@@ -2,6 +2,7 @@
 /AdminManifest.txt -text
 /ClientManifest.txt -text
 /MegaMek.jar -text
+/MekWarsAutoUpdateManifest.txt -text
 /OpEditorManifest.txt -text
 /ServerManifest.txt -text
 /TrackerManifest.txt -text
