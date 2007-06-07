@@ -54,7 +54,7 @@ import common.comm.ServerCommand;
 public class MMServ {
 	
 	//Static logging engine, and static version info.
-	public static final String SERVER_VERSION = "0.2.2.11";//Sync this with the clientVersion in MMClient @Torren 
+	public static final String SERVER_VERSION = "0.2.2.12";//Sync this with the clientVersion in MMClient @Torren 
 	public static final SMWLogger mmlog = new SMWLogger();
 	
 	private ServerWrapper myCommunicator;
@@ -401,7 +401,7 @@ public class MMServ {
 			iphelp.put(newUser, hisip);
 		}
 		
-		String clientVersion = "any "+SERVER_VERSION.substring(0,SERVER_VERSION.length()-1)+"x";
+		String clientVersion = "any "+SERVER_VERSION.substring(0,SERVER_VERSION.lastIndexOf("."))+"x";
 		clientSend("CH|Welcome to " + getConfigParam("SERVERNAME") +  " (Server Version: " + SERVER_VERSION + ", Compatible Clients: " +clientVersion+")", name);
 		clientSend("CH|" + getConfigParam("INFOMESSAGE"), name);
 

@@ -88,7 +88,8 @@ public class PartsMarket {
 					eq.setCost(Math.min(masterEq.getMaxCost(),Math.max(masterEq.getMinCost(), eq.getCost()*costIncrease)));
 					
 					if ( eq.getAmount() < masterEq.getMaxProduction() ) {
-						int amountIncrease = (CampaignMain.cm.getR().nextInt(masterEq.getMaxProduction()+1)-eq.getAmount());
+						int difference = masterEq.getMaxProduction()-eq.getAmount();
+						int amountIncrease = Math.min(difference/2, CampaignMain.cm.getR().nextInt(difference+1));
 						eq.setAmount(eq.getAmount()+amountIncrease);
 					}
 					
@@ -96,8 +97,9 @@ public class PartsMarket {
 				else {
 					eq.setCostUp(false);
 					if ( eq.getAmount() < masterEq.getMaxProduction() ) {
-						int amountIncrease = CampaignMain.cm.getR().nextInt(masterEq.getMaxProduction()-eq.getAmount())+1;
-						eq.setAmount(amountIncrease+eq.getAmount());
+						int difference = masterEq.getMaxProduction()-eq.getAmount();
+						int amountIncrease = Math.min(difference/2, CampaignMain.cm.getR().nextInt(difference)+1);
+						eq.setAmount(eq.getAmount()+amountIncrease);
 					}
 					
 					//Only want the price to go down 10% max.

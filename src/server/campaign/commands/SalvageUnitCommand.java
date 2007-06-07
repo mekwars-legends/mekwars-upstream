@@ -70,7 +70,7 @@ public class SalvageUnitCommand implements Command {
             Entity entity = unit.getEntity();
             String salvageMessage = "";
             int tabLocation = location;
-            int cost = CampaignMain.cm.getRepairCost(entity,location,slot,techType,armor,0);
+            int cost = CampaignMain.cm.getRepairCost(entity,location,slot,techType,armor,0,true);
             
             if ( player.isUnitInLockedArmy(unitID) ){
                 CampaignMain.cm.toUser("FSM|Sorry but that unit is currently in combat and may not be worked on.",Username,false);

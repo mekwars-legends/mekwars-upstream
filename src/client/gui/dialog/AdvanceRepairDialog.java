@@ -1083,14 +1083,18 @@ import client.gui.SpringLayoutHelper;
                 armor = false;
 
                 CriticalSlot cs = unit.getCritical(critLocation,critSlot);
-                totalCrits = UnitUtils.getNumberOfCrits(unit,cs);
                 double cost = 1;
-                cost = CUnit.getCritCost(unit,mwclient,cs);
-                cost += techCost;
-                totalCost = (int)(totalCrits*cost);
-                totalCost += techCost;
-                totalCost += techCost*Math.abs(techCostWorkMod);
-                costField.setText(Integer.toString(totalCost));
+				if ( salvage )
+					totalCrits = UnitUtils.getNumberOfCrits(unit,cs) - UnitUtils.getNumberOfDamagedCrits(unit, critSlot, critLocation, armor);
+				else
+					totalCrits = UnitUtils.getNumberOfDamagedCrits(unit, critSlot, critLocation, armor);
+				cost = CUnit.getCritCost(unit,mwclient,cs);
+				totalCost = (int)(totalCrits*cost);
+				totalCost += (int)(totalCrits*techCost);
+				totalCost += techCost;
+				totalCost += techCost*Math.abs(techWorkMod);
+				cost = Math.max(1,totalCost);
+
             }//end Else
         }//end real repair cost else
         

@@ -106,6 +106,7 @@ public class AdminMenu extends JMenu {
     JMenuItem jMenuAdminRetrieveOperationFile = new JMenuItem();
     JMenuItem jMenuAdminSetOperationFile = new JMenuItem();
     JMenuItem jMenuAdminSetNewOperationFile = new JMenuItem();
+    JMenuItem jMenuAdminSendAllOperationFiles = new JMenuItem();
     JMenuItem jMenuAdminUpdateOperations= new JMenuItem();
 	JMenuItem jMenuAdminRemoveOMG = new JMenuItem();
 	JMenuItem jMenuAdminOmniVariantMod = new JMenuItem();
@@ -405,6 +406,13 @@ public class AdminMenu extends JMenu {
             }
         });
 
+        jMenuAdminSendAllOperationFiles.setText("Send All Local Op Files");
+        jMenuAdminSendAllOperationFiles.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                jMenuAdminSendAllOperationFiles_actionPerformed(e);
+            }
+        });
+
         jMenuAdminUpdateOperations.setText("Update Operations");
         jMenuAdminUpdateOperations.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -586,6 +594,7 @@ public class AdminMenu extends JMenu {
         if ( userLevel >= mwclient.getData().getAccessLevel("SetOperation") ){
             jMenuAdminOperations.add(jMenuAdminSetOperationFile);
             jMenuAdminOperations.add(jMenuAdminSetNewOperationFile);
+            jMenuAdminOperations.add(jMenuAdminSendAllOperationFiles);
         }
         if ( userLevel >= mwclient.getData().getAccessLevel("UpdateOperations") )
             jMenuAdminOperations.add(jMenuAdminUpdateOperations);
@@ -1146,6 +1155,45 @@ public class AdminMenu extends JMenu {
             }
 
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setoperation#short#"+opData.toString());
+        }
+
+        public void jMenuAdminSendAllOperationFiles_actionPerformed(ActionEvent e) {
+            
+
+            int result = JOptionPane.showConfirmDialog(null,"Upload All local OpFiles?","Upload Ops",JOptionPane.YES_NO_OPTION);
+            
+            if ( result == JOptionPane.NO_OPTION )
+                return;
+
+        	File opFiles = new File("./data/operations/short/");
+
+            
+            if ( !opFiles.exists() ){
+                return;
+            }
+
+            StringBuilder opData = new StringBuilder();
+            
+            for (File opFile : opFiles.listFiles() ){
+	            try{
+	            	
+	                FileInputStream fis = new FileInputStream(opFile);
+	                BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+	                opData.append(opFile.getName().substring(0,opFile.getName().lastIndexOf(".txt"))+"#");
+	                while (dis.ready()){
+	                    opData.append(dis.readLine().replaceAll("#","(pound)")+"#");
+	                }
+	                dis.close();
+	                fis.close();
+	                
+	            }catch(Exception ex){
+	                MWClient.mwClientLog.clientErrLog("Unable to read "+opFile);
+	                return;
+	            }
+	            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setoperation#short#"+opData.toString());
+	            opData.setLength(0);
+	            opData.trimToSize();
+            }
         }
 
         public void jMenuAdminSetNewOperationFile_actionPerformed(ActionEvent e) {

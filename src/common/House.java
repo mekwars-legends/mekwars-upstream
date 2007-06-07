@@ -113,7 +113,7 @@ public class House implements MMNetSerializable {
     }
     
     /**
-     * @param baseGunner The baseGunner to set.
+     * @param basePilotSkill The base piloting skill for unit <code>type</code> to set.
      */
     public void setBasePilotSkill(String basePilotSkill, int type) {
         this.basePilotSkills.set(type, basePilotSkill);
@@ -265,7 +265,7 @@ public class House implements MMNetSerializable {
         for( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
             baseGunner.add(4);
             basePilot.add(5);
-            basePilotSkills.add("");
+            basePilotSkills.add(" ");
         }
     }
 
@@ -276,7 +276,7 @@ public class House implements MMNetSerializable {
         for( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
             baseGunner.add(4);
             basePilot.add(5);
-            basePilotSkills.add("");
+            basePilotSkills.add(" ");
         }
     }
 
@@ -331,7 +331,7 @@ public class House implements MMNetSerializable {
         for( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
             baseGunner.add(4);
             basePilot.add(5);
-            basePilotSkills.add("");
+            basePilotSkills.add(" ");
         }
 
      	id = new Integer(in.readInt("id"));
@@ -424,7 +424,7 @@ public class House implements MMNetSerializable {
     	for( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
             baseGunner.add(4);
             basePilot.add(5);
-            basePilotSkills.add("");
+            basePilotSkills.add(" ");
         }
     	
     	id = new Integer(in.readInt("id"));
@@ -520,7 +520,10 @@ public class House implements MMNetSerializable {
 	}
 	
     public void setTechLevel(int level) {
-    	this.techLevel = level;
+    	if ( techLevel < TechConstants.T_IS_LEVEL_1 )
+    		this.techLevel = TechConstants.T_ALL;
+    	else
+    		this.techLevel = level;
     }
     
     public int getTechLevel() {

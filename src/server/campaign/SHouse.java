@@ -275,7 +275,11 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
         }
 
         for ( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
-            result.append(getBasePilotSkill(pos));
+        	String skill = getBasePilotSkill(pos);
+        	if ( skill.length() < 1)
+        		result.append(" ");
+        	else
+        		result.append(skill);
             result.append("|");
         }
 
@@ -629,7 +633,8 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
             if ( ST.hasMoreTokens() ){
                 try{
                     for ( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
-                        setBasePilotSkill(ST.nextToken(),pos);
+                    	String skill = ST.nextToken();
+                   		setBasePilotSkill(skill, pos);
                     }
                 }catch(Exception ex){
                     setPilotQueues(new PilotQueues(this.getBaseGunnerVect(), this.getBasePilotVect(), this.getBasePilotSkillVect()));

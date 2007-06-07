@@ -716,7 +716,7 @@ class Repair{
                     if ( pilotIsRepairing )
                         techType = UnitUtils.TECH_PILOT;
                     
-                    int cost = CampaignMain.cm.getRepairCost(unit,location,slot,techType,armor,techWorkMod);
+                    int cost = CampaignMain.cm.getRepairCost(unit,location,slot,techType,armor,techWorkMod,salvage);
                     if ( cost < player.getMoney() && player.getUnitParts().getPartsCritCount(critName) >= damagedCrits){
 
                         retries--;

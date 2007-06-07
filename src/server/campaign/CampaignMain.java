@@ -1389,6 +1389,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("REQUESTDONATED", new RequestDonatedCommand());
 		Commands.put("REQUESTSERVERMAIL", new RequestServerMailCommand());
 		Commands.put("RESTARTREPAIRTHREAD", new RestartRepairThreadCommand());
+		Commands.put("RETRIEVEALLOPERATIONS", new RetrieveAllOperationsCommand());
 		Commands.put("RETRIEVEOPERATION", new RetrieveOperationCommand());
 		Commands.put("RETIREPILOT", new RetirePilotCommand());
 		Commands.put("SALVAGEUNIT", new SalvageUnitCommand());
@@ -3309,8 +3310,12 @@ public final class CampaignMain implements Serializable {
 				1.72, 2.40, 3.60, 5.92, 12.0, 36.0 };
 		return payout[roll];
 	}
-	
+
 	public int getRepairCost(Entity unit, int critLocation, int critSlot, int techType, boolean armor,int techWorkMod){
+		return getRepairCost(unit, critLocation, critSlot, techType, armor, techWorkMod,false);
+	}
+	
+	public int getRepairCost(Entity unit, int critLocation, int critSlot, int techType, boolean armor,int techWorkMod, boolean salvage){
 		double totalCost =1;
 		double techCost = 0;
 		double cost = 1;
@@ -3386,15 +3391,16 @@ public final class CampaignMain implements Serializable {
 			}
 			else{
 				CriticalSlot cs = unit.getCritical(critLocation,critSlot);
-				totalCrits = UnitUtils.getNumberOfCrits(unit,cs);
-				cost = 1;
-				totalCrits = UnitUtils.getNumberOfCrits(unit,cs);
+				if ( salvage )
+					totalCrits = UnitUtils.getNumberOfCrits(unit,cs) - UnitUtils.getNumberOfDamagedCrits(unit, critSlot, critLocation, armor);
+				else
+					totalCrits = UnitUtils.getNumberOfDamagedCrits(unit, critSlot, critLocation, armor);
 				cost = SUnit.getCritCost(unit,cs);
-				cost += techCost;
 				totalCost = (int)(totalCrits*cost);
+				totalCost += (int)(totalCrits*techCost);
 				totalCost += techCost;
 				totalCost += techCost*Math.abs(techWorkMod);
-				cost = totalCost;
+				cost = Math.max(1,totalCost);
 			}//end critslot else
 		}
 		

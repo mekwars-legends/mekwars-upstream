@@ -2,6 +2,15 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.2.x 
++ Cost to salvage equipment is now based on number of viable crits
++ Cost to repair equipment is now based on number of damaged crits
++ Bug: Fixed a pricing erorr in get parts costs.
++ Slowed how quickly parts are restored to the Parts market.
++ Added menu item in admin that sends all local ops data to the server.
++ Added new command RetrieveAllOperationsCommand
++ Bug: checking for a single skill in SHouse.fromString() in a string of skills
++ Bug: House techlevel being set to less then 0
++ Bug: basePilotSkills not getting written to the faction data file correctly
 + Bug: getArmorCost(Entity) not returning 0 when using parts repair.
 + Bug: FFA teams would not send the commence link to the original attacker.
 + Bug: Could not repair ammo bins with parts repairs
