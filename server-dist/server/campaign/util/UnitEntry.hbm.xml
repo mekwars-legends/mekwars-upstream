@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping>
+    <class
+        name="server.campaign.util.UnitEntry"
+        table="Units"
+        dynamic-update="false"
+        dynamic-insert="false"
+    >
+
+        <id
+            name="ID"
+            column="ID"
+            type="java.lang.Integer"
+        >
+            <generator class="native">
+            </generator>
+        </id>
+
+        <property
+            name="pilotGunnery"
+            type="int"
+            update="true"
+            insert="true"
+            access="property"
+            column="pilotGunnery"
+        />
+
+        <property
+            name="pilotName"
+            type="java.lang.String"
+            update="true"
+            insert="true"
+            access="property"
+            column="pilotName"
+        />
+
+        <property
+            name="pilotPiloting"
+            type="int"
+            update="true"
+            insert="true"
+            access="property"
+            column="pilotPiloting"
+        />
+
+        <property
+            name="pilotSkill"
+            type="java.lang.String"
+            update="true"
+            insert="true"
+            access="property"
+            column="pilotSkill"
+        />
+
+        <property
+            name="fileName"
+            type="java.lang.String"
+            update="true"
+            insert="true"
+            access="property"
+            column="fileName"
+        />
+
+        <!--
+            To add non XDoclet property mappings, create a file named
+                hibernate-properties-UnitEntry.xml
+            containing the additional properties and place it in your merge dir.
+        -->
+
+    </class>
+
+</hibernate-mapping>

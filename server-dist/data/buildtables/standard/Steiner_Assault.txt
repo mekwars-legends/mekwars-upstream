@@ -1,0 +1,9 @@
+50 Common
+1 Rare
+2 Kurita
+2 Marik
+5 Battlemaster BLR-1S.blk
+5 Zeus ZEU-6T.blk
+5 Zeus ZEU-6S.blk
+5 Banshee BNC-3S.blk
+5 Victor VTR-9S.blk

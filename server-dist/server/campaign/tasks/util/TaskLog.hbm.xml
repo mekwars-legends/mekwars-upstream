@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping>
+    <class
+        name="server.campaign.tasks.util.TaskLog"
+        table="TaskLog"
+        dynamic-update="false"
+        dynamic-insert="false"
+    >
+
+        <id
+            name="ID"
+            column="ID"
+            type="java.lang.Integer"
+        >
+            <generator class="native">
+            </generator>
+        </id>
+
+        <property
+            name="timestamp"
+            type="long"
+            update="true"
+            insert="true"
+            access="property"
+            column="timestamp"
+        />
+
+        <property
+            name="type"
+            type="int"
+            update="true"
+            insert="true"
+            access="property"
+            column="type"
+        />
+
+        <property
+            name="attackerEmployerId"
+            type="java.lang.Integer"
+            update="true"
+            insert="true"
+            access="property"
+            column="attackerEmployerId"
+        />
+
+        <property
+            name="attackerHouseId"
+            type="java.lang.Integer"
+            update="true"
+            insert="true"
+            access="property"
+            column="attackerHouseId"
+        />
+
+        <property
+            name="attackerId"
+            type="java.lang.Integer"
+            update="true"
+            insert="true"
+            access="property"
+            column="attackerId"
+        />
+
+        <property
+            name="defenderEmployerId"
+            type="java.lang.Integer"
+            update="true"
+            insert="true"
+            access="property"
+            column="defenderEmployerId"
+        />
+
+        <property
+            name="defenderHouseId"
+            type="java.lang.Integer"
+            update="true"
+            insert="true"
+            access="property"
+            column="defenderHouseId"
+        />
+
+        <property
+            name="defenderId"
+            type="java.lang.Integer"
+            update="true"
+            insert="true"
+            access="property"
+            column="defenderId"
+        />
+
+        <property
+            name="planetId"
+            type="java.lang.Integer"
+            update="true"
+            insert="true"
+            access="property"
+            column="planetId"
+        />
+
+        <property
+            name="winnerId"
+            type="java.lang.Integer"
+            update="true"
+            insert="true"
+            access="property"
+            column="winnerId"
+        />
+
+        <!--
+            To add non XDoclet property mappings, create a file named
+                hibernate-properties-TaskLog.xml
+            containing the additional properties and place it in your merge dir.
+        -->
+
+    </class>
+
+</hibernate-mapping>

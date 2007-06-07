@@ -1,0 +1,23 @@
+5 Chameleon CLN-7V.blk
+5 Clint CLNT-2-3T.blk
+5 Clint CLNT-1-2R.blk
+5 Clint CLNT-2-4T.blk
+5 Crab CRB-20.blk
+5 Hoplite HOP-4B.blk
+5 Hoplite HOP-4C.blk
+5 Kintaro KTO-18.blk
+5 Scorpion SCP-1N.blk
+5 Sentinel STN-3K.blk
+5 Centurion CN9-YLW.blk
+5 Wyvern WVE-6N.blk
+5 Centurion CN9-AX.hmp
+5 Centurion CN9-DB.hmp
+5 Enforcer ENF-4A.hmp
+5 Griffin GRF-2M.hmp
+5 Hunchback HBK-4F.hmp
+5 Phoenix Hawk PXH-1S.hmp
+5 Shadow Hawk SHD-2HM.hmp
+5 Shadow Hawk SHD-2IC.hmp
+5 Vindicator VND-1L.hmp
+5 Wolverine WVR-6L.hmp
+5 Wolverine WVR-6S.hmp

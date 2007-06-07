@@ -1,0 +1,73 @@
+/*
+ * MekWars - Copyright (C) 2006 
+ *
+ * Original author - jtighe (torren@users.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ */
+
+package server.campaign.commands.admin;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.util.StringTokenizer;
+
+import server.campaign.CampaignMain;
+import server.campaign.commands.Command;
+import server.MWChatServer.auth.IAuthenticator;
+@SuppressWarnings({"unchecked","serial"})
+//Syntax setoperation#optype#opname#data
+public class SetOperationCommand implements Command {
+    
+    int accessLevel = IAuthenticator.ADMIN;
+    public int getExecutionLevel(){return accessLevel;}
+    public void setExecutionLevel(int i) {accessLevel = i;}
+    
+    public void process(StringTokenizer command,String Username) {
+        
+        //access level check
+        int userLevel = CampaignMain.cm.getServer().getUserLevel(Username);
+        if(userLevel < getExecutionLevel()) {
+            CampaignMain.cm.toUser("Insufficient access level for command. Level: " + userLevel + ". Required: " + accessLevel + ".",Username,true);
+            return;
+        }
+        
+        String opType;
+        String opName;
+        
+        try{
+            opType = command.nextToken();
+            opName = command.nextToken();
+        }catch (Exception ex){
+            CampaignMain.cm.toUser("Syntax setoperation#optype#opname",Username,true);
+            return;
+        }
+        
+        File opFile = new File("./data/operations/"+opType+"/"+opName+".txt");
+
+        try{
+            FileOutputStream fos = new FileOutputStream(opFile);
+            PrintStream ps = new PrintStream(fos);
+            while (command.hasMoreTokens()){
+                ps.println(command.nextToken().replaceAll("\\(pound\\)","#"));
+            }
+            ps.close();
+            fos.close();
+            
+        }catch(Exception ex){
+            CampaignMain.cm.toUser("Unable to write to "+opFile.getName(),Username,true);
+            return;
+        }
+        
+        CampaignMain.cm.doSendModMail("NOTE:",Username+" has updated "+opFile.getName());
+    }
+}//end RetrieveShortOperation

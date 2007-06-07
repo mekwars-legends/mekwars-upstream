@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping>
+    <class
+        name="server.campaign.dataFiles.SPlanetData"
+        table="SPlanetData"
+        dynamic-update="false"
+        dynamic-insert="false"
+    >
+
+        <id
+            name="id"
+            column="id"
+            type="java.lang.Integer"
+        >
+            <generator class="native">
+            </generator>
+        </id>
+
+        <property
+            name="baysProvided"
+            type="int"
+            update="true"
+            insert="true"
+            access="property"
+            column="baysProvided"
+        />
+
+        <property
+            name="compProduction"
+            type="int"
+            update="true"
+            insert="true"
+            access="property"
+            column="compProduction"
+        />
+
+        <property
+            name="conquerable"
+            type="boolean"
+            update="true"
+            insert="true"
+            access="property"
+            column="conquerable"
+        />
+
+        <property
+            name="description"
+            type="java.lang.String"
+            update="true"
+            insert="true"
+            access="property"
+            column="description"
+        />
+
+        <many-to-one
+            name="influence"
+            class="common.Influences"
+            cascade="none"
+            outer-join="auto"
+            update="true"
+            insert="true"
+            access="property"
+            column="INFLUENCE_ID"
+        />
+
+        <property
+            name="name"
+            type="java.lang.String"
+            update="true"
+            insert="true"
+            access="property"
+            column="name"
+        />
+
+        <property
+            name="unitFactories"
+            type="common.UnitFactories"
+            update="true"
+            insert="true"
+            access="property"
+            column="unitFactories"
+        />
+
+        <!--
+            To add non XDoclet property mappings, create a file named
+                hibernate-properties-SPlanetData.xml
+            containing the additional properties and place it in your merge dir.
+        -->
+
+    </class>
+
+</hibernate-mapping>

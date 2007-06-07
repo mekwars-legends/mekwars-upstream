@@ -1,0 +1,395 @@
+/*
+ * MekWars - Copyright (C) 2004 
+ * 
+ * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
+ * Original author - Helge Richter (McWizard)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ */
+
+/*
+ * Created on 23.03.2004
+ *
+ */
+package common;
+
+import java.io.IOException;
+import java.io.Serializable;
+
+import common.Unit;
+import common.persistence.MMNetSerializable;
+import common.persistence.TreeReader;
+import common.persistence.TreeWriter;
+import common.util.BinReader;
+import common.util.BinWriter;
+
+/**
+ * @author Helge Richter
+ *
+ */
+@SuppressWarnings({"unchecked","serial"})
+public class UnitFactory implements Serializable, MMNetSerializable {
+	
+	private String name;
+	private String size;
+	private String founder;
+
+	private int ticksUntilRefresh;
+	private int refreshSpeed = 100;//The Speed this factory refreshes
+	
+	static public final int BUILDALL = 0;
+	static public final int BUILDMEK = 1;
+	static public final int BUILDVEHICLES = 2;
+	static public final int BUILDMEKnVEHICLES = 3; 
+	static public final int BUILDINFANTRY = 4;
+	static public final int BUILDMEKNInFANTRY = 5;
+	static public final int BUILDVEHICLESnINFANTRY = 6;
+	static public final int BUILDMEKnINFANTRYnVEHICLES = 7;
+	static public final int BUILDPROTOMECHS = 8;
+	static public final int BUILDMEKnPROTOMECHS = 9;
+	static public final int BUILDVEHICLESnPROTOMECH = 10;
+	static public final int BUILDMEKnVEHICLESnPROTOMECH = 11;
+	static public final int BUILDINFANTRYnPROTOMECH = 12;
+	static public final int BUILDMEKnINFANTRYnPROTOMECH = 13;
+	static public final int BUILDVEHICLESnINFANTRYnPROTOMECH = 14;
+	static public final int BUILDMEKnVEHICLESnINFANTRYnPROTOMECH = 15;
+	static public final int BUILDBATTLEARMOR = 16;
+	static public final int BUILDMEKnBATTLEARMOR = 17;
+	static public final int BUILDVEHICLESnBATTLEARMOR = 18;
+	static public final int BUILDMEKnVEHICLEsnBATTLEARMOR = 19;
+	static public final int BUILDINFANTRYnBATTLEARMOR = 20;
+	static public final int BUILDMEKnINFANTRYnBATTLEARMOR = 21;
+	static public final int BUILDVEHICLESnINFANTRYnBATTLEARMOR = 22;
+	static public final int BUILDMEKnVEHICLESnINFANTRYnBATTLEARMOR = 23;
+	static public final int BUILDPROTOMECHSnBATTLEARMOR = 24;
+	static public final int BUILDMEKnPROTOMECHSnBATTLEARMOR = 25;
+	static public final int BUILDVEHICLESnPROTOMECHnBATTLEARMOR = 26;
+	static public final int BUILDMEKnVEHICLESnPROTOMECHnBATTLEARMOR = 27;
+	static public final int BUILDINFANTRYnPROTOMECHnBATTLEARMOR = 28;
+	static public final int BUILDMEKnINFANTRYnPROTOMECHnBATTLEARMOR = 29;
+	static public final int BUILDVEHICLESnINFANTRYnPROTOMECHnBATTLEARMOR = 30;
+	static public final int BUILDMEKnVEHICLESnINFANTRYnPROTOMECHnBATTLEARMOR = 31;
+	static public final int BUILDVTOL = 32;
+	
+	
+	/**
+	 * Type = 0 means can produce everything
+	 * Least significant bit = Mek
+	 * Next Bit = Vehicle
+	 * Next Bit = Infantry
+	 * TODO: Fixme.. this is no bitmask... this only think it is (Imi)
+	 */
+	private int type;
+	
+	/**
+	 * @author jtighe
+	 * 
+	 * This will allow admins to lock this factory
+	 */
+	private boolean factoryLocked = false;
+	
+	
+	private int factoryID = 0;
+	
+	/**
+	 * @return Returns the faction .
+	 */
+	public String getFounder() {
+		return founder;
+	}
+	/**
+	 * @param faction The faction to set.
+	 */
+	public void setFounder(String faction) {
+		this.founder = faction;
+	}
+
+	/**
+	 * @return Returns the factoryID
+	 */
+	public int getID() {
+	  return factoryID;
+	}
+
+	/**
+	 * @param id The factoryID to set.
+	 */
+	public void setID(int id) {
+	  this.factoryID = id;
+	}
+	
+	/**
+	 * @return Returns the name.
+	 */
+	public String getName() {
+		return name;
+	}
+	
+	/**
+	 * @param name The name to set.
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	/**
+	 * @return Returns the refreshSpeed.
+	 */
+	public int getRefreshSpeed() {
+		return refreshSpeed;
+	}
+	
+	/**
+	 * @param refreshSpeed The refreshSpeed to set.
+	 */
+	public void setRefreshSpeed(int refreshSpeed) {
+		this.refreshSpeed = refreshSpeed;
+	}
+	
+	/**
+	 * @return Returns the size.
+	 */
+	public String getSize() {
+		return size;
+	}
+	
+	/**
+	 * @param size The size to set.
+	 */
+	public void setSize(String size) {
+		this.size = size;
+	}
+	
+	/**
+	 * @return Returns the ticksUntilRefresh,
+	 *         but hides any negative values.
+	 */
+	public int getTicksUntilRefresh() {
+		if (isLocked())
+			return Integer.MAX_VALUE;
+		
+		if (ticksUntilRefresh < 0)
+			return 0;
+		//else
+		return ticksUntilRefresh;
+	}
+	
+	/**
+	 * @param ticksUntilRefresh The ticksUntilRefresh to set.
+	 */
+	public void setTicksUntilRefresh(int ticksUntilRefresh) {
+		this.ticksUntilRefresh = ticksUntilRefresh;
+	}
+	
+	/**
+	 * @return Returns the type.
+	 */
+	public int getType() {
+		return type;
+	}
+	
+	/**
+	 * @param type The type to set.
+	 */
+	public void setType(int type) {
+		this.type = type;
+	}
+	
+	/**
+	 * Test whether the factory can produce an unit.
+	 * @param type_id The type of the unit to test.
+	 */
+	public boolean canProduce(int type_id)
+	{
+		int test = getType();
+		
+		if ( test == BUILDALL )
+			return true;
+		
+		if ( test - BUILDBATTLEARMOR >= 0){
+			
+			test -= BUILDBATTLEARMOR;
+			if (type_id == Unit.BATTLEARMOR)
+				return true;
+		}
+		
+		if ( test - BUILDPROTOMECHS >= 0 ){
+			
+			test -= BUILDPROTOMECHS;
+			if (type_id == Unit.PROTOMEK)
+				return true;
+		}
+		
+		
+		if (test - BUILDINFANTRY >= 0)
+		{
+			test -= BUILDINFANTRY;
+			if (type_id == Unit.INFANTRY)
+				return true;
+		}
+		
+		if (test - BUILDVEHICLES >= 0)
+		{
+			test -= BUILDVEHICLES;
+			if (type_id == Unit.VEHICLE)
+				return true;
+		}
+		
+		if (test - BUILDMEK >= 0)
+		{
+			if (type_id == Unit.MEK)
+				return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Writes as binary stream
+	 */
+	public void binOut(BinWriter out) {
+		out.println(name, "name");
+		out.println(size, "size");
+		out.println(founder, "faction");
+		out.println(ticksUntilRefresh, "ticksUntilRefresh");
+		out.println(refreshSpeed, "refreshSpeed");
+		out.println(type, "type");
+		out.println(factoryLocked,"factorylock");
+		// TODO: no timezone saved until TimeZoneData is in common...
+	}
+	
+	/**
+	 * Read from a binary stream
+	 */
+	public void binIn(BinReader in) throws IOException {
+		name = in.readLine("name");
+		size = in.readLine("size");
+		founder = in.readLine("faction");
+		ticksUntilRefresh = in.readInt("ticksUntilRefresh");
+		refreshSpeed = in.readInt("refreshSpeed");
+		type = in.readInt("type");
+		factoryLocked = in.readBoolean("factorylock");
+	}    
+	
+	public String getTypeString() {
+		String result = "";
+		if (this.canProduce(Unit.MEK))
+			result += "M";
+		if (this.canProduce(Unit.VEHICLE))
+			result += "V";
+		if (this.canProduce(Unit.INFANTRY))
+			result += "I";
+		if (this.canProduce(Unit.PROTOMEK))
+			result += "P";
+		if (this.canProduce(Unit.BATTLEARMOR))
+			result += "B";
+		
+		return result;
+	}
+	
+	//TODO: Fix the unit type system and all that stuff.. this is a big bunch of garbage..
+	public String getFullTypeString() {
+		String result = "";
+		if (this.canProduce(Unit.MEK))
+			result = "Mek ";
+		if (this.canProduce(Unit.VEHICLE))
+			result += "Vehicle ";
+		if (this.canProduce(Unit.INFANTRY))
+			result += "Infantry ";
+		if (this.canProduce(Unit.PROTOMEK))
+			result += "ProtoMek ";
+		if (this.canProduce(Unit.BATTLEARMOR))
+			result += "BattleArmor ";
+		return result;
+	}
+	
+	/**
+	 * @return the Status that is shown on a detailed planet view
+	 */
+	public String getStatus() {
+		String result = getName() + "(" + getSize();
+		if (getType() != Unit.MEK)
+			result += " " + typeString();
+		result += ") built by " + getFounder() + ".<br>";
+		if (getTicksUntilRefresh() == 0)
+			result += "Factory is ready to produce a unit.<br>";
+		else
+			result += "Factory will be ready to produce a unit in " + getTicksUntilRefresh() + " miniticks.<br>";
+		return result;
+	}
+	
+	/**
+	 * Returns the name of all types this factory can produce seperated by space. 
+	 */
+	public String typeString() {
+		String result = "";
+		if (canProduce(Unit.MEK))
+			result += "Mek ";
+		if (canProduce(Unit.VEHICLE))
+			result += "Vehicle ";
+		if (canProduce(Unit.INFANTRY))
+			result += "Infantry ";
+		if (this.canProduce(Unit.PROTOMEK))
+			result += "ProtoMek ";
+		if (this.canProduce(Unit.BATTLEARMOR))
+			result += "BattleArmor ";
+		return result;
+	}
+	
+	public void binOut(TreeWriter out) {
+		out.write(getName(), "name");
+		out.write(getSize(), "size");
+		out.write(getFounder(), "founder");
+		out.write(getTicksUntilRefresh(), "ticksuntilrefresh");
+		out.write(getRefreshSpeed(), "refreshspeed");
+		out.write(getType(),"type");
+		out.write(isLocked(), "factorylock");
+	}
+	
+	//for serializable
+	public void binIn(TreeReader in, CampaignData data){
+		//empty. todo.
+	}
+	
+	public int getWeightclass() {
+		if (getSize().equalsIgnoreCase("Light"))
+			return Unit.LIGHT;
+		else if (getSize().equalsIgnoreCase("Medium"))
+			return Unit.MEDIUM;
+		else if (getSize().equalsIgnoreCase("Heavy"))
+			return Unit.HEAVY;
+		else if (getSize().equalsIgnoreCase("Assault"))
+			return Unit.ASSAULT;
+		return 0;
+	}
+	
+	public int getBestTypeProducable() {
+		if (this.canProduce(Unit.MEK))
+			return Unit.MEK;
+		if (this.canProduce(Unit.VEHICLE))
+			return Unit.VEHICLE;
+		if (this.canProduce(Unit.BATTLEARMOR))
+			return Unit.BATTLEARMOR;
+		if (this.canProduce(Unit.PROTOMEK))
+			return Unit.PROTOMEK;
+		if (this.canProduce(Unit.INFANTRY))
+			return Unit.INFANTRY;
+		return Unit.MEK;
+	}
+	
+	public boolean isLocked() {
+		return factoryLocked;
+	}
+	
+	public void setLock(boolean lock) {
+		factoryLocked = lock;
+	}
+}

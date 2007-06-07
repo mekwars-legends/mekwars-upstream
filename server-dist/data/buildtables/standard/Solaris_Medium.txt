@@ -1,0 +1,20 @@
+5 Assassin ASN-21.blk
+5 Blackjack BJ-1.blk
+5 Centurion CN9-A.blk
+5 Cicada CDA-2A.blk
+5 Dervish DV-6M.blk
+5 Griffin GRF-1N.blk
+5 Hunchback HBK-4G.blk
+5 Hunchback HBK-4H.blk
+5 Hunchback HBK-4J.blk
+5 Hunchback HBK-4N.blk
+5 Phoenix Hawk PXH-1.blk
+5 Shadow Hawk SHD-2H.blk
+5 Trebuchet TBT-5N.blk
+5 Vulcan VL-2T.blk
+5 Whitworth WTH-1.blk
+5 Wolverine WVR-6R.blk
+1 Centurion CN9-AH.blk
+1 Hunchback HBK-4P.blk
+1 Hunchback HBK-4SP.blk
+1 Vindicator VND-1R.blk

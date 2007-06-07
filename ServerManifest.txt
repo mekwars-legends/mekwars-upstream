@@ -1,0 +1,3 @@
+Manifest-Version: 1.1
+Main-Class: server.MMServ
+Class-Path: MegaMek.jar ./lib/TinyXML.jar ./lib/Ostermiller.jar ./lib/xstream.jar ./lib/mysql-connector-java-5.0.6-bin.jar
