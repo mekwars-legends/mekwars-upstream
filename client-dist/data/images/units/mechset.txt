@@ -1,0 +1,37 @@
+#
+# chassis Tileset
+#
+# The format goes as follows:
+# {chassis/exact} [model] [image filename] 
+# 
+# Use exact to specify the unit exactly, for example:
+# exact "Marauder MAD-3R" "marauder.gif"
+# exact "Timber Wolf Prime" "timberwolf.gif"
+# 
+# You may also just specify a graphic for a chassis, for example:
+# chassis "Marauder" "marauder.gif"
+#
+# Images should be greyscale, 84x72 pixel gifs with the chassis centered.  The
+# tinting process is subtractive, so make images light.
+# 
+
+exact 		"default_light" 		"default_light.gif"
+exact 		"default_medium" 		"default_medium.gif"
+exact 		"default_heavy" 		"default_heavy.gif"
+exact 		"default_assault" 		"default_assault.gif"
+exact 		"default_quad" 			"default_quad.gif"
+exact 		"default_tracked" 		"default_tracked.gif"
+exact 		"default_tracked_heavy" 	"default_tracked_heavy.gif"
+exact 		"default_tracked_assault" 	"default_tracked_assault.gif"
+exact 		"default_wheeled" 		"default_wheeled.gif"
+exact 		"default_wheeled_heavy" 	"default_wheeled_heavy.gif""
+exact 		"default_hover" 		"default_hover.gif"
+exact 		"default_vtol" 			"default_vtol.gif"
+exact 		"default_naval" 		"default_naval.gif"
+exact		"default_hydrofoil" 		"default_hydrofoil.gif"
+exact 		"default_infantry" 		"default_infantry.gif"
+exact 		"default_ba" 			"default_ba.gif"
+exact 		"default_proto" 		"default_proto.gif"
+exact 		"default_gun_emplacement" 	"default_gun_emplacement.gif"
+
+#add customs below
