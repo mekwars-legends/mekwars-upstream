@@ -19,9 +19,7 @@ package server.campaign.commands.mod;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
-import common.MMClientInfo;
-
-
+import server.MMClientInfo;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;

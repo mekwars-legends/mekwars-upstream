@@ -18,8 +18,7 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import common.MMClientInfo;
-
+import server.MMClientInfo;
 import server.campaign.CampaignMain;
 
 public class InCharacterCommand implements Command {

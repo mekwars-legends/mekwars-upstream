@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.2.x 
++ Moved MMClientInfo from Common to Server package.
 + Cost to salvage equipment is now based on number of viable crits
 + Cost to repair equipment is now based on number of damaged crits
 + Bug: Fixed a pricing erorr in get parts costs.

@@ -45,8 +45,8 @@ import server.campaign.SPlayer;
 import server.MWChatServer.auth.IAuthenticator;
 import server.util.IpCountry;
 import server.util.TrackerThread;
+import server.MMClientInfo;
 
-import common.MMClientInfo;
 import common.MMGame;
 import common.comm.Command;
 import common.comm.ServerCommand;

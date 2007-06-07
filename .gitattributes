@@ -1191,7 +1191,6 @@ src/common/Continent.java -text
 src/common/Equipment.java -text
 src/common/House.java -text
 src/common/Influences.java -text
-src/common/MMClientInfo.java -text
 src/common/MMGame.java -text
 src/common/MegaMekPilotOption.java -text
 src/common/MutableSerializable.java -text
@@ -1231,6 +1230,7 @@ src/common/util/StringUtils.java -text
 src/common/util/TeePrinter.java -text
 src/common/util/UnitComponents.java -text
 src/common/util/UnitUtils.java -text
+src/server/MMClientInfo.java -text
 src/server/MMServ.java -text
 src/server/MWChatServer/AbstractConnectionHandler.java -text
 src/server/MWChatServer/CommandMakerRemote.java -text
