@@ -2,6 +2,11 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.2.x 
++ Added Command RemovePlayerParts
++ Added Command AddPlayerParts
++ Added Command StripAllPlayerPartsCache
++ Bug: Server was adding parts instead of removing them when repairing.
++ Added Command ViewPlayerParts
 + Moved MMClientInfo from Common to Server package.
 + Cost to salvage equipment is now based on number of viable crits
 + Cost to repair equipment is now based on number of damaged crits

@@ -221,7 +221,7 @@ public class CBMPartsPanel extends JPanel {
 		if (bme != null) {
 			
 			//generate a new option dialog
-			String playerAmountString = JOptionPane.showInputDialog(null, "<HTML><center>How many units of " + bme.getEquipmentName() + " would you like to buy?","Amount to Buy", JOptionPane.PLAIN_MESSAGE);
+			String playerAmountString = JOptionPane.showInputDialog(mwclient.getMainFrame(), "<HTML><center>How many units of " + bme.getEquipmentName() + " would you like to buy?","Amount to Buy", JOptionPane.PLAIN_MESSAGE);
             
             //Clicked Cancel
             if ( playerAmountString == null || playerAmountString.trim().length() == 0)
@@ -242,7 +242,7 @@ public class CBMPartsPanel extends JPanel {
             	
             }catch (Exception ex) {
             	//Trap the error
-            	JOptionPane.showConfirmDialog(this, "Invalid Syntax Try Again.");
+            	JOptionPane.showConfirmDialog(mwclient.getMainFrame(), "Invalid Syntax Try Again.");
             	return;
             }
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c buyparts#"+ bme.getEquipmentInternalName() +"#"+ playerAmountString);

@@ -161,7 +161,7 @@ public class ModeratorUserlistPopupMenu extends JMenu implements ActionListener 
             {
                 
 
-                String exp = JOptionPane.showInputDialog(null, mwclient
+                String exp = JOptionPane.showInputDialog(mwclient.getMainFrame(), mwclient
                         .moneyOrFluMessage(false, true,-1)
                         + " Amount,- to remove");
                 if (exp == null || exp.length() == 0)
@@ -176,7 +176,7 @@ public class ModeratorUserlistPopupMenu extends JMenu implements ActionListener 
             userName = st.nextToken();
             {
                 
-                String exp = JOptionPane.showInputDialog(null, mwclient
+                String exp = JOptionPane.showInputDialog(mwclient.getMainFrame(), mwclient
                         .moneyOrFluMessage(true, true,-1)
                         + " Amount,- to remove");
                 if (exp == null || exp.length() == 0)
@@ -192,7 +192,7 @@ public class ModeratorUserlistPopupMenu extends JMenu implements ActionListener 
             {
                 
                 String exp = JOptionPane
-                .showInputDialog(null, "Exp Amount,- to remove");
+                .showInputDialog(mwclient.getMainFrame(), "Exp Amount,- to remove");
                 if (exp == null || exp.length() == 0)
                     return;
 
@@ -205,7 +205,7 @@ public class ModeratorUserlistPopupMenu extends JMenu implements ActionListener 
             userName = st.nextToken();
             {
                 
-                String exp = JOptionPane.showInputDialog(null,
+                String exp = JOptionPane.showInputDialog(mwclient.getMainFrame(),
                 "Reward Amount,- to remove");
                 if (exp == null || exp.length() == 0)
                     return;

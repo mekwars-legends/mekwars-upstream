@@ -399,7 +399,7 @@ public class UnitComponents  {
 		
 		int parts = components.get(key);
 		
-		parts -= amount;
+		parts -= Math.abs(amount);
 		
 		if ( parts <= 0 )
 			components.remove(key);
@@ -440,5 +440,9 @@ public class UnitComponents  {
 			return crit;
 		
 		return eq.getName();
+	}
+	
+	public void clear(){
+		components.clear();
 	}
 }

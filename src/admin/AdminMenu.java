@@ -639,15 +639,15 @@ public class AdminMenu extends JMenu {
 	  */
 
 	    public void jMenuAdminCreatePlanet_actionPerformed(ActionEvent e) {
-	        String planetName = JOptionPane.showInputDialog(null, "Planet Name?");
+	        String planetName = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Planet Name?");
 	        if (planetName == null || planetName.length() == 0)
 	            return;
 
-	        String xcord = JOptionPane.showInputDialog(null, "Planet x coord");
+	        String xcord = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Planet x coord");
 	        if (xcord == null || xcord.length() == 0)
 	            return;
 
-	        String ycord = JOptionPane.showInputDialog(null, "Planet y coord?");
+	        String ycord = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Planet y coord?");
 	        if (ycord == null || ycord.length() == 0)
 	            return;
 
@@ -702,7 +702,7 @@ public class AdminMenu extends JMenu {
 	        if (planetNamestr == null || planetNamestr.length() == 0)
 	            return;
 
-	        String factoryName = JOptionPane.showInputDialog(null, "Factory Name");
+	        String factoryName = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Factory Name");
 
 	        if (factoryName == null || factoryName.length() == 0)
 	            return;
@@ -715,7 +715,7 @@ public class AdminMenu extends JMenu {
 	        if (factionName == null || factionName.length() == 0)
 	            return;
 
-	        String factoryTypestr = (String) JOptionPane.showInputDialog(null,
+	        String factoryTypestr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(),
 	                "Select factory production", "Factory Production",
 	                JOptionPane.INFORMATION_MESSAGE, null, factoryTypes,
 	                factoryTypes[0]);
@@ -729,7 +729,7 @@ public class AdminMenu extends JMenu {
 
 	        int factoryTypeint = i;
 
-	        String factorySizestr = (String) JOptionPane.showInputDialog(null,
+	        String factorySizestr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(),
 	                "Select a factory size", "FactorySize",
 	                JOptionPane.INFORMATION_MESSAGE, null, factorySize,
 	                factorySize[0]);
@@ -799,7 +799,7 @@ public class AdminMenu extends JMenu {
 	            names.add(((PlanetEnvironment) it.next()).getName());
 
 	        /*
-	         * String terrainType = JOptionPane.showInputDialog(null,"Terrain
+	         * String terrainType = JOptionPane.showInputDialog(mwclient.getMainFrame(),"Terrain
 	         * Type");
 	         */
 
@@ -822,7 +822,7 @@ public class AdminMenu extends JMenu {
 	        if (terrainType == null || terrainType.length() == 0)
 	            return;
 
-	        String terrainChance = JOptionPane.showInputDialog(null,"Terrain Chance", new Integer(100));
+	        String terrainChance = JOptionPane.showInputDialog(mwclient.getMainFrame(),"Terrain Chance", new Integer(100));
 
 	        if (terrainChance == null || terrainChance.length() == 0)
 	            return;
@@ -843,7 +843,7 @@ public class AdminMenu extends JMenu {
 	            return;
 
 	        String terrainType = JOptionPane .showInputDialog(
-	                        null,
+	        		mwclient.getMainFrame(),
 	                        "Select the Terrain position: start with 0 for the top most terrain in the information box");
 
 	        if (terrainType == null || terrainType.length() == 0)
@@ -877,7 +877,7 @@ public class AdminMenu extends JMenu {
 	    }
 	    
 	    public void jMenuAdminTerminateAll_actionPerformed(ActionEvent e) {
-	    	int confirm = JOptionPane.showConfirmDialog(null,"Are you sure you want to terminate all waiting/running games?");
+	    	int confirm = JOptionPane.showConfirmDialog(mwclient.getMainFrame(),"Are you sure you want to terminate all waiting/running games?");
 	    	if (confirm != JOptionPane.YES_OPTION)
 	    		return;
 	    	mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c adminterminateall");
@@ -885,12 +885,12 @@ public class AdminMenu extends JMenu {
 
 	    public void jMenuAdminSetHouseFluFile_actionPerformed(ActionEvent e) {
 
-	        String factionName = JOptionPane.showInputDialog(null, "House Name:");
+	        String factionName = JOptionPane.showInputDialog(mwclient.getMainFrame(), "House Name:");
 
 	        if (factionName == null || factionName.length() == 0)
 	            return;
 
-	        String fluFilePrefix = JOptionPane.showInputDialog(null, mwclient
+	        String fluFilePrefix = JOptionPane.showInputDialog(mwclient.getMainFrame(), mwclient
 	                .moneyOrFluMessage(false,true,-1)
 	                + " File Prefix:");
 
@@ -912,20 +912,20 @@ public class AdminMenu extends JMenu {
 	        if (factionName == null || factionName.length() == 0)
 	            return;
 
-	        String Typestr = (String) JOptionPane.showInputDialog(null,
+	        String Typestr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(),
 	                "Select component type", "Component Type",
 	                JOptionPane.INFORMATION_MESSAGE, null, Types, Types[0]);
 
 	        if (Typestr == null || Typestr.length() == 0)
 	            return;
 
-	        String Sizestr = (String) JOptionPane.showInputDialog(null,
+	        String Sizestr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(),
 	                "Select a component size", "Component Size",
 	                JOptionPane.INFORMATION_MESSAGE, null, Size, Size[0]);
 	        if (Sizestr == null || Sizestr.length() == 0)
 	            return;
 
-	        String components = JOptionPane.showInputDialog(null,
+	        String components = JOptionPane.showInputDialog(mwclient.getMainFrame(),
 	                "Amount of Components to add(negative number to subtract)");
 	        if (components == null || components.length() == 0)
 	            return;
@@ -959,7 +959,7 @@ public class AdminMenu extends JMenu {
 	        if (losingHouseName == null || losingHouseName.length() == 0)
 	            return;
 
-	        String amount = JOptionPane.showInputDialog(null, "Amount");
+	        String amount = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Amount");
 	        if (amount == null || amount.length() == 0)
 	            return;
 
@@ -980,21 +980,21 @@ public class AdminMenu extends JMenu {
 	        if (factionName == null || factionName.length() == 0)
 	            return;
 
-	        String unitTypestr = (String) JOptionPane.showInputDialog(null,
+	        String unitTypestr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(),
 	                "Select Unit Type", "Unit Type",
 	                JOptionPane.INFORMATION_MESSAGE, null, unitTypes, unitTypes[0]);
 
 	        if (unitTypestr == null || unitTypestr.length() == 0)
 	            return;
 
-	        String unitClassstr = (String) JOptionPane.showInputDialog(null,
+	        String unitClassstr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(),
 	                "Select Unit Class", "Unit Class",
 	                JOptionPane.INFORMATION_MESSAGE, null, unitClass, unitClass[0]);
 
 	        if (unitClassstr == null || unitClassstr.length() == 0)
 	            return;
 
-	        String priceMod = JOptionPane.showInputDialog(null, "Price Modifier:");
+	        String priceMod = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Price Modifier:");
 
 	        if (priceMod == null || priceMod.length() == 0)
 	            return;
@@ -1015,21 +1015,21 @@ public class AdminMenu extends JMenu {
 	        if (factionName == null || factionName.length() == 0)
 	            return;
 
-	        String unitTypestr = (String) JOptionPane.showInputDialog(null,
+	        String unitTypestr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(),
 	                "Select Unit Type", "Unit Type",
 	                JOptionPane.INFORMATION_MESSAGE, null, unitTypes, unitTypes[0]);
 
 	        if (unitTypestr == null || unitTypestr.length() == 0)
 	            return;
 
-	        String unitClassstr = (String) JOptionPane.showInputDialog(null,
+	        String unitClassstr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(),
 	                "Select Unit Class", "Unit Class",
 	                JOptionPane.INFORMATION_MESSAGE, null, unitClass, unitClass[0]);
 
 	        if (unitClassstr == null || unitClassstr.length() == 0)
 	            return;
 
-	        String fluMod = JOptionPane.showInputDialog(null, "Price Modifier:");
+	        String fluMod = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Price Modifier:");
 
 	        if (fluMod == null || fluMod.length() == 0)
 	            return;
@@ -1262,7 +1262,7 @@ public class AdminMenu extends JMenu {
             
             Object[] unitTypes = { "Mek", "Vehicles", "Infantry", "ProtoMeks", "BattleArmor"};
 
-            String unitTypestr = (String) JOptionPane.showInputDialog(null,
+            String unitTypestr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(),
                     "Select Unit Type", "Unit Type",
                     JOptionPane.INFORMATION_MESSAGE, null, unitTypes,
                     unitTypes[0]);
@@ -1277,12 +1277,12 @@ public class AdminMenu extends JMenu {
 
             int unitTypeint = i;
 
-            String gunnery = JOptionPane.showInputDialog(null, "Base Gunnery");
+            String gunnery = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Base Gunnery");
 
             if (gunnery == null || gunnery.length() == 0)
                 return;
 
-            String piloting = JOptionPane.showInputDialog(null, "Base Piloting");
+            String piloting = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Base Piloting");
 
             if (piloting == null || piloting.length() == 0)
                 return;
@@ -1310,7 +1310,7 @@ public class AdminMenu extends JMenu {
             if ( commandNamestr == null || commandNamestr.equalsIgnoreCase("null") )
                 return;
 
-            String level = JOptionPane.showInputDialog(null, "Level");
+            String level = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Level");
 
 	        if (level == null || level.length() == 0)
 	            return;
@@ -1366,12 +1366,12 @@ public class AdminMenu extends JMenu {
 	        if (planetNamestr == null || planetNamestr.length() == 0)
 	            return;
 
-	        String xSize = JOptionPane.showInputDialog(null, "X size");
+	        String xSize = JOptionPane.showInputDialog(mwclient.getMainFrame(), "X size");
 
 	        if (xSize == null || xSize.length() == 0)
 	            return;
 
-	        String ySize = JOptionPane.showInputDialog(null, "Y Size");
+	        String ySize = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Y Size");
 
 	        if (ySize == null || ySize.length() == 0)
 	            return;
@@ -1413,12 +1413,12 @@ public class AdminMenu extends JMenu {
 	        if (planetNamestr == null || planetNamestr.length() == 0)
 	            return;
 
-	        String xSize = JOptionPane.showInputDialog(null, "X size");
+	        String xSize = JOptionPane.showInputDialog(mwclient.getMainFrame(), "X size");
 
 	        if (xSize == null || xSize.length() == 0)
 	            return;
 
-	        String ySize = JOptionPane.showInputDialog(null, "Y Size");
+	        String ySize = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Y Size");
 
 	        if (ySize == null || ySize.length() == 0)
 	            return;
@@ -1459,12 +1459,12 @@ public class AdminMenu extends JMenu {
 	        if (planetNamestr == null || planetNamestr.length() == 0)
 	            return;
 
-	        String lowTemp = JOptionPane.showInputDialog(null, "Low Temp");
+	        String lowTemp = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Low Temp");
 
 	        if (lowTemp == null || lowTemp.length() == 0)
 	            return;
 
-	        String hiTemp = JOptionPane.showInputDialog(null, "Hi Temp");
+	        String hiTemp = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Hi Temp");
 
 	        if (hiTemp == null || hiTemp.length() == 0)
 	            return;
@@ -1484,7 +1484,7 @@ public class AdminMenu extends JMenu {
 	        if (planetNamestr == null || planetNamestr.length() == 0)
 	            return;
 
-	        String grav = JOptionPane.showInputDialog(null, "Gravity");
+	        String grav = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Gravity");
 
 	        if (grav == null || grav.length() == 0)
 	            return;

@@ -99,7 +99,7 @@ public class AdminMapPopupMenu extends JMenu {
 		item.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent ex) {
-				String planetName = JOptionPane.showInputDialog(null,"Planet Name?");
+				String planetName = JOptionPane.showInputDialog(mwclient.getMainFrame(),"Planet Name?");
 				if ( planetName == null || planetName.length() == 0 )
 					return;
 				

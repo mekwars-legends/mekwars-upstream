@@ -15,7 +15,6 @@
  */
 package admin;
 
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -150,6 +149,32 @@ public class AdminUserlistPopupMenu extends JMenu implements ActionListener {
             pilotsMen.add(item);
         if ( pilotsMen.getItemCount() > 0 )
             this.add(pilotsMen);
+
+        //Parts submenu
+        JMenu partsMen = new JMenu();
+        partsMen.setText("Parts");
+        item = new JMenuItem("View Parts Cache");
+        item.setActionCommand("VPC|"+userName);
+        item.addActionListener(this);
+        if ( userLevel >= mwclient.getData().getAccessLevel("ViewPlayerParts") )
+        	partsMen.add(item);
+        item = new JMenuItem("Remove Part");
+        item.setActionCommand("RPC|"+userName);
+        item.addActionListener(this);
+        if ( userLevel >= mwclient.getData().getAccessLevel("RemoveParts") )
+        	partsMen.add(item);
+        item = new JMenuItem("Add Part");
+        item.setActionCommand("APC|"+userName);
+        item.addActionListener(this);
+        if ( userLevel >= mwclient.getData().getAccessLevel("AddParts") )
+        	partsMen.add(item);
+        item = new JMenuItem("Strip All Parts");
+        item.setActionCommand("SAPC|"+userName);
+        item.addActionListener(this);
+        if ( userLevel >= mwclient.getData().getAccessLevel("StringParts") )
+        	partsMen.add(item);
+        if ( partsMen.getItemCount() > 0 )
+            this.add(partsMen);
 	}
 	
 	public void actionPerformed(ActionEvent actionEvent) {
@@ -190,7 +215,7 @@ public class AdminUserlistPopupMenu extends JMenu implements ActionListener {
 			
 			userName = st.nextToken();
 			//confirm the strip
-			int result = JOptionPane.showConfirmDialog(new JFrame(),"Are you sure you want to strip " + userName + "'s units?");
+			int result = JOptionPane.showConfirmDialog(mwclient.getMainFrame(),"Are you sure you want to strip " + userName + "'s units?");
 			if (result == JOptionPane.YES_OPTION)
 				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c stripunits#" + userName);
 		}
@@ -260,14 +285,14 @@ public class AdminUserlistPopupMenu extends JMenu implements ActionListener {
             Object[] Types = { "All","Mek", "ProtoMek"};
             Object[] Size = { "All","Light", "Medium", "Heavy", "Assault" };
             
-            String Typestr = (String) JOptionPane.showInputDialog(null,
+            String Typestr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(),
                     "Select pilot unit type", "Pilot Unit Type",
                     JOptionPane.INFORMATION_MESSAGE, null, Types, Types[0]);
 
             if (Typestr == null || Typestr.length() == 0)
                 return;
 
-            String Sizestr = (String) JOptionPane.showInputDialog(null,
+            String Sizestr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(),
                     "Select a pilot unit size", "Pilot Unit Size",
                     JOptionPane.INFORMATION_MESSAGE, null, Size, Size[0]);
             if (Sizestr == null || Sizestr.length() == 0)
@@ -276,12 +301,53 @@ public class AdminUserlistPopupMenu extends JMenu implements ActionListener {
             String position = "ALL";
             
             if ( !Typestr.equalsIgnoreCase("all") && !Sizestr.equalsIgnoreCase("all") ){
-                position =(String)JOptionPane.showInputDialog(null,
+                position =(String)JOptionPane.showInputDialog(mwclient.getMainFrame(),
                     "Pilot Number?","Number,Range 1-9, or ALL",JOptionPane.OK_OPTION,null,null,"0");
                 if (position == null || position.length() == 0)
                     return;
             }
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c RemovePilot#" + userName+"#"+Typestr+"#"+Sizestr+"#"+position);
+        }
+        if (command.equals("VPC") && st.hasMoreElements()) {
+            
+            userName = st.nextToken();
+            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c ViewPlayerParts#" + userName);
+        }
+        if (command.equals("RPC") && st.hasMoreElements()) {
+            
+            userName = st.nextToken();
+            String partName =(String)JOptionPane.showInputDialog(mwclient.getMainFrame(),
+                    "Part?","Part Name",JOptionPane.OK_OPTION,null,null,"");
+            if (partName == null || partName.length() == 0)
+                return;
+                
+            String amount =(String)JOptionPane.showInputDialog(mwclient.getMainFrame(),
+                    "Amount","Amount To Add",JOptionPane.OK_OPTION,null,null,"0");
+            if (amount == null || amount.length() == 0)
+                return;
+            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c RemoveParts#" + userName+"#"+partName+"#"+amount);
+        }
+        if (command.equals("APC") && st.hasMoreElements()) {
+            
+            userName = st.nextToken();
+            String partName =(String)JOptionPane.showInputDialog(mwclient.getMainFrame(),
+                    "Part?","Part Name",JOptionPane.OK_OPTION,null,null,"");
+            if (partName == null || partName.length() == 0)
+                return;
+                
+            String amount =(String)JOptionPane.showInputDialog(mwclient.getMainFrame(),
+                    "Amount","Amount To Add",JOptionPane.OK_OPTION,null,null,"0");
+            if (amount == null || amount.length() == 0)
+                return;
+            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AddParts#" + userName+"#"+partName+"#"+amount);
+        }
+        if (command.equals("SAPC") && st.hasMoreElements()) {
+            
+            userName = st.nextToken();
+
+            int result = JOptionPane.showConfirmDialog(mwclient.getMainFrame(),"Are you sure you want to strip " + userName + "'s parts?");
+			if (result == JOptionPane.YES_OPTION)
+				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c StripAllPartsCache#" + userName+"#CONFIRM");
         }
     }//end actionPerformed
 	

@@ -1156,6 +1156,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("ACCEPTCONTRACT", new AcceptContractCommand());
 		Commands.put("ACTIVATE", new ActivateCommand());
 		Commands.put("ADDOMNIVARIANTMOD", new AddOmniVariantModCommand());
+		Commands.put("ADDPARTS", new AddPartsCommand());
 		Commands.put("ADDSONG", new AddSongCommand());
 		Commands.put("ADDTRAIT", new AddTraitCommand());
         Commands.put("ADMINADDSERVEROPFLAGS", new AdminAddServerOpFlagsCommand());
@@ -1380,6 +1381,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("RMA", new RemoveArmyCommand());
 		//
 		Commands.put("REMOVEFACTIONPILOT", new RemoveFactionPilotCommand());
+		Commands.put("REMOVEPARTS", new RemovePartsCommand());
 		Commands.put("REMOVEPILOT", new RemovePilotCommand());
 		Commands.put("REMOVESONG", new RemoveSongCommand());
 		Commands.put("REMOVETRAIT", new RemoveTraitCommand());
@@ -1433,6 +1435,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("SINGASONG", new SingASongCommand());
 		Commands.put("SAS", new SingASongCommand());
 		Commands.put("STOPREPAIRJOB", new StopRepairJobCommand());
+		Commands.put("STRIPALLPARTSCACHE", new StripAllPartsCacheCommand());
 		Commands.put("STRIPUNITS", new StripUnitsCommand());
 		Commands.put("TERMINATE", new TerminateCommand());
 		Commands.put("TERMINATECONTRACT", new TerminateContractCommand());
@@ -1447,6 +1450,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("UNITPOSITION", new UnitPositionCommand());
 		Commands.put("UNLOCKLANCES", new UnlockLancesCommand());
 		Commands.put("USEREWARDPOINTS", new UseRewardPointsCommand());
+		Commands.put("VIEWPLAYERPARTS", new ViewPlayerPartsCommand());
 		Commands.put("VIEWPLAYERPERSONALPILOTQUEUE", new ViewPlayerPersonalPilotQueueCommand());
 		Commands.put("VOTE", new VoteCommand());
 		

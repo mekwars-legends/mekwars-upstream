@@ -362,7 +362,7 @@ public class ModeratorMenu extends JMenu {
         
         if (name == null || name.length() == 0)
             return;
-        String exp = JOptionPane.showInputDialog(null, "Exp Amount,- to remove");
+        String exp = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Exp Amount,- to remove");
         if (exp == null || exp.length() == 0)
             return;
 
@@ -383,7 +383,7 @@ public class ModeratorMenu extends JMenu {
         
         if (name == null || name.length() == 0)
             return;
-        String exp = JOptionPane.showInputDialog(null, mwclient.moneyOrFluMessage(true, true,-1) + " Amount,- to remove");
+        String exp = JOptionPane.showInputDialog(mwclient.getMainFrame(), mwclient.moneyOrFluMessage(true, true,-1) + " Amount,- to remove");
         if (exp == null || exp.length() == 0)
             return;
 
@@ -403,7 +403,7 @@ public class ModeratorMenu extends JMenu {
         
         if (name == null || name.length() == 0)
             return;
-        String exp = JOptionPane.showInputDialog(null, mwclient.moneyOrFluMessage(false, true,-1) + " Amount,- to remove");
+        String exp = JOptionPane.showInputDialog(mwclient.getMainFrame(), mwclient.moneyOrFluMessage(false, true,-1) + " Amount,- to remove");
         if (exp == null || exp.length() == 0)
             return;
 
@@ -421,7 +421,7 @@ public class ModeratorMenu extends JMenu {
         else 
             name = player;
         
-        String exp = JOptionPane.showInputDialog(null,"Reward Amount,- to remove");
+        String exp = JOptionPane.showInputDialog(mwclient.getMainFrame(),"Reward Amount,- to remove");
         if (exp == null || exp.length() == 0)
             return;
 
@@ -429,7 +429,7 @@ public class ModeratorMenu extends JMenu {
     }
 
     public void jMenuModListCommands_actionPerformed(ActionEvent e) {
-        String name = JOptionPane.showInputDialog(null, "Parital Command");
+        String name = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Parital Command");
         if (name == null)
             return;
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c listcommands#" + name);
@@ -440,7 +440,7 @@ public class ModeratorMenu extends JMenu {
     }
 
     public void jMenuModTerminate_actionPerformed(ActionEvent e) {
-        String id = JOptionPane.showInputDialog(null, "Game ID");
+        String id = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Game ID");
         if (id == null || id.length() == 0)
             return;
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c modterminate#" + id);
@@ -458,7 +458,7 @@ public class ModeratorMenu extends JMenu {
     }
 
     public void jMenuModLog_actionPerformed(ActionEvent e) {
-        String name = JOptionPane.showInputDialog(null,"Enter comments you would like to add the the mod log");
+        String name = JOptionPane.showInputDialog(mwclient.getMainFrame(),"Enter comments you would like to add the the mod log");
         if (name == null || name.length() == 0)
             return;
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c modlog#" + name);
@@ -473,11 +473,11 @@ public class ModeratorMenu extends JMenu {
         if (name == null || name.length() == 0)
             return;
 
-        String mode = JOptionPane.showInputDialog(null, "Mode (add/remove)");
+        String mode = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Mode (add/remove)");
         if (mode == null || mode.length() == 0)
             return;
 
-        String offender = JOptionPane.showInputDialog(null, "Player to add");
+        String offender = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Player to add");
 
         if (offender == null || offender.length() == 0)
             return;
@@ -495,7 +495,7 @@ public class ModeratorMenu extends JMenu {
         if (name == null || name.length() == 0)
             return;
 
-        String elo = JOptionPane.showInputDialog(null, "ELO");
+        String elo = JOptionPane.showInputDialog(mwclient.getMainFrame(), "ELO");
         if (elo == null || elo.length() == 0)
             return;
 
@@ -511,7 +511,7 @@ public class ModeratorMenu extends JMenu {
         if (name == null || name.length() == 0)
             return;
 
-        String elo = JOptionPane.showInputDialog(null,"Price Mod Amount(- to remove)");
+        String elo = JOptionPane.showInputDialog(mwclient.getMainFrame(),"Price Mod Amount(- to remove)");
         if (elo == null || elo.length() == 0)
             return;
 

@@ -1388,7 +1388,7 @@ public class CMainFrame extends JFrame {
 		int unitType = 0;
 		
 		//determine the unit type to use
-		String pUnitTypeString = (String) JOptionPane.showInputDialog(null,
+		String pUnitTypeString = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(),
 				"Select a pilot unit type", "Unit Type Selection",
 				JOptionPane.INFORMATION_MESSAGE, null, pUnitType,
 				pUnitType[0]);
@@ -1402,7 +1402,7 @@ public class CMainFrame extends JFrame {
 			unitType = Unit.PROTOMEK;
 		
 		//determine the weight class to use
-		String pWeightClassString = (String) JOptionPane.showInputDialog(null,
+		String pWeightClassString = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(),
 				"Select a pilot unit size", "Weight Class Selection",
 				JOptionPane.INFORMATION_MESSAGE, null, pWeightClass,
 				pWeightClass[0]);
@@ -1465,7 +1465,7 @@ public class CMainFrame extends JFrame {
 		int unitType = 0;
 		
 		//determine the unit type to use
-		String pUnitTypeString = (String) JOptionPane.showInputDialog(null,
+		String pUnitTypeString = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(),
 				"Select a pilot unit type", "Unit Type Selection",
 				JOptionPane.INFORMATION_MESSAGE, null, pUnitType,
 				pUnitType[0]);
@@ -1479,7 +1479,7 @@ public class CMainFrame extends JFrame {
 			unitType = Unit.PROTOMEK;
 		
 		//determine the weight class to use
-		String pWeightClassString = (String) JOptionPane.showInputDialog(null,
+		String pWeightClassString = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(),
 				"Select a pilot unit size", "Weight Class Selection",
 				JOptionPane.INFORMATION_MESSAGE, null, pWeightClass,
 				pWeightClass[0]);
@@ -1755,7 +1755,7 @@ public class CMainFrame extends JFrame {
 
 		
 		//determine the unit type to use
-		String pUnitTypeString = (String) JOptionPane.showInputDialog(null,
+		String pUnitTypeString = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(),
 				"Select unit type", "Unit Type Selection",
 				JOptionPane.INFORMATION_MESSAGE, null, pUnitType,
 				pUnitType[0]);
@@ -1769,7 +1769,7 @@ public class CMainFrame extends JFrame {
 			unitType = Unit.PROTOMEK;
 		
 		//determine the weight class to use
-		String pWeightClassString = (String) JOptionPane.showInputDialog(null,
+		String pWeightClassString = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(),
 				"Select unit size", "Weight Class Selection",
 				JOptionPane.INFORMATION_MESSAGE, null, pWeightClass,
 				pWeightClass[0]);
