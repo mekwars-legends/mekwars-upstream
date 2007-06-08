@@ -85,11 +85,11 @@ public class BuyPartsCommand implements Command {
 		player.addMoney(-cost);
 		
 		if ( eq == null ) {
-			CampaignMain.cm.toUser("You have bought "+numtobuy+" "+bme.getEquipmentInternalName()+" crits.", Username);
+			CampaignMain.cm.toUser("You have bought "+numtobuy+" "+bme.getEquipmentInternalName()+" crits for "+CampaignMain.cm.moneyOrFluMessage(true, true, cost)+".", Username);
 			player.updatePartsCache(bme.getEquipmentInternalName(), numtobuy);
 		}
 		else {
-			CampaignMain.cm.toUser("You have bought "+numtobuy+" "+eq.getName()+" crits.", Username);
+			CampaignMain.cm.toUser("You have bought "+numtobuy+" "+eq.getName()+" crits for "+CampaignMain.cm.moneyOrFluMessage(true, true, cost)+".", Username);
 			player.updatePartsCache(eq.getInternalName(), numtobuy);
 		}
 		CampaignMain.cm.getPartsMarket().updatePartsBlackMarketAllPlayers();
