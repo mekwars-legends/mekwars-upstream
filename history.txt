@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.2.x 
++ Bug: Advance Repair dialog not showing cost.
 + Added Command RemovePlayerParts
 + Added Command AddPlayerParts
 + Added Command StripAllPlayerPartsCache

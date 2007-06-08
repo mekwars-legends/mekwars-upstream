@@ -1094,6 +1094,7 @@ import client.gui.SpringLayoutHelper;
 				totalCost += techCost;
 				totalCost += techCost*Math.abs(techWorkMod);
 				cost = Math.max(1,totalCost);
+	            costField.setText(Integer.toString((int)cost));
 
             }//end Else
         }//end real repair cost else
