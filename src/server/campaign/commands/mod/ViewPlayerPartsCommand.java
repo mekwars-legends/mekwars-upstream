@@ -25,7 +25,7 @@ import server.MWChatServer.auth.IAuthenticator;
  * Return a human readable string that describes the pilots
  * currently in a player's personal queues.
  */
-public class AddPartsCommand implements Command {
+public class ViewPlayerPartsCommand implements Command {
 	
 	int accessLevel = IAuthenticator.MODERATOR;
 	public int getExecutionLevel(){return accessLevel;}
