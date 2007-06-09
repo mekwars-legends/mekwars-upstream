@@ -43,10 +43,21 @@ public class CreateUnitCommand implements Command {
 		}
 		
         SPlayer p = CampaignMain.cm.getPlayer(Username);
-		String filename = command.nextToken();
-		String FlavorText = command.nextToken();
-		String gunnery = command.nextToken();
-		String piloting = command.nextToken();
+		String filename;
+		String FlavorText;
+		String gunnery;
+		String piloting;
+
+		try {
+			filename = command.nextToken();
+			FlavorText = command.nextToken();
+			gunnery = command.nextToken();
+			piloting = command.nextToken();
+		}catch(Exception ex) {
+			CampaignMain.cm.toUser("Synatx Error: /createunit filename#fluff#gunnery#piloting#[skill,skill,skill][Random]", Username);
+			return;
+		}
+		
 		SUnit cm = new SUnit(FlavorText,filename,0);
 		SPilot pilot = null;
 		if ( gunnery.equals("99") || piloting.equals("99") )
