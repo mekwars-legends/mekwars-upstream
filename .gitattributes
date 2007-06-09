@@ -1521,6 +1521,7 @@ src/server/campaign/commands/helpers/HireAndMaintainHelper.java -text
 src/server/campaign/commands/helpers/HireAndRequestNewHelper.java -text
 src/server/campaign/commands/helpers/HireAndRequestUsedHelper.java -text
 src/server/campaign/commands/helpers/RemoveAndAddNoPlayHelper.java -text
+src/server/campaign/commands/mod/AddPartsCommand.java -text
 src/server/campaign/commands/mod/BanCommand.java -text
 src/server/campaign/commands/mod/BanIPCommand.java -text
 src/server/campaign/commands/mod/BanListCommand.java -text
