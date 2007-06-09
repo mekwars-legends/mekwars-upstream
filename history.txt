@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.2.x 
++ Added Syntax to CreateUnitCommand.
++ Bug: UnitUtils does not stop at the end of the array when getting damaged 
+	crits
 + Bug: Advance Repair dialog not showing cost.
 + Added Command RemovePlayerParts
 + Added Command AddPlayerParts
