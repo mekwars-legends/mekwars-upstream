@@ -1553,6 +1553,7 @@ src/server/campaign/commands/mod/ModTerminateCommand.java -text
 src/server/campaign/commands/mod/ModeratorMailCommand.java -text
 src/server/campaign/commands/mod/NotifyFightingCommand.java -text
 src/server/campaign/commands/mod/RemovePartsCommand.java -text
+src/server/campaign/commands/mod/RemovePartsCommand.java.tmp -text
 src/server/campaign/commands/mod/ServerAnnouncementCommand.java -text
 src/server/campaign/commands/mod/SetEloCommand.java -text
 src/server/campaign/commands/mod/SetHouseBasePilotSkillsCommand.java -text
