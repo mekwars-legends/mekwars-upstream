@@ -4698,7 +4698,7 @@ public final class ServerConfigurationDialog implements ActionListener {
 		
 		// Create the pane containing the buttons
 		pane = new JOptionPane(ConfigPane, JOptionPane.PLAIN_MESSAGE,
-				JOptionPane.DEFAULT_OPTION, null, options, null);
+				JOptionPane.DEFAULT_OPTION,null, options, null);
 		
 		// Create the main dialog and set the default button
 		dialog = pane.createDialog(mainConfigPanel, windowName);
@@ -4713,9 +4713,8 @@ public final class ServerConfigurationDialog implements ActionListener {
             
         }
 
-
         //Show the dialog and get the user's input
-		dialog.setLocation(dialog.getLocation().x+10,dialog.getLocation().y);
+		dialog.setLocation(mwclient.getMainFrame().getLocation().x+10,mwclient.getMainFrame().getLocation().y);
 		dialog.setModal(true);
 		dialog.pack();
 		dialog.setVisible(true);

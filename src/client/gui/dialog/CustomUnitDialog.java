@@ -127,7 +127,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
     
     /** Creates new CustomMechDialog */
     public CustomUnitDialog(MWClient mwclient, Entity entity, Pilot pilot) {
-        super();
+        super(mwclient.getMainFrame());
         
         this.entity = entity;
         this.mwclient = mwclient;
@@ -342,6 +342,9 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                         || faction.getBannedAmmo().containsKey(munition) )
                     continue;
                 
+                //System.err.println(atCheck.getName()+"/"+atCheck.getInternalName());
+                if ( usingCrits && mwclient.getPlayer().getPartsCache().getPartsCritCount(atCheck.getInternalName()) < 1)
+                	continue;
                 // allow all lvl2 IS units to use level 1 ammo
                 // lvl1 IS units don't need to be allowed to use lvl1 ammo,
                 // because there is no special lvl1 ammo, therefore it doesn't
@@ -564,7 +567,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                         cost = Math.max(cost,1);
                     }
                     if ( usingCrits )
-                    	m_choice.addItem(at.getName()+" ("+shotsLeft+"/1)");
+                    	m_choice.addItem(at.getName()+" ("+shotsLeft+"/1/"+mwclient.getPlayer().getPartsCache().getPartsCritCount(at.getInternalName())+")");
                     else
                         m_choice.addItem(at.getName()+" ("+shotsLeft+"/1) "+mwclient.moneyOrFluMessage(true,true,cost));
 
@@ -574,7 +577,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 	cost = (int)Math.max(cost*percentLeft, 1);
 
                 	if ( usingCrits )
-                		m_choice.addItem(at.getName()+" ("+shotsLeft+"/"+at.getShots()+")");
+                		m_choice.addItem(at.getName()+" ("+shotsLeft+"/"+at.getShots()+"/"+mwclient.getPlayer().getPartsCache().getPartsCritCount(at.getInternalName())+")");
                 	else
                         m_choice.addItem(at.getName()+" ("+shotsLeft+"/"+at.getShots()+") "+mwclient.moneyOrFluMessage(true,true,cost));
 

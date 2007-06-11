@@ -219,6 +219,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		dialog.getRootPane().setDefaultButton(okayButton);
 
 		//Show the dialog and get the user's input
+		dialog.setLocation(mwclient.getMainFrame().getLocation().x+dialog.getWidth()/2,mwclient.getMainFrame().getLocation().y);
 		dialog.setModal(true);
 		dialog.pack();
 		dialog.setVisible(true);
