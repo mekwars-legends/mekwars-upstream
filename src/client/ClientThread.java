@@ -474,10 +474,6 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
                     playerUpdate = true;
                 }
                 
-                if ( mwclient.getPlayer().getTeamNumber() > 0 ) {
-                	client.getLocalPlayer().setTeam(mwclient.getPlayer().getTeamNumber());
-                }
-                
                 if (this.mechs.size() > 0) {
 					//check armies for C3Network mechs
 					CArmy currA = mwclient.getPlayer().getLockedArmy();
@@ -496,6 +492,11 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 					}
 				}
 
+                if ( mwclient.getPlayer().getTeamNumber() > 0 ) {
+                	client.getLocalPlayer().setTeam(mwclient.getPlayer().getTeamNumber());
+                	playerUpdate = true;
+                }
+                
                 if ( playerUpdate ){
                     client.sendPlayerInfo();
                     if ( bot != null)
