@@ -147,6 +147,13 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
      * That way some planets are harder to conquer then others.
      */
     private int maxConquestPoints = 100;
+
+    /*
+     * Planet Database ID, used in saving and retreiving the planet from the database.
+     * Set this to zero, which will queue the initial save routine that it needs to insert
+     * rather than update.  The save routine will then assign it a dbID.
+     */
+    private int DBID = 0;
     
     //CONSTRUCTORS
     public Planet(int id, String name, Position position, Influences influence) {
@@ -228,6 +235,14 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
         this.baysProvided = baysProvided;
     }
 
+    public int getDBID() {
+    	return DBID;
+    }
+    
+    public void setDBID(int ID) {
+    	this.DBID = ID;
+    }
+    
     /**
      * @return Returns the compProduction.
      */

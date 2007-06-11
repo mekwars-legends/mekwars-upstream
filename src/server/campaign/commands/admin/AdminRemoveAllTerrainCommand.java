@@ -50,6 +50,9 @@ public class AdminRemoveAllTerrainCommand implements Command {
 			p.getEnvironments().removeAll();
 			p.updated();
 			
+			if(CampaignMain.cm.isUsingMySQL())
+				CampaignMain.cm.MySQL.savePlanet(p);
+			
 			//server.MMServ.mmlog.modLog(Username + " removed terrain from " + p.getName() + "(#" + placeToDelete + ").");
 			CampaignMain.cm.doSendModMail("NOTE",Username + " removed all terrain from " + p.getName() + ".");
 		}

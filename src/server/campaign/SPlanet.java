@@ -57,8 +57,12 @@ Comparable {
 			for (int i = 0; i < getUnitFactories().size(); i++) {
 				SUnitFactory MF = (SUnitFactory) getUnitFactories().get(i);
 				result.append("#" + MF.toString());
-			if(CampaignMain.cm.isUsingMySQL())
-			  CampaignMain.cm.MySQL.saveFactory(MF);
+/**
+ * Commenting this out temporarily.
+ */	
+			//if(CampaignMain.cm.isUsingMySQL())
+			//  CampaignMain.cm.MySQL.saveFactory(MF);
+				
 			}
 		} else
 			result.append("#0");

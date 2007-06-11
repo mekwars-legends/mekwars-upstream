@@ -78,6 +78,9 @@ public class AdminExchangePlanetOwnershipCommand implements Command {
 		//breaks passed
 		int newAmount = planet.doGainInfluence(winningHouse,losingHouse, amount, true);
 		
+		if(CampaignMain.cm.isUsingMySQL())
+			CampaignMain.cm.MySQL.savePlanet(planet);
+		
 		//server.MMServ.mmlog.modLog(Username + " took " + newAmount + "% of "+ planet.getName() + " from " + losingHouse.getName() + " and gave it to " + winningHouse.getName() + ".");
 		CampaignMain.cm.toUser("You took " + newAmount + "% of "+ planet.getName() + " from " + losingHouse.getName() + " and gave it to " + winningHouse.getName() + ".",Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " took " + newAmount + "% of "+ planet.getName() + " from " + losingHouse.getName() + " and gave it to " + winningHouse.getName() + ".");

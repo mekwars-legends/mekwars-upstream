@@ -1,5 +1,7 @@
 package server.mwmysql;
 
+import common.CampaignData;
+
 import server.mwmysql.MWmysql;
 import server.mwmysql.planetHandler;
 import server.mwmysql.factoryHandler;
@@ -29,6 +31,22 @@ public class mysqlHandler{
 
   public void loadFactories(SPlanet planet){
     fh.loadFactories(planet);
+  }
+  
+  public void savePlanet(SPlanet planet) {
+	  ph.savePlanet(planet);
+  }
+  
+  public int countPlanets() {
+	  return ph.countPlanets();
+  }
+  
+  public void loadPlanets(CampaignData data) {
+	  ph.loadPlanets(data);
+  }
+  
+  public void deletePlanet(int PlanetID) {
+	  ph.deletePlanet(PlanetID);
   }
 
   public mysqlHandler(){

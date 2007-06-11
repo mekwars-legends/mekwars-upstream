@@ -51,7 +51,7 @@ public class SetPlanetConquerCommand implements Command {
 		}
 		
 		if (p == null) {
-			CampaignMain.cm.toUser("Couldn't find a faction with that name.", Username, true);
+			CampaignMain.cm.toUser("Couldn't find a planet with that name.", Username, true);
 			return;
 		}
 		

@@ -46,9 +46,9 @@ public class AdminDestroyPlanetCommand implements Command {
 		if (h != null)
 			h.removePlanet(p);
 		
-		// remove its factories from the database
+		// remove it from the database
 		if(CampaignMain.cm.isUsingMySQL())
-			CampaignMain.cm.MySQL.deletePlanetFactories(p.getName());
+			CampaignMain.cm.MySQL.deletePlanet(p.getDBID());
 		//remove the world from the data in memory
 		CampaignMain.cm.getData().removePlanet(p.getId());
 		

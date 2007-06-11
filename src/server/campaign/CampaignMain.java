@@ -3767,11 +3767,21 @@ public final class CampaignMain implements Serializable {
 		FilenameFilter filter = new datFileFilter();
 		
 		//Check for faction save dir & ensure dat files exist therein
-		if (!planetFile.exists() || planetFile.listFiles(filter).length == 0){
+		if (!CampaignMain.cm.isUsingMySQL() && (!planetFile.exists() || planetFile.listFiles(filter).length == 0)){
 			MMServ.mmlog.errLog("Unable to find and load /planets, or /planets is empty.");
 			MMServ.mmlog.errLog("Planets will be read from XML during init().");
 			return;
 		}
+		else if (CampaignMain.cm.isUsingMySQL() && CampaignMain.cm.MySQL.countPlanets() == 0) {
+			MMServ.mmlog.errLog("Empty planet database.");
+			MMServ.mmlog.errLog("Planets will be read from XML during init().");
+			return;
+		}
+		// If we're using the database, load the planets here.
+		
+		if (CampaignMain.cm.isUsingMySQL()) {
+			CampaignMain.cm.MySQL.loadPlanets(data);
+		} else {
 		
 		//dir and files exist. read them.
 		File[] planetFileList = planetFile.listFiles(filter);
@@ -3793,22 +3803,26 @@ public final class CampaignMain implements Serializable {
 			} catch(Exception ex) {
 				MMServ.mmlog.errLog("Unable to load "+planetFileList[pos].getName());
 				MMServ.mmlog.errLog(ex);
-			}
+			}}
 		}
-	}
+	} 
+	
 	
 	//Save Planets
 	public void savePlanetData() {
 		
-        savePlanetOpFlags();
-		File planetFile = new File("./campaign/planets");
-		
-		if (!planetFile.exists())
-			planetFile.mkdir();
-		
-		for (Planet currP : data.getAllPlanets()) {
-			
-			SPlanet p = (SPlanet)currP;
+				if(cm.isUsingMySQL()) 
+					for (Planet currP : data.getAllPlanets())
+					  MySQL.savePlanet((SPlanet)currP);
+	
+		else {
+	        savePlanetOpFlags();
+			File planetFile = new File("./campaign/planets");
+			if (!planetFile.exists())
+				planetFile.mkdir();
+			for (Planet currP : data.getAllPlanets()) {
+			{
+			SPlanet p = (SPlanet) currP;
 			String saveName = p.getName().toLowerCase().trim()+".dat";
 			String backupName = p.getName().toLowerCase().trim()+".bak";
 			try{
@@ -3829,8 +3843,8 @@ public final class CampaignMain implements Serializable {
 				ps.println(p.toString());
 				ps.close();
 				out.close();
-				
-			} catch(Exception ex) {
+			}
+			 catch(Exception ex) {
 				MMServ.mmlog.errLog("Unable to save planet: "+saveName);
 				MMServ.mmlog.errLog(ex);
 			}
@@ -3852,10 +3866,10 @@ public final class CampaignMain implements Serializable {
 		
 	}
 	
-}
+}}
 
 class datFileFilter implements FilenameFilter{
 	public boolean accept(File dir, String name) {
 		return (name.endsWith(".dat"));
 	}
-}
+}}

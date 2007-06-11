@@ -69,6 +69,7 @@ public class AdminSetPlanetVacuumCommand implements Command {
 				CampaignMain.cm.doSendModMail("NOTE",Username + " has created an atmosphere on planet "+p.getName());
 			}
 			p.updated();
+
 			
 		}
 		catch (Exception ex){

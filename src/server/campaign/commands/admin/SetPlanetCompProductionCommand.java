@@ -70,5 +70,8 @@ public class SetPlanetCompProductionCommand implements Command {
 		CampaignMain.cm.toUser(planet.getName()+" has had its component production set to "+planet.getCompProduction(),Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has set planet " + PlanetName+"'s component production to "+planet.getCompProduction());
 		planet.updated();
+		
+        if(CampaignMain.cm.isUsingMySQL())
+        	CampaignMain.cm.MySQL.savePlanet(planet);
 	}
 }

@@ -74,6 +74,9 @@ public class AdminReturnPlanetsToOriginalOwnersCommand implements Command {
 			//set updated flag so players' maps refresh
 			p.updated();
 			
+			if(CampaignMain.cm.isUsingMySQL())
+				CampaignMain.cm.MySQL.savePlanet(p);
+			
 		}
 		
 		//server.MMServ.mmlog.modLog(Username + " restored all plants to their original owners.");

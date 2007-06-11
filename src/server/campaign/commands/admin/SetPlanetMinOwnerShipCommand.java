@@ -48,11 +48,15 @@ public class SetPlanetMinOwnerShipCommand implements Command {
 		}
 		
 		if (p == null) {
-			CampaignMain.cm.toUser("Couldn't find a faction with that name.", Username, true);
+			CampaignMain.cm.toUser("Couldn't find a planet with that name.", Username, true);
 			return;
 		}
 		
 		p.setMinPlanetOwnerShip(ownership);
+		
+        if(CampaignMain.cm.isUsingMySQL())
+        	CampaignMain.cm.MySQL.savePlanet(p);
+        
 		CampaignMain.cm.toUser("You set " + p.getName() + "'s min owner ship to "+ownership,Username,true);
 		CampaignMain.cm.doSendModMail("PLANETARY CHANGE",Username + " has changed "+p.getName()+"'s min ownership to "+ownership);
 

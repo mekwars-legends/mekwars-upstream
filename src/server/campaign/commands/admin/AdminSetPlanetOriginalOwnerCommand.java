@@ -59,5 +59,8 @@ public class AdminSetPlanetOriginalOwnerCommand implements Command {
 		CampaignMain.cm.toUser(planet.getName()+"'s original owner set to: " +originalOwner + ".",Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " changed " + PlanetName+" 's original owner to: " + originalOwner + ".");
 		planet.updated();
+		
+        if(CampaignMain.cm.isUsingMySQL())
+        	CampaignMain.cm.MySQL.savePlanet(planet);
 	}
 }

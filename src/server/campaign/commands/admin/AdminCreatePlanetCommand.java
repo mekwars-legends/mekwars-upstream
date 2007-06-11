@@ -63,6 +63,9 @@ public class AdminCreatePlanetCommand implements Command {
 		planet.setOwner(null,faction,true);
 		planet.setOriginalOwner(faction.getName());
         planet.updated();
+        if(CampaignMain.cm.isUsingMySQL())
+        	CampaignMain.cm.MySQL.savePlanet(planet);
+        
 		CampaignMain.cm.toUser("Planet created!",Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has created planet " + PlanetName);
 		
