@@ -1,7 +1,7 @@
 /*
- * MekWars - Copyright (C) 2004 
- * 
- * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
+ * MekWars - Copyright (C) 2007 
+ *
+ * Original author - jtighe (torren@users.sourceforge.net)
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -18,12 +18,13 @@ package server.campaign.commands.mod;
 
 import java.util.StringTokenizer;
 
+import server.campaign.CampaignMain;
+import server.campaign.SPlayer;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
 
 /**
- * Return a human readable string that describes the pilots
- * currently in a player's personal queues.
+ * Strip the Players parts cache.
  */
 public class StripAllPartsCacheCommand implements Command {
 	
@@ -33,5 +34,39 @@ public class StripAllPartsCacheCommand implements Command {
 	
 	public void process(StringTokenizer command,String Username) {
 		
+		if (accessLevel != 0) {
+			int userLevel = CampaignMain.cm.getServer().getUserLevel(Username);
+			if(userLevel < getExecutionLevel()) {
+				CampaignMain.cm.toUser("Insufficient access level for command. Level: " + userLevel + ". Required: " + accessLevel + ".",Username,true);
+				return;
+			}
+		}
+		
+		if ( !CampaignMain.cm.getBooleanConfig("UsePartsRepair") ){
+            CampaignMain.cm.toUser("Parts repair not used on this server!",Username);
+            return;
+		}
+		//get the player you wish to use
+        
+        if ( !command.hasMoreTokens() ){
+            CampaignMain.cm.toUser("Syntax: StripAllPartsCache#Name#CONFIRM",Username);
+            return;
+        }
+		SPlayer p = CampaignMain.cm.getPlayer(command.nextToken());
+
+        if ( !command.hasMoreTokens() ){
+            CampaignMain.cm.toUser("Syntax: StripAllPartsCache#Name#CONFIRM",Username);
+            return;
+        }
+
+        String confirm = command.nextToken();
+        
+        if ( !confirm.equals("CONFIRM") ){
+            CampaignMain.cm.toUser("Syntax: StripAllPartsCache#Name#CONFIRM",Username);
+            return;
+        }
+        
+        p.getUnitParts().clear();
+        CampaignMain.cm.doSendModMail("NOTE:",Username+" has stripped all of "+p.getName()+"'s parts cache.");
 	}
 }
