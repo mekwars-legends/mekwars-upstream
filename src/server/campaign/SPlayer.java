@@ -2654,6 +2654,9 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
         result.append(unitParts.toString());
         result.append("~");
         
+        result.append(this.getAutoReorder());
+        result.append("~");
+        
 		return result.toString();
 	}
 	

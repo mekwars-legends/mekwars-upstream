@@ -19,8 +19,13 @@ package client.cmd;
 
 import java.util.StringTokenizer;
 
+import common.campaign.pilot.Pilot;
+import common.util.UnitUtils;
+
 import client.MWClient;
 import client.campaign.CPlayer;
+import client.campaign.CUnit;
+import client.gui.dialog.AdvanceRepairDialog;
 
 /**
  * @author Imi (immanuel.scholz@gmx.de)
@@ -147,6 +152,31 @@ public class PL extends Command {
         	mwclient.getPlayer().getPartsCache().fromString(st);
         else if (cmd.equals("STN"))
         	mwclient.getPlayer().setTeamNumber(Integer.parseInt(st.nextToken()));
+        else if ( cmd.equals("VUI") ){
+        	StringTokenizer data = new StringTokenizer(st.nextToken(),"#");
+			String filename = data.nextToken();
+			int BV = Integer.parseInt(data.nextToken());
+			int gunnery = Integer.parseInt(data.nextToken());
+			int piloting = Integer.parseInt(data.nextToken());
+			String damage = "";
+			
+			if ( data.hasMoreElements() )
+				damage = data.nextToken();
+			
+			mwclient.getMainFrame().getMainPanel().getHSPanel().showInfoWindow(filename, BV, gunnery, piloting, damage);
+        }
+        else if ( cmd.equals("VURD") ){
+        	StringTokenizer data = new StringTokenizer(st.nextToken(),"#");
+			String filename = data.nextToken();
+			String damage = data.nextToken();
+			CUnit unit = new CUnit(mwclient);
+			
+			unit.setUnitFilename(filename);
+			unit.createEntity();
+			unit.setPilot(new Pilot("Jeeves",4,5));
+			UnitUtils.applyBattleDamage(unit.getEntity(), damage);
+			new AdvanceRepairDialog(mwclient,unit,unit.getEntity(),false);
+        }
 		else
 			return;
 		

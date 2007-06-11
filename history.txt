@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.2.x 
++ Added new var Player.autoReorderParts
++ Changed more dialog code so more of the dialogs center around CMainFrame
++ Added new command ViewPlayerUnit
++ Added New command SetAutoReorder
 + Fixed some dialog starting locations.
 + Added ability to save planetary information to a MySQL database
 + New MM.jar 0.33.7-MW06092007-5114

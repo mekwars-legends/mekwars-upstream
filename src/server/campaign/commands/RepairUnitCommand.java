@@ -119,6 +119,16 @@ public class RepairUnitCommand implements Command {
 				int damagedCrits = UnitUtils.getNumberOfDamagedCrits(entity,slot,location,armor);
 				//MMServ.mmlog.errLog("Crits: "+player.getUnitParts().getPartsCritCount(crit)+" Needed: "+damagedCrits);
 				if ( player.getUnitParts().getPartsCritCount(crit) < damagedCrits) {
+					
+					if ( player.getAutoReorder() && 
+							CampaignMain.cm.getPartsMarket().getEquipmentList().get(crit).getAmount() >= damagedCrits ){
+						String newCommand = crit+"#"+damagedCrits;
+						
+						CampaignMain.cm.getServerCommands().get("BUYPARTS").process(new StringTokenizer(newCommand), Username);
+						newCommand = unitID+"#"+location+"#"+slot+"#"+armor+"#"+techType+"#"+retries+"#"+techWorkMod+"#"+sendDialogUpdate;
+						CampaignMain.cm.getServerCommands().get("REPAIRUNIT").process(new StringTokenizer(newCommand), Username);
+						return;
+					}
 					CampaignMain.cm.toUser("FSM|You do not have enough "+crit+" crits to repair this.", Username,false);
 					return;
 				}

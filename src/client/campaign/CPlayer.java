@@ -214,6 +214,9 @@ public class CPlayer extends Player {
         	partsCache.fromString(ST.nextToken());
         }
 
+        if ( ST.hasMoreElements() ){
+        	this.setAutoReorder(Boolean.parseBoolean(ST.nextToken()));
+        }
 		// traps run. sort the HQ. this isn't duplicative, b/c
 		// direct lods (PS instead of PL) don't trigger sorts.
 		this.sortHangar();

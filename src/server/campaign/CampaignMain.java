@@ -1403,6 +1403,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("SERVERGAMEOPTIONS", new ServerGameOptionsCommand());
 		Commands.put("SETADVANCEPLANETTERRAIN", new SetAdvancePlanetTerrainCommand());
 		Commands.put("SETAUTOEJECT", new SetAutoEjectCommand());
+		Commands.put("SETAUTOREORDER", new SetAutoReorderCommand());
 		Commands.put("SETCLIENTVERSION", new SetClientVersionCommand());
 		Commands.put("SETEDGESKILLS", new SetEdgeSkillsCommand());
 		Commands.put("SETELO", new SetEloCommand());
@@ -1452,6 +1453,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("USEREWARDPOINTS", new UseRewardPointsCommand());
 		Commands.put("VIEWPLAYERPARTS", new ViewPlayerPartsCommand());
 		Commands.put("VIEWPLAYERPERSONALPILOTQUEUE", new ViewPlayerPersonalPilotQueueCommand());
+		Commands.put("VIEWPLAYERUNIT", new ViewPlayerUnitCommand());
 		Commands.put("VOTE", new VoteCommand());
 		
 		//Old / comamds move to be usable by /c or /

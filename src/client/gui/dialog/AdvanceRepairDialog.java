@@ -124,16 +124,19 @@ import client.gui.SpringLayoutHelper;
 	JTabbedPane ConfigPane = new JTabbedPane(SwingConstants.TOP);
 	
 	public AdvanceRepairDialog(MWClient c, int unitID, boolean salvage) {
-        
-        //super(c.getMainFrame(),"Repair Dialog", true);
-        //super();
-
-		//save the client
-		this.mwclient = c;
-        this.playerUnit =c.getPlayer().getUnit(unitID);
-        synchronized (playerUnit.getEntity()) {
-            this.unit = playerUnit.getEntity();
+        CUnit pUnit =c.getPlayer().getUnit(unitID);
+        Entity unit = null;
+        synchronized (pUnit.getEntity()) {
+            unit = pUnit.getEntity();
         }
+        new AdvanceRepairDialog( c, pUnit, unit, salvage);
+	}
+	
+	public AdvanceRepairDialog(MWClient c, CUnit playerUnit, Entity unit, boolean salvage) {
+        
+		this.playerUnit = playerUnit; 
+		this.unit = unit;
+		this.mwclient = c;
         this.tablocation = c.getPlayer().getRepairLocation();
         this.techs.addAll(c.getPlayer().getAvailableTechs());
         this.techType = c.getPlayer().getRepairTechType();
@@ -195,7 +198,7 @@ import client.gui.SpringLayoutHelper;
         this.setExtendedState(Frame.NORMAL);
 
         this.repaint();
-        this.setLocation(mwclient.getMainFrame().getLocation().x+(mwclient.getMainFrame().getWidth()/2)-this.getWidth()/2,mwclient.getMainFrame().getLocation().y+(mwclient.getMainFrame().getHeight()/2)-this.getHeight()/2);
+        this.setLocation(Math.max(mwclient.getMainFrame().getLocation().x,mwclient.getMainFrame().getLocation().x+((mwclient.getMainFrame().getWidth()/2)-(this.getWidth()/2))),Math.max(mwclient.getMainFrame().getLocation().y+(mwclient.getMainFrame().getHeight()/2)-this.getHeight()/2,mwclient.getMainFrame().getLocation().y));
         
         this.pack();
         this.setVisible(true);

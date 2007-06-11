@@ -28,6 +28,7 @@ public class Player {
 	private int currentTechPayment = -1;//num Cbills owed to techs after games
 	private boolean isInvsible = false;//Evil command for Big brother err admins.
 	private int teamNumber = -1;
+	private boolean autoReorderParts = false;
 	
 	/**
 	 * @return current post-task payment to technicians, in Cbills
@@ -104,6 +105,22 @@ public class Player {
      */
     public void setTeamNumber(int team) {
     	this.teamNumber = team;
+    }
+    
+    /**
+     * Sets if the player wants to reorder parts.
+     * @param reorder
+     */
+    public void setAutoReorder(boolean reorder){
+    	this.autoReorderParts = reorder;
+    }
+    
+    /**
+     * Returns if the player has auto reorder parts turned on.
+     * @return
+     */
+    public boolean getAutoReorder(){
+    	return this.autoReorderParts;
     }
     
 }//End Class Player
