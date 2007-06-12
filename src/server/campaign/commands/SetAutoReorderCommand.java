@@ -48,7 +48,7 @@ public class SetAutoReorderCommand implements Command {
 		try {
 			p.setAutoReorder(Boolean.parseBoolean(command.nextToken()));
 		}//end try
-		catch (NumberFormatException ex) {
+		catch (Exception ex) {
 			CampaignMain.cm.toUser("SetAutoAutoReorder command failed. Check your input. It should be something like this: /c setAutoReorder#True/False",Username);
 			return;
 		}//end catch

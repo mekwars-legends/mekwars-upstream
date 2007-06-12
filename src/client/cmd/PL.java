@@ -177,6 +177,9 @@ public class PL extends Command {
 			UnitUtils.applyBattleDamage(unit.getEntity(), damage);
 			new AdvanceRepairDialog(mwclient,unit,unit.getEntity(),false);
         }
+        else if ( cmd.equals("CPPC") ) {
+        	mwclient.getPlayer().getPartsCache().clear();
+        }
 		else
 			return;
 		

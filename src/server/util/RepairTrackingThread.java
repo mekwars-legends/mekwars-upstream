@@ -23,6 +23,7 @@
 package server.util;
 
 import java.text.DecimalFormat;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import common.campaign.pilot.Pilot;
@@ -717,6 +718,11 @@ class Repair{
                         techType = UnitUtils.TECH_PILOT;
                     
                     int cost = CampaignMain.cm.getRepairCost(unit,location,slot,techType,armor,techWorkMod,salvage);
+                    if ( player.getAutoReorder() && player.getUnitParts().getPartsCritCount(critName) >= damagedCrits ) {
+                    	String newCommand = critName+"#"+damagedCrits;
+                    	CampaignMain.cm.getServerCommands().get("BUYPARTS").process(new StringTokenizer(newCommand,"#"), Username);
+                    }
+
                     if ( cost < player.getMoney() && player.getUnitParts().getPartsCritCount(critName) >= damagedCrits){
 
                         retries--;

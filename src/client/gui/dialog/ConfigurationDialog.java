@@ -179,6 +179,7 @@ public final class ConfigurationDialog implements ActionListener {
     private final JCheckBox viewUnitFluffBox = new JCheckBox();
     private final JCheckBox viewLogoBox = new JCheckBox();
     private final JCheckBox armyPopUpBox = new JCheckBox();
+    private final JCheckBox autoReOrder = new JCheckBox();
 
     
     //chat options
@@ -428,11 +429,15 @@ public final class ConfigurationDialog implements ActionListener {
         		"If checked, an army dialog selection will open when<br>" +
         		"you attack or have the opportunity to defend.</html>");
 
+        autoReOrder.setText("Auto ReOrder");
+        autoReOrder.setToolTipText("<Html>If checked the system will continue to reorder parts<br>from the market while trying to repair your units</html>");
+
         playerLowerCBoxesPanel.add(autoConnectBox);
         playerLowerCBoxesPanel.add(timeStampBox);
         playerLowerCBoxesPanel.add(viewUnitFluffBox);
         playerLowerCBoxesPanel.add(viewLogoBox);
         playerLowerCBoxesPanel.add(armyPopUpBox);
+        playerLowerCBoxesPanel.add(autoReOrder);
         SpringLayoutHelper.setupSpringGrid(playerLowerCBoxesPanel, 2);
 
         //lay out the main player panel
@@ -1082,6 +1087,7 @@ public final class ConfigurationDialog implements ActionListener {
         viewUnitFluffBox.setSelected(mwclient.getConfig().isParam("VIEWFLUFF"));
         viewLogoBox.setSelected(mwclient.getConfig().isParam("LOGO"));
         armyPopUpBox.setSelected(mwclient.getConfig().isParam("POPUPONATTACK"));
+        autoReOrder.setSelected(mwclient.getPlayer().getAutoReorder());
         autoConnectBox.setSelected(mwclient.getConfig().isParam("AUTOCONNECT"));
         soundOnCallField.setText(mwclient.getConfig().getParam("SOUNDONCALL"));
         soundOnKeywordField.setText(mwclient.getConfig().getParam("SOUNDONKEYWORD"));
@@ -1503,7 +1509,10 @@ public final class ConfigurationDialog implements ActionListener {
             mwclient.getConfig().saveConfig();
             mwclient.setConfig();
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "color " + chatNameColorField.getText());
-
+            
+            if ( mwclient.getPlayer().getAutoReorder() != autoReOrder.isSelected() )
+            	mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "setautoreorder "+autoReOrder.isSelected());
+            
             mwclient.getMainFrame().getMainPanel().recreateMainTPane(mwclient.getMainFrame());
            
             /*
