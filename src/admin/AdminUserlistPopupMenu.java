@@ -108,6 +108,16 @@ public class AdminUserlistPopupMenu extends JMenu implements ActionListener {
 		item.addActionListener(this);
 		if ( userLevel >= mwclient.getData().getAccessLevel("FixAmmo") )
 		    unitsMen.add(item);
+		item = new JMenuItem("View");
+		item.setActionCommand("VPU|"+userName);
+		item.addActionListener(this);
+		if ( userLevel >= mwclient.getData().getAccessLevel("ViewPlayerUnit") )
+		    unitsMen.add(item);
+		item = new JMenuItem("Repair View");
+		item.setActionCommand("VPUR"+userName);
+		item.addActionListener(this);
+		if ( userLevel >= mwclient.getData().getAccessLevel("ViewPlayerUnit") )
+		    unitsMen.add(item);
         
 		if ( unitsMen.getItemCount() > 0 )
 		    this.add(unitsMen);
@@ -233,6 +243,16 @@ public class AdminUserlistPopupMenu extends JMenu implements ActionListener {
 			
 			userName = st.nextToken();
 			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX+"c getplayerunits#"+userName+"#fixammo");
+		}
+		if (command.equals("VPU") && st.hasMoreElements()) {
+			
+			userName = st.nextToken();
+			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX+"c getplayerunits#"+userName+"#viewplayerunit#"+false);
+		}
+		if (command.equals("VPUR") && st.hasMoreElements()) {
+			
+			userName = st.nextToken();
+			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX+"c getplayerunits#"+userName+"#viewplayerunit#"+true);
 		}
 		if (command.equals("TU") && st.hasMoreElements()) {
 			

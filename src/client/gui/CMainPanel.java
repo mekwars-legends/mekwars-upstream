@@ -34,6 +34,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import common.BMEquipment;
+
 import client.MWClient;
 import client.gui.CCommPanel;
 
@@ -53,7 +55,7 @@ public class CMainPanel extends JPanel implements ChangeListener, ComponentListe
 	CHQPanel HQPanel = null;
 	CBMPanel BMPanel = null;
 	CHSPanel HSPanel = null;
-	CBMPartsPanel BMEPanel = null;
+	JTabbedPane BMETabbed = null;
 	CSelectTabAction HQSelect = null;
 	CSelectTabAction BMSelect = null;
 	CSelectTabAction HSSelect = null;
@@ -150,6 +152,41 @@ public class CMainPanel extends JPanel implements ChangeListener, ComponentListe
 		CommPanel.CommTPane.getActionMap().put(commandStr, select);
 	}
 	
+	private void addPanelMain(
+			JTabbedPane panel, 
+			CSelectTabAction select, 
+			String name, 
+			String tooltip, 
+			String mnemostr, 
+			String commandStr) {
+		MainTPane.addTab(name, null, panel, tooltip);
+		int index = MainTPane.indexOfComponent(panel);
+		int mnemo = MainTPane.getTitleAt(index).indexOf(mnemostr.toUpperCase());
+		if (mnemo == -1) 
+			mnemo = MainTPane.getTitleAt(index).indexOf(mnemostr.toLowerCase());
+		MainTPane.setDisplayedMnemonicIndexAt(index, mnemo);
+		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("alt "+mnemostr), commandStr);
+		getActionMap().put(commandStr, select);
+	}
+	
+	private void addPanelCComm(
+			JTabbedPane panel, 
+			CSelectTabAction select, 
+			String name, 
+			String tooltip, 
+			String mnemostr, 
+			String commandStr,
+			CCommPanel CommPanel) {
+		CommPanel.CommTPane.addTab(name, null, panel, tooltip);
+		int index = CommPanel.CommTPane.indexOfComponent(panel);
+		int mnemo = CommPanel.CommTPane.getTitleAt(index).indexOf(mnemostr.toUpperCase());
+		if (mnemo == -1) 
+			mnemo = CommPanel.CommTPane.getTitleAt(index).indexOf(mnemostr.toLowerCase());
+		CommPanel.CommTPane.setDisplayedMnemonicIndexAt(index, mnemo);
+		CommPanel.CommTPane.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("alt "+mnemostr), commandStr);
+		CommPanel.CommTPane.getActionMap().put(commandStr, select);
+	}
+	
 	private void createMainTPane(CMainFrame mainFrame)
 	{
 		//int index;
@@ -186,14 +223,18 @@ public class CMainPanel extends JPanel implements ChangeListener, ComponentListe
 		
 		if ( mwclient.getConfig().isParam("BMETABVISIBLE") && Boolean.parseBoolean(mwclient.getserverConfigs("UsePartsBlackMarket")) )
 		{
-			BMEPanel = new CBMPartsPanel(mwclient);
-			BMESelect = new CSelectTabAction(BMEPanel);
+			BMETabbed = new JTabbedPane(SwingConstants.BOTTOM);
+			BMETabbed.addTab("Ammo", new CBMPartsPanel(mwclient,BMEquipment.PART_AMMO));
+			BMETabbed.addTab("Armor", new CBMPartsPanel(mwclient,BMEquipment.PART_ARMOR));
+			BMETabbed.addTab("Weapons", new CBMPartsPanel(mwclient,BMEquipment.PART_WEAPON));
+			BMETabbed.addTab("Misc", new CBMPartsPanel(mwclient,BMEquipment.PART_MISC));
+			BMESelect = new CSelectTabAction(BMETabbed);
 			tabText = mwclient.getConfig().getParam("BMETABNAME");
 			mnemonicText = mwclient.getConfig().getParam("BMEMNEMONIC");
 			if ( mwclient.getConfig().isParam("BMEINTOPROW"))
-				addPanelMain(BMEPanel, BMESelect, tabText, "Buy and Sell Parts (Alt + "+mnemonicText+")", mnemonicText, "BMESelect");
+				addPanelMain(BMETabbed, BMESelect, tabText, "Buy and Sell Parts (Alt + "+mnemonicText+")", mnemonicText, "BMESelect");
 			else
-				addPanelCComm(BMEPanel, BMESelect, tabText, "Buy and Sell Parts (Alt + "+mnemonicText+")", mnemonicText, "BMESelect",CommPanel);
+				addPanelCComm(BMETabbed, BMESelect, tabText, "Buy and Sell Parts (Alt + "+mnemonicText+")", mnemonicText, "BMESelect",CommPanel);
 		}
 		
 		HSPanel = new CHSPanel(mwclient);
@@ -312,7 +353,18 @@ public class CMainPanel extends JPanel implements ChangeListener, ComponentListe
 	public CHQPanel getHQPanel() {return HQPanel;}
 	public CBMPanel getBMPanel() {return BMPanel;}
 	public CHSPanel getHSPanel() {return HSPanel;}
-	public CBMPartsPanel getBMEPanel() {return BMEPanel;}
+	public void refreshBME() {
+		if ( BMETabbed == null )
+			return;
+		try{
+		((CBMPartsPanel)BMETabbed.getComponentAt(0)).refresh();
+		((CBMPartsPanel)BMETabbed.getComponentAt(1)).refresh();
+		((CBMPartsPanel)BMETabbed.getComponentAt(2)).refresh();
+		((CBMPartsPanel)BMETabbed.getComponentAt(3)).refresh();
+		}catch (Exception ex){
+			MWClient.mwClientLog.clientErrLog(ex);
+		}
+	}
 	
 	public JTable getBattleTable() {return BattlePanel.getBattleTable();}
 	
@@ -437,16 +489,20 @@ public class CMainPanel extends JPanel implements ChangeListener, ComponentListe
         
         if ( mwclient.getConfig().isParam("BMETABVISIBLE") && Boolean.parseBoolean(mwclient.getserverConfigs("UsePartsBlackMarket")) )
         {
-            if ( BMEPanel == null ){
-                BMEPanel = new CBMPartsPanel(mwclient);
-                BMESelect = new CSelectTabAction(BMEPanel);
+            if ( BMETabbed == null ){
+            	BMETabbed = new JTabbedPane(SwingConstants.BOTTOM);
+    			BMETabbed.addTab("Ammo", new CBMPartsPanel(mwclient,BMEquipment.PART_AMMO));
+    			BMETabbed.addTab("Armor", new CBMPartsPanel(mwclient,BMEquipment.PART_ARMOR));
+    			BMETabbed.addTab("Weapons", new CBMPartsPanel(mwclient,BMEquipment.PART_WEAPON));
+    			BMETabbed.addTab("Misc", new CBMPartsPanel(mwclient,BMEquipment.PART_MISC));
+    			BMESelect = new CSelectTabAction(BMETabbed);
             }
             tabText = mwclient.getConfig().getParam("BMETABNAME");
             mnemonicText = mwclient.getConfig().getParam("BMEMNEMONIC");
             if ( mwclient.getConfig().isParam("BMEINTOPROW"))
-                addPanelMain(BMEPanel, BMSelect, tabText, "Buy and Sell Parts (Alt + "+mnemonicText+")", mnemonicText, "BMESelect");
+                addPanelMain(BMETabbed, BMSelect, tabText, "Buy and Sell Parts (Alt + "+mnemonicText+")", mnemonicText, "BMESelect");
             else
-                addPanelCComm(BMEPanel, BMSelect, tabText, "Buy and Sell Parts (Alt + "+mnemonicText+")", mnemonicText, "BMESelect",CommPanel);
+                addPanelCComm(BMETabbed, BMSelect, tabText, "Buy and Sell Parts (Alt + "+mnemonicText+")", mnemonicText, "BMESelect",CommPanel);
         }
         
         if ( mwclient.getConfig().isParam("HSTATUSTABVISIBLE"))

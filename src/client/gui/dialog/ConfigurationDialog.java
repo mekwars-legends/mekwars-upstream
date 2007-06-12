@@ -26,7 +26,6 @@ import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.SpringLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -1568,7 +1567,7 @@ public final class ConfigurationDialog implements ActionListener {
             pane.setValue(cancelButton);
             dialog.dispose();
         } else if (command.equals(camoCommand)) {
-        	CamoSelectionDialog camoDialog = new CamoSelectionDialog(new JFrame(), mwclient);
+        	CamoSelectionDialog camoDialog = new CamoSelectionDialog(mwclient.getMainFrame(), mwclient);
         	camoDialog.setVisible(true);
         }
     }

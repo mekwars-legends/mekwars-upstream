@@ -81,7 +81,7 @@ public class BanListCommand implements Command {
 		
 		i = 1;
         result += "Banned IPs:<br>";
-		synchronized (CampaignMain.cm.getServer().getBanIps()) {
+		synchronized (CampaignMain.cm.getServer().getBanIps().keySet()) {
 
 	        for (InetAddress currAddress : CampaignMain.cm.getServer().getBanIps().keySet()) {
 	            Long l = CampaignMain.cm.getServer().getBanIps().get(currAddress);

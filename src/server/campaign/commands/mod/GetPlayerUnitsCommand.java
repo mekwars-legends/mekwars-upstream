@@ -52,10 +52,10 @@ public class GetPlayerUnitsCommand implements Command {
     		}
     		String username = command.nextToken();
     		String commandName = command.nextToken();
-    		String receivingPlayer = null;
+    		String extraCommands = null;
     		
-    		if ( commandName.equalsIgnoreCase("admintransfer"))
-    		    receivingPlayer = command.nextToken();
+    		if ( command.hasMoreTokens() )
+    			extraCommands = command.nextToken();
     		
     		Command commandMethod = CampaignMain.cm.getServerCommands().get(commandName.toUpperCase());
     		
@@ -85,8 +85,8 @@ public class GetPlayerUnitsCommand implements Command {
      		        result += unit.getId()+" "+unit.getModelName()+" ("+unit.getPilot().getGunnery()+")#";
     		}
     		
-    		if ( receivingPlayer != null )
-    		    result +="|"+receivingPlayer;
+    		if ( extraCommands != null )
+    		    result +="|"+extraCommands;
     		
     		CampaignMain.cm.toUser("LPU|"+result,Username,false);
         }catch (Exception ex){

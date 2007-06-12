@@ -28,7 +28,12 @@ public class BMEquipment {
 	private boolean costUp = false;
 	private String tech = "IS";
 	private String equipmentType = "";
-
+	
+	static public String PART_AMMO = "Ammo";
+	static public String PART_WEAPON = "Weapons";
+	static public String PART_MISC = "Misc";
+	static public String PART_ARMOR = "Armor";
+	
 	public void setEquipmentInternalName(String name) {
 		this.equipmentInternalName = name;
 	}

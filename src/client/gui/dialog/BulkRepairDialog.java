@@ -108,9 +108,13 @@ import client.gui.SpringLayoutHelper;
     private JSpinner baseRollField = new JSpinner(baseRollEditor);
     
     private JComboBox techComboBox = new JComboBox();
-    private boolean simpleRepair = false;
+    private int repairType = BulkRepairDialog.TYPE_BULK;
     
-	public BulkRepairDialog(MWClient c, int unitID, boolean staticicalRepair) {
+    public static int TYPE_BULK = 0;
+    public static int TYPE_SIMPLE = 1;
+    public static int TYPE_SALVAGE = 2;
+    
+	public BulkRepairDialog(MWClient c, int unitID, int repairType) {
         
         //super(c.getMainFrame(),"Repair Dialog", true);
         //super();
@@ -118,7 +122,7 @@ import client.gui.SpringLayoutHelper;
 		//save the client
 		this.mwclient = c;
         this.playerUnit =c.getPlayer().getUnit(unitID);
-        this.simpleRepair = staticicalRepair;
+        this.repairType = repairType;
         
         synchronized (playerUnit.getEntity()) {
             this.unit = playerUnit.getEntity();
@@ -129,6 +133,8 @@ import client.gui.SpringLayoutHelper;
         
 		//stored values.
 
+        if ( isSalvage() )
+        	okayButton.setText("Start Salvage");
 		//Set the tooltips and actions for dialouge buttons
 		okayButton.setActionCommand(okayCommand);
         okayButton.addActionListener(this);
@@ -165,7 +171,7 @@ import client.gui.SpringLayoutHelper;
         contentPane.setLayout(new BorderLayout());
         contentPane.add(pane, BorderLayout.CENTER);
         this.setResizable(true);
-        if ( simpleRepair )
+        if ( !isBulk() )
             this.setSize(new Dimension(440,287));
         else
             this.setSize(new Dimension(369,287));
@@ -198,13 +204,21 @@ import client.gui.SpringLayoutHelper;
         if ( command.equals(okayCommand)){
             
 
-            if ( simpleRepair ){
+            if ( isSimple() ){
                 StringBuilder sb = new StringBuilder();
                 for (int type = ARMOR; type <= ENGINES; type++){
                     sb.append("#"+((JComboBox)techBox.getComponent(type)).getSelectedIndex());
                     sb.append("#"+((JSpinner)rollBox.getComponent(type)).getValue().toString());
                 }
                 mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c simplerepair#"+playerUnit.getId()+sb.toString());
+            }else if (isSalvage()){
+                mwclient.getSMT().removeAllWorkOrders(unit.getExternalId());
+                checkArmor();
+                checkWeapons();
+                checkEquipment();
+                checkSystems();
+                checkEngines();
+                checkInternal();
             }else{
                 mwclient.getRMT().removeAllWorkOrders(unit.getExternalId());
     
@@ -257,7 +271,7 @@ import client.gui.SpringLayoutHelper;
         techBox.add(new JLabel("Tech Type",SwingConstants.LEFT));
         rollBox.add(new JLabel("Base Roll",SwingConstants.LEFT));
         costBox.add(new JLabel("Cost",SwingConstants.LEFT));
-        if ( simpleRepair )
+        if ( isSimple() )
             timeBox.add(new JLabel("Time",SwingConstants.LEFT));
 
 
@@ -276,6 +290,7 @@ import client.gui.SpringLayoutHelper;
             baseRollField.addKeyListener(this);
             baseRollField.addChangeListener(this);
             baseRollField.setName(Integer.toString(x+1));
+            baseRollField.setEnabled(!isSalvage());
             rollBox.add(baseRollField);
             costField = new JLabel("0");
             costField.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -292,16 +307,16 @@ import client.gui.SpringLayoutHelper;
         repairCB.addKeyListener(this);
         repairCB.addActionListener(this);
         repairCB.setActionCommand(Integer.toString(ARMOR));
-        repairCB.setSelected(simpleRepair);
-        repairCB.setEnabled(!simpleRepair);
+        repairCB.setSelected(!isBulk());
+        repairCB.setEnabled(!isSimple());
         repairBox.add(repairCB);
 
         repairCB = new JCheckBox("Structure");
         repairCB.addKeyListener(this);
         repairCB.addActionListener(this);
         repairCB.setActionCommand(Integer.toString(INTERNAL));
-        repairCB.setSelected(simpleRepair);
-        repairCB.setEnabled(!simpleRepair);
+        repairCB.setSelected(!isBulk());
+        repairCB.setEnabled(!isSimple());
         repairBox.add(repairCB);
 
         repairCB = new JCheckBox("Weapons");
@@ -309,38 +324,38 @@ import client.gui.SpringLayoutHelper;
         repairCB.addKeyListener(this);
         repairCB.setActionCommand(Integer.toString(WEAPONS));
         repairCB.addActionListener(this);
-        repairCB.setSelected(simpleRepair);
-        repairCB.setEnabled(!simpleRepair);
+        repairCB.setSelected(!isBulk());
+        repairCB.setEnabled(!isSimple());
 
         repairCB = new JCheckBox("Equipment");
         repairBox.add(repairCB);
         repairCB.addKeyListener(this);
         repairCB.addActionListener(this);
         repairCB.setActionCommand(Integer.toString(EQUIPMENT));
-        repairCB.setSelected(simpleRepair);
-        repairCB.setEnabled(!simpleRepair);
+        repairCB.setSelected(!isBulk());
+        repairCB.setEnabled(!isSimple());
 
         repairCB = new JCheckBox("Systems");
         repairBox.add(repairCB);
         repairCB.addKeyListener(this);
         repairCB.addActionListener(this);
         repairCB.setActionCommand(Integer.toString(SYSTEMS));
-        repairCB.setSelected(simpleRepair);
-        repairCB.setEnabled(!simpleRepair);
+        repairCB.setSelected(!isBulk());
+        repairCB.setEnabled(!isSimple());
 
         repairCB = new JCheckBox("Engines");
         repairCB.addKeyListener(this);
         repairCB.addActionListener(this);
         repairBox.add(repairCB);
         repairCB.setActionCommand(Integer.toString(ENGINES));
-        repairCB.setSelected(simpleRepair);
-        repairCB.setEnabled(!simpleRepair);
+        repairCB.setSelected(!isBulk());
+        repairCB.setEnabled(!isSimple());
         
         masterBox.add(repairBox);
         masterBox.add(techBox);
         masterBox.add(rollBox);
         masterBox.add(costBox);
-        if ( simpleRepair )
+        if ( isSimple() )
             masterBox.add(timeBox);
 
         blankPanel1.add(new JLabel(" "));
@@ -355,19 +370,19 @@ import client.gui.SpringLayoutHelper;
         masterBox.add(blankPanel2);
         masterBox.add(totalTextPanel);
         masterBox.add(totalPanel);
-        if ( simpleRepair ){
+        if ( isSimple() ){
             timeField = new JLabel("0");
             timePanel.add(timeField);
             masterBox.add(timePanel);
         }
 
-        if ( simpleRepair )
+        if ( isSimple() )
             SpringLayoutHelper.setupSpringGrid(masterBox,5);
         else
             SpringLayoutHelper.setupSpringGrid(masterBox,4);
         MasterPanel.add(masterBox);
         
-        if ( simpleRepair ){
+        if ( isSimple() ){
             for ( int type = ARMOR; type <= ENGINES; type++)
                 setCost(type);
             setTotalCost();
@@ -378,6 +393,17 @@ import client.gui.SpringLayoutHelper;
     
     	int tech = 0;
     	int roll = 0;
+    	
+    	if ( isSalvage() ){
+    		setArmorCost();
+    		setInternalCost();
+    		setSystemCost();
+    		setEngineCost();
+    		setWeaponCost();
+    		setEquipmentCost();
+    		setTotalCost();
+    		return;
+    	}
     	
     	if ( UnitUtils.hasArmorDamage(unit) ) {
     		((JCheckBox)repairBox.getComponent(ARMOR)).setSelected(true);
@@ -525,20 +551,32 @@ import client.gui.SpringLayoutHelper;
         int techType = ((JComboBox)techBox.getComponent(ARMOR)).getSelectedIndex();
         String baseRoll = ((JSpinner)rollBox.getComponent(ARMOR)).getValue().toString();
         
-        if ( techType != UnitUtils.TECH_PILOT ) {
+        if ( isBulk() && techType != UnitUtils.TECH_PILOT ) {
 	        mwclient.getConfig().setParam("REPAIRARMORTECH", Integer.toString(techType));
 	        mwclient.getConfig().setParam("REPAIRARMORROLL", baseRoll);
         }
 
         for ( int location = 0; location < unit.locations(); location++ ){
-            if ( unit.getArmor(location) < unit.getOArmor(location) ){
-                String workOrder = unit.getExternalId()+"#"+location+"#"+UnitUtils.LOC_FRONT_ARMOR+"#"+baseRoll+"#999";
-                mwclient.getRMT().addWorkOrder(techType,workOrder);
-            }
-            if ( unit.hasRearArmor(location) && unit.getArmor(location,true) < unit.getOArmor(location,true) ){
-                String workOrder = unit.getExternalId()+"#"+(location+7)+"#"+UnitUtils.LOC_REAR_ARMOR+"#"+baseRoll+"#999";
-                mwclient.getRMT().addWorkOrder(techType,workOrder);
-            }
+        	if ( isSalvage() ){
+	            if ( unit.getArmor(location) > 0 ){
+	                String workOrder = unit.getExternalId()+"#"+location+"#"+UnitUtils.LOC_FRONT_ARMOR;
+	                mwclient.getSMT().addWorkOrder(techType,workOrder);
+	            }
+	            if ( unit.hasRearArmor(location) && unit.getArmor(location,true) > 0 ){
+	                String workOrder = unit.getExternalId()+"#"+(location)+"#"+UnitUtils.LOC_REAR_ARMOR;
+	                mwclient.getSMT().addWorkOrder(techType,workOrder);
+	            }
+        	}
+        	else{
+	            if ( unit.getArmor(location) < unit.getOArmor(location) ){
+	                String workOrder = unit.getExternalId()+"#"+location+"#"+UnitUtils.LOC_FRONT_ARMOR+"#"+baseRoll+"#999";
+	                mwclient.getRMT().addWorkOrder(techType,workOrder);
+	            }
+	            if ( unit.hasRearArmor(location) && unit.getArmor(location,true) < unit.getOArmor(location,true) ){
+	                String workOrder = unit.getExternalId()+"#"+(location+7)+"#"+UnitUtils.LOC_REAR_ARMOR+"#"+baseRoll+"#999";
+	                mwclient.getRMT().addWorkOrder(techType,workOrder);
+	            }
+        	}
                 
         }
         
@@ -552,13 +590,20 @@ import client.gui.SpringLayoutHelper;
         int techType = ((JComboBox)techBox.getComponent(INTERNAL)).getSelectedIndex();
         String baseRoll = ((JSpinner)rollBox.getComponent(INTERNAL)).getValue().toString();
 
-        if ( techType != UnitUtils.TECH_PILOT ) {
+        if ( isBulk() &&  techType != UnitUtils.TECH_PILOT ) {
         	mwclient.getConfig().setParam("REPAIRINTERNALTECH", Integer.toString(techType));
         	mwclient.getConfig().setParam("REPAIRINTERNALROLL", baseRoll);
         }
         
         for ( int location = 0; location < unit.locations(); location++ ){
-            if ( unit.getInternal(location) < unit.getOInternal(location) ){
+        	
+        	if ( isSalvage() ){
+        		if ( unit.getInternal(location) > 0 ){
+	                String workOrder = unit.getExternalId()+"#"+location+"#"+UnitUtils.LOC_INTERNAL_ARMOR+"#";
+	                mwclient.getSMT().addWorkOrder(techType,workOrder);
+        		}
+        	}
+        	else if ( unit.getInternal(location) < unit.getOInternal(location) ){
                 String workOrder = unit.getExternalId()+"#"+location+"#"+UnitUtils.LOC_INTERNAL_ARMOR+"#"+baseRoll+"#999";
                 mwclient.getRMT().addWorkOrder(techType,workOrder);
             }
@@ -577,7 +622,7 @@ import client.gui.SpringLayoutHelper;
         int techType = ((JComboBox)techBox.getComponent(ENGINES)).getSelectedIndex();
         String baseRoll = ((JSpinner)rollBox.getComponent(ENGINES)).getValue().toString();
         
-        if ( techType != UnitUtils.TECH_PILOT ) {
+        if ( isBulk() && techType != UnitUtils.TECH_PILOT ) {
 	        mwclient.getConfig().setParam("REPAIRENGINESTECH", Integer.toString(techType));
 	        mwclient.getConfig().setParam("REPAIRENGINESROLL", baseRoll);
         }        
@@ -591,12 +636,21 @@ import client.gui.SpringLayoutHelper;
                 if ( !UnitUtils.isEngineCrit(cs) )
                     continue;
                 //check its damaged
-                if ( !cs.isDamaged() && !cs.isBreached() )
-                    continue;
-                //ok we have a damaged engine slot lets queue up the repair and exit.
-                String workOrder = unit.getExternalId()+"#"+location+"#"+slot+"#"+baseRoll+"#999";
-                mwclient.getRMT().addWorkOrder(techType,workOrder);
-                return;
+                if ( isSalvage() ){
+                	if ( !cs.isDamaged()){
+	                    String workOrder = unit.getExternalId()+"#"+location+"#"+slot;
+	                    mwclient.getSMT().addWorkOrder(techType,workOrder);
+	                    return;
+                	}
+                }else{
+                	if ( !cs.isDamaged() && !cs.isBreached() )
+                		continue;
+
+	                //ok we have a damaged engine slot lets queue up the repair and exit.
+	                String workOrder = unit.getExternalId()+"#"+location+"#"+slot+"#"+baseRoll+"#999";
+	                mwclient.getRMT().addWorkOrder(techType,workOrder);
+	                return;
+                }
             }
         }
     }
@@ -608,7 +662,7 @@ import client.gui.SpringLayoutHelper;
         
         int techType = ((JComboBox)techBox.getComponent(SYSTEMS)).getSelectedIndex();
         String baseRoll = ((JSpinner)rollBox.getComponent(SYSTEMS)).getValue().toString();
-        if ( techType != UnitUtils.TECH_PILOT ) {
+        if ( !isSalvage() && techType != UnitUtils.TECH_PILOT ) {
 	        mwclient.getConfig().setParam("REPAIRSYSTEMSTECH", Integer.toString(techType));
 	        mwclient.getConfig().setParam("REPAIRSYSTEMSROLL", baseRoll);
         }
@@ -618,11 +672,20 @@ import client.gui.SpringLayoutHelper;
                 CriticalSlot cs = unit.getCritical(location,slot);
                 if ( cs == null )
                     continue;
-                if ( !cs.isBreached() && !cs.isDamaged() )
-                    continue;
-                if (cs.getType() == CriticalSlot.TYPE_SYSTEM && cs.getIndex() != Mech.SYSTEM_ENGINE) {
-                    String workOrder = unit.getExternalId()+"#"+location+"#"+slot+"#"+baseRoll+"#999";
-                    mwclient.getRMT().addWorkOrder(techType,workOrder);
+                if ( isSalvage() ){
+                        if ( !cs.isDamaged()
+                        && cs.getType() == CriticalSlot.TYPE_SYSTEM 
+                        && cs.getIndex() != Mech.SYSTEM_ENGINE){
+	                        String workOrder = unit.getExternalId()+"#"+location+"#"+slot;
+	                        mwclient.getSMT().addWorkOrder(techType,workOrder);
+                        }
+                }else{ 
+	                if ( !cs.isBreached() && !cs.isDamaged() )
+	                    continue;
+	                if (cs.getType() == CriticalSlot.TYPE_SYSTEM && cs.getIndex() != Mech.SYSTEM_ENGINE) {
+	                    String workOrder = unit.getExternalId()+"#"+location+"#"+slot+"#"+baseRoll+"#999";
+	                    mwclient.getRMT().addWorkOrder(techType,workOrder);
+	                }
                 }
             }
         }
@@ -636,7 +699,7 @@ import client.gui.SpringLayoutHelper;
         int techType = ((JComboBox)techBox.getComponent(WEAPONS)).getSelectedIndex();
         String baseRoll = ((JSpinner)rollBox.getComponent(WEAPONS)).getValue().toString();
 
-        if ( techType != UnitUtils.TECH_PILOT ) {
+        if ( !isSalvage() && techType != UnitUtils.TECH_PILOT ) {
 	        mwclient.getConfig().setParam("REPAIRWEAPONSTECH", Integer.toString(techType));
 	        mwclient.getConfig().setParam("REPAIRWEAPONSROLL", baseRoll);
         }
@@ -653,12 +716,26 @@ import client.gui.SpringLayoutHelper;
                     Mounted mounted = unit.getEquipment(cs.getIndex());
                     //Only want to set a Tech to work on the Mounted object that is destroyed don't need to
                     //add multiple techs to a single weapon
-                    if ( mounted.getType() instanceof WeaponType 
+                    if ( isSalvage() ){
+                    		if ( mounted.getType() instanceof WeaponType 
+                            && !mounted.isDestroyed() 
+                            && !mounted.isMissing()
+                            && !mounted.equals(lastWeapon)){
+	                    		lastWeapon = mounted;
+		                        String workOrder = unit.getExternalId()+"#"+location+"#"+slot;
+		                        mwclient.getSMT().addWorkOrder(techType,workOrder);
+                    		}
+                    }else if ( mounted.getType() instanceof WeaponType 
                             && (mounted.isDestroyed() || mounted.isMissing()) 
                             && !mounted.equals(lastWeapon) ){
                         lastWeapon = mounted;
-                        String workOrder = unit.getExternalId()+"#"+location+"#"+slot+"#"+baseRoll+"#999";
-                        mwclient.getRMT().addWorkOrder(techType,workOrder);
+                        if ( isSalvage() ){
+	                        String workOrder = unit.getExternalId()+"#"+location+"#"+slot;
+	                        mwclient.getSMT().addWorkOrder(techType,workOrder);
+                        }else{
+                            String workOrder = unit.getExternalId()+"#"+location+"#"+slot+"#"+baseRoll+"#999";
+                            mwclient.getRMT().addWorkOrder(techType,workOrder);
+                        }
                     }
                 }
             }
@@ -673,7 +750,7 @@ import client.gui.SpringLayoutHelper;
         int techType = ((JComboBox)techBox.getComponent(EQUIPMENT)).getSelectedIndex();
         String baseRoll = ((JSpinner)rollBox.getComponent(EQUIPMENT)).getValue().toString();
 
-        if ( techType != UnitUtils.TECH_PILOT ) {
+        if ( isBulk() && techType != UnitUtils.TECH_PILOT ) {
         	mwclient.getConfig().setParam("REPAIREQUIPMENTTECH", Integer.toString(techType));
 	        mwclient.getConfig().setParam("REPAIREQUIPMENTROLL", baseRoll);
         }
@@ -692,10 +769,20 @@ import client.gui.SpringLayoutHelper;
                     
                     //Only want to set a Tech to work on the Mounted object that is destroyed don't need to
                     //add multiple techs to a single piece of equipment
-                    if ( !(mounted.getType() instanceof WeaponType) 
+                    if ( isSalvage() ){
+                    		if ( !(mounted.getType() instanceof WeaponType) 
+                            && !mounted.isDestroyed() 
+                            && !mounted.isMissing()
+                            && !mounted.equals(lastEq)){
+	                    		lastEq = mounted;
+		                        String workOrder = unit.getExternalId()+"#"+location+"#"+slot;
+		                        mwclient.getSMT().addWorkOrder(techType,workOrder);
+                    		}
+                    }else if ( !(mounted.getType() instanceof WeaponType) 
                             && (mounted.isDestroyed() || mounted.isMissing())
                             && !mounted.equals(lastEq)){
                         lastEq = mounted;
+                        
                         String workOrder = unit.getExternalId()+"#"+location+"#"+slot+"#"+baseRoll+"#999";
                         mwclient.getRMT().addWorkOrder(techType,workOrder);
                     }
@@ -725,28 +812,44 @@ import client.gui.SpringLayoutHelper;
         techWorkMod = Math.max(techWorkMod,0);
         
         for ( int location = 0; location < unit.locations(); location++ ){
-            if ( unit.getArmor(location) < unit.getOArmor(location) ){
-                pointsToRepair += unit.getOArmor(location) - unit.getArmor(location);
-                cost += armorCost*pointsToRepair;
-                cost += techCost*Math.abs(techWorkMod);
-                cost += techCost;
-                setWorkHours(ARMOR,location,0,true,clear);
-                clear = false;
-            }
-                
-            if ( unit.hasRearArmor(location) ){
-                pointsToRepair += unit.getOArmor(location,true) - unit.getArmor(location,true);
-                cost += armorCost*pointsToRepair;
-                cost += techCost*Math.abs(techWorkMod);
-                cost += techCost;
-                setWorkHours(ARMOR,location,0,true,clear);
-                clear = false;
-            }
+        	
+        	if ( isSalvage() ){
+	            if ( unit.getArmor(location) > 0 ){
+	                cost += techCost;
+	                setWorkHours(ARMOR,location,0,true,clear);
+	                clear = false;
+	            }
+	                
+	            if ( unit.hasRearArmor(location) && unit.getArmor(location,true) > 0){
+	                cost += techCost;
+	                setWorkHours(ARMOR,location,0,true,clear);
+	                clear = false;
+	            }
+        	}else{
+	            if ( unit.getArmor(location) < unit.getOArmor(location) ){
+	                pointsToRepair += unit.getOArmor(location) - unit.getArmor(location);
+	                cost += armorCost*pointsToRepair;
+	                cost += techCost*Math.abs(techWorkMod);
+	                cost += techCost;
+	                setWorkHours(ARMOR,location,0,true,clear);
+	                clear = false;
+	            }
+	                
+	            if ( unit.hasRearArmor(location) ){
+	                pointsToRepair += unit.getOArmor(location,true) - unit.getArmor(location,true);
+	                cost += armorCost*pointsToRepair;
+	                cost += techCost*Math.abs(techWorkMod);
+	                cost += techCost;
+	                setWorkHours(ARMOR,location,0,true,clear);
+	                clear = false;
+	            }
+        	}
         }
         
         //Base on what they assigned as the base roll we increase the payout so
         //that it covers the chances of failures. not the greatest but better then nothing.
-        cost *= payOutIncreaseBasedOnRoll(baseRoll);
+        if ( !isSalvage() )
+        	cost *= payOutIncreaseBasedOnRoll(baseRoll);
         cost = Math.max(0,cost);
         
         ((JLabel)costBox.getComponent(ARMOR)).setText(Integer.toString((int)cost));
@@ -768,25 +871,33 @@ import client.gui.SpringLayoutHelper;
         }
         
         for ( int location = 0; location < unit.locations(); location++ ){
-            if ( unit.getInternal(location) < unit.getOInternal(location) ){
-                if ( techType != UnitUtils.TECH_PILOT ){ 
-                    techWorkMod = UnitUtils.getTechRoll(unit,location,UnitUtils.LOC_INTERNAL_ARMOR,techType,true,this.mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getTechLevel()) - baseRoll;
-                }
-                
-                techWorkMod = Math.max(techWorkMod,0);
-                pointsToRepair = unit.getOInternal(location) - unit.getInternal(location);
-                cost +=  armorCost*pointsToRepair;
-                cost += techCost*Math.abs(techWorkMod);
-                cost += techCost;
+        	
+        	if ( isSalvage() && unit.getInternal(location) > 0){
+        		cost += techCost;
                 setWorkHours(INTERNAL,location,UnitUtils.LOC_INTERNAL_ARMOR,true,clear);
                 clear = false;
-
-            }
+        	}else{
+	            if ( unit.getInternal(location) < unit.getOInternal(location) ){
+	                if ( techType != UnitUtils.TECH_PILOT ){ 
+	                    techWorkMod = UnitUtils.getTechRoll(unit,location,UnitUtils.LOC_INTERNAL_ARMOR,techType,true,this.mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getTechLevel()) - baseRoll;
+	                }
+	                
+	                techWorkMod = Math.max(techWorkMod,0);
+	                pointsToRepair = unit.getOInternal(location) - unit.getInternal(location);
+	                cost +=  armorCost*pointsToRepair;
+	                cost += techCost*Math.abs(techWorkMod);
+	                cost += techCost;
+	                setWorkHours(INTERNAL,location,UnitUtils.LOC_INTERNAL_ARMOR,true,clear);
+	                clear = false;
+	
+	            }
+        	}
         }
         
         //Base on what they assigned as the base roll we increase the payout so
         //that it covers the chances of failures. not the greatest but better then nothing.
-        cost *= payOutIncreaseBasedOnRoll(baseRoll);
+        if ( !isSalvage() )
+        	cost *= payOutIncreaseBasedOnRoll(baseRoll);
         cost = Math.max(0,cost);
         
         ((JLabel)costBox.getComponent(INTERNAL)).setText(Integer.toString((int)cost));
@@ -812,6 +923,12 @@ import client.gui.SpringLayoutHelper;
                 CriticalSlot cs = unit.getCritical(location,slot);
                 if ( cs == null )
                     continue;
+            	if ( isSalvage() && !cs.isDamaged()){
+        			cost += techCost*2;
+        			clear = false;
+        			continue;
+            	}
+
                 if ( !cs.isBreached() && !cs.isDamaged() )
                     continue;
                 if (cs.getType() == CriticalSlot.TYPE_SYSTEM && cs.getIndex() != Mech.SYSTEM_ENGINE) {
@@ -837,7 +954,8 @@ import client.gui.SpringLayoutHelper;
 
         //Base on what they assigned as the base roll we increase the payout so
         //that it covers the chances of failures. not the greatest but better then nothing.
-        cost *= payOutIncreaseBasedOnRoll(baseRoll);
+        if ( !isSalvage() )
+        	cost *= payOutIncreaseBasedOnRoll(baseRoll);
         cost = Math.max(0,cost);
         
         ((JLabel)costBox.getComponent(SYSTEMS)).setText(Integer.toString((int)cost));
@@ -863,6 +981,11 @@ import client.gui.SpringLayoutHelper;
                 CriticalSlot cs = unit.getCritical(location,slot);
                 if ( cs == null )
                     continue;
+            	if ( isSalvage() && !cs.isDamaged()){
+        			cost += techCost*2;
+        			clear = false;
+        			continue;
+            	}
                 if ( !cs.isBreached() && !cs.isDamaged() )
                     continue;
                 if (cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
@@ -892,7 +1015,8 @@ import client.gui.SpringLayoutHelper;
         
         //Base on what they assigned as the base roll we increase the payout so
         //that it covers the chances of failures. not the greatest but better then nothing.
-        cost *= payOutIncreaseBasedOnRoll(baseRoll);
+        if ( !isSalvage() )
+        	cost *= payOutIncreaseBasedOnRoll(baseRoll);
         cost = Math.max(0,cost);
         
         ((JLabel)costBox.getComponent(WEAPONS)).setText(Integer.toString((int)cost));
@@ -918,6 +1042,12 @@ import client.gui.SpringLayoutHelper;
                 CriticalSlot cs = unit.getCritical(location,slot);
                 if ( cs == null )
                     continue;
+            	if ( isSalvage() && !cs.isDamaged()){
+        			cost += techCost*2;
+        			clear = false;
+        			continue;
+            	}
+
                 if ( !cs.isBreached() && !cs.isDamaged() )
                     continue;
                 if (cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
@@ -937,7 +1067,6 @@ import client.gui.SpringLayoutHelper;
                         cost += techCost;
                         setWorkHours(EQUIPMENT,location,slot,false,clear);
                         clear = false;
-
                         //move the slot ahead if the Crit is more then 1 in size.
                         slot += pointsToRepair-1;
                     }
@@ -947,7 +1076,8 @@ import client.gui.SpringLayoutHelper;
         
         //Base on what they assigned as the base roll we increase the payout so
         //that it covers the chances of failures. not the greatest but better then nothing.
-        cost *= payOutIncreaseBasedOnRoll(baseRoll);
+        if ( !isSalvage() )
+        	cost *= payOutIncreaseBasedOnRoll(baseRoll);
         cost = Math.max(0,cost);
         
         ((JLabel)costBox.getComponent(EQUIPMENT)).setText(Integer.toString((int)cost));
@@ -978,10 +1108,19 @@ import client.gui.SpringLayoutHelper;
                 if ( cs == null )
                     continue;
                 
-                if ( !cs.isDamaged() && !cs.isBreached() )
+                if ( !UnitUtils.isEngineCrit(cs) )
                     continue;
                 
-                if ( !UnitUtils.isEngineCrit(cs) )
+            	if ( isSalvage() ){
+        			int totalCrits = UnitUtils.getNumberOfCrits(unit,cs) - UnitUtils.getNumberOfDamagedCrits(unit, slot, location, false);
+        			int totalCost = (int)(totalCrits*techCost);
+        			totalCost += techCost;
+        			cost = Math.max(1,totalCost);
+        			((JLabel)costBox.getComponent(ENGINES)).setText(Integer.toString((int)cost));
+        			return;
+            	}
+
+                if ( !cs.isDamaged() && !cs.isBreached() )
                     continue;
                 
                 location = x;
@@ -1011,11 +1150,10 @@ import client.gui.SpringLayoutHelper;
         cost *= payOutIncreaseBasedOnRoll(baseRoll);
         cost = Math.max(0,cost);
         //System.err.println("Cost 2: "+cost);
-
         if ( !found ){
             cost = 0;
         }
-        if ( simpleRepair ){
+        if ( isSimple() ){
             ((JLabel)timeBox.getComponent(ENGINES)).setText("0");
             setWorkHours(ENGINES,UnitUtils.LOC_CT,0,false,true);
         }
@@ -1076,11 +1214,11 @@ import client.gui.SpringLayoutHelper;
         
         for ( int x = ARMOR; x <= ENGINES; x++ ){
             cost += Integer.parseInt(((JLabel)costBox.getComponent(x)).getText());
-            if ( simpleRepair )
+            if ( isSimple() )
                 seconds += Integer.parseInt(((JLabel)timeBox.getComponent(x)).getText());
         }
         
-        if ( simpleRepair ){
+        if ( isSimple() ){
             if ( seconds > 3600 ){
                 hours = seconds/3600;
                 seconds %= 3600;
@@ -1108,5 +1246,17 @@ import client.gui.SpringLayoutHelper;
             ((JLabel)timePanel.getComponent(0)).setToolTipText(toolTip.toString());
         }
         ((JLabel)totalPanel.getComponent(0)).setText(Integer.toString(cost));
+    }
+    
+    private boolean isSimple(){
+    	return repairType == BulkRepairDialog.TYPE_SIMPLE;
+    }
+    
+    private boolean isBulk(){
+    	return repairType == BulkRepairDialog.TYPE_BULK;
+    }
+    
+    private boolean isSalvage(){
+    	return repairType == BulkRepairDialog.TYPE_SALVAGE;
     }
 }//end BulkRepairDialog.java

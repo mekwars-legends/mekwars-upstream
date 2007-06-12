@@ -69,11 +69,11 @@ public class CBMPartsPanel extends JPanel {
 	private GridBagConstraints gridBagConstraints;
 	private BMEquipment bme;
 	
-	public CBMPartsPanel(MWClient client) {
+	public CBMPartsPanel(MWClient client, String type) {
 		setLayout(new GridBagLayout());
 		this.mwclient = client;
 		
-		BlackMarketInfo = new BlackMarketPartsModel(mwclient);
+		BlackMarketInfo = new BlackMarketPartsModel(mwclient,type);
 		theCampaign = client.getCampaign();
 		TableSorter sorter = new TableSorter(this.BlackMarketInfo, client, TableSorter.SORTER_BMPARTS);
 		this.tblMarket.setModel(sorter);

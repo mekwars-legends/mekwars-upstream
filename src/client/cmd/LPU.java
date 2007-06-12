@@ -48,7 +48,7 @@ public class LPU extends Command {
 		String unitList = command.nextToken();
 		String receivingPlayer = null;
 		
-		if( commandName.equalsIgnoreCase("admintransfer") )
+		if( command.hasMoreTokens() )
 			receivingPlayer = command.nextToken();
 		
 		StringTokenizer units = new StringTokenizer(unitList,"#");
@@ -63,7 +63,7 @@ public class LPU extends Command {
 		JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE,
 				JOptionPane.OK_CANCEL_OPTION);
 		
-		JDialog dlg = jop.createDialog(null, "Select a unit.");
+		JDialog dlg = jop.createDialog(mwclient.getMainFrame(), "Select a unit.");
 		combo.grabFocus();
 		combo.getEditor().selectAll();
 		
@@ -77,8 +77,12 @@ public class LPU extends Command {
 		if (value == JOptionPane.CANCEL_OPTION)
 			return;
 		
-		if ( receivingPlayer != null )
-			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c "+commandName+"#"+username+"#"+receivingPlayer+unit);
+		if ( receivingPlayer != null ){
+			if( commandName.equalsIgnoreCase("admintransfer") )
+				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c "+commandName+"#"+username+"#"+receivingPlayer+unit);
+			else if ( commandName.equalsIgnoreCase("viewplayerunit") )
+				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c "+commandName+"#"+username+unit+"#"+receivingPlayer);
+		}
 		else
 			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c "+commandName+"#"+username+unit);
 	}

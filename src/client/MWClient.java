@@ -110,6 +110,7 @@ import client.protocol.commands.IProtCommand;
 import client.protocol.commands.PingPCmd;
 import client.protocol.commands.PongPCmd;
 import client.util.RepairManagmentThread;
+import client.util.SalvageManagmentThread;
 
 import common.AdvanceTerrain;
 import common.BMEquipment;
@@ -251,6 +252,7 @@ public final class MWClient implements IClient {
 	
 	//Advance Repair Queue
 	private RepairManagmentThread RMT = null;
+	private SalvageManagmentThread SMT = null;
 	
 	private boolean waitingOnCommand = false;
 
@@ -631,6 +633,10 @@ public final class MWClient implements IClient {
 		if ( Boolean.parseBoolean(getserverConfigs("UseAdvanceRepair")) ){
 			RMT = new RepairManagmentThread(Long.parseLong(getserverConfigs("TimeForEachRepairPoint"))*1000,this);
 			RMT.start();
+		}
+		if ( Boolean.parseBoolean(getserverConfigs("UsePartsRepair")) ){
+			SMT = new SalvageManagmentThread(Long.parseLong(getserverConfigs("TimeForEachRepairPoint"))*1000,this);
+			SMT.start();
 		}
 		
 		//start checking for timeouts
@@ -1240,6 +1246,7 @@ public final class MWClient implements IClient {
 	public Vector<String> getIgnoreHouse() {return IgnoreHouse;}
 	public Vector<String> getIgnorePrivate() {return IgnorePrivate;}
 	public RepairManagmentThread getRMT() {return RMT;}
+	public SalvageManagmentThread getSMT() {return SMT;}
 	
 	public Vector<String> getIgnored(int type) {
 		if (type == IGNORE_PUBLIC) {return IgnorePublic;}
@@ -3047,7 +3054,14 @@ public final class MWClient implements IClient {
 					bme.setTech("IS");
 				}else
 					bme.setTech("All");
-				bme.setEquipmentType("Misc");
+				
+				if ( bme.getEquipmentName().toLowerCase().indexOf("armor") > -1 ||
+						bme.getEquipmentName().equalsIgnoreCase("IS (STD)") ||
+						EquipmentType.getArmorType(bme.getEquipmentName()) != EquipmentType.T_ARMOR_UNKNOWN ||
+						EquipmentType.getStructureType(bme.getEquipmentName()) != EquipmentType.T_STRUCTURE_UNKNOWN )
+					bme.setEquipmentType(BMEquipment.PART_ARMOR);
+				else
+					bme.setEquipmentType(BMEquipment.PART_MISC);
 			}else {
 				
 				bme.setEquipmentName(eq.getName());
@@ -3062,11 +3076,15 @@ public final class MWClient implements IClient {
 					bme.setTech("IS");
 				
 				if ( eq instanceof AmmoType)
-					bme.setEquipmentType("Ammo");
+					bme.setEquipmentType(BMEquipment.PART_AMMO);
 				else if ( eq instanceof WeaponType)
-					bme.setEquipmentType("Weapons");
+					bme.setEquipmentType(BMEquipment.PART_WEAPON);
+				else if ( bme.getEquipmentName().toLowerCase().indexOf("armor") > -1 ||
+						EquipmentType.getArmorType(bme.getEquipmentName()) != EquipmentType.T_ARMOR_UNKNOWN ||
+						EquipmentType.getStructureType(bme.getEquipmentName()) != EquipmentType.T_STRUCTURE_UNKNOWN )
+					bme.setEquipmentType(BMEquipment.PART_ARMOR);
 				else 
-					bme.setEquipmentType("Misc");
+					bme.setEquipmentType(BMEquipment.PART_MISC);
 			}
 		
 			if ( !allowTechCrossOver && !UnitUtils.isSameTech(bme.getTech(), techLevel))
@@ -3075,7 +3093,7 @@ public final class MWClient implements IClient {
 			this.getCampaign().getBlackMarketParts().put(bme.getEquipmentName(),bme);
 		}
 
-		this.getMainFrame().getMainPanel().getBMEPanel().refresh();
+		this.getMainFrame().getMainPanel().refreshBME();
 	}
 	
 	public void updatePlayerPartsCache(String data) {
@@ -3089,8 +3107,7 @@ public final class MWClient implements IClient {
 		else
 			getPlayer().getPartsCache().add(key, value);
 		
-		if ( this.getMainFrame().getMainPanel().getBMEPanel() != null )
-			this.getMainFrame().getMainPanel().getBMEPanel().refresh();
+			this.getMainFrame().getMainPanel().refreshBME();
 	}
 
 	/*

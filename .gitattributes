@@ -1183,6 +1183,7 @@ src/client/protocol/commands/PingPCmd.java -text
 src/client/protocol/commands/PongPCmd.java -text
 src/client/util/CUnitComparator.java -text
 src/client/util/RepairManagmentThread.java -text
+src/client/util/SalvageManagmentThread.java -text
 src/common/AdvanceTerrain.java -text
 src/common/Army.java -text
 src/common/BMEquipment.java -text

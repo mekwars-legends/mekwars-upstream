@@ -43,25 +43,23 @@ public class BlackMarketPartsModel extends AbstractTableModel {
 	public MWClient mwclient;
 	CCampaign theCampaign;
 	public TreeMap<String,BMEquipment> components; //this collection is backed by the main map, so it should always be good
-	public Object[] sortedComponents; //not really though, sort is handled elsewhere...
+	public Object[] sortedComponents = null; //not really though, sort is handled elsewhere...
+	private String type = "";
 	
 	public final static int PART = 0;
 	public final static int TECH = 1;
 	public final static int COST = 2;
 	public final static int AMOUNT = 3;
-	public final static int TYPE = 4;
 	
 	final String[] columnNames = {
 			"Part",
 			"Tech",
 			"Cost",
 			"Amount",
-			"Type",
 	};
 	
 	final String[] longValues = {
 			"XXXXXX-XXXX-XXXXXX",
-			"XXXXXXXXX",
 			"XXXXXXXXX",
 			"XXXXXXXXX",
 			"XXXXXXXXX",
@@ -71,20 +69,34 @@ public class BlackMarketPartsModel extends AbstractTableModel {
 		return this.columnNames.length;
 	}
 	
-	public BlackMarketPartsModel(MWClient client)
+	public BlackMarketPartsModel(MWClient client, String type)
 	{
 		this.mwclient = client;
 		theCampaign = mwclient.getCampaign();
+		this.type = type;
 		this.components = theCampaign.getBlackMarketParts();
-		//    this.bids = client.getMyBids();
 		
-		this.sortedComponents = this.components.values().toArray();
+		filter();
 	}
 	
 	public void refreshModel() {
 		//do a resort
-		this.sortedComponents = this.components.values().toArray();
+		//this.sortedComponents = this.components.values().toArray();
+		filter();
 		this.fireTableDataChanged();
+	}
+
+	private void filter(){
+		TreeMap<String,BMEquipment> tempTree = new TreeMap<String, BMEquipment>();
+		for (String key :  this.components.keySet() ){
+			BMEquipment eq =  this.components.get(key);
+			if ( eq.getEquipmentType().equals(this.type) )
+				tempTree.put(key, eq);
+		}
+		//    this.bids = client.getMyBids();
+
+		if ( tempTree.size() > 0 )
+			this.sortedComponents = tempTree.values().toArray();
 	}
 	
 	public void initColumnSizes(JTable table) {
@@ -105,6 +117,8 @@ public class BlackMarketPartsModel extends AbstractTableModel {
 	}
 	
 	public int getRowCount() {
+		if ( this.sortedComponents == null )
+			return 0;
 		return this.sortedComponents.length;
 	}
 	
@@ -128,8 +142,6 @@ public class BlackMarketPartsModel extends AbstractTableModel {
 		case COST:
 			DecimalFormat df = new DecimalFormat( "#,###,###,##0.00" );
 			return df.format(bme.getCost());
-		case TYPE:
-			return bme.getEquipmentType();
 		case TECH:
 			return bme.getTech();
 		case AMOUNT:

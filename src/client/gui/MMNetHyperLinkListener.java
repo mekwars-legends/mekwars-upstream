@@ -195,7 +195,16 @@ class MMNetHyperLinkListener implements HyperlinkListener {
                         mwclient.getRMT().removeWorkOrder(tech,position);
                         
                     }
-					
+                    else if (e.getDescription().startsWith("REMOVESALVAGEQUEUEDWORKORDER")){
+                        String command = e.getDescription();
+                        StringTokenizer ST = new StringTokenizer(command,"|");
+                        ST.nextToken();//strip command code
+                        int tech=Integer.parseInt(ST.nextToken());
+                        String position=ST.nextToken();
+                        
+                        mwclient.getSMT().removeWorkOrder(tech,position);
+                        
+                    }
 					else {
 						Browser.displayURL(e.getURL().toExternalForm());
 					}

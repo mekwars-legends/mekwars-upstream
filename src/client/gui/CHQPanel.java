@@ -272,7 +272,7 @@ public class CHQPanel extends JPanel {
 	}
 	
 	private void setCamoButtonActionPerformed(ActionEvent evt) {
-		CamoSelectionDialog camoDialog = new CamoSelectionDialog(new JFrame(), mwclient);
+		CamoSelectionDialog camoDialog = new CamoSelectionDialog(mwclient.getMainFrame(), mwclient);
 		camoDialog.setVisible(true);
 	}
 	
@@ -1536,6 +1536,8 @@ public class CHQPanel extends JPanel {
                                     menuItem.addActionListener(this);
                                     repairs.add(menuItem);
                                 }
+                                
+                                
                             }
 
                             if ( Boolean.parseBoolean(mwclient.getserverConfigs("UsePartsRepair")) ) {
@@ -1543,6 +1545,10 @@ public class CHQPanel extends JPanel {
 	                            menuItem.setActionCommand("SUC|"+row+"|"+col);
 	                            menuItem.addActionListener(this);
 	                            repairs.add(menuItem);
+                                menuItem = new JMenuItem("Bulk Salvage");
+                                menuItem.setActionCommand("BSU|"+row+"|"+col);
+                                menuItem.addActionListener(this);
+                                repairs.add(menuItem);
                             }
                             
                             if ( UnitUtils.isRepairing(cm.getEntity()) ){
@@ -1553,7 +1559,8 @@ public class CHQPanel extends JPanel {
                                 repairs.add(menuItem); 
                             }
 
-                            if ( mwclient.getRMT() != null && mwclient.getRMT().hasQueuedOrders(cm.getId()) ){
+                            if ( (mwclient.getRMT() != null && mwclient.getRMT().hasQueuedOrders(cm.getId())) ||
+                            		(mwclient.getSMT() != null && mwclient.getSMT().hasQueuedOrders(cm.getId()))){
                                 //Add display pending job option 
                                 menuItem = new JMenuItem("Display Pending Work Orders");
                                 menuItem.setActionCommand("DPWO|"+row+"|"+col);
@@ -2313,13 +2320,19 @@ public class CHQPanel extends JPanel {
                 int row = Integer.parseInt(st.nextToken());
                 int col = Integer.parseInt(st.nextToken());
                 CUnit mek = MekTable.getMekAt(row,col);
-                new BulkRepairDialog(mwclient,mek.getId(),false);
+                new BulkRepairDialog(mwclient,mek.getId(),BulkRepairDialog.TYPE_BULK);
             }//Repair a unit
             else if (command.equalsIgnoreCase("SUR")) {
                 int row = Integer.parseInt(st.nextToken());
                 int col = Integer.parseInt(st.nextToken());
                 CUnit mek = MekTable.getMekAt(row,col);
-                new BulkRepairDialog(mwclient,mek.getId(),true);
+                new BulkRepairDialog(mwclient,mek.getId(),BulkRepairDialog.TYPE_SIMPLE);
+            } //Salvage a unit
+            else if (command.equalsIgnoreCase("BSU")) {
+                int row = Integer.parseInt(st.nextToken());
+                int col = Integer.parseInt(st.nextToken());
+                CUnit mek = MekTable.getMekAt(row,col);
+                new BulkRepairDialog(mwclient,mek.getId(),BulkRepairDialog.TYPE_SALVAGE);
             } else if (command.equalsIgnoreCase("SUC")) {
                 int row = Integer.parseInt(st.nextToken());
                 int col = Integer.parseInt(st.nextToken());
@@ -2339,6 +2352,8 @@ public class CHQPanel extends JPanel {
                 CUnit mek = MekTable.getMekAt(row,col);
                 if ( mwclient.getRMT() != null )
                     mwclient.systemMessage(mwclient.getRMT().getRepairQueue(mek.getId()));
+                if ( mwclient.getSMT() != null )
+                	mwclient.systemMessage(mwclient.getSMT().getSalvageQueue(mek.getId()));
             }//Stop all pending work orders
             else if (command.equalsIgnoreCase("SAPWO")) {
                     int row = Integer.parseInt(st.nextToken());
@@ -2346,13 +2361,15 @@ public class CHQPanel extends JPanel {
                     CUnit mek = MekTable.getMekAt(row,col);
                     if ( mwclient.getRMT() != null )
                         mwclient.getRMT().removeAllWorkOrders(mek.getId());
+                    if ( mwclient.getSMT() != null )
+                        mwclient.getSMT().removeAllWorkOrders(mek.getId());
                     mwclient.systemMessage("Cancelled all pending work orders.");
             }//Reload all ammo
             else if ( command.equalsIgnoreCase("RAA") ) {
                 int row = Integer.parseInt(st.nextToken());
                 int col = Integer.parseInt(st.nextToken());
                 CUnit mek = MekTable.getMekAt(row,col);
-				int result = JOptionPane.showConfirmDialog(new JFrame(),"Are you sure you want to reload all the ammo on this unit "+mwclient.getPlayer().getName()+"?","Reload it?",JOptionPane.YES_NO_OPTION);
+				int result = JOptionPane.showConfirmDialog(mwclient.getMainFrame(),"Are you sure you want to reload all the ammo on this unit "+mwclient.getPlayer().getName()+"?","Reload it?",JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.YES_OPTION)
 					mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c RELOADALLAMMO#"+mek.getId());
             }
@@ -2433,7 +2450,7 @@ public class CHQPanel extends JPanel {
 				//scrap mek
 			} else if (command.equalsIgnoreCase("S")) {
 				int num = Integer.parseInt(st.nextToken());
-				int result = JOptionPane.showConfirmDialog(new JFrame(),"Are you sure you want to scrap this unit?","Scrap it?",JOptionPane.YES_NO_OPTION);
+				int result = JOptionPane.showConfirmDialog(mwclient.getMainFrame(),"Are you sure you want to scrap this unit?","Scrap it?",JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.YES_OPTION)
 					mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c scrap#"+num);
 				//Maintain Mek
@@ -2444,14 +2461,14 @@ public class CHQPanel extends JPanel {
 				//unmaintain mek
 			} else if (command.equalsIgnoreCase("UMM")) {
 				int num = Integer.parseInt(st.nextToken());
-				int result = JOptionPane.showConfirmDialog(new JFrame(),"Are you sure you want to stop maintaining this unit?","Unmaintain?",JOptionPane.YES_NO_OPTION);
+				int result = JOptionPane.showConfirmDialog(mwclient.getMainFrame(),"Are you sure you want to stop maintaining this unit?","Unmaintain?",JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.YES_OPTION)
 					mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setunmaintained#"+num);
 				mwclient.refreshGUI(MWClient.REFRESH_HQPANEL);
 				//donate mek
 			} else if (command.equalsIgnoreCase("DO")) {
 				int mid = Integer.parseInt(st.nextToken());
-				int result = JOptionPane.showConfirmDialog(new JFrame(),"Are you sure you want to donate this unit?","Donate?",JOptionPane.YES_NO_OPTION);
+				int result = JOptionPane.showConfirmDialog(mwclient.getMainFrame(),"Are you sure you want to donate this unit?","Donate?",JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.YES_OPTION)
 					mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c donate#"+mid);
 				//buy mek

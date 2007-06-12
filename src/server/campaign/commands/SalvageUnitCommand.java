@@ -100,7 +100,7 @@ public class SalvageUnitCommand implements Command {
             }
 
             if ( numberOfTechs <= 0 ){
-                CampaignMain.cm.toUser("FSM|You do not have any "+UnitUtils.techDescription(techType)+" techs to do this repair!",Username,false);
+                CampaignMain.cm.toUser("FSM|You do not have any "+UnitUtils.techDescription(techType)+" techs to do this salvage job!",Username,false);
                 return;
             }
 

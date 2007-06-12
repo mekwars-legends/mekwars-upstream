@@ -222,7 +222,7 @@ public class CMainFrame extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent evt) {
 				if (mwclient.isServerRunning()) {
-					int result = JOptionPane.showConfirmDialog(new JFrame(), "Are you sure you want to exit?","You are hosting a game!",JOptionPane.YES_NO_OPTION);
+					int result = JOptionPane.showConfirmDialog(mwclient.getMainFrame(), "Are you sure you want to exit?","You are hosting a game!",JOptionPane.YES_NO_OPTION);
 					if (result == JOptionPane.YES_OPTION) {
 						mwclient.goodbye();
 						System.exit(0);

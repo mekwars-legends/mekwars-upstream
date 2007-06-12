@@ -1158,7 +1158,7 @@ MouseMotionListener, MouseWheelListener, ActionListener {
 	 * from a button on a non-map panel.
 	 */
 	public void createPlanetSearchDialog() {
-		PlanetSearchDialog searchDialog = new PlanetSearchDialog(this, mwclient.getData().getAllPlanets());
+		PlanetSearchDialog searchDialog = new PlanetSearchDialog(this, mwclient);
 		searchDialog.setVisible(true);
 	}
 	

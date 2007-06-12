@@ -36,7 +36,6 @@ import javax.swing.SpringLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JList;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -46,6 +45,7 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
 //MekWars imports
+import client.MWClient;
 import client.gui.InnerStellarMap;
 import client.gui.SpringLayoutHelper;
 import common.Planet;
@@ -73,9 +73,9 @@ public class PlanetSearchDialog extends JDialog implements ActionListener {
 	private final JButton okayButton = new JButton("OK");
 	private final JButton cancelButton = new JButton("Cancel");	
 	private final String okayCommand = "Okay";
-
+	
 	//constructor
-	public PlanetSearchDialog(InnerStellarMap map, Collection planets) {
+	public PlanetSearchDialog(InnerStellarMap map, MWClient mwclient) {
 		
 		/*
 		 * NOTE: variables are final in order to
@@ -83,9 +83,9 @@ public class PlanetSearchDialog extends JDialog implements ActionListener {
 		 */
 		
 		//super, and variable saves
-		super(new JFrame(),"Planet Search", true);//dummy frame as owner
+		super(mwclient.getMainFrame(),"Planet Search", true);//dummy frame as owner
 		this.map = map;
-		this.planets = planets;
+		this.planets = mwclient.getData().getAllPlanets();
 		
 		//setup the a list of names to feed into a list
 		planetNames = new TreeSet();//tree to alpha sort
