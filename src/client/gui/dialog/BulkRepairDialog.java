@@ -395,6 +395,12 @@ import client.gui.SpringLayoutHelper;
     	int roll = 0;
     	
     	if ( isSalvage() ){
+    		((JComboBox)techBox.getComponent(ARMOR)).setSelectedIndex(Integer.parseInt(mwclient.getConfigParam(("SALVAGEARMORTECH"))));
+    		((JComboBox)techBox.getComponent(INTERNAL)).setSelectedIndex(Integer.parseInt(mwclient.getConfigParam(("SALVAGEINTERNALTECH"))));
+    		((JComboBox)techBox.getComponent(SYSTEMS)).setSelectedIndex(Integer.parseInt(mwclient.getConfigParam(("SALVAGESYSTEMSTECH"))));
+    		((JComboBox)techBox.getComponent(ENGINES)).setSelectedIndex(Integer.parseInt(mwclient.getConfigParam(("SALVAGEENGINESTECH"))));
+    		((JComboBox)techBox.getComponent(WEAPONS)).setSelectedIndex(Integer.parseInt(mwclient.getConfigParam(("SALVAGEWEAPONSTECH"))));
+    		((JComboBox)techBox.getComponent(EQUIPMENT)).setSelectedIndex(Integer.parseInt(mwclient.getConfigParam(("SALVAGEEQUIPMENTTECH"))));
     		setArmorCost();
     		setInternalCost();
     		setSystemCost();
@@ -407,7 +413,7 @@ import client.gui.SpringLayoutHelper;
     	
     	if ( UnitUtils.hasArmorDamage(unit) ) {
     		((JCheckBox)repairBox.getComponent(ARMOR)).setSelected(true);
-            tech = Integer.parseInt(mwclient.getConfigParam(("REPAIRARMORTECH")));
+   			tech = Integer.parseInt(mwclient.getConfigParam(("REPAIRARMORTECH")));
             roll = Integer.parseInt(mwclient.getConfigParam(("REPAIRARMORROLL")));
     		((JComboBox)techBox.getComponent(ARMOR)).setSelectedIndex(tech);
     		((JSpinner)rollBox.getComponent(ARMOR)).setValue(roll);
@@ -416,7 +422,7 @@ import client.gui.SpringLayoutHelper;
     	
     	if (  UnitUtils.hasISDamage(unit)) {
     		((JCheckBox)repairBox.getComponent(INTERNAL)).setSelected(true);
-            tech = Integer.parseInt(mwclient.getConfigParam(("REPAIRINTERNALTECH")));
+   			tech = Integer.parseInt(mwclient.getConfigParam(("REPAIRINTERNALTECH")));
             roll = Integer.parseInt(mwclient.getConfigParam(("REPAIRINTERNALROLL")));
     		((JComboBox)techBox.getComponent(INTERNAL)).setSelectedIndex(tech);
     		((JSpinner)rollBox.getComponent(INTERNAL)).setValue(roll);
@@ -441,7 +447,7 @@ import client.gui.SpringLayoutHelper;
 	                    //add multiple techs to a single weapon
 	                    if ( mounted.getType() instanceof WeaponType ){
 	                		((JCheckBox)repairBox.getComponent(WEAPONS)).setSelected(true);
-	                        tech = Integer.parseInt(mwclient.getConfigParam(("REPAIRWEAPONSTECH")));
+                			tech = Integer.parseInt(mwclient.getConfigParam(("REPAIRWEAPONSTECH")));
 	                        roll = Integer.parseInt(mwclient.getConfigParam(("REPAIRWEAPONSROLL")));
 	                		((JComboBox)techBox.getComponent(WEAPONS)).setSelectedIndex(tech);
 	                		((JSpinner)rollBox.getComponent(WEAPONS)).setValue(roll);
@@ -449,7 +455,7 @@ import client.gui.SpringLayoutHelper;
 	                    }
 		                else if ( !(mounted.getType() instanceof WeaponType ) ){
 		                	((JCheckBox)repairBox.getComponent(EQUIPMENT)).setSelected(true);
-	                        tech = Integer.parseInt(mwclient.getConfigParam(("REPAIREQUIPMENTTECH")));
+                			tech = Integer.parseInt(mwclient.getConfigParam(("REPAIREQUIPMENTTECH")));
 	                        roll = Integer.parseInt(mwclient.getConfigParam(("REPAIREQUIPMENTROLL")));
 	                		((JComboBox)techBox.getComponent(EQUIPMENT)).setSelectedIndex(tech);
 	                		((JSpinner)rollBox.getComponent(EQUIPMENT)).setValue(roll);
@@ -458,7 +464,7 @@ import client.gui.SpringLayoutHelper;
 	                }
 	                else if (cs.getType() == CriticalSlot.TYPE_SYSTEM && cs.getIndex() != Mech.SYSTEM_ENGINE) {
                 		((JCheckBox)repairBox.getComponent(SYSTEMS)).setSelected(true);
-                        tech = Integer.parseInt(mwclient.getConfigParam(("REPAIRSYSTEMSTECH")));
+               			tech = Integer.parseInt(mwclient.getConfigParam(("REPAIRSYSTEMSTECH")));
                         roll = Integer.parseInt(mwclient.getConfigParam(("REPAIRSYSTEMSROLL")));
                 		((JComboBox)techBox.getComponent(SYSTEMS)).setSelectedIndex(tech);
                 		((JSpinner)rollBox.getComponent(SYSTEMS)).setValue(roll);
@@ -466,7 +472,7 @@ import client.gui.SpringLayoutHelper;
 	                }
 	                else if ( UnitUtils.isEngineCrit(cs) ) {
                 		((JCheckBox)repairBox.getComponent(ENGINES)).setSelected(true);
-                        tech = Integer.parseInt(mwclient.getConfigParam(("REPAIRENGINESTECH")));
+               			tech = Integer.parseInt(mwclient.getConfigParam(("REPAIRENGINESTECH")));
                         roll = Integer.parseInt(mwclient.getConfigParam(("REPAIRENGINESROLL")));
                 		((JComboBox)techBox.getComponent(ENGINES)).setSelectedIndex(tech);
                 		((JSpinner)rollBox.getComponent(ENGINES)).setValue(roll);
@@ -554,6 +560,8 @@ import client.gui.SpringLayoutHelper;
         if ( isBulk() && techType != UnitUtils.TECH_PILOT ) {
 	        mwclient.getConfig().setParam("REPAIRARMORTECH", Integer.toString(techType));
 	        mwclient.getConfig().setParam("REPAIRARMORROLL", baseRoll);
+        }else if ( isSalvage()) {
+        	mwclient.getConfig().setParam("SALVAGEARMORTECH", Integer.toString(techType));
         }
 
         for ( int location = 0; location < unit.locations(); location++ ){
@@ -593,6 +601,8 @@ import client.gui.SpringLayoutHelper;
         if ( isBulk() &&  techType != UnitUtils.TECH_PILOT ) {
         	mwclient.getConfig().setParam("REPAIRINTERNALTECH", Integer.toString(techType));
         	mwclient.getConfig().setParam("REPAIRINTERNALROLL", baseRoll);
+        }else if ( isSalvage()) {
+        	mwclient.getConfig().setParam("SALVAGEINTERNALTECH", Integer.toString(techType));
         }
         
         for ( int location = 0; location < unit.locations(); location++ ){
@@ -616,7 +626,7 @@ import client.gui.SpringLayoutHelper;
             return;
     
         //No damaged engines no reason to keep going.
-        if ( UnitUtils.getNumberOfDamagedEngineCrits(unit) < 1)
+        if ( !isSalvage() && UnitUtils.getNumberOfDamagedEngineCrits(unit) < 1)
             return;
         
         int techType = ((JComboBox)techBox.getComponent(ENGINES)).getSelectedIndex();
@@ -625,6 +635,8 @@ import client.gui.SpringLayoutHelper;
         if ( isBulk() && techType != UnitUtils.TECH_PILOT ) {
 	        mwclient.getConfig().setParam("REPAIRENGINESTECH", Integer.toString(techType));
 	        mwclient.getConfig().setParam("REPAIRENGINESROLL", baseRoll);
+        }else if ( isSalvage()) {
+        	mwclient.getConfig().setParam("SALVAGEENGINESTECH", Integer.toString(techType));
         }        
         for ( int location = UnitUtils.LOC_CT; location <= UnitUtils.LOC_LT;location++ ){
             for ( int slot = 0; slot < unit.locations(); slot++ ){
@@ -665,7 +677,9 @@ import client.gui.SpringLayoutHelper;
         if ( !isSalvage() && techType != UnitUtils.TECH_PILOT ) {
 	        mwclient.getConfig().setParam("REPAIRSYSTEMSTECH", Integer.toString(techType));
 	        mwclient.getConfig().setParam("REPAIRSYSTEMSROLL", baseRoll);
-        }
+        }else if ( isSalvage() )
+	        mwclient.getConfig().setParam("SALVAGESYSTEMSTECH", Integer.toString(techType));
+
         
         for ( int location = 0; location < unit.locations(); location++ ){
             for( int slot = 0; slot < unit.getNumberOfCriticals(location); slot++){
@@ -678,6 +692,7 @@ import client.gui.SpringLayoutHelper;
                         && cs.getIndex() != Mech.SYSTEM_ENGINE){
 	                        String workOrder = unit.getExternalId()+"#"+location+"#"+slot;
 	                        mwclient.getSMT().addWorkOrder(techType,workOrder);
+	                        slot += UnitUtils.getNumberOfCrits(unit, cs)-1;
                         }
                 }else{ 
 	                if ( !cs.isBreached() && !cs.isDamaged() )
@@ -685,6 +700,7 @@ import client.gui.SpringLayoutHelper;
 	                if (cs.getType() == CriticalSlot.TYPE_SYSTEM && cs.getIndex() != Mech.SYSTEM_ENGINE) {
 	                    String workOrder = unit.getExternalId()+"#"+location+"#"+slot+"#"+baseRoll+"#999";
 	                    mwclient.getRMT().addWorkOrder(techType,workOrder);
+                        slot += UnitUtils.getNumberOfCrits(unit, cs)-1;
 	                }
                 }
             }
@@ -702,6 +718,8 @@ import client.gui.SpringLayoutHelper;
         if ( !isSalvage() && techType != UnitUtils.TECH_PILOT ) {
 	        mwclient.getConfig().setParam("REPAIRWEAPONSTECH", Integer.toString(techType));
 	        mwclient.getConfig().setParam("REPAIRWEAPONSROLL", baseRoll);
+        }else if ( isSalvage()) {
+        	mwclient.getConfig().setParam("SALVAGEWEAPONSTECH", Integer.toString(techType));
         }
         
         for ( int location = 0; location < unit.locations(); location++ ){
@@ -710,32 +728,27 @@ import client.gui.SpringLayoutHelper;
                 CriticalSlot cs = unit.getCritical(location,slot);
                 if ( cs == null )
                     continue;
-                if ( !cs.isBreached() && !cs.isDamaged() )
+                if ( !isSalvage() && !cs.isBreached() && !cs.isDamaged() )
                     continue;
                 if (cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
                     Mounted mounted = unit.getEquipment(cs.getIndex());
                     //Only want to set a Tech to work on the Mounted object that is destroyed don't need to
                     //add multiple techs to a single weapon
                     if ( isSalvage() ){
-                    		if ( mounted.getType() instanceof WeaponType 
-                            && !mounted.isDestroyed() 
-                            && !mounted.isMissing()
-                            && !mounted.equals(lastWeapon)){
-	                    		lastWeapon = mounted;
-		                        String workOrder = unit.getExternalId()+"#"+location+"#"+slot;
-		                        mwclient.getSMT().addWorkOrder(techType,workOrder);
-                    		}
+                		if ( (mounted.getType() instanceof WeaponType) 
+                        && !mounted.isDestroyed() 
+                        && !mounted.isMissing()
+                        && !mounted.equals(lastWeapon) ){
+                    		lastWeapon = mounted;
+	                        String workOrder = unit.getExternalId()+"#"+location+"#"+slot;
+	                        mwclient.getSMT().addWorkOrder(techType,workOrder);
+                		}
                     }else if ( mounted.getType() instanceof WeaponType 
                             && (mounted.isDestroyed() || mounted.isMissing()) 
                             && !mounted.equals(lastWeapon) ){
                         lastWeapon = mounted;
-                        if ( isSalvage() ){
-	                        String workOrder = unit.getExternalId()+"#"+location+"#"+slot;
-	                        mwclient.getSMT().addWorkOrder(techType,workOrder);
-                        }else{
-                            String workOrder = unit.getExternalId()+"#"+location+"#"+slot+"#"+baseRoll+"#999";
-                            mwclient.getRMT().addWorkOrder(techType,workOrder);
-                        }
+                        String workOrder = unit.getExternalId()+"#"+location+"#"+slot+"#"+baseRoll+"#999";
+                        mwclient.getRMT().addWorkOrder(techType,workOrder);
                     }
                 }
             }
@@ -753,6 +766,8 @@ import client.gui.SpringLayoutHelper;
         if ( isBulk() && techType != UnitUtils.TECH_PILOT ) {
         	mwclient.getConfig().setParam("REPAIREQUIPMENTTECH", Integer.toString(techType));
 	        mwclient.getConfig().setParam("REPAIREQUIPMENTROLL", baseRoll);
+        }else if ( isSalvage()) {
+        	mwclient.getConfig().setParam("SALVAGEEQUIPMENTTECH", Integer.toString(techType));
         }
         
         for ( int location = 0; location < unit.locations(); location++ ){
@@ -761,7 +776,7 @@ import client.gui.SpringLayoutHelper;
                 CriticalSlot cs = unit.getCritical(location,slot);
                 if ( cs == null )
                     continue;
-                if ( !cs.isBreached() && !cs.isDamaged() )
+                if ( !isSalvage() && !cs.isBreached() && !cs.isDamaged() )
                     continue;
                 
                 if (cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
@@ -923,10 +938,17 @@ import client.gui.SpringLayoutHelper;
                 CriticalSlot cs = unit.getCritical(location,slot);
                 if ( cs == null )
                     continue;
-            	if ( isSalvage() && !cs.isDamaged()){
-        			cost += techCost*2;
-        			clear = false;
-        			continue;
+            	if ( isSalvage() ){
+            		if ( !cs.isDamaged() &&
+            				cs.getType() == CriticalSlot.TYPE_SYSTEM && 
+            				cs.getIndex() != Mech.SYSTEM_ENGINE) {
+	            		int crits = UnitUtils.getNumberOfCrits(unit, cs) - UnitUtils.getNumberOfDamagedCrits(unit, slot, location, false);
+	        			cost += techCost*crits;
+	        			cost += techCost;
+	        			slot += UnitUtils.getNumberOfCrits(unit, cs)-1;
+	        			clear = false;
+	        			continue;
+            		}
             	}
 
                 if ( !cs.isBreached() && !cs.isDamaged() )
@@ -975,41 +997,53 @@ import client.gui.SpringLayoutHelper;
         if ( techType != UnitUtils.TECH_PILOT ){ 
             techCost = Integer.parseInt(mwclient.getserverConfigs(UnitUtils.techDescription(techType)+"TechRepairCost"));
         }
-        
+
+        Mounted lastWeapon = null;
         for ( int location = 0; location < unit.locations(); location++ ){
             for( int slot = 0; slot < unit.getNumberOfCriticals(location); slot++){
                 CriticalSlot cs = unit.getCritical(location,slot);
                 if ( cs == null )
                     continue;
-            	if ( isSalvage() && !cs.isDamaged()){
-        			cost += techCost*2;
-        			clear = false;
+            	if ( isSalvage() ){
+            		if ( !cs.isDamaged() && cs.getType() == CriticalSlot.TYPE_EQUIPMENT ) {
+	                    Mounted mounted = unit.getEquipment(cs.getIndex());
+	                    
+	                    if ( mounted.getType() instanceof WeaponType && 
+	                    		!mounted.equals(lastWeapon)){
+		            		int crits = UnitUtils.getNumberOfCrits(unit, cs) - UnitUtils.getNumberOfDamagedCrits(unit, slot, location, false);
+		        			cost += techCost*crits;
+		        			if ( crits > 0)
+		        				cost += techCost;
+		        			clear = false;
+		        			lastWeapon = mounted;
+	                    }
+            		}
         			continue;
+            	}else {
+	                if ( !cs.isBreached() && !cs.isDamaged() )
+	                    continue;
+	                if (cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
+	                    Mounted mounted = unit.getEquipment(cs.getIndex());
+	                    
+	                    if ( mounted.getType() instanceof WeaponType &&
+	                    		!mounted.equals(lastWeapon) ){
+	                        if ( techType != UnitUtils.TECH_PILOT ){ 
+	                            techWorkMod = UnitUtils.getTechRoll(unit,location,slot,techType,true,this.mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getTechLevel()) - baseRoll;
+	                        }
+	                        
+	                        critCost = CUnit.getCritCost(unit,mwclient,cs);
+	                        techWorkMod = Math.max(techWorkMod,0);
+	                        pointsToRepair = UnitUtils.getNumberOfCrits(unit,cs);
+	                        critCost += techCost;
+	                        cost += critCost*pointsToRepair;
+	                        cost += techCost*Math.abs(techWorkMod);
+	                        cost += techCost;
+	                        setWorkHours(WEAPONS,location,slot,false,clear);
+		        			lastWeapon = mounted;
+	                        clear = false;
+	                    }
+	                }
             	}
-                if ( !cs.isBreached() && !cs.isDamaged() )
-                    continue;
-                if (cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
-                    Mounted mounted = unit.getEquipment(cs.getIndex());
-                    
-                    if ( mounted.getType() instanceof WeaponType ){
-                        if ( techType != UnitUtils.TECH_PILOT ){ 
-                            techWorkMod = UnitUtils.getTechRoll(unit,location,slot,techType,true,this.mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getTechLevel()) - baseRoll;
-                        }
-                        
-                        critCost = CUnit.getCritCost(unit,mwclient,cs);
-                        techWorkMod = Math.max(techWorkMod,0);
-                        pointsToRepair = UnitUtils.getNumberOfCrits(unit,cs);
-                        critCost += techCost;
-                        cost += critCost*pointsToRepair;
-                        cost += techCost*Math.abs(techWorkMod);
-                        cost += techCost;
-                        setWorkHours(WEAPONS,location,slot,false,clear);
-                        clear = false;
-
-                        //move the slot ahead if the Crit is more then 1 in size.
-                        slot += pointsToRepair-1;
-                    }
-                }
             }
         }
         
@@ -1032,6 +1066,7 @@ import client.gui.SpringLayoutHelper;
         double techWorkMod = 0;
         double cost = 0;
         boolean clear = true;
+        Mounted lastEq = null;
         
         if ( techType != UnitUtils.TECH_PILOT ){ 
             techCost = Integer.parseInt(mwclient.getserverConfigs(UnitUtils.techDescription(techType)+"TechRepairCost"));
@@ -1042,9 +1077,18 @@ import client.gui.SpringLayoutHelper;
                 CriticalSlot cs = unit.getCritical(location,slot);
                 if ( cs == null )
                     continue;
-            	if ( isSalvage() && !cs.isDamaged()){
-        			cost += techCost*2;
-        			clear = false;
+            	if ( isSalvage() ){
+            		if ( !cs.isDamaged() && cs.getType() == CriticalSlot.TYPE_EQUIPMENT ) {
+            			Mounted mounted = unit.getEquipment(cs.getIndex());
+            			if ( !(mounted.getType() instanceof WeaponType) &&
+            					!mounted.equals(lastEq)){
+		            		int crits = UnitUtils.getNumberOfCrits(unit, cs) - UnitUtils.getNumberOfDamagedCrits(unit, slot, location, false);
+		        			cost += techCost*crits;
+		        			cost += techCost;
+		        			clear = false;
+		        			lastEq = mounted;
+            			}
+            		}
         			continue;
             	}
 
@@ -1053,7 +1097,8 @@ import client.gui.SpringLayoutHelper;
                 if (cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
                     Mounted mounted = unit.getEquipment(cs.getIndex());
                     
-                    if ( !(mounted.getType() instanceof WeaponType) ){
+                    if ( !(mounted.getType() instanceof WeaponType) &&
+        					!mounted.equals(lastEq)){
                         if ( techType != UnitUtils.TECH_PILOT ){ 
                             techWorkMod = UnitUtils.getTechRoll(unit,location,slot,techType,true,this.mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getTechLevel()) - baseRoll;
                         }
@@ -1067,8 +1112,7 @@ import client.gui.SpringLayoutHelper;
                         cost += techCost;
                         setWorkHours(EQUIPMENT,location,slot,false,clear);
                         clear = false;
-                        //move the slot ahead if the Crit is more then 1 in size.
-                        slot += pointsToRepair-1;
+                        lastEq = mounted;
                     }
                 }
             }
@@ -1112,10 +1156,11 @@ import client.gui.SpringLayoutHelper;
                     continue;
                 
             	if ( isSalvage() ){
-        			int totalCrits = UnitUtils.getNumberOfCrits(unit,cs) - UnitUtils.getNumberOfDamagedCrits(unit, slot, location, false);
+        			int totalCrits = UnitUtils.getNumberOfEngineCrits(unit) - UnitUtils.getNumberOfDamagedEngineCrits(unit);
         			int totalCost = (int)(totalCrits*techCost);
-        			totalCost += techCost;
-        			cost = Math.max(1,totalCost);
+        			if ( totalCrits > 0)
+        				totalCost += techCost;
+        			cost = Math.max(0,totalCost);
         			((JLabel)costBox.getComponent(ENGINES)).setText(Integer.toString((int)cost));
         			return;
             	}

@@ -366,6 +366,13 @@ public class CConfig {
         defaults.setProperty("REPAIRENGINESTECH", "0");
         defaults.setProperty("REPAIRENGINESROLL", "9");
 
+        //Salvage Options
+        defaults.setProperty("SALVAGEARMORTECH", "0");
+        defaults.setProperty("SALVAGEINTERNALTECH", "0");
+        defaults.setProperty("SALVAGEWEAPONSTECH", "0");
+        defaults.setProperty("SALVAGEEQUIPMENTTECH", "0");
+        defaults.setProperty("SALVAGESYSTEMSTECH", "0");
+        defaults.setProperty("SALVAGEENGINESTECH", "0");
         return defaults;
 	}
 	
