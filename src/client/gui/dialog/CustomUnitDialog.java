@@ -316,8 +316,8 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
             Mounted m = (Mounted)e.next();
             AmmoType at = (AmmoType)m.getType();
             
-            Vector vTypes = new Vector();
-            Vector vAllTypes = AmmoType.getMunitionsFor(at.getAmmoType());
+            Vector<AmmoType> vTypes = new Vector<AmmoType>();
+            Vector<AmmoType> vAllTypes = AmmoType.getMunitionsFor(at.getAmmoType());
             location++;
             
             canDump = mmClient.game.getOptions().booleanOption("lobby_ammo_dump");
@@ -331,7 +331,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 continue;*/
             
             for (int x = 0, n = vAllTypes.size(); x < n; x++) {
-                AmmoType atCheck = (AmmoType)vAllTypes.elementAt(x);
+                AmmoType atCheck = vAllTypes.elementAt(x);
                 boolean bTechMatch = TechConstants.isLegal(entity.getTechLevel(), atCheck.getTechLevel());//(entity.getTechLevel() == atCheck.getTechLevel());
                 
                 String munition = Long.toString(atCheck.getMunitionType());
@@ -342,8 +342,11 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                         || faction.getBannedAmmo().containsKey(munition) )
                     continue;
                 
+                
                 //System.err.println(atCheck.getName()+"/"+atCheck.getInternalName());
-                if ( usingCrits && mwclient.getPlayer().getPartsCache().getPartsCritCount(atCheck.getInternalName()) < 1)
+                if ( usingCrits && 
+                		mwclient.getPlayer().getPartsCache().getPartsCritCount(atCheck.getInternalName()) < 1 &&
+                		!ammoAlreadyLoaded(atCheck))
                 	continue;
                 // allow all lvl2 IS units to use level 1 ammo
                 // lvl1 IS units don't need to be allowed to use lvl1 ammo,
@@ -424,10 +427,9 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 if ( bTechMatch &&
                      atCheck.getRackSize() == at.getRackSize() &&
                      !atCheck.hasFlag(AmmoType.F_BATTLEARMOR) &&
-                     atCheck.getTonnage(entity) == at.getTonnage(entity) ) {
+                     atCheck.getTonnage(entity) == at.getTonnage(entity)) {
                     vTypes.addElement(atCheck);
                 }
-                
             }
          
             //Protomechs need special choice panels.
@@ -869,4 +871,15 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
         mwclient.loadBanTargeting();
     }
 
+    private boolean ammoAlreadyLoaded(AmmoType ammo){
+    	
+    	for ( Mounted mounted : entity.getAmmo() ){
+    		AmmoType currAmmo = (AmmoType)mounted.getType();
+    		
+    		if ( currAmmo.equals(ammo) )
+    			return true;
+    	}
+    	
+    	return false;
+    }
 }

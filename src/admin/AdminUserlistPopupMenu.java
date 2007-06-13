@@ -342,7 +342,7 @@ public class AdminUserlistPopupMenu extends JMenu implements ActionListener {
                 return;
                 
             String amount =(String)JOptionPane.showInputDialog(mwclient.getMainFrame(),
-                    "Amount","Amount To Add",JOptionPane.OK_OPTION,null,null,"0");
+                    "Amount","Amount To Remove",JOptionPane.OK_OPTION,null,null,"0");
             if (amount == null || amount.length() == 0)
                 return;
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c RemoveParts#" + userName+"#"+partName+"#"+amount);
