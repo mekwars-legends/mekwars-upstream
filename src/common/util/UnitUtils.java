@@ -760,6 +760,18 @@ public class UnitUtils  {
         return false;
     }
     
+    public static boolean hasCriticalsUnderRepair(Entity unit, int location){
+
+        if ( unit instanceof Mech || unit instanceof Tank){
+            for (int y = 0; y < unit.getNumberOfCriticals(location); y++) {
+                CriticalSlot cs = unit.getCritical(location, y);
+                if (cs != null && cs.isRepairing() )
+                    return true;
+            }
+        }
+        return false;
+    }
+    
     public static boolean isRepairing(Entity unit){
 
         if ( unit instanceof Mech || unit instanceof Tank){
@@ -2097,7 +2109,8 @@ public class UnitUtils  {
 	            return salvageMessage;
 	        }
 	        
-	        if ( UnitUtils.hasUndamagedCriticals(unit,location)) {
+	        if ( UnitUtils.hasUndamagedCriticals(unit,location) ||
+	        		UnitUtils.hasCriticalsUnderRepair(unit,location)){
 	            salvageMessage = ("You may not salvage your "+unit.getShortNameRaw()+"'s "+unit.getLocationName(location)+" internal structure until the parts have been fully removed.");
 	            return salvageMessage;
 	        }

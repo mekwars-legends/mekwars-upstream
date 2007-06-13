@@ -686,6 +686,8 @@ import client.gui.SpringLayoutHelper;
                 CriticalSlot cs = unit.getCritical(location,slot);
                 if ( cs == null )
                     continue;
+                if ( UnitUtils.isNonRepairableCrit(unit, cs))
+                	continue;
                 if ( isSalvage() ){
                         if ( !cs.isDamaged()
                         && cs.getType() == CriticalSlot.TYPE_SYSTEM 
@@ -728,8 +730,12 @@ import client.gui.SpringLayoutHelper;
                 CriticalSlot cs = unit.getCritical(location,slot);
                 if ( cs == null )
                     continue;
+                if ( UnitUtils.isNonRepairableCrit(unit, cs))
+                	continue;
+                
                 if ( !isSalvage() && !cs.isBreached() && !cs.isDamaged() )
                     continue;
+                
                 if (cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
                     Mounted mounted = unit.getEquipment(cs.getIndex());
                     //Only want to set a Tech to work on the Mounted object that is destroyed don't need to
@@ -776,6 +782,9 @@ import client.gui.SpringLayoutHelper;
                 CriticalSlot cs = unit.getCritical(location,slot);
                 if ( cs == null )
                     continue;
+                if ( UnitUtils.isNonRepairableCrit(unit, cs))
+                	continue;
+
                 if ( !isSalvage() && !cs.isBreached() && !cs.isDamaged() )
                     continue;
                 
@@ -938,6 +947,8 @@ import client.gui.SpringLayoutHelper;
                 CriticalSlot cs = unit.getCritical(location,slot);
                 if ( cs == null )
                     continue;
+                if ( UnitUtils.isNonRepairableCrit(unit, cs) )
+                	continue;
             	if ( isSalvage() ){
             		if ( !cs.isDamaged() &&
             				cs.getType() == CriticalSlot.TYPE_SYSTEM && 
@@ -947,8 +958,8 @@ import client.gui.SpringLayoutHelper;
 	        			cost += techCost;
 	        			slot += UnitUtils.getNumberOfCrits(unit, cs)-1;
 	        			clear = false;
-	        			continue;
             		}
+        			continue;
             	}
 
                 if ( !cs.isBreached() && !cs.isDamaged() )
@@ -1077,6 +1088,8 @@ import client.gui.SpringLayoutHelper;
                 CriticalSlot cs = unit.getCritical(location,slot);
                 if ( cs == null )
                     continue;
+                if ( UnitUtils.isNonRepairableCrit(unit, cs) )
+                	continue;
             	if ( isSalvage() ){
             		if ( !cs.isDamaged() && cs.getType() == CriticalSlot.TYPE_EQUIPMENT ) {
             			Mounted mounted = unit.getEquipment(cs.getIndex());

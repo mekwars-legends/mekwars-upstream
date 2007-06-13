@@ -1434,7 +1434,7 @@ public class CMainFrame extends JFrame {
 		JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE,
 				JOptionPane.OK_CANCEL_OPTION);
 		
-		JDialog dlg = jop.createDialog(null, "Select a pilot.");
+		JDialog dlg = jop.createDialog(mwclient.getMainFrame(), "Select a pilot.");
 		combo.grabFocus();
 		combo.getEditor().selectAll();
 		
@@ -1512,7 +1512,7 @@ public class CMainFrame extends JFrame {
 		JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE,
 				JOptionPane.OK_CANCEL_OPTION);
 		
-		JDialog dlg = jop.createDialog(null, "Select a pilot.");
+		JDialog dlg = jop.createDialog(mwclient.getMainFrame(), "Select a pilot.");
 		combo.grabFocus();
 		combo.getEditor().selectAll();
 		
@@ -1665,7 +1665,7 @@ public class CMainFrame extends JFrame {
 			combo.setEditable(true);
 			JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
 			
-			JDialog dlg = jop.createDialog(null, "Select tech to fire.");
+			JDialog dlg = jop.createDialog(mwclient.getMainFrame(), "Select tech to fire.");
 			combo.grabFocus();
 			combo.getEditor().selectAll();
 			
@@ -1717,7 +1717,7 @@ public class CMainFrame extends JFrame {
 			combo.setEditable(false);
 			JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
 			
-			JDialog dlg = jop.createDialog(null, "Select tech to hire.");
+			JDialog dlg = jop.createDialog(mwclient.getMainFrame(), "Select tech to hire.");
 			combo.grabFocus();
 			combo.getEditor().selectAll();
 			

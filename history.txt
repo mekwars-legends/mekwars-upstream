@@ -1,7 +1,13 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.2.x 
+v 0.2.3.x 
+
+Release Server & Client 0.2.3.0
++ New MM.jar
++ Fixed bugs in the Bulk Repair Dialog cost calculations.
++ Added tabs to the parts market.
++ Added Scrap feature to Bulk Repair Dialog.
 + Debuging auto reorder parts code.
 + Added new var Player.autoReorderParts
 + Changed more dialog code so more of the dialogs center around CMainFrame
