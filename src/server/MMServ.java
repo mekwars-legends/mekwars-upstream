@@ -54,7 +54,7 @@ import common.comm.ServerCommand;
 public class MMServ {
 	
 	//Static logging engine, and static version info.
-	public static final String SERVER_VERSION = "0.2.2.15";//Sync this with the clientVersion in MMClient @Torren 
+	public static final String SERVER_VERSION = "0.2.3.0";//Sync this with the clientVersion in MMClient @Torren 
 	public static final SMWLogger mmlog = new SMWLogger();
 	
 	private ServerWrapper myCommunicator;
