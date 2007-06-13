@@ -4,6 +4,8 @@ VERSION HISTORY:
 v 0.2.3.x 
 
 Release Server & Client 0.2.3.0
++ RFE 1719396: Admin Repair view
++ RFE 1719397: Admin Unit View
 + New MM.jar
 + Fixed bugs in the Bulk Repair Dialog cost calculations.
 + Added tabs to the parts market.

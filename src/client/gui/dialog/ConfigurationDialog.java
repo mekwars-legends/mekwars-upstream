@@ -1065,6 +1065,8 @@ public final class ConfigurationDialog implements ActionListener {
         dialog = pane.createDialog(mainConfigPanel, windowName);
         dialog.getRootPane().setDefaultButton(okayButton);
 
+        dialog.setLocation(Math.max(mwclient.getMainFrame().getLocation().x,mwclient.getMainFrame().getLocation().x+((mwclient.getMainFrame().getWidth()/2)-(dialog.getWidth()/2))),Math.max(mwclient.getMainFrame().getLocation().y+(mwclient.getMainFrame().getHeight()/2)-dialog.getHeight()/2,mwclient.getMainFrame().getLocation().y));
+        
         showHexinHQBox.setSelected(mwclient.getConfig().isParam("UNITHEX"));
         darkenMapBox.setSelected(mwclient.getConfig().isParam("DARKERMAP"));
         bmPreviewImageBox.setSelected(mwclient.getConfig().isParam("BMPREVIEWIMAGE"));
