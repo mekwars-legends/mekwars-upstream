@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.3.x 
++ Added Command SetPlanetConquerPointsCommand
++ Updated Planet Editor dialog to add Minplanet ownership and Conquer Points
 + RFE 1716034: Allow SO's to sent Planet Conquer Points
 + Added get/setConquestPoints() to SPlanet.java
 + BUG: Repair View command not working in Admin Menu List.

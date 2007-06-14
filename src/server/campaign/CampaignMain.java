@@ -1419,6 +1419,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("SETMULTIPLAYERGROUP", new SetMultiPlayerGroupCommand());
 		Commands.put("SETMYLOGO", new SetMyLogoCommand());
 		Commands.put("SETPLANETCONQUER", new SetPlanetConquerCommand());
+		Commands.put("SETPLANETCONQUERPOINTS", new SetPlanetConquerPointsCommand());
 		Commands.put("SETPLANETMINOWNERSHIP", new SetPlanetMinOwnerShipCommand());
 		Commands.put("SETPLANETWAREHOUSE", new SetPlanetWareHouseCommand());
 		Commands.put("SETPLANETCOMPPRODUCTION", new SetPlanetCompProductionCommand());
