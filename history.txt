@@ -2,7 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.3.x 
-
++ BUG: Client wasn't showing current ammo in customization dialog if there was 
+  no reloads in the players cache.
++ Added Auto Reordering of Ammo when reloading.
 Release Server & Client 0.2.3.0
 + RFE 1719396: Admin Repair view
 + RFE 1719397: Admin Unit View
