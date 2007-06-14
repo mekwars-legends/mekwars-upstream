@@ -1,5 +1,5 @@
 /*
- * MekWars - Copyright (C) 2005 
+ * MekWars - Copyright (C) 2007 
  * 
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -22,7 +22,7 @@ import server.campaign.SPlanet;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
 
-public class SetPlanetMinOwnerShipCommand implements Command {
+public class SetPlanetConquerPointsCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
 	public int getExecutionLevel(){return accessLevel;}
@@ -38,12 +38,12 @@ public class SetPlanetMinOwnerShipCommand implements Command {
 		}
 		
 		SPlanet p = null;
-		int ownership = 0;
+		int points = 0;
 		try {
 			p = CampaignMain.cm.getPlanetFromPartialString(command.nextToken(),Username);
-            ownership = Integer.parseInt(command.nextToken());
+			points = Integer.parseInt(command.nextToken());
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper command. Try: /c setplanetminownership#planet#pecent", Username, true);
+			CampaignMain.cm.toUser("Improper command. Try: /c SetPlanetConquerPoints#planet#amount", Username, true);
 			return;
 		}
 		
@@ -52,14 +52,14 @@ public class SetPlanetMinOwnerShipCommand implements Command {
 			return;
 		}
 		
-		p.setMinPlanetOwnerShip(ownership);
+		p.setConquestPoints(points);
 		p.updated();
 		
         if(CampaignMain.cm.isUsingMySQL())
         	CampaignMain.cm.MySQL.savePlanet(p);
         
-		CampaignMain.cm.toUser("You set " + p.getName() + "'s min owner ship to "+ownership,Username,true);
-		CampaignMain.cm.doSendModMail("PLANETARY CHANGE",Username + " has changed "+p.getName()+"'s min ownership to "+ownership);
+		CampaignMain.cm.toUser("You set " + p.getName() + "'s conquer points to "+points,Username,true);
+		CampaignMain.cm.doSendModMail("PLANETARY CHANGE",Username + " has changed "+p.getName()+"'s conquer points to "+points);
 
 	}
 }

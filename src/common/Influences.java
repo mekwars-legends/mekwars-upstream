@@ -50,7 +50,7 @@ public class Influences implements MutableSerializable, MMNetSerializable {
      * A hash table with key=House and value=Integer of the influences of the
      * different factions. Only factions greater than 0% are listed.
      */
-    private HashMap influences = new HashMap();
+    private HashMap<Integer,Integer> influences = new HashMap<Integer,Integer>();
 
     /**
      * Creates a new Influence with a preset table.
@@ -76,12 +76,12 @@ public class Influences implements MutableSerializable, MMNetSerializable {
     /**
      * Return the influence of a specific faction.
      */
-    public int getInfluence(Integer factionID) {
-        Integer i = (Integer) influences.get(factionID);
-        if (i == null)
-            return 0;
-        //else
-        return i.intValue();
+    public int getInfluence(int factionID) {
+    	
+    	if ( !influences.containsKey(factionID) )
+    		return 0;
+        int i = influences.get(factionID);
+        return i;
     }
     
     /**
@@ -105,8 +105,8 @@ public class Influences implements MutableSerializable, MMNetSerializable {
                 factions[i++] = (House)it.next();
             Arrays.sort(factions, new Comparator(){
                 public int compare(Object o1, Object o2) {
-                    int i1 = getInfluence(new Integer(((House)o1).getId()));
-                    int i2 = getInfluence(new Integer(((House)o2).getId()));
+                    int i1 = getInfluence((((House)o1).getId()));
+                    int i2 = getInfluence((((House)o2).getId()));
                     return (i1>i2) ? -1 : (i1==i2?0:1);
                 }});
     
@@ -121,7 +121,7 @@ public class Influences implements MutableSerializable, MMNetSerializable {
             House faction2 = factions[1];
     
             if ( faction2 != null &&  
-                    getInfluence(new Integer(faction2.getId())) == getInfluence(new Integer(faction.getId())) )
+                    getInfluence((faction2.getId())) == getInfluence((faction.getId())) )
                 return null;
     
             return faction.getId();
@@ -142,20 +142,20 @@ public class Influences implements MutableSerializable, MMNetSerializable {
      * @param gainer
      *            If there is a portion left, one faction get it all. This faction.
      */
-    public void setNeutral(List factions, House gainer) {
+    public void setNeutral(List factions, House gainer, int maxInfluence) {
         influences = new HashMap();
         for (int i = 0; i < factions.size(); i++) {
             House h = (House) factions.get(i);
-            influences.put(new Integer(h.getId()), new Integer(100 / factions.size()));
+            influences.put((h.getId()), (maxInfluence / factions.size()));
         }
-        if (100 % factions.size() != 0) {
-            int bonus = 100 % factions.size();
-            if (influences.containsKey(new Integer(gainer.getId())))
-                influences.put(new Integer(gainer.getId()), new Integer(((Integer) influences
+        if (maxInfluence % factions.size() != 0) {
+            int bonus = maxInfluence % factions.size();
+            if (influences.containsKey((gainer.getId())))
+                influences.put((gainer.getId()), (((Integer) influences
                         .get(gainer)).intValue()
                         + bonus));
             else
-                influences.put(new Integer(gainer.getId()), new Integer(bonus));
+                influences.put((gainer.getId()), (bonus));
         }
     }
 
@@ -184,7 +184,7 @@ public class Influences implements MutableSerializable, MMNetSerializable {
      * that nobody can have more influence than 100% and nobody may drop below 0.
      * If you not want to respect to this, use add() instead.
      */
-    public int moveInfluence(House winner, House looser, int amount) {
+    public int moveInfluence(House winner, House looser, int amount, int maxInfluence) {
         if (amount == 0) return 0;
 
         int oldwinnerinfluence = 0;
@@ -195,22 +195,22 @@ public class Influences implements MutableSerializable, MMNetSerializable {
         //if (influences.get(looser) != null)
             oldlooserinfluence = getInfluence(looser.getId());
 
-        if (oldwinnerinfluence + amount >= 100)
-                amount = 100 - oldwinnerinfluence;
+        if (oldwinnerinfluence + amount >= maxInfluence)
+                amount = maxInfluence - oldwinnerinfluence;
         if (oldlooserinfluence < amount) amount = oldlooserinfluence;
 
         int winnerInfluence = oldwinnerinfluence + amount;
         int looserInfluence = oldlooserinfluence - amount;
 
         if (winnerInfluence == 0)
-            influences.remove(new Integer(winner.getId()));
+            influences.remove((winner.getId()));
         else
-            influences.put(new Integer(winner.getId()), new Integer(winnerInfluence));
+            influences.put((winner.getId()), (winnerInfluence));
         
         if (looserInfluence == 0)
-            influences.remove(new Integer(looser.getId()));
+            influences.remove((looser.getId()));
         else
-            influences.put(new Integer(looser.getId()), new Integer(looserInfluence));
+            influences.put((looser.getId()), (looserInfluence));
         return amount;
     }
 
@@ -267,7 +267,7 @@ public class Influences implements MutableSerializable, MMNetSerializable {
         for (int i = 0; i < s; i++) {
             int factionID = in.readInt("id");
             int flu = in.readInt("amount");
-            influences.put(new Integer(factionID),new Integer(flu));
+            influences.put((factionID),(flu));
         }
     }
     
@@ -299,12 +299,12 @@ public class Influences implements MutableSerializable, MMNetSerializable {
             House h = (House) it.next();
             int d = getInfluence(h.getId()) - infNew.getInfluence(h.getId());
             if (d != 0)
-                diff.put(h,new Integer(d));
+                diff.put(h,(d));
         }
         for (Iterator it = other.iterator(); it.hasNext();) {
             House h = (House) it.next();
             if (!thisone.contains(h))
-                diff.put(h,new Integer(-infNew.getInfluence(h.getId())));
+                diff.put(h,(-infNew.getInfluence(h.getId())));
         }
         return new Influences(diff);
     }
@@ -315,17 +315,17 @@ public class Influences implements MutableSerializable, MMNetSerializable {
     public void add(Influences infNew) {
         for (Iterator it = getHouses().iterator(); it.hasNext();) {
             House h = (House) it.next();
-            influences.put(new Integer(h.getId()),new Integer(infNew.getInfluence(h.getId())));
+            influences.put((h.getId()),(infNew.getInfluence(h.getId())));
         }
         for (Iterator it = infNew.getHouses().iterator(); it.hasNext();) {
             House h = (House) it.next();
             if (!getHouses().contains(h))
-                influences.put(new Integer(h.getId()),new Integer(infNew.getInfluence(h.getId())));
+                influences.put((h.getId()),(infNew.getInfluence(h.getId())));
         }
         for (Iterator it = getHouses().iterator(); it.hasNext();) {
             House h = (House) it.next();
             if (getInfluence(h.getId()) == 0)
-                influences.remove(new Integer(h.getId()));
+                influences.remove((h.getId()));
         }
     }
 
@@ -356,7 +356,7 @@ public class Influences implements MutableSerializable, MMNetSerializable {
         for (int i = 0; i < size; i++) {
             int hid = in.readInt("faction");
             int flu = in.readInt("amount");
-            influences.put(new Integer(hid),new Integer(flu));
+            influences.put((hid),(flu));
         }
     }
 
@@ -366,7 +366,7 @@ public class Influences implements MutableSerializable, MMNetSerializable {
         for (int i = 0; i < size; i++) {
             int hid = in.readInt("faction");
             int flu = in.readInt("amount");
-            influences.put(new Integer(hid),new Integer(flu));
+            influences.put((hid),(flu));
         }
     }
 
@@ -397,7 +397,7 @@ public class Influences implements MutableSerializable, MMNetSerializable {
         for (int i = 0; i < size; i++) {
             int hid = in.readInt("faction");
             int flu = in.readInt("amount");
-            influences.put(new Integer(hid),new Integer(flu));
+            influences.put((hid),(flu));
         }
     }
     

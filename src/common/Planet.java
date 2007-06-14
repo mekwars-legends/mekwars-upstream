@@ -460,6 +460,7 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
             out.println(key, "PlanetFlags.key");
             out.println(this.getPlanetFlags().get(key), "PlayerFlags.value");
         }
+        out.println(this.getConquestPoints(), "MaxInfluence");
     }
 
 
@@ -509,6 +510,8 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
             map.put(key, value);
         }
         this.setPlanetFlags(map);
+        
+        this.setConquestPoints(in.readInt("MaxInfluence"));
     }
 
     /**

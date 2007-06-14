@@ -148,6 +148,9 @@ Comparable {
         else
             result.append("^^#");
         
+        result.append(this.getConquestPoints());
+        result.append("#");
+        
 		return result.toString();
 	}
 	
@@ -318,6 +321,10 @@ Comparable {
             }
             this.setPlanetFlags(map);
         }
+		
+		if ( ST.hasMoreElements() )
+			this.setConquestPoints(Integer.parseInt(ST.nextToken()));
+		
 		setOwner(null,checkOwner(),false);
 		
 		return s;
@@ -514,7 +521,7 @@ Comparable {
 		if (!winner.isConquerable() && !adminExchange)
 			return 0;
 		
-		int infgain = getInfluence().moveInfluence(winner, loser, amount);
+		int infgain = getInfluence().moveInfluence(winner, loser, amount, this.getConquestPoints());
 		//dont bother with updates if land has not changed hands.
         if (infgain > 0) {
         	

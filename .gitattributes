@@ -1513,6 +1513,7 @@ src/server/campaign/commands/admin/SetMultiPlayerGroupCommand.java -text
 src/server/campaign/commands/admin/SetOperationCommand.java -text
 src/server/campaign/commands/admin/SetPlanetCompProductionCommand.java -text
 src/server/campaign/commands/admin/SetPlanetConquerCommand.java -text
+src/server/campaign/commands/admin/SetPlanetConquerPointsCommand.java -text
 src/server/campaign/commands/admin/SetPlanetMinOwnerShipCommand.java -text
 src/server/campaign/commands/admin/SetPlanetWareHouseCommand.java -text
 src/server/campaign/commands/admin/ShutdownCommand.java -text

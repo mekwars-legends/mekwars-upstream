@@ -2092,8 +2092,8 @@ public class ShortResolver {
 						
 						if (totalConquest > 0) {
 							hasLoss = true;
-							winnerMetaString += " gained " + totalConquest + "% of " + target.getNameAsColoredLink();
-							loserMetaString += " lost " + totalConquest + "% of " + target.getNameAsColoredLink();
+							winnerMetaString += " gained " + totalConquest + " points of " + target.getNameAsColoredLink();
+							loserMetaString += " lost " + totalConquest + " points  of " + target.getNameAsColoredLink();
 							checkMercContracts(aWinner, ContractInfo.CONTRACT_LAND, totalConquest);
 						}
 						
@@ -2571,8 +2571,8 @@ public class ShortResolver {
 						
 						if (totalConquest > 0) {
 							hasLoss = true;
-							winnerMetaString += " gained " + totalConquest + "% of " + target.getNameAsColoredLink();
-							loserMetaString += " lost " + totalConquest + "% of " + target.getNameAsColoredLink();
+							winnerMetaString += " gained " + totalConquest + "points of " + target.getNameAsColoredLink();
+							loserMetaString += " lost " + totalConquest + "points of " + target.getNameAsColoredLink();
 							checkMercContracts(aWinner, ContractInfo.CONTRACT_LAND, totalConquest);
 						}
 						

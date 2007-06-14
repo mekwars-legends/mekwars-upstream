@@ -128,6 +128,8 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 	private final JTextField currentFactionOwnerShip = new JTextField(5);
 	private final JTextField newFacitonOwnerShip = new JTextField(5);
 	private final JTextField currentTerrainPercent = new JTextField(5);
+	private final JTextField minPlanetOwnerShip = new JTextField(5);
+	private final JTextField planetConquerPoints = new JTextField(5);
 	
 	private final JCheckBox isStaticMapCB = new JCheckBox();
 	private final JCheckBox isVacuumCB = new JCheckBox();
@@ -260,13 +262,13 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			refreshAllPanels();
 		}else if ( command.equals(planetTerrainsCombo)){
 			if ( planetTerrains.getItemCount() > 0 ){
-				currentTerrainPercent.setText(terrainMap.get(planetTerrains.getSelectedItem().toString())+"%");
+				currentTerrainPercent.setText(Integer.toString(terrainMap.get(planetTerrains.getSelectedItem().toString())));
 				this.advanceTerrainId = getTerrainId();
 				loadAdvanceTerrainsData();
 			}
 		}else if ( command.equals(planetOwnersListCommand)){
 			try{
-				currentFactionOwnerShip.setText(this.ownersMap.get(planetOwnersList.getSelectedItem().toString())+"%");
+				currentFactionOwnerShip.setText(Integer.toString(this.ownersMap.get(planetOwnersList.getSelectedItem().toString())));
 			}catch(Exception ex){
 				currentFactionOwnerShip.setText("");
 			}
@@ -437,8 +439,23 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		isHomeWorldCB.setSelected(this.selectedPlanet.isHomeWorld());
 		panel1.add(isHomeWorldCB);
 
-		JPanel panel2 = new JPanel(new SpringLayout());
-		panel2.add(new JLabel("Original Owner:",JLabel.TRAILING));
+		JPanel panel2 = new JPanel();
+		panel2.add(new JLabel("MinOwnerShip:",JLabel.TRAILING));
+		minPlanetOwnerShip.setText(Integer.toString(selectedPlanet.getMinPlanetOwnerShip()));
+		panel2.add(minPlanetOwnerShip);
+		minPlanetOwnerShip.setPreferredSize(textFieldSize);
+		minPlanetOwnerShip.setMaximumSize(textFieldSize);
+		minPlanetOwnerShip.setMinimumSize(textFieldSize);
+		
+		panel2.add(new JLabel("Conquer Points:",JLabel.TRAILING));
+		planetConquerPoints.setPreferredSize(textFieldSize);
+		planetConquerPoints.setMaximumSize(textFieldSize);
+		planetConquerPoints.setMinimumSize(textFieldSize);
+		planetConquerPoints.setText(Integer.toString(selectedPlanet.getConquestPoints()));
+		panel2.add(planetConquerPoints);
+
+		JPanel panel3 = new JPanel(new SpringLayout());
+		panel3.add(new JLabel("Original Owner:",JLabel.TRAILING));
 		houseNames = new JComboBox();
 		populateHouseNames(houseNames);
 		
@@ -446,14 +463,14 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		houseNames.setMaximumSize(comboBoxSize);
 		houseNames.setMinimumSize(comboBoxSize);
 		houseNames.setSelectedItem(selectedPlanet.getOriginalOwner());
-		panel2.add(houseNames);
+		panel3.add(houseNames);
 		
-		SpringLayoutHelper.setupSpringGrid(panel2,2);
+		SpringLayoutHelper.setupSpringGrid(panel3,2);
 		
-		JPanel  panel3= new JPanel();
-		panel3.setLayout(new BoxLayout(panel3,BoxLayout.LINE_AXIS));
+		JPanel  panel4= new JPanel();
+		panel4.setLayout(new BoxLayout(panel4,BoxLayout.LINE_AXIS));
 		
-		panel3.add(new JLabel("Owners:",JLabel.LEFT));
+		panel4.add(new JLabel("Owners:",JLabel.LEFT));
 		
 		TreeSet<String> houseList = new TreeSet<String>();
 		for ( House house : this.selectedPlanet.getInfluence().getHouses() ){
@@ -469,23 +486,23 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		planetOwnersList.setMaximumSize(comboBoxSize);
 		planetOwnersList.setMinimumSize(comboBoxSize);
 
-		panel3.add(planetOwnersList);
+		panel4.add(planetOwnersList);
 		
 		currentFactionOwnerShip.setPreferredSize(textFieldSize);
 		currentFactionOwnerShip.setMaximumSize(textFieldSize);
 		currentFactionOwnerShip.setMinimumSize(textFieldSize);
 		currentFactionOwnerShip.addKeyListener(this);
-		panel3.add(currentFactionOwnerShip);
+		panel4.add(currentFactionOwnerShip);
 
-		JPanel panel4 = new JPanel();
+		JPanel panel5 = new JPanel();
 
 		ownerNames = new JComboBox();
 		populateHouseNames(ownerNames);
 		ownerNames.setPreferredSize(comboBoxSize);
 		ownerNames.setMaximumSize(comboBoxSize);
 		ownerNames.setMinimumSize(comboBoxSize);
-		panel4.add(ownerNames);
-		panel4.add(newFacitonOwnerShip);
+		panel5.add(ownerNames);
+		panel5.add(newFacitonOwnerShip);
 		
 		JPanel buttonPanel = new JPanel();
 		
@@ -503,6 +520,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		planetInfo.add(panel2);
 		planetInfo.add(panel3);
 		planetInfo.add(panel4);
+		planetInfo.add(panel5);
 		planetInfo.add(buttonPanel);
 		this.planetInfo.setBorder(BorderFactory.createLineBorder(Color.black));
 		planetInfo.repaint();
@@ -863,6 +881,9 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		planetOwnersList.setActionCommand(planetOwnersListCommand);
 		planetOwnersList.setSelectedIndex(0);
 
+		minPlanetOwnerShip.setText(Integer.toString(selectedPlanet.getMinPlanetOwnerShip()));
+		planetConquerPoints.setText(Integer.toString(selectedPlanet.getConquestPoints()));
+		
 		ownerNames.removeAllItems();
 		populateHouseNames(ownerNames);
 		
@@ -1184,5 +1205,10 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminMovePlanet#"+planetName+"#"+planetXPosition.getText()+"#"+planetYPosition.getText());
 		if ( !planetOwnersList.getSelectedItem().toString().equals(this.selectedPlanet.getOriginalOwner()) )
 			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminSetPlanetOriginalOwner#"+planetName+"#"+planetOwnersList.getSelectedItem().toString());
+		if ( !minPlanetOwnerShip.getText().equals(Integer.toString(this.selectedPlanet.getMinPlanetOwnerShip())) )
+			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c SetPlanetMinOwnerShip#"+planetName+"#"+this.selectedPlanet.getMinPlanetOwnerShip());
+		if ( !planetConquerPoints.getText().equals(Integer.toString(this.selectedPlanet.getConquestPoints())) )
+			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c SetPlanetConquerPoints#"+planetName+"#"+this.selectedPlanet.getConquestPoints());
+
 	}
 }//end PlanetEditorDialog.java

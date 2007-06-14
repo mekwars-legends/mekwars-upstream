@@ -2056,19 +2056,19 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
 		
         BaseTextField = new JTextField(5);
 		attackerPanel.add(new JLabel("Base Conquer:",SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("Base % of a planet taken for winning attacker");
+        BaseTextField.setToolTipText("Base points of a planet taken for winning attacker");
         BaseTextField.setName("AttackerBaseConquestAmount");
 		attackerPanel.add(BaseTextField);
 		
         BaseTextField = new JTextField(5);
 		attackerPanel.add(new JLabel("Conquer BV Mod:",SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("Amount of BV needed for extra % point");
+        BaseTextField.setToolTipText("Amount of BV needed for extra points");
         BaseTextField.setName("AttackerConquestBVAdjustment");
 		attackerPanel.add(BaseTextField);
 		
         BaseTextField = new JTextField(5);
 		attackerPanel.add(new JLabel("Conquer Unit Mod:",SwingConstants.TRAILING));
-		BaseTextField.setToolTipText("Number of units needed for extra % point");
+		BaseTextField.setToolTipText("Number of units needed for extra points");
         BaseTextField.setName("AttackerConquestUnitAdjustment");
 		attackerPanel.add(BaseTextField);
 		
@@ -2136,19 +2136,19 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
 		
         BaseTextField = new JTextField(5);
 		defenderPanel.add(new JLabel("Base Conquer:",SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("Base % of a planet taken for winning defender");
+        BaseTextField.setToolTipText("Base points of a planet taken for winning defender");
         BaseTextField.setName("DefenderBaseConquestAmount");
 		defenderPanel.add(BaseTextField);
 		
         BaseTextField = new JTextField(5);
 		defenderPanel.add(new JLabel("Conquer BV Mod:",SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("Amount of BV needed for extra % point");
+        BaseTextField.setToolTipText("Amount of BV needed for extra points");
         BaseTextField.setName("DefenderConquestBVAdjustment");
 		defenderPanel.add(BaseTextField);
 		
         BaseTextField = new JTextField(5);
 		defenderPanel.add(new JLabel("Conquer Unit Mod:",SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("Number of units needed for extra % point");
+        BaseTextField.setToolTipText("Number of units needed for extra points");
         BaseTextField.setName("DefenderConquestUnitAdjustment");
 		defenderPanel.add(BaseTextField);
 		

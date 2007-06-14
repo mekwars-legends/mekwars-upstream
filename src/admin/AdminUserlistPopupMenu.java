@@ -114,7 +114,7 @@ public class AdminUserlistPopupMenu extends JMenu implements ActionListener {
 		if ( userLevel >= mwclient.getData().getAccessLevel("ViewPlayerUnit") )
 		    unitsMen.add(item);
 		item = new JMenuItem("Repair View");
-		item.setActionCommand("VPUR"+userName);
+		item.setActionCommand("VPUR|"+userName);
 		item.addActionListener(this);
 		if ( userLevel >= mwclient.getData().getAccessLevel("ViewPlayerUnit") )
 		    unitsMen.add(item);
@@ -254,6 +254,7 @@ public class AdminUserlistPopupMenu extends JMenu implements ActionListener {
 			userName = st.nextToken();
 			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX+"c getplayerunits#"+userName+"#viewplayerunit#"+true);
 		}
+		
 		if (command.equals("TU") && st.hasMoreElements()) {
 			
 			userName = st.nextToken();
