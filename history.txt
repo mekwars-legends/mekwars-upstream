@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.3.x 
++ RFE 1434391: Complete faction configs in faction config!
 + Added Command SetPlanetConquerPointsCommand
 + Updated Planet Editor dialog to add Minplanet ownership and Conquer Points
 + RFE 1716034: Allow SO's to sent Planet Conquer Points

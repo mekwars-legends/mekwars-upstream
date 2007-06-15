@@ -50,6 +50,9 @@ public class XMLFactionDataParser implements XMLResponder {
 	boolean isMercenary = false;
 	boolean canConquer = true;
 	boolean inHouseAttacks = false;
+	boolean canDefectFrom = true;
+	boolean canDefectTo = true;
+	
 	Vector<SHouse> Factions = new Vector<SHouse>();
 	
 	private String Filename;
@@ -218,6 +221,8 @@ public class XMLFactionDataParser implements XMLResponder {
 			this.BasePilot=5;
 			this.canConquer = true;
 			this.inHouseAttacks = false;
+			this.canDefectFrom = true;
+			this.canDefectTo = true;
 			this.houseColor = "#000000";
 
 			Factions.add(h);
@@ -256,6 +261,10 @@ public class XMLFactionDataParser implements XMLResponder {
 			inHouseAttacks = new Boolean(charData).booleanValue();
 		else if (lastElement.equalsIgnoreCase("HOUSEPLAYERCOLOR"))
 			houseColor = charData;
+		else if (lastElement.equalsIgnoreCase("DEFECTTO"))
+			canDefectTo = Boolean.parseBoolean(charData);
+		else if (lastElement.equalsIgnoreCase("DEFECTFROM"))
+			canDefectFrom = Boolean.parseBoolean(charData);
 	}
 	
 	public void recordComment(String comment) {
