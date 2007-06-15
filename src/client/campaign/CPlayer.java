@@ -211,7 +211,10 @@ public class CPlayer extends Player {
             this.setInvisible(Boolean.parseBoolean(ST.nextToken()));
 		
         if ( ST.hasMoreElements() ) {
-        	partsCache.fromString(ST.nextToken());
+        	if ( Boolean.parseBoolean(mwclient.getserverConfigs("UsePartsRepair")) )
+        		partsCache.fromString(ST.nextToken());
+        	else
+        		ST.nextToken();
         }
 
         if ( ST.hasMoreElements() ){

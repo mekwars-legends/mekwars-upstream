@@ -2840,7 +2840,10 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
         }
         
         if ( ST.hasMoreElements() ) {
-        	unitParts.fromString(ST.nextToken());
+        	if ( CampaignMain.cm.getBooleanConfig("UsePartsRepair") )
+        		unitParts.fromString(ST.nextToken());
+        	else
+        		ST.nextToken();
         }
 
         if ( this.password != null && this.password.getPasswd().trim().length() <= 2){

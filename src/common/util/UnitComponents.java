@@ -101,6 +101,7 @@ public class UnitComponents  {
 	}
 	
 	public void fromString(String data) {
+		
 		StringTokenizer st = new StringTokenizer(data,"|");
 		
 		try {
