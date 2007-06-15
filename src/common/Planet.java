@@ -217,6 +217,7 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
             map.put(key, value);
         }
         this.setPlanetFlags(map);
+        this.setConquestPoints(in.readInt("MaxInfluence"));
     }
     
     //METHODS
