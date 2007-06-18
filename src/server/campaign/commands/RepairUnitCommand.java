@@ -76,6 +76,11 @@ public class RepairUnitCommand implements Command {
             int tabLocation = location;
             int cost = CampaignMain.cm.getRepairCost(entity,location,slot,techType,armor,techWorkMod);
             
+            if ( CampaignMain.cm.getRTT().isBeingRepaired(unitID,location,slot,armor) ){
+                CampaignMain.cm.toUser("FSM|That section is already being repaired wait for the work to finish before starting again.",Username,false);
+                return;
+            }
+            
             if ( player.isUnitInLockedArmy(unitID) ){
                 CampaignMain.cm.toUser("FSM|Sorry but that unit is currently in combat and may not be repaired.",Username,false);
                 return;
@@ -201,11 +206,6 @@ public class RepairUnitCommand implements Command {
 
             }
 
-            if ( CampaignMain.cm.getRTT().isBeingRepaired(unitID,location,slot,armor) ){
-                CampaignMain.cm.toUser("FSM|That section is already being repaired wait for the work to finish before starting again.",Username,false);
-                return;
-            }
-            
             if ( CampaignMain.cm.getRTT().getState() == Thread.State.TERMINATED ){
                 CampaignMain.cm.toUser("FSM|Sorry your repair order could not be processed, and the repair thread terminated. Staff was notified.",Username,false);
                 MMServ.mmlog.errLog("NOTE: Repair Thread terminated! Use the restartrepairthread command to restart. If all else fails, reboot.");

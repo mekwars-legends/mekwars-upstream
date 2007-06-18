@@ -67,6 +67,10 @@ public class BuyPartsCommand implements Command {
 			return;
 		}
 		
+		if ( numtobuy < 1 ){
+			CampaignMain.cm.toUser("You cannot buy negative parts!", Username);
+			return;
+		}
 		
 		int cost = (int)Math.ceil(numtobuy * bme.getCost()); 
 		if ( numtobuy > bme.getAmount() ) {

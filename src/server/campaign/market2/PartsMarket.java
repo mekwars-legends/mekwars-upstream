@@ -89,7 +89,7 @@ public class PartsMarket {
 					
 					if ( eq.getAmount() < masterEq.getMaxProduction() ) {
 						int difference = masterEq.getMaxProduction()-eq.getAmount();
-						int amountIncrease = Math.min(difference/2, CampaignMain.cm.getR().nextInt(difference+1));
+						int amountIncrease = Math.min(1,Math.min(difference/2, CampaignMain.cm.getR().nextInt(difference+1)));
 						eq.setAmount(eq.getAmount()+amountIncrease);
 					}
 					
@@ -98,7 +98,7 @@ public class PartsMarket {
 					eq.setCostUp(false);
 					if ( eq.getAmount() < masterEq.getMaxProduction() ) {
 						int difference = masterEq.getMaxProduction()-eq.getAmount();
-						int amountIncrease = Math.min(difference/2, CampaignMain.cm.getR().nextInt(difference)+1);
+						int amountIncrease = Math.min(1, Math.min(difference/2, CampaignMain.cm.getR().nextInt(difference)+1));
 						eq.setAmount(eq.getAmount()+amountIncrease);
 					}
 					

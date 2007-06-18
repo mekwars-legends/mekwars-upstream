@@ -2397,7 +2397,7 @@ public class UnitUtils  {
 	            for ( int pos = 0; pos < numberOfSlots; pos++){
 	                CriticalSlot crit = unit.getCritical(location,pos);
 	                try {
-	                    if ( crit != null && unit.getEquipment(crit.getIndex()).equals(unit.getEquipment(cs.getIndex())) ){
+	                    if ( crit != null && unit.getEquipment(crit.getIndex()).equals(mount) ){
 	                        if ( crit.isDamaged() )
 	                            damagedCrits++;
 	                    }
@@ -2409,7 +2409,7 @@ public class UnitUtils  {
 	            for ( int pos = 0; pos < numberOfSlots; pos++){
 	                CriticalSlot crit = unit.getCritical(location,pos);
 	                try {
-	                    if ( crit != null && unit.getEquipment(crit.getIndex()).equals(unit.getEquipment(cs.getIndex())) ){
+	                    if ( crit != null && unit.getEquipment(crit.getIndex()).equals(mount) ){
 	                        if ( crit.isDamaged() )
 	                            damagedCrits++;
 	                    }
@@ -2421,7 +2421,7 @@ public class UnitUtils  {
 	            for ( int pos = 0; pos < numberOfSlots; pos++){
 	                CriticalSlot crit = unit.getCritical(mount.getLocation(),pos);
 	                try {
-	                    if ( crit != null && unit.getEquipment(crit.getIndex()).equals(unit.getEquipment(cs.getIndex())) ){
+	                    if ( crit != null && unit.getEquipment(crit.getIndex()).equals(mount) ){
 	                        if ( crit.isDamaged() )
 	                            damagedCrits++;
 	                    }
@@ -2429,7 +2429,8 @@ public class UnitUtils  {
 	            }
 	
 	        }
-	        return damagedCrits;
+	        return Math.min(mount.getFoundCrits(), damagedCrits);
+
         }
         
         return getNumberOfDamagedSystemCriticals(unit, cs);

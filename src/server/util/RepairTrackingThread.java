@@ -328,13 +328,23 @@ class Repair{
             String critName = "";
             int damagedCrits = 0;
             
+           
+            
             if ( useCrits ) {
 				critName = UnitUtils.getCritName(unit, slot, location, armor);
             	
+				//Need to turn off armor repair so we can get an acurate account of whats needs to
+				//be repaired.
+	            if ( armor )
+	                UnitUtils.removeArmorRepair(unit,slot,location);
+	            
             	if ( salvage )
     				damagedCrits = UnitUtils.getNumberOfCrits(unit, slot,location)-UnitUtils.getNumberOfDamagedCrits(unit,slot,location,armor);
 				else
     				damagedCrits = UnitUtils.getNumberOfDamagedCrits(unit,slot,location,armor);
+            	//Ok turn armor repairing back on.
+            	if ( armor )
+                    UnitUtils.setArmorRepair(unit,slot,location);
             }
             
             CriticalSlot cs = null;
@@ -718,7 +728,7 @@ class Repair{
                         techType = UnitUtils.TECH_PILOT;
                     
                     int cost = CampaignMain.cm.getRepairCost(unit,location,slot,techType,armor,techWorkMod,salvage);
-                    if ( player.getAutoReorder() && player.getUnitParts().getPartsCritCount(critName) >= damagedCrits ) {
+                    if ( player.getAutoReorder() && player.getUnitParts().getPartsCritCount(critName) < damagedCrits ) {
                     	String newCommand = critName+"#"+damagedCrits;
                     	CampaignMain.cm.getServerCommands().get("BUYPARTS").process(new StringTokenizer(newCommand,"#"), Username);
                     }
@@ -732,6 +742,9 @@ class Repair{
                         player.getUnit(unitID).addRepairCost(cost);
                         if ( armor )
                             UnitUtils.setArmorRepair(unit,slot,location);
+                        else if ( cs != null )
+                            UnitUtils.setRepairing(unit,cs);
+
                         //set the location back to a rear location number i.e. LOC_CTR, LOC_RTR, LOC_LTR
                         if ( rear )
                             location += 7;
@@ -851,8 +864,9 @@ class Repair{
 	                        if ( mounted.getType() instanceof AmmoType ) {
 	                        	player.updatePartsCache("Ammo Bin",1);
 	                        	damagedCrits = mounted.getShotsLeft();
+	                        	critName = ((AmmoType)mounted.getType()).getInternalName();
 	                        	if ( damagedCrits > 0 ) 
-	                        		repairMessage += "<br>"+damagedCrits + " rounds of ammo where recovered along with the bin.";
+	                        		repairMessage += "<br>"+damagedCrits + " rounds of "+((AmmoType)mounted.getType()).getName()+" where recovered along with the bin.";
 	                        }
 
                         }// end CS type if

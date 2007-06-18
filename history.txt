@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.4.x 
++ Bug: autoreorder parts not working inside repair thread.
++ Bug: buyUnitParts allowing you to buy negative parts
++ Bug: Salvaging Ammo Bins with ammo in them gave multiple bins.
 + Bug: Concurrent Modification errors in LoadPlanets and PDiff.
 + New MM.jar 0.33.7-MW06162007-5114
 + Bug: Loading Unit parts error when Player doesn't have any parts.
