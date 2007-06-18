@@ -29,42 +29,47 @@ import server.campaign.data.TimeUpdateHouse;
 import server.campaign.data.TimeUpdatePlanet;
 import server.dataProvider.ServerCommand;
 
-
-
 /**
  * Request for data diff.
  * 
  * @author Imi (immanuel.scholz@gmx.de)
  */
-@SuppressWarnings({"unchecked","serial"})
+@SuppressWarnings( { "unchecked", "serial" })
 public class PDiff implements ServerCommand {
 
-    public void execute(Date timestamp, BinWriter out, CampaignData data) throws Exception {
-    	
-    	//System.err.println("PDiff Timestamp: "+timestamp.toString());
-        if (timestamp == null)
-            // make a date far in the past to retrieve all..
-            timestamp = new Date(0);
-        ArrayList<Planet> planets = new ArrayList<Planet>();
-        for (Planet e : data.getAllPlanets() ) {
-        	TimeUpdatePlanet tPlanet = (TimeUpdatePlanet) e;
-            //System.err.println("Planet time: "+tPlanet.getLastChanged().toString());
-            if (tPlanet.getLastChanged() != null && tPlanet.getLastChanged().compareTo(timestamp) > 0) {
-            	planets.add(e);
-                //ids.add(new Integer(e.getId()));
-            }
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        out.println(sdf.format(new Date()),"lasttimestamp");
+	public void execute(Date timestamp, BinWriter out, CampaignData data)
+			throws Exception {
 
-        data.binPlanetsOut(planets, out);
-        ArrayList<House> houses = new ArrayList<House>();
-        for (House e : data.getAllHouses() ) {
-        	TimeUpdateHouse tHouse = (TimeUpdateHouse) e;
-            if (tHouse.getLastChanged() != null && tHouse.getLastChanged().compareTo(timestamp) > 0) {
-            	houses.add(e);
-            }
-        }
-        data.binHousesOut(houses,out);
-    }
+		// System.err.println("PDiff Timestamp: "+timestamp.toString());
+		if (timestamp == null)
+			// make a date far in the past to retrieve all..
+			timestamp = new Date(0);
+		ArrayList<Planet> planets = new ArrayList<Planet>();
+		synchronized (data.getAllPlanets()) {
+
+			for (Planet e : data.getAllPlanets()) {
+				TimeUpdatePlanet tPlanet = (TimeUpdatePlanet) e;
+				// System.err.println("Planet time:
+				// "+tPlanet.getLastChanged().toString());
+				if (tPlanet.getLastChanged() != null
+						&& tPlanet.getLastChanged().compareTo(timestamp) > 0) {
+					planets.add(e);
+					// ids.add(new Integer(e.getId()));
+				}
+			}
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+			out.println(sdf.format(new Date()), "lasttimestamp");
+
+			data.binPlanetsOut(planets, out);
+			ArrayList<House> houses = new ArrayList<House>();
+			for (House e : data.getAllHouses()) {
+				TimeUpdateHouse tHouse = (TimeUpdateHouse) e;
+				if (tHouse.getLastChanged() != null
+						&& tHouse.getLastChanged().compareTo(timestamp) > 0) {
+					houses.add(e);
+				}
+			}
+			data.binHousesOut(houses, out);
+		}
+	}
 }

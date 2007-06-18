@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.4.x 
++ Bug: Concurrent Modification errors in LoadPlanets and PDiff.
 + New MM.jar 0.33.7-MW06162007-5114
 + Bug: Loading Unit parts error when Player doesn't have any parts.
 Release Server & Client 0.2.4.0
