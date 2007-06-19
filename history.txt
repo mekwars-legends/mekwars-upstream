@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.4.x 
++ Added new MegaMek Jar 0.33.7-MW06192007-5114
 + Bug: Auto repair using the wrong location for reparing rear armor
 + Bug: autoreorder parts not working inside repair thread.
 + Bug: buyUnitParts allowing you to buy negative parts
