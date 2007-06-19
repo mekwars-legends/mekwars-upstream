@@ -43,9 +43,9 @@ public class UpdateOperationsCommand implements Command {
             return;
         }
         
-        CampaignMain.cm.createNewOpsManager();
+        CampaignMain.cm.getOpsManager().loadOperations();
         
-        CampaignMain.cm.doSendModMail("NOTE",Username+" has created a new ops manager.");
+        CampaignMain.cm.doSendModMail("NOTE",Username+" ops manager updated.");
         
         CampaignMain.cm.doSendToAllOnlinePlayers("PL|UDAO|1",false);
         CampaignMain.cm.updateAllOnlinePlayerArmies();

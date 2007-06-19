@@ -120,66 +120,7 @@ public class OperationManager {
 		disconnectionTimestamps = new TreeMap<String, Long>();
 		disconnectionDurations = new TreeMap<String, Long>();
 		
-		/*
-		 * Check for the operations directories.
-		 * If they're missing create them. 
-		 */
-		File shortDir = new File("./data/operations/short/");
-		File longDir = new File("./data/operations/long/");
-		File modDir = new File("./data/operations/modifiers/");
-		try {
-			if (!shortDir.exists())
-				shortDir.mkdirs();
-			if (!longDir.exists())
-				longDir.mkdir();
-			if (!modDir.exists())
-				modDir.mkdir();
-		} catch (Exception e) {
-			MMServ.mmlog.errLog("Error while creating operations directories.");
-		}
-		
-		/*
-		 * read the shortoperation's subdir and do loads. since every
-		 * long has a corresponding short, its possible to do loads
-		 * via the short names only (loader handles this properly)
-		 */
-		String[] shortNames = shortDir.list();
-		for (int i = 0; i < shortNames.length; i++) {
-			Operation currOp = opLoader.loadOpValues(shortNames[i]);
-			ops.put(currOp.getName(), currOp);
-		}
-		
-		/*
-		 * read the mod operations subdir and do loads. add the mods to
-		 * target ops' modmaps as the loads occur. Throw error if, for some
-		 * reason, a given target cannot be found.
-		 */
-		String[] modNames = modDir.list();
-		for (int i = 0; i < modNames.length; i++) {
-			ModifyingOperation currMod = opLoader.loadModOpValues(modNames[i]);
-			mods.put(currMod.getName(), currMod);
-			
-			/*
-			 * mod loaded. now, try to put it into standard op's trees.
-			 * targets are a string w/ ; as deliminter. trim to remove leading
-			 * and trailing spaces.
-			 */
-			String targets = currMod.getValueAsString("LinkedOperations");
-			StringTokenizer st = new StringTokenizer(targets, ";");
-			while (st.hasMoreTokens()) {
-				String currTarget = st.nextToken().trim();
-				Operation currOp = ops.get(currTarget);
-				if (currOp == null)
-					MMServ.mmlog.errLog("Error assigning modop target. Mod: " + currMod.getName() + " Target: " + currTarget);
-				else
-					currOp.addModifyingOperation(currMod);
-			}//end while(more targets)
-		}//end modOp loading
-		
-		/*
-		 * Now that all Ops are loaded, write out the crib sheet for clients.
-		 */
-		opWriter.writeOpList(ops);
+		loadOperations();
 		
 	}//end constructor
 
@@ -1065,5 +1006,68 @@ public class OperationManager {
 	public void checkOperations(SArmy a, boolean display) {
 		shortValidator.checkOperations(a, display, ops);
 	}
-	
+
+	public void loadOperations(){
+		/*
+		 * Check for the operations directories.
+		 * If they're missing create them. 
+		 */
+		File shortDir = new File("./data/operations/short/");
+		File longDir = new File("./data/operations/long/");
+		File modDir = new File("./data/operations/modifiers/");
+		try {
+			if (!shortDir.exists())
+				shortDir.mkdirs();
+			if (!longDir.exists())
+				longDir.mkdir();
+			if (!modDir.exists())
+				modDir.mkdir();
+		} catch (Exception e) {
+			MMServ.mmlog.errLog("Error while creating operations directories.");
+		}
+		
+		/*
+		 * read the shortoperation's subdir and do loads. since every
+		 * long has a corresponding short, its possible to do loads
+		 * via the short names only (loader handles this properly)
+		 */
+		String[] shortNames = shortDir.list();
+		for (int i = 0; i < shortNames.length; i++) {
+			Operation currOp = opLoader.loadOpValues(shortNames[i]);
+			ops.put(currOp.getName(), currOp);
+		}
+		
+		/*
+		 * read the mod operations subdir and do loads. add the mods to
+		 * target ops' modmaps as the loads occur. Throw error if, for some
+		 * reason, a given target cannot be found.
+		 */
+		String[] modNames = modDir.list();
+		for (int i = 0; i < modNames.length; i++) {
+			ModifyingOperation currMod = opLoader.loadModOpValues(modNames[i]);
+			mods.put(currMod.getName(), currMod);
+			
+			/*
+			 * mod loaded. now, try to put it into standard op's trees.
+			 * targets are a string w/ ; as deliminter. trim to remove leading
+			 * and trailing spaces.
+			 */
+			String targets = currMod.getValueAsString("LinkedOperations");
+			StringTokenizer st = new StringTokenizer(targets, ";");
+			while (st.hasMoreTokens()) {
+				String currTarget = st.nextToken().trim();
+				Operation currOp = ops.get(currTarget);
+				if (currOp == null)
+					MMServ.mmlog.errLog("Error assigning modop target. Mod: " + currMod.getName() + " Target: " + currTarget);
+				else
+					currOp.addModifyingOperation(currMod);
+			}//end while(more targets)
+		}//end modOp loading
+		
+		/*
+		 * Now that all Ops are loaded, write out the crib sheet for clients.
+		 */
+		opWriter.writeOpList(ops);
+
+	}
 }//end OperationsManager class

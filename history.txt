@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.4.x 
++ Bug: Update Operations kills all Running ops. (Fix Needs Testing)
 + Bug: Planet Editor not showing Factions in Factory Factions Combobox when
   They exist as a planet owner.
 + Bug: removeArmorRepair(Entity, int, int) throwing exception when location was
