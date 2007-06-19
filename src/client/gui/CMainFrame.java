@@ -495,7 +495,7 @@ public class CMainFrame extends JFrame {
 			}
 		});
 		
-		jMenuCampaignISStatus.setText("Plantary Control");
+		jMenuCampaignISStatus.setText("Planetary Control");
 		jMenuCampaignISStatus.setMnemonic('C');
 		jMenuCampaignISStatus.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

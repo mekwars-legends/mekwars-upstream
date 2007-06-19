@@ -1014,8 +1014,6 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		
 		TreeSet<String> factionNames = new TreeSet<String>();//tree to alpha sort
 		for (House house : mwclient.getData().getAllHouses()) {
-			if ( ownersMap.containsKey(house.getName()) )
-				continue;
             factionNames.add(house.getName());
 		}
 

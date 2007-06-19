@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.4.x 
++ Bug: Planet Editor not showing Factions in Factory Factions Combobox when
+  They exist as a planet owner.
++ Bug: removeArmorRepair(Entity, int, int) throwing exception when location was
+  Greater then Mech.LOC_LLEG
 + Added new MegaMek Jar 0.33.7-MW06192007-5114
 + Bug: Auto repair using the wrong location for reparing rear armor
 + Bug: autoreorder parts not working inside repair thread.

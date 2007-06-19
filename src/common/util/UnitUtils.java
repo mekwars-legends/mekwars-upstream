@@ -1775,6 +1775,8 @@ public class UnitUtils  {
         
         if ( slot < UnitUtils.LOC_INTERNAL_ARMOR ){
             //incase something was fubared.
+        	if ( location >= UnitUtils.LOC_CTR )
+        		location -= 7;
             while ( unit.getArmor(location,slot == UnitUtils.LOC_REAR_ARMOR) > unit.getOArmor(location,slot == UnitUtils.LOC_REAR_ARMOR) ){
                 int currArmor = unit.getArmor(location,slot == UnitUtils.LOC_REAR_ARMOR);
                 currArmor -= 99;
@@ -1783,8 +1785,6 @@ public class UnitUtils  {
         }//internal
         else
         {
-        	if ( location >= UnitUtils.LOC_CTR )
-        		location -= 7;
             while ( unit.getInternal(location) > unit.getOInternal(location) ){
                 int currArmor = unit.getInternal(location);
                 currArmor -= 99;

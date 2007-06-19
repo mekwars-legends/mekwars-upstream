@@ -312,7 +312,22 @@ class Repair{
     
     public boolean finishRepair(){
         
+        CriticalSlot cs = null;
+        Pilot pilot = null;
         
+        SPlayer player = CampaignMain.cm.getPlayer(Username);
+        if ( player == null ){
+            MMServ.mmlog.errLog("Could not find player "+Username+" removing repair job from queue.");
+            return true;
+        }
+        player.setSave(true);
+        SUnit mek = player.getUnit(unitID);
+
+        if ( mek == null ){
+            MMServ.mmlog.errLog("Could not find unit # "+unitID+" for player "+player.getName()+ " removing repair job from queue.");
+            return true;
+        }
+
         try{
             int roll = 12;
             
@@ -347,21 +362,6 @@ class Repair{
                     UnitUtils.setArmorRepair(unit,slot,location);
             }
             
-            CriticalSlot cs = null;
-            Pilot pilot = null;
-            
-            SPlayer player = CampaignMain.cm.getPlayer(Username);
-            if ( player == null ){
-                MMServ.mmlog.errLog("Could not find player "+Username+" removing repair job from queue.");
-                return true;
-            }
-            player.setSave(true);
-            SUnit mek = player.getUnit(unitID);
-    
-            if ( mek == null ){
-                MMServ.mmlog.errLog("Could not find unit # "+unitID+" for player "+player.getName()+ " removing repair job from queue.");
-                return true;
-            }
             
             //Repairs will not finish on units that are on the front lines.
             if (player.getAmountOfTimesUnitExistsInArmies(unitID) > 0 
@@ -981,6 +981,10 @@ class Repair{
         }catch(Exception ex){
             MMServ.mmlog.errLog("Failed to trap the following error removing repair job from queue: ");
             MMServ.mmlog.errLog(ex);
+            if ( mek != null && player != null ){
+                CampaignMain.cm.toUser("PL|UU|"+unitID+"|"+mek.toString(true),Username,false);
+                player.checkAndUpdateArmies(mek);
+            }
             return true;
         }
     }
