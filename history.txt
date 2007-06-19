@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.4.x 
++ Bug: Auto repair using the wrong location for reparing rear armor
 + Bug: autoreorder parts not working inside repair thread.
 + Bug: buyUnitParts allowing you to buy negative parts
 + Bug: Salvaging Ammo Bins with ammo in them gave multiple bins.

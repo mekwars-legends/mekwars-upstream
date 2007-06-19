@@ -1783,6 +1783,8 @@ public class UnitUtils  {
         }//internal
         else
         {
+        	if ( location >= UnitUtils.LOC_CTR )
+        		location -= 7;
             while ( unit.getInternal(location) > unit.getOInternal(location) ){
                 int currArmor = unit.getInternal(location);
                 currArmor -= 99;
