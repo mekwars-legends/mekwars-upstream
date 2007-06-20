@@ -1795,6 +1795,9 @@ public class UnitUtils  {
     
     public static void setArmorRepair(Entity unit,int slot, int location){
         if ( slot < LOC_INTERNAL_ARMOR ){
+        	if ( location >= UnitUtils.LOC_CTR )
+        		location -= 7;
+
             while ( unit.getArmor(location,slot == UnitUtils.LOC_REAR_ARMOR) < unit.getOArmor(location,slot == UnitUtils.LOC_REAR_ARMOR)){
                 int currArmor =unit.getArmor(location,slot == UnitUtils.LOC_REAR_ARMOR);
                 currArmor += 99;
