@@ -7,11 +7,13 @@ import server.mwmysql.planetHandler;
 import server.mwmysql.factoryHandler;
 import server.campaign.SUnitFactory;
 import server.campaign.SPlanet;
+import server.campaign.pilot.SPilot;
 
 public class mysqlHandler{
   private MWmysql MySQLCon = null;
   private planetHandler ph = null;
   private factoryHandler fh = null;
+  private PilotHandler pih = null;
 
   public void closeMySQL(){
     MySQLCon.close();
@@ -48,10 +50,23 @@ public class mysqlHandler{
   public void deletePlanet(int PlanetID) {
 	  ph.deletePlanet(PlanetID);
   }
+  
+  public void savePilot(SPilot p) {
+	  pih.savePilot(p);
+  }
+  
+  public void linkPilotToUnit(int pilotID, int unitID) {
+	  pih.linkPilotToUnit(pilotID, unitID);
+  }
+  
+  public void unlinkPilotFromUnit(int pilotID){
+	  pih.unlinkPilotFromUnit(pilotID);
+  }
 
   public mysqlHandler(){
     this.MySQLCon = new MWmysql();
     this.ph = new planetHandler(MySQLCon.con);
     this.fh = new factoryHandler(MySQLCon.con);
+    this.pih = new PilotHandler(MySQLCon.con);
   }
 }

@@ -1,6 +1,7 @@
 package server.mwmysql;
 
 //import java.sql.*;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -15,17 +16,16 @@ public class factoryHandler {
 
   public void loadFactories(SPlanet planet)
     {
-    StringBuffer sql = new StringBuffer();
-    Statement stmt = null;
     ResultSet rs = null;
-
+   
     try {
-    sql.append("SELECT * from factories WHERE FactoryPlanet = '");
-    sql.append(planet.getName());
-    sql.append("'");
+    PreparedStatement ps;	
+    	
 
-    stmt = con.createStatement();
-    rs = stmt.executeQuery(sql.toString());
+    ps = con.prepareStatement("SELECT * from factories WHERE FactoryPlanet = ?");
+    ps.setString(1, planet.getName());
+
+    rs = ps.executeQuery();
     while(rs.next())
       {
       SUnitFactory factory = new SUnitFactory();
@@ -36,12 +36,12 @@ public class factoryHandler {
       factory.setRefreshSpeed(rs.getInt("FactoryRefreshSpeed"));
       factory.setID(rs.getInt("FactoryID"));
       factory.setType(rs.getInt("FactoryType"));
-      factory.setLock(rs.getBoolean("FactoryisLocked"));
+      factory.setLock(Boolean.parseBoolean(rs.getString("FactoryisLocked")));
       factory.setPlanet(planet);
       planet.getUnitFactories().add(factory); 
+
       }
-    stmt.close();
-    rs.close();
+
     } catch (SQLException e) {
       MMServ.mmlog.dbLog("SQL Error in factoryHandler.java: " + e.getMessage());
     }       
@@ -64,15 +64,12 @@ public class factoryHandler {
 
   public void deletePlanetFactories(String planetName)
     {
-    Statement stmt = null;
-    StringBuffer sql = new StringBuffer();
-
+    PreparedStatement stmt = null;
+ 
     try {
-      stmt = con.createStatement();
-      sql.append("DELETE from factories where FactoryPlanet='");
-      sql.append(planetName);
-      sql.append("'");
-      stmt.executeUpdate(sql.toString());
+      stmt = con.prepareStatement("DELETE from factories where FactoryPlanet=?");
+      stmt.setString(1, planetName);
+      stmt.executeUpdate();
       stmt.close();
       }
       catch (SQLException e) {
@@ -82,7 +79,10 @@ public class factoryHandler {
 
   public void saveFactory(SUnitFactory factory)
     {
-    int fid=0, ud;
+/**
+ * TODO: Switch this to use PreparedStatements
+ */
+	  int fid=0;
     Statement stmt = null;
     ResultSet rs = null;
     StringBuffer sql = new StringBuffer();
@@ -126,7 +126,7 @@ public class factoryHandler {
 	sql.append("FactoryisLocked = '");
 	sql.append(factory.isLocked());
 	sql.append("'");
-	ud = stmt.executeUpdate(sql.toString(), Statement.RETURN_GENERATED_KEYS);
+	stmt.executeUpdate(sql.toString(), Statement.RETURN_GENERATED_KEYS);
 	rs = stmt.getGeneratedKeys();
 	if (rs.next())
 	  {
@@ -167,7 +167,7 @@ public class factoryHandler {
 	sql.append("WHERE FactoryID = ");
 	sql.append(fid);
 
-      ud = stmt.executeUpdate(sql.toString());
+      stmt.executeUpdate(sql.toString());
       }
         rs.close();
         stmt.close();

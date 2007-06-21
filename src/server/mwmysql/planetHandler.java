@@ -1,6 +1,7 @@
 package server.mwmysql;
 
 import java.awt.Dimension;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -24,10 +25,14 @@ import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.SUnitFactory;
 
- 
 public class planetHandler {
   Connection con = null;
 
+  /**
+   * TODO: Change this to use entirely PreparedStatements
+   * 
+   */
+  
   public int countPlanets() {
 	  int num = 0;
 	  try {
@@ -106,9 +111,7 @@ public void loadPlanets(CampaignData data) {
 			  
 			  // Add the vectors now
 			  
-			  // Factories
-			  CampaignMain.cm.MySQL.loadFactories(p);
-					  
+
 			  // Influences
 			  loadInfluences(p, data);
 			  
@@ -119,8 +122,11 @@ public void loadPlanets(CampaignData data) {
 			  // Flags
 			  loadPlanetFlags(p, data);
 
-			  
+			  // Factories
+			  CampaignMain.cm.MySQL.loadFactories(p);
+					  			  
 			  CampaignMain.cm.addPlanet(p);
+			  p.setOwner(null, p.checkOwner(), false);
 		  }
 
 
@@ -239,33 +245,61 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 			  ResultSet rs = null;
 			  StringBuffer sql = new StringBuffer();
 			  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+			  PreparedStatement ps;
 			  
-			  sql.append("INSERT into planets set pCompProd = " + planet.getCompProduction() + ", "); 
-			  sql.append("pXpos = " + planet.getPosition().getX() + ", ");
-			  sql.append("pYpos = " + planet.getPosition().getY() + ", ");
-			  sql.append("pDesc = '" + planet.getDescription() + "', ");
-			  sql.append("pBays = " + planet.getBaysProvided() + ", ");
-			  sql.append("pIsConquerable = '" + planet.isConquerable() + "', ");
-			  sql.append("pLastChanged = '" + sdf.format(planet.getLastChanged()) + "', ");
-			  sql.append("pMWID = " + planet.getId() + ", ");
-			  sql.append("pMapSizeWidth = " + planet.getMapSize().width + ", ");
-			  sql.append("pMapSizeHeight = " + planet.getMapSize().height + ", ");
-			  sql.append("pBoardSizeWidth = " + planet.getBoardSize().width + ", ");
-			  sql.append("pBoardSizeHeight = " + planet.getBoardSize().height + ", ");
-			  sql.append("pTempWidth = " + planet.getTemp().width + ", ");
-			  sql.append("pTempHeight = " + planet.getTemp().height + ", ");
-			  sql.append("pGravity = " + planet.getGravity() + ", ");
-			  sql.append("pVacuum = '" + planet.isVacuum() + "', ");
-			  sql.append("pNightChance = " + planet.getNightChance() + ", ");
-			  sql.append("pNightTempMod = " + planet.getNightTempMod() + ", ");
-			  sql.append("pMinPlanetOwnership = " + planet.getMinPlanetOwnerShip() + ", ");
-			  sql.append("pIsHomeworld = '" + planet.isHomeWorld() + "', ");
-			  sql.append("pOriginalOwner = '" + planet.getOriginalOwner() + "', ");
-			  sql.append("pMaxConquestPoints = " + planet.getConquestPoints() + ", ");
-			  sql.append("pName = '" + planet.getName() + "'");
+			  sql.append("INSERT into planets set pCompProd = ?, "); 
+			  sql.append("pXpos = ?, ");
+			  sql.append("pYpos = ?, ");
+			  sql.append("pDesc = ?, ");
+			  sql.append("pBays = ?, ");
+			  sql.append("pIsConquerable = ?, ");
+			  sql.append("pLastChanged = ?, ");
+			  sql.append("pMWID = ?, ");
+			  sql.append("pMapSizeWidth = ?, ");
+			  sql.append("pMapSizeHeight = ?, ");
+			  sql.append("pBoardSizeWidth = ?, ");
+			  sql.append("pBoardSizeHeight = ?, ");
+			  sql.append("pTempWidth = ?, ");
+			  sql.append("pTempHeight = ?, ");
+			  sql.append("pGravity = ?, ");
+			  sql.append("pVacuum = ?, ");
+			  sql.append("pNightChance = ?, ");
+			  sql.append("pNightTempMod = ?, ");
+			  sql.append("pMinPlanetOwnership = ?, ");
+			  sql.append("pIsHomeworld = ?, ");
+			  sql.append("pOriginalOwner = ?, ");
+			  sql.append("pMaxConquestPoints = ?, ");
+			  sql.append("pName = ?");
 			  
-			  stmt.executeUpdate(sql.toString(), Statement.RETURN_GENERATED_KEYS);
-			  rs=stmt.getGeneratedKeys();
+			  ps=con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
+			  ps.setInt(1, planet.getCompProduction());
+			  ps.setDouble(2, planet.getPosition().getX());
+			  ps.setDouble(3, planet.getPosition().getY());
+			  ps.setString(4, planet.getDescription());
+			  ps.setInt(5, planet.getBaysProvided());
+			  ps.setString(6, String.valueOf(planet.isConquerable()));
+			  ps.setString(7, sdf.format(planet.getLastChanged()));
+			  ps.setInt(8, planet.getId());
+			  ps.setInt(9, planet.getMapSize().width);
+			  ps.setInt(10, planet.getMapSize().height);
+			  ps.setInt(11, planet.getBoardSize().width);
+			  ps.setInt(12, planet.getBoardSize().height);
+			  ps.setInt(13, planet.getTemp().width);
+			  ps.setInt(14, planet.getTemp().height);
+			  ps.setDouble(15, planet.getGravity());
+			  ps.setString(16, String.valueOf(planet.isVacuum()));
+			  ps.setInt(17, planet.getNightChance());
+			  ps.setInt(18, planet.getNightTempMod());
+			  ps.setInt(19, planet.getMinPlanetOwnerShip());
+			  ps.setString(20, String.valueOf(planet.isHomeWorld()));
+			  ps.setString(21, planet.getOriginalOwner());
+			  ps.setInt(22, planet.getConquestPoints());
+			  ps.setString(23, planet.getName());
+			  
+			  ps.executeUpdate();
+			  
+			  
+			  rs=ps.getGeneratedKeys();
 			  if(rs.next()){
 				  int pid = rs.getInt(1);
 				  planet.setDBID(pid);
@@ -307,33 +341,61 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 			  Statement stmt = con.createStatement();
 			  StringBuffer sql = new StringBuffer();
 			  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+			  PreparedStatement ps;
 			  
-			  sql.append("UPDATE planets set pCompProd = " + planet.getCompProduction() + ", "); 
-			  sql.append("pXpos = " + planet.getPosition().getX() + ", ");
-			  sql.append("pYpos = " + planet.getPosition().getY() + ", ");
-			  sql.append("pDesc = '" + planet.getDescription() + "', ");
-			  sql.append("pBays = " + planet.getBaysProvided() + ", ");
-			  sql.append("pIsConquerable = '" + planet.isConquerable() + "', ");
-			  sql.append("pLastChanged = '" + sdf.format(planet.getLastChanged()) + "', ");
-			  sql.append("pMWID = " + planet.getId() + ", ");
-			  sql.append("pMapSizeWidth = " + planet.getMapSize().width + ", ");
-			  sql.append("pMapSizeHeight = " + planet.getMapSize().height + ", ");
-			  sql.append("pBoardSizeWidth = " + planet.getBoardSize().width + ", ");
-			  sql.append("pBoardSizeHeight = " + planet.getBoardSize().height + ", ");
-			  sql.append("pTempWidth = " + planet.getTemp().width + ", ");
-			  sql.append("pTempHeight = " + planet.getTemp().height + ", ");
-			  sql.append("pGravity = " + planet.getGravity() + ", ");
-			  sql.append("pVacuum = '" + planet.isVacuum() + "', ");
-			  sql.append("pNightChance = " + planet.getNightChance() + ", ");
-			  sql.append("pNightTempMod = " + planet.getNightTempMod() + ", ");
-			  sql.append("pMinPlanetOwnership = " + planet.getMinPlanetOwnerShip() + ", ");
-			  sql.append("pIsHomeworld = '" + planet.isHomeWorld() + "', ");
-			  sql.append("pOriginalOwner = '" + planet.getOriginalOwner() + "', ");
-			  sql.append("pMaxConquestPoints = " + planet.getConquestPoints() + ", ");
-			  sql.append("pName = '" + planet.getName() + "' ");
-			  sql.append("WHERE PlanetID = " + planet.getDBID());
+			  sql.append("UPDATE planets set pCompProd = ?, "); 
+			  sql.append("pXpos = ?, ");
+			  sql.append("pYpos = ?, ");
+			  sql.append("pDesc = ?, ");
+			  sql.append("pBays = ?, ");
+			  sql.append("pIsConquerable = ?, ");
+			  sql.append("pLastChanged = ?, ");
+			  sql.append("pMWID = ?, ");
+			  sql.append("pMapSizeWidth = ?, ");
+			  sql.append("pMapSizeHeight = ?, ");
+			  sql.append("pBoardSizeWidth = ?, ");
+			  sql.append("pBoardSizeHeight = ?, ");
+			  sql.append("pTempWidth = ?, ");
+			  sql.append("pTempHeight = ?, ");
+			  sql.append("pGravity = ?, ");
+			  sql.append("pVacuum = ?, ");
+			  sql.append("pNightChance = ?, ");
+			  sql.append("pNightTempMod = ?, ");
+			  sql.append("pMinPlanetOwnership = ?, ");
+			  sql.append("pIsHomeworld = ?, ");
+			  sql.append("pOriginalOwner = ?, ");
+			  sql.append("pMaxConquestPoints = ?, ");
+			  sql.append("pName = ? ");
+			  sql.append("WHERE PlanetID = ?");
 			  
-			  stmt.executeUpdate(sql.toString());
+			  ps=con.prepareStatement(sql.toString());
+			  
+			  ps.setInt(1, planet.getCompProduction());
+			  ps.setDouble(2, planet.getPosition().getX());
+			  ps.setDouble(3, planet.getPosition().getY());
+			  ps.setString(4, planet.getDescription());
+			  ps.setInt(5, planet.getBaysProvided());
+			  ps.setBoolean(6, planet.isConquerable());
+			  ps.setString(7, sdf.format(planet.getLastChanged()));
+			  ps.setInt(8, planet.getId());
+			  ps.setInt(9, planet.getMapSize().width);
+			  ps.setInt(10, planet.getMapSize().height);
+			  ps.setInt(11, planet.getBoardSize().width);
+			  ps.setInt(12, planet.getBoardSize().height);
+			  ps.setInt(13, planet.getTemp().width);
+			  ps.setInt(14, planet.getTemp().height);
+			  ps.setDouble(15, planet.getGravity());
+			  ps.setBoolean(16, planet.isVacuum());
+			  ps.setInt(17, planet.getNightChance());
+			  ps.setInt(18, planet.getNightTempMod());
+			  ps.setInt(19, planet.getMinPlanetOwnerShip());
+			  ps.setBoolean(20, planet.isHomeWorld());
+			  ps.setString(21, planet.getOriginalOwner());
+			  ps.setInt(22, planet.getConquestPoints());
+			  ps.setString(23, planet.getName());
+			  ps.setInt(24, planet.getDBID());
+			  
+			  ps.executeUpdate();
 				  
 				  /**
 				   * Now, we need to save all the vectors:
@@ -457,7 +519,8 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 	  
 	  while (it.hasNext()) {
 		  SHouse next = (SHouse) it.next();
-		  String iName = next.getName();
+		  String iName = next.getName().replace("'", "\'");
+		  
 		  int iInf = p.getInfluence().getInfluence(next.getId());
 		  try {
 			sql.setLength(0);

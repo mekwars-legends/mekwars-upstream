@@ -1669,6 +1669,8 @@ src/server/mwcyclopscomm/MWCyclopsUnit.java -text
 src/server/mwcyclopscomm/MWCyclopsUnitTemplate.java -text
 src/server/mwcyclopscomm/MWCyclopsUtils.java -text
 src/server/mwmysql/MWmysql.java -text
+src/server/mwmysql/PilotHandler.java -text
+src/server/mwmysql/UnitHandler.java -text
 src/server/mwmysql/factoryHandler.java -text
 src/server/mwmysql/mysqlHandler.java -text
 src/server/mwmysql/planetHandler.java -text

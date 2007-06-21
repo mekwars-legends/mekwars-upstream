@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.4.x 
++ Option for all planetary information to load and save to database
++ BUG: Planets with apostrophes in the name would not save.  Fixed string escaping.
++ Pilots now saving to database
 + RFE: Update Operatons no longer kills all short ops. 
 + Bug: setArmorRepair(Entity, int, int) throwing exception when location was
   Greater then Mech.LOC_LLEG
