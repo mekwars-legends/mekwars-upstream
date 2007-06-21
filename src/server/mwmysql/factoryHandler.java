@@ -79,15 +79,13 @@ public class factoryHandler {
 
   public void saveFactory(SUnitFactory factory)
     {
-/**
- * TODO: Switch this to use PreparedStatements
- */
 	  int fid=0;
     Statement stmt = null;
     ResultSet rs = null;
     StringBuffer sql = new StringBuffer();
     Planet planet = factory.getPlanet();
-     
+    PreparedStatement ps;
+    
     try {
     if(con.isClosed())
 	MMServ.mmlog.dbLog("Error: con closed"); 
@@ -101,33 +99,28 @@ public class factoryHandler {
       {
       // This doesn't exist, so INSERT it
 	sql.setLength(0);
-      sql.append("INSERT into factories set ");
-	sql.append("FactoryName = '");
-	sql.append(factory.getName());
-	sql.append("', ");
-	sql.append("FactorySize = '");
-	sql.append(factory.getSize());
-	sql.append("', ");
-	sql.append("FactoryFounder = '");
-	sql.append(factory.getFounder());
-	sql.append("', ");
-	sql.append("FactoryTicks = '");
-	sql.append(factory.getTicksUntilRefresh());
-	sql.append("', ");
-	sql.append("FactoryRefreshSpeed = '");
-	sql.append(factory.getRefreshSpeed());
-	sql.append("', ");
-	sql.append("FactoryType = '");
-	sql.append(factory.getType());
-	sql.append("', ");
-	sql.append("FactoryPlanet = '");
-	sql.append(planet.getName());
-	sql.append("', ");
-	sql.append("FactoryisLocked = '");
-	sql.append(factory.isLocked());
-	sql.append("'");
-	stmt.executeUpdate(sql.toString(), Statement.RETURN_GENERATED_KEYS);
-	rs = stmt.getGeneratedKeys();
+    sql.append("INSERT into factories set ");
+	sql.append("FactoryName = ?, ");
+	sql.append("FactorySize = ?, ");
+	sql.append("FactoryFounder = ?, ");
+	sql.append("FactoryTicks = ?, ");
+	sql.append("FactoryRefreshSpeed = ?, ");
+	sql.append("FactoryType = ?, ");
+	sql.append("FactoryPlanet = ?, ");
+	sql.append("FactoryisLocked = ?");
+
+	ps = con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
+	ps.setString(1, factory.getName());
+	ps.setString(2, factory.getSize());
+	ps.setString(3, factory.getFounder());
+	ps.setInt(4, factory.getTicksUntilRefresh());
+	ps.setInt(5, factory.getTicksUntilRefresh());
+	ps.setInt(6, factory.getType());
+	ps.setString(7, planet.getName());
+	ps.setString(8, Boolean.toString(factory.isLocked()));
+
+	ps.executeUpdate();
+	rs = ps.getGeneratedKeys();
 	if (rs.next())
 	  {
 	  fid = rs.getInt(1);
@@ -138,39 +131,37 @@ public class factoryHandler {
       {
       // It already exists, so UPDATE it
       fid = rs.getInt("FactoryID");
-	sql.setLength(0);
+	  sql.setLength(0);
       sql.append("UPDATE factories set ");
-        sql.append("FactoryName = '");
-	sql.append(factory.getName());
-	sql.append("', ");
-        sql.append("FactorySize = '");
-	sql.append(factory.getSize());
-	sql.append("', ");
-	sql.append("FactoryPlanet = '");
-	sql.append(planet.getName());
-	sql.append("', ");
-        sql.append("FactoryFounder = '");
-	sql.append(factory.getFounder());
-	sql.append("', ");
-        sql.append("FactoryTicks = '");
-	sql.append(factory.getTicksUntilRefresh());
-	sql.append("', ");
-        sql.append("FactoryRefreshSpeed = '");
-	sql.append(factory.getRefreshSpeed());
-	sql.append("', ");
-        sql.append("FactoryType = '");
-	sql.append(factory.getType());
-	sql.append("', ");
-        sql.append("FactoryisLocked = '");
-	sql.append(factory.isLocked());
-	sql.append("' ");
-	sql.append("WHERE FactoryID = ");
-	sql.append(fid);
+      sql.append("FactoryName = ?, ");
+      sql.append("FactorySize = ?, ");
+	  sql.append("FactoryPlanet = ?, ");
+      sql.append("FactoryFounder = ?, ");
+      sql.append("FactoryTicks = ?, ");
+      sql.append("FactoryRefreshSpeed = ?, ");
+      sql.append("FactoryType = ?, ");
+      sql.append("FactoryisLocked = ? ");
+	  sql.append("WHERE FactoryID = ?");
 
-      stmt.executeUpdate(sql.toString());
+	  ps = con.prepareStatement(sql.toString());
+	  ps.setString(1, factory.getName());
+	  ps.setString(2, factory.getSize());
+	  ps.setString(3, planet.getName());
+	  ps.setString(4, factory.getFounder());
+	  ps.setInt(5, factory.getTicksUntilRefresh());
+	  ps.setInt(6, factory.getRefreshSpeed());
+	  ps.setInt(7, factory.getType());
+	  ps.setString(8, Boolean.toString(factory.isLocked()));
+	  ps.setInt(9, factory.getID());
+	  
+      ps.executeUpdate();
       }
-        rs.close();
-        stmt.close();
+        if(rs!=null)
+        	rs.close();
+        if(stmt!=null)
+        	stmt.close();
+        if(ps!=null)
+        	ps.close();
     }
     catch (SQLException e)
       {
