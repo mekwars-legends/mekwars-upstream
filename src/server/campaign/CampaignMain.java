@@ -1751,6 +1751,9 @@ public final class CampaignMain implements Serializable {
 	}
 
 	public void addPlanet(SPlanet p) {
+		
+		if ( p.getOriginalOwner().trim().equals("") )
+			p.setOriginalOwner(cm.getConfig("NewbieHouseName"));
 		data.addPlanet(p);
 	}
 

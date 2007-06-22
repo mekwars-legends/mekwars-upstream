@@ -80,7 +80,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		 * can reclaim these slots. Fill with nonesense now.
 		 * @urgru 8/26/06
 		 */
-		result.append("*1*A*A");
+		result.append("*0");
         
 		result.append("*");
 		result.append(getType());
@@ -114,16 +114,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		if (ST.hasMoreElements())//eat the timezone count
 			TimeZonesCounter = Integer.parseInt((String)ST.nextElement());
 		for (int count = 0; count < TimeZonesCounter;count++) {
-			String Data = ST.nextToken();
-			if (Data.indexOf("~") != -1) {
-				//TimeZoneData TZData = new TimeZoneData(Data);
-				//getTimeZones().put(TZData.getName(),TZData);
-			} else {
-				//TimeZoneData TZData = new TimeZoneData();
-				//TZData.setName(Data);
-				/*TZData.setPropability(Integer.parseInt(*/ST.nextToken();//);
-				//getTimeZones().put(TZData.getName(),TZData);
-			}
+			ST.nextToken();
 			//functional portions commented out. still eat tokens. @urgru, 8/22/06
 		}
 		
@@ -134,14 +125,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		
 		if (ST.hasMoreElements())
 			setLock(Boolean.parseBoolean(ST.nextToken()));
-		
-		/*
-		 * This token was the "ProductionTable." Is no longer saved in the
-		 * toString, and can be removed after a few releases. @urgru 8/26/06
-		 */
-		if (ST.hasMoreElements())
-			ST.nextToken();
-		
+
 		setPlanet(p);
 	}
 	

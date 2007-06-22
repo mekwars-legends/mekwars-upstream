@@ -95,7 +95,7 @@ public class XMLPlanetDataParser implements XMLResponder
 	boolean hasAdvanceTerrain = false;
 	int terrainProb = 0;
 	String terrainName = "";
-	String OriginalOwner = "";
+	String OriginalOwner = CampaignMain.cm.getConfig("NewbieHouseName");
 	String OpFlag = "";
 	String OpName = "";
 	
@@ -314,7 +314,7 @@ public class XMLPlanetDataParser implements XMLResponder
 			ymap = -1;
 			xmap = -1;
 			
-			OriginalOwner = "";
+			OriginalOwner = CampaignMain.cm.getConfig("NewbieHouseName");
 			AdvTerr = null;
 			AdvTerrTreeMap.clear();
 			

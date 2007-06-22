@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.4.x 
++ Default Original owner to NewbieHouseName when loading houses from XML
+  or flat files.
 + Option for all planetary information to load and save to database
 + BUG: Planets with apostrophes in the name would not save.  Fixed string escaping.
 + Pilots now saving to database
