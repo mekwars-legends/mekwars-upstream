@@ -121,12 +121,12 @@ public class UnitHandler {
 		ps.executeUpdate("DELETE from unit_ammo WHERE unitID = " + u.getId());
 		
 		ArrayList<Mounted> en_Ammo = ent.getAmmo();
+		int AmmoLoc = 1;
 		for (Mounted mAmmo : en_Ammo ) {
 			boolean hotloaded = mAmmo.isHotLoaded();
 			if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("maxtech_hotload"))
 				hotloaded = false;
 			AmmoType at = (AmmoType)mAmmo.getType();
-			int AmmoLoc = mAmmo.getLocation();
 			sql.setLength(0);
 			sql.append("INSERT into unit_ammo set unitID = ?, ammoLocation = ?, ammoHotLoaded=?, ammoType=?, ammoInternalName=?, ammoShotsLeft=?");
 			ps = con.prepareStatement(sql.toString());
@@ -137,6 +137,7 @@ public class UnitHandler {
 			ps.setString(5, at.getInternalName());
 			ps.setInt(6, mAmmo.getShotsLeft());
 			ps.executeUpdate();
+			AmmoLoc++;
 		}
 		// Save the pilot
 		if (u.getPilot().getGunnery()!=99){
