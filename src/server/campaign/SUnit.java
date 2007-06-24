@@ -373,10 +373,7 @@ public final class SUnit extends Unit implements Serializable {
 			setBV(0);
 			getBV();
 		}
-		if(CampaignMain.cm.isUsingMySQL() && !toPlayer){
-			CampaignMain.cm.MySQL.saveUnit(this);
-		}
-				
+
 		StringBuilder result = new StringBuilder();
 		result.append("CM$");
 		if ( toPlayer )

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import common.util.UnitUtils;
@@ -23,6 +24,51 @@ import server.campaign.pilot.SPilot;
 public class UnitHandler {
 	
 	Connection con;
+	
+	public void linkUnitToFaction(int unitID, String factionName) {
+		try {
+			PreparedStatement ps;
+			ps = con.prepareStatement("DELETE from units_to_factions WHERE unitID = ?");
+			ps.setInt(1, unitID);
+			ps.executeUpdate();
+			
+			ps = con.prepareStatement("INSERT into units_to_factions set unitID = ?, factionName = ?");
+			ps.setInt(1, unitID);
+			ps.setString(2, factionName);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in UnitHandler.linkUnitToFaction: " + e.getMessage());
+		}
+	}
+	
+	public void unlinkUnit(int unitID){
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE from units_to_factions WHERE unitID = " + unitID);
+			stmt.executeUpdate("DELETE from units_to_players WHERE unitID = " + unitID);
+			stmt.close();
+		} catch(SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in UnitHandler.unlinkUnit: " + e.getMessage());
+		}
+	}
+	
+	public void linkUnitToPlayer(int unitID, String playerName) {
+		try {
+			PreparedStatement ps;
+			ps = con.prepareStatement("DELETE from units_to_players WHERE unitID = ?");
+			ps.setInt(1, unitID);
+			ps.executeUpdate();
+			
+			ps = con.prepareStatement("INSERT into units_to_players set unitID = ?, playerName = ?");
+			ps.setInt(1, unitID);
+			ps.setString(2, playerName);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in UnitHandler.linkUnitToPlayer: " + e.getMessage());
+		}
+	}
 	
 	public void saveUnit(SUnit u) {
 	PreparedStatement ps;
@@ -147,6 +193,18 @@ public class UnitHandler {
 	} catch (SQLException e){
 		MMServ.mmlog.dbLog("SQL Exception in UnitHandler.saveUnit: " + e.getMessage());
 	}
+	}
+	
+	public void deleteUnit(int unitID) {
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE from unit_mgs WHERE unitID = " + unitID);
+			stmt.executeUpdate("DELETE from unit_ammo WHERE unitID = " + unitID);
+			stmt.executeUpdate("DELETE from units WHERE unitID = " + unitID);
+			stmt.close();
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in UnitHandler.deleteUnit: " + e.getMessage());
+		}
 	}
 	
 	public UnitHandler(Connection c) {

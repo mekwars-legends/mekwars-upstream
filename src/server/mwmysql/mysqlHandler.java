@@ -61,12 +61,32 @@ public class mysqlHandler{
 	  pih.linkPilotToUnit(pilotID, unitID);
   }
   
-  public void unlinkPilotFromUnit(int pilotID){
-	  pih.unlinkPilotFromUnit(pilotID);
+  public void linkPilotToFaction(int pilotID, String factionName) {
+	  pih.linkPilotToFaction(pilotID, factionName);
+  }
+  
+  public void linkPilotToPlayer(int pilotID, String playerName) {
+	  pih.linkPilotToPlayer(pilotID, playerName);
+  }
+  
+  public void unlinkPilot(int pilotID){
+	  pih.unlinkPilot(pilotID);
   }
 
+  public void unlinkUnit(int unitID) {
+	  uh.unlinkUnit(unitID);
+  }
+  
   public void saveUnit(SUnit u) {
 	  uh.saveUnit(u);
+  }
+  
+  public void linkUnitToPlayer(int unitID, String playerName) {
+	  uh.linkUnitToPlayer(unitID, playerName);
+  }
+  
+  public void linkUnitToFaction(int unitID, String factionName){
+	  uh.linkUnitToFaction(unitID, factionName);
   }
   
   public mysqlHandler(){

@@ -113,6 +113,10 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			result.append("|");
 			
 			for (SUnit currU : tmpVec) {
+				if(CampaignMain.cm.isUsingMySQL()){
+					CampaignMain.cm.MySQL.saveUnit(currU);
+					CampaignMain.cm.MySQL.linkUnitToFaction(currU.getId(), getName());
+				}
 				result.append(currU.toString(false));
 				result.append("|");
 			}
@@ -127,6 +131,10 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			result.append("|");
 			
 			for (SUnit currU : tmpVec) {
+				if(CampaignMain.cm.isUsingMySQL()){
+					CampaignMain.cm.MySQL.saveUnit(currU);
+					CampaignMain.cm.MySQL.linkUnitToFaction(currU.getId(), getName());
+				}
 				result.append(currU.toString(false));
 				result.append("|");
 			}
@@ -143,6 +151,10 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 				result.append("|");
 				
 				for (SUnit currU : tmpVec) {
+					if(CampaignMain.cm.isUsingMySQL()){
+						CampaignMain.cm.MySQL.saveUnit(currU);
+						CampaignMain.cm.MySQL.linkUnitToFaction(currU.getId(), getName());
+					}
 					result.append(currU.toString(false));
 					result.append("|");
 				}
@@ -221,6 +233,10 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			result.append("|");
 			
 			for (SUnit currU : tmpVec) {
+				if(CampaignMain.cm.isUsingMySQL()){
+					CampaignMain.cm.MySQL.saveUnit(currU);
+					CampaignMain.cm.MySQL.linkUnitToFaction(currU.getId(), getName());
+				}
 				result.append(currU.toString(false));
 				result.append("|");
 			}
@@ -234,6 +250,10 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			result.append(tmpVec.size());
 			result.append("|");
 			for (SUnit currU : tmpVec) {
+				if(CampaignMain.cm.isUsingMySQL()){
+					CampaignMain.cm.MySQL.saveUnit(currU);
+					CampaignMain.cm.MySQL.linkUnitToFaction(currU.getId(), getName());
+				}
 				result.append(currU.toString(false));
 				result.append("|");
 			}

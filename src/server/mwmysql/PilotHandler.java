@@ -20,7 +20,7 @@ public class PilotHandler {
 	
 	public void linkPilotToUnit(int pilotID, int unitID) {
 		try {
-		unlinkPilotFromUnit(pilotID);
+		unlinkPilot(pilotID);
 			
 		Statement stmt = con.createStatement();
 		stmt.executeUpdate("INSERT into pilots_to_units SET pilotID = " + pilotID + ", unitID = " + unitID);
@@ -30,7 +30,33 @@ public class PilotHandler {
 		}
 	}
 	
-	public void unlinkPilotFromUnit(int pilotID) {
+	public void linkPilotToFaction(int pilotID, String factionName) {
+		try {
+			unlinkPilot(pilotID);
+			PreparedStatement ps = con.prepareStatement("INSERT into pilots_to_factions set pilotID = ?, factionName = ?");
+			ps.setInt(1, pilotID);
+			ps.setString(2, factionName);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in PilotHandler.linkPilotToFaction: " + e.getMessage());
+		}
+	}
+
+	public void linkPilotToPlayer(int pilotID, String playerName) {
+		try {
+			unlinkPilot(pilotID);
+			PreparedStatement ps = con.prepareStatement("INSERT into pilots_to_players set pilotID = ?, playerName = ?");
+			ps.setInt(1, pilotID);
+			ps.setString(2, playerName);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in PilotHandler.linkPilotToPlayer: " + e.getMessage());
+		}
+	}
+	
+	public void unlinkPilot(int pilotID) {
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate("DELETE from pilots_to_units WHERE pilotID = " + pilotID);
@@ -118,6 +144,17 @@ public class PilotHandler {
 		}
 
 		
+	}
+	
+	public void deletePilot(int pilotID) {
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE from pilotskills WHERE pilotID = " + pilotID);
+			stmt.executeUpdate("DELETE fron pilots WHERE pilotID = " + pilotID);
+			stmt.close();
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in PilotHandler.deletePilot: " + e.getMessage());
+		}
 	}
 	
 	public PilotHandler(Connection c) {

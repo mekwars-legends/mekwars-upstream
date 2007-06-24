@@ -2515,6 +2515,11 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 					currU.getPilot().setCurrentFaction(myHouse.getName());
 					result.append(currU.toString(toClient));
 					result.append("~");
+					
+					if(CampaignMain.cm.isUsingMySQL() && !toClient) {
+						CampaignMain.cm.MySQL.saveUnit(currU);
+						CampaignMain.cm.MySQL.linkUnitToPlayer(currU.getId(), getName());
+					}
 				}
 			}
 		}
