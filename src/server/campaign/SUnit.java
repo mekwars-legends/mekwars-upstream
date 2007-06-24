@@ -374,10 +374,7 @@ public final class SUnit extends Unit implements Serializable {
 			getBV();
 		}
 		if(CampaignMain.cm.isUsingMySQL() && !toPlayer){
-			if(getPilot().getGunnery()!=99) {
-				CampaignMain.cm.MySQL.savePilot((SPilot) getPilot());
-				CampaignMain.cm.MySQL.linkPilotToUnit(getPilot().getPilotId(), this.getId());				
-			}
+			CampaignMain.cm.MySQL.saveUnit(this);
 		}
 				
 		StringBuilder result = new StringBuilder();

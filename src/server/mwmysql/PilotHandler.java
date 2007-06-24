@@ -53,17 +53,7 @@ public class PilotHandler {
 			if(rs.getInt("num") == 0){
 				// No pilot with this id, so INSERT
 				sql.setLength(0);
-				/*
-				sql.append("INSERT into pilots set ");
-				sql.append("pilotID = " + p.getPilotId() + ", ");
-				sql.append("pilotName = '" + p.getName() + "', ");
-				sql.append("pilotExp = " + p.getExperience() + ", ");
-				sql.append("pilotGunnery = " + p.getGunnery() + ", ");
-				sql.append("pilotPiloting = " + p.getPiloting() + ", ");
-				sql.append("pilotKills = " + p.getKills() + ", ");
-				sql.append("pilotCurrentFaction = '" + p.getCurrentFaction() + "', ");
-				sql.append("pilotHits = " + p.getHits());
-				*/
+
 				PreparedStatement ps;
 				ps = con.prepareStatement("INSERT into pilots set pilotID=?, pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?");
 				ps.setInt(1, p.getPilotId());
@@ -78,18 +68,7 @@ public class PilotHandler {
 			} else {
 				// Pilot already saved, so UPDATE
 				sql.setLength(0);
-				/*
-				 
-				sql.append("UPDATE pilots set ");
-				sql.append("pilotName = '" + p.getName() + "', ");
-				sql.append("pilotExp = " + p.getExperience() + ", ");
-				sql.append("pilotGunnery = " + p.getGunnery() + ", ");
-				sql.append("pilotPiloting = " + p.getPiloting() + ", ");
-				sql.append("pilotKills = " + p.getKills() + ", ");
-				sql.append("pilotCurrentFaction = '" + p.getCurrentFaction() + "', ");
-				sql.append("pilotHits = " + p.getHits());
-				sql.append(" WHERE pilotID = " + p.getPilotId());
-				*/
+
 				PreparedStatement ps;
 				ps = con.prepareStatement("UPDATE pilots set pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=? WHERE pilotID=?");
 				ps.setString(1, p.getName());

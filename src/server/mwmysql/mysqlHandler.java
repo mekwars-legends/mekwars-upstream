@@ -5,6 +5,7 @@ import common.CampaignData;
 import server.mwmysql.MWmysql;
 import server.mwmysql.planetHandler;
 import server.mwmysql.factoryHandler;
+import server.campaign.SUnit;
 import server.campaign.SUnitFactory;
 import server.campaign.SPlanet;
 import server.campaign.pilot.SPilot;
@@ -14,9 +15,10 @@ public class mysqlHandler{
   private planetHandler ph = null;
   private factoryHandler fh = null;
   private PilotHandler pih = null;
+  private UnitHandler uh = null;
 
   public void closeMySQL(){
-    MySQLCon.close();
+	  MySQLCon.close();
   }
 
   public void deleteFactory(int FactoryID){
@@ -63,10 +65,15 @@ public class mysqlHandler{
 	  pih.unlinkPilotFromUnit(pilotID);
   }
 
+  public void saveUnit(SUnit u) {
+	  uh.saveUnit(u);
+  }
+  
   public mysqlHandler(){
     this.MySQLCon = new MWmysql();
     this.ph = new planetHandler(MySQLCon.con);
     this.fh = new factoryHandler(MySQLCon.con);
     this.pih = new PilotHandler(MySQLCon.con);
+    this.uh = new UnitHandler(MySQLCon.con);
   }
 }
