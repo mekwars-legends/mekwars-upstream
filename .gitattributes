@@ -1668,6 +1668,7 @@ src/server/mwcyclopscomm/MWCyclopsSkill.java -text
 src/server/mwcyclopscomm/MWCyclopsUnit.java -text
 src/server/mwcyclopscomm/MWCyclopsUnitTemplate.java -text
 src/server/mwcyclopscomm/MWCyclopsUtils.java -text
+src/server/mwmysql/FactionHandler.java -text
 src/server/mwmysql/MWmysql.java -text
 src/server/mwmysql/PilotHandler.java -text
 src/server/mwmysql/UnitHandler.java -text

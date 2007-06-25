@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.4.x
+- Removed redundant database linking in SHouse.toString()
++ Changed linkUnitToFaction to use faction ID, rather than Name
 + Fixed several instances of "destroy" being spelled as "destory"
 + Units linked in database on transferring to player and to faction
 + All units, in faction bays or player hangars, now save to database

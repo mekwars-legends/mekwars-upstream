@@ -25,16 +25,16 @@ public class UnitHandler {
 	
 	Connection con;
 	
-	public void linkUnitToFaction(int unitID, String factionName) {
+	public void linkUnitToFaction(int unitID, int factionID) {
 		try {
 			PreparedStatement ps;
 			ps = con.prepareStatement("DELETE from units_to_factions WHERE unitID = ?");
 			ps.setInt(1, unitID);
 			ps.executeUpdate();
 			
-			ps = con.prepareStatement("INSERT into units_to_factions set unitID = ?, factionName = ?");
+			ps = con.prepareStatement("INSERT into units_to_factions set unitID = ?, factionID = ?");
 			ps.setInt(1, unitID);
-			ps.setString(2, factionName);
+			ps.setInt(2, factionID);
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {

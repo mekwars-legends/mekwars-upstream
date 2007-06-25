@@ -16,6 +16,7 @@ public class mysqlHandler{
   private factoryHandler fh = null;
   private PilotHandler pih = null;
   private UnitHandler uh = null;
+  private FactionHandler fac = null;
 
   public void closeMySQL(){
 	  MySQLCon.close();
@@ -85,8 +86,8 @@ public class mysqlHandler{
 	  uh.linkUnitToPlayer(unitID, playerName);
   }
   
-  public void linkUnitToFaction(int unitID, String factionName){
-	  uh.linkUnitToFaction(unitID, factionName);
+  public void linkUnitToFaction(int unitID, int factionID){
+	  uh.linkUnitToFaction(unitID, factionID);
   }
   
   public mysqlHandler(){
@@ -95,5 +96,6 @@ public class mysqlHandler{
     this.fh = new factoryHandler(MySQLCon.con);
     this.pih = new PilotHandler(MySQLCon.con);
     this.uh = new UnitHandler(MySQLCon.con);
+    this.fac = new FactionHandler(MySQLCon.con);
   }
 }
