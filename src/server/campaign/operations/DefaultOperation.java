@@ -604,7 +604,7 @@ public class DefaultOperation {
          * 
          * PPDestructionCap              - Max # of PP that can be destroyed by an Op
          * UnitDestructionCap            - Max # of units that can be destroyed by an Op.
-         * BaseUnitsDestroyed            - base number of units destoryed by winning attacker
+         * BaseUnitsDestroyed            - base number of units destroyed by winning attacker
          * DestroyedUnitsBVAdjustment    - BV to Destroyed an additonal unit
          * DestroyedUnitsUnitAdjustment  - units to Destroyed an additional unit (confusing!)
          * BasePPDestroyed               - Base production points destroyed by winning attacker
@@ -668,7 +668,7 @@ public class DefaultOperation {
          * This is setup to allow buildings to be both placed on the map and also count towards the operation rewards
          * 
          * TotalBuildings        - Total number of buildings to place on the map
-         * MinBuildingsForOp     - [Minimum number of buildings the Attack needs to destory for the op to be a sucess
+         * MinBuildingsForOp     - [Minimum number of buildings the Attack needs to destroy for the op to be a sucess
          *                         [I.E. 10 buildings 5 min. if the attacker kills only 4 they don't get any of the bonuses.
          * MinFloors             - Minimum number of floors in each building.
          * MaxFloors             - Maximum number of floors in each building.

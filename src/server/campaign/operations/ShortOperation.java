@@ -997,7 +997,7 @@ public class ShortOperation implements Comparable {
             
             if ( o.getIntValue("TotalBuildings") > 0 ){
                 isBuildingOperation = true;
-                attackIntel += "<br><b>Mission Objectives:</b><br>You must destory "+o.getValue("MinBuildingsForOp")+ " out of "+o.getValue("TotalBuildings")+" facilities.";
+                attackIntel += "<br><b>Mission Objectives:</b><br>You must destroy "+o.getValue("MinBuildingsForOp")+ " out of "+o.getValue("TotalBuildings")+" facilities.";
                 defendIntel += "<br><b>Mission Objectives:</b><br>You must defend all "+o.getValue("TotalBuildings")+" of your facilities.";
             }
                 

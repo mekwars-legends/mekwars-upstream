@@ -4568,7 +4568,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         lossCompSpring.add(new JLabel("Salvage Multi:",SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html>" +
 				"Multiplier applied to loss compensation (base + variable) if a unit is taken<br>" +
-				"by the enemy (instead of destoryed). Example: a unit that has 30 CBill base + var<br>" +
+				"by the enemy (instead of destroyed). Example: a unit that has 30 CBill base + var<br>" +
 				"is taken by an enemy and a multi of .5 is applied, reducing loss compensation to<br>" +
 				"15 CBills (30 * .5 = 15) before other multis and caps.</html>");
         baseTextField.setName("SalvageMultiToUnitLossPayment");
@@ -4676,7 +4676,7 @@ public final class ServerConfigurationDialog implements ActionListener {
 		ConfigPane.addTab("Factory Options",null,productionPanel,"Factories That Can Do");
 		ConfigPane.addTab("File Paths",null,pathsPanel,"Paths");
 		ConfigPane.addTab("Influence",null,influencePanel,"Influence");
-		ConfigPane.addTab("Loss Compensation",null,lossCompensationPanel,"Extra Payments for salvaged/destoryed units.");
+		ConfigPane.addTab("Loss Compensation",null,lossCompensationPanel,"Extra Payments for salvaged/destroyed units.");
 		ConfigPane.addTab("No Play",null,noPlayPanel,"Personal Blacklist/Exclusion options");
 		ConfigPane.addTab("Pilots",null,pilotsPanel,"Pilot Options");
 		ConfigPane.addTab("Pilot Skills",null,pilotSkillsPanel,"Server Configurable Pilot Skills");

@@ -823,7 +823,7 @@ public class UnitUtils  {
     }
 
     /**
-     * This destorys all the engine crits in the unit this means a botched salvage job
+     * This destroys all the engine crits in the unit this means a botched salvage job
      * or cored unit
      * @param unit
      * @return
@@ -2305,7 +2305,7 @@ public class UnitUtils  {
      * 50% of the CS's in a Mount are damaged/missing/destroyed
      * @param unit
      * @param cs
-     * @return <code>true</code> if destoryed <code>false</code> if damaged
+     * @return <code>true</code> if destroyed <code>false</code> if damaged
      */
     public static boolean isDestroyedOrDamaged(Entity unit, CriticalSlot cs){
         

@@ -2248,7 +2248,7 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
 
         BaseTextField = new JTextField(5);
         destructionPanel.add(new JLabel("Unit Unit adjust:",SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("Number of units to destory based on units used in the op.");
+        BaseTextField.setToolTipText("Number of units to destroy based on units used in the op.");
         BaseTextField.setName("DestroyedUnitsUnitAdjustment");
         destructionPanel.add(BaseTextField);
 
@@ -2521,7 +2521,7 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
         
         BaseTextField = new JTextField(5);
         constructionPanel.add(new JLabel("Min Buildings:",SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>Minimum number of buildings the Attack needs to destory for the op to be a sucess<br>I.E. 10 buildings 5 min. if the attacker kills only 4 they don't get any of the b</html>");
+        BaseTextField.setToolTipText("<html>Minimum number of buildings the Attack needs to destroy for the op to be a sucess<br>I.E. 10 buildings 5 min. if the attacker kills only 4 they don't get any of the b</html>");
         BaseTextField.setName("MinBuildingsForOp");
         constructionPanel.add(BaseTextField);
         
