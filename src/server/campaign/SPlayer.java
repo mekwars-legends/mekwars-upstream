@@ -311,6 +311,10 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		m.setPosId(getFreeID());
 		units.add(m);
 		
+		if(CampaignMain.cm.isUsingMySQL()){
+			CampaignMain.cm.MySQL.unlinkUnit(m.getId());
+			CampaignMain.cm.MySQL.linkUnitToPlayer(m.getId(), getName());
+		}
 		/*
 		 * Send PL|HD. Client-side reading of HD adds units to the hangar
 		 * instead of clearing/replacing the hangar, so we can send just this

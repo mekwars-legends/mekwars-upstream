@@ -1715,7 +1715,8 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 	}
 
 	public String removeUnit(SUnit unitToRemove, boolean sendUpdate) {
-		
+
+
 		Vector<SUnit> Weightclass = this.getHangar(unitToRemove.getType()).elementAt(unitToRemove.getWeightclass());
 		Weightclass.remove(unitToRemove);
 		
@@ -1754,7 +1755,10 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		Vector<SUnit> weightClass = getHangar(unit.getType()).elementAt(unit.getWeightclass());
 		if (weightClass.contains(unit))
 			return "";
-
+		if(CampaignMain.cm.isUsingMySQL()){
+			CampaignMain.cm.MySQL.unlinkUnit(unit.getId());
+			CampaignMain.cm.MySQL.linkUnitToFaction(unit.getId(), getName());
+		}
 		weightClass.add(unit);
 		
 		String hsUpdate = this.getHSUnitAdditionString(unit);
