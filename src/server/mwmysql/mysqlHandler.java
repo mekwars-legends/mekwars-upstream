@@ -62,8 +62,8 @@ public class mysqlHandler{
 	  pih.linkPilotToUnit(pilotID, unitID);
   }
   
-  public void linkPilotToFaction(int pilotID, String factionName) {
-	  pih.linkPilotToFaction(pilotID, factionName);
+  public void linkPilotToFaction(int pilotID, int factionID) {
+	  pih.linkPilotToFaction(pilotID, factionID);
   }
   
   public void linkPilotToPlayer(int pilotID, String playerName) {

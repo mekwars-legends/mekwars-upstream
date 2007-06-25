@@ -30,12 +30,12 @@ public class PilotHandler {
 		}
 	}
 	
-	public void linkPilotToFaction(int pilotID, String factionName) {
+	public void linkPilotToFaction(int pilotID, int factionId) {
 		try {
 			unlinkPilot(pilotID);
 			PreparedStatement ps = con.prepareStatement("INSERT into pilots_to_factions set pilotID = ?, factionName = ?");
 			ps.setInt(1, pilotID);
-			ps.setString(2, factionName);
+			ps.setInt(2, factionId);
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
