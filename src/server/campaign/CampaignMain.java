@@ -3962,6 +3962,8 @@ public final class CampaignMain implements Serializable {
 					PrintStream p = new PrintStream(out);
 
 					p.println(h.toString());
+					if(CampaignMain.cm.isUsingMySQL())
+						CampaignMain.cm.MySQL.saveFaction(h);
 
 					p.close();
 					out.close();

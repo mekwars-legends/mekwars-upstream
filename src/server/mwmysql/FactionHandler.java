@@ -1,9 +1,12 @@
 package server.mwmysql;
 
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.Vector;
 
@@ -23,34 +26,37 @@ public class FactionHandler {
 	public void saveFaction (SHouse h) {
 		PreparedStatement ps;
 		StringBuffer sql = new StringBuffer();
-		ResultSet rs;
+		ResultSet rs = null;
+		Statement stmt;
 		
 		try {
-			ps = con.prepareStatement("SELECT COUNT(*) as num from factions WHERE factionID = ?");
-			ps.setInt(1, h.getId());
-			rs = ps.executeQuery();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT COUNT(*) as numfactions from factions WHERE fID = " + h.getId());
+
 			rs.next();
-			if(rs.getInt("num")== 0) {
+
+			if(rs.getInt("numfactions")== 0) {
 				// Not in the database - INSERT it
 				sql.setLength(0);
 				sql.append("INSERT into factions set ");
-				sql.append("factionName = ?, ");
-				sql.append("factionMoney = ?, ");
-				sql.append("factionColor = ?, ");
-				sql.append("factionAbbreviation = ?, ");
-				sql.append("factionLogo = ?, ");
-				sql.append("factionInitialHouseRanking = ?, ");
-				sql.append("factionConquerable = ?, ");
-				sql.append("factionPlayerColors = ?, ");
-				sql.append("factionInHouseAttacks = ?, ");
-				sql.append("factionAllowDefectionsFrom = ?, ");
-				sql.append("factionFluFile = ?, ");
-				sql.append("factionMOTD = ?, ");
-				sql.append("factionAllowDefectionsTo = ?, ");
-				sql.append("factionTechLevel = ?, ");
-				sql.append("factionBaseGunner = ?, ");
-				sql.append("factionBasePilot = ?, ");
-				sql.append("factionID = ?");
+				sql.append("fName = ?, ");
+				sql.append("fMoney = ?, ");
+				sql.append("fColor = ?, ");
+				sql.append("fAbbreviation = ?, ");
+				sql.append("fLogo = ?, ");
+				sql.append("fInitialHouseRanking = ?, ");
+				sql.append("fConquerable = ?, ");
+				sql.append("fPlayerColors = ?, ");
+				sql.append("fInHouseAttacks = ?, ");
+				sql.append("fAllowDefectionsFrom = ?, ");
+				sql.append("fFluFile = ?, ");
+				sql.append("fMOTD = ?, ");
+				sql.append("fAllowDefectionsTo = ?, ");
+				sql.append("fTechLevel = ?, ");
+				sql.append("fBaseGunner = ?, ");
+				sql.append("fBasePilot = ?, ");
+				sql.append("fID = ?");
+
 				ps = con.prepareStatement(sql.toString());
 				ps.setString(1, h.getName());
 				ps.setInt(2, h.getMoney());
@@ -69,29 +75,30 @@ public class FactionHandler {
 				ps.setInt(15, h.getBaseGunner());
 				ps.setInt(16, h.getBasePilot());
 				ps.setInt(17, h.getId());
+				MMServ.mmlog.dbLog(ps.toString());
 				ps.executeUpdate();
+				MMServ.mmlog.dbLog("Got here");
 			} else {
 				// Already in the database - UPDATE it
 				sql.setLength(0);
-				sql.setLength(0);
 				sql.append("UPDATE factions set ");
-				sql.append("factionName = ?, ");
-				sql.append("factionMoney = ?, ");
-				sql.append("factionColor = ?, ");
-				sql.append("factionAbbreviation = ?, ");
-				sql.append("factionLogo = ?, ");
-				sql.append("factionInitialHouseRanking = ?, ");
-				sql.append("factionConquerable = ?, ");
-				sql.append("factionPlayerColors = ?, ");
-				sql.append("factionInHouseAttacks = ?, ");
-				sql.append("factionAllowDefectionsFrom = ?, ");
-				sql.append("factionFluFile = ?, ");
-				sql.append("factionMOTD = ?, ");
-				sql.append("factionAllowDefectionsTo = ?, ");
-				sql.append("factionTechLevel = ?, ");
-				sql.append("factionBaseGunner = ?, ");
-				sql.append("factionBasePilot = ? ");
-				sql.append("WHERE factionID = ?");
+				sql.append("fName = ?, ");
+				sql.append("fMoney = ?, ");
+				sql.append("fColor = ?, ");
+				sql.append("fAbbreviation = ?, ");
+				sql.append("fLogo = ?, ");
+				sql.append("fInitialHouseRanking = ?, ");
+				sql.append("fConquerable = ?, ");
+				sql.append("fPlayerColors = ?, ");
+				sql.append("fInHouseAttacks = ?, ");
+				sql.append("fAllowDefectionsFrom = ?, ");
+				sql.append("fFluFile = ?, ");
+				sql.append("fMOTD = ?, ");
+				sql.append("fAllowDefectionsTo = ?, ");
+				sql.append("fTechLevel = ?, ");
+				sql.append("fBaseGunner = ?, ");
+				sql.append("fBasePilot = ? ");
+				sql.append("WHERE fID = ?");
 				ps = con.prepareStatement(sql.toString());
 				ps.setString(1, h.getName());
 				ps.setInt(2, h.getMoney());
@@ -113,7 +120,8 @@ public class FactionHandler {
 				ps.executeUpdate();				
 			}
 			
-			// Now we do the vectors
+
+		// Now we do the vectors
 			
 			// Mechs
 			for (int i = 0; i < 4; i++) {
@@ -197,51 +205,46 @@ public class FactionHandler {
 					CampaignMain.cm.MySQL.linkPilotToFaction(currP.getPilotId(), h.getId());
 				}
 				
+
 				// Components
-				
+				ps.executeUpdate("DELETE from factionComponents WHERE factionID = " + h.getId());
+				Enumeration en = h.getComponents().keys();
+				while (en.hasMoreElements()) {
+					Integer id = (Integer) en.nextElement();
+					Vector<Integer> v = h.getComponents().get(id);
+					for (int i = 0; i < v.size(); i ++){
+//						ps.executeUpdate("INSERT into factionComponents set factionID = " + h.getId() + ", unitType = " + id.intValue() + ", unitWeight = " + v + ", components = " + v.elementAt(i).intValue());
+						MMServ.mmlog.dbLog("----------------");
+					MMServ.mmlog.dbLog("Faction ID: " + h.getId());
+					MMServ.mmlog.dbLog("Unit Type: " + id.intValue());
+					MMServ.mmlog.dbLog("Unit Weight: " + v);
+					MMServ.mmlog.dbLog("Components: " + v.elementAt(i).intValue());
+					MMServ.mmlog.dbLog("----------------");
+					}
+				}
+
 				// Pilot Skill
+				ps.executeUpdate("DELETE from faction_pilot_skills WHERE factionID = " + h.getId());
+				for (int pos = 0; pos < Unit.MAXBUILD; pos ++ ) {
+					String skill = h.getBasePilotSkill(pos);
+					ps = con.prepareStatement("INSERT into faction_pilot_skills set factionID = ?, skillName = ?, skillID = ?");
+					ps.setInt(1, h.getId());
+					if(skill.length() < 1)
+						ps.setString(2, " ");
+					else
+					    ps.setString(2, skill);
+					ps.setInt(3, pos);
+					ps.executeUpdate();			
+				}
+				// BaseGunner & Pilot
+				ps.executeUpdate("DELETE from faction_base_gunnery_piloting where factionId = " + h.getId());
+				for (int pos = 0; pos < Unit.MAXBUILD; pos++){
+					ps.executeUpdate("INSERT into faction_base_gunnery_piloting set factionID = " + h.getId() + ", unitType = " + pos + ", baseGunnery = " + h.getBaseGunner(pos) + ", basePiloting = " + h.getBasePilot(pos));
+				}
 				
-				// BaseGunner
-				
-				// BasePilot
-				
-				/**
-				 * 		// Write the Components / BuildingPP's
-		result.append("Components" + "|");
-		Enumeration e = getComponents().keys();
-		while (e.hasMoreElements()) {
-			Integer id = (Integer) e.nextElement();
-			Vector<Integer> v = getComponents().get(id);
-			result.append(id.intValue() + "|" + v.size() + "|");
-			for (int i = 0; i < v.size(); i++)
-				result.append(v.elementAt(i).intValue() + "|");
-		}
-	
-
-		
-
-        for ( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
-            result.append(getBaseGunner(pos));
-            result.append("|");
-            result.append(getBasePilot(pos));
-            result.append("|");
-        }
-
-        for ( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
-        	String skill = getBasePilotSkill(pos);
-        	if ( skill.length() < 1)
-        		result.append(" ");
-        	else
-        		result.append(skill);
-            result.append("|");
-        }
-				 */
-				
-		} catch (SQLException e) {
+			} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in FactionHandler.saveFaction: " + e.getMessage());
-		}
-
-		
+		}	
 	}
 	
 	public FactionHandler (Connection c) {

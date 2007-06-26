@@ -5,6 +5,7 @@ import common.CampaignData;
 import server.mwmysql.MWmysql;
 import server.mwmysql.planetHandler;
 import server.mwmysql.factoryHandler;
+import server.campaign.SHouse;
 import server.campaign.SUnit;
 import server.campaign.SUnitFactory;
 import server.campaign.SPlanet;
@@ -16,7 +17,7 @@ public class mysqlHandler{
   private factoryHandler fh = null;
   private PilotHandler pih = null;
   private UnitHandler uh = null;
-  private FactionHandler fac = null;
+  private FactionHandler fah = null;
 
   public void closeMySQL(){
 	  MySQLCon.close();
@@ -90,12 +91,16 @@ public class mysqlHandler{
 	  uh.linkUnitToFaction(unitID, factionID);
   }
   
+  public void saveFaction(SHouse h) {
+	  fah.saveFaction(h);
+  }
+  
   public mysqlHandler(){
     this.MySQLCon = new MWmysql();
     this.ph = new planetHandler(MySQLCon.con);
     this.fh = new factoryHandler(MySQLCon.con);
     this.pih = new PilotHandler(MySQLCon.con);
     this.uh = new UnitHandler(MySQLCon.con);
-    this.fac = new FactionHandler(MySQLCon.con);
+    this.fah = new FactionHandler(MySQLCon.con);
   }
 }
