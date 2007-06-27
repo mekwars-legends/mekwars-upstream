@@ -852,7 +852,6 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			getPilotQueues().addPilot(u.getType(), (SPilot) u.getPilot(), true);
 		else//normal de-levalling addition	
 			getPilotQueues().addPilot(u.getType(), (SPilot) u.getPilot());
-				
 	}
 
 	public PilotQueues getPilotQueues() {

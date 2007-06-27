@@ -75,9 +75,7 @@ public class FactionHandler {
 				ps.setInt(15, h.getBaseGunner());
 				ps.setInt(16, h.getBasePilot());
 				ps.setInt(17, h.getId());
-				MMServ.mmlog.dbLog(ps.toString());
 				ps.executeUpdate();
-				MMServ.mmlog.dbLog("Got here");
 			} else {
 				// Already in the database - UPDATE it
 				sql.setLength(0);
@@ -170,39 +168,29 @@ public class FactionHandler {
 				LinkedList<SPilot> PilotList = h.getPilotQueues().getPilotQueue(Unit.MEK);
 				for (SPilot currP: PilotList) {
 					CampaignMain.cm.MySQL.savePilot(currP);
-					CampaignMain.cm.MySQL.unlinkPilot(currP.getPilotId());
-					CampaignMain.cm.MySQL.linkPilotToFaction(currP.getPilotId(), h.getId());
 				}
 				// Vehicles
 				PilotList = h.getPilotQueues().getPilotQueue(Unit.MEK);
 				for (SPilot currP: PilotList) {
 					CampaignMain.cm.MySQL.savePilot(currP);
-					CampaignMain.cm.MySQL.unlinkPilot(currP.getPilotId());
-					CampaignMain.cm.MySQL.linkPilotToFaction(currP.getPilotId(), h.getId());
 				}
 				
 				// Infantry
 				PilotList = h.getPilotQueues().getPilotQueue(Unit.MEK);
 				for (SPilot currP: PilotList) {
 					CampaignMain.cm.MySQL.savePilot(currP);
-					CampaignMain.cm.MySQL.unlinkPilot(currP.getPilotId());
-					CampaignMain.cm.MySQL.linkPilotToFaction(currP.getPilotId(), h.getId());
 				}
 				
 				// BattleArmor
 				PilotList = h.getPilotQueues().getPilotQueue(Unit.MEK);
 				for (SPilot currP: PilotList) {
 					CampaignMain.cm.MySQL.savePilot(currP);
-					CampaignMain.cm.MySQL.unlinkPilot(currP.getPilotId());
-					CampaignMain.cm.MySQL.linkPilotToFaction(currP.getPilotId(), h.getId());
 				}
 				
 				// ProtoMechs
 				PilotList = h.getPilotQueues().getPilotQueue(Unit.MEK);
 				for (SPilot currP: PilotList) {
 					CampaignMain.cm.MySQL.savePilot(currP);
-					CampaignMain.cm.MySQL.unlinkPilot(currP.getPilotId());
-					CampaignMain.cm.MySQL.linkPilotToFaction(currP.getPilotId(), h.getId());
 				}
 				
 
@@ -213,28 +201,22 @@ public class FactionHandler {
 					Integer id = (Integer) en.nextElement();
 					Vector<Integer> v = h.getComponents().get(id);
 					for (int i = 0; i < v.size(); i ++){
-//						ps.executeUpdate("INSERT into factionComponents set factionID = " + h.getId() + ", unitType = " + id.intValue() + ", unitWeight = " + v + ", components = " + v.elementAt(i).intValue());
-						MMServ.mmlog.dbLog("----------------");
-					MMServ.mmlog.dbLog("Faction ID: " + h.getId());
-					MMServ.mmlog.dbLog("Unit Type: " + id.intValue());
-					MMServ.mmlog.dbLog("Unit Weight: " + v);
-					MMServ.mmlog.dbLog("Components: " + v.elementAt(i).intValue());
-					MMServ.mmlog.dbLog("----------------");
+						ps.executeUpdate("INSERT into factionComponents set factionID = " + h.getId() + ", unitType = " + id.intValue() + ", unitWeight = " + i + ", components = " + v.elementAt(i).intValue());
 					}
 				}
 
 				// Pilot Skill
+				// Change this so it doesn't save if it's blank.
 				ps.executeUpdate("DELETE from faction_pilot_skills WHERE factionID = " + h.getId());
 				for (int pos = 0; pos < Unit.MAXBUILD; pos ++ ) {
 					String skill = h.getBasePilotSkill(pos);
-					ps = con.prepareStatement("INSERT into faction_pilot_skills set factionID = ?, skillName = ?, skillID = ?");
+
+ 					ps = con.prepareStatement("INSERT into faction_pilot_skills set factionID = ?, skillID = ?, pilotSkills = ?");
 					ps.setInt(1, h.getId());
-					if(skill.length() < 1)
-						ps.setString(2, " ");
-					else
-					    ps.setString(2, skill);
-					ps.setInt(3, pos);
-					ps.executeUpdate();			
+					ps.setString(3, skill);
+					ps.setInt(2, pos);
+					ps.executeUpdate();
+			
 				}
 				// BaseGunner & Pilot
 				ps.executeUpdate("DELETE from faction_base_gunnery_piloting where factionId = " + h.getId());

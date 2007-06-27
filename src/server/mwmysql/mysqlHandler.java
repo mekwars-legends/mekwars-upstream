@@ -71,10 +71,6 @@ public class mysqlHandler{
 	  pih.linkPilotToPlayer(pilotID, playerName);
   }
   
-  public void unlinkPilot(int pilotID){
-	  pih.unlinkPilot(pilotID);
-  }
-
   public void unlinkUnit(int unitID) {
 	  uh.unlinkUnit(unitID);
   }

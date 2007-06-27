@@ -820,6 +820,8 @@ public final class SUnit extends Unit implements Serializable {
 		
 		p.setUnitType(this.getType());
 		super.setPilot(p);
+		if(CampaignMain.cm.isUsingMySQL() && p.getGunnery()!=99)
+			CampaignMain.cm.MySQL.linkPilotToUnit(p.getPilotId(), getId());
 	}
 	
 	public void init() {

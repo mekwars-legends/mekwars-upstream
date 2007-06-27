@@ -188,7 +188,6 @@ public class UnitHandler {
 		// Save the pilot
 		if (u.getPilot().getGunnery()!=99){
 			CampaignMain.cm.MySQL.savePilot((SPilot)u.getPilot());
-			CampaignMain.cm.MySQL.linkPilotToUnit(u.getPilot().getPilotId(), u.getId());
 		}
 	} catch (SQLException e){
 		MMServ.mmlog.dbLog("SQL Exception in UnitHandler.saveUnit: " + e.getMessage());

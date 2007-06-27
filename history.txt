@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.4.x
++ Factions saving to database
 - Removed redundant database linking in SHouse.toString()
 + Changed linkUnitToFaction to use faction ID, rather than Name
 + Fixed several instances of "destroy" being spelled as "destory"

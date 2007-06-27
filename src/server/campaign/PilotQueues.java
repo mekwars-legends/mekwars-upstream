@@ -198,6 +198,11 @@ public class PilotQueues {
 		}//end if(downgrade elites)
 		
 		queues.get(type).addLast(p);
+		
+		if(CampaignMain.cm.isUsingMySQL()) {
+			CampaignMain.cm.MySQL.savePilot(p);
+			CampaignMain.cm.MySQL.linkPilotToFaction(p.getPilotId(), CampaignMain.cm.getData().getHouseByName(getFactionString()).getId());
+		}
 	}//end void addPilot()
 	
 	/**
@@ -215,8 +220,9 @@ public class PilotQueues {
 	
 	public SPilot getPilot(int type) {
 		LinkedList<SPilot> list = queues.get(type);
-		while (list.size() < 10)
+		while (list.size() < 10) 
 			addPilot(type, rollNewPilot(type), true);
+		
 		SPilot pilot = list.remove(CampaignMain.cm.getR().nextInt(list.size()));
 		
 		StringTokenizer ST = new StringTokenizer(getBasePilotSkill(type),"$");
