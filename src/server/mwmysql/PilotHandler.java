@@ -6,9 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Iterator;
+import java.util.StringTokenizer;
+
+import common.campaign.pilot.skills.PilotSkill;
 
 import server.MMServ;
+import server.campaign.CampaignMain;
 import server.campaign.pilot.SPilot;
+import server.campaign.pilot.skills.AstechSkill;
 import server.campaign.pilot.skills.EdgeSkill;
 import server.campaign.pilot.skills.SPilotSkill;
 import server.campaign.pilot.skills.TraitSkill;
@@ -17,6 +22,68 @@ import server.campaign.pilot.skills.WeaponSpecialistSkill;
 public class PilotHandler {
 
 	Connection con;
+	
+	public SPilot loadPilot(int pID) {
+		SPilot p = new SPilot();
+		ResultSet rs;
+		TraitSkill traitSkill = null;
+		try {
+			try {
+				Statement stmt = con.createStatement();
+				rs = stmt.executeQuery("SELECT * from pilots WHERE pilotID = " + pID);
+				if(rs.next()) {
+					p.setName(rs.getString("pilotName"));
+					p.setExperience(rs.getInt("pilotExp"));
+					p.setGunnery(rs.getInt("pilotGunnery"));
+					p.setPiloting(rs.getInt("pilotPiloting"));
+					p.setKills(rs.getInt("pilotKills"));
+					p.setCurrentFaction(rs.getString("pilotCurrentFaction"));
+					p.setPilotId(pID);
+					p.setHits(rs.getInt("pilotHits"));
+			
+					// Load the skills
+					rs = stmt.executeQuery("SELECT * from pilotskills WHERE pilotID = " + pID);
+					while(rs.next()) {
+						SPilotSkill skill = CampaignMain.cm.getPilotSkill(rs.getInt("skillNum"));
+						int level = rs.getInt("skillLevel");
+						if (skill instanceof AstechSkill)
+							skill = new AstechSkill(PilotSkill.AstechSkillID);
+						if(skill instanceof WeaponSpecialistSkill )
+							p.setWeapon(rs.getString("skillData"));
+						if (skill instanceof TraitSkill ) {
+							String traitName = rs.getString("skillData");
+							if (traitName.equalsIgnoreCase("none"))
+								traitSkill = (TraitSkill)skill;
+							else
+								p.setTraitName(traitName);
+						}
+						if (skill instanceof EdgeSkill) {
+							String skillString = rs.getString("skillData");
+							StringTokenizer ST = new StringTokenizer("$", skillString);
+							skill = new EdgeSkill(PilotSkill.EdgeSkillID);
+							((EdgeSkill)skill).setTac(Boolean.parseBoolean(ST.nextToken()));
+							((EdgeSkill)skill).setKO(Boolean.parseBoolean(ST.nextToken()));
+							((EdgeSkill)skill).setHeadHit(Boolean.parseBoolean(ST.nextToken()));
+							((EdgeSkill)skill).setExplosion(Boolean.parseBoolean(ST.nextToken()));
+						}	
+						skill.setLevel(level);
+						skill.addToPilot(p);
+						skill.modifyPilot(p);
+					}
+					if (traitSkill != null)
+						traitSkill.assignTrait(p);
+					if (p.getPilotId() == -1)
+						p.setPilotId(CampaignMain.cm.getAndUpdateCurrentPilotID());
+				}
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in PilotHandler.loadPilot: " + e.getMessage());
+			p.setName(null);
+		} } catch (Exception ex) {
+			MMServ.mmlog.errLog("Error loading Pilot " + p.getPilotId());
+			MMServ.mmlog.errLog(ex);
+		}
+    return p;
+	}
 	
 	public void unlinkPilot(int pilotID) {
 		try {
@@ -59,7 +126,7 @@ public class PilotHandler {
 		}
 	}
 	
-	public void savePilot(SPilot p) {
+	public void savePilot(SPilot p, int unitType, int unitSize) {
 		try {
 			ResultSet rs = null;
 			Statement stmt = con.createStatement();	
@@ -73,7 +140,7 @@ public class PilotHandler {
 				sql.setLength(0);
 
 				PreparedStatement ps;
-				ps = con.prepareStatement("INSERT into pilots set pilotID=?, pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?");
+				ps = con.prepareStatement("INSERT into pilots set pilotID=?, pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ?");
 				ps.setInt(1, p.getPilotId());
 				ps.setString(2, p.getName());
 				ps.setInt(3, p.getExperience());
@@ -82,13 +149,15 @@ public class PilotHandler {
 				ps.setInt(6, p.getKills());
 				ps.setString(7, p.getCurrentFaction());
 				ps.setInt(8, p.getHits());
+				ps.setInt(9, unitSize);
+				ps.setInt(10, unitType);
 				ps.executeUpdate();
 			} else {
 				// Pilot already saved, so UPDATE
 				sql.setLength(0);
 
 				PreparedStatement ps;
-				ps = con.prepareStatement("UPDATE pilots set pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=? WHERE pilotID=?");
+				ps = con.prepareStatement("UPDATE pilots set pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ? WHERE pilotID=?");
 				ps.setString(1, p.getName());
 				ps.setInt(2, p.getExperience());
 				ps.setInt(3, p.getGunnery());
@@ -96,7 +165,9 @@ public class PilotHandler {
 				ps.setInt(5, p.getKills());
 				ps.setString(6, p.getCurrentFaction());
 				ps.setInt(7, p.getHits());
-				ps.setInt(8, p.getPilotId());
+				ps.setInt(8, unitSize);
+				ps.setInt(9, unitType);
+				ps.setInt(10, p.getPilotId());
 				ps.executeUpdate();
 			}
 			//stmt.executeUpdate(sql.toString());

@@ -167,30 +167,30 @@ public class FactionHandler {
 				// Mechs
 				LinkedList<SPilot> PilotList = h.getPilotQueues().getPilotQueue(Unit.MEK);
 				for (SPilot currP: PilotList) {
-					CampaignMain.cm.MySQL.savePilot(currP);
+					CampaignMain.cm.MySQL.savePilot(currP, Unit.MEK, -1);
 				}
 				// Vehicles
-				PilotList = h.getPilotQueues().getPilotQueue(Unit.MEK);
+				PilotList = h.getPilotQueues().getPilotQueue(Unit.VEHICLE);
 				for (SPilot currP: PilotList) {
-					CampaignMain.cm.MySQL.savePilot(currP);
+					CampaignMain.cm.MySQL.savePilot(currP, Unit.VEHICLE, -1);
 				}
 				
 				// Infantry
-				PilotList = h.getPilotQueues().getPilotQueue(Unit.MEK);
+				PilotList = h.getPilotQueues().getPilotQueue(Unit.INFANTRY);
 				for (SPilot currP: PilotList) {
-					CampaignMain.cm.MySQL.savePilot(currP);
+					CampaignMain.cm.MySQL.savePilot(currP, Unit.INFANTRY, -1);
 				}
 				
 				// BattleArmor
-				PilotList = h.getPilotQueues().getPilotQueue(Unit.MEK);
+				PilotList = h.getPilotQueues().getPilotQueue(Unit.BATTLEARMOR);
 				for (SPilot currP: PilotList) {
-					CampaignMain.cm.MySQL.savePilot(currP);
+					CampaignMain.cm.MySQL.savePilot(currP, Unit.BATTLEARMOR, -1);
 				}
 				
 				// ProtoMechs
-				PilotList = h.getPilotQueues().getPilotQueue(Unit.MEK);
+				PilotList = h.getPilotQueues().getPilotQueue(Unit.PROTOMEK);
 				for (SPilot currP: PilotList) {
-					CampaignMain.cm.MySQL.savePilot(currP);
+					CampaignMain.cm.MySQL.savePilot(currP, Unit.PROTOMEK, -1);
 				}
 				
 

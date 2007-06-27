@@ -1,7 +1,12 @@
 package server.mwmysql;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import common.CampaignData;
 
+import server.MMServ;
 import server.mwmysql.MWmysql;
 import server.mwmysql.planetHandler;
 import server.mwmysql.factoryHandler;
@@ -55,8 +60,23 @@ public class mysqlHandler{
 	  ph.deletePlanet(PlanetID);
   }
   
-  public void savePilot(SPilot p) {
-	  pih.savePilot(p);
+  public void loadFactionPilots(SHouse h) {
+	  try {
+		  ResultSet rs;
+		  Statement stmt = MySQLCon.con.createStatement();
+		  
+		  rs = stmt.executeQuery("SELECT pilotID from pilots WHERE factionID = " + h.getId());
+		  while(rs.next()) {
+			  SPilot p = pih.loadPilot(rs.getInt("pilotID"));
+			  
+		  }
+	  } catch (SQLException e) {
+		  MMServ.mmlog.dbLog("SQL Error in mysqlHandler.loadFactionPilots: " + e.getMessage());
+	  }
+  }
+  
+  public void savePilot(SPilot p, int unitType, int unitSize) {
+	  pih.savePilot(p, unitType, unitSize);
   }
   
   public void linkPilotToUnit(int pilotID, int unitID) {

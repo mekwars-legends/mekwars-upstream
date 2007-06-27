@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.4.x
++ Change to pilotHandler.savePilot to save weightclass and unit type, to accomodate Personal Pilot Queues
 + Factions saving to database
 - Removed redundant database linking in SHouse.toString()
 + Changed linkUnitToFaction to use faction ID, rather than Name
