@@ -1735,7 +1735,8 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		if (weightClass.contains(unit))
 			return "";
 		if(CampaignMain.cm.isUsingMySQL()){
-			CampaignMain.cm.MySQL.unlinkUnit(unit.getId());
+			if(unit.getDBId()== 0)
+				CampaignMain.cm.MySQL.saveUnit(unit);
 			CampaignMain.cm.MySQL.linkUnitToFaction(unit.getId(), getId());
 		}
 		weightClass.add(unit);

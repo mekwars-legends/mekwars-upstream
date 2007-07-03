@@ -291,6 +291,9 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		if (isNew) {
 			long immunityTime = Long.parseLong(this.getMyHouse().getConfig("ImmunityTime")) * 1000;
 			m.setPassesMaintainanceUntil(System.currentTimeMillis()+ immunityTime * 2);
+			if(CampaignMain.cm.isUsingMySQL()){
+				CampaignMain.cm.MySQL.saveUnit(m);
+			}
 		}
 		
 		// clear any scrap allowance
@@ -312,7 +315,6 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		units.add(m);
 		
 		if(CampaignMain.cm.isUsingMySQL()){
-			CampaignMain.cm.MySQL.unlinkUnit(m.getId());
 			CampaignMain.cm.MySQL.linkUnitToPlayer(m.getId(), getName());
 		}
 		/*
@@ -2521,8 +2523,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 					result.append("~");
 					
 					if(CampaignMain.cm.isUsingMySQL() && !toClient) {
-						CampaignMain.cm.MySQL.saveUnit(currU);
-						CampaignMain.cm.MySQL.linkUnitToPlayer(currU.getId(), getName());
+						CampaignMain.cm.MySQL.linkUnitToPlayer(currU.getDBId(), getName());
 					}
 				}
 			}

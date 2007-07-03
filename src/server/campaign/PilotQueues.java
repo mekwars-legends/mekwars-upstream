@@ -203,6 +203,7 @@ public class PilotQueues {
 			CampaignMain.cm.MySQL.savePilot(p, type, -1);
 			CampaignMain.cm.MySQL.linkPilotToFaction(p.getPilotId(), CampaignMain.cm.getData().getHouseByName(getFactionString()).getId());
 		}
+
 	}//end void addPilot()
 	
 	/**

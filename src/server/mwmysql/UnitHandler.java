@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import common.Unit;
 import common.util.UnitUtils;
 
 import megamek.common.AmmoType;
@@ -27,16 +28,10 @@ public class UnitHandler {
 	
 	public void linkUnitToFaction(int unitID, int factionID) {
 		try {
-			PreparedStatement ps;
-			ps = con.prepareStatement("DELETE from units_to_factions WHERE unitID = ?");
-			ps.setInt(1, unitID);
-			ps.executeUpdate();
-			
-			ps = con.prepareStatement("INSERT into units_to_factions set unitID = ?, factionID = ?");
-			ps.setInt(1, unitID);
-			ps.setInt(2, factionID);
-			ps.executeUpdate();
-			ps.close();
+			Statement stmt = con.createStatement();
+
+			stmt.executeUpdate("UPDATE units set uPlayerName = NULL, uFactionID = " + factionID + " WHERE ID = " + unitID);
+			stmt.close();
 		} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in UnitHandler.linkUnitToFaction: " + e.getMessage());
 		}
@@ -45,8 +40,7 @@ public class UnitHandler {
 	public void unlinkUnit(int unitID){
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE from units_to_factions WHERE unitID = " + unitID);
-			stmt.executeUpdate("DELETE from units_to_players WHERE unitID = " + unitID);
+			stmt.executeUpdate("UPDATE units set uFactionID = NULL, uPlayerName = NULL WHERE ID = " + unitID);
 			stmt.close();
 		} catch(SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in UnitHandler.unlinkUnit: " + e.getMessage());
@@ -56,13 +50,8 @@ public class UnitHandler {
 	public void linkUnitToPlayer(int unitID, String playerName) {
 		try {
 			PreparedStatement ps;
-			ps = con.prepareStatement("DELETE from units_to_players WHERE unitID = ?");
-			ps.setInt(1, unitID);
-			ps.executeUpdate();
-			
-			ps = con.prepareStatement("INSERT into units_to_players set unitID = ?, playerName = ?");
-			ps.setInt(1, unitID);
-			ps.setString(2, playerName);
+			ps = con.prepareStatement("UPDATE units set uFactionID = NULL, uPlayerName = ? WHERE ID = " + unitID);
+			ps.setString(1, playerName);
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
@@ -72,20 +61,16 @@ public class UnitHandler {
 	
 	public void saveUnit(SUnit u) {
 	PreparedStatement ps;
-	ResultSet rs = null;
 	StringBuffer sql = new StringBuffer();
 	Entity ent = u.getEntity();
+	ResultSet rs;
 	
 	try {
-		ps = con.prepareStatement("SELECT COUNT(*) as num from units where uid=?");
-		ps.setInt(1, u.getId());
-		rs = ps.executeQuery();
-		rs.next();
-		if(rs.getInt("num")==0) {
+			if(u.getDBId()==0) {
 			// Unit's not in there - insert it
 			sql.setLength(0);
-			sql.append("INSERT into units set uID=?, uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?");
-			ps=con.prepareStatement(sql.toString());
+			sql.append("INSERT into units set MWID=?, uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?");
+			ps=con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setInt(1, u.getId());
 			ps.setString(2, u.getUnitFilename());
 			ps.setInt(3, u.getPosId());
@@ -113,10 +98,16 @@ public class UnitHandler {
 			ps.setInt(14, u.getCurrentRepairCost());
 			ps.setInt(15, u.getLifeTimeRepairCost());
 			ps.executeUpdate();
+			rs = ps.getGeneratedKeys();
+			rs.next();
+			int uid = -1;
+			uid = rs.getInt(1);
+			if (uid != -1)
+				u.setDBId(uid);
 		} else {
 			// Unit's already there - update it
 			sql.setLength(0);
-			sql.append("UPDATE units set uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=? where uID=?");
+			sql.append("UPDATE units set uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, MWID=? where ID=?");
 			ps=con.prepareStatement(sql.toString());
 			ps.setString(1, u.getUnitFilename());
 			ps.setInt(2, u.getPosId());
@@ -144,6 +135,7 @@ public class UnitHandler {
 			ps.setInt(13, u.getCurrentRepairCost());
 			ps.setInt(14, u.getLifeTimeRepairCost());
 			ps.setInt(15, u.getId());
+			ps.setInt(16, u.getDBId());
 			ps.executeUpdate();
 		}
 		// Now do Machine Guns
@@ -185,7 +177,7 @@ public class UnitHandler {
 			ps.executeUpdate();
 			AmmoLoc++;
 		}
-		// Save the pilot
+//		 Save the pilot
 		if (u.getPilot().getGunnery()!=99){
 			CampaignMain.cm.MySQL.savePilot((SPilot)u.getPilot(), u.getType(), u.getWeightclass());
 		}
@@ -199,12 +191,102 @@ public class UnitHandler {
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate("DELETE from unit_mgs WHERE unitID = " + unitID);
 			stmt.executeUpdate("DELETE from unit_ammo WHERE unitID = " + unitID);
-			stmt.executeUpdate("DELETE from units WHERE unitID = " + unitID);
+			stmt.executeUpdate("DELETE from units WHERE ID = " + unitID);
 			stmt.close();
 		} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in UnitHandler.deleteUnit: " + e.getMessage());
 		}
 	}
+	
+	public SUnit loadUnit(int unitID) {
+		SUnit u = new SUnit();
+		try {
+			ResultSet rs;
+			Statement stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT * from units WHERE ID = " + unitID);
+			while(rs.next()) {
+			u.setUnitFilename(rs.getString("uFileName"));
+			u.setPosId(rs.getInt("uPosID"));
+			int newstate = rs.getInt("uStatus");
+			u.setProducer(rs.getString("uProducer"));
+			u.setWeightclass(rs.getInt("uWeightClass"));
+			u.setId(unitID);
+			if(CampaignMain.cm.getCurrentUnitID() <= u.getId())
+				CampaignMain.cm.setCurrentUnitID(u.getId() + 1);
+			if (u.getId()==0)
+				u.setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
+			if (newstate == Unit.STATUS_FORSALE && CampaignMain.cm.getMarket().getListingForUnit(u.getId()) == null)
+				u.setStatus(Unit.STATUS_OK);
+			else if (CampaignMain.cm.isUsingAdvanceRepair())
+				u.setStatus(Unit.STATUS_OK);
+			else
+				u.setStatus(newstate);
+			u.setScrappableFor(rs.getInt("uScrappableFor"));
+			u.setRepairCosts(rs.getInt("uCurrentRepairCost"), rs.getInt("uLifetimeRepairCost"));
+
+			Entity unitEntity = u.loadMech(u.getUnitFilename());
+			((Mech)unitEntity).setAutoEject(Boolean.parseBoolean(rs.getString("uAutoEject")));
+			unitEntity.setSpotlight(Boolean.parseBoolean(rs.getString("uHasSpotlight")));
+			unitEntity.setSpotlightState(Boolean.parseBoolean(rs.getString("uIsUsingSpotlight")));
+			if(CampaignMain.cm.isUsingAdvanceRepair())
+				UnitUtils.applyBattleDamage(unitEntity, rs.getString("uBattleDamage"), (CampaignMain.cm.getRTT() != null & CampaignMain.cm.getRTT().unitRepairTimes(u.getId())!=null));
+			if (CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("allow_level_3_targsys")) {
+				int targetingType = rs.getInt("uTargetSystem");
+				if (CampaignMain.cm.getData().getBannedTargetingSystems().containsKey(targetingType) || unitEntity.hasC3() || unitEntity.hasC3i() || UnitUtils.hasTargettingComputer(unitEntity))
+					unitEntity.setTargSysType(MiscType.T_TARGSYS_STANDARD);
+				else
+					unitEntity.setTargSysType(targetingType);
+			}
+			// Load ammo
+			rs = stmt.executeQuery("SELECT * from unit_ammo WHERE unitID = " + unitID + " ORDER BY ammoLocation");
+			ArrayList<Mounted> e = unitEntity.getAmmo();
+			while(rs.next()) {
+				int weaponType = rs.getInt("ammoType");
+				String ammoName = rs.getString("ammoInternalName");
+				int shots = rs.getInt("ammoShotsLeft");
+				boolean hotloaded = Boolean.parseBoolean(rs.getString("ammoHotLoaded"));
+				if(!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("maxtech_hotload"))
+					hotloaded = false;
+				Mounted mWeapon = e.get(rs.getInt("ammoLocation"));
+				AmmoType at = u.getEntityAmmo(weaponType, ammoName);
+				if (at == null)
+					continue;
+				String munition = Long.toString(at.getMunitionType());
+				if (CampaignMain.cm.getData().getServerBannedAmmo().get(munition) != null)
+					continue;
+				mWeapon.changeAmmoType(at);
+				mWeapon.setShotsLeft(shots);
+				mWeapon.setHotLoad(hotloaded);
+			}
+			
+			// Load MGs
+			ArrayList<Mounted> enWeapons = unitEntity.getWeaponList();
+			rs = stmt.executeQuery("SELECT * from unit_mgs WHERE unitID = " + unitID + " ORDER BY mgLocation");
+			while(rs.next()) {
+				int location = rs.getInt("mgLocation");
+				int currentLocation = 0;
+				for (Mounted mWeapon : enWeapons) {
+					if (currentLocation == location ) {
+						mWeapon.setRapidfire(Boolean.parseBoolean(rs.getString("mgRapidFire")));
+						currentLocation++;
+						break;
+					}
+					currentLocation++;
+				}
+			}
+			
+			u.setEntity(unitEntity);
+			SPilot p = new SPilot();
+			p = CampaignMain.cm.MySQL.loadUnitPilot(unitID);
+			u.setPilot(p);
+			u.setLastCombatPilot(p.getPilotId());
+			u.init();
+			}
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in UnitHandler.loadUnit: " + e.getMessage());
+		}
+		return u;
+		}
 	
 	public UnitHandler(Connection c) {
 		this.con = c;

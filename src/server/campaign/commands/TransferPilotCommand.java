@@ -102,17 +102,23 @@ public class TransferPilotCommand implements Command {
 		if (!targetplayer.getMyHouse().equals(player.getMyHouse()) && !targetplayer.getMyHouse().getHouseFightingFor(targetplayer).equals(player.getMyHouse())) {
 			CampaignMain.cm.toUser(targetplayer.getName() + " is not in your faction. You cannot send him units.", Username, true);
 			player.getPersonalPilotQueue().addPilot(pilot, pWeightClass);
+			if(CampaignMain.cm.isUsingMySQL())
+				CampaignMain.cm.MySQL.linkPilotToPlayer(pilot.getPilotId(), Username);
 			return;
 			//Target has no room?
 		} else if (!targetplayer.getMyHouse().isLoggedIntoFaction(targetplayer.getName())) {
 			CampaignMain.cm.toUser(targetplayer.getName() + " is not logged in. You may only transfer to players who are online.", Username, true);
 			player.getPersonalPilotQueue().addPilot(pilot, pWeightClass);
+			if(CampaignMain.cm.isUsingMySQL())
+				CampaignMain.cm.MySQL.linkPilotToPlayer(pilot.getPilotId(), Username);
 			return;
 			//Same IP address?
 		} else if (new Boolean(house.getConfig("IPCheck")).booleanValue()) {
 			if (CampaignMain.cm.getServer().getIP(player.getName()).toString().equals(CampaignMain.cm.getServer().getIP(targetplayer.getName()).toString())) {
 				CampaignMain.cm.toUser(targetplayer.getName() + " has the same IP as you do. You can't send them pilots.", Username, true);
 				player.getPersonalPilotQueue().addPilot(pilot, pWeightClass);
+				if(CampaignMain.cm.isUsingMySQL())
+					CampaignMain.cm.MySQL.linkPilotToPlayer(pilot.getPilotId(), Username);
 				return;
 			}
 		}
@@ -122,6 +128,8 @@ public class TransferPilotCommand implements Command {
 		 * the players' client-side queue representations.
 		 */
 		targetplayer.getPersonalPilotQueue().addPilot(pilot, pWeightClass);
+		if(CampaignMain.cm.isUsingMySQL())
+			CampaignMain.cm.MySQL.linkPilotToPlayer(pilot.getPilotId(), targetplayer.getName());
 		CampaignMain.cm.toUser("PL|RPPPQ|"+pUnitType+"|"+pWeightClass+"|"+pPosition,Username,false);
 		CampaignMain.cm.toUser("PL|AP2PPQ|"+pUnitType+"|"+pWeightClass+"|"+pilot.toFileFormat("#",true),targetPlayer,false);
 		//NOTE: No need to do checkQueueAndWarn b/c transfers that overload barracks are forbidden above.

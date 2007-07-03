@@ -70,6 +70,8 @@ public final class SUnit extends Unit implements Serializable {
 	private Entity unitEntity = null;
     private int lastCombatPilot = -1;
 	
+    private int dbId = 0;
+    
 	//CONSTRUCTOR
 	/**
 	 * For Serialization.
@@ -367,7 +369,12 @@ public final class SUnit extends Unit implements Serializable {
 	 * @return the Serialized Version of this entity
 	 */
 	public String toString(boolean toPlayer) {
-		
+		if (CampaignMain.cm.isUsingMySQL() && !toPlayer) {
+			SPilot p = (SPilot)getPilot();
+			CampaignMain.cm.MySQL.savePilot(p, getType(), getWeightclass());
+			CampaignMain.cm.MySQL.saveUnit(this);
+			CampaignMain.cm.MySQL.linkPilotToUnit(p.getPilotId(), getDBId());
+		}
 		//Recalculate the unit's bv. There is a reason we are sending new data to the player
 		if (toPlayer) {
 			setBV(0);
@@ -526,12 +533,12 @@ public final class SUnit extends Unit implements Serializable {
 				if (CampaignMain.cm.getCurrentUnitID() <= getId())
 					CampaignMain.cm.setCurrentUnitID(getId() + 1);
 			}
-			else
+			else {
 				setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
-			
-			if (this.getId() == 0 )
+			}
+			if (this.getId() == 0 ) {
 				setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
-			
+			}
 			/*
 			 * Handle unit status. FOR_SALE and AdvanceRepair both require special handling. If the
 			 * unit is FOR_SALE, make sure a listing still exists. If not, the server probably crashed
@@ -820,9 +827,7 @@ public final class SUnit extends Unit implements Serializable {
 		
 		p.setUnitType(this.getType());
 		super.setPilot(p);
-		if(CampaignMain.cm.isUsingMySQL() && p.getGunnery()!=99)
-			CampaignMain.cm.MySQL.linkPilotToUnit(p.getPilotId(), getId());
-	}
+		}
 	
 	public void init() {
 		
@@ -1096,4 +1101,11 @@ public final class SUnit extends Unit implements Serializable {
         lastCombatPilot = pilot;
     }
     
+    public int getDBId() {
+    	return dbId;
+    }
+    
+    public void setDBId(int newId) {
+    	dbId = newId;
+    }
 }

@@ -3836,7 +3836,10 @@ public final class CampaignMain implements Serializable {
 	}
 
 	public void loadFactionData() {
-
+//		if(CampaignMain.cm.isUsingMySQL()) {
+//			CampaignMain.cm.MySQL.loadFactions();
+//			return;
+//		}
 		File factionFile = new File("./campaign/factions");
 
 		// Check for new faction save location
@@ -3937,8 +3940,11 @@ public final class CampaignMain implements Serializable {
 
 		synchronized (data.getAllHouses()) {
 			for (House currH : data.getAllHouses()) {
-
 				SHouse h = (SHouse) currH;
+				if(CampaignMain.cm.isUsingMySQL()) {
+					CampaignMain.cm.MySQL.saveFaction(h);
+				}
+
 				String saveName = h.getName().toLowerCase().trim() + ".dat";
 				String backupName = h.getName().toLowerCase().trim() + ".bak";
 
@@ -3962,12 +3968,8 @@ public final class CampaignMain implements Serializable {
 					PrintStream p = new PrintStream(out);
 
 					p.println(h.toString());
-					if(CampaignMain.cm.isUsingMySQL())
-						CampaignMain.cm.MySQL.saveFaction(h);
-
 					p.close();
 					out.close();
-
 				} catch (Exception ex) {
 					MMServ.mmlog.errLog("Unable to save Faction: " + saveName);
 					MMServ.mmlog.errLog(ex);

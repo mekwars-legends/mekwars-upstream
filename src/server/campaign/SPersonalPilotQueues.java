@@ -121,6 +121,11 @@ public class SPersonalPilotQueues {
 
 	    //add the pilot to the correct weightclass list.
 	    this.getUnitTypeQueue(p.getUnitType()).get(weightClass).addLast(p);
+	    
+	    if(CampaignMain.cm.isUsingMySQL()) {
+	    	int type = p.getUnitType();
+	    	CampaignMain.cm.MySQL.savePilot((SPilot)p, type, weightClass);
+	    }
 	}
 	
 	/**

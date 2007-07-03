@@ -5,11 +5,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import common.CampaignData;
+import common.Unit;
 
 import server.MMServ;
 import server.mwmysql.MWmysql;
 import server.mwmysql.planetHandler;
 import server.mwmysql.factoryHandler;
+import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SUnit;
 import server.campaign.SUnitFactory;
@@ -64,15 +66,26 @@ public class mysqlHandler{
 	  try {
 		  ResultSet rs;
 		  Statement stmt = MySQLCon.con.createStatement();
-		  
-		  rs = stmt.executeQuery("SELECT pilotID from pilots WHERE factionID = " + h.getId());
-		  while(rs.next()) {
-			  SPilot p = pih.loadPilot(rs.getInt("pilotID"));
-			  
+
+		  for (int x = Unit.MEK; x < Unit.MAXBUILD; x++) {
+			  rs = stmt.executeQuery("SELECT pilotID from pilots WHERE factionID = " + h.getId() + "AND unitType= " + x);
+			  while(rs.next()) {
+				  SPilot p = pih.loadPilot(rs.getInt("pilotID"));
+				  h.getPilotQueues().loadPilot(x, p);
+			  }			  
 		  }
+
 	  } catch (SQLException e) {
 		  MMServ.mmlog.dbLog("SQL Error in mysqlHandler.loadFactionPilots: " + e.getMessage());
 	  }
+  }
+  
+  public SPilot loadUnitPilot(int unitID) {
+	  return pih.loadUnitPilot(unitID);
+  }
+  
+  public SPilot loadPilot(int pilotID) {
+	  return pih.loadPilot(pilotID);
   }
   
   public void savePilot(SPilot p, int unitType, int unitSize) {
@@ -99,6 +112,11 @@ public class mysqlHandler{
 	  uh.saveUnit(u);
   }
   
+  public SUnit loadUnit(int unitID) {
+	  SUnit u = uh.loadUnit(unitID);
+	  return u;
+  }
+  
   public void linkUnitToPlayer(int unitID, String playerName) {
 	  uh.linkUnitToPlayer(unitID, playerName);
   }
@@ -109,6 +127,10 @@ public class mysqlHandler{
   
   public void saveFaction(SHouse h) {
 	  fah.saveFaction(h);
+  }
+  
+  public void loadFactions() {
+	  fah.loadFactions();
   }
   
   public mysqlHandler(){

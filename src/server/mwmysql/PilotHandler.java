@@ -27,6 +27,9 @@ public class PilotHandler {
 		SPilot p = new SPilot();
 		ResultSet rs;
 		TraitSkill traitSkill = null;
+		p.setName("Vacant");
+		p.setGunnery(99);
+		p.setPiloting(99);
 		try {
 			try {
 				Statement stmt = con.createStatement();
@@ -83,6 +86,20 @@ public class PilotHandler {
 			MMServ.mmlog.errLog(ex);
 		}
     return p;
+	}
+	
+	public SPilot loadUnitPilot(int unitID) {
+		SPilot p = new SPilot();
+		try {
+			ResultSet rs;
+			Statement stmt = con.createStatement();
+			rs = stmt.executeQuery("Select pilotID from pilots WHERE unitID = " + unitID);
+			while(rs.next())
+				p = loadPilot(rs.getInt("pilotID"));
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in PilotHandler.loadUnitPilot: " + e.getMessage());
+		}
+		return p;
 	}
 	
 	public void unlinkPilot(int pilotID) {
@@ -220,6 +237,7 @@ public class PilotHandler {
 		}
 	}
 	
+
 	public PilotHandler(Connection c) {
 		this.con = c;
 	}

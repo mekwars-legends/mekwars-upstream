@@ -81,6 +81,8 @@ public class DonatePilotCommand implements Command {
 					CampaignMain.cm.toUser("You can't afford to retrain this pilot. You need "  + CampaignMain.cm.moneyOrFluMessage(true,true,mechdonateprize) + " and " + CampaignMain.cm.moneyOrFluMessage(false,false,infToDonate)+".", Username, true);
 					//send the pilot back to the players queue.
 					p.getPersonalPilotQueue().addPilot(pilot,weightClass);
+					if(CampaignMain.cm.isUsingMySQL())
+						CampaignMain.cm.MySQL.linkPilotToPlayer(pilot.getPilotId(), Username);
 					return;
 				}
 			}

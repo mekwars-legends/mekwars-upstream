@@ -19,11 +19,15 @@ import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SUnit;
 import server.campaign.pilot.SPilot;
+import server.campaign.NewbieHouse;
+import server.campaign.mercenaries.MercHouse;
 
 public class FactionHandler {
 	Connection con;
 	
 	public void saveFaction (SHouse h) {
+		//TODO: modify this to save the Merc stuff if it's a Merc house
+		
 		PreparedStatement ps;
 		StringBuffer sql = new StringBuffer();
 		ResultSet rs = null;
@@ -55,7 +59,10 @@ public class FactionHandler {
 				sql.append("fTechLevel = ?, ");
 				sql.append("fBaseGunner = ?, ");
 				sql.append("fBasePilot = ?, ");
+				sql.append("fIsNewbieHouse = ?, ");
+				sql.append("fIsMercHouse = ?");
 				sql.append("fID = ?");
+
 
 				ps = con.prepareStatement(sql.toString());
 				ps.setString(1, h.getName());
@@ -74,7 +81,9 @@ public class FactionHandler {
 				ps.setInt(14, h.getTechLevel());
 				ps.setInt(15, h.getBaseGunner());
 				ps.setInt(16, h.getBasePilot());
-				ps.setInt(17, h.getId());
+				ps.setString(17, Boolean.toString(h.isNewbieHouse()));
+				ps.setString(18, Boolean.toString(h.isMercHouse()));
+				ps.setInt(19, h.getId());
 				ps.executeUpdate();
 			} else {
 				// Already in the database - UPDATE it
@@ -227,6 +236,110 @@ public class FactionHandler {
 			} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in FactionHandler.saveFaction: " + e.getMessage());
 		}	
+	}
+	
+	public void loadFactions() {
+		try {
+			ResultSet rs, rs1;
+			Statement stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT * from factions ORDER BY fID");
+			while(rs.next()) {
+				SHouse h;
+				boolean newbieHouse = Boolean.parseBoolean(rs.getString("fIsNewbieHouse"));
+				boolean mercHouse = Boolean.parseBoolean(rs.getString("fIsMercHouse"));
+				if (newbieHouse)
+					h = new NewbieHouse(rs.getInt("fID"));
+				else if (mercHouse)
+					h = new MercHouse(rs.getInt("fID"));
+				else
+					h = new SHouse(rs.getInt("fID"));
+				MMServ.mmlog.createFactionLogger(h.getName());
+				h.setMoney(rs.getInt("fMoney"));
+				h.setHouseColor(rs.getString("fHouseColor"));
+				h.setBaseGunner(rs.getInt("fBaseGunner"));
+				h.setBasePilot(rs.getInt("fBasePilot"));
+				h.setAbbreviation(rs.getString("fAbbreviation"));
+				h.getHangar().put(new Integer(Unit.MEK), new Vector<Vector<SUnit>>(5, 1));
+				h.getHangar().put(new Integer(Unit.VEHICLE), new Vector<Vector<SUnit>>(5, 1));
+				h.getHangar().put(new Integer(Unit.INFANTRY), new Vector<Vector<SUnit>>(5, 1));
+				h.getHangar().put(new Integer(Unit.PROTOMEK), new Vector<Vector<SUnit>>(5, 1));
+				h.getHangar().put(new Integer(Unit.BATTLEARMOR), new Vector<Vector<SUnit>>(5, 1));
+				// Init all of the hangars
+				for (int i = 0; i < 4; i++) {
+
+					h.getHangar(Unit.MEK).add(new Vector<SUnit>());
+					h.getHangar(Unit.VEHICLE).add(new Vector<SUnit>());
+					h.getHangar(Unit.INFANTRY).add(new Vector<SUnit>());
+					h.getHangar(Unit.BATTLEARMOR).add(new Vector<SUnit>());
+					h.getHangar(Unit.PROTOMEK).add(new Vector<SUnit>());
+				}
+				h.getComponents().put(Unit.MEK, new Vector<Integer>(4, 1));
+				h.getComponents().put(Unit.VEHICLE, new Vector<Integer>(4, 1));
+				h.getComponents().put(Unit.INFANTRY, new Vector<Integer>(4, 1));
+				h.getComponents().put(Unit.PROTOMEK, new Vector<Integer>(4, 1));
+				h.getComponents().put(Unit.BATTLEARMOR, new Vector<Integer>(4, 1));
+				
+				for (int i = 0; i < 4; i++) {
+					h.getComponents().get(Unit.MEK).add(0);
+					h.getComponents().get(Unit.VEHICLE).add(0);
+					h.getComponents().get(Unit.INFANTRY).add(0);
+					h.getComponents().get(Unit.PROTOMEK).add(0);
+					h.getComponents().get(Unit.BATTLEARMOR).add(0);
+				}
+				h.setInitialHouseRanking(rs.getInt("fInitialHouseRanking"));
+				h.setConquerable(Boolean.parseBoolean(rs.getString("fConquerable")));
+				h.setInHouseAttacks(Boolean.parseBoolean(rs.getString("fInHouseAttacks")));
+				h.setId(rs.getInt("fID"));
+				h.setHousePlayerColors(rs.getString("fPlayerColors"));
+				h.setHouseDefectionFrom(Boolean.parseBoolean(rs.getString("fAllowDefectionsFrom")));
+				h.setHouseDefectionTo(Boolean.parseBoolean(rs.getString("fAllowDefectionsTo")));
+				h.setHouseFluFile(rs.getString("fFluFile"));
+				h.setMotd(rs.getString("fMOTD"));
+				h.setTechLevel(rs.getInt("fTechLevel"));
+				
+				// Now the vectors
+				
+				 //TODO: Load the Meks
+				
+				
+				//TODO: Load the Vees
+				
+				
+				//TODO: Load the Infantry
+				
+				
+				//TODO: Load the Protomeks
+				
+				
+				//TODO: Load the BattleArmor
+				
+				
+				//TODO: Load the components
+				
+				
+				//TODO: Load the pilotqueues
+				
+				
+				//TODO: Load the baseGunner / BasePilot vectors
+				rs1 = stmt.executeQuery("SELECT * from faction_base_gunnery_piloting WHERE factionID = " + h.getId());
+				while(rs1.next()) {
+					
+				}
+				
+				//TODO: Load the house Piloting skills
+				
+				
+				//TODO: Load the Merc stuff.  Don't forget to change saveFaction to save the Merc stuff
+				
+				
+				
+				
+				CampaignMain.cm.addHouse(h);
+			}
+			
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in FactionHandler.saveFactions: " + e.getMessage());
+		}
 	}
 	
 	public FactionHandler (Connection c) {
