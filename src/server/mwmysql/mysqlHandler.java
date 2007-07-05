@@ -11,7 +11,6 @@ import server.MMServ;
 import server.mwmysql.MWmysql;
 import server.mwmysql.planetHandler;
 import server.mwmysql.factoryHandler;
-import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SUnit;
 import server.campaign.SUnitFactory;
