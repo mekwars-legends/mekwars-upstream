@@ -1,7 +1,9 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.4.x
+v 0.2.5.x
+Release Server & Client 0.2.5.0
++ New MegaMek.jar 0.33.7-MW06042007-5148
 + Change to pilotHandler.savePilot to save weightclass and unit type, to accomodate Personal Pilot Queues
 + Factions saving to database
 - Removed redundant database linking in SHouse.toString()
@@ -33,6 +35,7 @@ v 0.2.4.x
 + Bug: Concurrent Modification errors in LoadPlanets and PDiff.
 + New MM.jar 0.33.7-MW06162007-5114
 + Bug: Loading Unit parts error when Player doesn't have any parts.
+v 0.2.4.x
 Release Server & Client 0.2.4.0
 + RFE 1434391: Complete faction configs in faction config!
 + Added Command SetPlanetConquerPointsCommand

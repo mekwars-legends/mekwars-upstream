@@ -71,6 +71,7 @@ import megamek.common.event.GameTurnChangeEvent;
 import megamek.common.MapSettings;
 import megamek.common.Mech;
 import megamek.common.options.GameOptions;
+import megamek.common.options.IBasicOption;
 import megamek.common.options.Option;
 import megamek.common.options.PilotOptions;
 import megamek.common.options.IOption;
@@ -146,7 +147,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 		gui = new ClientGUI(client);
 		gui.initialize();
 		//client.game.getOptions().
-        Vector<IOption> xmlGameOptions = new Vector<IOption>();
+        Vector<IBasicOption> xmlGameOptions = new Vector<IBasicOption>();
         Vector<IOption> loadOptions = client.game.getOptions().loadOptions();
         
         //Load Defaults first.

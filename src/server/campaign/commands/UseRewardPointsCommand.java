@@ -242,12 +242,12 @@ public class UseRewardPointsCommand implements Command {
 						unitWeight = Unit.LIGHT;
 					break;
 				case Unit.PROTOMEK:
-					typeCost = (Integer.parseInt(house.getConfig("RewardPointsForInf")));
+					typeCost = (Integer.parseInt(house.getConfig("RewardPointsForProto")));
 					if (new Boolean(house.getConfig("UseOnlyLightInfantry")).booleanValue())
 						unitWeight = Unit.LIGHT;
 					break;
 				case Unit.BATTLEARMOR:
-					typeCost = (Integer.parseInt(house.getConfig("RewardPointsForInf")));
+					typeCost = (Integer.parseInt(house.getConfig("RewardPointsForBA")));
 					if (new Boolean(house.getConfig("UseOnlyLightInfantry")).booleanValue() )
 						unitWeight = Unit.LIGHT;
 					break;
