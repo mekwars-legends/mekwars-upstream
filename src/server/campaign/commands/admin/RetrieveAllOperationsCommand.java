@@ -74,6 +74,8 @@ public class RetrieveAllOperationsCommand implements Command {
 	            CampaignMain.cm.doSendModMail("NOTE:",Username+" has retreived "+opFile.getName());
 	            
 	            CampaignMain.cm.toUser("PL|RSOD|"+opData.toString(),Username,false);
+	            //Clean it out for use again.
+	            opData.setLength(0);
 	        }catch(Exception ex){
 	            CampaignMain.cm.toUser("Unable to read "+opFile.getName(),Username,true);
 	            return;

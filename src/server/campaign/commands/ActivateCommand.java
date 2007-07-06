@@ -98,23 +98,14 @@ public class ActivateCommand implements Command {
 				return;
 			}
 			
-			int protoCount = 0;
 			for (Unit currU : currA.getUnits()) {
 				
 				if (currU.hasVacantPilot()) {
 					CampaignMain.cm.toUser("You may not activate with pilotless units!",Username,true);
 					return;
 				}
-				
-				if (currU.getType() == Unit.PROTOMEK)
-					protoCount++;
 			}
 			
-			if (protoCount % 5 != 0) {
-				CampaignMain.cm.toUser("Armies must contain full points of ProtoMeks in order to activate.",Username,true);
-				return;
-			}
-				
 		}
 		
 		

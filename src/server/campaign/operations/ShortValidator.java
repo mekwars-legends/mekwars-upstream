@@ -761,7 +761,9 @@ public class ShortValidator {
 			failureReasons.add(new Integer(SFAIL_ATTACK_OMNIONLY));
 		
 		//proto failures. wee.
-		if (numProtoMeks > 0 && numProtoMeks % 5 != 0)
+		if ( o.getBooleanValue("ProtosMustbeGrouped") 
+				&& numProtoMeks > 0 
+				&& numProtoMeks % 5 != 0)
 			failureReasons.add(new Integer(SFAIL_COMMON_PROTOGROUPS));
 		
 		//add speed failure to list
@@ -1047,7 +1049,9 @@ public class ShortValidator {
 			failureReasons.add(new Integer(SFAIL_DEFEND_OMNIONLY));
 		
 		//proto failures. wee.
-		if (numProtoMeks > 0 && numProtoMeks % 5 != 0)
+		if ( o.getBooleanValue("ProtosMustbeGrouped") 
+				&& numProtoMeks > 0 
+				&& numProtoMeks % 5 != 0)
 			failureReasons.add(new Integer(SFAIL_COMMON_PROTOGROUPS));
 		
 		//add speed failure to list

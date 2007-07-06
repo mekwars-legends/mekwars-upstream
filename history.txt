@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Release Server 0.2.5.2
++ Added check for ProtosMustbeGrouped variable to ShortValidator.java
+- Remove Proto check from activate command no longer need as Ops can set this.
 Release Server & Client 0.2.5.0
 + New MegaMek.jar 0.33.7-MW06042007-5148
 + Change to pilotHandler.savePilot to save weightclass and unit type, to accomodate Personal Pilot Queues
