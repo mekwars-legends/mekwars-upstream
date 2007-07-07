@@ -4,10 +4,11 @@ VERSION HISTORY:
 v 0.2.5.x
 + Release Server 0.2.5.2
 + Added check for ProtosMustbeGrouped variable to ShortValidator.java
-- Remove Proto check from activate command no longer need as Ops can set this.
-Release Server & Client 0.2.5.0
+- Remove Proto check from ActivateCommand. No longer need as Ops can set this.
+R Server & Client 0.2.5.0
 + New MegaMek.jar 0.33.7-MW06042007-5148
-+ Change to pilotHandler.savePilot to save weightclass and unit type, to accomodate Personal Pilot Queues
++ Change to pilotHandler.savePilot to save weightclass and unit type, to
+  accomodate Personal Pilot Queues.
 + Factions saving to database
 - Removed redundant database linking in SHouse.toString()
 + Changed linkUnitToFaction to use faction ID, rather than Name
@@ -16,41 +17,43 @@ Release Server & Client 0.2.5.0
 + All units, in faction bays or player hangars, now save to database
 + BUG: fixed error in ammo saving
 + Units and pilots saved to database 
-+ Converted factoryHandler to use PreparedStatements to protect against line escaping issues.
-+ Default Original owner to NewbieHouseName when loading houses from XML
-  or flat files.
-+ Option for all planetary information to load and save to database
-+ BUG: Planets with apostrophes in the name would not save.  Fixed string escaping.
++ Converted factoryHandler to use PreparedStatements to protect against line
+  escaping issues.
++ Default OriginalOwner to NewbieHouse if loading houses from XML or dat files.
++ Option for all planetary information to load and save to database.
++ BUG: Planets with apostrophes in the name did not save. Fixed string escapes.
 + Pilots now saving to database
 + RFE: Update Operatons no longer kills all short ops. 
-+ Bug: setArmorRepair(Entity, int, int) throwing exception when location was
++ BUG: setArmorRepair(Entity, int, int) throwing exception when location was
   Greater then Mech.LOC_LLEG
-+ Bug: Update Operations kills all Running ops. (Fix Needs Testing)
-+ Bug: Planet Editor not showing Factions in Factory Factions Combobox when
-  They exist as a planet owner.
-+ Bug: removeArmorRepair(Entity, int, int) throwing exception when location was
++ BUG: Planet Editor not showing Factions in Factory Factions Combobox when
+  they exist as a planet owner.
++ BUG: removeArmorRepair(Entity, int, int) throwing exception when location was
   Greater then Mech.LOC_LLEG
 + Added new MegaMek Jar 0.33.7-MW06192007-5114
-+ Bug: Auto repair using the wrong location for reparing rear armor
-+ Bug: autoreorder parts not working inside repair thread.
-+ Bug: buyUnitParts allowing you to buy negative parts
-+ Bug: Salvaging Ammo Bins with ammo in them gave multiple bins.
-+ Bug: Concurrent Modification errors in LoadPlanets and PDiff.
++ BUG: Auto repair using the wrong location for reparing rear armor
++ BUG: autoreorder parts not working inside repair thread.
++ BUG: buyUnitParts allowing you to buy negative parts
++ BUG: Salvaging Ammo Bins with ammo in them gave multiple bins.
++ BUG: Concurrent Modification errors in LoadPlanets and PDiff.
 + New MM.jar 0.33.7-MW06162007-5114
-+ Bug: Loading Unit parts error when Player doesn't have any parts.
-v 0.2.4.x
-Release Server & Client 0.2.4.0
++ BUG: Loading Unit parts error when Player doesn't have any parts.
+
+v 0.2.4.x (Closed)
+R Server & Client 0.2.4.0
 + RFE 1434391: Complete faction configs in faction config!
 + Added Command SetPlanetConquerPointsCommand
-+ Updated Planet Editor dialog to add Minplanet ownership and Conquer Points
-+ RFE 1716034: Allow SO's to sent Planet Conquer Points
++ Updated Planet Editor dialog to add MinPlanetOwnership and Conquer Points
++ RFE 1716034: Allow SO's to set Planet Conquer Points
 + Added get/setConquestPoints() to SPlanet.java
 + BUG: Repair View command not working in Admin Menu List.
-+ BUG: Client wasn't showing current ammo in customization dialog if there was 
-  no reloads in the players cache.
++ BUG: Client wasn't showing current ammo in customization dialog if there were
+  no reloads in the player's cache.
+  
+v 0.2.3.X (Closed)
 + Added Auto Reordering of Ammo when reloading.
-Release Server & Client 0.2.3.0
-+ RFE 1719396: Admin Repair view
+R Server & Client 0.2.3.0
++ RFE 1719396: Admin Repair View
 + RFE 1719397: Admin Unit View
 + New MM.jar
 + Fixed bugs in the Bulk Repair Dialog cost calculations.
@@ -64,39 +67,41 @@ Release Server & Client 0.2.3.0
 + Fixed some dialog starting locations.
 + Added ability to save planetary information to a MySQL database
 + New MM.jar 0.33.7-MW06092007-5114
+
+v 0.2.2.X (Closed)
 + Added Syntax to CreateUnitCommand.
-+ Bug: UnitUtils does not stop at the end of the array when getting damaged 
-	crits
-+ Bug: Advance Repair dialog not showing cost.
++ BUG: UnitUtils does not stop at the end of the array when getting damaged 
+  crits
++ BUG: Advance Repair dialog not showing cost.
 + Added Command RemovePlayerParts
 + Added Command AddPlayerParts
 + Added Command StripAllPlayerPartsCache
-+ Bug: Server was adding parts instead of removing them when repairing.
-+ Added Command ViewPlayerParts
++ BUG: Server adding parts instead of removing them when repairing.
++ Added new command "ViewPlayerParts"
 + Moved MMClientInfo from Common to Server package.
 + Cost to salvage equipment is now based on number of viable crits
 + Cost to repair equipment is now based on number of damaged crits
-+ Bug: Fixed a pricing erorr in get parts costs.
-+ Slowed how quickly parts are restored to the Parts market.
++ BUG: Fixed a pricing error in get parts costs.
++ Slowed how quickly parts are restored to the Parts Market.
 + Added menu item in admin that sends all local ops data to the server.
-+ Added new command RetrieveAllOperationsCommand
-+ Bug: checking for a single skill in SHouse.fromString() in a string of skills
-+ Bug: House techlevel being set to less then 0
-+ Bug: basePilotSkills not getting written to the faction data file correctly
-+ Bug: getArmorCost(Entity) not returning 0 when using parts repair.
-+ Bug: FFA teams would not send the commence link to the original attacker.
-+ Bug: Could not repair ammo bins with parts repairs
-+ Bug: was not resending team number and starting edge on reconnect.
-+ RFE: have all team members deploy in the same location.
-+ Bug: Setting damaged crits as breached making them have to be repaired twice.
-+ Changed falling prices on parts market to only drop a max of 10% at a time.
-+ Bug: Randomly selecting Attackers team can cause the attack to be on their
-	own team. Now attacker starts on team 1.
-+ Bug: Pfile ruined if SPilot loading dies. 
-+ Bug: Defend command still setting teams even if not a team op.
++ Added new command "RetrieveAllOperationsCommand"
++ BUG: checking for a single skill in SHouse.fromString() in a string of skills
++ BUG: House techlevel being set to less then 0
++ BUG: basePilotSkills not getting written to the faction data file correctly
++ BUG: getArmorCost(Entity) not returning 0 when using parts repair.
++ BUG: FFA teams would not send the commence link to the original attacker.
++ BUG: Could not repair ammo bins with parts repairs
++ BUG: Was not resending team number and starting edge on reconnect.
++ RFE: Have all team members deploy in the same location.
++ BUG: Breached crits required two repairs.
++ Changed falling prices on parts market to drop a max of 10% at a time.
++ BUG: Randomly selecting Attackers' team can cause the attack to be on their
+  own team. Now attacker starts on team 1.
++ BUG: Pfile ruined if SPilot loading dies. 
++ BUG: Defend command still setting teams even if not a team op.
 + Added Random Team Selection
 + Fixes to Team Ops
-Release Client & Server 0.2.2.0
+R Client & Server 0.2.2.0
 + New MM.jar 0.33.7-MW06012007-5114
 + RFE 1717489 Support for Teams in Operations
 + New MM.jar 0.33.7-MW05312007-5114
@@ -110,72 +115,76 @@ Release Client & Server 0.2.2.0
 + Changed all Operation value Integer.parse statements to use getIntValue
 + Changed all Operation Value Boolean.parse statements to use getBooleanValue
 + Added MM game Option no_force_size_mod to work with UseOperationsRule config
-+ Patch: Mysql Patch authored by Spork/BillyPinHead
++ PATCH: Mysql Patch authored by Spork/BillyPinHead
+
+v 0.2.1.X (Closed)
 + MM jar 0.33.6-MW05242007-5101
-+ Bug: C3i not disabling level 3 Targeting.
++ BUG: C3i not disabling level 3 Targeting.
 + Debuging PlanetEditorDialog.
-+ Bug: Debuging more issues with PlanetEditorDialog
-+ Bug: out of bounds error in PlanetEditorDialog
-+ Bug: GetFactionConfigsCommand sending FC command as message when 
-  timestamp not found
-+ Cosmetic changes to the Opeditor.
-+ Added access level check to AdminSpoofCommand to see if target could 
-  use the command they where being forced to use.
-+ Updated AdminCreatePlanet command to use less params
-+ All menu driven create planet calls will call the planet Editor Dialog
-+ Finished PlanetEditorDialog, needs Testing
++ BUG: Debugging more issues with PlanetEditorDialog
++ BUG: out of bounds error in PlanetEditorDialog
++ BUG: GetFactionConfigsCommand sending FC command as message when timestamp
+  not found
++ Cosmetic changes to the OpEditor.
++ Added access level check to AdminSpoofCommand to see if target could use the
+  command they were being forced to use.
++ Updated AdminCreatePlanet command, now uses fewer params.
++ All menu-driven create planet calls will start the Planet Editor Dialog
++ Finished PlanetEditorDialog, needs testing.
 + Added command AdminUpdatePlanetOwnership
 + Added command AdminRemovePlanetOwnership
-+ Updated AdminDestroyTerrain now uses Terrain name instead of list position
-+ Bug: purge player was enrolling instead of unenrolling.
-+ RFE: allow SO's to set Element amount for each unit type when using Force 
-	Modifer
++ Updated AdminDestroyTerrain. Now uses Terrain name instead of list position.
++ BUG: Purge was enrolling instead of unenrolling. Oops.
++ RFE: Allow SO's to set Element amount for each unit type when using Force
+  Modifer.
 + More additions to the Planet Editor.
 + Started Planet Editor
-+ Bug: Error message for not finding Player DRAW#....
++ BUG: Error message for not finding Player DRAW#....
 + REF 1531258: Spotlight enabling.
 + Cleaned up some Warnings.
-+ Bug: Able to tab to complete invisible players you could not see.
++ BUG: Able to tab to complete invisible players you could not see.
 + RFE 1675392: Defection List
 + RFE 1686446: Max ELO difrence for Operations
 + RFE 1705469: force refresh factory cmd
-+ Bug: Client not updating Parts black market for tech cross over
++ BUG: Client not updating Parts black market for tech cross over
 + Changed all Boolean/Integer/Double/Float parse methods for server configs to
   use the corrisponding new config method.
 + Added getBooleanConfig()
 + Added getIntegerConfig()
 + Added getDoubleConfig()
 + Added getFloatConfig()
-+ Added new config AllowCrossOverTech if false factions can not see different
-  tech on the parts bm then their own.
++ Added new config AllowCrossOverTech. If false factions cannot see parts on
+  the BM with a techlevel different than their own.
 + RFE: Show Force Modifier BV in HQ
-+ Bug: C3 BV Mod not working with new BV2.0
-+ Can now tab to complete invis player names if your level is >= to theres.
-Release Client & Server 0.2.1.0
++ BUG: C3 BV Mod not working with new BV2.0
++ Can now tab to complete invis player names if your level is >= to theirs.
+R Client & Server 0.2.1.0
 + New MM.jar 0.33.6-MW04272007-5101
-+ Bug: Invalid engine names used when salvaging/repairing engines.
-+ Bug: level 3 targetting was allowed in units with C3i or C3s
-+ Bug: reloading ammo not updating parts cache correctly.
-+ Bug: Price set to zero after buying part on the BM.
-+ Bug: Clan parts bought off the BM showing as Tech Type All.
-+ Bug: Players Parts cached showing as all for Tech type.
-+ Bug: Damaged tanks reporting as cored.
-Release Server 0.2.0.4
-+ Bug: Damaged tanks reporting as cored.
++ BUG: Invalid engine names used when salvaging/repairing engines.
++ BUG: level 3 targetting was allowed in units with C3i or C3s
++ BUG: reloading ammo not updating parts cache correctly.
++ BUG: Price set to zero after buying part on the BM.
++ BUG: Clan parts bought off the BM showing as Tech Type All.
++ BUG: Players Parts cached showing as all for Tech type.
++ BUG: Damaged tanks reporting as cored.
+
+v 0.2.0.0 (Closed)
+R Server 0.2.0.4
++ BUG: Damaged tanks reporting as cored.
 + Bug 1678682: adding warehouses not increasing bays for faction members
 + New MM.jar 0.33.6-MW04252007-5083
-+ Changed ForceUpdateCommand so it sends update command Deds instead of 
-   disconnecting them.
-Release Client 0.2.0.2 Server 0.2.0.3
-+ Bug: SetUnitAmmo and SetUnitAmmoByCrit commands loading all ammo to a bin
-+ Bug: Reload All Ammo command charging money but not reloading ammo.
-+ Bug: Clients throwing bugs when trying to use die command after leaving host/ded.
-+ Bug: GetFactionConfigsCommand would send a PL|FC command without any data 
-	causing the wait command not to be read.
++ Changed ForceUpdateCommand so it sends update command to Deds instead of 
+  disconnecting them.
+R Client 0.2.0.2 & Server 0.2.0.3
++ BUG: SetUnitAmmo and SetUnitAmmoByCrit commands loading all ammo to a bin
++ BUG: Reload All Ammo command charging money but not reloading ammo.
++ BUG: Clients throwing bugs when trying to use die command after leaving host/ded.
++ BUG: GetFactionConfigsCommand would send a PL|FC command without any data, 
+  causing the wait command not to be read.
 + Added error trapping for when messages are recieved by the client and a panel
   doesnt exist.
 + New MM jar 0.33.5-MW04132007-5054
-Release Client & Server 0.2.0.0
+R Client & Server 0.2.0.0
 + New MM jar 0.33.5-MW04122007
 + New MM jar 0.33.5-MW04102007
 + Bug: House bays not updated when units are destroyed.
@@ -190,8 +199,9 @@ Release Client & Server 0.2.0.0
 + Added +4 to tech roll for repairing units that are not a compatible tech
 + Added -4 to tech roll for repairing omnit pods
 + Added House Tech Levels
-v 0.1.54.x(Closed 03/22/07)
-Release Client & Server 0.1.54.1
+
+v 0.1.54.x (Closed 03/22/07)
+R Client & Server 0.1.54.1
 + RFE: Add NonInfantry Units to Operations.
 + BUG 1608412: Problem w/ C3 Linking in client
 + BUG 1428480: c3 networks loading is unreliable
@@ -201,7 +211,7 @@ Release Client & Server 0.1.54.1
   campaign Configs.
 + BUG: Fixed SingaSongCommand Admin issue
 + BUG: Misc bug fixes
-Release client & server 0.1.54.0
+R Client & Server 0.1.54.0
 + New MM Jar 0.33.4-MW022707-5022
 + RFE 1436013: Individual init specified in Operations
 + BUG: Torpedos not listed in ammo data set.
@@ -219,22 +229,21 @@ Release client & server 0.1.54.0
 + MegaMek.jar 0.33.4-MW021907-5022
 
 v 0.1.53.x (No Release)
-Release client & server 0.1.53.0
+R Client & Server 0.1.53.0
 + BUG 1659227: Destroyed Weapons in Tanks not being repaired
 + RFE 1660827: Typo in command name
-+ RFE: dont show people with lower access then user results of a command in mod
-	mail.
++ RFE: don't show people with lower access than user results of a command in
+  mod mail.
 + RFE: /me working in IC House Mod and Mail
 + BUG: DRAW games no longer reporting correctly.
 + BUG: BulkRepairDialog did not select damaged equipment.
 + BUG: CreateUnitCommand was adding skills to pilots incorrectly.
 + moved up house name in toString and fromString in SPlayer (Older string needs 
-	to be removed in later versions)
+  to be removed in later versions)
 + BUG: Players could not load because house was checked before house was loaded
 + Moved online Pilot healing from fromString to its own method
 + added REDCOLOR BLUECOLOR GREENCOLOR to XMLFactionDataParser
-+ added OriginalOwner and op flags to XMLPlanetDataParser and 
-	AdminSavePlanetsToXML
++ added OriginalOwner & op flags to XMLPlanetDataParser, AdminSavePlanetsToXML
 + BUG: AdminReturnPlanetsToOriginalOwners returns a like with only 1 Confirm
 + new MegaMek.jar
 + added standard rewards and rare folders to the server distribution folders
