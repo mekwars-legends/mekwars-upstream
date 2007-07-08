@@ -2171,7 +2171,7 @@ public class CHQPanel extends JPanel {
                         toSend += " "+  Math.round(currArmy.getBV()*forceSizeMod) + " BV";
     					if ( forceSizeMod > 1 )
     						toSend += " vs "+opForceSize+" units";
-    					toSend = ", with";
+    					toSend += ", with";
                         if ( assault > 0)
                             toSend += " "+assault+"A,";
                         if ( heavy > 0)

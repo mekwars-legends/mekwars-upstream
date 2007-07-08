@@ -273,15 +273,20 @@ public class AttackMenu extends JMenu implements ActionListener {
 			for (String currName : allEligibles) {
 				
 				if (!allOps.containsKey(currName)) {
-					MWClient.mwClientLog.clientErrLog("Error in updateMenuItems(): no _" + currName + "_ in allOps.");
 					
-					StringBuilder allOpsList = new StringBuilder("allOps contains: ");
-					for(String currO : allOps.keySet())
-						allOpsList.append(currO + " ");
-					MWClient.mwClientLog.clientErrLog(allOpsList.toString());
+					mwclient.updateOpData();
 					
-					//don't want to stop building because of one bad apple - continue to next element.
-	                continue;
+					if (!allOps.containsKey(currName)) {
+						MWClient.mwClientLog.clientErrLog("Error in updateMenuItems(): no _" + currName + "_ in allOps.");
+						
+						StringBuilder allOpsList = new StringBuilder("allOps contains: ");
+						for(String currO : allOps.keySet())
+							allOpsList.append(currO + " ");
+						MWClient.mwClientLog.clientErrLog(allOpsList.toString());
+						
+						//don't want to stop building because of one bad apple - continue to next element.
+		                continue;
+					}
 				}
 				
 				String[] settings = allOps.get(currName);

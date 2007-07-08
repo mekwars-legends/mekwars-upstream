@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Bug: updateOperations command not forcing Client to update ops list.
 + Release Server 0.2.5.2
 + Added check for ProtosMustbeGrouped variable to ShortValidator.java
 - Remove Proto check from ActivateCommand. No longer need as Ops can set this.

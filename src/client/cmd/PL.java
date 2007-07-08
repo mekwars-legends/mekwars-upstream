@@ -180,6 +180,9 @@ public class PL extends Command {
         else if ( cmd.equals("CPPC") ) {
         	mwclient.getPlayer().getPartsCache().clear();
         }
+        else if ( cmd.equals("UDAO") ) {
+        	mwclient.updateOpData();
+        }
 		else
 			return;
 		
