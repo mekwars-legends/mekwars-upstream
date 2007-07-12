@@ -84,7 +84,6 @@ public class AutomaticBackup implements Runnable{
         playerZipFileName = "./campaign/backup/players"+dateTime+".zip";
         dataZipFileName = "./campaign/backup/data"+dateTime+".zip";
         
-        if(!CampaignMain.cm.isUsingMySQL()) {
         	try{
 	        	out = new FileOutputStream(factionZipFileName);
 	        	zipFile = new ZipOutputStream(out);
@@ -95,6 +94,7 @@ public class AutomaticBackup implements Runnable{
             	MMServ.mmlog.errLog("Unable to create factions zip file");
             	MMServ.mmlog.errLog(ex);
         	}
+            if(!CampaignMain.cm.isUsingMySQL()) {
         	try{
             	out = new FileOutputStream(planetZipFileName);
             	zipFile = new ZipOutputStream(out);
