@@ -49,6 +49,7 @@ public class House implements MMNetSerializable {
 	private String factionFluFile = "Common";
 	
 	private Integer id;
+	private int dbId = 0;
 	private Vector<Integer>baseGunner = new Vector<Integer>(Unit.MAXBUILD);
 	private Vector<Integer>basePilot = new Vector<Integer>(Unit.MAXBUILD);
 	private Vector<String>basePilotSkills = new Vector<String>(Unit.MAXBUILD);
@@ -255,6 +256,14 @@ public class House implements MMNetSerializable {
     	if (id == null)
     		return -1;
         return id.intValue();
+    }
+    
+    public int getDBId() {
+    	return dbId;
+    }
+    
+    public void setDBId(int id) {
+    	dbId = id;
     }
 
     /**

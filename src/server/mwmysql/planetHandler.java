@@ -151,7 +151,7 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 			  String HouseName = rs1.getString("FactionName");
 			  SHouse h = (SHouse)data.getHouseByName(HouseName);
 			  if(h!= null){
-				  influence.put(new Integer(h.getId()), HouseInf);
+			  influence.put(new Integer(h.getId()), HouseInf);
 
 			  } else
 				  MMServ.mmlog.errLog("House not found: " + HouseName);

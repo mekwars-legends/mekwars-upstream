@@ -1,5 +1,11 @@
 package server.mwmysql;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.sql.Connection;
 
 import java.sql.PreparedStatement;
@@ -8,8 +14,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Enumeration;
 import java.util.LinkedList;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
+import common.CampaignData;
 import common.Unit;
 
 
@@ -27,19 +35,12 @@ public class FactionHandler {
 	
 	public void saveFaction (SHouse h) {
 		//TODO: modify this to save the Merc stuff if it's a Merc house
-		
+		MMServ.mmlog.dbLog("Saving Faction " + h.getName());
 		PreparedStatement ps;
 		StringBuffer sql = new StringBuffer();
-		ResultSet rs = null;
-		Statement stmt;
-		
+		ResultSet rs;
 		try {
-			stmt = con.createStatement();
-			rs = stmt.executeQuery("SELECT COUNT(*) as numfactions from factions WHERE fID = " + h.getId());
-
-			rs.next();
-
-			if(rs.getInt("numfactions")== 0) {
+			if(h.getDBId()== 0) {
 				// Not in the database - INSERT it
 				sql.setLength(0);
 				sql.append("INSERT into factions set ");
@@ -61,10 +62,8 @@ public class FactionHandler {
 				sql.append("fBasePilot = ?, ");
 				sql.append("fIsNewbieHouse = ?, ");
 				sql.append("fIsMercHouse = ?");
-				sql.append("fID = ?");
 
-
-				ps = con.prepareStatement(sql.toString());
+				ps = con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setString(1, h.getName());
 				ps.setInt(2, h.getMoney());
 				ps.setString(3, h.getHouseColor());
@@ -83,8 +82,10 @@ public class FactionHandler {
 				ps.setInt(16, h.getBasePilot());
 				ps.setString(17, Boolean.toString(h.isNewbieHouse()));
 				ps.setString(18, Boolean.toString(h.isMercHouse()));
-				ps.setInt(19, h.getId());
 				ps.executeUpdate();
+				rs = ps.getGeneratedKeys();
+				rs.next();
+				h.setDBId(rs.getInt(1));
 			} else {
 				// Already in the database - UPDATE it
 				sql.setLength(0);
@@ -105,7 +106,7 @@ public class FactionHandler {
 				sql.append("fTechLevel = ?, ");
 				sql.append("fBaseGunner = ?, ");
 				sql.append("fBasePilot = ? ");
-				sql.append("WHERE fID = ?");
+				sql.append("WHERE ID = ?");
 				ps = con.prepareStatement(sql.toString());
 				ps.setString(1, h.getName());
 				ps.setInt(2, h.getMoney());
@@ -123,7 +124,7 @@ public class FactionHandler {
 				ps.setInt(14, h.getTechLevel());
 				ps.setInt(15, h.getBaseGunner());
 				ps.setInt(16, h.getBasePilot());
-				ps.setInt(17, h.getId());
+				ps.setInt(17, h.getDBId());
 				ps.executeUpdate();				
 			}
 			
@@ -204,58 +205,142 @@ public class FactionHandler {
 				
 
 				// Components
-				ps.executeUpdate("DELETE from factionComponents WHERE factionID = " + h.getId());
+				ps.executeUpdate("DELETE from factionComponents WHERE factionID = " + h.getDBId());
 				Enumeration en = h.getComponents().keys();
 				while (en.hasMoreElements()) {
 					Integer id = (Integer) en.nextElement();
 					Vector<Integer> v = h.getComponents().get(id);
 					for (int i = 0; i < v.size(); i ++){
-						ps.executeUpdate("INSERT into factionComponents set factionID = " + h.getId() + ", unitType = " + id.intValue() + ", unitWeight = " + i + ", components = " + v.elementAt(i).intValue());
+						ps.executeUpdate("INSERT into factionComponents set factionID = " + h.getDBId() + ", unitType = " + id.intValue() + ", unitWeight = " + i + ", components = " + v.elementAt(i).intValue());
 					}
 				}
 
 				// Pilot Skill
 				// Change this so it doesn't save if it's blank.
-				ps.executeUpdate("DELETE from faction_pilot_skills WHERE factionID = " + h.getId());
+				ps.executeUpdate("DELETE from faction_pilot_skills WHERE factionID = " + h.getDBId());
 				for (int pos = 0; pos < Unit.MAXBUILD; pos ++ ) {
 					String skill = h.getBasePilotSkill(pos);
 
  					ps = con.prepareStatement("INSERT into faction_pilot_skills set factionID = ?, skillID = ?, pilotSkills = ?");
-					ps.setInt(1, h.getId());
+					ps.setInt(1, h.getDBId());
 					ps.setString(3, skill);
 					ps.setInt(2, pos);
 					ps.executeUpdate();
 			
 				}
 				// BaseGunner & Pilot
-				ps.executeUpdate("DELETE from faction_base_gunnery_piloting where factionId = " + h.getId());
+				ps.executeUpdate("DELETE from faction_base_gunnery_piloting where factionId = " + h.getDBId());
 				for (int pos = 0; pos < Unit.MAXBUILD; pos++){
-					ps.executeUpdate("INSERT into faction_base_gunnery_piloting set factionID = " + h.getId() + ", unitType = " + pos + ", baseGunnery = " + h.getBaseGunner(pos) + ", basePiloting = " + h.getBasePilot(pos));
+					ps.executeUpdate("INSERT into faction_base_gunnery_piloting set factionID = " + h.getDBId() + ", unitType = " + pos + ", baseGunnery = " + h.getBaseGunner(pos) + ", basePiloting = " + h.getBasePilot(pos));
 				}
-				
+				// Save the units to a textfile until I can figure out what the hell is up.
+				StringBuffer info = new StringBuffer();
+				for (int i = 0; i < 4; i++) {
+					Vector<SUnit> tmpVec = h.getHangar(Unit.MEK).elementAt(i);
+					tmpVec.trimToSize();
+					info.append(tmpVec.size());
+					info.append("|");
+					
+					for (SUnit currU : tmpVec) {
+						info.append(currU.toString(false));
+						info.append("|");
+					}
+				}
+				for (int i = 0; i < 4; i++) {
+					Vector<SUnit> tmpVec = h.getHangar(Unit.VEHICLE).elementAt(i);
+					tmpVec.trimToSize();
+					info.append(tmpVec.size());
+					info.append("|");
+					
+					for (SUnit currU : tmpVec) {
+						info.append(currU.toString(false));
+						info.append("|");
+					}
+				}
+				if (Boolean.parseBoolean(h.getConfig("UseInfantry"))) {
+					for (int i = 0; i < 4; i++) {
+						Vector<SUnit> tmpVec = h.getHangar(Unit.INFANTRY).elementAt(i);
+						tmpVec.trimToSize();
+						info.append(tmpVec.size());
+						info.append("|");
+					
+						for (SUnit currU : tmpVec) {
+							info.append(currU.toString(false));
+							info.append("|");
+						}
+					}
+				}
+				for (int i = 0; i < 4; i++) {
+					Vector<SUnit> tmpVec = h.getHangar(Unit.PROTOMEK).elementAt(i);
+					tmpVec.trimToSize();
+					info.append(tmpVec.size());
+					info.append("|");
+					
+					for (SUnit currU : tmpVec) {
+						info.append(currU.toString(false));
+						info.append("|");
+					}
+				}
+				for (int i = 0; i < 4; i++) {
+					Vector<SUnit> tmpVec = h.getHangar(Unit.BATTLEARMOR).elementAt(i);
+					tmpVec.trimToSize();
+					info.append(tmpVec.size());
+					info.append("|");
+					
+					for (SUnit currU : tmpVec) {
+						info.append(currU.toString(false));
+						info.append("|");
+					}
+				}
+				File factionFile = new File("./campaign/factions");
+				if (!factionFile.exists())
+					factionFile.mkdir();
+				String saveName = h.getName().toLowerCase().trim() + ".dat";
+				String backupName = h.getName().toLowerCase().trim() + ".bak";
+				try {
+					File faction = new File("./campaign/factions/" + saveName);
+					if(faction.exists()) {
+						File backupFile = new File("./campaign/factions/" + backupName);
+						if(backupFile.exists())
+							backupFile.delete();
+						faction.renameTo(backupFile);
+					}
+					FileOutputStream out = new FileOutputStream ("./campaign/factions/" + saveName);
+					PrintStream p = new PrintStream(out);
+					p.println(info.toString());
+					p.close();
+					out.close();
+				} catch(Exception ex) {
+					MMServ.mmlog.errLog("Unable to save Faction Units in FactionHandler.saveFaction: " + saveName);
+					MMServ.mmlog.errLog(ex);
+				}
 			} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in FactionHandler.saveFaction: " + e.getMessage());
 		}	
 	}
 	
-	public void loadFactions() {
+	public void loadFactions(CampaignData data) {
 		try {
 			ResultSet rs, rs1;
 			Statement stmt = con.createStatement();
-			rs = stmt.executeQuery("SELECT * from factions ORDER BY fID");
+			Statement stmt2 = con.createStatement();
+			rs = stmt.executeQuery("SELECT * from factions ORDER BY ID");
 			while(rs.next()) {
 				SHouse h;
 				boolean newbieHouse = Boolean.parseBoolean(rs.getString("fIsNewbieHouse"));
 				boolean mercHouse = Boolean.parseBoolean(rs.getString("fIsMercHouse"));
 				if (newbieHouse)
-					h = new NewbieHouse(rs.getInt("fID"));
+					h = new NewbieHouse(data.getUnusedHouseID());
 				else if (mercHouse)
-					h = new MercHouse(rs.getInt("fID"));
+					h = new MercHouse(data.getUnusedHouseID());
 				else
-					h = new SHouse(rs.getInt("fID"));
+					h = new SHouse(data.getUnusedHouseID());
+				h.setName(rs.getString("fName"));
 				MMServ.mmlog.createFactionLogger(h.getName());
+				MMServ.mmlog.dbLog("Loading faction " + h.getName());
+				h.setDBId(rs.getInt("ID"));
 				h.setMoney(rs.getInt("fMoney"));
-				h.setHouseColor(rs.getString("fHouseColor"));
+				h.setHouseColor(rs.getString("fColor"));
 				h.setBaseGunner(rs.getInt("fBaseGunner"));
 				h.setBasePilot(rs.getInt("fBasePilot"));
 				h.setAbbreviation(rs.getString("fAbbreviation"));
@@ -289,7 +374,7 @@ public class FactionHandler {
 				h.setInitialHouseRanking(rs.getInt("fInitialHouseRanking"));
 				h.setConquerable(Boolean.parseBoolean(rs.getString("fConquerable")));
 				h.setInHouseAttacks(Boolean.parseBoolean(rs.getString("fInHouseAttacks")));
-				h.setId(rs.getInt("fID"));
+				h.setId(-1);
 				h.setHousePlayerColors(rs.getString("fPlayerColors"));
 				h.setHouseDefectionFrom(Boolean.parseBoolean(rs.getString("fAllowDefectionsFrom")));
 				h.setHouseDefectionTo(Boolean.parseBoolean(rs.getString("fAllowDefectionsTo")));
@@ -297,48 +382,245 @@ public class FactionHandler {
 				h.setMotd(rs.getString("fMOTD"));
 				h.setTechLevel(rs.getInt("fTechLevel"));
 				
-				// Now the vectors
-				
-				 //TODO: Load the Meks
-				
-				
-				//TODO: Load the Vees
-				
-				
-				//TODO: Load the Infantry
-				
-				
-				//TODO: Load the Protomeks
-				
-				
-				//TODO: Load the BattleArmor
-				
-				
-				//TODO: Load the components
-				
-				
-				//TODO: Load the pilotqueues
-				
-				
-				//TODO: Load the baseGunner / BasePilot vectors
-				rs1 = stmt.executeQuery("SELECT * from faction_base_gunnery_piloting WHERE factionID = " + h.getId());
-				while(rs1.next()) {
+				// When we get them loading from the database, get rid of this part
+				File factionFile = new File("./campaign/factions/" + h.getName().toLowerCase().trim() + ".dat");
+				if (factionFile.exists()) {
+					try {
+						FileInputStream fis = new FileInputStream(factionFile);
+						BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+						String line = dis.readLine();
+						StringTokenizer ST = new StringTokenizer(line, "|");
+						
+						// READ THE MEKS
+						for (int i = 0; i < 4; i ++) {
+							int num = (Integer.parseInt(ST.nextToken()));
+							SUnit m = null;
+							for (int j = 0; j < num; j++) {
+								m = new SUnit();
+								m.fromString(ST.nextToken());
+								
+								if(newbieHouse) {
+									int priceForUnit = h.getPriceForUnit(m.getWeightclass(), m.getType());
+									int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
+									CampaignMain.cm.getMarket().addListing("Faction_" + h.getName(), m, priceForUnit, rareSalesTime);
+									m.setStatus(Unit.STATUS_FORSALE);
+								}
+								h.addUnit(m, false);
+							}
+						}
+						// READ THE VEES
+						for (int i = 0; i < 4; i ++) {
+							int num = (Integer.parseInt(ST.nextToken()));
+							SUnit m = null;
+							for (int j = 0; j < num; j++) {
+								m = new SUnit();
+								m.fromString(ST.nextToken());
+								
+								if(newbieHouse) {
+									int priceForUnit = h.getPriceForUnit(m.getWeightclass(), m.getType());
+									int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
+									CampaignMain.cm.getMarket().addListing("Faction_" + h.getName(), m, priceForUnit, rareSalesTime);
+									m.setStatus(Unit.STATUS_FORSALE);
+								}
+								h.addUnit(m, false);
+							}
+						}	
+						// READ THE INFANTRY
+						if (Boolean.parseBoolean(h.getConfig("UseInfantry"))) {
+								for (int i = 0; i < 4; i ++) {
+									int num = (Integer.parseInt(ST.nextToken()));
+									SUnit m = null;
+									for (int j = 0; j < num; j++) {
+										m = new SUnit();
+										m.fromString(ST.nextToken());
+								
+										if(newbieHouse) {
+											int priceForUnit = h.getPriceForUnit(m.getWeightclass(), m.getType());
+											int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
+											CampaignMain.cm.getMarket().addListing("Faction_" + h.getName(), m, priceForUnit, rareSalesTime);
+											m.setStatus(Unit.STATUS_FORSALE);
+										}
+										h.addUnit(m, false);
+									}
+								}	
+						}
+						// READ THE PROTOMEKS
+						for (int i = 0; i < 4; i ++) {
+							int num = (Integer.parseInt(ST.nextToken()));
+							SUnit m = null;
+							for (int j = 0; j < num; j++) {
+								m = new SUnit();
+								m.fromString(ST.nextToken());
+								
+								if(newbieHouse) {
+									int priceForUnit = h.getPriceForUnit(m.getWeightclass(), m.getType());
+									int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
+									CampaignMain.cm.getMarket().addListing("Faction_" + h.getName(), m, priceForUnit, rareSalesTime);
+									m.setStatus(Unit.STATUS_FORSALE);
+								}
+								h.addUnit(m, false);
+							}
+						}	
+						// READ THE BATTLEARMOR
+						for (int i = 0; i < 4; i ++) {
+							int num = (Integer.parseInt(ST.nextToken()));
+							SUnit m = null;
+							for (int j = 0; j < num; j++) {
+								m = new SUnit();
+								m.fromString(ST.nextToken());
+								
+								if(newbieHouse) {
+									int priceForUnit = h.getPriceForUnit(m.getWeightclass(), m.getType());
+									int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
+									CampaignMain.cm.getMarket().addListing("Faction_" + h.getName(), m, priceForUnit, rareSalesTime);
+									m.setStatus(Unit.STATUS_FORSALE);
+								}
+								h.addUnit(m, false);
+							}
+						}	
+
+						dis.close();
+						fis.close();
+					} catch (Exception ex) {
+						
+					}
+				}
 					
+
+				// Now the vectors
+/*				
+				// Load these when I figure out what's wrong with it.  For now, load them from the text file.
+				//Load the Meks
+				MMServ.mmlog.dbLog("Loading Meks");
+				rs1 = stmt2.executeQuery("SELECT MWID from units WHERE uType = " + Unit.MEK + " AND uFactionID = " + h.getDBId());
+				while(rs1.next()) {
+					MMServ.mmlog.dbLog("Loading Unit " + rs1.getInt("MWID"));
+					SUnit u = CampaignMain.cm.MySQL.loadUnit(rs1.getInt("MWID"));
+
+					if ( newbieHouse ){
+						int priceForUnit = h.getPriceForUnit(u.getWeightclass(), u.getType());
+						int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
+						CampaignMain.cm.getMarket().addListing("Faction_" + h.getName(), u,priceForUnit, rareSalesTime);
+						u.setStatus(Unit.STATUS_FORSALE);
+					}
+					MMServ.mmlog.dbLog ("Returned from loading mek");
+					try {
+						h.addUnit(u, false);
+					} catch (Exception ex) {
+						MMServ.mmlog.dbLog("Exception at addUnit: ");
+						MMServ.mmlog.dbLog(ex.toString());
+						MMServ.mmlog.dbLog(ex.getStackTrace().toString());
+					}
+					MMServ.mmlog.dbLog("Unit " + rs1.getInt("MWID") + " loaded");
 				}
 				
-				//TODO: Load the house Piloting skills
+				//Load the Vees
+				MMServ.mmlog.dbLog("Loading Vees");
+				rs1 = stmt2.executeQuery("SELECT MWID from units WHERE uType = " + Unit.VEHICLE + " AND uFactionID = " + h.getDBId());
+				while(rs1.next()) {
+					SUnit u = CampaignMain.cm.MySQL.loadUnit(rs1.getInt("MWID"));
+					if ( newbieHouse ){
+						int priceForUnit = h.getPriceForUnit(u.getWeightclass(), u.getType());
+						int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
+						CampaignMain.cm.getMarket().addListing("Faction_" + h.getName(), u,priceForUnit, rareSalesTime);
+						u.setStatus(Unit.STATUS_FORSALE);
+					}
+					h.addUnit(u, false);
+				}
 				
 				
+				//Load the Infantry
+				MMServ.mmlog.dbLog("Loading Infantry");
+				if (Boolean.parseBoolean(h.getConfig("UseInfantry"))) {
+					rs1 = stmt2.executeQuery("SELECT MWID from units WHERE uType = " + Unit.INFANTRY + " AND uFactionID = " + h.getDBId());
+					while(rs1.next()) {
+						SUnit u = CampaignMain.cm.MySQL.loadUnit(rs1.getInt("MWID"));
+						if ( newbieHouse ){
+							int priceForUnit = h.getPriceForUnit(u.getWeightclass(), u.getType());
+							int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
+							CampaignMain.cm.getMarket().addListing("Faction_" + h.getName(), u,priceForUnit, rareSalesTime);
+							u.setStatus(Unit.STATUS_FORSALE);
+						}
+						h.addUnit(u, false);
+					}
+				}
+				
+				//Load the Protomeks
+				MMServ.mmlog.dbLog("Loading Protos");
+				rs1 = stmt2.executeQuery("SELECT MWID from units WHERE uType = " + Unit.PROTOMEK + " AND uFactionID = " + h.getDBId());
+				while(rs1.next()) {
+					SUnit u = CampaignMain.cm.MySQL.loadUnit(rs1.getInt("MWID"));
+					if ( newbieHouse ){
+						int priceForUnit = h.getPriceForUnit(u.getWeightclass(), u.getType());
+						int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
+						CampaignMain.cm.getMarket().addListing("Faction_" + h.getName(), u,priceForUnit, rareSalesTime);
+						u.setStatus(Unit.STATUS_FORSALE);
+					}
+					h.addUnit(u, false);
+				}
+				
+				
+				//Load the BattleArmor
+				MMServ.mmlog.dbLog("Loading BA");
+				rs1 = stmt2.executeQuery("SELECT MWID from units WHERE uType = " + Unit.BATTLEARMOR + " AND uFactionID = " + h.getDBId());
+				while(rs1.next()) {
+					SUnit u = CampaignMain.cm.MySQL.loadUnit(rs1.getInt("MWID"));
+					if ( newbieHouse ){
+						int priceForUnit = h.getPriceForUnit(u.getWeightclass(), u.getType());
+						int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
+						CampaignMain.cm.getMarket().addListing("Faction_" + h.getName(), u,priceForUnit, rareSalesTime);
+						u.setStatus(Unit.STATUS_FORSALE);
+					}
+					h.addUnit(u, false);
+				}
+				
+				*/
+				
+				//Load the components
+				MMServ.mmlog.dbLog("Loading Components");
+				rs1 = stmt2.executeQuery("SELECT * from factioncomponents where factionID = " + h.getDBId());
+				while (rs1.next()) {
+					h.getComponents().get(rs1.getInt("unitType")).setElementAt(rs1.getInt("components"), rs1.getInt("unitWeight"));
+				}
+				
+				MMServ.mmlog.dbLog("Loading Base Gunnery & Piloting");
+				rs1 = stmt2.executeQuery("SELECT * from faction_base_gunnery_piloting WHERE factionID = " + h.getDBId());
+					while(rs1.next()) {
+					h.setBaseGunner(rs1.getInt("baseGunnery"), rs1.getInt("unitType"));
+					h.setBasePilot(rs1.getInt("basePiloting"), rs1.getInt("unitType"));
+					}
+				
+					MMServ.mmlog.dbLog("Loading Default Pilot Skills");
+				rs1 = stmt2.executeQuery("SELECT * from faction_pilot_skills WHERE factionID = " + h.getDBId());
+					while(rs1.next()) {
+						int skillID = rs1.getInt("skillID");
+						h.setBasePilotSkill(rs1.getString("pilotSkills"), skillID);
+				}
 				//TODO: Load the Merc stuff.  Don't forget to change saveFaction to save the Merc stuff
 				
-				
-				
-				
 				CampaignMain.cm.addHouse(h);
-			}
+				MMServ.mmlog.dbLog("Loading Faction Pilots");
+				CampaignMain.cm.MySQL.loadFactionPilots(h);
+
+				MMServ.mmlog.dbLog("Faction " + h.getName() + " loaded");
+				}
 			
 		} catch (SQLException e) {
-			MMServ.mmlog.dbLog("SQL Error in FactionHandler.saveFactions: " + e.getMessage());
+			e.printStackTrace();
+			MMServ.mmlog.dbLog("SQL Error in FactionHandler.loadFaction: " + e.getMessage());
+		}
+	}
+	
+	public int countFactions() {
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT COUNT(*) as num from factions");
+			rs.next();
+			
+			return rs.getInt("num");
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in FactionHandler.countFactions: " + e.getMessage());
+			return 0;
 		}
 	}
 	

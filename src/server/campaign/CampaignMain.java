@@ -1659,7 +1659,7 @@ public final class CampaignMain implements Serializable {
 			return;
 
 		// No SHouse Data yet? Parse the XML file and creathe them
-		if (data.getAllHouses().size() == 0) {
+		if ((!CampaignMain.cm.isUsingMySQL() && data.getAllHouses().size() == 0) || (cm.isUsingMySQL() && cm.MySQL.countFactions() == 0)) {
 			try {
 				XMLFactionDataParser parser = new XMLFactionDataParser(
 						"./data/factions.xml");
@@ -3836,10 +3836,10 @@ public final class CampaignMain implements Serializable {
 	}
 
 	public void loadFactionData() {
-//		if(CampaignMain.cm.isUsingMySQL()) {
-//			CampaignMain.cm.MySQL.loadFactions();
-//			return;
-//		}
+		if(CampaignMain.cm.isUsingMySQL()) {
+			CampaignMain.cm.MySQL.loadFactions(data);
+			return;
+		}
 		File factionFile = new File("./campaign/factions");
 
 		// Check for new faction save location
@@ -3933,6 +3933,18 @@ public final class CampaignMain implements Serializable {
 	// Save Houses
 	public void saveFactionData() {
 
+		if(CampaignMain.cm.isUsingMySQL()) {
+			for (House currH : data.getAllHouses()) {
+				SHouse h = (SHouse) currH;
+				CampaignMain.cm.MySQL.saveFaction(h);
+				
+				// For right now, we're going to save units to the faction file
+				// I can save them fine to the database, but they're not loading.
+				
+			}
+			return;
+		}
+		
 		// Standard faction saves
 		File factionFile = new File("./campaign/factions");
 		if (!factionFile.exists())
@@ -3941,9 +3953,6 @@ public final class CampaignMain implements Serializable {
 		synchronized (data.getAllHouses()) {
 			for (House currH : data.getAllHouses()) {
 				SHouse h = (SHouse) currH;
-				if(CampaignMain.cm.isUsingMySQL()) {
-					CampaignMain.cm.MySQL.saveFaction(h);
-				}
 
 				String saveName = h.getName().toLowerCase().trim() + ".dat";
 				String backupName = h.getName().toLowerCase().trim() + ".bak";

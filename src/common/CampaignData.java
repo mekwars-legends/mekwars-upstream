@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
+
 import megamek.common.AmmoType;
 
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -61,7 +62,7 @@ import common.util.MMNetXStream;
  * @author Imi (immanuel.scholz@gmx.de)
  */
 public class CampaignData implements TerrainProvider, MMNetSerializable {
-
+	
     public static CampaignData cd;
     
     /**

@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Factions loading from database, except units.
 + Bug: updateOperations command not forcing Client to update ops list.
 + Release Server 0.2.5.2
 + Added check for ProtosMustbeGrouped variable to ShortValidator.java

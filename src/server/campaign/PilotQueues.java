@@ -201,7 +201,7 @@ public class PilotQueues {
 		
 		if(CampaignMain.cm.isUsingMySQL()) {
 			CampaignMain.cm.MySQL.savePilot(p, type, -1);
-			CampaignMain.cm.MySQL.linkPilotToFaction(p.getPilotId(), CampaignMain.cm.getData().getHouseByName(getFactionString()).getId());
+			CampaignMain.cm.MySQL.linkPilotToFaction(p.getPilotId(), CampaignMain.cm.getData().getHouseByName(getFactionString()).getDBId());
 		}
 
 	}//end void addPilot()

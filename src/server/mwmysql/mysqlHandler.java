@@ -67,8 +67,9 @@ public class mysqlHandler{
 		  Statement stmt = MySQLCon.con.createStatement();
 
 		  for (int x = Unit.MEK; x < Unit.MAXBUILD; x++) {
-			  rs = stmt.executeQuery("SELECT pilotID from pilots WHERE factionID = " + h.getId() + "AND unitType= " + x);
+			  rs = stmt.executeQuery("SELECT pilotID from pilots WHERE factionID = " + h.getId() + " AND pilotType= " + x);
 			  while(rs.next()) {
+				  MMServ.mmlog.dbLog("Loading pilots for Faction " + h.getId() + " , type = " + x);
 				  SPilot p = pih.loadPilot(rs.getInt("pilotID"));
 				  h.getPilotQueues().loadPilot(x, p);
 			  }			  
@@ -128,8 +129,12 @@ public class mysqlHandler{
 	  fah.saveFaction(h);
   }
   
-  public void loadFactions() {
-	  fah.loadFactions();
+  public void loadFactions(CampaignData data) {
+	  fah.loadFactions(data);
+  }
+
+  public int countFactions() {
+	  return fah.countFactions();
   }
   
   public mysqlHandler(){

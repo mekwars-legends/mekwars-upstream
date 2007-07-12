@@ -369,12 +369,15 @@ public final class SUnit extends Unit implements Serializable {
 	 * @return the Serialized Version of this entity
 	 */
 	public String toString(boolean toPlayer) {
-		if (CampaignMain.cm.isUsingMySQL() && !toPlayer) {
+		// For the moment, we're going to skip this, as loading units is not currently working.
+/*		if (CampaignMain.cm.isUsingMySQL() && !toPlayer) {
 			SPilot p = (SPilot)getPilot();
 			CampaignMain.cm.MySQL.savePilot(p, getType(), getWeightclass());
 			CampaignMain.cm.MySQL.saveUnit(this);
 			CampaignMain.cm.MySQL.linkPilotToUnit(p.getPilotId(), getDBId());
 		}
+		*/
+		
 		//Recalculate the unit's bv. There is a reason we are sending new data to the player
 		if (toPlayer) {
 			setBV(0);
@@ -501,7 +504,10 @@ public final class SUnit extends Unit implements Serializable {
         result.append("$");
         result.append(this.getLifeTimeRepairCost());
         result.append("$");
-        
+        if(CampaignMain.cm.isUsingMySQL() && ! toPlayer) {
+        	result.append(this.getDBId());
+        	result.append("$");
+        }
 		return result.toString();
 	}
 	
@@ -654,7 +660,8 @@ public final class SUnit extends Unit implements Serializable {
             
             if ( ST.hasMoreTokens() )
             	this.setRepairCosts(Integer.parseInt(ST.nextToken()),Integer.parseInt(ST.nextToken()));
-            
+            if ( CampaignMain.cm.isUsingMySQL() && ST.hasMoreTokens())
+            	this.setDBId(Integer.parseInt(ST.nextToken()));
 			return s;
 		}
 		catch(Exception ex){

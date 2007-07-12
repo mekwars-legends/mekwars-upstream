@@ -24,12 +24,9 @@ public class PilotHandler {
 	Connection con;
 	
 	public SPilot loadPilot(int pID) {
-		SPilot p = new SPilot();
+		SPilot p = new SPilot("Vacant", 99, 99);
 		ResultSet rs;
 		TraitSkill traitSkill = null;
-		p.setName("Vacant");
-		p.setGunnery(99);
-		p.setPiloting(99);
 		try {
 			try {
 				Statement stmt = con.createStatement();
@@ -45,6 +42,7 @@ public class PilotHandler {
 					p.setHits(rs.getInt("pilotHits"));
 			
 					// Load the skills
+					MMServ.mmlog.dbLog("Loading skills for pilot ID " + p.getPilotId());
 					rs = stmt.executeQuery("SELECT * from pilotskills WHERE pilotID = " + pID);
 					while(rs.next()) {
 						SPilotSkill skill = CampaignMain.cm.getPilotSkill(rs.getInt("skillNum"));
@@ -78,12 +76,18 @@ public class PilotHandler {
 					if (p.getPilotId() == -1)
 						p.setPilotId(CampaignMain.cm.getAndUpdateCurrentPilotID());
 				}
+				else {
+					return p;
+				}
 		} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in PilotHandler.loadPilot: " + e.getMessage());
-			p.setName(null);
+			p = new SPilot("Vacant", 99, 99);
+			return p;
 		} } catch (Exception ex) {
 			MMServ.mmlog.errLog("Error loading Pilot " + p.getPilotId());
 			MMServ.mmlog.errLog(ex);
+			p = new SPilot("Vacant", 99, 99);
+			return p;
 		}
     return p;
 	}
@@ -147,6 +151,12 @@ public class PilotHandler {
 		try {
 			ResultSet rs = null;
 			Statement stmt = con.createStatement();	
+
+			if(p == null)
+				return;
+			
+			if(p.getName().equalsIgnoreCase("Vacant"))
+				return;
 			
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT COUNT(*) as num from pilots WHERE pilotID=" + p.getPilotId());

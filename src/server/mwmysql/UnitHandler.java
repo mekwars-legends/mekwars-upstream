@@ -28,9 +28,12 @@ public class UnitHandler {
 	
 	public void linkUnitToFaction(int unitID, int factionID) {
 		try {
+			MMServ.mmlog.dbLog("Linking Unit to Faction: ");
+			MMServ.mmlog.dbLog(" --> Unit ID: " + unitID);
+			MMServ.mmlog.dbLog(" --> Faction ID: " + factionID);
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE units set uPlayerName = NULL, uFactionID = " + factionID + " WHERE ID = " + unitID);
+			stmt.executeUpdate("UPDATE units set uPlayerName = NULL, uFactionID = " + factionID + " WHERE MWID = " + unitID);
 			stmt.close();
 		} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in UnitHandler.linkUnitToFaction: " + e.getMessage());
@@ -50,7 +53,7 @@ public class UnitHandler {
 	public void linkUnitToPlayer(int unitID, String playerName) {
 		try {
 			PreparedStatement ps;
-			ps = con.prepareStatement("UPDATE units set uFactionID = NULL, uPlayerName = ? WHERE ID = " + unitID);
+			ps = con.prepareStatement("UPDATE units set uFactionID = NULL, uPlayerName = ? WHERE MWID = " + unitID);
 			ps.setString(1, playerName);
 			ps.executeUpdate();
 			ps.close();
@@ -63,13 +66,12 @@ public class UnitHandler {
 	PreparedStatement ps;
 	StringBuffer sql = new StringBuffer();
 	Entity ent = u.getEntity();
-	ResultSet rs;
 	
 	try {
 			if(u.getDBId()==0) {
 			// Unit's not in there - insert it
 			sql.setLength(0);
-			sql.append("INSERT into units set MWID=?, uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?");
+			sql.append("INSERT into units set MWID=?, uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, uType=?");
 			ps=con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setInt(1, u.getId());
 			ps.setString(2, u.getUnitFilename());
@@ -97,17 +99,13 @@ public class UnitHandler {
 			ps.setInt(13, u.getLastCombatPilot());
 			ps.setInt(14, u.getCurrentRepairCost());
 			ps.setInt(15, u.getLifeTimeRepairCost());
+			ps.setInt(16, u.getType());
 			ps.executeUpdate();
-			rs = ps.getGeneratedKeys();
-			rs.next();
-			int uid = -1;
-			uid = rs.getInt(1);
-			if (uid != -1)
-				u.setDBId(uid);
+			u.setDBId(u.getId());
 		} else {
 			// Unit's already there - update it
 			sql.setLength(0);
-			sql.append("UPDATE units set uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, MWID=? where ID=?");
+			sql.append("UPDATE units set uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, uType = ? where MWID=?");
 			ps=con.prepareStatement(sql.toString());
 			ps.setString(1, u.getUnitFilename());
 			ps.setInt(2, u.getPosId());
@@ -134,8 +132,8 @@ public class UnitHandler {
 			ps.setInt(12, u.getLastCombatPilot());
 			ps.setInt(13, u.getCurrentRepairCost());
 			ps.setInt(14, u.getLifeTimeRepairCost());
-			ps.setInt(15, u.getId());
-			ps.setInt(16, u.getDBId());
+			ps.setInt(15, u.getType());
+			ps.setInt(16, u.getId());
 			ps.executeUpdate();
 		}
 		// Now do Machine Guns
@@ -159,7 +157,7 @@ public class UnitHandler {
 		ps.executeUpdate("DELETE from unit_ammo WHERE unitID = " + u.getId());
 		
 		ArrayList<Mounted> en_Ammo = ent.getAmmo();
-		int AmmoLoc = 1;
+		int AmmoLoc = 0;
 		for (Mounted mAmmo : en_Ammo ) {
 			boolean hotloaded = mAmmo.isHotLoaded();
 			if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("maxtech_hotload"))
@@ -191,7 +189,7 @@ public class UnitHandler {
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate("DELETE from unit_mgs WHERE unitID = " + unitID);
 			stmt.executeUpdate("DELETE from unit_ammo WHERE unitID = " + unitID);
-			stmt.executeUpdate("DELETE from units WHERE ID = " + unitID);
+			stmt.executeUpdate("DELETE from units WHERE MWID = " + unitID);
 			stmt.close();
 		} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in UnitHandler.deleteUnit: " + e.getMessage());
@@ -201,9 +199,10 @@ public class UnitHandler {
 	public SUnit loadUnit(int unitID) {
 		SUnit u = new SUnit();
 		try {
+			MMServ.mmlog.dbLog("Entering loadUnit, loading unit #: " + unitID);
 			ResultSet rs;
 			Statement stmt = con.createStatement();
-			rs = stmt.executeQuery("SELECT * from units WHERE ID = " + unitID);
+			rs = stmt.executeQuery("SELECT * from units WHERE MWID = " + unitID);
 			while(rs.next()) {
 			u.setUnitFilename(rs.getString("uFileName"));
 			u.setPosId(rs.getInt("uPosID"));
@@ -211,6 +210,7 @@ public class UnitHandler {
 			u.setProducer(rs.getString("uProducer"));
 			u.setWeightclass(rs.getInt("uWeightClass"));
 			u.setId(unitID);
+			u.setDBId(unitID);
 			if(CampaignMain.cm.getCurrentUnitID() <= u.getId())
 				CampaignMain.cm.setCurrentUnitID(u.getId() + 1);
 			if (u.getId()==0)
@@ -237,29 +237,56 @@ public class UnitHandler {
 				else
 					unitEntity.setTargSysType(targetingType);
 			}
-			// Load ammo
+
+			u.setEntity(unitEntity);
+			SPilot p = new SPilot();
+			p = CampaignMain.cm.MySQL.loadUnitPilot(unitID);
+			u.setPilot(p);
+			u.setLastCombatPilot(p.getPilotId());
+			u.init();
+			
+			// Load ammo			
+			MMServ.mmlog.dbLog("Loading ammo....");
 			rs = stmt.executeQuery("SELECT * from unit_ammo WHERE unitID = " + unitID + " ORDER BY ammoLocation");
 			ArrayList<Mounted> e = unitEntity.getAmmo();
 			while(rs.next()) {
 				int weaponType = rs.getInt("ammoType");
 				String ammoName = rs.getString("ammoInternalName");
 				int shots = rs.getInt("ammoShotsLeft");
+				int AmmoLoc = rs.getInt("ammoLocation");
 				boolean hotloaded = Boolean.parseBoolean(rs.getString("ammoHotLoaded"));
 				if(!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("maxtech_hotload"))
 					hotloaded = false;
-				Mounted mWeapon = e.get(rs.getInt("ammoLocation"));
+				MMServ.mmlog.dbLog("Got Here 1");
+
 				AmmoType at = u.getEntityAmmo(weaponType, ammoName);
-				if (at == null)
-					continue;
 				String munition = Long.toString(at.getMunitionType());
-				if (CampaignMain.cm.getData().getServerBannedAmmo().get(munition) != null)
+				
+				if (at == null )
 					continue;
-				mWeapon.changeAmmoType(at);
-				mWeapon.setShotsLeft(shots);
-				mWeapon.setHotLoad(hotloaded);
+				if (CampaignMain.cm.getData().getServerBannedAmmo().get(munition) != null)
+					continue;				
+				MMServ.mmlog.dbLog("Got Here 2");
+				try {
+					MMServ.mmlog.dbLog("AmmoLoc: " + AmmoLoc);
+					unitEntity.getAmmo().get(AmmoLoc).changeAmmoType(at);
+					MMServ.mmlog.dbLog("Got Here A");
+					unitEntity.getAmmo().get(AmmoLoc).setShotsLeft(shots);
+					MMServ.mmlog.dbLog("Got Here B");
+					unitEntity.getAmmo().get(AmmoLoc).setHotLoad(hotloaded);
+					MMServ.mmlog.dbLog("Got Here C");
+				} catch (Exception ex) {
+					MMServ.mmlog.dbLog("Exception: " + ex.toString());
+					MMServ.mmlog.dbLog(ex.getStackTrace().toString());
+				}
+				MMServ.mmlog.dbLog("Got Here 3");
 			}
-			
+			MMServ.mmlog.dbLog("Got Here 4");
+			u.setEntity(unitEntity);
+			MMServ.mmlog.dbLog("Finished loading ammo");
+					
 			// Load MGs
+			MMServ.mmlog.dbLog("Loading mgs....");
 			ArrayList<Mounted> enWeapons = unitEntity.getWeaponList();
 			rs = stmt.executeQuery("SELECT * from unit_mgs WHERE unitID = " + unitID + " ORDER BY mgLocation");
 			while(rs.next()) {
@@ -276,15 +303,13 @@ public class UnitHandler {
 			}
 			
 			u.setEntity(unitEntity);
-			SPilot p = new SPilot();
-			p = CampaignMain.cm.MySQL.loadUnitPilot(unitID);
-			u.setPilot(p);
-			u.setLastCombatPilot(p.getPilotId());
-			u.init();
+			MMServ.mmlog.dbLog("Unit " + unitID + " loaded.  Returning");
 			}
 		} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in UnitHandler.loadUnit: " + e.getMessage());
 		}
+		if(u == null)
+			MMServ.mmlog.dbLog("U is null!!!");
 		return u;
 		}
 	
