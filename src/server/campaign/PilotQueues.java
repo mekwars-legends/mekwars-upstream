@@ -48,6 +48,7 @@ public class PilotQueues {
 	private Vector<Integer> basePiloting = new Vector<Integer>(Unit.MAXBUILD);
 	private Vector<String>  basePilotSkills = new Vector<String>(Unit.MAXBUILD);
 	private String factionString = "";//string for faction specific name list
+	private int factionID;
 	
 	public PilotQueues(Vector<Integer>baseGunnery, Vector<Integer>basePiloting, Vector<String>basePilotSkill) {
 		for (int i = Unit.MEK; i < Unit.MAXBUILD; i++) {
@@ -102,6 +103,13 @@ public class PilotQueues {
 		}
 		else {//skip the skill adjustmebnt
 			queues.get(type).addLast(p);
+			if(CampaignMain.cm.isUsingMySQL()) {
+				if (!p.getName().equalsIgnoreCase("Vacant")){
+						CampaignMain.cm.MySQL.savePilot(p, type, -1);
+						CampaignMain.cm.MySQL.linkPilotToFaction(p.getDBId(), factionID);
+				}
+			}
+			
 		}//end else(bypass the adjustmenbt)
 	}
 	
@@ -200,8 +208,10 @@ public class PilotQueues {
 		queues.get(type).addLast(p);
 		
 		if(CampaignMain.cm.isUsingMySQL()) {
-			CampaignMain.cm.MySQL.savePilot(p, type, -1);
-			CampaignMain.cm.MySQL.linkPilotToFaction(p.getPilotId(), CampaignMain.cm.getData().getHouseByName(getFactionString()).getDBId());
+			if (!p.getName().equalsIgnoreCase("Vacant")){
+					CampaignMain.cm.MySQL.savePilot(p, type, -1);
+					CampaignMain.cm.MySQL.linkPilotToFaction(p.getDBId(), factionID);
+			}
 		}
 
 	}//end void addPilot()
@@ -354,6 +364,9 @@ public class PilotQueues {
 	    this.basePilotSkills.set(type,skills);
 	}
 	
+	public void setFactionID(int factionID) {
+		this.factionID = factionID;
+	}
 	/**
 	 * @return a pilot name
 	 * 

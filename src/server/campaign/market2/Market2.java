@@ -509,8 +509,6 @@ public class Market2 {
 							if (sellingActor.isHuman()) {
 								SPlayer p = (SPlayer) sellingActor;
 								p.getPersonalPilotQueue().addPilot(unitForSale.getPilot(),unitForSale.getWeightclass());
-								if(CampaignMain.cm.isUsingMySQL())
-									CampaignMain.cm.MySQL.linkPilotToPlayer(unitForSale.getPilot().getPilotId(), p.getName());
 								CampaignMain.cm.toUser("PL|AP2PPQ|" + unitForSale.getType() + "|" + unitForSale.getWeightclass() + "|" + ((SPilot) unitForSale.getPilot()).toFileFormat("#", true), p.getName(), false);
 					    	    p.getPersonalPilotQueue().checkQueueAndWarn(p.getName(), unitForSale.getType(), unitForSale.getWeightclass());
 							}

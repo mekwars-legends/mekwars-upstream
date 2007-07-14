@@ -81,8 +81,6 @@ public class DonatePilotCommand implements Command {
 					CampaignMain.cm.toUser("You can't afford to retrain this pilot. You need "  + CampaignMain.cm.moneyOrFluMessage(true,true,mechdonateprize) + " and " + CampaignMain.cm.moneyOrFluMessage(false,false,infToDonate)+".", Username, true);
 					//send the pilot back to the players queue.
 					p.getPersonalPilotQueue().addPilot(pilot,weightClass);
-					if(CampaignMain.cm.isUsingMySQL())
-						CampaignMain.cm.MySQL.linkPilotToPlayer(pilot.getPilotId(), Username);
 					return;
 				}
 			}
@@ -94,6 +92,8 @@ public class DonatePilotCommand implements Command {
 		toUser += ".";
 
 		p.getMyHouse().getPilotQueues().addPilot(unitType,(SPilot)pilot);
+		if(CampaignMain.cm.isUsingMySQL())
+			CampaignMain.cm.MySQL.linkPilotToFaction(((SPilot)pilot).getDBId(), p.getMyHouse().getDBId());
         CampaignMain.cm.toUser("PL|RPPPQ|"+unitType+"|"+weightClass+"|"+pilotLocation,Username,false);
 		CampaignMain.cm.doSendHouseMail(p.getMyHouse(), "NOTE", p.getName() + " donated a " + pilot.getName().trim() + " to the faction pools!");
 

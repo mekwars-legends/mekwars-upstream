@@ -12,6 +12,7 @@ import server.mwmysql.MWmysql;
 import server.mwmysql.planetHandler;
 import server.mwmysql.factoryHandler;
 import server.campaign.SHouse;
+import server.campaign.SPlayer;
 import server.campaign.SUnit;
 import server.campaign.SUnitFactory;
 import server.campaign.SPlanet;
@@ -24,6 +25,7 @@ public class mysqlHandler{
   private PilotHandler pih = null;
   private UnitHandler uh = null;
   private FactionHandler fah = null;
+  private PlayerHandler plh = null;
 
   public void closeMySQL(){
 	  MySQLCon.close();
@@ -67,6 +69,7 @@ public class mysqlHandler{
 		  Statement stmt = MySQLCon.con.createStatement();
 
 		  for (int x = Unit.MEK; x < Unit.MAXBUILD; x++) {
+			  h.getPilotQueues().setFactionID(h.getDBId());
 			  rs = stmt.executeQuery("SELECT pilotID from pilots WHERE factionID = " + h.getId() + " AND pilotType= " + x);
 			  while(rs.next()) {
 				  MMServ.mmlog.dbLog("Loading pilots for Faction " + h.getId() + " , type = " + x);
@@ -100,8 +103,8 @@ public class mysqlHandler{
 	  pih.linkPilotToFaction(pilotID, factionID);
   }
   
-  public void linkPilotToPlayer(int pilotID, String playerName) {
-	  pih.linkPilotToPlayer(pilotID, playerName);
+  public void linkPilotToPlayer(int pilotID, int playerID) {
+	  pih.linkPilotToPlayer(pilotID, playerID);
   }
   
   public void unlinkUnit(int unitID) {
@@ -117,8 +120,8 @@ public class mysqlHandler{
 	  return u;
   }
   
-  public void linkUnitToPlayer(int unitID, String playerName) {
-	  uh.linkUnitToPlayer(unitID, playerName);
+  public void linkUnitToPlayer(int unitID, int playerID) {
+	  uh.linkUnitToPlayer(unitID, playerID);
   }
   
   public void linkUnitToFaction(int unitID, int factionID){
@@ -137,6 +140,22 @@ public class mysqlHandler{
 	  return fah.countFactions();
   }
   
+  public int countPlayers() {
+	  return plh.countPlayers();
+  }
+  
+  public void savePlayer(SPlayer p) {
+	  plh.savePlayer(p);
+  }
+  
+  public int getPlayerIDByName(String name) {
+	  return plh.getPlayerIDByName(name);
+  }
+  
+  public void setPlayerPassword(int ID, String password) {
+	  plh.setPassword(ID, password);
+  }
+  
   public mysqlHandler(){
     this.MySQLCon = new MWmysql();
     this.ph = new planetHandler(MySQLCon.con);
@@ -144,5 +163,6 @@ public class mysqlHandler{
     this.pih = new PilotHandler(MySQLCon.con);
     this.uh = new UnitHandler(MySQLCon.con);
     this.fah = new FactionHandler(MySQLCon.con);
+    this.plh = new PlayerHandler(MySQLCon.con);
   }
 }

@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Players saving to database;
++ Units saving and loading from database;
++ Pilots saving to and loading from database;
++ Factions completely loading from database.
 + Bug: Factions not backed up if using database.
 + Factions loading from database, except units.
 + Bug: updateOperations command not forcing Client to update ops list.

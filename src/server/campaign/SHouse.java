@@ -852,6 +852,8 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			getPilotQueues().addPilot(u.getType(), (SPilot) u.getPilot(), true);
 		else//normal de-levalling addition	
 			getPilotQueues().addPilot(u.getType(), (SPilot) u.getPilot());
+		if(CampaignMain.cm.isUsingMySQL())
+			CampaignMain.cm.MySQL.linkPilotToFaction(((SPilot)u.getPilot()).getDBId(), this.getDBId());
 	}
 
 	public PilotQueues getPilotQueues() {
@@ -1725,6 +1727,9 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
                 && (unit.getType() == Unit.MEK || unit.getType() == Unit.PROTOMEK)
                 && !unit.hasVacantPilot() ){
             this.getPilotQueues().addPilot(unit.getType(),(SPilot)unit.getPilot());
+            if(CampaignMain.cm.isUsingMySQL()) {
+            	CampaignMain.cm.MySQL.linkPilotToFaction(((SPilot)unit.getPilot()).getDBId(), this.getDBId());
+            }
             unit.setPilot(new SPilot("Vacant",99,99));
         }
         
@@ -1737,7 +1742,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		if(CampaignMain.cm.isUsingMySQL()){
 			if(unit.getDBId()== 0)
 				CampaignMain.cm.MySQL.saveUnit(unit);
-			CampaignMain.cm.MySQL.linkUnitToFaction(unit.getId(), getDBId());
+			CampaignMain.cm.MySQL.linkUnitToFaction(unit.getDBId(), this.getDBId());
 		}
 		weightClass.add(unit);
 		

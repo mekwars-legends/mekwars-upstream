@@ -89,8 +89,6 @@ public class ExchangePilotInUnitCommand implements Command {
 				if ( !pilot.getName().equals("Vacant") )
 				{
 					p.getPersonalPilotQueue().addPilot(pilot,m.getWeightclass());
-					if(CampaignMain.cm.isUsingMySQL())
-						CampaignMain.cm.MySQL.linkPilotToPlayer(pilot.getPilotId(), Username);
 					
                     CampaignMain.cm.toUser("PL|AP2PPQ|"+m.getType()+"|"+m.getWeightclass()+"|"+pilot.toFileFormat("#",true),Username,false);
 					CampaignMain.cm.toUser(pilot.getName() + " was moved from your "+ m.getModelName() + " to your barracks.",Username,true);

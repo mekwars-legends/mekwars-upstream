@@ -33,7 +33,7 @@ public class UnitHandler {
 			MMServ.mmlog.dbLog(" --> Faction ID: " + factionID);
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("UPDATE units set uPlayerName = NULL, uFactionID = " + factionID + " WHERE MWID = " + unitID);
+			stmt.executeUpdate("UPDATE units set uPlayerID = NULL, uFactionID = " + factionID + " WHERE MWID = " + unitID);
 			stmt.close();
 		} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in UnitHandler.linkUnitToFaction: " + e.getMessage());
@@ -43,18 +43,18 @@ public class UnitHandler {
 	public void unlinkUnit(int unitID){
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("UPDATE units set uFactionID = NULL, uPlayerName = NULL WHERE ID = " + unitID);
+			stmt.executeUpdate("UPDATE units set uFactionID = NULL, uPlayerID = NULL WHERE ID = " + unitID);
 			stmt.close();
 		} catch(SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in UnitHandler.unlinkUnit: " + e.getMessage());
 		}
 	}
 	
-	public void linkUnitToPlayer(int unitID, String playerName) {
+	public void linkUnitToPlayer(int unitID, int playerID) {
 		try {
 			PreparedStatement ps;
-			ps = con.prepareStatement("UPDATE units set uFactionID = NULL, uPlayerName = ? WHERE MWID = " + unitID);
-			ps.setString(1, playerName);
+			ps = con.prepareStatement("UPDATE units set uFactionID = NULL, uPlayerID = ? WHERE MWID = " + unitID);
+			ps.setInt(1, playerID);
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
@@ -246,9 +246,8 @@ public class UnitHandler {
 			u.init();
 			
 			// Load ammo			
-			MMServ.mmlog.dbLog("Loading ammo....");
 			rs = stmt.executeQuery("SELECT * from unit_ammo WHERE unitID = " + unitID + " ORDER BY ammoLocation");
-			ArrayList<Mounted> e = unitEntity.getAmmo();
+
 			while(rs.next()) {
 				int weaponType = rs.getInt("ammoType");
 				String ammoName = rs.getString("ammoInternalName");
@@ -257,7 +256,6 @@ public class UnitHandler {
 				boolean hotloaded = Boolean.parseBoolean(rs.getString("ammoHotLoaded"));
 				if(!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("maxtech_hotload"))
 					hotloaded = false;
-				MMServ.mmlog.dbLog("Got Here 1");
 
 				AmmoType at = u.getEntityAmmo(weaponType, ammoName);
 				String munition = Long.toString(at.getMunitionType());
@@ -266,27 +264,19 @@ public class UnitHandler {
 					continue;
 				if (CampaignMain.cm.getData().getServerBannedAmmo().get(munition) != null)
 					continue;				
-				MMServ.mmlog.dbLog("Got Here 2");
 				try {
 					MMServ.mmlog.dbLog("AmmoLoc: " + AmmoLoc);
 					unitEntity.getAmmo().get(AmmoLoc).changeAmmoType(at);
-					MMServ.mmlog.dbLog("Got Here A");
 					unitEntity.getAmmo().get(AmmoLoc).setShotsLeft(shots);
-					MMServ.mmlog.dbLog("Got Here B");
 					unitEntity.getAmmo().get(AmmoLoc).setHotLoad(hotloaded);
-					MMServ.mmlog.dbLog("Got Here C");
 				} catch (Exception ex) {
 					MMServ.mmlog.dbLog("Exception: " + ex.toString());
 					MMServ.mmlog.dbLog(ex.getStackTrace().toString());
 				}
-				MMServ.mmlog.dbLog("Got Here 3");
 			}
-			MMServ.mmlog.dbLog("Got Here 4");
 			u.setEntity(unitEntity);
-			MMServ.mmlog.dbLog("Finished loading ammo");
 					
 			// Load MGs
-			MMServ.mmlog.dbLog("Loading mgs....");
 			ArrayList<Mounted> enWeapons = unitEntity.getWeaponList();
 			rs = stmt.executeQuery("SELECT * from unit_mgs WHERE unitID = " + unitID + " ORDER BY mgLocation");
 			while(rs.next()) {
@@ -303,7 +293,7 @@ public class UnitHandler {
 			}
 			
 			u.setEntity(unitEntity);
-			MMServ.mmlog.dbLog("Unit " + unitID + " loaded.  Returning");
+			MMServ.mmlog.dbLog("Unit " + unitID + " loaded.");
 			}
 		} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in UnitHandler.loadUnit: " + e.getMessage());

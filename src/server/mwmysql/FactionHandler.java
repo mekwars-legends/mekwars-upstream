@@ -1,11 +1,6 @@
 package server.mwmysql;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+
 import java.sql.Connection;
 
 import java.sql.PreparedStatement;
@@ -14,7 +9,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Enumeration;
 import java.util.LinkedList;
-import java.util.StringTokenizer;
 import java.util.Vector;
 
 import common.CampaignData;
@@ -233,88 +227,7 @@ public class FactionHandler {
 				for (int pos = 0; pos < Unit.MAXBUILD; pos++){
 					ps.executeUpdate("INSERT into faction_base_gunnery_piloting set factionID = " + h.getDBId() + ", unitType = " + pos + ", baseGunnery = " + h.getBaseGunner(pos) + ", basePiloting = " + h.getBasePilot(pos));
 				}
-				// Save the units to a textfile until I can figure out what the hell is up.
-				StringBuffer info = new StringBuffer();
-				for (int i = 0; i < 4; i++) {
-					Vector<SUnit> tmpVec = h.getHangar(Unit.MEK).elementAt(i);
-					tmpVec.trimToSize();
-					info.append(tmpVec.size());
-					info.append("|");
-					
-					for (SUnit currU : tmpVec) {
-						info.append(currU.toString(false));
-						info.append("|");
-					}
-				}
-				for (int i = 0; i < 4; i++) {
-					Vector<SUnit> tmpVec = h.getHangar(Unit.VEHICLE).elementAt(i);
-					tmpVec.trimToSize();
-					info.append(tmpVec.size());
-					info.append("|");
-					
-					for (SUnit currU : tmpVec) {
-						info.append(currU.toString(false));
-						info.append("|");
-					}
-				}
-				if (Boolean.parseBoolean(h.getConfig("UseInfantry"))) {
-					for (int i = 0; i < 4; i++) {
-						Vector<SUnit> tmpVec = h.getHangar(Unit.INFANTRY).elementAt(i);
-						tmpVec.trimToSize();
-						info.append(tmpVec.size());
-						info.append("|");
-					
-						for (SUnit currU : tmpVec) {
-							info.append(currU.toString(false));
-							info.append("|");
-						}
-					}
-				}
-				for (int i = 0; i < 4; i++) {
-					Vector<SUnit> tmpVec = h.getHangar(Unit.PROTOMEK).elementAt(i);
-					tmpVec.trimToSize();
-					info.append(tmpVec.size());
-					info.append("|");
-					
-					for (SUnit currU : tmpVec) {
-						info.append(currU.toString(false));
-						info.append("|");
-					}
-				}
-				for (int i = 0; i < 4; i++) {
-					Vector<SUnit> tmpVec = h.getHangar(Unit.BATTLEARMOR).elementAt(i);
-					tmpVec.trimToSize();
-					info.append(tmpVec.size());
-					info.append("|");
-					
-					for (SUnit currU : tmpVec) {
-						info.append(currU.toString(false));
-						info.append("|");
-					}
-				}
-				File factionFile = new File("./campaign/factions");
-				if (!factionFile.exists())
-					factionFile.mkdir();
-				String saveName = h.getName().toLowerCase().trim() + ".dat";
-				String backupName = h.getName().toLowerCase().trim() + ".bak";
-				try {
-					File faction = new File("./campaign/factions/" + saveName);
-					if(faction.exists()) {
-						File backupFile = new File("./campaign/factions/" + backupName);
-						if(backupFile.exists())
-							backupFile.delete();
-						faction.renameTo(backupFile);
-					}
-					FileOutputStream out = new FileOutputStream ("./campaign/factions/" + saveName);
-					PrintStream p = new PrintStream(out);
-					p.println(info.toString());
-					p.close();
-					out.close();
-				} catch(Exception ex) {
-					MMServ.mmlog.errLog("Unable to save Faction Units in FactionHandler.saveFaction: " + saveName);
-					MMServ.mmlog.errLog(ex);
-				}
-			} catch (SQLException e) {
+				} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in FactionHandler.saveFaction: " + e.getMessage());
 		}	
 	}
@@ -381,115 +294,8 @@ public class FactionHandler {
 				h.setHouseFluFile(rs.getString("fFluFile"));
 				h.setMotd(rs.getString("fMOTD"));
 				h.setTechLevel(rs.getInt("fTechLevel"));
-				
-				// When we get them loading from the database, get rid of this part
-				File factionFile = new File("./campaign/factions/" + h.getName().toLowerCase().trim() + ".dat");
-				if (factionFile.exists()) {
-					try {
-						FileInputStream fis = new FileInputStream(factionFile);
-						BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
-						String line = dis.readLine();
-						StringTokenizer ST = new StringTokenizer(line, "|");
-						
-						// READ THE MEKS
-						for (int i = 0; i < 4; i ++) {
-							int num = (Integer.parseInt(ST.nextToken()));
-							SUnit m = null;
-							for (int j = 0; j < num; j++) {
-								m = new SUnit();
-								m.fromString(ST.nextToken());
-								
-								if(newbieHouse) {
-									int priceForUnit = h.getPriceForUnit(m.getWeightclass(), m.getType());
-									int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
-									CampaignMain.cm.getMarket().addListing("Faction_" + h.getName(), m, priceForUnit, rareSalesTime);
-									m.setStatus(Unit.STATUS_FORSALE);
-								}
-								h.addUnit(m, false);
-							}
-						}
-						// READ THE VEES
-						for (int i = 0; i < 4; i ++) {
-							int num = (Integer.parseInt(ST.nextToken()));
-							SUnit m = null;
-							for (int j = 0; j < num; j++) {
-								m = new SUnit();
-								m.fromString(ST.nextToken());
-								
-								if(newbieHouse) {
-									int priceForUnit = h.getPriceForUnit(m.getWeightclass(), m.getType());
-									int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
-									CampaignMain.cm.getMarket().addListing("Faction_" + h.getName(), m, priceForUnit, rareSalesTime);
-									m.setStatus(Unit.STATUS_FORSALE);
-								}
-								h.addUnit(m, false);
-							}
-						}	
-						// READ THE INFANTRY
-						if (Boolean.parseBoolean(h.getConfig("UseInfantry"))) {
-								for (int i = 0; i < 4; i ++) {
-									int num = (Integer.parseInt(ST.nextToken()));
-									SUnit m = null;
-									for (int j = 0; j < num; j++) {
-										m = new SUnit();
-										m.fromString(ST.nextToken());
-								
-										if(newbieHouse) {
-											int priceForUnit = h.getPriceForUnit(m.getWeightclass(), m.getType());
-											int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
-											CampaignMain.cm.getMarket().addListing("Faction_" + h.getName(), m, priceForUnit, rareSalesTime);
-											m.setStatus(Unit.STATUS_FORSALE);
-										}
-										h.addUnit(m, false);
-									}
-								}	
-						}
-						// READ THE PROTOMEKS
-						for (int i = 0; i < 4; i ++) {
-							int num = (Integer.parseInt(ST.nextToken()));
-							SUnit m = null;
-							for (int j = 0; j < num; j++) {
-								m = new SUnit();
-								m.fromString(ST.nextToken());
-								
-								if(newbieHouse) {
-									int priceForUnit = h.getPriceForUnit(m.getWeightclass(), m.getType());
-									int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
-									CampaignMain.cm.getMarket().addListing("Faction_" + h.getName(), m, priceForUnit, rareSalesTime);
-									m.setStatus(Unit.STATUS_FORSALE);
-								}
-								h.addUnit(m, false);
-							}
-						}	
-						// READ THE BATTLEARMOR
-						for (int i = 0; i < 4; i ++) {
-							int num = (Integer.parseInt(ST.nextToken()));
-							SUnit m = null;
-							for (int j = 0; j < num; j++) {
-								m = new SUnit();
-								m.fromString(ST.nextToken());
-								
-								if(newbieHouse) {
-									int priceForUnit = h.getPriceForUnit(m.getWeightclass(), m.getType());
-									int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
-									CampaignMain.cm.getMarket().addListing("Faction_" + h.getName(), m, priceForUnit, rareSalesTime);
-									m.setStatus(Unit.STATUS_FORSALE);
-								}
-								h.addUnit(m, false);
-							}
-						}	
-
-						dis.close();
-						fis.close();
-					} catch (Exception ex) {
-						
-					}
-				}
-					
-
 				// Now the vectors
-/*				
-				// Load these when I figure out what's wrong with it.  For now, load them from the text file.
+				
 				//Load the Meks
 				MMServ.mmlog.dbLog("Loading Meks");
 				rs1 = stmt2.executeQuery("SELECT MWID from units WHERE uType = " + Unit.MEK + " AND uFactionID = " + h.getDBId());
@@ -574,7 +380,7 @@ public class FactionHandler {
 					h.addUnit(u, false);
 				}
 				
-				*/
+			
 				
 				//Load the components
 				MMServ.mmlog.dbLog("Loading Components");

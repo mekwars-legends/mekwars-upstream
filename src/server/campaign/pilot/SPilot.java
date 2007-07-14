@@ -51,6 +51,7 @@ public class SPilot extends Pilot {
     private int originalID;
 	private int pickedUpID;
 	private boolean death = false;
+	private int dbId;
 	
 	public SPilot(String name,int gunnery, int piloting) {
 		super(name,gunnery,piloting);
@@ -58,6 +59,14 @@ public class SPilot extends Pilot {
 	
 	public SPilot() {
 		//TODO: remove when possible
+	}
+	
+	public void setDBId(int id) {
+		this.dbId = id;
+	}
+	
+	public int getDBId() {
+		return this.dbId;
 	}
 	
 	/**
@@ -406,7 +415,10 @@ public class SPilot extends Pilot {
         else
             result.append(0);
         result.append(delimiter);
-        result.append(false);//unused var
+        if(CampaignMain.cm.isUsingMySQL())
+        	result.append(getDBId());
+        else
+        	result.append(false);//unused var
         result.append(delimiter);
 		return result.toString();
 	}
@@ -470,7 +482,10 @@ public class SPilot extends Pilot {
 	
 	        //Unused var
 	        if ( ST.hasMoreElements() )
-	            ST.nextToken();
+	        	if (CampaignMain.cm.isUsingMySQL())
+	        		setDBId(Integer.parseInt(ST.nextToken()));
+	        	else
+	        		ST.nextToken();
 	        
 	        /*
 	         * some times a pilot doesn't get assigned a skill this code fixes that however the Trait skill needs

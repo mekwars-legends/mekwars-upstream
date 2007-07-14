@@ -369,14 +369,6 @@ public final class SUnit extends Unit implements Serializable {
 	 * @return the Serialized Version of this entity
 	 */
 	public String toString(boolean toPlayer) {
-		// For the moment, we're going to skip this, as loading units is not currently working.
-/*		if (CampaignMain.cm.isUsingMySQL() && !toPlayer) {
-			SPilot p = (SPilot)getPilot();
-			CampaignMain.cm.MySQL.savePilot(p, getType(), getWeightclass());
-			CampaignMain.cm.MySQL.saveUnit(this);
-			CampaignMain.cm.MySQL.linkPilotToUnit(p.getPilotId(), getDBId());
-		}
-		*/
 		
 		//Recalculate the unit's bv. There is a reason we are sending new data to the player
 		if (toPlayer) {
@@ -834,6 +826,8 @@ public final class SUnit extends Unit implements Serializable {
 		
 		p.setUnitType(this.getType());
 		super.setPilot(p);
+		if(CampaignMain.cm.isUsingMySQL() && !p.getName().equalsIgnoreCase("Vacant"))
+			CampaignMain.cm.MySQL.linkPilotToUnit(p.getDBId(), this.getDBId());
 		}
 	
 	public void init() {

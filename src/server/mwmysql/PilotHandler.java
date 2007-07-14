@@ -38,7 +38,8 @@ public class PilotHandler {
 					p.setPiloting(rs.getInt("pilotPiloting"));
 					p.setKills(rs.getInt("pilotKills"));
 					p.setCurrentFaction(rs.getString("pilotCurrentFaction"));
-					p.setPilotId(pID);
+					p.setPilotId(rs.getInt("MWID"));
+					p.setDBId(pID);
 					p.setHits(rs.getInt("pilotHits"));
 			
 					// Load the skills
@@ -119,7 +120,7 @@ public class PilotHandler {
 	public void linkPilotToUnit(int pilotID, int unitID) {
 		try {
 		Statement stmt = con.createStatement();
-		stmt.executeUpdate("UPDATE pilots SET factionID = NULL, playerName = NULL, unitID = " + unitID + " WHERE pilotID = " + pilotID);
+		stmt.executeUpdate("UPDATE pilots SET factionID = NULL, playerID = NULL, unitID = " + unitID + " WHERE pilotID = " + pilotID);
 		stmt.close();
 		} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in PilotHandler.linkPilotToUnit: " + e.getMessage());
@@ -129,17 +130,18 @@ public class PilotHandler {
 	public void linkPilotToFaction(int pilotID, int factionId) {
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("UPDATE pilots SET playerName = NULL, unitID = NULL, factionID = " + factionId + " WHERE pilotID = " + pilotID);
+			stmt.executeUpdate("UPDATE pilots SET playerID = NULL, unitID = NULL, factionID = " + factionId + " WHERE pilotID = " + pilotID);
 			stmt.close();
 		} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in PilotHandler.linkPilotToFaction: " + e.getMessage());
 		}
 	}
 
-	public void linkPilotToPlayer(int pilotID, String playerName) {
+	public void linkPilotToPlayer(int pilotID, int playerID) {
 		try {
-			PreparedStatement ps = con.prepareStatement("UPDATE pilots SET factionID = NULL, unitID = NULL, playerName = ? WHERE pilotID = " + pilotID);
-			ps.setString(1, playerName);
+			MMServ.mmlog.dbLog("Linking Pilot " + pilotID + " to Player " + playerID);
+			PreparedStatement ps = con.prepareStatement("UPDATE pilots SET factionID = NULL, unitID = NULL, playerID = ? WHERE pilotID = " + pilotID);
+			ps.setInt(1, playerID);
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
@@ -149,25 +151,19 @@ public class PilotHandler {
 	
 	public void savePilot(SPilot p, int unitType, int unitSize) {
 		try {
-			ResultSet rs = null;
-			Statement stmt = con.createStatement();	
-
 			if(p == null)
 				return;
-			
+
 			if(p.getName().equalsIgnoreCase("Vacant"))
 				return;
+			StringBuffer sql = new StringBuffer();
+			PreparedStatement ps;
 			
-			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT COUNT(*) as num from pilots WHERE pilotID=" + p.getPilotId());
-			rs = stmt.executeQuery(sql.toString());
-			rs.next();
-			if(rs.getInt("num") == 0){
+			if(p.getDBId() == 0){
 				// No pilot with this id, so INSERT
 				sql.setLength(0);
 
-				PreparedStatement ps;
-				ps = con.prepareStatement("INSERT into pilots set pilotID=?, pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ?");
+				ps = con.prepareStatement("INSERT into pilots set MWID=?, pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ?", PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, p.getPilotId());
 				ps.setString(2, p.getName());
 				ps.setInt(3, p.getExperience());
@@ -179,12 +175,14 @@ public class PilotHandler {
 				ps.setInt(9, unitSize);
 				ps.setInt(10, unitType);
 				ps.executeUpdate();
+				ResultSet rs = ps.getGeneratedKeys();
+				rs.next();
+				p.setDBId(rs.getInt(1));
 			} else {
 				// Pilot already saved, so UPDATE
 				sql.setLength(0);
 
-				PreparedStatement ps;
-				ps = con.prepareStatement("UPDATE pilots set pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ? WHERE pilotID=?");
+				ps = con.prepareStatement("UPDATE pilots set pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ?, MWID=? WHERE pilotID=?");
 				ps.setString(1, p.getName());
 				ps.setInt(2, p.getExperience());
 				ps.setInt(3, p.getGunnery());
@@ -195,6 +193,7 @@ public class PilotHandler {
 				ps.setInt(8, unitSize);
 				ps.setInt(9, unitType);
 				ps.setInt(10, p.getPilotId());
+				ps.setInt(11, p.getDBId());
 				ps.executeUpdate();
 			}
 			//stmt.executeUpdate(sql.toString());
@@ -202,7 +201,7 @@ public class PilotHandler {
 			// Update pilot skills
 			sql.setLength(0);
 			sql.append("DELETE from pilotskills WHERE pilotID = " + p.getPilotId());
-			stmt.executeUpdate(sql.toString());
+			ps.executeUpdate(sql.toString());
 			
 			if(p.getSkills().size() > 0) {
 				Iterator it = p.getSkills().getSkillIterator();
@@ -225,12 +224,13 @@ public class PilotHandler {
 						sql.append(((EdgeSkill)sk).getHeadHit() + "$");
 						sql.append(((EdgeSkill)sk).getExplosion() + "'");
 					}
-					stmt.executeUpdate(sql.toString());
+					ps.executeUpdate(sql.toString());
+					
 					}
 			}
-			stmt.close();
+			ps.close();
 		} catch (SQLException e) {
-			MMServ.mmlog.dbLog("SQL Error in PilotHandler: " + e.getMessage());
+			MMServ.mmlog.dbLog("SQL Error in PilotHandler.savePilot: " + e.getMessage());
 		}
 
 		

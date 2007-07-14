@@ -3097,8 +3097,6 @@ public class ShortResolver {
 			//if PPQs are on, insert the pilot in the owner's queue
 			if (isPilotChangeable && personalQueues ){
 				owner.getPersonalPilotQueue().addPilot(unit.getPilot(),unit.getWeightclass());
-				if(CampaignMain.cm.isUsingMySQL())
-					CampaignMain.cm.MySQL.linkPilotToPlayer(unit.getPilot().getPilotId(), owner.getName());
 				CampaignMain.cm.toUser("PL|AP2PPQ|"+unit.getType()+"|"+unit.getWeightclass()+"|"+((SPilot)unit.getPilot()).toFileFormat("#",true),owner.getName(),false);
 				owner.getPersonalPilotQueue().checkQueueAndWarn(owner.getName(), unit.getType(), unit.getWeightclass());
 				unit.setPilot(new SPilot("Vacant",99,99));
@@ -3183,8 +3181,6 @@ public class ShortResolver {
 					if (CampaignMain.cm.getR().nextInt(100) < captureChance){
 						if (CampaignMain.cm.getBooleanConfig("AllowPersonalPilotQueues")){
 							pickupPlayer.getPersonalPilotQueue().addPilot(currUnit.getPilot(),currUnit.getWeightclass());
-							if(CampaignMain.cm.isUsingMySQL())
-								CampaignMain.cm.MySQL.linkPilotToPlayer(currUnit.getPilot().getPilotId(), pickupPlayer.getName());
 							CampaignMain.cm.toUser("PL|AP2PPQ|"+currUnit.getType()+"|"+currUnit.getWeightclass()+"|"+((SPilot)currUnit.getPilot()).toFileFormat("#",true),pickupPlayer.getName(),false);
 							pickupPlayer.getPersonalPilotQueue().checkQueueAndWarn(pickupPlayer.getName(), currUnit.getType(), currUnit.getWeightclass());
 						} else

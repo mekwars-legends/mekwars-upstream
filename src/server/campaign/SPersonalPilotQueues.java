@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import server.MMServ;
 import server.campaign.pilot.SPilot;
 
 import common.Unit;
@@ -52,6 +53,7 @@ public class SPersonalPilotQueues {
 	 */
 	private Vector<LinkedList<Pilot>> mekPilots = new Vector<LinkedList<Pilot>>();
     private Vector<LinkedList<Pilot>> protoPilots = new Vector<LinkedList<Pilot>>();
+	private int playerID = 0;
 	
     //CONSTRUCTOR
     /**
@@ -62,7 +64,7 @@ public class SPersonalPilotQueues {
      * returned by a getPilotQueue() call.
      */
 	public SPersonalPilotQueues() {
-	
+
 		for (int i = Unit.LIGHT; i <= Unit.ASSAULT; i++) {// for (0 - 3)
 			mekPilots.add(i , new LinkedList<Pilot>());
 			protoPilots.add(i, new LinkedList<Pilot>());
@@ -95,7 +97,9 @@ public class SPersonalPilotQueues {
         p.setUnitType(type);
         addPilot(p,weightClass);
     }
-    
+    public void setOwnerID(int ID) {
+    	this.playerID = ID;
+    }
     /**
      * Add a pilot to the queue. Many different events can trigger
      * an addition, including game resolution, sale via market, the
@@ -123,8 +127,14 @@ public class SPersonalPilotQueues {
 	    this.getUnitTypeQueue(p.getUnitType()).get(weightClass).addLast(p);
 	    
 	    if(CampaignMain.cm.isUsingMySQL()) {
+	    	MMServ.mmlog.dbLog("In SPersonalPilotQueues: adding Pilot ->");
+	    	MMServ.mmlog.dbLog(" --> Pilot ID: " + ((SPilot)p).getPilotId());
+	    	MMServ.mmlog.dbLog(" ==> Player ID: " + this.playerID);
+	    	
 	    	int type = p.getUnitType();
-	    	CampaignMain.cm.MySQL.savePilot((SPilot)p, type, weightClass);
+	    	if(((SPilot)p).getDBId()==0)
+	    		CampaignMain.cm.MySQL.savePilot((SPilot)p, type, weightClass);
+	    	CampaignMain.cm.MySQL.linkPilotToPlayer(((SPilot)p).getDBId(), this.playerID);
 	    }
 	}
 	

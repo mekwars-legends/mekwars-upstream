@@ -875,6 +875,7 @@ public final class CampaignMain implements Serializable {
 		 * SignOn.java, for uniformity).
 		 */
 		SPlayer toLogin = this.getPlayer(Username);
+		
 		if (toLogin == null) {
 			this
 					.toUser(
@@ -1181,6 +1182,7 @@ public final class CampaignMain implements Serializable {
 
 				// create player from string read by dis
 				SPlayer p = new SPlayer();
+
 				String pString = dis.readLine();
 				p.fromString(pString);
 

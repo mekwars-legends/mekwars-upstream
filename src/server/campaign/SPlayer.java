@@ -125,6 +125,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	
     private UnitComponents unitParts = new UnitComponents();
     
+    private int DBId = 0;
+    
 	// CONSTRUCTORS
 	/**
 	 * Stock constructor. Note that an SPlayer is data-less unless/until
@@ -291,9 +293,6 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		if (isNew) {
 			long immunityTime = Long.parseLong(this.getMyHouse().getConfig("ImmunityTime")) * 1000;
 			m.setPassesMaintainanceUntil(System.currentTimeMillis()+ immunityTime * 2);
-			if(CampaignMain.cm.isUsingMySQL()){
-				CampaignMain.cm.MySQL.saveUnit(m);
-			}
 		}
 		
 		// clear any scrap allowance
@@ -314,9 +313,6 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		m.setPosId(getFreeID());
 		units.add(m);
 		
-		if(CampaignMain.cm.isUsingMySQL()){
-			CampaignMain.cm.MySQL.linkUnitToPlayer(m.getId(), getName());
-		}
 		/*
 		 * Send PL|HD. Client-side reading of HD adds units to the hangar
 		 * instead of clearing/replacing the hangar, so we can send just this
@@ -331,7 +327,10 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			CampaignMain.cm.toUser("PL|SB|" + this.getTotalMekBays(), name, false);
 			CampaignMain.cm.toUser("PL|SF|" + this.getFreeBays(), name,false);
 		}
-		
+		if (CampaignMain.cm.isUsingMySQL()) {
+			CampaignMain.cm.MySQL.saveUnit(m);
+			CampaignMain.cm.MySQL.linkUnitToPlayer(m.getDBId(), getDBId());
+		}
 		// make sure to save the player, with his fancy new unit ...
 		setSave(true);
 		return "";//dummy stirng returned to comply with IBuyer
@@ -2113,6 +2112,9 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		setSave(true);
 	}
 	
+	public int getXPToReward() {
+		return xpToReward;
+	}
 	public void setMyLogo(String s) {
 		myLogo = s;
 	}
@@ -2506,6 +2508,11 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	 * huge (and important) that they get a separate block.
 	 */
 	public String toString(boolean toClient) {
+		
+		if(CampaignMain.cm.isUsingMySQL() && !toClient) {
+			CampaignMain.cm.MySQL.savePlayer(this);
+		}
+		
 		StringBuilder result = new StringBuilder();
 		result.append("CP~");
 		result.append(name);
@@ -2521,10 +2528,6 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 					currU.getPilot().setCurrentFaction(myHouse.getName());
 					result.append(currU.toString(toClient));
 					result.append("~");
-					
-					if(CampaignMain.cm.isUsingMySQL() && !toClient) {
-						CampaignMain.cm.MySQL.linkUnitToPlayer(currU.getDBId(), getName());
-					}
 				}
 			}
 		}
@@ -2587,7 +2590,10 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		 * feature has been eliminated, and the spaces can be reclaimed. @urgru 9.30.06
 		 */
 		if (!toClient) {
-			result.append("0");
+			if(CampaignMain.cm.isUsingMySQL())
+				result.append(getDBId());
+			else
+				result.append("0");
 			result.append("~");
 			result.append(0);
 			result.append("~");
@@ -2680,7 +2686,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		
 		//print the player into the info log. only for Debug
 		//MMServ.mmlog.infoLog("CSPlayer: " + s);
-		
+
 		this.armies.clear();
 		
 		s = s.substring(3);
@@ -2696,7 +2702,11 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		 * @urgru 4.2.05
 		 */
 		exclusionList.setOwnerName(name);
-		
+		if(CampaignMain.cm.isUsingMySQL()) {
+			int dbId = CampaignMain.cm.MySQL.getPlayerIDByName(name);
+			setDBId(dbId);
+		}
+			 
 		money = Integer.parseInt((String) ST.nextElement());
 		experience = Integer.parseInt((String) ST.nextElement());
 		
@@ -2769,7 +2779,10 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		 * reclaimed soon-ish, as no server used the feature. @urgru 9/30/06
 		 */
 		if (ST.hasMoreElements())
-			ST.nextToken();
+			if(CampaignMain.cm.isUsingMySQL())
+				setDBId(Integer.parseInt(ST.nextToken()));
+			else
+				ST.nextToken();
 		if (ST.hasMoreElements())
 			ST.nextToken();
 		
@@ -2951,4 +2964,14 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 
 		return null;
 	}
+	
+	public int getDBId() {
+		return this.DBId;
+	}
+	
+	public void setDBId(int id) {
+		this.DBId = id;
+		this.personalPilotQueue.setOwnerID(id);
+	}
+	
 }// end SPlayer()
