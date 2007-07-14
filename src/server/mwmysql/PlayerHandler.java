@@ -14,7 +14,6 @@ import common.campaign.pilot.Pilot;
 
 import server.MMServ;
 import server.campaign.CampaignMain;
-import server.campaign.SPersonalPilotQueues;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
 import server.campaign.pilot.SPilot;
@@ -24,10 +23,12 @@ public class PlayerHandler {
 	Connection con;
 	
 	public void savePlayer(SPlayer p) {
+		
+		
 		PreparedStatement ps;
 		StringBuffer sql = new StringBuffer();
 		try {
-			MMServ.mmlog.dbLog("Saving player " + p.getName());		
+			MMServ.mmlog.dbLog("Saving player " + p.getName() + " (DBID: " + p.getDBId() + ")");		
 			if(p.getDBId()==0){
 				// Not in the database - INSERT it
 				sql.setLength(0);
@@ -52,14 +53,14 @@ public class PlayerHandler {
 				sql.append("playerExcludeList = ?, ");
 				sql.append("playerTotalTechsString = ?, ");
 				sql.append("playerAvailableTechsString = ?, ");
-				sql.append("playerBaysOwned = ?, ");
 				sql.append("playerLogo = ?, ");
 				sql.append("playerLastAFR = ?, ");
 				sql.append("playerGroupAllowance = ?, ");
 				sql.append("playerLastISP = ?, ");
 				sql.append("playerIsInvisible = ?, ");
-				sql.append("playerAccess = ?, ");
+
 				sql.append("playerUnitParts = ?, ");
+				sql.append("playerAccess = ?, ");
 				sql.append("playerAutoReorder = ?");
 
 				ps = con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
@@ -84,24 +85,26 @@ public class PlayerHandler {
 				if(CampaignMain.cm.isUsingAdvanceRepair()) {
 					ps.setString(16, p.totalTechsToString());
 					ps.setString(17, p.availableTechsToString());
-					ps.setInt(18, p.getBaysOwned());
 				}
 				else {
 					ps.setString(16, "");
 					ps.setString(17, "");
-					ps.setInt(18, 0);
 				}
 				if(p.getMyLogo().length() > 0)
-					ps.setString(19, p.getMyLogo());
+					ps.setString(18, p.getMyLogo());
 				else
-					ps.setString(19, "");
-				ps.setDouble(20, p.getLastAttackFromReserve());
-				ps.setInt(21, p.getGroupAllowance());
-				ps.setString(22, p.getLastISP());
-				ps.setString(23, Boolean.toString(p.isInvisible()));
-				ps.setInt(24, p.getPassword().getAccess());
-				ps.setString(25, p.getUnitParts().toString());
-				ps.setString(26, Boolean.toString(p.getAutoReorder()));
+					ps.setString(18, "");
+				ps.setDouble(19, p.getLastAttackFromReserve());
+				ps.setInt(20, p.getGroupAllowance());
+				ps.setString(21, p.getLastISP());
+				ps.setString(22, Boolean.toString(p.isInvisible()));
+				ps.setString(23, p.getUnitParts().toString());
+				if(p.getPassword()!=null)
+					ps.setInt(24, p.getPassword().getAccess());
+				else
+					ps.setInt(24, 0);
+				ps.setString(25, Boolean.toString(p.getAutoReorder()));
+
 				ps.executeUpdate();
 				ResultSet rs = ps.getGeneratedKeys();
 				rs.next();
@@ -133,7 +136,6 @@ public class PlayerHandler {
 				sql.append("playerExcludeList = ?, ");
 				sql.append("playerTotalTechsString = ?, ");
 				sql.append("playerAvailableTechsString = ?, ");
-				sql.append("playerBaysOwned = ?, ");
 				sql.append("playerLogo = ?, ");
 				sql.append("playerLastAFR = ?, ");
 				sql.append("playerGroupAllowance = ?, ");
@@ -165,25 +167,25 @@ public class PlayerHandler {
 				if(CampaignMain.cm.isUsingAdvanceRepair()) {
 					ps.setString(16, p.totalTechsToString());
 					ps.setString(17, p.availableTechsToString());
-					ps.setInt(18, p.getBaysOwned());
+			
 				}
 				else {
 					ps.setString(16, "");
 					ps.setString(17, "");
-					ps.setInt(18, 0);
+
 				}
 				if(p.getMyLogo().length() > 0)
-					ps.setString(19, p.getMyLogo());
+					ps.setString(18, p.getMyLogo());
 				else
-					ps.setString(19, "");
-				ps.setDouble(20, p.getLastAttackFromReserve());
-				ps.setInt(21, p.getGroupAllowance());
-				ps.setString(22, p.getLastISP());
-				ps.setString(23, Boolean.toString(p.isInvisible()));
-				ps.setInt(24, p.getPassword().getAccess());
-				ps.setString(25, p.getUnitParts().toString());
-				ps.setString(26, Boolean.toString(p.getAutoReorder()));
-				ps.setInt(27, p.getDBId());
+					ps.setString(18, "");
+				ps.setDouble(19, p.getLastAttackFromReserve());
+				ps.setInt(20, p.getGroupAllowance());
+				ps.setString(21, p.getLastISP());
+				ps.setString(22, Boolean.toString(p.isInvisible()));
+				ps.setInt(23, p.getPassword().getAccess());
+				ps.setString(24, p.getUnitParts().toString());
+				ps.setString(25, Boolean.toString(p.getAutoReorder()));
+				ps.setInt(26, p.getDBId());
 				MMServ.mmlog.dbLog(ps.toString());	
 				ps.executeUpdate();
 
@@ -274,6 +276,39 @@ public class PlayerHandler {
 			MMServ.mmlog.dbLog("SQL Error in PlayerHandler.setPassword: " + e.getMessage());
 		}
 	}
+	
+	public void setPlayerAccess(int DBId, int level) {
+		try {
+			PreparedStatement ps = con.prepareStatement("UPDATE players set playerAccess = ? WHERE playerID = " + DBId);
+			ps.setInt(1, level);
+			ps.executeUpdate();
+			ps.close();
+		} catch(SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in PlayerHandler.setPlayerAccess: " + e.getMessage());
+		}
+	}
+	
+	public int matchPassword(String playerName, String pass) {
+		PreparedStatement ps;
+		ResultSet rs;
+		try {
+			ps = con.prepareStatement("SELECT playerPassword, MD5(?) as cryptedpass, playerAccess from players WHERE playerName = ?");
+			ps.setString(1, pass);
+			ps.setString(2, playerName);
+			rs = ps.executeQuery();
+			if(!rs.next())
+				return 0;
+			else
+				if(rs.getString("playerPassword").equalsIgnoreCase(rs.getString("cryptedpass")))
+					return rs.getInt("playerAccess");
+				else
+					return 0;
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in PlayerHandler.matchPassword: " + e.getMessage());
+			return 0;
+		}
+	}
+	
 	public PlayerHandler(Connection c) {
 		this.con = c;
 	}

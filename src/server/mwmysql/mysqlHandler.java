@@ -156,6 +156,10 @@ public class mysqlHandler{
 	  plh.setPassword(ID, password);
   }
   
+  public void setPlayerAccess(int ID, int level) {
+	  plh.setPlayerAccess(ID, level);
+  }
+  
   public mysqlHandler(){
     this.MySQLCon = new MWmysql();
     this.ph = new planetHandler(MySQLCon.con);

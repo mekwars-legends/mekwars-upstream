@@ -302,7 +302,8 @@ public class FactionHandler {
 				while(rs1.next()) {
 					MMServ.mmlog.dbLog("Loading Unit " + rs1.getInt("MWID"));
 					SUnit u = CampaignMain.cm.MySQL.loadUnit(rs1.getInt("MWID"));
-
+					if (u == null)
+						continue;
 					if ( newbieHouse ){
 						int priceForUnit = h.getPriceForUnit(u.getWeightclass(), u.getType());
 						int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
@@ -325,6 +326,8 @@ public class FactionHandler {
 				rs1 = stmt2.executeQuery("SELECT MWID from units WHERE uType = " + Unit.VEHICLE + " AND uFactionID = " + h.getDBId());
 				while(rs1.next()) {
 					SUnit u = CampaignMain.cm.MySQL.loadUnit(rs1.getInt("MWID"));
+					if (u == null)
+						continue;
 					if ( newbieHouse ){
 						int priceForUnit = h.getPriceForUnit(u.getWeightclass(), u.getType());
 						int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
@@ -341,12 +344,18 @@ public class FactionHandler {
 					rs1 = stmt2.executeQuery("SELECT MWID from units WHERE uType = " + Unit.INFANTRY + " AND uFactionID = " + h.getDBId());
 					while(rs1.next()) {
 						SUnit u = CampaignMain.cm.MySQL.loadUnit(rs1.getInt("MWID"));
+						if (u == null) {
+						    MMServ.mmlog.dbLog("Null Unit");
+							continue;
+						}
+						
 						if ( newbieHouse ){
 							int priceForUnit = h.getPriceForUnit(u.getWeightclass(), u.getType());
 							int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
 							CampaignMain.cm.getMarket().addListing("Faction_" + h.getName(), u,priceForUnit, rareSalesTime);
 							u.setStatus(Unit.STATUS_FORSALE);
 						}
+						MMServ.mmlog.dbLog("Adding Unit");
 						h.addUnit(u, false);
 					}
 				}
@@ -356,6 +365,8 @@ public class FactionHandler {
 				rs1 = stmt2.executeQuery("SELECT MWID from units WHERE uType = " + Unit.PROTOMEK + " AND uFactionID = " + h.getDBId());
 				while(rs1.next()) {
 					SUnit u = CampaignMain.cm.MySQL.loadUnit(rs1.getInt("MWID"));
+					if (u == null)
+						continue;
 					if ( newbieHouse ){
 						int priceForUnit = h.getPriceForUnit(u.getWeightclass(), u.getType());
 						int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
@@ -371,6 +382,8 @@ public class FactionHandler {
 				rs1 = stmt2.executeQuery("SELECT MWID from units WHERE uType = " + Unit.BATTLEARMOR + " AND uFactionID = " + h.getDBId());
 				while(rs1.next()) {
 					SUnit u = CampaignMain.cm.MySQL.loadUnit(rs1.getInt("MWID"));
+					if (u == null)
+						continue;
 					if ( newbieHouse ){
 						int priceForUnit = h.getPriceForUnit(u.getWeightclass(), u.getType());
 						int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));

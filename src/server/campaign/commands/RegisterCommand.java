@@ -111,7 +111,10 @@ public class RegisterCommand implements Command {
                 player.setSave(true);
                 
             }
-                		
+            if(CampaignMain.cm.isUsingMySQL()) {
+            	CampaignMain.cm.MySQL.setPlayerPassword(CampaignMain.cm.MySQL.getPlayerIDByName(Username), pw);
+            	CampaignMain.cm.MySQL.setPlayerAccess(CampaignMain.cm.MySQL.getPlayerIDByName(Username), level);
+            }
             //acknowledge registration
             CampaignMain.cm.toUser("\"" + regname + "\" successfully registered.", Username);
             MMServ.mmlog.modLog("New nickname registered: " + regname);

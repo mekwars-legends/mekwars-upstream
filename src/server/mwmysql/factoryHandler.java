@@ -114,7 +114,7 @@ public class factoryHandler {
 	ps.setString(2, factory.getSize());
 	ps.setString(3, factory.getFounder());
 	ps.setInt(4, factory.getTicksUntilRefresh());
-	ps.setInt(5, factory.getTicksUntilRefresh());
+	ps.setInt(5, factory.getRefreshSpeed());
 	ps.setInt(6, factory.getType());
 	ps.setString(7, planet.getName());
 	ps.setString(8, Boolean.toString(factory.isLocked()));

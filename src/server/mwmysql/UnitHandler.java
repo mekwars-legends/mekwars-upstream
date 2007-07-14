@@ -223,13 +223,24 @@ public class UnitHandler {
 				u.setStatus(newstate);
 			u.setScrappableFor(rs.getInt("uScrappableFor"));
 			u.setRepairCosts(rs.getInt("uCurrentRepairCost"), rs.getInt("uLifetimeRepairCost"));
-
+MMServ.mmlog.dbLog("Loading entity...");
 			Entity unitEntity = u.loadMech(u.getUnitFilename());
-			((Mech)unitEntity).setAutoEject(Boolean.parseBoolean(rs.getString("uAutoEject")));
+			MMServ.mmlog.dbLog("Entity Loaded.");
+			if(unitEntity == null) {
+				u = null;
+				return u;
+			}
+
+MMServ.mmlog.dbLog(rs.getString("uAutoEject"));
+			if(unitEntity instanceof Mech)
+				((Mech)unitEntity).setAutoEject(Boolean.parseBoolean(rs.getString("uAutoEject")));
 			unitEntity.setSpotlight(Boolean.parseBoolean(rs.getString("uHasSpotlight")));
+			
 			unitEntity.setSpotlightState(Boolean.parseBoolean(rs.getString("uIsUsingSpotlight")));
+			
 			if(CampaignMain.cm.isUsingAdvanceRepair())
 				UnitUtils.applyBattleDamage(unitEntity, rs.getString("uBattleDamage"), (CampaignMain.cm.getRTT() != null & CampaignMain.cm.getRTT().unitRepairTimes(u.getId())!=null));
+			
 			if (CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("allow_level_3_targsys")) {
 				int targetingType = rs.getInt("uTargetSystem");
 				if (CampaignMain.cm.getData().getBannedTargetingSystems().containsKey(targetingType) || unitEntity.hasC3() || unitEntity.hasC3i() || UnitUtils.hasTargettingComputer(unitEntity))
@@ -237,6 +248,7 @@ public class UnitHandler {
 				else
 					unitEntity.setTargSysType(targetingType);
 			}
+			
 
 			u.setEntity(unitEntity);
 			SPilot p = new SPilot();
@@ -244,6 +256,7 @@ public class UnitHandler {
 			u.setPilot(p);
 			u.setLastCombatPilot(p.getPilotId());
 			u.init();
+			
 			
 			// Load ammo			
 			rs = stmt.executeQuery("SELECT * from unit_ammo WHERE unitID = " + unitID + " ORDER BY ammoLocation");
@@ -265,7 +278,6 @@ public class UnitHandler {
 				if (CampaignMain.cm.getData().getServerBannedAmmo().get(munition) != null)
 					continue;				
 				try {
-					MMServ.mmlog.dbLog("AmmoLoc: " + AmmoLoc);
 					unitEntity.getAmmo().get(AmmoLoc).changeAmmoType(at);
 					unitEntity.getAmmo().get(AmmoLoc).setShotsLeft(shots);
 					unitEntity.getAmmo().get(AmmoLoc).setHotLoad(hotloaded);
@@ -274,6 +286,7 @@ public class UnitHandler {
 					MMServ.mmlog.dbLog(ex.getStackTrace().toString());
 				}
 			}
+
 			u.setEntity(unitEntity);
 					
 			// Load MGs

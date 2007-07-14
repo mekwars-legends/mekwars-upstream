@@ -2,9 +2,11 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Bug: NPE in user password when saving player to database prior to registration.
++ Bug: Vehicles / Infantry calling setAutoEject, crashing the server when loading from database
 + Players saving to database;
-+ Units saving and loading from database;
-+ Pilots saving to and loading from database;
++ Units saving and loading from database
++ Pilots saving to and loading from database
 + Factions completely loading from database.
 + Bug: Factions not backed up if using database.
 + Factions loading from database, except units.
