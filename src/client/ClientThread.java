@@ -916,7 +916,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 	 * Scans the boards directory for map boards of the appropriate size
 	 * and returns them.
 	 */
-	private Vector scanForBoards(int boardWidth, int boardHeight) {
+	private Vector<String> scanForBoards(int boardWidth, int boardHeight) {
 		Vector<String> boards = new Vector<String>();
 		//Board Board = client.game.getBoard();
 		File boardDir = new File("data/boards");

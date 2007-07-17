@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Fix to ClientThread.java ouput added Vector<String>
 + New MegaMek.jar 0.33.9-MW07172007-5162
 + Bug: NPE in user password when saving player to database prior to registration.
 + Bug: Vehicles / Infantry calling setAutoEject, crashing the server when loading from database
