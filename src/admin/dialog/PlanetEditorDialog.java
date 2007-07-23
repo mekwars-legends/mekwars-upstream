@@ -1170,8 +1170,22 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		if ( useAdvanceTerrain ){
 			for ( String terrain : terrainMap.keySet() ){
 				AdvanceTerrain aTerrain = advanceTerrainMap.get(terrain);
+				PlanetEnvironment pTerrain = mwclient.getData().getTerrainByName(terrain);
+				if ( pTerrain == null ){
+					MWClient.mwClientLog.clientErrLog("Unable to find Terrain "+terrain+" on planet "
+							+selectedPlanet.getName());
+					throw new NullPointerException();
+				}
+				int id = pTerrain.getId();
+				
+				if ( aTerrain == null ){
+					MWClient.mwClientLog.clientErrLog("Unable to find Advance Terrain for "+terrain+" on planet "
+							+selectedPlanet.getName());
+					throw new NullPointerException();
+				}
+				
 				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c SetAdvancePlanetTerrain#"+planetName
-		        +"#"+ mwclient.getData().getTerrainByName(terrain).getId()
+		        +"#"+ id
 		        +"#"+ (aTerrain.getDisplayName().trim().length() < 1 ? "Display Name" : aTerrain.getDisplayName())
 		    	+"#"+ aTerrain.getXSize()
 		    	+"#"+ aTerrain.getYSize()
@@ -1207,6 +1221,8 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c SetPlanetMinOwnerShip#"+planetName+"#"+this.selectedPlanet.getMinPlanetOwnerShip());
 		if ( !planetConquerPoints.getText().equals(Integer.toString(this.selectedPlanet.getConquestPoints())) )
 			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c SetPlanetConquerPoints#"+planetName+"#"+this.selectedPlanet.getConquestPoints());
+		if ( isHomeWorldCB.isSelected() != selectedPlanet.isHomeWorld() )
+			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c Adminsethomeworld#"+isHomeWorldCB.isSelected());
 
 	}
 }//end PlanetEditorDialog.java
