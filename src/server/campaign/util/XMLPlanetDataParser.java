@@ -98,6 +98,7 @@ public class XMLPlanetDataParser implements XMLResponder
 	String OriginalOwner = CampaignMain.cm.getConfig("NewbieHouseName");
 	String OpFlag = "";
 	String OpName = "";
+	boolean isHomeWorld = false;
 	
 	public XMLPlanetDataParser(String filename) {
 		
@@ -284,6 +285,8 @@ public class XMLPlanetDataParser implements XMLResponder
 			 }*/
 			p.setOriginalOwner(OriginalOwner);
 			p.setPlanetFlags(OpFlags);
+			p.setHomeWorld(isHomeWorld);
+			
 			planets.add(p);
 			
 			//RESET VARIABLES
@@ -313,6 +316,7 @@ public class XMLPlanetDataParser implements XMLResponder
 			hitemp = 25;
 			ymap = -1;
 			xmap = -1;
+			isHomeWorld = false;
 			
 			OriginalOwner = CampaignMain.cm.getConfig("NewbieHouseName");
 			AdvTerr = null;
@@ -425,6 +429,8 @@ public class XMLPlanetDataParser implements XMLResponder
 			OpFlag = charData;
 		else if (lastElement.endsWith("OPNAME"))
 			OpName = charData;
+		else if (lastElement.endsWith("HOMEWORLD"))
+			isHomeWorld = Boolean.parseBoolean(charData);
 		
 		
 	}

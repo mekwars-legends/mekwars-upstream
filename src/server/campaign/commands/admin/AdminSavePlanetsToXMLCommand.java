@@ -148,6 +148,7 @@ public class AdminSavePlanetsToXMLCommand implements Command {
 	                }
 	                p.println("     </PLANETOPFLAGS>");
                 }
+                p.println("     <HOMEWORLD>"+planet.isHomeWorld()+"</HOMEWORLD>");
 				p.println("	</PLANET>");
 			}
 			p.println("</MEGAMEKNETPLANETDATA>");
