@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Added Syntax Message to AdminSetHomeWorld
 + Added HOMEWORLD Tag to AdminSavePlanetsToXML and XML Parser
 + Bug: NPE when saving ATerrain with Planet editor.
 + Fix to ClientThread.java ouput added Vector<String>

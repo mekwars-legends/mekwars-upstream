@@ -54,9 +54,10 @@ Comparable {
 		result.append(getCompProduction());
 		if (getUnitFactories() != null) {
 			result.append("#" + getUnitFactories().size());
-			for (int i = 0; i < getUnitFactories().size(); i++) {
-				SUnitFactory MF = (SUnitFactory) getUnitFactories().get(i);
-				result.append("#" + MF.toString());
+			for (UnitFactory factory : getUnitFactories() ){
+				//int i = 0; i < getUnitFactories().size(); i++) {
+				//SUnitFactory MF = (SUnitFactory) getUnitFactories().get(i);
+				result.append("#" + ((SUnitFactory)factory).toString());
 /**
  * Commenting this out temporarily.
  */	

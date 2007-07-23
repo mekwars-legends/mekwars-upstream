@@ -41,18 +41,21 @@ public class AdminSetHomeWorldCommand implements Command {
 			return;
 		}
 		
-		String PlanetName = command.nextToken();
         boolean homeworld = false;
-        SPlanet planet = CampaignMain.cm.getPlanetFromPartialString(PlanetName,Username);
+        SPlanet planet = null ;
+        
+        try{
+        	planet = CampaignMain.cm.getPlanetFromPartialString(command.nextToken(),Username);
+            if ( command.hasMoreTokens() )
+                homeworld = Boolean.parseBoolean(command.nextToken());
+            else
+            	homeworld = !planet.isHomeWorld();
+        }catch (Exception ex){
+        	CampaignMain.cm.toUser("Invalid syntax. Try: adminsethomeworld#faction#[true/false]",Username);
+        }
         
         if ( planet == null )
             return;
-        
-        try{
-            if ( command.hasMoreTokens() )
-                homeworld = Boolean.parseBoolean(command.nextToken());
-        }catch (Exception ex){}
-        
         
         planet.setHomeWorld(homeworld);
         
