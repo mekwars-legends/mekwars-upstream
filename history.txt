@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ New MegaMek.jar 0.33.9-MW-07232007-5162
 + Added Syntax Message to AdminSetHomeWorld
 + Added HOMEWORLD Tag to AdminSavePlanetsToXML and XML Parser
 + Bug: NPE when saving ATerrain with Planet editor.
