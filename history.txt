@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
+Release Server 0.2.5.3 & Client 0.2.5.1
++ Bug: Planet Editor sending the wrong planet conquere points
++ Bug: Planet Editor sending the wrong minplanet OwnerShip
 + New MegaMek.jar 0.33.9-MW-07232007-5162
 + Added Syntax Message to AdminSetHomeWorld
 + Added HOMEWORLD Tag to AdminSavePlanetsToXML and XML Parser
