@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Bug: Planet Editor Dialog not always creating new Advance Terrains
++ Bug: Planet info now shows "extra bays." instead of "extra ." when a planet
+  has warehouses.
 Release Server 0.2.5.3 & Client 0.2.5.1
 + Bug: Planet Editor sending the wrong planet conquere points
 + Bug: Planet Editor sending the wrong minplanet OwnerShip

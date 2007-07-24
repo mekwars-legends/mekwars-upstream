@@ -530,9 +530,11 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
         if (getCompProduction() > 0)
                 result.append("Heavy industry allows an export of "
                         + getCompProduction() + " parts.<br>");
-        if (getBaysProvided() > 0)
+        if (getBaysProvided() > 0){
                 result.append("A warehouse on this world provides all players with " + getBaysProvided()
-                        + " extra .<br><br>");
+                        + " extra bays.<br>");
+        }
+        
         if (getUnitFactories().size() > 0)
         {
             Iterator it = getUnitFactories().iterator();

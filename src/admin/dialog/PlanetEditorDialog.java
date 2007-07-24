@@ -1082,8 +1082,10 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 
 	private void updateAdvanceTerrain() {
 		AdvanceTerrain aTerrain = advanceTerrainMap.get(planetTerrains.getSelectedItem().toString());
-		if ( aTerrain == null )
-			return;
+		if ( aTerrain == null ){
+			aTerrain = new AdvanceTerrain();
+			advanceTerrainMap.put(planetTerrains.getSelectedItem().toString(), aTerrain);
+		}
 
 		aTerrain.setDisplayName(DisplayNameText.getText());
 		aTerrain.setStaticMapName(StaticMapNameText.getText());
@@ -1098,11 +1100,8 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		aTerrain.setNightTempMod(Integer.parseInt(NightTempModText.getText()));
 		aTerrain.setMinVisibility(Integer.parseInt(MinVisibilityText.getText()));
 		aTerrain.setMaxVisibility(Integer.parseInt(MaxVisibilityText.getText()));
-
 		aTerrain.setStaticMap(isStaticMapCB.isSelected());
 		aTerrain.setVacuum(isVacuumCB.isSelected());
-		
-
 	}
 	
 	private boolean saveAllData(){
@@ -1179,14 +1178,27 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 				int id = pTerrain.getId();
 				
 				if ( aTerrain == null ){
-					MWClient.mwClientLog.clientErrLog("Unable to find Advance Terrain for "+terrain+" on planet "
-							+selectedPlanet.getName());
-					throw new NullPointerException();
+					aTerrain = new AdvanceTerrain();
+					aTerrain.setDisplayName(DisplayNameText.getText());
+					aTerrain.setStaticMapName(StaticMapNameText.getText());
+					aTerrain.setXSize(Integer.parseInt(XSizeText.getText()));
+					aTerrain.setYSize(Integer.parseInt(YSizeText.getText()));
+					aTerrain.setXBoardSize(Integer.parseInt(XBoardSizeText.getText()));
+					aTerrain.setYBoardSize(Integer.parseInt(YBoardSizeText.getText()));
+					aTerrain.setLowTemp(Integer.parseInt(LowTempText.getText()));
+					aTerrain.setHighTemp(Integer.parseInt(HighTempText.getText()));
+					aTerrain.setGravity(Double.parseDouble(GravityText.getText()));
+					aTerrain.setNightChance(Integer.parseInt(NightChanceText.getText()));
+					aTerrain.setNightTempMod(Integer.parseInt(NightTempModText.getText()));
+					aTerrain.setMinVisibility(Integer.parseInt(MinVisibilityText.getText()));
+					aTerrain.setMaxVisibility(Integer.parseInt(MaxVisibilityText.getText()));
+					aTerrain.setStaticMap(isStaticMapCB.isSelected());
+					aTerrain.setVacuum(isVacuumCB.isSelected());
 				}
 				
 				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c SetAdvancePlanetTerrain#"+planetName
 		        +"#"+ id
-		        +"#"+ (aTerrain.getDisplayName().trim().length() < 1 ? "Display Name" : aTerrain.getDisplayName())
+		        +"#"+ (aTerrain.getDisplayName().trim().length() < 1 ? terrain : aTerrain.getDisplayName())
 		    	+"#"+ aTerrain.getXSize()
 		    	+"#"+ aTerrain.getYSize()
 		    	+"#"+ aTerrain.isStaticMap()
