@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
+Release Server 0.2.5.4
++ Bug: Planets without any influence where not loading.
++ Bug: Planets with old Factory toString not loading in 0.2.5.3
 + Bug: Planet Editor Dialog not always creating new Advance Terrains
 + Bug: Planet info now shows "extra bays." instead of "extra ." when a planet
   has warehouses.

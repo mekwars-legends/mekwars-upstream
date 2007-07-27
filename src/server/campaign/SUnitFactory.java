@@ -115,6 +115,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 			TimeZonesCounter = Integer.parseInt((String)ST.nextElement());
 		for (int count = 0; count < TimeZonesCounter;count++) {
 			ST.nextToken();
+			ST.nextToken();
 			//functional portions commented out. still eat tokens. @urgru, 8/22/06
 		}
 		

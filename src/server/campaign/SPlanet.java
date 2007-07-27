@@ -79,6 +79,9 @@ Comparable {
 			result.append(getInfluence().getInfluence(next.getId()));
 			result.append("$"); // change for unusual influence
 		}
+		//No Influences then make sure there is a space so it'll still load.
+		if ( getInfluence().getHouses().size() < 1 )
+			result.append(" ");
 		result.append("#");
 		result.append(getEnvironments().size());
 		result.append("#");
