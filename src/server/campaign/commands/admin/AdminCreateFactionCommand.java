@@ -45,18 +45,23 @@ public class AdminCreateFactionCommand implements Command {
 			return;
 		}
 		
-		String name = command.nextToken();
-		String color = command.nextToken();
-		int baseGunner = Integer.parseInt(command.nextToken());
-		int basePilot = Integer.parseInt(command.nextToken());
-		String Abb = command.nextToken();
-		
-		SHouse newfaction = new SHouse(CampaignMain.cm.getData().getUnusedHouseID(),name,"#" + color,baseGunner,basePilot,Abb); 
-		newfaction.updated();
-		
-		CampaignMain.cm.addHouse(newfaction);
-		CampaignMain.cm.toUser("Faction created!",Username,true);
-		CampaignMain.cm.doSendModMail("NOTE",Username + " has created faction" + newfaction.getName());
-		
+		try{
+			String name = command.nextToken();
+			String color = command.nextToken();
+			int baseGunner = Integer.parseInt(command.nextToken());
+			int basePilot = Integer.parseInt(command.nextToken());
+			String Abb = command.nextToken();
+			
+			SHouse newfaction = new SHouse(CampaignMain.cm.getData().getUnusedHouseID(),name,"#" + color,baseGunner,basePilot,Abb); 
+			newfaction.updated();
+			
+			CampaignMain.cm.addHouse(newfaction);
+			CampaignMain.cm.toUser("Faction created!",Username,true);
+			CampaignMain.cm.doSendModMail("NOTE",Username + " has created faction " + newfaction.getName());
+		}
+		catch(Exception ex){
+			CampaignMain.cm.toUser("Invalid Syntax: /AdminCreateFaction Name#Color(hex)#BaseGunner#BasePilot#Abberviation",Username,true);
+			return;
+		}
 	}
 }
