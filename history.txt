@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Bug: Admin Planet Editor not editing Original Owner.
 + Added Syntax to AdminCreateFaction command
 Release Server 0.2.5.4
 + Bug: Planets without any influence where not loading.

@@ -1227,8 +1227,8 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		
 		if ( !planetXPosition.getText().equals(Double.toString(this.selectedPlanet.getPosition().getX())) || !planetYPosition.getText().equals(Double.toString(this.selectedPlanet.getPosition().getY())))
 			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminMovePlanet#"+planetName+"#"+planetXPosition.getText()+"#"+planetYPosition.getText());
-		if ( !planetOwnersList.getSelectedItem().toString().equals(this.selectedPlanet.getOriginalOwner()) )
-			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminSetPlanetOriginalOwner#"+planetName+"#"+planetOwnersList.getSelectedItem().toString());
+		if ( !houseNames.getSelectedItem().toString().equals(this.selectedPlanet.getOriginalOwner()) )
+			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminSetPlanetOriginalOwner#"+planetName+"#"+houseNames.getSelectedItem().toString());
 		if ( !minPlanetOwnerShip.getText().equals(Integer.toString(this.selectedPlanet.getMinPlanetOwnerShip())) )
 			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c SetPlanetMinOwnerShip#"+planetName+"#"+minPlanetOwnerShip.getText());
 		if ( !planetConquerPoints.getText().equals(Integer.toString(this.selectedPlanet.getConquestPoints())) )
