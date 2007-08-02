@@ -439,20 +439,23 @@ public class CUnit extends Unit {
 	public static int getPriceForUnit(MWClient mwclient, int weightclass, int type_id, House producer) {
 		
 		int result = Integer.MAX_VALUE;
-		String classtype = Unit.getWeightClassDesc(weightclass) + Unit.getTypeClassDesc(type_id) + "Price";
-		
-		if (type_id == Unit.MEK)
-			result = Integer.parseInt(mwclient.getserverConfigs(Unit.getWeightClassDesc(weightclass) + "Price"));
-		else
-			result = Integer.parseInt(mwclient.getserverConfigs(classtype));
-		
-		//modify the result by the faction price modifier
-		result += producer.getHouseUnitPriceMod(type_id, weightclass);
-		
-		//dont allow negative pricing
-		if (result < 0)
-			result = 0;
-		
+		try{
+			String classtype = Unit.getWeightClassDesc(weightclass) + Unit.getTypeClassDesc(type_id) + "Price";
+			
+			if (type_id == Unit.MEK)
+				result = Integer.parseInt(mwclient.getserverConfigs(Unit.getWeightClassDesc(weightclass) + "Price"));
+			else
+				result = Integer.parseInt(mwclient.getserverConfigs(classtype));
+			
+			//modify the result by the faction price modifier
+			result += producer.getHouseUnitPriceMod(type_id, weightclass);
+			
+			//dont allow negative pricing
+			if (result < 0)
+				result = 0;
+		}catch(Exception ex){
+			MWClient.mwClientLog.clientErrLog(ex);
+		}
 		return result;
 	}// end getPriceForCUnit()
 	
