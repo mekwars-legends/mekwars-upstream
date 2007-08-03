@@ -1,7 +1,6 @@
 package server.mwmysql;
 
 import java.awt.Dimension;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,6 +15,7 @@ import java.util.TreeMap;
 import common.AdvanceTerrain;
 import common.CampaignData;
 import common.Continent;
+import common.House;
 import common.Influences;
 import common.PlanetEnvironment;
 import common.util.Position;
@@ -23,7 +23,6 @@ import server.MMServ;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
-import server.campaign.SUnitFactory;
 
 public class planetHandler {
   Connection con = null;
@@ -236,201 +235,6 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 	  }
   }
   
-  public void savePlanet(SPlanet planet)
-  {
-	  try {
-		  if (planet.getDBID()==0) {
-			  // It's a new planet, INSERT it.
-			  Statement stmt = con.createStatement();
-			  ResultSet rs = null;
-			  StringBuffer sql = new StringBuffer();
-			  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-			  PreparedStatement ps;
-			  
-			  sql.append("INSERT into planets set pCompProd = ?, "); 
-			  sql.append("pXpos = ?, ");
-			  sql.append("pYpos = ?, ");
-			  sql.append("pDesc = ?, ");
-			  sql.append("pBays = ?, ");
-			  sql.append("pIsConquerable = ?, ");
-			  sql.append("pLastChanged = ?, ");
-			  sql.append("pMWID = ?, ");
-			  sql.append("pMapSizeWidth = ?, ");
-			  sql.append("pMapSizeHeight = ?, ");
-			  sql.append("pBoardSizeWidth = ?, ");
-			  sql.append("pBoardSizeHeight = ?, ");
-			  sql.append("pTempWidth = ?, ");
-			  sql.append("pTempHeight = ?, ");
-			  sql.append("pGravity = ?, ");
-			  sql.append("pVacuum = ?, ");
-			  sql.append("pNightChance = ?, ");
-			  sql.append("pNightTempMod = ?, ");
-			  sql.append("pMinPlanetOwnership = ?, ");
-			  sql.append("pIsHomeworld = ?, ");
-			  sql.append("pOriginalOwner = ?, ");
-			  sql.append("pMaxConquestPoints = ?, ");
-			  sql.append("pName = ?");
-			  
-			  ps=con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
-			  ps.setInt(1, planet.getCompProduction());
-			  ps.setDouble(2, planet.getPosition().getX());
-			  ps.setDouble(3, planet.getPosition().getY());
-			  ps.setString(4, planet.getDescription());
-			  ps.setInt(5, planet.getBaysProvided());
-			  ps.setString(6, String.valueOf(planet.isConquerable()));
-			  ps.setString(7, sdf.format(planet.getLastChanged()));
-			  ps.setInt(8, planet.getId());
-			  ps.setInt(9, planet.getMapSize().width);
-			  ps.setInt(10, planet.getMapSize().height);
-			  ps.setInt(11, planet.getBoardSize().width);
-			  ps.setInt(12, planet.getBoardSize().height);
-			  ps.setInt(13, planet.getTemp().width);
-			  ps.setInt(14, planet.getTemp().height);
-			  ps.setDouble(15, planet.getGravity());
-			  ps.setString(16, String.valueOf(planet.isVacuum()));
-			  ps.setInt(17, planet.getNightChance());
-			  ps.setInt(18, planet.getNightTempMod());
-			  ps.setInt(19, planet.getMinPlanetOwnerShip());
-			  ps.setString(20, String.valueOf(planet.isHomeWorld()));
-			  ps.setString(21, planet.getOriginalOwner());
-			  ps.setInt(22, planet.getConquestPoints());
-			  ps.setString(23, planet.getName());
-			  
-			  ps.executeUpdate();
-			  
-			  
-			  rs=ps.getGeneratedKeys();
-			  if(rs.next()){
-				  int pid = rs.getInt(1);
-				  planet.setDBID(pid);
-				  
-				  /**
-				   * If it didn't get us an ID, there's not much point in doing the following:
-				   * 
-				   * Now, we need to save all the vectors:
-				   * Factories
-				   * Influence
-				   * Environments
-				   * planet flags
-				   */
-				  if(planet.getUnitFactories()!=null){
-					  for (int i = 0; i < planet.getUnitFactories().size(); i++) {
-						SUnitFactory MF = (SUnitFactory) planet.getUnitFactories().get(i);
-						CampaignMain.cm.MySQL.saveFactory(MF);
-					  }
-				  }
-				  // Save Influences
-				  saveInfluences(planet);
-				  
-				  // Save Environments
-				  
-				  saveEnvironments(planet);
-				  
-				  // Save Planet Flags
-				  if(planet.getPlanetFlags().size() > 0)
-				    savePlanetFlags(planet);
-				  
-			  }
-			  if(rs!=null)
-				  rs.close();
-			  if(stmt!=null)
-				  stmt.close();
-		  }
-		  else {
-			  // It's already in the database, UPDATE it
-			  Statement stmt = con.createStatement();
-			  StringBuffer sql = new StringBuffer();
-			  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-			  PreparedStatement ps;
-			  
-			  sql.append("UPDATE planets set pCompProd = ?, "); 
-			  sql.append("pXpos = ?, ");
-			  sql.append("pYpos = ?, ");
-			  sql.append("pDesc = ?, ");
-			  sql.append("pBays = ?, ");
-			  sql.append("pIsConquerable = ?, ");
-			  sql.append("pLastChanged = ?, ");
-			  sql.append("pMWID = ?, ");
-			  sql.append("pMapSizeWidth = ?, ");
-			  sql.append("pMapSizeHeight = ?, ");
-			  sql.append("pBoardSizeWidth = ?, ");
-			  sql.append("pBoardSizeHeight = ?, ");
-			  sql.append("pTempWidth = ?, ");
-			  sql.append("pTempHeight = ?, ");
-			  sql.append("pGravity = ?, ");
-			  sql.append("pVacuum = ?, ");
-			  sql.append("pNightChance = ?, ");
-			  sql.append("pNightTempMod = ?, ");
-			  sql.append("pMinPlanetOwnership = ?, ");
-			  sql.append("pIsHomeworld = ?, ");
-			  sql.append("pOriginalOwner = ?, ");
-			  sql.append("pMaxConquestPoints = ?, ");
-			  sql.append("pName = ? ");
-			  sql.append("WHERE PlanetID = ?");
-			  
-			  ps=con.prepareStatement(sql.toString());
-			  
-			  ps.setInt(1, planet.getCompProduction());
-			  ps.setDouble(2, planet.getPosition().getX());
-			  ps.setDouble(3, planet.getPosition().getY());
-			  ps.setString(4, planet.getDescription());
-			  ps.setInt(5, planet.getBaysProvided());
-			  ps.setBoolean(6, planet.isConquerable());
-			  ps.setString(7, sdf.format(planet.getLastChanged()));
-			  ps.setInt(8, planet.getId());
-			  ps.setInt(9, planet.getMapSize().width);
-			  ps.setInt(10, planet.getMapSize().height);
-			  ps.setInt(11, planet.getBoardSize().width);
-			  ps.setInt(12, planet.getBoardSize().height);
-			  ps.setInt(13, planet.getTemp().width);
-			  ps.setInt(14, planet.getTemp().height);
-			  ps.setDouble(15, planet.getGravity());
-			  ps.setBoolean(16, planet.isVacuum());
-			  ps.setInt(17, planet.getNightChance());
-			  ps.setInt(18, planet.getNightTempMod());
-			  ps.setInt(19, planet.getMinPlanetOwnerShip());
-			  ps.setBoolean(20, planet.isHomeWorld());
-			  ps.setString(21, planet.getOriginalOwner());
-			  ps.setInt(22, planet.getConquestPoints());
-			  ps.setString(23, planet.getName());
-			  ps.setInt(24, planet.getDBID());
-			  
-			  ps.executeUpdate();
-				  
-				  /**
-				   * Now, we need to save all the vectors:
-				   * Factories
-				   * Influence
-				   * Environments
-				   * planet flags
-				   */
-				  if(planet.getUnitFactories()!=null){
-					  for (int i = 0; i < planet.getUnitFactories().size(); i++) {
-						SUnitFactory MF = (SUnitFactory) planet.getUnitFactories().get(i);
-						CampaignMain.cm.MySQL.saveFactory(MF);
-					  }
-				  }
-				  // Save Influences
-				  saveInfluences(planet);
-				  
-				  // Save Environments
-				  
-				  saveEnvironments(planet);
-				  
-				  // Save Planet Flags
-				  if(planet.getPlanetFlags().size() > 0)
-				    savePlanetFlags(planet);
-				  
-			  if(stmt!=null)
-				  stmt.close();
-		  }
-	  }
-	  catch(SQLException e) {
-		  MMServ.mmlog.dbLog(e.getMessage());
-	  }
-	  
-  }
-  
   public void saveEnvironments(SPlanet p) {
 	  Statement stmt = null;
 	  StringBuffer sql = new StringBuffer();
@@ -439,9 +243,9 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 		stmt = con.createStatement();
 		sql.append("DELETE from planetenvironments WHERE PlanetID = " + p.getDBID());
 		stmt.executeUpdate(sql.toString());
-		Iterator it = p.getEnvironments().iterator();
+		Iterator<Continent> it = p.getEnvironments().iterator();
 		while(it.hasNext()){
-			Continent t = (Continent) it.next();
+			Continent t = it.next();
 			int size = t.getSize();
 			StringBuffer atData = new StringBuffer();
 			StringBuffer tName = new StringBuffer();
@@ -503,9 +307,8 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 
 
   public void saveInfluences(SPlanet p) {
-	  Iterator it = p.getInfluence().getHouses().iterator();
-	  Statement stmt = null;	  
-	  ResultSet rs = null;
+	  Iterator<House> it = p.getInfluence().getHouses().iterator();
+	  Statement stmt;	  
 	  StringBuffer sql = new StringBuffer();
 	  int pid = p.getDBID();
 	  
@@ -513,36 +316,23 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 		  stmt = con.createStatement();
 		  sql.append("DELETE from planetinfluences WHERE PlanetID = " + pid);
 		  stmt.executeUpdate(sql.toString());
-	  } catch (SQLException e) {
-		  MMServ.mmlog.dbLog("SQL Error in saveInfluences: " + e.getMessage());
-	  }
-	  
-	  while (it.hasNext()) {
-		  SHouse next = (SHouse) it.next();
-		  String iName = next.getName().replace("'", "\'");
+		  while (it.hasNext()) {
+			  SHouse next = (SHouse) it.next();
+			  String iName = next.getName().replace("'", "\'");
 		  
-		  int iInf = p.getInfluence().getInfluence(next.getId());
-		  try {
-			sql.setLength(0);
-			sql.append("INSERT into planetinfluences set PlanetID = " + pid + ", ");
-			sql.append("FactionName = '" + iName + "', ");
-			sql.append("Influence = " + iInf);
-			stmt.executeUpdate(sql.toString());
-			
-		  }
-		  catch (SQLException e) {
-		  MMServ.mmlog.dbLog("SQL ERROR in saveInluences: " + e.getMessage());
-		  }
-		try {
-			if(rs != null)
-				rs.close();
-			if(stmt != null)
-				stmt.close();
+			  int iInf = p.getInfluence().getInfluence(next.getId());
+			  sql.setLength(0);
+			  sql.append("INSERT into planetinfluences set PlanetID = " + pid + ", ");
+			  sql.append("FactionName = '" + iName + "', ");
+			  sql.append("Influence = " + iInf);
+			  stmt.executeUpdate(sql.toString());
+	  		}
+			stmt.close();
 		} catch (SQLException e) {
 			MMServ.mmlog.dbLog("Error closing resources in saveInfluences: " + e.getMessage());
 		}
-	  }
   }
+ 
    
   // CONSTRUCTOR
   public planetHandler(Connection c)

@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.sql.Connection;
 import server.campaign.SUnitFactory;
 import server.MMServ;
-import common.Planet;
 import server.campaign.SPlanet;
 
 public class factoryHandler {
@@ -75,98 +74,6 @@ public class factoryHandler {
       catch (SQLException e) {
         MMServ.mmlog.dbLog("SQL ERROR in factoryHandler.java: " + e.getMessage());
       }    
-    }
-
-  public void saveFactory(SUnitFactory factory)
-    {
-	  int fid=0;
-    Statement stmt = null;
-    ResultSet rs = null;
-    StringBuffer sql = new StringBuffer();
-    Planet planet = factory.getPlanet();
-    PreparedStatement ps;
-    
-    try {
-    if(con.isClosed())
-	MMServ.mmlog.dbLog("Error: con closed"); 
-    stmt = con.createStatement();
-    sql.setLength(0); 
-    sql.append("SELECT FactoryID from factories WHERE FactoryID = '");
-	sql.append(factory.getID());
-	sql.append("'"); 
-    rs = stmt.executeQuery(sql.toString());
-    if(!rs.next())
-      {
-      // This doesn't exist, so INSERT it
-	sql.setLength(0);
-    sql.append("INSERT into factories set ");
-	sql.append("FactoryName = ?, ");
-	sql.append("FactorySize = ?, ");
-	sql.append("FactoryFounder = ?, ");
-	sql.append("FactoryTicks = ?, ");
-	sql.append("FactoryRefreshSpeed = ?, ");
-	sql.append("FactoryType = ?, ");
-	sql.append("FactoryPlanet = ?, ");
-	sql.append("FactoryisLocked = ?");
-
-	ps = con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
-	ps.setString(1, factory.getName());
-	ps.setString(2, factory.getSize());
-	ps.setString(3, factory.getFounder());
-	ps.setInt(4, factory.getTicksUntilRefresh());
-	ps.setInt(5, factory.getRefreshSpeed());
-	ps.setInt(6, factory.getType());
-	ps.setString(7, planet.getName());
-	ps.setString(8, Boolean.toString(factory.isLocked()));
-
-	ps.executeUpdate();
-	rs = ps.getGeneratedKeys();
-	if (rs.next())
-	  {
-	  fid = rs.getInt(1);
-	  factory.setID(fid);
-	  }
-      }
-    else
-      {
-      // It already exists, so UPDATE it
-      fid = rs.getInt("FactoryID");
-	  sql.setLength(0);
-      sql.append("UPDATE factories set ");
-      sql.append("FactoryName = ?, ");
-      sql.append("FactorySize = ?, ");
-	  sql.append("FactoryPlanet = ?, ");
-      sql.append("FactoryFounder = ?, ");
-      sql.append("FactoryTicks = ?, ");
-      sql.append("FactoryRefreshSpeed = ?, ");
-      sql.append("FactoryType = ?, ");
-      sql.append("FactoryisLocked = ? ");
-	  sql.append("WHERE FactoryID = ?");
-
-	  ps = con.prepareStatement(sql.toString());
-	  ps.setString(1, factory.getName());
-	  ps.setString(2, factory.getSize());
-	  ps.setString(3, planet.getName());
-	  ps.setString(4, factory.getFounder());
-	  ps.setInt(5, factory.getTicksUntilRefresh());
-	  ps.setInt(6, factory.getRefreshSpeed());
-	  ps.setInt(7, factory.getType());
-	  ps.setString(8, Boolean.toString(factory.isLocked()));
-	  ps.setInt(9, factory.getID());
-	  
-      ps.executeUpdate();
-      }
-        if(rs!=null)
-        	rs.close();
-        if(stmt!=null)
-        	stmt.close();
-        if(ps!=null)
-        	ps.close();
-    }
-    catch (SQLException e)
-      {
-      MMServ.mmlog.dbLog("SQL ERROR in factoryHandler.java: " + e.getMessage());
-      }
     }
 
   // CONSTRUCTOR

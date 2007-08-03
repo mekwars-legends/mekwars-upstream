@@ -67,7 +67,7 @@ public class AdminCreateFactoryCommand implements Command {
 		}
         planet.updated();
 	if(CampaignMain.cm.isUsingMySQL())
-		CampaignMain.cm.MySQL.saveFactory(fac);
+		fac.toDB();
 
 		CampaignMain.cm.toUser("Factory created!",Username,true);
 

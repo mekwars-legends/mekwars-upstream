@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import common.campaign.pilot.skills.PilotSkill;
@@ -43,7 +42,6 @@ public class PilotHandler {
 					p.setHits(rs.getInt("pilotHits"));
 			
 					// Load the skills
-					MMServ.mmlog.dbLog("Loading skills for pilot ID " + p.getPilotId());
 					rs = stmt.executeQuery("SELECT * from pilotskills WHERE pilotID = " + pID);
 					while(rs.next()) {
 						SPilotSkill skill = CampaignMain.cm.getPilotSkill(rs.getInt("skillNum"));
@@ -139,7 +137,6 @@ public class PilotHandler {
 
 	public void linkPilotToPlayer(int pilotID, int playerID) {
 		try {
-			MMServ.mmlog.dbLog("Linking Pilot " + pilotID + " to Player " + playerID);
 			PreparedStatement ps = con.prepareStatement("UPDATE pilots SET factionID = NULL, unitID = NULL, playerID = ? WHERE pilotID = " + pilotID);
 			ps.setInt(1, playerID);
 			ps.executeUpdate();
@@ -149,105 +146,91 @@ public class PilotHandler {
 		}
 	}
 	
-	public void savePilot(SPilot p, int unitType, int unitSize) {
-		try {
-			if(p == null)
-				return;
-
-			if(p.getName().equalsIgnoreCase("Vacant"))
-				return;
-			StringBuffer sql = new StringBuffer();
-			PreparedStatement ps;
-			
-			if(p.getDBId() == 0){
-				// No pilot with this id, so INSERT
-				sql.setLength(0);
-
-				ps = con.prepareStatement("INSERT into pilots set MWID=?, pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ?", PreparedStatement.RETURN_GENERATED_KEYS);
-				ps.setInt(1, p.getPilotId());
-				ps.setString(2, p.getName());
-				ps.setInt(3, p.getExperience());
-				ps.setInt(4, p.getGunnery());
-				ps.setInt(5, p.getPiloting());
-				ps.setInt(6, p.getKills());
-				ps.setString(7, p.getCurrentFaction());
-				ps.setInt(8, p.getHits());
-				ps.setInt(9, unitSize);
-				ps.setInt(10, unitType);
-				ps.executeUpdate();
-				ResultSet rs = ps.getGeneratedKeys();
-				rs.next();
-				p.setDBId(rs.getInt(1));
-			} else {
-				// Pilot already saved, so UPDATE
-				sql.setLength(0);
-
-				ps = con.prepareStatement("UPDATE pilots set pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ?, MWID=? WHERE pilotID=?");
-				ps.setString(1, p.getName());
-				ps.setInt(2, p.getExperience());
-				ps.setInt(3, p.getGunnery());
-				ps.setInt(4, p.getPiloting());
-				ps.setInt(5, p.getKills());
-				ps.setString(6, p.getCurrentFaction());
-				ps.setInt(7, p.getHits());
-				ps.setInt(8, unitSize);
-				ps.setInt(9, unitType);
-				ps.setInt(10, p.getPilotId());
-				ps.setInt(11, p.getDBId());
-				ps.executeUpdate();
-			}
-			//stmt.executeUpdate(sql.toString());
-
-			// Update pilot skills
-			sql.setLength(0);
-			sql.append("DELETE from pilotskills WHERE pilotID = " + p.getPilotId());
-			ps.executeUpdate(sql.toString());
-			
-			if(p.getSkills().size() > 0) {
-				Iterator it = p.getSkills().getSkillIterator();
-				while(it.hasNext()) {
-					SPilotSkill sk = (SPilotSkill) it.next();
-					sql.setLength(0);
-					sql.append("INSERT into pilotSkills set ");
-					sql.append("pilotID = " + p.getPilotId() + ", ");
-					sql.append("SkillNum = " + sk.getId() + ", ");
-					sql.append("SkillLevel = " + sk.getLevel());
-					if (sk instanceof WeaponSpecialistSkill ) {
-						sql.append(", skillData = '" + p.getWeapon() + "'");
-					}
-					if (sk instanceof TraitSkill) {
-						sql.append(", skillData = '" + p.getTraitName() + "'");
-					}
-					if (sk instanceof EdgeSkill) {
-						sql.append(", skillData = '" + ((EdgeSkill)sk).getTac() + "$");
-						sql.append(((EdgeSkill)sk).getKO() + "$");
-						sql.append(((EdgeSkill)sk).getHeadHit() + "$");
-						sql.append(((EdgeSkill)sk).getExplosion() + "'");
-					}
-					ps.executeUpdate(sql.toString());
-					
-					}
-			}
-			ps.close();
-		} catch (SQLException e) {
-			MMServ.mmlog.dbLog("SQL Error in PilotHandler.savePilot: " + e.getMessage());
-		}
-
-		
-	}
-	
 	public void deletePilot(int pilotID) {
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate("DELETE from pilotskills WHERE pilotID = " + pilotID);
-			stmt.executeUpdate("DELETE fron pilots WHERE pilotID = " + pilotID);
+			stmt.executeUpdate("DELETE from pilots WHERE pilotID = " + pilotID);
 			stmt.close();
 		} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in PilotHandler.deletePilot: " + e.getMessage());
 		}
 	}
 	
-
+	public void deleteFactionPilots(int factionID) {
+		Statement stmt;
+		ResultSet rs;
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT pilotID from pilots WHERE factionID = " + factionID);
+			while(rs.next()) {
+				stmt.executeUpdate("DELETE from pilotskills WHERE pilotID = " + rs.getInt("pilotID"));
+				stmt.executeUpdate("DELETE from pilots WHERE pilotID = " + rs.getInt("pilotID"));
+			}
+			stmt.close();
+			rs.close();
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
+		}
+	}
+		
+	public void deletePlayerPilots(int playerID) {
+		Statement stmt, stmt1;
+		ResultSet rs;
+		try {
+			stmt = con.createStatement();
+			stmt1 = con.createStatement();
+			rs = stmt.executeQuery("SELECT pilotID from pilots WHERE playerID = " + playerID);
+			while(rs.next()) {
+				stmt1.executeUpdate("DELETE from pilotskills WHERE pilotID = " + rs.getInt("pilotID"));
+				stmt1.executeUpdate("DELETE from pilots WHERE pilotID = " + rs.getInt("pilotID"));
+			}
+			stmt.close();
+			stmt1.close();
+			rs.close();
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
+		}
+	}
+	
+	public void deletePlayerPilots(int playerID, int unitType, int unitWeight) {
+		Statement stmt, stmt1;
+		ResultSet rs;
+		try {
+			stmt = con.createStatement();
+			stmt1 = con.createStatement();
+			rs = stmt.executeQuery("SELECT pilotID from pilots WHERE playerID = " + playerID + " AND pilotType = " + unitType + " AND pilotSize = " + unitWeight);
+			while(rs.next()) {
+				stmt1.executeUpdate("DELETE from pilotskills WHERE pilotID = " + rs.getInt("pilotID"));
+				stmt1.executeUpdate("DELETE from pilots WHERE pilotID = " + rs.getInt("pilotID"));
+			}
+			stmt.close();
+			stmt1.close();
+			rs.close();
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
+		}
+	}
+	
+	public void deleteFactionPilots(int factionID, int type) {
+		Statement stmt, stmt1;
+		ResultSet rs;
+		try {
+			stmt = con.createStatement();
+			stmt1 = con.createStatement();
+			rs = stmt.executeQuery("SELECT pilotID from pilots WHERE factionID = " + factionID + " AND pilotType = " + type);
+			while(rs.next()) {
+				stmt1.executeUpdate("DELETE from pilotskills WHERE pilotID = " + rs.getInt("pilotID"));
+				stmt1.executeUpdate("DELETE from pilots WHERE pilotID = " + rs.getInt("pilotID"));
+			}
+			stmt.close();
+			stmt1.close();
+			rs.close();
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
+		}
+	}
+	
 	public PilotHandler(Connection c) {
 		this.con = c;
 	}

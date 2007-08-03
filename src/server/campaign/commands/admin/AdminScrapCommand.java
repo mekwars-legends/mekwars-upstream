@@ -78,6 +78,8 @@ public class AdminScrapCommand implements Command {
 		CampaignMain.cm.doSendModMail("NOTE",Username + " scrapped a "+ m.getModelName() + " belonging to " + targetName);
 		
 		//then do it
+		if(CampaignMain.cm.isUsingMySQL())
+			CampaignMain.cm.MySQL.deleteUnit(m.getDBId());
 		target.removeUnit(unitID, true);
 		
 	}

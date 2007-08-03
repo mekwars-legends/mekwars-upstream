@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Players saving and loading from DB
++ Pilots / Units deleting from DB when retired / destroyed
 + Added Try/Catch to CUnit.getPriceForUnit()
 Release Server 0.2.5.5
 + Added Debug Messaged to Tick to find inf loop bug.

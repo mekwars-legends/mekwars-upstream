@@ -44,24 +44,35 @@ public class RemoveFactionPilotCommand implements Command {
         try {
             if ( type.equalsIgnoreCase("all") ){
                if ( weight.equalsIgnoreCase("all") ){
-                       h.getPilotQueues().flushQueue();
+            	   if (CampaignMain.cm.isUsingMySQL())
+            		   CampaignMain.cm.MySQL.deleteFactionPilots(h.getDBId());
+                   h.getPilotQueues().flushQueue();
                }
             }
             else{
                 position = command.nextToken();
                 if ( position.equalsIgnoreCase("all") ){
                     h.getPilotQueues().getPilotQueue(Unit.getTypeIDForName(type)).clear();
+                    if(CampaignMain.cm.isUsingMySQL()) {
+                    	CampaignMain.cm.MySQL.deleteFactionPilots(h.getDBId(), Unit.getTypeIDForName(type));
+
+                    }
                 }
                 else if ( position.indexOf("-") > 0){
                     int end = Integer.parseInt(position.substring(0,position.indexOf("-")));
                     int start = Integer.parseInt(position.substring(position.indexOf("-")+1));
                     //search backwards through the queue so you stay ahead of the shrinkinage.
                     for (int pos = start ;pos >= end; pos--){
+                    	if(CampaignMain.cm.isUsingMySQL())
+                    		CampaignMain.cm.MySQL.deletePilot(h.getPilotQueues().getPilotQueue(Unit.getTypeIDForName(type)).get(pos).getDBId());
                         h.getPilotQueues().getPilotQueue(Unit.getTypeIDForName(type)).remove(pos);
                     }
                 }
-                else
+                else {
                     h.getPilotQueues().getPilotQueue(Unit.getTypeIDForName(type)).remove(Integer.parseInt(position));
+                    if(CampaignMain.cm.isUsingMySQL())
+                    	CampaignMain.cm.MySQL.deletePilot(h.getPilotQueues().getPilotQueue(Unit.getTypeIDForName(type)).get(Integer.parseInt(position)).getDBId());
+                }
             }
         }catch(Exception ex) {
             CampaignMain.cm.toUser("Syntanx RemoveFactionPilot#House#Type[Mek,Vehicle,Infantry,Proto,BattleArmor]/ALL#Position[Not used if ALL is selected].",Username);

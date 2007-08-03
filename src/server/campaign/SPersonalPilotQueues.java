@@ -20,6 +20,10 @@
  */
 package server.campaign;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -127,13 +131,9 @@ public class SPersonalPilotQueues {
 	    this.getUnitTypeQueue(p.getUnitType()).get(weightClass).addLast(p);
 	    
 	    if(CampaignMain.cm.isUsingMySQL()) {
-	    	MMServ.mmlog.dbLog("In SPersonalPilotQueues: adding Pilot ->");
-	    	MMServ.mmlog.dbLog(" --> Pilot ID: " + ((SPilot)p).getPilotId());
-	    	MMServ.mmlog.dbLog(" ==> Player ID: " + this.playerID);
-	    	
 	    	int type = p.getUnitType();
-	    	if(((SPilot)p).getDBId()==0)
-	    		CampaignMain.cm.MySQL.savePilot((SPilot)p, type, weightClass);
+    		((SPilot)p).toDB(type, weightClass);
+	    		
 	    	CampaignMain.cm.MySQL.linkPilotToPlayer(((SPilot)p).getDBId(), this.playerID);
 	    }
 	}
@@ -246,6 +246,33 @@ public class SPersonalPilotQueues {
 	 * @param buffer
 	 * @param delimiter
 	 */
+	
+	public void fromDB(int playerID) {
+		int capSize = CampaignMain.cm.getIntegerConfig("MaxallowedPilotsInQueueToBuyFromHouse");
+		Connection con = CampaignMain.cm.MySQL.getCon();
+		ResultSet rs;
+		Statement stmt;
+		int currentCount=0;
+		
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT pilotID, pilotType, pilotSize from pilots WHERE playerID = " + playerID);
+			while(rs.next()) {
+				SPilot p = CampaignMain.cm.MySQL.loadPilot(rs.getInt("pilotID"));
+				if(capSize < 1 || currentCount < capSize) {
+					this.addPilot(p, rs.getInt("pilotType"), rs.getInt("pilotSize"));
+				} else {
+					// Delete the pilot here - no function for that yet.
+				}
+				currentCount++;					
+			}
+			rs.close();
+			stmt.close();
+		}catch(SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in SPersonalPilotQueues.fromDB: " + e.getMessage());
+		}
+		
+	}
 	public void fromString(String buffer, String delimiter) {
 		
 		StringTokenizer mainTokenizer = new StringTokenizer(buffer,delimiter);

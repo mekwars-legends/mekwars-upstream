@@ -49,7 +49,7 @@ public class AdminSetPlanetGravityCommand implements Command {
 		planet.updated();
 		
 		if(CampaignMain.cm.isUsingMySQL())
-			CampaignMain.cm.MySQL.savePlanet(planet);
+			planet.toDB();
 		
 		
 		CampaignMain.cm.toUser("Gravity set for "+planet.getName(),Username,true);

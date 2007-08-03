@@ -75,7 +75,7 @@ public class AdminReturnPlanetsToOriginalOwnersCommand implements Command {
 			p.updated();
 			
 			if(CampaignMain.cm.isUsingMySQL())
-				CampaignMain.cm.MySQL.savePlanet(p);
+				p.toDB();
 			
 		}
 		

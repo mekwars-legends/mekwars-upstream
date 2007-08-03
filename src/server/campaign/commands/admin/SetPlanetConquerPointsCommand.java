@@ -56,7 +56,7 @@ public class SetPlanetConquerPointsCommand implements Command {
 		p.updated();
 		
         if(CampaignMain.cm.isUsingMySQL())
-        	CampaignMain.cm.MySQL.savePlanet(p);
+        	p.toDB();
         
 		CampaignMain.cm.toUser("You set " + p.getName() + "'s conquer points to "+points,Username,true);
 		CampaignMain.cm.doSendModMail("PLANETARY CHANGE",Username + " has changed "+p.getName()+"'s conquer points to "+points);

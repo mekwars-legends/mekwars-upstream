@@ -354,7 +354,7 @@ public class DefectCommand implements Command {
 					return;
 				}
 				
-				//cound have a penalty, but apparently none would be applied ... so ...
+				//could have a penalty, but apparently none would be applied ... so ...
 				if (varsWhichChange == 0 && unitsToLose == 0) {
 					CampaignMain.cm.toUser("Click [<a href=\"MWDEFECTDLG/c defect#" + newHouse.getName() + "#CONFIRM\">here</a>] to confirm your defection to " + newHouse.getName() + ".<br>",p.getName(),true);
 					return;

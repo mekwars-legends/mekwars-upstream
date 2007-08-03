@@ -57,7 +57,7 @@ public class AdminCreateSolarisCommand implements Command {
 		CampaignMain.cm.addPlanet(newbieP);
 
 		if(CampaignMain.cm.isUsingMySQL())
-			CampaignMain.cm.MySQL.savePlanet(newbieP);
+			newbieP.toDB();
 		
 		solaris.addPlanet(newbieP);
 		CampaignMain.cm.toUser(CampaignMain.cm.getConfig("NewbieHouseName"),Username,true);

@@ -1252,7 +1252,7 @@ public class ShortResolver {
 		 * Now that we've handled the living units, look at the salvageable units and
 		 * determine who ends up with the unit. Need to forumulate 2 or 3 Strings. 1
 		 * to tell the original player what happened to the unit, 1 to tell all other
-		 * players what happened to the unit, and 1 (of the owner is not the same as
+		 * players what happened to the unit, and 1 (if the owner is not the same as
 		 * the original owner) to tell the new owner of his prize ...
 		 * 
 		 * Also, salvaged units *may* earn kills if their pilots are still alive and
@@ -1651,6 +1651,9 @@ public class ShortResolver {
 			
 			//remove the unit from the player's hangar.
 			oldOwner.removeUnit(currU.getId(), false);
+			// Remove it from the database
+			if (CampaignMain.cm.isUsingMySQL())
+				CampaignMain.cm.MySQL.deleteUnit(currU.getDBId());
 			
 			/*
 			 * Tell the player if his pilot was killed, saved
@@ -3056,6 +3059,8 @@ public class ShortResolver {
 					|| entity.getType() == Unit.PROTOMEK);
 			if ( CampaignMain.cm.isUsingCyclops() )
 				CampaignMain.cm.getMWCC().pilotKill((SPilot)unit.getPilot(),op.getOpCyclopsID());
+			if ( CampaignMain.cm.isUsingMySQL() )
+				CampaignMain.cm.MySQL.deletePilot(((SPilot)unit.getPilot()).getDBId());
 			if (isPilotChangeable && personalQueues){
 				SPilot pilot = new SPilot("Vacant",99,99);
 				unit.setPilot(pilot);

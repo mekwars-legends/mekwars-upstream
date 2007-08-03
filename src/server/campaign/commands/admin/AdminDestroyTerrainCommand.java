@@ -52,7 +52,7 @@ public class AdminDestroyTerrainCommand implements Command {
 			p.updated();
 			
 			if(CampaignMain.cm.isUsingMySQL())
-			  CampaignMain.cm.MySQL.savePlanet(p);
+			  p.toDB();
 			
 			//server.MMServ.mmlog.modLog(Username + " removed terrain from " + p.getName() + "(#" + placeToDelete + ").");
 			CampaignMain.cm.doSendModMail("NOTE",Username + " removed terrain from " + p.getName() + "(" + terrain + ").");

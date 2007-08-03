@@ -84,7 +84,7 @@ public class SetAdvancePlanetTerrainCommand implements Command {
 		planet.updated();
 		
         if(CampaignMain.cm.isUsingMySQL())
-        	CampaignMain.cm.MySQL.savePlanet(planet);
+        	planet.toDB();
 		
 		CampaignMain.cm.toUser("Advance Terrain set for terrain: "+aTerrain.getDisplayName()+" on planet "+planet.getName(),Username,true);
 		//server.MMServ.mmlog.modLog(Username + " set Advance Terrain for terrain: "+aTerrain.getDisplayName()+" on planet "+planet.getName());

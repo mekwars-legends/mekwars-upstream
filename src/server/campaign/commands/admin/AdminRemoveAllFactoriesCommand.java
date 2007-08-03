@@ -48,7 +48,7 @@ public class AdminRemoveAllFactoriesCommand implements Command {
             p.updated();
             
             if(CampaignMain.cm.isUsingMySQL())
-            	CampaignMain.cm.MySQL.savePlanet(p);
+            	p.toDB();
             
 			//server.MMServ.mmlog.modLog(Username + "  removed " + factoryname + " from " + p.getName() + ".");
 			CampaignMain.cm.doSendModMail("NOTE",Username + "  removed all factories  from " + p.getName() + ".");

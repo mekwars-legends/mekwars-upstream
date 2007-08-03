@@ -82,7 +82,7 @@ public class AdminUpdatePlanetOwnershipCommand implements Command {
 		planet.updated();
 		
         if(CampaignMain.cm.isUsingMySQL())
-        	CampaignMain.cm.MySQL.savePlanet(planet);
+        	planet.toDB();
 		
 		CampaignMain.cm.doSendModMail("NOTE",Username + " updated "+house.getName()+" ownership of "+ planet.getName()+" to "+ownerShip+".");
 	}

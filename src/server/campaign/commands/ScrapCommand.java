@@ -187,6 +187,9 @@ public class ScrapCommand implements Command {
 		int initialPP = p.getMyHouse().getPPCost(m.getWeightclass(), m.getType());
 		p.getMyHouse().addPP(m.getWeightclass(), m.getType(), initialPP/4, true);
 		
+		// Remove from database
+		if(CampaignMain.cm.isUsingMySQL())
+			CampaignMain.cm.MySQL.deleteUnit(m.getDBId());
 	}//end process()
 
 }//end ScrapCommand

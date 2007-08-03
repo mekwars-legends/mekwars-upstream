@@ -61,6 +61,6 @@ public class AdminSetPlanetOriginalOwnerCommand implements Command {
 		planet.updated();
 		
         if(CampaignMain.cm.isUsingMySQL())
-        	CampaignMain.cm.MySQL.savePlanet(planet);
+        	planet.toDB();
 	}
 }

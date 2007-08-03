@@ -56,7 +56,7 @@ public class AdminSetPlanetTemperatureCommand implements Command {
 		planet.updated();
 		
         if(CampaignMain.cm.isUsingMySQL())
-        	CampaignMain.cm.MySQL.savePlanet(planet);
+        	planet.toDB();
 		
 		CampaignMain.cm.toUser("Temperature range set for "+planet.getName(),Username,true);
 		//server.MMServ.mmlog.modLog(Username + " set the Temperature range for "+planet.getName());

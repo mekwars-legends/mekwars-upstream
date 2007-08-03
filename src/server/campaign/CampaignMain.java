@@ -1142,7 +1142,16 @@ public final class CampaignMain implements Serializable {
 		 * set it's save value to true. this will make sure that temp-loads are
 		 * saved/purged quickly.
 		 */
-
+		if(CampaignMain.cm.isUsingMySQL()) {
+			// For now, see if the user is there, see if the passwords match, and log it.
+			MMServ.mmlog.dbLog("Loading player " + pName);
+			if(CampaignMain.cm.MySQL.getPlayerIDByName(pName)== -1) {
+				// Player doesn't exist
+				MMServ.mmlog.dbLog("Player not in database");
+			} else {
+				
+			}
+		}
 		result = this.loadPlayerFile(pName, false);
 		if (result != null)
 			result.setSave(save);
@@ -1165,7 +1174,14 @@ public final class CampaignMain implements Serializable {
 		if (!name.startsWith("[Dedicated]") && !name.startsWith("War Bot")) {
 
 			try {
-
+				if(CampaignMain.cm.isUsingMySQL()) {
+					if(!CampaignMain.cm.MySQL.playerExists(name))
+						return null;
+					SPlayer p = new SPlayer();
+					int pid = CampaignMain.cm.MySQL.getPlayerIDByName(name);
+					p.fromDB(pid);
+					return p;
+				}
 				// log the load attempt & create readers
 				MMServ.mmlog.mainLog("Loading pfile for: " + name);
 
@@ -2710,7 +2726,10 @@ public final class CampaignMain implements Serializable {
 		 */
 		for (SPlayer p : savePlayers.values()) {
 			MMServ.mmlog.infoLog("Saving " + p.getName());
-			this.savePlayerFile(p);
+			if(CampaignMain.cm.isUsingMySQL())
+				p.toDB();
+			else
+				this.savePlayerFile(p);
 		}
 
 		// write out log footer
@@ -2750,7 +2769,10 @@ public final class CampaignMain implements Serializable {
 		for (House vh : CampaignMain.cm.getData().getAllHouses()) {
 			SHouse currH = (SHouse) vh;
 			for (SPlayer currP : currH.getAllOnlinePlayers().values()) {
-				this.savePlayerFile(currP);
+				if(CampaignMain.cm.isUsingMySQL())
+					currP.toDB();
+				else
+					this.savePlayerFile(currP);
 				if (Username != null)
 					CampaignMain.cm.toUser(currP.getName() + " saved",
 							Username, true);
@@ -2770,7 +2792,10 @@ public final class CampaignMain implements Serializable {
 	 * commands This is used so the players have a Pfile created right away
 	 */
 	public void forceSavePlayer(SPlayer p) {
-		savePlayerFile(p);
+		if(CampaignMain.cm.isUsingMySQL())
+			p.toDB();
+		else
+			savePlayerFile(p);
 	}
 
 	/**
@@ -3948,7 +3973,7 @@ public final class CampaignMain implements Serializable {
 		if(CampaignMain.cm.isUsingMySQL()) {
 			for (House currH : data.getAllHouses()) {
 				SHouse h = (SHouse) currH;
-				CampaignMain.cm.MySQL.saveFaction(h);
+				h.toDB();
 				
 				// For right now, we're going to save units to the faction file
 				// I can save them fine to the database, but they're not loading.
@@ -4122,8 +4147,10 @@ public final class CampaignMain implements Serializable {
 	public void savePlanetData() {
 
 		if (cm.isUsingMySQL())
-			for (Planet currP : data.getAllPlanets())
-				MySQL.savePlanet((SPlanet) currP);
+			for (Planet currP : data.getAllPlanets()){
+				SPlanet p = (SPlanet) currP;
+				p.toDB();
+			}
 
 		else {
 			savePlanetOpFlags();

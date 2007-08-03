@@ -1,5 +1,6 @@
 package server.mwmysql;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,10 +13,8 @@ import server.mwmysql.MWmysql;
 import server.mwmysql.planetHandler;
 import server.mwmysql.factoryHandler;
 import server.campaign.SHouse;
-import server.campaign.SPlayer;
-import server.campaign.SUnit;
-import server.campaign.SUnitFactory;
 import server.campaign.SPlanet;
+import server.campaign.SPlayer;
 import server.campaign.pilot.SPilot;
 
 public class mysqlHandler{
@@ -30,7 +29,10 @@ public class mysqlHandler{
   public void closeMySQL(){
 	  MySQLCon.close();
   }
-
+  public Connection getCon() {
+	return MySQLCon.con;  
+  }
+  
   public void deleteFactory(int FactoryID){
     fh.deleteFactory(FactoryID);
   }
@@ -39,16 +41,8 @@ public class mysqlHandler{
     fh.deletePlanetFactories(planetName);
   }
 
-  public void saveFactory(SUnitFactory factory){
-    fh.saveFactory(factory);
-  }
-
   public void loadFactories(SPlanet planet){
     fh.loadFactories(planet);
-  }
-  
-  public void savePlanet(SPlanet planet) {
-	  ph.savePlanet(planet);
   }
   
   public int countPlanets() {
@@ -57,6 +51,18 @@ public class mysqlHandler{
   
   public void loadPlanets(CampaignData data) {
 	  ph.loadPlanets(data);
+  }
+  
+  public void saveInfluences(SPlanet planet) {
+	  ph.saveInfluences(planet);
+  }
+  
+  public void saveEnvironments(SPlanet planet) {
+	  ph.saveEnvironments(planet);
+  }
+  
+  public void savePlanetFlags(SPlanet planet) {
+	  ph.savePlanetFlags(planet);
   }
   
   public void deletePlanet(int PlanetID) {
@@ -83,16 +89,32 @@ public class mysqlHandler{
 	  }
   }
   
+  public void deleteFactionPilots(int factionID) {
+	  pih.deleteFactionPilots(factionID);
+  }
+  
+  public void deleteFactionPilots(int factionID, int type) {
+	  pih.deleteFactionPilots(factionID, type);
+  }
+  
+  public void deletePlayerPilots(int playerID) {
+	  pih.deletePlayerPilots(playerID);
+  }
+  
+  public void deletePlayerPilots(int playerID, int unitType, int unitWeight) {
+	  pih.deletePlayerPilots(playerID, unitType, unitWeight);
+  }
+  
+  public void deletePilot(int pilotID) {
+	  pih.deletePilot(pilotID);
+  }
+  
   public SPilot loadUnitPilot(int unitID) {
 	  return pih.loadUnitPilot(unitID);
   }
   
   public SPilot loadPilot(int pilotID) {
 	  return pih.loadPilot(pilotID);
-  }
-  
-  public void savePilot(SPilot p, int unitType, int unitSize) {
-	  pih.savePilot(p, unitType, unitSize);
   }
   
   public void linkPilotToUnit(int pilotID, int unitID) {
@@ -111,15 +133,6 @@ public class mysqlHandler{
 	  uh.unlinkUnit(unitID);
   }
   
-  public void saveUnit(SUnit u) {
-	  uh.saveUnit(u);
-  }
-  
-  public SUnit loadUnit(int unitID) {
-	  SUnit u = uh.loadUnit(unitID);
-	  return u;
-  }
-  
   public void linkUnitToPlayer(int unitID, int playerID) {
 	  uh.linkUnitToPlayer(unitID, playerID);
   }
@@ -128,8 +141,8 @@ public class mysqlHandler{
 	  uh.linkUnitToFaction(unitID, factionID);
   }
   
-  public void saveFaction(SHouse h) {
-	  fah.saveFaction(h);
+  public void deleteUnit(int unitID) {
+	  uh.deleteUnit(unitID);
   }
   
   public void loadFactions(CampaignData data) {
@@ -144,10 +157,6 @@ public class mysqlHandler{
 	  return plh.countPlayers();
   }
   
-  public void savePlayer(SPlayer p) {
-	  plh.savePlayer(p);
-  }
-  
   public int getPlayerIDByName(String name) {
 	  return plh.getPlayerIDByName(name);
   }
@@ -158,6 +167,18 @@ public class mysqlHandler{
   
   public void setPlayerAccess(int ID, int level) {
 	  plh.setPlayerAccess(ID, level);
+  }
+  
+  public boolean matchPassword(String playerName, String pass) {
+	  return plh.matchPassword(playerName, pass);
+  }
+  
+  public boolean playerExists(String name) {
+	  return plh.playerExists(name);
+  }
+  
+  public void deletePlayer(SPlayer p) {
+	  plh.deletePlayer(p);
   }
   
   public mysqlHandler(){

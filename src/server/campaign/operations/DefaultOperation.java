@@ -52,7 +52,7 @@ public class DefaultOperation {
 		
 		/*
 		 * Note: The following values MUST BE SET for each operation
-		 * and have no recouse to default. EVERY long operation MUST
+		 * and have no recourse to default. EVERY long operation MUST
 		 * have a matching short operation with the same name.
 		 * 
 		 * 1) OperationName 	- name (eg - "Assault" or "Conquer"). SET BY FILENAME!
@@ -65,7 +65,7 @@ public class DefaultOperation {
 		
         /*
          * DebugOp - This is used to send debug message to error logs so the 
-         *           SO's can debug issues with thier ops. Currently it only
+         *           SO's can debug issues with their ops. Currently it only
          *           debugs failed defender messages 
          */
         operationsDefaults.put("DebugOp","false");

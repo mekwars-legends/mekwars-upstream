@@ -62,7 +62,41 @@ public class AdminPurgeHouseBaysCommand implements Command {
 		
 		if ( h == null )
 		    return;
-		 
+		
+		// Delete them from the database
+		if(CampaignMain.cm.isUsingMySQL()) {
+			if (strType.equals("ALL")) {
+				for (int type = Unit.MEK; type <= Unit.BATTLEARMOR; type ++){
+					for (int i = 0; i < 4; i++) {
+						Vector<SUnit> tmpVec = h.getHangar(type).elementAt(i);
+						tmpVec.trimToSize();
+						for (SUnit currU : tmpVec) {
+							CampaignMain.cm.MySQL.deleteUnit(currU.getDBId());
+						}
+					}
+				}
+			} else {
+				strClass = command.nextToken();
+				unitType = Integer.parseInt(strType);
+				if(strClass.equals("ALL")) {
+					for (int i = 0; i < 4; i++) {
+						Vector<SUnit> tmpVec = h.getHangar(unitType).elementAt(i);
+						tmpVec.trimToSize();
+						for (SUnit currU : tmpVec) {
+							CampaignMain.cm.MySQL.deleteUnit(currU.getDBId());
+						}
+					}
+				} else {
+					unitClass = Integer.parseInt(strClass);
+					Vector<SUnit> tmpVec = h.getHangar(unitType).elementAt(unitClass);
+					tmpVec.trimToSize();
+					for (SUnit currU : tmpVec) {
+						CampaignMain.cm.MySQL.deleteUnit(currU.getDBId());
+					}
+				}
+			}
+		}
+		
 		try {
     		if ( strType.equals("ALL") ){
     		    for ( Vector<Vector<SUnit>> hangers : h.getHangar().values() ){
@@ -71,7 +105,8 @@ public class AdminPurgeHouseBaysCommand implements Command {
                 }
             }//else select a unit type
             else{
-            	strClass = command.nextToken();
+            	if(!CampaignMain.cm.isUsingMySQL())
+            		strClass = command.nextToken();
                 unitType = Integer.parseInt(strType);
                 Vector<Vector<SUnit>> hanger = h.getHangar(unitType);
                 
@@ -80,7 +115,8 @@ public class AdminPurgeHouseBaysCommand implements Command {
                         hanger.elementAt(size).clear();
                 }//else one unit size
                 else{
-                    unitClass = Integer.parseInt(strClass);
+                    if(!CampaignMain.cm.isUsingMySQL())
+                    	unitClass = Integer.parseInt(strClass);
                     hanger.elementAt(unitClass).clear();
                 }
             }

@@ -106,17 +106,18 @@ public class AutomaticBackup implements Runnable{
             	MMServ.mmlog.errLog("Unable to create planets zip file");
             	MMServ.mmlog.errLog(ex);
         	}
+            try{
+    	        out = new FileOutputStream(playerZipFileName);
+    	        zipFile = new ZipOutputStream(out);
+    	        zipBackupPlayers();
+    	        zipFile.close();
+            }
+            catch(Exception ex){
+                MMServ.mmlog.errLog("Unable to create player zip file");
+                MMServ.mmlog.errLog(ex);
+            }
         }
-        try{
-	        out = new FileOutputStream(playerZipFileName);
-	        zipFile = new ZipOutputStream(out);
-	        zipBackupPlayers();
-	        zipFile.close();
-        }
-        catch(Exception ex){
-            MMServ.mmlog.errLog("Unable to create player zip file");
-            MMServ.mmlog.errLog(ex);
-        }
+
         try{
             out = new FileOutputStream(dataZipFileName);
             zipFile = new ZipOutputStream(out);

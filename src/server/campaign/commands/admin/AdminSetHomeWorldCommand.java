@@ -63,6 +63,6 @@ public class AdminSetHomeWorldCommand implements Command {
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has set " + planet.getName() +"'s homeworld status to: " + homeworld + ".");
 		planet.updated();
 		if(CampaignMain.cm.isUsingMySQL())
-			CampaignMain.cm.MySQL.savePlanet(planet);
+			planet.toDB();
 	}
 }

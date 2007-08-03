@@ -59,7 +59,7 @@ public class AdminMovePlanetCommand implements Command {
         p.updated();
 
         if(CampaignMain.cm.isUsingMySQL())
-        	CampaignMain.cm.MySQL.savePlanet(p);
+        	p.toDB();
         
         CampaignMain.cm.doSendModMail("NOTE",Username + " has moved planet " + p.getName()+" to "+x+","+y);
 		CampaignMain.cm.toUser("Planet Moved",Username);

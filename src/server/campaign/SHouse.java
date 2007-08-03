@@ -34,6 +34,10 @@ import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 
 import megamek.common.Entity;
@@ -293,6 +297,213 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		return Components;
 	}
 
+	public void toDB() {
+		MMServ.mmlog.dbLog("Saving Faction " + getName());
+		
+		Connection con = CampaignMain.cm.MySQL.getCon();
+		
+		PreparedStatement ps;
+		StringBuffer sql = new StringBuffer();
+		ResultSet rs;
+		try {
+			if(getDBId()== 0) {
+				// Not in the database - INSERT it
+				sql.setLength(0);
+				sql.append("INSERT into factions set ");
+				sql.append("fName = ?, ");
+				sql.append("fMoney = ?, ");
+				sql.append("fColor = ?, ");
+				sql.append("fAbbreviation = ?, ");
+				sql.append("fLogo = ?, ");
+				sql.append("fInitialHouseRanking = ?, ");
+				sql.append("fConquerable = ?, ");
+				sql.append("fPlayerColors = ?, ");
+				sql.append("fInHouseAttacks = ?, ");
+				sql.append("fAllowDefectionsFrom = ?, ");
+				sql.append("fFluFile = ?, ");
+				sql.append("fMOTD = ?, ");
+				sql.append("fAllowDefectionsTo = ?, ");
+				sql.append("fTechLevel = ?, ");
+				sql.append("fBaseGunner = ?, ");
+				sql.append("fBasePilot = ?, ");
+				sql.append("fIsNewbieHouse = ?, ");
+				sql.append("fIsMercHouse = ?");
+
+				ps = con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
+				ps.setString(1, getName());
+				ps.setInt(2, getMoney());
+				ps.setString(3, getHouseColor());
+				ps.setString(4, getAbbreviation());
+				ps.setString(5, getLogo());
+				ps.setInt(6, getInitialHouseRanking());
+				ps.setString(7, Boolean.toString(isConquerable()));
+				ps.setString(8, getHousePlayerColor());
+				ps.setString(9, Boolean.toString(isInHouseAttacks()));
+				ps.setString(10, Boolean.toString(getHouseDefectionFrom()));
+				ps.setString(11, getHouseFluFile());
+				ps.setString(12, getMotd());
+				ps.setString(13, Boolean.toString(getHouseDefectionTo()));
+				ps.setInt(14, getTechLevel());
+				ps.setInt(15, getBaseGunner());
+				ps.setInt(16, getBasePilot());
+				ps.setString(17, Boolean.toString(isNewbieHouse()));
+				ps.setString(18, Boolean.toString(isMercHouse()));
+				ps.executeUpdate();
+				rs = ps.getGeneratedKeys();
+				rs.next();
+				setDBId(rs.getInt(1));
+			} else {
+				// Already in the database - UPDATE it
+				sql.setLength(0);
+				sql.append("UPDATE factions set ");
+				sql.append("fName = ?, ");
+				sql.append("fMoney = ?, ");
+				sql.append("fColor = ?, ");
+				sql.append("fAbbreviation = ?, ");
+				sql.append("fLogo = ?, ");
+				sql.append("fInitialHouseRanking = ?, ");
+				sql.append("fConquerable = ?, ");
+				sql.append("fPlayerColors = ?, ");
+				sql.append("fInHouseAttacks = ?, ");
+				sql.append("fAllowDefectionsFrom = ?, ");
+				sql.append("fFluFile = ?, ");
+				sql.append("fMOTD = ?, ");
+				sql.append("fAllowDefectionsTo = ?, ");
+				sql.append("fTechLevel = ?, ");
+				sql.append("fBaseGunner = ?, ");
+				sql.append("fBasePilot = ? ");
+				sql.append("WHERE ID = ?");
+				ps = con.prepareStatement(sql.toString());
+				ps.setString(1, getName());
+				ps.setInt(2, getMoney());
+				ps.setString(3, getHouseColor());
+				ps.setString(4, getAbbreviation());
+				ps.setString(5, getLogo());
+				ps.setInt(6, getInitialHouseRanking());
+				ps.setString(7, Boolean.toString(isConquerable()));
+				ps.setString(8, getHousePlayerColor());
+				ps.setString(9, Boolean.toString(isInHouseAttacks()));
+				ps.setString(10, Boolean.toString(getHouseDefectionFrom()));
+				ps.setString(11, getHouseFluFile());
+				ps.setString(12, getMotd());
+				ps.setString(13, Boolean.toString(getHouseDefectionTo()));
+				ps.setInt(14, getTechLevel());
+				ps.setInt(15, getBaseGunner());
+				ps.setInt(16, getBasePilot());
+				ps.setInt(17, getDBId());
+				ps.executeUpdate();				
+			}
+			
+
+		// Now we do the vectors
+			
+			// Mechs
+			for (int i = 0; i < 4; i++) {
+				Vector<SUnit> tmpVec = getHangar(Unit.MEK).elementAt(i);
+				tmpVec.trimToSize();
+				for (SUnit currU : tmpVec) {
+					currU.toDB();
+				}
+			}
+			//Vehicles
+			for (int i = 0; i < 4; i++) {
+				Vector<SUnit> tmpVec = getHangar(Unit.VEHICLE).elementAt(i);
+				tmpVec.trimToSize();
+				for (SUnit currU : tmpVec) {
+					currU.toDB();
+				}
+			}
+			//Infantry
+			if(Boolean.parseBoolean(getConfig("UseInfantry"))) {
+				for (int i = 0; i < 4; i++) {
+					Vector<SUnit> tmpVec = getHangar(Unit.INFANTRY).elementAt(i);
+					tmpVec.trimToSize();
+					for (SUnit currU : tmpVec) {
+						currU.toDB();
+					}
+				}				
+			}
+			//BattleArmor
+				for (int i = 0; i < 4; i++) {
+					Vector<SUnit> tmpVec = getHangar(Unit.BATTLEARMOR).elementAt(i);
+					tmpVec.trimToSize();
+					for (SUnit currU : tmpVec) {
+						currU.toDB();
+					}
+				}
+			// Protomechs
+				for (int i = 0; i < 4; i++) {
+					Vector<SUnit> tmpVec = getHangar(Unit.PROTOMEK).elementAt(i);
+					tmpVec.trimToSize();
+					for (SUnit currU : tmpVec) {
+						currU.toDB();
+					}
+				}
+			// Pilot Queues
+				// Mechs
+				LinkedList<SPilot> PilotList = getPilotQueues().getPilotQueue(Unit.MEK);
+				for (SPilot currP: PilotList) {
+					currP.toDB(Unit.MEK, -1);
+				}
+				// Vehicles
+				PilotList = getPilotQueues().getPilotQueue(Unit.VEHICLE);
+				for (SPilot currP: PilotList) {
+					currP.toDB(Unit.VEHICLE, -1);
+				}
+				
+				// Infantry
+				PilotList = getPilotQueues().getPilotQueue(Unit.INFANTRY);
+				for (SPilot currP: PilotList) {
+					currP.toDB(Unit.INFANTRY, -1);
+				}
+				
+				// BattleArmor
+				PilotList = getPilotQueues().getPilotQueue(Unit.BATTLEARMOR);
+				for (SPilot currP: PilotList) {
+					currP.toDB(Unit.BATTLEARMOR, -1);
+				}
+				
+				// ProtoMechs
+				PilotList = getPilotQueues().getPilotQueue(Unit.PROTOMEK);
+				for (SPilot currP: PilotList) {
+					currP.toDB(Unit.PROTOMEK, -1);
+				}
+				
+
+				// Components
+				ps.executeUpdate("DELETE from factionComponents WHERE factionID = " + getDBId());
+				Enumeration en = getComponents().keys();
+				while (en.hasMoreElements()) {
+					Integer id = (Integer) en.nextElement();
+					Vector<Integer> v = getComponents().get(id);
+					for (int i = 0; i < v.size(); i ++){
+						ps.executeUpdate("INSERT into factionComponents set factionID = " + getDBId() + ", unitType = " + id.intValue() + ", unitWeight = " + i + ", components = " + v.elementAt(i).intValue());
+					}
+				}
+
+				// Pilot Skill
+				// Change this so it doesn't save if it's blank.
+				ps.executeUpdate("DELETE from faction_pilot_skills WHERE factionID = " + getDBId());
+				for (int pos = 0; pos < Unit.MAXBUILD; pos ++ ) {
+					String skill = getBasePilotSkill(pos);
+
+ 					ps = con.prepareStatement("INSERT into faction_pilot_skills set factionID = ?, skillID = ?, pilotSkills = ?");
+					ps.setInt(1, getDBId());
+					ps.setString(3, skill);
+					ps.setInt(2, pos);
+					ps.executeUpdate();
+			
+				}
+				// BaseGunner & Pilot
+				ps.executeUpdate("DELETE from faction_base_gunnery_piloting where factionId = " + getDBId());
+				for (int pos = 0; pos < Unit.MAXBUILD; pos++){
+					ps.executeUpdate("INSERT into faction_base_gunnery_piloting set factionID = " + getDBId() + ", unitType = " + pos + ", baseGunnery = " + getBaseGunner(pos) + ", basePiloting = " + getBasePilot(pos));
+				}
+				} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in FactionHandler.saveFaction: " + e.getMessage());
+		}	
+	}
+	
 	/**
 	 * Save itself to a TreeWriter
 	 */
@@ -1741,7 +1952,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			return "";
 		if(CampaignMain.cm.isUsingMySQL()){
 			if(unit.getDBId()== 0)
-				CampaignMain.cm.MySQL.saveUnit(unit);
+				unit.toDB();
 			CampaignMain.cm.MySQL.linkUnitToFaction(unit.getDBId(), this.getDBId());
 		}
 		weightClass.add(unit);

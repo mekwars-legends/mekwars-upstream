@@ -25,9 +25,15 @@
 package server.campaign;
 
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Random;
 import java.util.StringTokenizer;
 
+import common.Planet;
 import common.Unit;
 import common.UnitFactory;
 
@@ -90,6 +96,94 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		return result.toString();
 	}
 	
+	public void toDB() {
+		Connection con = CampaignMain.cm.MySQL.getCon();
+	    Statement stmt = null;
+	    ResultSet rs = null;
+	    StringBuffer sql = new StringBuffer();
+	    Planet planet = getPlanet();
+	    PreparedStatement ps;
+	    int fid=0;
+	    
+	    try {
+	    if(con.isClosed())
+		MMServ.mmlog.dbLog("Error: con closed"); 
+	    stmt = con.createStatement();
+	    sql.setLength(0); 
+	    sql.append("SELECT FactoryID from factories WHERE FactoryID = '");
+		sql.append(getID());
+		sql.append("'"); 
+	    rs = stmt.executeQuery(sql.toString());
+	    if(!rs.next())
+	      {
+	      // This doesn't exist, so INSERT it
+		sql.setLength(0);
+	    sql.append("INSERT into factories set ");
+		sql.append("FactoryName = ?, ");
+		sql.append("FactorySize = ?, ");
+		sql.append("FactoryFounder = ?, ");
+		sql.append("FactoryTicks = ?, ");
+		sql.append("FactoryRefreshSpeed = ?, ");
+		sql.append("FactoryType = ?, ");
+		sql.append("FactoryPlanet = ?, ");
+		sql.append("FactoryisLocked = ?");
+
+		ps = con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
+		ps.setString(1, getName());
+		ps.setString(2, getSize());
+		ps.setString(3, getFounder());
+		ps.setInt(4, getTicksUntilRefresh());
+		ps.setInt(5, getRefreshSpeed());
+		ps.setInt(6, getType());
+		ps.setString(7, planet.getName());
+		ps.setString(8, Boolean.toString(isLocked()));
+
+		ps.executeUpdate();
+		rs = ps.getGeneratedKeys();
+		if (rs.next())
+		  {
+		  fid = rs.getInt(1);
+		  setID(fid);
+		  }
+	      }
+	    else
+	      {
+	      // It already exists, so UPDATE it
+	      fid = rs.getInt("FactoryID");
+		  sql.setLength(0);
+	      sql.append("UPDATE factories set ");
+	      sql.append("FactoryName = ?, ");
+	      sql.append("FactorySize = ?, ");
+		  sql.append("FactoryPlanet = ?, ");
+	      sql.append("FactoryFounder = ?, ");
+	      sql.append("FactoryTicks = ?, ");
+	      sql.append("FactoryRefreshSpeed = ?, ");
+	      sql.append("FactoryType = ?, ");
+	      sql.append("FactoryisLocked = ? ");
+		  sql.append("WHERE FactoryID = ?");
+
+		  ps = con.prepareStatement(sql.toString());
+		  ps.setString(1, getName());
+		  ps.setString(2, getSize());
+		  ps.setString(3, planet.getName());
+		  ps.setString(4, getFounder());
+		  ps.setInt(5, getTicksUntilRefresh());
+		  ps.setInt(6, getRefreshSpeed());
+		  ps.setInt(7, getType());
+		  ps.setString(8, Boolean.toString(isLocked()));
+		  ps.setInt(9, getID());
+		  
+	      ps.executeUpdate();
+	      }
+        	rs.close();
+        	stmt.close();
+        	ps.close();
+	    }
+	    catch (SQLException e)
+	      {
+	      MMServ.mmlog.dbLog("SQL ERROR in SUnitFactory.toDB: " + e.getMessage());
+	      }
+	}
 	/**
 	 * Used to DE-Serialise a MF
 	 * @param s The Serialised Version
@@ -279,5 +373,5 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		SHouse originalHouse = (SHouse)CampaignMain.cm.getData().getHouseByName(this.getFounder());
 		return originalHouse.getPPCost(weightclass, typeid);
 	}
-	
+
 }

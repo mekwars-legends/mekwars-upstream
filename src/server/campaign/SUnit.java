@@ -21,6 +21,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -503,6 +508,130 @@ public final class SUnit extends Unit implements Serializable {
 		return result.toString();
 	}
 	
+	public void toDB() {
+		Connection con = CampaignMain.cm.MySQL.getCon();
+		
+		PreparedStatement ps;
+		StringBuffer sql = new StringBuffer();
+		Entity ent = getEntity();
+		
+		try {
+				if(getDBId()==0) {
+				// Unit's not in there - insert it
+				sql.setLength(0);
+				sql.append("INSERT into units set MWID=?, uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, uType=?");
+				ps=con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
+				ps.setInt(1, getId());
+				ps.setString(2, getUnitFilename());
+				ps.setInt(3, getPosId());
+				ps.setInt(4, getStatus());
+				ps.setString(5, getProducer());
+				ps.setInt(6, getWeightclass());
+				if(ent instanceof Mech)
+				  ps.setString(7, Boolean.toString(((Mech)ent).isAutoEject()));
+				else
+					ps.setString(7, "false");
+				ps.setString(8, Boolean.toString(ent.hasSpotlight()));
+				ps.setString(9, Boolean.toString(ent.isUsingSpotlight()));
+				if (CampaignMain.cm.getData().getBannedTargetingSystems().containsKey(getEntity().getTargSysType())) {
+					ps.setInt(10, MiscType.T_TARGSYS_STANDARD);
+					getEntity().setTargSysType(MiscType.T_TARGSYS_STANDARD);
+				} else {
+					ps.setInt(10, ent.getTargSysType());
+				}
+				ps.setInt(11, getScrappableFor());
+				if(CampaignMain.cm.isUsingAdvanceRepair())
+					ps.setString(12, UnitUtils.unitBattleDamage(getEntity(), false));
+				else
+					ps.setString(12, "%%-%%-%%-");
+				ps.setInt(13, getLastCombatPilot());
+				ps.setInt(14, getCurrentRepairCost());
+				ps.setInt(15, getLifeTimeRepairCost());
+				ps.setInt(16, getType());
+				ps.executeUpdate();
+				setDBId(getId());
+			} else {
+				// Unit's already there - update it
+				sql.setLength(0);
+				sql.append("UPDATE units set uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, uType = ? where MWID=?");
+				ps=con.prepareStatement(sql.toString());
+				ps.setString(1, getUnitFilename());
+				ps.setInt(2, getPosId());
+				ps.setInt(3, getStatus());
+				ps.setString(4, getProducer());
+				ps.setInt(5, getWeightclass());
+				if(ent instanceof Mech)
+				  ps.setString(6, Boolean.toString(((Mech)ent).isAutoEject()));
+				else
+					ps.setString(6, "false");
+				ps.setString(7, Boolean.toString(ent.hasSpotlight()));
+				ps.setString(8, Boolean.toString(ent.isUsingSpotlight()));
+				if (CampaignMain.cm.getData().getBannedTargetingSystems().containsKey(getEntity().getTargSysType())) {
+					ps.setInt(9, MiscType.T_TARGSYS_STANDARD);
+					getEntity().setTargSysType(MiscType.T_TARGSYS_STANDARD);
+				} else {
+					ps.setInt(9, ent.getTargSysType());
+				}
+				ps.setInt(10, getScrappableFor());
+				if(CampaignMain.cm.isUsingAdvanceRepair())
+					ps.setString(11, UnitUtils.unitBattleDamage(getEntity(), false));
+				else
+					ps.setString(11, "%%-%%-%%-");
+				ps.setInt(12, getLastCombatPilot());
+				ps.setInt(13, getCurrentRepairCost());
+				ps.setInt(14, getLifeTimeRepairCost());
+				ps.setInt(15, getType());
+				ps.setInt(16, getId());
+				ps.executeUpdate();
+			}
+			// Now do Machine Guns
+			ps.executeUpdate("DELETE from unit_mgs WHERE unitID = " + getId());
+			ArrayList<Mounted> en_Weapon = ent.getWeaponList();
+			int location = 0;
+			for (Mounted mWeapon : en_Weapon) {
+				WeaponType weapon = (WeaponType)mWeapon.getType();
+				if (weapon.hasFlag(WeaponType.F_MG)) {
+					sql.setLength(0);
+					sql.append("INSERT into unit_mgs set unitID=?, mgLocation=?, mgRapidFire=?");
+					ps = con.prepareStatement(sql.toString());
+					ps.setInt(1, getId());
+					ps.setInt(2, location);
+					ps.setString(3, Boolean.toString(mWeapon.isRapidfire()));
+					ps.executeUpdate();
+				}
+				location++;
+			}
+			// Do Ammo
+			ps.executeUpdate("DELETE from unit_ammo WHERE unitID = " + getId());
+			
+			ArrayList<Mounted> en_Ammo = ent.getAmmo();
+			int AmmoLoc = 0;
+			for (Mounted mAmmo : en_Ammo ) {
+				boolean hotloaded = mAmmo.isHotLoaded();
+				if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("maxtech_hotload"))
+					hotloaded = false;
+				AmmoType at = (AmmoType)mAmmo.getType();
+				sql.setLength(0);
+				sql.append("INSERT into unit_ammo set unitID = ?, ammoLocation = ?, ammoHotLoaded=?, ammoType=?, ammoInternalName=?, ammoShotsLeft=?");
+				ps = con.prepareStatement(sql.toString());
+				ps.setInt(1, getId());
+				ps.setInt(2, AmmoLoc);
+				ps.setString(3, Boolean.toString(hotloaded));
+				ps.setInt(4, at.getAmmoType());
+				ps.setString(5, at.getInternalName());
+				ps.setInt(6, mAmmo.getShotsLeft());
+				ps.executeUpdate();
+				AmmoLoc++;
+			}
+//			 Save the pilot
+			if (getPilot().getGunnery()!=99){
+				((SPilot)getPilot()).toDB(getType(), getWeightclass());
+			}
+		} catch (SQLException e){
+			MMServ.mmlog.dbLog("SQL Exception in UnitHandler.saveUnit: " + e.getMessage());
+		}
+	}
+	
 	/**
 	 * Reads a Entity from a String
 	 * @param s A string to read from
@@ -661,6 +790,115 @@ public final class SUnit extends Unit implements Serializable {
 			MMServ.mmlog.errLog("Unable to Load SUnit: "+s);
 			//the unit should still be good return what did get set
 			return s;
+		}
+	}
+	
+	public void fromDB(int unitID) {
+		try {
+			Connection con = CampaignMain.cm.MySQL.getCon();
+			ResultSet rs;
+			Statement stmt = con.createStatement();
+			
+			
+			rs = stmt.executeQuery("SELECT * from units WHERE MWID = " + unitID);
+			if(rs.next()) {
+			setUnitFilename(rs.getString("uFileName"));
+			setPosId(rs.getInt("uPosID"));
+			int newstate = rs.getInt("uStatus");
+			setProducer(rs.getString("uProducer"));
+			setWeightclass(rs.getInt("uWeightClass"));
+			setId(unitID);
+			setDBId(unitID);
+			if(CampaignMain.cm.getCurrentUnitID() <= getId())
+				CampaignMain.cm.setCurrentUnitID(getId() + 1);
+			if (getId()==0)
+				setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
+			if (newstate == Unit.STATUS_FORSALE && CampaignMain.cm.getMarket().getListingForUnit(getId()) == null)
+				setStatus(Unit.STATUS_OK);
+			else if (CampaignMain.cm.isUsingAdvanceRepair())
+				setStatus(Unit.STATUS_OK);
+			else
+				setStatus(newstate);
+			setScrappableFor(rs.getInt("uScrappableFor"));
+			setRepairCosts(rs.getInt("uCurrentRepairCost"), rs.getInt("uLifetimeRepairCost"));
+			Entity unitEntity = loadMech(getUnitFilename());
+
+
+			if(unitEntity instanceof Mech)
+				((Mech)unitEntity).setAutoEject(Boolean.parseBoolean(rs.getString("uAutoEject")));
+			unitEntity.setSpotlight(Boolean.parseBoolean(rs.getString("uHasSpotlight")));
+			
+			unitEntity.setSpotlightState(Boolean.parseBoolean(rs.getString("uIsUsingSpotlight")));
+			
+			if(CampaignMain.cm.isUsingAdvanceRepair())
+				UnitUtils.applyBattleDamage(unitEntity, rs.getString("uBattleDamage"), (CampaignMain.cm.getRTT() != null & CampaignMain.cm.getRTT().unitRepairTimes(getId())!=null));
+			
+			if (CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("allow_level_3_targsys")) {
+				int targetingType = rs.getInt("uTargetSystem");
+				if (CampaignMain.cm.getData().getBannedTargetingSystems().containsKey(targetingType) || unitEntity.hasC3() || unitEntity.hasC3i() || UnitUtils.hasTargettingComputer(unitEntity))
+					unitEntity.setTargSysType(MiscType.T_TARGSYS_STANDARD);
+				else
+					unitEntity.setTargSysType(targetingType);
+			}
+			
+
+			setEntity(unitEntity);
+			SPilot p = new SPilot();
+			p = CampaignMain.cm.MySQL.loadUnitPilot(unitID);
+			setPilot(p);
+			setLastCombatPilot(p.getPilotId());
+			init();
+			
+			
+			// Load ammo			
+			rs = stmt.executeQuery("SELECT * from unit_ammo WHERE unitID = " + unitID + " ORDER BY ammoLocation");
+
+			while(rs.next()) {
+				int weaponType = rs.getInt("ammoType");
+				String ammoName = rs.getString("ammoInternalName");
+				int shots = rs.getInt("ammoShotsLeft");
+				int AmmoLoc = rs.getInt("ammoLocation");
+				boolean hotloaded = Boolean.parseBoolean(rs.getString("ammoHotLoaded"));
+				if(!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("maxtech_hotload"))
+					hotloaded = false;
+
+				AmmoType at = getEntityAmmo(weaponType, ammoName);
+				String munition = Long.toString(at.getMunitionType());
+				
+				if (CampaignMain.cm.getData().getServerBannedAmmo().get(munition) != null)
+					continue;				
+				try {
+					unitEntity.getAmmo().get(AmmoLoc).changeAmmoType(at);
+					unitEntity.getAmmo().get(AmmoLoc).setShotsLeft(shots);
+					unitEntity.getAmmo().get(AmmoLoc).setHotLoad(hotloaded);
+				} catch (Exception ex) {
+					MMServ.mmlog.dbLog("Exception: " + ex.toString());
+					MMServ.mmlog.dbLog(ex.getStackTrace().toString());
+				}
+			}
+
+			setEntity(unitEntity);
+					
+			// Load MGs
+			ArrayList<Mounted> enWeapons = unitEntity.getWeaponList();
+			rs = stmt.executeQuery("SELECT * from unit_mgs WHERE unitID = " + unitID + " ORDER BY mgLocation");
+			while(rs.next()) {
+				int location = rs.getInt("mgLocation");
+				int currentLocation = 0;
+				for (Mounted mWeapon : enWeapons) {
+					if (currentLocation == location ) {
+						mWeapon.setRapidfire(Boolean.parseBoolean(rs.getString("mgRapidFire")));
+						currentLocation++;
+						break;
+					}
+					currentLocation++;
+				}
+			}
+			
+			setEntity(unitEntity);
+			}
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in SUnit.fromDB: " + e.getMessage());
 		}
 	}
 	

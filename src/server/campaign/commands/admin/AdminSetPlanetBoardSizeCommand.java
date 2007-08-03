@@ -49,7 +49,7 @@ public class AdminSetPlanetBoardSizeCommand implements Command {
 		planet.updated();
 		
 		if(CampaignMain.cm.isUsingMySQL())
-			CampaignMain.cm.MySQL.savePlanet(planet);
+			planet.toDB();
 		
 		CampaignMain.cm.toUser("Board size set for planet "+planet.getName(),Username,true);
 		//server.MMServ.mmlog.modLog(Username + " set the board size for planet "+planet.getName());

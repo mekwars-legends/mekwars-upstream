@@ -25,6 +25,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.StringTokenizer;
@@ -421,6 +425,89 @@ public class SPilot extends Pilot {
         	result.append(false);//unused var
         result.append(delimiter);
 		return result.toString();
+	}
+	
+	public void toDB(int unitType, int unitSize) {
+		Connection con = CampaignMain.cm.MySQL.getCon();
+		try {
+			if(getName().equalsIgnoreCase("Vacant"))
+				return;
+			StringBuffer sql = new StringBuffer();
+			PreparedStatement ps;
+			
+			if(getDBId() == 0){
+				// No pilot with this id, so INSERT
+				sql.setLength(0);
+
+				ps = con.prepareStatement("INSERT into pilots set MWID=?, pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ?", PreparedStatement.RETURN_GENERATED_KEYS);
+				ps.setInt(1, getPilotId());
+				ps.setString(2, getName());
+				ps.setInt(3, getExperience());
+				ps.setInt(4, getGunnery());
+				ps.setInt(5, getPiloting());
+				ps.setInt(6, getKills());
+				ps.setString(7, getCurrentFaction());
+				ps.setInt(8, getHits());
+				ps.setInt(9, unitSize);
+				ps.setInt(10, unitType);
+				ps.executeUpdate();
+				ResultSet rs = ps.getGeneratedKeys();
+				rs.next();
+				setDBId(rs.getInt(1));
+			} else {
+				// Pilot already saved, so UPDATE
+				sql.setLength(0);
+
+				ps = con.prepareStatement("UPDATE pilots set pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ?, MWID=? WHERE pilotID=?");
+				ps.setString(1, getName());
+				ps.setInt(2, getExperience());
+				ps.setInt(3, getGunnery());
+				ps.setInt(4, getPiloting());
+				ps.setInt(5, getKills());
+				ps.setString(6, getCurrentFaction());
+				ps.setInt(7, getHits());
+				ps.setInt(8, unitSize);
+				ps.setInt(9, unitType);
+				ps.setInt(10, getPilotId());
+				ps.setInt(11, getDBId());
+				ps.executeUpdate();
+			}
+			//stmt.executeUpdate(sql.toString());
+
+			// Update pilot skills
+			sql.setLength(0);
+			sql.append("DELETE from pilotskills WHERE pilotID = " + getPilotId());
+			ps.executeUpdate(sql.toString());
+			
+			if(getSkills().size() > 0) {
+				Iterator it = getSkills().getSkillIterator();
+				while(it.hasNext()) {
+					SPilotSkill sk = (SPilotSkill) it.next();
+					sql.setLength(0);
+					sql.append("INSERT into pilotSkills set ");
+					sql.append("pilotID = " + getPilotId() + ", ");
+					sql.append("SkillNum = " + sk.getId() + ", ");
+					sql.append("SkillLevel = " + sk.getLevel());
+					if (sk instanceof WeaponSpecialistSkill ) {
+						sql.append(", skillData = '" + getWeapon() + "'");
+					}
+					if (sk instanceof TraitSkill) {
+						sql.append(", skillData = '" + getTraitName() + "'");
+					}
+					if (sk instanceof EdgeSkill) {
+						sql.append(", skillData = '" + ((EdgeSkill)sk).getTac() + "$");
+						sql.append(((EdgeSkill)sk).getKO() + "$");
+						sql.append(((EdgeSkill)sk).getHeadHit() + "$");
+						sql.append(((EdgeSkill)sk).getExplosion() + "'");
+					}
+					ps.executeUpdate(sql.toString());
+					
+					}
+			}
+			ps.close();
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in PilotHandler.savePilot: " + e.getMessage());
+		}		
 	}
 
 	public void fromFileFormat(String s, String delimiter) {

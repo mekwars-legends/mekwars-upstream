@@ -51,7 +51,7 @@ public class AdminSetPlanetMapSizeCommand implements Command {
 		planet.updated();
 		
 		if(CampaignMain.cm.isUsingMySQL())
-			CampaignMain.cm.MySQL.savePlanet(planet);
+			planet.toDB();
 		
 		CampaignMain.cm.toUser("Map size set for planet "+planet.getName(),Username,true);
 		//server.MMServ.mmlog.modLog(Username + " set the map size for planet "+planet.getName());

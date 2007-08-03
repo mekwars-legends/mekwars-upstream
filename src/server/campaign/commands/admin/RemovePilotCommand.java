@@ -6,6 +6,7 @@ import common.Unit;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.commands.Command;
+import server.campaign.pilot.SPilot;
 import server.MWChatServer.auth.IAuthenticator;
 
 /**
@@ -46,18 +47,33 @@ public class RemovePilotCommand implements Command {
         if ( type.equalsIgnoreCase("all") ){
            if ( weight.equalsIgnoreCase("all") ){
                    p.getPersonalPilotQueue().flushQueue();
+                   if(CampaignMain.cm.isUsingMySQL()) {
+                	   CampaignMain.cm.MySQL.deletePlayerPilots(p.getDBId());
+                   }
            }
            else{
                p.getPersonalPilotQueue().getPilotQueue(Unit.MEK,Unit.getWeightIDForName(weight)).clear();
                p.getPersonalPilotQueue().getPilotQueue(Unit.PROTOMEK,Unit.getWeightIDForName(weight)).clear();
+               if(CampaignMain.cm.isUsingMySQL()) {
+            	   CampaignMain.cm.MySQL.deletePlayerPilots(p.getDBId(), Unit.MEK, Unit.getWeightIDForName(weight));
+            	   CampaignMain.cm.MySQL.deletePlayerPilots(p.getDBId(), Unit.PROTOMEK, Unit.getWeightIDForName(weight));
+               }
            }
         }else if (weight.equalsIgnoreCase("all") ){
             for ( int weightClass = 0; weightClass <= Unit.ASSAULT; weightClass++ ){
                 p.getPersonalPilotQueue().getPilotQueue(Unit.getTypeIDForName(type),weightClass).clear();
+                if(CampaignMain.cm.isUsingMySQL()) {
+                	CampaignMain.cm.MySQL.deletePlayerPilots(p.getDBId(), Unit.getTypeIDForName(type), weightClass);
+                }
             }
         }//Ok so lets try a position
         else{
             if ( position.equalsIgnoreCase("all") ){
+            	if(CampaignMain.cm.isUsingMySQL()) {
+            		int numpilots = p.getPersonalPilotQueue().getPilotQueue(Unit.getTypeIDForName(type), Unit.getWeightIDForName(weight)).size();
+            		for(int x = 0; x < numpilots; x++)
+            			CampaignMain.cm.MySQL.deletePilot(((SPilot)p.getPersonalPilotQueue().getPilotQueue(Unit.getTypeIDForName(type), Unit.getWeightIDForName(weight)).get(x)).getDBId());
+            	}
                 p.getPersonalPilotQueue().getPilotQueue(Unit.getTypeIDForName(type),Unit.getWeightIDForName(weight)).clear();
             }
             else if ( position.indexOf("-") > 0){
@@ -65,11 +81,18 @@ public class RemovePilotCommand implements Command {
                 int start = Integer.parseInt(position.substring(position.indexOf("-")+1));
                 //search backwards through the queue so you stay ahead of the shrinkinage.
                 for (int pos = start ;pos >= end; pos--){
+                	if(CampaignMain.cm.isUsingMySQL()) {
+                		CampaignMain.cm.MySQL.deletePilot(((SPilot)p.getPersonalPilotQueue().getPilotQueue(Unit.getTypeIDForName(type), Unit.getWeightIDForName(weight)).get(pos)).getDBId());
+                	}
                     p.getPersonalPilotQueue().getPilot(Unit.getTypeIDForName(type),Unit.getWeightIDForName(weight),pos);
                 }
             }
-            else
+            else {
+               	if(CampaignMain.cm.isUsingMySQL()) {
+            		CampaignMain.cm.MySQL.deletePilot(((SPilot)p.getPersonalPilotQueue().getPilotQueue(Unit.getTypeIDForName(type), Unit.getWeightIDForName(weight)).get(Integer.parseInt(position))).getDBId());
+            	}   
                 p.getPersonalPilotQueue().getPilot(Unit.getTypeIDForName(type),Unit.getWeightIDForName(weight),Integer.parseInt(position));
+            }
         }
 
         CampaignMain.cm.toUser("PL|PPQ|"+p.getPersonalPilotQueue().toString(true),player,false);
