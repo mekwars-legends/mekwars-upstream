@@ -33,19 +33,6 @@ import java.util.Vector;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.LookAndFeel;
-import javax.swing.UIManager;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-
-import net.sourceforge.mlf.metouia.MetouiaLookAndFeel;
-
-import com.jgoodies.looks.plastic.Plastic3DLookAndFeel;
-import com.jgoodies.looks.plastic.PlasticLookAndFeel;
-import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
-import com.jgoodies.looks.plastic.theme.DesertGreen;
-import com.jgoodies.looks.plastic.theme.SkyBlue;
-import com.jgoodies.looks.windows.WindowsLookAndFeel;
-import com.sun.java.swing.plaf.motif.MotifLookAndFeel;
 
 public class MekWarsAutoUpdate {
 
@@ -55,7 +42,7 @@ public class MekWarsAutoUpdate {
      */
     private static final String CONFIG_FILE = "./data/mwconfig.txt";
     private static final String logFileName = "./logs/mekwarsautoupdate.log";
-    private static final String VERSION = "0.7";
+    private static final String VERSION = "0.9";
     private Properties config = null;
     private SplashWindow splash = null;
     
@@ -219,32 +206,6 @@ public class MekWarsAutoUpdate {
             ex.printStackTrace();
             return;
         }
-
-        try {
-            LookAndFeel LAF = new com.incors.plaf.kunststoff.KunststoffLookAndFeel();
-            if (config.getProperty("LOOKANDFEEL").equals("metal")) {
-                LAF = new MetalLookAndFeel();
-            } else if (config.getProperty("LOOKANDFEEL").equals("motif")) {
-                LAF = new MotifLookAndFeel();
-            } else if (config.getProperty("LOOKANDFEEL").equals("metouia")) {
-                LAF = new MetouiaLookAndFeel();
-            } else if (config.getProperty("LOOKANDFEEL").equals("plastic")) {
-                PlasticLookAndFeel.setMyCurrentTheme(new DesertGreen());
-                LAF = new Plastic3DLookAndFeel();
-            } else if (config.getProperty("LOOKANDFEEL").equals("plasticxp")) {
-                LAF = new PlasticXPLookAndFeel();
-            } else if (config.getProperty("LOOKANDFEEL").equals("plastic3d")) {
-                PlasticLookAndFeel.setMyCurrentTheme(new SkyBlue());
-                LAF = new Plastic3DLookAndFeel();
-            } else if (config.getProperty("LOOKANDFEEL").equals("jwindows")) {
-                LAF = new WindowsLookAndFeel();
-            }
-            UIManager.setLookAndFeel(LAF);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.err.flush();
-        }
-
     }
 
 }
