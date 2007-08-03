@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Save methods moved to SUnit / SPlayer / SHouse / SPersonalPilotQueues / SPilot
++ Load methods moved to SUnit / SPlayer
 + Players saving and loading from DB
 + Pilots / Units deleting from DB when retired / destroyed
 + Added Try/Catch to CUnit.getPriceForUnit()
