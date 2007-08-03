@@ -182,6 +182,15 @@ public class VersionManifest {
          */
         String rootDir = fc.getSelectedFile().getPath() + File.separatorChar;
         String outFileName = rootDir + "files.txt";
+        
+        //Remove old manifest files
+        if ( new File(outFileName).exists() )
+        	new File(outFileName).delete();
+        if ( new File(rootDir+"Manifest.txt").exists() )
+        	new File(rootDir+"Manifest.txt").delete();
+        if ( new File(rootDir+"Manifest.txt.jar").exists() )
+        	new File(rootDir+"Manifest.txt.jar").delete();
+        
         // want to leave that last \ or / on
         // rootDir = rootDir.substring(0,rootDir.length()-1);
 
@@ -207,12 +216,31 @@ public class VersionManifest {
 
         try {
             if (file.isDirectory()) {
-                File[] listFiles = file.listFiles();
+            	//Dont bother sending the logs folder.
+            	if ( file.getAbsolutePath().endsWith("logs") 
+            			|| file.getAbsolutePath().endsWith("servers")
+            			|| file.getAbsolutePath().endsWith("campaign")
+            			|| file.getAbsolutePath().endsWith("mmconf") )
+            		return;
+
+            	File[] listFiles = file.listFiles();
                 for (File newFile : listFiles)
                     VersionManifest.printOutFiles(ps, newFile, root);
             } else {
 
                 String path = file.getAbsolutePath();
+                
+                //Dont want any windows Thumbs.db files
+                //are mwconfig files as those could 
+                //screw over the end users.
+                if ( path.endsWith("Thumbs.db") 
+                		|| path.endsWith("mwconfig.txt") 
+                		|| path.endsWith("mwconfig.txt.bak")
+                		|| path.endsWith("files.txt")
+                		|| path.endsWith("Manifest.txt")
+                		|| path.endsWith("Manifest.txt.jar"))
+                	return;
+                
                 int index = path.indexOf(root);
                 
                 if (index > -1)
@@ -257,8 +285,13 @@ public class VersionManifest {
             // Basic folders that should be cleaned up regularly.
             ps.println("<CLEANUP>*./data/mechfiles");
             ps.println("<CLEANUP>*./data/images/units");
+            ps.println("<CLEANUP>*./data/images/camo");
             ps.println("<CLEANUP>*./data/images/units/wrecks");
+            ps.println("<CLEANUP>*./data/images/misc");
+            ps.println("<CLEANUP>*./data/images/");
+            ps.println("<CLEANUP>*./data/images/widgets");
             ps.println("<CLEANUP>*./lib");
+            ps.println("<CLEANUP>*./data/boards/");
             ps.flush();
             out.flush();
             ps.close();
