@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ New MegaMek.jar 0.33.9-MW08032008-5162
 + New MekWarsAutoUpdate.jar 0.9 No longer needs the lib folder and now stream
   Lines the manifest creation process by not including useless files/folders
   I.E. Thumbs.db, logs, data/servers
