@@ -283,7 +283,7 @@ CREATE TABLE `units` (
 -- Table structure for table `config`
 --
 CREATE TABLE `mekwars`.`config` (
-  `config_key` VARCHAR(20) NOT NULL DEFAULT ' ',
+  `config_key` VARCHAR(100) NOT NULL DEFAULT ' ',
   `config_value` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`config_key`, `config_value`)
 )
