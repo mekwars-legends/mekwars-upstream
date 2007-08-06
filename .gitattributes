@@ -997,6 +997,7 @@ server-dist/data/buildtables/standard/Steiner_Medium.txt -text
 server-dist/data/buildtables/standard/Steiner_MediumVehicle.txt -text
 server-dist/data/buildtables/standard/Welfare.txt -text
 server-dist/data/countrynames.txt -text
+server-dist/data/db_schemas/db_schema_0to1.txt -text
 server-dist/data/factions.dtd -text
 server-dist/data/factions.xml -text
 server-dist/data/influencemessages/CommonInfluenceMessages.txt -text

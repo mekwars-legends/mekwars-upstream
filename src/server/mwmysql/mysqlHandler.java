@@ -1,22 +1,20 @@
 package server.mwmysql;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import common.CampaignData;
-import common.Unit;
-
 import server.MMServ;
-import server.mwmysql.MWmysql;
-import server.mwmysql.planetHandler;
-import server.mwmysql.factoryHandler;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.SPlayer;
 import server.campaign.pilot.SPilot;
+
+import common.CampaignData;
+import common.Unit;
 
 public class mysqlHandler{
   private MWmysql MySQLCon = null;
@@ -28,6 +26,8 @@ public class mysqlHandler{
   private PlayerHandler plh = null;
   private PhpbbHandler phpBB = null;
 
+  private final int currentDBVersion = 1;
+  
   public void closeMySQL(){
 	  MySQLCon.close();
   }
@@ -200,6 +200,53 @@ public class mysqlHandler{
 	  plh.purgeStalePlayers(days);
   }
   
+  public int getDBVersion() {
+	  Statement stmt;
+	  ResultSet rs;
+	  try {
+		  stmt = getCon().createStatement();
+		  rs = stmt.executeQuery("SELECT config_value from config WHERE config_key = 'mekwars_database_version'");
+		  if(rs.next()) {
+			  return rs.getInt("config_value");
+		  }
+		  return 0;
+	  } catch (SQLException e) {
+		  MMServ.mmlog.dbLog("SQL Error in mysqlHandler.getDBVersion: " + e.getMessage());
+		  return 0;
+	  }
+  }
+  
+  private boolean databaseIsUpToDate() {
+	  if(getDBVersion() == currentDBVersion){
+		  MMServ.mmlog.dbLog("Database up to date");
+		  return true;
+	  }
+	  MMServ.mmlog.dbLog("Database is out of date!  Please update.");
+	  return false;
+  }
+  
+  public void checkAndUpdateDB() {
+	  if(databaseIsUpToDate())
+		  return;
+	  MMServ.mmlog.dbLog("Database out of date");
+	  MMServ.mmlog.mainLog("Database out of date.  Shutting down to avoid data corruption.");
+	  System.exit(0);
+
+/*
+
+	  int dbVersion = getDBVersion();
+	  
+	  MMServ.mmlog.dbLog("Updating Database from version " + dbVersion + " to " + currentDBVersion);
+	  while (dbVersion != currentDBVersion) {
+		  int targetVersion = dbVersion + 1;
+		  MMServ.mmlog.dbLog("Starting update: " + dbVersion + " to " + targetVersion);
+
+		  dbVersion = targetVersion;
+		  
+	  }
+*/
+  }
+  
   public mysqlHandler(){
     this.MySQLCon = new MWmysql();
 //    if(CampaignMain.cm.isSynchingBB()) {
@@ -212,5 +259,6 @@ public class mysqlHandler{
     this.uh = new UnitHandler(MySQLCon.con);
     this.fah = new FactionHandler(MySQLCon.con);
     this.plh = new PlayerHandler(MySQLCon.con);
+    this.checkAndUpdateDB();
   }
 }

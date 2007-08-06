@@ -2,6 +2,19 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Added check to make sure that database is up to date
+  *************************************************************************
+  * Server Ops: Please note the addition of files in the                  * 
+  * server-dist/db_schemas folder.  The txt files MUST be fed to mysql in *
+  * the correct order prior to starting MekWars with the database enabled *
+  *                                                                       *
+  * To do this, navigate to the db_schemas folder, and run (for instance) *
+  *                                                                       *
+  *   mysql -u [user] -p[pass] [database] < db_schema_0to1.txt            *
+  *                                                                       *
+  * Please also note that the database must be created prior to running   *
+  * this command.                                                         *
+  *************************************************************************
 + Players deleted from database on Unenroll / Purge
 + Database backing up in AutomaticBackup
 + New MegaMek.jar 0.33.9-MW08032008-5162
