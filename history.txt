@@ -21,7 +21,6 @@ v 0.2.5.x
 + New MekWarsAutoUpdate.jar 0.9 No longer needs the lib folder and now stream
   Lines the manifest creation process by not including useless files/folders
   I.E. Thumbs.db, logs, data/servers
->>>>>>> .r94
 + Save methods moved to SUnit / SPlayer / SHouse / SPersonalPilotQueues / SPilot
 + Load methods moved to SUnit / SPlayer
 + Players saving and loading from DB
