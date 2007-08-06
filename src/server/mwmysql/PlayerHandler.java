@@ -5,8 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.StringTokenizer;
+
 import server.MMServ;
+import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
+import server.campaign.commands.Command;
 
 public class PlayerHandler {
 
@@ -23,6 +27,26 @@ public class PlayerHandler {
 		} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in PlayerHandler.countPlayers: " + e.getMessage());
 			return 0;
+		}
+	}
+	
+	public void purgeStalePlayers(long days) {
+		Statement stmt;
+		ResultSet rs;
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT playerName from players WHERE playerLastModified < (CURRENT_TIMESTAMP() - INTERVAL " + days + " DAYS");
+			while(rs.next()) {
+				SPlayer p = CampaignMain.cm.getPlayer(rs.getString("playerName"), false);
+				p.addExperience(100, true);
+				Command c = CampaignMain.cm.getServerCommands().get("UNENROLL");
+				c.process(new StringTokenizer("CONFIRMED", "#"), rs.getString("playerName"));
+				MMServ.mmlog.infoLog(rs.getString("playerName") + " purged.");
+			}
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in PlayerHandler.purgeStalePlayers: " + e.getMessage());
 		}
 	}
 	

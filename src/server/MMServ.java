@@ -192,6 +192,11 @@ public class MMServ {
 			config.setProperty("MYSQLPASS", "");
 			config.setProperty("MYSQLHOST", "");
 			config.setProperty("MYSQLDB", "mekwars");
+			config.setProperty("MYSQL_SYNCHPPHPBB", "false");
+			config.setProperty("PHPBB_USER", "sa");
+			config.setProperty("PHPBB_PASS", "master");
+			config.setProperty("PHPBB_HOST", "localhost");
+			config.setProperty("PHPBB_DB", "phpbb");
 			try {
 				config.store(new FileOutputStream("./data/serverconfig.txt"), "Server config File");
 			} catch (Exception e1) {

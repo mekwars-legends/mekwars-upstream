@@ -70,3 +70,9 @@ MYSQLUSER=sa
 MYSQLPASS=master
 MYSQLHOST=localhost
 MYSQLDB=mekwars
+MYSQL_SYNCHPHPBB=false
+PHPBB_USER=sa
+PHPBB_PASS=master
+PHPBB_HOST=localhost
+PHPBB_DB=phpbb
+

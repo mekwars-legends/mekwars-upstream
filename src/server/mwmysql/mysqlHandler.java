@@ -12,6 +12,7 @@ import server.MMServ;
 import server.mwmysql.MWmysql;
 import server.mwmysql.planetHandler;
 import server.mwmysql.factoryHandler;
+import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.SPlayer;
@@ -25,12 +26,26 @@ public class mysqlHandler{
   private UnitHandler uh = null;
   private FactionHandler fah = null;
   private PlayerHandler plh = null;
+  private PhpbbHandler phpBB = null;
 
   public void closeMySQL(){
 	  MySQLCon.close();
   }
+  
+  public void createBBCon() {
+	  MySQLCon.createPHPBBConnection();
+  }
+  
+  public void backupDB() {
+	  MySQLCon.backupDB();
+  }
+  
   public Connection getCon() {
 	return MySQLCon.con;  
+  }
+  
+  public Connection getBBCon() {
+	  return MySQLCon.bbcon;
   }
   
   public void deleteFactory(int FactoryID){
@@ -181,8 +196,16 @@ public class mysqlHandler{
 	  plh.deletePlayer(p);
   }
   
+  public void purgeStalePlayers(long days) {
+	  plh.purgeStalePlayers(days);
+  }
+  
   public mysqlHandler(){
     this.MySQLCon = new MWmysql();
+//    if(CampaignMain.cm.isSynchingBB()) {
+//    	createBBCon();
+//    	this.phpBB = new PhpbbHandler(MySQLCon.bbcon);
+//    }
     this.ph = new planetHandler(MySQLCon.con);
     this.fh = new factoryHandler(MySQLCon.con);
     this.pih = new PilotHandler(MySQLCon.con);

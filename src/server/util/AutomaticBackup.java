@@ -66,9 +66,18 @@ public class AutomaticBackup implements Runnable{
         if (lastBackup > time - backupHours )
             return;
         
-        MMServ.mmlog.mainLog("Arching Started at "+time);
+        MMServ.mmlog.mainLog("Archiving Started at "+time);
         CampaignMain.cm.setArchiving(true);
-            
+        
+        if(CampaignMain.cm.isUsingMySQL()) {
+        	CampaignMain.cm.MySQL.backupDB();
+    		CampaignMain.cm.getConfig().setProperty("LastAutomatedBackup",Long.toString(time));
+    		CampaignMain.dso.createConfig();
+            CampaignMain.cm.setArchiving(false);
+            MMServ.mmlog.mainLog("Archiving Ended.");
+        	return;
+        }
+        
         SimpleDateFormat sDF = new SimpleDateFormat(dateTimeFormat);
         Date date = new Date(time);
 

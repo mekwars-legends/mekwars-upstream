@@ -855,6 +855,11 @@ public class DefaultServerOptions {
 	defaults.setProperty("MYSQLPASS", "");
 	defaults.setProperty("MYSQLHOST", "");
 	defaults.setProperty("MYSQLDB", "mekwars");
+	defaults.setProperty("MYSQL_SYNCHPHPBB", "false");
+	defaults.setProperty("PHPBB_USER", "");
+	defaults.setProperty("PHPBB_PASS", "");
+	defaults.setProperty("PHPBB_HOST", "");
+	defaults.setProperty("PHPBB_DB", "phpbb");
     }
 
 /**

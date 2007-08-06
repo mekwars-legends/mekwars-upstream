@@ -215,6 +215,8 @@ public final class CampaignMain implements Serializable {
 		 */
 
 		cm.isUsingMySQL();
+//		if(cm.isSynchingBB())
+//			cm.MySQL.
 
 		market = new Market2();
 		partsmarket = new PartsMarket();
@@ -2277,6 +2279,12 @@ public final class CampaignMain implements Serializable {
 		return isUsing;
 	}
 
+	public boolean isSynchingBB() {
+		if(!isUsingMySQL())
+			return false;
+		return Boolean.parseBoolean(myServer.getConfigParam("MYSQL_SYNCHPHPBB"));
+	}
+	
 	/*
 	 * Checks to see if the campaign is using advance repairs and starts up the
 	 * thread if it is null
@@ -3069,7 +3077,10 @@ public final class CampaignMain implements Serializable {
 	public void purgePlayerFiles() {
 		long days = Long.parseLong(CampaignMain.cm
 				.getConfig("PurgePlayerFilesDays"));
-
+		if(CampaignMain.cm.isUsingMySQL()) {
+			CampaignMain.cm.MySQL.purgeStalePlayers(days);
+			return;
+		}
 		// Turn purging off by setting it to 0 or less days
 		if (days <= 0)
 			return;
