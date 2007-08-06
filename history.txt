@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ New MegaMek.jar build 0.33.9-MW08062007-5162
++ added line feeds to the DMML command client side.
 + Added check to make sure that database is up to date
   *************************************************************************
   * Server Ops: Please note the addition of files in the                  * 

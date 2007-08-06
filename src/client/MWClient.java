@@ -809,7 +809,7 @@ public final class MWClient implements IClient {
 			} catch (Exception ex){
 				//do nothing?
 			}
-			this.sendChat(PROTOCOL_PREFIX + "c mm# " + name + " used the display saved games command on "+myUsername);
+			this.sendChat(PROTOCOL_PREFIX + "c mm# " + name + " used the display megamek logs command on "+myUsername);
 			return;
 		}
 		

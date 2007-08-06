@@ -54,7 +54,9 @@ public class DMML extends Command {
         		FileOutputStream fos = new FileOutputStream(logFile,true);
     			PrintStream p = new PrintStream(fos);
 
-    			p.append(st.nextToken());
+    			p.append(st.nextToken()+'\n');
+    			p.flush();
+    			p.close();
         	}catch(Exception ex) {
         		MWClient.mwClientLog.clientErrLog(ex);
         	}
