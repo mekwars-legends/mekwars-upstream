@@ -53,7 +53,6 @@ public class MWmysql{
 	  cl.append(" > ." + fs + "campaign" + fs + "backup" + fs + "DB_Backup.");
 	  cl.append(System.currentTimeMillis());
 	  cl.append(".sql");
-	  MMServ.mmlog.mainLog(cl.toString());
 	  
 	  Runtime runtime = Runtime.getRuntime();
 	  String[] call = {cl.toString()};
