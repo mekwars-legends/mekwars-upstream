@@ -71,11 +71,6 @@ public class AutomaticBackup implements Runnable{
         
         if(CampaignMain.cm.isUsingMySQL()) {
         	CampaignMain.cm.MySQL.backupDB();
-    		CampaignMain.cm.getConfig().setProperty("LastAutomatedBackup",Long.toString(time));
-    		CampaignMain.dso.createConfig();
-            CampaignMain.cm.setArchiving(false);
-            MMServ.mmlog.mainLog("Archiving Ended.");
-        	return;
         }
         
         SimpleDateFormat sDF = new SimpleDateFormat(dateTimeFormat);

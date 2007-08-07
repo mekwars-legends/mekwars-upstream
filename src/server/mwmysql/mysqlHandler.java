@@ -33,7 +33,7 @@ public class mysqlHandler{
   }
   
   public void createBBCon() {
-	  MySQLCon.createPHPBBConnection();
+	  //MySQLCon.createPHPBBConnection();
   }
   
   public void backupDB() {
@@ -93,7 +93,6 @@ public class mysqlHandler{
 			  h.getPilotQueues().setFactionID(h.getDBId());
 			  rs = stmt.executeQuery("SELECT pilotID from pilots WHERE factionID = " + h.getId() + " AND pilotType= " + x);
 			  while(rs.next()) {
-				  MMServ.mmlog.dbLog("Loading pilots for Faction " + h.getId() + " , type = " + x);
 				  SPilot p = pih.loadPilot(rs.getInt("pilotID"));
 				  h.getPilotQueues().loadPilot(x, p);
 			  }			  
