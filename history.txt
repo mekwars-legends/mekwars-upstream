@@ -2,7 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
-+ BUG: NPE in shutdown when database enabled - fixed
++ Shutdown command now saves all campaign data before shutting down.
++ Bug: NPE in shutdown when database enabled - fixed
 + Fixed field size error in schema creation.
 + New MegaMek.jar build 0.33.9-MW08062007-5162
 + added line feeds to the DMML command client side.

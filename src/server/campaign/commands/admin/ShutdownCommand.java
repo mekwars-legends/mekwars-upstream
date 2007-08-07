@@ -47,7 +47,9 @@ public class ShutdownCommand implements Command {
 			}
 		}
         CampaignMain.cm.getMarket().removeAllListings();
-        CampaignMain.cm.forceSavePlayers(Username);
+		CampaignMain.cm.toFile();
+		CampaignMain.cm.forceSavePlayers(Username);
+        CampaignMain.cm.saveBannedAmmo();
         if ( CampaignMain.cm.isUsingMySQL() )
         	CampaignMain.cm.MySQL.closeMySQL();
         CampaignMain.cm.toUser("You halted the server. Have a nice day.", Username,true);
