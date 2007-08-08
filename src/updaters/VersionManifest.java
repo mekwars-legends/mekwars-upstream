@@ -168,8 +168,7 @@ public class VersionManifest {
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         fc.setCurrentDirectory(new File("./"));
         fc.setApproveButtonText("Create List");
-        fc
-                .setApproveButtonToolTipText("<html>Select the folder where the file list<br>and manifest will be crated.</html>");
+        fc.setApproveButtonToolTipText("<html>Select the folder where the file list<br>and manifest will be crated.</html>");
         int selection = fc.showOpenDialog(null);
 
         if (selection != JFileChooser.APPROVE_OPTION)

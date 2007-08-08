@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ I did something don't remember what --Torren
 + Shutdown command now saves all campaign data before shutting down.
 + Bug: NPE in shutdown when database enabled - fixed
 + Fixed field size error in schema creation.
