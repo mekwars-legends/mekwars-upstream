@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Release Client 0.2.5.2
++ Added code to manually seach the cache file if unit name cannot be found
+  on the first pull, works best for vehicle files.
 + I did something don't remember what --Torren
 + Shutdown command now saves all campaign data before shutting down.
 + Bug: NPE in shutdown when database enabled - fixed
