@@ -2,6 +2,12 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Automated backup now dumping MySQL database to a restore file
+  **************************************************************
+  * Server Ops: If you use the database, please copy the       *
+  * server-dist/dump_db.{sh,bat} files to the server root,     *
+  * then edit them with the pertinent information              *
+  **************************************************************
 + Release Client 0.2.5.2
 + Added code to manually seach the cache file if unit name cannot be found
   on the first pull, works best for vehicle files.

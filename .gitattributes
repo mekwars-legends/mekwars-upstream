@@ -1029,6 +1029,8 @@ server-dist/data/unitfiles/Error[!!-~]OMG-UR-FD.hmp -text
 server-dist/data/unitfiles/Infantry.zip -text
 server-dist/data/unitfiles/Meks.zip -text
 server-dist/data/unitfiles/Vehicles.zip -text
+server-dist/dump_db.bat -text
+server-dist/dump_db.sh -text
 server-dist/lib/Ostermiller.jar -text
 server-dist/lib/TinyXML.jar -text
 server-dist/lib/mysql-connector-java-5.0.6-bin.jar -text

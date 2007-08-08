@@ -43,21 +43,20 @@ public class MWmysql{
 
   public void backupDB() {
 	  String fs = System.getProperty("file.separator");
-	  StringBuffer cl = new StringBuffer();
-	  cl.append("mysqldump -u ");
-	  cl.append(CampaignMain.cm.getServer().getConfigParam("MYSQLUSER"));
-	  cl.append(" -p");
-	  cl.append(CampaignMain.cm.getServer().getConfigParam("MYSQLPASS"));
-	  cl.append(" ");
-	  cl.append(CampaignMain.cm.getServer().getConfigParam("MYSQLDB"));
-	  cl.append(" > ." + fs + "campaign" + fs + "backup" + fs + "DB_Backup.");
-	  cl.append(System.currentTimeMillis());
-	  cl.append(".sql");
+	  Runtime runtime=Runtime.getRuntime();
 	  
-	  Runtime runtime = Runtime.getRuntime();
-	  String[] call = {cl.toString()};
+
 	  try {
-		  runtime.exec(call);		  
+		  if(fs.equalsIgnoreCase("/"))
+		  {
+			  // It's Unix
+			  String[] call={"dump_db.sh", Long.toString(System.currentTimeMillis())};
+			  runtime.exec(call);
+		  } else {
+			  // It's Windows
+			  String[] call={"dump_db.bat", Long.toString(System.currentTimeMillis())};
+			  runtime.exec(call);
+		  }		  
 	  } catch (IOException ex){
 		  MMServ.mmlog.dbLog("Error in backupDB: " + ex.toString());
 	  }
