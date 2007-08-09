@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Steam lined the data coming from CheckAttackCommand. Now it only shows the FM
+  BV if your army is bigger then your opponents.
++ Bug: units in the House bays showing as OMG's when click on the view unit link
 + Second database connection now working for connection to phpBB database.
   In the very near future, this will allow for synching MW and phpBB users,
   thereby automating the almost-universal mandatory forum account rule for
