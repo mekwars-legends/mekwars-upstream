@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Second database connection now working for connection to phpBB database.
+  In the very near future, this will allow for synching MW and phpBB users,
+  thereby automating the almost-universal mandatory forum account rule for
+  the Server Ops
 + Automated backup now dumping MySQL database to a restore file
   **************************************************************
   * Server Ops: If you use the database, please copy the       *

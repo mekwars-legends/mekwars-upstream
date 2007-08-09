@@ -27,13 +27,13 @@ import server.campaign.CampaignMain;
 
 public class MWmysql{
   Connection con = null;
-  Connection bbcon = null;
+
  
   public void close(){
     MMServ.mmlog.dbLog("Attempting to close MySQL Connection");
     try {
     	this.con.close();
-//    	this.bbcon.close();
+
     } catch (SQLException e) {
     	MMServ.mmlog.dbLog("SQL Exception: " + e.getMessage());
     	MMServ.mmlog.errLog("SQL Exception:");

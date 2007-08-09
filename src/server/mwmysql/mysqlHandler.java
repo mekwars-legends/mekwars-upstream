@@ -1,6 +1,5 @@
 package server.mwmysql;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,16 +23,14 @@ public class mysqlHandler{
   private UnitHandler uh = null;
   private FactionHandler fah = null;
   private PlayerHandler plh = null;
-  private PhpbbHandler phpBB = null;
+  private PhpBBConnector phpBBCon = null;
 
   private final int currentDBVersion = 1;
   
   public void closeMySQL(){
 	  MySQLCon.close();
-  }
-  
-  public void createBBCon() {
-	  //MySQLCon.createPHPBBConnection();
+	  if(CampaignMain.cm.isSynchingBB())
+		  phpBBCon.close();
   }
   
   public void backupDB() {
@@ -45,7 +42,7 @@ public class mysqlHandler{
   }
   
   public Connection getBBCon() {
-	  return MySQLCon.bbcon;
+	  return phpBBCon.con;
   }
   
   public void deleteFactory(int FactoryID){
@@ -248,10 +245,9 @@ public class mysqlHandler{
   
   public mysqlHandler(){
     this.MySQLCon = new MWmysql();
-//    if(CampaignMain.cm.isSynchingBB()) {
-//    	createBBCon();
-//    	this.phpBB = new PhpbbHandler(MySQLCon.bbcon);
-//    }
+    if(CampaignMain.cm.isSynchingBB()) {
+    	this.phpBBCon = new PhpBBConnector();
+    }
     this.ph = new planetHandler(MySQLCon.con);
     this.fh = new factoryHandler(MySQLCon.con);
     this.pih = new PilotHandler(MySQLCon.con);

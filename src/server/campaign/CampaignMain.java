@@ -2272,7 +2272,7 @@ public final class CampaignMain implements Serializable {
 
 		if (isUsing && MySQL == null) {
 			MySQL = new mysqlHandler();
-		} else if (!isUsing && mwcc != null) {
+		} else if (!isUsing && MySQL != null) {
 			MySQL.closeMySQL();
 			MySQL = null;
 		}
@@ -2280,8 +2280,6 @@ public final class CampaignMain implements Serializable {
 	}
 
 	public boolean isSynchingBB() {
-		if(!isUsingMySQL())
-			return false;
 		return Boolean.parseBoolean(myServer.getConfigParam("MYSQL_SYNCHPHPBB"));
 	}
 	
