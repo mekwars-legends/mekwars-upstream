@@ -1983,9 +1983,19 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	
 	public void setLastOnline(long l) {
 		lastOnline = l;
-		
+		SmallPlayer smallp = null;
+		if ( myHouse.getSmallPlayers().containsKey(name.toLowerCase()) )
 		// update the corresponding small player.
-		SmallPlayer smallp = myHouse.getSmallPlayers().get(name.toLowerCase());
+			smallp = myHouse.getSmallPlayers().get(name.toLowerCase());
+		else{
+			smallp = new SmallPlayer();
+			smallp.setExperience(this.getExperience());
+			smallp.setFluffText(this.getFluffText());
+			smallp.setName(this.getName());
+			smallp.setRating(this.getRating());
+			myHouse.getSmallPlayers().put(name.toLowerCase(),smallp);
+		}
+			
 		smallp.setLastOnline(lastOnline);
 	}
 	

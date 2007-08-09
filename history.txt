@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Bug: NPE in TouchCommand when updating a player that has not connected since server
+  was restarted.
 + Steam lined the data coming from CheckAttackCommand. Now it only shows the FM
   BV if your army is bigger then your opponents.
 + Bug: units in the House bays showing as OMG's when click on the view unit link
