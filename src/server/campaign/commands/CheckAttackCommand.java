@@ -133,12 +133,10 @@ public class CheckAttackCommand implements Command {
 						String coloredHouseName = currTargetP.getMyHouse().getHouseFightingFor(currTargetP).getColoredName();
 						Desc += coloredHouseName + "(" + currTarget.getAmountOfUnits() + ")";
 
-						if ( usingOpRules ) {
-							if (  arm.getAmountOfUnits() > currTarget.getAmountOfUnits() )
+						if ( usingOpRules && arm.getAmountOfUnits() > currTarget.getAmountOfUnits()) {
 								Desc += "(BV Against: "+ arm.getOperationsBV(currTarget) +")";
-							else
-								Desc += "(BV Against: "+ arm.getBV() +")";
 						}
+						
 						if (targets.hasMoreElements())
 							Desc += ", ";
 					}//end while(more targets)

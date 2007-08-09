@@ -49,9 +49,6 @@ import javax.swing.SpringLayout;
 import javax.swing.BoxLayout;
 
 import megamek.common.Entity;
-import megamek.common.MechFileParser;
-import megamek.common.MechSummary;
-import megamek.common.MechSummaryCache;
 
 import client.MWClient;
 import client.campaign.CCampaign;
@@ -672,23 +669,11 @@ public class CHSPanel extends JPanel {
 	
 	public void showInfoWindow(String MekFile, int BV, int Gunnery, int Piloting, String battleDamage)
 	{
-        //MMClient.mwClientLog.clientErrLog("Filename: " + getUnitFilename());
         Entity UnitEntity = null;
-        try {
-            MechSummary ms = MechSummaryCache.getInstance().getMech(MekFile);
-            UnitEntity = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
-        }
-        catch (Exception exep) {
-            try {
-                MWClient.mwClientLog.clientErrLog("Error loading unit: " +MekFile + ". Try replacing with OMG.");
-                MechSummary ms = MechSummaryCache.getInstance().getMech("Error OMG-UR-FD");
-                UnitEntity = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
-            }
-            catch (Exception exepe) {
-                MWClient.mwClientLog.clientErrLog("Error unit failed to load. Exiting.");
-                return;
-            }
-        }
+		CUnit embeddedUnit = new CUnit();
+		embeddedUnit.setUnitFilename(MekFile);
+		embeddedUnit.createEntity();
+		UnitEntity = embeddedUnit.getEntity();
 		
 		JFrame InfoWindow = new JFrame();
 		MechDetailDisplay MechDetailInfo = new MechDetailDisplay();
