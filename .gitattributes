@@ -901,13 +901,6 @@ client-dist/lib/xstream.jar -text
 client-dist/licenses/jgoodies[!!-~]license.txt -text
 client-dist/licenses/license.txt -text
 client-dist/licenses/metouia[!!-~]license.txt -text
-client-dist/megamek-docs/ai-readme.txt -text
-client-dist/megamek-docs/contributors.txt -text
-client-dist/megamek-docs/editor-readme.txt -text
-client-dist/megamek-docs/history.txt -text
-client-dist/megamek-docs/license.txt -text
-client-dist/megamek-docs/scenario-readme.txt -text
-client-dist/mmconf/bot.properties -text
 client-dist/startClient.bat -text
 /contributors.txt -text
 /history.txt -text
