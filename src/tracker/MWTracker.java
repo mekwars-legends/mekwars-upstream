@@ -691,7 +691,7 @@ public final class MWTracker {
 											maxPlayers = currPlayers;
 										
 										currGames = Integer.parseInt(st.nextToken());//games in progress
-										gamesPlayed += Integer.parseInt(st.nextToken());//finshed games
+										gamesPlayed += Integer.parseInt(st.nextToken());//finished games
 									}
 									
 									//load next line

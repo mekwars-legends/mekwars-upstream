@@ -1368,7 +1368,7 @@ public class ShortOperation implements Comparable {
 			else
 				toSend = incompleteFinishedString.replaceAll("<br>"," ");
 			for (SHouse currH : houseMap.values())
-				CampaignMain.cm.doSendHouseMail(currH, "Finshed Game:", toSend);
+				CampaignMain.cm.doSendHouseMail(currH, "Finished Game:", toSend);
 			
 			//we now return to our regularly scheduled program ...
 			defenders.clear();
