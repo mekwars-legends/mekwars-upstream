@@ -4,6 +4,7 @@
   Sebastian Brocks  (beerockxs@users.sourceforge.net)
   coelocanth        (coelocanth@users.sourceforge.net)
   Mikhail           (redzed260@users.sourceforge.net)
+  Bob Eldred		(billypinhead@users.sourceforge.net)
   
  MekWars testing and documentation (a few of many):
   Alan Bell         (Carpe Mortis)
