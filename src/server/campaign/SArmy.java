@@ -458,9 +458,6 @@ public class SArmy extends Army {
 					result.append(", ");
 			}
 			result.append("; BV: " + getBV());
-			boolean usingOperationsRule = CampaignMain.cm.getBooleanConfig("UseOperationsRule"); 
-			if (this.getUnits().size() > 4 && usingOperationsRule)
-				result.append(", BV. vs 4 Units: " + getOperationsBV(null));
 			
 			return result.toString();
 		} 

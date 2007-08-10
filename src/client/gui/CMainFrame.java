@@ -130,7 +130,7 @@ public class CMainFrame extends JFrame {
 	JMenuItem jMenuSubCampaignSellBays = new JMenuItem();
 	JMenuItem jMenuSubCampaignBuyBays = new JMenuItem();
 	
-	JMenuItem jMenuCampaignSubOtherBuyPilots = new JMenuItem();
+	JMenuItem jMenuCampaignBuyPilots = new JMenuItem();
 
 	JMenuItem jMenuMercStatus = new JMenuItem();
 	JMenuItem jMenuMercUnemployed = new JMenuItem();
@@ -518,7 +518,7 @@ public class CMainFrame extends JFrame {
 			jMenuCampaignSubBays.setText("Bays");
 			jMenuCampaignSubBays.setMnemonic('B');
 		}
-		jMenuCampaignSubTechs.setText("Techs");
+		jMenuCampaignSubTechs.setText("Personal");
 		jMenuCampaignSubTechs.setMnemonic('E');
 		
 		jMenuCampaignSubTransfer.setText("Transfer");
@@ -664,9 +664,9 @@ public class CMainFrame extends JFrame {
 		}
 		
 		if ( usePersonalPilotQueues ) {
-			jMenuCampaignSubOtherBuyPilots.setText("Buy Pilots");
-			jMenuCampaignSubOtherBuyPilots.setMnemonic('P');
-			jMenuCampaignSubOtherBuyPilots.addActionListener(new ActionListener() {
+			jMenuCampaignBuyPilots.setText("Buy Pilots");
+			jMenuCampaignBuyPilots.setMnemonic('P');
+			jMenuCampaignBuyPilots.addActionListener(new ActionListener() {
 			    public void actionPerformed(ActionEvent e) {
 			    	jMenuCampaignSubOtherBuyPilots_actionPerformed();
 			    }
@@ -952,6 +952,12 @@ public class CMainFrame extends JFrame {
 		//techs sub menu
 		jMenuCampaignSubTechs.add(jMenuSubCampaignHireTechs);
 		jMenuCampaignSubTechs.add(jMenuSubCampaignFireTechs);
+        //Pilots sub menus.
+		if ( usePersonalPilotQueues ) {
+			jMenuCampaignSubTechs.add(jMenuCampaignPersonalPilotQueue);
+			jMenuCampaignSubTechs.add(jMenuCampaignBuyPilots);
+			jMenuCampaignSubTechs.add(jMenuCampaignDonatePersonalPilot);
+		}
 		
 		//Bay sub menu
 		jMenuCampaignSubBays.add(jMenuSubCampaignBuyBays);
@@ -975,12 +981,6 @@ public class CMainFrame extends JFrame {
 		if ( Boolean.parseBoolean(mwclient.getserverConfigs("UsePartsBlackMarket")) ) 
 				jMenuCampaignSubOther.add(jMenuCampaignPartsCache);
 
-        //Pilots sub menus.
-		if ( usePersonalPilotQueues ) {
-			jMenuCampaignSubOther.add(jMenuCampaignPersonalPilotQueue);
-			jMenuCampaignSubOther.add(jMenuCampaignSubOtherBuyPilots);
-			jMenuCampaignSubOther.add(jMenuCampaignDonatePersonalPilot);
-		}
 		jMenuCampaignSubOther.add(jMenuCampaignDirectSell);
 		
 		//assemble the actual campaign menu...

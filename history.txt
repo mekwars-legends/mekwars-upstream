@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
+Release Client 0.2.5.3 & Server 0.2.5.6
++ GUI Change to Pilot Menus.
++ New MegaMek.jar 0.33.9-08102007-5162
 + Bug: NPE in TouchCommand when updating a player that has not connected since server
   was restarted.
 + Steam lined the data coming from CheckAttackCommand. Now it only shows the FM
