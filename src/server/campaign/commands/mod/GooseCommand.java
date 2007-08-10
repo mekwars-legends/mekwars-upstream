@@ -38,26 +38,31 @@ public class GooseCommand implements Command {
 			return;
 		}
 		
-		String player = command.nextToken();
-		SPlayer p = CampaignMain.cm.getPlayer(player);
-		
-		if ( p == null) {
-			CampaignMain.cm.toUser("Sorry you cannot find "+player+" to goose!", Username);
-			return;
-		}
-		
-		if ( p.getName().equalsIgnoreCase("torren") || userLevel < CampaignMain.cm.getServer().getUserLevel(p.getName()) ) {
-			CampaignMain.cm.toUser(p.getName()+" grabs your hand and breaks it just before your able to goose 'em!", Username);
-			CampaignMain.cm.toUser(Username+" tried to goose you but you deftly avoided it!",p.getName());
-			CampaignMain.cm.doSendModMail("NOTE",Username + " tried to goose " + p.getName() + " and nearly lost their hand for it.");
-			return;
-		}
-		
-		
+		try{
+			String player = command.nextToken();
+			SPlayer p = CampaignMain.cm.getPlayer(player);
 			
-		CampaignMain.cm.toUser("You goose " + p.getName() + ".",Username,true);
-		CampaignMain.cm.toUser(Username+" goosed you!", p.getName());
-		CampaignMain.cm.doSendModMail("NOTE",Username + " goosed " + p.getName() + ".");
-		
+			if ( p == null) {
+				CampaignMain.cm.toUser("Sorry you cannot find "+player+" to goose!", Username);
+				return;
+			}
+			
+			if ( p.getName().equalsIgnoreCase("torren") || userLevel < CampaignMain.cm.getServer().getUserLevel(p.getName()) ) {
+				CampaignMain.cm.toUser(p.getName()+" grabs your hand and breaks it just before your able to goose 'em!", Username);
+				CampaignMain.cm.toUser(Username+" tried to goose you but you deftly avoided it!",p.getName());
+				CampaignMain.cm.doSendModMail("NOTE",Username + " tried to goose " + p.getName() + " and nearly lost their hand for it.");
+				return;
+			}
+			
+			
+				
+			CampaignMain.cm.toUser("You goose " + p.getName() + ".",Username,true);
+			CampaignMain.cm.toUser(Username+" goosed you!", p.getName());
+			CampaignMain.cm.doSendModMail("NOTE",Username + " goosed " + p.getName() + ".");
+		}
+		catch(Exception ex){
+			CampaignMain.cm.toUser("You really need to specify whom you would like to goose", Username);
+			return;
+		}
 	}
 }
