@@ -105,7 +105,8 @@ public class OperationEntity {
                 SPlayer player = CampaignMain.cm.getPlayer(ownerName);
                 if ( player != null ){
                     SUnit currUnit = player.getUnit(ID);
-                    currUnit.setLastCombatPilot(currUnit.getPilot().getPilotId());
+                    if ( currUnit != null )
+                    	currUnit.setLastCombatPilot(currUnit.getPilot().getPilotId());
                 }
 
     		}

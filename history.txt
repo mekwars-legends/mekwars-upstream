@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Bug: NPE when trying to assign last know pilot id to auto created units
++ Typo: On-Line help showing Vet Techs instead of Reg Techs
 + Typo: Finished mispelled in ShortOpretaion.java and MWTracker.java
 + Exception thrown from goosecommand when a target is not specified.
 Release Client 0.2.5.3 & Server 0.2.5.6

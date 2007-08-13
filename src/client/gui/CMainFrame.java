@@ -1993,7 +1993,7 @@ public class CMainFrame extends JFrame {
             result.append("<tr><td>Green Tech</td><td>"+Integer.parseInt(mwclient.getserverConfigs("GreenTechHireCost"))+"</td></tr>");
 
             if ( Boolean.parseBoolean(mwclient.getserverConfigs("AllowRegTechsToBeHired")) )
-                result.append("<tr><td>Vet Tech</td><td>"+Integer.parseInt(mwclient.getserverConfigs("RegTechHireCost"))+"</td></tr>");
+                result.append("<tr><td>Reg Tech</td><td>"+Integer.parseInt(mwclient.getserverConfigs("RegTechHireCost"))+"</td></tr>");
             result.append("</table>");
         }
 		result.append("<table><tr><th>Size of Unit</th><th>EXP needed</th></tr>");
