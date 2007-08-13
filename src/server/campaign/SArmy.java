@@ -448,7 +448,7 @@ public class SArmy extends Army {
 		
 	}
 	
-	public String getDescription(boolean accurate,SArmy opposingArmy){
+	public String getDescription(boolean accurate, SArmy opposingArmy){
 		if (accurate){
 			
 			StringBuilder result = new StringBuilder();
@@ -466,7 +466,7 @@ public class SArmy extends Army {
 			result.append("; BV: " + getBV());
 			
 			if ( opposingArmy != null && getBV() != getOperationsBV(opposingArmy) ){
-				result.append("(BV vs "+opposingArmy.getUnits().size()+" : "+getOperationsBV(opposingArmy));
+				result.append("(BV vs "+opposingArmy.getUnits().size()+" units : "+getOperationsBV(opposingArmy));
 			}
 			
 			return result.toString();
