@@ -443,6 +443,12 @@ public class SArmy extends Army {
 	}
 	
 	public String getDescription(boolean accurate){
+		
+		return getDescription(accurate, null);
+		
+	}
+	
+	public String getDescription(boolean accurate,SArmy opposingArmy){
 		if (accurate){
 			
 			StringBuilder result = new StringBuilder();
@@ -458,6 +464,10 @@ public class SArmy extends Army {
 					result.append(", ");
 			}
 			result.append("; BV: " + getBV());
+			
+			if ( opposingArmy != null && getBV() != getOperationsBV(opposingArmy) ){
+				result.append("(BV vs "+opposingArmy.getUnits().size()+" : "+getOperationsBV(opposingArmy));
+			}
 			
 			return result.toString();
 		} 

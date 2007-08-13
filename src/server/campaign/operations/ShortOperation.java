@@ -1850,8 +1850,9 @@ public class ShortOperation implements Comparable {
 		if (numAttackers == 1 && numDefenders < 2) {
 			
 			SArmy attackArm = CampaignMain.cm.getPlayer(attackers.firstKey()).getArmy(attackers.get(attackers.firstKey()));
+			SArmy defendArm = CampaignMain.cm.getPlayer(defenders.firstKey()).getArmy(defenders.get(defenders.firstKey()));
 			if (mod || (complete && !blindDrop))
-				resultString += "with " + attackArm.getDescription(true);
+				resultString += "with " + attackArm.getDescription(true,defendArm);
 			else
 				resultString += attackArm.getInaccurateDescription();
 		}
@@ -1883,9 +1884,10 @@ public class ShortOperation implements Comparable {
 		//add unit info
 		if (numDefenders == 1 && numAttackers < 2) {
 			
+			SArmy attackArm = CampaignMain.cm.getPlayer(attackers.firstKey()).getArmy(attackers.get(attackers.firstKey()));
 			SArmy defendArm = CampaignMain.cm.getPlayer(defenders.firstKey()).getArmy(defenders.get(defenders.firstKey()));
 			if (mod || (complete && !blindDrop))
-				resultString += " with " + defendArm.getDescription(true);
+				resultString += " with " + defendArm.getDescription(true,attackArm);
 			else
 				resultString += defendArm.getInaccurateDescription();
 		}
