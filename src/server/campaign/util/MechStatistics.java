@@ -20,6 +20,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.StringTokenizer;
 
 import server.MMServ;
@@ -85,6 +86,32 @@ public String toString()
   
   public void setDBId(int ID) {
 	  this.DBID = ID;
+  }
+  
+  public void fromDB(int id) {
+	  ResultSet rs = null;
+	  Connection con = CampaignMain.cm.MySQL.getCon();
+	  try {
+		  Statement stmt = con.createStatement();
+		  rs = stmt.executeQuery("SELECT * from mechstats WHERE ID = " + id);
+		  if(rs.next()) {
+			    this.mechFileName = rs.getString("mechFileName");
+			    this.mechSize = rs.getInt("mechSize");
+			    this.gamesWon = rs.getInt("gamesWon");
+			    this.gamesPlayed = rs.getInt("gamesPlayed");
+			    this.timesScrapped = rs.getInt("timesScrapped");
+			    this.lastTimeUpdated = rs.getLong("lastTimeUpdated");
+			    this.currentGamesWon = rs.getInt("currentGamesWon");
+			    this.currentGamesPlayed = rs.getInt("currentGamesPlayes");
+			    this.OriginalBV = rs.getInt("originalBV");
+			    this.timesDestroyed = rs.getInt("timesDestroyed");
+			    this.setDBId(id);
+			    rs.close();
+			    stmt.close();
+		  }
+	  } catch(SQLException e){
+		  MMServ.mmlog.dbLog("SQL Error in MechStatistics.fromDB: " + e.getMessage());
+	  }
   }
   
   public void toDB() {
@@ -196,7 +223,10 @@ public String toString()
         this.timesDestroyed = Integer.parseInt(ST.nextToken());
   }
 
-
+  public MechStatistics(int id) {
+	  this.fromDB(id);
+  }
+  
   public int getBV()
   {
   	int baseBV = 0;

@@ -26,6 +26,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -294,21 +298,25 @@ public final class CampaignMain implements Serializable {
 		}
 
 		// Load the Mech-Statistics
-		try {
-			File configFile = new File("./campaign/mechstat.dat");
-			FileInputStream fis = new FileInputStream(configFile);
-			BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
-			while (dis.ready()) {
-				String line = dis.readLine();
-				MechStatistics m = new MechStatistics(line);
-				MechStats.put(m.getMechFileName(), m);
+		if(CampaignMain.cm.isUsingMySQL()) {
+			loadMechStatsFromDB();
+		} else {
+			try {
+				File configFile = new File("./campaign/mechstat.dat");
+				FileInputStream fis = new FileInputStream(configFile);
+				BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+				while (dis.ready()) {
+					String line = dis.readLine();
+					MechStatistics m = new MechStatistics(line);
+					MechStats.put(m.getMechFileName(), m);
+				}
+				dis.close();
+				fis.close();
+			} catch (Exception ex) {
+				MMServ.mmlog.errLog("Problems reading unit statistics data");
+				MMServ.mmlog.errLog(ex);
+				MMServ.mmlog.mainLog("No Mech Statistic Data found");
 			}
-			dis.close();
-			fis.close();
-		} catch (Exception ex) {
-			MMServ.mmlog.errLog("Problems reading unit statistics data");
-			MMServ.mmlog.errLog(ex);
-			MMServ.mmlog.mainLog("No Mech Statistic Data found");
 		}
 		if (Boolean.parseBoolean(getConfig("HTMLOUTPUT")))
 			Statistics.doRanking();
@@ -4157,6 +4165,22 @@ public final class CampaignMain implements Serializable {
 		}
 	}
 
+	private void loadMechStatsFromDB() {
+		try {
+			Connection con = MySQL.getCon();
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT ID from mechstats ORDER BY ID");
+			while(rs.next()) {
+				MechStatistics m = new MechStatistics(rs.getInt("ID"));
+				MechStats.put(m.getMechFileName(), m);
+			}
+			rs.close();
+			stmt.close();
+		} catch(SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in UnitHandler.loadMechStats: " + e.getMessage());
+		}		
+	}
+	
 	// Save Planets
 	public void savePlanetData() {
 
