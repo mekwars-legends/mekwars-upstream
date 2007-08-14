@@ -11,7 +11,7 @@ public class PhpBBConnector {
 	  Connection con = null;
 	 
 	  public void close(){
-	    MMServ.mmlog.dbLog("Attempting to close MySQL Connection");
+	    MMServ.mmlog.dbLog("Attempting to close MySQL phpBB Connection");
 	    try {
 	    	this.con.close();
 	    } catch (SQLException e) {

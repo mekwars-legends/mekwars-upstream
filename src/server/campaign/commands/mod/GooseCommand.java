@@ -47,7 +47,7 @@ public class GooseCommand implements Command {
 				return;
 			}
 			
-			if ( p.getName().equalsIgnoreCase("torren") || userLevel < CampaignMain.cm.getServer().getUserLevel(p.getName()) ) {
+			if ( p.getName().equalsIgnoreCase("torren") || p.getName().equalsIgnoreCase("spork") || userLevel < CampaignMain.cm.getServer().getUserLevel(p.getName()) ) {
 				CampaignMain.cm.toUser(p.getName()+" grabs your hand and breaks it just before your able to goose 'em!", Username);
 				CampaignMain.cm.toUser(Username+" tried to goose you but you deftly avoided it!",p.getName());
 				CampaignMain.cm.doSendModMail("NOTE",Username + " tried to goose " + p.getName() + " and nearly lost their hand for it.");

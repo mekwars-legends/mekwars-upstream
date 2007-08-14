@@ -434,13 +434,18 @@ public final class CampaignMain implements Serializable {
 
 			// Save Mech-Stats
 			FileOutputStream out = new FileOutputStream(
-					"./campaign/mechstat.dat");
+			"./campaign/mechstat.dat");
 			PrintStream p = new PrintStream(out);
-			for (MechStatistics currStats : MechStats.values())
-				p.println(currStats.toString());
+			if(CampaignMain.cm.isUsingMySQL()) {
+				for (MechStatistics currStats : MechStats.values())
+					currStats.toDB();
+			} else {
+				for (MechStatistics currStats : MechStats.values())
+					p.println(currStats.toString());
+				p.close();
+				out.close();				
+			}
 
-			p.close();
-			out.close();
 
 			try {
 				// Save the Readable Mechstats

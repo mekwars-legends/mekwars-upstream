@@ -282,7 +282,7 @@ CREATE TABLE `units` (
 --
 -- Table structure for table `config`
 --
-CREATE TABLE `mekwars`.`config` (
+CREATE TABLE `config` (
   `config_key` VARCHAR(100) NOT NULL DEFAULT ' ',
   `config_value` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`config_key`, `config_value`)
@@ -291,5 +291,5 @@ ENGINE = MyISAM;
 --
 -- Insert data for table `config`
 --
-INSERT into `mekwars`.`config` SET config_key='mekwars_database_version', config_value='1';
+INSERT into `config` SET config_key='mekwars_database_version', config_value='1';
 

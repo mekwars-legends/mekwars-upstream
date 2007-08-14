@@ -16,8 +16,13 @@
 
 package server.campaign.util;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.StringTokenizer;
 
+import server.MMServ;
 import server.campaign.*;
 
 /**
@@ -39,6 +44,7 @@ public class MechStatistics implements Cloneable, Comparable {
   private int currentGamesWon = 0;
   private int currentGamesPlayed = 0;
   private int timesDestroyed = 0;
+  private int DBID = 0;
   
   public String getMechFileName() {
     return mechFileName;
@@ -72,7 +78,92 @@ public String toString()
     result += this.timesDestroyed;
     return result;
   }
-
+  
+  public int getDBId() {
+	  return this.DBID;
+  }
+  
+  public void setDBId(int ID) {
+	  this.DBID = ID;
+  }
+  
+  public void toDB() {
+	 Connection con = CampaignMain.cm.MySQL.getCon();
+	 PreparedStatement ps = null;
+	 ResultSet rs = null;
+	 StringBuffer sql = new StringBuffer();
+	 if(getDBId()==0) {
+		 // It's an insert
+		 sql.append("INSERT into mechstats set ");
+		 sql.append("mechFileName = ?, ");
+		 sql.append("mechSize = ?, ");
+		 sql.append("gamesWon = ?, ");
+		 sql.append("gamesPlayed = ?, ");
+		 sql.append("timesScrapped = ?, ");
+		 sql.append("currentGamesWon = ?, ");
+		 sql.append("currentGamesPlayed = ?, ");
+		 sql.append("originalBV = ?, ");
+		 sql.append("timesDestroyed = ?, ");
+		 sql.append("lastTimeUpdated = ?");
+		 try {
+			 ps = con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
+			 ps.setString(1, this.mechFileName);
+			 ps.setInt(2, this.mechSize);
+			 ps.setInt(3, this.gamesWon);
+			 ps.setInt(4, this.gamesPlayed);
+			 ps.setInt(5, this.timesScrapped);
+			 ps.setInt(6, this.currentGamesWon);
+			 ps.setInt(7, this.currentGamesPlayed);
+			 ps.setInt(8, this.OriginalBV);
+			 ps.setInt(9, this.timesDestroyed);
+			 ps.setLong(10, this.lastTimeUpdated);
+			 
+			 ps.executeUpdate();
+			 rs = ps.getGeneratedKeys();
+			 if(rs.next()) {
+				 this.setDBId(rs.getInt(1));
+			 }	
+			 rs.close();
+			 ps.close();
+		 } catch (SQLException e) {
+			 MMServ.mmlog.dbLog("SQLException in MechStatistics.toDB: " + e.getMessage());
+		 }
+		 
+	 } else {
+		 // It's an update
+		 sql.append("UPDATE mechstats set ");
+		 sql.append("mechFileName = ?, ");
+		 sql.append("mechSize = ?, ");
+		 sql.append("gamesWon = ?, ");
+		 sql.append("gamesPlayed = ?, ");
+		 sql.append("timesScrapped = ?, ");
+		 sql.append("currentGamesWon = ?, ");
+		 sql.append("currentGamesPlayed = ?, ");
+		 sql.append("originalBV = ?, ");
+		 sql.append("timesDestroyed = ?, ");
+		 sql.append("lastTimeUpdated = ? ");
+		 sql.append("WHERE ID = ?");
+		 try {
+			 ps = con.prepareStatement(sql.toString());
+			 ps.setString(1, this.mechFileName);
+			 ps.setInt(2, this.mechSize);
+			 ps.setInt(3, this.gamesWon);
+			 ps.setInt(4, this.gamesPlayed);
+			 ps.setInt(5, this.timesScrapped);
+			 ps.setInt(6, this.currentGamesWon);
+			 ps.setInt(7, this.currentGamesPlayed);
+			 ps.setInt(8, this.OriginalBV);
+			 ps.setInt(9, this.timesDestroyed);
+			 ps.setLong(10, this.lastTimeUpdated);
+			 ps.setInt(11, this.getDBId());
+			 ps.executeUpdate();
+			 ps.close();
+		 } catch (SQLException e) {
+			 MMServ.mmlog.dbLog("SQLException in MechStatistics.toDB: " + e.getMessage());
+		 }
+	 }	 
+  }
+  
   public MechStatistics()
   {}
 
