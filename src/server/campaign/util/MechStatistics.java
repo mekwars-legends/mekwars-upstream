@@ -102,7 +102,7 @@ public String toString()
 			    this.timesScrapped = rs.getInt("timesScrapped");
 			    this.lastTimeUpdated = rs.getLong("lastTimeUpdated");
 			    this.currentGamesWon = rs.getInt("currentGamesWon");
-			    this.currentGamesPlayed = rs.getInt("currentGamesPlayes");
+			    this.currentGamesPlayed = rs.getInt("currentGamesPlayed");
 			    this.OriginalBV = rs.getInt("originalBV");
 			    this.timesDestroyed = rs.getInt("timesDestroyed");
 			    this.setDBId(id);
