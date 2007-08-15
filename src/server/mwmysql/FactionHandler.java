@@ -91,7 +91,6 @@ public class FactionHandler {
 				MMServ.mmlog.dbLog("Loading Meks");
 				rs1 = stmt2.executeQuery("SELECT MWID from units WHERE uType = " + Unit.MEK + " AND uFactionID = " + h.getDBId());
 				while(rs1.next()) {
-					MMServ.mmlog.dbLog("Loading Unit " + rs1.getInt("MWID"));
 					SUnit u = new SUnit();
 					u.fromDB(rs1.getInt("MWID"));
 					if ( newbieHouse ){

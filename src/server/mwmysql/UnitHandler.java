@@ -13,9 +13,6 @@ public class UnitHandler {
 	
 	public void linkUnitToFaction(int unitID, int factionID) {
 		try {
-			MMServ.mmlog.dbLog("Linking Unit to Faction: ");
-			MMServ.mmlog.dbLog(" --> Unit ID: " + unitID);
-			MMServ.mmlog.dbLog(" --> Faction ID: " + factionID);
 			Statement stmt = con.createStatement();
 
 			stmt.executeUpdate("UPDATE units set uPlayerID = NULL, uFactionID = " + factionID + " WHERE MWID = " + unitID);

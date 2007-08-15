@@ -166,6 +166,8 @@ public final class CampaignMain implements Serializable {
 	private Random r = new Random(System.currentTimeMillis());
 
 	public mysqlHandler MySQL = null;
+	
+	private boolean validBBVersion = true;
 
 	// CONSTRUCTOR
 	public CampaignMain(MMServ serv) {
@@ -2293,7 +2295,13 @@ public final class CampaignMain implements Serializable {
 	}
 
 	public boolean isSynchingBB() {
-		return Boolean.parseBoolean(myServer.getConfigParam("MYSQL_SYNCHPHPBB"));
+		if (validBBVersion)
+			return Boolean.parseBoolean(myServer.getConfigParam("MYSQL_SYNCHPHPBB"));
+		return false;
+	}
+	
+	public void turnOffBBSynch() {
+		this.validBBVersion = false;
 	}
 	
 	/*

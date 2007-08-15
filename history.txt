@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Server will only attempt to synch with phpBB if a supported version
+  of phpBB is installed.
 + Mech Statistics saving to and loading from database.
 + Added Force Mod BV Info to game info.
 + Bug: NPE when trying to assign last know pilot id to auto created units

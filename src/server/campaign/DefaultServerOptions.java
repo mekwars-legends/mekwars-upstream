@@ -860,6 +860,8 @@ public class DefaultServerOptions {
 	defaults.setProperty("PHPBB_PASS", "");
 	defaults.setProperty("PHPBB_HOST", "");
 	defaults.setProperty("PHPBB_DB", "phpbb");
+	defaults.setProperty("PHPBB_TABLE_PREFIX", "phpbb_");
+	defaults.setProperty("PHPBB_MAJOR_VERSION", "2");
     }
 
 /**

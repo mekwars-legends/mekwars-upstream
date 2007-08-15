@@ -247,6 +247,7 @@ public class mysqlHandler{
     this.MySQLCon = new MWmysql();
     if(CampaignMain.cm.isSynchingBB()) {
     	this.phpBBCon = new PhpBBConnector();
+    	phpBBCon.init();
     }
     this.ph = new planetHandler(MySQLCon.con);
     this.fh = new factoryHandler(MySQLCon.con);
