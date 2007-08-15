@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Bug: Bugs with Team Ops.
 + Updated db_schema to v2
 + Server will only attempt to synch with phpBB if a supported version
   of phpBB is installed.

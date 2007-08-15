@@ -433,6 +433,14 @@ public class ShortOperation implements Comparable {
             //get the op we are setting up.
             Operation o = CampaignMain.cm.getOpsManager().getOperation(opName);
             
+            //Should always have at least 1 attacker if not well then this is
+            //More fubared then anything I can come up with.
+            if ( defenders.size() < 1 ){
+                for (String currP : attackers.keySet())
+                    CampaignMain.cm.toUser("No defenders are listed for this op, someone screwed up!",currP,false);
+                return;
+            }
+            
             /*
              * Check to see if this is a building operation. If so, build an
              * info string that can be sent to all players and reconnectors.
@@ -2059,6 +2067,7 @@ public class ShortOperation implements Comparable {
 			
 		} else {//not complete
 
+			try{
 			//get *a* defender. all are from same faction, or he'll be the only one.
 			SPlayer defender = CampaignMain.cm.getPlayer(defenders.firstKey());	
 			
@@ -2089,6 +2098,10 @@ public class ShortOperation implements Comparable {
 				defendString += nameString;
 			else if (numDefenders > 1)
 				defendString += nameString + " players ";
+			}catch (Exception ex){
+				MMServ.mmlog.errLog("Unable to find defenders for operation: "+this.opName);
+				MMServ.mmlog.errLog(ex);
+			}
 		}
 		
 		return defendString;
