@@ -12,3 +12,5 @@ CREATE TABLE `mechstats` (
   `lastTimeUpdated` DOUBLE NOT NULL DEFAULT 0,
   PRIMARY KEY (`ID`)
 );
+
+UPDATE config set config_value='2' WHERE config_key='mekwars_database_version';
