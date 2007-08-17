@@ -199,6 +199,7 @@ public class MMServ {
 			config.setProperty("PHPBB_DB", "phpbb");
 			config.setProperty("PHPBB_TABLE_PREFIX", "phpbb_");
 			config.setProperty("PHPBB_MAJOR_VERSION", "2");
+			config.setProperty("PHPBB_URL", "http://localhost/phpbb/index.php");
 			try {
 				config.store(new FileOutputStream("./data/serverconfig.txt"), "Server config File");
 			} catch (Exception e1) {

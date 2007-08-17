@@ -76,6 +76,7 @@ PHPBB_PASS=master
 PHPBB_HOST=localhost
 PHPBB_DB=phpbb
 PHPBB_MAJOR_VERSION=2
-PHPBB_TABLE_PREFIX="phpbb_"
+PHPBB_TABLE_PREFIX=phpbb_
+PHPBB_URL=http://localhost/phpbb/index.php
 
 

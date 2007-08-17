@@ -33,6 +33,7 @@ public class PhpBBConnector {
 	  private String bbVersion = "0";
 	  private String userTable = "";
 	  private int bbMajorVersion = Integer.parseInt(CampaignMain.cm.getServer().getConfigParam("PHPBB_MAJOR_VERSION"));
+	  private String bbUrl = "";
 	  
 	  public void close(){
 	    MMServ.mmlog.dbLog("Attempting to close MySQL phpBB Connection");
@@ -124,6 +125,7 @@ public class PhpBBConnector {
 				  	ps.executeUpdate();
 				  	rs.close();
 				  	ps.close();
+				  	CampaignMain.cm.toUser("Your forum account has been activated.  You can log in to the forum at " + bbUrl + ".", name);
 				  }
 				  break;
 				  
@@ -161,6 +163,7 @@ public class PhpBBConnector {
 		  // Get all the phpBB defaults
 		  //this.bbUrl = getBBConfigVar("");
 		  this.bbVersion = getBBConfigVar("version");
+		  this.bbUrl = CampaignMain.cm.getServer().getConfigParam("PHPBB_URL");
 		  switch(bbMajorVersion) {
 		  	case 2:
 		  		if(bbVersion.equalsIgnoreCase(".0.22")) {

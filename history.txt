@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Newly registered users given the url to the server's forum if auto-forum-registered.
 + Change to Forceupdate command.
 R Server 0.2.5.7
 + New MegaMek.jar 0.33.9-MW08172007-5162
