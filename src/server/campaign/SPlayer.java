@@ -150,53 +150,14 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				getTotalTechs().add(0);
 			}
 		}
-		
+		this.myHouse = CampaignMain.cm.getHouseFromPartialString(CampaignMain.cm.getConfig("NewbieHouseName"));
 	}
 	
-	// METHODS TO FIX
-	/*
-	 * This is stuff that needs refactoring, or general improvement.
-	 */
 	/**
-	 * Method that adds the player to CampaignMain's to-save hash for write-out
-	 * and, potentially, removal from memory.
-	 * 
-	 * Nearly all uses of setSave will be to add to the hash; however, some rare
-	 * cases (defection, etc) will require making a remove attempt.
-	 * 
-	 * NOTE: Be careful with setSave(false). This method will not succesfully
-	 * remove players from the queue if they aren't removable. For example, if a
-	 * player defects while repairing a unit, and isRemovable is not checked
-	 * prior to the defection, a PFile of the player in the old house may get
-	 * written out AFTER he's changed.
-	 * 
-	 * In an ideal world, we'll be able to get rid of isRemovable entirely by
-	 * eliminating the need to hold certain players in memory.
+	 * Save player file immediatly.
 	 */
 	public void setSave(boolean save) {
-		
-		// if unremovable, save continuously
-		if (!isRemoveable())
-			CampaignMain.cm.addSavePlayer(this);
-		
-		// setting save to true
-		else if (save)
-			CampaignMain.cm.addSavePlayer(this);
-		
-		// else, setting save to false
-		else
-			CampaignMain.cm.removeSavePlayer(this);
-	}
-	
-	/**
-	 * Determine whether or not a player may be removed from the save queue.
-	 * 
-	 * TODO: Remove this ASAP. See setSave() comments.
-	 */
-	protected boolean isRemoveable() {
-		if (this.hasRepairingUnits(false))
-			return false;
-		return true;
+		CampaignMain.cm.savePlayerFile(this);
 	}
 	
 	/**
@@ -1433,6 +1394,14 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	}
 	
     public void setPassword(MMNetPasswdRecord pass){
+    	
+    	if ( pass == null){
+    		try{
+    			throw new Exception();
+    		}catch(Exception ex){
+    			MMServ.mmlog.errLog(ex);
+    		}
+    	}
         this.password = pass;
         this.setSave(true);
     }
@@ -2538,6 +2507,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	 */
 	public String toString(boolean toClient) {
 		
+		
 		StringBuilder result = new StringBuilder();
 		result.append("CP~");
 		result.append(name);
@@ -2563,7 +2533,10 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			result.append("~");
 		}
 		if (!toClient) {
-			result.append(this.getMyHouse().getName());
+			if ( this.getMyHouse() != null )
+				result.append(this.getMyHouse().getName());
+			else
+				result.append(CampaignMain.cm.getConfig("NewbieHouseName"));	
 			result.append("~");
 			result.append(this.lastOnline);
 			result.append("~");
@@ -2661,8 +2634,12 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				result.append(this.technicians);
 				result.append("~");
 			}
-			if (getMyLogo().length() == 0)
-				result.append(myHouse.getLogo());
+			if (getMyLogo().trim().length() == 0){
+				if ( myHouse.getLogo().trim().length() < 1)
+					result.append(" ");
+				else
+					result.append(myHouse.getLogo());
+			}
 			else
 				result.append(getMyLogo());
 			result.append("~");
@@ -2689,6 +2666,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
                 result.append("~");
                 result.append(this.password.getTime());
                 result.append("~");
+            }else{
+            	result.append(" ~ ~ ~");
             }
         }
 
@@ -3099,7 +3078,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
                 String passwd = ST.nextToken();
                 long time = Long.parseLong(ST.nextToken());
                 
-                this.password = new MMNetPasswdRecord(this.name,access,passwd,time,"");
+                this.setPassword(new MMNetPasswdRecord(this.name,access,passwd,time,""));
             } catch(Exception ex){}
         }
         

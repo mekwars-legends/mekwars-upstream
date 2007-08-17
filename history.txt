@@ -2,6 +2,13 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Removed the Save player hash. Players are now saved when ever setSave is
+	called. Also every X slices all players are still saved for good measure.
++ Fixed Registration issue, hopefully.
++ Fixed concurrent Mod issue with Forceupdate command also stream lined the code
++ Fixed Output for Newbie Units when player enrolls.
++ Fixed typo in ShortResolver for gaining/losing points.
++ Fix for ForceUpdate Command.
 + New users now added to phpBB (v 2.0.22) if they are not already registered
   when server is MySQL-enabled and set to synch phpBB
 + Bug: Bugs with Team Ops.

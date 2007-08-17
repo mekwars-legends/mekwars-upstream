@@ -163,9 +163,5 @@ public class EnrollCommand implements Command {
 		MMServ.mmlog.ipLog("ENROLL: " + Username + " IP: " + ip);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " enrolled in the campaign (IP: " + ip + ").");
 		
-		//force the save, and set save flag
-		CampaignMain.cm.forceSavePlayer(newPlayer);
-        newPlayer.setSave(true);
-        
 	}//end process()
 }//end EnrollCommand

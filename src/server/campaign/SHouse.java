@@ -2086,7 +2086,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		reservePlayers.remove(lowerName);
 		activePlayers.remove(lowerName);
 		fightingPlayers.remove(lowerName);
-		
+		p = null;
 		//add info to logs
 		Date d = new Date(System.currentTimeMillis());
 		MMServ.mmlog.mainLog(d + ":" + "User Logged out: " + realName);

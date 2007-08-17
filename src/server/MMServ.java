@@ -846,7 +846,7 @@ public class MMServ {
 					mailtext = mailtext + st.nextElement();
 				}
 				text = text + mailtext;
-				if (getUser(target).getName().equals(target)) {
+				if (getUser(target).getName().equalsIgnoreCase(target)) {
                     if ( getUser(target).isInvis() && getUser(target).getLevel() > getUser(name).getLevel() )
                         clientSend("CH|Saved mail to " + target + ".", name);
 					this.clientSend("PM|" + name + "|" + mailtext, target);

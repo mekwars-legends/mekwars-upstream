@@ -359,10 +359,10 @@ public class NewbieHouse extends NonConqHouse {
 			//construct the info string
 			toReturn.append(currUnit.getVerboseModelName());
 			
-			//remove last 2 chars (", ") and add a "."
-			toReturn.substring(0, toReturn.length() - 2);
-			toReturn.append(".");
+			toReturn.append(", ");
 		}
+		//remove last 2 chars (", ")
+		toReturn.delete(toReturn.length() - 2,toReturn.length());
 		
 		return toReturn.toString();
 	}//end getNewSOLUnits

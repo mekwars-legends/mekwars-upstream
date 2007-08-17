@@ -72,7 +72,7 @@ public class RegisterCommand implements Command {
             		regged = true;
             } catch (Exception ex) {
                 //Username already registered, ignore error.
-                MMServ.mmlog.errLog(ex);
+                //MMServ.mmlog.errLog(ex);
                 regged = true;
             }
              
@@ -100,16 +100,13 @@ public class RegisterCommand implements Command {
             }
             
             //send the userlevel change to all players
-            CampaignMain.cm.getServer().getClient(Username).setAccessLevel(level);
-            CampaignMain.cm.getServer().getUser(Username).setLevel(level);
-            CampaignMain.cm.getServer().sendRemoveUserToAll(Username,false);
-            CampaignMain.cm.getServer().sendNewUserToAll(Username,false);
+            CampaignMain.cm.getServer().getClient(regname).setAccessLevel(level);
+            CampaignMain.cm.getServer().getUser(regname).setLevel(level);
+            CampaignMain.cm.getServer().sendRemoveUserToAll(regname,false);
+            CampaignMain.cm.getServer().sendNewUserToAll(regname,false);
             
             if (player != null){
             	CampaignMain.cm.doSendToAllOnlinePlayers("PI|DA|" + CampaignMain.cm.getPlayerUpdateString(player),false);
-            	player.getPassword().setAccess(level);
-                player.setSave(true);
-                
             }
             if(CampaignMain.cm.isUsingMySQL()) {
             	CampaignMain.cm.MySQL.setPlayerPassword(CampaignMain.cm.MySQL.getPlayerIDByName(Username), pw);

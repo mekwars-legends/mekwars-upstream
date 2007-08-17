@@ -42,7 +42,6 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
-import java.util.concurrent.ConcurrentHashMap;
 
 import megamek.MegaMek;
 import megamek.client.Client;
@@ -118,7 +117,7 @@ public final class CampaignMain implements Serializable {
 
 	private Properties config = new Properties();
 
-	private ConcurrentHashMap<String, SPlayer> savePlayers = new ConcurrentHashMap<String, SPlayer>();
+	//private ConcurrentHashMap<String, SPlayer> savePlayers = new ConcurrentHashMap<String, SPlayer>();
 
 	private Hashtable<String, Command> Commands = new Hashtable<String, Command>();
 
@@ -1136,8 +1135,7 @@ public final class CampaignMain implements Serializable {
 	public SPlayer getPlayer(String pName, boolean save) {
 
 		// Fix for Draw games.
-		if (pName.equalsIgnoreCase("DRAW") || pName.equalsIgnoreCase("DRAW#")
-				|| pName.startsWith("DRAW#"))
+		if (pName.equalsIgnoreCase("DRAW") || pName.toUpperCase().startsWith("DRAW#"))
 			return null;
 
 		// look for faction players
@@ -1149,11 +1147,12 @@ public final class CampaignMain implements Serializable {
 				return result;
 		}
 
-		// look for players awaiting purge
+		/* look for players awaiting purge
 		String lowerName = pName.toLowerCase();
 		if (savePlayers.containsKey(lowerName))
 			return savePlayers.get(lowerName);
-
+		 */
+		
 		/*
 		 * no online player, so try to read from a file. if we do pull a file,
 		 * set it's save value to true. this will make sure that temp-loads are
@@ -1170,8 +1169,8 @@ public final class CampaignMain implements Serializable {
 			}
 		}
 		result = this.loadPlayerFile(pName, false);
-		if (result != null)
-			result.setSave(save);
+		//if (result != null)
+			//result.setSave(save);
 
 		return result;
 	}
@@ -2713,14 +2712,14 @@ public final class CampaignMain implements Serializable {
 		return theMatch;
 	}
 
-	protected void addSavePlayer(SPlayer p) {
+/*	protected void addSavePlayer(SPlayer p) {
 		savePlayers.put(p.getName().toLowerCase(), p);
 	}
 
 	protected void removeSavePlayer(SPlayer p) {
 		savePlayers.remove(p.getName().toLowerCase());
 	}
-
+*/
 	// return the mwcyclopscomm class
 	public MWCyclopsComm getMWCC() {
 		return mwcc;
@@ -2747,16 +2746,14 @@ public final class CampaignMain implements Serializable {
 		// add log header
 		Date d = new Date(System.currentTimeMillis());
 		MMServ.mmlog.infoLog(d + ": Starting Player Saving cycle");
-
-		/*
-		 * Save the various and sundry player files.
-		 */
-		for (SPlayer p : savePlayers.values()) {
-			MMServ.mmlog.infoLog("Saving " + p.getName());
-			if(CampaignMain.cm.isUsingMySQL())
-				p.toDB();
-			else
-				this.savePlayerFile(p);
+		for (House vh : CampaignMain.cm.getData().getAllHouses()) {
+			SHouse currH = (SHouse) vh;
+			for (SPlayer currP : currH.getAllOnlinePlayers().values()) {
+				if(CampaignMain.cm.isUsingMySQL())
+					currP.toDB();
+				else
+					this.savePlayerFile(currP);
+			}
 		}
 
 		// write out log footer
@@ -2772,7 +2769,7 @@ public final class CampaignMain implements Serializable {
 		 * removable b/c of ongoing repairs). If the player is removable AND
 		 * logged out, we can null his player and save some memory space @ next
 		 * gc().
-		 */
+		 
 		Iterator<SPlayer> i = savePlayers.values().iterator();
 		while (i.hasNext()) {
 			SPlayer p = i.next();
@@ -2781,7 +2778,7 @@ public final class CampaignMain implements Serializable {
 				if (p.getDutyStatus() == SPlayer.STATUS_LOGGEDOUT)
 					p = null;
 			}
-		}
+		}*/
 
 	}
 
@@ -2805,13 +2802,6 @@ public final class CampaignMain implements Serializable {
 							Username, true);
 			}
 		}
-
-		/*
-		 * Saving all of the online players may not get everyone. Players who
-		 * logged out after the last save will be in the savePlayers hash. Run a
-		 * standard save to clear out these folks.
-		 */
-		this.savePlayers();
 	}
 
 	/**
@@ -2832,7 +2822,7 @@ public final class CampaignMain implements Serializable {
 	 * 
 	 * @author nmorris 1/13/06
 	 */
-	private void savePlayerFile(SPlayer p) {
+	protected void savePlayerFile(SPlayer p) {
 
 		try {
 
