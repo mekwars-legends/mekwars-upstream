@@ -22,7 +22,7 @@ R Server 0.2.5.7
 + Added Force Mod BV Info to game info.
 + Bug: NPE when trying to assign last know pilot id to auto created units
 + Typo: On-Line help showing Vet Techs instead of Reg Techs
-+ Typo: Finished mispelled in ShortOpretaion.java and MWTracker.java
++ Typo: Finished mispelled in ShortOperation.java and MWTracker.java
 + Exception thrown from goosecommand when a target is not specified.
 Release Client 0.2.5.3 & Server 0.2.5.6
 + GUI Change to Pilot Menus.
