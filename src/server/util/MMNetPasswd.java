@@ -52,11 +52,14 @@ public class MMNetPasswd implements ICommands{
     public static final MMNetPasswdRecord getRecord(String userId){
         SPlayer player = CampaignMain.cm.getPlayer(userId);
         
-        if ( player == null )
-            return null;
+        if ( player == null ){
+        	//MMServ.mmlog.errLog("Player is null");
+        	return null;
+        }
         
         if ( player.getPassword() == null ){
             //MMNetPasswd.reloadFile();
+        	//MMServ.mmlog.errLog("password is null");
             return null;
         }
         //else
@@ -79,6 +82,7 @@ public class MMNetPasswd implements ICommands{
        	r = getRecord(userId.toLowerCase());
 
         if (r == null) {
+        	//MMServ.mmlog.errLog("r is null");
             return null;
         }
         if (password == null) {
@@ -141,8 +145,10 @@ public class MMNetPasswd implements ICommands{
     {
         SPlayer player = CampaignMain.cm.getPlayer(userId);
         
-        if ( player == null )
+        if ( player == null ){
+        	MMServ.mmlog.errLog("writeRecord::Player is null");
             return;
+        }
         
     	MMNetPasswdRecord r = new MMNetPasswdRecord(userId, access, passwd,System.currentTimeMillis(),"");
         String salt = String.valueOf(System.currentTimeMillis());

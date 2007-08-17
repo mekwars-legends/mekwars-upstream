@@ -64,6 +64,7 @@ public class PasswdAuthenticator extends NullAuthenticator {
             MMNetPasswdRecord record = MMNetPasswd.getRecord(userId, password);
             
             if (record == null) {
+            	//MMServ.mmlog.errLog("record is null for: "+userId);
             	if (_allowGuests) {
             		Auth auth = super.authenticate(client, password);
             		if (_storeGuests) {

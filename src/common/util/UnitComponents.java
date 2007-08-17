@@ -87,6 +87,8 @@ public class UnitComponents  {
 	public String toString() {
 		StringBuffer result = new StringBuffer();
 		
+		if ( components.size() < 1 )
+			return " ";
 		for ( String key : components.keySet() ) {
 			
 			if ( components.get(key) < 1)

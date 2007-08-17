@@ -16,12 +16,10 @@
 
 package server.campaign.commands.admin;
 
-import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import server.MMServ;
-import server.MWChatServer.MWChatServer;
 import server.campaign.CampaignMain;
 import server.campaign.DefaultServerOptions;
 import server.campaign.commands.Command;
@@ -73,101 +71,35 @@ public class ForceUpdateCommand implements Command {
         if ( command.hasMoreTokens() ){
             whoToKick = command.nextToken();
             CampaignMain.cm.doSendModMail("NOTE",Username + " is kicking "+whoToKick);
-
-            if ( whoToKick.equalsIgnoreCase("all")) {
-                Set<String> users = CampaignMain.cm.getServer().getUsers().keySet();
-                TreeSet<String> toKickList = new TreeSet<String>();
-                synchronized (users) {
-                    for ( String toKick : users)
-                        toKickList.add(toKick);
-                }
-                for ( String toKick : toKickList ){
-                    if ( CampaignMain.cm.getServer().isAdmin(toKick) )
-                        continue;
-
-                    if ( toKick.toLowerCase().startsWith("[dedicated]") ) {
-                        try{
-                    		CampaignMain.cm.getServer().doStoreMail(toKick+",update", Username);
-                        	Thread.sleep(120);
-                        }catch (Exception ex){
-                            MMServ.mmlog.errLog(ex);
-                        }
-                        continue;
-                    }
-
-                    CampaignMain.cm.toUser("PL|GBB|Bye Bye", toKick,false);
-                    //Use this to kick ghost players from the clients.
-                    CampaignMain.cm.getServer().sendRemoveUserToAll(toKick,false);
-                    try{
-                        Thread.sleep(120);
-                    }catch (Exception ex){
-                        MMServ.mmlog.errLog(ex);
-                    }
-                    try{
-                        CampaignMain.cm.doLogoutPlayer(toKick);
-                        CampaignMain.cm.getOpsManager().doDisconnectCheckOnPlayer(toKick);
-                        if (CampaignMain.cm.getServer().getClient(MWChatServer.clientKey(toKick)) != null) {
-                            CampaignMain.cm.getServer().killClient(toKick,Username);
-                        }
-                        
-                    }catch (Exception ex){
-                        MMServ.mmlog.errLog(ex);
-                    }
-                }//end For
-            }//end if all
-            else if ( whoToKick.equalsIgnoreCase("player")) {
-                Set<String> users = CampaignMain.cm.getServer().getUsers().keySet();
-                TreeSet<String> toKickList = new TreeSet<String>();
-                synchronized (users) {
-                    for ( String toKick : users)
-                        toKickList.add(toKick);
-                }
-                for ( String toKick : users ){
-                    if ( toKick.toLowerCase().startsWith("[dedicated]") )
-                        continue;
-                    if ( CampaignMain.cm.getServer().isAdmin(toKick) )
-                        continue;
-                    CampaignMain.cm.toUser("You have been kicked by " + Username, toKick,true);
-                    CampaignMain.cm.toUser("PL|GBB|Bye Bye", toKick,false);
-                    //Use this to kick ghost players from the clients.
-                    CampaignMain.cm.getServer().sendRemoveUserToAll(toKick,false);
-                    try{
-                        Thread.sleep(120);
-                    }catch (Exception ex){
-                        MMServ.mmlog.errLog(ex);
-                    }
-                    try{
-                        CampaignMain.cm.doLogoutPlayer(toKick);
-                        CampaignMain.cm.getOpsManager().doDisconnectCheckOnPlayer(toKick);
-                        if (CampaignMain.cm.getServer().getClient(MWChatServer.clientKey(toKick)) != null) {
-                            CampaignMain.cm.getServer().killClient(toKick,Username);
-                        }
-                        
-                    }catch (Exception ex){
-                        MMServ.mmlog.errLog(ex);
-                    }
-                }//end For
-            }//end if player
-            else if ( whoToKick.equalsIgnoreCase("dedicated")) {
-                Set<String> users = CampaignMain.cm.getServer().getUsers().keySet();
-                TreeSet<String> toKickList = new TreeSet<String>();
-                synchronized (users) {
-                    for ( String toKick : users)
-                        toKickList.add(toKick);
-                }
-                for ( String toKick : toKickList ){
-                    if ( !toKick.toLowerCase().startsWith("[dedicated]") )
-                        continue;
-                    if ( CampaignMain.cm.getServer().isAdmin(toKick) )
-                        continue;
-                    try{
-                		CampaignMain.cm.getServer().doStoreMail(toKick+",update", Username);
-                    	Thread.sleep(120);
-                    }catch (Exception ex){
-                        MMServ.mmlog.errLog(ex);
-                    }
-                }//end For
-            }//end if ded
+            boolean players = false;
+            boolean deds = false;
+            
+            if ( whoToKick.equalsIgnoreCase("all") ){
+            	players = true;
+            	deds = true;
+            }
+            else if ( whoToKick.equalsIgnoreCase("player") )
+        		players = true;
+            else
+            	deds = true;
+            
+            ConcurrentLinkedQueue<String> users = new ConcurrentLinkedQueue<String>(CampaignMain.cm.getServer().getUsers().keySet());
+            for ( String toKick : users ){
+                if ( CampaignMain.cm.getServer().isAdmin(toKick) )
+                    continue;
+            	if ( players && !toKick.toLowerCase().startsWith("[dedicated]") ){
+	                CampaignMain.cm.toUser("You have been forced to update by " + Username+"!<br>Restart your client to update.", toKick,true);
+	                CampaignMain.cm.toUser("PL|GBB|Bye Bye", toKick,false);
+            	}
+            	else if ( deds && toKick.toLowerCase().startsWith("[dedicated]") ){
+	                try{
+	            		CampaignMain.cm.getServer().doStoreMail(toKick+",update", Username);
+	                	Thread.sleep(120);
+	                }catch (Exception ex){
+	                    MMServ.mmlog.errLog(ex);
+	                }
+            	}
+            }//end for
         }//end hasMore Commands
    	}
 }

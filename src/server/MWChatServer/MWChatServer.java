@@ -461,7 +461,7 @@ public class MWChatServer implements ICommands {
     }
 
     public boolean userExists(String username) {
-        MMServ.mmlog.infoLog("userExists: " + username);
+        //MMServ.mmlog.infoLog("userExists: " + username);
         return _users.containsKey(username.toLowerCase());
     }
 
