@@ -1,0 +1,7 @@
+CREATE TABLE `faction_configs` (
+  `factionID` INTEGER UNSIGNED NOT NULL,
+  `configKey` VARCHAR(100) NOT NULL,
+  `configValue` TEXT,
+  PRIMARY KEY (`factionID`, `configKey`)
+)
+ENGINE = MyISAM;

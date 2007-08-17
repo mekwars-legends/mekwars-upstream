@@ -91,6 +91,8 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
     private boolean inHouseAttacks = false;
 	private Properties config = new Properties();
 	
+	private String forumName = "";
+	
     @Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
@@ -2086,7 +2088,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		reservePlayers.remove(lowerName);
 		activePlayers.remove(lowerName);
 		fightingPlayers.remove(lowerName);
-		p = null;
+		
 		//add info to logs
 		Date d = new Date(System.currentTimeMillis());
 		MMServ.mmlog.mainLog(d + ":" + "User Logged out: " + realName);
@@ -2519,6 +2521,35 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		}   
 
 	}
+
+	public void saveConfigFileToDB() {
+		if ( config == null )
+			return;
+		
+		if ( config.size() < 1 ) {
+			config = null;
+			return;
+		}
+		int dbId = this.getDBId();
+		PreparedStatement ps = null;
+		try {
+			Connection con = CampaignMain.cm.MySQL.getCon();
+			ps = con.prepareStatement("DELETE from faction_configs WHERE factionID = " + dbId);
+			ps.executeUpdate();
+			for (Enumeration e = config.keys(); e.hasMoreElements();) {
+				String key = (String)e.nextElement();
+				String val = config.getProperty(key);
+				String sql = "INSERT into faction_configs SET factionID = " + dbId + ", configKey = ?, configValue = ?";
+				ps = con.prepareStatement(sql);
+				ps.setString(1, key);
+				ps.setString(2, val);
+				ps.executeUpdate();
+			}
+			ps.close();
+		} catch(SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in SHouse.saveConfigFileToDB: " + e.getMessage());
+		}
+	}
 	
 	public void loadConfigFile() {
 		
@@ -2536,4 +2567,12 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		}
 	}
 
+	public void setForumName(String name) {
+		this.forumName = name;
+	}
+	
+	public String getForumName() {
+		return this.forumName;
+	}
+	
 }// end SHouse.java

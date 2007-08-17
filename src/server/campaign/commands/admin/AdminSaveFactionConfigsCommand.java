@@ -56,6 +56,8 @@ public class AdminSaveFactionConfigsCommand implements Command {
 		if ( h == null )
 		    return;
 
+		if(CampaignMain.cm.isUsingAdvanceRepair())
+			h.saveConfigFileToDB();
 		h.saveConfigFile();
 		CampaignMain.cm.toUser("Status saved!",Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has saved "+faction+"'s configs");
