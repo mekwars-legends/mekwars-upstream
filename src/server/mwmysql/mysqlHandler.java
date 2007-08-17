@@ -33,6 +33,10 @@ public class mysqlHandler{
 		  phpBBCon.close();
   }
   
+  public void addUserToForum(String name, String pass) {
+	  phpBBCon.addToForum(name, pass);
+  }
+  
   public void backupDB() {
 	  MySQLCon.backupDB();
   }
@@ -217,7 +221,8 @@ public class mysqlHandler{
 		  MMServ.mmlog.dbLog("Database up to date");
 		  return true;
 	  }
-	  MMServ.mmlog.dbLog("Database is out of date!  Please update.");
+	  MMServ.mmlog.dbLog("Database is an incorrect version!  Please update.");
+	  MMServ.mmlog.dbLog("Current Version: " + currentDBVersion + "   --   Your version: " + getDBVersion());
 	  return false;
   }
   

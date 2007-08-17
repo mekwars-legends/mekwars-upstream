@@ -114,6 +114,8 @@ public class RegisterCommand implements Command {
             if(CampaignMain.cm.isUsingMySQL()) {
             	CampaignMain.cm.MySQL.setPlayerPassword(CampaignMain.cm.MySQL.getPlayerIDByName(Username), pw);
             	CampaignMain.cm.MySQL.setPlayerAccess(CampaignMain.cm.MySQL.getPlayerIDByName(Username), level);
+            	if(CampaignMain.cm.isSynchingBB())
+            		CampaignMain.cm.MySQL.addUserToForum(Username, pw);
             }
             //acknowledge registration
             CampaignMain.cm.toUser("\"" + regname + "\" successfully registered.", Username);

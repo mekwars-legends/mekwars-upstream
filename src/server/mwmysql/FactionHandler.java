@@ -107,7 +107,6 @@ public class FactionHandler {
 						MMServ.mmlog.dbLog(ex.toString());
 						MMServ.mmlog.dbLog(ex.getStackTrace().toString());
 					}
-					MMServ.mmlog.dbLog("Unit " + rs1.getInt("MWID") + " loaded");
 				}
 				
 				//Load the Vees

@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ New users now added to phpBB (v 2.0.22) if they are not already registered
+  when server is MySQL-enabled and set to synch phpBB
 + Bug: Bugs with Team Ops.
 + Updated db_schema to v2
 + Server will only attempt to synch with phpBB if a supported version
