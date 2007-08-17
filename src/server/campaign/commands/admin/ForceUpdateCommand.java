@@ -78,7 +78,7 @@ public class ForceUpdateCommand implements Command {
             	players = true;
             	deds = true;
             }
-            else if ( whoToKick.equalsIgnoreCase("player") )
+            else if ( whoToKick.toLowerCase().startsWith("player") )
         		players = true;
             else
             	deds = true;
