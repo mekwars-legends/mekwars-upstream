@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ BUG: Short Validator was not checking vehicles for defenders
 + Typo: Changed "Personal" to "Personnel" in Campaign Menu
 + Update database to v3
 + Newly registered users given the url to the server's forum if auto-forum-registered.

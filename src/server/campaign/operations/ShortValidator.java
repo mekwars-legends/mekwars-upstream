@@ -936,7 +936,7 @@ public class ShortValidator {
 		//NonInfantry min/max. Remember - these are for op qualification, not related to limiters.
 		if (da.getNumberOfUnitTypes(Unit.MEK)+da.getNumberOfUnitTypes(Unit.VEHICLE) > o.getIntValue("MaxDefenderNonInfantry"))
 			failureReasons.add(new Integer(SFAIL_DEFEND_MAXNONINFANTRY));
-		else if (da.getNumberOfUnitTypes(Unit.MEK)+da.getNumberOfUnitTypes(Unit.VEHICLE) < o.getIntValue("MinDefenderMeks"))
+		else if (da.getNumberOfUnitTypes(Unit.MEK)+da.getNumberOfUnitTypes(Unit.VEHICLE) < o.getIntValue("MinDefenderNonInfantry"))
 			failureReasons.add(new Integer(SFAIL_DEFEND_MINNONINFANTRY));
 		
         /*
