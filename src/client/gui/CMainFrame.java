@@ -518,7 +518,7 @@ public class CMainFrame extends JFrame {
 			jMenuCampaignSubBays.setText("Bays");
 			jMenuCampaignSubBays.setMnemonic('B');
 		}
-		jMenuCampaignSubTechs.setText("Personal");
+		jMenuCampaignSubTechs.setText("Personnel");
 		jMenuCampaignSubTechs.setMnemonic('E');
 		
 		jMenuCampaignSubTransfer.setText("Transfer");
