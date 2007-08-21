@@ -466,7 +466,7 @@ public class SArmy extends Army {
 			result.append("; BV: " + getBV());
 			
 			if ( opposingArmy != null && getBV() != getOperationsBV(opposingArmy) ){
-				result.append("(BV vs "+opposingArmy.getUnits().size()+" units : "+getOperationsBV(opposingArmy));
+				result.append(" (BV vs "+opposingArmy.getUnits().size()+" units : "+getOperationsBV(opposingArmy)+")");
 			}
 			
 			return result.toString();

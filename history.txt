@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Bug: Missing end ")" in FM BV message in SArmy.getDescription.
 + Faction config files now loading from database
 + Players were saving multiple times during load
 + BUG: Short Validator was not checking vehicles for defenders
