@@ -1444,9 +1444,7 @@ public class ShortOperation implements Comparable {
 		CampaignMain.cm.toUser(botTeams,lowerName,false);
 
 		//reset the player's fighting status
-		SHouse h = p.getMyHouse();
-		if (h.getFightingPlayers().get(lowerName) == null)
-			p.setFightingNoOppList();
+		p.setFightingNoOppList();
 		
 		//tell all players that we're fighting
 		CampaignMain.cm.sendPlayerStatusUpdate(p,true);//send fighting info to all
