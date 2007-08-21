@@ -133,6 +133,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
     
     private int DBId = 0;
     
+    private boolean isLoading = false; //Player was getting saved multiple times during loading.  Just seemed silly.
+    
 	// CONSTRUCTORS
 	/**
 	 * Stock constructor. Note that an SPlayer is data-less unless/until
@@ -157,7 +159,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	 * Save player file immediatly.
 	 */
 	public void setSave(boolean save) {
-		CampaignMain.cm.savePlayerFile(this);
+		if(!this.isLoading)
+			CampaignMain.cm.savePlayerFile(this);
 	}
 	
 	/**
@@ -2906,7 +2909,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		
 		//print the player into the info log. only for Debug
 		//MMServ.mmlog.infoLog("CSPlayer: " + s);
-
+		this.isLoading = true;
+		
 		this.armies.clear();
 		
 		s = s.substring(3);
@@ -3129,9 +3133,11 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
         for (SUnit currU : units) {
         	this.fixPilot(currU);
         }
+        this.isLoading = false;
 	}
 
 	public void fromDB(int playerID) {
+		this.isLoading = true;
 		try {
 		Connection con = CampaignMain.cm.MySQL.getCon();
 		ResultSet rs, rs1;
@@ -3272,6 +3278,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		stmt.close();
 		stmt1.close();
 		rs.close();
+		this.isLoading = false;
 		} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in SPlayer.fromDB: " + e.getMessage());
 		}

@@ -2825,7 +2825,10 @@ public final class CampaignMain implements Serializable {
 	protected void savePlayerFile(SPlayer p) {
 
 		try {
-
+			if(CampaignMain.cm.isUsingMySQL()) {
+				p.toDB();
+				return;
+			}
 			String fileName = p.getName().toLowerCase();
 			FileOutputStream pout = new FileOutputStream("./campaign/players/"
 					+ fileName.toLowerCase() + ".dat");

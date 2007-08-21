@@ -38,6 +38,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DecimalFormat;
 
 import megamek.common.Entity;
@@ -2567,6 +2568,26 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		}
 	}
 
+	public void loadConfigFileFromDB() {
+		Connection con = CampaignMain.cm.MySQL.getCon();
+		ResultSet rs = null;
+		Statement stmt = null;
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT configKey, configValue from faction_configs WHERE factionID = " + this.getDBId());
+			boolean configCreated=false;
+			while(rs.next()) {
+				if(!configCreated) {
+					this.config = new Properties();
+					configCreated=true;
+				}
+				this.config.put(rs.getString("configKey"), rs.getString("configValue"));
+			}
+		} catch (SQLException e) {
+			MMServ.mmlog.dbLog("SQL Error in SHouse.loadConfigFileFromDB: " + e.getMessage());
+		}
+	}
+	
 	public void setForumName(String name) {
 		this.forumName = name;
 	}

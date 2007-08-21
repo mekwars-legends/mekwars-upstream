@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Faction config files now loading from database
++ Players were saving multiple times during load
 + BUG: Short Validator was not checking vehicles for defenders
 + Typo: Changed "Personal" to "Personnel" in Campaign Menu
 + Update database to v3

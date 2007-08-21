@@ -61,7 +61,8 @@ public class AdminPurgeHouseConfigsCommand implements Command {
 		
 		if(CampaignMain.cm.isUsingMySQL())
 			h.saveConfigFileToDB();
-		h.saveConfigFile();
+		else
+			h.saveConfigFile();
 		
 		h.updated();
         CampaignMain.cm.doSendModMail("NOTE",Username+" has purged campaign configs for "+h.getName());

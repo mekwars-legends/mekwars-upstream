@@ -202,7 +202,7 @@ public class FactionHandler {
 				CampaignMain.cm.addHouse(h);
 				MMServ.mmlog.dbLog("Loading Faction Pilots");
 				CampaignMain.cm.MySQL.loadFactionPilots(h);
-
+				h.loadConfigFileFromDB();
 				MMServ.mmlog.dbLog("Faction " + h.getName() + " loaded");
 				}
 			
