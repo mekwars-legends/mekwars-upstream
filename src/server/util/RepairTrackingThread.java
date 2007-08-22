@@ -81,6 +81,10 @@ public class RepairTrackingThread extends Thread{
                 //MMServ.mmlog.errLog("Start Time: "+ new Date(repairOrder.getStartTime()).toString()+" End Time: "+new Date(repairOrder.getEndTime()).toString());
                 //double minutes = (repairOrder.getEndTime()-System.currentTimeMillis())/60000;
                 //MMServ.mmlog.errLog("ETA: "+Double.toString(minutes));
+            	if ( repairOrder == null ){
+            		repairList.removeElement(repairOrder);
+            		return;
+            	}
                 if ( repairOrder.getEndTime() <= System.currentTimeMillis() ){
                     try{
                         if ( repairOrder.finishRepair() )

@@ -15,6 +15,7 @@ client-dist/data/images/absent.gif -text
 client-dist/data/images/active_colored.gif -text
 client-dist/data/images/ai.gif -text
 client-dist/data/images/am.gif -text
+client-dist/data/images/ammo.gif -text
 client-dist/data/images/av.gif -text
 client-dist/data/images/camo/Flame.jpg -text
 client-dist/data/images/cart.gif -text
@@ -26,7 +27,10 @@ client-dist/data/images/closedLiao.gif -text
 client-dist/data/images/closedMarik.gif -text
 client-dist/data/images/closedPeriphery.gif -text
 client-dist/data/images/closedSteiner.gif -text
+client-dist/data/images/comm.gif -text
+client-dist/data/images/critical.gif -text
 client-dist/data/images/crtr1.gif -text
+client-dist/data/images/engined.gif -text
 client-dist/data/images/fighting_colored.gif -text
 client-dist/data/images/hexes/artyadj.gif -text
 client-dist/data/images/hexes/artyauto.gif -text
@@ -778,7 +782,10 @@ client-dist/data/images/openLiao.gif -text
 client-dist/data/images/openMarik.gif -text
 client-dist/data/images/openPeriphery.gif -text
 client-dist/data/images/openSteiner.gif -text
+client-dist/data/images/pending.gif -text
+client-dist/data/images/pilot.gif -text
 client-dist/data/images/repair.gif -text
+client-dist/data/images/repairing.gif -text
 client-dist/data/images/reserve_colored.gif -text
 client-dist/data/images/rivr1.gif -text
 client-dist/data/images/road1.gif -text
@@ -833,6 +840,7 @@ client-dist/data/images/units/wrecks/default_vtol_wreck.gif -text
 client-dist/data/images/units/wrecks/large_boom.gif -text
 client-dist/data/images/units/wrecks/small_boom.gif -text
 client-dist/data/images/units/wrecks/wreckset.txt -text
+client-dist/data/images/unmaint.gif -text
 client-dist/data/images/watr1.gif -text
 client-dist/data/images/watr2.gif -text
 client-dist/data/images/widgets/active_corner.gif -text
