@@ -2242,9 +2242,15 @@ public final class FactionConfigurationDialog implements ActionListener {
         BaseCheckBox.setToolTipText("<html>If checked, faction names will replace player names in<br>news feed description of games.</html>");
         BaseCheckBox.setName("ShowCompleteGameInfoInNews");
         factionCBoxSpring.add(BaseCheckBox);
+              
+        baseTextField = new JTextField(20);
+        factionCBoxSpring.add(new JLabel("Forum Group Name:",SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Database with phpBB Integration only</html>");
+        baseTextField.setName("ForumGroupName");
+        factionCBoxSpring.add(baseTextField);
         
         SpringLayoutHelper.setupSpringGrid(factionCBoxSpring,3);
-        
+
 		//finalize the layout
 		JPanel factionBox = new JPanel();
 		factionBox.setLayout(new BoxLayout(factionBox, BoxLayout.Y_AXIS));

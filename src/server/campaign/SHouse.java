@@ -2570,6 +2570,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			Connection con = CampaignMain.cm.MySQL.getCon();
 			ps = con.prepareStatement("DELETE from faction_configs WHERE factionID = " + dbId);
 			ps.executeUpdate();
+			config.setProperty("TIMESTAMP", Long.toString((System.currentTimeMillis())));
 			for (Enumeration e = config.keys(); e.hasMoreElements();) {
 				String key = (String)e.nextElement();
 				String val = config.getProperty(key);

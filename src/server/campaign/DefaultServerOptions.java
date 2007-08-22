@@ -849,6 +849,8 @@ public class DefaultServerOptions {
         defaults.setProperty("UsePartsBlackMarket", "false");
         defaults.setProperty("UsePartsRepair", "false");
         defaults.setProperty("AllowCrossOverTech", "false");
+        
+        defaults.setProperty("ForumGroupName", "");
 
         //My SQL Settings
 		defaults.setProperty("USEMYSQL", "false");
