@@ -505,6 +505,9 @@ public final class SUnit extends Unit implements Serializable {
         	result.append(this.getDBId());
         	result.append("$");
         }
+        result.append(this.isUnitCommander());
+        result.append("$");
+        
 		return result.toString();
 	}
 	
@@ -783,6 +786,10 @@ public final class SUnit extends Unit implements Serializable {
             	this.setRepairCosts(Integer.parseInt(ST.nextToken()),Integer.parseInt(ST.nextToken()));
             if ( CampaignMain.cm.isUsingMySQL() && ST.hasMoreTokens())
             	this.setDBId(Integer.parseInt(ST.nextToken()));
+            
+            if ( ST.hasMoreTokens() )
+            	this.setUnitCommander(Boolean.parseBoolean(ST.nextToken()));
+            
 			return s;
 		}
 		catch(Exception ex){

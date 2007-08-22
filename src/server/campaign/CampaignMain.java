@@ -2846,6 +2846,11 @@ public final class CampaignMain implements Serializable {
 			pout.close();
 		}
 
+		catch ( FileNotFoundException fnfe ){
+			//Since we are saving to disk do nothing. 
+			//The proccess is most likely already being used.
+			return;
+		}
 		catch (Exception ex) {
 			MMServ.mmlog.errLog(ex);
 			MMServ.mmlog.errLog("Unable to save " + p.getName().toLowerCase());

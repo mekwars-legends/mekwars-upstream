@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ New unitCommander Boolean for use with the new MM victory option kill 
+  all unit commanders
 + Bug: Players again loading / saving properly from database - the removal
   of the save cache was messing up the initial login / registration of new
   players
