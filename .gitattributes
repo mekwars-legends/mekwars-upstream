@@ -1391,6 +1391,7 @@ src/server/campaign/commands/SetTargetSystemTypeCommand.java -text
 src/server/campaign/commands/SetUnitAmmoByCritCommand.java -text
 src/server/campaign/commands/SetUnitAmmoCommand.java -text
 src/server/campaign/commands/SetUnitBurstCommand.java -text
+src/server/campaign/commands/SetUnitCommanderCommand.java -text
 src/server/campaign/commands/SetUnmaintainedCommand.java -text
 src/server/campaign/commands/ShowToHouseCommand.java -text
 src/server/campaign/commands/SignOffCommand.java -text
