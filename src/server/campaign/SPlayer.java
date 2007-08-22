@@ -2762,7 +2762,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				if(getPassword()!=null)
 					ps.setInt(24, getPassword().getAccess());
 				else
-					ps.setInt(24, 0);
+					ps.setInt(24, 1);
 				ps.setString(25, Boolean.toString(getAutoReorder()));
 				ps.executeUpdate();
 				ResultSet rs = ps.getGeneratedKeys();
@@ -2844,11 +2844,20 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				ps.setInt(20, getGroupAllowance());
 				ps.setString(21, getLastISP());
 				ps.setString(22, Boolean.toString(isInvisible()));
-				ps.setInt(23, getPassword().getAccess());
+				if(getPassword()!=null)
+					ps.setInt(23, getPassword().getAccess());
+				else
+					ps.setInt(23, 1);
 				ps.setString(24, getUnitParts().toString());
 				ps.setString(25, Boolean.toString(getAutoReorder()));
-				ps.setString(26, this.password.getPasswd());
-				ps.setLong(27, this.password.getTime());
+				if(getPassword()!=null)
+					ps.setString(26, this.password.getPasswd());
+				else
+					ps.setString(26, "");
+				if(getPassword()!=null)
+					ps.setLong(27, this.password.getTime());
+				else
+					ps.setLong(27, 0);
 				ps.setInt(28, getDBId());
 				ps.executeUpdate();
 
@@ -3230,8 +3239,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	                int access = rs.getInt("playerAccess");
 	                String passwd = rs.getString("playerPassword");
 	                long time = System.currentTimeMillis();
-	                
-	                this.password = new MMNetPasswdRecord(this.name,access,passwd,time,"");
+	                if(access >= 2)
+	                	this.password = new MMNetPasswdRecord(this.name,access,passwd,time,"");
 	            } catch(Exception ex){}
 	        
 	        	if ( CampaignMain.cm.getBooleanConfig("UsePartsRepair") )

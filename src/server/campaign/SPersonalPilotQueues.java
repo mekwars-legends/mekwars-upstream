@@ -248,7 +248,7 @@ public class SPersonalPilotQueues {
 	 */
 	
 	public void fromDB(int playerID) {
-		int capSize = CampaignMain.cm.getIntegerConfig("MaxallowedPilotsInQueueToBuyFromHouse");
+		int capSize = CampaignMain.cm.getIntegerConfig("MaxAllowedPilotsInQueueToBuyFromHouse");
 		Connection con = CampaignMain.cm.MySQL.getCon();
 		ResultSet rs;
 		Statement stmt;

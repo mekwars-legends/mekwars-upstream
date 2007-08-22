@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Bug: Players again loading / saving properly from database - the removal
+  of the save cache was messing up the initial login / registration of new
+  players
 + Bug: Missing end ")" in FM BV message in SArmy.getDescription.
 + Faction config files now loading from database
 + Players were saving multiple times during load

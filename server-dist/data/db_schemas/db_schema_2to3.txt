@@ -5,3 +5,5 @@ CREATE TABLE `faction_configs` (
   PRIMARY KEY (`factionID`, `configKey`)
 )
 ENGINE = MyISAM;
+
+UPDATE config set config_value='3' WHERE config_key='mekwars_database_version';
