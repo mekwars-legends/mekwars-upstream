@@ -285,6 +285,9 @@ public class CUnit extends Unit {
 		else
 			tinfo += " (" + getPilot().getName() + ", " + getPilot().getGunnery() + ") <br>";
 		
+		if ( this.isUnitCommander() )
+			tinfo += "Unit Commander<br>";
+		
 		if ( this.getType() == Unit.VEHICLE )
 			tinfo += " Movement: "+this.getEntity().getMovementModeAsString() + "<br>";
 			

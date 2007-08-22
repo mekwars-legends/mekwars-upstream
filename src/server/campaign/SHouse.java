@@ -2491,6 +2491,39 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		return config;
 	}
 	
+	public boolean getBooleanConfig(String key) {
+		try {
+			return Boolean.parseBoolean(this.getConfig(key));
+		} catch (Exception ex) {
+			return false;
+		}
+	}
+
+	public int getIntegerConfig(String key) {
+		try {
+			return Integer.parseInt(this.getConfig(key));
+		} catch (Exception ex) {
+			return -1;
+		}
+	}
+
+	public double getDoubleConfig(String key) {
+		try {
+			return Double.parseDouble(this.getConfig(key));
+		} catch (Exception ex) {
+			return -1;
+		}
+	}
+
+	public float getFloatConfig(String key) {
+		try {
+			return Float.parseFloat(this.getConfig(key));
+		} catch (Exception ex) {
+			return -1;
+		}
+	}
+
+
 	public String getConfig(String key) {
 		
 		if ( config == null || config.getProperty(key) == null) {
@@ -2509,7 +2542,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			return;
 		}
 			
-		String fileName = this.getName().toLowerCase()+"_configs.dat";
+		String fileName = "./data/"+this.getName().toLowerCase()+"_configs.dat";
 		try{
 			config.setProperty("TIMESTAMP", Long.toString((System.currentTimeMillis())));
 			PrintStream ps = new PrintStream(new FileOutputStream(fileName));

@@ -1841,6 +1841,7 @@ public final class ServerConfigurationDialog implements ActionListener {
 		JPanel baCbillsSpring = new JPanel(new SpringLayout());
 		JPanel baFluSpring = new JPanel(new SpringLayout());
 		JPanel baComponentSpring = new JPanel(new SpringLayout());
+		JPanel unitCommanderSpring = new JPanel(new SpringLayout());
 		
 		JPanel unit2SpringGrid = new JPanel(new GridLayout(2,3));
 		unit2SpringGrid.add(protoCbillsSpring);
@@ -2037,11 +2038,43 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("NonOriginalComponentMultiplier");
         unit2TextFlow.add(baseTextField);
 		
+        BaseCheckBox = new JCheckBox("Allow Mek Commanders");
+        BaseCheckBox.setToolTipText("<html>Allow meks to be set as unit commanders<br>for the kill all unit commanders operation victory condition</html>");
+        BaseCheckBox.setName("allowUnitCommanderMek");
+        unitCommanderSpring.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Allow Vee Commanders");
+        BaseCheckBox.setToolTipText("<html>Allow vehicles to be set as unit commanders<br>for the kill all unit commanders operation victory condition</html>");
+        BaseCheckBox.setName("allowUnitCommanderVehicle");
+        unitCommanderSpring.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Allow Inf Commanders");
+        BaseCheckBox.setToolTipText("<html>Allow infantry to be set as unit commanders<br>for the kill all unit commanders operation victory condition</html>");
+        BaseCheckBox.setName("allowUnitCommanderInfantry");
+        unitCommanderSpring.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Allow Proto Commanders");
+        BaseCheckBox.setToolTipText("<html>Allow protomeks to be set as unit commanders<br>for the kill all unit commanders operation victory condition</html>");
+        BaseCheckBox.setName("allowUnitCommanderProtoMek");
+        unitCommanderSpring.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Allow BA Commanders");
+        BaseCheckBox.setToolTipText("<html>Allow battlearmor to be set as unit commanders<br>for the kill all unit commanders operation victory condition</html>");
+        BaseCheckBox.setName("allowUnitCommanderBattleArmor");
+        unitCommanderSpring.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Allow Fighting Without Commanders");
+        BaseCheckBox.setToolTipText("<html>Allow players to go active without any unit commanders set in their armies<br>for the kill all unit commanders operation victory condition</html>");
+        BaseCheckBox.setName("allowGoingActiveWithoutUnitCommanders");
+        unitCommanderSpring.add(BaseCheckBox);
+		SpringLayoutHelper.setupSpringGrid(unitCommanderSpring,3);
+		
         //build complete panel, wrapped in box
         JPanel unit2Box = new JPanel();
         unit2Box.setLayout(new BoxLayout(unit2Box, BoxLayout.Y_AXIS));
         unit2Box.add(unit2SpringGrid);
         unit2Box.add(unit2TextFlow);
+        unit2Box.add(unitCommanderSpring);
         
 		unit2Panel.add(unit2Box);
 		

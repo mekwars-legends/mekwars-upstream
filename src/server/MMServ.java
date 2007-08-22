@@ -648,7 +648,7 @@ public class MMServ {
 				this.getCampaign().addInProgressUpdate(result, name);
 			} else {
 				clientSend("CH|Unknown command. Please make sure your client is up to date.", name);
-				mmlog.warnLog("Got a strange command from " + name);
+				mmlog.warnLog("Got a strange command, "+task+", from " + name);
 			}
 		} catch (Exception ex) {
 			//The GB doesn't arrive at the server because of the client disconnecting

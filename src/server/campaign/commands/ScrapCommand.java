@@ -27,7 +27,6 @@ import common.util.StringUtils;
 import common.util.UnitUtils;
 
 import server.campaign.CampaignMain;
-import server.campaign.SArmy;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
@@ -103,11 +102,9 @@ public class ScrapCommand implements Command {
 			return;
 		}//end (unit is in armies and player is active)
 		
-		for (SArmy currA : p.getArmies()) {
-			if (currA.isLocked() && currA.getUnit(mechid) != null) {
-				CampaignMain.cm.toUser("You may not scrap units which are in fighting armies.", Username, true);
-				return;
-			}
+		if (p.isUnitInLockedArmy(m.getId())) {
+			CampaignMain.cm.toUser("You may not scrap units which are in fighting armies.", Username, true);
+			return;
 		}
 		
 		//If he has not scrapped this tick and Scrapping is allowed, OR if the entity was salvaged recently

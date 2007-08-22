@@ -59,6 +59,7 @@ public final class SMWLogger {//final - no extension of the server logger
 	private Logger tickLog;		// Log for tick events (rankings, production, player stats)
 	private Logger ipLog;		// Log connecting IPs.
 	private Logger dbLog;		// Log MySQL Database issues
+	private Logger debugLog;   // for all debug messages
 	
 	private MMNetFormatter mmnetFormatter;
 
@@ -76,6 +77,7 @@ public final class SMWLogger {//final - no extension of the server logger
 	private FileHandler tickHandler;
 	private FileHandler ipHandler;
 	private FileHandler dbHandler;
+	private FileHandler debugHandler;
 	
 	public static class MMNetFormatter extends SimpleFormatter {
 
@@ -247,6 +249,15 @@ public final class SMWLogger {//final - no extension of the server logger
 				dbLog.setUseParentHandlers(false);
 				dbLog.addHandler(dbHandler);
 
+				debugHandler = new FileHandler(logDir.getPath() + "/debuglog", hugeFileSize, rotations, true);
+				debugHandler.setLevel(Level.INFO);
+				debugHandler.setFilter(null);
+				debugHandler.setFormatter(mmnetFormatter);
+				debugLog = Logger.getLogger("debugLogger");
+				debugLog.setUseParentHandlers(false);
+				debugLog.addHandler(debugHandler);
+	
+
 				logging = true;
 
 		} catch (Exception e) {
@@ -322,6 +333,22 @@ public final class SMWLogger {//final - no extension of the server logger
 				errLog.warning("   " + t[i].toString());
 			    if ( CampaignMain.cm != null )
 		        	CampaignMain.cm.doSendErrLog("   " + t[i].toString());
+			}
+		}
+	}
+
+	public void debugLog(String s) {
+		if(logging){
+		    errLog.info(s);
+		}
+	}
+
+	public void debugLog(Exception e) {
+		if(logging) {
+			errLog.warning("[" + e.toString() + "]");
+			StackTraceElement[] t = e.getStackTrace();
+			for(int i = 0; i < t.length; i++){
+				errLog.warning("   " + t[i].toString());
 			}
 		}
 	}

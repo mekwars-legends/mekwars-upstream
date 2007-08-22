@@ -1048,6 +1048,8 @@ public final class SUnit extends Unit implements Serializable {
 		if (p == null)
 			return;
 		
+		//any time the pilot changes set the unit commander flag to false.
+		this.setUnitCommander(false);
 		Pilot mPilot = new Pilot(p.getName(), p.getGunnery(), p.getPiloting());
 		Entity entity = this.getEntity();
 		entity.setCrew(mPilot);

@@ -2809,7 +2809,11 @@ public class CHQPanel extends JPanel {
 					result.append(" |M|");
 				else if ( army.getC3Network().get(new Integer(cm.getId())) != null)
 					result.append(" |L|");
+				if ( !mwclient.getConfig().isUsingStatusIcons() && cm.isUnitCommander() ){
+					result.append(" Cmdr");
+				}
 			}
+			
 			return result.toString();
 		}
 		

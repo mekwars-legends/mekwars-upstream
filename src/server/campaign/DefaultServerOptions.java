@@ -850,19 +850,30 @@ public class DefaultServerOptions {
         defaults.setProperty("UsePartsRepair", "false");
         defaults.setProperty("AllowCrossOverTech", "false");
 
-	defaults.setProperty("USEMYSQL", "false");
-	defaults.setProperty("MYSQLUSER", "");
-	defaults.setProperty("MYSQLPASS", "");
-	defaults.setProperty("MYSQLHOST", "");
-	defaults.setProperty("MYSQLDB", "mekwars");
-	defaults.setProperty("MYSQL_SYNCHPHPBB", "false");
-	defaults.setProperty("PHPBB_USER", "");
-	defaults.setProperty("PHPBB_PASS", "");
-	defaults.setProperty("PHPBB_HOST", "");
-	defaults.setProperty("PHPBB_DB", "phpbb");
-	defaults.setProperty("PHPBB_TABLE_PREFIX", "phpbb_");
-	defaults.setProperty("PHPBB_MAJOR_VERSION", "2");
-	defaults.setProperty("PHPBB_URL", "http://localhost/phpbb/index.php");
+        //My SQL Settings
+		defaults.setProperty("USEMYSQL", "false");
+		defaults.setProperty("MYSQLUSER", "");
+		defaults.setProperty("MYSQLPASS", "");
+		defaults.setProperty("MYSQLHOST", "");
+		defaults.setProperty("MYSQLDB", "mekwars");
+		
+		//PHPBB Settings
+		defaults.setProperty("MYSQL_SYNCHPHPBB", "false");
+		defaults.setProperty("PHPBB_USER", "");
+		defaults.setProperty("PHPBB_PASS", "");
+		defaults.setProperty("PHPBB_HOST", "");
+		defaults.setProperty("PHPBB_DB", "phpbb");
+		defaults.setProperty("PHPBB_TABLE_PREFIX", "phpbb_");
+		defaults.setProperty("PHPBB_MAJOR_VERSION", "2");
+		defaults.setProperty("PHPBB_URL", "http://localhost/phpbb/index.php");
+		
+		//Victory Condition Kill Unit Commanders Settings.
+        defaults.setProperty("allowUnitCommanderMek","true");
+        defaults.setProperty("allowUnitCommanderVehicle","false");
+        defaults.setProperty("allowUnitCommanderInfantry","false");
+        defaults.setProperty("allowUnitCommanderProtoMek","false");
+        defaults.setProperty("allowUnitCommanderBattleArmor","false");
+		defaults.setProperty("allowGoingActiveWithoutUnitCommanders","true");
     }
 
 /**

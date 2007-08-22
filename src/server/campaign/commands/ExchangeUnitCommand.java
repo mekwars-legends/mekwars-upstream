@@ -124,6 +124,8 @@ public class ExchangeUnitCommand implements Command {
 					position = a.getUnitPosition(oldID);
 					a.removeUnit(oldID);
 					CampaignMain.cm.toUser("PL|RAU|"+a.getID()+"#"+oldID+"#"+a.getBV(),Username,false);
+					oldMech.setUnitCommander(false);
+					CampaignMain.cm.toUser("PL|UU|"+oldMech.getId()+"|"+oldMech.toString(true),Username,false);
 					a.checkLegalRatio(Username);
 				}
 				else
@@ -146,6 +148,8 @@ public class ExchangeUnitCommand implements Command {
 				a.removeUnit(oldMech.getId());
 				CampaignMain.cm.toUser("PL|RAU|"+a.getID()+"#"+oldMech.getId()+"#"+a.getBV(),Username,false);
 				a.checkLegalRatio(Username);
+				oldMech.setUnitCommander(false);
+				CampaignMain.cm.toUser("PL|UU|"+oldMech.getId()+"|"+oldMech.toString(true),Username,false);
 			}
 			
 			//tell the player that his army was changed and inform him of any legal ops changes

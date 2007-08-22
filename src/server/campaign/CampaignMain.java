@@ -1585,6 +1585,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("SETUNITAMMO", new SetUnitAmmoCommand());
 		Commands.put("SETUNITAMMOBYCRIT", new SetUnitAmmoByCritCommand());
 		Commands.put("SETUNITBURST", new SetUnitBurstCommand());
+		Commands.put("SETUNITCOMMANDER", new SetUnitCommanderCommand());
 		Commands.put("SETUNMAINTAINED", new SetUnmaintainedCommand());
 		// Double ShowToHouse
 		Commands.put("SHOWTOHOUSE", new ShowToHouseCommand());
@@ -2039,9 +2040,9 @@ public final class CampaignMain implements Serializable {
 
 				String houseTickInfo = "";
 				try {
-					MMServ.mmlog.tickLog("Starting Faciton Tick");
+					MMServ.mmlog.debugLog("Starting Faction Tick");
 					houseTickInfo = currH.tick(real, tickid);
-					MMServ.mmlog.tickLog("Finished Faciton Tick");
+					MMServ.mmlog.debugLog("Finished Faction Tick");
 				} catch (Exception e) {
 					MMServ.mmlog.errLog("Problems with faction tick.");
 					MMServ.mmlog.errLog(e);
@@ -2053,20 +2054,20 @@ public final class CampaignMain implements Serializable {
 					// Clear up any users that the server still thinks is
 					// connected.
 					if (this.getServer().getClient(currP.getName()) == null) {
-						MMServ.mmlog.tickLog("Logging out Player "+currP.getName());
+						MMServ.mmlog.debugLog("Logging out Player "+currP.getName());
 						this.doLogoutPlayer(currP.getName());
 						continue;
 					}
 
 					totalPlayersOnline++;
-					MMServ.mmlog.tickLog("Setting Scraps This tick for "+currP.getName());
+					MMServ.mmlog.debugLog("Setting Scraps This tick for "+currP.getName());
 					currP.setScrapsThisTick(0);
-					MMServ.mmlog.tickLog("Setting Donations This tick for "+currP.getName());
+					MMServ.mmlog.debugLog("Setting Donations This tick for "+currP.getName());
 					currP.setDonatonsThisTick(0);
-					MMServ.mmlog.tickLog("Healing pilots This tick for "+currP.getName());
+					MMServ.mmlog.debugLog("Healing pilots This tick for "+currP.getName());
 					currP.healPilots();
 
-					MMServ.mmlog.tickLog("Updating faction info for "+currP.getName());
+					MMServ.mmlog.debugLog("Updating faction info for "+currP.getName());
 					// return the result of the faction tick to everyone, to
 					// misc tab.
 					toUser("SM|" + houseTickInfo, currP.getName(), false);
