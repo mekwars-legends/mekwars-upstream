@@ -207,7 +207,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
         
         if ( !(UnitUtils.hasTargettingComputer(entity) ) 
                 && (mmClient.game.getOptions().booleanOption("allow_level_3_targsys")) 
-                && (entity instanceof Mech)
+                && ((entity instanceof Mech) || (entity instanceof Tank))
                 && !entity.hasC3()
                 && !entity.hasC3i()) {
             
@@ -820,28 +820,31 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                     mech.setAutoEject(!autoEject);
                     mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setautoeject#"+mech.getExternalId()+"#"+!autoEject);
                  }
-                // Update the entity's targetting system type.
-                if (!(UnitUtils.hasTargettingComputer(entity)) && (mmClient.game.getOptions().booleanOption("allow_level_3_targsys"))) {
-                    
-                    int targSysIndex = MiscType.T_TARGSYS_STANDARD;
-                    if (choTargSys.getSelectedItem() != null)
-                        targSysIndex = MiscType.getTargetSysType(choTargSys.getSelectedItem());
-                    if ( entity.getTargSysType() != targSysIndex){
-                        if (targSysIndex >= 0)
-                            entity.setTargSysType(targSysIndex);
-                        else {
-                            System.err.println("Illegal targetting system index: "+targSysIndex);
-                            entity.setTargSysType(MiscType.T_TARGSYS_STANDARD);
-                        }
-                        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c settargetsystemtype#"+mech.getExternalId()+"#"+entity.getTargSysType());
-                    }
-                }
                 if ( pilot.getSkills().has(PilotSkill.EdgeSkillID) ){
                     mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setedgeSkills#"+mech.getExternalId()+"#"+tacCB.isSelected()+"#"+koCB.isSelected()+"#"+headHitsCB.isSelected()+"#"+explosionsCB.isSelected());
 
                 }
           }
            
+           if ((entity instanceof Mech) || (entity instanceof Tank)) {
+               // Update the entity's targetting system type.
+               if (!(UnitUtils.hasTargettingComputer(entity)) && (mmClient.game.getOptions().booleanOption("allow_level_3_targsys"))) {
+                   
+                   int targSysIndex = MiscType.T_TARGSYS_STANDARD;
+                   if (choTargSys.getSelectedItem() != null)
+                       targSysIndex = MiscType.getTargetSysType(choTargSys.getSelectedItem());
+                   if ( entity.getTargSysType() != targSysIndex){
+                       if (targSysIndex >= 0)
+                           entity.setTargSysType(targSysIndex);
+                       else {
+                           System.err.println("Illegal targetting system index: "+targSysIndex);
+                           entity.setTargSysType(MiscType.T_TARGSYS_STANDARD);
+                       }
+                       mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c settargetsystemtype#"+entity.getExternalId()+"#"+entity.getTargSysType());
+                   }
+               }
+           }           
+          
             if ( entity.hasSpotlight() != searchLight 
                     || entity.isUsingSpotlight() != searchLightSetting ){
                 entity.setSpotlight(searchLight);
