@@ -26,6 +26,7 @@ import java.util.Vector;
 
 import common.Unit;
 
+import server.MMServ;
 import server.campaign.CampaignMain;
 import server.campaign.SmallPlayer;
 import server.campaign.SHouse;
@@ -86,54 +87,59 @@ public class Statistics {
 	}
 
 	public static void doRanking() {
-	    //String result = "<html><body bgcolor=\"#000000\" text=\"#009900\">";
-	    StringBuilder result = new StringBuilder();
-	    result.append("<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"format.css\"><style type=\"text/css\"></style></head><body><font face=\"Verdana, Arial, Helvetica, sans-serif\">");
-	    result.append("<h2>Player Ranking:</h2><p>");
-	    //result.append("(Only Players with more than 1000 EXP shown)<p>";
-	    Iterator e = CampaignMain.cm.getData().getAllHouses().iterator();
-	    Hashtable allplayers = new Hashtable();
-	    //Player DefaultPlayer = null;
-	    while (e.hasNext()) {
-	        SHouse h = (SHouse) e.next();
-	        if (!h.isNewbieHouse())
-	        	allplayers.putAll(h.getSmallPlayers());
-	    }
-	    TreeSet Sorted = new TreeSet(allplayers.values());
-	    Iterator i = Sorted.iterator();
-	    Vector v = new Vector();
-	    boolean color = false;
-	    while (i.hasNext())
-	        v.add(i.next());
-	    result.append("<table cellpadding=\"3\" cellspacing=\"0\"><tr bgcolor=\"#0066FF\"><th><font color=\"#FFFFFF\">Rank</font></th><th><font color=\"#FFFFFF\">Name</th><th><font color=\"#FFFFFF\">Rating</th><th><font color=\"#FFFFFF\">House</th><th><font color=\"#FFFFFF\">House Rank</th><th><font color=\"#FFFFFF\">Comment</th></tr>");
-	    int rank = 1;
-	    //  for (int j = v.size() - 1;j >= 0 && j >= v.size() - 1000;j--) {
-	    for (int j = v.size() - 1; j >= 0; j--) {
-	        SmallPlayer p = (SmallPlayer)v.elementAt(j);
-	        //Show the limiter at the END of all Players with the limited Rating.
-	        if (color)
-	            result.append("<tr class=\"trcolored\">");
-	        else
-	            result.append("<tr class=\"truncolored\">");
-	        color = !color;
-	        result.append("<td>" + rank + "</td>");
-	        result.append("<td>" + p.getName() + "</td>");
-	        if (CampaignMain.cm.getBooleanConfig("HideELO"))
-	            result.append("<td> -- </td>");
-	        else
-	            result.append("<td>" + p.getRatingRounded() + "</td>");
-	        result.append("<td>" + p.getMyHouse().getColoredName() + "</td>");
-	        if (p.getFluffText().equals("0"))
-	            result.append("<td> </td>");
-	        else
-	            result.append("<td>" + p.getFluffText() + "</td>");
-	        result.append("</tr>");
-	        rank++;
-	    }
-	    result.append("</table>");
-	    result.append("</body></html>");
-	
-	    try {
+		try{
+		    //String result = "<html><body bgcolor=\"#000000\" text=\"#009900\">";
+		    StringBuilder result = new StringBuilder();
+		    result.append("<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"format.css\"><style type=\"text/css\"></style></head><body><font face=\"Verdana, Arial, Helvetica, sans-serif\">");
+		    result.append("<h2>Player Ranking:</h2><p>");
+		    //result.append("(Only Players with more than 1000 EXP shown)<p>";
+		    Iterator e = CampaignMain.cm.getData().getAllHouses().iterator();
+		    Hashtable allplayers = new Hashtable();
+		    //Player DefaultPlayer = null;
+		    while (e.hasNext()) {
+		        SHouse h = (SHouse) e.next();
+		        if (!h.isNewbieHouse())
+		        	allplayers.putAll(h.getSmallPlayers());
+		    }
+		    TreeSet Sorted = new TreeSet(allplayers.values());
+		    Iterator i = Sorted.iterator();
+		    Vector v = new Vector();
+		    boolean color = false;
+		    while (i.hasNext())
+		        v.add(i.next());
+		    result.append("<table cellpadding=\"3\" cellspacing=\"0\"><tr bgcolor=\"#0066FF\"><th><font color=\"#FFFFFF\">Rank</font></th><th><font color=\"#FFFFFF\">Name</th><th><font color=\"#FFFFFF\">Rating</th><th><font color=\"#FFFFFF\">House</th><th><font color=\"#FFFFFF\">House Rank</th><th><font color=\"#FFFFFF\">Comment</th></tr>");
+		    int rank = 1;
+		    //  for (int j = v.size() - 1;j >= 0 && j >= v.size() - 1000;j--) {
+		    for (int j = v.size() - 1; j >= 0; j--) {
+		        SmallPlayer p = (SmallPlayer)v.elementAt(j);
+		        try{
+			        //Show the limiter at the END of all Players with the limited Rating.
+			        if (color)
+			            result.append("<tr class=\"trcolored\">");
+			        else
+			            result.append("<tr class=\"truncolored\">");
+			        color = !color;
+			        result.append("<td>" + rank + "</td>");
+			        result.append("<td>" + p.getName() + "</td>");
+			        if (CampaignMain.cm.getBooleanConfig("HideELO"))
+			            result.append("<td> -- </td>");
+			        else
+			            result.append("<td>" + p.getRatingRounded() + "</td>");
+			        result.append("<td>" + p.getMyHouse().getColoredName() + "</td>");
+			        if (p.getFluffText().equals("0"))
+			            result.append("<td> </td>");
+			        else
+			            result.append("<td>" + p.getFluffText() + "</td>");
+			        result.append("</tr>");
+			        rank++;
+		        }catch(Exception ex){
+		        	MMServ.mmlog.errLog("Error while Referencing player: "+p.getName());
+		        	MMServ.mmlog.errLog(ex);
+		        }
+		    }
+		    result.append("</table>");
+		    result.append("</body></html>");
+		
 	        //Save Planets
 	        //      FileOutputStream out = new FileOutputStream("Ranking.htm");
 	        FileOutputStream out = new FileOutputStream(
@@ -142,9 +148,10 @@ public class Statistics {
 	        p.println(result.toString());
 	        p.close();
 	        out.close();
+		    Statistics.doEXPRanking();
 	    } catch (Exception ex) {
+	    	MMServ.mmlog.errLog(ex);
 	    }
-	    Statistics.doEXPRanking();
 	}
 
 	public static void doEXPRanking() {

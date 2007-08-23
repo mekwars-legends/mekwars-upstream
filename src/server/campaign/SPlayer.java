@@ -1960,11 +1960,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		// update the corresponding small player.
 			smallp = myHouse.getSmallPlayers().get(name.toLowerCase());
 		else{
-			smallp = new SmallPlayer();
-			smallp.setExperience(this.getExperience());
-			smallp.setFluffText(this.getFluffText());
-			smallp.setName(this.getName());
-			smallp.setRating(this.getRating());
+			smallp = new SmallPlayer(this.getExperience(),lastOnline,this.getRating(),this.getName(),this.getFluffText(),this.getMyHouse());
 			myHouse.getSmallPlayers().put(name.toLowerCase(),smallp);
 		}
 			

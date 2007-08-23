@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Bug: house info not getting set when TouchCommand is used on off line player
+  that did not have a smallplayer object yet.
 + RFE: CheckAttackCommand now lists all ops Target Army is able to defend 
 	against
 + Bug: Concurrent Modification error when using the BanListCommand.
