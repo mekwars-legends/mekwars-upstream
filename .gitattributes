@@ -27,7 +27,6 @@ client-dist/data/images/closedLiao.gif -text
 client-dist/data/images/closedMarik.gif -text
 client-dist/data/images/closedPeriphery.gif -text
 client-dist/data/images/closedSteiner.gif -text
-client-dist/data/images/comm.gif -text
 client-dist/data/images/critical.gif -text
 client-dist/data/images/crtr1.gif -text
 client-dist/data/images/engined.gif -text
@@ -794,6 +793,7 @@ client-dist/data/images/star.gif -text
 client-dist/data/images/status/ammo.gif -text
 client-dist/data/images/status/armor.gif -text
 client-dist/data/images/status/blank.gif -text
+client-dist/data/images/status/comm.gif -text
 client-dist/data/images/status/critical.gif -text
 client-dist/data/images/status/eject.gif -text
 client-dist/data/images/status/empty.gif -text
