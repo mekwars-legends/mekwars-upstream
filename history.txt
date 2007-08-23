@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Bug: Concurrent Modification error when using the BanListCommand.
 + Bug: Faction TIMESTAMP wasn't saving to database.
 + Add Hud Icons to client dist
 + Added code to allow users to set unit commanders and see what units
