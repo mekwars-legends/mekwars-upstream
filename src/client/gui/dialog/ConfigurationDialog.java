@@ -218,6 +218,7 @@ public final class ConfigurationDialog implements ActionListener {
     private final JCheckBox leftArmorCB = new JCheckBox();
     private final JCheckBox leftSliteCB = new JCheckBox();
     private final JCheckBox leftAmmoCB = new JCheckBox();
+    private final JCheckBox leftCommanderCB = new JCheckBox();
 
     private final JCheckBox rightColumnDynamicCB = new JCheckBox();
     private final JCheckBox rightPilotEjectCB = new JCheckBox();
@@ -227,6 +228,7 @@ public final class ConfigurationDialog implements ActionListener {
     private final JCheckBox rightArmorCB = new JCheckBox();
     private final JCheckBox rightSliteCB = new JCheckBox();
     private final JCheckBox rightAmmoCB = new JCheckBox();
+    private final JCheckBox rightCommanderCB = new JCheckBox();
 
     //STOCK DIALOUG AND PANE
     private JDialog dialog;
@@ -776,6 +778,10 @@ public final class ConfigurationDialog implements ActionListener {
         mainHUDSpring.add(leftAmmoCB);
         mainHUDSpring.add(rightAmmoCB);
         
+        mainHUDSpring.add(new JLabel("Commander"));
+        mainHUDSpring.add(leftCommanderCB);
+        mainHUDSpring.add(rightCommanderCB);
+        
         //Set up the springs
         SpringLayoutHelper.setupSpringGrid(mainHUDSpring, 3);
 
@@ -1269,6 +1275,7 @@ public final class ConfigurationDialog implements ActionListener {
         rightArmorCB.setSelected(mwclient.getConfig().isParam("RIGHTARMOR"));
         rightSliteCB.setSelected(mwclient.getConfig().isParam("RIGHTSLITE"));
         rightAmmoCB.setSelected(mwclient.getConfig().isParam("RIGHTAMMO"));
+        rightCommanderCB.setSelected(mwclient.getConfig().isParam("RIGHTCOMMANDER"));
         //Left Column
         leftColumnDynamicCB.setSelected(mwclient.getConfig().isParam("LEFTCOLUMNDYNAMIC"));
         leftPilotEjectCB.setSelected(mwclient.getConfig().isParam("LEFTPILOTEJECT"));
@@ -1278,6 +1285,7 @@ public final class ConfigurationDialog implements ActionListener {
         leftArmorCB.setSelected(mwclient.getConfig().isParam("LEFTARMOR"));
         leftSliteCB.setSelected(mwclient.getConfig().isParam("LEFTSLITE"));
         leftAmmoCB.setSelected(mwclient.getConfig().isParam("LEFTAMMO"));
+        leftCommanderCB.setSelected(mwclient.getConfig().isParam("LEFTCOMMANDER"));
 
         //Show the dialog and get the user's input
         dialog.setModal(true);
@@ -1493,6 +1501,7 @@ public final class ConfigurationDialog implements ActionListener {
             mwclient.getConfig().setParam("RIGHTARMOR",Boolean.toString(rightArmorCB.isSelected()));
             mwclient.getConfig().setParam("RIGHTSLITE",Boolean.toString(rightSliteCB.isSelected()));
             mwclient.getConfig().setParam("RIGHTAMMO",Boolean.toString(rightAmmoCB.isSelected()));
+            mwclient.getConfig().setParam("RIGHTCOMMANDER",Boolean.toString(rightCommanderCB.isSelected()));
             //Left Column
             mwclient.getConfig().setParam("LEFTCOLUMNDYNAMIC",Boolean.toString(leftColumnDynamicCB.isSelected()));
             mwclient.getConfig().setParam("LEFTPILOTEJECT",Boolean.toString(leftPilotEjectCB.isSelected()));
@@ -1502,6 +1511,7 @@ public final class ConfigurationDialog implements ActionListener {
             mwclient.getConfig().setParam("LEFTARMOR",Boolean.toString(leftArmorCB.isSelected()));
             mwclient.getConfig().setParam("LEFTSLITE",Boolean.toString(leftSliteCB.isSelected()));
             mwclient.getConfig().setParam("LEFTAMMO",Boolean.toString(leftAmmoCB.isSelected()));
+            mwclient.getConfig().setParam("LEFTCOMMANDER",Boolean.toString(leftCommanderCB.isSelected()));
 
             mwclient.setIgnoreHouse();
             mwclient.setIgnorePrivate();

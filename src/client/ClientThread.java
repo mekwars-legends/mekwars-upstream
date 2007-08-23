@@ -141,6 +141,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 	@Override
 	public void run() {
         boolean playerUpdate = false;
+        boolean nightGame = false;
 		client = new Client(myname, serverip, serverport);
 		client.game.addGameListener(this);
 		client.addCloseClientListener(this);
@@ -329,6 +330,10 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
                     client.getLocalPlayer().setNbrMFVibra(mwclient.getPlayer().getVibraMinesAllowed());
                 }
                 
+                if ( client.game.getOptions().booleanOption("night_battle") 
+                		|| client.game.getOptions().booleanOption("dusk"))
+                	nightGame = true;
+                
                 for (Iterator i = this.mechs.iterator(); i.hasNext();) {
 					// Get the Mek
 					CUnit mek = (CUnit) i.next();
@@ -339,6 +344,12 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 					entity.setId(mek.getId());
 					//Set the owner
 					entity.setOwner(client.getLocalPlayer());
+					
+					//if not a night game no reason to have the slites set.
+					if ( !nightGame ){
+						entity.setSpotlight(false);
+						entity.setSpotlightState(false);
+					}
 					
                     //Set the correct home edge for off board units
                     if ( entity.isOffBoard() ){

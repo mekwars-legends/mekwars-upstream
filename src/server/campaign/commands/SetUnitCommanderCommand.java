@@ -52,11 +52,13 @@ public class SetUnitCommanderCommand implements Command {
 		SPlayer p = CampaignMain.cm.getPlayer(Username);
 		SHouse house = p.getMyHouse();
 		int mechid = -1;
+		boolean commander = false;
 		
 		try {
-			mechid = Integer.parseInt((String)command.nextElement());
+			mechid = Integer.parseInt(command.nextToken());
+			commander = Boolean.parseBoolean(command.nextToken());
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Incorrect syntax. Try: /setUnitCommander unit ID", Username, true);
+			CampaignMain.cm.toUser("Incorrect syntax. Try: /setUnitCommander unit ID#true/false", Username, true);
 			return;
 		}
 		
@@ -86,9 +88,12 @@ public class SetUnitCommanderCommand implements Command {
 			return;
 		}
 		
-		m.setUnitCommander(true);
+		m.setUnitCommander(commander);
 		CampaignMain.cm.toUser("PL|UU|"+m.getId()+"|"+m.toString(true),Username,false);
-		CampaignMain.cm.toUser("Unit #"+m.getId()+" has been set as unit commander", Username);
+		if ( commander )
+			CampaignMain.cm.toUser("Unit #"+m.getId()+" has been set as unit commander", Username);
+		else
+			CampaignMain.cm.toUser("Unit #"+m.getId()+" has been removed as unit commander", Username);
 	}//end process()
 
 }//end ScrapCommand

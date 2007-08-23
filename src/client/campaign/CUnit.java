@@ -235,8 +235,11 @@ public class CUnit extends Unit {
         if ( ST.hasMoreTokens() )
         	this.setRepairCosts(Integer.parseInt(ST.nextToken()),Integer.parseInt(ST.nextToken()));
         
-        if ( ST.hasMoreTokens() )
+        if ( ST.hasMoreTokens() ){
         	this.setUnitCommander(Boolean.parseBoolean(ST.nextToken()));
+        	this.getEntity().setCommander(this.isUnitCommander());
+        }
+        	
         
         UnitEntity.setExternalId(this.getId());
         UnitEntity.setCrew(new megamek.common.Pilot(p.getName(), p.getGunnery(), p.getPiloting()));

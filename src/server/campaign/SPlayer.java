@@ -2389,7 +2389,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				s.append("Votes: " + votesCast + " votes cast. " + votesAllowed + " votes allowed. (" + votesCast + "/" + votesAllowed + ").<br>");
 		}// end if(voting is allowed)
 		
-		if (!Boolean.parseBoolean(this.getMyHouse().getConfig("HideELO")))
+		if (!Boolean.parseBoolean(this.getMyHouse().getConfig("HideELO")) && !adminStatus)
 			s.append("Rating: " + myFormatter.format(this.getRating())+ "<br>");
 		if (Boolean.parseBoolean(this.getMyHouse().getConfig("ShowReward")))
 			s.append("Current Reward Points: " + getReward() + " (Maximum  of " + Integer .parseInt(this.getMyHouse().getConfig("XPRewardCap")) + ")<br>");

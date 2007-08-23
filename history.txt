@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.5.x
++ Added setunit icon commands for client
++ RFE: Slights not added to MM Entites if it is not a night game.
 + New MegaMek.jar 0.33.9-MW08232007-5162
 + Updated Customize Dialog to allow vehicles to use targetting systems.
 + Bug: house info not getting set when TouchCommand is used on off line player

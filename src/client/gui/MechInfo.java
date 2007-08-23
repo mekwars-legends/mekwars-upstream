@@ -266,6 +266,21 @@ public class MechInfo extends JPanel {
                   }
               }
 
+              //commander block
+              if ( Config.isParam("LEFTCOMMANDER") ){
+                  if ( cm.isUnitCommander() ){
+                      ic = new ImageIcon("data/images/status/comm.gif");
+                      g.drawImage(ic.getImage(),0, height,ic.getImageObserver());
+                      height += ic.getIconHeight();
+                  }else{
+                      if ( !dynamic ){
+                          ic = new ImageIcon("data/images/status/blank.gif");
+                          g.drawImage(ic.getImage(),cellWidth-ic.getIconWidth(), height,ic.getImageObserver());
+                          height += ic.getIconHeight();
+                      }
+                  }
+              }
+              
               height = 0;
               //Screw it I can't find the width any other way. consecutive paints will fix the issue.
               cellWidth = Math.min(cellWidth,getWidth());
@@ -423,6 +438,21 @@ public class MechInfo extends JPanel {
               }
           }
 
+          //commander block
+          if ( Config.isParam("RIGHTCOMMANDER") ){
+              if ( cm.isUnitCommander() ){
+                  ic = new ImageIcon("data/images/status/comm.gif");
+                  g.drawImage(ic.getImage(),cellWidth-ic.getIconWidth(), height,ic.getImageObserver());
+                  height += ic.getIconHeight();
+              }else{
+                  if ( !dynamic ){
+                      ic = new ImageIcon("data/images/status/blank.gif");
+                      g.drawImage(ic.getImage(),cellWidth-ic.getIconWidth(), height,ic.getImageObserver());
+                      height += ic.getIconHeight();
+                  }
+              }
+          }
+          
   	      //setLeftStatusIcons(g, icon);
   	      //setRightStatusIcons(g);
         }

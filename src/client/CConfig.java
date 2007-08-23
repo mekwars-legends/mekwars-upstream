@@ -332,6 +332,7 @@ public class CConfig {
         defaults.setProperty("RIGHTARMOR", "false");
         defaults.setProperty("RIGHTSLITE", "false");
         defaults.setProperty("RIGHTAMMO", "false");
+        defaults.setProperty("RIGHTCOMMANDER", "false");
         //Left Column
         defaults.setProperty("LEFTCOLUMNDYNAMIC", "false");
         defaults.setProperty("LEFTPILOTEJECT", "false");
@@ -341,6 +342,7 @@ public class CConfig {
         defaults.setProperty("LEFTARMOR", "false");
         defaults.setProperty("LEFTSLITE", "false");
         defaults.setProperty("LEFTAMMO", "false");
+        defaults.setProperty("LEFTCOMMANDER", "false");
         
         //enable or disable splash screen
         defaults.setProperty("ENABLESPLASHSCREEN", "true");
