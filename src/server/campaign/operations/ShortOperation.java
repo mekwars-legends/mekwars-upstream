@@ -1147,13 +1147,15 @@ public class ShortOperation implements Comparable {
             //Send the pertinate data.
             if ( o.getIntValue("NumberOfVictoryConditions") > 0 
                     && (o.getBooleanValue("UseDestroyEnemyBV")) 
-                            || o.getBooleanValue("UseBVRatioPercent")){
+                            || o.getBooleanValue("UseBVRatioPercent")
+                            || o.getBooleanValue("UseUnitCommander")){
                 gameOptions += "|check_victory|true";
                 gameOptions += "|achieve_conditions|"+o.getValue("NumberOfVictoryConditions");
                 gameOptions += "|use_bv_destroyed|"+o.getValue("UseDestroyEnemyBV");
                 gameOptions += "|bv_destroyed_percent|"+o.getValue("DestroyEnemyBV");
                 gameOptions += "|use_bv_ratio|"+o.getValue("UseBVRatioPercent");
                 gameOptions += "|bv_ratio_percent|"+o.getValue("BVRatioPercent");
+                gameOptions += "|commander_killed|"+o.getValue("UseUnitCommander");
             }
             else
                 gameOptions += "|check_victory|true|use_bv_destroyed|false|use_bv_ratio|false";

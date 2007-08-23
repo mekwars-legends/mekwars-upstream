@@ -762,6 +762,9 @@ public class DefaultOperation {
          * DestroyEnemyBV            - Destroy/damage a certain percentage of the enemy force to win, measured by current BV / original BV
          * UseBVRatioPercent         - If this is turned on UseBVRatioPercent field will be sent to MM.
          * BVRatioPercent            - Friendly forces outnumber enemy forces by a percentage ratio.  Measured by current BV. E.G. 300 means you have 3x the surviving BV of the enemy.
+         * UseUnitCommander			 - If this is turned on the UseUnitCommand field will be sent to MM.
+         * MinimumUnitCommanders     - Minimum Number Of unit commanders players must have to launch/defend this op
+         * MaximumUnitCommanders     - Maximum Number of unit commanders players can have to launch/defend this op
          * 
          * [End Victory Conditions]
          * 
@@ -1140,6 +1143,9 @@ public class DefaultOperation {
         operationsDefaults.put("DestroyEnemyBV","100");
         operationsDefaults.put("UseBVRatioPercent","false");
         operationsDefaults.put("BVRatioPercent","300");
+        operationsDefaults.put("UseUnitCommander","false");
+        operationsDefaults.put("MinimumUnitCommanders","1");
+        operationsDefaults.put("MaximumUnitCommanders","1");
 
 		/*
 		 * LONG VARIABLES. These params are necessary for operations

@@ -1,7 +1,12 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.5.x
+v 0.2.6.x
+Release Client/Server 0.2.6.0
++ new Operations Editor
++ Added Operation variable UseUnitCommander
++ Added Operation variable MinimumUnitCommanders
++ Added Operation Variable MaximumUnitCommanders
 + Added setunit icon commands for client
 + RFE: Slights not added to MM Entites if it is not a night game.
 + New MegaMek.jar 0.33.9-MW08232007-5162
@@ -30,6 +35,7 @@ v 0.2.5.x
 + Update database to v3
 + Newly registered users given the url to the server's forum if auto-forum-registered.
 + Change to Forceupdate command.
+v 0.2.5.x
 R Server 0.2.5.7
 + New MegaMek.jar 0.33.9-MW08172007-5162
 + Removed the Save player hash. Players are now saved when ever setSave is

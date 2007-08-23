@@ -2746,6 +2746,11 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
         BaseCheckBox.setName("UseBVRatioPercent");
         checkBoxBox.add(BaseCheckBox);
 
+        BaseCheckBox = new JCheckBox("Use Unit Commanders?");
+        BaseCheckBox.setToolTipText("<html>If this is turned on UseUnitCommanders field will be sent to MM.</html>");
+        BaseCheckBox.setName("UseUnitCommander");
+        checkBoxBox.add(BaseCheckBox);
+
         BaseTextField = new JTextField(5);
         victoryParamsPanel.add(new JLabel("Victory Conditions:",SwingConstants.TRAILING));
         BaseTextField.setToolTipText("<html>The number of victory conditions that must<br>be achieved by the winning team.<br>Default 0 (off)</html>");
@@ -2759,12 +2764,24 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
         victoryParamsPanel.add(BaseTextField);
         
         BaseTextField = new JTextField(5);
-        victoryParamsPanel.add(new JLabel("BV Ratio Percent :",SwingConstants.TRAILING));
+        victoryParamsPanel.add(new JLabel("BV Ratio Percent:",SwingConstants.TRAILING));
         BaseTextField.setToolTipText("<html>Friendly forces outnumber enemy forces by a percentage ratio.<br>Measured by current BV.<br>E.G. 300 means you have 3x the surviving BV of the enemy.</html>");
         BaseTextField.setName("BVRatioPercent");
         victoryParamsPanel.add(BaseTextField);
         
-        SpringLayoutHelper.setupSpringGrid(checkBoxBox,2);
+        BaseTextField = new JTextField(5);
+        victoryParamsPanel.add(new JLabel("Minimum Commanders:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Minimum number of unit commanders this op needs for players to launch/defend it.</html>");
+        BaseTextField.setName("MinimumUnitCommanders");
+        victoryParamsPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        victoryParamsPanel.add(new JLabel("Maximum Commanders:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Maximum number of unit commanders this op needs for players to launch/defend it.</html>");
+        BaseTextField.setName("MaximumUnitCommanders");
+        victoryParamsPanel.add(BaseTextField);
+        
+        SpringLayoutHelper.setupSpringGrid(checkBoxBox,3);
         SpringLayoutHelper.setupSpringGrid(victoryParamsPanel,2);
 
         masterBox.add(checkBoxBox);

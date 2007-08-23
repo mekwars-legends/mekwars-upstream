@@ -59,8 +59,8 @@ public class ShortValidator {
 	public static final int SFAIL_COMMON_PROTOGROUPS = 1;//"ProtosMustbeGrouped", whether protos must be a multiple of move clumps
 	public static final int SFAIL_COMMON_ELODIFFERENCE = 2;//"MaxELODifference", Max difference in ELO between attacker and defender.
 	public static final int SFAIL_COMMON_TEAM_BV_EXCEEDED = 3;//The max amount of the BV for the op + max difference for the server is the max bv of a team.
-	//public static final int SFAIL_COMMON = 4;
-	//public static final int SFAIL_COMMON = 5;
+	public static final int SFAIL_COMMON_NOT_ENOUGH_COMMANDERS = 4;//the army does not have enough unit commanders in it.
+	public static final int SFAIL_COMMON_TOO_MANY_COMMANDERS = 5;//The army has too many unit commanders in it.
 	//public static final int SFAIL_COMMON = 6;
 	//public static final int SFAIL_COMMON = 7;
 	//public static final int SFAIL_COMMON = 8;
@@ -646,6 +646,7 @@ public class ShortValidator {
 		int numProtoMeks    = aa.getNumberOfUnitTypes(Unit.PROTOMEK);
 		int lowUnitBV       = -1;//used for spreads, NOT single unit BV checks
 		int highUnitBV      = -1;//used for spreads, NOT single unit BV checks
+		int numberOfCommanders = 0;
 		boolean hasMeks 	= false;
 		boolean hasVehs 	= false;
 		boolean hasInf 		= false;
@@ -664,6 +665,10 @@ public class ShortValidator {
 			
 			//load the next unit
 			SUnit currUnit = (SUnit)i.next();
+			
+			//Check to see if its a unit commander.
+			if ( currUnit.isUnitCommander() )
+				numberOfCommanders++;
 			
 			//get the unit's weight, store
 			int currWeight = (int)currUnit.getEntity().getWeight();
@@ -757,6 +762,14 @@ public class ShortValidator {
 			else//no infantry allowed, at all
 				failureReasons.add(new Integer(SFAIL_ATTACK_NOINF));
 		}//end if(!AllowedInf)
+		
+		if ( o.getBooleanValue("UseUnitCommander") ){
+			if ( numberOfCommanders < o.getIntValue("MinimumUnitCommanders") )
+				failureReasons.add(SFAIL_COMMON_NOT_ENOUGH_COMMANDERS);
+			if ( numberOfCommanders > o.getIntValue("MaximumUnitCommanders") )
+				failureReasons.add(SFAIL_COMMON_TOO_MANY_COMMANDERS);
+		}
+		
 		if (checkOmni && omniFail)
 			failureReasons.add(new Integer(SFAIL_ATTACK_OMNIONLY));
 		
@@ -947,6 +960,7 @@ public class ShortValidator {
 		int numProtoMeks    = da.getNumberOfUnitTypes(Unit.PROTOMEK);
 		int lowUnitBV       = -1;//used for spreads, NOT single unit BV checks
 		int highUnitBV      = -1;//used for spreads, NOT single unit BV checks
+		int numberOfCommanders = 0;
 		boolean hasMeks 	= false;
 		boolean hasVehs 	= false;
 		boolean hasInf 		= false;
@@ -965,6 +979,10 @@ public class ShortValidator {
 			
 			//load the next unit
 			SUnit currUnit = (SUnit)i.next();
+			
+			//Check to see if the unit is a commander
+			if ( currUnit.isUnitCommander() )
+				numberOfCommanders++;
 			
 			//get the unit's weight, store
 			int currWeight = (int)currUnit.getEntity().getWeight();
@@ -1047,6 +1065,13 @@ public class ShortValidator {
 		}//end if(!AllowedInf)
 		if (checkOmni && omniFail)
 			failureReasons.add(new Integer(SFAIL_DEFEND_OMNIONLY));
+		
+		if ( o.getBooleanValue("UseUnitCommander") ){
+			if ( numberOfCommanders < o.getIntValue("MinimumUnitCommanders") )
+				failureReasons.add(SFAIL_COMMON_NOT_ENOUGH_COMMANDERS);
+			if ( numberOfCommanders > o.getIntValue("MaximumUnitCommanders") )
+				failureReasons.add(SFAIL_COMMON_TOO_MANY_COMMANDERS);
+		}
 		
 		//proto failures. wee.
 		if ( o.getBooleanValue("ProtosMustbeGrouped") 
