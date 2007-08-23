@@ -22,6 +22,8 @@ import java.util.StringTokenizer;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SArmy;
+import server.campaign.operations.Operation;
+import server.campaign.operations.OperationManager;
 
 public class CheckAttackCommand implements Command {
 	
@@ -106,9 +108,11 @@ public class CheckAttackCommand implements Command {
 					Desc += coloredHouseName + "(" + currTarget.getAmountOfUnits() + ")";
 				else 
 					Desc += coloredHouseName + "(" + currTarget.getAmountOfUnitsWithoutInfantry() + ")";
-					
+
+				Desc += listDefendableOperations(arm,p,currTarget);
+				
 				if (targets.hasMoreElements())
-					Desc += ", ";
+					Desc += "<br>";
 			}//end while(more targets)
 		}//end (if for a specific army)
 		
@@ -137,8 +141,10 @@ public class CheckAttackCommand implements Command {
 								Desc += "(BV Against: "+ arm.getOperationsBV(currTarget) +")";
 						}
 						
+						Desc += listDefendableOperations(arm,p,currTarget);
+
 						if (targets.hasMoreElements())
-							Desc += ", ";
+							Desc += "<br>";
 					}//end while(more targets)
 					Desc += "<br>";
 				}
@@ -149,4 +155,21 @@ public class CheckAttackCommand implements Command {
 
 	}
 	
+	private String listDefendableOperations(SArmy aa, SPlayer dp, SArmy da){
+		StringBuffer report = new StringBuffer(" [");
+		
+		OperationManager manager = CampaignMain.cm.getOpsManager(); 
+		for ( String attack : aa.getLegalOperations().keySet() ){
+			Operation o = manager.getOperation(attack);
+			if ( manager.validateShortDefense(dp, da, o, null) == null ){
+				report.append(attack);
+				report.append(", ");
+			}
+				
+		}
+		
+		report.delete(report.length()-2, report.length());
+		report.append("]");
+		return report.toString();
+	}
 }//end CheckAttackCommand
