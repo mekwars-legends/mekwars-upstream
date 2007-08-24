@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
++ Fixed formatting for CheckAttackCommand
 + Database update to v5
 + UnitCommanders saved to database
 Release Client/Server 0.2.6.0

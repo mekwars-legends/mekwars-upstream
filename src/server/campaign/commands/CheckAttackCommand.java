@@ -94,6 +94,7 @@ public class CheckAttackCommand implements Command {
 				return;
 			}
 			
+			
 			Desc += arm.getID() + " (" + arm.getBV()+ " BV) ";
 			Desc += " may attack: ";
 			
@@ -103,17 +104,22 @@ public class CheckAttackCommand implements Command {
 				SPlayer currTargetP = CampaignMain.cm.getPlayer(currTarget.getPlayerName());
 				String coloredHouseName = currTargetP.getMyHouse().getHouseFightingFor(currTargetP).getColoredName();
 				
+				Desc += "<table><td>";
 				//adjust return for infantry settings
 				if(new Boolean(CampaignMain.cm.getConfig("ShowInfInCheckAttack")).booleanValue())
 					Desc += coloredHouseName + "(" + currTarget.getAmountOfUnits() + ")";
 				else 
 					Desc += coloredHouseName + "(" + currTarget.getAmountOfUnitsWithoutInfantry() + ")";
 
-				Desc += listDefendableOperations(arm,p,currTarget);
+				if ( usingOpRules && arm.getAmountOfUnits() > currTarget.getAmountOfUnits()) {
+					Desc += "(BV Against: "+ arm.getOperationsBV(currTarget) +")";
+				}
 				
-				if (targets.hasMoreElements())
-					Desc += "<br>";
+				Desc += "</td><td>"+listDefendableOperations(arm,p,currTarget);
+				
+				Desc += "</td></tr>";
 			}//end while(more targets)
+			Desc += "</table>";
 		}//end (if for a specific army)
 		
 		//otherwise, loop out *all* the armies
@@ -122,11 +128,12 @@ public class CheckAttackCommand implements Command {
 			Enumeration e = p.getArmies().elements();
 			while (e.hasMoreElements()) {
 				SArmy arm = (SArmy)e.nextElement();
+				Desc += "<table><tr><td>";
 				if (arm != null) {
 					Desc += "Army " + arm.getID() ;
 					if ( usingOpRules )
 						Desc += " (" + arm.getBV() + " BV)";
-					Desc += ": ";
+					Desc += ": </td>";
 					
 					Enumeration targets = arm.getOpponents().elements();
 					while (targets.hasMoreElements()) {
@@ -135,18 +142,24 @@ public class CheckAttackCommand implements Command {
                         if ( currTargetP == null )
                             continue;
 						String coloredHouseName = currTargetP.getMyHouse().getHouseFightingFor(currTargetP).getColoredName();
-						Desc += coloredHouseName + "(" + currTarget.getAmountOfUnits() + ")";
+						Desc += "<td>";
+						//adjust return for infantry settings
+						if(new Boolean(CampaignMain.cm.getConfig("ShowInfInCheckAttack")).booleanValue())
+							Desc += coloredHouseName + "(" + currTarget.getAmountOfUnits() + ")";
+						else 
+							Desc += coloredHouseName + "(" + currTarget.getAmountOfUnitsWithoutInfantry() + ")";
 
 						if ( usingOpRules && arm.getAmountOfUnits() > currTarget.getAmountOfUnits()) {
 								Desc += "(BV Against: "+ arm.getOperationsBV(currTarget) +")";
 						}
 						
-						Desc += listDefendableOperations(arm,p,currTarget);
+						Desc += "</td><td>"+listDefendableOperations(arm,p,currTarget);
 
-						if (targets.hasMoreElements())
-							Desc += "<br>";
+						Desc += "</td></tr>";
+						if ( targets.hasMoreElements() )
+							Desc += "<tr><td>&nbsp;</td>";
 					}//end while(more targets)
-					Desc += "<br>";
+					Desc += "</table>";
 				}
 			}
 		}
@@ -157,7 +170,6 @@ public class CheckAttackCommand implements Command {
 	
 	private String listDefendableOperations(SArmy aa, SPlayer dp, SArmy da){
 		StringBuffer report = new StringBuffer(" [");
-		
 		OperationManager manager = CampaignMain.cm.getOpsManager(); 
 		for ( String attack : aa.getLegalOperations().keySet() ){
 			Operation o = manager.getOperation(attack);
@@ -167,7 +179,9 @@ public class CheckAttackCommand implements Command {
 			}
 				
 		}
-		
+		report.trimToSize();
+		if ( report.length() < 2 )
+			return "[]";
 		report.delete(report.length()-2, report.length());
 		report.append("]");
 		return report.toString();

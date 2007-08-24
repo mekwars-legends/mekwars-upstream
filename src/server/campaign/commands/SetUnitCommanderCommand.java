@@ -22,6 +22,8 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
+import megamek.common.VTOL;
+
 import common.Unit;
 
 import server.campaign.CampaignMain;
@@ -80,6 +82,16 @@ public class SetUnitCommanderCommand implements Command {
 		
 		if ( !house.getBooleanConfig("allowUnitCommander"+SUnit.getTypeClassDesc(m.getType())) ){
 			CampaignMain.cm.toUser(SUnit.getTypeClassDesc(m.getType())+" units are not allowed to be set as unit commanders!", Username);
+			return;
+		}
+		
+		if ( !house.getBooleanConfig("allowUnitCommanderVTOL") && m.getEntity() instanceof VTOL){
+			CampaignMain.cm.toUser("VTOL units are not allowed to be set as unit commanders!", Username);
+			return;
+		}
+		
+		if ( m.getEntity().isOffBoard() ){
+			CampaignMain.cm.toUser("Off board units are not allowed to be set as unit commanders!", Username);
 			return;
 		}
 		
