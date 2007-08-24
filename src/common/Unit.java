@@ -87,8 +87,6 @@ public class Unit {
 	private int currentRepairCost = 0;
 	private int lifeTimeRepairCost = 0;
 	
-	private boolean unitCommander = false; //Used
-	
 	//CONSTRUCTOR
 	public Unit(){
 		//no content
@@ -605,12 +603,5 @@ public class Unit {
     public int getLifeTimeRepairCost () {
     	return lifeTimeRepairCost;
     }
-    
-    public void setUnitCommander(boolean commander){
-    	unitCommander = commander;
-    }
-    
-    public boolean isUnitCommander(){
-    	return unitCommander;
-    }
+   
 }

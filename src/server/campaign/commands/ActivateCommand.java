@@ -108,6 +108,9 @@ public class ActivateCommand implements Command {
 			
 		}
 		
+		if ( !CampaignMain.cm.getBooleanConfig("allowGoingActiveWithoutUnitCommanders") ){
+			
+		}
 		
 		//AR-only activation checks
 		if (CampaignMain.cm.isUsingAdvanceRepair()) {

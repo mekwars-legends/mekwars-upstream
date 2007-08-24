@@ -1492,14 +1492,14 @@ public class CHQPanel extends JPanel {
 						}
 						popup.add(sliteMenu);
 						
-						if ( cm.isUnitCommander() ){
+						if ( l.isCommander(cm.getId()) ){
 							menuItem = new JMenuItem("Remove Commander");
-							menuItem.setActionCommand("REMOVEUNITCOMMANDER|"+row+"|"+col);
+							menuItem.setActionCommand("REMOVEUNITCOMMANDER|"+row+"|"+col+"|"+lid);
 							menuItem.addActionListener(this);
 							popup.add(menuItem);
 						}else{
 							menuItem = new JMenuItem("Set Commander");
-							menuItem.setActionCommand("SETUNITCOMMANDER|"+row+"|"+col);
+							menuItem.setActionCommand("SETUNITCOMMANDER|"+row+"|"+col+"|"+lid);
 							menuItem.addActionListener(this);
 							popup.add(menuItem);
 						}
@@ -1644,19 +1644,6 @@ public class CHQPanel extends JPanel {
 							sliteMenu.add(menuItem);
 						}
 						popup.add(sliteMenu);
-
-						if ( cm.isUnitCommander() ){
-							menuItem = new JMenuItem("Remove Commander");
-							menuItem.setActionCommand("REMOVEUNITCOMMANDER|"+row+"|"+col);
-							menuItem.addActionListener(this);
-							popup.add(menuItem);
-						}else{
-							menuItem = new JMenuItem("Set Commander");
-							menuItem.setActionCommand("SETUNITCOMMANDER|"+row+"|"+col);
-							menuItem.addActionListener(this);
-							popup.add(menuItem);
-						}
-
 
 						popup.addSeparator();
 						
@@ -2586,14 +2573,16 @@ public class CHQPanel extends JPanel {
 			}else if (command.equalsIgnoreCase("REMOVEUNITCOMMANDER")) {
 				int row = Integer.parseInt(st.nextToken());
 				int col = Integer.parseInt(st.nextToken());
+				String armyId = st.nextToken();
 				CUnit mek = MekTable.getMekAt(row,col);
-				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setunitcommander#"+mek.getId()+"#false");
+				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setunitcommander#"+mek.getId()+"#"+armyId+"#false");
 			//exchange pilot
 			} else if (command.equalsIgnoreCase("SETUNITCOMMANDER")) {
 				int row = Integer.parseInt(st.nextToken());
 				int col = Integer.parseInt(st.nextToken());
+				String armyId = st.nextToken();
 				CUnit mek = MekTable.getMekAt(row,col);
-				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setunitcommander#"+mek.getId()+"#true");
+				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setunitcommander#"+mek.getId()+"#"+armyId+"#true");
 			//exchange pilot
 			} 
 			
@@ -2849,7 +2838,7 @@ public class CHQPanel extends JPanel {
 					result.append(" |L|");
 				if ( !Boolean.parseBoolean(mwclient.getConfig().getParam("RIGHTCOMMANDER"))
 						&& !Boolean.parseBoolean(mwclient.getConfig().getParam("LEFTCOMMANDER"))
-						&& cm.isUnitCommander() ){
+						&& army.isCommander(cm.getId()) ){
 					result.append(" Cmdr");
 				}
 			}
@@ -2964,7 +2953,7 @@ public class CHQPanel extends JPanel {
 						description = cm.getDisplayInfo(C3Text.toString());
 					
 					setToolTipText(description);
-					setUnit(cm);
+					setUnit(cm,l);
 					setImageVisible(true);
                     
 					if (cm.getStatus() == Unit.STATUS_FORSALE) {

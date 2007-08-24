@@ -580,7 +580,9 @@ public final class CampaignMain implements Serializable {
 				&& (text.toUpperCase().indexOf("ENROLL") == -1)
 				&& (text.toUpperCase().indexOf("LOGIN") == -1)
 				&& (text.toUpperCase().indexOf("REGISTER") == -1)
-				&& (text.toUpperCase().indexOf("GETSERVERCONFIGS") == -1)) {
+				&& (text.toUpperCase().indexOf("GETSERVERCONFIGS") == -1)
+				&& (text.toUpperCase().indexOf("SETCLIENTVERSION") == -1)
+				&& (text.toUpperCase().indexOf("GETSAVEDMAIL") == -1)) {
 			toUser("You are not logged in!", Username, true);
 			return;
 		}
@@ -1229,7 +1231,7 @@ public final class CampaignMain implements Serializable {
 						&& !name.toLowerCase().startsWith("war bot")
 						&& !name.toLowerCase().startsWith("[dedicated]"))
 					MMServ.mmlog.errLog("could not find a pfile for " + name);
-
+					//MMServ.mmlog.debugLog(fnf);
 				return null;
 			} catch (Exception ex) {
 				MMServ.mmlog.errLog(ex);

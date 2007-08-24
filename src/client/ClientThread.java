@@ -106,6 +106,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 	private int turn = 0;
 	private ArrayList<Unit> mechs = new ArrayList<Unit>();
 	private ArrayList<CUnit> autoarmy = new ArrayList<CUnit>();//from server's auto army
+	CArmy army = null;
     BotClient bot = null;
     
     final int N  = 0;
@@ -142,6 +143,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 	public void run() {
         boolean playerUpdate = false;
         boolean nightGame = false;
+        CArmy currA = mwclient.getPlayer().getLockedArmy();
 		client = new Client(myname, serverip, serverport);
 		client.game.addGameListener(this);
 		client.addCloseClientListener(this);
@@ -344,6 +346,8 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 					entity.setId(mek.getId());
 					//Set the owner
 					entity.setOwner(client.getLocalPlayer());
+					//Set if unit is a commander in this army.
+					entity.setCommander(currA.isCommander(mek.getId()));
 					
 					//if not a night game no reason to have the slites set.
 					if ( !nightGame ){
@@ -380,10 +384,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
                     //get and set the options
                     IOptionGroup group = null;
 					Pilot pilot = null;
-					if (mek.getType() == Unit.MEK || mek.getType() == Unit.VEHICLE)
-					    pilot = new Pilot(mek.getPilot().getName(), mek.getPilot().getGunnery(), mek.getPilot().getPiloting());
-					else
-					    pilot = new Pilot(mek.getPilot().getName(), mek.getPilot().getGunnery(), 5);
+				    pilot = new Pilot(mek.getPilot().getName(), mek.getPilot().getGunnery(), mek.getPilot().getPiloting());
                     
                     //Hits defaults to 0 so no reason to keep checking over and over again.
                     pilot.setHits(mek.getPilot().getHits());
@@ -488,8 +489,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
                 
                 if (this.mechs.size() > 0) {
 					//check armies for C3Network mechs
-					CArmy currA = mwclient.getPlayer().getLockedArmy();
-
+					
 					synchronized (currA) {
 						
 						if (currA.getC3Network().size() > 0) {

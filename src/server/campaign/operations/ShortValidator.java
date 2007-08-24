@@ -667,8 +667,7 @@ public class ShortValidator {
 			SUnit currUnit = (SUnit)i.next();
 			
 			//Check to see if its a unit commander.
-			if ( currUnit.isUnitCommander() )
-				numberOfCommanders++;
+			numberOfCommanders = aa.getCommanders().size();
 			
 			//get the unit's weight, store
 			int currWeight = (int)currUnit.getEntity().getWeight();
@@ -981,8 +980,7 @@ public class ShortValidator {
 			SUnit currUnit = (SUnit)i.next();
 			
 			//Check to see if the unit is a commander
-			if ( currUnit.isUnitCommander() )
-				numberOfCommanders++;
+			numberOfCommanders = da.getCommanders().size();
 			
 			//get the unit's weight, store
 			int currWeight = (int)currUnit.getEntity().getWeight();

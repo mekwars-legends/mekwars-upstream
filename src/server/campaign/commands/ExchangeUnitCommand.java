@@ -124,7 +124,6 @@ public class ExchangeUnitCommand implements Command {
 					position = a.getUnitPosition(oldID);
 					a.removeUnit(oldID);
 					CampaignMain.cm.toUser("PL|RAU|"+a.getID()+"#"+oldID+"#"+a.getBV(),Username,false);
-					oldMech.setUnitCommander(false);
 					CampaignMain.cm.toUser("PL|UU|"+oldMech.getId()+"|"+oldMech.toString(true),Username,false);
 					a.checkLegalRatio(Username);
 				}
@@ -148,7 +147,6 @@ public class ExchangeUnitCommand implements Command {
 				a.removeUnit(oldMech.getId());
 				CampaignMain.cm.toUser("PL|RAU|"+a.getID()+"#"+oldMech.getId()+"#"+a.getBV(),Username,false);
 				a.checkLegalRatio(Username);
-				oldMech.setUnitCommander(false);
 				CampaignMain.cm.toUser("PL|UU|"+oldMech.getId()+"|"+oldMech.toString(true),Username,false);
 			}
 			

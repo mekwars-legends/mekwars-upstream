@@ -339,7 +339,7 @@ public final class SMWLogger {//final - no extension of the server logger
 
 	public void debugLog(String s) {
 		if(logging){
-		    errLog.info(s);
+		    debugLog.info(s);
 		}
 	}
 
@@ -348,7 +348,7 @@ public final class SMWLogger {//final - no extension of the server logger
 			errLog.warning("[" + e.toString() + "]");
 			StackTraceElement[] t = e.getStackTrace();
 			for(int i = 0; i < t.length; i++){
-				errLog.warning("   " + t[i].toString());
+				debugLog.warning("   " + t[i].toString());
 			}
 		}
 	}

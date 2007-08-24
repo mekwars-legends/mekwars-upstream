@@ -27,6 +27,7 @@ import megamek.common.VTOL;
 import common.Unit;
 
 import server.campaign.CampaignMain;
+import server.campaign.SArmy;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
@@ -54,17 +55,22 @@ public class SetUnitCommanderCommand implements Command {
 		SPlayer p = CampaignMain.cm.getPlayer(Username);
 		SHouse house = p.getMyHouse();
 		int mechid = -1;
+		int armyid = -1;
 		boolean commander = false;
 		
 		try {
 			mechid = Integer.parseInt(command.nextToken());
+			armyid = Integer.parseInt(command.nextToken());
 			commander = Boolean.parseBoolean(command.nextToken());
+			
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Incorrect syntax. Try: /setUnitCommander unit ID#true/false", Username, true);
+			CampaignMain.cm.toUser("Incorrect syntax. Try: /setUnitCommander unit ID#army ID#true/false", Username, true);
 			return;
 		}
 		
 		SUnit m = p.getUnit(mechid);
+		SArmy army = p.getArmy(armyid);
+		
 		if (m == null) {
 			CampaignMain.cm.toUser("Could not find a unit with the given ID.", Username, true);
 			return;
@@ -100,14 +106,25 @@ public class SetUnitCommanderCommand implements Command {
 			return;
 		}
 		
-		m.setUnitCommander(commander);
+		if ( army.isCommander(m.getId()) && commander ){
+			CampaignMain.cm.toUser(m.getModelName()+" is already a unit commander for this army!",Username);
+			return;
+		}
+
 		if(CampaignMain.cm.isUsingMySQL())
-			m.toDB();
-		CampaignMain.cm.toUser("PL|UU|"+m.getId()+"|"+m.toString(true),Username,false);
-		if ( commander )
+			p.toDB();
+		
+		
+		if ( commander ){
+			army.addCommander(m.getId());
 			CampaignMain.cm.toUser("Unit #"+m.getId()+" has been set as unit commander", Username);
-		else
+		}
+		else{
 			CampaignMain.cm.toUser("Unit #"+m.getId()+" has been removed as unit commander", Username);
+			army.removeCommander(m.getId());
+		}
+		CampaignMain.cm.toUser("PL|SAD|"+army.toString(true,"%"),Username,false);
+		
 	}//end process()
 
 }//end ScrapCommand

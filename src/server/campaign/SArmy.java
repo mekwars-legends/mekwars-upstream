@@ -86,6 +86,7 @@ public class SArmy extends Army {
         removeUnitFromC3Network(id);
 		super.setBV(0);
 		setRawForceSize(0);
+		removeCommander(id);
 	}
 	
 	public int getUnitPosition(int id){
@@ -512,6 +513,7 @@ public class SArmy extends Army {
 		
 		if ( ST.hasMoreTokens() )
 			this.setOpForceSize(Integer.parseInt(ST.nextToken()));
+
 	}
 	
 	public String getMinimalInfo(){

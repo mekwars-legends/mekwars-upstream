@@ -52,6 +52,7 @@ import megamek.common.Mech;
 import megamek.common.Tank;
 import client.CConfig;
 import client.MWClient;
+import client.campaign.CArmy;
 import client.campaign.CUnit;
 /**
  *
@@ -69,7 +70,8 @@ public class MechInfo extends JPanel {
   CConfig Config = null;
   ImageIcon previewIcon = null;
   CUnit cm = null;
-
+  CArmy army = null;
+  
   /*public void setBackground(Color color){
       super.setBackground(color);
       try{
@@ -267,8 +269,8 @@ public class MechInfo extends JPanel {
               }
 
               //commander block
-              if ( Config.isParam("LEFTCOMMANDER") ){
-                  if ( cm.isUnitCommander() ){
+              if ( Config.isParam("LEFTCOMMANDER") && army != null ){
+                  if ( army.isCommander(cm.getId()) ){
                       ic = new ImageIcon("data/images/status/comm.gif");
                       g.drawImage(ic.getImage(),0, height,ic.getImageObserver());
                       height += ic.getIconHeight();
@@ -439,8 +441,8 @@ public class MechInfo extends JPanel {
           }
 
           //commander block
-          if ( Config.isParam("RIGHTCOMMANDER") ){
-              if ( cm.isUnitCommander() ){
+          if ( Config.isParam("RIGHTCOMMANDER") && army != null ){
+              if ( army.isCommander(cm.getId()) ){
                   ic = new ImageIcon("data/images/status/comm.gif");
                   g.drawImage(ic.getImage(),cellWidth-ic.getIconWidth(), height,ic.getImageObserver());
                   height += ic.getIconHeight();
@@ -575,12 +577,13 @@ public class MechInfo extends JPanel {
 
   }
 
-  public void setUnit(CUnit cm)  {
+  public void setUnit(CUnit cm, CArmy army)  {
       
       if ( cm == null )
           return;
       
       this.cm = cm;
+      this.army = army;
       Image unit = null;
       Image camo = null;
       ImageIcon camoicon = null;

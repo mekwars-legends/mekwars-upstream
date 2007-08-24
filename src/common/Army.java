@@ -49,6 +49,8 @@ public class Army {
 	
 	private Hashtable<Integer,Integer> c3Network = new Hashtable<Integer,Integer>();
 
+	private Vector<Integer> commanders = new Vector<Integer>();
+	
 	//CONSTRUCTORS
 	public Army(){
 		//no content
@@ -238,6 +240,13 @@ public class Army {
 		result.append(opForceSize);
 		result.append(delimiter);
 		
+		result.append(commanders.size());
+		result.append(delimiter);
+		for ( Integer unitId : commanders){
+			result.append(unitId);
+			result.append(delimiter);
+		}
+		
 		return result.toString();
 	}
 
@@ -299,4 +308,29 @@ public class Army {
 	public void setOpForceSize(int force) {
 		this.opForceSize = force;
 	}
+	
+	public Vector<Integer> getCommanders(){
+		return commanders;
+	}
+	
+	public boolean isCommander(int id){
+		
+		if ( commanders.contains(id) )
+			return true;
+		
+		return false;
+	}
+	
+	public void removeCommander(int id){
+		commanders.removeElement(id);
+		commanders.trimToSize();
+	}
+	
+	public void addCommander(int id){
+		if ( isCommander(id) )
+			return;
+		commanders.add(id);
+		commanders.trimToSize();
+	}
+	
 }

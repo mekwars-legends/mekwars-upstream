@@ -505,9 +505,6 @@ public final class SUnit extends Unit implements Serializable {
         	result.append(this.getDBId());
         	result.append("$");
         }
-        result.append(this.isUnitCommander());
-        result.append("$");
-        
 		return result.toString();
 	}
 	
@@ -551,7 +548,6 @@ public final class SUnit extends Unit implements Serializable {
 				ps.setInt(14, getCurrentRepairCost());
 				ps.setInt(15, getLifeTimeRepairCost());
 				ps.setInt(16, getType());
-				ps.setString(17, Boolean.toString(this.isUnitCommander()));
 				ps.executeUpdate();
 				setDBId(getId());
 			} else {
@@ -585,7 +581,6 @@ public final class SUnit extends Unit implements Serializable {
 				ps.setInt(13, getCurrentRepairCost());
 				ps.setInt(14, getLifeTimeRepairCost());
 				ps.setInt(15, getType());
-				ps.setString(16, Boolean.toString(this.isUnitCommander()));
 				ps.setInt(17, getId());
 				ps.executeUpdate();
 			}
@@ -789,9 +784,6 @@ public final class SUnit extends Unit implements Serializable {
             if ( CampaignMain.cm.isUsingMySQL() && ST.hasMoreTokens())
             	this.setDBId(Integer.parseInt(ST.nextToken()));
             
-            if ( ST.hasMoreTokens() )
-            	this.setUnitCommander(Boolean.parseBoolean(ST.nextToken()));
-            
 			return s;
 		}
 		catch(Exception ex){
@@ -807,7 +799,6 @@ public final class SUnit extends Unit implements Serializable {
 			Connection con = CampaignMain.cm.MySQL.getCon();
 			ResultSet rs;
 			Statement stmt = con.createStatement();
-			boolean isCommander=false;
 			
 			rs = stmt.executeQuery("SELECT * from units WHERE MWID = " + unitID);
 			if(rs.next()) {
@@ -818,7 +809,6 @@ public final class SUnit extends Unit implements Serializable {
 			setWeightclass(rs.getInt("uWeightClass"));
 			setId(unitID);
 			setDBId(unitID);
-			isCommander=Boolean.parseBoolean(rs.getString("uIsUnitCommander"));
 			if(CampaignMain.cm.getCurrentUnitID() <= getId())
 				CampaignMain.cm.setCurrentUnitID(getId() + 1);
 			if (getId()==0)
@@ -904,8 +894,7 @@ public final class SUnit extends Unit implements Serializable {
 				}
 			}
 			
-			setEntity(unitEntity);
-			this.setUnitCommander(isCommander);
+				setEntity(unitEntity);
 			}
 		} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in SUnit.fromDB: " + e.getMessage());
@@ -1052,7 +1041,6 @@ public final class SUnit extends Unit implements Serializable {
 			return;
 		
 		//any time the pilot changes set the unit commander flag to false.
-		this.setUnitCommander(false);
 		Pilot mPilot = new Pilot(p.getName(), p.getGunnery(), p.getPiloting());
 		Entity entity = this.getEntity();
 		entity.setCrew(mPilot);

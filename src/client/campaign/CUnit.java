@@ -235,12 +235,6 @@ public class CUnit extends Unit {
         if ( ST.hasMoreTokens() )
         	this.setRepairCosts(Integer.parseInt(ST.nextToken()),Integer.parseInt(ST.nextToken()));
         
-        if ( ST.hasMoreTokens() ){
-        	this.setUnitCommander(Boolean.parseBoolean(ST.nextToken()));
-        	this.getEntity().setCommander(this.isUnitCommander());
-        }
-        	
-        
         UnitEntity.setExternalId(this.getId());
         UnitEntity.setCrew(new megamek.common.Pilot(p.getName(), p.getGunnery(), p.getPiloting()));
 
@@ -287,9 +281,6 @@ public class CUnit extends Unit {
 			tinfo += " (" + getPilot().getName() + ", " + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ") <br>";
 		else
 			tinfo += " (" + getPilot().getName() + ", " + getPilot().getGunnery() + ") <br>";
-		
-		if ( this.isUnitCommander() )
-			tinfo += "Unit Commander<br>";
 		
 		if ( this.getType() == Unit.VEHICLE )
 			tinfo += " Movement: "+this.getEntity().getMovementModeAsString() + "<br>";
