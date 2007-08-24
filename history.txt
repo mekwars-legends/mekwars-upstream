@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
++ Database update to v5
++ UnitCommanders saved to database
 Release Client/Server 0.2.6.0
 + new Operations Editor
 + Added Operation variable UseUnitCommander

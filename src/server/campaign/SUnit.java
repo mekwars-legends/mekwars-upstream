@@ -522,7 +522,7 @@ public final class SUnit extends Unit implements Serializable {
 				if(getDBId()==0) {
 				// Unit's not in there - insert it
 				sql.setLength(0);
-				sql.append("INSERT into units set MWID=?, uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, uType=?");
+				sql.append("INSERT into units set MWID=?, uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, uType=?, uIsUnitCommander=?");
 				ps=con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, getId());
 				ps.setString(2, getUnitFilename());
@@ -551,12 +551,13 @@ public final class SUnit extends Unit implements Serializable {
 				ps.setInt(14, getCurrentRepairCost());
 				ps.setInt(15, getLifeTimeRepairCost());
 				ps.setInt(16, getType());
+				ps.setString(17, Boolean.toString(this.isUnitCommander()));
 				ps.executeUpdate();
 				setDBId(getId());
 			} else {
 				// Unit's already there - update it
 				sql.setLength(0);
-				sql.append("UPDATE units set uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, uType = ? where MWID=?");
+				sql.append("UPDATE units set uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, uType = ?, uIsUnitCommander=? where MWID=?");
 				ps=con.prepareStatement(sql.toString());
 				ps.setString(1, getUnitFilename());
 				ps.setInt(2, getPosId());
@@ -584,7 +585,8 @@ public final class SUnit extends Unit implements Serializable {
 				ps.setInt(13, getCurrentRepairCost());
 				ps.setInt(14, getLifeTimeRepairCost());
 				ps.setInt(15, getType());
-				ps.setInt(16, getId());
+				ps.setString(16, Boolean.toString(this.isUnitCommander()));
+				ps.setInt(17, getId());
 				ps.executeUpdate();
 			}
 			// Now do Machine Guns
@@ -805,7 +807,7 @@ public final class SUnit extends Unit implements Serializable {
 			Connection con = CampaignMain.cm.MySQL.getCon();
 			ResultSet rs;
 			Statement stmt = con.createStatement();
-			
+			boolean isCommander=false;
 			
 			rs = stmt.executeQuery("SELECT * from units WHERE MWID = " + unitID);
 			if(rs.next()) {
@@ -816,6 +818,7 @@ public final class SUnit extends Unit implements Serializable {
 			setWeightclass(rs.getInt("uWeightClass"));
 			setId(unitID);
 			setDBId(unitID);
+			isCommander=Boolean.parseBoolean(rs.getString("uIsUnitCommander"));
 			if(CampaignMain.cm.getCurrentUnitID() <= getId())
 				CampaignMain.cm.setCurrentUnitID(getId() + 1);
 			if (getId()==0)
@@ -847,7 +850,6 @@ public final class SUnit extends Unit implements Serializable {
 				else
 					unitEntity.setTargSysType(targetingType);
 			}
-			
 
 			setEntity(unitEntity);
 			SPilot p = new SPilot();
@@ -903,6 +905,7 @@ public final class SUnit extends Unit implements Serializable {
 			}
 			
 			setEntity(unitEntity);
+			this.setUnitCommander(isCommander);
 			}
 		} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in SUnit.fromDB: " + e.getMessage());

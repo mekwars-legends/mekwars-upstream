@@ -2615,7 +2615,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 					this.config = new Properties();
 					configCreated=true;
 				}
-				this.config.put(rs.getString("configKey"), rs.getString("configValue"));
+				this.config.setProperty(rs.getString("configKey"), rs.getString("configValue"));
 			}
 		} catch (SQLException e) {
 			MMServ.mmlog.dbLog("SQL Error in SHouse.loadConfigFileFromDB: " + e.getMessage());

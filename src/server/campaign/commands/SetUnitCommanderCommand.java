@@ -89,6 +89,8 @@ public class SetUnitCommanderCommand implements Command {
 		}
 		
 		m.setUnitCommander(commander);
+		if(CampaignMain.cm.isUsingMySQL())
+			m.toDB();
 		CampaignMain.cm.toUser("PL|UU|"+m.getId()+"|"+m.toString(true),Username,false);
 		if ( commander )
 			CampaignMain.cm.toUser("Unit #"+m.getId()+" has been set as unit commander", Username);
