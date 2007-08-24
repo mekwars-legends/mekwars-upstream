@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
++ Changed Unit Commander from being set per unit to per army
++ Bug: debug log was writing to error log file
 + Added allowUnitCommandVTOL check to SetUnitCommanderCommand
 + Fixed formatting for CheckAttackCommand
 + Database update to v5
