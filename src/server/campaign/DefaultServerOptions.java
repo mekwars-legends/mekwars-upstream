@@ -875,6 +875,7 @@ public class DefaultServerOptions {
         defaults.setProperty("allowUnitCommanderInfantry","false");
         defaults.setProperty("allowUnitCommanderProtoMek","false");
         defaults.setProperty("allowUnitCommanderBattleArmor","false");
+        defaults.setProperty("allowUnitCommanderVTOL","false");
 		defaults.setProperty("allowGoingActiveWithoutUnitCommanders","true");
     }
 

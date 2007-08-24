@@ -1924,6 +1924,11 @@ public final class FactionConfigurationDialog implements ActionListener {
         BaseCheckBox.setName("allowUnitCommanderBattleArmor");
         unitCommanderSpring.add(BaseCheckBox);
         
+        BaseCheckBox = new JCheckBox("Allow VTOL Commanders");
+        BaseCheckBox.setToolTipText("<html>Allow VTOL to be set as unit commanders<br>for the kill all unit commanders operation victory condition</html>");
+        BaseCheckBox.setName("allowUnitCommanderVTOL");
+        unitCommanderSpring.add(BaseCheckBox);
+        
         BaseCheckBox = new JCheckBox("Allow Fighting Without Commanders");
         BaseCheckBox.setToolTipText("<html>Allow players to go active without any unit commanders set in their armies<br>for the kill all unit commanders operation victory condition</html>");
         BaseCheckBox.setName("allowGoingActiveWithoutUnitCommanders");
