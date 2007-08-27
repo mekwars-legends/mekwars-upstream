@@ -514,6 +514,16 @@ public class SArmy extends Army {
 		if ( ST.hasMoreTokens() )
 			this.setOpForceSize(Integer.parseInt(ST.nextToken()));
 
+		if ( ST.hasMoreElements())
+		{
+			count = Integer.parseInt(ST.nextToken());
+			for (int i = 0; i < count; i++) {
+				int unit = Integer.parseInt(ST.nextToken());
+				addCommander(unit);
+			}
+		}
+
+
 	}
 	
 	public String getMinimalInfo(){

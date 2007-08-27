@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
++ Bug: SArmy.fromString() not reading commander Status
 + Bug: CheckAttackCommand using attacking players info instead of defending 
   players info to see if defending players armies can defend.
 + Bug: Faction configs trying to load from wrong directory
