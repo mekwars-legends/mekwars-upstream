@@ -1229,7 +1229,7 @@ public class ShortValidator {
 		
 			String s = "";
 			if (failList.size() == 1)
-				return s += " because " + this.decodeFailure((Integer)failList.get(0)) + ".";
+				return s += " because: " + this.decodeFailure((Integer)failList.get(0)) + ".";
 			
 			s += "because:<br>";
 			Iterator i = failList.iterator();

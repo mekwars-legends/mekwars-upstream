@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
++ Bug: CheckAttackCommand using attacking players info instead of defending 
+  players info to see if defending players armies can defend.
 + Bug: Faction configs trying to load from wrong directory
 + Changed Unit Commander from being set per unit to per army
 + Bug: debug log was writing to error log file

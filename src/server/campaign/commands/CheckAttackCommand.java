@@ -115,7 +115,7 @@ public class CheckAttackCommand implements Command {
 					Desc += "(BV Against: "+ arm.getOperationsBV(currTarget) +")";
 				}
 				
-				Desc += "</td><td>"+listDefendableOperations(arm,p,currTarget);
+				Desc += "</td><td>"+listDefendableOperations(arm,currTargetP,currTarget);
 				
 				Desc += "</td></tr>";
 			}//end while(more targets)
@@ -153,7 +153,7 @@ public class CheckAttackCommand implements Command {
 								Desc += "(BV Against: "+ arm.getOperationsBV(currTarget) +")";
 						}
 						
-						Desc += "</td><td>"+listDefendableOperations(arm,p,currTarget);
+						Desc += "</td><td>"+listDefendableOperations(arm,currTargetP,currTarget);
 
 						Desc += "</td></tr>";
 						if ( targets.hasMoreElements() )
@@ -180,7 +180,7 @@ public class CheckAttackCommand implements Command {
 				
 		}
 		report.trimToSize();
-		if ( report.length() < 2 )
+		if ( report.length() <= 2 )
 			return "[]";
 		report.delete(report.length()-2, report.length());
 		report.append("]");
