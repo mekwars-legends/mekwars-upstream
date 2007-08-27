@@ -18,14 +18,14 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 
 
 
 /**
- * Moving the SignOff command from MMServ into the normal command structure.
+ * Moving the SignOff command from MWServ into the normal command structure.
  *
  * Syntax  /c SignOff
  */
@@ -36,7 +36,7 @@ public class SignOffCommand implements Command {
 	
 	public void process(StringTokenizer command,String Username) {
 		
-        MMServ.mmlog.errLog(Username+" has sent signoff command");
+        MWServ.mwlog.errLog(Username+" has sent signoff command");
         CampaignMain.cm.getServer().clientLogout(Username);
 	}
 }

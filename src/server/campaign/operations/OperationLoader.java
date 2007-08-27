@@ -33,7 +33,7 @@ import java.io.FileInputStream;
 
 import java.util.Properties;
 
-import server.MMServ;
+import server.MWServ;
 
 @SuppressWarnings({"unchecked","serial"})
 public class OperationLoader {
@@ -83,8 +83,8 @@ public class OperationLoader {
 		try {
 			opValues.load(new FileInputStream(shortFilename));
 		} catch (Exception e) {
-			MMServ.mmlog.errLog("Problems loading short op: " + opName);
-			MMServ.mmlog.errLog(e);
+			MWServ.mwlog.errLog("Problems loading short op: " + opName);
+			MWServ.mwlog.errLog(e);
 		}
 		
 		//attempt to load longvals
@@ -124,8 +124,8 @@ public class OperationLoader {
 		try {
 			modValues.load(new FileInputStream(modFilename));
 		} catch (Exception e) {
-			MMServ.mmlog.errLog("Problems loading mod op: " + opName);
-			MMServ.mmlog.errLog(e);
+			MWServ.mwlog.errLog("Problems loading mod op: " + opName);
+			MWServ.mwlog.errLog(e);
 		}
 		
 		opName = opName.substring(0, opName.length() - 5);//remove ".txt"

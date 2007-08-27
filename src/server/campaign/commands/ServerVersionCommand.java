@@ -18,7 +18,7 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 
 public class ServerVersionCommand implements Command {
@@ -28,7 +28,7 @@ public class ServerVersionCommand implements Command {
 	public void setExecutionLevel(int i) {}
 	
 	public void process(StringTokenizer command,String Username) {
-		CampaignMain.cm.toUser("The current server version is " + MMServ.SERVER_VERSION,Username,true);
+		CampaignMain.cm.toUser("The current server version is " + MWServ.SERVER_VERSION,Username,true);
 	}
 	
 }

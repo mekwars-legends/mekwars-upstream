@@ -34,7 +34,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.zip.Deflater;
 
-import server.MMServ;
+import server.MWServ;
 import server.MWChatServer.commands.ICommands;
 
 /**
@@ -97,7 +97,7 @@ public class ConnectionHandler extends AbstractConnectionHandler {
     		_reader = new ReaderThread(this, _client, _inputStream);
     		_reader.start();
     	} catch (Exception ex) {
-    		MMServ.mmlog.errLog(ex);
+    		MWServ.mwlog.errLog(ex);
     	} catch (OutOfMemoryError OOM) {
     		
     		/*
@@ -125,7 +125,7 @@ public class ConnectionHandler extends AbstractConnectionHandler {
     			_reader.start();
    
     		} catch (Exception e) {
-    			MMServ.mmlog.errLog(e);
+    			MWServ.mwlog.errLog(e);
     		}
     		
     	}
@@ -180,7 +180,7 @@ public class ConnectionHandler extends AbstractConnectionHandler {
             
             //If the message is brief (under 200 chars), send uncompressed, then return.
             if (s.length() < 200) {
-              //  MMServ.mmlog.warnLog("Client: " + _client.getUserId() + " /" + _client.getHost() + " Size: " + s.length() + " Message: " + s);
+              //  MWServ.mwlog.warnLog("Client: " + _client.getUserId() + " /" + _client.getHost() + " Size: " + s.length() + " Message: " + s);
                 _out.print(s);
                 _out.flush();
                 return;
@@ -207,7 +207,7 @@ public class ConnectionHandler extends AbstractConnectionHandler {
 
             int n = _deflater.deflate(_deflatedBytes);// should always be nonzero since we called finish()
 
-            //MMServ.mmlog.warnLog("Deflating Message for " + _client.getUserId()+ "/" + _client.getHost() + " from " + s.length() + " to " + n + " Message: " + s);
+            //MWServ.mwlog.warnLog("Deflating Message for " + _client.getUserId()+ "/" + _client.getHost() + " from " + s.length() + " to " + n + " Message: " + s);
             
             /*
              * @NFC comment
@@ -228,7 +228,7 @@ public class ConnectionHandler extends AbstractConnectionHandler {
             try {
                 _out.print(o);
             } catch (Exception ex) {
-                MMServ.mmlog.errLog(ex);
+                MWServ.mwlog.errLog(ex);
             }
             
             /*
@@ -239,8 +239,8 @@ public class ConnectionHandler extends AbstractConnectionHandler {
             _socket.getOutputStream().flush();
             
         } catch (Exception e) {
-            MMServ.mmlog.errLog("Socket error; shutting down client");
-            MMServ.mmlog.errLog(e);
+            MWServ.mwlog.errLog("Socket error; shutting down client");
+            MWServ.mwlog.errLog(e);
             //Commenting out for now. letting the socket get closed in the 
             //readerthread code. --Torren
             //shutdown(true);
@@ -255,7 +255,7 @@ public class ConnectionHandler extends AbstractConnectionHandler {
     @Override
 	public void queuePriorityMessage(String message) {
         synchronized (_messages) {
-    //        MMServ.mmlog.warnLog("queuePriorityMessage Client: "
+    //        MWServ.mwlog.warnLog("queuePriorityMessage Client: "
       //              + _client.getUserId() + "Size: " + message.length()
         //            + " Host: " + _client.getHost());
             _out.print(message + "\n");
@@ -283,8 +283,8 @@ public class ConnectionHandler extends AbstractConnectionHandler {
             try {
                 _socket.close();
             } catch (IOException e) {
-                MMServ.mmlog.errLog("connection shutdown due to error");
-                MMServ.mmlog.errLog(e);
+                MWServ.mwlog.errLog("connection shutdown due to error");
+                MWServ.mwlog.errLog(e);
             }
 
             super.shutdown(notify);

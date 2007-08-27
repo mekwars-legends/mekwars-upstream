@@ -42,7 +42,7 @@ public class GrantInfluenceCommand implements Command {
 			p.addInfluence(amount);
 			CampaignMain.cm.toUser("You've been granted " + CampaignMain.cm.moneyOrFluMessage(false,true,amount,true)+" from " + Username,p.getName(),true);
 			CampaignMain.cm.toUser("You granted " + CampaignMain.cm.moneyOrFluMessage(false,true,amount,true)+" to " + p.getName(),Username,true);
-			//server.MMServ.mmlog.modLog(Username + " granted " +CampaignMain.cm.moneyOrFluMessage(false,true,amount,true)+" to " + p.getName());
+			//server.MWServ.mwlog.modLog(Username + " granted " +CampaignMain.cm.moneyOrFluMessage(false,true,amount,true)+" to " + p.getName());
 			CampaignMain.cm.doSendModMail("NOTE",Username + " granted " +CampaignMain.cm.moneyOrFluMessage(false,true,amount,true)+" to " + p.getName());
 		}	
 	}

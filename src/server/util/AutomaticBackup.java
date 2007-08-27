@@ -33,7 +33,7 @@ import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 
 public class AutomaticBackup implements Runnable{
@@ -66,7 +66,7 @@ public class AutomaticBackup implements Runnable{
         if (lastBackup > time - backupHours )
             return;
         
-        MMServ.mmlog.mainLog("Archiving Started at "+time);
+        MWServ.mwlog.mainLog("Archiving Started at "+time);
         CampaignMain.cm.setArchiving(true);
         
         if(CampaignMain.cm.isUsingMySQL()) {
@@ -96,8 +96,8 @@ public class AutomaticBackup implements Runnable{
 	        	zipFile.close();
         	}
         	catch(Exception ex){
-            	MMServ.mmlog.errLog("Unable to create factions zip file");
-            	MMServ.mmlog.errLog(ex);
+            	MWServ.mwlog.errLog("Unable to create factions zip file");
+            	MWServ.mwlog.errLog(ex);
         	}
 
         	try{
@@ -107,8 +107,8 @@ public class AutomaticBackup implements Runnable{
             	zipFile.close();
         	}
         	catch(Exception ex){
-            	MMServ.mmlog.errLog("Unable to create planets zip file");
-            	MMServ.mmlog.errLog(ex);
+            	MWServ.mwlog.errLog("Unable to create planets zip file");
+            	MWServ.mwlog.errLog(ex);
         	}
             try{
     	        out = new FileOutputStream(playerZipFileName);
@@ -117,8 +117,8 @@ public class AutomaticBackup implements Runnable{
     	        zipFile.close();
             }
             catch(Exception ex){
-                MMServ.mmlog.errLog("Unable to create player zip file");
-                MMServ.mmlog.errLog(ex);
+                MWServ.mwlog.errLog("Unable to create player zip file");
+                MWServ.mwlog.errLog(ex);
             }
         }
 
@@ -129,13 +129,13 @@ public class AutomaticBackup implements Runnable{
             zipFile.close();
         }
         catch(Exception ex){
-            MMServ.mmlog.errLog("Unable to create data zip file");
-            MMServ.mmlog.errLog(ex);
+            MWServ.mwlog.errLog("Unable to create data zip file");
+            MWServ.mwlog.errLog(ex);
         }
 		CampaignMain.cm.getConfig().setProperty("LastAutomatedBackup",Long.toString(time));
 		CampaignMain.dso.createConfig();
         CampaignMain.cm.setArchiving(false);
-        MMServ.mmlog.mainLog("Archiving Ended.");
+        MWServ.mwlog.mainLog("Archiving Ended.");
     }
     
     /**
@@ -163,11 +163,11 @@ public class AutomaticBackup implements Runnable{
                     in.close();
                 }
                 catch ( FileNotFoundException fnfe ){
-                    MMServ.mmlog.errLog("Unable to backup faction file: "+files[i].getName());
+                    MWServ.mwlog.errLog("Unable to backup faction file: "+files[i].getName());
                 }
                 catch (Exception ex){
-                    MMServ.mmlog.errLog("Unable to backup faction files");
-                    MMServ.mmlog.errLog(ex);
+                    MWServ.mwlog.errLog("Unable to backup faction files");
+                    MWServ.mwlog.errLog(ex);
                 }
             }
         
@@ -192,8 +192,8 @@ public class AutomaticBackup implements Runnable{
             }
         }
         catch (Exception ex){
-            MMServ.mmlog.errLog("Unable to backup planet files");
-            MMServ.mmlog.errLog(ex);
+            MWServ.mwlog.errLog("Unable to backup planet files");
+            MWServ.mwlog.errLog(ex);
         }
         
     }
@@ -217,8 +217,8 @@ public class AutomaticBackup implements Runnable{
 	        }
         }
         catch (Exception ex){
-            MMServ.mmlog.errLog("Unable to backup player files");
-            MMServ.mmlog.errLog(ex);
+            MWServ.mwlog.errLog("Unable to backup player files");
+            MWServ.mwlog.errLog(ex);
         }
         
     }
@@ -254,8 +254,8 @@ public class AutomaticBackup implements Runnable{
             }
         }
         catch (Exception ex){
-            MMServ.mmlog.errLog("Unable to backup server data files: "+path);
-            MMServ.mmlog.errLog(ex);
+            MWServ.mwlog.errLog("Unable to backup server data files: "+path);
+            MWServ.mwlog.errLog(ex);
         }
         
     }

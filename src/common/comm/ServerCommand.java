@@ -23,7 +23,7 @@
 
 package common.comm;
 
-import server.MMServ;
+import server.MWServ;
 
 /**
  *
@@ -32,7 +32,7 @@ import server.MMServ;
 public interface ServerCommand extends ICommand {
 
   public void parseArguments(String s);
-  public void setServer(MMServ server);
+  public void setServer(MWServ server);
   public void setUsername(String name);
   public void clientSend(String txt);
 

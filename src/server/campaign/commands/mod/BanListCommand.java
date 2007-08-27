@@ -27,7 +27,7 @@ import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
 
 /**
- * Moving the BanList command from MMServ into the normal command structure.
+ * Moving the BanList command from MWServ into the normal command structure.
  * 
  * Syntax /c BanList
  */
@@ -109,6 +109,6 @@ public class BanListCommand implements Command {
 		CampaignMain.cm.toUser(result, Username);
 		CampaignMain.cm.doSendModMail("NOTE", Username
 				+ " checked the ban list.");
-		// MMServ.mmlog.modLog(Username + " checked the ban list.");
+		// MWServ.mwlog.modLog(Username + " checked the ban list.");
 	}
 }

@@ -40,7 +40,7 @@ import common.Unit;
 import common.campaign.pilot.Pilot;
 import common.util.MD5;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.SPersonalPilotQueues;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.SPilotSkill;
@@ -66,7 +66,7 @@ public class  MWCyclopsPilot{
 			
 			message.append(MWCyclopsUtils.methodCallEnd());
 		}catch(Exception ex){
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 		
 		return message.toString();
@@ -105,7 +105,7 @@ public class  MWCyclopsPilot{
 			
 			message.append(MWCyclopsUtils.methodCallEnd());
 		}catch(Exception ex){
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 		
 		return message.toString();
@@ -130,7 +130,7 @@ public class  MWCyclopsPilot{
 			
 			message.append(MWCyclopsUtils.methodCallEnd());
 		}catch(Exception ex){
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 		
 		return message.toString();
@@ -156,7 +156,7 @@ public class  MWCyclopsPilot{
 			
 			message.append(MWCyclopsUtils.methodCallEnd());
 		}catch(Exception ex){
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 		
 		return message.toString();

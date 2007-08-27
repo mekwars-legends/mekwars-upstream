@@ -25,7 +25,7 @@ import server.MWChatServer.auth.IAuthenticator;
 
 
 /**
- * Moving the ServerAnnouncement command from MMServ into the normal command structure.
+ * Moving the ServerAnnouncement command from MWServ into the normal command structure.
  *
  * Syntax  /c ServerAnnouncement#Message
  */

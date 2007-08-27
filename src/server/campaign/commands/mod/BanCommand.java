@@ -25,7 +25,7 @@ import server.MWChatServer.auth.IAuthenticator;
 
 
 /**
- * Moving the Ban command from MMServ into the normal command structure.
+ * Moving the Ban command from MWServ into the normal command structure.
  *
  * Syntax  /c Ban
  */
@@ -140,7 +140,7 @@ public class BanCommand implements Command {
 			//CampaignMain.cm.getServer().ISPlog.put(CampaignMain.cm.getServer().myCommunicator.getClient(toKill).getClientVersion(),until);
 			//retreiveISPS(until,toKill);
 			CampaignMain.cm.getServer().bansUpdate();
-			//MMServ.mmlog.modLog(Username + " banned " + toKill + " " +timeName+".");
+			//MWServ.mwlog.modLog(Username + " banned " + toKill + " " +timeName+".");
 			CampaignMain.cm.getServer().sendChat(Username + " banned " + toKill + " " +timeName+".");
 			
 			CampaignMain.cm.getOpsManager().doDisconnectCheckOnPlayer(toKill);

@@ -19,7 +19,7 @@ package server.campaign.commands.mod;
 import java.util.StringTokenizer;
 
 
-import server.MMServ;
+import server.MWServ;
 import server.MWChatServer.MWChatServer;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
@@ -27,7 +27,7 @@ import server.MWChatServer.auth.IAuthenticator;
 
 
 /**
- * Moving the Kick command from MMServ into the normal command structure.
+ * Moving the Kick command from MWServ into the normal command structure.
  *
  * Syntax  /c Kick#Player
  */
@@ -66,13 +66,13 @@ public class KickCommand implements Command {
 		//Use this to kick ghost players from the clients.
 		CampaignMain.cm.getServer().sendRemoveUserToAll(toKick,false);
 		CampaignMain.cm.getServer().sendChat(Username + " kicked " + toKick);
-		MMServ.mmlog.modLog(Username + " kicked " + toKick);
+		MWServ.mwlog.modLog(Username + " kicked " + toKick);
 		
-		try {
+		/*try {
 			Thread.sleep(100);//Why do we sleep here? Anyone?
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
-		}        
+			MWServ.mwlog.errLog(ex);
+		} */       
 		
 		try {
 			
@@ -82,7 +82,7 @@ public class KickCommand implements Command {
 				CampaignMain.cm.getServer().killClient(toKick,Username);
 			
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
        
 

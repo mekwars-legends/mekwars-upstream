@@ -17,7 +17,7 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.operations.Operation;
@@ -111,7 +111,7 @@ public class CommenceOperationCommand implements Command {
 		so.changeStatus(ShortOperation.STATUS_INPROGRESS);
 		
 		//tell the defender that he has succesfully joined the attack.
-		MMServ.mmlog.gameLog("Operation Commenced: " + so.getShortID() + "/" + ap.getName());
+		MWServ.mwlog.gameLog("Operation Commenced: " + so.getShortID() + "/" + ap.getName());
 		CampaignMain.cm.toUser("Operation Commenced!",Username,true);
 		
 	}//end process

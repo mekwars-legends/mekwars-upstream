@@ -22,7 +22,7 @@ import java.util.Vector;
 
 import common.Unit;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SPlayer;
@@ -108,7 +108,7 @@ public class ExchangePilotInUnitCommand implements Command {
 							return;
 						}
 					} catch(Exception ex){
-						MMServ.mmlog.errLog(ex);
+						MWServ.mwlog.errLog(ex);
 						CampaignMain.cm.toUser("Invalid Pilot try again!",Username,true);
 						return;
 					}

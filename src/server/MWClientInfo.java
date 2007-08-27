@@ -29,7 +29,7 @@ import java.io.Serializable;
  * TODO: As of 7.9.06, this class is referenced only by the server. Can
  *       probably be safely repackaged as a server.* class.
  */
-public class MMClientInfo implements Serializable, java.lang.Comparable {
+public class MWClientInfo implements Serializable, java.lang.Comparable {
 	
 	//VARIABLES
 	String name ="Nobody";//should be unique
@@ -45,10 +45,16 @@ public class MMClientInfo implements Serializable, java.lang.Comparable {
 	InetAddress Adr;
 	
 	//CONSTRUCTORS
-	public MMClientInfo() {
+	public MWClientInfo() {
 	}
 	
-	public MMClientInfo(String name, InetAddress Adr, long time, int level, boolean invis) {
+	public MWClientInfo(String name) {
+		
+		if ( name != null )
+			this.name = name.toLowerCase();
+	}
+	
+	public MWClientInfo(String name, InetAddress Adr, long time, int level, boolean invis) {
 		this.name = name;
 		this.Adr = Adr;
 		Checktime = time;
@@ -119,9 +125,9 @@ public class MMClientInfo implements Serializable, java.lang.Comparable {
 		if (_mmci == null)
 			return false;
 		
-		MMClientInfo mmci;
+		MWClientInfo mmci;
 		try {
-			mmci = (MMClientInfo)_mmci;
+			mmci = (MWClientInfo)_mmci;
 		} catch (ClassCastException e) {
 			return false;
 		}
@@ -141,7 +147,7 @@ public class MMClientInfo implements Serializable, java.lang.Comparable {
 	}
 	
 	public int compareTo(Object obj) {
-		return this.name.compareTo(((MMClientInfo)obj).getName());
+		return this.name.compareTo(((MWClientInfo)obj).getName());
 	}
 	
 	public int getLevel() {

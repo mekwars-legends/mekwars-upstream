@@ -43,7 +43,7 @@ import megamek.common.Entity;
 import megamek.common.Mounted;
 import megamek.common.Protomech;
 
-import server.MMServ;
+import server.MWServ;
 
 import server.campaign.market2.IBuyer;
 import server.campaign.market2.ISeller;
@@ -57,7 +57,7 @@ import server.campaign.SUnit;
 import server.campaign.SArmy;
 import server.campaign.SHouse;
 import server.MWChatServer.auth.IAuthenticator;
-import server.util.MMNetPasswdRecord;
+import server.util.MWPasswdRecord;
 
 import common.Player;
 import common.Unit;
@@ -127,7 +127,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	private String clientVersion = "";// version gets sent by the player and set
 	
 	private SHouse myHouse;
-    private MMNetPasswdRecord password = null;
+    private MWPasswdRecord password = null;
 	
     private UnitComponents unitParts = new UnitComponents();
     
@@ -1089,7 +1089,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 					fileName = "./data/influencemessages/CommonInfluenceMessages.txt";
 					messageFile = new File(fileName);
 					if (!messageFile.exists()) {
-						MMServ.mmlog.errLog("A problem occured with your CommonInfluenceMessages File!");
+						MWServ.mwlog.errLog("A problem occured with your CommonInfluenceMessages File!");
 						return "";
 					}
 				}
@@ -1122,7 +1122,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				return fluMessageWithPlayerName;
 				
 			} catch (Exception e) {
-				MMServ.mmlog.errLog("A problem occured with your CommonInfluenceMessages File!");
+				MWServ.mwlog.errLog("A problem occured with your CommonInfluenceMessages File!");
 				return "";
 			}
 		}
@@ -1396,20 +1396,20 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		return money;
 	}
 	
-    public void setPassword(MMNetPasswdRecord pass){
+    public void setPassword(MWPasswdRecord pass){
     	
     	if ( pass == null){
     		try{
     			throw new Exception();
     		}catch(Exception ex){
-    			MMServ.mmlog.errLog(ex);
+    			MWServ.mwlog.errLog(ex);
     		}
     	}
         this.password = pass;
         this.setSave(true);
     }
     
-    public MMNetPasswdRecord getPassword(){
+    public MWPasswdRecord getPassword(){
         return this.password;
     }
     
@@ -2237,7 +2237,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	            healAllPilots((int)(timeGone/tickTime));
 		}
 		catch(Exception ex){
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 	}
 	
@@ -2685,7 +2685,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		PreparedStatement ps;
 		StringBuffer sql = new StringBuffer();
 		try {
-			MMServ.mmlog.dbLog("Saving player " + getName() +  " (DBID: " + getDBId() + ")");		
+			MWServ.mwlog.dbLog("Saving player " + getName() +  " (DBID: " + getDBId() + ")");		
 			if(getDBId()==0){
 				// Not in the database - INSERT it
 				sql.setLength(0);
@@ -2898,9 +2898,9 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				CampaignMain.cm.MySQL.linkPilotToPlayer(((SPilot)currList.get(position)).getDBId(), getDBId());
 			}
 		}
-		MMServ.mmlog.dbLog("Finished saving player");
+		MWServ.mwlog.dbLog("Finished saving player");
 		} catch (SQLException e) {
-			MMServ.mmlog.dbLog("SQL error in PlayerHandler.savePlayer: " + e.getMessage());
+			MWServ.mwlog.dbLog("SQL error in PlayerHandler.savePlayer: " + e.getMessage());
 		}
 	}
 	
@@ -2913,7 +2913,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	public void fromString(String s) {
 		
 		//print the player into the info log. only for Debug
-		//MMServ.mmlog.infoLog("CSPlayer: " + s);
+		//MWServ.mwlog.infoLog("CSPlayer: " + s);
 		this.isLoading = true;
 		
 		this.armies.clear();
@@ -3087,7 +3087,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
                 String passwd = ST.nextToken();
                 long time = Long.parseLong(ST.nextToken());
                 
-                this.setPassword(new MMNetPasswdRecord(this.name,access,passwd,time,""));
+                this.setPassword(new MWPasswdRecord(this.name,access,passwd,time,""));
             } catch(Exception ex){}
         }
         
@@ -3236,7 +3236,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	                String passwd = rs.getString("playerPassword");
 	                long time = System.currentTimeMillis();
 	                if(access >= 2)
-	                	this.password = new MMNetPasswdRecord(this.name,access,passwd,time,"");
+	                	this.password = new MWPasswdRecord(this.name,access,passwd,time,"");
 	            } catch(Exception ex){}
 	        
 	        	if ( CampaignMain.cm.getBooleanConfig("UsePartsRepair") )
@@ -3285,7 +3285,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		rs.close();
 		this.isLoading = false;
 		} catch (SQLException e) {
-			MMServ.mmlog.dbLog("SQL Error in SPlayer.fromDB: " + e.getMessage());
+			MWServ.mwlog.dbLog("SQL Error in SPlayer.fromDB: " + e.getMessage());
 		}
 		}	
 	

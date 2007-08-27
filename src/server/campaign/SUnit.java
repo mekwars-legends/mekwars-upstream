@@ -38,7 +38,7 @@ import common.Unit;
 import common.campaign.pilot.skills.PilotSkill;
 import common.util.UnitUtils;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.PainResistanceSkill;
 import server.campaign.pilot.skills.SPilotSkill;
@@ -628,7 +628,7 @@ public final class SUnit extends Unit implements Serializable {
 				((SPilot)getPilot()).toDB(getType(), getWeightclass());
 			}
 		} catch (SQLException e){
-			MMServ.mmlog.dbLog("SQL Exception in UnitHandler.saveUnit: " + e.getMessage());
+			MWServ.mwlog.dbLog("SQL Exception in UnitHandler.saveUnit: " + e.getMessage());
 		}
 	}
 	
@@ -787,8 +787,8 @@ public final class SUnit extends Unit implements Serializable {
 			return s;
 		}
 		catch(Exception ex){
-			MMServ.mmlog.errLog(ex);
-			MMServ.mmlog.errLog("Unable to Load SUnit: "+s);
+			MWServ.mwlog.errLog(ex);
+			MWServ.mwlog.errLog("Unable to Load SUnit: "+s);
 			//the unit should still be good return what did get set
 			return s;
 		}
@@ -871,8 +871,8 @@ public final class SUnit extends Unit implements Serializable {
 					unitEntity.getAmmo().get(AmmoLoc).setShotsLeft(shots);
 					unitEntity.getAmmo().get(AmmoLoc).setHotLoad(hotloaded);
 				} catch (Exception ex) {
-					MMServ.mmlog.dbLog("Exception: " + ex.toString());
-					MMServ.mmlog.dbLog(ex.getStackTrace().toString());
+					MWServ.mwlog.dbLog("Exception: " + ex.toString());
+					MWServ.mwlog.dbLog(ex.getStackTrace().toString());
 				}
 			}
 
@@ -897,7 +897,7 @@ public final class SUnit extends Unit implements Serializable {
 				setEntity(unitEntity);
 			}
 		} catch (SQLException e) {
-			MMServ.mmlog.dbLog("SQL Error in SUnit.fromDB: " + e.getMessage());
+			MWServ.mwlog.dbLog("SQL Error in SUnit.fromDB: " + e.getMessage());
 		}
 	}
 	
@@ -1052,7 +1052,7 @@ public final class SUnit extends Unit implements Serializable {
 				SPilotSkill skill = (SPilotSkill)ski.next();
 				if ( skill.getName().equals("Weapon Specialist")
 						&& p.getWeapon().equals("Default")){
-					//MMServ.mmlog.errLog("setPilot inside");
+					//MWServ.mwlog.errLog("setPilot inside");
 					p.getSkills().remove(skill);
 					((WeaponSpecialistSkill)skill).assignWeapon(this.getEntity(),p);
 					skill.addToPilot(p);
@@ -1202,7 +1202,7 @@ public final class SUnit extends Unit implements Serializable {
 					 * a bad filename (table type) or a missing unit. Either way, need to set
 					 * up and return a failsafe unit.
 					 */
-					MMServ.mmlog.errLog("Error loading: " + Filename);
+					MWServ.mwlog.errLog("Error loading: " + Filename);
 					
 					try {
 						ent = new MechFileParser (new File("./data/unitfiles/Meks.zip"),"Error OMG-UR-FD.hmp").getEntity();
@@ -1212,8 +1212,8 @@ public final class SUnit extends Unit implements Serializable {
 						 * Can't even find the default unit file. Are all the
 						 * .zip files missing? Misnamed? Read access is denied?
 						 */
-						MMServ.mmlog.errLog("Unable to find default unit file. Server Exiting");
-						MMServ.mmlog.errLog(exep);
+						MWServ.mwlog.errLog("Unable to find default unit file. Server Exiting");
+						MWServ.mwlog.errLog(exep);
 						System.exit(1);
 					}
 				}
@@ -1300,7 +1300,7 @@ public final class SUnit extends Unit implements Serializable {
 	
 	public boolean hasSemiGuided(){
 		for ( Mounted ammo : this.getEntity().getAmmo() ){
-			//MMServ.mmlog.errLog("ammo type: "+((AmmoType)ammo.getType()).getMunitionType());
+			//MWServ.mwlog.errLog("ammo type: "+((AmmoType)ammo.getType()).getMunitionType());
 			if ( ((AmmoType)ammo.getType()).getMunitionType() == AmmoType.M_SEMIGUIDED )
 				return true;
 		}

@@ -37,7 +37,7 @@ import common.Planet;
 import common.Unit;
 import common.UnitFactory;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.pilot.SPilot;
 import server.campaign.SUnit;
 
@@ -107,7 +107,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 	    
 	    try {
 	    if(con.isClosed())
-		MMServ.mmlog.dbLog("Error: con closed"); 
+		MWServ.mwlog.dbLog("Error: con closed"); 
 	    stmt = con.createStatement();
 	    sql.setLength(0); 
 	    sql.append("SELECT FactoryID from factories WHERE FactoryID = '");
@@ -181,7 +181,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 	    }
 	    catch (SQLException e)
 	      {
-	      MMServ.mmlog.dbLog("SQL ERROR in SUnitFactory.toDB: " + e.getMessage());
+	      MWServ.mwlog.dbLog("SQL ERROR in SUnitFactory.toDB: " + e.getMessage());
 	      }
 	}
 	/**
@@ -287,7 +287,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		if (type_id != Unit.MEK)
 			buildtableName += Unit.getTypeClassDesc(type_id);
 		
-		MMServ.mmlog.infoLog("New unit for " + this.getPlanet().getOwner().getName() + " on " + this.getPlanet().getName() + ": "
+		MWServ.mwlog.infoLog("New unit for " + this.getPlanet().getOwner().getName() + " on " + this.getPlanet().getName() + ": "
 				+ Filename + "(Table: " + buildtableName + ")");
 		
 		//Build the unit & create history entry

@@ -38,7 +38,7 @@ import java.util.StringTokenizer;
 
 import common.Unit;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.SUnit;
 import server.campaign.CampaignMain;
 
@@ -469,7 +469,7 @@ public class AutoArmy {
 		try {
 			v.elements();
 		} catch (Exception e) {
-			MMServ.mmlog.mainLog("AUTOARMY UNITS WERE NULL");
+			MWServ.mwlog.mainLog("AUTOARMY UNITS WERE NULL");
 		}
 		
 		for (SUnit currU : this.getUnits())

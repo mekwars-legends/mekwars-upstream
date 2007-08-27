@@ -52,7 +52,7 @@ public class ModeratorMailCommand implements Command {
 			return;
 		
 		CampaignMain.cm.doSendModMail(Username, toSend);
-		//MMServ.mmlog.modLog("[MM] " + Username + ": " + toSend);
+		//MWServ.mwlog.modLog("[MM] " + Username + ": " + toSend);
 		
 	}
 }

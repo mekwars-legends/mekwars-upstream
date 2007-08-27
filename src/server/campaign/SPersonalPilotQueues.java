@@ -28,7 +28,7 @@ import java.util.LinkedList;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.pilot.SPilot;
 
 import common.Unit;
@@ -269,7 +269,7 @@ public class SPersonalPilotQueues {
 			rs.close();
 			stmt.close();
 		}catch(SQLException e) {
-			MMServ.mmlog.dbLog("SQL Error in SPersonalPilotQueues.fromDB: " + e.getMessage());
+			MWServ.mwlog.dbLog("SQL Error in SPersonalPilotQueues.fromDB: " + e.getMessage());
 		}
 		
 	}

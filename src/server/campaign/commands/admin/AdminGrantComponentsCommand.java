@@ -77,7 +77,7 @@ public class AdminGrantComponentsCommand implements Command {
 		
 		h.addPP(unitWeight,unitType,comps,true);
 		CampaignMain.cm.toUser("You granted " + comps + " Comps to " + h.getName(),Username,true);
-		//server.MMServ.mmlog.modLog(Username + " granted " + comps+ " Comps to " + h.getName());
+		//server.MWServ.mwlog.modLog(Username + " granted " + comps+ " Comps to " + h.getName());
 		CampaignMain.cm.doSendModMail("NOTE",Username + " granted " + comps+ " Comps to " + h.getName());
 		
 	}

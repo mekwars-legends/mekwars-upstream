@@ -19,7 +19,7 @@ package server.campaign.commands.admin;
 import java.util.StringTokenizer;
 import java.util.Iterator;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.SUnitFactory;
 import server.campaign.SPlanet;
 import server.campaign.CampaignMain;
@@ -75,11 +75,11 @@ public class AdminDestroyFactoryCommand implements Command {
 				return;
 			}
             p.updated();
-			//server.MMServ.mmlog.modLog(Username + "  removed " + factoryname + " from " + p.getName() + ".");
+			//server.MWServ.mwlog.modLog(Username + "  removed " + factoryname + " from " + p.getName() + ".");
 			CampaignMain.cm.toUser(factoryname + " removed from " + p.getName() + ".",Username,true);
 			CampaignMain.cm.doSendModMail("NOTE",Username + "  removed " + factoryname + " from " + p.getName() + ".");
 		} catch (Exception ex){
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}//end catch
 		
 	}

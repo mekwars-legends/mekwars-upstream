@@ -19,7 +19,7 @@ package server.campaign;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.util.OpponentListHelper;
 
 /**
@@ -48,7 +48,7 @@ public final class ImmunityThread extends Thread {//no extension
 		try {
 			this.wait(time);
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 	}
 	

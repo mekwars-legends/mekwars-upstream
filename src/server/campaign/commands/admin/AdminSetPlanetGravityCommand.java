@@ -53,7 +53,7 @@ public class AdminSetPlanetGravityCommand implements Command {
 		
 		
 		CampaignMain.cm.toUser("Gravity set for "+planet.getName(),Username,true);
-		//server.MMServ.mmlog.modLog(Username + " set the gravity for "+planet.getName());
+		//server.MWServ.mwlog.modLog(Username + " set the gravity for "+planet.getName());
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has set the gravity for "+planet.getName());
 		
 	}

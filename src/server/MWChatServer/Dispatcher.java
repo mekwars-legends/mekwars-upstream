@@ -30,7 +30,7 @@ package server.MWChatServer;
 
 import java.util.ArrayList;
 
-import server.MMServ;
+import server.MWServ;
 
 public class Dispatcher implements Runnable {
     protected ArrayList<ConnectionHandler> _handlers;
@@ -65,7 +65,7 @@ public class Dispatcher implements Runnable {
                 }
             }
             catch (InterruptedException e) { 
-                MMServ.mmlog.errLog(e);
+                MWServ.mwlog.errLog(e);
             }
         }
     }
@@ -78,7 +78,7 @@ public class Dispatcher implements Runnable {
             try{
                 ch.flush();
             } catch(Exception ex){
-                MMServ.mmlog.errLog(ex);
+                MWServ.mwlog.errLog(ex);
             }
 		}
     }

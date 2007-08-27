@@ -39,7 +39,7 @@ package server.campaign.operations;
 import java.util.Properties;
 import java.util.TreeMap;
 
-import server.MMServ;
+import server.MWServ;
 @SuppressWarnings({"unchecked","serial"})
 public class Operation {
 	
@@ -115,7 +115,7 @@ public class Operation {
 		
 		//catastrophic failue. sysexit.
 		if (toReturn == null) {
-			MMServ.mmlog.errLog("Failed getting value \"" + valToGet + "\" from " + this.getName() + " and DefaultOp. Returning null."); 
+			MWServ.mwlog.errLog("Failed getting value \"" + valToGet + "\" from " + this.getName() + " and DefaultOp. Returning null."); 
 		}
 			
 		return toReturn;

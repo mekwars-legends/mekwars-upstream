@@ -14,7 +14,7 @@ package server.util;
 
 import java.io.IOException;
 
-import server.MMServ;
+import server.MWServ;
 import server.MWChatServer.commands.ICommands;
 import server.MWChatServer.translator.jcrypt;
 import server.campaign.CampaignMain;
@@ -38,7 +38,7 @@ import server.campaign.SPlayer;
  * <li>crypted password (String)
  */
 
-public class MMNetPasswd implements ICommands{
+public class MWPasswd implements ICommands{
     
     public static String getUserId(String target)
     {
@@ -49,17 +49,17 @@ public class MMNetPasswd implements ICommands{
             
     	return player.getName();
     }    
-    public static final MMNetPasswdRecord getRecord(String userId){
+    public static final MWPasswdRecord getRecord(String userId){
         SPlayer player = CampaignMain.cm.getPlayer(userId);
         
         if ( player == null ){
-        	//MMServ.mmlog.errLog("Player is null");
+        	//MWServ.mwlog.errLog("Player is null");
         	return null;
         }
         
         if ( player.getPassword() == null ){
-            //MMNetPasswd.reloadFile();
-        	//MMServ.mmlog.errLog("password is null");
+            //MWPasswd.reloadFile();
+        	//MWServ.mwlog.errLog("password is null");
             return null;
         }
         //else
@@ -75,21 +75,21 @@ public class MMNetPasswd implements ICommands{
      * @throw AccessDenied if the user was found, but his password did not match the contents
      *                        of the passwd file.
      */
-    public static final MMNetPasswdRecord getRecord(String userId, String password)
+    public static final MWPasswdRecord getRecord(String userId, String password)
         throws IOException, Exception
     {
-    	MMNetPasswdRecord r;
+    	MWPasswdRecord r;
        	r = getRecord(userId.toLowerCase());
 
         if (r == null) {
-        	//MMServ.mmlog.errLog("r is null");
+        	//MWServ.mwlog.errLog("r is null");
             return null;
         }
         if (password == null) {
             password = "";
         }
         if (password.length() < 2) {
-            MMServ.mmlog.infoLog("Access denied: " + userId);
+            MWServ.mwlog.infoLog("Access denied: " + userId);
             throw new Exception(userId);
         }
 
@@ -101,7 +101,7 @@ public class MMNetPasswd implements ICommands{
         }
         
         //else
-        MMServ.mmlog.errLog("Access denied: " + userId);
+        MWServ.mwlog.errLog("Access denied: " + userId);
         throw new Exception(ACCESS_DENIED);
     }
 
@@ -112,7 +112,7 @@ public class MMNetPasswd implements ICommands{
      *
      * @param r the record to write
      */
-    public static final void writeRecord(MMNetPasswdRecord r,String userId) throws IOException {
+    public static final void writeRecord(MWPasswdRecord r,String userId) throws IOException {
         SPlayer player = CampaignMain.cm.getPlayer(userId);
         
         if ( player == null )
@@ -146,11 +146,11 @@ public class MMNetPasswd implements ICommands{
         SPlayer player = CampaignMain.cm.getPlayer(userId);
         
         if ( player == null ){
-        	MMServ.mmlog.errLog("writeRecord::Player is null");
+        	MWServ.mwlog.errLog("writeRecord::Player is null");
             return;
         }
         
-    	MMNetPasswdRecord r = new MMNetPasswdRecord(userId, access, passwd,System.currentTimeMillis(),"");
+    	MWPasswdRecord r = new MWPasswdRecord(userId, access, passwd,System.currentTimeMillis(),"");
         String salt = String.valueOf(System.currentTimeMillis());
         int len = salt.length();
         salt = salt.substring(len-2, len);
@@ -168,7 +168,7 @@ public class MMNetPasswd implements ICommands{
         try {
             out = new PrintWriter(new FileWriter(getPasswdFileName()));
             for (Enumeration e = records.elements(); e.hasMoreElements(); ) {
-                saveRecord(out, (MMNetPasswdRecord)e.nextElement());
+                saveRecord(out, (MWPasswdRecord)e.nextElement());
             }
         }
         finally {
@@ -186,7 +186,7 @@ public class MMNetPasswd implements ICommands{
     }
 
 	public static void reloadFile(){
-/*		records = new Hashtable<String,MMNetPasswdRecord>();
+/*		records = new Hashtable<String,MWPasswdRecord>();
 
 		BufferedReader reader = null;
 		int lineno = 1;
@@ -195,7 +195,7 @@ public class MMNetPasswd implements ICommands{
 			reader = new BufferedReader(new InputStreamReader(is));
 			String s;
 			while ((s = reader.readLine()) != null) {
-				MMNetPasswdRecord r = parseRecord(s);
+				MWPasswdRecord r = parseRecord(s);
 				records.put(r.userId.toLowerCase(), r);
 			}
 			lineno++;
@@ -203,15 +203,15 @@ public class MMNetPasswd implements ICommands{
 		catch (FileNotFoundException FNFE) {
 		}
 		catch(Exception ex){
-            MMServ.mmlog.errLog("Error reading passwd file, line " + lineno);
-            MMServ.mmlog.errLog(ex);
+            MWServ.mwlog.errLog("Error reading passwd file, line " + lineno);
+            MWServ.mwlog.errLog(ex);
 		}
 		finally {
 			if (reader != null) {
 				try {
 					reader.close();
 				} catch (Exception e) {
-                    MMServ.mmlog.errLog(e);
+                    MWServ.mwlog.errLog(e);
 				}
 			}
 		}
@@ -223,7 +223,7 @@ public class MMNetPasswd implements ICommands{
 			writeRecord(args[0], Integer.parseInt(args[1]), args[2]);
 		}
 		catch (IOException e) {
-			MMServ.mmlog.errLog("An I/O error occurred: " + e.getMessage());
+			MWServ.mwlog.errLog("An I/O error occurred: " + e.getMessage());
 		}
 		catch (Exception e) {
 			showUsageAndExit();
@@ -231,15 +231,15 @@ public class MMNetPasswd implements ICommands{
 	}
 
 	private static final void showUsageAndExit() {
-		MMServ.mmlog.errLog("Passwd Program.  Adds new line to the passwd file, encrypting the password.");
-		MMServ.mmlog.errLog("usage: java com.lyrisoft.chat.server.remote.auth.Passwd " +
+		MWServ.mwlog.errLog("Passwd Program.  Adds new line to the passwd file, encrypting the password.");
+		MWServ.mwlog.errLog("usage: java com.lyrisoft.chat.server.remote.auth.Passwd " +
 						   "[user id] [access level] [password] [timeoflastuse]");
 		System.exit(1);
 	}
 
     /*public static String getUserId(String target)
     {
-       MMNetPasswdRecord record = (MMNetPasswdRecord)records.get(target.toLowerCase());
+       MWPasswdRecord record = (MWPasswdRecord)records.get(target.toLowerCase());
        
        if ( record == null )
            return null;

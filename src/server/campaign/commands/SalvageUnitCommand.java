@@ -29,7 +29,7 @@ import megamek.common.Entity;
 import megamek.common.Mech;
 import megamek.common.Mounted;
 import megamek.common.Tank;
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
@@ -176,7 +176,7 @@ public class SalvageUnitCommand implements Command {
             
             if ( CampaignMain.cm.getRTT().getState() == Thread.State.TERMINATED ){
                 CampaignMain.cm.toUser("FSM|Sorry your repair order could not be processed, and the repair thread terminated. Staff was notified.",Username,false);
-                MMServ.mmlog.errLog("NOTE: Repair Thread terminated! Use the restartrepairthread command to restart. If all else fails, reboot.");
+                MWServ.mwlog.errLog("NOTE: Repair Thread terminated! Use the restartrepairthread command to restart. If all else fails, reboot.");
                 return;
             }
             if ( techType == UnitUtils.TECH_PILOT )
@@ -192,8 +192,8 @@ public class SalvageUnitCommand implements Command {
             if ( sendDialogUpdate )
                 CampaignMain.cm.toUser("ARD|"+unitID+"|true",Username,false);
         }catch(Exception ex){
-            MMServ.mmlog.errLog("Unable to Process Salvage Unit Command!");
-            MMServ.mmlog.errLog(ex);
+            MWServ.mwlog.errLog("Unable to Process Salvage Unit Command!");
+            MWServ.mwlog.errLog(ex);
         }
         
 	}//end process()

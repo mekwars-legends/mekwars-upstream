@@ -75,7 +75,7 @@ public class AdminDonateCommand implements Command {
 		//tell the user about the scrap
 		CampaignMain.cm.toUser("You forced " + targetName + " to donate his " + m.getModelName() + " (ID#" + m.getId() + ").", Username, true);
 		CampaignMain.cm.toUser(Username + " forced you to donate your " + m.getModelName() + " (ID#" + m.getId() + ")", targetName, true);
-		//server.MMServ.mmlog.modLog(Username + " forced + " + targetName + " to donate his " + m.getModelName() + " (ID#" + m.getId() + ").");	
+		//server.MWServ.mwlog.modLog(Username + " forced + " + targetName + " to donate his " + m.getModelName() + " (ID#" + m.getId() + ").");	
 		CampaignMain.cm.doSendModMail("NOTE",Username + " forced " + targetName + " to donate his " + m.getModelName() + " (ID#" + m.getId() + ").");
 		
 		//and then do it ...

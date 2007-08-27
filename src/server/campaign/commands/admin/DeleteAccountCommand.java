@@ -74,7 +74,7 @@ public class DeleteAccountCommand implements Command {
 		CampaignMain.cm.toUser("You deleted " + p.getName() + "'s account.",Username,true);
 		CampaignMain.cm.toUser(Username + " deleted your account.",p.getName(),true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " deleted " + p.getName() + "'s account.");
-		//server.MMServ.mmlog.modLog(Username + " deleted " + p.getName() + "'s account.");
+		//server.MWServ.mwlog.modLog(Username + " deleted " + p.getName() + "'s account.");
 		
 	}//end process()
 	

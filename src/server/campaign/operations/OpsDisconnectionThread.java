@@ -16,7 +16,7 @@
 
 package server.campaign.operations;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 
 public class OpsDisconnectionThread extends Thread {
@@ -56,12 +56,12 @@ public class OpsDisconnectionThread extends Thread {
 		CampaignMain.cm.toUser(CampaignMain.cm.getPlayer(loserName).getColoredName() + " disconnected. You will win by forfeit if he does not return within " + timeToReturn + ".",winnerName,true);
 		
 		//add the start to the log
-		MMServ.mmlog.gameLog("Disco Thread/Start:" + id + "/" + loserName + ". " + winnerName + " wins in " + timeToReturn);
+		MWServ.mwlog.gameLog("Disco Thread/Start:" + id + "/" + loserName + ". " + winnerName + " wins in " + timeToReturn);
 		
 		try {
 			this.wait(timeToReport);
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 		
 		//only report if player is still missing
@@ -76,7 +76,7 @@ public class OpsDisconnectionThread extends Thread {
 		Operation o = CampaignMain.cm.getOpsManager().getOperation(so.getName());
 				
 		//add to log and send to resolver
-		MMServ.mmlog.gameLog("Autoreport: " + id + "/" + loserName + ". " + winnerName + " wins by forfeit");
+		MWServ.mwlog.gameLog("Autoreport: " + id + "/" + loserName + ". " + winnerName + " wins by forfeit");
 		CampaignMain.cm.getOpsManager().resolveShortAttack(o, so, winnerName, loserName);
 		
 	}//end run()
@@ -84,9 +84,9 @@ public class OpsDisconnectionThread extends Thread {
 	public void playerReturned(boolean tellOtherPlayer, long timeOffline) {
 		if (tellOtherPlayer) {
 			CampaignMain.cm.toUser(CampaignMain.cm.getPlayer(loserName).getColoredName() + " returned. He was offline for " + CampaignMain.readableTimeWithSeconds(timeOffline) + ".",winnerName,true);
-			MMServ.mmlog.gameLog("Disco Thread/Stop:" + id + "/" + loserName + ". Player returned.");
+			MWServ.mwlog.gameLog("Disco Thread/Stop:" + id + "/" + loserName + ". Player returned.");
 		} else {
-			MMServ.mmlog.gameLog("Disco Thread/Stop:" + id + "/" + loserName + ". Player threads cleared.");
+			MWServ.mwlog.gameLog("Disco Thread/Stop:" + id + "/" + loserName + ". Player threads cleared.");
 		}
 		playerReturned = true;
 	}

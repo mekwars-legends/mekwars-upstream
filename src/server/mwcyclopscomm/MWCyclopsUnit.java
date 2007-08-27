@@ -37,7 +37,7 @@ import java.util.List;
 
 import common.util.MD5;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.SUnit;
  
 /**
@@ -66,7 +66,7 @@ import server.campaign.SUnit;
              
              message.append(MWCyclopsUtils.methodCallEnd());
          }catch(Exception ex){
-             MMServ.mmlog.errLog(ex);
+             MWServ.mwlog.errLog(ex);
          }
 
          
@@ -99,7 +99,7 @@ import server.campaign.SUnit;
              
              message.append(MWCyclopsUtils.methodCallEnd());
          }catch(Exception ex){
-             MMServ.mmlog.errLog(ex);
+             MWServ.mwlog.errLog(ex);
          }
 
          return message.toString();
@@ -126,7 +126,7 @@ import server.campaign.SUnit;
              
              message.append(MWCyclopsUtils.methodCallEnd());
          }catch(Exception ex){
-             MMServ.mmlog.errLog(ex);
+             MWServ.mwlog.errLog(ex);
          }
 
          
@@ -152,7 +152,7 @@ import server.campaign.SUnit;
              
              message.append(MWCyclopsUtils.methodCallEnd());
          }catch(Exception ex){
-             MMServ.mmlog.errLog(ex);
+             MWServ.mwlog.errLog(ex);
          }
 
          

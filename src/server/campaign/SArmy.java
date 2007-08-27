@@ -31,7 +31,7 @@ import megamek.common.Mounted;
 import common.Army;
 import common.Unit;
 
-import server.MMServ;
+import server.MWServ;
 
 /**
  * @author Helge Richter
@@ -162,13 +162,13 @@ public class SArmy extends Army {
 				if (u.hasHoming())
 					hasHoming = true;
 				
-				//MMServ.mmlog.errLog(" Unit: "+u.getModelName()+" TAG: "+hasTAG+" Homing: "+hasHoming);
+				//MWServ.mwlog.errLog(" Unit: "+u.getModelName()+" TAG: "+hasTAG+" Homing: "+hasHoming);
 				if (hasTAG && hasHoming)
 					return true;
 			} 	
 		} catch(Exception ex) {
-			MMServ.mmlog.errLog("Bad unit in army for TAGandHomingCombo. Returning false.");
-            MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog("Bad unit in army for TAGandHomingCombo. Returning false.");
+            MWServ.mwlog.errLog(ex);
 			return false;
 		}
 		return false;
@@ -187,13 +187,13 @@ public class SArmy extends Army {
 				if (u.hasSemiGuided())
 					hasSemiGuided = true;
 				
-//				MMServ.mmlog.errLog(" Unit: "+u.getModelName()+" TAG: "+hasTAG+" SemiGuided: "+hasSemiGuided);
+//				MWServ.mwlog.errLog(" Unit: "+u.getModelName()+" TAG: "+hasTAG+" SemiGuided: "+hasSemiGuided);
 				if (hasTAG && hasSemiGuided)
 					return true;
 			} 	
 		} catch(Exception ex) {
-			MMServ.mmlog.errLog("Bad unit in army for hasTAGAndSemiGuidedCombo. Returning false.");
-            MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog("Bad unit in army for hasTAGAndSemiGuidedCombo. Returning false.");
+            MWServ.mwlog.errLog(ex);
 			return false;
 		}
 		return false;
@@ -260,9 +260,9 @@ public class SArmy extends Army {
 			total += subTotal;
 		}
 		
-		//MMServ.mmlog.errLog("Count: "+ c3Count+" BV: "+c3BV+" Modifier: "+(c3BV * ( c3Count * .05))/this.getNumberOfNetworks());
+		//MWServ.mwlog.errLog("Count: "+ c3Count+" BV: "+c3BV+" Modifier: "+(c3BV * ( c3Count * .05))/this.getNumberOfNetworks());
 		total += (c3BV * ( c3Count * .05))/this.getNumberOfNetworks();
-        //MMServ.mmlog.errLog("Army BV: "+total);
+        //MWServ.mwlog.errLog("Army BV: "+total);
 		
 		if ( hasSemiGuided )
 			total += this.getSemiGuidedBV();
@@ -563,8 +563,8 @@ public class SArmy extends Army {
 		try {
 			opponents.add(a);
 		} catch (Exception e) {
-			MMServ.mmlog.errLog("Error adding army to opponentList. Trace follows.");
-			MMServ.mmlog.errLog(e);
+			MWServ.mwlog.errLog("Error adding army to opponentList. Trace follows.");
+			MWServ.mwlog.errLog(e);
 		}
 	}//end addOpponent
 	
@@ -572,8 +572,8 @@ public class SArmy extends Army {
 		try {
 			opponents.remove(a);
 		} catch (Exception e) {
-			MMServ.mmlog.errLog("Error removing army from opponentList. Trace follows.");
-			MMServ.mmlog.errLog(e);
+			MWServ.mwlog.errLog("Error removing army from opponentList. Trace follows.");
+			MWServ.mwlog.errLog(e);
 		}
 	}//end removeOpponent()
 	

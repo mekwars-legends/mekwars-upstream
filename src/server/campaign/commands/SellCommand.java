@@ -202,7 +202,7 @@ public class SellCommand implements Command {
 		CampaignMain.cm.toUser("The " + unitToSell.getModelName() + " is now on the Market "
 				+ "(" + CampaignMain.cm.moneyOrFluMessage(false,false,-sellFluCost,true) + ").", Username, true);
 		CampaignMain.cm.doSendHouseMail(p.getMyHouse(), "NOTE", p.getName() + " added a unit to the market [" + unitToSell.getModelName() + "].");
-		server.MMServ.mmlog.bmLog(p.getName() + " added a " + unitToSell.getModelName() + ". Asking: " + minBid + ". Length: " + salesTicks);
+		server.MWServ.mwlog.bmLog(p.getName() + " added a " + unitToSell.getModelName() + ". Asking: " + minBid + ". Length: " + salesTicks);
 				
 	}//end process()
 }//end SellCommand.java

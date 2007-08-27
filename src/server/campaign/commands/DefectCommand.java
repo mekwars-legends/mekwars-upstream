@@ -28,7 +28,7 @@ import server.campaign.SHouse;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
 import server.campaign.util.HouseRankingHelpContainer;
-import server.util.MMNetPasswd;
+import server.util.MWPasswd;
 
 public class DefectCommand implements Command {
 	
@@ -139,7 +139,7 @@ public class DefectCommand implements Command {
 			 */
 			boolean regged = false;
 			try {
-				MMNetPasswd.getRecord(p.getName(), null);
+				MWPasswd.getRecord(p.getName(), null);
 			} catch (Exception ex) {
 				regged = true;
 			}
@@ -497,7 +497,7 @@ public class DefectCommand implements Command {
 			//let people defect and retain faction leadership access, etc. May be
 			//a problem for mods, but better than the alternative ...
 			if (p.getMyHouse().equals(newHouse) && !CampaignMain.cm.getServer().isAdmin(Username))
-				MMNetPasswd.getRecord(Username).setAccess(2);
+				MWPasswd.getRecord(Username).setAccess(2);
 			
 			/*
 			 * Player is part of his new house. Check the ammo

@@ -52,7 +52,7 @@ public class AdminSetPlanetBoardSizeCommand implements Command {
 			planet.toDB();
 		
 		CampaignMain.cm.toUser("Board size set for planet "+planet.getName(),Username,true);
-		//server.MMServ.mmlog.modLog(Username + " set the board size for planet "+planet.getName());
+		//server.MWServ.mwlog.modLog(Username + " set the board size for planet "+planet.getName());
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has set the board size for planet "+planet.getName());
 		
 	}

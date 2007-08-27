@@ -23,7 +23,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.StringTokenizer;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.*;
 
 /**
@@ -110,7 +110,7 @@ public String toString()
 			    stmt.close();
 		  }
 	  } catch(SQLException e){
-		  MMServ.mmlog.dbLog("SQL Error in MechStatistics.fromDB: " + e.getMessage());
+		  MWServ.mwlog.dbLog("SQL Error in MechStatistics.fromDB: " + e.getMessage());
 	  }
   }
   
@@ -153,7 +153,7 @@ public String toString()
 			 rs.close();
 			 ps.close();
 		 } catch (SQLException e) {
-			 MMServ.mmlog.dbLog("SQLException in MechStatistics.toDB: " + e.getMessage());
+			 MWServ.mwlog.dbLog("SQLException in MechStatistics.toDB: " + e.getMessage());
 		 }
 		 
 	 } else {
@@ -186,7 +186,7 @@ public String toString()
 			 ps.executeUpdate();
 			 ps.close();
 		 } catch (SQLException e) {
-			 MMServ.mmlog.dbLog("SQLException in MechStatistics.toDB: " + e.getMessage());
+			 MWServ.mwlog.dbLog("SQLException in MechStatistics.toDB: " + e.getMessage());
 		 }
 	 }	 
   }

@@ -49,7 +49,7 @@ public class TouchCommand implements Command {
 		p.setSave(true);
 		
 		CampaignMain.cm.toUser("You touched " + p.getName() + ".",Username,true);
-		//server.MMServ.mmlog.modLog(Username + " touched " + p.getName() + ".");
+		//server.MWServ.mwlog.modLog(Username + " touched " + p.getName() + ".");
 		CampaignMain.cm.doSendModMail("NOTE",Username + " touched " + p.getName() + ".");
 		
 	}

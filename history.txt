@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
++ Changed MMServ MMClietnInfo MMNetPasswd and MMNetPasswdRecord to MW file names
 + Updated Database to v6
 + Bug: SArmy.fromString() not reading commander Status
 + Bug: CheckAttackCommand using attacking players info instead of defending 

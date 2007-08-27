@@ -77,12 +77,12 @@ public class TraitSkill extends SPilotSkill {
         String Trait = "none";
         String faction = p.getCurrentFaction();
 
-        //MMServ.mmlog.errLog("Trait Skill Faction: "+faction);
+        //MWServ.mwlog.errLog("Trait Skill Faction: "+faction);
         Vector traitNames = CampaignMain.cm.getFactionTraits(faction);
 
         size = traitNames.size();
         
-        //MMServ.mmlog.errLog("Trait Skill size: "+size);
+        //MWServ.mwlog.errLog("Trait Skill size: "+size);
         
         if ( size < 1 )
             return;
@@ -92,7 +92,7 @@ public class TraitSkill extends SPilotSkill {
         else{
 	        choice = CampaignMain.cm.getR().nextInt(size);
 	
-	        //MMServ.mmlog.errLog("Trait Skill choice: "+choice);
+	        //MWServ.mwlog.errLog("Trait Skill choice: "+choice);
 	        
 	        for (int i = 0; i < choice; i++)
 	            Trait = (String)traitNames.elementAt(i);

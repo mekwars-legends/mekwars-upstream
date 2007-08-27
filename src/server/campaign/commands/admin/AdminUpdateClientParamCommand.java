@@ -69,7 +69,7 @@ public class AdminUpdateClientParamCommand implements Command {
         }
         
 		//checks passed. we have a valid player and command name. tell everyone about the spoof ...
-		//MMServ.mmlog.modLog(Username + " used update client param to update " + playerName + "'s " + param + " to " + paramValue);
+		//MWServ.mwlog.modLog(Username + " used update client param to update " + playerName + "'s " + param + " to " + paramValue);
 		CampaignMain.cm.doSendModMail("WARNING",Username + " used update client param to update " + playerName + "'s " + param + " to " + paramValue);
 		CampaignMain.cm.toUser("you updated " + playerName + "'s " + param + " to " + paramValue,Username,true);
 		

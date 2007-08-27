@@ -25,7 +25,7 @@ import server.MWChatServer.auth.IAuthenticator;
 
 
 /**
- * Moving the SetSMOTD command from MMServ into the normal command structure.
+ * Moving the SetSMOTD command from MWServ into the normal command structure.
  *
  * Syntax  /c SetSMOTD#Message
  */

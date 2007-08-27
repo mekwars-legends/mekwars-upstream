@@ -16,7 +16,7 @@
 
 package server.campaign;
 
-import server.MMServ;
+import server.MWServ;
 
 /**
  * @author urgru
@@ -48,7 +48,7 @@ public class SliceThread extends Thread {
 		try {
 			this.wait(time);
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 	}//end ExtendedWait(time)
 	
@@ -65,13 +65,13 @@ public class SliceThread extends Thread {
 				try {
 					myCampaign.slice(getSliceID());
 				} catch (Exception ex) {
-					MMServ.mmlog.errLog(ex);
+					MWServ.mwlog.errLog(ex);
 					myCampaign.doSendToAllOnlinePlayers("Slice skipped. Errors occured", true);
 				}
 			}
 		}
 		catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 	}
 }

@@ -20,7 +20,7 @@ import java.util.StringTokenizer;
 
 import java.util.Vector;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
@@ -54,7 +54,7 @@ public class RemoveTraitCommand implements Command {
 			traitName = command.nextToken();
 			confirmString = command.nextToken();
 		}catch (Exception ex){
-		    MMServ.mmlog.errLog(ex);
+		    MWServ.mwlog.errLog(ex);
 		}		
 
 		if ( !confirmString.equals("CONFIRM") )

@@ -22,7 +22,7 @@ import java.util.Vector;
 
 import common.Unit;
 import common.util.UnitUtils;
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SArmy;
@@ -54,16 +54,16 @@ public class ActivateCommand implements Command {
 		
 		//Put it into a try block. One user was causing FormatExceptions
 		try{
-			if (!(MMServ.SERVER_VERSION).substring(0,server.MMServ.SERVER_VERSION.lastIndexOf(".")).equals(p.getPlayerClientVersion().substring(0,p.getPlayerClientVersion().lastIndexOf("."))) ) {
-				//server.MMServ.mmlog.modLog(Username + " failed to activate. Was using version " + p.getPlayerClientVersion()+" Server Version: "+ MMServ.SERVER_VERSION);
-				CampaignMain.cm.doSendModMail("NOTE",Username + " failed to activate. Was using version " + p.getPlayerClientVersion()+" Server Version: "+ MMServ.SERVER_VERSION);
-				CampaignMain.cm.toUser("You may not go active with an incompatible client version! Please switch to version " + MMServ.SERVER_VERSION +"!",Username,true);
+			if (!(MWServ.SERVER_VERSION).substring(0,server.MWServ.SERVER_VERSION.lastIndexOf(".")).equals(p.getPlayerClientVersion().substring(0,p.getPlayerClientVersion().lastIndexOf("."))) ) {
+				//server.MWServ.mwlog.modLog(Username + " failed to activate. Was using version " + p.getPlayerClientVersion()+" Server Version: "+ MWServ.SERVER_VERSION);
+				CampaignMain.cm.doSendModMail("NOTE",Username + " failed to activate. Was using version " + p.getPlayerClientVersion()+" Server Version: "+ MWServ.SERVER_VERSION);
+				CampaignMain.cm.toUser("You may not go active with an incompatible client version! Please switch to version " + MWServ.SERVER_VERSION +"!",Username,true);
 				return;
 			}
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog("Error activating player. User reported client verson: " + p.getPlayerClientVersion() + " --- Stack Trace Follows.");	   
-			//MMServ.mmlog.errLog(ex);
-			CampaignMain.cm.toUser("Your clients version was not reported to the server. <a href=\"MEKWARS/c setclientversion#"+ Username+ "#" + MMServ.SERVER_VERSION + "\">Click here to update the server.</a> then try to activate again.", Username);
+			MWServ.mwlog.errLog("Error activating player. User reported client verson: " + p.getPlayerClientVersion() + " --- Stack Trace Follows.");	   
+			//MWServ.mwlog.errLog(ex);
+			CampaignMain.cm.toUser("Your clients version was not reported to the server. <a href=\"MEKWARS/c setclientversion#"+ Username+ "#" + MWServ.SERVER_VERSION + "\">Click here to update the server.</a> then try to activate again.", Username);
 			return;
 		}
 		
@@ -332,7 +332,7 @@ class CheckAttackThread extends Thread {
 			//ran once. kill the thread by returning.
 			return;
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 	}//end run()
 }//end CheckAttackThread

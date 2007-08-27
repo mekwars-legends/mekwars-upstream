@@ -25,7 +25,7 @@ import server.MWChatServer.auth.IAuthenticator;
 
 
 /**
- * Moving the Config command from MMServ into the normal command structure.
+ * Moving the Config command from MWServ into the normal command structure.
  *
  * Syntax  /c Config
  */

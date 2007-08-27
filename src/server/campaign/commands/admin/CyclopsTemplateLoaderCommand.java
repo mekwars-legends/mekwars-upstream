@@ -25,7 +25,7 @@ import java.util.zip.ZipInputStream;
 
 import common.Unit;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SUnit;
 import server.campaign.commands.Command;
@@ -78,11 +78,11 @@ public class CyclopsTemplateLoaderCommand implements Command {
                 }catch(Exception ex){}
             }
         }catch(FileNotFoundException fnf){
-            MMServ.mmlog.errLog("Unable to load Meks.zip for UnitCosts.loadUnitCosts");
+            MWServ.mwlog.errLog("Unable to load Meks.zip for UnitCosts.loadUnitCosts");
         }
          catch(Exception ex){
-             MMServ.mmlog.errLog("Error with Meks.zip file "+ entityName);
-             MMServ.mmlog.errLog(ex);
+             MWServ.mwlog.errLog("Error with Meks.zip file "+ entityName);
+             MWServ.mwlog.errLog(ex);
         }
          try{
              FileInputStream in = new FileInputStream("./data/unitfiles/Vehicles.zip");
@@ -99,11 +99,11 @@ public class CyclopsTemplateLoaderCommand implements Command {
              }
                  
          }catch(FileNotFoundException fnf){
-             MMServ.mmlog.errLog("Unable to load Vehicles.zip for UnitCosts.loadUnitCosts");
+             MWServ.mwlog.errLog("Unable to load Vehicles.zip for UnitCosts.loadUnitCosts");
          }
           catch(Exception ex){
-              MMServ.mmlog.errLog("Error with Vehicles.zip file "+ entityName);
-              MMServ.mmlog.errLog(ex);
+              MWServ.mwlog.errLog("Error with Vehicles.zip file "+ entityName);
+              MWServ.mwlog.errLog(ex);
          }
           try{
               FileInputStream in = new FileInputStream("./data/unitfiles/Infantry.zip");
@@ -119,11 +119,11 @@ public class CyclopsTemplateLoaderCommand implements Command {
                   }catch (Exception ex){}
               }
           }catch(FileNotFoundException fnf){
-              MMServ.mmlog.errLog("Unable to load Infantry.zip for UnitCosts.loadUnitCosts");
+              MWServ.mwlog.errLog("Unable to load Infantry.zip for UnitCosts.loadUnitCosts");
           }
            catch(Exception ex){
-               MMServ.mmlog.errLog("Error with Infantry.zip file "+ entityName);
-               MMServ.mmlog.errLog(ex);
+               MWServ.mwlog.errLog("Error with Infantry.zip file "+ entityName);
+               MWServ.mwlog.errLog(ex);
           }
          if ( !units.isEmpty() ){
             CampaignMain.cm.toUser("Sending Template Packet",Username,true);

@@ -49,7 +49,7 @@ import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.SPlayer;
 
-import server.MMServ;
+import server.MWServ;
 
 @SuppressWarnings({"unchecked","serial"})
 public class OperationManager {
@@ -363,7 +363,7 @@ public class OperationManager {
 		
 		//nullcheck, just in case.
 		if (so == null) {
-			MMServ.mmlog.errLog("Error: Tried to add a null ShortOperation to the Manager");
+			MWServ.mwlog.errLog("Error: Tried to add a null ShortOperation to the Manager");
 			return;
 		}
 		
@@ -421,7 +421,7 @@ public class OperationManager {
 	public void terminateOperation(ShortOperation so, int termCode, SPlayer terminator, boolean ignoreStatus) {
 		
 		if (so == null) {
-			MMServ.mmlog.errLog("Attempted to terminate null ShortOperation");
+			MWServ.mwlog.errLog("Attempted to terminate null ShortOperation");
 			return;
 		}
 		
@@ -557,7 +557,7 @@ public class OperationManager {
     			currA.setLocked(false);
     			CampaignMain.cm.toUser("PL|SAL|"+ currA.getID() + "#" + false, currA.getPlayerName(),false);
             }catch(Exception ex){
-                MMServ.mmlog.errLog(currN+" had a null army while terminating. Continuing to next player.");
+                MWServ.mwlog.errLog(currN+" had a null army while terminating. Continuing to next player.");
                 continue;
             }
 		}
@@ -1023,7 +1023,7 @@ public class OperationManager {
 			if (!modDir.exists())
 				modDir.mkdir();
 		} catch (Exception e) {
-			MMServ.mmlog.errLog("Error while creating operations directories.");
+			MWServ.mwlog.errLog("Error while creating operations directories.");
 		}
 		
 		/*
@@ -1058,7 +1058,7 @@ public class OperationManager {
 				String currTarget = st.nextToken().trim();
 				Operation currOp = ops.get(currTarget);
 				if (currOp == null)
-					MMServ.mmlog.errLog("Error assigning modop target. Mod: " + currMod.getName() + " Target: " + currTarget);
+					MWServ.mwlog.errLog("Error assigning modop target. Mod: " + currMod.getName() + " Target: " + currTarget);
 				else
 					currOp.addModifyingOperation(currMod);
 			}//end while(more targets)

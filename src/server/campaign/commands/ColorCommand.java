@@ -22,7 +22,7 @@ import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 
 /**
- * Moving the Color command from MMServ into the normal command structure.
+ * Moving the Color command from MWServ into the normal command structure.
  *
  * Syntax  /c Color#Color Schema
  */

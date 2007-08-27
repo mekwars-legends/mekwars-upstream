@@ -29,7 +29,7 @@ import megamek.common.Entity;
 import megamek.common.Mech;
 import megamek.common.Mounted;
 import megamek.common.Tank;
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
@@ -122,7 +122,7 @@ public class RepairUnitCommand implements Command {
 			if ( techType != UnitUtils.TECH_REWARD_POINTS && CampaignMain.cm.getBooleanConfig("UsePartsRepair") ) {
 				String crit = UnitUtils.getCritName(entity, slot, location, armor);
 				int damagedCrits = UnitUtils.getNumberOfDamagedCrits(entity,slot,location,armor);
-				//MMServ.mmlog.errLog(crit+" Crits: "+player.getUnitParts().getPartsCritCount(crit)+" Needed: "+damagedCrits);
+				//MWServ.mwlog.errLog(crit+" Crits: "+player.getUnitParts().getPartsCritCount(crit)+" Needed: "+damagedCrits);
 				if ( player.getUnitParts().getPartsCritCount(crit) < damagedCrits  ) {
 					
 					if ( player.getAutoReorder() ){
@@ -208,7 +208,7 @@ public class RepairUnitCommand implements Command {
 
             if ( CampaignMain.cm.getRTT().getState() == Thread.State.TERMINATED ){
                 CampaignMain.cm.toUser("FSM|Sorry your repair order could not be processed, and the repair thread terminated. Staff was notified.",Username,false);
-                MMServ.mmlog.errLog("NOTE: Repair Thread terminated! Use the restartrepairthread command to restart. If all else fails, reboot.");
+                MWServ.mwlog.errLog("NOTE: Repair Thread terminated! Use the restartrepairthread command to restart. If all else fails, reboot.");
                 return;
             }
             if ( techType == UnitUtils.TECH_PILOT )
@@ -240,8 +240,8 @@ public class RepairUnitCommand implements Command {
             if ( sendDialogUpdate )
                 CampaignMain.cm.toUser("ARD|"+unitID,Username,false);
         }catch(Exception ex){
-            MMServ.mmlog.errLog("Unable to Process Repair Unit Command!");
-            MMServ.mmlog.errLog(ex);
+            MWServ.mwlog.errLog("Unable to Process Repair Unit Command!");
+            MWServ.mwlog.errLog(ex);
         }
         
 	}//end process()

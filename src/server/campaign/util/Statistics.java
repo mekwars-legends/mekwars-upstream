@@ -26,7 +26,7 @@ import java.util.Vector;
 
 import common.Unit;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SmallPlayer;
 import server.campaign.SHouse;
@@ -133,8 +133,8 @@ public class Statistics {
 			        result.append("</tr>");
 			        rank++;
 		        }catch(Exception ex){
-		        	MMServ.mmlog.errLog("Error while Referencing player: "+p.getName());
-		        	MMServ.mmlog.errLog(ex);
+		        	MWServ.mwlog.errLog("Error while Referencing player: "+p.getName());
+		        	MWServ.mwlog.errLog(ex);
 		        }
 		    }
 		    result.append("</table>");
@@ -150,7 +150,7 @@ public class Statistics {
 	        out.close();
 		    Statistics.doEXPRanking();
 	    } catch (Exception ex) {
-	    	MMServ.mmlog.errLog(ex);
+	    	MWServ.mwlog.errLog(ex);
 	    }
 	}
 

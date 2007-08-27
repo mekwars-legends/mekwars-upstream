@@ -23,7 +23,7 @@ import java.io.InputStreamReader;
 import common.CampaignData;
 import common.util.BinWriter;
 
-import server.MMServ;
+import server.MWServ;
 import server.dataProvider.ServerCommand;
 
 /**
@@ -47,13 +47,13 @@ public class OpListTimestamp implements ServerCommand {
 				
 				oplistTimestamp = tempTime.substring(11);//remove "#Timestamp="
 			} catch (Exception e) {
-				MMServ.mmlog.infoLog("Error reading first line from OpList.txt");       
+				MWServ.mwlog.infoLog("Error reading first line from OpList.txt");       
 			}
     	
     	}//end if(oplist exists)
     		
     	else
-    		MMServ.mmlog.infoLog("OpList.txt didn't exist. Returning falsified timestamp to requesting client.");
+    		MWServ.mwlog.infoLog("OpList.txt didn't exist. Returning falsified timestamp to requesting client.");
        
         out.println(oplistTimestamp, "OpListTimestamp");
         out.flush();

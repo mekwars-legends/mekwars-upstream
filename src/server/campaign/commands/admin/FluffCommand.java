@@ -71,7 +71,7 @@ public class FluffCommand implements Command {
             p.setFluffText(fluff);
 			CampaignMain.cm.toUser("New fluff text for " + p.getName() + ": " + fluff,Username,true);
 			CampaignMain.cm.toUser(Username + " set your fluff to: " + fluff,p.getName(),true);
-			//server.MMServ.mmlog.modLog(Username + " set " + p.getName() + "'s fluff to '" + fluff + "'.");
+			//server.MWServ.mwlog.modLog(Username + " set " + p.getName() + "'s fluff to '" + fluff + "'.");
 			CampaignMain.cm.doSendModMail("NOTE",Username + " set " + p.getName() + "'s fluff to '" + fluff + "'.");
 		}
 		
@@ -80,7 +80,7 @@ public class FluffCommand implements Command {
 			p.setFluffText("");
 			CampaignMain.cm.toUser("Removed fluff from " + p.getName() + ".",Username,true);
 			CampaignMain.cm.toUser(Username + " removed your fluff text.",p.getName(),true);
-			//server.MMServ.mmlog.modLog(Username + " removed " + p.getName() + "'s fluff.");
+			//server.MWServ.mwlog.modLog(Username + " removed " + p.getName() + "'s fluff.");
 			CampaignMain.cm.doSendModMail("NOTE",Username + " removed " + p.getName() + "'s fluff.");
 		}
 		

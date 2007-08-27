@@ -36,7 +36,7 @@ import java.util.StringTokenizer;
 import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
@@ -506,7 +506,7 @@ public class SPilot extends Pilot {
 			}
 			ps.close();
 		} catch (SQLException e) {
-			MMServ.mmlog.dbLog("SQL Error in PilotHandler.savePilot: " + e.getMessage());
+			MWServ.mwlog.dbLog("SQL Error in PilotHandler.savePilot: " + e.getMessage());
 		}		
 	}
 
@@ -585,8 +585,8 @@ public class SPilot extends Pilot {
 	        if ( getPilotId() == -1 )
 	            setPilotId(CampaignMain.cm.getAndUpdateCurrentPilotID());
         }catch(Exception ex) {
-        	MMServ.mmlog.errLog("Error loading Pilot "+this.getName());
-        	MMServ.mmlog.errLog(ex);
+        	MWServ.mwlog.errLog("Error loading Pilot "+this.getName());
+        	MWServ.mwlog.errLog(ex);
         }
 	}
 	
@@ -657,7 +657,7 @@ public class SPilot extends Pilot {
                 
                 
                 String scrapFile = "/pilotcapturemessagestoowner.txt";
-                //MMServ.mmlog.errLog(folder.getPath()+scrapFile);
+                //MWServ.mwlog.errLog(folder.getPath()+scrapFile);
                 FileInputStream fis = new FileInputStream(folder.getPath()+scrapFile);
                 BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
                 int messages = Integer.parseInt(dis.readLine());
@@ -678,7 +678,7 @@ public class SPilot extends Pilot {
                 return this.getName() +" was captured by enemy forces after fleeing the "+unit.getModelName()+".";
             }
             catch (Exception e){
-                MMServ.mmlog.errLog("A problem occured with your pilotcapturemessagestoowner File!");
+                MWServ.mwlog.errLog("A problem occured with your pilotcapturemessagestoowner File!");
                 return this.getName() +" was captured by enemy forces after fleeing the "+unit.getModelName()+".";
             }//end catch
 
@@ -700,7 +700,7 @@ public class SPilot extends Pilot {
                 
                 
                 String scrapFile = "/pilotcaptureanddefectedmessages.txt";
-                //MMServ.mmlog.errLog(folder.getPath()+scrapFile);
+                //MWServ.mwlog.errLog(folder.getPath()+scrapFile);
                 FileInputStream fis = new FileInputStream(folder.getPath()+scrapFile);
                 BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
                 int messages = Integer.parseInt(dis.readLine());
@@ -722,7 +722,7 @@ public class SPilot extends Pilot {
                 return this.getName() +" was rescued from his unit by our infantry and has decided to join " + house.getColoredNameAsLink() +".";
             }
             catch (Exception e){
-                MMServ.mmlog.errLog("A problem occured with your pilotcapturemessagesdefect File!");
+                MWServ.mwlog.errLog("A problem occured with your pilotcapturemessagesdefect File!");
                 return this.getName() +" was rescued from his unit by our infantry and has decided to join " + house.getColoredNameAsLink() +".";
             }//end catch
 
@@ -744,7 +744,7 @@ public class SPilot extends Pilot {
                 
                 
                 String scrapFile = "/pilotcaptureandremovedmessages.txt";
-                //MMServ.mmlog.errLog(folder.getPath()+scrapFile);
+                //MWServ.mwlog.errLog(folder.getPath()+scrapFile);
                 FileInputStream fis = new FileInputStream(folder.getPath()+scrapFile);
                 BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
                 int messages = Integer.parseInt(dis.readLine());
@@ -765,7 +765,7 @@ public class SPilot extends Pilot {
                 return this.getName() +" captured by our infantry transferred to HQ for interrogation.";
             }
             catch (Exception e){
-                MMServ.mmlog.errLog("A problem occured with your pilotcapturemessagesdefect File!");
+                MWServ.mwlog.errLog("A problem occured with your pilotcapturemessagesdefect File!");
                 return this.getName() +" captured by our infantry transferred to HQ for interrogation.";
             }//end catch
 
@@ -787,7 +787,7 @@ public class SPilot extends Pilot {
                 
                 
                 String scrapFile = "/pilotrescuemessages.txt";
-                //MMServ.mmlog.errLog(folder.getPath()+scrapFile);
+                //MWServ.mwlog.errLog(folder.getPath()+scrapFile);
                 FileInputStream fis = new FileInputStream(folder.getPath()+scrapFile);
                 BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
                 int messages = Integer.parseInt(dis.readLine());
@@ -808,7 +808,7 @@ public class SPilot extends Pilot {
                 return this.getName() +" hiked back to base.";
             }
             catch (Exception e){
-                MMServ.mmlog.errLog("A problem occured with your pilotcapturemessages File!");
+                MWServ.mwlog.errLog("A problem occured with your pilotcapturemessages File!");
                 return this.getName() +" hiked back to base.";
             }//end catch
 
@@ -838,7 +838,7 @@ public class SPilot extends Pilot {
 			}
 		}
 		catch (Exception e) {
-			MMServ.mmlog.errLog("A problem occured with your Pilotnames File!");
+			MWServ.mwlog.errLog("A problem occured with your Pilotnames File!");
 		}
 		return result;
 	}

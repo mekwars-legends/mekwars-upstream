@@ -37,7 +37,7 @@ import server.campaign.CampaignMain;
 import server.campaign.pilot.SPilot;
 import server.campaign.BuildTable;
 
-import server.MMServ;
+import server.MWServ;
 
 /**
  * 
@@ -297,8 +297,8 @@ public class UseRewardPointsCommand implements Command {
 				player.addReward(-unitTotalRewardPointCost);
 			} catch (Exception ex){
 				CampaignMain.cm.toUser("An error has occured while trying to create your requested unit. Please contact an admin. Faction: "+factionstring +" Type: "+unitType+" Class: "+unitWeight,Username,true);
-				MMServ.mmlog.errLog(ex);
-				MMServ.mmlog.errLog("Error creating unit in "+this.getClass().getName());
+				MWServ.mwlog.errLog(ex);
+				MWServ.mwlog.errLog("Error creating unit in "+this.getClass().getName());
 			}
             break;
             

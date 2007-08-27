@@ -91,7 +91,7 @@ public class CreateUnitCommand implements Command {
 		
 		p.addUnit(cm, true);
 		CampaignMain.cm.toUser("Unit created: " + filename + " " + FlavorText + " " + gunnery + " " + piloting+" "+pilot.getSkillString(true) + ". ID #" + cm.getId(),Username,true);
-		//server.MMServ.mmlog.modLog(Username + " created a unit: " + filename + " " + FlavorText + " " + gunnery + " " + piloting+" "+pilot.getSkillString(true));	
+		//server.MWServ.mwlog.modLog(Username + " created a unit: " + filename + " " + FlavorText + " " + gunnery + " " + piloting+" "+pilot.getSkillString(true));	
 		CampaignMain.cm.doSendModMail("NOTE",Username + " created a unit: " + filename + " " + FlavorText + " " + gunnery + " " + piloting+" "+pilot.getSkillString(true));
 		
 	}

@@ -33,7 +33,7 @@ import common.Unit;
 import common.campaign.pilot.skills.PilotSkill;
 import common.util.UnitUtils;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SPlanet;
@@ -308,7 +308,7 @@ public class ShortResolver {
 			CampaignMain.cm.toUser("PL|STN|"+-1, currName,false);
 
 			//stick the result into the human readable result log, per RFE1479311.
-			MMServ.mmlog.resultsLog(toSend);
+			MWServ.mwlog.resultsLog(toSend);
 			
 			//deal with scrapThread for player, if he has one.
 			if (scrapThreads.containsKey(currName)) {
@@ -516,7 +516,7 @@ public class ShortResolver {
 		CampaignMain.cm.toUser(toSend, winName, true);
 		
 		//stick the result into the human readable result log, per RFE1479311.
-		MMServ.mmlog.resultsLog(toSend);
+		MWServ.mwlog.resultsLog(toSend);
 		
 		//update operations and set unbusy. we know the loser isn't
 		//online, so we only need to send to the winner.
@@ -571,7 +571,7 @@ public class ShortResolver {
 		CampaignMain.cm.toUser(toSend, loseName, true);
 		
 		//stick the result into the human readable result log, per RFE1479311.
-		MMServ.mmlog.resultsLog(toSend);
+		MWServ.mwlog.resultsLog(toSend);
 				
 		/*
 		 * Set the finished strings for the ShortOperation.
@@ -1205,7 +1205,7 @@ public class ShortResolver {
 			 * normal resolution.
 			 */
 			if (owner == null) {
-				MMServ.mmlog.errLog("Null _owner_ while processing post-game salvage for " 
+				MWServ.mwlog.errLog("Null _owner_ while processing post-game salvage for " 
 						+ " Attack #" + so.getShortID() + ". Needed to find Player: " + ownerName
 						+ " Unit #" + currEntity.getID() + "/Type: " + currEntity.getType());
 				continue;
@@ -1218,8 +1218,8 @@ public class ShortResolver {
     			if (!o.getBooleanValue("NoDestructionMode") && currEntity.getUnitDamage().trim().length() > 0 )
                     UnitUtils.applyBattleDamage(currU.getEntity(),currEntity.getUnitDamage(),false);
             } catch(Exception ex) {
-                MMServ.mmlog.errLog("Unable to apply damage to unit "+currU.getModelName() );
-                MMServ.mmlog.errLog(ex);
+                MWServ.mwlog.errLog("Unable to apply damage to unit "+currU.getModelName() );
+                MWServ.mwlog.errLog(ex);
             }
             
 			//If damaged is transfered from Game to campaign then save it the pilot
@@ -1283,8 +1283,8 @@ public class ShortResolver {
                 if (currEntity.getUnitDamage().trim().length() > 0)
                     UnitUtils.applyBattleDamage(currU.getEntity(),currEntity.getUnitDamage(),false);
             } catch(Exception ex) {
-                MMServ.mmlog.errLog("Unable to apply damage to unit "+currU.getModelName() );
-                MMServ.mmlog.errLog(ex);
+                MWServ.mwlog.errLog("Unable to apply damage to unit "+currU.getModelName() );
+                MWServ.mwlog.errLog(ex);
             }
 
 			/*
@@ -1888,7 +1888,7 @@ public class ShortResolver {
 					return;
 				}
 				catch (Exception ex){
-					MMServ.mmlog.errLog(ex);
+					MWServ.mwlog.errLog(ex);
 				}
 			}//end if(polluted)
 			
@@ -2018,7 +2018,7 @@ public class ShortResolver {
                 newsFeedTitle += " on "+so.getTargetWorld().getName();
 			}
 			catch (Exception ex){
-				MMServ.mmlog.errLog(ex);
+				MWServ.mwlog.errLog(ex);
 			}
 			
 			/*
@@ -2538,7 +2538,7 @@ public class ShortResolver {
                         }//end while(factories remain)
                         checkMercContracts(aWinner, ContractInfo.CONTRACT_COMPONENTS, ppDestroyed);
 					}catch (Exception ex){
-						MMServ.mmlog.errLog(ex);
+						MWServ.mwlog.errLog(ex);
 					}
 					
 				}//end if(attackerWon)
@@ -2688,7 +2688,7 @@ public class ShortResolver {
 							}//end if ppToGenerate > 0
 						}//end if(defender has factories on world)
 					}catch (Exception ex){
-						MMServ.mmlog.errLog(ex);
+						MWServ.mwlog.errLog(ex);
 					}
 					
 				}//end elseif(defenderWon)
@@ -2742,12 +2742,12 @@ public class ShortResolver {
 					CampaignMain.cm.doSendToAllOnlinePlayers(aLoser.getHouseFightingFor(), "HS|" + loserHSUpdates, false);
 				
 			}catch (Exception ex){
-				MMServ.mmlog.errLog(ex);
+				MWServ.mwlog.errLog(ex);
 			}
 			
 		}
 		catch (Exception ex){
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 	}//end this.assembleMetaStrings()
 	
@@ -2843,7 +2843,7 @@ public class ShortResolver {
 				so.setFinishingBV(currentBV);
 				
 			}catch (Exception ex){
-				MMServ.mmlog.errLog(ex);
+				MWServ.mwlog.errLog(ex);
 			}
 			
 			/*
@@ -2900,11 +2900,11 @@ public class ShortResolver {
 					}//end if 
 				}//end while(More To Check)
 			}catch (Exception ex){
-				MMServ.mmlog.errLog(ex);
+				MWServ.mwlog.errLog(ex);
 			}
 			
 		}catch (Exception ex){
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 		
 	}//end possibleSalvageFromReport
@@ -2942,7 +2942,7 @@ public class ShortResolver {
 						destroyedUnits.put(currEntity.getID(), currEntity);
 				}
 			} catch (Exception ex) {
-				MMServ.mmlog.errLog(ex);
+				MWServ.mwlog.errLog(ex);
 			}
 			
 			/*
@@ -2961,7 +2961,7 @@ public class ShortResolver {
 					}//end for(all units in currArmy)
 				}//end for(all armies)
 			}catch (Exception ex){
-				MMServ.mmlog.errLog(ex);
+				MWServ.mwlog.errLog(ex);
 			}
 			
 			/*
@@ -2981,7 +2981,7 @@ public class ShortResolver {
 						dropLivingUnits.add(currE);
 				}
 			}catch (Exception ex){
-				MMServ.mmlog.errLog(ex);
+				MWServ.mwlog.errLog(ex);
 			}
 			
 			/*
@@ -3032,11 +3032,11 @@ public class ShortResolver {
 					
 				}//end if(no units to shift)            
 			}catch (Exception ex){
-				MMServ.mmlog.errLog(ex);
+				MWServ.mwlog.errLog(ex);
 			}
 			
 		}catch (Exception ex){
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 		
 	}//end possibleSalvageFromInProgressInfo
@@ -3078,7 +3078,7 @@ public class ShortResolver {
 				toReturn += " " + newPilotDescription(unit);
 			}
 		}catch (Exception ex){
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 			return toReturn;
 		}
 		
@@ -3111,7 +3111,7 @@ public class ShortResolver {
 			else
 				owner.getHouseFightingFor().addDispossessedPilot(unit, false);
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 	}
 	
@@ -3437,7 +3437,7 @@ public class ShortResolver {
 			//captured, but did not defect
 			toReturn[2] = ((SPilot)currUnit.getPilot()).getPilotCaptureAndRemovedMessage(currUnit);
 		}catch (Exception ex){
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 			return toReturn;
 		}
 		
@@ -3492,7 +3492,7 @@ public class ShortResolver {
 				repairCost = repairCost * o.getFloatValue("DefenderSalvageCostModifier");
 
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 			return Math.round(repairCost);
 		}
 		
@@ -3591,7 +3591,7 @@ public class ShortResolver {
 			
 			return null;
 		}catch (Exception ex){
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 			return null;
 		}
 		
@@ -3628,7 +3628,7 @@ public class ShortResolver {
 			
 			return null;
 		}catch (Exception ex){
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 			return null;
 		}
 		
@@ -3647,7 +3647,7 @@ public class ShortResolver {
 			result += "]";
 			return result;
 		}catch (Exception ex){
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 			return result;
 		}
 		
@@ -3702,7 +3702,7 @@ public class ShortResolver {
 			}
 			return false;
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 			return false;
 		}
 		

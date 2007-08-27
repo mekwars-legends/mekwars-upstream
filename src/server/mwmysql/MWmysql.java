@@ -22,7 +22,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 
 public class MWmysql{
@@ -30,14 +30,14 @@ public class MWmysql{
 
  
   public void close(){
-    MMServ.mmlog.dbLog("Attempting to close MySQL Connection");
+    MWServ.mwlog.dbLog("Attempting to close MySQL Connection");
     try {
     	this.con.close();
 
     } catch (SQLException e) {
-    	MMServ.mmlog.dbLog("SQL Exception: " + e.getMessage());
-    	MMServ.mmlog.errLog("SQL Exception:");
-    	MMServ.mmlog.errLog(e);
+    	MWServ.mwlog.dbLog("SQL Exception: " + e.getMessage());
+    	MWServ.mwlog.errLog("SQL Exception:");
+    	MWServ.mwlog.errLog(e);
     }
   } 
 
@@ -58,27 +58,27 @@ public class MWmysql{
 			  runtime.exec(call);
 		  }		  
 	  } catch (IOException ex){
-		  MMServ.mmlog.dbLog("Error in backupDB: " + ex.toString());
+		  MWServ.mwlog.dbLog("Error in backupDB: " + ex.toString());
 	  }
   }
 
   public MWmysql(){
     String url = "jdbc:mysql://" + CampaignMain.cm.getServer().getConfigParam("MYSQLHOST") + "/" + CampaignMain.cm.getServer().getConfigParam("MYSQLDB") + "?user=" + CampaignMain.cm.getServer().getConfigParam("MYSQLUSER") + "&password=" + CampaignMain.cm.getServer().getConfigParam("MYSQLPASS");
-    MMServ.mmlog.dbLog("Attempting MySQL Connection");
+    MWServ.mwlog.dbLog("Attempting MySQL Connection");
     
     try{
       Class.forName("com.mysql.jdbc.Driver");
     }
     catch(ClassNotFoundException e){
-      MMServ.mmlog.dbLog("ClassNotFoundException: " + e.getMessage());
+      MWServ.mwlog.dbLog("ClassNotFoundException: " + e.getMessage());
     }
     try{
     	con=DriverManager.getConnection(url);
       	if(con != null)
-    	  MMServ.mmlog.dbLog("Connection established");
+    	  MWServ.mwlog.dbLog("Connection established");
     }
     catch(SQLException ex){
-    	MMServ.mmlog.dbLog("SQLException: " + ex.getMessage());
+    	MWServ.mwlog.dbLog("SQLException: " + ex.getMessage());
     }
   }
 }

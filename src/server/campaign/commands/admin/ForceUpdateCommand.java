@@ -19,7 +19,7 @@ package server.campaign.commands.admin;
 import java.util.StringTokenizer;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.DefaultServerOptions;
 import server.campaign.commands.Command;
@@ -96,7 +96,7 @@ public class ForceUpdateCommand implements Command {
 	            		CampaignMain.cm.getServer().doStoreMail(toKick+",update", Username);
 	                	Thread.sleep(120);
 	                }catch (Exception ex){
-	                    MMServ.mmlog.errLog(ex);
+	                    MWServ.mwlog.errLog(ex);
 	                }
             	}
             }//end for

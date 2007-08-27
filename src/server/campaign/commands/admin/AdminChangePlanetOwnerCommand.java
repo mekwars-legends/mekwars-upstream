@@ -69,7 +69,7 @@ public class AdminChangePlanetOwnerCommand implements Command {
 		p.getInfluence().setInfluence(flu);
 		p.updated();
 		
-		//server.MMServ.mmlog.modLog(Username + " gave ownership of " + p.getName() + " to " + h.getName() + ".");
+		//server.MWServ.mwlog.modLog(Username + " gave ownership of " + p.getName() + " to " + h.getName() + ".");
 		CampaignMain.cm.toUser("You gave ownership of " + p.getName() + " to " + h.getName()+ ".",Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " gave ownership of " + p.getName() + " to " + h.getName()+ ".");
 		

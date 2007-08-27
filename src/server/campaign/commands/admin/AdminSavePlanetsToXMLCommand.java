@@ -21,7 +21,7 @@ import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.commands.Command;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
@@ -156,7 +156,7 @@ public class AdminSavePlanetsToXMLCommand implements Command {
 			p.close();
 			out.close();
 		}
-		catch ( Exception ex){MMServ.mmlog.errLog(ex);}
+		catch ( Exception ex){MWServ.mwlog.errLog(ex);}
 		CampaignMain.cm.toUser("XML saved!",Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has saved the universe to XML");   
 		

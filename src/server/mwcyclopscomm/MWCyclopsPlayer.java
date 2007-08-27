@@ -35,7 +35,7 @@ package server.mwcyclopscomm;
 
 import common.util.MD5;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
  
@@ -73,7 +73,7 @@ import server.campaign.SPlayer;
              
              message += MWCyclopsUtils.methodCallEnd();
          }catch(Exception ex){
-             MMServ.mmlog.errLog(ex);
+             MWServ.mwlog.errLog(ex);
          }
          
          return message;

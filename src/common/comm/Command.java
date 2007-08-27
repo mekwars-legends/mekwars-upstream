@@ -27,7 +27,7 @@ import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import server.MMServ;
+import server.MWServ;
 import client.MWClient;
 
 /**
@@ -47,7 +47,7 @@ public abstract class Command extends Thread implements ClientCommand, ServerCom
 	public Vector<String> ErrorMessages = new Vector<String>();
 	
 	protected MWClient mwclient = null;
-	protected MMServ myServer = null;
+	protected MWServ myServer = null;
 	protected String username;
 	protected int error_code = -1;
 	protected String myPrefix;
@@ -92,7 +92,7 @@ public abstract class Command extends Thread implements ClientCommand, ServerCom
 		mwclient = client;
 	}
 	
-	public void setServer(MMServ server) {
+	public void setServer(MWServ server) {
 		this.myServer = server;
 	}
 	

@@ -25,7 +25,7 @@ import java.util.Date;
 import common.CampaignData;
 import common.util.BinWriter;
 
-import server.MMServ;
+import server.MWServ;
 import server.dataProvider.ServerCommand;
 
 /**
@@ -48,12 +48,12 @@ public class BanTargetingTimeStamp implements ServerCommand {
                 in.close();
                 
             } catch (Exception e) {
-                MMServ.mmlog.infoLog("Error reading first line from bantargeting.dat");       
+                MWServ.mwlog.infoLog("Error reading first line from bantargeting.dat");       
             }
         } 
         
         else
-            MMServ.mmlog.infoLog("bantargeting.dat didn't exist. returning ficticious timestamp to requesting client.");       
+            MWServ.mwlog.infoLog("bantargeting.dat didn't exist. returning ficticious timestamp to requesting client.");       
         
         out.println(bannedAmmoTimestamp, "BanTargetingTimeStamp");
     }

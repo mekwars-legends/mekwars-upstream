@@ -18,7 +18,7 @@ package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.commands.Command;
 import server.campaign.CampaignMain;
 import server.campaign.SPlanet;
@@ -53,11 +53,11 @@ public class AdminRemoveAllTerrainCommand implements Command {
 			if(CampaignMain.cm.isUsingMySQL())
 				p.toDB();
 			
-			//server.MMServ.mmlog.modLog(Username + " removed terrain from " + p.getName() + "(#" + placeToDelete + ").");
+			//server.MWServ.mwlog.modLog(Username + " removed terrain from " + p.getName() + "(#" + placeToDelete + ").");
 			CampaignMain.cm.doSendModMail("NOTE",Username + " removed all terrain from " + p.getName() + ".");
 		}
 		catch (Exception ex){
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 		
 	}

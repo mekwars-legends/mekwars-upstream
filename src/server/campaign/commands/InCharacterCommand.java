@@ -18,7 +18,7 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import server.MMClientInfo;
+import server.MWClientInfo;
 import server.campaign.CampaignMain;
 
 public class InCharacterCommand implements Command {
@@ -50,7 +50,7 @@ public class InCharacterCommand implements Command {
 		toSend = "(In Character)"+Username+":" + toSend;
 		
         //if client is somehow null, just send the message
-        MMClientInfo client = CampaignMain.cm.getServer().getUser(Username);
+        MWClientInfo client = CampaignMain.cm.getServer().getUser(Username);
         if (client == null) 
         	return;
         

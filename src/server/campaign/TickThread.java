@@ -19,7 +19,7 @@ package server.campaign;
 
 import java.io.IOException;
 import java.io.FileWriter;
-import server.MMServ;
+import server.MWServ;
 import server.campaign.util.Statistics;
 
 public class TickThread extends Thread {
@@ -43,7 +43,7 @@ public class TickThread extends Thread {
 		try {
 			this.wait(time);
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 		
 	}
@@ -60,12 +60,12 @@ public class TickThread extends Thread {
 				this.extendedWait(Duration);  //15 mins by default
 				
 				tickid++;
-				MMServ.mmlog.tickLog("Tick (" + tickid + ") Started");
+				MWServ.mwlog.tickLog("Tick (" + tickid + ") Started");
 				
 				try {
 					myCampaign.tick(true,tickid);
 				} catch (Exception ex) {
-					MMServ.mmlog.errLog(ex);
+					MWServ.mwlog.errLog(ex);
 					myCampaign.doSendToAllOnlinePlayers("Tick skipped. Errors occured", true);
 				}
 				
@@ -85,16 +85,16 @@ public class TickThread extends Thread {
 						out.write("\n");
 						out.close();
 					} catch (IOException e) {
-						MMServ.mmlog.errLog(e);
+						MWServ.mwlog.errLog(e);
 					}
 				}
 				
-				MMServ.mmlog.tickLog("Tick (" + tickid + ") Finished");
+				MWServ.mwlog.tickLog("Tick (" + tickid + ") Finished");
 				myCampaign.doSendToAllOnlinePlayers("CC|NT|" + this.Duration + "|" + true,false);
 			}
 		}
 		catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 	}
 }

@@ -31,7 +31,7 @@ import common.Unit;
 import common.util.StringUtils;
 import common.util.UnitUtils;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.BuildTable;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
@@ -108,7 +108,7 @@ public class RepodCommand implements Command {
 				}
 			}
 			
-			//MMServ.mmlog.errLog("repod target "+target+" Global: "+global);
+			//MWServ.mwlog.errLog("repod target "+target+" Global: "+global);
 			
 			//return if the unit which is targetted is not an omni
 			if (!m.isOmni()) {
@@ -142,7 +142,7 @@ public class RepodCommand implements Command {
 					SHouse faction = (SHouse)Houses.next();
 					
 					fileName = BuildTable.getFileName(faction.getName(), Unit.getWeightClassDesc(m.getWeightclass()), timeZone, m.getType() );
-					//MMServ.mmlog.errLog("File: "+fileName);
+					//MWServ.mwlog.errLog("File: "+fileName);
 					
 					if (!tables.contains(fileName))
 						tables.add(fileName);
@@ -155,9 +155,9 @@ public class RepodCommand implements Command {
 			} else if ( !Boolean.parseBoolean(h.getConfig("RepodUsesFactory"))){
 				String fileName = "";
 				String timeZone = h.getConfig("NoFactoryRepodFolder");
-				//MMServ.mmlog.errLog("TimeZone: "+timeZone);
+				//MWServ.mwlog.errLog("TimeZone: "+timeZone);
 				fileName = BuildTable.getFileName(h.getName(), Unit.getWeightClassDesc(m.getWeightclass()), timeZone, m.getType() );
-				//MMServ.mmlog.errLog("File: "+fileName);
+				//MWServ.mwlog.errLog("File: "+fileName);
 				
 				if (!tables.contains(fileName))
 					tables.add(fileName);
@@ -205,7 +205,7 @@ public class RepodCommand implements Command {
 			//variants.add(mEnt.getModel());
 			int i = tables.size();
 			
-			//MMServ.mmlog.errLog("table size is "+i);
+			//MWServ.mwlog.errLog("table size is "+i);
 			if (i < 1) {
 				CampaignMain.cm.toUser("Repod Failed: No acceptable factory currently available", Username, true);
 				return;
@@ -256,7 +256,7 @@ public class RepodCommand implements Command {
 										if ( target.equals("RANDOM") &&  cm.getModelName().equals(m.getModelName()) )
 											continue;
 										
-										//MMServ.mmlog.errLog("FileName: "+Filename+" Model: "+model);
+										//MWServ.mwlog.errLog("FileName: "+Filename+" Model: "+model);
 										if (!variants.contains(Filename)) {
 											variants.add(Filename);
 											String repodMoneyCfg = "RepodCost" + Unit.getWeightClassDesc(cm.getWeightclass()); 
@@ -290,17 +290,17 @@ public class RepodCommand implements Command {
 						}
 						
 						else
-							MMServ.mmlog.mainLog("File " + prodFile + " has a problem with line:" + l);
+							MWServ.mwlog.mainLog("File " + prodFile + " has a problem with line:" + l);
 					}//end dis.ready()
 					dis.close();
 					fis.close();
 				} catch (FileNotFoundException ex){
-					MMServ.mmlog.mainLog("File " + prodFile + " was not Found");
+					MWServ.mwlog.mainLog("File " + prodFile + " was not Found");
 				} catch (IOException ex){
-					MMServ.mmlog.mainLog("File " + prodFile + " had an I/O error");
+					MWServ.mwlog.mainLog("File " + prodFile + " had an I/O error");
 				} catch (Exception ex){
-					MMServ.mmlog.errLog(ex);
-					MMServ.mmlog.mainLog("File " + prodFile + " has a problem");
+					MWServ.mwlog.errLog(ex);
+					MWServ.mwlog.mainLog("File " + prodFile + " has a problem");
 				}
 				
 				finally {
@@ -339,7 +339,7 @@ public class RepodCommand implements Command {
 	
 	private void createOmni(SUnit m, String Filename, int unitid,SPlayer p, Vector possible,boolean random){
 		
-		//MMServ.mmlog.errLog("Filename "+Filename);
+		//MWServ.mwlog.errLog("Filename "+Filename);
 		SHouse h = p.getHouseFightingFor();
 		String Username = p.getName();
 		

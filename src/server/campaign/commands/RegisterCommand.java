@@ -18,16 +18,16 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
-import server.util.MMNetPasswd;
+import server.util.MWPasswd;
 
 
 /**
- * Moving the Register command from MMServ into the normal command structure.
+ * Moving the Register command from MWServ into the normal command structure.
  *
  * Syntax  /c Register#Name,Password
  */
@@ -59,26 +59,26 @@ public class RegisterCommand implements Command {
                 regname = str.nextToken().trim().toLowerCase();
                 pw = str.nextToken();
             }catch (Exception ex){
-                MMServ.mmlog.errLog("Failure to register: "+regname);
+                MWServ.mwlog.errLog("Failure to register: "+regname);
                 return;
             }
             
             //Check to see if the Username is already registered
             boolean regged = false;
             try {
-                //MMNetPasswd.getRecord(regname, null);
+                //MWPasswd.getRecord(regname, null);
             	 player = CampaignMain.cm.getPlayer(regname);
             	if ( player.getPassword() != null )
             		regged = true;
             } catch (Exception ex) {
                 //Username already registered, ignore error.
-                //MMServ.mmlog.errLog(ex);
+                //MWServ.mwlog.errLog(ex);
                 regged = true;
             }
              
             if (regged && !CampaignMain.cm.getServer().isAdmin(Username)) {
             	CampaignMain.cm.toUser("Nickname \"" + regname + "\" is already registered!", Username);
-                //MMServ.mmlog.modLog(Username + " tried to register the nickname \"" + regname + "\", which was already registered.");
+                //MWServ.mwlog.modLog(Username + " tried to register the nickname \"" + regname + "\", which was already registered.");
                 CampaignMain.cm.doSendModMail("NOTE",Username + " tried to register the nickname \"" + regname + "\", which was already registered.");
                 return;
             }
@@ -92,10 +92,10 @@ public class RegisterCommand implements Command {
             //change userlevel
             int level = -1;
             if (CampaignMain.cm.getServer().isAdmin(Username)){
-            	MMNetPasswd.writeRecord(regname, IAuthenticator.ADMIN, pw);	
+            	MWPasswd.writeRecord(regname, IAuthenticator.ADMIN, pw);	
             	level = IAuthenticator.ADMIN;
             } else {
-            	MMNetPasswd.writeRecord(regname, IAuthenticator.REGISTERED, pw);
+            	MWPasswd.writeRecord(regname, IAuthenticator.REGISTERED, pw);
             	level = IAuthenticator.REGISTERED;
             }
             
@@ -116,14 +116,14 @@ public class RegisterCommand implements Command {
             }
             //acknowledge registration
             CampaignMain.cm.toUser("\"" + regname + "\" successfully registered.", Username);
-            MMServ.mmlog.modLog("New nickname registered: " + regname);
+            MWServ.mwlog.modLog("New nickname registered: " + regname);
             CampaignMain.cm.doSendModMail("NOTE","New nickname registered: " + regname + " by: " + Username);
     	
         } catch (Exception e) {
-            MMServ.mmlog.errLog(e);
-            MMServ.mmlog.errLog("^ Not supposed to happen! ^");
-            MMServ.mmlog.errLog(e);
-            MMServ.mmlog.errLog("Not supposed to happen");
+            MWServ.mwlog.errLog(e);
+            MWServ.mwlog.errLog("^ Not supposed to happen! ^");
+            MWServ.mwlog.errLog(e);
+            MWServ.mwlog.errLog("Not supposed to happen");
         }
     }
 }

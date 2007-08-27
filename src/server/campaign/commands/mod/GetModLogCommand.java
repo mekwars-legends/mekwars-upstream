@@ -22,7 +22,7 @@ import java.io.File;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
@@ -53,7 +53,7 @@ public class GetModLogCommand implements Command {
 			CampaignMain.cm.toUser("SM|" + total,Username,false);
 			CampaignMain.cm.doSendModMail("NOTE",Username + " read the modlog.");
 		} catch (Exception ex) {
-		    MMServ.mmlog.errLog(ex);
+		    MWServ.mwlog.errLog(ex);
 		}//end catch
 		
 		

@@ -18,7 +18,7 @@ package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
 import java.io.FileInputStream;
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
@@ -41,7 +41,7 @@ public class CampaignConfigCommand implements Command {
 		try {//Try to read the config file
 			CampaignMain.cm.getConfig().load(new FileInputStream(CampaignMain.cm.getServer().getConfigParam("CAMPAIGNCONFIG")));
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 			CampaignMain.cm.toUser("Failed to read campaign config.",Username,true);
 		}	
 		CampaignMain.cm.toUser("Campaign config reread!",Username,true);

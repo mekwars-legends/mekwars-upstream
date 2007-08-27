@@ -42,7 +42,7 @@ public class GrantMoneyCommand implements Command {
 			p.addMoney(amount);
 			CampaignMain.cm.toUser("You've been granted " + CampaignMain.cm.moneyOrFluMessage(true,false,amount,true)+" from " + Username,p.getName(),true);
 			CampaignMain.cm.toUser("You granted " + CampaignMain.cm.moneyOrFluMessage(true,false,amount,true)+" to " + p.getName(),Username,true);
-			//server.MMServ.mmlog.modLog(Username + " granted " + CampaignMain.cm.moneyOrFluMessage(true,false,amount,true)+" to " + p.getName());
+			//server.MWServ.mwlog.modLog(Username + " granted " + CampaignMain.cm.moneyOrFluMessage(true,false,amount,true)+" to " + p.getName());
 			CampaignMain.cm.doSendModMail("NOTE",Username + " granted " + CampaignMain.cm.moneyOrFluMessage(true,false,amount,true)+" to " + p.getName());
 		}
 		

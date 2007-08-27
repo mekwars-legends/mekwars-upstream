@@ -42,7 +42,7 @@ import common.Planet;
 import common.UnitFactory;
 import common.util.MD5;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SPlanet;
  /**
@@ -72,7 +72,7 @@ import server.campaign.SPlanet;
              
              message.append(MWCyclopsUtils.methodCallEnd());
          }catch(Exception ex){
-             MMServ.mmlog.errLog(ex);
+             MWServ.mwlog.errLog(ex);
          }
          
          return message.toString();
@@ -105,7 +105,7 @@ import server.campaign.SPlanet;
              
              message.append(MWCyclopsUtils.methodCallEnd());
          }catch(Exception ex){
-             MMServ.mmlog.errLog(ex);
+             MWServ.mwlog.errLog(ex);
          }
          
          return message.toString();

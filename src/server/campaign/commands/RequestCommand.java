@@ -23,7 +23,7 @@ import java.util.StringTokenizer;
 
 import common.Unit;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.BuildTable;
 import server.campaign.SPlayer;
 import server.campaign.CampaignMain;
@@ -356,7 +356,7 @@ public class RequestCommand implements Command {
 			hsUpdates.append(playerHouse.addPP(weightclass, type_id, -mechPP, false));//remove PP from the faction
 			result = "You've been granted a " + mech.getModelName() + ". (-";
 			result += CampaignMain.cm.moneyOrFluMessage(true,false,mechCbills)+" / -" + CampaignMain.cm.moneyOrFluMessage(false,true,mechInfluence)+")";
-			MMServ.mmlog.mainLog(p.getName() + " bought a " + mech.getVerboseModelName() + " from " + factory.getName() + " on " + planet.getName());
+			MWServ.mwlog.mainLog(p.getName() + " bought a " + mech.getVerboseModelName() + " from " + factory.getName() + " on " + planet.getName());
 			CampaignMain.cm.toUser(result,Username,true);
 			CampaignMain.cm.doSendHouseMail(playerHouse,"NOTE",p.getName() + " bought a " + mech.getVerboseModelName() + " from " + factory.getName() + " on " + planet.getName() + "!");
 

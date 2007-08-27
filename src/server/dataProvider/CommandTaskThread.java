@@ -25,7 +25,7 @@ import java.net.SocketTimeoutException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import server.MMServ;
+import server.MWServ;
 
 import common.CampaignData;
 //import common.util.BinReader;
@@ -64,7 +64,7 @@ public class CommandTaskThread extends Thread {
             // timestamp is in this format
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 
-            MMServ.mmlog.infoLog("DataProvider call accepted from "+client.getInetAddress());
+            MWServ.mwlog.infoLog("DataProvider call accepted from "+client.getInetAddress());
             BinWriter out = null;
             BufferedReader in = null;
             String cmdStr = "";
@@ -80,8 +80,8 @@ public class CommandTaskThread extends Thread {
                     	//System.err.println("timeStr: "+timeStr);
                     }catch (Exception e) {
                         in.close();
-                    	MMServ.mmlog.errLog("Error getting data provider command or timestamp from client.");
-                    	MMServ.mmlog.errLog(e);
+                    	MWServ.mwlog.errLog("Error getting data provider command or timestamp from client.");
+                    	MWServ.mwlog.errLog(e);
                     	return;
                     }//end command name try/catch
                     
@@ -91,8 +91,8 @@ public class CommandTaskThread extends Thread {
                         	out = new BinWriter(new PrintWriter(client.getOutputStream()));
                         } catch (Exception e) {
                             in.close();
-                        	MMServ.mmlog.errLog("Error in data provider while creating output stream.");
-                        	MMServ.mmlog.errLog(e);
+                        	MWServ.mwlog.errLog("Error in data provider while creating output stream.");
+                        	MWServ.mwlog.errLog(e);
                         	return;
                         } 
                     }//end output stream if
@@ -106,8 +106,8 @@ public class CommandTaskThread extends Thread {
                     } catch (Exception e) {
                         in.close();
                         out.close();
-                    	MMServ.mmlog.errLog("Error creating dataprovider command: " + cmdStr);
-                    	MMServ.mmlog.errLog(e);
+                    	MWServ.mwlog.errLog("Error creating dataprovider command: " + cmdStr);
+                    	MWServ.mwlog.errLog(e);
                     	return;
                     }//end command class try/catch
                    
@@ -120,14 +120,14 @@ public class CommandTaskThread extends Thread {
                     } catch (Exception e) {
                         in.close();
                         out.close();
-                    	MMServ.mmlog.errLog("Error executing dataprovider command: " + cmdStr);
-                    	MMServ.mmlog.errLog(e);
+                    	MWServ.mwlog.errLog("Error executing dataprovider command: " + cmdStr);
+                    	MWServ.mwlog.errLog(e);
                     	return;
                     }//end execute try/catch
                     out.flush();
                 }//end While            
                 try {
-                    MMServ.mmlog.infoLog("Closing DataProvider call from "+client.getInetAddress());
+                    MWServ.mwlog.infoLog("Closing DataProvider call from "+client.getInetAddress());
                     in.close();
                     out.close();
                 	client.close();
@@ -137,7 +137,7 @@ public class CommandTaskThread extends Thread {
                     client = null;
                     return;
                 }catch (Exception e) {
-                	MMServ.mmlog.errLog(e);
+                	MWServ.mwlog.errLog(e);
                 	return;
                 }//end client.close() try
             }catch (SocketException se ){
@@ -148,12 +148,12 @@ public class CommandTaskThread extends Thread {
                     in.close();
                     out.close();
                     client.close();
-                    MMServ.mmlog.infoLog("TimeOut DataProvider call from "+client.getInetAddress());
+                    MWServ.mwlog.infoLog("TimeOut DataProvider call from "+client.getInetAddress());
                 }catch(Exception ex){}
                 client = null;
                 return;
             }catch (Exception ex){
-                MMServ.mmlog.errLog(ex);
+                MWServ.mwlog.errLog(ex);
                 return;
             }//end first try
             

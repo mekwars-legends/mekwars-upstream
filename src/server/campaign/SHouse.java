@@ -52,7 +52,7 @@ import common.persistence.TreeWriter;
 import common.util.StringUtils;
 import common.util.UnitUtils;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.commands.Command;
 import server.campaign.data.TimeUpdateHouse;
 import server.campaign.market2.IBuyer;
@@ -301,7 +301,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 	}
 
 	public void toDB() {
-		MMServ.mmlog.dbLog("Saving Faction " + getName());
+		MWServ.mwlog.dbLog("Saving Faction " + getName());
 		
 		Connection con = CampaignMain.cm.MySQL.getCon();
 		
@@ -503,7 +503,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 					ps.executeUpdate("INSERT into faction_base_gunnery_piloting set factionID = " + getDBId() + ", unitType = " + pos + ", baseGunnery = " + getBaseGunner(pos) + ", basePiloting = " + getBasePilot(pos));
 				}
 				} catch (SQLException e) {
-			MMServ.mmlog.dbLog("SQL Error in FactionHandler.saveFaction: " + e.getMessage());
+			MWServ.mwlog.dbLog("SQL Error in FactionHandler.saveFaction: " + e.getMessage());
 		}	
 	}
 	
@@ -570,7 +570,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			setName(ST.nextToken());
 
 			// start the chat logging.
-			MMServ.mmlog.createFactionLogger(this.getName());
+			MWServ.mwlog.createFactionLogger(this.getName());
 
 			setMoney(((Integer.parseInt(ST.nextToken()))));
 			setHouseColor(ST.nextToken());
@@ -865,7 +865,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
             // Stuff for MercHouse.. Has to be here until someone tells me how
 			// to move it :) - McWiz
 			if (this.isMercHouse()) {
-				MMServ.mmlog.mainLog("Merc House");
+				MWServ.mwlog.mainLog("Merc House");
 				int contractamount = 0;
 				if (ST.hasMoreElements())
 					contractamount = Integer.parseInt(ST.nextToken());
@@ -878,7 +878,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 				((MercHouse) this).setOutstandingContracts(merctable);
 			}
 			// if (CampaignMain.cm.isDebugEnabled())
-			MMServ.mmlog.mainLog("House loaded: " + getName());
+			MWServ.mwlog.mainLog("House loaded: " + getName());
 
 			/*
 			 * this.getPilotQueues().setBaseGunnery(this.getBaseGunner());
@@ -889,8 +889,8 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			
 			return s;
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
-			MMServ.mmlog.errLog("Error while loading faction: " + this.getName()+ "Going forward anyway ...");
+			MWServ.mwlog.errLog(ex);
+			MWServ.mwlog.errLog("Error while loading faction: " + this.getName()+ "Going forward anyway ...");
 			return s;
 		}
 	}
@@ -957,7 +957,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		setHouseColor(HouseColor);
 		setName(name);
 		
-		MMServ.mmlog.createFactionLogger(this.getName());
+		MWServ.mwlog.createFactionLogger(this.getName());
 		// Vehicles = new Vector();
 
 		for (int j = 0; j < 5; j++) // Type
@@ -1536,7 +1536,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			return scrapMessageForPlayer;
 
 		} catch (Exception e) {//./data/scrapmessages/ is 21 chars. strip path leader and just name file w/ problems.
-			MMServ.mmlog.errLog("A problem occured with your " + filepath.substring(21,filepath.length()) + " file!");
+			MWServ.mwlog.errLog("A problem occured with your " + filepath.substring(21,filepath.length()) + " file!");
 			return "A " + unit.getModelName() + " was kidnapped by aliens from outer space";
 		}
 	}
@@ -1671,9 +1671,9 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			Vector<Integer> v = this.getComponents().get(type_id);
 			v.setElementAt(new Integer(v.elementAt(weight).intValue() + val), weight);
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
-			MMServ.mmlog.errLog("Error in addPP()");
-			MMServ.mmlog.errLog("weight: " + weight + " type: " + type_id + " value: " + val);
+			MWServ.mwlog.errLog(ex);
+			MWServ.mwlog.errLog("Error in addPP()");
+			MWServ.mwlog.errLog("weight: " + weight + " type: " + type_id + " value: " + val);
 			Vector v = new Vector();
 			for (int i = 0; i < 4; i++)// Weight
 				v.add(new Integer(0));
@@ -1708,8 +1708,8 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		try {
 			s = this.getHangar(type_id).elementAt(weightclass);
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
-			MMServ.mmlog.errLog("Empty Vector in getEntity");
+			MWServ.mwlog.errLog(ex);
+			MWServ.mwlog.errLog("Empty Vector in getEntity");
 			return null;
 		}
 		
@@ -1989,7 +1989,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		CampaignMain.cm.toUser("PL|SH|" + this.getName(), realName, false);
 
 		Date d = new Date(System.currentTimeMillis());
-		MMServ.mmlog.mainLog(d + ":" + "User Logged into House: " + realName);
+		MWServ.mwlog.mainLog(d + ":" + "User Logged into House: " + realName);
 		
 		/*
          * Remove from all status hashes and place in reserve, in case the players
@@ -2092,7 +2092,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		
 		//add info to logs
 		Date d = new Date(System.currentTimeMillis());
-		MMServ.mmlog.mainLog(d + ":" + "User Logged out: " + realName);
+		MWServ.mwlog.mainLog(d + ":" + "User Logged out: " + realName);
 		CampaignMain.cm.toUser("CS|" + SPlayer.STATUS_LOGGEDOUT,realName, false);
 	}
 
@@ -2471,8 +2471,8 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		try {
 			s = this.getHangar(type).elementAt(weight);
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
-			MMServ.mmlog.errLog("Empty Vector in getHighestUnitCost");
+			MWServ.mwlog.errLog(ex);
+			MWServ.mwlog.errLog("Empty Vector in getHighestUnitCost");
 			return Float.MAX_VALUE;
 		}
 		if (s == null)
@@ -2549,9 +2549,9 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			config.store(ps, "Faction Config");
 			ps.close();
 		} catch (FileNotFoundException fe) {
-			MMServ.mmlog.errLog(fileName+" not found");
+			MWServ.mwlog.errLog(fileName+" not found");
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}   
 
 	}
@@ -2582,7 +2582,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			}
 			ps.close();
 		} catch(SQLException e) {
-			MMServ.mmlog.dbLog("SQL Error in SHouse.saveConfigFileToDB: " + e.getMessage());
+			MWServ.mwlog.dbLog("SQL Error in SHouse.saveConfigFileToDB: " + e.getMessage());
 		}
 	}
 	
@@ -2598,7 +2598,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			config.load(new FileInputStream(configFile));
 		}
 		catch(Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 	}
 
@@ -2618,7 +2618,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 				this.config.setProperty(rs.getString("configKey"), rs.getString("configValue"));
 			}
 		} catch (SQLException e) {
-			MMServ.mmlog.dbLog("SQL Error in SHouse.loadConfigFileFromDB: " + e.getMessage());
+			MWServ.mwlog.dbLog("SQL Error in SHouse.loadConfigFileFromDB: " + e.getMessage());
 		}
 	}
 	

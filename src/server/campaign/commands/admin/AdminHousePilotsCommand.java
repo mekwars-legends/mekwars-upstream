@@ -77,7 +77,7 @@ public class AdminHousePilotsCommand implements Command {
 		h.updated();
 		//send to caller and notify mod channel
 		CampaignMain.cm.toUser(toReturn.toString(),Username,true);
-		//server.MMServ.mmlog.modLog(Username + " checked House " + h.getName() + " Pilots");
+		//server.MWServ.mwlog.modLog(Username + " checked House " + h.getName() + " Pilots");
 		CampaignMain.cm.doSendModMail("NOTE",Username + " checked House "+ h.getName() + " Pilots");
 		
 		

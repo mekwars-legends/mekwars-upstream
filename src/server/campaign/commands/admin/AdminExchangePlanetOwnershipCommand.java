@@ -81,7 +81,7 @@ public class AdminExchangePlanetOwnershipCommand implements Command {
 		if(CampaignMain.cm.isUsingMySQL())
 			planet.toDB();
 		
-		//server.MMServ.mmlog.modLog(Username + " took " + newAmount + "% of "+ planet.getName() + " from " + losingHouse.getName() + " and gave it to " + winningHouse.getName() + ".");
+		//server.MWServ.mwlog.modLog(Username + " took " + newAmount + "% of "+ planet.getName() + " from " + losingHouse.getName() + " and gave it to " + winningHouse.getName() + ".");
 		CampaignMain.cm.toUser("You took " + newAmount + "% of "+ planet.getName() + " from " + losingHouse.getName() + " and gave it to " + winningHouse.getName() + ".",Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " took " + newAmount + "% of "+ planet.getName() + " from " + losingHouse.getName() + " and gave it to " + winningHouse.getName() + ".");
 	}

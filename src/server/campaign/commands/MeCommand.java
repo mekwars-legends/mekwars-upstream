@@ -18,14 +18,14 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import server.MMClientInfo;
+import server.MWClientInfo;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.commands.Command;
 
 
 /**
- * Moving the Me command from MMServ into the normal command structure.
+ * Moving the Me command from MWServ into the normal command structure.
  *
  * Syntax  /c me blah
  */
@@ -73,7 +73,7 @@ public class MeCommand implements Command {
         	channel = channels.nextToken();
 
         //if client is somehow null, just send the message
-        MMClientInfo client = CampaignMain.cm.getServer().getUser(Username);
+        MWClientInfo client = CampaignMain.cm.getServer().getUser(Username);
         if (client == null) {
         	CampaignMain.cm.doSendToAllOnlinePlayers(Username + "|#me " + toSend,true);
         	return;

@@ -23,7 +23,7 @@ import java.util.StringTokenizer;
 
 import megamek.common.Entity;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SUnit;
 import server.campaign.commands.Command;
@@ -143,7 +143,7 @@ public class BuildTableValidatorCommand implements Command {
 
 				}
 			} catch (Exception e) {
-				MMServ.mmlog.errLog(e);
+				MWServ.mwlog.errLog(e);
 				return "Error from FileReader of BufferedReader while opening files. Check permissions.";
 			}
 		}

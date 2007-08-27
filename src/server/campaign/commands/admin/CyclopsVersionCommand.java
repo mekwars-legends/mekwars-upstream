@@ -23,7 +23,7 @@ package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.commands.Command;
 import server.campaign.CampaignMain;
 import server.MWChatServer.auth.IAuthenticator;
@@ -43,9 +43,9 @@ public class CyclopsVersionCommand implements Command {
 			return;
 		}
 		
-        MMServ.mmlog.errLog("Starting Version");
+        MWServ.mwlog.errLog("Starting Version");
         CampaignMain.cm.getMWCC().version();
-        MMServ.mmlog.errLog("Ending Version");
+        MWServ.mwlog.errLog("Ending Version");
         
         
 	}

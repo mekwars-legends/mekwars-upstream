@@ -74,7 +74,7 @@ public class CheckCommand implements Command {
 		
 		//send messages and log use
 		CampaignMain.cm.toUser(toMod,Username,true);
-		//server.MMServ.mmlog.modLog(Username + " checked " + p.getName());
+		//server.MWServ.mwlog.modLog(Username + " checked " + p.getName());
 		CampaignMain.cm.doSendModMail("NOTE",Username + " checked " + p.getName());
 		
 	}

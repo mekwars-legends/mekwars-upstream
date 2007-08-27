@@ -38,7 +38,7 @@ import java.util.Collection;
 import common.House;
 import common.util.MD5;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.SHouse;
  /**
   * Main House class for all house.* commands sent to cyclops
@@ -67,7 +67,7 @@ import server.campaign.SHouse;
              
              message += MWCyclopsUtils.methodCallEnd();
          }catch(Exception ex){
-             MMServ.mmlog.errLog(ex);
+             MWServ.mwlog.errLog(ex);
          }
          
          return message;
@@ -101,7 +101,7 @@ import server.campaign.SHouse;
              
              message += MWCyclopsUtils.methodCallEnd();
          }catch(Exception ex){
-             MMServ.mmlog.errLog(ex);
+             MWServ.mwlog.errLog(ex);
          }
          
          return message;

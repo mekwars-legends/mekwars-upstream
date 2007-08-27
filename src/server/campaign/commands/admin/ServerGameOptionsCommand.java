@@ -28,7 +28,7 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.StringTokenizer;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
@@ -64,8 +64,8 @@ public class ServerGameOptionsCommand implements Command {
 			fops.close();
 		}
 		catch (Exception ex){
-			MMServ.mmlog.errLog("Unable to save Mega Mek Game Options!");
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog("Unable to save Mega Mek Game Options!");
+			MWServ.mwlog.errLog(ex);
 		}
 		
 		CampaignMain.cm.getMegaMekClient().game.getOptions().loadOptions();

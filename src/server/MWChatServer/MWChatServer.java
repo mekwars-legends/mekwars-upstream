@@ -38,7 +38,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
-import server.MMServ;
+import server.MWServ;
 import server.MWChatServer.auth.IAuthenticator;
 import server.MWChatServer.auth.IRoomAuthenticator;
 import server.MWChatServer.auth.NullRoomAuthenticator;
@@ -158,7 +158,7 @@ public class MWChatServer implements ICommands {
         try {
             return _users.get(clientKey(target));
         } catch (Exception ex) {
-            MMServ.mmlog.errLog(ex);
+            MWServ.mwlog.errLog(ex);
             return null;
         }
     }
@@ -200,7 +200,7 @@ public class MWChatServer implements ICommands {
         validateUserId(userId);
         Auth auth = _authenticator.authenticate(client, password);
         int access = auth.getAccess();
-        MMServ.mmlog.infoLog(client.getUserId() + " signon from "
+        MWServ.mwlog.infoLog(client.getUserId() + " signon from "
                 + client.getHost() + ".  Access = " + access
                 + (client.getTunneling() ? " (tunneling)" : ""));
 
@@ -210,12 +210,12 @@ public class MWChatServer implements ICommands {
 
         client.setUserId(auth.getUserId());
         synchronized (_users) {
-            MMServ.mmlog.infoLog("signOn: " + client.getUserId());
+            MWServ.mwlog.infoLog("signOn: " + client.getUserId());
             // if signed on locally, let new take precedence
             MWChatClient oldC = _users.get(clientKey(client));
             if (oldC != null) {
                 oldC.killed(client.getUserId(),"Terminated by signing on elsewhere");
-                MMServ.mmlog.errLog("Terminated by signing on elsewhere");
+                MWServ.mwlog.errLog("Terminated by signing on elsewhere");
                 signOff(oldC);
             }
 
@@ -225,8 +225,8 @@ public class MWChatServer implements ICommands {
             try {
                 this.joinRoom(client, "Main Chat", "");
             } catch (Exception ex) {
-                MMServ.mmlog.errLog("Unable to join room");
-                MMServ.mmlog.errLog(ex);
+                MWServ.mwlog.errLog("Unable to join room");
+                MWServ.mwlog.errLog(ex);
             }
 
         }
@@ -246,7 +246,7 @@ public class MWChatServer implements ICommands {
                 try {
                     _users.remove(clientKey(client));
                 } catch (Exception ex) {
-                    MMServ.mmlog.errLog(ex);
+                    MWServ.mwlog.errLog(ex);
                 }
             }
 
@@ -267,7 +267,7 @@ public class MWChatServer implements ICommands {
                     RoomServer room = (RoomServer) i.next();
                     room.part(client, true);
                     if (room.isEmpty()) {
-                        MMServ.mmlog.infoLog("Removing empty room: "
+                        MWServ.mwlog.infoLog("Removing empty room: "
                                 + room.getName());
                         i.remove();
                     }
@@ -297,7 +297,7 @@ public class MWChatServer implements ICommands {
                 killedKey = MWChatClient.getKey(victimId);
             }
         } else {
-            MMServ.mmlog.infoLog(victim + " kicked off by " + killer._userId);
+            MWServ.mwlog.infoLog(victim + " kicked off by " + killer._userId);
             killedKey = c.getKey();
             c.killed(killer.getUserId(), message);
             signOff(c);
@@ -323,7 +323,7 @@ public class MWChatServer implements ICommands {
                 killedKey = MWChatClient.getKey(victimId);
             }
         } else {
-            MMServ.mmlog.infoLog(victim + " kicked off by server.");
+            MWServ.mwlog.infoLog(victim + " kicked off by server.");
             killedKey = c.getKey();
             signOff(c);
         }
@@ -350,12 +350,12 @@ public class MWChatServer implements ICommands {
                             int c = roomName.charAt(i);
                             // don't include space or DEL
                             if (c <= 32 && c >= 128) {
-                                MMServ.mmlog.infoLog(client.getUserId() + " room creation rejected: " + roomName);
+                                MWServ.mwlog.infoLog(client.getUserId() + " room creation rejected: " + roomName);
                                 throw new Exception(ICommands.INVALID_CHARACTER);
                             }
                         }
                     }
-                    MMServ.mmlog.infoLog(client.getUserId()
+                    MWServ.mwlog.infoLog(client.getUserId()
                             + " created new room: " + roomName);
                     room = createRoomServer(roomName, password);
                     _rooms.put(roomKey(room), room);
@@ -407,7 +407,7 @@ public class MWChatServer implements ICommands {
         try {
             return client.toLowerCase();
         } catch (Exception ex) {
-            MMServ.mmlog.errLog(ex);
+            MWServ.mwlog.errLog(ex);
             return null;
         }
     }
@@ -420,7 +420,7 @@ public class MWChatServer implements ICommands {
         PingThread pingKeepAlive = new PingThread(this);
         pingKeepAlive.start();
 
-        MMServ.mmlog.infoLog("Accepting socket connections on port " + _port);
+        MWServ.mwlog.infoLog("Accepting socket connections on port " + _port);
         while (true) {
             try {
                 Socket s = _serverSocket.accept();
@@ -431,18 +431,18 @@ public class MWChatServer implements ICommands {
                 // MWChatClient client =
                 createMWChatClient(s);
             } catch (IOException e) {
-                MMServ.mmlog.errLog(e);
+                MWServ.mwlog.errLog(e);
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
-                    MMServ.mmlog.errLog(ex);
+                    MWServ.mwlog.errLog(ex);
                 }
             } catch (Exception ex) {
-                MMServ.mmlog.errLog(ex);
+                MWServ.mwlog.errLog(ex);
                 try {
                     Thread.sleep(1000);
                 } catch (Exception exs) {
-                    MMServ.mmlog.errLog(exs);
+                    MWServ.mwlog.errLog(exs);
                 }
             }
         }
@@ -461,7 +461,7 @@ public class MWChatServer implements ICommands {
     }
 
     public boolean userExists(String username) {
-        //MMServ.mmlog.infoLog("userExists: " + username);
+        //MWServ.mwlog.infoLog("userExists: " + username);
         return _users.containsKey(username.toLowerCase());
     }
 
@@ -480,7 +480,7 @@ public class MWChatServer implements ICommands {
          */
         try {
             synchronized (_users) {
-                MMServ.mmlog.infoLog("sendServerPing: " + server);
+                MWServ.mwlog.infoLog("sendServerPing: " + server);
                 Iterator<MWChatClient> clients = _users.values().iterator();
                 while (clients.hasNext()) {
                     MWChatClient client = clients.next();
@@ -488,8 +488,8 @@ public class MWChatServer implements ICommands {
                 }
             }
         } catch (Exception ex) {
-            MMServ.mmlog.errLog("Error while sending server ping!");
-            MMServ.mmlog.errLog(ex);
+            MWServ.mwlog.errLog("Error while sending server ping!");
+            MWServ.mwlog.errLog(ex);
         }
     }
 
@@ -514,7 +514,7 @@ public class MWChatServer implements ICommands {
             }
             
             for (MWChatClient client : clientToRemove) {
-                MMServ.mmlog.infoLog("RemovalThread sign off: " + client.getUserId());
+                MWServ.mwlog.infoLog("RemovalThread sign off: " + client.getUserId());
                 this.signOff(client);
             }
             
@@ -536,7 +536,7 @@ public class MWChatServer implements ICommands {
 
         public PingThread(MWChatServer server) {
             super("PingThread");
-            MMServ.mmlog.infoLog("Starting PingThread");
+            MWServ.mwlog.infoLog("Starting PingThread");
             this.server = server;
         }
 
@@ -555,8 +555,8 @@ public class MWChatServer implements ICommands {
 
                 }
             } catch (Exception ex) {
-                MMServ.mmlog.errLog("Error while trying to sleep PingThread");
-                MMServ.mmlog.errLog(ex);
+                MWServ.mwlog.errLog("Error while trying to sleep PingThread");
+                MWServ.mwlog.errLog(ex);
             }
 
         }

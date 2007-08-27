@@ -48,7 +48,7 @@ public class GrantRewardCommand implements Command {
 			CampaignMain.cm.toUser(toRecipient,p.getName(),true);
 			
 			CampaignMain.cm.toUser("You granted " + amount + " Reward Points to " + p.getName(),Username,true);
-			//server.MMServ.mmlog.modLog(Username + " granted " + amount + " Reward Points to " + p.getName());
+			//server.MWServ.mwlog.modLog(Username + " granted " + amount + " Reward Points to " + p.getName());
 			CampaignMain.cm.doSendModMail("NOTE",Username + " granted " + amount + " Reward Points to " + p.getName());
 		}
 		

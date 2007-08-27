@@ -34,12 +34,12 @@ package server.MWChatServer.auth;
 
 import java.io.IOException;
 
-import server.MMServ;
+import server.MWServ;
 import server.MWChatServer.MWChatClient;
 import server.MWChatServer.MWChatServer;
 import server.MWChatServer.auth.IAuthenticator;
-import server.util.MMNetPasswd;
-import server.util.MMNetPasswdRecord;
+import server.util.MWPasswd;
+import server.util.MWPasswdRecord;
 
 /**
  * Authenitcator that reads from a password file.<p>
@@ -61,14 +61,14 @@ public class PasswdAuthenticator extends NullAuthenticator {
 	public Auth authenticate(MWChatClient client, String password) throws Exception {
     	String userId = client.getUserId();
         try {
-            MMNetPasswdRecord record = MMNetPasswd.getRecord(userId, password);
+            MWPasswdRecord record = MWPasswd.getRecord(userId, password);
             
             if (record == null) {
-            	//MMServ.mmlog.errLog("record is null for: "+userId);
+            	//MWServ.mwlog.errLog("record is null for: "+userId);
             	if (_allowGuests) {
             		Auth auth = super.authenticate(client, password);
             		if (_storeGuests) {
-		            	MMNetPasswd.writeRecord(auth.getUserId(), IAuthenticator.GUEST, password);
+		            	MWPasswd.writeRecord(auth.getUserId(), IAuthenticator.GUEST, password);
             		}
     	            return auth;
             	} 
@@ -81,7 +81,7 @@ public class PasswdAuthenticator extends NullAuthenticator {
             
         }
         catch (IOException e) {
-            MMServ.mmlog.errLog(e);
+            MWServ.mwlog.errLog(e);
             throw new Exception(userId);
         }
     }
@@ -89,7 +89,7 @@ public class PasswdAuthenticator extends NullAuthenticator {
 	/** checks all stored users besides just those currently logged on */
     @Override
 	public String getUserId(String target) {
-    	return MMNetPasswd.getUserId(target);
+    	return MWPasswd.getUserId(target);
     }
     
 }

@@ -58,7 +58,7 @@ public class SetHouseInHouseAttacksCommand implements Command {
 		h.setInHouseAttacks(conquer);
 		h.updated();
 		CampaignMain.cm.toUser("You set " + h.getName() + "'s infaction attack status to " + conquer,Username,true);
-		//server.MMServ.mmlog.modLog(Username + " has changed the infaction attack status for " + h.getName()+" to "+conquer);
+		//server.MWServ.mwlog.modLog(Username + " has changed the infaction attack status for " + h.getName()+" to "+conquer);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has changed the infaction attack status for " + h.getName()+" to "+conquer);
 
 	}

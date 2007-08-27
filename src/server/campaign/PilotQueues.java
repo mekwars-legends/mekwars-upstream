@@ -32,7 +32,7 @@ import java.util.Vector;
 import common.Unit;
 import common.campaign.pilot.skills.PilotSkill;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.SPilotSkill;
 import server.campaign.pilot.skills.TraitSkill;
@@ -398,7 +398,7 @@ public class PilotQueues {
         	fis.close();
 
         } catch (Exception e) {
-        	MMServ.mmlog.errLog("A problem occured while retreiving a name from the " + factionString + " Pilotnames File! Tried using Pilotnames.txt instead.");
+        	MWServ.mwlog.errLog("A problem occured while retreiving a name from the " + factionString + " Pilotnames File! Tried using Pilotnames.txt instead.");
         	result = SPilot.getRandomPilotName(CampaignMain.cm.getR());
         }
         

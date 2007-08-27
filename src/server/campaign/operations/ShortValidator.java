@@ -24,7 +24,7 @@
 package server.campaign.operations;
 
 //IMPORTS
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.NewbieHouse;
 import server.campaign.SHouse;
@@ -347,12 +347,12 @@ public class ShortValidator {
 				if (defenderFails.size() == 0)//if player can defend, add
 					fullMatches.add(currArmy);
 				else if ( o.getBooleanValue("DebugOp")){ //spamalama
-					MMServ.mmlog.errLog("Failed Defense reasons for Op: "+o.getName()+" Launched by player: "+ap.getName()+" with army: #"+aa.getID());
-					MMServ.mmlog.errLog("Defending Player: "+currPlayer.getName()+" Army id: #"+currArmy.getID());
+					MWServ.mwlog.errLog("Failed Defense reasons for Op: "+o.getName()+" Launched by player: "+ap.getName()+" with army: #"+aa.getID());
+					MWServ.mwlog.errLog("Defending Player: "+currPlayer.getName()+" Army id: #"+currArmy.getID());
 
 					Iterator df = defenderFails.iterator();
 					while (df.hasNext()) {
-						MMServ.mmlog.errLog("Reason: "+this.decodeFailure((Integer)df.next()));
+						MWServ.mwlog.errLog("Reason: "+this.decodeFailure((Integer)df.next()));
 					}
 				}
 			}

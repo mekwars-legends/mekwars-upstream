@@ -65,7 +65,7 @@ public class AdminSetHousePlayerColorCommand implements Command {
 		faction.updated();
 		
 		CampaignMain.cm.doSendModMail("NOTE",Username + " changed the faction playerlist color for " + HouseName);
-		//server.MMServ.mmlog.modLog(Username + " changed the faction playerlist color for " + HouseName);
+		//server.MWServ.mwlog.modLog(Username + " changed the faction playerlist color for " + HouseName);
 		
 		CampaignMain.cm.toUser(HouseName +" color changed.",Username,true);
 		

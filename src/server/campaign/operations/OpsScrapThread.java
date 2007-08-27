@@ -18,7 +18,7 @@ package server.campaign.operations;
 
 import java.util.TreeMap;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
@@ -62,7 +62,7 @@ public class OpsScrapThread extends Thread {
 		TreeMap<Integer,Integer> toReplace = new TreeMap<Integer,Integer>();
 		for (Integer currID : salvagedUnits.keySet()) {
 			int currScrapValue = salvagedUnits.get(currID).intValue();
-			//MMServ.mmlog.errLog("currID: "+currID+" maxTotalPayment: "+maxTotalPayment+" currScrapValue: "+currScrapValue);
+			//MWServ.mwlog.errLog("currID: "+currID+" maxTotalPayment: "+maxTotalPayment+" currScrapValue: "+currScrapValue);
 			if (currScrapValue > maxTotalPayment)
 				toReplace.put(currID, maxTotalPayment);
 		}
@@ -187,7 +187,7 @@ public class OpsScrapThread extends Thread {
 		try {
 			this.wait(waitTime);
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 		
 		/*

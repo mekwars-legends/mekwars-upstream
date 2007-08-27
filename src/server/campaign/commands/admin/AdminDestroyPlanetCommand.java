@@ -57,7 +57,7 @@ public class AdminDestroyPlanetCommand implements Command {
 		if (fp.exists())
 			fp.delete();
 		
-		//server.MMServ.mmlog.modLog(Username + " unleashed the Death Star on " + p.getName() + ". Planet destroyed!");
+		//server.MWServ.mwlog.modLog(Username + " unleashed the Death Star on " + p.getName() + ". Planet destroyed!");
 		CampaignMain.cm.doSendModMail("NOTE",Username + " unleashed the Death Star on " + p.getName() + ". Planet destroyed!");
 		
 	}

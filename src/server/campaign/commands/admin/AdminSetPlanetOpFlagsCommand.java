@@ -67,7 +67,7 @@ public class AdminSetPlanetOpFlagsCommand implements Command {
         
         planet.setPlanetFlags(map);
 		CampaignMain.cm.toUser("Op flags set for "+planet.getName(),Username,true);
-		//server.MMServ.mmlog.modLog(Username + " set the op flags for "+planet.getName());
+		//server.MWServ.mwlog.modLog(Username + " set the op flags for "+planet.getName());
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has set the op flags for "+planet.getName());
 		
         planet.updated();

@@ -79,7 +79,7 @@ public class AdminSpoofCommand implements Command {
 		StringTokenizer newCommand = new StringTokenizer(issuedCommand.toString(),"#");//rebuild a tokenizer to pass
 		
 		//checks passed. we have a valid player and command name. tell everyone about the spoof ...
-		//MMServ.mmlog.modLog(Username + " used spoof to send a command as if he were " + targetPlayerName + ": /c " + targetCommandName + "#" + issuedCommand);
+		//MWServ.mwlog.modLog(Username + " used spoof to send a command as if he were " + targetPlayerName + ": /c " + targetCommandName + "#" + issuedCommand);
 		CampaignMain.cm.doSendModMail("WARNING",Username + " used spoof to send a command as if he were " + targetPlayerName + ": /c " + targetCommandName + "#" + issuedCommand);
 		CampaignMain.cm.toUser(Username + " issued a command on your behalf: /c " + targetCommandName + "#" + issuedCommand,targetPlayerName,true);
 		CampaignMain.cm.toUser("You issued a command as if you were " + targetPlayerName + ": /c " + targetCommandName + "#" + issuedCommand,Username,true);

@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
@@ -100,7 +100,7 @@ public class mysqlHandler{
 		  }
 
 	  } catch (SQLException e) {
-		  MMServ.mmlog.dbLog("SQL Error in mysqlHandler.loadFactionPilots: " + e.getMessage());
+		  MWServ.mwlog.dbLog("SQL Error in mysqlHandler.loadFactionPilots: " + e.getMessage());
 	  }
   }
   
@@ -211,36 +211,36 @@ public class mysqlHandler{
 		  }
 		  return 0;
 	  } catch (SQLException e) {
-		  MMServ.mmlog.dbLog("SQL Error in mysqlHandler.getDBVersion: " + e.getMessage());
+		  MWServ.mwlog.dbLog("SQL Error in mysqlHandler.getDBVersion: " + e.getMessage());
 		  return 0;
 	  }
   }
   
   private boolean databaseIsUpToDate() {
 	  if(getDBVersion() == currentDBVersion){
-		  MMServ.mmlog.dbLog("Database up to date");
+		  MWServ.mwlog.dbLog("Database up to date");
 		  return true;
 	  }
-	  MMServ.mmlog.dbLog("Database is an incorrect version!  Please update.");
-	  MMServ.mmlog.dbLog("Current Version: " + currentDBVersion + "   --   Your version: " + getDBVersion());
+	  MWServ.mwlog.dbLog("Database is an incorrect version!  Please update.");
+	  MWServ.mwlog.dbLog("Current Version: " + currentDBVersion + "   --   Your version: " + getDBVersion());
 	  return false;
   }
   
   public void checkAndUpdateDB() {
 	  if(databaseIsUpToDate())
 		  return;
-	  MMServ.mmlog.dbLog("Database out of date");
-	  MMServ.mmlog.mainLog("Database out of date.  Shutting down to avoid data corruption.");
+	  MWServ.mwlog.dbLog("Database out of date");
+	  MWServ.mwlog.mainLog("Database out of date.  Shutting down to avoid data corruption.");
 	  System.exit(0);
 
 /*
 
 	  int dbVersion = getDBVersion();
 	  
-	  MMServ.mmlog.dbLog("Updating Database from version " + dbVersion + " to " + currentDBVersion);
+	  MWServ.mwlog.dbLog("Updating Database from version " + dbVersion + " to " + currentDBVersion);
 	  while (dbVersion != currentDBVersion) {
 		  int targetVersion = dbVersion + 1;
-		  MMServ.mmlog.dbLog("Starting update: " + dbVersion + " to " + targetVersion);
+		  MWServ.mwlog.dbLog("Starting update: " + dbVersion + " to " + targetVersion);
 
 		  dbVersion = targetVersion;
 		  

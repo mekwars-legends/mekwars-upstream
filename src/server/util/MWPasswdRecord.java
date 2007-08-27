@@ -15,14 +15,14 @@ package server.util;
 /**
  * Represents a line in the passwd file.  All fields are public
  */
-public class MMNetPasswdRecord {
+public class MWPasswdRecord {
     public String userId;
     public String passwd;
     public int access;
     public long time;
     private Long id;
     
-    public MMNetPasswdRecord(){
+    public MWPasswdRecord(){
     	//for serialization
     }
     
@@ -77,7 +77,7 @@ public class MMNetPasswdRecord {
     /**
      * Constructor for convenience
      */
-    public MMNetPasswdRecord(String userId, int access, String cryptedPasswd,long time, String logo) {
+    public MWPasswdRecord(String userId, int access, String cryptedPasswd,long time, String logo) {
         this.userId = userId;
         this.access = access;
         this.passwd = cryptedPasswd;

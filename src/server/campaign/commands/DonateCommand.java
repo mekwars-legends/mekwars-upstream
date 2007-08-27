@@ -27,7 +27,7 @@ import common.Unit;
 import common.util.StringUtils;
 import common.util.UnitUtils;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SHouse;
@@ -90,7 +90,7 @@ public class DonateCommand implements Command {
         if (m.getModelName().startsWith("Error") || m.getModelName().startsWith("OMG")){
             CampaignMain.cm.toUser("You tried to donate an Error unit. The unit was auto-scrapped and the staff was alerted.",Username,true);
             CampaignMain.cm.doSendModMail("NOTE",Username + " tried to donate an OMG. Unit auto-scrapped. Data: " + m.getProducer());
-            MMServ.mmlog.errLog(Username + " tried to donate an OMG. Unit auto-scrapped. Data: " + m.getProducer());
+            MWServ.mwlog.errLog(Username + " tried to donate an OMG. Unit auto-scrapped. Data: " + m.getProducer());
             p.removeUnit(unitid, true);
             return;
         }

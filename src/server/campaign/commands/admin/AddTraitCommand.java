@@ -20,7 +20,7 @@ import java.util.StringTokenizer;
 
 import java.util.Vector;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
@@ -56,10 +56,10 @@ public class AddTraitCommand implements Command {
 			skillList = command.nextToken();
 			confirmString = command.nextToken();
 		}catch (Exception ex){
-		    MMServ.mmlog.errLog(ex);
+		    MWServ.mwlog.errLog(ex);
 		}		
 
-		//MMServ.mmlog.errLog("faction: "+faction+" Trait: "+traitName+" skills: "+skillList+" Confirm: "+confirmString);
+		//MWServ.mwlog.errLog("faction: "+faction+" Trait: "+traitName+" skills: "+skillList+" Confirm: "+confirmString);
 		
 		if ( !confirmString.equals("CONFIRM") )
 		    return;

@@ -28,7 +28,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 
 @SuppressWarnings({"unchecked","serial"})
@@ -120,23 +120,23 @@ public final class SMWLogger {//final - no extension of the server logger
 		if(!logDir.exists()) {
 			try {
 				if(!logDir.mkdirs()) {
-					MMServ.mmlog.errLog("WARNING: logging directory cannot be created!");
-					MMServ.mmlog.errLog("WARNING: disabling log subsystem");
+					MWServ.mwlog.errLog("WARNING: logging directory cannot be created!");
+					MWServ.mwlog.errLog("WARNING: disabling log subsystem");
 					return;
 				}
 			} catch (Exception e) {
-				MMServ.mmlog.errLog(e);
+				MWServ.mwlog.errLog(e);
 			}
 		}
 		else if(!logDir.isDirectory()) {
-			MMServ.mmlog.errLog("WARNING: logging directory is not a directory!");
-			MMServ.mmlog.errLog("WARNING: disabling log subsystem");
+			MWServ.mwlog.errLog("WARNING: logging directory is not a directory!");
+			MWServ.mwlog.errLog("WARNING: disabling log subsystem");
 			return;
 		}
 
 		if(!logDir.canWrite()) {
-			MMServ.mmlog.errLog("WARNING: cannot write in logging directory!");
-			MMServ.mmlog.errLog("WARNING: disabling log subsystem");
+			MWServ.mwlog.errLog("WARNING: cannot write in logging directory!");
+			MWServ.mwlog.errLog("WARNING: disabling log subsystem");
 			return;
 		}
 
@@ -261,7 +261,7 @@ public final class SMWLogger {//final - no extension of the server logger
 				logging = true;
 
 		} catch (Exception e) {
-			MMServ.mmlog.errLog(e);
+			MWServ.mwlog.errLog(e);
 		}
 	}
 
@@ -390,7 +390,7 @@ public final class SMWLogger {//final - no extension of the server logger
             factionLog.addHandler(factionHandler);
             factionLog.info(logName+" log touched");
         }catch(Exception ex){
-            MMServ.mmlog.errLog(ex);
+            MWServ.mwlog.errLog(ex);
         }
 
     }
@@ -406,8 +406,8 @@ public final class SMWLogger {//final - no extension of the server logger
 	        out.close();
 	        CampaignMain.cm.doSendModMail("MODLOG: ", s);
 	    } catch (Exception ex) {
-	        MMServ.mmlog.errLog("Problems writing modlog to file");
-	        MMServ.mmlog.errLog(ex);
+	        MWServ.mwlog.errLog("Problems writing modlog to file");
+	        MWServ.mwlog.errLog(ex);
 	    }
 	}
 }

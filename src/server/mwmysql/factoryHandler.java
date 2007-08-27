@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Connection;
 import server.campaign.SUnitFactory;
-import server.MMServ;
+import server.MWServ;
 import server.campaign.SPlanet;
 
 public class factoryHandler {
@@ -42,7 +42,7 @@ public class factoryHandler {
       }
 
     } catch (SQLException e) {
-      MMServ.mmlog.dbLog("SQL Error in factoryHandler.java: " + e.getMessage());
+      MWServ.mwlog.dbLog("SQL Error in factoryHandler.java: " + e.getMessage());
     }       
     }
 
@@ -57,7 +57,7 @@ public class factoryHandler {
       stmt.executeUpdate(sql);
       stmt.close();
       } catch (SQLException e) {
-      MMServ.mmlog.dbLog("SQL ERROR in factoryHandler.java: " + e.getMessage());
+      MWServ.mwlog.dbLog("SQL ERROR in factoryHandler.java: " + e.getMessage());
       }
     }
 
@@ -72,7 +72,7 @@ public class factoryHandler {
       stmt.close();
       }
       catch (SQLException e) {
-        MMServ.mmlog.dbLog("SQL ERROR in factoryHandler.java: " + e.getMessage());
+        MWServ.mwlog.dbLog("SQL ERROR in factoryHandler.java: " + e.getMessage());
       }    
     }
 

@@ -33,23 +33,23 @@ import server.MWChatServer.commands.ICommands;
 @SuppressWarnings({"unchecked","serial"})
 public class ServerWrapper extends MWChatServer{
 	
-	MMServ myServer;
+	MWServ myServer;
 	
-	public static ServerWrapper createServer(MMServ server) throws Exception {
+	public static ServerWrapper createServer(MWServ server) throws Exception {
 		return new ServerWrapper(server);
 	}
 	
-	public ServerWrapper(MMServ server) throws Exception {
+	public ServerWrapper(MWServ server) throws Exception {
 		super(server.getConfigParam("SERVERIP"),Integer.parseInt(server.getConfigParam("SERVERPORT")));
 		this.myServer = server;
 	}
 	
 	public void start() {
-		MMServ.mmlog.mainLog("Starting");
+		MWServ.mwlog.mainLog("Starting");
 		this.acceptConnections();
 	}
 	
-	public MMServ getMMServ() {
+	public MWServ getMWServ() {
 		return this.myServer;
 	}
 	
@@ -58,7 +58,7 @@ public class ServerWrapper extends MWChatServer{
 		try {
 			this.myServer.clientRecieve(command, username);
 		} catch (Exception e) {
-			MMServ.mmlog.errLog(e);
+			MWServ.mwlog.errLog(e);
 		}
 	}
 	
@@ -68,7 +68,7 @@ public class ServerWrapper extends MWChatServer{
 			try {
 				client.sendRaw("/comm" + ICommands.DELIMITER + common.comm.TransportCodec.encode(msg));
 			} catch (Exception e) {
-				MMServ.mmlog.errLog(e);
+				MWServ.mwlog.errLog(e);
 			}
 		}
 	}
@@ -89,7 +89,7 @@ public class ServerWrapper extends MWChatServer{
 		try {
 			MWChatClient c = this.getClient(username);
 			if (c == null) {
-				MMServ.mmlog.mainLog("WARNING: Tried to get the IP from " + username + ", who is not here.");
+				MWServ.mwlog.mainLog("WARNING: Tried to get the IP from " + username + ", who is not here.");
 				
 				/*
 				 * We don't want to log out player who we can't find - logout uses getIP
@@ -109,7 +109,7 @@ public class ServerWrapper extends MWChatServer{
 				try {
 					return InetAddress.getLocalHost();
 				} catch (Exception ex) {
-					MMServ.mmlog.errLog(ex);
+					MWServ.mwlog.errLog(ex);
 					return null;
 				}
 			}
@@ -117,7 +117,7 @@ public class ServerWrapper extends MWChatServer{
 		}
 		
 		catch (Exception e) {
-			MMServ.mmlog.errLog(e);
+			MWServ.mwlog.errLog(e);
 			try {
 				return InetAddress.getLocalHost();
 			} catch (Exception ex) {
@@ -136,7 +136,7 @@ public class ServerWrapper extends MWChatServer{
 	@Override
 	public void signOn(MWChatClient client, String password) throws Exception{
 		
-		MMServ.mmlog.infoLog(client.getUserId() + " is attempting a signon");
+		MWServ.mwlog.infoLog(client.getUserId() + " is attempting a signon");
 		String userId = client.getUserId();
 		validateUserId(userId);
 		
@@ -157,7 +157,7 @@ public class ServerWrapper extends MWChatServer{
 			int access = auth.getAccess();
 			client.setAccessLevel(access);
 			_users.put(clientKey(client), client);
-			MMServ.mmlog.infoLog(client.getUserId() + " is authenticated.  Access = " + access + (client.getTunneling() ? " (tunneling)" : ""));
+			MWServ.mwlog.infoLog(client.getUserId() + " is authenticated.  Access = " + access + (client.getTunneling() ? " (tunneling)" : ""));
 			_cumulativeLogins++;
 		}
 		
@@ -171,7 +171,7 @@ public class ServerWrapper extends MWChatServer{
 		try {
 			this.myServer.clientLogout(client.getUserId());
 		} catch (Exception e) {
-			MMServ.mmlog.errLog(e);
+			MWServ.mwlog.errLog(e);
 		}
 	}
 	

@@ -45,26 +45,26 @@ import server.campaign.SPlayer;
 import server.MWChatServer.auth.IAuthenticator;
 import server.util.IpCountry;
 import server.util.TrackerThread;
-import server.MMClientInfo;
+import server.MWClientInfo;
 
 import common.MMGame;
 import common.comm.Command;
 import common.comm.ServerCommand;
 @SuppressWarnings({"unchecked","serial"})
-public class MMServ {
+public class MWServ {
 	
 	//Static logging engine, and static version info.
 	public static final String SERVER_VERSION = "0.2.6.0";//Sync this with the clientVersion in MMClient @Torren 
-	public static final SMWLogger mmlog = new SMWLogger();
+	public static final SMWLogger mwlog = new SMWLogger();
 	
 	private ServerWrapper myCommunicator;
 	private Hashtable<String,MMGame> games = new Hashtable<String,MMGame>();
-	private Hashtable<String,MMClientInfo> users = new Hashtable<String,MMClientInfo>();
+	private Hashtable<String,MWClientInfo> users = new Hashtable<String,MWClientInfo>();
 	private Hashtable ips = new Hashtable();
 	private Hashtable<InetAddress,Long> banips = new Hashtable<InetAddress,Long>();
 	private Hashtable<String,String> banaccounts = new Hashtable<String,String>();
     private Hashtable<String,Long> ISPlog = new Hashtable<String,Long>();
-	private Hashtable<MMClientInfo, InetAddress> iphelp = new Hashtable<MMClientInfo, InetAddress>();
+	private Hashtable<MWClientInfo, InetAddress> iphelp = new Hashtable<MWClientInfo, InetAddress>();
 	private Properties config = new Properties();
 	private Hashtable mails = new Hashtable();
 	private Hashtable iplog = new Hashtable();
@@ -88,46 +88,46 @@ public class MMServ {
 	 CH = Chat Server news:(CH|<text>)  Client Chat: (CH|<UserName>|<Color>|<Text>)
 	 Used only by the Server:
 	 GS = Games (GS|<MMGame.toString()>|<MMGame.toString()|...)
-	 US = Users (US|<MMClientInfo.toString()>|<MMClientInfo.toString()>|..)
+	 US = Users (US|<MWClientInfo.toString()>|<MWClientInfo.toString()>|..)
 	 UR = Update Request (UR|<Text to Show>)
-	 UG = User Gone (UG|<MMClientInfo.toString>|[Gone]) Gone is used when the client didn't just change his name
-	 NU = New User (NU|<MMClientInfo.toString>|[NEW]) NEW is used the same way as GONE in UG
+	 UG = User Gone (UG|<MWClientInfo.toString>|[Gone]) Gone is used when the client didn't just change his name
+	 NU = New User (NU|<MWClientInfo.toString>|[NEW]) NEW is used the same way as GONE in UG
 	 ER = Error (Not yet used) (ER|<ErrorLevel>|<description>)
 	 CR = Campaign Result -> Just give to CampaignMain
 	 */
 	
 	public static void main(String[] argv) {
-		new MMServ(argv);
+		new MWServ(argv);
 	}
 	
-	MMServ(String[] argv) {
+	MWServ(String[] argv) {
 				
 		String logFileName = "./logs/logFile.txt";
 		String errorFileName = "./logs/errorFile.txt";
 		
 		try {
-			//MMServ.mmlog.mainLog("Redirecting output to " + logFileName);
+			//MWServ.mwlog.mainLog("Redirecting output to " + logFileName);
 			PrintStream ps = new PrintStream(new BufferedOutputStream(new FileOutputStream(logFileName), 64));
 			System.setOut(ps);
 		} catch (Exception ex) {
-			mmlog.errLog(ex);
-			mmlog.errLog("Unable to redirect standard output to " + logFileName);
+			mwlog.errLog(ex);
+			mwlog.errLog("Unable to redirect standard output to " + logFileName);
 		}
 		
 		try {
-			//MMServ.mmlog.mainLog("Redirecting output to " + logFileName);
+			//MWServ.mwlog.mainLog("Redirecting output to " + logFileName);
 			PrintStream ps = new PrintStream(new BufferedOutputStream(new FileOutputStream(errorFileName), 64));
 			System.setErr(ps);
 		} catch (Exception ex) {
-			mmlog.errLog(ex);
-			mmlog.errLog("Unable to redirect standard error to " + errorFileName);
+			mwlog.errLog(ex);
+			mwlog.errLog("Unable to redirect standard error to " + errorFileName);
 		}
 	
-		mmlog.log("----- MekWars Server V " + SERVER_VERSION + " is starting up... -----");
+		mwlog.log("----- MekWars Server V " + SERVER_VERSION + " is starting up... -----");
 		/*** Required to kick off the Server ***/
-		mmlog.log("Loading configuration...");
+		mwlog.log("Loading configuration...");
 		this.loadConfig();
-		mmlog.log("Configuration loaded.");
+		mwlog.log("Configuration loaded.");
 		/*for (int i = 0; i < argv.length; i++) {
 			if (argv[0].equals("debug"))
 				debug = false;
@@ -135,37 +135,37 @@ public class MMServ {
         if (Boolean.parseBoolean(getConfigParam("RESOLVECOUNTRY"))) 
             ipToCountry = new IpCountry ("./data/iplist.txt", "./data/countrynames.txt");
 	
-        mmlog.log("Loading mail file...");
+        mwlog.log("Loading mail file...");
 		mails = checkAndCreateConfig("./data/mails.txt");
-		mmlog.log("Mail file loaded.");
-		mmlog.log("Creating new campaign environment...");
+		mwlog.log("Mail file loaded.");
+		mwlog.log("Creating new campaign environment...");
 		campaign = new server.campaign.CampaignMain(this);
-		mmlog.log("Environment created.");
+		mwlog.log("Environment created.");
 				
 		//Touch log files
-		mmlog.log("Initializing log subsystem. Touching log files.");
-		mmlog.mainLog("Main channel log touched.");
-		mmlog.gameLog("Game log touched.");
-		mmlog.cmdLog("Command log touched.");
-		mmlog.pmLog("Private messages (PM) log touched.");
-		mmlog.bmLog("Black Market (BM) log touched.");
-		mmlog.infoLog("Server info log touched.");
-		mmlog.warnLog("Server warnings log touched.");
-		mmlog.errLog("Server errors log touched.");
-		mmlog.modLog("Moderators log touched.");
-		mmlog.tickLog("Tick report log touched.");
+		mwlog.log("Initializing log subsystem. Touching log files.");
+		mwlog.mainLog("Main channel log touched.");
+		mwlog.gameLog("Game log touched.");
+		mwlog.cmdLog("Command log touched.");
+		mwlog.pmLog("Private messages (PM) log touched.");
+		mwlog.bmLog("Black Market (BM) log touched.");
+		mwlog.infoLog("Server info log touched.");
+		mwlog.warnLog("Server warnings log touched.");
+		mwlog.errLog("Server errors log touched.");
+		mwlog.modLog("Moderators log touched.");
+		mwlog.tickLog("Tick report log touched.");
 		
 		//start the TrackerThread if using tracker
 		boolean useTracker = Boolean.parseBoolean(getConfigParam("USETRACKER"));
-		mmlog.infoLog("Use Tracker: " + useTracker);
+		mwlog.infoLog("Use Tracker: " + useTracker);
 		if (useTracker) {
-			mmlog.infoLog("Attempting to create TrackerThread in MMServ.");
+			mwlog.infoLog("Attempting to create TrackerThread in MWServ.");
 			TrackerThread trackT = new TrackerThread(this);
 			trackT.start();
 		}
 		
 		//start server
-		mmlog.log("Entering main loop cycle. Starting the server...");
+		mwlog.log("Entering main loop cycle. Starting the server...");
 		startServer(argv);
 	}
 	
@@ -203,8 +203,8 @@ public class MMServ {
 			try {
 				config.store(new FileOutputStream("./data/serverconfig.txt"), "Server config File");
 			} catch (Exception e1) {
-				mmlog.errLog("config file could not be read or written, defaults will be used.");
-				mmlog.errLog(e1);
+				mwlog.errLog("config file could not be read or written, defaults will be used.");
+				mwlog.errLog(e1);
 			}
 		}
 		
@@ -216,15 +216,15 @@ public class MMServ {
 	//this will just loop and take in info...
 	public void startServer(String[] args) {
 		if (args == null) {
-			mmlog.infoLog("Server started without parameters");
+			mwlog.infoLog("Server started without parameters");
 		}
 		try {
 			this.myCommunicator = ServerWrapper.createServer(this);
 			this.myCommunicator.start();
 		} catch (Exception e) {
-			mmlog.errLog("== PROBLEM STARTING SERVER WRAPPER ==");
-			mmlog.errLog(e);
-			MMServ.mmlog.errLog(e);
+			mwlog.errLog("== PROBLEM STARTING SERVER WRAPPER ==");
+			mwlog.errLog(e);
+			MWServ.mwlog.errLog(e);
 		}
 	}
 	
@@ -238,8 +238,8 @@ public class MMServ {
 			fis.close();
 		} catch (Exception ex) {
 			try {
-				mmlog.infoLog("Creating new File");
-				MMServ.mmlog.mainLog("Creating new File");
+				mwlog.infoLog("Creating new File");
+				MWServ.mwlog.mainLog("Creating new File");
 				if (filename.equals("./data/mails.txt")) {
 					FileOutputStream out = new FileOutputStream(filename);
 					PrintStream p = new PrintStream(out);
@@ -248,10 +248,10 @@ public class MMServ {
 					out.close();
 				}
 			} catch (Exception e) {
-				mmlog.errLog(e);
-				mmlog.errLog("No file named " + filename + " was found and cannot create one!");
-				MMServ.mmlog.errLog(e);
-				MMServ.mmlog.mainLog("No file named " + filename + " was found and cannot create one!");
+				mwlog.errLog(e);
+				mwlog.errLog("No file named " + filename + " was found and cannot create one!");
+				MWServ.mwlog.errLog(e);
+				MWServ.mwlog.mainLog("No file named " + filename + " was found and cannot create one!");
 				System.exit(1);
 			}
 		}
@@ -284,11 +284,11 @@ public class MMServ {
 						logname += " " + this.getCampaign().getPlayer(logname).getMyHouse().getAbbreviation();
 					if ((a != null) && (b != null)) {
 						if ( a.getGroupAllowance() != 0 && a.getGroupAllowance() != b.getGroupAllowance() ) {
-							//mmlog.modLog("Double Accounting: " + nametmp + " and " + logname + " IP: " + hisip);
+							//mwlog.modLog("Double Accounting: " + nametmp + " and " + logname + " IP: " + hisip);
 							getCampaign().doSendModMail("NOTE:", "Double Accounting: " + nametmp + " Group: "+a.getGroupAllowance()+" and " + logname + " Group: "+b.getGroupAllowance()+" IP: " + hisip);
 						}
 					} else {
-						//mmlog.modLog("Double Accounting: " + nametmp + " and " + logname + " IP: " + hisip);
+						//mwlog.modLog("Double Accounting: " + nametmp + " and " + logname + " IP: " + hisip);
 						getCampaign().doSendModMail("NOTE:", "Double Accounting: " + nametmp + " and " + logname + " IP: " + hisip);
 					}
 				}
@@ -365,8 +365,8 @@ public class MMServ {
         
         if ( this.getCampaign().getPlayer(name) != null )
             invis = this.getCampaign().getPlayer(name).isInvisible();
-		MMClientInfo newUser = new MMClientInfo(originalName, getIP(name), System.currentTimeMillis(), status,invis);
-		mmlog.infoLog(originalName + " logged in from " + getIP(name).toString() + " at " + new Date(System.currentTimeMillis()).toString());
+		MWClientInfo newUser = new MWClientInfo(originalName, getIP(name), System.currentTimeMillis(), status,invis);
+		mwlog.infoLog(originalName + " logged in from " + getIP(name).toString() + " at " + new Date(System.currentTimeMillis()).toString());
 		
 		//Double IP Check
 		if (!originalName.startsWith("[Dedicated]")) {
@@ -376,7 +376,7 @@ public class MMServ {
 				boolean allowed = true;
 				int groupid = 0;
 				for (int i = 0; i < allthose.size(); i++) {
-					MMClientInfo user = (MMClientInfo) allthose.elementAt(i);
+					MWClientInfo user = (MWClientInfo) allthose.elementAt(i);
                     
                     if ( originalName.equalsIgnoreCase(user.getName()) )
                         continue;
@@ -425,7 +425,7 @@ public class MMServ {
 		Enumeration u = users.elements();
 		String toSend = "US";
 		while (u.hasMoreElements()) {
-			toSend = toSend.concat("|" + ((MMClientInfo) u.nextElement()).toString());
+			toSend = toSend.concat("|" + ((MWClientInfo) u.nextElement()).toString());
 		}
 		clientSend(toSend, name);
 		
@@ -487,7 +487,7 @@ public class MMServ {
 			return; 
 		
 		//get the user to log out. may be null if banned.
-		MMClientInfo user = this.getUser(name);
+		MWClientInfo user = this.getUser(name);
 		if (user == null)
 			return;
 		
@@ -507,7 +507,7 @@ public class MMServ {
 		campaign.doLogoutPlayer(name);
 		
 		sendRemoveUserToAll(name, true);
-		mmlog.infoLog("Client " + name + "logged out.");
+		mwlog.infoLog("Client " + name + "logged out.");
 		users.remove(name.toLowerCase());
 				
 		//remove his host, if he has a game open
@@ -628,7 +628,7 @@ public class MMServ {
                     }
 	
 				} else {
-					MMClientInfo client = this.getUser(name);
+					MWClientInfo client = this.getUser(name);
 					if (client != null) {
 						if (!ignoreList.contains(client.getName()) && !factionLeaderIgnoreList.contains(client.getName())) {
 							sendChat(name + "|" + text);
@@ -642,28 +642,28 @@ public class MMServ {
 			} else if (task.equals("CR")) {
 				String result = st.nextToken();
 				this.getCampaign().doProcessAutomaticReport(result, name);
-				mmlog.gameLog(name + " reported: " + result);
+				mwlog.gameLog(name + " reported: " + result);
 			} else if (task.equals("IPU")) {//InProgressUpdate
 				String result = st.nextToken();
 				this.getCampaign().addInProgressUpdate(result, name);
 			} else {
 				clientSend("CH|Unknown command. Please make sure your client is up to date.", name);
-				mmlog.warnLog("Got a strange command, "+task+", from " + name);
+				mwlog.warnLog("Got a strange command, "+task+", from " + name);
 			}
 		} catch (Exception ex) {
 			//The GB doesn't arrive at the server because of the client disconnecting
 			if (!lineIn.equals("GB")) {
 				//Most propably an out of date client. Send him the request to update
 				clientSend("CH|Your Client sent a false packet or caused a server error. You probably entered an illegal server command.", name);
-				mmlog.errLog("False packet/illegal command (from " + name + "):");
-				mmlog.errLog(ex);
+				mwlog.errLog("False packet/illegal command (from " + name + "):");
+				mwlog.errLog(ex);
 			}
 		}
 	}
 	
 	public void statusMessage() {
-		MMServ.mmlog.mainLog("Open Games: " + games.size());
-		mmlog.infoLog("Open Games: " + games.size());
+		MWServ.mwlog.mainLog("Open Games: " + games.size());
+		mwlog.infoLog("Open Games: " + games.size());
 	}
 	
 	private void doCloseGame(MMGame game) {
@@ -691,7 +691,7 @@ public class MMServ {
                     String player = dis.readLine();
                     if ( player.equalsIgnoreCase(name) ){
                         String provderName = newFile.getName().substring(0,newFile.getName().lastIndexOf(".prv"));
-                        MMServ.mmlog.errLog("Provider: "+provderName);
+                        MWServ.mwlog.errLog("Provider: "+provderName);
                         ISPlog.put(provderName,time);
                         in.close();
                         dis.close();
@@ -710,7 +710,7 @@ public class MMServ {
 	
 	public void sendRemoveUserToAll(String name, boolean userGone) {
 		if (userGone) {
-			mmlog.infoLog(name + " left the room.");
+			mwlog.infoLog(name + " left the room.");
 		}
 		this.myCommunicator.broadcastComm("UG|" + getUser(name) + (userGone ? "|GONE" : ""));
 	}
@@ -721,7 +721,7 @@ public class MMServ {
 	
 	public void sendChat(String s) {
 		this.myCommunicator.broadcastComm("CH|" + s);
-		mmlog.mainLog(s);
+		mwlog.mainLog(s);
 	}
 	
 	//Check for new Mail
@@ -751,7 +751,7 @@ public class MMServ {
 		
 	}
 	
-    public Hashtable<String,MMClientInfo> getUsers(){
+    public Hashtable<String,MWClientInfo> getUsers(){
         return this.users;
     }
 	
@@ -784,8 +784,8 @@ public class MMServ {
 			dis.close();
 			fis.close();
 		} catch (Exception ex) {
-			mmlog.errLog("Problems reading mail file:");
-			mmlog.errLog(ex);
+			mwlog.errLog("Problems reading mail file:");
+			mwlog.errLog(ex);
 		}
 		return result;
 	}
@@ -802,8 +802,8 @@ public class MMServ {
 			p.close();
 			out.close();
 		} catch (Exception ex) {
-			mmlog.errLog("Problems writing mail file:");
-			mmlog.errLog(ex);
+			mwlog.errLog("Problems writing mail file:");
+			mwlog.errLog(ex);
 		}
 	}
 	
@@ -834,7 +834,7 @@ public class MMServ {
 	}
 	
 	public void doStoreMail(String s, String name) {
-		//MMServ.mmlog.mainLog("Debug: " + s);
+		//MWServ.mwlog.mainLog("Debug: " + s);
 		StringTokenizer st = new StringTokenizer(s, ",");
 		String target = "";
 		String text = "";
@@ -858,12 +858,12 @@ public class MMServ {
 				
 				if (campaign.getPlayer(name) != null) {
 					if (campaign.getPlayer(target) != null) {
-						mmlog.pmLog(name + "[" + campaign.getPlayer(name).getMyHouse().getAbbreviation() + "] -> " + target + "[" + campaign.getPlayer(target).getMyHouse().getAbbreviation() + "]: " + mailtext);
+						mwlog.pmLog(name + "[" + campaign.getPlayer(name).getMyHouse().getAbbreviation() + "] -> " + target + "[" + campaign.getPlayer(target).getMyHouse().getAbbreviation() + "]: " + mailtext);
 					} else {
-						mmlog.pmLog(name + "[" + campaign.getPlayer(name).getMyHouse().getAbbreviation() + "] -> " + target + ": " + mailtext);
+						mwlog.pmLog(name + "[" + campaign.getPlayer(name).getMyHouse().getAbbreviation() + "] -> " + target + ": " + mailtext);
 					}
 				} else {
-					mmlog.pmLog(name + " -> " + target + ": " + mailtext);
+					mwlog.pmLog(name + " -> " + target + ": " + mailtext);
 				}
 				
 			}
@@ -895,9 +895,9 @@ public class MMServ {
 		  */
 	}
 	
-	public MMClientInfo getUser(String name) {
+	public MWClientInfo getUser(String name) {
 		if (name == null || users.get(name.toLowerCase()) == null)
-			return new MMClientInfo();
+			return new MWClientInfo(name);
 		//else
 		return  users.get(name.toLowerCase());
 	}
@@ -919,20 +919,20 @@ public class MMServ {
 		/*    Enumeration e = users.elements();
 		 boolean found = false;
 		 while (e.hasMoreElements()) {
-		 MMClientInfo usr = (MMClientInfo) e.nextElement();
+		 MWClientInfo usr = (MWClientInfo) e.nextElement();
 		 if (usr.getName().equals(username)) {
 		 clientSend(txt, username);
 		 found = true;
 		 }
 		 }*/
         try{
-            MMClientInfo usr = users.get(username.toLowerCase());
+            MWClientInfo usr = users.get(username.toLowerCase());
     		if (usr != null)
     			clientSend(txt, username);
     		else if (txt.startsWith("CH|")||txt.startsWith("FSM|"))
     			this.doStoreMailToHashtable(null, username, txt);
         }catch (Exception ex){
-            MMServ.mmlog.errLog(ex);
+            MWServ.mwlog.errLog(ex);
         }
 	}
 
@@ -974,8 +974,8 @@ public class MMServ {
             p.close();
             out.close();
 		} catch (Exception e) {
-			mmlog.errLog("Problem updating ban files:");
-			mmlog.errLog(e);
+			mwlog.errLog("Problem updating ban files:");
+			mwlog.errLog(e);
 		}
 	}
 	
@@ -1017,24 +1017,24 @@ public class MMServ {
 				InetAddress ia = InetAddress.getByName(ip);
 				if (ia != null) {
 					banips.put(ia, time);
-					mmlog.infoLog("Added " + line + " to the list of banned IPs");
-					MMServ.mmlog.mainLog("Added " + line + " to the list of banned IP's");
+					mwlog.infoLog("Added " + line + " to the list of banned IPs");
+					MWServ.mwlog.mainLog("Added " + line + " to the list of banned IP's");
 				} else {
-					mmlog.warnLog("Importing IP bans; offending line: " + line);
+					mwlog.warnLog("Importing IP bans; offending line: " + line);
 				}
 			}
 			dis.close();
 			fis.close();
 		} catch (Exception ex) {
-			mmlog.errLog("Problems with loading IP banlist:");
-			mmlog.errLog(ex);
+			mwlog.errLog("Problems with loading IP banlist:");
+			mwlog.errLog(ex);
 		}
 	}
 	
 	public void loadBanPlayers(){
 		// Loading the banned players file.
 		try {
-			MMServ.mmlog.infoLog("Loading Ban Players");
+			MWServ.mwlog.infoLog("Loading Ban Players");
 			File banFile = new File("./data/accountbans.txt");
 			
 			//make the file, if its missing
@@ -1050,23 +1050,23 @@ public class MMServ {
 				String howLong = st.nextToken().trim();
 				if ((toBan != null) && (howLong != null)) {
 					this.banaccounts.put(toBan.toLowerCase(), howLong);
-					mmlog.infoLog("Added " + toBan + " to the banlist (for " + howLong + ")");
-					MMServ.mmlog.mainLog("Added " + toBan + " to the banlist (for " + howLong + ")");
+					mwlog.infoLog("Added " + toBan + " to the banlist (for " + howLong + ")");
+					MWServ.mwlog.mainLog("Added " + toBan + " to the banlist (for " + howLong + ")");
 				} else {
-					mmlog.warnLog("Initial bans warning: " + toBan + " / " + howLong);
+					mwlog.warnLog("Initial bans warning: " + toBan + " / " + howLong);
 				}
 			}
 			dis.close();
 			fis.close();
 		} catch (Exception ex) {
-			mmlog.errLog("Problems reading ban file at startup!");
+			mwlog.errLog("Problems reading ban file at startup!");
 		}
 	}
     
     public void loadISPs(){
         // Loading the ISP file.
         try {
-            MMServ.mmlog.infoLog("Loading ISPs");
+            MWServ.mwlog.infoLog("Loading ISPs");
             File ispFile = new File("./data/isps.txt");
             
             //make the file, if its missing
@@ -1082,14 +1082,14 @@ public class MMServ {
                 Long address = Long.parseLong(st.nextToken().trim());
                 if ((isp != null) && (address != null)) {
                     this.ISPlog.put(isp.toLowerCase(), address);
-                    mmlog.infoLog("Added " + isp + " to the ISP List");
-                    MMServ.mmlog.mainLog("Added " + isp + " to the ISP List");
+                    mwlog.infoLog("Added " + isp + " to the ISP List");
+                    MWServ.mwlog.mainLog("Added " + isp + " to the ISP List");
                 } 
             }
             dis.close();
             fis.close();
         } catch (Exception ex) {
-            mmlog.errLog("Problems reading ISP file at startup!");
+            mwlog.errLog("Problems reading ISP file at startup!");
         }
     }
     
@@ -1101,7 +1101,7 @@ public class MMServ {
         return myCommunicator.getClient(name);
     }
     
-    public Hashtable<MMClientInfo, InetAddress> getIPHelp(){
+    public Hashtable<MWClientInfo, InetAddress> getIPHelp(){
         return iphelp;
     }
     

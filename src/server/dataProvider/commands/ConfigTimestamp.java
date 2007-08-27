@@ -28,7 +28,7 @@ import java.io.InputStreamReader;
 import common.CampaignData;
 import common.util.BinWriter;
 
-import server.MMServ;
+import server.MWServ;
 import server.dataProvider.ServerCommand;
 //import server.campaign.CampaignMain;
 
@@ -53,12 +53,12 @@ public class ConfigTimestamp implements ServerCommand {
 				
 				serverConfigTimestamp = tempTime.substring(11);//remove "#Timestamp="
 			} catch (Exception e) {
-				MMServ.mmlog.infoLog("Error reading first line from campaignconfig.txt");       
+				MWServ.mwlog.infoLog("Error reading first line from campaignconfig.txt");       
 			}
     	} 
         
         else
-        	MMServ.mmlog.infoLog("campaignconfig.txt didn't exist. returning ficticious timestamp to requesting client.");       
+        	MWServ.mwlog.infoLog("campaignconfig.txt didn't exist. returning ficticious timestamp to requesting client.");       
         
         out.println(serverConfigTimestamp, "ConfigTimestamp");
     }

@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
 
 import common.Unit;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SPlanet;
@@ -207,7 +207,7 @@ public class AcceptAttackFromReserveCommand implements Command {
 			toSend += ".";
 		
 		//tell the defender that he has succesfully joined the attack.
-		MMServ.mmlog.gameLog("AcceptAttackFromReserve: " + so.getShortID() + "/" + dp.getName() + " w. Army #" + da.getID());
+		MWServ.mwlog.gameLog("AcceptAttackFromReserve: " + so.getShortID() + "/" + dp.getName() + " w. Army #" + da.getID());
 		CampaignMain.cm.toUser(toSend,Username,true);
 		
 	}//end process

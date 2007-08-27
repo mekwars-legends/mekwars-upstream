@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.StringTokenizer;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.AutoArmy;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
@@ -228,7 +228,7 @@ public class ShortOperation implements Comparable {
 		String toLog = "Attack: #" + shortID + "/" + initiator.getName() + "/" + opName + "/" + target.getName() + ".<br> - Potential Defenders: ";
 		for (SArmy currA : possibleDefenders)
 			toLog += currA.getName() + "/" + currA.getID() + " "; 
-		MMServ.mmlog.gameLog(toLog);
+		MWServ.mwlog.gameLog(toLog);
 		
 		Operation o = CampaignMain.cm.getOpsManager().getOperation(opName);
 		
@@ -277,7 +277,7 @@ public class ShortOperation implements Comparable {
             	int maxPlayersPerTeam = o.getIntValue("TeamSize");
             	int maxPlayers = Math.max(2,Math.min(8,maxTeams)) * maxPlayersPerTeam;
 
-	        	//MMServ.mmlog.errLog("Max Teams: "+maxTeams+" Players Per Team: "+maxPlayersPerTeam+" Max Players: "+maxPlayers+" Current Players: "+this.getAllPlayerNames().size());
+	        	//MWServ.mwlog.errLog("Max Teams: "+maxTeams+" Players Per Team: "+maxPlayersPerTeam+" Max Players: "+maxPlayers+" Current Players: "+this.getAllPlayerNames().size());
 	        	if ( this.getAllPlayerNames().size() >= maxPlayers )
 	        		this.changeStatus(STATUS_INPROGRESS);
         	}
@@ -330,7 +330,7 @@ public class ShortOperation implements Comparable {
         	int maxPlayers = Math.max(2,Math.min(8,maxTeams)) * maxPlayersPerTeam;
 
         	isTeamOp = true;
-        	//MMServ.mmlog.errLog("Max Teams: "+maxTeams+" Players Per Team: "+maxPlayersPerTeam+" Max Players: "+maxPlayers+" Current Players: "+this.getAllPlayerNames().size());
+        	//MWServ.mwlog.errLog("Max Teams: "+maxTeams+" Players Per Team: "+maxPlayersPerTeam+" Max Players: "+maxPlayers+" Current Players: "+this.getAllPlayerNames().size());
         	if ( this.getAllPlayerNames().size() >= maxPlayers )
         		this.changeStatus(STATUS_INPROGRESS);
         	else if ( o.getBooleanValue("TeamsMustBeSameFaction") && this.checkDefendersAndLaunch(maxTeams,maxPlayersPerTeam) ){
@@ -1107,8 +1107,8 @@ public class ShortOperation implements Comparable {
                     intelVisibility = Math.max(visibility,minVisibility);
                     gameOptions +="|visibility|"+intelVisibility;
                 } catch (Exception ex) {
-                    MMServ.mmlog.errLog("Unable to retrieve advance terrain data for Planet: "+targetWorld.getName()+" Terrain: "+playEnvironment.getName());
-                    MMServ.mmlog.errLog(ex);
+                    MWServ.mwlog.errLog("Unable to retrieve advance terrain data for Planet: "+targetWorld.getName()+" Terrain: "+playEnvironment.getName());
+                    MWServ.mwlog.errLog(ex);
                 }
 			}
 			
@@ -1357,7 +1357,7 @@ public class ShortOperation implements Comparable {
 			for (String currName : this.getAllPlayerNames())
 				toStore.append(currName + " ");
 			toStore.append("/ Start BV: " + startingBV + " / Finish BV: " + finishingBV);
-			MMServ.mmlog.resultsLog(toStore.toString());
+			MWServ.mwlog.resultsLog(toStore.toString());
 						
 			/*
 			 * send a Finished Game entry to faction mates. same as when
@@ -1535,7 +1535,7 @@ public class ShortOperation implements Comparable {
 	/**
 	 * Method which updates the ShortOperation's removedTree and
 	 * pilotTree. String taken as a param is sent from a Client
-	 * when a unit is removed, via MMServ and CampaignMain.
+	 * when a unit is removed, via MWServ and CampaignMain.
 	 * 
 	 * Each string will contain info for one, and only one, Entity,
 	 * which may be either a "real" unit or a pilot.
@@ -1622,7 +1622,7 @@ public class ShortOperation implements Comparable {
 				chickenThreads.put(playername, newThread);
 				
 				//add creation to log
-				MMServ.mmlog.gameLog("Created chicken thread for " + shortID + "/" + currPlayer.getName() + "(" + opName + ")");
+				MWServ.mwlog.gameLog("Created chicken thread for " + shortID + "/" + currPlayer.getName() + "(" + opName + ")");
 			}
 		}//end while(poss defenders remain)
 		
@@ -1631,7 +1631,7 @@ public class ShortOperation implements Comparable {
 		 * for those players who have multiple armies able to defend,
 		 * start the threads.
 		 */
-		MMServ.mmlog.gameLog("Starting all chicken threads for #" + shortID + " (" + opName + ")");
+		MWServ.mwlog.gameLog("Starting all chicken threads for #" + shortID + " (" + opName + ")");
 		for (OpsChickenThread ct : chickenThreads.values())
 			ct.start();
 	}
@@ -2099,8 +2099,8 @@ public class ShortOperation implements Comparable {
 			else if (numDefenders > 1)
 				defendString += nameString + " players ";
 			}catch (Exception ex){
-				MMServ.mmlog.errLog("Unable to find defenders for operation: "+this.opName);
-				MMServ.mmlog.errLog(ex);
+				MWServ.mwlog.errLog("Unable to find defenders for operation: "+this.opName);
+				MWServ.mwlog.errLog(ex);
 			}
 		}
 		

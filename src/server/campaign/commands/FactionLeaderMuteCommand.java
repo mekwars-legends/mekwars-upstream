@@ -66,12 +66,12 @@ public class FactionLeaderMuteCommand implements Command {
 		//do the actual mute
 		if (factionIgnores.indexOf(p.getName()) == -1) {
 			factionIgnores.add(p.getName());
-			//server.MMServ.mmlog.modLog(Username + " faction muted " + p.getName());
+			//server.MWServ.mwlog.modLog(Username + " faction muted " + p.getName());
 			CampaignMain.cm.doSendModMail("NOTE",Username + " faction muted " + p.getName());
 			CampaignMain.cm.getServer().sendChat(Username + " muted " + p.getName() + " (faction mute).");
 		} else { //unmute
 			factionIgnores.remove(p.getName());
-			server.MMServ.mmlog.modLog(Username + " faction unmuted " + p.getName());
+			server.MWServ.mwlog.modLog(Username + " faction unmuted " + p.getName());
 			CampaignMain.cm.doSendModMail("NOTE",Username + " faction unmuted " + p.getName());
 			CampaignMain.cm.getServer().sendChat(Username + " unmuted " + p.getName() + " (faction mute).");
 		}

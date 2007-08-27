@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.StringTokenizer;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.commands.Command;
@@ -25,7 +25,7 @@ public class PlayerHandler {
 			rs.close();
 			return numplayers;
 		} catch (SQLException e) {
-			MMServ.mmlog.dbLog("SQL Error in PlayerHandler.countPlayers: " + e.getMessage());
+			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.countPlayers: " + e.getMessage());
 			return 0;
 		}
 	}
@@ -41,12 +41,12 @@ public class PlayerHandler {
 				p.addExperience(100, true);
 				Command c = CampaignMain.cm.getServerCommands().get("UNENROLL");
 				c.process(new StringTokenizer("CONFIRMED", "#"), rs.getString("playerName"));
-				MMServ.mmlog.infoLog(rs.getString("playerName") + " purged.");
+				MWServ.mwlog.infoLog(rs.getString("playerName") + " purged.");
 			}
 			rs.close();
 			stmt.close();
 		} catch (SQLException e) {
-			MMServ.mmlog.dbLog("SQL Error in PlayerHandler.purgeStalePlayers: " + e.getMessage());
+			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.purgeStalePlayers: " + e.getMessage());
 		}
 	}
 	
@@ -60,7 +60,7 @@ public class PlayerHandler {
 				return rs.getInt("playerID");
 			return -1;
 		} catch (SQLException e) {
-			MMServ.mmlog.dbLog("SQL Error in PlayerHandler.getPlayerIDByName: " + e.getMessage());
+			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.getPlayerIDByName: " + e.getMessage());
 			return -1;
 		}
 	}
@@ -71,7 +71,7 @@ public class PlayerHandler {
 			ps.executeUpdate();
 			ps.close();
 		} catch(SQLException e) {
-			MMServ.mmlog.dbLog("SQL Error in PlayerHandler.setPassword: " + e.getMessage());
+			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.setPassword: " + e.getMessage());
 		}
 	}
 	
@@ -82,7 +82,7 @@ public class PlayerHandler {
 			ps.executeUpdate();
 			ps.close();
 		} catch(SQLException e) {
-			MMServ.mmlog.dbLog("SQL Error in PlayerHandler.setPlayerAccess: " + e.getMessage());
+			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.setPlayerAccess: " + e.getMessage());
 		}
 	}
 	
@@ -102,7 +102,7 @@ public class PlayerHandler {
 				else
 					return false;
 		} catch (SQLException e) {
-			MMServ.mmlog.dbLog("SQL Error in PlayerHandler.matchPassword: " + e.getMessage());
+			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.matchPassword: " + e.getMessage());
 			return false;
 		}
 	}
@@ -121,7 +121,7 @@ public class PlayerHandler {
 					return true;
 			return false;
 		} catch(SQLException e) {
-			MMServ.mmlog.dbLog("SQL Error in playerHandler.playerExists: " + e.getMessage());
+			MWServ.mwlog.dbLog("SQL Error in playerHandler.playerExists: " + e.getMessage());
 			return false;
 		}
 	}
@@ -135,7 +135,7 @@ public class PlayerHandler {
 			// Remove player
 			stmt.executeUpdate("DELETE from players WHERE playerID = " + p.getDBId());
 		} catch (SQLException e) {
-			MMServ.mmlog.dbLog("SQL Error in PlayerHandler.deletePlayer: " + e.getMessage());
+			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.deletePlayer: " + e.getMessage());
 		}
 	}
 	

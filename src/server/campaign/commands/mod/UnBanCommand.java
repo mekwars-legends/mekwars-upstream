@@ -24,7 +24,7 @@ import server.MWChatServer.auth.IAuthenticator;
 
 
 /**
- * Moving the unban command from MMServ into the normal command structure.
+ * Moving the unban command from MWServ into the normal command structure.
  *
  * Syntax  /c unban#name
  */
@@ -50,14 +50,14 @@ public class UnBanCommand implements Command {
                 CampaignMain.cm.getServer().getBanAccounts().remove(account);
                 CampaignMain.cm.getServer().bansUpdate();
                 CampaignMain.cm.doSendModMail("NOTE",Username + " unbanned " + account);
-                //MMServ.mmlog.modLog(Username + " unbanned " + account);
+                //MWServ.mwlog.modLog(Username + " unbanned " + account);
 
                 CampaignMain.cm.toUser("You unbanned " + account, Username);
                 CampaignMain.cm.toUser("Don't forget to unban any assotiated IP's as well with the unbanip command", Username);
             } else {
             	CampaignMain.cm.toUser("Unban failed for " + account, Username);
             	CampaignMain.cm.doSendModMail("NOTE",Username + " tried to uban " + account + ", but failed.");
-                //MMServ.mmlog.modLog(Username + " tried to uban " + account + ", but failed.");
+                //MWServ.mwlog.modLog(Username + " tried to uban " + account + ", but failed.");
             }
         }catch(Exception ex){
             CampaignMain.cm.toUser("Syntax: unban (Username)<br>Don't forget to unban any assotiated IP's as well with the unbanip command", Username);

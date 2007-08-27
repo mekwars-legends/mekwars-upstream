@@ -18,12 +18,12 @@ package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.commands.Command;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.MWChatServer.auth.IAuthenticator;
-import server.util.MMNetPasswd;
+import server.util.MWPasswd;
 
 public class AdminPasswordCommand implements Command {
 	
@@ -55,7 +55,7 @@ public class AdminPasswordCommand implements Command {
 		String action = command.nextToken();
 		if (action.equalsIgnoreCase("save")) {
 			try {
-				MMNetPasswd.save();
+				MWPasswd.save();
 				CampaignMain.cm.toUser("Password-file saved!",Username,true);
 				CampaignMain.cm.doSendModMail("NOTE",Username + " has saved the password-file.");
 			} catch (Exception ex) {
@@ -65,11 +65,11 @@ public class AdminPasswordCommand implements Command {
 		
 		else if (action.equalsIgnoreCase("remove")) {
 			String target = command.nextToken();
-			MMNetPasswd.removeRecord(target);
+			MWPasswd.removeRecord(target);
 			try {
-				MMNetPasswd.save();
+				MWPasswd.save();
 			}  catch (Exception ex) {
-				MMServ.mmlog.errLog(ex);
+				MWServ.mwlog.errLog(ex);
 			}
 			CampaignMain.cm.toUser("Password for " + target + " removed!",Username,true);
 			CampaignMain.cm.doSendModMail("NOTE",Username + " has removed "+ target+"'s password");
@@ -82,7 +82,7 @@ public class AdminPasswordCommand implements Command {
             SPlayer p = CampaignMain.cm.getPlayer(target);
             
 			try{
-                MMNetPasswd.getRecord(target).setAccess(level);
+                MWPasswd.getRecord(target).setAccess(level);
             } catch(Exception ex){
                 CampaignMain.cm.toUser(target+" is not registered. Have them register, then try again.",Username);
                 return;
@@ -93,13 +93,13 @@ public class AdminPasswordCommand implements Command {
                 CampaignMain.cm.getServer().getUser(target).setLevel(level);
                 CampaignMain.cm.getServer().sendRemoveUserToAll(target,false);
                 CampaignMain.cm.getServer().sendNewUserToAll(target,false);
-				MMNetPasswd.writeRecord(p.getPassword(),target);
+				MWPasswd.writeRecord(p.getPassword(),target);
                 
                 if (p != null)
                 	CampaignMain.cm.doSendToAllOnlinePlayers("PI|DA|" + CampaignMain.cm.getPlayerUpdateString(p),false);
                 
 			} catch (Exception ex) {
-				MMServ.mmlog.errLog(ex);
+				MWServ.mwlog.errLog(ex);
 			}
 			
 			CampaignMain.cm.toUser("Level for " + target + " set to " + level + "!",Username,true);

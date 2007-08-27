@@ -35,7 +35,7 @@ package server.mwcyclopscomm;
 
 import java.util.Hashtable;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.pilot.skills.SPilotSkill;
  /**
   * Pilot skllls used by MW server sent to
@@ -65,7 +65,7 @@ import server.campaign.pilot.skills.SPilotSkill;
              
              message += MWCyclopsUtils.methodCallEnd();
          }catch(Exception ex){
-             MMServ.mmlog.errLog(ex);
+             MWServ.mwlog.errLog(ex);
          }
          
          return message;
@@ -98,7 +98,7 @@ import server.campaign.pilot.skills.SPilotSkill;
              
              message += MWCyclopsUtils.methodCallEnd();
          }catch(Exception ex){
-             MMServ.mmlog.errLog(ex);
+             MWServ.mwlog.errLog(ex);
          }
          
          return message;

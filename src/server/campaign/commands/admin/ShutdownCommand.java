@@ -19,15 +19,15 @@ package server.campaign.commands.admin;
 import java.util.StringTokenizer;
 
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
-import server.util.MMNetPasswd;
+import server.util.MWPasswd;
 
 
 /**
- * Moving the Shutdown command from MMServ into the normal command structure.
+ * Moving the Shutdown command from MWServ into the normal command structure.
  *
  * Syntax  /c Shutdown
  */
@@ -53,13 +53,13 @@ public class ShutdownCommand implements Command {
         if ( CampaignMain.cm.isUsingMySQL() )
         	CampaignMain.cm.MySQL.closeMySQL();
         CampaignMain.cm.toUser("You halted the server. Have a nice day.", Username,true);
-        MMServ.mmlog.infoLog(Username + " halted the server. Have a nice day!");
+        MWServ.mwlog.infoLog(Username + " halted the server. Have a nice day!");
         CampaignMain.cm.addToNewsFeed("Server halted!");
         try {
-            MMNetPasswd.save();
+            MWPasswd.save();
         } catch(Exception ex) {
-            MMServ.mmlog.errLog("Unable to save passwords before shutdown!");
-            MMServ.mmlog.errLog(ex);
+            MWServ.mwlog.errLog("Unable to save passwords before shutdown!");
+            MWServ.mwlog.errLog(ex);
         }
         
         System.exit(0);

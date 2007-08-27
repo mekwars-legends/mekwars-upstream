@@ -25,7 +25,7 @@ import server.MWChatServer.auth.IAuthenticator;
 
 
 /**
- * Moving the IgnoreList command from MMServ into the normal command structure.
+ * Moving the IgnoreList command from MWServ into the normal command structure.
  *
  * Syntax  /c IgnoreList
  */

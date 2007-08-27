@@ -31,7 +31,7 @@ import java.util.TreeMap;
 import java.util.Vector;
 import java.awt.Dimension;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
@@ -107,7 +107,7 @@ public class XMLPlanetDataParser implements XMLResponder
 			XMLParser xp = new XMLParser();
 			xp.parseXML(this);
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 	}
 	
@@ -120,7 +120,7 @@ public class XMLPlanetDataParser implements XMLResponder
 	public void recordNotationDeclaration(String name, String pubID, String sysID) throws ParseException {
 		System.out.print(prefix+"!NOTATION: "+name);
 		if (sysID!=null) System.out.print("  sysID = "+sysID);
-		MMServ.mmlog.mainLog("");
+		MWServ.mwlog.mainLog("");
 	}
 	
 	public void recordEntityDeclaration(String name, String value, String pubID, String sysID, String notation) throws ParseException {
@@ -129,12 +129,12 @@ public class XMLPlanetDataParser implements XMLResponder
 		if (pubID!=null) System.out.print("  pubID = "+pubID);
 		if (sysID!=null) System.out.print("  sysID = "+sysID);
 		if (notation!=null) System.out.print("  notation = "+notation);
-		MMServ.mmlog.mainLog("");
+		MWServ.mwlog.mainLog("");
 	}
 	
 	public void recordElementDeclaration(String name, String content) throws ParseException {
 		System.out.print(prefix+"!ELEMENT: "+name);
-		MMServ.mmlog.mainLog("  content = "+content);
+		MWServ.mwlog.mainLog("  content = "+content);
 	}
 	
 	public void recordAttlistDeclaration(String element, String attr, boolean notation, String type, String defmod, String def) throws ParseException {
@@ -142,14 +142,14 @@ public class XMLPlanetDataParser implements XMLResponder
 		System.out.print("  attr = "+attr);
 		System.out.print("  type = " + ((notation) ? "NOTATIONS " : "") + type);
 		System.out.print("  def. modifier = "+defmod);
-		MMServ.mmlog.mainLog( (def==null) ? "" : "  def = "+notation);
+		MWServ.mwlog.mainLog( (def==null) ? "" : "  def = "+notation);
 	}
 	
 	public void recordDoctypeDeclaration(String name, String pubID, String sysID) throws ParseException {
 		System.out.print(prefix+"!DOCTYPE: "+name);
 		if (pubID!=null) System.out.print("  pubID = "+pubID);
 		if (sysID!=null) System.out.print("  sysID = "+sysID);
-		MMServ.mmlog.mainLog("");
+		MWServ.mwlog.mainLog("");
 		prefix = "";
 	}
 	
@@ -159,12 +159,12 @@ public class XMLPlanetDataParser implements XMLResponder
 	}
 	
 	public void recordDocEnd() {
-		MMServ.mmlog.mainLog("");
-		MMServ.mmlog.mainLog("Parsing finished without error");
+		MWServ.mwlog.mainLog("");
+		MWServ.mwlog.mainLog("Parsing finished without error");
 	}
 	
 	public void recordElementStart(String name, Hashtable attr) throws ParseException {
-		//MMServ.mmlog.mainLog(prefix+"Element: "+name);
+		//MWServ.mwlog.mainLog(prefix+"Element: "+name);
 		lastElement = name;
 		if (name.equalsIgnoreCase("WAREHOUSE"))
 			inWarehouse = true;
@@ -188,7 +188,7 @@ public class XMLPlanetDataParser implements XMLResponder
 		 System.out.print(conj+k+" = "+attr.get(k));
 		 conj = ", ";
 		 }
-		 MMServ.mmlog.mainLog("");
+		 MWServ.mwlog.mainLog("");
 		 }
 		 prefix = prefix+"  ";*/
 	}
@@ -196,7 +196,7 @@ public class XMLPlanetDataParser implements XMLResponder
 	public void recordElementEnd(String name) throws ParseException {
 		
 		if (name.equalsIgnoreCase("TIMEZONE")) {
-			MMServ.mmlog.errLog("planets.xml contains TIMEZONE field. No longer necessary!");
+			MWServ.mwlog.errLog("planets.xml contains TIMEZONE field. No longer necessary!");
 		}
 		
 		if (name.equalsIgnoreCase("UNITFACTORY")) {
@@ -250,7 +250,7 @@ public class XMLPlanetDataParser implements XMLResponder
 		
 		if (name.equalsIgnoreCase("PLANET"))
 		{
-			MMServ.mmlog.mainLog("PLANET READ");
+			MWServ.mwlog.mainLog("PLANET READ");
 			SPlanet p;
 			p = new SPlanet(
 					counter++,
@@ -268,7 +268,7 @@ public class XMLPlanetDataParser implements XMLResponder
 			p.setEnvironments(PlanEnv);
 			p.setDescription(Description);
 			p.setBaysProvided(Warehousesize);
-			MMServ.mmlog.mainLog("Influence: " + Influence);
+			MWServ.mwlog.mainLog("Influence: " + Influence);
 			//This has to be called last since the Bays provided are added to the faction then for instance
 			p.setInfluence(new Influences(Influence));
 			p.setConquerable(conquerable);
@@ -328,19 +328,19 @@ public class XMLPlanetDataParser implements XMLResponder
 	}
 	
 	public void recordPI(String name, String pValue) {
-		MMServ.mmlog.mainLog(prefix+"*"+name+" PI: "+pValue);
+		MWServ.mwlog.mainLog(prefix+"*"+name+" PI: "+pValue);
 	}
 	
 	public void recordCharData(String charData) {
-		//MMServ.mmlog.mainLog(prefix+charData);
+		//MWServ.mwlog.mainLog(prefix+charData);
 		if (!charData.equalsIgnoreCase("")) {
-			//do nothing; //MMServ.mmlog.mainLog(lastElement + " --> " + charData);
+			//do nothing; //MWServ.mwlog.mainLog(lastElement + " --> " + charData);
 		} else
 			lastElement = "";
 		
 		if (lastElement.equalsIgnoreCase("NAME")) {	
 			Name = charData;
-			MMServ.mmlog.mainLog(Name);
+			MWServ.mwlog.mainLog(Name);
 		} else if (lastElement.equalsIgnoreCase("INCOME"))
 			Income = Integer.parseInt(charData);
 		else if (lastElement.equalsIgnoreCase("XCOOD"))
@@ -355,10 +355,10 @@ public class XMLPlanetDataParser implements XMLResponder
 			SHouse h = CampaignMain.cm.getHouseFromPartialString(lastInfFaction,null);
 			if (h != null) {
 				Influence.put(new Integer(h.getId()),new Integer(charData));
-				MMServ.mmlog.mainLog("Parsed: " + h.toString() + " - " + charData);
+				MWServ.mwlog.mainLog("Parsed: " + h.toString() + " - " + charData);
 			}
 			else
-				MMServ.mmlog.mainLog("ERROR READING FACTION: " + lastInfFaction);
+				MWServ.mwlog.mainLog("ERROR READING FACTION: " + lastInfFaction);
 		}
 		
 		else if (lastElement.equalsIgnoreCase("FACTORYNAME"))
@@ -436,7 +436,7 @@ public class XMLPlanetDataParser implements XMLResponder
 	}
 	
 	public void recordComment(String comment) {
-		MMServ.mmlog.mainLog(prefix+"*Comment: "+comment);
+		MWServ.mwlog.mainLog(prefix+"*Comment: "+comment);
 	}
 	
 	/* INPUT METHODS */

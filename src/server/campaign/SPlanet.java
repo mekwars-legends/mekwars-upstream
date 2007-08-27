@@ -41,7 +41,7 @@ import common.Unit;
 import common.UnitFactory;
 import common.util.Position;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.data.TimeUpdatePlanet;
 
 @SuppressWarnings({"unchecked","serial"})
@@ -346,7 +346,7 @@ Comparable {
 			  }
 		  }
 		  catch(SQLException e) {
-			  MMServ.mmlog.dbLog(e.getMessage());
+			  MWServ.mwlog.dbLog(e.getMessage());
 		  }
 		  
 	}
@@ -356,7 +356,7 @@ Comparable {
 	 */
 	public String fromString(String s, Random r, CampaignData data) {
 		//debug
-		MMServ.mmlog.mainLog(s);
+		MWServ.mwlog.mainLog(s);
 		s = s.substring(3);
 		StringTokenizer ST = new StringTokenizer(s, "#");
 		setName(ST.nextToken());
@@ -394,14 +394,14 @@ Comparable {
 					if (h != null) 
 						influence.put(new Integer(h.getId()), HouseInf);
 					else
-						MMServ.mmlog.errLog("House not found: " + HouseName);
+						MWServ.mwlog.errLog("House not found: " + HouseName);
 				}
 			}
 			//getInfluence().setInfluence(influence);
 			setInfluence(new Influences(influence));
 		} catch (RuntimeException ex) {
-			MMServ.mmlog.errLog("Problem on Planet: " + this.getName());
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog("Problem on Planet: " + this.getName());
+			MWServ.mwlog.errLog(ex);
 		}
 		if (ST.hasMoreElements()) {
 			int Envs = Integer.parseInt(ST.nextToken());
@@ -464,8 +464,8 @@ Comparable {
 				setTimestamp(sdf.parse(ST.nextToken()));
 			} catch (Exception ex) {
 				//No biggy, but will cause senseless Data transfer, so:
-				MMServ.mmlog.errLog("The following excepion is not critical, but will cause useless bandwith usage: please fix!");
-				MMServ.mmlog.errLog(ex);
+				MWServ.mwlog.errLog("The following excepion is not critical, but will cause useless bandwith usage: please fix!");
+				MWServ.mwlog.errLog(ex);
 				setTimestamp(new Date(0));
 			}
 		} else
@@ -669,7 +669,7 @@ Comparable {
 	public SHouse checkOwner() {
 		
 		if (getInfluence() == null) {
-			MMServ.mmlog.errLog("getINF == null Planet: " + getName());
+			MWServ.mwlog.errLog("getINF == null Planet: " + getName());
 			return null;
 		}
 		

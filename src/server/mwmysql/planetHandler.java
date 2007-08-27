@@ -19,7 +19,7 @@ import common.House;
 import common.Influences;
 import common.PlanetEnvironment;
 import common.util.Position;
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
@@ -46,7 +46,7 @@ public class planetHandler {
 
 	  
 	  } catch (SQLException e) {
-		  MMServ.mmlog.dbLog("SQL Error in countPlanets: " + e.getMessage());
+		  MWServ.mwlog.dbLog("SQL Error in countPlanets: " + e.getMessage());
 	  }
 	  return num;
   }
@@ -60,7 +60,7 @@ public class planetHandler {
 		  stmt.executeUpdate("DELETE from planetflags WHERE PlanetID = " + PlanetID);
 		  stmt.executeUpdate("DELETE from planetinfluences WHERE PlanetID = " + PlanetID);
 	  } catch (SQLException e) {
-		  MMServ.mmlog.dbLog("SQL Error in deletePlanet: " + e.getMessage());
+		  MWServ.mwlog.dbLog("SQL Error in deletePlanet: " + e.getMessage());
 	  }
 	  
   }
@@ -87,8 +87,8 @@ public void loadPlanets(CampaignData data) {
 			  try {
 				  p.setTimestamp(sdf.parse(rs.getString("pLastChanged")));
 			    } catch (Exception ex) {
-			    	MMServ.mmlog.errLog("The following exception is not critical, but will cause useless bandwidth usage: please fix!");
-			    	MMServ.mmlog.errLog(ex);
+			    	MWServ.mwlog.errLog("The following exception is not critical, but will cause useless bandwidth usage: please fix!");
+			    	MWServ.mwlog.errLog(ex);
 			    	p.setTimestamp(new Date(0));
 			    }
 
@@ -130,7 +130,7 @@ public void loadPlanets(CampaignData data) {
 
 
 	  } catch (SQLException e) {
-		  MMServ.mmlog.dbLog("SQL Error in loadPlanets: " + e.getMessage());
+		  MWServ.mwlog.dbLog("SQL Error in loadPlanets: " + e.getMessage());
 		}
   }
   
@@ -153,11 +153,11 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 			  influence.put(new Integer(h.getId()), HouseInf);
 
 			  } else
-				  MMServ.mmlog.errLog("House not found: " + HouseName);
+				  MWServ.mwlog.errLog("House not found: " + HouseName);
 		  }
 		  p.setInfluence(new Influences(influence));
 	  } catch (SQLException e) {
-		  MMServ.mmlog.dbLog("SQL Error in loadInfluences: " + e.getMessage());
+		  MWServ.mwlog.dbLog("SQL Error in loadInfluences: " + e.getMessage());
 	  }
   }
 
@@ -176,7 +176,7 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 		  }
 		  p.setPlanetFlags(map);
 	  } catch (SQLException e) {
-		  MMServ.mmlog.dbLog("SQL Error in loadPlanetFlags: " + e.getMessage());
+		  MWServ.mwlog.dbLog("SQL Error in loadPlanetFlags: " + e.getMessage());
 	  }
   }
   
@@ -231,7 +231,7 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 		  }
 		  p.getEnvironments().add(PE);
 	  } } catch (SQLException e) {
-		  MMServ.mmlog.dbLog("SQL Error in loadEnvironments: " + e.getMessage());
+		  MWServ.mwlog.dbLog("SQL Error in loadEnvironments: " + e.getMessage());
 	  }
   }
   
@@ -277,7 +277,7 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 		}
 		stmt.close();
 	  } catch (SQLException e) {
-		  MMServ.mmlog.dbLog("SQL Error in saveEnvironments: " + e.getMessage());
+		  MWServ.mwlog.dbLog("SQL Error in saveEnvironments: " + e.getMessage());
 	  }
   }
   
@@ -301,7 +301,7 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 		  
 		  }
 	  catch (SQLException e) {
-		  MMServ.mmlog.dbLog("SQL Error in savePlanetFlags: " + e.getMessage());
+		  MWServ.mwlog.dbLog("SQL Error in savePlanetFlags: " + e.getMessage());
 	  }
   }
 
@@ -329,7 +329,7 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 	  		}
 			stmt.close();
 		} catch (SQLException e) {
-			MMServ.mmlog.dbLog("Error closing resources in saveInfluences: " + e.getMessage());
+			MWServ.mwlog.dbLog("Error closing resources in saveInfluences: " + e.getMessage());
 		}
   }
  

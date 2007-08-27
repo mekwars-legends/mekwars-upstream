@@ -25,7 +25,7 @@ import java.util.StringTokenizer;
 
 import common.Equipment;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.commands.Command;
 import server.campaign.CampaignMain;
 import server.MWChatServer.auth.IAuthenticator;
@@ -75,7 +75,7 @@ public class AdminSetBlackMarketSettingCommand implements Command {
 			CampaignMain.cm.getBlackMarketEquipmentTable().put(key, bme);
 			
 		}catch (Exception ex){
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 		
 		//NOTE:

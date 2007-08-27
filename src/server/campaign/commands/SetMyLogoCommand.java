@@ -21,7 +21,7 @@ import java.util.StringTokenizer;
 
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
-import server.util.MMNetPasswd;
+import server.util.MWPasswd;
 
 public class SetMyLogoCommand implements Command {
 	
@@ -45,7 +45,7 @@ public class SetMyLogoCommand implements Command {
             player.setMyLogo(player.getMyHouse().getLogo());
         }else{
     		String newLogo = command.nextToken();
-    		if (MMNetPasswd.getRecord(Username) == null) {
+    		if (MWPasswd.getRecord(Username) == null) {
     			CampaignMain.cm.toUser("You cannot set a logo until you registered your Name. Please use the File Menu -> Register Nickname to do so!",Username,true);
     			return;
     		}

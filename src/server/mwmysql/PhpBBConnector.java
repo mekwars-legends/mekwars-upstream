@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 
 /*
@@ -36,13 +36,13 @@ public class PhpBBConnector {
 	  private String bbUrl = "";
 	  
 	  public void close(){
-	    MMServ.mmlog.dbLog("Attempting to close MySQL phpBB Connection");
+	    MWServ.mwlog.dbLog("Attempting to close MySQL phpBB Connection");
 	    try {
 	    	this.con.close();
 	    } catch (SQLException e) {
-	    	MMServ.mmlog.dbLog("SQL Exception in PhpBBConnector.close: " + e.getMessage());
-	    	MMServ.mmlog.errLog("SQL Exception in PhpBBConnector.close: ");
-	    	MMServ.mmlog.errLog(e);
+	    	MWServ.mwlog.dbLog("SQL Exception in PhpBBConnector.close: " + e.getMessage());
+	    	MWServ.mwlog.errLog("SQL Exception in PhpBBConnector.close: ");
+	    	MWServ.mwlog.errLog(e);
 	    }
 	  } 
 
@@ -66,7 +66,7 @@ public class PhpBBConnector {
 			ps.close();
 			return exists;
 		  } catch (SQLException e) {
-			  MMServ.mmlog.dbLog("SQL Error in PhpBBConnector.userExistsInForum: " + e.getMessage());
+			  MWServ.mwlog.dbLog("SQL Error in PhpBBConnector.userExistsInForum: " + e.getMessage());
 			  return false;
 		  }
 	  }
@@ -135,7 +135,7 @@ public class PhpBBConnector {
 
 
 		  } catch(SQLException e) {
-			  MMServ.mmlog.dbLog("SQL Error in PhpBBConnector.addToForum: " + e.getMessage());
+			  MWServ.mwlog.dbLog("SQL Error in PhpBBConnector.addToForum: " + e.getMessage());
 		  }
 	  }
 	  
@@ -154,7 +154,7 @@ public class PhpBBConnector {
 			  ps.close();
 			  return ret;			  
 		  } catch(SQLException e) {
-			  MMServ.mmlog.dbLog("SQL Error in PhpBBConnector.getBBConfigVar: " + e.getMessage());
+			  MWServ.mwlog.dbLog("SQL Error in PhpBBConnector.getBBConfigVar: " + e.getMessage());
 			  return null;
 		  }
 	  }
@@ -170,15 +170,15 @@ public class PhpBBConnector {
 					  this.groupsTable = tablePrefix + "groups";
 					  this.userGroupTable = tablePrefix + "user_group";
 					  this.userTable = tablePrefix + "users";
-					  MMServ.mmlog.dbLog("Valid phpBB Version");
+					  MWServ.mwlog.dbLog("Valid phpBB Version");
 					  
 				  } else {
-					  MMServ.mmlog.dbLog("Unsupported phpBB Version");
+					  MWServ.mwlog.dbLog("Unsupported phpBB Version");
 					  CampaignMain.cm.turnOffBBSynch();
 				  }
 		  		break;
 		  	default:
-		  		MMServ.mmlog.dbLog("Unsupported phpBB Version");
+		  		MWServ.mwlog.dbLog("Unsupported phpBB Version");
 		  		CampaignMain.cm.turnOffBBSynch();
 		  		break;
 		  }
@@ -187,21 +187,21 @@ public class PhpBBConnector {
 	  
 	  public PhpBBConnector(){
 	    String url = "jdbc:mysql://" + CampaignMain.cm.getServer().getConfigParam("PHPBB_HOST") + "/" + CampaignMain.cm.getServer().getConfigParam("PHPBB_DB") + "?user=" + CampaignMain.cm.getServer().getConfigParam("PHPBB_USER") + "&password=" + CampaignMain.cm.getServer().getConfigParam("PHPBB_PASS");
-	    MMServ.mmlog.dbLog("Attempting phpBB Connection");
+	    MWServ.mwlog.dbLog("Attempting phpBB Connection");
 	    
 	    try{
 	      Class.forName("com.mysql.jdbc.Driver");
 	    }
 	    catch(ClassNotFoundException e){
-	      MMServ.mmlog.dbLog("ClassNotFoundException: " + e.getMessage());
+	      MWServ.mwlog.dbLog("ClassNotFoundException: " + e.getMessage());
 	    }
 	    try{
 	    	this.con=DriverManager.getConnection(url);
 	      	if(con != null)
-	    	  MMServ.mmlog.dbLog("phpBB Connection established");
+	    	  MWServ.mwlog.dbLog("phpBB Connection established");
 	    }
 	    catch(SQLException ex){
-	    	MMServ.mmlog.dbLog("SQLException in PhpBBConnector: " + ex.getMessage());
+	    	MWServ.mwlog.dbLog("SQLException in PhpBBConnector: " + ex.getMessage());
 	    }
 	  }
 }

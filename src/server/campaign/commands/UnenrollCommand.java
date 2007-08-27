@@ -20,11 +20,11 @@ import java.io.File;
 import java.net.InetAddress;
 import java.util.StringTokenizer;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SHouse;
-import server.util.MMNetPasswd;
+import server.util.MWPasswd;
 
 
 public class UnenrollCommand implements Command {
@@ -96,11 +96,11 @@ public class UnenrollCommand implements Command {
 		
 		//checks passed. do the actual removal.
 		hisfaction.removePlayer(p, CampaignMain.cm.getBooleanConfig("DonateUnitsUponUnenrollment"));
-		MMNetPasswd.removeRecord(Username);
+		MWPasswd.removeRecord(Username);
 		try {
-			MMNetPasswd.save();
+			MWPasswd.save();
 		}  catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 		
 		//tell the user
@@ -118,8 +118,8 @@ public class UnenrollCommand implements Command {
 		}
 		//tell the mods and add to iplog.0
 		InetAddress ip = CampaignMain.cm.getServer().getIP(Username);
-		//MMServ.mmlog.modLog(Username + " unenrolled from the campaign (IP: " + ip + ").");
-		MMServ.mmlog.ipLog("UNENROLL: " + Username + " IP: " + ip);
+		//MWServ.mwlog.modLog(Username + " unenrolled from the campaign (IP: " + ip + ").");
+		MWServ.mwlog.ipLog("UNENROLL: " + Username + " IP: " + ip);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " unenrolled from the campaign (IP: " + ip + ").");
 		
 		

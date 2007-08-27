@@ -38,7 +38,7 @@ import java.util.StringTokenizer;
 
 import common.House;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 
 //IMPORTS
@@ -153,9 +153,9 @@ public class OperationWriter {
 			}
 			ps.close();
 		} catch (FileNotFoundException fe) {
-			MMServ.mmlog.errLog("Error: could not find " + path);
+			MWServ.mwlog.errLog("Error: could not find " + path);
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 		
 	}//end writeOpList

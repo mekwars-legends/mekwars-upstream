@@ -29,7 +29,7 @@ import java.util.StringTokenizer;
 
 import common.Unit;
 
-import server.MMServ;
+import server.MWServ;
 
 
 /**
@@ -187,7 +187,7 @@ public class BuildTable {
 			dis.close();
 			fis.close();		
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 		return result;
 	}

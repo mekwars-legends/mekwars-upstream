@@ -1240,8 +1240,6 @@ src/common/util/StringUtils.java -text
 src/common/util/TeePrinter.java -text
 src/common/util/UnitComponents.java -text
 src/common/util/UnitUtils.java -text
-src/server/MMClientInfo.java -text
-src/server/MMServ.java -text
 src/server/MWChatServer/AbstractConnectionHandler.java -text
 src/server/MWChatServer/CommandMakerRemote.java -text
 src/server/MWChatServer/CommandProcessorRemote.java -text
@@ -1272,6 +1270,8 @@ src/server/MWChatServer/commands/SignOn.java -text
 src/server/MWChatServer/commands/UnknownCommand.java -text
 src/server/MWChatServer/translator/Translator.java -text
 src/server/MWChatServer/translator/jcrypt.java -text
+src/server/MWClientInfo.java -text
+src/server/MWServ.java -text
 src/server/SMWLogger.java -text
 src/server/ServerWrapper.java -text
 src/server/campaign/AutoArmy.java -text
@@ -1689,8 +1689,8 @@ src/server/mwmysql/mysqlHandler.java -text
 src/server/mwmysql/planetHandler.java -text
 src/server/util/AutomaticBackup.java -text
 src/server/util/IpCountry.java -text
-src/server/util/MMNetPasswd.java -text
-src/server/util/MMNetPasswdRecord.java -text
+src/server/util/MWPasswd.java -text
+src/server/util/MWPasswdRecord.java -text
 src/server/util/RepairTrackingThread.java -text
 src/server/util/TrackerThread.java -text
 src/tracker/MWTracker.java -text

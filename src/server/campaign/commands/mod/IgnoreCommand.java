@@ -18,14 +18,14 @@ package server.campaign.commands.mod;
 
 import java.util.StringTokenizer;
 
-import server.MMClientInfo;
+import server.MWClientInfo;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
 
 
 /**
- * Moving the Ignore command from MMServ into the normal command structure.
+ * Moving the Ignore command from MWServ into the normal command structure.
  *
  * Syntax  /c Ignore#Player
  */
@@ -46,13 +46,13 @@ public class IgnoreCommand implements Command {
 		}
         
         String user = command.nextToken();
-        MMClientInfo client = CampaignMain.cm.getServer().getUser(user);
+        MWClientInfo client = CampaignMain.cm.getServer().getUser(user);
         
         //Offline users may only be de-listed.
         if (client.getName().equals("Nobody")) {
         	   CampaignMain.cm.getServer().getIgnoreList().remove(user);
                CampaignMain.cm.getServer().getFactionLeaderIgnoreList().remove(client.getName());
-               //MMServ.mmlog.modLog(Username + " unmuted " + client.getName());
+               //MWServ.mwlog.modLog(Username + " unmuted " + client.getName());
                CampaignMain.cm.toUser("You set " + user + " to be ignored to: false. He/She is currently not in the channel.", Username);
                return;
         }
@@ -60,13 +60,13 @@ public class IgnoreCommand implements Command {
         //standard mute/unmute
         if (CampaignMain.cm.getServer().getIgnoreList().indexOf(client.getName()) == -1) {
         	CampaignMain.cm.getServer().getIgnoreList().add(client.getName());
-        	//MMServ.mmlog.modLog(Username + " muted " + client.getName());
+        	//MWServ.mwlog.modLog(Username + " muted " + client.getName());
         	CampaignMain.cm.getServer().sendChat(Username + " muted " + client.getName());
         } else {
         	CampaignMain.cm.getServer().getIgnoreList().remove(client.getName());
         	CampaignMain.cm.getServer().getFactionLeaderIgnoreList().remove(client.getName());
         	CampaignMain.cm.getServer().sendChat(Username + " unmuted " + client.getName());
-        	//MMServ.mmlog.modLog(Username + " unmuted " + client.getName());
+        	//MWServ.mwlog.modLog(Username + " unmuted " + client.getName());
         }
 
 	}

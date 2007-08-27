@@ -23,7 +23,7 @@ import server.campaign.commands.Command;
 
 
 /**
- * Moving the Roll command from MMServ into the normal command structure.
+ * Moving the Roll command from MWServ into the normal command structure.
  *
  * Syntax  /c Roll#Dice
  */

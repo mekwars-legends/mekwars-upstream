@@ -27,7 +27,7 @@ import server.MWChatServer.auth.IAuthenticator;
 
 
 /**
- * Moving the UnBanIP command from MMServ into the normal command structure.
+ * Moving the UnBanIP command from MWServ into the normal command structure.
  *
  * Syntax  /c UnBanIP#Number
  */

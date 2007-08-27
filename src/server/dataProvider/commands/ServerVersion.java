@@ -21,7 +21,7 @@ import java.util.Date;
 import common.CampaignData;
 import common.util.BinWriter;
 
-import server.MMServ;
+import server.MWServ;
 import server.dataProvider.ServerCommand;
 
 /**
@@ -31,6 +31,6 @@ import server.dataProvider.ServerCommand;
  */
 public class ServerVersion implements ServerCommand {
     public void execute(Date timestamp, BinWriter out, CampaignData data) throws Exception {
-        out.println(MMServ.SERVER_VERSION, "ServerVersion");
+        out.println(MWServ.SERVER_VERSION, "ServerVersion");
     }
 }

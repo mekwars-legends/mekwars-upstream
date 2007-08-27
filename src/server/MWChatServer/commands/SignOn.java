@@ -21,7 +21,7 @@
  */ 
 package server.MWChatServer.commands;
 
-import server.MMServ;
+import server.MWServ;
 import server.ServerWrapper;
 import server.MWChatServer.MWChatClient;
 import server.MWChatServer.Translator;
@@ -90,7 +90,7 @@ public class SignOn extends CommandBase implements ICommands {
 			}
 			
 			client.getServer().signOn(client, args[2]);
-			server.MMServ server = ((ServerWrapper)client.getServer()).getMMServ();
+			server.MWServ server = ((ServerWrapper)client.getServer()).getMWServ();
 			server.getUser(username).setColor(UserColor);
 			server.sendNewUserToAll(username, true);
 			
@@ -111,17 +111,17 @@ public class SignOn extends CommandBase implements ICommands {
 			return true;
 			
 		} catch (NullPointerException NPE) {
-			MMServ.mmlog.errLog("Sign On Error");
-			MMServ.mmlog.errLog(NPE);
+			MWServ.mwlog.errLog("Sign On Error");
+			MWServ.mwlog.errLog(NPE);
 		} catch (Exception e) {//even though access is denied, find an acceptable nobody
 			
 			if (e.getMessage() == null) {
-				MMServ.mmlog.errLog("Sign On Error: Null exception message");
-				MMServ.mmlog.errLog(e);
+				MWServ.mwlog.errLog("Sign On Error: Null exception message");
+				MWServ.mwlog.errLog(e);
 			}
 			
 			else if (e.getMessage().equals(ACCESS_DENIED)){
-				//MMServ.mmlog.errLog("SignOn error: "+client.getUserId()+" is a dumbfuck and forgot thier password");
+				//MWServ.mwlog.errLog("SignOn error: "+client.getUserId()+" is a dumbfuck and forgot thier password");
 				client.setUserId(null);
 				client.error(ACCESS_DENIED, e.getMessage());
 				String key;

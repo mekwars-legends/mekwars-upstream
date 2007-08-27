@@ -18,7 +18,7 @@ package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.commands.Command;
 import server.campaign.SPlanet;
 import server.campaign.CampaignMain;
@@ -60,12 +60,12 @@ public class AdminSetPlanetVacuumCommand implements Command {
 			p.setVacuum(lock);
 			if ( lock ) {
 				CampaignMain.cm.toUser("You've removed the atmosphere from planet "+p.getName(),Username,true);
-				//server.MMServ.mmlog.modLog(Username + " removed the atmosphere from planet "+p.getName());
+				//server.MWServ.mwlog.modLog(Username + " removed the atmosphere from planet "+p.getName());
 				CampaignMain.cm.doSendModMail("NOTE",Username + " has removed the atmosphere from planet "+p.getName());
 			}
 			else {	
 				CampaignMain.cm.toUser("You've created an atmosphere on planet "+p.getName(),Username,true);
-				//server.MMServ.mmlog.modLog(Username + " has created an atmosphere on planet "+p.getName());
+				//server.MWServ.mwlog.modLog(Username + " has created an atmosphere on planet "+p.getName());
 				CampaignMain.cm.doSendModMail("NOTE",Username + " has created an atmosphere on planet "+p.getName());
 			}
 			p.updated();
@@ -73,7 +73,7 @@ public class AdminSetPlanetVacuumCommand implements Command {
 			
 		}
 		catch (Exception ex){
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 		
 	}

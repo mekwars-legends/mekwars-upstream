@@ -26,7 +26,7 @@ import common.CampaignData;
 import common.util.BinWriter;
 import common.util.MD5;
 
-import server.MMServ;
+import server.MWServ;
 import server.dataProvider.ServerCommand;
 //import server.campaign.CampaignMain;
 
@@ -42,7 +42,7 @@ public class ServerMegaMekGameOptionsMD5 implements ServerCommand {
     	if (ServerMegaMekGameOptions.exists()) {
             ServerMegaMekGameOptionsMD5 = MD5.getHashString(ServerMegaMekGameOptions);
     	} else {
-    		MMServ.mmlog.mainLog("gameoptions.xml didn't exist. returning bum string to requesting client.");
+    		MWServ.mwlog.mainLog("gameoptions.xml didn't exist. returning bum string to requesting client.");
     	}
        
         out.println(ServerMegaMekGameOptionsMD5, "ServerMegaMekGameOptionsMD5");

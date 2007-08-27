@@ -34,7 +34,7 @@ import java.util.StringTokenizer;
 
 import common.PlanetEnvironment;
 
-import server.MMServ;
+import server.MWServ;
 import server.campaign.CampaignMain;
 
 
@@ -151,7 +151,7 @@ public class XMLTerrainDataParser implements XMLResponder{
 			XMLParser xp = new XMLParser();
 			xp.parseXML(this);
 		} catch (Exception ex) {
-			MMServ.mmlog.errLog(ex);
+			MWServ.mwlog.errLog(ex);
 		}
 	}
 	
@@ -159,7 +159,7 @@ public class XMLTerrainDataParser implements XMLResponder{
 		System.out.print(prefix+"!NOTATION: "+name);
 		if (pubID!=null) System.out.print("  pubID = "+pubID);
 		if (sysID!=null) System.out.print("  sysID = "+sysID);
-		MMServ.mmlog.mainLog("");
+		MWServ.mwlog.mainLog("");
 	}
 	
 	public void recordEntityDeclaration(String name, String value, String pubID, String sysID, String notation) throws ParseException {
@@ -168,12 +168,12 @@ public class XMLTerrainDataParser implements XMLResponder{
 		if (pubID!=null) System.out.print("  pubID = "+pubID);
 		if (sysID!=null) System.out.print("  sysID = "+sysID);
 		if (notation!=null) System.out.print("  notation = "+notation);
-		MMServ.mmlog.mainLog("");
+		MWServ.mwlog.mainLog("");
 	}
 	
 	public void recordElementDeclaration(String name, String content) throws ParseException {
 		System.out.print(prefix+"!ELEMENT: "+name);
-		MMServ.mmlog.mainLog("  content = "+content);
+		MWServ.mwlog.mainLog("  content = "+content);
 	}
 	
 	public void recordAttlistDeclaration(String element, String attr, boolean notation, String type, String defmod, String def) throws ParseException {
@@ -181,14 +181,14 @@ public class XMLTerrainDataParser implements XMLResponder{
 		System.out.print("  attr = "+attr);
 		System.out.print("  type = " + ((notation) ? "NOTATIONS " : "") + type);
 		System.out.print("  def. modifier = "+defmod);
-		MMServ.mmlog.mainLog( (def==null) ? "" : "  def = "+notation);
+		MWServ.mwlog.mainLog( (def==null) ? "" : "  def = "+notation);
 	}
 	
 	public void recordDoctypeDeclaration(String name, String pubID, String sysID) throws ParseException {
 		System.out.print(prefix+"!DOCTYPE: "+name);
 		if (pubID!=null) System.out.print("  pubID = "+pubID);
 		if (sysID!=null) System.out.print("  sysID = "+sysID);
-		MMServ.mmlog.mainLog("");
+		MWServ.mwlog.mainLog("");
 		prefix = "";
 	}
 	
@@ -198,18 +198,18 @@ public class XMLTerrainDataParser implements XMLResponder{
 	}
 	
 	public void recordDocEnd() {
-		MMServ.mmlog.mainLog("");
-		MMServ.mmlog.mainLog("Parsing finished without error");
+		MWServ.mwlog.mainLog("");
+		MWServ.mwlog.mainLog("Parsing finished without error");
 	}
 	
 	public void recordElementStart(String name, Hashtable attr) throws ParseException {
-		//MMServ.mmlog.mainLog(prefix+"Element: "+name);
+		//MWServ.mwlog.mainLog(prefix+"Element: "+name);
 		lastElement = name;
 	}
 	
 	public void recordElementEnd(String tagName) throws ParseException {
 		if (tagName.equals("TERRAIN")) {
-			MMServ.mmlog.mainLog("ENVIRONMENT READ");
+			MWServ.mwlog.mainLog("ENVIRONMENT READ");
 			PlanetEnvironment PE = new PlanetEnvironment();
 			PE.setCraterProb(CraterProb);
 			PE.setCraterMinNum(CraterMinNum);
@@ -396,18 +396,18 @@ public class XMLTerrainDataParser implements XMLResponder{
 	}
 	
 	public void recordPI(String name, String pValue) {
-		MMServ.mmlog.mainLog(prefix+"*"+name+" PI: "+pValue);
+		MWServ.mwlog.mainLog(prefix+"*"+name+" PI: "+pValue);
 	}
 	
 	public void recordCharData(String charData) {
-		//MMServ.mmlog.mainLog(prefix+charData);
+		//MWServ.mwlog.mainLog(prefix+charData);
 		if (!charData.equalsIgnoreCase("")) {
-			//do nothing; //MMServ.mmlog.mainLog(lastElement + " --> " + charData);
+			//do nothing; //MWServ.mwlog.mainLog(lastElement + " --> " + charData);
 		} else
 			lastElement = "";
 		if (lastElement.equalsIgnoreCase("NAME")) {	
 			name = charData;
-			MMServ.mmlog.mainLog(name);
+			MWServ.mwlog.mainLog(name);
 		}
 		else if (lastElement.equalsIgnoreCase("CRATERPROB"))
 			CraterProb = Integer.parseInt(charData);
@@ -559,7 +559,7 @@ public class XMLTerrainDataParser implements XMLResponder{
 	}
 	
 	public void recordComment(String comment) {
-		MMServ.mmlog.mainLog(prefix+"*Comment: "+comment);
+		MWServ.mwlog.mainLog(prefix+"*Comment: "+comment);
 	}
 	
 	
