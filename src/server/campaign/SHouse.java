@@ -2588,9 +2588,9 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 	
 	public void loadConfigFile() {
 		
-		File configFile = new File(this.getName().toLowerCase()+"_configs.dat");
+		File configFile = new File("./data/" + this.getName().toLowerCase()+"_configs.dat");
 		
-		if ( !configFile.exists() )
+		if ( !configFile.exists() ) 
 			return;
 		
 		try {
