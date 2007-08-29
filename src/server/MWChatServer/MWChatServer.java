@@ -195,7 +195,7 @@ public class MWChatServer implements ICommands {
      * @exception AccessException
      *                is the login failed
      */
-    public void signOn(MWChatClient client, String password) throws Exception {
+    public boolean signOn(MWChatClient client, String password) throws Exception {
         String userId = client.getUserId();
         validateUserId(userId);
         Auth auth = _authenticator.authenticate(client, password);
@@ -231,6 +231,8 @@ public class MWChatServer implements ICommands {
 
         }
         client.ackSignon(auth.getUserId());
+        
+        return true;
     }
     
     /**
