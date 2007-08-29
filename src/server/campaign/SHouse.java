@@ -1136,13 +1136,14 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		
 		double result = 0;
 		boolean showOutput = Boolean.parseBoolean(this.getConfig("ShowOutputMultiplierOnTick"));
-		
+		MWServ.mwlog.debugLog("Staring getNumberOfPlayersWhoCountForProduction");
 		//loop through all of the active players
 		for (SPlayer currP : this.getActivePlayers().values()) {
 			
-            
+			MWServ.mwlog.debugLog("Counting "+currP.getName());
             if ( System.currentTimeMillis() < currP.getActiveSince()+Long.parseLong(this.getConfig("InfluenceTimeMin")) )
                 continue;
+            MWServ.mwlog.debugLog("Getting army weight");
 			//move on to the next player if value is 0.
 			double value = currP.getWeightedArmyNumber();
 			if (value <= 0)
@@ -1151,6 +1152,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			//add the players weight to the total faction multiplier
 			result += value;
 			
+			MWServ.mwlog.debugLog("Showing output");
 			//if enabled, show the player his personal worth
 			if (showOutput) {
 				String toShow = "You counted towards production this tick";
@@ -1162,6 +1164,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			
 		}//end for(active players)
 		
+		MWServ.mwlog.debugLog("Getting all fighting players");
 		//now loop through all of the fighting players
 		for (SPlayer currP : this.getFightingPlayers().values()) {
 			
@@ -1169,18 +1172,22 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			 * Get the player's short op. He's fighing, so there should
 			 * always be one, but check for a null just in case.
 			 */
+			MWServ.mwlog.debugLog("checking short operation for "+currP.getName());
 			ShortOperation so = CampaignMain.cm.getOpsManager().getShortOpForPlayer(currP);
 			if (so == null)
 				continue;
 
+			MWServ.mwlog.debugLog("Getting data for op "+so.getName()+" for player "+currP.getName());
 			Operation o = CampaignMain.cm.getOpsManager().getOperation(so.getName());
 			double value = o.getDoubleValue("CountGameForProduction");
 			if (value < 0)
 				value = 0;
 			
+			MWServ.mwlog.debugLog("adding value.");
 			//add the players weight to the total faction multiplier
 			result += value;
 			
+			MWServ.mwlog.debugLog("Showing output");
 			//if enabled, show the player his personal worth
 			if (value > 0 && showOutput) {
 				String toReturn = "You counted towards production this tick";
@@ -1191,6 +1198,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			}
 		}//end for(fighting players)
 
+		MWServ.mwlog.debugLog("returning with results.");
 		//pass back the aggregate value.
 		return result;
 	}
@@ -1203,10 +1211,13 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 	 */
 	public String tick(boolean real, int tickid) {
 		
+		MWServ.mwlog.debugLog("Inside SHouse.Tick for: "+this.getName());
 		String result = "<font color=\"black\">-------> <b>Tick! [" + tickid + "]</b><br>";
 		StringBuilder hsUpdates = new StringBuilder();
 		
 		double tickworth = 0;
+
+		MWServ.mwlog.debugLog("Getting number of players who count for production");
 
 		//non-real ticks occur the first time a server starts, when free minticks are given away
 		if (!real)
@@ -1214,6 +1225,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		else// if real, get the weighted number of valid players
 			tickworth = this.getNumberOfPlayersWhoCountForProduction();
 
+		MWServ.mwlog.debugLog("Calculating refresh points");
 		double cComp = getComponentProduction();
 		int componentsToAdd = (int) (tickworth * cComp);
 		int refreshToAdd = (int) Math.round(tickworth);
@@ -1222,13 +1234,16 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			//Allow Servers to refresh factories without having active players.
 			refreshToAdd = Integer.parseInt(this.getConfig("FactoryRefreshPoints"));
 
+		MWServ.mwlog.debugLog("Geting planet income and refreshing factories");
 		// Get income, and refresh factories
 		Iterator e = getPlanets().values().iterator();
 		while (e.hasNext()) {// loop through all planets which the faction
 			// has territory on
 			SPlanet p = (SPlanet) e.next();
-			if (this.equals(p.getOwner()))
+			if (this.equals(p.getOwner())){
+				MWServ.mwlog.debugLog("Updating planet "+p.getName());
 				hsUpdates.append(p.tick(refreshToAdd));// call the planetary tick
+			}
 		}
 
 		// then add to the faction PP pools
@@ -1241,27 +1256,32 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		for (int i = 0; i < 4; i++) {// loop through each weight class,
 			// adding PP
 			if (useMekPP) {
+				MWServ.mwlog.debugLog("Updating House Mek Parts: "+i);
 				hsUpdates.append(this.addPP(i, Unit.MEK, componentsToAdd, false));
 				addComponentsProduced(Unit.MEK, componentsToAdd);
 			} 
 			
 			if (useVehiclePP) {
+				MWServ.mwlog.debugLog("Updating House Vehicle Parts: "+i);
 				hsUpdates.append(this.addPP(i, Unit.VEHICLE, componentsToAdd, false));
 				addComponentsProduced(Unit.VEHICLE, componentsToAdd);
 			}
 
 			if (useInfantryPP) {
+				MWServ.mwlog.debugLog("Updating House Infantry: "+i);
 				if (!Boolean.parseBoolean(this.getConfig("UseOnlyLightInfantry")) || i == Unit.LIGHT)
 					hsUpdates.append(this.addPP(i, Unit.INFANTRY, componentsToAdd, false));
 				addComponentsProduced(Unit.INFANTRY, componentsToAdd);
 			}
 
 			if (useProtoMekPP) {
+				MWServ.mwlog.debugLog("Updating House ProtoMek: "+i);
 				hsUpdates.append(this.addPP(i, Unit.PROTOMEK, componentsToAdd, false));
 				addComponentsProduced(Unit.PROTOMEK, componentsToAdd);
 			} 
 
 			if (useBattleArmorPP) {
+				MWServ.mwlog.debugLog("Updating House BA: "+i);
 				hsUpdates.append(this.addPP(i, Unit.BATTLEARMOR, componentsToAdd, false));
 				addComponentsProduced(Unit.BATTLEARMOR, componentsToAdd);
 			}
@@ -1281,6 +1301,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		StringBuilder scrapExcuses = new StringBuilder();
 		StringBuilder marketAdditions = new StringBuilder();
 		
+		MWServ.mwlog.debugLog("Checking for Unit Overflow");
 		/*
 		 * Loop though every type and weight class, looking for overflow. If
 		 * there are more units than allowed in the hangar, dispose of random
@@ -1326,6 +1347,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			}// end weight class loop
 		}// end unit type loop
 		
+		MWServ.mwlog.debugLog("Doing Component Overflow");
 		/*
 		 * Loop through all types/weightclasses as above, but look for component
 		 * overflow instead of hangar overage. Here we either scrap the
@@ -1364,6 +1386,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 					//else, make a new unit
 					else {
 						SUnit newUnit = m.getMechProduced(type_id, this.getNewPilot(type_id));
+						MWServ.mwlog.debugLog("AP Unit "+newUnit.getModelName());
 						hsUpdates.append(this.addUnit(newUnit, false));
 						hsUpdates.append(this.addPP(weight, type_id, -(this.getPPCost(weight,type_id)), false));
 						
@@ -1402,6 +1425,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		// now, assemble the strings
 		result += mechsProduced.toString() + marketAdditions.toString() + industrialAccidents.toString() + scrapExcuses.toString();
 
+		MWServ.mwlog.debugLog("show Production Count");
 		if ((getShowProductionCountNext() - 1) <= 0) {
 			setShowProductionCountNext((Integer.parseInt(this.getConfig("ShowComponentGainEvery"))));
 			
@@ -1454,6 +1478,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 				result += myFormatter.format(BAComponents/(Double.parseDouble(this.getConfig("AssaultBattleArmorPP")))) + " Assault battle armor<br>";
 			}
 
+			MWServ.mwlog.debugLog("SetComponentsProduced");
 			// and return the result to CampaignMain in order to have it sent to the players
 			setComponentsProduced(Unit.MEK, 0);
 			setComponentsProduced(Unit.VEHICLE, 0);
@@ -1465,10 +1490,11 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 
 		result += "</font>";
 
+		MWServ.mwlog.debugLog("Send House Updates");
 		//send house updates, if not empty
 		if (hsUpdates.length() > 0)
 			CampaignMain.cm.doSendToAllOnlinePlayers(this, "HS|" + hsUpdates.toString(), false);
-		
+		MWServ.mwlog.debugLog("returning");
 		return result;
 	}
 
