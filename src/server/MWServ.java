@@ -261,7 +261,7 @@ public class MWServ {
 	}
 		
 	/*** Once a user(lPID) logs in this function is kicked off ****/
-	public void clientLogin(String name) {
+	public boolean clientLogin(String name) {
 		String originalName = name;
 		name = name.toLowerCase();
 		InetAddress hisip = this.getIP(name);
@@ -309,7 +309,7 @@ public class MWServ {
                 }catch(Exception ex){}
 
 				myCommunicator.kill(name,"");
-				return;
+				return false;
 			} 
 			
 			//else
@@ -329,7 +329,7 @@ public class MWServ {
                     Thread.sleep(125);
                 }catch(Exception ex){}
 				this.myCommunicator.kill(name,"");
-				return;
+				return false;
 			} 
 			
 			//else
@@ -350,7 +350,7 @@ public class MWServ {
                 }catch(Exception ex){}
 
                 this.myCommunicator.kill(name, "");
-                return;
+                return false;
             } 
             
             //else
@@ -442,6 +442,7 @@ public class MWServ {
 		 */
 		//send him any saved mail
 		//checkAndSendMail(name);
+		return true;
 	}
 	
 	public InetAddress getIP(String name) {
@@ -897,7 +898,7 @@ public class MWServ {
 	
 	public MWClientInfo getUser(String name) {
 		if (name == null || users.get(name.toLowerCase()) == null)
-			return new MWClientInfo(name);
+			return new MWClientInfo();
 		//else
 		return  users.get(name.toLowerCase());
 	}

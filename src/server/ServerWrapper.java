@@ -134,7 +134,7 @@ public class ServerWrapper extends MWChatServer{
 	 * This needs to be coupled a little more (or less) with the signon command object
 	 */
 	@Override
-	public void signOn(MWChatClient client, String password) throws Exception{
+	public boolean signOn(MWChatClient client, String password) throws Exception{
 		
 		MWServ.mwlog.infoLog(client.getUserId() + " is attempting a signon");
 		String userId = client.getUserId();
@@ -162,7 +162,7 @@ public class ServerWrapper extends MWChatServer{
 		}
 		
 		client.ackSignon(auth.getUserId());		
-		this.myServer.clientLogin(client.getUserId());
+		return this.myServer.clientLogin(client.getUserId());
 	}
 	
 	@Override

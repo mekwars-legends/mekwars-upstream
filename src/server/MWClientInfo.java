@@ -48,12 +48,6 @@ public class MWClientInfo implements Serializable, java.lang.Comparable {
 	public MWClientInfo() {
 	}
 	
-	public MWClientInfo(String name) {
-		
-		if ( name != null )
-			this.name = name.toLowerCase();
-	}
-	
 	public MWClientInfo(String name, InetAddress Adr, long time, int level, boolean invis) {
 		this.name = name;
 		this.Adr = Adr;
