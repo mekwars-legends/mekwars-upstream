@@ -47,12 +47,12 @@ public class NU extends Command {
 		
 		CUser newUser = new CUser(st.nextToken());
 		
-		if (mwclient.isDedicated())
-			return;
-
 		if ( !mwclient.getUsers().contains(newUser) )
 			mwclient.getUsers().add(newUser);
 		
+		if (mwclient.isDedicated())
+			return;
+
         if (newUser.isInvis() && newUser.getUserlevel() > mwclient.getUser(mwclient.getPlayer().getName()).getUserlevel()) {
             mwclient.refreshGUI(MWClient.REFRESH_USERLIST);
             return;
