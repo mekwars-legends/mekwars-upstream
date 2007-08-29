@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
++ Updated database to v7
 + Changed code to not allow banned players to show up in the user lists at all.
 + RFE: Cost of used unit now shown in Faction Status window 
 + New MegaMek.jar 0.33.9-82807-5162
