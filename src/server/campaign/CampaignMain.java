@@ -1145,8 +1145,10 @@ public final class CampaignMain implements Serializable {
 		for (House vh : data.getAllHouses()) {
 			SHouse h = (SHouse) vh;
 			result = h.getPlayer(pName);
-			if (result != null)
+			if (result != null){
+				MWServ.mwlog.debugLog(pName+" Found in house data");
 				return result;
+			}
 		}
 
 		/* look for players awaiting purge
@@ -1162,14 +1164,15 @@ public final class CampaignMain implements Serializable {
 		 */
 		if(CampaignMain.cm.isUsingMySQL()) {
 			// For now, see if the user is there, see if the passwords match, and log it.
-			MWServ.mwlog.dbLog("Loading player " + pName);
+			//MWServ.mwlog.dbLog("Loading player " + pName);
 			if(CampaignMain.cm.MySQL.getPlayerIDByName(pName)== -1) {
 				// Player doesn't exist
-				MWServ.mwlog.dbLog("Player not in database");
+				//MWServ.mwlog.dbLog("Player not in database");
 			} else {
 				
 			}
 		}
+		//MWServ.mwlog.debugLog("Loading "+pName+" from file.");
 		result = this.loadPlayerFile(pName, false);
 		//if (result != null)
 			//result.setSave(save);

@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
++ Now saving player team number.
++ Bug: Get Reorder not being read in SPlayer.fromString();
 + Updated database to v7
 + Changed code to not allow banned players to show up in the user lists at all.
 + RFE: Cost of used unit now shown in Faction Status window 

@@ -2676,6 +2676,11 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
         result.append(this.getAutoReorder());
         result.append("~");
         
+        if ( !toClient ){
+	        result.append(this.getTeamNumber());
+	        result.append("~");
+        }
+        
 		return result.toString();
 	}
 	
@@ -3097,7 +3102,14 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
         	else
         		ST.nextToken();
         }
+        
+        if ( ST.hasMoreElements() )
+        	this.setAutoReorder(Boolean.parseBoolean(ST.nextToken()));
 
+        if ( ST.hasMoreTokens() ){
+        	this.setTeamNumber(Integer.parseInt(ST.nextToken()));
+        }
+        
         if ( this.password != null && this.password.getPasswd().trim().length() <= 2){
             this.password.setAccess(IAuthenticator.GUEST);
         }
@@ -3241,8 +3253,11 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	        
 	        	if ( CampaignMain.cm.getBooleanConfig("UsePartsRepair") )
 	        		unitParts.fromString(rs.getString("playerUnitParts"));
-	        if ( this.password != null && this.password.getPasswd().trim().length() <= 2){
-	            this.password.setAccess(IAuthenticator.GUEST);
+	        	
+	        	this.setAutoReorder(Boolean.parseBoolean(rs.getString("playerAutoReorder")));
+
+	        	if ( this.password != null && this.password.getPasswd().trim().length() <= 2){
+	        		this.password.setAccess(IAuthenticator.GUEST);
 	        }
 	        
 			if (CampaignMain.cm.isUsingCyclops()) {
@@ -3287,7 +3302,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in SPlayer.fromDB: " + e.getMessage());
 		}
-		}	
+	}	
 	
 	
 	/**
@@ -3353,4 +3368,9 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		this.personalPilotQueue.setOwnerID(id);
 	}
 	
+	public void setTeamNumber(int team){
+		super.setTeamNumber(team);
+		this.setSave(true);
+	}
+
 }// end SPlayer()

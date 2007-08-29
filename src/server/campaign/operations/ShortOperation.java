@@ -1427,7 +1427,9 @@ public class ShortOperation implements Comparable {
 		
 		if ( isTeamOp ) {
 			CampaignMain.cm.toUser("PL|STN|"+p.getTeamNumber(), lowerName,false);
+			MWServ.mwlog.debugLog(p.getName()+" Team: "+p.getTeamNumber());
 			CampaignMain.cm.toUser("GMEP|"+teamEdge[p.getTeamNumber()-1],lowerName,false);
+			MWServ.mwlog.debugLog("Sent team edge to "+p.getName());
 		}
 		//send starting edge and autoarmy
 		else if (defenders.containsKey(lowerName)) {
