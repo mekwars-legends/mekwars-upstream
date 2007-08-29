@@ -203,6 +203,7 @@ public class FactionHandler {
 				MWServ.mwlog.dbLog("Loading Faction Pilots");
 				CampaignMain.cm.MySQL.loadFactionPilots(h);
 				h.loadConfigFileFromDB();
+				h.setUsedMekBayMultiplier(Float.parseFloat(h.getConfig("UsedPurchaseCostMulti")));
 				MWServ.mwlog.dbLog("Faction " + h.getName() + " loaded");
 				}
 			

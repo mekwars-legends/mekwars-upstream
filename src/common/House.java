@@ -71,6 +71,8 @@ public class House implements MMNetSerializable {
     private boolean allowDefectionsFrom = true;
     private boolean allowDefectionsTo = true;
 	
+    public float usedMekBayMultiplier;
+    
 	/**
 	 * @return Returns the baseGunner.
 	 */
@@ -330,6 +332,7 @@ public class House implements MMNetSerializable {
         out.println(this.getTechLevel(), "techLevel");
         out.println(this.getHouseDefectionFrom(), "defectFrom");
         out.println(this.getHouseDefectionTo(), "defectTo");
+        out.println(this.getUsedMekBayMultiplier(), "usedMekBayMultiplier");
     }
 
     /**
@@ -376,7 +379,7 @@ public class House implements MMNetSerializable {
         this.setTechLevel(in.readInt("techLevel"));
         this.setHouseDefectionFrom(in.readBoolean("defectFrom"));
         this.setHouseDefectionTo(in.readBoolean("defectTo"));
-
+        this.setUsedMekBayMultiplier((float)in.readDouble("usedMekBayMultiplier"));
     }
 	
 	/**
@@ -553,6 +556,14 @@ public class House implements MMNetSerializable {
 
 	public void setHouseDefectionTo(boolean defection) {
 		allowDefectionsTo = defection;
+	}
+	
+	public void setUsedMekBayMultiplier(float mult) {
+		this.usedMekBayMultiplier = mult;
+	}
+	
+	public float getUsedMekBayMultiplier() {
+		return this.usedMekBayMultiplier;
 	}
 
 }

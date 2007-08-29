@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
++ RFE: Cost of used unit now shown in Faction Status window 
 + New MegaMek.jar 0.33.9-82807-5162
 + Changed MMServ MMClietnInfo MMNetPasswd and MMNetPasswdRecord to MW file names
 + Updated Database to v6

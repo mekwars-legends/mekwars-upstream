@@ -886,7 +886,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			 */
 
 			this.loadConfigFile();
-			
+			this.setUsedMekBayMultiplier(Float.parseFloat(getConfig("UsedPurchaseCostMulti")));
 			return s;
 		} catch (Exception ex) {
 			MWServ.mwlog.errLog(ex);

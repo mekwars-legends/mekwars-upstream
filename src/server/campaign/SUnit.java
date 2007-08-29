@@ -519,7 +519,7 @@ public final class SUnit extends Unit implements Serializable {
 				if(getDBId()==0) {
 				// Unit's not in there - insert it
 				sql.setLength(0);
-				sql.append("INSERT into units set MWID=?, uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, uType=?, uIsUnitCommander=?");
+				sql.append("INSERT into units set MWID=?, uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, uType=?");
 				ps=con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, getId());
 				ps.setString(2, getUnitFilename());
@@ -553,7 +553,7 @@ public final class SUnit extends Unit implements Serializable {
 			} else {
 				// Unit's already there - update it
 				sql.setLength(0);
-				sql.append("UPDATE units set uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, uType = ?, uIsUnitCommander=? where MWID=?");
+				sql.append("UPDATE units set uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, uType = ? where MWID=?");
 				ps=con.prepareStatement(sql.toString());
 				ps.setString(1, getUnitFilename());
 				ps.setInt(2, getPosId());
@@ -581,7 +581,7 @@ public final class SUnit extends Unit implements Serializable {
 				ps.setInt(13, getCurrentRepairCost());
 				ps.setInt(14, getLifeTimeRepairCost());
 				ps.setInt(15, getType());
-				ps.setInt(17, getId());
+				ps.setInt(16, getId());
 				ps.executeUpdate();
 			}
 			// Now do Machine Guns
@@ -628,7 +628,7 @@ public final class SUnit extends Unit implements Serializable {
 				((SPilot)getPilot()).toDB(getType(), getWeightclass());
 			}
 		} catch (SQLException e){
-			MWServ.mwlog.dbLog("SQL Exception in UnitHandler.saveUnit: " + e.getMessage());
+			MWServ.mwlog.dbLog("SQL Exception in SaveUnit.toDB: " + e.getMessage());
 		}
 	}
 	

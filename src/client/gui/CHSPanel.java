@@ -562,8 +562,10 @@ public class CHSPanel extends JPanel {
 			for (int weight = 0; weight < 4; weight++) {
 				
 				if (this.unitsInfo.get(weight+"$"+type) != null && ((Vector)this.unitsInfo.get(weight+"$"+type)).size() > 0 ) {
-					
-					result.append("<a href=\"MEKWARS/c requestdonated#" + weight + "#" + type + "\"><img border=\"0\" alt=\"Request one of the Units from this bay" + "\" src=\"data/images/cart.gif\"></a> " + Unit.getWeightClassDesc(weight) + ": ");
+					House foundH = mwclient.getData().getHouseByName(mwclient.getPlayer().getMyHouse().getName());
+					int cbillCost = Math.round(CUnit.getPriceForUnit(mwclient, weight, type, foundH) * foundH.getUsedMekBayMultiplier());
+					int fluCost = Math.round(CUnit.getInfluenceForUnit(mwclient, weight, type, foundH) * foundH.getUsedMekBayMultiplier());
+					result.append("<a href=\"MEKWARS/c requestdonated#" + weight + "#" + type + "\"><img border=\"0\" alt=\"Request one of the Units from this bay (Cost: " + mwclient.moneyOrFluMessage(true, true, cbillCost, false) + ", " + mwclient.moneyOrFluMessage(false, true, fluCost, false) + ")\" src=\"data/images/cart.gif\"></a> " + Unit.getWeightClassDesc(weight) + ": ");
 					Vector<HSMek> v = this.unitsInfo.get(weight + "$" + type);
 					HSMek[] entities = new HSMek[v.size()];
 					for (int i = 0; i < v.size();i++)
