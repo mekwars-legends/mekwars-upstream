@@ -2723,7 +2723,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 
 				sql.append("playerUnitParts = ?, ");
 				sql.append("playerAccess = ?, ");
-				sql.append("playerAutoReorder = ?");
+				sql.append("playerAutoReorder = ?, ");
+				sql.append("playerTeamNumber = ?");
 				ps = con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setString(1, getName());
 				ps.setInt(2, getMoney());
@@ -2765,6 +2766,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				else
 					ps.setInt(24, 1);
 				ps.setString(25, Boolean.toString(getAutoReorder()));
+				ps.setInt(26, getTeamNumber());
 				ps.executeUpdate();
 				ResultSet rs = ps.getGeneratedKeys();
 				rs.next();
@@ -2805,7 +2807,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				sql.append("playerUnitParts = ?, ");
 				sql.append("playerAutoReorder = ?, ");
 				sql.append("playerPassword= ?, ");
-				sql.append("playerPassTime= ? ");
+				sql.append("playerPassTime= ?, ");
+				sql.append("playerTeamNumber= ? ");
 				sql.append("WHERE playerID = ?");
 	
 				ps = con.prepareStatement(sql.toString());
@@ -2859,7 +2862,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 					ps.setLong(27, this.password.getTime());
 				else
 					ps.setLong(27, 0);
-				ps.setInt(28, getDBId());
+				ps.setInt(28, getTeamNumber());
+				ps.setInt(29, getDBId());
 				ps.executeUpdate();
 
 			}
@@ -2905,7 +2909,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		}
 		MWServ.mwlog.dbLog("Finished saving player");
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL error in PlayerHandler.savePlayer: " + e.getMessage());
+			MWServ.mwlog.dbLog("SQL error in SPlayer.toDB: " + e.getMessage());
 		}
 	}
 	
@@ -3195,6 +3199,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			rating = rs.getDouble("playerRating");
 			influence = rs.getInt("playerInfluence");
 			fluffText = rs.getString("playerFluff").trim();
+			setTeamNumber(rs.getInt("playerTeamNumber"));
 			
 			if (CampaignMain.cm.isUsingAdvanceRepair()) 
 				this.addBays(rs.getInt("playerBaysOwned"));
