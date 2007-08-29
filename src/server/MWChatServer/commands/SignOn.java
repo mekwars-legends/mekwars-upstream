@@ -133,6 +133,8 @@ public class SignOn extends CommandBase implements ICommands {
 				args[1] = key;
 				return this.process(client, args);
 			}
+			else
+				MWServ.mwlog.errLog(e);
 			String userId = client.getUserId();
 			client.setUserId(null);
 			client.signOnError(e.getMessage(), userId);

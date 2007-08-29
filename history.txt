@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
+Release Client/Server 0.2.6.1
 + Now saving player team number.
 + Bug: Get Reorder not being read in SPlayer.fromString();
 + Updated database to v7
