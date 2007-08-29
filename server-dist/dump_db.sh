@@ -11,8 +11,5 @@ TIME=$1
 
 OUTPUTFILE="./campaign/backup/db_$TIME.sql"
 
-echo dumpexe: $DUMPEXE
-echo Output file: $OUTPUTFILE
-
 $DUMPEXE -u$DBUSER -p$DBPASS $DBDATABASE > $OUTPUTFILE
 
