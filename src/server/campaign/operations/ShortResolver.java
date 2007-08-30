@@ -55,8 +55,6 @@ public class ShortResolver {
 	 * in place of gigantic paramater lists for each method called
 	 * by a resolve(). They are reset with each new resolve().
 	 */
-	TreeMap<String, SPlayer> winners;
-	TreeMap<String, SPlayer> losers;
 	TreeMap<String, SPlayer> allPlayers;
 	TreeMap<String, SArmy> allArmies;
 	
@@ -92,6 +90,7 @@ public class ShortResolver {
 	private boolean drawGame = false;
     private boolean saveStats = false;
     private boolean freeForAll = false;
+    private ShortOperation shortOp = null;
 	//CONSTRUCTORS
 	public ShortResolver() {
 		//contents
@@ -105,8 +104,6 @@ public class ShortResolver {
 	 */
 	private void resetVariables() {
 		
-		winners = null;
-		losers = null;
 		allPlayers = null;
 		allArmies = null;
 		
@@ -161,6 +158,7 @@ public class ShortResolver {
 	 */
 	public void resolveShortAttack(Operation o, ShortOperation so, String report) {
 		
+		this.shortOp = so;
 		//return if the game is waiting, already reporting or already finished.
 		if (so.getStatus() != ShortOperation.STATUS_INPROGRESS)
 			return;
@@ -181,9 +179,10 @@ public class ShortResolver {
 		 * generally, align perfectly with the attacker/defender
 		 * maps; however, doing it this way makes arena and
 		 * grand melee style operations theoretically possible.
-		 */
-		winners = new TreeMap<String, SPlayer>();
-		losers = new TreeMap<String, SPlayer>();
+		 
+		so.getWinners() = new TreeMap<String, SPlayer>();
+		so.getLosers() = new TreeMap<String, SPlayer>();
+		*/
 		
 		/*
 		 * Set up a Map with all of the players from the game. ShortOperation
@@ -208,41 +207,41 @@ public class ShortResolver {
 		StringTokenizer winnerTokenizer = new StringTokenizer(reportTokenizer.nextToken(), "*");
 		
 		/*
-		 * loop through winners and add each to the winner tree.
+		 * loop through so.getWinners() and add each to the winner tree.
 		 */
 		while (winnerTokenizer.hasMoreElements()) {
 			String nextName = winnerTokenizer.nextToken().toLowerCase();
 			if ( nextName.equalsIgnoreCase("DRAW") )
 				drawGame = true;
-			if (!winners.containsKey(nextName))
-				winners.put(nextName, allPlayers.get(nextName));
+			if (!so.getWinners().containsKey(nextName))
+				so.getWinners().put(nextName, allPlayers.get(nextName));
 		}
 		
 		/*
-		 * It is safe to assume that that all players who weren't winners
-		 * lost. Compare the allPlayers tree to the winners tree and add
-		 * those from all who aren't already in winners to the losers map.
+		 * It is safe to assume that that all players who weren't so.getWinners()
+		 * lost. Compare the allPlayers tree to the so.getWinners() tree and add
+		 * those from all who aren't already in so.getWinners() to the so.getLosers() map.
 		 */
 		for (String currName : allPlayers.keySet()) {
-			if (!winners.containsKey(currName) && !losers.containsKey(currName))
-				losers.put(currName, allPlayers.get(currName));
+			if (!so.getWinners().containsKey(currName) && !so.getLosers().containsKey(currName))
+				so.getLosers().put(currName, allPlayers.get(currName));
 		}
 		
 
         /*
          * Before establishing which units are saveable/killed
          * and moving anything between players or changing the
-         * pilots in units, save the losers's BV. User to set
+         * pilots in units, save the so.getLosers()'s BV. User to set
          * the level at which he's paid out.
          */
         loserBV = 0;
         for (SArmy currArmy : allArmies.values()) {
-            if (losers.containsKey(currArmy.getPlayerName()))
+            if (so.getLosers().containsKey(currArmy.getPlayerName()))
                 loserBV += currArmy.getBV();
         }
         
         //return if there is no winner. terminate the game.
-		if (winners.size() == 0) {
+		if (so.getWinners().size() == 0) {
 			for (String pname : allPlayers.keySet())
 				CampaignMain.cm.toUser("Reporting error: Game had no winner.",pname,true);
 			//set to reporting status
@@ -410,24 +409,25 @@ public class ShortResolver {
 		/*
 		 * Disconnect resolution is used only for games involving
 		 * 2 players, and our winner and loser are fed to us here.
-		 */
-		winners = new TreeMap<String, SPlayer>();
-		losers = new TreeMap<String, SPlayer>();
+		 
+		so.getWinners() = new TreeMap<String, SPlayer>();
+		so.getLosers() = new TreeMap<String, SPlayer>();
+		*/
 		
 		if (winner != null)
-			winners.put(winnerName.toLowerCase(), winner);
+			so.getWinners().put(winnerName.toLowerCase(), winner);
 		if (loser != null)
-			losers.put(loserName.toLowerCase(), loser);
+			so.getLosers().put(loserName.toLowerCase(), loser);
 		
 		//return if there is no winner. terminate the game.
-		if (winners.size() == 0) {
+		if (so.getWinners().size() == 0) {
 			CampaignMain.cm.toUser("Autoreporting error: Game had no winner.",loserName,true);
 			CampaignMain.cm.getOpsManager().terminateOperation(so, OperationManager.TERM_REPORTINGERROR, null);
 			return;
 		}
 		
 		//return if there is no loser. terminate the game.
-		if (losers.size() == 0) {
+		if (so.getLosers().size() == 0) {
 			CampaignMain.cm.toUser("Autoreporting error: Game had no loser.",winnerName,true);
 			CampaignMain.cm.getOpsManager().terminateOperation(so, OperationManager.TERM_REPORTINGERROR, null);
 			return;
@@ -738,15 +738,15 @@ public class ShortResolver {
 			int earnedRP = 0;
 			
 			/*
-			 * Check to see if all should be paid as winners. Note that salvage
+			 * Check to see if all should be paid as so.getWinners(). Note that salvage
 			 * has already happened, as have meta impacts (% exchanges and unit
-			 * thefts, for example). At thie point it is safe to move ALL losers
-			 * into the winners tree for payment purposes.
+			 * thefts, for example). At thie point it is safe to move ALL so.getLosers()
+			 * into the so.getWinners() tree for payment purposes.
 			 */
 			boolean payAllAsWinners = o.getBooleanValue("PayAllAsWinners");
 			if (payAllAsWinners) {
-				winners.putAll(losers);
-				losers.clear();
+				so.getWinners().putAll(so.getLosers());
+				so.getLosers().clear();
 			}
 			
 			/*
@@ -773,7 +773,7 @@ public class ShortResolver {
 				earnedXP += baseAttackerExperiencePay;
 				earnedRP += baseAttackerRewardPointsPay;
 				
-				if (winners.containsKey(currName)) {
+				if (so.getWinners().containsKey(currName)) {
 					
 					earnedRP += o.getIntValue("RPForWinner");
 					earnedMoney += o.getIntValue("AttackerWinModifierCBillsFlat");
@@ -791,7 +791,7 @@ public class ShortResolver {
 					if (expMod > 0)
 						earnedXP *= expMod;
 					
-				} else if (losers.containsKey(currName)) {
+				} else if (so.getLosers().containsKey(currName)) {
 					
 					earnedRP += o.getIntValue("RPForLoser");
 					earnedMoney -= o.getIntValue("AttackerLossModifierCBillsFlat");
@@ -836,7 +836,7 @@ public class ShortResolver {
 				earnedXP += baseDefenderExperiencePay;
 				earnedRP += baseDefenderRewardPointsPay;
 				
-				if (winners.containsKey(currName)) {
+				if (so.getWinners().containsKey(currName)) {
 					
 					earnedRP += o.getIntValue("RPForWinner");
 					earnedMoney += o.getIntValue("DefenderWinModifierCBillsFlat");
@@ -854,7 +854,7 @@ public class ShortResolver {
 					if (expMod > 0)
 						earnedXP *= expMod;
 					
-				} else if (losers.containsKey(currName)) {
+				} else if (so.getLosers().containsKey(currName)) {
 					
 					earnedRP += o.getIntValue("RPForLoser");
 					earnedMoney -= o.getIntValue("DefenderLossModifierCBillsFlat");
@@ -922,7 +922,7 @@ public class ShortResolver {
             if ( minBVDifference > 0 
                     && (1.0-((double)currentBV/(double)loserBV)) < minBVDifference 
                     && disconnector == null
-                    && losers.containsKey(currName)){
+                    && so.getLosers().containsKey(currName)){
                 int minBVvPenaltyMod = o.getIntValue("BVFailurePaymentModifier");
                 earnedMoney = (earnedMoney * minBVvPenaltyMod)/100;
                 //earnedFlu = (earnedFlu * minBVvPenaltyMod)/100;
@@ -1099,8 +1099,8 @@ public class ShortResolver {
 		boolean opEffectsElo = o.getBooleanValue("CountGameForRanking");
 		if (allPlayers.size() == 2 && opEffectsElo && !drawGame ) {
 			
-			SPlayer wp = winners.get(winners.firstKey());
-			SPlayer lp = losers.get(losers.firstKey());
+			SPlayer wp = so.getWinners().get(so.getWinners().firstKey());
+			SPlayer lp = so.getLosers().get(so.getLosers().firstKey());
 			
 			double oldWinnerRating = wp.getRating();
 			double oldLoserRating = lp.getRating();
@@ -1191,7 +1191,7 @@ public class ShortResolver {
 		/*
 		 * First, dispose of the living units. Iterate through
 		 * the survivors, adding experience to each and trying to
-		 * level up those which belong to winners.
+		 * level up those which belong to so.getWinners().
 		 */
 		for (OperationEntity currEntity : livingUnits.values()) {
 			
@@ -1295,11 +1295,11 @@ public class ShortResolver {
 			Object[] pilotinformation = this.setupPilotStringForUnit(currEntity, currU, so.getTargetWorld());
 			
 			/*
-			 * If the winners always recover their own salvage, pull it
+			 * If the so.getWinners() always recover their own salvage, pull it
 			 * from the queue and send a recovery message to the original
 			 * owner. Also check to see if the pilot survived.
 			 */
-			if (winnerAlwaysSalvagesOwn && winners.containsKey(oldOwnerName)) {
+			if (winnerAlwaysSalvagesOwn && so.getWinners().containsKey(oldOwnerName)) {
 				
 				String toOwner = " You recovered your " + currU.getModelName() + ". ";
 				String toOthers = oldOwner.getColoredName() + " recovered his " + currU.getModelName() + ". ";
@@ -1404,10 +1404,10 @@ public class ShortResolver {
 			if (CampaignMain.cm.getR().nextInt(100) < winnerSalvagePercent) {
 				
 				//previous owner wasn't a winner. pick a new owner
-				if(!winners.containsKey(oldOwnerName))
+				if(!so.getWinners().containsKey(oldOwnerName))
 					newOwner = selectRandomWinner();
 				
-				//decrease the winners chance to get the next unit
+				//decrease the so.getWinners() chance to get the next unit
 				if (salvageAdjustment != 0)
 					winnerSalvagePercent -= salvageAdjustment;
 				if (winnerSalvagePercent < 0)
@@ -1418,7 +1418,7 @@ public class ShortResolver {
 			else {
 				
 				//previous owner wasnt a loser. pick a new owner.
-				if (!losers.containsKey(oldOwnerName))
+				if (!so.getLosers().containsKey(oldOwnerName))
 					newOwner = selectRandomLoser();
 				
 				//increase the winner's chance to get next unit
@@ -1722,8 +1722,8 @@ public class ShortResolver {
 			 * the outcomes. Determine whether the attacking
 			 * or defending team was the winner.
 			 */
-			SPlayer aWinner = winners.get(winners.firstKey());
-			SPlayer aLoser = losers.get(losers.firstKey());
+			SPlayer aWinner = so.getWinners().get(so.getWinners().firstKey());
+			SPlayer aLoser = so.getLosers().get(so.getLosers().firstKey());
 			//Draw Game
 			if ( drawGame ){
 				attackersWon = false;
@@ -1750,16 +1750,16 @@ public class ShortResolver {
 			boolean attackersPolluted = false;
 			boolean defendersPolluted = false;
 			if ( !drawGame ){
-				for (SPlayer wp : winners.values()) {
-					for (SPlayer compareP : winners.values()) {
+				for (SPlayer wp : so.getWinners().values()) {
+					for (SPlayer compareP : so.getWinners().values()) {
 						if (!compareP.getHouseFightingFor().equals(wp.getHouseFightingFor()))
 							attackersPolluted = true;
 					}
 					if (attackersPolluted) {break;}
 				}
 			}
-			for (SPlayer lp : losers.values()) {
-				for (SPlayer compareP : losers.values()) {
+			for (SPlayer lp : so.getLosers().values()) {
+				for (SPlayer compareP : so.getLosers().values()) {
 					if (!compareP.getHouseFightingFor().equals(lp.getHouseFightingFor())) {
 						defendersPolluted = true;
 						break;
@@ -1796,9 +1796,9 @@ public class ShortResolver {
 					 */
 					String genericWinnerString = "";
 					int marker = 0;
-					int total = winners.size();
+					int total = so.getWinners().size();
 					if ( !drawGame ){
-						for (SPlayer wp : winners.values()) {
+						for (SPlayer wp : so.getWinners().values()) {
 							genericWinnerString += wp.getName();
 							marker++;
 							if (marker + 1 == total)
@@ -1813,8 +1813,8 @@ public class ShortResolver {
 					
 					String genericLoserString = "";
 					marker = 0;
-					total = losers.size();
-					for (SPlayer lp : losers.values()) {
+					total = so.getLosers().size();
+					for (SPlayer lp : so.getLosers().values()) {
 						genericLoserString += lp.getName();
 						marker++;
 						if (marker + 1 == total)
@@ -1833,9 +1833,9 @@ public class ShortResolver {
 					 * showing the victorious faction. This requires some
 					 * unappealing embedded loops.
 					 */
-					int numberOfWinners = winners.size();
+					int numberOfWinners = so.getWinners().size();
 					if ( !drawGame ){
-						for (SPlayer wp : winners.values()) {
+						for (SPlayer wp : so.getWinners().values()) {
 							
 							//if only one winner, send him a singular victory message.
 							if (numberOfWinners == 1)
@@ -1846,7 +1846,7 @@ public class ShortResolver {
 								int i = 0;
 								int numToList = numberOfWinners - 1;
 								String toSet = "You worked with ";
-								for (SPlayer loopP : winners.values()) {
+								for (SPlayer loopP : so.getWinners().values()) {
 									if (!wp.equals(loopP)) {
 										toSet += loopP.getName();
 										i++;
@@ -1859,18 +1859,18 @@ public class ShortResolver {
 								
 								toSet += " to defeat " + genericLoserString + " (" + so.getName() + ").";
 								metaStrings.put(wp.getName().toLowerCase(), toSet);
-							}//end else(multiple winners/plural victory string)
+							}//end else(multiple so.getWinners()/plural victory string)
 						}//end (foreach winner)
 					}
 					/*
 					 * Although the loser metastrings should show complete
-					 * lists, same as the winners, "you worked with player B
+					 * lists, same as the so.getWinners(), "you worked with player B
 					 * to get your ass kicked" sounds wrong. Need to give this
 					 * some thought and revise with a clearer message.
 					 * 
 					 * For now, just say "You were defeated..."
 					 */
-					for (SPlayer lp : losers.values()) { 
+					for (SPlayer lp : so.getLosers().values()) { 
 						if (drawGame) {
 							String toSet = "The match on " + so.getTargetWorld().getNameAsColoredLink() + " ended in a draw! (" + so.getName() + ").<br>";
 							metaStrings.put(lp.getName().toLowerCase(), toSet);
@@ -1908,10 +1908,10 @@ public class ShortResolver {
 			 * being ...
 			 */
 			try{
-				int numWinners = winners.size();
-				int numLosers = losers.size();
+				int numWinners = so.getWinners().size();
+				int numLosers = so.getLosers().size();
 				if (!drawGame){ 
-					for(SPlayer wp : winners.values()) {
+					for(SPlayer wp : so.getWinners().values()) {
 						
 						String toSet = "";
 						if (numWinners > 1)
@@ -1931,7 +1931,7 @@ public class ShortResolver {
 					}
 				}
 				
-				for (SPlayer lp: losers.values()) {
+				for (SPlayer lp: so.getLosers().values()) {
 					
 					String toSet = "";
 					if ( drawGame ){
@@ -2724,12 +2724,12 @@ public class ShortResolver {
 					}
 					
 					if ( !drawGame ){
-						for (String currName : winners.keySet()) {
+						for (String currName : so.getWinners().keySet()) {
 							String currMeta = metaStrings.get(currName);
 							metaStrings.put(currName, currMeta + " You've " + winnerMetaString  + "<br>");
 						}
 					}
-					for (String currName : losers.keySet()) {
+					for (String currName : so.getLosers().keySet()) {
 						String currentMeta = metaStrings.get(currName);
 						metaStrings.put(currName, currentMeta + " You've " + loserMetaString  + "<br>");
 					}
@@ -2804,7 +2804,7 @@ public class ShortResolver {
 						if (oEntity.isLiving()){
 							livingUnits.put(oEntity.getID(), oEntity);
                             destroyed = 0;
-                            if ( losers.containsKey(oEntity.getOwnerName()) )
+                            if ( so.getLosers().containsKey(oEntity.getOwnerName().toLowerCase()) )
                                 currentBV += unit.getBV();
                         }
 						else if (oEntity.isSalvagable()){
@@ -2828,9 +2828,9 @@ public class ShortResolver {
                          */
                         if (saveStats) {
                             SUnit currU = CampaignMain.cm.getPlayer(oEntity.getOwnerName()).getUnit(oEntity.getID());
-                                if (winners.containsKey(oEntity.getOwnerName().toLowerCase())) {
+                                if (so.getWinners().containsKey(oEntity.getOwnerName().toLowerCase())) {
                                         CampaignMain.cm.addMechStat(currU.getUnitFilename(), currU.getWeightclass(), 1, 1, 0, destroyed);
-                                } else if (losers.containsKey(oEntity.getOwnerName().toLowerCase())) {
+                                } else if (so.getLosers().containsKey(oEntity.getOwnerName().toLowerCase())) {
                                         CampaignMain.cm.addMechStat(currU.getUnitFilename(), currU.getWeightclass(), 1, 0, 0, destroyed);
                                 }                   
                         }//end save stats
@@ -2870,8 +2870,8 @@ public class ShortResolver {
 					
 					OperationEntity currO = (OperationEntity)i.next();
 					
-					//winners don't get overrun
-					if (winners.containsKey(currO.getOwnerName().toLowerCase()))
+					//so.getWinners() don't get overrun
+					if (so.getWinners().containsKey(currO.getOwnerName().toLowerCase()))
 						continue;
 					
 					//if a unit isn't actually offboard, no check
@@ -3206,8 +3206,8 @@ public class ShortResolver {
 				 * if the pilot managed to survive or was captured on the field.
 				 */
 				
-				//allow winners to recover all of their pilots outright
-				if (winners.containsKey(currEntity.getOwnerName().toLowerCase())) {
+				//allow so.getWinners() to recover all of their pilots outright
+				if (shortOp.getWinners().containsKey(currEntity.getOwnerName().toLowerCase())) {
 					toReturn[0] = new Boolean(true);
 					toReturn[1] = currUnit.getPilot().getName() + " was picked up by a recovery team.";
 					toReturn[3] = "The pilot survived.";
@@ -3288,7 +3288,7 @@ public class ShortResolver {
 					 * Winners always keep their crews. If survival checks for trapped pilots
 					 * and crews are turned off, the crew is always returned to its owner.
 					 */
-					if (winners.containsKey(currEntity.getOwnerName().toLowerCase())
+					if (shortOp.getWinners().containsKey(currEntity.getOwnerName().toLowerCase())
 							|| !CampaignMain.cm.getBooleanConfig("DownPilotsMustRollForSurvival")) {
 						toReturn[0] = new Boolean(true);
 						toReturn[1] = "The crew survived.";
@@ -3371,7 +3371,7 @@ public class ShortResolver {
 			 * Winners should always recover their engine-killed pilots, and pilots
 			 * should always be returned if the survival roll is disabled by an admin.
 			 */
-			if (winners.containsKey(currEntity.getOwnerName().toLowerCase()) ||
+			if (shortOp.getWinners().containsKey(currEntity.getOwnerName().toLowerCase()) ||
 					!CampaignMain.cm.getBooleanConfig("DownPilotsMustRollForSurvival")) {
 				toReturn[0] = new Boolean(true);
 				toReturn[1] = ((SPilot)currUnit.getPilot()).getPilotRescueMessage(currUnit);
@@ -3567,10 +3567,10 @@ public class ShortResolver {
 	private SPlayer selectRandomWinner() {
 		
 		try{
-			if(winners.size() <= 0)
+			if(shortOp.getWinners().size() <= 0)
 				return null;
-			else if (winners.size() == 1) {
-				String key = winners.firstKey();
+			else if (shortOp.getWinners().size() == 1) {
+				String key = shortOp.getWinners().firstKey();
 				return CampaignMain.cm.getPlayer(key);
 			}
 			
@@ -3579,10 +3579,10 @@ public class ShortResolver {
 			 * size, generate a random, then iterate until we hit
 			 * the random number, returning the SPlayer @ stop.
 			 */
-			int random = CampaignMain.cm.getR().nextInt(winners.size());
+			int random = CampaignMain.cm.getR().nextInt(shortOp.getWinners().size());
 			int current = 0;
 			
-			for (String wn : winners.keySet()) {
+			for (String wn : shortOp.getWinners().keySet()) {
 				if (random == current)
 					return CampaignMain.cm.getPlayer(wn);
 				//else
@@ -3599,16 +3599,16 @@ public class ShortResolver {
 	
 	/**
 	 * Method which selects a random player from
-	 * the losers tree. Used to assign salvage which
-	 * is gained from winners (used rarely).
+	 * the so.getLosers() tree. Used to assign salvage which
+	 * is gained from so.getWinners() (used rarely).
 	 */
 	private SPlayer selectRandomLoser() {
 		
 		try{
-			if(losers.size() <= 0)
+			if(shortOp.getLosers().size() <= 0)
 				return null;
-			else if (losers.size() == 1) {
-				String key = losers.firstKey();
+			else if (shortOp.getLosers().size() == 1) {
+				String key = shortOp.getLosers().firstKey();
 				return CampaignMain.cm.getPlayer(key);
 			}
 			
@@ -3617,9 +3617,9 @@ public class ShortResolver {
 			 * size, generate a random, then iterate until we hit
 			 * the random number, returning the SPlayer @ stop.
 			 */
-			int random = CampaignMain.cm.getR().nextInt(losers.size());
+			int random = CampaignMain.cm.getR().nextInt(shortOp.getLosers().size());
 			int current = 0;
-			for (String ln : losers.keySet()) {
+			for (String ln : shortOp.getLosers().keySet()) {
 				if (random == current)
 					return CampaignMain.cm.getPlayer(ln);
 				//else
@@ -3697,7 +3697,7 @@ public class ShortResolver {
 	private boolean attackerisWinner(ShortOperation so){
 		try{
 			for (String player : so.getAttackers().keySet()) {
-				if(winners.containsKey(player)) 
+				if(so.getWinners().containsKey(player)) 
 					return true;
 			}
 			return false;
@@ -3729,7 +3729,7 @@ public class ShortResolver {
         int totalXPforUnit = unitXP;
         
         //add defender/winner XP
-        if (winners.containsKey(ownerName))
+        if (so.getWinners().containsKey(ownerName))
             totalXPforUnit += winnerXP;
         if (so.getDefenders().containsKey(ownerName))
             totalXPforUnit += defenderXP;
@@ -3761,9 +3761,9 @@ public class ShortResolver {
                     continue;
                 
                 //if the killed units owner was on the same team as (or is!) the killer, no XP.
-                if (winners.containsKey(ownerName) && winners.containsKey(killed.getOwnerName().toLowerCase()))
+                if (so.getWinners().containsKey(ownerName) && so.getWinners().containsKey(killed.getOwnerName().toLowerCase()))
                     continue;
-                if (losers.containsKey(ownerName) && losers.containsKey(killed.getOwnerName().toLowerCase()) && !drawGame && !freeForAll)
+                if (so.getLosers().containsKey(ownerName) && so.getLosers().containsKey(killed.getOwnerName().toLowerCase()) && !drawGame && !freeForAll)
                     continue;
                 
                 //add BV bonus XP
@@ -3802,7 +3802,7 @@ public class ShortResolver {
         currU.getPilot().setExperience(currU.getPilot().getExperience() + totalXPforUnit);
         
         //if the player is a winner, check for level up
-        if (winners.containsKey(ownerName) && allowLevelUp) {
+        if (so.getWinners().containsKey(ownerName) && allowLevelUp) {
             boolean solPilotCanLevel = o.getBooleanValue("SOLPilotsCheckLevelUp");
             boolean housePilotCanLevel = o.getBooleanValue("HousePilotsCheckLevelUp");
             if ((owner.getMyHouse().isNewbieHouse() && solPilotCanLevel) || (!owner.getMyHouse().isNewbieHouse() && housePilotCanLevel))

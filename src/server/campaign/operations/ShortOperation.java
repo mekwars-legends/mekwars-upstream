@@ -94,6 +94,8 @@ public class ShortOperation implements Comparable {
 	
 	private TreeMap<String, Integer> defenders;
 	private TreeMap<String, Integer> attackers;
+	private TreeMap<String, SPlayer> winners;
+	private TreeMap<String, SPlayer> losers;
 	private ArrayList<SArmy> pdlist;
 	private TreeMap<String, OpsChickenThread> chickenThreads;
 	
@@ -112,7 +114,7 @@ public class ShortOperation implements Comparable {
     private int intelTemp = 0;
     private int intelTimeFrame = TIME_DAY;
     private int intelVisibility = 999;
-   
+
     private String[] intelTimeFrameString = {"Day","Dusk","Night"};
     
 	/*
@@ -144,6 +146,8 @@ public class ShortOperation implements Comparable {
 	private String defenderAutoString = null;
 	private String attackArtDesc = "";
 	private String defendArtDesc = "";
+	private float defenderArmyCount = 0;
+	private float attackerArmyCount = 0;
     
     /* 
      * Building Options
@@ -204,6 +208,8 @@ public class ShortOperation implements Comparable {
 		this.chickenThreads = new TreeMap<String, OpsChickenThread>();
 		this.attackers = new TreeMap<String, Integer>();
 		this.defenders = new TreeMap<String, Integer>();
+		this.winners = new TreeMap<String, SPlayer>();
+		this.losers = new TreeMap<String, SPlayer>();
 		
 		//fetch an environment to play in
 		playEnvironment = targetWorld.getEnvironments().getRandomEnvironment(CampaignMain.cm.getR());
@@ -1211,6 +1217,8 @@ public class ShortOperation implements Comparable {
 				SPlayer currP = CampaignMain.cm.getPlayer(currN);
 				SArmy currA = currP.getArmy(defenders.get(currN));
 				Enumeration units = currA.getUnits().elements();
+				defenderArmyCount += currA.getRawForceSize();
+				
 				while (units.hasMoreElements()){
 					SUnit u = (SUnit)units.nextElement();
 					totalWeight += SUnit.getMapSizeModification(u);
@@ -1221,6 +1229,8 @@ public class ShortOperation implements Comparable {
 			for (String currN : attackers.keySet()) {
 				SPlayer currP = CampaignMain.cm.getPlayer(currN);
 				SArmy currA = currP.getArmy(attackers.get(currN));
+            	attackerArmyCount += currA.getRawForceSize();
+
 				Enumeration units = currA.getUnits().elements();
 				while (units.hasMoreElements()){
 					SUnit u = (SUnit)units.nextElement();
@@ -1254,6 +1264,7 @@ public class ShortOperation implements Comparable {
                     CampaignMain.cm.toUser(logos + defendIntel,currN,true);
                 CampaignMain.cm.toUser(this.getInfo(true,false),currN,true);
             }
+
 
             /*
 			 * Send the options to all of the players. The sendReconnectInfoTo()
@@ -1357,6 +1368,22 @@ public class ShortOperation implements Comparable {
 			for (String currName : this.getAllPlayerNames())
 				toStore.append(currName + " ");
 			toStore.append("/ Start BV: " + startingBV + " / Finish BV: " + finishingBV);
+			
+			if ( CampaignMain.cm.getBooleanConfig("UseOperationsRule") ){
+				if ( this.getWinners().containsKey(this.getAttackers().firstKey()) ){
+					toStore.append(" / FSM (");
+					toStore.append(attackerArmyCount);
+					toStore.append(") ");
+					toStore.append(defenderArmyCount);
+				}
+				else{
+					toStore.append(" / FSM ");
+					toStore.append(attackerArmyCount);
+					toStore.append(" (");
+					toStore.append(defenderArmyCount);
+					toStore.append(")");
+				}
+			}
 			MWServ.mwlog.resultsLog(toStore.toString());
 						
 			/*
@@ -1383,7 +1410,8 @@ public class ShortOperation implements Comparable {
 			//we now return to our regularly scheduled program ...
 			defenders.clear();
 			attackers.clear();
-			
+			winners.clear();
+			losers.clear();
 		}
 		
 	}
@@ -2407,6 +2435,14 @@ public class ShortOperation implements Comparable {
     
     public SPlayer getInitiator() {
     	return this.initiator;
+    }
+    
+    public TreeMap<String, SPlayer> getWinners(){
+    	return this.winners;
+    }
+    
+    public TreeMap<String, SPlayer> getLosers(){
+    	return this.losers;
     }
     
 }//end OperationsManager class

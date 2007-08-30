@@ -56,11 +56,11 @@ public class SetMMOTDCommand implements Command {
 				motd += "#" + command.nextToken();
 			
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper syntax. Try: /c setmotd#text",Username,true);
+			CampaignMain.cm.toUser("Improper syntax. Try: /setmmotd text or /setmmotd clear to clear",Username,true);
 			return;
 		}
 		
-		if (motd.trim().equals("")) {
+		if (motd.trim().equals("") || motd.equalsIgnoreCase("clear")) {
 			CampaignMain.cm.getConfig().setProperty("MMOTD", "");
 			CampaignMain.cm.toUser("MMOTD cleared.",Username,true);
 			return;

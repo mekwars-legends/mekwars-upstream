@@ -1284,13 +1284,13 @@ public final class ServerConfigurationDialog implements ActionListener {
 		
         baseTextField = new JTextField(5);
 		pilotOptionsSpring1.add(new JLabel("Skill Gain:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("% chance for a pilot to get a skill instead of a gunnery/piloting upgrade");
+        baseTextField.setToolTipText("<html>% chance for a pilot to get a skill<br>instead of a gunnery/piloting upgrade</html>");
         baseTextField.setName("SkillLevelChance");
 		pilotOptionsSpring1.add(baseTextField);
 		
         baseTextField = new JTextField(5);
 		pilotOptionsSpring1.add(new JLabel("XP Loss:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("% chance for a pilot to lose accumulated XP in the Queue");
+        baseTextField.setToolTipText("<html>% chance for a pilot to lose<br>accumulated XP in the Queue</html>");
         baseTextField.setName("ClearXPInQue");
 		pilotOptionsSpring1.add(baseTextField);
 
@@ -1376,7 +1376,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField = new JTextField(5);
 		pilotOptionsSpring2.add(new JLabel("Base level Up Roll", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html>" +
-				"Basic 1dX required used for level up. If roll" +
+				"Basic 1dX required used for level up. If roll<br>" +
 				"is less than pilot XP, pilot gains a level.</html>");
         baseTextField.setName("BaseRollToLevel");
 		pilotOptionsSpring2.add(baseTextField);
@@ -1418,8 +1418,8 @@ public final class ServerConfigurationDialog implements ActionListener {
 
         BaseCheckBox = new JCheckBox("Unlevel@Queue");
         BaseCheckBox.setToolTipText("<HTML>" +
-				"Unchecking allows Pilots to keep skills and XP in queue" +
-				"after their rides die. Disabling this is discouraged.</HTML>");
+				"Unchecking allows Pilots to keep skills and XP in queue<br>" +
+				"after their rides die.</HTML>");
         BaseCheckBox.setName("ReduceSkillsInQue");
         pilotCBoxGrid.add(BaseCheckBox);
 

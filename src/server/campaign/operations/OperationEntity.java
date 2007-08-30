@@ -255,26 +255,22 @@ public class OperationEntity {
 	
 	public boolean isLiving() {
 		
-		//destroyed, devastated, ejected and salvage units aren't living
-		if (this.getRemovalReason() == IEntityRemovalConditions.REMOVE_DEVASTATED)
-			return false;
-		
-		if (this.getRemovalReason() == IEntityRemovalConditions.REMOVE_STACKPOLE)
-			return false;
-		
 		if (this.getCTint() <= 0)
 			return false;
-		if (this.getRemovalReason() == IEntityRemovalConditions.REMOVE_EJECTED)
-			return false;
-		if (this.getRemovalReason() == IEntityRemovalConditions.REMOVE_SALVAGEABLE)
-			return false;
 		
-		//we can assume that any unit which makes it off map IS living.
-		if (this.getRemovalReason() == IEntityRemovalConditions.REMOVE_IN_RETREAT)
-			return true;
-		if (this.getRemovalReason() == IEntityRemovalConditions.REMOVE_PUSHED)
-			return true;
-		
+		switch (this.getRemovalReason()){
+		//destroyed, devastated, ejected and salvage units aren't living
+		case IEntityRemovalConditions.REMOVE_DEVASTATED:
+		case IEntityRemovalConditions.REMOVE_STACKPOLE:
+		case IEntityRemovalConditions.REMOVE_EJECTED:
+		case IEntityRemovalConditions.REMOVE_SALVAGEABLE:
+			return false;
+			//we can assume that any unit which makes it off map IS living.
+		case IEntityRemovalConditions.REMOVE_IN_RETREAT:
+		case IEntityRemovalConditions.REMOVE_PUSHED:
+			return true; 
+		}
+
 		/*
 		 * Retreating units have already been returned as living. Anything on board
 		 * with no leg or a destroyed gyro is presumed salvageable. Vehicles which

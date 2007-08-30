@@ -99,7 +99,7 @@ public class SArmy extends Army {
 		return -1;
 	}
 	/** 	 
-	 * @return returns the raw force size (Operations Rule) 	 
+	 * @return returns the raw force size (Force Mod Rule) 	 
 	 */ 	 
 	public float getRawForceSize() { 	 
 		
@@ -112,7 +112,11 @@ public class SArmy extends Army {
 			if (u.getType() == Unit.INFANTRY) 	 
 				rawForceSize += CampaignMain.cm.getFloatConfig("InfantryOperationsBVMod"); 	 
 			else if (u.getType() == Unit.VEHICLE) 	 
-				rawForceSize += CampaignMain.cm.getFloatConfig("VehicleOperationsBVMod"); 	 
+				rawForceSize += CampaignMain.cm.getFloatConfig("VehicleOperationsBVMod");
+			else if ( u.getType() == Unit.BATTLEARMOR)
+				rawForceSize += CampaignMain.cm.getFloatConfig("BAOperationsBVMod");
+			else if ( u.getType() == Unit.PROTOMEK)
+				rawForceSize += CampaignMain.cm.getFloatConfig("ProtoOperationsBVMod");
 			else //all other allowed types have a 1.0 weight 	 
 				rawForceSize += CampaignMain.cm.getFloatConfig("MekOperationsBVMod"); 	 
 		}
@@ -467,7 +471,7 @@ public class SArmy extends Army {
 			result.append("; BV: " + getBV());
 			
 			if ( opposingArmy != null && getBV() != getOperationsBV(opposingArmy) ){
-				result.append(" (BV vs "+opposingArmy.getUnits().size()+" units : "+getOperationsBV(opposingArmy)+")");
+				result.append(" (BV vs "+opposingArmy.getRawForceSize()+" units : "+getOperationsBV(opposingArmy)+")");
 			}
 			
 			return result.toString();
@@ -726,60 +730,13 @@ public class SArmy extends Army {
 		
 		double myForceSize = 0;
 		double opposingForceSize = 0;
-		double mekSize = CampaignMain.cm.getDoubleConfig("MekOperationsBVMod");
-		double veeSize = CampaignMain.cm.getDoubleConfig("VehicleOperationsBVMod");
-		double baSize = CampaignMain.cm.getDoubleConfig("BAOperationsBVMod");
-		double protoSize = CampaignMain.cm.getDoubleConfig("ProtoOperationsBVMod");
-		double infSize = CampaignMain.cm.getDoubleConfig("InfantryOperationsBVMod");
 		
-		for ( Unit unit : this.getUnits() ){
-			
-			switch(unit.getType()){
-			case Unit.MEK:
-				myForceSize += mekSize;
-				break;
-			case Unit.VEHICLE:
-				myForceSize += veeSize;
-				break;
-			case Unit.BATTLEARMOR: 
-				myForceSize += baSize;
-				break;
-			case Unit.PROTOMEK:
-				myForceSize += protoSize;
-				break;
-			case Unit.INFANTRY:
-				myForceSize += infSize;
-				break;
-				default :
-					myForceSize += 1;
-				break;
-			}
-		}
+		this.setRawForceSize(0);
+		myForceSize = this.getRawForceSize();
 		
-		for ( Unit unit : opposingForce.getUnits() ){
-			
-			switch(unit.getType()){
-			case Unit.MEK:
-				opposingForceSize += mekSize;
-				break;
-			case Unit.VEHICLE:
-				opposingForceSize += veeSize;
-				break;
-			case Unit.BATTLEARMOR: 
-				opposingForceSize += baSize;
-				break;
-			case Unit.PROTOMEK:
-				opposingForceSize += protoSize;
-				break;
-			case Unit.INFANTRY:
-				opposingForceSize += infSize;
-				break;
-				default :
-					opposingForceSize += 1;
-				break;
-			}
-		}
-		
+		opposingForce.setRawForceSize(0);
+		opposingForceSize = opposingForce.getRawForceSize();
+
 		if ( myForceSize > opposingForceSize )
 			return ((opposingForceSize/myForceSize)+(myForceSize/opposingForceSize))-1;
 		return 1.0;
