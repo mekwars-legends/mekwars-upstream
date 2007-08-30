@@ -2,11 +2,11 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
+Release Server 0.2.6.2
 + RFE: Add actual foce size's to reports. 
 + RFE: Add Force Size Modifier Data to Operation Results.
 + Bug: when adding losers suriving units bv to report checking player name was 
 	not done in lower case.
-Release Server 0.2.6.2
 + Added Uber debug messages for Inf Loop House Tick Thingy
 + Player team number saved to database
 Release Client/Server 0.2.6.1
