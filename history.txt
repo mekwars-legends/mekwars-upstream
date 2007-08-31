@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
+Release Server 0.2.6.4
++ Fixed Register/Enroll Bug again
 Release Server 0.2.6.3
 + Bug: players not able to log in due to erorrs!!!!!!
 + RFE: Added ability to upload build tables

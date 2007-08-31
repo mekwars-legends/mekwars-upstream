@@ -1146,7 +1146,7 @@ public final class CampaignMain implements Serializable {
 			SHouse h = (SHouse) vh;
 			result = h.getPlayer(pName);
 			if (result != null){
-				MWServ.mwlog.debugLog(pName+" Found in house data");
+				//MWServ.mwlog.debugLog(pName+" Found in house data");
 				return result;
 			}
 		}

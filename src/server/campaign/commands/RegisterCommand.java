@@ -68,7 +68,7 @@ public class RegisterCommand implements Command {
             try {
                 //MWPasswd.getRecord(regname, null);
             	 player = CampaignMain.cm.getPlayer(regname);
-            	if ( player.getPassword() != null )
+            	if ( player.getPassword() != null && player.getPassword().access >= 2)
             		regged = true;
             } catch (Exception ex) {
                 //Username already registered, ignore error.

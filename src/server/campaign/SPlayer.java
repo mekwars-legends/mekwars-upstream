@@ -3097,8 +3097,13 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	                String passwd = ST.nextToken();
 	                long time = Long.parseLong(ST.nextToken());
 	                
-	                this.setPassword(new MWPasswdRecord(this.name,access,passwd,time,""));
-	            } catch(Exception ex){}
+	                if ( passwd.trim().length() > 2)
+	                	this.setPassword(new MWPasswdRecord(this.name,access,passwd,time,""));
+	            } catch(Exception ex){
+	            	//Issue with password loading just stop now.
+	            	this.isLoading = false;
+	            	return;
+	            }
 	        }
 	        
 	        if ( ST.hasMoreElements() ) {
