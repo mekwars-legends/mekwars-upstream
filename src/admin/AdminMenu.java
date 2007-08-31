@@ -20,6 +20,9 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -29,6 +32,7 @@ import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JFileChooser;
 
 import megamek.client.ui.AWT.UnitLoadingDialog;
 import megamek.common.TechConstants;
@@ -68,6 +72,7 @@ public class AdminMenu extends JMenu {
 	JMenu jMenuAdminSubDestroy = new JMenu();
     JMenu jMenuAdminBlackMarketSettings = new JMenu("Black Market Settings");
 	JMenu jMenuAdminOperations = new JMenu("Operations");
+	JMenu jMenuAdminBuildTables = new JMenu("Build Tables");
     
 	JMenuItem jMenuAdminServerConfig = new JMenuItem();
 	JMenuItem jMenuAdminFactionConfig = new JMenuItem();
@@ -115,6 +120,7 @@ public class AdminMenu extends JMenu {
     JMenuItem jMenuAdminComponentWeaponList = new JMenuItem();
     JMenuItem jMenuAdminComponentAmmoList = new JMenuItem();
     JMenuItem jMenuAdminSetHouseBasePilotSkill = new JMenuItem();
+    JMenuItem jMenuAdminUploadBuildTable = new JMenuItem();
     
 	MWClient mwclient;
 	private int userLevel = 0;
@@ -139,7 +145,7 @@ public class AdminMenu extends JMenu {
         jMenuAdminSubSet.setText("Set");
         jMenuAdminSubCreate.setText("Create");
         jMenuAdminSubDestroy.setText("Destroy");
-
+        
         jMenuAdminCreatePlanet.setText("Create Planet");
         jMenuAdminCreatePlanet.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -392,6 +398,13 @@ public class AdminMenu extends JMenu {
             }
         });
 
+        jMenuAdminUploadBuildTable.setText("Upload a build table");
+        jMenuAdminUploadBuildTable.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		jMenuAdminUploadBuildTable_actionPerformed(e);
+        	}
+        });
+        
         jMenuAdminSetOperationFile.setText("Set Operation File");
         jMenuAdminSetOperationFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -602,6 +615,9 @@ public class AdminMenu extends JMenu {
         if ( jMenuAdminOperations.getItemCount() > 0)
             this.add(jMenuAdminOperations);
 
+        if ( userLevel >= mwclient.getData().getAccessLevel("AdminUploadBuildTable"));
+        	jMenuAdminBuildTables.add(jMenuAdminUploadBuildTable);
+        	this.add(jMenuAdminBuildTables);
         if ( userLevel >= mwclient.getData().getAccessLevel("AdminSave") )
             jMenuAdminSubSave.add(jMenuAdminSaveTheUniverse);
         if ( userLevel >= mwclient.getData().getAccessLevel("AdminSavePlanetsToXML") )
@@ -1157,6 +1173,45 @@ public class AdminMenu extends JMenu {
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setoperation#short#"+opData.toString());
         }
 
+        public void jMenuAdminUploadBuildTable_actionPerformed(ActionEvent e) {
+        	JFileChooser chooser = new JFileChooser();
+        	
+        	chooser.setCurrentDirectory(new File("./data/buildtables"));
+        	
+        	int returnVal = chooser.showOpenDialog(chooser);
+        	if(returnVal == JFileChooser.APPROVE_OPTION) {
+        		File file = chooser.getSelectedFile();
+        		StringBuilder line = new StringBuilder();
+        		line.append(MWClient.CAMPAIGN_PREFIX + "AdminUploadBuildTable ");
+        		String path = file.getPath();
+        		if(path.contains("rare"))
+        			path = "rare/" + file.getName();
+        		else if(path.contains("standard"))
+        			path = "standard/" + file.getName();
+        		else if(path.contains("reward"))
+        			path = "reward/" + file.getName();
+        		line.append(path);
+        		try {	
+        			FileInputStream in = new FileInputStream(file);
+        			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        			try {
+        				while(br.ready()) {
+        					line.append("#" + br.readLine());
+        				}
+        				br.close();
+        				in.close();
+        			} catch (IOException ioex) {
+        				MWClient.mwClientLog.clientErrLog("IOException: " + line.toString());
+        			}
+        		} catch (FileNotFoundException fnfex) {
+    				MWClient.mwClientLog.clientErrLog("FileNotFoundException: " + line.toString());    			    
+        		}
+        		line.append("#");
+	            mwclient.sendChat(line.toString());
+	            
+        	}
+        }
+        
         public void jMenuAdminSendAllOperationFiles_actionPerformed(ActionEvent e) {
             
 

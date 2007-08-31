@@ -1490,6 +1490,7 @@ src/server/campaign/commands/admin/AdminTransferCommand.java -text
 src/server/campaign/commands/admin/AdminUnlockCampaignCommand.java -text
 src/server/campaign/commands/admin/AdminUpdateClientParamCommand.java -text
 src/server/campaign/commands/admin/AdminUpdatePlanetOwnershipCommand.java -text
+src/server/campaign/commands/admin/AdminUploadBuildTableCommand.java -text
 src/server/campaign/commands/admin/AdminViewLogCommand.java -text
 src/server/campaign/commands/admin/CampaignConfigCommand.java -text
 src/server/campaign/commands/admin/ChangeHouseColorCommand.java -text

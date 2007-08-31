@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
++ RFE: Added ability to upload build tables
 Release Server 0.2.6.2 
 + RFE: Add actual foce size's to reports. 
 + RFE: Add Force Size Modifier Data to Operation Results.

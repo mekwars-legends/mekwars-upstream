@@ -1376,6 +1376,7 @@ public final class CampaignMain implements Serializable {
 				new AdminUpdateClientParamCommand());
 		Commands.put("ADMINUPDATEPLANETOWNERSHIP",
 				new AdminUpdatePlanetOwnershipCommand());
+		Commands.put("ADMINUPLOADBUILDTABLE", new AdminUploadBuildTableCommand());
 		Commands.put("ADMINVIEWLOG", new AdminViewLogCommand());
 		Commands.put("ALL", new ArmyLowerLimiterCommand());
 		Commands.put("AOFS", new ArmyOpForceSizeCommand());
