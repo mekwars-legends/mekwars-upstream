@@ -2666,7 +2666,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
                 result.append(this.password.getTime());
                 result.append("~");
             }else{
-            	result.append(" ~ ~ ~");
+            	result.append("0~ ~0~");
             }
         }
 
@@ -2925,236 +2925,241 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		//MWServ.mwlog.infoLog("CSPlayer: " + s);
 		this.isLoading = true;
 		
-		this.armies.clear();
-		
-		s = s.substring(3);
-		StringTokenizer ST = new StringTokenizer(s, "~");
-		name = ST.nextToken();
-		
-		/*
-		 * name is set before the exclusion list is un-strung in
-		 * SPlayer.fromString(). Use this opportunity to set it in the
-		 * ExclusionList so strip/error messages can be sent back to the
-		 * player properly. Uber-Hacky, but functional.
-		 * 
-		 * @urgru 4.2.05
-		 */
-		exclusionList.setOwnerName(name);
-		if(CampaignMain.cm.isUsingMySQL()) {
-			int dbId = CampaignMain.cm.MySQL.getPlayerIDByName(name);
-			setDBId(dbId);
-		}
-			 
-		money = Integer.parseInt((String) ST.nextElement());
-		experience = Integer.parseInt((String) ST.nextElement());
-		
-		int numofarmies = 0;
-		int numofUnits = Integer.parseInt((String) ST.nextElement());
-		units = new Vector<SUnit>();
-		
-		for (int i = 0; i < numofUnits; i++) {
-			SUnit m = new SUnit();
-			m.fromString((String) ST.nextElement());
-			units.add(m);
-			CampaignMain.cm.toUser("PL|HD|" + m.toString(true), name,false);
-		}
-		
-		numofarmies = (Integer.parseInt((String) ST.nextElement()));
-		for (int i = 0; i < numofarmies; i++) {
-			SArmy a = new SArmy(name);
-			a.fromString((String) ST.nextElement(), "%", this);
-			armies.add(a);
-			CampaignMain.cm.toUser("PL|SAD|" + a.toString(true, "%"), name, false);
-		}
-		
-		this.setMyHouse(CampaignMain.cm.getHouseFromPartialString(ST.nextToken(),null));
-		
-		lastOnline = new Long(ST.nextToken()).longValue();
-		if (ST.hasMoreElements()) {
-			// Just read it. It's not necessary to use it on the server.. It's useful for the client
-			ST.nextToken();// Number of Bays
-			ST.nextToken();// Number of Free Bays
-		}
-		
-		rating = Double.parseDouble(ST.nextToken());
-		influence = Integer.parseInt(ST.nextToken());
-		if (ST.hasMoreElements())
-			fluffText = ST.nextToken().trim();
-		
-		/*
-		 * This space used to be occupied by player-set game options. Do not use
-		 * the node until we're sure all servers have reset and removed any
-		 * residual data. For now, we'll READ the data correctly, but write out
-		 * 0's during all saves. At some point in the future, we'll be able to
-		 * fully reclaim this space.
-		 */
-		if (ST.hasMoreElements()) {
+		try{
+			this.armies.clear();
 			
-			int numberOfOptions = Integer.parseInt(ST.nextToken());
-			for (int i = 0; i < numberOfOptions; i++) {
-				ST.nextToken();// eat the option's Description token
-				ST.nextToken();// eat the options Setting token
+			s = s.substring(3);
+			StringTokenizer ST = new StringTokenizer(s, "~");
+			name = ST.nextToken();
+			
+			/*
+			 * name is set before the exclusion list is un-strung in
+			 * SPlayer.fromString(). Use this opportunity to set it in the
+			 * ExclusionList so strip/error messages can be sent back to the
+			 * player properly. Uber-Hacky, but functional.
+			 * 
+			 * @urgru 4.2.05
+			 */
+			exclusionList.setOwnerName(name);
+			if(CampaignMain.cm.isUsingMySQL()) {
+				int dbId = CampaignMain.cm.MySQL.getPlayerIDByName(name);
+				setDBId(dbId);
 			}
-		}
-		
-		if (ST.hasMoreElements()) {
-			if (CampaignMain.cm.isUsingAdvanceRepair()) {
-				int greenTechs = Integer.parseInt(ST.nextToken());
-				int regTechs = greenTechs / 5;
-				greenTechs -= regTechs;
-				this.updateAvailableTechs(greenTechs + "%" + regTechs+ "%0%0%");
-				this.getTotalTechs().addAll(getAvailableTechs());
-				// give them some bays
-				this.setBaysOwned(greenTechs + regTechs);
-			} else
-				technicians = Integer.parseInt(ST.nextToken());
-		}
-		if (ST.hasMoreElements())
-			currentReward = Integer.parseInt(ST.nextToken());
-		
-		/*
-		 * Eat the next two tokens. Formerly used to save mezzo data. Can be
-		 * reclaimed soon-ish, as no server used the feature. @urgru 9/30/06
-		 */
-		if (ST.hasMoreElements())
-			if(CampaignMain.cm.isUsingMySQL())
-				setDBId(Integer.parseInt(ST.nextToken()));
-			else
-				ST.nextToken();
-		if (ST.hasMoreElements())
-			ST.nextToken();
-		
-		//TODO: Remove this after the next few updates from 0.1.51.2
-		if (ST.hasMoreElements())
-			myHouse = CampaignMain.cm.getHouseFromPartialString(ST.nextToken(),getName());
-		if (ST.hasMoreElements())
-			this.setXPToReward(Integer.parseInt(ST.nextToken()));
-		if (ST.hasMoreElements())
-			ST.nextToken();// faction logo not saved.
-		if (ST.hasMoreElements())
-			this.getPersonalPilotQueue().fromString(ST.nextToken(), "$");
-		if (ST.hasMoreElements())
-			this.getExclusionList().adminExcludeFromString(ST.nextToken(), "$");
-		if (ST.hasMoreElements())
-			this.getExclusionList().playerExcludeFromString(ST.nextToken(), "$");
-		
-		if (ST.hasMoreElements()) {
-			try {
-				if (CampaignMain.cm.isUsingAdvanceRepair()) {
-					updateTotalTechs(ST.nextToken());
-					if (ST.hasMoreElements())
-						updateAvailableTechs(ST.nextToken());
-					if (ST.hasMoreElements())
-						setBaysOwned(Integer.parseInt(ST.nextToken()));
-				}// get rid of the 3 blanks
-				else {
-                    ST.nextElement();
-					if (ST.hasMoreElements())
-						ST.nextElement();
-                    //allow servers to go back and forth using Bays as techs since bays are what techs are.
-					if (ST.hasMoreElements()){
-                        if ( technicians <= 0 )
-                            technicians = Integer.parseInt(ST.nextToken());
-                        else
-                            ST.nextElement();
-                    }
+				 
+			money = Integer.parseInt((String) ST.nextElement());
+			experience = Integer.parseInt((String) ST.nextElement());
+			
+			int numofarmies = 0;
+			int numofUnits = Integer.parseInt((String) ST.nextElement());
+			units = new Vector<SUnit>();
+			
+			for (int i = 0; i < numofUnits; i++) {
+				SUnit m = new SUnit();
+				m.fromString((String) ST.nextElement());
+				units.add(m);
+				CampaignMain.cm.toUser("PL|HD|" + m.toString(true), name,false);
+			}
+			
+			numofarmies = (Integer.parseInt((String) ST.nextElement()));
+			for (int i = 0; i < numofarmies; i++) {
+				SArmy a = new SArmy(name);
+				a.fromString((String) ST.nextElement(), "%", this);
+				armies.add(a);
+				CampaignMain.cm.toUser("PL|SAD|" + a.toString(true, "%"), name, false);
+			}
+			
+			this.setMyHouse(CampaignMain.cm.getHouseFromPartialString(ST.nextToken(),null));
+			
+			lastOnline = new Long(ST.nextToken()).longValue();
+			if (ST.hasMoreElements()) {
+				// Just read it. It's not necessary to use it on the server.. It's useful for the client
+				ST.nextToken();// Number of Bays
+				ST.nextToken();// Number of Free Bays
+			}
+			
+			rating = Double.parseDouble(ST.nextToken());
+			influence = Integer.parseInt(ST.nextToken());
+			if (ST.hasMoreElements())
+				fluffText = ST.nextToken().trim();
+			
+			/*
+			 * This space used to be occupied by player-set game options. Do not use
+			 * the node until we're sure all servers have reset and removed any
+			 * residual data. For now, we'll READ the data correctly, but write out
+			 * 0's during all saves. At some point in the future, we'll be able to
+			 * fully reclaim this space.
+			 */
+			if (ST.hasMoreElements()) {
+				
+				int numberOfOptions = Integer.parseInt(ST.nextToken());
+				for (int i = 0; i < numberOfOptions; i++) {
+					ST.nextToken();// eat the option's Description token
+					ST.nextToken();// eat the options Setting token
 				}
-			}// Had alot of problems with advance repair so lets just use this.
-			catch (Exception ex) {
 			}
-		}// get rid of the 2 blanks
-		
-		if (ST.hasMoreTokens())
-			myLogo = ST.nextToken();
-		
-		// Stupid error with player logo if its blank it doesn't save anything
-		// and gets skipped.
-		// Thats been fixed but for all the PFiles out there with the defect
-		// this will allow them to
-		// Still Load.
-		try {
-			if (ST.hasMoreTokens())
-				setLastAttackFromReserve(Long.parseLong(ST.nextToken()));
 			
-			if (ST.hasMoreTokens())
-				setGroupAllowance(Integer.parseInt(ST.nextToken()));
-			
-			if (ST.hasMoreTokens())
-				setLastISP(ST.nextToken());
-
-            if ( ST.hasMoreTokens())
-                this.setInvisible(Boolean.parseBoolean(ST.nextToken()));
-            
-            if ( ST.hasMoreElements() )
-                this.setGroupAllowance(Integer.parseInt(ST.nextToken()));
-		} catch (Exception ex) {
-		}
-		
-        if ( ST.hasMoreElements() ){
-            try{
-                int access = Integer.parseInt(ST.nextToken());
-                String passwd = ST.nextToken();
-                long time = Long.parseLong(ST.nextToken());
-                
-                this.setPassword(new MWPasswdRecord(this.name,access,passwd,time,""));
-            } catch(Exception ex){}
-        }
-        
-        if ( ST.hasMoreElements() ) {
-        	if ( CampaignMain.cm.getBooleanConfig("UsePartsRepair") )
-        		unitParts.fromString(ST.nextToken());
-        	else
-        		ST.nextToken();
-        }
-        
-        if ( ST.hasMoreElements() )
-        	this.setAutoReorder(Boolean.parseBoolean(ST.nextToken()));
-
-        if ( ST.hasMoreTokens() ){
-        	this.setTeamNumber(Integer.parseInt(ST.nextToken()));
-        }
-        
-        if ( this.password != null && this.password.getPasswd().trim().length() <= 2){
-            this.password.setAccess(IAuthenticator.GUEST);
-        }
-        
-		if (CampaignMain.cm.isUsingCyclops()) {
-			CampaignMain.cm.getMWCC().playerWrite(this);
-			// CampaignMain.cm.getMWCC().unitWrite(this.getUnitsData().firstElement(),name,this.getHouseName());
-			CampaignMain.cm.getMWCC().unitWriteFromList(this.getUnits(),name, myHouse.getName());
-			CampaignMain.cm.getMWCC().pilotWriteFromList(this.getPersonalPilotQueue(), name);
-			// CampaignMain.cm.getMWCC().pilotWrite((SPilot)this.getUnitsData().firstElement().getPilot(),name);
-		}
-		
-		CampaignMain.cm.toUser("PL|SB|" + this.getTotalMekBays(), name, false);
-		CampaignMain.cm.toUser("PL|SF|" + this.getFreeBays(), name,false);
-		if (CampaignMain.cm.isUsingAdvanceRepair()) {
-			
-			if (!this.hasRepairingUnits()) {
-				CampaignMain.cm.toUser("PL|UTT|" + this.totalTechsToString(),name, false);
-				CampaignMain.cm.toUser("PL|UAT|" + this.totalTechsToString(),name, false);
-				this.updateAvailableTechs(this.totalTechsToString());// make sure techs are in synch
-			} else {
-				CampaignMain.cm.toUser("PL|UTT|" + this.totalTechsToString(),name, false);
-				CampaignMain.cm.toUser("PL|UAT|"+ this.availableTechsToString(), name, false);
+			if (ST.hasMoreElements()) {
+				if (CampaignMain.cm.isUsingAdvanceRepair()) {
+					int greenTechs = Integer.parseInt(ST.nextToken());
+					int regTechs = greenTechs / 5;
+					greenTechs -= regTechs;
+					this.updateAvailableTechs(greenTechs + "%" + regTechs+ "%0%0%");
+					this.getTotalTechs().addAll(getAvailableTechs());
+					// give them some bays
+					this.setBaysOwned(greenTechs + regTechs);
+				} else
+					technicians = Integer.parseInt(ST.nextToken());
 			}
+			if (ST.hasMoreElements())
+				currentReward = Integer.parseInt(ST.nextToken());
+			
+			/*
+			 * Eat the next two tokens. Formerly used to save mezzo data. Can be
+			 * reclaimed soon-ish, as no server used the feature. @urgru 9/30/06
+			 */
+			if (ST.hasMoreElements())
+				if(CampaignMain.cm.isUsingMySQL())
+					setDBId(Integer.parseInt(ST.nextToken()));
+				else
+					ST.nextToken();
+			if (ST.hasMoreElements())
+				ST.nextToken();
+			
+			//TODO: Remove this after the next few updates from 0.1.51.2
+			if (ST.hasMoreElements())
+				myHouse = CampaignMain.cm.getHouseFromPartialString(ST.nextToken(),getName());
+			if (ST.hasMoreElements())
+				this.setXPToReward(Integer.parseInt(ST.nextToken()));
+			if (ST.hasMoreElements())
+				ST.nextToken();// faction logo not saved.
+			if (ST.hasMoreElements())
+				this.getPersonalPilotQueue().fromString(ST.nextToken(), "$");
+			if (ST.hasMoreElements())
+				this.getExclusionList().adminExcludeFromString(ST.nextToken(), "$");
+			if (ST.hasMoreElements())
+				this.getExclusionList().playerExcludeFromString(ST.nextToken(), "$");
+			
+			if (ST.hasMoreElements()) {
+				try {
+					if (CampaignMain.cm.isUsingAdvanceRepair()) {
+						updateTotalTechs(ST.nextToken());
+						if (ST.hasMoreElements())
+							updateAvailableTechs(ST.nextToken());
+						if (ST.hasMoreElements())
+							setBaysOwned(Integer.parseInt(ST.nextToken()));
+					}// get rid of the 3 blanks
+					else {
+	                    ST.nextElement();
+						if (ST.hasMoreElements())
+							ST.nextElement();
+	                    //allow servers to go back and forth using Bays as techs since bays are what techs are.
+						if (ST.hasMoreElements()){
+	                        if ( technicians <= 0 )
+	                            technicians = Integer.parseInt(ST.nextToken());
+	                        else
+	                            ST.nextElement();
+	                    }
+					}
+				}// Had alot of problems with advance repair so lets just use this.
+				catch (Exception ex) {
+				}
+			}// get rid of the 2 blanks
+			
+			if (ST.hasMoreTokens())
+				myLogo = ST.nextToken();
+			
+			// Stupid error with player logo if its blank it doesn't save anything
+			// and gets skipped.
+			// Thats been fixed but for all the PFiles out there with the defect
+			// this will allow them to
+			// Still Load.
+			try {
+				if (ST.hasMoreTokens())
+					setLastAttackFromReserve(Long.parseLong(ST.nextToken()));
+				
+				if (ST.hasMoreTokens())
+					setGroupAllowance(Integer.parseInt(ST.nextToken()));
+				
+				if (ST.hasMoreTokens())
+					setLastISP(ST.nextToken());
+	
+	            if ( ST.hasMoreTokens())
+	                this.setInvisible(Boolean.parseBoolean(ST.nextToken()));
+	            
+	            if ( ST.hasMoreElements() )
+	                this.setGroupAllowance(Integer.parseInt(ST.nextToken()));
+			} catch (Exception ex) {
+			}
+			
+	        if ( ST.hasMoreElements() ){
+	            try{
+	                int access = Integer.parseInt(ST.nextToken());
+	                String passwd = ST.nextToken();
+	                long time = Long.parseLong(ST.nextToken());
+	                
+	                this.setPassword(new MWPasswdRecord(this.name,access,passwd,time,""));
+	            } catch(Exception ex){}
+	        }
+	        
+	        if ( ST.hasMoreElements() ) {
+	        	if ( CampaignMain.cm.getBooleanConfig("UsePartsRepair") )
+	        		unitParts.fromString(ST.nextToken());
+	        	else
+	        		ST.nextToken();
+	        }
+	        
+	        if ( ST.hasMoreElements() )
+	        	this.setAutoReorder(Boolean.parseBoolean(ST.nextToken()));
+	
+	        if ( ST.hasMoreTokens() ){
+	        	this.setTeamNumber(Integer.parseInt(ST.nextToken()));
+	        }
+	        
+	        if ( this.password != null && this.password.getPasswd().trim().length() <= 2){
+	            this.password.setAccess(IAuthenticator.GUEST);
+	        }
+	        
+			if (CampaignMain.cm.isUsingCyclops()) {
+				CampaignMain.cm.getMWCC().playerWrite(this);
+				// CampaignMain.cm.getMWCC().unitWrite(this.getUnitsData().firstElement(),name,this.getHouseName());
+				CampaignMain.cm.getMWCC().unitWriteFromList(this.getUnits(),name, myHouse.getName());
+				CampaignMain.cm.getMWCC().pilotWriteFromList(this.getPersonalPilotQueue(), name);
+				// CampaignMain.cm.getMWCC().pilotWrite((SPilot)this.getUnitsData().firstElement().getPilot(),name);
+			}
+			
+			CampaignMain.cm.toUser("PL|SB|" + this.getTotalMekBays(), name, false);
+			CampaignMain.cm.toUser("PL|SF|" + this.getFreeBays(), name,false);
+			if (CampaignMain.cm.isUsingAdvanceRepair()) {
+				
+				if (!this.hasRepairingUnits()) {
+					CampaignMain.cm.toUser("PL|UTT|" + this.totalTechsToString(),name, false);
+					CampaignMain.cm.toUser("PL|UAT|" + this.totalTechsToString(),name, false);
+					this.updateAvailableTechs(this.totalTechsToString());// make sure techs are in synch
+				} else {
+					CampaignMain.cm.toUser("PL|UTT|" + this.totalTechsToString(),name, false);
+					CampaignMain.cm.toUser("PL|UAT|"+ this.availableTechsToString(), name, false);
+				}
+			}
+	        
+	        healAllPilots();
+	        
+	        /*
+	         * Check all units for bad ammo or illegal/mis-set vacant pilots. This
+	         * was being done at the same time as the units are unstrung, but caused
+	         * a null b/c fixAmmo() uses .myHouse(), which is null at that point in
+	         * the unstring.
+	         * 
+	         * If the units are changed as a result of the checks, a PL|UU is sent, as
+	         * well as a PL|SAD for each army that includes the unit.
+	         */
+	        for (SUnit currU : units) {
+	        	this.fixPilot(currU);
+	        }
+		}catch (Exception ex){
+			MWServ.mwlog.errLog(ex);
+		}finally{
+			this.isLoading = false;
 		}
-        
-        healAllPilots();
-        
-        /*
-         * Check all units for bad ammo or illegal/mis-set vacant pilots. This
-         * was being done at the same time as the units are unstrung, but caused
-         * a null b/c fixAmmo() uses .myHouse(), which is null at that point in
-         * the unstring.
-         * 
-         * If the units are changed as a result of the checks, a PL|UU is sent, as
-         * well as a PL|SAD for each army that includes the unit.
-         */
-        for (SUnit currU : units) {
-        	this.fixPilot(currU);
-        }
-        this.isLoading = false;
 	}
 
 	public void fromDB(int playerID) {

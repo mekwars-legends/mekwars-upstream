@@ -1901,7 +1901,7 @@ public final class MWClient implements IClient {
 		}
 		if (Status != STATUS_DISCONNECTED)
 		{
-			serverSend("GB");
+			//serverSend("GB");
 			Connector.send(PROTOCOL_PREFIX + "signoff");
 			this.dataFetcher.closeDataConnection();
 			Connector.closeConnection();
