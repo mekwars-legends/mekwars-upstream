@@ -483,7 +483,7 @@ public class DefectCommand implements Command {
 			 */
 			p.getMyHouse().removePlayer(p,false);
 			p.setMyHouse(newHouse);
-            CampaignMain.cm.forceSavePlayer(p);
+            //CampaignMain.cm.forceSavePlayer(p);
             
 			//send the various messages
 			CampaignMain.cm.toUser(toReturn,Username,true);
@@ -510,7 +510,7 @@ public class DefectCommand implements Command {
 			 * Might as well just log the player into his new faction. Sort of silly to make
 			 * him redo /c login when we can duplicate the login process right here.
 			 */
-			CampaignMain.cm.getPlayer(Username);
+			//CampaignMain.cm.getPlayer(Username);
 			CampaignMain.cm.doLoginPlayer(Username);
 			CampaignMain.cm.toUser("SP|Welcome to " + newHouse.getName() +"!",p.getName(), false);
 			

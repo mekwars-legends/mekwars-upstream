@@ -106,7 +106,7 @@ public class CheckAttackCommand implements Command {
 				
 				Desc += "<table><td>";
 				//adjust return for infantry settings
-				if(new Boolean(CampaignMain.cm.getConfig("ShowInfInCheckAttack")).booleanValue())
+				if(CampaignMain.cm.getBooleanConfig("ShowInfInCheckAttack"))
 					Desc += coloredHouseName + "(" + currTarget.getAmountOfUnits() + ")";
 				else 
 					Desc += coloredHouseName + "(" + currTarget.getAmountOfUnitsWithoutInfantry() + ")";
@@ -144,7 +144,7 @@ public class CheckAttackCommand implements Command {
 						String coloredHouseName = currTargetP.getMyHouse().getHouseFightingFor(currTargetP).getColoredName();
 						Desc += "<td>";
 						//adjust return for infantry settings
-						if(new Boolean(CampaignMain.cm.getConfig("ShowInfInCheckAttack")).booleanValue())
+						if(CampaignMain.cm.getBooleanConfig("ShowInfInCheckAttack"))
 							Desc += coloredHouseName + "(" + currTarget.getAmountOfUnits() + ")";
 						else 
 							Desc += coloredHouseName + "(" + currTarget.getAmountOfUnitsWithoutInfantry() + ")";

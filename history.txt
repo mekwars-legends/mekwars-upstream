@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
++ Bug: Gyro hits not checked on quads when forced salavage is turned on.
++ Bug: defect command causing client verison to be wiped out.
 + Bug: Slites not getting set on night ops.
 Release Server 0.2.6.4
 + Fixed Register/Enroll Bug again

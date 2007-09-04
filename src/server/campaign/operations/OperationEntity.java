@@ -287,7 +287,7 @@ public class OperationEntity {
 				if (getRLint() <= 0) missingLegsCount++;
 				if (getRAint() <= 0) missingLegsCount++;
 				if (getLAint() <= 0) missingLegsCount++;
-				if (missingLegsCount >= 2)
+				if (missingLegsCount >= 2 || this.getGyrohits() >= 2)
 					return false;
 			} else if (MMUnitType == Unit.VEHICLE){
 			    return !isImmobile;
