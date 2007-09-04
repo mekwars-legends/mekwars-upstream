@@ -178,7 +178,20 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
         
         xmlGameOptions.addAll(loadOptions);
         xmlGameOptions.addAll(this.mwclient.getGameOptions());
-		
+        
+        //Check for a night game and set nightGame Variable.
+        //This needed to be done since it was possible that a slow connection would
+        //keep the client from getting an update from the server before the entities
+        //where added to the game.
+        for ( IBasicOption option : xmlGameOptions ){
+            if ( ( option.getName().equalsIgnoreCase("night_battle") 
+            		|| option.getName().equalsIgnoreCase("dusk") )
+            		&& option.getValue().toString().equalsIgnoreCase("true") ){
+            	nightGame = true;
+            	break;
+            }
+        }
+        
 		try {
 			client.connect();
 		} catch (Exception ex) {
@@ -307,11 +320,9 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
             }
             
 			if ((client.game != null && client.game.getPhase() == IGame.PHASE_LOUNGE)) {
-				if (this.mechs.size() > 0)
-					/*if (this.mwclient.getGameOptions().size() > 0)
-						client.sendGameOptions("", this.mwclient.getGameOptions());*/
-                    if ( xmlGameOptions.size() > 0 )
+				if (this.mechs.size() > 0 && xmlGameOptions.size() > 0 ){
                        client.sendGameOptions("",xmlGameOptions);
+				}
 				IClientPreferences cs = PreferenceManager.getClientPreferences();
 				cs.setStampFilenames(Boolean.parseBoolean(mwclient.getserverConfigs("MMTimeStampLogFile")));
 				cs.setShowUnitId(Boolean.parseBoolean(mwclient.getserverConfigs("MMShowUnitId")));
@@ -331,10 +342,6 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
                     client.getLocalPlayer().setNbrMFConventional(mwclient.getPlayer().getConventionalMinesAllowed());
                     client.getLocalPlayer().setNbrMFVibra(mwclient.getPlayer().getVibraMinesAllowed());
                 }
-                
-                if ( client.game.getOptions().booleanOption("night_battle") 
-                		|| client.game.getOptions().booleanOption("dusk"))
-                	nightGame = true;
                 
                 for (Iterator i = this.mechs.iterator(); i.hasNext();) {
 					// Get the Mek
