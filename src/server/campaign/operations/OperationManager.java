@@ -279,6 +279,10 @@ public class OperationManager {
 		return ops.get(name);
 	}
 	
+	public TreeMap<String, Operation> getOperations(){
+		return ops;
+	}
+	
 	public ModifyingOperation getModifyingOperation(String name) {
 		return mods.get(name);
 	}

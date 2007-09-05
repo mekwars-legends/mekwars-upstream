@@ -68,6 +68,7 @@ public class Dispatcher implements Runnable {
                 MWServ.mwlog.errLog(e);
             }
         }
+        MWServ.mwlog.debugLog("Ending Dispatcher Thread: _keepGoing="+_keepGoing);
     }
     
     private synchronized void flushAll() {

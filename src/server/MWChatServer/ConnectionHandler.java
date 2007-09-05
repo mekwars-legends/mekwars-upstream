@@ -241,6 +241,11 @@ public class ConnectionHandler extends AbstractConnectionHandler {
         } catch (Exception e) {
             MWServ.mwlog.errLog("Socket error; shutting down client");
             MWServ.mwlog.errLog(e);
+            try{
+            	_socket.close();
+            }catch(Exception se){
+            	
+            }
             //Commenting out for now. letting the socket get closed in the 
             //readerthread code. --Torren
             //shutdown(true);

@@ -78,7 +78,7 @@ public class CheckAttackCommand implements Command {
 		//if command has more elements, spit out checkattack for specific armies. no real reason for
 		//a user to do this through the CLI, but it is called by right clicking armies in HQ
 		if (command.hasMoreElements()) {
-			Desc = "<br><font color=\"black\">Army "; 
+			Desc = "<br><table><tr><td><font color=\"black\">Army "; 
 			
 			int armyID = -1;
 			try {
@@ -96,15 +96,15 @@ public class CheckAttackCommand implements Command {
 			
 			
 			Desc += arm.getID() + " (" + arm.getBV()+ " BV) ";
-			Desc += " may attack: ";
+			Desc += " may attack: </font></td><td>&nbsp;</td><td>&nbsp;</td></tr>";
 			
 			Enumeration targets = arm.getOpponents().elements();
 			while (targets.hasMoreElements()) {
 				SArmy currTarget = (SArmy)targets.nextElement();
 				SPlayer currTargetP = CampaignMain.cm.getPlayer(currTarget.getPlayerName());
 				String coloredHouseName = currTargetP.getMyHouse().getHouseFightingFor(currTargetP).getColoredName();
+				Desc += "<tr><td>&nbsp;</td><td>";
 				
-				Desc += "<table><td>";
 				//adjust return for infantry settings
 				if(CampaignMain.cm.getBooleanConfig("ShowInfInCheckAttack"))
 					Desc += coloredHouseName + "(" + currTarget.getAmountOfUnits() + ")";

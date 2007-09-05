@@ -728,6 +728,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	 */
 	public void doMaintainance() {
 		
+		if ( CampaignMain.cm.isUsingAdvanceRepair() )
+			return;
 		int increase = Integer.parseInt(this.getMyHouse().getConfig("MaintainanceIncrease"));
 		int decrease = Integer.parseInt(this.getMyHouse().getConfig("MaintainanceDecrease"));
 		
@@ -1030,15 +1032,21 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	 */
 	protected String addInfluenceAtSlice() {
 		
+		MWServ.mwlog.debugLog("Starting addInfluenceAtSlice for "+this.getName());
+		
 		// cant get any inf beyond ceiling, so no reason to do the math
 		int fluCeiling = Integer.parseInt(this.getMyHouse().getConfig("InfluenceCeiling"));
-		if (influence >= fluCeiling)
+		MWServ.mwlog.debugLog("getting max flu");
+		if (influence >= fluCeiling){
+			MWServ.mwlog.debugLog("returning");
 			return "";
+		}
 		
+		MWServ.mwlog.debugLog("checking for merc house");
 		// mercs who are active but w/o contract get no flu
 		if (this.getHouseFightingFor().isMercHouse())
 			return "";
-		
+		MWServ.mwlog.debugLog("not in merc house");
 		/*
 		 * Passed simple returns. Now check the player's activity time and make
 		 * sure he has at least 1 (after weighting) eligible army.
@@ -1046,8 +1054,10 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		double weightedNumArmies = this.getWeightedArmyNumber();
 		boolean activeLongEnough = (System.currentTimeMillis() - activeSince) > Integer.parseInt(this.getMyHouse().getConfig("InfluenceTimeMin"));
 		
+		MWServ.mwlog.debugLog("check active status, army number/weight, activelong enough");
 		if (this.getDutyStatus() == STATUS_ACTIVE && weightedNumArmies > 0 && activeLongEnough) {
 			
+			MWServ.mwlog.debugLog(this.getName()+" is active!");
 			// if player has been on long enough to get influece,
 			// do all of the math to determine influence grant amount
 			double totalInfluenceGrant = 0;
@@ -1071,14 +1081,18 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			if (newFlu > fluCeiling)
 				intFluToAdd -= (newFlu - fluCeiling);
 			
+			MWServ.mwlog.debugLog("Adding Flue");
 			// then give him the flu
 			this.addInfluence(intFluToAdd);
 			
 			// flu added. send the player a nice fluffy message about it.
 			try {
+				MWServ.mwlog.debugLog("staring up flu message");
 				String fileName = "";
+				MWServ.mwlog.debugLog("getting house");
 				SHouse faction = this.getHouseFightingFor();
-				
+
+				MWServ.mwlog.debugLog("getting flu message file");
 				if (faction == null)
 					fileName = "./data/influencemessages/CommonInfluenceMessages.txt";
 				else
@@ -1097,6 +1111,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				FileInputStream fis = new FileInputStream(messageFile);
 				BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
 				
+				MWServ.mwlog.debugLog("getting random flu message");
 				int messages = Integer.parseInt(dis.readLine());
 				Random rand = new Random();
 				int messageLine = rand.nextInt(messages);
@@ -1113,12 +1128,13 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				
 				int unitId = rand.nextInt(units.size());// random
 				SUnit unitForMessages = units.elementAt(unitId);
-				
+				MWServ.mwlog.debugLog("Adding Subs for unitid: "+unitId);
 				String fluMessageWithPilotName = fluMessage.replaceAll("PILOT",unitForMessages.getPilot().getName());
 				String fluMessageWithModelName = fluMessageWithPilotName.replaceAll("UNIT", unitForMessages.getModelName());
 				String fluMessageWithPlayerName = fluMessageWithModelName.replaceAll("PLAYER", name);
 				
 				fluMessageWithPlayerName += " ("+ CampaignMain.cm.moneyOrFluMessage(false, false,intFluToAdd, true) + ")";
+				MWServ.mwlog.debugLog("returning ["+fluMessageWithPlayerName+"] for "+this.getName());
 				return fluMessageWithPlayerName;
 				
 			} catch (Exception e) {
