@@ -40,7 +40,7 @@ public final class SMWLogger {//final - no extension of the server logger
 	private static final int hugeFileSize = 10000000; //Configurable
 	
 	private static boolean logging = false;
-	private static boolean addSeconds = false;
+	private static boolean addSeconds = true;
 	//private static boolean clientlog = false;
 
 	private File logDir;

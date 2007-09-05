@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
++ changed addSeconds in SMWLogger.java to default to true
 Release Server 0.2.6.5
 + More Debugging for chat thread issues.
 + RFE 1786762: Added Terrain and Theme information to after-battle log
