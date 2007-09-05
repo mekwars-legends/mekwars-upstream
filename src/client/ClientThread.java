@@ -265,6 +265,8 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
                     mySettings.setMountainParams(env.getMountPeaks(), env.getMountWidthMin(),env.getMountWidthMax(), env.getMountHeightMin(), env.getMountHeightMax(), env.getMountStyle());
                     if ( env.getTheme().length() > 1 )
                         mySettings.setTheme(env.getTheme());
+                    else
+                    	mySettings.setTheme("");
                     
                     /* select the map */
                     Vector<String> boardvec = new Vector<String>();
