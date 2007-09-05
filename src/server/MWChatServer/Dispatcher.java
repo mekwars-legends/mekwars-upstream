@@ -77,7 +77,9 @@ public class Dispatcher implements Runnable {
 			
 			// catch SocketException: Broken Pipe
             try{
+            	MWServ.mwlog.debugLog("Flushing "+ch._client.getUserId());
                 ch.flush();
+                MWServ.mwlog.debugLog("Done Flushing "+ch._client.getUserId());
             } catch(Exception ex){
                 MWServ.mwlog.errLog(ex);
             }
