@@ -27,6 +27,8 @@ import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SArmy;
 import server.campaign.SUnit;
+import server.campaign.operations.Operation;
+import server.campaign.operations.OperationManager;
 
 import megamek.common.Mech;
 
@@ -108,8 +110,9 @@ public class ActivateCommand implements Command {
 			
 		}
 		
-		if ( !CampaignMain.cm.getBooleanConfig("allowGoingActiveWithoutUnitCommanders") ){
-			
+		if ( !CampaignMain.cm.getBooleanConfig("allowGoingActiveWithoutUnitCommanders") && hasCommanderlessUnits(p.getArmies())){
+			CampaignMain.cm.toUser("You may not activate with armies lacking unit commanders!",Username,true);
+			return;
 		}
 		
 		//AR-only activation checks
@@ -165,6 +168,11 @@ public class ActivateCommand implements Command {
 				CampaignMain.cm.toUser("You may not activate with negative bays!",Username,true);
 			else
 				CampaignMain.cm.toUser("You may not activate with negative techs!",Username,true);
+			return;
+		}
+		
+		if ( !hasLegalOpArmies(p, p.getArmies()) ){
+			CampaignMain.cm.toUser("None of your armies are currently able to launch or defend any ops!  You may not go active.",Username,true);
 			return;
 		}
 		
@@ -293,6 +301,36 @@ public class ActivateCommand implements Command {
         
         //no units with partial ammobins found. return false.
         return false;
+    }
+    
+    private boolean hasCommanderlessUnits(Vector<SArmy> armies){
+        //loop though all units in all armies
+        for (SArmy army : armies) {
+        	if ( army.getCommanders().size() > 0 )
+        		return false;
+        }
+        
+        //no unit commanders found
+        return true;
+    	
+    }
+    
+    private boolean hasLegalOpArmies(SPlayer player, Vector<SArmy> armies){
+    	
+    	for ( SArmy army : armies ){
+        	//check for legal attacks
+    		if ( army.getLegalOperations().size() > 0)
+    			return true;
+    		//check for legal defense
+    		
+    		OperationManager manager = CampaignMain.cm.getOpsManager(); 
+    		for ( Operation op : manager.getOperations().values() ){
+    			if ( manager.validateShortDefense(player, army, op, null) == null )
+    				return true;
+    		}
+    	}
+    	
+    	return false;
     }
     
 }//end activatecommand class

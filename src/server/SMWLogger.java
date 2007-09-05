@@ -104,7 +104,12 @@ public final class SMWLogger {//final - no extension of the server logger
 				sb.append(now.get(Calendar.MINUTE) + ":");
 				if(now.get(Calendar.SECOND) < 10)
 					sb.append("0");
-				sb.append(now.get(Calendar.SECOND) /* +"|" + record.getLevel() */ +"|"+ formatMessage(record) + "\n");
+				sb.append(now.get(Calendar.SECOND) /* +"|" + record.getLevel() */ );
+				sb.append(".");
+				sb.append(now.get(Calendar.MILLISECOND));
+				sb.append("|");
+				sb.append(formatMessage(record));
+				sb.append("\n");
 			} else {
 				sb.append(now.get(Calendar.MINUTE) /* +"|" + record.getLevel() */ +"|"+ formatMessage(record) + "\n");
 			}
