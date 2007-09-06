@@ -78,9 +78,14 @@ Comparable {
 			result.append(getInfluence().getInfluence(next.getId()));
 			result.append("$"); // change for unusual influence
 		}
-		//No Influences then make sure there is a space so it'll still load.
-		if ( getInfluence().getHouses().size() < 1 )
-			result.append(" ");
+		//No Influences then set influence to NewbieHouse so the planet will load.
+		if ( getInfluence().getHouses().size() < 1 ){
+			result.append(CampaignMain.cm.getConfig("NewbieHouseName"));
+			result.append("$");
+			result.append(this.getConquestPoints());
+			result.append("$");
+		}
+		
 		result.append("#");
 		result.append(getEnvironments().size());
 		result.append("#");
