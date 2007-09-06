@@ -43,8 +43,8 @@ public class planetHandler {
 	  rs = stmt.executeQuery(sql);
 	  rs.next();
 	  num = rs.getInt("numplanets");
-
-	  
+	  rs.close();
+	  stmt.close();
 	  } catch (SQLException e) {
 		  MWServ.mwlog.dbLog("SQL Error in countPlanets: " + e.getMessage());
 	  }
@@ -59,6 +59,7 @@ public class planetHandler {
 		  stmt.executeUpdate("DELETE from planetfactories WHERE PlanetID = " + PlanetID);
 		  stmt.executeUpdate("DELETE from planetflags WHERE PlanetID = " + PlanetID);
 		  stmt.executeUpdate("DELETE from planetinfluences WHERE PlanetID = " + PlanetID);
+		  stmt.close();
 	  } catch (SQLException e) {
 		  MWServ.mwlog.dbLog("SQL Error in deletePlanet: " + e.getMessage());
 	  }
@@ -126,6 +127,8 @@ public void loadPlanets(CampaignData data) {
 					  			  
 			  CampaignMain.cm.addPlanet(p);
 			  p.setOwner(null, p.checkOwner(), false);
+			  rs.close();
+			  stmt.close();
 		  }
 
 
@@ -156,6 +159,8 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 				  MWServ.mwlog.errLog("House not found: " + HouseName);
 		  }
 		  p.setInfluence(new Influences(influence));
+		  rs1.close();
+		  stmt.close();
 	  } catch (SQLException e) {
 		  MWServ.mwlog.dbLog("SQL Error in loadInfluences: " + e.getMessage());
 	  }
@@ -175,6 +180,8 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 				  map.put(key, CampaignMain.cm.getData().getPlanetOpFlags().get(key));
 		  }
 		  p.setPlanetFlags(map);
+		  rs2.close();
+		  stmt.close();
 	  } catch (SQLException e) {
 		  MWServ.mwlog.dbLog("SQL Error in loadPlanetFlags: " + e.getMessage());
 	  }
@@ -190,15 +197,10 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 	  
 	  while(rs3.next()) {
 		  int size = rs3.getInt("ContinentSize");
-	//	  String terrain = rs3.getString("TerrainData");
 		  PlanetEnvironment planetEnvironment = null;
 		  int terrainNumber = 0;
 		  
 		  try {
-/**
- * This is returning a string.  We need to figure out what the hell.
- * 
- */
 			  terrainNumber = rs3.getInt("TerrainData");
 			  planetEnvironment = data.getTerrain(terrainNumber);
 		  } catch (Exception ex) {
@@ -230,6 +232,8 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 			  p.getAdvanceTerrain().put(new Integer(PE.getEnvironment().getId()), aTerrain);
 		  }
 		  p.getEnvironments().add(PE);
+		  rs3.close();
+		  stmt.close();
 	  } } catch (SQLException e) {
 		  MWServ.mwlog.dbLog("SQL Error in loadEnvironments: " + e.getMessage());
 	  }

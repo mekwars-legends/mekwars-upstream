@@ -78,6 +78,8 @@ public class PilotHandler {
 				else {
 					return p;
 				}
+				rs.close();
+				stmt.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PilotHandler.loadPilot: " + e.getMessage());
 			p = new SPilot("Vacant", 99, 99);
@@ -99,6 +101,8 @@ public class PilotHandler {
 			rs = stmt.executeQuery("Select pilotID from pilots WHERE unitID = " + unitID);
 			while(rs.next())
 				p = loadPilot(rs.getInt("pilotID"));
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PilotHandler.loadUnitPilot: " + e.getMessage());
 		}
@@ -167,8 +171,8 @@ public class PilotHandler {
 				stmt.executeUpdate("DELETE from pilotskills WHERE pilotID = " + rs.getInt("pilotID"));
 				stmt.executeUpdate("DELETE from pilots WHERE pilotID = " + rs.getInt("pilotID"));
 			}
-			stmt.close();
 			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
 		}

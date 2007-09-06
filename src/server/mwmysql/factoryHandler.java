@@ -40,7 +40,8 @@ public class factoryHandler {
       planet.getUnitFactories().add(factory); 
 
       }
-
+    rs.close();
+    ps.close();
     } catch (SQLException e) {
       MWServ.mwlog.dbLog("SQL Error in factoryHandler.java: " + e.getMessage());
     }       

@@ -23,6 +23,7 @@ public class PlayerHandler {
 			rs.next();
 			int numplayers = rs.getInt("num");
 			rs.close();
+			stmt.close();
 			return numplayers;
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.countPlayers: " + e.getMessage());
@@ -56,8 +57,14 @@ public class PlayerHandler {
 			ps = con.prepareStatement("SELECT playerID from players WHERE playerName = ?");
 			ps.setString(1, name);
 			ResultSet rs = ps.executeQuery();
-			if(rs.next())
-				return rs.getInt("playerID");
+			if(rs.next()) {
+				int pid = rs.getInt("playerID");
+				rs.close();
+				ps.close();
+				return pid;
+			}
+			rs.close();
+			ps.close();
 			return -1;
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.getPlayerIDByName: " + e.getMessage());
@@ -94,13 +101,22 @@ public class PlayerHandler {
 			ps.setString(1, pass);
 			ps.setString(2, playerName);
 			rs = ps.executeQuery();
-			if(!rs.next())
+			if(!rs.next()){
+				rs.close();
+				ps.close();
 				return false;
+			}
 			else
-				if(rs.getString("playerPassword").equalsIgnoreCase(rs.getString("cryptedpass")))
+				if(rs.getString("playerPassword").equalsIgnoreCase(rs.getString("cryptedpass"))) {
+					rs.close();
+					ps.close();
 					return true;
-				else
+				}
+				else {
+					rs.close();
+					ps.close();
 					return false;
+				}
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.matchPassword: " + e.getMessage());
 			return false;
@@ -114,11 +130,19 @@ public class PlayerHandler {
 			ps = con.prepareStatement("SELECT COUNT(*) as num from players where playerName = ?");
 			ps.setString(1, name);
 			rs=ps.executeQuery();
-			if(!rs.next())
+			if(!rs.next()) {
+				rs.close();
+				ps.close();
 				return false;
+			}
 			else
-				if(rs.getInt("num") == 1)
+				if(rs.getInt("num") == 1) {
+					rs.close();
+					ps.close();
 					return true;
+				}
+			rs.close();
+			ps.close();
 			return false;
 		} catch(SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in playerHandler.playerExists: " + e.getMessage());
@@ -134,6 +158,7 @@ public class PlayerHandler {
 			stmt.executeUpdate("DELETE from playerarmies WHERE playerID = " + p.getDBId());
 			// Remove player
 			stmt.executeUpdate("DELETE from players WHERE playerID = " + p.getDBId());
+			stmt.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.deletePlayer: " + e.getMessage());
 		}

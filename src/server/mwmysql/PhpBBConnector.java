@@ -160,8 +160,6 @@ public class PhpBBConnector {
 	  }
 	  
 	  public void init() {
-		  // Get all the phpBB defaults
-		  //this.bbUrl = getBBConfigVar("");
 		  this.bbVersion = getBBConfigVar("version");
 		  this.bbUrl = CampaignMain.cm.getServer().getConfigParam("PHPBB_URL");
 		  switch(bbMajorVersion) {

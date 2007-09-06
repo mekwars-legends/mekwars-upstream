@@ -25,7 +25,7 @@ public class FactionHandler {
 	
 	public void loadFactions(CampaignData data) {
 		try {
-			ResultSet rs, rs1;
+			ResultSet rs = null, rs1 = null;
 			Statement stmt = con.createStatement();
 			Statement stmt2 = con.createStatement();
 			rs = stmt.executeQuery("SELECT * from factions ORDER BY ID");
@@ -206,7 +206,11 @@ public class FactionHandler {
 				h.setUsedMekBayMultiplier(Float.parseFloat(h.getConfig("UsedPurchaseCostMulti")));
 				MWServ.mwlog.dbLog("Faction " + h.getName() + " loaded");
 				}
-			
+			rs.close();
+			if(rs1 != null)
+				rs1.close();
+			stmt.close();
+			stmt2.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			MWServ.mwlog.dbLog("SQL Error in FactionHandler.loadFaction: " + e.getMessage());
@@ -218,8 +222,10 @@ public class FactionHandler {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT COUNT(*) as num from factions");
 			rs.next();
-			
-			return rs.getInt("num");
+			int num = rs.getInt("num");
+			rs.close();
+			stmt.close();
+			return num;
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in FactionHandler.countFactions: " + e.getMessage());
 			return 0;

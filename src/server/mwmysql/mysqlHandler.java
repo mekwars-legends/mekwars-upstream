@@ -87,7 +87,7 @@ public class mysqlHandler{
   
   public void loadFactionPilots(SHouse h) {
 	  try {
-		  ResultSet rs;
+		  ResultSet rs = null;
 		  Statement stmt = MySQLCon.con.createStatement();
 
 		  for (int x = Unit.MEK; x < Unit.MAXBUILD; x++) {
@@ -98,7 +98,9 @@ public class mysqlHandler{
 				  h.getPilotQueues().loadPilot(x, p);
 			  }			  
 		  }
-
+		  if(rs!=null)
+			  rs.close();
+		  stmt.close();
 	  } catch (SQLException e) {
 		  MWServ.mwlog.dbLog("SQL Error in mysqlHandler.loadFactionPilots: " + e.getMessage());
 	  }
@@ -201,14 +203,16 @@ public class mysqlHandler{
   }
   
   public int getDBVersion() {
-	  Statement stmt;
-	  ResultSet rs;
+	  Statement stmt = null;
+	  ResultSet rs = null;
 	  try {
 		  stmt = getCon().createStatement();
 		  rs = stmt.executeQuery("SELECT config_value from config WHERE config_key = 'mekwars_database_version'");
 		  if(rs.next()) {
 			  return rs.getInt("config_value");
 		  }
+		  rs.close();
+		  stmt.close();
 		  return 0;
 	  } catch (SQLException e) {
 		  MWServ.mwlog.dbLog("SQL Error in mysqlHandler.getDBVersion: " + e.getMessage());
