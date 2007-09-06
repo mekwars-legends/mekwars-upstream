@@ -93,7 +93,7 @@ public void loadPlanets(CampaignData data) {
 			    	p.setTimestamp(new Date(0));
 			    }
 
-			  p.setId(rs.getInt("pMWID"));
+			  p.setId(-1);
 
 			  p.setMapSize(new Dimension(rs.getInt("pMapSizeWidth"), rs.getInt("pMapSizeHeight")));
 			  p.setBoardSize(new Dimension(rs.getInt("pBoardSizeWidth"), rs.getInt("pBoardSizeHeight")));
