@@ -253,6 +253,7 @@ Comparable {
 					  
 				  }
 				  rs.close();
+				  ps.close();
 				  if(stmt!=null)
 					  stmt.close();
 			  }
@@ -340,7 +341,7 @@ Comparable {
 					  // Save Planet Flags
 					  if(getPlanetFlags().size() > 0)
 					    CampaignMain.cm.MySQL.savePlanetFlags(this);
-					  
+					ps.close();  
 				  if(stmt!=null)
 					  stmt.close();
 			  }

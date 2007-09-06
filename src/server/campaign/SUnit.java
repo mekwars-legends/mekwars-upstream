@@ -623,6 +623,7 @@ public final class SUnit extends Unit implements Serializable {
 				ps.executeUpdate();
 				AmmoLoc++;
 			}
+			ps.close();
 //			 Save the pilot
 			if (getPilot().getGunnery()!=99){
 				((SPilot)getPilot()).toDB(getType(), getWeightclass());

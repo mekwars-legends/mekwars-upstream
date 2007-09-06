@@ -2883,7 +2883,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				ps.executeUpdate();
 
 			}
-		
+		ps.close();
 		// Save Units
 		if (getUnits().size() > 0) {
 			for (SUnit currU : getUnits()) {

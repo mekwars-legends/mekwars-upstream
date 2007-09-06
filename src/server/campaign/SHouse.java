@@ -307,7 +307,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		
 		PreparedStatement ps;
 		StringBuffer sql = new StringBuffer();
-		ResultSet rs;
+		ResultSet rs = null;
 		try {
 			if(getDBId()== 0) {
 				// Not in the database - INSERT it
@@ -502,6 +502,9 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 				for (int pos = 0; pos < Unit.MAXBUILD; pos++){
 					ps.executeUpdate("INSERT into faction_base_gunnery_piloting set factionID = " + getDBId() + ", unitType = " + pos + ", baseGunnery = " + getBaseGunner(pos) + ", basePiloting = " + getBasePilot(pos));
 				}
+				if(rs != null)
+					rs.close();
+				ps.close();
 				} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in FactionHandler.saveFaction: " + e.getMessage());
 		}	
