@@ -117,7 +117,7 @@ Comparable {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 		result.append(sdf.format(this.getLastChanged()));
 		result.append("#");
-		result.append(getId());
+		result.append(-1);
 		result.append("#");
 		result.append(getMapSize().width);
 		result.append("#");
@@ -477,7 +477,8 @@ Comparable {
 		} else
 			setTimestamp(new Date(0));
 		if (ST.hasMoreElements()){
-			setId(Integer.parseInt(ST.nextToken()));
+			ST.nextToken();
+			setId(-1);
 		}
 		if (ST.hasMoreElements()){
 			int x = (Integer.parseInt(ST.nextToken()));
