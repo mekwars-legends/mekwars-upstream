@@ -176,8 +176,8 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 	      ps.executeUpdate();
 	      }
         	rs.close();
-        	stmt.close();
         	ps.close();
+        	stmt.close();
 	    }
 	    catch (SQLException e)
 	      {

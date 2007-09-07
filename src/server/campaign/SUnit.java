@@ -897,6 +897,8 @@ public final class SUnit extends Unit implements Serializable {
 			
 				setEntity(unitEntity);
 			}
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in SUnit.fromDB: " + e.getMessage());
 		}

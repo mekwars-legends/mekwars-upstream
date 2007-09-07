@@ -3187,7 +3187,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		this.isLoading = true;
 		try {
 		Connection con = CampaignMain.cm.MySQL.getCon();
-		ResultSet rs, rs1;
+		ResultSet rs = null, rs1=null;
 		Statement stmt = con.createStatement();
 		Statement stmt1 = con.createStatement();
 		rs = stmt.executeQuery("SELECT * from players WHERE playerID = " + playerID);
@@ -3329,6 +3329,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		stmt.close();
 		stmt1.close();
 		rs.close();
+		if(rs1 != null)
+			rs1.close();
 		this.isLoading = false;
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in SPlayer.fromDB: " + e.getMessage());
