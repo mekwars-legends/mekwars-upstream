@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
++ Bug: Admin Planet Editor not setting Planet Comp Production or Warehouses.
 + Planets no longer save Id's to flat files. ID will be assigned at startup.
 + Planets now default to NewbieHouseName as 100% owner if none is listed
 + Removed memory leaks in database code
