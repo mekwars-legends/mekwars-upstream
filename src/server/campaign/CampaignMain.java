@@ -1346,6 +1346,7 @@ public final class CampaignMain implements Serializable {
 				new AdminSetBlackMarketSettingCommand());
 		Commands.put("ADMINSETCOMMANDLEVEL", new AdminSetCommandLevelCommand());
 		Commands.put("ADMINSETHOMEWORLD", new AdminSetHomeWorldCommand());
+		Commands.put("ADMINSETHOUSEABBREVIATION", new AdminSetHouseAbbreviationCommand());
 		Commands.put("ADMINSETHOUSEFLUFILE", new AdminSetHouseFluFileCommand());
 		Commands.put("ADMINSETHOUSEPLAYERCOLOR",
 				new AdminSetHousePlayerColorCommand());
