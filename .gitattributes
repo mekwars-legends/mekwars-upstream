@@ -1472,6 +1472,7 @@ src/server/campaign/commands/admin/AdminSetBanTargetingCommand.java -text
 src/server/campaign/commands/admin/AdminSetBlackMarketSettingCommand.java -text
 src/server/campaign/commands/admin/AdminSetCommandLevelCommand.java -text
 src/server/campaign/commands/admin/AdminSetHomeWorldCommand.java -text
+src/server/campaign/commands/admin/AdminSetHouseAbbreviationCommand.java -text
 src/server/campaign/commands/admin/AdminSetHouseAmmoBanCommand.java -text
 src/server/campaign/commands/admin/AdminSetHouseFluFileCommand.java -text
 src/server/campaign/commands/admin/AdminSetHousePlayerColorCommand.java -text
