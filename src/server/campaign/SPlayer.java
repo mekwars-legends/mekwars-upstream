@@ -2701,8 +2701,6 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	}
 	
 	public void toDB() {
-		Connection con = CampaignMain.cm.MySQL.getCon();
-		
 		PreparedStatement ps;
 		StringBuffer sql = new StringBuffer();
 		try {
@@ -2741,7 +2739,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				sql.append("playerAccess = ?, ");
 				sql.append("playerAutoReorder = ?, ");
 				sql.append("playerTeamNumber = ?");
-				ps = con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
+				ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setString(1, getName());
 				ps.setInt(2, getMoney());
 				ps.setInt(3, getExperience());
@@ -2827,7 +2825,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				sql.append("playerTeamNumber= ? ");
 				sql.append("WHERE playerID = ?");
 	
-				ps = con.prepareStatement(sql.toString());
+				ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
 				ps.setString(1, getName());
 				ps.setInt(2, getMoney());
 				ps.setInt(3, getExperience());
@@ -2895,13 +2893,13 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			}
 		}
 		if(getArmies().size() > 0) {
-			ps = con.prepareStatement("DELETE from playerarmies WHERE playerID = " + getDBId());
+			ps = CampaignMain.cm.MySQL.getPreparedStatement("DELETE from playerarmies WHERE playerID = " + getDBId());
 			ps.executeUpdate();
 			for (int i = 0; i < getArmies().size(); i++) {
 
 					sql.setLength(0);
 					sql.append("INSERT into playerarmies set playerID = " + getDBId() + ", armyID = " + getArmies().elementAt(i).getID() + ", armyString = ?");
-					ps=con.prepareStatement(sql.toString());
+					ps=CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
 					ps.setString(1, getArmies().elementAt(i).toString(false,"%"));
 					ps.executeUpdate();			
 				}
@@ -2923,6 +2921,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				CampaignMain.cm.MySQL.linkPilotToPlayer(((SPilot)currList.get(position)).getDBId(), getDBId());
 			}
 		}
+		ps.close();
 		MWServ.mwlog.dbLog("Finished saving player");
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL error in SPlayer.toDB: " + e.getMessage());
@@ -3186,10 +3185,9 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	public void fromDB(int playerID) {
 		this.isLoading = true;
 		try {
-		Connection con = CampaignMain.cm.MySQL.getCon();
 		ResultSet rs = null, rs1=null;
-		Statement stmt = con.createStatement();
-		Statement stmt1 = con.createStatement();
+		Statement stmt = CampaignMain.cm.MySQL.getStatement();
+		Statement stmt1 = CampaignMain.cm.MySQL.getStatement();
 		rs = stmt.executeQuery("SELECT * from players WHERE playerID = " + playerID);
 		if(rs.next()) {
 			this.armies.clear();
@@ -3326,11 +3324,11 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	        	this.fixPilot(currU);
 	        }
 		}
-		stmt.close();
-		stmt1.close();
 		rs.close();
 		if(rs1 != null)
 			rs1.close();
+		stmt.close();
+		stmt1.close();
 		this.isLoading = false;
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in SPlayer.fromDB: " + e.getMessage());

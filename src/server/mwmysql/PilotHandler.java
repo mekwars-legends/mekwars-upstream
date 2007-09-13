@@ -76,6 +76,8 @@ public class PilotHandler {
 						p.setPilotId(CampaignMain.cm.getAndUpdateCurrentPilotID());
 				}
 				else {
+					rs.close();
+					stmt.close();
 					return p;
 				}
 				rs.close();
@@ -208,9 +210,9 @@ public class PilotHandler {
 				stmt1.executeUpdate("DELETE from pilotskills WHERE pilotID = " + rs.getInt("pilotID"));
 				stmt1.executeUpdate("DELETE from pilots WHERE pilotID = " + rs.getInt("pilotID"));
 			}
+			rs.close();
 			stmt.close();
 			stmt1.close();
-			rs.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
 		}
@@ -227,9 +229,9 @@ public class PilotHandler {
 				stmt1.executeUpdate("DELETE from pilotskills WHERE pilotID = " + rs.getInt("pilotID"));
 				stmt1.executeUpdate("DELETE from pilots WHERE pilotID = " + rs.getInt("pilotID"));
 			}
+			rs.close();
 			stmt.close();
 			stmt1.close();
-			rs.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
 		}

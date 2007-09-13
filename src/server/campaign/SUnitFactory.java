@@ -97,7 +97,6 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 	}
 	
 	public void toDB() {
-		Connection con = CampaignMain.cm.MySQL.getCon();
 	    Statement stmt = null;
 	    ResultSet rs = null;
 	    StringBuffer sql = new StringBuffer();
@@ -106,9 +105,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 	    int fid=0;
 	    
 	    try {
-	    if(con.isClosed())
-		MWServ.mwlog.dbLog("Error: con closed"); 
-	    stmt = con.createStatement();
+	    stmt = CampaignMain.cm.MySQL.getStatement();
 	    sql.setLength(0); 
 	    sql.append("SELECT FactoryID from factories WHERE FactoryID = '");
 		sql.append(getID());
@@ -128,7 +125,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		sql.append("FactoryPlanet = ?, ");
 		sql.append("FactoryisLocked = ?");
 
-		ps = con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
+		ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 		ps.setString(1, getName());
 		ps.setString(2, getSize());
 		ps.setString(3, getFounder());
@@ -162,7 +159,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 	      sql.append("FactoryisLocked = ? ");
 		  sql.append("WHERE FactoryID = ?");
 
-		  ps = con.prepareStatement(sql.toString());
+		  ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
 		  ps.setString(1, getName());
 		  ps.setString(2, getSize());
 		  ps.setString(3, planet.getName());

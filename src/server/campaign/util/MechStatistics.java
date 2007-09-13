@@ -90,9 +90,8 @@ public String toString()
   
   public void fromDB(int id) {
 	  ResultSet rs = null;
-	  Connection con = CampaignMain.cm.MySQL.getCon();
 	  try {
-		  Statement stmt = con.createStatement();
+		  Statement stmt = CampaignMain.cm.MySQL.getStatement();
 		  rs = stmt.executeQuery("SELECT * from mechstats WHERE ID = " + id);
 		  if(rs.next()) {
 			    this.mechFileName = rs.getString("mechFileName");
@@ -115,7 +114,6 @@ public String toString()
   }
   
   public void toDB() {
-	 Connection con = CampaignMain.cm.MySQL.getCon();
 	 PreparedStatement ps = null;
 	 ResultSet rs = null;
 	 StringBuffer sql = new StringBuffer();
@@ -133,7 +131,7 @@ public String toString()
 		 sql.append("timesDestroyed = ?, ");
 		 sql.append("lastTimeUpdated = ?");
 		 try {
-			 ps = con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
+			 ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 			 ps.setString(1, this.mechFileName);
 			 ps.setInt(2, this.mechSize);
 			 ps.setInt(3, this.gamesWon);
@@ -171,7 +169,7 @@ public String toString()
 		 sql.append("lastTimeUpdated = ? ");
 		 sql.append("WHERE ID = ?");
 		 try {
-			 ps = con.prepareStatement(sql.toString());
+			 ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
 			 ps.setString(1, this.mechFileName);
 			 ps.setInt(2, this.mechSize);
 			 ps.setInt(3, this.gamesWon);

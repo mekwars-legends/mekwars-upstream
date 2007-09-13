@@ -509,8 +509,6 @@ public final class SUnit extends Unit implements Serializable {
 	}
 	
 	public void toDB() {
-		Connection con = CampaignMain.cm.MySQL.getCon();
-		
 		PreparedStatement ps;
 		StringBuffer sql = new StringBuffer();
 		Entity ent = getEntity();
@@ -520,7 +518,7 @@ public final class SUnit extends Unit implements Serializable {
 				// Unit's not in there - insert it
 				sql.setLength(0);
 				sql.append("INSERT into units set MWID=?, uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, uType=?");
-				ps=con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
+				ps=CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, getId());
 				ps.setString(2, getUnitFilename());
 				ps.setInt(3, getPosId());
@@ -554,7 +552,7 @@ public final class SUnit extends Unit implements Serializable {
 				// Unit's already there - update it
 				sql.setLength(0);
 				sql.append("UPDATE units set uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, uType = ? where MWID=?");
-				ps=con.prepareStatement(sql.toString());
+				ps=CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
 				ps.setString(1, getUnitFilename());
 				ps.setInt(2, getPosId());
 				ps.setInt(3, getStatus());
@@ -593,7 +591,7 @@ public final class SUnit extends Unit implements Serializable {
 				if (weapon.hasFlag(WeaponType.F_MG)) {
 					sql.setLength(0);
 					sql.append("INSERT into unit_mgs set unitID=?, mgLocation=?, mgRapidFire=?");
-					ps = con.prepareStatement(sql.toString());
+					ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
 					ps.setInt(1, getId());
 					ps.setInt(2, location);
 					ps.setString(3, Boolean.toString(mWeapon.isRapidfire()));
@@ -613,7 +611,7 @@ public final class SUnit extends Unit implements Serializable {
 				AmmoType at = (AmmoType)mAmmo.getType();
 				sql.setLength(0);
 				sql.append("INSERT into unit_ammo set unitID = ?, ammoLocation = ?, ammoHotLoaded=?, ammoType=?, ammoInternalName=?, ammoShotsLeft=?");
-				ps = con.prepareStatement(sql.toString());
+				ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
 				ps.setInt(1, getId());
 				ps.setInt(2, AmmoLoc);
 				ps.setString(3, Boolean.toString(hotloaded));
@@ -797,9 +795,8 @@ public final class SUnit extends Unit implements Serializable {
 	
 	public void fromDB(int unitID) {
 		try {
-			Connection con = CampaignMain.cm.MySQL.getCon();
 			ResultSet rs;
-			Statement stmt = con.createStatement();
+			Statement stmt = CampaignMain.cm.MySQL.getStatement();
 			
 			rs = stmt.executeQuery("SELECT * from units WHERE MWID = " + unitID);
 			if(rs.next()) {

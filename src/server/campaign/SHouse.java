@@ -303,8 +303,6 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 	public void toDB() {
 		MWServ.mwlog.dbLog("Saving Faction " + getName());
 		
-		Connection con = CampaignMain.cm.MySQL.getCon();
-		
 		PreparedStatement ps;
 		StringBuffer sql = new StringBuffer();
 		ResultSet rs = null;
@@ -332,7 +330,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 				sql.append("fIsNewbieHouse = ?, ");
 				sql.append("fIsMercHouse = ?");
 
-				ps = con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
+				ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setString(1, getName());
 				ps.setInt(2, getMoney());
 				ps.setString(3, getHouseColor());
@@ -376,7 +374,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 				sql.append("fBaseGunner = ?, ");
 				sql.append("fBasePilot = ? ");
 				sql.append("WHERE ID = ?");
-				ps = con.prepareStatement(sql.toString());
+				ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
 				ps.setString(1, getName());
 				ps.setInt(2, getMoney());
 				ps.setString(3, getHouseColor());
@@ -490,7 +488,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 				for (int pos = 0; pos < Unit.MAXBUILD; pos ++ ) {
 					String skill = getBasePilotSkill(pos);
 
- 					ps = con.prepareStatement("INSERT into faction_pilot_skills set factionID = ?, skillID = ?, pilotSkills = ?");
+ 					ps = CampaignMain.cm.MySQL.getPreparedStatement("INSERT into faction_pilot_skills set factionID = ?, skillID = ?, pilotSkills = ?");
 					ps.setInt(1, getDBId());
 					ps.setString(3, skill);
 					ps.setInt(2, pos);
@@ -2596,15 +2594,14 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		int dbId = this.getDBId();
 		PreparedStatement ps = null;
 		try {
-			Connection con = CampaignMain.cm.MySQL.getCon();
-			ps = con.prepareStatement("DELETE from faction_configs WHERE factionID = " + dbId);
+			ps = CampaignMain.cm.MySQL.getPreparedStatement("DELETE from faction_configs WHERE factionID = " + dbId);
 			ps.executeUpdate();
 			config.setProperty("TIMESTAMP", Long.toString((System.currentTimeMillis())));
 			for (Enumeration e = config.keys(); e.hasMoreElements();) {
 				String key = (String)e.nextElement();
 				String val = config.getProperty(key);
 				String sql = "INSERT into faction_configs SET factionID = " + dbId + ", configKey = ?, configValue = ?";
-				ps = con.prepareStatement(sql);
+				ps = CampaignMain.cm.MySQL.getPreparedStatement(sql);
 				ps.setString(1, key);
 				ps.setString(2, val);
 				ps.executeUpdate();
@@ -2632,11 +2629,10 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 	}
 
 	public void loadConfigFileFromDB() {
-		Connection con = CampaignMain.cm.MySQL.getCon();
 		ResultSet rs = null;
 		Statement stmt = null;
 		try {
-			stmt = con.createStatement();
+			stmt = CampaignMain.cm.MySQL.getStatement();
 			rs = stmt.executeQuery("SELECT configKey, configValue from faction_configs WHERE factionID = " + this.getDBId());
 			boolean configCreated=false;
 			while(rs.next()) {
@@ -2646,6 +2642,8 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 				}
 				this.config.setProperty(rs.getString("configKey"), rs.getString("configValue"));
 			}
+			rs.close();
+			stmt.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in SHouse.loadConfigFileFromDB: " + e.getMessage());
 		}

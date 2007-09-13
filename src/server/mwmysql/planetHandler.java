@@ -127,11 +127,9 @@ public void loadPlanets(CampaignData data) {
 					  			  
 			  CampaignMain.cm.addPlanet(p);
 			  p.setOwner(null, p.checkOwner(), false);
-			  rs.close();
-			  stmt.close();
 		  }
-
-
+		  rs.close();
+		  stmt.close();
 	  } catch (SQLException e) {
 		  MWServ.mwlog.dbLog("SQL Error in loadPlanets: " + e.getMessage());
 		}

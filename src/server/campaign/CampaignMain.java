@@ -4181,8 +4181,7 @@ public final class CampaignMain implements Serializable {
 
 	private void loadMechStatsFromDB() {
 		try {
-			Connection con = MySQL.getCon();
-			Statement stmt = con.createStatement();
+			Statement stmt = MySQL.getStatement();
 			ResultSet rs = stmt.executeQuery("SELECT ID from mechstats ORDER BY ID");
 			while(rs.next()) {
 				MechStatistics m = new MechStatistics(rs.getInt("ID"));

@@ -27,6 +27,14 @@ import server.campaign.commands.Command;
 
 
 public class AdminUploadBuildTableCommand implements Command {
+
+	/*
+	 * This command allows an Admin to upload a single build table
+	 * from a directory on their local machine.  The directory structure
+	 * on the local machine must match that on the server - i.e, ./buildtables/rare
+	 * ./buildtables/reward and ./buildtables/standard.  The replacement build
+	 * table is put into place and a backup of the original build table is created.
+	 */
 	
 	int accessLevel = IAuthenticator.ADMIN;
 	public int getExecutionLevel(){return accessLevel;}
@@ -60,6 +68,7 @@ public class AdminUploadBuildTableCommand implements Command {
 			}
 			p.close();
 			out.close();
+			
 			CampaignMain.cm.toUser(fileName + " Saved", Username, true);
 		}
 		catch ( Exception ex){

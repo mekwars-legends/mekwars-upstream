@@ -249,13 +249,12 @@ public class SPersonalPilotQueues {
 	
 	public void fromDB(int playerID) {
 		int capSize = CampaignMain.cm.getIntegerConfig("MaxAllowedPilotsInQueueToBuyFromHouse");
-		Connection con = CampaignMain.cm.MySQL.getCon();
 		ResultSet rs;
 		Statement stmt;
 		int currentCount=0;
 		
 		try {
-			stmt = con.createStatement();
+			stmt = CampaignMain.cm.MySQL.getStatement();
 			rs = stmt.executeQuery("SELECT pilotID, pilotType, pilotSize from pilots WHERE playerID = " + playerID);
 			while(rs.next()) {
 				SPilot p = CampaignMain.cm.MySQL.loadPilot(rs.getInt("pilotID"));

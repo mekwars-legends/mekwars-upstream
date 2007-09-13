@@ -428,7 +428,6 @@ public class SPilot extends Pilot {
 	}
 	
 	public void toDB(int unitType, int unitSize) {
-		Connection con = CampaignMain.cm.MySQL.getCon();
 		try {
 			if(getName().equalsIgnoreCase("Vacant"))
 				return;
@@ -439,7 +438,7 @@ public class SPilot extends Pilot {
 				// No pilot with this id, so INSERT
 				sql.setLength(0);
 
-				ps = con.prepareStatement("INSERT into pilots set MWID=?, pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ?", PreparedStatement.RETURN_GENERATED_KEYS);
+				ps = CampaignMain.cm.MySQL.getPreparedStatement("INSERT into pilots set MWID=?, pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ?", PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setInt(1, getPilotId());
 				ps.setString(2, getName());
 				ps.setInt(3, getExperience());
@@ -458,7 +457,7 @@ public class SPilot extends Pilot {
 				// Pilot already saved, so UPDATE
 				sql.setLength(0);
 
-				ps = con.prepareStatement("UPDATE pilots set pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ?, MWID=? WHERE pilotID=?");
+				ps = CampaignMain.cm.MySQL.getPreparedStatement("UPDATE pilots set pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ?, MWID=? WHERE pilotID=?");
 				ps.setString(1, getName());
 				ps.setInt(2, getExperience());
 				ps.setInt(3, getGunnery());

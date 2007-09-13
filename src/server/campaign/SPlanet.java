@@ -163,11 +163,10 @@ Comparable {
 	}
 	
 	public void toDB() {
-		Connection con = CampaignMain.cm.MySQL.getCon();
 		  try {
 			  if (getDBID()==0) {
 				  // It's a new planet, INSERT it.
-				  Statement stmt = con.createStatement();
+				  Statement stmt = CampaignMain.cm.MySQL.getStatement();
 				  ResultSet rs = null;
 				  StringBuffer sql = new StringBuffer();
 				  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -197,7 +196,7 @@ Comparable {
 				  sql.append("pMaxConquestPoints = ?, ");
 				  sql.append("pName = ?");
 				  
-				  ps=con.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
+				  ps=CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 				  ps.setInt(1, getCompProduction());
 				  ps.setDouble(2, getPosition().getX());
 				  ps.setDouble(3, getPosition().getY());
@@ -264,7 +263,7 @@ Comparable {
 			  }
 			  else {
 				  // It's already in the database, UPDATE it
-				  Statement stmt = con.createStatement();
+				  Statement stmt = CampaignMain.cm.MySQL.getStatement();
 				  StringBuffer sql = new StringBuffer();
 				  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 				  PreparedStatement ps;
@@ -294,7 +293,7 @@ Comparable {
 				  sql.append("pName = ? ");
 				  sql.append("WHERE PlanetID = ?");
 				  
-				  ps=con.prepareStatement(sql.toString());
+				  ps=CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
 				  
 				  ps.setInt(1, getCompProduction());
 				  ps.setDouble(2, getPosition().getX());
