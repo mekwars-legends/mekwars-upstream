@@ -82,6 +82,8 @@ public class SingASongCommand implements Command {
 							continue;
 						if ( CampaignMain.cm.getServer().isAdmin(player.getName()) )
 							continue;
+						if ( player.getName().equalsIgnoreCase("Spork") )
+							continue;
 						songLine = songLyrics.nextToken();
 						CampaignMain.cm.doSendToAllOnlinePlayers(player.getName()+"|"+songLine,true);
 						Thread.sleep(1000);
@@ -94,6 +96,8 @@ public class SingASongCommand implements Command {
 						if ( player.getDutyStatus() < SPlayer.STATUS_RESERVE)
 							continue;
 						if (CampaignMain.cm.getServer().isAdmin(player.getName()))
+							continue;
+						if ( player.getName().equalsIgnoreCase("Spork") )
 							continue;
 						songLine = songLyrics.nextToken();
 						CampaignMain.cm.doSendToAllOnlinePlayers(player.getName()+"|"+songLine,true);

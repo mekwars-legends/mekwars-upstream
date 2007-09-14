@@ -535,6 +535,7 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
     public void addTerrain(PlanetEnvironment pe) {
     	  pe.setId(getUnusedTerrainID());
         terrains.add(pe);
+        terrains.trimToSize();
     }
 
     public PlanetEnvironment getTerrainByName(String TerrainName) {
