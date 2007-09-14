@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -432,7 +431,7 @@ public class SPilot extends Pilot {
 			if(getName().equalsIgnoreCase("Vacant"))
 				return;
 			StringBuffer sql = new StringBuffer();
-			PreparedStatement ps;
+			PreparedStatement ps = null;
 			
 			if(getDBId() == 0){
 				// No pilot with this id, so INSERT

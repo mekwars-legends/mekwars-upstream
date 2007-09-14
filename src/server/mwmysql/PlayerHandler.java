@@ -53,7 +53,7 @@ public class PlayerHandler {
 	
 	public int getPlayerIDByName(String name) {
 		try {
-			PreparedStatement ps;
+			PreparedStatement ps = null;
 			ps = con.prepareStatement("SELECT playerID from players WHERE playerName = ?");
 			ps.setString(1, name);
 			ResultSet rs = ps.executeQuery();
@@ -94,7 +94,7 @@ public class PlayerHandler {
 	}
 	
 	public boolean matchPassword(String playerName, String pass) {
-		PreparedStatement ps;
+		PreparedStatement ps = null;
 		ResultSet rs;
 		try {
 			ps = con.prepareStatement("SELECT playerPassword, MD5(?) as cryptedpass, playerAccess from players WHERE playerName = ?");
@@ -124,8 +124,8 @@ public class PlayerHandler {
 	}
 	
 	public boolean playerExists(String name) {
-		PreparedStatement ps;
-		ResultSet rs;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		try {
 			ps = con.prepareStatement("SELECT COUNT(*) as num from players where playerName = ?");
 			ps.setString(1, name);

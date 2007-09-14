@@ -17,7 +17,6 @@
 package server.campaign;
 
 import java.io.Serializable;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -170,7 +169,7 @@ Comparable {
 				  ResultSet rs = null;
 				  StringBuffer sql = new StringBuffer();
 				  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-				  PreparedStatement ps;
+				  PreparedStatement ps = null;
 				  
 				  sql.append("INSERT into planets set pCompProd = ?, "); 
 				  sql.append("pXpos = ?, ");
@@ -266,7 +265,7 @@ Comparable {
 				  Statement stmt = CampaignMain.cm.MySQL.getStatement();
 				  StringBuffer sql = new StringBuffer();
 				  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-				  PreparedStatement ps;
+				  PreparedStatement ps = null;
 				  
 				  sql.append("UPDATE planets set pCompProd = ?, "); 
 				  sql.append("pXpos = ?, ");

@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -509,7 +508,7 @@ public final class SUnit extends Unit implements Serializable {
 	}
 	
 	public void toDB() {
-		PreparedStatement ps;
+		PreparedStatement ps = null;
 		StringBuffer sql = new StringBuffer();
 		Entity ent = getEntity();
 		
@@ -840,8 +839,8 @@ public final class SUnit extends Unit implements Serializable {
 			}
 
 			setEntity(unitEntity);
-			SPilot p = new SPilot();
-			p = CampaignMain.cm.MySQL.loadUnitPilot(unitID);
+			
+			SPilot p = CampaignMain.cm.MySQL.loadUnitPilot(unitID);
 			setPilot(p);
 			setLastCombatPilot(p.getPilotId());
 			init();

@@ -2701,7 +2701,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	}
 	
 	public void toDB() {
-		PreparedStatement ps;
+		PreparedStatement ps = null;
 		StringBuffer sql = new StringBuffer();
 		try {
 			MWServ.mwlog.dbLog("Saving player " + getName() +  " (DBID: " + getDBId() + ")");		

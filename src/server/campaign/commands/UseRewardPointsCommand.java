@@ -389,6 +389,7 @@ public class UseRewardPointsCommand implements Command {
 		SUnit cm = new SUnit(producer,Filename,weightClass);
 				
 		cm.setPilot(pilot);
+		factory = null;  // clear this out of memory
 		return cm;
 	}
 }

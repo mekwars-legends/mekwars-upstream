@@ -34,7 +34,7 @@ public class UnitHandler {
 	
 	public void linkUnitToPlayer(int unitID, int playerID) {
 		try {
-			PreparedStatement ps;
+			PreparedStatement ps = null;
 			ps = con.prepareStatement("UPDATE units set uFactionID = NULL, uPlayerID = ? WHERE MWID = " + unitID);
 			ps.setInt(1, playerID);
 			ps.executeUpdate();

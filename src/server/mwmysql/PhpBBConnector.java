@@ -123,8 +123,7 @@ public class PhpBBConnector {
 				  	ps.setInt(1, userID);
 				  	ps.setInt(2, groupID);
 				  	ps.executeUpdate();
-				  	rs.close();
-				  	ps.close();
+
 				  	CampaignMain.cm.toUser("Your forum account has been activated.  You can log in to the forum at " + bbUrl + ".", name);
 				  }
 				  break;
@@ -133,7 +132,10 @@ public class PhpBBConnector {
 					break;
 			  	}
 
-
+			  	if(rs != null)
+			  		rs.close();
+			  	if(ps != null)
+			  		ps.close();
 		  } catch(SQLException e) {
 			  MWServ.mwlog.dbLog("SQL Error in PhpBBConnector.addToForum: " + e.getMessage());
 		  }

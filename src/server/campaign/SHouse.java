@@ -303,7 +303,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 	public void toDB() {
 		MWServ.mwlog.dbLog("Saving Faction " + getName());
 		
-		PreparedStatement ps;
+		PreparedStatement ps = null;
 		StringBuffer sql = new StringBuffer();
 		ResultSet rs = null;
 		try {

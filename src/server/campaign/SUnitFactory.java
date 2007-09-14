@@ -25,7 +25,6 @@
 package server.campaign;
 
 import java.io.Serializable;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -101,7 +100,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 	    ResultSet rs = null;
 	    StringBuffer sql = new StringBuffer();
 	    Planet planet = getPlanet();
-	    PreparedStatement ps;
+	    PreparedStatement ps = null;
 	    int fid=0;
 	    
 	    try {

@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
++ More memory tightening
 + Removed all references to MySQL.getCon and MySQL.getBBCon to make sure
   there are no hanging Connections causing memory leaks
 + Typo in activation message when unit is not completely full of ammo.

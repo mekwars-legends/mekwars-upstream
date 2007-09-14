@@ -18,7 +18,7 @@ public class factoryHandler {
     ResultSet rs = null;
    
     try {
-    PreparedStatement ps;	
+    PreparedStatement ps = null;	
     	
 
     ps = con.prepareStatement("SELECT * from factories WHERE FactoryPlanet = ?");
