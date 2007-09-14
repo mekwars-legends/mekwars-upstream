@@ -58,14 +58,14 @@ public class BuyPilotsFromHouseCommand implements Command {
 				numberOfPilots = Integer.parseInt(command.nextToken());
 			
 			if ( p.getPersonalPilotQueue().getPilotQueue(unitType,weightClass).size() > 0 
-					&& !new Boolean(h.getConfig("AllowPlayerToBuyPilotsFromHouseWhenPoolIsFull")).booleanValue() ){
+					&& !h.getBooleanConfig("AllowPlayerToBuyPilotsFromHouseWhenPoolIsFull") ){
 				CampaignMain.cm.toUser("You faction will not let you plunder their pilot reserves while you have perfectly able pilots in your barracks!",Username,true);
 				return;
 			}
 			
 			//ok the faction will allow them to buy pilots even with them in the queue but how many?
 			if (p.getPersonalPilotQueue().getPilotQueue(unitType,weightClass).size() + numberOfPilots > Integer.parseInt(h.getConfig("MaxAllowedPilotsInQueueToBuyFromHouse"))){
-				CampaignMain.cm.toUser("Your Faction will only allow you to buy pilots from their reserve when you have "+new Integer(h.getConfig("MaxAllowedPilotsInQueueToBuyFromHouse")).intValue()+", or less, pilots in your barracks.",Username,true);
+				CampaignMain.cm.toUser("Your Faction will only allow you to buy pilots from their reserve when you have "+h.getIntegerConfig("MaxAllowedPilotsInQueueToBuyFromHouse")+", or less, pilots in your barracks.",Username,true);
 				return;
 			}
 			
@@ -73,9 +73,9 @@ public class BuyPilotsFromHouseCommand implements Command {
 			int money = 0;
             
             if ( unitType == Unit.MEK )
-                money = Integer.parseInt(h.getConfig("CostToBuyNewPilot"));
+                money = h.getIntegerConfig("CostToBuyNewPilot");
             else
-                money = Integer.parseInt(h.getConfig("CostToBuyNewProtoPilot"));
+                money = h.getIntegerConfig("CostToBuyNewProtoPilot");
             
 			if ( p.getMoney() < money*numberOfPilots ){
 				CampaignMain.cm.toUser("You do not have enough money to procure a new pilot from your faction.("+ CampaignMain.cm.moneyOrFluMessage(true,true,money) + ") needed.",Username,true);
