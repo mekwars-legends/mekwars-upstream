@@ -1914,7 +1914,9 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				break;
 			}			
 		}
-
+		if(CampaignMain.cm.isUsingMySQL()) {
+			CampaignMain.cm.MySQL.deleteArmy(getDBId(), armyID);
+		}
 		CampaignMain.cm.toUser("PL|RA|" + armyID, name, false);
 	}
 	

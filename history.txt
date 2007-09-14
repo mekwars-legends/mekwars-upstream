@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
++ Bug: Player defecting with armies causing NPE in database-enabled server
+  if lost units are part of the army.
 + Bug: Losing army Starting BV showing up as 0 due to name case mismatch.
 + Bug: Tank crews reported as killed in Action showing up alive.
 + More memory tightening

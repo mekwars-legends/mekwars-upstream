@@ -33,6 +33,29 @@ public class mysqlHandler{
 		  phpBBCon.close();
   }
   
+  public void clearArmies(int userID) {
+	  try {
+		  PreparedStatement ps = MySQLCon.con.prepareStatement("DELETE from playerarmies WHERE playerID = ?");
+		  ps.setInt(1, userID);
+		  ps.executeUpdate();
+		  ps.close();
+	  } catch (SQLException e) {
+		 MWServ.mwlog.dbLog("SQLException in mysqlHandler.clearArmies: " + e.getMessage());
+	  } 	  
+  }
+  
+  public void deleteArmy(int userID, int armyID) {
+	  try {
+		  PreparedStatement ps = MySQLCon.con.prepareStatement("DELETE from playerarmies WHERE playerID = ? AND armyID = ?");
+		  ps.setInt(1, userID);
+		  ps.setInt(2, armyID);
+		  ps.executeUpdate();
+		  ps.close();
+	  } catch (SQLException e) {
+		  MWServ.mwlog.dbLog("SQLException in mysqlHandler.deleteArmy: " + e.getMessage());
+	  }
+  }
+  
   public void addUserToForum(String name, String pass) {
 	  phpBBCon.addToForum(name, pass);
   }

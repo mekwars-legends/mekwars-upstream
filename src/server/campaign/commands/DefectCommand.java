@@ -473,7 +473,12 @@ public class DefectCommand implements Command {
 				
 				toReturn += ".";
 			}		
+			// Logging in prior to saving will cause an error if the player has lost
+			// Units and those units were in armies.  Clear the armies prior to this if 
+			// using the database to prevent this.
 			
+			if (CampaignMain.cm.isUsingMySQL())
+				CampaignMain.cm.MySQL.clearArmies(p.getDBId());
 			/*
 			 * All returns passed, and command confirmed.
 			 * 
@@ -510,6 +515,14 @@ public class DefectCommand implements Command {
 			 * Might as well just log the player into his new faction. Sort of silly to make
 			 * him redo /c login when we can duplicate the login process right here.
 			 */
+			
+			// Logging in prior to saving will cause an error if the player has lost
+			// Units and those units were in armies.  Clear the armies prior to this if 
+			// using the database to prevent this.
+			
+			if (CampaignMain.cm.isUsingMySQL())
+				CampaignMain.cm.MySQL.clearArmies(p.getDBId());
+			
 			//CampaignMain.cm.getPlayer(Username);
 			CampaignMain.cm.doLoginPlayer(Username);
 			CampaignMain.cm.toUser("SP|Welcome to " + newHouse.getName() +"!",p.getName(), false);
