@@ -46,6 +46,8 @@ public class CancelOfferCommand implements Command {
 				receivingPlayerName = info.getPlayerName();
 				CampaignMain.cm.getUnresolvedContracts().remove(i);
 				contractRemoved = true;
+				CampaignMain.cm.getUnresolvedContracts().trimToSize();
+				break;
 			}//end if(offering player has contract outstanding)
 		}//end for(length of vector)
 		if (contractRemoved == true) {

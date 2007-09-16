@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.Serializable;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -854,7 +853,7 @@ public final class CampaignMain implements Serializable {
 			if (sh.isMercHouse())
 				result.add((MercHouse) currH);
 		}
-
+		result.trimToSize();
 		return result;
 	}
 
@@ -2513,6 +2512,7 @@ public final class CampaignMain implements Serializable {
 				trait = trait.substring(0, trait.indexOf("*"));
 			Vector<String> traitsList = this.getFactionTraits(p
 					.getCurrentFaction());
+			traitsList.trimToSize();
 			for (String traitNames : traitsList) {
 				StringTokenizer traitName = new StringTokenizer(traitNames, "*");
 				String traitString = traitName.nextToken();
@@ -2551,6 +2551,7 @@ public final class CampaignMain implements Serializable {
 				for (int pos = 0; pos < chance; pos++) {
 					skillBuilder.add(skill);
 				}
+				skillBuilder.trimToSize();
 				/*
 				 * //MWServ.mwlog.errLog("Pilot: "+p.getName()+" Skill:
 				 * "+skill.getName()+" Rnd "+rnd+ " chance: "+chance); if ( rnd <=
@@ -3029,6 +3030,7 @@ public final class CampaignMain implements Serializable {
 			MWServ.mwlog.errLog(ex);
 		}
 
+		traits.trimToSize();
 		return traits;
 	}
 

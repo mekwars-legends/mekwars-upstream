@@ -968,6 +968,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			{
 				v.add(new Integer(0));
 			}
+			v.trimToSize();
 			getComponents().put(new Integer(j), v);
 		}
 		// currentPP = new Vector();

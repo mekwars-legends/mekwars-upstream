@@ -55,6 +55,8 @@ public class AcceptContractCommand implements Command {
 					factionToSaveContract.setContract(info, claimingPlayer);
 					contractAccepted = true;
 					CampaignMain.cm.getUnresolvedContracts().remove(i);
+					CampaignMain.cm.getUnresolvedContracts().trimToSize();
+					break;
 				}
 			}//end if(reciev = user)
 		}//end for(search vector)

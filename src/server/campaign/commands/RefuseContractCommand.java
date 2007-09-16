@@ -54,6 +54,8 @@ public class RefuseContractCommand implements Command {
 					contractCancelled = true;
 					CampaignMain.cm.toUser("You refused the contract offered by " + offeringPlayerName,Username,true);
 					CampaignMain.cm.toUser(Username + " refused your contract offer",offeringPlayerName,true);
+					CampaignMain.cm.getUnresolvedContracts().trimToSize();
+					break;
 				}//end if (contract is offered to player attempting to cancel)
 			}//end if(contract offered by proper player)
 		}//end for loop

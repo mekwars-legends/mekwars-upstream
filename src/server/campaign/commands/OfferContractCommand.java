@@ -111,6 +111,7 @@ public class OfferContractCommand implements Command {
 				ContractInfo newContract = new ContractInfo(contractDuration, contractPayment, offeringPlayer.getMyHouse(), receivingPlayerName, contractType);
 				newContract.setOfferingPlayer(offeringPlayer);//set the offering player
 				CampaignMain.cm.getUnresolvedContracts().add(newContract);//add newContract to vector of contracts.
+				CampaignMain.cm.getUnresolvedContracts().trimToSize();
 				CampaignMain.cm.toUser("Accept this contract by <a href=\"MEKWARS/c acceptcontract#" + offeringPlayer.getName()+"\">clicking here</a>",receivingPlayerName ,true);
 				CampaignMain.cm.toUser("Decline this contract by <a href=\"MEKWARS/c refusecontract#" + offeringPlayer.getName()+"\">clicking here</a>",receivingPlayerName,true);
 				CampaignMain.cm.toUser("Cancel this offer by <a href=\"MEKWARS/c canceloffer\">clicking here</a>",Username,true);

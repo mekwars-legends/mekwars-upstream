@@ -566,6 +566,7 @@ public class SArmy extends Army {
 		//TODO: Sort by faction.
 		try {
 			opponents.add(a);
+			opponents.trimToSize();
 		} catch (Exception e) {
 			MWServ.mwlog.errLog("Error adding army to opponentList. Trace follows.");
 			MWServ.mwlog.errLog(e);
@@ -575,6 +576,7 @@ public class SArmy extends Army {
 	public void removeOpponent(SArmy a) {
 		try {
 			opponents.remove(a);
+			opponents.trimToSize();
 		} catch (Exception e) {
 			MWServ.mwlog.errLog("Error removing army from opponentList. Trace follows.");
 			MWServ.mwlog.errLog(e);
