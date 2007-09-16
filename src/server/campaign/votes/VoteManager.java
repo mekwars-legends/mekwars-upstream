@@ -32,7 +32,7 @@ public class VoteManager {
 	
 	//constructor
 	public VoteManager(CampaignMain campmain) {
-		voteVector = new Vector();
+		voteVector = new Vector(1,1);
 		cm = campmain;
 	}
 	
@@ -152,7 +152,7 @@ public class VoteManager {
 	 * @return a vector of votes
 	 */
 	public Vector getAllVotesFor(SPlayer p) {
-		Vector toReturn = new Vector();
+		Vector toReturn = new Vector(1,1);
 		
 		//loop and get the votes
 		Enumeration e = voteVector.elements();
@@ -175,7 +175,7 @@ public class VoteManager {
 	 */
 	public Vector getAllVotesFor(SPlayer p, int type) {
 		Vector votesForPlayer = this.getAllVotesFor(p);
-		Vector toReturn = new Vector();
+		Vector toReturn = new Vector(1,1);
 		Enumeration e = votesForPlayer.elements();
 		while (e.hasMoreElements()) {
 			Vote currVote = (Vote)e.nextElement();
@@ -195,7 +195,7 @@ public class VoteManager {
 	 * @return a vector of votes
 	 */
 	public Vector getAllVotesBy(SPlayer p) {
-		Vector toReturn = new Vector();
+		Vector toReturn = new Vector(1,1);
 		
 		//loop and get the votes
 		Enumeration e = voteVector.elements();
@@ -218,7 +218,7 @@ public class VoteManager {
 	 */
 	public Vector getAllVotesBy(SPlayer p, int type) {
 		Vector votesByPlayer = this.getAllVotesBy(p);
-		Vector toReturn = new Vector();
+		Vector toReturn = new Vector(1,1);
 		Enumeration e = votesByPlayer.elements();
 		while (e.hasMoreElements()) {
 			Vote currVote = (Vote)e.nextElement();
@@ -271,7 +271,7 @@ public class VoteManager {
 	 * given faction, and returns a vector.
 	 */
 	public Vector getAllHouseVotes(SHouse h) {
-		Vector toReturn = new Vector();
+		Vector toReturn = new Vector(1,1);
 		Enumeration e = voteVector.elements();
 		while (e.hasMoreElements()) {
 			//can assume votes are all for people in the same faction,
@@ -293,7 +293,7 @@ public class VoteManager {
 	 */
 	public Vector getAllHouseVotes(SHouse h, int type) {
 		Vector factionVotes = this.getAllHouseVotes(h);
-		Vector toReturn = new Vector();
+		Vector toReturn = new Vector(1,1);
 		Enumeration e = factionVotes.elements();
 		while (e.hasMoreElements()) {
 			Vote currVote = (Vote)e.nextElement();

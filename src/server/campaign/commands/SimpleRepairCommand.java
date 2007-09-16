@@ -61,8 +61,8 @@ public class SimpleRepairCommand implements Command {
 			}
 		}
 		
-        Vector<Integer> techs = new Vector<Integer>(7);
-        Vector<Integer> rolls = new Vector<Integer>(7);
+        Vector<Integer> techs = new Vector<Integer>(7,1);
+        Vector<Integer> rolls = new Vector<Integer>(7,1);
         
         try{
         

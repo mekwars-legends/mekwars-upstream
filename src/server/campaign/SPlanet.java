@@ -577,7 +577,7 @@ Comparable {
 	}
 	
 	public Vector<SUnitFactory> getFactoriesByName(String s) {
-		Vector<SUnitFactory> result = new Vector<SUnitFactory>();
+		Vector<SUnitFactory> result = new Vector<SUnitFactory>(getUnitFactories().size(),1);
 		for (int i = 0; i < getUnitFactories().size(); i++) {
 			SUnitFactory MF = (SUnitFactory) getUnitFactories().get(i);
 			if (MF.getName().equals(s)) result.add(MF);
@@ -586,7 +586,7 @@ Comparable {
 	}
 	
 	public Vector<SUnitFactory> getFactoriesOfWeighclass(int weightclass) {
-		Vector<SUnitFactory> result = new Vector<SUnitFactory>();
+		Vector<SUnitFactory> result = new Vector<SUnitFactory>(getUnitFactories().size(),1);
 		for (int i = 0; i < getUnitFactories().size(); i++) {
 			SUnitFactory MF = (SUnitFactory) getUnitFactories().get(i);
 			if (MF.getWeightclass() == weightclass) result.add(MF);
@@ -596,10 +596,10 @@ Comparable {
 	
 	/**
 	 * @param Attacker - attacking faction
-	 * @return potential defending hosues (ie - those with territory on the world)
+	 * @return potential defending houses (ie - those with territory on the world)
 	 */
 	public Vector getDefenders(SHouse Attacker) {
-		Vector result = new Vector();
+		Vector result = new Vector(1,1);
 		Iterator it = getInfluence().getHouses().iterator();
 		while (it.hasNext()) {
 			SHouse h = (SHouse) it.next();

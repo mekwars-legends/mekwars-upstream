@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
++ Changed all Initilization calls for Vectors to use 
+	Vector(int initialCapacity, int capacityIncrement) 
 + Added trimToSize() calls for vectors client and server side.
 + Bug: Player defecting with armies causing NPE in database-enabled server
   if lost units are part of the army.

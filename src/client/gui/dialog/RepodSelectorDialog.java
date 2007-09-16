@@ -256,7 +256,7 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
 	
 	private void filterMechs() {
 		
-		Vector vMechs = new Vector();
+		Vector vMechs = new Vector(1,1);
 		MechSummary[] mechs = MechSummaryCache.getInstance().getAllMechs();
 		
 		//break out if there are no units to filter

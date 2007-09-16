@@ -35,7 +35,7 @@ public class Army {
 	public static final int NO_LIMIT = -1;
 	
 	//VARIABLES
-	private Vector<Unit> units = new Vector<Unit>();
+	private Vector<Unit> units = new Vector<Unit>(1,1);
 	private String name = " ";
 	
 	private int upperLimiter = NO_LIMIT;
@@ -49,7 +49,7 @@ public class Army {
 	
 	private Hashtable<Integer,Integer> c3Network = new Hashtable<Integer,Integer>();
 
-	private Vector<Integer> commanders = new Vector<Integer>();
+	private Vector<Integer> commanders = new Vector<Integer>(1,1);
 	
 	//CONSTRUCTORS
 	public Army(){

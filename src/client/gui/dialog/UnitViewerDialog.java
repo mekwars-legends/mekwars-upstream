@@ -416,7 +416,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
     }
 	private void filterMechs(boolean calledByAdvancedSearch) {
 		
-		Vector vMechs = new Vector();
+		Vector vMechs = new Vector(1,1);
 		
         int nType = chType.getSelectedIndex();
         int nUnitType = chUnitType.getSelectedIndex();

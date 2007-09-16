@@ -92,8 +92,8 @@ public class CPlayer extends Player {
 		Influence = 0;
 		Rating = 0;
 		House = "";
-		Hangar = new Vector<CUnit>();
-		Armies = new Vector<CArmy>();
+		Hangar = new Vector<CUnit>(1,1);
+		Armies = new Vector<CArmy>(1,1);
 		AutoArmy = new ArrayList<CUnit>();
 		personalPilotQueue = new CPersonalPilotQueues();
 		adminExcludes = new ArrayList<String>();
@@ -943,7 +943,7 @@ public class CPlayer extends Player {
 			Arrays.sort(unitsArray, new CUnitComparator(primarySort));
 		
 		// overwrite the hangar with a new arraylist constructed from the unitsArray.
-		Vector<CUnit> Hangar2 = new Vector<CUnit>();
+		Vector<CUnit> Hangar2 = new Vector<CUnit>(1,1);
 		for (int i = 0; i < unitsArray.length; i++)
 			Hangar2.add((CUnit) unitsArray[i]);
 		

@@ -76,7 +76,7 @@ import server.campaign.pilot.skills.SPilotSkill;
      boolean debug = false;
      int port = 80;
      private int queueSize = 100;
-     private Vector<String> messageQueue = new Vector<String>(10);
+     private Vector<String> messageQueue = new Vector<String>(10,1);
      
      //Initalize the main Comm class.
      public MWCyclopsComm(String ip, String servername, String URL, boolean debug){
@@ -264,7 +264,7 @@ import server.campaign.pilot.skills.SPilotSkill;
      public void planetWriteFromList(Collection<Planet> planets){
          String message = "";
          
-         Collection<Planet> planetList = new Vector<Planet>(queueSize+1);//set up so it stars with 51 slots so we don't have to worry about overflow and extra memory usage.
+         Collection<Planet> planetList = new Vector<Planet>(queueSize+1,1);//set up so it stars with 51 slots so we don't have to worry about overflow and extra memory usage.
 
          //Having issues with traffic so we parse down the size of the packets to 50 planets.
          for ( Planet planet : planets ){
@@ -309,7 +309,7 @@ import server.campaign.pilot.skills.SPilotSkill;
 
      public void unitTemplateWriteFromList(Vector<SUnit> units){
          String message = "";
-         Vector<SUnit> unitList = new Vector<SUnit>(queueSize+1);
+         Vector<SUnit> unitList = new Vector<SUnit>(queueSize+1,1);
          
          for ( SUnit unit: units){
          

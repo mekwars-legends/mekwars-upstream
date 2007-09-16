@@ -42,7 +42,7 @@ public class TableSorter extends TableMap {
 	public final static int SORTER_BMPARTS = 3;
 
 	int	indexes[];
-	Vector<Integer>   sortingColumns = new Vector<Integer>();
+	Vector<Integer>   sortingColumns = new Vector<Integer>(1,1);
 	boolean	ascending = true;
 	int	compares;
 	int sortMode;

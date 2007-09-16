@@ -156,8 +156,8 @@ public final class MWClient implements IClient {
 	TreeMap<String,MMGame> servers = new TreeMap<String,MMGame>();//hostname,mmgame
 	Server myServer;
 	Date mytime = new Date(System.currentTimeMillis());
-	Vector<IOption> GameOptions = new Vector<IOption>();
-	Vector<String> decodeBuffer = new Vector<String>();//used to buffer incoming data until CMainFrame is built
+	Vector<IOption> GameOptions = new Vector<IOption>(1,1);
+	Vector<String> decodeBuffer = new Vector<String>(1,1);//used to buffer incoming data until CMainFrame is built
 	Browser browser;
 	
 	boolean SignOff = false;
@@ -228,10 +228,10 @@ public final class MWClient implements IClient {
 	HashMap<String,Command> commands = new HashMap<String,Command>();
     
 	String LastQuery = ""; // receiver of last mail
-	Vector<String> IgnorePublic = new Vector<String>(); // people whose public messages are ignored
-	Vector<String> IgnoreHouse = new Vector<String>(); // people whose faction messages are ignored
-	Vector<String> IgnorePrivate = new Vector<String>(); // people whose private messages are ignored
-	Vector<String> KeyWords = new Vector<String>(); // words announced with sound
+	Vector<String> IgnorePublic = new Vector<String>(1,1); // people whose public messages are ignored
+	Vector<String> IgnoreHouse = new Vector<String>(1,1); // people whose faction messages are ignored
+	Vector<String> IgnorePrivate = new Vector<String>(1,1); // people whose private messages are ignored
+	Vector<String> KeyWords = new Vector<String>(1,1); // words announced with sound
 	private String cacheDir;
 	
 	/**
@@ -339,7 +339,7 @@ public final class MWClient implements IClient {
 		Connector = new CConnector(this);
 		Connector.setSplashWindow(splash);//may set null if ded.
 		
-		Users = Collections.synchronizedList(new Vector<CUser>());
+		Users = Collections.synchronizedList(new Vector<CUser>(1,1));
 		
         //Non-ded's get a GUI, show signon dialog, etc.
 		if (!isDedicated()) {
@@ -1252,7 +1252,7 @@ public final class MWClient implements IClient {
 		if (type == IGNORE_PUBLIC) {return IgnorePublic;}
 		if (type == IGNORE_HOUSE) {return IgnoreHouse;}
 		if (type == IGNORE_PRIVATE) {return IgnorePrivate;}
-		return(new Vector<String>());   
+		return(new Vector<String>(1,1));   
 	}
 	
 	public boolean isIgnored(String name, int type) {
@@ -1379,7 +1379,7 @@ public final class MWClient implements IClient {
 	}
 	
 	protected Vector<String> splitString(String string, String splitter) {
-		Vector<String> vector = new Vector<String>();
+		Vector<String> vector = new Vector<String>(1,1);
 		String[] splitted = string.split(splitter);
 		for (int i = 0; i < splitted.length; i++) {vector.add(splitted[i].trim());}
 		

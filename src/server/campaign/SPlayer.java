@@ -102,8 +102,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	
 	private long lastOnline = 0;
 	
-	private Vector<SUnit> units = new Vector<SUnit>();
-	private Vector<SArmy> armies = new Vector<SArmy>();
+	private Vector<SUnit> units = new Vector<SUnit>(1,1);
+	private Vector<SArmy> armies = new Vector<SArmy>(1,1);
 	
 	private Vector<Integer> totalTechs = new Vector<Integer>(4, 1);
 	private Vector<Integer> availableTechs = new Vector<Integer>(4, 1);
@@ -684,7 +684,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		
 		// filter out units which are already unmaintained, for_sale or
 		// destroyed
-		Vector<SUnit> okUnitsData = new Vector<SUnit>();
+		Vector<SUnit> okUnitsData = new Vector<SUnit>(1,1);
 		for (SUnit currU : units) {
 			if (currU.getStatus() == Unit.STATUS_OK)
 				okUnitsData.add(currU);
@@ -1173,7 +1173,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		// only get the weight if it hasnt been calculated already.
 		if (weightedArmyNumber <= 0) {
 			
-			Vector<SArmy> orderedArmies = new Vector<SArmy>();
+			Vector<SArmy> orderedArmies = new Vector<SArmy>(1,1);
 			
 			int MinCount = Integer.parseInt(this.getMyHouse().getConfig("MinCountForTick"));
 			int MaxCount = Integer.parseInt(this.getMyHouse().getConfig("MaxCountForTick"));
@@ -1524,8 +1524,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			}
 		}
 		
-		units = new Vector<SUnit>();
-		armies = new Vector<SArmy>();
+		units = new Vector<SUnit>(1,1);
+		armies = new Vector<SArmy>(1,1);
 		
 		if (sendStatus)
 			CampaignMain.cm.toUser("PS|" + this.toString(true), name,false);
@@ -2968,7 +2968,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			
 			int numofarmies = 0;
 			int numofUnits = Integer.parseInt((String) ST.nextElement());
-			units = new Vector<SUnit>();
+			units = new Vector<SUnit>(1,1);
 			
 			for (int i = 0; i < numofUnits; i++) {
 				SUnit m = new SUnit();
@@ -3201,7 +3201,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			money = rs.getInt("playerMoney");
 			experience = rs.getInt("playerExperience");
 			
-			units = new Vector<SUnit>();
+			units = new Vector<SUnit>(1,1);
 			
 			rs1 = stmt1.executeQuery("SELECT MWID from units WHERE uplayerID = " + playerID);
 			while(rs1.next()) {

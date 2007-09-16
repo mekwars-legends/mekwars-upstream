@@ -60,8 +60,8 @@ public class ExclusionList {
 		owner = "";
 		
 		//build the vectors
-		playerExcludes = new Vector<String>(maxSize);
-		adminExcludes = new Vector<String>(maxSize);
+		playerExcludes = new Vector<String>(maxSize,1);
+		adminExcludes = new Vector<String>(maxSize,1);
 	}
 	
 	/**

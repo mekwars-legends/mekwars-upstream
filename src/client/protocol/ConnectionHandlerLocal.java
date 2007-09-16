@@ -130,7 +130,7 @@ class WriterThread extends Thread {
     WriterThread(PrintStream out) {
         super("ConnectionHandler$WriterThread");
         _out = out;
-        outgoingMessages = new Vector();
+        outgoingMessages = new Vector(1,1);
     }
 
     @Override

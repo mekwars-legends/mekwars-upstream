@@ -34,7 +34,7 @@ import client.campaign.CUnit;
 
 public class SalvageManagmentThread extends Thread{
     
-    private Vector<ConcurrentLinkedQueue<String>> workOrders = new Vector<ConcurrentLinkedQueue<String>>(5);
+    private Vector<ConcurrentLinkedQueue<String>> workOrders = new Vector<ConcurrentLinkedQueue<String>>(5,1);
     private long averageRepairTime = 1000;
     private MWClient client = null;
     

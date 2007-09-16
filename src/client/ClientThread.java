@@ -150,7 +150,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 		gui = new ClientGUI(client);
 		gui.initialize();
 		//client.game.getOptions().
-        Vector<IBasicOption> xmlGameOptions = new Vector<IBasicOption>();
+        Vector<IBasicOption> xmlGameOptions = new Vector<IBasicOption>(1,1);
         Vector<IOption> loadOptions = client.game.getOptions().loadOptions();
         
         //Load Defaults first.
@@ -224,7 +224,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
                     mySettings = new MapSettings(aTerrain.getXSize(),aTerrain.getYSize(), aTerrain.getXBoardSize(),aTerrain.getYBoardSize());
                     
                     //MMClient.mwClientLog.clientErrLog("Board x: "+myClient.getBoardSize().width+"Board y: "+myClient.getBoardSize().height+"Map x: "+myClient.getMapSize().width+"Map y: "+myClient.getMapSize().height);
-                    Vector<String> boardvec = new Vector<String>();
+                    Vector<String> boardvec = new Vector<String>(1,1);
                     if (aTerrain.getStaticMapName().equalsIgnoreCase("surprise") )
                     {
                         int maxBoards = aTerrain.getXBoardSize() * aTerrain.getYBoardSize();
@@ -269,7 +269,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
                     	mySettings.setTheme("");
                     
                     /* select the map */
-                    Vector<String> boardvec = new Vector<String>();
+                    Vector<String> boardvec = new Vector<String>(1,1);
                     boardvec.add(MapSettings.BOARD_GENERATED);
                     mySettings.setBoardsSelectedVector(boardvec);
 
@@ -937,7 +937,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 	 * and returns them.
 	 */
 	private Vector<String> scanForBoards(int boardWidth, int boardHeight) {
-		Vector<String> boards = new Vector<String>();
+		Vector<String> boards = new Vector<String>(1,1);
 		//Board Board = client.game.getBoard();
 		File boardDir = new File("data/boards");
 		
@@ -948,7 +948,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 		
 		// scan files
 		String[] fileList = boardDir.list();
-		Vector<String> tempList = new Vector<String>();
+		Vector<String> tempList = new Vector<String>(1,1);
 		Comparator<? super String> sortComp = ClientThread.stringComparator();
 		for (int i = 0; i < fileList.length; i++) {
 			if (fileList[i].indexOf(".board") == -1) {
@@ -978,7 +978,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
     private Vector<BuildingTemplate> generateRandomBuildings(MapSettings mapSettings, Buildings buildingTemplate){
         
         Vector<BuildingTemplate> buildingList = new Vector<BuildingTemplate>();
-        Vector<String> buildingTypes = new Vector<String>();
+        Vector<String> buildingTypes = new Vector<String>(1,1);
         
         int width = mapSettings.getBoardWidth();
         int height = mapSettings.getBoardHeight();
@@ -1024,7 +1024,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
         for ( int count = 0; count < buildingTemplate.getTotalBuildings(); count++){
             int loops = 0;
             boolean CFx2 = false;
-            Vector<Coords> coordList = new Vector<Coords>();
+            Vector<Coords> coordList = new Vector<Coords>(1,1);
             do{
                 if ( loops++ > 100 ){
                     CFx2 = true;

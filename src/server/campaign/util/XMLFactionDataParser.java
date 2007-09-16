@@ -53,7 +53,7 @@ public class XMLFactionDataParser implements XMLResponder {
 	boolean canDefectFrom = true;
 	boolean canDefectTo = true;
 	
-	Vector<SHouse> Factions = new Vector<SHouse>();
+	Vector<SHouse> Factions = new Vector<SHouse>(1,1);
 	
 	private String Filename;
 	private String prefix;

@@ -42,21 +42,21 @@ public class SArmy extends Army {
 	
 	//VARIABLES
 	private float rawForceSize = 0;
-	private Vector<SArmy> opponents = new Vector<SArmy>();
+	private Vector<SArmy> opponents = new Vector<SArmy>(1,1);
 	private TreeMap<String,String> legalOperations = new TreeMap<String,String>();
 	private String playerName = "";
 	
 	//CONSTRUCTORS
 	public SArmy(String ownerName) {
 		super();
-		opponents = new Vector<SArmy>();
+		opponents = new Vector<SArmy>(1,1);
 		playerName = ownerName;
 	}
 	
 	public SArmy(int id, String ownerName){
 		super();
 		setID(id);
-		opponents = new Vector<SArmy>();
+		opponents = new Vector<SArmy>(1,1);
 		playerName = ownerName;
 	}
 	

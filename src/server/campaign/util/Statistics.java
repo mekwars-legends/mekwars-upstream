@@ -103,7 +103,7 @@ public class Statistics {
 		    }
 		    TreeSet Sorted = new TreeSet(allplayers.values());
 		    Iterator i = Sorted.iterator();
-		    Vector v = new Vector();
+		    Vector v = new Vector(1,1);
 		    boolean color = false;
 		    while (i.hasNext())
 		        v.add(i.next());
@@ -175,7 +175,7 @@ public class Statistics {
 	    TreeSet Sorted = new TreeSet(allplayers.values());
 	
 	    Iterator i = Sorted.iterator();
-	    Vector v = new Vector();
+	    Vector v = new Vector(1,1);
 	    while (i.hasNext())
 	        v.add(i.next());
 	    result.append("<table cellpadding=\"3\" cellspacing=\"0\"><tr bgcolor=\"#0066FF\"><th><font color=\"#FFFFFF\">Rank</font></th><th><font color=\"#FFFFFF\">Name</th><th><font color=\"#FFFFFF\">Experience</th><th><font color=\"#FFFFFF\">House</th><th><font color=\"#FFFFFF\">House Rank</th><th><font color=\"#FFFFFF\">Comment</th></tr>");

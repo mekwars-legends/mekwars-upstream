@@ -218,7 +218,7 @@ public class OpponentListHelper {
 			}
 
 			//reset currArmy's OpponentList
-			currArmy.setOpponents(new Vector());
+			currArmy.setOpponents(new Vector(1,1));
 
 		}//end while(more armies to unlink)
 	}//end removeOpponentsForAll()

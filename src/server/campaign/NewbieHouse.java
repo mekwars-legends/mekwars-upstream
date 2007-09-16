@@ -236,7 +236,7 @@ public class NewbieHouse extends NonConqHouse {
 	 */
 	public String getNewSOLUnits(SPlayer p, String houseName) {
 		
-		Vector<SUnit> units = new Vector<SUnit>();
+		Vector<SUnit> units = new Vector<SUnit>(1,1);
 		
 		//meks
 		int numLMeks = CampaignMain.cm.getIntegerConfig("SOLLightMeks");

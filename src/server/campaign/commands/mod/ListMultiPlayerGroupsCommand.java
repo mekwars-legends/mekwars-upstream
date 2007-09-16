@@ -71,7 +71,7 @@ public class ListMultiPlayerGroupsCommand implements Command {
 			{
 				Vector v;
 				if (result.get(p.getGroupAllowance()) == null)
-					v = new Vector();
+					v = new Vector(1,1);
 				else
 					v = (Vector)result.get(p.getGroupAllowance());
 				v.add(p);

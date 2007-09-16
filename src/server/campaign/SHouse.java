@@ -588,11 +588,11 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			// Init all of the hangars
 			for (int i = 0; i < 4; i++) {
 
-				getHangar(Unit.MEK).add(new Vector<SUnit>());
-				getHangar(Unit.VEHICLE).add(new Vector<SUnit>());
-				getHangar(Unit.INFANTRY).add(new Vector<SUnit>());
-				getHangar(Unit.BATTLEARMOR).add(new Vector<SUnit>());
-				getHangar(Unit.PROTOMEK).add(new Vector<SUnit>());
+				getHangar(Unit.MEK).add(new Vector<SUnit>(1,1));
+				getHangar(Unit.VEHICLE).add(new Vector<SUnit>(1,1));
+				getHangar(Unit.INFANTRY).add(new Vector<SUnit>(1,1));
+				getHangar(Unit.BATTLEARMOR).add(new Vector<SUnit>(1,1));
+				getHangar(Unit.PROTOMEK).add(new Vector<SUnit>(1,1));
 			}
 
             boolean newbieHouse = this.isNewbieHouse();
@@ -973,31 +973,31 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		}
 		// currentPP = new Vector();
 		setMoney(0);
-		getHangar().put(new Integer(Unit.MEK), new Vector());
-		getHangar().put(new Integer(Unit.VEHICLE), new Vector());
-		getHangar().put(new Integer(Unit.INFANTRY), new Vector());
-		getHangar().put(new Integer(Unit.PROTOMEK), new Vector());
-		getHangar().put(new Integer(Unit.BATTLEARMOR), new Vector());
+		getHangar().put(new Integer(Unit.MEK), new Vector(1,1));
+		getHangar().put(new Integer(Unit.VEHICLE), new Vector(1,1));
+		getHangar().put(new Integer(Unit.INFANTRY), new Vector(1,1));
+		getHangar().put(new Integer(Unit.PROTOMEK), new Vector(1,1));
+		getHangar().put(new Integer(Unit.BATTLEARMOR), new Vector(1,1));
 		for (int i = 0; i < 4; i++) {
-			Vector v = new Vector();
+			Vector v = new Vector(1,1);
 			getHangar(Unit.MEK).add(v);
 		}
 		for (int i = 0; i < 4; i++) {
-			Vector v = new Vector();
+			Vector v = new Vector(1,1);
 			getHangar(Unit.VEHICLE).add(v);
 		}
 		if (Boolean.parseBoolean(this.getConfig("UseInfantry"))) {
 			for (int i = 0; i < 4; i++) {
-				Vector v = new Vector();
+				Vector v = new Vector(1,1);
 				getHangar(Unit.INFANTRY).add(v);
 			}
 		}
 		for (int i = 0; i < 4; i++) {
-			Vector v = new Vector();
+			Vector v = new Vector(1,1);
 			getHangar(Unit.PROTOMEK).add(v);
 		}
 		for (int i = 0; i < 4; i++) {
-			Vector v = new Vector();
+			Vector v = new Vector(1,1);
 			getHangar(Unit.BATTLEARMOR).add(v);
 		}
 
@@ -1599,7 +1599,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 	}
 
 	public Vector<SUnitFactory> getPossibleFactoryForProduction(int type, int weight, boolean ignoreRefresh) {
-		Vector<SUnitFactory> possible = new Vector<SUnitFactory>();
+		Vector<SUnitFactory> possible = new Vector<SUnitFactory>(1,1);
 		Iterator e = Planets.values().iterator();
 		while (e.hasNext()) {
 			SPlanet p = (SPlanet) e.next();
@@ -1629,7 +1629,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			return null;
 		
 		//sort out non-faction factories and return if none exist
-		Vector<SUnitFactory> factionPossible = new Vector<SUnitFactory>();
+		Vector<SUnitFactory> factionPossible = new Vector<SUnitFactory>(1,1);
 		for (SUnitFactory currFac : allPossible) {
 			if (currFac.getFounder().equalsIgnoreCase(this.getName()))
 				factionPossible.add(currFac);
@@ -1702,7 +1702,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			MWServ.mwlog.errLog(ex);
 			MWServ.mwlog.errLog("Error in addPP()");
 			MWServ.mwlog.errLog("weight: " + weight + " type: " + type_id + " value: " + val);
-			Vector v = new Vector();
+			Vector v = new Vector(1,1);
 			for (int i = 0; i < 4; i++)// Weight
 				v.add(new Integer(0));
 			

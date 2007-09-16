@@ -193,7 +193,7 @@ public class CHSPanel extends JPanel {
 		//if there isn't a vector for this type + weight combo already, create one
 		Vector<HSMek> weightAndTypeVec = unitsInfo.get(weight + "$" + type);
 		if (weightAndTypeVec == null) {
-			weightAndTypeVec = new Vector<HSMek>();
+			weightAndTypeVec = new Vector<HSMek>(1,1);
 			unitsInfo.put(weight + "$" + type, weightAndTypeVec);
 		}
 		

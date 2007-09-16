@@ -92,7 +92,7 @@ import client.gui.SpringLayoutHelper;
     private int selectedSlot = -1;
     private boolean armor = false;
     private int tablocation = 0;
-    private Vector<Integer> techs = new Vector<Integer>();
+    private Vector<Integer> techs = new Vector<Integer>(1,1);
     private int techType = UnitUtils.TECH_GREEN;
     private int baseLineCost = 0;
     private int techWorkMod = 0;
@@ -594,8 +594,8 @@ import client.gui.SpringLayoutHelper;
             for (int location = 0; location < unit.locations(); location++) {
                 JPanel locationPanel = new JPanel();
                 locationPanel.addMouseListener(this);
-                Vector<String> critNames = new Vector<String>();
-                Vector<String> armorNames = new Vector<String>(3);
+                Vector<String> critNames = new Vector<String>(1,1);
+                Vector<String> armorNames = new Vector<String>(3,1);
                 boolean armorDamage = false;
                 boolean critDamage = false;
                 
@@ -1187,7 +1187,7 @@ import client.gui.SpringLayoutHelper;
         baseLineCost = baseLine;
         techWorkMod = 0;
         
-        Vector<Integer> tempVector = new Vector<Integer>();
+        Vector<Integer> tempVector = new Vector<Integer>(1,1);
 
         tempVector.add(baseLine/2);
         tempVector.add(baseLine);

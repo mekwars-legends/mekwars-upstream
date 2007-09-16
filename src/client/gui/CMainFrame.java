@@ -1221,7 +1221,7 @@ public class CMainFrame extends JFrame {
 	
 	public void jMenuCommanderAddToBM_actionPerformed(int mid) {
 		
-		Vector<CUnit> toSell = new Vector<CUnit>();
+		Vector<CUnit> toSell = new Vector<CUnit>(1,1);
 		toSell.add(mwclient.getPlayer().getUnit(mid));
 		
 		SellUnitDialog sud = new SellUnitDialog(this, mwclient, toSell);
@@ -1588,7 +1588,7 @@ public class CMainFrame extends JFrame {
 			return;
 		
 		
-		Vector<String> techTypes = new Vector<String>();
+		Vector<String> techTypes = new Vector<String>(5,1);
 		techTypes.add("Exp");
 		techTypes.add("Land");
 		techTypes.add("Units");
@@ -1656,7 +1656,7 @@ public class CMainFrame extends JFrame {
 		
 		if ( useAdvanceRepairs ){
 			
-			Vector<String> techTypes = new Vector<String>();
+			Vector<String> techTypes = new Vector<String>(4,1);
 			techTypes.add("Green");
 			techTypes.add("Regular");
 			techTypes.add("Vet");
@@ -1710,7 +1710,7 @@ public class CMainFrame extends JFrame {
 		
 		if ( useAdvanceRepairs && allowRegTechs){
 			
-			Vector<String> techTypes = new Vector<String>();
+			Vector<String> techTypes = new Vector<String>(2,1);
 			techTypes.add("Green "+Integer.parseInt(mwclient.getserverConfigs("GreenTechHireCost"))+mwclient.moneyOrFluMessage(true,true,-2));
             techTypes.add("Regular "+Integer.parseInt(mwclient.getserverConfigs("RegTechHireCost"))+mwclient.moneyOrFluMessage(true,true,-2));
 			JComboBox combo = new JComboBox(techTypes);

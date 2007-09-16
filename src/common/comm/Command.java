@@ -44,7 +44,7 @@ public abstract class Command extends Thread implements ClientCommand, ServerCom
 	public static final int MALFORMED = 2;
 	public static final int LASTERROR = 2;
 	
-	public Vector<String> ErrorMessages = new Vector<String>();
+	public Vector<String> ErrorMessages = new Vector<String>(1,1);
 	
 	protected MWClient mwclient = null;
 	protected MWServ myServer = null;

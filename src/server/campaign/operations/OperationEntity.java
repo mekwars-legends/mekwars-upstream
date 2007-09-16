@@ -56,7 +56,7 @@ public class OperationEntity {
 	private int RemovalReason;
 	private String unitDamage = "";
     
-	private Vector<Integer> kills = new Vector<Integer>();
+	private Vector<Integer> kills = new Vector<Integer>(1,1);
 	
 	//CONSTRUCTOR
 	/**

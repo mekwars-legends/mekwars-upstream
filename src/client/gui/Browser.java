@@ -124,7 +124,7 @@ public class Browser {
                 "rundll32 url.dll,FileProtocolHandler {0}",
             };
         } else if (System.getProperty("os.name").startsWith("Mac")){
-            Vector<String> browsers = new Vector<String>();
+            Vector<String> browsers = new Vector<String>(1,1);
             try {
                 Process p = Runtime.getRuntime().exec("which open");
                 if (p.waitFor() == 0){
@@ -139,7 +139,7 @@ public class Browser {
                 exec = browsers.toArray(new String[0]);
             }
         } else {
-            Vector<String> browsers = new Vector<String>();
+            Vector<String> browsers = new Vector<String>(1,1);
             try {
                 Process p = Runtime.getRuntime().exec("which firebird");
                 if (p.waitFor() == 0){
@@ -366,7 +366,7 @@ public class Browser {
                         // stick the url into the command
                         command = MessageFormat.format(exec[i],messageArray);
                         // parse the command line.
-                        Vector<String> argsVector = new Vector<String>();
+                        Vector<String> argsVector = new Vector<String>(1,1);
                         BrowserCommandLexer lex = new BrowserCommandLexer(new StringReader(command));
                         String t;
                         while ((t = lex.getNextToken()) != null) {

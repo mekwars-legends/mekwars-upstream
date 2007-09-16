@@ -107,7 +107,7 @@ class ReaderThread extends Thread {
 
     private String[] decompose(String input) {
         StringTokenizer st = new StringTokenizer(input, IClient.DELIMITER);
-        Vector<String> v = new Vector<String>(5);
+        Vector<String> v = new Vector<String>(5,1);
         while (st.hasMoreTokens()) {
             v.addElement(st.nextToken());
         }

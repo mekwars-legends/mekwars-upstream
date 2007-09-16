@@ -50,9 +50,9 @@ public class House implements MMNetSerializable {
 	
 	private Integer id;
 	private int dbId = 0;
-	private Vector<Integer>baseGunner = new Vector<Integer>(Unit.MAXBUILD);
-	private Vector<Integer>basePilot = new Vector<Integer>(Unit.MAXBUILD);
-	private Vector<String>basePilotSkills = new Vector<String>(Unit.MAXBUILD);
+	private Vector<Integer>baseGunner = new Vector<Integer>(Unit.MAXBUILD,1);
+	private Vector<Integer>basePilot = new Vector<Integer>(Unit.MAXBUILD,1);
+	private Vector<String>basePilotSkills = new Vector<String>(Unit.MAXBUILD,1);
 		
 	//private int factionPlayerColors[] = new int[3]; // [red,green,blue]
 	

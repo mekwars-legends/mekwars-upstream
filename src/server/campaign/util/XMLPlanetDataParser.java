@@ -61,9 +61,9 @@ public class XMLPlanetDataParser implements XMLResponder
 	int Type = 0;
 	
 	HashMap<Integer,Integer> Influence = new HashMap<Integer,Integer>();//House ID, Amount
-	Vector<SPlanet> planets = new Vector<SPlanet>();
+	Vector<SPlanet> planets = new Vector<SPlanet>(1,1);
 	
-	Vector<UnitFactory> unitFactories = new Vector<UnitFactory>();
+	Vector<UnitFactory> unitFactories = new Vector<UnitFactory>(1,1);
 	
 	private String filename;
 	private String prefix;
@@ -297,7 +297,7 @@ public class XMLPlanetDataParser implements XMLResponder
 			YCood = null;
 			Influence = new HashMap<Integer,Integer>();
 			OpFlags.clear();
-			unitFactories = new Vector<UnitFactory>();
+			unitFactories = new Vector<UnitFactory>(1,1);
 			Description = "";
 			PlanEnv = new PlanetEnvironments();
 			Warehousesize = 0;

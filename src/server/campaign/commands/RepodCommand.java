@@ -130,10 +130,10 @@ public class RepodCommand implements Command {
 			String targetChassis = mEnt.getChassis();
 			
 			//scan the owner's default build list for pod types.
-			Vector<SUnitFactory> possible = new Vector<SUnitFactory>(); 
+			Vector<SUnitFactory> possible = new Vector<SUnitFactory>(1,1); 
 			
 			//now, to find the build tables, let's make a vector of them...
-			Vector<String> tables = new Vector<String>();
+			Vector<String> tables = new Vector<String>(1,1);
 			if ( global ){
 				Iterator Houses = CampaignMain.cm.getData().getAllHouses().iterator();
 				String fileName = "";
@@ -201,7 +201,7 @@ public class RepodCommand implements Command {
 			
 			//now, fetch the actual lines from the files
 			String result = "";
-			Vector variants = new Vector(); 
+			Vector variants = new Vector(1,1); 
 			//variants.add(mEnt.getModel());
 			int i = tables.size();
 			

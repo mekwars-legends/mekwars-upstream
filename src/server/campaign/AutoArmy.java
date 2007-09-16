@@ -65,7 +65,7 @@ public class AutoArmy {
 		int bvOfSArmy = i;
 		
 		//holder
-		Vector<SUnit> autoUnits = new Vector<SUnit>();
+		Vector<SUnit> autoUnits = new Vector<SUnit>(1,1);
 		
 		//no auto army if 0'ed BV
 		if(i <= 0)
@@ -253,7 +253,7 @@ public class AutoArmy {
         int bvOfSArmy = i;
         
         //holder
-        Vector<SUnit> autoUnits = new Vector<SUnit>();
+        Vector<SUnit> autoUnits = new Vector<SUnit>(1,1);
         
         //no auto army if 0'ed BV
         if(i <= 0)

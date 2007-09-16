@@ -100,10 +100,10 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
     private JButton butOkay = new JButton("Okay");
     private JButton butCancel = new JButton("Cancel");
 
-    private Vector m_vMunitions = new Vector();
+    private Vector m_vMunitions = new Vector(1,1);
     private JPanel panMunitions = new JPanel();
     
-    private Vector m_vMachineGuns = new Vector();
+    private Vector m_vMachineGuns = new Vector(1,1);
     private JPanel panMachineGuns = new JPanel();
         
     private JLabel labTargSys = new JLabel("Targeting System", SwingConstants.TRAILING);
@@ -316,7 +316,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
             Mounted m = (Mounted)e.next();
             AmmoType at = (AmmoType)m.getType();
             
-            Vector<AmmoType> vTypes = new Vector<AmmoType>();
+            Vector<AmmoType> vTypes = new Vector<AmmoType>(1,1);
             Vector<AmmoType> vAllTypes = AmmoType.getMunitionsFor(at.getAmmoType());
             location++;
             

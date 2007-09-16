@@ -72,7 +72,7 @@ public class MekWarsAutoUpdate {
 
         if (args.length < 1) {
 
-            Vector<String> selections = new Vector<String>();
+            Vector<String> selections = new Vector<String>(2,1);
 
             selections.add("Update");
             selections.add("Create Manifest");

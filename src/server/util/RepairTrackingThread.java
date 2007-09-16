@@ -50,7 +50,7 @@ import server.campaign.SUnit;
  */
 public class RepairTrackingThread extends Thread{
 
-    private Vector<Repair> repairList = new Vector<Repair>();
+    private Vector<Repair> repairList = new Vector<Repair>(1,1);
     private long repairtime = 0;
 
     

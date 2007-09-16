@@ -67,8 +67,8 @@ public class HouseCommand implements Command {
 		
 		//sort out planets owned/fighting on, etc.
 		//use this loop to generate a ranking as well.
-		Vector ownedWorlds = new Vector();
-		Vector contestedWorlds = new Vector();
+		Vector ownedWorlds = new Vector(1,1);
+		Vector contestedWorlds = new Vector(1,1);
 		int totalOwnership = 0;
 		
 		Iterator it = CampaignMain.cm.getData().getAllPlanets().iterator();

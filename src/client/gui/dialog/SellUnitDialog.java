@@ -86,7 +86,7 @@ public class SellUnitDialog extends JDialog implements ActionListener {
 		//load all legal units, if no set is given
 		if (toSell == null || toSell.size() == 0) {
 			
-			toSell = new Vector();
+			toSell = new Vector(1,1);
 			for(CUnit currU : mwclient.getPlayer().getHangar()) {
 				
 				if(currU.getType() == Unit.MEK && !Boolean.parseBoolean(mwclient.getserverConfigs("MeksMayBeSoldOnBM")))

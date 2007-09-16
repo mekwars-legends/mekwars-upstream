@@ -1039,7 +1039,7 @@ public class CHQPanel extends JPanel {
 					if (mwclient.getPlayer().getHangar().size() > 0 && !l.isLocked()) {
 						Object[] mechArray = mwclient.getPlayer().getHangar().toArray();
 						if (mechArray.length > 0) {
-							Vector SubMenus = new Vector();
+							Vector SubMenus = new Vector(1,1);
 							
 							/*
 							 * 6 entries
@@ -1047,7 +1047,7 @@ public class CHQPanel extends JPanel {
 							 * Protomech: 4
 							 * Infantry: 5
 							 */
-							for (int i = 0; i < 6; i++) {SubMenus.add(new Vector());}
+							for (int i = 0; i < 6; i++) {SubMenus.add(new Vector(1,1));}
 							
 							for(int i = 0; i < mechArray.length; i++) {
 								CUnit mm = (CUnit)mechArray[i];
@@ -1195,7 +1195,7 @@ public class CHQPanel extends JPanel {
 						 */
 						JMenu linkMenu = new JMenu("Link");
 						if (l.getUnits().size() > 0 && !l.isLocked()) {
-								Vector Masters = new Vector();
+								Vector Masters = new Vector(1,1);
 								Enumeration c3M = l.getUnits().elements();
 								while ( c3M.hasMoreElements()) {
 								    CUnit c3Unit = (CUnit)c3M.nextElement();
@@ -1258,7 +1258,7 @@ public class CHQPanel extends JPanel {
 								 * Protomech: 4
 								 * Infantry: 5
 								 */
-								for (int i = 0; i < 6; i++) {SubMenus.add(new Vector());}
+								for (int i = 0; i < 6; i++) {SubMenus.add(new Vector(1,1));}
 								
 								for(int i = 0; i < mechs.length; i++) {
 									CUnit mm = (CUnit)mechs[i];

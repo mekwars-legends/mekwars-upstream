@@ -59,7 +59,7 @@ public class CyclopsTemplateLoaderCommand implements Command {
         if ( !CampaignMain.cm.isUsingCyclops() )
             return;
         
-        Vector<SUnit> units = new Vector<SUnit>();
+        Vector<SUnit> units = new Vector<SUnit>(1,1);
         String entityName = "";
 
         try{

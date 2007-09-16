@@ -591,7 +591,7 @@ class WeaponPanel extends JPanel implements ListSelectionListener {
             ammoList.setEnabled(false);
         else {
             ammoList.setEnabled(true);
-            ammo = new Vector();
+            ammo = new Vector(1,1);
             int nCur = -1;
             int i = 0;
             for (Mounted mountedAmmo : entity.getAmmo()) {
@@ -652,7 +652,7 @@ class SystemPanel extends JPanel implements ListSelectionListener {
     public JList slotList;
     public JList locList;
 
-    private Vector equipment = new Vector(16);
+    private Vector equipment = new Vector(16,1);
 
     public JLabel modeLabel;
     public JComboBox modeList;
@@ -756,7 +756,7 @@ class SystemPanel extends JPanel implements ListSelectionListener {
     public void displaySlots() {
         int loc = locList.getSelectedIndex();
         slotList.removeAll();
-        equipment = new Vector(16);
+        equipment = new Vector(16,1);
         ArrayList data = new ArrayList();
         for (int i = 0; i < en.getNumberOfCriticals(loc); i++) {
             final CriticalSlot cs = en.getCritical(loc, i);

@@ -88,7 +88,7 @@ public class PlayerNameDialog extends JDialog implements ActionListener {
 		this.mwclient = client;
 		
 		//loop through all players, checking faction, if needed
-		Vector factionPlayers = new Vector();
+		Vector factionPlayers = new Vector(1,1);
 		Iterator i = client.getUsers().iterator();
 		if (playerType == FACTION_ONLY) {
 			while (i.hasNext()) {

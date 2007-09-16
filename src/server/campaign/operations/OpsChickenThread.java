@@ -48,7 +48,7 @@ public class OpsChickenThread extends Thread {
 	//CONSTRUCTOS
 	public OpsChickenThread(SPlayer pd, int id, String name, String mess) {
 		pdefender = pd;
-		parmies = new Vector<SArmy>();
+		parmies = new Vector<SArmy>(1,1);
 		shouldContinue = true;
 		leechCount = 0;
 		message = mess;

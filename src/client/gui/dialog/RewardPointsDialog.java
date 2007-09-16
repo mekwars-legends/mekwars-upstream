@@ -135,7 +135,7 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
           names.add(unitCommand);
           //private final String[] unitChoices = {"Mek", "Vehicle", "Infantry", "ProtoMek","BattleArmor" };
 
-          Vector<String> unitList = new Vector<String>(5);
+          Vector<String> unitList = new Vector<String>(5,1);
           
           unitList.add("Mek");
           if ( Boolean.parseBoolean(mwclient.getserverConfigs("UseVehicle")) )

@@ -74,9 +74,9 @@ public final class MWTracker {
 		addToLog("MWTracker initiated. Version " + MWTracker.VERSION);
 		
 		//initialize vectors (thread safe! yay!)
-		processingThreads = new Vector();
-		purgingThreads = new Vector();
-		htmlThreads = new Vector();
+		processingThreads = new Vector(1,1);
+		purgingThreads = new Vector(1,1);
+		htmlThreads = new Vector(1,1);
 		
 		/*
 		 * Ensure that required directories are in place. If

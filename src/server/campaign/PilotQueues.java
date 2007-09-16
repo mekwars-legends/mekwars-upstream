@@ -43,10 +43,10 @@ import server.campaign.pilot.skills.TraitSkill;
 @SuppressWarnings({"unchecked","serial"})
 public class PilotQueues {
 	
-	private Vector<LinkedList<SPilot>> queues = new Vector<LinkedList<SPilot>>();
-	private Vector<Integer> baseGunnery = new Vector<Integer>(Unit.MAXBUILD);
-	private Vector<Integer> basePiloting = new Vector<Integer>(Unit.MAXBUILD);
-	private Vector<String>  basePilotSkills = new Vector<String>(Unit.MAXBUILD);
+	private Vector<LinkedList<SPilot>> queues = new Vector<LinkedList<SPilot>>(Unit.MAXBUILD,1);
+	private Vector<Integer> baseGunnery = new Vector<Integer>(Unit.MAXBUILD,1);
+	private Vector<Integer> basePiloting = new Vector<Integer>(Unit.MAXBUILD,1);
+	private Vector<String>  basePilotSkills = new Vector<String>(Unit.MAXBUILD,1);
 	private String factionString = "";//string for faction specific name list
 	private int factionID;
 	

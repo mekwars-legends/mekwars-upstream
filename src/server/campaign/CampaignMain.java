@@ -153,7 +153,7 @@ public final class CampaignMain implements Serializable {
 
 	private OperationManager opsManager;
 
-	private Vector unresolvedContracts = new Vector();
+	private Vector unresolvedContracts = new Vector(1,1);
 
 	private UnitCosts unitCostLists = null;
 
@@ -847,7 +847,7 @@ public final class CampaignMain implements Serializable {
 	}
 
 	public Vector<MercHouse> getMercHouses() {
-		Vector<MercHouse> result = new Vector<MercHouse>();
+		Vector<MercHouse> result = new Vector<MercHouse>(1,1);
 		for (House currH : data.getAllHouses()) {
 			SHouse sh = (SHouse) currH;
 			if (sh.isMercHouse())
@@ -2539,7 +2539,7 @@ public final class CampaignMain implements Serializable {
 		 * if (total > 1) rnd = getR().nextInt(total) + 1;
 		 */
 		it = pilotSkills.values().iterator();
-		Vector<SPilotSkill> skillBuilder = new Vector<SPilotSkill>(total);
+		Vector<SPilotSkill> skillBuilder = new Vector<SPilotSkill>(total,1);
 
 		try {
 			while (it.hasNext()) {
@@ -3005,7 +3005,7 @@ public final class CampaignMain implements Serializable {
 	 * @return
 	 */
 	public Vector<String> getFactionTraits(String faction) {
-		Vector<String> traits = new Vector<String>();
+		Vector<String> traits = new Vector<String>(1,1);
 		File traitNames = new File("./data/pilotnames/" + faction.toLowerCase()
 				+ "traitnames.txt");
 

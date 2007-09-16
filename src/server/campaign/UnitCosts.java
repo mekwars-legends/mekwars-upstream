@@ -27,13 +27,13 @@ import server.MWServ;
 @SuppressWarnings("unchecked")
 public class UnitCosts {
 	
-	Vector<Vector> minCostUnitList = new Vector<Vector>();
-	Vector<Vector> maxCostUnitList = new Vector<Vector>();
+	Vector<Vector> minCostUnitList = new Vector<Vector>(4,1);
+	Vector<Vector> maxCostUnitList = new Vector<Vector>(4,1);
 	
 	public UnitCosts(){
 		for (int weight = Unit.LIGHT; weight <= Unit.ASSAULT; weight++){
-			Vector<Double> maxVector = new Vector<Double>();
-			Vector<Double> minVector = new Vector<Double>();
+			Vector<Double> maxVector = new Vector<Double>(4,1);
+			Vector<Double> minVector = new Vector<Double>(4,1);
 			for (int type = Unit.MEK; type <= Unit.BATTLEARMOR; type++){
 				maxVector.add(0.0);
 				minVector.add(0.0);

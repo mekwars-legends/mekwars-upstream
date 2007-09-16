@@ -20,7 +20,6 @@
  */
 package server.campaign;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -55,8 +54,8 @@ public class SPersonalPilotQueues {
 	 * Instead of constantly changing the type ID's being passed in, we'll just
 	 * use seperate list-holding vectors.
 	 */
-	private Vector<LinkedList<Pilot>> mekPilots = new Vector<LinkedList<Pilot>>();
-    private Vector<LinkedList<Pilot>> protoPilots = new Vector<LinkedList<Pilot>>();
+	private Vector<LinkedList<Pilot>> mekPilots = new Vector<LinkedList<Pilot>>(4,1);
+    private Vector<LinkedList<Pilot>> protoPilots = new Vector<LinkedList<Pilot>>(4,1);
 	private int playerID = 0;
 	
     //CONSTRUCTOR

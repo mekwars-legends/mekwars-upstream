@@ -73,8 +73,8 @@ public class MWServ {
 	//private String log = "";
 	private server.campaign.CampaignMain campaign;
 	private Command.Table myCommands = new Command.Table();
-	private Vector<String> ignoreList = new Vector<String>();
-    private Vector<String> factionLeaderIgnoreList = new Vector<String>();
+	private Vector<String> ignoreList = new Vector<String>(1,1);
+    private Vector<String> factionLeaderIgnoreList = new Vector<String>(1,1);
 	//private boolean debug = true;
 	
 	/*
@@ -402,7 +402,7 @@ public class MWServ {
 					this.getCampaign().doSendModMail("NOTE:", result.toString());
 				allthose.add(newUser);
 			} else {
-				Vector allthose = new Vector();
+				Vector allthose = new Vector(1,1);
 				allthose.add(newUser);
 				ips.put(hisip, allthose);
 			}

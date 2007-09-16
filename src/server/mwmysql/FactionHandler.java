@@ -56,11 +56,11 @@ public class FactionHandler {
 				// Init all of the hangars
 				for (int i = 0; i < 4; i++) {
 
-					h.getHangar(Unit.MEK).add(new Vector<SUnit>());
-					h.getHangar(Unit.VEHICLE).add(new Vector<SUnit>());
-					h.getHangar(Unit.INFANTRY).add(new Vector<SUnit>());
-					h.getHangar(Unit.BATTLEARMOR).add(new Vector<SUnit>());
-					h.getHangar(Unit.PROTOMEK).add(new Vector<SUnit>());
+					h.getHangar(Unit.MEK).add(new Vector<SUnit>(1,1));
+					h.getHangar(Unit.VEHICLE).add(new Vector<SUnit>(1,1));
+					h.getHangar(Unit.INFANTRY).add(new Vector<SUnit>(1,1));
+					h.getHangar(Unit.BATTLEARMOR).add(new Vector<SUnit>(1,1));
+					h.getHangar(Unit.PROTOMEK).add(new Vector<SUnit>(1,1));
 				}
 				h.getComponents().put(Unit.MEK, new Vector<Integer>(4, 1));
 				h.getComponents().put(Unit.VEHICLE, new Vector<Integer>(4, 1));

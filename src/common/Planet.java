@@ -65,7 +65,7 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
      * The unit factories on this planet. Type is UnitFactory
      * Mutable field (has to be transfered)
      */
-    private Vector<UnitFactory> unitFactories = new Vector<UnitFactory>();
+    private Vector<UnitFactory> unitFactories = new Vector<UnitFactory>(1,1);
 
     /**
      * The environment modifiers for the planet.
@@ -177,8 +177,8 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
     	this.setId(new Integer(in.readInt("id")));
     	this.setName(in.readLine("name"));
     	this.setPosition(new Position(in.readDouble("x"), in.readDouble("y")));
-    	this.setUnitFactories(new Vector<UnitFactory>());
         int size = in.readInt("unitFactories.size");
+    	this.setUnitFactories(new Vector<UnitFactory>(size,1));
         for (int i = 0; i < size; ++i) {
             UnitFactory uf = new UnitFactory();
             uf.binIn(in);
@@ -469,8 +469,8 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
     	this.setId(new Integer(in.readInt("id")));
     	this.setName(in.readLine("name"));
     	this.setPosition(new Position(in.readDouble("x"), in.readDouble("y")));
-    	this.setUnitFactories(new Vector<UnitFactory>());
         int size = in.readInt("unitFactories.size");
+    	this.setUnitFactories(new Vector<UnitFactory>(size,1));
         for (int i = 0; i < size; ++i) {
             UnitFactory uf = new UnitFactory();
             uf.binIn(in);
@@ -663,7 +663,7 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
     	this.setId(new Integer(in.readInt("id")));
     	this.setName(in.readString("name"));
     	this.setPosition(new Position(in.readDouble("x"), in.readDouble("y")));
-    	this.setUnitFactories(new Vector<UnitFactory>());
+    	this.setUnitFactories(new Vector<UnitFactory>(1,1));
         in.readCollection(this.getUnitFactories(), UnitFactory.class, dataProvider, "unitFactories");
         this.setEnvironments(new PlanetEnvironments());
         in.readObject(this.getEnvironments(), dataProvider, "environments");
