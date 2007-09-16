@@ -259,13 +259,20 @@ public class SPersonalPilotQueues {
 				SPilot p = CampaignMain.cm.MySQL.loadPilot(rs.getInt("pilotID"));
 				if(capSize < 1 || currentCount < capSize) {
 					this.addPilot(p, rs.getInt("pilotType"), rs.getInt("pilotSize"));
-				} else {
-					// Delete the pilot here - no function for that yet.
 				}
 				currentCount++;					
 			}
 			rs.close();
 			stmt.close();
+			for (int weightClass = Unit.LIGHT; weightClass <= Unit.ASSAULT; weightClass++) {
+		        while ( this.getPilotQueue(Unit.MEK, weightClass).size() > capSize ) {
+		        	this.getPilot(Unit.MEK,weightClass,CampaignMain.cm.getR().nextInt(this.getPilotQueue(Unit.MEK, weightClass).size()));
+		        }
+		        while ( this.getPilotQueue(Unit.PROTOMEK, weightClass).size() > capSize ) {
+		        	this.getPilot(Unit.PROTOMEK,weightClass,CampaignMain.cm.getR().nextInt(this.getPilotQueue(Unit.PROTOMEK, weightClass).size()));
+		        }
+		    }
+
 		}catch(SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in SPersonalPilotQueues.fromDB: " + e.getMessage());
 		}
@@ -282,8 +289,10 @@ public class SPersonalPilotQueues {
 	        for(int count = 0 ; count < listSize; count++){
 	            SPilot filePilot = new SPilot();
 	            filePilot.fromFileFormat(mainTokenizer.nextToken(),"#");
-                if ( count < capSize)
-                    this.addPilot(filePilot,Unit.MEK, weightClass);
+                this.addPilot(filePilot,Unit.MEK, weightClass);
+	        }
+	        while ( this.getPilotQueue(Unit.MEK, weightClass).size() > capSize ) {
+	        	this.getPilot(Unit.MEK,weightClass,CampaignMain.cm.getR().nextInt(this.getPilotQueue(Unit.MEK, weightClass).size()));
 	        }
 	    }
 		
@@ -293,8 +302,10 @@ public class SPersonalPilotQueues {
 	        for(int count = 0 ; count < listSize; count++){
 	            SPilot filePilot = new SPilot();
 	            filePilot.fromFileFormat(mainTokenizer.nextToken(),"#");
-                if ( count < capSize)
-                    this.addPilot(filePilot,Unit.PROTOMEK, weightClass);
+                this.addPilot(filePilot,Unit.PROTOMEK, weightClass);
+	        }
+	        while ( this.getPilotQueue(Unit.PROTOMEK, weightClass).size() > capSize ) {
+	        	this.getPilot(Unit.PROTOMEK,weightClass,CampaignMain.cm.getR().nextInt(this.getPilotQueue(Unit.PROTOMEK, weightClass).size()));
 	        }
 	    }
 		

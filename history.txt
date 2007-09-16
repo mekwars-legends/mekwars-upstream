@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
++ Randomized How pilots are removed from Pilot queue when loading player.
 + Changed all Initilization calls for Vectors to use 
 	Vector(int initialCapacity, int capacityIncrement) 
 + Added trimToSize() calls for vectors client and server side.
