@@ -1049,10 +1049,6 @@ public class ShortResolver {
 					&& so.getLosers().containsKey(currName)) {
 				int minBVvPenaltyMod = o
 						.getIntValue("BVFailurePaymentModifier");
-				MWServ.mwlog.debugLog("BV Failure Payment for "
-						+ so.getLosers().firstKey() + " currentBV: "
-						+ currentBV + " loserBV: " + loserBV + "::" + currentBV
-						/ 0);
 				earnedMoney = (earnedMoney * minBVvPenaltyMod) / 100;
 				// earnedFlu = (earnedFlu * minBVvPenaltyMod)/100;
 				// earnedXP = (earnedXP * minBVvPenaltyMod)/100;
