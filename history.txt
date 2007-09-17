@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
++ Updated finished game logging per Vertigo's request
 + Bug: Left debug statement in that causes divide by 0 error.
 + Randomized How pilots are removed from Pilot queue when loading player.
 + Changed all Initilization calls for Vectors to use 

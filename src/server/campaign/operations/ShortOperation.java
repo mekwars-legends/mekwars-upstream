@@ -1364,10 +1364,18 @@ public class ShortOperation implements Comparable {
 			
 			//add duration, names and BV's to the results log
 			StringBuilder toStore = new StringBuilder();
-			toStore.append("#" + this.getShortID() + " Duration: " + CampaignMain.readableTime(completionTime - startTime) + " / Players: ");
-			for (String currName : this.getAllPlayerNames())
-				toStore.append(currName + " ");
-			toStore.append("/ Start BV: " + startingBV + " / Finish BV: " + finishingBV);
+			toStore.append("#" + this.getShortID() + " [" + this.getName() + "]" + " [" + this.targetWorld.getName() + "]"+ " Duration: " + CampaignMain.readableTime(completionTime - startTime) + " / Players: ");
+			boolean firstPlayer = true;
+			for (String currName : this.getAllPlayerNames()) {				
+				if(firstPlayer) {
+					toStore.append(currName);
+					firstPlayer = false;
+				} else {
+					toStore.append(" + " + currName);
+				}
+				
+			}
+			toStore.append("/ Start BV: " + startingBV + " / Finish BV: " + finishingBV + " ");
 			toStore.append("/ Terrain: " + aTerrain.getDisplayName() + " ");
 			toStore.append("/ Theme: " + playEnvironment.getTheme());
 			if ( CampaignMain.cm.getBooleanConfig("UseOperationsRule") ){
