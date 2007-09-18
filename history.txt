@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.6.x
++ New MegaMek Jar 0.33.10-MW09182007
 + New MegaMek Jar 0.33.10-MW09172007
 + Updated finished game logging per Vertigo's request
 + Bug: Left debug statement in that causes divide by 0 error.
