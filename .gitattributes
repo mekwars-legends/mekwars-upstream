@@ -1388,6 +1388,7 @@ src/server/campaign/commands/SalvageUnitCommand.java -text
 src/server/campaign/commands/ScrapCommand.java -text
 src/server/campaign/commands/SellBaysCommand.java -text
 src/server/campaign/commands/SellCommand.java -text
+src/server/campaign/commands/SendClientDataCommand.java -text
 src/server/campaign/commands/SendToMiscCommand.java -text
 src/server/campaign/commands/ServerVersionCommand.java -text
 src/server/campaign/commands/SetAutoEjectCommand.java -text
