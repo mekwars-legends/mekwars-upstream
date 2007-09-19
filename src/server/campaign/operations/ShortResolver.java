@@ -626,6 +626,8 @@ public class ShortResolver {
 				+ payStrings.get(loseName);// + longStrings.get(loseName);
 		CampaignMain.cm.toUser(toSend, loseName, true);
 
+		winner.setSave(true);
+		loser.setSave(true);
 		// stick the result into the human readable result log, per RFE1479311.
 		MWServ.mwlog.resultsLog(toSend);
 
@@ -3600,7 +3602,7 @@ public class ShortResolver {
 
 						// destroy the unit, killing pilot
 						randomEntity
-								.setRemovalReason(megamek.common.IEntityRemovalConditions.REMOVE_DEVASTATED);
+								.setRemovalReason(megamek.common.IEntityRemovalConditions.REMOVE_STACKPOLE);
 						randomEntity.setSalvage(false);// for vehs
 						livingUnits.remove(randomEntity.getID());
 						destroyedUnits.put(randomEntity.getID(), randomEntity);

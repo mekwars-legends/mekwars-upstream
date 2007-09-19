@@ -158,6 +158,10 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	/**
 	 * Save player file immediatly.
 	 */
+	public void setSave(){
+		setSave(true);
+	}
+	
 	public void setSave(boolean save) {
 		if(!this.isLoading)
 			CampaignMain.cm.savePlayerFile(this);
