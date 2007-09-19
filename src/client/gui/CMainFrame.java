@@ -2049,6 +2049,14 @@ public class CMainFrame extends JFrame {
             }
         }
         
+     /*   
+        for ( Object prop : System.getProperties().keySet()){
+        	
+        	result.append(prop.toString());
+        	result.append(" = ");
+        	result.append(System.getProperty(prop.toString()));
+        	result.append("<br>");
+        }*/
         /*
          * use process incoming, instead of adding directly to misc, so that
          * output is directly to main if misc in main is enabled or players has

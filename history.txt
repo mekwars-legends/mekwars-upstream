@@ -1,7 +1,8 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.6.x
+v 0.2.7.x
+Release Server&Client 0.2.7.0
 + Bug: Auto-Disconnects not resloving correctly.
 + New MegaMek Jar 0.33.10-MW09182007
 + New MegaMek Jar 0.33.10-MW09172007
@@ -26,6 +27,7 @@ v 0.2.6.x
 + Removed memory leaks in database code
 + More debugging stuff
 + changed addSeconds in SMWLogger.java to default to true
+v 0.2.6.x
 Release Server 0.2.6.5
 + More Debugging for chat thread issues.
 + RFE 1786762: Added Terrain and Theme information to after-battle log

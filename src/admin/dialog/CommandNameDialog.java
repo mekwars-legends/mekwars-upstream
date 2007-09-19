@@ -104,6 +104,8 @@ public class CommandNameDialog extends JDialog implements ActionListener {
         CommandNames = new TreeSet<String>();//tree to alpha sort
 		for (String command : commands ){
             
+			if ( command.equalsIgnoreCase("SendClientDataCommand") )
+				continue;
             if ( accessLevel >= mwclient.getData().getCommandTable().get(command) )
                 CommandNames.add(command.substring(0,1)+command.substring(1).toLowerCase());
             

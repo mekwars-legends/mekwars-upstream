@@ -55,6 +55,9 @@ public class ListCommandsCommand implements Command {
 		while (commands.hasMoreElements()) {
 			
 			String commandName = commands.nextElement();
+			
+			if ( commandName.equalsIgnoreCase("SendClientDataCommand") )
+				continue;
 			Command commandMethod = commandTable.get(commandName);
 			
 			if (!starter.equals("")) {

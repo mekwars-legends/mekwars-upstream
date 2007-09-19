@@ -136,7 +136,7 @@ public class ServerWrapper extends MWChatServer{
 	@Override
 	public boolean signOn(MWChatClient client, String password) throws Exception{
 		
-		MWServ.mwlog.infoLog(client.getUserId() + " is attempting a signon");
+		MWServ.mwlog.infoLog(client.getUserId() + " is attempting a signon: ");
 		String userId = client.getUserId();
 		validateUserId(userId);
 		

@@ -148,7 +148,7 @@ public final class MWClient implements IClient {
 	
 	CConfig Config;
 	
-	public static final String CLIENT_VERSION = "0.2.6.1"; //change this with all client changes @Torren
+	public static final String CLIENT_VERSION = "0.2.7.0"; //change this with all client changes @Torren
 
 	CConnector Connector;
 	TimeOutThread TO;
@@ -609,6 +609,20 @@ public final class MWClient implements IClient {
 			 */
 			this.sendChat(MWClient.CAMPAIGN_PREFIX + "c setclientversion#" + this.myUsername+ "#" + CLIENT_VERSION);
 			this.sendChat("/getsavedmail");
+			
+			try{
+				StringBuilder userData = new StringBuilder(MWClient.CAMPAIGN_PREFIX + "c sendclientdata#");
+				
+				String[] userDataSet = {"user.name","user.language","user.country","user.timezone","os.name","os.arch","os.version","java.version"};
+				
+				for ( int pos = 0; pos < userDataSet.length; pos++ ){
+					String property = System.getProperty(userDataSet[pos],"Unknown"); 
+					userData.append(property);
+					userData.append("#");
+				}
+				this.sendChat(userData.toString());
+			}catch(Exception ex){
+			}
 		
 		}		
 		//repeated connection attempts for dedicated hosts.

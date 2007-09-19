@@ -1552,6 +1552,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("RETIREPILOT", new RetirePilotCommand());
 		Commands.put("SALVAGEUNIT", new SalvageUnitCommand());
 		Commands.put("SCRAP", new ScrapCommand());
+		Commands.put("SENDCLIENTDATA", new SendClientDataCommand());
 		Commands.put("SELL", new SellCommand());
 		Commands.put("SELLBAYS", new SellBaysCommand());
 		Commands.put("SENDTOMISC", new SendToMiscCommand());
