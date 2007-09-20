@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.7.x
++ fixed typos in TransferPilotCommand
 Release Server&Client 0.2.7.0
 + Bug: Auto-Disconnects not resloving correctly.
 + New MegaMek Jar 0.33.10-MW09182007
