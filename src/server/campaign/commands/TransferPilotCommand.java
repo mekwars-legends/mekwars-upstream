@@ -76,7 +76,7 @@ public class TransferPilotCommand implements Command {
 		}
 
 		//The receiving player must have enough room
-		if (targetplayer.getPersonalPilotQueue().getPilotQueue(pUnitType,pWeightClass).size() > Integer.parseInt(house.getConfig("MaxAllowedPilotsInQueueToBuyFromHouse"))){
+		if (targetplayer.getPersonalPilotQueue().getPilotQueue(pUnitType,pWeightClass).size()+1 > Integer.parseInt(house.getConfig("MaxAllowedPilotsInQueueToBuyFromHouse"))){
 			CampaignMain.cm.toUser(Username + "tried to send you a pilot, but your faction allows only "+new Integer(house.getConfig("MaxAllowedPilotsInQueueToBuyFromHouse")).intValue()+" pilots of each type in your barracks.",targetplayer.getName(),true);
 			CampaignMain.cm.toUser(targetplayer.getName()+"'s barracks are currently full!",Username,true);
 			return;
