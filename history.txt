@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.7.x
++ Bug: BuyPartsCommand not allow same techlevel factions to buy parts
 + Bug: TransferPilotCommand calculating the max queue size incorrectly
 + fixed typos in TransferPilotCommand
 Release Server&Client 0.2.7.0
