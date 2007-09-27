@@ -1410,6 +1410,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("CRA", new CreateArmyCommand());
 		//
 		Commands.put("CREATEMERCFACTION", new CreateMercFactionCommand());
+		Commands.put("CREATESUBFACTION", new CreateSubFactionCommand());
 		Commands.put("CREATEUNIT", new CreateUnitCommand());
 		Commands.put("CYCLOPSCHECKUP", new CyclopsCheckupCommand());
 		Commands.put("CYCLOPSOPTIMIZE", new CyclopsOptimizeCommand());
@@ -1494,6 +1495,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("LISTMULTIPLAYERGROUPS",
 				new ListMultiPlayerGroupsCommand());
 		Commands.put("LISTSERVEROPFLAGS", new ListServerOpFlagsCommand());
+		Commands.put("LISTSUBFACTION", new ListSubFactionCommand());
 		Commands.put("LOGIN", new LoginCommand());
 		Commands.put("LOGOUT", new LogoutCommand());
 		// Double MStatus
@@ -1539,6 +1541,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("REMOVEPARTS", new RemovePartsCommand());
 		Commands.put("REMOVEPILOT", new RemovePilotCommand());
 		Commands.put("REMOVESONG", new RemoveSongCommand());
+		Commands.put("REMOVESUBFACTION", new RemoveSubFactionCommand());
 		Commands.put("REMOVETRAIT", new RemoveTraitCommand());
 		Commands.put("REMOVEVOTE", new RemoveVoteCommand());
 		Commands.put("REPAIRUNIT", new RepairUnitCommand());
@@ -1588,6 +1591,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("SETPLANETCOMPPRODUCTION",
 				new SetPlanetCompProductionCommand());
 		Commands.put("SETSEARCHLIGHT", new SetSearchLightCommand());
+		Commands.put("SETSUBFACTIONCONFIG", new SetSubFactionConfigCommand());
 		Commands.put("SETTARGETSYSTEMTYPE", new SetTargetSystemTypeCommand());
 		Commands.put("SETUNITAMMO", new SetUnitAmmoCommand());
 		Commands.put("SETUNITAMMOBYCRIT", new SetUnitAmmoByCritCommand());

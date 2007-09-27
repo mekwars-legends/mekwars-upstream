@@ -45,6 +45,7 @@ import megamek.common.Entity;
 
 import common.CampaignData;
 import common.House;
+import common.SubFaction;
 import common.Unit;
 import common.persistence.MMNetSerializable;
 import common.persistence.TreeReader;
@@ -94,6 +95,8 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 	
 	private String forumName = "";
 	
+    private ConcurrentHashMap<String,SubFaction> subFactionList = new ConcurrentHashMap<String,SubFaction>();
+
     @Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
@@ -292,6 +295,14 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 
         result.append(this.getTechLevel());
         result.append("|");
+        
+        result.append(subFactionList.size());
+        result.append("|");
+        
+        for (String key : subFactionList.keySet() ){
+        	result.append(subFactionList.get(key).toString());
+        	result.append("|");
+        }
         
     	return result.toString();
 	}
@@ -863,6 +874,18 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
             setPilotQueues(new PilotQueues(this.getBaseGunnerVect(), this.getBasePilotVect(), this.getBasePilotSkillVect()));
             getPilotQueues().setFactionString(this.getName());// set the faction name for the queue
             
+            
+            if ( ST.hasMoreTokens() ){
+            	int amount = Integer.parseInt(ST.nextToken());
+            	
+            	for (;amount > 0; amount--){
+            		SubFaction newSubFaction = new SubFaction();
+            		newSubFaction.fromString(ST.nextToken());
+            		subFactionList.put(newSubFaction.getConfig("Name"),newSubFaction);
+            	}
+            }
+            
+            //subFactionList.put("Test SubFaction", new SubFaction("Test Faction"));
             // Stuff for MercHouse.. Has to be here until someone tells me how
 			// to move it :) - McWiz
 			if (this.isMercHouse()) {
@@ -891,7 +914,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			return s;
 		} catch (Exception ex) {
 			MWServ.mwlog.errLog(ex);
-			MWServ.mwlog.errLog("Error while loading faction: " + this.getName()+ "Going forward anyway ...");
+			MWServ.mwlog.errLog("Error while loading faction: " + this.getName()+ " Going forward anyway ...");
 			return s;
 		}
 	}
@@ -2658,4 +2681,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		return this.forumName;
 	}
 	
+	public ConcurrentHashMap<String,SubFaction> getSubFactionList(){
+		return subFactionList;
+	}
 }// end SHouse.java

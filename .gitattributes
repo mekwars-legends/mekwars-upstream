@@ -1209,6 +1209,7 @@ src/common/Planet.java -text
 src/common/PlanetEnvironment.java -text
 src/common/PlanetEnvironments.java -text
 src/common/Player.java -text
+src/common/SubFaction.java -text
 src/common/TerrainProvider.java -text
 src/common/Unit.java -text
 src/common/UnitFactory.java -text
@@ -1352,6 +1353,7 @@ src/server/campaign/commands/LastOnlineCommand.java -text
 src/server/campaign/commands/LinkUnitCommand.java -text
 src/server/campaign/commands/ListCommandsCommand.java -text
 src/server/campaign/commands/ListServerOpFlagsCommand.java -text
+src/server/campaign/commands/ListSubFactionCommand.java -text
 src/server/campaign/commands/LoginCommand.java -text
 src/server/campaign/commands/LogoutCommand.java -text
 src/server/campaign/commands/MOTDCommand.java -text
@@ -1545,6 +1547,7 @@ src/server/campaign/commands/mod/BanListCommand.java -text
 src/server/campaign/commands/mod/BuildTableValidatorCommand.java -text
 src/server/campaign/commands/mod/CheckCommand.java -text
 src/server/campaign/commands/mod/ConfigCommand.java -text
+src/server/campaign/commands/mod/CreateSubFactionCommand.java -text
 src/server/campaign/commands/mod/FixAmmoCommand.java -text
 src/server/campaign/commands/mod/GetModLogCommand.java -text
 src/server/campaign/commands/mod/GetPlayerUnitsCommand.java -text
@@ -1570,11 +1573,13 @@ src/server/campaign/commands/mod/ModTerminateCommand.java -text
 src/server/campaign/commands/mod/ModeratorMailCommand.java -text
 src/server/campaign/commands/mod/NotifyFightingCommand.java -text
 src/server/campaign/commands/mod/RemovePartsCommand.java -text
+src/server/campaign/commands/mod/RemoveSubFactionCommand.java -text
 src/server/campaign/commands/mod/ServerAnnouncementCommand.java -text
 src/server/campaign/commands/mod/SetEloCommand.java -text
 src/server/campaign/commands/mod/SetHouseBasePilotSkillsCommand.java -text
 src/server/campaign/commands/mod/SetMMOTDCommand.java -text
 src/server/campaign/commands/mod/SetSMOTDCommand.java -text
+src/server/campaign/commands/mod/SetSubFactionConfigCommand.java -text
 src/server/campaign/commands/mod/StripAllPartsCacheCommand.java -text
 src/server/campaign/commands/mod/TerminateContractCommand.java -text
 src/server/campaign/commands/mod/TouchCommand.java -text
