@@ -176,22 +176,46 @@ public class PlanetNameDialog extends JDialog implements ActionListener {
 				
                 //Check for allowed planet flags. the planet most have these flags.
                 if ( allowPlanetFlags.length() > 0 ){
+                    //MWClient.mwClientLog.clientErrLog(currOpName+" AllowPlanetFlags: "+allowPlanetFlags);
+                    boolean allowOp = true;
                     StringTokenizer st = new StringTokenizer(allowPlanetFlags,"^");
-                    while ( st.hasMoreTokens() )
-                        if ( !tp.getPlanetFlags().containsKey(st.nextToken()) )
+                    while ( st.hasMoreTokens() ){
+                        String key = st.nextToken();
+                        
+                        if ( key.trim().length() < 1 )
                             continue;
+                        if ( !tp.getPlanetFlags().containsKey(key) ){
+                            MWClient.mwClientLog.clientErrLog(tp.getName()+" does not have flag: "+key);
+                            allowOp = false;
+                            break;
+                        }
+                    }
+                    if ( !allowOp )
+                        continue;
                 }
                 
                 //Check for disallowed planet flags. If the planet has one of these flags
                 // The planet will not be allowed.
                 if ( disallowPlanetFlags.length() > 0){
+                    //MWClient.mwClientLog.clientErrLog(currOpName+" DisallowPlanetFlags: "+disallowPlanetFlags);
+                    
+                    boolean allowOp = true;
                     StringTokenizer st = new StringTokenizer(disallowPlanetFlags,"^");
                     while ( st.hasMoreTokens() ){
-                        if ( tp.getPlanetFlags().containsKey(st.nextToken()))
+                        String key = st.nextToken();
+                        
+                        if ( key.trim().length() < 1 )
                             continue;
+                        if ( tp.getPlanetFlags().containsKey(key)){
+                            allowOp = false;
+                            MWClient.mwClientLog.clientErrLog(tp.getName()+" has flag: "+key);
+                            break;
+                        }
                     }
+                    if ( !allowOp )
+                        continue;
                 }
-               
+
 				//alas, we now devolve into O^2 and check all planets for possible
 				//launchpads to the target world. Better to do this client side and
 				//verify once on the server than to force the server to repeatedly
