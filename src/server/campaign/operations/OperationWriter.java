@@ -88,22 +88,23 @@ public class OperationWriter {
 				String maxOwn = currO.getValue("MaxPlanetOwnership") + "*";
 				String reserveOnly = currO.getValue("OnlyAllowedFromReserve") + "*";
 				String activeOnly = currO.getValue("OnlyAllowedFromActive") + "*";
+				String minSubFactionLevel = currO.getValue("MinSubFactionAccessLevel")+"*";
 				
-				String facInfo = "any*";
+				StringBuffer facInfo = new StringBuffer("any*");
 				if (Boolean.parseBoolean(currO.getValue("OnlyAgainstFactoryWorlds")))
-					facInfo = "only*";
+					facInfo.append("only*");
 				else if (Boolean.parseBoolean(currO.getValue("OnlyAgainstNonFactoryWorlds")))
-					facInfo = "none*";
+					facInfo.append("none*");
 				
-                String homeworldInfo = "any*";
+                StringBuffer homeworldInfo = new StringBuffer("any*");
                 if (Boolean.parseBoolean(currO.getValue("OnlyAgainstHomeWorlds")))
-                    homeworldInfo = "only*";
+                    homeworldInfo.append("only*");
                 else if (Boolean.parseBoolean(currO.getValue("OnlyAgainstNonHomeWorlds")))
-                    homeworldInfo = "none*";
+                    homeworldInfo.append("none*");
                 
-				String legalDefenders = "";
+				StringBuffer legalDefenders = new StringBuffer(" ");
 				if (!currO.getValue("LegalDefendFactions").trim().equals("")) {
-					legalDefenders = currO.getValue("LegalDefendFactions").trim() + "*";
+					legalDefenders.append(currO.getValue("LegalDefendFactions").trim() + "*");
 				} else if (!currO.getValue("IllegalDefendFactions").trim().equals("")) {
 					
 					//determine which factions *can't* use the type
@@ -117,23 +118,23 @@ public class OperationWriter {
 					while (i.hasNext()) {
 						House currH = (House)i.next();
 						if (!illegals.contains(currH.getName()))
-							legalDefenders += currH.getName() + "$";
+							legalDefenders.append(currH.getName() + "$");
 					}
-					legalDefenders += "*";
+					legalDefenders.append("*");
 					
 				} else
-					legalDefenders = "allFactions*";
+					legalDefenders.append("allFactions*");
 				
-                String allowPlanetFlags = currO.getValue("AllowPlanetFlags");
+                StringBuffer allowPlanetFlags = new StringBuffer(currO.getValue("AllowPlanetFlags"));
                 if ( allowPlanetFlags.length() < 1 )
-                    allowPlanetFlags = "^ ^*";
+                    allowPlanetFlags.append("^ ^*");
                 else
-                    allowPlanetFlags += "*";
-                String disallowPlanetFlags = currO.getValue("DisallowPlanetFlags");
+                    allowPlanetFlags.append("*");
+                    StringBuffer disallowPlanetFlags = new StringBuffer(currO.getValue("DisallowPlanetFlags"));
                 if ( disallowPlanetFlags.length() < 1)
-                    disallowPlanetFlags = "^ ^*";
+                    disallowPlanetFlags.append("^ ^*");
                 else
-                    disallowPlanetFlags += "*";
+                    disallowPlanetFlags.append("*");
                 
 				ps.println(name
 						+ range
@@ -149,7 +150,8 @@ public class OperationWriter {
 						+ activeOnly
 						+ legalDefenders
 						+ allowPlanetFlags
-						+ disallowPlanetFlags);
+						+ disallowPlanetFlags
+						+ minSubFactionLevel);
 			}
 			ps.close();
 		} catch (FileNotFoundException fe) {

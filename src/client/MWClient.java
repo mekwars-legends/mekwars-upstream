@@ -1515,6 +1515,7 @@ public final class MWClient implements IClient {
 				String legalDefenders = st.nextToken();
                 String allowPlanetFlags = st.nextToken();
                 String disallowPlanetFlags = st.nextToken();
+                String minAccessLevel = st.nextToken();//int
                 
                 //TODO: Replace explicit numerical references with static ints.
 				String[] props = {//value bag
@@ -1531,7 +1532,8 @@ public final class MWClient implements IClient {
 						allowPlanetFlags,//10
 						disallowPlanetFlags,//11
 						reserveOnly,//12
-						activeOnly//13
+						activeOnly,//13
+						minAccessLevel//14
 				};
 				
 				allOps.put(name, props);

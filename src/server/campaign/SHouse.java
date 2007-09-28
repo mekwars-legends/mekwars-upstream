@@ -2574,6 +2574,13 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		}
 	}
 
+	public float getLongConfig(String key) {
+		try {
+			return Long.parseLong(this.getConfig(key));
+		} catch (Exception ex) {
+			return -1;
+		}
+	}
 
 	public String getConfig(String key) {
 		

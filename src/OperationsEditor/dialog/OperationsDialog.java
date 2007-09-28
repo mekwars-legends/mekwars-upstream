@@ -475,6 +475,12 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
         BaseTextField.setName("MaxELODifference");
         rangesBox.add(BaseTextField);
         
+        BaseTextField = new JTextField(5);
+        rangesBox.add(new JLabel("Min SubFaction Access Level:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Your SubFactionAcessLevel must be this high to ride.<br>Default 0</html>");
+        BaseTextField.setName("MinSubFactionAccessLevel");
+        rangesBox.add(BaseTextField);
+
         BaseCheckBox = new JCheckBox("Must Have Fac");
         BaseCheckBox.setToolTipText("<html>If checked, attack type may only be used against<br>a world which has a production facility.</html>");
         BaseCheckBox.setName("OnlyAgainstFactoryWorlds");

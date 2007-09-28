@@ -31,6 +31,7 @@ import client.util.CUnitComparator;
 
 import common.House;
 import common.Player;
+import common.SubFaction;
 import common.Unit;
 import common.util.UnitComponents;
 import common.util.UnitUtils;
@@ -81,6 +82,8 @@ public class CPlayer extends Player {
 	private int vibraMinesAllowed = 0;
 	
 	private UnitComponents partsCache = new UnitComponents();
+	
+	private SubFaction mySubFaction = null;
 	
 	public CPlayer(MWClient client) {
 		mwclient = client;
@@ -220,6 +223,16 @@ public class CPlayer extends Player {
         if ( ST.hasMoreElements() ){
         	this.setAutoReorder(Boolean.parseBoolean(ST.nextToken()));
         }
+        
+        //subFactionName
+        if ( ST.hasMoreElements() )
+        	ST.nextElement();
+        
+        if ( ST.hasMoreElements() ){
+        	mySubFaction = new SubFaction();
+        	mySubFaction.fromString(ST.nextToken());
+        }
+        	
 		// traps run. sort the HQ. this isn't duplicative, b/c
 		// direct lods (PS instead of PL) don't trigger sorts.
 		this.sortHangar();
@@ -1094,4 +1107,29 @@ public class CPlayer extends Player {
 	public UnitComponents getPartsCache() {
 		return this.partsCache;
 	}
+	
+	public SubFaction getSubFaction(){
+		
+		if ( mySubFaction == null )
+			return new SubFaction();
+		
+		return mySubFaction;
+	}
+	
+	public int getSubFactionAccess(){
+
+		if ( mySubFaction == null )
+			return 0;
+		
+		return Integer.parseInt(mySubFaction.getConfig("AccessLevel"));
+		
+	}
+
+	public String getSubFactionName(){
+		if ( mySubFaction == null )
+			return "";
+		
+		return mySubFaction.getConfig("Name");
+	}
+
 }

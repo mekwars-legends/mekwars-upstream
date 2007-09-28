@@ -60,6 +60,7 @@ import server.MWChatServer.auth.IAuthenticator;
 import server.util.MWPasswdRecord;
 
 import common.Player;
+import common.SubFaction;
 import common.Unit;
 import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
@@ -134,6 +135,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
     private int DBId = 0;
     
     private boolean isLoading = false; //Player was getting saved multiple times during loading.  Just seemed silly.
+    
+    private String subFaction = "";
     
 	// CONSTRUCTORS
 	/**
@@ -2703,6 +2706,14 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	        result.append("~");
         }
         
+        result.append(this.getSubFactionName());
+        result.append("~");
+        
+        if ( toClient ){
+        	result.append(this.getSubFaction().toString());
+        	result.append("~");
+        }
+        
 		return result.toString();
 	}
 	
@@ -3141,6 +3152,10 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	        	this.setTeamNumber(Integer.parseInt(ST.nextToken()));
 	        }
 	        
+	        if ( ST.hasMoreTokens() ){
+	        	this.subFaction = ST.nextToken();
+	        }
+	        
 	        if ( this.password != null && this.password.getPasswd().trim().length() <= 2){
 	            this.password.setAccess(IAuthenticator.GUEST);
 	        }
@@ -3409,5 +3424,28 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		super.setTeamNumber(team);
 		this.setSave(true);
 	}
+	
+	public SubFaction getSubFaction(){
+		
+		SubFaction sub = this.getMyHouse().getSubFactionList().get(this.subFaction);
 
+		if ( sub == null )
+			return new SubFaction();
+		
+		return sub;
+	}
+	
+	public int getSubFactionAccess(){
+		SubFaction sub = this.getMyHouse().getSubFactionList().get(this.subFaction);
+
+		if ( sub == null )
+			return 0;
+		
+		return Integer.parseInt(sub.getConfig("AccessLevel"));
+		
+	}
+
+	public String getSubFactionName(){
+		return this.subFaction;
+	}
 }// end SPlayer()

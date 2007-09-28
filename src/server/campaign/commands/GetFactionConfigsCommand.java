@@ -77,7 +77,7 @@ public class GetFactionConfigsCommand implements Command {
 			/* No reason to update. you're up to date.
 			 * Calling this command from AdminMenu causes it to fully update each time.
 			 */
-			if ( timeStamp >= Long.parseLong(faction.getConfig("TIMESTAMP")) ) {
+			if ( timeStamp >= faction.getLongConfig("TIMESTAMP") ) {
 				CampaignMain.cm.toUser("PL|FC|DONE#DONE", Username,false);
 				return;
 			}

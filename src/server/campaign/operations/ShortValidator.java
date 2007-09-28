@@ -61,7 +61,7 @@ public class ShortValidator {
 	public static final int SFAIL_COMMON_TEAM_BV_EXCEEDED = 3;//The max amount of the BV for the op + max difference for the server is the max bv of a team.
 	public static final int SFAIL_COMMON_NOT_ENOUGH_COMMANDERS = 4;//the army does not have enough unit commanders in it.
 	public static final int SFAIL_COMMON_TOO_MANY_COMMANDERS = 5;//The army has too many unit commanders in it.
-	//public static final int SFAIL_COMMON = 6;
+	public static final int SFAIL_COMMON_INSUFFICENT_SUBFACTION_ACCESS_LEVEL = 6;//cannot defend/launch this Op due to your sub factions accesslevel being too low
 	//public static final int SFAIL_COMMON = 7;
 	//public static final int SFAIL_COMMON = 8;
 	//public static final int SFAIL_COMMON = 9;
@@ -546,6 +546,10 @@ public class ShortValidator {
 		if (ap.getExperience() < o.getIntValue("MinAttackerXP"))
 			failureReasons.add(SFAIL_ATTACK_MINXP);
 		
+		//subFaction Checks
+		if ( ap.getSubFactionAccess() < o.getIntValue("MinSubFactionAccessLevel") )
+			failureReasons.add(SFAIL_COMMON_INSUFFICENT_SUBFACTION_ACCESS_LEVEL);
+		
 		//if (ap.getGamesPlayed() > o.getIntValue("MaxAttackerGamesPlayed")))
 		//	failureReasons.add(SFAIL_ATTACK_MAXGAMES);
 		//if (ap.getGamesPlayed() < o.getIntValue("MinAttackerGamesPlayed")))
@@ -868,6 +872,10 @@ public class ShortValidator {
 		if (dp.getExperience() < o.getIntValue("MinDefenderXP"))
 			failureReasons.add(SFAIL_DEFEND_MINXP);
 		
+		//subFaction Checks
+		if ( dp.getSubFactionAccess() < o.getIntValue("MinSubFactionAccessLevel") )
+			failureReasons.add(SFAIL_COMMON_INSUFFICENT_SUBFACTION_ACCESS_LEVEL);
+
 		//if (dp.getGamesPlayed() > o.getIntValue("MaxDefenderGamesPlayed")))
 		//	failureReasons.add(SFAIL_DEFEND_MAXGAMES);
 		//if (dp.getGamesPlayed() < o.getIntValue("MinDefenderGamesPlayed")))
@@ -1258,6 +1266,19 @@ public class ShortValidator {
 		
 			case SFAIL_COMMON_ELODIFFERENCE:
 				return " Difference in ELO was too high.";
+				
+			case SFAIL_COMMON_TEAM_BV_EXCEEDED:
+				return " Team total bv exceeded.";
+				
+			case SFAIL_COMMON_NOT_ENOUGH_COMMANDERS:
+				return " not enough commanders in army";
+				
+			case SFAIL_COMMON_TOO_MANY_COMMANDERS:
+				return " too many commanders in army";
+
+			case SFAIL_COMMON_INSUFFICENT_SUBFACTION_ACCESS_LEVEL:
+				return " Sub-Factions access level is lower then the operations min. required access level.";
+				
 			/*
 			 * ATTACK failure causes
 			 */	

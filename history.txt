@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.7.x
++ Yet more Subfaction code.
 + Bug 1632824: op flags not checked when attacking from HQ tab or menu
 + Bug: UnenrollCommand accessing old static MMPassword Object.
 + Started adding code for SubFactions

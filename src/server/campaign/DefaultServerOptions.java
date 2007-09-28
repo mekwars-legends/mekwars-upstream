@@ -877,6 +877,9 @@ public class DefaultServerOptions {
         defaults.setProperty("allowUnitCommanderBattleArmor","false");
         defaults.setProperty("allowUnitCommanderVTOL","false");
 		defaults.setProperty("allowGoingActiveWithoutUnitCommanders","true");
+		
+		//SubFactions
+		defaults.setProperty("autoPromoteSubFaction", "true");
     }
 
 /**

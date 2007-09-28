@@ -2432,6 +2432,12 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setName("ShowCompleteGameInfoInNews");
         factionCBoxSpring.add(BaseCheckBox);
         
+        BaseCheckBox = new JCheckBox("Auto Promote Sub Factions");
+        BaseCheckBox.setToolTipText("<html>If checked, a player will be automatically promoted<br>to the next higher sub faction,<br>if they are qualified.</html>");
+        BaseCheckBox.setName("autoPromoteSubFaction");
+        factionCBoxSpring.add(BaseCheckBox);
+
+        
         SpringLayoutHelper.setupSpringGrid(factionCBoxSpring,3);
         
 		//finalize the layout

@@ -106,6 +106,7 @@ public class DefaultOperation {
          * OnlyAllowedFromActive       - Stop players from using this attack if they are on reserve duty.
          * IndividualInit              - Allow Individual Init to be set in MM for this game.
          * MaxELODifference            - Max Difference in ELO between attacker and defender.
+         * MinSubFactionAccessLevel    - Your SubFactionAcessLevel must be this high to ride. Default 0
          * 
 		 * NOTE: Colours are HTML hexidecimal. Keywords cannot be used. # must
 		 *       lead the string or massive fuck-ups will ensue.
@@ -144,6 +145,7 @@ public class DefaultOperation {
         operationsDefaults.put("OnlyAllowedFromActive", "false");
         operationsDefaults.put("IndividualInit", "false");
         operationsDefaults.put("MaxELODifference", "0");
+        operationsDefaults.put("MinSubFactionAccessLevel", "0");
         
 		/*
 		 * SHORT VARIABLES. These are params which are necessary for

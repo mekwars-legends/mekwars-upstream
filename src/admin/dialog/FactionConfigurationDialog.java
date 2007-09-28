@@ -2228,6 +2228,12 @@ public final class FactionConfigurationDialog implements ActionListener {
         baseTextField.setName("CostToScrapEngined");
         factionSpring2.add(baseTextField);
         
+        baseTextField = new JTextField(20);
+        factionSpring2.add(new JLabel("Forum Group Name:",SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Database with phpBB Integration only</html>");
+        baseTextField.setName("ForumGroupName");
+        factionSpring2.add(baseTextField);
+        
 		SpringLayoutHelper.setupSpringGrid(factionSpring2,2);
 		
 		//setup CBoxes
@@ -2248,12 +2254,11 @@ public final class FactionConfigurationDialog implements ActionListener {
         BaseCheckBox.setName("ShowCompleteGameInfoInNews");
         factionCBoxSpring.add(BaseCheckBox);
               
-        baseTextField = new JTextField(20);
-        factionCBoxSpring.add(new JLabel("Forum Group Name:",SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html>Database with phpBB Integration only</html>");
-        baseTextField.setName("ForumGroupName");
-        factionCBoxSpring.add(baseTextField);
-        
+        BaseCheckBox = new JCheckBox("Auto Promote Sub Factions");
+        BaseCheckBox.setToolTipText("<html>If checked, a player will be automatically promoted<br>to the next higher sub faction,<br>if they are qualified.</html>");
+        BaseCheckBox.setName("autoPromoteSubFaction");
+        factionCBoxSpring.add(BaseCheckBox);
+              
         SpringLayoutHelper.setupSpringGrid(factionCBoxSpring,3);
 
 		//finalize the layout
