@@ -119,6 +119,9 @@ public class AttackMenu extends JMenu implements ActionListener {
 				//save the players house ID, which will be referenced frequently
 				int houseID = mwclient.getPlayer().getHouseFightingFor().getId();
 				
+				//Sub Faction Access Level;
+				int accessLevel = mwclient.getPlayer().getSubFactionAccess();
+				
 				//put all elibibles into a temporary tree. this weeds out
 				//duplicate entries and saves some loops through the planets.
 				TreeSet<String> tempEligibles = new TreeSet<String>();
@@ -143,6 +146,11 @@ public class AttackMenu extends JMenu implements ActionListener {
                     String disallowPlanetFlags = opProps[11]+"^";
                     //boolean reserveOnly is 12. Checked below, after this else statement is done.
 					//boolean activeOnly is 13. Unused in updateMenuItems. See cmdAttackFromReserve below.
+                    int minAccessLevel = Integer.parseInt(opProps[14]);
+                    
+                    //Your sub faction is not allowed to use this!
+                    if ( accessLevel < minAccessLevel)
+                    	continue;
                     
 					//only check for a legal defender limits if necessary
 					if (!legalDefenders.startsWith("allFactions")) {
