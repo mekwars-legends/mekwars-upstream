@@ -24,7 +24,6 @@ import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SHouse;
-import server.util.MWPasswd;
 
 
 public class UnenrollCommand implements Command {
@@ -96,13 +95,7 @@ public class UnenrollCommand implements Command {
 		
 		//checks passed. do the actual removal.
 		hisfaction.removePlayer(p, CampaignMain.cm.getBooleanConfig("DonateUnitsUponUnenrollment"));
-		MWPasswd.removeRecord(Username);
-		try {
-			MWPasswd.save();
-		}  catch (Exception ex) {
-			MWServ.mwlog.errLog(ex);
-		}
-		
+
 		//tell the user
 		CampaignMain.cm.toUser("You've been unenrolled.", Username, true);
 		

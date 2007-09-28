@@ -1495,7 +1495,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("LISTMULTIPLAYERGROUPS",
 				new ListMultiPlayerGroupsCommand());
 		Commands.put("LISTSERVEROPFLAGS", new ListServerOpFlagsCommand());
-		Commands.put("LISTSUBFACTION", new ListSubFactionCommand());
+		Commands.put("LISTSUBFACTIONS", new ListSubFactionCommand());
 		Commands.put("LOGIN", new LoginCommand());
 		Commands.put("LOGOUT", new LogoutCommand());
 		// Double MStatus
