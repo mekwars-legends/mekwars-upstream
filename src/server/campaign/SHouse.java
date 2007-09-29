@@ -63,7 +63,6 @@ import server.campaign.mercenaries.MercHouse;
 import server.campaign.operations.Operation;
 import server.campaign.operations.ShortOperation;
 import server.campaign.pilot.SPilot;
-import sun.rmi.runtime.GetThreadPoolAction;
 
 @SuppressWarnings( { "unchecked", "serial", "unused" })
 public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Comparable, ISeller, IBuyer {

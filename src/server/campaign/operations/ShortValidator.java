@@ -648,8 +648,8 @@ public class ShortValidator {
 		int totalWeight 	= 0;
 		int largestWeight	= 0;
 		int numProtoMeks    = aa.getNumberOfUnitTypes(Unit.PROTOMEK);
-		int lowUnitBV       = -1;//used for spreads, NOT single unit BV checks
-		int highUnitBV      = -1;//used for spreads, NOT single unit BV checks
+		int lowUnitBV       = Integer.MAX_VALUE;//used for spreads, NOT single unit BV checks
+		int highUnitBV      = Integer.MIN_VALUE;//used for spreads, NOT single unit BV checks
 		int numberOfCommanders = 0;
 		boolean hasMeks 	= false;
 		boolean hasVehs 	= false;
@@ -744,10 +744,8 @@ public class ShortValidator {
 			else if ((type == Unit.BATTLEARMOR || type == Unit.INFANTRY) && !o.getBooleanValue("CountInfForSpread"))
 				continue;
 			
-			if (currBV < lowUnitBV || lowUnitBV == -1)
-				lowUnitBV = currBV;
-			if (currBV > highUnitBV || highUnitBV == -1)
-				highUnitBV = currBV;
+			lowUnitBV = Math.min(lowUnitBV, currBV);
+			highUnitBV = Math.max(highUnitBV, currBV);
 				
 		}//end while(units remain)
 		
@@ -965,8 +963,8 @@ public class ShortValidator {
 		int totalWeight 	= 0;
 		int largestWeight	= 0;
 		int numProtoMeks    = da.getNumberOfUnitTypes(Unit.PROTOMEK);
-		int lowUnitBV       = -1;//used for spreads, NOT single unit BV checks
-		int highUnitBV      = -1;//used for spreads, NOT single unit BV checks
+		int lowUnitBV       = Integer.MAX_VALUE;//used for spreads, NOT single unit BV checks
+		int highUnitBV      = Integer.MIN_VALUE;//used for spreads, NOT single unit BV checks
 		int numberOfCommanders = 0;
 		boolean hasMeks 	= false;
 		boolean hasVehs 	= false;
@@ -1048,10 +1046,8 @@ public class ShortValidator {
 			else if ((type == Unit.BATTLEARMOR || type == Unit.INFANTRY) && !o.getBooleanValue("CountInfForSpread"))
 				continue;
 			
-			if (currBV < lowUnitBV || lowUnitBV == -1)
-				lowUnitBV = currBV;
-			else if (currBV > highUnitBV || highUnitBV == -1)
-				highUnitBV = currBV;
+			lowUnitBV = Math.min(lowUnitBV, currBV);
+			highUnitBV = Math.max(highUnitBV, currBV);
 			
 		}//end while(units remain)
 		
