@@ -148,15 +148,17 @@ public class SetUnitAmmoCommand implements Command {
             if ( shotsLeft == refillShots )
             	return;
             
-            //Single shot weapons should only cost 1 short i.e. total shots = 10 then price is 1/10th minium 1.
+            //Single shot weapons should only cost 1 shot i.e. total shots = 10 then price is 1/10th minium 1.
             if ( mWeapon.getLocation() == Entity.LOC_NONE ){
-                ammoCharge /= at.getShots();
-                ammoCharge = Math.max(ammoCharge,1);
-                refillShots = 1;
-            }else if (at.getAmmoType() == AmmoType.T_ROCKET_LAUNCHER){
-                ammoCharge = (int)(ammoCharge/2.5);//Basicly it boils down to Rocket being 2.5 times cheaper then lrms and I really didn't want to break it down to 1 rocket and build back up based on launcher I'm lazy --Torren.
-                ammoCharge = Math.max(ammoCharge,1);
-                refillShots = 1;
+	            if (at.getAmmoType() == AmmoType.T_ROCKET_LAUNCHER){
+	                ammoCharge = (int)(ammoCharge/2.5);//Basicly it boils down to Rocket being 2.5 times cheaper then lrms and I really didn't want to break it down to 1 rocket and build back up based on launcher I'm lazy --Torren.
+	                ammoCharge = Math.max(ammoCharge,1);
+	                refillShots = 1;
+	            }else{
+	                ammoCharge /= at.getShots();
+	                ammoCharge = Math.max(ammoCharge,1);
+	                refillShots = 1;
+	            }
             }//Parital Reloads
             else {
             	double percentLeft = ((double)refillShots - (double)shotsLeft) / (double)refillShots;

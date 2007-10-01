@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.7.x
++ Bug: ActivateCommand was allow Illegal armies to go active.
++ Bug: Rocket Launcher ammo charging full price.
++ Bug: Faction Config Property not clearing all data when getting new data.
 + Bug: Operations sending incorrect data to Client causing attack menu to die
 + Bug: Defender unit bv diff not working.
 + Yet more Subfaction code.

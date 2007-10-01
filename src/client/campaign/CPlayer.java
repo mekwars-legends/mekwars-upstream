@@ -1095,12 +1095,16 @@ public class CPlayer extends Player {
 	}
 	
 	public void setFactionConfigs(String data) {
+		
+		if ( data.startsWith("DONE#DONE") )
+			return;
+		
 		StringTokenizer ST = new StringTokenizer(data, DELIMITER);
+		mwclient.getserverConfigs().clear();
 		while ( ST.hasMoreTokens() ) {
 			String key = ST.nextToken();
 			String value = ST.nextToken();
 			
-			mwclient.getserverConfigs().remove(key);
 			mwclient.getserverConfigs().setProperty(key, value);
 		}
 		mwclient.setWaiting(false);
