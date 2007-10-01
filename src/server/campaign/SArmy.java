@@ -587,7 +587,9 @@ public class SArmy extends Army {
 	@Override
 	public void setName(String name) {
 		super.setName(name);
-		CampaignMain.cm.toUser("PL|RNA|"+ this.getID()+"#"+ name,this.getPlayerName(),false);
+		
+		if ( name.trim().length() > 0 )
+			CampaignMain.cm.toUser("PL|RNA|"+ this.getID()+"#"+ name,this.getPlayerName(),false);
 	}
 	
 	/*

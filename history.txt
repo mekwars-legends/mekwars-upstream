@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.7.x
++ Bug: Operations sending incorrect data to Client causing attack menu to die
 + Bug: Defender unit bv diff not working.
 + Yet more Subfaction code.
 + Bug 1632824: op flags not checked when attacking from HQ tab or menu

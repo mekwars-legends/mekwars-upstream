@@ -792,7 +792,9 @@ public class CPlayer extends Player {
 		if (ST.hasMoreTokens()) {
 			int army = Integer.parseInt(ST.nextToken());
 			String name = ST.nextToken();
-			this.getArmy(army).setName(name);
+			
+			if ( this.getArmy(army) != null )
+				this.getArmy(army).setName(name);
 		}
 	}
 	

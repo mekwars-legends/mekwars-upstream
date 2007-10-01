@@ -90,19 +90,19 @@ public class OperationWriter {
 				String activeOnly = currO.getValue("OnlyAllowedFromActive") + "*";
 				String minSubFactionLevel = currO.getValue("MinSubFactionAccessLevel")+"*";
 				
-				StringBuffer facInfo = new StringBuffer("any*");
+				String facInfo = "any*";
 				if (Boolean.parseBoolean(currO.getValue("OnlyAgainstFactoryWorlds")))
-					facInfo.append("only*");
+					facInfo = "only*";
 				else if (Boolean.parseBoolean(currO.getValue("OnlyAgainstNonFactoryWorlds")))
-					facInfo.append("none*");
+					facInfo = "none*";
 				
-                StringBuffer homeworldInfo = new StringBuffer("any*");
+                String homeworldInfo = "any*";
                 if (Boolean.parseBoolean(currO.getValue("OnlyAgainstHomeWorlds")))
-                    homeworldInfo.append("only*");
+                    homeworldInfo = "only*";
                 else if (Boolean.parseBoolean(currO.getValue("OnlyAgainstNonHomeWorlds")))
-                    homeworldInfo.append("none*");
+                    homeworldInfo = "none*";
                 
-				StringBuffer legalDefenders = new StringBuffer(" ");
+				StringBuffer legalDefenders = new StringBuffer();
 				if (!currO.getValue("LegalDefendFactions").trim().equals("")) {
 					legalDefenders.append(currO.getValue("LegalDefendFactions").trim() + "*");
 				} else if (!currO.getValue("IllegalDefendFactions").trim().equals("")) {
@@ -130,7 +130,8 @@ public class OperationWriter {
                     allowPlanetFlags.append("^ ^*");
                 else
                     allowPlanetFlags.append("*");
-                    StringBuffer disallowPlanetFlags = new StringBuffer(currO.getValue("DisallowPlanetFlags"));
+                    
+                StringBuffer disallowPlanetFlags = new StringBuffer(currO.getValue("DisallowPlanetFlags"));
                 if ( disallowPlanetFlags.length() < 1)
                     disallowPlanetFlags.append("^ ^*");
                 else
@@ -148,9 +149,9 @@ public class OperationWriter {
 						+ maxOwn
 						+ reserveOnly
 						+ activeOnly
-						+ legalDefenders
-						+ allowPlanetFlags
-						+ disallowPlanetFlags
+						+ legalDefenders.toString().trim()
+						+ allowPlanetFlags.toString().trim()
+						+ disallowPlanetFlags.toString().trim()
 						+ minSubFactionLevel);
 			}
 			ps.close();
