@@ -77,12 +77,15 @@ public class BuildTableListCommand implements Command {
 						else
 						    results += "<a href=\"MEKINFO" +ent.getChassis() + " " +  ent.getModel()+ "#" + ent.calculateBattleValue() + "#4#5\">"+line.trim()+"</a><br>";
 					}
-					else{
+					else if ( file.getName().indexOf("_") >= 0){
 					    String typeWeight = file.getName().substring(file.getName().indexOf("_"));
 					    line = line+typeWeight.trim();
 					    String fileWithOutChance;
-					    try{fileWithOutChance  = line.substring(line.indexOf(" "));}
-					    catch(Exception ex){fileWithOutChance = line;}
+					    try {
+							fileWithOutChance = line.substring(line.indexOf(" "));
+						} catch (Exception ex) {
+							fileWithOutChance = line;
+						}
 						String tempFilePath = filePath.substring(0,filePath.lastIndexOf("/"));
 					    results += "<a href=\"MEKWARS/c buildtablelist#"+tempFilePath+"/"+fileWithOutChance.trim()+"\">"+line+"</a><br>";
 					}

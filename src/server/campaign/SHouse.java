@@ -870,10 +870,6 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
             if ( ST.hasMoreElements() )
             	this.setTechLevel(Integer.parseInt(ST.nextToken()));
             
-            setPilotQueues(new PilotQueues(this.getBaseGunnerVect(), this.getBasePilotVect(), this.getBasePilotSkillVect()));
-            getPilotQueues().setFactionString(this.getName());// set the faction name for the queue
-            
-            
             if ( ST.hasMoreTokens() ){
             	int amount = Integer.parseInt(ST.nextToken());
             	
@@ -883,8 +879,10 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
             		subFactionList.put(newSubFaction.getConfig("Name"),newSubFaction);
             	}
             }
+
+            setPilotQueues(new PilotQueues(this.getBaseGunnerVect(), this.getBasePilotVect(), this.getBasePilotSkillVect()));
+            getPilotQueues().setFactionString(this.getName());// set the faction name for the queue
             
-            //subFactionList.put("Test SubFaction", new SubFaction("Test Faction"));
             // Stuff for MercHouse.. Has to be here until someone tells me how
 			// to move it :) - McWiz
 			if (this.isMercHouse()) {

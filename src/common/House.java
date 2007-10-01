@@ -532,7 +532,7 @@ public class House implements MMNetSerializable {
 	}
 	
     public void setTechLevel(int level) {
-    	if ( techLevel < TechConstants.T_IS_LEVEL_1 )
+    	if ( level < TechConstants.T_IS_LEVEL_1 )
     		this.techLevel = TechConstants.T_ALL;
     	else
     		this.techLevel = level;
