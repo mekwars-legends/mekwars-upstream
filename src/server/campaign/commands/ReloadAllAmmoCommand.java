@@ -117,7 +117,7 @@ public class ReloadAllAmmoCommand implements Command {
 
 	           	if ( (ammo.getLocation() == Entity.LOC_NONE ||
 	            		baseAmmo.getAmmoType() == AmmoType.T_ROCKET_LAUNCHER)
-	            		&& ammo.getShotsLeft() == 0) {
+	            		&& ammo.getShotsLeft() != 1) {
 	            	ammoAmount = 1;
 	            	refillShots = 1;
 	           	}

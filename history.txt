@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.7.x
++ Bug: OS weapons reloading with more then 1 shot
 + Bug: Faction Tech Levels getting reset to ALL
 + Bug: ActivateCommand was allow Illegal armies to go active.
 + Bug: Rocket Launcher ammo charging full price.
