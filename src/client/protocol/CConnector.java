@@ -83,7 +83,7 @@ public class CConnector implements IConnectionListener
      * Construct and queue an outgoing message.
      */
     public void send(String message) {
-    	if ( message.indexOf("c sendclientdata#") < 0)
+    	if ( message.indexOf("CH%7c%2fc+sendclientdata%23#") < 0)
     		MWClient.mwClientLog.clientOutputLog("SENT: " + message);
       _connectionHandler.queueMessage(message);
     }

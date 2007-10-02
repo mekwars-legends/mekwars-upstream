@@ -174,7 +174,7 @@ public class ActivateCommand implements Command {
 		Integer armyID = 0;
 		
 		if ( !hasLegalOpArmies(p, p.getArmies(),armyID) ){
-			CampaignMain.cm.toUser("Army #"+armyID+" is currently able to launch or defend any ops!  You may not go active.",Username,true);
+			CampaignMain.cm.toUser("Army #"+armyID+" is currently unable to launch or defend any ops!  You may not go active.",Username,true);
 			return;
 		}
 		
@@ -321,17 +321,24 @@ public class ActivateCommand implements Command {
     	
     	for ( SArmy army : armies ){
     		
+        	boolean canAttack = false;
+        	boolean canDefend = false;
     		armyID = army.getID();
         	//check for legal attacks
-    		if ( army.getLegalOperations().size() == 0)
-    			return false;
+    		if ( army.getLegalOperations().size() > 0)
+    			canAttack = true;
     		
     		//check for legal defense
     		OperationManager manager = CampaignMain.cm.getOpsManager(); 
     		for ( Operation op : manager.getOperations().values() ){
-    			if ( manager.validateShortDefense(player, army, op, null) != null )
-    				return false;
+    			if ( manager.validateShortDefense(player, army, op, null) == null ){
+    				canDefend = true;
+    				break;
+    			}
     		}
+    		
+    		if ( !canAttack && !canDefend )
+    			return false;
     	}
     	
     	return true;

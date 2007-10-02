@@ -1425,6 +1425,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("DEFECT", new DefectCommand());
 		Commands.put("DEFEND", new DefendCommand());
 		Commands.put("DELETEACCOUNT", new DeleteAccountCommand());
+		Commands.put("DEMOTEPLAYER", new DemotePlayerCommand());
 		Commands.put("DIRECTSELLUNIT", new DirectSellUnitCommand());
 		Commands.put("DISPLAYPLAYERPERSONALPILOTQUEUE",
 				new DisplayPlayerPersonalPilotQueueCommand());
@@ -1525,6 +1526,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("OFFERCONTRACT", new OfferContractCommand());
 		Commands.put("PLANET", new PlanetCommand());
 		Commands.put("PLAYERS", new PlayersCommand());
+		Commands.put("PROMOTEPLAYER", new PromotePlayerCommand());
 		Commands.put("RANGE", new RangeCommand());
 		Commands.put("RECALL", new RecallCommand());
 		Commands.put("RECALLBID", new RecallBidCommand());
@@ -1548,6 +1550,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("REQUEST", new RequestCommand());
 		Commands.put("REQUESTDONATED", new RequestDonatedCommand());
 		Commands.put("REQUESTSERVERMAIL", new RequestServerMailCommand());
+		Commands.put("REQUESTSUBFACTIONPROMOTION", new RequestSubFactionPromotionCommand());
 		Commands.put("RESTARTREPAIRTHREAD", new RestartRepairThreadCommand());
 		Commands.put("RETRIEVEALLOPERATIONS",
 				new RetrieveAllOperationsCommand());

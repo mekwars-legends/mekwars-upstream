@@ -43,6 +43,7 @@ import common.UnitFactory;
 import client.MWClient;
 import client.gui.dialog.HouseNameDialog;
 import client.gui.dialog.PlanetNameDialog;
+import client.gui.dialog.SubFactionNameDialog;
 import client.gui.dialog.TraitDialog;
 import client.gui.dialog.UnitViewerDialog;
 
@@ -54,6 +55,7 @@ import admin.dialog.PlanetEditorDialog;
 import admin.dialog.ServerConfigurationDialog;
 import admin.dialog.BannedAmmoDialog;
 import admin.dialog.ComponentDisplayDialog;
+import admin.dialog.SubFactionConfigurationDialog;
 
 public class AdminMenu extends JMenu {
 	
@@ -87,6 +89,7 @@ public class AdminMenu extends JMenu {
 	JMenuItem jMenuAdminSetHouseFluFile = new JMenuItem();
 	JMenuItem jMenuAdminSetHouseTechLevel = new JMenuItem();
 	JMenuItem jMenuAdminSetFactionTraits = new JMenuItem();
+	JMenuItem jMenuAdminSetSubFactionConfigs = new JMenuItem();
 	JMenuItem jMenuAdminSaveTheUniverse = new JMenuItem();
 	JMenuItem jMenuAdminSaveBlackMaketSettings = new JMenuItem();
 	JMenuItem jMenuAdminSavePlanetsToXML = new JMenuItem();
@@ -240,6 +243,33 @@ public class AdminMenu extends JMenu {
             }
         });
 
+        
+        jMenuAdminSetSubFactionConfigs.setText("Sub Faction Configs");
+        jMenuAdminSetSubFactionConfigs.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+		        HouseNameDialog factionDialog = new HouseNameDialog(mwclient, "Faction", false,false);
+		        factionDialog.setVisible(true);
+		        String faction = factionDialog.getHouseName();
+		        factionDialog.dispose();
+		        if (faction == null || faction.length() == 0)
+		            return;
+	
+		        try{
+		        	mwclient.refreshData();
+		        }catch (Exception ex) {
+		        	ex.printStackTrace();
+		        }
+		        SubFactionNameDialog subFactionDialog = new SubFactionNameDialog(mwclient, "SubFaction",faction);
+		        subFactionDialog.setVisible(true);
+		        String subFactionName = subFactionDialog.getSubFactionName();
+		        subFactionDialog.dispose();
+		        if (subFactionName == null || subFactionName.length() == 0)
+		            return;
+		        
+            	new SubFactionConfigurationDialog(mwclient,faction,subFactionName);
+            }
+        });
+        
         jMenuAdminSetFactionTraits.setText("Faction Traits");
         jMenuAdminSetFactionTraits.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -555,6 +585,10 @@ public class AdminMenu extends JMenu {
             jMenuAdminSubSetHouse.add(jMenuAdminHouseAmmoBan);
         if ( userLevel >= mwclient.getData().getAccessLevel("AddTrait") )
             jMenuAdminSubSetHouse.add(jMenuAdminSetFactionTraits);
+        if ( userLevel >= mwclient.getData().getAccessLevel("CreateSubFaction") 
+        		&& userLevel >= mwclient.getData().getAccessLevel("SetSubFactionConfig"))
+            jMenuAdminSubSetHouse.add(jMenuAdminSetSubFactionConfigs);
+        
 
         jMenuAdminSubSetHouse.setText("Factions");
         if ( jMenuAdminSubSetHouse.getItemCount() > 0)

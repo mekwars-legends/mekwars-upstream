@@ -68,7 +68,7 @@ public class RemoveSubFactionCommand implements Command {
 
 		faction.getSubFactionList().remove(subFactionName);
 		
-		
+		faction.updated();
 		CampaignMain.cm.doSendModMail("NOTE", Username +" has removed subfaction "+subFactionName+" for faction "+faction.getName());
 		CampaignMain.cm.toUser("You have removed subfaction "+subFactionName+" for faction "+faction.getName(), Username);
 	}

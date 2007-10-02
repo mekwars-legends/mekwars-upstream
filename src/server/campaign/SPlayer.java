@@ -2706,7 +2706,10 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	        result.append("~");
         }
         
-        result.append(this.getSubFactionName());
+        if ( this.getSubFactionName().trim().length() < 1 )
+        	result.append(" ");
+        else
+        	result.append(this.getSubFactionName());
         result.append("~");
         
         if ( toClient ){
@@ -3423,6 +3426,11 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	public void setTeamNumber(int team){
 		super.setTeamNumber(team);
 		this.setSave(true);
+	}
+	
+	public void setSubFaction(String subFaction){
+		this.subFaction = subFaction;
+		this.setSave();
 	}
 	
 	public SubFaction getSubFaction(){

@@ -69,10 +69,14 @@ public class CreateSubFactionCommand implements Command {
 		if ( faction == null )
 			return;
 		
+		if ( faction.getSubFactionList().containsKey(subFactionName) )
+			return;
+		
 		SubFaction subFaction = new SubFaction(subFactionName,Integer.toString(access));
 		
 		faction.getSubFactionList().put(subFactionName, subFaction);
 		
+		faction.updated();
 		
 		CampaignMain.cm.doSendModMail("NOTE", Username +" has created subfaction "+subFactionName+" for faction "+faction.getName());
 		CampaignMain.cm.toUser("You have created subfaction "+subFactionName+" for faction "+faction.getName(), Username);

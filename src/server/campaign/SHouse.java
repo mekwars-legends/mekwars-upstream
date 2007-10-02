@@ -94,8 +94,8 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 	
 	private String forumName = "";
 	
-    private ConcurrentHashMap<String,SubFaction> subFactionList = new ConcurrentHashMap<String,SubFaction>();
-
+	private Vector<String>leaders = new Vector<String>(1,1);
+	
     @Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
@@ -295,11 +295,11 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
         result.append(this.getTechLevel());
         result.append("|");
         
-        result.append(subFactionList.size());
+        result.append(getSubFactionList().size());
         result.append("|");
         
-        for (String key : subFactionList.keySet() ){
-        	result.append(subFactionList.get(key).toString());
+        for (String key : getSubFactionList().keySet() ){
+        	result.append(getSubFactionList().get(key).toString());
         	result.append("|");
         }
         
@@ -876,7 +876,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
             	for (;amount > 0; amount--){
             		SubFaction newSubFaction = new SubFaction();
             		newSubFaction.fromString(ST.nextToken());
-            		subFactionList.put(newSubFaction.getConfig("Name"),newSubFaction);
+            		getSubFactionList().put(newSubFaction.getConfig("Name"),newSubFaction);
             	}
             }
 
@@ -2685,7 +2685,14 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		return this.forumName;
 	}
 	
-	public ConcurrentHashMap<String,SubFaction> getSubFactionList(){
-		return subFactionList;
+	public void sendMessageToHouseLeaders(String msg){
+		
+		if ( leaders.size() < 1 )
+			return;
+		
+		for (String name : leaders ){
+			CampaignMain.cm.toUser(msg, name);
+		}
 	}
+	
 }// end SHouse.java

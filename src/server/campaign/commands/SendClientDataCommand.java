@@ -36,7 +36,7 @@ public class SendClientDataCommand implements Command {
 				userData.append(";");
 			}
 			
-			MWServ.mwlog.infoLog(userData.toString());
+			MWServ.mwlog.ipLog(userData.toString());
 		}catch (Exception ex){
 			//do nothing
 		}

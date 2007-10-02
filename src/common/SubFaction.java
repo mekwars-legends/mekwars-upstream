@@ -19,8 +19,6 @@ package common;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import server.MWServ;
-
 public class SubFaction{
 	
 	private static Properties defaultSettings = new Properties();
@@ -52,6 +50,14 @@ public class SubFaction{
 		defaultSettings.setProperty("CanBuyUsedMediumMek", "true");
 		defaultSettings.setProperty("CanBuyUsedHeavyMek", "true");
 		defaultSettings.setProperty("CanBuyUsedAssaultMek", "true");
+		defaultSettings.setProperty("CanBuyNewLightVehicle", "true");
+		defaultSettings.setProperty("CanBuyNewMediumVehicle", "true");
+		defaultSettings.setProperty("CanBuyNewHeavyVehicle", "true");
+		defaultSettings.setProperty("CanBuyNewAssaultVehicle", "true");
+		defaultSettings.setProperty("CanBuyUsedLightVehicle", "true");
+		defaultSettings.setProperty("CanBuyUsedMediumVehicle", "true");
+		defaultSettings.setProperty("CanBuyUsedHeavyVehicle", "true");
+		defaultSettings.setProperty("CanBuyUsedAssaultVehicle", "true");
 		defaultSettings.setProperty("CanBuyNewLightInfantry", "true");
 		defaultSettings.setProperty("CanBuyNewMediumInfantry", "true");
 		defaultSettings.setProperty("CanBuyNewHeavyInfantry", "true");
@@ -68,14 +74,14 @@ public class SubFaction{
 		defaultSettings.setProperty("CanBuyUsedMediumProtoMek", "true");
 		defaultSettings.setProperty("CanBuyUsedHeavyProtoMek", "true");
 		defaultSettings.setProperty("CanBuyUsedAssaultProtoMek", "true");
-		defaultSettings.setProperty("CanBuyNewLightProtoMek", "true");
-		defaultSettings.setProperty("CanBuyNewMediumProtoMek", "true");
-		defaultSettings.setProperty("CanBuyNewHeavyProtoMek", "true");
-		defaultSettings.setProperty("CanBuyNewAssaultProtoMek", "true");
-		defaultSettings.setProperty("CanBuyUsedLightProtoMek", "true");
-		defaultSettings.setProperty("CanBuyUsedMediumProtoMek", "true");
-		defaultSettings.setProperty("CanBuyUsedHeavyProtoMek", "true");
-		defaultSettings.setProperty("CanBuyUsedAssaultProtoMek", "true");
+		defaultSettings.setProperty("CanBuyNewLightBattleArmor", "true");
+		defaultSettings.setProperty("CanBuyNewMediumBattleArmor", "true");
+		defaultSettings.setProperty("CanBuyNewHeavyBattleArmor", "true");
+		defaultSettings.setProperty("CanBuyNewAssaultBattleArmor", "true");
+		defaultSettings.setProperty("CanBuyUsedLightBattleArmor", "true");
+		defaultSettings.setProperty("CanBuyUsedMediumBattleArmor", "true");
+		defaultSettings.setProperty("CanBuyUsedHeavyBattleArmor", "true");
+		defaultSettings.setProperty("CanBuyUsedAssaultBattleArmor", "true");
 		defaultSettings.setProperty("MinELO", "0");
 		defaultSettings.setProperty("MinExp", "0");
 		
@@ -89,7 +95,7 @@ public class SubFaction{
 			if ( SubFaction.getDefault().containsKey(key) )
 				return SubFaction.getDefault().getProperty(key);
 			
-			MWServ.mwlog.errLog("Unable to find subfaction config: "+key);
+			System.err.println("Unable to find subfaction config: "+key);
 			return "-1";
 		}
 		
@@ -103,6 +109,8 @@ public class SubFaction{
 	public String toString(){
 		StringBuffer result = new StringBuffer();
 		
+		if ( factionSettings.size() < 1 )
+			return "# #";
 		for (Object key : factionSettings.keySet()){
 			result.append(key.toString());
 			result.append("#");
@@ -117,7 +125,14 @@ public class SubFaction{
 		StringTokenizer propertyList = new StringTokenizer(settings,"#");
 		
 		while ( propertyList.hasMoreElements() ){
-			setConfig(propertyList.nextToken(), propertyList.nextToken());
+			
+			String key = propertyList.nextToken();
+			
+			if ( !propertyList.hasMoreElements() )
+				return;
+			
+			String value = propertyList.nextToken();
+			setConfig(key, value);
 		}
 	}
 }

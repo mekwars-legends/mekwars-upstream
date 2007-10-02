@@ -1082,6 +1082,7 @@ src/admin/dialog/FactionConfigurationDialog.java -text
 src/admin/dialog/OpFlagSelectionDialog.java -text
 src/admin/dialog/PlanetEditorDialog.java -text
 src/admin/dialog/ServerConfigurationDialog.java -text
+src/admin/dialog/SubFactionConfigurationDialog.java -text
 src/admin/dialog/TerrainSelectionDialog.java -text
 src/client/CConfig.java -text
 src/client/CMWLogger.java -text
@@ -1173,6 +1174,7 @@ src/client/gui/dialog/RepodSelectorDialog.java -text
 src/client/gui/dialog/RewardPointsDialog.java -text
 src/client/gui/dialog/SellUnitDialog.java -text
 src/client/gui/dialog/SignonDialog.java -text
+src/client/gui/dialog/SubFactionNameDialog.java -text
 src/client/gui/dialog/TableViewerDialog.java -text
 src/client/gui/dialog/TraitDialog.java -text
 src/client/gui/dialog/UnitSelectionDialog.java -text
@@ -1324,6 +1326,7 @@ src/server/campaign/commands/DeactivateCommand.java -text
 src/server/campaign/commands/DeclineAttackFromReserveCommand.java -text
 src/server/campaign/commands/DefectCommand.java -text
 src/server/campaign/commands/DefendCommand.java -text
+src/server/campaign/commands/DemotePlayerCommand.java -text
 src/server/campaign/commands/DirectSellUnitCommand.java -text
 src/server/campaign/commands/DisplayPlayerPersonalPilotQueueCommand.java -text
 src/server/campaign/commands/DisplayUnitRepairJobsCommand.java -text
@@ -1369,6 +1372,7 @@ src/server/campaign/commands/NoPlayCommand.java -text
 src/server/campaign/commands/OfferContractCommand.java -text
 src/server/campaign/commands/PlanetCommand.java -text
 src/server/campaign/commands/PlayersCommand.java -text
+src/server/campaign/commands/PromotePlayerCommand.java -text
 src/server/campaign/commands/RangeCommand.java -text
 src/server/campaign/commands/RecallBidCommand.java -text
 src/server/campaign/commands/RecallCommand.java -text
@@ -1383,6 +1387,7 @@ src/server/campaign/commands/RepodCommand.java -text
 src/server/campaign/commands/RequestCommand.java -text
 src/server/campaign/commands/RequestDonatedCommand.java -text
 src/server/campaign/commands/RequestServerMailCommand.java -text
+src/server/campaign/commands/RequestSubFactionPromotionCommand.java -text
 src/server/campaign/commands/RetirePilotCommand.java -text
 src/server/campaign/commands/RollCommand.java -text
 src/server/campaign/commands/SMOTDCommand.java -text

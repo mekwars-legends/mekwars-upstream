@@ -88,7 +88,7 @@ public class UnitComponents  {
 		StringBuffer result = new StringBuffer();
 		
 		if ( components.size() < 1 )
-			return " ";
+			return "| |";
 		for ( String key : components.keySet() ) {
 			
 			if ( components.get(key) < 1)
@@ -109,7 +109,11 @@ public class UnitComponents  {
 		try {
 			components.clear();
 			while ( st.hasMoreTokens() ) {
-				components.put(st.nextToken(), Integer.parseInt(st.nextToken()));
+				String key = st.nextToken();
+				if ( !st.hasMoreElements() )
+					return;
+				int value = Integer.parseInt(st.nextToken());
+				components.put(key, value);
 			}
 		}catch(Exception ex) {
 			ex.printStackTrace();
