@@ -504,6 +504,9 @@ public class DefectCommand implements Command {
 			if (p.getMyHouse().equals(newHouse) && !CampaignMain.cm.getServer().isAdmin(Username))
 				MWPasswd.getRecord(Username).setAccess(2);
 			
+			p.setSubFaction("");
+			p.getMyHouse().removeLeader(p.getName());
+			
 			/*
 			 * Player is part of his new house. Check the ammo
 			 * in all of his units, removing illegal ammos.
@@ -555,7 +558,7 @@ public class DefectCommand implements Command {
 			}//end if(defection leaves player with negative bays)
 			
 			//save the player in his new house
-			p.setSave(true);
+			p.setSave();
 			
 		}//end if(more tokens)
 	}//end process()

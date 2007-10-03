@@ -51,6 +51,7 @@ import javax.swing.BoxLayout;
 import megamek.MegaMek;
 import megamek.client.ui.AWT.UnitLoadingDialog;
 
+import client.CUser;
 import client.MWClient;
 import client.campaign.CCampaign;
 import client.campaign.CPlayer;
@@ -159,6 +160,14 @@ public class CMainFrame extends JFrame {
 	JCheckBoxMenuItem jMenuOptionsMute = new JCheckBoxMenuItem();
     JMenuItem jMenuOptionsReloadAllData = new JMenuItem();
 	
+    //Leadership Menu
+    JMenu jMenuLeaderShip = new JMenu();
+    
+	JMenuItem jMenuLeaderPromote = new JMenuItem();
+	JMenuItem jMenuLeaderDemote = new JMenuItem();
+	JMenuItem jMenuLeaderFluff = new JMenuItem();
+	JMenuItem jMenuLeaderMute = new JMenuItem();
+
 	//HELP Menu
 	JMenu jMenuHelp = new JMenu();
 	
@@ -374,6 +383,12 @@ public class CMainFrame extends JFrame {
 		//jMenuTask.setVisible(loggedin);
 		jMenuHost.setVisible(!disconnected);
 		
+        if ( mwclient.getUser(mwclient.getPlayer().getName()).getUserlevel() >= Integer.parseInt(mwclient.getserverConfigs("factionLeaderLevel")) )
+        	jMenuLeaderShip.setVisible(true);
+        else
+        	jMenuLeaderShip.setVisible(false);
+        
+
 		jMenuFileConnect.setVisible(disconnected);
 		jMenuFileDisconnect.setVisible(!disconnected);
 		jMenuFileRegister.setVisible(!disconnected);
@@ -809,6 +824,36 @@ public class CMainFrame extends JFrame {
             }
         });
 
+        jMenuLeaderShip.setText("LeaderShip");
+
+        jMenuLeaderPromote.setText("Promote Player");
+        jMenuLeaderPromote.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				jMenuLeaderPromote_actionPerformed();
+			}
+		});
+        
+        jMenuLeaderDemote.setText("Demote Player");
+        jMenuLeaderDemote.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				jMenuLeaderDemote_actionPerformed();
+			}
+		});
+        
+        jMenuLeaderFluff.setText("Fluff Player");
+        jMenuLeaderFluff.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				jMenuLeaderFluff_actionPerformed();
+			}
+		});
+        
+        jMenuLeaderMute.setText("Mute Player");
+        jMenuLeaderMute.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				jMenuLeaderMute_actionPerformed();
+			}
+		});
+        
         jMenuHelp.setText("Help");
 		jMenuHelp.setMnemonic('E');
 		
@@ -1015,6 +1060,11 @@ public class CMainFrame extends JFrame {
 		jMenuOptions.add(jMenuOptionsMute);
 		jMenuOptions.addSeparator();
         jMenuOptions.add(jMenuOptionsReloadAllData);
+        
+        jMenuLeaderShip.add(jMenuLeaderFluff);
+        jMenuLeaderShip.add(jMenuLeaderMute);
+        jMenuLeaderShip.add(jMenuLeaderPromote);
+        jMenuLeaderShip.add(jMenuLeaderDemote);
 				
 		jMenuHelp.add(jMenuHelpAbout);
 		jMenuHelp.addSeparator();
@@ -1053,6 +1103,7 @@ public class CMainFrame extends JFrame {
 		jMenuBar1.add(jMenuAttackMenu);
 		jMenuBar1.add(jMenuHost);
 		jMenuBar1.add(jMenuOptions);
+		jMenuBar1.add(jMenuLeaderShip);
 		jMenuBar1.add(jMenuHelp);
 		jMenuBar1.add(jMenuMod);
 		//jMenuBar1.add(jMenuAdmin);
@@ -1836,6 +1887,95 @@ public class CMainFrame extends JFrame {
 		UnitViewerDialog unitSelector = new UnitViewerDialog(mwclient.getMainFrame(), unitLoadingDialog, mwclient,UnitViewerDialog.UNIT_VIEWER);
 		new Thread(unitSelector).start();
 		//unitSelector.setVisible(true);
+	}
+	
+	public void jMenuLeaderPromote_actionPerformed(){
+		String targetPlayer;
+	
+		int menuType = mwclient.isMod() ? PlayerNameDialog.ANY_PLAYER : PlayerNameDialog.FACTION_ONLY;
+		
+		PlayerNameDialog pnd = new PlayerNameDialog(mwclient, "Promote", menuType);
+		pnd.setVisible(true);
+		targetPlayer = pnd.getPlayerName();
+		pnd.dispose();
+		
+		if (targetPlayer == null)
+			return;
+		
+		
+        SubFactionNameDialog subFactionDialog = new SubFactionNameDialog(mwclient, "SubFaction",mwclient.getUser(targetPlayer).getHouse());
+        subFactionDialog.setVisible(true);
+        String subFactionName = subFactionDialog.getSubFactionName();
+        subFactionDialog.dispose();
+
+        if (subFactionName == null || subFactionName.length() == 0)
+            return;
+		
+		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c promoteplayer#" + targetPlayer + "#" + subFactionName);
+	
+	}
+	
+	public void jMenuLeaderDemote_actionPerformed(){
+		String targetPlayer;
+	
+		int menuType = mwclient.isMod() ? PlayerNameDialog.ANY_PLAYER : PlayerNameDialog.FACTION_ONLY;
+		
+		PlayerNameDialog pnd = new PlayerNameDialog(mwclient, "Demote Player", menuType);
+		pnd.setVisible(true);
+		targetPlayer = pnd.getPlayerName();
+		pnd.dispose();
+		
+		if (targetPlayer == null)
+			return;
+		
+		
+        SubFactionNameDialog subFactionDialog = new SubFactionNameDialog(mwclient, "Use None to remove completely",mwclient.getUser(targetPlayer).getHouse());
+        subFactionDialog.setVisible(true);
+        String subFactionName = subFactionDialog.getSubFactionName();
+        subFactionDialog.dispose();
+
+        if (subFactionName == null || subFactionName.length() == 0)
+            return;
+		
+		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c demoteplayer#" + targetPlayer + "#" + subFactionName);
+	
+	}
+	
+	public void jMenuLeaderFluff_actionPerformed(){
+		String targetPlayer;
+	
+		int menuType = PlayerNameDialog.FACTION_ONLY;
+		
+		PlayerNameDialog pnd = new PlayerNameDialog(mwclient, "Fluff Player", menuType);
+		pnd.setVisible(true);
+		targetPlayer = pnd.getPlayerName();
+		pnd.dispose();
+		
+		if (targetPlayer == null)
+			return;
+		
+		CUser user = mwclient.getUser(targetPlayer);
+		
+		String newfluff = JOptionPane.showInputDialog(this, "Fluff? (Leave blank to remove)",user.getFluff());
+		
+		if (newfluff != null)
+			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c FactionLeaderFluff#" + targetPlayer + "#" + newfluff);
+	}
+	
+	public void jMenuLeaderMute_actionPerformed(){
+		String targetPlayer;
+	
+		int menuType = PlayerNameDialog.FACTION_ONLY;
+		
+		PlayerNameDialog pnd = new PlayerNameDialog(mwclient, "Mute Player", menuType);
+		pnd.setVisible(true);
+		targetPlayer = pnd.getPlayerName();
+		pnd.dispose();
+		
+		if (targetPlayer == null)
+			return;
+		
+		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c FactionLeaderMute#" + targetPlayer);
 	}
 	
 	//Show data about the mek wars client and server

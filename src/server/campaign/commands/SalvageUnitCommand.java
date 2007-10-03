@@ -183,7 +183,7 @@ public class SalvageUnitCommand implements Command {
                 unit.setPilotIsRepairing(true);
             //charge them for the repair now.
             player.addMoney(-cost);
-            player.setSave(true);
+            player.setSave();
             CampaignMain.cm.getRTT().getRepairList().add(RepairTrackingThread.Repair(player,unitID,armor,location,slot,techType,0,0,true));
             CampaignMain.cm.toUser("FSM|"+salvageMessage,Username,false);
             CampaignMain.cm.toUser("PL|UU|"+unitID+"|"+unit.toString(true),Username,false);

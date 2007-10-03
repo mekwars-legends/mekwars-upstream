@@ -82,7 +82,7 @@ public class SetUnmaintainedCommand implements Command {
 		CampaignMain.cm.toUser("PL|SB|"+p.getTotalMekBays(),Username,false);
 		CampaignMain.cm.toUser("PL|SF|"+p.getFreeBays(),Username,false);
 		CampaignMain.cm.toUser(unitToSet.getPilot().getName() + "'s " + unitToSet.getModelName() + " is no longer being maintained." ,Username,true);
-		p.setSave(true);
+		p.setSave();
 		
 	}//end process()
 }//end SetUnmaintainedCommand class

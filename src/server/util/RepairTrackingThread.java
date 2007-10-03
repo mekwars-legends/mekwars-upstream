@@ -324,7 +324,7 @@ class Repair{
             MWServ.mwlog.errLog("Could not find player "+Username+" removing repair job from queue.");
             return true;
         }
-        player.setSave(true);
+        player.setSave();
         SUnit mek = player.getUnit(unitID);
 
         if ( mek == null ){

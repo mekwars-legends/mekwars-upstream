@@ -69,7 +69,7 @@ public class ModFullRepairCommand implements Command {
 		CampaignMain.cm.toUser(targetName + "'s " + m.getModelName() + " is now fully repaired.", Username, true);
 		CampaignMain.cm.toUser(Username + " mod-repaired your " + m.getModelName() + " (ID#" + m.getId() + ")", targetName, true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " mod-repaired a "+ m.getModelName() + " belonging to " + targetName);
-        target.setSave(true);
+        target.setSave();
         target.checkAndUpdateArmies(m);
         CampaignMain.cm.toUser("PL|UU|"+m.getId()+"|"+m.toString(true),targetName,false);
 	}

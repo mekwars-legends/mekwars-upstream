@@ -82,7 +82,7 @@ public class ForcedDefectCommand implements Command {
 		
 		//force a save, and set save flag
 		CampaignMain.cm.forceSavePlayer(p);
-		p.setSave(true);
+		p.setSave();
 		
 		//send appropraite messages
 		CampaignMain.cm.toUser(Username + " forced you to defect to " + h.getName(),p.getName(),true);

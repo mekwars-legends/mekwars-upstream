@@ -99,9 +99,6 @@ public class UnenrollCommand implements Command {
 		//tell the user
 		CampaignMain.cm.toUser("You've been unenrolled.", Username, true);
 		
-		//remove him from the save queue
-		p.setSave(false);
-		
 		//delete the player's saved info, if a pfile exists
 		File fp = new File("./campaign/players/" + p.getName().toLowerCase() + ".dat");
 		if (fp.exists())

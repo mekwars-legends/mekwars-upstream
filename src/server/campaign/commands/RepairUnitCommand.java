@@ -231,7 +231,7 @@ public class RepairUnitCommand implements Command {
     				player.updatePartsCache(crit, -damagedCrits);
                 }
             }
-            player.setSave(true);
+            player.setSave();
             CampaignMain.cm.getRTT().getRepairList().add(RepairTrackingThread.Repair(player,unitID,armor,location,slot,techType,retries,techWorkMod,false));
             CampaignMain.cm.toUser("FSM|"+repairMessage,Username,false);
             CampaignMain.cm.toUser("PL|UU|"+unitID+"|"+unit.toString(true),Username,false);

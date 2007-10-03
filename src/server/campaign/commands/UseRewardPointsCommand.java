@@ -360,7 +360,7 @@ public class UseRewardPointsCommand implements Command {
             CampaignMain.cm.toUser("PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
             player.addReward(-rewardPoints);
             player.checkAndUpdateArmies(unit);
-            player.setSave(true);
+            player.setSave();
             break;
 		}  
 		

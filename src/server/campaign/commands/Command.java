@@ -26,5 +26,6 @@ public interface Command {
   //for userlevel configurability
   public int getExecutionLevel();
   public void setExecutionLevel(int i);
-  
+/*  public String getSyntax();
+  public void setSyntax();*/
 }

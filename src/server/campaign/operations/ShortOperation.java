@@ -1302,7 +1302,7 @@ public class ShortOperation implements Comparable {
                     CampaignMain.cm.toUser(buildingOptions,currN,false);
 				
 				//set save flag. this is a holdover from task. why do we do it?
-                CampaignMain.cm.getPlayer(currN).setSave(true);
+                CampaignMain.cm.getPlayer(currN).setSave();
 			}
             
 

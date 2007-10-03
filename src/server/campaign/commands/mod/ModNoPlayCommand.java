@@ -117,7 +117,7 @@ public class ModNoPlayCommand implements Command {
 				CampaignMain.cm.toUser(Username + " added you to " + listerName + "'s mod/admin no-play list. He cannot alter this entry.", excludeName, true);
 				CampaignMain.cm.toUser(excludeName + " added to " + listerName + "'s mod/admin no-play list.", Username, true);
 				CampaignMain.cm.toUser("PL|AEU|"+lister.getExclusionList().adminExcludeToString("$"),listerName,false);
-				lister.setSave(true);
+				lister.setSave();
 				
 				//also inform mod channels
 				//server.MWServ.mwlog.modLog(Username + " added " + excludeName + " to " + listerName + "'s mod/admin no-play list.");
@@ -158,7 +158,7 @@ public class ModNoPlayCommand implements Command {
 					//server.MWServ.mwlog.modLog(Username + " removed " + excludeName + " from " + listerName + "'s standard no-play list.");
 					CampaignMain.cm.doSendModMail("NOTE",Username + " removed " + excludeName + " from " + listerName + "'s standard no-play list.");
 				}
-				lister.setSave(true);
+				lister.setSave();
 			} catch (Exception e) {
 				CampaignMain.cm.toUser("Error while removing " + excludeName + " from " + listerName + "'s no-play list.", Username, true);
 				return;

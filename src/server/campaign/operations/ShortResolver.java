@@ -372,6 +372,7 @@ public class ShortResolver {
 			else
 				currPlayer.setFighting(false);
 
+			currPlayer.checkForPromotion();
 			/*
 			 * Servers with AR generally force people to deactivate and repair.
 			 * We set immunity above, despite the fact that players will never
@@ -626,8 +627,8 @@ public class ShortResolver {
 				+ payStrings.get(loseName);// + longStrings.get(loseName);
 		CampaignMain.cm.toUser(toSend, loseName, true);
 
-		winner.setSave(true);
-		loser.setSave(true);
+		winner.setSave();
+		loser.setSave();
 		// stick the result into the human readable result log, per RFE1479311.
 		MWServ.mwlog.resultsLog(toSend);
 
@@ -651,6 +652,11 @@ public class ShortResolver {
 		// game
 		if (o.getBooleanValue("ReportOpToNewsFeed"))
 			CampaignMain.cm.addToNewsFeed(newsFeedTitle, newsFeedBody);
+		winner.checkForPromotion();
+		winner.setSave();
+		loser.checkForPromotion();
+		loser.setSave();
+		
 	}
 
 	/**

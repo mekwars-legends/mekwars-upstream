@@ -195,7 +195,7 @@ public class Market2 {
 			if (seller.isHuman()) {
 				SPlayer p = (SPlayer) seller;
 				CampaignMain.cm.toUser("PL|SUS|" + auctionU.getId() + "#" + Unit.STATUS_OK, sellerName, false);
-				p.setSave(true);
+				p.setSave();
 			} else{
 				SHouse h = (SHouse) seller;
 				if (destroyFactionUnits)
@@ -437,7 +437,7 @@ public class Market2 {
 							CampaignMain.cm.toUser("No one purchased your " + currList.getListedModelName() + ".", currList.getSellerName(), true);
                             SPlayer p = (SPlayer) sellingActor;
                             CampaignMain.cm.toUser("PL|SUS|" + currAuctionID + "#" + Unit.STATUS_OK, p.getName(), false);
-                            p.setSave(true);
+                            p.setSave();
                         }
 						listingsToRemove.add(currAuctionID);
 					}

@@ -303,6 +303,13 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
         	result.append("|");
         }
         
+        result.append(leaders.size());
+        result.append("|");
+        for ( String leader : leaders ){
+        	result.append(leader);
+        	result.append("|");
+        }
+        
     	return result.toString();
 	}
 
@@ -880,6 +887,13 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
             	}
             }
 
+            if ( ST.hasMoreTokens() ){
+            	int amount = Integer.parseInt(ST.nextToken());
+            	for (; amount > 0; amount--){
+            		leaders.add(ST.nextToken());
+            	}
+            }
+            
             setPilotQueues(new PilotQueues(this.getBaseGunnerVect(), this.getBasePilotVect(), this.getBasePilotSkillVect()));
             getPilotQueues().setFactionString(this.getName());// set the faction name for the queue
             
@@ -2032,7 +2046,17 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			CampaignMain.cm.toUser("CS|" + SPlayer.STATUS_RESERVE, realName, false);
 			return null;
 		}
-				
+		
+		
+		if ( p.getPassword() == null && isLeader(p.getName()) )
+				removeLeader(p.getName());
+		else if( isLeader(p.getName()) && p.getPassword().getAccess() < CampaignMain.cm.getIntegerConfig("factionLeaderLevel") ){
+			CampaignMain.cm.updatePlayersAccessLevel(p.getName(),CampaignMain.cm.getIntegerConfig("factionLeaderLevel"));
+		}else if ( p.getPassword().getAccess() == CampaignMain.cm.getIntegerConfig("factionLeaderLevel") && !isLeader(p.getName()) ){
+			CampaignMain.cm.updatePlayersAccessLevel(p.getName(),2);
+		}
+			
+			
 		//update the player's myHouse
 		CampaignMain.cm.toUser("PL|SH|" + this.getName(), realName, false);
 
@@ -2157,6 +2181,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		//log the player out of the house
 		this.doLogout(p);
 		
+		this.removeLeader(p.getName());
         //Never send the newbie mechs back to the house bays.
         if ( this.isNewbieHouse() )
             donateMechs = false;
@@ -2190,9 +2215,6 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		//remove small player. don't delete the pfile.
 		p.getMyHouse().getSmallPlayers().remove(p.getName().toLowerCase());
 				
-		//if the player is in the save queue, remove him
-		p.setSave(false);
-
 	}//end removePlayer()
 
 	/*
@@ -2693,6 +2715,18 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		for (String name : leaders ){
 			CampaignMain.cm.toUser(msg, name);
 		}
+	}
+	
+	public void addLeader(String leader){
+		this.leaders.add(leader.toLowerCase());
+	}
+	
+	public void removeLeader(String leader){
+		this.leaders.remove(leader.toLowerCase());
+	}
+	
+	public boolean isLeader(String leader){
+		return this.leaders.contains(leader.toLowerCase());
 	}
 	
 }// end SHouse.java

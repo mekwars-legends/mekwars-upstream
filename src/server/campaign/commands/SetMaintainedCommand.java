@@ -104,7 +104,7 @@ public class SetMaintainedCommand implements Command {
 		CampaignMain.cm.toUser("PL|SF|"+p.getFreeBays(),Username,false);
 		CampaignMain.cm.toUser("PL|SUS|"+unitToSet.getId()+"#"+Unit.STATUS_OK,Username,false);
 		CampaignMain.cm.toUser(unitToSet.getPilot().getName() + "'s " + unitToSet.getModelName() + " is now being maintained." ,Username,true);
-		p.setSave(true);
+		p.setSave();
 		
 	}//end process() 
 }//end SetMaintainedCommand class

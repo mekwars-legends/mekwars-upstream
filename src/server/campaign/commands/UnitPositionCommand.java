@@ -115,7 +115,7 @@ public class UnitPositionCommand implements Command {
 			
 			//this doesnt trigger any of the add/remove save flags, but
 			//if would still be nice to record. So set the player's save state.
-			p.setSave(true);
+			p.setSave();
 
 		}
 	}

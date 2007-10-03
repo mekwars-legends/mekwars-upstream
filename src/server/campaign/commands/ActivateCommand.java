@@ -171,9 +171,9 @@ public class ActivateCommand implements Command {
 			return;
 		}
 		
-		Integer armyID = 0;
+		int armyID = hasIllegalOpArmies(p, p.getArmies());
 		
-		if ( !hasLegalOpArmies(p, p.getArmies(),armyID) ){
+		if ( armyID > -1 ){
 			CampaignMain.cm.toUser("Army #"+armyID+" is currently unable to launch or defend any ops!  You may not go active.",Username,true);
 			return;
 		}
@@ -317,13 +317,13 @@ public class ActivateCommand implements Command {
     	
     }
     
-    private boolean hasLegalOpArmies(SPlayer player, Vector<SArmy> armies, Integer armyID){
+    private int hasIllegalOpArmies(SPlayer player, Vector<SArmy> armies){
     	
     	for ( SArmy army : armies ){
     		
         	boolean canAttack = false;
         	boolean canDefend = false;
-    		armyID = army.getID();
+    		
         	//check for legal attacks
     		if ( army.getLegalOperations().size() > 0)
     			canAttack = true;
@@ -338,10 +338,10 @@ public class ActivateCommand implements Command {
     		}
     		
     		if ( !canAttack && !canDefend )
-    			return false;
+    			return army.getID();
     	}
     	
-    	return true;
+    	return -1;
     }
     
 }//end activatecommand class

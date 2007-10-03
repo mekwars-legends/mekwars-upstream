@@ -161,11 +161,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	/**
 	 * Save player file immediatly.
 	 */
-	public void setSave(){
-		setSave(true);
-	}
-	
-	public void setSave(boolean save) {
+	public void setSave() {
 		if(!this.isLoading)
 			CampaignMain.cm.savePlayerFile(this);
 	}
@@ -309,7 +305,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			CampaignMain.cm.MySQL.linkUnitToPlayer(m.getDBId(), getDBId());
 		}
 		// make sure to save the player, with his fancy new unit ...
-		setSave(true);
+		setSave();
 		return "";//dummy stirng returned to comply with IBuyer
 	}
 	
@@ -378,7 +374,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		CampaignMain.cm.toUser("PL|RU|" + unitid, name, false);
 		CampaignMain.cm.toUser("PL|SB|" + this.getTotalMekBays(), name, false);
 		CampaignMain.cm.toUser("PL|SF|" + this.getFreeBays(), name,false);
-		setSave(true);// save on remove (adminstrip, etc)
+		setSave();// save on remove (adminstrip, etc)
 	}
 	
 	/**
@@ -714,7 +710,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			
 		}// end while(no free bays)
 		
-		setSave(true);
+		setSave();
 		return numUnmaintained;
 		
 	}// end setRandomUnmaintained
@@ -1386,7 +1382,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
         this.xpToReward = 0;
         this.sellingto = " ";
         this.weightedArmyNumber = 0;
-        this.setSave(true);
+        this.setSave();
     }
 	/**
 	 * Add money to a player. Money is always modified relative to a previous
@@ -1408,7 +1404,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		// change the value and send an update
 		this.money = moneyToSet;
 		CampaignMain.cm.toUser("PL|SM|" + money, name, false);
-		setSave(true);
+		setSave();
 	}
 	
 	/**
@@ -1429,7 +1425,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
     		}
     	}
         this.password = pass;
-        this.setSave(true);
+        this.setSave();
     }
     
     public MWPasswdRecord getPassword(){
@@ -1466,7 +1462,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	 */
 	public void setMyHouse(SHouse h) {
 		myHouse = h;
-		setSave(true);
+		setSave();
 	}
 	
 	/**
@@ -1537,7 +1533,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		if (sendStatus)
 			CampaignMain.cm.toUser("PS|" + this.toString(true), name,false);
 		
-		setSave(true);
+		setSave();
 	}
 	
 	// EXPERIENCE SET/ADD/GET Methods
@@ -1609,7 +1605,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			}
 		}
 			
-		setSave(true);
+		setSave();
 	}
 	
 	public int getExperience() {
@@ -1702,7 +1698,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	@Override
 	public void setCurrentTechPayment(int i) {
 		currentTechPayment = i;
-		setSave(true);
+		setSave();
 	}
 	
 	/**
@@ -1867,7 +1863,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		CampaignMain.cm.toUser("PL|ST|" + t, name, false);
 		CampaignMain.cm.toUser("PL|SB|" + this.getTotalMekBays(), name, false);
 		CampaignMain.cm.toUser("PL|SF|" + this.getFreeBays(), name,false);
-		setSave(true);
+		setSave();
 	}
 	
 	/**
@@ -1894,7 +1890,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	
 	public void setName(String s) {
 		name = s;
-		setSave(true);
+		setSave();
 	}
 	
 	public SArmy getArmy(int id) {
@@ -1929,7 +1925,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	
 	public void setArmies(Vector<SArmy> v) {
 		armies = v;
-		setSave(true);
+		setSave();
 	}
 	
 	public Vector<SUnit> getUnits() {
@@ -2018,7 +2014,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			CampaignMain.cm.doSendToAllOnlinePlayers("PI|RA|" + name + "|" + rounded,false);
 		}
 			
-		setSave(true);
+		setSave();
 	}
 	
 	public String getFluffText() {
@@ -2034,7 +2030,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		SmallPlayer smallp = myHouse.getSmallPlayers().get(name.toLowerCase());
 		smallp.setFluffText(fluffText);
 		
-		setSave(true);
+		setSave();
 	}
 	
 	public String getLastSentStatus() {
@@ -2098,7 +2094,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			influence = 0; // Set to 0 if below
 		
 		CampaignMain.cm.toUser("PL|SI|" + influence, name, false);
-		setSave(true);
+		setSave();
 	}
 	
 	public int getGroupAllowance() {
@@ -2121,7 +2117,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			currentReward = (Integer.parseInt(this.getMyHouse().getConfig("XPRewardCap")));
 		
 		CampaignMain.cm.toUser("PL|SRP|" + currentReward, name, false);
-		setSave(true);
+		setSave();
 	}
 	
 	public void addReward(int toAdd) {
@@ -2131,7 +2127,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	// sets how much exp the player has towards an award point.
 	public void setXPToReward(int xp) {
 		xpToReward = xp;
-		setSave(true);
+		setSave();
 	}
 	
 	public int getXPToReward() {
@@ -2711,11 +2707,6 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
         else
         	result.append(this.getSubFactionName());
         result.append("~");
-        
-        if ( toClient ){
-        	result.append(this.getSubFaction().toString());
-        	result.append("~");
-        }
         
 		return result.toString();
 	}
@@ -3425,7 +3416,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	
 	public void setTeamNumber(int team){
 		super.setTeamNumber(team);
-		this.setSave(true);
+		this.setSave();
 	}
 	
 	public void setSubFaction(String subFaction){
@@ -3455,5 +3446,23 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 
 	public String getSubFactionName(){
 		return this.subFaction;
+	}
+	
+	public void checkForPromotion(){
+		
+		if ( getMyHouse().getSubFactionList().size() < 1 )
+			return;
+		
+		int currentAccessLevel = getSubFactionAccess();
+		
+		for(SubFaction subFaction : getMyHouse().getSubFactionList().values() ){
+			
+			if ( currentAccessLevel < Integer.parseInt(subFaction.getConfig("AccessLevel")) 
+					&& getRating() >= Integer.parseInt(subFaction.getConfig("MinELO"))
+					&& getExperience() >= Integer.parseInt(subFaction.getConfig("MinExp")) ){
+				CampaignMain.cm.toUser("You are eligible for a promotion to subFaction "+subFaction.getConfig("Name")+". <a href=\"MEKWARS/c RequestSubFactionPromotion#" + getName() + "#" + subFaction.getConfig("Name") +"\">Click here to request promotion.</a>", getName());
+			}
+			
+		}
 	}
 }// end SPlayer()

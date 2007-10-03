@@ -2,6 +2,11 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.7.x
++ SubFaction now shows in fluff
++ Added AddLeaderCommand
++ Added RemoveleaderCommand
++ Added Leadership menu. Anyone with access level >= factionLeaderLevel has
+  access to it. This has the Promote, Demote, Fluff, and mute commands
 + Issues with Faciton Config data loading.
 + More SubFaction stuff.
 + Added Admin.Dialog.SubFactionConfigurationDialog.java

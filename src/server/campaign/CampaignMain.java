@@ -73,6 +73,7 @@ import server.campaign.votes.VoteManager;
 import server.dataProvider.Server;
 import server.mwcyclopscomm.MWCyclopsComm;
 import server.util.AutomaticBackup;
+import server.util.MWPasswd;
 import server.util.RepairTrackingThread;
 import server.mwmysql.mysqlHandler;
 
@@ -1044,7 +1045,7 @@ public final class CampaignMain implements Serializable {
 			return;
 
 		// set save, then log the player out of his house
-		toLogout.setSave(true);
+		toLogout.setSave();
 		toLogout.getMyHouse().doLogout(toLogout);// hacky.
 
 		// clear the addon and send the new logged out status to all players
@@ -1061,9 +1062,9 @@ public final class CampaignMain implements Serializable {
 
 	public String getPlayerUpdateString(SPlayer p) {
 
-		String result = "";
+		StringBuffer result = new StringBuffer();
 		if (p == null)
-			return result;
+			return result.toString();
 
 		// Hide Reserve and Active Status
 		int Status = p.getDutyStatus();
@@ -1071,21 +1072,31 @@ public final class CampaignMain implements Serializable {
 				&& Boolean.parseBoolean(getConfig("HideActiveStatus")))
 			Status = SPlayer.STATUS_ACTIVE;
 
-		result = p.getName() + "|" + p.getExperience() + "#";
+		result.append(p.getName());
+		result.append("|");
+		result.append(p.getExperience());
+		result.append("#");
 		if (Boolean.parseBoolean(getConfig("HideELO")))
-			result += "0";
+			result.append("0");
 		else
-			result += p.getRatingRounded();
+			result.append(p.getRatingRounded());
 
-		result += "#" + Status + "#";
+		result.append("#");
+		result.append(Status);
+		result.append("#");
 		if (p.getFluffText().equals(""))
-			result += " #";
-		else
-			result += p.getFluffText() + "#";
+			result.append(" #");
+		else{
+			result.append(p.getFluffText()); 
+			result.append("#");
+		}
 
-		result += p.getHouseFightingFor().getName() + "#";
-		result += p.getMyHouse().isMercHouse() + "#";
-		return result;
+		result.append(p.getHouseFightingFor().getName());
+		result.append("#");
+		result.append(p.getMyHouse().isMercHouse());
+		result.append("#");
+		result.append(p.getSubFactionName());
+		return result.toString();
 	}
 
 	/**
@@ -1265,6 +1276,7 @@ public final class CampaignMain implements Serializable {
 				new AcceptAttackFromReserveCommand());
 		Commands.put("ACCEPTCONTRACT", new AcceptContractCommand());
 		Commands.put("ACTIVATE", new ActivateCommand());
+		Commands.put("ADDLEADER", new AddLeaderCommand());
 		Commands.put("ADDOMNIVARIANTMOD", new AddOmniVariantModCommand());
 		Commands.put("ADDPARTS", new AddPartsCommand());
 		Commands.put("ADDSONG", new AddSongCommand());
@@ -1540,6 +1552,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("RMA", new RemoveArmyCommand());
 		//
 		Commands.put("REMOVEFACTIONPILOT", new RemoveFactionPilotCommand());
+		Commands.put("REMOVELEADER", new RemoveLeaderCommand());
 		Commands.put("REMOVEPARTS", new RemovePartsCommand());
 		Commands.put("REMOVEPILOT", new RemovePilotCommand());
 		Commands.put("REMOVESONG", new RemoveSongCommand());
@@ -4204,6 +4217,22 @@ public final class CampaignMain implements Serializable {
 		}		
 	}
 	
+	public void updatePlayersAccessLevel(String playerName, int accessLevel){
+		SPlayer player =  cm.getPlayer(playerName);
+		
+		if ( player == null )
+			return;
+		try{
+			cm.getServer().getClient(playerName).setAccessLevel(accessLevel);
+		    cm.getServer().getUser(playerName).setLevel(accessLevel);
+		    cm.getServer().sendRemoveUserToAll(playerName,false);
+		    cm.getServer().sendNewUserToAll(playerName,false);
+			MWPasswd.writeRecord(player.getPassword(),playerName);
+		   	cm.doSendToAllOnlinePlayers("PI|DA|" + cm.getPlayerUpdateString(player),false);
+		}catch (Exception ex){}
+       	player.setSave();
+	}
+
 	// Save Planets
 	public void savePlanetData() {
 

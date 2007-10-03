@@ -193,7 +193,7 @@ public class NoPlayCommand implements Command {
 					exList.addExclude(false, excludeName);
 					CampaignMain.cm.toUser(excludeName + " was added to your no-play list.", Username, true);
 					CampaignMain.cm.toUser("PL|PEU|"+p.getExclusionList().playerExcludeToString("$"),Username,false);
-					p.setSave(true);
+					p.setSave();
 					return;
 				} catch (Exception e) {
 					CampaignMain.cm.toUser("Error while adding " + excludeName + " to your no-play list. Report this to an admin.", Username, true);
@@ -239,7 +239,7 @@ public class NoPlayCommand implements Command {
 					p.addReward(-removeRPCost);
 					p.addInfluence(-removeFluCost);
 					CampaignMain.cm.toUser("PL|PEU|"+p.getExclusionList().playerExcludeToString("$"),Username,false);
-					p.setSave(true);
+					p.setSave();
 					return;
 				} catch (Exception e) {
 					CampaignMain.cm.toUser("Error while removing " + excludeName + " from your no-play list. Report this to an admin.", Username, true);

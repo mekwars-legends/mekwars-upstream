@@ -136,7 +136,7 @@ public class SimpleRepairCommand implements Command {
             //set Lifetime repair cost
             unit.addRepairCost(cost);
             unit.addRepairCost(-1);
-            player.setSave(true);
+            player.setSave();
             time = setWorkHours(rolls,techs,unit.getEntity(),player.getMyHouse());
             MWServ.mwlog.errLog("Repair Time: "+time);
             CampaignMain.cm.getRTT().getRepairList().add(

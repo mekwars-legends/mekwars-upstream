@@ -83,7 +83,7 @@ public class CPlayer extends Player {
 	
 	private UnitComponents partsCache = new UnitComponents();
 	
-	private SubFaction mySubFaction = null;
+	private String subFactionName = "";
 	
 	public CPlayer(MWClient client) {
 		mwclient = client;
@@ -226,13 +226,8 @@ public class CPlayer extends Player {
         
         //subFactionName
         if ( ST.hasMoreElements() )
-        	ST.nextElement();
+        	subFactionName = ST.nextToken();
         
-        if ( ST.hasMoreElements() ){
-        	mySubFaction = new SubFaction();
-        	mySubFaction.fromString(ST.nextToken());
-        }
-        	
 		// traps run. sort the HQ. this isn't duplicative, b/c
 		// direct lods (PS instead of PL) don't trigger sorts.
 		this.sortHangar();
@@ -1119,6 +1114,7 @@ public class CPlayer extends Player {
 	
 	public SubFaction getSubFaction(){
 		
+		SubFaction mySubFaction = myHouse.getSubFactionList().get(subFactionName);
 		if ( mySubFaction == null )
 			return new SubFaction();
 		
@@ -1127,6 +1123,7 @@ public class CPlayer extends Player {
 	
 	public int getSubFactionAccess(){
 
+		SubFaction mySubFaction = myHouse.getSubFactionList().get(subFactionName);
 		if ( mySubFaction == null )
 			return 0;
 		
@@ -1135,10 +1132,7 @@ public class CPlayer extends Player {
 	}
 
 	public String getSubFactionName(){
-		if ( mySubFaction == null )
-			return "";
-		
-		return mySubFaction.getConfig("Name");
+		return subFactionName;
 	}
 
 }

@@ -81,7 +81,7 @@ public class FixAmmoCommand implements Command {
 		CampaignMain.cm.toUser(targetName + "'s " + m.getModelName() + "'s ammo has been fixed.", Username, true);
 		CampaignMain.cm.toUser(Username + " has fixed the ammo on your " + m.getModelName() + " (ID#" + m.getId() + ")", targetName, true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " fixed the ammo on "+StringUtils.aOrAn(m.getModelName(),true) + " belonging to " + targetName);
-        target.setSave(true);
+        target.setSave();
         target.checkAndUpdateArmies(m);
         CampaignMain.cm.toUser("PL|UU|"+m.getId()+"|"+m.toString(true),targetName,false);
 	}

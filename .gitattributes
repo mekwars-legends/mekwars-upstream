@@ -1545,6 +1545,7 @@ src/server/campaign/commands/helpers/HireAndMaintainHelper.java -text
 src/server/campaign/commands/helpers/HireAndRequestNewHelper.java -text
 src/server/campaign/commands/helpers/HireAndRequestUsedHelper.java -text
 src/server/campaign/commands/helpers/RemoveAndAddNoPlayHelper.java -text
+src/server/campaign/commands/mod/AddLeaderCommand.java -text
 src/server/campaign/commands/mod/AddPartsCommand.java -text
 src/server/campaign/commands/mod/BanCommand.java -text
 src/server/campaign/commands/mod/BanIPCommand.java -text
@@ -1577,6 +1578,7 @@ src/server/campaign/commands/mod/ModRefreshFactoryCommand.java -text
 src/server/campaign/commands/mod/ModTerminateCommand.java -text
 src/server/campaign/commands/mod/ModeratorMailCommand.java -text
 src/server/campaign/commands/mod/NotifyFightingCommand.java -text
+src/server/campaign/commands/mod/RemoveLeaderCommand.java -text
 src/server/campaign/commands/mod/RemovePartsCommand.java -text
 src/server/campaign/commands/mod/RemoveSubFactionCommand.java -text
 src/server/campaign/commands/mod/ServerAnnouncementCommand.java -text

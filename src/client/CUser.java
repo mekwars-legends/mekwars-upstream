@@ -24,25 +24,40 @@ import common.House;
 import common.util.StringUtils;
 
 /*
-  Class for User objects held in userlist
+ * Class for User objects held in userlist
  */
 
 public class CUser implements Comparable {
 
 	protected String Name;
+
 	protected String Addon;
+
 	protected int Userlevel = 0;
+
 	protected String PlayerHouse;
+
 	protected String Fluff;
+
 	protected int Exp;
+
 	protected float Rating;
+
 	protected int Status;
+
 	protected String HTMLColor;
+
 	protected Color RGBColor;
+
 	protected String Country;
+
 	protected boolean LoggedIn = false;
+
 	protected boolean isMerc = false;
+
 	protected boolean isInvis = false;
+
+	protected String subFaction = "";
 
 	/**
 	 * Empty CUser.
@@ -77,7 +92,7 @@ public class CUser implements Comparable {
 		Status = MWClient.STATUS_LOGGEDOUT;
 		RGBColor = Color.black;
 
-		ST = new StringTokenizer(data,"~");
+		ST = new StringTokenizer(data, "~");
 		try {
 			Name = ST.nextToken();
 			HTMLColor = ST.nextToken();
@@ -89,32 +104,89 @@ public class CUser implements Comparable {
 		}
 	}
 
+	public void setName(String tname) {
+		Name = tname;
+	}
 
-	public void setName(String tname) {Name = tname;}
-	public String getName() {return Name;}
-	public void setAddon(String taddon) {Addon = taddon;}
-	public String getAddon() {return Addon;}
-	public void setCountry(String tcountry) {Country = tcountry;}
-	public String getCountry() {return Country;}
-	public void setColor(String tcolor) {HTMLColor = tcolor;}
-	public String getColor() {return HTMLColor;}
-	public void setUserlevel(int tlevel) {Userlevel = tlevel;}
-	public int getUserlevel() {return Userlevel;}
-	public void setFluff(String tfluff) {Fluff = tfluff;}
-	public String getFluff() {return Fluff;}
-	public String getHouse() {return PlayerHouse;}
-	public void setExp(int texp) {Exp = texp;}
-	public int getExp() {return Exp;}
-	public void setRating(float trating) {Rating = trating;}
-	public float getRating() {return Rating;}
+	public String getName() {
+		return Name;
+	}
 
-	public boolean isInvis(){return isInvis;}
+	public void setAddon(String taddon) {
+		Addon = taddon;
+	}
 
-	public void setMercStatus(boolean merc){isMerc = merc;}
-	public boolean isMerc(){return this.isMerc;}
+	public String getAddon() {
+		return Addon;
+	}
 
+	public void setCountry(String tcountry) {
+		Country = tcountry;
+	}
 
-	public Color getRGBColor() {return RGBColor;}
+	public String getCountry() {
+		return Country;
+	}
+
+	public void setColor(String tcolor) {
+		HTMLColor = tcolor;
+	}
+
+	public String getColor() {
+		return HTMLColor;
+	}
+
+	public void setUserlevel(int tlevel) {
+		Userlevel = tlevel;
+	}
+
+	public int getUserlevel() {
+		return Userlevel;
+	}
+
+	public void setFluff(String tfluff) {
+		Fluff = tfluff;
+	}
+
+	public String getFluff() {
+		return Fluff;
+	}
+
+	public String getHouse() {
+		return PlayerHouse;
+	}
+
+	public void setExp(int texp) {
+		Exp = texp;
+	}
+
+	public int getExp() {
+		return Exp;
+	}
+
+	public void setRating(float trating) {
+		Rating = trating;
+	}
+
+	public float getRating() {
+		return Rating;
+	}
+
+	public boolean isInvis() {
+		return isInvis;
+	}
+
+	public void setMercStatus(boolean merc) {
+		isMerc = merc;
+	}
+
+	public boolean isMerc() {
+		return this.isMerc;
+	}
+
+	public Color getRGBColor() {
+		return RGBColor;
+	}
 
 	public void setCampaignData(MWClient mwclient, String data) {
 		StringTokenizer ST = new StringTokenizer(data, "#");
@@ -134,7 +206,11 @@ public class CUser implements Comparable {
 			if (ST.hasMoreElements())
 				isMerc = Boolean.parseBoolean(ST.nextToken());
 
-			//Abbreviation and Color from House (sed to be sent as part of player update)
+			if (ST.hasMoreElements())
+				subFaction = ST.nextToken();
+
+			// Abbreviation and Color from House (sed to be sent as part of
+			// player update)
 			House playerH = mwclient.getData().getHouseByName(PlayerHouse);
 			Addon = playerH.getAbbreviation();
 
@@ -145,8 +221,7 @@ public class CUser implements Comparable {
 		}
 	}
 
-	public void clearCampaignData()
-	{
+	public void clearCampaignData() {
 		Addon = "";
 		PlayerHouse = "";
 		Fluff = "";
@@ -156,93 +231,132 @@ public class CUser implements Comparable {
 		RGBColor = Color.black;
 	}
 
-	public void setStatus(int status)
-	{
+	public void setStatus(int status) {
 		Status = status;
-		if (Status == MWClient.STATUS_LOGGEDOUT)
-		{
+		if (Status == MWClient.STATUS_LOGGEDOUT) {
 			LoggedIn = false;
 			clearCampaignData();
-		}
-		else
-		{
-			if (Status == MWClient.STATUS_RESERVE || Status == MWClient.STATUS_ACTIVE ||
-					Status == MWClient.STATUS_FIGHTING)
-			{LoggedIn = true;}
+		} else {
+			if (Status == MWClient.STATUS_RESERVE
+					|| Status == MWClient.STATUS_ACTIVE
+					|| Status == MWClient.STATUS_FIGHTING) {
+				LoggedIn = true;
+			}
 		}
 	}
 
-	public int getStatus() {return Status;}
+	public int getStatus() {
+		return Status;
+	}
 
-	public boolean isLoggedIn() {return LoggedIn;}
+	public boolean isLoggedIn() {
+		return LoggedIn;
+	}
 
 	public String getShortInfo() {
-		String info;
-		info = "<html><body>" + getName();
-		if (Userlevel >= 100 && Userlevel < 200) {info += " (Moderator)";}
-		if (Userlevel >= 200) {info += " (Admin)";}
-		if (!Country.equals("unknown")) {info += " (" + getCountry() + ")";}
-		info += "</body></html>";
-		return info;
+		StringBuffer info = new StringBuffer("<html><body>");
+		info.append(getName());
+		if (Userlevel >= 100 && Userlevel < 200) {
+			info.append(" (Moderator)");
+		}
+		if (Userlevel >= 200) {
+			info.append(" (Admin)");
+		}
+		if (!Country.equals("unknown")) {
+			info.append(" (");
+			info.append(getCountry());
+			info.append(")");
+		}
+		info.append("</body></html>");
+		return info.toString();
 	}
 
 	public String getInfo(boolean removeImages) {
 
-		String info;
-		info = "<html><body>" + Name;
-		if (!Addon.equals("") && LoggedIn) {info += " [" + Addon + "]";}
-		if (Userlevel >= 100 && Userlevel < 200) {info += " (Moderator)";}
-		if (Userlevel >= 200) {info += " (Admin)";}
-		if (!Country.equals("unknown")) {info += " (" + getCountry() + ")";}
+		StringBuffer info = new StringBuffer("<html><body>");
+		info.append(Name);
+		if (!Addon.equals("") && LoggedIn) {
+			info.append(" [");
+			info.append(Addon);
+			info.append("]");
+		}
+		if (Userlevel >= 100 && Userlevel < 200) {
+			info.append(" (Moderator)");
+		}
+		if (Userlevel >= 200) {
+			info.append(" (Admin)");
+		}
+		if (!Country.equals("unknown")) {
+			info.append(" (");
+			info.append(getCountry());
+			info.append(")");
+		}
 		if (LoggedIn) {
-			info += "<br>Exp: " + Exp;
+			info.append("<br>Exp: ");
+			info.append(Exp);
 
-			//only show the rating if its real. will be 0.0 if server is hiding ELOs.
-			if (Rating >= 1) {info += " Rating: " + Rating;}
+			// only show the rating if its real. will be 0.0 if server is hiding
+			// ELOs.
+			if (Rating >= 1) {
+				info.append(" Rating: ");
+				info.append(Rating);
+			}
 
-			if (!PlayerHouse.equals("")) {info += "<br>Fights for " + PlayerHouse;}
+			if (PlayerHouse.trim().length() > 0) {
+				info.append("<br>Fights for ");
+				info.append(PlayerHouse);
+				if ( subFaction.trim().length() > 0){
+					info.append("(");
+					info.append(subFaction);
+					info.append(")");
+				}
+			}
+			
 			if (!Fluff.equals("")) {
 
-				//if the user wants to, remove any img tags in fluff
-				String toShow = "";
+				// if the user wants to, remove any img tags in fluff
 				if (removeImages) {
 
+					info.append("<br>");
 					int start = Fluff.indexOf("<img");
 					int finish = -1;
 
 					if (start != -1)
-						finish = Fluff.indexOf(">",start);
+						finish = Fluff.indexOf(">", start);
 
 					if (start != -1 && finish != -1) {
-						String firstHalf = Fluff.substring(0,start);
-						String secondHalf = Fluff.substring(finish + 1, Fluff.length());
+						String firstHalf = Fluff.substring(0, start);
+						String secondHalf = Fluff.substring(finish + 1, Fluff
+								.length());
 
-						toShow = firstHalf + "(img blocked)" + secondHalf;
-					}
+						info.append(firstHalf);
+						info.append("(img blocked)");
+						info.append(secondHalf);
+					}else
+						info.append(Fluff);
 
-					info += "<br>" + toShow;
-				} 
+				}
 
-				//otherwise, just display the fluff
+				// otherwise, just display the fluff
 				else {
-					info += "<br>" + Fluff;
-				}  
+					info.append("<br>");
+					info.append(Fluff);
+				}
 			}
 
 		}
-		info += "</body></html>";
-		return info;
+		info.append("</body></html>");
+		return info.toString();
 	}
 
 	/**
-	 * Comparable, for PlayerNameDialog.
-	 * Don't use elsewhere =)
+	 * Comparable, for PlayerNameDialog. Don't use elsewhere =)
 	 */
 	public int compareTo(Object o) {
 		if (!(o instanceof CUser))
 			return 0;
 
-		CUser u = (CUser)o;
+		CUser u = (CUser) o;
 		return this.getName().compareTo(u.getName());
 	}
 

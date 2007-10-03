@@ -2412,6 +2412,12 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("CostToScrapEngined");
         factionSpring2.add(baseTextField);
         
+        baseTextField = new JTextField(5);
+        factionSpring2.add(new JLabel("Leader Level:",SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Integer Field, Access Level given to a player when they are promoted to the faction leadership<br>NOTE: if their access level is already higher then this it will not be changed.</html>");
+        baseTextField.setName("factionLeaderLevel");
+        factionSpring2.add(baseTextField);
+        
 		SpringLayoutHelper.setupSpringGrid(factionSpring2,2);
 		
 		//setup CBoxes
