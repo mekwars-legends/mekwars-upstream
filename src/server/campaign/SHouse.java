@@ -2041,13 +2041,16 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		String realName = p.getName();
 		String lowerName = realName.toLowerCase();
 		
+		/*
+		 * Player has logged into their house we no longer have to worry about them. 
+		 */
+		CampaignMain.cm.releaseLostSoul(p.getName());
+
 		//test to see if the player is already in the hashes
 		if (this.isLoggedIntoFaction(lowerName)) {
 			CampaignMain.cm.toUser("CS|" + SPlayer.STATUS_RESERVE, realName, false);
 			return null;
 		}
-		
-		CampaignMain.cm.releaseLostSoul(p.getName());
 		
 		if ( p.getPassword() == null && isLeader(p.getName()) )
 				removeLeader(p.getName());

@@ -168,6 +168,12 @@ public final class CampaignMain implements Serializable {
 	
 	private boolean validBBVersion = true;
 
+	/**
+	 * This is a hash collection of all the players that have yet to log into their houses
+	 * This catch all is to keep from having to load the player file over and over again.
+	 * Once the player has been logged in they are removed from this hash and added to the 
+	 * houses memory.
+	 */
 	private Hashtable<String, SPlayer> lostSouls = new Hashtable<String, SPlayer>();
 
 	// CONSTRUCTOR
@@ -1046,6 +1052,11 @@ public final class CampaignMain implements Serializable {
 		if (toLogout == null)
 			return;
 
+		/*
+		 * double check to make sure the SPlayer object does not reside in the lost Souls hash
+		 * this is incase someone connected but never logged into thier house or never 
+		 * registered and enrolled.
+		 */
 		cm.releaseLostSoul(name);
 		// set save, then log the player out of his house
 		toLogout.setSave();
@@ -4242,6 +4253,12 @@ public final class CampaignMain implements Serializable {
        	player.setSave();
 	}
 
+	/**
+	 * this removes a SPlayer object form the global hash. This is called when a player
+	 * logs into a house, in which case the house now stores the object, or when the 
+	 * player logs off, incase they never bothred to register or login.
+	 * @param soul
+	 */
 	public void releaseLostSoul(String soul){
 		cm.lostSouls.remove(soul.toLowerCase());
 	}
