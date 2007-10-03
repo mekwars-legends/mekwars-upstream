@@ -84,8 +84,8 @@ public class GetFactionConfigsCommand implements Command {
 			
 			StringBuffer result = new StringBuffer("PL|FC|");
 			String delimiter = "#";
-			Enumeration keys = faction.getConfig().keys();
 			
+			Enumeration<Object> keys = faction.getConfig().keys();
 			while ( keys.hasMoreElements() ) {
 				String key = (String)keys.nextElement();
 				String value = faction.getConfig(key);
@@ -94,7 +94,7 @@ public class GetFactionConfigsCommand implements Command {
 				result.append(value);
 				result.append(delimiter);
 			}//End While
-			
+
 			result.append("DONE#DONE");
 			CampaignMain.cm.toUser(result.toString(), Username,false);
 		}
