@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.7.x
++ SPlayer object getting loaded from pfiles up to 6 times upon player login
 + Added new MegaMek.jar 0.33.10-MW10032007
 + SubFaction now shows in fluff
 + Added AddLeaderCommand

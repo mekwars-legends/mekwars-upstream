@@ -2047,6 +2047,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			return null;
 		}
 		
+		CampaignMain.cm.releaseLostSoul(p.getName());
 		
 		if ( p.getPassword() == null && isLeader(p.getName()) )
 				removeLeader(p.getName());

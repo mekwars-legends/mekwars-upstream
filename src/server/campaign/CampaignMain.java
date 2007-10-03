@@ -168,6 +168,8 @@ public final class CampaignMain implements Serializable {
 	
 	private boolean validBBVersion = true;
 
+	private Hashtable<String, SPlayer> lostSouls = new Hashtable<String, SPlayer>();
+
 	// CONSTRUCTOR
 	public CampaignMain(MWServ serv) {
 
@@ -1044,6 +1046,7 @@ public final class CampaignMain implements Serializable {
 		if (toLogout == null)
 			return;
 
+		cm.releaseLostSoul(name);
 		// set save, then log the player out of his house
 		toLogout.setSave();
 		toLogout.getMyHouse().doLogout(toLogout);// hacky.
@@ -1150,6 +1153,10 @@ public final class CampaignMain implements Serializable {
 		if (pName.equalsIgnoreCase("DRAW") || pName.toUpperCase().startsWith("DRAW#"))
 			return null;
 
+		
+		if ( lostSouls.containsKey(pName.toLowerCase()) )
+			return lostSouls.get(pName.toLowerCase());
+		
 		// look for faction players
 		SPlayer result = null;
 		for (House vh : data.getAllHouses()) {
@@ -1184,6 +1191,8 @@ public final class CampaignMain implements Serializable {
 		}
 		//MWServ.mwlog.debugLog("Loading "+pName+" from file.");
 		result = this.loadPlayerFile(pName, false);
+		
+		lostSouls.put(pName.toLowerCase(),result);
 		//if (result != null)
 			//result.setSave(save);
 
@@ -4231,6 +4240,10 @@ public final class CampaignMain implements Serializable {
 		   	cm.doSendToAllOnlinePlayers("PI|DA|" + cm.getPlayerUpdateString(player),false);
 		}catch (Exception ex){}
        	player.setSave();
+	}
+
+	public void releaseLostSoul(String soul){
+		cm.lostSouls.remove(soul.toLowerCase());
 	}
 
 	// Save Planets
