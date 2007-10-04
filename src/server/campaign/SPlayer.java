@@ -3476,7 +3476,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			if ( currentAccessLevel < Integer.parseInt(subFaction.getConfig("AccessLevel")) 
 					&& getRating() >= Integer.parseInt(subFaction.getConfig("MinELO"))
 					&& getExperience() >= Integer.parseInt(subFaction.getConfig("MinExp")) ){
-				CampaignMain.cm.toUser("You are eligible for a promotion to subFaction "+subFaction.getConfig("Name")+". <a href=\"MEKWARS/c RequestSubFactionPromotion#" + getName() + "#" + subFaction.getConfig("Name") +"\">Click here to request promotion.</a>", getName());
+				CampaignMain.cm.toUser("You are eligible for a promotion to subFaction "+subFaction.getConfig("Name")+". <a href=\"MEKWARS/c RequestSubFactionPromotion#" + subFaction.getConfig("Name") +"\">Click here to request promotion.</a>", getName());
 			}
 			
 		}

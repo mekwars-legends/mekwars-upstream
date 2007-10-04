@@ -76,6 +76,7 @@ public class PartsMarket {
 					eq.setAmount(Math.max(masterEq.getMinProduction(),CampaignMain.cm.getR().nextInt(masterEq.getMaxProduction())+1));
 					eq.setCost(Math.max(masterEq.getMinCost(), CampaignMain.cm.getR().nextDouble()*masterEq.getMaxCost()));
 					eq.setCostUp(false);
+					
 					this.lastTickList.put(key, eq.clone());
 					this.equipmentList.put(key,eq);
 					continue;

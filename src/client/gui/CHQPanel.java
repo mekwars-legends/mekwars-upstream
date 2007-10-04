@@ -2817,8 +2817,8 @@ public class CHQPanel extends JPanel {
 						
 					boolean useOpRule = Boolean.parseBoolean(mwclient.getserverConfigs("UseOperationsRule"));
 					String modifiedBV = "";
-					if ( useOpRule && army.getOpForceSize() > army.getUnits().size() )
-						modifiedBV = "("+Integer.toString((int)(army.getBV()*army.forceSizeModifier((double)army.getOpForceSize())))+")";
+					if ( useOpRule && army.getOpForceSize() < army.getUnits().size() )
+						modifiedBV = "("+Long.toString(Math.round((army.getBV()*army.forceSizeModifier((double)army.getOpForceSize()))))+")";
 					
 					toReturn +=  "BV: " + army.getBV() + modifiedBV + "<br>" + range + "</center>";
 					if (  useOpRule && army.getOpForceSize() > army.getUnits().size() ) {

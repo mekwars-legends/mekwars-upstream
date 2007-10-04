@@ -79,7 +79,6 @@ import megamek.common.CriticalSlot;
 import megamek.common.Entity;
 import megamek.common.EquipmentType;
 import megamek.common.Mech;
-import megamek.common.TechConstants;
 import megamek.common.WeaponType;
 import megamek.common.options.GameOptions;
 import megamek.common.options.IOption;
@@ -3062,15 +3061,6 @@ public final class MWClient implements IClient {
 			if ( eq == null ) {
 				bme.setEquipmentName(bme.getEquipmentInternalName());
 				
-				if ( bme.getEquipmentInternalName().indexOf("Engine") > 0 &&
-						bme.getEquipmentInternalName().startsWith("Clan")) {
-					bme.setTech("Clan");
-				}else if ( bme.getEquipmentInternalName().indexOf("Engine") > 0 &&
-						bme.getEquipmentInternalName().startsWith("IS")) {
-					bme.setTech("IS");
-				}else
-					bme.setTech("All");
-				
 				if ( bme.getEquipmentName().toLowerCase().indexOf("armor") > -1 ||
 						bme.getEquipmentName().equalsIgnoreCase("IS (STD)") ||
 						EquipmentType.getArmorType(bme.getEquipmentName()) != EquipmentType.T_ARMOR_UNKNOWN ||
@@ -3082,14 +3072,6 @@ public final class MWClient implements IClient {
 				
 				bme.setEquipmentName(eq.getName());
 				
-				if ( eq.getTechLevel() == TechConstants.T_CLAN_LEVEL_2 ||
-						eq.getTechLevel() == TechConstants.T_CLAN_LEVEL_3)
-					bme.setTech("Clan");
-				else if ( eq.getTechLevel() == TechConstants.T_ALL ||
-						eq.getTechLevel() < TechConstants.T_IS_LEVEL_1 )
-					bme.setTech("All");
-				else
-					bme.setTech("IS");
 				
 				if ( eq instanceof AmmoType)
 					bme.setEquipmentType(BMEquipment.PART_AMMO);

@@ -16,6 +16,9 @@
 
 package common;
 
+import megamek.common.EquipmentType;
+import megamek.common.TechConstants;
+
 /**
  *	Unit Equipment Container
  */
@@ -26,7 +29,6 @@ public class BMEquipment {
 	private double cost = 0;
 	private int amount = 0;
 	private boolean costUp = false;
-	private String tech = "IS";
 	private String equipmentType = "";
 	
 	static public String PART_AMMO = "Ammo";
@@ -86,12 +88,31 @@ public class BMEquipment {
 		this.costUp = update;
 	}
 	
-	public void setTech(String tech) {
-		this.tech = tech;
-	}
-	
 	public String getTech() {
-		return this.tech;
+		EquipmentType eq = EquipmentType.get(getEquipmentInternalName());
+
+		if ( eq == null ) {
+			if ( this.getEquipmentInternalName().indexOf("Engine") > 0 &&
+					this.getEquipmentInternalName().startsWith("Clan"))
+				return "Clan";
+				
+			if ( this.getEquipmentInternalName().indexOf("Engine") > 0 &&
+					this.getEquipmentInternalName().startsWith("IS"))
+				return "IS";
+		
+				return "All";
+		}else{
+			if ( eq.getTechLevel() == TechConstants.T_CLAN_LEVEL_2 ||
+					eq.getTechLevel() == TechConstants.T_CLAN_LEVEL_3)
+				return  "Clan";
+
+			if ( eq.getTechLevel() == TechConstants.T_ALL ||
+					eq.getTechLevel() < TechConstants.T_IS_LEVEL_1 )
+				return "All" ;
+
+			return "IS";
+
+		}
 	}
 	
 	public BMEquipment clone() {
@@ -103,7 +124,6 @@ public class BMEquipment {
 		clone.setEquipmentInternalName(this.getEquipmentInternalName());
 		clone.setEquipmentName(this.getEquipmentName());
 		clone.setEquipmentType(this.getEquipmentType());
-		clone.setTech(this.getTech());
 		
 		return clone;
 	}

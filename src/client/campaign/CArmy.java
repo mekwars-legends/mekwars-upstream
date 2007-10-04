@@ -40,7 +40,8 @@ public class CArmy extends Army {
 	//VARS
 	private MWClient mwclient;
 	private TreeSet<String> legalOperations;
-	
+	private float rawForceSize = 0;
+
 	//CONSTRUCTOR
 	public CArmy() {
 		super();
@@ -184,9 +185,43 @@ public class CArmy extends Army {
 		
 	}//end getOperationsBV 	 
 */	
+	
+	/** 	 
+	 * @return returns the raw force size (Force Mod Rule) 	 
+	 */ 	 
+	public float getRawForceSize() { 	 
+		
+		//dont recalculate if it isnt necessary 	 
+		if (rawForceSize != 0)
+			return rawForceSize;
+		
+		//no break, generate a raw force size 	 
+		for (Unit u : this.getUnits()) { 	 
+			if (u.getType() == Unit.INFANTRY) 	 
+				rawForceSize += Float.parseFloat(mwclient.getserverConfigs("InfantryOperationsBVMod")); 	 
+			else if (u.getType() == Unit.VEHICLE) 	 
+				rawForceSize += Float.parseFloat(mwclient.getserverConfigs("VehicleOperationsBVMod"));
+			else if ( u.getType() == Unit.BATTLEARMOR)
+				rawForceSize += Float.parseFloat(mwclient.getserverConfigs("BAOperationsBVMod"));
+			else if ( u.getType() == Unit.PROTOMEK)
+				rawForceSize += Float.parseFloat(mwclient.getserverConfigs("ProtoOperationsBVMod"));
+			else //all other allowed types have a 1.0 weight 	 
+				rawForceSize += Float.parseFloat(mwclient.getserverConfigs("MekOperationsBVMod")); 	 
+		}
+		
+		return rawForceSize; 	 
+	}//end getRawForceSize() 	 
+
+	/** 	 
+	 * @param rfs - the forcesize to set (Operations Rule) 	 
+	 */ 	 
+	public void setRawForceSize(float rfs) { 	 
+		rawForceSize = rfs; 	 
+	} 	 
+
 	public double forceSizeModifier(double opposingForceSize) {
 		
-		double myForceSize = 0;
+/*		double myForceSize = 0;
 		double mekSize = Double.parseDouble(mwclient.getserverConfigs("MekOperationsBVMod"));
 		double veeSize = Double.parseDouble(mwclient.getserverConfigs("VehicleOperationsBVMod"));
 		double baSize = Double.parseDouble(mwclient.getserverConfigs("BAOperationsBVMod"));
@@ -219,7 +254,17 @@ public class CArmy extends Army {
 		
 		if ( myForceSize > opposingForceSize )
 			return ((opposingForceSize/myForceSize)+(myForceSize/opposingForceSize))-1;
+		return 1.0;*/
+		
+		double myForceSize = 0;
+		
+		this.setRawForceSize(0);
+		myForceSize = this.getRawForceSize();
+		
+		if ( myForceSize > opposingForceSize )
+			return ((opposingForceSize/myForceSize)+(myForceSize/opposingForceSize))-1;
 		return 1.0;
+
 	}
 
 }

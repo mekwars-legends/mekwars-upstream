@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.8.x
++ Bug: Black Market Equipment not setting tech level server side.
++ Bug: Request Promotion Link using incorrect syntax.
 + new MegaMek.jar 0.33.10-MW10042007-5217
 + Bug: NPE when checking leadership on SHouse.doLogin()
 + Added ability for players to lock an army, protecting them from being cleared.
