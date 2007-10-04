@@ -2052,14 +2052,17 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			return null;
 		}
 		
-		if ( p.getPassword() == null && isLeader(p.getName()) )
+		if ( p.getPassword() == null  ){
+			if ( isLeader(p.getName()) )
 				removeLeader(p.getName());
-		else if( isLeader(p.getName()) && p.getPassword().getAccess() < CampaignMain.cm.getIntegerConfig("factionLeaderLevel") ){
-			CampaignMain.cm.updatePlayersAccessLevel(p.getName(),CampaignMain.cm.getIntegerConfig("factionLeaderLevel"));
-		}else if ( p.getPassword().getAccess() == CampaignMain.cm.getIntegerConfig("factionLeaderLevel") && !isLeader(p.getName()) ){
-			CampaignMain.cm.updatePlayersAccessLevel(p.getName(),2);
 		}
-			
+		else{
+			if( isLeader(p.getName()) && p.getPassword().getAccess() < CampaignMain.cm.getIntegerConfig("factionLeaderLevel") ){
+				CampaignMain.cm.updatePlayersAccessLevel(p.getName(),CampaignMain.cm.getIntegerConfig("factionLeaderLevel"));
+			}else if ( p.getPassword().getAccess() == CampaignMain.cm.getIntegerConfig("factionLeaderLevel") && !isLeader(p.getName()) ){
+				CampaignMain.cm.updatePlayersAccessLevel(p.getName(),2);
+			}
+		}
 			
 		//update the player's myHouse
 		CampaignMain.cm.toUser("PL|SH|" + this.getName(), realName, false);

@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.8.x
++ Bug: NPE when checking leadership on SHouse.doLogin()
 + Added ability for players to lock an army, protecting them from being cleared.
 + Some more memory fixes.
 Release Server & Client 0.2.8.0
