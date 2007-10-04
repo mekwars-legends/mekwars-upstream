@@ -1,7 +1,9 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.7.x
+v 0.2.8.x
+Release Server & Client 0.2.8.0
++ Bug: Nulls added to the lostSouls hash
 + SPlayer object getting loaded from pfiles up to 6 times upon player login
 + Added new MegaMek.jar 0.33.10-MW10032007
 + SubFaction now shows in fluff
@@ -29,6 +31,7 @@ v 0.2.7.x
 + Bug: BuyPartsCommand not allow same techlevel factions to buy parts
 + Bug: TransferPilotCommand calculating the max queue size incorrectly
 + fixed typos in TransferPilotCommand
+v 0.2.7.x
 Release Server&Client 0.2.7.0
 + Bug: Auto-Disconnects not resloving correctly.
 + New MegaMek Jar 0.33.10-MW09182007

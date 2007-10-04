@@ -1200,12 +1200,11 @@ public final class CampaignMain implements Serializable {
 				
 			}
 		}
-		//MWServ.mwlog.debugLog("Loading "+pName+" from file.");
+
 		result = this.loadPlayerFile(pName, false);
-		
-		lostSouls.put(pName.toLowerCase(),result);
-		//if (result != null)
-			//result.setSave(save);
+
+		if ( result != null )
+			lostSouls.put(pName.toLowerCase(),result);	
 
 		return result;
 	}
