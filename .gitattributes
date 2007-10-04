@@ -1371,6 +1371,8 @@ src/server/campaign/commands/NamePilotCommand.java -text
 src/server/campaign/commands/NoPlayCommand.java -text
 src/server/campaign/commands/OfferContractCommand.java -text
 src/server/campaign/commands/PlanetCommand.java -text
+src/server/campaign/commands/PlayerLockArmyCommand.java -text
+src/server/campaign/commands/PlayerUnlockArmyCommand.java -text
 src/server/campaign/commands/PlayersCommand.java -text
 src/server/campaign/commands/PromotePlayerCommand.java -text
 src/server/campaign/commands/RangeCommand.java -text

@@ -80,6 +80,11 @@ public class ExchangeUnitCommand implements Command {
 				return;
 			}
 			
+			if (a.isPlayerLocked()) {
+				CampaignMain.cm.toUser("You cannot modify a locked army.", Username, true);
+				return;
+				}
+			
 			SUnit oldMech = (SUnit)a.getUnit(mechid);
 			SUnit changeMech = p.getUnit(changeid);
 			

@@ -134,7 +134,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
     
     private int DBId = 0;
     
-    private boolean isLoading = false; //Player was getting saved multiple times during loading.  Just seemed silly.
+    boolean isLoading = false; //Player was getting saved multiple times during loading.  Just seemed silly.
     
     private String subFaction = "";
     
@@ -1522,10 +1522,12 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	public void stripOfAllUnits(boolean sendStatus) {
 		if(CampaignMain.cm.isUsingMySQL()) {
 			// We have to remove them from the database, or we'll have stale data
-			for (SUnit currU : units) {
-				CampaignMain.cm.MySQL.deleteUnit(currU.getDBId());
-			}
-		}
+			// We also have to remove the armies.
+			CampaignMain.cm.MySQL.clearArmies(getDBId());
+				for (SUnit currU : units) {
+					CampaignMain.cm.MySQL.deleteUnit(currU.getDBId());
+				}
+			}				
 		
 		units = new Vector<SUnit>(1,1);
 		armies = new Vector<SArmy>(1,1);
@@ -2712,6 +2714,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	}
 	
 	public void toDB() {
+		if(this.isLoading)
+			return;
 		PreparedStatement ps = null;
 		StringBuffer sql = new StringBuffer();
 		try {
@@ -3198,6 +3202,9 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	}
 
 	public void fromDB(int playerID) {
+		MWServ.mwlog.dbLog("Entering fromDB");
+		if(this.isLoading)
+			return;
 		this.isLoading = true;
 		try {
 		ResultSet rs = null, rs1=null;
@@ -3223,11 +3230,15 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				units.add(m);
 				CampaignMain.cm.toUser("PL|HD|" + m.toString(true), name,false);				
 			}
+			rs1.close();
 			rs1 = stmt1.executeQuery("SELECT * from playerarmies WHERE playerID = " + playerID);
 			while(rs1.next()) {
 				SArmy a = new SArmy(name);
 				a.fromString(rs1.getString("armyString"), "%", this);
 				armies.add(a);
+				MWServ.mwlog.dbLog(rs1.getString("armyString"));
+				MWServ.mwlog.dbLog(a.toString());
+				
 				CampaignMain.cm.toUser("PL|SAD|" + a.toString(true, "%"), name, false);				
 			}
 	
@@ -3344,9 +3355,10 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			rs1.close();
 		stmt.close();
 		stmt1.close();
-		this.isLoading = false;
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in SPlayer.fromDB: " + e.getMessage());
+		} finally {
+			this.isLoading = false;
 		}
 	}	
 	
@@ -3447,8 +3459,12 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	public String getSubFactionName(){
 		return this.subFaction;
 	}
-	
-	public void checkForPromotion(){
+
+	public boolean playerIsLoading() {
+		return this.isLoading;
+	}
+
+	public void checkForPromotion() {
 		
 		if ( getMyHouse().getSubFactionList().size() < 1 )
 			return;
@@ -3465,4 +3481,5 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			
 		}
 	}
+
 }// end SPlayer()

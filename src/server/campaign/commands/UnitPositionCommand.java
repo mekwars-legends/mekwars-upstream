@@ -98,6 +98,11 @@ public class UnitPositionCommand implements Command {
 				return;
 			}
 			
+			if (a.isPlayerLocked()) {
+				CampaignMain.cm.toUser("You cannot modify a locked army.", Username, true);
+				return;
+			}
+			
 			//do the actual shift server side. remove the unit
 			//from the army and then immediately re-add it at the
 			//new position

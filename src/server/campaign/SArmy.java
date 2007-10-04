@@ -20,6 +20,8 @@
  */
 package server.campaign;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
@@ -45,6 +47,7 @@ public class SArmy extends Army {
 	private Vector<SArmy> opponents = new Vector<SArmy>(1,1);
 	private TreeMap<String,String> legalOperations = new TreeMap<String,String>();
 	private String playerName = "";
+
 	
 	//CONSTRUCTORS
 	public SArmy(String ownerName) {
@@ -60,21 +63,53 @@ public class SArmy extends Army {
 		playerName = ownerName;
 	}
 	
+	public void toDB() {
+		this.deleteFromDB();
+		try {
+		StringBuffer sql = new StringBuffer();
+		sql.append("INSERT into playerarmies set playerID = " + CampaignMain.cm.MySQL.getPlayerIDByName(playerName) + ", armyID = " + getID() + ", armyString = ?");
+		PreparedStatement ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
+		ps=CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
+		ps.setString(1, super.toString(false, "%"));
+		ps.executeUpdate();	
+		ps.close();
+		} catch (SQLException e) {
+			MWServ.mwlog.dbLog("SQLException in SArmy.toDB: " + e.getMessage());
+		}
+	}
+	
+
+	public void deleteFromDB() {
+		  try {
+			  PreparedStatement ps = CampaignMain.cm.MySQL.getPreparedStatement("DELETE from playerarmies WHERE playerID = ? AND armyID = ?");
+			  ps.setInt(1, CampaignMain.cm.MySQL.getPlayerIDByName(playerName));
+			  ps.setInt(2, this.getID());
+			  ps.executeUpdate();
+			  ps.close();
+		  } catch (SQLException e) {
+			  MWServ.mwlog.dbLog("SQLException in SArmy.deleteFromDB: " + e.getMessage());
+		  }
+	}
+	
 	//METHODS
 	public void addUnit(SUnit u){
         super.addUnit(u);
 		super.setBV(0);
 		setRawForceSize(0);
+		if(CampaignMain.cm.isUsingMySQL())
+			this.toDB();
 	}
 	
 	public void addUnit(SUnit u, int position){
-        super.addUnit(u,position);
+       super.addUnit(u,position);
 		super.setBV(0);
 		setRawForceSize(0);
+		if(CampaignMain.cm.isUsingMySQL())
+			this.toDB();
 	}
 	
 	public void removeUnit(int id){
-		
+
 		Iterator<Unit> i = getUnits().iterator();
 		while (i.hasNext()) {
 			if (i.next().getId() == id){
@@ -87,8 +122,10 @@ public class SArmy extends Army {
 		super.setBV(0);
 		setRawForceSize(0);
 		removeCommander(id);
+		if(CampaignMain.cm.isUsingMySQL())
+			this.toDB();
 	}
-	
+		
 	public int getUnitPosition(int id){
 		Vector v = getUnits();
 		for (int i = 0; i < v.size(); i++){
@@ -526,8 +563,13 @@ public class SArmy extends Army {
 				addCommander(unit);
 			}
 		}
-
-
+		if (ST. hasMoreTokens()){
+			boolean lock = Boolean.parseBoolean(ST.nextToken());
+			if(lock)
+				playerLockArmy();
+			else
+				playerUnlockArmy();
+		}
 	}
 	
 	public String getMinimalInfo(){
@@ -590,6 +632,16 @@ public class SArmy extends Army {
 		
 		if ( name.trim().length() > 0 )
 			CampaignMain.cm.toUser("PL|RNA|"+ this.getID()+"#"+ name,this.getPlayerName(),false);
+	}
+	
+	public void setPlayerLock(int aid, boolean lock) {
+		if(lock){
+			super.playerLockArmy();
+			CampaignMain.cm.toUser("PL|LA|" + this.getID(), this.getPlayerName(), false);
+		} else {
+			super.playerUnlockArmy();
+			CampaignMain.cm.toUser("PL|ULA|" + this.getID(), this.getPlayerName(), false);
+		}
 	}
 	
 	/*

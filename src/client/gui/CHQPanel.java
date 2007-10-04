@@ -258,9 +258,10 @@ public class CHQPanel extends JPanel {
 		if (mwclient.getMyStatus() != MWClient.STATUS_RESERVE)
 			return;
 		
-		for (CArmy currA : mwclient.getPlayer().getArmies())
-			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c removearmy#" + currA.getID());
-			
+		for (CArmy currA : mwclient.getPlayer().getArmies()) {
+			if(!currA.isPlayerLocked())
+				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c removearmy#" + currA.getID());
+		}
 	}//end btnRemoveAllArmiesActionPerformed
 	
 	private void newbieResetUnitsButtonActionPerformed(ActionEvent evt) {
@@ -723,6 +724,19 @@ public class CHQPanel extends JPanel {
 
 							popup.addSeparator();
 						}
+						
+						menuItem = new JMenuItem("Lock Army");
+						menuItem.setActionCommand("LA|"+lid);
+						menuItem.addActionListener(this);
+						popup.add(menuItem);
+						if (mwclient.getPlayer().getArmy(lid).isPlayerLocked())
+							menuItem.setEnabled(false);
+						menuItem = new JMenuItem("Unlock Army");
+						menuItem.setActionCommand("ULA|"+lid);
+						menuItem.addActionListener(this);
+						popup.add(menuItem);
+						if (!mwclient.getPlayer().getArmy(lid).isPlayerLocked())
+							menuItem.setEnabled(false);
 						menuItem = new JMenuItem("Remove Army");
 						menuItem.setActionCommand("RA|"+lid);
 						menuItem.addActionListener(this);
@@ -1912,6 +1926,14 @@ public class CHQPanel extends JPanel {
 				int lid = Integer.parseInt(st.nextToken());
 				mwclient.getMainFrame().jMenuCommanderRemoveLance_actionPerformed(lid);
 				//rename army
+			} else if (command.equalsIgnoreCase("LA")) {
+				int lid = Integer.parseInt(st.nextToken());
+				mwclient.getMainFrame().jMenuCommanderPlayerLockArmy_actionPerformed(lid);
+				// lock army
+			} else if (command.equalsIgnoreCase("ULA")) {
+				int lid = Integer.parseInt(st.nextToken());
+				mwclient.getMainFrame().jMenuCommanderPlayerUnlockArmy_actionPerformed(lid);
+				// unlock army
 			} else if (command.equalsIgnoreCase("NA")) {
 				int mid = Integer.parseInt(st.nextToken());
 				mwclient.getMainFrame().jMenuCommanderNameArmy_actionPerformed(mid);
@@ -2770,6 +2792,8 @@ public class CHQPanel extends JPanel {
 						armyName = armyName.substring(0,11);
 					
 					String toReturn = "<html><center><b>Army #" + new Integer(lid) + "</b><br>";
+					if (army.isPlayerLocked())
+						toReturn += "(locked)<br>";
 					
 					//only show army name if one is actually set
 					boolean fakeName = false;

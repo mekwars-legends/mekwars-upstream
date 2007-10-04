@@ -1190,16 +1190,7 @@ public final class CampaignMain implements Serializable {
 		 * set it's save value to true. this will make sure that temp-loads are
 		 * saved/purged quickly.
 		 */
-		if(CampaignMain.cm.isUsingMySQL()) {
-			// For now, see if the user is there, see if the passwords match, and log it.
-			//MWServ.mwlog.dbLog("Loading player " + pName);
-			if(CampaignMain.cm.MySQL.getPlayerIDByName(pName)== -1) {
-				// Player doesn't exist
-				//MWServ.mwlog.dbLog("Player not in database");
-			} else {
-				
-			}
-		}
+
 
 		result = this.loadPlayerFile(pName, false);
 
@@ -1556,7 +1547,9 @@ public final class CampaignMain implements Serializable {
 		Commands.put("NOTIFYFIGHTING", new NotifyFightingCommand());
 		Commands.put("OFFERCONTRACT", new OfferContractCommand());
 		Commands.put("PLANET", new PlanetCommand());
+		Commands.put("PLAYERLOCKARMY", new PlayerLockArmyCommand());
 		Commands.put("PLAYERS", new PlayersCommand());
+		Commands.put("PLAYERUNLOCKARMY", new PlayerUnlockArmyCommand());
 		Commands.put("PROMOTEPLAYER", new PromotePlayerCommand());
 		Commands.put("RANGE", new RangeCommand());
 		Commands.put("RECALL", new RecallCommand());

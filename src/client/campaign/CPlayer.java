@@ -793,6 +793,16 @@ public class CPlayer extends Player {
 		}
 	}
 	
+	public void playerLockArmy(int aid) {
+		if (this.getArmy(aid) != null)
+			this.getArmy(aid).playerLockArmy();
+	}
+	
+	public void playerUnlockArmy(int aid) {
+		if (this.getArmy(aid) != null)
+			this.getArmy(aid).playerUnlockArmy();
+	}
+	
 	public void setArmyBV(String data) {
 		StringTokenizer ST = new StringTokenizer(data, DELIMITER);
 		if (ST.hasMoreTokens()) {

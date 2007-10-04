@@ -1319,6 +1319,21 @@ public class CMainFrame extends JFrame {
 		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c namearmy#" + aid + "#" + newName);
 	}
 	
+	public void jMenuCommanderPlayerLockArmy_actionPerformed(int aid) {
+		
+//		CArmy selectedArmy = mwclient.getPlayer().getArmies().get(aid);
+//		if(selectedArmy == null)
+//			return;
+		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c playerlockarmy#" + aid);
+	}
+	
+	public void jMenuCommanderPlayerUnlockArmy_actionPerformed(int aid) {
+//		CArmy selectedArmy = mwclient.getPlayer().getArmies().get(aid);
+//		if(selectedArmy == null)
+//			return;
+		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c playerunlockarmy#" + aid);
+	}
+	
 	/*
 	 * Only called from HQ, via MechTableMouseAdapter. Will always have valid army id.
 	 */

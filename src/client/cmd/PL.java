@@ -54,6 +54,10 @@ public class PL extends Command {
 			return;
 		else if (cmd.equals("RA")) // Remove army PL|RA|
 			player.removeArmy(Integer.parseInt(st.nextToken()));
+		else if (cmd.equals("LA"))
+			player.playerLockArmy(Integer.parseInt(st.nextToken()));
+		else if (cmd.equals("ULA"))
+			player.playerUnlockArmy(Integer.parseInt(st.nextToken()));
 		else if (cmd.equals("SAD")) // New army. PL|SAD|army data
 			player.setArmyData(st.nextToken());
 		else if (cmd.equals("SABV")) // New army bv PL|army ID|new BV

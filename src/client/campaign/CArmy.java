@@ -91,7 +91,15 @@ public class CArmy extends Army {
 				addCommander(unit);
 			}
 		}
-
+		if (ST.hasMoreTokens())
+		{
+			boolean locked = Boolean.parseBoolean(ST.nextToken());
+			MWClient.mwClientLog.clientOutputLog("Army " + getID() + " locked: " + Boolean.toString(locked));
+			if(locked)
+				playerLockArmy();
+			else
+				playerUnlockArmy();
+		} 
 	}
 	
 	/**

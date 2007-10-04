@@ -44,6 +44,8 @@ public class Army {
 	private int bv = 0;
 	private int id;
 	private boolean locked = false;
+	
+	private boolean armyPlayerLocked = false; //Used by players to keep armies from being cleared
 
 	private int opForceSize = NO_LIMIT;
 	
@@ -59,6 +61,18 @@ public class Army {
 	//METHODS
 	public int getAmountOfUnits() {
 		return units.size();
+	}
+	
+	public boolean isPlayerLocked() {
+		return armyPlayerLocked;
+	}
+	
+	public void playerLockArmy() {
+		armyPlayerLocked = true;
+	}
+	
+	public void playerUnlockArmy() {
+		armyPlayerLocked = false;
 	}
 	
 	/**
@@ -246,7 +260,8 @@ public class Army {
 			result.append(unitId);
 			result.append(delimiter);
 		}
-		
+		result.append(Boolean.toString(armyPlayerLocked));
+		result.append(delimiter);
 		return result.toString();
 	}
 
