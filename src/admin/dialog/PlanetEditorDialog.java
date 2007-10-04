@@ -379,7 +379,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			terrainMap.clear();
 			planetTerrains.removeAllItems();
 			currentTerrainPercent.setText("");
-		}else if ( command.equals(staticMapCBCommmand) || command.equals(staticMapCBCommmand)) {
+		}else if ( command.equals(staticMapCBCommmand) || command.equals(vacuumCBCommand)) {
 			updateAdvanceTerrain();
 		}
 	}

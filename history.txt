@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.8.x
++ Bug: Advance terrain status not updated when Vaccum check box was toggled
 + Bug: Black Market Equipment not setting tech level server side.
 + Bug: Request Promotion Link using incorrect syntax.
 + new MegaMek.jar 0.33.10-MW10042007-5217
