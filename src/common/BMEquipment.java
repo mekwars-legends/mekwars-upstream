@@ -30,6 +30,7 @@ public class BMEquipment {
 	private int amount = 0;
 	private boolean costUp = false;
 	private String equipmentType = "";
+	private String tech = "";
 	
 	static public String PART_AMMO = "Ammo";
 	static public String PART_WEAPON = "Weapons";
@@ -89,30 +90,35 @@ public class BMEquipment {
 	}
 	
 	public String getTech() {
+		
+		if ( tech.trim().length() > 0 )
+			return tech;
+		
 		EquipmentType eq = EquipmentType.get(getEquipmentInternalName());
 
 		if ( eq == null ) {
 			if ( this.getEquipmentInternalName().indexOf("Engine") > 0 &&
 					this.getEquipmentInternalName().startsWith("Clan"))
-				return "Clan";
+				tech = "Clan";
 				
-			if ( this.getEquipmentInternalName().indexOf("Engine") > 0 &&
+			else if ( this.getEquipmentInternalName().indexOf("Engine") > 0 &&
 					this.getEquipmentInternalName().startsWith("IS"))
-				return "IS";
-		
-				return "All";
+				tech = "IS";
+			else
+				tech = "All";
 		}else{
 			if ( eq.getTechLevel() == TechConstants.T_CLAN_LEVEL_2 ||
 					eq.getTechLevel() == TechConstants.T_CLAN_LEVEL_3)
-				return  "Clan";
-
-			if ( eq.getTechLevel() == TechConstants.T_ALL ||
+				tech = "Clan";
+			else if ( eq.getTechLevel() == TechConstants.T_ALL ||
 					eq.getTechLevel() < TechConstants.T_IS_LEVEL_1 )
-				return "All" ;
-
-			return "IS";
+				tech = "All" ;
+			else
+				tech =  "IS";
 
 		}
+		
+		return tech;
 	}
 	
 	public BMEquipment clone() {
@@ -124,6 +130,7 @@ public class BMEquipment {
 		clone.setEquipmentInternalName(this.getEquipmentInternalName());
 		clone.setEquipmentName(this.getEquipmentName());
 		clone.setEquipmentType(this.getEquipmentType());
+		clone.getTech();
 		
 		return clone;
 	}
