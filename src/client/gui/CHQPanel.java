@@ -2331,7 +2331,7 @@ public class CHQPanel extends JPanel {
 				InfoWindow.setSize(220,400);
 				InfoWindow.setResizable(false);
 				InfoWindow.setTitle(mek.getModelName());
-				InfoWindow.setLocationRelativeTo(null);
+				InfoWindow.setLocationRelativeTo(mwclient.getMainFrame());
 				InfoWindow.setVisible(true);
 			} 
 			else if (command.equalsIgnoreCase("CMU")) {

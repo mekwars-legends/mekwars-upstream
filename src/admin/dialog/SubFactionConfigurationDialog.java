@@ -23,8 +23,7 @@ package admin.dialog;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Hashtable;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -65,6 +64,8 @@ public final class SubFactionConfigurationDialog implements ActionListener {
 	
 	private SubFaction subFactionConfig = null;
 	private House faction = null;
+
+	private Hashtable<String, String> configChanges = new Hashtable<String, String>();
 	
 	JTabbedPane ConfigPane = new JTabbedPane(SwingConstants.TOP);
 	
@@ -203,7 +204,7 @@ public final class SubFactionConfigurationDialog implements ActionListener {
 
 
         //Show the dialog and get the user's input
-		dialog.setLocation(dialog.getLocation().x+10,dialog.getLocation().y);
+        dialog.setLocation(mwclient.getMainFrame().getLocation().x+10,mwclient.getMainFrame().getLocation().y);
 		dialog.setModal(true);
 		dialog.pack();
 		dialog.setVisible(true);
@@ -214,6 +215,19 @@ public final class SubFactionConfigurationDialog implements ActionListener {
             for ( int pos = ConfigPane.getComponentCount()-1; pos >= 0; pos-- ){
                 JPanel panel = (JPanel) ConfigPane.getComponent(pos);
                 findAndSaveConfigs(panel);
+            }
+            
+            if ( configChanges.size() > 0){
+		        StringBuffer configPairs = new StringBuffer();
+		        
+		        for (String key : configChanges.keySet() ){
+		        	configPairs.append(key);
+		        	configPairs.append("#");
+		        	configPairs.append(configChanges.get(key));
+		        	configPairs.append("#");
+		        }
+            
+            	mwclient.sendChat(MWClient.CAMPAIGN_PREFIX+ "c SetSubFactionConfig#"+this.subFactionConfig.getConfig("Name")+"#"+houseName+"#"+configPairs.toString());
             }
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX+ "c adminsave");
 			mwclient.refreshData();
@@ -247,18 +261,7 @@ public final class SubFactionConfigurationDialog implements ActionListener {
                     continue;
                 
                 textBox.setMaximumSize(new Dimension(100,10));
-                try{
-                    //bad hack need to format the message for the last time the backup happened
-                    if (key.equals("LastAutomatedBackup") ){
-                        SimpleDateFormat sDF = new SimpleDateFormat("MM/dd/yy HH:mm:ss");
-                        Date date = new Date(Long.parseLong(mwclient.getserverConfigs(key)));
-                        textBox.setText(sDF.format(date));
-                    }
-                    else
-                        textBox.setText(this.subFactionConfig.getConfig(key));
-                }catch(Exception ex){
-                    textBox.setText("N/A");
-                }
+                textBox.setText(this.subFactionConfig.getConfig(key));
             }else if ( field instanceof JCheckBox){
                 JCheckBox checkBox = (JCheckBox)field;
                 
@@ -315,7 +318,7 @@ public final class SubFactionConfigurationDialog implements ActionListener {
                     
                 //reduce bandwidth only send things that have changed.
                 if ( !this.subFactionConfig.getConfig(key).equalsIgnoreCase(value) )
-                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX+ "c SetSubFactionConfig#"+this.subFactionConfig.getConfig("Name")+"#"+houseName+"#"+key+"#"+value); 
+                    configChanges.put(key,value); 
             } else if ( field instanceof JCheckBox){
                 JCheckBox checkBox = (JCheckBox)field;
                 
@@ -326,7 +329,7 @@ public final class SubFactionConfigurationDialog implements ActionListener {
                     continue;
                 //reduce bandwidth only send things that have changed.
                 if ( !this.subFactionConfig.getConfig(key).equalsIgnoreCase(value) )
-                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX+ "c SetSubFactionConfig#"+this.subFactionConfig.getConfig("Name")+"#"+houseName+"#"+key+"#"+value); 
+                    configChanges.put(key,value); 
             }else if ( field instanceof JRadioButton){
                 JRadioButton radioButton = (JRadioButton)field;
                 
@@ -337,7 +340,7 @@ public final class SubFactionConfigurationDialog implements ActionListener {
                     continue;
                 //reduce bandwidth only send things that have changed.
                 if ( !this.subFactionConfig.getConfig(key).equalsIgnoreCase(value) )
-                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX+ "c SetSubFactionConfig#"+this.subFactionConfig.getConfig("Name")+"#"+houseName+"#"+key+"#"+value); 
+                    configChanges.put(key,value); 
             }//else continue
         }
 

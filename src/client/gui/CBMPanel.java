@@ -341,10 +341,10 @@ public class CBMPanel extends JPanel {
 		InfoWindow.getContentPane().add(MechDetailInfo);
 		InfoWindow.setSize(220,400);
 		InfoWindow.setResizable(false);
-		
+
 		MechDetailInfo.displayEntity(theEntity, mm.getEmbeddedUnit().getEntity().calculateBattleValue(false,false), mwclient.getConfig().getImage("CAMO"));
 		InfoWindow.setTitle(mm.getModelName());
-		InfoWindow.setLocationRelativeTo(null);//center it
+		InfoWindow.setLocationRelativeTo(mwclient.getMainFrame());//center it
 		InfoWindow.setVisible(true);
 	}
 	

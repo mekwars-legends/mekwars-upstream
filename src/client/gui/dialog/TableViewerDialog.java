@@ -213,7 +213,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 					
 					MechDetailInfo.displayEntity(theEntity, theEntity.calculateBattleValue(), mwclient.getConfig().getImage("CAMO"));
 					InfoWindow.setTitle(u.getModelName());
-					InfoWindow.setLocationRelativeTo(null);//center it
+					InfoWindow.setLocationRelativeTo(mwclient.getMainFrame());//center it
 					InfoWindow.setVisible(true);
 				}
 			}

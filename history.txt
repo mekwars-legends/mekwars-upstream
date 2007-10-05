@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.8.x
++ Changes to SubFactionConfigurationDialog to send all changes in one command
 + Filled out syntax for all mod commands
 + ListCommandsCommand now looks for indexOf target word instead of startsWith()
 + Added syntax printout to ListCommandsCommand

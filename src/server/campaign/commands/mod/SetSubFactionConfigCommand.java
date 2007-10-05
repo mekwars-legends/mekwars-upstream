@@ -91,7 +91,7 @@ public class SetSubFactionConfigCommand implements Command {
 		faction.getSubFactionList().put(subFactionName, subFaction);
 		faction.updated();
 		
-		//CampaignMain.cm.doSendModMail("NOTE", Username +" has updated configs for subfaction "+subFactionName+" for faction "+faction.getName());
-		//CampaignMain.cm.toUser("You have updateded configs for subfaction "+subFactionName+" for faction "+faction.getName(), Username);
+		CampaignMain.cm.doSendModMail("NOTE", Username +" has updated configs for subfaction "+subFactionName+" for faction "+faction.getName());
+		CampaignMain.cm.toUser("You have updateded configs for subfaction "+subFactionName+" for faction "+faction.getName(), Username);
 	}
 }

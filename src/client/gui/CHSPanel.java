@@ -688,7 +688,7 @@ public class CHSPanel extends JPanel {
 		InfoWindow.setSize(220,400);
 		InfoWindow.setResizable(false);
 		InfoWindow.setTitle(UnitEntity.getModel());
-		InfoWindow.setLocationRelativeTo(null);
+		InfoWindow.setLocationRelativeTo(mwclient.getMainFrame());
 		InfoWindow.setVisible(true);
 	}
 	
