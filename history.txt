@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.8.x
++ Filled out syntax for all mod commands
 + ListCommandsCommand now looks for indexOf target word instead of startsWith()
 + Added syntax printout to ListCommandsCommand
 + Filled out syntax for all admin commands

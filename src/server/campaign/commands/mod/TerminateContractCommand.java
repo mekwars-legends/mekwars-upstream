@@ -29,7 +29,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class TerminateContractCommand implements Command {
 	
 	int accessLevel = IAuthenticator.MODERATOR;
-	String syntax = "";
+	String syntax = "Player Name";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}
@@ -69,14 +69,14 @@ public class TerminateContractCommand implements Command {
 		SPlayer contractingPlayer = contract.getOfferingPlayer();
 		if (contractingPlayer != null) {
 			contractingPlayer.addMoney(refund);
-			CampaignMain.cm.toUser(Username + " abrogatted your contract with"
+			CampaignMain.cm.toUser(Username + " abrogated your contract with"
 					+ contract.getEmployingHouse().getName() + ". Funds returned from escrow (" 
 					+ CampaignMain.cm.moneyOrFluMessage(true,true,refund,true) + ").", p.getName(), true);
 		} else
 			contract.getEmployingHouse().setMoney(employer.getMoney() + refund);
 		
 		mercFaction.endContract(p);
-		CampaignMain.cm.toUser(Username + " abrogatted your contract with" + contract.getEmployingHouse().getName() + ".", p.getName(), true);
+		CampaignMain.cm.toUser(Username + " abrogated your contract with" + contract.getEmployingHouse().getName() + ".", p.getName(), true);
 		CampaignMain.cm.toUser("You revoked " + p.getName() + "'s contract with" + contract.getEmployingHouse().getName() + ".", Username, true);
 		
 	}//end process()

@@ -1051,6 +1051,9 @@ public class ShortResolver {
 			// reduced.
 			double minBVDifference = o
 					.getDoubleValue("MinBVDifferenceForFullPay");
+			/*MWServ.mwlog.debugLog("Loser BV: Current: "+currentBV+" Starting BV: "+loserBV+" minBVDiff: "+minBVDifference);
+			MWServ.mwlog.debugLog("Total BV Lost: "+(1.0 - ((double) currentBV / (double) loserBV)));
+			MWServ.mwlog.debugLog("Money Earned: "+earnedMoney);*/
 			if (minBVDifference > 0
 					&& (1.0 - ((double) currentBV / (double) loserBV)) < minBVDifference
 					&& disconnector == null
@@ -1062,6 +1065,7 @@ public class ShortResolver {
 				// earnedXP = (earnedXP * minBVvPenaltyMod)/100;
 				// earnedRP = (earnedRP * minBVvPenaltyMod)/100;
 			}
+			//MWServ.mwlog.debugLog("Money Earned: "+earnedMoney);
 
 			/*
 			 * Determine how much to play the players technicians (or, if using

@@ -27,7 +27,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class ModGamesCommand implements Command {
 	
 	int accessLevel = IAuthenticator.MODERATOR;
-	String syntax = "";
+	String syntax = "[Faction]";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

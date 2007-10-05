@@ -1795,7 +1795,7 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
 
         BaseTextField = new JTextField(5);
         penaltyPanel.add(new JLabel("Min BV Difference:",SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html><b>NOTE:</b>This is a double field. 0.25 = 25%<br>This is the min difference between the starting BV of both armies<br>combined and the ending BV. if the difference is less then this<br>the player will not get a full payout</html>");
+        BaseTextField.setToolTipText("<html><b>NOTE:</b>This is a double field. 0.25 = 25%<br>This is the min difference between the starting BV of the losers army<br>and his ending BV. if the difference is less then this<br>the player will not get a full payout</html>");
         BaseTextField.setName("MinBVDifferenceForFullPay");
         penaltyPanel.add(BaseTextField);
 

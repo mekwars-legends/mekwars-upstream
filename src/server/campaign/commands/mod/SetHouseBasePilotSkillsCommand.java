@@ -29,7 +29,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class SetHouseBasePilotSkillsCommand implements Command {
 	
 	int accessLevel = IAuthenticator.MODERATOR;
-	String syntax = "";
+	String syntax = "Faction Name#Pilot Type#Gunnery#Piloting";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

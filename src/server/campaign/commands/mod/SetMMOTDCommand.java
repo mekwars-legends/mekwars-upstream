@@ -34,7 +34,7 @@ import server.campaign.commands.Command;
 public class SetMMOTDCommand implements Command {
 	
 	int accessLevel = IAuthenticator.MODERATOR;
-	String syntax = "";
+	String syntax = "Message[Clear to clear]";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}
