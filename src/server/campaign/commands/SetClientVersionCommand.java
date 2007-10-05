@@ -25,7 +25,9 @@ public class SetClientVersionCommand implements Command {
 	//conforming methods
 	public int getExecutionLevel(){return 0;}
 	public void setExecutionLevel(int i) {}
-	
+	String syntax = "";
+	public String getSyntax() { return syntax;}
+
 	public void process(StringTokenizer command,String Username) {
 		
 		SPlayer p = CampaignMain.cm.getPlayer(command.nextToken());

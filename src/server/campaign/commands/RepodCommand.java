@@ -55,10 +55,12 @@ import megamek.common.MiscType;
 public class RepodCommand implements Command {
 	
 	int accessLevel = 0;
+	String syntax = "";
 	private boolean global = false;
 	
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
+	public String getSyntax() { return syntax;}
 	
 	public void process(StringTokenizer command,String Username) {
 		

@@ -32,8 +32,10 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminSaveCommandLevelsCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
+	String syntax = "";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
+	public String getSyntax() { return syntax;}
 	
 	@SuppressWarnings("unchecked")
     public void process(StringTokenizer command,String Username) {

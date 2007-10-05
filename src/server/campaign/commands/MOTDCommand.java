@@ -35,8 +35,10 @@ public class MOTDCommand implements Command {
 	 * @see server.Campaign.Commands.Command#process(java.util.StringTokenizer, java.lang.String, server.Campaign.CampaignMain)
 	 */
 	int accessLevel = 0;
+	String syntax = "";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
+	public String getSyntax() { return syntax;}
 	
 	public void process(StringTokenizer command,String Username) {
 		

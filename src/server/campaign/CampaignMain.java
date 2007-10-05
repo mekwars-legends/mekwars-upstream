@@ -635,7 +635,12 @@ public final class CampaignMain implements Serializable {
 				}
 
 				Command c = Commands.get(task);
-				c.process(ST, Username);
+				try {
+					c.process(ST, Username);
+				}catch(Exception ex) {
+					MWServ.mwlog.errLog(ex);
+					CampaignMain.cm.toUser("Invalid Syntax: /"+task+" "+c.getSyntax(), Username);
+				}
 				return;
 			}// if the text is a command
 

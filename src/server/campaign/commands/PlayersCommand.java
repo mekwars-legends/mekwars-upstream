@@ -28,8 +28,10 @@ import common.House;
 public class PlayersCommand implements Command {
 	
 	int accessLevel = 0;
+	String syntax = "";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
+	public String getSyntax() { return syntax;}
 	
 	//NOTE: There Are Problems WIth This Code and the display of MERCENARY PLAYERS
 	public void process(StringTokenizer command,String Username) {

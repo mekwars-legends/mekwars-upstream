@@ -42,7 +42,9 @@ public class AttackFromReserveCommand implements Command {
 	int accessLevel = 2;
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
-	
+	String syntax = "";
+	public String getSyntax() { return syntax;}
+
 	public void process(StringTokenizer command,String Username) {
 		
 		if (accessLevel != 0) {

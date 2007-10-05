@@ -33,6 +33,9 @@ public class ModFullRepairCommand implements Command {
 	int accessLevel = IAuthenticator.ADMIN;
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
+	String syntax = "";
+	public String getSyntax() { return syntax;}
+
 	
 	public void process(StringTokenizer command,String Username) {
 		

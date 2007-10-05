@@ -36,8 +36,10 @@ import server.MWChatServer.auth.IAuthenticator;
 public class FixAmmoCommand implements Command {
 	
 	int accessLevel = IAuthenticator.MODERATOR;
+	String syntax = "";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
+	public String getSyntax() { return syntax;}
 	
 	public void process(StringTokenizer command,String Username) {
 		

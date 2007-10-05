@@ -37,6 +37,8 @@ import server.campaign.SPlayer;
 public class GetFactionConfigsCommand implements Command {
 	
 	int accessLevel = 0;
+	String syntax = "";
+	public String getSyntax() { return syntax;}
 	public int getExecutionLevel(){return 0;}
 	public void setExecutionLevel(int i) {}
 	

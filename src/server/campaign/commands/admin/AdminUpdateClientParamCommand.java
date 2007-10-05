@@ -33,6 +33,9 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminUpdateClientParamCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
+	String syntax = "";
+	public String getSyntax() { return syntax;}
+
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i){accessLevel = i;}//cannot be changed
 	

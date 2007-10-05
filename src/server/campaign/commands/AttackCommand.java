@@ -36,8 +36,10 @@ import server.campaign.operations.OperationManager;
 public class AttackCommand implements Command {
 	
 	int accessLevel = 0;
+	String syntax = "";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
+	public String getSyntax() { return syntax;}
 	
 	public void process(StringTokenizer command,String Username) {
 		

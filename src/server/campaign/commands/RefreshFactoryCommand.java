@@ -29,8 +29,10 @@ import server.MWChatServer.auth.IAuthenticator;
 public class RefreshFactoryCommand implements Command {
 	
 	int accessLevel = IAuthenticator.GUEST;
+	String syntax = "";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
+	public String getSyntax() { return syntax;}
 	
 	public void process(StringTokenizer command,String Username) {
 		

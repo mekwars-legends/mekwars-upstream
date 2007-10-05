@@ -26,7 +26,9 @@ public class ServerVersionCommand implements Command {
 	//conforming methods
 	public int getExecutionLevel(){return 0;}
 	public void setExecutionLevel(int i) {}
-	
+	String syntax = "";
+	public String getSyntax() { return syntax;}
+
 	public void process(StringTokenizer command,String Username) {
 		CampaignMain.cm.toUser("The current server version is " + MWServ.SERVER_VERSION,Username,true);
 	}

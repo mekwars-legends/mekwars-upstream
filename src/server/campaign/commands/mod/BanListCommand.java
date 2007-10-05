@@ -34,6 +34,9 @@ import server.MWChatServer.auth.IAuthenticator;
 public class BanListCommand implements Command {
 
 	int accessLevel = IAuthenticator.MODERATOR;
+	String syntax = "";
+	public String getSyntax() { return syntax;}
+
 
 	public int getExecutionLevel() {
 		return accessLevel;

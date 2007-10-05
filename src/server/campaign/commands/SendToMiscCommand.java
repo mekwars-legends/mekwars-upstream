@@ -27,7 +27,9 @@ public class SendToMiscCommand implements Command {
 	int accessLevel = 200;
 	public int getExecutionLevel(){return 200;}
 	public void setExecutionLevel(int i) {accessLevel = 200;}
-	
+	String syntax = "";
+	public String getSyntax() { return syntax;}
+
 	public void process(StringTokenizer command,String Username) {
 		
 		String endUser = command.nextToken();

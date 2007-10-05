@@ -29,6 +29,9 @@ public class DemotePlayerCommand implements Command {
 	int accessLevel = IAuthenticator.MODERATOR;
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
+	String syntax = "";
+	public String getSyntax() { return syntax;}
+
 
 	public void process(StringTokenizer command,String Username) {
 
