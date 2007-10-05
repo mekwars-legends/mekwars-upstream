@@ -74,6 +74,11 @@ public class SalvageUnitCommand implements Command {
             int tabLocation = location;
             int cost = CampaignMain.cm.getRepairCost(entity,location,slot,techType,armor,0,true);
             
+            if ( unit.getType() != SUnit.MEK && unit.getType() != SUnit.VEHICLE ){
+            	CampaignMain.cm.toUser("Sorry you can only salvage components from meks and vehicles.", Username);
+            	return;
+            }
+            
             if ( player.isUnitInLockedArmy(unitID) ){
                 CampaignMain.cm.toUser("FSM|Sorry but that unit is currently in combat and may not be worked on.",Username,false);
                 return;

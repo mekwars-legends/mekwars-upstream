@@ -1567,7 +1567,8 @@ public class CHQPanel extends JPanel {
                                 
                             }
 
-                            if ( Boolean.parseBoolean(mwclient.getserverConfigs("UsePartsRepair")) ) {
+                            if ( Boolean.parseBoolean(mwclient.getserverConfigs("UsePartsRepair")) 
+                            		&& (cm.getType() == CUnit.MEK || cm.getType() == CUnit.VEHICLE) ) {
 	                            menuItem = new JMenuItem("Salvage Unit Crits");
 	                            menuItem.setActionCommand("SUC|"+row+"|"+col);
 	                            menuItem.addActionListener(this);
