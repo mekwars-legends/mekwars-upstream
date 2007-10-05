@@ -31,7 +31,12 @@ public class AdminPasswordCommand implements Command {
     int accessLevel = IAuthenticator.REGISTERED;
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
-	String syntax = "";
+	String syntax = "Admin Password Commands:<br>" +
+					" /c adminpassword#save - save the password file<br>" +
+					" /c adminpassword#remove#NAME - remove NAME's password<br>" +
+					" /c adminpassword#level#NAME#LEVEL - set a player's userlevel.<br>" +
+					" EXAMPLE: /c adminpassword#remove#urgru<br>" +
+					" EXAMPLE: /c adminpassword#level#urgru#200";
 	public String getSyntax() { return syntax;}
 
 	

@@ -31,7 +31,7 @@ public class DirectSellUnitCommand implements Command {
 	int accessLevel = 2;
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
-	String syntax = "";
+	String syntax = "buyer#seller#unitid#sellPrice";
 	public String getSyntax() { return syntax;}
 
 	

@@ -31,7 +31,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminPurgeHouseBaysCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "Faction Name#[ALL]unittype#[ALL]unitsize";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

@@ -27,7 +27,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminAllowHouseDefectionCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "factionname#to/from#true/false";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

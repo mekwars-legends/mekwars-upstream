@@ -37,7 +37,7 @@ public class AdminUploadBuildTableCommand implements Command {
 	 */
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "[rare/reward/standard]/Build Table File Name";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

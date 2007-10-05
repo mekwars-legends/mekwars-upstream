@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.8.x
++ ListCommandsCommand now looks for indexOf target word instead of startsWith()
++ Added syntax printout to ListCommandsCommand
++ Filled out syntax for all admin commands
 + Added public String getSyntax(); to command class.
 + Bug: Advance terrain status not updated when Vaccum check box was toggled
 + Bug: Black Market Equipment not setting tech level server side.

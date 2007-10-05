@@ -33,7 +33,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminSpoofCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "Target Name#command#[command options]";
 	public String getSyntax() { return syntax;}
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i){accessLevel = i;}//cannot be changed

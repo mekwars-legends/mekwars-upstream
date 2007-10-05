@@ -30,7 +30,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminChangeFactionConfigCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "house#config#arg";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

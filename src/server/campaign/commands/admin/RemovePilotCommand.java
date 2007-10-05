@@ -15,7 +15,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class RemovePilotCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "Player Name#Type/ALL#weight/ALL#Position[Not used if ALL is selected]";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

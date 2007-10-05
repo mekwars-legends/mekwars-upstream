@@ -33,7 +33,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminSetBlackMarketSettingCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "Item Name#Min Cost#Max Cost#Min Production#Max Production";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

@@ -30,7 +30,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class CreateUnitCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "filename#flavortext#gunnery#pilot#skill1,skill2,skill3...";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

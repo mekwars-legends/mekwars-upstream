@@ -26,7 +26,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminTransferCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "Sending Player#Receiving Player#Unit ID";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

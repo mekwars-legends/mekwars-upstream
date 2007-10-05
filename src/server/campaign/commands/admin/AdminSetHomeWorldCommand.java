@@ -29,7 +29,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminSetHomeWorldCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "Planet Name#[true/false]";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}
@@ -53,7 +53,7 @@ public class AdminSetHomeWorldCommand implements Command {
             else
             	homeworld = !planet.isHomeWorld();
         }catch (Exception ex){
-        	CampaignMain.cm.toUser("Invalid syntax. Try: adminsethomeworld#faction#[true/false]",Username);
+        	CampaignMain.cm.toUser("Invalid syntax. Try: adminsethomeworld#Planet#[true/false]",Username);
         }
         
         if ( planet == null )

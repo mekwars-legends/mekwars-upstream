@@ -33,7 +33,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminCreateFactionCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "name#color(hex)#basegunner#basePilot#Abbreviation";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

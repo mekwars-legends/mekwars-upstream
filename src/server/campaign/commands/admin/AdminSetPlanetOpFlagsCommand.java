@@ -28,7 +28,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminSetPlanetOpFlagsCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "Planet Name#FlagCode#FlagCode#...<br>NOTE: you can repeat FlagCode multiple times.<br>NOTE:This will reset all the flags for the planet to these flags!";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

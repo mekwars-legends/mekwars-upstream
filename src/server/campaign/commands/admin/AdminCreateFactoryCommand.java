@@ -39,7 +39,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminCreateFactoryCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "planet name#factory name#size#faction#type";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

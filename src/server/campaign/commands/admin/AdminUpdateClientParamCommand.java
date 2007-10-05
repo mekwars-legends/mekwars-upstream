@@ -33,7 +33,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminUpdateClientParamCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "Player Name[ALL]#param#param value";
 	public String getSyntax() { return syntax;}
 
 	public int getExecutionLevel(){return accessLevel;}
@@ -41,7 +41,7 @@ public class AdminUpdateClientParamCommand implements Command {
 	
 	public void process(StringTokenizer command,String Username) {
 		
-		//access level check. hardcheck'ed to admin.
+		//access level check. hard check'ed to admin.
 		if(CampaignMain.cm.getServer().getUserLevel(Username) < IAuthenticator.ADMIN) {
 			CampaignMain.cm.toUser("Only admins may use the update client param command.",Username,true);
 			return;

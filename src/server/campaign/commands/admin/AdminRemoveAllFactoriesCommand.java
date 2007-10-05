@@ -26,7 +26,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminRemoveAllFactoriesCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "Planet Name";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

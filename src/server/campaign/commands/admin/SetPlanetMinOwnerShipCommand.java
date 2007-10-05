@@ -25,7 +25,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class SetPlanetMinOwnerShipCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "Planet Name#Percent";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}
@@ -45,7 +45,7 @@ public class SetPlanetMinOwnerShipCommand implements Command {
 			p = CampaignMain.cm.getPlanetFromPartialString(command.nextToken(),Username);
             ownership = Integer.parseInt(command.nextToken());
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper command. Try: /c setplanetminownership#planet#pecent", Username, true);
+			CampaignMain.cm.toUser("Improper command. Try: /c setplanetminownership#planet#percent", Username, true);
 			return;
 		}
 		

@@ -31,7 +31,7 @@ public class SetOperationCommand implements Command {
     int accessLevel = IAuthenticator.ADMIN;
     public int getExecutionLevel(){return accessLevel;}
     public void setExecutionLevel(int i) {accessLevel = i;}
-	String syntax = "";
+	String syntax = "Op Type[Short/Long/Special]#Op Name";
 	public String getSyntax() { return syntax;}
 
     public void process(StringTokenizer command,String Username) {

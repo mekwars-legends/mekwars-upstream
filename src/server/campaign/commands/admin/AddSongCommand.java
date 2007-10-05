@@ -31,7 +31,7 @@ public class AddSongCommand implements Command {
     int accessLevel = IAuthenticator.ADMIN;
     public int getExecutionLevel(){return accessLevel;}
     public void setExecutionLevel(int i) {accessLevel = i;}
-	String syntax = "";
+	String syntax = "addsong#songname#lyric1#lyric2....";
 	public String getSyntax() { return syntax;}
 
     public void process(StringTokenizer command,String Username) {

@@ -28,7 +28,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminMovePlanetCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "Planet Name#X Coord#Y Coord";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

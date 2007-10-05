@@ -38,7 +38,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminGetUnitComponentsCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "TargetPlayer#Option[BreakDownUnit,DisplayParts,AddParts]#Unit[ID,FileName]";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

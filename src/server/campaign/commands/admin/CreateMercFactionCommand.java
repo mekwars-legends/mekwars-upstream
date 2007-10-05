@@ -25,7 +25,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class CreateMercFactionCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "Faction Name#htmlhexcolor#abbreviation";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

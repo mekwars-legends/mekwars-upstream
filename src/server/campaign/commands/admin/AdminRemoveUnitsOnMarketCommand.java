@@ -33,7 +33,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminRemoveUnitsOnMarketCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "[player][all][number]";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

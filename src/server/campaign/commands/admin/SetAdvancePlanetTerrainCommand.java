@@ -30,7 +30,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class SetAdvancePlanetTerrainCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "Planet Name#Terrain ID#Display Name#XSize#YSize#StaticMap(bool)#Xboard#YBoard#Low Temp#High Temp#Gravity(Double)#Vaccum(bool)#Night Chance#Night Temp Mod#Static Map(bool)#Min Visibility#Max Visibility#";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

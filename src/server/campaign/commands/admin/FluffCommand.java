@@ -25,7 +25,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class FluffCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "Player Name#[fluff text][blank to clear]";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

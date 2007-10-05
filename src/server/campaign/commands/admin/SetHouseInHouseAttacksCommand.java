@@ -27,7 +27,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class SetHouseInHouseAttacksCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "Faction Name#[true/false]";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}
@@ -48,7 +48,7 @@ public class SetHouseInHouseAttacksCommand implements Command {
 			h = CampaignMain.cm.getHouseFromPartialString(command.nextToken(),Username);
 			conquer = new Boolean(command.nextToken()).booleanValue();
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper command. Try: /c sethouseconquer#Faction#true/false", Username, true);
+			CampaignMain.cm.toUser("Improper command. Try: /c sethouseinHouseAttacks#Faction#true/false", Username, true);
 			return;
 		}
 		

@@ -31,7 +31,7 @@ public class AdminDestroyFactoryCommand implements Command {
 	int accessLevel = IAuthenticator.ADMIN, factoryID;
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
-	String syntax = "";
+	String syntax = "Planet Name#Factory Name";
 	public String getSyntax() { return syntax;}
 
 	

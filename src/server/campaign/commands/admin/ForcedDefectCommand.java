@@ -28,7 +28,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class ForcedDefectCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "Player Name#Faction Name";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

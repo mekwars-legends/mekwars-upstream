@@ -41,7 +41,7 @@ public class AdminDonateCommand implements Command {
 		}
 		
 		
-		String targetName = "";
+		String targetName = "name#unitid";
 		SPlayer target = null;
 		int unitID = -1;
 		SUnit m = null;

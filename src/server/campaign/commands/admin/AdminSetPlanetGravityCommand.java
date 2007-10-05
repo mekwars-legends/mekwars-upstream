@@ -26,7 +26,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminSetPlanetGravityCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
+	String syntax = "Planet Name#Gravity(Double)";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

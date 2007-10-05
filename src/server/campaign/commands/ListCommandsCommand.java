@@ -66,13 +66,17 @@ public class ListCommandsCommand implements Command {
 			if (!starter.equals("")) {
 			    if ( userLevel < commandMethod.getExecutionLevel())
 			        continue;
-			    else if ( commandName.toLowerCase().startsWith(starter.toLowerCase()) )
-				    commandArray[x] = commandName.substring(0,1)+commandName.substring(1,commandName.length()).toLowerCase()+"#"+commandMethod.getExecutionLevel();
+			    else if ( commandName.toLowerCase().indexOf(starter.toLowerCase()) > -1 ) {
+			    	String syntax = commandMethod.getSyntax().trim().length() < 1 ? " " : commandMethod.getSyntax();
+			        commandArray[x] = commandName.substring(0,1)+commandName.substring(1,commandName.length()).toLowerCase()+"#"+syntax+"#"+commandMethod.getExecutionLevel();
+			    }
 				else
 					continue;
 			} else{
-			    if ( userLevel >= commandMethod.getExecutionLevel())
-			        commandArray[x] = commandName.substring(0,1)+commandName.substring(1,commandName.length()).toLowerCase()+"#"+commandMethod.getExecutionLevel();
+			    if ( userLevel >= commandMethod.getExecutionLevel()) {
+			    	String syntax = commandMethod.getSyntax().trim().length() < 1 ? " " : commandMethod.getSyntax();
+			        commandArray[x] = commandName.substring(0,1)+commandName.substring(1,commandName.length()).toLowerCase()+"#"+syntax+"#"+commandMethod.getExecutionLevel();
+			    }
 			    else
 			        continue;
 			}
@@ -90,11 +94,11 @@ public class ListCommandsCommand implements Command {
 		Arrays.sort(commandArray);
 		String result = "SM|";
 		result += "<font color=\"black\">";
-		result += "<table><tr><th>Command Name</th><th>Access Level</th></tr>";
+		result += "<table><tr><th>Command Name</th><th>Syntax</th><th>Access Level</th></tr>";
 
 		for( x=0; x<commandArray.length; x++){
 		    StringTokenizer commandList = new StringTokenizer(commandArray[x],"#");
-		    result += "<tr><td>"+commandList.nextToken()+"</td><td>"+commandList.nextToken()+ "</td></tr>";
+		    result += "<tr><td>"+commandList.nextToken()+"</td><td>"+commandList.nextToken()+"</td><td>"+commandList.nextToken()+ "</td></tr>";
 		}
 		result +="</table>";
 		CampaignMain.cm.toUser(result,Username,false);
