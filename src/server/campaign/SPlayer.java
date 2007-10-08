@@ -1656,6 +1656,22 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		return id;
 	}
 	
+	public int getFreeArmyId() {
+		int i = 0;
+		boolean free = false;
+		while (!free) {
+			free = true;
+			for (int j = 0; j < getArmies().size(); j++) {
+				if (getArmies().elementAt(j).getID() == i) {
+					free = false;
+					i++;
+				}
+			}
+		}
+		
+		return i;
+	}
+	
 	// METHODS TO CHECK/COMMENT
 	/**
 	 * @author Jason Tighe aka Torren
