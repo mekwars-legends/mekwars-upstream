@@ -475,7 +475,11 @@ public class CHSPanel extends JPanel {
 
 			result.append("<TR><TD VALIGN=MIDDLE><b>" + Unit.getTypeClassDesc(type_id) + "</b></TD>");
 			for (int weight = 0; weight < 4; weight++) {
-												
+									
+				String buyNew = "CanBuyNew"+CUnit.getWeightClassDesc(weight)+CUnit.getTypeClassDesc(type_id);
+				if ( !Boolean.parseBoolean(thePlayer.getSubFaction().getConfig(buyNew)) )
+					continue;
+				
 				String Comps = componentsInfo.get(weight + "$" + type_id);
 				StringTokenizer ST = new StringTokenizer(Comps,"$");
 				int comps = Integer.parseInt(ST.nextToken());
@@ -549,6 +553,7 @@ public class CHSPanel extends JPanel {
 		    if (!Boolean.parseBoolean(mwclient.getserverConfigs(useIt)))
 		        continue;
 			
+		    
 		    //if the house has any units at all, add a Bays: title.
 			boolean hasUnits = false;
 			for (int weight = 0; weight < 4; weight++) {
@@ -560,6 +565,10 @@ public class CHSPanel extends JPanel {
 			
 			//fill out bays
 			for (int weight = 0; weight < 4; weight++) {
+				
+				String buyUsed = "CanBuyUsed"+CUnit.getWeightClassDesc(weight)+CUnit.getTypeClassDesc(type);
+				if ( !Boolean.parseBoolean(thePlayer.getSubFaction().getConfig(buyUsed)) )
+					continue;
 				
 				if (this.unitsInfo.get(weight+"$"+type) != null && ((Vector)this.unitsInfo.get(weight+"$"+type)).size() > 0 ) {
 					House foundH = mwclient.getData().getHouseByName(mwclient.getPlayer().getMyHouse().getName());

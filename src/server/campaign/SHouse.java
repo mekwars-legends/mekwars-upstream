@@ -2736,4 +2736,17 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		return this.leaders.contains(leader.toLowerCase());
 	}
 	
+	public String getZeroLevelSubFaction(){
+		
+		if ( this.getSubFactionList().size() < 1)
+			return "";
+		
+		for (SubFaction subFac : this.getSubFactionList().values() ){
+			if ( Integer.parseInt(subFac.getConfig("AccessLevel")) == 0 )
+				return subFac.getConfig("Name");
+		}
+		
+		return "";
+	}
+	
 }// end SHouse.java

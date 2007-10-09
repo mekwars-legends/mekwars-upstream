@@ -488,8 +488,11 @@ public class DefectCommand implements Command {
 			 * relevant messages w/i the faction, to the player and on the
 			 * RSS feed. 
 			 */
+			p.getMyHouse().removeLeader(p.getName());
+			
 			p.getMyHouse().removePlayer(p,false);
 			p.setMyHouse(newHouse);
+			p.setSubFaction(newHouse.getZeroLevelSubFaction());
             //CampaignMain.cm.forceSavePlayer(p);
             
 			//send the various messages
@@ -505,9 +508,6 @@ public class DefectCommand implements Command {
 			//a problem for mods, but better than the alternative ...
 			if (p.getMyHouse().equals(newHouse) && !CampaignMain.cm.getServer().isAdmin(Username))
 				MWPasswd.getRecord(Username).setAccess(2);
-			
-			p.setSubFaction("");
-			p.getMyHouse().removeLeader(p.getName());
 			
 			/*
 			 * Player is part of his new house. Check the ammo
