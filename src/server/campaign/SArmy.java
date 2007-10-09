@@ -281,7 +281,7 @@ public class SArmy extends Army {
             SUnit u = (SUnit)currU;
             
             //C3 adjustments
-			if (u.hasBeenC3LinkedTo(this) || this.getC3Network().get(new Integer(u.getId())) != null){
+			if (u.hasBeenC3LinkedTo(this) || this.getC3Network().get(u.getId()) != null){
 				c3BV += u.getBV();
 				c3Count++;
 			} 
@@ -301,8 +301,8 @@ public class SArmy extends Army {
 			total += subTotal;
 		}
 		
-		//MWServ.mwlog.errLog("Count: "+ c3Count+" BV: "+c3BV+" Modifier: "+(c3BV * ( c3Count * .05))/this.getNumberOfNetworks());
-		total += (c3BV * ( c3Count * .05))/this.getNumberOfNetworks();
+		//MWServ.mwlog.errLog("Count: "+ c3Count+" BV: "+total+" Modifier: "+c3Count * ( c3BV * .05));///this.getNumberOfNetworks());
+		total += c3Count * ( c3BV * .05);///this.getNumberOfNetworks();
         //MWServ.mwlog.errLog("Army BV: "+total);
 		
 		if ( hasSemiGuided )

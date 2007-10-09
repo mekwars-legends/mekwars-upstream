@@ -1584,7 +1584,7 @@ public class ShortOperation implements Comparable {
 		StringTokenizer tokenizer = new StringTokenizer(s, "*");
 		
 		//see if we're dealing with a pilot or unit
-		if (s.startsWith("MW*")) {
+		if ( s.startsWith("MW*")) {
 			
 			tokenizer.nextToken();//strip the "MW"
 			
@@ -1598,15 +1598,8 @@ public class ShortOperation implements Comparable {
 			pilotsInProgress.put(originalID, mw);//key to host unit
 		} else {
 			
-			String ownerName = tokenizer.nextToken();
-			int externalID = Integer.parseInt(tokenizer.nextToken());
-			int removalCondition = Integer.parseInt(tokenizer.nextToken());
-			int ctIS = Integer.parseInt(tokenizer.nextToken());
-			int headIS = Integer.parseInt(tokenizer.nextToken());
-			boolean repairable = Boolean.parseBoolean(tokenizer.nextToken());
-			
-			OperationEntity oe = new OperationEntity(ownerName, externalID, removalCondition, ctIS, headIS, repairable);
-			unitsInProgress.put(externalID, oe);			
+			OperationEntity oe = new OperationEntity(s);
+			unitsInProgress.put(oe.getID(), oe);			
 		}
 	}
 	

@@ -2810,6 +2810,7 @@ public final class MWClient implements IClient {
 			MMGOD.update(gameOptions);
 			MMGOD.setEditable(true);
 			MMGOD.setVisible(true);
+			MMGOD.dispose();
 			File localGameOptions = new File("mmconf/gameoptions.xml");
 			//get the local MD5
 			String localOptionsMD5 = MD5.getHashString(localGameOptions);

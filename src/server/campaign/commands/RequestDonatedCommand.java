@@ -115,6 +115,12 @@ public class RequestDonatedCommand implements Command {
 			return;
 		}
 		
+		if ( !Boolean.parseBoolean(p.getSubFaction().getConfig("CanBuyUsed"+SUnit.getWeightClassDesc(weightclass)+SUnit.getTypeClassDesc(type_id))) ){
+			CampaignMain.cm.toUser("Sorry as a member of "+p.getSubFactionName()+" you are unable to purchase this unit.", Username);
+			return;
+		}
+		
+
 		//boot the player's request if he has unmaintained units
 		if (p.hasUnmaintainedUnit()) {
 			result = "Your faction refuses to assign additional units to you force while existing resources are not being properly maintained!";

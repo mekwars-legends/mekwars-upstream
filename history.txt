@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.8.x
++ Misc typo fixes.
++ Bug: CreateArmyFromMulCommand not sending army data to correct player.
++ RFE: complete data of all damaged units are sent to server during the game.
++ Bug: SubFactions not stopping players from Buy New/Used Units
 + added CreateArmyFrmoMulCommand. Mul files must be located in data/armies and
   units files must be in data/mechfiles.
 + new MegaMek.jar 0.33.10-MW10052007-5217

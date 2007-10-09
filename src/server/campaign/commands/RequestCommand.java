@@ -138,6 +138,11 @@ public class RequestCommand implements Command {
 			return;
 		}
 
+		if ( !Boolean.parseBoolean(p.getSubFaction().getConfig("CanBuyNew"+SUnit.getWeightClassDesc(weightclass)+SUnit.getTypeClassDesc(type_id))) ){
+			CampaignMain.cm.toUser("Sorry as a member of "+p.getSubFactionName()+" you are unable to purchase this unit.", Username);
+			return;
+		}
+		
 		/*
 		 * Check to see if a planet and factory names are specified. If they are,
 		 * fetch the planet and factory and make sure the user entered a legal combo.

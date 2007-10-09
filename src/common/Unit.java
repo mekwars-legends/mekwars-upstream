@@ -442,8 +442,8 @@ public class Unit {
 		if (army.getUnit(this.getId()) == null)
 			return false;
 		
-		for (Integer c3U : army.getC3Network().values()) {
-			if (c3U.intValue() == this.getId())
+		for (int c3U : army.getC3Network().values()) {
+			if (c3U == this.getId())
 				return true;
 		}
 		

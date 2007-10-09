@@ -80,7 +80,7 @@ public class RetrieveOperationCommand implements Command {
             return;
         }
         
-        CampaignMain.cm.doSendModMail("NOTE:",Username+" has retreived "+opFile);
+        CampaignMain.cm.doSendModMail("NOTE:",Username+" has retrieved "+opFile);
         
         CampaignMain.cm.toUser("PL|RSOD|"+opData.toString(),Username,false);
     }

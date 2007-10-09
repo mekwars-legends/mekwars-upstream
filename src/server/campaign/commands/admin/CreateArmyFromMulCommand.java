@@ -24,7 +24,6 @@ import megamek.common.Entity;
 import megamek.common.EntityListFile;
 import megamek.common.MechSummary;
 import megamek.common.MechSummaryCache;
-import megamek.common.preference.PreferenceManager;
 import server.MWServ;
 import server.campaign.commands.Command;
 import server.campaign.CampaignMain;
@@ -191,9 +190,9 @@ public class CreateArmyFromMulCommand implements Command {
 		army.getBV();
 		army.setOpForceSize(army.getAmountOfUnits());
 		
-		CampaignMain.cm.toUser("PL|SAD|" + army.toString(true, "%"), Username,
+		CampaignMain.cm.toUser("PL|SAD|" + army.toString(true, "%"), p.getName(),
 				false);
-		CampaignMain.cm.toUser("army created: " + armyname, Username, true);
+		CampaignMain.cm.toUser("army created: " + armyname, p.getName(), true);
 		CampaignMain.cm.doSendModMail("NOTE", Username
 				+ " has created an army from file " + filename);
 

@@ -108,6 +108,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 	private ArrayList<CUnit> autoarmy = new ArrayList<CUnit>();//from server's auto army
 	CArmy army = null;
     BotClient bot = null;
+    private int currentPhase = IGame.PHASE_DEPLOYMENT;
     
     final int N  = 0;
     final int NE = 1;
@@ -540,7 +541,14 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 		if (client != null) {
 			if (this.getTurn() == 0 && (myname.equals(serverName) || serverName.startsWith("[Dedicated]")))
 				mwclient.serverSend("SHS|" + serverName + "|Running");
+			else if ( client.game.getPhase() != currentPhase
+					&& client.game.getOptions().booleanOption("paranoid_autosave") 
+					&& !client.getLocalPlayer().isObserver()){
+				sendServerGameUpdate();
+				currentPhase = client.game.getPhase();
+			}
 			turn += 1;
+			
 		}
 	}
 	
@@ -714,22 +722,21 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 			 * the same (ie - remove on Engine crits even when a CT core
 			 * comes later in the round).
 			 */
-			else if(client.game.getPhase() == IGame.PHASE_FIRING_REPORT
-					|| client.game.getPhase() == IGame.PHASE_PHYSICAL_REPORT
-					|| client.game.getPhase() == IGame.PHASE_MOVEMENT_REPORT
-					|| client.game.getPhase() == IGame.PHASE_END_REPORT
-					|| client.game.getPhase() == IGame.PHASE_OFFBOARD_REPORT) {
+			else if( client.game.getPhase() == IGame.PHASE_END_REPORT ) {
 				
 				//observers need not report
 				if (client.getLocalPlayer().isObserver())
 					return;
+				
+
+				sendServerGameUpdate();
 				
 				/*
 				 * Wrecked entities include all those which were
 				 * devastated, ejected, or removed but salvagable
 				 * according to MegaMek. We want to check them for
 				 * CT-cores.
-				 */
+				 *
 				Enumeration en = client.game.getWreckedEntities();
 				while (en.hasMoreElements()) {
 					Entity currEntity = (Entity)en.nextElement();
@@ -737,7 +744,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 					/*
 					 * MM is now reporting post-attack IS instead of pre-attack IS
 					 * in gameEntityRemove, so this check shouldn't be necessary anymore.
-					 */
+					 *
 					//if (currEntity instanceof Mech || currEntity instanceof QuadMech) {
 					//	//if a mech-type, override grouping if its salvage and CT 0
 					//	if (currEntity.getInternal(Mech.LOC_CT) <= 0)
@@ -763,12 +770,12 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 				 * This is probably extraneous - retreats should be properly handled
 				 * in the movement phase and do not involve damage transferal which
 				 * could lead to a final status different from the removal status.
-				 */
+				 *
 				//en = client.game.getRetreatedEntities();
 				//while (en.hasMoreElements()) {
 				//	Entity currEntity = (Entity)en.nextElement();
 				//	mwclient.serverSend("IPU|" + this.serializeEntity(currEntity, false));
-				//}
+				//}*/
 			}
 			
 		}//end try
@@ -801,7 +808,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
         if ( removedE.getOwner().getName().startsWith("War Bot"))
             return;
 
-		String toSend = this.serializeEntity(removedE, false, false);
+		String toSend = this.serializeEntity(removedE, true, false);
 		mwclient.serverSend("IPU|" + toSend);
 	}
 	
@@ -1093,6 +1100,75 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
             buildingCount++;
         }
         return buildingCount;
+    }
+    
+    private void sendServerGameUpdate(){
+		//Report the mech stat
+		/*Enumeration<Entity> en = client.game.getDevastatedEntities();
+		while (en.hasMoreElements()) {
+			Entity ent = en.nextElement();
+			if ( ent.getOwner().getName().startsWith("War Bot")
+					|| ( !(ent instanceof MechWarrior) 
+							&& !UnitUtils.hasArmorDamage(ent)
+							&& !UnitUtils.hasISDamage(ent)
+							&& !UnitUtils.hasCriticalDamage(ent)
+							&& !UnitUtils.hasLowAmmo(ent)
+							&& !UnitUtils.hasEmptyAmmo(ent)))
+				continue;
+			mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, false));
+		}
+		en = client.game.getGraveyardEntities();
+		while (en.hasMoreElements()) {
+			Entity ent = en.nextElement();
+			if ( ent.getOwner().getName().startsWith("War Bot")
+					|| ( !(ent instanceof MechWarrior) 
+							&& !UnitUtils.hasArmorDamage(ent)
+							&& !UnitUtils.hasISDamage(ent)
+							&& !UnitUtils.hasCriticalDamage(ent)
+							&& !UnitUtils.hasLowAmmo(ent)
+							&& !UnitUtils.hasEmptyAmmo(ent)))
+				continue;
+			if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0)
+				mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, true));              
+			else
+				mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, false));
+			
+		}*/
+    	
+    	//Only send data for units currently on the board.
+    	//any units removed from play will have already sent thier final update.
+    	Enumeration<Entity> en = client.game.getEntities();
+		while (en.hasMoreElements()) {
+			Entity ent = en.nextElement();
+			if ( ent.getOwner().getName().startsWith("War Bot")
+					|| ( !(ent instanceof MechWarrior) 
+							&& !UnitUtils.hasArmorDamage(ent)
+							&& !UnitUtils.hasISDamage(ent)
+							&& !UnitUtils.hasCriticalDamage(ent)
+							&& !UnitUtils.hasLowAmmo(ent)
+							&& !UnitUtils.hasEmptyAmmo(ent)))
+				continue;
+			if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0)
+				mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, true));          
+			else
+				mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, false));
+		}
+		/*en = client.game.getRetreatedEntities();
+		while (en.hasMoreElements()) {
+			Entity ent = en.nextElement();
+			if ( ent.getOwner().getName().startsWith("War Bot")
+					|| ( !(ent instanceof MechWarrior) 
+							&& !UnitUtils.hasArmorDamage(ent)
+							&& !UnitUtils.hasISDamage(ent)
+							&& !UnitUtils.hasCriticalDamage(ent)
+							&& !UnitUtils.hasLowAmmo(ent)
+							&& !UnitUtils.hasEmptyAmmo(ent)))
+				continue;
+			if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0)
+				mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, true));          
+			else
+				mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, false));
+		}*/
     }
     
 }
