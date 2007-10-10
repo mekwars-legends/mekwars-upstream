@@ -147,7 +147,7 @@ public final class MWClient implements IClient {
 	
 	CConfig Config;
 	
-	public static final String CLIENT_VERSION = "0.2.8.0"; //change this with all client changes @Torren
+	public static final String CLIENT_VERSION = "0.2.9.0"; //change this with all client changes @Torren
 
 	CConnector Connector;
 	TimeOutThread TO;
@@ -2981,6 +2981,32 @@ public final class MWClient implements IClient {
 		opFile = new File("./data/operations/"+type+"/"+opName+".txt");
 		try{
 			FileOutputStream out = new FileOutputStream(opFile);
+			PrintStream p = new PrintStream(out);
+			while ( st.hasMoreTokens() )
+				p.println(st.nextToken().replaceAll("\\(pound\\)","#"));
+			p.close();
+			out.close();
+		}catch (Exception ex){
+			MWClient.mwClientLog.clientErrLog(ex);
+		}
+		
+		
+	}
+
+	public void retrieveMul(String data){
+		
+		StringTokenizer st = new StringTokenizer(data,"#");
+		
+		String mulName = st.nextToken();
+		
+		File mulFile = new File("./data/armies/");
+		
+		if ( !mulFile.exists() )
+			mulFile.mkdirs();
+		
+		mulFile = new File("./data/armies/"+mulName);
+		try{
+			FileOutputStream out = new FileOutputStream(mulFile);
 			PrintStream p = new PrintStream(out);
 			while ( st.hasMoreTokens() )
 				p.println(st.nextToken().replaceAll("\\(pound\\)","#"));

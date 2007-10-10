@@ -16,7 +16,10 @@
 
 package server.campaign.commands.admin;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 import server.MWChatServer.auth.IAuthenticator;
@@ -24,7 +27,7 @@ import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 
 
-public class ListMulsCommand implements Command {
+public class RetrieveAllMulsCommand implements Command {
 
 	/*
 	 * This command allows an Admin to upload a single build table
@@ -35,7 +38,7 @@ public class ListMulsCommand implements Command {
 	 */
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "Option Box[True/False]";
+	String syntax = "FileName";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}
@@ -48,40 +51,39 @@ public class ListMulsCommand implements Command {
 			CampaignMain.cm.toUser("Insufficient access level for command. Level: " + userLevel + ". Required: " + accessLevel + ".",Username,true);
 			return;
 		}
+		String fileName = "./data/armies/";
 
-		File mulDir = new File("./data/armies");
-		String clientCommand = null;
-		
-		if ( command.hasMoreTokens() )
-			clientCommand = command.nextToken();
-		
-		if ( !mulDir.exists() ) {
-			CampaignMain.cm.toUser("./data/armies/ folder found.", Username);
+		try {
+			
+			
+			File mulFolder = new File(fileName);
+			if(!mulFolder.exists()) {
+				CampaignMain.cm.toUser("Unable to find file "+fileName, Username);
+			}
+			for ( File mul : mulFolder.listFiles() ){
+				StringBuffer sendData = new StringBuffer("PL|RMF|");
+				FileInputStream fis = new FileInputStream(mul);
+				BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+				
+				sendData.append(mul.getName());
+				sendData.append("#");
+				while ( br.ready() ){
+					sendData.append(br.readLine());
+					
+					if ( sendData.lastIndexOf("#") == sendData.length()-1)
+						sendData.append(" ");
+					sendData.append("#");
+				}
+				
+				CampaignMain.cm.toUser(sendData.toString(), Username,false);
+			}
+		}
+		catch ( Exception ex){
+			CampaignMain.cm.toUser("File Not found",Username,true);
 			return;
 		}
 		
-		StringBuffer fileNames = new StringBuffer();
+		CampaignMain.cm.doSendModMail("NOTE", Username+" has retrived all mul files");
 		
-		if ( clientCommand != null ) {
-			fileNames.append("PL|");
-			fileNames.append(clientCommand);
-			fileNames.append("|");
-			for (File file : mulDir.listFiles()) {
-				fileNames.append(file.getName());
-				fileNames.append("#");
-			}
-		}else{
-			fileNames.append("SM|");
-			for (File file : mulDir.listFiles()) {
-				fileNames.append("<a href=\"MEKWARS/c retrievemul#");
-				fileNames.append(file.getName());
-				fileNames.append("\">");
-				fileNames.append(file.getName());
-				fileNames.append("</a><br>");
-			}
-			
-		}
-			
-		CampaignMain.cm.toUser(fileNames.toString(), Username,false);
 	}
 }

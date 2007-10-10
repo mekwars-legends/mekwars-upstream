@@ -1526,6 +1526,7 @@ src/server/campaign/commands/admin/RemovePilotCommand.java -text
 src/server/campaign/commands/admin/RemoveSongCommand.java -text
 src/server/campaign/commands/admin/RemoveTraitCommand.java -text
 src/server/campaign/commands/admin/RestartRepairThreadCommand.java -text
+src/server/campaign/commands/admin/RetrieveAllMulsCommand.java -text
 src/server/campaign/commands/admin/RetrieveAllOperationsCommand.java -text
 src/server/campaign/commands/admin/RetrieveMulCommand.java -text
 src/server/campaign/commands/admin/RetrieveOperationCommand.java -text

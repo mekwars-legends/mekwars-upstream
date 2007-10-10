@@ -71,8 +71,6 @@ public class PlayerNameDialog extends JDialog implements ActionListener {
 	private String toReturn = null;
 	private ArrayList possiblePlayers = null;
 	
-	private MWClient mwclient;
-	
 	//constructor
 	public PlayerNameDialog(MWClient client, String boxText, int playerType) {
 		
@@ -83,9 +81,6 @@ public class PlayerNameDialog extends JDialog implements ActionListener {
 		
 		//super, and variable saves
 		super(client.getMainFrame(),boxText, true);//dummy frame as owner
-		
-		//save client
-		this.mwclient = client;
 		
 		//loop through all players, checking faction, if needed
 		Vector factionPlayers = new Vector(1,1);
@@ -235,21 +230,22 @@ public class PlayerNameDialog extends JDialog implements ActionListener {
 	        if (selectedPlayer == null)
 	        	selectedPlayer = nameField.getText();
 			
-	        if (selectedPlayer == null || selectedPlayer.equals(""))
-	        	return;
-	        
 	        if (matchingPlayersList.getModel().getSize() == 1)
 	        	selectedPlayer = (String)matchingPlayersList.getModel().getElementAt(0);
 			
-			for (Iterator it = mwclient.getUsers().iterator(); it.hasNext();) {
+	        if (selectedPlayer == null || selectedPlayer.equals(""))
+	        	return;
+	        
+	        this.setPlayerName(selectedPlayer);
+/*			for (Iterator it = mwclient.getUsers().iterator(); it.hasNext();) {
 				CUser currUser = (CUser)it.next();
 				if (selectedPlayer.equals(currUser.getName())) {
-					this.setPlayerName(currUser.getName());
+					this.setPlayerName(currUser.getName());*/
 					this.setVisible(false);
 					//this.dispose();
 					return;
-				}
-			}
+/*				}
+			}*/
 		}
 		
 		//dispose of the dialog

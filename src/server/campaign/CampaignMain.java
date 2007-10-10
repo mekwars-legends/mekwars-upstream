@@ -1521,6 +1521,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("LASTONLINE", new LastOnlineCommand());
 		Commands.put("LINKUNIT", new LinkUnitCommand());
 		Commands.put("LISTCOMMANDS", new ListCommandsCommand());
+		Commands.put("LISTMULS", new ListMulsCommand());
 		Commands.put("LISTMULTIPLAYERGROUPS",
 				new ListMultiPlayerGroupsCommand());
 		Commands.put("LISTSERVEROPFLAGS", new ListServerOpFlagsCommand());
@@ -1586,6 +1587,8 @@ public final class CampaignMain implements Serializable {
 		Commands.put("RETRIEVEALLOPERATIONS",
 				new RetrieveAllOperationsCommand());
 		Commands.put("RETRIEVEOPERATION", new RetrieveOperationCommand());
+		Commands.put("RETRIEVEMUL", new RetrieveMulCommand());
+		Commands.put("RETRIEVEALLMULS", new RetrieveAllMulsCommand());
 		Commands.put("RETIREPILOT", new RetirePilotCommand());
 		Commands.put("SALVAGEUNIT", new SalvageUnitCommand());
 		Commands.put("SCRAP", new ScrapCommand());
@@ -1650,6 +1653,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("TRANSFERPILOT", new TransferPilotCommand());
 		Commands.put("TRANSFERUNIT", new TransferUnitCommand());
 		Commands.put("UPDATEOPERATIONS", new UpdateOperationsCommand());
+		Commands.put("UPLOADMUL", new UploadMulCommand());
 		Commands.put("UNEMPLOYEDMERCS", new UnemployedMercsCommand());
 		Commands.put("UNENROLL", new UnenrollCommand());
 		Commands.put("UNITPOSITION", new UnitPositionCommand());

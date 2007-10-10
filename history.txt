@@ -1,7 +1,14 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.8.x
+v 0.2.9.x
+Release Client & Server 0.2.9.0
++ Bug: Upload Build Table Gui not working correctly.
++ Added Gui to Admin menu for Mul related commands
++ Added RetrieveAllMulsCommand
++ Added RetrieveMulCommand
++ Added ListMulsCommand
++ Added UploadMulCommand
 + Bug: Repod with parts was using ammo shot counts for ammo bins
 + Bug: default SubFaction not added when player defects or forcedefects
 + Misc typo fixes.

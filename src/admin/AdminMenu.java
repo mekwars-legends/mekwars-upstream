@@ -74,6 +74,7 @@ public class AdminMenu extends JMenu {
     JMenu jMenuAdminBlackMarketSettings = new JMenu("Black Market Settings");
 	JMenu jMenuAdminOperations = new JMenu("Operations");
 	JMenu jMenuAdminBuildTables = new JMenu("Build Tables");
+	JMenu jMenuAdminMuls = new JMenu("Muls");
     
 	JMenuItem jMenuAdminServerConfig = new JMenuItem();
 	JMenuItem jMenuAdminFactionConfig = new JMenuItem();
@@ -123,6 +124,11 @@ public class AdminMenu extends JMenu {
     JMenuItem jMenuAdminComponentAmmoList = new JMenuItem();
     JMenuItem jMenuAdminSetHouseBasePilotSkill = new JMenuItem();
     JMenuItem jMenuAdminUploadBuildTable = new JMenuItem();
+    JMenuItem jMenuAdminUploadMul = new JMenuItem();
+    JMenuItem jMenuAdminListMuls = new JMenuItem();
+    JMenuItem jMenuAdminRetrieveMul = new JMenuItem();
+    JMenuItem jMenuAdminRetrieveAllMuls = new JMenuItem();
+    JMenuItem jMenuAdminCreateMulArmy = new JMenuItem();
     
 	MWClient mwclient;
 	private int userLevel = 0;
@@ -434,6 +440,41 @@ public class AdminMenu extends JMenu {
         	}
         });
         
+        jMenuAdminUploadMul.setText("Upload a Mul File");
+        jMenuAdminUploadMul.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		jMenuAdminUploadMul_actionPerformed(e);
+        	}
+        });
+        
+        jMenuAdminListMuls.setText("List Muls");
+        jMenuAdminListMuls.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		jMenuAdminListMuls_actionPerformed(e);
+        	}
+        });
+        
+        jMenuAdminRetrieveMul.setText("Retrieve Mul File");
+        jMenuAdminRetrieveMul.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		jMenuAdminRetrieveMul_actionPerformed(e);
+        	}
+        });
+        
+        jMenuAdminRetrieveAllMuls.setText("Retrieve All Muls");
+        jMenuAdminRetrieveAllMuls.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		jMenuAdminRetrieveAllMuls_actionPerformed(e);
+        	}
+        });
+        
+        jMenuAdminCreateMulArmy.setText("Create Mul Army");
+        jMenuAdminCreateMulArmy.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		jMenuAdminCreateMulArmy_actionPerformed(e);
+        	}
+        });
+        
         jMenuAdminSetOperationFile.setText("Set Operation File");
         jMenuAdminSetOperationFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -648,9 +689,27 @@ public class AdminMenu extends JMenu {
         if ( jMenuAdminOperations.getItemCount() > 0)
             this.add(jMenuAdminOperations);
 
-        if ( userLevel >= mwclient.getData().getAccessLevel("AdminUploadBuildTable"));
+        if ( userLevel >= mwclient.getData().getAccessLevel("AdminUploadBuildTable"))
         	jMenuAdminBuildTables.add(jMenuAdminUploadBuildTable);
+        	
+        if ( jMenuAdminBuildTables.getItemCount() > 0)
         	this.add(jMenuAdminBuildTables);
+        	
+        	
+        if ( userLevel >= mwclient.getData().getAccessLevel("ListMuls"))
+            jMenuAdminMuls.add(jMenuAdminListMuls);
+        if ( userLevel >= mwclient.getData().getAccessLevel("RetrieveMul")){
+        	jMenuAdminMuls.add(jMenuAdminRetrieveMul);
+        	jMenuAdminMuls.add(jMenuAdminRetrieveAllMuls);
+        }
+        if ( userLevel >= mwclient.getData().getAccessLevel("UploadMul"))
+        	jMenuAdminMuls.add(jMenuAdminUploadMul);
+        if ( userLevel >= mwclient.getData().getAccessLevel("CreateArmyFromMul"))
+        	jMenuAdminMuls.add(jMenuAdminCreateMulArmy);
+        	
+        if ( jMenuAdminMuls.getItemCount() > 0)
+        	this.add(jMenuAdminMuls);
+
         if ( userLevel >= mwclient.getData().getAccessLevel("AdminSave") )
             jMenuAdminSubSave.add(jMenuAdminSaveTheUniverse);
         if ( userLevel >= mwclient.getData().getAccessLevel("AdminSavePlanetsToXML") )
@@ -1206,6 +1265,55 @@ public class AdminMenu extends JMenu {
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setoperation#short#"+opData.toString());
         }
 
+        public void jMenuAdminListMuls_actionPerformed(ActionEvent e) {
+        	mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c listMuls");
+        }
+        
+        public void jMenuAdminRetrieveMul_actionPerformed(ActionEvent e) {
+        	mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c listMuls#SMFD");
+        }
+
+        public void jMenuAdminRetrieveAllMuls_actionPerformed(ActionEvent e) {
+        	mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c RetrieveAllMuls");
+        }
+
+        public void jMenuAdminUploadMul_actionPerformed(ActionEvent e) {
+        	
+        	JFileChooser chooser = new JFileChooser();
+        	
+        	File mulFolder = new File("./data/armies");
+        	if ( !mulFolder.exists() )
+        		mulFolder.mkdir();
+        	
+        	chooser.setCurrentDirectory(mulFolder);
+        	
+        	int returnVal = chooser.showOpenDialog(chooser);
+        	if(returnVal == JFileChooser.APPROVE_OPTION) {
+        		File file = chooser.getSelectedFile();
+        		StringBuilder line = new StringBuilder();
+        		line.append(MWClient.CAMPAIGN_PREFIX + "UploadMul ");
+        		line.append(file.getName());
+        		try {	
+        			FileInputStream in = new FileInputStream(file);
+        			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        			try {
+        				while(br.ready()) {
+        					line.append("#" + br.readLine());
+        				}
+        				br.close();
+        				in.close();
+        			} catch (IOException ioex) {
+        				MWClient.mwClientLog.clientErrLog("IOException: " + line.toString());
+        			}
+        		} catch (FileNotFoundException fnfex) {
+    				MWClient.mwClientLog.clientErrLog("FileNotFoundException: " + line.toString());    			    
+        		}
+        		line.append("#");
+	            mwclient.sendChat(line.toString());
+	            
+        	}
+        }
+
         public void jMenuAdminUploadBuildTable_actionPerformed(ActionEvent e) {
         	JFileChooser chooser = new JFileChooser();
         	
@@ -1600,5 +1708,9 @@ public class AdminMenu extends JMenu {
             new ComponentDisplayDialog(mwclient,type);
             //componentDialog.setVisible(true);
         }
+
+    	public void jMenuAdminCreateMulArmy_actionPerformed(ActionEvent e) {
+    		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "listmuls CAFM");
+    	}
 
 }//end AdminMenu class

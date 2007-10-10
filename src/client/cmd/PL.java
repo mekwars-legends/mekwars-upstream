@@ -187,6 +187,15 @@ public class PL extends Command {
         else if ( cmd.equals("UDAO") ) {
         	mwclient.updateOpData();
         }
+        else if ( cmd.equals("RMF") ) {
+        	mwclient.retrieveMul(st.nextToken());
+        }
+        else if ( cmd.equals("SMFD") ){
+        	mwclient.getMainFrame().showMulFileList(st.nextToken());
+        }
+        else if ( cmd.equals("CAFM") ){
+        	mwclient.getMainFrame().createArmyFromMul(st.nextToken());
+        }
 		else
 			return;
 		

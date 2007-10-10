@@ -32,6 +32,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URLClassLoader;
 import java.net.URL;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.JCheckBoxMenuItem;
@@ -2389,6 +2390,39 @@ public class CMainFrame extends JFrame {
 		
 	}
 	
+	public void showMulFileList(String data) {
+		
+		StringTokenizer mulList = new StringTokenizer(data,"#");
+		
+		Vector<String> list = new Vector<String>(1,1);
+		
+		while ( mulList.hasMoreElements() )
+			list.add(mulList.nextToken());
+		
+		JComboBox combo = new JComboBox(list);
+		combo.setEditable(false);
+		JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
+		
+		JDialog dlg = jop.createDialog(mwclient.getMainFrame(), "Select mul file.");
+		combo.grabFocus();
+		combo.getEditor().selectAll();
+		
+		dlg.setVisible(true);
+		
+		if ( combo.getSelectedIndex() < 0 )
+			return;
+
+		
+        int value = ((Integer) jop.getValue()).intValue();
+        
+        if (value == JOptionPane.CANCEL_OPTION)
+            return;
+		String selectedMul = list.elementAt(combo.getSelectedIndex());
+
+		
+		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c retrievemul#" + selectedMul);
+	}
+
 	/*
 	 * Admin methods used to be here. These have been
 	 * extracted into a seperate .jar file. @urgru
@@ -2489,5 +2523,53 @@ public class CMainFrame extends JFrame {
 		enableMenu();
 		repaint();
 	}
+	
+	public void createArmyFromMul(String data) {
+		PlayerNameDialog playerDialog = new PlayerNameDialog(mwclient,"Choose a Player.", PlayerNameDialog.ANY_PLAYER);
+		playerDialog.setVisible(true);
+		String player = playerDialog.getPlayerName();
+		playerDialog.dispose();
+		
+		if (player == null)
+			player = "";
+		
+		System.err.println("String Tokenizer called");
+		StringTokenizer mulList = new StringTokenizer(data,"#");
+		
+		Vector<String> list = new Vector<String>(1,1);
+		
+		System.err.println("adding mul's to vector");
+		while ( mulList.hasMoreElements() )
+			list.add(mulList.nextToken());
+		
+		System.err.println("creating combo box.");
+
+		JComboBox combo = new JComboBox(list);
+		combo.setEditable(false);
+		JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
+		
+		JDialog dlg = jop.createDialog(mwclient.getMainFrame(), "Select mul file.");
+		combo.grabFocus();
+		combo.getEditor().selectAll();
+		
+		dlg.setVisible(true);
+		
+		if ( combo.getSelectedIndex() < 0 )
+			return;
+
+		
+        int value = ((Integer) jop.getValue()).intValue();
+        
+        if (value == JOptionPane.CANCEL_OPTION)
+            return;
+		String selectedMul = list.elementAt(combo.getSelectedIndex());
+
+		String fluff = JOptionPane.showInputDialog(this.getContentPane(), "Army Name.");
+		if (fluff == null || fluff.length() < 1)
+			return;
+
+		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "createarmyfrommul "+selectedMul+"#"+fluff+"#"+player);
+	}
+
 	
 }
