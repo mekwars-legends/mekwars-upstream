@@ -1520,12 +1520,14 @@ src/server/campaign/commands/admin/FluffCommand.java -text
 src/server/campaign/commands/admin/ForceUpdateCommand.java -text
 src/server/campaign/commands/admin/ForcedDefectCommand.java -text
 src/server/campaign/commands/admin/InvisCommand.java -text
+src/server/campaign/commands/admin/ListMulsCommand.java -text
 src/server/campaign/commands/admin/RemoveFactionPilotCommand.java -text
 src/server/campaign/commands/admin/RemovePilotCommand.java -text
 src/server/campaign/commands/admin/RemoveSongCommand.java -text
 src/server/campaign/commands/admin/RemoveTraitCommand.java -text
 src/server/campaign/commands/admin/RestartRepairThreadCommand.java -text
 src/server/campaign/commands/admin/RetrieveAllOperationsCommand.java -text
+src/server/campaign/commands/admin/RetrieveMulCommand.java -text
 src/server/campaign/commands/admin/RetrieveOperationCommand.java -text
 src/server/campaign/commands/admin/ServerGameOptionsCommand.java -text
 src/server/campaign/commands/admin/SetAdvancePlanetTerrainCommand.java -text
@@ -1544,6 +1546,7 @@ src/server/campaign/commands/admin/ShutdownCommand.java -text
 src/server/campaign/commands/admin/SingASongCommand.java -text
 src/server/campaign/commands/admin/StripUnitsCommand.java -text
 src/server/campaign/commands/admin/UpdateOperationsCommand.java -text
+src/server/campaign/commands/admin/UploadMulCommand.java -text
 src/server/campaign/commands/helpers/HireAndMaintainHelper.java -text
 src/server/campaign/commands/helpers/HireAndRequestNewHelper.java -text
 src/server/campaign/commands/helpers/HireAndRequestUsedHelper.java -text
