@@ -178,17 +178,17 @@ public class UnitComponents  {
 				
 				part = UnitUtils.getCritName(mainUnit, slot, location, false);
 
-				if ( part.indexOf("Ammo") > -1 ) {
+				if ( part.equalsIgnoreCase("Ammo Bin") ) {
 					Mounted mount = mainUnit.getEquipment(crit.getIndex());
-					
+					String ammoName = mount.getName();
+					if ( mainUnitParts.containsKey(ammoName) )
+						mainUnitParts.put(ammoName, mainUnitParts.get(ammoName)+mount.getShotsLeft());
+					else
+						mainUnitParts.put(ammoName, mount.getShotsLeft());
 					if ( mainUnitParts.containsKey(part) )
-						mainUnitParts.put(part, mainUnitParts.get(part)+mount.getShotsLeft());
+						mainUnitParts.put(part, mainUnitParts.get(part)+1);
 					else
-						mainUnitParts.put(part, mount.getShotsLeft());
-					if ( mainUnitParts.containsKey("Ammo Bin") )
-						mainUnitParts.put("Ammo Bin", mainUnitParts.get("Ammo Bin")+1);
-					else
-						mainUnitParts.put("Ammo Bin", 1);
+						mainUnitParts.put(part, 1);
 				}else {
 					if ( mainUnitParts.containsKey(part) )
 						mainUnitParts.put(part, mainUnitParts.get(part)+1);
@@ -222,17 +222,18 @@ public class UnitComponents  {
 				
 				part = UnitUtils.getCritName(repodUnit, slot, location, false);
 
-				if ( part.indexOf("Ammo") > -1 ) {
+				if ( part.equalsIgnoreCase("Ammo Bin") ) {
 					Mounted mount = repodUnit.getEquipment(crit.getIndex());
-					
+					String ammoName = mount.getName();
+
+					if ( repodUnitParts.containsKey(ammoName) )
+						repodUnitParts.put(ammoName, repodUnitParts.get(ammoName)+mount.getShotsLeft());
+					else
+						repodUnitParts.put(ammoName, mount.getShotsLeft());
 					if ( repodUnitParts.containsKey(part) )
-						repodUnitParts.put(part, repodUnitParts.get(part)+mount.getShotsLeft());
+						repodUnitParts.put(part, repodUnitParts.get(part)+1);
 					else
-						repodUnitParts.put(part, mount.getShotsLeft());
-					if ( repodUnitParts.containsKey("Ammo Bin") )
-						repodUnitParts.put("Ammo Bin", repodUnitParts.get("Ammo Bin")+1);
-					else
-						repodUnitParts.put("Ammo Bin", 1);
+						repodUnitParts.put(part, 1);
 				}else {
 					if ( repodUnitParts.containsKey(part) )
 						repodUnitParts.put(part, repodUnitParts.get(part)+1);

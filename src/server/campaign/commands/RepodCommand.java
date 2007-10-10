@@ -368,9 +368,10 @@ public class RepodCommand implements Command {
 		
 		if (!global){
 			
+			String needPartsList = p.getUnitParts().canRepodUnit(m.getEntity(), cm.getEntity()).trim(); 
 			if ( CampaignMain.cm.getBooleanConfig("UsePartsRepair") &&
-					p.getUnitParts().canRepodUnit(m.getEntity(), cm.getEntity()).trim().length() > 0 ) {
-				CampaignMain.cm.toUser("You do not have enough parts to repod your "+m.getModelName()+" to "+cm.getModelName()+"<br> you need the following parts:<br>"+p.getUnitParts().canRepodUnit(m.getEntity(), cm.getEntity()).trim(),Username);
+					needPartsList.length() > 0 ) {
+				CampaignMain.cm.toUser("You do not have enough parts to repod your "+m.getModelName()+" to "+cm.getModelName()+"<br> you need the following parts:<br>"+needPartsList,Username);
 				return;
 			}
 			

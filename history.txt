@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.8.x
++ Bug: Repod with parts was using ammo shot counts for ammo bins
 + Bug: default SubFaction not added when player defects or forcedefects
 + Misc typo fixes.
 + Bug: CreateArmyFromMulCommand not sending army data to correct player.
