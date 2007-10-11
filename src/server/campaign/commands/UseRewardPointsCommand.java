@@ -216,7 +216,7 @@ public class UseRewardPointsCommand implements Command {
 					
 					//else
 					buyRareUnit = true;
-					factionstring = "Rare";
+					factionstring = house.getConfig("RewardsRareBuildTable");
 					
 				}
 				else if ( !factionstring.equalsIgnoreCase("common") )

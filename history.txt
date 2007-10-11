@@ -2,8 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.9.x
++ RFE 1811186: Rare Reward Unit Purchases settable Per faction
 + Bug: Building Destruction Ops not working.
-+ REF 1720368: Cancel Operation Command needs confirmation
++ RFE 1720368: Cancel Operation Command needs confirmation
 + Bug: Army BV not always being updated when a unit is repaired.
 + Bug: FM mod not being used when BV difference was checked for armies
 Release Client & Server 0.2.9.0

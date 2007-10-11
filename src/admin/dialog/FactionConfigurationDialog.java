@@ -2654,6 +2654,11 @@ public final class FactionConfigurationDialog implements ActionListener {
         baseTextField.setName("RewardsRepodFolder");
         rewardSpring2.add(baseTextField);
         
+        baseTextField = new JTextField(5);
+        rewardSpring2.add(new JLabel("Rewards Rare Build Table:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Build table that will be used in the rewards folder");
+        baseTextField.setName("RewardsRareBuildTable");
+        rewardSpring2.add(baseTextField);
         
 		SpringLayoutHelper.setupSpringGrid(rewardSpring2,2);
 		
@@ -2713,7 +2718,7 @@ public final class FactionConfigurationDialog implements ActionListener {
 
 
         //Show the dialog and get the user's input
-		dialog.setLocation(dialog.getLocation().x+10,dialog.getLocation().y);
+		dialog.setLocation(mwclient.getMainFrame().getLocation().x+10,mwclient.getMainFrame().getLocation().y);
 		dialog.setModal(true);
 		dialog.pack();
 		dialog.setVisible(true);

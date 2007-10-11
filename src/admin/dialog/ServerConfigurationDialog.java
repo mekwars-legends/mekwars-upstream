@@ -2879,6 +2879,11 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("RewardsRepodFolder");
         rewardSpring2.add(baseTextField);
         
+        baseTextField = new JTextField(5);
+        rewardSpring2.add(new JLabel("Rewards Rare Build Table:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Build table that will be used in the rewards folder");
+        baseTextField.setName("RewardsRareBuildTable");
+        rewardSpring2.add(baseTextField);
         
 		SpringLayoutHelper.setupSpringGrid(rewardSpring2,2);
 		

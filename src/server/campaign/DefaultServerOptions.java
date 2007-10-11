@@ -305,7 +305,8 @@ public class DefaultServerOptions {
         defaults.setProperty("RewardPointNonHouseMultiplier", "5");
         defaults.setProperty("AllowFactoryRefreshForRewards", "false");
         defaults.setProperty("RewardPointToRefreshFactory", "2");
-        defaults.setProperty("RewardsRepodFolder","rewards");//TODO: Lock reward repods to ./standard?
+        defaults.setProperty("RewardsRepodFolder","rewards");
+        defaults.setProperty("RewardsRareBuildTable","rare");
         
         //Reward points with Advance Repair
         defaults.setProperty("AllowRepairsForRewards","false");
