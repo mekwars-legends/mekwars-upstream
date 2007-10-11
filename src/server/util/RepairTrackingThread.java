@@ -87,8 +87,12 @@ public class RepairTrackingThread extends Thread{
             	}
                 if ( repairOrder.getEndTime() <= System.currentTimeMillis() ){
                     try{
-                        if ( repairOrder.finishRepair() )
+                        if ( CampaignMain.cm.getPlayer(repairOrder.getUsername()) == null 
+                        		|| repairOrder.finishRepair() ){
                             repairList.removeElement(repairOrder);
+                            SPlayer player = CampaignMain.cm.getPlayer(repairOrder.getUsername());
+                            player.checkAndUpdateArmies(player.getUnit(repairOrder.getUnitID()));
+                        }
                     }
                     catch(Exception ex){
                         MWServ.mwlog.errLog("Unable to finish repair for "+repairOrder.getUsername()+" for unit #"+repairOrder.getUnitID()+" "+repairOrder.getUnit().getShortNameRaw());

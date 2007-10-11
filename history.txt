@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.9.x
++ Bug: Army BV not always being updated when a unit is repaired.
++ Bug: FM mod not being used when BV difference was checked for armies
 Release Client & Server 0.2.9.0
 + Bug: Upload Build Table Gui not working correctly.
 + Added Gui to Admin menu for Mul related commands

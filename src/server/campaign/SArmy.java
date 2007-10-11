@@ -327,8 +327,8 @@ public class SArmy extends Army {
 		//percentage caps arent being used, only check the strainght cap from the params
 		if (percentCap == 0){
 			
-			int enemyBV = enemy.getBV();
-			int myBV = this.getBV();
+			int enemyBV = enemy.getOperationsBV(this);
+			int myBV = this.getOperationsBV(enemy);
 			
 			if ( enemy.getAmountOfUnits() > this.getAmountOfUnits() )
 				enemyBV = enemy.getOperationsBV(this);
@@ -344,8 +344,8 @@ public class SArmy extends Army {
 		else{
 			//int bvdif = Math.abs(enemy.getOperationsBV(this) - this.getOperationsBV(enemy));
 			double percent = 0;
-			double enemyOpBV = enemy.getBV();
-			double myOpBV = this.getBV();
+			double enemyOpBV = enemy.getOperationsBV(this);
+			double myOpBV = this.getOperationsBV(enemy);
 			
 			if ( enemy.getAmountOfUnits() > this.getAmountOfUnits() )
 				enemyOpBV = enemy.getOperationsBV(this);
