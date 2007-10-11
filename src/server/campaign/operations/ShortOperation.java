@@ -41,6 +41,7 @@ import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import server.MWServ;
 import server.campaign.AutoArmy;
@@ -117,6 +118,7 @@ public class ShortOperation implements Comparable {
 
     private String[] intelTimeFrameString = {"Day","Dusk","Night"};
     
+    private TreeSet<String>cancellingPlayers = new TreeSet<String>();
 	/*
 	 * For the time being, we're only allowing 1 v 1 games.
 	 * This will change in the future, and MOST of the
@@ -447,6 +449,7 @@ public class ShortOperation implements Comparable {
                 return;
             }
             
+            isBuildingOperation = o.getIntValue("TotalBuildings") > 0;
             /*
              * Check to see if this is a building operation. If so, build an
              * info string that can be sent to all players and reconnectors.
@@ -1009,8 +1012,7 @@ public class ShortOperation implements Comparable {
             if ( defendArtDesc.length() > 0)
                 defendIntel+="<br>"+defendArtDesc;
             
-            if ( o.getIntValue("TotalBuildings") > 0 ){
-                isBuildingOperation = true;
+            if ( isBuildingOperation  ){
                 attackIntel += "<br><b>Mission Objectives:</b><br>You must destroy "+o.getValue("MinBuildingsForOp")+ " out of "+o.getValue("TotalBuildings")+" facilities.";
                 defendIntel += "<br><b>Mission Objectives:</b><br>You must defend all "+o.getValue("TotalBuildings")+" of your facilities.";
             }
@@ -2445,6 +2447,10 @@ public class ShortOperation implements Comparable {
     
     public TreeMap<String, SPlayer> getLosers(){
     	return this.losers;
+    }
+    
+    public TreeSet<String> getCancelledPlayers(){
+    	return this.cancellingPlayers;
     }
     
 }//end OperationsManager class

@@ -85,9 +85,31 @@ public class TerminateCommand implements Command {
 			return;
 		}
 		
-		//terminate
-		CampaignMain.cm.getOpsManager().terminateOperation(so, OperationManager.TERM_TERMCOMMAND, tp);
+		if ( so.getStatus() == ShortOperation.STATUS_WAITING ){
+			CampaignMain.cm.toUser("Terminate failed. You may not terminate a game that has yet to start!", Username);
+			return;
+		}
 		
+		so.getCancelledPlayers().add(Username.toLowerCase());
+		
+		if ( so.getCancelledPlayers().size() >= so.getAllPlayerNames().size() ){
+			
+			String msg = "Cancelling Operation "+so.getName();
+			for (String currPlayerName : so.getAllPlayerNames()) {
+				CampaignMain.cm.toUser(msg, currPlayerName);
+			}
+			//terminate
+			CampaignMain.cm.getOpsManager().terminateOperation(so, OperationManager.TERM_TERMCOMMAND, tp);
+		}else{
+			CampaignMain.cm.toUser("Informing all other participants of your wish to cancel the operation.", Username);
+
+			String msg = Username+" wishes to cancel Operation #"+so.getShortID()+" "+so.getName()+ " <a href=\"MEKWARS/c terminate#"+so.getShortID()+"\">click here to confirm</a>";
+			for (String currPlayerName : so.getAllPlayerNames()) {
+				
+				if ( !so.getCancelledPlayers().contains(currPlayerName.toLowerCase()) && !Username.equalsIgnoreCase(currPlayerName) )
+					CampaignMain.cm.toUser(msg, currPlayerName);
+			}
+		}
 	}//end process
 	
 }//end TerminateCommand
