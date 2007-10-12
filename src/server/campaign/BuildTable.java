@@ -26,6 +26,8 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 import common.Unit;
 
@@ -59,13 +61,12 @@ public class BuildTable {
 	public static String getUnitFilename(String unitProducer, String size, int type_id, String dir) {
 		boolean fileFound = false;
 		String Filename = "";
-		Hashtable table = null;
+		Vector<String> table = null;
 		while (!fileFound){
 			String fileToRead = getFileName(unitProducer,size,dir,type_id);
 			table = getListFromFile(new File(fileToRead));
-			int totalentries = ((Integer)(table.get("TotalEntries"))).intValue();
-			int ran = CampaignMain.cm.getR().nextInt((totalentries - 1)) + 1;
-			Filename = (String)table.get(new Integer(ran));
+			int ran = Math.round(((float)table.size()-1) * ((float)CampaignMain.cm.getR().nextInt((Integer.MAX_VALUE))/(float)(Integer.MAX_VALUE-1)));
+			Filename = table.elementAt(ran);
 			if (Filename.indexOf(".") == -1)
 				unitProducer = Filename;
 			else
@@ -81,12 +82,10 @@ public class BuildTable {
 	public static String getUnitFilename(String unitFileName) {
 		boolean fileFound = false;
 		String Filename = "";
-		Hashtable table = null;
+		Vector<String> table = null;
 		while (!fileFound){
-			table = getListFromFile(new File(unitFileName));
-			int totalentries = ((Integer)(table.get("TotalEntries"))).intValue();
-			int ran = CampaignMain.cm.getR().nextInt((totalentries - 1)) + 1;//1-100, determines which mech from a table is produced
-			Filename = (String)table.get(new Integer(ran));
+			int ran = Math.round(((float)table.size()-1) * ((float)CampaignMain.cm.getR().nextInt((Integer.MAX_VALUE))/(float)(Integer.MAX_VALUE-1)));
+			Filename = table.elementAt(ran);
 			if (Filename.indexOf(".") == -1)
 				unitFileName= Filename;
 			else
@@ -119,8 +118,10 @@ public class BuildTable {
 		if (Type != Unit.MEK)
 			addon = Unit.getTypeClassDesc(Type);
 		String result = "./data/buildtables/"+dir+"/" + faction + "_" + weightclass + addon + ".txt";
-		if (!new File(result).exists())
+		if (!new File(result).exists()){
 			result = "./data/buildtables/"+dir+"/Common_" + weightclass + addon + ".txt";
+			MWServ.mwlog.errLog("Unable to find build table file "+result+" using "+result);
+		}
 		return result;
 	}
 	
@@ -141,13 +142,13 @@ public class BuildTable {
 	 * 
 	 * @return buildtable in a Hashtable that also contains a "TotalEntries" key
 	 */
-	private static Hashtable<Object,Object> getListFromFile(File prodFile){
-		Hashtable<Object,Object>  result = new Hashtable<Object,Object> ();
+	private static Vector<String> getListFromFile(File prodFile){
+		Vector<String>  result = new Vector<String>();
+		ConcurrentHashMap<String, Integer> unitHolder = new ConcurrentHashMap<String, Integer>();
 		try {
+			
 			FileInputStream fis = new FileInputStream(prodFile);
 			BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
-			int totalentries = 0;
-			int currentCount = 1;
 			while (dis.ready()) {
 
 				/*
@@ -168,24 +169,30 @@ public class BuildTable {
 				StringTokenizer ST = new StringTokenizer(l.trim());
 				if (ST.hasMoreElements()) {
 					int amount = Integer.parseInt((String)ST.nextElement());
-					int from = currentCount;
-					int to = currentCount + amount; 
-					currentCount += amount;
 					StringBuilder filename = new StringBuilder();
 					while (ST.hasMoreElements()) {
 						filename.append(ST.nextToken());
 						if (ST.hasMoreTokens())
 							filename.append(" ");
 					}
-					for (int i = from; i <= to; i++)
-						result.put(new Integer(i),filename.toString());
-					if (to > totalentries)
-						totalentries = to;
+					unitHolder.put(filename.toString(), amount);
 				}
 			}
-			result.put("TotalEntries",new Integer(totalentries));
+
+			while ( unitHolder.size() > 0 ){
+				for (String filename : unitHolder.keySet() ){
+					result.add(filename);
+					int count = unitHolder.get(filename);
+					if ( --count < 1)
+						unitHolder.remove(filename);
+					else
+						unitHolder.put(filename, count);
+						
+				}
+			}
 			dis.close();
-			fis.close();		
+			fis.close();
+			result.trimToSize();
 		} catch (Exception ex) {
 			MWServ.mwlog.errLog(ex);
 		}

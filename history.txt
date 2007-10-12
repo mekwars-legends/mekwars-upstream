@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.9.x
++ RFE 1775574: New operations parameter - raid from factory
++ Stream Lined Build Table code, used Vectors instead of hash tables.
 + fixed SQL error in planetHandler.loadEnvironments()
 + removed debug logging from FactionHandler
 + added AdminRequestBuildTable command

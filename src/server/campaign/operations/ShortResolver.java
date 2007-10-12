@@ -2540,6 +2540,7 @@ public class ShortResolver {
 								.getIntValue("AttackerUnitsUnitAdjustment");
 						int unitBVAdjust = o
 								.getIntValue("AttackerUnitsBVAdjustment");
+						
 						if (unitUnitAdjust > 0)
 							unitsToCapture += Math.floor(so.getStartingUnits()
 									/ unitUnitAdjust);
@@ -2651,7 +2652,121 @@ public class ShortResolver {
 									ContractInfo.CONTRACT_UNITS, numCaptured);
 						}// end if(unitsToCapture > 0)
 
+
 						/*
+						 * Force factories to build units 
+						 */
+						
+						unitsToCapture = o
+								.getIntValue("AttackerBaseFactoryUnitsTaken");
+						unitUnitAdjust = o
+								.getIntValue("AttackerFactoryUnitsUnitAdjustment");
+						unitBVAdjust = o
+								.getIntValue("AttackerFactoryUnitsBVAdjustment");
+
+						if (unitUnitAdjust > 0)
+							unitsToCapture += Math.floor(so.getStartingUnits()
+									/ unitUnitAdjust);
+						if (unitBVAdjust > 0)
+							unitsToCapture += Math.floor(so.getStartingBV()
+									/ unitBVAdjust);
+						if (unitsToCapture > unitCaptureCap)
+							unitsToCapture = unitCaptureCap;
+
+						capturedUnits = new ArrayList<SUnit>();
+						if (unitsToCapture > 0) {
+
+							// for (all unit types, mek preferred)
+							int numCaptured = 0;
+
+							/*
+							 * Try every factory on the world, at random, until
+							 * we've taken what we can. This may mean getting
+							 * inf or vehs on a planet than can produce assault
+							 * mechs.
+							 */
+							ArrayList<SUnitFactory> factoriesSearched = new ArrayList<SUnitFactory>();
+							while (factoriesSearched.size() < target.getFactoryCount()) {
+
+								// get a random factory
+								SUnitFactory currFacility = target.getRandomUnitFactory();
+
+								// if we've already searched this factory
+								// before, skip
+								if (factoriesSearched.contains(currFacility))
+									continue;
+
+								// we've not searched the facility before. add
+								// it to the searchlist
+								factoriesSearched.add(currFacility);
+
+								for (int type = Unit.MEK; type <= Unit.BATTLEARMOR; type++) {
+
+									// skip this type if the facility cannot
+									// produce
+									if (!currFacility.canProduce(type))
+										continue;
+
+									boolean noUnits = false;
+									while (!noUnits && numCaptured < unitsToCapture) {
+										SPilot pilot = new SPilot("Vacant",99,99);
+										SUnit captured = currFacility.getMechProduced(type,pilot);
+										if (captured == null)
+											noUnits = true;
+										else {
+											capturedUnits.add(captured);
+											loserHSUpdates.append(aLoser
+													.getHouseFightingFor()
+													.getHSUnitRemovalString(
+															captured));
+											winnerHSUpdates.append(aWinner
+													.getHouseFightingFor()
+													.addUnit(captured, false));
+											numCaptured++;
+										}
+									}// end while(units remain in this
+									// factories' pool)
+								}// end for(all types)
+
+							}// end while(factories remain)
+
+							// add to metaString if anything was actually taken
+							if (numCaptured >= 1) {
+
+								// setup leadin
+								if (hasLoss) {
+									winnerMetaString += ",";
+									loserMetaString += ",";
+								}
+								hasLoss = true;
+
+								// get the units
+								String unitString = "";
+								for (SUnit currU : capturedUnits) {
+									unitString += currU.getModelName() + ", ";
+								}
+
+								// strip the last ", "
+								unitString = unitString.substring(0, unitString
+										.length() - 2);
+
+								if (numCaptured == 1) {
+									winnerMetaString += " captured a unit ["
+											+ unitString + "]";
+									loserMetaString += " lost a unit ["
+											+ unitString + "]";
+								} else {
+									winnerMetaString += " captured "
+											+ numCaptured + " units ["
+											+ unitString + "]";
+									loserMetaString += " lost " + numCaptured
+											+ " units [" + unitString + "]";
+								}
+							}
+							checkMercContracts(aWinner,ContractInfo.CONTRACT_UNITS, numCaptured);
+						}// end if(unitsToCapture > 0)
+				
+				/*
 						 * Determine the number and type of components to steal
 						 * from target faction. Much like Unit theft, this is
 						 * handled in a different manner than it was under the
