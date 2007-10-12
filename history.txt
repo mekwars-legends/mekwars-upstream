@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.9.x
++ Updated Ops Editor to reflect changed made in RFE 1775574
 + RFE 1775574: New operations parameter - raid from factory
 + Stream Lined Build Table code, used Vectors instead of hash tables.
 + fixed SQL error in planetHandler.loadEnvironments()

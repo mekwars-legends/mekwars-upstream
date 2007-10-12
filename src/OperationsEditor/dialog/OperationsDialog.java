@@ -2128,13 +2128,31 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
 		
         BaseTextField = new JTextField(5);
 		attackerPanel.add(new JLabel("Units Unit Mod:",SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("units to take an additional unit (confusing!)");
+        BaseTextField.setToolTipText("Units to take an additional unit (confusing!)");
+        BaseTextField.setName("AttackerUnitsUnitAdjustment");
+		attackerPanel.add(BaseTextField);
+		
+        BaseTextField = new JTextField(5);
+		attackerPanel.add(new JLabel("Factory Units Taken:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Base number of units taken by winning attacker<br>from factories on the planet</html>");
+        BaseTextField.setName("AttackerBaseUnitsTaken");
+		attackerPanel.add(BaseTextField);
+		
+        BaseTextField = new JTextField(5);
+		attackerPanel.add(new JLabel("Factory Units BV Mod:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("BV to take an additonal factory unit");
+        BaseTextField.setName("AttackerUnitsBVAdjustment");
+		attackerPanel.add(BaseTextField);
+		
+        BaseTextField = new JTextField(5);
+		attackerPanel.add(new JLabel("Factory Units Unit Mod:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("units to take an additional factory unit (confusing!)");
         BaseTextField.setName("AttackerUnitsUnitAdjustment");
 		attackerPanel.add(BaseTextField);
 		
         BaseTextField = new JTextField(5);
 		attackerPanel.add(new JLabel("Target Op Mod:",SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>Op Adjustments are used to increase or decrease victory THRESHOLDS for<br>targetted long-ops. Not recommended for individual games. Generlly, better<br>for use as a long-op (w/ fewer games than target) set up as a counter-assault<br>or spoling attack.</html>");
+        BaseTextField.setToolTipText("<html>Op Adjustments are used to increase or decrease victory THRESHOLDS for<br>targetted long-ops. Not recommended for individual games. Generally, better<br>for use as a long-op (w/ fewer games than target) set up as a counter-assault<br>or spoling attack.</html>");
         BaseTextField.setName("AttackerTargetOpAdjustment");
 		attackerPanel.add(BaseTextField);
 		
