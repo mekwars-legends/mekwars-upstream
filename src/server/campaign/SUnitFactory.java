@@ -370,4 +370,36 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		return originalHouse.getPPCost(weightclass, typeid);
 	}
 
+	/**
+	 * This is used for tech raids. to increase other players build tables.
+	 * @param type_id
+	 * @return
+	 */
+	public String getTechProduced(int type_id) {
+		
+		//Build the fluff text for the mek
+		String Filename = "";
+		String producer = "Built by ";
+		if (this.getPlanet().getOwner() != null)
+			producer += this.getPlanet().getOwner().getName();
+		else
+			producer += this.getFounder();
+		
+		/*
+		 * add a production location to the fluff, if from a normal
+		 * planet. null planet will normally be reward point production.
+		 */
+		if (this.getPlanet().getName() != null)
+			producer += " on " + this.getPlanet().getName();
+		
+		String unitSize = getSize();
+		if (CampaignMain.cm.getBooleanConfig("UseOnlyOneVehicleSize") && type_id == Unit.VEHICLE)
+			unitSize = Unit.getWeightClassDesc(CampaignMain.cm.getR().nextInt(4));
+		
+		Filename = BuildTable.getUnitFilename(this.getFounder(),unitSize,type_id,BuildTable.STANDARD);
+		
+		return Filename;
+	}
+
+
 }

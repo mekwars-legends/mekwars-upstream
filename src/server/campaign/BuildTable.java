@@ -23,7 +23,9 @@ package server.campaign;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -50,6 +52,7 @@ public class BuildTable {
 	public static final String STANDARD = "standard";
 	public static final String RARE = "rare";
 	public static final String REWARD = "reward";
+	public static final String TECH = "tech";
 	
 	//NO CONSTRUCTOR. ALL METHODS STATIC
 	
@@ -65,6 +68,11 @@ public class BuildTable {
 		while (!fileFound){
 			String fileToRead = getFileName(unitProducer,size,dir,type_id);
 			table = getListFromFile(new File(fileToRead));
+
+			String techFile = getTechFileName(unitProducer, size, type_id);
+			if ( techFile.trim().length() > 0 )
+				table.addAll(getListFromFile(new File(techFile)));
+			
 			int ran = Math.round(((float)table.size()-1) * ((float)CampaignMain.cm.getR().nextInt((Integer.MAX_VALUE))/(float)(Integer.MAX_VALUE-1)));
 			Filename = table.elementAt(ran);
 			if (Filename.indexOf(".") == -1)
@@ -84,6 +92,7 @@ public class BuildTable {
 		String Filename = "";
 		Vector<String> table = null;
 		while (!fileFound){
+			table = getListFromFile(new File(unitFileName));
 			int ran = Math.round(((float)table.size()-1) * ((float)CampaignMain.cm.getR().nextInt((Integer.MAX_VALUE))/(float)(Integer.MAX_VALUE-1)));
 			Filename = table.elementAt(ran);
 			if (Filename.indexOf(".") == -1)
@@ -125,6 +134,28 @@ public class BuildTable {
 		return result;
 	}
 	
+	public static String getTechFileName(String faction, String weightclass,int Type) {
+		/*
+		 * Build the Filename, using patterns:
+		 * FACTION_SIZE.txt or FACTION_SIZE&TYPE.txt
+		 *  ex: Davion_Assault.txt
+		 *  ex: Marik_LightVehicle
+		 *  ex: WardenClan_HeavyBattleArmor.txt
+		 *  ex: FadeFalcon_MediumProtoMek.txt
+		 *  
+		 * and the path, the same way: ./data/buildtables/YEAR/
+		 *  ex: ./data/buildtables/3025/
+		 *  ex: ./data/buildtables/3130/
+		 */
+		String addon = "";
+		if (Type != Unit.MEK)
+			addon = Unit.getTypeClassDesc(Type);
+		String result = "./data/buildtables/"+BuildTable.TECH+"/" + faction + "_" + weightclass + addon + ".txt";
+		if (!new File(result).exists()){
+			result = "";
+		}
+		return result;
+	}
 	
 	/**
 	 * This reads the unit tables. Format should be:
@@ -178,6 +209,8 @@ public class BuildTable {
 					unitHolder.put(filename.toString(), amount);
 				}
 			}
+			dis.close();
+			fis.close();
 
 			while ( unitHolder.size() > 0 ){
 				for (String filename : unitHolder.keySet() ){
@@ -190,8 +223,6 @@ public class BuildTable {
 						
 				}
 			}
-			dis.close();
-			fis.close();
 			result.trimToSize();
 		} catch (Exception ex) {
 			MWServ.mwlog.errLog(ex);
@@ -199,4 +230,157 @@ public class BuildTable {
 		return result;
 	}
 	
+	private static void addTech(String faction, int weightclass, int type, String unitName, int chances){
+		ConcurrentHashMap<String, Integer> unitHolder = new ConcurrentHashMap<String, Integer>();
+		
+		if ( chances < 1 )
+			return;
+		
+		try {
+			
+			String techFileName = getTechFileName(faction, SUnit.getWeightClassDesc(weightclass), type);
+			if ( techFileName.trim().length() < 1 )
+				return;
+			File techFile = new File(techFileName); 
+			FileInputStream fis = new FileInputStream(techFile);
+			BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+			while (dis.ready()) {
+
+				/*
+				 * Read the line and remove excess whitespace. Removing whitespace
+				 * sensitivity will allow ops to make more readable files; however,
+				 * any unit file name that contains 2 spaces consecutively (is there
+				 * such a thing?) will be broken. 
+				 */
+				String l = dis.readLine();
+				if (l == null || l.trim().length() == 0)
+					continue;
+				
+				l = l.trim();
+				l = l.replaceAll("\\s+"," ");//reduce multi-spaces to one space
+				if (l.indexOf(" ") == 0)
+					l = l.substring(1,l.length());
+				
+				StringTokenizer ST = new StringTokenizer(l.trim());
+				if (ST.hasMoreElements()) {
+					int amount = Integer.parseInt((String)ST.nextElement());
+					StringBuilder filename = new StringBuilder();
+					while (ST.hasMoreElements()) {
+						filename.append(ST.nextToken());
+						if (ST.hasMoreTokens())
+							filename.append(" ");
+					}
+					unitHolder.put(filename.toString(),amount);
+				}
+			}
+			dis.close();
+			fis.close();
+			
+			if ( unitHolder.containsKey(unitName) )
+				unitHolder.put(unitName,unitHolder.get(unitName)+chances);
+			else
+				unitHolder.put(unitName,chances);
+			
+			BuildTable.saveBuildTableFile(techFile, unitHolder);
+		} catch (Exception ex) {
+			MWServ.mwlog.errLog(ex);
+		}
+
+	}
+	
+	private static String destroyTech(String faction, int weightclass, int type, int amountToDestroy){
+		Vector<String>  result = new Vector<String>();
+		ConcurrentHashMap<String, Integer> unitHolder = new ConcurrentHashMap<String, Integer>();
+		StringBuffer destroyedTech = new StringBuffer();
+
+		if ( amountToDestroy < 1 )
+			return "Nothing to destroy";
+		
+		try {
+			
+			String techFileName = getTechFileName(faction, SUnit.getWeightClassDesc(weightclass), type);
+			if ( techFileName.trim().length() < 1 )
+				return "Nothing to destroy";
+			File techFile = new File(techFileName); 
+			FileInputStream fis = new FileInputStream(techFile);
+			BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+			while (dis.ready()) {
+
+				/*
+				 * Read the line and remove excess whitespace. Removing whitespace
+				 * sensitivity will allow ops to make more readable files; however,
+				 * any unit file name that contains 2 spaces consecutively (is there
+				 * such a thing?) will be broken. 
+				 */
+				String l = dis.readLine();
+				if (l == null || l.trim().length() == 0)
+					continue;
+				
+				l = l.trim();
+				l = l.replaceAll("\\s+"," ");//reduce multi-spaces to one space
+				if (l.indexOf(" ") == 0)
+					l = l.substring(1,l.length());
+				
+				StringTokenizer ST = new StringTokenizer(l.trim());
+				if (ST.hasMoreElements()) {
+					int amount = Integer.parseInt((String)ST.nextElement());
+					StringBuilder filename = new StringBuilder();
+					while (ST.hasMoreElements()) {
+						filename.append(ST.nextToken());
+						if (ST.hasMoreTokens())
+							filename.append(" ");
+					}
+					result.add(filename.toString());
+				}
+			}
+			dis.close();
+			fis.close();
+
+			if ( result.size() <= amountToDestroy ){
+				techFile.delete();
+				return "all technological advances have been wiped out";
+			}
+			
+			for ( ; amountToDestroy > 0; amountToDestroy-- ){
+				int ran = Math.round(((float)result.size()-1) * ((float)CampaignMain.cm.getR().nextInt((Integer.MAX_VALUE))/(float)(Integer.MAX_VALUE-1)));
+				destroyedTech.append(result.elementAt(ran));
+				destroyedTech.append(", " );
+				result.removeElementAt(ran);
+			}
+			result.trimToSize();
+			
+			//get rid of the ending ", "
+			destroyedTech.delete(destroyedTech.length()-3, destroyedTech.length()-1);
+			destroyedTech.append(".");
+			
+			for (String filename : result){
+				if ( unitHolder.containsKey(filename) )
+					unitHolder.put(filename,unitHolder.get(filename)+1);
+				else
+					unitHolder.put(filename,1);
+			}
+
+			BuildTable.saveBuildTableFile(techFile, unitHolder);
+		} catch (Exception ex) {
+			MWServ.mwlog.errLog(ex);
+		}
+		return destroyedTech.toString();
+	}
+	
+	public static void saveBuildTableFile(File file, ConcurrentHashMap<String,Integer> unitHolder){
+		try{
+			FileOutputStream fos = new FileOutputStream(file);
+			PrintStream ps = new PrintStream(fos);
+			
+			for (String key : unitHolder.keySet())
+				ps.println(unitHolder.get(key)+" "+key);
+			
+			ps.close();
+			fos.close();
+		}
+		catch(Exception ex){
+			MWServ.mwlog.errLog(ex);
+		}
+
+	}
 }
