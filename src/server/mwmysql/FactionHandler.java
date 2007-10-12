@@ -99,7 +99,6 @@ public class FactionHandler {
 						CampaignMain.cm.getMarket().addListing("Faction_" + h.getName(), u,priceForUnit, rareSalesTime);
 						u.setStatus(Unit.STATUS_FORSALE);
 					}
-					MWServ.mwlog.dbLog ("Returned from loading mek");
 					try {
 						h.addUnit(u, false);
 					} catch (Exception ex) {

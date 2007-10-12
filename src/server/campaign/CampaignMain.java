@@ -1350,6 +1350,7 @@ public final class CampaignMain implements Serializable {
 				new AdminRemoveServerOpFlagsCommand());
 		Commands.put("ADMINREMOVEUNITSONMARKET",
 				new AdminRemoveUnitsOnMarketCommand());
+		Commands.put("ADMINREQUESTBUILDTABLE", new AdminRequestBuildTableCommand());
 		Commands.put("ADMINRESETHOUSERANKINGS",
 				new AdminResetHouseRankingsCommand());
 		Commands.put("ADMINRESETPLAYER", new AdminResetPlayerCommand());

@@ -3218,7 +3218,6 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	}
 
 	public void fromDB(int playerID) {
-		MWServ.mwlog.dbLog("Entering fromDB");
 		if(this.isLoading)
 			return;
 		this.isLoading = true;
@@ -3252,9 +3251,6 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				SArmy a = new SArmy(name);
 				a.fromString(rs1.getString("armyString"), "%", this);
 				armies.add(a);
-				MWServ.mwlog.dbLog(rs1.getString("armyString"));
-				MWServ.mwlog.dbLog(a.toString());
-				
 				CampaignMain.cm.toUser("PL|SAD|" + a.toString(true, "%"), name, false);				
 			}
 	

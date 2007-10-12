@@ -124,6 +124,7 @@ public class AdminMenu extends JMenu {
     JMenuItem jMenuAdminComponentAmmoList = new JMenuItem();
     JMenuItem jMenuAdminSetHouseBasePilotSkill = new JMenuItem();
     JMenuItem jMenuAdminUploadBuildTable = new JMenuItem();
+    JMenuItem jMenuAdminSynchBuildTables = new JMenuItem();
     JMenuItem jMenuAdminUploadMul = new JMenuItem();
     JMenuItem jMenuAdminListMuls = new JMenuItem();
     JMenuItem jMenuAdminRetrieveMul = new JMenuItem();
@@ -440,6 +441,13 @@ public class AdminMenu extends JMenu {
         	}
         });
         
+        jMenuAdminSynchBuildTables.setText("Synch local build tables");
+        jMenuAdminSynchBuildTables.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		jMenuAdminRequestBuildTable_actionPerformed(e);
+        	}
+        });
+        
         jMenuAdminUploadMul.setText("Upload a Mul File");
         jMenuAdminUploadMul.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -691,10 +699,11 @@ public class AdminMenu extends JMenu {
 
         if ( userLevel >= mwclient.getData().getAccessLevel("AdminUploadBuildTable"))
         	jMenuAdminBuildTables.add(jMenuAdminUploadBuildTable);
+        if ( userLevel >= mwclient.getData().getAccessLevel("AdminRequestBuildTable"))
+        	jMenuAdminBuildTables.add(jMenuAdminSynchBuildTables);
         	
         if ( jMenuAdminBuildTables.getItemCount() > 0)
-        	this.add(jMenuAdminBuildTables);
-        	
+        	this.add(jMenuAdminBuildTables);	
         	
         if ( userLevel >= mwclient.getData().getAccessLevel("ListMuls"))
             jMenuAdminMuls.add(jMenuAdminListMuls);
@@ -1314,6 +1323,10 @@ public class AdminMenu extends JMenu {
         	}
         }
 
+        public void jMenuAdminRequestBuildTable_actionPerformed(ActionEvent e) {
+        	mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "AdminRequestBuildTable list");
+        }
+        
         public void jMenuAdminUploadBuildTable_actionPerformed(ActionEvent e) {
         	JFileChooser chooser = new JFileChooser();
         	

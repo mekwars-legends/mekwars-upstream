@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.9.x
++ fixed SQL error in planetHandler.loadEnvironments()
++ removed debug logging from FactionHandler
++ added AdminRequestBuildTable command
++ added ability to synch build tables to admin menu
 + RFE 1811186: Rare Reward Unit Purchases settable Per faction
 + Bug: Building Destruction Ops not working.
 + RFE 1720368: Cancel Operation Command needs confirmation

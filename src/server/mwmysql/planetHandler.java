@@ -230,9 +230,11 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 			  p.getAdvanceTerrain().put(new Integer(PE.getEnvironment().getId()), aTerrain);
 		  }
 		  p.getEnvironments().add(PE);
-		  rs3.close();
-		  stmt.close();
-	  } } catch (SQLException e) {
+
+	  } 
+	  rs3.close();
+	  stmt.close();
+	  } catch (SQLException e) {
 		  MWServ.mwlog.dbLog("SQL Error in loadEnvironments: " + e.getMessage());
 	  }
   }
