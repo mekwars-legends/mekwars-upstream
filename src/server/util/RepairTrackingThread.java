@@ -361,8 +361,12 @@ class Repair{
 	            if ( armor )
 	                UnitUtils.removeArmorRepair(unit,slot,location);
 	            
-            	if ( salvage )
-    				damagedCrits = UnitUtils.getNumberOfCrits(unit, slot,location)-UnitUtils.getNumberOfDamagedCrits(unit,slot,location,armor);
+            	if ( salvage ){
+            		if ( armor )
+            			damagedCrits = UnitUtils.getNumberOfCrits(unit, slot,location);
+            		else
+            			damagedCrits = UnitUtils.getNumberOfCrits(unit, slot,location)-UnitUtils.getNumberOfDamagedCrits(unit,slot,location,armor);
+            	}
 				else
     				damagedCrits = UnitUtils.getNumberOfDamagedCrits(unit,slot,location,armor);
             	//Ok turn armor repairing back on.
@@ -885,7 +889,7 @@ class Repair{
                             }
                             else{
                                 if (unit instanceof Mech) 
-                                    repairMessage = "The "+((Mech)unit).getSystemName(cs.getIndex())+"("+unit.getLocationAbbr(location)+") of the "+unit.getShortName()+" has been salvaged.";
+                                    repairMessage = "The "+((Mech)unit).getSystemName(cs.getIndex())+"("+unit.getLocationAbbr(location)+") of your "+unit.getShortName()+" has been salvaged.";
                                 //UnitUtils.fixCriticalSlot(cs,unit);
                                 UnitUtils.salvageSystemCrit(location,cs,unit);
                                 unit.setCritical(location,slot,cs);

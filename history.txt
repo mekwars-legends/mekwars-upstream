@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.9.x
++ Bug: Repod check using the wrong ammo name.
++ Bug: Actuators not being salvaged correctly
 + New MegaMek.jar 0.33.10-MW10152007-5217
 + Started working on Technology raid for ops code.
 + Updated Ops Editor to reflect changed made in RFE 1775574

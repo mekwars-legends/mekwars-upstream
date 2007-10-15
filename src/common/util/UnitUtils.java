@@ -1257,8 +1257,13 @@ public class UnitUtils  {
         int count = 0;
         
         //actuators are always 1.
-        if ( cs.getIndex() > Mech.SYSTEM_GYRO)
-            return 1;
+        if ( cs.getIndex() > Mech.SYSTEM_GYRO){
+        	
+        	if ( cs.isDamaged() )
+        		return 1;
+        	
+        	return 0;
+        }
         
         if ( cs.getIndex() == Mech.SYSTEM_GYRO ){
             for ( int slot = 0; slot < unit.getNumberOfCriticals(Mech.LOC_CT);slot++ ){

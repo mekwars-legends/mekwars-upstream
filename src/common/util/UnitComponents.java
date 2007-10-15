@@ -180,7 +180,8 @@ public class UnitComponents  {
 
 				if ( part.equalsIgnoreCase("Ammo Bin") ) {
 					Mounted mount = mainUnit.getEquipment(crit.getIndex());
-					String ammoName = mount.getName();
+					String ammoName = mount.getType().getInternalName();
+					
 					if ( mainUnitParts.containsKey(ammoName) )
 						mainUnitParts.put(ammoName, mainUnitParts.get(ammoName)+mount.getShotsLeft());
 					else
@@ -224,7 +225,7 @@ public class UnitComponents  {
 
 				if ( part.equalsIgnoreCase("Ammo Bin") ) {
 					Mounted mount = repodUnit.getEquipment(crit.getIndex());
-					String ammoName = mount.getName();
+					String ammoName = mount.getType().getInternalName();
 
 					if ( repodUnitParts.containsKey(ammoName) )
 						repodUnitParts.put(ammoName, repodUnitParts.get(ammoName)+mount.getShotsLeft());

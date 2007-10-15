@@ -128,8 +128,8 @@ public class BuildTable {
 			addon = Unit.getTypeClassDesc(Type);
 		String result = "./data/buildtables/"+dir+"/" + faction + "_" + weightclass + addon + ".txt";
 		if (!new File(result).exists()){
+			MWServ.mwlog.errLog("Unable to find build table file "+result+" using ./data/buildtables/"+dir+"/Common_" + weightclass + addon + ".txt");
 			result = "./data/buildtables/"+dir+"/Common_" + weightclass + addon + ".txt";
-			MWServ.mwlog.errLog("Unable to find build table file "+result+" using "+result);
 		}
 		return result;
 	}
