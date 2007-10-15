@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.9.x
++ New MegaMek.jar 0.33.10-MW10152007-5217
 + Started working on Technology raid for ops code.
 + Updated Ops Editor to reflect changed made in RFE 1775574
 + RFE 1775574: New operations parameter - raid from factory
