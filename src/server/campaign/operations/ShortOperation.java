@@ -146,6 +146,10 @@ public class ShortOperation implements Comparable {
 	private String gameOptions;
 	private String attackerAutoString = null;
 	private String defenderAutoString = null;
+	private String attackerAutoEmplacementsString = null;
+	private String defenderAutoEmplacementsString = null;
+	private String attackerAutoMinesString = null;
+	private String defenderAutoMinesString = null;
 	private String attackArtDesc = "";
 	private String defendArtDesc = "";
 	private float defenderArmyCount = 0;
@@ -737,16 +741,16 @@ public class ShortOperation implements Comparable {
                 
                 //all attackers will have same autoarmy
                 AutoArmy currAutoArmy = new AutoArmy(attackGunBV,true);
-                attackerAutoString = "PL|GEA|" + currAutoArmy.toString("|");
+                attackerAutoEmplacementsString = "PL|GEA|" + currAutoArmy.toString("|");
                 attackArtDesc += "[Bonus Gun Emplacements: " + currAutoArmy.getUnits().size() + " pieces, " + currAutoArmy.getBV() + "BV]<br>";
                 
                 //so send it to each attacker ...
                 for (String currP : attackers.keySet())
-                    CampaignMain.cm.toUser(attackerAutoString,currP,false);
+                    CampaignMain.cm.toUser(attackerAutoEmplacementsString,currP,false);
             }else{
-                attackerAutoString = "PL|GEA|";
+            	attackerAutoEmplacementsString = "PL|GEA|CLEAR";
                 for (String currP : attackers.keySet())
-                    CampaignMain.cm.toUser(attackerAutoString,currP,false);
+                    CampaignMain.cm.toUser(attackerAutoEmplacementsString,currP,false);
             }
             
             //send defender autoarmy, and save for future use
@@ -754,17 +758,17 @@ public class ShortOperation implements Comparable {
                 
                 //all defenders will have same autoarmy
                 AutoArmy currAutoArmy = new AutoArmy(defendGunBV,true);
-                defenderAutoString = "PL|GEA|" + currAutoArmy.toString("|");
+                defenderAutoEmplacementsString = "PL|GEA|" + currAutoArmy.toString("|");
                 defendArtDesc += "[Bonus Gun Emplacements: " + currAutoArmy.getUnits().size() + " pieces, " + currAutoArmy.getBV() + "BV]<br>";
                 
                 //so send it to each defender ...
                 for (String currP : defenders.keySet())
-                    CampaignMain.cm.toUser(defenderAutoString,currP,false);
+                    CampaignMain.cm.toUser(defenderAutoEmplacementsString,currP,false);
             }else{
-                defenderAutoString = "PL|GEA|";
+            	defenderAutoEmplacementsString = "PL|GEA|CLEAR";
                 //so send it to each defender ...
                 for (String currP : defenders.keySet())
-                    CampaignMain.cm.toUser(defenderAutoString,currP,false);
+                    CampaignMain.cm.toUser(defenderAutoEmplacementsString,currP,false);
             }
 
             /*
@@ -849,17 +853,17 @@ public class ShortOperation implements Comparable {
             if (attackerConventionalMines > 0 || attackerVibraMines > 0) {
                 
                 //all attackers will have same number of mines
-                attackerAutoString = "PL|AAM|" + attackerConventionalMines+"|"+attackerVibraMines;
+                attackerAutoMinesString = "PL|AAM|" + attackerConventionalMines+"|"+attackerVibraMines;
                 attackArtDesc += "[Bonus Mines: Conventional: " +attackerConventionalMines+" Vibra: "+ attackerVibraMines+"]<br>";
                 
                 //so send it to each attacker ...
                 for (String currP : attackers.keySet())
-                    CampaignMain.cm.toUser(attackerAutoString,currP,false);
+                    CampaignMain.cm.toUser(attackerAutoMinesString,currP,false);
             } else {
-                attackerAutoString = "PL|AAM|" + 0+"|"+0;
+            	attackerAutoMinesString = "PL|AAM|" + 0+"|"+0;
                 //so send it to each attacker ...
                 for (String currP : attackers.keySet())
-                    CampaignMain.cm.toUser(attackerAutoString,currP,false);
+                    CampaignMain.cm.toUser(attackerAutoMinesString,currP,false);
             }
             
             
@@ -867,17 +871,17 @@ public class ShortOperation implements Comparable {
             if (defenderConventionalMines > 0 || defenderVibraMines > 0) {
                 
                 //all defenders will have same autoarmy
-                defenderAutoString = "PL|AAM|" + defenderConventionalMines+"|"+defenderVibraMines;
+                defenderAutoMinesString = "PL|AAM|" + defenderConventionalMines+"|"+defenderVibraMines;
                 defendArtDesc += "[Bonus Mines: Conventional: " +defenderConventionalMines+" Vibra: "+ defenderVibraMines+"]<br>";
                 
                 //so send it to each defender ...
                 for (String currP : defenders.keySet())
-                    CampaignMain.cm.toUser(defenderAutoString,currP,false);
+                    CampaignMain.cm.toUser(defenderAutoMinesString,currP,false);
             } else {
-                defenderAutoString = "PL|AAM|" + 0+"|"+0;
+            	defenderAutoMinesString = "PL|AAM|" + 0+"|"+0;
                 //so send it to each defender ...
                 for (String currP : defenders.keySet())
-                    CampaignMain.cm.toUser(defenderAutoString,currP,false);
+                    CampaignMain.cm.toUser(defenderAutoMinesString,currP,false);
             }
 
             bots = "PL|UB|"+o.getBooleanValue("BotControlsAll");
@@ -1474,9 +1478,13 @@ public class ShortOperation implements Comparable {
 		else if (defenders.containsKey(lowerName)) {
 			CampaignMain.cm.toUser("GMEP|"+defenderEdge,lowerName,false);
 			CampaignMain.cm.toUser(defenderAutoString,lowerName,false);
+			CampaignMain.cm.toUser(defenderAutoEmplacementsString,lowerName,false);
+			CampaignMain.cm.toUser(defenderAutoMinesString,lowerName,false);
 		} else if (attackers.containsKey(lowerName)) {
 			CampaignMain.cm.toUser("GMEP|"+attackerEdge,lowerName,false);
 			CampaignMain.cm.toUser(attackerAutoString,lowerName,false);
+			CampaignMain.cm.toUser(attackerAutoEmplacementsString,lowerName,false);
+			CampaignMain.cm.toUser(attackerAutoMinesString,lowerName,false);
 		}
 		
 		//send building options
