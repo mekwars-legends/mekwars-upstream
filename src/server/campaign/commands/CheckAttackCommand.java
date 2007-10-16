@@ -105,6 +105,11 @@ public class CheckAttackCommand implements Command {
 				SArmy currTarget = (SArmy)targets.nextElement();
 				SPlayer currTargetP = CampaignMain.cm.getPlayer(currTarget.getPlayerName());
 				String coloredHouseName = currTargetP.getMyHouse().getHouseFightingFor(currTargetP).getColoredName();
+				String defendableOps = listDefendableOperations(arm,currTargetP,currTarget);
+				
+				if ( defendableOps.equals("[]") )
+					continue;
+				
 				Desc += "<tr><td>&nbsp;</td><td>";
 				
 				//adjust return for infantry settings
@@ -117,7 +122,7 @@ public class CheckAttackCommand implements Command {
 					Desc += "(BV Against: "+ arm.getOperationsBV(currTarget) +")";
 				}
 				
-				Desc += "</td><td>"+listDefendableOperations(arm,currTargetP,currTarget);
+				Desc += "</td><td>"+defendableOps;
 				
 				Desc += "</td></tr>";
 			}//end while(more targets)
@@ -143,6 +148,9 @@ public class CheckAttackCommand implements Command {
 						SPlayer currTargetP = CampaignMain.cm.getPlayer(currTarget.getPlayerName());
                         if ( currTargetP == null )
                             continue;
+                        String defendableOps = listDefendableOperations(arm,currTargetP,currTarget);
+                        if ( defendableOps.equals("[]") )
+                        	continue;
 						String coloredHouseName = currTargetP.getMyHouse().getHouseFightingFor(currTargetP).getColoredName();
 						Desc += "<td>";
 						//adjust return for infantry settings
@@ -155,7 +163,7 @@ public class CheckAttackCommand implements Command {
 								Desc += "(BV Against: "+ arm.getOperationsBV(currTarget) +")";
 						}
 						
-						Desc += "</td><td>"+listDefendableOperations(arm,currTargetP,currTarget);
+						Desc += "</td><td>"+defendableOps;
 
 						Desc += "</td></tr>";
 						if ( targets.hasMoreElements() )
@@ -175,6 +183,8 @@ public class CheckAttackCommand implements Command {
 		OperationManager manager = CampaignMain.cm.getOpsManager(); 
 		for ( String attack : aa.getLegalOperations().keySet() ){
 			Operation o = manager.getOperation(attack);
+			if ( !aa.matches(da, o) )
+				continue;
 			if ( manager.validateShortDefense(dp, da, o, null) == null ){
 				report.append(attack);
 				report.append(", ");

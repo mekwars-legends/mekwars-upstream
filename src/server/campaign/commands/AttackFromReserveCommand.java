@@ -192,7 +192,7 @@ public class AttackFromReserveCommand implements Command {
         ArrayList<SArmy> defendingArmies   = new ArrayList<SArmy>();
         for (SArmy currArmy : dp.getArmies()) {
             ArrayList<Integer> defenderFails = manager.getShortValidator().validateShortDefender(dp, currArmy, o,target);
-            if (defenderFails.size() == 0 && aa.matches(currArmy))//if army can defend, add
+            if (defenderFails.size() == 0 && aa.matches(currArmy,o))//if army can defend, add
                 defendingArmies.add(currArmy);
         }
 

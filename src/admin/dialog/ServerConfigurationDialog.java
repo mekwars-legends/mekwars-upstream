@@ -3888,15 +3888,6 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("InfantryOperationsBVMod");
 		battleValueSpring.add(baseTextField);
 
-		battleValueSpring.add(new JLabel("  ",SwingConstants.TRAILING));
-		battleValueSpring.add(new JLabel("  ",SwingConstants.TRAILING));
-
-		baseTextField = new JTextField(5);
-		battleValueSpring.add(new JLabel("Max BV Difference",SwingConstants.TRAILING));
-        baseTextField.setToolTipText("This is the maximal Difference in Battle Value that is allowed for each game");
-        baseTextField.setName("MaxBVDifference");
-		battleValueSpring.add(baseTextField);
-
 		SpringLayoutHelper.setupSpringGrid(battleValueSpring,4);
 		
 		//finalize layout

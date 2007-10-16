@@ -481,6 +481,18 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
         BaseTextField.setName("MinSubFactionAccessLevel");
         rangesBox.add(BaseTextField);
 
+        BaseTextField = new JTextField(5);
+        rangesBox.add(new JLabel("Max BV Difference:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Max BV difference between attacker and defender.<br>Default 150</html>");
+        BaseTextField.setName("MaxBVDifference");
+        rangesBox.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        rangesBox.add(new JLabel("Max % BV Difference:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Double Field. Max % BV diffence between Attacker and defneder.<br>Default 0%</html>");
+        BaseTextField.setName("MaxBVPercent");
+        rangesBox.add(BaseTextField);
+
         BaseCheckBox = new JCheckBox("Must Have Fac");
         BaseCheckBox.setToolTipText("<html>If checked, attack type may only be used against<br>a world which has a production facility.</html>");
         BaseCheckBox.setName("OnlyAgainstFactoryWorlds");

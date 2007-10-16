@@ -62,7 +62,7 @@ public class ShortValidator {
 	public static final int SFAIL_COMMON_NOT_ENOUGH_COMMANDERS = 4;//the army does not have enough unit commanders in it.
 	public static final int SFAIL_COMMON_TOO_MANY_COMMANDERS = 5;//The army has too many unit commanders in it.
 	public static final int SFAIL_COMMON_INSUFFICENT_SUBFACTION_ACCESS_LEVEL = 6;//cannot defend/launch this Op due to your sub factions accesslevel being too low
-	//public static final int SFAIL_COMMON = 7;
+	public static final int SFAIL_COMMON_MAX_BV_DIFFERENCE = 7; //max bv or max bv % difference has bene exceeded
 	//public static final int SFAIL_COMMON = 8;
 	//public static final int SFAIL_COMMON = 9;
 	//public static final int SFAIL_COMMON = 10;
@@ -344,6 +344,8 @@ public class ShortValidator {
 				ArrayList defenderFails = this.validateShortDefender(currPlayer, currArmy, o,target);
 				if ( maxELO > 0 && Math.abs(currPlayer.getRating()- ap.getRating()) > maxELO)
 					defenderFails.add(ShortValidator.SFAIL_COMMON_ELODIFFERENCE);
+				if ( !aa.matches(currArmy, o) )
+					defenderFails.add(ShortValidator.SFAIL_COMMON_MAX_BV_DIFFERENCE);
 				if (defenderFails.size() == 0)//if player can defend, add
 					fullMatches.add(currArmy);
 				else if ( o.getBooleanValue("DebugOp")){ //spamalama
@@ -1274,6 +1276,9 @@ public class ShortValidator {
 
 			case SFAIL_COMMON_INSUFFICENT_SUBFACTION_ACCESS_LEVEL:
 				return " Sub-Factions access level is lower then the operations min. required access level.";
+				
+			case SFAIL_COMMON_MAX_BV_DIFFERENCE:
+				return " BV difference between attacking and defending army is too large.";
 				
 			/*
 			 * ATTACK failure causes

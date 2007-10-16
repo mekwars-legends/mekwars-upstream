@@ -2751,16 +2751,16 @@ public class ShortResolver {
 										.length() - 2);
 
 								if (numCaptured == 1) {
-									winnerMetaString += " captured a unit ["
+									winnerMetaString += " force produced a unit ["
 											+ unitString + "]";
-									loserMetaString += " lost a unit ["
+									loserMetaString += " had a unit force produced ["
 											+ unitString + "]";
 								} else {
-									winnerMetaString += " captured "
+									winnerMetaString += " force produced "
 											+ numCaptured + " units ["
 											+ unitString + "]";
-									loserMetaString += " lost " + numCaptured
-											+ " units [" + unitString + "]";
+									loserMetaString += " had " + numCaptured
+											+ " units force produced [" + unitString + "]";
 								}
 							}
 							checkMercContracts(aWinner,ContractInfo.CONTRACT_UNITS, numCaptured);

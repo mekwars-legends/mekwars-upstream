@@ -27,6 +27,8 @@ import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
+import server.campaign.operations.Operation;
+import server.campaign.operations.OperationManager;
 
 import common.util.StringUtils;
 import common.House;
@@ -131,18 +133,24 @@ public class OpponentListHelper {
 				 * as opponents in each others' lists.
 				 */
 				ArrayList<SArmy> possDefendArmies = new ArrayList<SArmy>();
+				OperationManager manager = CampaignMain.cm.getOpsManager(); 
+
 				for (SArmy searchArmy : searchPlayer.getArmies()) {
 					for (SArmy enemyArmy : currPlayer.getArmies()) {
-						
-						if (searchArmy.matches(enemyArmy)) {
-							
-							//cross link
-							searchArmy.addOpponent(enemyArmy);
-							enemyArmy.addOpponent(searchArmy);
-							
-							//only add each army one time
-							if (!possDefendArmies.contains(enemyArmy))
-								possDefendArmies.add(enemyArmy);
+						for ( String attack : searchArmy.getLegalOperations().keySet() ){
+							Operation o = manager.getOperation(attack);
+
+							if (searchArmy.matches(enemyArmy,o)) {
+								
+								//cross link
+								searchArmy.addOpponent(enemyArmy);
+								enemyArmy.addOpponent(searchArmy);
+								
+								//only add each army one time
+								if (!possDefendArmies.contains(enemyArmy))
+									possDefendArmies.add(enemyArmy);
+								break;
+							}
 						}
 						
 					}

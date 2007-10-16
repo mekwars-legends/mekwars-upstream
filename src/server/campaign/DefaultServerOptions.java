@@ -50,8 +50,8 @@ public class DefaultServerOptions {
         defaults.setProperty("XMLPlanetPath", "./data/DynPlanets.xml");
         defaults.setProperty("MechstatPath", "./Mechstats.htm");
         
-        defaults.setProperty("MaxBVDifference", "150");
-        defaults.setProperty("MaxBVPercent", "0");
+        /*defaults.setProperty("MaxBVDifference", "150");
+        defaults.setProperty("MaxBVPercent", "0");*/
         
         //Op: Stinger BV mods
         defaults.setProperty("UseOperationsRule", "true");

@@ -34,6 +34,7 @@ import common.Army;
 import common.Unit;
 
 import server.MWServ;
+import server.campaign.operations.Operation;
 
 /**
  * @author Helge Richter
@@ -316,9 +317,9 @@ public class SArmy extends Army {
 	 * which indicates whether they fall within each others'
 	 * unit limits and have a generic BV match.
 	 */
-	public boolean matches(SArmy enemy){
-		int cap = CampaignMain.cm.getIntegerConfig("MaxBVDifference");
-		double percentCap = CampaignMain.cm.getDoubleConfig("MaxBVPercent");
+	public boolean matches(SArmy enemy, Operation o){
+		int cap =o.getIntValue("MaxBVDifference");
+		double percentCap = o.getDoubleValue("MaxBVPercent");
 		
 		//catch a 0 BV, just in case getBV(false) calls lead here
 		if (enemy.getBV() == 0)
@@ -329,11 +330,6 @@ public class SArmy extends Army {
 			
 			int enemyBV = enemy.getOperationsBV(this);
 			int myBV = this.getOperationsBV(enemy);
-			
-			if ( enemy.getAmountOfUnits() > this.getAmountOfUnits() )
-				enemyBV = enemy.getOperationsBV(this);
-			else if ( this.getAmountOfUnits() > enemy.getAmountOfUnits() )
-				myBV = this.getOperationsBV(enemy);
 			
 			if (Math.abs( enemyBV - myBV) > cap)
 				return false;
@@ -347,11 +343,6 @@ public class SArmy extends Army {
 			double enemyOpBV = enemy.getOperationsBV(this);
 			double myOpBV = this.getOperationsBV(enemy);
 			
-			if ( enemy.getAmountOfUnits() > this.getAmountOfUnits() )
-				enemyOpBV = enemy.getOperationsBV(this);
-			else if ( this.getAmountOfUnits() > enemy.getAmountOfUnits() )
-				myOpBV = this.getOperationsBV(enemy);
-
 			if ( enemyOpBV > myOpBV){
 				percent = myOpBV/enemyOpBV;
 				percent *= 100;
@@ -373,7 +364,7 @@ public class SArmy extends Army {
 		}
 		
 		//BVs match - check limits of THIS army
-		boolean infCounts = CampaignMain.cm.getBooleanConfig("CountInfForLimiters");
+		/*boolean infCounts = CampaignMain.cm.getBooleanConfig("CountInfForLimiters");
 		boolean allowLimiters = CampaignMain.cm.getBooleanConfig("AllowLimiters");
 		if (getLowerLimiter() != Army.NO_LIMIT && allowLimiters){
 			
@@ -444,7 +435,7 @@ public class SArmy extends Army {
 			if (ownNum > highest)
 				return false;
 		}
-		
+		*/
 		return true;
 	}//end matches()
 	

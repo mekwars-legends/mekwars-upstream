@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.9.x
++ RFE 1743658: BV determined by ops vs server setting
 + Bug: Auto Army and Auto Gun Emplacements not reporting after disconnect
 + Bug: Repod check using the wrong ammo name.
 + Bug: Actuators not being salvaged correctly
