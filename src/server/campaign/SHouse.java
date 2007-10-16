@@ -1248,7 +1248,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 	public String tick(boolean real, int tickid) {
 		
 		MWServ.mwlog.debugLog("Inside SHouse.Tick for: "+this.getName());
-		String result = "<font color=\"black\">-------> <b>Tick! [" + tickid + "]</b><br>";
+		String result = "-------> <b>Tick! [" + tickid + "]</b><br>";
 		StringBuilder hsUpdates = new StringBuilder();
 		
 		double tickworth = 0;
@@ -1523,8 +1523,6 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			setComponentsProduced(Unit.BATTLEARMOR, 0);
 		} else
 			addShowProductionCountNext(-1);
-
-		result += "</font>";
 
 		MWServ.mwlog.debugLog("Send House Updates");
 		//send house updates, if not empty
@@ -2139,7 +2137,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		//send the player the latest data from the factionbays
 		p.setLastOnline(System.currentTimeMillis());//must be done after smallplayer creation
 		
-		return ("<font color=\"black\">[*] Logged into " + getColoredNameAsLink() + ".</font>");
+		return ("[*] Logged into " + getColoredNameAsLink() + ".");
 	}
 
 	/**

@@ -964,14 +964,14 @@ class Repair{
             if ( levelTech ){
                 if (pilotIsRepairing) {
                     pilot.getSkills().getPilotSkill(PilotSkill.AstechSkillID).setLevel(pilot.getSkills().getPilotSkill(PilotSkill.AstechSkillID).getLevel()+1);
-                    CampaignMain.cm.toUser("FSM|"+pilot.getName()+" advanced in skill and is now " + StringUtils.aOrAn(UnitUtils.techDescription(techType+1),true) + " tech.",Username,false);
+                    CampaignMain.cm.toUser("FSM|<font color=#C11B17>"+pilot.getName()+" advanced in skill and is now " + StringUtils.aOrAn(UnitUtils.techDescription(techType+1),true) + " tech.</font>",Username,false);
                 }else{
                     //AvailableTech was already removed so just move the tech to the next level
                     player.addAvailableTechs(techType+1,1);
                     //Now remove the tech from its old class and move it to its new class
                     player.addTotalTechs(techType,-1);
                     player.addTotalTechs(techType+1,1);
-                    CampaignMain.cm.toUser("FSM|One of your " + UnitUtils.techDescription(techType) + " techs advanced in skill and is now "+ StringUtils.aOrAn(UnitUtils.techDescription(techType+1),true) + " tech.",Username,false);
+                    CampaignMain.cm.toUser("FSM|<font color=#C11B17>One of your " + UnitUtils.techDescription(techType) + " techs advanced in skill and is now "+ StringUtils.aOrAn(UnitUtils.techDescription(techType+1),true) + " tech.</font>",Username,false);
                 }
             }else if ( !pilotIsRepairing && !repairTech)
                 player.addAvailableTechs(techType,1);
@@ -983,7 +983,7 @@ class Repair{
             }
             
             if ( techDeath ){
-                CampaignMain.cm.toUser("FSM|<font color=#ff80ff>One of your "+UnitUtils.techDescription(techType)+" techs was killed in an accident while repairing "+unit.getShortNameRaw()+".</font>",Username,false);
+                CampaignMain.cm.toUser("FSM|<font color=#302226>One of your "+UnitUtils.techDescription(techType)+" techs was killed in an accident while repairing "+unit.getShortNameRaw()+".</font>",Username,false);
                 player.addAvailableTechs(techType,-1);
                 player.addTotalTechs(techType,-1);
             }

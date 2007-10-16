@@ -93,6 +93,9 @@ public final class ConfigurationDialog implements ActionListener {
     private final JTextField uNameField = new JTextField(11);
     private final JPasswordField passwordField = new JPasswordField();
     private final JTextField chatNameColorField = new JTextField();
+    private final JTextField foregroundColorField = new JTextField();
+    private final JTextField backgroundColorField = new JTextField();
+    private final JTextField chatFontField = new JTextField();
     private final JTextField defaultArmyNameField = new JTextField();
     private final JTextField mapOverLayField = new JTextField(3);
 
@@ -142,7 +145,7 @@ public final class ConfigurationDialog implements ActionListener {
     private final JComboBox playerChatColorComboBox = new JComboBox(playerChatColorChoices);
 
     private final String[] sysMessageColorChoices = { "Dark Green", "Gold",
-            "Indigo", "Navy", "Orange", "Red", "Teal" };
+            "Indigo", "Navy", "Orange", "Red", "Teal", "Black" };
     private final JComboBox sysMessageColorComboBox = new JComboBox(sysMessageColorChoices);
 
     //CHECK BOXEN
@@ -297,10 +300,25 @@ public final class ConfigurationDialog implements ActionListener {
         passwordField.setToolTipText("Account Password");
         playerFieldsPanel.add(passwordField);
 
-        playerFieldsPanel.add(new JLabel("Color:", SwingConstants.TRAILING));
+        playerFieldsPanel.add(new JLabel("Name Color:", SwingConstants.TRAILING));
         chatNameColorField.setMaximumSize(newDim);
-        chatNameColorField.setToolTipText("<HTML>Chat colour. Can be any HTML keyword<br>colour (blue) or hex code (#003366)</HTML>");
+        chatNameColorField.setToolTipText("<HTML>Chat name colour. Can be any HTML keyword<br>colour (blue) or hex code (#003366)</HTML>");
         playerFieldsPanel.add(chatNameColorField);
+
+        playerFieldsPanel.add(new JLabel("Text Color:", SwingConstants.TRAILING));
+        foregroundColorField.setMaximumSize(newDim);
+        foregroundColorField.setToolTipText("<HTML>Foreground text colour. Can be any HTML keyword<br>colour (blue) or hex code (#003366)</HTML>");
+        playerFieldsPanel.add(foregroundColorField);
+
+        playerFieldsPanel.add(new JLabel("Back Ground:", SwingConstants.TRAILING));
+        backgroundColorField.setMaximumSize(newDim);
+        backgroundColorField.setToolTipText("<HTML>Background colour. Can be any HTML keyword<br>colour (blue) or hex code (#003366)</HTML>");
+        playerFieldsPanel.add(backgroundColorField);
+
+        playerFieldsPanel.add(new JLabel("Chat Font:", SwingConstants.TRAILING));
+        chatFontField.setMaximumSize(newDim);
+        chatFontField.setToolTipText("<HTML>Chat font size. Use +10 -10 or even size number</HTML>");
+        playerFieldsPanel.add(chatFontField);
 
         if (mwclient.getConfig().isParam("HQTABVISIBLE")) {
         	playerFieldsPanel.add(new JLabel("HQ Columns:", SwingConstants.TRAILING));
@@ -1127,12 +1145,13 @@ public final class ConfigurationDialog implements ActionListener {
             sysMessageColorComboBox.setSelectedIndex(3);
         } else if (sysColor.equals("#FFA500")) {//orange
             sysMessageColorComboBox.setSelectedIndex(4);
+        } else if (sysColor.equals("red")) {//red
+            sysMessageColorComboBox.setSelectedIndex(5);
         } else if (sysColor.equals("teal")) {
             sysMessageColorComboBox.setSelectedIndex(6);
-        } else {//red
-            sysMessageColorComboBox.setSelectedIndex(5);
-        }
-
+        } else
+        	sysMessageColorComboBox.setSelectedIndex(7);
+        
         //Set the selected look and feel button
         String skin = mwclient.getConfigParam("LOOKANDFEEL").toLowerCase();
         if (skin.equals("motif")) {
@@ -1250,7 +1269,10 @@ public final class ConfigurationDialog implements ActionListener {
         pmUseMultipleTabs.setSelected(mwclient.getConfig().isParam("USEMULTIPLEPM"));
 
         chatNameColorField.setText(mwclient.getConfig().getParam("COLOR"));
-
+        foregroundColorField.setText(mwclient.getConfig().getParam("CHATFONTCOLOR"));
+        backgroundColorField.setText(mwclient.getConfig().getParam("BACKGROUNDCOLOR"));
+        chatFontField.setText(mwclient.getConfig().getParam("CHATFONTSIZE"));
+        
         f1Field.setText(mwclient.getConfig().getParam("F1BIND"));
         f2Field.setText(mwclient.getConfig().getParam("F2BIND"));
         f3Field.setText(mwclient.getConfig().getParam("F3BIND"));
@@ -1379,9 +1401,11 @@ public final class ConfigurationDialog implements ActionListener {
                 mwclient.getConfig().setParam("SYSMESSAGECOLOR", "#FFA500");//orange
             } else if (sysMessageColorComboBox.getSelectedIndex() == 6) {
                 mwclient.getConfig().setParam("SYSMESSAGECOLOR", "teal");
-            } else {//colour is red
+            } else if ( sysMessageColorComboBox.getSelectedIndex() == 5){//colour is red
                 mwclient.getConfig().setParam("SYSMESSAGECOLOR", "red");
-            }
+            } else
+            	mwclient.getConfig().setParam("SYSMESSAGECOLOR", "black");
+            
 
             //set the PLAYERCHATCOLORMODE based on selected button.
             //private final String[] playerChatColorChoices = {"Player Defined", "Faction Colors", "Mixed (Faction Tag)", "Mixed (Faction Name)"};
@@ -1473,7 +1497,10 @@ public final class ConfigurationDialog implements ActionListener {
             mwclient.getConfig().setParam("REPLYTORECEIVER",Boolean.toString(pmReplyToReciever.isSelected()));
             mwclient.getConfig().setParam("USEMULTIPLEPM",Boolean.toString(pmUseMultipleTabs.isSelected()));
             mwclient.getConfig().setParam("COLOR", chatNameColorField.getText());
-
+            mwclient.getConfig().setParam("CHATFONTCOLOR", foregroundColorField.getText());
+            mwclient.getConfig().setParam("BACKGROUNDCOLOR", backgroundColorField.getText());
+            mwclient.getConfig().setParam("CHATFONTSIZE", chatFontField.getText());
+            
             mwclient.getConfig().setParam("F1BIND", f1Field.getText());
             mwclient.getConfig().setParam("F2BIND", f2Field.getText());
             mwclient.getConfig().setParam("F3BIND", f3Field.getText());
@@ -1566,6 +1593,7 @@ public final class ConfigurationDialog implements ActionListener {
             if (!mwclient.getConfigParam("BMPREVIEWIMAGE").equalsIgnoreCase(originalBMPreview))
                 mwclient.getMainFrame().getMainPanel().getBMPanel().resetButtonBar();
 
+            mwclient.addToChat("</BODY></html><html><BODY  TEXT=\"" + mwclient.getConfig().getParam("CHATFONTCOLOR") + "\" BGCOLOR=\""+mwclient.getConfig().getParam("BACKGROUNDCOLOR")+"\"></BODY>");
         } else
             dialog.dispose();
     }

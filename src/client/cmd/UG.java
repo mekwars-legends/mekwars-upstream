@@ -62,7 +62,7 @@ public class UG extends Command {
         	String toSend = "<font color=\"maroon\">>> Exit " + mmci.getName() + "</font>";
         	
             if (mwclient.getConfig().isParam("TIMESTAMP"))
-            	toSend = mwclient.getShortTime() + toSend;
+            	toSend = "<font color=\"" + mwclient.getConfig().isParam("CHATFONTCOLOR") + "\">" + mwclient.getShortTime() + "</font>" + toSend;
             
             if (mwclient.getConfig().isParam("SHOWENTERANDEXIT"))
             	mwclient.addToChat(toSend);

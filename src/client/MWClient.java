@@ -1219,7 +1219,7 @@ public final class MWClient implements IClient {
 			String addon = getUser(myUsername).getAddon();
 			addon = addon.equals("") ? "" : " ["+addon+"]";
 			s = "<font color=\"" + color + "\"><b>" + myUsername + addon + "</b></font><b>:</b> " + input;
-			if (Config.isParam("TIMESTAMP")) {s =  getShortTime() + s;}
+			if (Config.isParam("TIMESTAMP")) {s =  "<font color=\"" + Config.isParam("CHATFONTCOLOR") + "\">" + getShortTime()+ "</font>" + s;}
 			addToChat(s, CCommPanel.CHANNEL_PLOG,null);
 		}
 	}//end processGUIInput
@@ -1345,7 +1345,8 @@ public final class MWClient implements IClient {
 	
 	public void addToChat(String s, int channel, String tabName) {
 		
-		s = "<font size=\"" + Config.getParam("CHATFONTSIZE") + "\">" + s + "</font>";
+		s = "<BODY  TEXT=\"" + Config.getParam("CHATFONTCOLOR") + "\" BGCOLOR=\""+Config.getParam("BACKGROUNDCOLOR")+"\"><font size=\"" + Config.getParam("CHATFONTSIZE") + "\">" + s + "</font></BODY>";
+		//MWClient.mwClientLog.clientOutputLog("String: "+s);
 		try {SwingUtilities.invokeLater(new CAddToChat(s, channel,tabName));}
 		catch (Exception ex) {MWClient.mwClientLog.clientErrLog(ex);}
 		
@@ -1420,7 +1421,9 @@ public final class MWClient implements IClient {
 			if (currUser.getName().equalsIgnoreCase(name))
 				return currUser;
 		}
-		return new CUser();
+		CUser dummyUser = new CUser();
+		dummyUser.setColor(Config.getParam("CHATFONTCOLOR"));
+		return dummyUser;
 	}
 	
 	public synchronized ArrayList<String> getPartialUser(String u) {

@@ -120,7 +120,7 @@ public class MailGCmd extends CGUICommand {
 		message = "=> " + name + addon + "<font color=\""+fontcolor+"\"><b>:</b> " + message.trim() + "</font>";
 		
 		if (Config.isParam("TIMESTAMP"))
-			message = mwclient.getShortTime() + message;
+			message = "<font color=\"" + mwclient.getConfig().isParam("CHATFONTCOLOR") + "\">" + mwclient.getShortTime() + "</font>" + message;
 		
 		if (mwclient.getConfig().isParam("USEMULTIPLEPM")) {
 			mailTab = mwclient.getMainFrame().getMainPanel().getCommPanel().findMailTab(tabName); 

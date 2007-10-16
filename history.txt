@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.9.x
++ Bug: Server would set client color to black if they had too much red in it
++ Added ability to change foreground, background, and font size on the client
 + RFE 1743658: BV determined by ops vs server setting
 + Bug: Auto Army and Auto Gun Emplacements not reporting after disconnect
 + Bug: Repod check using the wrong ammo name.

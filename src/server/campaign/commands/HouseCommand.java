@@ -59,7 +59,7 @@ public class HouseCommand implements Command {
 		}
 		
 		//cleared breaks. start assembling a status return.
-		String s = "<font Color =\"black\"><br><b><u>Status for: " + h.getColoredName() + "</u></b><br>";
+		String s = "<br><b><u>Status for: " + h.getColoredName() + "</u></b><br>";
 		
 		//add up number of various player numbers
 		int totalOnline = h.getAllOnlinePlayers().size();

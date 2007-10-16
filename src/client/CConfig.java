@@ -375,6 +375,9 @@ public class CConfig {
         defaults.setProperty("SALVAGEEQUIPMENTTECH", "0");
         defaults.setProperty("SALVAGESYSTEMSTECH", "0");
         defaults.setProperty("SALVAGEENGINESTECH", "0");
+        
+        //Client colors
+        defaults.setProperty("BACKGROUNDCOLOR", "#FFFFFF");
         return defaults;
 	}
 	

@@ -64,8 +64,9 @@ public class CH extends Command {
 			String addon = "";
 
 			String nextString = ST.nextToken();
-			String fontcolor = mwclient.getConfig().getParam("CHATFONTCOLOR");
-
+			String defaultColor = mwclient.getConfig().getParam("CHATFONTCOLOR");
+			String fontSize = mwclient.getConfig().getParam("CHATFONTSIZE");
+			
 			boolean wasSystemMessage = false;
 			boolean wasICMessage = false;
 
@@ -103,14 +104,13 @@ public class CH extends Command {
 						if (user.getHouse().length() > 1 && mwclient.getData().getHouseByName(user.getHouse()) != null )
 							factioncolor = mwclient.getData().getHouseByName(user.getHouse()).getHouseColor();
 						else
-							factioncolor = "black";
+							factioncolor = defaultColor;
 
 					} else {
-						usercolor = "black";
-						factioncolor = "black";
+						usercolor = defaultColor;
+						factioncolor = defaultColor;
 						addon = "";
-						if ( isInvisible )
-							name = "Someone";
+						name = "Someone";
 					}
 
 					/*
@@ -122,15 +122,15 @@ public class CH extends Command {
 					 */
 					String colorSetting = mwclient.getConfig().getParam("PLAYERCHATCOLORMODE").toLowerCase();
 					if (colorSetting.equals("factionadd") || colorSetting.equals("factionall")) {
-						addon = addon.equals("") ? "" : " <b><font color=\""+factioncolor+"\">[" + addon + "]</b></font>";
+						addon = addon.equals("") ? "" : " <b><font color=\""+factioncolor+"\" size=\""+fontSize+"\">[" + addon + "]</b></font>";
 					} else {
-						addon = addon.equals("") ? "" : " <b><font color=\""+usercolor+"\">[" + addon + "]</b></font>";
+						addon = addon.equals("") ? "" : " <b><font color=\""+usercolor+"\" size=\""+fontSize+"\">[" + addon + "]</b></font>";
 					}
 
 					if (colorSetting.equals("factionname") || colorSetting.equals("factionall")) {
-						name = name.equals("") ? "" : " <b><font color=\"" + factioncolor + "\" >" + name + "</b></font>";
+						name = name.equals("") ? "" : " <b><font color=\"" + factioncolor + "\" size=\""+fontSize+"\">" + name + "</b></font>";
 					} else {
-						name = name.equals("") ? "" : " <b><font color=\"" + usercolor + "\" >" + name + "</b></font>";
+						name = name.equals("") ? "" : " <b><font color=\"" + usercolor + "\" size=\""+fontSize+"\">" + name + "</b></font>";
 					}
 
 					//load the message
@@ -138,17 +138,20 @@ public class CH extends Command {
 					while (ST.hasMoreTokens())
 						message += "|"+ST.nextToken();
 
+
 					//faction mail emote. [does this work server side? never seen it used.]
 					if (message.startsWith("#me")) {
 						if (mwclient.getConfig().isParam("COLOREDEMOTES"))
 							message = "*** " + name + message.substring(3);
 						else
 							message = "*** " + uncoloredName + message.substring(3);
+						message = "<font size=\""+fontSize+"\">" + message +"</font>";
 					}	
 
 					//normal factionmail message	
 					else {
-						message = name + addon + "<font color=\"" + fontcolor + "\"><b>:</b> " + message.trim() + "</font>";
+						message = "<font size=\""+fontSize+"\">" + message +"</font>";
+						message = name + addon + "<b>:</b> " + message.trim();
 					}
 
 					//if the user wants to, remove any img tags
@@ -182,7 +185,7 @@ public class CH extends Command {
 
 						//also add to main, if configured to do so
 						if (mwclient.getConfig().isParam("MAINCHANNELHM"))
-							mwclient.addToChat("<font color=\"red\"><b>House Mail: </b></font>" + message);
+							mwclient.addToChat("<font color=\"red\" size=\""+fontSize+"\"><b>House Mail: </b></font>" + message);
 					}
 				}
 			}//end HM and MM
@@ -221,11 +224,11 @@ public class CH extends Command {
 						if (user.getHouse().length() > 1 && mwclient.getData().getHouseByName(user.getHouse()) != null )
 							factioncolor = mwclient.getData().getHouseByName(user.getHouse()).getHouseColor();
 						else
-							factioncolor = "black";
+							factioncolor = defaultColor;
 
 					} else {
-						usercolor = "black";
-						factioncolor = "black";
+						usercolor = defaultColor;
+						factioncolor = defaultColor;
 						addon = "";
 						if ( isInvisible )
 							name = "Someone";
@@ -240,15 +243,15 @@ public class CH extends Command {
 					 */
 					String colorSetting = mwclient.getConfig().getParam("PLAYERCHATCOLORMODE").toLowerCase();
 					if (colorSetting.equals("factionadd") || colorSetting.equals("factionall")) {
-						addon = addon.equals("") ? "" : " <b><font color=\""+factioncolor+"\">[" + addon + "]</b></font>";
+						addon = addon.equals("") ? "" : " <b><font color=\""+factioncolor+"\" size=\""+fontSize+"\">[" + addon + "]</b></font>";
 					} else {
-						addon = addon.equals("") ? "" : " <b><font color=\""+usercolor+"\">[" + addon + "]</b></font>";
+						addon = addon.equals("") ? "" : " <b><font color=\""+usercolor+"\" size=\""+fontSize+"\">[" + addon + "]</b></font>";
 					}
 
 					if (colorSetting.equals("factionname") || colorSetting.equals("factionall")) {
-						name = name.equals("") ? "" : " <b><font color=\"" + factioncolor + "\" >" + name + "</b></font>";
+						name = name.equals("") ? "" : " <b><font color=\"" + factioncolor + "\" size=\""+fontSize+"\">" + name + "</b></font>";
 					} else {
-						name = name.equals("") ? "" : " <b><font color=\"" + usercolor + "\" >" + name + "</b></font>";
+						name = name.equals("") ? "" : " <b><font color=\"" + usercolor + "\" size=\""+fontSize+"\">" + name + "</b></font>";
 					}
 
 					//load the message
@@ -260,18 +263,21 @@ public class CH extends Command {
 					//strip HTML from the chat in order to stop javascripts
 					message = mwclient.doEscape(message);
 
-
 					//IC emote. [does this work server side? never seen it used.]
 					if (message.startsWith("#me")) {
 						if (mwclient.getConfig().isParam("COLOREDEMOTES"))
 							message = "*** " + name + message.substring(3);
 						else
 							message = "*** " + uncoloredName + message.substring(3);
+						message = "<font size=\""+fontSize+"\">" + message +"</font>";
+
 					}   
 
 					//normal message    
 					else {
-						message = name + addon + "<font color=\"" + fontcolor + "\"><b>:</b> " + message.trim() + "</font>";
+						message = "<font size=\""+fontSize+"\">" + message +"</font>";
+
+						message = name + addon + "<b>:</b> " + message.trim();
 					}
 
 					//if the user wants to, remove any img tags
@@ -300,7 +306,7 @@ public class CH extends Command {
 
 					//also add to main, if configured to do so
 					if (mwclient.getConfig().isParam("MAINCHANNELRPG"))
-						mwclient.addToChat("<font color=\"red\"><b>In Character: </b></font>" + message);
+						mwclient.addToChat("<font color=\"red\" size=\""+fontSize+"\"><b>In Character: </b></font>" + message);
 				}
 			}//end In Character
 
@@ -337,13 +343,13 @@ public class CH extends Command {
 						if (user.getHouse().length() > 1 && mwclient.getData().getHouseByName(user.getHouse()) != null )
 							factioncolor = mwclient.getData().getHouseByName(user.getHouse()).getHouseColor();
 						else
-							factioncolor = "black";
+							factioncolor = defaultColor;
 
 					} else {
 						//user is null. usually means player isn't
 						//logged into the campaign. 
-						usercolor = "black";
-						factioncolor = "black";
+						usercolor =  defaultColor;
+						factioncolor =  defaultColor;
 						addon = "";
 						if ( isInvisible )
 							name = "Someone";
@@ -362,15 +368,15 @@ public class CH extends Command {
 					 */
 					String colorSetting = mwclient.getConfig().getParam("PLAYERCHATCOLORMODE").toLowerCase();
 					if (colorSetting.equals("factionadd") || colorSetting.equals("factionall")) {
-						addon = addon.equals("") ? "" : " <b><font color=\""+factioncolor+"\">[" + addon + "]</b></font>";
+						addon = addon.equals("") ? "" : " <b><font color=\""+factioncolor+"\" size=\""+fontSize+"\">[" + addon + "]</b></font>";
 					} else {
-						addon = addon.equals("") ? "" : " <b><font color=\""+usercolor+"\">[" + addon + "]</b></font>";
+						addon = addon.equals("") ? "" : " <b><font color=\""+usercolor+"\" size=\""+fontSize+"\">[" + addon + "]</b></font>";
 					}
 
 					if (colorSetting.equals("factionname") || colorSetting.equals("factionall")) {
-						name = name.equals("") ? "" : " <b><font color=\"" + factioncolor + "\">" + name + "</b></font>";
+						name = name.equals("") ? "" : " <b><font color=\"" + factioncolor + "\" size=\""+fontSize+"\">" + name + "</b></font>";
 					} else {
-						name = name.equals("") ? "" : " <b><font color=\"" + usercolor + "\">" + name + "</b></font>";
+						name = name.equals("") ? "" : " <b><font color=\"" + usercolor + "\" size=\""+fontSize+"\">" + name + "</b></font>";
 					}
 
 					message = ST.nextToken();
@@ -386,16 +392,19 @@ public class CH extends Command {
 							message = "*** " + name + message.substring(3);
 						else
 							message = "*** " + uncoloredName + message.substring(3);
+						message = "<font size=\""+fontSize+"\">" + message +"</font>";
 					}
 
 					//if not me, its a normal message
 					else {
-						message = name + addon + "<font color=\""+fontcolor+"\"><b>:</b> " + message.trim() + "</font>";
+						message = "<font size=\""+fontSize+"\">" + message +"</font>";
+						message = name + addon + "<b>:</b> " + message.trim();
 					}
+
 
 					//add timestamp
 					if (mwclient.getConfig().isParam("TIMESTAMP")) 
-						message = mwclient.getShortTime() + message;
+						message = mwclient.getShortTime()+ message;
 
 					//append message to chat
 					mwclient.addToChat(message);

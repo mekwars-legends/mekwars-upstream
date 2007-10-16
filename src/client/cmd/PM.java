@@ -130,7 +130,7 @@ public class PM extends Command {
 				
 				//add timestamp
 				if (mwclient.getConfig().isParam("TIMESTAMP")) 
-					message = mwclient.getShortTime() + message;
+					message ="<font color=\"" + mwclient.getConfig().isParam("CHATFONTCOLOR") + "\">" + mwclient.getShortTime()+"</font>" + message;
 				
 				//put the message in PM panel
 				mwclient.addToChat(message, CCommPanel.CHANNEL_PMAIL,tabName);

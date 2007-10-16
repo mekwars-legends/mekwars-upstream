@@ -2374,7 +2374,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	public String getReadableStatus(boolean adminStatus) {
 		DecimalFormat myFormatter = new DecimalFormat("####.##");
 		StringBuilder s = new StringBuilder(
-				"<font Color =\"black\"><br><b>Status for: " + getColoredName()
+				"<br><b>Status for: " + getColoredName()
 				+ " (" + myHouse.getColoredName() + ")</b><br>");
 		
 		// if being checked by an admin, show his activity status.
@@ -2511,7 +2511,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			s.append(saleUnits);
 		}
 		
-		s.append("<br></font>");
+		s.append("<br>");
 		return s.toString();
 	}
 	
@@ -2522,7 +2522,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	public String getReadableMercStatus() {
 		String s = "";
 		if (myHouse.isMercHouse()) {// if a merc
-			s = "<font Color =\"black\"> Mercenary information for "
+			s = "Mercenary information for "
 				+ getName() + ": <br>";// list name
 			s += "Currently fighting for: "
 				+ (((MercHouse) myHouse).getHouseFightingFor(this))
@@ -2533,7 +2533,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				s += contract.getInfo(this);
 			else
 				s += "Contract Status: Currently avaliable for hire <br>";
-			s += "</font><br>";
+			s += "<br>";
 		}
 		return s;
 	}
