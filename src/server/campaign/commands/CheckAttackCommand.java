@@ -20,6 +20,7 @@ import java.util.Enumeration;
 import java.util.StringTokenizer;
 
 import server.campaign.CampaignMain;
+import server.campaign.SHouse;
 import server.campaign.SPlayer;
 import server.campaign.SArmy;
 import server.campaign.operations.Operation;
@@ -80,7 +81,7 @@ public class CheckAttackCommand implements Command {
 		//if command has more elements, spit out checkattack for specific armies. no real reason for
 		//a user to do this through the CLI, but it is called by right clicking armies in HQ
 		if (command.hasMoreElements()) {
-			Desc = "<br><table><tr><td><font color=\"black\">Army "; 
+			Desc = "<br><table><tr><td>Army "; 
 			
 			int armyID = -1;
 			try {
@@ -98,14 +99,14 @@ public class CheckAttackCommand implements Command {
 			
 			
 			Desc += arm.getID() + " (" + arm.getBV()+ " BV) ";
-			Desc += " may attack: </font></td><td>&nbsp;</td><td>&nbsp;</td></tr>";
+			Desc += " may attack: </td><td>&nbsp;</td><td>&nbsp;</td></tr>";
 			
 			Enumeration targets = arm.getOpponents().elements();
 			while (targets.hasMoreElements()) {
 				SArmy currTarget = (SArmy)targets.nextElement();
 				SPlayer currTargetP = CampaignMain.cm.getPlayer(currTarget.getPlayerName());
 				String coloredHouseName = currTargetP.getMyHouse().getHouseFightingFor(currTargetP).getColoredName();
-				String defendableOps = listDefendableOperations(arm,currTargetP,currTarget);
+				String defendableOps = listDefendableOperations(arm,currTargetP,currTarget,p.getHouseFightingFor());
 				
 				if ( defendableOps.equals("[]") )
 					continue;
@@ -131,7 +132,7 @@ public class CheckAttackCommand implements Command {
 		
 		//otherwise, loop out *all* the armies
 		else {
-			Desc = "<font color=\"black\">Intelligence reports the following attack options:<br>";
+			Desc = "Intelligence reports the following attack options:<br>";
 			Enumeration e = p.getArmies().elements();
 			while (e.hasMoreElements()) {
 				SArmy arm = (SArmy)e.nextElement();
@@ -148,7 +149,7 @@ public class CheckAttackCommand implements Command {
 						SPlayer currTargetP = CampaignMain.cm.getPlayer(currTarget.getPlayerName());
                         if ( currTargetP == null )
                             continue;
-                        String defendableOps = listDefendableOperations(arm,currTargetP,currTarget);
+                        String defendableOps = listDefendableOperations(arm,currTargetP,currTarget,p.getHouseFightingFor());
                         if ( defendableOps.equals("[]") )
                         	continue;
 						String coloredHouseName = currTargetP.getMyHouse().getHouseFightingFor(currTargetP).getColoredName();
@@ -174,17 +175,21 @@ public class CheckAttackCommand implements Command {
 			}
 		}
 
-		CampaignMain.cm.toUser(Desc + "</font><br>",Username,true);
+		CampaignMain.cm.toUser(Desc + "<br>",Username,true);
 
 	}
 	
-	private String listDefendableOperations(SArmy aa, SPlayer dp, SArmy da){
+	private String listDefendableOperations(SArmy aa, SPlayer dp, SArmy da, SHouse ah){
 		StringBuffer report = new StringBuffer(" [");
 		OperationManager manager = CampaignMain.cm.getOpsManager(); 
 		for ( String attack : aa.getLegalOperations().keySet() ){
 			Operation o = manager.getOperation(attack);
 			if ( !aa.matches(da, o) )
 				continue;
+
+			if (dp.getHouseFightingFor().equals(ah) && !o.getBooleanValue("AllowInFaction") )
+				continue;
+
 			if ( manager.validateShortDefense(dp, da, o, null) == null ){
 				report.append(attack);
 				report.append(", ");

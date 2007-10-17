@@ -56,6 +56,9 @@ public class ActivateCommand implements Command {
 			return;
 		}
 		
+		if( command.hasMoreTokens() )
+			p.setPlayerClientVersion(command.nextToken());
+		
 		//Put it into a try block. One user was causing FormatExceptions
 		try{
 			if (!(MWServ.SERVER_VERSION).substring(0,server.MWServ.SERVER_VERSION.lastIndexOf(".")).equals(p.getPlayerClientVersion().substring(0,p.getPlayerClientVersion().lastIndexOf("."))) ) {
@@ -182,7 +185,7 @@ public class ActivateCommand implements Command {
 		
 		p.setActive(true);
 		
-		CampaignMain.cm.toUser("<font color=\"black\">[!] You're on your way to the front lines.</font>",Username,true);
+		CampaignMain.cm.toUser("[!] You're on your way to the front lines.",Username,true);
 		CampaignMain.cm.sendPlayerStatusUpdate(p,!new Boolean(CampaignMain.cm.getConfig("HideActiveStatus")).booleanValue());
 		
 		//set up a thread which will do an auto /c ca once the minactivetime expires
@@ -376,7 +379,7 @@ class CheckAttackThread extends Thread {
 			//been forcedeactivated, attacked or joined a game).
 			if (p.getDutyStatus() == SPlayer.STATUS_ACTIVE) {
 				CheckAttackCommand ca = new CheckAttackCommand();
-				CampaignMain.cm.toUser("<br><font color=\"black\">You have arrived on the front lines!</font>",p.getName(),true);
+				CampaignMain.cm.toUser("<br>You have arrived on the front lines!",p.getName(),true);
 				ca.process(new StringTokenizer(""), p.getName());    
 			}
 			

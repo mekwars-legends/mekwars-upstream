@@ -160,7 +160,7 @@ public final class ImmunityThread extends Thread {//no extension
 					if (p.getDutyStatus() == SPlayer.STATUS_ACTIVE) {
 						
 						//tell the player
-						CampaignMain.cm .toUser("<font color=\"black\">[!] Your post-game immunity expired!</font>",p.getName(), true);
+						CampaignMain.cm .toUser("[!] Your post-game immunity expired!",p.getName(), true);
 						
 						//alert other players
 						OpponentListHelper olh = new OpponentListHelper(p,OpponentListHelper.MODE_ADD);
@@ -171,7 +171,7 @@ public final class ImmunityThread extends Thread {//no extension
 							
 							NewbieHouse currH = (NewbieHouse)p.getMyHouse();
 							if (currH.getResetsRemaining(p) > 0)
-								CampaignMain.cm .toUser("<font color=\"black\">[!] Your post-game reset time expired!</font>",p.getName(), true);
+								CampaignMain.cm .toUser("[!] Your post-game reset time expired!",p.getName(), true);
 							
 							currH.removeResetPlayer(p);
 						}

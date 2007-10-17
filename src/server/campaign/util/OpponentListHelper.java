@@ -84,13 +84,11 @@ public class OpponentListHelper {
 		 * immune players, people at the same IP, or excluded players to creep
 		 * into the OLH.
 		 */
+		SHouse searchHouse = searchPlayer.getHouseFightingFor();
+
 		for (House h : CampaignMain.cm.getData().getAllHouses()) {
 
 			SHouse currHouse = (SHouse)h;
-
-			//continue to next house if this is our faction and attacks aren't allowed
-			if (currHouse.equals(searchPlayer.getHouseFightingFor()) && !currHouse.isInHouseAttacks())
-				continue;
 
 			//check all active player and ONLY active players
 			playersLoop: for (SPlayer currPlayer : currHouse.getActivePlayers().values()) {
@@ -136,9 +134,14 @@ public class OpponentListHelper {
 				OperationManager manager = CampaignMain.cm.getOpsManager(); 
 
 				for (SArmy searchArmy : searchPlayer.getArmies()) {
-					for (SArmy enemyArmy : currPlayer.getArmies()) {
-						for ( String attack : searchArmy.getLegalOperations().keySet() ){
+					armyLoop: for (SArmy enemyArmy : currPlayer.getArmies()) {
+						attackLoop: for ( String attack : searchArmy.getLegalOperations().keySet() ){
 							Operation o = manager.getOperation(attack);
+
+							//continue to next operation if this is our faction and attacks aren't allowed
+							if (currHouse.equals(searchHouse) && !o.getBooleanValue("AllowInFaction") )
+								continue attackLoop;
+
 
 							if (searchArmy.matches(enemyArmy,o)) {
 								
@@ -149,7 +152,7 @@ public class OpponentListHelper {
 								//only add each army one time
 								if (!possDefendArmies.contains(enemyArmy))
 									possDefendArmies.add(enemyArmy);
-								break;
+								break armyLoop;
 							}
 						}
 						
@@ -172,11 +175,11 @@ public class OpponentListHelper {
 				//do insertion sort on the armies, by ID. inefficient.
 				possDefLoop: for (SArmy currArmy : possDefendArmies) {
 				
-					//first insertion is automatic. otherwise NPE @ toStore.get(0).getID() below.
+					/*first insertion is automatic. otherwise NPE @ toStore.get(0).getID() below.
 					if (toStore.size() == 0) {
 						toStore.add(currArmy);
 						continue possDefLoop;
-					}
+					}*/
 					
 					for (int j = 0; j < toStore.size(); j++) {
 						
@@ -244,7 +247,7 @@ public class OpponentListHelper {
 
 		for (String currOppName : potentialOpponents.keySet()) {
 
-			StringBuilder output = new StringBuilder("<font color=\"black\">[!] ");
+			StringBuilder output = new StringBuilder("[!] ");
 			SPlayer currOpp = CampaignMain.cm.getPlayer(currOppName);
 
 			if (currOpp == null)
@@ -293,7 +296,7 @@ public class OpponentListHelper {
 			 * Also give the user a link which he can click in order
 			 * to issue a checkattack command and see the matchups.
 			 */
-			output.append(". [<a href=\"MEKWARS/c checkattack\">Report</a>]</font>");
+			output.append(". [<a href=\"MEKWARS/c checkattack\">Report</a>]");
 			CampaignMain.cm.toUser(output.toString(),currOppName,true);
 
 		}//end while(more opponents to inform)

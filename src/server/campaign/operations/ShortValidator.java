@@ -63,7 +63,7 @@ public class ShortValidator {
 	public static final int SFAIL_COMMON_TOO_MANY_COMMANDERS = 5;//The army has too many unit commanders in it.
 	public static final int SFAIL_COMMON_INSUFFICENT_SUBFACTION_ACCESS_LEVEL = 6;//cannot defend/launch this Op due to your sub factions accesslevel being too low
 	public static final int SFAIL_COMMON_MAX_BV_DIFFERENCE = 7; //max bv or max bv % difference has bene exceeded
-	//public static final int SFAIL_COMMON = 8;
+	public static final int SFAIL_COMMON_INFACTION_ATTACK = 8; //Intra-faction attacks not allowed.
 	//public static final int SFAIL_COMMON = 9;
 	//public static final int SFAIL_COMMON = 10;
 	//public static final int SFAIL_COMMON = 11;
@@ -346,6 +346,11 @@ public class ShortValidator {
 					defenderFails.add(ShortValidator.SFAIL_COMMON_ELODIFFERENCE);
 				if ( !aa.matches(currArmy, o) )
 					defenderFails.add(ShortValidator.SFAIL_COMMON_MAX_BV_DIFFERENCE);
+				
+				if ( currPlayer.getHouseFightingFor().equals(ap.getHouseFightingFor()) && !o.getBooleanValue("AllowInFaction")){
+					defenderFails.add(SFAIL_COMMON_INFACTION_ATTACK);
+				}
+
 				if (defenderFails.size() == 0)//if player can defend, add
 					fullMatches.add(currArmy);
 				else if ( o.getBooleanValue("DebugOp")){ //spamalama
@@ -1279,6 +1284,9 @@ public class ShortValidator {
 				
 			case SFAIL_COMMON_MAX_BV_DIFFERENCE:
 				return " BV difference between attacking and defending army is too large.";
+				
+			case SFAIL_COMMON_INFACTION_ATTACK:
+				return " Intra-Faction attacks not allowed.";
 				
 			/*
 			 * ATTACK failure causes

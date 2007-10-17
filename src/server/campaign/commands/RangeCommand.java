@@ -72,7 +72,7 @@ public class RangeCommand implements Command {
 			
 			SPlayer player = CampaignMain.cm.getPlayer(Username);
 			SHouse h = player.getMyHouse();
-			String result = "<font color=\"black\">These planets are within " + range + " light-years ";
+			String result = "These planets are within " + range + " light-years ";
 			if(targetfaction != null) {
 				if (facWorldsOnly)
 					result += "and " + targetfaction.getName() + " production facilities are present ";
@@ -94,7 +94,7 @@ public class RangeCommand implements Command {
 							if (owner != null)
 								result += "<font color=\"" + p.getOwner().getHouseColor() + "\">" +  p.getShortDescription(true) + "</font>" + "<br>";
 							else
-								result += "<font color=\"black\">" +  p.getSmallStatus(true) + "</font>" + "<br>";
+								result += p.getSmallStatus(true) + "<br>";
 						}
 						
 					} else {
@@ -103,13 +103,12 @@ public class RangeCommand implements Command {
 							if (owner != null)
 								result += "<font color=\"" + p.getOwner().getHouseColor() + "\">" + p.getShortDescription(true) + "</font>" + "<br>";
 							else
-								result += "<font color=\"black\">" +  p.getSmallStatus(true)  + "</font>" + "<br>";
+								result += p.getSmallStatus(true)  + "<br>";
 						}
 					}
 				}
 			}
 			result = result.substring(0,result.length()-2);
-			result += "</font>";
 			CampaignMain.cm.toUser("SM|" + result,Username,false);
 		}
 	}

@@ -149,7 +149,7 @@ public class DefaultOperation {
         operationsDefaults.put("MaxELODifference", "0");
         operationsDefaults.put("MinSubFactionAccessLevel", "0");
         operationsDefaults.put("MaxBVDifference", "150");
-        operationsDefaults.put("MaxBVPercent", "0");
+        operationsDefaults.put("MaxBVPercent", "0.0");
         
 		/*
 		 * SHORT VARIABLES. These are params which are necessary for
@@ -531,6 +531,7 @@ public class DefaultOperation {
 		 *                     Pilot/Unit kills will not be counted or published.
 		 * NoDestructionMode - if enabled, no units will be destroyed and no units will
 		 *                     be salvaged (essentially sets up a sim-match).
+		 * AllowInFaction		 - if enabled then players in the same faction will be able to attack each other 
 		 * 
 		 * NOTEs: for a training game, AllowSOLtoUse and AllowAgainsSOL should be
 		 *       set true simultaneously, otherwise player would be able to LAUNCH
@@ -1024,6 +1025,7 @@ public class DefaultOperation {
 		operationsDefaults.put("CountGameForProduction", "1.0");
 		operationsDefaults.put("NoStatisticsMode", "false");
 		operationsDefaults.put("NoDestructionMode", "false");
+		operationsDefaults.put("AllowInFaction", "false");
 		
 		//META outcome paramaters
 		operationsDefaults.put("AttackerBaseConquestAmount","0");

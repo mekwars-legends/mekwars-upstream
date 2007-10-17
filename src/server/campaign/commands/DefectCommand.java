@@ -490,6 +490,7 @@ public class DefectCommand implements Command {
 			 */
 			p.getMyHouse().removeLeader(p.getName());
 			
+			String clientVersion = p.getPlayerClientVersion();
 			p.getMyHouse().removePlayer(p,false);
 			p.setMyHouse(newHouse);
 			p.setSubFaction(newHouse.getZeroLevelSubFaction());
@@ -559,6 +560,7 @@ public class DefectCommand implements Command {
 				CampaignMain.cm.toUser(dismayMessage,Username,true);
 			}//end if(defection leaves player with negative bays)
 			
+			p.setPlayerClientVersion(clientVersion);
 			//save the player in his new house
 			p.setSave();
 			

@@ -43,7 +43,7 @@ public class UnemployedMercsCommand implements Command {
 			}
 		}
 		
-		String s = "<font color=\"black\"> Unemployed Mercenaries: ";
+		String s = "Unemployed Mercenaries: ";
 		Vector mh = CampaignMain.cm.getMercHouses();
 		for (int i = 0; i < mh.size(); i++) {
 			MercHouse searchHouse = (MercHouse) mh.get(i);
@@ -63,6 +63,6 @@ public class UnemployedMercsCommand implements Command {
 			}//end while
 		}//end for(all merc factions)
 		
-		CampaignMain.cm.toUser(s + "</font>", Username, true);
+		CampaignMain.cm.toUser(s, Username, true);
 	}
 }

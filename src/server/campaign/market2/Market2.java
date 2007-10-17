@@ -325,7 +325,7 @@ public class Market2 {
 	 * @urgru 12.29.05
 	 */
 	public String getPlayerBidsString(String playerName) {
-		String result = "<font color=\"black\">Current Bids:<br> ";
+		String result = "Current Bids:<br> ";
 		for (Integer currListID : currentAuctions.keySet()) {
 			MarketListing currList = currentAuctions.get(currListID);
 			Integer currBid = currList.getAllBids().get(playerName.toLowerCase()).getAmount();
@@ -333,7 +333,6 @@ public class Market2 {
 				result += "You bid " + currBid + " for " + currList.getListedModelName() + " (Auction #" + currListID + ")<br>";
 		}
 		
-		result += "</font>";
 		return result;
 	}
 	

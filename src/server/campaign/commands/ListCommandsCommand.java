@@ -93,7 +93,7 @@ public class ListCommandsCommand implements Command {
 		
 		Arrays.sort(commandArray);
 		String result = "SM|";
-		result += "<font color=\"black\">";
+		result += "";
 		result += "<table><tr><th>Command Name</th><th>Syntax</th><th>Access Level</th></tr>";
 
 		for( x=0; x<commandArray.length; x++){

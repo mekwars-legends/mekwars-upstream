@@ -61,7 +61,7 @@ public class DeactivateCommand implements Command {
 		}
 		
 		p.setActive(false);
-		CampaignMain.cm.toUser("<font color=\"black\">[*] You've left active duty and are now in reserve.",Username,true);
+		CampaignMain.cm.toUser("[*] You've left active duty and are now in reserve.",Username,true);
 		
 		/*
 		 * Note: Old code to stop offensive tasks was here. This is handled

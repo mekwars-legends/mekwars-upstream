@@ -599,13 +599,14 @@ Comparable {
 	 * @return potential defending houses (ie - those with territory on the world)
 	 */
 	public Vector getDefenders(SHouse Attacker) {
-		Vector result = new Vector(1,1);
-		Iterator it = getInfluence().getHouses().iterator();
+		Vector result = new Vector(getInfluence().getHouses());
+		result.trimToSize();
+		/*Iterator it = getInfluence().getHouses().iterator();
 		while (it.hasNext()) {
 			SHouse h = (SHouse) it.next();
-			if (!h.equals(Attacker) || Attacker.isInHouseAttacks())
-				result.add(h);
-		}
+			//if (!h.equals(Attacker) || Attacker.isInHouseAttacks())
+			result.add(h);
+		}*/
 		return result;
 	}
 	

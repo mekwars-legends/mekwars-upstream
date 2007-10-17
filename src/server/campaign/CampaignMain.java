@@ -1071,7 +1071,7 @@ public final class CampaignMain implements Serializable {
 		this.doSendToAllOnlinePlayers("PI|CS|" + name + "|"
 				+ SPlayer.STATUS_LOGGEDOUT, false);
 		toUser(
-				"<font color=\"black\">[*] You've logged out of the campaign.</font>",
+				"[*] You've logged out of the campaign.",
 				name, true);
 	}
 
@@ -1911,13 +1911,13 @@ public final class CampaignMain implements Serializable {
 			}
 		}
 		if (text != "")
-			this.doSendToAllOnlinePlayers("<font color=\"black\">" + Username
+			this.doSendToAllOnlinePlayers(Username
 					+ " rolled " + diceBuffer + " for a total of " + total
-					+ ", using " + text + ".</font>", true);
+					+ ", using " + text + ".", true);
 		else
-			this.doSendToAllOnlinePlayers("<font color=\"black\">" + Username
+			this.doSendToAllOnlinePlayers(Username
 					+ " rolled " + diceBuffer + " for a total of " + total
-					+ ", using 2d6.</font>", true);
+					+ ", using 2d6.", true);
 	}
 
 	public void addMechStat(String Filename, int mechsize, int gameplayed,

@@ -875,7 +875,7 @@ public class OperationManager {
 	public String tick() {
 		
 		TreeMap<Long,ShortOperation> timeSort = new TreeMap<Long,ShortOperation>();
-		String toReturn = "<font color=\"black\"><b><i>Recently Completed Games:</i><br></font></b>";
+		String toReturn = "<b><i>Recently Completed Games:</i><br></b>";
 		
 		Iterator<ShortOperation> i = this.runningOperations.values().iterator();
 		while (i.hasNext()) {

@@ -73,6 +73,7 @@ public class ForcedDefectCommand implements Command {
 		}
 		
 		//make the move
+		String clientVersion = p.getPlayerClientVersion();
 		p.getMyHouse().removeLeader(p.getName());
 		p.getMyHouse().removePlayer(p,false);
 		p.setMyHouse(h);
@@ -84,15 +85,12 @@ public class ForcedDefectCommand implements Command {
 			CampaignMain.cm.doLoginPlayer(p.getName());
 		}
 		
-		//force a save, and set save flag
-		CampaignMain.cm.forceSavePlayer(p);
-		p.setSave();
-		
 		//send appropraite messages
 		CampaignMain.cm.toUser(Username + " forced you to defect to " + h.getName(),p.getName(),true);
 		CampaignMain.cm.toUser("You forced " + p.getName() + " to defect to " + h.getName(),Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " forced " + p.getName() + " to defect to " + h.getName());
 		//server.MWServ.mwlog.modLog(Username + " forced " + p.getName() + " to defect to " + h.getName());
+		p.setPlayerClientVersion(clientVersion);
 		
 	}
 }

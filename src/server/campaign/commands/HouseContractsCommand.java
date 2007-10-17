@@ -55,7 +55,7 @@ public class HouseContractsCommand implements Command {
 			SHouse ourH = player.getMyHouse();
 						
 			//employed players
-			toSend.append("<font color=\"black\">Employed: <br>");
+			toSend.append("Employed: <br>");
 			for (SPlayer currP : ourH.getAllOnlinePlayers().values()) {
 				if (!ourH.getHouseFightingFor(currP).equals(ourH)) {
 					toSend.append(currP.getName() + ": " + ourH.getHouseFightingFor(currP).getColoredName() + "<br>");
@@ -83,9 +83,6 @@ public class HouseContractsCommand implements Command {
 			if (count == 0)
 				toSend.append("- NONE<br>");
 			
-			//close the font format
-			toSend.append("</font>");
-			
 			//send the string
 			CampaignMain.cm.toUser(toSend.toString(),Username,true);
 			return;
@@ -93,7 +90,7 @@ public class HouseContractsCommand implements Command {
 		}//end if(merc)
 		
 		//not a merc, therefor must be is a normal faction member
-		toSend.append("<font color=\"black\"> Mercenaries employed by your faction: <br>");
+		toSend.append("Mercenaries employed by your faction: <br>");
 
 		//get merc factions, loop through
 		Vector<MercHouse> mh = CampaignMain.cm.getMercHouses();
@@ -109,9 +106,6 @@ public class HouseContractsCommand implements Command {
 		//if none unemployed, say so.
 		if (count == 0)
 			toSend.append("- NONE<br>");
-		
-		//close the font format
-		toSend.append("</font>");
 		
 		CampaignMain.cm.toUser(toSend.toString(),Username,true);
 		

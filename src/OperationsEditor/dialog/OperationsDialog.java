@@ -1959,7 +1959,7 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
         BaseCheckBox.setName("AllowAgainstSOL");
 		newbiePanel1.add(BaseCheckBox);
 		
-        BaseCheckBox = new JCheckBox("Allow NonConquer To Use");
+        BaseCheckBox = new JCheckBox("Allow For NonConquer");
         BaseCheckBox.setToolTipText("set false to forbid non-conquer players from using this attack");
         BaseCheckBox.setName("AllowNonConqToUse");
 		newbiePanel1.add(BaseCheckBox);
@@ -2013,12 +2013,17 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
         BaseCheckBox.setName("NoDestructionMode");
 		newbiePanel3.add(BaseCheckBox);
 		
-        BaseCheckBox = new JCheckBox("Pay Techs:");
+        BaseCheckBox = new JCheckBox("Pay Techs");
         BaseCheckBox.setToolTipText("set false to turn off technician payments.");
         BaseCheckBox.setName("PayTechsForGame");
 		newbiePanel3.add(BaseCheckBox);
 		
-		SpringLayoutHelper.setupSpringGrid(newbiePanel3,1,5);
+        BaseCheckBox = new JCheckBox("Allow In Faction");
+        BaseCheckBox.setToolTipText("<html>If enabled then players in the same faction<br>will be able to attack each other.</html>");
+        BaseCheckBox.setName("AllowInFaction");
+		newbiePanel3.add(BaseCheckBox);
+		
+		SpringLayoutHelper.setupSpringGrid(newbiePanel3,4);
 		
 		newbiePanel4.add(new JLabel("Count Game For Production:",SwingConstants.TRAILING));
 

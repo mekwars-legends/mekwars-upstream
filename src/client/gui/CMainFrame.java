@@ -483,7 +483,7 @@ public class CMainFrame extends JFrame {
 		//    jMenuCampaignActivate.setMnemonic('A');
 		jMenuCampaignActivate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c activate");
+				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c activate#"+MWClient.CLIENT_VERSION);
 			}
 		});
 		

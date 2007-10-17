@@ -38,7 +38,6 @@ public class ListServerOpFlagsCommand implements Command {
 		
         StringBuilder result = new StringBuilder();
     
-        result.append("<font color=\"black\">");
         result.append("Server Op Flags<br>");
         result.append("<table><tr><th>Key</th>");
         result.append("<th>Value</th>");
@@ -52,7 +51,7 @@ public class ListServerOpFlagsCommand implements Command {
             result.append("</td>");
             result.append("</tr>");
         }
-        result.append("</table></font>");
+        result.append("</table>");
         CampaignMain.cm.toUser(result.toString(), Username);
 	}
 }
