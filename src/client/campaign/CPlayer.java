@@ -541,7 +541,9 @@ public class CPlayer extends Player {
 		
 		while (st.hasMoreTokens()) {
 			String filename = st.nextToken();
-			
+			if (filename.equals("CLEAR"))
+				return;
+
 			CUnit currUnit = new CUnit(mwclient);
 			currUnit.setAutoUnitData(filename, 0, 0);
 			AutoArmy.add(currUnit);

@@ -95,7 +95,6 @@ public class DefaultOperation {
 		 * MaxPlanetOwnership          - If faction owns > max %, world is not a legal target  - AFC=236
          * OnlyAgainstHomeWorlds       - Limit attack to planets that are homeworlds
          * OnlyAgainstNonHomeWorlds    - Limit attack to planets that are not homeworlds
-         * RandomDeployment            - Operation picks the map edge for the attackers and defenders
          * RealBlindDrop               - Set Real Blind Drop of this op
 		 * ReportOpToNewsFeed          - default to false. Set true if you want the op reported to the server's News Feed.
          * DoesNotCountForPP           - Armies built just for this OP will not count towards production.
@@ -136,7 +135,6 @@ public class DefaultOperation {
 		operationsDefaults.put("MaxPlanetOwnership","100");//attack anywhere
         operationsDefaults.put("OnlyAgainstHomeWorlds", "false");
         operationsDefaults.put("OnlyAgainstNonHomeWorlds", "false");
-        operationsDefaults.put("RandomDeployment", "false");
         operationsDefaults.put("RealBlindDrop", "false");
         operationsDefaults.put("ReportOpToNewsFeed", "false");
         operationsDefaults.put("DoesNotCountForPP", "false");
@@ -779,7 +777,28 @@ public class DefaultOperation {
          * 
          * [End Victory Conditions]
          * 
+         * [Begin Deployment]
+         * RandomDeployment            - Operation picks the map edge for the attackers and defenders
+         * DeployNorthwest				- Chance to deploy Northwest
+         * DeployNorth					- Chance to deploy North
+         * DeployNortheast				- Chance to deploy Northeast
+         * DeployEast					- Chance to deploy East
+         * DeploySoutheast				- Chance to deploy SouthEast
+         * DeploySouth					- Chance to deploy South
+         * DeploySouthwest				- Chance to deploy Southwest
+         * DeployWest					- Chance to deploy West
+         * DeployEdge					- Chance to deploy on the Edge
+         * DeployCenter					- Chance to deploy in the Center
+         * DeployNorthwestdeep			- Chance to deploy Northwest (Deep)
+         * DeployNorthdeep				- Chance to deploy North (Deep)
+         * DeployNortheastdeep			- Chance to deploy Northeast (Deep)
+         * DeployEastdeep				- Chance to deploy East (Deep)
+         * DeploySoutheastdeep			- Chance to deploy Southeast (Deep)
+         * DeploySouthdeep				- Chance to deploy South (Deep)
+         * DeploySouthwestdeep			- Chance to deploy Southwest (Deep)
+         * DeployWestdeep				- Chance to deploy West (Deep)
          * 
+         * [End Deployment
          */
 
 		//army contruction
@@ -1162,6 +1181,27 @@ public class DefaultOperation {
         operationsDefaults.put("UseUnitCommander","false");
         operationsDefaults.put("MinimumUnitCommanders","1");
         operationsDefaults.put("MaximumUnitCommanders","1");
+        
+        //Deployment
+        operationsDefaults.put("RandomDeployment", "false");
+        operationsDefaults.put("DeployNorthwest","1");
+        operationsDefaults.put("DeployNorth","1");
+        operationsDefaults.put("DeployNortheast","1");
+        operationsDefaults.put("DeployEast","1");
+        operationsDefaults.put("DeploySoutheast","1");
+        operationsDefaults.put("DeploySouth","1");
+        operationsDefaults.put("DeploySouthwest","1");
+        operationsDefaults.put("DeployWest","1");
+        operationsDefaults.put("DeployEdge","0");
+        operationsDefaults.put("DeployCenter","0");
+        operationsDefaults.put("DeployNorthwestdeep","0");
+        operationsDefaults.put("DeployNorthdeep","0");
+        operationsDefaults.put("DeployNortheastdeep","0");
+        operationsDefaults.put("DeployEastdeep","0");
+        operationsDefaults.put("DeploySoutheastdeep","0");
+        operationsDefaults.put("DeploySouthdeep","0");
+        operationsDefaults.put("DeploySouthwestdeep","0");
+        operationsDefaults.put("DeployWestdeep","0");
 
 		/*
 		 * LONG VARIABLES. These params are necessary for operations

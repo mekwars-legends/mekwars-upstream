@@ -38,6 +38,18 @@ public final class Buildings{
     public static final int SOUTHWEST = 7;
     public static final int WEST = 8;
 
+    public static final int EDGE = 9;
+    public static final int CENTER = 10;
+
+    public static final int NORTHWESTDEEP = 11;
+    public static final int NORTHDEEP = 12;
+    public static final int NORTHEASTDEEP= 13;
+    public static final int EASTDEEP = 14;
+    public static final int SOUTHEASTDEEP = 15;
+    public static final int SOUTHDEEP = 16;
+    public static final int SOUTHWESTDEEP = 17;
+    public static final int WESTDEEP = 18;
+
     private int totalBuildings = 0;
     private int minBuildings = 0;
     private int minFloors = 0;

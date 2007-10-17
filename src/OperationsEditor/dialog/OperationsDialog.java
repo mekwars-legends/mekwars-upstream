@@ -403,6 +403,7 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
         JPanel cityPanel = new JPanel();//Set up City Generator for Ops
         JPanel victoryPanel = new JPanel();//Set up Victory Conditions.
 		JPanel teamPanel = new JPanel();//Set up for Team games.
+		JPanel deploymentPanel = new JPanel();//Set up game deployments.
         
 		ConfigPane = new JTabbedPane();
 		
@@ -511,11 +512,6 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
         BaseCheckBox = new JCheckBox("May Not Have Home");
         BaseCheckBox.setToolTipText("<html>If checked, attack type may only be used against<br>a world which has not been labeled as a homeworld.</html>");
         BaseCheckBox.setName("OnlyAgainstNonHomeWorlds");
-        rangesBox2.add(BaseCheckBox);
-
-        BaseCheckBox = new JCheckBox("Random Deployment");
-        BaseCheckBox.setToolTipText("<html>If checked the operation picks what sides<br>the attacker and defender start on.</html>");
-        BaseCheckBox.setName("RandomDeployment");
         rangesBox2.add(BaseCheckBox);
 
         BaseCheckBox = new JCheckBox("Real Blind Drop");
@@ -2889,9 +2885,154 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
         masterBox.add(teamParamsPanel);
         teamPanel.add(masterBox);
 
+        /*
+         * Deployment Panel
+         * 
+         * Set up the Deployment settings that will be sent to MegaMek
+         *  
+         */
+        
+        JPanel deploymentParamsPanel = new JPanel(new SpringLayout());
+        JPanel deploymentParamsPanel2 = new JPanel(new SpringLayout());
+        checkBoxBox = new JPanel(new SpringLayout());
+                
+        masterBox = new JPanel();
+        masterBox.setLayout(new BoxLayout(masterBox, BoxLayout.Y_AXIS));
+        JPanel deploymentBox = new JPanel();
+        deploymentBox.setLayout(new BoxLayout(deploymentBox, BoxLayout.X_AXIS));
+        
+        BaseCheckBox = new JCheckBox("Random Deployment");
+        BaseCheckBox.setToolTipText("<html>If checked the operation picks what sides<br>the attacker and defender start on.</html>");
+        BaseCheckBox.setName("RandomDeployment");
+        checkBoxBox.add(BaseCheckBox);
+        
+        SpringLayoutHelper.setupSpringGrid(checkBoxBox,3);
+
+        BaseTextField = new JTextField(5);
+        deploymentParamsPanel.add(new JLabel("Northwest:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Chances for the attacker to deploy Northwest</html>");
+        BaseTextField.setName("DeployNorthwest");
+        deploymentParamsPanel.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        deploymentParamsPanel.add(new JLabel("North:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Chances for the attacker to deploy North</html>");
+        BaseTextField.setName("DeployNorth");
+        deploymentParamsPanel.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        deploymentParamsPanel.add(new JLabel("Northeast:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Chances for the attacker to deploy Northeast</html>");
+        BaseTextField.setName("DeployNortheast");
+        deploymentParamsPanel.add(BaseTextField);
+
+
+        BaseTextField = new JTextField(5);
+        deploymentParamsPanel.add(new JLabel("East:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Chances for the attacker to deploy East</html>");
+        BaseTextField.setName("DeployEast");
+        deploymentParamsPanel.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        deploymentParamsPanel.add(new JLabel("Southeast:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Chances for the attacker to deploy Southeast</html>");
+        BaseTextField.setName("DeploySoutheast");
+        deploymentParamsPanel.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        deploymentParamsPanel.add(new JLabel("South:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Chances for the attacker to deploy South</html>");
+        BaseTextField.setName("DeploySouth");
+        deploymentParamsPanel.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        deploymentParamsPanel.add(new JLabel("Southwest:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Chances for the attacker to deploy Southwest</html>");
+        BaseTextField.setName("DeploySouthwest");
+        deploymentParamsPanel.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        deploymentParamsPanel.add(new JLabel("West:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Chances for the attacker to deploy West</html>");
+        BaseTextField.setName("DeployWest");
+        deploymentParamsPanel.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        deploymentParamsPanel.add(new JLabel("Edge:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Chances for the attacker to deploy Edge</html>");
+        BaseTextField.setName("DeployEdge");
+        deploymentParamsPanel.add(BaseTextField);
+
+        SpringLayoutHelper.setupSpringGrid(deploymentParamsPanel,2);
+        
+        BaseTextField = new JTextField(5);
+        deploymentParamsPanel2.add(new JLabel("Northwest (Deep):",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Chances for the attacker to deploy Northwest (Deep)</html>");
+        BaseTextField.setName("DeployNorthwestdeep");
+        deploymentParamsPanel2.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        deploymentParamsPanel2.add(new JLabel("North (Deep):",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Chances for the attacker to deploy North (Deep)</html>");
+        BaseTextField.setName("DeployNorthdeep");
+        deploymentParamsPanel2.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        deploymentParamsPanel2.add(new JLabel("Northeast (Deep):",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Chances for the attacker to deploy Northeast (Deep)</html>");
+        BaseTextField.setName("DeployNortheastdeep");
+        deploymentParamsPanel2.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        deploymentParamsPanel2.add(new JLabel("East (Deep):",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Chances for the attacker to deploy East (Deep)</html>");
+        BaseTextField.setName("DeployEastdeep");
+        deploymentParamsPanel2.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        deploymentParamsPanel2.add(new JLabel("Southeast (Deep):",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Chances for the attacker to deploy Southeast (Deep)</html>");
+        BaseTextField.setName("DeploySoutheastdeep");
+        deploymentParamsPanel2.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        deploymentParamsPanel2.add(new JLabel("South (Deep):",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Chances for the attacker to deploy South (Deep)</html>");
+        BaseTextField.setName("DeploySouthdeep");
+        deploymentParamsPanel2.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        deploymentParamsPanel2.add(new JLabel("Southwest (Deep):",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Chances for the attacker to deploy Southwest (Deep)</html>");
+        BaseTextField.setName("DeploySouthwestdeep");
+        deploymentParamsPanel2.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        deploymentParamsPanel2.add(new JLabel("West (deep):",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Chances for the attacker to deploy West (Deep)</html>");
+        BaseTextField.setName("DeployWestdeep");
+        deploymentParamsPanel2.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        deploymentParamsPanel2.add(new JLabel("Center:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Chances for the attacker to deploy Center</html>");
+        BaseTextField.setName("DeployCenter");
+        deploymentParamsPanel2.add(BaseTextField);
+
+        SpringLayoutHelper.setupSpringGrid(deploymentParamsPanel2,2);
+
+
+        deploymentBox.add(deploymentParamsPanel);
+        deploymentBox.add(deploymentParamsPanel2);
+        masterBox.add(checkBoxBox);
+        masterBox.add(deploymentBox);
+        deploymentPanel.add(masterBox);
+
+
         ConfigPane.addTab("Buildings",null,buildingsPanel,"Set up buildings for operations.");
 		ConfigPane.addTab("Chicken/Leech",null,chickenLeechPanel,"<html>Set up what happens to those that flee and<br>those that don't pay attention to an attack.</html>");
         ConfigPane.addTab("City Generator",null,cityPanel,"Generate a City.");
+        ConfigPane.addTab("Deployment",null,deploymentPanel,"Set Army Deployment Chances.");
 		ConfigPane.addTab("Faction Limits",null,factionPanel,"Exlude factions from using or defending the op.");
 		ConfigPane.addTab("Meta Awards",null,metaSetupPanel,"<html>Set what your faction gets for this op.<br>Land, Units, Components</html>");
 		ConfigPane.addTab("Newbie Ops",null,newbieOpsPanel,"how to treat the new player in your life");

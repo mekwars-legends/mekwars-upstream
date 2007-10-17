@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.9.x
++ RFE 1439731 "deployment" tab in op editor
++ Bug: OMG getting created for Gun Emplacements
 + REF 1433520: Allow in house attacks as an operation setting
 + Bug: Server would set client color to black if they had too much red in it
 + Added ability to change foreground, background, and font size on the client

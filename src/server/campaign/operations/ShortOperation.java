@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
+import java.util.Vector;
 
 import server.MWServ;
 import server.campaign.AutoArmy;
@@ -164,8 +165,10 @@ public class ShortOperation implements Comparable {
 	private int[] mapEdge = {Buildings.NORTH,Buildings.SOUTH,Buildings.EAST,Buildings.WEST};
     private int[] mapEdgeReverse = {Buildings.SOUTH,Buildings.NORTH,Buildings.WEST,Buildings.EAST};
     
-    private int[] playerEdge = {Buildings.NORTHWEST,Buildings.NORTH,Buildings.NORTHEAST,Buildings.EAST,Buildings.SOUTHEAST,Buildings.SOUTH,Buildings.SOUTHWEST,Buildings.WEST};
-    private int[] playerEdgeReverse = {Buildings.SOUTHEAST,Buildings.SOUTH,Buildings.SOUTHWEST,Buildings.WEST,Buildings.NORTHWEST,Buildings.NORTH,Buildings.NORTHEAST,Buildings.EAST};
+    private int[] playerEdge = {Buildings.NORTHWEST,Buildings.NORTH,Buildings.NORTHEAST,Buildings.EAST,Buildings.SOUTHEAST,Buildings.SOUTH,Buildings.SOUTHWEST,Buildings.WEST, Buildings.EDGE, Buildings.CENTER,
+    		Buildings.NORTHWESTDEEP,Buildings.NORTHDEEP,Buildings.NORTHEASTDEEP,Buildings.EASTDEEP,Buildings.SOUTHEASTDEEP,Buildings.SOUTHDEEP,Buildings.SOUTHWESTDEEP,Buildings.WESTDEEP};
+    private int[] playerEdgeReverse = {Buildings.SOUTHEAST,Buildings.SOUTH,Buildings.SOUTHWEST,Buildings.WEST,Buildings.NORTHWEST,Buildings.NORTH,Buildings.NORTHEAST,Buildings.EAST,Buildings.CENTER,Buildings.EDGE,
+    		Buildings.SOUTHEASTDEEP,Buildings.SOUTHDEEP,Buildings.SOUTHWESTDEEP,Buildings.WESTDEEP,Buildings.NORTHWESTDEEP,Buildings.NORTHDEEP,Buildings.NORTHEASTDEEP,Buildings.EASTDEEP};
 
     private int attackerEdge = -1;
     private int defenderEdge = -1;
@@ -486,9 +489,11 @@ public class ShortOperation implements Comparable {
              * server lets people pick their own deployment areas. Probably by rolling.
              */
             else if (o.getBooleanValue("RandomDeployment")){
-                int pos = CampaignMain.cm.getR().nextInt(playerEdge.length);
+                int pos = getRandomDeployment(o);
                 defenderEdge = playerEdge[pos];
                 attackerEdge = playerEdgeReverse[pos];
+                if ( pos >= Buildings.NORTHWESTDEEP )
+                	gameOptions += "|deep_deployment|true";
             }
 
             if ( o.getBooleanValue("TeamOperation") ) {
@@ -2461,4 +2466,43 @@ public class ShortOperation implements Comparable {
     	return this.cancellingPlayers;
     }
     
+    private int getRandomDeployment(Operation o){
+    	int position = 1;
+    	String[] positionNames = {"DeployNorthwest",
+    			"DeployNorth",
+    			"DeployNortheast",
+    			"DeployEast",
+    			"DeploySoutheast",
+    			"DeploySouth",
+    			"DeploySouthwest",
+    			"DeployWest",
+    			"DeployEdge",
+    			"DeployCenter",
+    			"DeployNorthwestdeep",
+    			"DeployNorthdeep",
+    			"DeployNortheastdeep",
+    			"DeployEastdeep",
+    			"DeploySoutheastdeep",
+    			"DeploySouthdeep",
+    			"DeploySouthwestdeep",
+    			"DeployWestdeep"};
+
+    	Vector<Integer> deploymentChoices = new Vector<Integer>();
+    	
+    	for ( int pos = 0; pos < positionNames.length; pos++ ){
+    		int chances = o.getIntValue(positionNames[pos]);
+    		for ( int count = 0; count < chances; count++ )
+    			deploymentChoices.add(pos);
+    	}
+    	deploymentChoices.trimToSize();
+    	
+    	if ( deploymentChoices.size() < 1)
+    		return position;
+    	
+    	if ( deploymentChoices.size() == 1)
+    		return deploymentChoices.firstElement();
+    	
+    	int rand = CampaignMain.cm.getR().nextInt(deploymentChoices.size());
+    	return deploymentChoices.elementAt(rand);
+    }
 }//end OperationsManager class
