@@ -607,8 +607,7 @@ public class ShortResolver {
 		if (!so.isFromReserve()
 				&& CampaignMain.cm.getBooleanConfig("ForcedDeactivation")) {
 			winner.setActive(false);
-			CampaignMain.cm
-					.toUser(
+			CampaignMain.cm.toUser(
 							"You've left the front lines to repair and refit, and are now in reserve.",
 							winner.getName());
 		}
@@ -1086,8 +1085,7 @@ public class ShortResolver {
 				toSave.append(buildingReport);
 
 			// Don't allow 0 base pay
-			if (earnedMoney < 0)
-				earnedMoney = 0;
+			earnedMoney = Math.max(earnedMoney, 0);
 
 			int actualPay = 0;
 			String techFiringWarning = "";
@@ -1112,10 +1110,7 @@ public class ShortResolver {
 						- salvageAndRepairCosts;
 
 				// check to see if the player can afford to pay his techs.
-				int availMoney = currP.getMoney() + actualPay;
-				if (availMoney < 0) {
-					availMoney = 0;
-				}
+				int availMoney = Math.max(currP.getMoney() + actualPay,0);
 
 				/*
 				 * If the tech payment is greater than the amount the player has
