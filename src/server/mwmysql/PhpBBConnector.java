@@ -102,6 +102,8 @@ public class PhpBBConnector {
 				  	// grab an unused id.
 				  	Statement stmt = con.createStatement();
 				  	rs = stmt.executeQuery("SELECT MAX(user_id) as total FROM " + userTable);
+				  	// Note that while this is how phpBB does it, it is a potential race condition
+				  	
 				  	if(rs.next()) {
 					  	userID = rs.getInt("total") + 1;
 				  	}
@@ -113,12 +115,14 @@ public class PhpBBConnector {
 				  	ps.executeUpdate();
 				  	stmt.close();
 				  	// Now add to the groups
+				  	ps.close();
 				  	ps = con.prepareStatement("INSERT INTO " + groupsTable + " (group_name, group_description, group_single_user, group_moderator) VALUES ('', 'Personal User', 1, 0)", PreparedStatement.RETURN_GENERATED_KEYS);
 				  	ps.executeUpdate();
 				  	rs = ps.getGeneratedKeys();
 				  	rs.next();
 				  	int groupID = rs.getInt(1);
-			  
+				  	ps.close();
+				  	
 				  	ps = con.prepareStatement("INSERT INTO " + userGroupTable + " (user_id, group_id, user_pending) VALUES (?, ?, 0)");
 				  	ps.setInt(1, userID);
 				  	ps.setInt(2, groupID);

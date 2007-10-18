@@ -1221,12 +1221,16 @@ public final class CampaignMain implements Serializable {
 
 			try {
 				if(CampaignMain.cm.isUsingMySQL()) {
-					if(!CampaignMain.cm.MySQL.playerExists(name))
-						return null;
-					SPlayer p = new SPlayer();
-					int pid = CampaignMain.cm.MySQL.getPlayerIDByName(name);
-					p.fromDB(pid);
-					return p;
+					boolean playerFound = false;
+					if(CampaignMain.cm.MySQL.playerExists(name)) {
+						playerFound = true;
+					}
+					if(playerFound) {
+						SPlayer p = new SPlayer();
+						int pid = CampaignMain.cm.MySQL.getPlayerIDByName(name);
+						p.fromDB(pid);
+						return p;
+					}
 				}
 				// log the load attempt & create readers
 				MWServ.mwlog.mainLog("Loading pfile for: " + name);
