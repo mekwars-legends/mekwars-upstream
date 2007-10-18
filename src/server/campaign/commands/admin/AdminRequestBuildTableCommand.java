@@ -25,7 +25,7 @@ public class AdminRequestBuildTableCommand implements Command {
 	 */
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = " list | get[#filename]";
+	String syntax = "list,get[#folder#filename]";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}

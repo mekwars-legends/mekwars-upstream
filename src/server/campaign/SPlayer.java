@@ -2924,15 +2924,16 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			}
 		}
 		if(getArmies().size() > 0) {
+			ps.close();
 			ps = CampaignMain.cm.MySQL.getPreparedStatement("DELETE from playerarmies WHERE playerID = " + getDBId());
 			ps.executeUpdate();
 			for (int i = 0; i < getArmies().size(); i++) {
-
+					ps.close();
 					sql.setLength(0);
 					sql.append("INSERT into playerarmies set playerID = " + getDBId() + ", armyID = " + getArmies().elementAt(i).getID() + ", armyString = ?");
 					ps=CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
 					ps.setString(1, getArmies().elementAt(i).toString(false,"%"));
-					ps.executeUpdate();			
+					ps.executeUpdate();	
 				}
 			}
 		// Save Personal Pilots Queues

@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.9.x
++ Eliminated last of the memory leaks from database code
++ Started prep work for saving Mercenary house info to database
 + RFE 1439731 "deployment" tab in op editor
 + Bug: OMG getting created for Gun Emplacements
 + REF 1433520: Allow in house attacks as an operation setting

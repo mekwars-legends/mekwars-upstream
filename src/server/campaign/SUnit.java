@@ -590,6 +590,7 @@ public final class SUnit extends Unit implements Serializable {
 				if (weapon.hasFlag(WeaponType.F_MG)) {
 					sql.setLength(0);
 					sql.append("INSERT into unit_mgs set unitID=?, mgLocation=?, mgRapidFire=?");
+					ps.close();
 					ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
 					ps.setInt(1, getId());
 					ps.setInt(2, location);
@@ -610,6 +611,7 @@ public final class SUnit extends Unit implements Serializable {
 				AmmoType at = (AmmoType)mAmmo.getType();
 				sql.setLength(0);
 				sql.append("INSERT into unit_ammo set unitID = ?, ammoLocation = ?, ammoHotLoaded=?, ammoType=?, ammoInternalName=?, ammoShotsLeft=?");
+				ps.close();
 				ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
 				ps.setInt(1, getId());
 				ps.setInt(2, AmmoLoc);

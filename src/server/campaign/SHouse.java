@@ -504,7 +504,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 				ps.executeUpdate("DELETE from faction_pilot_skills WHERE factionID = " + getDBId());
 				for (int pos = 0; pos < Unit.MAXBUILD; pos ++ ) {
 					String skill = getBasePilotSkill(pos);
-
+					ps.close();
  					ps = CampaignMain.cm.MySQL.getPreparedStatement("INSERT into faction_pilot_skills set factionID = ?, skillID = ?, pilotSkills = ?");
 					ps.setInt(1, getDBId());
 					ps.setString(3, skill);
