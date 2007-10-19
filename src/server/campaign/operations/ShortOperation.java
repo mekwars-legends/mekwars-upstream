@@ -1387,7 +1387,10 @@ public class ShortOperation implements Comparable {
 				
 			}
 			toStore.append("/ Start BV: " + startingBV + " / Finish BV: " + finishingBV + " ");
-			toStore.append("/ Terrain: " + aTerrain.getDisplayName() + " ");
+			if ( aTerrain != null )
+				toStore.append("/ Terrain: " + aTerrain.getDisplayName() + " ");
+			else
+				toStore.append("/ Terrain: " + playEnvironment.getName() + " " );
 			toStore.append("/ Theme: " + playEnvironment.getTheme());
 			if ( CampaignMain.cm.getBooleanConfig("UseOperationsRule") ){
 				if ( this.getWinners().containsKey(this.getAttackers().firstKey()) ){

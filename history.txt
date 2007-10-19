@@ -3,6 +3,7 @@ VERSION HISTORY:
 
 v 0.2.10.x
 Release Server 0.2.10.1
++ Bug: ShortOperations erroring when advance terrain is not used.
 + Bug: OpponentListHelper breaking out too soon.
 + Found 1 more leak in phpBB integration code.  Fixed
 + If a player is not in the database, will look for a pfile before creating a new player
