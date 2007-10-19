@@ -91,24 +91,16 @@ public class MWClientInfo implements Serializable, java.lang.Comparable {
 	}
 	
 	public void setColor(String c) {
-		final String[] Colors = {"black", "green", "olive", "navy", "purple",
-				"teal", "silver", "gray", "lime", "yellow", "blue", "fuchsia",
-		"aqua"};
 		
-		for (int i = 0; i < Colors.length; i++) {
-			if (Colors[i].equalsIgnoreCase(c)){
-				color = c;
-				return;
-			}
+		//check if its hex without the #
+		if ( !c.startsWith("#") ){
+			try{
+                Integer.parseInt(c,16);
+                c = "#"+c;
+			}catch(Exception ex){}
 		}
-		
-		if (c.length() != 6 )
-		{
-			color = Colors[0];
-			return;
-		}
-		
-		color = "#"+c;
+			
+		color = c;
 	}
 	
 	@Override

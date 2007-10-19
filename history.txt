@@ -1,9 +1,12 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.9.x
+v 0.2.10.x
+Release Server 0.2.10.1
++ Bug: OpponentListHelper breaking out too soon.
 + Found 1 more leak in phpBB integration code.  Fixed
 + If a player is not in the database, will look for a pfile before creating a new player
+Release Client & Server 0.2.10.0
 + Eliminated last of the memory leaks from database code
 + Started prep work for saving Mercenary house info to database
 + RFE 1439731 "deployment" tab in op editor
@@ -29,6 +32,7 @@ v 0.2.9.x
 + RFE 1720368: Cancel Operation Command needs confirmation
 + Bug: Army BV not always being updated when a unit is repaired.
 + Bug: FM mod not being used when BV difference was checked for armies
+v 02.9.x
 Release Client & Server 0.2.9.0
 + Bug: Upload Build Table Gui not working correctly.
 + Added Gui to Admin menu for Mul related commands

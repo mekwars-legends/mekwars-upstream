@@ -134,7 +134,7 @@ public class OpponentListHelper {
 				OperationManager manager = CampaignMain.cm.getOpsManager(); 
 
 				for (SArmy searchArmy : searchPlayer.getArmies()) {
-					armyLoop: for (SArmy enemyArmy : currPlayer.getArmies()) {
+					for (SArmy enemyArmy : currPlayer.getArmies()) {
 						attackLoop: for ( String attack : searchArmy.getLegalOperations().keySet() ){
 							Operation o = manager.getOperation(attack);
 
@@ -152,7 +152,7 @@ public class OpponentListHelper {
 								//only add each army one time
 								if (!possDefendArmies.contains(enemyArmy))
 									possDefendArmies.add(enemyArmy);
-								break armyLoop;
+								break attackLoop;
 							}
 						}
 						
