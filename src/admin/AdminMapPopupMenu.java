@@ -113,10 +113,10 @@ public class AdminMapPopupMenu extends JMenu {
         if ( userLevel >= mwclient.getData().getAccessLevel("AdminCreatePlanet") )
             this.add(item);
 		
-		item = new JMenuItem("Destory Planet");
+		item = new JMenuItem("Destroy Planet");
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ex) {
-				int result = JOptionPane.showConfirmDialog(new JFrame(),"Are you Sure you want to Destory this planet?");
+				int result = JOptionPane.showConfirmDialog(new JFrame(),"Are you Sure you want to Destroy this planet?");
 				if (result == JOptionPane.YES_OPTION)
 				{
 					mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c admindestroyplanet#"+ pname);

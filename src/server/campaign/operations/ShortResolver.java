@@ -3706,14 +3706,14 @@ public class ShortResolver {
 			try {
 				if (dropLivingUnits.size() > 0) {
 
-					int unitsToDestory = CampaignMain.cm
+					int unitsToDestroy = CampaignMain.cm
 							.getIntegerConfig("DisconnectionAddUnitsDestroyed");
 					int unitsToSalvage = CampaignMain.cm
 							.getIntegerConfig("DisconnectionAddUnitsSalvage");
 
-					// DESTORY! RAWR!
+					// DESTROY! RAWR!
 					int unitsDestroyed = 0;
-					while (unitsDestroyed < unitsToDestory
+					while (unitsDestroyed < unitsToDestroy
 							&& dropLivingUnits.size() > 0) {
 
 						OperationEntity randomEntity = dropLivingUnits
