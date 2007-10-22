@@ -66,6 +66,7 @@ public class Server implements Runnable {
 			MWServ.mwlog.errLog(e);
 			MWServ.mwlog.mainLog("DataProvider: Could not create server socket. Shutting down.");
 			MWServ.mwlog.infoLog("DataProvider: Could not create server socket. Shutting down.");
+			return;
 		}
 		
 		MWServ.mwlog.mainLog("DataProvider: server created at port "+dataPort+". Address "+IpAddress+". Waiting for calls...");
