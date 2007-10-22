@@ -662,10 +662,18 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("TechsForAssaultBattleArmor");
 		techSpring.add(baseTextField);
 
-		SpringLayoutHelper.setupSpringGrid(techSpring,14,4);
+		baseTextField = new JTextField(5);
+		techSpring.add(new JLabel("Non-House Unit Increased Techs:", SwingConstants.TRAILING));
+		baseTextField.setToolTipText("Float field.  Multiplier to tech cost of non-house units.  Only used with Tech Repair.");
+		baseTextField.setName("NonFactionUnitsIncreasedTechs");
+		techSpring.add(baseTextField);
+		
+		SpringLayoutHelper.setupSpringGrid(techSpring,15,4);
 
 		//finalize the layout
 		technicianPanel.add(techsBox);
+		
+		
 
 		/*
 		 * PILOT SKILLS Panel
@@ -4261,7 +4269,12 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setToolTipText("Parts are pulled from the players cache to use for repairs.");
         BaseCheckBox.setName("UsePartsRepair");
         repairSpring.add(BaseCheckBox);
-
+        
+        BaseCheckBox = new JCheckBox("Non-Faction Units cost extra techs");
+        BaseCheckBox.setToolTipText("Only used with Tech Repairs.  Increases the tech cost of non-faction units.");
+        BaseCheckBox.setName("UseNonFactionUnitIncreasedTechs");
+        repairSpring.add(BaseCheckBox);
+        
         SpringLayoutHelper.setupSpringGrid(repairSpring, 3);
 
         //The base cost to hire a tech.

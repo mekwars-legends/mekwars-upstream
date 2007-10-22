@@ -677,6 +677,10 @@ public class DefaultServerOptions {
         defaults.setProperty("UseSimpleRepair","false");
         defaults.setProperty("UseTechRepair","false");
         
+        //Increase the cost of non-faction units for maintenance
+        defaults.setProperty("UseNonFactionUnitsIncreasedTechs", "false");
+        defaults.setProperty("NonFactionUnitsIncreasedTechs", "1.0");
+        
         //The base cost to hire a tech.
         defaults.setProperty("GreenTechHireCost","1");
         defaults.setProperty("RegTechHireCost","2");

@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ Laid groundwork for increasing costs of non-house units
 Release Server 0.2.10.1
 + Bug: ShortOperations erroring when advance terrain is not used.
 + Bug: OpponentListHelper breaking out too soon.
