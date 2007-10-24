@@ -1960,7 +1960,7 @@ public class CHQPanel extends JPanel {
 				int mode = Integer.parseInt(st.nextToken());
 				int lid = Integer.parseInt(st.nextToken());
 				boolean useForceSize = Boolean.parseBoolean(mwclient.getserverConfigs("UseOperationsRule"));
-				int opForceSize = CArmy.NO_LIMIT;
+				float opForceSize = CArmy.NO_LIMIT;
 				double forceSizeMod = 1;
 				
                 String operation = st.nextToken();
@@ -1975,7 +1975,7 @@ public class CHQPanel extends JPanel {
                     if ( useForceSize ) {
                     	opForceSize = currArmy.getOpForceSize();
                     	if ( opForceSize > 0 )
-                    		forceSizeMod = currArmy.forceSizeModifier((double)opForceSize);
+                    		forceSizeMod = currArmy.forceSizeModifier(opForceSize);
                     }
                     //load the default if a non-entry is set.
                     if (toSend.trim().equals(""))

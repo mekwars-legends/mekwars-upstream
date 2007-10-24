@@ -55,7 +55,7 @@ public class ArmyOpForceSizeCommand implements Command {
 			int armyid = Integer.parseInt((String)command.nextElement());
 			if (command.hasMoreElements()) {
 				
-				int limit = Integer.parseInt(command.nextToken());
+				float limit = Float.parseFloat(command.nextToken());
 				SPlayer p = CampaignMain.cm.getPlayer(Username);
 				if (p != null) {
 					if (p.getDutyStatus() == SPlayer.STATUS_ACTIVE) {

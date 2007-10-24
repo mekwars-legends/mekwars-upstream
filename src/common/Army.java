@@ -47,7 +47,7 @@ public class Army {
 	
 	private boolean armyPlayerLocked = false; //Used by players to keep armies from being cleared
 
-	private int opForceSize = NO_LIMIT;
+	private float opForceSize = NO_LIMIT;
 	
 	private Hashtable<Integer,Integer> c3Network = new Hashtable<Integer,Integer>();
 
@@ -316,11 +316,11 @@ public class Army {
 		return Math.max(1, count);
 	}
 	
-	public int getOpForceSize() {
+	public float getOpForceSize() {
 		return this.opForceSize;
 	}
 	
-	public void setOpForceSize(int force) {
+	public void setOpForceSize(float force) {
 		this.opForceSize = force;
 	}
 	

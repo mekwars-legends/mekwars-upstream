@@ -832,7 +832,7 @@ public class CPlayer extends Player {
 		StringTokenizer ST = new StringTokenizer(data, DELIMITER);
 		if (ST.hasMoreTokens()) {
 			int army = Integer.parseInt(ST.nextToken());
-			int opForceSize = Integer.parseInt(ST.nextToken());
+			float opForceSize = Float.parseFloat(ST.nextToken());
 			
 			this.getArmy(army).setOpForceSize(opForceSize);
 		}

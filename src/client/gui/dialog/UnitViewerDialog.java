@@ -669,6 +669,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
 					String unitFile = ms.getEntryName();
 					String unit = ms.getName();
 					this.setVisible(false);
+					int weightClass = chWeightClass.getSelectedIndex();
                     
                     if ( unitFile == null || unitFile.equals("null") ){
                         unitFile = ms.getSourceFile().getName();
@@ -702,7 +703,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
 			            return;
 			        }
 
-			        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c createunit#"+unitFile+"#"+fluff+"#"+gunnery+"#"+piloting+"#"+skills);
+			        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c createunit#"+unitFile+"#"+fluff+"#"+gunnery+"#"+piloting+"#"+weightClass+"#"+skills);
 
 					this.dispose();
 				}

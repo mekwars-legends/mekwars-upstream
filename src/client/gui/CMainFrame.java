@@ -1409,7 +1409,7 @@ public class CMainFrame extends JFrame {
 		
 		String force = JOptionPane.showInputDialog(this.getContentPane(),
 				"<HTML>" + "Force Size To Face	? [-1 to disable the limit]<i><br><br>" + example
-				+ "<br></i></HTML>", Integer.toString(selectedArmy.getOpForceSize()),
+				+ "<br></i></HTML>", Float.toString(selectedArmy.getOpForceSize()),
 				JOptionPane.PLAIN_MESSAGE);
 		
 		if (force == null)

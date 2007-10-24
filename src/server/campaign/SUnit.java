@@ -1073,9 +1073,9 @@ public final class SUnit extends Unit implements Serializable {
 		
 		setType(Unit.getEntityType(this.getEntity()));
 		
-		if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE)
+		/*if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE)
 			setWeightclass(getEntityWeight(this.getEntity()));
-		
+		*/
 		//Set Modelname
 		if ( getType() == Unit.PROTOMEK || getType() == Unit.BATTLEARMOR 
 				|| getType() == Unit.INFANTRY || getType() == Unit.VEHICLE

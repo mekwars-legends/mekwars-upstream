@@ -88,13 +88,6 @@ public class CUnit extends Unit {
 		if (!element.equals("CM")) {return(false);}
 		
 		setUnitFilename(ST.nextToken());
-		createEntity();
-		if (UnitEntity == null) {
-			MWClient.mwClientLog.clientErrLog("Cannot load entity!");
-			return(false);
-		}
-		
-		this.getC3Type(UnitEntity);
 		setId((Integer.parseInt((String)ST.nextElement())));
 		setStatus(Integer.parseInt(ST.nextToken()));
 
@@ -146,18 +139,23 @@ public class CUnit extends Unit {
 		}
 		
 		setType(Integer.parseInt((String)ST.nextElement()));
-		setType(getEntityType(UnitEntity));
+		//setType(getEntityType(UnitEntity));
 		setPilot(p);
-		BV = Integer.parseInt(ST.nextToken());
-		
-		if ( BV < 0 )
-			BV = 0;
+		BV = Math.max(Integer.parseInt(ST.nextToken()),0);
 		
 		setWeightclass(Integer.parseInt(ST.nextToken()));
-		if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE)
-			setWeightclass(getEntityWeight(UnitEntity));
+		//if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE)
+			//setWeightclass(getEntityWeight(UnitEntity));
 		setId(Integer.parseInt(ST.nextToken()));
 		
+		createEntity();
+		if (UnitEntity == null) {
+			MWClient.mwClientLog.clientErrLog("Cannot load entity!");
+			return(false);
+		}
+		
+		this.getC3Type(UnitEntity);
+
 		//don't try to set ammo and eject on an OMG
 		if (this.getModelName().startsWith("Error") || this.getModelName().startsWith("OMG")){
             UnitEntity.setExternalId(this.getId());
@@ -393,6 +391,7 @@ public class CUnit extends Unit {
 				MWClient.mwClientLog.clientErrLog("Error loading unit: " + getUnitFilename() + ". Try replacing with OMG.");
                 MechSummary ms = MechSummaryCache.getInstance().getMech("Error OMG-UR-FD");
                 UnitEntity = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
+                setProducer("Unable to find "+getUnitFilename()+" on clients system!");
                 //UnitEntity = new MechFileParser (new File("./data/mechfiles/Meks.zip"),"Error OMG-UR-FD.hmp").getEntity();
 			}
 			catch (Exception exepe) {
@@ -400,7 +399,7 @@ public class CUnit extends Unit {
 				System.exit(1);
 			}
 		}
-		setType(getEntityType(UnitEntity));
+		//setType(getEntityType(UnitEntity));
 		this.getC3Type(UnitEntity);
 	}
 	
