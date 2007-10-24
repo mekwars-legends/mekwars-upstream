@@ -68,7 +68,7 @@ public class ListCommandsCommand implements Command {
 			        continue;
 			    else if ( commandName.toLowerCase().indexOf(starter.toLowerCase()) > -1 ) {
 			    	String syntax = commandMethod.getSyntax().trim().length() < 1 ? " " : commandMethod.getSyntax();
-			        commandArray[x] = commandName.substring(0,1)+commandName.substring(1,commandName.length()).toLowerCase()+"#"+syntax+"#"+commandMethod.getExecutionLevel();
+			        commandArray[x] = commandName.substring(0,1)+commandName.substring(1,commandName.length()).toLowerCase()+"~"+syntax+"~"+commandMethod.getExecutionLevel();
 			    }
 				else
 					continue;
@@ -97,7 +97,7 @@ public class ListCommandsCommand implements Command {
 		result += "<table><tr><th>Command Name</th><th>Syntax</th><th>Access Level</th></tr>";
 
 		for( x=0; x<commandArray.length; x++){
-		    StringTokenizer commandList = new StringTokenizer(commandArray[x],"#");
+		    StringTokenizer commandList = new StringTokenizer(commandArray[x],"~");
 		    result += "<tr><td>"+commandList.nextToken()+"</td><td>"+commandList.nextToken()+"</td><td>"+commandList.nextToken()+ "</td></tr>";
 		}
 		result +="</table>";

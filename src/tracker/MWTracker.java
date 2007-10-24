@@ -45,7 +45,7 @@ import java.util.StringTokenizer;
 public final class MWTracker {
 	
 	//VARIABLES
-	public static final String VERSION = "0.1.0.2";
+	public static final String VERSION = "0.1.0.3";
 		
 	private static final int listenPort = 13731;//random number ...
 	private String infoFilePath = "./infofiles/";
@@ -56,6 +56,8 @@ public final class MWTracker {
 	private Vector processingThreads;
 	private Vector purgingThreads;
 	private Vector htmlThreads;
+
+	private int oneWeek = (7*24*60*60*1000);
 	
 	//MAIN METHOD [Create the mwtracker]
 	public static void main(String[] args) {
@@ -680,10 +682,9 @@ public final class MWTracker {
 									st = new StringTokenizer(currLine, "%");
 									timestamp = Long.parseLong(st.nextToken());
 									
-									//7*24*60*60*1000 = 604,800,000 ms in a week.
 									//only check remaining tokens if within the week timeframe.
 									timeDifference = System.currentTimeMillis() - timestamp;
-									if (timeDifference <= 604800000) {
+									if (timeDifference <= oneWeek) {
 										
 										//players online and maxplayers
 										currPlayers = Integer.parseInt(st.nextToken());
@@ -692,6 +693,12 @@ public final class MWTracker {
 										
 										currGames = Integer.parseInt(st.nextToken());//games in progress
 										gamesPlayed += Integer.parseInt(st.nextToken());//finished games
+									}
+									//Do not bother to report anymore if they have been down longer then a week
+									else{
+										currRecordFile.deleteOnExit();
+										new File(tracker.getInfoPath() + name + "_info.txt").deleteOnExit();
+										continue;
 									}
 									
 									//load next line
@@ -722,7 +729,6 @@ public final class MWTracker {
 									"<td STYLE=\"text-align: center;\">" + this.readableTime(timeDifference) + " ago</td>" + //update
 									"</tr>";
 							}
-							
 							//last report was timely. include current counts.
 							else {
 								tableListing +=
