@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ Added "Move Planet Here" back into adminMapPopupMenu.java
 + Bug: ListCommandsCommand used # for parsing string now uses ~
 + Updated Tracker to no longer report servers that have not sent data in 7 days
 + Laid groundwork for increasing costs of non-house units

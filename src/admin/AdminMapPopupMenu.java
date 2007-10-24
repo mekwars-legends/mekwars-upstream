@@ -29,6 +29,7 @@ import client.MWClient;
 
 import client.gui.CMapPanel;
 import client.gui.InnerStellarMap;
+import client.gui.dialog.PlanetNameDialog;
 
 import admin.dialog.OpFlagSelectionDialog;
 import admin.dialog.PlanetEditorDialog;
@@ -93,8 +94,28 @@ public class AdminMapPopupMenu extends JMenu {
         		&& userLevel >= mwclient.getData().getAccessLevel("AdminSetPlanetOriginalOwner")
         		&& userLevel >= mwclient.getData().getAccessLevel("AdminSave"))
             this.add(item);
-        
 
+        item = new JMenuItem("Move Planet Here");
+        item.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ex) {
+
+                PlanetNameDialog pnd = new PlanetNameDialog(mwclient,"Select a Planet",null);
+
+                pnd.setVisible(true);
+
+                String planet = pnd.getPlanetName();
+
+                if ( planet != null ){
+                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c adminmoveplanet#"+ planet +"#"+xcoord+"#"+ycoord);
+                    mwclient.refreshData();
+                    mp.repaint();
+                }
+            }
+        });
+        
+        if ( userLevel >= mwclient.getData().getAccessLevel("adminmoveplanet") )
+            this.add(item);
+        
 		item = new JMenuItem("Create Planet");
 		item.addActionListener(new ActionListener() {
 			
