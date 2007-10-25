@@ -1352,13 +1352,13 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 					//get vector of units of the right weight, then select a
 					//random unit from the stack.
 					Vector<SUnit> v = this.getHangar(type_id).elementAt(i);
-					SUnit randUnit = v.elementAt(CampaignMain.cm.getR().nextInt(v.size()));
+					SUnit randUnit = v.elementAt(CampaignMain.cm.getRandomNumber(v.size()));
 					
 					if (randUnit.getStatus() == Unit.STATUS_FORSALE)
 						continue;
 					
 					int bmPercent = Integer.parseInt(this.getConfig("ChanceToSendUnitToBM"));
-					if (this.maySellOnBM() && CampaignMain.cm.getR().nextInt(101) < bmPercent && SUnit.mayBeSoldOnMarket(randUnit)) {
+					if (this.maySellOnBM() && CampaignMain.cm.getRandomNumber(101) < bmPercent && SUnit.mayBeSoldOnMarket(randUnit)) {
 						
 						//Use standard factory pricing for the unit, and configured ticks.
 						int minPrice = this.getPriceForUnit(i, type_id);
@@ -1399,12 +1399,12 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 				
 				while (this.getPP(weight, type_id) > this.getMaxAllowedPP(weight, type_id)) {
 					
-					int randomLossFactor = CampaignMain.cm.getR().nextInt(this.getPPCost(weight, type_id)) + 1;
+					int randomLossFactor = CampaignMain.cm.getRandomNumber(this.getPPCost(weight, type_id)) + 1;
 					
 					//see if we should have an accident
 					boolean accident = false;
 					SUnitFactory m = this.getNativeFactoryForProduction(type_id,weight);
-					if (CampaignMain.cm.getR().nextInt(100) + 1 <= Integer.parseInt(this.getConfig("AutoProductionFailureRate")))
+					if (CampaignMain.cm.getRandomNumber(100) + 1 <= Integer.parseInt(this.getConfig("AutoProductionFailureRate")))
 						accident = true;
 			
 					//no factory to produce, or random accident
@@ -1575,7 +1575,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			
 			//pick random message, given count from line 1
 			int messages = Integer.parseInt(dis.readLine());
-			int id = CampaignMain.cm.getR().nextInt(messages);
+			int id = CampaignMain.cm.getRandomNumber(messages);
 			
 			//read lines until counter reaches randomly selected message
 			String scrapMessage = "";
@@ -1670,7 +1670,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			return null;
 		
 		//select a random factory to return
-		int rand = CampaignMain.cm.getR().nextInt(factionPossible.size());
+		int rand = CampaignMain.cm.getRandomNumber(factionPossible.size());
 		return (factionPossible.elementAt(rand));
 	}
 
@@ -1787,7 +1787,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
              * will become an infinite loop.
              */
             while (true) {
-    			int ran = CampaignMain.cm.getR().nextInt(s.size());
+    			int ran = CampaignMain.cm.getRandomNumber(s.size());
     			m = s.elementAt(ran);
                 if (m.getStatus() != Unit.STATUS_FORSALE){
         			s.removeElementAt(ran);

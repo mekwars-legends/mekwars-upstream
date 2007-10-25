@@ -555,7 +555,7 @@ Comparable {
 		if (getUnitFactories().size() == 0)
 			return null;
 		//else
-		return (SUnitFactory) getUnitFactories().get(CampaignMain.cm.getR().nextInt(getUnitFactories().size()));
+		return (SUnitFactory) getUnitFactories().get(CampaignMain.cm.getRandomNumber(getUnitFactories().size()));
 	}
 	
 	public SUnitFactory getBestUnitFactory() {

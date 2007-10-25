@@ -73,7 +73,7 @@ public class BuildTable {
 			if ( techFile.trim().length() > 0 )
 				table.addAll(getListFromFile(new File(techFile)));
 			
-			int ran = Math.round(((float)table.size()-1) * ((float)CampaignMain.cm.getR().nextInt((Integer.MAX_VALUE))/(float)(Integer.MAX_VALUE-1)));
+			int ran = CampaignMain.cm.getRandomNumber(table.size());
 			Filename = table.elementAt(ran);
 			if (Filename.indexOf(".") == -1)
 				unitProducer = Filename;
@@ -93,7 +93,7 @@ public class BuildTable {
 		Vector<String> table = null;
 		while (!fileFound){
 			table = getListFromFile(new File(unitFileName));
-			int ran = Math.round(((float)table.size()-1) * ((float)CampaignMain.cm.getR().nextInt((Integer.MAX_VALUE))/(float)(Integer.MAX_VALUE-1)));
+			int ran = CampaignMain.cm.getRandomNumber(table.size());
 			Filename = table.elementAt(ran);
 			if (Filename.indexOf(".") == -1)
 				unitFileName= Filename;
@@ -342,7 +342,7 @@ public class BuildTable {
 			}
 			
 			for ( ; amountToDestroy > 0; amountToDestroy-- ){
-				int ran = Math.round(((float)result.size()-1) * ((float)CampaignMain.cm.getR().nextInt((Integer.MAX_VALUE))/(float)(Integer.MAX_VALUE-1)));
+				int ran = CampaignMain.cm.getRandomNumber(result.size());
 				destroyedTech.append(result.elementAt(ran));
 				destroyedTech.append(", " );
 				result.removeElementAt(ran);

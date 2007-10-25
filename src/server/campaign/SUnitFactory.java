@@ -274,7 +274,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		
 		String unitSize = getSize();
 		if (CampaignMain.cm.getBooleanConfig("UseOnlyOneVehicleSize") && type_id == Unit.VEHICLE)
-			unitSize = Unit.getWeightClassDesc(CampaignMain.cm.getR().nextInt(4));
+			unitSize = Unit.getWeightClassDesc(CampaignMain.cm.getRandomNumber(4));
 		
 		Filename = BuildTable.getUnitFilename(this.getFounder(),unitSize,type_id,BuildTable.STANDARD);
 		
@@ -394,7 +394,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		
 		String unitSize = getSize();
 		if (CampaignMain.cm.getBooleanConfig("UseOnlyOneVehicleSize") && type_id == Unit.VEHICLE)
-			unitSize = Unit.getWeightClassDesc(CampaignMain.cm.getR().nextInt(4));
+			unitSize = Unit.getWeightClassDesc(CampaignMain.cm.getRandomNumber(4));
 		
 		Filename = BuildTable.getUnitFilename(this.getFounder(),unitSize,type_id,BuildTable.STANDARD);
 		

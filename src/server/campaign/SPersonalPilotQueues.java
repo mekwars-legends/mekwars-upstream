@@ -266,10 +266,10 @@ public class SPersonalPilotQueues {
 			stmt.close();
 			for (int weightClass = Unit.LIGHT; weightClass <= Unit.ASSAULT; weightClass++) {
 		        while ( this.getPilotQueue(Unit.MEK, weightClass).size() > capSize ) {
-		        	this.getPilot(Unit.MEK,weightClass,CampaignMain.cm.getR().nextInt(this.getPilotQueue(Unit.MEK, weightClass).size()));
+		        	this.getPilot(Unit.MEK,weightClass,CampaignMain.cm.getRandomNumber(this.getPilotQueue(Unit.MEK, weightClass).size()));
 		        }
 		        while ( this.getPilotQueue(Unit.PROTOMEK, weightClass).size() > capSize ) {
-		        	this.getPilot(Unit.PROTOMEK,weightClass,CampaignMain.cm.getR().nextInt(this.getPilotQueue(Unit.PROTOMEK, weightClass).size()));
+		        	this.getPilot(Unit.PROTOMEK,weightClass,CampaignMain.cm.getRandomNumber(this.getPilotQueue(Unit.PROTOMEK, weightClass).size()));
 		        }
 		    }
 
@@ -292,7 +292,7 @@ public class SPersonalPilotQueues {
                 this.addPilot(filePilot,Unit.MEK, weightClass);
 	        }
 	        while ( this.getPilotQueue(Unit.MEK, weightClass).size() > capSize ) {
-	        	this.getPilot(Unit.MEK,weightClass,CampaignMain.cm.getR().nextInt(this.getPilotQueue(Unit.MEK, weightClass).size()));
+	        	this.getPilot(Unit.MEK,weightClass,CampaignMain.cm.getRandomNumber(this.getPilotQueue(Unit.MEK, weightClass).size()));
 	        }
 	    }
 		
@@ -305,7 +305,7 @@ public class SPersonalPilotQueues {
                 this.addPilot(filePilot,Unit.PROTOMEK, weightClass);
 	        }
 	        while ( this.getPilotQueue(Unit.PROTOMEK, weightClass).size() > capSize ) {
-	        	this.getPilot(Unit.PROTOMEK,weightClass,CampaignMain.cm.getR().nextInt(this.getPilotQueue(Unit.PROTOMEK, weightClass).size()));
+	        	this.getPilot(Unit.PROTOMEK,weightClass,CampaignMain.cm.getRandomNumber(this.getPilotQueue(Unit.PROTOMEK, weightClass).size()));
 	        }
 	    }
 		

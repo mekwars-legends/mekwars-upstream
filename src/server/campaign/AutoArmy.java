@@ -194,7 +194,7 @@ public class AutoArmy {
             if ( size == 1)
                 filename = list.nextToken();
             else{
-                position = CampaignMain.cm.getR().nextInt(size)+1;
+                position = CampaignMain.cm.getRandomNumber(size)+1;
                 
                 for( int count = 0; count < position; count++)
                     filename = list.nextToken();
@@ -207,7 +207,7 @@ public class AutoArmy {
             if ( size == 1)
                 filename = list.nextToken();
             else{
-                position = CampaignMain.cm.getR().nextInt(size)+1;
+                position = CampaignMain.cm.getRandomNumber(size)+1;
                 
                 for( int count = 0; count < position; count++)
                     filename = list.nextToken();
@@ -220,7 +220,7 @@ public class AutoArmy {
             if ( size == 1)
                 filename = list.nextToken();
             else{
-                position = CampaignMain.cm.getR().nextInt(size)+1;
+                position = CampaignMain.cm.getRandomNumber(size)+1;
                 
                 for( int count = 0; count < position; count++)
                     filename = list.nextToken();
@@ -233,7 +233,7 @@ public class AutoArmy {
             if ( size == 1)
                 filename = list.nextToken();
             else{
-                position = CampaignMain.cm.getR().nextInt(size)+1;
+                position = CampaignMain.cm.getRandomNumber(size)+1;
                 
                 for( int count = 0; count < position; count++)
                     filename = list.nextToken();
@@ -381,7 +381,7 @@ public class AutoArmy {
             if ( size == 1)
                 filename = list.nextToken();
             else{
-                position = CampaignMain.cm.getR().nextInt(size)+1;
+                position = CampaignMain.cm.getRandomNumber(size)+1;
                 
                 for( int count = 0; count < position; count++)
                     filename = list.nextToken();
@@ -394,7 +394,7 @@ public class AutoArmy {
             if ( size == 1)
                 filename = list.nextToken();
             else{
-                position = CampaignMain.cm.getR().nextInt(size)+1;
+                position = CampaignMain.cm.getRandomNumber(size)+1;
                 
                 for( int count = 0; count < position; count++)
                     filename = list.nextToken();
@@ -407,7 +407,7 @@ public class AutoArmy {
             if ( size == 1)
                 filename = list.nextToken();
             else{
-                position = CampaignMain.cm.getR().nextInt(size)+1;
+                position = CampaignMain.cm.getRandomNumber(size)+1;
                 
                 for( int count = 0; count < position; count++)
                     filename = list.nextToken();
@@ -420,7 +420,7 @@ public class AutoArmy {
             if ( size == 1)
                 filename = list.nextToken();
             else{
-                position = CampaignMain.cm.getR().nextInt(size)+1;
+                position = CampaignMain.cm.getRandomNumber(size)+1;
                 
                 for( int count = 0; count < position; count++)
                     filename = list.nextToken();

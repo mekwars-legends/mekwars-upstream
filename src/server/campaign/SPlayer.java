@@ -699,7 +699,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				return numUnmaintained;
 			
 			// passed the catch. unmaintain some units.
-			int rnd = CampaignMain.cm.getR().nextInt(okUnitsData.size());// generate
+			int rnd = CampaignMain.cm.getRandomNumber(okUnitsData.size());// generate
 			// a
 			// RND
 			SUnit unit = okUnitsData.elementAt(rnd);// get unit @ rnd location
@@ -745,7 +745,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			
 			// unit is unmaintained
 			else if (currUnit.getStatus() == Unit.STATUS_UNMAINTAINED) {
-				int rnd = CampaignMain.cm.getR().nextInt(100) + 1;
+				int rnd = CampaignMain.cm.getRandomNumber(100) + 1;
 				
 				//immediately after a game, only decrement. don't scrap.
 				long currTime = System.currentTimeMillis();

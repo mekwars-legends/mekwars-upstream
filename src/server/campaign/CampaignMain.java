@@ -2382,6 +2382,16 @@ public final class CampaignMain implements Serializable {
 		return r;
 	}
 
+	public int getRandomNumber(int seed){
+		
+		if( seed < 1 )
+			return seed;
+		
+		float answer = (cm.getRandomNumber(Integer.MAX_VALUE)/(Integer.MAX_VALUE-1))* (float)seed;
+		
+		return Math.round(answer);
+	}
+	
 	synchronized public void addToNewsFeed(String s) {
 		addToNewsFeed(s, "");
 	}
@@ -2609,7 +2619,7 @@ public final class CampaignMain implements Serializable {
 				 */
 			}
 
-			return skillBuilder.elementAt(getR().nextInt(skillBuilder.size()));
+			return skillBuilder.elementAt(cm.getRandomNumber(skillBuilder.size()));
 		} catch (Exception ex) {
 			MWServ.mwlog
 					.errLog("Problems during skill earning! Skill Table Size = "
