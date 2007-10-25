@@ -4070,8 +4070,13 @@ public final class CampaignMain implements Serializable {
 		
 		// Standard faction saves
 		File factionFile = new File("./campaign/factions");
-		if (!factionFile.exists())
+		if (!factionFile.exists()) {
 			factionFile.mkdir();
+			if(Boolean.parseBoolean(getConfig("UseNonFactionUnitsIncreasedTechs"))){
+				File supportFile = new File("./campaign/factions/support");
+				supportFile.mkdir();
+			}
+		}
 
 		synchronized (data.getAllHouses()) {
 			for (House currH : data.getAllHouses()) {

@@ -76,6 +76,9 @@ public class House implements MMNetSerializable {
 
     public float usedMekBayMultiplier;
     
+	public ConcurrentHashMap<String, Integer> supportedUnits = new ConcurrentHashMap<String, Integer>();
+
+    
 	/**
 	 * @return Returns the baseGunner.
 	 */
@@ -674,5 +677,14 @@ public class House implements MMNetSerializable {
 	public ConcurrentHashMap<String,SubFaction> getSubFactionList(){
 		return subFactionList;
 	}
+	
+	public boolean houseSupportsUnit(String fileName) {
+		return supportedUnits.containsKey(fileName);
+	}
+	
+	public ConcurrentHashMap<String, Integer> getSupportedUnits() {
+		return supportedUnits;
+	}
+	
 }
 

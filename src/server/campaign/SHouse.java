@@ -95,7 +95,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 	private String forumName = "";
 	
 	private Vector<String>leaders = new Vector<String>(1,1);
-	
+		
     @Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
@@ -1946,11 +1946,71 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		return result;
 	}
 
+	private void modifyUnitProduction(SPlanet p, boolean addProduction) {
+		if(p.getFactoryCount() > 0) {
+			for(int weightclass = Unit.LIGHT; weightclass <= Unit.ASSAULT; weightclass++) {
+				for(SUnitFactory uf : p.getFactoriesOfWeighclass(weightclass)) {
+					String typeString=uf.getTypeString();
+					String dirName = "./campaign/factions/support/" + uf.getFounder() + "_" + uf.getSize()+ "_";
+					dirName=dirName.toLowerCase();
+					if(typeString.contains("M")) {
+						MWServ.mwlog.mainLog("Looking for " + dirName + "meks.txt");
+						parseSupportFile(dirName + "meks.txt", addProduction);
+					}
+					if(typeString.contains("V")) {
+						MWServ.mwlog.mainLog("Looking for " + dirName + "vehicles.txt");
+						parseSupportFile(dirName + "vehicles.txt", addProduction);						
+					}
+					if(typeString.contains("I")) {
+						MWServ.mwlog.mainLog("Looking for " + dirName + "infantry.txt");
+						parseSupportFile(dirName + "infantry.txt", addProduction);
+					}
+					if(typeString.contains("P")) {
+						MWServ.mwlog.mainLog("Looking for " + dirName + "protomeks.txt");
+						parseSupportFile(dirName + "protomeks.txt", addProduction);
+					}
+					if(typeString.contains("B")) {
+						MWServ.mwlog.mainLog("Looking for " + dirName + "battlearmor.txt");
+						parseSupportFile(dirName + "battlearmor.txt", addProduction);
+					}
+				}
+			}
+		}		
+	}
+	
+	private void parseSupportFile(String fileName, boolean addUnits) {
+		File file = new File(fileName);
+		if (!file.exists())
+			return;
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+			while (dis.ready()) {
+				if(addUnits)
+					addUnitSupported(dis.readLine());
+				else
+					removeUnitSupported(dis.readLine());
+			}
+			dis.close();
+			fis.close();			
+		} catch(FileNotFoundException fnfe) {
+			
+		} catch (IOException ioe) {
+			
+		}
+	}
+	
 	public void addPlanet(SPlanet p) {
 		if (getPlanets().get(p.getName()) == null) {
 			getPlanets().put(p.getName(), p);
 			setBaysProvided(getBaysProvided() + p.getBaysProvided());
 			setComponentProduction(getComponentProduction() + p.getCompProduction());
+			
+			// Add unit production here
+			if(Boolean.parseBoolean(CampaignMain.cm.getConfig("UseNonFactionUnitIncreasedTechs")) && p.getFactoryCount() > 0) {
+				MWServ.mwlog.mainLog("Modifying production for planet " + p.getName());
+				modifyUnitProduction(p, true);
+			}
 		}
 	}
 
@@ -1959,6 +2019,11 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			getPlanets().remove(p.getName());
 			setBaysProvided(getBaysProvided() - p.getBaysProvided());
 			setComponentProduction(getComponentProduction() - p.getCompProduction());
+			
+			// Remove unit production here
+			if(Boolean.parseBoolean(CampaignMain.cm.getConfig("UseNonFactionUnitsIncreasedTechs")) && p.getFactoryCount() > 0) {
+				modifyUnitProduction(p, false);
+			}			
 		}
 	}
 
@@ -2745,6 +2810,38 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		}
 		
 		return "";
+	}
+	
+
+	private void addUnitSupported(String fileName) {
+		if (fileName.trim().length() < 1)
+			return;
+		fileName = fileName.trim();
+		if(houseSupportsUnit(fileName)) {
+			int num = getSupportedUnits().get(fileName);
+			supportedUnits.put(fileName, num + 1);
+		} else {
+			supportedUnits.put(fileName, 1);
+		}
+	}
+	
+	public void removeUnitSupported(String fileName) {
+		if (fileName.trim().length() < 1)
+			return;
+		fileName = fileName.trim();
+		if(houseSupportsUnit(fileName)) {
+			int num = supportedUnits.get(fileName);
+			if (num == 1) {
+				// Remove it from the HashMap
+				supportedUnits.remove(fileName);
+			} else {
+				supportedUnits.put(fileName, num - 1);
+			}
+		} else {
+			// Error.  We should never get here.
+			MWServ.mwlog.mainLog("Error in SHouse.removeUnitProduction(): trying to remove a unit that is not produced.");
+			MWServ.mwlog.mainLog("  --> House: " + getName() + ", Unit: " + fileName);
+		}
 	}
 	
 }// end SHouse.java

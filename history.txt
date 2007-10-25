@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ More work on increased maintenance for non-House units
 + RFE: allow SO to set the weightclass of a unit based on build table settings
 + RFE: allow force size to face to use float
 + Added "Move Planet Here" back into adminMapPopupMenu.java
