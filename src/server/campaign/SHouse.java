@@ -1946,7 +1946,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		return result;
 	}
 
-	private void modifyUnitProduction(SPlanet p, boolean addProduction) {
+	private void modifyUnitSupport(SPlanet p, boolean addProduction) {
 		if(p.getFactoryCount() > 0) {
 			for(int weightclass = Unit.LIGHT; weightclass <= Unit.ASSAULT; weightclass++) {
 				for(SUnitFactory uf : p.getFactoriesOfWeighclass(weightclass)) {
@@ -1954,23 +1954,18 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 					String dirName = "./campaign/factions/support/" + uf.getFounder() + "_" + uf.getSize()+ "_";
 					dirName=dirName.toLowerCase();
 					if(typeString.contains("M")) {
-						MWServ.mwlog.mainLog("Looking for " + dirName + "meks.txt");
 						parseSupportFile(dirName + "meks.txt", addProduction);
 					}
 					if(typeString.contains("V")) {
-						MWServ.mwlog.mainLog("Looking for " + dirName + "vehicles.txt");
 						parseSupportFile(dirName + "vehicles.txt", addProduction);						
 					}
 					if(typeString.contains("I")) {
-						MWServ.mwlog.mainLog("Looking for " + dirName + "infantry.txt");
 						parseSupportFile(dirName + "infantry.txt", addProduction);
 					}
 					if(typeString.contains("P")) {
-						MWServ.mwlog.mainLog("Looking for " + dirName + "protomeks.txt");
 						parseSupportFile(dirName + "protomeks.txt", addProduction);
 					}
 					if(typeString.contains("B")) {
-						MWServ.mwlog.mainLog("Looking for " + dirName + "battlearmor.txt");
 						parseSupportFile(dirName + "battlearmor.txt", addProduction);
 					}
 				}
@@ -2008,8 +2003,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			
 			// Add unit production here
 			if(Boolean.parseBoolean(CampaignMain.cm.getConfig("UseNonFactionUnitIncreasedTechs")) && p.getFactoryCount() > 0) {
-				MWServ.mwlog.mainLog("Modifying production for planet " + p.getName());
-				modifyUnitProduction(p, true);
+				modifyUnitSupport(p, true);
 			}
 		}
 	}
@@ -2022,7 +2016,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			
 			// Remove unit production here
 			if(Boolean.parseBoolean(CampaignMain.cm.getConfig("UseNonFactionUnitsIncreasedTechs")) && p.getFactoryCount() > 0) {
-				modifyUnitProduction(p, false);
+				modifyUnitSupport(p, false);
 			}			
 		}
 	}
