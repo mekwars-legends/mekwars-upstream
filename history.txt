@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ RFE: Make the length of the MOTD settable
 + Bug: Inf loop created in getRandomNumber method.
 + Added getRandomNumber Method to CampaignMain, this uses higher end numbers
   for a more random result.

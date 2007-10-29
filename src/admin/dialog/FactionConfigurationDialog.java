@@ -2113,6 +2113,24 @@ public final class FactionConfigurationDialog implements ActionListener {
 		JPanel factionSpring2 = new JPanel(new SpringLayout());
 		
         baseTextField = new JTextField(5);
+		factionSpring1.add(new JLabel("Medium XP:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("XP required to buy medium units");
+        baseTextField.setName("MinEXPforMedium");
+		factionSpring1.add(baseTextField);
+		
+        baseTextField = new JTextField(5);
+		factionSpring1.add(new JLabel("Heavy XP:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("XP required to buy heavy units");
+        baseTextField.setName("MinEXPforHeavy");
+		factionSpring1.add(baseTextField);
+		
+        baseTextField = new JTextField(5);
+		factionSpring1.add(new JLabel("Assault XP:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("XP required to buy assault units");
+        baseTextField.setName("MinEXPforAssault");
+		factionSpring1.add(baseTextField);
+		
+        baseTextField = new JTextField(5);
 		factionSpring1.add(new JLabel("Min House Techs:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<HTML>" +
 				"Minimum number of faction techs. Assigned to player<br>" +
@@ -2144,27 +2162,15 @@ public final class FactionConfigurationDialog implements ActionListener {
         baseTextField.setName("ScrapsAllowed");
 		factionSpring1.add(baseTextField);
 		
+        baseTextField = new JTextField(5);
+		factionSpring1.add(new JLabel("Max MOTD Length:",SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Max number of characters allowed in the MOTD.");
+        baseTextField.setName("MaxMOTDLength");
+		factionSpring1.add(baseTextField);
+		
 		SpringLayoutHelper.setupSpringGrid(factionSpring1, 2);
 		
 		//faction spring #2
-        baseTextField = new JTextField(5);
-		factionSpring2.add(new JLabel("Medium XP:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("XP required to buy medium units");
-        baseTextField.setName("MinEXPforMedium");
-		factionSpring2.add(baseTextField);
-		
-        baseTextField = new JTextField(5);
-		factionSpring2.add(new JLabel("Heavy XP:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("XP required to buy heavy units");
-        baseTextField.setName("MinEXPforHeavy");
-		factionSpring2.add(baseTextField);
-		
-        baseTextField = new JTextField(5);
-		factionSpring2.add(new JLabel("Assault XP:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("XP required to buy assault units");
-        baseTextField.setName("MinEXPforAssault");
-		factionSpring2.add(baseTextField);
-		
         baseTextField = new JTextField(5);
 		factionSpring2.add(new JLabel("Welfare Ceiling:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("Max # of Cbills a player can have to collect welfare");

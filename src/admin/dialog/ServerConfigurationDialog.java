@@ -2336,6 +2336,13 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("ScrapsAllowed");
 		factionSpring1.add(baseTextField);
 		
+        baseTextField = new JTextField(5);
+		factionSpring1.add(new JLabel("Scraps Allowed:",SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Number of scraps players are allowed each tick.");
+        baseTextField.setName("ScrapsAllowed");
+		factionSpring1.add(baseTextField);
+		
+
 		SpringLayoutHelper.setupSpringGrid(factionSpring1, 2);
 		
 		//faction spring #2

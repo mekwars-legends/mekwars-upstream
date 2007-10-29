@@ -78,8 +78,9 @@ public class SetMOTDCommand implements Command {
 		}
 		
 		int size = motd.length();
-		if (size > 7000) {
-			CampaignMain.cm.toUser("MOTD's may contain up to 7000 charachters. Your message was " + size + "chars long. Reduce its length and try again.",Username,true);
+		int maxSize = CampaignMain.cm.getIntegerConfig("MaxMOTDLength");
+		if (size > maxSize) {
+			CampaignMain.cm.toUser("MOTD's may contain up to "+maxSize+" characters. Your message was " + size + "chars long. Reduce its length and try again.",Username,true);
 			return;
 		}
 		
