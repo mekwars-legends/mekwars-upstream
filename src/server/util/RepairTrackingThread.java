@@ -339,8 +339,8 @@ class Repair{
         try{
             int roll = 12;
             
-            int die1 = CampaignMain.cm.getR().nextInt(6)+1;
-            int die2 = CampaignMain.cm.getR().nextInt(6)+1;
+            int die1 = CampaignMain.cm.getRandomNumber(6)+1;
+            int die2 = CampaignMain.cm.getRandomNumber(6)+1;
             boolean levelTech = false;
             boolean pilotIsRepairing = false;
             boolean rear = false;
@@ -421,8 +421,8 @@ class Repair{
                     
                     techType = techs.elementAt(type);
                     // Tech made it so he can try and level
-                    die1 = CampaignMain.cm.getR().nextInt(6) + 1;
-                    die2 = CampaignMain.cm.getR().nextInt(6) + 1;
+                    die1 = CampaignMain.cm.getRandomNumber(6) + 1;
+                    die2 = CampaignMain.cm.getRandomNumber(6) + 1;
 
                     // MWServ.mwlog.errLog("tech level roll: "+(die1+die2)+"
                     // base: "+(10+techType));
@@ -434,8 +434,8 @@ class Repair{
                     }
 
                     // Roll to see if the Tech Retires.
-                    die1 = CampaignMain.cm.getR().nextInt(6) + 1;
-                    die2 = CampaignMain.cm.getR().nextInt(6) + 1;
+                    die1 = CampaignMain.cm.getRandomNumber(6) + 1;
+                    die2 = CampaignMain.cm.getRandomNumber(6) + 1;
 
                     if (techType > UnitUtils.TECH_GREEN
                             && (die1 + die2) <= (9 + techType) / 4// Regs & Vets retire on 2. Elites on 3.
@@ -517,7 +517,7 @@ class Repair{
             //Check to see if the pilot died while failing the repair.
             if ( (die1+die2) == 2 && !pilotIsRepairing ){
                 int chance = CampaignMain.cm.getIntegerConfig("ChanceTechDiesOnFailedRepair");
-                if (chance > CampaignMain.cm.getR().nextInt(100)) {
+                if (chance > CampaignMain.cm.getRandomNumber(100)) {
                     techDeath = true;
                     retries = 0;
                 }
@@ -562,7 +562,7 @@ class Repair{
 	                        if ( armorToRepair <= 3)
 	                            armorRepaired = 1;
 	                        else
-	                            armorRepaired = CampaignMain.cm.getR().nextInt(armorToRepair-2)+1;
+	                            armorRepaired = CampaignMain.cm.getRandomNumber(armorToRepair-2)+1;
 	            
 	                        //the more they miss the roll by the less armor is repaired.
 	                        armorRepaired = Math.max(1,armorRepaired-(roll-(die1+die2)));
@@ -593,7 +593,7 @@ class Repair{
 	                        if ( armorToRepair <= 3)
 	                            armorRepaired = 1;
 	                        else
-	                            armorRepaired = CampaignMain.cm.getR().nextInt(armorToRepair-2)+1;
+	                            armorRepaired = CampaignMain.cm.getRandomNumber(armorToRepair-2)+1;
 	            
 	                        //the more they miss the roll by the less armor is repaired.
 	                        armorRepaired = Math.max(1,armorRepaired-(roll-(die1+die2)));
@@ -635,7 +635,7 @@ class Repair{
                             if ( armorToRepair <= 3)
                                 armorRepaired = 1;
                             else
-                                armorRepaired = CampaignMain.cm.getR().nextInt(armorToRepair-2)+1;
+                                armorRepaired = CampaignMain.cm.getRandomNumber(armorToRepair-2)+1;
                             
                             //MWServ.mwlog.errLog("IS Amount2: "+armorRepaired);
                             //the more they miss the roll by the less armor is repaired.
@@ -665,7 +665,7 @@ class Repair{
 	                        if ( armorToRepair <= 3)
 	                            armorRepaired = 1;
 	                        else
-	                            armorRepaired = CampaignMain.cm.getR().nextInt(armorToRepair-2)+1;
+	                            armorRepaired = CampaignMain.cm.getRandomNumber(armorToRepair-2)+1;
 	                        
 	                        //the more they miss the roll by the less armor is repaired.
 	                        armorRepaired = Math.max(1,armorRepaired-(roll-(die1+die2)));
@@ -926,8 +926,8 @@ class Repair{
                     }
                 }//end of crit repair
                 //Tech made it so he can try and level
-                die1 = CampaignMain.cm.getR().nextInt(6)+1;
-                die2 = CampaignMain.cm.getR().nextInt(6)+1;
+                die1 = CampaignMain.cm.getRandomNumber(6)+1;
+                die2 = CampaignMain.cm.getRandomNumber(6)+1;
                 
                 //MWServ.mwlog.errLog("tech level roll: "+(die1+die2)+" base: "+(10+techType));
                 
@@ -938,8 +938,8 @@ class Repair{
                 }
                 
                 //Roll to see if the Tech Retires.
-                die1 = CampaignMain.cm.getR().nextInt(6)+1;
-                die2 = CampaignMain.cm.getR().nextInt(6)+1;
+                die1 = CampaignMain.cm.getRandomNumber(6)+1;
+                die2 = CampaignMain.cm.getRandomNumber(6)+1;
     
                 if ( techType > UnitUtils.TECH_GREEN 
                         && (die1+die2) <= (9+techType)/4//Regs and Vets retire on 2 Elites on 3 

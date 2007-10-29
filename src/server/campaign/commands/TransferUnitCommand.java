@@ -153,7 +153,7 @@ public class TransferUnitCommand implements Command {
 					"#CONFIRM\">Click here to send the unit anyway</a>", Username, true);
 			return;
 		} else if (m.getMaintainanceLevel() <= scrapLevel && confirmedSend) {
-			int rnd = CampaignMain.cm.getR().nextInt(100) + 1;
+			int rnd = CampaignMain.cm.getRandomNumber(100) + 1;
 			if (rnd > m.getMaintainanceLevel()) {
 
 				//if scrapping costs bills, subtract the appropriate amount.

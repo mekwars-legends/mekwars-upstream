@@ -323,7 +323,7 @@ public class RepodCommand implements Command {
 					return;
 				}
 				
-				int number = CampaignMain.cm.getR().nextInt(size);
+				int number = CampaignMain.cm.getRandomNumber(size);
 				String Filename =(String)variants.elementAt(number); 
 				createOmni(m,Filename,m.getId(),p,possible,true);
 				return;

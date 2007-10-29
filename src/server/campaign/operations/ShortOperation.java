@@ -474,7 +474,7 @@ public class ShortOperation implements Comparable {
                 buildingOptions += "|"+o.getValue("BuildingType");
                 
                 if (o.getBooleanValue("BuildingsStartOnMapEdge")){
-                    int pos = CampaignMain.cm.getR().nextInt(mapEdge.length);
+                    int pos = CampaignMain.cm.getRandomNumber(mapEdge.length);
                     defenderEdge = mapEdge[pos];
                     attackerEdge = mapEdgeReverse[pos];
                     buildingOptions += "|"+defenderEdge;
@@ -521,7 +521,7 @@ public class ShortOperation implements Comparable {
                 for (String currN : this.getAllPlayerNames()) {
                     
                     while ( !found ){
-                        pos = CampaignMain.cm.getR().nextInt(9)+1;
+                        pos = CampaignMain.cm.getRandomNumber(9)+1;
                         if ( edges.get(pos) != 1){
                             found = true;
                             edges.add(pos,1);
@@ -1076,16 +1076,16 @@ public class ShortOperation implements Comparable {
                     //make it min 2 that way you don't have to worry about checking for 1's against the RNG less code!! --Torren
                     visibility = Math.max(visibility,2);
                     //Break visibility into halfs and roll each so we get more of a bell curve.
-                    visRoll1 = CampaignMain.cm.getR().nextInt((int)Math.ceil(visibility/2)); 
-                    visRoll2 = CampaignMain.cm.getR().nextInt((int)Math.floor(visibility/2)); 
+                    visRoll1 = CampaignMain.cm.getRandomNumber((int)Math.ceil(visibility/2)); 
+                    visRoll2 = CampaignMain.cm.getRandomNumber((int)Math.floor(visibility/2)); 
                     visibility = visRoll1+minVisibility+visRoll2;
                     
     				//only get random if there's an actual tempdiff
     				if (tempdiff > 0)
-    					tempToSet = CampaignMain.cm.getR().nextInt(tempdiff) + lowTemp;
+    					tempToSet = CampaignMain.cm.getRandomNumber(tempdiff) + lowTemp;
     				
     				//half as likely to get dusk as outright night. helf temp drop.
-    			    if (CampaignMain.cm.getR().nextInt(100)+1 <= aTerrain.getNightChance()/2){
+    			    if (CampaignMain.cm.getRandomNumber(100)+1 <= aTerrain.getNightChance()/2){
     			        gameOptions +="|night_battle|"+true;
     			        gameOptions +="|dusk|"+true;
     			        tempToSet -= Math.abs(aTerrain.getNightTempMod())/2;
@@ -1095,7 +1095,7 @@ public class ShortOperation implements Comparable {
     			    }
     			   
     			    //else if ... no simultaneous dusk/night. full temp drop.
-    			    else if (CampaignMain.cm.getR().nextInt(100)+1 <= aTerrain.getNightChance()){
+    			    else if (CampaignMain.cm.getRandomNumber(100)+1 <= aTerrain.getNightChance()){
     			        gameOptions +="|night_battle|"+true;
     			        gameOptions +="|dusk|"+false;
     			        tempToSet -= Math.abs(aTerrain.getNightTempMod());
@@ -1140,7 +1140,7 @@ public class ShortOperation implements Comparable {
 				
 				//only get random if there's an actual tempdiff
 				if (tempdiff > 0)
-					tempToSet = CampaignMain.cm.getR().nextInt(tempdiff) + lowTemp;
+					tempToSet = CampaignMain.cm.getRandomNumber(tempdiff) + lowTemp;
 				
 			    gameOptions += "|temperature|" +tempToSet;
 			    gameOptions += "|gravity|"+ targetWorld.getGravity();
@@ -2272,10 +2272,10 @@ public class ShortOperation implements Comparable {
 
         int factionOwnerShip = this.getTargetWorld().getInfluence().getInfluence(house.getId());
         int basedOwnerShip = CampaignMain.cm.getIntegerConfig("MinChanceForAccurateOperationsReports");
-        int chanceVacuum = CampaignMain.cm.getR().nextInt(100);
-        int chanceGravity = CampaignMain.cm.getR().nextInt(100);
-        int chanceTemp = CampaignMain.cm.getR().nextInt(100);
-        int chanceTime = CampaignMain.cm.getR().nextInt(100);
+        int chanceVacuum = CampaignMain.cm.getRandomNumber(100);
+        int chanceGravity = CampaignMain.cm.getRandomNumber(100);
+        int chanceTemp = CampaignMain.cm.getRandomNumber(100);
+        int chanceTime = CampaignMain.cm.getRandomNumber(100);
         
         if ( factionOwnerShip < basedOwnerShip )
             factionOwnerShip = basedOwnerShip;
@@ -2505,7 +2505,7 @@ public class ShortOperation implements Comparable {
     	if ( deploymentChoices.size() == 1)
     		return deploymentChoices.firstElement();
     	
-    	int rand = CampaignMain.cm.getR().nextInt(deploymentChoices.size());
+    	int rand = CampaignMain.cm.getRandomNumber(deploymentChoices.size());
     	return deploymentChoices.elementAt(rand);
     }
 }//end OperationsManager class

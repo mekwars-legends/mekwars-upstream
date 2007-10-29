@@ -90,7 +90,7 @@ public class TraitSkill extends SPilotSkill {
         if ( size == 1)
             Trait = (String)traitNames.elementAt(0);
         else{
-	        choice = CampaignMain.cm.getR().nextInt(size);
+	        choice = CampaignMain.cm.getRandomNumber(size);
 	
 	        //MWServ.mwlog.errLog("Trait Skill choice: "+choice);
 	        

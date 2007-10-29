@@ -568,14 +568,14 @@ public class Market2 {
 		 * if a new rare should be listed at this point. This gets us a nice 2
 		 * decimal double to compare to the config.
 		 */
-		double rareChance = (CampaignMain.cm.getR().nextInt(100001)) / 1000;// 0.000-100.000
+		double rareChance = (CampaignMain.cm.getRandomNumber(100001)) / 1000;// 0.000-100.000
 		if (rareChance < CampaignMain.cm.getDoubleConfig("RareChance")) {
 			
 			/*
 			 * We're going to be creating a RARE unit. Joyous day. First, lets
 			 * pick a weightclass ...
 			 */
-			int weightClass = CampaignMain.cm.getR().nextInt(4);// 0-3
+			int weightClass = CampaignMain.cm.getRandomNumber(4);// 0-3
 			
 			// get a filename from the static build table
 			String factionName = "Rare";

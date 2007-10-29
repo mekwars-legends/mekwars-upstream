@@ -73,7 +73,7 @@ public class PartsMarket {
 					eq = new BMEquipment();
 					
 					eq.setEquipmentInternalName(key);
-					eq.setAmount(Math.max(masterEq.getMinProduction(),CampaignMain.cm.getR().nextInt(masterEq.getMaxProduction())+1));
+					eq.setAmount(Math.max(masterEq.getMinProduction(),CampaignMain.cm.getRandomNumber(masterEq.getMaxProduction())+1));
 					eq.setCost(Math.max(masterEq.getMinCost(), CampaignMain.cm.getR().nextDouble()*masterEq.getMaxCost()));
 					eq.setCostUp(false);
 					
@@ -90,7 +90,7 @@ public class PartsMarket {
 					
 					if ( eq.getAmount() < masterEq.getMaxProduction() ) {
 						int difference = masterEq.getMaxProduction()-eq.getAmount();
-						int amountIncrease = Math.min(1,Math.min(difference/2, CampaignMain.cm.getR().nextInt(difference+1)));
+						int amountIncrease = Math.min(1,Math.min(difference/2, CampaignMain.cm.getRandomNumber(difference+1)));
 						eq.setAmount(eq.getAmount()+amountIncrease);
 					}
 					
@@ -99,7 +99,7 @@ public class PartsMarket {
 					eq.setCostUp(false);
 					if ( eq.getAmount() < masterEq.getMaxProduction() ) {
 						int difference = masterEq.getMaxProduction()-eq.getAmount();
-						int amountIncrease = Math.min(1, Math.min(difference/2, CampaignMain.cm.getR().nextInt(difference)+1));
+						int amountIncrease = Math.min(1, Math.min(difference/2, CampaignMain.cm.getRandomNumber(difference)+1));
 						eq.setAmount(eq.getAmount()+amountIncrease);
 					}
 					

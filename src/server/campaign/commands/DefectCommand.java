@@ -450,7 +450,7 @@ public class DefectCommand implements Command {
 								toReturn += ", ";
 							
 							//pick random unit
-							SUnit toRemove = p.getUnits().get(CampaignMain.cm.getR().nextInt(p.getUnits().size()));
+							SUnit toRemove = p.getUnits().get(CampaignMain.cm.getRandomNumber(p.getUnits().size()));
 							
 							//make an actual unit, store name, remove
 							toReturn += toRemove.getModelName();

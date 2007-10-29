@@ -108,7 +108,7 @@ public class WeaponSpecialistSkill extends SPilotSkill {
 			return;
 		
 		if (uniqueWeapons.size() > 1)
-			selectedWeapon = CampaignMain.cm.getR().nextInt(uniqueWeapons.size());
+			selectedWeapon = CampaignMain.cm.getRandomNumber(uniqueWeapons.size());
 		
 		
 		for (Enumeration e = uniqueWeapons.keys(); e.hasMoreElements(); selectedWeapon--) {

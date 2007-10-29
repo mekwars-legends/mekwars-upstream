@@ -1598,7 +1598,7 @@ public class ShortResolver {
 			SPlayer newOwner = null;
 
 			// roll is under winner %. winner gets the unit.
-			if (CampaignMain.cm.getR().nextInt(100) < winnerSalvagePercent) {
+			if (CampaignMain.cm.getRandomNumber(100) < winnerSalvagePercent) {
 
 				// previous owner wasn't a winner. pick a new owner
 				if (!so.getWinners().containsKey(oldOwnerName))
@@ -3585,13 +3585,13 @@ public class ShortResolver {
 							- currO.getOffBoardRange();
 
 					// check for overrun
-					if (CampaignMain.cm.getR().nextInt(100) <= currOverrunChance) {
+					if (CampaignMain.cm.getRandomNumber(100) <= currOverrunChance) {
 
 						// its been overrun. remove from living units.
 						i.remove();
 
 						// if capture roll passes, set as salvageable
-						if (CampaignMain.cm.getR().nextInt(100) < captureChance) {
+						if (CampaignMain.cm.getRandomNumber(100) < captureChance) {
 							currO
 									.setRemovalReason(megamek.common.IEntityRemovalConditions.REMOVE_SALVAGEABLE);
 							salvagableUnits.put(currO.getID(), currO);
@@ -3717,7 +3717,7 @@ public class ShortResolver {
 							&& dropLivingUnits.size() > 0) {
 
 						OperationEntity randomEntity = dropLivingUnits
-								.remove(CampaignMain.cm.getR().nextInt(
+								.remove(CampaignMain.cm.getRandomNumber(
 										dropLivingUnits.size()));
 
 						// destroy the unit, killing pilot
@@ -3736,7 +3736,7 @@ public class ShortResolver {
 							&& dropLivingUnits.size() > 0) {
 
 						OperationEntity randomEntity = dropLivingUnits
-								.remove(CampaignMain.cm.getR().nextInt(
+								.remove(CampaignMain.cm.getRandomNumber(
 										dropLivingUnits.size()));
 
 						// if the entity if a mech, eject the pilot
@@ -3927,7 +3927,7 @@ public class ShortResolver {
 
 					// captured. check to see if the pilot defects and joins the
 					// queues.
-					if (CampaignMain.cm.getR().nextInt(100) < captureChance) {
+					if (CampaignMain.cm.getRandomNumber(100) < captureChance) {
 						if (CampaignMain.cm
 								.getBooleanConfig("AllowPersonalPilotQueues")) {
 							pickupPlayer.getPersonalPilotQueue().addPilot(
@@ -3999,7 +3999,7 @@ public class ShortResolver {
 					survivalChance += 20;
 
 				// survived. let the player know and return.
-				if (CampaignMain.cm.getR().nextInt(100) < survivalChance) {
+				if (CampaignMain.cm.getRandomNumber(100) < survivalChance) {
 					toReturn[0] = new Boolean(true);
 					toReturn[1] = ((SPilot) currUnit.getPilot())
 							.getPilotRescueMessage(currUnit);
@@ -4022,7 +4022,7 @@ public class ShortResolver {
 
 				// captured. check to see if the pilot defects and joins the
 				// queues.
-				if (CampaignMain.cm.getR().nextInt(100) < captureChance) {
+				if (CampaignMain.cm.getRandomNumber(100) < captureChance) {
 					if (CampaignMain.cm
 							.getBooleanConfig("AllowPersonalPilotQueues")) {
 						pickupPlayer.getPersonalPilotQueue().addPilot(
@@ -4105,7 +4105,7 @@ public class ShortResolver {
 							.getIntegerConfig("TrappedInMechSurvivalMod");
 
 					// survived. let the player know and return.
-					if (CampaignMain.cm.getR().nextInt(100) < survivalChance) {
+					if (CampaignMain.cm.getRandomNumber(100) < survivalChance) {
 						toReturn[0] = new Boolean(true);
 						toReturn[1] = "The crew survived.";
 						toReturn[3] = "The crew survived.";
@@ -4226,7 +4226,7 @@ public class ShortResolver {
 					.getIntegerConfig("TrappedInMechSurvivalMod");
 
 			// survived. let the player know and return.
-			if (CampaignMain.cm.getR().nextInt(100) < survivalChance) {
+			if (CampaignMain.cm.getRandomNumber(100) < survivalChance) {
 				toReturn[0] = new Boolean(true);
 				toReturn[1] = ((SPilot) currUnit.getPilot())
 						.getPilotRescueMessage(currUnit);
@@ -4247,7 +4247,7 @@ public class ShortResolver {
 					.getIntegerConfig("ChanceToConvertCapturedPilots");
 
 			// captured. check to see if the pilot defects and joins the queues.
-			if (CampaignMain.cm.getR().nextInt(100) < captureChance) {
+			if (CampaignMain.cm.getRandomNumber(100) < captureChance) {
 				if (CampaignMain.cm
 						.getBooleanConfig("AllowPersonalPilotQueues")) {
 					pickupPlayer.getPersonalPilotQueue().addPilot(
@@ -4436,7 +4436,7 @@ public class ShortResolver {
 			 * a random, then iterate until we hit the random number, returning
 			 * the SPlayer @ stop.
 			 */
-			int random = CampaignMain.cm.getR().nextInt(
+			int random = CampaignMain.cm.getRandomNumber(
 					shortOp.getWinners().size());
 			int current = 0;
 
@@ -4474,7 +4474,7 @@ public class ShortResolver {
 			 * a random, then iterate until we hit the random number, returning
 			 * the SPlayer @ stop.
 			 */
-			int random = CampaignMain.cm.getR().nextInt(
+			int random = CampaignMain.cm.getRandomNumber(
 					shortOp.getLosers().size());
 			int current = 0;
 			for (String ln : shortOp.getLosers().keySet()) {

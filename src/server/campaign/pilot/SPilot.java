@@ -175,14 +175,14 @@ public class SPilot extends Pilot {
 			
 			if (!useRandomLevels && getExperience() >= dieSize)
 				shouldLevelUp = true;
-			else if (getExperience() >= CampaignMain.cm.getR().nextInt(dieSize))
+			else if (getExperience() >= CampaignMain.cm.getRandomNumber(dieSize))
 				shouldLevelUp = true;
 			
 		} else if (pilotIsElite && CampaignMain.cm.getBooleanConfig("RandomRetirementOfElites")) {
 			
 			if (!useRandomLevels && getExperience() >= dieSize)
 				shouldLevelDown = true;
-			else if (getExperience() >= CampaignMain.cm.getR().nextInt(dieSize))
+			else if (getExperience() >= CampaignMain.cm.getRandomNumber(dieSize))
 				shouldLevelDown = true;
 			
 		}
@@ -203,7 +203,7 @@ public class SPilot extends Pilot {
             if (unit.getPilot().getSkills().has(PilotSkill.GiftedID))
                 chanceToGainSkill += 5;
             
-			int dieRoll = CampaignMain.cm.getR().nextInt(100) + 1;
+			int dieRoll = CampaignMain.cm.getRandomNumber(100) + 1;
 			if (dieRoll < chanceToGainSkill)
 				skillToAdd = CampaignMain.cm.getRandomSkill(this,unit.getType());
 		}
@@ -219,7 +219,7 @@ public class SPilot extends Pilot {
 		 */
 		if (shouldLevelUp) {
 			
-			int random = CampaignMain.cm.getR().nextInt(10);
+			int random = CampaignMain.cm.getRandomNumber(10);
 			boolean levelGunnery = false;
 			boolean levelPiloting = false;
 			if(differential > 0)

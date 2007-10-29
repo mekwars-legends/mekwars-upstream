@@ -385,7 +385,7 @@ public class UseRewardPointsCommand implements Command {
 		String producer = "Reward Unit";
 		
 		if (new Boolean(house.getConfig("UseOnlyOneVehicleSize")).booleanValue() && type_id == Unit.VEHICLE)
-			unitSize = Unit.getWeightClassDesc(CampaignMain.cm.getR().nextInt(4));
+			unitSize = Unit.getWeightClassDesc(CampaignMain.cm.getRandomNumber(4));
 		
 		Filename = BuildTable.getUnitFilename(faction,unitSize,type_id,BuildTable.REWARD);//build from rewards dir.
 		SUnit cm = new SUnit(producer,Filename,weightClass);
