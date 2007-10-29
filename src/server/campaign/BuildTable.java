@@ -68,24 +68,14 @@ public class BuildTable {
 		while (!fileFound){
 			String fileToRead = getFileName(unitProducer,size,dir,type_id);
 			table = getListFromFile(new File(fileToRead));
-			MWServ.mwlog.errLog("1");
-
-			/*String techFile = getTechFileName(unitProducer, size, type_id);
-			if ( techFile.trim().length() > 0 )
-				table.addAll(getListFromFile(new File(techFile)));
-			*/
-			MWServ.mwlog.errLog("2");
 
 			int ran = CampaignMain.cm.getRandomNumber(table.size());
-			MWServ.mwlog.errLog("3");
 
 			Filename = table.elementAt(ran);
-			MWServ.mwlog.errLog("4");
 			if (Filename.indexOf(".") == -1)
 				unitProducer = Filename;
 			else
 				fileFound = true;
-			MWServ.mwlog.errLog("5");
 
 		}
 		return Filename;

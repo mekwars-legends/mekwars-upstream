@@ -19,8 +19,6 @@ package server.campaign;
 import java.util.TreeMap;
 import java.util.Vector;
 
-import server.MWServ;
-
 import common.Unit;
 
 @SuppressWarnings({"unchecked","serial"})
@@ -118,11 +116,9 @@ public class NewbieHouse extends NonConqHouse {
 		else
 			factionName = houseName;
 		
-		MWServ.mwlog.errLog("Looking for Unit");
 		String unitFilename = BuildTable.getUnitFilename(factionName, Unit.getWeightClassDesc(weightClass), unitType, BuildTable.STANDARD);
 		
 		//build the new unit
-		MWServ.mwlog.errLog("unit found now creating");
 		SUnit newbieUnit = new SUnit(factionName,unitFilename,weightClass);
 		newbieUnit.setProducer("Training Unit");
 		return newbieUnit;
