@@ -544,7 +544,7 @@ public class SArmy extends Army {
 		}
 		
 		if ( ST.hasMoreTokens() )
-			this.setOpForceSize(Integer.parseInt(ST.nextToken()));
+			this.setOpForceSize(Float.parseFloat(ST.nextToken()));
 
 		if ( ST.hasMoreElements())
 		{

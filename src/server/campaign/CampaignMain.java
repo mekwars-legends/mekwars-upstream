@@ -2387,7 +2387,7 @@ public final class CampaignMain implements Serializable {
 		if( seed < 1 )
 			return seed;
 		
-		float answer = (cm.getRandomNumber(Integer.MAX_VALUE)/(Integer.MAX_VALUE-1))* (float)seed;
+		float answer = (r.nextInt(Integer.MAX_VALUE)/(Integer.MAX_VALUE-1))* (float)seed;
 		
 		return Math.round(answer);
 	}
