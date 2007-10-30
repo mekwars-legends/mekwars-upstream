@@ -2378,6 +2378,17 @@ public final class CampaignMain implements Serializable {
 		return isUsing;
 	}
 
+	public void restartRTT(){
+		boolean isUsing = Boolean
+		.parseBoolean(cm.getConfig("UseAdvanceRepair"))
+		|| Boolean.parseBoolean(cm.getConfig("UseSimpleRepair"));
+		if ( isUsing ){
+			RTT = null;
+			RTT = new RepairTrackingThread(Long.parseLong(cm.getConfig("TimeForEachRepairPoint")) * 1000);
+			RTT.start();
+		}
+	}
+	
 	public Random getR() {
 		return r;
 	}

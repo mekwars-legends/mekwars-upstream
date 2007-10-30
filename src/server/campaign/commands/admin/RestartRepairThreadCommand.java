@@ -45,7 +45,7 @@ public class RestartRepairThreadCommand implements Command {
         
         // start advance Repair
         if ( CampaignMain.cm.isUsingAdvanceRepair() ){
-            CampaignMain.cm.getRTT().start();
+            CampaignMain.cm.restartRTT();
         }
 
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has restared the repair thread");

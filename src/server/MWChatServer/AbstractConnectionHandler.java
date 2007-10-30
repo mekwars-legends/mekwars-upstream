@@ -28,7 +28,6 @@
 package server.MWChatServer;
 
 import java.net.InetAddress;
-import java.util.LinkedList;
 
 /**
  * The keeper of the Socket on the server side.  Spawns a thread for reading from the
@@ -42,7 +41,7 @@ import java.util.LinkedList;
 public abstract class AbstractConnectionHandler {
 	
 	//alas, we'll have to synchronize manually b/c of how flushDeflated() works
-	protected LinkedList<String> _messages = new LinkedList<String>();
+	//protected LinkedList<String> _messages = new LinkedList<String>();
 	protected MWChatClient _client;
 	protected long _lastReceived = System.currentTimeMillis(); // corresponds to timeInMillis
 
@@ -53,10 +52,8 @@ public abstract class AbstractConnectionHandler {
     /**
      * Queue a message headed outbound
      */
-	public void queueMessage(String message) {
-		synchronized(_messages) {_messages.add(message);}
-    }
-
+	public abstract void queueMessage(String message);
+	
 	// for PING and anything else that shouldn't be batched by deflate    
 	public abstract void queuePriorityMessage(String message);
     

@@ -62,7 +62,7 @@ public class MWChatClient implements IConnectionListener, ICommands {
 		// looks ugly, but we do it so all FlashMWChatClient
 		// has to override is createConnectionHandler.
 		_connectionHandler = createConnectionHandler(s);
-		((ConnectionHandler) _connectionHandler).init(server.getDispatcher());
+		((ConnectionHandler) _connectionHandler).init();
 	}
 
 	public AbstractConnectionHandler createConnectionHandler(java.net.Socket s) throws java.io.IOException {

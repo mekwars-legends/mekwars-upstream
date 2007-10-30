@@ -61,8 +61,8 @@ public class MWChatServer implements ICommands {
     protected String _motd;
 
     protected ServerSocket _serverSocket;
-    protected Dispatcher _dispatcher;
-    protected Thread _dispatchThread;
+   // protected Dispatcher _dispatcher;
+    //protected Thread _dispatchThread;
 
     protected int _cumulativeLogins = 0;
     protected int _port = 0;
@@ -70,9 +70,9 @@ public class MWChatServer implements ICommands {
 
     public MWChatServer(String IPAddress, int port) throws Exception {
        
-    	_dispatcher = createDispatcher();
+    	/*_dispatcher = createDispatcher();
         _dispatchThread = new Thread(_dispatcher, "Dispatcher");
-        _dispatchThread.start();
+        _dispatchThread.start();*/
 
         Properties commandProps = new Properties();
         commandProps.setProperty("signon.class", "server.MWChatServer.commands.SignOn");
@@ -135,13 +135,13 @@ public class MWChatServer implements ICommands {
         return _roomAuthenticator.getNextOp(rs);
     }
 
-    protected Dispatcher createDispatcher() {
+    /*protected Dispatcher createDispatcher() {
         return new Dispatcher();
     }
 
     public Dispatcher getDispatcher() {
         return _dispatcher;
-    }
+    }*/
 
     public void initTranslator(Properties p) {
         Translator.init(p);

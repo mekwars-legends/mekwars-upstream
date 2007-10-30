@@ -2773,17 +2773,12 @@ public class ShortResolver {
 						 * factories until the PP amount is reached or all
 						 * options from the world are exhausted.
 						 */
-						double ppToCaptureDoub = o
-								.getDoubleValue("AttackerBasePPAmount");
-						double ppUnitAdjust = o
-								.getDoubleValue("AttackerPPUnitAdjustment");
-						double ppBVAdjust = o
-								.getDoubleValue("AttackerPPBVAdjustment");
-						if (ppUnitAdjust > 0)
-							ppToCaptureDoub *= so.getStartingUnits()
-									/ ppUnitAdjust;
-						if (ppBVAdjust > 0)
-							ppToCaptureDoub *= so.getStartingBV() / ppBVAdjust;
+						double ppToCaptureDoub = o.getDoubleValue("AttackerBasePPAmount");
+						double ppUnitAdjust = Math.max(1, o.getDoubleValue("AttackerPPUnitAdjustment"));
+						double ppBVAdjust = Math.max(1, o.getDoubleValue("AttackerPPBVAdjustment"));
+
+						ppToCaptureDoub *= so.getStartingUnits() / ppUnitAdjust;
+						ppToCaptureDoub *= so.getStartingBV() / ppBVAdjust;
 						if (ppToCaptureDoub > ppCaptureCap)
 							ppToCaptureDoub = ppCaptureCap;
 
@@ -2888,21 +2883,14 @@ public class ShortResolver {
 
 						// Start Destruction of Units and Components
 
-						int unitDestructionCap = o
-								.getIntValue("UnitDestructionCap");
-						int unitsToDestroy = o
-								.getIntValue("BaseUnitsDestroyed");
-						int unitUnitDestroyAdjust = o
-								.getIntValue("DestroyedUnitsBVAdjustment");
-						int unitBVDestroyAdjust = o
-								.getIntValue("DestroyedUnitsUnitAdjustment");
+						int unitDestructionCap = o.getIntValue("UnitDestructionCap");
+						int unitsToDestroy = o.getIntValue("BaseUnitsDestroyed");
+						int unitUnitDestroyAdjust = Math.max(1, o.getIntValue("DestroyedUnitsBVAdjustment"));
+						int unitBVDestroyAdjust = Math.max(1, o.getIntValue("DestroyedUnitsUnitAdjustment"));
 
-						if (unitUnitDestroyAdjust > 0)
-							unitsToDestroy += Math.floor(so.getStartingUnits()
-									/ unitUnitDestroyAdjust);
-						if (unitBVDestroyAdjust > 0)
-							unitsToDestroy += Math.floor(so.getStartingBV()
-									/ unitBVDestroyAdjust);
+						unitsToDestroy += Math.floor(so.getStartingUnits() / unitUnitDestroyAdjust);
+						unitsToDestroy += Math.floor(so.getStartingBV() / unitBVDestroyAdjust);
+						
 						if (unitsToDestroy > unitDestructionCap)
 							unitsToDestroy = unitDestructionCap;
 
@@ -3018,20 +3006,14 @@ public class ShortResolver {
 						 * factories until the PP amount is reached or all
 						 * options from the world are exhausted.
 						 */
-						double ppDestructionCap = o
-								.getDoubleValue("PPDestructionCap");
-						double ppToDestroyDoub = o
-								.getDoubleValue("BasePPDestroyed");
-						double ppUnitDestroyAdjust = o
-								.getDoubleValue("DestroyedPPBVAdjustment");
-						double ppBVDestroyAdjust = o
-								.getDoubleValue("DestroyedPPUnitAdjustment");
-						if (ppUnitDestroyAdjust > 0)
-							ppToDestroyDoub *= so.getStartingUnits()
-									/ ppUnitDestroyAdjust;
-						if (ppBVDestroyAdjust > 0)
-							ppToDestroyDoub *= so.getStartingBV()
-									/ ppBVDestroyAdjust;
+						double ppDestructionCap = o.getDoubleValue("PPDestructionCap");
+						double ppToDestroyDoub = o.getDoubleValue("BasePPDestroyed");
+						double ppUnitDestroyAdjust = Math.max(1,o.getDoubleValue("DestroyedPPBVAdjustment"));
+						double ppBVDestroyAdjust = Math.max(1,o.getDoubleValue("DestroyedPPUnitAdjustment"));
+						
+						ppToDestroyDoub *= so.getStartingUnits() / ppUnitDestroyAdjust;
+						ppToDestroyDoub *= so.getStartingBV() / ppBVDestroyAdjust;
+						
 						if (ppToDestroyDoub > ppDestructionCap)
 							ppToDestroyDoub = ppDestructionCap;
 

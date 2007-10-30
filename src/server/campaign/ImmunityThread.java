@@ -153,6 +153,13 @@ public final class ImmunityThread extends Thread {//no extension
 					//load the player
 					SPlayer p = CampaignMain.cm.getPlayer(currName);
 					
+					if ( p == null ){
+						synchronized (immunePlayers) {
+							immunePlayers.remove(currName);
+						}
+						continue;
+					}
+					
 					/*
 					 * make sure the player is still active (hasnt logged out, deactivated (voluntary
 					 * of otherwise) and subsequently re-activated, attacked or joined a game.
