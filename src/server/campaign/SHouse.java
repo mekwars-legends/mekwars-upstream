@@ -2002,7 +2002,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			setComponentProduction(getComponentProduction() + p.getCompProduction());
 			
 			// Add unit production here
-			if(Boolean.parseBoolean(CampaignMain.cm.getConfig("UseNonFactionUnitIncreasedTechs")) && p.getFactoryCount() > 0) {
+			if(Boolean.parseBoolean(CampaignMain.cm.getConfig("UseNonFactionUnitsIncreasedTechs")) && p.getFactoryCount() > 0) {
 				modifyUnitSupport(p, true);
 			}
 		}

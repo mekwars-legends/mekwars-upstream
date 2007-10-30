@@ -4279,7 +4279,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         
         BaseCheckBox = new JCheckBox("Non-Faction Units cost extra techs");
         BaseCheckBox.setToolTipText("Only used with Tech Repairs.  Increases the tech cost of non-faction units.");
-        BaseCheckBox.setName("UseNonFactionUnitIncreasedTechs");
+        BaseCheckBox.setName("UseNonFactionUnitsIncreasedTechs");
         repairSpring.add(BaseCheckBox);
         
         SpringLayoutHelper.setupSpringGrid(repairSpring, 3);
