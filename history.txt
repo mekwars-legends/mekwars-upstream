@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ Release Client 0.2.10.1 & Server 0.2.10.2
++ New MegaMek.jar 0.33.11-MW10312008-5249
 + RFE 1439739: Night/Dusk chance in operation
 + Changed Advance Repair to Advanced Repair
 + Changed AdvanceTerrain to AdvancedTerrain
