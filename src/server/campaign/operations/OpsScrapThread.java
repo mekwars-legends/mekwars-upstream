@@ -142,7 +142,7 @@ public class OpsScrapThread extends Thread {
 				salvagedUnits.remove(currID);
 				continue;
 			}
-			//cost gets set to 0 for advance repair but you still need to be able to scrap multiple units.
+			//cost gets set to 0 for advanced repair but you still need to be able to scrap multiple units.
 			if ( CampaignMain.cm.isUsingAdvanceRepair() )
 				currU.setScrappableFor(1);
 			else

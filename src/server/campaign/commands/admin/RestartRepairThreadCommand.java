@@ -43,7 +43,7 @@ public class RestartRepairThreadCommand implements Command {
             return;
         
         
-        // start advance Repair
+        // start advanced Repair
         if ( CampaignMain.cm.isUsingAdvanceRepair() ){
             CampaignMain.cm.restartRTT();
         }

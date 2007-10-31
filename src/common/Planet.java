@@ -119,7 +119,7 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
     private int nightChance = 0;
     private int nightTempMod = 0;
 
-    private Hashtable<Integer,AdvanceTerrain> advanceTerrain = new Hashtable<Integer,AdvanceTerrain>();
+    private Hashtable<Integer,AdvancedTerrain> advanceTerrain = new Hashtable<Integer,AdvancedTerrain>();
     
     /**
      * Min Planet ownership to allow a faction to use the planets resources
@@ -200,12 +200,12 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
         this.setMinPlanetOwnerShip(in.readInt("minplanetownership"));
         this.setHomeWorld(in.readBoolean("homeworld"));
         this.setOriginalOwner(in.readLine("originalowner"));
-        size = in.readInt("AdvanceTerrain.size");
+        size = in.readInt("AdvancedTerrain.size");
         for (int i = 0; i < size; ++i) {
-            AdvanceTerrain aTerrain = new AdvanceTerrain();
-            int id = in.readInt("AdvanceTerrainId");
+            AdvancedTerrain aTerrain = new AdvancedTerrain();
+            int id = in.readInt("AdvancedTerrainId");
             aTerrain.binIn(in);
-            this.getAdvanceTerrain().put(new Integer(id),aTerrain);
+            this.getAdvancedTerrain().put(new Integer(id),aTerrain);
         }
         TreeMap<String, String> map = new TreeMap<String, String>();
         size = in.readInt("PlanetFlags.size");
@@ -449,10 +449,10 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
         out.println(this.isHomeWorld(),"homeworld");
         out.println(this.getOriginalOwner(),"originalowner");
 
-        out.println(this.getAdvanceTerrain().size(),"AdvanceTerrain.size");
-        for (Integer currI : this.getAdvanceTerrain().keySet()) {
-            out.println(currI.intValue(),"AdvanceTerrainId");
-            AdvanceTerrain aTerrain = this.getAdvanceTerrain().get(currI);
+        out.println(this.getAdvancedTerrain().size(),"AdvancedTerrain.size");
+        for (Integer currI : this.getAdvancedTerrain().keySet()) {
+            out.println(currI.intValue(),"AdvancedTerrainId");
+            AdvancedTerrain aTerrain = this.getAdvancedTerrain().get(currI);
             aTerrain.binOut(out);    
         }
         
@@ -492,14 +492,14 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
         this.setMinPlanetOwnerShip(in.readInt("minplanetownership"));
         this.setHomeWorld(in.readBoolean("homeworld"));
         this.setOriginalOwner(in.readLine("originalowner"));
-        size = in.readInt("AdvanceTerrain.size");
-        //System.err.println("AdvanceTerrain.size");
+        size = in.readInt("AdvancedTerrain.size");
+        //System.err.println("AdvancedTerrain.size");
         for (int i = 0; i < size; ++i) {
-            AdvanceTerrain aTerrain = new AdvanceTerrain();
-            int id = in.readInt("AdvanceTerrainId");
-            //System.err.println("AdvanceTerrainId "+id);
+            AdvancedTerrain aTerrain = new AdvancedTerrain();
+            int id = in.readInt("AdvancedTerrainId");
+            //System.err.println("AdvancedTerrainId "+id);
             aTerrain.binIn(in);
-            this.getAdvanceTerrain().put(new Integer(id),aTerrain);
+            this.getAdvancedTerrain().put(new Integer(id),aTerrain);
         }
         TreeMap<String, String> map = new TreeMap<String, String>();
         size = in.readInt("PlanetFlags.size");
@@ -739,7 +739,7 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
                 	result.append("0");
                 result.append(curProb+"% ");
                 result.append(pe.getEnvironment().toImageAbsolutePathDescription());
-                AdvanceTerrain aTerrain = this.getAdvanceTerrain().get(new Integer(pe.getEnvironment().getId()));
+                AdvancedTerrain aTerrain = this.getAdvancedTerrain().get(new Integer(pe.getEnvironment().getId()));
                 if ( aTerrain == null ) {
                 	result.append("Nothing special");
                 }else {
@@ -837,11 +837,11 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
        nightTempMod = mod;
     }
 
-    public Hashtable<Integer,AdvanceTerrain> getAdvanceTerrain() {
+    public Hashtable<Integer,AdvancedTerrain> getAdvancedTerrain() {
     	return advanceTerrain;
     }
     
-    public void setAdvanceTerrain(Hashtable<Integer,AdvanceTerrain> terrain){
+    public void setAdvancedTerrain(Hashtable<Integer,AdvancedTerrain> terrain){
         this.advanceTerrain = terrain;
     }
 

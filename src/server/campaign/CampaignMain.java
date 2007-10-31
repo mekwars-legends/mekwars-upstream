@@ -411,7 +411,7 @@ public final class CampaignMain implements Serializable {
 		IThread = new ImmunityThread();
 		IThread.start();
 
-		// start Advance Repair, if enabled
+		// start Advanced Repair, if enabled
 		isUsingAdvanceRepair();
 
 		// finally, announce restart in news feed.
@@ -1603,8 +1603,8 @@ public final class CampaignMain implements Serializable {
 		Commands.put("SENDTOMISC", new SendToMiscCommand());
 		Commands.put("SERVERVERSION", new ServerVersionCommand());
 		Commands.put("SERVERGAMEOPTIONS", new ServerGameOptionsCommand());
-		Commands.put("SETADVANCEPLANETTERRAIN",
-				new SetAdvancePlanetTerrainCommand());
+		Commands.put("SETADVANCEDPLANETTERRAIN",
+				new SetAdvancedPlanetTerrainCommand());
 		Commands.put("SETAUTOEJECT", new SetAutoEjectCommand());
 		Commands.put("SETAUTOREORDER", new SetAutoReorderCommand());
 		Commands.put("SETCLIENTVERSION", new SetClientVersionCommand());
@@ -2359,7 +2359,7 @@ public final class CampaignMain implements Serializable {
 	}
 	
 	/*
-	 * Checks to see if the campaign is using advance repairs and starts up the
+	 * Checks to see if the campaign is using advanced repairs and starts up the
 	 * thread if it is null
 	 */
 	public boolean isUsingAdvanceRepair() {

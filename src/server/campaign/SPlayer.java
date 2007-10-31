@@ -148,7 +148,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	 */
 	public SPlayer() {
 		
-		// if using advance repair, populate tech vectors and generate info
+		// if using advanced repair, populate tech vectors and generate info
 		if (CampaignMain.cm.isUsingAdvanceRepair()) {
 			for (int x = 0; x < 4; x++) {
 				getAvailableTechs().add(0);
@@ -436,7 +436,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	 * This can be calcualted in one of three "standard" ways: 1) House bays +
 	 * techs 2) House bays + experience 3) House bays + techs + experience
 	 * 
-	 * Or, two additional ways if using Advance Repair: 4) House Bays + bays
+	 * Or, two additional ways if using Advanced Repair: 4) House Bays + bays
 	 * owned by player 5) House bays + bays owned by player + experience
 	 * 
 	 * @return the total amount of bays this player has
@@ -482,7 +482,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		if (usesTechs)
 			numBays += this.getTechnicians();
 		
-		// now add bays if you are using advance repairs
+		// now add bays if you are using advanced repairs
 		if (usesAdvanceRepairs)
 			numBays += baysOwned;
 		
@@ -2211,7 +2211,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	 */
 	public boolean hasRepairingUnits(boolean inArmy) {
 		
-		// if not using advance repair don't spend the time checking.
+		// if not using advanced repair don't spend the time checking.
 		if (!CampaignMain.cm.isUsingAdvanceRepair())
 			return false;
 		
@@ -2242,7 +2242,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	}// end hasRepairingUnits
 	
 	/**
-	 * Used for Advance Repair cannot repair a unit that is in combat.
+	 * Used for Advanced Repair cannot repair a unit that is in combat.
 	 * 
 	 * @param unitID
 	 * @return
@@ -2396,7 +2396,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				+ " //  " + CampaignMain.cm.moneyOrFluMessage(false, false, influence)
 				+ " // " + experience + " Experience<br>");
 		
-		// advance repair
+		// advanced repair
 		if (CampaignMain.cm.isUsingAdvanceRepair()) {
 			s.append("Technicians (Green/Reg/Vet/Elite): "
 					+ this.getTotalTechs().elementAt(UnitUtils.TECH_GREEN) + "/"
@@ -3107,7 +3107,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	                            ST.nextElement();
 	                    }
 					}
-				}// Had alot of problems with advance repair so lets just use this.
+				}// Had alot of problems with advanced repair so lets just use this.
 				catch (Exception ex) {
 				}
 			}// get rid of the 2 blanks
@@ -3290,7 +3290,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	                            technicians = rs.getInt("playerTechnicians");
 	                    }
 					}
-				// Had alot of problems with advance repair so lets just use this.
+				// Had alot of problems with advanced repair so lets just use this.
 				catch (Exception ex) {
 				}
 			

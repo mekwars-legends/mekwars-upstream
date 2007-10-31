@@ -54,7 +54,7 @@ import server.campaign.SArmy;
 import server.campaign.SUnit;
 import server.campaign.pilot.SPilot;
 
-import common.AdvanceTerrain;
+import common.AdvancedTerrain;
 import common.PlanetEnvironment;
 import common.campaign.Buildings;
 import common.util.StringUtils;
@@ -109,7 +109,7 @@ public class ShortOperation implements Comparable {
     private StringBuilder cityBuilder = new StringBuilder();
     
     //intel info
-	AdvanceTerrain aTerrain = null;
+	AdvancedTerrain aTerrain = null;
     private boolean intelVacuum = false;
     private boolean doubleBlind = false;
     private double intelGravity = 0;
@@ -225,7 +225,7 @@ public class ShortOperation implements Comparable {
         
         //load the terrain for the randomly selected environment
         if (CampaignMain.cm.getBooleanConfig("UseStaticMaps"))
-            aTerrain = targetWorld.getAdvanceTerrain().get(new Integer(playEnvironment.getId()));
+            aTerrain = targetWorld.getAdvancedTerrain().get(new Integer(playEnvironment.getId()));
 
         //initiator is always an attacker, so add
 		this.addAttacker(initiator, attackingArmy, "");
@@ -1060,7 +1060,7 @@ public class ShortOperation implements Comparable {
 				
                 try{
     				//load the terrain for the randomly selected environment
-    			    //aTerrain = (AdvanceTerrain)targetWorld.getAdvanceTerrain().get(new Integer(playEnvironment.getId()));
+    			    //aTerrain = (AdvancedTerrain)targetWorld.getAdvancedTerrain().get(new Integer(playEnvironment.getId()));
     			    
     			    //determine temp. Add a random number from 0-(Diff b/w Max and Min Temp) to the low temperature
     			    int highTemp = aTerrain.getHighTemp();
@@ -1136,7 +1136,7 @@ public class ShortOperation implements Comparable {
                     gameOptions.append("|visibility|");
                     gameOptions.append(intelVisibility);
                 } catch (Exception ex) {
-                    MWServ.mwlog.errLog("Unable to retrieve advance terrain data for Planet: "+targetWorld.getName()+" Terrain: "+playEnvironment.getName());
+                    MWServ.mwlog.errLog("Unable to retrieve advanced terrain data for Planet: "+targetWorld.getName()+" Terrain: "+playEnvironment.getName());
                     MWServ.mwlog.errLog(ex);
                 }
 			}
@@ -1165,7 +1165,7 @@ public class ShortOperation implements Comparable {
                 this.intelGravity = targetWorld.getGravity();
                 this.intelTemp = tempToSet;
                 this.intelVacuum = targetWorld.isVacuum();
-                //Advance Terrain is not being used to reset visibility to max
+                //Advanced Terrain is not being used to reset visibility to max
                 gameOptions.append("|visibility|999");
 			}
 			

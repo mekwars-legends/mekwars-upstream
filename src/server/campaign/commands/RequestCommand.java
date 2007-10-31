@@ -267,7 +267,7 @@ public class RequestCommand implements Command {
 				needsMoreTechs = true;
 			}
 			
-			//find out if your are using advance repair if so buy bays instead of hiring techs.
+			//find out if your are using advanced repair if so buy bays instead of hiring techs.
 			boolean useBays = CampaignMain.cm.isUsingAdvanceRepair();
 
 			//if the player needs more techs/bays, make a compound link and return

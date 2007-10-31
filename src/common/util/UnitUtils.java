@@ -56,7 +56,7 @@ public class UnitUtils  {
 														        "Clan XL Engine",
 														        "Clan XXL Engine"};
 
-    //Locations for Advance Repair.
+    //Locations for Advanced Repair.
     public static final int LOC_HEAD = 0;
     public static final int LOC_CT   = 1;
     public static final int LOC_RT   = 2;

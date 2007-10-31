@@ -123,7 +123,7 @@ public final class ServerConfigurationDialog implements ActionListener {
 		JPanel defectionPanel = new JPanel();//control defection access, losses therefrom, etc.
 		JPanel battleValuePanel = new JPanel();//mekwars BV adjustments
 		JPanel disconenctionPanel = new JPanel();
-        JPanel advanceRepairPanel = new JPanel();//Advance Repair
+        JPanel advancedRepairPanel = new JPanel();//Advanced Repair
         JPanel lossCompensationPanel = new JPanel();//battle loss compensation
 		
 		/*
@@ -3646,7 +3646,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setName("ForceSalvage");
 		combatCBoxGrid.add(BaseCheckBox);
 		
-        BaseCheckBox = new JCheckBox("Use Advance Terrains");
+        BaseCheckBox = new JCheckBox("Use Advanced Terrains");
 
         BaseCheckBox.setToolTipText("Use Already built maps vs terrain and RMG");
         BaseCheckBox.setName("UseStaticMaps");
@@ -4243,9 +4243,9 @@ public final class ServerConfigurationDialog implements ActionListener {
         repairTypes.add(baseRadioButton);
         repairSpring.add(baseRadioButton);
         
-        baseRadioButton = new JRadioButton("Use Advance Repair");
+        baseRadioButton = new JRadioButton("Use Advanced Repair");
 
-        baseRadioButton.setToolTipText("<html>Use Advance Repair?<br>NOTE: Save all player files and reboot<br>When turning on or off.</html>");
+        baseRadioButton.setToolTipText("<html>Use Advanced Repair?<br>NOTE: Save all player files and reboot<br>When turning on or off.</html>");
         baseRadioButton.setName("UseAdvanceRepair");
         repairTypes.add(baseRadioButton);
         repairSpring.add(baseRadioButton);
@@ -4596,7 +4596,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         masterBox.add(masterEquipmentPanel);
         masterBox.add(masterCostModPanel);
         
-        advanceRepairPanel.add(masterBox);
+        advancedRepairPanel.add(masterBox);
         
         /*
          * LOSS COMPENSATION setup
@@ -4731,7 +4731,7 @@ public final class ServerConfigurationDialog implements ActionListener {
 		cancelButton.setToolTipText("Exit without saving options");
 	
 		ConfigPane.addTab("Misc Options",null,miscOptionsPanel,"Misc Stuff");
-		ConfigPane.addTab("Advance Repairs",null,advanceRepairPanel,"For all your Unit Care needs");
+		ConfigPane.addTab("Advanced Repairs",null,advancedRepairPanel,"For all your Unit Care needs");
         ConfigPane.addTab("Black Market",null,blackMarketPanel,"Black Market access controls");
         ConfigPane.addTab("BV Options",null,battleValuePanel,"Battle Value");
 		ConfigPane.addTab("Combat",null,combatPanel,"Combat");

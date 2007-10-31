@@ -404,10 +404,10 @@ public class CUnit extends Unit {
 	}
 	
     public boolean isOmni(){
-		boolean isOmni = false;
+		boolean isOmni =  this.getEntity().isOmni();
 		String targetChassis = this.getEntity().getChassis();
 		
-		if (this.getType() == Unit.VEHICLE )
+		if (this.getType() == Unit.VEHICLE && !isOmni)
 		{
 			try{
 				FileInputStream fis = new FileInputStream("./data/mechfiles/omnivehiclelist.txt");
@@ -417,8 +417,9 @@ public class CUnit extends Unit {
 					String chassie = dis.readLine();
 					//check to see if the chassies listed in the file match omni vehicle chassies.
 					if ( targetChassis.equalsIgnoreCase(chassie) ){
-						isOmni = true;
-						break;//found one no reason to keep searching :)
+						dis.close();
+						fis.close();
+						return true;
 					}
 				}
 				dis.close();
@@ -428,8 +429,6 @@ public class CUnit extends Unit {
 				
 			}
 		}
-		else
-			isOmni = this.getEntity().isOmni();
 		
 		return isOmni;
 	}

@@ -78,7 +78,7 @@ public class AdminMapPopupMenu extends JMenu {
 				new PlanetEditorDialog(mwclient, cPlanet.getName());
 			}
 		});
-        if ( userLevel >= mwclient.getData().getAccessLevel("SetAdvancePlanetTerrain") 
+        if ( userLevel >= mwclient.getData().getAccessLevel("SetAdvancedPlanetTerrain") 
         		&& userLevel >= mwclient.getData().getAccessLevel("AdminRemovePlanetOwnership")
         		&& userLevel >= mwclient.getData().getAccessLevel("AdminDestroyFactory")
         		&& userLevel >= mwclient.getData().getAccessLevel("AdminDestroyTerrain")

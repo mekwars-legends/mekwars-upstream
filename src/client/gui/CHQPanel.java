@@ -66,7 +66,7 @@ import client.campaign.CArmy;
 import client.campaign.CBMUnit;
 import client.campaign.CPlayer;
 import client.campaign.CUnit;
-import client.gui.dialog.AdvanceRepairDialog;
+import client.gui.dialog.AdvancedRepairDialog;
 import client.gui.dialog.BulkRepairDialog;
 import client.gui.dialog.CamoSelectionDialog;
 import client.gui.dialog.MechDetailDisplay;
@@ -2350,7 +2350,7 @@ public class CHQPanel extends JPanel {
                 int row = Integer.parseInt(st.nextToken());
                 int col = Integer.parseInt(st.nextToken());
                 CUnit mek = MekTable.getMekAt(row,col);
-                new AdvanceRepairDialog(mwclient,mek.getId(),false);
+                new AdvancedRepairDialog(mwclient,mek.getId(),false);
             }//Repair a unit
             else if (command.equalsIgnoreCase("BUR")) {
                 int row = Integer.parseInt(st.nextToken());
@@ -2373,7 +2373,7 @@ public class CHQPanel extends JPanel {
                 int row = Integer.parseInt(st.nextToken());
                 int col = Integer.parseInt(st.nextToken());
                 CUnit mek = MekTable.getMekAt(row,col);
-                new AdvanceRepairDialog(mwclient,mek.getId(),true);
+                new AdvancedRepairDialog(mwclient,mek.getId(),true);
             }//Display Unit Repair Jobs
             else if (command.equalsIgnoreCase("DRJ")) {
                 int row = Integer.parseInt(st.nextToken());

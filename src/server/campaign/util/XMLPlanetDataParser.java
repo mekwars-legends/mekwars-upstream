@@ -37,7 +37,7 @@ import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.SUnitFactory;
 
-import common.AdvanceTerrain;
+import common.AdvancedTerrain;
 import common.Continent;
 import common.Influences;
 import common.PlanetEnvironments;
@@ -69,8 +69,8 @@ public class XMLPlanetDataParser implements XMLResponder
 	private String prefix;
 	private String Description = "";
 	private PlanetEnvironments PlanEnv  = new PlanetEnvironments();
-	private AdvanceTerrain AdvTerr = null;
-	public TreeMap<Integer,AdvanceTerrain> AdvTerrTreeMap = new TreeMap<Integer,AdvanceTerrain>();
+	private AdvancedTerrain AdvTerr = null;
+	public TreeMap<Integer,AdvancedTerrain> AdvTerrTreeMap = new TreeMap<Integer,AdvancedTerrain>();
 	private TreeMap<String,String> OpFlags = new TreeMap<String,String>();
 	boolean conquerable = true;
 	private int counter = 1;
@@ -92,7 +92,7 @@ public class XMLPlanetDataParser implements XMLResponder
 	int Warehousesize = 0;
 	boolean inWarehouse = false;
 	boolean inContinent = false;
-	boolean hasAdvanceTerrain = false;
+	boolean hasAdvancedTerrain = false;
 	int terrainProb = 0;
 	String terrainName = "";
 	String OriginalOwner = CampaignMain.cm.getConfig("NewbieHouseName");
@@ -171,8 +171,8 @@ public class XMLPlanetDataParser implements XMLResponder
 		if (name.equalsIgnoreCase("CONTINENT"))
 			inContinent = true;
 		if (name.equalsIgnoreCase("ADVANCETERRAIN")){
-			hasAdvanceTerrain = true;
-			AdvTerr = new AdvanceTerrain();
+			hasAdvancedTerrain = true;
+			AdvTerr = new AdvancedTerrain();
 			if ( !CampaignMain.cm.getBooleanConfig("UseStaticMaps")){
 				CampaignMain.cm.getConfig().setProperty("UseStaticMaps","true");
 				CampaignMain.cm.saveConfigureFile(CampaignMain.cm.getConfig(),CampaignMain.cm.getServer().getConfigParam("CAMPAIGNCONFIG"));
@@ -223,7 +223,7 @@ public class XMLPlanetDataParser implements XMLResponder
 			terrainProb = 0;
 			terrainName = "";
 			inContinent = false;
-			if ( hasAdvanceTerrain )
+			if ( hasAdvancedTerrain )
 				AdvTerrTreeMap.put(cont.getEnvironment().getId(),AdvTerr);
 		}
 		if ( name.equalsIgnoreCase("ADVANCETERRAIN")){
@@ -278,10 +278,10 @@ public class XMLPlanetDataParser implements XMLResponder
 			p.setGravity(gravity);
 			p.setVacuum(vacuum);
 			p.setOwner(null,p.checkOwner(),false);//no old owner, no updates
-			if ( hasAdvanceTerrain)
-				p.getAdvanceTerrain().putAll(AdvTerrTreeMap);
+			if ( hasAdvancedTerrain)
+				p.getAdvancedTerrain().putAll(AdvTerrTreeMap);
 			/*        for ( Integer id: AdvTerrTreeMap.keySet() ){
-			 p.getAdvanceTerrain().put(id,AdvTerrTreeMap.get(id));
+			 p.getAdvancedTerrain().put(id,AdvTerrTreeMap.get(id));
 			 }*/
 			p.setOriginalOwner(OriginalOwner);
 			p.setPlanetFlags(OpFlags);
@@ -302,7 +302,7 @@ public class XMLPlanetDataParser implements XMLResponder
 			PlanEnv = new PlanetEnvironments();
 			Warehousesize = 0;
 			CompProduction = 0;
-			hasAdvanceTerrain = false;
+			hasAdvancedTerrain = false;
 			xboard = -1;
 			yboard = -1;
 			nightchance = 0;

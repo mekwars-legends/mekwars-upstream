@@ -72,7 +72,7 @@ import client.campaign.CUnit;
 import client.gui.SpringLayoutHelper;
 
 @SuppressWarnings({"unchecked","serial"})
-    public class AdvanceRepairDialog extends JFrame implements ActionListener, MouseListener, KeyListener, ChangeListener{
+    public class AdvancedRepairDialog extends JFrame implements ActionListener, MouseListener, KeyListener, ChangeListener{
 	
 	//store the client backlink for other things to use
 	private MWClient mwclient = null;
@@ -123,16 +123,16 @@ import client.gui.SpringLayoutHelper;
     
 	JTabbedPane ConfigPane = new JTabbedPane(SwingConstants.TOP);
 	
-	public AdvanceRepairDialog(MWClient c, int unitID, boolean salvage) {
+	public AdvancedRepairDialog(MWClient c, int unitID, boolean salvage) {
         CUnit pUnit =c.getPlayer().getUnit(unitID);
         Entity unit = null;
         synchronized (pUnit.getEntity()) {
             unit = pUnit.getEntity();
         }
-        new AdvanceRepairDialog( c, pUnit, unit, salvage);
+        new AdvancedRepairDialog( c, pUnit, unit, salvage);
 	}
 	
-	public AdvanceRepairDialog(MWClient c, CUnit playerUnit, Entity unit, boolean salvage) {
+	public AdvancedRepairDialog(MWClient c, CUnit playerUnit, Entity unit, boolean salvage) {
         
 		this.playerUnit = playerUnit; 
 		this.unit = unit;
@@ -1237,4 +1237,4 @@ import client.gui.SpringLayoutHelper;
         baseRollField.setText(Integer.toString(roll+techWorkMod));
         setCost();   
     }
-}//end AdvanceRepairDialog.java
+}//end AdvancedRepairDialog.java

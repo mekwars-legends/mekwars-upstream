@@ -25,7 +25,7 @@ import common.util.UnitUtils;
 import client.MWClient;
 import client.campaign.CPlayer;
 import client.campaign.CUnit;
-import client.gui.dialog.AdvanceRepairDialog;
+import client.gui.dialog.AdvancedRepairDialog;
 
 /**
  * @author Imi (immanuel.scholz@gmx.de)
@@ -179,7 +179,7 @@ public class PL extends Command {
 			unit.createEntity();
 			unit.setPilot(new Pilot("Jeeves",4,5));
 			UnitUtils.applyBattleDamage(unit.getEntity(), damage);
-			new AdvanceRepairDialog(mwclient,unit,unit.getEntity(),false);
+			new AdvancedRepairDialog(mwclient,unit,unit.getEntity(),false);
         }
         else if ( cmd.equals("CPPC") ) {
         	mwclient.getPlayer().getPartsCache().clear();

@@ -1258,10 +1258,12 @@ public final class SUnit extends Unit implements Serializable {
 	
 	public boolean isOmni(){
 		
-		boolean isOmni = false;
+		boolean isOmni = this.getEntity().isOmni();
 		String targetChassis = this.getEntity().getChassis();
 		
-		if (this.getType() == Unit.VEHICLE) {
+		//Check the vehicle list to see if they SO's want it to be an omni but do not have it flagged
+		//In the MM File.
+		if (this.getType() == Unit.VEHICLE && !isOmni) {
 			try{
 				FileInputStream fis = new FileInputStream("./data/buildtables/omnivehiclelist.txt");
 				BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
@@ -1270,8 +1272,9 @@ public final class SUnit extends Unit implements Serializable {
 					String chassie = dis.readLine();
 					//check to see if the chassies listed in the file match omni vehicle chassies.
 					if ( targetChassis.equalsIgnoreCase(chassie) ){
-						isOmni = true;
-						break;//found one no reason to keep searching :)
+						dis.close();
+						fis.close();
+						return true;
 					}
 				}
 				dis.close();
@@ -1280,8 +1283,6 @@ public final class SUnit extends Unit implements Serializable {
 				//Simply means no omniveh list present. Ignore.
 			}
 		}
-		else
-			isOmni = this.getEntity().isOmni();
 		
 		return isOmni;
 	}

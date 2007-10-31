@@ -42,7 +42,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
-import common.AdvanceTerrain;
+import common.AdvancedTerrain;
 import common.Continent;
 import common.House;
 import common.Planet;
@@ -58,17 +58,17 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 	//store the client backlink for other things to use
 	private MWClient mwclient = null; 
 	private String planetName = "";
-	private AdvanceTerrain aTerrain = new AdvanceTerrain();
+	private AdvancedTerrain aTerrain = new AdvancedTerrain();
 	private int advanceTerrainId = -1;
 	private Planet selectedPlanet; 
-	private boolean useAdvanceTerrain = false;
+	private boolean useAdvancedTerrain = false;
 	private TreeSet<String>removedOwners = new TreeSet<String>();
 	private HashMap<String, Integer>ownersMap = new HashMap<String, Integer>();
 	private TreeSet<String>removedTerrain = new TreeSet<String>();
 	private HashMap<String, Integer>terrainMap = new HashMap<String, Integer>();
 	private TreeSet<String>removedFactory = new TreeSet<String>();
 	private HashMap<String, String>factoryMap = new HashMap<String, String>();
-	private HashMap<String, AdvanceTerrain>advanceTerrainMap = new HashMap<String, AdvanceTerrain>();
+	private HashMap<String, AdvancedTerrain>advancedTerrainMap = new HashMap<String, AdvancedTerrain>();
 	
 	private final static String okayCommand = "Save";
 	private final static String cancelCommand = "Cancel";
@@ -143,7 +143,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 	private JPanel planetInfo;
 	private JPanel planetProduction;
 	private JPanel planetTerrain;
-	private JPanel planetAdvanceTerrain;
+	private JPanel planetAdvancedTerrain;
 	
     private String[] factoryTypes = { "All", "Mek", "Vee", "Mek & Vee",
             "Inf", "Mek & Inf", "Vee & Inf",
@@ -186,7 +186,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		this.mwclient = c;
 		this.planetName = planetName;
 		
-		useAdvanceTerrain = Boolean.parseBoolean(mwclient.getserverConfigs("UseStaticMaps"));
+		useAdvancedTerrain = Boolean.parseBoolean(mwclient.getserverConfigs("UseStaticMaps"));
 		//Set the tooltips and actions for dialouge buttons
 		okayButton.setActionCommand(okayCommand);
 		cancelButton.setActionCommand(cancelCommand);
@@ -208,7 +208,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		masterPanel.add(planetInfo);
 		masterPanel.add(planetProduction);
 		masterPanel.add(planetTerrain);
-		masterPanel.add(planetAdvanceTerrain);
+		masterPanel.add(planetAdvancedTerrain);
 		
 		// Set the user's options
 		Object[] options = { refreshButton, okayButton, cancelButton };
@@ -264,7 +264,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			if ( planetTerrains.getItemCount() > 0 ){
 				currentTerrainPercent.setText(Integer.toString(terrainMap.get(planetTerrains.getSelectedItem().toString())));
 				this.advanceTerrainId = getTerrainId();
-				loadAdvanceTerrainsData();
+				loadAdvancedTerrainsData();
 			}
 		}else if ( command.equals(planetOwnersListCommand)){
 			try{
@@ -352,10 +352,10 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 				terrainMap.put(allTerrains.getSelectedItem().toString(),percent);
 				planetTerrains.addItem(allTerrains.getSelectedItem().toString().trim());
 				planetTerrains.setSelectedIndex(0);
-				if ( useAdvanceTerrain ) {
-					AdvanceTerrain at = new AdvanceTerrain();
+				if ( useAdvancedTerrain ) {
+					AdvancedTerrain at = new AdvancedTerrain();
 					at.setDisplayName(allTerrains.getSelectedItem().toString());
-					advanceTerrainMap.put(allTerrains.getSelectedItem().toString(),at);
+					advancedTerrainMap.put(allTerrains.getSelectedItem().toString(),at);
 				}
 			}catch(Exception ex){
 				ex.printStackTrace();
@@ -369,18 +369,18 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 				planetTerrains.removeItemAt(planetTerrains.getSelectedIndex());
 				if ( planetTerrains.getItemCount() > 0 )
 					planetTerrains.setSelectedIndex(0);
-				if ( useAdvanceTerrain )
-					advanceTerrainMap.remove(terrainName);
+				if ( useAdvancedTerrain )
+					advancedTerrainMap.remove(terrainName);
 			}
 		}else if ( command.equals(removeAllTerrainsCommand)){
 			removedTerrain.addAll(terrainMap.keySet());
-			if ( useAdvanceTerrain )
-				advanceTerrainMap.clear();
+			if ( useAdvancedTerrain )
+				advancedTerrainMap.clear();
 			terrainMap.clear();
 			planetTerrains.removeAllItems();
 			currentTerrainPercent.setText("");
 		}else if ( command.equals(staticMapCBCommmand) || command.equals(vacuumCBCommand)) {
-			updateAdvanceTerrain();
+			updateAdvancedTerrain();
 		}
 	}
 
@@ -394,7 +394,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		loadPlanetTerrain();
 		
 		this.advanceTerrainId = getTerrainId();
-		loadAdvanceTerrains();
+		loadAdvancedTerrains();
 		
 		masterPanel.repaint();
 	}
@@ -407,7 +407,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		loadPlanetTerrainData();
 		this.advanceTerrainId = getTerrainId();
 
-		loadAdvanceTerrainsData();
+		loadAdvancedTerrainsData();
 	}
 	
 	private void loadPlanetInfo() {
@@ -669,24 +669,24 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		planetTerrain.repaint();
 	}
 	
-	private void loadAdvanceTerrains() {
+	private void loadAdvancedTerrains() {
 		
-		planetAdvanceTerrain = new JPanel();
+		planetAdvancedTerrain = new JPanel();
 		
-		this.planetAdvanceTerrain.setBorder(BorderFactory.createLineBorder(Color.black));
+		this.planetAdvancedTerrain.setBorder(BorderFactory.createLineBorder(Color.black));
 		/*
 		 * Format the Reward Points panel. Spring layout.
 		 */
-		aTerrain = mwclient.getData().getPlanetByName(planetName).getAdvanceTerrain().get(advanceTerrainId);
-		planetAdvanceTerrain.setLayout(new BoxLayout(planetAdvanceTerrain,BoxLayout.Y_AXIS));
+		aTerrain = mwclient.getData().getPlanetByName(planetName).getAdvancedTerrain().get(advanceTerrainId);
+		planetAdvancedTerrain.setLayout(new BoxLayout(planetAdvancedTerrain,BoxLayout.Y_AXIS));
 		
 		JPanel textPanel = new JPanel(new SpringLayout());
 		JPanel checkboxPanel = new JPanel();
 		
-		if ( useAdvanceTerrain ){
+		if ( useAdvancedTerrain ){
 			
-			for ( int aTerrainId : this.selectedPlanet.getAdvanceTerrain().keySet() ) {
-				advanceTerrainMap.put(mwclient.getData().getTerrain(aTerrainId).getName(), this.selectedPlanet.getAdvanceTerrain().get(aTerrainId));
+			for ( int aTerrainId : this.selectedPlanet.getAdvancedTerrain().keySet() ) {
+				advancedTerrainMap.put(mwclient.getData().getTerrain(aTerrainId).getName(), this.selectedPlanet.getAdvancedTerrain().get(aTerrainId));
 			}
 			textPanel.add(new JLabel("Display Name:", SwingConstants.TRAILING));
 			DisplayNameText.setToolTipText("Name of the Continent to appear in planet info");
@@ -795,10 +795,10 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			//run the spring layout
 			SpringLayoutHelper.setupSpringGrid(textPanel,4);
 		}
-		planetAdvanceTerrain.add(checkboxPanel);
-		planetAdvanceTerrain.add(textPanel);
+		planetAdvancedTerrain.add(checkboxPanel);
+		planetAdvancedTerrain.add(textPanel);
 
-		if ( aTerrain != null && useAdvanceTerrain) {
+		if ( aTerrain != null && useAdvancedTerrain) {
 			DisplayNameText.setText(aTerrain.getDisplayName());
 			StaticMapNameText.setText(aTerrain.getStaticMapName());
 			XSizeText.setText(Integer.toString(aTerrain.getXSize()));
@@ -822,7 +822,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			NightChanceText.setText(Integer.toString(this.selectedPlanet.getNightChance()));
 			NightTempModText.setText(Integer.toString(this.selectedPlanet.getNightTempMod()));
 		}
-		planetAdvanceTerrain.repaint();
+		planetAdvancedTerrain.repaint();
 	}
 	
 	private void loadPlanetNames() {
@@ -946,13 +946,13 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		
 	}
 	
-	private void loadAdvanceTerrainsData() {
+	private void loadAdvancedTerrainsData() {
 		
 
 		if ( planetTerrains.getItemCount() < 1 ){
 			aTerrain = null;
 		}else
-			aTerrain = advanceTerrainMap.get(planetTerrains.getSelectedItem().toString());
+			aTerrain = advancedTerrainMap.get(planetTerrains.getSelectedItem().toString());
 
 		if ( aTerrain != null) {
 			DisplayNameText.setText(aTerrain.getDisplayName());
@@ -1071,7 +1071,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 				|| e.getComponent().equals(this.NightTempModText)
 				|| e.getComponent().equals(this.GravityText)
 				){
-			updateAdvanceTerrain();
+			updateAdvancedTerrain();
 		}
 	}
 
@@ -1080,11 +1080,11 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 	}
 	
 
-	private void updateAdvanceTerrain() {
-		AdvanceTerrain aTerrain = advanceTerrainMap.get(planetTerrains.getSelectedItem().toString());
+	private void updateAdvancedTerrain() {
+		AdvancedTerrain aTerrain = advancedTerrainMap.get(planetTerrains.getSelectedItem().toString());
 		if ( aTerrain == null ){
-			aTerrain = new AdvanceTerrain();
-			advanceTerrainMap.put(planetTerrains.getSelectedItem().toString(), aTerrain);
+			aTerrain = new AdvancedTerrain();
+			advancedTerrainMap.put(planetTerrains.getSelectedItem().toString(), aTerrain);
 		}
 
 		aTerrain.setDisplayName(DisplayNameText.getText());
@@ -1114,7 +1114,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			saveOwners();
 			saveFactories();
 			saveTerrain();
-			saveAdvanceTerrain();
+			saveAdvancedTerrain();
 			saveMisc();
 			
 		}catch (Exception ex){
@@ -1164,11 +1164,11 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		
 	}
 
-	private void saveAdvanceTerrain(){
+	private void saveAdvancedTerrain(){
 		
-		if ( useAdvanceTerrain ){
+		if ( useAdvancedTerrain ){
 			for ( String terrain : terrainMap.keySet() ){
-				AdvanceTerrain aTerrain = advanceTerrainMap.get(terrain);
+				AdvancedTerrain aTerrain = advancedTerrainMap.get(terrain);
 				PlanetEnvironment pTerrain = mwclient.getData().getTerrainByName(terrain);
 				if ( pTerrain == null ){
 					MWClient.mwClientLog.clientErrLog("Unable to find Terrain "+terrain+" on planet "
@@ -1178,7 +1178,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 				int id = pTerrain.getId();
 				
 				if ( aTerrain == null ){
-					aTerrain = new AdvanceTerrain();
+					aTerrain = new AdvancedTerrain();
 					aTerrain.setDisplayName(DisplayNameText.getText());
 					aTerrain.setStaticMapName(StaticMapNameText.getText());
 					aTerrain.setXSize(Integer.parseInt(XSizeText.getText()));
@@ -1196,7 +1196,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 					aTerrain.setVacuum(isVacuumCB.isSelected());
 				}
 				
-				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c SetAdvancePlanetTerrain#"+planetName
+				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c SetAdvancedPlanetTerrain#"+planetName
 		        +"#"+ id
 		        +"#"+ (aTerrain.getDisplayName().trim().length() < 1 ? terrain : aTerrain.getDisplayName())
 		    	+"#"+ aTerrain.getXSize()

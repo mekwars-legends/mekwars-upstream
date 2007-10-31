@@ -24,14 +24,14 @@ import common.util.BinReader;
 import common.util.BinWriter;
 
 /**
- * Advance Environment for planets.
+ * Advanced Environment for planets.
  * 
  * @@author Torren (Jason Tighe)
  * 
  * allows So's to sup up each indivual terrain on a planet.
  */
 
-final public class AdvanceTerrain{
+final public class AdvancedTerrain{
     
 
     private String displayName = "";
@@ -111,7 +111,7 @@ final public class AdvanceTerrain{
         out.println(maxVisibility,"maxvisibility");
     }
     
-    public AdvanceTerrain(String s){
+    public AdvancedTerrain(String s){
         StringTokenizer command = new StringTokenizer(s,"$");
 
     	setDisplayName(command.nextToken());
@@ -134,7 +134,7 @@ final public class AdvanceTerrain{
 
     }
     
-    public AdvanceTerrain(){
+    public AdvancedTerrain(){
     }
     
 	public String getDisplayName(){

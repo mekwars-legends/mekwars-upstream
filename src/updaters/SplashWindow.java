@@ -185,7 +185,7 @@ class AnimationThread extends Thread {
 					
 					int currStatus = splash.getStatus();
 					if (currStatus == splash.STATUS_DATAERROR || currStatus == splash.STATUS_INPUTWAIT || currStatus == splash.STATUS_CONNECTFAILED) {
-						//do not advance the progress meter. roll back the cycle.
+						//do not advanced the progress meter. roll back the cycle.
 						cycle--;
 					} else if (cycle == 0) {
 						progress++;

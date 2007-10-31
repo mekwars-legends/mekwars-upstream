@@ -31,7 +31,7 @@ import java.util.TreeMap;
 import java.util.Vector;
 import java.awt.Dimension;
 
-import common.AdvanceTerrain;
+import common.AdvancedTerrain;
 import common.CampaignData;
 import common.Continent;
 import common.Influences;
@@ -95,9 +95,9 @@ Comparable {
 			result.append(t.getEnvironment().getName());
 			result.append("#");
 			if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")){
-				AdvanceTerrain aTerrain = this.getAdvanceTerrain().get(new Integer(t.getEnvironment().getId()));
+				AdvancedTerrain aTerrain = this.getAdvancedTerrain().get(new Integer(t.getEnvironment().getId()));
 				if ( aTerrain == null )
-					aTerrain = new AdvanceTerrain(); //no data start it over. first time starting advance maps.
+					aTerrain = new AdvancedTerrain(); //no data start it over. first time starting advanced maps.
 				if ( aTerrain.getDisplayName().length() <= 1)
 					aTerrain.setDisplayName(t.getEnvironment().getName());
 				result.append(aTerrain.toString());
@@ -430,7 +430,7 @@ Comparable {
 				
 				Continent PE = new Continent(size,planetEnvironment);
 				if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")){
-					AdvanceTerrain aTerrain = new AdvanceTerrain();
+					AdvancedTerrain aTerrain = new AdvancedTerrain();
 					
 					String tempHolder = ST.nextToken();
 					if ( tempHolder.indexOf("$") < 0 ){
@@ -449,9 +449,9 @@ Comparable {
 						aTerrain.setStaticMapName(ST.nextToken());
 					}
 					else{
-						aTerrain = new AdvanceTerrain(tempHolder);
+						aTerrain = new AdvancedTerrain(tempHolder);
 					}
-					this.getAdvanceTerrain().put(new Integer(PE.getEnvironment().getId()),aTerrain);
+					this.getAdvancedTerrain().put(new Integer(PE.getEnvironment().getId()),aTerrain);
 				}
 				getEnvironments().add(PE);
 			}

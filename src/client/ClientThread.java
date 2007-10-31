@@ -31,7 +31,7 @@ import java.io.File;
 import client.campaign.CUnit;
 import client.campaign.CArmy;
 
-import common.AdvanceTerrain;
+import common.AdvancedTerrain;
 import common.MegaMekPilotOption;
 import common.MMGame;
 import common.PlanetEnvironment;
@@ -217,8 +217,8 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
                 // creates the playboard*/
                 MapSettings mySettings = new MapSettings(mwclient.getMapSize().width,mwclient.getMapSize().height, 1, 1);
                 //MapSettings mySettings = new MapSettings(16, 17, 2, 2);
-                AdvanceTerrain aTerrain = new AdvanceTerrain();
-                aTerrain = this.mwclient.getCurrentAdvanceTerrain();
+                AdvancedTerrain aTerrain = new AdvancedTerrain();
+                aTerrain = this.mwclient.getCurrentAdvancedTerrain();
             
                 if ( (aTerrain != null ) && aTerrain.isStaticMap() ){
                     
@@ -688,7 +688,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
                 mwclient.setUsingBots(false);
                 //clear out everything from this game
                 mwclient.setEnvironment(null,null,null);
-                mwclient.setAdvanceTerrain(null,null);
+                mwclient.setAdvancedTerrain(null,null);
                 mwclient.setPlayerStartingEdge(Buildings.EDGE_UNKNOWN);
                 //get rid of any and all bots.
                 for (Iterator i = gui.getBots().values().iterator(); i.hasNext();) {

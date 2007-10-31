@@ -18,7 +18,7 @@ package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
 
-import common.AdvanceTerrain;
+import common.AdvancedTerrain;
 
 import server.campaign.commands.Command;
 import server.campaign.CampaignMain;
@@ -27,7 +27,7 @@ import server.MWChatServer.auth.IAuthenticator;
 
 
 @SuppressWarnings({"unchecked","serial"})
-public class SetAdvancePlanetTerrainCommand implements Command {
+public class SetAdvancedPlanetTerrainCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
 	String syntax = "Planet Name#Terrain ID#Display Name#XSize#YSize#StaticMap(bool)#Xboard#YBoard#Low Temp#High Temp#Gravity(Double)#Vaccum(bool)#Night Chance#Night Temp Mod#Static Map(bool)#Min Visibility#Max Visibility#";
@@ -52,9 +52,9 @@ public class SetAdvancePlanetTerrainCommand implements Command {
 		
 		int id = Integer.parseInt(command.nextToken());
 		
-		AdvanceTerrain aTerrain = new AdvanceTerrain();
+		AdvancedTerrain aTerrain = new AdvancedTerrain();
 		
-		aTerrain = planet.getAdvanceTerrain().get(new Integer(id));
+		aTerrain = planet.getAdvancedTerrain().get(new Integer(id));
 		
 		if ( aTerrain == null){
 			CampaignMain.cm.toUser("Could not find that terrain on planet "+planet.getName(),Username,true);
@@ -81,16 +81,16 @@ public class SetAdvancePlanetTerrainCommand implements Command {
 		if ( command.hasMoreTokens() )
 			aTerrain.setMaxVisibility(Integer.parseInt(command.nextToken()));
 		
-		planet.getAdvanceTerrain().put(new Integer(id),aTerrain);
-		planet.setAdvanceTerrain(planet.getAdvanceTerrain());
+		planet.getAdvancedTerrain().put(new Integer(id),aTerrain);
+		planet.setAdvancedTerrain(planet.getAdvancedTerrain());
 		planet.updated();
 		
         if(CampaignMain.cm.isUsingMySQL())
         	planet.toDB();
 		
-		CampaignMain.cm.toUser("Advance Terrain set for terrain: "+aTerrain.getDisplayName()+" on planet "+planet.getName(),Username,true);
-		//server.MWServ.mwlog.modLog(Username + " set Advance Terrain for terrain: "+aTerrain.getDisplayName()+" on planet "+planet.getName());
-		CampaignMain.cm.doSendModMail("NOTE",Username + " has set Advance Terrain for terrain: "+aTerrain.getDisplayName()+" on planet "+planet.getName());
+		CampaignMain.cm.toUser("Advanced Terrain set for terrain: "+aTerrain.getDisplayName()+" on planet "+planet.getName(),Username,true);
+		//server.MWServ.mwlog.modLog(Username + " set Advanced Terrain for terrain: "+aTerrain.getDisplayName()+" on planet "+planet.getName());
+		CampaignMain.cm.doSendModMail("NOTE",Username + " has set Advanced Terrain for terrain: "+aTerrain.getDisplayName()+" on planet "+planet.getName());
 		
 	}
 }

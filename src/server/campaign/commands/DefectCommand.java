@@ -424,11 +424,17 @@ public class DefectCommand implements Command {
 					 * the faction for later display.
 					 */
 					StringBuilder hsUpdates = new StringBuilder();
+					boolean damaged = false;
 					if (unitsToLose == startingUnits) {
 						
 						//move all units to the faction bay
-						for (SUnit currU : p.getUnits())
+						for (SUnit currU : p.getUnits()){
+                            damaged = (!UnitUtils.canStartUp(currU.getEntity()) 
+                                    || UnitUtils.hasArmorDamage(currU.getEntity()) 
+                                    || UnitUtils.hasCriticalDamage(currU.getEntity())); 
+                            if ((damaged && allowDamagedUnits) || !damaged)
 							hsUpdates.append(oldHouse.addUnit(currU,false));
+						}
 						p.stripOfAllUnits(false);
 						
 						//add to string
@@ -444,7 +450,6 @@ public class DefectCommand implements Command {
 						int numRemoved = 0;
 						
 						while (numRemoved < unitsToLose) {
-							boolean damaged = false;
                             
 							if (numRemoved != 0)
 								toReturn += ", ";

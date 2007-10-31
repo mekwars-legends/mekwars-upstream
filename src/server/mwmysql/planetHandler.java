@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
-import common.AdvanceTerrain;
+import common.AdvancedTerrain;
 import common.CampaignData;
 import common.Continent;
 import common.House;
@@ -206,9 +206,9 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 		  }
 		  Continent PE = new Continent(size, planetEnvironment);
 		  if(CampaignMain.cm.getBooleanConfig("UseStaticMaps")) {
-			  AdvanceTerrain aTerrain = new AdvanceTerrain();
+			  AdvancedTerrain aTerrain = new AdvancedTerrain();
 			  
-			  String tempHolder  = rs3.getString("AdvanceTerrainData");
+			  String tempHolder  = rs3.getString("AdvancedTerrainData");
 			  if (tempHolder.length() > 0 ) {
 				 StringTokenizer ST = new StringTokenizer(tempHolder, "$");
 				 aTerrain.setDisplayName(ST.nextToken());
@@ -225,9 +225,9 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 				 aTerrain.setNightTempMod(Integer.parseInt(ST.nextToken()));
 				 aTerrain.setStaticMapName(ST.nextToken());
 			  } else {
-				  aTerrain = new AdvanceTerrain(tempHolder);
+				  aTerrain = new AdvancedTerrain(tempHolder);
 			  }
-			  p.getAdvanceTerrain().put(new Integer(PE.getEnvironment().getId()), aTerrain);
+			  p.getAdvancedTerrain().put(new Integer(PE.getEnvironment().getId()), aTerrain);
 		  }
 		  p.getEnvironments().add(PE);
 
@@ -263,9 +263,9 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 				 *  I'm going to just store the terrain.fromString()
 				 *  string.  I'll come back and break this out later.
 				 */
-				AdvanceTerrain aTerrain = p.getAdvanceTerrain().get(new Integer(t.getEnvironment().getId()));
+				AdvancedTerrain aTerrain = p.getAdvancedTerrain().get(new Integer(t.getEnvironment().getId()));
 				if( aTerrain == null )
-					aTerrain = new AdvanceTerrain();
+					aTerrain = new AdvancedTerrain();
 				if ( aTerrain.getDisplayName().length() <= 1)
 					aTerrain.setDisplayName(t.getEnvironment().getName());
 				atData.append(aTerrain.toString());
@@ -276,7 +276,7 @@ public void loadInfluences(SPlanet p, CampaignData data) {
 			sql.append("ContinentSize = " + size + ", ");
 			sql.append("TerrainData = '" + tId + "'");
 			if(CampaignMain.cm.getBooleanConfig("UseStaticMaps"))
-			  sql.append(", AdvanceTerrainData = '" + atData.toString() + "'");
+			  sql.append(", AdvancedTerrainData = '" + atData.toString() + "'");
 			stmt.executeUpdate(sql.toString());
 		}
 		stmt.close();

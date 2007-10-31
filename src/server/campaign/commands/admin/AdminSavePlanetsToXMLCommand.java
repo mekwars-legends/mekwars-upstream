@@ -29,7 +29,7 @@ import server.campaign.SPlanet;
 import server.campaign.SUnitFactory;
 import server.MWChatServer.auth.IAuthenticator;
 
-import common.AdvanceTerrain;
+import common.AdvancedTerrain;
 import common.Continent;
 import common.Unit;
 
@@ -103,8 +103,8 @@ public class AdminSavePlanetsToXMLCommand implements Command {
 					p.println("			<TERRAIN>"+pe.getEnvironment().getName()+"</TERRAIN>");
 					p.println("			<SIZE>"+pe.getSize()+"</SIZE>");
                     if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")){
-                        AdvanceTerrain aTerrain = new AdvanceTerrain();
-                        aTerrain = planet.getAdvanceTerrain().get(new Integer(pe.getEnvironment().getId()));
+                        AdvancedTerrain aTerrain = new AdvancedTerrain();
+                        aTerrain = planet.getAdvancedTerrain().get(new Integer(pe.getEnvironment().getId()));
                         if ( aTerrain != null ){
                             p.println("                 <ADVANCETERRAIN>");
                             if ( aTerrain.getDisplayName().length() <= 1)

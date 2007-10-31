@@ -52,7 +52,7 @@ public class HireAndRequestNewHelper implements Command {
 			}
 		}
 		
-        //find out if your are using advance repair if so buy bays instead of hiring techs.
+        //find out if your are using advanced repair if so buy bays instead of hiring techs.
         boolean useBays = CampaignMain.cm.isUsingAdvanceRepair();
 
 		//get number of techs to hire from the command

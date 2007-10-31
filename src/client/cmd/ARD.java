@@ -20,12 +20,12 @@ package client.cmd;
 import java.util.StringTokenizer;
 
 import client.MWClient;
-import client.gui.dialog.AdvanceRepairDialog;
+import client.gui.dialog.AdvancedRepairDialog;
 
 /**
  * @@author Torren (Jason Tighe)
  * 
- * Used for Advance Repair Dialog.
+ * Used for Advanced Repair Dialog.
  * 
  * This command creates a new repair dialog once the unit has been updated.
  */
@@ -48,8 +48,8 @@ public class ARD extends Command {
 		int unitID = Integer.parseInt(st.nextToken());
 
 		if ( st.hasMoreElements() )
-			new AdvanceRepairDialog(mwclient,unitID,true);
+			new AdvancedRepairDialog(mwclient,unitID,true);
 		else
-	        new AdvanceRepairDialog(mwclient,unitID,false);
+	        new AdvancedRepairDialog(mwclient,unitID,false);
 	}
 }

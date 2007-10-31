@@ -20,14 +20,14 @@ package client.cmd;
 import java.awt.Dimension;
 import java.util.StringTokenizer;
 
-import common.AdvanceTerrain;
+import common.AdvancedTerrain;
 
 import client.MWClient;
 
 /**
  * @@author Torren (Jason Tighe)
  * 
- * Used for Advance Planet Environments.
+ * Used for Advanced Planet Environments.
  * 
  */
 
@@ -46,7 +46,7 @@ public class APE extends Command {
 	@Override
 	public void execute(String input) {
 		StringTokenizer st = decode(input);
-		AdvanceTerrain aTerrain = new AdvanceTerrain(st.nextToken());
+		AdvancedTerrain aTerrain = new AdvancedTerrain(st.nextToken());
 		int xsize = Integer.parseInt(st.nextToken());
 		int ysize = Integer.parseInt(st.nextToken());
 		/*if (Boolean.parseBoolean(client.getserverConfigs("UseStaticMaps")).booleanValue() ){
@@ -56,6 +56,6 @@ public class APE extends Command {
 		}
 		
 		else*/
-		mwclient.setAdvanceTerrain(aTerrain, new Dimension(xsize,ysize));
+		mwclient.setAdvancedTerrain(aTerrain, new Dimension(xsize,ysize));
 	}
 }

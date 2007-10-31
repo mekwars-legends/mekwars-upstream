@@ -18,7 +18,7 @@ package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
 
-import common.AdvanceTerrain;
+import common.AdvancedTerrain;
 import common.Continent;
 import server.MWServ;
 import server.campaign.commands.Command;
@@ -57,8 +57,8 @@ public class AdminCreateTerrainCommand implements Command {
 			Continent cont = new Continent(chance, CampaignMain.cm.getData().getTerrainByName(terraintype));
 			p.getEnvironments().add(cont);
 			if ( new Boolean(CampaignMain.cm.getConfig("UseStaticMaps")).booleanValue() ){
-				AdvanceTerrain aTerrain = new AdvanceTerrain();
-				p.getAdvanceTerrain().put(new Integer(cont.getEnvironment().getId()),aTerrain);
+				AdvancedTerrain aTerrain = new AdvancedTerrain();
+				p.getAdvancedTerrain().put(new Integer(cont.getEnvironment().getId()),aTerrain);
 			}
 			p.updated();
 			

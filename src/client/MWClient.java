@@ -111,7 +111,7 @@ import client.protocol.commands.PongPCmd;
 import client.util.RepairManagmentThread;
 import client.util.SalvageManagmentThread;
 
-import common.AdvanceTerrain;
+import common.AdvancedTerrain;
 import common.BMEquipment;
 import common.CampaignData;
 import common.Equipment;
@@ -173,7 +173,7 @@ public final class MWClient implements IClient {
 	long LastPing = 0;
 	
 	PlanetEnvironment currentEnvironment;
-	AdvanceTerrain aTerrain = null;
+	AdvancedTerrain aTerrain = null;
 	
 	TreeMap<String,String[]> allOps;//all operations, from OpList.txt
 	
@@ -249,7 +249,7 @@ public final class MWClient implements IClient {
 	private boolean usingBots = false;
 	private boolean botsOnSameTeam = false;
 	
-	//Advance Repair Queue
+	//Advanced Repair Queue
 	private RepairManagmentThread RMT = null;
 	private SalvageManagmentThread SMT = null;
 	
@@ -2142,7 +2142,7 @@ public final class MWClient implements IClient {
 	public Dimension getMapSize() {return MapSize;}
 	public Dimension getBoardSize() {return BoardSize;}
 	public PlanetEnvironment getCurrentEnvironment() {return currentEnvironment;}
-	public AdvanceTerrain getCurrentAdvanceTerrain() {return aTerrain;}
+	public AdvancedTerrain getCurrentAdvancedTerrain() {return aTerrain;}
 	public Browser getBrowser() {return browser;}
 	
 	public void getBlackMarketSettings() {
@@ -2446,9 +2446,9 @@ public final class MWClient implements IClient {
 	}
 	
 	/**
-	 * Sets the current advance terrain and map size that will be used on next playboard
+	 * Sets the current advanced terrain and map size that will be used on next playboard
 	 */
-	public void setAdvanceTerrain(AdvanceTerrain aTerrain, Dimension dim) {
+	public void setAdvancedTerrain(AdvancedTerrain aTerrain, Dimension dim) {
 		this.aTerrain = aTerrain;
 		MapSize = dim;
 	}

@@ -308,7 +308,7 @@ public class DefaultServerOptions {
         defaults.setProperty("RewardsRepodFolder","rewards");
         defaults.setProperty("RewardsRareBuildTable","rare");
         
-        //Reward points with Advance Repair
+        //Reward points with Advanced Repair
         defaults.setProperty("AllowRepairsForRewards","false");
         defaults.setProperty("RewardPointsForRepair","10000");
         
@@ -673,7 +673,7 @@ public class DefaultServerOptions {
         defaults.setProperty("DisputedPlanetColor","999999");
         defaults.setProperty("MinPlanetOwnerShip","50");
         
-        //Advance Repair
+        //Advanced Repair
         defaults.setProperty("UseAdvanceRepair","false");
         defaults.setProperty("UseSimpleRepair","false");
         defaults.setProperty("UseTechRepair","false");
