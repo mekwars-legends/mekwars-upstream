@@ -494,6 +494,18 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
         BaseTextField.setName("MaxBVPercent");
         rangesBox.add(BaseTextField);
 
+        BaseTextField = new JTextField(5);
+        rangesBox.add(new JLabel("Night Chance:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>% chance operation will occur at night. Default 0</html>");
+        BaseTextField.setName("NightChance");
+        rangesBox.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        rangesBox.add(new JLabel("Dusk Chance:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>% Chance operation will occur at dusk.  Default 0%</html>");
+        BaseTextField.setName("DuskChance");
+        rangesBox.add(BaseTextField);
+
         BaseCheckBox = new JCheckBox("Must Have Fac");
         BaseCheckBox.setToolTipText("<html>If checked, attack type may only be used against<br>a world which has a production facility.</html>");
         BaseCheckBox.setName("OnlyAgainstFactoryWorlds");
@@ -555,7 +567,7 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
         rangesBox2.add(BaseCheckBox);
 
         //finalize layout.
-		SpringLayoutHelper.setupSpringGrid(rangesBox,2);
+		SpringLayoutHelper.setupSpringGrid(rangesBox,4);
 		SpringLayoutHelper.setupSpringGrid(rangesBox2,3);
 		
 		rangesmasterBox.add(rangesBox);

@@ -1085,8 +1085,28 @@ public class ShortOperation implements Comparable {
     				if (tempdiff > 0)
     					tempToSet = CampaignMain.cm.getRandomNumber(tempdiff) + lowTemp;
     				
-    				//half as likely to get dusk as outright night. helf temp drop.
-    			    if (CampaignMain.cm.getRandomNumber(100)+1 <= aTerrain.getNightChance()/2){
+    				if ( o.getIntValue("DuskChance") > 0 || o.getIntValue("NightChance") > 0){
+        			    if (CampaignMain.cm.getRandomNumber(100)+1 <= o.getIntValue("DuskChance") ){
+        			        gameOptions.append("|night_battle|");
+        			        gameOptions.append(true);
+        			        gameOptions.append("|dusk|");
+        			        gameOptions.append(true);
+        			        tempToSet -= Math.abs(aTerrain.getNightTempMod())/2;
+                            this.intelTimeFrame = ShortOperation.TIME_DUSK;
+                            //Visibility cut by 25% at dusk/dawn
+                            visibility = (visibility*3)/4;
+        			    }else if (CampaignMain.cm.getRandomNumber(100)+1 <= o.getIntValue("NightChance") ){
+        			    	  gameOptions.append("|night_battle|");
+          			        gameOptions.append(true);
+          			        gameOptions.append("|dusk|");
+          			        gameOptions.append(false);
+          			        tempToSet -= Math.abs(aTerrain.getNightTempMod());
+                              this.intelTimeFrame = ShortOperation.TIME_NIGHT;
+                              //Visibility cut in half at night
+                              visibility /= 2;
+        			    }
+    				} //half as likely to get dusk as outright night. helf temp drop.
+        			else if (CampaignMain.cm.getRandomNumber(100)+1 <= aTerrain.getNightChance()/2){
     			        gameOptions.append("|night_battle|");
     			        gameOptions.append(true);
     			        gameOptions.append("|dusk|");

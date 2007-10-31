@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ RFE 1439739: Night/Dusk chance in operation
 + Changed Advance Repair to Advanced Repair
 + Changed AdvanceTerrain to AdvancedTerrain
 + Bug: cannot scrap multiple salvaged units in a tick.

@@ -108,6 +108,8 @@ public class DefaultOperation {
          * MinSubFactionAccessLevel    - Your SubFactionAcessLevel must be this high to ride. Default 0
          * MaxBVDifference			   - Max BV difference between attacker and defender. Default 150
          * MaxBVPercent				   - Max % BV diffence between Attacker and defneder. default 0%
+         * NightChance				   - Chance that operation will take place at night.
+         * DuskChance				   - Chance that operation will take place at dusk.
          * 
 		 * NOTE: Colours are HTML hexidecimal. Keywords cannot be used. # must
 		 *       lead the string or massive fuck-ups will ensue.
@@ -148,6 +150,8 @@ public class DefaultOperation {
         operationsDefaults.put("MinSubFactionAccessLevel", "0");
         operationsDefaults.put("MaxBVDifference", "150");
         operationsDefaults.put("MaxBVPercent", "0.0");
+        operationsDefaults.put("NightChance", "0");
+        operationsDefaults.put("DuskChance", "0");
         
 		/*
 		 * SHORT VARIABLES. These are params which are necessary for
