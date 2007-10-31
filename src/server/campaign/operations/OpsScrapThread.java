@@ -207,7 +207,7 @@ public class OpsScrapThread extends Thread {
 		boolean shouldGetText = (currPlayer.getDutyStatus() >= SPlayer.STATUS_RESERVE);
 			
 		//Player is real. Send the requisite unit updates.
-		int scrappablesRemaining = 0;
+		boolean scrappablesRemaining = false;
 		for (int currID : salvagedUnits.keySet()) {
 			SUnit currU = currPlayer.getUnit(currID);
 			
@@ -217,13 +217,13 @@ public class OpsScrapThread extends Thread {
 			
 			currU.setScrappableFor(-1);
 			
-			if (shouldGetText)
+			if (shouldGetText){
 				CampaignMain.cm.toUser("PL|UU|"+currU.getId()+"|"+currU.toString(true),playerName,false);
-			
-			scrappablesRemaining++;
+				scrappablesRemaining = true;
+			}
 		}
 		
-		if (scrappablesRemaining > 0 && shouldGetText)
+		if (scrappablesRemaining && shouldGetText)
 			CampaignMain.cm.toUser("[!] Time to scrap salvaged has expired.",playerName,true);
 	
 		//clean up.

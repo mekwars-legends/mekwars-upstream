@@ -144,7 +144,7 @@ public class ShortOperation implements Comparable {
 	 * when switching to INPROGRESS status. Save in case the game
 	 * needs to be rehosted, player quits and returns, etc.
 	 */
-	private String gameOptions;
+	private StringBuffer gameOptions = new StringBuffer();
 	private String attackerAutoString = null;
 	private String defenderAutoString = null;
 	private String attackerAutoEmplacementsString = null;
@@ -237,7 +237,7 @@ public class ShortOperation implements Comparable {
 		//set initial counter, status, strings, etc
 		showsToClear = 3;//3 tick default
 		this.currentStatus = STATUS_WAITING;
-		this.gameOptions = "GO";
+		this.gameOptions.append("GO");
 		
 		//add to gamelog
 		String toLog = "Attack: #" + shortID + "/" + initiator.getName() + "/" + opName + "/" + target.getName() + ".<br> - Potential Defenders: ";
@@ -493,7 +493,7 @@ public class ShortOperation implements Comparable {
                 defenderEdge = playerEdge[pos];
                 attackerEdge = playerEdgeReverse[pos];
                 if ( pos >= Buildings.NORTHWESTDEEP )
-                	gameOptions += "|deep_deployment|true";
+                	gameOptions.append("|deep_deployment|true");
             }
 
             if ( o.getBooleanValue("TeamOperation") ) {
@@ -1038,21 +1038,22 @@ public class ShortOperation implements Comparable {
 			
 			//look for blind drop first. MM defaults this to false, so only look for true.
             if ( CampaignMain.cm.getBooleanConfig("UseBlindDrops")) 
-                gameOptions += "|real_blind_drop|true";
+                gameOptions.append("|real_blind_drop|true");
             else if ( o.getBooleanValue("RealBlindDrop")) {
-                gameOptions += "|double_blind|true";
-                gameOptions += "|real_blind_drop|true";
+                gameOptions.append("|double_blind|true");
+                gameOptions.append("|real_blind_drop|true");
                 doubleBlind = true;
             }
             else
-                gameOptions += "|real_blind_drop|false";
+                gameOptions.append("|real_blind_drop|false");
 			
             //if Op isn't set to double blind check to see if the game option is.
             if ( !doubleBlind )
                 doubleBlind = CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("double_blind");
             
 			//autoset offboard arty to homeedge. always.
-	        gameOptions += "|set_arty_player_homeedge|"+true;
+	        gameOptions.append("|set_arty_player_homeedge|");
+	        gameOptions.append(true);
 			
 			//set the temp gravity and vacuum from the terrain configs
 			if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")){
@@ -1086,8 +1087,10 @@ public class ShortOperation implements Comparable {
     				
     				//half as likely to get dusk as outright night. helf temp drop.
     			    if (CampaignMain.cm.getRandomNumber(100)+1 <= aTerrain.getNightChance()/2){
-    			        gameOptions +="|night_battle|"+true;
-    			        gameOptions +="|dusk|"+true;
+    			        gameOptions.append("|night_battle|");
+    			        gameOptions.append(true);
+    			        gameOptions.append("|dusk|");
+    			        gameOptions.append(true);
     			        tempToSet -= Math.abs(aTerrain.getNightTempMod())/2;
                         this.intelTimeFrame = ShortOperation.TIME_DUSK;
                         //Visibility cut by 25% at dusk/dawn
@@ -1096,8 +1099,10 @@ public class ShortOperation implements Comparable {
     			   
     			    //else if ... no simultaneous dusk/night. full temp drop.
     			    else if (CampaignMain.cm.getRandomNumber(100)+1 <= aTerrain.getNightChance()){
-    			        gameOptions +="|night_battle|"+true;
-    			        gameOptions +="|dusk|"+false;
+    			        gameOptions.append("|night_battle|");
+    			        gameOptions.append(true);
+    			        gameOptions.append("|dusk|");
+    			        gameOptions.append(false);
     			        tempToSet -= Math.abs(aTerrain.getNightTempMod());
                         this.intelTimeFrame = ShortOperation.TIME_NIGHT;
                         //Visibility cut in half at night
@@ -1106,23 +1111,30 @@ public class ShortOperation implements Comparable {
     			    
     			    //else normal daylight conditions
     			    else{
-    			        gameOptions +="|night_battle|"+false;
-    			        gameOptions +="|dusk|"+false;
+    			        gameOptions.append("|night_battle|");
+    			        gameOptions.append(false);
+    			        gameOptions.append("|dusk|");
+    			        gameOptions.append(false);
                         this.intelTimeFrame = ShortOperation.TIME_DAY;
     			    }
     			    
     			    //add the temp/gravity/vacuum. disable fire if in vacuum.
-    			    gameOptions +="|temperature|"+tempToSet;
-    			    gameOptions +="|gravity|"+aTerrain.getGravity();
-    			    gameOptions +="|vacuum|"+aTerrain.isVacuum();
-    	            if (aTerrain.isVacuum())
-    	                gameOptions +="|fire|false";
+    			    gameOptions.append("|temperature|");
+    			    gameOptions.append(tempToSet);
+    			    gameOptions.append("|gravity|");
+    			    gameOptions.append(aTerrain.getGravity());
+    			    gameOptions.append("|vacuum|");
+    			    gameOptions.append(aTerrain.isVacuum());
+    	            if (aTerrain.isVacuum()){
+    	                gameOptions.append("|fire|false");
+    	            }
                     this.intelGravity = aTerrain.getGravity();
                     this.intelTemp = tempToSet;
                     this.intelVacuum = aTerrain.isVacuum();
                     //make sure visibility never goes below minVisibility
                     intelVisibility = Math.max(visibility,minVisibility);
-                    gameOptions +="|visibility|"+intelVisibility;
+                    gameOptions.append("|visibility|");
+                    gameOptions.append(intelVisibility);
                 } catch (Exception ex) {
                     MWServ.mwlog.errLog("Unable to retrieve advance terrain data for Planet: "+targetWorld.getName()+" Terrain: "+playEnvironment.getName());
                     MWServ.mwlog.errLog(ex);
@@ -1142,22 +1154,25 @@ public class ShortOperation implements Comparable {
 				if (tempdiff > 0)
 					tempToSet = CampaignMain.cm.getRandomNumber(tempdiff) + lowTemp;
 				
-			    gameOptions += "|temperature|" +tempToSet;
-			    gameOptions += "|gravity|"+ targetWorld.getGravity();
-			    gameOptions += "|vacuum|"+ targetWorld.isVacuum();
+			    gameOptions.append("|temperature|");
+			    gameOptions.append(tempToSet);
+			    gameOptions.append("|gravity|");
+			    gameOptions.append(targetWorld.getGravity());
+			    gameOptions.append("|vacuum|");
+			    gameOptions.append(targetWorld.isVacuum());
 	            if (targetWorld.isVacuum())
-	                gameOptions +="|fire|false";
+	                gameOptions.append("|fire|false");
                 this.intelGravity = targetWorld.getGravity();
                 this.intelTemp = tempToSet;
                 this.intelVacuum = targetWorld.isVacuum();
                 //Advance Terrain is not being used to reset visibility to max
-                gameOptions +="|visibility|"+999;
+                gameOptions.append("|visibility|999");
 			}
 			
             //if this is a DB game then exclusive_db_deployment needs to be turned off as players 
             //maybe getting random edges assigned to them
             if ( o.getBooleanValue("FreeForAllOperation")) 
-                gameOptions += "|exclusive_db_deployment|false";
+                gameOptions.append("|exclusive_db_deployment|false");
                     
             
             //Check if this operation is using victory conditions. If so then 
@@ -1166,27 +1181,35 @@ public class ShortOperation implements Comparable {
                     && (o.getBooleanValue("UseDestroyEnemyBV")) 
                             || o.getBooleanValue("UseBVRatioPercent")
                             || o.getBooleanValue("UseUnitCommander")){
-                gameOptions += "|check_victory|true";
-                gameOptions += "|achieve_conditions|"+o.getValue("NumberOfVictoryConditions");
-                gameOptions += "|use_bv_destroyed|"+o.getValue("UseDestroyEnemyBV");
-                gameOptions += "|bv_destroyed_percent|"+o.getValue("DestroyEnemyBV");
-                gameOptions += "|use_bv_ratio|"+o.getValue("UseBVRatioPercent");
-                gameOptions += "|bv_ratio_percent|"+o.getValue("BVRatioPercent");
-                gameOptions += "|commander_killed|"+o.getValue("UseUnitCommander");
+                gameOptions.append("|check_victory|true");
+                gameOptions.append("|achieve_conditions|");
+                gameOptions.append(o.getValue("NumberOfVictoryConditions"));
+                gameOptions.append("|use_bv_destroyed|");
+                gameOptions.append(o.getValue("UseDestroyEnemyBV"));
+                gameOptions.append("|bv_destroyed_percent|");
+                gameOptions.append(o.getValue("DestroyEnemyBV"));
+                gameOptions.append("|use_bv_ratio|");
+                gameOptions.append(o.getValue("UseBVRatioPercent"));
+                gameOptions.append("|bv_ratio_percent|");
+                gameOptions.append(o.getValue("BVRatioPercent"));
+                gameOptions.append("|commander_killed|");
+                gameOptions.append(o.getValue("UseUnitCommander"));
             }
             else
-                gameOptions += "|check_victory|true|use_bv_destroyed|false|use_bv_ratio|false";
+                gameOptions.append("|check_victory|true|use_bv_destroyed|false|use_bv_ratio|false");
             
             //if your using bots then turn off exclusive db deployment.
             if ( o.getBooleanValue("BotControlsAll") ||
             		o.getBooleanValue("BotsAllOnSameTeam") )
-            	gameOptions += "|exclusive_db_deployment|false";
+            	gameOptions.append("|exclusive_db_deployment|false");
 
-            gameOptions += "|individual_initiative|"+o.getValue("IndividualInit");
+            gameOptions.append("|individual_initiative|");
+            gameOptions.append(o.getValue("IndividualInit"));
             
             //If Server is not using Force Size mod then turn off the option In MM
             //This will allow for closer BV's between MW and MM
-            gameOptions += "|no_force_size_mod|"+CampaignMain.cm.getConfig("UseOperationsRule");
+            gameOptions.append("|no_force_size_mod|");
+            gameOptions.append(!CampaignMain.cm.getBooleanConfig("UseOperationsRule"));
             
             /*
              * Stop all repairs on units
@@ -1299,7 +1322,7 @@ public class ShortOperation implements Comparable {
             for (String currN : this.getAllPlayerNames()) {
 				
 				//send options
-				CampaignMain.cm.toUser(gameOptions,currN,false);
+				CampaignMain.cm.toUser(gameOptions.toString(),currN,false);
                     
 				//send terrain
 				if (aTerrain != null){
@@ -1466,7 +1489,7 @@ public class ShortOperation implements Comparable {
 		CampaignMain.cm.toUser("PL|SAL|"+lockArmy.getID()+"#"+true,p.getName(),false);
 		
 		//send options
-		CampaignMain.cm.toUser(gameOptions,lowerName,false);
+		CampaignMain.cm.toUser(gameOptions.toString(),lowerName,false);
 		
 		//send terrain
 		if (aTerrain != null){

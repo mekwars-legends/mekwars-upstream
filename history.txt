@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ Bug: cannot scrap multiple salvaged units in a tick.
++ Bug: Scrapping salvaged units reports giveing flu.
 + New thread pool is used to manage players I/O to the server. Now each client
 	has their own out bound thread.
 - Removed Dispatcher.java

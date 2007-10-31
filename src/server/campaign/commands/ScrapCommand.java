@@ -145,10 +145,11 @@ public class ScrapCommand implements Command {
 		//Give the player the amount the unit can be scrapped for (post-game), or add/deduct the standard cost
 		if (m.getScrappableFor() >= 0) {
 			p.addMoney(m.getScrappableFor());
-			CampaignMain.cm.toUser("You scrapped the " + m.getModelName() + " (" + CampaignMain.cm.moneyOrFluMessage(true,true,m.getScrappableFor(),true)+ ", " + CampaignMain.cm.moneyOrFluMessage(false,true,infToScrap,true) + ").", Username, true);
+			CampaignMain.cm.toUser("You scrapped the " + m.getModelName() + " (" + CampaignMain.cm.moneyOrFluMessage(true,true,m.getScrappableFor(),true)+ ".", Username, true);
 		} else {
 			p.addMoney(-moneyToScrap);
 			p.addInfluence(-infToScrap);
+			p.addScrapThisTick();
 			CampaignMain.cm.toUser("You scrapped the " + m.getModelName() + " (" + CampaignMain.cm.moneyOrFluMessage(true,true,-moneyToScrap,true) +  ", " + CampaignMain.cm.moneyOrFluMessage(false,true,-infToScrap,true) + ").", Username, true);
 		}
 
@@ -159,7 +160,6 @@ public class ScrapCommand implements Command {
 
 		//do the actual remove last, so the checkops show under the scrap string
 		p.removeUnit(mechid, true);
-		p.addScrapThisTick();
 		
 		//if the player has an ops scrap thread running, try to remove this unit
 		OpsScrapThread scrapT = CampaignMain.cm.getOpsManager().getScrapThreads().get(p.getName().toLowerCase());
