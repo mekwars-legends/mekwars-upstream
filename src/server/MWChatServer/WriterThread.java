@@ -69,11 +69,13 @@ public class WriterThread extends Thread {
                 flush();
                 long elapsed = System.currentTimeMillis() - start;
                 if (elapsed < 20) {
-	                Thread.sleep(20 - elapsed);
+	                this.wait(20 - elapsed);
                 }
             }
             catch (InterruptedException e) { 
                 MWServ.mwlog.errLog(e);
+            }catch ( Exception ex){
+                MWServ.mwlog.errLog(ex);
             }
         }
     }
@@ -101,7 +103,7 @@ public class WriterThread extends Thread {
             while (!_messages.isEmpty()) {
                 
             	//add to buffer, and break messages with newlines
-            	sb.append(_messages.remove(0));
+            	sb.append(_messages.remove());
                 sb.append("\n");
                 
                 /*
@@ -119,10 +121,21 @@ public class WriterThread extends Thread {
             
             //If the message is brief (under 200 chars), send uncompressed, then return.
             if (s.length() < 200) {
-              //  MWServ.mwlog.warnLog("Client: " + _client.getUserId() + " /" + _client.getHost() + " Size: " + s.length() + " Message: " + s);
-                _out.print(s);
-                _out.flush();
-                return;
+            	try{
+	              //  MWServ.mwlog.warnLog("Client: " + _client.getUserId() + " /" + _client.getHost() + " Size: " + s.length() + " Message: " + s);
+	                _out.print(s);
+	                _out.flush();
+            	}catch (Exception ex){
+                    MWServ.mwlog.errLog("Socket error; shutting down client");
+                    MWServ.mwlog.errLog(ex);
+                    pleaseStop();
+                    try{
+                    	_socket.close();
+                    }catch(Exception se){
+                    	
+                    }
+            	}   
+            	return;
             }
             
             //9000 chars > message > 200 chars. Send compressed.
@@ -164,11 +177,7 @@ public class WriterThread extends Thread {
              * array, then print to the PrintWriter.
              */
             String o = ICommands.DEFLATED + ICommands.DELIMITER + n + ICommands.DELIMITER + s.length() +"\n";
-            try {
-                _out.print(o);
-            } catch (Exception ex) {
-                MWServ.mwlog.errLog(ex);
-            }
+            _out.print(o);
             
             /*
              * End of NFC prinln, resumption of deflateAndSend.
@@ -180,6 +189,7 @@ public class WriterThread extends Thread {
         } catch (Exception e) {
             MWServ.mwlog.errLog("Socket error; shutting down client");
             MWServ.mwlog.errLog(e);
+            pleaseStop();
             try{
             	_socket.close();
             }catch(Exception se){

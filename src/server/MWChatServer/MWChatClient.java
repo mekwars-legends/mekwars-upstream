@@ -27,6 +27,8 @@
 
 package server.MWChatServer;
 
+import java.net.Socket;
+
 import server.MWChatServer.auth.IAuthenticator;
 import server.MWChatServer.commands.ICommands;
 
@@ -53,7 +55,7 @@ public class MWChatClient implements IConnectionListener, ICommands {
 
 	private boolean _tunneling = false;
 
-	public MWChatClient(MWChatServer server, java.net.Socket s) throws java.io.IOException {
+	public MWChatClient(MWChatServer server, Socket s) throws java.io.IOException {
 		_server = server;
 		_connectionTime = System.currentTimeMillis();
 		_host = s.getInetAddress().getHostAddress();
@@ -65,7 +67,7 @@ public class MWChatClient implements IConnectionListener, ICommands {
 		((ConnectionHandler) _connectionHandler).init();
 	}
 
-	public AbstractConnectionHandler createConnectionHandler(java.net.Socket s) throws java.io.IOException {
+	public AbstractConnectionHandler createConnectionHandler(Socket s) throws java.io.IOException {
 		return new ConnectionHandler(s, this);
 	}
 

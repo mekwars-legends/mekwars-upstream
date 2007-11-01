@@ -436,7 +436,7 @@ public class MWChatServer implements ICommands {
                 MWServ.mwlog.errLog(e);
                 try {
                     Thread.sleep(1000);
-                } catch (InterruptedException ex) {
+                } catch (Exception ex) {
                     MWServ.mwlog.errLog(ex);
                 }
             } catch (Exception ex) {

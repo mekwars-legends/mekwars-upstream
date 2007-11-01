@@ -91,7 +91,8 @@ public class ConnectionHandler extends AbstractConnectionHandler {
     	try {
     		_reader = new ReaderThread(this, _client, _inputStream);
     		ThreadManager.getInstance().runInThreadFromPool(_reader);
-    		//_reader.start();
+    		_writer = new WriterThread(_socket,_out);
+    		ThreadManager.getInstance().runInThreadFromPool(_writer);
     	} catch (Exception ex) {
     		MWServ.mwlog.errLog(ex);
     	} catch (OutOfMemoryError OOM) {
@@ -112,25 +113,19 @@ public class ConnectionHandler extends AbstractConnectionHandler {
     			_inputStream = null;
     			_client = null;
     			_reader = null;
-    			
+    			_writer = null;
     			//garbage collect and try again
     			System.gc();
-    			_reader = new ReaderThread(this, _client, _inputStream);
-    			_reader.start();
-   
+        		_reader = new ReaderThread(this, _client, _inputStream);
+        		ThreadManager.getInstance().runInThreadFromPool(_reader);
+        		_writer = new WriterThread(_socket,_out);
+        		ThreadManager.getInstance().runInThreadFromPool(_writer);
     		} catch (Exception e) {
     			MWServ.mwlog.errLog(e);
     		}
     		
     	}
     	
-    	try {
-    		_writer = new WriterThread(_socket,_out);
-    		ThreadManager.getInstance().runInThreadFromPool(_writer);
-    		//_reader.start();
-    	} catch (Exception ex) {
-    		MWServ.mwlog.errLog(ex);
-    	}
     }//end init()
 
 
