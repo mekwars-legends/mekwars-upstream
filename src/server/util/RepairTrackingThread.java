@@ -341,7 +341,7 @@ class Repair{
             
             int die1 = CampaignMain.cm.getRandomNumber(6)+1;
             int die2 = CampaignMain.cm.getRandomNumber(6)+1;
-            MWServ.mwlog.errLog("Die 1: "+die1+" Die2: "+die2);
+
             boolean levelTech = false;
             boolean pilotIsRepairing = false;
             boolean rear = false;
