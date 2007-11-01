@@ -26,10 +26,6 @@ import java.util.Hashtable;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
-import server.MWServ;
-import server.campaign.SPlanet;
-import server.campaign.SUnitFactory;
-
 import megamek.common.TechConstants;
 
 import common.persistence.MMNetSerializable;

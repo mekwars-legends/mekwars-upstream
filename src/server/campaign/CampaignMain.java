@@ -1852,7 +1852,7 @@ public final class CampaignMain implements Serializable {
 	public synchronized void userRoll(String text, String Username) {
 
 		// added by VEGETA 2/8/2003
-		Random random = new Random();
+		//Random random = new Random();
 		int dice = 2;
 		int sides = 6;
 		int total = 0;
@@ -1896,7 +1896,8 @@ public final class CampaignMain implements Serializable {
 		StringBuilder diceBuffer = new StringBuilder();
 
 		for (int i = 0; i < dice; i++) {
-			roll = random.nextInt(sides) + 1;
+			//roll = random.nextInt(sides) + 1;
+			roll = cm.getRandomNumber(sides) + 1;
 			total += roll;
 
 			// for one die, we're all set
@@ -2153,7 +2154,7 @@ public final class CampaignMain implements Serializable {
 			generalResult += rankTick + "<br><br>";
 
 		// send the combined & spaced string to players
-		if (generalResult.toLowerCase().replace("<br>", "").trim().length() > 0)
+		if (generalResult.toLowerCase().replace("<br>", " ").trim().length() > 0)
 			this.doSendToAllOnlinePlayers(generalResult, true);
 
 		/*
@@ -2398,9 +2399,10 @@ public final class CampaignMain implements Serializable {
 		if( seed < 1 )
 			return seed;
 		
-		float answer = (r.nextInt(Integer.MAX_VALUE)/(Integer.MAX_VALUE-1))* (float)seed;
 		
-		return Math.round(answer);
+		float answer = r.nextFloat() * (float)seed;
+
+		return (int)Math.floor(answer);
 	}
 	
 	synchronized public void addToNewsFeed(String s) {
