@@ -45,7 +45,7 @@ import java.util.StringTokenizer;
 public final class MWTracker {
 	
 	//VARIABLES
-	public static final String VERSION = "0.1.0.3";
+	public static final String VERSION = "0.1.0.4";
 		
 	private static final int listenPort = 13731;//random number ...
 	private String infoFilePath = "./infofiles/";
@@ -613,7 +613,7 @@ public final class MWTracker {
 					
 					//add table records
 					tracker.addToLog("- begin readin loop");
-					fileloop: for (int i = 0; i < length; i++) {
+					for (int i = 0; i < length; i++) {
 						
 						String currInfoName = infoNames[i];
 						//tracker.addToLog("- reading " + currInfoName);
@@ -693,10 +693,6 @@ public final class MWTracker {
 										
 										currGames = Integer.parseInt(st.nextToken());//games in progress
 										gamesPlayed += Integer.parseInt(st.nextToken());//finished games
-									}
-									//Do not bother to report anymore if they have been down longer then a week
-									else{
-										continue fileloop;
 									}
 									
 									//load next line

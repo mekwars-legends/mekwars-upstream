@@ -1411,7 +1411,10 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 					if (m == null || accident) {
 						hsUpdates.append(this.addPP(weight, type_id, -randomLossFactor, false));
 						if (type_id == Unit.INFANTRY) {
-							//silently reduce the component numbers. think of a spiffy message later @urgru 9.17.04
+							industrialAccidents.append("a cache of "
+									+ Unit.getWeightClassDesc(weight)
+									+ " " + Unit.getTypeClassDesc(type_id)
+									+ " supplies is donated to the salvation army.<br>");
 						} else
 							industrialAccidents.append("An industrial accident destroys a substantial cache of "
 								+ Unit.getWeightClassDesc(weight)
