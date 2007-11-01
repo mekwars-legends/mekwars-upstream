@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
+Release Server 0.2.10.5
 + Bug: Destroyed Units and Components settings for Ops always destroying
 + Bug: Tracking Causing inf loop if data is older then 7 days.
 + Bug: Sockets not closeing cleanly.
