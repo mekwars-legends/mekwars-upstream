@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ Bug: Tracking Causing inf loop if data is older then 7 days.
 + Bug: Sockets not closeing cleanly.
 + Bug: getRandomNumber always returning 0. 
 + Updated database to v8

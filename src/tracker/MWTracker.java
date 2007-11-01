@@ -613,7 +613,7 @@ public final class MWTracker {
 					
 					//add table records
 					tracker.addToLog("- begin readin loop");
-					for (int i = 0; i < length; i++) {
+					fileloop: for (int i = 0; i < length; i++) {
 						
 						String currInfoName = infoNames[i];
 						//tracker.addToLog("- reading " + currInfoName);
@@ -696,9 +696,7 @@ public final class MWTracker {
 									}
 									//Do not bother to report anymore if they have been down longer then a week
 									else{
-										currRecordFile.deleteOnExit();
-										new File(tracker.getInfoPath() + name + "_info.txt").deleteOnExit();
-										continue;
+										continue fileloop;
 									}
 									
 									//load next line
