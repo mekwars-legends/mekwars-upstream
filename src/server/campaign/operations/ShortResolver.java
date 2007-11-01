@@ -30,6 +30,7 @@ import megamek.common.IEntityRemovalConditions;
 import megamek.common.Mech;
 
 import common.Unit;
+import common.UnitFactory;
 import common.campaign.pilot.skills.PilotSkill;
 import common.util.UnitUtils;
 
@@ -2680,21 +2681,21 @@ public class ShortResolver {
 							 * inf or vehs on a planet than can produce assault
 							 * mechs.
 							 */
-							ArrayList<SUnitFactory> factoriesSearched = new ArrayList<SUnitFactory>();
-							while (factoriesSearched.size() < target.getFactoryCount()) {
+							ArrayList<UnitFactory> factoriesSearched = new ArrayList<UnitFactory>(target.getUnitFactories());
+							while (factoriesSearched.size() > 0) {
 
 								// get a random factory
-								SUnitFactory currFacility = target.getRandomUnitFactory();
+								SUnitFactory currFacility = (SUnitFactory)factoriesSearched.remove(CampaignMain.cm.getRandomNumber(factoriesSearched.size()));
 
 								// if we've already searched this factory
-								// before, skip
+								/* before, skip
 								if (factoriesSearched.contains(currFacility))
 									continue;
 
 								// we've not searched the facility before. add
 								// it to the searchlist
 								factoriesSearched.add(currFacility);
-
+								*/
 								for (int type = Unit.MEK; type <= Unit.BATTLEARMOR; type++) {
 
 									// skip this type if the facility cannot
@@ -2803,22 +2804,20 @@ public class ShortResolver {
 						 * ppToCapture is 0.
 						 */
 						int ppCaptured = 0;
-						ArrayList<SUnitFactory> factoriesSearched = new ArrayList<SUnitFactory>();
-						while (factoriesSearched.size() < target
-								.getFactoryCount()
+						ArrayList<UnitFactory> factoriesSearched = new ArrayList<UnitFactory>(target.getUnitFactories());
+						while (factoriesSearched.size() > 0
 								&& ppCaptured < ppToCapture) {
 
 							// get a random factory
-							SUnitFactory currFacility = target
-									.getRandomUnitFactory();
+							SUnitFactory currFacility = (SUnitFactory)factoriesSearched.remove(CampaignMain.cm.getRandomNumber(factoriesSearched.size()));
 
 							// if we've already searched this factory before,
 							// skip
-							if (factoriesSearched.contains(currFacility))
-								continue;
+							//if (factoriesSearched.contains(currFacility))
+								//continue;
 
 							// searching the factory.
-							factoriesSearched.add(currFacility);
+							//factoriesSearched.add(currFacility);
 
 							// get the factory's weightclass, then try
 							// all types in order of preference.
@@ -2909,21 +2908,20 @@ public class ShortResolver {
 							 * mechs.
 							 */
 							factoriesSearched.clear();
-							while (factoriesSearched.size() < target
-									.getFactoryCount()) {
+							factoriesSearched.addAll(target.getUnitFactories());
+							while (factoriesSearched.size() > 0 ) {
 
 								// get a random factory
-								SUnitFactory currFacility = target
-										.getRandomUnitFactory();
+								SUnitFactory currFacility = (SUnitFactory)factoriesSearched.remove(CampaignMain.cm.getRandomNumber(factoriesSearched.size()));
 
 								// if we've already searched this factory
 								// before, skip
-								if (factoriesSearched.contains(currFacility))
-									continue;
+								//if (factoriesSearched.contains(currFacility))
+									//continue;
 
 								// we've not searched the facility before. add
 								// it to the searchlist
-								factoriesSearched.add(currFacility);
+								//factoriesSearched.add(currFacility);
 
 								// get the factory's weightclass, then try
 								// all types in order of preference.
@@ -3043,21 +3041,12 @@ public class ShortResolver {
 						 */
 						int ppDestroyed = 0;
 						factoriesSearched.clear();
-						while (factoriesSearched.size() < target
-								.getFactoryCount()
+						factoriesSearched.addAll(target.getUnitFactories());
+						while (factoriesSearched.size() > 0
 								&& ppDestroyed < ppToDestroy) {
 
 							// get a random factory
-							SUnitFactory currFacility = target
-									.getRandomUnitFactory();
-
-							// if we've already searched this factory before,
-							// skip
-							if (factoriesSearched.contains(currFacility))
-								continue;
-
-							// searching the factory.
-							factoriesSearched.add(currFacility);
+							SUnitFactory currFacility = (SUnitFactory)factoriesSearched.remove(CampaignMain.cm.getRandomNumber(factoriesSearched.size()));
 
 							// get the factory's weightclass, then try
 							// all types in order of preference.

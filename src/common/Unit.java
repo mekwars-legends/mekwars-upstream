@@ -291,7 +291,7 @@ public class Unit {
 	 * @return Returns the unitFilename.
 	 */
 	public String getUnitFilename() {
-		return UnitFilename.trim();
+		return UnitFilename;//.trim();
 	}
 	
 	/**

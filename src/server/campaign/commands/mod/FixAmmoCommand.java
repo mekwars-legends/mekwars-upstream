@@ -100,6 +100,9 @@ public class FixAmmoCommand implements Command {
 		ArrayList<Mounted> baseLineAmmo = baseLine.getAmmo();
 		ArrayList<Mounted> currentAmmo = en.getAmmo();
 		
+		if ( baseLineAmmo.size() < 1)
+			unit.getEntity().getAmmo().clear();
+		
 		for ( int pos = 0; pos < baseLineAmmo.size(); pos++) {
 			AmmoType baseAmmo = (AmmoType)baseLineAmmo.get(pos).getType();
 			AmmoType ammo = (AmmoType)currentAmmo.get(pos).getType();
