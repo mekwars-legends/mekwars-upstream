@@ -2769,7 +2769,9 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				sql.append("playerUnitParts = ?, ");
 				sql.append("playerAccess = ?, ");
 				sql.append("playerAutoReorder = ?, ");
-				sql.append("playerTeamNumber = ?");
+				sql.append("playerTeamNumber = ?, ");
+				sql.append("playerUnitComponents = ?, ");
+				sql.append("playerSubfactionName = ?");
 				ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setString(1, getName());
 				ps.setInt(2, getMoney());
@@ -2812,6 +2814,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 					ps.setInt(24, 1);
 				ps.setString(25, Boolean.toString(getAutoReorder()));
 				ps.setInt(26, getTeamNumber());
+				ps.setString(27, unitParts.toString());
+				ps.setString(28, this.getSubFactionName().trim().length() < 1 ? " " : getSubFactionName());
 				ps.executeUpdate();
 				ResultSet rs = ps.getGeneratedKeys();
 				rs.next();
@@ -2853,7 +2857,9 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				sql.append("playerAutoReorder = ?, ");
 				sql.append("playerPassword= ?, ");
 				sql.append("playerPassTime= ?, ");
-				sql.append("playerTeamNumber= ? ");
+				sql.append("playerTeamNumber= ?, ");
+				sql.append("playerUnitComponents = ?, ");
+				sql.append("playerSubfactionName = ? ");
 				sql.append("WHERE playerID = ?");
 	
 				ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
@@ -2908,7 +2914,9 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				else
 					ps.setLong(27, 0);
 				ps.setInt(28, getTeamNumber());
-				ps.setInt(29, getDBId());
+				ps.setString(29, unitParts.toString());
+				ps.setString(30, (this.getSubFactionName().trim().length() < 1) ? " " : getSubFactionName());
+				ps.setInt(31, getDBId());
 				ps.executeUpdate();
 
 			}
@@ -3321,6 +3329,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	        
 	        	if ( CampaignMain.cm.getBooleanConfig("UsePartsRepair") )
 	        		unitParts.fromString(rs.getString("playerUnitParts"));
+	        	
+	        	this.subFaction = rs.getString("playerSubfactionName");
 	        	
 	        	this.setAutoReorder(Boolean.parseBoolean(rs.getString("playerAutoReorder")));
 

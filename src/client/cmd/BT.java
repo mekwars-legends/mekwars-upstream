@@ -11,7 +11,10 @@ import client.MWClient;
 import client.gui.CCommPanel;
 
 /**
- * @author Imi (immanuel.scholz@gmx.de)
+ * @author Spork
+ * 
+ * Handles Build Table up/downloading for admins/mods
+ * 
  */
 public class BT extends Command {
 

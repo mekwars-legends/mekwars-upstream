@@ -26,6 +26,10 @@ import java.util.Hashtable;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
+import server.MWServ;
+import server.campaign.SPlanet;
+import server.campaign.SUnitFactory;
+
 import megamek.common.TechConstants;
 
 import common.persistence.MMNetSerializable;
@@ -686,5 +690,36 @@ public class House implements MMNetSerializable {
 		return supportedUnits;
 	}
 	
+	public void addUnitSupported(String fileName) {
+		if (fileName.trim().length() < 1)
+			return;
+		fileName = fileName.trim();
+		if(houseSupportsUnit(fileName)) {
+			int num = getSupportedUnits().get(fileName);
+			supportedUnits.put(fileName, num + 1);
+		} else {
+			supportedUnits.put(fileName, 1);
+		}
+	}
+	
+	public void removeUnitSupported(String fileName) {
+		if (fileName.trim().length() < 1)
+			return;
+		fileName = fileName.trim();
+		if(houseSupportsUnit(fileName)) {
+			int num = supportedUnits.get(fileName);
+			if (num == 1) {
+				// Remove it from the HashMap
+				supportedUnits.remove(fileName);
+			} else {
+				supportedUnits.put(fileName, num - 1);
+			}
+		} else {
+			// Error.  We should never get here.
+			// Fix the logging here.  How to determine if it's being called from CHouse or SHouse?
+			//MWServ.mwlog.mainLog("Error in House.removeUnitProduction(): trying to remove a unit that is not produced.");
+			//MWServ.mwlog.mainLog("  --> House: " + getName() + ", Unit: " + fileName);
+		}
+	}
 }
 

@@ -1946,33 +1946,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		return result;
 	}
 
-	private void modifyUnitSupport(SPlanet p, boolean addProduction) {
-		if(p.getFactoryCount() > 0) {
-			for(int weightclass = Unit.LIGHT; weightclass <= Unit.ASSAULT; weightclass++) {
-				for(SUnitFactory uf : p.getFactoriesOfWeighclass(weightclass)) {
-					String typeString=uf.getTypeString();
-					String dirName = "./campaign/factions/support/" + uf.getFounder() + "_" + uf.getSize()+ "_";
-					dirName=dirName.toLowerCase();
-					if(typeString.contains("M")) {
-						parseSupportFile(dirName + "meks.txt", addProduction);
-					}
-					if(typeString.contains("V")) {
-						parseSupportFile(dirName + "vehicles.txt", addProduction);						
-					}
-					if(typeString.contains("I")) {
-						parseSupportFile(dirName + "infantry.txt", addProduction);
-					}
-					if(typeString.contains("P")) {
-						parseSupportFile(dirName + "protomeks.txt", addProduction);
-					}
-					if(typeString.contains("B")) {
-						parseSupportFile(dirName + "battlearmor.txt", addProduction);
-					}
-				}
-			}
-		}		
-	}
-	
+
 	private void parseSupportFile(String fileName, boolean addUnits) {
 		File file = new File(fileName);
 		if (!file.exists())
@@ -2806,36 +2780,32 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		return "";
 	}
 	
-
-	private void addUnitSupported(String fileName) {
-		if (fileName.trim().length() < 1)
-			return;
-		fileName = fileName.trim();
-		if(houseSupportsUnit(fileName)) {
-			int num = getSupportedUnits().get(fileName);
-			supportedUnits.put(fileName, num + 1);
-		} else {
-			supportedUnits.put(fileName, 1);
-		}
-	}
-	
-	public void removeUnitSupported(String fileName) {
-		if (fileName.trim().length() < 1)
-			return;
-		fileName = fileName.trim();
-		if(houseSupportsUnit(fileName)) {
-			int num = supportedUnits.get(fileName);
-			if (num == 1) {
-				// Remove it from the HashMap
-				supportedUnits.remove(fileName);
-			} else {
-				supportedUnits.put(fileName, num - 1);
+	private void modifyUnitSupport(SPlanet p, boolean addProduction) {
+		if(p.getFactoryCount() > 0) {
+			for(int weightclass = Unit.LIGHT; weightclass <= Unit.ASSAULT; weightclass++) {
+				for(SUnitFactory uf : p.getFactoriesOfWeighclass(weightclass)) {
+					String typeString=uf.getTypeString();
+					String dirName = "./campaign/factions/support/" + uf.getFounder() + "_" + uf.getSize()+ "_";
+					dirName=dirName.toLowerCase();
+					if(typeString.contains("M")) {
+						parseSupportFile(dirName + "meks.txt", addProduction);
+					}
+					if(typeString.contains("V")) {
+						parseSupportFile(dirName + "vehicles.txt", addProduction);						
+					}
+					if(typeString.contains("I")) {
+						parseSupportFile(dirName + "infantry.txt", addProduction);
+					}
+					if(typeString.contains("P")) {
+						parseSupportFile(dirName + "protomeks.txt", addProduction);
+					}
+					if(typeString.contains("B")) {
+						parseSupportFile(dirName + "battlearmor.txt", addProduction);
+					}
+				}
 			}
-		} else {
-			// Error.  We should never get here.
-			MWServ.mwlog.mainLog("Error in SHouse.removeUnitProduction(): trying to remove a unit that is not produced.");
-			MWServ.mwlog.mainLog("  --> House: " + getName() + ", Unit: " + fileName);
-		}
-	}
+		}		
+	}	
+
 	
 }// end SHouse.java
