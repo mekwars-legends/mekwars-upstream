@@ -2885,14 +2885,16 @@ public class ShortResolver {
 
 						int unitDestructionCap = o.getIntValue("UnitDestructionCap");
 						int unitsToDestroy = o.getIntValue("BaseUnitsDestroyed");
-						int unitUnitDestroyAdjust = Math.max(1, o.getIntValue("DestroyedUnitsBVAdjustment"));
-						int unitBVDestroyAdjust = Math.max(1, o.getIntValue("DestroyedUnitsUnitAdjustment"));
+						int unitUnitDestroyAdjust = o.getIntValue("DestroyedUnitsBVAdjustment");
+						int unitBVDestroyAdjust = o.getIntValue("DestroyedUnitsUnitAdjustment");
 
-						unitsToDestroy += Math.floor(so.getStartingUnits() / unitUnitDestroyAdjust);
-						unitsToDestroy += Math.floor(so.getStartingBV() / unitBVDestroyAdjust);
+						if (unitUnitDestroyAdjust > 0 )
+							unitsToDestroy += so.getStartingUnits() / unitUnitDestroyAdjust;
 						
-						if (unitsToDestroy > unitDestructionCap)
-							unitsToDestroy = unitDestructionCap;
+						if (unitBVDestroyAdjust > 0 )
+							unitsToDestroy += so.getStartingBV() / unitBVDestroyAdjust;
+						
+						unitsToDestroy = Math.min(unitsToDestroy, unitDestructionCap);
 
 						ArrayList<SUnit> opdestroyedUnits = new ArrayList<SUnit>();
 						if (unitsToDestroy > 0) {
@@ -3008,17 +3010,19 @@ public class ShortResolver {
 						 */
 						double ppDestructionCap = o.getDoubleValue("PPDestructionCap");
 						double ppToDestroyDoub = o.getDoubleValue("BasePPDestroyed");
-						double ppUnitDestroyAdjust = Math.max(1,o.getDoubleValue("DestroyedPPBVAdjustment"));
-						double ppBVDestroyAdjust = Math.max(1,o.getDoubleValue("DestroyedPPUnitAdjustment"));
+						double ppUnitDestroyAdjust = o.getDoubleValue("DestroyedPPBVAdjustment");
+						double ppBVDestroyAdjust = o.getDoubleValue("DestroyedPPUnitAdjustment");
 						
-						ppToDestroyDoub *= so.getStartingUnits() / ppUnitDestroyAdjust;
-						ppToDestroyDoub *= so.getStartingBV() / ppBVDestroyAdjust;
+						if ( ppUnitDestroyAdjust > 0)
+							ppToDestroyDoub *= so.getStartingUnits() / ppUnitDestroyAdjust;
 						
-						if (ppToDestroyDoub > ppDestructionCap)
-							ppToDestroyDoub = ppDestructionCap;
+						if ( ppBVDestroyAdjust > 0)
+							ppToDestroyDoub *= so.getStartingBV() / ppBVDestroyAdjust;
+						
+						
 
 						// convert ppToCapture into an int
-						int ppToDestroy = (int) ppToDestroyDoub;
+						int ppToDestroy = (int) Math.min(ppToDestroyDoub,ppDestructionCap);
 
 						// not allowed to delay or steal from factories the
 						// defender doesn't own
