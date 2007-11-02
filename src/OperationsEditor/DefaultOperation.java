@@ -480,7 +480,12 @@ public class DefaultOperation {
          *                            - That must be achieved for full payment
          * BVFailurePaymentModifier   - How much of the full payment players actually get if they do not meet the
          *                            - Min requirement.
-         *                             
+         *                            
+         * FledUnitSalvageChance         - Chance, out of 100, that a unit that flees the field is put into the salvage pool. Default 0
+         * FledUnitScrappedChance		 - Chance, out of 100, that a unit that flees the field is scrapped. Default 0.
+         * PushedUnitSalvageChance		 - Chance that a unit that is pushed off the field is put into the salvage pool. Default 0
+         * PushedUnitScrappedChance		 - Chance, out of 100, that a unit that is pushed off the field is scrapped. Default 0.
+         * 
 		 * [player result params finished]
 		 * 
 		 * [Salvage props]
@@ -625,7 +630,6 @@ public class DefaultOperation {
          * DestroyedPPUnitAdjustment     - Number of units needed to destroy extra prodpoints
          * 
          * NOTE: All Destruction parameters are only used by the Attacker and go into effect when the attacker wins.
-         * 
 		 * [Meta setup finished]
 		 * 
 		 * [Chicken/Non-Defender setup]
@@ -1030,6 +1034,11 @@ public class DefaultOperation {
 		operationsDefaults.put("AttackerSalvageCostModifier","1");
 		operationsDefaults.put("DefenderSalvageCostModifier","1");
 		
+		operationsDefaults.put("FledUnitSalvageChance","0");
+		operationsDefaults.put("FledUnitScrappedChance","0");
+		operationsDefaults.put("PushedUnitSalvageChance","0");
+		operationsDefaults.put("PushedUnitScrappedChance","0");
+
 		//newbie-match flags
 		operationsDefaults.put("AllowSOLToUse", "false");
 		operationsDefaults.put("AllowAgainstSOL", "false");

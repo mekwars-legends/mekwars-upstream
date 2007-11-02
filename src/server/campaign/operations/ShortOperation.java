@@ -1660,7 +1660,7 @@ public class ShortOperation implements Comparable {
 		} else {
 			
 			OperationEntity oe = new OperationEntity(s);
-			unitsInProgress.put(oe.getID(), oe);			
+			unitsInProgress.put(oe.getID(), oe);
 		}
 	}
 	

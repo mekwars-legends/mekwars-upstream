@@ -1550,11 +1550,18 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
         penaltyBox.setMinimumSize(new Dimension(700,50));
         penaltyBox.setMaximumSize(new Dimension(700,50));
 
+        JPanel fleeingBox = new JPanel();
+        fleeingBox.setLayout(new BoxLayout(fleeingBox, BoxLayout.Y_AXIS));
+        fleeingBox.setPreferredSize(new Dimension(700,75));
+        fleeingBox.setMinimumSize(new Dimension(700,75));
+        fleeingBox.setMaximumSize(new Dimension(700,75));
+
         attackerPanel = new JPanel(new SpringLayout());
 		defenderPanel = new JPanel(new SpringLayout());
 		
 		JPanel outcomePanel = new JPanel(new SpringLayout());
         JPanel penaltyPanel = new JPanel(new SpringLayout());
+        JPanel fleeingPanel = new JPanel(new SpringLayout());
         
         BaseTextField = new JTextField(5);
 		attackerPanel.add(new JLabel("Money Paid:",SwingConstants.TRAILING));
@@ -1830,6 +1837,35 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
         penaltyBox.add(penaltyPanel);
         penaltyBox.setBorder(BorderFactory.createLineBorder(Color.black));
         
+        BaseTextField = new JTextField(5);
+        fleeingPanel.add(new JLabel("Fled Slavage Chance:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html><b>NOTE:</b>This is a double field. 0.25 = 25%<br>Chance that a unit that flees the field is put into the salvage pool. Default 0</html>");
+        BaseTextField.setName("FledUnitSalvageChance");
+        fleeingPanel.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        fleeingPanel.add(new JLabel("Fled Scrapped Chance:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html><b>NOTE:</b>This is an Integer Field. 25 = 25%<br>Chance, out of 100, that a unit that flees the field is scrapped. Default 0.</html>");
+        BaseTextField.setName("FledUnitScrappedChance");
+        fleeingPanel.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        fleeingPanel.add(new JLabel("Pushed Slavage Chance:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html><b>NOTE:</b>This is a double field. 0.25 = 25%<br>Chance that a unit that is pushed off the field is put into the salvage pool. Default 0</html>");
+        BaseTextField.setName("PushedUnitSalvageChance");
+        fleeingPanel.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        fleeingPanel.add(new JLabel("Pushed Scrapped Chance:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html><b>NOTE:</b>This is an Integer Field. 25 = 25%<br>Chance, out of 100, that a unit that is pushed off the field is scrapped. Default 0.</html>");
+        BaseTextField.setName("PushedUnitScrappedChance");
+        fleeingPanel.add(BaseTextField);
+
+        SpringLayoutHelper.setupSpringGrid(fleeingPanel,4);
+        fleeingBox.add(new JLabel("Fleeing Penalties"));
+        fleeingBox.add(fleeingPanel);
+        fleeingBox.setBorder(BorderFactory.createLineBorder(Color.black));
+        
         attackerBox.add(new JLabel("Attacker"));
 		attackerBox.add(attackerPanel);
 		
@@ -1845,6 +1881,7 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
 		masterBox.add(opResultsBox);
 		masterBox.add(outcomeBox);
         masterBox.add(penaltyBox);
+        masterBox.add(fleeingBox);
 		
 		opresultsPanel.add(masterBox);
 		

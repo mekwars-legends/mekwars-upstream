@@ -3418,6 +3418,11 @@ public class ShortResolver {
 			livingUnits = new TreeMap<Integer, OperationEntity>();
 			pilots = new TreeMap<Integer, SPilot>();
 			int destroyed = 0;
+			Operation o = CampaignMain.cm.getOpsManager().getOperation(so.getName());
+			int fledSalvageChance = o.getIntValue("FledUnitSalvageChance");
+			int fledScrappedChance = o.getIntValue("FledUnitScrappedChance");
+			int pushedSalvageChance = o.getIntValue("PushedUnitSalvageChance");
+			int pushedScrappedChance = o.getIntValue("PushedUnitScrappedChance");
 
 			try {
 				// loop through all units in the string
@@ -3428,17 +3433,13 @@ public class ShortResolver {
 					// MechWarrior
 					if (currentUnit.startsWith("MW*")) {
 
-						StringTokenizer mwTokenizer = new StringTokenizer(
-								currentUnit, "*");
+						StringTokenizer mwTokenizer = new StringTokenizer(currentUnit, "*");
 						mwTokenizer.nextToken();// burn the second token. always
 												// -1. unused.
 
-						int originalID = Integer.parseInt(mwTokenizer
-								.nextToken());
-						int pickUpID = Integer
-								.parseInt(mwTokenizer.nextToken());
-						boolean isDead = Boolean.parseBoolean(mwTokenizer
-								.nextToken());
+						int originalID = Integer.parseInt(mwTokenizer.nextToken());
+						int pickUpID = Integer.parseInt(mwTokenizer.nextToken());
+						boolean isDead = Boolean.parseBoolean(mwTokenizer.nextToken());
 
 						SPilot mw = SPilot.getMekWarrior(originalID, pickUpID);
 						mw.setDeath(isDead);
@@ -3449,28 +3450,42 @@ public class ShortResolver {
 					// check for builings left this is tacked onto the end of
 					// the results string.
 					else if (currentUnit.startsWith("BL*"))
-						buildingsLeft = Integer.parseInt(currentUnit
-								.substring(3));
+						buildingsLeft = Integer.parseInt(currentUnit.substring(3));
 
 					// Combat Unit. Make and store an OperationEntity.
 					else {
 
-						OperationEntity oEntity = new OperationEntity(
-								currentUnit);
-						SUnit unit = CampaignMain.cm.getPlayer(
-								oEntity.getOwnerName())
-								.getUnit(oEntity.getID());
+						OperationEntity oEntity = new OperationEntity(currentUnit);
+						SUnit unit = CampaignMain.cm.getPlayer(oEntity.getOwnerName()).getUnit(oEntity.getID());
 
 						// if the player doesnt own the unit, its probably
 						// autoartillery. continue to next loop.
 						if (unit == null)
 							continue;
 
+						if ( (fledSalvageChance > 0 || fledScrappedChance > 0) 
+								&& oEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_IN_RETREAT ){
+							if ( CampaignMain.cm.getRandomNumber(100) <= fledSalvageChance ){
+								oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_SALVAGEABLE);
+								oEntity.setSalvage(true);
+							}else if ( CampaignMain.cm.getRandomNumber(100) <= fledScrappedChance ){
+								oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_STACKPOLE);
+							}
+						}
+						else if ( (pushedSalvageChance > 0 || pushedScrappedChance > 0) 
+								&& oEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_PUSHED ){
+							if ( CampaignMain.cm.getRandomNumber(100) <= fledSalvageChance ){
+								oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_SALVAGEABLE);
+								oEntity.setSalvage(true);
+							}else if ( CampaignMain.cm.getRandomNumber(100) <= fledScrappedChance ){
+								oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_STACKPOLE);
+							}
+						}
+						
 						if (oEntity.isLiving()) {
 							livingUnits.put(oEntity.getID(), oEntity);
 							destroyed = 0;
-							if (so.getLosers().containsKey(
-									oEntity.getOwnerName().toLowerCase()))
+							if (so.getLosers().containsKey(oEntity.getOwnerName().toLowerCase()))
 								currentBV += unit.getBV();
 						} else if (oEntity.isSalvagable()) {
 							salvagableUnits.put(oEntity.getID(), oEntity);
@@ -3493,19 +3508,11 @@ public class ShortResolver {
 						 * disco resolutions as they are not meritorious.
 						 */
 						if (saveStats) {
-							SUnit currU = CampaignMain.cm.getPlayer(
-									oEntity.getOwnerName()).getUnit(
-									oEntity.getID());
-							if (so.getWinners().containsKey(
-									oEntity.getOwnerName().toLowerCase())) {
-								CampaignMain.cm.addMechStat(currU
-										.getUnitFilename(), currU
-										.getWeightclass(), 1, 1, 0, destroyed);
-							} else if (so.getLosers().containsKey(
-									oEntity.getOwnerName().toLowerCase())) {
-								CampaignMain.cm.addMechStat(currU
-										.getUnitFilename(), currU
-										.getWeightclass(), 1, 0, 0, destroyed);
+							SUnit currU = CampaignMain.cm.getPlayer(oEntity.getOwnerName()).getUnit(oEntity.getID());
+							if (so.getWinners().containsKey(oEntity.getOwnerName().toLowerCase())) {
+								CampaignMain.cm.addMechStat(currU.getUnitFilename(), currU.getWeightclass(), 1, 1, 0, destroyed);
+							} else if (so.getLosers().containsKey(oEntity.getOwnerName().toLowerCase())) {
+								CampaignMain.cm.addMechStat(currU.getUnitFilename(), currU.getWeightclass(), 1, 0, 0, destroyed);
 							}
 						}// end save stats
 
@@ -3568,8 +3575,7 @@ public class ShortResolver {
 
 						// if capture roll passes, set as salvageable
 						if (CampaignMain.cm.getRandomNumber(100) < captureChance) {
-							currO
-									.setRemovalReason(megamek.common.IEntityRemovalConditions.REMOVE_SALVAGEABLE);
+							currO.setRemovalReason(megamek.common.IEntityRemovalConditions.REMOVE_SALVAGEABLE);
 							salvagableUnits.put(currO.getID(), currO);
 						} else {// destroy the piece
 							if (currO.getType() == Unit.MEK
