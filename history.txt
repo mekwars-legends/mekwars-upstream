@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ Bug: ISStatus displaying % instead of CP of planet owned.
 + RFE 1552861: flee options
 + Release Server 0.2.10.8
 + Bug: BV and Unit Adjustments on stole components not working.

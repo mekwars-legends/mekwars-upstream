@@ -664,7 +664,7 @@ Comparable {
 		Iterator it = getInfluence().getHouses().iterator();
 		while (it.hasNext()) {
 			SHouse h = (SHouse) it.next();
-			result.append(h.getName() + "(" + getInfluence().getInfluence(h.getId()) + "%)");
+			result.append(h.getName() + "(" + getInfluence().getInfluence(h.getId()) + "cp)");
 			if (it.hasNext())
 				result.append(", ");
 			else if (useHTML) result.append("<br>");
