@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ Updated Database to v9
++ SubFactions now saving to database
 + Release Server 0.2.10.7 & Client 0.2.10.2
 + Bug: triming unit file name kept correct units from loading.
 + Release Server 0.2.10.6

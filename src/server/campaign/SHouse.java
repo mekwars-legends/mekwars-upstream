@@ -517,6 +517,19 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 				for (int pos = 0; pos < Unit.MAXBUILD; pos++){
 					ps.executeUpdate("INSERT into faction_base_gunnery_piloting set factionID = " + getDBId() + ", unitType = " + pos + ", baseGunnery = " + getBaseGunner(pos) + ", basePiloting = " + getBasePilot(pos));
 				}
+				
+				// SubFactions
+				ps.executeUpdate("DELETE from subFactions WHERE houseID = " + getDBId());
+				if(rs!=null)
+					rs.close();
+				for(String key : getSubFactionList().keySet() ) {
+					ps.close();
+					ps = CampaignMain.cm.MySQL.getPreparedStatement("INSERT into subfactions set subfactionName = ?, houseID = ?, sf_string = ?");
+					ps.setString(1, key);
+					ps.setInt(2, getDBId());
+					ps.setString(3, getSubFactionList().get(key).toString());
+				}
+				
 				if(rs != null)
 					rs.close();
 				ps.close();

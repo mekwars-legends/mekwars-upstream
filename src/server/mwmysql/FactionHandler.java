@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.Vector;
 
 import common.CampaignData;
+import common.SubFaction;
 import common.Unit;
 
 
@@ -196,6 +197,15 @@ public class FactionHandler {
 						int skillID = rs1.getInt("skillID");
 						h.setBasePilotSkill(rs1.getString("pilotSkills"), skillID);
 				}
+					
+					// Load subFactions
+				rs1 = stmt2.executeQuery("SELECT * from subfactions WHERE houseID = " + h.getDBId());
+				while (rs1.next()) {
+					SubFaction newSubFaction = new SubFaction();
+					newSubFaction.fromString(rs1.getString("sf_string"));
+					h.getSubFactionList().put(rs1.getString("subfactionName"), newSubFaction);
+				}
+					
 				//TODO: Load the Merc stuff.  Don't forget to change saveFaction to save the Merc stuff
 				
 				CampaignMain.cm.addHouse(h);
