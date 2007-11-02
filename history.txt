@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ Release Server 0.2.10.8
++ Bug: BV and Unit Adjustments on stole components not working.
 + Updated Database to v9
 + SubFactions now saving to database
 + Release Server 0.2.10.7 & Client 0.2.10.2

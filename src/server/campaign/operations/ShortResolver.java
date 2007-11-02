@@ -2775,16 +2775,17 @@ public class ShortResolver {
 						 * options from the world are exhausted.
 						 */
 						double ppToCaptureDoub = o.getDoubleValue("AttackerBasePPAmount");
-						double ppUnitAdjust = Math.max(1, o.getDoubleValue("AttackerPPUnitAdjustment"));
-						double ppBVAdjust = Math.max(1, o.getDoubleValue("AttackerPPBVAdjustment"));
+						double ppUnitAdjust = o.getDoubleValue("AttackerPPUnitAdjustment");
+						double ppBVAdjust = o.getDoubleValue("AttackerPPBVAdjustment");
 
-						ppToCaptureDoub *= so.getStartingUnits() / ppUnitAdjust;
-						ppToCaptureDoub *= so.getStartingBV() / ppBVAdjust;
-						if (ppToCaptureDoub > ppCaptureCap)
-							ppToCaptureDoub = ppCaptureCap;
+						if ( ppUnitAdjust > 0 )
+							ppToCaptureDoub *= so.getStartingUnits() / ppUnitAdjust;
+						
+						if ( ppBVAdjust > 0 )
+							ppToCaptureDoub *= so.getStartingBV() / ppBVAdjust;
 
 						// convert ppToCapture into an int
-						int ppToCapture = (int) ppToCaptureDoub;
+						int ppToCapture = (int) Math.min(ppToCaptureDoub,ppCaptureCap);
 
 						// not allowed to delay or steal from factories the
 						// defender doesn't own
