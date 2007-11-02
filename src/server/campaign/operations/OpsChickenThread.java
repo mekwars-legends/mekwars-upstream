@@ -254,7 +254,7 @@ public class OpsChickenThread extends Thread {
 			int actualPenalty = target.doGainInfluence(attackH, defendH, conquestPenalty, false);
 			
 			if (actualPenalty > 0) {
-				toMain += actualPenalty + "% of the world";
+				toMain += actualPenalty + "cp from the world";
 				hasLoss = true;
 			}
 		}

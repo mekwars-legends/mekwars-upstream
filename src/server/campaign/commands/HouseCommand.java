@@ -134,8 +134,8 @@ public class HouseCommand implements Command {
 			
 			//show % owned, if < 100
 			int amtOwned = currPlanet.getInfluence().getInfluence(h.getId());
-			if (amtOwned < 100)
-				s += " (" + amtOwned + "%)";
+			if (amtOwned < currPlanet.getConquestPoints() )
+				s += " (" + amtOwned + "cp)";
 			
 			if (i.hasNext())
 				s += ", ";
@@ -160,9 +160,9 @@ public class HouseCommand implements Command {
 			//show % owned
 			SHouse owner = currPlanet.getOwner();
 			if (owner != null)
-				s += " (" + currPlanet.getInfluence().getInfluence(h.getId()) + "%, " + owner.getColoredAbbreviation(false) + " " + currPlanet.getInfluence().getInfluence(owner.getId()) + "%)";
+				s += " (" + currPlanet.getInfluence().getInfluence(h.getId()) + "cp, " + owner.getColoredAbbreviation(false) + " " + currPlanet.getInfluence().getInfluence(owner.getId()) + "cp)";
 			else
-				s += "(" + currPlanet.getInfluence().getInfluence(h.getId()) + "%, No Owner)";
+				s += "(" + currPlanet.getInfluence().getInfluence(h.getId()) + "cp, No Owner)";
 			
 			if (i.hasNext())
 				s += ", ";

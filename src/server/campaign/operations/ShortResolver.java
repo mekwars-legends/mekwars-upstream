@@ -568,8 +568,7 @@ public class ShortResolver {
 		// online, so we only need to send to the winner.
 		for (SArmy currA : winner.getArmies()) {
 			currA.setBV(0);
-			CampaignMain.cm.toUser("PL|SAD|" + currA.toString(true, "%"), currA
-					.getPlayerName(), false);
+			CampaignMain.cm.toUser("PL|SAD|" + currA.toString(true, "%"), currA.getPlayerName(), false);
 			CampaignMain.cm.getOpsManager().checkOperations(currA, true);
 		}
 
