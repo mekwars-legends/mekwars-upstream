@@ -2183,6 +2183,23 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			SmallPlayers.put(lowerName, smallp);
 		}
 		
+		// Send supported units updates
+		if(Boolean.parseBoolean(CampaignMain.cm.getConfig("UseNonFactionUnitsIncreasedTechs")) ) {
+			CampaignMain.cm.toUser("PL|CSU|", realName, false);
+			StringBuilder toSend = new StringBuilder();
+			toSend.append("PL|USU|");
+			int num = 0;
+			for (String unitName : getSupportedUnits().keySet()) {
+				num = getSupportedUnits().get(unitName);
+				for(; num > 0 ; num--) {
+					toSend.append("true|");
+					toSend.append(unitName + "|");
+				}
+			}
+			CampaignMain.cm.toUser(toSend.toString(), realName, false);
+		}
+
+		
 		//send the player the latest data from the factionbays
 		p.setLastOnline(System.currentTimeMillis());//must be done after smallplayer creation
 		

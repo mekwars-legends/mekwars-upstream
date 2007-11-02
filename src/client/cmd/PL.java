@@ -196,6 +196,24 @@ public class PL extends Command {
         else if ( cmd.equals("CAFM") ){
         	mwclient.getMainFrame().createArmyFromMul(st.nextToken());
         }
+        else if (cmd.equals("USU") ) {
+        	// Update Supported Units
+        	while(st.hasMoreTokens()) {
+        		boolean addSupport = Boolean.parseBoolean(st.nextToken());
+        		String unitName = st.nextToken();
+        		if(unitName != null) {
+        			if(addSupport) {
+        				player.getMyHouse().addUnitSupported(unitName);
+        			} else {
+        				player.getMyHouse().removeUnitSupported(unitName);
+        			}
+        		}
+        	}
+        }
+        else if (cmd.equals("CSU")) {
+        	player.getMyHouse().supportedUnits.clear();
+        	player.getMyHouse().setNonFactionUnitsCostMore(true);
+        }
 		else
 			return;
 		

@@ -26,6 +26,8 @@ import java.util.Hashtable;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
+import server.campaign.CampaignMain;
+
 import megamek.common.TechConstants;
 
 import common.persistence.MMNetSerializable;
@@ -78,7 +80,9 @@ public class House implements MMNetSerializable {
     
 	public ConcurrentHashMap<String, Integer> supportedUnits = new ConcurrentHashMap<String, Integer>();
 
+	private boolean nonFactionUnitsCostMore = false;
     
+	
 	/**
 	 * @return Returns the baseGunner.
 	 */
@@ -388,7 +392,6 @@ public class House implements MMNetSerializable {
     		out.println(subFaction.getConfig("MinELO"), "SubFactionMinELO");
     		out.println(subFaction.getConfig("MinExp"), "SubFactionMinExp");
         }
-
     }
 
     /**
@@ -716,6 +719,14 @@ public class House implements MMNetSerializable {
 			//MWServ.mwlog.mainLog("Error in House.removeUnitProduction(): trying to remove a unit that is not produced.");
 			//MWServ.mwlog.mainLog("  --> House: " + getName() + ", Unit: " + fileName);
 		}
+	}
+	
+	public boolean getNonFactionUnitsCostMore() {
+		return nonFactionUnitsCostMore;
+	}
+	
+	public void setNonFactionUnitsCostMore(boolean answer) {
+		nonFactionUnitsCostMore = answer;
 	}
 }
 
