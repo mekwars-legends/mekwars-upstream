@@ -52,14 +52,18 @@ public class AdminCreateFactoryCommand implements Command {
 			CampaignMain.cm.toUser("Insufficient access level for command. Level: " + userLevel + ". Required: " + accessLevel + ".",Username,true);
 			return;
 		}
-		
+		int fid = 0;  // Factory DBId
 		SPlanet planet = CampaignMain.cm.getPlanetFromPartialString(command.nextToken(),Username);
 		String name = command.nextToken();
 		String size = command.nextToken();
 		String faction = command.nextToken();
+		if(CampaignMain.cm.isUsingMySQL()) {
+			fid = CampaignMain.cm.MySQL.getFactoryIdByNameAndPlanet(name, planet.getName());			
+		}
 		int type = Integer.parseInt(command.nextToken());
 		
 		SUnitFactory fac = new SUnitFactory(name,planet,size,faction,0,100,type);
+		fac.setID(fid);
         Vector<UnitFactory> uf = planet.getUnitFactories();
 		uf.add(fac);
 		fac.setPlanet(planet);

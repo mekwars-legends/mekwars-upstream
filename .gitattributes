@@ -1038,6 +1038,7 @@ server-dist/data/unitfiles/Error[!!-~]OMG-UR-FD.hmp -text
 server-dist/data/unitfiles/Infantry.zip -text
 server-dist/data/unitfiles/Meks.zip -text
 server-dist/data/unitfiles/Vehicles.zip -text
+server-dist/docs/IncreasedTechForNonFactionUnits.txt -text
 server-dist/dump_db.bat -text
 server-dist/dump_db.sh -text
 server-dist/lib/Ostermiller.jar -text

@@ -44,6 +44,10 @@ public class mysqlHandler{
 	  } 	  
   }
   
+  public int getFactoryIdByNameAndPlanet(String fName, String pName) {
+	  return fh.getFactoryIdByNameAndPlanet(fName, pName);
+  }
+  
   public void deleteArmy(int userID, int armyID) {
 	  try {
 		  PreparedStatement ps = MySQLCon.con.prepareStatement("DELETE from playerarmies WHERE playerID = ? AND armyID = ?");

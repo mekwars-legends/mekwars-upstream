@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ RFE 1813023: Non Faction Mechs Require More Techs
++ Factories saving multiple times to the database when planet edited
 + More % instead of CP of planet owned typo's
 + Bug: ISStatus displaying % instead of CP of planet owned.
 + RFE 1552861: flee options

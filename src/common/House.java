@@ -680,6 +680,8 @@ public class House implements MMNetSerializable {
 	}
 	
 	public boolean houseSupportsUnit(String fileName) {
+		if(fileName.indexOf(".") > 0)
+			fileName = fileName.substring(0, fileName.indexOf("."));
 		return supportedUnits.containsKey(fileName);
 	}
 	

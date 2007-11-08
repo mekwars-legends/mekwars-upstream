@@ -57,6 +57,8 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import server.campaign.CampaignMain;
+
 import megamek.client.ui.AWT.MechTileset;
 import megamek.common.Entity;
 import megamek.common.Mech;
@@ -2964,7 +2966,18 @@ public class CHQPanel extends JPanel {
 							
 						}
 					}
-					
+					if(mwclient.getPlayer().getMyHouse().getNonFactionUnitsCostMore()) {
+						String techCostString = "";
+						if (cm.getC3Level() > 0)
+							techCostString = C3Text.toString() + "<br>";
+						
+						String techAmount = "TechsFor"+Unit.getWeightClassDesc(cm.getWeightclass())+Unit.getTypeClassDesc(cm.getType());
+						int numTechs =(int) (Integer.parseInt(mwclient.getserverConfigs(techAmount)) * (mwclient.getPlayer().getMyHouse().houseSupportsUnit(cm.getUnitFilename())? 1 : Float.parseFloat(mwclient.getserverConfigs("NonFactionUnitsIncreasedTechs"))));
+				 
+						techCostString += "Techs required: " + numTechs;
+						C3Text.setLength(0);
+						C3Text.append(techCostString);
+					}
 					//If you have a unit in more then one army, list all the armies it is in.
 					if (inNumberofArmies > 1) {
 						String armiesText = "";

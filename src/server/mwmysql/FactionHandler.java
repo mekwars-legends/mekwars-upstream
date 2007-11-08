@@ -213,6 +213,8 @@ public class FactionHandler {
 				CampaignMain.cm.MySQL.loadFactionPilots(h);
 				h.loadConfigFileFromDB();
 				h.setUsedMekBayMultiplier(Float.parseFloat(h.getConfig("UsedPurchaseCostMulti")));
+				if(CampaignMain.cm.isUsingIncreasedTechs())
+					h.addCommonUnitSupport();
 				MWServ.mwlog.dbLog("Faction " + h.getName() + " loaded");
 				}
 			rs.close();

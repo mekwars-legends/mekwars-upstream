@@ -275,7 +275,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		 * OK if there's room, unmaintained if not. This also strips any
 		 * FOR_SALE from units purchased via the market.
 		 */
-		if (this.getFreeBays() < SUnit.getHangarSpaceRequired(m))
+		if (this.getFreeBays() < (CampaignMain.cm.isUsingIncreasedTechs()? SUnit.getHangarSpaceRequired(m, getMyHouse().houseSupportsUnit(m.getUnitFilename())) : SUnit.getHangarSpaceRequired(m)))
 			m.setUnmaintainedStatus();
 		else
 			m.setStatus(Unit.STATUS_OK);
@@ -402,7 +402,10 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			
 			if (currU.getStatus() == Unit.STATUS_OK
 					|| currU.getStatus() == Unit.STATUS_FORSALE) {
-				free -= SUnit.getHangarSpaceRequired(currU);
+				if(CampaignMain.cm.isUsingIncreasedTechs())
+					free -= SUnit.getHangarSpaceRequired(currU, getMyHouse().houseSupportsUnit(currU.getUnitFilename()));
+				else
+					free -= SUnit.getHangarSpaceRequired(currU);
 				
 				// proto counting
 				if (currU.getEntity() instanceof Protomech && !advanceRep) {

@@ -2349,6 +2349,10 @@ public final class CampaignMain implements Serializable {
 		return isUsing;
 	}
 
+	public boolean isUsingIncreasedTechs() {
+		return (Boolean.parseBoolean(CampaignMain.cm.getConfig("UseNonFactionUnitsIncreasedTechs")) && !CampaignMain.cm.isUsingAdvanceRepair());
+	}
+	
 	public boolean isSynchingBB() {
 		if (validBBVersion)
 			return Boolean.parseBoolean(myServer.getConfigParam("MYSQL_SYNCHPHPBB"));
@@ -4020,6 +4024,8 @@ public final class CampaignMain implements Serializable {
 				} else
 					h = new SHouse(data.getUnusedHouseID());
 				h.fromString(line, r);
+				if(isUsingIncreasedTechs())
+					h.addCommonUnitSupport();
 				addHouse(h);
 				dis.close();
 				fis.close();
@@ -4095,7 +4101,7 @@ public final class CampaignMain implements Serializable {
 		File factionFile = new File("./campaign/factions");
 		if (!factionFile.exists()) {
 			factionFile.mkdir();
-			if(Boolean.parseBoolean(getConfig("UseNonFactionUnitsIncreasedTechs"))){
+			if(isUsingIncreasedTechs()){
 				File supportFile = new File("./campaign/factions/support");
 				supportFile.mkdir();
 			}

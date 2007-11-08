@@ -46,6 +46,31 @@ public class factoryHandler {
       MWServ.mwlog.dbLog("SQL Error in factoryHandler.java: " + e.getMessage());
     }       
     }
+  
+  public int getFactoryIdByNameAndPlanet(String fName, String planetName) {
+		ResultSet rs = null;
+		  PreparedStatement ps = null;
+		  
+	  try {
+		  ps = con.prepareStatement("SELECT factoryID from factories WHERE factoryPlanet = ? AND factoryName = ?");		  ps.setString(1, planetName);
+		  ps.setString(2, fName);
+		  rs = ps.executeQuery();
+		  if(!rs.next()) {
+			  rs.close();
+			  ps.close();
+			  return 0;
+		  }
+		  int fid = rs.getInt("factoryID");
+		  rs.close();
+		  ps.close();
+		  return fid;
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		MWServ.mwlog.dbLog("SQLException in factoryHandler.getFactoryByNameAndPlanet: " + e.toString());
+		return 0;
+	}
+	  
+  }
 
   public void deleteFactory(int factoryID)
     {

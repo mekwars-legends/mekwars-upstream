@@ -209,10 +209,13 @@ public class PL extends Command {
         			}
         		}
         	}
+        	MWClient.mwClientLog.clientOutputLog(player.getMyHouse().getSupportedUnits().toString());       	
         }
         else if (cmd.equals("CSU")) {
+        	// clear supported units
+        	MWClient.mwClientLog.clientOutputLog("Clearing Supported Units");
         	player.getMyHouse().supportedUnits.clear();
-        	player.getMyHouse().setNonFactionUnitsCostMore(true);
+        	player.getMyHouse().setNonFactionUnitsCostMore(Boolean.parseBoolean(mwclient.getserverConfigs("UseNonFactionUnitsIncreasedTechs")));
         }
 		else
 			return;

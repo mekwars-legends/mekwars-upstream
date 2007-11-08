@@ -257,12 +257,24 @@ public final class SUnit extends Unit implements Serializable {
 		return result;
 	}
 	
+	public static int getHangarSpaceRequired(int typeid, int weightclass, int baymod, String model, boolean unitSupported) {
+		if (unitSupported)
+			return getHangarSpaceRequired(typeid, weightclass, baymod, model);
+		return (int)(getHangarSpaceRequired(typeid, weightclass, baymod, model) * CampaignMain.cm.getFloatConfig("NonFactionUnitsIncreasedTechs"));
+	}
+	
 	/**
 	 * Pass-through method that gets the number of bays/techs required for a given unit
 	 * by drawing its characteristics and feeding them to getHangarSpaceRequired(int,int,int,String).
 	 */
 	public static int getHangarSpaceRequired(SUnit u) {
 		return SUnit.getHangarSpaceRequired(u.getType(),u.getWeightclass(),u.getPilot().getBayModifier(),u.getModelName());
+	}
+	
+	public static int getHangarSpaceRequired(SUnit u, boolean unitSupported) {
+		if(unitSupported)
+			return SUnit.getHangarSpaceRequired(u.getType(),u.getWeightclass(),u.getPilot().getBayModifier(),u.getModelName());
+		return SUnit.getHangarSpaceRequired(u.getType(),u.getWeightclass(),u.getPilot().getBayModifier(),u.getModelName(), unitSupported);
 	}
 	
 	/**

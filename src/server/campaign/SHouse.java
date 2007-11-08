@@ -1972,17 +1972,60 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
 			while (dis.ready()) {
 				if(addUnits)
-					addUnitSupported(dis.readLine());
+					addUnitSupported(dis.readLine(), true);
 				else
-					removeUnitSupported(dis.readLine());
+					removeUnitSupported(dis.readLine(), true);
 			}
 			dis.close();
-			fis.close();			
+			fis.close();
 		} catch(FileNotFoundException fnfe) {
-			
+			MWServ.mwlog.mainLog("FNFE!!!!");
 		} catch (IOException ioe) {
-			
+			MWServ.mwlog.mainLog("IOE!!!");
 		}
+	}
+	
+	public void addUnitSupported(String fileName, boolean sendMail) {
+		if (fileName.trim().length() < 1)
+			return;
+		fileName = fileName.trim();
+		StringBuilder toReturn = new StringBuilder();
+		if(houseSupportsUnit(fileName)) {
+			int num = getSupportedUnits().get(fileName);
+			supportedUnits.put(fileName, num + 1);
+		} else {
+			supportedUnits.put(fileName, 1);
+			toReturn.append(fileName);
+		}
+		if(toReturn.length() == 0)
+			return;
+		CampaignMain.cm.doSendToAllOnlinePlayers(this, "PL|USU|" + "|true|" + fileName, false);
+		CampaignMain.cm.doSendHouseMail(this, "NOTE", "The faction is now able to support the " + toReturn.toString()) ;
+	}
+	
+	public void removeUnitSupported(String fileName, boolean sendMail) {
+		if (fileName.trim().length() < 1)
+			return;
+		fileName = fileName.trim();
+		StringBuilder toReturn = new StringBuilder();
+		if(houseSupportsUnit(fileName)) {
+			int num = supportedUnits.get(fileName);
+			if (num == 1) {
+				// Remove it from the HashMap
+				supportedUnits.remove(fileName);
+				toReturn.append(fileName);
+			} else {
+				supportedUnits.put(fileName, num - 1);
+			}
+		} else {
+			// Error.  We should never get here.
+			MWServ.mwlog.mainLog("Error in House.removeUnitProduction(): trying to remove a unit that is not produced.");
+			MWServ.mwlog.mainLog("  --> House: " + getName() + ", Unit: " + fileName);
+		}
+		if(toReturn.length() == 0)
+			return;
+		CampaignMain.cm.doSendToAllOnlinePlayers(this, "PL|USU|" + "|false|" + fileName, false);
+		CampaignMain.cm.doSendHouseMail(this, "NOTE", "The faction has lost the ability to support the following units: " + toReturn.toString());
 	}
 	
 	public void addPlanet(SPlanet p) {
@@ -1992,7 +2035,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			setComponentProduction(getComponentProduction() + p.getCompProduction());
 			
 			// Add unit production here
-			if(Boolean.parseBoolean(CampaignMain.cm.getConfig("UseNonFactionUnitsIncreasedTechs")) && p.getFactoryCount() > 0) {
+			if(CampaignMain.cm.isUsingIncreasedTechs() && p.getFactoryCount() > 0) {
 				modifyUnitSupport(p, true);
 			}
 		}
@@ -2005,7 +2048,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			setComponentProduction(getComponentProduction() - p.getCompProduction());
 			
 			// Remove unit production here
-			if(Boolean.parseBoolean(CampaignMain.cm.getConfig("UseNonFactionUnitsIncreasedTechs")) && p.getFactoryCount() > 0) {
+			if(CampaignMain.cm.isUsingIncreasedTechs() && p.getFactoryCount() > 0) {
 				modifyUnitSupport(p, false);
 			}			
 		}
@@ -2184,8 +2227,8 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		}
 		
 		// Send supported units updates
-		if(Boolean.parseBoolean(CampaignMain.cm.getConfig("UseNonFactionUnitsIncreasedTechs")) ) {
-			CampaignMain.cm.toUser("PL|CSU|", realName, false);
+		if(CampaignMain.cm.isUsingIncreasedTechs()) {
+			CampaignMain.cm.toUser("PL|CSU|0", realName, false);
 			StringBuilder toSend = new StringBuilder();
 			toSend.append("PL|USU|");
 			int num = 0;
@@ -2811,6 +2854,14 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		}
 		
 		return "";
+	}
+	
+	public void addCommonUnitSupport() {
+		parseSupportFile("./campaign/factions/support/common_meks.txt", true);
+		parseSupportFile("./campaign/factions/support/common_vehicles.txt", true);
+		parseSupportFile("./campaign/factions/support/common_infantry.txt", true);
+		parseSupportFile("./campaign/factions/support/common_battlearmor.txt", true);
+		parseSupportFile("./campaign/factions/support/common_protomeks.txt", true);
 	}
 	
 	private void modifyUnitSupport(SPlanet p, boolean addProduction) {
