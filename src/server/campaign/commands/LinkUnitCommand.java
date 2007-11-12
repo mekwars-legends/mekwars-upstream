@@ -78,10 +78,6 @@ public class LinkUnitCommand implements Command {
           return;
       }
 
-      //passed the nulls, try the actual linking. and get Operations status.
-      boolean usingOpRules = CampaignMain.cm.getBooleanConfig("UseOperationsRule");
-      double opRuleBaseSize = CampaignMain.cm.getDoubleConfig("BaseForceSize");
-      
       if ( slaveUnit.hasBeenC3LinkedTo(a) && masterid == -1) {
           Enumeration c3Key = a.getC3Network().keys();
           Enumeration c3Unit = a.getC3Network().elements();
@@ -96,8 +92,6 @@ public class LinkUnitCommand implements Command {
           a.setRawForceSize(0);
           a.setBV(0);
           String toReturn = "Unit #"+ slaveid + " was removed from its C3 network. New BV: " + a.getBV();
-          if (usingOpRules && a.getRawForceSize() > opRuleBaseSize)
-          	toReturn += " / BV vs 4: " + a.getOperationsBV(null);
           
           CampaignMain.cm.toUser(toReturn,Username,true);
           CampaignMain.cm.toUser("PL|SAD|"+a.toString(true,"%"),Username,false);
@@ -111,8 +105,6 @@ public class LinkUnitCommand implements Command {
           a.setBV(0);
           
           String toReturn = "Unit #"+ slaveid + " was removed from its C3 network. New BV: " + a.getBV();
-          if (usingOpRules && a.getRawForceSize() > opRuleBaseSize)
-          	toReturn += " / BV vs 4: " + a.getOperationsBV(null);
           
           CampaignMain.cm.toUser(toReturn,Username,true);
           CampaignMain.cm.toUser("PL|SAD|"+a.toString(true,"%"),Username,false);
@@ -133,8 +125,6 @@ public class LinkUnitCommand implements Command {
           a.setBV(0);
           
           String toReturn = "Unit #"+ slaveUnit.getId() + " is now linked to Unit #"+masterUnit.getId()+". New BV: " + a.getBV();
-          if (usingOpRules && a.getRawForceSize() > opRuleBaseSize)
-          	toReturn += " / BV vs 4: " + a.getOperationsBV(null);
           
           CampaignMain.cm.toUser(toReturn,Username,true);
           CampaignMain.cm.toUser("PL|SAD|"+a.toString(true,"%"),Username,false);
