@@ -174,7 +174,7 @@ public final class MWTracker {
 	}
 	
 	public void addToLog(String s) {
-		boolean loggingEnabled = false;//Turn on if testing.
+		boolean loggingEnabled = true;//Turn on if testing.
 		if (loggingEnabled) {
 			String fileName = "log.txt";
 			try {
