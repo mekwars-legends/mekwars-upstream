@@ -473,6 +473,8 @@ public class RepodCommand implements Command {
 		
 		cm.getEntity().setSpotlight(entity.hasSpotlight());
 		cm.getEntity().setSpotlightState(entity.isUsingSpotlight());
+		cm.setWeightclass(m.getWeightclass());
+		cm.setType(m.getType());
 		//since unit cannot be in armies, no checkOperations on remove
 		p.removeUnit(unitid, false);
 		

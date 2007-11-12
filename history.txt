@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ BUG: Incorrect data being set/saved for FactoryRefreshPoints
++ BUG 1829911: Omnimechs turning into Light Class after repodding
++ BUG 1825583: Disable Force Size Mod
 + RFE 1813023: Non Faction Mechs Require More Techs
 + Factories saving multiple times to the database when planet edited
 + More % instead of CP of planet owned typo's
