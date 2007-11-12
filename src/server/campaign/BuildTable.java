@@ -205,7 +205,8 @@ public class BuildTable {
 						if (ST.hasMoreTokens())
 							filename.append(" ");
 					}
-					unitHolder.put(filename.toString(), amount);
+					if ( amount > 0 )
+						unitHolder.put(filename.toString(), amount);
 				}
 			}
 			dis.close();
