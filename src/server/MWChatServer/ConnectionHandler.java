@@ -47,11 +47,11 @@ import server.MWServ;
  */
 public class ConnectionHandler extends AbstractConnectionHandler {
     
-    protected Socket _socket;
-    protected PrintWriter _out;
-    protected ReaderThread _reader;
-    protected WriterThread _writer;
-    protected InputStream _inputStream;
+    protected Socket _socket = null;
+    protected PrintWriter _out = null;
+    protected ReaderThread _reader = null;
+    protected WriterThread _writer = null;
+    protected InputStream _inputStream = null;
     protected boolean _isShutDown = false;
 //    protected Dispatcher _dispatcher;
 
@@ -176,7 +176,8 @@ public class ConnectionHandler extends AbstractConnectionHandler {
     }//end shutdown()
     
 	public void queueMessage(String message) {
-		_writer.queueMessage(message);
+		if ( _writer != null )
+			_writer.queueMessage(message);
 	}
 
 }

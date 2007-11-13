@@ -117,7 +117,7 @@ public final class RegisterNameDialog implements ActionListener {
 			
 			else {
 				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "register " + usernameField.getText() + "," + String.valueOf(passwordField1.getPassword()));
-				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setclientversion#" + mwclient.myUsername+ "#" + MWClient.CLIENT_VERSION);
+				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setclientversion#" + mwclient.myUsername.trim()+ "#" + MWClient.CLIENT_VERSION);
 			}
 			
 		}

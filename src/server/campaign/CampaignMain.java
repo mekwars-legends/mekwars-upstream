@@ -1261,10 +1261,11 @@ public final class CampaignMain implements Serializable {
 				if (!name.toLowerCase().startsWith("nobody")
 						&& !name.equals("SERVER")
 						&& !name.toLowerCase().startsWith("war bot")
-						&& !name.toLowerCase().startsWith("[dedicated]"))
+						&& !name.toLowerCase().startsWith("[dedicated]")){
 					MWServ.mwlog.errLog("could not find a pfile for " + name);
 					MWServ.mwlog.debugLog(fnf);
 					MWServ.mwlog.debugLog("could not find a pfile for " + name);
+				}
 				return null;
 			} catch (Exception ex) {
 				MWServ.mwlog.errLog(ex);

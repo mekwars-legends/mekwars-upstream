@@ -606,7 +606,7 @@ public final class MWClient implements IClient {
 			 * after the main frame is build and visible will (I hope) fix the "PM
 			 * Ping Crash" TT users have with Client 0.1.44.5. 
 			 */
-			this.sendChat(MWClient.CAMPAIGN_PREFIX + "c setclientversion#" + this.myUsername+ "#" + CLIENT_VERSION);
+			this.sendChat(MWClient.CAMPAIGN_PREFIX + "c setclientversion#" + this.myUsername.trim()+ "#" + CLIENT_VERSION);
 			this.sendChat("/getsavedmail");
 			
 			try{
@@ -1755,7 +1755,7 @@ public final class MWClient implements IClient {
 	
 	public String getProtocolVersion() {return "4";}
 	
-	public void setUsername(String s) {myUsername = s;}
+	public void setUsername(String s) {myUsername = s.trim();}
 	
 	public void setPassword(String s) {password = s;}
 	

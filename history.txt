@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ NPE when trying to write to a closed player socket.
++ Trimed up name of player client side.
 + updated all files that needed to use the AM: tag
 + added AM: tag for True Server Annoucements.
 Release Server 0.2.10.9

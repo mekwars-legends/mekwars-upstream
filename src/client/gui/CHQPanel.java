@@ -57,8 +57,6 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 
-import server.campaign.CampaignMain;
-
 import megamek.client.ui.AWT.MechTileset;
 import megamek.common.Entity;
 import megamek.common.Mech;

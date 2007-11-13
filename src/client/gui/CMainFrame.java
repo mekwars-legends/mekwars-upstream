@@ -1123,7 +1123,7 @@ public class CMainFrame extends JFrame {
 		mwclient.connectToServer();
 		//Set Version upon reconnect.
 		if ( !mwclient.getStatus().equals("Not connected") ) {
-			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setclientversion#" + mwclient.myUsername+ "#" + MWClient.CLIENT_VERSION);
+			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setclientversion#" + mwclient.myUsername.trim()+ "#" + MWClient.CLIENT_VERSION);
 		}
 	}
 	
