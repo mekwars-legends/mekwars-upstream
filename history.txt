@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ updated all files that needed to use the AM: tag
++ added AM: tag for True Server Annoucements.
 Release Server 0.2.10.9
 + Added MegaMek.jar 0.33.12-MW11132007-5273
 + Added debugging logging for LoadPlayerFile.

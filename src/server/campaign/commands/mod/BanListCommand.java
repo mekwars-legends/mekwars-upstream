@@ -52,7 +52,7 @@ public class BanListCommand implements Command {
 			int userLevel = CampaignMain.cm.getServer().getUserLevel(Username);
 			if (userLevel < getExecutionLevel()) {
 				CampaignMain.cm.toUser(
-						"Insufficient access level for command. Level: "
+						"AM:Insufficient access level for command. Level: "
 								+ userLevel + ". Required: " + accessLevel
 								+ ".", Username, true);
 				return;

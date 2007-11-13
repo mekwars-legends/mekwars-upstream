@@ -39,7 +39,7 @@ public class ModeratorMailCommand implements Command {
 			userLevel = getExecutionLevel();
 		
 		if(userLevel < getExecutionLevel()) {
-			CampaignMain.cm.toUser("Insufficient access level for command. Level: " + userLevel + ". Required: " + accessLevel + ".",Username,true);
+			CampaignMain.cm.toUser("AM:Insufficient access level for command. Level: " + userLevel + ". Required: " + accessLevel + ".",Username,true);
 			return;
 		}
 		

@@ -44,7 +44,7 @@ public class ShutdownCommand implements Command {
 		if (accessLevel != 0) {
 			int userLevel = CampaignMain.cm.getServer().getUserLevel(Username);
 			if(userLevel < getExecutionLevel()) {
-				CampaignMain.cm.toUser("Insufficient access level for command. Level: " + userLevel + ". Required: " + accessLevel + ".",Username,true);
+				CampaignMain.cm.toUser("AM:Insufficient access level for command. Level: " + userLevel + ". Required: " + accessLevel + ".",Username,true);
 				return;
 			}
 		}
@@ -54,7 +54,7 @@ public class ShutdownCommand implements Command {
         CampaignMain.cm.saveBannedAmmo();
         if ( CampaignMain.cm.isUsingMySQL() )
         	CampaignMain.cm.MySQL.closeMySQL();
-        CampaignMain.cm.toUser("You halted the server. Have a nice day.", Username,true);
+        CampaignMain.cm.toUser("AM:You halted the server. Have a nice day.", Username,true);
         MWServ.mwlog.infoLog(Username + " halted the server. Have a nice day!");
         CampaignMain.cm.addToNewsFeed("Server halted!");
         try {

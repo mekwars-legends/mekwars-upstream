@@ -49,7 +49,7 @@ public class GetPlayerUnitsCommand implements Command {
     		//access level check
     		int userLevel = CampaignMain.cm.getServer().getUserLevel(Username);
     		if(userLevel < getExecutionLevel()) {
-    			CampaignMain.cm.toUser("Insufficient access level for command. Level: " + userLevel + ". Required: " + accessLevel + ".",Username,true);
+    			CampaignMain.cm.toUser("AM:Insufficient access level for command. Level: " + userLevel + ". Required: " + accessLevel + ".",Username,true);
     			return;
     		}
     		String username = command.nextToken();
@@ -67,7 +67,7 @@ public class GetPlayerUnitsCommand implements Command {
     		}
     		
     		if ( commandMethod.getExecutionLevel() > userLevel ){
-    			CampaignMain.cm.toUser("Insufficient access level for command. Level: " + userLevel + ". Required: " + commandMethod.getExecutionLevel() + ".",Username,true);
+    			CampaignMain.cm.toUser("AM:Insufficient access level for command. Level: " + userLevel + ". Required: " + commandMethod.getExecutionLevel() + ".",Username,true);
     			return;
     		}
     

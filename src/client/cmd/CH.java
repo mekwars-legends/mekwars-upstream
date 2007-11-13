@@ -419,10 +419,15 @@ public class CH extends Command {
 			else {
 
 				//load the message colour
-				String sysColour = mwclient.getConfigParam("SYSMESSAGECOLOR");
 
-				message = "<font color=\"" + sysColour + "\"><b>" + nextString + "</b></font>";
-				wasSystemMessage = true;
+				if ( nextString.startsWith("AM:") ){
+					String sysColour = mwclient.getConfigParam("SYSMESSAGECOLOR");
+					message = "<font color=\"" + sysColour + "\"><b>" + nextString.substring(3) + "</b></font>";
+					wasSystemMessage = true;
+				}
+				else
+					message = nextString;
+				
 				mwclient.addToChat(message);
 			}
 

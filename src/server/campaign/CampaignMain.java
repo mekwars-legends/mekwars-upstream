@@ -2883,7 +2883,7 @@ public final class CampaignMain implements Serializable {
 				else
 					this.savePlayerFile(currP);
 				if (Username != null)
-					CampaignMain.cm.toUser(currP.getName() + " saved",
+					CampaignMain.cm.toUser("AM:"+currP.getName() + " saved",
 							Username, true);
 			}
 		}

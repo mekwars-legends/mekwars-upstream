@@ -51,7 +51,7 @@ public class DonateCommand implements Command {
 		if (accessLevel != 0) {
 			int userLevel = CampaignMain.cm.getServer().getUserLevel(Username);
 			if(userLevel < getExecutionLevel()) {
-				CampaignMain.cm.toUser("Insufficient access level for command. Level: " + userLevel + ". Required: " + accessLevel + ".",Username,true);
+				CampaignMain.cm.toUser("AM:Insufficient access level for command. Level: " + userLevel + ". Required: " + accessLevel + ".",Username,true);
 				return;
 			}
 		}
