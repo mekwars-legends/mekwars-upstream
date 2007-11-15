@@ -662,6 +662,7 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
         munitions.put("LRM Thunder VibraBomb",AmmoType.M_THUNDER_VIBRABOMB);
         munitions.put("LRM Thunder Active",AmmoType.M_THUNDER_ACTIVE);
         munitions.put("LRM Follow The Leader",AmmoType.M_FOLLOW_THE_LEADER);
+        munitions.put("Multi Purpose",AmmoType.M_MULTI_PURPOSE);
 
         // SRM Munition Types
         munitions.put("SRM Inferno",AmmoType.M_INFERNO);
@@ -736,6 +737,7 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
         munitions.put(AmmoType.M_THUNDER_VIBRABOMB,"LRM Thunder VibraBomb");
         munitions.put(AmmoType.M_THUNDER_ACTIVE,"LRM Thunder Active" );
         munitions.put(AmmoType.M_FOLLOW_THE_LEADER,"LRM Follow The Leader" );
+        munitions.put(AmmoType.M_MULTI_PURPOSE,"Multi Purpose" );
 
         // SRM Munition Types
         munitions.put(AmmoType.M_INFERNO,"SRM Inferno");

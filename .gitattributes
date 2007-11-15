@@ -1247,6 +1247,7 @@ src/common/util/MMNetXStream.java -text
 src/common/util/Position.java -text
 src/common/util/StringUtils.java -text
 src/common/util/TeePrinter.java -text
+src/common/util/ThreadManager.java -text
 src/common/util/UnitComponents.java -text
 src/common/util/UnitUtils.java -text
 src/server/MWChatServer/AbstractConnectionHandler.java -text
@@ -1260,7 +1261,6 @@ src/server/MWChatServer/MultiValueHashMap.java -text
 src/server/MWChatServer/ReaderThread.java -text
 src/server/MWChatServer/RoomServer.java -text
 src/server/MWChatServer/RoomTable.java -text
-src/server/MWChatServer/ThreadManager.java -text
 src/server/MWChatServer/TimedUserList.java -text
 src/server/MWChatServer/Translator.java -text
 src/server/MWChatServer/WriterThread.java -text

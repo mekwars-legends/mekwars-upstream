@@ -337,17 +337,21 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 String munition = Long.toString(atCheck.getMunitionType());
                 House faction = mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse());
                 
+                MWClient.mwClientLog.clientErrLog("Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
                 //check banned ammo
                 if ( mwclient.getData().getServerBannedAmmo().containsKey(munition)
                         || faction.getBannedAmmo().containsKey(munition) )
                     continue;
                 
+                MWClient.mwClientLog.clientErrLog("2.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
                 
                 //System.err.println(atCheck.getName()+"/"+atCheck.getInternalName());
                 if ( usingCrits && 
                 		mwclient.getPlayer().getPartsCache().getPartsCritCount(atCheck.getInternalName()) < 1 &&
                 		!ammoAlreadyLoaded(atCheck))
                 	continue;
+                MWClient.mwClientLog.clientErrLog("3.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
+
                 // allow all lvl2 IS units to use level 1 ammo
                 // lvl1 IS units don't need to be allowed to use lvl1 ammo,
                 // because there is no special lvl1 ammo, therefore it doesn't
@@ -407,13 +411,15 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 	AmmoType.canDeliverMinefield(atCheck) ) {
                     continue;
                 }
-                
+                MWClient.mwClientLog.clientErrLog("4.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
+
                 // Only Protos can use Proto-specific ammo
                 if ( atCheck.hasFlag(AmmoType.F_PROTOMECH) &&
                      !(entity instanceof Protomech) ) {
                     continue;
                 }
-                
+                MWClient.mwClientLog.clientErrLog("5.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
+
                 // When dealing with machine guns, Protos can only
                 //  use proto-specific machine gun ammo
                 if ( entity instanceof Protomech &&
@@ -421,7 +427,8 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                      !atCheck.hasFlag(AmmoType.F_PROTOMECH) ) {
                     continue;
                 }
-                
+                MWClient.mwClientLog.clientErrLog("6.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
+
                 // BattleArmor ammo can't be selected at all.
                 // All other ammo types need to match on rack size and tech.
                 if ( bTechMatch &&

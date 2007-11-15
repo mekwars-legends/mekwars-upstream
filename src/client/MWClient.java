@@ -123,6 +123,7 @@ import common.PlanetEnvironment;
 import common.Unit;
 import common.campaign.Buildings;
 import common.util.MD5;
+import common.util.ThreadManager;
 import common.util.UnitUtils;
 
 //lookandfeel imports
@@ -212,7 +213,6 @@ public final class MWClient implements IClient {
 	CCampaign theCampaign;
 	CPlayer myPlayer;
 	CMainFrame MainFrame;
-    ClientThread MMGameThread = null;
     
 	int Status = STATUS_DISCONNECTED;
 	int LastStatus = STATUS_DISCONNECTED;
@@ -2014,7 +2014,6 @@ public final class MWClient implements IClient {
 		
 		//Send the new game info to the Server
 		serverSend("NG|" + new MMGame(this.myUsername, ip, myPort, MaxPlayers, MegaMek.VERSION + " " + MegaMek.TIMESTAMP, comment).toString());
-		
 		if (!dedicated) {
 			
 			if (deploy) {
@@ -2025,10 +2024,10 @@ public final class MWClient implements IClient {
 				autoArmy = new ArrayList<CUnit>();
 			}
 			mwClientLog.clientOutputLog("Joining own game!");
-			serverSend("JG|" + myUsername);
 
-            MMGameThread = new ClientThread(myUsername,myUsername,"127.0.0.1", myPort, this, meks, autoArmy);
-            MMGameThread.run();
+		    ClientThread MMGameThread = new ClientThread(myUsername,myUsername,"127.0.0.1", myPort, this, meks, autoArmy);
+    		ThreadManager.getInstance().runInThreadFromPool(MMGameThread);
+			serverSend("JG|" + myUsername);
 		} else {
 			clearSavedGames();
 			purgeOldLogs();
@@ -2119,7 +2118,7 @@ public final class MWClient implements IClient {
 			}
 			
 			ClientThread tmpThread = new ClientThread(Config.getParam("NAME"), hostName, serverip, serverport, this, meks, autoArmy);
-			tmpThread.start();
+			ThreadManager.getInstance().runInThreadFromPool(tmpThread);
 			serverSend("JG|" + toJoin.getHostName());
             toJoin = null;
 		}
@@ -2133,8 +2132,6 @@ public final class MWClient implements IClient {
 		mwClientLog.clientOutputLog("Leaving " + hostName);
 		serverSend("LG|" + hostName);
         
-		//explicitly null the client thread, and try to GC the MM client objects out of memory.
-		MMGameThread = null;
         System.gc();
 	}
 		
