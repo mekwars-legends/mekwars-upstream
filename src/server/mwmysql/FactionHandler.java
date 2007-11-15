@@ -3,9 +3,11 @@ package server.mwmysql;
 
 import java.sql.Connection;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Hashtable;
 import java.util.Vector;
 
 import common.CampaignData;
@@ -19,6 +21,7 @@ import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SUnit;
 import server.campaign.NewbieHouse;
+import server.campaign.mercenaries.ContractInfo;
 import server.campaign.mercenaries.MercHouse;
 
 public class FactionHandler {
@@ -211,6 +214,22 @@ public class FactionHandler {
 					h.addLeader(rs1.getString("leader_name"));
 				
 				//TODO: Load the Merc stuff.  Don't forget to change saveFaction to save the Merc stuff
+				
+				if(h.isMercHouse()) {
+					MWServ.mwlog.dbLog("Merc House");
+					rs1.close();
+					Hashtable merctable = new Hashtable();
+					PreparedStatement ps = con.prepareStatement("SELECT contractID from merc_contract_info WHERE contractHouse = ?");
+					ps.setString(1, h.getName());
+					rs1 = ps.executeQuery();
+					while (rs1.next()) {
+						ContractInfo ci = new ContractInfo();
+						ci.fromDB(rs1.getInt("contractID"));
+						merctable.put(ci.getPlayerName(), ci);
+					}
+					ps.close();
+					((MercHouse)h).setOutstandingContracts(merctable);
+				}
 				
 				CampaignMain.cm.addHouse(h);
 				MWServ.mwlog.dbLog("Loading Faction Pilots");

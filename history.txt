@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ Mercenary contracts loading from database.
 + More admin tags added.
 + Update Database to v10
 + Mercenary contracts saving to database.
