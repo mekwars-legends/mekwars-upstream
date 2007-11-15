@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ Added debuging messages for MM issue with loading units and options
++ added ClientThread to Thread pooling.
++ Moved ThreadManager to common.util.
 + Mercenary contracts loading from database.
 + More admin tags added.
 + Update Database to v10
