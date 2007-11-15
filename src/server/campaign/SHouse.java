@@ -530,6 +530,17 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 					ps.setString(3, getSubFactionList().get(key).toString());
 				}
 				
+				// Leaders
+				ps.executeUpdate("DELETE from faction_leaders WHERE faction_id = " + getDBId());
+				if(rs!=null)
+					rs.close();
+				for(String leader : leaders) {
+					ps.close();
+					ps = CampaignMain.cm.MySQL.getPreparedStatement("INSERT into faction_leaders set faction_id = ?, leader_name=?");
+					ps.setInt(1, getDBId());
+					ps.setString(2, leader);
+				}
+				
 				if(rs != null)
 					rs.close();
 				ps.close();

@@ -205,7 +205,11 @@ public class FactionHandler {
 					newSubFaction.fromString(rs1.getString("sf_string"));
 					h.getSubFactionList().put(rs1.getString("subfactionName"), newSubFaction);
 				}
-					
+				rs1.close();
+				rs1 = stmt2.executeQuery("SELECT * from faction_leaders WHERE faction_id = " + h.getDBId());
+				while(rs1.next())
+					h.addLeader(rs1.getString("leader_name"));
+				
 				//TODO: Load the Merc stuff.  Don't forget to change saveFaction to save the Merc stuff
 				
 				CampaignMain.cm.addHouse(h);

@@ -1007,6 +1007,7 @@ server-dist/data/db_schemas/db_schema_5to6.txt -text
 server-dist/data/db_schemas/db_schema_6to7.txt -text
 server-dist/data/db_schemas/db_schema_7to8.txt -text
 server-dist/data/db_schemas/db_schema_8to9.txt -text
+server-dist/data/db_schemas/db_schema_9to10.txt -text
 server-dist/data/factions.dtd -text
 server-dist/data/factions.xml -text
 server-dist/data/influencemessages/CommonInfluenceMessages.txt -text
