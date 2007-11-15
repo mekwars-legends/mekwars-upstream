@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ More admin tags added.
 + Update Database to v10
 + Mercenary contracts saving to database.
 + NPE when trying to write to a closed player socket.

@@ -639,7 +639,7 @@ public final class CampaignMain implements Serializable {
 					c.process(ST, Username);
 				}catch(Exception ex) {
 					MWServ.mwlog.errLog(ex);
-					CampaignMain.cm.toUser("Invalid Syntax: /"+task+" "+c.getSyntax(), Username);
+					CampaignMain.cm.toUser("AM:Invalid Syntax: /"+task+" "+c.getSyntax(), Username);
 				}
 				return;
 			}// if the text is a command
