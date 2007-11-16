@@ -65,8 +65,7 @@ public class factoryHandler {
 		  ps.close();
 		  return fid;
 	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		MWServ.mwlog.dbLog("SQLException in factoryHandler.getFactoryByNameAndPlanet: " + e.toString());
+		MWServ.mwlog.dbLog("SQLException in factoryHandler.getFactoryByNameAndPlanet: " + e.getMessage());
 		return 0;
 	}
 	  

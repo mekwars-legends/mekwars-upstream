@@ -27,11 +27,6 @@ import server.campaign.SPlanet;
 public class planetHandler {
   Connection con = null;
 
-  /**
-   * TODO: Change this to use entirely PreparedStatements
-   * 
-   */
-  
   public int countPlanets() {
 	  int num = 0;
 	  try {

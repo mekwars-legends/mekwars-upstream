@@ -213,12 +213,11 @@ public class FactionHandler {
 				while(rs1.next())
 					h.addLeader(rs1.getString("leader_name"));
 				
-				//TODO: Load the Merc stuff.  Don't forget to change saveFaction to save the Merc stuff
 				
 				if(h.isMercHouse()) {
 					MWServ.mwlog.dbLog("Merc House");
 					rs1.close();
-					Hashtable merctable = new Hashtable();
+					Hashtable<String, ContractInfo> merctable = new Hashtable<String, ContractInfo>();
 					PreparedStatement ps = con.prepareStatement("SELECT contractID from merc_contract_info WHERE contractHouse = ?");
 					ps.setString(1, h.getName());
 					rs1 = ps.executeQuery();
