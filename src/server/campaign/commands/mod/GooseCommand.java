@@ -58,8 +58,8 @@ public class GooseCommand implements Command {
 			
 			
 				
-			CampaignMain.cm.toUser("You goose " + p.getName() + ".",Username,true);
-			CampaignMain.cm.toUser(Username+" goosed you!", p.getName());
+			CampaignMain.cm.toUser("AM:You goose " + p.getName() + ".",Username,true);
+			CampaignMain.cm.toUser("AM:"+Username+" goosed you!", p.getName());
 			CampaignMain.cm.doSendModMail("NOTE",Username + " goosed " + p.getName() + ".");
 		}
 		catch(Exception ex){

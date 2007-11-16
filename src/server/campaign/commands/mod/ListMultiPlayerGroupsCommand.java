@@ -49,7 +49,7 @@ public class ListMultiPlayerGroupsCommand implements Command {
 		}
 		
 		//WARNING: CODE EFFECIENCY VERY BAD. COULD CAUSE HIGH SERVER LOAD IF USED OFTEN
-		String toSend = "List of Multiplayergroups:";
+		String toSend = "AM:List of Multiplayergroups:";
 		
 		/*
 		 * INCREDIBLY EVIL!

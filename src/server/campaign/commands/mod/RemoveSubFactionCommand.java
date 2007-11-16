@@ -58,7 +58,7 @@ public class RemoveSubFactionCommand implements Command {
 			else
 				factionName = player.getMyHouse().getName();
 		}catch(Exception ex){
-			CampaignMain.cm.toUser("Invalid syntax: /RemoveSubFaction SubFactionName#[FactionName]", Username);
+			CampaignMain.cm.toUser("AM:Invalid syntax: /RemoveSubFaction SubFactionName#[FactionName]", Username);
 			return;
 		}
 		
@@ -72,6 +72,6 @@ public class RemoveSubFactionCommand implements Command {
 		
 		faction.updated();
 		CampaignMain.cm.doSendModMail("NOTE", Username +" has removed subfaction "+subFactionName+" for faction "+faction.getName());
-		CampaignMain.cm.toUser("You have removed subfaction "+subFactionName+" for faction "+faction.getName(), Username);
+		CampaignMain.cm.toUser("AM:You have removed subfaction "+subFactionName+" for faction "+faction.getName(), Username);
 	}
 }

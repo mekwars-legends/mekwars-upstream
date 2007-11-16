@@ -57,7 +57,7 @@ public class RemoveLeaderCommand implements Command {
 				level = 2;
 				CampaignMain.cm.updatePlayersAccessLevel(target,level);
 			}
-			CampaignMain.cm.toUser("You have been demoted as a faction leader by "+Username+".", target);
+			CampaignMain.cm.toUser("AM:You have been demoted as a faction leader by "+Username+".", target);
 			CampaignMain.cm.doSendHouseMail(player.getMyHouse(), "Note", player.getName()+" has been demoted from the faction leadership.");
 			CampaignMain.cm.doSendModMail("NOTE:",Username+" has removed "+player.getName()+" as a faction leader.");
 		}catch(Exception ex){

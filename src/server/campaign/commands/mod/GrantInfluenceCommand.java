@@ -42,8 +42,8 @@ public class GrantInfluenceCommand implements Command {
 		int amount = Integer.parseInt(command.nextToken());
 		if (p != null) {
 			p.addInfluence(amount);
-			CampaignMain.cm.toUser("You've been granted " + CampaignMain.cm.moneyOrFluMessage(false,true,amount,true)+" from " + Username,p.getName(),true);
-			CampaignMain.cm.toUser("You granted " + CampaignMain.cm.moneyOrFluMessage(false,true,amount,true)+" to " + p.getName(),Username,true);
+			CampaignMain.cm.toUser("AM:You've been granted " + CampaignMain.cm.moneyOrFluMessage(false,true,amount,true)+" from " + Username,p.getName(),true);
+			CampaignMain.cm.toUser("AM:You granted " + CampaignMain.cm.moneyOrFluMessage(false,true,amount,true)+" to " + p.getName(),Username,true);
 			//server.MWServ.mwlog.modLog(Username + " granted " +CampaignMain.cm.moneyOrFluMessage(false,true,amount,true)+" to " + p.getName());
 			CampaignMain.cm.doSendModMail("NOTE",Username + " granted " +CampaignMain.cm.moneyOrFluMessage(false,true,amount,true)+" to " + p.getName());
 		}	

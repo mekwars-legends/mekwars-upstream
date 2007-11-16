@@ -55,7 +55,7 @@ public class IgnoreCommand implements Command {
         	   CampaignMain.cm.getServer().getIgnoreList().remove(user);
                CampaignMain.cm.getServer().getFactionLeaderIgnoreList().remove(client.getName());
                //MWServ.mwlog.modLog(Username + " unmuted " + client.getName());
-               CampaignMain.cm.toUser("You set " + user + " to be ignored to: false. He/She is currently not in the channel.", Username);
+               CampaignMain.cm.toUser("AM:You set " + user + " to be ignored to: false. He/She is currently not in the channel.", Username);
                return;
         }
         
@@ -63,11 +63,11 @@ public class IgnoreCommand implements Command {
         if (CampaignMain.cm.getServer().getIgnoreList().indexOf(client.getName()) == -1) {
         	CampaignMain.cm.getServer().getIgnoreList().add(client.getName());
         	//MWServ.mwlog.modLog(Username + " muted " + client.getName());
-        	CampaignMain.cm.getServer().sendChat(Username + " muted " + client.getName());
+        	CampaignMain.cm.getServer().sendChat("AM:"+Username + " muted " + client.getName());
         } else {
         	CampaignMain.cm.getServer().getIgnoreList().remove(client.getName());
         	CampaignMain.cm.getServer().getFactionLeaderIgnoreList().remove(client.getName());
-        	CampaignMain.cm.getServer().sendChat(Username + " unmuted " + client.getName());
+        	CampaignMain.cm.getServer().sendChat("AM:"+Username + " unmuted " + client.getName());
         	//MWServ.mwlog.modLog(Username + " unmuted " + client.getName());
         }
 

@@ -46,7 +46,7 @@ public class IgnoreListCommand implements Command {
 				return;
 			}
 		}
-        CampaignMain.cm.toUser("Curently ignored people: " + CampaignMain.cm.getServer().getIgnoreList().toString(), Username);
-        CampaignMain.cm.toUser("Curently faction ignored people: " + CampaignMain.cm.getServer().getFactionLeaderIgnoreList().toString(), Username);
+        CampaignMain.cm.toUser("AM:Curently ignored people: " + CampaignMain.cm.getServer().getIgnoreList().toString(), Username);
+        CampaignMain.cm.toUser("AM:Curently faction ignored people: " + CampaignMain.cm.getServer().getFactionLeaderIgnoreList().toString(), Username);
 	}
 }

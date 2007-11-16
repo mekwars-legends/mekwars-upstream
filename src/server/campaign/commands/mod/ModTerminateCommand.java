@@ -61,13 +61,13 @@ public class ModTerminateCommand implements Command {
 		//check the attack
 		ShortOperation so = CampaignMain.cm.getOpsManager().getRunningOps().get(opID);
 		if (so == null) {
-			CampaignMain.cm.toUser("Terminate failed. Attack #" + opID + " does not exist.",Username,true);
+			CampaignMain.cm.toUser("AM:Terminate failed. Attack #" + opID + " does not exist.",Username,true);
 			return;
 		}
 		
 		//don't cancel finished or reporting games
 		if (so.getStatus() == ShortOperation.STATUS_FINISHED) {
-			CampaignMain.cm.toUser("Terminate failed. You may not terminate a completed game.",Username,true);
+			CampaignMain.cm.toUser("AM:Terminate failed. You may not terminate a completed game.",Username,true);
 			return;
 		}
 		
@@ -77,7 +77,7 @@ public class ModTerminateCommand implements Command {
 		//Make a string which holds involved players names. Use
 		//an incrementing ocunter to make sure that formatting is
 		//correct for a list of any given size.
-		String players = "Players were ";
+		String players = "AM:Players were ";
 		int playerCounter = 1;
 		int totalPlayers = so.getAllPlayerNames().size();
 		for (String currPlayerName : so.getAllPlayerNames()) {
@@ -91,7 +91,7 @@ public class ModTerminateCommand implements Command {
 				players += ", ";
 		}
 		
-		CampaignMain.cm.toUser("You terminated Attack #" + opID + ". " + players,Username,true);
+		CampaignMain.cm.toUser("AM:You terminated Attack #" + opID + ". " + players,Username,true);
 		//server.MWServ.mwlog.modLog(Username + " terminated Attack #" + opID + ". " + players);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " terminated Attack #" + opID + ". " + players);
 		

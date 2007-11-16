@@ -62,12 +62,12 @@ public class KickCommand implements Command {
 			return;
 		}
 		
-		CampaignMain.cm.toUser("You were kicked by " + Username,toKick,true);
+		CampaignMain.cm.toUser("AM:You were kicked by " + Username,toKick,true);
 		CampaignMain.cm.toUser("PL|GBB|Bye Bye", toKick,false);
 		
 		//Use this to kick ghost players from the clients.
 		CampaignMain.cm.getServer().sendRemoveUserToAll(toKick,false);
-		CampaignMain.cm.getServer().sendChat(Username + " kicked " + toKick);
+		CampaignMain.cm.getServer().sendChat("AM:"+Username + " kicked " + toKick);
 		MWServ.mwlog.modLog(Username + " kicked " + toKick);
 		
 		/*try {

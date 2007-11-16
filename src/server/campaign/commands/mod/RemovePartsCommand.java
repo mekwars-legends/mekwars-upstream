@@ -45,7 +45,7 @@ public class RemovePartsCommand implements Command {
 		}
 		
 		if ( !CampaignMain.cm.getBooleanConfig("UsePartsRepair") ){
-            CampaignMain.cm.toUser("Parts repair not used on this server!",Username);
+            CampaignMain.cm.toUser("AM:Parts repair not used on this server!",Username);
             return;
 		}
 
@@ -59,7 +59,7 @@ public class RemovePartsCommand implements Command {
 			amount = Integer.parseInt(command.nextToken());
 		}
 		catch(Exception ex){
-            CampaignMain.cm.toUser("Syntax: RemoveParts#Name#PartName#Amount",Username);
+            CampaignMain.cm.toUser("AM:Syntax: RemoveParts#Name#PartName#Amount",Username);
             return;
 		}
 

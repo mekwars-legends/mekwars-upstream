@@ -2,6 +2,11 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ new MegaMek.jar 0.33.13-MW11162007
++ new sort method only sends game options to mm that are not default
++ Added Patch to allow MW to talk to newer version of MW no only sends 10 game
+  Options at a time instead of all of them.
++ Added More AM: tags
 + Added debuging messages for MM issue with loading units and options
 + added ClientThread to Thread pooling.
 + Moved ThreadManager to common.util.

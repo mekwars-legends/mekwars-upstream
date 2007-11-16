@@ -47,7 +47,7 @@ public class IPListCommand implements Command {
 				return;
 			}
 		}
-        String result = "Current IP's:<br>";
+        String result = "AM:Current IP's:<br>";
         TreeSet<MWClientInfo> sorted = new TreeSet<MWClientInfo>();
         sorted.addAll(CampaignMain.cm.getServer().getIPHelp().keySet());
         for (MWClientInfo m: sorted)

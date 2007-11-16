@@ -128,7 +128,7 @@ public class BanCommand implements Command {
 				banip = null;
 			
 			long until = System.currentTimeMillis() + howlong;
-			CampaignMain.cm.toUser("You were banned by " + Username + " " +timeName+".", toKill);
+			CampaignMain.cm.toUser("AM:You were banned by " + Username + " " +timeName+".", toKill);
 			CampaignMain.cm.toUser("PL|GBB|Banned!", toKill,false);
 			
 			try {
@@ -143,7 +143,7 @@ public class BanCommand implements Command {
 			//retreiveISPS(until,toKill);
 			CampaignMain.cm.getServer().bansUpdate();
 			//MWServ.mwlog.modLog(Username + " banned " + toKill + " " +timeName+".");
-			CampaignMain.cm.getServer().sendChat(Username + " banned " + toKill + " " +timeName+".");
+			CampaignMain.cm.getServer().sendChat("AM:"+Username + " banned " + toKill + " " +timeName+".");
 			
 			CampaignMain.cm.getOpsManager().doDisconnectCheckOnPlayer(toKill);
 			CampaignMain.cm.getServer().getCampaign().doLogoutPlayer(toKill);
@@ -151,7 +151,7 @@ public class BanCommand implements Command {
 			if (CampaignMain.cm.getServer().getClient(toKill) != null)
 				CampaignMain.cm.getServer().killClient(toKill,Username);
 		} catch(Exception ex) {
-			CampaignMain.cm.toUser("Incorrect Syntax: Syntax is as follows<br>/ban playername#time" +
+			CampaignMain.cm.toUser("AM:Incorrect Syntax: Syntax is as follows<br>/ban playername#time" +
 					"<br>Please note the time argument can be left off and will default to 1 year" +
 					"<br>also note that the time argument can be made in different ways" +
 					"<br>/ban playername#10 (player is banned for 10 mins)" +
