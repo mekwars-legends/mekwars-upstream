@@ -47,14 +47,14 @@ public class HouseCommand implements Command {
 		}
 		
 		if (!command.hasMoreElements()) {
-			CampaignMain.cm.toUser("Improper format. Try: /c faction#name",Username,false);
+			CampaignMain.cm.toUser("AM:Improper format. Try: /c faction#name",Username,false);
 			return;
 		}
 		
 		String Name = (String)command.nextElement();
 		SHouse h = (SHouse) CampaignMain.cm.getData().getHouseByName(Name);
 		if (h == null) {
-			CampaignMain.cm.toUser("Could not find faction. Command fails.",Username,false);
+			CampaignMain.cm.toUser("AM:Could not find faction. Command fails.",Username,false);
 			return;
 		}
 		

@@ -45,7 +45,7 @@ public class EnrollCommand implements Command {
 		
 		//don't let stock names enroll
 		if (Username.startsWith("Nobody")) {
-			CampaignMain.cm.toUser("Nobodies are not allowed to enroll. If you're signing on for the " +
+			CampaignMain.cm.toUser("AM:Nobodies are not allowed to enroll. If you're signing on for the " +
 					"first time and were labelled a Nobody, you're probably using a name someone else " +
 					"has already registered. If you've registered this name previously, you're either not " +
 					"sending a password or sending an incorrect password. Try changing/removing your password in " +
@@ -54,13 +54,13 @@ public class EnrollCommand implements Command {
 		}
 		
 		if ( Username.equalsIgnoreCase("DRAW") ){
-			CampaignMain.cm.toUser("The name DRAW is reserved for system use. Try another name.",Username,true);
+			CampaignMain.cm.toUser("AM:The name DRAW is reserved for system use. Try another name.",Username,true);
 			return;
 
 		}
 
 		if (Username.startsWith("[Dedicated]")) {
-			CampaignMain.cm.toUser("Dedicated hosts may not enroll in the campaign.",Username,true);
+			CampaignMain.cm.toUser("AM:Dedicated hosts may not enroll in the campaign.",Username,true);
 			return;
 		}
 		
@@ -70,14 +70,14 @@ public class EnrollCommand implements Command {
 		 */
 		for (House currFaction : CampaignMain.cm.getData().getAllHouses()) {
 			if (Username.equalsIgnoreCase(currFaction.getName())) {
-				CampaignMain.cm.toUser("You may not enroll in the campaign using the name of an existing faction.",Username,true);
+				CampaignMain.cm.toUser("AM:You may not enroll in the campaign using the name of an existing faction.",Username,true);
 				return;
 			}
 		}
 		
 		//reserve "SERVER" as a PM and BM name
 		if (Username.trim().equalsIgnoreCase("SERVER")) {
-			CampaignMain.cm.toUser("The name SERVER is reserved for system use. Try another name.",Username,true);
+			CampaignMain.cm.toUser("AM:The name SERVER is reserved for system use. Try another name.",Username,true);
 			return;
 		}
 		
@@ -102,7 +102,7 @@ public class EnrollCommand implements Command {
 				 Username.indexOf("+") > -1 ||
 				 Username.indexOf("=") > -1 ||
 				 Username.indexOf("|") > -1 ){
- 			CampaignMain.cm.toUser("Your name contains one or more illegal charachters. These are "
+ 			CampaignMain.cm.toUser("AM:Your name contains one or more illegal charachters. These are "
  					+ " reserved for system use or high-level players (mods, admins). Remove any of "
  					+ " the following and try enrolling again: ~ @ # $ % ^ + = & < > * . , ! |",Username,true);
  			return;
@@ -110,14 +110,14 @@ public class EnrollCommand implements Command {
 		
 		//make sure the player isn't alread enrolled
 		if (CampaignMain.cm.getHouseForPlayer(Username) != null) {
-			CampaignMain.cm.toUser("You are already enrolled in the campaign. Nice try though.",Username,true);
+			CampaignMain.cm.toUser("AM:You are already enrolled in the campaign. Nice try though.",Username,true);
 			return;
 		}
 		
 		//this shouldn't ever happen, but still needs to be checked ...
 		SHouse h = CampaignMain.cm.getHouseFromPartialString(CampaignMain.cm.getConfig("NewbieHouseName"),null);
 		if (h == null) {
-			CampaignMain.cm.toUser("Training faction is null. Contact an admin immediately.",Username,true);
+			CampaignMain.cm.toUser("AM:Training faction is null. Contact an admin immediately.",Username,true);
 			return;
 		}
 		
@@ -127,7 +127,7 @@ public class EnrollCommand implements Command {
 			nh = (NewbieHouse)h;
 		
 		if (nh == null) {
-			CampaignMain.cm.toUser("Named training faction is not a NewbieHouse. Contact an admin immediately.",Username,true);
+			CampaignMain.cm.toUser("AM:Named training faction is not a NewbieHouse. Contact an admin immediately.",Username,true);
 			return;
 		}
 			
@@ -143,7 +143,7 @@ public class EnrollCommand implements Command {
 		String unitInfo = nh.getNewSOLUnits(newPlayer,null);
 		newPlayer.addMoney(CampaignMain.cm.getIntegerConfig("PlayerBaseMoney"));
 		
-		String result = new String("<font color=\"navy\">WELCOME TO MEKWARS!</font>"
+		String result = new String("AM:<font color=\"navy\">WELCOME TO MEKWARS!</font>"
 				+ "<br><br>You've been assigned to " + nh.getNameAsLink() + ", "
 				+ "a training faction. Take some time here to learn about the server rules, "
 				+ "the unique qualities of the factions that you may join, and the software "
@@ -155,7 +155,7 @@ public class EnrollCommand implements Command {
 		CampaignMain.cm.toUser(result,Username,true);
 		
 		if (CampaignMain.cm.getServer().getUserLevel(Username) < IAuthenticator.REGISTERED)
-			CampaignMain.cm.toUser("<font color=\"navy\"><br>---<br>NOTE: Your account will not be password protected until you [<a href=\"MWREG\">register</a>] your nickname.<br>---<br></font>", Username, true);
+			CampaignMain.cm.toUser("AM:<font color=\"navy\"><br>---<br>NOTE: Your account will not be password protected until you [<a href=\"MWREG\">register</a>] your nickname.<br>---<br></font>", Username, true);
 	
 		CampaignMain.cm.doLoginPlayer(Username);
 		

@@ -48,7 +48,7 @@ public class SetMyLogoCommand implements Command {
         }else{
     		String newLogo = command.nextToken();
     		if (MWPasswd.getRecord(Username) == null) {
-    			CampaignMain.cm.toUser("You cannot set a logo until you registered your Name. Please use the File Menu -> Register Nickname to do so!",Username,true);
+    			CampaignMain.cm.toUser("AM:You cannot set a logo until you registered your Name. Please use the File Menu -> Register Nickname to do so!",Username,true);
     			return;
     		}
             // this way for some reason doesn't work anymore so I'm moving everything to SPlayer. -- Torren
@@ -57,8 +57,8 @@ public class SetMyLogoCommand implements Command {
             else
                 player.setMyLogo(newLogo);
         }
-        CampaignMain.cm.toUser("PL|SUL|"+ player.getMyLogo(),Username,false);
-		CampaignMain.cm.toUser("You've set your Logo to " + player.getMyLogo(),Username,true);
-		CampaignMain.cm.toUser("It'll look like this: <img height=\"150\" width=\"150\" src =\"" + player.getMyLogo() +"\">",Username,true);
+        CampaignMain.cm.toUser("AM:PL|SUL|"+ player.getMyLogo(),Username,false);
+		CampaignMain.cm.toUser("AM:You've set your Logo to " + player.getMyLogo(),Username,true);
+		CampaignMain.cm.toUser("AM:It'll look like this: <img height=\"150\" width=\"150\" src =\"" + player.getMyLogo() +"\">",Username,true);
 	}
 }

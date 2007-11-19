@@ -42,7 +42,7 @@ public class RecallBidCommand implements Command {
 		//load the SPlayer
 		SPlayer p = CampaignMain.cm.getPlayer(Username);
 		if (p == null) {
-			CampaignMain.cm.toUser("Null SPlayer while recalling bid. Report immediately!",Username,true);
+			CampaignMain.cm.toUser("AM:Null SPlayer while recalling bid. Report immediately!",Username,true);
 			return;
 		}
 		
@@ -51,20 +51,20 @@ public class RecallBidCommand implements Command {
 		try {
 			auctionID = Integer.parseInt(command.nextToken());
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper format. Try: /c recallbid#AuctionID",Username,true);
+			CampaignMain.cm.toUser("AM:Improper format. Try: /c recallbid#AuctionID",Username,true);
 			return;
 		}
 				
 		//check the auction ID
 		MarketListing auction = CampaignMain.cm.getMarket().getListingByID(auctionID);
 		if (auction == null) {
-			CampaignMain.cm.toUser("There is no auction with ID#" + auctionID + ".",Username,true);
+			CampaignMain.cm.toUser("AM:There is no auction with ID#" + auctionID + ".",Username,true);
 			return;
 		}
 		
 		//make sure the requestor is the seller
 		if (auction.getBidForPlayer(p) < 1) {
-			CampaignMain.cm.toUser("You have no bid on this unit.",Username,true);
+			CampaignMain.cm.toUser("AM:You have no bid on this unit.",Username,true);
 			return;
 		}
 				
@@ -77,10 +77,10 @@ public class RecallBidCommand implements Command {
 		bidList.placeBid(Username, -1);//placing a negative bid actually removes from the Hash. See MarketListing.
 		
 		//let the player know the bid was recalled
-		CampaignMain.cm.toUser("You've rescinded your bid for the " + auction.getListedModelName() + ".", Username, true);
+		CampaignMain.cm.toUser("AM:You've rescinded your bid for the " + auction.getListedModelName() + ".", Username, true);
 
 		//send BM|CU to bidder
-		CampaignMain.cm.toUser("BM|CU|" + auction.toString(auctionID,p),Username,false);
+		CampaignMain.cm.toUser("AM:BM|CU|" + auction.toString(auctionID,p),Username,false);
 		
 	}//end process()
 	

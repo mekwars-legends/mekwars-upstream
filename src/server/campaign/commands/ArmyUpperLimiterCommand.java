@@ -47,7 +47,7 @@ public class ArmyUpperLimiterCommand implements Command {
 			//first, make sure limiters are allowed ...
 			boolean limitsAllowed = new Boolean(CampaignMain.cm.getConfig("AllowLimiters")).booleanValue();
 			if (!limitsAllowed) {
-				CampaignMain.cm.toUser("Limits are disabled.",Username,true);
+				CampaignMain.cm.toUser("AM:Limits are disabled.",Username,true);
 				return;
 			}
 			
@@ -59,30 +59,30 @@ public class ArmyUpperLimiterCommand implements Command {
 				SPlayer p = CampaignMain.cm.getPlayer(Username);
 				if (p != null) {
 					if (p.getDutyStatus() == SPlayer.STATUS_ACTIVE) {
-						CampaignMain.cm.toUser("You cannot change limits while active.",Username,true);
+						CampaignMain.cm.toUser("AM:You cannot change limits while active.",Username,true);
 						return;
 					}
 					SArmy army = p.getArmy(armyid);
 					if (army != null) {
 						
 						if (limit < Army.NO_LIMIT) {//-1 is NO_LIMIT
-							CampaignMain.cm.toUser("You may not set negative limits.",Username,true);
+							CampaignMain.cm.toUser("AM:You may not set negative limits.",Username,true);
 							return;
 						}
 						
 						//check to make sure that the proposed limit doesnt hit the buffer
 						int bufferAmt = CampaignMain.cm.getIntegerConfig("UpperLimitBuffer");
 						if (limit < bufferAmt && limit != Army.NO_LIMIT) {
-							CampaignMain.cm.toUser("You must set an upper limit of " + bufferAmt + "or more.",Username,true);
+							CampaignMain.cm.toUser("AM:You must set an upper limit of " + bufferAmt + "or more.",Username,true);
 							return;
 						}
 						
 						army.setUpperLimiter(limit);
 						
 						if (limit == -1)
-							CampaignMain.cm.toUser("Army #" + armyid + "'s upper limit disabled.",Username,true);
+							CampaignMain.cm.toUser("AM:Army #" + armyid + "'s upper limit disabled.",Username,true);
 						else	
-							CampaignMain.cm.toUser("Army #" + armyid + "'s upper limit set to " + limit + ".",Username,true);
+							CampaignMain.cm.toUser("AM:Army #" + armyid + "'s upper limit set to " + limit + ".",Username,true);
 						
 						CampaignMain.cm.toUser("PL|SAB|"+army.getID()+"#"+army.getLowerLimiter()+"#"+ army.getUpperLimiter(),Username,false);
 					}

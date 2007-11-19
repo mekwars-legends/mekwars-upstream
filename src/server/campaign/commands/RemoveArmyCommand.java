@@ -45,7 +45,7 @@ public class RemoveArmyCommand implements Command {
 		SPlayer p = CampaignMain.cm.getPlayer(Username);
 		
 		if (p == null) {
-			CampaignMain.cm.toUser("Null player while removing army. Report this to an admin. Remove fails.",Username,true);
+			CampaignMain.cm.toUser("AM:Null player while removing army. Report this to an admin. Remove fails.",Username,true);
 			return;
 		}
 		
@@ -54,31 +54,31 @@ public class RemoveArmyCommand implements Command {
 		try {
 			id = Integer.parseInt(command.nextToken());
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper usage. Try: /c removearmy#ID",Username,true);
+			CampaignMain.cm.toUser("AM:Improper usage. Try: /c removearmy#ID",Username,true);
 			return;
 		}
 		
 		//try to load the army, and check for a null
 		SArmy toRemove = p.getArmy(id);
 		if (toRemove == null) {
-			CampaignMain.cm.toUser("No army with that ID. Remove failed.",Username,true);
+			CampaignMain.cm.toUser("AM:No army with that ID. Remove failed.",Username,true);
 			return;
 		}
 		
 		if (CampaignMain.cm.getOpsManager().getShortOpForPlayer(p) != null) {
-			CampaignMain.cm.toUser("You may not modify your armies while in a game.",Username,true);
+			CampaignMain.cm.toUser("AM:You may not modify your armies while in a game.",Username,true);
 			return;
 		}
 		
 		if (p.getDutyStatus() == SPlayer.STATUS_ACTIVE && toRemove.getAmountOfUnits() != 0){
-			CampaignMain.cm.toUser("You may not modify armies while active.",Username,true);
+			CampaignMain.cm.toUser("AM:You may not modify armies while active.",Username,true);
 			return;
 		}
 		
 		//break outs passed, so remove the army.
 		p.removeArmy(id);
 		p.resetWeightedArmyNumber();
-		CampaignMain.cm.toUser("Army #" + id + " was removed.",Username,true);
+		CampaignMain.cm.toUser("AM:Army #" + id + " was removed.",Username,true);
 		
 		
 	}//end process()

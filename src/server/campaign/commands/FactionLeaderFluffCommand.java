@@ -47,7 +47,7 @@ public class FactionLeaderFluffCommand implements Command {
 		try {
 			p = CampaignMain.cm.getPlayer(command.nextToken());
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper command. Try: /c factionleaderfluff#PlayerName#text", Username, true);
+			CampaignMain.cm.toUser("AM:Improper command. Try: /c factionleaderfluff#PlayerName#text", Username, true);
 			return;
 		}
 		
@@ -57,12 +57,12 @@ public class FactionLeaderFluffCommand implements Command {
             fluff = null;
         
 		if (p == null) {
-			CampaignMain.cm.toUser("Couldn't find a player with that name.", Username, true);
+			CampaignMain.cm.toUser("AM:Couldn't find a player with that name.", Username, true);
 			return;
 		}
 		
 		if (!leader.getMyHouse().getName().equalsIgnoreCase(p.getMyHouse().getName()) ){
-			CampaignMain.cm.toUser("You are not in the same faction as "+p.getName()+ " therefore you maynot change their fluff!",Username,true);
+			CampaignMain.cm.toUser("AM:You are not in the same faction as "+p.getName()+ " therefore you maynot change their fluff!",Username,true);
 			return;
 		}
 
@@ -73,7 +73,7 @@ public class FactionLeaderFluffCommand implements Command {
     		        fluff.indexOf("$") >0 ||
     		        fluff.indexOf("#") >0 ||
     		        fluff.indexOf("|") > 0){
-    			CampaignMain.cm.toUser("Illegal characters in the fluff text try again without '|','$','#', or '~' characters",Username,true);
+    			CampaignMain.cm.toUser("AM:Illegal characters in the fluff text try again without '|','$','#', or '~' characters",Username,true);
     			return;
     		}
     		
@@ -81,7 +81,7 @@ public class FactionLeaderFluffCommand implements Command {
     		p.setFluffText(fluff);
         }
         
-		CampaignMain.cm.toUser("New fluff text for " + p.getName() + ": " + fluff,Username,true);
+		CampaignMain.cm.toUser("AM:New fluff text for " + p.getName() + ": " + fluff,Username,true);
 		CampaignMain.cm.toUser(Username + " set your fluff to: " + fluff,p.getName(),true);
 		//server.MWServ.mwlog.modLog(Username + " set " + p.getName() + "'s fluff to '" + fluff + "'.");
 		CampaignMain.cm.doSendModMail("NOTE",Username + " set " + p.getName() + "'s fluff to '" + fluff + "'.");

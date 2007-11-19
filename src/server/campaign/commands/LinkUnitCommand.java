@@ -56,25 +56,25 @@ public class LinkUnitCommand implements Command {
 
       SArmy a = p.getArmy(armyid);
       if (a == null) {
-        CampaignMain.cm.toUser("Army #" + armyid + " does not exist.", Username, true);
+        CampaignMain.cm.toUser("AM:Army #" + armyid + " does not exist.", Username, true);
         return;
       }
 
       //Is the army in a fight atm?
       if (a.isLocked()) {
-        CampaignMain.cm.toUser("You may not change C3 networks while an Army is in combat.", Username, true);
+        CampaignMain.cm.toUser("AM:You may not change C3 networks while an Army is in combat.", Username, true);
         return;
       }
 
       if (p.getDutyStatus() == SPlayer.STATUS_ACTIVE) {
-          CampaignMain.cm.toUser("You may not change C3 networks while on active duty.", Username, true);
+          CampaignMain.cm.toUser("AM:You may not change C3 networks while on active duty.", Username, true);
           return;
       }
       
       //throw out if the target slave doesnt exist
       Unit slaveUnit = a.getUnit(slaveid);
       if ( slaveUnit == null ) {
-          CampaignMain.cm.toUser("Could not find unit #"+slaveid+" in army #"+armyid+".",Username,true);
+          CampaignMain.cm.toUser("AM:Could not find unit #"+slaveid+" in army #"+armyid+".",Username,true);
           return;
       }
 
@@ -94,7 +94,7 @@ public class LinkUnitCommand implements Command {
           String toReturn = "Unit #"+ slaveid + " was removed from its C3 network. New BV: " + a.getBV();
           
           CampaignMain.cm.toUser(toReturn,Username,true);
-          CampaignMain.cm.toUser("PL|SAD|"+a.toString(true,"%"),Username,false);
+          CampaignMain.cm.toUser("AM:PL|SAD|"+a.toString(true,"%"),Username,false);
           CampaignMain.cm.getOpsManager().checkOperations(a,true);//update legal ops
           return;
       }
@@ -107,7 +107,7 @@ public class LinkUnitCommand implements Command {
           String toReturn = "Unit #"+ slaveid + " was removed from its C3 network. New BV: " + a.getBV();
           
           CampaignMain.cm.toUser(toReturn,Username,true);
-          CampaignMain.cm.toUser("PL|SAD|"+a.toString(true,"%"),Username,false);
+          CampaignMain.cm.toUser("AM:PL|SAD|"+a.toString(true,"%"),Username,false);
           CampaignMain.cm.getOpsManager().checkOperations(a,true);//update legal ops
           return;
       }
@@ -115,7 +115,7 @@ public class LinkUnitCommand implements Command {
       //throw out if the master unit doesnt exist.
       Unit masterUnit = a.getUnit(masterid);
       if ( masterUnit == null ){
-          CampaignMain.cm.toUser("Unable to find master unit (#"+masterid+") in Army #"+armyid+".",Username,true);
+          CampaignMain.cm.toUser("AM:Unable to find master unit (#"+masterid+") in Army #"+armyid+".",Username,true);
           return;
       }
       
@@ -127,12 +127,12 @@ public class LinkUnitCommand implements Command {
           String toReturn = "Unit #"+ slaveUnit.getId() + " is now linked to Unit #"+masterUnit.getId()+". New BV: " + a.getBV();
           
           CampaignMain.cm.toUser(toReturn,Username,true);
-          CampaignMain.cm.toUser("PL|SAD|"+a.toString(true,"%"),Username,false);
+          CampaignMain.cm.toUser("AM:PL|SAD|"+a.toString(true,"%"),Username,false);
           CampaignMain.cm.getOpsManager().checkOperations(a,true);//update legal ops
       }
       
       else
-          CampaignMain.cm.toUser("Unabled to Link Unit #"+slaveUnit.getId()+" to unit #"+masterUnit.getId()+".",Username,true);
+          CampaignMain.cm.toUser("AM:Unabled to Link Unit #"+slaveUnit.getId()+" to unit #"+masterUnit.getId()+".",Username,true);
     }//end if(command has more elements)
     
   }//end process()

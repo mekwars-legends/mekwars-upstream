@@ -45,7 +45,7 @@ public class UnitPositionCommand implements Command {
 		
 		//allowing people to reorder in games could break reports
 		if (CampaignMain.cm.getOpsManager().getShortOpForPlayer(p) != null) {
-			CampaignMain.cm.toUser("You may not change unit positions while you are in a game!", Username, true);
+			CampaignMain.cm.toUser("AM:You may not change unit positions while you are in a game!", Username, true);
 			return;
 		}
 		
@@ -59,7 +59,7 @@ public class UnitPositionCommand implements Command {
 				unitid = Integer.parseInt((String)command.nextElement());
 				newposition = Integer.parseInt((String)command.nextElement());
 			} catch (Exception e) {
-				CampaignMain.cm.toUser("Improper format. Try: /c unitposition#army#unit#newposition", Username, true);
+				CampaignMain.cm.toUser("AM:Improper format. Try: /c unitposition#army#unit#newposition", Username, true);
 				return;
 			}
 			
@@ -67,41 +67,41 @@ public class UnitPositionCommand implements Command {
 			//load (and check) the army to modify
 			SArmy a = p.getArmy(armyid);
 			if (a == null) {
-				CampaignMain.cm.toUser("You do not have an Army with ID #" + armyid + ".", Username, true);
+				CampaignMain.cm.toUser("AM:You do not have an Army with ID #" + armyid + ".", Username, true);
 				return;
 			}
 			
 			//break out if the lance is locked. NOT duplicative with the earlier game check,
 			//since locks can/could be set for other reasons (non-reports, etc.)
 			if (a.isLocked()) {
-				CampaignMain.cm.toUser("Army #" + armyid + " is locked.", Username, true);
+				CampaignMain.cm.toUser("AM:Army #" + armyid + " is locked.", Username, true);
 				return;
 			}
 			
 			SUnit u = p.getUnit(unitid);
 			if (u == null) {
-				CampaignMain.cm.toUser("You do not have a Unit with ID #" + unitid + ".", Username, true);
+				CampaignMain.cm.toUser("AM:You do not have a Unit with ID #" + unitid + ".", Username, true);
 				return;
 			}
 			
 			if (u.getStatus() == Unit.STATUS_UNMAINTAINED) {
-				CampaignMain.cm.toUser("You may not change the position of an unmaintained unit.", Username, true);
+				CampaignMain.cm.toUser("AM:You may not change the position of an unmaintained unit.", Username, true);
 				return;
 			}
 		
 			//check validity of new position
 			if (newposition < 0) {
-				CampaignMain.cm.toUser("You may not place a unit in a negative order/position.", Username, true);
+				CampaignMain.cm.toUser("AM:You may not place a unit in a negative order/position.", Username, true);
 				return;
 			} 
 			
 			if (newposition > a.getAmountOfUnits()) {
-				CampaignMain.cm.toUser("Highest position available in Army #" + armyid + " is Pos. #" + a.getAmountOfUnits() + ".",Username,true);
+				CampaignMain.cm.toUser("AM:Highest position available in Army #" + armyid + " is Pos. #" + a.getAmountOfUnits() + ".",Username,true);
 				return;
 			}
 			
 			if (a.isPlayerLocked()) {
-				CampaignMain.cm.toUser("You cannot modify a locked army.", Username, true);
+				CampaignMain.cm.toUser("AM:You cannot modify a locked army.", Username, true);
 				return;
 			}
 			
@@ -115,10 +115,10 @@ public class UnitPositionCommand implements Command {
 				a.addUnit(u, newposition);
 			
 			//now, send an update command to the client
-			CampaignMain.cm.toUser("PL|RPU|"+a.getID()+"#"+u.getId()+"#"+newposition,Username,false);
+			CampaignMain.cm.toUser("AM:PL|RPU|"+a.getID()+"#"+u.getId()+"#"+newposition,Username,false);
 			
 			//and send the user some nice chat
-			CampaignMain.cm.toUser("Army #"+ a.getID() + "'s order was changed. The " + u.getModelName() + "  is now Unit " + (newposition + 1) + "." ,Username,true);
+			CampaignMain.cm.toUser("AM:Army #"+ a.getID() + "'s order was changed. The " + u.getModelName() + "  is now Unit " + (newposition + 1) + "." ,Username,true);
 			
 			//this doesnt trigger any of the add/remove save flags, but
 			//if would still be nice to record. So set the player's save state.

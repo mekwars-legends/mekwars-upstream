@@ -48,7 +48,7 @@ public class ShowToHouseCommand implements Command {
 		SPlayer p = CampaignMain.cm.getPlayer(Username);
 		
 		if (p == null) {
-			CampaignMain.cm.toUser("Null player. Report this to an admin. Show fails.",Username,true);
+			CampaignMain.cm.toUser("AM:Null player. Report this to an admin. Show fails.",Username,true);
 			return;
 		}
 		
@@ -56,7 +56,7 @@ public class ShowToHouseCommand implements Command {
 		try {
 			showType = command.nextToken();
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper usage. Try: /c showtofaction#type#id",Username,true);
+			CampaignMain.cm.toUser("AM:Improper usage. Try: /c showtofaction#type#id",Username,true);
 			return;
 		}
 		
@@ -65,7 +65,7 @@ public class ShowToHouseCommand implements Command {
 		try {
 			id = Integer.parseInt(command.nextToken());
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper usage. Try: /c showtofaction#type#id",Username,true);
+			CampaignMain.cm.toUser("AM:Improper usage. Try: /c showtofaction#type#id",Username,true);
 			return;
 		}
 		
@@ -77,7 +77,7 @@ public class ShowToHouseCommand implements Command {
 				CampaignMain.cm.doSendHouseMail(p.getMyHouse(),Username,"My unit: " + p.getUnit(id).getDescription(false));
 			return;
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Error while attempting to Show. Incorrect ID?",Username,true);
+			CampaignMain.cm.toUser("AM:Error while attempting to Show. Incorrect ID?",Username,true);
 			return;
 		}
 		

@@ -66,7 +66,7 @@ public class SetUnitCommanderCommand implements Command {
 			commander = Boolean.parseBoolean(command.nextToken());
 			
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Incorrect syntax. Try: /setUnitCommander unit ID#army ID#true/false", Username, true);
+			CampaignMain.cm.toUser("AM:Incorrect syntax. Try: /setUnitCommander unit ID#army ID#true/false", Username, true);
 			return;
 		}
 		
@@ -74,17 +74,17 @@ public class SetUnitCommanderCommand implements Command {
 		SArmy army = p.getArmy(armyid);
 		
 		if (m == null) {
-			CampaignMain.cm.toUser("Could not find a unit with the given ID.", Username, true);
+			CampaignMain.cm.toUser("AM:Could not find a unit with the given ID.", Username, true);
 			return;
 		}
 		
 		if (m.getStatus() == Unit.STATUS_FORSALE) {
-			CampaignMain.cm.toUser("Units that are for sale on the Market.", Username, true);
+			CampaignMain.cm.toUser("AM:Units that are for sale on the Market.", Username, true);
 			return;
 		}
 		
 		if ( m.getPilot() == null || m.getPilot().getName().equalsIgnoreCase("vacant") ){
-			CampaignMain.cm.toUser("This unit does not have a pilot to be a commander for!", Username);
+			CampaignMain.cm.toUser("AM:This unit does not have a pilot to be a commander for!", Username);
 			return;
 		}
 		
@@ -94,22 +94,22 @@ public class SetUnitCommanderCommand implements Command {
 		}
 		
 		if ( !house.getBooleanConfig("allowUnitCommanderVTOL") && m.getEntity() instanceof VTOL){
-			CampaignMain.cm.toUser("VTOL units are not allowed to be set as unit commanders!", Username);
+			CampaignMain.cm.toUser("AM:VTOL units are not allowed to be set as unit commanders!", Username);
 			return;
 		}
 		
 		if ( m.getEntity().isOffBoard() ){
-			CampaignMain.cm.toUser("Off board units are not allowed to be set as unit commanders!", Username);
+			CampaignMain.cm.toUser("AM:Off board units are not allowed to be set as unit commanders!", Username);
 			return;
 		}
 		
 		if ( p.getAmountOfTimesUnitExistsInArmies(m.getId()) < 1){
-			CampaignMain.cm.toUser("the "+m.getModelName()+" is not in any armies!", Username);
+			CampaignMain.cm.toUser("AM:the "+m.getModelName()+" is not in any armies!", Username);
 			return;
 		}
 		
 		if ( army.isCommander(m.getId()) && commander ){
-			CampaignMain.cm.toUser(m.getModelName()+" is already a unit commander for this army!",Username);
+			CampaignMain.cm.toUser(m.getModelName()+"AM: is already a unit commander for this army!",Username);
 			return;
 		}
 
@@ -119,13 +119,13 @@ public class SetUnitCommanderCommand implements Command {
 		
 		if ( commander ){
 			army.addCommander(m.getId());
-			CampaignMain.cm.toUser("Unit #"+m.getId()+" has been set as unit commander", Username);
+			CampaignMain.cm.toUser("AM:Unit #"+m.getId()+" has been set as unit commander", Username);
 		}
 		else{
-			CampaignMain.cm.toUser("Unit #"+m.getId()+" has been removed as unit commander", Username);
+			CampaignMain.cm.toUser("AM:Unit #"+m.getId()+" has been removed as unit commander", Username);
 			army.removeCommander(m.getId());
 		}
-		CampaignMain.cm.toUser("PL|SAD|"+army.toString(true,"%"),Username,false);
+		CampaignMain.cm.toUser("AM:PL|SAD|"+army.toString(true,"%"),Username,false);
 		
 	}//end process()
 

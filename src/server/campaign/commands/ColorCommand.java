@@ -51,7 +51,7 @@ public class ColorCommand implements Command {
         }catch (Exception ex){}
         
         if (text.trim().length() < 1)
-            CampaignMain.cm.toUser("You need to choose a color. /color blue", Username,true);
+            CampaignMain.cm.toUser("AM:You need to choose a color. /color blue", Username,true);
         else {
             //Hex numbers need a # in from of them. This is parsed out by the tokenizer
             try{

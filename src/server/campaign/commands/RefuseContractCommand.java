@@ -54,7 +54,7 @@ public class RefuseContractCommand implements Command {
 				if (CampaignMain.cm.getPlayer(receivingPlayerName) == CampaignMain.cm.getPlayer(Username)) {//player can kill contract offer
 					CampaignMain.cm.getUnresolvedContracts().remove(i);
 					contractCancelled = true;
-					CampaignMain.cm.toUser("You refused the contract offered by " + offeringPlayerName,Username,true);
+					CampaignMain.cm.toUser("AM:You refused the contract offered by " + offeringPlayerName,Username,true);
 					CampaignMain.cm.toUser(Username + " refused your contract offer",offeringPlayerName,true);
 					CampaignMain.cm.getUnresolvedContracts().trimToSize();
 					break;
@@ -63,10 +63,10 @@ public class RefuseContractCommand implements Command {
 		}//end for loop
 		if (contractCancelled == false) {
 			if (offeringPlayerFound == false) {//not found
-				CampaignMain.cm.toUser("This player has no outstanding contracts",Username,true);
+				CampaignMain.cm.toUser("AM:This player has no outstanding contracts",Username,true);
 			}
 			else {//contract is for someone else
-				CampaignMain.cm.toUser("This player has not offered you a contract.",Username,true);
+				CampaignMain.cm.toUser("AM:This player has not offered you a contract.",Username,true);
 			}
 		}//end if contract not cancelled.
 	}//end process

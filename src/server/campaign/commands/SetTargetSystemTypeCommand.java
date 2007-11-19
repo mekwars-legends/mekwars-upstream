@@ -51,7 +51,7 @@ public class SetTargetSystemTypeCommand implements Command {
 			unitid= Integer.parseInt(command.nextToken());
 		}//end try
 		catch (NumberFormatException ex) {
-			CampaignMain.cm.toUser("SetTargetSystemType command failed. Check your input. It should be something like this: /c SetTargetSystemType#unitid#targettype",Username,true);
+			CampaignMain.cm.toUser("AM:SetTargetSystemType command failed. Check your input. It should be something like this: /c SetTargetSystemType#unitid#targettype",Username,true);
 			return;
 		}//end catch
 		
@@ -59,19 +59,19 @@ public class SetTargetSystemTypeCommand implements Command {
             targetSystemType = Integer.parseInt(command.nextToken());
 		}//end try
 		catch (Exception ex){
-			CampaignMain.cm.toUser("SetTargetSystemType command failed. Check your input. It should be something like this: /c SetTargetSystemType#unitid#targettype",Username,true);
+			CampaignMain.cm.toUser("AM:SetTargetSystemType command failed. Check your input. It should be something like this: /c SetTargetSystemType#unitid#targettype",Username,true);
 			return;
 		}//end catch
 		
 		if ( CampaignMain.cm.getData().getBannedTargetingSystems().containsKey(targetSystemType) ){
-            CampaignMain.cm.toUser("Your techs regret to inform you that your unit's electronics cannot support that type of targeting system.",Username,true);
+            CampaignMain.cm.toUser("AM:Your techs regret to inform you that your unit's electronics cannot support that type of targeting system.",Username,true);
             return;
         }
 		SUnit unit = p.getUnit(unitid);
 		Entity en = unit.getEntity();
         en.setTargSysType(targetSystemType);
 		unit.setEntity(en);
-		CampaignMain.cm.toUser("Targeting Sytem set for "+ unit.getModelName(),Username,true);
+		CampaignMain.cm.toUser("AM:Targeting Sytem set for "+ unit.getModelName(),Username,true);
 		
 	}//end process() 
 }//end SetSearchLightCommand class

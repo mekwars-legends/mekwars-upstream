@@ -62,34 +62,34 @@ public class DefectCommand implements Command {
 			
 			SPlayer p = CampaignMain.cm.getPlayer(Username);
 			if (CampaignMain.cm.getMarket().hasActiveListings(p)) {
-				CampaignMain.cm.toUser("You are not allowed to defect while you have units on the black market.",Username,true);
+				CampaignMain.cm.toUser("AM:You are not allowed to defect while you have units on the black market.",Username,true);
 				return;
 			}	
 			
 			if (CampaignMain.cm.getData().getHouseByName(HouseName) == null) {
-				CampaignMain.cm.toUser("Could not find a faction with that name. Try again?",Username,true);
+				CampaignMain.cm.toUser("AM:Could not find a faction with that name. Try again?",Username,true);
 				return;
 			}
 			
 			SHouse newHouse = (SHouse) CampaignMain.cm.getData().getHouseByName(HouseName);
 			SHouse oldHouse = p.getMyHouse();
 			if (!oldHouse.getHouseDefectionFrom()){
-				CampaignMain.cm.toUser("You may not defect from this faction!",Username,true);
+				CampaignMain.cm.toUser("AM:You may not defect from this faction!",Username,true);
 				return;
 			}
 			
 			if (!newHouse.getHouseDefectionTo()){
-				CampaignMain.cm.toUser("You may not defect to the " + newHouse.getName() + " faction.",Username,true);
+				CampaignMain.cm.toUser("AM:You may not defect to the " + newHouse.getName() + " faction.",Username,true);
 				return;
 			}
 			
 			if (CampaignMain.cm.getOpsManager().getShortOpForPlayer(p) != null) {
-				CampaignMain.cm.toUser("You may not defect while playing a game. Try again after your game is finished.",Username,true);
+				CampaignMain.cm.toUser("AM:You may not defect while playing a game. Try again after your game is finished.",Username,true);
 				return;
 			}
 			
             if (p.getDutyStatus() == SPlayer.STATUS_ACTIVE){
-                CampaignMain.cm.toUser("You may not defect while active. Try again after you've returned to reserve.",Username,true);
+                CampaignMain.cm.toUser("AM:You may not defect while active. Try again after you've returned to reserve.",Username,true);
                 return;
             }
             
@@ -107,28 +107,28 @@ public class DefectCommand implements Command {
 			
 			//throw out if players has too little XP to defect
 			if (p.getExperience() < minEXPRequired ) {
-				CampaignMain.cm.toUser("You're too inexperienced to defect. You need at least " + minEXPRequired + " XP to join that faction.",p.getName(),true);
+				CampaignMain.cm.toUser("AM:You're too inexperienced to defect. You need at least " + minEXPRequired + " XP to join that faction.",p.getName(),true);
 				return;
 			}
 			
 			//throw out if going to same faction
 			if (newHouse.equals(oldHouse)) {
-				CampaignMain.cm.toUser("You're already in that faction!",p.getName(),true);
+				CampaignMain.cm.toUser("AM:You're already in that faction!",p.getName(),true);
 				return;
 			}
 			
 			//throw out if player is going merc and lacks the requisite XP
 			else if (p.getExperience() < mercEXPRequired && newHouse.isMercHouse()) {
 				if (new Boolean(CampaignMain.cm.getConfig("HideELO")).booleanValue())
-					CampaignMain.cm.toUser("You're too inexperienced to defect to a Mercenary faction!",p.getName(),true);
+					CampaignMain.cm.toUser("AM:You're too inexperienced to defect to a Mercenary faction!",p.getName(),true);
 				else
-					CampaignMain.cm.toUser("You're too inexperienced to defect to a Mercenary faction!  You need "+mercEXPRequired+" experience with your current Rating!",p.getName(),true);
+					CampaignMain.cm.toUser("AM:You're too inexperienced to defect to a Mercenary faction!  You need "+mercEXPRequired+" experience with your current Rating!",p.getName(),true);
 				return;
 			}
 			
 			//break out if user tries to defect back to SOL
 			if (newHouse.isNewbieHouse()) {
-				CampaignMain.cm.toUser("You may not defect back to the training faction.",Username,true);
+				CampaignMain.cm.toUser("AM:You may not defect back to the training faction.",Username,true);
 				return;
 			}
 			
@@ -148,7 +148,7 @@ public class DefectCommand implements Command {
 			
 			if (!regged) {
 				//SEND WARNING
-				CampaignMain.cm.toUser("<br>-----<br>" +
+				CampaignMain.cm.toUser("AM:<br>-----<br>" +
 						"You may not join a faction until you set a password for your account. Click [<a href=\"MWREG\">HERE</a>] to register.<br>" +
 						"NOTE: Passwords must be between 4 and 10 characters in length, and should use standard ASCII characters.<br>-----",Username,true);
 				return;
@@ -346,19 +346,19 @@ public class DefectCommand implements Command {
 				
 				//no penalty. send a simple confirm link.
 				if (!penalizeDefection && !solToBeReset) {
-					CampaignMain.cm.toUser("Click [<a href=\"MWDEFECTDLG/c defect#" + newHouse.getName() + "#CONFIRM\">here</a>] to confirm your defection to " + newHouse.getName() + ".<br>",p.getName(),true);
+					CampaignMain.cm.toUser("AM:Click [<a href=\"MWDEFECTDLG/c defect#" + newHouse.getName() + "#CONFIRM\">here</a>] to confirm your defection to " + newHouse.getName() + ".<br>",p.getName(),true);
 					return;
 				} else if (solToBeReset && !replaceWithFaction) {
-					CampaignMain.cm.toUser("Click [<a href=\"MWDEFECTDLG/c defect#" + newHouse.getName() + "#CONFIRM\">here</a>] to confirm your defection to " + newHouse.getName() + ". Your units will be reset.<br>",p.getName(),true);
+					CampaignMain.cm.toUser("AM:Click [<a href=\"MWDEFECTDLG/c defect#" + newHouse.getName() + "#CONFIRM\">here</a>] to confirm your defection to " + newHouse.getName() + ". Your units will be reset.<br>",p.getName(),true);
 					return;
 				} else if (solToBeReset && replaceWithFaction) {
-					CampaignMain.cm.toUser("Click [<a href=\"MWDEFECTDLG/c defect#" + newHouse.getName() + "#CONFIRM\">here</a>] to confirm your defection to " + newHouse.getName() + ". " + newHouse.getName() + " will replace your units.",p.getName(),true);
+					CampaignMain.cm.toUser("AM:Click [<a href=\"MWDEFECTDLG/c defect#" + newHouse.getName() + "#CONFIRM\">here</a>] to confirm your defection to " + newHouse.getName() + ". " + newHouse.getName() + " will replace your units.",p.getName(),true);
 					return;
 				}
 				
 				//could have a penalty, but apparently none would be applied ... so ...
 				if (varsWhichChange == 0 && unitsToLose == 0) {
-					CampaignMain.cm.toUser("Click [<a href=\"MWDEFECTDLG/c defect#" + newHouse.getName() + "#CONFIRM\">here</a>] to confirm your defection to " + newHouse.getName() + ".<br>",p.getName(),true);
+					CampaignMain.cm.toUser("AM:Click [<a href=\"MWDEFECTDLG/c defect#" + newHouse.getName() + "#CONFIRM\">here</a>] to confirm your defection to " + newHouse.getName() + ".<br>",p.getName(),true);
 					return;
 				}
 				

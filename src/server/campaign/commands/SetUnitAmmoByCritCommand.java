@@ -66,7 +66,7 @@ public class SetUnitAmmoByCritCommand implements Command {
 			ammoName = command.nextToken();
 			shots = Integer.parseInt(command.nextToken());
 		} catch (NumberFormatException ex) {
-			CampaignMain.cm.toUser("SetUnitAmmo command failed. Check your input. It should be something like this: /c setUnitAmmo#unitid#weaponlocation#weaponType#ammoname#rounds",Username,true);
+			CampaignMain.cm.toUser("AM:SetUnitAmmo command failed. Check your input. It should be something like this: /c setUnitAmmo#unitid#weaponlocation#weaponType#ammoname#rounds",Username,true);
 			return;
 		}
 		
@@ -94,8 +94,8 @@ public class SetUnitAmmoByCritCommand implements Command {
 			
 			p.checkAndUpdateArmies(unit);
 			//Don't have to set BV to 0 and recalculate in this class - unit.toString(true) does it for us.
-			CampaignMain.cm.toUser("PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
-			CampaignMain.cm.toUser("Ammo dumped. BV Recalculated",Username,true);
+			CampaignMain.cm.toUser("AM:PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
+			CampaignMain.cm.toUser("AM:Ammo dumped. BV Recalculated",Username,true);
 			return;
 		}
 		
@@ -103,7 +103,7 @@ public class SetUnitAmmoByCritCommand implements Command {
 		
 		
 		if ( CampaignMain.cm.getData().getServerBannedAmmo().get(munitionType) != null || faction.getBannedAmmo().get(munitionType) != null)	{
-			CampaignMain.cm.toUser("<font color=green>Quartermaster Command regretfully informs you that "+ammoName+" is out of stock.</font>",Username,true);
+			CampaignMain.cm.toUser("AM:<font color=green>Quartermaster Command regretfully informs you that "+ammoName+" is out of stock.</font>",Username,true);
 			return;
 		}
 		
@@ -162,13 +162,13 @@ public class SetUnitAmmoByCritCommand implements Command {
 					newAmmoAmount = p.getUnitParts().getPartsCritCount(at.getInternalName());
 				}
             	if ( newAmmoAmount == 0 ) {
-            		String result = "After unloading "+currAmmo.getDesc()+"("+en.getLocationAbbr(loc)+") from unit #"+unit.getId()+" "+unit.getModelName()+" your techs realize you do not have any "+at.getDesc()+" to reload with!";
+            		String result = "AM:After unloading "+currAmmo.getDesc()+"("+en.getLocationAbbr(loc)+") from unit #"+unit.getId()+" "+unit.getModelName()+" your techs realize you do not have any "+at.getDesc()+" to reload with!";
             		CampaignMain.cm.toUser(result, Username);
             	}else if ( newAmmoAmount < at.getShots() ) {
-            		String result = "After unloading "+currAmmo.getDesc()+"("+en.getLocationAbbr(loc)+") from unit #"+unit.getId()+" "+unit.getModelName()+" your techs realize you only had "+newAmmoAmount+" rounds of "+at.getDesc()+" to reload with!";
+            		String result = "AM:After unloading "+currAmmo.getDesc()+"("+en.getLocationAbbr(loc)+") from unit #"+unit.getId()+" "+unit.getModelName()+" your techs realize you only had "+newAmmoAmount+" rounds of "+at.getDesc()+" to reload with!";
             		CampaignMain.cm.toUser(result, Username);
             	}else {
-            		CampaignMain.cm.toUser("Ammo set for " + unit.getModelName() + " (#" +unit.getId()+").",Username,true);
+            		CampaignMain.cm.toUser("AM:Ammo set for " + unit.getModelName() + " (#" +unit.getId()+").",Username,true);
             		newAmmoAmount = refillShots;
             	}
             	p.updatePartsCache(currAmmo.getInternalName(), mWeapon.getShotsLeft());
@@ -177,23 +177,23 @@ public class SetUnitAmmoByCritCommand implements Command {
         		mWeapon.setShotsLeft(newAmmoAmount);
         		unit.setEntity(en);
         		p.checkAndUpdateArmies(unit);
-        		CampaignMain.cm.toUser("PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
+        		CampaignMain.cm.toUser("AM:PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
         		
-        		CampaignMain.cm.toUser("Ammo set for " + unit.getModelName() + " (#" +unit.getId()+").",Username,true);
+        		CampaignMain.cm.toUser("AM:Ammo set for " + unit.getModelName() + " (#" +unit.getId()+").",Username,true);
         		return;
             }
 			//check the confirmation
             if (!strConfirm.equals("CONFIRM")) {
-				String result = "Quartermaster command will charge you " +CampaignMain.cm.moneyOrFluMessage(true,false,ammoCharge)+" to change the load out on #"+unit.getId()+" "+ unit.getModelName()
+				String result = "AM:Quartermaster command will charge you " +CampaignMain.cm.moneyOrFluMessage(true,false,ammoCharge)+" to change the load out on #"+unit.getId()+" "+ unit.getModelName()
                 +"<br>from "+currAmmo.getDesc()+"("+en.getLocationAbbr(loc)+" "+mWeapon.getShotsLeft()+"/"+currAmmo.getShots()+") to "+at.getDesc()+"("+refillShots+"/"+refillShots+").";
-				result += "<br><a href=\"MEKWARS/c setunitammobyCrit#" + unitid + "#" + weaponLocation+ "#" + weaponSlot + "#" + weaponType + "#" + ammoName + "#"+at.getShots()+"#CONFIRM";
-				result += "\">Click here to change the ammo.</a>";
+				result += "AM:<br><a href=\"MEKWARS/c setunitammobyCrit#" + unitid + "#" + weaponLocation+ "#" + weaponSlot + "#" + weaponType + "#" + ammoName + "#"+at.getShots()+"#CONFIRM";
+				result += "AM:\">Click here to change the ammo.</a>";
 				CampaignMain.cm.toUser(result,Username,true);
 				return;
 			}
 			
 			if (p.getMoney() < ammoCharge) {
-				CampaignMain.cm.toUser("Changing ammo costs " + CampaignMain.cm.moneyOrFluMessage(true,false,ammoCharge,false) + ", but you only have "+ p.getMoney() + ".",Username,true);
+				CampaignMain.cm.toUser("AM:Changing ammo costs " + CampaignMain.cm.moneyOrFluMessage(true,false,ammoCharge,false) + ", but you only have "+ p.getMoney() + ".",Username,true);
 				return;
 			}
 			
@@ -204,9 +204,9 @@ public class SetUnitAmmoByCritCommand implements Command {
 		mWeapon.changeAmmoType(at);
 		unit.setEntity(en);
 		p.checkAndUpdateArmies(unit);
-		CampaignMain.cm.toUser("PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
+		CampaignMain.cm.toUser("AM:PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
 		
-		CampaignMain.cm.toUser("Ammo set for " + unit.getModelName() + " (#" +unit.getId()+").",Username,true);
+		CampaignMain.cm.toUser("AM:Ammo set for " + unit.getModelName() + " (#" +unit.getId()+").",Username,true);
 		
 	}//end process() 
 }//end SetMaintainedCommand class

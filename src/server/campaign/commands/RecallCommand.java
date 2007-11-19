@@ -42,7 +42,7 @@ public class RecallCommand implements Command {
 		//load the SPlayer
 		SPlayer p = CampaignMain.cm.getPlayer(Username);
 		if (p == null) {
-			CampaignMain.cm.toUser("Null SPlayer while recalling unit. Report immediately!",Username,true);
+			CampaignMain.cm.toUser("AM:Null SPlayer while recalling unit. Report immediately!",Username,true);
 			return;
 		}
 		
@@ -51,26 +51,26 @@ public class RecallCommand implements Command {
 		try {
 			auctionID = Integer.parseInt(command.nextToken());
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper format. Try: /c recall#AuctionID",Username,true);
+			CampaignMain.cm.toUser("AM:Improper format. Try: /c recall#AuctionID",Username,true);
 			return;
 		}
 				
 		//check the auction ID
 		MarketListing auction = CampaignMain.cm.getMarket().getListingByID(auctionID);
 		if (auction == null) {
-			CampaignMain.cm.toUser("There is no auction with ID#" + auctionID + ".",Username,true);
+			CampaignMain.cm.toUser("AM:There is no auction with ID#" + auctionID + ".",Username,true);
 			return;
 		}
 		
 		//make sure the requestor is the seller
 		if (!auction.getSellerName().equalsIgnoreCase(Username)) {
-			CampaignMain.cm.toUser("Only the selling player may terminate an auction.",Username,true);
+			CampaignMain.cm.toUser("AM:Only the selling player may terminate an auction.",Username,true);
 			return;
 		}
 		
 		//if the auction has received bids, it cant be killed
 		if (auction.getAllBids().size() > 0) {
-			CampaignMain.cm.toUser("There are bids on the " + auction.getListedModelName()
+			CampaignMain.cm.toUser("AM:There are bids on the " + auction.getListedModelName()
 					+ ". Sale may not be stopped.",Username,true);
 			return;
 		}

@@ -89,17 +89,17 @@ public class SimpleRepairCommand implements Command {
             int time = 0; 
             
             if ( player.isUnitInLockedArmy(unitID) ){
-                CampaignMain.cm.toUser("FSM|Sorry but that unit is currently in combat and may not be repaired.",Username,false);
+                CampaignMain.cm.toUser("AM:FSM|Sorry but that unit is currently in combat and may not be repaired.",Username,false);
                 return;
             }
                 
             if ( cost > player.getMoney() ){
-                CampaignMain.cm.toUser("FSM|You do not have enough "+CampaignMain.cm.moneyOrFluMessage(true,false,-cost)+" to repair this location.",Username,false);
+                CampaignMain.cm.toUser("AM:FSM|You do not have enough "+CampaignMain.cm.moneyOrFluMessage(true,false,-cost)+" to repair this location.",Username,false);
                 return;
             }
             
             if ( player.getDutyStatus() == SPlayer.STATUS_ACTIVE && player.getAmountOfTimesUnitExistsInArmies(unitID) > 0 ){
-                CampaignMain.cm.toUser("FSM|You man not repair that unit while it is in an active army.",Username,false);
+                CampaignMain.cm.toUser("AM:FSM|You man not repair that unit while it is in an active army.",Username,false);
                 return;
             }
 
@@ -114,7 +114,7 @@ public class SimpleRepairCommand implements Command {
                 
                 if ( techType == UnitUtils.TECH_PILOT && unit.getPilot() != null
                         && unit.getLastCombatPilot() != unit.getPilot().getPilotId() ){
-                    CampaignMain.cm.toUser("FSM|"+unit.getPilot().getName()+" refuses to repair a unit he does not remember damaging himself!",Username,false);
+                    CampaignMain.cm.toUser("AM:FSM|"+unit.getPilot().getName()+" refuses to repair a unit he does not remember damaging himself!",Username,false);
                     return;
                 }
 
@@ -122,14 +122,14 @@ public class SimpleRepairCommand implements Command {
                     unit.setPilotIsRepairing(true);
     
                 if ( numberOfTechs <= 0 ){
-                    CampaignMain.cm.toUser("FSM|You do not have any "+UnitUtils.techDescription(techType)+" techs to do this repair!",Username,false);
+                    CampaignMain.cm.toUser("AM:FSM|You do not have any "+UnitUtils.techDescription(techType)+" techs to do this repair!",Username,false);
                     return;
                 }
             }
             
             if ( CampaignMain.cm.getRTT().getState() == Thread.State.TERMINATED ){
-                CampaignMain.cm.toUser("FSM|Sorry your repair order could not be processed the repair thread has been terminated. Staff has been notified.",Username,false);
-                MWServ.mwlog.errLog("NOTE: Repair Thread has been terminated! Use the restartrepairthread command to restart it! If all else fails reboot!");
+                CampaignMain.cm.toUser("AM:FSM|Sorry your repair order could not be processed the repair thread has been terminated. Staff has been notified.",Username,false);
+                MWServ.mwlog.errLog("AM:NOTE: Repair Thread has been terminated! Use the restartrepairthread command to restart it! If all else fails reboot!");
                 return;
             }
 
@@ -143,8 +143,8 @@ public class SimpleRepairCommand implements Command {
             MWServ.mwlog.errLog("Repair Time: "+time);
             CampaignMain.cm.getRTT().getRepairList().add(
                     RepairTrackingThread.Repair(player, unitID, techs, time,false));
-            CampaignMain.cm.toUser("FSM|Repairs have begone on your "+unit.getModelName()+" <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>",Username,false);
-            CampaignMain.cm.toUser("PL|UU|"+unitID+"|"+unit.toString(true),Username,false);
+            CampaignMain.cm.toUser("AM:FSM|Repairs have begone on your "+unit.getModelName()+" <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>",Username,false);
+            CampaignMain.cm.toUser("AM:PL|UU|"+unitID+"|"+unit.toString(true),Username,false);
 
         }catch(Exception ex){
             MWServ.mwlog.errLog("Unable to Process Repair Unit Command!");

@@ -58,30 +58,30 @@ public class BuyPartsCommand implements Command {
 			partName = command.nextToken();
 			numtobuy = Integer.parseInt(command.nextToken());
 		}catch ( Exception ex) {
-			CampaignMain.cm.toUser("Invalid Syntax: /BuyParts Name#Amount", Username);
+			CampaignMain.cm.toUser("AM:Invalid Syntax: /BuyParts Name#Amount", Username);
 			return;
 		}
 		boolean allowTechCrossOver = CampaignMain.cm.getBooleanConfig("AllowCrossOverTech");
 		BMEquipment bme = CampaignMain.cm.getPartsMarket().getEquipmentList().get(partName);
 		
 		if ( bme == null || (!allowTechCrossOver && !UnitUtils.isSameTech(bme.getTech(), player.getMyHouse().getTechLevel()))) {
-			CampaignMain.cm.toUser(partName+" not found on the black market", Username);
+			CampaignMain.cm.toUser(partName+"AM: not found on the black market", Username);
 			return;
 		}
 		
 		if ( numtobuy < 1 ){
-			CampaignMain.cm.toUser("You cannot buy negative parts!", Username);
+			CampaignMain.cm.toUser("AM:You cannot buy negative parts!", Username);
 			return;
 		}
 		
 		int cost = (int)Math.ceil(numtobuy * bme.getCost()); 
 		if ( numtobuy > bme.getAmount() ) {
-			CampaignMain.cm.toUser("There are only "+bme.getAmount()+" crits left select a smaller amount", Username);
+			CampaignMain.cm.toUser("AM:There are only "+bme.getAmount()+" crits left select a smaller amount", Username);
 			return;
 		}
 		
 		if (  cost > player.getMoney() ) {
-			CampaignMain.cm.toUser("It will cost you "+CampaignMain.cm.moneyOrFluMessage(true, true, cost)+" you only have "+CampaignMain.cm.moneyOrFluMessage(true, true, player.getMoney())+".", Username);
+			CampaignMain.cm.toUser("AM:It will cost you "+CampaignMain.cm.moneyOrFluMessage(true, true, cost)+" you only have "+CampaignMain.cm.moneyOrFluMessage(true, true, player.getMoney())+".", Username);
 			return;
 		}
 		
@@ -91,11 +91,11 @@ public class BuyPartsCommand implements Command {
 		player.addMoney(-cost);
 		
 		if ( eq == null ) {
-			CampaignMain.cm.toUser("You have bought "+numtobuy+" "+bme.getEquipmentInternalName()+" crits for "+CampaignMain.cm.moneyOrFluMessage(true, true, cost)+".", Username);
+			CampaignMain.cm.toUser("AM:You have bought "+numtobuy+" "+bme.getEquipmentInternalName()+" crits for "+CampaignMain.cm.moneyOrFluMessage(true, true, cost)+".", Username);
 			player.updatePartsCache(bme.getEquipmentInternalName(), numtobuy);
 		}
 		else {
-			CampaignMain.cm.toUser("You have bought "+numtobuy+" "+eq.getName()+" crits for "+CampaignMain.cm.moneyOrFluMessage(true, true, cost)+".", Username);
+			CampaignMain.cm.toUser("AM:You have bought "+numtobuy+" "+eq.getName()+" crits for "+CampaignMain.cm.moneyOrFluMessage(true, true, cost)+".", Username);
 			player.updatePartsCache(eq.getInternalName(), numtobuy);
 		}
 		CampaignMain.cm.getPartsMarket().updatePartsBlackMarketAllPlayers();

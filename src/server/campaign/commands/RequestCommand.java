@@ -99,7 +99,7 @@ public class RequestCommand implements Command {
 
 		//boot the player's request if he has unmaintained units
 		if (p.hasUnmaintainedUnit()) {
-			CampaignMain.cm.toUser("Your faction refuses to assign new units to you force while units in your hangar are unmaintained!",Username,true);
+			CampaignMain.cm.toUser("AM:Your faction refuses to assign new units to you force while units in your hangar are unmaintained!",Username,true);
 			return;
 		}
 		
@@ -111,7 +111,7 @@ public class RequestCommand implements Command {
 			SPilot pilot = house.getNewPilot(unit.getType());
 			unit.setPilot(pilot);
 			p.addUnit(unit, true);
-			CampaignMain.cm.toUser("High Command has given you a new unit from its welfare rolls to help you get back on your feet!",Username,true);
+			CampaignMain.cm.toUser("AM:High Command has given you a new unit from its welfare rolls to help you get back on your feet!",Username,true);
 
 			return;
 		}
@@ -134,12 +134,12 @@ public class RequestCommand implements Command {
 
 		//break out if player lacks experience to buy weightclass
 		if (!p.mayUse(weightclass)) {
-			CampaignMain.cm.toUser("You are not experienced enough to use " + Unit.getWeightClassDesc(weightclass) + " units.",Username,true);
+			CampaignMain.cm.toUser("AM:You are not experienced enough to use " + Unit.getWeightClassDesc(weightclass) + " units.",Username,true);
 			return;
 		}
 
 		if ( !Boolean.parseBoolean(p.getSubFaction().getConfig("CanBuyNew"+SUnit.getWeightClassDesc(weightclass)+SUnit.getTypeClassDesc(type_id))) ){
-			CampaignMain.cm.toUser("Sorry as a member of "+p.getSubFactionName()+" you are unable to purchase this unit.", Username);
+			CampaignMain.cm.toUser("AM:Sorry as a member of "+p.getSubFactionName()+" you are unable to purchase this unit.", Username);
 			return;
 		}
 		
@@ -155,13 +155,13 @@ public class RequestCommand implements Command {
 			planetName = command.nextToken();
 			planet = (SPlanet)CampaignMain.cm.getData().getPlanetByName(planetName);
 			if (planet == null) {
-				CampaignMain.cm.toUser("Could not find planet: " + planetName + ".",Username,true);
+				CampaignMain.cm.toUser("AM:Could not find planet: " + planetName + ".",Username,true);
 				return;
 			}
 			
 			//make sure the player's faction owns the world
 			if (!planet.getOwner().equals(p.getMyHouse())) {
-				CampaignMain.cm.toUser("Your faction does not control " + planetName + ".",Username,true);
+				CampaignMain.cm.toUser("AM:Your faction does not control " + planetName + ".",Username,true);
 				return;
 			}
 			
@@ -175,14 +175,14 @@ public class RequestCommand implements Command {
 			try {
 				factoryName = command.nextToken();
 			} catch (NoSuchElementException e) {
-				CampaignMain.cm.toUser("You requested a unit from " + planetName + ", but did not specifiy which factory to use.",Username,true);
+				CampaignMain.cm.toUser("AM:You requested a unit from " + planetName + ", but did not specifiy which factory to use.",Username,true);
 				return;
 			}
 			
 			//make sure the named factory exists
 			Vector<SUnitFactory> namedFactories = planet.getFactoriesByName(factoryName);
 			if (namedFactories.size() == 0) {
-				CampaignMain.cm.toUser("There is no " + factoryName + " on " + planetName + ".",Username,true);
+				CampaignMain.cm.toUser("AM:There is no " + factoryName + " on " + planetName + ".",Username,true);
 				return;
 			}
 			
@@ -226,7 +226,7 @@ public class RequestCommand implements Command {
 			if (factory != null)
 				planet = factory.getPlanet();
 		} if (planet == null || factory == null) {
-			CampaignMain.cm.toUser("No " + p.getMyHouse().getName() + " factory is available to fill your order at this time (Click on icon in House Status to use captured factories).",Username,true);
+			CampaignMain.cm.toUser("AM:No " + p.getMyHouse().getName() + " factory is available to fill your order at this time (Click on icon in House Status to use captured factories).",Username,true);
 			return;
 		}
 
@@ -285,7 +285,7 @@ public class RequestCommand implements Command {
 				//if the player can't afford to pay for more support, tell him so and return w/o a link.
 				if (totalCost > p.getMoney()) {
 					
-					toSend.append("Command will not release a new unit to you unless support is in place; however, you cannot afford to buy the unit *and* ");
+					toSend.append("AM:Command will not release a new unit to you unless support is in place; however, you cannot afford to buy the unit *and* ");
 					if (useBays)
 						toSend.append(" purchase the necessary bayspace");
 					else
@@ -296,7 +296,7 @@ public class RequestCommand implements Command {
 					return;
 				}
 
-				toSend.append("Quartermaster command will not send a new unit to your force until support resources are in place. You will need to ");
+				toSend.append("AM:Quartermaster command will not send a new unit to your force until support resources are in place. You will need to ");
 				if (useBays)
 					toSend.append("purchase " + numTechs + " more bays");
 				else
@@ -329,7 +329,7 @@ public class RequestCommand implements Command {
 				}
 
 				if (mechCbills > p.getMoney()){
-					CampaignMain.cm.toUser("The quartermaster regrets to inform you that the factories cannot create any units within your current budget. Please try again later.",Username,true);
+					CampaignMain.cm.toUser("AM:The quartermaster regrets to inform you that the factories cannot create any units within your current budget. Please try again later.",Username,true);
 					return;
 				}	
 			}
@@ -361,7 +361,7 @@ public class RequestCommand implements Command {
 			p.addInfluence(-mechInfluence);//and take away influence
 			
 			hsUpdates.append(playerHouse.addPP(weightclass, type_id, -mechPP, false));//remove PP from the faction
-			result = "You've been granted a " + mech.getModelName() + ". (-";
+			result = "AM:You've been granted a " + mech.getModelName() + ". (-";
 			result += CampaignMain.cm.moneyOrFluMessage(true,false,mechCbills)+" / -" + CampaignMain.cm.moneyOrFluMessage(false,true,mechInfluence)+")";
 			MWServ.mwlog.mainLog(p.getName() + " bought a " + mech.getVerboseModelName() + " from " + factory.getName() + " on " + planet.getName());
 			CampaignMain.cm.toUser(result,Username,true);
@@ -374,12 +374,12 @@ public class RequestCommand implements Command {
 		}//end if(enough money/influence/pp)
 
 		else if (!hasEnoughMoney || !hasEnoughInfluence){//tell the player what he needs to buy the unit
-			result = "You need at least " + CampaignMain.cm.moneyOrFluMessage(true,false,mechCbills)+ " and " + CampaignMain.cm.moneyOrFluMessage(false,true,mechInfluence)+" to request a " + Unit.getDescriptionForID(type_id) + " of this weight class from a factory.";
+			result = "AM:You need at least " + CampaignMain.cm.moneyOrFluMessage(true,false,mechCbills)+ " and " + CampaignMain.cm.moneyOrFluMessage(false,true,mechInfluence)+" to request a " + Unit.getDescriptionForID(type_id) + " of this weight class from a factory.";
 			CampaignMain.cm.toUser(result,Username,true);
 			return;//break out ...
 		}//end else(player has too few money or too little Influence)
 		else if (!factionHasEnoughPP) {//tell the player that the faction needs more PP
-			result = "Your faction does not have the components needed to produce such a unit at this time. Wait for your faction to gather more resources.";
+			result = "AM:Your faction does not have the components needed to produce such a unit at this time. Wait for your faction to gather more resources.";
 			CampaignMain.cm.toUser(result,Username,true);
 			return;//break out ...
 		}//end else (not enough PP in faction)

@@ -51,11 +51,11 @@ public class SetAutoReorderCommand implements Command {
 			p.setAutoReorder(Boolean.parseBoolean(command.nextToken()));
 		}//end try
 		catch (Exception ex) {
-			CampaignMain.cm.toUser("SetAutoAutoReorder command failed. Check your input. It should be something like this: /c setAutoReorder#True/False",Username);
+			CampaignMain.cm.toUser("AM:SetAutoAutoReorder command failed. Check your input. It should be something like this: /c setAutoReorder#True/False",Username);
 			return;
 		}//end catch
 		
-		CampaignMain.cm.toUser("Auto Reorder set.",Username,true);
+		CampaignMain.cm.toUser("AM:Auto Reorder set.",Username,true);
 		
 	}//end process() 
 }//end SetAutoEjectCommand class

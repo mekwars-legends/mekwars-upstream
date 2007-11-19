@@ -49,7 +49,7 @@ public class TerminateCommand implements Command {
         //get the player
         SPlayer tp = CampaignMain.cm.getPlayer(Username);
         if (tp == null) {
-            CampaignMain.cm.toUser("Null player. Report this immediately!",Username,true);
+            CampaignMain.cm.toUser("AM:Null player. Report this immediately!",Username,true);
             return;
         }
         
@@ -58,7 +58,7 @@ public class TerminateCommand implements Command {
     			opID = Integer.parseInt(command.nextToken());
                 so = CampaignMain.cm.getOpsManager().getRunningOps().get(opID);
             } catch (Exception e) {
-    			CampaignMain.cm.toUser("Improper format. Try: /c terminate#attack number",Username,true);
+    			CampaignMain.cm.toUser("AM:Improper format. Try: /c terminate#attack number",Username,true);
     			return;
     		}
         }
@@ -69,24 +69,24 @@ public class TerminateCommand implements Command {
         //check the attack
 		
 		if (so == null) {
-			CampaignMain.cm.toUser("Terminate failed. Attack #" + opID + " does not exist.",Username,true);
+			CampaignMain.cm.toUser("AM:Terminate failed. Attack #" + opID + " does not exist.",Username,true);
 			return;
 		}
 		
 		//if the player isnt in the game, reject
 		if (!so.getAllPlayerNames().contains(tp.getName().toLowerCase())) {
-			CampaignMain.cm.toUser("Terminate failed. You must be a participant in order to terminate an Attack.",Username,true);
+			CampaignMain.cm.toUser("AM:Terminate failed. You must be a participant in order to terminate an Attack.",Username,true);
 			return;
 		}
 		
 		//don't cancel finished or reporting games
 		if (so.getStatus() == ShortOperation.STATUS_FINISHED || so.getStatus() == ShortOperation.STATUS_REPORTING) {
-			CampaignMain.cm.toUser("Terminate failed. You may not terminate a completed game.",Username,true);
+			CampaignMain.cm.toUser("AM:Terminate failed. You may not terminate a completed game.",Username,true);
 			return;
 		}
 		
 		if ( so.getStatus() == ShortOperation.STATUS_WAITING ){
-			CampaignMain.cm.toUser("Terminate failed. You may not terminate a game that has yet to start!", Username);
+			CampaignMain.cm.toUser("AM:Terminate failed. You may not terminate a game that has yet to start!", Username);
 			return;
 		}
 		
@@ -101,9 +101,9 @@ public class TerminateCommand implements Command {
 			//terminate
 			CampaignMain.cm.getOpsManager().terminateOperation(so, OperationManager.TERM_TERMCOMMAND, tp);
 		}else{
-			CampaignMain.cm.toUser("Informing all other participants of your wish to cancel the operation.", Username);
+			CampaignMain.cm.toUser("AM:Informing all other participants of your wish to cancel the operation.", Username);
 
-			String msg = Username+" wishes to cancel Operation #"+so.getShortID()+" "+so.getName()+ " <a href=\"MEKWARS/c terminate#"+so.getShortID()+"\">click here to confirm</a>";
+			String msg = Username+"AM: wishes to cancel Operation #"+so.getShortID()+" "+so.getName()+ " <a href=\"MEKWARS/c terminate#"+so.getShortID()+"\">click here to confirm</a>";
 			for (String currPlayerName : so.getAllPlayerNames()) {
 				
 				if ( !so.getCancelledPlayers().contains(currPlayerName.toLowerCase()) && !Username.equalsIgnoreCase(currPlayerName) )

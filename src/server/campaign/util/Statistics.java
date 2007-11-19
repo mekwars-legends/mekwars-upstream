@@ -217,7 +217,7 @@ public class Statistics {
 		
 	    String result = "";
 	    if (useHTML)
-	    	result += "<b><i>Faction Ranking: </i></b><br>";
+	    	result += "<b><i>Faction Ranking: </i><br>";
 	    else
 	    	result += "Faction Ranking: ";
 	    
@@ -239,6 +239,8 @@ public class Statistics {
         int sendLength = result.lastIndexOf(",");
         result = result.substring(0, sendLength) + ".";
 
+        if ( useHTML )
+        	result += "</b>";
 	    return result;
 	}
 	

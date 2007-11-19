@@ -56,32 +56,32 @@ public class SellBaysCommand implements Command {
 			numtosell = Integer.parseInt(command.nextToken());
 		}//end try
 		catch (NumberFormatException ex) {
-			CampaignMain.cm.toUser("Couldn't tell how many bays to sell. Check your input. It should be something like this: /c sellbays#3",Username,true);
+			CampaignMain.cm.toUser("AM:Couldn't tell how many bays to sell. Check your input. It should be something like this: /c sellbays#3",Username,true);
 			return;
 		}//end catch
 		
 		//Check to see if the player is selling too many bays
 		if (p.getBaysOwned() < numtosell) {
-			CampaignMain.cm.toUser("You tried to return " + numtosell + " bays, but you only have " + p.getBaysOwned() + " bays " +
+			CampaignMain.cm.toUser("AM:You tried to return " + numtosell + " bays, but you only have " + p.getBaysOwned() + " bays " +
 					". The rest were assigned to your force by your faction and can't be returned.",Username,true);
 			return;
 		}
 		
 		//Check to see if the player is fighting. Engaged players can't fire techs.
 		if (p.getDutyStatus() == SPlayer.STATUS_FIGHTING) {
-			CampaignMain.cm.toUser("You may not return bays while you are engaged! Wait until your units are out of battle and fully repaired.",Username,true);
+			CampaignMain.cm.toUser("AM:You may not return bays while you are engaged! Wait until your units are out of battle and fully repaired.",Username,true);
 			return;
 		}//end if(fighting)
 		
 		//dont want a unit being marked unmaintained while its in an active army, so only let reserve players fire techs
 		if (p.getDutyStatus() == SPlayer.STATUS_ACTIVE) {
-			CampaignMain.cm.toUser("You may not return bays while you are active. Withdraw from the front lines " +
+			CampaignMain.cm.toUser("AM:You may not return bays while you are active. Withdraw from the front lines " +
 					"before reducing your support levels.",Username,true);
 			return;
 		}//end if(active)
 		
         if (p.getFreeBays() < numtosell){
-            CampaignMain.cm.toUser("You need to free up some bay space before you can return anymore!",Username,true);
+            CampaignMain.cm.toUser("AM:You need to free up some bay space before you can return anymore!",Username,true);
             return;
         }
         
@@ -91,12 +91,12 @@ public class SellBaysCommand implements Command {
         p.addMoney(sellbackprice);
         
 		if ( numtosell == 1)
-			CampaignMain.cm.toUser("You return a bay.  Your faction returns "+CampaignMain.cm.moneyOrFluMessage(true,true,sellbackprice)+" of your security deposit.",Username,true);
+			CampaignMain.cm.toUser("AM:You return a bay.  Your faction returns "+CampaignMain.cm.moneyOrFluMessage(true,true,sellbackprice)+" of your security deposit.",Username,true);
 		else
-			CampaignMain.cm.toUser("You return " + numtosell + " bays.  Your faction returns "+CampaignMain.cm.moneyOrFluMessage(true,true,sellbackprice)+" of your security deposit.",Username,true);
-        CampaignMain.cm.toUser("PL|SF|"+p.getFreeBays(),Username,false);
-        CampaignMain.cm.toUser("PL|SB|"+p.getTotalMekBays(),Username,false);
-        CampaignMain.cm.toUser("PL|ST|"+p.getBaysOwned(),Username,false);
+			CampaignMain.cm.toUser("AM:You return " + numtosell + " bays.  Your faction returns "+CampaignMain.cm.moneyOrFluMessage(true,true,sellbackprice)+" of your security deposit.",Username,true);
+        CampaignMain.cm.toUser("AM:PL|SF|"+p.getFreeBays(),Username,false);
+        CampaignMain.cm.toUser("AM:PL|SB|"+p.getTotalMekBays(),Username,false);
+        CampaignMain.cm.toUser("AM:PL|ST|"+p.getBaysOwned(),Username,false);
 
 	}//end process()
 }//end SellBaysCommand()

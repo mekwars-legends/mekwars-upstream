@@ -49,7 +49,7 @@ public class NamePilotCommand implements Command {
 			unitid = Integer.parseInt((String)command.nextElement());
 			name = (String)command.nextElement();
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper syntx. Try: /c namepilot#unitid#newname",Username,true);
+			CampaignMain.cm.toUser("AM:Improper syntx. Try: /c namepilot#unitid#newname",Username,true);
 			return;
 		}
 		
@@ -58,83 +58,83 @@ public class NamePilotCommand implements Command {
 			name = name.substring(0,30);
 		
 		if (name.indexOf("%") != -1) {
-			CampaignMain.cm.toUser("Illegal pilot name (% forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal pilot name (% forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("~") != -1) {
-			CampaignMain.cm.toUser("Illegal pilot name (~ forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal pilot name (~ forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("$") != -1) {
-			CampaignMain.cm.toUser("Illegal pilot name ($ forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal pilot name ($ forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("|") != -1) {
-			CampaignMain.cm.toUser("Illegal pilot name (| forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal pilot name (| forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("!") != -1) {
-			CampaignMain.cm.toUser("Illegal pilot name (! forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal pilot name (! forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("*") != -1) {
-			CampaignMain.cm.toUser("Illegal pilot name (* forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal pilot name (* forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("#") != -1) {
-			CampaignMain.cm.toUser("Illegal pilot name (# forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal pilot name (# forbidden).",Username,true);
 			return;
 		} else if (name.indexOf(">") != -1) {
-			CampaignMain.cm.toUser("Illegal pilot name (> forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal pilot name (> forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("<") != -1) {
-			CampaignMain.cm.toUser("Illegal pilot name (< forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal pilot name (< forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("@") != -1) {
-			CampaignMain.cm.toUser("Illegal pilot name (@ forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal pilot name (@ forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("&") != -1) {
-			CampaignMain.cm.toUser("Illegal pilot name (& forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal pilot name (& forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("^") != -1) {
-			CampaignMain.cm.toUser("Illegal pilot name (^ forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal pilot name (^ forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("+") != -1) {
-			CampaignMain.cm.toUser("Illegal pilot name (+ forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal pilot name (+ forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("=") != -1) {
-			CampaignMain.cm.toUser("Illegal pilot name (= forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal pilot name (= forbidden).",Username,true);
 			return;
 		} else if (name.toLowerCase().startsWith("vacant")) {
-			CampaignMain.cm.toUser("Illegal pilot name (\"vacant\" forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal pilot name (\"vacant\" forbidden).",Username,true);
 			return;
 		} 
 		
 		//check player
 		SPlayer p = CampaignMain.cm.getPlayer(Username);
 		if (p == null) {
-			CampaignMain.cm.toUser("Null player while naming pilot. Report to an admin.",Username,true);
+			CampaignMain.cm.toUser("AM:Null player while naming pilot. Report to an admin.",Username,true);
 			return;
 		}
 		
 		//fetch unit
 		SUnit u = p.getUnit(unitid);
 		if (u == null) {
-			CampaignMain.cm.toUser("Could not find a unit with ID#" + unitid + ".",Username,true);
+			CampaignMain.cm.toUser("AM:Could not find a unit with ID#" + unitid + ".",Username,true);
 			return;
 		}
 		
 		//fetch pilot
 		SPilot pilot = (SPilot)u.getPilot();
 		if (pilot == null) {
-			CampaignMain.cm.toUser("Unit #" + unitid + " has a null pilot. Report this to an admin.",Username,true);
+			CampaignMain.cm.toUser("AM:Unit #" + unitid + " has a null pilot. Report this to an admin.",Username,true);
 			return;
 		}
 		
 		//make sure pilot isn't Vacant (99/99)
 		if (pilot.getName().toLowerCase().startsWith("vacant")) {
-			CampaignMain.cm.toUser("There is no pilot in that unit! It is vacant!",Username,true);
+			CampaignMain.cm.toUser("AM:There is no pilot in that unit! It is vacant!",Username,true);
 			return;
 		}
 		
 		//checks passed. change name,
 		pilot.setName(name);
-		CampaignMain.cm.toUser("The pilot of the " + u.getModelName() + " (#" + unitid + ") was renamed. New name: " + name + ".",Username,true);
-		CampaignMain.cm.toUser("PL|UU|"+ u.getId() + "|" + u.toString(true),Username,false);
+		CampaignMain.cm.toUser("AM:The pilot of the " + u.getModelName() + " (#" + unitid + ") was renamed. New name: " + name + ".",Username,true);
+		CampaignMain.cm.toUser("AM:PL|UU|"+ u.getId() + "|" + u.toString(true),Username,false);
 		
 	}//end process()
 }//end NamePilotCommand

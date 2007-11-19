@@ -52,7 +52,7 @@ public class SetAutoEjectCommand implements Command {
 			unitid= Integer.parseInt(command.nextToken());
 		}//end try
 		catch (NumberFormatException ex) {
-			CampaignMain.cm.toUser("SetAutoEject command failed. Check your input. It should be something like this: /c setAutoEject#unitid#true/false",Username,true);
+			CampaignMain.cm.toUser("AM:SetAutoEject command failed. Check your input. It should be something like this: /c setAutoEject#unitid#true/false",Username,true);
 			return;
 		}//end catch
 		
@@ -60,7 +60,7 @@ public class SetAutoEjectCommand implements Command {
 			autoEject = new Boolean(command.nextToken()).booleanValue();
 		}//end try
 		catch (Exception ex){
-			CampaignMain.cm.toUser("SetAutoEject Command failed. Check your input. It should be something like this: /c setAutoEject#unitid#true/false",Username,true);
+			CampaignMain.cm.toUser("AM:SetAutoEject Command failed. Check your input. It should be something like this: /c setAutoEject#unitid#true/false",Username,true);
 			return;
 		}//end catch
 		
@@ -68,7 +68,7 @@ public class SetAutoEjectCommand implements Command {
 		Entity en = unit.getEntity();
 		((Mech)en).setAutoEject(autoEject);
 		unit.setEntity(en);
-		CampaignMain.cm.toUser("AutoEject set for "+ unit.getModelName(),Username,true);
+		CampaignMain.cm.toUser("AM:AutoEject set for "+ unit.getModelName(),Username,true);
 		
 	}//end process() 
 }//end SetAutoEjectCommand class

@@ -44,18 +44,18 @@ public class MercStatusCommand implements Command {
 		try {
 			targetPlayer = command.nextToken();
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper format. Try: /c mercstatus#name",Username,true);
+			CampaignMain.cm.toUser("AM:Improper format. Try: /c mercstatus#name",Username,true);
 			return;
 		}
 		
 		SPlayer merc = CampaignMain.cm.getPlayer(targetPlayer);
 		if (merc == null)
-			CampaignMain.cm.toUser("No player named " + targetPlayer + "!",Username,true);
+			CampaignMain.cm.toUser("AM:No player named " + targetPlayer + "!",Username,true);
 		else if ((merc.getMyHouse()).isMercHouse()) {
 			String s = merc.getReadableMercStatus();
 			CampaignMain.cm.toUser(s,Username,true);
 		} else
-			CampaignMain.cm.toUser("Target player is not a mercenary",Username,true);
+			CampaignMain.cm.toUser("AM:Target player is not a mercenary",Username,true);
 		
 	}
 }

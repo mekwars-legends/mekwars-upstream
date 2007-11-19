@@ -61,17 +61,17 @@ public class DonateCommand implements Command {
 		
 		int donationsAllowed = Integer.parseInt(house.getConfig("DonationsAllowed"));
 		if (donationsAllowed <= 0) {
-			CampaignMain.cm.toUser("Donations are not allowed on this server.",Username,true);
+			CampaignMain.cm.toUser("AM:Donations are not allowed on this server.",Username,true);
 			return;
 		}
 		
 		if (p.getMyHouse().isNewbieHouse()) {
-			CampaignMain.cm.toUser("SOL Players are not allowed to donate units, sorry!",Username,true);
+			CampaignMain.cm.toUser("AM:SOL Players are not allowed to donate units, sorry!",Username,true);
 			return;
 		}
 		
         if (p.mayAcquireWelfareUnits()) {
-            CampaignMain.cm.toUser("You may not donate any of your units while you are on welfare.",Username,true);
+            CampaignMain.cm.toUser("AM:You may not donate any of your units while you are on welfare.",Username,true);
             return;
         }
 
@@ -79,18 +79,18 @@ public class DonateCommand implements Command {
         try {
         	unitid = Integer.parseInt((String)command.nextElement());
         } catch (Exception e) {
-        	CampaignMain.cm.toUser("Improper format. Try: /c donate#unitid",Username,true);
+        	CampaignMain.cm.toUser("AM:Improper format. Try: /c donate#unitid",Username,true);
             return;
         }
         
 		SUnit m = p.getUnit(unitid);
 		if (m == null) {
-			CampaignMain.cm.toUser("You do not have a unit with ID#" + unitid + ".",Username,true);
+			CampaignMain.cm.toUser("AM:You do not have a unit with ID#" + unitid + ".",Username,true);
             return;
 		}
 		
         if (m.getModelName().startsWith("Error") || m.getModelName().startsWith("OMG")){
-            CampaignMain.cm.toUser("You tried to donate an Error unit. The unit was auto-scrapped and the staff was alerted.",Username,true);
+            CampaignMain.cm.toUser("AM:You tried to donate an Error unit. The unit was auto-scrapped and the staff was alerted.",Username,true);
             CampaignMain.cm.doSendModMail("NOTE",Username + " tried to donate an OMG. Unit auto-scrapped. Data: " + m.getProducer());
             MWServ.mwlog.errLog(Username + " tried to donate an OMG. Unit auto-scrapped. Data: " + m.getProducer());
             p.removeUnit(unitid, true);
@@ -98,29 +98,29 @@ public class DonateCommand implements Command {
         }
 
 		if (m.getStatus() == Unit.STATUS_FORSALE){
-			CampaignMain.cm.toUser("Units that are for sale on the Market may not be donated.", Username, true);
+			CampaignMain.cm.toUser("AM:Units that are for sale on the Market may not be donated.", Username, true);
 			return;
 		}
 
 		if (p.getAmountOfTimesUnitExistsInArmies(unitid) > 0 && p.getDutyStatus() == SPlayer.STATUS_ACTIVE) {
-			CampaignMain.cm.toUser("You may not donate units which are in active armies.", Username, true);
+			CampaignMain.cm.toUser("AM:You may not donate units which are in active armies.", Username, true);
 			return;	
 		}
 		
 		for (SArmy currA : p.getArmies()) {
 			if (currA.isLocked() && currA.getUnit(unitid) != null) {
-				CampaignMain.cm.toUser("You may not donate units which are in fighting armies.", Username, true);
+				CampaignMain.cm.toUser("AM:You may not donate units which are in fighting armies.", Username, true);
 				return;
 			}
 		}
 		
 		if (p.getDonationsThisTick() >= donationsAllowed) {
-			CampaignMain.cm.toUser("You may only donate " + donationsAllowed + " unit(s) each tick.", Username, true);
+			CampaignMain.cm.toUser("AM:You may only donate " + donationsAllowed + " unit(s) each tick.", Username, true);
 			return;
 		}
 
         if (!Boolean.parseBoolean(house.getConfig("AllowDonatingOfDamagedUnits")) && (UnitUtils.hasArmorDamage(m.getEntity()) || UnitUtils.hasCriticalDamage(m.getEntity()))) {
-            CampaignMain.cm.toUser("You may not donate damaged units.",Username,true);
+            CampaignMain.cm.toUser("AM:You may not donate damaged units.",Username,true);
             return;
         }
         
@@ -137,7 +137,7 @@ public class DonateCommand implements Command {
 
 		//Check to ensure player can afford the scrap
 		if (p.getMoney() < moneyToDonate || p.getInfluence() < infToDonate) {
-			CampaignMain.cm.toUser("You cannot afford to donate this unit. You need " + CampaignMain.cm.moneyOrFluMessage(true,true,moneyToDonate)+" and " +CampaignMain.cm.moneyOrFluMessage(false,true,infToDonate)+".",Username,true);
+			CampaignMain.cm.toUser("AM:You cannot afford to donate this unit. You need " + CampaignMain.cm.moneyOrFluMessage(true,true,moneyToDonate)+" and " +CampaignMain.cm.moneyOrFluMessage(false,true,infToDonate)+".",Username,true);
 			return;
 		}
 		
@@ -145,12 +145,12 @@ public class DonateCommand implements Command {
 		if (m.getScrappableFor() >= 0) {
 			p.addMoney(m.getScrappableFor()/2);
 			p.addInfluence(infToDonate/2);
-			CampaignMain.cm.toUser("You donated the " + m.getModelName() + " (" + CampaignMain.cm.moneyOrFluMessage(true,true,m.getScrappableFor()/2,true)+ ", " + CampaignMain.cm.moneyOrFluMessage(false,true,infToDonate/2,true) + ").", Username, true);
+			CampaignMain.cm.toUser("AM:You donated the " + m.getModelName() + " (" + CampaignMain.cm.moneyOrFluMessage(true,true,m.getScrappableFor()/2,true)+ ", " + CampaignMain.cm.moneyOrFluMessage(false,true,infToDonate/2,true) + ").", Username, true);
 		} else {
 			p.addMoney(-moneyToDonate);
 			p.addInfluence(-infToDonate);
 			p.addDonationThisTick();
-			CampaignMain.cm.toUser("You donated the " + m.getModelName() + " (" + CampaignMain.cm.moneyOrFluMessage(true,true,-moneyToDonate,true)+ ", " + CampaignMain.cm.moneyOrFluMessage(false,true,-infToDonate,true) + ").", Username, true);
+			CampaignMain.cm.toUser("AM:You donated the " + m.getModelName() + " (" + CampaignMain.cm.moneyOrFluMessage(true,true,-moneyToDonate,true)+ ", " + CampaignMain.cm.moneyOrFluMessage(false,true,-infToDonate,true) + ").", Username, true);
 		}
 
 		//notify house and, if needed, send warning to mod channel
@@ -165,7 +165,7 @@ public class DonateCommand implements Command {
 		SPilot oldPilot = (SPilot)m.getPilot();
 		if (Boolean.parseBoolean(house.getConfig("AllowPersonalPilotQueues")) && !m.hasVacantPilot() && (m.getType() == Unit.MEK || m.getType() == Unit.PROTOMEK)) {
 			p.getPersonalPilotQueue().addPilot(m.getPilot(), m.getWeightclass());
-			CampaignMain.cm.toUser("PL|AP2PPQ|"+m.getType() + "|" + m.getWeightclass() + "|" + oldPilot.toFileFormat("#",true),Username,false);
+			CampaignMain.cm.toUser("AM:PL|AP2PPQ|"+m.getType() + "|" + m.getWeightclass() + "|" + oldPilot.toFileFormat("#",true),Username,false);
             CampaignMain.cm.toUser(oldPilot.getName() + " was moved to your barracks.",Username,true);
     	    p.getPersonalPilotQueue().checkQueueAndWarn(p.getName(), m.getType(), m.getWeightclass());
 		} else {

@@ -60,17 +60,17 @@ public class ScrapCommand implements Command {
 		
 		int scrapsAllowed = Integer.parseInt(house.getConfig("ScrapsAllowed"));
 		if (scrapsAllowed <= 0) {
-			CampaignMain.cm.toUser("Scrapping is not allowed on this server.", Username, true);
+			CampaignMain.cm.toUser("AM:Scrapping is not allowed on this server.", Username, true);
 			return;
 		}
 		
 		if (house.isNewbieHouse()) {
-			CampaignMain.cm.toUser("SOL players may not Sell, Scrap or Donate their units!", Username, true);
+			CampaignMain.cm.toUser("AM:SOL players may not Sell, Scrap or Donate their units!", Username, true);
 			return;
 		}
 		
         if ( p.mayAcquireWelfareUnits() ){
-            CampaignMain.cm.toUser("You may not scrap any of your units while you are on welfare.",Username,true);
+            CampaignMain.cm.toUser("AM:You may not scrap any of your units while you are on welfare.",Username,true);
             return;
         }
 
@@ -78,40 +78,40 @@ public class ScrapCommand implements Command {
 		try {
 			mechid = Integer.parseInt((String)command.nextElement());
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Formatting error. Try: /c scrap#ID Number", Username, true);
+			CampaignMain.cm.toUser("AM:Formatting error. Try: /c scrap#ID Number", Username, true);
 			return;
 		}
 		
 		SUnit m = p.getUnit(mechid);
 		if (m == null) {
-			CampaignMain.cm.toUser("Could not find a unit with the given ID.", Username, true);
+			CampaignMain.cm.toUser("AM:Could not find a unit with the given ID.", Username, true);
 			return;
 		}
 		
         
         if ( UnitUtils.isRepairing(m.getEntity()) ){
-            CampaignMain.cm.toUser("This unit is currently being repaired. You cannot scrap it until the repairs are complete!",Username,true);
+            CampaignMain.cm.toUser("AM:This unit is currently being repaired. You cannot scrap it until the repairs are complete!",Username,true);
             return;
         }
         
 		if (m.getStatus() == Unit.STATUS_FORSALE) {
-			CampaignMain.cm.toUser("Units that are for sale on the Market may not be scrapped.", Username, true);
+			CampaignMain.cm.toUser("AM:Units that are for sale on the Market may not be scrapped.", Username, true);
 			return;
 		}
 		
 		if (p.getAmountOfTimesUnitExistsInArmies(mechid) > 0 && p.getDutyStatus() == SPlayer.STATUS_ACTIVE) {	
-			CampaignMain.cm.toUser("You may not scrap units which are in active armies.", Username, true);
+			CampaignMain.cm.toUser("AM:You may not scrap units which are in active armies.", Username, true);
 			return;
 		}//end (unit is in armies and player is active)
 		
 		if (p.isUnitInLockedArmy(m.getId())) {
-			CampaignMain.cm.toUser("You may not scrap units which are in fighting armies.", Username, true);
+			CampaignMain.cm.toUser("AM:You may not scrap units which are in fighting armies.", Username, true);
 			return;
 		}
 		
 		//If he has not scrapped this tick and Scrapping is allowed, OR if the entity was salvaged recently
 		if (p.getScrapsThisTick() >= scrapsAllowed && m.getScrappableFor() <= 0) {
-			CampaignMain.cm.toUser("You may only scrap " + scrapsAllowed + " unit(s) per tick.", Username, true);
+			CampaignMain.cm.toUser("AM:You may only scrap " + scrapsAllowed + " unit(s) per tick.", Username, true);
 			return;
 		}
 		
@@ -138,19 +138,19 @@ public class ScrapCommand implements Command {
 
 		//Check to ensure player can afford the scrap
 		if (p.getMoney() < moneyToScrap || p.getInfluence() < infToScrap && m.getScrappableFor() < 0) {
-			CampaignMain.cm.toUser("You cannot afford to scrap this unit. You need " + CampaignMain.cm.moneyOrFluMessage(true,true,moneyToScrap)+" and " +CampaignMain.cm.moneyOrFluMessage(false,true,infToScrap)+".",Username,true);
+			CampaignMain.cm.toUser("AM:You cannot afford to scrap this unit. You need " + CampaignMain.cm.moneyOrFluMessage(true,true,moneyToScrap)+" and " +CampaignMain.cm.moneyOrFluMessage(false,true,infToScrap)+".",Username,true);
 			return;
 		}
 		
 		//Give the player the amount the unit can be scrapped for (post-game), or add/deduct the standard cost
 		if (m.getScrappableFor() >= 0) {
 			p.addMoney(m.getScrappableFor());
-			CampaignMain.cm.toUser("You scrapped the " + m.getModelName() + " (" + CampaignMain.cm.moneyOrFluMessage(true,true,m.getScrappableFor(),true)+ ".", Username, true);
+			CampaignMain.cm.toUser("AM:You scrapped the " + m.getModelName() + " (" + CampaignMain.cm.moneyOrFluMessage(true,true,m.getScrappableFor(),true)+ ".", Username, true);
 		} else {
 			p.addMoney(-moneyToScrap);
 			p.addInfluence(-infToScrap);
 			p.addScrapThisTick();
-			CampaignMain.cm.toUser("You scrapped the " + m.getModelName() + " (" + CampaignMain.cm.moneyOrFluMessage(true,true,-moneyToScrap,true) +  ", " + CampaignMain.cm.moneyOrFluMessage(false,true,-infToScrap,true) + ").", Username, true);
+			CampaignMain.cm.toUser("AM:You scrapped the " + m.getModelName() + " (" + CampaignMain.cm.moneyOrFluMessage(true,true,-moneyToScrap,true) +  ", " + CampaignMain.cm.moneyOrFluMessage(false,true,-infToScrap,true) + ").", Username, true);
 		}
 
 		//notify house and, if needed, send warning to mod channel
@@ -172,7 +172,7 @@ public class ScrapCommand implements Command {
         		&& (m.getType() == Unit.MEK || m.getType() == Unit.PROTOMEK) ){
             SPilot pilot = (SPilot)m.getPilot();
             p.getPersonalPilotQueue().addPilot(m.getPilot(), m.getWeightclass());
-            CampaignMain.cm.toUser("PL|AP2PPQ|"+m.getType()+"|"+m.getWeightclass()+"|"+pilot.toFileFormat("#",true),Username,false);
+            CampaignMain.cm.toUser("AM:PL|AP2PPQ|"+m.getType()+"|"+m.getWeightclass()+"|"+pilot.toFileFormat("#",true),Username,false);
             CampaignMain.cm.toUser(pilot.getName() + " was moved to your barracks.",Username,true);
             p.getPersonalPilotQueue().checkQueueAndWarn(p.getName(), m.getType(), m.getWeightclass());
 

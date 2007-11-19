@@ -50,12 +50,12 @@ public class DisplayUnitRepairJobsCommand implements Command {
             int unitid = Integer.parseInt(command.nextToken());
             String data = CampaignMain.cm.getRTT().unitRepairTimes(unitid);
             if ( data != null )
-                CampaignMain.cm.toUser("FSM|"+data,Username,false);
+                CampaignMain.cm.toUser("AM:FSM|"+data,Username,false);
             else{
                 SPlayer player = CampaignMain.cm.getPlayer(Username);
                 SUnit unit = player.getUnit(unitid);
                 
-                CampaignMain.cm.toUser("FSM|#"+unitid+" "+unit.getEntity().getShortNameRaw()+" has the following repair jobs pending:<br><b>None.</b><br>",Username,false);
+                CampaignMain.cm.toUser("AM:FSM|#"+unitid+" "+unit.getEntity().getShortNameRaw()+" has the following repair jobs pending:<br><b>None.</b><br>",Username,false);
             }
         }catch(Exception ex){}
 	}

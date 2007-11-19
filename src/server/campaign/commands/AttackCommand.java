@@ -54,33 +54,33 @@ public class AttackCommand implements Command {
 		OperationManager manager = CampaignMain.cm.getOpsManager();
 		SPlayer ap = CampaignMain.cm.getPlayer(Username);
 		if (ap == null) {
-			CampaignMain.cm.toUser("Null player. Contact an administrator to report this, immediately!",Username,true);
+			CampaignMain.cm.toUser("AM:Null player. Contact an administrator to report this, immediately!",Username,true);
 			return;
 		}
 		
 		//throw up if the player is not active or fighting
 		if (ap.getDutyStatus() < SPlayer.STATUS_ACTIVE) {
-			CampaignMain.cm.toUser("You aren't on the front lines! (You are currently in Reserve. Activate in order to attack.)",Username,true);
+			CampaignMain.cm.toUser("AM:You aren't on the front lines! (You are currently in Reserve. Activate in order to attack.)",Username,true);
 			return;
 		}
 		
 		//can't attack while in a game
 		if(ap.getDutyStatus() == SPlayer.STATUS_FIGHTING) {
-			CampaignMain.cm.toUser("You are already fighting!", Username, true);
+			CampaignMain.cm.toUser("AM:You are already fighting!", Username, true);
 			return;
 		}
 		
 		//can only attack once
 		int altID = CampaignMain.cm.getOpsManager().playerIsAnAttacker(ap);
 		if (altID >= 0) {
-			CampaignMain.cm.toUser("You're only allowed to attack once, and are already in Attack #" + altID + ".", Username, true);
+			CampaignMain.cm.toUser("AM:You're only allowed to attack once, and are already in Attack #" + altID + ".", Username, true);
 			return;	
 		}
 		
 		//cant only defend once
 		altID = CampaignMain.cm.getOpsManager().playerIsADefender(ap);
 		if (altID >= 0) {
-			CampaignMain.cm.toUser("You're already defending against Attack #" + altID + ".", Username, true);
+			CampaignMain.cm.toUser("AM:You're already defending against Attack #" + altID + ".", Username, true);
 			return;	
 		}
 		
@@ -88,7 +88,7 @@ public class AttackCommand implements Command {
 		boolean minActiveMet = (System.currentTimeMillis() - ap.getActiveSince()) >=
 			(Long.parseLong(CampaignMain.cm.getConfig("MinActiveTime")) * 1000);
 		if (!minActiveMet) {
-			CampaignMain.cm.toUser("You're still on your way to the frontline. You cannot attack until you arrive.",Username,true);
+			CampaignMain.cm.toUser("AM:You're still on your way to the frontline. You cannot attack until you arrive.",Username,true);
 			return;
 		}
 		
@@ -97,13 +97,13 @@ public class AttackCommand implements Command {
 		try {
 			opName = command.nextToken();
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("No operation name given. Try again.",Username,true);
+			CampaignMain.cm.toUser("AM:No operation name given. Try again.",Username,true);
 			return;
 		}
 		
 		Operation o = manager.getOperation(opName);
 		if (o == null) {
-			CampaignMain.cm.toUser("Operation Type: " + opName + " does not exist.",Username,true);
+			CampaignMain.cm.toUser("AM:Operation Type: " + opName + " does not exist.",Username,true);
 			return;
 		}
 		
@@ -112,17 +112,17 @@ public class AttackCommand implements Command {
 		try {
 			armyID = Integer.parseInt(command.nextToken());
 		} catch (Exception e){
-			CampaignMain.cm.toUser("Non-number given for Army ID. Try again.",Username,true);
+			CampaignMain.cm.toUser("AM:Non-number given for Army ID. Try again.",Username,true);
 			return;
 		}
 		
 		SArmy aa = ap.getArmy(armyID);
 		if (aa == null) {
-			CampaignMain.cm.toUser("An error occured while creating your Army (The Army was null. This usually means " +
+			CampaignMain.cm.toUser("AM:An error occured while creating your Army (The Army was null. This usually means " +
 					"the army doesn't exist. Example: you tried to use Army 1, but you only have Armies 0 and 2.)",Username,true);
 			return;
 		} else if (aa.getBV() == 0) {
-			CampaignMain.cm.toUser("Army #" + armyID + " has a BV of 0 and may not be used to attack.",Username,true);
+			CampaignMain.cm.toUser("AM:Army #" + armyID + " has a BV of 0 and may not be used to attack.",Username,true);
 			return;
 		}
 		
@@ -131,7 +131,7 @@ public class AttackCommand implements Command {
 		try {
 			planetName = command.nextToken();
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("No planet name given. Try again.",Username,true);
+			CampaignMain.cm.toUser("AM:No planet name given. Try again.",Username,true);
 			return;
 		}
 		
@@ -147,7 +147,7 @@ public class AttackCommand implements Command {
 		if (o.getTypeIndicator() == Operation.TYPE_SHORTANDLONG) {
 		
 			if (!manager.hasSpecificLongOnPlanet(ap.getHouseFightingFor(), target, o)) {
-				CampaignMain.cm.toUser("Your faction has no " + opName + " in progress on " + target.getName() + ".",Username,true);
+				CampaignMain.cm.toUser("AM:Your faction has no " + opName + " in progress on " + target.getName() + ".",Username,true);
 				return;
 			}
 			
@@ -164,7 +164,7 @@ public class AttackCommand implements Command {
 		 */
 		String s = manager.validateShortAttack(ap, aa, o, target, longID,false);
 		if (s != null && !s.trim().equals("")) {
-			CampaignMain.cm.toUser("Attack failed " + s,Username,true);
+			CampaignMain.cm.toUser("AM:Attack failed " + s,Username,true);
 			return;
 		}
 		
@@ -199,7 +199,7 @@ public class AttackCommand implements Command {
 	
 			
 			CampaignMain.cm.toUser("PL|STN|"+teamNumber, Username,false);
-			CampaignMain.cm.toUser("You have been assigned to team #"+teamNumber, Username);
+			CampaignMain.cm.toUser("AM:You have been assigned to team #"+teamNumber, Username);
 			ap.setTeamNumber(teamNumber);
 		}
 	}//end process

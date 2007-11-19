@@ -63,22 +63,22 @@ public class AcceptContractCommand implements Command {
 			}//end if(reciev = user)
 		}//end for(search vector)
 		if (contractAccepted) {
-			CampaignMain.cm.toUser("You have accepted the contract offered by " + offeringPlayerName + " and are now in the employment of " + (offeringPlayer.getMyHouse()).getName(),Username,true);
+			CampaignMain.cm.toUser("AM:You have accepted the contract offered by " + offeringPlayerName + " and are now in the employment of " + (offeringPlayer.getMyHouse()).getName(),Username,true);
 			CampaignMain.cm.toUser(claimingPlayerName + "has accepted your contract offer.",offeringPlayerName,true);
 			//do finances.
 			int contractPay = info.getPayment();
 			//code to pay player
 			int immediatePay = (contractPay/2);
 			claimingPlayer.addMoney(immediatePay);
-			CampaignMain.cm.toUser("Received " +CampaignMain.cm.moneyOrFluMessage(true,true,immediatePay)+". The remainder of your pay will be delivered upon contract completion.",Username,true);
+			CampaignMain.cm.toUser("AM:Received " +CampaignMain.cm.moneyOrFluMessage(true,true,immediatePay)+". The remainder of your pay will be delivered upon contract completion.",Username,true);
 			//code to decrease money of offering player.
 			offeringPlayer.addMoney(0 - contractPay);
-			CampaignMain.cm.toUser("You have spent " +CampaignMain.cm.moneyOrFluMessage(true,true,contractPay)+" to hire " + claimingPlayerName,offeringPlayerName,true);
+			CampaignMain.cm.toUser("AM:You have spent " +CampaignMain.cm.moneyOrFluMessage(true,true,contractPay)+" to hire " + claimingPlayerName,offeringPlayerName,true);
             CampaignMain.cm.toUser("PL|SHFF|"+claimingPlayer.getHouseFightingFor().getName(),claimingPlayer.getName(), false);
             
 		}//end if(contractAccepted)
 		else {//contract not set
-			CampaignMain.cm.toUser("You have no contract to accept from a player of the given name",Username,true);
+			CampaignMain.cm.toUser("AM:You have no contract to accept from a player of the given name",Username,true);
 		}//end else(no contract)
 	}//end AcceptContractCommand
 	

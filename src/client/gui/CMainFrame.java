@@ -2113,7 +2113,7 @@ public class CMainFrame extends JFrame {
 		}
 		result.append("</table>");
 		
-		result.append("<br>Repoding facts:");
+		result.append("<br><b><i>Repoding facts:</b></i>");
 		result.append("<table><tr><th>Class</th><th>"
 			+ mwclient.moneyOrFluMessage(true,false,-2) + "</th><th>"
 			+ mwclient.moneyOrFluMessage(false,false,-2)
@@ -2142,7 +2142,7 @@ public class CMainFrame extends JFrame {
 		
 		result.append("</table><br>");
         if ( useAdvanceRepairs ){
-            result.append("<br>Tech/BayCosts:");
+            result.append("<br><b><i>Tech/BayCosts:</b></i>");
             result.append("<table><tr><th>Type</th><th>" + mwclient.moneyOrFluMessage(true,false,-2) + "</th>");
             result.append("<tr><td>Bay Cost</td><td>"+Integer.parseInt(mwclient.getserverConfigs("CostToBuyNewBay"))+"</td></tr>");
             result.append("<tr><td>Bay Sale</td><td>"+Integer.parseInt(mwclient.getserverConfigs("BaySellBackPrice"))+"</td></tr>");
@@ -2166,7 +2166,7 @@ public class CMainFrame extends JFrame {
 		
 		result.append("</table><br>");
 
-        result.append("<b>Unit Status Icons</B><br>");
+        result.append("<b><i>Unit Status Icons</B></i><br>");
         result.append("<table><tr><th>Icon</th><th>Description</th></tr>");
         result.append("<tr><td><img src=\"data/images/status/ammo.gif\"></td><td>Unit has all ammo bins loaded</td></tr>");
         result.append("<tr><td><img src=\"data/images/status/low.gif\"></td><td>Unit has 1 or more ammo bins that are low on ammo</td></tr>");
@@ -2192,14 +2192,14 @@ public class CMainFrame extends JFrame {
         result.append("</table><br>");
 
         if ( mwclient.getData().getServerBannedAmmo().size() > 0 ){
-            result.append("Server Banned ammo<br>");
+            result.append("<b><i>Server Banned ammo</b></i><br>");
             for ( String key : mwclient.getData().getServerBannedAmmo().keySet() )
                 result.append(mwclient.getData().getMunitionsByNumber().get(Long.parseLong(key))+"<br>");
         }
         
         House faction = mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse());
         if ( faction.getBannedAmmo().size() > 0 ){
-            result.append("House Banned Ammo<br>");
+            result.append("<b><i>House Banned Ammo</b></i><br>");
             for ( String key : faction.getBannedAmmo().keySet() ){
                 result.append(mwclient.getData().getMunitionsByNumber().get(Long.parseLong(key))+"<br>");
             }
@@ -2224,7 +2224,7 @@ public class CMainFrame extends JFrame {
 	public void jMenuHelpPilotSkills_actionPerformed() {
 		String result = "";
 		result += "<font color=\"black\">";
-		result += "MEKWARS/MEGAMEK Pilot Skills<br>";
+		result += "<b><i>MekWars/MegaMek Pilot Skills</b></i><br>";
 		result += "<table><tr><th>Name</th>"
 			+ "<th>Abbrivation</th>"
 			+ "<th>Description</th></tr>";

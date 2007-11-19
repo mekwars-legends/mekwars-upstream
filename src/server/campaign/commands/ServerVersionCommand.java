@@ -30,7 +30,7 @@ public class ServerVersionCommand implements Command {
 	public String getSyntax() { return syntax;}
 
 	public void process(StringTokenizer command,String Username) {
-		CampaignMain.cm.toUser("The current server version is " + MWServ.SERVER_VERSION,Username,true);
+		CampaignMain.cm.toUser("AM:The current server version is " + MWServ.SERVER_VERSION,Username,true);
 	}
 	
 }

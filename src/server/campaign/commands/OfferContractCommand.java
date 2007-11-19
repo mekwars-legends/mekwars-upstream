@@ -52,7 +52,7 @@ public class OfferContractCommand implements Command {
 			strContractType = command.nextToken();
 		}
 		catch(Exception ex) {
-			CampaignMain.cm.toUser("Invalid Syntax: /offercontract Merc Name#ContractPayment#ContarctDuration#Contract Type[land,units,components,delay,exp]", Username);
+			CampaignMain.cm.toUser("AM:Invalid Syntax: /offercontract Merc Name#ContractPayment#ContarctDuration#Contract Type[land,units,components,delay,exp]", Username);
 			return;
 		}
 		
@@ -61,7 +61,7 @@ public class OfferContractCommand implements Command {
 		SPlayer receivingPlayer = CampaignMain.cm.getPlayer(receivingPlayerName);
 		if (receivingPlayer == null)
 		{
-			CampaignMain.cm.toUser("There's no such player",Username,true);
+			CampaignMain.cm.toUser("AM:There's no such player",Username,true);
 			return;
 		}
 		if ((receivingPlayer.getMyHouse()).isMercHouse()) {
@@ -81,46 +81,46 @@ public class OfferContractCommand implements Command {
 				}//end if(offering player has contract outstanding)
 			}//end for(all offered contracts)
 			if (contractPayment < 2) {
-				CampaignMain.cm.toUser("You must pay a mercenary at least "+CampaignMain.cm.moneyOrFluMessage(true,true,2)+".",Username,true);
+				CampaignMain.cm.toUser("AM:You must pay a mercenary at least "+CampaignMain.cm.moneyOrFluMessage(true,true,2)+".",Username,true);
 			}
 			else if (contractDuration < minContract) {
-				CampaignMain.cm.toUser("Mercenaries must do work to get paid. Set a contract term of at least "+minContract+ " "+strContractType,Username,true);
+				CampaignMain.cm.toUser("AM:Mercenaries must do work to get paid. Set a contract term of at least "+minContract+ " "+strContractType,Username,true);
 			}
 			else if (noOtherOffers == false) {
-				CampaignMain.cm.toUser("You may offer only one contract at a time.",Username,true);
+				CampaignMain.cm.toUser("AM:You may offer only one contract at a time.",Username,true);
 			}//end if(another offer exists)
 			//make sure player can pay contract
 			else if (offeringPlayer.getMoney() < contractPayment) {
-				CampaignMain.cm.toUser("Your offer exceeds your monetary resources. Get loans or lower your offer.",Username,true);
+				CampaignMain.cm.toUser("AM:Your offer exceeds your monetary resources. Get loans or lower your offer.",Username,true);
 			}//end elseif(funds too low)
 			else if (offeringPlayer.getMyHouse().isNewbieHouse()) {
-				CampaignMain.cm.toUser("No Mercenary would ever fight for SOL!",Username,true);
+				CampaignMain.cm.toUser("AM:No Mercenary would ever fight for SOL!",Username,true);
 			}//end elseif(no Sol may offer)
 			else if ((offeringPlayer.getMyHouse()).isMercHouse()) {
-				CampaignMain.cm.toUser("Mercenaries may not employ other mercenaries",Username,true);
+				CampaignMain.cm.toUser("AM:Mercenaries may not employ other mercenaries",Username,true);
 			}//end elseif(offering playeris merc)
 			//make sure that the merc is online. only loggedin players get contract offers.
 			else if ((receivingPlayer.getMyHouse()).isLoggedIntoFaction(receivingPlayerName) == false) {
-				CampaignMain.cm.toUser("You may only offer contracts to players currently online",Username,true);
+				CampaignMain.cm.toUser("AM:You may only offer contracts to players currently online",Username,true);
 			}//end elseif -> player offline
 			else if(((MercHouse)(receivingPlayer.getMyHouse())).getContractInfo(receivingPlayer) != null) {//if a contract already exists
-				CampaignMain.cm.toUser("You may not offer contracts to mercenaries with employers",Username,true);
+				CampaignMain.cm.toUser("AM:You may not offer contracts to mercenaries with employers",Username,true);
 			}//end elseif->player has contract
 			else {//player is a merc, non-trader, online, employable, etc so give him the offer.
 				CampaignMain.cm.toUser(offeringPlayer.getName() + " of " + (offeringPlayer.getMyHouse()).getName() + " has offered you " + CampaignMain.cm.moneyOrFluMessage(true,false,contractPayment)+" for " + contractDuration + " "+strContractType+" of service.",receivingPlayerName,true);
-				CampaignMain.cm.toUser("You have offered " + receivingPlayerName + " " + CampaignMain.cm.moneyOrFluMessage(true,false,contractPayment)+" for " + contractDuration + " "+strContractType+" of service.",Username,true);
+				CampaignMain.cm.toUser("AM:You have offered " + receivingPlayerName + " " + CampaignMain.cm.moneyOrFluMessage(true,false,contractPayment)+" for " + contractDuration + " "+strContractType+" of service.",Username,true);
 				//make a new contract
 				ContractInfo newContract = new ContractInfo(contractDuration, contractPayment, offeringPlayer.getMyHouse(), receivingPlayerName, contractType);
 				newContract.setOfferingPlayer(offeringPlayer);//set the offering player
 				CampaignMain.cm.getUnresolvedContracts().add(newContract);//add newContract to vector of contracts.
 				CampaignMain.cm.getUnresolvedContracts().trimToSize();
-				CampaignMain.cm.toUser("Accept this contract by <a href=\"MEKWARS/c acceptcontract#" + offeringPlayer.getName()+"\">clicking here</a>",receivingPlayerName ,true);
-				CampaignMain.cm.toUser("Decline this contract by <a href=\"MEKWARS/c refusecontract#" + offeringPlayer.getName()+"\">clicking here</a>",receivingPlayerName,true);
-				CampaignMain.cm.toUser("Cancel this offer by <a href=\"MEKWARS/c canceloffer\">clicking here</a>",Username,true);
+				CampaignMain.cm.toUser("AM:Accept this contract by <a href=\"MEKWARS/c acceptcontract#" + offeringPlayer.getName()+"\">clicking here</a>",receivingPlayerName ,true);
+				CampaignMain.cm.toUser("AM:Decline this contract by <a href=\"MEKWARS/c refusecontract#" + offeringPlayer.getName()+"\">clicking here</a>",receivingPlayerName,true);
+				CampaignMain.cm.toUser("AM:Cancel this offer by <a href=\"MEKWARS/c canceloffer\">clicking here</a>",Username,true);
 			}//end if offeringplayer is ok, and receivingplayer is non-trader merc.
 		}//end ifismerc
 		else {
-			CampaignMain.cm.toUser("You may not offer contracts to non-mercenary players.",Username,true);
+			CampaignMain.cm.toUser("AM:You may not offer contracts to non-mercenary players.",Username,true);
 		}//end else -> not merc.
 	}//end elseif OFFERCONTRACT
 }

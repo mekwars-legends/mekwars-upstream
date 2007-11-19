@@ -52,7 +52,7 @@ public class SetSearchLightCommand implements Command {
 			unitid= Integer.parseInt(command.nextToken());
 		}//end try
 		catch (NumberFormatException ex) {
-			CampaignMain.cm.toUser("SetSearchLight command failed. Check your input. It should be something like this: /c SetSerachLight#unitid#true/false#true/false",Username,true);
+			CampaignMain.cm.toUser("AM:SetSearchLight command failed. Check your input. It should be something like this: /c SetSerachLight#unitid#true/false#true/false",Username,true);
 			return;
 		}//end catch
 		
@@ -60,7 +60,7 @@ public class SetSearchLightCommand implements Command {
 			searchLight = new Boolean(command.nextToken()).booleanValue();
 		}//end try
 		catch (Exception ex){
-			CampaignMain.cm.toUser("SetSearchLight command failed. Check your input. It should be something like this: /c SetSerachLight#unitid#true/false#true/false",Username,true);
+			CampaignMain.cm.toUser("AM:SetSearchLight command failed. Check your input. It should be something like this: /c SetSerachLight#unitid#true/false#true/false",Username,true);
 			return;
 		}//end catch
 		
@@ -68,7 +68,7 @@ public class SetSearchLightCommand implements Command {
 			searchLightSetting = new Boolean(command.nextToken()).booleanValue();
 		}//end try
 		catch (Exception ex){
-			CampaignMain.cm.toUser("SetSearchLight command failed. Check your input. It should be something like this: /c SetSerachLight#unitid#true/false#true/false",Username,true);
+			CampaignMain.cm.toUser("AM:SetSearchLight command failed. Check your input. It should be something like this: /c SetSerachLight#unitid#true/false#true/false",Username,true);
 			return;
 		}//end catch
 
@@ -80,7 +80,7 @@ public class SetSearchLightCommand implements Command {
 		en.setSpotlight(searchLight);
 		en.setSpotlightState(searchLightSetting);
 		unit.setEntity(en);
-		CampaignMain.cm.toUser("Searchlight set for "+ unit.getModelName(),Username,true);
+		CampaignMain.cm.toUser("AM:Searchlight set for "+ unit.getModelName(),Username,true);
 		
 	}//end process() 
 }//end SetSearchLightCommand class

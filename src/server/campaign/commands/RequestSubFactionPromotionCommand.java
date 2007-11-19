@@ -50,12 +50,12 @@ public class RequestSubFactionPromotionCommand implements Command {
 			subFactionName = command.nextToken();
 			subFaction = faction.getSubFactionList().get(subFactionName);
 		}catch(Exception ex){
-			CampaignMain.cm.toUser("Invalid Syntax: /RequestSubFactionPromotion subFactionname", Username);
+			CampaignMain.cm.toUser("AM:Invalid Syntax: /RequestSubFactionPromotion subFactionname", Username);
 			return;
 		}
 		
 		if( subFaction == null ){
-			CampaignMain.cm.toUser("That SubFaction does not exist for faction "+faction.getName()+".", Username);
+			CampaignMain.cm.toUser("AM:That SubFaction does not exist for faction "+faction.getName()+".", Username);
 			return;
 		}
 		
@@ -63,22 +63,22 @@ public class RequestSubFactionPromotionCommand implements Command {
 		int minEXP = Integer.parseInt(subFaction.getConfig("MinExp"));
 		
 		if ( player.getExperience() < minEXP || player.getRating() < minELO ){
-			CampaignMain.cm.toUser("Sorry but you are not skilled enough to join that SubFaction.", Username);
+			CampaignMain.cm.toUser("AM:Sorry but you are not skilled enough to join that SubFaction.", Username);
 			return;
 		}
 		
 		if ( player.getSubFactionAccess() > Integer.parseInt(subFaction.getConfig("AccessLevel")) ){
-			CampaignMain.cm.toUser("Sorry but you cannot demote yourself", Username);
+			CampaignMain.cm.toUser("AM:Sorry but you cannot demote yourself", Username);
 			return;
 		}
 		
 		if ( CampaignMain.cm.getBooleanConfig("autoPromoteSubFaction") ){
 			player.setSubFaction(subFactionName);
-			CampaignMain.cm.toUser("PS|"+player.toString(true), Username,false);
-			CampaignMain.cm.toUser("Congratulations you have been promoted to SubFaction "+subFactionName+".", Username);
+			CampaignMain.cm.toUser("AM:PS|"+player.toString(true), Username,false);
+			CampaignMain.cm.toUser("AM:Congratulations you have been promoted to SubFaction "+subFactionName+".", Username);
 			CampaignMain.cm.doSendHouseMail(player.getMyHouse(), "NOTE", player.getName()+" has been promoted to subfaction "+subFactionName+"!");
 		}else{
-			CampaignMain.cm.toUser("Your request for a promotion has been noted. Someone will be in touch.", Username);
+			CampaignMain.cm.toUser("AM:Your request for a promotion has been noted. Someone will be in touch.", Username);
 			String msg = Username+" has requested for a promtion to subfaction "+subFactionName+"<a href=\"MEKWARS/c promoteplayer#" + Username + "#" + subFactionName +"\">Click here to promote.</a>";
 			faction.sendMessageToHouseLeaders(msg);
 			CampaignMain.cm.doSendModMail("Note", msg);

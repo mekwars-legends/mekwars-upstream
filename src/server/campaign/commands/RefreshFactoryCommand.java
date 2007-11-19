@@ -44,7 +44,7 @@ public class RefreshFactoryCommand implements Command {
 		}
 		
 		if (!CampaignMain.cm.getBooleanConfig("AllowFactoryRefreshForRewards")) {
-			CampaignMain.cm.toUser("You may not use RP to refresh a factory on this server.",Username,true);
+			CampaignMain.cm.toUser("AM:You may not use RP to refresh a factory on this server.",Username,true);
 			return;   
 		}
 		
@@ -57,19 +57,19 @@ public class RefreshFactoryCommand implements Command {
 			planetName = command.nextToken();
 			factoryName = command.nextToken();
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper format. Try: /c refreshfactory#planetname#factoryname",Username,true);
+			CampaignMain.cm.toUser("AM:Improper format. Try: /c refreshfactory#planetname#factoryname",Username,true);
 			return;   
 		}
 		
 		SPlanet p = (SPlanet)CampaignMain.cm.getData().getPlanetByName(planetName);
 		if (p == null){
-			CampaignMain.cm.toUser("Could not find planet: " + planetName + ".",Username,true);
+			CampaignMain.cm.toUser("AM:Could not find planet: " + planetName + ".",Username,true);
 			return;   
 		}
 		
 		SUnitFactory uf = (SUnitFactory)CampaignMain.cm.getData().getFactoryByName(p,factoryName);
 		if (uf == null){
-			CampaignMain.cm.toUser("Could not find factory: " + factoryName + ".",Username,true);
+			CampaignMain.cm.toUser("AM:Could not find factory: " + factoryName + ".",Username,true);
 			return;               
 		}
 		
@@ -85,7 +85,7 @@ public class RefreshFactoryCommand implements Command {
 		
 		CampaignMain.cm.doSendToAllOnlinePlayers(player.getMyHouse(), "HS|" + refresh, false);
 
-		CampaignMain.cm.toUser("You refreshed "+ uf.getName()+" on planet "+p.getName()+" (-"+rpCost+" RP).",Username,true);
+		CampaignMain.cm.toUser("AM:You refreshed "+ uf.getName()+" on planet "+p.getName()+" (-"+rpCost+" RP).",Username,true);
 		CampaignMain.cm.doSendHouseMail(player.getMyHouse(), "NOTE",player.getName()+" refreshed "+ uf.getName()+" on planet "+p.getName());
 	}
 }

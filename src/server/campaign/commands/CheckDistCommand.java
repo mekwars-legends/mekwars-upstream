@@ -43,7 +43,7 @@ public class CheckDistCommand implements Command {
 			SPlayer player = CampaignMain.cm.getPlayer(Username);
 			SPlanet p = (SPlanet)CampaignMain.cm.getData().getPlanetByName(command.nextToken());
 			if (p != null)
-				CampaignMain.cm.toUser("SM|Distance to " + p.getName() + " is " + player.getMyHouse().getDistanceTo(p, CampaignMain.cm.getPlayer(Username)),Username,false);
+				CampaignMain.cm.toUser("AM:SM|Distance to " + p.getName() + " is " + player.getMyHouse().getDistanceTo(p, CampaignMain.cm.getPlayer(Username)),Username,false);
 		}
 	}//end process()
 	

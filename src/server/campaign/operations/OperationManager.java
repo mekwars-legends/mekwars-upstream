@@ -875,7 +875,7 @@ public class OperationManager {
 	public String tick() {
 		
 		TreeMap<Long,ShortOperation> timeSort = new TreeMap<Long,ShortOperation>();
-		String toReturn = "<b><i>Recently Completed Games:</i><br></b>";
+		String toReturn = "<b><i>Recently Completed Games:</i><br>";
 		
 		Iterator<ShortOperation> i = this.runningOperations.values().iterator();
 		while (i.hasNext()) {
@@ -896,12 +896,14 @@ public class OperationManager {
 		
 		//write info, in time order.
 		boolean completeInfo = CampaignMain.cm.getBooleanConfig("ShowCompleteGameInfoOnTick");
+		if (timeSort.size() == 0)
+			return "";
+
 		for (ShortOperation currO : timeSort.values())
 			toReturn += currO.getInfo(completeInfo,false) + "<br>";
 		
-		if (timeSort.size() == 0)
-			return "";
-			
+
+		toReturn += "</b>";
 		timeSort.clear();//make sure ops are purged.
 		return toReturn;
 	}//end .tick()

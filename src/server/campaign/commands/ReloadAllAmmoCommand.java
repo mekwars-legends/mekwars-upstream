@@ -52,7 +52,7 @@ public class ReloadAllAmmoCommand implements Command {
 		try {
 			unitid= Integer.parseInt(command.nextToken());
 		} catch (NumberFormatException ex) {
-			CampaignMain.cm.toUser("ReloadAllAmmo command failed. Check your input. It should be something like this: /c reloadAllAmmo#unitid",Username,true);
+			CampaignMain.cm.toUser("AM:ReloadAllAmmo command failed. Check your input. It should be something like this: /c reloadAllAmmo#unitid",Username,true);
 			return;
 		}
 		
@@ -92,7 +92,7 @@ public class ReloadAllAmmoCommand implements Command {
 			}
 	
 			if ( cost > p.getMoney() ) {
-				CampaignMain.cm.toUser("You do not have enough to fully reload Unit #" +unit.getId()+". It would cost "+CampaignMain.cm.moneyOrFluMessage(true,false,cost), Username);
+				CampaignMain.cm.toUser("AM:You do not have enough to fully reload Unit #" +unit.getId()+". It would cost "+CampaignMain.cm.moneyOrFluMessage(true,false,cost), Username);
 				return;
 			}
 			
@@ -143,10 +143,10 @@ public class ReloadAllAmmoCommand implements Command {
 			
 		}
 		//unit.toString() sent's BV to zero and recalculates, so we don't need to do it in this Command class.
-		CampaignMain.cm.toUser("PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
+		CampaignMain.cm.toUser("AM:PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
 		
 		p.addMoney(-cost);
-		CampaignMain.cm.toUser("Ammo set for " + unit.getModelName() + " (#" +unit.getId()+") at a cost of "+CampaignMain.cm.moneyOrFluMessage(true,false,cost),Username,true);
+		CampaignMain.cm.toUser("AM:Ammo set for " + unit.getModelName() + " (#" +unit.getId()+") at a cost of "+CampaignMain.cm.moneyOrFluMessage(true,false,cost),Username,true);
 		
 	}//end process() 
 }//end SetMaintainedCommand class

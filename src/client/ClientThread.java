@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.StringTokenizer;
@@ -1180,32 +1181,26 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
     
     private Vector<IBasicOption> sortAndShrinkGameOptions(Vector<IBasicOption> defaults, Vector<IOption>serverGameOptions, Vector<IOption>OperationGameOptions){
     	
-    	Vector<IBasicOption> returnedOptions = new Vector<IBasicOption>(defaults.size(),1);
+    	Vector<IBasicOption> returnedOptions = new Vector<IBasicOption>(OperationGameOptions.size(),1);
+    	Hashtable<String, IBasicOption> gameHash = new Hashtable<String, IBasicOption>();
     	
-    	
-    	//Hierarchy
-    	//Operation Game Options
-    	//Server Game Options
-    	
+
+    	//Start with a base of Server options
+		for (IOption option: serverGameOptions){
+			gameHash.put(option.getName(),option);
+		}
+		//Over write the server options with the Operation options
     	for (IOption option:OperationGameOptions){
-    		
-    		for (int pos = 0; pos < serverGameOptions.size(); pos++ ){
-    			if ( serverGameOptions.elementAt(pos).getName().equals(option.getName()) ){
-    				serverGameOptions.set(pos,option);
-    				break;
-    			}
-    		}
+			gameHash.put(option.getName(),option);
     	}
     	
-    	//Remove any options are are the same as the defaults.
-    	for (IBasicOption option: serverGameOptions){
+    	//Only add options to the return list that are different from the game defaults.
+    	for (IBasicOption option: defaults){
     		
-    		for (int pos = 0; pos < defaults.size(); pos++ ){
-    			if ( defaults.elementAt(pos).getName().equals(option.getName()) ){
-    				if ( defaults.elementAt(pos).getValue() != option.getValue() )
-    					returnedOptions.add(option);
-    				continue;
-    			}
+    		IBasicOption currentOption = gameHash.get(option.getName() );
+ 
+    		if ( currentOption != null && !option.getValue().toString().equals(currentOption.getValue().toString()) ){
+				returnedOptions.add(currentOption);
     		}
     	}
 

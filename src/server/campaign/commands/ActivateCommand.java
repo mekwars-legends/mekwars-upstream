@@ -52,7 +52,7 @@ public class ActivateCommand implements Command {
 		
 		SPlayer p = CampaignMain.cm.getPlayer(Username);
 		if (new Boolean(CampaignMain.cm.getConfig("CampaignLock")).booleanValue() == true) {
-			CampaignMain.cm.toUser("The campaign is currently locked. Player activation is disabled until the campaign is unlocked. NOTE: Running games will resolve normally.",Username,true);
+			CampaignMain.cm.toUser("AM:The campaign is currently locked. Player activation is disabled until the campaign is unlocked. NOTE: Running games will resolve normally.",Username,true);
 			return;
 		}
 		
@@ -64,36 +64,36 @@ public class ActivateCommand implements Command {
 			if (!(MWServ.SERVER_VERSION).substring(0,server.MWServ.SERVER_VERSION.lastIndexOf(".")).equals(p.getPlayerClientVersion().substring(0,p.getPlayerClientVersion().lastIndexOf("."))) ) {
 				//server.MWServ.mwlog.modLog(Username + " failed to activate. Was using version " + p.getPlayerClientVersion()+" Server Version: "+ MWServ.SERVER_VERSION);
 				CampaignMain.cm.doSendModMail("NOTE",Username + " failed to activate. Was using version " + p.getPlayerClientVersion()+" Server Version: "+ MWServ.SERVER_VERSION);
-				CampaignMain.cm.toUser("You may not go active with an incompatible client version! Please switch to version " + MWServ.SERVER_VERSION +"!",Username,true);
+				CampaignMain.cm.toUser("AM:You may not go active with an incompatible client version! Please switch to version " + MWServ.SERVER_VERSION +"!",Username,true);
 				return;
 			}
 		} catch (Exception ex) {
 			MWServ.mwlog.errLog("Error activating player. User reported client verson: " + p.getPlayerClientVersion() + " --- Stack Trace Follows.");	   
 			//MWServ.mwlog.errLog(ex);
-			CampaignMain.cm.toUser("Your clients version was not reported to the server. <a href=\"MEKWARS/c setclientversion#"+ Username+ "#" + MWServ.SERVER_VERSION + "\">Click here to update the server.</a> then try to activate again.", Username);
+			CampaignMain.cm.toUser("AM:Your clients version was not reported to the server. <a href=\"MEKWARS/c setclientversion#"+ Username+ "#" + MWServ.SERVER_VERSION + "\">Click here to update the server.</a> then try to activate again.", Username);
 			return;
 		}
 		
 		int currentStatus = p.getDutyStatus();
 		if (currentStatus == SPlayer.STATUS_FIGHTING) {
-			CampaignMain.cm.toUser("You are already fighting!",Username,true);
+			CampaignMain.cm.toUser("AM:You are already fighting!",Username,true);
 			return;
 		}
 		
 		if (currentStatus == SPlayer.STATUS_ACTIVE) {
-			CampaignMain.cm.toUser("You are already on active duty!",Username,true);
+			CampaignMain.cm.toUser("AM:You are already on active duty!",Username,true);
 			return;
 		}
 		
 		//this should never come up, but better safe than sorry
 		if (currentStatus == SPlayer.STATUS_LOGGEDOUT) {
-			CampaignMain.cm.toUser("You are logged out and may not activate.",Username,true);
+			CampaignMain.cm.toUser("AM:You are logged out and may not activate.",Username,true);
 			return;
 		}
 		
 		//if player has no armies, break out
 		if (p.getArmies().size() == 0){
-			CampaignMain.cm.toUser("You must have armies constructed in order to activate.",Username,true);
+			CampaignMain.cm.toUser("AM:You must have armies constructed in order to activate.",Username,true);
 			return;
 		}
 
@@ -101,14 +101,14 @@ public class ActivateCommand implements Command {
 		for (SArmy currA : p.getArmies()) {
 			
 			if (currA.getAmountOfUnits() == 0) {
-				CampaignMain.cm.toUser("You may not activate with empty armies.",Username,true);
+				CampaignMain.cm.toUser("AM:You may not activate with empty armies.",Username,true);
 				return;
 			}
 			
 			for (Unit currU : currA.getUnits()) {
 				
 				if (currU.hasVacantPilot()) {
-					CampaignMain.cm.toUser("You may not activate with pilotless units!",Username,true);
+					CampaignMain.cm.toUser("AM:You may not activate with pilotless units!",Username,true);
 					return;
 				}
 			}
@@ -116,7 +116,7 @@ public class ActivateCommand implements Command {
 		}
 		
 		if ( !CampaignMain.cm.getBooleanConfig("allowGoingActiveWithoutUnitCommanders") && hasCommanderlessUnits(p.getArmies())){
-			CampaignMain.cm.toUser("You may not activate with armies lacking unit commanders!",Username,true);
+			CampaignMain.cm.toUser("AM:You may not activate with armies lacking unit commanders!",Username,true);
 			return;
 		}
 		
@@ -124,27 +124,27 @@ public class ActivateCommand implements Command {
 		if (CampaignMain.cm.isUsingAdvanceRepair()) {
 			
 			if (this.armiesContainEnginedUnit(p.getArmies())){
-				CampaignMain.cm.toUser("You may not activate with an engine-disabled unit in an army.",Username,true);
+				CampaignMain.cm.toUser("AM:You may not activate with an engine-disabled unit in an army.",Username,true);
 				return;
 			}
 			
 			if (this.armiesContainLeggedUnit(p.getArmies())){
-				CampaignMain.cm.toUser("You may not activate with a legless unit in an army.",Username,true);
+				CampaignMain.cm.toUser("AM:You may not activate with a legless unit in an army.",Username,true);
 				return;
 			}
 			
 			if (p.hasRepairingUnits()){
-				CampaignMain.cm.toUser("You may not activate while units in your armies are undergoing repairs.",Username,true);
+				CampaignMain.cm.toUser("AM:You may not activate while units in your armies are undergoing repairs.",Username,true);
 				return;
 			}
 			
             if ( CampaignMain.cm.getBooleanConfig("UseSimpleRepair") && this.armiesDamagedUnits(p.getArmies())){
-                CampaignMain.cm.toUser("You may not activate while units in your armies have damage.",Username,true);
+                CampaignMain.cm.toUser("AM:You may not activate while units in your armies have damage.",Username,true);
                 return;
             }
             
             if ( !CampaignMain.cm.getBooleanConfig("AllowUnitsToActivateWithPartialBins") && this.armiesPartialAmmoBinUnits(p.getArmies())){
-                CampaignMain.cm.toUser("You may not activate while units in your armies have parital ammo bins.",Username,true);
+                CampaignMain.cm.toUser("AM:You may not activate while units in your armies have parital ammo bins.",Username,true);
                 return;
             }
 
@@ -162,7 +162,7 @@ public class ActivateCommand implements Command {
 		for (SArmy currA : p.getArmies()) {
 			for (Unit currUnit : currA.getUnits()) {
 				if (currUnit.getStatus() == Unit.STATUS_UNMAINTAINED) {
-					CampaignMain.cm.toUser("You may not send armies containing unmaintained units to the front lines!",Username,true);
+					CampaignMain.cm.toUser("AM:You may not send armies containing unmaintained units to the front lines!",Username,true);
 					return;
 				}
 			}
@@ -170,22 +170,22 @@ public class ActivateCommand implements Command {
 		
 		if (p.getFreeBays() < 0){
 			if (CampaignMain.cm.isUsingAdvanceRepair())
-				CampaignMain.cm.toUser("You may not activate with negative bays!",Username,true);
+				CampaignMain.cm.toUser("AM:You may not activate with negative bays!",Username,true);
 			else
-				CampaignMain.cm.toUser("You may not activate with negative techs!",Username,true);
+				CampaignMain.cm.toUser("AM:You may not activate with negative techs!",Username,true);
 			return;
 		}
 		
 		int armyID = hasIllegalOpArmies(p, p.getArmies());
 		
 		if ( armyID > -1 ){
-			CampaignMain.cm.toUser("Army #"+armyID+" is currently unable to launch or defend any ops!  You may not go active.",Username,true);
+			CampaignMain.cm.toUser("AM:Army #"+armyID+" is currently unable to launch or defend any ops!  You may not go active.",Username,true);
 			return;
 		}
 		
 		p.setActive(true);
 		
-		CampaignMain.cm.toUser("[!] You're on your way to the front lines.",Username,true);
+		CampaignMain.cm.toUser("AM:[!] You're on your way to the front lines.",Username,true);
 		CampaignMain.cm.sendPlayerStatusUpdate(p,!new Boolean(CampaignMain.cm.getConfig("HideActiveStatus")).booleanValue());
 		
 		//set up a thread which will do an auto /c ca once the minactivetime expires

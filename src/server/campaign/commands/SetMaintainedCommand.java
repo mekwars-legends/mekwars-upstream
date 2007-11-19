@@ -51,23 +51,23 @@ public class SetMaintainedCommand implements Command {
 			numtoset = Integer.parseInt(command.nextToken());
 		}//end try
 		catch (NumberFormatException ex) {
-			CampaignMain.cm.toUser("SetMaintained command failed. Check your input. It should be something like this: /c setmaintained#12",Username,true);
+			CampaignMain.cm.toUser("AM:SetMaintained command failed. Check your input. It should be something like this: /c setmaintained#12",Username,true);
 			return;
 		}//end catch
 		
 		SUnit unitToSet = p.getUnit(numtoset);
 		if (unitToSet == null) {
-			CampaignMain.cm.toUser("Invalid id number. Make sure you're using the right unit number.",Username,true);
+			CampaignMain.cm.toUser("AM:Invalid id number. Make sure you're using the right unit number.",Username,true);
 			return;
 		}
 		
 		if (unitToSet.getStatus() == Unit.STATUS_OK) {
-			CampaignMain.cm.toUser("This unit is already maintained.",Username,true);
+			CampaignMain.cm.toUser("AM:This unit is already maintained.",Username,true);
 			return;
 		}
 		
 		if (unitToSet.getStatus() == Unit.STATUS_FORSALE) {
-			CampaignMain.cm.toUser("You may not change the maintenance status of a unit which is being sold.",Username,true);
+			CampaignMain.cm.toUser("AM:You may not change the maintenance status of a unit which is being sold.",Username,true);
 			return;
 		}
 		
@@ -89,22 +89,22 @@ public class SetMaintainedCommand implements Command {
 				if(numTechs == 1)
 					plural = "s";
 				
-				CampaignMain.cm.toUser("You need to hire " + numTechs + " more technician" + plural + " in order to maintain this unit. Doing so would " +
+				CampaignMain.cm.toUser("AM:You need to hire " + numTechs + " more technician" + plural + " in order to maintain this unit. Doing so would " +
 						" cost " + CampaignMain.cm.moneyOrFluMessage(true,false,techCost)+", and you only have " +CampaignMain.cm.moneyOrFluMessage(true,true,p.getMoney()) + ".",Username,true);
 				return;	
 			}
 			
-			String toReturn = "You must hire " + numTechs + " more technicians in order to maintain this unit. Doing so will cost " +CampaignMain.cm.moneyOrFluMessage(true,true,techCost)+".<br>";
-			toReturn += "<a href=\"MEKWARS/c hireandmaintain#" + numTechs + "#" + numtoset + "\">Click here to hire the technicians and maintain the unit.</a>";    	
+			String toReturn = "AM:You must hire " + numTechs + " more technicians in order to maintain this unit. Doing so will cost " +CampaignMain.cm.moneyOrFluMessage(true,true,techCost)+".<br>";
+			toReturn += "AM:<a href=\"MEKWARS/c hireandmaintain#" + numTechs + "#" + numtoset + "\">Click here to hire the technicians and maintain the unit.</a>";    	
 			CampaignMain.cm.toUser(toReturn,Username,true);
 			return;
 		}//end if(not enough techs to maintain)
 		
 		//passes checks. now actually make the unit maintained.
 		unitToSet.setStatus(Unit.STATUS_OK);
-		CampaignMain.cm.toUser("PL|SB|"+p.getTotalMekBays(),Username,false);
-		CampaignMain.cm.toUser("PL|SF|"+p.getFreeBays(),Username,false);
-		CampaignMain.cm.toUser("PL|SUS|"+unitToSet.getId()+"#"+Unit.STATUS_OK,Username,false);
+		CampaignMain.cm.toUser("AM:PL|SB|"+p.getTotalMekBays(),Username,false);
+		CampaignMain.cm.toUser("AM:PL|SF|"+p.getFreeBays(),Username,false);
+		CampaignMain.cm.toUser("AM:PL|SUS|"+unitToSet.getId()+"#"+Unit.STATUS_OK,Username,false);
 		CampaignMain.cm.toUser(unitToSet.getPilot().getName() + "'s " + unitToSet.getModelName() + " is now being maintained." ,Username,true);
 		p.setSave();
 		

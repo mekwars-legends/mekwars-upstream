@@ -73,7 +73,7 @@ public class AcceptAttackFromReserveCommand implements Command {
             opName = command.nextToken();
             target = CampaignMain.cm.getPlanetFromPartialString(command.nextToken(),null);
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper format. Should be /c acceptattackfromreserve#attacker name#attack army#your army#opname#world",Username,true);
+			CampaignMain.cm.toUser("AM:Improper format. Should be /c acceptattackfromreserve#attacker name#attack army#your army#opname#world",Username,true);
 			return;
 		}
 		
@@ -83,26 +83,26 @@ public class AcceptAttackFromReserveCommand implements Command {
 
         aa = ap.getArmy(attackingArmyID);
         if (aa == null) {
-			CampaignMain.cm.toUser("Defend failed. Attacker does not have an army with ID #" + armyID + ".",Username,true);
+			CampaignMain.cm.toUser("AM:Defend failed. Attacker does not have an army with ID #" + armyID + ".",Username,true);
 			return;
 		}
         
         da = dp.getArmy(armyID);
 		if (da == null) {
-			CampaignMain.cm.toUser("Defend failed. Army #" + armyID + " does not exist.",Username,true);
+			CampaignMain.cm.toUser("AM:Defend failed. Army #" + armyID + " does not exist.",Username,true);
 			return;
 		}
         
 		//Ensure offer is still valid
         Long launchTime = ap.getLastAttackFromReserve();
         if (launchTime + (Long.parseLong(CampaignMain.cm.getConfig("AttackFromReserveResponseTime")) * 60000) < System.currentTimeMillis()) {
-            CampaignMain.cm.toUser("Sorry - this offer has expired.",Username,true);
+            CampaignMain.cm.toUser("AM:Sorry - this offer has expired.",Username,true);
             return;
         }
         
         //Don't let players defend multiple games
 		if(dp.getDutyStatus() == SPlayer.STATUS_FIGHTING) {
-			CampaignMain.cm.toUser("You are already fighting!", Username, true);
+			CampaignMain.cm.toUser("AM:You are already fighting!", Username, true);
 			return;
 		}
         
@@ -129,7 +129,7 @@ public class AcceptAttackFromReserveCommand implements Command {
          */
         for (Unit currU : da.getUnits()) {
         	if (currU.hasVacantPilot()) {
-        		CampaignMain.cm.toUser("You may not defend using an army with pilotless units.",Username,true);
+        		CampaignMain.cm.toUser("AM:You may not defend using an army with pilotless units.",Username,true);
         		return;
         	}
         }
@@ -175,7 +175,7 @@ public class AcceptAttackFromReserveCommand implements Command {
 		int flu = o.getIntValue("DefenderCostInfluence");
 		int rp = o.getIntValue("DefenderCostReward");
 		
-		String toSend = "You are now defending Attack #" + opID;
+		String toSend = "AM:You are now defending Attack #" + opID;
 		
 		boolean hasCost = false;
 		

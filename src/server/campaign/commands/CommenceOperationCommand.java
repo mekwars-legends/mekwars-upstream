@@ -52,38 +52,38 @@ public class CommenceOperationCommand implements Command {
 			opID = Integer.parseInt(command.nextToken());
             confirm = command.nextToken();
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper format. Try: /c commenceOperation#Op number#CONFIRM",Username,true);
+			CampaignMain.cm.toUser("AM:Improper format. Try: /c commenceOperation#Op number#CONFIRM",Username,true);
 			return;
 		}
 		
 		//get the player
 		SPlayer ap = CampaignMain.cm.getPlayer(Username);
 		if (ap == null) {
-			CampaignMain.cm.toUser("Null player. Report this immediately!",Username,true);
+			CampaignMain.cm.toUser("AM:Null player. Report this immediately!",Username,true);
 			return;
 		}
 
         if ( !confirm.equals("CONFIRM") ){
-            CampaignMain.cm.toUser("This command must be confirmed!",Username,true);
+            CampaignMain.cm.toUser("AM:This command must be confirmed!",Username,true);
             return;
         }
         
 		//check the attack
 		ShortOperation so = CampaignMain.cm.getOpsManager().getRunningOps().get(opID);
 		if (so == null) {
-			CampaignMain.cm.toUser("Operation #" + opID + " does not exist.",Username,true);
+			CampaignMain.cm.toUser("AM:Operation #" + opID + " does not exist.",Username,true);
 			return;
 		}
 		
 		//check FFA
 		Operation o = CampaignMain.cm.getOpsManager().getOperation(so.getName());
         if ( !o.getBooleanValue("FreeForAllOperation")){
-            CampaignMain.cm.toUser("This command can only be used on Free For All Operations!", Username);
+            CampaignMain.cm.toUser("AM:This command can only be used on Free For All Operations!", Username);
             return;
         }
 
         if ( !so.getAttackers().containsKey(ap.getName().toLowerCase()) ){
-            CampaignMain.cm.toUser("Only the attacker may commence this operation! ",Username,true);
+            CampaignMain.cm.toUser("AM:Only the attacker may commence this operation! ",Username,true);
             return;
         }
             
@@ -91,12 +91,12 @@ public class CommenceOperationCommand implements Command {
 		if (so.getStatus() != ShortOperation.STATUS_WAITING) {
 			
 			if (so.getStatus() == ShortOperation.STATUS_FINISHED) {
-				CampaignMain.cm.toUser("Operation #" + opID + " is finished.",Username,true);
+				CampaignMain.cm.toUser("AM:Operation #" + opID + " is finished.",Username,true);
 				return;
 			} 
 			
 			//else
-			CampaignMain.cm.toUser("Operation #" + opID + " has already commenced.",Username,true);
+			CampaignMain.cm.toUser("AM:Operation #" + opID + " has already commenced.",Username,true);
 			return;
 		}
 
@@ -106,7 +106,7 @@ public class CommenceOperationCommand implements Command {
         }catch ( Exception ex){}
         
         if ( (so.getDefenders().size()+so.getAttackers().size()) < minPlayers ){
-            CampaignMain.cm.toUser("Operation #" + opID + " does not have enough players to commence!<br>At least "+minPlayers+" players are needed.",Username,true);
+            CampaignMain.cm.toUser("AM:Operation #" + opID + " does not have enough players to commence!<br>At least "+minPlayers+" players are needed.",Username,true);
             return;
         }
             
@@ -114,7 +114,7 @@ public class CommenceOperationCommand implements Command {
 		
 		//tell the defender that he has succesfully joined the attack.
 		MWServ.mwlog.gameLog("Operation Commenced: " + so.getShortID() + "/" + ap.getName());
-		CampaignMain.cm.toUser("Operation Commenced!",Username,true);
+		CampaignMain.cm.toUser("AM:Operation Commenced!",Username,true);
 		
 	}//end process
 	

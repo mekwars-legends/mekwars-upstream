@@ -57,26 +57,26 @@ public class FireTechsCommand implements Command {
 			numtofire = Integer.parseInt(command.nextToken());
 		}//end try
 		catch (NumberFormatException ex) {
-			CampaignMain.cm.toUser("Couldn't tell how many techs to fire. Check your input. It should be something like this: /c firetechs#3",Username,true);
+			CampaignMain.cm.toUser("AM:Couldn't tell how many techs to fire. Check your input. It should be something like this: /c firetechs#3",Username,true);
 			return;
 		}//end catch
 		
 		//Check to see if the player is firing too many technicians
 		if (p.getTechnicians() < numtofire) {
-			CampaignMain.cm.toUser("You tried to fire " + numtofire + " technicians, but you only have " + p.getTechnicians() + " independent techs " +
+			CampaignMain.cm.toUser("AM:You tried to fire " + numtofire + " technicians, but you only have " + p.getTechnicians() + " independent techs " +
 					"on your payroll. The rest were assigned to your force by your faction and can't be dismissed.",Username,true);
 			return;
 		}
 		
 		//Check to see if the player is fighting. Engaged players can't fire techs.
 		if (p.getDutyStatus() == SPlayer.STATUS_FIGHTING) {
-			CampaignMain.cm.toUser("You may not fire technicians while you are engaged! Wait until your units are out of battle and fully repaired!",Username,true);
+			CampaignMain.cm.toUser("AM:You may not fire technicians while you are engaged! Wait until your units are out of battle and fully repaired!",Username,true);
 			return;
 		}//end if(fighting)
 		
 		//dont want a unit being marked unmaintained while its in an active army, so only let reserve players fire techs
 		if (p.getDutyStatus() == SPlayer.STATUS_ACTIVE) {
-			CampaignMain.cm.toUser("You may not fire technicians while you are active! Withdraw from the front lines " +
+			CampaignMain.cm.toUser("AM:You may not fire technicians while you are active! Withdraw from the front lines " +
 					"before reducing your support levels!",Username,true);
 			return;
 		}//end if(active)
@@ -93,9 +93,9 @@ public class FireTechsCommand implements Command {
 		p.addTechnicians(-numtofire);
 		
 		if ( numtofire == 1)
-			CampaignMain.cm.toUser("You fire 1 technician.",Username,true);
+			CampaignMain.cm.toUser("AM:You fire 1 technician.",Username,true);
 		else
-			CampaignMain.cm.toUser("You fired " + numtofire + " technicians.",Username,true);
+			CampaignMain.cm.toUser("AM:You fired " + numtofire + " technicians.",Username,true);
 		
 		if (p.getFreeBays() < 0) {
 			int numUnmaintained = p.setRandomUnmaintained();
@@ -124,12 +124,12 @@ public class FireTechsCommand implements Command {
         int availableTechsToFire = player.getAvailableTechs().elementAt(techType);
         
         if ( totalTechsToFire < numberOfTechs ){
-            CampaignMain.cm.toUser("You do not have enough "+UnitUtils.techDescription(techType)+" techs to fire! You only have "+totalTechsToFire+".",Username,true);
+            CampaignMain.cm.toUser("AM:You do not have enough "+UnitUtils.techDescription(techType)+" techs to fire! You only have "+totalTechsToFire+".",Username,true);
             return;
         }
         
         if ( availableTechsToFire < numberOfTechs){
-            CampaignMain.cm.toUser("While you do have enough techs to fire some of them are currently working and you must wait for them to finish before you can fire them.",Username,true);
+            CampaignMain.cm.toUser("AM:While you do have enough techs to fire some of them are currently working and you must wait for them to finish before you can fire them.",Username,true);
             return;
         }
         
@@ -137,9 +137,9 @@ public class FireTechsCommand implements Command {
         player.addTotalTechs(techType,-numberOfTechs);
         
         if ( numberOfTechs == 1)
-            CampaignMain.cm.toUser("You have fired a "+UnitUtils.techDescription(techType)+" tech.",Username,true);
+            CampaignMain.cm.toUser("AM:You have fired a "+UnitUtils.techDescription(techType)+" tech.",Username,true);
         else
-            CampaignMain.cm.toUser("You have fired "+numberOfTechs+" "+UnitUtils.techDescription(techType)+" techs.",Username,true);
+            CampaignMain.cm.toUser("AM:You have fired "+numberOfTechs+" "+UnitUtils.techDescription(techType)+" techs.",Username,true);
         
     }//end fireAdvanceTechs
     

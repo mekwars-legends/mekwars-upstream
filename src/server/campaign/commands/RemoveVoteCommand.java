@@ -49,20 +49,20 @@ public class RemoveVoteCommand implements Command {
 			recipientName = new String(command.nextToken()).toString();
 		}//end try
 		catch (NumberFormatException ex) {
-			CampaignMain.cm.toUser("RemoveVote command failed. Check your input. It should be something like this: /c removevote#name",Username,true);
+			CampaignMain.cm.toUser("AM:RemoveVote command failed. Check your input. It should be something like this: /c removevote#name",Username,true);
 			return;
 		}//end catch
 		
 		//break out if a player is trying to vote for himself
 		if (Username.equals(recipientName)) {
-			CampaignMain.cm.toUser("You may not vote for youself.",Username,true);
+			CampaignMain.cm.toUser("AM:You may not vote for youself.",Username,true);
 			return;
 		}
 		
 		//break out if voting isnt enabled on the server
 		boolean canVote = new Boolean(CampaignMain.cm.getConfig("VotingEnabled")).booleanValue();
 		if (!canVote) {
-			CampaignMain.cm.toUser("Voting is disabled on this server.",Username,true);
+			CampaignMain.cm.toUser("AM:Voting is disabled on this server.",Username,true);
 			return;
 		}
 		
@@ -71,7 +71,7 @@ public class RemoveVoteCommand implements Command {
 		
 		//break out if the player has no outstanding votes to remove
 		if (castersVotes.isEmpty()) {
-			CampaignMain.cm.toUser("You have not cast any votes. Removal is impossible.",Username,true);
+			CampaignMain.cm.toUser("AM:You have not cast any votes. Removal is impossible.",Username,true);
 			return;
 		}
 		
@@ -80,7 +80,7 @@ public class RemoveVoteCommand implements Command {
 		
 		//break out if the recieving player isnt known
 		if (recipientPlayer == null) {
-			CampaignMain.cm.toUser("You can't remove a vote for a player who doesn't exist.",Username,true);
+			CampaignMain.cm.toUser("AM:You can't remove a vote for a player who doesn't exist.",Username,true);
 			return;
 		}
 		
@@ -103,18 +103,18 @@ public class RemoveVoteCommand implements Command {
 		 */
 		
 		if (!hasVoteForRecipient) {
-			CampaignMain.cm.toUser("You have not voted for this player.",Username,true);
+			CampaignMain.cm.toUser("AM:You have not voted for this player.",Username,true);
 			return;
 		}
 		
 		//else if
 		boolean voteRemoved = CampaignMain.cm.getVoteManager().removeVote(v);
 		if (!voteRemoved) {
-			CampaignMain.cm.toUser("There was an error removing the vote. Please contact your " + "server admin or file a bug report.", Username, true);
+			CampaignMain.cm.toUser("AM:There was an error removing the vote. Please contact your " + "server admin or file a bug report.", Username, true);
 			return;
 		}
 			
 		//else
-		CampaignMain.cm.toUser("Your vote for " + recipientName + " has been removed.",Username,true);
+		CampaignMain.cm.toUser("AM:Your vote for " + recipientName + " has been removed.",Username,true);
 	}
 }

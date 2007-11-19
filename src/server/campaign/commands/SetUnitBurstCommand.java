@@ -54,7 +54,7 @@ public class SetUnitBurstCommand implements Command {
 			unitid= Integer.parseInt(command.nextToken());
 		}//end try
 		catch (NumberFormatException ex) {
-			CampaignMain.cm.toUser("SetBurstAmmo command failed. Check your input. It should be something like this: /c setUnitAmmo#unitid#weaponlocation#true/false",Username,true);
+			CampaignMain.cm.toUser("AM:SetBurstAmmo command failed. Check your input. It should be something like this: /c setUnitAmmo#unitid#weaponlocation#true/false",Username,true);
 			return;
 		}//end catch
 		
@@ -62,7 +62,7 @@ public class SetUnitBurstCommand implements Command {
 			weaponLocation = Integer.parseInt(command.nextToken());
 		}//end try
 		catch (Exception ex){
-			CampaignMain.cm.toUser("SetBurstAmmo command failed. Check your input. It should be something like this: /c setUnitAmmo#unitid#weaponlocation#true/false",Username,true);
+			CampaignMain.cm.toUser("AM:SetBurstAmmo command failed. Check your input. It should be something like this: /c setUnitAmmo#unitid#weaponlocation#true/false",Username,true);
 			return;
 		}//end catch
 		
@@ -70,7 +70,7 @@ public class SetUnitBurstCommand implements Command {
 			selection = new Boolean(command.nextToken()).booleanValue();
 		}//end try
 		catch (Exception ex){
-			CampaignMain.cm.toUser("SetBurstAmmo command failed. Check your input. It should be something like this: /c setUnitAmmo#unitid#weaponlocation#true/false",Username,true);
+			CampaignMain.cm.toUser("AM:SetBurstAmmo command failed. Check your input. It should be something like this: /c setUnitAmmo#unitid#weaponlocation#true/false",Username,true);
 			return;
 		}//end catch
 		
@@ -94,9 +94,9 @@ public class SetUnitBurstCommand implements Command {
 		
 		mWeapon.setRapidfire(selection);
 		unit.setEntity(en);
-		CampaignMain.cm.toUser("PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
+		CampaignMain.cm.toUser("AM:PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
 		
-		CampaignMain.cm.toUser("Rapid fire set for " + unit.getModelName() + " (#" +unit.getId()+").",Username,true);
+		CampaignMain.cm.toUser("AM:Rapid fire set for " + unit.getModelName() + " (#" +unit.getId()+").",Username,true);
 		
 	}//end process() 
 }//end SetMaintainedCommand class

@@ -48,7 +48,7 @@ public class DeclineAttackFromReserveCommand implements Command {
         Long launchTime = ap.getLastAttackFromReserve();
         
         if ( launchTime + (Long.parseLong(CampaignMain.cm.getConfig("AttackFromReserveResponseTime"))*60000) < System.currentTimeMillis() ){
-            CampaignMain.cm.toUser("Sorry but this offer has already expired.",Username,true);
+            CampaignMain.cm.toUser("AM:Sorry but this offer has already expired.",Username,true);
             return;
         }
         
@@ -56,8 +56,8 @@ public class DeclineAttackFromReserveCommand implements Command {
         
         ap.setLastAttackFromReserve(launchTime-(Long.parseLong(CampaignMain.cm.getConfig("AttackFromReserveResponseTime"))*60000));
         
-        CampaignMain.cm.toUser(Username+" has declined your proposal.",ap.getName(),true);
-        CampaignMain.cm.toUser("You have declined "+ap.getName()+"'s proposal.",Username,true);
+        CampaignMain.cm.toUser(Username+"AM: has declined your proposal.",ap.getName(),true);
+        CampaignMain.cm.toUser("AM:You have declined "+ap.getName()+"'s proposal.",Username,true);
         
 	}//end process
 	

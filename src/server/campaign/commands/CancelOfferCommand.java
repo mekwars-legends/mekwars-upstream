@@ -53,11 +53,11 @@ public class CancelOfferCommand implements Command {
 			}//end if(offering player has contract outstanding)
 		}//end for(length of vector)
 		if (contractRemoved == true) {
-			CampaignMain.cm.toUser("You have cancelled your offer to " + receivingPlayerName,Username,true);
+			CampaignMain.cm.toUser("AM:You have cancelled your offer to " + receivingPlayerName,Username,true);
 			CampaignMain.cm.toUser(offeringPlayer.getName() + " has rescinded his contract offer",receivingPlayerName,true);
 		}//end if(a contract was removed)
 		else if (contractRemoved == false) {
-			CampaignMain.cm.toUser("There was no outstanding contract to cancel!",Username,true);
+			CampaignMain.cm.toUser("AM:There was no outstanding contract to cancel!",Username,true);
 		}//end elseif(no contract was removed)
 	}//end process
 }

@@ -49,17 +49,17 @@ public class FactionLeaderMuteCommand implements Command {
 		try {
 			p = CampaignMain.cm.getPlayer(command.nextToken());
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper command. Try: /c factionleadermute#PlayerName", Username, true);
+			CampaignMain.cm.toUser("AM:Improper command. Try: /c factionleadermute#PlayerName", Username, true);
 			return;
 		}
 		
 		if (p == null) {
-			CampaignMain.cm.toUser("Couldn't find a player with that name.", Username, true);
+			CampaignMain.cm.toUser("AM:Couldn't find a player with that name.", Username, true);
 			return;
 		}
 		
 		if ( !leader.getMyHouse().getName().equalsIgnoreCase(p.getMyHouse().getName()) ){
-			CampaignMain.cm.toUser("You are not in the same faction as "+p.getName()+ ". You may not mute them!",Username,true);
+			CampaignMain.cm.toUser("AM:You are not in the same faction as "+p.getName()+ ". You may not mute them!",Username,true);
 			return;
 		}
 		

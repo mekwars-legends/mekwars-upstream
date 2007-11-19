@@ -54,17 +54,17 @@ public class DemotePlayerCommand implements Command {
 			grunt = CampaignMain.cm.getPlayer(command.nextToken());
 			subFactionName = command.nextToken();
 		}catch(Exception ex){
-			CampaignMain.cm.toUser("Invalid Syntax: /demoteplayer Player#NewSubFactionName[none]", Username);
+			CampaignMain.cm.toUser("AM:Invalid Syntax: /demoteplayer Player#NewSubFactionName[none]", Username);
 			return;
 		}
 		
 		if ( grunt == null ){
-			CampaignMain.cm.toUser("Unknown Player", Username);
+			CampaignMain.cm.toUser("AM:Unknown Player", Username);
 			return;
 		}
 		
 		if ( !grunt.getMyHouse().getName().equalsIgnoreCase(leader.getMyHouse().getName()) && !CampaignMain.cm.getServer().isModerator(Username) ){
-			CampaignMain.cm.toUser("You can only demote players that within your same faction!", Username);
+			CampaignMain.cm.toUser("AM:You can only demote players that within your same faction!", Username);
 			return;
 		}
 		
@@ -74,7 +74,7 @@ public class DemotePlayerCommand implements Command {
 			subFaction = grunt.getMyHouse().getSubFactionList().get(subFactionName);
 		
 		if( subFaction == null ){
-			CampaignMain.cm.toUser("That SubFaction does not exist for faction "+grunt.getMyHouse().getName()+".", Username);
+			CampaignMain.cm.toUser("AM:That SubFaction does not exist for faction "+grunt.getMyHouse().getName()+".", Username);
 			return;
 		}
 		
@@ -82,18 +82,18 @@ public class DemotePlayerCommand implements Command {
 		int minEXP = Integer.parseInt(subFaction.getConfig("MinExp"));
 
 		if ( grunt.getSubFactionAccess() < Integer.parseInt(subFaction.getConfig("AccessLevel")) ){
-			CampaignMain.cm.toUser("You cannot demote "+grunt.getName()+" to a subfaction with a higher access level", Username);
+			CampaignMain.cm.toUser("AM:You cannot demote "+grunt.getName()+" to a subfaction with a higher access level", Username);
 			return;
 		}
 		
 		if ( grunt.getExperience() < minEXP || grunt.getRating() < minELO ){
-			CampaignMain.cm.toUser("Sorry but "+grunt.getName()+" is not skilled enough to join that SubFaction.", Username);
+			CampaignMain.cm.toUser("AM:Sorry but "+grunt.getName()+" is not skilled enough to join that SubFaction.", Username);
 			return;
 		}
 		
 		grunt.setSubFaction(subFactionName);
-		CampaignMain.cm.toUser("PS|"+grunt.toString(true), Username,false);
-		CampaignMain.cm.toUser("You have been demoted to SubFaction "+subFactionName+".", grunt.getName());
+		CampaignMain.cm.toUser("AM:PS|"+grunt.toString(true), Username,false);
+		CampaignMain.cm.toUser("AM:You have been demoted to SubFaction "+subFactionName+".", grunt.getName());
 		CampaignMain.cm.doSendHouseMail(grunt.getMyHouse(), "NOTE", grunt.getName()+" has been demoted to subfaction "+subFactionName+" by "+leader.getName()+"!");
 	
 	}

@@ -47,7 +47,7 @@ public class ArmyOpForceSizeCommand implements Command {
 			//first, make sure limiters are allowed ...
 			boolean useForceSize = new Boolean(CampaignMain.cm.getConfig("UseOperationsRule")).booleanValue();
 			if (!useForceSize) {
-				CampaignMain.cm.toUser("Force size is disabled.",Username,true);
+				CampaignMain.cm.toUser("AM:Force size is disabled.",Username,true);
 				return;
 			}
 			
@@ -59,14 +59,14 @@ public class ArmyOpForceSizeCommand implements Command {
 				SPlayer p = CampaignMain.cm.getPlayer(Username);
 				if (p != null) {
 					if (p.getDutyStatus() == SPlayer.STATUS_ACTIVE) {
-						CampaignMain.cm.toUser("You cannot change op force size while active.",Username,true);
+						CampaignMain.cm.toUser("AM:You cannot change op force size while active.",Username,true);
 						return;
 					}
 					SArmy army = p.getArmy(armyid);
 					if (army != null) {
 						
 						if (limit < Army.NO_LIMIT) {//-1 is NO_LIMIT
-							CampaignMain.cm.toUser("You may not set negative op force size.",Username,true);
+							CampaignMain.cm.toUser("AM:You may not set negative op force size.",Username,true);
 							return;
 						}
 						
@@ -74,9 +74,9 @@ public class ArmyOpForceSizeCommand implements Command {
 						army.setOpForceSize(limit);
 						
 						if (limit == -1)
-							CampaignMain.cm.toUser("Army #" + armyid + "'s op force size disabled.",Username,true);
+							CampaignMain.cm.toUser("AM:Army #" + armyid + "'s op force size disabled.",Username,true);
 						else	
-							CampaignMain.cm.toUser("Army #" + armyid + "'s op force size set to " + limit + ".",Username,true);
+							CampaignMain.cm.toUser("AM:Army #" + armyid + "'s op force size set to " + limit + ".",Username,true);
 						
 						CampaignMain.cm.toUser("PL|SAOFS|"+army.getID()+"#"+army.getOpForceSize(),Username,false);
 					}

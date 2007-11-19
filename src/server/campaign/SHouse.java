@@ -2257,7 +2257,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		//send the player the latest data from the factionbays
 		p.setLastOnline(System.currentTimeMillis());//must be done after smallplayer creation
 		
-		return ("[*] Logged into " + getColoredNameAsLink() + ".");
+		return ("<b>[*] Logged into " + getColoredNameAsLink() + ".</b>");
 	}
 
 	/**

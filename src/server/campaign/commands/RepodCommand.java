@@ -84,17 +84,17 @@ public class RepodCommand implements Command {
 			
 			//blow out if player has a null unit
 			if (m == null) {
-				CampaignMain.cm.toUser("You do not have a unit with ID# "+ unitid +".", Username, true);
+				CampaignMain.cm.toUser("AM:You do not have a unit with ID# "+ unitid +".", Username, true);
 				return;
 			}
 			
 			if (p.mayAcquireWelfareUnits()) {
-				CampaignMain.cm.toUser("You may not repod your units while you are on welfare!",Username,true);
+				CampaignMain.cm.toUser("AM:You may not repod your units while you are on welfare!",Username,true);
 				return;
 			}
 			
 			if ( UnitUtils.hasArmorDamage(m.getEntity()) || UnitUtils.hasCriticalDamage(m.getEntity()) ){
-				CampaignMain.cm.toUser("This unit is currently damaged and cannot be repodded until you repair it.",Username,true);
+				CampaignMain.cm.toUser("AM:This unit is currently damaged and cannot be repodded until you repair it.",Username,true);
 				return;
 			}
 			
@@ -114,7 +114,7 @@ public class RepodCommand implements Command {
 			
 			//return if the unit which is targetted is not an omni
 			if (!m.isOmni()) {
-				CampaignMain.cm.toUser("Your " + m.getVerboseModelName() + " is not an Omni.", Username, true);
+				CampaignMain.cm.toUser("AM:Your " + m.getVerboseModelName() + " is not an Omni.", Username, true);
 				return;
 			}
 			
@@ -123,7 +123,7 @@ public class RepodCommand implements Command {
 			//      .checkOperations() circumstances (add, then remove, need to know
 			//      which armies are impacted, etc).
 			if (p.getAmountOfTimesUnitExistsInArmies(m.getId()) > 0) {
-				CampaignMain.cm.toUser("You may not repod a unit while it is in an army.",Username,true);
+				CampaignMain.cm.toUser("AM:You may not repod a unit while it is in an army.",Username,true);
 				return;
 			}
 			
@@ -209,7 +209,7 @@ public class RepodCommand implements Command {
 			
 			//MWServ.mwlog.errLog("table size is "+i);
 			if (i < 1) {
-				CampaignMain.cm.toUser("Repod Failed: No acceptable factory currently available", Username, true);
+				CampaignMain.cm.toUser("AM:Repod Failed: No acceptable factory currently available", Username, true);
 				return;
 			}
 			
@@ -314,7 +314,7 @@ public class RepodCommand implements Command {
 				
 				int size = variants.size();
 				if (size <= 0){
-					CampaignMain.cm.toUser("No random targets available for "+ m.getModelName() + ".",Username,true);
+					CampaignMain.cm.toUser("AM:No random targets available for "+ m.getModelName() + ".",Username,true);
 					return;
 				}
 				if (size == 1){
@@ -362,7 +362,7 @@ public class RepodCommand implements Command {
 		//make sure a vaild unit is select for the repod first.
 		SUnit cm = new SUnit(unitid,m.getProducer(),Filename);
 		if (cm.getModelName().equals("OMG-UR-FD")) {
-			CampaignMain.cm.toUser("Invaild repod format try again!",Username,true);
+			CampaignMain.cm.toUser("AM:Invaild repod format try again!",Username,true);
 			return;
 		}
 		
@@ -398,7 +398,7 @@ public class RepodCommand implements Command {
 					moneyCost = (moneyCost * repodRandomMod)/100;
 				
 				if (p.getMoney() < moneyCost) {
-					CampaignMain.cm.toUser("You do not have enough money to repod this unit! It will cost "+CampaignMain.cm.moneyOrFluMessage(true,false,moneyCost)+" to repod this unit",Username, true);
+					CampaignMain.cm.toUser("AM:You do not have enough money to repod this unit! It will cost "+CampaignMain.cm.moneyOrFluMessage(true,false,moneyCost)+" to repod this unit",Username, true);
 					return;
 				}
 				
@@ -408,7 +408,7 @@ public class RepodCommand implements Command {
 					influenceCost = (influenceCost*repodRandomMod)/100;
 				
 				if (p.getInfluence() < influenceCost) {
-					CampaignMain.cm.toUser("You do not have enough influence to repod this unit! It will cost "+CampaignMain.cm.moneyOrFluMessage(false,false,influenceCost)+" to repod this unit!",Username, true);
+					CampaignMain.cm.toUser("AM:You do not have enough influence to repod this unit! It will cost "+CampaignMain.cm.moneyOrFluMessage(false,false,influenceCost)+" to repod this unit!",Username, true);
 					return;
 				}
 				
@@ -418,7 +418,7 @@ public class RepodCommand implements Command {
 						compCost = (compCost*repodRandomMod)/100;
 					
 					if (h.getPP(m.getWeightclass(),m.getType()) < compCost) {
-						CampaignMain.cm.toUser("Your faction doesn't have enough components to repod this unit. You need "+compCost+" components to repod.",Username, true);
+						CampaignMain.cm.toUser("AM:Your faction doesn't have enough components to repod this unit. You need "+compCost+" components to repod.",Username, true);
 						return;
 					}
 				}
@@ -443,7 +443,7 @@ public class RepodCommand implements Command {
 		}
 		else{
 			if (p.getReward() < rpCost){
-				CampaignMain.cm.toUser("You do not have enough reward points to repod this unit!",Username, true);
+				CampaignMain.cm.toUser("AM:You do not have enough reward points to repod this unit!",Username, true);
 				return;
 			}
 			p.addReward(-rpCost);
@@ -480,15 +480,15 @@ public class RepodCommand implements Command {
 		
 		//and the unit and send informational messages to player.
 		p.addUnit(cm,true);
-		CampaignMain.cm.toUser("Your " + m.getVerboseModelName() + " is now " + StringUtils.aOrAn(cm.getVerboseModelName(), true) + ".", Username, true);
+		CampaignMain.cm.toUser("AM:Your " + m.getVerboseModelName() + " is now " + StringUtils.aOrAn(cm.getVerboseModelName(), true) + ".", Username, true);
 		if (!global){
 			if ( new Boolean(h.getConfig("RepodUsesComp")).booleanValue() )
-				CampaignMain.cm.toUser("Repodding cost " + CampaignMain.cm.moneyOrFluMessage(true,false,moneyCost)+" and " + CampaignMain.cm.moneyOrFluMessage(false,true,influenceCost)+" "+compCost+" Components.",Username, true);
+				CampaignMain.cm.toUser("AM:Repodding cost " + CampaignMain.cm.moneyOrFluMessage(true,false,moneyCost)+" and " + CampaignMain.cm.moneyOrFluMessage(false,true,influenceCost)+" "+compCost+" Components.",Username, true);
 			else    
-				CampaignMain.cm.toUser("Repodding cost " +CampaignMain.cm.moneyOrFluMessage(true,false,moneyCost)+" and " + CampaignMain.cm.moneyOrFluMessage(false,true,influenceCost) + ".",Username, true);
+				CampaignMain.cm.toUser("AM:Repodding cost " +CampaignMain.cm.moneyOrFluMessage(true,false,moneyCost)+" and " + CampaignMain.cm.moneyOrFluMessage(false,true,influenceCost) + ".",Username, true);
 		}
 		else
-			CampaignMain.cm.toUser("Repodding cost "+rpCost+" reward points.",Username,true);
+			CampaignMain.cm.toUser("AM:Repodding cost "+rpCost+" reward points.",Username,true);
 		
 		return;//break out of it all
 	}

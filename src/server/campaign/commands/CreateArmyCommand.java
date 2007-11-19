@@ -44,12 +44,12 @@ public class CreateArmyCommand implements Command {
 		int maxlances = CampaignMain.cm.getIntegerConfig("MaxLancesPerPlayer");
 		
 		if (p.getDutyStatus() == SPlayer.STATUS_ACTIVE) {
-			CampaignMain.cm.toUser("You may not create new armies while on active duty.",Username,true);
+			CampaignMain.cm.toUser("AM:You may not create new armies while on active duty.",Username,true);
 			return;
 		}
 		
 		if ( p.getArmies().size() >= maxlances ) {
-			CampaignMain.cm.toUser("You have reached the max number of allowable armies ("+maxlances+").",Username,true);
+			CampaignMain.cm.toUser("AM:You have reached the max number of allowable armies ("+maxlances+").",Username,true);
 			return;
 		}
 		
@@ -84,46 +84,46 @@ public class CreateArmyCommand implements Command {
 				name = name.substring(0,50);
 			
 			if (name.indexOf("%") != -1) {
-				CampaignMain.cm.toUser("Illegal army name (% forbidden).",Username,true);
+				CampaignMain.cm.toUser("AM:Illegal army name (% forbidden).",Username,true);
 				illegalName = true;
 			} else if (name.indexOf("~") != -1) {
-				CampaignMain.cm.toUser("Illegal army name (~ forbidden).",Username,true);
+				CampaignMain.cm.toUser("AM:Illegal army name (~ forbidden).",Username,true);
 				illegalName = true;
 			} else if (name.indexOf("$") != -1) {
-				CampaignMain.cm.toUser("Illegal army name ($ forbidden).",Username,true);
+				CampaignMain.cm.toUser("AM:Illegal army name ($ forbidden).",Username,true);
 				illegalName = true;
 			} else if (name.indexOf("|") != -1) {
-				CampaignMain.cm.toUser("Illegal army name (| forbidden).",Username,true);
+				CampaignMain.cm.toUser("AM:Illegal army name (| forbidden).",Username,true);
 				illegalName = true;
 			} else if (name.indexOf("!") != -1) {
-				CampaignMain.cm.toUser("Illegal army name (! forbidden).",Username,true);
+				CampaignMain.cm.toUser("AM:Illegal army name (! forbidden).",Username,true);
 				illegalName = true;
 			} else if (name.indexOf("*") != -1) {
-				CampaignMain.cm.toUser("Illegal army name (* forbidden).",Username,true);
+				CampaignMain.cm.toUser("AM:Illegal army name (* forbidden).",Username,true);
 				illegalName = true;
 			} else if (name.indexOf("#") != -1) {
-				CampaignMain.cm.toUser("Illegal army name (# forbidden).",Username,true);
+				CampaignMain.cm.toUser("AM:Illegal army name (# forbidden).",Username,true);
 				illegalName = true;
 			} else if (name.indexOf(">") != -1) {
-				CampaignMain.cm.toUser("Illegal army name (> forbidden).",Username,true);
+				CampaignMain.cm.toUser("AM:Illegal army name (> forbidden).",Username,true);
 				illegalName = true;
 			} else if (name.indexOf("<") != -1) {
-				CampaignMain.cm.toUser("Illegal army name (< forbidden).",Username,true);
+				CampaignMain.cm.toUser("AM:Illegal army name (< forbidden).",Username,true);
 				illegalName = true;
 			} else if (name.indexOf("@") != -1) {
-				CampaignMain.cm.toUser("Illegal army name (@ forbidden).",Username,true);
+				CampaignMain.cm.toUser("AM:Illegal army name (@ forbidden).",Username,true);
 				illegalName = true;
 			} else if (name.indexOf("&") != -1) {
-				CampaignMain.cm.toUser("Illegal army name (& forbidden).",Username,true);
+				CampaignMain.cm.toUser("AM:Illegal army name (& forbidden).",Username,true);
 				illegalName = true;
 			} else if (name.indexOf("^") != -1) {
-				CampaignMain.cm.toUser("Illegal army name (^ forbidden).",Username,true);
+				CampaignMain.cm.toUser("AM:Illegal army name (^ forbidden).",Username,true);
 				illegalName = true;
 			} else if (name.indexOf("+") != -1) {
-				CampaignMain.cm.toUser("Illegal army name (+ forbidden).",Username,true);
+				CampaignMain.cm.toUser("AM:Illegal army name (+ forbidden).",Username,true);
 				illegalName = true;
 			} else if (name.indexOf("=") != -1) {
-				CampaignMain.cm.toUser("Illegal army name (= forbidden).",Username,true);
+				CampaignMain.cm.toUser("AM:Illegal army name (= forbidden).",Username,true);
 				illegalName = true;
 			}
 			
@@ -139,8 +139,8 @@ public class CreateArmyCommand implements Command {
 		p.getArmies().add(newArmy);
 		
 		//send relevant data to client
-		CampaignMain.cm.toUser("PL|SAD|"+p.getArmy(i).toString(true,"%"),Username,false);
-		CampaignMain.cm.toUser("Created a new Army (#" + p.getArmy(i).getID() + ")." ,Username,true);
+		CampaignMain.cm.toUser("AM:PL|SAD|"+p.getArmy(i).toString(true,"%"),Username,false);
+		CampaignMain.cm.toUser("AM:Created a new Army (#" + p.getArmy(i).getID() + ")." ,Username,true);
 	
 	}//end process()
 }//end CreateArmyCommand

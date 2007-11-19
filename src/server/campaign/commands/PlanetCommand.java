@@ -44,12 +44,12 @@ public class PlanetCommand implements Command {
 			if (p == null)
 				return;
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper format. Try: /c planet#NAME",Username,true);
+			CampaignMain.cm.toUser("AM:Improper format. Try: /c planet#NAME",Username,true);
 			return;
 		}
 		
 		//found a valid world. send info.
-		CampaignMain.cm.toUser("SM|" + p.getLongDescription(false),Username,false);
+		CampaignMain.cm.toUser("AM:SM|" + p.getLongDescription(false),Username,false);
 		
 	}//end process()
 	

@@ -45,12 +45,12 @@ public class TransferMoneyCommand implements Command {
 		SHouse house = player.getMyHouse();
 		
 		if (player == null) {
-			CampaignMain.cm.toUser("Null player (" + Username + ") in transfermoney. Report to an admin.",Username,true);
+			CampaignMain.cm.toUser("AM:Null player (" + Username + ") in transfermoney. Report to an admin.",Username,true);
 			return;
 		}
 		
 		if (player.getMyHouse().isNewbieHouse()) {
-			CampaignMain.cm.toUser("You may not transfer " + house.getConfig("MoneyLongName") + " while in a training faction.",Username,true);
+			CampaignMain.cm.toUser("AM:You may not transfer " + house.getConfig("MoneyLongName") + " while in a training faction.",Username,true);
 			return;
 		}
 		
@@ -61,46 +61,46 @@ public class TransferMoneyCommand implements Command {
 			targetPlayer = (String) command.nextElement();
 			amount = Integer.parseInt((String) command.nextElement());
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper format. Try: /c transferunit#TargetPlayer#UnitID",Username,true);
+			CampaignMain.cm.toUser("AM:Improper format. Try: /c transferunit#TargetPlayer#UnitID",Username,true);
 			return;
 		}
 		
 		SPlayer targetplayer = CampaignMain.cm.getPlayer(targetPlayer);
 		if (targetplayer == null) {
-			CampaignMain.cm.toUser("Could not find a player named " + targetPlayer + ".",Username,true);
+			CampaignMain.cm.toUser("AM:Could not find a player named " + targetPlayer + ".",Username,true);
 			return;
 		}
 		
 		//no negative amounts
 		if (amount < 1) {
-			CampaignMain.cm.toUser("You must transfer at least 1 " + house.getConfig("MoneyLongName") + ".",Username,true);
+			CampaignMain.cm.toUser("AM:You must transfer at least 1 " + house.getConfig("MoneyLongName") + ".",Username,true);
 			return;
 		}
 		
 		// check for same-ip interaction
 		boolean ipcheck = Boolean.parseBoolean(house.getConfig("IPCheck"));
 		if (ipcheck && CampaignMain.cm.getServer().getIP(player.getName()).toString().equals(CampaignMain.cm.getServer().getIP(targetplayer.getName()).toString())) {
-			CampaignMain.cm.toUser(targetplayer.getName() + " has the same IP as you do. You can't send them "+house.getConfig("MoneyLongName"), Username, true);
+			CampaignMain.cm.toUser(targetplayer.getName() + "AM: has the same IP as you do. You can't send them "+house.getConfig("MoneyLongName"), Username, true);
 			return;
 		}
 		
 		// if the player is neither in the faction of the target, nor fighting for that faction
 		if (!targetplayer.getHouseFightingFor().equals(player.getMyHouse()) && !targetplayer.getMyHouse().equals(player.getMyHouse())) {
-			CampaignMain.cm.toUser(targetplayer.getName() + " is not from your faction! You can't send them "+house.getConfig("MoneyLongName"), Username, true);
+			CampaignMain.cm.toUser(targetplayer.getName() + "AM: is not from your faction! You can't send them "+house.getConfig("MoneyLongName"), Username, true);
 			return;
 		} 
 		
 		// welfare check
 		if (player.getMoney() - Integer.parseInt(house.getConfig("WelfareCeiling")) <= amount) {
-			CampaignMain.cm.toUser("You may not send that much money!",Username,true);
+			CampaignMain.cm.toUser("AM:You may not send that much money!",Username,true);
 			return;
 		} 
 		
 		//do the transfer
 		player.addMoney(-amount);
 		targetplayer.addMoney(amount);
-		CampaignMain.cm.toUser("You've transferred " + CampaignMain.cm.moneyOrFluMessage(true,true,amount)+" to " + targetplayer.getName(), Username, true);
-		CampaignMain.cm.toUser(player.getName() + " sends you " +CampaignMain.cm.moneyOrFluMessage(true,true,amount)+".", targetPlayer, true);
+		CampaignMain.cm.toUser("AM:You've transferred " + CampaignMain.cm.moneyOrFluMessage(true,true,amount)+" to " + targetplayer.getName(), Username, true);
+		CampaignMain.cm.toUser(player.getName() + "AM: sends you " +CampaignMain.cm.moneyOrFluMessage(true,true,amount)+".", targetPlayer, true);
 
 	}
 }

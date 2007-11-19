@@ -42,7 +42,7 @@ public class GamesCommand implements Command {
 		//load player
 		SPlayer p = CampaignMain.cm.getPlayer(Username);
 		if (p == null) {
-			CampaignMain.cm.toUser("Null player. Contact an administrator to report this, immediately!",Username,true);
+			CampaignMain.cm.toUser("AM:Null player. Contact an administrator to report this, immediately!",Username,true);
 			return;
 		}
 		
@@ -57,7 +57,7 @@ public class GamesCommand implements Command {
 				if (factionName.trim().length() > 0)
 					factionSort = true;
 			} catch (Exception ex) {
-				CampaignMain.cm.toUser("Games command failed. Check your input. It should be:" +
+				CampaignMain.cm.toUser("AM:Games command failed. Check your input. It should be:" +
 						"/c games (to get all games) or /c games#faction (for a filtered list)",Username,true);
 				return;
 			}

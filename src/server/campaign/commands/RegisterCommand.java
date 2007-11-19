@@ -79,7 +79,7 @@ public class RegisterCommand implements Command {
             }
              
             if (regged && !CampaignMain.cm.getServer().isAdmin(Username)) {
-            	CampaignMain.cm.toUser("Nickname \"" + regname + "\" is already registered!", Username);
+            	CampaignMain.cm.toUser("AM:Nickname \"" + regname + "\" is already registered!", Username);
                 //MWServ.mwlog.modLog(Username + " tried to register the nickname \"" + regname + "\", which was already registered.");
                 CampaignMain.cm.doSendModMail("NOTE",Username + " tried to register the nickname \"" + regname + "\", which was already registered.");
                 return;
@@ -87,7 +87,7 @@ public class RegisterCommand implements Command {
             	
             //check passwd length
             if (pw.length() < 3 && pw.length() > 11) {
-            	CampaignMain.cm.toUser("Passwords must be between 4 and 10 characters!", Username);
+            	CampaignMain.cm.toUser("AM:Passwords must be between 4 and 10 characters!", Username);
             	return;
             }
                 	
@@ -117,7 +117,7 @@ public class RegisterCommand implements Command {
             		CampaignMain.cm.MySQL.addUserToForum(Username, pw);
             }
             //acknowledge registration
-            CampaignMain.cm.toUser("\"" + regname + "\" successfully registered.", Username);
+            CampaignMain.cm.toUser("AM:\"" + regname + "\" successfully registered.", Username);
             MWServ.mwlog.modLog("New nickname registered: " + regname);
             CampaignMain.cm.doSendModMail("NOTE","New nickname registered: " + regname + " by: " + Username);
     	

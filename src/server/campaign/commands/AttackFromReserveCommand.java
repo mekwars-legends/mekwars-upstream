@@ -58,50 +58,50 @@ public class AttackFromReserveCommand implements Command {
 		OperationManager manager = CampaignMain.cm.getOpsManager();
 		SPlayer ap = CampaignMain.cm.getPlayer(Username);
 		if (ap == null) {
-			CampaignMain.cm.toUser("Null player. Contact an administrator to report this, immediately!",Username,true);
+			CampaignMain.cm.toUser("AM:Null player. Contact an administrator to report this, immediately!",Username,true);
 			return;
 		}
 
         if ( !CampaignMain.cm.getBooleanConfig("AllowAttackFromReserve")){
-            CampaignMain.cm.toUser("Sorry but attack from reserve is not allowed in this campaign!",Username,true);
+            CampaignMain.cm.toUser("AM:Sorry but attack from reserve is not allowed in this campaign!",Username,true);
             return;
         }
         
         //Fix for BUG 1491934: AFR possible when campaign locked
 		if (new Boolean(CampaignMain.cm.getConfig("CampaignLock")).booleanValue() == true) {
-			CampaignMain.cm.toUser("The campaign is currently locked. Attacks are disabled until the campaign is unlocked.",Username,true);
+			CampaignMain.cm.toUser("AM:The campaign is currently locked. Attacks are disabled until the campaign is unlocked.",Username,true);
 			return;
 		}
 		
 		//check time limits
         if (ap.getLastAttackFromReserve()+(Long.parseLong(CampaignMain.cm.getConfig("AttackFromReserveSleepTime"))*60000) > System.currentTimeMillis()) {
-            CampaignMain.cm.toUser("Sorry but you may only attack from reserve once every "+CampaignMain.cm.getConfig("AttackFromReserveSleepTime")+" mins.",Username,true);
+            CampaignMain.cm.toUser("AM:Sorry but you may only attack from reserve once every "+CampaignMain.cm.getConfig("AttackFromReserveSleepTime")+" mins.",Username,true);
             return;
         }
                 
 		//throw up if the player is not in reserve
 		if (ap.getDutyStatus() == SPlayer.STATUS_ACTIVE) {
-			CampaignMain.cm.toUser("You are currently active. You must deactivate in order to attack from reserve.)",Username,true);
+			CampaignMain.cm.toUser("AM:You are currently active. You must deactivate in order to attack from reserve.)",Username,true);
 			return;
 		}
 		
 		//can't attack while in a game
 		if (ap.getDutyStatus() == SPlayer.STATUS_FIGHTING) {
-			CampaignMain.cm.toUser("You are already fighting!", Username, true);
+			CampaignMain.cm.toUser("AM:You are already fighting!", Username, true);
 			return;
 		}
 		
 		//must leave/cancel any prior attacks to initiate new attack
 		int altID = CampaignMain.cm.getOpsManager().playerIsAnAttacker(ap);
 		if (altID >= 0) {
-			CampaignMain.cm.toUser("You're only allowed to attack once, and are already in Attack #" + altID + ".", Username, true);
+			CampaignMain.cm.toUser("AM:You're only allowed to attack once, and are already in Attack #" + altID + ".", Username, true);
 			return;	
 		}
 		
 		//can't AFR while a listed defendant elsewhere
 		altID = CampaignMain.cm.getOpsManager().playerIsADefender(ap);
 		if (altID >= 0) {
-			CampaignMain.cm.toUser("You're already defending against Attack #" + altID + ".", Username, true);
+			CampaignMain.cm.toUser("AM:You're already defending against Attack #" + altID + ".", Username, true);
 			return;	
 		}
 		
@@ -109,7 +109,7 @@ public class AttackFromReserveCommand implements Command {
 		String opName = command.nextToken();
 		Operation o = manager.getOperation(opName);
 		if (o == null) {
-			CampaignMain.cm.toUser("Operation Type: " + opName + " does not exist.",Username,true);
+			CampaignMain.cm.toUser("AM:Operation Type: " + opName + " does not exist.",Username,true);
 			return;
 		}
 		
@@ -118,25 +118,25 @@ public class AttackFromReserveCommand implements Command {
 		try {
 			armyID = Integer.parseInt(command.nextToken());
 		} catch (Exception e){
-			CampaignMain.cm.toUser("Non-number given for Army ID. Try again.",Username,true);
+			CampaignMain.cm.toUser("AM:Non-number given for Army ID. Try again.",Username,true);
 			return;
 		}
 		
 		SArmy aa = ap.getArmy(armyID);
 		if (aa == null) {
-			CampaignMain.cm.toUser("You do not have an army with ID #" + armyID + ".",Username,true);
+			CampaignMain.cm.toUser("AM:You do not have an army with ID #" + armyID + ".",Username,true);
 			return;
 		} 
 		
 		if (aa.getBV() == 0) {
-			CampaignMain.cm.toUser("Army #" + armyID + " has a BV of 0 and may not be used to attack.",Username,true);
+			CampaignMain.cm.toUser("AM:Army #" + armyID + " has a BV of 0 and may not be used to attack.",Username,true);
 			return;
 		}
 		
 		//return if any unpiloted units in attacking army.
 		for (Unit currU : aa.getUnits()) {
 			if (currU.hasVacantPilot()) {
-				CampaignMain.cm.toUser("You may not attack using an army with pilotless units.",Username,true);
+				CampaignMain.cm.toUser("AM:You may not attack using an army with pilotless units.",Username,true);
 				return;
 			}
 		}           
@@ -166,19 +166,19 @@ public class AttackFromReserveCommand implements Command {
         SPlayer dp = CampaignMain.cm.getPlayer(toFind);
 
         if (dp == null){
-            CampaignMain.cm.toUser("Could not find a player named " + toFind + ". Try again?",Username,true);
+            CampaignMain.cm.toUser("AM:Could not find a player named " + toFind + ". Try again?",Username,true);
             return;
         }
         
         if (ap.equals(dp)){
-            CampaignMain.cm.toUser("You cannot attack yourself. Nice try though.",Username,true);
+            CampaignMain.cm.toUser("AM:You cannot attack yourself. Nice try though.",Username,true);
             return;
         }
         
         //check for modnoplays
         if (ap.getExclusionList().checkExclude(dp.getName()) == ExclusionList.ADMIN_EXCLUDED ||
         	dp.getExclusionList().checkExclude(ap.getName()) == ExclusionList.ADMIN_EXCLUDED) {
-        	CampaignMain.cm.toUser("A moderator-added no play stops you from playing with " + dp.getName() + ".",Username,true);
+        	CampaignMain.cm.toUser("AM:A moderator-added no play stops you from playing with " + dp.getName() + ".",Username,true);
             return;
         }
 
@@ -198,7 +198,7 @@ public class AttackFromReserveCommand implements Command {
 
         //if target player can't defend, return
         if (defendingArmies.size() == 0){
-            CampaignMain.cm.toUser(dp.getName()+ " cannot defend your attack with his current force(s).",Username,true);
+            CampaignMain.cm.toUser(dp.getName()+ "AM: cannot defend your attack with his current force(s).",Username,true);
             return;
         }
         
@@ -206,7 +206,7 @@ public class AttackFromReserveCommand implements Command {
         ap.setLastAttackFromReserve(System.currentTimeMillis());
         
         //send messages informing the involved players
-        CampaignMain.cm.toUser("Your attack proposal was sent to "+ dp.getName(),Username,true);
+        CampaignMain.cm.toUser("AM:Your attack proposal was sent to "+ dp.getName(),Username,true);
         StringBuilder toSend = new StringBuilder(ap.getName()+" proposes you a game of "+o.getName()+" on planet "+target.getNameAsColoredLink()+" with "+aa.getAmountOfUnits()+" units totalling "+aa.getBV()+" BV. You may accept with:  <br>");
         
         //give clickables to potential defender

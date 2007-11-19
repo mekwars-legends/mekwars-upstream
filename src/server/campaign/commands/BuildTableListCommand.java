@@ -98,7 +98,7 @@ public class BuildTableListCommand implements Command {
 		    CampaignMain.cm.toUser("SM|"+results,Username,false);
 		}
 		catch(Exception ex){
-		    CampaignMain.cm.toUser("Unknown path try again!",Username,true);
+		    CampaignMain.cm.toUser("AM:Unknown path try again!",Username,true);
 		    MWServ.mwlog.errLog("Error with build table list");
 		    MWServ.mwlog.errLog(ex);
 		    return;

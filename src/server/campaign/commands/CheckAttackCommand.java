@@ -50,26 +50,26 @@ public class CheckAttackCommand implements Command {
 		//break if player isnt active
 		boolean canProbeFromReserve = CampaignMain.cm.getBooleanConfig("ProbeInReserve");
 		if(!canProbeFromReserve && p.getDutyStatus() < SPlayer.STATUS_ACTIVE){
-			CampaignMain.cm.toUser("You are not on the frontline. You can't probe enemy forces from reserve!", Username, true);
+			CampaignMain.cm.toUser("AM:You are not on the frontline. You can't probe enemy forces from reserve!", Username, true);
 			return;
 		}
 		
 		//don't allow fighting players to /c ca spot for their comrades
 		if(p.getDutyStatus() == SPlayer.STATUS_FIGHTING) {
-			CampaignMain.cm.toUser("You should focus on playing your game!", Username, true);
+			CampaignMain.cm.toUser("AM:You should focus on playing your game!", Username, true);
 			return;
 		}
 		
 		//if not fighting, check to make sure minactivetime is met
 		boolean minActiveMet = System.currentTimeMillis() - p.getActiveSince() >= Long.parseLong(CampaignMain.cm.getConfig("MinActiveTime")) * 1000;
 		if (!canProbeFromReserve && !minActiveMet) {
-			CampaignMain.cm.toUser("You're still on your way to the frontline. Contact an intelligence officer once you arrive at your post.",Username,true);
+			CampaignMain.cm.toUser("AM:You're still on your way to the frontline. Contact an intelligence officer once you arrive at your post.",Username,true);
 			return;
 		}
 		
 		//don't allow uncontracted mercs to /c ca spot for their friends
 		if (p.getMyHouse().isMercHouse() && p.getHouseFightingFor() == p.getMyHouse()) {
-			CampaignMain.cm.toUser("You are not under contract!", Username, true);
+			CampaignMain.cm.toUser("AM:You are not under contract!", Username, true);
 			return;
 		}
 		
@@ -87,13 +87,13 @@ public class CheckAttackCommand implements Command {
 			try {
 				armyID = Integer.parseInt(command.nextToken());
 			} catch (Exception e) {
-				CampaignMain.cm.toUser("Improper format. Try: /c checkattack or /c checkattack#armyid", Username, true);
+				CampaignMain.cm.toUser("AM:Improper format. Try: /c checkattack or /c checkattack#armyid", Username, true);
 				return;
 			}
 			
 			SArmy arm = p.getArmy(armyID);
 			if (arm == null) {
-				CampaignMain.cm.toUser("Army #" + armyID + " doesn't exist.", Username, true);
+				CampaignMain.cm.toUser("AM:Army #" + armyID + " doesn't exist.", Username, true);
 				return;
 			}
 			

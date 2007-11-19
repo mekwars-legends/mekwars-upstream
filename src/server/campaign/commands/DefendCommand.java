@@ -57,40 +57,40 @@ public class DefendCommand implements Command {
 			armyID = Integer.parseInt(command.nextToken());
 			teamNumber = Integer.parseInt(command.nextToken());
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper format. Try: /c defend#attack number#army number#team number",Username,true);
+			CampaignMain.cm.toUser("AM:Improper format. Try: /c defend#attack number#army number#team number",Username,true);
 			return;
 		}
 		
 		//get the player
 		SPlayer dp = CampaignMain.cm.getPlayer(Username);
 		if (dp == null) {
-			CampaignMain.cm.toUser("Null player. Report this immediately!",Username,true);
+			CampaignMain.cm.toUser("AM:Null player. Report this immediately!",Username,true);
 			return;
 		}
 		
 		//check the attack
 		ShortOperation so = CampaignMain.cm.getOpsManager().getRunningOps().get(opID);
 		if (so == null) {
-			CampaignMain.cm.toUser("Defend failed. Attack #" + opID + " does not exist.",Username,true);
+			CampaignMain.cm.toUser("AM:Defend failed. Attack #" + opID + " does not exist.",Username,true);
 			return;
 		}
 		
 		//check the army
 		SArmy da = dp.getArmy(armyID);
 		if (da == null) {
-			CampaignMain.cm.toUser("Defend failed. Army #" + armyID + " does not exist.",Username,true);
+			CampaignMain.cm.toUser("AM:Defend failed. Army #" + armyID + " does not exist.",Username,true);
 			return;
 		}
 		
 		//don't let players defend multiple games
 		if(dp.getDutyStatus() == SPlayer.STATUS_FIGHTING) {
-			CampaignMain.cm.toUser("You are already fighting!", Username, true);
+			CampaignMain.cm.toUser("AM:You are already fighting!", Username, true);
 			return;
 		}
 		
 		//check the player's activity
 		if (dp.getDutyStatus() != SPlayer.STATUS_ACTIVE) {
-			CampaignMain.cm.toUser("Defend failed. You must be active to defend against an attack.",Username,true);
+			CampaignMain.cm.toUser("AM:Defend failed. You must be active to defend against an attack.",Username,true);
 			return;
 		}
 		
@@ -98,12 +98,12 @@ public class DefendCommand implements Command {
 		if (so.getStatus() != ShortOperation.STATUS_WAITING) {
 			
 			if (so.getStatus() == ShortOperation.STATUS_FINISHED) {
-				CampaignMain.cm.toUser("Defend failed. Attack #" + opID + " is finished.",Username,true);
+				CampaignMain.cm.toUser("AM:Defend failed. Attack #" + opID + " is finished.",Username,true);
 				return;
 			}
 			
 			//else, neither waiting nor finished. assume running.
-			CampaignMain.cm.toUser("Defend failed. Attack #" + opID + " is already defended.",Username,true);
+			CampaignMain.cm.toUser("AM:Defend failed. Attack #" + opID + " is already defended.",Username,true);
 			return;
 
 		}
@@ -134,7 +134,7 @@ public class DefendCommand implements Command {
 			}
 			
 			if (!isAnOpponent) {
-				CampaignMain.cm.toUser("Defend failed. Army #" + da.getID() + " is not an opponent "
+				CampaignMain.cm.toUser("AM:Defend failed. Army #" + da.getID() + " is not an opponent "
 						+ "for the army in Attack #" + so.getShortID() +". BV's do not match.",Username,true);
 				return;
 			}
@@ -142,7 +142,7 @@ public class DefendCommand implements Command {
 			//is an opponent (BV wise), so check for an op match
 			String s = CampaignMain.cm.getOpsManager().validateShortDefense(dp, da, o,null);
 			if (s != null && !s.trim().equals("")) {
-				CampaignMain.cm.toUser("Defend failed " + s,Username,true);
+				CampaignMain.cm.toUser("AM:Defend failed " + s,Username,true);
 				return;
 			} 
 		}
@@ -150,11 +150,11 @@ public class DefendCommand implements Command {
 		
 		if ( teamNumber > 0 ) {
 			int bv = 0;
-			String message = "That team is already full pick another one!";
+			String message = "AM:That team is already full pick another one!";
 			if ( o.getBooleanValue("TeamOperation") && o.getBooleanValue("TeamsMustBeSameFaction") ) {
 				teamNumber = so.getFactionTeam(dp.getHouseFightingFor().getName());
 				bv = da.getBV();
-				message = "You are not able to join that team to defend!";
+				message = "AM:You are not able to join that team to defend!";
 			}
 			if ( !so.checkTeam(teamNumber,bv,false) ) {
 				CampaignMain.cm.toUser(message, Username);
@@ -163,8 +163,8 @@ public class DefendCommand implements Command {
 			}
 			
 			dp.setTeamNumber(teamNumber);
-			CampaignMain.cm.toUser("PL|STN|"+teamNumber, Username,false);
-			CampaignMain.cm.toUser("You've been assigned to team #"+teamNumber+".", Username);
+			CampaignMain.cm.toUser("AM:PL|STN|"+teamNumber, Username,false);
+			CampaignMain.cm.toUser("AM:You've been assigned to team #"+teamNumber+".", Username);
 		}else if ( o.getBooleanValue("RandomTeamDetermination") && o.getBooleanValue("TeamOperation") ) {
 			int numberOfTeams = Math.max(2,Math.min(8,o.getIntValue("NumberOfTeams")));
 
@@ -174,8 +174,8 @@ public class DefendCommand implements Command {
 					break;
 				}
 			}
-			CampaignMain.cm.toUser("PL|STN|"+teamNumber, Username,false);
-			CampaignMain.cm.toUser("You've been assigned to team #"+teamNumber+".", Username);
+			CampaignMain.cm.toUser("AM:PL|STN|"+teamNumber, Username,false);
+			CampaignMain.cm.toUser("AM:You've been assigned to team #"+teamNumber+".", Username);
 		}
 		
 		/*
@@ -212,7 +212,7 @@ public class DefendCommand implements Command {
 		int flu = o.getIntValue("DefenderCostInfluence");
 		int rp = o.getIntValue("DefenderCostReward");
 		
-		String toSend = "You are now defending Attack #" + opID;
+		String toSend = "AM:You are now defending Attack #" + opID;
 		
 		boolean hasCost = false;
 		
@@ -250,7 +250,7 @@ public class DefendCommand implements Command {
 		CampaignMain.cm.toUser(toSend,Username,true);
         
         if ( o.getBooleanValue("FreeForAllOperation") ){
-            CampaignMain.cm.toUser(dp.getName()+" has joined the operation, as a defender. <a href=\"MEKWARS/c commenceoperation#" + opID + "#CONFIRM\">Click here to commence</a>",so.getInitiator().getName(),true);
+            CampaignMain.cm.toUser(dp.getName()+"AM: has joined the operation, as a defender. <a href=\"MEKWARS/c commenceoperation#" + opID + "#CONFIRM\">Click here to commence</a>",so.getInitiator().getName(),true);
         }
 		
 	}//end process

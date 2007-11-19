@@ -48,7 +48,7 @@ public class MyVotesCommand implements Command {
 		//break out if voting isnt enabled on the server
 		boolean canVote = new Boolean(CampaignMain.cm.getConfig("VotingEnabled")).booleanValue();
 		if (!canVote) {
-			CampaignMain.cm.toUser("Voting is disabled on this server.",Username,true);
+			CampaignMain.cm.toUser("AM:Voting is disabled on this server.",Username,true);
 			return;
 		}
 		

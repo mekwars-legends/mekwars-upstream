@@ -45,7 +45,7 @@ public class MailCommand implements Command {
 		}
 		
 		if (!command.hasMoreTokens()) {
-			CampaignMain.cm.toUser("Syntax: /mail name,text",Username);
+			CampaignMain.cm.toUser("AM:Syntax: /mail name,text",Username);
 			return;
 		}
 		

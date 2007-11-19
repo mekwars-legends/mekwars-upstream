@@ -52,7 +52,7 @@ public class LastOnlineCommand implements Command {
 		}//end while(more elements && haven't found target yet)
 		
 		if (smallp == null || smallp.getLastOnline() == 0) {
-			CampaignMain.cm.toUser("Target player doesn't exist, or has not been"
+			CampaignMain.cm.toUser("AM:Target player doesn't exist, or has not been"
 					+ " online since the last server restart.",Username,true);
 			return;
 		}

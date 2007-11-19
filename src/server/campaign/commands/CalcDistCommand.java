@@ -39,13 +39,13 @@ public class CalcDistCommand implements Command {
 		}
 		
 		if (!command.hasMoreElements()) {
-			CampaignMain.cm.toUser("SM|You need to enter 2 Planet Names!", Username, false);
+			CampaignMain.cm.toUser("AM:SM|You need to enter 2 Planet Names!", Username, false);
 			return;
 		}
 		
 		SPlanet p1 = CampaignMain.cm.getPlanetFromPartialString(command.nextToken(),Username);
 		if (!command.hasMoreElements()) {
-			CampaignMain.cm.toUser("SM|You need to enter 2 Planet Names!", Username, false);
+			CampaignMain.cm.toUser("AM:SM|You need to enter 2 Planet Names!", Username, false);
 			return;
 		}
 		
@@ -54,7 +54,7 @@ public class CalcDistCommand implements Command {
 			int xdiff = (int)(Math.pow((new Double(p1.getPosition().getX()).intValue() - new Double(p2.getPosition().getX()).intValue()),2));
 			int ydiff = (int)(Math.pow((new Double(p1.getPosition().getY()).intValue() - new Double(p2.getPosition().getY()).intValue()),2));
 			int newdist = (int)Math.sqrt(xdiff+ydiff);
-			CampaignMain.cm.toUser("SM|The distance between " + p1.getName() + " and " + p2.getName() + " is " + newdist + " LY",Username,false);
+			CampaignMain.cm.toUser("AM:SM|The distance between " + p1.getName() + " and " + p2.getName() + " is " + newdist + " LY",Username,false);
 		}
 		
 	}//end process()

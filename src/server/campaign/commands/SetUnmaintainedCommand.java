@@ -48,41 +48,41 @@ public class SetUnmaintainedCommand implements Command {
 			numtoset = Integer.parseInt(command.nextToken());
 		}//end try
 		catch (NumberFormatException ex) {
-			CampaignMain.cm.toUser("SetUnmaintained command failed. Check your input. It should be something like this: /c setunmaintained#12",Username,true);
+			CampaignMain.cm.toUser("AM:SetUnmaintained command failed. Check your input. It should be something like this: /c setunmaintained#12",Username,true);
 			return;
 		}//end catch
 		
 		SUnit unitToSet = p.getUnit(numtoset);
 		if (unitToSet == null) {
-			CampaignMain.cm.toUser("Invalid id number. Make sure you're using the right unit number.",Username,true);
+			CampaignMain.cm.toUser("AM:Invalid id number. Make sure you're using the right unit number.",Username,true);
 			return;
 		}
 		
 		if (unitToSet.getStatus() == Unit.STATUS_UNMAINTAINED) {
-			CampaignMain.cm.toUser("This unit is already unmaintained.",Username,true);
+			CampaignMain.cm.toUser("AM:This unit is already unmaintained.",Username,true);
 			return;
 		}
 		
 		if (unitToSet.getStatus() == Unit.STATUS_FORSALE) {
-			CampaignMain.cm.toUser("You may not change the maintenance status of a unit which is being sold.",Username,true);
+			CampaignMain.cm.toUser("AM:You may not change the maintenance status of a unit which is being sold.",Username,true);
 			return;
 		}
 		
 		if (p.getDutyStatus() == SPlayer.STATUS_ACTIVE) {
-			CampaignMain.cm.toUser("You may not unmaintain a unit while active.",Username,true);
+			CampaignMain.cm.toUser("AM:You may not unmaintain a unit while active.",Username,true);
 			return;
 		}
 		
 		if (p.getDutyStatus() == SPlayer.STATUS_FIGHTING) {
-			CampaignMain.cm.toUser("You may not unmaintain a unit while engaged!.",Username,true);
+			CampaignMain.cm.toUser("AM:You may not unmaintain a unit while engaged!.",Username,true);
 			return;
 		}
 		
 		//passes checks. now actually make the unit unmaintained.
 		unitToSet.setUnmaintainedStatus();
-		CampaignMain.cm.toUser("PL|SUS|"+unitToSet.getId()+"#"+Unit.STATUS_UNMAINTAINED,Username,false);
-		CampaignMain.cm.toUser("PL|SB|"+p.getTotalMekBays(),Username,false);
-		CampaignMain.cm.toUser("PL|SF|"+p.getFreeBays(),Username,false);
+		CampaignMain.cm.toUser("AM:PL|SUS|"+unitToSet.getId()+"#"+Unit.STATUS_UNMAINTAINED,Username,false);
+		CampaignMain.cm.toUser("AM:PL|SB|"+p.getTotalMekBays(),Username,false);
+		CampaignMain.cm.toUser("AM:PL|SF|"+p.getFreeBays(),Username,false);
 		CampaignMain.cm.toUser(unitToSet.getPilot().getName() + "'s " + unitToSet.getModelName() + " is no longer being maintained." ,Username,true);
 		p.setSave();
 		

@@ -37,12 +37,12 @@ public class LogoutCommand implements Command {
         
         if (p.getDutyStatus() == SPlayer.STATUS_ACTIVE
         		&& System.currentTimeMillis() - p.getActiveSince() < Long.parseLong(CampaignMain.cm.getConfig("MinActiveTime")) * 1000) {
-        	CampaignMain.cm.toUser("You can't log out yet (must meet minimum activity time).",Username,true);
+        	CampaignMain.cm.toUser("AM:You can't log out yet (must meet minimum activity time).",Username,true);
         	return;
         }
         
         if (p.getDutyStatus() == SPlayer.STATUS_FIGHTING) {
-			CampaignMain.cm.toUser("You cannot log out until your game is over.",Username,true);
+			CampaignMain.cm.toUser("AM:You cannot log out until your game is over.",Username,true);
         	return;
         }
         

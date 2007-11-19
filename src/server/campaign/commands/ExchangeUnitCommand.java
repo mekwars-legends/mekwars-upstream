@@ -46,13 +46,13 @@ public class ExchangeUnitCommand implements Command {
 		//get the player
 		SPlayer p = CampaignMain.cm.getPlayer(Username);
 		if (p == null) {
-			CampaignMain.cm.toUser("Null player. Report this immediately!",Username,true);
+			CampaignMain.cm.toUser("AM:Null player. Report this immediately!",Username,true);
 			return;
 		}
 		
 		//allowing people to reorder in game could break reports
 		if (CampaignMain.cm.getOpsManager().getShortOpForPlayer(p) != null) {
-			CampaignMain.cm.toUser("You may not change an army's composition while you are in a game.", Username, true);
+			CampaignMain.cm.toUser("AM:You may not change an army's composition while you are in a game.", Username, true);
 			return;
 		}
 		
@@ -72,18 +72,18 @@ public class ExchangeUnitCommand implements Command {
 			
 			SArmy a = p.getArmy(armyid);
 			if (a == null) {
-				CampaignMain.cm.toUser("You do not have an  Army #" + armyid, Username, true);
+				CampaignMain.cm.toUser("AM:You do not have an  Army #" + armyid, Username, true);
 				return;
 			}
 			
 			//Is the Lance in a fight atm?
 			if (a.isLocked()) {
-				CampaignMain.cm.toUser("This Army is currently in a game.", Username, true);
+				CampaignMain.cm.toUser("AM:This Army is currently in a game.", Username, true);
 				return;
 			}
 			
 			if (a.isPlayerLocked()) {
-				CampaignMain.cm.toUser("You cannot modify a locked army.", Username, true);
+				CampaignMain.cm.toUser("AM:You cannot modify a locked army.", Username, true);
 				return;
 				}
 			
@@ -91,22 +91,22 @@ public class ExchangeUnitCommand implements Command {
 			SUnit changeMech = p.getUnit(changeid);
 			
 			if (changeMech != null && changeMech.getModelName().startsWith("Error")) {
-				CampaignMain.cm.toUser("Error units may not be added to armies.", Username, true);
+				CampaignMain.cm.toUser("AM:Error units may not be added to armies.", Username, true);
 				return;
 			}
 
 			if (changeMech != null && a.isUnitInArmy(changeMech)) {
-				CampaignMain.cm.toUser("That unit already exits in Army #" + armyid + ".", Username, true);
+				CampaignMain.cm.toUser("AM:That unit already exits in Army #" + armyid + ".", Username, true);
 				return;
 			}
 		
 			if (p.getDutyStatus() == SPlayer.STATUS_ACTIVE) {
-				CampaignMain.cm.toUser("You may not change your armies while on active duty.", Username, true);
+				CampaignMain.cm.toUser("AM:You may not change your armies while on active duty.", Username, true);
 				return;
 			}
 			
 			if (changeMech != null && changeMech.getStatus() == Unit.STATUS_UNMAINTAINED) {
-				CampaignMain.cm.toUser("You may not assign unmaintained units to combat formations!", Username, true);
+				CampaignMain.cm.toUser("AM:You may not assign unmaintained units to combat formations!", Username, true);
 				return;
 			}
 			
@@ -114,14 +114,14 @@ public class ExchangeUnitCommand implements Command {
 				int maxAmount = Integer.valueOf(CampaignMain.cm.getConfig("UnitsInMultipleArmiesAmount")).intValue();
 				if (p.getAmountOfTimesUnitExistsInArmies(changeMech.getId()) >= maxAmount ) {
 					if (maxAmount == 1 )
-						CampaignMain.cm.toUser("A unit may only be in one army at a time.", Username, true);
+						CampaignMain.cm.toUser("AM:A unit may only be in one army at a time.", Username, true);
 					else
-						CampaignMain.cm.toUser("A unit may be in a maximum of " + maxAmount + " armies.", Username, true);
+						CampaignMain.cm.toUser("AM:A unit may be in a maximum of " + maxAmount + " armies.", Username, true);
 					return;
 				}
 				
 				if (changeMech.getStatus() == Unit.STATUS_FORSALE) {
-					CampaignMain.cm.toUser("This unit is being sold on the Market. It may not be added to an army.", Username, true);
+					CampaignMain.cm.toUser("AM:This unit is being sold on the Market. It may not be added to an army.", Username, true);
 					return;
 				}
 				
@@ -130,8 +130,8 @@ public class ExchangeUnitCommand implements Command {
 					oldID = oldMech.getId();
 					position = a.getUnitPosition(oldID);
 					a.removeUnit(oldID);
-					CampaignMain.cm.toUser("PL|RAU|"+a.getID()+"#"+oldID+"#"+a.getBV(),Username,false);
-					CampaignMain.cm.toUser("PL|UU|"+oldMech.getId()+"|"+oldMech.toString(true),Username,false);
+					CampaignMain.cm.toUser("AM:PL|RAU|"+a.getID()+"#"+oldID+"#"+a.getBV(),Username,false);
+					CampaignMain.cm.toUser("AM:PL|UU|"+oldMech.getId()+"|"+oldMech.toString(true),Username,false);
 					a.checkLegalRatio(Username);
 				}
 				else
@@ -140,11 +140,11 @@ public class ExchangeUnitCommand implements Command {
 				//changeMech.setID(oldID);
 				if ( position > -1){
 				    a.addUnit(changeMech,position);
-				    CampaignMain.cm.toUser("PL|AAU|"+a.getID()+"#"+changeMech.getId()+"#"+a.getBV()+"#"+position,Username,false);
+				    CampaignMain.cm.toUser("AM:PL|AAU|"+a.getID()+"#"+changeMech.getId()+"#"+a.getBV()+"#"+position,Username,false);
 				}
 				else{
 				    a.addUnit(changeMech);
-				    CampaignMain.cm.toUser("PL|AAU|"+a.getID()+"#"+changeMech.getId()+"#"+a.getBV(),Username,false);
+				    CampaignMain.cm.toUser("AM:PL|AAU|"+a.getID()+"#"+changeMech.getId()+"#"+a.getBV(),Username,false);
 				}
 				
 				p.resetWeightedArmyNumber();//change made. clear the cached weightedArmyNumber.
@@ -152,13 +152,13 @@ public class ExchangeUnitCommand implements Command {
 			}
 			else if (oldMech != null) {//changemech is known to be null from previous if statement
 				a.removeUnit(oldMech.getId());
-				CampaignMain.cm.toUser("PL|RAU|"+a.getID()+"#"+oldMech.getId()+"#"+a.getBV(),Username,false);
+				CampaignMain.cm.toUser("AM:PL|RAU|"+a.getID()+"#"+oldMech.getId()+"#"+a.getBV(),Username,false);
 				a.checkLegalRatio(Username);
-				CampaignMain.cm.toUser("PL|UU|"+oldMech.getId()+"|"+oldMech.toString(true),Username,false);
+				CampaignMain.cm.toUser("AM:PL|UU|"+oldMech.getId()+"|"+oldMech.toString(true),Username,false);
 			}
 			
 			//tell the player that his army was changed and inform him of any legal ops changes
-			CampaignMain.cm.toUser("Army #"+ a.getID() + " was changed. New BV: " + a.getBV(),Username,true);
+			CampaignMain.cm.toUser("AM:Army #"+ a.getID() + " was changed. New BV: " + a.getBV(),Username,true);
 			CampaignMain.cm.getOpsManager().checkOperations(a,true);
 			
 		}

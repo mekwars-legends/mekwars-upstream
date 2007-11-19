@@ -56,20 +56,20 @@ public class RetirePilotCommand implements Command {
 			try {
 				mechid = Integer.parseInt((String)command.nextElement());
 			} catch (Exception e) {
-				CampaignMain.cm.toUser("Improper format. Try: /c retirepilot#UnitID",Username,true);
+				CampaignMain.cm.toUser("AM:Improper format. Try: /c retirepilot#UnitID",Username,true);
 				return;
 			}
 			
 			//get the actual unit, and check for a null
 			SUnit m = p.getUnit(mechid);
 			if (m == null) {
-				CampaignMain.cm.toUser("You do not have unit #" + mechid + ".",Username,true);
+				CampaignMain.cm.toUser("AM:You do not have unit #" + mechid + ".",Username,true);
 				return;
 			}
 			
 			//see if its even possible to retire pilots
 			if (new Boolean(CampaignMain.cm.getConfig("PilotRetirementAllowed")).booleanValue() == false) {
-				CampaignMain.cm.toUser("Pilot retirement is not allowed.",Username,true);
+				CampaignMain.cm.toUser("AM:Pilot retirement is not allowed.",Username,true);
 				return;
 			}
 			
@@ -81,7 +81,7 @@ public class RetirePilotCommand implements Command {
 				while (f.hasMoreElements()) {
 					SArmy currArmy = (SArmy)f.nextElement();
 					if (currArmy.getUnit(m.getId()) != null) {
-						CampaignMain.cm.toUser("You may not dismiss/retire a pilot while his unit is part of an active army.",Username,true);
+						CampaignMain.cm.toUser("AM:You may not dismiss/retire a pilot while his unit is part of an active army.",Username,true);
 						return;
 					}//end if(army contains the )
 				}//end while(more armies to check)
@@ -114,7 +114,7 @@ public class RetirePilotCommand implements Command {
 				
 				//qualify for free.
 				if (!commandConfirmed) {//send confirm link
-					String toReturn = "<br>Are you sure you want to retire " + m.getPilot().getName() + "?<br><a href=\"MEKWARS/c retirepilot#" + mechid + "#CONFIRM\">Click here to confirm the retirment order.</a>";
+					String toReturn = "AM:<br>Are you sure you want to retire " + m.getPilot().getName() + "?<br><a href=\"MEKWARS/c retirepilot#" + mechid + "#CONFIRM\">Click here to confirm the retirment order.</a>";
 					CampaignMain.cm.toUser(toReturn,Username,true);
 					return;
 				}
@@ -139,14 +139,14 @@ public class RetirePilotCommand implements Command {
 				}
 				
 				if (p.getMoney() < retirementCost) {
-					CampaignMain.cm.toUser("You don't have enough money to dismiss " + m.getPilot().getName() + ". Bribing HQ to reassign him would cost " + CampaignMain.cm.moneyOrFluMessage(true,true,retirementCost)+".",Username,true);
+					CampaignMain.cm.toUser("AM:You don't have enough money to dismiss " + m.getPilot().getName() + ". Bribing HQ to reassign him would cost " + CampaignMain.cm.moneyOrFluMessage(true,true,retirementCost)+".",Username,true);
 					return;
 				}
 				
 				//else (early retirement allowed).
 				if (!commandConfirmed) {
 					//not confirmed. send a link.
-					String toReturn = "You can get " + m.getPilot().getName() + " transfered out of your unit, but you'll have " +
+					String toReturn = "AM:You can get " + m.getPilot().getName() + " transfered out of your unit, but you'll have " +
 					"to bribe someone at HQ. Are you willing to spend " +CampaignMain.cm.moneyOrFluMessage(true,true,retirementCost)+" to make an \"accident\" happen?<br>" +
 					"<a href=\"MEKWARS/c retirepilot#" + mechid + "#CONFIRM\">Click here to pay the " + CampaignMain.cm.moneyOrFluMessage(true,true,retirementCost)+".</a>";
 					CampaignMain.cm.toUser(toReturn,Username,true);
@@ -165,7 +165,7 @@ public class RetirePilotCommand implements Command {
 			if (retirementCost <= 0)
 				toReturn = m.getPilot().getName() + " retired, went home to his family, and lived happily ever after.";
 			else
-				toReturn = "You dismissed " + m.getPilot().getName() + " (-" + CampaignMain.cm.moneyOrFluMessage(true,true,retirementCost)+").";
+				toReturn = "AM:You dismissed " + m.getPilot().getName() + " (-" + CampaignMain.cm.moneyOrFluMessage(true,true,retirementCost)+").";
 			
 			//take money away
 			if (retirementCost > 0)
@@ -194,14 +194,14 @@ public class RetirePilotCommand implements Command {
 			}
 			
 			//continue normally. update unit and its armies, etc.
-			CampaignMain.cm.toUser("PL|UU|"+m.getId()+"|"+m.toString(true),Username,false);
+			CampaignMain.cm.toUser("AM:PL|UU|"+m.getId()+"|"+m.toString(true),Username,false);
 			
 			Enumeration f = p.getArmies().elements();
 			while (f.hasMoreElements()) {
 				SArmy currArmy = (SArmy)f.nextElement();
 				if (currArmy.getUnit(m.getId()) != null) {
 					currArmy.setBV(0);//not null so recalc BV of the army
-					CampaignMain.cm.toUser("PL|SAD|"+currArmy.toString(true,"%"),Username,false);
+					CampaignMain.cm.toUser("AM:PL|SAD|"+currArmy.toString(true,"%"),Username,false);
 					CampaignMain.cm.getOpsManager().checkOperations(currArmy,true);//update legal operations
 				}//end if(army contains the )
 			}//end while(more armies to check)

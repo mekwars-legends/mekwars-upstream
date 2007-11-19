@@ -52,12 +52,12 @@ public class CheckArmyLinkCommand implements Command {
 			armyid = Integer.parseInt(command.nextToken());
 			army = p.getArmy(armyid);
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper format. Try: /c checkarmylink#name#armyid",Username,true);
+			CampaignMain.cm.toUser("AM:Improper format. Try: /c checkarmylink#name#armyid",Username,true);
 			return;
 		}
 		
 		if (p.getDutyStatus() != SPlayer.STATUS_FIGHTING && CampaignMain.cm.getServer().getUserLevel(Username) < IAuthenticator.ADMIN) {
-			CampaignMain.cm.toUser("You may only check links in fighting players' amries.",Username,true);
+			CampaignMain.cm.toUser("AM:You may only check links in fighting players' amries.",Username,true);
 			return;
 		}
 		

@@ -63,7 +63,7 @@ public class ExchangePilotInUnitCommand implements Command {
 			{
                 
                 if ( m.getType() != Unit.MEK && m.getType() != Unit.PROTOMEK ){
-                    CampaignMain.cm.toUser("You may not remove that pilot from this unit.",Username,true);
+                    CampaignMain.cm.toUser("AM:You may not remove that pilot from this unit.",Username,true);
                     return;
                 }
                 
@@ -83,7 +83,7 @@ public class ExchangePilotInUnitCommand implements Command {
 				int capSize = CampaignMain.cm.getIntegerConfig("MaxAllowedPilotsInQueueToBuyFromHouse");
 				
 				if ( newPilotId == -1 && p.getPersonalPilotQueue().getPilotQueue(m.getType(), m.getWeightclass()).size() >= capSize ) {
-					CampaignMain.cm.toUser("There are no free beds in the barracks "+pilot.getName()+" will have to sleep in his unit.", Username);
+					CampaignMain.cm.toUser("AM:There are no free beds in the barracks "+pilot.getName()+" will have to sleep in his unit.", Username);
 					return;
 				}
                 //issues where protomeks are getting set to the wrong unit type so they become Mek pilots.
@@ -102,16 +102,16 @@ public class ExchangePilotInUnitCommand implements Command {
 					try{
 						p2 = (SPilot) p.getPersonalPilotQueue().getPilot(m.getType(),m.getWeightclass(),newPilotId);
 						if ( p2 != null ) {
-	                        CampaignMain.cm.toUser("PL|RPPPQ|"+m.getType()+"|"+m.getWeightclass()+"|"+newPilotId,Username,false);
+	                        CampaignMain.cm.toUser("AM:PL|RPPPQ|"+m.getType()+"|"+m.getWeightclass()+"|"+newPilotId,Username,false);
 	                        m.setPilot(p2);
 	                        CampaignMain.cm.toUser(p2.getName()+" is now assigned to the "+ m.getModelName()  + " [New BV: " + m.getBV() + "].",Username,true);
 						}else {
-							CampaignMain.cm.toUser("Invalid Pilot try again!",Username,true);
+							CampaignMain.cm.toUser("AM:Invalid Pilot try again!",Username,true);
 							return;
 						}
 					} catch(Exception ex){
 						MWServ.mwlog.errLog(ex);
-						CampaignMain.cm.toUser("Invalid Pilot try again!",Username,true);
+						CampaignMain.cm.toUser("AM:Invalid Pilot try again!",Username,true);
 						return;
 					}
 				}
@@ -124,7 +124,7 @@ public class ExchangePilotInUnitCommand implements Command {
 				//m.setExperience(new Integer(0)); -- trying to decide if I want to keep it this way or the old way Torren.
 				
                 //CampaignMain.cm.toUser("PL|PPQ|"+p.getPersonalPilotQueue().toString(true),Username,false);
-				CampaignMain.cm.toUser("PL|UU|"+m.getId()+"|"+m.toString(true),Username,false);
+				CampaignMain.cm.toUser("AM:PL|UU|"+m.getId()+"|"+m.toString(true),Username,false);
 				Vector armies = p.getArmies();
 				
 				Enumeration f = armies.elements();
@@ -132,7 +132,7 @@ public class ExchangePilotInUnitCommand implements Command {
 					SArmy currArmy = (SArmy)f.nextElement();
 					if (currArmy.getUnit(m.getId()) != null) {
 						currArmy.setBV(0);//not null so recalc BV of the army
-						CampaignMain.cm.toUser("PL|SAD|"+currArmy.toString(true,"%"),Username,false);
+						CampaignMain.cm.toUser("AM:PL|SAD|"+currArmy.toString(true,"%"),Username,false);
 						CampaignMain.cm.getOpsManager().checkOperations(currArmy,true);//update legal operations
 					}//end if(army contains the )
 				}//end while(more armies to check)

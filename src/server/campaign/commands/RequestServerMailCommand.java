@@ -45,11 +45,11 @@ public class RequestServerMailCommand implements Command {
 		}
 		
         if (CampaignMain.cm.getServer().getServerMail().get(Username.toLowerCase()) != null) {
-            CampaignMain.cm.toUser("PM|SERVER|" + (String) (CampaignMain.cm.getServer().getServerMail().get(Username.toLowerCase())), Username,false);
+            CampaignMain.cm.toUser("AM:PM|SERVER|" + (String) (CampaignMain.cm.getServer().getServerMail().get(Username.toLowerCase())), Username,false);
     		CampaignMain.cm.getServer().getServerMail().remove(Username.toLowerCase());
             CampaignMain.cm.getServer().doWriteMailFile();
         }
         else
-            CampaignMain.cm.toUser("Sorry but you do not have any mail waiting for you.",Username,true);
+            CampaignMain.cm.toUser("AM:Sorry but you do not have any mail waiting for you.",Username,true);
 	}
 }

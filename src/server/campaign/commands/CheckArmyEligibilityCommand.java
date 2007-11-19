@@ -50,31 +50,31 @@ public class CheckArmyEligibilityCommand implements Command {
 			armyid = Integer.parseInt(command.nextToken());
 			opName = command.nextToken();
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper command. Try: /c checkarmyeligibility#id#operation", Username, true);
+			CampaignMain.cm.toUser("AM:Improper command. Try: /c checkarmyeligibility#id#operation", Username, true);
 			return;
 		}
 		
 		SArmy currA = p.getArmy(armyid);
 		if (currA == null) {
-			CampaignMain.cm.toUser("Could not find Army #" + armyid + ".", Username, true);
+			CampaignMain.cm.toUser("AM:Could not find Army #" + armyid + ".", Username, true);
 			return;
 		}
 		
 		Operation currO = CampaignMain.cm.getOpsManager().getOperation(opName);
 		if (currO == null) {
-			CampaignMain.cm.toUser("Operation Type: " + opName + " does not exist.",Username,true);
+			CampaignMain.cm.toUser("AM:Operation Type: " + opName + " does not exist.",Username,true);
 			return;
 		}
 		
 		//breaks passed. check the op.
 		String s = CampaignMain.cm.getOpsManager().validateShortAttack(p, currA, currO, null, -1,false);
 		if (s != null && !s.trim().equals("")) {
-			CampaignMain.cm.toUser(opName + " is illegal for Army #" + armyid + " " + s,Username,true);
+			CampaignMain.cm.toUser(opName + "AM: is illegal for Army #" + armyid + " " + s,Username,true);
 			return;
 		} 
 		
 		//else
-		CampaignMain.cm.toUser(opName + " is legal for Army #" + armyid + ".", Username, true);
+		CampaignMain.cm.toUser(opName + "AM: is legal for Army #" + armyid + ".", Username, true);
 					
 	}//end process
 	

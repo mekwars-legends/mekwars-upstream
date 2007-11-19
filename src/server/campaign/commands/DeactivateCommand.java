@@ -40,28 +40,28 @@ public class DeactivateCommand implements Command {
 		
 		SPlayer p = CampaignMain.cm.getPlayer(Username);
 		if (p == null) {
-			CampaignMain.cm.toUser("Null player. Big Failure. Report to admin immediately.",Username,true);
+			CampaignMain.cm.toUser("AM:Null player. Big Failure. Report to admin immediately.",Username,true);
 			return;
 		}
 		
 		int currentStatus = p.getDutyStatus();
 		if (currentStatus == SPlayer.STATUS_RESERVE) {
-			CampaignMain.cm.toUser("You're already on reserve duty.",Username,true);
+			CampaignMain.cm.toUser("AM:You're already on reserve duty.",Username,true);
 			return;
 		}
 		
 		if (currentStatus == SPlayer.STATUS_FIGHTING) {
-			CampaignMain.cm.toUser("You're currently fighting! You cannot go into the reserve!",Username,true);
+			CampaignMain.cm.toUser("AM:You're currently fighting! You cannot go into the reserve!",Username,true);
 			return;
 		}
 			
 		if (System.currentTimeMillis() - p.getActiveSince() < Long.parseLong(CampaignMain.cm.getConfig("MinActiveTime")) * 1000) {
-			CampaignMain.cm.toUser("You haven't even reached the front yet! (Must meet minimum activity requirement before deactivating)",Username,true);
+			CampaignMain.cm.toUser("AM:You haven't even reached the front yet! (Must meet minimum activity requirement before deactivating)",Username,true);
 			return;
 		}
 		
 		p.setActive(false);
-		CampaignMain.cm.toUser("[*] You've left active duty and are now in reserve.",Username,true);
+		CampaignMain.cm.toUser("AM:[*] You've left active duty and are now in reserve.",Username,true);
 		
 		/*
 		 * Note: Old code to stop offensive tasks was here. This is handled

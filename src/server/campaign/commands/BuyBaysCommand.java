@@ -57,7 +57,7 @@ public class BuyBaysCommand implements Command {
 			numtobuy = Integer.parseInt(command.nextToken());
 		}//end try
 		catch (NumberFormatException ex) {
-			CampaignMain.cm.toUser("Lease Bays command failed. Check your input. It should be something like this: /c buybays#3",Username,true);
+			CampaignMain.cm.toUser("AM:Lease Bays command failed. Check your input. It should be something like this: /c buybays#3",Username,true);
 			return;
 		}//end catch
 		
@@ -65,13 +65,13 @@ public class BuyBaysCommand implements Command {
 		bayCost = Integer.parseInt(house.getConfig("CostToBuyNewBay"));
 		
         if ( bayCost == -1){
-            CampaignMain.cm.toUser("Sorry but their are no bays available for leasing at this moment in time.",Username,true);
+            CampaignMain.cm.toUser("AM:Sorry but their are no bays available for leasing at this moment in time.",Username,true);
             return;
         }
         
         //-1 maxbays allows for unlimited bays
         if ( maxBays != -1 && p.getBaysOwned()+numtobuy > maxBays ){
-            CampaignMain.cm.toUser("Sorry but the max number of bays you can lease is "+maxBays+".",Username,true);
+            CampaignMain.cm.toUser("AM:Sorry but the max number of bays you can lease is "+maxBays+".",Username,true);
             return;
         }
 
@@ -80,7 +80,7 @@ public class BuyBaysCommand implements Command {
 		
 		//send a message is the bays 
 		if (bayCost > p.getMoney()) {
-			CampaignMain.cm.toUser("Leasing " + numtobuy + " bays will cost you "+CampaignMain.cm.moneyOrFluMessage(true,false,bayCost)+" for a security deposit. You only have "+CampaignMain.cm.moneyOrFluMessage(true,false,p.getMoney())+".",Username,true);
+			CampaignMain.cm.toUser("AM:Leasing " + numtobuy + " bays will cost you "+CampaignMain.cm.moneyOrFluMessage(true,false,bayCost)+" for a security deposit. You only have "+CampaignMain.cm.moneyOrFluMessage(true,false,p.getMoney())+".",Username,true);
 			return;
 		}//end if(player doenst have enough money) 	
 		
@@ -90,9 +90,9 @@ public class BuyBaysCommand implements Command {
         p.addMoney(-bayCost); 
 
         if ( numtobuy == 1 )
-			CampaignMain.cm.toUser("You've leased a bay! After paying the security deposit of " +CampaignMain.cm.moneyOrFluMessage(true,false,bayCost),Username,true);
+			CampaignMain.cm.toUser("AM:You've leased a bay! After paying the security deposit of " +CampaignMain.cm.moneyOrFluMessage(true,false,bayCost),Username,true);
 		else
-			CampaignMain.cm.toUser("You've leased " + numtobuy + " bays! After paying the security deposit of " +CampaignMain.cm.moneyOrFluMessage(true,false,bayCost),Username,true);
+			CampaignMain.cm.toUser("AM:You've leased " + numtobuy + " bays! After paying the security deposit of " +CampaignMain.cm.moneyOrFluMessage(true,false,bayCost),Username,true);
         
         CampaignMain.cm.toUser("PL|SF|"+p.getFreeBays(),Username,false);
         CampaignMain.cm.toUser("PL|SB|"+p.getTotalMekBays(),Username,false);

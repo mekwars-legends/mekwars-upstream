@@ -43,7 +43,7 @@ public class NameArmyCommand implements Command {
 		
 		SPlayer p = CampaignMain.cm.getPlayer(Username);
 		if (p == null) {
-			CampaignMain.cm.toUser("Null Player while renaming army. Report This!.",Username,true);
+			CampaignMain.cm.toUser("AM:Null Player while renaming army. Report This!.",Username,true);
 			return;
 		}
 		
@@ -53,13 +53,13 @@ public class NameArmyCommand implements Command {
 			aid = Integer.parseInt((String)command.nextElement());
 			name = (String)command.nextElement();
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper format. Try: /c namearmy#ID#Name",Username,true);
+			CampaignMain.cm.toUser("AM:Improper format. Try: /c namearmy#ID#Name",Username,true);
 			return;
 		}
 		
 		SArmy army = p.getArmy(aid);
 		if (army == null) {
-			CampaignMain.cm.toUser("Could not find an Army #" + aid + ".",Username,true);
+			CampaignMain.cm.toUser("AM:Could not find an Army #" + aid + ".",Username,true);
 			return;
 		}
 		
@@ -67,46 +67,46 @@ public class NameArmyCommand implements Command {
 			name = name.substring(0,50);
 		
 		if (name.indexOf("%") != -1) {
-			CampaignMain.cm.toUser("Illegal army name (% forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal army name (% forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("~") != -1) {
-			CampaignMain.cm.toUser("Illegal army name (~ forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal army name (~ forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("$") != -1) {
-			CampaignMain.cm.toUser("Illegal army name ($ forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal army name ($ forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("|") != -1) {
-			CampaignMain.cm.toUser("Illegal army name (| forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal army name (| forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("!") != -1) {
-			CampaignMain.cm.toUser("Illegal army name (! forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal army name (! forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("*") != -1) {
-			CampaignMain.cm.toUser("Illegal army name (* forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal army name (* forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("#") != -1) {
-			CampaignMain.cm.toUser("Illegal army name (# forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal army name (# forbidden).",Username,true);
 			return;
 		} else if (name.indexOf(">") != -1) {
-			CampaignMain.cm.toUser("Illegal army name (> forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal army name (> forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("<") != -1) {
-			CampaignMain.cm.toUser("Illegal army name (< forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal army name (< forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("@") != -1) {
-			CampaignMain.cm.toUser("Illegal army name (@ forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal army name (@ forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("&") != -1) {
-			CampaignMain.cm.toUser("Illegal army name (& forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal army name (& forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("^") != -1) {
-			CampaignMain.cm.toUser("Illegal army name (^ forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal army name (^ forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("+") != -1) {
-			CampaignMain.cm.toUser("Illegal army name (+ forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal army name (+ forbidden).",Username,true);
 			return;
 		} else if (name.indexOf("=") != -1) {
-			CampaignMain.cm.toUser("Illegal army name (= forbidden).",Username,true);
+			CampaignMain.cm.toUser("AM:Illegal army name (= forbidden).",Username,true);
 			return;
 		}
 		
@@ -121,7 +121,7 @@ public class NameArmyCommand implements Command {
 		if (command.hasMoreElements()) {
 			String silent = (String)command.nextElement();
 			if (!silent.equals("SILENT"))
-				CampaignMain.cm.toUser("Army " + army.getID() + " renamed.",Username,true);
+				CampaignMain.cm.toUser("AM:Army " + army.getID() + " renamed.",Username,true);
 		}
 		
 	}//end process()

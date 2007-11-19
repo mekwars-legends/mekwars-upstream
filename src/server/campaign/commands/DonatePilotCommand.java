@@ -35,19 +35,19 @@ public class DonatePilotCommand implements Command {
 		
 		int donationsAllowed = Integer.parseInt(house.getConfig("DonationsAllowed"));
 		if (donationsAllowed <= 0) {
-			CampaignMain.cm.toUser("Donations are not allowed on this server.",Username,true);
+			CampaignMain.cm.toUser("AM:Donations are not allowed on this server.",Username,true);
 			return;
 		}
 		
         
         if ( p.mayAcquireWelfareUnits() ){
-            CampaignMain.cm.toUser("You may not donate any of your pilots while you are on welfare.",Username,true);
+            CampaignMain.cm.toUser("AM:You may not donate any of your pilots while you are on welfare.",Username,true);
             
             return;
         }
 
         if (p.getMyHouse().isNewbieHouse()) {
-			CampaignMain.cm.toUser("SOL Players are not allowed to donate pilots, sorry!",Username,true);
+			CampaignMain.cm.toUser("AM:SOL Players are not allowed to donate pilots, sorry!",Username,true);
 			return;
 		}
 		
@@ -58,7 +58,7 @@ public class DonatePilotCommand implements Command {
 		Pilot pilot = p.getPersonalPilotQueue().getPilot(unitType,weightClass,pilotLocation);
 
 		if ( pilot == null ){
-			CampaignMain.cm.toUser("Unable to find pilot!",Username,true);
+			CampaignMain.cm.toUser("AM:Unable to find pilot!",Username,true);
 			return;
 		}
 		int mechdonateprize = 0;
@@ -70,7 +70,7 @@ public class DonatePilotCommand implements Command {
 					p.addInfluence( -infToDonate);
 				}
 				else if (p.getUnits().size() < 4 ) {
-					CampaignMain.cm.toUser("HQ has allowed you to retrain this pilot, at a reduced rate, due to your current situation.", Username, true);
+					CampaignMain.cm.toUser("AM:HQ has allowed you to retrain this pilot, at a reduced rate, due to your current situation.", Username, true);
 					if ( p.getMoney() >= mechdonateprize )
 						p.addMoney( -mechdonateprize);
 					else {
@@ -80,7 +80,7 @@ public class DonatePilotCommand implements Command {
 					p.addInfluence( -infToDonate);
 				}
 				else {
-					CampaignMain.cm.toUser("You can't afford to retrain this pilot. You need "  + CampaignMain.cm.moneyOrFluMessage(true,true,mechdonateprize) + " and " + CampaignMain.cm.moneyOrFluMessage(false,false,infToDonate)+".", Username, true);
+					CampaignMain.cm.toUser("AM:You can't afford to retrain this pilot. You need "  + CampaignMain.cm.moneyOrFluMessage(true,true,mechdonateprize) + " and " + CampaignMain.cm.moneyOrFluMessage(false,false,infToDonate)+".", Username, true);
 					//send the pilot back to the players queue.
 					p.getPersonalPilotQueue().addPilot(pilot,weightClass);
 					return;
@@ -88,7 +88,7 @@ public class DonatePilotCommand implements Command {
 			}
 		
 		//set up strign to send user
-		String toUser = "You've sent pilot "+pilot.getName()+" back to the faction for more training";
+		String toUser = "AM:You've sent pilot "+pilot.getName()+" back to the faction for more training";
 		if (mechdonateprize > 0)
 			toUser += ". Your faction charges you " + CampaignMain.cm.moneyOrFluMessage(true,true,mechdonateprize) + " for the transfer";
 		toUser += ".";

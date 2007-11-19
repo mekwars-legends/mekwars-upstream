@@ -38,7 +38,7 @@ public class SendToMiscCommand implements Command {
 		    return;
 		
 		if ( command.hasMoreTokens() )
-			CampaignMain.cm.toUser("DMML|"+Username+"|"+command.nextToken(),endUser,false);
+			CampaignMain.cm.toUser("AM:DMML|"+Username+"|"+command.nextToken(),endUser,false);
 	}
 }
 	

@@ -53,7 +53,7 @@ public class RangeCommand implements Command {
 				
 				//RFE 1121663 - Range Calculator and Couldn't find Name @urgru 6.5.05
 				if (targetfaction == null) {
-					CampaignMain.cm.toUser("Could not find faction " + target + ". Try again?",Username,true);
+					CampaignMain.cm.toUser("AM:Could not find faction " + target + ". Try again?",Username,true);
 					return;
 				}
 			}
@@ -65,7 +65,7 @@ public class RangeCommand implements Command {
 				try {
 					facWorldsOnly = Boolean.parseBoolean(command.nextToken());
 				} catch (Exception e) {
-					CampaignMain.cm.toUser("Improper format. Try: /c range#Distance#Faction#true to return only production worlds.",Username,true);
+					CampaignMain.cm.toUser("AM:Improper format. Try: /c range#Distance#Faction#true to return only production worlds.",Username,true);
 					return;
 				}
 			}
@@ -109,7 +109,7 @@ public class RangeCommand implements Command {
 				}
 			}
 			result = result.substring(0,result.length()-2);
-			CampaignMain.cm.toUser("SM|" + result,Username,false);
+			CampaignMain.cm.toUser("AM:SM|" + result,Username,false);
 		}
 	}
 }

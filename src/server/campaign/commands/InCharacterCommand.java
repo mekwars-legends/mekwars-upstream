@@ -60,7 +60,7 @@ public class InCharacterCommand implements Command {
         boolean factionMute = CampaignMain.cm.getServer().getFactionLeaderIgnoreList().indexOf(client.getName()) > -1;
        
         if (generalMute || factionMute)
-            CampaignMain.cm.toUser("You've been set to ignore mode and cannot participate in chat.", Username,true);
+            CampaignMain.cm.toUser("AM:You've been set to ignore mode and cannot participate in chat.", Username,true);
         else
         	CampaignMain.cm.doSendToAllOnlinePlayers(toSend,true);
 		

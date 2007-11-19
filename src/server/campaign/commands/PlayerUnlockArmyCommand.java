@@ -25,22 +25,22 @@ public class PlayerUnlockArmyCommand implements Command {
 		
 		SPlayer p = CampaignMain.cm.getPlayer(Username);
 		if (p == null) {
-			CampaignMain.cm.toUser("Null Player while renaming army. Report This!.",Username,true);
+			CampaignMain.cm.toUser("AM:Null Player while renaming army. Report This!.",Username,true);
 			return;
 		}
 		int aid = -1;
 		try {
 			aid = Integer.parseInt((String)command.nextElement());
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper format. Try: /c playerunlockarmy#ID",Username,true);
+			CampaignMain.cm.toUser("AM:Improper format. Try: /c playerunlockarmy#ID",Username,true);
 			return;
 		}
 		SArmy army = p.getArmy(aid);
 		if (army == null) {
-			CampaignMain.cm.toUser("Could not find an Army #" + aid + ".",Username,true);
+			CampaignMain.cm.toUser("AM:Could not find an Army #" + aid + ".",Username,true);
 			return;
 		}
 		army.setPlayerLock(aid, false);
-		CampaignMain.cm.toUser("Army " + army.getID() + " unlocked.",Username,true);
+		CampaignMain.cm.toUser("AM:Army " + army.getID() + " unlocked.",Username,true);
 	}
 }

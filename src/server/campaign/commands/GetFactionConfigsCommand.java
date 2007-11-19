@@ -49,7 +49,7 @@ public class GetFactionConfigsCommand implements Command {
 				int userLevel = CampaignMain.cm.getServer().getUserLevel(Username);
 				if(userLevel < getExecutionLevel()) {
 					CampaignMain.cm.toUser("AM:Insufficient access level for command. Level: " + userLevel + ". Required: " + accessLevel + ".",Username,true);
-					CampaignMain.cm.toUser("PL|FC|DONE#DONE", Username,false);
+					CampaignMain.cm.toUser("AM:PL|FC|DONE#DONE", Username,false);
 					return;
 				}
 			}
@@ -62,7 +62,7 @@ public class GetFactionConfigsCommand implements Command {
 			try {
 				timeStamp = Long.parseLong(command.nextToken());
 			}catch (Exception ex) {
-				CampaignMain.cm.toUser("PL|FC|DONE#DONE", Username,false);
+				CampaignMain.cm.toUser("AM:PL|FC|DONE#DONE", Username,false);
 				return;
 			}
 			
@@ -72,7 +72,7 @@ public class GetFactionConfigsCommand implements Command {
 			faction = CampaignMain.cm.getHouseFromPartialString(factionName);
 			
 			if ( faction == null || faction.getConfig() == null) {
-				CampaignMain.cm.toUser("PL|FC|DONE#DONE", Username,false);
+				CampaignMain.cm.toUser("AM:PL|FC|DONE#DONE", Username,false);
 				return;
 			}
 			
@@ -80,7 +80,7 @@ public class GetFactionConfigsCommand implements Command {
 			 * Calling this command from AdminMenu causes it to fully update each time.
 			 */
 			if ( timeStamp >= faction.getLongConfig("TIMESTAMP") ) {
-				CampaignMain.cm.toUser("PL|FC|DONE#DONE", Username,false);
+				CampaignMain.cm.toUser("AM:PL|FC|DONE#DONE", Username,false);
 				return;
 			}
 			
@@ -101,7 +101,7 @@ public class GetFactionConfigsCommand implements Command {
 			CampaignMain.cm.toUser(result.toString(), Username,false);
 		}
 		catch(Exception ex) {
-			CampaignMain.cm.toUser("PL|FC|DONE#DONE", Username,false);
+			CampaignMain.cm.toUser("AM:PL|FC|DONE#DONE", Username,false);
 			MWServ.mwlog.errLog(ex);
 		}
 	}

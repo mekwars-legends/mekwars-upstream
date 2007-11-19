@@ -58,7 +58,7 @@ public class SetEdgeSkillsCommand implements Command {
 			unitid= Integer.parseInt(command.nextToken());
 		}//end try
 		catch (NumberFormatException ex) {
-			CampaignMain.cm.toUser("SetEdgeSkills command failed. Check your input. It should be something like this: /c SetEdgeSkills#unitid#true/false#true/false#true/false#true/false",Username,true);
+			CampaignMain.cm.toUser("AM:SetEdgeSkills command failed. Check your input. It should be something like this: /c SetEdgeSkills#unitid#true/false#true/false#true/false#true/false",Username,true);
 			return;
 		}//end catch
 		
@@ -69,7 +69,7 @@ public class SetEdgeSkillsCommand implements Command {
             edge_when_explosion = new Boolean(command.nextToken()).booleanValue();
 		}//end try
 		catch (Exception ex){
-			CampaignMain.cm.toUser("SetAutoEject Command failed. Check your input. It should be something like this: /c SetEdgeSkills#unitid#true/false#true/false#true/false#true/false",Username,true);
+			CampaignMain.cm.toUser("AM:SetAutoEject Command failed. Check your input. It should be something like this: /c SetEdgeSkills#unitid#true/false#true/false#true/false#true/false",Username,true);
 			return;
 		}//end catch
 		
@@ -84,9 +84,9 @@ public class SetEdgeSkillsCommand implements Command {
         ((EdgeSkill)pilot.getSkills().getPilotSkill(PilotSkill.EdgeSkillID)).setHeadHit(edge_when_headhit);
         ((EdgeSkill)pilot.getSkills().getPilotSkill(PilotSkill.EdgeSkillID)).setExplosion(edge_when_explosion);
 
-        CampaignMain.cm.toUser("PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
+        CampaignMain.cm.toUser("AM:PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
 
-        CampaignMain.cm.toUser("Edge set for "+ unit.getModelName(),Username,true);
+        CampaignMain.cm.toUser("AM:Edge set for "+ unit.getModelName(),Username,true);
 		
 	}//end process() 
 }//end SetEdgeSkillsCommand class
