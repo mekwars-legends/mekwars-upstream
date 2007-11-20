@@ -70,7 +70,7 @@ public class AutomaticBackup implements Runnable{
         CampaignMain.cm.setArchiving(true);
         
         if(CampaignMain.cm.isUsingMySQL()) {
-        	CampaignMain.cm.MySQL.backupDB();
+        	CampaignMain.cm.MySQL.backupDB(time);
         }
         
         SimpleDateFormat sDF = new SimpleDateFormat(dateTimeFormat);

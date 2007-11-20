@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import server.MWServ;
 import server.campaign.CampaignMain;
@@ -41,20 +43,24 @@ public class MWmysql{
     }
   } 
 
-  public void backupDB() {
+  public void backupDB(long time) {
 	  String fs = System.getProperty("file.separator");
 	  Runtime runtime=Runtime.getRuntime();
-	  
 
+	  String dateTimeFormat = "yyyy.MM.dd.HH.mm";
+      SimpleDateFormat sDF = new SimpleDateFormat(dateTimeFormat);
+      Date date = new Date(time);
+      String dateTime = sDF.format(date);
+      
 	  try {
 		  if(fs.equalsIgnoreCase("/"))
 		  {
 			  // It's Unix
-			  String[] call={"dump_db.sh", Long.toString(System.currentTimeMillis())};
+			  String[] call={"dump_db.sh", dateTime};
 			  runtime.exec(call);
 		  } else {
 			  // It's Windows
-			  String[] call={"dump_db.bat", Long.toString(System.currentTimeMillis())};
+			  String[] call={"dump_db.bat", dateTime};
 			  runtime.exec(call);
 		  }		  
 	  } catch (IOException ex){

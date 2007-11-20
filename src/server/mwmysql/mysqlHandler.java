@@ -64,8 +64,8 @@ public class mysqlHandler{
 	  phpBBCon.addToForum(name, pass);
   }
   
-  public void backupDB() {
-	  MySQLCon.backupDB();
+  public void backupDB(long time) {
+	  MySQLCon.backupDB(time);
   }
   
   public PreparedStatement getPreparedStatement(String sql) {
