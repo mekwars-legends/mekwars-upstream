@@ -1255,7 +1255,7 @@ public class CCommPanel extends JPanel implements ChangeListener, ComponentListe
 		//offer to close mail tabs
 		if (mwclient.getConfig().isParam("USEMULTIPLEPM") && CommTPane.getSelectedComponent() instanceof JPanel) {
 			JPanel panel = (JPanel)CommTPane.getSelectedComponent();
-			if (panel.getName().startsWith("Mail Tab ")) {
+			if (panel != null && panel.getName().startsWith("Mail Tab ")) {
 				JPopupMenu popup = new JPopupMenu();
 				JMenuItem info = new JMenuItem("Close");
 				info.addActionListener(new ActionListener(){

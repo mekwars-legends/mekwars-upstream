@@ -324,7 +324,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 
 			if ((client.game != null && client.game.getPhase() == IGame.PHASE_LOUNGE)) {
 				if (this.mechs.size() > 0 && xmlGameOptions.size() > 0 ){
-					Vector<IBasicOption> tempVector = new Vector<IBasicOption>(10,1);
+					/*Vector<IBasicOption> tempVector = new Vector<IBasicOption>(10,1);
 					while ( xmlGameOptions.size() > 0 ){
 						tempVector.clear();
 						int count = Math.min(10, xmlGameOptions.size());
@@ -332,7 +332,8 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 							tempVector.add(xmlGameOptions.remove(0));
 						client.sendGameOptions("",tempVector);
 						sleep(150);
-					}
+					}*/
+					client.sendGameOptions("",xmlGameOptions);
 				}
 
 				IClientPreferences cs = PreferenceManager.getClientPreferences();

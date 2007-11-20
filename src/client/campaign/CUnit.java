@@ -368,20 +368,24 @@ public class CUnit extends Unit {
 		try {
 			MechSummary ms = MechSummaryCache.getInstance().getMech(getUnitFilename());
             if ( ms == null ) {
-                MechSummary[] units = MechSummaryCache.getInstance().getAllMechs();
-                //System.err.println("unit: "+getUnitFilename());
-                for ( MechSummary unit :  units) {
-                    //System.err.println("Source file: "+unit.getSourceFile().getName());
-                    //System.err.println("Model: "+unit.getModel());
-                    //System.err.println("Chassis: "+unit.getChassis());
-                    if ( unit.getSourceFile().getName().equalsIgnoreCase(getUnitFilename()) 
-                    		|| unit.getModel().trim().equalsIgnoreCase(getUnitFilename().trim())
-                    		|| unit.getChassis().trim().equalsIgnoreCase(getUnitFilename().trim())
-                    		) {
-                        ms = unit;
-                        break;
-                    }
-                }
+            	ms = MechSummaryCache.getInstance().getMech(getUnitFilename().trim());
+            	if ( ms == null ){
+	                MechSummary[] units = MechSummaryCache.getInstance().getAllMechs();
+	                System.err.println("unit: "+getUnitFilename());
+	                for ( MechSummary unit :  units) {
+	                    System.err.println("Source file: "+unit.getSourceFile().getName());
+	                    System.err.println("Model: "+unit.getModel());
+	                    System.err.println("Chassis: "+unit.getChassis());
+	                    System.err.flush();
+	                    if ( unit.getSourceFile().getName().equalsIgnoreCase(getUnitFilename()) 
+	                    		|| unit.getModel().trim().equalsIgnoreCase(getUnitFilename().trim())
+	                    		|| unit.getChassis().trim().equalsIgnoreCase(getUnitFilename().trim())
+	                    		) {
+	                        ms = unit;
+	                        break;
+	                    }
+	                }
+            	}
             }
 
             UnitEntity = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
