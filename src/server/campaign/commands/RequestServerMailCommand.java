@@ -45,7 +45,7 @@ public class RequestServerMailCommand implements Command {
 		}
 		
         if (CampaignMain.cm.getServer().getServerMail().get(Username.toLowerCase()) != null) {
-            CampaignMain.cm.toUser("AM:PM|SERVER|" + (String) (CampaignMain.cm.getServer().getServerMail().get(Username.toLowerCase())), Username,false);
+            CampaignMain.cm.toUser("PM|SERVER|" + (String) (CampaignMain.cm.getServer().getServerMail().get(Username.toLowerCase())), Username,false);
     		CampaignMain.cm.getServer().getServerMail().remove(Username.toLowerCase());
             CampaignMain.cm.getServer().doWriteMailFile();
         }
