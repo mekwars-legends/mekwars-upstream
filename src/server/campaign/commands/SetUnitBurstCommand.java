@@ -94,7 +94,7 @@ public class SetUnitBurstCommand implements Command {
 		
 		mWeapon.setRapidfire(selection);
 		unit.setEntity(en);
-		CampaignMain.cm.toUser("AM:PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
+		CampaignMain.cm.toUser("PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
 		
 		CampaignMain.cm.toUser("AM:Rapid fire set for " + unit.getModelName() + " (#" +unit.getId()+").",Username,true);
 		

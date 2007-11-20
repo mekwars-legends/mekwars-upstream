@@ -163,7 +163,7 @@ public class DefendCommand implements Command {
 			}
 			
 			dp.setTeamNumber(teamNumber);
-			CampaignMain.cm.toUser("AM:PL|STN|"+teamNumber, Username,false);
+			CampaignMain.cm.toUser("PL|STN|"+teamNumber, Username,false);
 			CampaignMain.cm.toUser("AM:You've been assigned to team #"+teamNumber+".", Username);
 		}else if ( o.getBooleanValue("RandomTeamDetermination") && o.getBooleanValue("TeamOperation") ) {
 			int numberOfTeams = Math.max(2,Math.min(8,o.getIntValue("NumberOfTeams")));
@@ -174,7 +174,7 @@ public class DefendCommand implements Command {
 					break;
 				}
 			}
-			CampaignMain.cm.toUser("AM:PL|STN|"+teamNumber, Username,false);
+			CampaignMain.cm.toUser("PL|STN|"+teamNumber, Username,false);
 			CampaignMain.cm.toUser("AM:You've been assigned to team #"+teamNumber+".", Username);
 		}
 		

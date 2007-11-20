@@ -92,7 +92,7 @@ public class DemotePlayerCommand implements Command {
 		}
 		
 		grunt.setSubFaction(subFactionName);
-		CampaignMain.cm.toUser("AM:PS|"+grunt.toString(true), Username,false);
+		CampaignMain.cm.toUser("PS|"+grunt.toString(true), Username,false);
 		CampaignMain.cm.toUser("AM:You have been demoted to SubFaction "+subFactionName+".", grunt.getName());
 		CampaignMain.cm.doSendHouseMail(grunt.getMyHouse(), "NOTE", grunt.getName()+" has been demoted to subfaction "+subFactionName+" by "+leader.getName()+"!");
 	

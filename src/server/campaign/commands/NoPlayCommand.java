@@ -240,7 +240,7 @@ public class NoPlayCommand implements Command {
 					p.addMoney(-removeMUCost);
 					p.addReward(-removeRPCost);
 					p.addInfluence(-removeFluCost);
-					CampaignMain.cm.toUser("AM:PL|PEU|"+p.getExclusionList().playerExcludeToString("$"),Username,false);
+					CampaignMain.cm.toUser("PL|PEU|"+p.getExclusionList().playerExcludeToString("$"),Username,false);
 					p.setSave();
 					return;
 				} catch (Exception e) {

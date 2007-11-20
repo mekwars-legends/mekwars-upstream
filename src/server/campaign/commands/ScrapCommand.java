@@ -172,7 +172,7 @@ public class ScrapCommand implements Command {
         		&& (m.getType() == Unit.MEK || m.getType() == Unit.PROTOMEK) ){
             SPilot pilot = (SPilot)m.getPilot();
             p.getPersonalPilotQueue().addPilot(m.getPilot(), m.getWeightclass());
-            CampaignMain.cm.toUser("AM:PL|AP2PPQ|"+m.getType()+"|"+m.getWeightclass()+"|"+pilot.toFileFormat("#",true),Username,false);
+            CampaignMain.cm.toUser("PL|AP2PPQ|"+m.getType()+"|"+m.getWeightclass()+"|"+pilot.toFileFormat("#",true),Username,false);
             CampaignMain.cm.toUser(pilot.getName() + " was moved to your barracks.",Username,true);
             p.getPersonalPilotQueue().checkQueueAndWarn(p.getName(), m.getType(), m.getWeightclass());
 

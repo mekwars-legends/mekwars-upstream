@@ -80,9 +80,9 @@ public class SetUnmaintainedCommand implements Command {
 		
 		//passes checks. now actually make the unit unmaintained.
 		unitToSet.setUnmaintainedStatus();
-		CampaignMain.cm.toUser("AM:PL|SUS|"+unitToSet.getId()+"#"+Unit.STATUS_UNMAINTAINED,Username,false);
-		CampaignMain.cm.toUser("AM:PL|SB|"+p.getTotalMekBays(),Username,false);
-		CampaignMain.cm.toUser("AM:PL|SF|"+p.getFreeBays(),Username,false);
+		CampaignMain.cm.toUser("PL|SUS|"+unitToSet.getId()+"#"+Unit.STATUS_UNMAINTAINED,Username,false);
+		CampaignMain.cm.toUser("PL|SB|"+p.getTotalMekBays(),Username,false);
+		CampaignMain.cm.toUser("PL|SF|"+p.getFreeBays(),Username,false);
 		CampaignMain.cm.toUser(unitToSet.getPilot().getName() + "'s " + unitToSet.getModelName() + " is no longer being maintained." ,Username,true);
 		p.setSave();
 		

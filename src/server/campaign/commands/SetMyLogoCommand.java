@@ -57,7 +57,7 @@ public class SetMyLogoCommand implements Command {
             else
                 player.setMyLogo(newLogo);
         }
-        CampaignMain.cm.toUser("AM:PL|SUL|"+ player.getMyLogo(),Username,false);
+        CampaignMain.cm.toUser("PL|SUL|"+ player.getMyLogo(),Username,false);
 		CampaignMain.cm.toUser("AM:You've set your Logo to " + player.getMyLogo(),Username,true);
 		CampaignMain.cm.toUser("AM:It'll look like this: <img height=\"150\" width=\"150\" src =\"" + player.getMyLogo() +"\">",Username,true);
 	}

@@ -66,7 +66,7 @@ public class MWServ {
     private Hashtable<String,Long> ISPlog = new Hashtable<String,Long>();
 	private Hashtable<MWClientInfo, InetAddress> iphelp = new Hashtable<MWClientInfo, InetAddress>();
 	private Properties config = new Properties();
-	private Hashtable mails = new Hashtable();
+	private Hashtable<String, String>mails = new Hashtable<String, String>();
 	private Hashtable iplog = new Hashtable();
 	//private Hashtable versionsubids = new Hashtable();
 	private IpCountry ipToCountry = null;
@@ -228,7 +228,7 @@ public class MWServ {
 		}
 	}
 	
-	public Hashtable checkAndCreateConfig(String filename) {
+	public Hashtable<String,String> checkAndCreateConfig(String filename) {
 		try {
 			File configFile = new File(filename);
 			FileInputStream fis = new FileInputStream(configFile);
@@ -257,7 +257,7 @@ public class MWServ {
 		}
 		if (filename.equals("./data/mails.txt"))
 			return getMails();
-		return new Hashtable();
+		return new Hashtable<String,String>();
 	}
 		
 	/*** Once a user(lPID) logs in this function is kicked off ****/
@@ -760,8 +760,8 @@ public class MWServ {
 		return this.campaign;
 	}
 	
-	public Hashtable getMails() {
-		Hashtable result = new Hashtable();
+	public Hashtable<String,String> getMails() {
+		Hashtable<String,String> result = new Hashtable<String,String>();
 		try {
 			File configFile = new File("./data/mails.txt");
 			FileInputStream fis = new FileInputStream(configFile);
@@ -988,7 +988,7 @@ public class MWServ {
         return factionLeaderIgnoreList;
     }
 	
-	public Hashtable getServerMail(){
+	public Hashtable<String,String> getServerMail(){
 		return mails;
 	}
 	

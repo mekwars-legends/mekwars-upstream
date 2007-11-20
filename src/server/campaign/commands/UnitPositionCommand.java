@@ -115,7 +115,7 @@ public class UnitPositionCommand implements Command {
 				a.addUnit(u, newposition);
 			
 			//now, send an update command to the client
-			CampaignMain.cm.toUser("AM:PL|RPU|"+a.getID()+"#"+u.getId()+"#"+newposition,Username,false);
+			CampaignMain.cm.toUser("PL|RPU|"+a.getID()+"#"+u.getId()+"#"+newposition,Username,false);
 			
 			//and send the user some nice chat
 			CampaignMain.cm.toUser("AM:Army #"+ a.getID() + "'s order was changed. The " + u.getModelName() + "  is now Unit " + (newposition + 1) + "." ,Username,true);

@@ -54,7 +54,7 @@ public class AcceptAttackFromReserveCommand implements Command {
 		//Issuer of command will be defending player
 		SPlayer dp = CampaignMain.cm.getPlayer(Username);
         if (dp == null) {
-			CampaignMain.cm.toUser("Null player in AcceptAttackFromReserve. Report this immediately!",Username,true);
+			CampaignMain.cm.toUser("AM:Null player in AcceptAttackFromReserve. Report this immediately!",Username,true);
 			return;
 		}
 
@@ -118,7 +118,7 @@ public class AcceptAttackFromReserveCommand implements Command {
         if (defensiveFailures.size() == 0) {
             fullMatches.add(da);
         } else {
-        	CampaignMain.cm.toUser("Army #" + da.getID() + "could not defend " + manager.getShortValidator().failuresToString(defensiveFailures), Username, true);
+        	CampaignMain.cm.toUser("AM:Army #" + da.getID() + "could not defend " + manager.getShortValidator().failuresToString(defensiveFailures), Username, true);
 			return;
         }
         

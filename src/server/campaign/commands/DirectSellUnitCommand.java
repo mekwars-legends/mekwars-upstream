@@ -195,7 +195,7 @@ public class DirectSellUnitCommand implements Command {
 		pBuyer.setPlayerSellingto("");
 
 		if ( p.mayAcquireWelfareUnits() ){
-			CampaignMain.cm.doSendModMail("NOTE",Username + "AM: has used the Direct Sell Command and sent themself into welfare.");
+			CampaignMain.cm.doSendModMail("NOTE",Username + " has used the Direct Sell Command and sent themself into welfare.");
 		}
 
 

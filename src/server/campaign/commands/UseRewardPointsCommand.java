@@ -359,7 +359,7 @@ public class UseRewardPointsCommand implements Command {
                 weap.setShotsLeft(((AmmoType)weap.getType()).getShots());
 
             CampaignMain.cm.toUser("AM:Unit #" + unitID + " "+unit.getModelName()+" is now fully repaired.", Username, true);
-            CampaignMain.cm.toUser("AM:PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
+            CampaignMain.cm.toUser("PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
             player.addReward(-rewardPoints);
             player.checkAndUpdateArmies(unit);
             player.setSave();

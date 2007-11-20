@@ -94,7 +94,7 @@ public class SetUnitAmmoByCritCommand implements Command {
 			
 			p.checkAndUpdateArmies(unit);
 			//Don't have to set BV to 0 and recalculate in this class - unit.toString(true) does it for us.
-			CampaignMain.cm.toUser("AM:PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
+			CampaignMain.cm.toUser("PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
 			CampaignMain.cm.toUser("AM:Ammo dumped. BV Recalculated",Username,true);
 			return;
 		}
@@ -177,7 +177,7 @@ public class SetUnitAmmoByCritCommand implements Command {
         		mWeapon.setShotsLeft(newAmmoAmount);
         		unit.setEntity(en);
         		p.checkAndUpdateArmies(unit);
-        		CampaignMain.cm.toUser("AM:PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
+        		CampaignMain.cm.toUser("PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
         		
         		CampaignMain.cm.toUser("AM:Ammo set for " + unit.getModelName() + " (#" +unit.getId()+").",Username,true);
         		return;
@@ -204,7 +204,7 @@ public class SetUnitAmmoByCritCommand implements Command {
 		mWeapon.changeAmmoType(at);
 		unit.setEntity(en);
 		p.checkAndUpdateArmies(unit);
-		CampaignMain.cm.toUser("AM:PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
+		CampaignMain.cm.toUser("PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
 		
 		CampaignMain.cm.toUser("AM:Ammo set for " + unit.getModelName() + " (#" +unit.getId()+").",Username,true);
 		

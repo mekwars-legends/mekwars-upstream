@@ -36,6 +36,6 @@ public class MyBidsCommand implements Command {
 				return;
 			}
 		}
-		CampaignMain.cm.toUser("AM:SM|" + CampaignMain.cm.getMarket().getPlayerBidsString(Username),Username,false);
+		CampaignMain.cm.toUser("SM|" + CampaignMain.cm.getMarket().getPlayerBidsString(Username),Username,false);
 	}
 }

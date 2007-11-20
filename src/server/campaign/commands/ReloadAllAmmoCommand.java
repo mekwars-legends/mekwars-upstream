@@ -143,7 +143,7 @@ public class ReloadAllAmmoCommand implements Command {
 			
 		}
 		//unit.toString() sent's BV to zero and recalculates, so we don't need to do it in this Command class.
-		CampaignMain.cm.toUser("AM:PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
+		CampaignMain.cm.toUser("PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
 		
 		p.addMoney(-cost);
 		CampaignMain.cm.toUser("AM:Ammo set for " + unit.getModelName() + " (#" +unit.getId()+") at a cost of "+CampaignMain.cm.moneyOrFluMessage(true,false,cost),Username,true);

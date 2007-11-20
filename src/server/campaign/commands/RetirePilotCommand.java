@@ -194,14 +194,14 @@ public class RetirePilotCommand implements Command {
 			}
 			
 			//continue normally. update unit and its armies, etc.
-			CampaignMain.cm.toUser("AM:PL|UU|"+m.getId()+"|"+m.toString(true),Username,false);
+			CampaignMain.cm.toUser("PL|UU|"+m.getId()+"|"+m.toString(true),Username,false);
 			
 			Enumeration f = p.getArmies().elements();
 			while (f.hasMoreElements()) {
 				SArmy currArmy = (SArmy)f.nextElement();
 				if (currArmy.getUnit(m.getId()) != null) {
 					currArmy.setBV(0);//not null so recalc BV of the army
-					CampaignMain.cm.toUser("AM:PL|SAD|"+currArmy.toString(true,"%"),Username,false);
+					CampaignMain.cm.toUser("PL|SAD|"+currArmy.toString(true,"%"),Username,false);
 					CampaignMain.cm.getOpsManager().checkOperations(currArmy,true);//update legal operations
 				}//end if(army contains the )
 			}//end while(more armies to check)

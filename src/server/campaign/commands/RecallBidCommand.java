@@ -80,7 +80,7 @@ public class RecallBidCommand implements Command {
 		CampaignMain.cm.toUser("AM:You've rescinded your bid for the " + auction.getListedModelName() + ".", Username, true);
 
 		//send BM|CU to bidder
-		CampaignMain.cm.toUser("AM:BM|CU|" + auction.toString(auctionID,p),Username,false);
+		CampaignMain.cm.toUser("BM|CU|" + auction.toString(auctionID,p),Username,false);
 		
 	}//end process()
 	

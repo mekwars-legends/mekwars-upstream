@@ -125,7 +125,7 @@ public class SetUnitCommanderCommand implements Command {
 			CampaignMain.cm.toUser("AM:Unit #"+m.getId()+" has been removed as unit commander", Username);
 			army.removeCommander(m.getId());
 		}
-		CampaignMain.cm.toUser("AM:PL|SAD|"+army.toString(true,"%"),Username,false);
+		CampaignMain.cm.toUser("PL|SAD|"+army.toString(true,"%"),Username,false);
 		
 	}//end process()
 

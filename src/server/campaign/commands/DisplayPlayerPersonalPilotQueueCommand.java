@@ -159,9 +159,9 @@ public class DisplayPlayerPersonalPilotQueueCommand implements Command {
         toReturn.append("</font>");
 		
 		if (hasQueuedPilots)
-			CampaignMain.cm.toUser("AM:SM|"+toReturn.toString(),Username,false);
+			CampaignMain.cm.toUser("SM|"+toReturn.toString(),Username,false);
 		else
-			CampaignMain.cm.toUser("AM:SM|You don't have any reserve pilots at the moment.",Username,false);
+			CampaignMain.cm.toUser("SM|You don't have any reserve pilots at the moment.",Username,false);
 		
 	}
 }

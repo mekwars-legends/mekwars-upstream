@@ -134,7 +134,7 @@ public class NamePilotCommand implements Command {
 		//checks passed. change name,
 		pilot.setName(name);
 		CampaignMain.cm.toUser("AM:The pilot of the " + u.getModelName() + " (#" + unitid + ") was renamed. New name: " + name + ".",Username,true);
-		CampaignMain.cm.toUser("AM:PL|UU|"+ u.getId() + "|" + u.toString(true),Username,false);
+		CampaignMain.cm.toUser("PL|UU|"+ u.getId() + "|" + u.toString(true),Username,false);
 		
 	}//end process()
 }//end NamePilotCommand

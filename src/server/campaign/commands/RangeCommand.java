@@ -109,7 +109,7 @@ public class RangeCommand implements Command {
 				}
 			}
 			result = result.substring(0,result.length()-2);
-			CampaignMain.cm.toUser("AM:SM|" + result,Username,false);
+			CampaignMain.cm.toUser("SM|" + result,Username,false);
 		}
 	}
 }

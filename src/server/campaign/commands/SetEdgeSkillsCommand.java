@@ -84,7 +84,7 @@ public class SetEdgeSkillsCommand implements Command {
         ((EdgeSkill)pilot.getSkills().getPilotSkill(PilotSkill.EdgeSkillID)).setHeadHit(edge_when_headhit);
         ((EdgeSkill)pilot.getSkills().getPilotSkill(PilotSkill.EdgeSkillID)).setExplosion(edge_when_explosion);
 
-        CampaignMain.cm.toUser("AM:PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
+        CampaignMain.cm.toUser("PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
 
         CampaignMain.cm.toUser("AM:Edge set for "+ unit.getModelName(),Username,true);
 		

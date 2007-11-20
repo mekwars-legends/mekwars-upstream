@@ -94,9 +94,9 @@ public class SellBaysCommand implements Command {
 			CampaignMain.cm.toUser("AM:You return a bay.  Your faction returns "+CampaignMain.cm.moneyOrFluMessage(true,true,sellbackprice)+" of your security deposit.",Username,true);
 		else
 			CampaignMain.cm.toUser("AM:You return " + numtosell + " bays.  Your faction returns "+CampaignMain.cm.moneyOrFluMessage(true,true,sellbackprice)+" of your security deposit.",Username,true);
-        CampaignMain.cm.toUser("AM:PL|SF|"+p.getFreeBays(),Username,false);
-        CampaignMain.cm.toUser("AM:PL|SB|"+p.getTotalMekBays(),Username,false);
-        CampaignMain.cm.toUser("AM:PL|ST|"+p.getBaysOwned(),Username,false);
+        CampaignMain.cm.toUser("PL|SF|"+p.getFreeBays(),Username,false);
+        CampaignMain.cm.toUser("PL|SB|"+p.getTotalMekBays(),Username,false);
+        CampaignMain.cm.toUser("PL|ST|"+p.getBaysOwned(),Username,false);
 
 	}//end process()
 }//end SellBaysCommand()

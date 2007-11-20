@@ -74,7 +74,7 @@ public class RequestSubFactionPromotionCommand implements Command {
 		
 		if ( CampaignMain.cm.getBooleanConfig("autoPromoteSubFaction") ){
 			player.setSubFaction(subFactionName);
-			CampaignMain.cm.toUser("AM:PS|"+player.toString(true), Username,false);
+			CampaignMain.cm.toUser("PS|"+player.toString(true), Username,false);
 			CampaignMain.cm.toUser("AM:Congratulations you have been promoted to SubFaction "+subFactionName+".", Username);
 			CampaignMain.cm.doSendHouseMail(player.getMyHouse(), "NOTE", player.getName()+" has been promoted to subfaction "+subFactionName+"!");
 		}else{

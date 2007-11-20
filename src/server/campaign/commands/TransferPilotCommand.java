@@ -124,8 +124,8 @@ public class TransferPilotCommand implements Command {
 		 * the players' client-side queue representations.
 		 */
 		targetplayer.getPersonalPilotQueue().addPilot(pilot, pWeightClass);
-		CampaignMain.cm.toUser("AM:PL|RPPPQ|"+pUnitType+"|"+pWeightClass+"|"+pPosition,Username,false);
-		CampaignMain.cm.toUser("AM:PL|AP2PPQ|"+pUnitType+"|"+pWeightClass+"|"+pilot.toFileFormat("#",true),targetPlayer,false);
+		CampaignMain.cm.toUser("PL|RPPPQ|"+pUnitType+"|"+pWeightClass+"|"+pPosition,Username,false);
+		CampaignMain.cm.toUser("PL|AP2PPQ|"+pUnitType+"|"+pWeightClass+"|"+pilot.toFileFormat("#",true),targetPlayer,false);
 		//NOTE: No need to do checkQueueAndWarn b/c transfers that overload barracks are forbidden above.
 
 		/* 

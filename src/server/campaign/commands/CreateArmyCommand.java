@@ -139,7 +139,7 @@ public class CreateArmyCommand implements Command {
 		p.getArmies().add(newArmy);
 		
 		//send relevant data to client
-		CampaignMain.cm.toUser("AM:PL|SAD|"+p.getArmy(i).toString(true,"%"),Username,false);
+		CampaignMain.cm.toUser("PL|SAD|"+p.getArmy(i).toString(true,"%"),Username,false);
 		CampaignMain.cm.toUser("AM:Created a new Army (#" + p.getArmy(i).getID() + ")." ,Username,true);
 	
 	}//end process()

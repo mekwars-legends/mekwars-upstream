@@ -136,7 +136,7 @@ public class JoinAttackCommand implements Command {
 		
 		o.addAttacker(jp, aa, "");
 
-		CampaignMain.cm.toUser("AM:PL|STN|"+ap.getTeamNumber(), Username,false);
+		CampaignMain.cm.toUser("PL|STN|"+ap.getTeamNumber(), Username,false);
 		CampaignMain.cm.toUser("AM:You have been assigned to team #"+ap.getTeamNumber(), Username);
 		jp.setTeamNumber(ap.getTeamNumber());
 	}//end process

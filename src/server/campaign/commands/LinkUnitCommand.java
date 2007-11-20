@@ -94,7 +94,7 @@ public class LinkUnitCommand implements Command {
           String toReturn = "Unit #"+ slaveid + " was removed from its C3 network. New BV: " + a.getBV();
           
           CampaignMain.cm.toUser(toReturn,Username,true);
-          CampaignMain.cm.toUser("AM:PL|SAD|"+a.toString(true,"%"),Username,false);
+          CampaignMain.cm.toUser("PL|SAD|"+a.toString(true,"%"),Username,false);
           CampaignMain.cm.getOpsManager().checkOperations(a,true);//update legal ops
           return;
       }
@@ -107,7 +107,7 @@ public class LinkUnitCommand implements Command {
           String toReturn = "Unit #"+ slaveid + " was removed from its C3 network. New BV: " + a.getBV();
           
           CampaignMain.cm.toUser(toReturn,Username,true);
-          CampaignMain.cm.toUser("AM:PL|SAD|"+a.toString(true,"%"),Username,false);
+          CampaignMain.cm.toUser("PL|SAD|"+a.toString(true,"%"),Username,false);
           CampaignMain.cm.getOpsManager().checkOperations(a,true);//update legal ops
           return;
       }
@@ -127,7 +127,7 @@ public class LinkUnitCommand implements Command {
           String toReturn = "Unit #"+ slaveUnit.getId() + " is now linked to Unit #"+masterUnit.getId()+". New BV: " + a.getBV();
           
           CampaignMain.cm.toUser(toReturn,Username,true);
-          CampaignMain.cm.toUser("AM:PL|SAD|"+a.toString(true,"%"),Username,false);
+          CampaignMain.cm.toUser("PL|SAD|"+a.toString(true,"%"),Username,false);
           CampaignMain.cm.getOpsManager().checkOperations(a,true);//update legal ops
       }
       

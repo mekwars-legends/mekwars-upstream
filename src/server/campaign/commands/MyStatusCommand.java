@@ -39,7 +39,7 @@ public class MyStatusCommand implements Command {
 		
 		//Send status to player (SM means Send to Miscellaneous Tab)
 		if (CampaignMain.cm.getPlayer(Username) != null)
-			CampaignMain.cm.toUser("AM:SM|" + CampaignMain.cm.getPlayer(Username).getReadableStatus(false),Username,false);
+			CampaignMain.cm.toUser("SM|" + CampaignMain.cm.getPlayer(Username).getReadableStatus(false),Username,false);
 		else
 			CampaignMain.cm.toUser("AM:You are not participating in the campaign!",Username,true);
 	}//end process()

@@ -49,7 +49,7 @@ public class PlanetCommand implements Command {
 		}
 		
 		//found a valid world. send info.
-		CampaignMain.cm.toUser("AM:SM|" + p.getLongDescription(false),Username,false);
+		CampaignMain.cm.toUser("SM|" + p.getLongDescription(false),Username,false);
 		
 	}//end process()
 	
