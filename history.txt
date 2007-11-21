@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ Bug: auto armies/gun emplacements and mines not reseting after op ends
 + Patch 1835344: updated patch for AM: Messages
 + Changed naming on DB backups
 + Sped up gameoption sorting now only !Default options are sent to MM Server

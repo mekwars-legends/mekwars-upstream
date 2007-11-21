@@ -865,7 +865,7 @@ public class ShortOperation implements Comparable {
                 for (String currP : attackers.keySet())
                     CampaignMain.cm.toUser(attackerAutoMinesString,currP,false);
             } else {
-            	attackerAutoMinesString = "PL|AAM|" + 0+"|"+0;
+            	attackerAutoMinesString = "PL|AAM|0|0";
                 //so send it to each attacker ...
                 for (String currP : attackers.keySet())
                     CampaignMain.cm.toUser(attackerAutoMinesString,currP,false);
@@ -883,7 +883,7 @@ public class ShortOperation implements Comparable {
                 for (String currP : defenders.keySet())
                     CampaignMain.cm.toUser(defenderAutoMinesString,currP,false);
             } else {
-            	defenderAutoMinesString = "PL|AAM|" + 0+"|"+0;
+            	defenderAutoMinesString = "PL|AAM|0|0";
                 //so send it to each defender ...
                 for (String currP : defenders.keySet())
                     CampaignMain.cm.toUser(defenderAutoMinesString,currP,false);

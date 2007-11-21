@@ -373,6 +373,10 @@ public class ShortResolver {
 			else
 				currPlayer.setFighting(false);
 
+			CampaignMain.cm.toUser("PL|AAA|CLEAR", currPlayer.getName());
+			CampaignMain.cm.toUser("PL|GEA|CLEAR", currPlayer.getName());
+			CampaignMain.cm.toUser("PL|AAM|0|0", currPlayer.getName());
+			
 			currPlayer.checkForPromotion();
 			/*
 			 * Servers with AR generally force people to deactivate and repair.
