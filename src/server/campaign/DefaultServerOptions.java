@@ -858,7 +858,7 @@ public class DefaultServerOptions {
         
         defaults.setProperty("ForumGroupName", "");
 
-        //My SQL Settings
+/*        //My SQL Settings
 		defaults.setProperty("USEMYSQL", "false");
 		defaults.setProperty("MYSQLUSER", "");
 		defaults.setProperty("MYSQLPASS", "");
@@ -874,7 +874,7 @@ public class DefaultServerOptions {
 		defaults.setProperty("PHPBB_TABLE_PREFIX", "phpbb_");
 		defaults.setProperty("PHPBB_MAJOR_VERSION", "2");
 		defaults.setProperty("PHPBB_URL", "http://localhost/phpbb/index.php");
-		
+*/		
 		//Victory Condition Kill Unit Commanders Settings.
         defaults.setProperty("allowUnitCommanderMek","true");
         defaults.setProperty("allowUnitCommanderVehicle","false");
