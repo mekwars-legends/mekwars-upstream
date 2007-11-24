@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.10.x
++ BUG: House MoTD showing in main chat.
 + Bug: MySQL settings being sent in campaignconfig.  Removed from serverdefaults
 + Bug: auto armies/gun emplacements and mines not reseting after op ends
 + Patch 1835344: updated patch for AM: Messages
