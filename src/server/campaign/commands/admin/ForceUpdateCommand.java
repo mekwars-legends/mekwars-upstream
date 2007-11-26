@@ -59,12 +59,15 @@ public class ForceUpdateCommand implements Command {
             updateKey = command.nextToken();
         }catch(Exception ex){
             CampaignMain.cm.toUser("You must supply a Key<br>" +
-                    "Syntax  /c forceupdate#Key#[Player/Dedicated/All]<br>"+
+                    "Syntax  /c forceupdate#Key[Clear]#[Player/Dedicated/All]<br>"+
                      "Player/Dedicated/All are optional and will kick those entities<br>"+
                      "off so that they have to update right away.",Username);
             return;
         }
 
+        if ( updateKey.equalsIgnoreCase("Clear") || updateKey.equalsIgnoreCase("-1") )
+        	updateKey = "";
+        
         CampaignMain.cm.getConfig().setProperty("ForceUpdateKey",updateKey);
         DefaultServerOptions dso = new DefaultServerOptions();
         dso.createConfig();
@@ -91,8 +94,8 @@ public class ForceUpdateCommand implements Command {
                 if ( CampaignMain.cm.getServer().isAdmin(toKick) )
                     continue;
             	if ( players && !toKick.toLowerCase().startsWith("[dedicated]") ){
-	                CampaignMain.cm.toUser("You have been forced to update by " + Username+"!<br>Restart your client to update.", toKick,true);
-	                CampaignMain.cm.toUser("PL|GBB|Bye Bye", toKick,false);
+	                CampaignMain.cm.toUser("You have been forced to update by " + Username+"!", toKick);
+	                CampaignMain.cm.toUser("PL|FCU|Bye Bye", toKick,false);
             	}
             	else if ( deds && toKick.toLowerCase().startsWith("[dedicated]") ){
 	                try{

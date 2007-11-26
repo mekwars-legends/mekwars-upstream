@@ -217,6 +217,10 @@ public class PL extends Command {
         	player.getMyHouse().supportedUnits.clear();
         	player.getMyHouse().setNonFactionUnitsCostMore(Boolean.parseBoolean(mwclient.getserverConfigs("UseNonFactionUnitsIncreasedTechs")));
         }
+        else if (cmd.equals("FCU")){
+        	mwclient.updateClient();
+        	return;
+        }
 		else
 			return;
 		

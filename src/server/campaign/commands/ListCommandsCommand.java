@@ -54,7 +54,7 @@ public class ListCommandsCommand implements Command {
 		
 		if ( command.hasMoreElements())
 			starter = command.nextToken();
-		
+
 		while (commands.hasMoreElements()) {
 			
 			String commandName = commands.nextElement();
@@ -63,7 +63,7 @@ public class ListCommandsCommand implements Command {
 				continue;
 			Command commandMethod = commandTable.get(commandName);
 			
-			if (!starter.equals("")) {
+			if (starter.trim().length() > 0) {
 			    if ( userLevel < commandMethod.getExecutionLevel())
 			        continue;
 			    else if ( commandName.toLowerCase().indexOf(starter.toLowerCase()) > -1 ) {
@@ -75,7 +75,7 @@ public class ListCommandsCommand implements Command {
 			} else{
 			    if ( userLevel >= commandMethod.getExecutionLevel()) {
 			    	String syntax = commandMethod.getSyntax().trim().length() < 1 ? " " : commandMethod.getSyntax();
-			        commandArray[x] = commandName.substring(0,1)+commandName.substring(1,commandName.length()).toLowerCase()+"#"+syntax+"#"+commandMethod.getExecutionLevel();
+			        commandArray[x] = commandName.substring(0,1)+commandName.substring(1,commandName.length()).toLowerCase()+"~"+syntax+"~"+commandMethod.getExecutionLevel();
 			    }
 			    else
 			        continue;
@@ -92,15 +92,14 @@ public class ListCommandsCommand implements Command {
 		}
 		
 		Arrays.sort(commandArray);
-		String result = "SM|";
-		result += "";
-		result += "<table><tr><th>Command Name</th><th>Syntax</th><th>Access Level</th></tr>";
+		StringBuffer result = new StringBuffer("SM|");
+		result.append("<table><tr><th>Command Name</th><th>Syntax</th><th>Access Level</th></tr>");
 
 		for( x=0; x<commandArray.length; x++){
 		    StringTokenizer commandList = new StringTokenizer(commandArray[x],"~");
-		    result += "<tr><td>"+commandList.nextToken()+"</td><td>"+commandList.nextToken()+"</td><td>"+commandList.nextToken()+ "</td></tr>";
+		    result.append("<tr><td>"+commandList.nextToken()+"</td><td>"+commandList.nextToken()+"</td><td>"+commandList.nextToken()+ "</td></tr>");
 		}
-		result +="</table>";
-		CampaignMain.cm.toUser(result,Username,false);
+		result.append("</table>");
+		CampaignMain.cm.toUser(result.toString(),Username,false);
 	}
 }

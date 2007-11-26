@@ -1,7 +1,11 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.10.x
+v 0.2.11.x
++ Release Server & Client 0.2.11.0
++ Forceupdate command now forces the client to run the update.
++ Bug: Ghost players showing up on clients.
++ Bug: Auto Army clearing Statements going to chat instead of being processed
 + BUG: House MoTD showing in main chat.
 + Bug: MySQL settings being sent in campaignconfig.  Removed from serverdefaults
 + Bug: auto armies/gun emplacements and mines not reseting after op ends
@@ -26,6 +30,7 @@ v 0.2.10.x
 + Trimed up name of player client side.
 + updated all files that needed to use the AM: tag
 + added AM: tag for True Server Annoucements.
+v 0.2.10.x
 Release Server 0.2.10.9
 + Added MegaMek.jar 0.33.12-MW11132007-5273
 + Added debugging logging for LoadPlayerFile.

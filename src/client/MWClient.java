@@ -148,7 +148,7 @@ public final class MWClient implements IClient {
 	
 	CConfig Config;
 	
-	public static final String CLIENT_VERSION = "0.2.10.2"; //change this with all client changes @Torren
+	public static final String CLIENT_VERSION = "0.2.11.0"; //change this with all client changes @Torren
 
 	CConnector Connector;
 	TimeOutThread TO;
@@ -2085,8 +2085,7 @@ public final class MWClient implements IClient {
 	}
 	
 	public boolean isServerRunning() {
-		if (myServer == null) {return false;}
-		return true;
+		return myServer == null;
 	}
 	
 	public void startClient(String hostName, boolean deploy) {
@@ -3135,6 +3134,19 @@ public final class MWClient implements IClient {
 			this.getMainFrame().getMainPanel().refreshBME();
 	}
 
+	public void updateClient(){
+		try{
+			//this.stopHost();
+			this.goodbye();
+			Runtime runtime = Runtime.getRuntime();
+			String[] call = {"java","-jar","MekWarsAutoUpdate.jar","PLAYER"};
+			runtime.exec(call);
+		} catch(Exception ex) {
+			MWClient.mwClientLog.clientErrLog(ex);
+		}
+		System.exit(0); 
+	}
+	
 	/*
 	 * INNER CLASSES
 	 */

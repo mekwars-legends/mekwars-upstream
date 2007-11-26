@@ -373,9 +373,9 @@ public class ShortResolver {
 			else
 				currPlayer.setFighting(false);
 
-			CampaignMain.cm.toUser("PL|AAA|CLEAR", currPlayer.getName());
-			CampaignMain.cm.toUser("PL|GEA|CLEAR", currPlayer.getName());
-			CampaignMain.cm.toUser("PL|AAM|0|0", currPlayer.getName());
+			CampaignMain.cm.toUser("PL|AAA|CLEAR", currPlayer.getName(),false);
+			CampaignMain.cm.toUser("PL|GEA|CLEAR", currPlayer.getName(),false);
+			CampaignMain.cm.toUser("PL|AAM|0|0", currPlayer.getName(),false);
 			
 			currPlayer.checkForPromotion();
 			/*

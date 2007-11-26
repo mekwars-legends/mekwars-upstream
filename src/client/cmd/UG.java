@@ -50,7 +50,10 @@ public class UG extends Command {
         
         if ( mmci.isInvis() && mmci.getUserlevel() > mwclient.getUser(mwclient.getPlayer().getName()).getUserlevel() ){
             //Check the Users and remove the User
-            mwclient.getUsers().remove(mwclient.getUser(mmci.getName()));
+        	CUser user = mwclient.getUser(mmci.getName());
+        	//delete every instance of that user from the list
+        	while ( mwclient.getUsers().remove(user) );
+        		
             mwclient.refreshGUI(MWClient.REFRESH_USERLIST);
 
             return;
