@@ -30,7 +30,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class CreateUnitCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "filename#flavortext#gunnery#pilot#weightclass#skill1,skill2,skill3...";
+	String syntax = "filename#flavortext#gunnery#pilot#weightclass#skill1,skill2,skill3[Random]";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}
@@ -56,7 +56,7 @@ public class CreateUnitCommand implements Command {
 			gunnery = command.nextToken();
 			piloting = command.nextToken();
 		}catch(Exception ex) {
-			CampaignMain.cm.toUser("Synatx Error: /createunit filename#fluff#gunnery#piloting#weightclass#[skill,skill,skill][Random]", Username);
+			CampaignMain.cm.toUser(syntax, Username);
 			return;
 		}
 		

@@ -148,13 +148,13 @@ public final class MWClient implements IClient {
 	
 	CConfig Config;
 	
-	public static final String CLIENT_VERSION = "0.2.11.0"; //change this with all client changes @Torren
+	public static final String CLIENT_VERSION = "0.2.11.1"; //change this with all client changes @Torren
 
 	CConnector Connector;
 	TimeOutThread TO;
 	Collection<CUser> Users;
 	TreeMap<String,MMGame> servers = new TreeMap<String,MMGame>();//hostname,mmgame
-	Server myServer;
+	Server myServer = null;
 	Date mytime = new Date(System.currentTimeMillis());
 	Vector<IOption> GameOptions = new Vector<IOption>(1,1);
 	Vector<String> decodeBuffer = new Vector<String>(1,1);//used to buffer incoming data until CMainFrame is built
@@ -2004,6 +2004,7 @@ public final class MWClient implements IClient {
 					MWClient.mwClientLog.clientErrLog("Error opening dedicated server. Will attempt a .die().");
 					MWClient.mwClientLog.clientErrLog(ex);
 					myServer.die();
+					myServer = null;
 				}				
 			} catch (Exception e) {
 				MWClient.mwClientLog.clientErrLog("Further error while trying to clean up failed host attempt.");
@@ -2085,7 +2086,7 @@ public final class MWClient implements IClient {
 	}
 	
 	public boolean isServerRunning() {
-		return myServer == null;
+		return myServer != null;
 	}
 	
 	public void startClient(String hostName, boolean deploy) {

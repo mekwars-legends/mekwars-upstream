@@ -312,7 +312,7 @@ public class Unit {
 	 * @param weightclass The weightclass to set.
 	 */
 	public void setWeightclass(int i) {
-		weightclass = i;
+			weightclass = i;
 	}
 	
 	/**

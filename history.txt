@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.11.x
+Release Client 0.2.11.1
++ Changed SUnit.setWeightclass(int) to default to Entity WeightClass if entered
+   Weight is above type Assault.
++ Bug: Clients showing as hosting a game when they are not.
 + Release Server & Client 0.2.11.0
 + Forceupdate command now forces the client to run the update.
 + Bug: Ghost players showing up on clients.

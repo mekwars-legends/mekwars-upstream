@@ -98,15 +98,10 @@ public final class SUnit extends Unit implements Serializable {
         SHouse house = CampaignMain.cm.getHouseFromPartialString(p,null);
         
 		setUnitFilename(Filename);
-		Entity ent = loadMech(getUnitFilename());
-		this.setEntity(ent);
-
+        init();
+        
         this.setWeightclass(weightclass); //default weight class.
-        if (ent != null) {
-            unitEntity = ent;
-            init();
-        }
-
+        
         if ( house != null )
             setPilot(house.getNewPilot(this.getType()));
         else
@@ -1361,4 +1356,13 @@ public final class SUnit extends Unit implements Serializable {
     public void setDBId(int newId) {
     	dbId = newId;
     }
+    
+	public void setWeightclass(int i) {
+		
+		if ( i > SUnit.ASSAULT )
+			i = SUnit.getEntityWeight(this.getEntity());
+		
+		super.setWeightclass(i);
+	}
+
 }
