@@ -58,14 +58,14 @@ public class FixAmmoCommand implements Command {
 			targetName = command.nextToken();
 			unitID = Integer.parseInt(command.nextToken());
 		}catch (Exception ex) {
-			CampaignMain.cm.toUser("Invalid Syntax: /FixAmmo Player#UnitID", Username);
+			CampaignMain.cm.toUser("AM:Invalid Syntax: /FixAmmo Player#UnitID", Username);
 			return;
 		}
 		
 		target = CampaignMain.cm.getPlayer(targetName);
 		
 		if (target == null) {
-			CampaignMain.cm.toUser("Target player could not be found. Try again.", Username, true);
+			CampaignMain.cm.toUser("AM:Target player could not be found. Try again.", Username, true);
 			return;
 		}
 		
@@ -74,7 +74,7 @@ public class FixAmmoCommand implements Command {
 		
 		//break out if the player doesn't have a unit with that id
 		if (m == null) {
-			CampaignMain.cm.toUser("Target player doesn't have a unit with ID# " + unitID + ".", Username, true);
+			CampaignMain.cm.toUser("AM:Target player doesn't have a unit with ID# " + unitID + ".", Username, true);
 			return;
 		}
 		

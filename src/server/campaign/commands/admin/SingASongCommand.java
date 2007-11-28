@@ -71,7 +71,7 @@ public class SingASongCommand implements Command {
 		if ( !startHouse.equals("") )
 			faction = CampaignMain.cm.getHouseFromPartialString(startHouse,null);
 		
-		CampaignMain.cm.doSendToAllOnlinePlayers(Username + " forces you all to sing "+request, true);
+		CampaignMain.cm.doSendToAllOnlinePlayers("AM:"+Username + " forces you all to sing "+request, true);
 		StringTokenizer songLyrics = new StringTokenizer(song,"#");
 		
 		try{

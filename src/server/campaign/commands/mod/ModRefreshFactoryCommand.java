@@ -72,5 +72,5 @@ public class ModRefreshFactoryCommand implements Command {
 		if ( p.getOwner() != null )
 			CampaignMain.cm.doSendToAllOnlinePlayers(p.getOwner(), "HS|" + refresh, false);
 
-		CampaignMain.cm.doSendModMail("NOTE:",Username+" has refreshed factory "+uf.getName()+" on planet "+p.getName()+"!");	}
+		CampaignMain.cm.doSendModMail("NOTE",Username+" has refreshed factory "+uf.getName()+" on planet "+p.getName()+"!");	}
 }

@@ -71,6 +71,6 @@ public class StripAllPartsCacheCommand implements Command {
         p.getUnitParts().clear();
         
         CampaignMain.cm.toUser("PL|CPPC", Username);
-        CampaignMain.cm.doSendModMail("NOTE:",Username+" has stripped all of "+p.getName()+"'s parts cache.");
+        CampaignMain.cm.doSendModMail("NOTE",Username+" has stripped all of "+p.getName()+"'s parts cache.");
 	}
 }

@@ -45,7 +45,7 @@ public class GooseCommand implements Command {
 			SPlayer p = CampaignMain.cm.getPlayer(player);
 			
 			if ( p == null) {
-				CampaignMain.cm.toUser("Sorry you cannot find "+player+" to goose!", Username);
+				CampaignMain.cm.toUser("AM:Sorry you cannot find "+player+" to goose!", Username);
 				return;
 			}
 			
@@ -63,7 +63,7 @@ public class GooseCommand implements Command {
 			CampaignMain.cm.doSendModMail("NOTE",Username + " goosed " + p.getName() + ".");
 		}
 		catch(Exception ex){
-			CampaignMain.cm.toUser("You really need to specify whom you would like to goose", Username);
+			CampaignMain.cm.toUser("AM:You really need to specify whom you would like to goose", Username);
 			return;
 		}
 	}

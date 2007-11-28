@@ -750,7 +750,7 @@ import client.gui.SpringLayoutHelper;
                             result += "* ";
                             critDamage = true;
                         }else if ( cs.isBreached() ){
-                            result += "location ";
+                            result += "x ";
                             critDamage = true;
                         }
                         if (unit instanceof Mech) 
@@ -770,7 +770,7 @@ import client.gui.SpringLayoutHelper;
                             critDamage = true;
                             critNames.add("* "+m.getDesc());
                         }else if ( cs.isBreached() ){
-                            critNames.add("location "+m.getDesc());
+                            critNames.add("x "+m.getDesc());
                             critDamage = true;
                         }else 
                             critNames.add(m.getDesc());

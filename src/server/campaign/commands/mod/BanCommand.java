@@ -118,7 +118,7 @@ public class BanCommand implements Command {
 			}
 			
 			if (CampaignMain.cm.getServer().isAdmin(toKill) && !Username.startsWith("[Dedicated]")) {
-				CampaignMain.cm.toUser("You may not ban an admin.", Username);
+				CampaignMain.cm.toUser("AM:You may not ban an admin.", Username);
 				return;
 			}
 			
@@ -143,7 +143,7 @@ public class BanCommand implements Command {
 			//retreiveISPS(until,toKill);
 			CampaignMain.cm.getServer().bansUpdate();
 			//MWServ.mwlog.modLog(Username + " banned " + toKill + " " +timeName+".");
-			CampaignMain.cm.getServer().sendChat("AM:"+Username + " banned " + toKill + " " +timeName+".");
+			CampaignMain.cm.getServer().sendChat(" "+Username + " banned " + toKill + " " +timeName+".");
 			
 			CampaignMain.cm.getOpsManager().doDisconnectCheckOnPlayer(toKill);
 			CampaignMain.cm.getServer().getCampaign().doLogoutPlayer(toKill);

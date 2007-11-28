@@ -54,12 +54,12 @@ public class AdminSetBanTargetingCommand implements Command {
 			CampaignMain.cm.getData().getBannedTargetingSystems().remove(targetingType);
             CampaignMain.cm.getData().setBannedTargetingSystems(CampaignMain.cm.getData().getBannedTargetingSystems());
 			CampaignMain.cm.toUser("You lifted the ban on " + MiscType.getTargetSysName(targetingType)+".",Username,true);
-			CampaignMain.cm.doSendModMail("NOTE:",Username + " lifted the ban on " + MiscType.getTargetSysName(targetingType)+".");
+			CampaignMain.cm.doSendModMail("NOTE",Username + " lifted the ban on " + MiscType.getTargetSysName(targetingType)+".");
 		} else {
             CampaignMain.cm.getData().getBannedTargetingSystems().put(targetingType,"banned");
             CampaignMain.cm.getData().setBannedTargetingSystems(CampaignMain.cm.getData().getBannedTargetingSystems());
 			CampaignMain.cm.toUser("You banned " + MiscType.getTargetSysName(targetingType)+".",Username,true);
-			CampaignMain.cm.doSendModMail("NOTE:",Username + " banned " + MiscType.getTargetSysName(targetingType)+".");
+			CampaignMain.cm.doSendModMail("NOTE",Username + " banned " + MiscType.getTargetSysName(targetingType)+".");
 		}
 		
         CampaignMain.cm.saveBannedTargetingSystems();

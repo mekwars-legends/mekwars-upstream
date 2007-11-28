@@ -59,7 +59,7 @@ public class RemoveLeaderCommand implements Command {
 			}
 			CampaignMain.cm.toUser("AM:You have been demoted as a faction leader by "+Username+".", target);
 			CampaignMain.cm.doSendHouseMail(player.getMyHouse(), "Note", player.getName()+" has been demoted from the faction leadership.");
-			CampaignMain.cm.doSendModMail("NOTE:",Username+" has removed "+player.getName()+" as a faction leader.");
+			CampaignMain.cm.doSendModMail("NOTE",Username+" has removed "+player.getName()+" as a faction leader.");
 		}catch(Exception ex){
 			CampaignMain.cm.toUser("Invalid syntax: /addleader UserName", Username);
 		}

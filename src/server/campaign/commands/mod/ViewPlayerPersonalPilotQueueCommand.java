@@ -171,6 +171,6 @@ public class ViewPlayerPersonalPilotQueueCommand implements Command {
 		else
 			CampaignMain.cm.toUser("SM|"+p.getName()+" doesn't have any reserve pilots at the moment.",Username,false);
 		
-        CampaignMain.cm.doSendModMail("NOTE:",Username+" has viewed "+p.getName()+"'s pilot queue");
+        CampaignMain.cm.doSendModMail("NOTE",Username+" has viewed "+p.getName()+"'s pilot queue");
 	}
 }

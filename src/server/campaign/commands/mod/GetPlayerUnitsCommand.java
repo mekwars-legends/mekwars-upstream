@@ -62,7 +62,7 @@ public class GetPlayerUnitsCommand implements Command {
     		Command commandMethod = CampaignMain.cm.getServerCommands().get(commandName.toUpperCase());
     		
     		if ( commandMethod == null ){
-    		    CampaignMain.cm.toUser("Unknown command "+commandName+".",Username,true);
+    		    CampaignMain.cm.toUser("AM:Unknown command "+commandName+".",Username,true);
     			return;
     		}
     		
@@ -74,7 +74,7 @@ public class GetPlayerUnitsCommand implements Command {
     		SPlayer target = CampaignMain.cm.getPlayer(username);
     		
     		if ( target == null ){
-    			CampaignMain.cm.toUser("Unknown user "+username+".",Username,true);
+    			CampaignMain.cm.toUser("AM:Unknown user "+username+".",Username,true);
     			return;
     		}
     		

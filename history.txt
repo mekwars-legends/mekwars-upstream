@@ -2,6 +2,11 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.11.x
++ New MegaMek.jar 0.33.13-MW11282007-5285
++ Fixed typo in Advanced Repair Dialog with Breached parts showing 
+	"location" instead of X
++ Patch 1839705: Reload Ammo Fix, few more AM Tags patch
++ Fixed typeo of NOTE: to NOTE
 Release Client 0.2.11.1
 + Changed SUnit.setWeightclass(int) to default to Entity WeightClass if entered
    Weight is above type Assault.

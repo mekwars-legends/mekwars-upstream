@@ -58,7 +58,7 @@ public class KickCommand implements Command {
 		}
 
 		if (CampaignMain.cm.getServer().isAdmin(toKick) && !Username.startsWith("[Dedicated]")) {
-			CampaignMain.cm.toUser("You may not kick an admin.", Username);
+			CampaignMain.cm.toUser("AM:You may not kick an admin.", Username);
 			return;
 		}
 		

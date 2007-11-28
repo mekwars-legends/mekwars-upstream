@@ -43,12 +43,12 @@ public class CheckCommand implements Command {
 		try {
 			p = CampaignMain.cm.getPlayer(command.nextToken());
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper format. Try: /c check#name",Username,true);
+			CampaignMain.cm.toUser("AM:Improper format. Try: /c check#name",Username,true);
 			return;
 		}
 		
 		if (p == null) {
-			CampaignMain.cm.toUser("Couldn't find a user with that name.",Username,true);
+			CampaignMain.cm.toUser("AM:Couldn't find a user with that name.",Username,true);
 			return;
 		}
 		

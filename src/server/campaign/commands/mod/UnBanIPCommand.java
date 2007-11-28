@@ -60,10 +60,10 @@ public class UnBanIPCommand implements Command {
             }
             CampaignMain.cm.getServer().getBanIps().remove(inetAddress);
             CampaignMain.cm.getServer().bansUpdate();
-            CampaignMain.cm.toUser("You unbanned: " + inetAddress, Username);
+            CampaignMain.cm.toUser("AM:You unbanned: " + inetAddress, Username);
             CampaignMain.cm.doSendModMail("NOTE",Username + " unbanned " + inetAddress);
         } catch(Exception ex) {
-            CampaignMain.cm.toUser("Syntax: unbanip (number)<br>Where number corresponds to the number in the ipban list.", Username);
+            CampaignMain.cm.toUser("AM:Syntax: unbanip (number)<br>Where number corresponds to the number in the ipban list.", Username);
         }
 	}
 }

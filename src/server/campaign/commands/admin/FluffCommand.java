@@ -45,7 +45,7 @@ public class FluffCommand implements Command {
 		try {
 			p = CampaignMain.cm.getPlayer(command.nextToken());
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper command. Try: /c fluff#PlayerName#text to set text or /c fluff#PlayerName to clear", Username, true);
+			CampaignMain.cm.toUser("AM:Improper command. Try: /c fluff#PlayerName#text to set text or /c fluff#PlayerName to clear", Username, true);
 			return;
 		}
 		
@@ -56,7 +56,7 @@ public class FluffCommand implements Command {
 		}
 		
 		if (p == null) {
-			CampaignMain.cm.toUser("Couldn't find a player with that name.", Username, true);
+			CampaignMain.cm.toUser("AM:Couldn't find a player with that name.", Username, true);
 			return;
 		}
 		
@@ -66,13 +66,13 @@ public class FluffCommand implements Command {
                     fluff.indexOf("$") >0 ||
                     fluff.indexOf("#") >0 ||
                     fluff.indexOf("|") > 0){
-                CampaignMain.cm.toUser("Illegal characters in the fluff text try again without '|','$','#', or '~' characters",Username,true);
+                CampaignMain.cm.toUser("AM:Illegal characters in the fluff text try again without '|','$','#', or '~' characters",Username,true);
                 return;
             }
             
             p.setFluffText(fluff);
-			CampaignMain.cm.toUser("New fluff text for " + p.getName() + ": " + fluff,Username,true);
-			CampaignMain.cm.toUser(Username + " set your fluff to: " + fluff,p.getName(),true);
+			CampaignMain.cm.toUser("AM:New fluff text for " + p.getName() + ": " + fluff,Username,true);
+			CampaignMain.cm.toUser("AM:"+Username + " set your fluff to: " + fluff,p.getName(),true);
 			//server.MWServ.mwlog.modLog(Username + " set " + p.getName() + "'s fluff to '" + fluff + "'.");
 			CampaignMain.cm.doSendModMail("NOTE",Username + " set " + p.getName() + "'s fluff to '" + fluff + "'.");
 		}
@@ -80,8 +80,8 @@ public class FluffCommand implements Command {
 		//no text, so remove fluff
 		else {
 			p.setFluffText("");
-			CampaignMain.cm.toUser("Removed fluff from " + p.getName() + ".",Username,true);
-			CampaignMain.cm.toUser(Username + " removed your fluff text.",p.getName(),true);
+			CampaignMain.cm.toUser("AM:Removed fluff from " + p.getName() + ".",Username,true);
+			CampaignMain.cm.toUser("AM:"+Username + " removed your fluff text.",p.getName(),true);
 			//server.MWServ.mwlog.modLog(Username + " removed " + p.getName() + "'s fluff.");
 			CampaignMain.cm.doSendModMail("NOTE",Username + " removed " + p.getName() + "'s fluff.");
 		}

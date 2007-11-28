@@ -58,17 +58,17 @@ public class ForcedDefectCommand implements Command {
 			h = CampaignMain.cm.getHouseFromPartialString(command.nextToken(),null);
 			
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper command. Try: /c forceddefect#player#faction", Username, true);
+			CampaignMain.cm.toUser("AM:Improper command. Try: /c forceddefect#player#faction", Username, true);
 			return;
 		}
 		
 		if (p == null) {
-			CampaignMain.cm.toUser("Couldn't find a player with that name.", Username, true);
+			CampaignMain.cm.toUser("AM:Couldn't find a player with that name.", Username, true);
 			return;
 		}
 		
 		if (h == null) {
-			CampaignMain.cm.toUser("Couldn't find a faction with that name.", Username, true);
+			CampaignMain.cm.toUser("AM:Couldn't find a faction with that name.", Username, true);
 			return;
 		}
 		
@@ -86,8 +86,8 @@ public class ForcedDefectCommand implements Command {
 		}
 		
 		//send appropraite messages
-		CampaignMain.cm.toUser(Username + " forced you to defect to " + h.getName(),p.getName(),true);
-		CampaignMain.cm.toUser("You forced " + p.getName() + " to defect to " + h.getName(),Username,true);
+		CampaignMain.cm.toUser("AM:"+Username + " forced you to defect to " + h.getName(),p.getName(),true);
+		CampaignMain.cm.toUser("AM:You forced " + p.getName() + " to defect to " + h.getName(),Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " forced " + p.getName() + " to defect to " + h.getName());
 		//server.MWServ.mwlog.modLog(Username + " forced " + p.getName() + " to defect to " + h.getName());
 		p.setPlayerClientVersion(clientVersion);

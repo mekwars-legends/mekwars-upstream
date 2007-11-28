@@ -98,7 +98,7 @@ public class RemovePilotCommand implements Command {
         }
 
         CampaignMain.cm.toUser("PL|PPQ|"+p.getPersonalPilotQueue().toString(true),player,false);
-		CampaignMain.cm.doSendModMail("NOTE:",Username+" has removed pilots from "+player+"'s PPQ");
+		CampaignMain.cm.doSendModMail("NOTE",Username+" has removed pilots from "+player+"'s PPQ");
         CampaignMain.cm.toUser(Username+" has removed pilots from your PPQ",player);
 
 		

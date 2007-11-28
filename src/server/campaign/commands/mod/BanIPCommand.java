@@ -72,7 +72,7 @@ public class BanIPCommand implements Command {
 			toKill = command.nextToken().trim();//ip to ban
 			ip = InetAddress.getByName(toKill);
 			if (ip.equals(InetAddress.getLocalHost())) {
-				CampaignMain.cm.toUser("You may not ban the localhost.", Username);
+				CampaignMain.cm.toUser("AM:You may not ban the localhost.", Username);
 				return;
 			}
 			
@@ -127,7 +127,7 @@ public class BanIPCommand implements Command {
 			}//end else(not perm)
 			
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Incorrect Syntax: Syntax is as follows<br>/c banip ip#time" +
+			CampaignMain.cm.toUser("AM:Incorrect Syntax: Syntax is as follows<br>/c banip ip#time" +
 					"<br>Please note the time argument can be left off and will default to 1 year" +
 					"<br>also note that the time argument can be made in different ways" +
 					"<br>/c banip X.X.X.X#10 (address is banned for 10 mins)" +

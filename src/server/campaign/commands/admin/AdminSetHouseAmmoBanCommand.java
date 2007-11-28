@@ -62,13 +62,13 @@ public class AdminSetHouseAmmoBanCommand implements Command {
 		    h.getBannedAmmo().remove(ammoName);
 			ammoName = CampaignMain.cm.getData().getMunitionsByNumber().get(new Long(ammoName));
 			CampaignMain.cm.toUser("Ban on " + ammoName + " lifted for "+h.getName() + ".",Username,true);
-			CampaignMain.cm.doSendModMail("NOTE:",Username + " lifted the ban on " + ammoName+ " for " + h.getName() + ".");
+			CampaignMain.cm.doSendModMail("NOTE",Username + " lifted the ban on " + ammoName+ " for " + h.getName() + ".");
 		}
 		else {
 		    h.getBannedAmmo().put(ammoName,"banned");
 			ammoName = CampaignMain.cm.getData().getMunitionsByNumber().get(new Long(ammoName));
 			CampaignMain.cm.toUser("Banned " + ammoName + " for "+h.getName() + ".",Username,true);
-			CampaignMain.cm.doSendModMail("NOTE:",Username + " banned " + ammoName+ " for " + h.getName() + ".");
+			CampaignMain.cm.doSendModMail("NOTE",Username + " banned " + ammoName+ " for " + h.getName() + ".");
 		}
 	
 		h.updated();

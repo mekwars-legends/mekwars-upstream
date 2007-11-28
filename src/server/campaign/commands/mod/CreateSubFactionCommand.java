@@ -62,7 +62,7 @@ public class CreateSubFactionCommand implements Command {
 			else
 				factionName = player.getMyHouse().getName();
 		}catch(Exception ex){
-			CampaignMain.cm.toUser("Invalid syntax: /CreateSubFaction SubFactionName#SubFactionAccessLevel#[FactionName]", Username);
+			CampaignMain.cm.toUser("AM:Invalid syntax: /CreateSubFaction SubFactionName#SubFactionAccessLevel#[FactionName]", Username);
 			return;
 		}
 		
@@ -81,6 +81,6 @@ public class CreateSubFactionCommand implements Command {
 		faction.updated();
 		
 		CampaignMain.cm.doSendModMail("NOTE", Username +" has created subfaction "+subFactionName+" for faction "+faction.getName());
-		CampaignMain.cm.toUser("You have created subfaction "+subFactionName+" for faction "+faction.getName(), Username);
+		CampaignMain.cm.toUser("AM:You have created subfaction "+subFactionName+" for faction "+faction.getName(), Username);
 	}
 }

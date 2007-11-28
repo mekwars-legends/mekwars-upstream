@@ -46,12 +46,12 @@ public class ChangeHouseColorCommand implements Command {
 			h = CampaignMain.cm.getHouseFromPartialString(command.nextToken(),null);
 			newColor = command.nextToken();
 		} catch (Exception e) {
-			CampaignMain.cm.toUser("Improper command. Try: /c changehousecolor#faction#htmlhexcolor", Username, true);
+			CampaignMain.cm.toUser("AM:Improper command. Try: /c changehousecolor#faction#htmlhexcolor", Username, true);
 			return;
 		}
 		
 		if (h == null) {
-			CampaignMain.cm.toUser("Couldn't find a faction with that name.", Username, true);
+			CampaignMain.cm.toUser("AM:Couldn't find a faction with that name.", Username, true);
 			return;
 		}
 		

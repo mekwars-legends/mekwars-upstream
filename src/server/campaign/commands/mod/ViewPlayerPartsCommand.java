@@ -63,6 +63,6 @@ public class ViewPlayerPartsCommand implements Command {
 
 		CampaignMain.cm.toUser("SM|"+toReturn.toString(),Username,false);
 	
-        CampaignMain.cm.doSendModMail("NOTE:",Username+" has viewed "+p.getName()+"'s parts cache.");
+        CampaignMain.cm.doSendModMail("NOTE",Username+" has viewed "+p.getName()+"'s parts cache.");
 	}
 }

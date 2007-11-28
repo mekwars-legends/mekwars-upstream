@@ -51,7 +51,7 @@ public class ModFullRepairCommand implements Command {
 		SPlayer target = CampaignMain.cm.getPlayer(targetName);
 		
 		if (target == null) {
-			CampaignMain.cm.toUser("Target player could not be found. Try again.", Username, true);
+			CampaignMain.cm.toUser("AM:Target player could not be found. Try again.", Username, true);
 			return;
 		}
 		
@@ -61,7 +61,7 @@ public class ModFullRepairCommand implements Command {
 		
 		//break out if the player doesn't have a unit with that id
 		if (m == null) {
-			CampaignMain.cm.toUser("Target player doesn't have a unit with ID# " + unitID + ".", Username, true);
+			CampaignMain.cm.toUser("AM:Target player doesn't have a unit with ID# " + unitID + ".", Username, true);
 			return;
 		}
 		
@@ -70,7 +70,7 @@ public class ModFullRepairCommand implements Command {
 		
 		//tell the player you're going to scrap the unit ...
 		CampaignMain.cm.toUser(targetName + "'s " + m.getModelName() + " is now fully repaired.", Username, true);
-		CampaignMain.cm.toUser(Username + " mod-repaired your " + m.getModelName() + " (ID#" + m.getId() + ")", targetName, true);
+		CampaignMain.cm.toUser("AM:"+Username + " mod-repaired your " + m.getModelName() + " (ID#" + m.getId() + ")", targetName, true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " mod-repaired a "+ m.getModelName() + " belonging to " + targetName);
         target.setSave();
         target.checkAndUpdateArmies(m);

@@ -70,6 +70,6 @@ public class SetOperationCommand implements Command {
             return;
         }
         
-        CampaignMain.cm.doSendModMail("NOTE:",Username+" has updated "+opFile.getName());
+        CampaignMain.cm.doSendModMail("NOTE",Username+" has updated "+opFile.getName());
     }
 }//end RetrieveShortOperation

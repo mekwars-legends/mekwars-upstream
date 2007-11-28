@@ -55,7 +55,7 @@ public class AdminSetAmmoCostCommand implements Command {
         
         CampaignMain.cm.getAmmoCost().put(ammo,cost);
         CampaignMain.cm.toUser("Cost for " + ammoName + " set to " + CampaignMain.cm.moneyOrFluMessage(true,false,cost) + " per ton.",Username,true);
-        CampaignMain.cm.doSendModMail("NOTE:",Username + " set the cost of " + ammoName + " to " + CampaignMain.cm.moneyOrFluMessage(true,false,cost) + " per ton.");
+        CampaignMain.cm.doSendModMail("NOTE",Username + " set the cost of " + ammoName + " to " + CampaignMain.cm.moneyOrFluMessage(true,false,cost) + " per ton.");
         CampaignMain.cm.saveAmmoCosts();
 	}
 }

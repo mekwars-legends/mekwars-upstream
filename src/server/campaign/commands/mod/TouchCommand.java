@@ -50,7 +50,7 @@ public class TouchCommand implements Command {
 		p.setLastOnline(System.currentTimeMillis());
 		p.setSave();
 		
-		CampaignMain.cm.toUser("You touched " + p.getName() + ".",Username,true);
+		CampaignMain.cm.toUser("AM:You touched " + p.getName() + ".",Username,true);
 		//server.MWServ.mwlog.modLog(Username + " touched " + p.getName() + ".");
 		CampaignMain.cm.doSendModMail("NOTE",Username + " touched " + p.getName() + ".");
 		

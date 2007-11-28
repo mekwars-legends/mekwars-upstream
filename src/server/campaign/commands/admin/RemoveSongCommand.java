@@ -84,6 +84,6 @@ public class RemoveSongCommand implements Command {
             return;
         }
         
-        CampaignMain.cm.doSendModMail("NOTE:",Username+" has removed "+songName+" from the song list!");
+        CampaignMain.cm.doSendModMail("NOTE",Username+" has removed "+songName+" from the song list!");
     }
 }

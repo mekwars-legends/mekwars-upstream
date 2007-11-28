@@ -181,12 +181,12 @@ public class RepairUnitCommand implements Command {
                 	}
 
                     if ( rear )
-                        repairMessage = "AM:Repairs have begun on the external armor("+entity.getLocationAbbr(tabLocation)+"r) of your "+entity.getShortNameRaw()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
+                        repairMessage = "Repairs have begun on the external armor("+entity.getLocationAbbr(tabLocation)+"r) of your "+entity.getShortNameRaw()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
                     else
-                        repairMessage = "AM:Repairs have begun on the external armor("+entity.getLocationAbbr(tabLocation)+") of your "+entity.getShortNameRaw()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
+                        repairMessage = "Repairs have begun on the external armor("+entity.getLocationAbbr(tabLocation)+") of your "+entity.getShortNameRaw()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
                 }//Internal armor
                 else{
-                    repairMessage = "AM:Repairs have begun on the internal structure("+entity.getLocationAbbr(location)+") of your "+entity.getShortNameRaw()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
+                    repairMessage = "Repairs have begun on the internal structure("+entity.getLocationAbbr(location)+") of your "+entity.getShortNameRaw()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
                 }
                 
             }else{
@@ -194,15 +194,15 @@ public class RepairUnitCommand implements Command {
 
                 if ( cs.getType() == CriticalSlot.TYPE_EQUIPMENT ){
                     Mounted mounted = entity.getEquipment(cs.getIndex());
-                    repairMessage ="AM:Work has begun on the "+mounted.getName()+"("+ entity.getLocationAbbr(location)+") for your "+entity.getShortNameRaw()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
+                    repairMessage ="Work has begun on the "+mounted.getName()+"("+ entity.getLocationAbbr(location)+") for your "+entity.getShortNameRaw()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
                 }// end CS type if
                 else{
                     if ( UnitUtils.isEngineCrit(cs) ){
-                        repairMessage = "AM:Work on your "+entity.getShortNameRaw()+"'s engine has begun.  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
+                        repairMessage = "Work on your "+entity.getShortNameRaw()+"'s engine has begun.  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
                     }
                     else{
                         if (entity instanceof Mech) 
-                            repairMessage = "AM:Work has begun on the "+((Mech)entity).getSystemName(cs.getIndex())+"("+entity.getLocationAbbr(location)+") for your "+entity.getShortName()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
+                            repairMessage = "Work has begun on the "+((Mech)entity).getSystemName(cs.getIndex())+"("+entity.getLocationAbbr(location)+") for your "+entity.getShortName()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
                     }
                 }//end CS type else
 
@@ -242,7 +242,7 @@ public class RepairUnitCommand implements Command {
             if ( sendDialogUpdate )
                 CampaignMain.cm.toUser("ARD|"+unitID,Username,false);
         }catch(Exception ex){
-            MWServ.mwlog.errLog("AM:Unable to Process Repair Unit Command!");
+            MWServ.mwlog.errLog("Unable to Process Repair Unit Command!");
             MWServ.mwlog.errLog(ex);
         }
         

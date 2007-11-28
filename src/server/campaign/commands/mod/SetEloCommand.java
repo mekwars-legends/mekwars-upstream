@@ -43,8 +43,8 @@ public class SetEloCommand implements Command {
 		double amount = Double.parseDouble(command.nextToken());
 		if (p != null) {
 			p.setRating(amount);
-			CampaignMain.cm.toUser(Username + " set your ELO to: " + amount + ".", p.getName(), true);
-			CampaignMain.cm.toUser("You set " + p.getName() +  "'s ELO to "  + amount + ".",Username,true);
+			CampaignMain.cm.toUser("AM:"+Username + " set your ELO to: " + amount + ".", p.getName(), true);
+			CampaignMain.cm.toUser("AM:You set " + p.getName() +  "'s ELO to "  + amount + ".",Username,true);
 			//server.MWServ.mwlog.modLog(Username + " set " + p.getName() + "'s ELO to " + amount + ".");
 			CampaignMain.cm.doSendModMail("NOTE",Username + " set " + p.getName() +  "'s ELO to "  + amount + ".");
 		}

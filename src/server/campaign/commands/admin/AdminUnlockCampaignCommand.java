@@ -37,7 +37,7 @@ public class AdminUnlockCampaignCommand implements Command {
 		}
 		
 		if (new Boolean(CampaignMain.cm.getConfig("CampaignLock")).booleanValue() != true) {
-			CampaignMain.cm.toUser("Campaign is already unlocked.",Username,true);
+			CampaignMain.cm.toUser("AM:Campaign is already unlocked.",Username,true);
 			return;
 		}
 		
@@ -45,8 +45,8 @@ public class AdminUnlockCampaignCommand implements Command {
 		CampaignMain.cm.getConfig().setProperty("CampaignLock","false");
 		
 		//tell the admin he has unlocked the campaign
-        CampaignMain.cm.doSendToAllOnlinePlayers(Username + " unlocked the campaign!", true);
-		CampaignMain.cm.toUser("You unlocked the campaign. Players may now activate.",Username,true);
+        CampaignMain.cm.doSendToAllOnlinePlayers("AM:"+Username+" unlocked the campaign!", true);
+		CampaignMain.cm.toUser("AM:You unlocked the campaign. Players may now activate.",Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " unlocked the campaign");
 		
 	}//end Process()

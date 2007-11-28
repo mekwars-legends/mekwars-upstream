@@ -46,7 +46,7 @@ public class InvisCommand implements Command {
             return;
         
         if (player.getDutyStatus() != SPlayer.STATUS_RESERVE) {
-        	CampaignMain.cm.toUser("You must be in reserve to change visibility.",Username,true);
+        	CampaignMain.cm.toUser("AM:You must be in reserve to change visibility.",Username,true);
         	return;
         }
         
@@ -60,7 +60,7 @@ public class InvisCommand implements Command {
         //Fix for BUG 1491951: post-invisibility status
         CampaignMain.cm.sendPlayerStatusUpdate(player,true);
 
-        CampaignMain.cm.toUser("You have become "+ (player.isInvisible()?"invisible":"visible"),Username,true);
+        CampaignMain.cm.toUser("AM:You have become "+ (player.isInvisible()?"invisible":"visible"),Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has become " + (player.isInvisible()?"invisible":"visible"));		
 	}
 }

@@ -53,12 +53,12 @@ public class AddLeaderCommand implements Command {
 			int level = CampaignMain.cm.getIntegerConfig("factionLeaderLevel");
 			if ( player.getPassword().getAccess() < level )
 				CampaignMain.cm.updatePlayersAccessLevel(target,level);
-			CampaignMain.cm.toUser("You have been promoted to the faction leadership by "+Username+".", target);
-			CampaignMain.cm.doSendHouseMail(player.getMyHouse(), "Note", player.getName()+" has been promoted to the faction leadership.");
-			CampaignMain.cm.doSendModMail("NOTE:",Username+" has added promoted "+target+" to faction leader.");		
+			CampaignMain.cm.toUser("AM:You have been promoted to the faction leadership by "+Username+".", target);
+			CampaignMain.cm.doSendHouseMail(player.getMyHouse(), "NOTE", player.getName()+" has been promoted to the faction leadership.");
+			CampaignMain.cm.doSendModMail("NOTE",Username+" has added promoted "+target+" to faction leader.");		
 			
 		}catch(Exception ex){
-			CampaignMain.cm.toUser("Invalid syntax: /addleader UserName", Username);
+			CampaignMain.cm.toUser("AM:Invalid syntax: /addleader UserName", Username);
 		}
 	}		
 }

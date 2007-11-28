@@ -45,7 +45,7 @@ public class AddPartsCommand implements Command {
 		}
 		
 		if ( !CampaignMain.cm.getBooleanConfig("UsePartsRepair") ){
-            CampaignMain.cm.toUser("Parts repair not used on this server!",Username);
+            CampaignMain.cm.toUser("AM:Parts repair not used on this server!",Username);
             return;
 		}
 		SPlayer p;
@@ -57,12 +57,12 @@ public class AddPartsCommand implements Command {
 			amount = Integer.parseInt(command.nextToken());
 		}
 		catch(Exception ex){
-            CampaignMain.cm.toUser("Syntax: AddParts#Name#PartName#Amount",Username);
+            CampaignMain.cm.toUser("AM:Syntax: AddParts#Name#PartName#Amount",Username);
             return;
 		}
 
 		p.updatePartsCache(part, amount);
 		
-        CampaignMain.cm.doSendModMail("NOTE:",Username+" has added "+amount+" "+part+" to "+p.getName()+".");	
+        CampaignMain.cm.doSendModMail("NOTE",Username+" has added "+amount+" "+part+" to "+p.getName()+".");	
 	}
 }

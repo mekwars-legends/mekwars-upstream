@@ -65,5 +65,5 @@ public class RemovePartsCommand implements Command {
 
 		p.updatePartsCache(part, -amount);
 		
-        CampaignMain.cm.doSendModMail("NOTE:",Username+" has removed "+amount+" "+part+" from "+p.getName()+".");	}
+        CampaignMain.cm.doSendModMail("NOTE",Username+" has removed "+amount+" "+part+" from "+p.getName()+".");	}
 }

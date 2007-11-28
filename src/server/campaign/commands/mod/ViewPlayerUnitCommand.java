@@ -78,7 +78,7 @@ public class ViewPlayerUnitCommand implements Command {
         	CampaignMain.cm.toUser("PL|VUI|"+fileName+ "#" + unit.getBV() + "#" + unit.getPilot().getGunnery() + "#" + unit.getPilot().getPiloting()+"#"+UnitUtils.unitBattleDamage(unit.getEntity()), Username,false);
         else
         	CampaignMain.cm.toUser("PL|VURD|"+fileName+ "#"+UnitUtils.unitBattleDamage(unit.getEntity()), Username,false);
-        CampaignMain.cm.doSendModMail("NOTE:",Username+" has viewed "+p.getName()+"'s "+unit.getModelName());
+        CampaignMain.cm.doSendModMail("NOTE",Username+" has viewed "+p.getName()+"'s "+unit.getModelName());
         CampaignMain.cm.toUser(Username+" has viewed your "+unit.getModelName()+".", p.getName());
         
 	}

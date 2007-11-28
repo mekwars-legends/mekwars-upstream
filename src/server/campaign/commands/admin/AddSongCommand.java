@@ -77,6 +77,6 @@ public class AddSongCommand implements Command {
             return;
         }
         
-        CampaignMain.cm.doSendModMail("NOTE:",Username+" has added "+songName+" to the song list!");
+        CampaignMain.cm.doSendModMail("NOTE",Username+" has added "+songName+" to the song list!");
     }
 }

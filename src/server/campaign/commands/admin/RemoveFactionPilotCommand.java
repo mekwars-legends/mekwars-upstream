@@ -82,7 +82,7 @@ public class RemoveFactionPilotCommand implements Command {
         }
 
         h.updated();
-        CampaignMain.cm.doSendModMail("NOTE:",Username+" has removed pilots from "+h.getName()+"'s pilot queue");
+        CampaignMain.cm.doSendModMail("NOTE",Username+" has removed pilots from "+h.getName()+"'s pilot queue");
 	}
 }
 

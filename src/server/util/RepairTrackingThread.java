@@ -22,7 +22,7 @@
 
 package server.util;
 
-import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -111,28 +111,55 @@ public class RepairTrackingThread extends Thread{
         
         String results = "";
         String unitName = "";
-        String numberOfMinutes = "minutes";
+        int MS = 1000;
+        int SEC = MS * 60;
+        int MIN = SEC * 60;
+        int HOUR = MIN * 60;
+        int DAY = HOUR * 24;
+        
         for ( Repair repairOrder: repairList ){
             if (repairOrder.getUnitID() == unitID){
                 if ( unitName.length() < 1)
                     unitName = repairOrder.getUnit().getShortNameRaw();
                 
-                double minutes = ((double)repairOrder.getEndTime()-(double)System.currentTimeMillis())/60000;
+                long mills = (repairOrder.getEndTime()-System.currentTimeMillis());///60000;
                 
-                if ( minutes < 0 ){
-                    minutes += CampaignMain.cm.getDoubleConfig("TimeForEachRepairPoint")/60;
+                if ( mills < 0 ){
+                	mills += CampaignMain.cm.getDoubleConfig("TimeForEachRepairPoint")*1000;
                 }
-                DecimalFormat myFormatter = new DecimalFormat("###.##");
-                String output = myFormatter.format(minutes);
-
-                if ( minutes < 1)
-                    minutes = 1;
+                Calendar time = Calendar.getInstance();
+                time.setTimeInMillis(mills);
                 
-                if ( minutes == 1 )
-                    numberOfMinutes = "minute";
+                
+                String output = "";
+                
+                if ( mills >= DAY ){
+                	output += mills/DAY +"d "; 
+                	mills %= DAY;
+                }
+                
+                if ( mills >= HOUR ){
+                	output += mills/HOUR +"h ";
+                	mills %= HOUR;
+                }
+                
+                if ( mills >= MIN ){
+                	output += mills/MIN +"m ";
+                	mills %= MIN;
+                }
 
+                if ( mills >= SEC ){
+                	output += mills/SEC +"s ";
+                	mills %= SEC;
+                }
+                
+                if ( mills > 0 )
+                	output += mills +"ms ";
+                
+                output = output.trim();
+                
                 if ( repairOrder.isSimpleRepair()){
-                    results = "#"+unitID+" "+unitName+" is undergoing a complete repair cycle. ETA: "+output+" "+numberOfMinutes+".";
+                    results = "#"+unitID+" "+unitName+" is undergoing a complete repair cycle. ETA: "+output+".";
                     return results;
                 }
 
@@ -161,23 +188,23 @@ public class RepairTrackingThread extends Thread{
                         }
                         
                         if ( rear )
-                            results += "Repairing external armor "+repairOrder.getUnit().getLocationAbbr(armorLocation)+"(r) ETA: "+output+" "+numberOfMinutes+".";
+                            results += "Repairing external armor "+repairOrder.getUnit().getLocationAbbr(armorLocation)+"(r) ETA: "+output+".";
                         else
-                            results += "Repairing external armor "+repairOrder.getUnit().getLocationAbbr(armorLocation)+" ETA: "+output+" "+numberOfMinutes+".";
+                            results += "Repairing external armor "+repairOrder.getUnit().getLocationAbbr(armorLocation)+" ETA: "+output+".";
                     }//Internal armor
                     else{
-                        results += "Repairing internal structure "+repairOrder.getUnit().getLocationAbbr(armorLocation)+" ETA: "+output+" "+numberOfMinutes+".";
+                        results += "Repairing internal structure "+repairOrder.getUnit().getLocationAbbr(armorLocation)+" ETA: "+output+".";
                     }     
                 }else{
                     CriticalSlot cs = repairOrder.getUnit().getCritical(repairOrder.getLocation(),repairOrder.getSlot());
                     
                     if ( cs.getType() == CriticalSlot.TYPE_EQUIPMENT ){
                         Mounted mounted = repairOrder.getUnit().getEquipment(cs.getIndex());
-                        results +="Repairing "+mounted.getName()+"("+ repairOrder.getUnit().getLocationAbbr(repairOrder.getLocation())+") ETA: "+output+" "+numberOfMinutes+".";
+                        results +="Repairing "+mounted.getName()+"("+ repairOrder.getUnit().getLocationAbbr(repairOrder.getLocation())+") ETA: "+output+".";
                     }// end CS type if
                     else{
                         if (repairOrder.getUnit() instanceof Mech) 
-                            results += "Repairing "+((Mech)repairOrder.getUnit()).getSystemName(cs.getIndex())+"("+repairOrder.getUnit().getLocationAbbr(repairOrder.getLocation())+") ETA: "+output+" "+numberOfMinutes+".";
+                            results += "Repairing "+((Mech)repairOrder.getUnit()).getSystemName(cs.getIndex())+"("+repairOrder.getUnit().getLocationAbbr(repairOrder.getLocation())+") ETA: "+output+".";
                     }//end CS type else
                 }
                 results += " <a href=\"MEKWARS/c stoprepairjob#"+unitID+"#"+repairOrder.getLocation()+"#"+repairOrder.getSlot()+"#"+repairOrder.getArmor()+"\">Click here to stop</a><br>";

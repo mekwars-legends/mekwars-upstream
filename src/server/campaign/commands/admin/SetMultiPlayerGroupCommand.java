@@ -58,7 +58,7 @@ public class SetMultiPlayerGroupCommand implements Command {
 		//continue
 		p.setGroupAllowance(groupNum);
 		CampaignMain.cm.toUser("Group " + groupNum + " set for " + p.getName() + ".",Username,true);
-        CampaignMain.cm.doSendModMail("NOTE:",Username + " added " + p.getName() + " to MultiPlayGroup #" + groupNum + ".");
+        CampaignMain.cm.doSendModMail("NOTE",Username + " added " + p.getName() + " to MultiPlayGroup #" + groupNum + ".");
 		
 	}
 }

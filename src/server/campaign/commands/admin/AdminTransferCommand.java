@@ -49,7 +49,7 @@ public class AdminTransferCommand implements Command {
     		receivingPlayer = (String)command.nextElement();
     		mechid = Integer.parseInt((String)command.nextElement());
     	} catch (Exception e) {
-    		CampaignMain.cm.toUser("Improper format. Try: /c admintransfer#from#to#id", Username, true);
+    		CampaignMain.cm.toUser("AM:Improper format. Try: /c admintransfer#from#to#id", Username, true);
     		return;
     	}
       
@@ -58,25 +58,25 @@ public class AdminTransferCommand implements Command {
       SPlayer receiver = CampaignMain.cm.getPlayer(receivingPlayer);
       
       if (sender == null) {
-		CampaignMain.cm.toUser("Sending player could not be found. Try again.", Username, true);
+		CampaignMain.cm.toUser("AM:Sending player could not be found. Try again.", Username, true);
 		return;
       }
       
       if (receiver == null) {
-		CampaignMain.cm.toUser("Receiving player could not be found. Try again.", Username, true);
+		CampaignMain.cm.toUser("AM:Receiving player could not be found. Try again.", Username, true);
 		return;
       }
       
       SUnit m = sender.getUnit(mechid);
       if (m == null) {
-		CampaignMain.cm.toUser("Sender doesn't have a unit with ID# " + mechid + ".", Username, true);
+		CampaignMain.cm.toUser("AM:Sender doesn't have a unit with ID# " + mechid + ".", Username, true);
 		return;
       }
       
       //passed all the breaks. discuss the transfer.
-      CampaignMain.cm.toUser("You transfered " + sendingPlayer + "'s " + m.getModelName() + " to " + receiver.getName(),Username,true);
-      CampaignMain.cm.toUser(Username + " forced " + sendingPlayer + " to send you a " + m.getModelName() + ".",receivingPlayer,true);
-      CampaignMain.cm.toUser(Username + " forced you to send your " + m.getModelName() + " to " + receivingPlayer + ".",sendingPlayer,true);
+      CampaignMain.cm.toUser("AM:You transfered " + sendingPlayer + "'s " + m.getModelName() + " to " + receiver.getName(),Username,true);
+      CampaignMain.cm.toUser("AM:"+Username + " forced " + sendingPlayer + " to send you a " + m.getModelName() + ".",receivingPlayer,true);
+      CampaignMain.cm.toUser("AM:"+Username + " forced you to send your " + m.getModelName() + " to " + receivingPlayer + ".",sendingPlayer,true);
       //server.MWServ.mwlog.modLog(Username + " transfers a " + m.getModelName() + "from " + sendingPlayer + " to " + receivingPlayer);
       CampaignMain.cm.doSendModMail("NOTE",Username + " transfers a " + m.getModelName() + " from " + sendingPlayer + " to " + receivingPlayer);
     

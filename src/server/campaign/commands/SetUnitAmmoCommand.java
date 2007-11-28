@@ -189,10 +189,10 @@ public class SetUnitAmmoCommand implements Command {
 				}
 
             	if ( newAmmoAmount == 0 ) {
-            		String result = "AM:After unloading "+currAmmo.getDesc()+"("+en.getLocationAbbr(loc)+") from unit #"+unit.getId()+" "+unit.getModelName()+" your techs realize you do not have any "+at.getDesc()+" to reload with!";
+            		String result = "After unloading "+currAmmo.getDesc()+"("+en.getLocationAbbr(loc)+") from unit #"+unit.getId()+" "+unit.getModelName()+" your techs realize you do not have any "+at.getDesc()+" to reload with!";
             		CampaignMain.cm.toUser(result, Username);
             	}else if ( newAmmoAmount < at.getShots() ) {
-            		String result = "AM:After unloading "+currAmmo.getDesc()+"("+en.getLocationAbbr(loc)+") from unit #"+unit.getId()+" "+unit.getModelName()+" your techs realize you only had "+newAmmoAmount+" rounds of "+at.getDesc()+" to reload with!";
+            		String result = "After unloading "+currAmmo.getDesc()+"("+en.getLocationAbbr(loc)+") from unit #"+unit.getId()+" "+unit.getModelName()+" your techs realize you only had "+newAmmoAmount+" rounds of "+at.getDesc()+" to reload with!";
             		CampaignMain.cm.toUser(result, Username);
             	}else {
             		CampaignMain.cm.toUser("AM:Ammo set for " + unit.getModelName() + " (#" +unit.getId()+").",Username,true);
@@ -213,8 +213,8 @@ public class SetUnitAmmoCommand implements Command {
             if (!strConfirm.equals("CONFIRM")) {
 				String result = "AM:Quartermaster command will charge you " +CampaignMain.cm.moneyOrFluMessage(true,false,ammoCharge)+" to change the load out on #"+unit.getId()+" "+ unit.getModelName()
 				+"<br>from "+currAmmo.getDesc()+"("+en.getLocationAbbr(loc)+" "+shotsLeft+"/"+currAmmo.getShots()+") to "+at.getDesc()+"("+refillShots+"/"+refillShots+").";
-				result += "AM:<br><a href=\"MEKWARS/c setunitammo#" + unitid + "#" + weaponLocation + "#" + weaponType + "#" + ammoName + "#"+at.getShots()+"#"+hotloaded+"#CONFIRM";
-				result += "AM:\">Click here to change the ammo.</a>";
+				result += "<br><a href=\"MEKWARS/c setunitammo#" + unitid + "#" + weaponLocation + "#" + weaponType + "#" + ammoName + "#"+at.getShots()+"#"+hotloaded+"#CONFIRM";
+				result += "\">Click here to change the ammo.</a>";
 				CampaignMain.cm.toUser(result,Username,true);
 				return;
 			}
