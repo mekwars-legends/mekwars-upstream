@@ -1,5 +1,5 @@
 /*
- * MekWars - Copyright (C) 20057 
+ * MekWars - Copyright (C) 2007 
  * 
  * Original author - Torren (torren@users.sourceforge.net)
  *
