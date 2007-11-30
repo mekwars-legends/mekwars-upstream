@@ -149,12 +149,12 @@ public class SalvageUnitCommand implements Command {
                 	}
 
                     if ( rear )
-                    	salvageMessage = "AM:Work has begun on the external armor("+entity.getLocationAbbr(tabLocation)+"r) of your "+entity.getShortNameRaw()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
+                    	salvageMessage = "Work has begun on the external armor("+entity.getLocationAbbr(tabLocation)+"r) of your "+entity.getShortNameRaw()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
                     else
-                    	salvageMessage = "AM:Work has begun on the external armor("+entity.getLocationAbbr(tabLocation)+") of your "+entity.getShortNameRaw()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
+                    	salvageMessage = "Work has begun on the external armor("+entity.getLocationAbbr(tabLocation)+") of your "+entity.getShortNameRaw()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
                 }//Internal armor
                 else{
-                	salvageMessage = "AM:Work has begun on the internal structure("+entity.getLocationAbbr(location)+") of your "+entity.getShortNameRaw()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
+                	salvageMessage = "Work has begun on the internal structure("+entity.getLocationAbbr(location)+") of your "+entity.getShortNameRaw()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
                 }
                 
             }else{
@@ -162,15 +162,15 @@ public class SalvageUnitCommand implements Command {
 
                 if ( cs.getType() == CriticalSlot.TYPE_EQUIPMENT ){
                     Mounted mounted = entity.getEquipment(cs.getIndex());
-                    salvageMessage ="AM:Work has begun on the "+mounted.getName()+"("+ entity.getLocationAbbr(location)+") for your "+entity.getShortNameRaw()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
+                    salvageMessage ="Work has begun on the "+mounted.getName()+"("+ entity.getLocationAbbr(location)+") for your "+entity.getShortNameRaw()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
                 }// end CS type if
                 else{
                     if ( UnitUtils.isEngineCrit(cs) ){
-                    	salvageMessage = "AM:Work on your "+entity.getShortNameRaw()+"'s engine has begun.  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
+                    	salvageMessage = "Work on your "+entity.getShortNameRaw()+"'s engine has begun.  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
                     }
                     else{
                         if (entity instanceof Mech) 
-                        	salvageMessage = "AM:Work has begun on the "+((Mech)entity).getSystemName(cs.getIndex())+"("+entity.getLocationAbbr(location)+") for your "+entity.getShortName()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
+                        	salvageMessage = "Work has begun on the "+((Mech)entity).getSystemName(cs.getIndex())+"("+entity.getLocationAbbr(location)+") for your "+entity.getShortName()+".  <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>";
                     }
                 }//end CS type else
 
@@ -183,7 +183,7 @@ public class SalvageUnitCommand implements Command {
             
             if ( CampaignMain.cm.getRTT().getState() == Thread.State.TERMINATED ){
                 CampaignMain.cm.toUser("FSM|Sorry your repair order could not be processed, and the repair thread terminated. Staff was notified.",Username,false);
-                MWServ.mwlog.errLog("AM:NOTE: Repair Thread terminated! Use the restartrepairthread command to restart. If all else fails, reboot.");
+                MWServ.mwlog.errLog("NOTE: Repair Thread terminated! Use the restartrepairthread command to restart. If all else fails, reboot.");
                 return;
             }
             if ( techType == UnitUtils.TECH_PILOT )

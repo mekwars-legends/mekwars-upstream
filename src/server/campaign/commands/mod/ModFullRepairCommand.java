@@ -69,7 +69,7 @@ public class ModFullRepairCommand implements Command {
         m.setEntity(unitEntity);
 		
 		//tell the player you're going to scrap the unit ...
-		CampaignMain.cm.toUser(targetName + "'s " + m.getModelName() + " is now fully repaired.", Username, true);
+		CampaignMain.cm.toUser("AM:"+targetName + "'s " + m.getModelName() + " is now fully repaired.", Username, true);
 		CampaignMain.cm.toUser("AM:"+Username + " mod-repaired your " + m.getModelName() + " (ID#" + m.getId() + ")", targetName, true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " mod-repaired a "+ m.getModelName() + " belonging to " + targetName);
         target.setSave();

@@ -358,6 +358,7 @@ public class UnitUtils  {
             // * for Damaged X for Breached
             // location#Crit Number#Damage
             for (int x = 0; x < unit.locations(); x++) {
+            	int shieldHitsLeft = -1;
                 for (int y = 0; y < unit.getNumberOfCriticals(x); y++) {
                     CriticalSlot cs = unit.getCritical(x, y);
                     if (cs == null) continue;
@@ -365,6 +366,25 @@ public class UnitUtils  {
                     if ( isNonRepairableCrit(unit,cs) )
                         continue;
                     
+                    
+                    Mounted m = unit.getEquipment(cs.getIndex());
+                    if (m != null &&  m.getType() instanceof MiscType 
+                    		&& ((MiscType)m.getType()).isShield()
+                    		&& m.getBaseDamageCapacity() != m.getCurrentDamageCapacity(unit, x)
+                    		&& shieldHitsLeft == -1
+                    		&& ( x == Mech.LOC_LARM || x == Mech.LOC_RARM) ){
+                    	float shieldcrits = Math.max(1,UnitUtils.getNumberOfCrits(unit, cs));
+                    	float basePoints = m.getBaseDamageCapacity();
+                    	float currentPoints = m.getCurrentDamageCapacity(unit, x);
+                    	float tempHits = 0;
+                    	
+                    	tempHits = shieldcrits/basePoints;
+                    	tempHits *= currentPoints;
+                    	
+                    	tempHits = Math.abs(tempHits-shieldcrits);
+
+                    	shieldHitsLeft = Math.max(1,Math.round(tempHits));
+                    }
                     
                     if ( cs.isRepairing() ){
                         result.append(x);
@@ -408,6 +428,19 @@ public class UnitUtils  {
                         result.append("X");
                         result.append(delimiter2);
                         hasData = true;
+                    }else if (m != null 
+                    		&& m.getType() instanceof MiscType 
+                    		&& ((MiscType)m.getType()).isShield()
+                    		&& ( x == Mech.LOC_LARM || x == Mech.LOC_RARM)
+                    		&& shieldHitsLeft > 0){
+                        result.append(x);
+                        result.append(delimiter2);
+                        result.append(y);
+                        result.append(delimiter2);
+                        result.append("^");
+                        result.append(delimiter2);
+                        hasData = true;
+                        shieldHitsLeft--;
                     }
                 }
             }
@@ -1154,10 +1187,7 @@ public class UnitUtils  {
              numberOfCrits = getNumberOfSystemCriticals(unit,cs);
         
         //always return at least 1 crit.
-        if ( numberOfCrits <= 0)
-            numberOfCrits = 1;
-        
-        return numberOfCrits;
+        return Math.max(1, numberOfCrits);
     }
     
     //Sets multiple system crits to repairing.

@@ -2,6 +2,11 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.11.x
++ new MegaMek.jar 0.33.13-MW11302007-5285
++ Added client.util.SerializeEntity.java
++ RFE: 1616609: Shield Repairs
++ RFE: Sort Armies by Number.
++ Bug: units that are repaired while off line not saving the repair.
 + New MegaMek.jar 0.33.13-MW11282007-5285
 + Fixed typo in Advanced Repair Dialog with Breached parts showing 
 	"location" instead of X

@@ -21,21 +21,11 @@ import java.util.Enumeration;
 import java.util.StringTokenizer;
 
 import client.MWClient;
+import client.util.SerializeEntity;
 
-import common.Unit;
-import common.util.UnitUtils;
-
-import megamek.common.BattleArmor;
-import megamek.common.BipedMech;
-import megamek.common.CriticalSlot;
 import megamek.common.Entity;
-import megamek.common.IEntityRemovalConditions;
 import megamek.common.Mech;
-import megamek.common.MechWarrior;
 import megamek.common.Player;
-import megamek.common.Protomech;
-import megamek.common.QuadMech;
-import megamek.common.Tank;
 import megamek.server.Server;
 
 /**
@@ -110,7 +100,7 @@ public class RGTS extends Command {
 			Entity ent = en.nextElement();
 			if ( ent.getOwner().getName().startsWith("War Bot"))
 				continue;
-			result.append(this.serializeEntity(ent, true, false) + "#");
+			result.append(SerializeEntity.serializeEntity(ent, true, false,mwclient.isUsingAdvanceRepairs()) + "#");
 		}
 		en = server.getGame().getGraveyardEntities();
 		while (en.hasMoreElements()) {
@@ -118,9 +108,9 @@ public class RGTS extends Command {
 			if ( ent.getOwner().getName().startsWith("War Bot"))
 				continue;
 			if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0)
-				result.append(this.serializeEntity(ent, true, true) + "#");              
+				result.append(SerializeEntity.serializeEntity(ent, true, true,mwclient.isUsingAdvanceRepairs()) + "#");              
 			else
-				result.append(this.serializeEntity(ent, true, false) + "#");
+				result.append(SerializeEntity.serializeEntity(ent, true, false,mwclient.isUsingAdvanceRepairs()) + "#");
 			
 		}
 		en = server.getGame().getEntities();
@@ -129,9 +119,9 @@ public class RGTS extends Command {
 			if ( ent.getOwner().getName().startsWith("War Bot"))
 				continue;
 			if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0)
-				result.append(this.serializeEntity(ent, true, true) + "#");          
+				result.append(SerializeEntity.serializeEntity(ent, true, false,mwclient.isUsingAdvanceRepairs()) + "#");          
 			else
-				result.append(this.serializeEntity(ent, true, false) + "#");
+				result.append(SerializeEntity.serializeEntity(ent, true, false,mwclient.isUsingAdvanceRepairs()) + "#");
 		}
 		en = server.getGame().getRetreatedEntities();
 		while (en.hasMoreElements()) {
@@ -139,9 +129,9 @@ public class RGTS extends Command {
 			if ( ent.getOwner().getName().startsWith("War Bot"))
 				continue;
 			if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0)
-				result.append(this.serializeEntity(ent, true, true) + "#");          
+				result.append(SerializeEntity.serializeEntity(ent, true, false,mwclient.isUsingAdvanceRepairs()) + "#");          
 			else
-				result.append(this.serializeEntity(ent, true, false) + "#");
+				result.append(SerializeEntity.serializeEntity(ent, true, false,mwclient.isUsingAdvanceRepairs()) + "#");
 		}
 		
 		if ( mwclient.getBuildingTemplate()!= null )
@@ -154,124 +144,6 @@ public class RGTS extends Command {
 		//we may assume that a server which reports a game is no longer "Running"
 		mwclient.serverSend("SHS|" + mwclient.myUsername + "|Open");
 	}
-	
-	public String serializeEntity (Entity e, boolean fullStatus, boolean forceDevastate) {
-		
-		StringBuilder result = new StringBuilder();
-		boolean useRepairs = mwclient.isUsingAdvanceRepairs();
-		
-		if (fullStatus) {
-			if ( !(e instanceof MechWarrior))
-			{
-				result.append(e.getExternalId() + "*");
-				result.append(e.getOwner().getName() + "*");
-				result.append(e.getCrew().getHits() + "*");
-				
-				if (forceDevastate)
-					result.append(IEntityRemovalConditions.REMOVE_DEVASTATED + "*");
-				else
-					result.append(e.getRemovalCondition() + "*");
-				
-				if ( e instanceof BipedMech )
-					result.append(Unit.MEK +"*");
-				else if ( e instanceof QuadMech )
-					result.append(Unit.QUAD + "*");
-				else if ( e instanceof Tank)
-					result.append(Unit.VEHICLE +"*");
-				else if ( e instanceof Protomech)
-					result.append(Unit.PROTOMEK +"*");
-				else if ( e instanceof BattleArmor )
-					result.append(Unit.BATTLEARMOR+"*");
-				else
-					result.append(Unit.INFANTRY +"*");
-				//result.append(e.getMovementType() + "*"); bad code
-				//Collect kills
-				Enumeration<Entity> en = e.getKills();
-				//No kills? Add an empty space
-				if (!en.hasMoreElements())
-					result.append(" *");
-				while (en.hasMoreElements()) {
-					Entity kill = en.nextElement();
-					result.append(kill.getExternalId());
-					if (en.hasMoreElements())
-						result.append("~");
-					else
-						result.append("*");
-				}
-			}
-			
-			if (e instanceof Mech ) {
-				result.append(e.getCrew().isUnconscious() + "*");
-				result.append(e.getInternal(Mech.LOC_CT) + "*");
-				result.append(e.getInternal(Mech.LOC_HEAD) + "*");
-				result.append(e.getInternal(Mech.LOC_LLEG) + "*");
-				result.append(e.getInternal(Mech.LOC_RLEG) + "*");
-				result.append(e.getInternal(Mech.LOC_LARM) + "*");
-				result.append(e.getInternal(Mech.LOC_RARM) + "*");
-				result.append(e.getBadCriticals(CriticalSlot.TYPE_SYSTEM, Mech.SYSTEM_GYRO, Mech.LOC_CT) + "*");
-				result.append(((Mech)e).getCockpitType()+"*");
-				if ( useRepairs ){
-					result.append(UnitUtils.unitBattleDamage(e)+"*");
-				}
-			} else if (e instanceof Tank ) {
-				result.append(e.isRepairable() + "*");
-				result.append(e.isImmobile() + "*");
-				result.append(e.getCrew().isDead() + "*");
-				if ( useRepairs ){
-					result.append(UnitUtils.unitBattleDamage(e)+"*");
-				}
-			}
-			else if (e instanceof MechWarrior) {
-				MechWarrior mw = (MechWarrior)e;
-				result.append("MW*");
-				result.append(mw.getOriginalRideExternalId() + "*");
-				result.append(mw.getPickedUpByExternalId() + "*");
-				result.append(mw.isDestroyed()+"*");
-			}
-			
-			if (  e.isOffBoard() ){
-				result.append(e.getOffBoardDistance()+"*");
-			}
-		}
-		
-		/*
-		 * FullStatus is used when autoreporting. This status, which 
-		 * sends less information, is used for InProgressUpdates.
-		 */
-		else {
-			//if the entity is a mechwarrior, send an IPU command
-			//(InProgressUpdate) to the server.
-			if (e instanceof MechWarrior) {
-				MechWarrior mw = (MechWarrior)e;
-				result.append("MW*" + mw.getOriginalRideExternalId() + "*");
-				result.append(mw.getPickedUpByExternalId() + "*");
-				result.append(mw.isDestroyed()+"*");
-			} 
-			
-			//else (the entity is a real unit)
-			else {
-				result.append(e.getOwner().getName() + "*");
-				result.append(e.getExternalId() + "*");
-				
-				if (forceDevastate)
-					result.append(IEntityRemovalConditions.REMOVE_DEVASTATED + "*");
-				else
-					result.append(e.getRemovalCondition() + "*");
-				
-				if (e instanceof Mech ) {
-					result.append(e.getInternal(Mech.LOC_CT) + "*");
-					result.append(e.getInternal(Mech.LOC_HEAD) + "*");
-				} else {
-					result.append("1*");
-					result.append("1*");
-				}
-				result.append(e.isRepairable() + "*");
-			}
-		}//end else(un-full status)
-		
-		return result.toString();
-	}
-	
 	
 	public int getBuildingsLeft(){
 		Enumeration buildings = server.getGame().getBoard().getBuildings();

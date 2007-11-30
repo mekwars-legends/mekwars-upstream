@@ -111,8 +111,7 @@ public class RepairTrackingThread extends Thread{
         
         String results = "";
         String unitName = "";
-        int MS = 1000;
-        int SEC = MS * 60;
+        int SEC = 1000;
         int MIN = SEC * 60;
         int HOUR = MIN * 60;
         int DAY = HOUR * 24;
@@ -153,8 +152,8 @@ public class RepairTrackingThread extends Thread{
                 	mills %= SEC;
                 }
                 
-                if ( mills > 0 )
-                	output += mills +"ms ";
+             /*   if ( mills > 0 )
+                	output += mills +"ms ";*/
                 
                 output = output.trim();
                 
@@ -247,6 +246,8 @@ public class RepairTrackingThread extends Thread{
                     player.addAvailableTechs(repairOrder.getTechType(),1);
                 repairOrder.stopRepair();
                 getRepairList().removeElement(repairOrder);
+                unit.setEntity(repairOrder.getUnit());
+                CampaignMain.cm.toUser("PL|UU|"+unitID+"|"+unit.toString(true),player.getName(),false);
                 return;
             }
         }
@@ -355,7 +356,6 @@ class Repair{
             MWServ.mwlog.errLog("Could not find player "+Username+" removing repair job from queue.");
             return true;
         }
-        player.setSave();
         SUnit mek = player.getUnit(unitID);
 
         if ( mek == null ){
@@ -406,6 +406,7 @@ class Repair{
             //Repairs will not finish on units that are on the front lines.
             if (player.getAmountOfTimesUnitExistsInArmies(unitID) > 0 
                     && player.getDutyStatus() == SPlayer.STATUS_ACTIVE) {   
+            	player.setSave();
                 return false;
             }
             
@@ -513,6 +514,7 @@ class Repair{
                 }
                 CampaignMain.cm.toUser("FSM|Your "+ unit.getShortNameRaw()
                                     + " is now fully operational and combat ready again!",Username, false);
+                player.setSave();
                 return true;
             }
 
@@ -788,6 +790,7 @@ class Repair{
                         //set the location back to a rear location number i.e. LOC_CTR, LOC_RTR, LOC_LTR
                         if ( rear )
                             location += 7;
+                        mek.setEntity(unit);
                         CampaignMain.cm.toUser("PL|UU|"+unitID+"|"+mek.toString(true),Username,false);
                         player.checkAndUpdateArmies(mek);
                         
@@ -797,7 +800,7 @@ class Repair{
                				else
                 				player.updatePartsCache(critName, -1);
                         }
-
+                        player.setSave();
                         return false;
                     }
                 }
@@ -805,6 +808,8 @@ class Repair{
                     UnitUtils.removeArmorRepair(unit,slot,location);
                 else if ( cs != null )
                     UnitUtils.removeRepairing(unit,cs);
+
+                mek.setEntity(unit);
                 CampaignMain.cm.toUser("PL|UU|"+unitID+"|"+mek.toString(true),Username,false);
                 player.checkAndUpdateArmies(mek);
                 //end Failure
@@ -1015,14 +1020,18 @@ class Repair{
                 player.addAvailableTechs(techType,-1);
                 player.addTotalTechs(techType,-1);
             }
+            mek.setEntity(unit);
             CampaignMain.cm.toUser("PL|UU|"+unitID+"|"+mek.toString(true),Username,false);
+            player.setSave();
             player.checkAndUpdateArmies(mek);
             return true;
         }catch(Exception ex){
             MWServ.mwlog.errLog("Failed to trap the following error removing repair job from queue: ");
             MWServ.mwlog.errLog(ex);
             if ( mek != null && player != null ){
+                mek.setEntity(unit);
                 CampaignMain.cm.toUser("PL|UU|"+unitID+"|"+mek.toString(true),Username,false);
+                player.setSave();
                 player.checkAndUpdateArmies(mek);
             }
             return true;

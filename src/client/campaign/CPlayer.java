@@ -146,7 +146,10 @@ public class CPlayer extends Player {
 		
 		// swap the armies
 		this.removeArmy(newArmy.getID());
-		Armies.add(newArmy);
+		if ( Armies.size() < newArmy.getID() )
+			Armies.add(newArmy);
+		else
+			Armies.add(newArmy.getID(),newArmy);
 	}
 	
 	/**

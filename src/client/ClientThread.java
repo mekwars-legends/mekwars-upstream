@@ -31,6 +31,7 @@ import java.io.File;
 
 import client.campaign.CUnit;
 import client.campaign.CArmy;
+import client.util.SerializeEntity;
 
 import common.AdvancedTerrain;
 import common.MegaMekPilotOption;
@@ -46,9 +47,7 @@ import megamek.client.bot.BotClient;
 import megamek.client.bot.TestBot;
 import megamek.client.bot.ui.AWT.BotGUI;
 import megamek.client.ui.AWT.ClientGUI;
-import megamek.common.BattleArmor;
 import megamek.common.Board;
-import megamek.common.CriticalSlot;
 import megamek.common.Entity;
 import megamek.common.event.GameBoardChangeEvent;
 import megamek.common.event.GameBoardNewEvent;
@@ -77,16 +76,11 @@ import megamek.common.options.Option;
 import megamek.common.options.PilotOptions;
 import megamek.common.options.IOption;
 import megamek.common.options.IOptionGroup;
-import megamek.common.BipedMech;
 import megamek.common.Coords;
-import megamek.common.IEntityRemovalConditions;
 import megamek.common.IGame;
 import megamek.common.IOffBoardDirections;
 import megamek.common.Pilot;
 import megamek.common.Player;
-import megamek.common.Protomech;
-import megamek.common.QuadMech;
-import megamek.common.Tank;
 import megamek.common.MechWarrior;
 import megamek.common.util.BuildingTemplate;
 import megamek.client.CloseClientListener;
@@ -561,120 +555,6 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 		}
 	}
 	
-	public String serializeEntity (Entity e, boolean fullStatus, boolean forceDevastate) {
-		
-		String result = "";
-        boolean useRepairs = mwclient.isUsingAdvanceRepairs();
-
-		if (fullStatus) {
-			if ( !(e instanceof MechWarrior))
-			{
-				result += e.getExternalId() + "*";
-				result += e.getOwner().getName() + "*";
-				result += e.getCrew().getHits() + "*";
-				
-				if (forceDevastate)
-					result += IEntityRemovalConditions.REMOVE_DEVASTATED + "*";
-				else
-					result += e.getRemovalCondition() + "*";
-				
-				if ( e instanceof BipedMech )
-					result += Unit.MEK +"*";
-				else if ( e instanceof QuadMech )
-					result += Unit.QUAD + "*";
-				else if ( e instanceof Tank)
-					result += Unit.VEHICLE +"*";
-				else if ( e instanceof Protomech)
-					result += Unit.PROTOMEK +"*";
-				else if ( e instanceof BattleArmor )
-					result += Unit.BATTLEARMOR+"*";
-				else
-					result += Unit.INFANTRY +"*";
-				//result += e.getMovementType() + "*"; bad code
-				//Collect kills
-				Enumeration en = e.getKills();
-				//No kills? Add an empty space
-				if (!en.hasMoreElements())
-					result += " *";
-				while (en.hasMoreElements()) {
-					Entity kill = (Entity) en.nextElement();
-					result += kill.getExternalId();
-					if (en.hasMoreElements())
-						result += "~";
-					else
-						result += "*";
-				}
-			}
-			
-			if (e instanceof Mech ) {
-				result += e.getCrew().isUnconscious() + "*";
-				result += e.getInternal(Mech.LOC_CT) + "*";
-				result += e.getInternal(Mech.LOC_HEAD) + "*";
-				result += e.getInternal(Mech.LOC_LLEG) + "*";
-				result += e.getInternal(Mech.LOC_RLEG) + "*";
-				result += e.getInternal(Mech.LOC_LARM) + "*";
-				result += e.getInternal(Mech.LOC_RARM) + "*";
-				result += e.getBadCriticals(CriticalSlot.TYPE_SYSTEM, Mech.SYSTEM_GYRO, Mech.LOC_CT) + "*";
-                result += ((Mech)e).getCockpitType()+"*";
-                if ( useRepairs ){
-                    result += UnitUtils.unitBattleDamage(e)+"*";
-                }
-			} else if (e instanceof Tank ) {
-				result += e.isRepairable() + "*";
-                result += e.isImmobile() + "*";
-                result += e.getCrew().isDead() + "*";
-			}
-			else if (e instanceof MechWarrior) {
-				MechWarrior mw = (MechWarrior)e;
-				result += "MW*";
-				result += mw.getOriginalRideExternalId() + "*";
-				result += mw.getPickedUpByExternalId() + "*";
-				result += mw.isDestroyed()+"*";
-			}
-			
-			if (  e.isOffBoard() ){
-			    result += e.getOffBoardDistance()+"*";
-			}
-		}
-		
-		/*
-		 * FullStatus is used when autoreporting. This status, which 
-		 * sends less information, is used for InProgressUpdates.
-		 */
-		else {
-			//if the entity is a mechwarrior, send an IPU command
-			//(InProgressUpdate) to the server.
-			if (e instanceof MechWarrior) {
-				MechWarrior mw = (MechWarrior)e;
-				result += "MW*" + mw.getOriginalRideExternalId() + "*";
-				result += mw.getPickedUpByExternalId() + "*";
-				result += mw.isDestroyed()+"*";
-			} 
-			
-			//else (the entity is a real unit)
-			else {
-				result += e.getOwner().getName() + "*";
-				result += e.getExternalId() + "*";
-				
-				if (forceDevastate)
-					result += IEntityRemovalConditions.REMOVE_DEVASTATED + "*";
-				else
-					result += e.getRemovalCondition() + "*";
-				
-				if (e instanceof Mech ) {
-					result += e.getInternal(Mech.LOC_CT) + "*";
-					result += e.getInternal(Mech.LOC_HEAD) + "*";
-				} else {
-					result += "1*";
-					result += "1*";
-				}
-				result += e.isRepairable() + "*";
-			}
-		}//end else(un-full status)
-		
-		return result;
-	}
-	
 	public void gamePhaseChange(GamePhaseChangeEvent e) {
 		
 		//String result = "";
@@ -817,7 +697,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
         if ( removedE.getOwner().getName().startsWith("War Bot"))
             return;
 
-		String toSend = this.serializeEntity(removedE, true, false);
+		String toSend = SerializeEntity.serializeEntity(removedE, true, false,mwclient.isUsingAdvanceRepairs());
 		mwclient.serverSend("IPU|" + toSend);
 	}
 	
@@ -1158,9 +1038,9 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 							&& !UnitUtils.hasEmptyAmmo(ent)))
 				continue;
 			if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0)
-				mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, true));          
+				mwclient.serverSend("IPU|"+SerializeEntity.serializeEntity(ent, true, true,mwclient.isUsingAdvanceRepairs()));          
 			else
-				mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, false));
+				mwclient.serverSend("IPU|"+SerializeEntity.serializeEntity(ent, true, false,mwclient.isUsingAdvanceRepairs()));
 		}
 		/*en = client.game.getRetreatedEntities();
 		while (en.hasMoreElements()) {

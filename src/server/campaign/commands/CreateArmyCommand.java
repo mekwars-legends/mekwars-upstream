@@ -136,7 +136,11 @@ public class CreateArmyCommand implements Command {
 		newArmy.setLowerLimiter(CampaignMain.cm.getIntegerConfig("DefaultLowerLimit"));
 		
 		//add the army to the player's list
-		p.getArmies().add(newArmy);
+		if ( p.getArmies().size() < newArmy.getID() )
+			p.getArmies().add(newArmy);
+		else
+			p.getArmies().add(newArmy.getID(),newArmy);
+
 		
 		//send relevant data to client
 		CampaignMain.cm.toUser("PL|SAD|"+p.getArmy(i).toString(true,"%"),Username,false);

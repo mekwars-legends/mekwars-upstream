@@ -65,7 +65,7 @@ public class BuyPartsCommand implements Command {
 		BMEquipment bme = CampaignMain.cm.getPartsMarket().getEquipmentList().get(partName);
 		
 		if ( bme == null || (!allowTechCrossOver && !UnitUtils.isSameTech(bme.getTech(), player.getMyHouse().getTechLevel()))) {
-			CampaignMain.cm.toUser(partName+"AM: not found on the black market", Username);
+			CampaignMain.cm.toUser("AM:"+partName+" not found on the black market", Username);
 			return;
 		}
 		

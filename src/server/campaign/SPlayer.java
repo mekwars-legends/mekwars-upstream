@@ -3022,7 +3022,10 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			for (int i = 0; i < numofarmies; i++) {
 				SArmy a = new SArmy(name);
 				a.fromString((String) ST.nextElement(), "%", this);
-				armies.add(a);
+				if ( armies.size() < a.getID() )
+					armies.add(a);
+				else
+					armies.add(a.getID(),a);
 				CampaignMain.cm.toUser("PL|SAD|" + a.toString(true, "%"), name, false);
 			}
 			
@@ -3262,7 +3265,11 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			while(rs1.next()) {
 				SArmy a = new SArmy(name);
 				a.fromString(rs1.getString("armyString"), "%", this);
-				armies.add(a);
+				if ( armies.size() < a.getID() )
+					armies.add(a);
+				else
+					armies.add(a.getID(),a);
+				
 				CampaignMain.cm.toUser("PL|SAD|" + a.toString(true, "%"), name, false);				
 			}
 	
