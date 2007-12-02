@@ -333,7 +333,7 @@ public final class MWClient implements IClient {
 
         //set up the splash screen. do this before any
         //other non-main/non-static actions.
-        if ( !isDedicated() && Config.isParam("ENABLESPLASHSCREEN") ) {splash = new SplashWindow(null);}
+        if ( !isDedicated() && Config.isParam("ENABLESPLASHSCREEN") ) {splash = new SplashWindow();}
         
 		Connector = new CConnector(this);
 		Connector.setSplashWindow(splash);//may set null if ded.

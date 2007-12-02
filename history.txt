@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.11.x
++ fix splashscreen on Linux by making it an undecorated JFrame instead of a JWindow
 + new MegaMek.jar 0.33.13-MW11302007-5285
 + Added client.util.SerializeEntity.java
 + RFE: 1616609: Shield Repairs
