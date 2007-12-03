@@ -109,7 +109,7 @@ public class MekWarsAutoUpdate {
          */
 
         if (args[0].equals("PLAYER"))
-            splash = new SplashWindow(null);
+            splash = new SplashWindow();
 
         try {
             System.out.println("Starting Update");

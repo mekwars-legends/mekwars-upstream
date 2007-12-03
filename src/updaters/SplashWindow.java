@@ -23,7 +23,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JFrame;
-import javax.swing.JWindow;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -34,7 +33,7 @@ import java.awt.Image;
 
 public class SplashWindow {
 	
-	public JWindow splashWindow;
+	public JFrame splashWindow;
 	private boolean continueAnimating;
 	private JLabel imageLabel;
 	private JLabel versionLabel;
@@ -49,12 +48,13 @@ public class SplashWindow {
 	public final int STATUS_DATAERROR = 5;
 	public final int STATUS_CONNECTFAILED = 6;
 	
-	public SplashWindow(JFrame owner) {
+	public SplashWindow() {
 		
 		continueAnimating = true;
 		currentStatus = STATUS_INITIALIZING;
 		
-		splashWindow = new JWindow(owner);
+		splashWindow = new JFrame();
+        splashWindow.setUndecorated(true);
 		
 		//load and scale the splash image
 		ImageIcon splashImage = null;
@@ -74,7 +74,7 @@ public class SplashWindow {
 		imageLabel.setIconTextGap(6);
 		
 		//create a version label
-		versionLabel = new JLabel("<HTML><CENTER><b>Initializing<br>¥</b></CENTER></HTML>",SwingConstants.CENTER);
+		versionLabel = new JLabel("<HTML><CENTER><b>Initializing<br>ï¿½</b></CENTER></HTML>",SwingConstants.CENTER);
 		
 		//place the labels in a panel
 		JPanel windowPanel = new JPanel();
@@ -155,16 +155,16 @@ class AnimationThread extends Thread {
 	
     private void updateProgress(){
         switch (progress) {
-        case 0:	splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>¥</b></CENTER></HTML>"); break;
-		case 1:	splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>¥¥</b></CENTER></HTML>"); break;
-		case 2:	splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>¥¥¥</b></CENTER></HTML>"); break;
-		case 3: splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>¥¥¥¥</b></CENTER></HTML>"); break;
-		case 4: splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>¥¥¥¥¥</b></CENTER></HTML>"); break;
-		case 5: splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>¥¥¥¥¥¥</b></CENTER></HTML>"); break;
-		case 6: splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>¥¥¥¥¥¥¥</b></CENTER></HTML>"); break;
-		case 7: splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>¥¥¥¥¥¥¥¥</b></CENTER></HTML>"); break;
-		case 8: splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>¥¥¥¥¥¥¥¥¥</b></CENTER></HTML>"); break;
-		case 9: splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>¥¥¥¥¥¥¥¥¥¥</b></CENTER></HTML>"); break;
+        case 0:	splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>ï¿½</b></CENTER></HTML>"); break;
+		case 1:	splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>ï¿½ï¿½</b></CENTER></HTML>"); break;
+		case 2:	splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>ï¿½ï¿½ï¿½</b></CENTER></HTML>"); break;
+		case 3: splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>ï¿½ï¿½ï¿½ï¿½</b></CENTER></HTML>"); break;
+		case 4: splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>ï¿½ï¿½ï¿½ï¿½ï¿½</b></CENTER></HTML>"); break;
+		case 5: splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</b></CENTER></HTML>"); break;
+		case 6: splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</b></CENTER></HTML>"); break;
+		case 7: splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</b></CENTER></HTML>"); break;
+		case 8: splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</b></CENTER></HTML>"); break;
+		case 9: splash.getImageLabel().setText("<HTML><CENTER><b>" + progressText + "<br>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</b></CENTER></HTML>"); break;
         }
     }
 	@Override
