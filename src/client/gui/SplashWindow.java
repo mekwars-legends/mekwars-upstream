@@ -76,7 +76,7 @@ public class SplashWindow {
 		imageLabel.setIconTextGap(6);
 		
 		//create a version label
-		versionLabel = new JLabel("<HTML><CENTER><b>Initializing<br>�</b></CENTER></HTML>",SwingConstants.CENTER);
+		versionLabel = new JLabel("<HTML><CENTER><b>Initializing<br>\u25cf</b></CENTER></HTML>",SwingConstants.CENTER);
 		
 		//place the labels in a panel
 		JPanel windowPanel = new JPanel();
@@ -154,16 +154,16 @@ class AnimationThread extends Thread {
 	
 	private void setLabelText(String s) {
 		switch (progress) {
-		case 0:	splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>�</b></CENTER></HTML>"); break;
-		case 1:	splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>��</b></CENTER></HTML>"); break;
-		case 2:	splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>���</b></CENTER></HTML>"); break;
-		case 3: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>����</b></CENTER></HTML>"); break;
-		case 4: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>�����</b></CENTER></HTML>"); break;
-		case 5: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>������</b></CENTER></HTML>"); break;
-		case 6: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>�������</b></CENTER></HTML>"); break;
-		case 7: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>��������</b></CENTER></HTML>"); break;
-		case 8: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>���������</b></CENTER></HTML>"); break;
-		case 9: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>����������</b></CENTER></HTML>"); break;
+		case 0:	splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF</b></CENTER></HTML>"); break;
+		case 1:	splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF\u25CF</b></CENTER></HTML>"); break;
+		case 2:	splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF\u25CF\u25CF</b></CENTER></HTML>"); break;
+		case 3: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF\u25CF\u25CF\u25CF</b></CENTER></HTML>"); break;
+		case 4: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF\u25CF\u25CF\u25CF\u25CF</b></CENTER></HTML>"); break;
+		case 5: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF</b></CENTER></HTML>"); break;
+		case 6: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF</b></CENTER></HTML>"); break;
+		case 7: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF</b></CENTER></HTML>"); break;
+		case 8: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF</b></CENTER></HTML>"); break;
+		case 9: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF</b></CENTER></HTML>"); break;
 		}
 	}
 	

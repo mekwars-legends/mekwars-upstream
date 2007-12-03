@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.11.x
++ Fix splash screen character
 + Replaced deprecated toURL() calls with supported toURI().toURL() calls
 + fix splashscreen on Linux by making it an undecorated JFrame instead of a JWindow
 + new MegaMek.jar 0.33.13-MW11302007-5285
