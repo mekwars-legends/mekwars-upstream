@@ -251,7 +251,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
         }
         
         //layout the boxpanel. 2 columns. Counted the rows.
-        SpringLayoutHelper.setupSpringGrid(boxPanel, boxRows, 2);
+        SpringLayoutHelper.setupSpringGrid(boxPanel, 2);
         
         //add the boxPanel to the scroll panel. We know it has contents b/c all units can mount lights.
         scrollPanel.add(boxPanel);
@@ -290,8 +290,8 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
 			public void windowClosing(WindowEvent e) {setVisible(false);}
         });
 
-        scrollPane.setMinimumSize(new Dimension(150, 150));
-        scrollPane.setMaximumSize(new Dimension(780, 580));
+        //scrollPane.setMinimumSize(new Dimension(150, 150));
+        //scrollPane.setMaximumSize(new Dimension(780, 580));
         pack();
         
         setResizable(false);
@@ -540,7 +540,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
         private int location = 0;
         
         protected JCheckBox chDump = new JCheckBox();
-        private JCheckBox chHotLoad = new JCheckBox();
+        protected JCheckBox chHotLoad = new JCheckBox();
         
         public MunitionChoicePanel(Mounted m, Vector vTypes, int location) {
             
@@ -610,7 +610,12 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 chHotLoad.setSelected(m.isHotLoaded());
                 chHotLoad.setText("Hot-Load");
                 add(chHotLoad);
+            }else{
+            	chHotLoad.setEnabled(false);
+                chHotLoad.setText("Hot-Load");
+                add(chHotLoad);
             }
+            
         }
 
         /*  Yes this to load the ammo

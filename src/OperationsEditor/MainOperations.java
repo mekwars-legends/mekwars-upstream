@@ -34,10 +34,17 @@ public class MainOperations{
      */
     public static void main(String[] args) {
         try {
-        	new OperationsDialog();
+        	new OperationsDialog(null);
         } catch (Exception e) {
         	System.err.println(e);
         }
     }
     
+    public static void main(Object o) {
+        try {
+        	new OperationsDialog(o);
+        } catch (Exception e) {
+        	System.err.println(e);
+        }
+    }
 }

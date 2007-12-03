@@ -183,6 +183,7 @@ public class CMainFrame extends JFrame {
 	//is generated/returned from  the admin plugin.
 	JMenu jMenuMod = new JMenu();
 	JMenu jMenuAdmin = new JMenu();
+	JMenu jMenuOperations = new JMenu();
 	
 	public MWClient mwclient;
 	
@@ -364,7 +365,27 @@ public class CMainFrame extends JFrame {
 				}
 			}//end else(Admin.jar exists)
 			
-			
+			if ( new File("./MekWarsOpEditor.jar").exists() ){
+				jMenuOperations.setText("Operations");
+				JMenuItem item = new JMenuItem("Op Editor");
+				item.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						try{
+							URLClassLoader loader = new URLClassLoader(new URL[] {new File("./MekWarsOpEditor.jar").toURI().toURL()});
+							Class c = loader.loadClass("OperationsEditor.MainOperations");
+							Object o = c.newInstance();
+							c.getDeclaredMethod("main", new Class[] {Object.class}).invoke(o,new Object[] {mwclient});
+						
+						}catch(Exception ex){
+							ex.printStackTrace();
+						}
+						
+						//new OperationsEditor.dialog.OperationsDialog(mwclient);
+					}
+				});
+				jMenuOperations.add(item);
+				jMenuBar1.add(jMenuOperations);
+			}
 			this.hasAdminMenus = true;
 		}//end if(is admin or mod)
 		

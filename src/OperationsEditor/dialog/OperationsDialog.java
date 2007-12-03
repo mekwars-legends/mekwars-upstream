@@ -62,7 +62,7 @@ import javax.swing.SwingConstants;
 import OperationsEditor.DefaultOperation;
 import OperationsEditor.dialog.SpringLayoutHelper;
 
-public final class OperationsDialog extends JFrame implements ActionListener, KeyListener{
+public class OperationsDialog extends JFrame implements ActionListener, KeyListener{
 	
 	/**
 	 * 
@@ -74,6 +74,7 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
 	private final static int LONG_OP = 0;
 	private final static int SPECIAL_OP = 0;
 	
+	public final static int OP_VERSION = 2;
 	private int currentOpType = SHORT_OP;
 	
 	private boolean shortOpScreenCreated = false;
@@ -90,6 +91,8 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
 	private String filePathName = "./data/operations"; 
 	private JOptionPane pane;
 	private JScrollPane scrollPane;
+	private Object mwclient;
+	
 	JPanel contentPane;
 	
     private boolean changesMade = false;
@@ -122,7 +125,11 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
      * new var to 3 locations when it is used. Now only 1 location needs to 
      * be added and that is the vars placement on the tab in the UI.
      */
-	public OperationsDialog() {
+	public OperationsDialog(Object o) {
+		
+		super("Ops Editor");
+		
+		this.mwclient = o;
 		
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu();
@@ -229,11 +236,19 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
             public void actionPerformed(ActionEvent e) {
                 if ( changesMade ){
                     int result = JOptionPane.showConfirmDialog(null,"Changes have been made\n\rDo you want to exit without saving?","Exit Without Saving",JOptionPane.YES_NO_OPTION);
-                    if ( result == JOptionPane.YES_OPTION )
-                        System.exit(0);
+                    if ( result == JOptionPane.YES_OPTION ){
+                    	if ( mwclient == null )
+                    		System.exit(0);
+                    	else
+                    		dispose();
+                    }
                 }
-                else
-                    System.exit(0);
+                else{
+                	if ( mwclient == null )
+                		System.exit(0);
+                	else
+                		dispose();
+                }
             }
         });
         fileMenu.add(item);
@@ -241,7 +256,10 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
 		setResizable(true);
 		setSize(new Dimension(640, 480));
 		setExtendedState(Frame.NORMAL);
-		setTitle(windowName);
+		if ( mwclient != null )
+			setTitle(windowName+"(Integrated)");
+		else
+			setTitle(windowName);
 		
 		/*
 		 * Check for the operations directories.
@@ -287,12 +305,16 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
                 if ( changesMade ){
                     int result = JOptionPane.showConfirmDialog(null,"Changes were been made!\n\rDo you want to exit without saving?","Exit Without Saving",JOptionPane.YES_NO_OPTION);
                     if ( result == JOptionPane.YES_OPTION )
-                        System.exit(0);
+                        closeit = true;
                     else
                         closeit = false;
                 }
-                if ( closeit )
-                    System.exit(0);
+                if ( closeit ){
+                	if ( mwclient != null )
+                		dispose();
+                	else
+                		System.exit(0);
+                }
 			}
 		});
 		
@@ -3131,6 +3153,9 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
 			JOptionPane.showMessageDialog(null,taskName+" saved to "+filePathName,"File Saved",JOptionPane.INFORMATION_MESSAGE);
             changesMade = false;
             setTitle(windowName+" ("+taskName+")");
+            if ( mwclient != null ){
+            	((client.MWClient)mwclient).sendChat("Send to Chat Test");
+            }
 
 		}
 		catch(Exception ex){
@@ -3146,6 +3171,9 @@ public final class OperationsDialog extends JFrame implements ActionListener, Ke
 		
 		fDialog.setDirectory(System.getProperty("user.dir")+"/data/operations/short");
 		fDialog.setVisible(true);
+		
+		if ( fDialog.getFile() == null )
+			return;
 		
 		File shortOP = new File(fDialog.getDirectory(), fDialog.getFile());
 		
