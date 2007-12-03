@@ -387,7 +387,7 @@ MouseMotionListener, MouseWheelListener, ActionListener {
 					if (!loadJar.exists())
 						MWClient.mwClientLog.clientErrLog("AdminMapPopupMenu creation skipped. No MekWarsAdmin.jar present.");
 					else {
-		        		URLClassLoader loader = new URLClassLoader(new URL[] {loadJar.toURL()});
+		        		URLClassLoader loader = new URLClassLoader(new URL[] {loadJar.toURI().toURL()});
 		        		Class c = loader.loadClass("admin.AdminMapPopupMenu");
 		        		Object o = c.newInstance();
 		        		c.getDeclaredMethod("createMenu", 

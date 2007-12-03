@@ -215,7 +215,7 @@ public class AutoUpdater
             	tempJarFile = copyMap_.get(originalJarFileName);
             }
 
-            String completeURL = tempJarFile.toURL().toString() + "!" + urlParts[1];
+            String completeURL = tempJarFile.toURI().toURL().toString() + "!" + urlParts[1];
 
             completeURL = IOUtil.fixJarURL(completeURL);
             System.err.println("Reading from jarfile: " + completeURL);

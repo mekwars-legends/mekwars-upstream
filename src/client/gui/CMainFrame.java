@@ -334,7 +334,7 @@ public class CMainFrame extends JFrame {
 			else {
 				//assume mod
 				try {
-					URLClassLoader loader = new URLClassLoader(new URL[] {loadJar.toURL()});
+					URLClassLoader loader = new URLClassLoader(new URL[] {loadJar.toURI().toURL()});
 					Class c = loader.loadClass("admin.ModeratorMenu");
 					Object o = c.newInstance();
 					c.getDeclaredMethod("createMenu", new Class[] {MWClient.class}).invoke(o,new Object[] {mwclient});
@@ -350,7 +350,7 @@ public class CMainFrame extends JFrame {
 					MWClient.mwClientLog.clientErrLog(ex);
 				}
 				try {
-					URLClassLoader loader = new URLClassLoader(new URL[] {loadJar.toURL()});
+					URLClassLoader loader = new URLClassLoader(new URL[] {loadJar.toURI().toURL()});
 					Class c = loader.loadClass("admin.AdminMenu");
 					Object o = c.newInstance();
 					c.getDeclaredMethod("createMenu", new Class[] {MWClient.class}).invoke(o,new Object[] {mwclient});

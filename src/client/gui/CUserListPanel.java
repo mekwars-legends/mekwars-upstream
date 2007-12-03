@@ -415,7 +415,7 @@ public class CUserListPanel extends JPanel implements ActionListener {
 							if (!loadJar.exists())
 								MWClient.mwClientLog.clientErrLog("ModeratorUserlistPopupMenu creation skipped. No MekWarsAdmin.jar present.");
 							else {
-								URLClassLoader loader = new URLClassLoader(new URL[] {loadJar.toURL()});
+								URLClassLoader loader = new URLClassLoader(new URL[] {loadJar.toURI().toURL()});
 								Class c = loader.loadClass("admin.ModeratorUserlistPopupMenu");
 								Object o = c.newInstance();
 								c.getDeclaredMethod("createMenu", new Class[] {MWClient.class, CUser.class}).invoke(o,
@@ -432,7 +432,7 @@ public class CUserListPanel extends JPanel implements ActionListener {
 							if (!loadJar.exists())
 								MWClient.mwClientLog.clientErrLog("AdminUserlistPopupMenu creation skipped. No MekWarsAdmin.jar present.");
 							else {
-								URLClassLoader loader = new URLClassLoader(new URL[] {loadJar.toURL()});
+								URLClassLoader loader = new URLClassLoader(new URL[] {loadJar.toURI().toURL()});
 								Class c = loader.loadClass("admin.AdminUserlistPopupMenu");
 								Object o = c.newInstance();
 								c.getDeclaredMethod("createMenu", new Class[] {MWClient.class, CUser.class}).invoke(o,
