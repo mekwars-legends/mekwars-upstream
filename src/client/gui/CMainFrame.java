@@ -29,7 +29,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.net.URLClassLoader;
 import java.net.URL;
 import java.util.StringTokenizer;
@@ -384,6 +387,58 @@ public class CMainFrame extends JFrame {
 					}
 				});
 				jMenuOperations.add(item);
+			    JMenuItem jMenuRetrieveOperationFile = new JMenuItem();
+			    JMenuItem jMenuSetOperationFile = new JMenuItem();
+			    JMenuItem jMenuSetNewOperationFile = new JMenuItem();
+			    JMenuItem jMenuSendAllOperationFiles = new JMenuItem();
+			    JMenuItem jMenuUpdateOperations= new JMenuItem();
+
+		        jMenuRetrieveOperationFile.setText("Retrieve Operation File");
+		        jMenuRetrieveOperationFile.addActionListener(new ActionListener() {
+		            public void actionPerformed(ActionEvent e) {
+		                jMenuRetrieveOperationFile_actionPerformed(e);
+		            }
+		        });
+
+		        jMenuSetOperationFile.setText("Set Operation File");
+		        jMenuSetOperationFile.addActionListener(new ActionListener() {
+		            public void actionPerformed(ActionEvent e) {
+		                jMenuSetOperationFile_actionPerformed(e);
+		            }
+		        });
+
+		        jMenuSetNewOperationFile.setText("Set New Operation File");
+		        jMenuSetNewOperationFile.addActionListener(new ActionListener() {
+		            public void actionPerformed(ActionEvent e) {
+		                jMenuSetNewOperationFile_actionPerformed(e);
+		            }
+		        });
+
+		        jMenuSendAllOperationFiles.setText("Send All Local Op Files");
+		        jMenuSendAllOperationFiles.addActionListener(new ActionListener() {
+		            public void actionPerformed(ActionEvent e) {
+		                jMenuSendAllOperationFiles_actionPerformed(e);
+		            }
+		        });
+
+		        jMenuUpdateOperations.setText("Update Operations");
+		        jMenuUpdateOperations.addActionListener(new ActionListener() {
+		            public void actionPerformed(ActionEvent e) {
+		                jMenuUpdateOperations_actionPerformed(e);
+		            }
+		        });
+
+				int userLevel = this.mwclient.getUser(this.mwclient.getUsername()).getUserlevel();
+		        if ( userLevel >= mwclient.getData().getAccessLevel("RetrieveOperation") )
+		        	jMenuOperations.add(jMenuRetrieveOperationFile);
+		        if ( userLevel >= mwclient.getData().getAccessLevel("SetOperation") ){
+		        	jMenuOperations.add(jMenuSetOperationFile);
+		        	jMenuOperations.add(jMenuSetNewOperationFile);
+		        	jMenuOperations.add(jMenuSendAllOperationFiles);
+		        }
+		        if ( userLevel >= mwclient.getData().getAccessLevel("UpdateOperations") )
+		        	jMenuOperations.add(jMenuUpdateOperations);
+
 				jMenuBar1.add(jMenuOperations);
 			}
 			this.hasAdminMenus = true;
@@ -2559,11 +2614,11 @@ public class CMainFrame extends JFrame {
 		
 		Vector<String> list = new Vector<String>(1,1);
 		
-		System.err.println("adding mul's to vector");
+		//System.err.println("adding mul's to vector");
 		while ( mulList.hasMoreElements() )
 			list.add(mulList.nextToken());
 		
-		System.err.println("creating combo box.");
+		//System.err.println("creating combo box.");
 
 		JComboBox combo = new JComboBox(list);
 		combo.setEditable(false);
@@ -2592,5 +2647,148 @@ public class CMainFrame extends JFrame {
 		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "createarmyfrommul "+selectedMul+"#"+fluff+"#"+player);
 	}
 
-	
+    public void jMenuSendAllOperationFiles_actionPerformed(ActionEvent e) {
+        
+
+        int result = JOptionPane.showConfirmDialog(null,"Upload All local OpFiles?","Upload Ops",JOptionPane.YES_NO_OPTION);
+        
+        if ( result == JOptionPane.NO_OPTION )
+            return;
+
+    	File opFiles = new File("./data/operations/short/");
+
+        
+        if ( !opFiles.exists() ){
+            return;
+        }
+
+        StringBuilder opData = new StringBuilder();
+        
+        for (File opFile : opFiles.listFiles() ){
+            try{
+            	
+                FileInputStream fis = new FileInputStream(opFile);
+                BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+                opData.append(opFile.getName().substring(0,opFile.getName().lastIndexOf(".txt"))+"#");
+                while (dis.ready()){
+                    opData.append(dis.readLine().replaceAll("#","(pound)")+"#");
+                }
+                dis.close();
+                fis.close();
+                
+            }catch(Exception ex){
+                MWClient.mwClientLog.clientErrLog("Unable to read "+opFile);
+                return;
+            }
+            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setoperation#short#"+opData.toString());
+            opData.setLength(0);
+            opData.trimToSize();
+        }
+    }
+
+    public void jMenuSetNewOperationFile_actionPerformed(ActionEvent e) {
+        
+        
+        String opName = JOptionPane.showInputDialog(mwclient.getMainFrame().getContentPane(),"New Op Name?");
+
+        if ( opName == null || opName.trim().length() < 1)
+            return;
+        
+        File opFile = new File("./data/operations/short/"+opName+".txt");
+
+        
+        if ( !opFile.exists() ){
+            return;
+        }
+
+        StringBuilder opData = new StringBuilder();
+        
+        try{
+            FileInputStream fis = new FileInputStream(opFile);
+            BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+            opData.append(opName+"#");
+            while (dis.ready()){
+                opData.append(dis.readLine().replaceAll("#","(pound)")+"#");
+            }
+            dis.close();
+            fis.close();
+            
+        }catch(Exception ex){
+            MWClient.mwClientLog.clientErrLog("Unable to read "+opFile);
+            return;
+        }
+
+        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setoperation#short#"+opData.toString());
+    }
+
+    public void jMenuUpdateOperations_actionPerformed(ActionEvent e) {
+    	mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c adminlockcampaign");
+        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c updateoperations");
+    	mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c adminunlockcampaign");
+
+    }
+    
+    public void jMenuRetrieveOperationFile_actionPerformed(ActionEvent e) {
+        
+        JComboBox opCombo = new JComboBox(mwclient.getAllOps().keySet().toArray());
+        opCombo.setEditable(false);
+
+        JOptionPane jop = new JOptionPane(opCombo, JOptionPane.QUESTION_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
+        JDialog dlg = jop.createDialog(null, "Select Op.");
+        opCombo.grabFocus();
+        opCombo.getEditor().selectAll();
+
+        dlg.setVisible(true);
+
+        if ( (Integer)jop.getValue()  == JOptionPane.CANCEL_OPTION )
+            return;
+        
+        String opName = (String)opCombo.getSelectedItem();
+        
+        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c RETRIEVEOPERATION#short#"+opName);
+    }
+
+    public void jMenuSetOperationFile_actionPerformed(ActionEvent e) {
+        
+        JComboBox opCombo = new JComboBox(mwclient.getAllOps().keySet().toArray());
+        opCombo.setEditable(false);
+
+        JOptionPane jop = new JOptionPane(opCombo, JOptionPane.QUESTION_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
+        JDialog dlg = jop.createDialog(null, "Select Op.");
+        opCombo.grabFocus();
+        opCombo.getEditor().selectAll();
+
+        dlg.setVisible(true);
+
+        if ( (Integer)jop.getValue()  == JOptionPane.CANCEL_OPTION )
+            return;
+        
+        String opName = (String)opCombo.getSelectedItem();
+        
+        File opFile = new File("./data/operations/short/"+opName+".txt");
+
+        
+        if ( !opFile.exists() ){
+            return;
+        }
+
+        StringBuilder opData = new StringBuilder();
+        
+        try{
+            FileInputStream fis = new FileInputStream(opFile);
+            BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+            opData.append(opName+"#");
+            while (dis.ready()){
+                opData.append(dis.readLine().replaceAll("#","(pound)")+"#");
+            }
+            dis.close();
+            fis.close();
+            
+        }catch(Exception ex){
+            MWClient.mwClientLog.clientErrLog("Unable to read "+opFile);
+            return;
+        }
+
+        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setoperation#short#"+opData.toString());
+    }
 }

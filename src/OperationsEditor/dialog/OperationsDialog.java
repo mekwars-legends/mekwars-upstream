@@ -59,6 +59,8 @@ import javax.swing.SpringLayout;
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 
+import client.MWClient;
+
 import OperationsEditor.DefaultOperation;
 import OperationsEditor.dialog.SpringLayoutHelper;
 
@@ -91,7 +93,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 	private String filePathName = "./data/operations"; 
 	private JOptionPane pane;
 	private JScrollPane scrollPane;
-	private Object mwclient;
+	private MWClient mwclient = null;
 	
 	JPanel contentPane;
 	
@@ -129,7 +131,8 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 		
 		super("Ops Editor");
 		
-		this.mwclient = o;
+		if ( o != null )
+			this.mwclient = (MWClient)o;
 		
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu();
@@ -253,7 +256,10 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         });
         fileMenu.add(item);
         
-		setResizable(true);
+        if ( mwclient != null )
+        	menuBar.add(createEditMenu());
+        	
+        setResizable(true);
 		setSize(new Dimension(640, 480));
 		setExtendedState(Frame.NORMAL);
 		if ( mwclient != null )
@@ -3153,10 +3159,6 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 			JOptionPane.showMessageDialog(null,taskName+" saved to "+filePathName,"File Saved",JOptionPane.INFORMATION_MESSAGE);
             changesMade = false;
             setTitle(windowName+" ("+taskName+")");
-            if ( mwclient != null ){
-            	((client.MWClient)mwclient).sendChat("Send to Chat Test");
-            }
-
 		}
 		catch(Exception ex){
 			System.err.println("Unable to save file");
@@ -3384,6 +3386,106 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
             }//else continue
         }
 
+    }
+    
+    private JMenu createEditMenu(){
+    	JMenu jMenuOperations = new JMenu();
+    	
+    	jMenuOperations.setText("Edit");
+
+    	JMenuItem jMenuSendCurrentOperationFile = new JMenuItem();
+    	JMenuItem jMenuRetrieveOperationFile = new JMenuItem();
+	    JMenuItem jMenuSetOperationFile = new JMenuItem();
+	    JMenuItem jMenuSetNewOperationFile = new JMenuItem();
+	    JMenuItem jMenuSendAllOperationFiles = new JMenuItem();
+	    JMenuItem jMenuUpdateOperations= new JMenuItem();
+
+	    jMenuSendCurrentOperationFile.setText("Send Current File");
+	    jMenuSendCurrentOperationFile.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	jMenuSendCurrentFile_actionPerformed(e);
+            }
+        });
+
+        jMenuRetrieveOperationFile.setText("Retrieve Operation File");
+        jMenuRetrieveOperationFile.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	mwclient.getMainFrame().jMenuRetrieveOperationFile_actionPerformed(e);
+            }
+        });
+
+        jMenuSetOperationFile.setText("Set Operation File");
+        jMenuSetOperationFile.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	mwclient.getMainFrame().jMenuSetOperationFile_actionPerformed(e);
+            }
+        });
+
+        jMenuSetNewOperationFile.setText("Set New Operation File");
+        jMenuSetNewOperationFile.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	mwclient.getMainFrame().jMenuSetNewOperationFile_actionPerformed(e);
+            }
+        });
+
+        jMenuSendAllOperationFiles.setText("Send All Local Op Files");
+        jMenuSendAllOperationFiles.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	mwclient.getMainFrame().jMenuSendAllOperationFiles_actionPerformed(e);
+            }
+        });
+
+        jMenuUpdateOperations.setText("Update Operations");
+        jMenuUpdateOperations.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	mwclient.getMainFrame().jMenuUpdateOperations_actionPerformed(e);
+            }
+        });
+
+		int userLevel = this.mwclient.getUser(this.mwclient.getUsername()).getUserlevel();
+        if ( userLevel >= mwclient.getData().getAccessLevel("RetrieveOperation") )
+        	jMenuOperations.add(jMenuRetrieveOperationFile);
+        if ( userLevel >= mwclient.getData().getAccessLevel("SetOperation") ){
+        	jMenuOperations.add(jMenuSendCurrentOperationFile);
+        	jMenuOperations.add(jMenuSetOperationFile);
+        	jMenuOperations.add(jMenuSetNewOperationFile);
+        	jMenuOperations.add(jMenuSendAllOperationFiles);
+        }
+        if ( userLevel >= mwclient.getData().getAccessLevel("UpdateOperations") )
+        	jMenuOperations.add(jMenuUpdateOperations);
+
+        return jMenuOperations;
+
+    }
+    
+    private void jMenuSendCurrentFile_actionPerformed(ActionEvent e) {
+        
+    	if ( changesMade )
+    		saveShortOperations();
+
+        File opFile = new File("./data/operations/short/"+taskName+".txt");
+        if ( !opFile.exists() ){
+            return;
+        }
+
+        StringBuilder opData = new StringBuilder();
+        
+        try{
+            FileInputStream fis = new FileInputStream(opFile);
+            BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+            opData.append(taskName+"#");
+            while (dis.ready()){
+                opData.append(dis.readLine().replaceAll("#","(pound)")+"#");
+            }
+            dis.close();
+            fis.close();
+            
+        }catch(Exception ex){
+            MWClient.mwClientLog.clientErrLog("Unable to read "+opFile);
+            return;
+        }
+
+        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setoperation#short#"+opData.toString());
     }
 }
 

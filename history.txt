@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.11.x
++ RFE 1719569: Integrate Ops Editor into Client
 + Bug: Customize Unit dialog not working with Java 1.6
 + Start of Integration of Ops editor into MW Client.
 + Fix splash screen character
