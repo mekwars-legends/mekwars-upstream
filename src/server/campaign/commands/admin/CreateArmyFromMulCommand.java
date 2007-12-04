@@ -154,6 +154,7 @@ public class CreateArmyFromMulCommand implements Command {
             
 			cm.setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
 			cm.setProducer(fluff);
+			cm.setWeightclass(99);//let the SUnit code handle the weightclass
 
 			SPilot pilot = null;
 			pilot = new SPilot(en.getCrew().getName(), en.getCrew()

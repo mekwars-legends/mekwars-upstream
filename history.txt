@@ -1,7 +1,10 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.11.x
+v 0.2.11.x 
++ Bug: CreateArmyFromMul creating all Light Units
++ Bug: Promote/DemotePlayer command sending demoted/promoted players data to 
+	command user
 + RFE 1719569: Integrate Ops Editor into Client
 + Bug: Customize Unit dialog not working with Java 1.6
 + Start of Integration of Ops editor into MW Client.
