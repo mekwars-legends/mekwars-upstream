@@ -470,16 +470,12 @@ public class CHSPanel extends JPanel {
 		    
 			//hide unit types that aren't in use on the server
 			String useIt = "Use" + Unit.getTypeClassDesc(type_id);
-		    if (!Boolean.parseBoolean(mwclient.getserverConfigs(useIt)))
-		        continue;
 
 			result.append("<TR><TD VALIGN=MIDDLE><b>" + Unit.getTypeClassDesc(type_id) + "</b></TD>");
 			for (int weight = 0; weight < 4; weight++) {
 									
 				String buyNew = "CanBuyNew"+CUnit.getWeightClassDesc(weight)+CUnit.getTypeClassDesc(type_id);
-				if ( !Boolean.parseBoolean(thePlayer.getSubFaction().getConfig(buyNew)) )
-					continue;
-				
+
 				String Comps = componentsInfo.get(weight + "$" + type_id);
 				StringTokenizer ST = new StringTokenizer(Comps,"$");
 				int comps = Integer.parseInt(ST.nextToken());
@@ -492,7 +488,7 @@ public class CHSPanel extends JPanel {
 					int typetocheck = type_id;
 					
 					TreeMap<String,String> facs = factoriesInfo.get(weight + "$" + typetocheck);
-					if (facs != null) {
+					if (facs != null && Boolean.parseBoolean(thePlayer.getSubFaction().getConfig(buyNew)) && Boolean.parseBoolean(mwclient.getserverConfigs(useIt))) {
 						
 						boolean hasOpen = false;
 						int minrefresh = Integer.MAX_VALUE;
