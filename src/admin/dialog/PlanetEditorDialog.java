@@ -125,6 +125,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 	private final JTextField planetYPosition = new JTextField(5);
 	private final JTextField newTerrainPercent = new JTextField(5);
 	private final JTextField newFactoryName = new JTextField(10);
+	private final JTextField newFactoryBuildTable = new JTextField(10);
 	private final JTextField currentFactionOwnerShip = new JTextField(5);
 	private final JTextField newFacitonOwnerShip = new JTextField(5);
 	private final JTextField currentTerrainPercent = new JTextField(5);
@@ -320,11 +321,12 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			
 		}else if ( command.equals(addFactoryCommand) ){
 			String factoryName = newFactoryName.getText().trim();
-			String factoryDesc = factoryName+"#"+factorySize.getSelectedItem().toString()+"#"+factoryOwners.getSelectedItem().toString()+"#"+factoryType.getSelectedIndex();
+			String factoryDesc = factoryName+"#"+factorySize.getSelectedItem().toString()+"#"+factoryOwners.getSelectedItem().toString()+"#"+factoryType.getSelectedIndex()+"#"+newFactoryBuildTable.getText().trim();
 			String fullFactoryName = factorySize.getSelectedItem().toString()+ " " + factoryType.getSelectedItem().toString() + " " + newFactoryName.getText().trim() +" "+factoryOwners.getSelectedItem().toString();
 			factoryMap.put(factoryName, factoryDesc);
 			planetFactories.addItem(fullFactoryName);
 			newFactoryName.setText("");
+			newFactoryBuildTable.setText("");
 			factorySize.setSelectedIndex(0);
 			factoryOwners.setSelectedIndex(0);
 			factoryType.setSelectedIndex(0);
@@ -571,10 +573,9 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		planetFactories.setOpaque(false);
 		panel2.add(planetFactories);
 
-		JPanel panel3 = new JPanel();
+		JPanel panel3 = new JPanel(new SpringLayout());
 		
 		newFactoryName.setToolTipText("Name of your new factory");
-		
 		factoryOwners = new JComboBox();
 		populateHouseNames(factoryOwners);
 		factoryOwners.setPreferredSize(comboBoxSize);
@@ -584,6 +585,11 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		panel3.add(factoryType);
 		panel3.add(factoryOwners);
 		panel3.add(newFactoryName);
+		panel3.add(new JLabel("Build Table",JLabel.TRAILING));
+		panel3.add(newFactoryBuildTable);
+		newFactoryBuildTable.setToolTipText("Factory can use a sub folder of Standard for its build tables");
+		
+		SpringLayoutHelper.setupSpringGrid(panel3,4);
 		
 		JPanel buttonPanel = new JPanel();
 		

@@ -582,7 +582,7 @@ public class ModeratorMenu extends JMenu {
 		JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE,
 				JOptionPane.OK_CANCEL_OPTION);
 		
-		JDialog dlg = jop.createDialog(null, "Select a factory.");
+		JDialog dlg = jop.createDialog(mwclient.getMainFrame(), "Select a factory.");
 		combo.grabFocus();
 		combo.getEditor().selectAll();
 		

@@ -174,13 +174,13 @@ public class RepodCommand implements Command {
 				possible = p.getMyHouse().getPossibleFactoryForProduction(m.getType(), m.getWeightclass(), false);
 				for (SUnitFactory working : possible) {
 					
-					String fileName = BuildTable.getFileName(working.getFounder(), Unit.getWeightClassDesc(m.getWeightclass()), BuildTable.STANDARD, m.getType() );
+					String fileName = BuildTable.getFileName(working.getFounder(), Unit.getWeightClassDesc(m.getWeightclass()), working.getBuildTableFolder(), m.getType() );
 					
 					if (!tables.contains(fileName))
 						tables.add(fileName);
 					
 					if (Boolean.parseBoolean(h.getConfig("UseCommonTableForRepod"))) {
-						fileName = BuildTable.getFileName("Common", Unit.getWeightClassDesc(m.getWeightclass()), BuildTable.STANDARD, m.getType() );
+						fileName = BuildTable.getFileName("Common", Unit.getWeightClassDesc(m.getWeightclass()), working.getBuildTableFolder(), m.getType() );
 						if (!tables.contains(fileName))
 							tables.add(fileName);	
 					}

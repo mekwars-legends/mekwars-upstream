@@ -833,7 +833,7 @@ public class AdminMenu extends JMenu {
 	        combo.setEditable(true);
 	        JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
 
-	        JDialog dlg = jop.createDialog(null, "Select factory to destroy.");
+	        JDialog dlg = jop.createDialog(mwclient.getMainFrame(), "Select factory to destroy.");
 	        combo.grabFocus();
 	        combo.getEditor().selectAll();
 
@@ -871,7 +871,7 @@ public class AdminMenu extends JMenu {
 	        combo.setEditable(false);
 	        JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
 
-	        JDialog dlg = jop.createDialog(null, "Select a Terrain Type.");
+	        JDialog dlg = jop.createDialog(mwclient.getMainFrame(), "Select a Terrain Type.");
 	        combo.grabFocus();
 	        combo.getEditor().selectAll();
 
@@ -1117,7 +1117,7 @@ public class AdminMenu extends JMenu {
             techCombo.setEditable(false);
 
             JOptionPane jop = new JOptionPane(techCombo, JOptionPane.QUESTION_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
-            JDialog dlg = jop.createDialog(null, "Select Tech Level");
+            JDialog dlg = jop.createDialog(mwclient.getMainFrame(), "Select Tech Level");
             techCombo.grabFocus();
             techCombo.getEditor().selectAll();
 
@@ -1354,7 +1354,7 @@ public class AdminMenu extends JMenu {
 	        JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE,
 	                JOptionPane.OK_CANCEL_OPTION);
 
-	        JDialog dlg = jop.createDialog(null,
+	        JDialog dlg = jop.createDialog(mwclient.getMainFrame(),
 	                "Select factory to toggle the lock on.");
 	        combo.grabFocus();
 	        combo.getEditor().selectAll();

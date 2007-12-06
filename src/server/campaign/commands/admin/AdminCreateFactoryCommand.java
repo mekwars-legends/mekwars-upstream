@@ -39,7 +39,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminCreateFactoryCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "planet name#factory name#size#faction#type";
+	String syntax = "planet name#factory name#size#faction#type#subfolder";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}
@@ -57,12 +57,15 @@ public class AdminCreateFactoryCommand implements Command {
 		String name = command.nextToken();
 		String size = command.nextToken();
 		String faction = command.nextToken();
+		String buildTableFolder = "0";
 		if(CampaignMain.cm.isUsingMySQL()) {
 			fid = CampaignMain.cm.MySQL.getFactoryIdByNameAndPlanet(name, planet.getName());			
 		}
 		int type = Integer.parseInt(command.nextToken());
 		
-		SUnitFactory fac = new SUnitFactory(name,planet,size,faction,0,100,type);
+		if ( command.hasMoreElements() )
+			buildTableFolder = command.nextToken();
+		SUnitFactory fac = new SUnitFactory(name,planet,size,faction,0,100,type,buildTableFolder);
 		fac.setID(fid);
         Vector<UnitFactory> uf = planet.getUnitFactories();
 		uf.add(fac);

@@ -2734,7 +2734,7 @@ public class CMainFrame extends JFrame {
         opCombo.setEditable(false);
 
         JOptionPane jop = new JOptionPane(opCombo, JOptionPane.QUESTION_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
-        JDialog dlg = jop.createDialog(null, "Select Op.");
+        JDialog dlg = jop.createDialog(this, "Select Op.");
         opCombo.grabFocus();
         opCombo.getEditor().selectAll();
 
@@ -2754,7 +2754,7 @@ public class CMainFrame extends JFrame {
         opCombo.setEditable(false);
 
         JOptionPane jop = new JOptionPane(opCombo, JOptionPane.QUESTION_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
-        JDialog dlg = jop.createDialog(null, "Select Op.");
+        JDialog dlg = jop.createDialog(this, "Select Op.");
         opCombo.grabFocus();
         opCombo.getEditor().selectAll();
 

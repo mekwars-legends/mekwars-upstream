@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.11.x 
++ RFE: Sub Folders for Factories. You can not add a sub folder to the Standard
+  Folder for each factory and that factroy can have its own set of build tables
 + Added Titles to the new splash screens
 + Rewrote portions of SArmy.matches(). Less int/double casting. Use smaller
   army's BV to determine BV difference percentages for Op eligibility.

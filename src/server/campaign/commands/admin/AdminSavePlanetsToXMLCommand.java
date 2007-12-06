@@ -23,6 +23,7 @@ import java.util.StringTokenizer;
 
 import server.MWServ;
 import server.campaign.commands.Command;
+import server.campaign.BuildTable;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
@@ -83,7 +84,7 @@ public class AdminSavePlanetsToXMLCommand implements Command {
 					p.println("			<FACTORYNAME>"+factory.getName()+"</FACTORYNAME>");
 					p.println("			<SIZE>"+factory.getSize()+"</SIZE>");
 					p.println("			<FOUNDER>"+factory.getFounder()+"</FOUNDER>");
-					
+					p.println("			<BUILDTABLEFOLDER>"+factory.getBuildTableFolder().substring(BuildTable.STANDARD.length())+"</BUILDTABLEFOLDER>");		
 					if ( factory.canProduce(Unit.MEK))
 						p.println("			<TYPE>Mek</TYPE>");
 					if ( factory.canProduce(Unit.INFANTRY))
@@ -93,7 +94,7 @@ public class AdminSavePlanetsToXMLCommand implements Command {
                     if ( factory.canProduce(Unit.PROTOMEK))
                         p.println("         <TYPE>PROTOMEK</TYPE>");
                     if ( factory.canProduce(Unit.BATTLEARMOR))
-                        p.println("         <TYPE>BATTLEARMOR</TYPE>");
+                        p.println("         <TYPE>BATTLEARMOR</TYPE>");                   
 					p.println("		</UNITFACTORY>");	
 				}
 				

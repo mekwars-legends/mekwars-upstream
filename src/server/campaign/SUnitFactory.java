@@ -24,6 +24,7 @@
 
 package server.campaign;
 
+import java.io.File;
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -45,13 +46,14 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 	
 	//VARIABLES
 	private SPlanet planet;
+	private String buildTableFolder = "";
 	
 	//CONSTRUCTORS
 	public SUnitFactory() {
 		//empty
 	}
 	
-	public SUnitFactory(String Name,SPlanet P, String Size,String Faction, int ticksuntilrefresh, int refreshSpeed, int type) {
+	public SUnitFactory(String Name,SPlanet P, String Size,String Faction, int ticksuntilrefresh, int refreshSpeed, int type, String buildTableFolder) {
 		setName(Name);
 		setPlanet(P);
 		setSize(Size);
@@ -59,6 +61,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		setTicksUntilRefresh(ticksuntilrefresh);
 		setRefreshSpeed(refreshSpeed);
 		setType(type);
+		setBuildTableFolder(buildTableFolder);
 	}
 	
 	//STRING SAVE METHODS
@@ -79,13 +82,12 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		result.append(getTicksUntilRefresh());
 		result.append("*");
 		result.append(getRefreshSpeed());
+		result.append("*");
 		
-		/*
-		 * Old TimeZome Data. At some point in the future we
-		 * can reclaim these slots. Fill with nonesense now.
-		 * @urgru 8/26/06
-		 */
-		result.append("*0");
+		if ( buildTableFolder.trim().length() < 1)
+			result.append(" ");
+		else
+			result.append(buildTableFolder);
         
 		result.append("*");
 		result.append(getType());
@@ -195,19 +197,8 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		setTicksUntilRefresh(Integer.parseInt(ST.nextToken()));
 		setRefreshSpeed(Integer.parseInt(ST.nextToken()));
 		
-		/*
-		 * Load timezones. This can eventually be removed as eras are
-		 * no longer supported. For now, read in all appropriate tokens
-		 * to ensure that old data works correctly.
-		 */
-		int TimeZonesCounter = 0;
-		if (ST.hasMoreElements())//eat the timezone count
-			TimeZonesCounter = Integer.parseInt((String)ST.nextElement());
-		for (int count = 0; count < TimeZonesCounter;count++) {
-			ST.nextToken();
-			ST.nextToken();
-			//functional portions commented out. still eat tokens. @urgru, 8/22/06
-		}
+		if (ST.hasMoreElements())
+			setBuildTableFolder(ST.nextToken());
 		
 		if (ST.hasMoreElements())
 			setType(Integer.parseInt(ST.nextToken()));
@@ -276,8 +267,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		if (CampaignMain.cm.getBooleanConfig("UseOnlyOneVehicleSize") && type_id == Unit.VEHICLE)
 			unitSize = Unit.getWeightClassDesc(CampaignMain.cm.getRandomNumber(4));
 		
-		Filename = BuildTable.getUnitFilename(this.getFounder(),unitSize,type_id,BuildTable.STANDARD);
-		
+		Filename = BuildTable.getUnitFilename(this.getFounder(),unitSize,type_id,getBuildTableFolder());
 		//log the creation
 		String buildtableName = this.getFounder() + "_" + this.getSize();
 		if (type_id != Unit.MEK)
@@ -396,10 +386,24 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		if (CampaignMain.cm.getBooleanConfig("UseOnlyOneVehicleSize") && type_id == Unit.VEHICLE)
 			unitSize = Unit.getWeightClassDesc(CampaignMain.cm.getRandomNumber(4));
 		
-		Filename = BuildTable.getUnitFilename(this.getFounder(),unitSize,type_id,BuildTable.STANDARD);
+		Filename = BuildTable.getUnitFilename(this.getFounder(),unitSize,type_id,getBuildTableFolder());
 		
 		return Filename;
 	}
 
+	public void setBuildTableFolder(String folder){
+		
+		if ( folder.equals("0") )
+			return;
+		
+		buildTableFolder = folder;
+	}
 
+	public String getBuildTableFolder(){
+		
+		if ( buildTableFolder.trim().length() < 1)
+			return BuildTable.STANDARD;
+			
+		return BuildTable.STANDARD+File.separatorChar+buildTableFolder.trim();
+	}
 }
