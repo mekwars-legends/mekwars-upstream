@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.11.x 
++ Rewrote portions of SArmy.matches(). Less int/double casting. Use smaller
+  army's BV to determine BV difference percentages for Op eligibility.
 + Bug: Issue with Factions Status output when in subfactions
 + Bug: CreateArmyFromMul creating all Light Units
 + Bug: Promote/DemotePlayer command sending demoted/promoted players data to 

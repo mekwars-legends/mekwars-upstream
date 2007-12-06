@@ -318,47 +318,41 @@ public class SArmy extends Army {
 	 * unit limits and have a generic BV match.
 	 */
 	public boolean matches(SArmy enemy, Operation o){
-		int cap =o.getIntValue("MaxBVDifference");
+		int flatCap = o.getIntValue("MaxBVDifference");
 		double percentCap = o.getDoubleValue("MaxBVPercent");
 		
 		//catch a 0 BV, just in case getBV(false) calls lead here
 		if (enemy.getBV() == 0)
 			return false;
 		
-		//percentage caps arent being used, only check the strainght cap from the params
-		if (percentCap == 0){
-			
-			int enemyBV = enemy.getOperationsBV(this);
-			int myBV = this.getOperationsBV(enemy);
-			
-			if (Math.abs( enemyBV - myBV) > cap)
+		//determine BV difference between the two armies
+		int enemyOpBV = enemy.getOperationsBV(this);
+		int myOpBV = this.getOperationsBV(enemy);
+		int bvDiff = Math.abs(enemyOpBV - myOpBV);
+		
+		//percentage caps arent being used, only check the straight cap from the params
+		if (percentCap == 0) {
+			if (bvDiff > flatCap)
 				return false;
 		}
 		
 		//percentage caps are being used. see which is larger
-		//(percent or straight) and check as appropriate,
-		else{
-			//int bvdif = Math.abs(enemy.getOperationsBV(this) - this.getOperationsBV(enemy));
-			double percent = 0;
-			double enemyOpBV = enemy.getOperationsBV(this);
-			double myOpBV = this.getOperationsBV(enemy);
+		//(percent or straight) and check as appropriate.
+		else {
 			
-			if ( enemyOpBV > myOpBV){
-				percent = myOpBV/enemyOpBV;
-				percent *= 100;
-			}
-			else {
-				percent = enemyOpBV/myOpBV;
-				percent *= 100;
-			}
-			percent = 100 - (int)percent;
+			double percentDiff = 0;
 			
-			if ( (int)((enemyOpBV*percent)/100) > cap || (int)((myOpBV*percent)/100) > cap) {
-				if ( percent > percentCap)
+			//use smaller army to determine percentage; gives narrowest legal range possible
+			if (enemyOpBV < myOpBV)
+				percentDiff = bvDiff/enemyOpBV * 100;
+			else
+				percentDiff = bvDiff/myOpBV * 100;
+			
+			if (percentCap * Math.min(enemyOpBV, myOpBV) < flatCap) {
+				if (bvDiff > flatCap)
 					return false;
-			}
-			else{
-				if (Math.abs(enemyOpBV - myOpBV) > cap)
+			} else {//percent cap is greater than flat
+				if (percentDiff > percentCap)
 					return false;
 			}
 		}
