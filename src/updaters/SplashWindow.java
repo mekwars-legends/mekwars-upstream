@@ -55,6 +55,7 @@ public class SplashWindow {
 		
 		splashWindow = new JFrame();
         splashWindow.setUndecorated(true);
+        splashWindow.setTitle("MekWars Client Update");
 		
 		//load and scale the splash image
 		ImageIcon splashImage = null;

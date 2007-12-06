@@ -70,6 +70,7 @@ public class SplashWindow {
 		
 		//format the label
 		imageLabel = new JLabel("<HTML><CENTER>MekWars Client " + MWClient.CLIENT_VERSION + "</CENTER></HTML>",splashImage, SwingConstants.CENTER);
+		splashWindow.setTitle("MekWars Client " + MWClient.CLIENT_VERSION);
 		imageLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
 		imageLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 		imageLabel.setVerticalTextPosition(SwingConstants.BOTTOM);

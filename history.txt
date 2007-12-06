@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.11.x 
++ Added Titles to the new splash screens
 + Rewrote portions of SArmy.matches(). Less int/double casting. Use smaller
   army's BV to determine BV difference percentages for Op eligibility.
 + Bug: Issue with Factions Status output when in subfactions
