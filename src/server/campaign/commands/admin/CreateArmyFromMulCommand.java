@@ -148,7 +148,7 @@ public class CreateArmyFromMulCommand implements Command {
                 
             }
             else {
-            	System.err.println("Entry: "+ms.getEntryName()+" source: "+ms.getSourceFile().getName());
+            	//System.err.println("Entry: "+ms.getEntryName()+" source: "+ms.getSourceFile().getName());
             	cm.setUnitFilename(ms.getEntryName());
             }
             

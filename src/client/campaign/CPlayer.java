@@ -17,6 +17,9 @@
 
 package client.campaign;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
@@ -24,7 +27,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
+import megamek.common.Entity;
+import megamek.common.EntityListFile;
 import megamek.common.IOffBoardDirections;
+import megamek.common.MechSummary;
+import megamek.common.MechSummaryCache;
 
 import client.MWClient;
 import client.util.CUnitComparator;
@@ -33,6 +40,8 @@ import common.House;
 import common.Player;
 import common.SubFaction;
 import common.Unit;
+import common.campaign.pilot.Pilot;
+import common.campaign.pilot.skills.PilotSkill;
 import common.util.UnitComponents;
 import common.util.UnitUtils;
 
@@ -553,6 +562,79 @@ public class CPlayer extends Player {
 		}// end while(tokens)
 	}// end setAutoArmy()
 	
+	public void setMULCreatedArmy(StringTokenizer st) {
+		
+		Vector<Entity> loadedUnits = null;
+		File entityFile = new File("data/armies");
+		
+		if ( !entityFile.exists() )
+			entityFile.mkdir();
+		
+		entityFile = new File("data/armies/MulArmy.mul");
+		
+		try {
+			FileOutputStream fis = new FileOutputStream(entityFile);
+			PrintStream ps = new PrintStream(fis);
+			
+			while ( st.hasMoreElements() )
+				ps.println(st.nextToken());
+			
+			ps.close();
+			fis.close();
+		}
+		catch(Exception ex) {
+			MWClient.mwClientLog.clientErrLog(ex);
+			return;
+		}
+		
+		try {
+			loadedUnits = EntityListFile.loadFrom(entityFile);
+			loadedUnits.trimToSize();
+		} catch (Exception ex) {
+			MWClient.mwClientLog.clientErrLog(ex);
+			return;
+		}
+
+		for (Entity en : loadedUnits) {
+
+			CUnit cm = new CUnit();
+			cm.UnitEntity = en;
+			MechSummary ms = MechSummaryCache.getInstance().getMech(en.getShortNameRaw());
+            if ( ms == null ) {
+                MechSummary[] units = MechSummaryCache.getInstance().getAllMechs();
+                //System.err.println("unit: "+en.getShortNameRaw());
+                for ( MechSummary unit :  units) {
+                  //  System.err.println("Source file: "+unit.getSourceFile().getName());
+                   // System.err.println("Model: "+unit.getModel());
+                    //System.err.println("Chassis: "+unit.getChassis());
+                    if ( unit.getModel().trim().equalsIgnoreCase(en.getModel().trim())
+                    		&& unit.getChassis().trim().equalsIgnoreCase(en.getChassis().trim() )
+                    		) {
+            			cm.setUnitFilename(unit.getEntryName());
+                        break;
+                    }
+                }
+                
+            }
+            else {
+            	//System.err.println("Entry: "+ms.getEntryName()+" source: "+ms.getSourceFile().getName());
+            	cm.setUnitFilename(ms.getEntryName());
+            }
+            
+			Pilot pilot = null;
+			String name = en.getCrew().getName();
+			if (pilot.getName().equalsIgnoreCase("Unnamed")
+					|| pilot.getName().equalsIgnoreCase("vacant")) {
+				name = "AutoMul Pilot";
+			}
+			pilot = new Pilot(name, en.getCrew().getGunnery(), en.getCrew().getPiloting());
+
+
+			cm.setPilot(pilot);
+
+			AutoArmy.add(cm);
+		}
+	}
 	/**
 	 * Method which returns the autoArmy arraylist.
 	 */

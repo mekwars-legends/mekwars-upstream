@@ -480,10 +480,13 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
                         entity.setOwner(bot.getLocalPlayer());
                     else
                         entity.setOwner(client.getLocalPlayer());
-					//set the pilot
-					Pilot pilot = new Pilot("AutoArtillery", 4, 5);
-					entity.setCrew(pilot);
-					
+                    
+        			if (entity.getCrew().getName().equalsIgnoreCase("Unnamed")
+        					|| entity.getCrew().getName().equalsIgnoreCase("vacant")) {
+						//set the pilot
+						Pilot pilot = new Pilot("AutoArtillery", 4, 5);
+						entity.setCrew(pilot);
+        			}					
                     MWClient.mwClientLog.clientErrLog(entity.getModel()+" direction "+entity.getOffBoardDirection());
 					//add the unit to the game.
                     if ( bot != null )

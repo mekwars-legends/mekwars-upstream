@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.11.x 
++ Started adding code for auto armies created with MUL's
 + RFE: Sub Folders for Factories. You can not add a sub folder to the Standard
   Folder for each factory and that factroy can have its own set of build tables
 + Added Titles to the new splash screens
