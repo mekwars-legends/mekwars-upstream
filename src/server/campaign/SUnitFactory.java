@@ -124,7 +124,8 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		sql.append("FactoryRefreshSpeed = ?, ");
 		sql.append("FactoryType = ?, ");
 		sql.append("FactoryPlanet = ?, ");
-		sql.append("FactoryisLocked = ?");
+		sql.append("FactoryisLocked = ?, ");
+		sql.append("FactoryBuildTableFolder = ?");
 
 		ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 		ps.setString(1, getName());
@@ -135,6 +136,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		ps.setInt(6, getType());
 		ps.setString(7, planet.getName());
 		ps.setString(8, Boolean.toString(isLocked()));
+		ps.setString(9, buildTableFolder);
 
 		ps.executeUpdate();
 		rs = ps.getGeneratedKeys();
@@ -157,7 +159,8 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 	      sql.append("FactoryTicks = ?, ");
 	      sql.append("FactoryRefreshSpeed = ?, ");
 	      sql.append("FactoryType = ?, ");
-	      sql.append("FactoryisLocked = ? ");
+	      sql.append("FactoryisLocked = ?, ");
+	      sql.append("FactoryBuildTableFolder = ? ");
 		  sql.append("WHERE FactoryID = ?");
 
 		  ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
@@ -169,7 +172,8 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		  ps.setInt(6, getRefreshSpeed());
 		  ps.setInt(7, getType());
 		  ps.setString(8, Boolean.toString(isLocked()));
-		  ps.setInt(9, getID());
+		  ps.setString(9, buildTableFolder);
+		  ps.setInt(10, getID());
 		  
 	      ps.executeUpdate();
 	      }

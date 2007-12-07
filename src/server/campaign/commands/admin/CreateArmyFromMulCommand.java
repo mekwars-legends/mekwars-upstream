@@ -75,7 +75,7 @@ public class CreateArmyFromMulCommand implements Command {
 				p = CampaignMain.cm.getPlayer(command.nextToken());
 		} catch (Exception ex) {
 			CampaignMain.cm.toUser(
-					"Synatx Error: /createarmyfrommul " + syntax, Username);
+					"Syntax Error: /createarmyfrommul " + syntax, Username);
 			return;
 		}
 

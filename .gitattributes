@@ -999,6 +999,7 @@ server-dist/data/buildtables/standard/Steiner_MediumVehicle.txt -text
 server-dist/data/buildtables/standard/Welfare.txt -text
 server-dist/data/countrynames.txt -text
 server-dist/data/db_schemas/db_schema_0to1.txt -text
+server-dist/data/db_schemas/db_schema_10to11.txt -text
 server-dist/data/db_schemas/db_schema_1to2.txt -text
 server-dist/data/db_schemas/db_schema_2to3.txt -text
 server-dist/data/db_schemas/db_schema_3to4.txt -text

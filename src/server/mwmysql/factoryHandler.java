@@ -35,6 +35,7 @@ public class factoryHandler {
       factory.setRefreshSpeed(rs.getInt("FactoryRefreshSpeed"));
       factory.setID(rs.getInt("FactoryID"));
       factory.setType(rs.getInt("FactoryType"));
+      factory.setBuildTableFolder(rs.getString("FactoryBuildTableFolder"));
       factory.setLock(Boolean.parseBoolean(rs.getString("FactoryisLocked")));
       factory.setPlanet(planet);
       planet.getUnitFactories().add(factory); 
