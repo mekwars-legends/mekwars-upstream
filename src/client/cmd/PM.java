@@ -114,7 +114,7 @@ public class PM extends Command {
 				//if the user wants to, remove any img tags
 				if (mwclient.getConfig().isParam("NOIMGINCHAT")) {
 					
-					int start = message.indexOf("<img");
+					int start = message.toLowerCase().indexOf("<img");
 					int finish = -1;
 				
 					if (start != -1)

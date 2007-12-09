@@ -318,7 +318,7 @@ public class CUser implements Comparable {
 				if (removeImages) {
 
 					info.append("<br>");
-					int start = Fluff.indexOf("<img");
+					int start = Fluff.toLowerCase().indexOf("<img");
 					int finish = -1;
 
 					if (start != -1)
@@ -326,8 +326,7 @@ public class CUser implements Comparable {
 
 					if (start != -1 && finish != -1) {
 						String firstHalf = Fluff.substring(0, start);
-						String secondHalf = Fluff.substring(finish + 1, Fluff
-								.length());
+						String secondHalf = Fluff.substring(finish + 1, Fluff.length());
 
 						info.append(firstHalf);
 						info.append("(img blocked)");
