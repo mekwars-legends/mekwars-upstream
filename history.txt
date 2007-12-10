@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.11.x 
++ Updated database to v12
 + Bug: Image blocking used a case sensitive search.
 + Factory subfolders saving/loading from database
 + Updated database to v11
