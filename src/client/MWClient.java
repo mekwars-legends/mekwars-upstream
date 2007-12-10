@@ -1166,7 +1166,7 @@ public final class MWClient implements IClient {
                     
                     mwClientLog.clientOutputLog("GetUpdateUrl command received from " + name);
                     String updateURL = getConfigParam("UPDATEURL");
-                    sendChat(PROTOCOL_PREFIX + "c mm# " + name + " used the set used the getUpdateURL command on "+myUsername);
+                    sendChat(PROTOCOL_PREFIX + "c mm# " + name + " used the getUpdateURL command on "+myUsername);
                     sendChat(PROTOCOL_PREFIX + "mail " + name + ", My update URL is "+updateURL+"." );
                     return;
                     

@@ -390,8 +390,8 @@ public class DefaultOperation {
          * MaxAttackerGunEmplacementBV   [assigning gun emplacement. Ceiling for modifiers.
          * 
          * [NOTES (Gun Emplacement): These variables are simpler than they may seem. First,
-         *  the true/false Receives variales are used to allow one party to have arty
-         *  while denying it to annother.
+         *  the true/false Receives variales are used to allow one party to have guns
+         *  while denying it to another.
          * 
          *  % and flat modifiers can be used simultaneously. The % modifier is applied
          *  to the player's combined BV first, then the flat modifier is added. Finally,
@@ -415,6 +415,20 @@ public class DefaultOperation {
          * AttackerBVPerVibra   [and the total of both armies bv is 10k you get 100 mines
          * DefenderTonPerVibra  [Set the Ton amount for 1 vibra mine i.e set to 100
          * AttackerTonPerVibra  [and the total of both armies ton is 500 you get 5 mines
+         * 
+         * [MUL Armies]
+         * DefenderReceivesMULArmy      [Allow attacker or defender to recieve a fulll army
+         * AttackerReceivesMULArmy
+         * 
+         * MinDefenderMulArmies			[Min number of MUL armies a Defender can receive
+         * MaxDefenderMulArmies			[Max number of MUL armies a Defender can receive
+         * DefenderMulArmyList			[List of the MUL files to choose from separated by ;
+         * 								[These files exist in the servers data\armies folder
+         * 
+         * MinAttackerMulArmies			[Min number of MUL armies a Defender can receive
+         * MaxAttackerMulArmies			[Max number of MUL armies a Defender can receive
+         * AttackerMulArmyList			[List of the MUL files to choose from separated by ;
+         * 								[These files exist in the servers data\armies folder
          * 
 		 * [Scenario props. finished]
 		 * 
@@ -961,6 +975,18 @@ public class DefaultOperation {
         operationsDefaults.put("DefenderTonPerVibra","0");
         operationsDefaults.put("AttackerTonPerVibra","0");
         
+        //MUL Armies
+        operationsDefaults.put("DefenderReceivesMULArmy", "false");
+        operationsDefaults.put("AttackerReceivesMULArmy", "false");
+        
+        operationsDefaults.put("MinDefenderMulArmies", "0");
+        operationsDefaults.put("MaxDefenderMulArmies","0");
+        operationsDefaults.put("DefenderMulArmyList","0");
+
+        operationsDefaults.put("MinAttackerMulArmies","0");
+        operationsDefaults.put("MaxAttackerMulArmies","0");
+        operationsDefaults.put("AttackerMulArmyList","0");
+
         //player outcome values [salvage, pay]
 		operationsDefaults.put("BaseAttackerPayCBills","0");
 		operationsDefaults.put("BaseDefenderPayCBills","0");

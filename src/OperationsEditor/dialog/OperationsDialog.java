@@ -1234,6 +1234,9 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         JPanel scenarioBox4 = new JPanel();
         scenarioBox4.setLayout(new BoxLayout(scenarioBox4, BoxLayout.X_AXIS));
 
+        JPanel scenarioBox5 = new JPanel();
+        scenarioBox5.setLayout(new BoxLayout(scenarioBox5, BoxLayout.X_AXIS));
+
         attackerBox = new JPanel();
 		attackerBox.setLayout(new BoxLayout(attackerBox, BoxLayout.Y_AXIS));
 		defenderBox = new JPanel();
@@ -1281,6 +1284,21 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         defenderMinePanel.setMaximumSize(boxSize);
         defenderMinePanel.setMinimumSize(boxSize);
         
+        JPanel attackerMULBox = new JPanel();
+        attackerMULBox.setLayout(new BoxLayout(attackerMULBox, BoxLayout.Y_AXIS));
+
+        JPanel defenderMULBox = new JPanel();
+        defenderMULBox.setLayout(new BoxLayout(defenderMULBox, BoxLayout.Y_AXIS));
+        
+        JPanel attackerMULPanel = new JPanel(new SpringLayout());
+        JPanel defenderMULPanel = new JPanel(new SpringLayout());
+        attackerMULPanel.setPreferredSize(boxSize);
+        attackerMULPanel.setMaximumSize(boxSize);
+        attackerMULPanel.setMinimumSize(boxSize);
+        defenderMULPanel.setPreferredSize(boxSize);
+        defenderMULPanel.setMaximumSize(boxSize);
+        defenderMULPanel.setMinimumSize(boxSize);
+
         BaseTextField = new JTextField(5);
         attackerPanel.add(new JLabel("Flat Artillery:",SwingConstants.TRAILING));
         BaseTextField.setToolTipText("Amount of BV to shift attacker");
@@ -1534,9 +1552,83 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         
         scenarioBox4.add(BotsBox);
         
-        masterBox.add(scenarioBox);
-        masterBox.add(scenarioBox2);
-        masterBox.add(scenarioBox3);
+        
+        BaseTextField = new JTextField(5);
+        defenderMULPanel.add(new JLabel("Min Armies:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Min number of MUL armies a Defender can receive</html>");
+        BaseTextField.setName("MinDefenderMulArmies");
+        defenderMULPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        defenderMULPanel.add(new JLabel("Max Armies:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Max number of MUL armies a Defender can receive</html>");
+        BaseTextField.setName("MaxDefenderMulArmies");
+        defenderMULPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        defenderMULPanel.add(new JLabel("Mul Army List:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>List of the MUL files to choose from separated by ; <br>These files exist in the servers data\\armies folder</html>");
+        BaseTextField.setName("DefenderMulArmyList");
+        defenderMULPanel.add(BaseTextField);
+        
+        SpringLayoutHelper.setupSpringGrid(defenderMULPanel,2);
+        
+        BaseTextField = new JTextField(5);
+        attackerMULPanel.add(new JLabel("Min Armies:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Min number of MUL armies a Attacker can receive</html>");
+        BaseTextField.setName("MinAttackerMulArmies");
+        attackerMULPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        attackerMULPanel.add(new JLabel("Max Armies:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Max number of MUL armies a Attacker can receive</html>");
+        BaseTextField.setName("MaxAttackerMulArmies");
+        attackerMULPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        attackerMULPanel.add(new JLabel("Mul Army List:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>List of the MUL files to choose from separated by ; <br>These files exist in the servers data\\armies folder</html>");
+        BaseTextField.setName("AttackerMulArmyList");
+        attackerMULPanel.add(BaseTextField);
+        
+        SpringLayoutHelper.setupSpringGrid(attackerMULPanel,2);
+        
+        attackerMULBox.add(new JLabel("Attacker"));
+
+        BaseCheckBox = new JCheckBox("MUL Armies");
+        BaseCheckBox.setToolTipText("<html>If true, attacking players will receive Mul Armies.</html>");
+        BaseCheckBox.setName("AttackerReceivesMULArmy");
+        attackerMULBox.add(BaseCheckBox);
+        attackerMULBox.add(attackerMULPanel);
+        
+        attackerMULBox.setBorder(BorderFactory.createLineBorder(Color.black));
+        
+        defenderMULBox.add(new JLabel("Defender"));
+
+        BaseCheckBox = new JCheckBox("MUL Armies");
+        BaseCheckBox.setToolTipText("<html>If true, defending players will receive Mul Armies.</html>");
+        BaseCheckBox.setName("DefenderReceivesMULArmy");
+        defenderMULBox.add(BaseCheckBox);
+        defenderMULBox.add(defenderMULPanel);
+        
+        defenderMULBox.setBorder(BorderFactory.createLineBorder(Color.black));
+
+        scenarioBox5.add(attackerMULBox);
+        scenarioBox5.add(defenderMULBox);
+
+        JPanel groupBox1 = new JPanel();
+        groupBox1.setLayout(new BoxLayout(groupBox1, BoxLayout.X_AXIS));
+        
+        JPanel groupBox2 = new JPanel();
+        groupBox2.setLayout(new BoxLayout(groupBox2, BoxLayout.X_AXIS));
+
+        groupBox1.add(scenarioBox);
+        groupBox1.add(scenarioBox2);
+        groupBox2.add(scenarioBox3);
+        groupBox2.add(scenarioBox5);
+        
+        masterBox.add(groupBox1);
+        masterBox.add(groupBox2);
         masterBox.add(scenarioBox4);
 
         scenarioPanel.add(masterBox);
