@@ -25,9 +25,11 @@ import megamek.common.Engine;
 import megamek.common.Entity;
 import megamek.common.EquipmentType;
 import megamek.common.IArmorState;
+import megamek.common.Infantry;
 import megamek.common.Mech;
 import megamek.common.MiscType;
 import megamek.common.Mounted;
+import megamek.common.Protomech;
 import megamek.common.Tank;
 import megamek.common.TechConstants;
 
@@ -602,6 +604,9 @@ public class UnitUtils  {
     		applyTankBattleDamage(unit,report,isRepairing);
     		return;
     	}
+    	
+    	if ( unit instanceof Protomech || unit instanceof Infantry )
+    		return;
     	
         //System.err.println(System.currentTimeMillis()+" Unit "+unit.getModel()+" applyBattleDamage: "+report);
         StringTokenizer entry = new StringTokenizer(report,"-");

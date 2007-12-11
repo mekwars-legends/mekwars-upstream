@@ -78,6 +78,11 @@ public class RepairUnitCommand implements Command {
             int tabLocation = location;
             int cost = CampaignMain.cm.getRepairCost(entity,location,slot,techType,armor,techWorkMod);
             
+            if ( unit.getType() == SUnit.INFANTRY ){
+                CampaignMain.cm.toUser("FSM|Infantry cannot be repaired.",Username,false);
+                return;
+            }
+
             if ( CampaignMain.cm.getRTT().isBeingRepaired(unitID,location,slot,armor) ){
                 CampaignMain.cm.toUser("FSM|That section is already being repaired wait for the work to finish before starting again.",Username,false);
                 return;

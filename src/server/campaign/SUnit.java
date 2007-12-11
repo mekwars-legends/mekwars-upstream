@@ -51,6 +51,7 @@ import megamek.common.MechFileParser;
 import megamek.common.MiscType;
 import megamek.common.Mounted;
 import megamek.common.Pilot;
+import megamek.common.Tank;
 import megamek.common.WeaponType;
 
 /**
@@ -778,7 +779,7 @@ public final class SUnit extends Unit implements Serializable {
 			if (ST.hasMoreElements())
 				this.setScrappableFor(new Integer(ST.nextToken()));
 			if ( ST.hasMoreTokens() ){
-				if ( CampaignMain.cm.isUsingAdvanceRepair() )
+				if ( CampaignMain.cm.isUsingAdvanceRepair() && (unitEntity instanceof Mech || unitEntity instanceof Tank) )
 					UnitUtils.applyBattleDamage(unitEntity,ST.nextToken(),(CampaignMain.cm.getRTT() != null && CampaignMain.cm.getRTT().unitRepairTimes(this.getId()) != null) );
 				else
 					ST.nextToken();
@@ -836,7 +837,7 @@ public final class SUnit extends Unit implements Serializable {
 			
 			unitEntity.setSpotlightState(Boolean.parseBoolean(rs.getString("uIsUsingSpotlight")));
 			
-			if(CampaignMain.cm.isUsingAdvanceRepair())
+			if(CampaignMain.cm.isUsingAdvanceRepair() && (unitEntity instanceof Mech || unitEntity instanceof Tank) )
 				UnitUtils.applyBattleDamage(unitEntity, rs.getString("uBattleDamage"), (CampaignMain.cm.getRTT() != null & CampaignMain.cm.getRTT().unitRepairTimes(getId())!=null));
 			
 			if (CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("allow_level_3_targsys")) {
