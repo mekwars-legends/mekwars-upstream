@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.11.x 
++ Added synchronized blocks to repairThread.
 + Added GUI for new Operations variables to Ops Editor.
 + Added Operations Variables DefenderReceivesMULArmy,  AttackerReceivesMULArmy, 
 	MinDefenderMulArmies,  MaxDefenderMulArmies,  DefenderMulArmyList,  

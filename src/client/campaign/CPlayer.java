@@ -41,7 +41,6 @@ import common.Player;
 import common.SubFaction;
 import common.Unit;
 import common.campaign.pilot.Pilot;
-import common.campaign.pilot.skills.PilotSkill;
 import common.util.UnitComponents;
 import common.util.UnitUtils;
 

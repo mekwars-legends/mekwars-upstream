@@ -77,28 +77,30 @@ public class RepairTrackingThread extends Thread{
         
         try{
             Vector<Repair> tempVector = new Vector<Repair>(repairList);
-            for ( Repair repairOrder: tempVector ){
-                //MWServ.mwlog.errLog("Start Time: "+ new Date(repairOrder.getStartTime()).toString()+" End Time: "+new Date(repairOrder.getEndTime()).toString());
-                //double minutes = (repairOrder.getEndTime()-System.currentTimeMillis())/60000;
-                //MWServ.mwlog.errLog("ETA: "+Double.toString(minutes));
-            	if ( repairOrder == null ){
-            		repairList.removeElement(repairOrder);
-            		return;
-            	}
-                if ( repairOrder.getEndTime() <= System.currentTimeMillis() ){
-                    try{
-                        if ( CampaignMain.cm.getPlayer(repairOrder.getUsername()) == null 
-                        		|| repairOrder.finishRepair() ){
-                            repairList.removeElement(repairOrder);
-                            SPlayer player = CampaignMain.cm.getPlayer(repairOrder.getUsername());
-                            player.checkAndUpdateArmies(player.getUnit(repairOrder.getUnitID()));
-                        }
-                    }
-                    catch(Exception ex){
-                        MWServ.mwlog.errLog("Unable to finish repair for "+repairOrder.getUsername()+" for unit #"+repairOrder.getUnitID()+" "+repairOrder.getUnit().getShortNameRaw());
-                        MWServ.mwlog.errLog(ex);
-                    }
-                }
+            synchronized (tempVector) {
+	            for ( Repair repairOrder: tempVector ){
+	                //MWServ.mwlog.errLog("Start Time: "+ new Date(repairOrder.getStartTime()).toString()+" End Time: "+new Date(repairOrder.getEndTime()).toString());
+	                //double minutes = (repairOrder.getEndTime()-System.currentTimeMillis())/60000;
+	                //MWServ.mwlog.errLog("ETA: "+Double.toString(minutes));
+	            	if ( repairOrder == null ){
+	            		repairList.removeElement(repairOrder);
+	            		return;
+	            	}
+	                if ( repairOrder.getEndTime() <= System.currentTimeMillis() ){
+	                    try{
+	                        if ( CampaignMain.cm.getPlayer(repairOrder.getUsername()) == null 
+	                        		|| repairOrder.finishRepair() ){
+	                            repairList.removeElement(repairOrder);
+	                            SPlayer player = CampaignMain.cm.getPlayer(repairOrder.getUsername());
+	                            player.checkAndUpdateArmies(player.getUnit(repairOrder.getUnitID()));
+	                        }
+	                    }
+	                    catch(Exception ex){
+	                        MWServ.mwlog.errLog("Unable to finish repair for "+repairOrder.getUsername()+" for unit #"+repairOrder.getUnitID()+" "+repairOrder.getUnit().getShortNameRaw());
+	                        MWServ.mwlog.errLog(ex);
+	                    }
+	                }
+	            }
             }
         }
         catch (Exception ex){
@@ -116,99 +118,102 @@ public class RepairTrackingThread extends Thread{
         int HOUR = MIN * 60;
         int DAY = HOUR * 24;
         
-        for ( Repair repairOrder: repairList ){
-            if (repairOrder.getUnitID() == unitID){
-                if ( unitName.length() < 1)
-                    unitName = repairOrder.getUnit().getShortNameRaw();
-                
-                long mills = (repairOrder.getEndTime()-System.currentTimeMillis());///60000;
-                
-                if ( mills < 0 ){
-                	mills += CampaignMain.cm.getDoubleConfig("TimeForEachRepairPoint")*1000;
-                }
-                Calendar time = Calendar.getInstance();
-                time.setTimeInMillis(mills);
-                
-                
-                String output = "";
-                
-                if ( mills >= DAY ){
-                	output += mills/DAY +"d "; 
-                	mills %= DAY;
-                }
-                
-                if ( mills >= HOUR ){
-                	output += mills/HOUR +"h ";
-                	mills %= HOUR;
-                }
-                
-                if ( mills >= MIN ){
-                	output += mills/MIN +"m ";
-                	mills %= MIN;
-                }
-
-                if ( mills >= SEC ){
-                	output += mills/SEC +"s ";
-                	mills %= SEC;
-                }
-                
-             /*   if ( mills > 0 )
-                	output += mills +"ms ";*/
-                
-                output = output.trim();
-                
-                if ( repairOrder.isSimpleRepair()){
-                    results = "#"+unitID+" "+unitName+" is undergoing a complete repair cycle. ETA: "+output+".";
-                    return results;
-                }
-
-                if ( repairOrder.getArmor() ){
-                    boolean rear = false;
-                    int armorLocation = repairOrder.getLocation();
-                    //External armor
-                    if ( repairOrder.getSlot() < UnitUtils.LOC_INTERNAL_ARMOR ){
-                        
-                        switch (armorLocation){
-                        case UnitUtils.LOC_CTR:
-                            armorLocation = UnitUtils.LOC_CT;
-                            rear = true;
-                            break;
-                        case UnitUtils.LOC_LTR:
-                            armorLocation = UnitUtils.LOC_LT;
-                            rear = true;
-                            break;
-                        case UnitUtils.LOC_RTR:
-                            armorLocation = UnitUtils.LOC_RT;
-                            rear = true;
-                            break;
-                        default:
-                            rear = false;
-                            break;
-                        }
-                        
-                        if ( rear )
-                            results += "Repairing external armor "+repairOrder.getUnit().getLocationAbbr(armorLocation)+"(r) ETA: "+output+".";
-                        else
-                            results += "Repairing external armor "+repairOrder.getUnit().getLocationAbbr(armorLocation)+" ETA: "+output+".";
-                    }//Internal armor
-                    else{
-                        results += "Repairing internal structure "+repairOrder.getUnit().getLocationAbbr(armorLocation)+" ETA: "+output+".";
-                    }     
-                }else{
-                    CriticalSlot cs = repairOrder.getUnit().getCritical(repairOrder.getLocation(),repairOrder.getSlot());
-                    
-                    if ( cs.getType() == CriticalSlot.TYPE_EQUIPMENT ){
-                        Mounted mounted = repairOrder.getUnit().getEquipment(cs.getIndex());
-                        results +="Repairing "+mounted.getName()+"("+ repairOrder.getUnit().getLocationAbbr(repairOrder.getLocation())+") ETA: "+output+".";
-                    }// end CS type if
-                    else{
-                        if (repairOrder.getUnit() instanceof Mech) 
-                            results += "Repairing "+((Mech)repairOrder.getUnit()).getSystemName(cs.getIndex())+"("+repairOrder.getUnit().getLocationAbbr(repairOrder.getLocation())+") ETA: "+output+".";
-                    }//end CS type else
-                }
-                results += " <a href=\"MEKWARS/c stoprepairjob#"+unitID+"#"+repairOrder.getLocation()+"#"+repairOrder.getSlot()+"#"+repairOrder.getArmor()+"\">Click here to stop</a><br>";
-            }//end if
-        }//end for
+        synchronized (repairList) {
+	        for ( Repair repairOrder: repairList ){
+	            if (repairOrder.getUnitID() == unitID){
+	                if ( unitName.length() < 1)
+	                    unitName = repairOrder.getUnit().getShortNameRaw();
+	                
+	                long mills = (repairOrder.getEndTime()-System.currentTimeMillis());///60000;
+	                
+	                if ( mills < 0 ){
+	                	mills += CampaignMain.cm.getDoubleConfig("TimeForEachRepairPoint")*1000;
+	                }
+	                Calendar time = Calendar.getInstance();
+	                time.setTimeInMillis(mills);
+	                
+	                
+	                String output = "";
+	                
+	                if ( mills >= DAY ){
+	                	output += mills/DAY +"d "; 
+	                	mills %= DAY;
+	                }
+	                
+	                if ( mills >= HOUR ){
+	                	output += mills/HOUR +"h ";
+	                	mills %= HOUR;
+	                }
+	                
+	                if ( mills >= MIN ){
+	                	output += mills/MIN +"m ";
+	                	mills %= MIN;
+	                }
+	
+	                if ( mills >= SEC ){
+	                	output += mills/SEC +"s ";
+	                	mills %= SEC;
+	                }
+	                
+	             /*   if ( mills > 0 )
+	                	output += mills +"ms ";*/
+	                
+	                output = output.trim();
+	                
+	                if ( repairOrder.isSimpleRepair()){
+	                    results = "#"+unitID+" "+unitName+" is undergoing a complete repair cycle. ETA: "+output+".";
+	                    return results;
+	                }
+	
+	                if ( repairOrder.getArmor() ){
+	                    boolean rear = false;
+	                    int armorLocation = repairOrder.getLocation();
+	                    //External armor
+	                    if ( repairOrder.getSlot() < UnitUtils.LOC_INTERNAL_ARMOR ){
+	                        
+	                        switch (armorLocation){
+	                        case UnitUtils.LOC_CTR:
+	                            armorLocation = UnitUtils.LOC_CT;
+	                            rear = true;
+	                            break;
+	                        case UnitUtils.LOC_LTR:
+	                            armorLocation = UnitUtils.LOC_LT;
+	                            rear = true;
+	                            break;
+	                        case UnitUtils.LOC_RTR:
+	                            armorLocation = UnitUtils.LOC_RT;
+	                            rear = true;
+	                            break;
+	                        default:
+	                            rear = false;
+	                            break;
+	                        }
+	                        
+	                        if ( rear )
+	                            results += "Repairing external armor "+repairOrder.getUnit().getLocationAbbr(armorLocation)+"(r) ETA: "+output+".";
+	                        else
+	                            results += "Repairing external armor "+repairOrder.getUnit().getLocationAbbr(armorLocation)+" ETA: "+output+".";
+	                    }//Internal armor
+	                    else{
+	                        results += "Repairing internal structure "+repairOrder.getUnit().getLocationAbbr(armorLocation)+" ETA: "+output+".";
+	                    }     
+	                }else{
+	                    CriticalSlot cs = repairOrder.getUnit().getCritical(repairOrder.getLocation(),repairOrder.getSlot());
+	                    
+	                    if ( cs.getType() == CriticalSlot.TYPE_EQUIPMENT ){
+	                        Mounted mounted = repairOrder.getUnit().getEquipment(cs.getIndex());
+	                        results +="Repairing "+mounted.getName()+"("+ repairOrder.getUnit().getLocationAbbr(repairOrder.getLocation())+") ETA: "+output+".";
+	                    }// end CS type if
+	                    else{
+	                        if (repairOrder.getUnit() instanceof Mech) 
+	                            results += "Repairing "+((Mech)repairOrder.getUnit()).getSystemName(cs.getIndex())+"("+repairOrder.getUnit().getLocationAbbr(repairOrder.getLocation())+") ETA: "+output+".";
+	                    }//end CS type else
+	                }
+	                results += " <a href=\"MEKWARS/c stoprepairjob#"+unitID+"#"+repairOrder.getLocation()+"#"+repairOrder.getSlot()+"#"+repairOrder.getArmor()+"\">Click here to stop</a><br>";
+	            }//end if
+	        }//end for
+			
+		}
         
         if ( results.length() > 1){
             results = "#"+unitID+" "+unitName+" has the following repair jobs pending:<br>"+results;
@@ -224,10 +229,13 @@ public class RepairTrackingThread extends Thread{
 
     public boolean isBeingRepaired(int unitID, int location, int slot, boolean armor){
         
-        for ( Repair repairOrder: getRepairList() ){
-            if ( repairOrder.matches(unitID,location,slot,armor) )
-               return true;
-        }
+        Vector<Repair> tempRepairList = new Vector<Repair>(getRepairList());
+        synchronized (tempRepairList) {
+	        for ( Repair repairOrder: tempRepairList ){
+	            if ( repairOrder.matches(unitID,location,slot,armor) )
+	               return true;
+	        }
+		}
         return false;
     }
     
@@ -235,39 +243,44 @@ public class RepairTrackingThread extends Thread{
         
         Vector<Repair> tempRepairList = new Vector<Repair>(getRepairList());
         
-        for ( Repair repairOrder:tempRepairList ){
-            if ( repairOrder.matches(unitID,location,slot,armor) ){
-                SPlayer player = CampaignMain.cm.getPlayer(repairOrder.getUsername()); 
-                SUnit unit = player.getUnit(unitID);
-                CampaignMain.cm.toUser("FSM|Repair order cancelled.",repairOrder.getUsername(),false);
-                if ( repairOrder.getTechType() == UnitUtils.TECH_PILOT )
-                    unit.setPilotIsRepairing(false);
-                else
-                    player.addAvailableTechs(repairOrder.getTechType(),1);
-                repairOrder.stopRepair();
-                getRepairList().removeElement(repairOrder);
-                unit.setEntity(repairOrder.getUnit());
-                CampaignMain.cm.toUser("PL|UU|"+unitID+"|"+unit.toString(true),player.getName(),false);
-                return;
-            }
-        }
+        synchronized (tempRepairList) {
+	        for ( Repair repairOrder:tempRepairList ){
+	            if ( repairOrder.matches(unitID,location,slot,armor) ){
+	                SPlayer player = CampaignMain.cm.getPlayer(repairOrder.getUsername()); 
+	                SUnit unit = player.getUnit(unitID);
+	                CampaignMain.cm.toUser("FSM|Repair order cancelled.",repairOrder.getUsername(),false);
+	                if ( repairOrder.getTechType() == UnitUtils.TECH_PILOT )
+	                    unit.setPilotIsRepairing(false);
+	                else
+	                    player.addAvailableTechs(repairOrder.getTechType(),1);
+	                repairOrder.stopRepair();
+	                getRepairList().removeElement(repairOrder);
+	                unit.setEntity(repairOrder.getUnit());
+	                CampaignMain.cm.toUser("PL|UU|"+unitID+"|"+unit.toString(true),player.getName(),false);
+	                return;
+	            }
+	        }
+		}
     }
 
     public void stopAllRepairJobs(int unitID, SPlayer player){
         
         Vector<Repair> tempRepairList = new Vector<Repair>(getRepairList());
         
-        for ( Repair repairOrder:tempRepairList ){
-            if ( repairOrder.getUnitID() == unitID ){
-                try{
-                    int techType = repairOrder.getTechType();
-                    if ( techType != UnitUtils.TECH_PILOT )
-                        player.addAvailableTechs(techType,1);
-                }catch(Exception ex){}
-                repairOrder.stopRepair();
-                getRepairList().removeElement(repairOrder);
-            }
-        }
+        synchronized (tempRepairList) {
+			
+	        for ( Repair repairOrder:tempRepairList ){
+	            if ( repairOrder.getUnitID() == unitID ){
+	                try{
+	                    int techType = repairOrder.getTechType();
+	                    if ( techType != UnitUtils.TECH_PILOT )
+	                        player.addAvailableTechs(techType,1);
+	                }catch(Exception ex){}
+	                repairOrder.stopRepair();
+	                getRepairList().removeElement(repairOrder);
+	            }
+	        }
+		}
         try{
             SUnit unit = player.getUnit(unitID);
             CampaignMain.cm.toUser("PL|UU|"+unitID+"|"+unit.toString(true),player.getName(),false);
