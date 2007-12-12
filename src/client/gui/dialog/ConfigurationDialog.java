@@ -39,8 +39,10 @@ import javax.swing.JCheckBox;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
+import common.util.SpringLayoutHelper;
+
 import client.MWClient;
-import client.gui.SpringLayoutHelper;
+
 @SuppressWarnings({"unchecked","serial"})
 public final class ConfigurationDialog implements ActionListener {
 

@@ -1070,10 +1070,8 @@ server-dist/server/campaign/util/UnitHistoryEntry.hbm.xml -text
 server-dist/server/util/MMNetPasswdRecord.hbm.xml -text
 server-dist/startserver.bat -text
 /serverDescription.xml -text
-src/OperationsEditor/DefaultOperation.java -text
 src/OperationsEditor/MainOperations.java -text
 src/OperationsEditor/dialog/OperationsDialog.java -text
-src/OperationsEditor/dialog/SpringLayoutHelper.java -text
 src/admin/AdminMapPopupMenu.java -text
 src/admin/AdminMenu.java -text
 src/admin/AdminUserlistPopupMenu.java -text
@@ -1157,7 +1155,6 @@ src/client/gui/MyHTMLEditorKit.java -text
 src/client/gui/MyImageView.java -text
 src/client/gui/PlanetPanel.java -text
 src/client/gui/SplashWindow.java -text
-src/client/gui/SpringLayoutHelper.java -text
 src/client/gui/TableMap.java -text
 src/client/gui/TableSorter.java -text
 src/client/gui/WholeNumberField.java -text
@@ -1209,6 +1206,7 @@ src/common/Army.java -text
 src/common/BMEquipment.java -text
 src/common/CampaignData.java -text
 src/common/Continent.java -text
+src/common/DefaultOperation.java -text
 src/common/Equipment.java -text
 src/common/House.java -text
 src/common/Influences.java -text
@@ -1248,6 +1246,7 @@ src/common/util/MD5.java -text
 src/common/util/MD5OutputStream.java -text
 src/common/util/MMNetXStream.java -text
 src/common/util/Position.java -text
+src/common/util/SpringLayoutHelper.java -text
 src/common/util/StringUtils.java -text
 src/common/util/TeePrinter.java -text
 src/common/util/ThreadManager.java -text
@@ -1626,7 +1625,6 @@ src/server/campaign/market2/PartsMarket.java -text
 src/server/campaign/market2/VickreyAuction.java -text
 src/server/campaign/mercenaries/ContractInfo.java -text
 src/server/campaign/mercenaries/MercHouse.java -text
-src/server/campaign/operations/DefaultOperation.java -text
 src/server/campaign/operations/LongOperation.java -text
 src/server/campaign/operations/LongResolver.java -text
 src/server/campaign/operations/LongValidator.java -text

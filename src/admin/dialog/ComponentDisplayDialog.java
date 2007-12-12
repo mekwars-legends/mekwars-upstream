@@ -41,6 +41,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import common.Equipment;
+import common.util.SpringLayoutHelper;
 import common.util.UnitUtils;
 
 import megamek.common.AmmoType;
@@ -51,7 +52,6 @@ import megamek.common.TechConstants;
 import megamek.common.WeaponType;
 
 import client.MWClient;
-import client.gui.SpringLayoutHelper;
 
 public final class ComponentDisplayDialog extends JDialog implements ActionListener, MouseListener, KeyListener, ChangeListener{
 	

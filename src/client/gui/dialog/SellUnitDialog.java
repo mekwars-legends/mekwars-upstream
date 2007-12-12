@@ -40,7 +40,7 @@ import common.Unit;
 import client.MWClient;
 import client.campaign.CUnit;
 import client.gui.WholeNumberField;
-import client.gui.SpringLayoutHelper;
+import common.util.SpringLayoutHelper;
 
 /*
  * 

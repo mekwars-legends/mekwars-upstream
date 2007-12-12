@@ -48,10 +48,9 @@ import common.House;
 import common.Planet;
 import common.PlanetEnvironment;
 import common.UnitFactory;
+import common.util.SpringLayoutHelper;
 
 import client.MWClient;
-
-import client.gui.SpringLayoutHelper;
 
 public final class PlanetEditorDialog implements ActionListener, KeyListener{
 	

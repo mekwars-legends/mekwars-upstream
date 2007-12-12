@@ -72,7 +72,7 @@ import megamek.common.WeaponType;
 import megamek.common.TechConstants;
 
 import client.MWClient;
-import client.gui.SpringLayoutHelper;
+import common.util.SpringLayoutHelper;
 
 /**
  * A dialog that a player can use to customize his mech before battle.  

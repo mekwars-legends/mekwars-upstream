@@ -40,10 +40,10 @@ import javax.swing.SwingConstants;
 
 import common.House;
 import common.SubFaction;
+import common.util.SpringLayoutHelper;
 
 import client.MWClient;
 import client.campaign.CUnit;
-import client.gui.SpringLayoutHelper;
 
 public final class SubFactionConfigurationDialog implements ActionListener {
 	

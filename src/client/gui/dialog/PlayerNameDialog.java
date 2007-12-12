@@ -42,7 +42,7 @@ import javax.swing.event.CaretListener;
 //mekwars imports
 import client.MWClient;
 import client.CUser;
-import client.gui.SpringLayoutHelper;
+import common.util.SpringLayoutHelper;
 
 /*
  * Dialog, based on HouseNameDialog, which allows players

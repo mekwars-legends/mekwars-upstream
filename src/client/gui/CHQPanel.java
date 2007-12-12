@@ -76,6 +76,7 @@ import client.gui.AttackMenu;
 import common.Army;
 import common.Unit;
 import common.campaign.pilot.Pilot;
+import common.util.SpringLayoutHelper;
 import common.util.UnitUtils;
 
 /**

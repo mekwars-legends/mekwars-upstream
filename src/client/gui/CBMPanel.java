@@ -37,6 +37,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import common.util.SpringLayoutHelper;
+
 import megamek.common.Entity;
 
 import client.MWClient;

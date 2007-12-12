@@ -30,7 +30,7 @@
  * 
  * NOTE: Defaults stored in a TreeMap, -not- a hash. 
  */
-package server.campaign.operations;
+package common;
 
 //IMPORTS
 import java.util.TreeMap;
@@ -981,11 +981,11 @@ public class DefaultOperation {
         
         operationsDefaults.put("MinDefenderMulArmies", "0");
         operationsDefaults.put("MaxDefenderMulArmies","0");
-        operationsDefaults.put("DefenderMulArmyList","0");
+        operationsDefaults.put("DefenderMulArmyList","");
 
         operationsDefaults.put("MinAttackerMulArmies","0");
         operationsDefaults.put("MaxAttackerMulArmies","0");
-        operationsDefaults.put("AttackerMulArmyList","0");
+        operationsDefaults.put("AttackerMulArmyList","");
 
         //player outcome values [salvage, pay]
 		operationsDefaults.put("BaseAttackerPayCBills","0");

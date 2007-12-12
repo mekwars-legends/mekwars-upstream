@@ -47,7 +47,7 @@ import javax.swing.event.CaretListener;
 
 //mekwars imports
 import client.MWClient;
-import client.gui.SpringLayoutHelper;
+import common.util.SpringLayoutHelper;
 import common.House;
 import common.Planet;
 

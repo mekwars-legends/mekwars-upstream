@@ -39,6 +39,8 @@ package server.campaign.operations;
 import java.util.Properties;
 import java.util.TreeMap;
 
+import common.DefaultOperation;
+
 import server.MWServ;
 @SuppressWarnings({"unchecked","serial"})
 public class Operation {

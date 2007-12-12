@@ -77,7 +77,7 @@ import megamek.common.loaders.EntityLoadingException;
 
 import client.MWClient;
 import client.gui.MechInfo;
-import client.gui.SpringLayoutHelper;
+import common.util.SpringLayoutHelper;
 import client.gui.CMainFrame;
 
 /* 

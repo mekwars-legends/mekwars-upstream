@@ -46,7 +46,7 @@ import common.util.UnitUtils;
 
 import client.MWClient;
 import client.campaign.CUnit;
-import client.gui.SpringLayoutHelper;
+import common.util.SpringLayoutHelper;
 
 @SuppressWarnings({"unchecked","serial"})
 public final class RewardPointsDialog implements ActionListener, KeyListener{

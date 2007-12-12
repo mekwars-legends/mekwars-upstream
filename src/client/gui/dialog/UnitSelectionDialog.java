@@ -39,7 +39,7 @@ import common.Unit;
 //mekwars imports
 import client.MWClient;
 import client.campaign.CUnit;
-import client.gui.SpringLayoutHelper;
+import common.util.SpringLayoutHelper;
 
 /*
  * Dialog, based on HouseNameDialog, which allows players

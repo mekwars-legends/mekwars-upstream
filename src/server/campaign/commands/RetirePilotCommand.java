@@ -73,6 +73,11 @@ public class RetirePilotCommand implements Command {
 				return;
 			}
 			
+			if ( m.hasVacantPilot() ){
+				CampaignMain.cm.toUser("AM:This unit does not currently have pilot in it.", Username);
+				return;
+			}
+			
 			//don't let someone retire while active, if unit is in an army
 			if (p.getDutyStatus() != SPlayer.STATUS_RESERVE) {
 				

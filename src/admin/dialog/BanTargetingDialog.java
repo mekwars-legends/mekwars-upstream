@@ -31,10 +31,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import common.util.SpringLayoutHelper;
+
 import megamek.common.MiscType;
 
 import client.MWClient;
-import client.gui.SpringLayoutHelper;
 
 public final class BanTargetingDialog implements ActionListener{
 	

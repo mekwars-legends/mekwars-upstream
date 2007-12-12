@@ -62,12 +62,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import common.Unit;
+import common.util.SpringLayoutHelper;
 
 import client.MWClient;
 import client.campaign.CArmy;
 import client.campaign.CPlayer;
 import client.campaign.CUnit;
-import client.gui.SpringLayoutHelper;
 
 
 /* 

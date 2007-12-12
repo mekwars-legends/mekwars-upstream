@@ -622,8 +622,8 @@ public class CPlayer extends Player {
             
 			Pilot pilot = null;
 			String name = en.getCrew().getName();
-			if (pilot.getName().equalsIgnoreCase("Unnamed")
-					|| pilot.getName().equalsIgnoreCase("vacant")) {
+			if (name.equalsIgnoreCase("Unnamed")
+					|| name.equalsIgnoreCase("vacant")) {
 				name = "AutoMul Pilot";
 			}
 			pilot = new Pilot(name, en.getCrew().getGunnery(), en.getCrew().getPiloting());

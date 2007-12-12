@@ -57,7 +57,7 @@ import megamek.common.Protomech;
 import megamek.common.Tank;
 import megamek.common.WeaponType;
 
-import client.gui.SpringLayoutHelper;
+import common.util.SpringLayoutHelper;
 import client.gui.MechInfo;
 
 /**

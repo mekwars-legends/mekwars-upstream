@@ -53,6 +53,7 @@ import javax.swing.event.ChangeListener;
 import common.House;
 import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
+import common.util.SpringLayoutHelper;
 import common.util.UnitUtils;
 
 import megamek.client.Client;
@@ -69,7 +70,6 @@ import megamek.common.TechConstants;
 
 import client.MWClient;
 import client.campaign.CUnit;
-import client.gui.SpringLayoutHelper;
 
 @SuppressWarnings({"unchecked","serial"})
     public class AdvancedRepairDialog extends JFrame implements ActionListener, MouseListener, KeyListener, ChangeListener{

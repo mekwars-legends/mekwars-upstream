@@ -45,7 +45,7 @@ import common.House;
 import common.campaign.pilot.skills.PilotSkill;
 
 import client.MWClient;
-import client.gui.SpringLayoutHelper;
+import common.util.SpringLayoutHelper;
 @SuppressWarnings({"unchecked","serial"})
 public final class TraitDialog implements ActionListener, KeyListener{
 	

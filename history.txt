@@ -1,7 +1,13 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.11.x 
+v 0.2.11.x
+Release Client 0.2.11.2 & Server 0.2.11.1 
++ Fully Implemented MUL armies in Operations. 
+	(Note: This break Client/Server Comms)
++ Bug: Able to retire vacant pilots.
++ Moved SpringLayoutHelper to common
++ Moved DefaultOpreation.java to common
 + Checked to see if an Entity is a Mech or Tank before processing battle damage
 + Added synchronized blocks to repairThread.
 + Added GUI for new Operations variables to Ops Editor.

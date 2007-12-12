@@ -35,6 +35,12 @@
 package server.campaign.operations;
 
 import java.awt.Dimension;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Enumeration;
 import java.util.TreeMap;
 import java.util.Iterator;
@@ -155,6 +161,10 @@ public class ShortOperation implements Comparable {
 	private String defendArtDesc = "";
 	private float defenderArmyCount = 0;
 	private float attackerArmyCount = 0;
+	
+	private Vector<String>attackerMULs = new Vector<String>(1,1);
+	private Vector<String>defenderMULs = new Vector<String>(1,1);
+	
     
     /* 
      * Building Options
@@ -902,7 +912,53 @@ public class ShortOperation implements Comparable {
                 CampaignMain.cm.toUser(botTeams,currN,false);
             }
             
+            
+            /*
+             * Check for Mul Armies
+             */
 
+            boolean attackerHasMUL = o.getBooleanValue("AttackerReceivesMULArmy");
+            boolean defenderHasMUL = o.getBooleanValue("DefenderReceivesMULArmy");
+
+            
+            if ( attackerHasMUL || defenderHasMUL )
+            {
+            	int attackerMinArmies = o.getIntValue("MinAttackerMulArmies");
+            	int attackerMaxArmies = o.getIntValue("MaxAttackerMulArmies");
+            	String attackerArmyList = o.getValue("AttackerMulArmyList");
+            	
+            	int defenderMinArmies = o.getIntValue("MinDefenderMulArmies");
+            	int defenderMaxArmies = o.getIntValue("MaxDefenderMulArmies");
+            	String defenderArmyList = o.getValue("DefenderMulArmyList");
+            	
+            	if ( attackerMinArmies > 0 
+            			&& attackerMaxArmies >= attackerMaxArmies 
+            			&& attackerArmyList.trim().length() > 0 ){
+            		int numOfArmies = CampaignMain.cm.getRandomNumber(attackerMaxArmies) + attackerMinArmies;
+            		
+                    attackerMULs.addAll(createMulArmy(numOfArmies, attackerArmyList));
+
+                    for (String currN : attackers.keySet()){
+                    	for (int count = 0; count < attackerMULs.size(); count++ )
+                    		CampaignMain.cm.toUser(attackerMULs.elementAt(count),currN,false);
+                    }
+
+            	}
+            	if ( defenderMinArmies > 0 
+            			&& defenderMaxArmies >= defenderMaxArmies 
+            			&& defenderArmyList.trim().length() > 0 ){
+            		int numOfArmies = CampaignMain.cm.getRandomNumber(defenderMaxArmies) + defenderMinArmies;
+                    defenderMULs.addAll(createMulArmy(numOfArmies, defenderArmyList));
+            		
+                    for (String currN : defenders.keySet()){ 
+                    	for (int count = 0; count < defenderMULs.size(); count++ )
+                    		CampaignMain.cm.toUser(defenderMULs.elementAt(count),currN,false);
+                    }
+            	}
+            	
+            	
+            }
+            
             /*
 			 * Apply certain things to all players ...
 			 * 1) Set busy status
@@ -1531,11 +1587,17 @@ public class ShortOperation implements Comparable {
 			CampaignMain.cm.toUser(defenderAutoString,lowerName,false);
 			CampaignMain.cm.toUser(defenderAutoEmplacementsString,lowerName,false);
 			CampaignMain.cm.toUser(defenderAutoMinesString,lowerName,false);
+			for ( int pos = 0; pos < defenderMULs.size(); pos++){
+				CampaignMain.cm.toUser(defenderMULs.elementAt(pos), lowerName,false);
+			}
 		} else if (attackers.containsKey(lowerName)) {
 			CampaignMain.cm.toUser("GMEP|"+attackerEdge,lowerName,false);
 			CampaignMain.cm.toUser(attackerAutoString,lowerName,false);
 			CampaignMain.cm.toUser(attackerAutoEmplacementsString,lowerName,false);
 			CampaignMain.cm.toUser(attackerAutoMinesString,lowerName,false);
+			for ( int pos = 0; pos < attackerMULs.size(); pos++){
+				CampaignMain.cm.toUser(attackerMULs.elementAt(pos), lowerName,false);
+			}
 		}
 		
 		//send building options
@@ -2550,5 +2612,59 @@ public class ShortOperation implements Comparable {
     	
     	int rand = CampaignMain.cm.getRandomNumber(deploymentChoices.size());
     	return deploymentChoices.elementAt(rand);
+    }
+    
+    private Vector<String> createMulArmy(int number, String list){
+    	
+    	StringTokenizer st = new StringTokenizer(list,";");
+    	Vector<String> mulFileList = new Vector<String>(1,1);
+    	Vector<String> returnList = new Vector<String>(1,1);
+    	
+    	while ( st.hasMoreElements() )
+    		mulFileList.add(st.nextToken());
+    	
+    	//something happened
+    	if ( mulFileList.size() < 1)
+    		return returnList;
+    		
+    	
+    	for ( ; number > 0; number-- ){
+    		if ( mulFileList.size() == 1 )
+    			returnList.add(loadAndParseMul(mulFileList.firstElement()));
+    		else
+    			returnList.add(loadAndParseMul(mulFileList.remove(CampaignMain.cm.getRandomNumber(mulFileList.size()))));
+    	}
+    	
+    	return returnList;
+    }
+    
+    private String loadAndParseMul(String fileName){
+    	StringBuffer results = new StringBuffer("PL|SMA|");
+		File entityFile = new File("data/armies");
+		
+		if ( !entityFile.exists() )
+			return results.toString();
+		
+		entityFile = new File("data/armies/"+fileName);
+		
+		try {	
+			FileInputStream in = new FileInputStream(entityFile);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			try {
+				while(br.ready()) {
+					results.append("|" + br.readLine());
+				}
+				br.close();
+				in.close();
+			} catch (IOException ioex) {
+				MWServ.mwlog.errLog("IOException: " + results.toString());
+			}
+		} catch (FileNotFoundException fnfex) {
+			MWServ.mwlog.errLog("FileNotFoundException: " + results.toString());    			    
+		}
+		results.append("|");
+
+		return results.toString();
+
     }
 }//end OperationsManager class

@@ -33,6 +33,8 @@ import java.io.FileInputStream;
 
 import java.util.Properties;
 
+import common.DefaultOperation;
+
 import server.MWServ;
 
 @SuppressWarnings({"unchecked","serial"})

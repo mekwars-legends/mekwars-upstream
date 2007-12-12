@@ -59,6 +59,7 @@ import client.gui.dialog.MechDetailDisplay;
 import common.House;
 import common.Unit;
 import common.UnitFactory;
+import common.util.SpringLayoutHelper;
 import common.util.UnitUtils;
 
 

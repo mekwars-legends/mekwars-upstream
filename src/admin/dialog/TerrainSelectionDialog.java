@@ -45,10 +45,10 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
 import common.PlanetEnvironment;
+import common.util.SpringLayoutHelper;
 
 //mekwars imports
 import client.MWClient;
-import client.gui.SpringLayoutHelper;
 
 /*
  * Base dialog, derived from MMNET's SearchHouseListener, allows players

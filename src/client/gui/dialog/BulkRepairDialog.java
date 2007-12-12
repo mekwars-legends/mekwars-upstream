@@ -42,6 +42,7 @@ import javax.swing.event.ChangeListener;
 
 import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
+import common.util.SpringLayoutHelper;
 import common.util.UnitUtils;
 
 import megamek.common.CriticalSlot;
@@ -52,7 +53,6 @@ import megamek.common.WeaponType;
 
 import client.MWClient;
 import client.campaign.CUnit;
-import client.gui.SpringLayoutHelper;
 
 @SuppressWarnings({"unchecked","serial"})
     public class BulkRepairDialog extends JFrame implements ActionListener, KeyListener, ChangeListener{

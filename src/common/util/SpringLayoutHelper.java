@@ -15,7 +15,7 @@
  */
 
 
-package OperationsEditor.dialog;
+package common.util;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -40,21 +40,20 @@ public class SpringLayoutHelper {
         
         setupSpringGrid(panel,rows,columns);
     }
-    
-    public static void setupSpringGrid(JPanel panel,int rows, int columns) {
+
+	public static void setupSpringGrid(JPanel panel,int rows, int columns) {
 		
 		//setup new layout.
 		SpringLayout layout = (SpringLayout)panel.getLayout();
 		
-		//make all cells in each row same height.
-		Spring y = Spring.constant(4);
-        
         //add padding so that the count matches
         if ( panel.getComponentCount() < (rows*columns) ){
             for ( int x = panel.getComponentCount(); x < (rows*columns); x++ )
                 panel.add(new JLabel(" "));
         }
         
+		//make all cells in each row same height.
+		Spring y = Spring.constant(4);
 		for (int r = 0; r < rows; r++) {
 			Spring height = Spring.constant(0);
 			for (int c = 0; c < columns; c++) {

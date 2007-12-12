@@ -33,9 +33,9 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import common.House;
+import common.util.SpringLayoutHelper;
 
 import client.MWClient;
-import client.gui.SpringLayoutHelper;
 
 public final class BannedAmmoDialog implements ActionListener{
 	

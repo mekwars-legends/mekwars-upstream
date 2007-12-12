@@ -43,8 +43,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
+import common.util.SpringLayoutHelper;
+
 import client.MWClient;
-import client.gui.SpringLayoutHelper;
 
 public final class FactionConfigurationDialog implements ActionListener {
 	

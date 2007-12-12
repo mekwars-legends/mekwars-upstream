@@ -428,6 +428,7 @@ public class AutoArmy {
         }//assume assault
             
         //now build the unit.
+        
         SUnit cm = new SUnit("autoassigned unit",filename,i);
         return cm;
     }//end makenewgunemplacement

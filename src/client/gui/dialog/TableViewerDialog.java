@@ -67,7 +67,7 @@ import common.campaign.pilot.Pilot;
 
 import client.MWClient;
 import client.campaign.CUnit;
-import client.gui.SpringLayoutHelper;
+import common.util.SpringLayoutHelper;
 import client.gui.TableSorter;
 import client.util.CUnitComparator;
 

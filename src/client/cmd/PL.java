@@ -52,7 +52,13 @@ public class PL extends Command {
 		
 		if (!st.hasMoreTokens())
 			return;
-		else if (cmd.equals("RA")) // Remove army PL|RA|
+
+		if (cmd.equals("FCU")){
+        	mwclient.updateClient();
+        	return;
+        }
+		
+		if (cmd.equals("RA")) // Remove army PL|RA|
 			player.removeArmy(Integer.parseInt(st.nextToken()));
 		else if (cmd.equals("LA"))
 			player.playerLockArmy(Integer.parseInt(st.nextToken()));
@@ -217,9 +223,8 @@ public class PL extends Command {
         	player.getMyHouse().supportedUnits.clear();
         	player.getMyHouse().setNonFactionUnitsCostMore(Boolean.parseBoolean(mwclient.getserverConfigs("UseNonFactionUnitsIncreasedTechs")));
         }
-        else if (cmd.equals("FCU")){
-        	mwclient.updateClient();
-        	return;
+        else if (cmd.equals("SMA")){
+        	mwclient.getPlayer().setMULCreatedArmy(st);
         }
 		else
 			return;

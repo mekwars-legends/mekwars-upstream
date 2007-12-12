@@ -59,10 +59,10 @@ import javax.swing.SpringLayout;
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 
-import client.MWClient;
+import common.DefaultOperation;
+import common.util.SpringLayoutHelper;
 
-import OperationsEditor.DefaultOperation;
-import OperationsEditor.dialog.SpringLayoutHelper;
+import client.MWClient;
 
 public class OperationsDialog extends JFrame implements ActionListener, KeyListener{
 	
