@@ -32,15 +32,23 @@
  */
 package server.campaign;
 
+import java.io.File;
 import java.util.Vector;
 
 import java.util.StringTokenizer;
+
+import megamek.common.Entity;
+import megamek.common.EntityListFile;
+import megamek.common.MechSummary;
+import megamek.common.MechSummaryCache;
 
 import common.Unit;
 
 import server.MWServ;
 import server.campaign.SUnit;
 import server.campaign.CampaignMain;
+import server.campaign.pilot.SPilot;
+import server.campaign.pilot.skills.SPilotSkill;
 
 
 public class AutoArmy {
@@ -346,7 +354,7 @@ public class AutoArmy {
             while (bvOfSArmy >= bvForCurrWeight && numOfCurrWeight < maxNumOfCurrWeight) {
                 
                 //make the unit and add it to the units vector
-                autoUnits.add(this.makeNewGunEmplacement(currWeight));
+                autoUnits.addAll(this.makeNewGunEmplacement(currWeight));
                 
                 //decrement the BV and boost the counter
                 bvOfSArmy = bvOfSArmy - bvForCurrWeight;
@@ -367,12 +375,13 @@ public class AutoArmy {
      * @param i weightclass to make
      * @return an artillery unit
      */
-    public SUnit makeNewGunEmplacement(int i) {
+    public Vector<SUnit> makeNewGunEmplacement(int i) {
         //file to get
         String filename = "";
         int size = 0;
         int position = 0;
-
+        Vector<SUnit> returnedUnits = new  Vector<SUnit>(1,1);
+        
         if (Unit.LIGHT == i){
             StringTokenizer list = new StringTokenizer(CampaignMain.cm.getConfig("LightGunEmplacementFile"),"$");
             
@@ -428,9 +437,77 @@ public class AutoArmy {
         }//assume assault
             
         //now build the unit.
-        
-        SUnit cm = new SUnit("autoassigned unit",filename,i);
-        return cm;
+        if ( filename.toLowerCase().endsWith(".mul") ){
+    		Vector<Entity> loadedUnits = null;
+    		File entityFile = new File("data/armies/" + filename);
+    		
+    		try {
+    			loadedUnits = EntityListFile.loadFrom(entityFile);
+    			loadedUnits.trimToSize();
+    		} catch (Exception ex) {
+    			MWServ.mwlog.errLog("Unable to load file " + entityFile.getName());
+    			MWServ.mwlog.errLog(ex);
+    			return returnedUnits;
+    		}
+
+    		for (Entity en : loadedUnits) {
+
+    			SUnit cm = new SUnit();
+    			cm.setEntity(en);
+    			MechSummary ms = MechSummaryCache.getInstance().getMech(en.getShortNameRaw());
+                if ( ms == null ) {
+                    MechSummary[] units = MechSummaryCache.getInstance().getAllMechs();
+                    //System.err.println("unit: "+en.getShortNameRaw());
+                    for ( MechSummary unit :  units) {
+                      //  System.err.println("Source file: "+unit.getSourceFile().getName());
+                       // System.err.println("Model: "+unit.getModel());
+                        //System.err.println("Chassis: "+unit.getChassis());
+                        if ( unit.getModel().trim().equalsIgnoreCase(en.getModel().trim())
+                        		&& unit.getChassis().trim().equalsIgnoreCase(en.getChassis().trim() )
+                        		) {
+                			cm.setUnitFilename(unit.getEntryName());
+                            break;
+                        }
+                    }
+                    
+                }
+                else {
+                	//System.err.println("Entry: "+ms.getEntryName()+" source: "+ms.getSourceFile().getName());
+                	cm.setUnitFilename(ms.getEntryName());
+                }
+                
+    			cm.setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
+    			cm.setWeightclass(99);//let the SUnit code handle the weightclass
+
+    			SPilot pilot = null;
+    			pilot = new SPilot(en.getCrew().getName(), en.getCrew()
+    					.getGunnery(), en.getCrew().getPiloting());
+
+    			if (pilot.getName().equalsIgnoreCase("Unnamed")
+    					|| pilot.getName().equalsIgnoreCase("vacant"))
+    				pilot.setName(SPilot.getRandomPilotName(CampaignMain.cm.getR()));
+
+    			pilot.setCurrentFaction("Common");
+    			StringTokenizer skillList = new StringTokenizer(en.getCrew().getAdvantageList(","), ",");
+
+    			while (skillList.hasMoreTokens()) {
+    				String skill = skillList.nextToken();
+    				SPilotSkill pSkill = null;
+    				if (skill.equalsIgnoreCase("random"))
+    					pSkill = CampaignMain.cm.getRandomSkill(pilot, cm.getType());
+    				else
+    					pSkill = CampaignMain.cm.getPilotSkill(skill);
+
+    				pilot.getSkills().add(pSkill);
+    			}
+    			cm.setPilot(pilot);
+    			returnedUnits.add(cm);
+    		}
+
+        }
+        else
+        	returnedUnits.add(new SUnit("autoassigned unit",filename,i));
+        return returnedUnits;
     }//end makenewgunemplacement
 
     /**
