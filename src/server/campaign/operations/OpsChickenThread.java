@@ -17,10 +17,10 @@
 package server.campaign.operations;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Vector;
 
 import common.Unit;
+import common.UnitFactory;
 import common.util.StringUtils;
 
 import server.MWServ;
@@ -271,9 +271,8 @@ public class OpsChickenThread extends Thread {
 				return;
 			
 			//damage all of the factories
-			Iterator i = target.getUnitFactories().iterator();
-			while (i.hasNext()) {
-				SUnitFactory currFac = (SUnitFactory)i.next();
+			for (UnitFactory UF : target.getUnitFactories()) {
+				SUnitFactory currFac = (SUnitFactory)UF;
 				loserHSUpdates.append(currFac.addRefresh(delayPenalty, false));
 			}
 			

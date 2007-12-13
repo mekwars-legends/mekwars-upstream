@@ -25,7 +25,6 @@ import java.awt.event.ActionEvent;
 
 //util imports
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.TreeSet;
 
 //swing imports
@@ -97,8 +96,8 @@ public class TerrainSelectionDialog extends JDialog implements ActionListener {
 		//super, and variable saves
 		super(new JFrame(),boxText,true);//dummy frame as owner
         names = new TreeSet<String>();
-        for (Iterator it = mwclient.getData().getAllTerrains().iterator(); it.hasNext();)
-            names.add(((PlanetEnvironment) it.next()).getName());
+        for (PlanetEnvironment it : mwclient.getData().getAllTerrains())
+            names.add(it.getName());
 
         final Object[] allCommandNames = names.toArray();
 
@@ -137,12 +136,11 @@ public class TerrainSelectionDialog extends JDialog implements ActionListener {
 						 */
 						boolean shouldContinue = true;
 						int element = 0;
-						Iterator it = possibleCommands.iterator();
-						while (it.hasNext() && shouldContinue) {
-							String name = (String)it.next();
+						for (String name : possibleCommands) {
 							if (name.toLowerCase().startsWith(text)) {
 								matchingCommandList.setSelectedIndex(element);
 								shouldContinue = false;
+								break;
 							}
 							element++;
 						}

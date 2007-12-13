@@ -26,13 +26,12 @@ import server.MWServ;
 import server.campaign.*;
 
 /**
- * @hibernate.class table="MechStatistics"
  *
  * @author McWizard
  *
  * Represents a MechStats Entry
  */
-public class MechStatistics implements Cloneable, Comparable {
+public class MechStatistics implements Cloneable, Comparable<Object> {
   private Long ID;
   private String mechFileName;
   private int mechSize;

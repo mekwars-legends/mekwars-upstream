@@ -30,7 +30,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -114,9 +113,7 @@ public class OperationWriter {
 						illegals.add(illegalTokenizer.nextToken());
 					
 					//compare all houses to the treeset and look for matches
-					Iterator i = CampaignMain.cm.getData().getAllHouses().iterator();
-					while (i.hasNext()) {
-						House currH = (House)i.next();
+					for (House currH : CampaignMain.cm.getData().getAllHouses()) {
 						if (!illegals.contains(currH.getName()))
 							legalDefenders.append(currH.getName() + "$");
 					}

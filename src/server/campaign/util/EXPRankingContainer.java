@@ -19,7 +19,7 @@ package server.campaign.util;
 import server.campaign.SmallPlayer;
 import server.campaign.SHouse;
 
-public class EXPRankingContainer implements Comparable {
+public class EXPRankingContainer implements Comparable<Object> {
 	
 	SmallPlayer player;
 	public EXPRankingContainer(SmallPlayer p) {

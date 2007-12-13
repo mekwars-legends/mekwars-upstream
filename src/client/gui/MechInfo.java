@@ -635,7 +635,6 @@ public class MechInfo extends JPanel {
 
       Entity m = cm.getEntity();
       
-      // TODO
       if ( lblImage.isVisible() && m instanceof Mech){
 
           boolean useAdvanceRepairs = mwclient.isUsingAdvanceRepairs();

@@ -21,7 +21,6 @@
 package common;
 
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
@@ -327,9 +326,7 @@ public class House implements MMNetSerializable {
                 out.println(this.getHouseUnitFluMod(type,weight),"fluMod"+type+weight);
  
         out.println(this.getBannedAmmo().size(),"factionbannedammosize");
-        Enumeration banned = this.getBannedAmmo().keys();
-        while (banned.hasMoreElements()){
-            String munition =(String)banned.nextElement();
+        for (String munition : this.getBannedAmmo().keySet()){
             out.println(munition,"munition");
         }
         
@@ -527,9 +524,8 @@ public class House implements MMNetSerializable {
                 out.write(this.getHouseUnitFluMod(type,weight),"fluMod"+type+weight);
         
         out.write(this.getBannedAmmo().size(),"factionbannedammosize");
-        Enumeration banned = this.getBannedAmmo().keys();
-        while (banned.hasMoreElements())
-            out.write((String)banned.nextElement(),"munition");
+        for (String banned : this.getBannedAmmo().keySet())
+            out.write(banned,"munition");
 
         for( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
         	out.write(basePilotSkills.elementAt(pos),"factionBasePilotSkill");

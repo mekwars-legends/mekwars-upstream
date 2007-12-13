@@ -67,7 +67,7 @@ public class RemoveVoteCommand implements Command {
 		}
 		
 		//get all votes cast by the player issuing the command
-		Vector castersVotes = CampaignMain.cm.getVoteManager().getAllVotesBy(castingPlayer);
+		Vector<Vote> castersVotes = CampaignMain.cm.getVoteManager().getAllVotesBy(castingPlayer);
 		
 		//break out if the player has no outstanding votes to remove
 		if (castersVotes.isEmpty()) {
@@ -85,7 +85,7 @@ public class RemoveVoteCommand implements Command {
 		}
 		
 		//break out if player has no votes cast for recipient
-		Enumeration e = castersVotes.elements();
+		Enumeration<Vote> e = castersVotes.elements();
 		boolean hasVoteForRecipient = false;
 		Vote v = null;
 		while (e.hasMoreElements() && !hasVoteForRecipient) {

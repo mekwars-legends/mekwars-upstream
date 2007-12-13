@@ -216,7 +216,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 
 	
 	private void loadAmmoPanelType(int tech) {
-		Enumeration list = EquipmentType.getAllTypes();
+		Enumeration<EquipmentType> list = EquipmentType.getAllTypes();
 
 		int count = 0;
 		int tabNumber = 0;
@@ -331,7 +331,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 	}
 	
 	private void loadWeaponPanelType(int tech) {
-		Enumeration list = EquipmentType.getAllTypes();
+		Enumeration<EquipmentType> list = EquipmentType.getAllTypes();
 
 		int count = 0;
 		int tabNumber = 0;
@@ -443,7 +443,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 	}
 
 	private void loadMiscPanelType(int tech) {
-		Enumeration list = EquipmentType.getAllTypes();
+		Enumeration<EquipmentType> list = EquipmentType.getAllTypes();
 
 		int count = 0;
 		int tabNumber = 0;

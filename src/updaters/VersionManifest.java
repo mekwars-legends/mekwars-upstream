@@ -3,7 +3,6 @@ package updaters;
 import java.io.BufferedReader;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.File;
@@ -46,10 +45,8 @@ public class VersionManifest {
         System.err.println("Getting diff infos");
 
         List<FileInfo> retval = new ArrayList<FileInfo>();
-        Iterator iter = fileList_.iterator();
         long tempCRC = 0;
-        while (iter.hasNext()) {
-            FileInfo file = (FileInfo) iter.next();
+        for (FileInfo file : fileList_) {
 
             try {
                 /*
@@ -144,10 +141,7 @@ public class VersionManifest {
         System.err.println("Getting client file structure");
 
         List<String> retval = new ArrayList<String>();
-        Iterator iter = fileList_.iterator();
-        while (iter.hasNext()) {
-            FileInfo file = (FileInfo) iter.next();
-
+        for (FileInfo file : fileList_) {
             retval.add(file.getLocalOffset());
         }
 

@@ -26,7 +26,6 @@ import java.awt.event.ActionEvent;
 //util imports
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.TreeSet;
 
 //swing imports
@@ -148,12 +147,11 @@ public class CommandNameDialog extends JDialog implements ActionListener {
 						 */
 						boolean shouldContinue = true;
 						int element = 0;
-						Iterator it = possibleCommands.iterator();
-						while (it.hasNext() && shouldContinue) {
-							String name = (String)it.next();
+						for (String name : possibleCommands) {
 							if (name.toLowerCase().startsWith(text)) {
 								matchingCommandList.setSelectedIndex(element);
 								shouldContinue = false;
+								break;
 							}
 							element++;
 						}

@@ -24,7 +24,6 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
@@ -34,6 +33,7 @@ import java.awt.Dimension;
 import common.AdvancedTerrain;
 import common.CampaignData;
 import common.Continent;
+import common.House;
 import common.Influences;
 import common.PlanetEnvironment;
 import common.Unit;
@@ -43,10 +43,13 @@ import common.util.Position;
 import server.MWServ;
 import server.campaign.data.TimeUpdatePlanet;
 
-@SuppressWarnings({"unchecked","serial"})
 public class SPlanet extends TimeUpdatePlanet implements Serializable,
-Comparable {
+Comparable<Object> {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2266871107987235842L;
 	private SHouse owner = null;
 	
 	@Override
@@ -69,9 +72,8 @@ Comparable {
 		result.append("#" + getPosition().getX());
 		result.append("#" + getPosition().getY());
 		result.append("#");
-		Iterator it = getInfluence().getHouses().iterator();
-		while (it.hasNext()) {
-			SHouse next = (SHouse) it.next();
+		for (House house : getInfluence().getHouses()) {
+			SHouse next = (SHouse) house;
 			result.append(next.getName());
 			result.append("$"); // change for unusual influence
 			result.append(getInfluence().getInfluence(next.getId()));
@@ -88,8 +90,7 @@ Comparable {
 		result.append("#");
 		result.append(getEnvironments().size());
 		result.append("#");
-		for (it = getEnvironments().iterator(); it.hasNext();) {
-			Continent t = (Continent) it.next();
+		for (Continent t : getEnvironments().toArray()) {
 			result.append(t.getSize());
 			result.append("#");
 			result.append(t.getEnvironment().getName());
@@ -387,16 +388,16 @@ Comparable {
 		
 		int Infcount = 0;
 		try {
-			HashMap influence = new HashMap();
+			HashMap<Integer,Integer> influence = new HashMap<Integer,Integer>();
 			{
 				StringTokenizer influences = new StringTokenizer(ST.nextToken(), "$");
 				while (influences.hasMoreElements()) {
 					String HouseName = influences.nextToken();
 					SHouse h = (SHouse)data.getHouseByName(HouseName);
 					Integer HouseInf = new Integer(influences.nextToken());
-					Infcount += HouseInf.intValue();
+					Infcount += HouseInf;
 					if (h != null) 
-						influence.put(new Integer(h.getId()), HouseInf);
+						influence.put(h.getId(), HouseInf);
 					else
 						MWServ.mwlog.errLog("House not found: " + HouseName);
 				}
@@ -598,8 +599,8 @@ Comparable {
 	 * @param Attacker - attacking faction
 	 * @return potential defending houses (ie - those with territory on the world)
 	 */
-	public Vector getDefenders(SHouse Attacker) {
-		Vector result = new Vector(getInfluence().getHouses());
+	public Vector<House> getDefenders(SHouse Attacker) {
+		Vector<House> result = new Vector<House>(getInfluence().getHouses());
 		result.trimToSize();
 		/*Iterator it = getInfluence().getHouses().iterator();
 		while (it.hasNext()) {
@@ -661,14 +662,13 @@ Comparable {
 		}
 		
 		result.append(":");
-		Iterator it = getInfluence().getHouses().iterator();
-		while (it.hasNext()) {
-			SHouse h = (SHouse) it.next();
+		for (House h : getInfluence().getHouses()) {
 			result.append(h.getName() + "(" + getInfluence().getInfluence(h.getId()) + "cp)");
-			if (it.hasNext())
-				result.append(", ");
-			else if (useHTML) result.append("<br>");
+			result.append(", ");
+			
 		}
+		if (useHTML) 
+			result.replace(result.length()-2, result.length(),"<br>");
 		return result.toString();
 	}
 	

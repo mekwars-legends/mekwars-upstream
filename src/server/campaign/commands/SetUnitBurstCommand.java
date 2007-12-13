@@ -77,7 +77,7 @@ public class SetUnitBurstCommand implements Command {
 		
 		SUnit unit = p.getUnit(unitid);
 		Entity en = unit.getEntity();
-		Iterator e = en.getWeapons();
+		Iterator<Mounted> e = en.getWeapons();
 		int location = 0;
 		Mounted mWeapon = null;
 		

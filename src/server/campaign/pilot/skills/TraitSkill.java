@@ -73,12 +73,11 @@ public class TraitSkill extends SPilotSkill {
         
     public void assignTrait(Pilot p){
         int size = 0;
-        int choice = 0;
         String Trait = "none";
         String faction = p.getCurrentFaction();
 
         //MWServ.mwlog.errLog("Trait Skill Faction: "+faction);
-        Vector traitNames = CampaignMain.cm.getFactionTraits(faction);
+        Vector<String> traitNames = CampaignMain.cm.getFactionTraits(faction);
 
         size = traitNames.size();
         
@@ -88,14 +87,9 @@ public class TraitSkill extends SPilotSkill {
             return;
         
         if ( size == 1)
-            Trait = (String)traitNames.elementAt(0);
+            Trait = traitNames.elementAt(0);
         else{
-	        choice = CampaignMain.cm.getRandomNumber(size);
-	
-	        //MWServ.mwlog.errLog("Trait Skill choice: "+choice);
-	        
-	        for (int i = 0; i < choice; i++)
-	            Trait = (String)traitNames.elementAt(i);
+        	Trait = traitNames.elementAt(CampaignMain.cm.getRandomNumber(size));
         }
         if ( Trait.indexOf("*") > -1)
             p.setTraitName(Trait.substring(0,Trait.indexOf("*")));

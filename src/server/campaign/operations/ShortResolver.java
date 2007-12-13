@@ -22,7 +22,6 @@ package server.campaign.operations;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
@@ -2481,10 +2480,8 @@ public class ShortResolver {
 
 						// do the delay and string setup
 						if (totalDelay > 0) {
-							Iterator i = target.getUnitFactories().iterator();
-							while (i.hasNext()) {
-								SUnitFactory currFacility = (SUnitFactory) i
-										.next();
+							for (UnitFactory UF : target.getUnitFactories()) {
+								SUnitFactory currFacility = (SUnitFactory) UF;
 								loserHSUpdates.append(currFacility.addRefresh(
 										totalDelay, false));
 							}
@@ -3204,10 +3201,8 @@ public class ShortResolver {
 
 						// do the refresh and string setup
 						if (totalRefreshBoost > 0) {
-							Iterator i = target.getUnitFactories().iterator();
-							while (i.hasNext()) {
-								SUnitFactory currFacility = (SUnitFactory) i
-										.next();
+							for (UnitFactory UF : target.getUnitFactories()) {
+								SUnitFactory currFacility = (SUnitFactory) UF;
 								winnerHSUpdates.append(currFacility.addRefresh(
 										totalRefreshBoost, false));
 							}
@@ -3550,11 +3545,8 @@ public class ShortResolver {
 			 * Need to use an iterator here b/c it allows for a chance to remove
 			 * units (over run) from living units, which foreach does not.
 			 */
-			Iterator i = livingUnits.values().iterator();
 			try {
-				while (i.hasNext()) {
-
-					OperationEntity currO = (OperationEntity) i.next();
+				for (OperationEntity currO : livingUnits.values() ) {
 
 					// so.getWinners() don't get overrun
 					if (so.getWinners().containsKey(
@@ -3563,7 +3555,7 @@ public class ShortResolver {
 
 					// if a unit isn't actually offboard, no check
 					if (currO.getOffBoardRange() <= 0)
-						return;
+						continue;
 
 					// integer which reresents this OEntity's likelyhood of
 					// being overrun
@@ -3574,7 +3566,7 @@ public class ShortResolver {
 					if (CampaignMain.cm.getRandomNumber(100) <= currOverrunChance) {
 
 						// its been overrun. remove from living units.
-						i.remove();
+						livingUnits.remove(currO);
 
 						// if capture roll passes, set as salvageable
 						if (CampaignMain.cm.getRandomNumber(100) < captureChance) {

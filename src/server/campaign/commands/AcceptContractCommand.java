@@ -47,7 +47,7 @@ public class AcceptContractCommand implements Command {
 		ContractInfo info = null;
 		boolean contractAccepted = false;
 		for (int i = 0; i < CampaignMain.cm.getUnresolvedContracts().size(); i++) {
-			info = (ContractInfo)(CampaignMain.cm.getUnresolvedContracts().get(i));
+			info = CampaignMain.cm.getUnresolvedContracts().get(i);
 			String receivingPlayerName = info.getPlayerName();
 			if (CampaignMain.cm.getPlayer(receivingPlayerName) == claimingPlayer) {//player can attempt to take offer
 				//check to see if offer is from player merc wants to accept from

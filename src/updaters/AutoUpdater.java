@@ -61,7 +61,6 @@ import java.io.InputStream;
 import java.io.File;
 import java.util.List;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.io.BufferedInputStream;
 import java.net.URL;
 import java.io.IOException;
@@ -105,17 +104,15 @@ public class AutoUpdater
         VersionManifest manifest = version.getManifest();
         ++stepsCompleted;
 
-        List fileDiffInfos = manifest.getDiffInfos(this);
+        List<FileInfo> fileDiffInfos = manifest.getDiffInfos(this);
 
         //set up progress monitor for getting the rest of the files
         setMaximumSteps(fileDiffInfos.size()+stepsCompleted);
         setProgress(stepsCompleted);
 
         //for each file that differs, update it
-        Iterator iter = fileDiffInfos.iterator();
-        while(iter.hasNext())
+        for (FileInfo nextFileInfo : fileDiffInfos)
         {
-            FileInfo nextFileInfo = (FileInfo)iter.next();
             FileDiff diff = repository.getDiff(nextFileInfo,version);
             diff.setTempFileUpToDate(nextFileInfo.getTempFileUpToDate());
             diff.apply(this,repository);
@@ -165,16 +162,13 @@ public class AutoUpdater
     {
     	//get the list of file offsets that the manifest says should
     	//be on the client
-    	List/*String*/ expectedOffsetStructure =
-    	    manifest.getClientFileStructure();
+    	List<String> expectedOffsetStructure =manifest.getClientFileStructure();
     
     	//convert offset structure to a bunch of File objects
     	List<File> expectedFileStructure = new ArrayList<File>(expectedOffsetStructure.size());
     
-    	Iterator offsetIter = expectedOffsetStructure.iterator();
-    	while(offsetIter.hasNext())
+    	for (String offset : expectedOffsetStructure)
     	{
-    	    String offset = (String)offsetIter.next();
     	    expectedFileStructure.add(new File(localDir_, offset));
     	}
     

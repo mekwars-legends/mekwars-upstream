@@ -23,6 +23,7 @@ import java.util.StringTokenizer;
 import client.MWClient;
 import client.util.SerializeEntity;
 
+import megamek.common.Building;
 import megamek.common.Entity;
 import megamek.common.Mech;
 import megamek.common.Player;
@@ -146,7 +147,7 @@ public class RGTS extends Command {
 	}
 	
 	public int getBuildingsLeft(){
-		Enumeration buildings = server.getGame().getBoard().getBuildings();
+		Enumeration<Building> buildings = server.getGame().getBoard().getBuildings();
 		int buildingCount = 0;
 		while ( buildings.hasMoreElements() ){
 			buildings.nextElement();

@@ -350,7 +350,7 @@ public class Influences implements MutableSerializable, MMNetSerializable {
     /**
      * Read from a binary stream
      */
-    public void binIn(BinReader in, Map factions) throws IOException {
+    public void binIn(BinReader in, Map<Integer,House> factions) throws IOException {
         influences = new HashMap();
         int size = in.readInt("influence.size");
         for (int i = 0; i < size; i++) {

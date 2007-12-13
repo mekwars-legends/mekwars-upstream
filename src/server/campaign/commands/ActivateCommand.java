@@ -207,7 +207,7 @@ public class ActivateCommand implements Command {
 		
 		//loop though all units in all armies
 		for (SArmy army : armies) {
-			Iterator units = army.getUnits().iterator();
+			Iterator<Unit> units = army.getUnits().iterator();
 			while (units.hasNext()) {
 				SUnit unit = (SUnit) units.next();
 				if (!UnitUtils.canStartUp(unit.getEntity()))
@@ -231,7 +231,7 @@ public class ActivateCommand implements Command {
 		
 		//loop though all units in all armies
 		for (SArmy army : armies) {
-			Iterator units = army.getUnits().iterator();
+			Iterator<Unit> units = army.getUnits().iterator();
 			while (units.hasNext()) {
 				
 				//check RL/LL on a standard mek
@@ -273,7 +273,7 @@ public class ActivateCommand implements Command {
         
         //loop though all units in all armies
         for (SArmy army : armies) {
-            Iterator units = army.getUnits().iterator();
+            Iterator<Unit> units = army.getUnits().iterator();
             while (units.hasNext()) {
                 
                 //check RL/LL on a standard mek
@@ -297,7 +297,7 @@ public class ActivateCommand implements Command {
         
         //loop though all units in all armies
         for (SArmy army : armies) {
-            Iterator units = army.getUnits().iterator();
+            Iterator<Unit> units = army.getUnits().iterator();
             while (units.hasNext()) {
                 
                 SUnit unit = (SUnit) units.next();

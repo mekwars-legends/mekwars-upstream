@@ -57,6 +57,7 @@ import server.campaign.commands.mod.*;
 import server.campaign.commands.helpers.*;
 import server.campaign.market2.Market2;
 import server.campaign.market2.PartsMarket;
+import server.campaign.mercenaries.ContractInfo;
 import server.campaign.mercenaries.MercHouse;
 import server.campaign.operations.Operation;
 import server.campaign.operations.OperationManager;
@@ -85,7 +86,6 @@ import common.Planet;
 import common.campaign.pilot.skills.PilotSkill;
 import common.util.UnitUtils;
 
-// TODO: remove serializable? remanant of a bygone era?
 public final class CampaignMain implements Serializable {
 
 	private static final long serialVersionUID = -8671163467590633378L;
@@ -154,7 +154,7 @@ public final class CampaignMain implements Serializable {
 
 	private OperationManager opsManager;
 
-	private Vector unresolvedContracts = new Vector(1,1);
+	private Vector<ContractInfo> unresolvedContracts = new Vector<ContractInfo>(1,1);
 
 	private UnitCosts unitCostLists = null;
 
@@ -1728,15 +1728,12 @@ public final class CampaignMain implements Serializable {
 						"./data/commands/commands.dat");
 				PrintStream p = new PrintStream(out);
 
-				String commandName = "";
-				for (Iterator i = commandTable.keySet().iterator(); i.hasNext(); commandName = (String) i
-						.next()) {
-					Command commandMethod = CampaignMain.cm.getServerCommands()
-							.get(commandName);
-					if (commandName == null || commandMethod == null)
+				for (String commandName  : commandTable.keySet()) {
+					
+					Command commandMethod = CampaignMain.cm.getServerCommands().get(commandName);
+					if (commandMethod == null)
 						continue;
-					p.println(commandName.toUpperCase() + "#"
-							+ commandMethod.getExecutionLevel());
+					p.println(commandName.toUpperCase() + "#"+ commandMethod.getExecutionLevel());
 				}
 			} catch (Exception ex1) {
 				MWServ.mwlog.errLog(ex1);
@@ -2576,7 +2573,7 @@ public final class CampaignMain implements Serializable {
 		return IThread;
 	}
 
-	public Vector getUnresolvedContracts() {
+	public Vector<ContractInfo> getUnresolvedContracts() {
 		return unresolvedContracts;
 	}
 
@@ -3115,7 +3112,7 @@ public final class CampaignMain implements Serializable {
 		return traits;
 	}
 
-	public void saveFactionTraits(String faction, Vector traits) {
+	public void saveFactionTraits(String faction, Vector<String> traits) {
 
 		File traitFile = new File("./data/pilotnames/" + faction.toLowerCase()
 				+ "traitnames.txt");
@@ -3128,8 +3125,7 @@ public final class CampaignMain implements Serializable {
 			FileOutputStream fos = new FileOutputStream(traitFile);
 			PrintStream p = new PrintStream(fos);
 
-			for (int pos = 0; pos < traits.size(); pos++) {
-				String tempTrait = (String) traits.elementAt(pos);
+			for (String tempTrait : traits) {
 				p.println(tempTrait);
 			}
 

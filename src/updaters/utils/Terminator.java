@@ -8,7 +8,6 @@
 package updaters.utils;
 
 import java.io.File;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -88,10 +87,8 @@ public class Terminator
 
 	public void runExitJobs()
 	{
-		Iterator iter = jobsToRunOnExit_.iterator();
-		while ( iter.hasNext() )
+		for ( VoidFunction vf : jobsToRunOnExit_)
 		{
-			VoidFunction vf = (VoidFunction) iter.next();
 			vf.execute();
 		}
 	}

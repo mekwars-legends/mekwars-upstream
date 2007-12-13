@@ -68,8 +68,8 @@ public interface TreeReader {
      *      informations in the data file, but this does not work with all 
      *      drivers.
      */
-    public void readCollection(Collection col, 
-            Class cl, 
+    public void readCollection(Collection<?> col, 
+            Class<?> cl, 
             CampaignData dataProvider,
             String name) throws IOException;
 

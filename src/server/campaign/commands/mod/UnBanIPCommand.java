@@ -52,10 +52,10 @@ public class UnBanIPCommand implements Command {
         try{
             int id  = Integer.parseInt(command.nextToken());
         
-            Enumeration e = CampaignMain.cm.getServer().getBanIps().keys();
+            Enumeration<InetAddress> e = CampaignMain.cm.getServer().getBanIps().keys();
             InetAddress inetAddress = InetAddress.getLocalHost();
             while (id > 0) {
-                inetAddress = (InetAddress) e.nextElement();
+                inetAddress = e.nextElement();
                 id--;
             }
             CampaignMain.cm.getServer().getBanIps().remove(inetAddress);

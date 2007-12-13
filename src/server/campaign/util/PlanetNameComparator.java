@@ -29,7 +29,7 @@ import server.campaign.SPlanet;
  * @author Helge Richter
  *
  */
-public class PlanetNameComparator implements Comparator {
+public class PlanetNameComparator implements Comparator<Object> {
 	/* (non-Javadoc)
 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */

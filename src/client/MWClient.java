@@ -734,8 +734,8 @@ public final class MWClient implements IClient {
 
 			if (!commands.containsKey(task)) {
 				try {
-					Class cmdClass = Class.forName(getClass().getPackage().getName()+".cmd."+task);
-					Constructor c = cmdClass.getConstructor(new Class[]{MWClient.class});
+					Class<?> cmdClass = Class.forName(getClass().getPackage().getName()+".cmd."+task);
+					Constructor<?> c = cmdClass.getConstructor(new Class[]{MWClient.class});
 					Command cmd = (Command)c.newInstance(new Object[]{this});
 					commands.put(task, cmd);
 				} catch (Exception e) {

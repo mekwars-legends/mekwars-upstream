@@ -24,7 +24,6 @@ import java.awt.Dimension;
 import java.io.IOException;
 import java.io.File;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.Vector;
@@ -41,7 +40,7 @@ import common.util.Position;
  *  
  */
 
-public class Planet implements Comparable, MutableSerializable, MMNetSerializable {
+public class Planet implements Comparable<Object>, MutableSerializable, MMNetSerializable {
 
 	//VARIABLES
 	/**
@@ -173,7 +172,7 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
     /**
      * Read the stream back to a Planet object.
      */
-    public Planet(BinReader in, Map factions, CampaignData data) throws IOException {
+    public Planet(BinReader in, Map<Integer,House> factions, CampaignData data) throws IOException {
     	this.setId(new Integer(in.readInt("id")));
     	this.setName(in.readLine("name"));
     	this.setPosition(new Position(in.readDouble("x"), in.readDouble("y")));
@@ -428,8 +427,8 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
         out.println(this.getPosition().x, "x");
         out.println(this.getPosition().y, "y");
         out.println(this.getUnitFactories().size(), "unitFactories.size");
-        for (Iterator i = this.getUnitFactories().iterator(); i.hasNext();) {
-            ((UnitFactory)i.next()).binOut(out);
+        for (UnitFactory i : this.getUnitFactories()) {
+            i.binOut(out);
         }
         this.getEnvironments().binOut(out);
         out.println(this.getDescription(), "description");
@@ -537,14 +536,12 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
         
         if (getUnitFactories().size() > 0)
         {
-            Iterator it = getUnitFactories().iterator();
             String founder = "";
             if ( getUnitFactories().size() == 1)
                 result.append("<br><b>Factory:</b><br>");
             else
                 result.append("<br><b>Factories:</b><br>");
-            while(it.hasNext()) {
-            	UnitFactory u = (UnitFactory)it.next();
+            for (UnitFactory u : getUnitFactories()) {
             	founder = u.getFounder();
             	if (client)
             	    result.append("<img src=\"file:///"+ new File(".").getAbsolutePath()+"/data/images/open"+founder+".gif\">"+u.getSize()+" "
@@ -566,13 +563,11 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
         result.append("Average High: "+getTemp().height+"<br>");
         
         result.append("<br><b>Terrain:</b><br>");
-        Iterator it = getEnvironments().iterator();
         int maxProbab = getEnvironments().getTotalEnivronmentPropabilities();
-        if (!it.hasNext())
+        if (getEnvironments().size() < 1)
             result.append("nothing special");
         else {
-            while(it.hasNext()) {
-                Continent pe = (Continent)it.next();
+            for (Continent pe : getEnvironments().toArray()) {
                 int curProb = (pe.getSize()*100/maxProbab); 
                 if (curProb < 10)
                 	result.append("0");
@@ -585,29 +580,25 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
                 String terrainName = pe.getEnvironment().getName();
                 
                 result.append(" " + terrainName);
-                if (it.hasNext())
-                    result.append("<br>");
+                result.append("<br>");
             }
         }
        
         // influence
-        result.append("<br><br><b>Influence:</b><br>");
-        it = getInfluence().getHouses().iterator();
-        while (it.hasNext()) {
-            House h = (House) it.next();
+        result.append("<br><b>Influence:</b><br>");
+        for (House h : getInfluence().getHouses()) {
             result.append("<font color="+h.getHouseColor()+">"+h.getName() + "</font> (" + getInfluence().getInfluence(h.getId()) + ")");
-            if (it.hasNext())
-                result.append(", ");
-            else
-                result.append("<br>");
-        } // while*/
+            result.append(", ");
+        } // End for Each
+        
+        result.replace(result.length()-2, result.length(),"<br>");
+
         if ( this.getPlanetFlags().size() > 0){
             result.append("<br><b>Points of Intereset:</b><br>");
             for( String value : this.getPlanetFlags().values() ){
                 result.append(value+", ");
             }
-            result.delete(result.length()-2, result.length());
-            result.append("<br> <br>");
+            result.replace(result.length()-2, result.length(),"<br> <br>");
         }//end if planet has flags
         return result;
 	}
@@ -712,14 +703,12 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
                     + " extra .<br><br>");
         if (getUnitFactories().size() > 0)
         {
-            Iterator it = getUnitFactories().iterator();
             String founder = "";
             if ( getUnitFactories().size() == 1)
                 result.append("<br><b>Factory:</b><br>");
             else
                 result.append("<br><b>Factories:</b><br>");
-            while(it.hasNext()) {
-            	UnitFactory u = (UnitFactory)it.next();
+            for (UnitFactory u : getUnitFactories()) {
             	founder = u.getFounder();
             	    result.append("<img src=\"file:///"+ new File(".").getAbsolutePath()+"/data/images/open"+founder+".gif\">"+u.getSize()+" "
                             +u.getFullTypeString() + u.getName() + " built by " + founder +"<br>");
@@ -727,13 +716,11 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
         }
     
         result.append("<br><b>Terrain:</b><br>");
-        Iterator it = getEnvironments().iterator();
         int maxProbab = getEnvironments().getTotalEnivronmentPropabilities();
-        if (!it.hasNext())
+        if (getEnvironments().size() < 1)
             result.append("nothing special");
         else {
-            while(it.hasNext()) {
-                Continent pe = (Continent)it.next();
+            for (Continent pe : getEnvironments().toArray()) {
                 int curProb = (pe.getSize()*100/maxProbab); 
                 if (curProb < 10)
                 	result.append("0");
@@ -764,22 +751,17 @@ public class Planet implements Comparable, MutableSerializable, MMNetSerializabl
 	                    result.append("<br>Max Visibility: "+aTerrain.getMaxVisibility());
 	                }
                 }
-                if (it.hasNext())
-                    result.append("<br>");
+                result.append("<br>");
             }
         }
        
         // influence
         result.append("<br><br><b>Influence:</b><br>");
-        it = getInfluence().getHouses().iterator();
-        while (it.hasNext()) {
-            House h = (House) it.next();
+        for (House h  : getInfluence().getHouses()) {
             result.append("<font color="+h.getHouseColor()+">"+h.getName() + "</font> (" + getInfluence().getInfluence(h.getId()) + ")");
-            if (it.hasNext())
-                result.append(", ");
-            else
-                result.append("<br>");
+            result.append(", ");
         } // while*/
+        result.replace(result.length()-2, result.length(),"<br>");
         if ( this.getPlanetFlags().size() > 0){
             result.append("<br><b>Points of Intereset:</b><br>");
             for( String value : this.getPlanetFlags().values() ){

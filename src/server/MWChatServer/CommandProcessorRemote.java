@@ -59,7 +59,7 @@ public class CommandProcessorRemote implements ICommands{
         _processors = new HashMap<String,ICommandProcessorRemote>();
         _idleTimeImmune = new HashSet<String>();
         
-        for (Enumeration e = p.propertyNames(); e.hasMoreElements(); ) {
+        for (Enumeration<?> e = p.propertyNames(); e.hasMoreElements(); ) {
             String name = (String)e.nextElement();
             int idx = name.indexOf(".");
             if (idx < 1) {
@@ -178,7 +178,7 @@ public class CommandProcessorRemote implements ICommands{
      * Get the map that contains the command processors.  This method exists
      * so the Help command processor can do its work
      */
-    public static Map getCommandProcessors() {
+    public static Map<String,ICommandProcessorRemote> getCommandProcessors() {
         return _processors;
     }
 }

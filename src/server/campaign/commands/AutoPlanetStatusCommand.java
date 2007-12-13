@@ -18,6 +18,9 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 import java.util.Iterator;
+
+import common.Planet;
+
 import server.campaign.CampaignMain;
 import server.campaign.SPlanet;
 
@@ -32,7 +35,7 @@ public class AutoPlanetStatusCommand implements Command {
 	public void process(StringTokenizer command,String Username) {
 		
 		//Send all SPlanet Info to the user
-		Iterator e = CampaignMain.cm.getData().getAllPlanets().iterator();
+		Iterator<Planet> e = CampaignMain.cm.getData().getAllPlanets().iterator();
 		String result = "PL|";
 		while (e.hasNext()) {
 			SPlanet p = (SPlanet)e.next();

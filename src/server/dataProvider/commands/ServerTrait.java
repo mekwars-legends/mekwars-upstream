@@ -17,10 +17,10 @@
 package server.dataProvider.commands;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Vector;
 
 import common.CampaignData;
+import common.House;
 import common.util.BinWriter;
 
 import server.dataProvider.ServerCommand;
@@ -41,17 +41,16 @@ public class ServerTrait implements ServerCommand {
     public void execute(Date timestamp, BinWriter out, CampaignData data)
             throws Exception {
         String factionName = "common";
-        Vector traits = CampaignMain.cm.getFactionTraits(factionName);
+        Vector<String> traits = CampaignMain.cm.getFactionTraits(factionName);
         out.println(factionName,"TraitLine");
         out.println(traits.size(),"TraitLine");
         for ( int i = 0; i < traits.size(); i++){
-            out.println((String)traits.elementAt(i),"TraitLine");
+            out.println(traits.elementAt(i),"TraitLine");
         }
         
-        Iterator factions = CampaignMain.cm.getData().getAllHouses().iterator();
         
-        while ( factions.hasNext() ){
-            SHouse faction = (SHouse) factions.next();
+        for ( House f : CampaignMain.cm.getData().getAllHouses()){
+            SHouse faction = (SHouse) f;
             factionName = faction.getName().toLowerCase();
             traits = CampaignMain.cm.getFactionTraits(factionName);
             out.println(factionName,"TraitLine");

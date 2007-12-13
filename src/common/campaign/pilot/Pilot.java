@@ -247,7 +247,7 @@ public class Pilot implements MMNetSerializable {
       }
 	 
     public void binIn(TreeReader in, CampaignData data){
-    	//TODO
+    	
     }
     
     public int getKills(){

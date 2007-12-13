@@ -57,11 +57,11 @@ public class AdminListHouseBannedAmmoCommand implements Command {
 			CampaignMain.cm.toUser("That faction is not currently banning any ammo.",Username,true);
 		else {
 		    CampaignMain.cm.toUser("Banned ammo for Faction "+h.getName(),Username,true);
-			Enumeration ammoBan = h.getBannedAmmo().keys();
-			Hashtable munitions = CampaignMain.cm.getData().getMunitionsByNumber();
+			Enumeration<String> ammoBan = h.getBannedAmmo().keys();
+			Hashtable<Long,String> munitions = CampaignMain.cm.getData().getMunitionsByNumber();
 			while (ammoBan.hasMoreElements()) {
-				String ammoName = (String)ammoBan.nextElement();
-				CampaignMain.cm.toUser((String)munitions.get(new Long(ammoName)),Username,true);
+				String ammoName = ammoBan.nextElement();
+				CampaignMain.cm.toUser(munitions.get(new Long(ammoName)),Username,true);
 			}
 		}
 		

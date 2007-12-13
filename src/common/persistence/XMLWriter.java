@@ -18,7 +18,6 @@ package common.persistence;
 
 import java.io.PrintWriter;
 import java.util.Collection;
-import java.util.Iterator;
 
 
 /**
@@ -114,11 +113,11 @@ public class XMLWriter implements TreeWriter {
     /**
      * @see common.persistence.TreeWriter#write(java.util.Collection, java.lang.String)
      */
-    public void write(Collection v, String name) {
+    public void write(Collection<?> v, String name) {
         out.println("<"+name+" size="+v.size()+">");
         indent += "  ";
-        for (Iterator it = v.iterator(); it.hasNext();)
-            write((MMNetSerializable)it.next(), name);
+        for (Object it : v)
+            write((MMNetSerializable)it, name);
         endDataBlock(name);
     }
 }

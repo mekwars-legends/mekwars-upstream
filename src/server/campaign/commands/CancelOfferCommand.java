@@ -42,7 +42,7 @@ public class CancelOfferCommand implements Command {
 		boolean contractRemoved = false;
 		String receivingPlayerName = "";
 		for (int i = 0; i < CampaignMain.cm.getUnresolvedContracts().size(); i++) {
-			ContractInfo info = (ContractInfo)CampaignMain.cm.getUnresolvedContracts().get(i);
+			ContractInfo info = CampaignMain.cm.getUnresolvedContracts().get(i);
 			if (info.getOfferingPlayer() == offeringPlayer) {
 				//if contract belong to offering player, remove the contract and set boolean to true
 				receivingPlayerName = info.getPlayerName();

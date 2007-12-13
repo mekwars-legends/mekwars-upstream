@@ -52,8 +52,8 @@ public class BlackMarketModel extends AbstractTableModel {
     private static final long serialVersionUID = -783116408720137035L;
     public MWClient mwclient;
 	CCampaign theCampaign;
-	public TreeMap mechs; //this collection is backed by the main map, so it should always be good
-	public TreeMap bids;
+	public TreeMap<Integer,CBMUnit> mechs; //this collection is backed by the main map, so it should always be good
+	//public TreeMap bids;
 	public Object[] sortedMechs; //not really though, sort is handled elsewhere...
 	
 	public final static int MECH = 0;

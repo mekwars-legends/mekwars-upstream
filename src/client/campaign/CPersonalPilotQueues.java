@@ -177,7 +177,7 @@ public class CPersonalPilotQueues {
 	 * they will never be null, even if a LIGHTONLY option for vehs
 	 * or infantry is enabled.
 	 */
-	public LinkedList getPilotQueue(int unitType, int weightClass) {
+	public LinkedList<Pilot> getPilotQueue(int unitType, int weightClass) {
 		return this.getUnitTypeQueue(unitType).get(weightClass);
 	}
 	

@@ -1093,8 +1093,10 @@ public final class SUnit extends Unit implements Serializable {
 			setModelname(unitEntity.getModel());
 		this.getC3Type(unitEntity);
 		
-		if (this.getModelName().equals("OMG-UR-FD"))
+		if (this.getModelName().equals("OMG-UR-FD")){
 			this.setProducer("Error loading unit. Tried to build from "+this.getUnitFilename());
+			this.setWeightclass(SUnit.LIGHT);
+		}
 		
 		/*
 		 //Set Weight

@@ -202,6 +202,7 @@ public class XMLTerrainDataParser implements XMLResponder{
 		MWServ.mwlog.mainLog("Parsing finished without error");
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void recordElementStart(String name, Hashtable attr) throws ParseException {
 		//MWServ.mwlog.mainLog(prefix+"Element: "+name);
 		lastElement = name;

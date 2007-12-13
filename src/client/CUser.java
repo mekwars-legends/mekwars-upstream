@@ -27,7 +27,7 @@ import common.util.StringUtils;
  * Class for User objects held in userlist
  */
 
-public class CUser implements Comparable {
+public class CUser implements Comparable<Object> {
 
 	protected String Name;
 

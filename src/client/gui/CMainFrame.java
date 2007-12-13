@@ -339,7 +339,7 @@ public class CMainFrame extends JFrame {
 				//assume mod
 				try {
 					URLClassLoader loader = new URLClassLoader(new URL[] {loadJar.toURI().toURL()});
-					Class c = loader.loadClass("admin.ModeratorMenu");
+					Class<?> c = loader.loadClass("admin.ModeratorMenu");
 					Object o = c.newInstance();
 					c.getDeclaredMethod("createMenu", new Class[] {MWClient.class}).invoke(o,new Object[] {mwclient});
 					JMenu tempMenu = (JMenu)o;
@@ -355,7 +355,7 @@ public class CMainFrame extends JFrame {
 				}
 				try {
 					URLClassLoader loader = new URLClassLoader(new URL[] {loadJar.toURI().toURL()});
-					Class c = loader.loadClass("admin.AdminMenu");
+					Class<?> c = loader.loadClass("admin.AdminMenu");
 					Object o = c.newInstance();
 					c.getDeclaredMethod("createMenu", new Class[] {MWClient.class}).invoke(o,new Object[] {mwclient});
 					JMenu tempMenu = (JMenu)o;
@@ -375,7 +375,7 @@ public class CMainFrame extends JFrame {
 					public void actionPerformed(ActionEvent e) {
 						try{
 							URLClassLoader loader = new URLClassLoader(new URL[] {new File("./MekWarsOpEditor.jar").toURI().toURL()});
-							Class c = loader.loadClass("OperationsEditor.MainOperations");
+							Class<?> c = loader.loadClass("OperationsEditor.MainOperations");
 							Object o = c.newInstance();
 							c.getDeclaredMethod("main", new Class[] {Object.class}).invoke(o,new Object[] {mwclient});
 						

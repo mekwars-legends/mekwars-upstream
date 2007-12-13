@@ -19,6 +19,8 @@ package server.campaign.commands;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import common.Planet;
+
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SHouse;
@@ -81,7 +83,7 @@ public class RangeCommand implements Command {
 			}
 			
 			result += ":<br>";
-			Iterator e = CampaignMain.cm.getData().getAllPlanets().iterator();
+			Iterator<Planet> e = CampaignMain.cm.getData().getAllPlanets().iterator();
 			while (e.hasNext()) {
 				SPlanet p = (SPlanet)e.next();
 				if (h.getDistanceTo(p, CampaignMain.cm.getPlayer(Username)) <= range) {

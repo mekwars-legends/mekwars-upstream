@@ -18,7 +18,6 @@ package server.campaign.commands;
 
 import java.util.Enumeration;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import common.Unit;
 
@@ -125,11 +124,10 @@ public class ExchangePilotInUnitCommand implements Command {
 				
                 //CampaignMain.cm.toUser("PL|PPQ|"+p.getPersonalPilotQueue().toString(true),Username,false);
 				CampaignMain.cm.toUser("PL|UU|"+m.getId()+"|"+m.toString(true),Username,false);
-				Vector armies = p.getArmies();
 				
-				Enumeration f = armies.elements();
+				Enumeration<SArmy> f = p.getArmies().elements();
 				while (f.hasMoreElements()) {
-					SArmy currArmy = (SArmy)f.nextElement();
+					SArmy currArmy = f.nextElement();
 					if (currArmy.getUnit(m.getId()) != null) {
 						currArmy.setBV(0);//not null so recalc BV of the army
 						CampaignMain.cm.toUser("PL|SAD|"+currArmy.toString(true,"%"),Username,false);

@@ -33,11 +33,11 @@
 
 package server.mwcyclopscomm;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import common.Unit;
 import common.campaign.pilot.Pilot;
+import common.campaign.pilot.skills.PilotSkill;
 import common.util.MD5;
 
 import server.MWServ;
@@ -180,11 +180,9 @@ public class  MWCyclopsPilot{
 			skillArray.append(MWCyclopsUtils.arrayStart());
 			skillArray.append(MWCyclopsUtils.dataStart());
 			
-			Iterator it = pilot.getSkills().getSkillIterator();
-			
-			while ( it.hasNext() ){
+			for (PilotSkill skills : pilot.getSkills().getPilotSkills()){
 				
-				SPilotSkill skill = (SPilotSkill)it.next();
+				SPilotSkill skill = (SPilotSkill)skills;
 				
 				skillArray.append(MWCyclopsUtils.value(createPilotSkillStruct(skill)));
 			}

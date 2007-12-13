@@ -30,7 +30,7 @@ package server.campaign;
 import java.math.BigDecimal;
 import server.campaign.SHouse;
 
-public final class SmallPlayer implements Comparable {
+public final class SmallPlayer implements Comparable<Object> {
 	
 	//VARIABLES
 	private int experience = 0;

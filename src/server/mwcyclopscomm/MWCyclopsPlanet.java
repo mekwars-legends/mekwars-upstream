@@ -34,7 +34,6 @@
 package server.mwcyclopscomm;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import common.Continent;
 import common.House;
@@ -157,10 +156,8 @@ import server.campaign.SPlanet;
              hasEnhancements = true;
          }
          
-         Iterator it = planet.getUnitFactories().iterator();
-         while ( it.hasNext() ){
+         for ( UnitFactory factory : planet.getUnitFactories()){
              hasEnhancements = true;
-             UnitFactory factory = (UnitFactory)it.next();
              enhancementArray.append(MWCyclopsUtils.value(createPlanetFactoryEnhancementStruct(factory)));
          }
          enhancementArray.append(MWCyclopsUtils.dataEnd());

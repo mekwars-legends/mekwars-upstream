@@ -572,12 +572,12 @@ public class UnitUtils  {
         
         if ( ammo != null && ammo.hasMoreTokens()){
             int locationCount = 0;
-            Iterator munitions = unit.getAmmo().iterator();
+            Iterator<Mounted> munitions = unit.getAmmo().iterator();
             
             //make sure the unit actually has ammo.
             if ( munitions.hasNext() ){
                 
-                Mounted weapon = (Mounted)munitions.next();
+                Mounted weapon = munitions.next();
             
                 try{
                     while ( ammo.hasMoreTokens() ){
@@ -585,7 +585,7 @@ public class UnitUtils  {
                         int ammoLeft = Integer.parseInt(ammo.nextToken());
                         
                         while ( location != locationCount ){
-                            weapon = (Mounted)munitions.next();
+                            weapon = munitions.next();
                             locationCount++;
                         }
                         
@@ -702,12 +702,12 @@ public class UnitUtils  {
         
         if ( ammo != null && ammo.hasMoreTokens()){
             int locationCount = 0;
-            Iterator munitions = unit.getAmmo().iterator();
+            Iterator<Mounted> munitions = unit.getAmmo().iterator();
             
             //make sure the unit actually has ammo.
             if ( munitions.hasNext() ){
                 
-                Mounted weapon = (Mounted)munitions.next();
+                Mounted weapon = munitions.next();
             
                 try{
                     while ( ammo.hasMoreTokens() ){
@@ -715,7 +715,7 @@ public class UnitUtils  {
                         int ammoLeft = Integer.parseInt(ammo.nextToken());
                         
                         while ( location != locationCount ){
-                            weapon = (Mounted)munitions.next();
+                            weapon = munitions.next();
                             locationCount++;
                         }
                         

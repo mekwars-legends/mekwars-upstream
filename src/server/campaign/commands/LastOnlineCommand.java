@@ -19,6 +19,9 @@ package server.campaign.commands;
 import java.util.Date;
 import java.util.StringTokenizer;
 import java.util.Iterator;
+
+import common.House;
+
 import server.campaign.*;
 
 public class LastOnlineCommand implements Command {
@@ -42,7 +45,7 @@ public class LastOnlineCommand implements Command {
 		String name = command.nextToken().toLowerCase();
 		
 		SmallPlayer smallp = null;
-		Iterator i = CampaignMain.cm.getData().getAllHouses().iterator();
+		Iterator<House> i = CampaignMain.cm.getData().getAllHouses().iterator();
 		boolean playerFound = false;
 		while (i.hasNext() && !playerFound) {
 			SHouse h = (SHouse) i.next();

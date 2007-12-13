@@ -79,6 +79,5 @@ public class Continent implements MMNetSerializable {
        out.write(getSize(), "size");
    }
    public void binIn(TreeReader in, CampaignData data){
-   	//TODO
    }
 }

@@ -14,8 +14,10 @@
 
 package server.campaign.commands.admin;
 
-import java.util.Iterator;
 import java.util.StringTokenizer;
+
+import common.House;
+
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
@@ -45,9 +47,8 @@ public class AdminLockCampaignCommand implements Command {
 		}
 		
 		//deactivate all active players, and tell them why.
-		Iterator e = CampaignMain.cm.getData().getAllHouses().iterator();
-		while (e.hasNext()) {
-			SHouse h = (SHouse)e.next();
+		for (House house : CampaignMain.cm.getData().getAllHouses()) {
+			SHouse h = (SHouse)house;
 			for (SPlayer p : h.getActivePlayers().values()) {
 				p.setActive(false);
 				CampaignMain.cm.toUser(Username + " locked the campaign. You were deactivated.",p.getName(),true);

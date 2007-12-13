@@ -28,7 +28,6 @@ import java.io.InputStreamReader;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.Random;
 import java.util.StringTokenizer;
 
@@ -359,9 +358,8 @@ public class SPilot extends Pilot {
 		result.append(delimiter);
 		result.append(getSkills().size());
 		result.append(delimiter);
-		Iterator it = getSkills().getSkillIterator();
-		while (it.hasNext()){
-			SPilotSkill sk = (SPilotSkill) it.next();
+		for (PilotSkill skill : getSkills().getPilotSkills()){
+			SPilotSkill sk = (SPilotSkill)skill;
 			result.append(sk.getId());
 			result.append(delimiter);
 			if (toPlayer) {
@@ -478,9 +476,8 @@ public class SPilot extends Pilot {
 			ps.executeUpdate(sql.toString());
 			
 			if(getSkills().size() > 0) {
-				Iterator it = getSkills().getSkillIterator();
-				while(it.hasNext()) {
-					SPilotSkill sk = (SPilotSkill) it.next();
+				for (PilotSkill skill : getSkills().getPilotSkills()) {
+					SPilotSkill sk = (SPilotSkill) skill;
 					sql.setLength(0);
 					sql.append("INSERT into pilotSkills set ");
 					sql.append("pilotID = " + getPilotId() + ", ");

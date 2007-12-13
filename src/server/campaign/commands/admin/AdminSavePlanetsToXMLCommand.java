@@ -18,7 +18,6 @@ package server.campaign.commands.admin;
 
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import server.MWServ;
@@ -32,7 +31,10 @@ import server.MWChatServer.auth.IAuthenticator;
 
 import common.AdvancedTerrain;
 import common.Continent;
+import common.House;
+import common.Planet;
 import common.Unit;
+import common.UnitFactory;
 
 public class AdminSavePlanetsToXMLCommand implements Command {
 	int accessLevel = IAuthenticator.ADMIN;
@@ -56,19 +58,18 @@ public class AdminSavePlanetsToXMLCommand implements Command {
 			p.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE DOCUMENT SYSTEM \"planets.dtd\">");
 			p.println("<DOCUMENT>");
 			p.println("<MEGAMEKNETPLANETDATA>");
-			Iterator e = CampaignMain.cm.getData().getAllPlanets().iterator();
-			while (e.hasNext()) {
-				SPlanet planet = (SPlanet) e.next();
+
+			for (Planet planets : CampaignMain.cm.getData().getAllPlanets()) {
+				SPlanet planet = (SPlanet) planets;
 				p.println("	<PLANET>");
 				p.println("		<NAME>"+planet.getName()+"</NAME>");
 				p.println("		<COMPPRODUCTION>"+planet.getCompProduction()+"</COMPPRODUCTION>");
 				p.println("		<XCOOD>"+ planet.getPosition().x+"</XCOOD>");
 				p.println("		<YCOOD>"+planet.getPosition().y+"</YCOOD>");
 				p.println("		<INFLUENCE>");
-				Iterator flu = planet.getInfluence().getHouses().iterator();
-				while (flu.hasNext()) {
+				for (House flu : planet.getInfluence().getHouses()) {
 					p.println("			<INF>");
-					SHouse faction = (SHouse) flu.next();
+					SHouse faction = (SHouse) flu;
 					p.println("				<FACTION>"+faction.getName()+"</FACTION>");
 					p.println("				<AMOUNT>"+planet.getInfluence().getInfluence(faction.getId())+"</AMOUNT>");
 					p.println("			</INF>");
@@ -77,10 +78,9 @@ public class AdminSavePlanetsToXMLCommand implements Command {
 				p.print("       <ORIGINALOWNER>");
 				p.print(planet.getOriginalOwner());
 				p.println("</ORIGINALOWNER>");
-				Iterator UF = planet.getUnitFactories().iterator();
-				while (UF.hasNext()) {
+				for (UnitFactory UF : planet.getUnitFactories()) {
 					p.println("		<UNITFACTORY>");
-					SUnitFactory factory = (SUnitFactory)UF.next();
+					SUnitFactory factory = (SUnitFactory)UF;
 					p.println("			<FACTORYNAME>"+factory.getName()+"</FACTORYNAME>");
 					p.println("			<SIZE>"+factory.getSize()+"</SIZE>");
 					p.println("			<FOUNDER>"+factory.getFounder()+"</FOUNDER>");
@@ -98,9 +98,8 @@ public class AdminSavePlanetsToXMLCommand implements Command {
 					p.println("		</UNITFACTORY>");	
 				}
 				
-				for (Iterator it = planet.getEnvironments().iterator(); it.hasNext();) {
+				for (Continent pe : planet.getEnvironments().toArray()) {
 					p.println("		<CONTINENT>");
-					Continent pe = (Continent) it.next();
 					p.println("			<TERRAIN>"+pe.getEnvironment().getName()+"</TERRAIN>");
 					p.println("			<SIZE>"+pe.getSize()+"</SIZE>");
                     if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")){

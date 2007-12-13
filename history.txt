@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.12.x
++ Removed Parameterization warnings
 + Added some extra logging (not enough yet) to SHouse.tick(), trying to 
 	find where it's hanging
 + SOs can set the DB-enabled version to require email at registration.  

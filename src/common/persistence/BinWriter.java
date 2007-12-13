@@ -18,7 +18,6 @@ package common.persistence;
 
 import java.io.PrintWriter;
 import java.util.Collection;
-import java.util.Iterator;
 
 import common.util.HTML;
 
@@ -87,10 +86,10 @@ public class BinWriter implements TreeWriter {
     /**
      * @see common.persistence.TreeWriter#write(java.util.Collection, java.lang.String)
      */
-    public void write(Collection v, String name) {
+    public void write(Collection<?> v, String name) {
         write(v.size(), null);
-        for (Iterator it = v.iterator(); it.hasNext();)
-            write((MMNetSerializable)it.next(),null);
+        for (Object it : v)
+            write((MMNetSerializable)it,null);
     }
 
     /**

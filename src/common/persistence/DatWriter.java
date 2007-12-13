@@ -20,7 +20,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
-import java.util.Iterator;
+
 
 
 /**
@@ -86,14 +86,14 @@ public class DatWriter implements TreeWriter {
     /**
      * @see common.persistence.TreeWriter#write(java.util.Collection, java.lang.String)
      */
-    public void write(Collection v, String name) {
+    public void write(Collection<?> v, String name) {
         name.replace('[','(');
         name.replace(']',')');
         name = ensureString(name)+"["+v.size()+"]";
         startDataBlock(name);
         int i = 0;
-        for (Iterator it = v.iterator(); it.hasNext();)
-            write((MMNetSerializable)it.next(), String.valueOf(i++));
+        for (Object it : v)
+            write((MMNetSerializable)it, String.valueOf(i++));
         endDataBlock(name);
     }
 

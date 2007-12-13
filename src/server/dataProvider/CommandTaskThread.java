@@ -98,7 +98,7 @@ public class CommandTaskThread extends Thread {
                     }//end output stream if
                     
                     //get the actual command class
-                    Class cmdClass;
+                    Class<?> cmdClass;
                     ServerCommand cmd;
                     try {
                     	cmdClass = Class.forName("server.dataProvider.commands."+cmdStr);

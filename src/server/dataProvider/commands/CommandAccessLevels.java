@@ -46,14 +46,14 @@ public class CommandAccessLevels implements ServerCommand {
      */
     public void execute(Date timestamp, BinWriter out, CampaignData data)
             throws Exception {
-		Hashtable commandTable = CampaignMain.cm.getServerCommands();
-		Enumeration commands = commandTable.keys();
+		Hashtable<String,Command> commandTable = CampaignMain.cm.getServerCommands();
+		Enumeration<String> commands = commandTable.keys();
 
 		out.println(commandTable.size(),"CommandSize");
 		while (commands.hasMoreElements())
 		{
-			String commandName = (String)commands.nextElement();
-			Command commandMethod = (Command) commandTable.get(commandName);
+			String commandName = commands.nextElement();
+			Command commandMethod = commandTable.get(commandName);
 			
 			out.println(commandName,"CommandName");
 	        out.println(commandMethod.getExecutionLevel(),"AccessLevel");

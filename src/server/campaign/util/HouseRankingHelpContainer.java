@@ -17,7 +17,7 @@
 package server.campaign.util;
 import server.campaign.SHouse;
 
-public class HouseRankingHelpContainer implements Comparable
+public class HouseRankingHelpContainer implements Comparable<Object>
 
 {
   SHouse faction;

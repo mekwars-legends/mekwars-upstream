@@ -1810,25 +1810,22 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		if (s == null)
 			return null;
 		
-		else if (getNumberOfNonSaleUnits(s) > 0) {
+		if (getNumberOfNonSaleUnits(s) > 0) {
             SUnit m = null;
-            
-            /*
-             * FIXME: This is an extremely dangerous loop. Although default settings
-             * on servers should prevent a faction bay from emptying while a unit is
-             * on the market, if someone changed the settings (such that there were 1
-             * or 2 units per bay), there's a risk that all would be bought and this 
-             * will become an infinite loop.
-             */
-            while (true) {
-    			int ran = CampaignMain.cm.getRandomNumber(s.size());
-    			m = s.elementAt(ran);
+
+            Vector<SUnit> unitsToBuy = new Vector<SUnit>(s.size(),1);
+            for ( int pos = 0; pos < s.size(); pos++){
+            	m = s.elementAt(pos);
                 if (m.getStatus() != Unit.STATUS_FORSALE){
-        			s.removeElementAt(ran);
+        			unitsToBuy.add(m);
         			m.setStatus(Unit.STATUS_OK);
-                    break;
                 }
             }
+            unitsToBuy.trimToSize();
+			int ran = CampaignMain.cm.getRandomNumber(unitsToBuy.size());
+			m = unitsToBuy.elementAt(ran);
+			s.removeElement(m);
+			unitsToBuy.clear();
 			return m;
 		}
 		return null;

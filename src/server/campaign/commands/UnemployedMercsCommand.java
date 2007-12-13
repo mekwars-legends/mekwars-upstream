@@ -44,14 +44,14 @@ public class UnemployedMercsCommand implements Command {
 		}
 		
 		String s = "Unemployed Mercenaries: ";
-		Vector mh = CampaignMain.cm.getMercHouses();
+		Vector<MercHouse> mh = CampaignMain.cm.getMercHouses();
 		for (int i = 0; i < mh.size(); i++) {
-			MercHouse searchHouse = (MercHouse) mh.get(i);
-			Enumeration e = searchHouse.getAllOnlinePlayers().elements();
+			MercHouse searchHouse = mh.get(i);
+			Enumeration<SPlayer> e = searchHouse.getAllOnlinePlayers().elements();
 			
 			boolean foundMerc = false;
 			while (e.hasMoreElements()) {
-				SPlayer mp = (SPlayer) e.nextElement();
+				SPlayer mp = e.nextElement();
 				if (mp.getMyHouse().getHouseFightingFor(mp).isMercHouse()){
 					if ( !foundMerc ){
 						s += mp.getName();

@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -90,7 +89,7 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
     private  TreeMap<String,Integer> planetid = new TreeMap<String,Integer>();
 
     /**
-     * List of all terrains that can occour on surfaces of planets.
+     * List of all terrains that can occur on surfaces of planets.
      */
     private  ArrayList<PlanetEnvironment> terrains = new ArrayList<PlanetEnvironment>();
     
@@ -136,8 +135,7 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
      * 
      */
     public UnitFactory getFactoryByName(Planet p,String name) {
-        for (Iterator iter = p.getUnitFactories().iterator(); iter.hasNext();) {
-            UnitFactory e = (UnitFactory) iter.next();
+        for (UnitFactory e : p.getUnitFactories()) {
             if (e.getName().equalsIgnoreCase(name))
                 return e;
         }
@@ -159,30 +157,19 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
     }
 
     /**
-     * Check if the planetname was only partial and complete it..
+     * Check if the planet name was only partial and complete it..
      */
     public Planet getPlanetByPartialName(String name) {
-        Iterator e = getAllPlanets().iterator();
-        Planet theone = null;
-        boolean found = false;
-        while (e.hasNext() && !found) {
-            Planet p = (Planet) e.next();
+        for (Planet p : getAllPlanets()) {
             if (p.getName().equals(name)) {
-                theone = p;
-                found = true;
-            } else {
-                if (p.getName().indexOf(name) != -1) {
-                    if (theone == null)
-                        theone = p;
-                    else
-                        return null;
-                }
+                return p;
+            } 
+
+            if (p.getName().indexOf(name) != -1) {
+            	return p;
             }
         }
-        if (theone == null)
-            return null;
-
-        return theone;
+        return null;
     }
 
 
@@ -306,8 +293,7 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
     public int getUnusedHouseID() {
         int id = 0;
         int hid = 0;
-        for (Iterator iter = factions.values().iterator(); iter.hasNext();) {
-        	House e = (House) iter.next();
+        for (House e : factions.values()) {
         	hid = e.getId();
         	if (hid > id) id = hid;
         }
@@ -317,16 +303,13 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
     
     /**
      * Retrieve an unused id for terrains.
-     * @deprecated There should be no need for such function, since ID's should
-     * extracted from ressource files. This function will vanish if ids are
-     * part of the ressource.
+     * Only used upon start up of a new server using XML files.
      * @return An House id not used yet.
      */
     public int getUnusedTerrainID() {
         int id = 0;
         int hid = 0;
-        for (Iterator iter = terrains.iterator(); iter.hasNext();) {
-        	PlanetEnvironment e = (PlanetEnvironment) iter.next();
+        for (PlanetEnvironment e : terrains) {
         	hid = e.getId();
         	if (hid > id) id = hid;
         }
@@ -364,8 +347,8 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
      */
     public void binHousesOut(BinWriter out) throws IOException {
         out.println(factions.size(), "factions.size");
-        for (Iterator it = factions.values().iterator(); it.hasNext();)
-            ((House)it.next()).binOut(out);
+        for (House house : factions.values())
+            house.binOut(out);
     }
 
     /**
@@ -385,8 +368,8 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
      */
     public void binTerrainsOut(BinWriter out) throws IOException {
         out.println(terrains.size(), "terrains.size");
-        for (Iterator it = terrains.iterator(); it.hasNext();)
-            ((PlanetEnvironment)it.next()).binOut(out);
+        for (PlanetEnvironment pe : terrains)
+            pe.binOut(out);
     }
 
 
@@ -396,8 +379,8 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
      */
     public void binPlanetsOut(BinWriter out) throws IOException {
         out.println(planets.size(), "planets.size");
-        for (Iterator it = planets.values().iterator(); it.hasNext();)
-            ((Planet)it.next()).binOut(out);
+        for (Planet p : planets.values())
+            p.binOut(out);
     }
 
 
@@ -443,8 +426,7 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
     }
 
     /**
-     * Updates some sended Planets due a differential update.
-
+     * Updates sent Planets due a differential update.
      * @param changesSinceLastRefresh A map to hold the change in planet ids
      * that got updated this refresh. Structure is as follows:
      * key=planetID(Integer), value=Influences(differential)
@@ -466,12 +448,11 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
      * Writes some planets due a differential update
      * @param ids A collection of java.lang.Integer with the ids to send.
      */
-    public void encodeMutablePlanets(BinWriter out, Collection ids) throws IOException {
+    public void encodeMutablePlanets(BinWriter out, Collection<Integer> ids) throws IOException {
         out.println(ids.size(), "mutableplanetsize");
-        for (Iterator it = ids.iterator(); it.hasNext();) {
-            Integer id = (Integer) it.next();
-            out.println(id.intValue(), "planetid");
-            getPlanet(id.intValue()).encodeMutableFields(out,this);
+        for (Integer id : ids ) {
+            out.println(id, "planetid");
+            getPlanet(id).encodeMutableFields(out,this);
         }
     }
 
@@ -512,9 +493,7 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
      * @see common.TerrainProvider#getTerrain(int)
      */
     public PlanetEnvironment getTerrain(int id) {
-    	Iterator it = terrains.iterator();
-    	while (it.hasNext()) {
-    		PlanetEnvironment env = (PlanetEnvironment)it.next();
+    	for (PlanetEnvironment env : terrains) {
     		if (env.getId() == id)
     			return env;
     	}
@@ -539,9 +518,7 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
     }
 
     public PlanetEnvironment getTerrainByName(String TerrainName) {
-    	Iterator it = terrains.iterator();
-    	while (it.hasNext()) {
-    		PlanetEnvironment env = (PlanetEnvironment)it.next();
+    	for (PlanetEnvironment env  : terrains) {
     		if (env.getName().equals(TerrainName))
     			return env;
     	}
@@ -555,16 +532,14 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
         out.write(terrains, "terrains");
         out.startDataBlock("factions");
         out.write(factions.size(), "factionsCount");
-        for (Iterator it = factions.values().iterator(); it.hasNext();) {
-            House h = (House) it.next();
+        for (House h : factions.values()) {
             out.write(h.getClass().getName(), "factionType");
             out.write(h, "faction");
         }
         out.endDataBlock("factions");
         out.startDataBlock("planets");
         out.write(factions.size(), "planetsCount");
-        for (Iterator it = planets.values().iterator(); it.hasNext();) {
-            Planet p = (Planet) it.next();
+        for (Planet p : planets.values()) {
             out.write(p.getClass().getName(), "planetType");
             out.write(p, "planet");
         }

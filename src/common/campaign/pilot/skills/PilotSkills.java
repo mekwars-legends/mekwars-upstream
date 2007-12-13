@@ -29,7 +29,7 @@ public class PilotSkills {
     /**
      * The data storage for the skills.
      */
-    private LinkedList skills = new LinkedList();
+    private LinkedList<PilotSkill> skills = new LinkedList<PilotSkill>();
 
 	/**
      * Return whether a pilot obtains a specific skill or not.
@@ -82,6 +82,10 @@ public class PilotSkills {
      */
     public Iterator getSkillIterator() {
     	return skills.iterator();
+    }
+    
+    public LinkedList<PilotSkill> getPilotSkills(){
+    	return skills;
     }
     
     public PilotSkill getPilotSkill(int skillid){

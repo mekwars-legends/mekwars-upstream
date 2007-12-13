@@ -57,10 +57,10 @@ public class MyVotesCommand implements Command {
 		VoteManager vm = CampaignMain.cm.getVoteManager();
 		
 		//get all of p's positive votes
-		Vector posVotes = vm.getAllVotesBy(p, Vote.POSITIVE_VOTE);
+		Vector<Vote> posVotes = vm.getAllVotesBy(p, Vote.POSITIVE_VOTE);
 		
 		//and all negative votes by the same
-		Vector negVotes = vm.getAllVotesBy(p, Vote.NEGATIVE_VOTE);
+		Vector<Vote> negVotes = vm.getAllVotesBy(p, Vote.NEGATIVE_VOTE);
 		
 		//set up the string to feed the player
 		String toPlayer = "Votes Cast: <br>-----------<br>";
@@ -71,9 +71,9 @@ public class MyVotesCommand implements Command {
 		}
 		else {
 			toPlayer += "Positive Votes Cast (" + posVotes.size() + "total):<br>";
-			Enumeration e = posVotes.elements();
+			Enumeration<Vote> e = posVotes.elements();
 			while (e.hasMoreElements()) {
-				Vote currVote = (Vote)e.nextElement();
+				Vote currVote = e.nextElement();
 				toPlayer += currVote.getRecipient() + "<br>";
 			}//end while(more elements)
 			toPlayer += "<br>";//and extra break to better split the two lists
@@ -86,15 +86,15 @@ public class MyVotesCommand implements Command {
 		}
 		else {
 			toPlayer += "Negative Votes Cast (" + negVotes.size() + "total):<br>";
-			Enumeration e = negVotes.elements();
+			Enumeration<Vote> e = negVotes.elements();
 			while (e.hasMoreElements()) {
-				Vote currVote = (Vote)e.nextElement();
+				Vote currVote = e.nextElement();
 				toPlayer += "<br>" + currVote.getRecipient();
 			}//end while(more elements)
 		}//end else (has cast negative votes)
 		
 		//check for abstentations
-		Vector absVotes = vm.getAllVotesBy(p, Vote.ABSTAIN_VOTE);
+		Vector<Vote> absVotes = vm.getAllVotesBy(p, Vote.ABSTAIN_VOTE);
 		int numAbs = absVotes.size();
 		if (numAbs > 0) {
 			toPlayer += "<br><br>NOTE: You have cast " + numAbs + "abstaining vote";

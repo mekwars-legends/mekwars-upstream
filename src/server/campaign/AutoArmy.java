@@ -542,7 +542,7 @@ public class AutoArmy {
 		 * file path and file names in the server config it received
 		 * during connection. 
 		 */
-		Vector v = this.getUnits();
+		Vector<SUnit> v = this.getUnits();
 		
 		try {
 			v.elements();
@@ -550,8 +550,12 @@ public class AutoArmy {
 			MWServ.mwlog.mainLog("AUTOARMY UNITS WERE NULL");
 		}
 		
-		for (SUnit currU : this.getUnits())
-			result.append(currU.getEntity().getChassis() + " " +  currU.getEntity().getModel() + delimiter);
+		for (SUnit currU : this.getUnits()){
+			result.append(currU.getEntity().getChassis());
+			result.append(" ");
+			result.append(currU.getEntity().getModel());
+			result.append(delimiter);
+		}
 		
 		return result.toString();
 	}//end toString()

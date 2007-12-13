@@ -41,13 +41,13 @@ public class AdminSetCommandLevelCommand implements Command {
 		}
 		
 		
-		Hashtable commandTable = CampaignMain.cm.getServerCommands();
+		Hashtable<String,Command> commandTable = CampaignMain.cm.getServerCommands();
 		
 		String commandName = command.nextToken().toUpperCase();
 		int commandLevel = Integer.parseInt(command.nextToken());
 		
 		if ( commandTable.containsKey(commandName) )
-		    ((Command)commandTable.get(commandName)).setExecutionLevel(commandLevel);
+		    commandTable.get(commandName).setExecutionLevel(commandLevel);
 		else{
 		    CampaignMain.cm.toUser("Command "+commandName+" not found!",Username,true);
 		    return;

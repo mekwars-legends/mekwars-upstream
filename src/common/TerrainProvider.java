@@ -34,7 +34,7 @@ public interface TerrainProvider {
     /**
      * Return all terrains
      */
-    public Collection getAllTerrains();
+    public Collection<PlanetEnvironment> getAllTerrains();
 
     /**
      * Add a terrain to the list

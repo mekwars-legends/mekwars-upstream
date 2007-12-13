@@ -17,9 +17,8 @@
 package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
-import java.util.Iterator;
-import java.util.Vector;
 
+import common.House;
 import common.Unit;
 
 import server.campaign.commands.Command;
@@ -49,16 +48,15 @@ public class AdminListAndRemoveOMGCommand implements Command {
 		 * We know that OMG's are always light meks, so we can loop
 		 * through every faction's light mek queue to remove them.
 		 */
-		Iterator i = CampaignMain.cm.getData().getAllHouses().iterator();
-		while (i.hasNext()) {
-			SHouse faction  = (SHouse)i.next();
-			Iterator it = ((Vector)faction.getHangar(Unit.MEK).elementAt(Unit.LIGHT)).iterator();
-			while (it.hasNext()) {
-				SUnit currU = (SUnit)it.next();
+		for (House house : CampaignMain.cm.getData().getAllHouses()) {
+			SHouse faction = (SHouse)house;
+			for (Unit unit : faction.getHangar(Unit.MEK).elementAt(Unit.LIGHT)) {
+				SUnit currU = (SUnit)unit;
 				if (currU.getModelName().equals("OMG-UR-FD")){
 					CampaignMain.cm.doSendModMail("NOTE",Username + " removed an OMG from the " + faction.getName() + "bays. Should have been a " + currU.getUnitFilename()+ ".");
 					CampaignMain.cm.toUser("Removed an OMG from the " + faction.getName() + " bays. Should have been a " + currU.getUnitFilename()+ ".",Username,true);
-					it.remove();
+					faction.getHangar(Unit.MEK).elementAt(Unit.LIGHT).removeElement(unit);
+					CampaignMain.cm.doSendToAllOnlinePlayers(faction, "HS|" + faction.getHSUnitRemovalString(currU), false);
 				}
 			}//end while(units remain in light mek hangar)
 		}//end while(factions remain)

@@ -17,10 +17,10 @@
 package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
-import java.util.Iterator;
+
+import common.UnitFactory;
 
 import server.MWServ;
-import server.campaign.SUnitFactory;
 import server.campaign.SPlanet;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
@@ -52,32 +52,31 @@ public class AdminDestroyFactoryCommand implements Command {
 				return;
 			}
 			
-			SUnitFactory UF = null;
-			Iterator it = p.getUnitFactories().iterator();
-			if ( !it.hasNext() ) {
+			if (  p.getUnitFactories().size() < 1) {
 				CampaignMain.cm.toUser("This planet does not have any factories!",Username,true);
 				return;
 			}
 			
-			int count = 0;
-			while (it.hasNext()){
-				UF = (SUnitFactory)it.next();
+			UnitFactory foundFactory = null;
+			for (UnitFactory UF : p.getUnitFactories()){
 				if ( UF.getName().equalsIgnoreCase(factoryname)) {
-					// Remove it from the database
-					if(CampaignMain.cm.isUsingMySQL())
-						CampaignMain.cm.MySQL.deleteFactory(UF.getID());
-					p.getUnitFactories().removeElementAt(count);
-					p.getUnitFactories().trimToSize();
+					foundFactory = UF; 
 					break;
 				}
-				count++;
 			}
 			
-			if ( UF == null ){
+			if ( foundFactory == null){
 				CampaignMain.cm.toUser("Factory " + factoryname + " not found",Username,true);
 				return;
+			}else{
+				// Remove it from the database
+				if(CampaignMain.cm.isUsingMySQL())
+					CampaignMain.cm.MySQL.deleteFactory(foundFactory.getID());
+				p.getUnitFactories().removeElement(foundFactory);
+				p.getUnitFactories().trimToSize();
 			}
-            p.updated();
+
+			p.updated();
 			//server.MWServ.mwlog.modLog(Username + "  removed " + factoryname + " from " + p.getName() + ".");
 			CampaignMain.cm.toUser(factoryname + " removed from " + p.getName() + ".",Username,true);
 			CampaignMain.cm.doSendModMail("NOTE",Username + "  removed " + factoryname + " from " + p.getName() + ".");

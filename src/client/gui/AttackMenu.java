@@ -160,12 +160,12 @@ public class AttackMenu extends JMenu implements ActionListener {
 						while (legalDefTokenizer.hasMoreTokens())
 							legalDefTree.put(legalDefTokenizer.nextToken(),null);
 						
-						Iterator i = tp.getInfluence().getHouses().iterator();
 						boolean foundDefender = false;
-						while (i.hasNext() && !foundDefender) {
-							House currH = (House)i.next();
-							if (legalDefTree.containsKey(currH.getName()))
+						for (House currH : tp.getInfluence().getHouses()) {
+							if (legalDefTree.containsKey(currH.getName())){
 								foundDefender = true;
+								break;
+							}
 						}
 						
 						if (!foundDefender)
@@ -240,20 +240,15 @@ public class AttackMenu extends JMenu implements ActionListener {
 
 					//cant launch on world. see if the operation can be started
 					//from a planet the player's house currently owns.
-					Iterator i = mwclient.getData().getAllPlanets().iterator();
-					boolean launchFound = false;
-					while (i.hasNext() && !launchFound) {
-						
-						//load next world
-						Planet currP = (Planet)i.next();
+					for (Planet currP : mwclient.getData().getAllPlanets()) {
 						
 						//check to see if operation can reach target world from currP
 						if (currP.getInfluence().getInfluence(houseID) >= launchFrom) {
 							double tdist = currP.getPosition().distanceSq(tp.getPosition());
 							
 							if (tdist <= range) {
-								launchFound = true;
 								allEligibles.add(currOpName);
+								break;
 							}
 						}
 						

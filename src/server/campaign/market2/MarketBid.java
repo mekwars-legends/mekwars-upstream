@@ -26,7 +26,7 @@ package server.campaign.market2;
  * used by some auction types (Dutch, Vickrey) to modify the
  * price paid by the winner.
  */
-public final class MarketBid implements Comparable {
+public final class MarketBid implements Comparable<Object> {
 	
 	//IVARS
 	private int bidAmount;

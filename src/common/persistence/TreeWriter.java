@@ -38,7 +38,7 @@ public interface TreeWriter {
     public void write(double v, String name);
     public void write(String v, String name);
     public void write(MMNetSerializable v, String name);
-    public void write(Collection v, String name);
+    public void write(Collection<?> v, String name);
     
     /**
      * Flushes the stream. This should make sure, the data is actually written 

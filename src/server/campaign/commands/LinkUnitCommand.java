@@ -79,12 +79,12 @@ public class LinkUnitCommand implements Command {
       }
 
       if ( slaveUnit.hasBeenC3LinkedTo(a) && masterid == -1) {
-          Enumeration c3Key = a.getC3Network().keys();
-          Enumeration c3Unit = a.getC3Network().elements();
+          Enumeration<Integer> c3Key = a.getC3Network().keys();
+          Enumeration<Integer> c3Unit = a.getC3Network().elements();
           
           while ( c3Key.hasMoreElements()){
-              Integer keyId = (Integer) c3Key.nextElement();
-              Integer unitId = (Integer) c3Unit.nextElement();
+              Integer keyId = c3Key.nextElement();
+              Integer unitId = c3Unit.nextElement();
               
               if ( slaveUnit.getId() == unitId.intValue())
                   a.getC3Network().remove(keyId);

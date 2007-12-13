@@ -53,8 +53,8 @@ class TimedUserList {
 	public boolean contains(String userId) {
 		long now = System.currentTimeMillis();
 		synchronized (_users) {
-			for (Iterator i = _users.iterator(); i.hasNext(); ) {
-				UserRecord u = (UserRecord)i.next();
+			for (Iterator<UserRecord> i = _users.iterator(); i.hasNext(); ) {
+				UserRecord u = i.next();
 				if (now > u.whenAdded + _seconds * 1000) {
 					i.remove();
 				} else if (u.userId.equalsIgnoreCase(userId)) {

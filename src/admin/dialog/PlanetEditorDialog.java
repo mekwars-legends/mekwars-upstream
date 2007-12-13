@@ -837,8 +837,8 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		Dimension comboBoxSize = new Dimension(150,22);
 		//setup the a list of names to feed into a list
 		TreeSet<String> pNames = new TreeSet<String>();//tree to alpha sort
-		for (Iterator it = planets.iterator(); it.hasNext();)
-			pNames.add(((Planet)it.next()).getName());
+		for (Planet planet : planets)
+			pNames.add(planet.getName());
 
 		this.planetNames = new JComboBox(pNames.toArray());
 		this.planetNames.setSelectedItem(this.planetName);

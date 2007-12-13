@@ -19,6 +19,8 @@ package server.campaign.commands;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import common.House;
+
 import megamek.common.TechConstants;
 
 import server.campaign.CampaignMain;
@@ -43,7 +45,7 @@ public class HouseStatusCommand implements Command {
 		}
 		
 		String result = "<h2>Faction Status: </h2>";
-		Iterator e = CampaignMain.cm.getData().getAllHouses().iterator();
+		Iterator<House> e = CampaignMain.cm.getData().getAllHouses().iterator();
 		while (e.hasNext()) {
 			SHouse h = (SHouse)e.next();
 			result += "<FONT Color=\"" + h.getHouseColor() + "\">";

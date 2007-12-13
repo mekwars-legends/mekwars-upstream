@@ -124,13 +124,13 @@ public class ConnectionHandlerLocal implements IConnectionHandler {
  */
 class WriterThread extends Thread {
     private boolean keepGoing = true;
-    private Vector outgoingMessages;
+    private Vector<String> outgoingMessages;
     private PrintStream _out;
 
     WriterThread(PrintStream out) {
         super("ConnectionHandler$WriterThread");
         _out = out;
-        outgoingMessages = new Vector(1,1);
+        outgoingMessages = new Vector<String>(1,1);
     }
 
     @Override

@@ -66,9 +66,9 @@ public class CheckArmyLinkCommand implements Command {
 			toSend.append(" No Linked C3.");
 			CampaignMain.cm.toUser(toSend.toString(),Username,true);
 		} else {
-			Enumeration c3Units = army.getC3Network().keys();
+			Enumeration<Integer> c3Units = army.getC3Network().keys();
 			while (c3Units.hasMoreElements()){
-				Integer c3U = (Integer)c3Units.nextElement();
+				Integer c3U = c3Units.nextElement();
 				Integer c3M = army.getC3Network().get(c3U);
 				toSend.append("<br>Unit " + c3U + " is linked to unit " + c3M + ".");
 			}

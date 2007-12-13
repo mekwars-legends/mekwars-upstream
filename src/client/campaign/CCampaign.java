@@ -204,7 +204,7 @@ public class CCampaign {
 	//public MWClient getClient() {return mwclient;}
 	public void setPlayer(CPlayer tplayer) {Player = tplayer;}
 	public CPlayer getPlayer() {return Player;}
-	public TreeMap getBlackMarket() {return BlackMarket;}
+	public TreeMap<Integer,CBMUnit> getBlackMarket() {return BlackMarket;}
 	
 	public TreeMap<String,BMEquipment> getBlackMarketParts() { return BlackMarketParts; }
 }

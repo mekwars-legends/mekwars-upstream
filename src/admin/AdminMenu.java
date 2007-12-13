@@ -23,7 +23,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Iterator;
 import java.util.TreeSet;
 
 import javax.swing.JComboBox;
@@ -826,8 +825,8 @@ public class AdminMenu extends JMenu {
 
 	        names.clear();
 
-	        for (Iterator UF = planet.getUnitFactories().iterator(); UF.hasNext();)
-	            names.add(((UnitFactory) UF.next()).getName());
+	        for (UnitFactory UF : planet.getUnitFactories())
+	            names.add(UF.getName());
 
 	        JComboBox combo = new JComboBox(names.toArray());
 	        combo.setEditable(true);
@@ -859,8 +858,8 @@ public class AdminMenu extends JMenu {
 	        if (planetNamestr == null || planetNamestr.length() == 0)
 	            return;
 
-	        for (Iterator it = mwclient.getData().getAllTerrains().iterator(); it.hasNext();)
-	            names.add(((PlanetEnvironment) it.next()).getName());
+	        for (PlanetEnvironment pe : mwclient.getData().getAllTerrains())
+	            names.add(pe.getName());
 
 	        /*
 	         * String terrainType = JOptionPane.showInputDialog(mwclient.getMainFrame(),"Terrain
@@ -1346,8 +1345,8 @@ public class AdminMenu extends JMenu {
 
 	        Planet planet = mwclient.getData().getPlanetByName(planetNamestr);
 
-	        for (Iterator UF = planet.getUnitFactories().iterator(); UF.hasNext();)
-	            names.add(((UnitFactory) UF.next()).getName());
+	        for (UnitFactory UF : planet.getUnitFactories())
+	            names.add(UF.getName());
 
 	        JComboBox combo = new JComboBox(names.toArray());
 	        combo.setEditable(true);

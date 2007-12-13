@@ -236,9 +236,7 @@ public class Army {
 		result.append(delimiter);
 		result.append(getUnits().size());
 		result.append(delimiter);
-		Vector en = getUnits();
-		for ( int i = 0; i < en.size(); i++){
-		    Unit unit = (Unit)en.elementAt(i);
+		for ( Unit unit : getUnits()){
 			result.append(unit.getId());
 			result.append(delimiter);
 		}

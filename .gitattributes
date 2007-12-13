@@ -1259,10 +1259,8 @@ src/server/MWChatServer/ConnectionHandler.java -text
 src/server/MWChatServer/IConnectionListener.java -text
 src/server/MWChatServer/MWChatClient.java -text
 src/server/MWChatServer/MWChatServer.java -text
-src/server/MWChatServer/MultiValueHashMap.java -text
 src/server/MWChatServer/ReaderThread.java -text
 src/server/MWChatServer/RoomServer.java -text
-src/server/MWChatServer/RoomTable.java -text
 src/server/MWChatServer/TimedUserList.java -text
 src/server/MWChatServer/Translator.java -text
 src/server/MWChatServer/WriterThread.java -text

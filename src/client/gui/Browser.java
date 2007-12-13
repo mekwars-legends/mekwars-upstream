@@ -294,7 +294,7 @@ public class Browser {
             if (System.getProperty("os.name").startsWith("Mac")){
                 boolean success = false;
             try {
-                Class nSWorkspace;
+                Class<?> nSWorkspace;
                     if (new File("/System/Library/Java/com/apple/cocoa/application/NSWorkspace.class").exists()){
                          // Mac OS X has NSWorkspace, but it is not in the classpath, add it.
                          ClassLoader classLoader = new URLClassLoader(new URL[]{new File("/System/Library/Java").toURI().toURL()});
@@ -310,7 +310,7 @@ public class Browser {
             } catch (Exception x) {}
                 if (!success){
                     try {
-                         Class mrjFileUtils = Class.forName("com.apple.mrj.MRJFileUtils");
+                         Class<?> mrjFileUtils = Class.forName("com.apple.mrj.MRJFileUtils");
                          Method openURL = mrjFileUtils.getMethod("openURL", new Class[] {Class.forName("java.lang.String")});
                          openURL.invoke(null, new Object[] {url});
                          //com.apple.mrj.MRJFileUtils.openURL(url);

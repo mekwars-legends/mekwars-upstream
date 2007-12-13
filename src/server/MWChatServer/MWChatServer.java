@@ -265,13 +265,12 @@ public class MWChatServer implements ICommands {
             // inform all the rooms that this user is gone
             synchronized (_rooms) {
 
-                for (Iterator i = _rooms.values().iterator(); i.hasNext();) {
-                    RoomServer room = (RoomServer) i.next();
+                for (String key : _rooms.keySet()) {
+                	RoomServer room = _rooms.get(key);
                     room.part(client, true);
                     if (room.isEmpty()) {
-                        MWServ.mwlog.infoLog("Removing empty room: "
-                                + room.getName());
-                        i.remove();
+                        MWServ.mwlog.infoLog("Removing empty room: "+ key);
+                        _rooms.remove(key);
                     }
                 }
             }

@@ -75,7 +75,7 @@ public class OfferContractCommand implements Command {
 				minContract /=10;
 			
 			for (int i = 0; i < CampaignMain.cm.getUnresolvedContracts().size(); i++) {
-				ContractInfo info = (ContractInfo)CampaignMain.cm.getUnresolvedContracts().get(i);
+				ContractInfo info = CampaignMain.cm.getUnresolvedContracts().get(i);
 				if (info.getOfferingPlayer() == offeringPlayer) {
 					noOtherOffers = false;
 				}//end if(offering player has contract outstanding)

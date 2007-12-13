@@ -30,7 +30,6 @@ package server.MWChatServer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import server.MWChatServer.auth.IAuthenticator;
 import server.MWChatServer.commands.ICommands;
@@ -89,8 +88,7 @@ public class RoomServer implements ICommands {
      */
     public void broadcast(String message) {
         synchronized (_users) {
-            for (Iterator i = _users.iterator(); i.hasNext(); ) {
-                MWChatClient rcpt = (MWChatClient)i.next();
+            for (MWChatClient rcpt : _users) {
                 rcpt.generalRoomMessage(_roomName, message);
             }
         }
@@ -108,8 +106,7 @@ public class RoomServer implements ICommands {
 
     public void say(String from, String message) {
         synchronized (_users) {
-            for (Iterator i = _users.iterator(); i.hasNext(); ) {
-                MWChatClient rcpt = (MWChatClient)i.next();
+            for (MWChatClient rcpt : _users) {
                 rcpt.messageFromUser(from, _roomName, message);
             }
         }
@@ -118,8 +115,8 @@ public class RoomServer implements ICommands {
     protected void notifyJoin(String userId) {
         synchronized (_users) {
             // notify the other people
-            for (Iterator i = _users.iterator(); i.hasNext(); ) {
-                ((MWChatClient)i.next()).userJoinedRoom(userId, _roomName);
+            for (MWChatClient rcpt :_users) {
+                rcpt.userJoinedRoom(userId, _roomName);
             }
         }
     }
@@ -131,9 +128,7 @@ public class RoomServer implements ICommands {
     protected void notifyPart(String userId, boolean isSignoff) {
         synchronized (_users) {
             // inform the other users here that someone signed off
-            MWChatClient rcpt = null;
-            for (Iterator i = _users.iterator(); i.hasNext(); ) {
-                rcpt = (MWChatClient)i.next();
+            for (MWChatClient rcpt : _users) {
                 rcpt.userPartedRoom(userId, _roomName, isSignoff);
             }
         }
@@ -252,26 +247,26 @@ public class RoomServer implements ICommands {
 
     /**
      * Get the number of users in this room
-     */
+     *
     public int getUserCount() {
         return _users.size();
     }
-
+*/
     /**
      * Get a string array containing the names of all the users in this room
-     */
+     
     public String[] getUsers() {
 		String[] names = new String[_users.size()];
         synchronized (_users) {
         	int j = 0;
-            for (Iterator i = _users.iterator(); i.hasNext(); ) {
-                String name = ((MWChatClient)i.next()).getUserId();
+            for (MWChatClient rcpt :_users) {
+                String name = rcpt.getUserId();
                 names[j++] = name;
             }
         }
         return names;
     }
-
+*/
 }
 
 

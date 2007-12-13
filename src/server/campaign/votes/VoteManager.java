@@ -23,16 +23,15 @@ import server.campaign.CampaignMain;
  * calls are duplicated when the VM is Hibernated, and return vote vectors, nothing
  * in SHouse or SPlayer should be broken by the transition.
  */
-@SuppressWarnings({"unchecked","serial"})
 public class VoteManager {
 	
 	//ivars
-	Vector voteVector;
+	Vector<Vote> voteVector;
 	CampaignMain cm;
 	
 	//constructor
 	public VoteManager(CampaignMain campmain) {
-		voteVector = new Vector(1,1);
+		voteVector = new Vector<Vote>(1,1);
 		cm = campmain;
 	}
 	
@@ -49,7 +48,7 @@ public class VoteManager {
 	 */
 	public boolean checkForDuplicate(Vote v) {
 		
-		Enumeration e = voteVector.elements();
+		Enumeration<Vote> e = voteVector.elements();
 		Vote nextVote = null;
 		boolean dupeFound = false;//has a duplicate been found?
 		
@@ -127,7 +126,7 @@ public class VoteManager {
 	 * remove it from the vote vector.
 	 */
 	public boolean removeVote(Vote v) {
-		Iterator i = voteVector.iterator();
+		Iterator<Vote> i = voteVector.iterator();
 		boolean voteRemoved = false;
 		
 		//look while elements remain, but stop once there
@@ -151,13 +150,13 @@ public class VoteManager {
 	 * @param p player
 	 * @return a vector of votes
 	 */
-	public Vector getAllVotesFor(SPlayer p) {
-		Vector toReturn = new Vector(1,1);
+	public Vector<Vote> getAllVotesFor(SPlayer p) {
+		Vector<Vote> toReturn = new Vector<Vote>(1,1);
 		
 		//loop and get the votes
-		Enumeration e = voteVector.elements();
+		Enumeration<Vote> e = voteVector.elements();
 		while (e.hasMoreElements()) {
-			Vote v  = (Vote)e.nextElement();
+			Vote v  = e.nextElement();
 			if (p.getName().equals(v.getRecipient())) {
 				toReturn.add(v);
 			}
@@ -173,12 +172,12 @@ public class VoteManager {
 	 * 
 	 * Takes results of getAllVotesFor(Player) and filters by vote type.
 	 */
-	public Vector getAllVotesFor(SPlayer p, int type) {
-		Vector votesForPlayer = this.getAllVotesFor(p);
-		Vector toReturn = new Vector(1,1);
-		Enumeration e = votesForPlayer.elements();
+	public Vector<Vote> getAllVotesFor(SPlayer p, int type) {
+		Vector<Vote> votesForPlayer = this.getAllVotesFor(p);
+		Vector<Vote> toReturn = new Vector<Vote>(1,1);
+		Enumeration<Vote> e = votesForPlayer.elements();
 		while (e.hasMoreElements()) {
-			Vote currVote = (Vote)e.nextElement();
+			Vote currVote = e.nextElement();
 			if (currVote.getType() == type) {
 				toReturn.add(currVote);
 			}//end if(types match)
@@ -194,13 +193,13 @@ public class VoteManager {
 	 * @param p player
 	 * @return a vector of votes
 	 */
-	public Vector getAllVotesBy(SPlayer p) {
-		Vector toReturn = new Vector(1,1);
+	public Vector<Vote> getAllVotesBy(SPlayer p) {
+		Vector<Vote> toReturn = new Vector<Vote>(1,1);
 		
 		//loop and get the votes
-		Enumeration e = voteVector.elements();
+		Enumeration<Vote> e = voteVector.elements();
 		while (e.hasMoreElements()) {
-			Vote v  = (Vote)e.nextElement();
+			Vote v  = e.nextElement();
 			if (p.getName().equals(v.getCaster())) {
 				toReturn.add(v);
 			}
@@ -216,12 +215,12 @@ public class VoteManager {
 	 * 
 	 * Takes results of getAllVotesBy(Player) and filters by vote type.
 	 */
-	public Vector getAllVotesBy(SPlayer p, int type) {
-		Vector votesByPlayer = this.getAllVotesBy(p);
-		Vector toReturn = new Vector(1,1);
-		Enumeration e = votesByPlayer.elements();
+	public Vector<Vote> getAllVotesBy(SPlayer p, int type) {
+		Vector<Vote> votesByPlayer = this.getAllVotesBy(p);
+		Vector<Vote> toReturn = new Vector<Vote>(1,1);
+		Enumeration<Vote> e = votesByPlayer.elements();
 		while (e.hasMoreElements()) {
-			Vote currVote = (Vote)e.nextElement();
+			Vote currVote = e.nextElement();
 			if (currVote.getType() == type) {
 				toReturn.add(currVote);
 			}//end if(types match)
@@ -237,11 +236,11 @@ public class VoteManager {
 	 * a player is removed.
 	 */
 	public void removeAllVotesForPlayer(SPlayer p) {
-		Vector votesForPlayer = this.getAllVotesFor(p);
-		Enumeration e = votesForPlayer.elements();
+		Vector<Vote> votesForPlayer = this.getAllVotesFor(p);
+		Enumeration<Vote> e = votesForPlayer.elements();
 		while (e.hasMoreElements()) {
 			//make a dummy vote with the 
-			Vote currVote = (Vote)e.nextElement();
+			Vote currVote = e.nextElement();
 			this.removeVote(currVote);
 		}//end while(votes remain to be removed)
 	}//end removeAllVotesForPlayer()
@@ -254,10 +253,10 @@ public class VoteManager {
 	 * when a player is removed.
 	 */
 	public void removeAllVotesByPlayer(SPlayer p) {
-		Vector votesByPlayer = this.getAllVotesBy(p);
-		Enumeration e = votesByPlayer.elements();
+		Vector<Vote> votesByPlayer = this.getAllVotesBy(p);
+		Enumeration<Vote> e = votesByPlayer.elements();
 		while (e.hasMoreElements()) {
-			Vote currVote = (Vote)e.nextElement();
+			Vote currVote = e.nextElement();
 			this.removeVote(currVote);
 		}//end while(votes remain to be removed)
 	}//end removeAllVotesByPlayer()
@@ -270,13 +269,13 @@ public class VoteManager {
 	 * Queries all votes, collects votes cast by players of the
 	 * given faction, and returns a vector.
 	 */
-	public Vector getAllHouseVotes(SHouse h) {
-		Vector toReturn = new Vector(1,1);
-		Enumeration e = voteVector.elements();
+	public Vector<Vote> getAllHouseVotes(SHouse h) {
+		Vector<Vote> toReturn = new Vector<Vote>(1,1);
+		Enumeration<Vote> e = voteVector.elements();
 		while (e.hasMoreElements()) {
 			//can assume votes are all for people in the same faction,
 			//or they would not have passed add
-			Vote v = (Vote)e.nextElement();
+			Vote v = e.nextElement();
 			SHouse casterHouse = cm.getHouseForPlayer(v.getCaster());
 			if (h.equals(casterHouse)) {
 				toReturn.add(v);
@@ -291,12 +290,12 @@ public class VoteManager {
 	 * @param type Type of vote to isolate
 	 * @return Vector of votes
 	 */
-	public Vector getAllHouseVotes(SHouse h, int type) {
-		Vector factionVotes = this.getAllHouseVotes(h);
-		Vector toReturn = new Vector(1,1);
-		Enumeration e = factionVotes.elements();
+	public Vector<Vote> getAllHouseVotes(SHouse h, int type) {
+		Vector<Vote> factionVotes = this.getAllHouseVotes(h);
+		Vector<Vote> toReturn = new Vector<Vote>(1,1);
+		Enumeration<Vote> e = factionVotes.elements();
 		while (e.hasMoreElements()) {
-			Vote currVote = (Vote)e.nextElement();
+			Vote currVote = e.nextElement();
 			if (currVote.getType() == type) {
 				toReturn.add(currVote);
 			}//end if(types match)

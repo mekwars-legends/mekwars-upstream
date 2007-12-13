@@ -101,9 +101,9 @@ public class CheckAttackCommand implements Command {
 			Desc += arm.getID() + " (" + arm.getBV()+ " BV) ";
 			Desc += " may attack: </td><td>&nbsp;</td><td>&nbsp;</td></tr>";
 			
-			Enumeration targets = arm.getOpponents().elements();
+			Enumeration<SArmy> targets = arm.getOpponents().elements();
 			while (targets.hasMoreElements()) {
-				SArmy currTarget = (SArmy)targets.nextElement();
+				SArmy currTarget = targets.nextElement();
 				SPlayer currTargetP = CampaignMain.cm.getPlayer(currTarget.getPlayerName());
 				String coloredHouseName = currTargetP.getMyHouse().getHouseFightingFor(currTargetP).getColoredName();
 				String defendableOps = listDefendableOperations(arm,currTargetP,currTarget,p.getHouseFightingFor());
@@ -133,9 +133,9 @@ public class CheckAttackCommand implements Command {
 		//otherwise, loop out *all* the armies
 		else {
 			Desc = "Intelligence reports the following attack options:<br>";
-			Enumeration e = p.getArmies().elements();
+			Enumeration<SArmy> e = p.getArmies().elements();
 			while (e.hasMoreElements()) {
-				SArmy arm = (SArmy)e.nextElement();
+				SArmy arm = e.nextElement();
 				Desc += "<table><tr><td>";
 				if (arm != null) {
 					Desc += "Army " + arm.getID() ;
@@ -143,9 +143,9 @@ public class CheckAttackCommand implements Command {
 						Desc += " (" + arm.getBV() + " BV)";
 					Desc += ": </td>";
 					
-					Enumeration targets = arm.getOpponents().elements();
+					Enumeration<SArmy> targets = arm.getOpponents().elements();
 					while (targets.hasMoreElements()) {
-						SArmy currTarget = (SArmy)targets.nextElement();
+						SArmy currTarget = targets.nextElement();
 						SPlayer currTargetP = CampaignMain.cm.getPlayer(currTarget.getPlayerName());
                         if ( currTargetP == null )
                             continue;

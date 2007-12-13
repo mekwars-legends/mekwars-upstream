@@ -82,9 +82,9 @@ public class RetirePilotCommand implements Command {
 			if (p.getDutyStatus() != SPlayer.STATUS_RESERVE) {
 				
 				//check the unit's armies.
-				Enumeration f = p.getArmies().elements();
+				Enumeration<SArmy> f = p.getArmies().elements();
 				while (f.hasMoreElements()) {
-					SArmy currArmy = (SArmy)f.nextElement();
+					SArmy currArmy = f.nextElement();
 					if (currArmy.getUnit(m.getId()) != null) {
 						CampaignMain.cm.toUser("AM:You may not dismiss/retire a pilot while his unit is part of an active army.",Username,true);
 						return;
@@ -201,9 +201,9 @@ public class RetirePilotCommand implements Command {
 			//continue normally. update unit and its armies, etc.
 			CampaignMain.cm.toUser("PL|UU|"+m.getId()+"|"+m.toString(true),Username,false);
 			
-			Enumeration f = p.getArmies().elements();
+			Enumeration<SArmy> f = p.getArmies().elements();
 			while (f.hasMoreElements()) {
-				SArmy currArmy = (SArmy)f.nextElement();
+				SArmy currArmy = f.nextElement();
 				if (currArmy.getUnit(m.getId()) != null) {
 					currArmy.setBV(0);//not null so recalc BV of the army
 					CampaignMain.cm.toUser("PL|SAD|"+currArmy.toString(true,"%"),Username,false);
