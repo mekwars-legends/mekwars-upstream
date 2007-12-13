@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.12.x
++ Added MegaMek.jar 0.33.13-MW12122007-5258
 Release Client/Server 0.2.12.0
 + RFE 1798401: MUL Files Integration
 v 0.2.11.x
