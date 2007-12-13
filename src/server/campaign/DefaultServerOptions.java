@@ -857,6 +857,7 @@ public class DefaultServerOptions {
         defaults.setProperty("AllowCrossOverTech", "false");
         
         defaults.setProperty("ForumGroupName", "");
+        defaults.setProperty("REQUIREEMAILFORREGISTRATION", "false");
 
 /*        //My SQL Settings
 		defaults.setProperty("USEMYSQL", "false");

@@ -1270,7 +1270,10 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 	 * of its faction members.
 	 */
 	public String tick(boolean real, int tickid) {
-		
+		/*
+		 * Something in this block appears to be causing MMNet's hangs.  Unfortunately,
+		 * it doesn't lend itself to very good logging.  I'll see what I can do.
+		 */
 		MWServ.mwlog.debugLog("Inside SHouse.Tick for: "+this.getName());
 		String result = "-------> <b>Tick! [" + tickid + "]</b><br>";
 		StringBuilder hsUpdates = new StringBuilder();
@@ -1284,22 +1287,25 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			tickworth = 10;// give 10 players worth ...
 		else// if real, get the weighted number of valid players
 			tickworth = this.getNumberOfPlayersWhoCountForProduction();
+		MWServ.mwlog.debugLog("     -> " + tickworth);
 
 		MWServ.mwlog.debugLog("Calculating refresh points");
 		double cComp = getComponentProduction();
 		int componentsToAdd = (int) (tickworth * cComp);
 		int refreshToAdd = (int) Math.round(tickworth);
-
+		
 		if ( Integer.parseInt(this.getConfig("FactoryRefreshPoints")) > -1)
 			//Allow Servers to refresh factories without having active players.
 			refreshToAdd = Integer.parseInt(this.getConfig("FactoryRefreshPoints"));
-
+		
+		MWServ.mwlog.debugLog("     -> " + refreshToAdd);
+		
 		MWServ.mwlog.debugLog("Geting planet income and refreshing factories");
 		// Get income, and refresh factories
-		Iterator e = getPlanets().values().iterator();
+		Iterator<SPlanet> e = getPlanets().values().iterator();
 		while (e.hasNext()) {// loop through all planets which the faction
 			// has territory on
-			SPlanet p = (SPlanet) e.next();
+			SPlanet p = e.next();
 			if (this.equals(p.getOwner())){
 				MWServ.mwlog.debugLog("Updating planet "+p.getName());
 				hsUpdates.append(p.tick(refreshToAdd));// call the planetary tick
@@ -1438,7 +1444,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 							industrialAccidents.append("a cache of "
 									+ Unit.getWeightClassDesc(weight)
 									+ " " + Unit.getTypeClassDesc(type_id)
-									+ " supplies is donated to the salvation army.<br>");
+									+ " supplies is donated to the Salvation Army.<br>");
 						} else
 							industrialAccidents.append("An industrial accident destroys a substantial cache of "
 								+ Unit.getWeightClassDesc(weight)
@@ -1551,11 +1557,12 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		} else
 			addShowProductionCountNext(-1);
 
-		MWServ.mwlog.debugLog("Send House Updates");
+		MWServ.mwlog.debugLog("Send House Updates: ");
+		MWServ.mwlog.debugLog("     -> " + hsUpdates.toString());
 		//send house updates, if not empty
 		if (hsUpdates.length() > 0)
 			CampaignMain.cm.doSendToAllOnlinePlayers(this, "HS|" + hsUpdates.toString(), false);
-		MWServ.mwlog.debugLog("returning");
+		MWServ.mwlog.debugLog("returning from tick: " + this.getName());
 		return result;
 	}
 

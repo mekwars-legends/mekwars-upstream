@@ -51,14 +51,16 @@ public class RegisterCommand implements Command {
 		}
 		
         try {
-    
             StringTokenizer str = new StringTokenizer(command.nextToken(), ",");
-            String regname = "";
-            String pw = "";             
+        	String regname = "";
+            String pw = "";  
+            String email = "";
             SPlayer player = null;
             
             try{
                 regname = str.nextToken().trim().toLowerCase();
+                if(CampaignMain.cm.requireEmailForRegistration())
+                	email = str.nextToken();
                 pw = str.nextToken();
             }catch (Exception ex){
                 MWServ.mwlog.errLog("Failure to register: "+regname);
@@ -113,8 +115,9 @@ public class RegisterCommand implements Command {
             if(CampaignMain.cm.isUsingMySQL()) {
             	CampaignMain.cm.MySQL.setPlayerPassword(CampaignMain.cm.MySQL.getPlayerIDByName(Username), pw);
             	CampaignMain.cm.MySQL.setPlayerAccess(CampaignMain.cm.MySQL.getPlayerIDByName(Username), level);
-            	if(CampaignMain.cm.isSynchingBB())
-            		CampaignMain.cm.MySQL.addUserToForum(Username, pw);
+            	if(CampaignMain.cm.isSynchingBB()) {
+           			CampaignMain.cm.MySQL.addUserToForum(Username, pw, email);
+            	}
             }
             //acknowledge registration
             CampaignMain.cm.toUser("AM:\"" + regname + "\" successfully registered.", Username);

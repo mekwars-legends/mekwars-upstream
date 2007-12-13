@@ -40,6 +40,7 @@ public final class RegisterNameDialog implements ActionListener {
 	private final JTextField usernameField = new JTextField();
 	private final JPasswordField passwordField1 = new JPasswordField();
 	private final JPasswordField passwordField2 = new JPasswordField();
+	private final JTextField emailField = new JTextField();
 	
 	private final JButton okayButton = new JButton("OK");
 	private final JButton cancelButton = new JButton("Cancel");
@@ -57,6 +58,7 @@ public final class RegisterNameDialog implements ActionListener {
 		usernameField.addActionListener(this);
 		passwordField1.addActionListener(this);
 		passwordField2.addActionListener(this);
+		emailField.addActionListener(this);
 		okayButton.addActionListener(this);
 		cancelButton.addActionListener(this);
 		
@@ -64,15 +66,21 @@ public final class RegisterNameDialog implements ActionListener {
 		usernameField.setToolTipText("Username to register");
 		passwordField1.setToolTipText("Password to set.");
 		passwordField2.setToolTipText("Confirm password.");
+		emailField.setToolTipText("Email address.");
 		
 		//Create the panel holding the labels and text fields
-		JPanel fieldPanel = new JPanel(new GridLayout(3,2), false);
+		JPanel fieldPanel = new JPanel(new GridLayout(4,2), false);
 		fieldPanel.add(new JLabel("Username: ", SwingConstants.LEFT));
 		fieldPanel.add(usernameField);
 		fieldPanel.add(new JLabel("Password1: ", SwingConstants.LEFT));
 		fieldPanel.add(passwordField1);
 		fieldPanel.add(new JLabel("Password2: ", SwingConstants.LEFT));
 		fieldPanel.add(passwordField2);
+		if(Boolean.parseBoolean(mwclient.getserverConfigs("REQUIREEMAILFORREGISTRATION"))) {
+			fieldPanel.add(new JLabel("Email: ", SwingConstants.LEFT));
+			fieldPanel.add(emailField);
+		}
+				
 		
 		JPanel messagePanel = new JPanel();
 		messagePanel.add(new JLabel("<HTML><b><center>" +
@@ -116,8 +124,12 @@ public final class RegisterNameDialog implements ActionListener {
 			}
 			
 			else {
-				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "register " + usernameField.getText() + "," + String.valueOf(passwordField1.getPassword()));
-				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setclientversion#" + mwclient.myUsername.trim()+ "#" + MWClient.CLIENT_VERSION);
+				if(Boolean.parseBoolean(mwclient.getserverConfigs("REQUIREEMAILFORREGISTRATION"))) {
+					mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "register " + usernameField.getText() + "," + emailField.getText() + "," + String.valueOf(passwordField1.getPassword()));
+				} else {
+					mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "register " + usernameField.getText() + "," + String.valueOf(passwordField1.getPassword()));
+				}
+			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setclientversion#" + mwclient.myUsername.trim()+ "#" + MWClient.CLIENT_VERSION);
 			}
 			
 		}

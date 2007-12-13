@@ -126,6 +126,7 @@ public final class ServerConfigurationDialog implements ActionListener {
 		JPanel disconenctionPanel = new JPanel();
         JPanel advancedRepairPanel = new JPanel();//Advanced Repair
         JPanel lossCompensationPanel = new JPanel();//battle loss compensation
+        JPanel dbPanel = new JPanel(); // Database configuration
 		
 		/*
 		 * PGMH PANEL CONSTRUCTION
@@ -4716,6 +4717,20 @@ public final class ServerConfigurationDialog implements ActionListener {
 		SpringLayoutHelper.setupSpringGrid(lossCompSpring, 4);
 		lossCompensationPanel.add(lossCompSpring);
         
+		/*
+		 * Database Configuration Panel Construction
+		 */
+        JPanel dbSpring = new JPanel(new SpringLayout());
+
+        BaseCheckBox = new JCheckBox("Require email address for registration: ");
+
+        BaseCheckBox.setToolTipText("Adds email address to forum registration");
+        BaseCheckBox.setName("REQUIREEMAILFORREGISTRATION");
+        dbSpring.add(BaseCheckBox);
+        
+		SpringLayoutHelper.setupSpringGrid(dbSpring, 2);
+        dbPanel.add(dbSpring);
+        
         
 		// Set the actions to generate
 		okayButton.setActionCommand(okayCommand);
@@ -4756,6 +4771,7 @@ public final class ServerConfigurationDialog implements ActionListener {
 		ConfigPane.addTab("Units",null,unitPanel,"Care and Feeding of Your Units");
 		ConfigPane.addTab("Units 2",null,unit2Panel,"More Care and Feeding of Your Units");
 		ConfigPane.addTab("Voting",null,votingPanel,"Voting Stuff");
+		ConfigPane.addTab("Database",null,dbPanel,"Database Configuration");
 		
 		//Create the panel that will hold the entire UI
 		JPanel mainConfigPanel = new JPanel();

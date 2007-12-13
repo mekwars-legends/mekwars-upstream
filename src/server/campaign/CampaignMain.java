@@ -2361,6 +2361,10 @@ public final class CampaignMain implements Serializable {
 		return false;
 	}
 	
+	public boolean requireEmailForRegistration() {
+		return (isUsingMySQL() && isSynchingBB() && Boolean.parseBoolean(cm.getConfig("REQUIREEMAILFORREGISTRATION")));
+	}
+	
 	public void turnOffBBSynch() {
 		this.validBBVersion = false;
 	}

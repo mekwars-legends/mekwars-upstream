@@ -60,8 +60,8 @@ public class mysqlHandler{
 	  }
   }
   
-  public void addUserToForum(String name, String pass) {
-	  phpBBCon.addToForum(name, pass);
+  public void addUserToForum(String name, String pass, String email) {
+	  phpBBCon.addToForum(name, pass, email);
   }
   
   public void backupDB(long time) {

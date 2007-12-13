@@ -68,12 +68,53 @@ public class PhpBBConnector {
 		  } catch (SQLException e) {
 			  MWServ.mwlog.dbLog("SQL Error in PhpBBConnector.userExistsInForum: " + e.getMessage());
 			  return false;
+		  }  
+	  }
+	  
+	  private boolean userExistsInForum(String name, String email) {
+		  PreparedStatement ps = null;
+		  ResultSet rs = null;
+		  boolean exists = false;
+		  try {
+			ps = con.prepareStatement("SELECT COUNT(*) as numusers from " + userTable + " WHERE username = ? AND user_email = ?");
+			ps.setString(1, name);
+			ps.setString(2, email);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				if(rs.getInt("numusers") > 0)
+					exists = true;
+				else
+					exists = false;
+			} else {
+				exists = false;
+			}
+			rs.close();
+			ps.close();
+			return exists;
+		  } catch (SQLException e) {
+			  MWServ.mwlog.dbLog("SQL Error in PhpBBConnector.userExistsInForum: " + e.getMessage());
+			  return false;
 		  }
 	  }
 	  
-	  public void addToForum(String name, String pass) {
+	  public void addToHouseForum(int userID, String forumName) {
+		  
+	  }
+	  
+	  public void removeFromHouseForum(int userID, String forumName) {
+		  
+	  }
+	  
+	  public void addToForum(String name, String pass, String email) {
+		  if(userExistsInForum(name, email))
+			  return;
+		  // The don't exist, using that email.  The username might still be taken
 		  if(userExistsInForum(name))
 			  return;
+		  
+		  /*
+		   * TODO: Need to return the phpBB ID somewhere in here.
+		   */
 		  
 		  PreparedStatement ps = null;
 		  StringBuffer sql = new StringBuffer();
@@ -91,12 +132,14 @@ public class PhpBBConnector {
 				  	sql.append("user_session_page = 0, ");
 				  	sql.append("user_lastvisit = 0, ");
 				  	sql.append("user_regdate = ?, ");
+				  	sql.append("user_email = ?, ");
 				  	sql.append("user_id = ?");
 		  
 				  	ps = con.prepareStatement(sql.toString());
 				  	ps.setString(1, name);
 				  	ps.setString(2, pass);
 				  	ps.setLong(3, (int)(System.currentTimeMillis()/1000));
+				  	ps.setString(4, email);
 			  
 				  	int userID = 0;
 				  	// grab an unused id.
@@ -111,7 +154,7 @@ public class PhpBBConnector {
 					  	// It's no good
 					  	break;
 				  	}
-				  	ps.setInt(4, userID);
+				  	ps.setInt(5, userID);
 				  	ps.executeUpdate();
 				  	stmt.close();
 				  	// Now add to the groups
