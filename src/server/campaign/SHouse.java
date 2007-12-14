@@ -1454,39 +1454,39 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 					
 					//else, make a new unit
 					else {
-						SUnit newUnit = m.getMechProduced(type_id, this.getNewPilot(type_id));
-						MWServ.mwlog.debugLog("AP Unit "+newUnit.getModelName());
-						hsUpdates.append(this.addUnit(newUnit, false));
-						hsUpdates.append(this.addPP(weight, type_id, -(this.getPPCost(weight,type_id)), false));
-						
-						/*
-						 * set refresh and add to back end of the HS update. if the refresh is added in-line in the
-						 * SUnitFactory, the command is sent BEFORE the final HS command, which then overwrites the
-						 * correct refresh time w/ an incorrect reflesh time that reflects player activity.
-						 */
-						 if (!Boolean.parseBoolean(this.getConfig("UseCalculatedCosts"))){
-					            //set the refresh miniticks
-					    		if (m.getWeightclass() == Unit.LIGHT)
-					    			hsUpdates.append(m.addRefresh((Integer.parseInt(this.getConfig("LightRefresh")) * 100) / m.getRefreshSpeed(), false));
-					    		else if (m.getWeightclass() == Unit.MEDIUM)
-					    			hsUpdates.append(m.addRefresh((Integer.parseInt(this.getConfig("MediumRefresh")) * 100) / m.getRefreshSpeed(), false));
-					    		else if (m.getWeightclass() == Unit.HEAVY)
-					    			hsUpdates.append(m.addRefresh((Integer.parseInt(this.getConfig("HeavyRefresh")) * 100) / m.getRefreshSpeed(), false));
-					    		else if (m.getWeightclass() == Unit.ASSAULT)
-					    			hsUpdates.append(m.addRefresh((Integer.parseInt(this.getConfig("AssaultRefresh")) * 100) / m.getRefreshSpeed(), false));
-					        }
-						
-						if (type_id == Unit.INFANTRY)// infantry exclusive message
-							mechsProduced.append("A militia unit [" + newUnit.getModelName()
-							+ "] from "	+ m.getPlanet().getName()
-							+ " activated for front line duty!<br>");
-						
-						else // non infantry, so use a standard build message
-							mechsProduced.append("Technicians assembled a "
-								+ newUnit.getModelName() + " at " + m.getName() + " on "
-								+ m.getPlanet().getName() + ".<br>");
-					}
-					
+						Vector<SUnit> newUnits = m.getMechProduced(type_id, this.getNewPilot(type_id));
+						for ( SUnit newUnit : newUnits ){
+							MWServ.mwlog.debugLog("AP Unit "+newUnit.getModelName());
+							hsUpdates.append(this.addUnit(newUnit, false));
+							hsUpdates.append(this.addPP(weight, type_id, -(this.getPPCost(weight,type_id)), false));
+							/*
+							 * set refresh and add to back end of the HS update. if the refresh is added in-line in the
+							 * SUnitFactory, the command is sent BEFORE the final HS command, which then overwrites the
+							 * correct refresh time w/ an incorrect reflesh time that reflects player activity.
+							 */
+							 if (!Boolean.parseBoolean(this.getConfig("UseCalculatedCosts"))){
+						            //set the refresh miniticks
+						    		if (m.getWeightclass() == Unit.LIGHT)
+						    			hsUpdates.append(m.addRefresh((Integer.parseInt(this.getConfig("LightRefresh")) * 100) / m.getRefreshSpeed(), false));
+						    		else if (m.getWeightclass() == Unit.MEDIUM)
+						    			hsUpdates.append(m.addRefresh((Integer.parseInt(this.getConfig("MediumRefresh")) * 100) / m.getRefreshSpeed(), false));
+						    		else if (m.getWeightclass() == Unit.HEAVY)
+						    			hsUpdates.append(m.addRefresh((Integer.parseInt(this.getConfig("HeavyRefresh")) * 100) / m.getRefreshSpeed(), false));
+						    		else if (m.getWeightclass() == Unit.ASSAULT)
+						    			hsUpdates.append(m.addRefresh((Integer.parseInt(this.getConfig("AssaultRefresh")) * 100) / m.getRefreshSpeed(), false));
+						        }
+							
+							if (type_id == Unit.INFANTRY)// infantry exclusive message
+								mechsProduced.append("A militia unit [" + newUnit.getModelName()
+								+ "] from "	+ m.getPlanet().getName()
+								+ " activated for front line duty!<br>");
+							
+							else // non infantry, so use a standard build message
+								mechsProduced.append("Technicians assembled a "
+									+ newUnit.getModelName() + " at " + m.getName() + " on "
+									+ m.getPlanet().getName() + ".<br>");
+						}
+					}					
 				}// end while(PP > MaxPP)
 			}// end for(all 4 weight classes)
 		}// end for(all 3 types)

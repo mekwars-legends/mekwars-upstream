@@ -315,61 +315,51 @@ public class RequestCommand implements Command {
 			}
 
 			SPilot pilot = playerHouse.getNewPilot(type_id);
-			SUnit mech = factory.getMechProduced(type_id,pilot);
 
-			if (CampaignMain.cm.getBooleanConfig("UseCalculatedCosts")) {
-				for ( int i = 0; i < 10; i++ ){
-
-					mech = factory.getMechProduced(type_id,pilot);
-					mechCbills = (int)(mech.getEntity().getCost()*Double.valueOf(CampaignMain.cm.getConfig("CostModifier")));
-					if (mech.getModelName().equals("OMG-UR-FD"))
-						break;
-					if (mechCbills <= p.getMoney())
-						break;
+			Vector<SUnit> mechs = factory.getMechProduced(type_id,pilot);
+			for (SUnit mech : mechs ){
+				if (CampaignMain.cm.getBooleanConfig("UseCalculatedCosts")) {
+						mechCbills = (int)(mech.getEntity().getCost()*Double.valueOf(CampaignMain.cm.getConfig("CostModifier")));
+						if ( mechCbills > p.getMoney() )
+							return;
 				}
-
-				if (mechCbills > p.getMoney()){
-					CampaignMain.cm.toUser("AM:The quartermaster regrets to inform you that the factories cannot create any units within your current budget. Please try again later.",Username,true);
-					return;
-				}	
+	
+				//we're going to build the unit. set up a houseupdate string.
+				StringBuilder hsUpdates = new StringBuilder();
+	
+				//set the refresh miniticks
+				if (factory.getWeightclass() == Unit.LIGHT)
+					hsUpdates.append(factory.addRefresh((CampaignMain.cm.getIntegerConfig("LightRefresh") * 100) / factory.getRefreshSpeed(), false));
+				else if (factory.getWeightclass() == Unit.MEDIUM)
+					hsUpdates.append(factory.addRefresh((CampaignMain.cm.getIntegerConfig("MediumRefresh") * 100) / factory.getRefreshSpeed(), false));
+				else if (factory.getWeightclass() == Unit.HEAVY)
+					hsUpdates.append(factory.addRefresh((CampaignMain.cm.getIntegerConfig("HeavyRefresh") * 100) / factory.getRefreshSpeed(), false));
+				else if (factory.getWeightclass() == Unit.ASSAULT)
+					hsUpdates.append(factory.addRefresh((CampaignMain.cm.getIntegerConfig("AssaultRefresh") * 100) / factory.getRefreshSpeed(), false));
+	
+				if (CampaignMain.cm.getBooleanConfig("AllowPersonalPilotQueues") && (mech.getType() == Unit.MEK || mech.getType() == Unit.PROTOMEK) ){
+					SPilot pilot1 = (SPilot)mech.getPilot();
+					SPilot pilot2 = new SPilot("Vacant",99,99);
+					mech.setPilot(pilot2);
+	
+					if (!pilot1.getName().equalsIgnoreCase("Vacant"))//no skill change on a returning pilot
+						playerHouse.getPilotQueues().addPilot(mech.getType(),pilot1,true);
+				}
+	
+				p.addUnit(mech, true);//give the actual unit...
+				p.addMoney(-mechCbills);//then take away money
+				p.addInfluence(-mechInfluence);//and take away influence
+				
+				hsUpdates.append(playerHouse.addPP(weightclass, type_id, -mechPP, false));//remove PP from the faction
+				result = "AM:You've been granted a " + mech.getModelName() + ". (-";
+				result += CampaignMain.cm.moneyOrFluMessage(true,false,mechCbills)+" / -" + CampaignMain.cm.moneyOrFluMessage(false,true,mechInfluence)+")";
+				MWServ.mwlog.mainLog(p.getName() + " bought a " + mech.getVerboseModelName() + " from " + factory.getName() + " on " + planet.getName());
+				CampaignMain.cm.toUser(result,Username,true);
+				CampaignMain.cm.doSendHouseMail(playerHouse,"NOTE",p.getName() + " bought a " + mech.getVerboseModelName() + " from " + factory.getName() + " on " + planet.getName() + "!");
+	
+				//send update to all players
+				CampaignMain.cm.doSendToAllOnlinePlayers(playerHouse, "HS|" + hsUpdates.toString(), false);
 			}
-
-			//we're going to build the unit. set up a houseupdate string.
-			StringBuilder hsUpdates = new StringBuilder();
-
-			//set the refresh miniticks
-			if (factory.getWeightclass() == Unit.LIGHT)
-				hsUpdates.append(factory.addRefresh((CampaignMain.cm.getIntegerConfig("LightRefresh") * 100) / factory.getRefreshSpeed(), false));
-			else if (factory.getWeightclass() == Unit.MEDIUM)
-				hsUpdates.append(factory.addRefresh((CampaignMain.cm.getIntegerConfig("MediumRefresh") * 100) / factory.getRefreshSpeed(), false));
-			else if (factory.getWeightclass() == Unit.HEAVY)
-				hsUpdates.append(factory.addRefresh((CampaignMain.cm.getIntegerConfig("HeavyRefresh") * 100) / factory.getRefreshSpeed(), false));
-			else if (factory.getWeightclass() == Unit.ASSAULT)
-				hsUpdates.append(factory.addRefresh((CampaignMain.cm.getIntegerConfig("AssaultRefresh") * 100) / factory.getRefreshSpeed(), false));
-
-			if (CampaignMain.cm.getBooleanConfig("AllowPersonalPilotQueues") && (mech.getType() == Unit.MEK || mech.getType() == Unit.PROTOMEK) ){
-				SPilot pilot1 = (SPilot)mech.getPilot();
-				SPilot pilot2 = new SPilot("Vacant",99,99);
-				mech.setPilot(pilot2);
-
-				if (!pilot1.getName().equalsIgnoreCase("Vacant"))//no skill change on a returning pilot
-					playerHouse.getPilotQueues().addPilot(mech.getType(),pilot1,true);
-			}
-
-			p.addUnit(mech, true);//give the actual unit...
-			p.addMoney(-mechCbills);//then take away money
-			p.addInfluence(-mechInfluence);//and take away influence
-			
-			hsUpdates.append(playerHouse.addPP(weightclass, type_id, -mechPP, false));//remove PP from the faction
-			result = "AM:You've been granted a " + mech.getModelName() + ". (-";
-			result += CampaignMain.cm.moneyOrFluMessage(true,false,mechCbills)+" / -" + CampaignMain.cm.moneyOrFluMessage(false,true,mechInfluence)+")";
-			MWServ.mwlog.mainLog(p.getName() + " bought a " + mech.getVerboseModelName() + " from " + factory.getName() + " on " + planet.getName());
-			CampaignMain.cm.toUser(result,Username,true);
-			CampaignMain.cm.doSendHouseMail(playerHouse,"NOTE",p.getName() + " bought a " + mech.getVerboseModelName() + " from " + factory.getName() + " on " + planet.getName() + "!");
-
-			//send update to all players
-			CampaignMain.cm.doSendToAllOnlinePlayers(playerHouse, "HS|" + hsUpdates.toString(), false);
-
 			return;
 		}//end if(enough money/influence/pp)
 

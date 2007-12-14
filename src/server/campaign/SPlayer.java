@@ -1181,10 +1181,10 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			
 			Vector<SArmy> orderedArmies = new Vector<SArmy>(1,1);
 			
-			int MinCount = Integer.parseInt(this.getMyHouse().getConfig("MinCountForTick"));
-			int MaxCount = Integer.parseInt(this.getMyHouse().getConfig("MaxCountForTick"));
-			int MaxFlatDiff = Integer.parseInt(this.getMyHouse().getConfig("MaxBVDifference"));
-			double MaxPercentDiff = Double.parseDouble(this.getMyHouse().getConfig("MaxBVPercent"));
+			int MinCount = this.getMyHouse().getIntegerConfig("MinCountForTick");
+			int MaxCount = this.getMyHouse().getIntegerConfig("MaxCountForTick");
+			int MaxFlatDiff = this.getMyHouse().getIntegerConfig("MaxBVDifference");
+			double MaxPercentDiff = this.getMyHouse().getDoubleConfig("MaxBVPercent");
 			
 			for (SArmy currentArmy : this.getArmies()) {
 				
@@ -1249,6 +1249,10 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			 */
 			
 			weightedArmyNumber = orderedArmies.size();
+			
+			double weightMod = Math.max(0,this.getMyHouse().getDoubleConfig("BaseCountForProduction"));
+			weightedArmyNumber *= weightMod;
+			
 			if (weightedArmyNumber > 0) {
 				
 				Enumeration e = orderedArmies.elements();
@@ -1269,7 +1273,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 					currentMaxDiff = caPercentDiff;
 				
 				if (currentBV - MinCount < currentMaxDiff) {
-					weightedArmyNumber -= Double.parseDouble(this.getMyHouse().getConfig("FloorPenalty"));
+					weightedArmyNumber -= this.getMyHouse().getDoubleConfig("FloorPenalty");
 					int overlap = currentBV - MinCount;
 					weightedArmyNumber -= (currentMaxDiff - overlap)
 					/ currentMaxDiff;
@@ -1305,7 +1309,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 					}
 					
 					if (nextBV - currentBV < currentMaxDiff) {
-						weightedArmyNumber -= Double.parseDouble(this.getMyHouse().getConfig("OverlapPenalty"));
+						weightedArmyNumber -= this.getMyHouse().getDoubleConfig("OverlapPenalty");
 						int overlap = nextBV - currentBV;
 						weightedArmyNumber -= (currentMaxDiff - overlap) / currentMaxDiff;
 					}
@@ -1322,7 +1326,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				else
 					currentMaxDiff = caPercentDiff;
 				if (MaxCount - currentBV < currentMaxDiff) {
-					weightedArmyNumber -= Double.parseDouble(this.getMyHouse().getConfig("CeilingPenalty"));
+					weightedArmyNumber -= this.getMyHouse().getDoubleConfig("CeilingPenalty");
 					int overlap = MaxCount - currentBV;
 					weightedArmyNumber -= (currentMaxDiff - overlap) / currentMaxDiff;
 				}

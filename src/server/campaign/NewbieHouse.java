@@ -84,7 +84,7 @@ public class NewbieHouse extends NonConqHouse {
 	public SUnit getEntity(int weightclass, int type_id) {
 		SUnit m = super.getEntity(weightclass,type_id);
 		if (m == null)
-			m = this.getRandomUnit(type_id,weightclass,null);
+			m = this.getRandomUnit(type_id,weightclass,null).firstElement();
 		return m;
 	}
 	
@@ -108,7 +108,7 @@ public class NewbieHouse extends NonConqHouse {
 		return 1* this.getPPCost(weight,type_id);
 	}
 	
-	public SUnit getRandomUnit(int unitType, int weightClass, String houseName) {
+	public Vector<SUnit> getRandomUnit(int unitType, int weightClass, String houseName) {
 		
 		String factionName;
 		if (houseName == null)
@@ -118,10 +118,16 @@ public class NewbieHouse extends NonConqHouse {
 		
 		String unitFilename = BuildTable.getUnitFilename(factionName, Unit.getWeightClassDesc(weightClass), unitType, BuildTable.STANDARD);
 		
-		//build the new unit
-		SUnit newbieUnit = new SUnit(factionName,unitFilename,weightClass);
-		newbieUnit.setProducer("Training Unit");
-		return newbieUnit;
+		Vector<SUnit>newbieUnits = new Vector<SUnit>(1,1);
+		if ( unitFilename.toLowerCase().trim().endsWith(".mul") ){
+			newbieUnits.addAll(SUnit.createMULUnits(unitFilename,"Training Unit"));
+		}else{
+			//build the new unit
+			SUnit newbieUnit = new SUnit(factionName,unitFilename,weightClass);
+			newbieUnit.setProducer("Training Unit");
+			newbieUnits.add(newbieUnit);
+		}
+		return newbieUnits;
 	}
 	
 	/**
@@ -270,83 +276,83 @@ public class NewbieHouse extends NonConqHouse {
 		
 		//for loops.
 		for (int i = 0; i < numLMeks; i++) {
-			units.add(this.getRandomUnit(Unit.MEK, Unit.LIGHT, houseName));
+			units.addAll(this.getRandomUnit(Unit.MEK, Unit.LIGHT, houseName));
 		}
 		
 		for (int i = 0; i < numMMeks; i++) {
-			units.add(this.getRandomUnit(Unit.MEK, Unit.MEDIUM, houseName));
+			units.addAll(this.getRandomUnit(Unit.MEK, Unit.MEDIUM, houseName));
 		}
 		
 		for (int i = 0; i < numHMeks; i++) {
-			units.add(this.getRandomUnit(Unit.MEK, Unit.HEAVY, houseName));
+			units.addAll(this.getRandomUnit(Unit.MEK, Unit.HEAVY, houseName));
 		}
 		
 		for (int i = 0; i < numAMeks; i++) {
-			units.add(this.getRandomUnit(Unit.MEK, Unit.ASSAULT, houseName));
+			units.addAll(this.getRandomUnit(Unit.MEK, Unit.ASSAULT, houseName));
 		}
 		
 		for (int i = 0; i < numLVehs; i++) {
-			units.add(this.getRandomUnit(Unit.VEHICLE, Unit.LIGHT, houseName));
+			units.addAll(this.getRandomUnit(Unit.VEHICLE, Unit.LIGHT, houseName));
 		}
 		
 		for (int i = 0; i < numMVehs; i++) {
-			units.add(this.getRandomUnit(Unit.VEHICLE, Unit.MEDIUM, houseName));
+			units.addAll(this.getRandomUnit(Unit.VEHICLE, Unit.MEDIUM, houseName));
 		}
 		
 		for (int i = 0; i < numHVehs; i++) {
-			units.add(this.getRandomUnit(Unit.VEHICLE, Unit.HEAVY, houseName));
+			units.addAll(this.getRandomUnit(Unit.VEHICLE, Unit.HEAVY, houseName));
 		}
 		
 		for (int i = 0; i < numAVehs; i++) {
-			units.add(this.getRandomUnit(Unit.VEHICLE, Unit.ASSAULT, houseName));
+			units.addAll(this.getRandomUnit(Unit.VEHICLE, Unit.ASSAULT, houseName));
 		}
 		
 		for (int i = 0; i < numLInf; i++) {
-			units.add(this.getRandomUnit(Unit.INFANTRY, Unit.LIGHT, houseName));
+			units.addAll(this.getRandomUnit(Unit.INFANTRY, Unit.LIGHT, houseName));
 		}
 		
 		for (int i = 0; i < numMInf; i++) {
-			units.add(this.getRandomUnit(Unit.INFANTRY, Unit.MEDIUM, houseName));
+			units.addAll(this.getRandomUnit(Unit.INFANTRY, Unit.MEDIUM, houseName));
 		}
 		
 		for (int i = 0; i < numHInf; i++) {
-			units.add(this.getRandomUnit(Unit.INFANTRY, Unit.HEAVY, houseName));
+			units.addAll(this.getRandomUnit(Unit.INFANTRY, Unit.HEAVY, houseName));
 		}
 		
 		for (int i = 0; i < numAInf; i++) {
-			units.add(this.getRandomUnit(Unit.INFANTRY, Unit.ASSAULT, houseName));
+			units.addAll(this.getRandomUnit(Unit.INFANTRY, Unit.ASSAULT, houseName));
 		}
 		
 		for (int i = 0; i < numLPM; i++) {
-			units.add(this.getRandomUnit(Unit.PROTOMEK, Unit.LIGHT, houseName));
+			units.addAll(this.getRandomUnit(Unit.PROTOMEK, Unit.LIGHT, houseName));
 		}
 		
 		for (int i = 0; i < numMPM; i++) {
-			units.add(this.getRandomUnit(Unit.PROTOMEK, Unit.MEDIUM, houseName));
+			units.addAll(this.getRandomUnit(Unit.PROTOMEK, Unit.MEDIUM, houseName));
 		}
 		
 		for (int i = 0; i < numHPM; i++) {
-			units.add(this.getRandomUnit(Unit.PROTOMEK, Unit.HEAVY, houseName));
+			units.addAll(this.getRandomUnit(Unit.PROTOMEK, Unit.HEAVY, houseName));
 		}
 		
 		for (int i = 0; i < numAPM; i++) {
-			units.add(this.getRandomUnit(Unit.PROTOMEK, Unit.ASSAULT, houseName));
+			units.addAll(this.getRandomUnit(Unit.PROTOMEK, Unit.ASSAULT, houseName));
 		}
 		
 		for (int i = 0; i < numLBA; i++) {
-			units.add(this.getRandomUnit(Unit.BATTLEARMOR, Unit.LIGHT, houseName));
+			units.addAll(this.getRandomUnit(Unit.BATTLEARMOR, Unit.LIGHT, houseName));
 		}
 		
 		for (int i = 0; i < numMBA; i++) {
-			units.add(this.getRandomUnit(Unit.BATTLEARMOR, Unit.MEDIUM, houseName));
+			units.addAll(this.getRandomUnit(Unit.BATTLEARMOR, Unit.MEDIUM, houseName));
 		}
 		
 		for (int i = 0; i < numHBA; i++) {
-			units.add(this.getRandomUnit(Unit.BATTLEARMOR, Unit.HEAVY, houseName));
+			units.addAll(this.getRandomUnit(Unit.BATTLEARMOR, Unit.HEAVY, houseName));
 		}
 		
 		for (int i = 0; i < numABA; i++) {
-			units.add(this.getRandomUnit(Unit.BATTLEARMOR, Unit.ASSAULT, houseName));
+			units.addAll(this.getRandomUnit(Unit.BATTLEARMOR, Unit.ASSAULT, houseName));
 		}
 		
 		//now add the units to player and get a return string

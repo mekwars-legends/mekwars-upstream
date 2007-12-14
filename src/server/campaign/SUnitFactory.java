@@ -32,6 +32,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 import common.Planet;
 import common.Unit;
@@ -250,11 +251,13 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 	 * 
 	 * @return the Mek Produced
 	 */
-	public SUnit getMechProduced(int type_id, SPilot pilot) {
+	public Vector<SUnit> getMechProduced(int type_id, SPilot pilot) {
 		
 		//Build the fluff text for the mek
 		String Filename = "";
 		String producer = "Built by ";
+		Vector<SUnit> units = new Vector<SUnit>(1,1);
+		
 		if (this.getPlanet().getOwner() != null)
 			producer += this.getPlanet().getOwner().getName();
 		else
@@ -280,11 +283,15 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		MWServ.mwlog.infoLog("New unit for " + this.getPlanet().getOwner().getName() + " on " + this.getPlanet().getName() + ": "
 				+ Filename + "(Table: " + buildtableName + ")");
 		
-		//Build the unit & create history entry
-		SUnit cm = new SUnit(producer,Filename,this.getWeightclass());
-		
-		cm.setPilot(pilot);
-		return cm;
+		if ( Filename.toLowerCase().trim().endsWith(".mul")){
+			units.addAll(SUnit.createMULUnits(Filename,producer));
+		}else{
+			//Build the unit & create history entry
+			SUnit cm = new SUnit(producer,Filename,this.getWeightclass());
+			cm.setPilot(pilot);
+			units.add(cm);
+		}
+		return units;
 	}
 
 	/**

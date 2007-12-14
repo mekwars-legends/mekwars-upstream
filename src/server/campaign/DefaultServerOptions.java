@@ -273,6 +273,7 @@ public class DefaultServerOptions {
         defaults.setProperty("MaxCountForTick", "6000");
         defaults.setProperty("MinActiveTime", "40");
         defaults.setProperty("MaxLancesPerPlayer", "7");
+        defaults.setProperty("BaseCountForProduction", "1.0");
         
         defaults.setProperty("EXPNeededPerHouseRank", "0");
         defaults.setProperty("MinContractEXP", "200");

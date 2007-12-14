@@ -39,7 +39,11 @@ public class ThreadManager{
 	}
 	
 	public void runInThreadFromPool(Runnable runnable){
-		executor.execute(runnable);
+		try{
+			executor.execute(runnable);
+		}catch(Exception ex ){
+			ex.printStackTrace();
+		}
 	}
 	
 	

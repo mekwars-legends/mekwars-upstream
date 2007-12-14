@@ -95,8 +95,6 @@ public class ConnectionHandler extends AbstractConnectionHandler {
     		ThreadManager.getInstance().runInThreadFromPool(_reader);
     		_writer = new WriterThread(_socket,_out);
     		ThreadManager.getInstance().runInThreadFromPool(_writer);
-    	} catch (Exception ex) {
-    		MWServ.mwlog.errLog(ex);
     	} catch (OutOfMemoryError OOM) {
     		
     		/*
@@ -126,7 +124,9 @@ public class ConnectionHandler extends AbstractConnectionHandler {
     			MWServ.mwlog.errLog(e);
     		}
     		
-    	}
+    	}catch (Exception ex) {
+    		MWServ.mwlog.errLog(ex);
+    	} 
     	
     }//end init()
 

@@ -1626,6 +1626,12 @@ public final class FactionConfigurationDialog implements ActionListener {
 		unitsMiscSpring.add(baseTextField);
 
         baseTextField = new JTextField(5);
+		unitsMiscSpring.add(new JLabel("Base Army Weight:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("How much each army counts for while figuring production");
+        baseTextField.setName("BaseCountForProduction");
+		unitsMiscSpring.add(baseTextField);
+		
+        baseTextField = new JTextField(5);
         unitsMiscSpring.add(new JLabel("Cost Multiplier:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html>This is set to lower or raise the calculated cost.<br>i.e. cost is 10 mil for a unit .1(10%) will set it to 1 mil.</html>");
         baseTextField.setName("CostModifier");

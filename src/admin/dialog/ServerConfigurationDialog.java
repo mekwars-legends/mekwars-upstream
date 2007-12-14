@@ -3080,7 +3080,13 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setToolTipText("Max num. of armies a player may have");
         baseTextField.setName("MaxLancesPerPlayer");
 		miscSpring1.add(baseTextField);
-		
+
+        baseTextField = new JTextField(5);
+        miscSpring1.add(new JLabel("Base Army Weight:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("How much each army counts for while figuring production");
+        baseTextField.setName("BaseCountForProduction");
+        miscSpring1.add(baseTextField);
+
         baseTextField = new JTextField(5);
 		miscSpring1.add(new JLabel("Startup Miniticks:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("Number of miniticks performed 1st time a server is run");

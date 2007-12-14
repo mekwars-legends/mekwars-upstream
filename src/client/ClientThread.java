@@ -396,64 +396,8 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
                         entity.setOffBoard(entity.getOffBoardDistance(),direction);
                     }
                     
-                    //get and set the options
-                    IOptionGroup group = null;
-					Pilot pilot = null;
-				    pilot = new Pilot(mek.getPilot().getName(), mek.getPilot().getGunnery(), mek.getPilot().getPiloting());
-                    
-                    //Hits defaults to 0 so no reason to keep checking over and over again.
-                    pilot.setHits(mek.getPilot().getHits());
-					//No reason to keep searching for the same group over and over and over again
-					//find it once and search through it each time for the pilots skill
-					for (Enumeration<IOptionGroup> enumeration = pilot.getOptions().getGroups(); enumeration.hasMoreElements();) {
-						group = enumeration.nextElement();
-					    //MWClient.mwClientLog.clientErrLog("Checking: " + pilot.getName()+" Key: "+group.getKey());
-						if (group.getKey().equalsIgnoreCase(PilotOptions.LVL3_ADVANTAGES)) break;
-					}
-					
-					Iterator<?> iter = mek.getPilot().getMegamekOptions().iterator();
-					while (iter.hasNext()) {
-					    MegaMekPilotOption po = (MegaMekPilotOption) iter.next();
-						for (Enumeration<IOption> j = group.getOptions(); j.hasMoreElements();) {
-							IOption option = j.nextElement();
-							//MWClient.mwClientLog.clientErrLog("Unit: "+mek.getModelName()+" Checking: " + option.getName() + " with " + po.getMmname());
-                            if (option.getName().equals(po.getMmname())){
-                                if ( po.getMmname().equals("weapon_specialist")){
-                                    option.setValue(mek.getPilot().getWeapon());
-                                }
-                                else if ( po.getMmname().equals("edge")){
-                                    option.setValue(mek.getPilot().getSkills().getPilotSkill(PilotSkill.EdgeSkillID).getLevel());
-                                }
-                                else{
-                                    option.setValue(po.isValue());
-                                }
-                                break;
-                            }
-						}
-					}
-                    
-                    boolean hasEdge = mek.getPilot().getSkills().has(PilotSkill.EdgeSkillID);
-                    
-                    if ( hasEdge ){
-                        for (Enumeration<IOption> j = group.getOptions(); j.hasMoreElements();) {
-                            IOption option = j.nextElement();
-
-                            if ( option.getName().equals("edge_when_tac")){
-                                option.setValue(mek.getPilot().getTac());
-                            }
-                            else if ( option.getName().equals("edge_when_ko")){
-                                option.setValue(mek.getPilot().getKO());
-                            }
-                            else if ( option.getName().equals("edge_when_headhit")){
-                                option.setValue(mek.getPilot().getHeadHit());
-                            }
-                            else if ( option.getName().equals("edge_when_explosion")){
-                                option.setValue(mek.getPilot().getExplosion());
-                            }//end of edge_else if statements.
-                        }
-                    }
 					//Add Pilot to entity
-					entity.setCrew(pilot);
+					entity.setCrew(createEntityPilot(mek));
 					// Add Mek to game
 					client.sendAddEntity(entity);
 					// Wait a few secs to not overuse bandwith
@@ -487,7 +431,10 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
 						//set the pilot
 						Pilot pilot = new Pilot("AutoArtillery", 4, 5);
 						entity.setCrew(pilot);
-        			}					
+        			}else{
+        				entity.setCrew(createEntityPilot(autoUnit));
+        			}
+        			
                     MWClient.mwClientLog.clientErrLog(entity.getModel()+" direction "+entity.getOffBoardDirection());
 					//add the unit to the game.
                     if ( bot != null )
@@ -1093,4 +1040,44 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
     	return returnedOptions;
     }
     
+    public Pilot createEntityPilot(Unit mek){
+	    //get and set the options
+	    IOptionGroup group = null;
+		Pilot pilot = null;
+	    pilot = new Pilot(mek.getPilot().getName(), mek.getPilot().getGunnery(), mek.getPilot().getPiloting());
+	    
+	    //Hits defaults to 0 so no reason to keep checking over and over again.
+	    pilot.setHits(mek.getPilot().getHits());
+		//No reason to keep searching for the same group over and over and over again
+		//find it once and search through it each time for the pilots skill
+		for (Enumeration<IOptionGroup> enumeration = pilot.getOptions().getGroups(); enumeration.hasMoreElements();) {
+			group = enumeration.nextElement();
+		    //MWClient.mwClientLog.clientErrLog("Checking: " + pilot.getName()+" Key: "+group.getKey());
+			if (group.getKey().equalsIgnoreCase(PilotOptions.LVL3_ADVANTAGES)) break;
+		}
+		
+		Iterator<?> iter = mek.getPilot().getMegamekOptions().iterator();
+		while (iter.hasNext()) {
+		    MegaMekPilotOption po = (MegaMekPilotOption) iter.next();
+			for (Enumeration<IOption> j = group.getOptions(); j.hasMoreElements();) {
+				IOption option = j.nextElement();
+				//MWClient.mwClientLog.clientErrLog("Unit: "+mek.getModelName()+" Checking: " + option.getName() + " with " + po.getMmname());
+	            if (option.getName().equals(po.getMmname())){
+	                if ( po.getMmname().equals("weapon_specialist")){
+	                    option.setValue(mek.getPilot().getWeapon());
+	                }
+	                else if ( po.getMmname().equals("edge")){
+	                    option.setValue(mek.getPilot().getSkills().getPilotSkill(PilotSkill.EdgeSkillID).getLevel());
+	                }
+	                else{
+	                    option.setValue(po.isValue());
+	                }
+	                break;
+	            }
+			}
+		}
+	    
+	    
+	    return pilot;
+    }
 }

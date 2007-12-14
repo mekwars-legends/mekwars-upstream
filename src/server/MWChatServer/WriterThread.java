@@ -132,7 +132,7 @@ public class WriterThread extends Thread {
                     try{
                     	_socket.close();
                     }catch(Exception se){
-                    	
+                    	MWServ.mwlog.errLog(se);
                     }
             	}   
             	return;
@@ -193,7 +193,7 @@ public class WriterThread extends Thread {
             try{
             	_socket.close();
             }catch(Exception se){
-            	
+            	MWServ.mwlog.errLog(se);
             }
             //Commenting out for now. letting the socket get closed in the 
             //readerthread code. --Torren

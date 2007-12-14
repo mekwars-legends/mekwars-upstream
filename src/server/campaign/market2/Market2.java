@@ -18,6 +18,7 @@ package server.campaign.market2;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
+import java.util.Vector;
 
 import common.Unit;
 import common.util.UnitUtils;
@@ -583,28 +584,34 @@ public class Market2 {
 			
 			// get a filename for a unit (ex: Wahrammer WHM-6R.MTF) from a build table
 			String unitFilename = BuildTable.getUnitFilename(factionName, Unit.getWeightClassDesc(weightClass), Unit.MEK, BuildTable.RARE);//rare units onto BM
+			Vector<SUnit> rareUnits = new Vector<SUnit>(1,1);
 			
+			if ( unitFilename.toLowerCase().trim().endsWith(".mul")){
+				rareUnits.addAll(SUnit.createMULUnits(unitFilename,unitFluff));
+			}else
+				rareUnits.add(new SUnit(unitFluff, unitFilename, weightClass));
 			// build the new unit
-			SUnit rareUnit = new SUnit(unitFluff, unitFilename, weightClass);
-			
-			/*
-			 * Have the newbie-house sell the unit. Although this can lead to
-			 * nasty rare unit buildup, we're lazy and don't want to handle null
-			 * sellers.
-			 * 
-			 * List it for the stock factory purchase price.
-			 */
-			SHouse sellingFaction = CampaignMain.cm.getHouseFromPartialString(CampaignMain.cm.getConfig("NewbieHouseName"), null);
-			int priceForUnit = sellingFaction.getPriceForUnit(rareUnit.getWeightclass(), rareUnit.getType());
-			
-			// Create the listing
-            //add 1 to the sale tick due to a quirk with the BM autoupdate.
-            //The the unit is sent to the player before the new tick counter so the clients
-            //are a tick ahead of the server.
-			int rareSalesTime = CampaignMain.cm.getIntegerConfig("RareMinSaleTime");
-			this.addListing("Faction_" + sellingFaction.getName(), rareUnit,priceForUnit, rareSalesTime, true);
-			sellingFaction.addUnit(rareUnit, true);
-			rareUnit.setStatus(Unit.STATUS_FORSALE);
+			for ( SUnit rareUnit : rareUnits){ 
+				
+				/*
+				 * Have the newbie-house sell the unit. Although this can lead to
+				 * nasty rare unit buildup, we're lazy and don't want to handle null
+				 * sellers.
+				 * 
+				 * List it for the stock factory purchase price.
+				 */
+				SHouse sellingFaction = CampaignMain.cm.getHouseFromPartialString(CampaignMain.cm.getConfig("NewbieHouseName"), null);
+				int priceForUnit = sellingFaction.getPriceForUnit(rareUnit.getWeightclass(), rareUnit.getType());
+				
+				// Create the listing
+	            //add 1 to the sale tick due to a quirk with the BM autoupdate.
+	            //The the unit is sent to the player before the new tick counter so the clients
+	            //are a tick ahead of the server.
+				int rareSalesTime = CampaignMain.cm.getIntegerConfig("RareMinSaleTime");
+				this.addListing("Faction_" + sellingFaction.getName(), rareUnit,priceForUnit, rareSalesTime, true);
+				sellingFaction.addUnit(rareUnit, true);
+				rareUnit.setStatus(Unit.STATUS_FORSALE);
+			}
 		}
 	}
 	

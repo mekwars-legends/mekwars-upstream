@@ -1372,6 +1372,9 @@ public final class SUnit extends Unit implements Serializable {
 	}
 
 	public static Vector<SUnit> createMULUnits(String filename){
+		return createMULUnits(filename, "autoassigned unit");
+	}
+	public static Vector<SUnit> createMULUnits(String filename, String fluff){
 		Vector<SUnit> mulUnits = new Vector<SUnit>(1,1);
 		
 		Vector<Entity> loadedUnits = null;
@@ -1414,7 +1417,7 @@ public final class SUnit extends Unit implements Serializable {
             
 			cm.setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
 			cm.setWeightclass(99);//let the SUnit code handle the weightclass
-			cm.setProducer("autoassigned unit");
+			cm.setProducer(fluff);
 			
 			SPilot pilot = null;
 			pilot = new SPilot(en.getCrew().getName(), en.getCrew().getGunnery(), en.getCrew().getPiloting());
@@ -1424,19 +1427,28 @@ public final class SUnit extends Unit implements Serializable {
 				pilot.setName(SPilot.getRandomPilotName(CampaignMain.cm.getR()));
 
 			pilot.setCurrentFaction("Common");
-			MWServ.mwlog.errLog(en.getCrew().getAdvantageList(","));
 			StringTokenizer skillList = new StringTokenizer(en.getCrew().getAdvantageList(","), ",");
 
 			while (skillList.hasMoreTokens()) {
 				String skill = skillList.nextToken();
-				SPilotSkill pSkill = null;
-				if (skill.equalsIgnoreCase("random"))
-					pSkill = CampaignMain.cm.getRandomSkill(pilot, cm.getType());
+				
+				if ( skill.toLowerCase().startsWith("weapon_specialist") ){
+					pilot.addMegamekOption(new MegaMekPilotOption("weapon_specialist",true));
+					pilot.getSkills().add(CampaignMain.cm.getPilotSkill(PilotSkill.WeaponSpecialistSkillID));
+					pilot.setWeapon(skill.substring("weapon_specialist".length()).trim());
+				}else if ( skill.toLowerCase().startsWith("edge ") ){
+					pilot.addMegamekOption(new MegaMekPilotOption("edge",true));
+					pilot.getSkills().add(CampaignMain.cm.getPilotSkill(PilotSkill.EdgeSkillID));
+					try{
+						pilot.getSkills().getPilotSkill(PilotSkill.EdgeSkillID).setLevel(Integer.parseInt(skill.substring("edge ".length()).trim()));
+					}catch(Exception ex){
+						pilot.getSkills().getPilotSkill(PilotSkill.EdgeSkillID).setLevel(1);
+					}
+				}
 				else
-					pSkill = CampaignMain.cm.getPilotSkill(skill);
-
-				pilot.getSkills().add(pSkill);
+					pilot.addMegamekOption(new MegaMekPilotOption(skill,true));
 			}
+			
 			cm.setPilot(pilot);
 			mulUnits.add(cm);
 		}

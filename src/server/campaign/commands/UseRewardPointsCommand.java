@@ -18,6 +18,7 @@
 package server.campaign.commands;
 
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 import megamek.common.AmmoType;
 import megamek.common.CriticalSlot;
@@ -186,7 +187,7 @@ public class UseRewardPointsCommand implements Command {
 			SHouse faction = player.getHouseFightingFor();
 			double rareCost = 1;
 			boolean buyRareUnit = false;
-			SUnit newUnit = null;
+			Vector<SUnit> newUnits = new Vector<SUnit>(1,1);
 			SPilot newPilot = null;
 			String factionstring = "common";
 			
@@ -293,9 +294,12 @@ public class UseRewardPointsCommand implements Command {
 				else
 					newPilot = player.getMyHouse().getNewPilot(unitType);
 
-				newUnit = getUnitProduced(unitType,unitWeight,newPilot,factionstring,player.getMyHouse());
-				player.addUnit(newUnit, true);
-				CampaignMain.cm.toUser("AM:You've bought a " + newUnit.getModelName() + " for " +unitTotalRewardPointCost + " reward points.",Username,true);
+				newUnits.addAll(getUnitProduced(unitType,unitWeight,newPilot,factionstring,player.getMyHouse()));
+				
+				for ( SUnit newUnit : newUnits ){
+					player.addUnit(newUnit, true);
+					CampaignMain.cm.toUser("AM:You've bought a " + newUnit.getModelName() + " for " +unitTotalRewardPointCost + " reward points.",Username,true);
+				}
 				player.addReward(-unitTotalRewardPointCost);
 			} catch (Exception ex){
 				CampaignMain.cm.toUser("AM:An error has occured while trying to create your requested unit. Please contact an admin. Faction: "+factionstring +" Type: "+unitType+" Class: "+unitWeight,Username,true);
@@ -373,12 +377,12 @@ public class UseRewardPointsCommand implements Command {
 	 * 
 	 * @return the Mek Produced
 	 */
-	private SUnit getUnitProduced(int type_id, int weightClass, SPilot pilot, String faction, SHouse house) {
+	private Vector<SUnit> getUnitProduced(int type_id, int weightClass, SPilot pilot, String faction, SHouse house) {
 		
 		SUnitFactory factory = new SUnitFactory();
 		String unitSize = Unit.getWeightClassDesc(weightClass);
 		factory.setFounder(faction);
-		
+		Vector<SUnit> units = new Vector<SUnit>(1,1);
 		String Filename = "";
 		
 		//Use special RP-build fluff text for the unit
@@ -388,10 +392,15 @@ public class UseRewardPointsCommand implements Command {
 			unitSize = Unit.getWeightClassDesc(CampaignMain.cm.getRandomNumber(4));
 		
 		Filename = BuildTable.getUnitFilename(faction,unitSize,type_id,BuildTable.REWARD);//build from rewards dir.
-		SUnit cm = new SUnit(producer,Filename,weightClass);
-				
-		cm.setPilot(pilot);
+		
+		if ( Filename.toLowerCase().endsWith(".mul") ){
+			units.addAll(SUnit.createMULUnits(Filename,producer));
+		}else{
+			SUnit cm = new SUnit(producer,Filename,weightClass);
+			cm.setPilot(pilot);
+			units.add(cm);
+		}
 		factory = null;  // clear this out of memory
-		return cm;
+		return units;
 	}
 }

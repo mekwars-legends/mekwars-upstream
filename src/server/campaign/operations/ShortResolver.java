@@ -24,6 +24,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
+import java.util.Vector;
 
 import megamek.common.IEntityRemovalConditions;
 import megamek.common.Mech;
@@ -2706,19 +2707,16 @@ public class ShortResolver {
 									boolean noUnits = false;
 									while (!noUnits && numCaptured < unitsToCapture) {
 										SPilot pilot = new SPilot("Vacant",99,99);
-										SUnit captured = currFacility.getMechProduced(type,pilot);
-										if (captured == null)
+										Vector<SUnit> captured = currFacility.getMechProduced(type,pilot);
+										if (captured == null || captured.size() < 1)
 											noUnits = true;
 										else {
-											capturedUnits.add(captured);
-											loserHSUpdates.append(aLoser
-													.getHouseFightingFor()
-													.getHSUnitRemovalString(
-															captured));
-											winnerHSUpdates.append(aWinner
-													.getHouseFightingFor()
-													.addUnit(captured, false));
-											numCaptured++;
+											capturedUnits.addAll(captured);
+											for ( SUnit unit : captured ){
+												loserHSUpdates.append(aLoser.getHouseFightingFor().getHSUnitRemovalString(unit));
+												winnerHSUpdates.append(aWinner.getHouseFightingFor().addUnit(unit, false));
+											}
+											numCaptured += captured.size();
 										}
 									}// end while(units remain in this
 									// factories' pool)

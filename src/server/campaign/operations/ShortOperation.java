@@ -927,8 +927,9 @@ public class ShortOperation implements Comparable {
             	
             	if ( attackerMinArmies > 0 
             			&& attackerMaxArmies >= attackerMaxArmies 
-            			&& attackerArmyList.trim().length() > 0 ){
-            		int numOfArmies = CampaignMain.cm.getRandomNumber(attackerMaxArmies) + attackerMinArmies;
+            			&& attackerArmyList.trim().length() > 0 
+            			&& attackerHasMUL){
+            		int numOfArmies = CampaignMain.cm.getRandomNumber(attackerMaxArmies-attackerMinArmies) + attackerMinArmies;
             		
             		Vector<SUnit> units = new Vector<SUnit>(1,1);
             		units.addAll(createMulArmy(numOfArmies, attackerArmyList));
@@ -948,17 +949,18 @@ public class ShortOperation implements Comparable {
             		
             	if ( defenderMinArmies > 0 
             			&& defenderMaxArmies >= defenderMaxArmies 
-            			&& defenderArmyList.trim().length() > 0 ){
-            		int numOfArmies = CampaignMain.cm.getRandomNumber(defenderMaxArmies) + defenderMinArmies;
+            			&& defenderArmyList.trim().length() > 0 
+            			&& defenderHasMUL){
+            		int numOfArmies = CampaignMain.cm.getRandomNumber(defenderMaxArmies-defenderMinArmies) + defenderMinArmies;
             		Vector<SUnit> units = new Vector<SUnit>(1,1);
-            		units.addAll(createMulArmy(numOfArmies, attackerArmyList));
+            		units.addAll(createMulArmy(numOfArmies, defenderArmyList));
 
             		defenderMULs = "PL|SMA|";
             		
             		for (SUnit unit : units )
             			defenderMULs += unit.toString(true)+"|";
             		
-                    for (String currN : attackers.keySet()){
+                    for (String currN : defenders.keySet()){
                    		CampaignMain.cm.toUser(defenderMULs,currN,false);
                     }
             	}
