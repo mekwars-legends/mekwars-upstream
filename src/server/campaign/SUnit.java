@@ -46,8 +46,11 @@ import server.campaign.pilot.skills.WeaponSpecialistSkill;
 import megamek.common.AmmoType;
 import megamek.common.CriticalSlot;
 import megamek.common.Entity;
+import megamek.common.EntityListFile;
 import megamek.common.Mech;
 import megamek.common.MechFileParser;
+import megamek.common.MechSummary;
+import megamek.common.MechSummaryCache;
 import megamek.common.MiscType;
 import megamek.common.Mounted;
 import megamek.common.Pilot;
@@ -1368,4 +1371,75 @@ public final class SUnit extends Unit implements Serializable {
 		super.setWeightclass(i);
 	}
 
+	public static Vector<SUnit> createMULUnits(String filename){
+		Vector<SUnit> mulUnits = new Vector<SUnit>(1,1);
+		
+		Vector<Entity> loadedUnits = null;
+		File entityFile = new File("data/armies/" + filename);
+		
+		try {
+			loadedUnits = EntityListFile.loadFrom(entityFile);
+			loadedUnits.trimToSize();
+		} catch (Exception ex) {
+			MWServ.mwlog.errLog("Unable to load file " + entityFile.getName());
+			MWServ.mwlog.errLog(ex);
+			return mulUnits;
+		}
+
+		for (Entity en : loadedUnits) {
+
+			SUnit cm = new SUnit();
+			cm.setEntity(en);
+			MechSummary ms = MechSummaryCache.getInstance().getMech(en.getShortNameRaw());
+            if ( ms == null ) {
+                MechSummary[] units = MechSummaryCache.getInstance().getAllMechs();
+                //System.err.println("unit: "+en.getShortNameRaw());
+                for ( MechSummary unit :  units) {
+                  //  System.err.println("Source file: "+unit.getSourceFile().getName());
+                   // System.err.println("Model: "+unit.getModel());
+                    //System.err.println("Chassis: "+unit.getChassis());
+                    if ( unit.getModel().trim().equalsIgnoreCase(en.getModel().trim())
+                    		&& unit.getChassis().trim().equalsIgnoreCase(en.getChassis().trim() )
+                    		) {
+            			cm.setUnitFilename(unit.getEntryName());
+                        break;
+                    }
+                }
+                
+            }
+            else {
+            	//System.err.println("Entry: "+ms.getEntryName()+" source: "+ms.getSourceFile().getName());
+            	cm.setUnitFilename(ms.getEntryName());
+            }
+            
+			cm.setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
+			cm.setWeightclass(99);//let the SUnit code handle the weightclass
+			cm.setProducer("autoassigned unit");
+			
+			SPilot pilot = null;
+			pilot = new SPilot(en.getCrew().getName(), en.getCrew().getGunnery(), en.getCrew().getPiloting());
+
+			if (pilot.getName().equalsIgnoreCase("Unnamed")
+					|| pilot.getName().equalsIgnoreCase("vacant"))
+				pilot.setName(SPilot.getRandomPilotName(CampaignMain.cm.getR()));
+
+			pilot.setCurrentFaction("Common");
+			MWServ.mwlog.errLog(en.getCrew().getAdvantageList(","));
+			StringTokenizer skillList = new StringTokenizer(en.getCrew().getAdvantageList(","), ",");
+
+			while (skillList.hasMoreTokens()) {
+				String skill = skillList.nextToken();
+				SPilotSkill pSkill = null;
+				if (skill.equalsIgnoreCase("random"))
+					pSkill = CampaignMain.cm.getRandomSkill(pilot, cm.getType());
+				else
+					pSkill = CampaignMain.cm.getPilotSkill(skill);
+
+				pilot.getSkills().add(pSkill);
+			}
+			cm.setPilot(pilot);
+			mulUnits.add(cm);
+		}
+		return mulUnits;
+	}
 }
