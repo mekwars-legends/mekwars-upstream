@@ -2666,7 +2666,7 @@ public final class CampaignMain implements Serializable {
 	 * Get a pilot skill by ID number. Used to unstring SPilots in pfiles.
 	 */
 	public SPilotSkill getPilotSkill(int id) {
-		return pilotSkills.get(new Integer(id));
+		return pilotSkills.get(id);
 	}
 
 	/*

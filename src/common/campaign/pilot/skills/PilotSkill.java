@@ -139,4 +139,38 @@ public class PilotSkill {
     public void setDescription(String description){
         this.description = description;
     }
+    
+    public static int getMMSkillID(String skill) {
+    	int skillID = -1;
+    	
+        if ( skill.equals("dodge_maneuver") )
+        	return PilotSkill.DodgeManeuverSkillID;
+        if ( skill.equals("maneuvering_ace") )
+        	return PilotSkill.ManeuveringAceSkillID;
+        if ( skill.equals("melee_specialist") )
+        	return PilotSkill.MeleeSpecialistSkillID;
+        if ( skill.equals("pain_resistance") )
+        	return PilotSkill.PainResistanceSkillID;
+        if ( skill.equals("tactical_genius") )
+        	return PilotSkill.TacticalGeniusSkillID;
+        if ( skill.equals("weapon_specialist") )
+        	return PilotSkill.WeaponSpecialistSkillID;
+        if ( skill.equals("gunnery_laser") )
+        	return PilotSkill.GunneryLaserSkillID;
+        if ( skill.equals("gunnery_missile") )
+        	return PilotSkill.GunneryMissileSkillID;
+        if ( skill.equals("gunnery_ballistic") )
+        	return PilotSkill.GunneryBallisticSkillID;
+        if ( skill.equals("iron_man") )
+        	return PilotSkill.IronManSkillID;
+        if ( skill.equals("ei_implant") )
+        	return PilotSkill.EnhancedInterfaceID;
+        if ( skill.equals("clan_pilot_training") )
+        	return PilotSkill.ClanPilotTraingID;
+        if ( skill.equals("edge") )
+        	return PilotSkill.EdgeSkillID;
+
+    	
+    	return skillID;
+    }
 }

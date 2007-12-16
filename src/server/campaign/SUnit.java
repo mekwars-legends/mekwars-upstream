@@ -1445,8 +1445,10 @@ public final class SUnit extends Unit implements Serializable {
 						pilot.getSkills().getPilotSkill(PilotSkill.EdgeSkillID).setLevel(1);
 					}
 				}
-				else
+				else {
+					pilot.getSkills().add(CampaignMain.cm.getPilotSkill(PilotSkill.getMMSkillID(skill)));
 					pilot.addMegamekOption(new MegaMekPilotOption(skill,true));
+				}
 			}
 			
 			cm.setPilot(pilot);

@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.12.x
++ RFE: MUL created units have MW pilots skills loaded 
 + Bug: RequestCommand charging money and components per unit 
 	instead of per batch
 + RFE 1818147: MUL BuildTable possibility
