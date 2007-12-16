@@ -17,6 +17,7 @@
 package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import common.House;
 import common.Unit;
@@ -50,12 +51,12 @@ public class AdminListAndRemoveOMGCommand implements Command {
 		 */
 		for (House house : CampaignMain.cm.getData().getAllHouses()) {
 			SHouse faction = (SHouse)house;
-			for (Unit unit : faction.getHangar(Unit.MEK).elementAt(Unit.LIGHT)) {
-				SUnit currU = (SUnit)unit;
+			ConcurrentLinkedQueue<SUnit>units = new ConcurrentLinkedQueue<SUnit>(faction.getHangar(Unit.MEK).elementAt(Unit.LIGHT));
+			for (SUnit currU : units ) {
 				if (currU.getModelName().equals("OMG-UR-FD")){
 					CampaignMain.cm.doSendModMail("NOTE",Username + " removed an OMG from the " + faction.getName() + "bays. Should have been a " + currU.getUnitFilename()+ ".");
 					CampaignMain.cm.toUser("Removed an OMG from the " + faction.getName() + " bays. Should have been a " + currU.getUnitFilename()+ ".",Username,true);
-					faction.getHangar(Unit.MEK).elementAt(Unit.LIGHT).removeElement(unit);
+					faction.getHangar(Unit.MEK).elementAt(Unit.LIGHT).removeElement(currU);
 					CampaignMain.cm.doSendToAllOnlinePlayers(faction, "HS|" + faction.getHSUnitRemovalString(currU), false);
 				}
 			}//end while(units remain in light mek hangar)

@@ -1392,7 +1392,10 @@ public final class SUnit extends Unit implements Serializable {
 		for (Entity en : loadedUnits) {
 
 			SUnit cm = new SUnit();
+			
 			cm.setEntity(en);
+			cm.init();
+			
 			MechSummary ms = MechSummaryCache.getInstance().getMech(en.getShortNameRaw());
             if ( ms == null ) {
                 MechSummary[] units = MechSummaryCache.getInstance().getAllMechs();
