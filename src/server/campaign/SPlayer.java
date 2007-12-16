@@ -306,7 +306,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		}
 		// make sure to save the player, with his fancy new unit ...
 		setSave();
-		return "";//dummy stirng returned to comply with IBuyer
+		return "";//dummy string returned to comply with IBuyer
 	}
 	
 	/**
