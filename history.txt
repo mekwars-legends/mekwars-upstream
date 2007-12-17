@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.12.x
++ Added Number of units to Army Sort
 + Typo in AdminListAndRemoveOMGCommand
 + REF 1842569: Army sort options
 + Bug: Concurrent Modification Errors

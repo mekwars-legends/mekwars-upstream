@@ -34,7 +34,8 @@
  	public static final int ARMYSORT_TONNAGE = 3;
  	public static final int ARMYSORT_AVGMPWALK = 4;
  	public static final int ARMYSORT_AVGMPJUMP = 5;
- 	public static final int ARMYSORT_NONE = 6;
+ 	public static final int ARMYSORT_UNITS = 6;
+ 	public static final int ARMYSORT_NONE = 7;
  	
  	private int sortOrder;
  	
@@ -77,6 +78,11 @@
  				Integer army2JP = new Integer(army2.getAverageJump());
  				return army1JP.compareTo(army2JP);	
 
+ 			case ARMYSORT_UNITS:
+ 				Integer army1Size = new Integer(army1.getUnits().size());
+ 				Integer army2Size = new Integer(army2.getUnits().size());
+ 				return army1Size.compareTo(army2Size);
+ 				
  			default :
  				return 0;
  		}//end switch

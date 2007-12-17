@@ -757,7 +757,7 @@ public class CHQPanel extends JPanel {
 						//popup.add(tertiarySortMenu);
 						
 						//Choices [note - this array must be duplicated in CPlayer's sortArmies()]
-						String[] choices = { "Name", "Battle Value", "ID Number", "Max Tonnage", "Avg Walk MP", "Avg Jump MP", "No Sort" };
+						String[] choices = { "Name", "Battle Value", "ID Number", "Max Tonnage", "Avg Walk MP", "Avg Jump MP", "Number Of Units", "No Sort" };
 						
 						//indicate current selections w/ Italics
 						String menuName = "";

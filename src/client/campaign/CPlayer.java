@@ -1017,7 +1017,7 @@ public class CPlayer extends Player {
 		String tertiarySortOrder = mwclient.getConfigParam("TERTIARYARMYSORTORDER");
 		
 		// Choices [note - this array must be duplicated in CHQPanel's maybeShowPopup()]
-		String[] choices = { "Name", "Battle Value", "ID Number", "Max Tonnage", "Avg Walk MP", "Avg Jump MP", "No Sort" };
+		String[] choices = { "Name", "Battle Value", "ID Number", "Max Tonnage", "Avg Walk MP", "Avg Jump MP", "Number Of Units", "No Sort" };
 		
 		// determine which sort will dominate
 		int primarySort = CArmyComparator.ARMYSORT_NONE;
