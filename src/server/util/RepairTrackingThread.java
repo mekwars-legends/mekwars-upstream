@@ -25,6 +25,7 @@ package server.util;
 import java.util.Calendar;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
@@ -76,7 +77,7 @@ public class RepairTrackingThread extends Thread{
     public void checkRepairs(){
         
         try{
-            Vector<Repair> tempVector = new Vector<Repair>(repairList);
+            ConcurrentLinkedQueue<Repair> tempVector = new ConcurrentLinkedQueue<Repair>(repairList);
             synchronized (tempVector) {
 	            for ( Repair repairOrder: tempVector ){
 	                //MWServ.mwlog.errLog("Start Time: "+ new Date(repairOrder.getStartTime()).toString()+" End Time: "+new Date(repairOrder.getEndTime()).toString());
@@ -241,7 +242,7 @@ public class RepairTrackingThread extends Thread{
     
     public void stopRepair(int unitID, int location, int slot, boolean armor){
         
-        Vector<Repair> tempRepairList = new Vector<Repair>(getRepairList());
+        ConcurrentLinkedQueue<Repair> tempRepairList = new ConcurrentLinkedQueue<Repair>(getRepairList());
         
         synchronized (tempRepairList) {
 	        for ( Repair repairOrder:tempRepairList ){
@@ -265,7 +266,7 @@ public class RepairTrackingThread extends Thread{
 
     public void stopAllRepairJobs(int unitID, SPlayer player){
         
-        Vector<Repair> tempRepairList = new Vector<Repair>(getRepairList());
+        ConcurrentLinkedQueue<Repair> tempRepairList = new ConcurrentLinkedQueue<Repair>(getRepairList());
         
         synchronized (tempRepairList) {
 			

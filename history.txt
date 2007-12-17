@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.12.x
++ Bug: Concurrent Modification Errors
 + Bug: Ammo not loading with MUL file units
 + RFE: MUL created units have MW pilots skills loaded 
 + Bug: RequestCommand charging money and components per unit 
