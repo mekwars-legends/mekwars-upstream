@@ -2,9 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.12.x
++ RFE 1512519:  Unit info link in 'Show to Faction'
 + Added Number of units to Army Sort
 + Typo in AdminListAndRemoveOMGCommand
-+ REF 1842569: Army sort options
++ RFE 1842569: Army sort options
 + Bug: Concurrent Modification Errors
 + Bug: Ammo not loading with MUL file units
 + RFE: MUL created units have MW pilots skills loaded 

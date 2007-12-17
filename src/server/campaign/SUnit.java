@@ -940,12 +940,13 @@ public final class SUnit extends Unit implements Serializable {
 			idToShow = "<a href=\"MEKWARS/c sth#u#" + this.getId() + "\">#" + this.getId() + "</a>";
 		else
 			idToShow = "#" + this.getId();
+		String dialogBox = "<a href=\"MEKINFO" + getEntity().getChassis() + " " +  getEntity().getModel() + "#" + getBV() + "#" + getPilot().getGunnery() + "#" + getPilot().getPiloting() + "\">" + getModelName() + "</a>";
 		
 		if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE)
-			return idToShow + " " + getModelName() + " (" + this.getPilot().getGunnery() + "/" + this.getPilot().getPiloting() + ") [" + getPilot().getExperience() + " EXP " + this.getPilot().getSkillString(false)+ "] Kills: " +this.getPilot().getKills()+" "+ this.getProducer() + ". BV: " + this.getBV() + " " + status ;
+			return idToShow + " " + dialogBox + " (" + this.getPilot().getGunnery() + "/" + this.getPilot().getPiloting() + ") [" + getPilot().getExperience() + " EXP " + this.getPilot().getSkillString(false)+ "] Kills: " +this.getPilot().getKills()+" "+ this.getProducer() + ". BV: " + this.getBV() + " " + status ;
 		
 		//else
-		return idToShow + " " + getModelName() + " (" + this.getPilot().getGunnery() + ") [" + getPilot().getExperience() + " EXP " + this.getPilot().getSkillString(false)+ "] Kills: " +this.getPilot().getKills()+" "+ this.getProducer() + ". BV: " + this.getBV() + " " + status ;
+		return idToShow + " " + dialogBox + " (" + this.getPilot().getGunnery() + ") [" + getPilot().getExperience() + " EXP " + this.getPilot().getSkillString(false)+ "] Kills: " +this.getPilot().getKills()+" "+ this.getProducer() + ". BV: " + this.getBV() + " " + status ;
 	}
 	
 	/**
