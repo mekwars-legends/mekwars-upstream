@@ -54,7 +54,7 @@ public class AdminListAndRemoveOMGCommand implements Command {
 			ConcurrentLinkedQueue<SUnit>units = new ConcurrentLinkedQueue<SUnit>(faction.getHangar(Unit.MEK).elementAt(Unit.LIGHT));
 			for (SUnit currU : units ) {
 				if (currU.getModelName().equals("OMG-UR-FD")){
-					CampaignMain.cm.doSendModMail("NOTE",Username + " removed an OMG from the " + faction.getName() + "bays. Should have been a " + currU.getUnitFilename()+ ".");
+					CampaignMain.cm.doSendModMail("NOTE",Username + " removed an OMG from the " + faction.getName() + " bays. Should have been a " + currU.getUnitFilename()+ ".");
 					CampaignMain.cm.toUser("Removed an OMG from the " + faction.getName() + " bays. Should have been a " + currU.getUnitFilename()+ ".",Username,true);
 					faction.getHangar(Unit.MEK).elementAt(Unit.LIGHT).removeElement(currU);
 					CampaignMain.cm.doSendToAllOnlinePlayers(faction, "HS|" + faction.getHSUnitRemovalString(currU), false);
