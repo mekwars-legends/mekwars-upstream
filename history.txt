@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.12.x
++ Code Clean up
 + RFE 1512519:  Unit info link in 'Show to Faction'
 + Added Number of units to Army Sort
 + Typo in AdminListAndRemoveOMGCommand
