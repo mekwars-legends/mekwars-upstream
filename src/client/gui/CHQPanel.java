@@ -250,6 +250,7 @@ public class CHQPanel extends JPanel {
 		MekTable.refreshModel();
 		tblMeks.setPreferredSize(new Dimension(this.tblMeks.getWidth(), this.tblMeks.getRowHeight()*(this.MekTable.getRowCount())));
 		tblMeks.revalidate();
+		mwclient.getPlayer().sortArmies();
 	}
 	
 	//try to remove all armies
@@ -747,6 +748,78 @@ public class CHQPanel extends JPanel {
 						menuItem.addActionListener(this);
 						popup.add(menuItem);
 
+						JMenu primeSortMenu = new JMenu("Sort (1st)");
+						//JMenu secondarySortMenu = new JMenu("Sort (2nd)");
+						//JMenu tertiarySortMenu = new JMenu("Sort (3rd)");
+						
+						popup.add(primeSortMenu);
+						//popup.add(secondarySortMenu);
+						//popup.add(tertiarySortMenu);
+						
+						//Choices [note - this array must be duplicated in CPlayer's sortArmies()]
+						String[] choices = { "Name", "Battle Value", "ID Number", "Max Tonnage", "Avg Walk MP", "Avg Jump MP", "No Sort" };
+						
+						//indicate current selections w/ Italics
+						String menuName = "";
+						//boolean selectionFound = true;
+						
+						//prime sort menu construction
+						for (int i = 0; i < choices.length; i++) {
+							
+							menuName = choices[i];
+							if (mwclient.getConfigParam("PRIMARYARMYSORTORDER").equalsIgnoreCase(choices[i])) {
+								menuName = "<HTML><i>" + menuName + "</i></HTML>";
+								//selectionFound = false;
+							}
+							menuItem = new JMenuItem(menuName);
+							menuItem.setActionCommand("PAS|" + choices[i]);
+							menuItem.addActionListener(this);
+							primeSortMenu.add(menuItem);
+							
+							if (i + 2 == choices.length)
+								primeSortMenu.addSeparator();
+						}
+						
+						//reset selectionFound
+						//selectionFound = true;
+						
+						/*secondary sort menu construction
+						for (int i = 0; i < choices.length; i++) {
+							
+							menuName = choices[i];
+							if (mwclient.getConfigParam("SECONDARYARMYSORTORDER").equals(choices[i])) {
+								menuName = "<HTML><i>" + menuName + "</i></HTML>";
+								//selectionFound = false;
+							}
+							menuItem = new JMenuItem(menuName);
+							menuItem.setActionCommand("SAS|" + choices[i]);
+							menuItem.addActionListener(this);
+							secondarySortMenu.add(menuItem);
+							
+							if (i + 2 == choices.length)
+								secondarySortMenu.addSeparator();
+						}
+						
+						//reset selectionFound
+						//selectionFound = true;
+						
+						//tertiary sort menu construction
+						for (int i = 0; i < choices.length; i++) {
+							
+							menuName = choices[i];
+							if (mwclient.getConfigParam("TERTIARYARMYSORTORDER").equals(choices[i])) {
+								menuName = "<HTML><i>" + menuName + "</i></HTML>";
+								//selectionFound = false;
+							}
+							menuItem = new JMenuItem(menuName);
+							menuItem.setActionCommand("TAS|" + choices[i]);
+							menuItem.addActionListener(this);
+							tertiarySortMenu.add(menuItem);
+							
+							if (i + 2 == choices.length)
+								tertiarySortMenu.addSeparator();
+						}
+						 */
 						popup.addSeparator();
 
 						menuItem = new JMenuItem("Show To Faction");
@@ -2594,7 +2667,19 @@ public class CHQPanel extends JPanel {
 				mwclient.getConfig().setParam("TERTIARYHQSORTORDER",st.nextToken());
 				mwclient.getConfig().saveConfig();
 				mwclient.getPlayer().sortHangar();
-			}else if (command.equalsIgnoreCase("REMOVEUNITCOMMANDER")) {
+			} else if (command.equals("PAS")) {//primary HQ sort
+				mwclient.getConfig().setParam("PRIMARYARMYSORTORDER",st.nextToken());
+				mwclient.getConfig().saveConfig();
+				mwclient.getPlayer().sortArmies();
+			} else if (command.equals("SAS")) {
+				mwclient.getConfig().setParam("SECONDARYARMYSORTORDER",st.nextToken());
+				mwclient.getConfig().saveConfig();
+				mwclient.getPlayer().sortArmies();
+			} else if (command.equals("TAS")) {
+				mwclient.getConfig().setParam("TERTIARYARMYSORTORDER",st.nextToken());
+				mwclient.getConfig().saveConfig();
+				mwclient.getPlayer().sortArmies();
+			} else if (command.equalsIgnoreCase("REMOVEUNITCOMMANDER")) {
 				int row = Integer.parseInt(st.nextToken());
 				int col = Integer.parseInt(st.nextToken());
 				String armyId = st.nextToken();

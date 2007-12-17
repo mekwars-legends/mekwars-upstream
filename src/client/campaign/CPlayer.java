@@ -27,6 +27,7 @@ import java.util.Vector;
 import megamek.common.IOffBoardDirections;
 
 import client.MWClient;
+import client.util.CArmyComparator;
 import client.util.CUnitComparator;
 
 import common.House;
@@ -705,6 +706,7 @@ public class CPlayer extends Player {
 			} else
 				this.getArmy(army).addUnit(this.getUnit(unitid));
 			this.getArmy(army).setBV(bv);
+			this.sortArmies();
 		}
 	}
 	
@@ -987,6 +989,83 @@ public class CPlayer extends Player {
 		// replace the hangar and flush the array
 		Hangar = Hangar2;
 		unitsArray = null;
+	}
+	
+	/*
+	 * Hangar sorting mechanisms. Client and server need not order hangars in
+	 * the same fashion, since all transactions (after the initial data feed)
+	 * take place on a unit by unit basis.
+	 * 
+	 * Sort options: - BV - Name - Type - Unit ID - Weight - No sort [load
+	 * order]
+	 * 
+	 * BV is (for all intents and purposes) an exclusive sort. The others can
+	 * lead to significant clustering. Hence, secondary filters can be applied.
+	 */
+	
+	/**
+	 * Method which resorts every unit. Inefficient, but we hate clients.
+	 * Because we're evil. So there.
+	 * 
+	 * @urgru 4.4.05
+	 */
+	public void sortArmies() {
+		
+		// load configs
+		String primeSortOrder = mwclient.getConfigParam("PRIMARYARMYSORTORDER");
+		String secondarySortOrder = mwclient.getConfigParam("SECONDARYARMYSORTORDER");
+		String tertiarySortOrder = mwclient.getConfigParam("TERTIARYARMYSORTORDER");
+		
+		// Choices [note - this array must be duplicated in CHQPanel's maybeShowPopup()]
+		String[] choices = { "Name", "Battle Value", "ID Number", "Max Tonnage", "Avg Walk MP", "Avg Jump MP", "No Sort" };
+		
+		// determine which sort will dominate
+		int primarySort = CArmyComparator.ARMYSORT_NONE;
+		for (int i = 0; i < choices.length; i++) {
+			if (primeSortOrder.equals(choices[i]))
+				primarySort = i;
+		}
+		
+		
+		// determine secondary sort
+		int secondarySort = CArmyComparator.ARMYSORT_NONE;
+		for (int i = 0; i < choices.length; i++) {
+			if (secondarySortOrder.equals(choices[i]))
+				secondarySort = i;
+		}
+		
+		// determine tertiary sort
+		int tertiarySort = CArmyComparator.ARMYSORT_NONE;
+		for (int i = 0; i < choices.length; i++) {
+			if (tertiarySortOrder.equals(choices[i]))
+				tertiarySort = i;
+		}
+		
+
+		// we know this holds CUnits. Can safely cast.
+		Object[] armiesArray = Armies.toArray();
+		
+		// run third sort
+		if (tertiarySort != primarySort && tertiarySort != secondarySort && tertiarySort != CArmyComparator.ARMYSORT_NONE)
+			Arrays.sort(armiesArray, new CArmyComparator(tertiarySort));
+		
+		// run the second sort
+		if (primarySort != secondarySort && secondarySort != CArmyComparator.ARMYSORT_NONE)
+			Arrays.sort(armiesArray, new CArmyComparator(secondarySort));
+		
+
+		// now the primary sort
+		if (primarySort != CArmyComparator.ARMYSORT_NONE)
+			Arrays.sort(armiesArray, new CArmyComparator(primarySort));
+		
+		// overwrite the hangar with a new arraylist constructed from the unitsArray.
+		Vector<CArmy> Army2 = new Vector<CArmy>(1,1);
+		for (int i = 0; i < armiesArray.length; i++)
+			Army2.add((CArmy) armiesArray[i]);
+		
+		// replace the hangar and flush the array
+		Armies = Army2;
+		armiesArray = null;
 	}
 	
 	public int getHangarSpaceRequired(int typeid, int weightclass, int baymod, String model) {

@@ -277,6 +277,7 @@ public class CConfig {
 		defaults.setProperty("PRIMARYHQSORTORDER","name");
 		defaults.setProperty("SECONDARYHQSORTORDER","none");
 		defaults.setProperty("TERTIARYHQSORTORDER","none");
+		defaults.setProperty("PRIMARYARMYSORTORDER","id number");
 		defaults.setProperty("DARKERMAP","false");
 		defaults.setProperty("BMPREVIEWIMAGE","false");
 		defaults.setProperty("PLAYERCHATCOLORMODE","playercolors");

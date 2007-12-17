@@ -41,7 +41,7 @@ public class CArmy extends Army {
 	private MWClient mwclient;
 	private TreeSet<String> legalOperations;
 	private float rawForceSize = 0;
-
+	
 	//CONSTRUCTOR
 	public CArmy() {
 		super();
@@ -265,5 +265,51 @@ public class CArmy extends Army {
 		return 1.0;
 
 	}
+	
+	public float getTotalTonnage(){
+		
+		float totalTonnage = 0;
+		
+		for (Unit unit: this.getUnits())
+			totalTonnage += ((CUnit)unit).getEntity().getWeight();
+		return totalTonnage;
+	}
+
+	public int getAverageWalk(){
+		
+		int walk = 0;
+		
+		if ( this.getUnits().size() < 1)
+			return 0;
+		
+		for ( Unit unit : this.getUnits() ){
+			CUnit en = (CUnit)unit;
+			
+			walk += en.getEntity().getWalkMP();
+		}
+		
+		walk /= this.getUnits().size();
+		
+		return walk;
+	}
+	
+	public int getAverageJump(){
+		
+		int walk = 0;
+		
+		if ( this.getUnits().size() < 1)
+			return 0;
+		
+		for ( Unit unit : this.getUnits() ){
+			CUnit en = (CUnit)unit;
+			
+			walk += en.getEntity().getJumpMP();
+		}
+		
+		walk /= this.getUnits().size();
+		
+		return walk;
+	}
+
 
 }
