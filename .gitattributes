@@ -1197,6 +1197,7 @@ src/client/protocol/commands/CommPCmd.java -text
 src/client/protocol/commands/IProtCommand.java -text
 src/client/protocol/commands/PingPCmd.java -text
 src/client/protocol/commands/PongPCmd.java -text
+src/client/util/CArmyComparator.java -text
 src/client/util/CUnitComparator.java -text
 src/client/util/RepairManagmentThread.java -text
 src/client/util/SalvageManagmentThread.java -text
