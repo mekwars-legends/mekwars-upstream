@@ -50,6 +50,7 @@ import admin.dialog.AmmoCostDialog;
 import admin.dialog.BanTargetingDialog;
 import admin.dialog.CommandNameDialog;
 import admin.dialog.FactionConfigurationDialog;
+import admin.dialog.FactionToFactionRewardPointMultiplierDialog;
 import admin.dialog.PlanetEditorDialog;
 import admin.dialog.ServerConfigurationDialog;
 import admin.dialog.BannedAmmoDialog;
@@ -90,6 +91,7 @@ public class AdminMenu extends JMenu {
 	JMenuItem jMenuAdminSetHouseTechLevel = new JMenuItem();
 	JMenuItem jMenuAdminSetFactionTraits = new JMenuItem();
 	JMenuItem jMenuAdminSetSubFactionConfigs = new JMenuItem();
+	JMenuItem jMenuAdminSetFactionToFactionRewardPointMultiplier = new JMenuItem();
 	JMenuItem jMenuAdminSaveTheUniverse = new JMenuItem();
 	JMenuItem jMenuAdminSaveBlackMaketSettings = new JMenuItem();
 	JMenuItem jMenuAdminSavePlanetsToXML = new JMenuItem();
@@ -245,6 +247,14 @@ public class AdminMenu extends JMenu {
         });
 
         
+        
+        jMenuAdminSetFactionToFactionRewardPointMultiplier.setText("Inter-Faction Reward Points");
+        jMenuAdminSetFactionToFactionRewardPointMultiplier.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+            	new FactionToFactionRewardPointMultiplierDialog(mwclient);
+            }
+        });
+
         jMenuAdminSetSubFactionConfigs.setText("Sub Faction Configs");
         jMenuAdminSetSubFactionConfigs.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent e) {
@@ -596,7 +606,9 @@ public class AdminMenu extends JMenu {
         if ( userLevel >= mwclient.getData().getAccessLevel("CreateSubFaction") 
         		&& userLevel >= mwclient.getData().getAccessLevel("SetSubFactionConfig"))
             jMenuAdminSubSetHouse.add(jMenuAdminSetSubFactionConfigs);
-        
+        if ( userLevel >= mwclient.getData().getAccessLevel("SetFactionToFactionRewardPointMultiplier"))
+            jMenuAdminSubSetHouse.add(jMenuAdminSetFactionToFactionRewardPointMultiplier);
+        	
 
         jMenuAdminSubSetHouse.setText("Factions");
         if ( jMenuAdminSubSetHouse.getItemCount() > 0)

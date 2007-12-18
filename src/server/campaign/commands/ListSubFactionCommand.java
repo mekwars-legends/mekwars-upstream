@@ -18,6 +18,8 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
+import common.House;
+
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
@@ -58,6 +60,22 @@ public class ListSubFactionCommand implements Command {
 				factionName = player.getMyHouse().getName();
 		}catch(Exception ex){
 			factionName = player.getMyHouse().getName();
+		}
+		
+		if ( factionName.equalsIgnoreCase("all") ){
+
+			for ( House faction : CampaignMain.cm.getData().getAllHouses() ){
+				StringBuffer result = new StringBuffer("SM|Subfaction list for faction ");
+				result.append(faction.getName());
+				for (String subFactionName : faction.getSubFactionList().keySet() ){
+					result.append("<BR>");
+					result.append(subFactionName);
+				}
+				
+				CampaignMain.cm.toUser(result.toString(), Username,false);
+				result.setLength(0);
+			}
+			return;
 		}
 		
 		SHouse faction = CampaignMain.cm.getHouseFromPartialString(factionName,Username);

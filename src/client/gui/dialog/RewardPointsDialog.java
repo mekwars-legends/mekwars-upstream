@@ -592,8 +592,13 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
 
 	    if ( House.equals("Rare"))
 	        cost *= Double.parseDouble(mwclient.getserverConfigs("RewardPointMultiplierForRare"));
-	    else if ( !House.equals("Common") && !House.equals(mwclient.getPlayer().getHouse()))
-	        cost *= Double.parseDouble(mwclient.getserverConfigs("RewardPointNonHouseMultiplier"));
+	    else if ( !House.equals("Common") && !House.equals(mwclient.getPlayer().getHouse())){
+	    	double multiplier = Double.parseDouble(mwclient.getserverConfigs(mwclient.getPlayer().getHouse()+"To"+House+"RewardPointMultiplier"));
+	    		
+	    	if ( multiplier < 0 )
+	    		multiplier = Double.parseDouble(mwclient.getserverConfigs("RewardPointNonHouseMultiplier"));
+	        cost *= multiplier;
+	    }
 	    
 	    return cost;
 	}

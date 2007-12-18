@@ -1612,6 +1612,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("SETCLIENTVERSION", new SetClientVersionCommand());
 		Commands.put("SETEDGESKILLS", new SetEdgeSkillsCommand());
 		Commands.put("SETELO", new SetEloCommand());
+		Commands.put("SETFACTIONTOFACTIONREWARDPOINTMULTIPLIER",new SetFactionToFactionRewardPointMultiplierCommand());
 		Commands.put("SETHOUSEBASEPILOTSKILLS",
 				new SetHouseBasePilotSkillsCommand());
 		Commands.put("SETHOUSEBASEPILOTINGSKILLS",

@@ -274,7 +274,9 @@ public class UseRewardPointsCommand implements Command {
 			unitTotalRewardPointCost = weightCost + typeCost;
 			
 			if ( !player.getHouseFightingFor().equals(faction) ) {
-				double nonHouseUnitMod = Double.parseDouble(house.getConfig("RewardPointNonHouseMultiplier"));
+				double nonHouseUnitMod = Double.parseDouble(house.getConfig(player.getHouseFightingFor().getName()+"To"+faction.getName()+"RewardPointMultiplier"));
+				if ( nonHouseUnitMod < 0)
+					nonHouseUnitMod = Double.parseDouble(house.getConfig("RewardPointNonHouseMultiplier"));
 				if ( nonHouseUnitMod > 0 )
 					unitTotalRewardPointCost *= nonHouseUnitMod;
 			}
