@@ -441,11 +441,12 @@ public class CH extends Command {
 			boolean checkSysMessages = mwclient.getConfig().isParam("SOUNDSFROMSYSMESSAGES");
 			if (!wasSystemMessage || checkSysMessages) {
 
+				//MWClient.mwClientLog.clientErrLog("uncoloredName: "+uncoloredName);
 				if (wasICMessage && !mwclient.getConfig().isParam("RPGVISIBLE") && !mwclient.getConfig().isParam("MAINCHANNELRPG")) {
 					//do nothing
 				}	
 
-				else if (!uncoloredName.equalsIgnoreCase(mwclient.getUsername()) && message.indexOf(mwclient.getUsername()) > -1) {
+				else if ((!uncoloredName.equalsIgnoreCase(mwclient.getUsername()) || uncoloredName.trim().length() < 1) && message.indexOf(mwclient.getUsername()) > -1) {
 					if(mwclient.getConfig().isParam("ENABLECALLSOUND"))
 						mwclient.doPlaySound(mwclient.getConfig().getParam("SOUNDONCALL"));
 

@@ -155,6 +155,7 @@ public class CUserListPanel extends JPanel implements ActionListener {
 		String order = mwclient.getConfig().getParam("SORTORDER");
 		if (order.equals("DESCENDING")) {((CUserListModel)UserList.getModel()).setSortOrder(SORTORDER_DESCENDING);}
 		else {((CUserListModel)UserList.getModel()).setSortOrder(SORTORDER_ASCENDING);}
+		
 	}
 	
 	public CUserListModel getUsers() {return Users;}
@@ -1088,5 +1089,4 @@ public class CUserListPanel extends JPanel implements ActionListener {
 		}
 		
 	}
-
 }

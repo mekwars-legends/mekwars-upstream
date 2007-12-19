@@ -51,6 +51,8 @@ import javax.swing.WindowConstants;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.BoxLayout;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 import megamek.MegaMek;
 import megamek.client.ui.AWT.UnitLoadingDialog;
@@ -69,7 +71,7 @@ import common.Unit;
 import common.campaign.pilot.Pilot;
 import common.util.StringUtils;
 
-public class CMainFrame extends JFrame {
+public class CMainFrame extends JFrame{
 	/**
 	 * 
 	 */
@@ -94,13 +96,13 @@ public class CMainFrame extends JFrame {
 	//CAMPAIGN Menu
 	JMenu jMenuCampaign = new JMenu();
 	
-	JMenuItem jMenuCampaignSubStatus = new JMenu();//submenu in Campaign
-	JMenuItem jMenuCampaignSubTechs = new JMenu();
-	JMenuItem jMenuCampaignSubBays = new JMenu();
-	JMenuItem jMenuCampaignSubTransfer = new JMenu();
-	JMenuItem jMenuCampaignSubAttack = new JMenu();
-	JMenuItem jMenuCampaignSubMerc = new JMenu();
-	JMenuItem jMenuCampaignSubOther = new JMenu();
+	JMenu jMenuCampaignSubStatus = new JMenu();//submenu in Campaign
+	JMenu jMenuCampaignSubTechs = new JMenu();
+	JMenu jMenuCampaignSubBays = new JMenu();
+	JMenu jMenuCampaignSubTransfer = new JMenu();
+	JMenu jMenuCampaignSubAttack = new JMenu();
+	JMenu jMenuCampaignSubMerc = new JMenu();
+	JMenu jMenuCampaignSubOther = new JMenu();
     
 	JMenuItem jMenuCampaignMyStatus = new JMenuItem();
 	
@@ -198,6 +200,8 @@ public class CMainFrame extends JFrame {
 	boolean useAdvanceRepairs = false;
     boolean usePersonalPilotQueues = false;
 	
+    private menuSound sound;
+    private menuPopupSound popupSound;
 	//CONSTRUCTOR
 	public CMainFrame(MWClient myC) {
 		mwclient = myC;
@@ -206,6 +210,9 @@ public class CMainFrame extends JFrame {
 		MainPanel = new CMainPanel(mwclient, this);
 		useAdvanceRepairs = mwclient.isUsingAdvanceRepairs();
         usePersonalPilotQueues = Boolean.parseBoolean(mwclient.getserverConfigs("AllowPersonalPilotQueues"));
+        sound = new menuSound(mwclient);
+        popupSound = new menuPopupSound(mwclient);
+        
 		/*
 		 * ATTACK/GAME Menu is a class unto itself and
 		 * needs constant update calls. Have to build it
@@ -482,6 +489,7 @@ public class CMainFrame extends JFrame {
         jMenuCampaignDonatePersonalPilot.setVisible(usePersonalPilotQueues);
 		jMenuCampaignDirectSell.setVisible(Boolean.parseBoolean(mwclient.getserverConfigs("UseDirectSell")));
 		
+		addMenuListener(jMenuBar1.getComponents());
 	}
 	
 	protected void createMenu() throws Exception {
@@ -602,9 +610,6 @@ public class CMainFrame extends JFrame {
 				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c housestatus");
 			}
 		});
-		
-		jMenuCampaign.setText("Campaign");
-		jMenuCampaign.setMnemonic('C');
 		
 		if ( useAdvanceRepairs ){
 			jMenuCampaignSubBays.setText("Bays");
@@ -1183,6 +1188,7 @@ public class CMainFrame extends JFrame {
 		jMenuBar1.add(jMenuLeaderShip);
 		jMenuBar1.add(jMenuHelp);
 		jMenuBar1.add(jMenuMod);
+		
 		//jMenuBar1.add(jMenuAdmin);
 	}
 	
@@ -2791,4 +2797,72 @@ public class CMainFrame extends JFrame {
 
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setoperation#short#"+opData.toString());
     }
+
+	private void addMenuListener(Object[] components){
+		for ( Object menu : components ){
+			if ( menu instanceof JMenu ){
+				JMenu jmenu = ((JMenu)menu);
+				jmenu.removeMenuListener(sound);
+				jmenu.addMenuListener(sound);
+				addMenuItemListner(jmenu);
+			}
+		}
+	}
+	
+	private void addMenuItemListner(JMenu menu){
+		for ( int pos = 0; pos < menu.getItemCount(); pos++ ){
+			JMenuItem item = menu.getItem(pos);
+			if ( item instanceof JMenu ){
+				((JMenu)item).removeMenuListener(popupSound);
+				((JMenu)item).addMenuListener(popupSound);
+				addMenuItemListner((JMenu)item);
+			}
+		}
+		
+	}
+}
+
+class menuSound implements MenuListener{
+	
+	MWClient mwclient = null;
+	
+	public menuSound(MWClient mwclient) {
+		this.mwclient = mwclient;
+	}
+
+	public void menuCanceled(MenuEvent arg0) {
+	}
+
+	public void menuDeselected(MenuEvent arg0) {
+	}
+
+	public void menuSelected(MenuEvent arg0) {
+		
+		if ( !mwclient.getMainFrame().jMenuOptionsMute.getState() ){
+			mwclient.doPlaySound("./data/sounds/menu.wav");
+		}
+	}
+}
+
+class menuPopupSound implements MenuListener{
+	
+	MWClient mwclient = null;
+	
+	public menuPopupSound(MWClient mwclient) {
+		this.mwclient = mwclient;
+	}
+
+	public void menuCanceled(MenuEvent arg0) {
+	}
+
+	public void menuDeselected(MenuEvent arg0) {
+	}
+
+	public void menuSelected(MenuEvent arg0) {
+		
+		if ( !mwclient.getMainFrame().jMenuOptionsMute.getState() ){
+			mwclient.doPlaySound("./data/sounds/menu popup.wav");
+		}
+	}
+	
 }

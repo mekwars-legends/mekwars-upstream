@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.io.File;
 
@@ -52,6 +53,7 @@ public final class ConfigurationDialog implements ActionListener {
     private final static String okayCommand = "Okay";
     private final static String cancelCommand = "Cancel";
     private final static String camoCommand = "Camo";
+    private final static String lookAndFeelCommand = "LAF";
 
     private final static String windowName = "MekWars Configuration";
 
@@ -139,7 +141,7 @@ public final class ConfigurationDialog implements ActionListener {
    
     private final String[] lookandFeelChoices = { "Native", "CDE/Motif",
             "Java/Ocean", "Metouia", "Plastic (Desert)",
-            "Plastic (Sky)", "Plastic XP", "Steel", "Windows - J" };
+            "Plastic (Sky)", "Plastic XP", "Steel", "Windows - J", "Skins" };
     private final JComboBox lookandfeelComboBox = new JComboBox(lookandFeelChoices);
  
     private final String[] playerChatColorChoices = { "Player Defined",
@@ -150,6 +152,7 @@ public final class ConfigurationDialog implements ActionListener {
             "Indigo", "Navy", "Orange", "Red", "Teal", "Black" };
     private final JComboBox sysMessageColorComboBox = new JComboBox(sysMessageColorChoices);
 
+    private JComboBox skinComboBox = null;
     //CHECK BOXEN
     //tab visibility
     private final JCheckBox hqTabVisBox = new JCheckBox();
@@ -250,7 +253,8 @@ public final class ConfigurationDialog implements ActionListener {
         int originalColumns = Integer.parseInt(mwclient.getConfigParam("UNITAMOUNT"));
         String originalUnitHex = mwclient.getConfigParam("UNITHEX");
         String originalScheme = mwclient.getConfigParam("HQCOLORSCHEME").toLowerCase();
-        String originalSkin = mwclient.getConfigParam("LOOKANDFEEL").toLowerCase();
+        String originalLookAndFeel = mwclient.getConfigParam("LOOKANDFEEL").toLowerCase();
+        String originalSkin = mwclient.getConfigParam("LOOKANDFEELSKIN").toLowerCase();
         //String originalMapBrightness = mwclient.getConfigParam("DARKERMAP").toLowerCase();
         String originalBMPreview = mwclient.getConfigParam("BMPREVIEWIMAGE").toLowerCase();
 
@@ -395,7 +399,9 @@ public final class ConfigurationDialog implements ActionListener {
 
         Dimension comboDim = new Dimension();
         comboDim.setSize(lookandfeelComboBox.getMinimumSize().getWidth() * 1.6, uNameField.getMinimumSize().getHeight() + 2);
-
+        lookandfeelComboBox.addActionListener(this);
+        lookandfeelComboBox.setActionCommand(lookAndFeelCommand);
+        
         JLabel schemeHeader = new JLabel("HQ Color Scheme:");
         schemeHeader.setAlignmentX(Component.CENTER_ALIGNMENT);
         schemeWrapper.add(schemeHeader);
@@ -416,7 +422,26 @@ public final class ConfigurationDialog implements ActionListener {
         skinWrapper.add(lookandfeelComboBox);
         lookandfeelComboBox.setAlignmentX(Component.CENTER_ALIGNMENT);
         lookandfeelComboBox.setMaximumSize(comboDim);
-
+        
+        File skinFiles = new File("./data/skins");
+        
+        if ( !skinFiles.exists() )
+        	skinFiles.mkdir();
+        
+        skinComboBox = new JComboBox(skinFiles.list());
+        
+       	for ( int pos = 0; pos < skinComboBox.getItemCount(); pos++){
+       		if ( skinComboBox.getItemAt(pos).toString().equalsIgnoreCase(originalSkin) ){
+       			skinComboBox.setSelectedIndex(pos);
+       			break;
+       		}
+        }
+        skinComboBox.setEnabled(false);
+        skinWrapper.add(new JLabel("Skins:",JLabel.CENTER));
+        skinWrapper.add(skinComboBox);
+        skinComboBox.setAlignmentX(Component.CENTER_ALIGNMENT);
+        skinComboBox.setMaximumSize(comboDim);
+        
         //sys message combo box
         JPanel sysMessageWrapper = new JPanel();
         sysMessageWrapper.setLayout(new BoxLayout(sysMessageWrapper,
@@ -1091,7 +1116,6 @@ public final class ConfigurationDialog implements ActionListener {
         dialog = pane.createDialog(mainConfigPanel, windowName);
         dialog.getRootPane().setDefaultButton(okayButton);
 
-        dialog.setLocation(Math.max(mwclient.getMainFrame().getLocation().x,mwclient.getMainFrame().getLocation().x+((mwclient.getMainFrame().getWidth()/2)-(dialog.getWidth()/2))),Math.max(mwclient.getMainFrame().getLocation().y+(mwclient.getMainFrame().getHeight()/2)-dialog.getHeight()/2,mwclient.getMainFrame().getLocation().y));
         
         showHexinHQBox.setSelected(mwclient.getConfig().isParam("UNITHEX"));
         darkenMapBox.setSelected(mwclient.getConfig().isParam("DARKERMAP"));
@@ -1172,6 +1196,8 @@ public final class ConfigurationDialog implements ActionListener {
             lookandfeelComboBox.setSelectedIndex(7);
         } else if (skin.equals("jwindows")) {
             lookandfeelComboBox.setSelectedIndex(8);
+        } else if (skin.equals("skins")) {
+            lookandfeelComboBox.setSelectedIndex(9);
         } else {//scheme is system
             lookandfeelComboBox.setSelectedIndex(0);
         }
@@ -1314,6 +1340,13 @@ public final class ConfigurationDialog implements ActionListener {
         //Show the dialog and get the user's input
         dialog.setModal(true);
         dialog.pack();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        
+        // Determine the new location of the window
+        int h = dialog.getSize().height;
+        int y = (dim.height-h)/2;
+        
+        dialog.setLocation(Math.max(mwclient.getMainFrame().getLocation().x,mwclient.getMainFrame().getLocation().x+((mwclient.getMainFrame().getWidth()/2)-(dialog.getWidth()/2))),y);
         dialog.setVisible(true);
 
         if (pane.getValue() == okayButton) {
@@ -1323,7 +1356,7 @@ public final class ConfigurationDialog implements ActionListener {
             mwclient.getConfig().setParam("DARKERMAP",Boolean.toString(darkenMapBox.isSelected()));
             mwclient.getConfig().setParam("BMPREVIEWIMAGE",Boolean.toString(bmPreviewImageBox.isSelected()));
 
-            //don't let people do stpuid things with the Columns and crash the
+            //don't let people do stupid things with the Columns and crash the
             // client.
             if (Integer.parseInt(hqColumnsField.getText()) < 1)
                 hqColumnsField.setText("8");//no negatives or 0's allowed
@@ -1384,7 +1417,10 @@ public final class ConfigurationDialog implements ActionListener {
                 mwclient.getConfig().setParam("LOOKANDFEEL", "steel");
             } else if (lookandfeelComboBox.getSelectedIndex() == 8) {
                 mwclient.getConfig().setParam("LOOKANDFEEL", "jwindows");
-            } else {//skin is system
+            } else if (lookandfeelComboBox.getSelectedIndex() == 9) {
+                mwclient.getConfig().setParam("LOOKANDFEEL", "skins");
+                mwclient.getConfig().setParam("LOOKANDFEELSKIN", skinComboBox.getSelectedItem().toString());
+            }  else {//skin is system
                 mwclient.getConfig().setParam("LOOKANDFEEL", "system");
             }
 
@@ -1566,7 +1602,9 @@ public final class ConfigurationDialog implements ActionListener {
             boolean unitHexChanged = false;
             boolean mapBrightnessChanged = false;
 
-            if (!mwclient.getConfigParam("LOOKANDFEEL").equalsIgnoreCase(originalSkin))
+            if (!mwclient.getConfigParam("LOOKANDFEEL").equalsIgnoreCase(originalLookAndFeel) 
+            		|| ( mwclient.getConfigParam("LOOKANDFEEL").equalsIgnoreCase("skins") 
+            				&& !mwclient.getConfigParam("LOOKANDFEELSKIN").equalsIgnoreCase(originalSkin)) )
                 mwclient.setLookAndFeel(true);
 
             if (!mwclient.getConfigParam("UNITHEX").equals(originalUnitHex))
@@ -1611,6 +1649,11 @@ public final class ConfigurationDialog implements ActionListener {
         } else if (command.equals(camoCommand)) {
         	CamoSelectionDialog camoDialog = new CamoSelectionDialog(mwclient.getMainFrame(), mwclient);
         	camoDialog.setVisible(true);
+        }else if ( command.equals(lookAndFeelCommand)){
+        	if ( lookandfeelComboBox.getSelectedIndex() == 9 )
+        		skinComboBox.setEnabled(true);
+        	else
+        		skinComboBox.setEnabled(false);
         }
     }
 

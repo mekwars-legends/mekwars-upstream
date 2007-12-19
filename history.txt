@@ -2,6 +2,17 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.12.x
++ Added AePlayWave Class uses Java 1.5 javax.sound lib
+- Removed CPlaySound
++ Added sount event to menu selections will play menu.wav or menu popup.wav
+  if client is not muted.
++ Added sound event to closingWindow now plays shutdown.wav if client
+  is not muted
++ Added 3 new sound files menu popup.wav menu.wav shutdown.wav
+  From MechWarrior II GPL Need to add GPL info to CMainFrame.java
++ Added 35 new skin zips. Located in client ./data/skins
++ Added skinlaf.jar for Skinable look and feel 
+	NOTE: new client needs this in lib folder!
 Release Client/Server 0.2.12.1
 + RFE 1587533: Setting Cross Faction RP costs Per Faction
 + Added ALL option to ListSubFactionsCommand

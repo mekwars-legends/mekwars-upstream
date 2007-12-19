@@ -20,9 +20,6 @@ package client;
 //This is the Client used for connecting to the master server.
 //@Author: Helge Richter (McWizard@gmx.de)
 
-import java.applet.Applet;
-import java.applet.AudioClip;
-
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FileDialog;
@@ -46,7 +43,6 @@ import java.io.PrintStream;
 import java.lang.reflect.Constructor;
 import java.net.ConnectException;
 import java.net.InetAddress;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -61,6 +57,14 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -138,6 +142,8 @@ import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import com.jgoodies.looks.plastic.theme.DesertGreen;
 import com.jgoodies.looks.plastic.theme.SkyBlue;
+import com.l2fprod.gui.plaf.skin.Skin;
+import com.l2fprod.gui.plaf.skin.SkinLookAndFeel;
 
 public final class MWClient implements IClient {
 	
@@ -1575,7 +1581,18 @@ public final class MWClient implements IClient {
 		else if (Config.getParam("LOOKANDFEEL").equals("plastic")) {PlasticLookAndFeel.setMyCurrentTheme(new DesertGreen()); LAF = new Plastic3DLookAndFeel();}
 		else if (Config.getParam("LOOKANDFEEL").equals("plasticxp")) {LAF = new PlasticXPLookAndFeel();}
 		else if (Config.getParam("LOOKANDFEEL").equals("plastic3d")) {PlasticLookAndFeel.setMyCurrentTheme(new SkyBlue()); LAF = new Plastic3DLookAndFeel();}
-		else if (Config.getParam("LOOKANDFEEL").equals("jwindows")) {LAF = new WindowsLookAndFeel();}
+		else if (Config.getParam("LOOKANDFEEL").equals("jwindows")){LAF = new WindowsLookAndFeel();}
+		else if (Config.getParam("LOOKANDFEEL").equals("skins")){
+			try{
+				Skin theSkinToUse = SkinLookAndFeel.loadThemePack("./data/skins/"+Config.getParam("LOOKANDFEELSKIN"));
+				SkinLookAndFeel.setSkin(theSkinToUse);
+				LAF = new SkinLookAndFeel();
+			}catch(Exception ex){
+				mwClientLog.clientErrLog(ex);
+				LAF = UIManager.getLookAndFeel();
+			}
+		}
+		
 		
 		try {
 			if (isRedraw) {MainFrame.setVisible(false);}
@@ -1584,10 +1601,10 @@ public final class MWClient implements IClient {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			else
 				UIManager.setLookAndFeel(LAF);
-			
+						
 			if (isRedraw) {
 				SwingUtilities.updateComponentTreeUI(MainFrame);
-				MainFrame.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+				//MainFrame.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
 				MainFrame.setVisible(true);
 			}
 			
@@ -1688,10 +1705,148 @@ public final class MWClient implements IClient {
 		}
 	}
 	
-	protected class CPlaySound implements Runnable {
-		String filename;
+	/**
+	 * 
+	 * @author http://www.anyexample.com
+	 *
+	 */
+	public static class AePlayWave implements Runnable {
+
+		private String filename;
+		 
+		private static final int EXTERNAL_BUFFER_SIZE = 524288; // 128Kb
+	 
+		private enum Position {
+			LEFT, RIGHT, NORMAL
+		};
+	 
+		private Position curPosition;
+
+		public AePlayWave(String wavfile) {
+			filename = wavfile;
+			curPosition = Position.NORMAL;
+		}
+	 
+		public AePlayWave(String wavfile, Position p) {
+			filename = wavfile;
+			curPosition = p;
+		}
+	 
+		public void run() {
+	 
+			File soundFile = new File(filename);
+			if (!soundFile.exists()) {
+				MWClient.mwClientLog.clientErrLog("Wave file not found: " + filename);
+				return;
+			}
+	 
+			AudioInputStream audioInputStream = null;
+			try {
+				audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+			} catch (UnsupportedAudioFileException e1) {
+				MWClient.mwClientLog.clientErrLog(e1);
+				return;
+			} catch (IOException e1) {
+				MWClient.mwClientLog.clientErrLog(e1);
+				return;
+			}
+	 
+			AudioFormat format = audioInputStream.getFormat();
+			SourceDataLine auline = null;
+			DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+	 
+			try {
+				auline = (SourceDataLine) AudioSystem.getLine(info);
+				auline.open(format);
+			} catch (LineUnavailableException e) {
+				MWClient.mwClientLog.clientErrLog(e);
+				return;
+			} catch (Exception e) {
+				MWClient.mwClientLog.clientErrLog(e);
+				return;
+			}
+	 
+			if (auline.isControlSupported(FloatControl.Type.PAN)) {
+				FloatControl pan = (FloatControl) auline.getControl(FloatControl.Type.PAN);
+				if (curPosition == Position.RIGHT)
+					pan.setValue(1.0f);
+				else if (curPosition == Position.LEFT)
+					pan.setValue(-1.0f);
+			} 
+	 
+			auline.start();
+			int nBytesRead = 0;
+			byte[] abData = new byte[EXTERNAL_BUFFER_SIZE];
+	 
+			try {
+				while (nBytesRead != -1) {
+					nBytesRead = audioInputStream.read(abData, 0, abData.length);
+					if (nBytesRead >= 0)
+						auline.write(abData, 0, nBytesRead);
+				}
+			} catch (IOException e) {
+				MWClient.mwClientLog.clientErrLog(e);
+				return;
+			} finally {
+				auline.drain();
+				auline.close();
+			}
+		}
 		
-		public CPlaySound(String tfilename) {filename = tfilename;}
+		public static void AePlayWaveNonThreaded(String filename) {
+			 
+			File soundFile = new File(filename);
+			if (!soundFile.exists()) {
+				MWClient.mwClientLog.clientErrLog("Wave file not found: " + filename);
+				return;
+			}
+	 
+			AudioInputStream audioInputStream = null;
+			try {
+				audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+			} catch (UnsupportedAudioFileException e1) {
+				MWClient.mwClientLog.clientErrLog(e1);
+				return;
+			} catch (IOException e1) {
+				MWClient.mwClientLog.clientErrLog(e1);
+				return;
+			}
+	 
+			AudioFormat format = audioInputStream.getFormat();
+			SourceDataLine auline = null;
+			DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+	 
+			try {
+				auline = (SourceDataLine) AudioSystem.getLine(info);
+				auline.open(format);
+			} catch (LineUnavailableException e) {
+				MWClient.mwClientLog.clientErrLog(e);
+				return;
+			} catch (Exception e) {
+				MWClient.mwClientLog.clientErrLog(e);
+				return;
+			}
+	 
+			auline.start();
+			int nBytesRead = 0;
+			byte[] abData = new byte[EXTERNAL_BUFFER_SIZE];
+	 
+			try {
+				while (nBytesRead != -1) {
+					nBytesRead = audioInputStream.read(abData, 0, abData.length);
+					if (nBytesRead >= 0)
+						auline.write(abData, 0, nBytesRead);
+				}
+			} catch (IOException e) {
+				MWClient.mwClientLog.clientErrLog(e);
+				return;
+			} finally {
+				auline.drain();
+				auline.close();
+			}
+		}
+
+		/*public CPlaySound(String tfilename) {filename = tfilename;}
 		
 		public void run()
 		{
@@ -1704,14 +1859,23 @@ public final class MWClient implements IClient {
 				clip.play();
 			}
 			catch (Exception ex) {MWClient.mwClientLog.clientErrLog(ex);}
-		}
+		}*/
+	}
+
+	public void doPlaySound(String filename) {
+		doPlaySound(filename, true);
 	}
 	
 	//This can happen quite often, since no check is made if the config option is set
-	public void doPlaySound(String filename) {
+	public void doPlaySound(String filename, boolean inThread) {
 		try {
-			CPlaySound player = new CPlaySound(filename);
-			new Thread(player).run();
+			if ( inThread ){
+				AePlayWave player = new MWClient.AePlayWave(filename);
+				new Thread(player).run();
+			}
+			else{
+				AePlayWave.AePlayWaveNonThreaded(filename);
+			}
 		} catch (Exception ex) {
 			MWClient.mwClientLog.clientErrLog(ex);
 		}
@@ -1924,6 +2088,9 @@ public final class MWClient implements IClient {
 			this.dataFetcher.closeDataConnection();
 			Connector.closeConnection();
 		}
+		
+		if ( !SoundMuted )
+			doPlaySound("./data/sounds/exit client.wav",false);
 	}
 	
 	public CConnector getConnector() {return Connector;}
