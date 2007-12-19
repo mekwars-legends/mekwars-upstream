@@ -4,7 +4,7 @@ VERSION HISTORY:
 v 0.2.12.x
 + Added AePlayWave Class uses Java 1.5 javax.sound lib
 - Removed CPlaySound
-+ Added sount event to menu selections will play menu.wav or menu popup.wav
++ Added sound event to menu selections will play menu.wav or menu popup.wav
   if client is not muted.
 + Added sound event to closingWindow now plays shutdown.wav if client
   is not muted
