@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.12.x
++ Updated database to v13
 + UIManager now loaded before SplashWindow
 + Added JProgressBar to SplashWindow.java
 + Added AePlayWave Class uses Java 1.5 javax.sound lib
