@@ -339,7 +339,11 @@ public final class MWClient implements IClient {
 
         //set up the splash screen. do this before any
         //other non-main/non-static actions.
-        if ( !isDedicated() && Config.isParam("ENABLESPLASHSCREEN") ) {splash = new SplashWindow();}
+        if ( !isDedicated() ){
+        	setLookAndFeel(false);
+        	if ( Config.isParam("ENABLESPLASHSCREEN") )
+        		splash = new SplashWindow();
+        }
         
 		Connector = new CConnector(this);
 		Connector.setSplashWindow(splash);//may set null if ded.
@@ -349,7 +353,6 @@ public final class MWClient implements IClient {
         //Non-ded's get a GUI, show signon dialog, etc.
 		if (!isDedicated()) {
 			
-			setLookAndFeel(false);
 			theCampaign = new CCampaign(this);
 			myPlayer = theCampaign.getPlayer();
 			createProtCommands();
@@ -1868,6 +1871,10 @@ public final class MWClient implements IClient {
 	
 	//This can happen quite often, since no check is made if the config option is set
 	public void doPlaySound(String filename, boolean inThread) {
+		
+		if ( SoundMuted )
+			return;
+		
 		try {
 			if ( inThread ){
 				AePlayWave player = new MWClient.AePlayWave(filename);

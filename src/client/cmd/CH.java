@@ -446,7 +446,9 @@ public class CH extends Command {
 					//do nothing
 				}	
 
-				else if ((!uncoloredName.equalsIgnoreCase(mwclient.getUsername()) || uncoloredName.trim().length() < 1) && message.indexOf(mwclient.getUsername()) > -1) {
+				else if ((!uncoloredName.equalsIgnoreCase(mwclient.getUsername()) 
+						|| uncoloredName.trim().length() < 1) 
+						&& message.indexOf(mwclient.getUsername()) > -1) {
 					if(mwclient.getConfig().isParam("ENABLECALLSOUND"))
 						mwclient.doPlaySound(mwclient.getConfig().getParam("SOUNDONCALL"));
 

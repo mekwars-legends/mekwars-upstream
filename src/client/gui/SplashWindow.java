@@ -18,12 +18,14 @@
 package client.gui;
 
 import java.awt.Color;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
@@ -41,6 +43,7 @@ public class SplashWindow {
 	private JLabel versionLabel;
 	private AnimationThread animator;
 	private int currentStatus;
+	private JProgressBar progressBar;
 	
 	public final int STATUS_INITIALIZING = 0;
 	public final int STATUS_FETCHINGDATA = 1;
@@ -57,7 +60,9 @@ public class SplashWindow {
 		
 		splashWindow = new JFrame();
         splashWindow.setUndecorated(true);
-		
+	
+        progressBar = new JProgressBar(0,9);
+        
 		//load and scale the splash image
 		ImageIcon splashImage = null;
 		boolean useJPGImage = new File("data/images/mekwarssplash.jpg").exists();
@@ -94,6 +99,7 @@ public class SplashWindow {
 		windowPanel.add(imageLabel);
 		windowPanel.add(new JSeparator());
 		windowPanel.add(versionLabel);
+		windowPanel.add(progressBar);
 		
 		//give the panel an attractive border
 		windowPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -122,6 +128,10 @@ public class SplashWindow {
 	
 	public JLabel getImageLabel() {
 		return versionLabel;
+	}
+	
+	public JProgressBar getProgressBar() {
+		return progressBar;
 	}
 	
 	public void setStatus(int i) {
@@ -154,18 +164,8 @@ class AnimationThread extends Thread {
 	}
 	
 	private void setLabelText(String s) {
-		switch (progress) {
-		case 0:	splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF</b></CENTER></HTML>"); break;
-		case 1:	splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF\u25CF</b></CENTER></HTML>"); break;
-		case 2:	splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF\u25CF\u25CF</b></CENTER></HTML>"); break;
-		case 3: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF\u25CF\u25CF\u25CF</b></CENTER></HTML>"); break;
-		case 4: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF\u25CF\u25CF\u25CF\u25CF</b></CENTER></HTML>"); break;
-		case 5: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF</b></CENTER></HTML>"); break;
-		case 6: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF</b></CENTER></HTML>"); break;
-		case 7: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF</b></CENTER></HTML>"); break;
-		case 8: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF</b></CENTER></HTML>"); break;
-		case 9: splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "<br>\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF</b></CENTER></HTML>"); break;
-		}
+		splash.getImageLabel().setText("<HTML><CENTER><b>" + s + "</b></CENTER></HTML>");
+		splash.getProgressBar().setValue(progress);
 	}
 	
 	@Override

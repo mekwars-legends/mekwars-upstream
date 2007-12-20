@@ -4651,8 +4651,7 @@ public class ShortResolver {
 			totalXPforUnit = (int) (totalXPforUnit * 1.05);
 
 		// set experience
-		currU.getPilot().setExperience(
-				currU.getPilot().getExperience() + totalXPforUnit);
+		currU.getPilot().setExperience(currU.getPilot().getExperience() + totalXPforUnit);
 
 		// if the player is a winner, check for level up
 		if (so.getWinners().containsKey(ownerName) && allowLevelUp) {

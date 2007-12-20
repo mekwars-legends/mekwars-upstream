@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.12.x
++ UIManager now loaded before SplashWindow
++ Added JProgressBar to SplashWindow.java
 + Added AePlayWave Class uses Java 1.5 javax.sound lib
 - Removed CPlaySound
 + Added sound event to menu selections will play menu.wav or menu popup.wav
