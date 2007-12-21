@@ -82,7 +82,7 @@ public class SplashWindow {
 		imageLabel.setIconTextGap(6);
 		
 		//create a version label
-		versionLabel = new JLabel("<HTML><CENTER><b>Initializing<br>\u25cf</b></CENTER></HTML>",SwingConstants.CENTER);
+		versionLabel = new JLabel("<HTML><CENTER><b>Initializing</b></CENTER></HTML>",SwingConstants.CENTER);
 		
 		//place the labels in a panel
 		JPanel windowPanel = new JPanel();

@@ -594,8 +594,11 @@ public final class MWClient implements IClient {
 			//make the main frame visible
 			try{
 				MainFrame.setVisible(true);
-				if ( splash != null)
+				if ( splash != null){
+					splash.getProgressBar().setValue(9);
+					splash.getProgressBar().setVisible(false);
 					splash.dispose();
+				}
 				splash = null;//nuke the splash
 			} catch (Exception ex){
 				MWClient.mwClientLog.clientErrLog(ex);

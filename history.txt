@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.12.x
++ Fixed bug with JProgressBar
++ added client exit.wav
 + NP lists now save to their own table in the database
 + NP lists are checked against database player existence at player load
 + Updated database to v14
