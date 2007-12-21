@@ -3,7 +3,7 @@ VERSION HISTORY:
 
 v 0.2.12.x
 + NP lists now save to their own table in the database
-+ NP lists are checked against database player existence at player load 
++ NP lists are checked against database player existence at player load
 + Updated database to v14
 + Updated database to v13
 + UIManager now loaded before SplashWindow
