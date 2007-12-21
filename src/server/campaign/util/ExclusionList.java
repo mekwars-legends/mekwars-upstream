@@ -17,10 +17,14 @@
 package server.campaign.util;
 
 import java.io.File;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.Iterator;
 
+import server.MWServ;
 import server.campaign.CampaignMain;
 
 /**
@@ -250,6 +254,31 @@ public class ExclusionList {
 		return result.toString();
 	}
 	
+	public void fromDB(int playerID) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			String sql = "SELECT * from noplay_lists WHERE player_id = " + playerID;
+			ps = CampaignMain.cm.MySQL.getPreparedStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				this.addExclude(rs.getString("admin_exclude").equalsIgnoreCase("y")? true : false, rs.getString("np_name"));
+			}
+			
+		} catch (SQLException e) {
+			MWServ.mwlog.dbLog("SQLException in ExclusionList.fromDB: " + e.getMessage());
+		} finally {
+			try {
+				if(ps != null)
+					ps.close();
+				if(rs != null)
+					rs.close();
+			} catch (SQLException ex) {
+				MWServ.mwlog.dbLog("Exception in ExclusionList.fromDB: " + ex.getMessage());
+			}
+		}
+	}
+	
 	public String playerExcludeToString(String token) {
 		
 		//MWServ.mwlog.mainLog("** playerExcludeToStringCalled");
@@ -269,5 +298,45 @@ public class ExclusionList {
 		return result.toString();
 	}
 	
+	public void toDB(int playerID) {
+		PreparedStatement ps = null;
+		String sql = "";
+		try {
+			sql = "DELETE from noplay_lists where player_id = " + playerID;
+			ps = CampaignMain.cm.MySQL.getPreparedStatement(sql);
+			ps.executeUpdate(sql);
+			ps.close();
+			
+			// player excludes
+			
+			if(playerExcludes.size() > 0) {
+				for (String currName : playerExcludes) {
+					sql = "INSERT into noplay_lists set player_id = ?, np_name = ?, admin_exclude = 'n'";
+					ps = CampaignMain.cm.MySQL.getPreparedStatement(sql);
+					ps.setInt(1, playerID);
+					ps.setString(2, currName);
+					ps.executeUpdate();
+					ps.close();
+				}
+			}
+			
+			// admin excludes
+			
+			if(adminExcludes.size() > 0) {
+				for (String currName : adminExcludes) {
+					sql = "INSERT into noplay_lists set player_id = ?, np_name = ?, admin_exclude = 'y'";
+					ps = CampaignMain.cm.MySQL.getPreparedStatement(sql);
+					ps.setInt(1, playerID);
+					ps.setString(2, currName);
+					ps.executeUpdate();
+					ps.close();
+				}
+			}
+		} catch(SQLException e) {
+			MWServ.mwlog.dbLog("SQLException in ExclusionList.toDB: " + e.getMessage());
+			MWServ.mwlog.dbLog("  -> " + sql);
+			MWServ.mwlog.dbLog("    -> " + ps.toString());
+		}
+	}
 	
 }//end ExcludeList

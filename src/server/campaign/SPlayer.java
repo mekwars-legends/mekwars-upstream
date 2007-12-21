@@ -2763,8 +2763,6 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 					sql.append("playerBaysOwned = NULL, playerTechnicians = ?, ");
 				sql.append("playerRP = ?, ");
 				sql.append("playerXPToReward = ?, ");
-				sql.append("playerAdminExcludeList = ?, ");
-				sql.append("playerExcludeList = ?, ");
 				sql.append("playerTotalTechsString = ?, ");
 				sql.append("playerAvailableTechsString = ?, ");
 				sql.append("playerLogo = ?, ");
@@ -2796,33 +2794,31 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 					ps.setInt(11, getTechnicians());
 				ps.setInt(12, getReward());
 				ps.setInt(13, getXPToReward());
-				ps.setString(14, getExclusionList().adminExcludeToString("$"));
-				ps.setString(15, getExclusionList().playerExcludeToString("$"));
 				if(CampaignMain.cm.isUsingAdvanceRepair()) {
-					ps.setString(16, totalTechsToString());
-					ps.setString(17, availableTechsToString());
+					ps.setString(14, totalTechsToString());
+					ps.setString(15, availableTechsToString());
 				}
 				else {
-					ps.setString(16, "");
-					ps.setString(17, "");
+					ps.setString(14, "");
+					ps.setString(15, "");
 				}
 				if(getMyLogo().length() > 0)
-					ps.setString(18, getMyLogo());
+					ps.setString(16, getMyLogo());
 				else
-					ps.setString(18, "");
-				ps.setDouble(19, getLastAttackFromReserve());
-				ps.setInt(20, getGroupAllowance());
-				ps.setString(21, getLastISP());
-				ps.setString(22, Boolean.toString(isInvisible()));
-				ps.setString(23, getUnitParts().toString());
+					ps.setString(16, "");
+				ps.setDouble(17, getLastAttackFromReserve());
+				ps.setInt(18, getGroupAllowance());
+				ps.setString(19, getLastISP());
+				ps.setString(20, Boolean.toString(isInvisible()));
+				ps.setString(21, getUnitParts().toString());
 				if(getPassword()!=null)
-					ps.setInt(24, getPassword().getAccess());
+					ps.setInt(22, getPassword().getAccess());
 				else
-					ps.setInt(24, 1);
-				ps.setString(25, Boolean.toString(getAutoReorder()));
-				ps.setInt(26, getTeamNumber());
-				ps.setString(27, unitParts.toString());
-				ps.setString(28, this.getSubFactionName().trim().length() < 1 ? " " : getSubFactionName());
+					ps.setInt(22, 1);
+				ps.setString(23, Boolean.toString(getAutoReorder()));
+				ps.setInt(24, getTeamNumber());
+				ps.setString(25, unitParts.toString());
+				ps.setString(26, this.getSubFactionName().trim().length() < 1 ? " " : getSubFactionName());
 				ps.executeUpdate();
 				ResultSet rs = ps.getGeneratedKeys();
 				rs.next();
@@ -2850,8 +2846,6 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 					sql.append("playerTechnicians = ?, playerBaysOwned = NULL, ");
 				sql.append("playerRP = ?, ");
 				sql.append("playerXPToReward = ?, ");
-				sql.append("playerAdminExcludeList = ?, ");
-				sql.append("playerExcludeList = ?, ");
 				sql.append("playerTotalTechsString = ?, ");
 				sql.append("playerAvailableTechsString = ?, ");
 				sql.append("playerLogo = ?, ");
@@ -2886,48 +2880,50 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 					ps.setInt(11, getTechnicians());
 				ps.setInt(12, getReward());
 				ps.setInt(13, getXPToReward());
-				ps.setString(14, getExclusionList().adminExcludeToString("$"));
-				ps.setString(15, getExclusionList().playerExcludeToString("$"));
 				if(CampaignMain.cm.isUsingAdvanceRepair()) {
-					ps.setString(16, totalTechsToString());
-					ps.setString(17, availableTechsToString());
+					ps.setString(14, totalTechsToString());
+					ps.setString(15, availableTechsToString());
 			
 				}
 				else {
-					ps.setString(16, "");
-					ps.setString(17, "");
+					ps.setString(14, "");
+					ps.setString(15, "");
 
 				}
 				if(getMyLogo().length() > 0)
-					ps.setString(18, getMyLogo());
+					ps.setString(16, getMyLogo());
 				else
-					ps.setString(18, "");
-				ps.setDouble(19, getLastAttackFromReserve());
-				ps.setInt(20, getGroupAllowance());
-				ps.setString(21, getLastISP());
-				ps.setString(22, Boolean.toString(isInvisible()));
+					ps.setString(16, "");
+				ps.setDouble(17, getLastAttackFromReserve());
+				ps.setInt(18, getGroupAllowance());
+				ps.setString(19, getLastISP());
+				ps.setString(20, Boolean.toString(isInvisible()));
 				if(getPassword()!=null)
-					ps.setInt(23, getPassword().getAccess());
+					ps.setInt(21, getPassword().getAccess());
 				else
-					ps.setInt(23, 1);
-				ps.setString(24, getUnitParts().toString());
-				ps.setString(25, Boolean.toString(getAutoReorder()));
+					ps.setInt(21, 1);
+				ps.setString(22, getUnitParts().toString());
+				ps.setString(23, Boolean.toString(getAutoReorder()));
 				if(getPassword()!=null)
-					ps.setString(26, this.password.getPasswd());
+					ps.setString(24, this.password.getPasswd());
 				else
-					ps.setString(26, "");
+					ps.setString(24, "");
 				if(getPassword()!=null)
-					ps.setLong(27, this.password.getTime());
+					ps.setLong(25, this.password.getTime());
 				else
-					ps.setLong(27, 0);
-				ps.setInt(28, getTeamNumber());
-				ps.setString(29, unitParts.toString());
-				ps.setString(30, (this.getSubFactionName().trim().length() < 1) ? " " : getSubFactionName());
-				ps.setInt(31, getDBId());
+					ps.setLong(25, 0);
+				ps.setInt(26, getTeamNumber());
+				ps.setString(27, unitParts.toString());
+				ps.setString(28, (this.getSubFactionName().trim().length() < 1) ? " " : getSubFactionName());
+				ps.setInt(29, getDBId());
 				ps.executeUpdate();
 
 			}
 		ps.close();
+		
+		// Save Exclude Lists
+		this.getExclusionList().toDB(getDBId());
+		
 		// Save Units
 		if (getUnits().size() > 0) {
 			for (SUnit currU : getUnits()) {
@@ -3297,9 +3293,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				this.setXPToReward(rs.getInt("playerXPToReward"));
 				
 				this.getPersonalPilotQueue().fromDB(getDBId());
-				this.getExclusionList().adminExcludeFromString(rs.getString("playerAdminExcludeList"), "$");
-				this.getExclusionList().playerExcludeFromString(rs.getString("playerExcludeList"), "$");
-			
+
+				this.getExclusionList().fromDB(getDBId());
 	
 				try {
 					if (CampaignMain.cm.isUsingAdvanceRepair()) {

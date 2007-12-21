@@ -141,7 +141,12 @@ public class NoPlayCommand implements Command {
 		if (mode.equals("add")) {
 			
 			//check to make sure the player who will be excluded exists
-			boolean playerExists = new File("./campaign/players/" + excludeName.toLowerCase() + ".dat").exists();
+			boolean playerExists = false;
+			if(!CampaignMain.cm.isUsingMySQL())
+				playerExists = new File("./campaign/players/" + excludeName.toLowerCase() + ".dat").exists();
+			else
+				playerExists = CampaignMain.cm.MySQL.playerExists(excludeName);
+			
 			if (!playerExists) {
 				CampaignMain.cm.toUser(excludeName + " does not have a player file. cannot add to your no-play list.", Username, true);
 				return;
