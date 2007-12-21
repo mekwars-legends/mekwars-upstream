@@ -929,6 +929,7 @@ client-dist/data/skins/tigerthemepack.zip -text
 client-dist/data/skins/underlingthemepack.zip -text
 client-dist/data/sounds/attack.wav -text
 client-dist/data/sounds/call.wav -text
+client-dist/data/sounds/exit[!!-~]client.wav -text
 client-dist/data/sounds/mail.wav -text
 client-dist/data/sounds/menu[!!-~]popup.wav -text
 client-dist/data/sounds/menu.wav -text
