@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.12.x
++ Added UTF8 to SMWLogger handlers
 + Fixed bug with JProgressBar
 + added client exit.wav
 + NP lists now save to their own table in the database

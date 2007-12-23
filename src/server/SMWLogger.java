@@ -153,6 +153,7 @@ public final class SMWLogger {//final - no extension of the server logger
 				mainHandler.setLevel(Level.INFO);
 				mainHandler.setFilter(null);
 				mainHandler.setFormatter(mmnetFormatter);
+				mainHandler.setEncoding("UTF8");
 				mainLog = Logger.getLogger("mainLogger");
 				mainLog.setUseParentHandlers(false);
 				mainLog.addHandler(mainHandler);
@@ -161,6 +162,7 @@ public final class SMWLogger {//final - no extension of the server logger
 				gameHandler.setLevel(Level.INFO);
 				gameHandler.setFilter(null);
 				gameHandler.setFormatter(mmnetFormatter);
+				gameHandler.setEncoding("UTF8");
 				gameLog = Logger.getLogger("gameLogger");
 				gameLog.setUseParentHandlers(false);
 				gameLog.addHandler(gameHandler);
@@ -169,6 +171,7 @@ public final class SMWLogger {//final - no extension of the server logger
 				resultsHandler.setLevel(Level.INFO);
 				resultsHandler.setFilter(null);
 				resultsHandler.setFormatter(mmnetFormatter);
+				resultsHandler.setEncoding("UTF8");
 				resultsLog = Logger.getLogger("resultsLogger");
 				resultsLog.setUseParentHandlers(false);
 				resultsLog.addHandler(resultsHandler);
@@ -177,6 +180,7 @@ public final class SMWLogger {//final - no extension of the server logger
 				cmdHandler.setLevel(Level.INFO);
 				cmdHandler.setFilter(null);
 				cmdHandler.setFormatter(mmnetFormatter);
+				cmdHandler.setEncoding("UTF8");
 				cmdLog = Logger.getLogger("cmdLogger");
 				cmdLog.setUseParentHandlers(false);
 				cmdLog.addHandler(cmdHandler);
@@ -185,6 +189,7 @@ public final class SMWLogger {//final - no extension of the server logger
 				pmHandler.setLevel(Level.INFO);
 				pmHandler.setFilter(null);
 				pmHandler.setFormatter(mmnetFormatter);
+				pmHandler.setEncoding("UTF8");
 				pmLog = Logger.getLogger("pmLogger");
 				pmLog.setUseParentHandlers(false);
 				pmLog.addHandler(pmHandler);
@@ -192,6 +197,7 @@ public final class SMWLogger {//final - no extension of the server logger
 				bmHandler = new FileHandler(logDir.getPath() + "/bmlog", normFileSize, rotations, true);
 				bmHandler.setLevel(Level.INFO);
 				bmHandler.setFilter(null);
+				bmHandler.setEncoding("UTF8");
 				bmHandler.setFormatter(mmnetFormatter);
 				bmLog = Logger.getLogger("bmLogger");
 				bmLog.setUseParentHandlers(false);
@@ -201,6 +207,7 @@ public final class SMWLogger {//final - no extension of the server logger
 				infoHandler.setLevel(Level.INFO);
 				infoHandler.setFilter(null);
 				infoHandler.setFormatter(mmnetFormatter);
+				infoHandler.setEncoding("UTF8");
 				infoLog = Logger.getLogger("infoLogger");
 				infoLog.setUseParentHandlers(false);
 				infoLog.addHandler(infoHandler);
@@ -209,6 +216,7 @@ public final class SMWLogger {//final - no extension of the server logger
 				warnHandler.setLevel(Level.INFO);
 				warnHandler.setFilter(null);
 				warnHandler.setFormatter(mmnetFormatter);
+				warnHandler.setEncoding("UTF8");
 				warnLog = Logger.getLogger("warnLogger");
 				warnLog.setUseParentHandlers(false);
 				warnLog.addHandler(warnHandler);
@@ -216,6 +224,7 @@ public final class SMWLogger {//final - no extension of the server logger
 				errHandler = new FileHandler(logDir.getPath() + "/errlog", normFileSize, rotations, true);
 				errHandler.setLevel(Level.INFO);
 				errHandler.setFilter(null);
+				errHandler.setEncoding("UTF8");
 				errHandler.setFormatter(mmnetFormatter);
 				errLog = Logger.getLogger("errLogger");
 				errLog.setUseParentHandlers(false);
@@ -225,6 +234,7 @@ public final class SMWLogger {//final - no extension of the server logger
 				modHandler.setLevel(Level.INFO);
 				modHandler.setFilter(null);
 				modHandler.setFormatter(mmnetFormatter);
+				modHandler.setEncoding("UTF8");
 				modLog = Logger.getLogger("modLogger");
 				modLog.setUseParentHandlers(false);
 				modLog.addHandler(modHandler);
@@ -233,6 +243,7 @@ public final class SMWLogger {//final - no extension of the server logger
 				tickHandler.setLevel(Level.INFO);
 				tickHandler.setFilter(null);
 				tickHandler.setFormatter(mmnetFormatter);
+				tickHandler.setEncoding("UTF8");
 				tickLog = Logger.getLogger("tickLogger");
 				tickLog.setUseParentHandlers(false);
 				tickLog.addHandler(tickHandler);
@@ -241,6 +252,7 @@ public final class SMWLogger {//final - no extension of the server logger
 				ipHandler = new FileHandler(logDir.getPath() + "/iplog", 104857600, rotations, true);
 				ipHandler.setLevel(Level.INFO);
 				ipHandler.setFilter(null);
+				ipHandler.setEncoding("UTF8");
 				ipHandler.setFormatter(mmnetFormatter);
 				ipLog = Logger.getLogger("ipLogger");
 				ipLog.setUseParentHandlers(false);
@@ -250,6 +262,7 @@ public final class SMWLogger {//final - no extension of the server logger
 				dbHandler.setLevel(Level.INFO);
 				dbHandler.setFilter(null);
 				dbHandler.setFormatter(mmnetFormatter);
+				dbHandler.setEncoding("UTF8");
 				dbLog = Logger.getLogger("dbLogger");
 				dbLog.setUseParentHandlers(false);
 				dbLog.addHandler(dbHandler);
@@ -258,6 +271,7 @@ public final class SMWLogger {//final - no extension of the server logger
 				debugHandler.setLevel(Level.INFO);
 				debugHandler.setFilter(null);
 				debugHandler.setFormatter(mmnetFormatter);
+				debugHandler.setEncoding("UTF8");
 				debugLog = Logger.getLogger("debugLogger");
 				debugLog.setUseParentHandlers(false);
 				debugLog.addHandler(debugHandler);
