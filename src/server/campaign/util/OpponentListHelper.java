@@ -247,7 +247,7 @@ public class OpponentListHelper {
 
 		for (String currOppName : potentialOpponents.keySet()) {
 
-			StringBuilder output = new StringBuilder("[!] ");
+			StringBuilder output = new StringBuilder("ED:[!] ");
 			SPlayer currOpp = CampaignMain.cm.getPlayer(currOppName);
 
 			if (currOpp == null)

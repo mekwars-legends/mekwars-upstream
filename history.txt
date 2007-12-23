@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.12.x
++ enemy detected.wav now plays when a player goes active message is sent out.
++ New wav file enemy detected.wav
++ New mail.wav file
 + Fixed errors in SQL schemas
 + Added UTF8 to SMWLogger handlers
 + Fixed bug with JProgressBar

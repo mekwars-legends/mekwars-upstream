@@ -423,7 +423,12 @@ public class CH extends Command {
 				if ( nextString.startsWith("AM:") ){
 					String sysColour = mwclient.getConfigParam("SYSMESSAGECOLOR");
 					message = "<font color=\"" + sysColour + "\"><b>" + nextString.substring(3) + "</b></font>";
+				} else if ( nextString.startsWith("ED:") ) {
+					message = nextString.substring(3);
+					if ( !mwclient.isMuted() )
+						MWClient.AePlayWave.AePlayWaveNonThreaded("./data/sounds/enemy detected.wav");
 				}
+				
 				else
 					message = nextString;
 				wasSystemMessage = true;

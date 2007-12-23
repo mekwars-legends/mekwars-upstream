@@ -1907,6 +1907,10 @@ public final class MWClient implements IClient {
 		
 	}
 	
+	public boolean isMuted() {
+		return SoundMuted;
+	}
+	
 	public void setUsingBots(Boolean using){
 		usingBots = using;
 	}
