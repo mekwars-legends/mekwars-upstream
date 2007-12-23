@@ -6,7 +6,7 @@ CREATE TABLE `subFactions` (
 )
 ENGINE = MyISAM;
 
-ALTER TABLE `subfactions` CHANGE COLUMN `subfactionID` `subfactionName` VARCHAR(100) NOT NULL DEFAULT ' ',
+ALTER TABLE `subFactions` CHANGE COLUMN `subfactionID` `subfactionName` VARCHAR(100) NOT NULL DEFAULT ' ',
  DROP PRIMARY KEY,
  ADD PRIMARY KEY  USING BTREE(`subfactionName`, `houseID`);
 

@@ -1,13 +1,13 @@
 CREATE TABLE `faction_leaders` (
   `house_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   `leader_name` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`faction_id`, `leader_name`)
+  PRIMARY KEY (`house_id`, `leader_name`)
 )
 ENGINE = MyISAM;
 
 ALTER TABLE `merc_contract_info` MODIFY COLUMN `contractHouse` VARCHAR(100) NOT NULL;
 
-ALTER TABLE `mekwars`.`merc_contract_info` MODIFY COLUMN `contractDuration` INTEGER UNSIGNED NOT NULL DEFAULT 0,
+ALTER TABLE `merc_contract_info` MODIFY COLUMN `contractDuration` INTEGER UNSIGNED NOT NULL DEFAULT 0,
  MODIFY COLUMN `contractEarnedAmount` INTEGER UNSIGNED NOT NULL DEFAULT 0,
  MODIFY COLUMN `contractPayment` INTEGER UNSIGNED NOT NULL DEFAULT 0,
  MODIFY COLUMN `contractHouse` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT ' ',
