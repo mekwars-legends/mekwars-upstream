@@ -65,6 +65,11 @@ public class WriterThread extends Thread {
 	public synchronized void run() {
         while (_keepGoing) {
             try {
+            	if ( _socket == null 
+            			|| _socket.isClosed() ) {
+            		pleaseStop();
+            		continue;
+            	}
                 long start = System.currentTimeMillis();
                 flush();
                 long elapsed = System.currentTimeMillis() - start;

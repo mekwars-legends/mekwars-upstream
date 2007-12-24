@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.12.x
++ Added check to see if socket is closed before flushing.
++ Added new shutdown wav, create by Liz "Jessica Rose" Gibbs.
++ Added activate sound, create by Liz "Jessica Rose" Gibbs.
++ Added activate button images, created by Liz "Jessica Rose" Gibbs.
 + enemy detected.wav now plays when a player goes active message is sent out.
 + New wav file enemy detected.wav
 + New mail.wav file

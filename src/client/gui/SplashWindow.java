@@ -17,7 +17,10 @@
 
 package client.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -62,6 +65,10 @@ public class SplashWindow {
         splashWindow.setUndecorated(true);
 	
         progressBar = new JProgressBar(0,9);
+		progressBar.setMaximumSize(new Dimension(350,10));
+		progressBar.setAlignmentX(Component.CENTER_ALIGNMENT);
+		progressBar.setAlignmentY(Component.LEFT_ALIGNMENT);
+		
         
 		//load and scale the splash image
 		ImageIcon splashImage = null;
@@ -99,7 +106,9 @@ public class SplashWindow {
 		windowPanel.add(imageLabel);
 		windowPanel.add(new JSeparator());
 		windowPanel.add(versionLabel);
-		windowPanel.add(progressBar);
+		
+		windowPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		windowPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
 		
 		//give the panel an attractive border
 		windowPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -107,6 +116,7 @@ public class SplashWindow {
 				BorderFactory.createEmptyBorder(6,6,6,6)));
 		
 		splashWindow.getContentPane().add(windowPanel);
+		splashWindow.getContentPane().add(progressBar,BorderLayout.SOUTH);
 		splashWindow.getContentPane().setBackground(Color.WHITE);
 		splashWindow.pack();
 		splashWindow.setLocationRelativeTo(null);
@@ -226,4 +236,4 @@ class AnimationThread extends Thread {
 			}//end while
 	   
 	}//end run()
-}//end CheckAttackThread
+}//end AnimationThread

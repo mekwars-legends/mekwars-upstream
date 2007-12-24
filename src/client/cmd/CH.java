@@ -425,8 +425,7 @@ public class CH extends Command {
 					message = "<font color=\"" + sysColour + "\"><b>" + nextString.substring(3) + "</b></font>";
 				} else if ( nextString.startsWith("ED:") ) {
 					message = nextString.substring(3);
-					if ( !mwclient.isMuted() )
-						MWClient.AePlayWave.AePlayWaveNonThreaded("./data/sounds/enemy detected.wav");
+					mwclient.doPlaySound("./data/sounds/enemy detected.wav");
 				}
 				
 				else

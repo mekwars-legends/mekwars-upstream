@@ -154,7 +154,7 @@ public final class MWClient implements IClient {
 	
 	CConfig Config;
 	
-	public static final String CLIENT_VERSION = "0.2.12.1"; //change this with all client changes @Torren
+	public static final String CLIENT_VERSION = "0.2.12.2"; //change this with all client changes @Torren
 
 	CConnector Connector;
 	TimeOutThread TO;
@@ -593,13 +593,30 @@ public final class MWClient implements IClient {
 			System.err.flush();
 			//make the main frame visible
 			try{
-				MainFrame.setVisible(true);
 				if ( splash != null){
+					System.err.println("splash not null: "+System.currentTimeMillis());
+					System.err.flush();
 					splash.getProgressBar().setValue(9);
+					System.err.println("progress bar set to 9: "+System.currentTimeMillis());
+					System.err.flush();
 					splash.getProgressBar().setVisible(false);
+					System.err.println("progressbar going bye bye: "+System.currentTimeMillis());
+					System.err.flush();
 					splash.dispose();
+					System.err.println("splash going bye bye: "+System.currentTimeMillis());
+					System.err.flush();
 				}
+				System.err.println("splash going to null: "+System.currentTimeMillis());
+				System.err.flush();
+
 				splash = null;//nuke the splash
+				System.err.println("splash null: "+System.currentTimeMillis());
+				System.err.flush();
+				System.err.println("making mainframe visible: "+System.currentTimeMillis());
+				System.err.flush();
+
+				MainFrame.setVisible(true);
+				
 			} catch (Exception ex){
 				MWClient.mwClientLog.clientErrLog(ex);
 				MWClient.mwClientLog.clientErrLog("Error closing splash / opening main frame.");
@@ -1711,163 +1728,6 @@ public final class MWClient implements IClient {
 		}
 	}
 	
-	/**
-	 * 
-	 * @author http://www.anyexample.com
-	 *
-	 */
-	public static class AePlayWave implements Runnable {
-
-		private String filename;
-		 
-		private static final int EXTERNAL_BUFFER_SIZE = 524288; // 128Kb
-	 
-		private enum Position {
-			LEFT, RIGHT, NORMAL
-		};
-	 
-		private Position curPosition;
-
-		public AePlayWave(String wavfile) {
-			filename = wavfile;
-			curPosition = Position.NORMAL;
-		}
-	 
-		public AePlayWave(String wavfile, Position p) {
-			filename = wavfile;
-			curPosition = p;
-		}
-	 
-		public void run() {
-	 
-			File soundFile = new File(filename);
-			if (!soundFile.exists()) {
-				MWClient.mwClientLog.clientErrLog("Wave file not found: " + filename);
-				return;
-			}
-	 
-			AudioInputStream audioInputStream = null;
-			try {
-				audioInputStream = AudioSystem.getAudioInputStream(soundFile);
-			} catch (UnsupportedAudioFileException e1) {
-				MWClient.mwClientLog.clientErrLog(e1);
-				return;
-			} catch (IOException e1) {
-				MWClient.mwClientLog.clientErrLog(e1);
-				return;
-			}
-	 
-			AudioFormat format = audioInputStream.getFormat();
-			SourceDataLine auline = null;
-			DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
-	 
-			try {
-				auline = (SourceDataLine) AudioSystem.getLine(info);
-				auline.open(format);
-			} catch (LineUnavailableException e) {
-				MWClient.mwClientLog.clientErrLog(e);
-				return;
-			} catch (Exception e) {
-				MWClient.mwClientLog.clientErrLog(e);
-				return;
-			}
-	 
-			if (auline.isControlSupported(FloatControl.Type.PAN)) {
-				FloatControl pan = (FloatControl) auline.getControl(FloatControl.Type.PAN);
-				if (curPosition == Position.RIGHT)
-					pan.setValue(1.0f);
-				else if (curPosition == Position.LEFT)
-					pan.setValue(-1.0f);
-			} 
-	 
-			auline.start();
-			int nBytesRead = 0;
-			byte[] abData = new byte[EXTERNAL_BUFFER_SIZE];
-	 
-			try {
-				while (nBytesRead != -1) {
-					nBytesRead = audioInputStream.read(abData, 0, abData.length);
-					if (nBytesRead >= 0)
-						auline.write(abData, 0, nBytesRead);
-				}
-			} catch (IOException e) {
-				MWClient.mwClientLog.clientErrLog(e);
-				return;
-			} finally {
-				auline.drain();
-				auline.close();
-			}
-		}
-		
-		public static void AePlayWaveNonThreaded(String filename) {
-			 
-			File soundFile = new File(filename);
-			if (!soundFile.exists()) {
-				MWClient.mwClientLog.clientErrLog("Wave file not found: " + filename);
-				return;
-			}
-	 
-			AudioInputStream audioInputStream = null;
-			try {
-				audioInputStream = AudioSystem.getAudioInputStream(soundFile);
-			} catch (UnsupportedAudioFileException e1) {
-				MWClient.mwClientLog.clientErrLog(e1);
-				return;
-			} catch (IOException e1) {
-				MWClient.mwClientLog.clientErrLog(e1);
-				return;
-			}
-	 
-			AudioFormat format = audioInputStream.getFormat();
-			SourceDataLine auline = null;
-			DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
-	 
-			try {
-				auline = (SourceDataLine) AudioSystem.getLine(info);
-				auline.open(format);
-			} catch (LineUnavailableException e) {
-				MWClient.mwClientLog.clientErrLog(e);
-				return;
-			} catch (Exception e) {
-				MWClient.mwClientLog.clientErrLog(e);
-				return;
-			}
-	 
-			auline.start();
-			int nBytesRead = 0;
-			byte[] abData = new byte[EXTERNAL_BUFFER_SIZE];
-	 
-			try {
-				while (nBytesRead != -1) {
-					nBytesRead = audioInputStream.read(abData, 0, abData.length);
-					if (nBytesRead >= 0)
-						auline.write(abData, 0, nBytesRead);
-				}
-			} catch (IOException e) {
-				MWClient.mwClientLog.clientErrLog(e);
-				return;
-			} finally {
-				auline.drain();
-				auline.close();
-			}
-		}
-
-		/*public CPlaySound(String tfilename) {filename = tfilename;}
-		
-		public void run()
-		{
-			if (filename == null || SoundMuted) return;
-			try
-			{
-				File file = new File(filename);
-				URI newUri = file.toURI();
-				AudioClip clip = Applet.newAudioClip(newUri.toURL());
-				clip.play();
-			}
-			catch (Exception ex) {MWClient.mwClientLog.clientErrLog(ex);}
-		}*/
-	}
-
 	public void doPlaySound(String filename) {
 		doPlaySound(filename, true);
 	}
@@ -1880,8 +1740,8 @@ public final class MWClient implements IClient {
 		
 		try {
 			if ( inThread ){
-				AePlayWave player = new MWClient.AePlayWave(filename);
-				new Thread(player).run();
+				AePlayWave player = new AePlayWave(filename);
+				player.start();
 			}
 			else{
 				AePlayWave.AePlayWaveNonThreaded(filename);
@@ -2103,8 +1963,7 @@ public final class MWClient implements IClient {
 			Connector.closeConnection();
 		}
 		
-		if ( !SoundMuted )
-			doPlaySound("./data/sounds/exit client.wav",false);
+		doPlaySound("./data/sounds/exit client.wav",false);
 	}
 	
 	public CConnector getConnector() {return Connector;}
@@ -2666,10 +2525,10 @@ public final class MWClient implements IClient {
 		
 		//update the activity button
 		if (Status == MWClient.STATUS_FIGHTING) {
-			this.getMainFrame().getMainPanel().getUserListPanel().setActivateButtonText("Deactivate");
+			//this.getMainFrame().getMainPanel().getUserListPanel().setActivityButton(false);
 			this.getMainFrame().getMainPanel().getUserListPanel().setActivityButtonEnabled(false);
 		} else if (Status == MWClient.STATUS_ACTIVE) {
-			this.getMainFrame().getMainPanel().getUserListPanel().setActivateButtonText("Deactivate");
+			this.getMainFrame().getMainPanel().getUserListPanel().setActivityButton(false);
 			this.getMainFrame().getMainPanel().getUserListPanel().setActivityButtonEnabled(true);
 		} else if (Status == MWClient.STATUS_DISCONNECTED) {
 			this.getMainFrame().getMainPanel().getUserListPanel().setActivateButtonText("Disconnected");
@@ -2678,7 +2537,7 @@ public final class MWClient implements IClient {
 			this.getMainFrame().getMainPanel().getUserListPanel().setActivateButtonText("Login");
 			this.getMainFrame().getMainPanel().getUserListPanel().setActivityButtonEnabled(true);
 		} else if (Status == MWClient.STATUS_RESERVE) {
-			this.getMainFrame().getMainPanel().getUserListPanel().setActivateButtonText("Activate");
+			this.getMainFrame().getMainPanel().getUserListPanel().setActivityButton(true);
 			this.getMainFrame().getMainPanel().getUserListPanel().setActivityButtonEnabled(true);
 		}
 		
@@ -3374,4 +3233,161 @@ public final class MWClient implements IClient {
 		}
 	}//end PurgeAutoSaves
 
+}
+
+/**
+ * 
+ * @author http://www.anyexample.com
+ *
+ */
+class AePlayWave extends Thread{
+
+	private String filename;
+	 
+	private static final int EXTERNAL_BUFFER_SIZE = 524288; // 128Kb
+ 
+	private enum Position {
+		LEFT, RIGHT, NORMAL
+	};
+ 
+	private Position curPosition;
+
+	public AePlayWave(String wavfile) {
+		filename = wavfile;
+		curPosition = Position.NORMAL;
+	}
+ 
+	public AePlayWave(String wavfile, Position p) {
+		filename = wavfile;
+		curPosition = p;
+	}
+ 
+	public synchronized void run() {
+ 
+		File soundFile = new File(filename);
+		if (!soundFile.exists()) {
+			MWClient.mwClientLog.clientErrLog("Wave file not found: " + filename);
+			return;
+		}
+ 
+		AudioInputStream audioInputStream = null;
+		try {
+			audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+		} catch (UnsupportedAudioFileException e1) {
+			MWClient.mwClientLog.clientErrLog(e1);
+			return;
+		} catch (IOException e1) {
+			MWClient.mwClientLog.clientErrLog(e1);
+			return;
+		}
+ 
+		AudioFormat format = audioInputStream.getFormat();
+		SourceDataLine auline = null;
+		DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+ 
+		try {
+			auline = (SourceDataLine) AudioSystem.getLine(info);
+			auline.open(format);
+		} catch (LineUnavailableException e) {
+			MWClient.mwClientLog.clientErrLog(e);
+			return;
+		} catch (Exception e) {
+			MWClient.mwClientLog.clientErrLog(e);
+			return;
+		}
+ 
+		if (auline.isControlSupported(FloatControl.Type.PAN)) {
+			FloatControl pan = (FloatControl) auline.getControl(FloatControl.Type.PAN);
+			if (curPosition == Position.RIGHT)
+				pan.setValue(1.0f);
+			else if (curPosition == Position.LEFT)
+				pan.setValue(-1.0f);
+		} 
+ 
+		auline.start();
+		int nBytesRead = 0;
+		byte[] abData = new byte[EXTERNAL_BUFFER_SIZE];
+ 
+		try {
+			while (nBytesRead != -1) {
+				nBytesRead = audioInputStream.read(abData, 0, abData.length);
+				if (nBytesRead >= 0)
+					auline.write(abData, 0, nBytesRead);
+			}
+		} catch (IOException e) {
+			MWClient.mwClientLog.clientErrLog(e);
+			return;
+		} finally {
+			auline.drain();
+			auline.close();
+		}
+	}
+	
+	public static void AePlayWaveNonThreaded(String filename) {
+		 
+		File soundFile = new File(filename);
+		if (!soundFile.exists()) {
+			MWClient.mwClientLog.clientErrLog("Wave file not found: " + filename);
+			return;
+		}
+ 
+		AudioInputStream audioInputStream = null;
+		try {
+			audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+		} catch (UnsupportedAudioFileException e1) {
+			MWClient.mwClientLog.clientErrLog(e1);
+			return;
+		} catch (IOException e1) {
+			MWClient.mwClientLog.clientErrLog(e1);
+			return;
+		}
+ 
+		AudioFormat format = audioInputStream.getFormat();
+		SourceDataLine auline = null;
+		DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+ 
+		try {
+			auline = (SourceDataLine) AudioSystem.getLine(info);
+			auline.open(format);
+		} catch (LineUnavailableException e) {
+			MWClient.mwClientLog.clientErrLog(e);
+			return;
+		} catch (Exception e) {
+			MWClient.mwClientLog.clientErrLog(e);
+			return;
+		}
+ 
+		auline.start();
+		int nBytesRead = 0;
+		byte[] abData = new byte[EXTERNAL_BUFFER_SIZE];
+ 
+		try {
+			while (nBytesRead != -1) {
+				nBytesRead = audioInputStream.read(abData, 0, abData.length);
+				if (nBytesRead >= 0)
+					auline.write(abData, 0, nBytesRead);
+			}
+		} catch (IOException e) {
+			MWClient.mwClientLog.clientErrLog(e);
+			return;
+		} finally {
+			auline.drain();
+			auline.close();
+		}
+	}
+
+	/*public CPlaySound(String tfilename) {filename = tfilename;}
+	
+	public void run()
+	{
+		if (filename == null || SoundMuted) return;
+		try
+		{
+			File file = new File(filename);
+			URI newUri = file.toURI();
+			AudioClip clip = Applet.newAudioClip(newUri.toURL());
+			clip.play();
+		}
+		catch (Exception ex) {MWClient.mwClientLog.clientErrLog(ex);}
+	}*/
 }

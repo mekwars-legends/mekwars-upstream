@@ -40,6 +40,7 @@ import java.util.TreeSet;
 import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JButton;
@@ -57,6 +58,7 @@ import client.CConfig;
 import client.CUser;
 import client.MWClient;
 
+
 //admin import. har!
 //import admin.ModeratorPopupMenu;
 
@@ -64,7 +66,7 @@ import client.MWClient;
  * User List panel
  */
 @SuppressWarnings({"unchecked","serial"})
-public class CUserListPanel extends JPanel implements ActionListener {
+public class CUserListPanel extends JPanel implements ActionListener{
 	
 	public static int SORTMODE_NAME = 0;
 	public static int SORTMODE_HOUSE = 1;
@@ -90,6 +92,13 @@ public class CUserListPanel extends JPanel implements ActionListener {
 	JLabel CountLabel = new JLabel();
 	JButton ActivityButton = new JButton();
 	UserListPopupListener UserListPopup = new UserListPopupListener();
+
+	private Icon activateIcon = null;
+	private Icon deactivateIcon = null;
+	private Icon mouseActivateIcon = null;
+	private Icon mouseDeactivateIcon = null;
+	private Icon activateFlashIcon = null;
+	private Icon deactivateFlashIcon = null;
 	
 	public CUserListPanel(MWClient client) {
 		mwclient = client;
@@ -120,18 +129,65 @@ public class CUserListPanel extends JPanel implements ActionListener {
 		if (mwclient.getConfig().isParam("USERLISTCOUNT")) {CountLabel.setVisible(true);}
 		else {CountLabel.setVisible(false);}
 		
+		if ( new File("./data/images/activatebutton.png").exists() )
+			activateIcon = new ImageIcon("./data/images/activatebutton.png");
+		else if ( new File("./data/images/activatebutton.jpg").exists() )
+			activateIcon = new ImageIcon("./data/images/activatebutton.jpg");
+		else
+			activateIcon = null;
+		
+		if ( new File("./data/images/deactivatebutton.png").exists() )
+			deactivateIcon = new ImageIcon("./data/images/deactivatebutton.png");
+		else if ( new File("./data/images/deactivatebutton.jpg").exists() )
+			deactivateIcon = new ImageIcon("./data/images/deactivatebutton.jpg");
+		else
+			deactivateIcon = null;
+
+		if ( new File("./data/images/activatebuttonmouse.png").exists() )
+			mouseActivateIcon = new ImageIcon("./data/images/activatebuttonmouse.png");
+		else if ( new File("./data/images/activatebuttonmouse.jpg").exists() )
+			mouseActivateIcon = new ImageIcon("./data/images/activatebuttonmouse.jpg");
+		else
+			mouseActivateIcon = null;
+
+		if ( new File("./data/images/deactivatebuttonmouse.png").exists() )
+			mouseDeactivateIcon = new ImageIcon("./data/images/deactivatebuttonmouse.png");
+		else if ( new File("./data/images/deactivatebuttonmouse.jpg").exists() )
+			mouseDeactivateIcon = new ImageIcon("./data/images/deactivatebuttonmouse.jpg");
+		else
+			mouseDeactivateIcon = null;
+
+		if ( new File("./data/images/activateflashbutton.png").exists() )
+			activateFlashIcon = new ImageIcon("./data/images/activateflashbutton.png");
+		else if ( new File("./data/images/activateflashbutton.jpg").exists() )
+			activateFlashIcon = new ImageIcon("./data/images/activateflashbutton.jpg");
+		else
+			activateFlashIcon = null;
+
+		if ( new File("./data/images/deactivateflashbutton.png").exists() )
+			deactivateFlashIcon = new ImageIcon("./data/images/deactivateflashbutton.png");
+		else if ( new File("./data/images/deactivateflashbutton.jpg").exists() )
+			deactivateFlashIcon = new ImageIcon("./data/images/deactivateflashbutton.jpg");
+		else
+			deactivateFlashIcon = null;
+
 		//set up activity button
-		ActivityButton.setText("Waiting ...");
+		//setActivateButtonText("Waiting ...");
 		ActivityButton.setEnabled(false);
 		ActivityButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		ActivityButton.setAlignmentY(Component.CENTER_ALIGNMENT);
 		ActivityButton.addActionListener(this);
+		ActivityButton.setRolloverEnabled(true);
+		ActivityButton.setRolloverIcon(mouseActivateIcon);
+		ActivityButton.setIcon(activateIcon);
+		
 		if (mwclient.getConfig().isParam("USERLISTACTIVITYBTN")) {ActivityButton.setVisible(true);}
 		else {ActivityButton.setVisible(false);}
 		
 		//add the button and label to CountPanel
 		countPanel.setLayout(new BoxLayout(countPanel, BoxLayout.Y_AXIS));
 		countPanel.add(ActivityButton);
+	
 		countPanel.add(CountLabel);
 		countPanel.setBorder(BorderFactory.createEmptyBorder(4,2,3,2));
 		add(countPanel, BorderLayout.SOUTH);
@@ -172,15 +228,39 @@ public class CUserListPanel extends JPanel implements ActionListener {
 		LoggedIn = tloggedin;
 		if (LoggedIn) {
 			ActivityButton.setEnabled(true);//update button for status
-			ActivityButton.setText("Activate");
+			//setActivityButton(true);
+			setActivateButtonText("Activate");
 		} else {//logged out
 			ActivityButton.setEnabled(true);//update button for status
-			ActivityButton.setText("Login");
+			setActivateButtonText("Login");
+		}
+	}
+	
+	public void setActivityButton(Boolean activate) {
+		
+		if ( activate ) {
+			setActivateButtonText("Activate");
+			ActivationThread  animator = new ActivationThread(mwclient,ActivityButton,deactivateFlashIcon,activateIcon,mouseActivateIcon);
+			animator.start();
+
+		}else {
+			setActivateButtonText("Deactivate");
+			mwclient.doPlaySound("./data/sounds/activate.wav");
+			ActivationThread  animator = new ActivationThread(mwclient,ActivityButton,activateFlashIcon,deactivateIcon,mouseDeactivateIcon);
+			animator.start();
 		}
 	}
 	
 	public void setActivateButtonText(String s) {
-		ActivityButton.setText(s);
+		
+			if ( ActivityButton.getIcon() == null ) {
+				ActivityButton.setText(s);
+				//ActivityButton.setBorder(BorderFactory.createEtchedBorder());
+			}
+			else {
+				ActivityButton.setText("");
+				//ActivityButton.setBorder(BorderFactory.createEmptyBorder());
+			}
 	}
 	
 	public void setActivityButtonEnabled(boolean b) {
@@ -1089,4 +1169,41 @@ public class CUserListPanel extends JPanel implements ActionListener {
 		}
 		
 	}
+}
+
+class ActivationThread extends Thread {
+	
+	Icon flashIcon = null;
+	Icon startIcon = null;
+	Icon finishIcon = null;
+	Icon rollOverIcon = null;
+	
+	MWClient mwclient = null;
+	JButton button = null;
+	
+	public ActivationThread(MWClient mwclient, JButton activityButton, Icon flash, Icon end, Icon roll) {;
+		this.mwclient = mwclient;
+		this.button = activityButton;
+		this.startIcon = this.button.getIcon();
+		this.flashIcon = flash;
+		this.finishIcon = end;
+		this.rollOverIcon = roll;
+	}
+
+	public synchronized void run() {
+		button.setRolloverIcon(null);
+		for ( int count = 0; count < 2; count++ ) {
+			try {
+				this.button.setIcon(flashIcon);
+				Thread.sleep(550);
+				this.button.setIcon(startIcon);
+				Thread.sleep(550);
+			}catch(Exception ex) {
+				
+			}
+		}
+		this.button.setRolloverIcon(rollOverIcon);
+		this.button.setIcon(finishIcon);
+	}
+	
 }

@@ -12,6 +12,12 @@ client-dist/MegaMek.jar -text
 client-dist/data/boards/devilsrun.board -text
 client-dist/data/boards/oasis.board -text
 client-dist/data/images/absent.gif -text
+client-dist/data/images/activatebutton.png -text
+client-dist/data/images/activatebuttonTWOLF.png -text
+client-dist/data/images/activatebuttonmouse.png -text
+client-dist/data/images/activatebuttonmouseTWOLF.png -text
+client-dist/data/images/activateflashbutton.png -text
+client-dist/data/images/activateflashbuttonTWOLF.png -text
 client-dist/data/images/active_colored.gif -text
 client-dist/data/images/ai.gif -text
 client-dist/data/images/am.gif -text
@@ -29,6 +35,12 @@ client-dist/data/images/closedPeriphery.gif -text
 client-dist/data/images/closedSteiner.gif -text
 client-dist/data/images/critical.gif -text
 client-dist/data/images/crtr1.gif -text
+client-dist/data/images/deactivatebutton.png -text
+client-dist/data/images/deactivatebuttonTWOLF.png -text
+client-dist/data/images/deactivatebuttonmouse.png -text
+client-dist/data/images/deactivatebuttonmouseTWOLF.png -text
+client-dist/data/images/deactivateflashbutton.png -text
+client-dist/data/images/deactivateflashbuttonTWOLF.png -text
 client-dist/data/images/engined.gif -text
 client-dist/data/images/fighting_colored.gif -text
 client-dist/data/images/hexes/artyadj.gif -text
@@ -927,6 +939,7 @@ client-dist/data/skins/solunaRthemepack.zip -text
 client-dist/data/skins/tigerGraphitethemepack.zip -text
 client-dist/data/skins/tigerthemepack.zip -text
 client-dist/data/skins/underlingthemepack.zip -text
+client-dist/data/sounds/activate.wav -text
 client-dist/data/sounds/attack.wav -text
 client-dist/data/sounds/call.wav -text
 client-dist/data/sounds/enemy[!!-~]detected.wav -text
@@ -935,7 +948,6 @@ client-dist/data/sounds/mail.wav -text
 client-dist/data/sounds/menu[!!-~]popup.wav -text
 client-dist/data/sounds/menu.wav -text
 client-dist/data/sounds/radarping.wav -text
-client-dist/data/sounds/shutdown.wav -text
 client-dist/data/sounds/winner.wav -text
 client-dist/lib/PngEncoder.jar -text
 client-dist/lib/TabPanel.jar -text
