@@ -154,7 +154,7 @@ public final class MWClient implements IClient {
 	
 	CConfig Config;
 	
-	public static final String CLIENT_VERSION = "0.2.12.2"; //change this with all client changes @Torren
+	public static final String CLIENT_VERSION = "0.2.13.0"; //change this with all client changes @Torren
 
 	CConnector Connector;
 	TimeOutThread TO;
@@ -1629,6 +1629,7 @@ public final class MWClient implements IClient {
 				SwingUtilities.updateComponentTreeUI(MainFrame);
 				//MainFrame.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
 				MainFrame.setVisible(true);
+				this.getMainFrame().getMainPanel().getUserListPanel().resetActivityButton();
 			}
 			
 		} catch (Exception ex) {
@@ -2537,7 +2538,8 @@ public final class MWClient implements IClient {
 			this.getMainFrame().getMainPanel().getUserListPanel().setActivateButtonText("Login");
 			this.getMainFrame().getMainPanel().getUserListPanel().setActivityButtonEnabled(true);
 		} else if (Status == MWClient.STATUS_RESERVE) {
-			this.getMainFrame().getMainPanel().getUserListPanel().setActivityButton(true);
+			if ( LastStatus != MWClient.STATUS_LOGGEDOUT )
+				this.getMainFrame().getMainPanel().getUserListPanel().setActivityButton(true);
 			this.getMainFrame().getMainPanel().getUserListPanel().setActivityButtonEnabled(true);
 		}
 		

@@ -22,6 +22,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -53,6 +54,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.LineBorder;
+import javax.swing.plaf.basic.BasicButtonUI;
 
 import client.CConfig;
 import client.CUser;
@@ -181,6 +183,8 @@ public class CUserListPanel extends JPanel implements ActionListener{
 		ActivityButton.setRolloverIcon(mouseActivateIcon);
 		ActivityButton.setIcon(activateIcon);
 		
+		resetActivityButton();
+		
 		if (mwclient.getConfig().isParam("USERLISTACTIVITYBTN")) {ActivityButton.setVisible(true);}
 		else {ActivityButton.setVisible(false);}
 		
@@ -240,6 +244,7 @@ public class CUserListPanel extends JPanel implements ActionListener{
 		
 		if ( activate ) {
 			setActivateButtonText("Activate");
+			mwclient.doPlaySound("./data/sounds/deactivate.wav");
 			ActivationThread  animator = new ActivationThread(mwclient,ActivityButton,deactivateFlashIcon,activateIcon,mouseActivateIcon);
 			animator.start();
 
@@ -261,6 +266,18 @@ public class CUserListPanel extends JPanel implements ActionListener{
 				ActivityButton.setText("");
 				//ActivityButton.setBorder(BorderFactory.createEmptyBorder());
 			}
+	}
+	
+	public void resetActivityButton() {
+		if ( activateIcon != null  ) {
+			ActivityButton.setUI(new BasicButtonUI());	
+			Insets noInsets = new Insets(0,0,0,0);
+			ActivityButton.setMargin(noInsets);			
+			ActivityButton.setBorder(BorderFactory.createEmptyBorder());
+			ActivityButton.setContentAreaFilled(false);
+			ActivityButton.setLayout(null);
+			ActivityButton.setBorderPainted(false);
+		}
 	}
 	
 	public void setActivityButtonEnabled(boolean b) {

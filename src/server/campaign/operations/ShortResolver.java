@@ -1075,7 +1075,7 @@ public class ShortResolver {
 			 * AR, the bay rental fee).
 			 */
 			int techPayment = 0;
-			if (o.getBooleanValue("PayTechsForGame"))
+			if (o.getBooleanValue("	"))
 				techPayment = currP.getCurrentTechPayment();
 
 			/*
@@ -1158,28 +1158,16 @@ public class ShortResolver {
 				// subtract tech payment from actual pay
 				actualPay -= techPayment;
 
-				toSave.append("Net Pay: "
-						+ CampaignMain.cm.moneyOrFluMessage(true, false,
-								actualPay, true) + " (");
-				toSave.append("Gross Pay: "
-						+ CampaignMain.cm.moneyOrFluMessage(true, false,
-								earnedMoney, true) + ", ");
+				toSave.append("Net Pay: "+ CampaignMain.cm.moneyOrFluMessage(true, false,actualPay, true) + " (");
+				toSave.append("Gross Pay: "+ CampaignMain.cm.moneyOrFluMessage(true, false,earnedMoney, true) + ", ");
 				if (battleLossCompensation > 0)
-					toSave.append("Battle Loss Comp: +"
-							+ CampaignMain.cm.moneyOrFluMessage(true, false,
-									battleLossCompensation) + ", ");
+					toSave.append("Battle Loss Comp: +"+ CampaignMain.cm.moneyOrFluMessage(true, false,battleLossCompensation) + ", ");
 				if (salvageAndRepairCosts > 0)
-					toSave.append("Salvage & Repair: -"
-							+ CampaignMain.cm.moneyOrFluMessage(true, false,
-									salvageAndRepairCosts) + ", ");
+					toSave.append("Salvage & Repair: -"+ CampaignMain.cm.moneyOrFluMessage(true, false,salvageAndRepairCosts) + ", ");
 				if (techPayment > 0 && CampaignMain.cm.isUsingAdvanceRepair())
-					toSave.append("Bay Rental: -"
-							+ CampaignMain.cm.moneyOrFluMessage(true, false,
-									techPayment) + ", ");
+					toSave.append("Bay Rental: -"+ CampaignMain.cm.moneyOrFluMessage(true, false,techPayment) + ", ");
 				else if (techPayment > 0)
-					toSave.append("Techs: -"
-							+ CampaignMain.cm.moneyOrFluMessage(true, false,
-									techPayment) + ", ");
+					toSave.append("Techs: -"+ CampaignMain.cm.moneyOrFluMessage(true, false,techPayment) + ", ");
 
 				int commaIndex = toSave.lastIndexOf(", ");
 				toSave = toSave.replace(commaIndex, commaIndex + 2, ")");

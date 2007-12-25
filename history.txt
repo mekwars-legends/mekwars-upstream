@@ -1,7 +1,9 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.12.x
+v 0.2.13.x
+Release Client/Server 0.2.13.0
++ Added third set of activate button animation
 + Added check to see if socket is closed before flushing.
 + Added new shutdown wav, create by Liz "Jessica Rose" Gibbs.
 + Added activate sound, create by Liz "Jessica Rose" Gibbs.
@@ -30,6 +32,7 @@ v 0.2.12.x
 + Added 35 new skin zips. Located in client ./data/skins
 + Added skinlaf.jar for Skinable look and feel 
 	NOTE: new client needs this in lib folder!
+v 0.2.12.x
 Release Client/Server 0.2.12.1
 + RFE 1587533: Setting Cross Faction RP costs Per Faction
 + Added ALL option to ListSubFactionsCommand

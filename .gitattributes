@@ -13,10 +13,13 @@ client-dist/data/boards/devilsrun.board -text
 client-dist/data/boards/oasis.board -text
 client-dist/data/images/absent.gif -text
 client-dist/data/images/activatebutton.png -text
+client-dist/data/images/activatebuttonCAT.png -text
 client-dist/data/images/activatebuttonTWOLF.png -text
 client-dist/data/images/activatebuttonmouse.png -text
+client-dist/data/images/activatebuttonmouseCAT.png -text
 client-dist/data/images/activatebuttonmouseTWOLF.png -text
 client-dist/data/images/activateflashbutton.png -text
+client-dist/data/images/activateflashbuttonCAT.png -text
 client-dist/data/images/activateflashbuttonTWOLF.png -text
 client-dist/data/images/active_colored.gif -text
 client-dist/data/images/ai.gif -text
@@ -36,10 +39,13 @@ client-dist/data/images/closedSteiner.gif -text
 client-dist/data/images/critical.gif -text
 client-dist/data/images/crtr1.gif -text
 client-dist/data/images/deactivatebutton.png -text
+client-dist/data/images/deactivatebuttonCAT.png -text
 client-dist/data/images/deactivatebuttonTWOLF.png -text
 client-dist/data/images/deactivatebuttonmouse.png -text
+client-dist/data/images/deactivatebuttonmouseCAT.png -text
 client-dist/data/images/deactivatebuttonmouseTWOLF.png -text
 client-dist/data/images/deactivateflashbutton.png -text
+client-dist/data/images/deactivateflashbuttonCAT.png -text
 client-dist/data/images/deactivateflashbuttonTWOLF.png -text
 client-dist/data/images/engined.gif -text
 client-dist/data/images/fighting_colored.gif -text
@@ -942,6 +948,7 @@ client-dist/data/skins/underlingthemepack.zip -text
 client-dist/data/sounds/activate.wav -text
 client-dist/data/sounds/attack.wav -text
 client-dist/data/sounds/call.wav -text
+client-dist/data/sounds/deactivate.wav -text
 client-dist/data/sounds/enemy[!!-~]detected.wav -text
 client-dist/data/sounds/exit[!!-~]client.wav -text
 client-dist/data/sounds/mail.wav -text
