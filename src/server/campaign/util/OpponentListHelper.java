@@ -135,27 +135,28 @@ public class OpponentListHelper {
 
 				for (SArmy searchArmy : searchPlayer.getArmies()) {
 					for (SArmy enemyArmy : currPlayer.getArmies()) {
-						attackLoop: for ( String attack : searchArmy.getLegalOperations().keySet() ){
-							Operation o = manager.getOperation(attack);
+						if (!searchArmy.isDisabled())  {
+							attackLoop: for ( String attack : searchArmy.getLegalOperations().keySet() ){
+								Operation o = manager.getOperation(attack);
 
-							//continue to next operation if this is our faction and attacks aren't allowed
-							if (currHouse.equals(searchHouse) && !o.getBooleanValue("AllowInFaction") )
-								continue attackLoop;
+								//continue to next operation if this is our faction and attacks aren't allowed
+								if (currHouse.equals(searchHouse) && !o.getBooleanValue("AllowInFaction") )
+									continue attackLoop;
 
 
-							if (searchArmy.matches(enemyArmy,o)) {
+								if (searchArmy.matches(enemyArmy,o) && !enemyArmy.isDisabled()) {
 								
-								//cross link
-								searchArmy.addOpponent(enemyArmy);
-								enemyArmy.addOpponent(searchArmy);
+									//cross link
+									searchArmy.addOpponent(enemyArmy);
+									enemyArmy.addOpponent(searchArmy);
 								
-								//only add each army one time
-								if (!possDefendArmies.contains(enemyArmy))
-									possDefendArmies.add(enemyArmy);
-								break attackLoop;
+									//only add each army one time
+									if (!possDefendArmies.contains(enemyArmy))
+										possDefendArmies.add(enemyArmy);
+									break attackLoop;
+								}
 							}
 						}
-						
 					}
 				}
 				

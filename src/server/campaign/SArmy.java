@@ -455,10 +455,14 @@ public class SArmy extends Army {
 		String toReturn = "";
 		if(accurate) {
 			if (showID && !idShouldLink)
-				toReturn += "#" + this.getID() + " - ";
+				toReturn += "#" + this.getID();
 			
 			else if (showID && idShouldLink)
-				toReturn += "<a href=\"MEKWARS/c sth#a#" + this.getID() + "\">#" + this.getID() + "</a> - ";
+				toReturn += "<a href=\"MEKWARS/c sth#a#" + this.getID() + "\">#" + this.getID() + "</a>";
+
+			if (isDisabled())
+				toReturn += " (disabled)";
+			toReturn += " - ";
 			
 			toReturn += this.getDescription(accurate);
 		}
@@ -548,12 +552,19 @@ public class SArmy extends Army {
 				addCommander(unit);
 			}
 		}
-		if (ST. hasMoreTokens()){
+		if (ST.hasMoreTokens()){
 			boolean lock = Boolean.parseBoolean(ST.nextToken());
 			if(lock)
 				playerLockArmy();
 			else
 				playerUnlockArmy();
+		}
+		if (ST.hasMoreTokens()) {
+			boolean disabled = Boolean.parseBoolean(ST.nextToken());
+			if(disabled)
+				disableArmy();
+			else
+				enableArmy();
 		}
 	}
 	
@@ -627,6 +638,11 @@ public class SArmy extends Army {
 			super.playerUnlockArmy();
 			CampaignMain.cm.toUser("PL|ULA|" + this.getID(), this.getPlayerName(), false);
 		}
+	}
+	
+	public void toggleArmyDisabled() {
+		super.toggleArmyDisabled();
+		CampaignMain.cm.toUser("PL|TAD|" + this.getID(), this.getPlayerName(), false);
 	}
 	
 	/*

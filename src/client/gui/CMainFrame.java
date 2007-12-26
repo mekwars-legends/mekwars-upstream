@@ -1417,6 +1417,11 @@ public class CMainFrame extends JFrame{
 		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c playerunlockarmy#" + aid);
 	}
 	
+	public void jMenuCommanderDisableArmy_actionPerformed(int aid) {
+		// Toggle armyDisabled
+		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c togglearmydisabled#" + aid);
+	}
+	
 	/*
 	 * Only called from HQ, via MechTableMouseAdapter. Will always have valid army id.
 	 */

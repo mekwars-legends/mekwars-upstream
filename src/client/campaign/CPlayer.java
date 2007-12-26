@@ -822,6 +822,11 @@ public class CPlayer extends Player {
 			this.getArmy(aid).playerUnlockArmy();
 	}
 	
+	public void toggleArmyDisabled(int aid) {
+		if (this.getArmy(aid) != null)
+			this.getArmy(aid).toggleArmyDisabled();
+	}
+	
 	public void setArmyBV(String data) {
 		StringTokenizer ST = new StringTokenizer(data, DELIMITER);
 		if (ST.hasMoreTokens()) {

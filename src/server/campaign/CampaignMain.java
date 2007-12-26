@@ -1656,6 +1656,7 @@ public final class CampaignMain implements Serializable {
 		Commands.put("TERMINATE", new TerminateCommand());
 		Commands.put("TERMINATECONTRACT", new TerminateContractCommand());
 		Commands.put("TICK", new TickCommand());
+		Commands.put("TOGGLEARMYDISABLED", new ToggleArmyDisabledCommand());
 		Commands.put("TOUCH", new TouchCommand());
 		Commands.put("TRANSFERMONEY", new TransferMoneyCommand());
 		Commands.put("TRANSFERPILOT", new TransferPilotCommand());

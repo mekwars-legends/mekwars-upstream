@@ -93,6 +93,11 @@ public class AcceptAttackFromReserveCommand implements Command {
 			return;
 		}
         
+		if (da.isDisabled()) {
+			CampaignMain.cm.toUser("AM:Defend failed. Army #" + armyID + " is disabled and cannot be used to defend.", Username, true);
+			return;
+		}
+		
 		//Ensure offer is still valid
         Long launchTime = ap.getLastAttackFromReserve();
         if (launchTime + (Long.parseLong(CampaignMain.cm.getConfig("AttackFromReserveResponseTime")) * 60000) < System.currentTimeMillis()) {

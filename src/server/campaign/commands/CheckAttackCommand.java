@@ -97,6 +97,10 @@ public class CheckAttackCommand implements Command {
 				return;
 			}
 			
+			if (arm.isDisabled()) {
+				CampaignMain.cm.toUser("AM: Army #" + armyID + " is disabled.", Username, true);
+				return;
+			}
 			
 			Desc += arm.getID() + " (" + arm.getBV()+ " BV) ";
 			Desc += " may attack: </td><td>&nbsp;</td><td>&nbsp;</td></tr>";
@@ -137,7 +141,7 @@ public class CheckAttackCommand implements Command {
 			while (e.hasMoreElements()) {
 				SArmy arm = e.nextElement();
 				Desc += "<table><tr><td>";
-				if (arm != null) {
+				if (arm != null && !arm.isDisabled()) {
 					Desc += "Army " + arm.getID() ;
 					if ( usingOpRules )
 						Desc += " (" + arm.getBV() + " BV)";

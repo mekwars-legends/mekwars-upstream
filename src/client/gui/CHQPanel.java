@@ -747,6 +747,18 @@ public class CHQPanel extends JPanel {
 						menuItem.setActionCommand("NA|"+lid);
 						menuItem.addActionListener(this);
 						popup.add(menuItem);
+						menuItem = new JMenuItem("Disable Army");
+						menuItem.setActionCommand("DAA|" + lid);
+						menuItem.addActionListener(this);
+						popup.add(menuItem);
+						if(mwclient.getPlayer().getArmy(lid).isDisabled())
+							menuItem.setVisible(false);
+						menuItem = new JMenuItem("Enable Army");
+						menuItem.setActionCommand("DAA|" + lid);
+						menuItem.addActionListener(this);
+						popup.add(menuItem);
+						if(!mwclient.getPlayer().getArmy(lid).isDisabled())
+							menuItem.setVisible(false);
 
 						JMenu primeSortMenu = new JMenu("Sort (1st)");
 						//JMenu secondarySortMenu = new JMenu("Sort (2nd)");
@@ -2009,6 +2021,9 @@ public class CHQPanel extends JPanel {
 				int lid = Integer.parseInt(st.nextToken());
 				mwclient.getMainFrame().jMenuCommanderPlayerUnlockArmy_actionPerformed(lid);
 				// unlock army
+			} else if (command.equalsIgnoreCase("DAA")) {
+				int lid = Integer.parseInt(st.nextToken());
+				mwclient.getMainFrame().jMenuCommanderDisableArmy_actionPerformed(lid);
 			} else if (command.equalsIgnoreCase("NA")) {
 				int mid = Integer.parseInt(st.nextToken());
 				mwclient.getMainFrame().jMenuCommanderNameArmy_actionPerformed(mid);
@@ -2881,6 +2896,9 @@ public class CHQPanel extends JPanel {
 					String toReturn = "<html><center><b>Army #" + new Integer(lid) + "</b><br>";
 					if (army.isPlayerLocked())
 						toReturn += "(locked)<br>";
+					
+					if (army.isDisabled())
+						toReturn += "(disabled)<br>";
 					
 					//only show army name if one is actually set
 					boolean fakeName = false;

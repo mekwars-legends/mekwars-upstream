@@ -97,6 +97,20 @@ public class ActivateCommand implements Command {
 			return;
 		}
 
+		// if player has no enabled armies, break out
+		int enabledArmies = 0;
+		for (SArmy a : p.getArmies()) {
+			if(!a.isDisabled()) {
+				enabledArmies++;
+				// All we need is one enabled army
+				break;
+			}
+		}
+		if (enabledArmies == 0) {
+			CampaignMain.cm.toUser("AM:You must have at least 1 enabled army to activate.", Username, true);
+			return;
+		}
+		
 		//check for empty armies, pilotless units
 		for (SArmy currA : p.getArmies()) {
 			
@@ -182,6 +196,8 @@ public class ActivateCommand implements Command {
 			CampaignMain.cm.toUser("AM:Army #"+armyID+" is currently unable to launch or defend any ops!  You may not go active.",Username,true);
 			return;
 		}
+		
+		
 		
 		p.setActive(true);
 		
@@ -328,6 +344,7 @@ public class ActivateCommand implements Command {
     		
         	boolean canAttack = false;
         	boolean canDefend = false;
+        	
     		
         	//check for legal attacks
     		if ( army.getLegalOperations().size() > 0)
@@ -342,7 +359,7 @@ public class ActivateCommand implements Command {
     			}
     		}
     		
-    		if ( !canAttack && !canDefend )
+    		if ( !canAttack && !canDefend && !army.isDisabled())
     			return army.getID();
     	}
     	

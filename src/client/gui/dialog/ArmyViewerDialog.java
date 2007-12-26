@@ -218,14 +218,15 @@ public class ArmyViewerDialog extends JDialog implements ActionListener, KeyList
         if ( opName != null ){
             for (CArmy currArmy : player.getArmies()) {
                 //include only armies which can actually make an attack
-                if (currArmy.getLegalOperations().contains(opName))
+                if (!currArmy.isDisabled() && currArmy.getLegalOperations().contains(opName))
                     defaultModel.add(x++, formatArmy(currArmy));
                 
             }
         } else {//Defend
     		for (CArmy army : player.getArmies()) {
-                if ( this.validArmyList.contains(army.getID()))
-                    defaultModel.add(x++, formatArmy(army));
+    			if (!army.isDisabled())
+    				if ( this.validArmyList.contains(army.getID()))
+    					defaultModel.add(x++, formatArmy(army));
     		}
         }
 		repaint();

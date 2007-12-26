@@ -100,6 +100,13 @@ public class CArmy extends Army {
 			else
 				playerUnlockArmy();
 		} 
+		if (ST.hasMoreTokens()) {
+			boolean disabled = Boolean.parseBoolean(ST.nextToken());
+			if(disabled)
+				disableArmy();
+			else
+				enableArmy();
+		}
 	}
 	
 	/**

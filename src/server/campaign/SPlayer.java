@@ -1196,6 +1196,10 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				if (forceBV >= MaxCount)
 					continue;
 				
+				// Don't count the army if it's disabled
+				if (currentArmy.isDisabled())
+					continue;
+				
                 //if they army is only set up for ops that SO's do not deem
                 //legal for component production then the player doesnt get anything.
                 boolean fLegalOp = false;

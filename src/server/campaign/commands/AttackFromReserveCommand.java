@@ -133,6 +133,11 @@ public class AttackFromReserveCommand implements Command {
 			return;
 		}
 		
+		if (aa.isDisabled()) {
+			CampaignMain.cm.toUser("AM:Army #" + armyID + " is disabled and may not be used to attack.", Username, true);
+			return;
+		}
+		
 		//return if any unpiloted units in attacking army.
 		for (Unit currU : aa.getUnits()) {
 			if (currU.hasVacantPilot()) {

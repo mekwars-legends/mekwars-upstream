@@ -88,6 +88,12 @@ public class DefendCommand implements Command {
 			return;
 		}
 		
+		// Don't defend with a disabled army
+		if(da.isDisabled()) {
+			CampaignMain.cm.toUser("AM: Defend failed.  Army #" + armyID + " is disabled and cannot be used to defend.", Username, true);
+			return;
+		}
+		
 		//check the player's activity
 		if (dp.getDutyStatus() != SPlayer.STATUS_ACTIVE) {
 			CampaignMain.cm.toUser("AM:Defend failed. You must be active to defend against an attack.",Username,true);

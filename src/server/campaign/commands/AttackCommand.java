@@ -124,6 +124,9 @@ public class AttackCommand implements Command {
 		} else if (aa.getBV() == 0) {
 			CampaignMain.cm.toUser("AM:Army #" + armyID + " has a BV of 0 and may not be used to attack.",Username,true);
 			return;
+		} else if (aa.isDisabled()) {
+			CampaignMain.cm.toUser("AM: Army #" + armyID + " is disabled and may not be used to attack.", Username, true);
+			return;
 		}
 		
 		//get the planet being attacked

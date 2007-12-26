@@ -46,7 +46,8 @@ public class Army {
 	private boolean locked = false;
 	
 	private boolean armyPlayerLocked = false; //Used by players to keep armies from being cleared
-
+	private boolean armyDisabled = false;
+	
 	private float opForceSize = NO_LIMIT;
 	
 	private Hashtable<Integer,Integer> c3Network = new Hashtable<Integer,Integer>();
@@ -61,6 +62,22 @@ public class Army {
 	//METHODS
 	public int getAmountOfUnits() {
 		return units.size();
+	}
+	
+	public boolean isDisabled() {
+		return armyDisabled;
+	}
+	
+	public void disableArmy() {
+		armyDisabled = true;
+	}
+	
+	public void enableArmy() {
+		armyDisabled = false;
+	}
+	
+	public void toggleArmyDisabled() {
+		armyDisabled = !armyDisabled;
 	}
 	
 	public boolean isPlayerLocked() {
@@ -259,6 +276,8 @@ public class Army {
 			result.append(delimiter);
 		}
 		result.append(Boolean.toString(armyPlayerLocked));
+		result.append(delimiter);
+		result.append(Boolean.toString(armyDisabled));
 		result.append(delimiter);
 		return result.toString();
 	}
