@@ -732,13 +732,13 @@ public class CHQPanel extends JPanel {
 						menuItem.addActionListener(this);
 						popup.add(menuItem);
 						if (mwclient.getPlayer().getArmy(lid).isPlayerLocked())
-							menuItem.setEnabled(false);
+							menuItem.setVisible(false);
 						menuItem = new JMenuItem("Unlock Army");
 						menuItem.setActionCommand("ULA|"+lid);
 						menuItem.addActionListener(this);
 						popup.add(menuItem);
 						if (!mwclient.getPlayer().getArmy(lid).isPlayerLocked())
-							menuItem.setEnabled(false);
+							menuItem.setVisible(false);
 						menuItem = new JMenuItem("Remove Army");
 						menuItem.setActionCommand("RA|"+lid);
 						menuItem.addActionListener(this);

@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.13.x
++ "Unlock Army" not shown if army is not locked, "Lock Army" not shown
+     if army is locked
 Release Client/Server 0.2.13.0
 + Added third set of activate button animation
 + Added check to see if socket is closed before flushing.
