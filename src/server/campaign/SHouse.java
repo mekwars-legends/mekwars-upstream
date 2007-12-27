@@ -489,13 +489,13 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 				
 
 				// Components
-				ps.executeUpdate("DELETE from factionComponents WHERE factionID = " + getDBId());
+				ps.executeUpdate("DELETE from factioncomponents WHERE factionID = " + getDBId());
 				Enumeration en = getComponents().keys();
 				while (en.hasMoreElements()) {
 					Integer id = (Integer) en.nextElement();
 					Vector<Integer> v = getComponents().get(id);
 					for (int i = 0; i < v.size(); i ++){
-						ps.executeUpdate("INSERT into factionComponents set factionID = " + getDBId() + ", unitType = " + id.intValue() + ", unitWeight = " + i + ", components = " + v.elementAt(i).intValue());
+						ps.executeUpdate("INSERT into factioncomponents set factionID = " + getDBId() + ", unitType = " + id.intValue() + ", unitWeight = " + i + ", components = " + v.elementAt(i).intValue());
 					}
 				}
 

@@ -129,7 +129,7 @@ CREATE TABLE `planetenvironments` (
   `PlanetID` int(10) unsigned NOT NULL default '0',
   `ContinentSize` int(10) unsigned NOT NULL default '0',
   `TerrainData` int(11) NOT NULL default '0',
-  `AdvanceTerrainData` text NOT NULL,
+  `AdvancedTerrainData` text NOT NULL,
   PRIMARY KEY  (`PTID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 --

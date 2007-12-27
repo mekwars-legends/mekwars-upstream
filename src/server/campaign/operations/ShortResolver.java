@@ -1075,7 +1075,7 @@ public class ShortResolver {
 			 * AR, the bay rental fee).
 			 */
 			int techPayment = 0;
-			if (o.getBooleanValue("	"))
+			if (o.getBooleanValue("PayTechsForGame"))
 				techPayment = currP.getCurrentTechPayment();
 
 			/*
