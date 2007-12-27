@@ -2779,7 +2779,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				sql.append("playerAccess = ?, ");
 				sql.append("playerAutoReorder = ?, ");
 				sql.append("playerTeamNumber = ?, ");
-				sql.append("playerUnitComponents = ?, ");
+
 				sql.append("playerSubfactionName = ?");
 				ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setString(1, getName());
@@ -2821,8 +2821,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 					ps.setInt(22, 1);
 				ps.setString(23, Boolean.toString(getAutoReorder()));
 				ps.setInt(24, getTeamNumber());
-				ps.setString(25, unitParts.toString());
-				ps.setString(26, this.getSubFactionName().trim().length() < 1 ? " " : getSubFactionName());
+
+				ps.setString(25, this.getSubFactionName().trim().length() < 1 ? " " : getSubFactionName());
 				ps.executeUpdate();
 				ResultSet rs = ps.getGeneratedKeys();
 				rs.next();
@@ -2863,7 +2863,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				sql.append("playerPassword= ?, ");
 				sql.append("playerPassTime= ?, ");
 				sql.append("playerTeamNumber= ?, ");
-				sql.append("playerUnitComponents = ?, ");
+
 				sql.append("playerSubfactionName = ? ");
 				sql.append("WHERE playerID = ?");
 	
@@ -2917,9 +2917,9 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				else
 					ps.setLong(25, 0);
 				ps.setInt(26, getTeamNumber());
-				ps.setString(27, unitParts.toString());
-				ps.setString(28, (this.getSubFactionName().trim().length() < 1) ? " " : getSubFactionName());
-				ps.setInt(29, getDBId());
+
+				ps.setString(27, (this.getSubFactionName().trim().length() < 1) ? " " : getSubFactionName());
+				ps.setInt(28, getDBId());
 				ps.executeUpdate();
 
 			}
