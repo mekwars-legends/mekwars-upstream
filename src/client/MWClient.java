@@ -2529,7 +2529,8 @@ public final class MWClient implements IClient {
 			//this.getMainFrame().getMainPanel().getUserListPanel().setActivityButton(false);
 			this.getMainFrame().getMainPanel().getUserListPanel().setActivityButtonEnabled(false);
 		} else if (Status == MWClient.STATUS_ACTIVE) {
-			this.getMainFrame().getMainPanel().getUserListPanel().setActivityButton(false);
+			if ( LastStatus != MWClient.STATUS_FIGHTING )
+				this.getMainFrame().getMainPanel().getUserListPanel().setActivityButton(false);
 			this.getMainFrame().getMainPanel().getUserListPanel().setActivityButtonEnabled(true);
 		} else if (Status == MWClient.STATUS_DISCONNECTED) {
 			this.getMainFrame().getMainPanel().getUserListPanel().setActivateButtonText("Disconnected");
