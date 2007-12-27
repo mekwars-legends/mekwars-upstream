@@ -1,5 +1,5 @@
 CREATE TABLE `faction_leaders` (
-  `house_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `faction_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   `leader_name` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`house_id`, `leader_name`)
 )
