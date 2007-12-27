@@ -519,7 +519,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 				}
 				
 				// SubFactions
-				ps.executeUpdate("DELETE from subFactions WHERE houseID = " + getDBId());
+				ps.executeUpdate("DELETE from subfactions WHERE houseID = " + getDBId());
 				if(rs!=null)
 					rs.close();
 				for(String key : getSubFactionList().keySet() ) {

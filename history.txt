@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.13.x
++ Fixed capitalization error in subfactions table
 + RFE 1858345: Ability to disable armies
 + "Unlock Army" not shown if army is not locked, "Lock Army" not shown
      if army is locked
