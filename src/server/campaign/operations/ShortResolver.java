@@ -1791,8 +1791,7 @@ public class ShortResolver {
 						so);
 				nameKey = newOwner.getName().toLowerCase();
 			} else {
-				costToRepair = getSalvageCost(oldOwner, currU, currEntity, o,
-						so);
+				costToRepair = getSalvageCost(oldOwner, currU, currEntity, o,so);
 				nameKey = oldOwnerName;
 			}
 

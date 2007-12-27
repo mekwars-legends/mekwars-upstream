@@ -61,7 +61,7 @@ public class AdminLockCampaignCommand implements Command {
 		CampaignMain.cm.getConfig().setProperty("CampaignLock","true");
 		
 		//tell the admin he has locked the campaign
-		CampaignMain.cm.doSendToAllOnlinePlayers(Username + " locked the campaign!", true);
+		CampaignMain.cm.doSendToAllOnlinePlayers("AM:"+Username + " locked the campaign!", true);
 		CampaignMain.cm.toUser("You locked the campaign. Players can no longer activate, and all active " +
 				"players were deactivated. Use 'adminunlockcampaign' to release the activity lock.",Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " locked the campaign.");

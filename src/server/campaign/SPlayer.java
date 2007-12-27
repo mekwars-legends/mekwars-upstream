@@ -2386,7 +2386,14 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		DecimalFormat myFormatter = new DecimalFormat("####.##");
 		StringBuilder s = new StringBuilder(
 				"<br><b>Status for: " + getColoredName()
-				+ " (" + myHouse.getColoredName() + ")</b><br>");
+				+ " (" + myHouse.getColoredName());
+		
+		if ( getSubFactionName().trim().length() > 0 ){
+			s.append("::");
+			s.append(getSubFactionName());
+		}
+		
+		s.append(")</b><br>");
 		
 		// if being checked by an admin, show his activity status.
 		if (adminStatus) {

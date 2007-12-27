@@ -45,7 +45,7 @@ public class HSMek {
 	
 	public HSMek(MWClient mwclient, StringTokenizer tokenizer) {
 		
-		this.MekFile = tokenizer.nextToken().trim();
+		this.MekFile = tokenizer.nextToken();
 		unitID = Integer.valueOf(tokenizer.nextToken());
 		
         if (tokenizer.hasMoreTokens())

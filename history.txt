@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.13.x
++ Added better tracing for bad Ops vars in code
++ Added System Message tag to Admin lock message
++ Bug OMG's showing House Bays when units are viable
 + Fixed capitalization error in subfactions table
 + RFE 1858345: Ability to disable armies
 + "Unlock Army" not shown if army is not locked, "Lock Army" not shown

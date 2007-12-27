@@ -117,7 +117,12 @@ public class Operation {
 		
 		//catastrophic failue. sysexit.
 		if (toReturn == null) {
-			MWServ.mwlog.errLog("Failed getting value \"" + valToGet + "\" from " + this.getName() + " and DefaultOp. Returning null."); 
+			MWServ.mwlog.errLog("Failed getting value \"" + valToGet + "\" from " + this.getName() + " and DefaultOp. Returning null.");
+			try{
+				throw new Exception();
+			}catch(Exception ex){
+				MWServ.mwlog.errLog(ex);
+			}
 		}
 			
 		return toReturn;
