@@ -1136,6 +1136,7 @@ public class CCommPanel extends JPanel implements ChangeListener, ComponentListe
 			this.setFocusTraversalKeysEnabled(false);
 			this.setBackground(StringUtils.html2Color(mwclient.getConfigParam("BACKGROUNDCOLOR")));
 			this.setForeground(StringUtils.html2Color(mwclient.getConfigParam("CHATFONTCOLOR")));
+			this.setCaretColor(StringUtils.html2Color(mwclient.getConfigParam("CHATFONTCOLOR")));
 		}
 		
 		public void setReceiver(IInputReceiver receiver) {

@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.13.x
++ Set CChat cart color to same as chat window foreground color
 + Chat Bar now uses the same background color as the chat window
 + House bays now uses the same background color as the chat window
 + User list now uses the same background color as the chat window
