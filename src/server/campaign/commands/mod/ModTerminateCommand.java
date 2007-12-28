@@ -77,7 +77,7 @@ public class ModTerminateCommand implements Command {
 		//Make a string which holds involved players names. Use
 		//an incrementing ocunter to make sure that formatting is
 		//correct for a list of any given size.
-		String players = "AM:Players were ";
+		String players = "Players were ";
 		int playerCounter = 1;
 		int totalPlayers = so.getAllPlayerNames().size();
 		for (String currPlayerName : so.getAllPlayerNames()) {
