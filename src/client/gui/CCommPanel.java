@@ -49,6 +49,9 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.html.HTMLEditorKit;
+
+import common.util.StringUtils;
+
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -1130,7 +1133,9 @@ public class CCommPanel extends JPanel implements ChangeListener, ComponentListe
 			Client = client;
 			this.addActionListener(this);
 			this.addKeyListener(this);
-			this.setFocusTraversalKeysEnabled(false);    
+			this.setFocusTraversalKeysEnabled(false);
+			this.setBackground(StringUtils.html2Color(mwclient.getConfigParam("BACKGROUNDCOLOR")));
+			this.setForeground(StringUtils.html2Color(mwclient.getConfigParam("CHATFONTCOLOR")));
 		}
 		
 		public void setReceiver(IInputReceiver receiver) {

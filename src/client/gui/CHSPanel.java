@@ -463,7 +463,7 @@ public class CHSPanel extends JPanel {
 	public void updateDisplay() {
 		
 		//Returns the Private Status for Members only
-		StringBuilder result = new StringBuilder();
+		StringBuilder result = new StringBuilder("<BODY  TEXT=\"" + mwclient.getConfigParam("CHATFONTCOLOR") + "\" BGCOLOR=\""+mwclient.getConfigParam("BACKGROUNDCOLOR")+"\">");
 		boolean usingAdvanceRepairs = mwclient.isUsingAdvanceRepairs();
         
 		result.append("<TABLE Border=\"1\"><TR><TH>"+ this.HouseName +"</TH><TH>Light</TH><TH>Medium</TH><TH>Heavy</TH><TH>Assault</TH></TR>");
@@ -623,7 +623,7 @@ public class CHSPanel extends JPanel {
                             else if (UnitUtils.hasArmorDamage(e))
                                 unitString.append("<font color=\"yellow\">");
                             else
-                                unitString.append("<font color=\"black\">");
+                                unitString.append("<font>");
                           }
                         
 						if (m.getType().equalsIgnoreCase("mek") || m.getType().equalsIgnoreCase("vehicle"))
@@ -649,6 +649,8 @@ public class CHSPanel extends JPanel {
 				}
 			}
 		}
+		
+		result.append("</BODY>");
 		mainPane.setText(result.toString());
 	}
 	

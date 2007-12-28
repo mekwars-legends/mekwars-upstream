@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.13.x
++ Chat Bar now uses the same background color as the chat window
++ House bays now uses the same background color as the chat window
++ User list now uses the same background color as the chat window
++ Added code to StringUtils.html2Color() to allow for html words like pink,red
 + Added better tracing for bad Ops vars in code
 + Added System Message tag to Admin lock message
 + Bug OMG's showing House Bays when units are viable

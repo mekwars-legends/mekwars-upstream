@@ -20,6 +20,11 @@ import java.awt.Color;
 
 public final class StringUtils {
 	
+	private static String[] colorWheel = {"blue","BLUE","black","BLACK","yellow","YELLOW","green","GREEN","red","RED",
+			"cyan","CYAN","gray","GRAY","darkGray","DARK_GRAY","lightGray","LIGHT_GRAY","orange","ORANGE","pink","PINK","magenta","MAGENTA","white","WHITE"};
+	private static Color[] colors = {Color.blue, Color.BLUE, Color.black, Color.BLACK, Color.yellow, Color.YELLOW, Color.green, Color.GREEN, Color.red, Color.RED,
+			Color.cyan, Color.CYAN, Color.gray, Color.GRAY, Color.darkGray, Color.DARK_GRAY, Color.lightGray, Color.LIGHT_GRAY, Color.orange, Color.ORANGE, Color.pink, Color.PINK, Color.magenta, Color.MAGENTA, Color.white, Color.WHITE};
+
 	public static String aOrAn(String s, boolean lowerCase) {
 		return aOrAn(s, lowerCase, true);
 	}
@@ -75,9 +80,15 @@ public final class StringUtils {
 			try{
 				return Color.decode("#"+htmlColor);
 			} catch (RuntimeException ex) {
+				
+				for (int pos = 0; pos < colorWheel.length; pos++){
+					if ( colorWheel[pos].equals(htmlColor) )
+						return colors[pos];
+				}
 				return Color.lightGray;
 			}
 		}
+		
 	}
 	
 	/**

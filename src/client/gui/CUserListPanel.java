@@ -56,6 +56,8 @@ import javax.swing.ListCellRenderer;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 
+import common.util.StringUtils;
+
 import client.CConfig;
 import client.CUser;
 import client.MWClient;
@@ -123,6 +125,7 @@ public class CUserListPanel extends JPanel implements ActionListener{
 		UserListSP.setViewportView(UserList);
 		add(UserListSP, BorderLayout.CENTER);
 		
+		UserList.setBackground(StringUtils.html2Color(mwclient.getConfigParam("BACKGROUNDCOLOR")));
 		//set up the countlabel
 		CountLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		CountLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
