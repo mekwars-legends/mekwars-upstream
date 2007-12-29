@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.13.x
++ Bug: planet editor now setting homewold.
 + Status typo in CheckArmyEligibilityCommand
 + Set CChat cart color to same as chat window foreground color
 + Chat Bar now uses the same background color as the chat window

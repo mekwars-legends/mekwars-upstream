@@ -1239,7 +1239,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		if ( !planetConquerPoints.getText().equals(Integer.toString(this.selectedPlanet.getConquestPoints())) )
 			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c SetPlanetConquerPoints#"+planetName+"#"+planetConquerPoints.getText());
 		if ( isHomeWorldCB.isSelected() != selectedPlanet.isHomeWorld() )
-			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c Adminsethomeworld#"+isHomeWorldCB.isSelected());
+			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c Adminsethomeworld#"+planetName+"#"+isHomeWorldCB.isSelected());
 		if ( !planetBays.getText().equals(Integer.toString(this.selectedPlanet.getBaysProvided())) )
 			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c Setplanetwarehouse#"+planetName+"#"+planetBays.getText());
 		if ( !planetComps.getText().equals(Integer.toString(this.selectedPlanet.getCompProduction())) )
