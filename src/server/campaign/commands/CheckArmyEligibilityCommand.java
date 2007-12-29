@@ -69,12 +69,12 @@ public class CheckArmyEligibilityCommand implements Command {
 		//breaks passed. check the op.
 		String s = CampaignMain.cm.getOpsManager().validateShortAttack(p, currA, currO, null, -1,false);
 		if (s != null && !s.trim().equals("")) {
-			CampaignMain.cm.toUser(opName + "AM: is illegal for Army #" + armyid + " " + s,Username,true);
+			CampaignMain.cm.toUser("AM:"+opName + " is illegal for Army #" + armyid + " " + s,Username,true);
 			return;
 		} 
 		
 		//else
-		CampaignMain.cm.toUser(opName + "AM: is legal for Army #" + armyid + ".", Username, true);
+		CampaignMain.cm.toUser("AM:"+opName + " is legal for Army #" + armyid + ".", Username, true);
 					
 	}//end process
 	
