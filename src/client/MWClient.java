@@ -154,7 +154,7 @@ public final class MWClient implements IClient {
 	
 	CConfig Config;
 	
-	public static final String CLIENT_VERSION = "0.2.13.0"; //change this with all client changes @Torren
+	public static final String CLIENT_VERSION = "0.2.13.1"; //change this with all client changes @Torren
 
 	CConnector Connector;
 	TimeOutThread TO;
@@ -339,7 +339,18 @@ public final class MWClient implements IClient {
 
         //set up the splash screen. do this before any
         //other non-main/non-static actions.
-        if ( !isDedicated() ){
+		
+		if ( isDedicated() ) {
+			try {
+	            Runtime runTime = Runtime.getRuntime();
+	            String[] call = { "java", "-jar", "MekWarsDed.jar" };
+	            runTime.exec(call);
+	            System.exit(0);
+			}catch(Exception ex){
+				MWClient.mwClientLog.clientErrLog("Unable to find MekWarsDed.jar");
+			}
+		}
+		else{
         	setLookAndFeel(false);
         	if ( Config.isParam("ENABLESPLASHSCREEN") )
         		splash = new SplashWindow();
@@ -651,7 +662,16 @@ public final class MWClient implements IClient {
 				this.sendChat(userData.toString());
 			}catch(Exception ex){
 			}
-		
+
+			//Lets start the repair thread
+			if ( Boolean.parseBoolean(getserverConfigs("UseAdvanceRepair")) ){
+				RMT = new RepairManagmentThread(Long.parseLong(getserverConfigs("TimeForEachRepairPoint"))*1000,this);
+				RMT.start();
+			}
+			if ( Boolean.parseBoolean(getserverConfigs("UsePartsRepair")) ){
+				SMT = new SalvageManagmentThread(Long.parseLong(getserverConfigs("TimeForEachRepairPoint"))*1000,this);
+				SMT.start();
+			}
 		}		
 		//repeated connection attempts for dedicated hosts.
 		else {
@@ -670,16 +690,6 @@ public final class MWClient implements IClient {
 			}
 		}//end else(is Dedicated host)
 		
-		
-		//Lets start the repair thread
-		if ( Boolean.parseBoolean(getserverConfigs("UseAdvanceRepair")) ){
-			RMT = new RepairManagmentThread(Long.parseLong(getserverConfigs("TimeForEachRepairPoint"))*1000,this);
-			RMT.start();
-		}
-		if ( Boolean.parseBoolean(getserverConfigs("UsePartsRepair")) ){
-			SMT = new SalvageManagmentThread(Long.parseLong(getserverConfigs("TimeForEachRepairPoint"))*1000,this);
-			SMT.start();
-		}
 		
 		//start checking for timeouts
 		TimeOut = Long.parseLong(Config.getParam("TIMEOUT"));

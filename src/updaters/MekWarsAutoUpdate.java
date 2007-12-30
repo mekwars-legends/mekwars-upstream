@@ -42,7 +42,7 @@ public class MekWarsAutoUpdate {
      */
     private static final String CONFIG_FILE = "./data/mwconfig.txt";
     private static final String logFileName = "./logs/mekwarsautoupdate.log";
-    private static final String VERSION = "0.9";
+    private static final String VERSION = "1.0";
     private Properties config = null;
     private SplashWindow splash = null;
     
@@ -162,8 +162,13 @@ public class MekWarsAutoUpdate {
             System.out.println("Restarting");
             System.out.flush();
             Runtime runTime = Runtime.getRuntime();
-            String[] call = { "java", "-jar", "MekWarsClient.jar" };
-            runTime.exec(call);
+            if ( !new File("MekWarsDed.jar").exists() && !args[0].equals("PLAYER")) {
+	            String[] call = { "java", "-jar", "MekWarsDed.jar" };
+	            runTime.exec(call);
+            }else {
+	            String[] call = { "java", "-jar", "MekWarsClient.jar" };
+	            runTime.exec(call);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
 

@@ -33,6 +33,11 @@
 	>
 	</property>
 	<property
+			name="dedfile"
+			value="MekWarsDed.jar"
+	>
+	</property>
+	<property
 			name="adminfile"
 			value="MekWarsAdmin.jar"
 	>
@@ -63,7 +68,13 @@
 	>
 	</property>
 	
-	
+	<property
+		name="dedfile"
+		value="MekWarsDed.jar"
+	>
+	    
+	</property>
+
 	<property
 		name="jarmanifest"
 		value="manifest.txt"
@@ -153,6 +164,7 @@
 			basedir="${build}"
 			compress="true"
 			destfile="${serverfile}"
+			excludes="admin/**,dedicatedhost/**"
 			includes="common/**,server/**,client/**"
 			jarfile="${serverfile}"
 			manifest="ServerManifest.txt"
@@ -172,6 +184,7 @@
 			basedir="${build}"
 			compress="true"
 			destfile="${trackerfile}"
+			excludes="server/**,admin/**,dedicatedhost/**"
 			includes="tracker/**"
 			jarfile="${trackerfile}"
 			manifest="TrackerManifest.txt"
@@ -191,6 +204,7 @@
 			basedir="${build}"
 			compress="true"
 			destfile="${opeditor}"
+			excludes="server/**,admin/**,dedicatedhost/**"
 			includes="OperationsEditor/**"
 			jarfile="${opeditor}"
 			manifest="OpEditorManifest.txt"
@@ -210,6 +224,7 @@
 			basedir="${build}"
 			compress="true"
 			destfile="${autoupdater}"
+			excludes="server/**,admin/**,dedicatedhost/**"
 			includes="updaters/**"
 			jarfile="${autoupdater}"
 			manifest="MekWarsAutoUpdateManifest.txt"
@@ -278,6 +293,10 @@
 			file="MekWarsAutoUpdate.jar"
 		>
 		</delete>
+		<delete
+			file="MekWarsDed.jar"
+		>
+		</delete>
 	</target>
 	<target
 		depends="compile"
@@ -292,11 +311,15 @@
 			file="${adminfile}"
 		>
 		</delete>
+		<delete
+			file="${dedfile}"
+		>
+		</delete>
 		<jar
 			basedir="${build}"
 			compress="true"
 			destfile="${clientfile}"
-			excludes="server/**,admin/**"
+			excludes="server/**,admin/**,dedicatedhost/**"
 			includes="client/**,com/**,common/**"
 			jarfile="${clientfile}"
 			manifest="ClientManifest.txt"
@@ -306,10 +329,20 @@
 			basedir="${build}"
 			compress="true"
 			destfile="${adminfile}"
-			excludes="server/**,client/**"
+			excludes="server/**,client/**,dedicatedhost/**"
 			includes="admin/**,com/**,common/**"
 			jarfile="${adminfile}"
 			manifest="AdminManifest.txt"
+		>
+		</jar>
+		<jar
+			basedir="${build}"
+			compress="true"
+			destfile="${dedfile}"
+			excludes="server/**,client/**,admin/**"
+			includes="dedicatedhost/**,common/**"
+			jarfile="${dedfile}"
+			manifest="DedHostManifest.txt"
 		>
 		</jar>
 	</target>
