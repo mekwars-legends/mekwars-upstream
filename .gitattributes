@@ -1072,6 +1072,7 @@ server-dist/data/db_schemas/db_schema_10to11.txt -text
 server-dist/data/db_schemas/db_schema_11to12.txt -text
 server-dist/data/db_schemas/db_schema_12to13.txt -text
 server-dist/data/db_schemas/db_schema_13to14.txt -text
+server-dist/data/db_schemas/db_schema_14to15.txt -text
 server-dist/data/factions.dtd -text
 server-dist/data/factions.xml -text
 server-dist/data/influencemessages/CommonInfluenceMessages.txt -text

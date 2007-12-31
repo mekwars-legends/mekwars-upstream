@@ -265,6 +265,59 @@ public class FactionHandler {
 		}
 	}
 	
+	public void saveSubFaction(String SubFactionString, int houseID) {
+		try {
+			String sql = "";
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			SubFaction sf = new SubFaction();
+			sf.fromString(SubFactionString);
+
+			MWServ.mwlog.dbLog("Saving subfaction: " + sf.getConfig("Name"));
+			
+			Boolean inDB = false;
+			ps = con.prepareStatement("SELECT COUNT(*) as num from subfactions WHERE houseID = " + houseID + " AND subfactionName='" + sf.getConfig("Name") + "'");
+			rs = ps.executeQuery();
+			rs.next();
+			if(rs.getInt("num") > 0)
+				inDB = true;
+			rs.close();
+			ps.close();
+			if(!inDB) {
+				sql = "INSERT into subfactions set subfactionName = ?, houseID = ?, sf_string = ?";
+				ps = con.prepareStatement(sql);
+				ps.setString(1, sf.getConfig("Name"));
+				ps.setInt(2, houseID);
+				ps.setString(3, sf.toString());
+				ps.executeUpdate();
+			} else {
+				sql = "UPDATE subfactions set sf_string = ? WHERE (houseID = ? AND subfactionName = ?)";
+				ps = con.prepareStatement(sql);
+				ps.setString(1, sf.toString());
+				ps.setInt(2, houseID);
+				ps.setString(3, sf.getConfig("Name"));
+				ps.executeUpdate();
+			}
+			ps.close();
+		} catch (SQLException e) {
+			MWServ.mwlog.dbLog("SQLException in FactionHandler.saveSubFaction: " + e.getMessage());
+		}
+	}
+	
+	public void deleteSubFaction(String subFactionName, int houseID) {
+		PreparedStatement ps = null;
+		try {
+			ps = con.prepareStatement("DELETE from subfactions WHERE subfactionName = ? AND houseID = ?");
+			ps.setString(1, subFactionName);
+			ps.setInt(2, houseID);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			MWServ.mwlog.dbLog("SQLException in FactionHandler.deleteSubFaction: " + e.getMessage());
+		}
+
+	}
+	
 	public FactionHandler (Connection c) {
 		this.con = c;
 	}

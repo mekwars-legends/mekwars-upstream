@@ -519,6 +519,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 				}
 				
 				// SubFactions
+/*
 				ps.executeUpdate("DELETE from subfactions WHERE houseID = " + getDBId());
 				if(rs!=null)
 					rs.close();
@@ -528,6 +529,10 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 					ps.setString(1, key);
 					ps.setInt(2, getDBId());
 					ps.setString(3, getSubFactionList().get(key).toString());
+				}
+*/
+				for (String key : getSubFactionList().keySet() ) {
+					CampaignMain.cm.MySQL.saveSubFaction(getSubFactionList().get(key).toString(), getDBId());
 				}
 				
 				// Leaders

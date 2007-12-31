@@ -80,6 +80,9 @@ public class CreateSubFactionCommand implements Command {
 		
 		faction.updated();
 		
+		if(CampaignMain.cm.isUsingMySQL())
+			CampaignMain.cm.MySQL.saveSubFaction(subFaction.toString(), faction.getDBId());
+		
 		CampaignMain.cm.doSendModMail("NOTE", Username +" has created subfaction "+subFactionName+" for faction "+faction.getName());
 		CampaignMain.cm.toUser("AM:You have created subfaction "+subFactionName+" for faction "+faction.getName(), Username);
 	}

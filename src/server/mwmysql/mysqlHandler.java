@@ -25,7 +25,7 @@ public class mysqlHandler{
   private PlayerHandler plh = null;
   private PhpBBConnector phpBBCon = null;
 
-  private final int currentDBVersion = 14;
+  private final int currentDBVersion = 15;
   
   public void closeMySQL(){
 	  MySQLCon.close();
@@ -305,6 +305,14 @@ public class mysqlHandler{
   
   public void purgeStalePlayers(long days) {
 	  plh.purgeStalePlayers(days);
+  }
+  
+  public void saveSubFaction(String SubFactionString, int houseID) {
+	  fah.saveSubFaction(SubFactionString, houseID);
+  }
+  
+  public void deleteSubFaction(String subFactionName, int houseID) {
+	  fah.deleteSubFaction(subFactionName, houseID);
   }
   
   public int getDBVersion() {

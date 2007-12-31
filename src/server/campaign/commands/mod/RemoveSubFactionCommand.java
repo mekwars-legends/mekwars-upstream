@@ -71,6 +71,10 @@ public class RemoveSubFactionCommand implements Command {
 		faction.getSubFactionList().remove(subFactionName);
 		
 		faction.updated();
+		
+		if (CampaignMain.cm.isUsingMySQL())
+			CampaignMain.cm.MySQL.deleteSubFaction(subFactionName, faction.getDBId());
+		
 		CampaignMain.cm.doSendModMail("NOTE", Username +" has removed subfaction "+subFactionName+" for faction "+faction.getName());
 		CampaignMain.cm.toUser("AM:You have removed subfaction "+subFactionName+" for faction "+faction.getName(), Username);
 	}

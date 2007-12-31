@@ -23,6 +23,7 @@ public class SubFaction{
 	
 	private static Properties defaultSettings = new Properties();
 	private Properties factionSettings = null;
+	public int DBId = 0;
 	
 	public SubFaction(){
 		factionSettings = new Properties(SubFaction.getDefault());
@@ -30,7 +31,7 @@ public class SubFaction{
 	
 	public SubFaction(String name){
 		factionSettings = new Properties(SubFaction.getDefault());
-		factionSettings.setProperty("Name", name);
+		factionSettings.setProperty("Name", name);	
 	}
 
 	public SubFaction(String name, String accessLevel){
@@ -38,7 +39,7 @@ public class SubFaction{
 		factionSettings.setProperty("Name", name);
 		factionSettings.setProperty("AccessLevel", accessLevel);
 	}
-
+	
 	public static Properties getDefault(){
 		defaultSettings.setProperty("Name", "");
 		defaultSettings.setProperty("AccessLevel", "0");
