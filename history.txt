@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.13.x
++ Stream lined more Ded Host code
 + Bug: SubFactions were not saving / loading properly from database
 Release Client/Server 0.2.13.1
 + Added Logic for MekWarsAutoUpdate.jar to start MekWarsDed.jar if AutoUpdater
