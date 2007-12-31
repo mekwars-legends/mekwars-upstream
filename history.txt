@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.13.x
++ Bug: Capitalization error in SPilot.toDB();
 + Bug: Capitalization error in SPlayer.toDB();
 + Stream lined more Ded Host code
 + Bug: SubFactions were not saving / loading properly from database

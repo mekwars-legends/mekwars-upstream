@@ -479,7 +479,7 @@ public class SPilot extends Pilot {
 				for (PilotSkill skill : getSkills().getPilotSkills()) {
 					SPilotSkill sk = (SPilotSkill) skill;
 					sql.setLength(0);
-					sql.append("INSERT into pilotSkills set ");
+					sql.append("INSERT into pilotskills set ");
 					sql.append("pilotID = " + getPilotId() + ", ");
 					sql.append("SkillNum = " + sk.getId() + ", ");
 					sql.append("SkillLevel = " + sk.getLevel());
