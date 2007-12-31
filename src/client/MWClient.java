@@ -1825,7 +1825,10 @@ public final class MWClient implements IClient {
 			return password;
 		
 		tparam = Config.getParam(p);
-		if (tparam == null) {tparam = "";}
+		if (tparam == null) {
+			mwClientLog.clientErrLog("Unable to find param "+p);
+			tparam = "";
+		}
 		
 		if (tparam.equals("") && p.equals("NAME") && isDedicated()) {
 			mwClientLog.clientOutputLog("Error: no dedicated name set.");

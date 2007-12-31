@@ -1324,7 +1324,6 @@ src/dedicatedhost/ClientThread.java -text
 src/dedicatedhost/MWDedHost.java -text
 src/dedicatedhost/cmd/CS.java -text
 src/dedicatedhost/cmd/Command.java -text
-src/dedicatedhost/cmd/DMML.java -text
 src/dedicatedhost/cmd/FSM.java -text
 src/dedicatedhost/cmd/GO.java -text
 src/dedicatedhost/cmd/KI.java -text
@@ -1334,7 +1333,6 @@ src/dedicatedhost/cmd/RBP.java -text
 src/dedicatedhost/cmd/RGTS.java -text
 src/dedicatedhost/cmd/SAS.java -text
 src/dedicatedhost/cmd/TL.java -text
-src/dedicatedhost/cmd/UC.java -text
 src/dedicatedhost/cmd/UG.java -text
 src/dedicatedhost/protocol/CConnector.java -text
 src/dedicatedhost/protocol/ConnectionHandlerLocal.java -text

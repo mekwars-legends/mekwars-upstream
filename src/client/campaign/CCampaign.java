@@ -74,7 +74,7 @@ public class CCampaign {
 			if (commandid.equals("AT")) {//incoming attack
 				
 				if (mwclient.getConfig().isParam("ENABLEATTACKSOUND"))
-					mwclient.doPlaySound(mwclient.getConfigParam("SOUNDONATTACK:"));
+					mwclient.doPlaySound(mwclient.getConfigParam("SOUNDONATTACK"));
 				
 				mwclient.addToChat("<font color=\"red\"><b>Your forces are under attack!</b></font>", CCommPanel.CHANNEL_HMAIL);
 				mwclient.addToChat("<font color=\"red\"><b>Your forces are under attack!</b></font>", CCommPanel.CHANNEL_PMAIL,"Server");

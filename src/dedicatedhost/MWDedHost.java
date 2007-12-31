@@ -905,7 +905,6 @@ public final class MWDedHost implements IClient {
 				return currUser;
 		}
 		CUser dummyUser = new CUser();
-		dummyUser.setColor(Config.getParam("CHATFONTCOLOR"));
 		return dummyUser;
 	}
 	
