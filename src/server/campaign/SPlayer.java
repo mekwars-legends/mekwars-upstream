@@ -2787,7 +2787,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				sql.append("playerAutoReorder = ?, ");
 				sql.append("playerTeamNumber = ?, ");
 
-				sql.append("playerSubfactionName = ?");
+				sql.append("playerSubFactionName = ?");
 				ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setString(1, getName());
 				ps.setInt(2, getMoney());
@@ -2871,7 +2871,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				sql.append("playerPassTime= ?, ");
 				sql.append("playerTeamNumber= ?, ");
 
-				sql.append("playerSubfactionName = ? ");
+				sql.append("playerSubFactionName = ? ");
 				sql.append("WHERE playerID = ?");
 	
 				ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
