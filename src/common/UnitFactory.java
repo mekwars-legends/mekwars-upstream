@@ -21,8 +21,11 @@
  */
 package common;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+
+import server.campaign.BuildTable;
 
 import common.Unit;
 import common.persistence.MMNetSerializable;
@@ -98,7 +101,10 @@ public class UnitFactory implements Serializable, MMNetSerializable {
 	
 	
 	private int factoryID = 0;
-	
+
+	private int factoryAccessLevel = 0;
+	private String buildTableFolder = "";
+
 	/**
 	 * @return Returns the faction .
 	 */
@@ -263,7 +269,8 @@ public class UnitFactory implements Serializable, MMNetSerializable {
 		out.println(refreshSpeed, "refreshSpeed");
 		out.println(type, "type");
 		out.println(factoryLocked,"factorylock");
-		// TODO: no timezone saved until TimeZoneData is in common...
+		out.println(factoryAccessLevel, "factoryaccess");
+		out.println(buildTableFolder,"buildtablefolder");
 	}
 	
 	/**
@@ -277,6 +284,8 @@ public class UnitFactory implements Serializable, MMNetSerializable {
 		refreshSpeed = in.readInt("refreshSpeed");
 		type = in.readInt("type");
 		factoryLocked = in.readBoolean("factorylock");
+		factoryAccessLevel = in.readInt("factoryaccess");
+		buildTableFolder = in.readLine("buildtablefolder");
 	}    
 	
 	public String getTypeString() {
@@ -391,5 +400,29 @@ public class UnitFactory implements Serializable, MMNetSerializable {
 	
 	public void setLock(boolean lock) {
 		factoryLocked = lock;
+	}
+	
+	public int getAccessLevel() {
+		return factoryAccessLevel;
+	}
+	
+	public void setAccessLevel(int access) {
+		this.factoryAccessLevel = access;
+	}
+
+	public void setBuildTableFolder(String folder){
+		
+		if ( folder.equals("0") )
+			return;
+		
+		buildTableFolder = folder;
+	}
+
+	public String getBuildTableFolder(){
+		
+		if ( buildTableFolder.trim().length() < 1)
+			return BuildTable.STANDARD;
+			
+		return BuildTable.STANDARD+File.separatorChar+buildTableFolder.trim();
 	}
 }
