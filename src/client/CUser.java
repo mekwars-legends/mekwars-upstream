@@ -306,7 +306,7 @@ public class CUser implements Comparable<Object> {
 				info.append("<br>Fights for ");
 				info.append(PlayerHouse);
 				if ( subFaction.trim().length() > 0){
-					info.append("(");
+					info.append(" (");
 					info.append(subFaction);
 					info.append(")");
 				}
