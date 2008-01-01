@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.14.x
++ Bug: MekWarsDed not downloading server configs.
 Release Client/Server 0.2.14.0
 + Updated Planet Editor for BuildTable and AccessLevel
 + New MegaMek.jar 0.33.15-MW123107-5362

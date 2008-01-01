@@ -69,7 +69,7 @@ public final class MWDedHost implements IClient {
 	public static final int STATUS_DISCONNECTED = 0;
 	public static final int STATUS_LOGGEDOUT = 1;
 
-	public static final String CLIENT_VERSION = "0.2.13.1"; //change this with all client changes @Torren
+	public static final String CLIENT_VERSION = "0.2.14.1"; //change this with all client changes @Torren
 
 	CConnector Connector;
 	TimeOutThread TO;
@@ -209,6 +209,8 @@ public final class MWDedHost implements IClient {
 		//set New timestamp
 		this.dataFetcher.setLastTimestamp(new Date(System.currentTimeMillis()));
 		this.dataFetcher.store();
+		
+		this.getServerConfigData();
 		
 		myUsername = getConfigParam("NAME");
 		
