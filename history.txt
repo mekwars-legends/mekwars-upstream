@@ -1,11 +1,16 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.13.x
+v 0.2.14.x
+Release Client/Server 0.2.14.0
++ Updated Planet Editor for BuildTable and AccessLevel
++ New MegaMek.jar 0.33.15-MW123107-5362
++ RFE 1840861: Exclusiv Factory Access for Subfactions
 + Bug: Capitalization error in SPilot.toDB();
 + Bug: Capitalization error in SPlayer.toDB();
 + Stream lined more Ded Host code
 + Bug: SubFactions were not saving / loading properly from database
+v 0.2.13.x
 Release Client/Server 0.2.13.1
 + Added Logic for MekWarsAutoUpdate.jar to start MekWarsDed.jar if AutoUpdater
   Was run by a Ded

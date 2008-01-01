@@ -2429,7 +2429,8 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 				result.append(currFactory.getFounder() + internalDelim);
 				result.append(currFactory.getPlanet().getName() + internalDelim);
 				result.append(currFactory.getName() + internalDelim);
-				result.append(currFactory.getTicksUntilRefresh());
+				result.append(currFactory.getTicksUntilRefresh() + internalDelim);
+				result.append(currFactory.getAccessLevel() + internalDelim);
 				
 				result.append(cmdDelim);
 			}			

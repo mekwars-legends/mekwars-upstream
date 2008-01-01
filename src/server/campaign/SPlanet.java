@@ -761,6 +761,8 @@ Comparable<Object> {
 			newOwnerHSUpdates.append("AF|" + currUF.getWeightclass() + "$" + currUF.getType()
 					+ "$" + currUF.getFounder() + "$" + this.getName() + "$" + currUF.getName()
 					+ "$" + currUF.getTicksUntilRefresh() + "|");
+			newOwnerHSUpdates.append(currUF.getAccessLevel());
+			newOwnerHSUpdates.append("|");
 		}
 
 		//send updates to non-null houses, so long as update strings have length > 0 (real updates)

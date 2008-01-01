@@ -62,6 +62,8 @@ public class XMLPlanetDataParser implements XMLResponder
 	
 	String buildTableFolder = "0";
 	
+	int accessLevel = 0;
+	
 	HashMap<Integer,Integer> Influence = new HashMap<Integer,Integer>();//House ID, Amount
 	Vector<SPlanet> planets = new Vector<SPlanet>(1,1);
 	
@@ -207,7 +209,7 @@ public class XMLPlanetDataParser implements XMLResponder
 				//if (Type == 0)
 				//	Type = Unit.MEK;
 				
-				SUnitFactory mf = new SUnitFactory(MFName,null,MFSize,MFFounder,MFTicksUntilRefresh,MFRefreshSpeed,Type,buildTableFolder);
+				SUnitFactory mf = new SUnitFactory(MFName,null,MFSize,MFFounder,MFTicksUntilRefresh,MFRefreshSpeed,Type,buildTableFolder,accessLevel);
 				unitFactories.add(mf);
 				
 				//RESET VARIABLES
@@ -218,6 +220,7 @@ public class XMLPlanetDataParser implements XMLResponder
 				MFRefreshSpeed = 100;
 				Type = 0;
 				buildTableFolder = "0";
+				accessLevel = 0;
 			}
 		}
 		if (name.equalsIgnoreCase("CONTINENT")){
@@ -436,6 +439,8 @@ public class XMLPlanetDataParser implements XMLResponder
 			isHomeWorld = Boolean.parseBoolean(charData);
 		else if (lastElement.endsWith("BUILDTABLEFOLDER"))
 			buildTableFolder = charData;
+		else if (lastElement.endsWith("ACCESSSLEVEL"))
+			accessLevel = Integer.parseInt(charData);
 		
 		
 	}

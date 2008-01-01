@@ -154,7 +154,7 @@ public final class MWClient implements IClient {
 	
 	CConfig Config;
 	
-	public static final String CLIENT_VERSION = "0.2.13.1"; //change this with all client changes @Torren
+	public static final String CLIENT_VERSION = "0.2.14.0"; //change this with all client changes @Torren
 
 	CConnector Connector;
 	TimeOutThread TO;

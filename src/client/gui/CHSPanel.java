@@ -267,6 +267,7 @@ public class CHSPanel extends JPanel {
 		String factoryName = tokenizer.nextToken();
 		
 		int timeToRefresh = Integer.valueOf(tokenizer.nextToken());
+		int accessLevel = Integer.parseInt(tokenizer.nextToken());
 		
 		/*
 		 * Check for multiproduction and add to all appropriate factory categories. Overly
@@ -275,15 +276,15 @@ public class CHSPanel extends JPanel {
 		 * :-(
 		 */
 		if (this.canProduce(Unit.MEK, type))
-			this.addFactoryHelper(weight,new Integer(Unit.MEK),timeToRefresh,founder,planet,factoryName);
+			this.addFactoryHelper(weight,new Integer(Unit.MEK),timeToRefresh,founder,planet,factoryName,accessLevel);
 		if (canProduce(Unit.VEHICLE, type))
-			this.addFactoryHelper(weight,new Integer(Unit.VEHICLE),timeToRefresh,founder,planet,factoryName);
+			this.addFactoryHelper(weight,new Integer(Unit.VEHICLE),timeToRefresh,founder,planet,factoryName,accessLevel);
 		if (canProduce(Unit.INFANTRY, type))
-			this.addFactoryHelper(weight,new Integer(Unit.INFANTRY),timeToRefresh,founder,planet,factoryName);
+			this.addFactoryHelper(weight,new Integer(Unit.INFANTRY),timeToRefresh,founder,planet,factoryName,accessLevel);
 		if (canProduce(Unit.PROTOMEK, type))
-			this.addFactoryHelper(weight,new Integer(Unit.PROTOMEK),timeToRefresh,founder,planet,factoryName);
+			this.addFactoryHelper(weight,new Integer(Unit.PROTOMEK),timeToRefresh,founder,planet,factoryName,accessLevel);
 		if (canProduce(Unit.BATTLEARMOR, type))
-			this.addFactoryHelper(weight,new Integer(Unit.BATTLEARMOR),timeToRefresh,founder,planet,factoryName);
+			this.addFactoryHelper(weight,new Integer(Unit.BATTLEARMOR),timeToRefresh,founder,planet,factoryName,accessLevel);
 	}
 	
 	/**
@@ -334,27 +335,28 @@ public class CHSPanel extends JPanel {
 		
 		int timeToRefresh = Integer.valueOf(tokenizer.nextToken());
 		
+		int accessLevel = Integer.parseInt(tokenizer.nextToken());
 		/*
 		 * Check for multiproduction and update in all appropriate factory categories. Overly
 		 * complex, and makes me want to punch the person who RFE'ed multifacs in the face :-(
 		 */
 		if (this.canProduce(Unit.MEK, type))
-			this.changeFactoryHelper(weight,Unit.MEK,planet,factoryName,timeToRefresh);
+			this.changeFactoryHelper(weight,Unit.MEK,planet,factoryName,timeToRefresh,accessLevel);
 		if (canProduce(Unit.VEHICLE, type))
-			this.changeFactoryHelper(weight,Unit.VEHICLE,planet,factoryName,timeToRefresh);
+			this.changeFactoryHelper(weight,Unit.VEHICLE,planet,factoryName,timeToRefresh,accessLevel);
 		if (canProduce(Unit.INFANTRY, type))
-			this.changeFactoryHelper(weight,Unit.INFANTRY,planet,factoryName,timeToRefresh);
+			this.changeFactoryHelper(weight,Unit.INFANTRY,planet,factoryName,timeToRefresh,accessLevel);
 		if (canProduce(Unit.PROTOMEK, type))
-			this.changeFactoryHelper(weight,Unit.PROTOMEK,planet,factoryName,timeToRefresh);
+			this.changeFactoryHelper(weight,Unit.PROTOMEK,planet,factoryName,timeToRefresh,accessLevel);
 		if (canProduce(Unit.BATTLEARMOR, type))
-			this.changeFactoryHelper(weight,Unit.BATTLEARMOR,planet,factoryName,timeToRefresh);
+			this.changeFactoryHelper(weight,Unit.BATTLEARMOR,planet,factoryName,timeToRefresh,accessLevel);
 	}
 	
 	/**
 	 * Private method called only from addFactionFactory. Abstracts out some repetetive
-	 * code that checks for factory vectors and creates missing listsings.
+	 * code that checks for factory vectors and creates missing listings.
 	 */
-	private void addFactoryHelper(int weight, int type, int timeToRefresh, String founder, String planet, String factoryName) {
+	private void addFactoryHelper(int weight, int type, int timeToRefresh, String founder, String planet, String factoryName, int accessLevel) {
 		
 		//if there isn't a vector for this type + weight combo already, create one
 		TreeMap<String,String> weightAndTypeMap = factoriesInfo.get(weight + "$" + type);
@@ -367,7 +369,7 @@ public class CHSPanel extends JPanel {
 		 * Add the factory to the map. Note that we use a map
 		 * so the factories appear in alpha order, by world.
 		 */
-		weightAndTypeMap.put(planet + "$" + factoryName, founder + "$" + planet + "$" + factoryName + "$" + timeToRefresh);
+		weightAndTypeMap.put(planet + "$" + factoryName, founder + "$" + planet + "$" + factoryName + "$" + timeToRefresh + "$" + accessLevel);
 	}
 	
 	/**
@@ -393,7 +395,7 @@ public class CHSPanel extends JPanel {
 	/**
 	 * Helper that abstracts out some repetetive checks from checkFactionFactory.
 	 */
-	private void changeFactoryHelper(int weight,int type, String planet, String factoryName, int timeToRefresh) {
+	private void changeFactoryHelper(int weight,int type, String planet, String factoryName, int timeToRefresh, int accessLevel) {
 		
 		TreeMap<String,String> weightAndTypeMap = factoriesInfo.get(weight + "$" + type);
 		
@@ -415,7 +417,7 @@ public class CHSPanel extends JPanel {
 		String founder = tokenizer.nextToken();
 		
 		//overwrite the old entry
-		weightAndTypeMap.put(planet + "$" + factoryName, founder + "$" + planet + "$" + factoryName + "$" + timeToRefresh);
+		weightAndTypeMap.put(planet + "$" + factoryName, founder + "$" + planet + "$" + factoryName + "$" + timeToRefresh + "$" + accessLevel);
 	}
 	
 	/**
@@ -501,6 +503,13 @@ public class CHSPanel extends JPanel {
 							String planet = ST.nextToken();
 							String factoryName = ST.nextToken();
 							int refreshTime = Integer.parseInt(ST.nextToken());
+							int accessLevel = Integer.parseInt(ST.nextToken());
+							
+							
+							if ( accessLevel > mwclient.getPlayer().getSubFactionAccess() ) {
+								hasOpen = true;
+								continue;
+							}
 							
 							if (refreshTime == 0) {
 								

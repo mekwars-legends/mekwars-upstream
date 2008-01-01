@@ -125,6 +125,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 	private final JTextField newTerrainPercent = new JTextField(5);
 	private final JTextField newFactoryName = new JTextField(10);
 	private final JTextField newFactoryBuildTable = new JTextField(10);
+	private final JTextField newFactoryAccessLevel = new JTextField(10);
 	private final JTextField currentFactionOwnerShip = new JTextField(5);
 	private final JTextField newFacitonOwnerShip = new JTextField(5);
 	private final JTextField currentTerrainPercent = new JTextField(5);
@@ -320,12 +321,19 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			
 		}else if ( command.equals(addFactoryCommand) ){
 			String factoryName = newFactoryName.getText().trim();
-			String factoryDesc = factoryName+"#"+factorySize.getSelectedItem().toString()+"#"+factoryOwners.getSelectedItem().toString()+"#"+factoryType.getSelectedIndex()+"#"+newFactoryBuildTable.getText().trim();
-			String fullFactoryName = factorySize.getSelectedItem().toString()+ " " + factoryType.getSelectedItem().toString() + " " + newFactoryName.getText().trim() +" "+factoryOwners.getSelectedItem().toString();
+			String factoryDesc = factoryName+"#"+factorySize.getSelectedItem().toString()+"#"+factoryOwners.getSelectedItem().toString()+"#"+factoryType.getSelectedIndex()+"#";
+			if ( newFactoryBuildTable.getText().trim().length() > 1 )
+				factoryDesc += newFactoryBuildTable.getText().trim();
+			else
+				factoryDesc += " ";
+			factoryDesc += "#"+newFactoryAccessLevel.getText();
+			
+			String fullFactoryName = factorySize.getSelectedItem().toString()+ " " + factoryType.getSelectedItem().toString() + " " + newFactoryName.getText().trim() +" "+factoryOwners.getSelectedItem().toString() + " " + newFactoryBuildTable.getText() + " " + newFactoryAccessLevel.getText();
 			factoryMap.put(factoryName, factoryDesc);
 			planetFactories.addItem(fullFactoryName);
 			newFactoryName.setText("");
 			newFactoryBuildTable.setText("");
+			newFactoryAccessLevel.setText("0");
 			factorySize.setSelectedIndex(0);
 			factoryOwners.setSelectedIndex(0);
 			factoryType.setSelectedIndex(0);
@@ -334,7 +342,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 				return;
 			String factoryName = "";
 			for ( UnitFactory factory : this.selectedPlanet.getUnitFactories() ){
-				factoryName = factory.getSize()+ " " + factory.getFullTypeString().trim() + " " + factory.getName() +" "+factory.getFounder();
+				factoryName = factory.getSize()+ " " + factory.getFullTypeString().trim() + " " + factory.getName() +" "+factory.getFounder() + " " + factory.getBuildTableFolder() + " " + factory.getAccessLevel();
 				if ( planetFactories.getSelectedItem().toString().trim().equals(factoryName) ){
 					removedFactory.add(factory.getName());
 					factoryMap.remove(factory.getName());
@@ -564,8 +572,8 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		
 		TreeSet<String>factoryList = new TreeSet<String>();
 		for ( UnitFactory factory : this.selectedPlanet.getUnitFactories() ){
-			factoryList.add(factory.getSize()+ " " + factory.getFullTypeString().trim() + " " + factory.getName() +" "+factory.getFounder());
-			factoryMap.put(factory.getName(),factory.getName()+"#"+factory.getSize()+"#"+factory.getFounder()+"#"+factory.getType());
+			factoryList.add(factory.getSize()+ " " + factory.getFullTypeString().trim() + " " + factory.getName() +" "+factory.getFounder() + " " + factory.getBuildTableFolder() + " " + factory.getAccessLevel());
+			factoryMap.put(factory.getName(),factory.getName()+"#"+factory.getSize()+"#"+factory.getFounder()+"#"+factory.getType()+"#"+factory.getBuildTableFolder()+"#"+factory.getAccessLevel());
 		}
 		
 		planetFactories = new JComboBox(factoryList.toArray());
@@ -587,6 +595,9 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		panel3.add(new JLabel("Build Table",JLabel.TRAILING));
 		panel3.add(newFactoryBuildTable);
 		newFactoryBuildTable.setToolTipText("Factory can use a sub folder of Standard for its build tables");
+		panel3.add(new JLabel("Access Level",JLabel.TRAILING));
+		panel3.add(newFactoryAccessLevel);
+		newFactoryAccessLevel.setToolTipText("Subfaction level needed to access this factory");
 		
 		SpringLayoutHelper.setupSpringGrid(panel3,4);
 		
@@ -909,8 +920,8 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		for ( UnitFactory factory : this.selectedPlanet.getUnitFactories() ){
 			if ( removedFactory.contains(factory.getName()) )
 				continue;
-			factoryList.add(factory.getSize()+ " " + factory.getFullTypeString().trim() + " " + factory.getName() +" "+factory.getFounder());
-			factoryMap.put(factory.getName(),factory.getName()+"#"+factory.getSize()+"#"+factory.getFounder()+"#"+factory.getType());
+			factoryList.add(factory.getSize()+ " " + factory.getFullTypeString().trim() + " " + factory.getName() +" "+factory.getFounder()+" " + factory.getBuildTableFolder()+ " " + factory.getAccessLevel());
+			factoryMap.put(factory.getName(),factory.getName()+"#"+factory.getSize()+"#"+factory.getFounder()+"#"+factory.getType()+"#"+factory.getBuildTableFolder()+"#"+factory.getAccessLevel());
 		}
 		
 		planetFactories.removeAllItems();

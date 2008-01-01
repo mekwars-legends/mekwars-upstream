@@ -1270,7 +1270,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				 * compare first force to floor. get first army, determine
 				 * percent and flat difference, then test against the BV-edge.
 				 */
-				double caPercentDiff = (currentBV * MaxPercentDiff) / 100;
+				double caPercentDiff = currentBV * MaxPercentDiff;
 				if (MaxFlatDiff >= caPercentDiff)
 					currentMaxDiff = MaxFlatDiff;
 				else
@@ -1302,9 +1302,9 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 						currentMaxDiff = MaxFlatDiff;
 					} else {
 						if (currentBV > nextBV)
-							caPercentDiff = (currentBV * MaxPercentDiff) / 100;
+							caPercentDiff = currentBV * MaxPercentDiff;
 						else
-							caPercentDiff = (nextBV * MaxPercentDiff) / 100;
+							caPercentDiff = nextBV * MaxPercentDiff;
 						
 						if (MaxFlatDiff >= caPercentDiff)
 							currentMaxDiff = MaxFlatDiff;
@@ -1324,7 +1324,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				/*
 				 * compare last force to ceiling
 				 */
-				caPercentDiff = (currentBV * MaxPercentDiff) / 100;
+				caPercentDiff = currentBV * MaxPercentDiff;
 				if (MaxFlatDiff >= caPercentDiff)
 					currentMaxDiff = MaxFlatDiff;
 				else

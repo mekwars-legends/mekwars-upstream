@@ -24,7 +24,6 @@
 
 package server.campaign;
 
-import java.io.File;
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -47,14 +46,13 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 	
 	//VARIABLES
 	private SPlanet planet;
-	private String buildTableFolder = "";
 	
 	//CONSTRUCTORS
 	public SUnitFactory() {
 		//empty
 	}
 	
-	public SUnitFactory(String Name,SPlanet P, String Size,String Faction, int ticksuntilrefresh, int refreshSpeed, int type, String buildTableFolder) {
+	public SUnitFactory(String Name,SPlanet P, String Size,String Faction, int ticksuntilrefresh, int refreshSpeed, int type, String buildTableFolder, int accessLevel) {
 		setName(Name);
 		setPlanet(P);
 		setSize(Size);
@@ -63,6 +61,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		setRefreshSpeed(refreshSpeed);
 		setType(type);
 		setBuildTableFolder(buildTableFolder);
+		setAccessLevel(accessLevel);
 	}
 	
 	//STRING SAVE METHODS
@@ -85,15 +84,17 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		result.append(getRefreshSpeed());
 		result.append("*");
 		
-		if ( buildTableFolder.trim().length() < 1)
+		if ( getBuildTableFolder().trim().length() < 1)
 			result.append(" ");
 		else
-			result.append(buildTableFolder);
+			result.append(getBuildTableFolder());
         
 		result.append("*");
 		result.append(getType());
 		result.append("*");
 		result.append(isLocked());
+		result.append("*");
+		result.append(getAccessLevel());
 		result.append("*");
 		return result.toString();
 	}
@@ -137,7 +138,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		ps.setInt(6, getType());
 		ps.setString(7, planet.getName());
 		ps.setString(8, Boolean.toString(isLocked()));
-		ps.setString(9, buildTableFolder);
+		ps.setString(9, getBuildTableFolder());
 
 		ps.executeUpdate();
 		rs = ps.getGeneratedKeys();
@@ -173,7 +174,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		  ps.setInt(6, getRefreshSpeed());
 		  ps.setInt(7, getType());
 		  ps.setString(8, Boolean.toString(isLocked()));
-		  ps.setString(9, buildTableFolder);
+		  ps.setString(9, getBuildTableFolder());
 		  ps.setInt(10, getID());
 		  
 	      ps.executeUpdate();
@@ -213,6 +214,9 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		if (ST.hasMoreElements())
 			setLock(Boolean.parseBoolean(ST.nextToken()));
 
+		if ( ST.hasMoreElements() )
+			setAccessLevel(Integer.parseInt(ST.nextToken()));
+		
 		setPlanet(p);
 	}
 	
@@ -400,21 +404,5 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		Filename = BuildTable.getUnitFilename(this.getFounder(),unitSize,type_id,getBuildTableFolder());
 		
 		return Filename;
-	}
-
-	public void setBuildTableFolder(String folder){
-		
-		if ( folder.equals("0") )
-			return;
-		
-		buildTableFolder = folder;
-	}
-
-	public String getBuildTableFolder(){
-		
-		if ( buildTableFolder.trim().length() < 1)
-			return BuildTable.STANDARD;
-			
-		return BuildTable.STANDARD+File.separatorChar+buildTableFolder.trim();
 	}
 }
