@@ -1324,7 +1324,6 @@ src/dedicatedhost/ClientThread.java -text
 src/dedicatedhost/MWDedHost.java -text
 src/dedicatedhost/cmd/CS.java -text
 src/dedicatedhost/cmd/Command.java -text
-src/dedicatedhost/cmd/FSM.java -text
 src/dedicatedhost/cmd/GO.java -text
 src/dedicatedhost/cmd/KI.java -text
 src/dedicatedhost/cmd/NU.java -text
