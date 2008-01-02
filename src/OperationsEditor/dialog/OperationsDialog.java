@@ -62,8 +62,6 @@ import javax.swing.SwingConstants;
 import common.DefaultOperation;
 import common.util.SpringLayoutHelper;
 
-import client.MWClient;
-
 public class OperationsDialog extends JFrame implements ActionListener, KeyListener{
 	
 	/**
@@ -93,7 +91,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 	private String filePathName = "./data/operations"; 
 	private JOptionPane pane;
 	private JScrollPane scrollPane;
-	private MWClient mwclient = null;
+	private Object mwclient = null;
 	
 	JPanel contentPane;
 	
@@ -129,10 +127,10 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
      */
 	public OperationsDialog(Object o) {
 		
-		super("Ops Editor");
+		//super("Ops Editor");
 		
 		if ( o != null )
-			this.mwclient = (MWClient)o;
+			this.mwclient = o;
 		
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu();
@@ -3502,48 +3500,48 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         jMenuRetrieveOperationFile.setText("Retrieve Operation File");
         jMenuRetrieveOperationFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	mwclient.getMainFrame().jMenuRetrieveOperationFile_actionPerformed(e);
+            	((client.MWClient)mwclient).getMainFrame().jMenuRetrieveOperationFile_actionPerformed(e);
             }
         });
 
         jMenuSetOperationFile.setText("Set Operation File");
         jMenuSetOperationFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	mwclient.getMainFrame().jMenuSetOperationFile_actionPerformed(e);
+            	((client.MWClient)mwclient).getMainFrame().jMenuSetOperationFile_actionPerformed(e);
             }
         });
 
         jMenuSetNewOperationFile.setText("Set New Operation File");
         jMenuSetNewOperationFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	mwclient.getMainFrame().jMenuSetNewOperationFile_actionPerformed(e);
+            	((client.MWClient)mwclient).getMainFrame().jMenuSetNewOperationFile_actionPerformed(e);
             }
         });
 
         jMenuSendAllOperationFiles.setText("Send All Local Op Files");
         jMenuSendAllOperationFiles.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	mwclient.getMainFrame().jMenuSendAllOperationFiles_actionPerformed(e);
+            	((client.MWClient)mwclient).getMainFrame().jMenuSendAllOperationFiles_actionPerformed(e);
             }
         });
 
         jMenuUpdateOperations.setText("Update Operations");
         jMenuUpdateOperations.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	mwclient.getMainFrame().jMenuUpdateOperations_actionPerformed(e);
+            	((client.MWClient)mwclient).getMainFrame().jMenuUpdateOperations_actionPerformed(e);
             }
         });
 
-		int userLevel = this.mwclient.getUser(this.mwclient.getUsername()).getUserlevel();
-        if ( userLevel >= mwclient.getData().getAccessLevel("RetrieveOperation") )
+		int userLevel = ((client.MWClient)mwclient).getUser(((client.MWClient)mwclient).getUsername()).getUserlevel();
+        if ( userLevel >= ((client.MWClient)mwclient).getData().getAccessLevel("RetrieveOperation") )
         	jMenuOperations.add(jMenuRetrieveOperationFile);
-        if ( userLevel >= mwclient.getData().getAccessLevel("SetOperation") ){
+        if ( userLevel >= ((client.MWClient)mwclient).getData().getAccessLevel("SetOperation") ){
         	jMenuOperations.add(jMenuSendCurrentOperationFile);
         	jMenuOperations.add(jMenuSetOperationFile);
         	jMenuOperations.add(jMenuSetNewOperationFile);
         	jMenuOperations.add(jMenuSendAllOperationFiles);
         }
-        if ( userLevel >= mwclient.getData().getAccessLevel("UpdateOperations") )
+        if ( userLevel >= ((client.MWClient)mwclient).getData().getAccessLevel("UpdateOperations") )
         	jMenuOperations.add(jMenuUpdateOperations);
 
         return jMenuOperations;
@@ -3573,11 +3571,11 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
             fis.close();
             
         }catch(Exception ex){
-            MWClient.mwClientLog.clientErrLog("Unable to read "+opFile);
+        	client.MWClient.mwClientLog.clientErrLog("Unable to read "+opFile);
             return;
         }
 
-        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setoperation#short#"+opData.toString());
+        ((client.MWClient)mwclient).sendChat(client.MWClient.CAMPAIGN_PREFIX + "c setoperation#short#"+opData.toString());
     }
 }
 

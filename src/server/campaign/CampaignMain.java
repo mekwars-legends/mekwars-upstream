@@ -1873,22 +1873,22 @@ public final class CampaignMain implements Serializable {
 				}
 
 			} catch (NumberFormatException ex) {
-				toUser("/roll: error parsing arguments.", Username, true);
+				toUser("AM:/roll: error parsing arguments.", Username, true);
 				return;
 			} catch (StringIndexOutOfBoundsException ex) {
-				toUser("/roll: error parsing arguments.", Username, true);
+				toUser("AM:/roll: error parsing arguments.", Username, true);
 				return;
 			}
 		}
 
 		if (dice < 1 || sides < 2) {
-			this.doSendToAllOnlinePlayers(Username
+			this.doSendToAllOnlinePlayers("AM"+Username
 					+ " loves the smell of napalm in the morning.", true);
 			return;
 		}
 
 		if (dice > 20 || sides > 100) {
-			this.doSendToAllOnlinePlayers(Username + " is a stupid haxx0r!",
+			this.doSendToAllOnlinePlayers("AM"+Username + " is a stupid haxx0r!",
 					true);
 			return;
 		}
@@ -1916,11 +1916,11 @@ public final class CampaignMain implements Serializable {
 			}
 		}
 		if (text != "")
-			this.doSendToAllOnlinePlayers(Username
+			this.doSendToAllOnlinePlayers("AM"+Username
 					+ " rolled " + diceBuffer + " for a total of " + total
 					+ ", using " + text + ".", true);
 		else
-			this.doSendToAllOnlinePlayers(Username
+			this.doSendToAllOnlinePlayers("AM"+Username
 					+ " rolled " + diceBuffer + " for a total of " + total
 					+ ", using 2d6.", true);
 	}

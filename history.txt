@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.14.x
++ New MegaMek.jar 0.33.15-MW010208-5362
++ Bug: Operations editor not working in stand alone
++ More System Message tags added
 + Removed all references of the blow files from the rest of the code.
 - Removed MMNetSerializable.java no longer used
 - Removed DatReader.java no longer used
