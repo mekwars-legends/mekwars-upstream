@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.14.x
+Release Client 0.2.14.1 & Server 0.2.14.2
 + Added more missing system message tags
 + RFE: check if player still meets min requirements for subfaction after Ops.
 + Added House Status refresh commands to Promote/Demote/Request Promotion commands
