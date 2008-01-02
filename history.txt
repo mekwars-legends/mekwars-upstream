@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.14.x
++ Bug: RequestCommand did not check subfaction accesslevel vs factory access
 + Factory Access Levels saved to database
 + Bug: factories not deleted when adminremoveallfactories command issued
 Release Server 0.2.14.1

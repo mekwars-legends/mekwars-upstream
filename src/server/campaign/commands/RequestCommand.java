@@ -193,6 +193,7 @@ public class RequestCommand implements Command {
 			 * weightclasses. Any name duping in a weightclass will cause odd behaviour. 
 			 */
 			for (SUnitFactory currFac : namedFactories) {
+				
 				if (currFac.getWeightclass() == weightclass) {
 					factory = currFac;
 					break;
@@ -202,7 +203,12 @@ public class RequestCommand implements Command {
 				CampaignMain.cm.toUser(factoryName + " on " + planetName + " does not produce units of the requested weightclass.",Username,true);
 				return;
 			}
-			
+
+			if ( factory.getAccessLevel() > p.getSubFactionAccess() ){
+				CampaignMain.cm.toUser("You do not have sufficient rank to purchase a unit from "+factoryName + " on " + planetName+".",Username);
+				return;
+			}
+
 			//make sure the named factory can produce the requested type
 			if (!factory.canProduce(type_id)) {
 				CampaignMain.cm.toUser(factoryName + " on " + planetName + " does not produce units of the requested type.",Username,true);

@@ -21,7 +21,6 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import megamek.common.AmmoType;
@@ -195,21 +194,12 @@ public class CUnit extends Unit {
 		//setup rapid fire Machine guns, if any
 		if ( ST.hasMoreElements()){
 		    int maxMachineGuns = Integer.parseInt(ST.nextToken());
-		    int currentLocation = 0;
 		    Entity en = UnitEntity;
-		    Iterator<Mounted> enWeapons = en.getWeapons();
+		    ArrayList<Mounted> enWeapons = en.getWeaponList();
 		    for ( int count = 0; count < maxMachineGuns; count++ ){
 		        int location = Integer.parseInt(ST.nextToken());
 		        boolean selection = Boolean.parseBoolean(ST.nextToken());
-		        while ( enWeapons.hasNext() ){
-		            Mounted mWeapon = enWeapons.next();
-		            if ( currentLocation == location ){
-		                mWeapon.setRapidfire(selection);
-		                currentLocation++;
-		                break;
-		            }
-		            currentLocation++;
-		        }
+		        enWeapons.get(location).setRapidfire(selection);
 		    }
 		}//Machine Guns
 

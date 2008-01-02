@@ -268,6 +268,21 @@ public class CPlayer extends Player {
 		}
 	}
 
+	public void updateUnitMachineGuns(StringTokenizer st){
+		try {
+			CUnit currUnit = this.getUnit(Integer.parseInt(st.nextToken()));
+			int location = Integer.parseInt(st.nextToken());
+			boolean selection = Boolean.parseBoolean(st.nextToken());
+			
+			currUnit.getEntity().getWeaponList().get(location).setRapidfire(selection);
+			
+			this.sortHangar();// properties have changes. sort. YARR!
+		} catch (Exception e) {
+			MWClient.mwClientLog.clientErrLog(e);
+			return;
+		}
+	}
+	
 	/**
 	 * Remove an army from a player's set. This can be called directly from a
 	 * PL|RA command, or indirectly by PL|SAD via CPlayer.setArmyData(), which

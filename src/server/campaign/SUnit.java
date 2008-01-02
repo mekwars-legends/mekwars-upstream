@@ -460,18 +460,18 @@ public final class SUnit extends Unit implements Serializable {
 		}
 		
         ArrayList<Mounted> en_Weapon = unitEntity.getWeaponList();
-		result.append(CampaignMain.cm.getMachineGunCount(en_Weapon));
+		result.append(CampaignMain.cm.getMachineGunCount(unitEntity.getWeaponList()));
 		result.append("$");
-		int location = 0;
-		for (Mounted mWeapon : en_Weapon ){
-			WeaponType weapon = (WeaponType)mWeapon.getType();
+		
+		for (int location = 0; location < unitEntity.getWeaponList().size(); location++){
+			WeaponType weapon = (WeaponType)unitEntity.getWeaponList().get(location).getType();
+			//MWServ.mwlog.errLog("Weapon: "+weapon.getName());
 			if (weapon.hasFlag(WeaponType.F_MG) ){
 				result.append(location);
 				result.append("$");
-				result.append(mWeapon.isRapidfire());
+				result.append(en_Weapon.get(location).isRapidfire());
 				result.append("$");
 			}
-			location++;
 		}
 		result.append(unitEntity.hasSpotlight());
 		result.append("$");
@@ -742,20 +742,12 @@ public final class SUnit extends Unit implements Serializable {
 			}
 			if ( ST.hasMoreElements()){
 				int maxMachineGuns = Integer.parseInt(defaultField);
-				int currentLocation = 0;
 				Entity en = this.getEntity();
 				ArrayList<Mounted> enWeapons = en.getWeaponList();
 				for ( int count = 0; count < maxMachineGuns; count++ ){
 					int location = Integer.parseInt(ST.nextToken());
 					boolean selection = Boolean.parseBoolean(ST.nextToken());
-					for ( Mounted mWeapon : enWeapons ){
-						if ( currentLocation == location ){
-							mWeapon.setRapidfire(selection);
-							currentLocation++;
-							break;
-						}
-						currentLocation++;
-					}
+					enWeapons.get(location).setRapidfire(selection);
 				}
 				setEntity(en);
 			}

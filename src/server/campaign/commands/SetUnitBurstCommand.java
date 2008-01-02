@@ -17,7 +17,6 @@
 package server.campaign.commands;
 
 
-import java.util.Iterator;
 import java.util.StringTokenizer;
 import server.campaign.SPlayer;
 import server.campaign.CampaignMain;
@@ -77,24 +76,14 @@ public class SetUnitBurstCommand implements Command {
 		
 		SUnit unit = p.getUnit(unitid);
 		Entity en = unit.getEntity();
-		Iterator<Mounted> e = en.getWeapons();
-		int location = 0;
-		Mounted mWeapon = null;
-		
-		while (e.hasNext())
-		{
-			mWeapon = (Mounted)e.next();
-			if ( location == weaponLocation)
-				break;
-			location++;
-		}
+		Mounted mWeapon = en.getWeaponList().get(weaponLocation);
 		
 		if ( mWeapon.isRapidfire() == selection )
 		    return;
 		
 		mWeapon.setRapidfire(selection);
 		unit.setEntity(en);
-		CampaignMain.cm.toUser("PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
+		CampaignMain.cm.toUser("PL|UUMG|"+unit.getId()+"|"+weaponLocation+"|"+selection,Username,false);
 		
 		CampaignMain.cm.toUser("AM:Rapid fire set for " + unit.getModelName() + " (#" +unit.getId()+").",Username,true);
 		
