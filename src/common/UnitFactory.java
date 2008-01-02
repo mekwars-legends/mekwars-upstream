@@ -25,8 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
-import server.campaign.BuildTable;
-
 import common.Unit;
 import common.persistence.MMNetSerializable;
 import common.persistence.TreeReader;
@@ -412,17 +410,20 @@ public class UnitFactory implements Serializable, MMNetSerializable {
 
 	public void setBuildTableFolder(String folder){
 		
-		if ( folder.equals("0") )
+		if ( folder.equals("0") || folder.equals("standard") )
 			return;
 		
-		buildTableFolder = folder;
+		buildTableFolder = folder.replaceAll("standard"+"\\"+File.separatorChar, "");
+		
+		if ( buildTableFolder.equals("standard") )
+			buildTableFolder = "";
 	}
 
 	public String getBuildTableFolder(){
 		
 		if ( buildTableFolder.trim().length() < 1)
-			return BuildTable.STANDARD;
+			return "standard";
 			
-		return BuildTable.STANDARD+File.separatorChar+buildTableFolder.trim();
+		return "standard"+File.separatorChar+buildTableFolder.trim();
 	}
 }

@@ -24,6 +24,7 @@
 
 package server.campaign;
 
+import java.io.File;
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -84,10 +85,13 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		result.append(getRefreshSpeed());
 		result.append("*");
 		
-		if ( getBuildTableFolder().trim().length() < 1)
-			result.append(" ");
+		String buildtablefolder = getBuildTableFolder().replaceAll(BuildTable.STANDARD+"\\"+File.separatorChar, "");
+		
+		if ( buildtablefolder.trim().length() < 1
+				|| buildtablefolder.equals(BuildTable.STANDARD) )
+			result.append("0");
 		else
-			result.append(getBuildTableFolder());
+			result.append(buildtablefolder);
         
 		result.append("*");
 		result.append(getType());
