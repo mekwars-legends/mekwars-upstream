@@ -25,7 +25,7 @@ public class mysqlHandler{
   private PlayerHandler plh = null;
   private PhpBBConnector phpBBCon = null;
 
-  private final int currentDBVersion = 15;
+  private final int currentDBVersion = 16;
   
   public void closeMySQL(){
 	  MySQLCon.close();
@@ -449,6 +449,10 @@ public class mysqlHandler{
 		  MWServ.mwlog.dbLog("resultSetConcurrency: " + resultSetConcurrency);
 		  return null;
 	  }
+  }
+  
+  public int getHouseForumID(String houseName) {
+	  return phpBBCon.getHouseForumID(houseName);
   }
   
   public mysqlHandler(){

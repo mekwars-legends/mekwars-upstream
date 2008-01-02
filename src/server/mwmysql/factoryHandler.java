@@ -37,6 +37,7 @@ public class factoryHandler {
       factory.setType(rs.getInt("FactoryType"));
       factory.setBuildTableFolder(rs.getString("FactoryBuildTableFolder"));
       factory.setLock(Boolean.parseBoolean(rs.getString("FactoryisLocked")));
+      factory.setAccessLevel(rs.getInt("FactoryAccessLevel"));
       factory.setPlanet(planet);
       planet.getUnitFactories().add(factory); 
 
@@ -78,6 +79,7 @@ public class factoryHandler {
     String sql;
     
     try {
+    	MWServ.mwlog.dbLog("Deleting factory " + factoryID);
       stmt = con.createStatement();
       sql = "DELETE from factories where FactoryID = " + factoryID;
       stmt.executeUpdate(sql);

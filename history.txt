@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.14.x
++ Factory Access Levels saved to database
++ Bug: factories not deleted when adminremoveallfactories command issued
 Release Server 0.2.14.1
 + Bug: build table folders saving as standard\
 + New MegaMek.jar 0.33.15-MW010108-5362

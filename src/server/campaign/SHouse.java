@@ -93,6 +93,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 	private Properties config = new Properties();
 	
 	private String forumName = "";
+	private int forumID = 0;
 	
 	private Vector<String>leaders = new Vector<String>(1,1);
 		
@@ -2912,5 +2913,12 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		}		
 	}	
 
+	public int getForumID() {
+		if(forumID > 0)
+			return forumID;
+		forumID = CampaignMain.cm.MySQL.getHouseForumID(this.getForumName());
+			return forumID;
+	}
+	
 	
 }// end SHouse.java

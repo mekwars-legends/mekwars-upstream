@@ -68,13 +68,15 @@ public class AdminDestroyFactoryCommand implements Command {
 			if ( foundFactory == null){
 				CampaignMain.cm.toUser("Factory " + factoryname + " not found",Username,true);
 				return;
-			}else{
-				// Remove it from the database
-				if(CampaignMain.cm.isUsingMySQL())
-					CampaignMain.cm.MySQL.deleteFactory(foundFactory.getID());
-				p.getUnitFactories().removeElement(foundFactory);
-				p.getUnitFactories().trimToSize();
 			}
+			
+			
+			// Remove it from the database
+			if(CampaignMain.cm.isUsingMySQL())
+				CampaignMain.cm.MySQL.deleteFactory(foundFactory.getID());
+			p.getUnitFactories().removeElement(foundFactory);
+			p.getUnitFactories().trimToSize();
+			
 
 			p.updated();
 			//server.MWServ.mwlog.modLog(Username + "  removed " + factoryname + " from " + p.getName() + ".");

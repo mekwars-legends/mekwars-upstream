@@ -105,6 +105,10 @@ public class PhpBBConnector {
 		  
 	  }
 	  
+	  public int getHouseForumID(String houseName) {
+		  return 0;
+	  }
+	  
 	  public void addToForum(String name, String pass, String email) {
 		  if(userExistsInForum(name, email))
 			  return;
