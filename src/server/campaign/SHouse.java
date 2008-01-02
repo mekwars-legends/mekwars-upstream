@@ -1221,7 +1221,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			MWServ.mwlog.debugLog("Showing output");
 			//if enabled, show the player his personal worth
 			if (showOutput) {
-				String toShow = "You counted towards production this tick";
+				String toShow = "AM:You counted towards production this tick";
 				DecimalFormat myFormatter = new DecimalFormat("###.##");
 				String output = myFormatter.format(value);
 				toShow += " (" + output + " points worth)";
@@ -1256,7 +1256,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 			MWServ.mwlog.debugLog("Showing output");
 			//if enabled, show the player his personal worth
 			if (value > 0 && showOutput) {
-				String toReturn = "You counted towards production this tick";
+				String toReturn = "AM:You counted towards production this tick";
 				DecimalFormat myFormatter = new DecimalFormat("###.##");
 				String output = myFormatter.format(value);
 				toReturn += " (" + output + " points worth)";
@@ -2178,6 +2178,8 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 		//update the player's myHouse
 		CampaignMain.cm.toUser("PL|SH|" + this.getName(), realName, false);
 
+		CampaignMain.cm.toUser("PL|SSN|"+ p.getSubFactionName(), realName,false);
+		
 		Date d = new Date(System.currentTimeMillis());
 		MWServ.mwlog.mainLog(d + ":" + "User Logged into House: " + realName);
 		

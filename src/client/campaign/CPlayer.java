@@ -228,10 +228,6 @@ public class CPlayer extends Player {
         	this.setAutoReorder(Boolean.parseBoolean(ST.nextToken()));
         }
         
-        //subFactionName
-        if ( ST.hasMoreElements() )
-        	subFactionName = ST.nextToken();
-        
 		// traps run. sort the HQ. this isn't duplicative, b/c
 		// direct lods (PS instead of PL) don't trigger sorts.
 		this.sortHangar();
@@ -1238,6 +1234,10 @@ public class CPlayer extends Player {
 		return this.partsCache;
 	}
 	
+	public void setSubFaction(String name){
+		this.subFactionName = name;
+	}
+	
 	public SubFaction getSubFaction(){
 		
 		SubFaction mySubFaction = myHouse.getSubFactionList().get(subFactionName);
@@ -1250,8 +1250,10 @@ public class CPlayer extends Player {
 	public int getSubFactionAccess(){
 
 		SubFaction mySubFaction = myHouse.getSubFactionList().get(subFactionName);
-		if ( mySubFaction == null )
+		if ( mySubFaction == null ){
+			MWClient.mwClientLog.clientErrLog("subFaction: "+subFactionName+" is null ");
 			return 0;
+		}
 		
 		return Integer.parseInt(mySubFaction.getConfig("AccessLevel"));
 		

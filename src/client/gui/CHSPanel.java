@@ -467,7 +467,7 @@ public class CHSPanel extends JPanel {
 		//Returns the Private Status for Members only
 		StringBuilder result = new StringBuilder("<BODY  TEXT=\"" + mwclient.getConfigParam("CHATFONTCOLOR") + "\" BGCOLOR=\""+mwclient.getConfigParam("BACKGROUNDCOLOR")+"\">");
 		boolean usingAdvanceRepairs = mwclient.isUsingAdvanceRepairs();
-        
+        int playerAccessLevel = mwclient.getPlayer().getSubFactionAccess();
 		result.append("<TABLE Border=\"1\"><TR><TH>"+ this.HouseName +"</TH><TH>Light</TH><TH>Medium</TH><TH>Heavy</TH><TH>Assault</TH></TR>");
 		for (int type_id = 0; type_id < Unit.TOTALTYPES; type_id++) {
 		    
@@ -505,8 +505,7 @@ public class CHSPanel extends JPanel {
 							int refreshTime = Integer.parseInt(ST.nextToken());
 							int accessLevel = Integer.parseInt(ST.nextToken());
 							
-							
-							if ( accessLevel > mwclient.getPlayer().getSubFactionAccess() ) {
+							if ( accessLevel > playerAccessLevel ) {
 								hasOpen = true;
 								continue;
 							}
@@ -660,7 +659,9 @@ public class CHSPanel extends JPanel {
 		}
 		
 		result.append("</BODY>");
+		mainPane.setText("");
 		mainPane.setText(result.toString());
+		mainPane.repaint();
 	}
 	
 	public void setInfoText(String s) {

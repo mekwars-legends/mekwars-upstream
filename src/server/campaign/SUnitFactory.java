@@ -324,13 +324,14 @@ public class SUnitFactory extends UnitFactory implements Serializable {
 		
 		/*
 		 * Change the factory's information (refresh time)
-		 * Format: HS|CF|weight$metatype$planet$name$timetorefresh|
+		 * Format: HS|CF|weight$metatype$planet$name$timetorefresh$accessLevel|
 		 */
 		String hsUpdate = "CF|" + getWeightclass()+
 			"$" + getType() +
 			"$" + getPlanet().getName() +
 			"$" + getName() +
 			"$" + getTicksUntilRefresh() +
+			"$" + getAccessLevel() +
 			"|";
 		
 		if (sendHSUpdate) {

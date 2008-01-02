@@ -88,7 +88,10 @@ public class PromotePlayerCommand implements Command {
 		}
 		
 		grunt.setSubFaction(subFactionName);
-		CampaignMain.cm.toUser("PS|"+grunt.toString(true), grunt.toString(),false);
+		CampaignMain.cm.toUser("PL|SSN|"+subFactionName, grunt.toString(),false);
+		CampaignMain.cm.toUser("HS|CA|0", grunt.getName(), false);//clear old data
+		CampaignMain.cm.toUser(grunt.getMyHouse().getCompleteStatus(),grunt.getName(), false);
+
 		CampaignMain.cm.toUser("AM:Congratulations you have been promoted to SubFaction "+subFactionName+".", grunt.getName());
 		CampaignMain.cm.doSendHouseMail(grunt.getMyHouse(), "NOTE", grunt.getName()+" has been promoted to subfaction "+subFactionName+" by "+leader.getName()+"!");
 	

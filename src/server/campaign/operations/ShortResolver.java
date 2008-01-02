@@ -378,6 +378,8 @@ public class ShortResolver {
 			CampaignMain.cm.toUser("PL|AAM|0|0", currPlayer.getName(),false);
 			
 			currPlayer.checkForPromotion();
+			currPlayer.checkForDemotion();
+			currPlayer.setSave();
 			/*
 			 * Servers with AR generally force people to deactivate and repair.
 			 * We set immunity above, despite the fact that players will never
@@ -387,10 +389,7 @@ public class ShortResolver {
 			if (!so.isFromReserve()
 					&& CampaignMain.cm.getBooleanConfig("ForcedDeactivation")) {
 				currPlayer.setActive(false);
-				CampaignMain.cm
-						.toUser(
-								"You've left the front lines to repair and refit, and are now in reserve.",
-								currPlayer.getName());
+				CampaignMain.cm.toUser("You've left the front lines to repair and refit, and are now in reserve.",currPlayer.getName());
 			}
 
 			CampaignMain.cm.sendPlayerStatusUpdate(currPlayer, true);
@@ -656,8 +655,10 @@ public class ShortResolver {
 		if (o.getBooleanValue("ReportOpToNewsFeed"))
 			CampaignMain.cm.addToNewsFeed(newsFeedTitle, newsFeedBody);
 		winner.checkForPromotion();
+		winner.checkForDemotion();
 		winner.setSave();
 		loser.checkForPromotion();
+		loser.checkForDemotion();
 		loser.setSave();
 		
 	}

@@ -47,7 +47,11 @@ public class HS extends Command {
 		while (st.hasMoreTokens()) {
 			cmdName = st.nextToken();
 			cmdData = st.nextToken();
-			this.issueSubCommand(cmdName, cmdData);      
+			try{
+				this.issueSubCommand(cmdName, cmdData);
+			}catch(Exception ex){
+				MWClient.mwClientLog.clientErrLog(ex);
+			}
 			
 			if(cmdName.equals("CA"))
 				return;//return without updating view

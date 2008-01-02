@@ -2,6 +2,11 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.14.x
++ Added more missing system message tags
++ RFE: check if player still meets min requirements for subfaction after Ops.
++ Added House Status refresh commands to Promote/Demote/Request Promotion commands
++ Bug: Client not always updating when factory changes where sent down.
++ Bug: Admin Menu Command Create Factory did not ask for build table or access level
 + Bug: RequestCommand did not check subfaction accesslevel vs factory access
 + Factory Access Levels saved to database
 + Bug: factories not deleted when adminremoveallfactories command issued

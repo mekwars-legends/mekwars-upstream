@@ -604,6 +604,11 @@ public final class MWClient implements IClient {
 			System.err.flush();
 			//make the main frame visible
 			try{
+				System.err.println("making mainframe visible: "+System.currentTimeMillis());
+				System.err.flush();
+
+				MainFrame.setVisible(true);
+				
 				if ( splash != null){
 					System.err.println("splash not null: "+System.currentTimeMillis());
 					System.err.flush();
@@ -623,11 +628,6 @@ public final class MWClient implements IClient {
 				splash = null;//nuke the splash
 				System.err.println("splash null: "+System.currentTimeMillis());
 				System.err.flush();
-				System.err.println("making mainframe visible: "+System.currentTimeMillis());
-				System.err.flush();
-
-				MainFrame.setVisible(true);
-				
 			} catch (Exception ex){
 				MWClient.mwClientLog.clientErrLog(ex);
 				MWClient.mwClientLog.clientErrLog("Error closing splash / opening main frame.");

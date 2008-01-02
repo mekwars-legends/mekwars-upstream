@@ -2255,14 +2255,21 @@ public class UnitUtils  {
     public static boolean hasLowAmmo(Entity unit){
         
         for ( Mounted ammo  : unit.getAmmo() ){
-            
-            if ( ammo.getLocation() == Entity.LOC_NONE ){
-                if ( ammo.getShotsLeft() == 0 )
-                    return true;
-            }
-            else if ( ammo.getShotsLeft() < ((AmmoType)ammo.getType()).getShots() &&
-                    ammo.getShotsLeft() > 0 )
-                return true;
+
+        	if ( ammo == null )
+        		continue;
+        	try{
+	            if ( ammo.getLocation() == Entity.LOC_NONE ){
+	                if ( ammo.getShotsLeft() == 0 )
+	                    return true;
+	            }
+	            else if ( ammo.getShotsLeft() < ((AmmoType)ammo.getType()).getShots() &&
+	                    ammo.getShotsLeft() > 0 )
+	                return true;
+        	}catch(Exception ex){
+        		ex.printStackTrace();
+        		continue;
+        	}
         }
         return false;
     }

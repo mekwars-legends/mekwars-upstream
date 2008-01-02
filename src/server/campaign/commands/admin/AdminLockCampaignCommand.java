@@ -51,7 +51,7 @@ public class AdminLockCampaignCommand implements Command {
 			SHouse h = (SHouse)house;
 			for (SPlayer p : h.getActivePlayers().values()) {
 				p.setActive(false);
-				CampaignMain.cm.toUser(Username + " locked the campaign. You were deactivated.",p.getName(),true);
+				CampaignMain.cm.toUser("AM:"+Username + " locked the campaign. You were deactivated.",p.getName(),true);
 				CampaignMain.cm.sendPlayerStatusUpdate(p,!new Boolean(CampaignMain.cm.getConfig("HideActiveStatus")).booleanValue());
 			}//end while (act members remain)
 			
@@ -62,7 +62,7 @@ public class AdminLockCampaignCommand implements Command {
 		
 		//tell the admin he has locked the campaign
 		CampaignMain.cm.doSendToAllOnlinePlayers("AM:"+Username + " locked the campaign!", true);
-		CampaignMain.cm.toUser("You locked the campaign. Players can no longer activate, and all active " +
+		CampaignMain.cm.toUser("AM:You locked the campaign. Players can no longer activate, and all active " +
 				"players were deactivated. Use 'adminunlockcampaign' to release the activity lock.",Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " locked the campaign.");
 		

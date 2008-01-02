@@ -2736,15 +2736,16 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
         if ( !toClient ){
 	        result.append(this.getTeamNumber());
 	        result.append("~");
+	        
+	        if ( this.getSubFactionName().trim().length() < 1 )
+	        	result.append(" ");
+	        else
+	        	result.append(this.getSubFactionName());
+	        result.append("~");
+	        
         }
-        
-        if ( this.getSubFactionName().trim().length() < 1 )
-        	result.append(" ");
-        else
-        	result.append(this.getSubFactionName());
-        result.append("~");
-        
-		return result.toString();
+
+        return result.toString();
 	}
 	
 	public void toDB() {
@@ -3525,4 +3526,45 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 		}
 	}
 
+	public void checkForDemotion(){
+		
+		SubFaction subfaction = getSubFaction();
+		
+		int access = Integer.parseInt(subfaction.getConfig("AccessLevel"));
+		int elo = Integer.parseInt(subfaction.getConfig("MinELO"));
+		int exp = Integer.parseInt(subfaction.getConfig("MinExp"));
+		
+		//can go any lower
+		if (  access < 1)
+			return;
+		
+		if ( elo > getRating() || exp > getExperience() ){
+			StringBuilder message = new StringBuilder(this.name);
+			message.append(" no longer meets the eligbility requirements for subfaction ");
+			message.append(subfaction.getConfig("Name"));
+			message.append(". He is eligible for the following:<br>");
+			for(SubFaction subFaction : getMyHouse().getSubFactionList().values() ){
+				
+				if ( access > Integer.parseInt(subFaction.getConfig("AccessLevel")) 
+						&& getRating() >= Integer.parseInt(subFaction.getConfig("MinELO"))
+						&& getExperience() >= Integer.parseInt(subFaction.getConfig("MinExp")) ){
+					message.append(subFaction.getConfig("Name"));
+					message.append(". <a href=\"MEKWARS/c demoteplayer#");
+					message.append(getName());
+					message.append("#");
+					message.append( subFaction.getConfig("Name"));
+					message.append("\">Click here to demote.</a><br>");
+				}
+				
+			}
+			message.append("None");
+			message.append(". <a href=\"MEKWARS/c demoteplayer#");
+			message.append(getName());
+			message.append("#");
+			message.append("None");
+			message.append("\">Click here to demote.</a><br>");
+
+			this.getMyHouse().sendMessageToHouseLeaders(message.toString());
+		}
+	} 
 }// end SPlayer()

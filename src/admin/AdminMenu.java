@@ -812,10 +812,24 @@ public class AdminMenu extends JMenu {
 	        if (factorySizestr == null || factorySizestr.length() == 0)
 	            return;
 
+	        String factoryBuildTable = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Factory Build Table");
+
+	        if (factoryBuildTable == null )
+	            return;
+
+	        String factoryAccessLevel = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Factory Access Level");
+
+	        if (factoryAccessLevel == null || factoryAccessLevel.length() == 0)
+	            return;
+
 	        StringBuilder sendCommand = new StringBuilder();
 	        sendCommand.append(planetNamestr.trim() + "#" + factoryName.trim()
 	                + "#" + factorySizestr.trim() + "#" + factionName.trim() + "#"
 	                + factoryTypeint);
+	        sendCommand.append("#");
+	        sendCommand.append(factoryBuildTable);
+	        sendCommand.append("#");
+	        sendCommand.append(factoryAccessLevel);
 
 	        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c admincreatefactory#" + sendCommand.toString());
 	        mwclient.reloadData();

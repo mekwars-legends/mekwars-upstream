@@ -96,6 +96,8 @@ public class PL extends Command {
 			player.setHouse(st.nextToken());
 		else if (cmd.equals("ST")) // set Technicians PL|ST|<number of techs>
 			player.setTechnicians(Integer.parseInt(st.nextToken()));
+		else if (cmd.equals("SSN")) // set Subfaction Name PL|SSN|Name of sub Faction;
+			player.setSubFaction(st.nextToken());
 		else if (cmd.equals("AAA"))//incoming autoarmy
 			player.setAutoArmy(st);//give it the whole tokenizer
 		else if (cmd.equals("AAM"))//incoming mines
@@ -112,6 +114,8 @@ public class PL extends Command {
 			player.setArmyLock(st.nextToken());
 		else if (cmd.equals("UU")) //update unit PL|UU|unitdata
 			player.updateUnitData(st);
+		else if (cmd.equals("UUMG")) //update unit PL|UUMG|id|location|selection
+			player.updateUnitMachineGuns(st);
 		else if (cmd.equals("BMW")){ //play a sound someone won the bm.
 			if(mwclient.getConfig().isParam("ENABLEBMSOUND"))
 				mwclient.doPlaySound(mwclient.getConfig().getParam("SOUNDONBMWIN"));
