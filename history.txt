@@ -2,6 +2,13 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.14.x
++ Removed all references of the blow files from the rest of the code.
+- Removed MMNetSerializable.java no longer used
+- Removed DatReader.java no longer used
+- Removed DatWriter.java no longer used
+- Removed XMLWriter.java no longer used
+- Removed TreeWriter.java no longer used
+- Removed TreeReader.java no longer used
 Release Client 0.2.14.1 & Server 0.2.14.2
 + Added more missing system message tags
 + RFE: check if player still meets min requirements for subfaction after Ops.

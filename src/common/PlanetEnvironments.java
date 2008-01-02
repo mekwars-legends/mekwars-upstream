@@ -21,9 +21,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-import common.persistence.MMNetSerializable;
-import common.persistence.TreeReader;
-import common.persistence.TreeWriter;
 import common.util.BinReader;
 import common.util.BinWriter;
 
@@ -38,7 +35,7 @@ import common.util.BinWriter;
  * TODO: simplify this class. subclass it from ArrayList or something like that   
  */
 @SuppressWarnings({"unchecked","serial"})
-public class PlanetEnvironments implements MMNetSerializable {
+public class PlanetEnvironments {
 
     /**
      * An terrain provider to get terrain information from.
@@ -168,7 +165,7 @@ public class PlanetEnvironments implements MMNetSerializable {
 
     /**
      * @see common.persistence.MMNetSerializable#binOut(common.persistence.TreeWriter)
-     */
+     *
     public void binOut(TreeWriter out) {
         out.write(size(), "terrain.size");
         for (Iterator it = continents.iterator(); it.hasNext();) {
@@ -180,10 +177,10 @@ public class PlanetEnvironments implements MMNetSerializable {
 
     /**
      * @see common.persistence.MMNetSerializable#binIn(common.persistence.TreeReader, common.CampaignData)
-     */
+     *
     public void binIn(TreeReader in, CampaignData dataProvider) throws IOException {
         int size = in.readInt("terrain.size");
         for (int i = 0; i < size; ++i)
             add(new Continent(in.readInt("size"),dataProvider.getTerrain(in.readInt("id"))));
-    }
+    }*/
 }

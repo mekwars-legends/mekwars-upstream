@@ -21,9 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
-import common.persistence.MMNetSerializable;
-import common.persistence.TreeReader;
-import common.persistence.TreeWriter;
 import common.util.BinReader;
 import common.util.BinWriter;
 
@@ -35,7 +32,7 @@ import common.util.BinWriter;
  * if you subclass PlanetEnvironment.
  */
 @SuppressWarnings({"unchecked","serial"})
-final public class PlanetEnvironment implements MMNetSerializable {
+final public class PlanetEnvironment{
     // id
     private int id = -1;
     private String Name = "";
@@ -1131,7 +1128,7 @@ final public class PlanetEnvironment implements MMNetSerializable {
     
     /**
      * Writes as binary stream
-     */
+     *
     public void binOut(TreeWriter out) {
         out.write(id, "id");
         out.write(id, "name");
@@ -1211,7 +1208,7 @@ final public class PlanetEnvironment implements MMNetSerializable {
 
     }
 	 
-
+*/
     /**
      * Read from a binary stream
      */
@@ -1295,7 +1292,7 @@ final public class PlanetEnvironment implements MMNetSerializable {
     
     /**
      * Read from a binary stream
-     */
+     *
     public void binIn(TreeReader in, CampaignData data) throws IOException {
         id = in.readInt("id");
         Name = in.readString("name");
@@ -1373,7 +1370,7 @@ final public class PlanetEnvironment implements MMNetSerializable {
         MountStyle = in.readInt("MountStyle");
 
     }
-
+*/
     /**
      * @return Returns the id.
      */

@@ -27,9 +27,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import megamek.common.TechConstants;
 
-import common.persistence.MMNetSerializable;
-import common.persistence.TreeReader;
-import common.persistence.TreeWriter;
 import common.util.BinReader;
 import common.util.BinWriter;
 import common.util.HTML;
@@ -38,7 +35,7 @@ import common.util.HTML;
  * @author Helge Richter
  *
  */
-public class House implements MMNetSerializable {
+public class House {
 
 	public static final int RED_VALUE = 0;
 	public static final int GREEN_VALUE = 1;
@@ -498,7 +495,7 @@ public class House implements MMNetSerializable {
 
     /**
      * @see common.persistence.MMNetSerializable#binOut(common.persistence.TreeWriter)
-     */
+     *
     public void binOut(TreeWriter out) {
     	
     	out.write(id.intValue(), "id");
@@ -535,7 +532,7 @@ public class House implements MMNetSerializable {
 
     /**
      * @see common.persistence.MMNetSerializable#binIn(common.persistence.TreeReader)
-     */
+     *
     public void binIn(TreeReader in, CampaignData dataProvider)throws IOException {
     	
     	for( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
@@ -573,7 +570,7 @@ public class House implements MMNetSerializable {
         for( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
         	basePilotSkills.set(pos,in.readString("factionBasePilotSkill"));
         }
-    }
+    }*/
     
 	/**
      * @get the unit price mod for a faction

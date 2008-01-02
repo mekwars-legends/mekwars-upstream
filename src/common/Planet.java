@@ -28,9 +28,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Vector;
 
-import common.persistence.MMNetSerializable;
-import common.persistence.TreeReader;
-import common.persistence.TreeWriter;
 import common.util.BinReader;
 import common.util.BinWriter;
 import common.util.Position;
@@ -40,7 +37,7 @@ import common.util.Position;
  *  
  */
 
-public class Planet implements Comparable<Object>, MutableSerializable, MMNetSerializable {
+public class Planet implements Comparable<Object>, MutableSerializable {
 
 	//VARIABLES
 	/**
@@ -620,7 +617,7 @@ public class Planet implements Comparable<Object>, MutableSerializable, MMNetSer
 
     /**
      * @see common.persistence.MMNetSerializable#binOut(common.persistence.TreeWriter)
-     */
+     *
     public void binOut(TreeWriter out) {
         out.write(this.getId(), "id");
         out.write(this.getName(), "name");
@@ -649,7 +646,7 @@ public class Planet implements Comparable<Object>, MutableSerializable, MMNetSer
 
     /**
      * @see common.persistence.MMNetSerializable#binIn(common.persistence.TreeReader)
-     */
+     *
     public void binIn(TreeReader in, CampaignData dataProvider) throws IOException {
     	this.setId(new Integer(in.readInt("id")));
     	this.setName(in.readString("name"));
@@ -685,7 +682,7 @@ public class Planet implements Comparable<Object>, MutableSerializable, MMNetSer
 
 
     }
-    
+    */
     public StringBuilder getAdvanceDescription(int level) {
 	            
 		StringBuilder result = new StringBuilder("Information for Planet: <b>");

@@ -29,9 +29,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import common.persistence.MMNetSerializable;
-import common.persistence.TreeReader;
-import common.persistence.TreeWriter;
 import common.util.BinReader;
 import common.util.BinWriter;
 
@@ -44,7 +41,7 @@ import common.util.BinWriter;
  * @author Imi (immanuel.scholz@gmx.de)
  */
 @SuppressWarnings({"unchecked","serial"})
-public class Influences implements MutableSerializable, MMNetSerializable {
+public class Influences implements MutableSerializable {
 
     /**
      * A hash table with key=House and value=Integer of the influences of the
@@ -372,7 +369,7 @@ public class Influences implements MutableSerializable, MMNetSerializable {
 
     /**
      * @see common.persistence.MMNetSerializable#binOut(common.persistence.TreeWriter)
-     */
+     *
     public void binOut(TreeWriter out) {
         Object h[] = influences.keySet().toArray();
         Arrays.sort(h, new Comparator(){
@@ -390,7 +387,7 @@ public class Influences implements MutableSerializable, MMNetSerializable {
 
     /**
      * @see common.persistence.MMNetSerializable#binIn(common.persistence.TreeReader)
-     */
+     *
     public void binIn(TreeReader in, CampaignData dataProvider) throws IOException {
         influences = new HashMap();
         int size = in.readInt("size");
@@ -400,7 +397,7 @@ public class Influences implements MutableSerializable, MMNetSerializable {
             influences.put((hid),(flu));
         }
     }
-    
+    */
     public void removeHouse(House house){
     	influences.remove(house.getId());
     }

@@ -18,7 +18,6 @@ package common;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,10 +31,6 @@ import megamek.common.AmmoType;
 
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-import common.persistence.DatWriter;
-import common.persistence.MMNetSerializable;
-import common.persistence.TreeReader;
-import common.persistence.TreeWriter;
 import common.util.BinReader;
 import common.util.BinWriter;
 import common.util.MMNetXStream;
@@ -60,7 +55,7 @@ import common.util.MMNetXStream;
  *
  * @author Imi (immanuel.scholz@gmx.de)
  */
-public class CampaignData implements TerrainProvider, MMNetSerializable {
+public class CampaignData implements TerrainProvider {
 	
     public static CampaignData cd;
     
@@ -460,7 +455,7 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
      * Saves itself to disk.
      * This uses the dynamic type of each object to make a copy as close to the
      * real data as possible. Use loadData() to read it back to memory.
-     */
+     *
     public void saveData(File directory) throws IOException {
         if (directory == null)
             throw new IllegalArgumentException("Please specify a directory.");
@@ -474,7 +469,7 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
         DatWriter datWriter = new DatWriter(directory.getPath()+"/CampaignData.dat");
         datWriter.write(this,"CampaignData");
         datWriter.close();
-    }
+    }*/
 
     /**
      * Loads itself back from disk.
@@ -527,7 +522,7 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
 
     /**
      * @see common.persistence.MMNetSerializable#binOut(common.persistence.TreeWriter)
-     */
+     *
     public void binOut(TreeWriter out) {
         out.write(terrains, "terrains");
         out.startDataBlock("factions");
@@ -544,11 +539,11 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
             out.write(p, "planet");
         }
         out.endDataBlock("planets");
-    }
+    }*/
 
     /**
      * @see common.persistence.MMNetSerializable#binIn(common.persistence.TreeReader)
-     */
+     *
     public void binIn(TreeReader in, CampaignData dataProvider) throws IOException {
         terrains.clear();
         in.startDataBlock("factions");
@@ -589,7 +584,7 @@ public class CampaignData implements TerrainProvider, MMNetSerializable {
         }
         in.endDataBlock("planets");
     }
-    
+    */
     /**
      * @author Torren (Jason Tighe)
      *

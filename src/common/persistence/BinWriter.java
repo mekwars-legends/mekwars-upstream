@@ -17,7 +17,6 @@
 package common.persistence;
 
 import java.io.PrintWriter;
-import java.util.Collection;
 
 import common.util.HTML;
 
@@ -31,7 +30,7 @@ import common.util.HTML;
  * 
  * @author Imi (immanuel.scholz@gmx.de)
  */
-public class BinWriter implements TreeWriter {
+public class BinWriter{
 
     /**
      * Output goes here
@@ -78,19 +77,19 @@ public class BinWriter implements TreeWriter {
 
     /**
      * @see common.persistence.TreeWriter#write(common.persistence.MMNetSerializable, java.lang.String)
-     */
+     *
     public void write(MMNetSerializable v, String name) {
         v.binOut(this);
     }
 
     /**
      * @see common.persistence.TreeWriter#write(java.util.Collection, java.lang.String)
-     */
+     *
     public void write(Collection<?> v, String name) {
         write(v.size(), null);
         for (Object it : v)
             write((MMNetSerializable)it,null);
-    }
+    }*/
 
     /**
      * @see common.persistence.TreeWriter#flush()

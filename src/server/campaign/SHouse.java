@@ -47,9 +47,6 @@ import common.CampaignData;
 import common.House;
 import common.SubFaction;
 import common.Unit;
-import common.persistence.MMNetSerializable;
-import common.persistence.TreeReader;
-import common.persistence.TreeWriter;
 import common.util.StringUtils;
 import common.util.UnitUtils;
 
@@ -65,7 +62,7 @@ import server.campaign.operations.ShortOperation;
 import server.campaign.pilot.SPilot;
 
 @SuppressWarnings( { "unchecked", "serial", "unused" })
-public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Comparable, ISeller, IBuyer {
+public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuyer {
    
     //store all online players in *THREE* hashes, one for each primary status
     private ConcurrentHashMap<String,SPlayer> reservePlayers = new ConcurrentHashMap<String,SPlayer>();
@@ -557,7 +554,7 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 	
 	/**
 	 * Save itself to a TreeWriter
-	 */
+	 *
 	@Override
 	public void binOut(TreeWriter out) {
 		super.binOut(out);
@@ -601,12 +598,12 @@ public class SHouse extends TimeUpdateHouse implements MMNetSerializable, Compar
 
 	/**
 	 * Save itself to a TreeWriter
-	 */
+	 *
 	@Override
 	public void binIn(TreeReader in, CampaignData data) throws IOException {
 		super.binIn(in, data);
 		setMoney(in.readInt("money"));
-	}
+	}*/
 
 	public String fromString(String s, Random r) {
 		try {

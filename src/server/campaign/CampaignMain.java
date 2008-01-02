@@ -22,7 +22,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.Serializable;
@@ -418,7 +417,7 @@ public final class CampaignMain implements Serializable {
 		this.addToNewsFeed("MekWars Server Started!");
 	}
 
-	public void saveData() {
+	/*public void saveData() {
 		try {
 			data.saveData(new File("campaign"));
 			/*
@@ -426,11 +425,11 @@ public final class CampaignMain implements Serializable {
 			 * (Iterator i = data.getAllHouses().iterator(); i.hasNext();) {
 			 * SHouse h = (SHouse) i.next(); xml.toXML(h.getMembers(), new
 			 * FileWriter("./campaign/members"+h.getName()+".xml")); }
-			 */
+			 
 		} catch (IOException e) {
 			MWServ.mwlog.errLog(e);
 		}
-	}
+	}*/
 
 	/**
 	 * Saves the current campaign state to a file system.

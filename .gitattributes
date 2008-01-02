@@ -1299,12 +1299,6 @@ src/common/comm/ServerCommand.java -text
 src/common/comm/TransportCodec.java -text
 src/common/persistence/BinReader.java -text
 src/common/persistence/BinWriter.java -text
-src/common/persistence/DatReader.java -text
-src/common/persistence/DatWriter.java -text
-src/common/persistence/MMNetSerializable.java -text
-src/common/persistence/TreeReader.java -text
-src/common/persistence/TreeWriter.java -text
-src/common/persistence/XMLWriter.java -text
 src/common/util/BinReader.java -text
 src/common/util/BinWriter.java -text
 src/common/util/HTML.java -text

@@ -20,14 +20,10 @@
  */
 package common;
 
-import common.persistence.MMNetSerializable;
-import common.persistence.TreeReader;
-import common.persistence.TreeWriter;
-
 /**
  * @author Helge Richter
  */
-public class Continent implements MMNetSerializable {
+public class Continent {
 	private PlanetEnvironment environment;
 	private int size = 1;
 	
@@ -73,11 +69,11 @@ public class Continent implements MMNetSerializable {
 		return environment;
 	}
 	
-   public void binOut(TreeWriter out)
+  /* public void binOut(TreeWriter out)
    {
        out.write(getEnvironment().getId(), "envID");
        out.write(getSize(), "size");
    }
    public void binIn(TreeReader in, CampaignData data){
-   }
+   }*/
 }

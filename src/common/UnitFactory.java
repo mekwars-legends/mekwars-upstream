@@ -26,9 +26,6 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import common.Unit;
-import common.persistence.MMNetSerializable;
-import common.persistence.TreeReader;
-import common.persistence.TreeWriter;
 import common.util.BinReader;
 import common.util.BinWriter;
 
@@ -37,7 +34,7 @@ import common.util.BinWriter;
  *
  */
 @SuppressWarnings({"unchecked","serial"})
-public class UnitFactory implements Serializable, MMNetSerializable {
+public class UnitFactory implements Serializable {
 	
 	private String name;
 	private String size;
@@ -351,7 +348,7 @@ public class UnitFactory implements Serializable, MMNetSerializable {
 		return result;
 	}
 	
-	public void binOut(TreeWriter out) {
+	/*public void binOut(TreeWriter out) {
 		out.write(getName(), "name");
 		out.write(getSize(), "size");
 		out.write(getFounder(), "founder");
@@ -359,13 +356,13 @@ public class UnitFactory implements Serializable, MMNetSerializable {
 		out.write(getRefreshSpeed(), "refreshspeed");
 		out.write(getType(),"type");
 		out.write(isLocked(), "factorylock");
-	}
+	}*/
 	
-	//for serializable
+	/*for serializable
 	public void binIn(TreeReader in, CampaignData data){
 		//empty. todo.
 	}
-	
+	*/
 	public int getWeightclass() {
 		if (getSize().equalsIgnoreCase("Light"))
 			return Unit.LIGHT;

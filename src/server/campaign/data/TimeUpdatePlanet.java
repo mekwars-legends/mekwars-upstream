@@ -16,16 +16,10 @@
 
 package server.campaign.data;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import common.CampaignData;
 import common.Influences;
 import common.Planet;
-import common.persistence.TreeReader;
-import common.persistence.TreeWriter;
 import common.util.Position;
 
 
@@ -73,7 +67,7 @@ public class TimeUpdatePlanet extends Planet {
 	
     /**
      * Writing itself into a stream
-     */
+     *
     @Override
 	public void binOut(TreeWriter out) {
         super.binOut(out);
@@ -83,7 +77,7 @@ public class TimeUpdatePlanet extends Planet {
 
     /**
      * Reading itself from a stream
-     */
+     *
     @Override
 	public void binIn(TreeReader in, CampaignData data) throws IOException {
         super.binIn(in, data);
@@ -93,5 +87,5 @@ public class TimeUpdatePlanet extends Planet {
 		} catch (ParseException e) {
 			throw new IOException("corrupted date format");
 		}
-    }
+    }*/
 }

@@ -16,15 +16,9 @@
 
 package server.campaign.data;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import common.CampaignData;
 import common.House;
-import common.persistence.TreeReader;
-import common.persistence.TreeWriter;
 
 
 
@@ -65,7 +59,7 @@ public class TimeUpdateHouse extends House {
     
     /**
      * Writing itself into a stream
-     */
+     *
     @Override
 	public void binOut(TreeWriter out) {
         super.binOut(out);
@@ -75,7 +69,7 @@ public class TimeUpdateHouse extends House {
 
     /**
      * Reading itself from a stream
-     */
+     *
     @Override
 	public void binIn(TreeReader in, CampaignData data) throws IOException {
         super.binIn(in, data);
@@ -85,5 +79,5 @@ public class TimeUpdateHouse extends House {
 		} catch (ParseException e) {
 			throw new IOException("corrupted date format");
 		}
-    }
+    }*/
 }

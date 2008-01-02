@@ -25,13 +25,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-import common.CampaignData;
 import common.MegaMekPilotOption;
 import common.campaign.pilot.skills.PilotSkill;
 import common.campaign.pilot.skills.PilotSkills;
-import common.persistence.MMNetSerializable;
-import common.persistence.TreeReader;
-import common.persistence.TreeWriter;
 
 
 /**
@@ -39,7 +35,7 @@ import common.persistence.TreeWriter;
  *
  */
 @SuppressWarnings({"unchecked","serial"})
-public class Pilot implements MMNetSerializable {
+public class Pilot {
 
 	private int gunnery = 4;
 	private int piloting = 5;
@@ -236,20 +232,6 @@ public class Pilot implements MMNetSerializable {
 		return megamekOptions;
 	}
 	
-	 public void binOut(TreeWriter out)
-    {
-        out.write(getName(), "name");
-        out.write(getGunnery(), "gunnery");
-        out.write(getPiloting(), "piloting");
-        out.write(getExperience(), "experience");
-        out.write(getHits(),"hits");
-        out.write(megamekOptions,"megamekoptions");
-      }
-	 
-    public void binIn(TreeReader in, CampaignData data){
-    	
-    }
-    
     public int getKills(){
         return kills;
     }

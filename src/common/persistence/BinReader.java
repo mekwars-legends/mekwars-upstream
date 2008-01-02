@@ -18,9 +18,6 @@ package common.persistence;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Collection;
-
-import common.CampaignData;
 
 /**
  * Reads compact data from a stream written with BinWriter. No data structure
@@ -30,7 +27,7 @@ import common.CampaignData;
  * @author Imi (immanuel.scholz@gmx.de)
  */
 @SuppressWarnings({"unchecked","serial"})
-public class BinReader implements TreeReader {
+public class BinReader {
     private BufferedReader in;
 
     /**
@@ -85,14 +82,14 @@ public class BinReader implements TreeReader {
 
     /**
      * @see common.persistence.TreeReader#readObject(common.persistence.MMNetSerializable, java.lang.String)
-     */
+     *
     public void readObject(MMNetSerializable obj, CampaignData dataProvider, String name) throws IOException {
         obj.binIn(this, dataProvider);
-    }
+    }*/
 
     /**
      * @see common.persistence.TreeReader#readCollection(java.util.Collection, java.lang.String)
-     */
+     *
     public void readCollection(
             Collection col, 
             Class cl, 
@@ -111,5 +108,5 @@ public class BinReader implements TreeReader {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 }
