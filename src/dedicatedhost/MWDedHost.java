@@ -1261,7 +1261,7 @@ public final class MWDedHost implements IClient {
 	}
 	
 	public boolean isAdmin(){
-		return this.getUser(this.getUsername()).getUserlevel() == 200;
+		return this.getUser(this.getUsername()).getUserlevel() >= 200;
 	}
 	
 	public boolean isMod(){
