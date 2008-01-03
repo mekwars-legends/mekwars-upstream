@@ -227,7 +227,7 @@ public final class SUnit extends Unit implements Serializable {
 	/**
 	 * Return the number of techs/bays required for a unit of given size/type.
 	 */
-	public static int getHangarSpaceRequired(int typeid, int weightclass, int baymod, String model) {
+	public static int getHangarSpaceRequired(int typeid, int weightclass, int baymod, String model, SHouse faction) {
 		
 		if (typeid == Unit.PROTOMEK)
 		    return 0;
@@ -244,7 +244,10 @@ public final class SUnit extends Unit implements Serializable {
 		
 		int result = 1;
 		String techAmount = "TechsFor"+Unit.getWeightClassDesc(weightclass)+Unit.getTypeClassDesc(typeid);
-		result = CampaignMain.cm.getIntegerConfig(techAmount);
+		if ( faction != null )
+			result = faction.getIntegerConfig(techAmount);
+		else
+			result = CampaignMain.cm.getIntegerConfig(techAmount);
         
         if (!CampaignMain.cm.isUsingAdvanceRepair())//Apply Pilot Mods (Astech skill)
     		result += baymod;
@@ -256,24 +259,24 @@ public final class SUnit extends Unit implements Serializable {
 		return result;
 	}
 	
-	public static int getHangarSpaceRequired(int typeid, int weightclass, int baymod, String model, boolean unitSupported) {
+	public static int getHangarSpaceRequired(int typeid, int weightclass, int baymod, String model, boolean unitSupported, SHouse faction) {
 		if (unitSupported)
-			return getHangarSpaceRequired(typeid, weightclass, baymod, model);
-		return (int)(getHangarSpaceRequired(typeid, weightclass, baymod, model) * CampaignMain.cm.getFloatConfig("NonFactionUnitsIncreasedTechs"));
+			return getHangarSpaceRequired(typeid, weightclass, baymod, model, faction);
+		return (int)(getHangarSpaceRequired(typeid, weightclass, baymod, model, faction) * CampaignMain.cm.getFloatConfig("NonFactionUnitsIncreasedTechs"));
 	}
 	
 	/**
 	 * Pass-through method that gets the number of bays/techs required for a given unit
 	 * by drawing its characteristics and feeding them to getHangarSpaceRequired(int,int,int,String).
 	 */
-	public static int getHangarSpaceRequired(SUnit u) {
-		return SUnit.getHangarSpaceRequired(u.getType(),u.getWeightclass(),u.getPilot().getBayModifier(),u.getModelName());
+	public static int getHangarSpaceRequired(SUnit u, SHouse faction) {
+		return SUnit.getHangarSpaceRequired(u.getType(),u.getWeightclass(),u.getPilot().getBayModifier(),u.getModelName(), faction);
 	}
 	
-	public static int getHangarSpaceRequired(SUnit u, boolean unitSupported) {
+	public static int getHangarSpaceRequired(SUnit u, boolean unitSupported, SHouse faction) {
 		if(unitSupported)
-			return SUnit.getHangarSpaceRequired(u.getType(),u.getWeightclass(),u.getPilot().getBayModifier(),u.getModelName());
-		return SUnit.getHangarSpaceRequired(u.getType(),u.getWeightclass(),u.getPilot().getBayModifier(),u.getModelName(), unitSupported);
+			return SUnit.getHangarSpaceRequired(u.getType(),u.getWeightclass(),u.getPilot().getBayModifier(),u.getModelName(), faction);
+		return SUnit.getHangarSpaceRequired(u.getType(),u.getWeightclass(),u.getPilot().getBayModifier(),u.getModelName(), unitSupported, faction);
 	}
 	
 	/**

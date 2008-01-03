@@ -361,9 +361,9 @@ public class CPlayer extends Player {
 		 * let it go.
 		 * --Torren
 		 */
-		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c GetFactionConfigs#"+mwclient.getserverConfigs("TIMESTAMP"));
+		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c getfactionconfigs#"+mwclient.getserverConfigs("TIMESTAMP"));
 		
-		/*
+        /*
 		 * Now that we have a house set, we can check for BM
 		 * access properly. Do the BM buy and sell button checks.
 		 */

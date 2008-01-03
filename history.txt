@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.14.x
++ Added example to BV Precent difference to show how doubles work
++ Bug: Tech/Bay's per unit in Faction configs not being used.
 + New MegaMek.jar 0.33.15-MW010208-5362
 + Bug: Operations editor not working in stand alone
 + More System Message tags added

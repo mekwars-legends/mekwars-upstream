@@ -268,7 +268,7 @@ public class RequestCommand implements Command {
 		if (hasEnoughMoney && hasEnoughInfluence && factionHasEnoughPP) {
 
 			//check to make sure the player has enough support for the unit requested
-			int spaceTaken = SUnit.getHangarSpaceRequired(type_id, weightclass,0,"null");
+			int spaceTaken = SUnit.getHangarSpaceRequired(type_id, weightclass,0,"null",p.getMyHouse());
 			if (spaceTaken > p.getFreeBays()) {
 				needsMoreTechs = true;
 			}

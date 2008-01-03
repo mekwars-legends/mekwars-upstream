@@ -99,7 +99,7 @@ public class TransferUnitCommand implements Command {
 			CampaignMain.cm.toUser(targetplayer.getName() + " is not in your faction. You cannot send him units.", Username, true);
 			return;
 			//Target has no room?
-		} else if (targetplayer.getFreeBays() < SUnit.getHangarSpaceRequired(m) && !usesTechs) {
+		} else if (targetplayer.getFreeBays() < SUnit.getHangarSpaceRequired(m,targetplayer.getMyHouse()) && !usesTechs) {
 			//on a tech server, can accept units past limit. theyre just marked unmaintained
 			CampaignMain.cm.toUser(targetplayer.getName() + " has no room for that unit.", Username, true);
 			return;

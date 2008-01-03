@@ -97,7 +97,7 @@ public class DirectSellUnitCommand implements Command {
 		}
 
 		//Target has no room?
-		if (pBuyer.getFreeBays() < SUnit.getHangarSpaceRequired(m) && !usesTechs) {
+		if (pBuyer.getFreeBays() < SUnit.getHangarSpaceRequired(m,pBuyer.getMyHouse()) && !usesTechs) {
 			//on a tech server, can accept units past limit. theyre just marked unmaintained
 			CampaignMain.cm.toUser(pBuyer.getName() + " has no room for that unit.", seller, true);
 			return;

@@ -516,7 +516,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         BaseTextField = new JTextField(5);
         rangesBox.add(new JLabel("Max % BV Difference:",SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>Double Field. Max % BV diffence between Attacker and defneder.<br>Default 0%</html>");
+        BaseTextField.setToolTipText("<html>Double Field. Max % BV diffence between Attacker and defneder.<br>Example .05 = 5% 1.5 = 150%. Default = 0%</html>");
         BaseTextField.setName("MaxBVPercent");
         rangesBox.add(BaseTextField);
 

@@ -71,7 +71,7 @@ public class SetMaintainedCommand implements Command {
 			return;
 		}
 		
-		int unitSpace = SUnit.getHangarSpaceRequired(unitToSet);
+		int unitSpace = SUnit.getHangarSpaceRequired(unitToSet,p.getMyHouse());
 		if (p.getFreeBays() < unitSpace) {
 			
 			/*

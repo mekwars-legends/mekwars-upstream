@@ -158,7 +158,7 @@ public class RequestDonatedCommand implements Command {
         }
 
         //check to make sure the player has enough support for the unit requested. if not, send hire and buy links.
-		int spaceTaken = SUnit.getHangarSpaceRequired(type_id, weightclass,0,"null");
+		int spaceTaken = SUnit.getHangarSpaceRequired(type_id, weightclass,0,"null",p.getMyHouse());
 		if (spaceTaken > p.getFreeBays()) {//if only needs more technicians
 			int techCost = p.getTechHiringFee();
             if ( useBays )
