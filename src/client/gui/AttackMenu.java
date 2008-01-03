@@ -277,7 +277,7 @@ public class AttackMenu extends JMenu implements ActionListener {
 				
 				if (!allOps.containsKey(currName)) {
 					
-					mwclient.updateOpData();
+					mwclient.updateOpData(false);
 					
 					if (!allOps.containsKey(currName)) {
 						MWClient.mwClientLog.clientErrLog("Error in updateMenuItems(): no _" + currName + "_ in allOps.");

@@ -1032,6 +1032,9 @@ public class OperationManager {
 			MWServ.mwlog.errLog("Error while creating operations directories.");
 		}
 		
+		ops.clear();
+		mods.clear();
+		
 		/*
 		 * read the shortoperation's subdir and do loads. since every
 		 * long has a corresponding short, its possible to do loads

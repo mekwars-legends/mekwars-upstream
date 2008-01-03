@@ -33,6 +33,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -132,6 +133,16 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 		if ( o != null )
 			this.mwclient = o;
 		
+		String logFileName = "./logs/opeditorlog.txt";
+		try {
+			PrintStream ps = new PrintStream(new BufferedOutputStream(new FileOutputStream(logFileName), 64));
+			System.setOut(ps);
+			System.setErr(ps);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu();
 		JMenu createMenu = new JMenu();

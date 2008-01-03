@@ -437,7 +437,6 @@ public final class MWClient implements IClient {
 					System.exit(0);//exit, if they so choose
 			}
 			
-			allOps = new TreeMap<String, String[]>();
 			this.setupAllOps();
 		
 		}
@@ -1513,6 +1512,7 @@ public final class MWClient implements IClient {
 	 */
 	public void setupAllOps() {
 		
+		allOps = new TreeMap<String, String[]>();
 		try {
 			
 			File f = new File(cacheDir + "/OpList.txt");
@@ -3083,8 +3083,11 @@ public final class MWClient implements IClient {
         return Config.isParam("DEDICATED");
     }
     
-	public void updateOpData(){
+	public void updateOpData(boolean deleteCache){
 		try{
+			if ( deleteCache)
+				new File(cacheDir + "/OpList.txt").delete();
+
 			dataFetcher.checkForMostRecentOpList();
 			setupAllOps();
 		}

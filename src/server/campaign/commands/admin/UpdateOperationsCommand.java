@@ -49,7 +49,7 @@ public class UpdateOperationsCommand implements Command {
         
         CampaignMain.cm.doSendModMail("NOTE",Username+" ops manager updated.");
         
-        CampaignMain.cm.doSendToAllOnlinePlayers("PL|UDAO|1",false);
         CampaignMain.cm.updateAllOnlinePlayerArmies();
+        CampaignMain.cm.doSendToAllOnlinePlayers("PL|UDAO|1",false);
     }
 }//end RetrieveOperation

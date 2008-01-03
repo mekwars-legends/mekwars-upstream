@@ -197,7 +197,9 @@ public class PL extends Command {
         	mwclient.getPlayer().getPartsCache().clear();
         }
         else if ( cmd.equals("UDAO") ) {
-        	mwclient.updateOpData();
+        	mwclient.updateOpData(true);
+        	if ( !mwclient.isDedicated() )
+        		mwclient.getMainFrame().updateAttackMenu();
         }
         else if ( cmd.equals("RMF") ) {
         	mwclient.retrieveMul(st.nextToken());

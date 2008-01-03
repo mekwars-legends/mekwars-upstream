@@ -2269,21 +2269,28 @@ public final class CampaignMain implements Serializable {
 	 */
 	public void updateAllOnlinePlayerArmies() {
 
+		doSendToAllOnlinePlayers("PL|UOE|CLEAR", false);
 		for (House vh : data.getAllHouses()) {
 			SHouse h = (SHouse) vh;
 			for (SPlayer currPlayer : h.getReservePlayers().values()) {
-				for (SArmy a : currPlayer.getArmies())
+				for (SArmy a : currPlayer.getArmies()){
+					a.getLegalOperations().clear();
 					CampaignMain.cm.getOpsManager().checkOperations(a, true);
+				}
 			}
 
 			for (SPlayer currPlayer : h.getActivePlayers().values()) {
-				for (SArmy a : currPlayer.getArmies())
+				for (SArmy a : currPlayer.getArmies()){
+					a.getLegalOperations().clear();
 					CampaignMain.cm.getOpsManager().checkOperations(a, true);
+				}
 			}
 
 			for (SPlayer currPlayer : h.getFightingPlayers().values()) {
-				for (SArmy a : currPlayer.getArmies())
+				for (SArmy a : currPlayer.getArmies()){
+					a.getLegalOperations().clear();
 					CampaignMain.cm.getOpsManager().checkOperations(a, true);
+				}
 			}
 		}
 	}

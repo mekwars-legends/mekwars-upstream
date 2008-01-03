@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.14.x
++ RFE: Client/Server do a full op update when UpdateOperations is called
++ Bug: List of valid Ops not updated on the server when Ops Manger is updated
++ Bug: OpEditor not built with common.util.SpringLayoutHelper
 + Added Solaris Training Company to factions.xml
 + Added ISNEWBIE tag to XMLFactionDataParser
 + Added example to BV Precent difference to show how doubles work

@@ -205,7 +205,7 @@
 			compress="true"
 			destfile="${opeditor}"
 			excludes="server/**,admin/**,dedicatedhost/**"
-			includes="OperationsEditor/**,common/DefaultOperation*"
+			includes="OperationsEditor/**,common/DefaultOperation*,common/util/SpringLayoutHelper*"
 			jarfile="${opeditor}"
 			manifest="OpEditorManifest.txt"
 		>

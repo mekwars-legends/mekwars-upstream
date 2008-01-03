@@ -747,6 +747,14 @@ public class CPlayer extends Player {
 	 */
 	public void updateOperations(String data) {
 		
+		
+		if ( data.equals("CLEAR") ){
+			for ( CArmy army : this.getArmies() ){
+				army.getLegalOperations().clear();
+			}
+			return;
+		}
+		
 		StringTokenizer tokenizer = new StringTokenizer(data, "*");
 		int armyID = Integer.parseInt(tokenizer.nextToken());
 		CArmy army = this.getArmy(armyID);
@@ -1251,7 +1259,6 @@ public class CPlayer extends Player {
 
 		SubFaction mySubFaction = myHouse.getSubFactionList().get(subFactionName);
 		if ( mySubFaction == null ){
-			MWClient.mwClientLog.clientErrLog("subFaction: "+subFactionName+" is null ");
 			return 0;
 		}
 		
