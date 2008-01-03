@@ -105,6 +105,17 @@
       <INHOUSEATTACKS>true</INHOUSEATTACKS>
       <ID>11</ID>
     </FACTION>
+    <FACTION>
+      <NAME>Solaris Training Company</NAME>
+      <MONEY>180</MONEY>
+      <COLOR>#33CCCC</COLOR>
+      <ABBREVIATION>SOL</ABBREVIATION>
+      <LOGO>http://www.megamek.com/NoLogo.jpg</LOGO>
+      <CONQUERABLE>false</CONQUERABLE>
+      <INHOUSEATTACKS>true</INHOUSEATTACKS>
+      <ISNEWBIE>true</ISNEWBIE>
+      <ID>12</ID>
+    </FACTION>
   </MEGAMEKNETFACTIONDATA>
 </DOCUMENT>
 

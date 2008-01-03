@@ -28,6 +28,7 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 import server.MWServ;
+import server.campaign.NewbieHouse;
 import server.campaign.SHouse;
 import server.campaign.mercenaries.MercHouse;
 
@@ -52,6 +53,7 @@ public class XMLFactionDataParser implements XMLResponder {
 	boolean inHouseAttacks = false;
 	boolean canDefectFrom = true;
 	boolean canDefectTo = true;
+	boolean isNewbie = false;
 	
 	Vector<SHouse> Factions = new Vector<SHouse>(1,1);
 	
@@ -203,8 +205,11 @@ public class XMLFactionDataParser implements XMLResponder {
 			idcounter++;
 			if (this.isMercenary)
 				h = new MercHouse(idcounter, Name,Color,BaseGunner,BasePilot,Abbreviation);
+			else if ( this.isNewbie )
+				h = new NewbieHouse(idcounter, Name,Color,BaseGunner,BasePilot,Abbreviation);
 			else
 				h = new SHouse(idcounter, Name,Color,BaseGunner,BasePilot,Abbreviation);
+			
 			if (Logo != null)
 				h.setLogo(Logo);
 			h.setInHouseAttacks(inHouseAttacks);
@@ -215,6 +220,7 @@ public class XMLFactionDataParser implements XMLResponder {
 			this.Money = 0;
 			this.Color = "#00FF00";
 			this.isMercenary = false;
+			this.isNewbie = false;
 			this.Abbreviation = null;
 			this.Logo = null;
 			this.BaseGunner=4;
@@ -265,6 +271,8 @@ public class XMLFactionDataParser implements XMLResponder {
 			canDefectTo = Boolean.parseBoolean(charData);
 		else if (lastElement.equalsIgnoreCase("DEFECTFROM"))
 			canDefectFrom = Boolean.parseBoolean(charData);
+		else if (lastElement.equalsIgnoreCase("ISNEWBIE"))
+			isNewbie = Boolean.parseBoolean(charData);
 	}
 	
 	public void recordComment(String comment) {
