@@ -144,7 +144,7 @@ public class ShortValidator {
 	public static final int SFAIL_ATTACK_ACTIVEONLY   = 249;//"OnlyAllowedFromActive", but player is trying to use via AttackFromReserve
     public static final int SFAIL_ATTACK_MAXNONINFANTRY  = 250;//"MaxAttackerNonInfantry" - unit ceiling, construction prop
     public static final int SFAIL_ATTACK_MINNONINFANTRY  = 251;//"MinAttackerNonInfantry" - unit floor, contruction prop 
-	//public static final int SFAIL_ATTACK = 250;
+	//public static final int SFAIL_ATTACK = 252;
 	
 	/*
 	 * Failure codes for defender-specific checks.
@@ -203,6 +203,7 @@ public class ShortValidator {
 	//public static final int SFAIL_DEFEND = 449; --- HOLD! This synchs with ATTACK_ACTIVEONLY. Skip/hold so others props can match.
     public static final int SFAIL_DEFEND_MAXNONINFANTRY = 450;//MaxDefenderInfantry - unit ceiling, contruction prop
     public static final int SFAIL_DEFEND_MINNONINFANTRY = 451;//MinDefenderInfantry - unit floor, contruction prop
+    public static final int SFAIL_DEFEND_NON_CONQ_PLANET = 452;//Defending this op would allow for conquer point exchange and planet is non-conquer
 	
 	//CONSTRUCTORS
 	public ShortValidator(OperationManager m) {
@@ -859,6 +860,15 @@ public class ShortValidator {
 		if (!dp.getMyHouse().isConquerable() && !nonConqCanDefend)
 			failureReasons.add(SFAIL_DEFEND_NON_CONQ_D);
 		
+		if ( (o.getIntValue("AttackerBaseConquestAmount") > 0
+				|| o.getIntValue("AttackerConquestBVAdjustment") > 0
+				|| o.getIntValue("AttackerConquestUnitAdjustment") > 0
+				|| o.getIntValue("DefenderBaseConquestAmount") > 0
+				|| o.getIntValue("DefenderConquestBVAdjustment") > 0
+				|| o.getIntValue("DefenderConquestUnitAdjustment") > 0) 
+				&& !target.isConquerable() )
+			failureReasons.add(SFAIL_DEFEND_NON_CONQ_PLANET);
+		
 		//faction checks
 		String allowed = o.getValue("LegalDefendFactions");
 		String notAllowed = o.getValue("IllegalDefendFactions");
@@ -1180,8 +1190,8 @@ public class ShortValidator {
 			//if verbose, inform the players
 			if (display) {
 				
-				String addSend = "Army #" + a.getID();
-				String removeSend = "Army #" + a.getID();
+				String addSend = "AM:Army #" + a.getID();
+				String removeSend = "AM:Army #" + a.getID();
 				
 				//add messages
 				if (addNames.size() == 1) {
@@ -1563,6 +1573,9 @@ public class ShortValidator {
                 
             case SFAIL_DEFEND_NOPOWERINF://"StandardAllowed," but BA or Protos present, contruction prop
 				return " the army contains armored infantry, which may not participate in this type of defense";
+				
+            case SFAIL_DEFEND_NON_CONQ_PLANET://defender or attacker might gain conquest points and the planet cannot be conquered
+            	return " the planet is non-conqerable and this operation allows for conqest";
 
 		}
 		

@@ -2326,19 +2326,19 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField = new JTextField(5);
 		attackerPanel.add(new JLabel("Factory Units Taken:",SwingConstants.TRAILING));
         BaseTextField.setToolTipText("<html>Base number of units taken by winning attacker<br>from factories on the planet</html>");
-        BaseTextField.setName("AttackerBaseUnitsTaken");
+        BaseTextField.setName("AttackerBaseFactoryUnitsTaken");
 		attackerPanel.add(BaseTextField);
 		
         BaseTextField = new JTextField(5);
 		attackerPanel.add(new JLabel("Factory Units BV Mod:",SwingConstants.TRAILING));
         BaseTextField.setToolTipText("BV to take an additonal factory unit");
-        BaseTextField.setName("AttackerUnitsBVAdjustment");
+        BaseTextField.setName("AttackerFactoryUnitsBVAdjustment");
 		attackerPanel.add(BaseTextField);
 		
         BaseTextField = new JTextField(5);
 		attackerPanel.add(new JLabel("Factory Units Unit Mod:",SwingConstants.TRAILING));
         BaseTextField.setToolTipText("units to take an additional factory unit (confusing!)");
-        BaseTextField.setName("AttackerUnitsUnitAdjustment");
+        BaseTextField.setName("AttackerFactoryUnitsUnitAdjustment");
 		attackerPanel.add(BaseTextField);
 		
         BaseTextField = new JTextField(5);

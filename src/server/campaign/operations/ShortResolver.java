@@ -2368,24 +2368,18 @@ public class ShortResolver {
 						 * sure there is actually land to gain - an attacker who
 						 * already owns 100% of a world should gain nothing.
 						 */
-						int totalConquest = o
-								.getIntValue("AttackerBaseConquestAmount");
-						int conquestUnitAdjust = o
-								.getIntValue("AttackerConquestUnitAdjustment");
-						int conquestBVAdjust = o
-								.getIntValue("AttackerConquestBVAdjustment");
+						int totalConquest = o.getIntValue("AttackerBaseConquestAmount");
+						int conquestUnitAdjust = o.getIntValue("AttackerConquestUnitAdjustment");
+						int conquestBVAdjust = o.getIntValue("AttackerConquestBVAdjustment");
 						if (conquestUnitAdjust > 0)
-							totalConquest += Math.floor(so.getStartingUnits()
-									/ conquestUnitAdjust);
+							totalConquest += Math.floor(so.getStartingUnits() / conquestUnitAdjust);
 						if (conquestBVAdjust > 0)
-							totalConquest += Math.floor(so.getStartingBV()
-									/ conquestBVAdjust);
+							totalConquest += Math.floor(so.getStartingBV() / conquestBVAdjust);
 						if (totalConquest > conquestCap)
 							totalConquest = conquestCap;
 
 						// Drop % to 0 if either group is non-conquer
-						if (!aWinner.getMyHouse().isConquerable()
-								|| !aLoser.getMyHouse().isConquerable())
+						if (!aWinner.getMyHouse().isConquerable() || !aLoser.getMyHouse().isConquerable())
 							totalConquest = 0;
 
 						// Drop to 0 is the planet is non-conquerable
@@ -2394,10 +2388,7 @@ public class ShortResolver {
 
 						// make the % adjustment. This zeros totalConquest if
 						// there is nothing to gain.
-						totalConquest = so.getTargetWorld().doGainInfluence(
-								aWinner.getHouseFightingFor(),
-								aLoser.getHouseFightingFor(), totalConquest,
-								false);
+						totalConquest = so.getTargetWorld().doGainInfluence(aWinner.getHouseFightingFor(),aLoser.getHouseFightingFor(), totalConquest,false);
 
 						if (totalConquest > 0) {
 							hasLoss = true;
@@ -2519,19 +2510,14 @@ public class ShortResolver {
 						 * situation which arises frequently with shorts. This,
 						 * they have downward/reduced spillover.
 						 */
-						int unitsToCapture = o
-								.getIntValue("AttackerBaseUnitsTaken");
-						int unitUnitAdjust = o
-								.getIntValue("AttackerUnitsUnitAdjustment");
-						int unitBVAdjust = o
-								.getIntValue("AttackerUnitsBVAdjustment");
+						int unitsToCapture = o.getIntValue("AttackerBaseUnitsTaken");
+						int unitUnitAdjust = o.getIntValue("AttackerUnitsUnitAdjustment");
+						int unitBVAdjust = o.getIntValue("AttackerUnitsBVAdjustment");
 						
 						if (unitUnitAdjust > 0)
-							unitsToCapture += Math.floor(so.getStartingUnits()
-									/ unitUnitAdjust);
+							unitsToCapture += Math.floor(so.getStartingUnits()/ unitUnitAdjust);
 						if (unitBVAdjust > 0)
-							unitsToCapture += Math.floor(so.getStartingBV()
-									/ unitBVAdjust);
+							unitsToCapture += Math.floor(so.getStartingBV()/ unitBVAdjust);
 						if (unitsToCapture > unitCaptureCap)
 							unitsToCapture = unitCaptureCap;
 
@@ -2548,12 +2534,10 @@ public class ShortResolver {
 							 * mechs.
 							 */
 							ArrayList<SUnitFactory> factoriesSearched = new ArrayList<SUnitFactory>();
-							while (factoriesSearched.size() < target
-									.getFactoryCount()) {
+							while (factoriesSearched.size() < target.getFactoryCount()) {
 
 								// get a random factory
-								SUnitFactory currFacility = target
-										.getRandomUnitFactory();
+								SUnitFactory currFacility = target.getRandomUnitFactory();
 
 								// if we've already searched this factory
 								// before, skip
@@ -2578,20 +2562,13 @@ public class ShortResolver {
 									boolean noUnits = false;
 									while (!noUnits
 											&& numCaptured < unitsToCapture) {
-										SUnit captured = aLoser
-												.getHouseFightingFor()
-												.getEntity(currWeight, type);
+										SUnit captured = aLoser.getHouseFightingFor().getEntity(currWeight, type);
 										if (captured == null)
 											noUnits = true;
 										else {
 											capturedUnits.add(captured);
-											loserHSUpdates.append(aLoser
-													.getHouseFightingFor()
-													.getHSUnitRemovalString(
-															captured));
-											winnerHSUpdates.append(aWinner
-													.getHouseFightingFor()
-													.addUnit(captured, false));
+											loserHSUpdates.append(aLoser.getHouseFightingFor().getHSUnitRemovalString(captured));
+											winnerHSUpdates.append(aWinner.getHouseFightingFor().addUnit(captured, false));
 											numCaptured++;
 										}
 									}// end while(units remain in this
@@ -3122,8 +3099,7 @@ public class ShortResolver {
 							totalConquest = conquestCap;
 
 						// Drop % to 0 if either group is non-conquer
-						if (!aWinner.getMyHouse().isConquerable()
-								|| !aLoser.getMyHouse().isConquerable())
+						if (!aWinner.getMyHouse().isConquerable()|| !aLoser.getMyHouse().isConquerable())
 							totalConquest = 0;
 
 						// Drop % to 0 if the planet is non-conquerable
@@ -3132,10 +3108,7 @@ public class ShortResolver {
 
 						// make the % adjustment. This zeros totalConquest if
 						// there is nothing to gain.
-						totalConquest = so.getTargetWorld().doGainInfluence(
-								aWinner.getHouseFightingFor(),
-								aLoser.getHouseFightingFor(), totalConquest,
-								false);
+						totalConquest = so.getTargetWorld().doGainInfluence(aWinner.getHouseFightingFor(),aLoser.getHouseFightingFor(), totalConquest,false);
 
 						if (totalConquest > 0) {
 							hasLoss = true;

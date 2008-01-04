@@ -203,7 +203,7 @@ public class AttackFromReserveCommand implements Command {
 
         //if target player can't defend, return
         if (defendingArmies.size() == 0){
-            CampaignMain.cm.toUser(dp.getName()+ "AM: cannot defend your attack with his current force(s).",Username,true);
+            CampaignMain.cm.toUser("AM:"+dp.getName()+ " cannot defend your attack with his current force(s).",Username,true);
             return;
         }
         
@@ -212,7 +212,7 @@ public class AttackFromReserveCommand implements Command {
         
         //send messages informing the involved players
         CampaignMain.cm.toUser("AM:Your attack proposal was sent to "+ dp.getName(),Username,true);
-        StringBuilder toSend = new StringBuilder(ap.getName()+" proposes you a game of "+o.getName()+" on planet "+target.getNameAsColoredLink()+" with "+aa.getAmountOfUnits()+" units totalling "+aa.getBV()+" BV. You may accept with:  <br>");
+        StringBuilder toSend = new StringBuilder("AM:"+ap.getName()+" proposes you a game of "+o.getName()+" on planet "+target.getNameAsColoredLink()+" with "+aa.getAmountOfUnits()+" units totalling "+aa.getBV()+" BV. You may accept with:  <br>");
         
         //give clickables to potential defender
         for (SArmy currArmy : defendingArmies) {

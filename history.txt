@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.14.x
++ Added check for non conqest target planet in a conquest operation
++ Added Set conquerable config to Planet editor
 + DB-enabled client with email required now makes sure that the email
 	address is valid (not functional, just valid)
 + Groundwork laid for moving players between house forums when defecting

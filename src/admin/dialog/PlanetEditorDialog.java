@@ -135,6 +135,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 	private final JCheckBox isStaticMapCB = new JCheckBox();
 	private final JCheckBox isVacuumCB = new JCheckBox();
 	private final JCheckBox isHomeWorldCB = new JCheckBox();
+	private final JCheckBox isConquerable = new JCheckBox();
 	
 	//STOCK DIALOUG AND PANE
 	private JDialog dialog;
@@ -447,6 +448,11 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		isHomeWorldCB.setText("HomeWorld");
 		isHomeWorldCB.setSelected(this.selectedPlanet.isHomeWorld());
 		panel1.add(isHomeWorldCB);
+
+		isConquerable.setText("Conquerable");
+		isConquerable.setSelected(this.selectedPlanet.isConquerable());
+		isConquerable.setToolTipText("If Checked then conquer points can be taken from this planet");
+		panel1.add(isConquerable);
 
 		JPanel panel2 = new JPanel();
 		panel2.add(new JLabel("MinOwnerShip:",JLabel.TRAILING));
@@ -875,6 +881,10 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 
 		isHomeWorldCB.setText("HomeWorld");
 		isHomeWorldCB.setSelected(this.selectedPlanet.isHomeWorld());
+		
+		isConquerable.setText("Conquerable");
+		isConquerable.setSelected(this.selectedPlanet.isConquerable());
+
 		ownersMap.clear();
 		
 		houseNames.removeAllItems();
@@ -1251,6 +1261,10 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c SetPlanetConquerPoints#"+planetName+"#"+planetConquerPoints.getText());
 		if ( isHomeWorldCB.isSelected() != selectedPlanet.isHomeWorld() )
 			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c Adminsethomeworld#"+planetName+"#"+isHomeWorldCB.isSelected());
+		
+		if ( isConquerable.isSelected() != selectedPlanet.isConquerable())
+			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c SetPlanetConquer#"+planetName+"#"+isConquerable.isSelected());
+
 		if ( !planetBays.getText().equals(Integer.toString(this.selectedPlanet.getBaysProvided())) )
 			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c Setplanetwarehouse#"+planetName+"#"+planetBays.getText());
 		if ( !planetComps.getText().equals(Integer.toString(this.selectedPlanet.getCompProduction())) )

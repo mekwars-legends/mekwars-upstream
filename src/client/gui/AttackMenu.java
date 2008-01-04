@@ -58,6 +58,7 @@ import client.gui.dialog.PlayerNameDialog;
 
 public class AttackMenu extends JMenu implements ActionListener {
 	
+	
 	/**
      * 
      */
@@ -66,6 +67,23 @@ public class AttackMenu extends JMenu implements ActionListener {
 	private MWClient mwclient;
 	private int armyID;
 	private String planetName;
+	
+	//Statics 
+	private static int OPRANGE = 0;
+	private static int OPCOLOR = 1;
+	//private static int OPLONG = 2;
+	private static int OPFACINFO = 3;
+	private static int OPHOMEINFO = 4;
+	private static int OPLAUNCHON = 5;
+	private static int OPLAUNCHFROM = 6;
+	private static int OPMINOWN = 7;
+	private static int OPMAXOWN = 8;
+	private static int OPLEGALDEFENDERS = 9;
+	private static int OPALLOWEDPLANETFLAGS = 10;
+	private static int OPDISALLOWEDPLANETFLAGS = 11;
+	private static int OPAFR = 12;
+	private static int OPACTIVE = 13;
+	private static int OPACCESSLEVEL = 14;
 	
 	//CONSTRUCTOR
 	public AttackMenu(MWClient mwclient, int armyID, String planetName) {
@@ -134,19 +152,18 @@ public class AttackMenu extends JMenu implements ActionListener {
 					String[] opProps = mwclient.getAllOps().get(currOpName);
 					
 					//load relevant properties, and the players house ID
-					double range = Double.parseDouble(opProps[0]);
-					String facInfo = opProps[3];
-                    String homeInfo = opProps[4];
-					int launchOn = Integer.parseInt(opProps[5]);
-					int launchFrom = Integer.parseInt(opProps[6]);
-					int minOwn = Integer.parseInt(opProps[7]);
-					int maxOwn = Integer.parseInt(opProps[8]);
-					String legalDefenders = opProps[9];
-					String allowPlanetFlags = opProps[10]+"^";
-                    String disallowPlanetFlags = opProps[11]+"^";
-                    //boolean reserveOnly is 12. Checked below, after this else statement is done.
-					//boolean activeOnly is 13. Unused in updateMenuItems. See cmdAttackFromReserve below.
-                    int minAccessLevel = Integer.parseInt(opProps[14]);
+					double range = Double.parseDouble(opProps[AttackMenu.OPRANGE]);
+					String facInfo = opProps[AttackMenu.OPFACINFO];
+                    String homeInfo = opProps[AttackMenu.OPHOMEINFO];
+					int launchOn = Integer.parseInt(opProps[AttackMenu.OPLAUNCHON]);
+					int launchFrom = Integer.parseInt(opProps[AttackMenu.OPLAUNCHFROM]);
+					int minOwn = Integer.parseInt(opProps[AttackMenu.OPMINOWN]);
+					int maxOwn = Integer.parseInt(opProps[AttackMenu.OPMAXOWN]);
+					String legalDefenders = opProps[AttackMenu.OPLEGALDEFENDERS];
+					String allowPlanetFlags = opProps[AttackMenu.OPALLOWEDPLANETFLAGS]+"^";
+                    String disallowPlanetFlags = opProps[AttackMenu.OPDISALLOWEDPLANETFLAGS]+"^";
+                    boolean reserveOnly = Boolean.parseBoolean(opProps[AttackMenu.OPAFR]);
+                    int minAccessLevel = Integer.parseInt(opProps[AttackMenu.OPACCESSLEVEL]);
                     
                     //Your sub faction is not allowed to use this!
                     if ( accessLevel < minAccessLevel)
@@ -216,6 +233,10 @@ public class AttackMenu extends JMenu implements ActionListener {
                             continue;
                     }
                     
+                    //AFR games do not show up in the AttackMenu/Star Map Menu/HQ
+                    if ( reserveOnly )
+                    	continue;
+                    
                     //Check for disallowed planet flags. If the planet has one of these flags
                     // The planet will not be allowed.
                     if ( disallowPlanetFlags.length() > 0){
@@ -257,17 +278,6 @@ public class AttackMenu extends JMenu implements ActionListener {
 				}//end for(all ops in tempEligibles)
 			}//end else(need to filter for range and factories)
 			
-			/*
-             * Filter out games that are reserve-only. Attack menus in HQ, CMainFrame and
-             * on the map may only be used to start games when a player is active, so 
-             */
-            Iterator<String> i = allEligibles.iterator();
-            while (i.hasNext()) {
-            	String[] currProperties = mwclient.getAllOps().get(i.next());
-            	if (Boolean.parseBoolean(currProperties[12]))//12 is reserve only
-            		i.remove();
-            }
-
 			if (allEligibles.size() <= 0) {
 				JMenuItem filler = new JMenuItem("None");
 				this.add(filler);
@@ -293,7 +303,7 @@ public class AttackMenu extends JMenu implements ActionListener {
 				}
 				
 				String[] settings = allOps.get(currName);
-				String color = settings[1];
+				String color = settings[AttackMenu.OPCOLOR];
 				//String hasLong = settings[2];//int, not a boolean
 	            
 				//we don't care about range here, but we do
@@ -347,8 +357,17 @@ public class AttackMenu extends JMenu implements ActionListener {
     	                continue;
     				}
     				
+
+
     				String[] settings = allOps.get(currName);
-    				String color = settings[1];
+    				/*
+    	             * Filter out games that are reserve-only. Attack menus in HQ, CMainFrame and
+    	             * on the map may only be used to start games when a player is active, so 
+    	             */
+   	            	if (Boolean.parseBoolean(settings[AttackMenu.OPAFR]))//12 is reserve only
+   	            		continue;
+
+   	            	String color = settings[AttackMenu.OPCOLOR];
     				//String hasLong = settings[2];//int, not a boolean
     	            
     				//we don't care about range here, but we do
@@ -539,7 +558,7 @@ public class AttackMenu extends JMenu implements ActionListener {
             Iterator<String> i = allEligibles.iterator();
             while (i.hasNext()) {
             	String[] currProperties = mwclient.getAllOps().get(i.next());
-            	if (Boolean.parseBoolean(currProperties[13]))//13 is active only
+            	if (Boolean.parseBoolean(currProperties[AttackMenu.OPACTIVE]))//13 is active only
             		i.remove();
             }
 
