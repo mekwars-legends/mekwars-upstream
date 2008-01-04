@@ -30,8 +30,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.Pattern;
-
 import client.MWClient;
 
 public final class RegisterNameDialog implements ActionListener {
