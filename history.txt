@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.14.x
++ BB-Synching server will now assign/revoke users forum rights to house
+	forums on enroll, unenroll, and defect commands
+	NOTE: This is not yet in effect for force defects.
 + Added check for non conqest target planet in a conquest operation
 + Added Set conquerable config to Planet editor
 + DB-enabled client with email required now makes sure that the email

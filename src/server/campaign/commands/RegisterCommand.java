@@ -117,7 +117,8 @@ public class RegisterCommand implements Command {
             	CampaignMain.cm.MySQL.setPlayerAccess(CampaignMain.cm.MySQL.getPlayerIDByName(Username), level);
             	if(CampaignMain.cm.isSynchingBB()) {
            			CampaignMain.cm.MySQL.addUserToForum(Username, pw, email);
-           			player.setForumID(CampaignMain.cm.MySQL.getUserForumID(Username, email));  			
+           			player.setForumID(CampaignMain.cm.MySQL.getUserForumID(Username, email));
+           			CampaignMain.cm.MySQL.addUserToHouseForum(player.getForumID(), player.getMyHouse().getForumID());
             	}
             }
             //acknowledge registration

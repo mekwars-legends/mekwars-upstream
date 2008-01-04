@@ -496,6 +496,10 @@ public class DefectCommand implements Command {
 			p.getMyHouse().removeLeader(p.getName());
 			
 			String clientVersion = p.getPlayerClientVersion();
+			if(CampaignMain.cm.isSynchingBB()) {
+				CampaignMain.cm.MySQL.removeUserFromHouseForum(p.getForumID(), p.getMyHouse().getForumID());
+				CampaignMain.cm.MySQL.addUserToHouseForum(p.getForumID(), newHouse.getForumID());
+			}
 			p.getMyHouse().removePlayer(p,false);
 			p.setMyHouse(newHouse);
 			p.setSubFaction(newHouse.getZeroLevelSubFaction());

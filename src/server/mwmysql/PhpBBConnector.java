@@ -97,12 +97,39 @@ public class PhpBBConnector {
 		  }
 	  }
 	  
-	  public void addToHouseForum(int userID, int forumID) {
-		  
+	  public void addToHouseForum(int userID, int houseForumID) {
+		  if(userID < 1) {
+			  MWServ.mwlog.dbLog("User ID < 1 in addToHouseForum, exiting");
+			  return;
+		  }
+		  try {
+			  PreparedStatement ps = con.prepareStatement("SELECT count(*) as num from " + userGroupTable + " WHERE group_id = " + houseForumID + " AND user_id = " + userID);
+			  ResultSet rs = ps.executeQuery();
+			  if(rs.next())
+				  if(rs.getInt("num") > 0)
+					  removeFromHouseForum(userID, houseForumID);
+			  rs.close();
+			  ps.close();
+			  ps = con.prepareStatement("INSERT into " + userGroupTable + " set group_id = "+ houseForumID + ", user_id = " + userID + ", user_pending=0");
+			  ps.executeUpdate();
+			  ps.close();
+			} catch (SQLException e) {
+			  MWServ.mwlog.dbLog("SQLException in PhpBBConnector.addToHouseForum: " + e.getMessage());
+		  }
 	  }
 	  
-	  public void removeFromHouseForum(int userID, int ForumID) {
-		  
+	  public void removeFromHouseForum(int userID, int forumID) {
+		  if(userID < 1) {
+			  MWServ.mwlog.dbLog("User ID < 1 in removeFromHouseForum, exiting");
+			  return;
+		  }
+		  try {
+			  PreparedStatement ps = con.prepareStatement("DELETE from " + userGroupTable + " WHERE group_id = " + forumID + " AND user_id = " + userID);
+			  ps.executeUpdate();
+			  ps.close();
+		  } catch (SQLException e) {
+			  MWServ.mwlog.dbLog("SQLException in PhpBBConnector.removeFromHouseForum: " + e.getMessage());
+		  }
 	  }
 	  
 	  public int getHouseForumID(String houseForumName) {

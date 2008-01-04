@@ -64,6 +64,14 @@ public class mysqlHandler{
 	  phpBBCon.addToForum(name, pass, email);
   }
   
+  public void addUserToHouseForum(int userID, int forumID) {
+	  phpBBCon.addToHouseForum(userID, forumID);
+  }
+  
+  public void removeUserFromHouseForum(int userID, int houseForumID) {
+	  phpBBCon.removeFromHouseForum(userID, houseForumID);
+  }
+  
   public void backupDB(long time) {
 	  MySQLCon.backupDB(time);
   }

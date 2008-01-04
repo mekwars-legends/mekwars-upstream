@@ -96,6 +96,9 @@ public class UnenrollCommand implements Command {
 		}
 		
 		//checks passed. do the actual removal.
+		if(CampaignMain.cm.isSynchingBB()) {
+			CampaignMain.cm.MySQL.removeUserFromHouseForum(p.getForumID(), hisfaction.getForumID());
+		}
 		hisfaction.removePlayer(p, CampaignMain.cm.getBooleanConfig("DonateUnitsUponUnenrollment"));
 
 		//tell the user
