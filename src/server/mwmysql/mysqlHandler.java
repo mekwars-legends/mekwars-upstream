@@ -25,7 +25,7 @@ public class mysqlHandler{
   private PlayerHandler plh = null;
   private PhpBBConnector phpBBCon = null;
 
-  private final int currentDBVersion = 17;
+  private final int currentDBVersion = 18;
   
   public void closeMySQL(){
 	  MySQLCon.close();

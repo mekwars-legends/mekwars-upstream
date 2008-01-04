@@ -78,7 +78,7 @@ public void loadPlanets(CampaignData data) {
  		      p.setPosition(new Position(rs.getFloat("pXpos"), rs.getFloat("pYpos")));
 			  p.setDescription(rs.getString("pDesc"));
 			  p.setBaysProvided(rs.getInt("pBays"));
-			  p.setConquerable(Boolean.parseBoolean(rs.getString("pIsConquerable")));
+			  p.setConquerable(rs.getBoolean("pIsConquerable"));
 			  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 			  try {
 				  p.setTimestamp(sdf.parse(rs.getString("pLastChanged")));
@@ -94,11 +94,11 @@ public void loadPlanets(CampaignData data) {
 			  p.setBoardSize(new Dimension(rs.getInt("pBoardSizeWidth"), rs.getInt("pBoardSizeHeight")));
 			  p.setTemp(new Dimension(rs.getInt("pTempWidth"), rs.getInt("pTempHeight")));
 			  p.setGravity(rs.getFloat("pGravity"));
-			  p.setVacuum(Boolean.parseBoolean(rs.getString("pVacuum")));
+			  p.setVacuum(rs.getBoolean("pVacuum"));
 			  p.setNightChance(rs.getInt("pNightChance"));
 			  p.setNightTempMod(rs.getInt("pNightTempMod"));
 			  p.setMinPlanetOwnerShip(rs.getInt("pMinPlanetOwnership"));
-			  p.setHomeWorld(Boolean.parseBoolean(rs.getString("pIsHomeworld")));
+			  p.setHomeWorld(rs.getBoolean("pIsHomeworld"));
 			  p.setOriginalOwner(rs.getString("pOriginalOwner"));
 			  p.setConquestPoints(rs.getInt("pMaxConquestPoints"));
 			  p.setName(rs.getString("pName"));

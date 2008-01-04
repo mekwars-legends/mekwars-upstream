@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.14.x
++ Bug: Planet booleans (isConquerable, isVacuum, isHomeworld) not saving properly
+	in DB-enabled server
++ Update DB to v18
 + BB-Synching server will now assign/revoke users forum rights to house
 	forums on enroll, unenroll, and defect commands
 	NOTE: This is not yet in effect for force defects.

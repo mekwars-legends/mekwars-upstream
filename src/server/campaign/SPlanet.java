@@ -201,7 +201,7 @@ Comparable<Object> {
 				  ps.setDouble(3, getPosition().getY());
 				  ps.setString(4, getDescription());
 				  ps.setInt(5, getBaysProvided());
-				  ps.setString(6, String.valueOf(isConquerable()));
+				  ps.setBoolean(6,isConquerable());
 				  ps.setString(7, sdf.format(getLastChanged()));
 				  ps.setInt(8, getId());
 				  ps.setInt(9, getMapSize().width);
@@ -211,11 +211,11 @@ Comparable<Object> {
 				  ps.setInt(13, getTemp().width);
 				  ps.setInt(14, getTemp().height);
 				  ps.setDouble(15, getGravity());
-				  ps.setString(16, String.valueOf(isVacuum()));
+				  ps.setBoolean(16, isVacuum());
 				  ps.setInt(17, getNightChance());
 				  ps.setInt(18, getNightTempMod());
 				  ps.setInt(19, getMinPlanetOwnerShip());
-				  ps.setString(20, String.valueOf(isHomeWorld()));
+				  ps.setBoolean(20, isHomeWorld());
 				  ps.setString(21, getOriginalOwner());
 				  ps.setInt(22, getConquestPoints());
 				  ps.setString(23, getName());
