@@ -237,6 +237,10 @@ public class FactionHandler {
 				h.setUsedMekBayMultiplier(Float.parseFloat(h.getConfig("UsedPurchaseCostMulti")));
 				if(CampaignMain.cm.isUsingIncreasedTechs())
 					h.addCommonUnitSupport();
+				if(CampaignMain.cm.isSynchingBB()) {
+					h.setForumName(h.getConfig("ForumGroupName"));
+					h.setForumID(CampaignMain.cm.MySQL.getHouseForumID(h.getForumName()));
+				}
 				MWServ.mwlog.dbLog("Faction " + h.getName() + " loaded");
 				}
 			rs.close();

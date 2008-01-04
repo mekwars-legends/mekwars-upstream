@@ -112,11 +112,12 @@ public class RegisterCommand implements Command {
             if (player != null){
             	CampaignMain.cm.doSendToAllOnlinePlayers("PI|DA|" + CampaignMain.cm.getPlayerUpdateString(player),false);
             }
-            if(CampaignMain.cm.isUsingMySQL()) {
+            if(CampaignMain.cm.isUsingMySQL() && player != null) {
             	CampaignMain.cm.MySQL.setPlayerPassword(CampaignMain.cm.MySQL.getPlayerIDByName(Username), pw);
             	CampaignMain.cm.MySQL.setPlayerAccess(CampaignMain.cm.MySQL.getPlayerIDByName(Username), level);
             	if(CampaignMain.cm.isSynchingBB()) {
            			CampaignMain.cm.MySQL.addUserToForum(Username, pw, email);
+           			player.setForumID(CampaignMain.cm.MySQL.getUserForumID(Username, email));  			
             	}
             }
             //acknowledge registration

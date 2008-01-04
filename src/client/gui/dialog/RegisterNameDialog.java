@@ -30,6 +30,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Pattern;
+
 import client.MWClient;
 
 public final class RegisterNameDialog implements ActionListener {
@@ -40,7 +42,8 @@ public final class RegisterNameDialog implements ActionListener {
 	private final JTextField usernameField = new JTextField();
 	private final JPasswordField passwordField1 = new JPasswordField();
 	private final JPasswordField passwordField2 = new JPasswordField();
-	private final JTextField emailField = new JTextField();
+	private final JTextField emailField1 = new JTextField();
+	private final JTextField emailField2 = new JTextField();
 	
 	private final JButton okayButton = new JButton("OK");
 	private final JButton cancelButton = new JButton("Cancel");
@@ -58,7 +61,8 @@ public final class RegisterNameDialog implements ActionListener {
 		usernameField.addActionListener(this);
 		passwordField1.addActionListener(this);
 		passwordField2.addActionListener(this);
-		emailField.addActionListener(this);
+		emailField1.addActionListener(this);
+		emailField2.addActionListener(this);
 		okayButton.addActionListener(this);
 		cancelButton.addActionListener(this);
 		
@@ -66,10 +70,11 @@ public final class RegisterNameDialog implements ActionListener {
 		usernameField.setToolTipText("Username to register");
 		passwordField1.setToolTipText("Password to set.");
 		passwordField2.setToolTipText("Confirm password.");
-		emailField.setToolTipText("Email address.");
+		emailField1.setToolTipText("Email address.");
+		emailField2.setToolTipText("Confirm email address.");
 		
 		//Create the panel holding the labels and text fields
-		JPanel fieldPanel = new JPanel(new GridLayout(4,2), false);
+		JPanel fieldPanel = new JPanel(new GridLayout(5,2), false);
 		fieldPanel.add(new JLabel("Username: ", SwingConstants.LEFT));
 		fieldPanel.add(usernameField);
 		fieldPanel.add(new JLabel("Password1: ", SwingConstants.LEFT));
@@ -78,7 +83,9 @@ public final class RegisterNameDialog implements ActionListener {
 		fieldPanel.add(passwordField2);
 		if(Boolean.parseBoolean(mwclient.getserverConfigs("REQUIREEMAILFORREGISTRATION"))) {
 			fieldPanel.add(new JLabel("Email: ", SwingConstants.LEFT));
-			fieldPanel.add(emailField);
+			fieldPanel.add(emailField1);
+			fieldPanel.add(new JLabel("Confirm Email: ", SwingConstants.LEFT));
+			fieldPanel.add(emailField2);
 		}
 				
 		
@@ -118,21 +125,37 @@ public final class RegisterNameDialog implements ActionListener {
 			String pass1 = String.valueOf(passwordField1.getPassword());
 			String pass2 = String.valueOf(passwordField2.getPassword());
 			
-			if (!pass1.equals(pass2)) {
-				String toUser = "CH|CLIENT: Passwords did not match. Registration failed.";
-		    	mwclient.doParseDataInput(toUser);
-			}
+			boolean emailValid = false;
+			boolean passwordValid = false;
+			StringBuilder toUser = new StringBuilder();
 			
-			else {
+			if (!pass1.equals(pass2)) 
+				toUser.append("CH|CLIENT: Passwords did not match. Registration failed.<br>");
+			else
+				passwordValid = true;
+			
+			if (Boolean.parseBoolean(mwclient.getserverConfigs("REQUIREEMAILFORREGISTRATION"))) {
+				if (emailField1.getText().equalsIgnoreCase(emailField2.getText()))
+					if(emailIsValid(emailField1.getText().toUpperCase()))
+						emailValid = true;
+					else
+						toUser.append("CH|CLIENT: " + emailField1.getText() + " is not a valid email address. Registration failed.<br>");
+				else
+					toUser.append("CH|CLIENT: Email fields did not match.  Registration failed.");
+			} else
+				emailValid = true;
+			
+			if(emailValid && passwordValid) {
 				if(Boolean.parseBoolean(mwclient.getserverConfigs("REQUIREEMAILFORREGISTRATION"))) {
-					mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "register " + usernameField.getText() + "," + emailField.getText() + "," + String.valueOf(passwordField1.getPassword()));
+					mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "register " + usernameField.getText() + "," + emailField1.getText() + "," + String.valueOf(passwordField1.getPassword()));
 				} else {
 					mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "register " + usernameField.getText() + "," + String.valueOf(passwordField1.getPassword()));
 				}
-			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setclientversion#" + mwclient.myUsername.trim()+ "#" + MWClient.CLIENT_VERSION);
+			} else {
+						mwclient.doParseDataInput(toUser.toString());
+				}
 			}
-			
-		}
+		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setclientversion#" + mwclient.myUsername.trim()+ "#" + MWClient.CLIENT_VERSION);
 		
 		dialog.dispose();
 	}
@@ -147,5 +170,10 @@ public final class RegisterNameDialog implements ActionListener {
 			pane.setValue(cancelButton);
 			dialog.dispose();
 		}
+	}
+	
+	private boolean emailIsValid(String email) {
+		return email.matches("[A-Z0-9._%+-]+@([A-Z0-9.-]+.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|name|aero|biz|info|jobs|museum)");
+		 
 	}
 }

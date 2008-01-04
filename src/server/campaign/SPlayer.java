@@ -133,6 +133,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
     private UnitComponents unitParts = new UnitComponents();
     
     private int DBId = 0;
+    private int forumID = 0;
     
     boolean isLoading = false; //Player was getting saved multiple times during loading.  Just seemed silly.
     
@@ -2788,7 +2789,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				sql.append("playerAutoReorder = ?, ");
 				sql.append("playerTeamNumber = ?, ");
 
-				sql.append("playerSubFactionName = ?");
+				sql.append("playerSubFactionName = ?, ");
+				sql.append("playerForumID = ?");
 				ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 				ps.setString(1, getName());
 				ps.setInt(2, getMoney());
@@ -2831,6 +2833,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				ps.setInt(24, getTeamNumber());
 
 				ps.setString(25, this.getSubFactionName().trim().length() < 1 ? " " : getSubFactionName());
+				ps.setInt(26, getForumID());
+				
 				ps.executeUpdate();
 				ResultSet rs = ps.getGeneratedKeys();
 				rs.next();
@@ -2872,7 +2876,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				sql.append("playerPassTime= ?, ");
 				sql.append("playerTeamNumber= ?, ");
 
-				sql.append("playerSubFactionName = ? ");
+				sql.append("playerSubFactionName = ?, ");
+				sql.append("playerForumID = ? ");
 				sql.append("WHERE playerID = ?");
 	
 				ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
@@ -2927,7 +2932,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 				ps.setInt(26, getTeamNumber());
 
 				ps.setString(27, (this.getSubFactionName().trim().length() < 1) ? " " : getSubFactionName());
-				ps.setInt(28, getDBId());
+				ps.setInt(28, getForumID());
+				ps.setInt(29, getDBId());
 				ps.executeUpdate();
 
 			}
@@ -3264,6 +3270,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			experience = rs.getInt("playerExperience");
 			
 			units = new Vector<SUnit>(1,1);
+			forumID = rs.getInt("playerForumID");
 			
 			rs1 = stmt1.executeQuery("SELECT MWID from units WHERE uplayerID = " + playerID);
 			while(rs1.next()) {
@@ -3468,6 +3475,14 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 	public void setDBId(int id) {
 		this.DBId = id;
 		this.personalPilotQueue.setOwnerID(id);
+	}
+	
+	public void setForumID(int id) {
+		this.forumID = id;
+	}
+	
+	public int getForumID() {
+		return forumID;
 	}
 	
 	public void setTeamNumber(int team){

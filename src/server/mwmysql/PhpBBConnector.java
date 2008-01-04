@@ -97,20 +97,52 @@ public class PhpBBConnector {
 		  }
 	  }
 	  
-	  public void addToHouseForum(int userID, String forumName) {
+	  public void addToHouseForum(int userID, int forumID) {
 		  
 	  }
 	  
-	  public void removeFromHouseForum(int userID, String forumName) {
+	  public void removeFromHouseForum(int userID, int ForumID) {
 		  
 	  }
 	  
-	  public int getHouseForumID(String houseName) {
-		  return 0;
+	  public int getHouseForumID(String houseForumName) {
+		  int forumID=0;
+		  try {
+			  PreparedStatement ps = con.prepareStatement("SELECT group_id from " + groupsTable + " WHERE group_name = ?");
+			  ps.setString(1, houseForumName);
+			  ResultSet rs = ps.executeQuery();
+			  if(rs.next()) {
+				  forumID = rs.getInt("group_id");
+			  }
+			  rs.close();
+			  ps.close();
+			  MWServ.mwlog.dbLog("Searching for forumID for house " + houseForumName + ": " + forumID);
+		  } catch (SQLException e) {
+			  MWServ.mwlog.dbLog("SQLException in PhpBBConnector.getHouseForumID: " + e.getMessage());
+		  }
+		  return forumID;
+	  }
+	  
+	  public int getUserForumID(String userName, String userEmail) {
+		  int userID = 0;
+		  try {
+			  PreparedStatement ps = con.prepareStatement("SELECT user_id from " + userTable + " WHERE (username = ? AND user_email = ?)");
+			  ps.setString(1, userName);
+			  ps.setString(2, userEmail);
+			  ResultSet rs = ps.executeQuery();
+			  if(rs.next()) {
+				  userID = rs.getInt("user_id");
+			  }
+			  rs.close();
+			  ps.close();
+		  } catch (SQLException e) {
+			  MWServ.mwlog.dbLog("SQLException in PhpBBConnector.getUserForumID: " + e.getMessage());
+		  }
+		  return userID;
 	  }
 	  
 	  public void addToForum(String name, String pass, String email) {
-		  if(userExistsInForum(name, email))
+		  if(userExistsInForum(name, email)) 
 			  return;
 		  // The don't exist, using that email.  The username might still be taken
 		  if(userExistsInForum(name))

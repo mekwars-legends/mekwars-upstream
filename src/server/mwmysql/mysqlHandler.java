@@ -25,7 +25,7 @@ public class mysqlHandler{
   private PlayerHandler plh = null;
   private PhpBBConnector phpBBCon = null;
 
-  private final int currentDBVersion = 16;
+  private final int currentDBVersion = 17;
   
   public void closeMySQL(){
 	  MySQLCon.close();
@@ -453,6 +453,10 @@ public class mysqlHandler{
   
   public int getHouseForumID(String houseName) {
 	  return phpBBCon.getHouseForumID(houseName);
+  }
+  
+  public int getUserForumID(String userName, String userEmail) {
+	  return phpBBCon.getUserForumID(userName, userEmail);
   }
   
   public mysqlHandler(){

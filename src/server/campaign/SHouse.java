@@ -2262,6 +2262,10 @@ public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuy
 			CampaignMain.cm.toUser(toSend.toString(), realName, false);
 		}
 
+		if (CampaignMain.cm.isSynchingBB() && p.getForumID() < 1) {
+				// Not a valid forum ID
+				CampaignMain.cm.doSendModMail("NOTE", p.getName() + " does not have a valid forum account.");
+		}
 		
 		//send the player the latest data from the factionbays
 		p.setLastOnline(System.currentTimeMillis());//must be done after smallplayer creation
@@ -2915,8 +2919,14 @@ public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuy
 	public int getForumID() {
 		if(forumID > 0)
 			return forumID;
+		if(!CampaignMain.cm.isSynchingBB())
+			return 0;
 		forumID = CampaignMain.cm.MySQL.getHouseForumID(this.getForumName());
 			return forumID;
+	}
+	
+	public void setForumID(int fID) {
+		forumID = fID;
 	}
 	
 	

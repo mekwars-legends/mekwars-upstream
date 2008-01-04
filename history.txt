@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.14.x
++ DB-enabled client with email required now makes sure that the email
+	address is valid (not functional, just valid)
++ Groundwork laid for moving players between house forums when defecting
++ DB updated to v17
 + RFE: Client/Server do a full op update when UpdateOperations is called
 + Bug: List of valid Ops not updated on the server when Ops Manger is updated
 + Bug: OpEditor not built with common.util.SpringLayoutHelper
