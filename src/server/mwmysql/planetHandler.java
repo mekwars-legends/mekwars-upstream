@@ -51,7 +51,6 @@ public class planetHandler {
 		  Statement stmt = con.createStatement();
 		  stmt.executeUpdate("DELETE from planets WHERE PlanetID = " + PlanetID);
 		  stmt.executeUpdate("DELETE from planetenvironments WHERE PlanetID = " + PlanetID);
-		  stmt.executeUpdate("DELETE from planetfactories WHERE PlanetID = " + PlanetID);
 		  stmt.executeUpdate("DELETE from planetflags WHERE PlanetID = " + PlanetID);
 		  stmt.executeUpdate("DELETE from planetinfluences WHERE PlanetID = " + PlanetID);
 		  stmt.close();
