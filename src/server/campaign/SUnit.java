@@ -640,6 +640,7 @@ public final class SUnit extends Unit implements Serializable {
 //			 Save the pilot
 			if (getPilot().getGunnery()!=99){
 				((SPilot)getPilot()).toDB(getType(), getWeightclass());
+				CampaignMain.cm.MySQL.linkPilotToUnit(((SPilot)getPilot()).getDBId(), getDBId());
 			}
 		} catch (SQLException e){
 			MWServ.mwlog.dbLog("SQL Exception in SaveUnit.toDB: " + e.getMessage());
