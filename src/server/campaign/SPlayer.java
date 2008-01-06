@@ -1537,6 +1537,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 			// We also have to remove the armies.
 			CampaignMain.cm.MySQL.clearArmies(getDBId());
 				for (SUnit currU : units) {
+					SPilot p = (SPilot) currU.getPilot();
+					CampaignMain.cm.MySQL.deletePilot(p.getDBId());
 					CampaignMain.cm.MySQL.deleteUnit(currU.getDBId());
 				}
 			}				

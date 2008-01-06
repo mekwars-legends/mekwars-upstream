@@ -22,6 +22,7 @@ import server.campaign.SPlayer;
 import server.campaign.SUnit;
 import common.campaign.pilot.Pilot;
 import server.campaign.commands.Command;
+import server.campaign.pilot.SPilot;
 import server.MWChatServer.auth.IAuthenticator;
 
 /**
@@ -80,8 +81,12 @@ public class AdminScrapCommand implements Command {
 		CampaignMain.cm.doSendModMail("NOTE",Username + " scrapped a "+ m.getModelName() + " belonging to " + targetName);
 		
 		//then do it
-		if(CampaignMain.cm.isUsingMySQL())
-			CampaignMain.cm.MySQL.deleteUnit(m.getDBId());
+		if(CampaignMain.cm.isUsingMySQL()) {
+			// If there's a pilot, remove him first
+			SPilot p = (SPilot)m.getPilot();
+			CampaignMain.cm.MySQL.deletePilot(p.getDBId());
+			CampaignMain.cm.MySQL.deleteUnit(m.getDBId());			
+		}
 		target.removeUnit(unitID, true);
 		
 	}
