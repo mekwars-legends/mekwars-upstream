@@ -67,6 +67,7 @@ public class RegisterCommand implements Command {
                 return;
             }
             
+            
             //Check to see if the Username is already registered
             boolean regged = false;
             try {

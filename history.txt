@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.14.x
++ Added new ammo cost code (needs to be tested)
 + Bug: SOL pilots not being saved properly
 + Bug: Stale data left in DB on stripunits and adminscrap processing
 + New MegaMek.java 0.33.15-MW010508-5362

@@ -112,9 +112,8 @@ public class SetUnitAmmoByCritCommand implements Command {
 			strConfirm = command.nextToken();
 		
 		//dont make players confirm the command on a server which doesnt charge for ammo
-		int ammoCharge = CampaignMain.cm.getData().getAmmoCost().get(at.getMunitionType());
-        
-        
+		double ammoCharge = CampaignMain.cm.getAmmoCost(currAmmo.getInternalName());
+		
 		if (ammoCharge > 0 || usingCrits){
 			
             int refillShots = at.getShots();
@@ -126,19 +125,10 @@ public class SetUnitAmmoByCritCommand implements Command {
             if ( shotsLeft == refillShots )
             	return;
             if ( mWeapon.getLocation() == Entity.LOC_NONE ){
-	            if (at.getAmmoType() == AmmoType.T_ROCKET_LAUNCHER){
-	                ammoCharge = (int)(ammoCharge/2.5);//Basicly it boils down to Rocket being 2.5 times cheaper then lrms and I really didn't want to break it down to 1 rocket and build back up based on launcher I'm lazy --Torren.
-	                ammoCharge = Math.max(ammoCharge,1);
-	                refillShots = 1;
-	            }else{
-	                ammoCharge /= at.getShots();
-	                ammoCharge = Math.max(ammoCharge,1);
-	                refillShots = 1;
-	            }
+                refillShots = 1;
             }//Parital Reloads
             else {
-            	double percentLeft = ((double)refillShots - (double)shotsLeft) / (double)refillShots;
-            	ammoCharge = (int)Math.max(ammoCharge*percentLeft, 1);
+            	ammoCharge *= (double)refillShots;;
             }
             
             int loc = 0;
@@ -182,9 +172,12 @@ public class SetUnitAmmoByCritCommand implements Command {
         		CampaignMain.cm.toUser("AM:Ammo set for " + unit.getModelName() + " (#" +unit.getId()+").",Username,true);
         		return;
             }
+            
+            int cost =  (int)Math.ceil(ammoCharge);
+            
 			//check the confirmation
             if (!strConfirm.equals("CONFIRM")) {
-				String result = "AM:Quartermaster command will charge you " +CampaignMain.cm.moneyOrFluMessage(true,false,ammoCharge)+" to change the load out on #"+unit.getId()+" "+ unit.getModelName()
+				String result = "AM:Quartermaster command will charge you " +CampaignMain.cm.moneyOrFluMessage(true,false,cost)+" to change the load out on #"+unit.getId()+" "+ unit.getModelName()
                 +"<br>from "+currAmmo.getDesc()+"("+en.getLocationAbbr(loc)+" "+mWeapon.getShotsLeft()+"/"+currAmmo.getShots()+") to "+at.getDesc()+"("+refillShots+"/"+refillShots+").";
 				result += "AM:<br><a href=\"MEKWARS/c setunitammobyCrit#" + unitid + "#" + weaponLocation+ "#" + weaponSlot + "#" + weaponType + "#" + ammoName + "#"+at.getShots()+"#CONFIRM";
 				result += "AM:\">Click here to change the ammo.</a>";
@@ -192,12 +185,12 @@ public class SetUnitAmmoByCritCommand implements Command {
 				return;
 			}
 			
-			if (p.getMoney() < ammoCharge) {
-				CampaignMain.cm.toUser("AM:Changing ammo costs " + CampaignMain.cm.moneyOrFluMessage(true,false,ammoCharge,false) + ", but you only have "+ p.getMoney() + ".",Username,true);
+			if (p.getMoney() < cost) {
+				CampaignMain.cm.toUser("AM:Changing ammo costs " + CampaignMain.cm.moneyOrFluMessage(true,false,cost,false) + ", but you only have "+ p.getMoney() + ".",Username,true);
 				return;
 			}
 			
-			p.addMoney(-ammoCharge);
+			p.addMoney(-cost);
 		}//end else(check for confirmation)
 		
 		

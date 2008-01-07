@@ -2338,15 +2338,6 @@ public final class MWClient implements IClient {
 		}
 	}
 	
-	public void loadAmmoCosts(){
-		try{
-			dataFetcher.getAmmoCostData(this);
-		}catch (Exception ex){
-			MWClient.mwClientLog.clientErrLog("Error loading Server ammo cost file");
-			MWClient.mwClientLog .clientErrLog(ex);
-		}
-	}
-	
 	/**
 	 * @return Returns the data.
 	 */
@@ -2426,13 +2417,6 @@ public final class MWClient implements IClient {
 			}
 			
 			try{
-				dataFetcher.getAmmoCostData(this);
-			}catch (Exception ex){
-				MWClient.mwClientLog.clientErrLog("Unable to fetch server ammo cost data."); 
-				MWClient.mwClientLog.clientErrLog(ex);       
-			}
-			
-			try{
 				dataFetcher.getBanTargetingData(this);
 			}catch (Exception ex){
 				MWClient.mwClientLog.clientErrLog("Unable to fetch banned targeting systems."); 
@@ -2445,6 +2429,16 @@ public final class MWClient implements IClient {
 		
 		return data;
 	}
+	
+	public double getAmmoCost(String ammo) {
+		
+		if ( !blackMarketEquipmentList.containsKey(ammo) )
+			return -1;
+		
+		return Math.max(-1.0,blackMarketEquipmentList.get(ammo).getMinCost());
+	}
+
+
 	
 	/**
 	 * Does things when a tick is arrived. 
@@ -2677,10 +2671,6 @@ public final class MWClient implements IClient {
 		}
 	}
 	
-	public void clearAmmoCosts(){
-		this.getData().getAmmoCost().clear();
-	}
-	
 	public void clearBanTargeting(){
 		this.getData().getBannedTargetingSystems().clear();
 	}
@@ -2721,15 +2711,6 @@ public final class MWClient implements IClient {
 				while ( st.hasMoreElements() )
 					this.getData().getServerBannedAmmo().put(st.nextToken(),"Banned");
 			}
-		}catch (Exception ex){}//make it compatible with people that had the old format,without the timestamp on the first line, the first time and now dont.
-	}
-	
-	public void loadAmmoCosts(String line){
-		
-		try{
-			StringTokenizer st = new StringTokenizer(line,"#");
-			while ( st.hasMoreElements() )
-				this.getData().getAmmoCost().put(Long.parseLong(st.nextToken()),Integer.parseInt(st.nextToken()));
 		}catch (Exception ex){}//make it compatible with people that had the old format,without the timestamp on the first line, the first time and now dont.
 	}
 	
@@ -2775,24 +2756,6 @@ public final class MWClient implements IClient {
 		} catch(Exception ex) {
 			//TODO: Log error?
 		}
-	}
-	
-	public void saveAmmoCosts(String timestamp){
-		//Save ammo costs
-		try{
-			FileOutputStream out = new FileOutputStream(cacheDir + "/ammocosts.dat");
-			PrintStream p = new PrintStream(out);
-			p.println(timestamp);
-			for ( Long ammo : this.getData().getAmmoCost().keySet() ){
-				int cost = this.getData().getAmmoCost().get(ammo);
-				p.print(ammo);
-				p.print("#");
-				p.print(cost);
-				p.print("#");
-			}
-			p.close();
-			out.close();
-		}catch(Exception ex){}
 	}
 	
 	/**

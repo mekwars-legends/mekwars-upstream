@@ -477,20 +477,27 @@ import client.campaign.CUnit;
                                  atCheck.getRackSize() == at.getRackSize() &&
                                  !atCheck.hasFlag(AmmoType.F_BATTLEARMOR) &&
                                  atCheck.getTonnage(unit) == at.getTonnage(unit) ) {
-                                int cost = mwclient.getData().getAmmoCost().get(atCheck.getMunitionType());
+                                double ammoCost = mwclient.getAmmoCost(atCheck.getInternalName());
+                                int cost = 0;
                                 JMenuItem info = new JMenuItem();
                                 Mounted m = unit.getEquipment(cs.getIndex());
                                 if ( m.getLocation() == Entity.LOC_NONE ){
-                                    cost /= atCheck.getShots();
-                                    cost = Math.max(cost,1);
-                                    if (atCheck.getAmmoType() == AmmoType.T_ROCKET_LAUNCHER){
-                                        cost = (int)(cost/2.5);
-                                        cost = Math.max(cost,1);
-                                    }
+                                	cost = (int)ammoCost;
                                     info.setText(atCheck.getName()+" ("+m.getShotsLeft()+"/1) "+mwclient.moneyOrFluMessage(true,true,cost));
                                 }
-                                else
+                                else {
+                                    int refillShots = at.getShots();
+                                    int shotsLeft = m.getShotsLeft();
+                                    if ( !atCheck.getInternalName().equalsIgnoreCase(at.getInternalName()) )
+                                    	shotsLeft = 0;
+                                    
+                                    //No reason to continue if there are not shots to refill.
+                                    if ( shotsLeft == refillShots )
+                                    	cost = 0;
+                                    else
+                                    	cost = (int)Math.ceil(ammoCost*(double)refillShots);
                                     info.setText(atCheck.getName()+" ("+m.getShotsLeft()+"/"+atCheck.getShots()+") "+mwclient.moneyOrFluMessage(true,true,cost));
+                                }
     
                                 info.addActionListener(new ActionListener(){
                                     public void actionPerformed(ActionEvent e) {

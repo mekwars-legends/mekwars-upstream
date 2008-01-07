@@ -1144,7 +1144,6 @@ src/admin/AdminMenu.java -text
 src/admin/AdminUserlistPopupMenu.java -text
 src/admin/ModeratorMenu.java -text
 src/admin/ModeratorUserlistPopupMenu.java -text
-src/admin/dialog/AmmoCostDialog.java -text
 src/admin/dialog/BanTargetingDialog.java -text
 src/admin/dialog/BannedAmmoDialog.java -text
 src/admin/dialog/CommandNameDialog.java -text
@@ -1579,7 +1578,6 @@ src/server/campaign/commands/admin/AdminSaveFactionConfigsCommand.java -text
 src/server/campaign/commands/admin/AdminSavePlanetsToXMLCommand.java -text
 src/server/campaign/commands/admin/AdminSaveServerConfigsCommand.java -text
 src/server/campaign/commands/admin/AdminScrapCommand.java -text
-src/server/campaign/commands/admin/AdminSetAmmoCostCommand.java -text
 src/server/campaign/commands/admin/AdminSetBanTargetingCommand.java -text
 src/server/campaign/commands/admin/AdminSetBlackMarketSettingCommand.java -text
 src/server/campaign/commands/admin/AdminSetCommandLevelCommand.java -text

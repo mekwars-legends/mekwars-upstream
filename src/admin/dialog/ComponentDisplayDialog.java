@@ -19,10 +19,6 @@ package admin.dialog;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 
@@ -37,8 +33,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpringLayout;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import common.Equipment;
 import common.util.SpringLayoutHelper;
@@ -53,7 +47,7 @@ import megamek.common.WeaponType;
 
 import client.MWClient;
 
-public final class ComponentDisplayDialog extends JDialog implements ActionListener, MouseListener, KeyListener, ChangeListener{
+public final class ComponentDisplayDialog extends JDialog implements ActionListener{
 	
 	//store the client backlink for other things to use
 	private static final long serialVersionUID = 8839724432360797850L;
@@ -62,6 +56,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 	public final static int WEAPON_TYPE = 0;
 	public final static int MISC_TYPE = 1;
 	public final static int AMMO_TYPE = 2;
+	public final static int AMMO_COSTS_TYPE = 3;
 	public final static int SYSTEM = 8;
 	
 	private final static String okayCommand = "Add";
@@ -103,7 +98,6 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 		cancelButton.setToolTipText("Exit without saving changes");
 		
 		ConfigPane = new JTabbedPane();
-		ConfigPane.addMouseListener(this);
 		
 		
 		//Pull data from the server.
@@ -118,6 +112,10 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 		else if ( displayType == AMMO_TYPE){
 			loadAmmoPanel();
 			windowName += " (Ammo)";
+		}
+		else if ( displayType == AMMO_COSTS_TYPE) {
+			loadAmmoCostPanel();
+			windowName += " (Ammo Costs)";
 		}
 		else{
 			loadMiscPanel();
@@ -178,26 +176,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 			dialog.dispose();
 		}
 	}
-	
-	public void mouseExited(MouseEvent e){
-	}
-	
-	public void mousePressed(MouseEvent e){
-		
-	}
-	
-	public void  mouseEntered(MouseEvent e){
-		
-	}
-	
-	public void mouseClicked(MouseEvent arg0) {
-		
-	}
-	
-	public void mouseReleased(MouseEvent arg0) {
-		
-	}
-	
+
 	private void loadWeaponPanel(){
 		loadWeaponPanelType(TechConstants.T_IS_LEVEL_1);
 		loadWeaponPanelType(TechConstants.T_IS_LEVEL_2);
@@ -212,6 +191,15 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 		loadAmmoPanelType(TechConstants.T_IS_LEVEL_3);
 		loadAmmoPanelType(TechConstants.T_CLAN_LEVEL_2);
 		loadAmmoPanelType(TechConstants.T_CLAN_LEVEL_3);
+	}
+
+	
+	private void loadAmmoCostPanel(){
+		loadAmmoCostPanelType(TechConstants.T_IS_LEVEL_1);
+		loadAmmoCostPanelType(TechConstants.T_IS_LEVEL_2);
+		loadAmmoCostPanelType(TechConstants.T_IS_LEVEL_3);
+		loadAmmoCostPanelType(TechConstants.T_CLAN_LEVEL_2);
+		loadAmmoCostPanelType(TechConstants.T_CLAN_LEVEL_3);
 	}
 
 	
@@ -299,7 +287,6 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 			panel.add(textField);
 			
 			if ( ++count % 40 == 0 ) {
-				panel.addMouseListener(this);
 				panel.setAutoscrolls(true);
 				SpringLayoutHelper.setupSpringGrid(panel,10);
 				masterBox.add(panel);
@@ -330,6 +317,90 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 
 	}
 	
+	private void loadAmmoCostPanelType(int tech) {
+		Enumeration<EquipmentType> list = EquipmentType.getAllTypes();
+
+		int count = 0;
+		int tabNumber = 0;
+		JPanel panel = new JPanel(new SpringLayout());
+		JTextField textField = null;
+		Dimension dim = new Dimension(50,10);
+        JPanel masterBox = new JPanel();
+        masterBox.setLayout(new BoxLayout(masterBox, BoxLayout.X_AXIS));
+		panel.add(new JLabel("Component"));
+		panel.add(new JLabel("Cost"));
+		panel.add(new JLabel("Component"));
+		panel.add(new JLabel("Cost"));
+
+		String tabPrefix = "";
+		switch (tech){
+			case TechConstants.T_IS_LEVEL_2:
+				tabPrefix = "IS Level 2-";
+				break;
+			case TechConstants.T_IS_LEVEL_3:
+				tabPrefix = "IS Level 3-";
+				break;
+			case TechConstants.T_CLAN_LEVEL_2:
+				tabPrefix = "Clan Level 2-";
+				break;
+			case TechConstants.T_CLAN_LEVEL_3:
+				tabPrefix = "Clan Level 3-";
+				break;
+			default:
+				tabPrefix = "IS Level 1-";
+				break;
+			}
+
+		while ( list.hasMoreElements() ){
+			Object eq = list.nextElement();
+			
+			if ( !(eq instanceof AmmoType) )
+				continue;
+			
+			if ( ((AmmoType)eq).getTechLevel() != tech ) {
+				//This is done for Unknown and all tech level. Make them all IS Level 1
+				if ( tech == TechConstants.T_IS_LEVEL_1 && ((AmmoType)eq).getTechLevel() > tech )
+					continue;
+				if ( tech != TechConstants.T_IS_LEVEL_1  )
+					continue;
+
+			}
+			
+			String name = ((AmmoType)eq).getName();
+			String intName = ((AmmoType)eq).getInternalName();
+			panel.add(new JLabel(name));
+			
+			textField = new JTextField("0");
+			textField.setName(intName+"|mincost");
+			textField.setMaximumSize(dim);
+			textField.setToolTipText("The cost for a ton of "+name+" ammo.");
+			panel.add(textField);
+			
+			if ( ++count % 40 == 0 ) {
+				panel.setAutoscrolls(true);
+				SpringLayoutHelper.setupSpringGrid(panel,10);
+				masterBox.add(panel);
+				
+				tabNumber++;
+				ConfigPane.addTab(tabPrefix+tabNumber,null,panel,tabPrefix+tabNumber);
+				panel =  new JPanel(new SpringLayout());
+				panel.add(new JLabel("Component"));
+				panel.add(new JLabel("Cost"));
+				panel.add(new JLabel("Component"));
+				panel.add(new JLabel("Cost"));
+			}
+		}
+
+		if ( panel.getComponentCount() > 0 ) {
+			tabNumber++;
+			SpringLayoutHelper.setupSpringGrid(panel,10);
+			ConfigPane.addTab(tabPrefix+tabNumber,null,panel,tabPrefix+tabNumber);
+		}
+		
+        MasterPanel.add(ConfigPane);
+
+	}
+
 	private void loadWeaponPanelType(int tech) {
 		Enumeration<EquipmentType> list = EquipmentType.getAllTypes();
 
@@ -413,7 +484,6 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 			panel.add(textField);
 			
 			if ( ++count % 40 == 0 ) {
-				panel.addMouseListener(this);
 				SpringLayoutHelper.setupSpringGrid(panel,10);
 				tabNumber++;
 				ConfigPane.addTab(tabPrefix+tabNumber,null,panel,tabPrefix+tabNumber);
@@ -747,7 +817,6 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 					panel.add(textField);
 				}				
 				if ( ++count % 40 == 0 ) {
-					panel.addMouseListener(this);
 					SpringLayoutHelper.setupSpringGrid(panel,10);
 					
 					tabNumber++;
@@ -817,23 +886,6 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 		loadMiscPanelType(TechConstants.T_CLAN_LEVEL_3);
 		loadMiscPanelType(SYSTEM);
 	}
-	
-	public void keyTyped(KeyEvent arg0) {
-		// Auto-generated method stub
-	}
-	
-	public void keyPressed(KeyEvent arg0) {
-		// Auto-generated method stub
-	}
-	
-	public void keyReleased(KeyEvent arg0) {
-		// Auto-generated method stub
-	}
-	
-	public void stateChanged(ChangeEvent arg0) {
-		// Auto-generated method stub
-	}
-	
 
     /**
      * This Method tunnels through all of the panels to find the textfields
@@ -934,15 +986,33 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 
                 String fieldKey = keys.nextToken();
                 
-        		if ( fieldKey.equalsIgnoreCase("mincost") )
-        			equipment.setMinCost(Double.parseDouble(value));
-        		else if ( fieldKey.equalsIgnoreCase("maxcost"))
-        			equipment.setMaxCost(Double.parseDouble(value));
-        		else if ( fieldKey.equalsIgnoreCase("minparts"))
-        			equipment.setMinProduction(Integer.parseInt(value));
-        		else 
-        			equipment.setMaxProduction(Integer.parseInt(value));
-
+                if ( displayType == AMMO_COSTS_TYPE ) {
+	        		if ( fieldKey.equalsIgnoreCase("mincost") ) {
+	        			double amount = Double.parseDouble(value);
+	        			if ( amount < 0 ){
+	        				equipment.setMinCost(-1);
+	        				equipment.setMaxCost(-1);
+	        				equipment.setMaxProduction(0);	
+	        				equipment.setMinProduction(0);
+	        			}
+	        			else {
+	        				equipment.setMinCost(amount);
+	        				equipment.setMaxCost(amount);
+	        				equipment.setMaxProduction(1);	
+	        				equipment.setMinProduction(1);
+	        			}
+	        		}
+                	
+                }else {
+	        		if ( fieldKey.equalsIgnoreCase("mincost") )
+	        			equipment.setMinCost(Double.parseDouble(value));
+	        		else if ( fieldKey.equalsIgnoreCase("maxcost"))
+	        			equipment.setMaxCost(Double.parseDouble(value));
+	        		else if ( fieldKey.equalsIgnoreCase("minparts"))
+	        			equipment.setMinProduction(Integer.parseInt(value));
+	        		else 
+	        			equipment.setMaxProduction(Integer.parseInt(value));
+                }
         		mwclient.getBlackMarketEquipmentList().put(internalName, equipment);
         		
         		//reduce bandwidth only send things that have changed.

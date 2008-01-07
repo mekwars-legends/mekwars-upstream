@@ -563,28 +563,29 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 if ( !curType.getInternalName().equalsIgnoreCase(at.getInternalName()) )
                 	shotsLeft = 0;
 
+                double ammoCost = 0;
                 try{
-                    cost = mwclient.getData().getAmmoCost().get(at.getMunitionType());
+                    ammoCost = mwclient.getAmmoCost(at.getInternalName());
                 }catch (Exception ex){
                     MWClient.mwClientLog.clientErrLog("error finding cost for: "+at.getName());
                     MWClient.mwClientLog.clientErrLog(ex);
                 }
                 if ( m.getLocation() == Entity.LOC_NONE ){
-                    cost /= at.getShots();
-                    cost = Math.max(cost,1);
-                    if (at.getAmmoType() == AmmoType.T_ROCKET_LAUNCHER){
-                        cost = (int)(cost/2.5);
-                        cost = Math.max(cost,1);
-                    }
                     if ( usingCrits )
                     	m_choice.addItem(at.getName()+" ("+shotsLeft+"/1/"+mwclient.getPlayer().getPartsCache().getPartsCritCount(at.getInternalName())+")");
                     else
                         m_choice.addItem(at.getName()+" ("+shotsLeft+"/1) "+mwclient.moneyOrFluMessage(true,true,cost));
-
                 }
                 else {
-                	double percentLeft = ((double)at.getShots() - (double)shotsLeft) / (double)at.getShots();
-                	cost = (int)Math.max(cost*percentLeft, 1);
+                    int refillShots = at.getShots();
+                    if ( !curType.getInternalName().equalsIgnoreCase(at.getInternalName()) )
+                    	shotsLeft = 0;
+                    
+                    //No reason to continue if there are not shots to refill.
+                    if ( shotsLeft == refillShots )
+                    	cost = 0;
+                    else
+                    	cost = (int)Math.ceil(ammoCost*(double)refillShots);
 
                 	if ( usingCrits )
                 		m_choice.addItem(at.getName()+" ("+shotsLeft+"/"+at.getShots()+"/"+mwclient.getPlayer().getPartsCache().getPartsCritCount(at.getInternalName())+")");
@@ -883,7 +884,6 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
     
     private void loadAmmo(){
         mwclient.loadBannedAmmo();
-        mwclient.loadAmmoCosts();
         mwclient.loadBanTargeting();
     }
 

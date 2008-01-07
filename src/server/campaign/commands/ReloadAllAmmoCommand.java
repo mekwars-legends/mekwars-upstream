@@ -60,7 +60,7 @@ public class ReloadAllAmmoCommand implements Command {
 		Entity en = unit.getEntity();
 		int cost = 0;
 		int refillShots = 0;
-		int ammoCharge = 0;
+		double ammoCharge = 0;
 
 		if ( !CampaignMain.cm.getBooleanConfig("UsePartsRepair") ) {
 			
@@ -69,22 +69,14 @@ public class ReloadAllAmmoCommand implements Command {
 				AmmoType baseAmmo = (AmmoType)ammo.getType();
 				
 	            refillShots = baseAmmo.getShots();
-	    		ammoCharge = CampaignMain.cm.getData().getAmmoCost().get(baseAmmo.getMunitionType());
+	    		ammoCharge = CampaignMain.cm.getAmmoCost(baseAmmo.getInternalName());
 	            //Single shot weapons should only cost 1 shot i.e. total shots = 10 then price is 1/10th minium 1.
 	            if ( ammo.getLocation() == Entity.LOC_NONE ){
-		            if (baseAmmo.getAmmoType() == AmmoType.T_ROCKET_LAUNCHER){
-		                ammoCharge = (int)(ammoCharge/2.5);//Basicly it boils down to Rocket being 2.5 times cheaper then lrms and I really didn't want to break it down to 1 rocket and build back up based on launcher I'm lazy --Torren.
-		                ammoCharge = Math.max(ammoCharge,1);
 		                refillShots = 1;
-		            }else{
-		                ammoCharge /= baseAmmo.getShots();
-		                ammoCharge = Math.max(ammoCharge,1);
-		                refillShots = 1;
-		            }
 	            }//Parital Reloads
 	            else if ( refillShots != ammo.getShotsLeft() ){
-	            	double percentLeft = ((double)refillShots - (double)ammo.getShotsLeft()) / (double)refillShots;
-	            	ammoCharge = (int)Math.max(ammoCharge*percentLeft, 1);
+	            	ammoCharge *= (double)refillShots;
+
 	            } else 
 	            	continue;
 	        
@@ -101,7 +93,7 @@ public class ReloadAllAmmoCommand implements Command {
 				AmmoType baseAmmo = (AmmoType)ammo.getType();
 				
 	            refillShots = baseAmmo.getShots();
-	    		ammoCharge = CampaignMain.cm.getData().getAmmoCost().get(baseAmmo.getMunitionType());
+
 	            //Single shot weapons should only cost 1 short i.e. total shots = 10 then price is 1/10th minium 1.
 	            if ( ammo.getLocation() == Entity.LOC_NONE ){
 	                refillShots = 1 ;

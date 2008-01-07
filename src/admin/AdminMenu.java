@@ -46,7 +46,6 @@ import client.gui.dialog.SubFactionNameDialog;
 import client.gui.dialog.TraitDialog;
 import client.gui.dialog.UnitViewerDialog;
 
-import admin.dialog.AmmoCostDialog;
 import admin.dialog.BanTargetingDialog;
 import admin.dialog.CommandNameDialog;
 import admin.dialog.FactionConfigurationDialog;
@@ -483,7 +482,8 @@ public class AdminMenu extends JMenu {
         jMenuAdminSetAmmoCost.setText("Set Ammo Cost");
         jMenuAdminSetAmmoCost.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                jMenuAdminAmmoCost_actionPerformed(e);
+                e.setSource(ComponentDisplayDialog.AMMO_COSTS_TYPE);
+                jMenuAdminComponentList_actionPerformed(e);
             }
         });
 
@@ -520,7 +520,7 @@ public class AdminMenu extends JMenu {
         jMenuAdminComponentWeaponList.setMnemonic('W');
         jMenuAdminComponentWeaponList.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                e.setSource(0);
+                e.setSource(ComponentDisplayDialog.WEAPON_TYPE);
                 jMenuAdminComponentList_actionPerformed(e);
             }
         });
@@ -529,7 +529,7 @@ public class AdminMenu extends JMenu {
         jMenuAdminComponentAmmoList.setMnemonic('A');
         jMenuAdminComponentAmmoList.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                e.setSource(2);
+                e.setSource(ComponentDisplayDialog.AMMO_TYPE);
                 jMenuAdminComponentList_actionPerformed(e);
             }
         });
@@ -538,7 +538,7 @@ public class AdminMenu extends JMenu {
         jMenuAdminComponentMiscList.setMnemonic('M');
         jMenuAdminComponentMiscList.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                e.setSource(1);
+                e.setSource(ComponentDisplayDialog.MISC_TYPE);
                 jMenuAdminComponentList_actionPerformed(e);
             }
         });
@@ -1274,10 +1274,6 @@ public class AdminMenu extends JMenu {
         	}
         }
         
-        public void jMenuAdminAmmoCost_actionPerformed(ActionEvent e) {
-            new AmmoCostDialog(mwclient);
-        }
-
 	    public void jMenuAdminHouseAmmoBan_actionPerformed(ActionEvent e) {
 	        HouseNameDialog factionDialog = new HouseNameDialog(mwclient, "Select Faction", false,false);
 	        factionDialog.setVisible(true);

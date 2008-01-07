@@ -346,68 +346,6 @@ public class DataFetchClient {
 
 
     /**
-     * Transfers ammo cost data from the server to the client.
-     *
-     */
-    public void getAmmoCostData(MWClient mwclient) throws IOException {
-        
-        boolean timestampMatch = false;
-        File localban = new File(cacheDir + "/ammocosts.dat");
-        if (localban.exists()) {
-            
-            //get the local timetamp
-            String localListTimestamp = "";
-            
-            try {
-                FileInputStream in = new FileInputStream(localban);
-                BufferedReader br = new BufferedReader(new InputStreamReader(in));
-                localListTimestamp = br.readLine();
-                br.close();
-                in.close();
-                
-                BinReader binreader = openConnection("AmmoCostTimeStamp");
-                String serverTimeStamp = binreader.readLine("AmmoCostTimeStamp");
-                
-                MWClient.mwClientLog.clientErrLog("Local Cost: "+localListTimestamp+" Server Cost: "+serverTimeStamp );
-                if (localListTimestamp.equals(serverTimeStamp) )
-                    timestampMatch = true;
-            } catch (Exception e) {
-                MWClient.mwClientLog.clientErrLog("Problems reading timestamp from local ammocosts.dat.");
-            }
-
-        
-        }
-        
-        if ( !timestampMatch ){
-            BinReader in = openConnection("AmmoCost");
-            String timestamp = "-1";
-            try{
-                //clear the hash so we can add all the new stuff --Torren
-                mwclient.clearAmmoCosts();
-                timestamp = in.readLine("AmmoCost");//TIMESTAMP
-                while(true){
-                    mwclient.loadAmmoCosts(in.readLine("AmmoCost"));
-                }
-            }catch(Exception ex){}//Bin empty
-            mwclient.saveAmmoCosts(timestamp);
-        }else{//load from the banned file.
-            try{
-                mwclient.clearAmmoCosts();
-                FileInputStream fis = new FileInputStream(mwclient.getCacheDir()+ "/ammocosts.dat");
-                BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
-                while (dis.ready()) {
-                    String line = dis.readLine();
-                    mwclient.loadAmmoCosts(line);
-                }
-                dis.close();
-                fis.close();
-            }catch(Exception ex){}
-        }
-        
-    }
-
-
-    /**
      * Check Server version against client if it doesn't match you can't connect
      *
      */

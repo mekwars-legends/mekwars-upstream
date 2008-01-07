@@ -270,27 +270,6 @@ public final class CampaignMain implements Serializable {
 			MWServ.mwlog.errLog("Problems reading banned ammo data.");
 		}
 
-		try {
-			File configFile = new File("./campaign/ammocosts.dat");
-			FileInputStream fis = new FileInputStream(configFile);
-			BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
-			while (dis.ready()) {
-				String line = dis.readLine();
-				loadAmmoCosts(line);
-			}
-			dis.close();
-			fis.close();
-		} catch (FileNotFoundException fne) {
-			MWServ.mwlog.mainLog("No ammo cost data found creating default");
-
-			for (long ammo : cm.getData().getMunitionsByNumber().keySet()) {
-				cm.getData().getAmmoCost().put(ammo, 9999);
-			}
-			saveAmmoCosts();
-		} catch (Exception ex) {
-			MWServ.mwlog.errLog("Problems reading ammo cost data");
-		}
-
 		// misc loads.
 		cm.loadBannedTargetingSystems();
 		cm.loadOmniVariantMods();
@@ -576,6 +555,10 @@ public final class CampaignMain implements Serializable {
 
 	public void fromUser(String text, String Username) {
 
+		//if you don't have a client signon to the server then you do not get to send commands
+		if ( CampaignMain.cm.getServer().getClient(Username) == null )
+			return;
+		
 		/*
 		 * Only a few commands should be accepted from a logged out player.
 		 * Unless the command is enroll, login, or register, return without
@@ -1372,7 +1355,6 @@ public final class CampaignMain implements Serializable {
 				new AdminSavePlanetsToXMLCommand());
 		Commands.put("ADMINSAVESERVERCONFIGS",
 				new AdminSaveServerConfigsCommand());
-		Commands.put("ADMINSETAMMOCOST", new AdminSetAmmoCostCommand());
 		Commands.put("ADMINSETBANTARGETING", new AdminSetBanTargetingCommand());
 		Commands.put("ADMINSETBLACKMARKETSETTING",
 				new AdminSetBlackMarketSettingCommand());
@@ -2551,8 +2533,12 @@ public final class CampaignMain implements Serializable {
 		return cm.getData().getServerBannedAmmo();
 	}
 
-	public Hashtable<Long, Integer> getAmmoCost() {
-		return cm.getData().getAmmoCost();
+	public double getAmmoCost(String ammo) {
+		
+		if ( !blackMarketEquipmentCostTable.contains(ammo) )
+			return -1;
+		
+		return Math.max(-1.0,blackMarketEquipmentCostTable.get(ammo).getMinCost());
 	}
 
 	/**
@@ -2977,18 +2963,6 @@ public final class CampaignMain implements Serializable {
 					CampaignMain.cm.getServerBannedAmmo().put(st.nextToken(),
 							"Banned");
 			}
-		} catch (Exception ex) {
-		}// make it compatible with people that had the old format,without
-			// the timestamp on the first line, the first time and now dont.
-	}
-
-	public void loadAmmoCosts(String line) {
-
-		try {
-			StringTokenizer st = new StringTokenizer(line, "#");
-			while (st.hasMoreTokens())
-				this.getAmmoCost().put(Long.parseLong(st.nextToken()),
-						Integer.parseInt(st.nextToken()));
 		} catch (Exception ex) {
 		}// make it compatible with people that had the old format,without
 			// the timestamp on the first line, the first time and now dont.
@@ -3879,28 +3853,6 @@ public final class CampaignMain implements Serializable {
 
 		} catch (Exception ex) {
 			MWServ.mwlog.errLog("Error saving banned ammo.");
-			MWServ.mwlog.errLog(ex);
-		}
-	}
-
-	public void saveAmmoCosts() {
-		// Save ammo costs
-		try {
-			FileOutputStream out = new FileOutputStream(
-					"./campaign/ammocosts.dat");
-			PrintStream p = new PrintStream(out);
-			p.println(System.currentTimeMillis());
-			for (long ammo : this.getAmmoCost().keySet()) {
-				int cost = this.getAmmoCost().get(ammo);
-				p.print(ammo);
-				p.print("#");
-				p.print(cost);
-				p.print("#");
-			}
-			p.close();
-			out.close();
-		} catch (Exception ex) {
-			MWServ.mwlog.errLog("Error saving ammo costs.");
 			MWServ.mwlog.errLog(ex);
 		}
 	}

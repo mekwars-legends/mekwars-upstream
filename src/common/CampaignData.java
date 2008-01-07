@@ -95,11 +95,6 @@ public class CampaignData implements TerrainProvider {
     private TreeMap<String, String> planetOpFlags = new TreeMap<String, String>();
 
     /**
-     * Cost for each type of ammo. from Standard LRM to Thunder LRM. 
-     */
-    private Hashtable<Long,Integer> AmmoCost = new Hashtable<Long,Integer>();
-
-    /**
      * Retrieve a specific planet.
      * @param id The id of the planet.
      * @return The requested Planet. This is usually a subclass of Planet. 
@@ -747,13 +742,6 @@ public class CampaignData implements TerrainProvider {
     }
     public HashMap<Integer,String> getBannedTargetingSystems(){
         return bannedTargetingSystems;
-    }
-    
-    public void setAmmoCost(Hashtable<Long,Integer> cost){
-        AmmoCost = cost;
-    }
-    public Hashtable<Long,Integer> getAmmoCost(){
-        return AmmoCost;
     }
     
     /**
