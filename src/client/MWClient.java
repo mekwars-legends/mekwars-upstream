@@ -343,7 +343,7 @@ public final class MWClient implements IClient {
 		if ( isDedicated() ) {
 			try {
 	            Runtime runTime = Runtime.getRuntime();
-	            String[] call = { "java", "-jar", "MekWarsDed.jar" };
+	            String[] call = { "java", "-Xmx512m", "-jar", "MekWarsDed.jar" };
 	            runTime.exec(call);
 	            System.exit(0);
 			}catch(Exception ex){
@@ -917,8 +917,23 @@ public final class MWClient implements IClient {
 					//sleep for a few seconds before restarting
 					try {Thread.sleep(5000);}
 					catch (Exception ex) {MWClient.mwClientLog.clientErrLog(ex);}
-					startHost(true, false, false);
 					sendChat(PROTOCOL_PREFIX + "c mm# " + name + " used the restart command on "+myUsername);
+					
+					try {
+			            Runtime runTime = Runtime.getRuntime();
+			            if ( new File("MekWarsDed.jar").exists() ){
+				            String[] call = { "java", "-Xmx512m", "-jar", "MekWarsDed.jar" };
+				            runTime.exec(call);
+			            }
+			            else{
+				            String[] call = { "java", "-Xmx512m", "-jar", "MekWarsClient.jar" };
+				            runTime.exec(call);
+			            }
+			            System.exit(0);
+			            
+					}catch(Exception ex){
+						MWClient.mwClientLog.clientErrLog("Unable to find MekWarsDed.jar");
+					}
 					return;
 					
 				} else if (command.equals("reset")) { // server reset (like /reset in MM)
@@ -2599,9 +2614,21 @@ public final class MWClient implements IClient {
 			stopHost();
 			try {Thread.sleep(5000);}
 			catch (Exception ex) {MWClient.mwClientLog.clientErrLog(ex);}
-			startHost(true, false, false);
-			gameCount = 0;
-			return;
+			try {
+	            Runtime runTime = Runtime.getRuntime();
+	            if ( new File("MekWarsDed.jar").exists() ){
+		            String[] call = { "java", "-Xmx512m", "-jar", "MekWarsDed.jar" };
+		            runTime.exec(call);
+	            }
+	            else{
+		            String[] call = { "java", "-Xmx512m", "-jar", "MekWarsClient.jar" };
+		            runTime.exec(call);
+	            }
+	            System.exit(0);
+	            
+			}catch(Exception ex){
+				MWClient.mwClientLog.clientErrLog("Unable to find MekWarsDed.jar");
+			}
 		}
 	}
 	

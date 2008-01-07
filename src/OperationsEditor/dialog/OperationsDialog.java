@@ -437,7 +437,6 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 		JPanel chickenLeechPanel = new JPanel();//Set up what happens to those that flee and those that don't pay attention to an attack.
 		JPanel pilotExpPanel = new JPanel();//Set up how unit pilots will be reward for surviving.
 		JPanel buildingsPanel = new JPanel();//Set up buildings for speicific ops.
-        JPanel cityPanel = new JPanel();//Set up City Generator for Ops
         JPanel victoryPanel = new JPanel();//Set up Victory Conditions.
 		JPanel teamPanel = new JPanel();//Set up for Team games.
 		JPanel deploymentPanel = new JPanel();//Set up game deployments.
@@ -2864,8 +2863,6 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         masterBox.add(constructionPanel);
         masterBox.add(buildingsBox);
         
-        buildingsPanel.add(masterBox);
-        
         /*
          * City Panel
          * 
@@ -2876,9 +2873,6 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         JPanel checkBoxBox = new JPanel(new SpringLayout());
         
         JPanel cityParamsPanel = new JPanel(new SpringLayout());
-
-        masterBox = new JPanel();
-        masterBox.setLayout(new BoxLayout(masterBox, BoxLayout.Y_AXIS));
 
         BaseCheckBox = new JCheckBox("Use City Generator for this Op?");
         BaseCheckBox.setToolTipText("<html>Check if you want MM to generate a city for this op<br>Using the settings below</html>");
@@ -2934,9 +2928,9 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         masterBox.add(checkBoxBox);
         masterBox.add(cityParamsPanel);
-        
-        cityPanel.add(masterBox);
-        
+
+        buildingsPanel.add(masterBox);
+
 
         /*
          * Victory Conditions Panel
@@ -3204,12 +3198,67 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         deploymentBox.add(deploymentParamsPanel2);
         masterBox.add(checkBoxBox);
         masterBox.add(deploymentBox);
-        deploymentPanel.add(masterBox);
 
+
+        /*
+         * Map Settings Panel
+         * 
+         * Set up the map settings that will be sent to MegaMek
+         *  
+         */
+        
+        JPanel mapParamsPanel = new JPanel(new SpringLayout());
+        JPanel mapParamsPanel2 = new JPanel(new SpringLayout());
+        checkBoxBox = new JPanel(new SpringLayout());
+                
+        BaseCheckBox = new JCheckBox("Use Operation Map");
+        BaseCheckBox.setToolTipText("<html>If checked use the Operation map instead of the terrain on the planet.</html>");
+        BaseCheckBox.setName("UseOperationMap");
+        checkBoxBox.add(BaseCheckBox);
+        
+        SpringLayoutHelper.setupSpringGrid(checkBoxBox,1);
+        
+        BaseTextField = new JTextField(5);
+        mapParamsPanel.add(new JLabel("Map Name:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Name of the map to use or surprise if using sizes</html>");
+        BaseTextField.setName("MapName");
+        mapParamsPanel.add(BaseTextField);
+
+        SpringLayoutHelper.setupSpringGrid(mapParamsPanel,2);
+
+        BaseTextField = new JTextField(5);
+        mapParamsPanel2.add(new JLabel("Board Size X:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Number of maps along the X axis of the Board</html>");
+        BaseTextField.setName("BoardSizeX");
+        mapParamsPanel2.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        mapParamsPanel2.add(new JLabel("Board Size Y:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Number of maps along the Y axis of the board</html>");
+        BaseTextField.setName("BoardSizeY");
+        mapParamsPanel2.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        mapParamsPanel2.add(new JLabel("Map Size X:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>X Size of the map</html>");
+        BaseTextField.setName("MapSizeX");
+        mapParamsPanel2.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        mapParamsPanel2.add(new JLabel("Map Size Y:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Y Size of the map</html>");
+        BaseTextField.setName("MapSizeY");
+        mapParamsPanel2.add(BaseTextField);
+
+        SpringLayoutHelper.setupSpringGrid(mapParamsPanel2,4);
+        
+        masterBox.add(checkBoxBox);
+        masterBox.add(mapParamsPanel);
+        masterBox.add(mapParamsPanel2);
+        deploymentPanel.add(masterBox);
 
         ConfigPane.addTab("Buildings",null,buildingsPanel,"Set up buildings for operations.");
 		ConfigPane.addTab("Chicken/Leech",null,chickenLeechPanel,"<html>Set up what happens to those that flee and<br>those that don't pay attention to an attack.</html>");
-        ConfigPane.addTab("City Generator",null,cityPanel,"Generate a City.");
         ConfigPane.addTab("Deployment",null,deploymentPanel,"Set Army Deployment Chances.");
 		ConfigPane.addTab("Faction Limits",null,factionPanel,"Exlude factions from using or defending the op.");
 		ConfigPane.addTab("Meta Awards",null,metaSetupPanel,"<html>Set what your faction gets for this op.<br>Land, Units, Components</html>");

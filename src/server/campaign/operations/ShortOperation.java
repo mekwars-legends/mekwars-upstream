@@ -227,10 +227,6 @@ public class ShortOperation implements Comparable {
 		//fetch an environment to play in
 		playEnvironment = targetWorld.getEnvironments().getRandomEnvironment(CampaignMain.cm.getR());
         
-        //load the terrain for the randomly selected environment
-        if (CampaignMain.cm.getBooleanConfig("UseStaticMaps"))
-            aTerrain = targetWorld.getAdvancedTerrain().get(new Integer(playEnvironment.getId()));
-
         //initiator is always an attacker, so add
 		this.addAttacker(initiator, attackingArmy, "");
 		
@@ -251,6 +247,19 @@ public class ShortOperation implements Comparable {
 		
 		Operation o = CampaignMain.cm.getOpsManager().getOperation(opName);
 		
+        //load the terrain for the randomly selected environment
+        if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")){
+            aTerrain = targetWorld.getAdvancedTerrain().get(new Integer(playEnvironment.getId()));
+            if ( o.getBooleanValue("UseOperationMap") ){
+            	aTerrain.setStaticMap(true);
+            	aTerrain.setStaticMapName(o.getValue("MapName"));
+            	aTerrain.setXBoardSize(o.getIntValue("BoardSizeX"));
+            	aTerrain.setYBoardSize(o.getIntValue("BoardSizeY"));
+            	aTerrain.setXSize(o.getIntValue("MapSizeX"));
+            	aTerrain.setYSize(o.getIntValue("MapSizeY"));
+            }
+        }
+
 		this.pdlist = possibleDefenders;
 		//inform the defenders
 		//Faction Team Ops have a delay in defender informing.

@@ -821,6 +821,17 @@ public class DefaultOperation {
          * DeployWestdeep				- Chance to deploy West (Deep)
          * 
          * [End Deployment
+         * 
+         * [Map Settings
+         * 
+         * UseOperationMap				- Use the Operation map instead of the terrain on the planet
+         * MapName						- Name of the map to use or surprise if using sizes
+         * BoardSizeX					- Number of maps along the X axis of the Board
+         * BoardSizeY					- Number of maps along the Y axis of the board
+         * MapSizeX						- X Size of the map
+         * MapSizeY						- Y Size of the map
+         * 
+         * [End Map Settings
          */
 
 		//army contruction
@@ -1241,6 +1252,16 @@ public class DefaultOperation {
         operationsDefaults.put("DeploySouthdeep","0");
         operationsDefaults.put("DeploySouthwestdeep","0");
         operationsDefaults.put("DeployWestdeep","0");
+
+        
+
+        //Map Settings
+        operationsDefaults.put("UseOperationMap","false");
+        operationsDefaults.put("MapName","surprise");
+        operationsDefaults.put("BoardSizeX","0");
+        operationsDefaults.put("BoardSizeY","0");
+        operationsDefaults.put("MapSizeX","0");
+        operationsDefaults.put("MapSizeY","0");
 
 		/*
 		 * LONG VARIABLES. These params are necessary for operations

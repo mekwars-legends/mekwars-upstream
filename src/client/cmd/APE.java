@@ -47,15 +47,19 @@ public class APE extends Command {
 	public void execute(String input) {
 		StringTokenizer st = decode(input);
 		AdvancedTerrain aTerrain = new AdvancedTerrain(st.nextToken());
-		int xsize = Integer.parseInt(st.nextToken());
-		int ysize = Integer.parseInt(st.nextToken());
-		/*if (Boolean.parseBoolean(client.getserverConfigs("UseStaticMaps")).booleanValue() ){
-		    int xboard = Integer.parseInt(st.nextToken());
-		    int yboard = Integer.parseInt(st.nextToken());
-		    client.setEnvironment(pe, new Dimension(xsize,ysize),new Dimension(xboard,yboard));
-		}
-		
-		else*/
-		mwclient.setAdvancedTerrain(aTerrain, new Dimension(xsize,ysize));
+    	aTerrain.setXSize(Integer.parseInt(st.nextToken()));
+    	aTerrain.setYSize(Integer.parseInt(st.nextToken()));
+    	aTerrain.setStaticMap(Boolean.parseBoolean(st.nextToken()));
+    	aTerrain.setXBoardSize(Integer.parseInt(st.nextToken()));
+    	aTerrain.setYBoardSize(Integer.parseInt(st.nextToken()));
+    	st.nextToken(); //low temp
+    	st.nextToken(); //hi temp
+    	st.nextToken(); //gravity
+    	st.nextToken(); //vaccum
+    	st.nextToken(); //Night Chance
+    	st.nextToken(); //Night Temp Mod
+    	aTerrain.setStaticMapName(st.nextToken());
+
+		mwclient.setAdvancedTerrain(aTerrain, new Dimension(aTerrain.getXSize(),aTerrain.getYSize()));
 	}
 }
