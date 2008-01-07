@@ -331,6 +331,10 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 		panel.add(new JLabel("Cost"));
 		panel.add(new JLabel("Component"));
 		panel.add(new JLabel("Cost"));
+		panel.add(new JLabel("Component"));
+		panel.add(new JLabel("Cost"));
+		panel.add(new JLabel("Component"));
+		panel.add(new JLabel("Cost"));
 
 		String tabPrefix = "";
 		switch (tech){
@@ -373,12 +377,12 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 			textField = new JTextField("0");
 			textField.setName(intName+"|mincost");
 			textField.setMaximumSize(dim);
-			textField.setToolTipText("The cost for a ton of "+name+" ammo.");
+			textField.setToolTipText("The cost for a shot of "+name+" ammo.");
 			panel.add(textField);
 			
 			if ( ++count % 40 == 0 ) {
 				panel.setAutoscrolls(true);
-				SpringLayoutHelper.setupSpringGrid(panel,10);
+				SpringLayoutHelper.setupSpringGrid(panel,8);
 				masterBox.add(panel);
 				
 				tabNumber++;
@@ -388,12 +392,16 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 				panel.add(new JLabel("Cost"));
 				panel.add(new JLabel("Component"));
 				panel.add(new JLabel("Cost"));
+				panel.add(new JLabel("Component"));
+				panel.add(new JLabel("Cost"));
+				panel.add(new JLabel("Component"));
+				panel.add(new JLabel("Cost"));
 			}
 		}
 
 		if ( panel.getComponentCount() > 0 ) {
 			tabNumber++;
-			SpringLayoutHelper.setupSpringGrid(panel,10);
+			SpringLayoutHelper.setupSpringGrid(panel,8);
 			ConfigPane.addTab(tabPrefix+tabNumber,null,panel,tabPrefix+tabNumber);
 		}
 		
@@ -989,7 +997,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
                 if ( displayType == AMMO_COSTS_TYPE ) {
 	        		if ( fieldKey.equalsIgnoreCase("mincost") ) {
 	        			double amount = Double.parseDouble(value);
-	        			if ( amount < 0 ){
+	        			if ( amount <= 0 ){
 	        				equipment.setMinCost(-1);
 	        				equipment.setMaxCost(-1);
 	        				equipment.setMaxProduction(0);	

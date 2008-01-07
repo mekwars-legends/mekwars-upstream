@@ -1957,7 +1957,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         BaseTextField = new JTextField(5);
         penaltyPanel.add(new JLabel("BV Failure Payment Mod:",SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html><b>NOTE:</b>This is an Integer Field. 25 = 25%<br>This is how much the payment is reduced by when players<br>fail to meet the min BV difference</html>");
+        BaseTextField.setToolTipText("<html><b>NOTE:</b>This is an Integer Field. 25 = 25%<br>This is precentage the payment is reduced to when players<br>fail to meet the min BV difference</html>");
         BaseTextField.setName("BVFailurePaymentModifier");
         penaltyPanel.add(BaseTextField);
 

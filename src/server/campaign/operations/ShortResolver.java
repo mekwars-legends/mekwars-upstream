@@ -2223,26 +2223,16 @@ public class ShortResolver {
 				 * if the "ShowCompleteGameInfoInNews" option is disabled.
 				 */
 				if (numWinners > 1
-						|| !CampaignMain.cm
-								.getBooleanConfig("ShowCompleteGameInfoInNews")) {
-					completeFinishedInfoString += aWinner.getHouseFightingFor()
-							.getColoredNameAsLink();
-					incompleteFinishedInfoString += aWinner
-							.getHouseFightingFor().getColoredNameAsLink();
+						|| !CampaignMain.cm.getBooleanConfig("ShowCompleteGameInfoInNews")) {
+					completeFinishedInfoString += aWinner.getHouseFightingFor().getColoredNameAsLink();
+					incompleteFinishedInfoString += aWinner.getHouseFightingFor().getColoredNameAsLink();
 					newsFeedBody = aWinner.getHouseFightingFor().getName();
 					newsFeedTitle = aWinner.getHouseFightingFor().getName();
 				} else {
-					completeFinishedInfoString += aWinner.getColoredName()
-							+ aWinner.getHouseFightingFor()
-									.getColoredAbbreviation(true);
-					incompleteFinishedInfoString += aWinner
-							.getHouseFightingFor().getColoredNameAsLink();
-					newsFeedBody = aWinner.getName() + "["
-							+ aWinner.getHouseFightingFor().getAbbreviation()
-							+ "]";
-					newsFeedTitle = aWinner.getName() + "["
-							+ aWinner.getHouseFightingFor().getAbbreviation()
-							+ "]";
+					completeFinishedInfoString += aWinner.getColoredName()+ aWinner.getHouseFightingFor().getColoredAbbreviation(true);
+					incompleteFinishedInfoString += aWinner.getHouseFightingFor().getColoredNameAsLink();
+					newsFeedBody = aWinner.getName() + "["+ aWinner.getHouseFightingFor().getAbbreviation()+ "]";
+					newsFeedTitle = aWinner.getName() + "["+ aWinner.getHouseFightingFor().getAbbreviation()+ "]";
 				}
 
 				newsFeedTitle += " defeats ";
@@ -2251,20 +2241,15 @@ public class ShortResolver {
 				String incompleteLoserTemp = "";
 				String newsFeedTemp = "";
 				if (numLosers > 1
-						|| !CampaignMain.cm
-								.getBooleanConfig("ShowCompleteGameInfoInNews")) {
-					completeLoserTemp += aLoser.getHouseFightingFor()
-							.getColoredNameAsLink();
-					incompleteLoserTemp += aLoser.getHouseFightingFor()
-							.getColoredNameAsLink();
+						|| !CampaignMain.cm.getBooleanConfig("ShowCompleteGameInfoInNews")) {
+					completeLoserTemp += aLoser.getHouseFightingFor().getColoredNameAsLink();
+					incompleteLoserTemp += aLoser.getHouseFightingFor().getColoredNameAsLink();
 					newsFeedTemp = aLoser.getHouseFightingFor().getName();
 					newsFeedTitle += aLoser.getHouseFightingFor().getName();
 				} else {
 					completeLoserTemp += aLoser.getColoredName()
-							+ aLoser.getHouseFightingFor()
-									.getColoredAbbreviation(true);
-					incompleteLoserTemp += aLoser.getHouseFightingFor()
-							.getColoredNameAsLink();
+							+ aLoser.getHouseFightingFor().getColoredAbbreviation(true);
+					incompleteLoserTemp += aLoser.getHouseFightingFor().getColoredNameAsLink();
 					newsFeedTemp = aLoser.getName() + "["
 							+ aLoser.getHouseFightingFor().getAbbreviation()
 							+ "]";

@@ -2432,10 +2432,19 @@ public final class MWClient implements IClient {
 	
 	public double getAmmoCost(String ammo) {
 		
-		if ( !blackMarketEquipmentList.containsKey(ammo) )
+		EquipmentType eq = EquipmentType.get(ammo);
+		
+		if ( eq == null )
 			return -1;
 		
-		return Math.max(-1.0,blackMarketEquipmentList.get(ammo).getMinCost());
+		if ( !this.getCampaign().getBlackMarketParts().containsKey(eq.getName()) ){
+			return -1;
+		}
+		
+		if ( this.getCampaign().getBlackMarketParts().get(eq.getName()).getCost() > 0)
+			return this.getCampaign().getBlackMarketParts().get(eq.getName()).getCost();
+		
+		return -1.0;
 	}
 
 
@@ -2783,8 +2792,8 @@ public final class MWClient implements IClient {
 		String sign = "+";
 		
 		if (amount < 0){
-			result = "";
 			amount *= -1;
+			result = Integer.toString(amount);
 			sign = "-";
 		}
 		

@@ -2450,8 +2450,8 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setName("ShowCompleteGameInfoOnTick");
         factionCBoxSpring.add(BaseCheckBox);
         
-        BaseCheckBox = new JCheckBox("Faction Names in News");
-        BaseCheckBox.setToolTipText("<html>If checked, faction names will replace player names in<br>news feed description of games.</html>");
+        BaseCheckBox = new JCheckBox("Player Names in News");
+        BaseCheckBox.setToolTipText("<html>If checked, player names will replace faction names in<br>news feed description of games.</html>");
         BaseCheckBox.setName("ShowCompleteGameInfoInNews");
         factionCBoxSpring.add(BaseCheckBox);
         
