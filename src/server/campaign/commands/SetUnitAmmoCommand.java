@@ -130,8 +130,8 @@ public class SetUnitAmmoCommand implements Command {
 		
 		if ( CampaignMain.cm.getData().getServerBannedAmmo().get(munitionType) != null 
 				|| faction.getBannedAmmo().get(munitionType) != null
-				|| ammoCharge < 0) {
-			CampaignMain.cm.toUser("AM:<font color=green>Quartermaster Command regretfully informs you that "+ammoName+" is out of stock.</font>",Username,true);
+				|| (ammoCharge < 0 && !usingCrits) ) {
+			CampaignMain.cm.toUser("AM:<font color=green>Quartermaster Command regretfully informs you that "+at.getName()+" is out of stock.</font>",Username,true);
 			return;
 		}
 		
@@ -155,6 +155,7 @@ public class SetUnitAmmoCommand implements Command {
                 refillShots = 1;
             }//Parital Reloads
             else {
+            	refillShots -= shotsLeft;
             	ammoCharge *= (double)refillShots;
             }
             

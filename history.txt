@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.14.x
++ Fixed Typo in Server config dialog
++ Fixed typo in Operations Editor
++ New Ammo cost code finished
 + Bug: Units not being removed from database after deleteaccount command
 + Added new ammo cost code (needs to be tested)
 + Bug: SOL pilots not being saved properly

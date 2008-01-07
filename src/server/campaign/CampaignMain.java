@@ -2535,10 +2535,12 @@ public final class CampaignMain implements Serializable {
 
 	public double getAmmoCost(String ammo) {
 		
-		if ( !blackMarketEquipmentCostTable.contains(ammo) )
+		if ( !blackMarketEquipmentCostTable.containsKey(ammo) )
 			return -1;
 		
-		return Math.max(-1.0,blackMarketEquipmentCostTable.get(ammo).getMinCost());
+		if ( blackMarketEquipmentCostTable.get(ammo).getMinCost() > 0)
+			return blackMarketEquipmentCostTable.get(ammo).getMinCost();
+		return -1.0;
 	}
 
 	/**
@@ -2997,8 +2999,7 @@ public final class CampaignMain implements Serializable {
 				bme.setMinProduction(Integer.parseInt(data.nextToken()));
 				bme.setMaxProduction(Integer.parseInt(data.nextToken()));
 
-				cm.getBlackMarketEquipmentTable().put(
-						bme.getEquipmentInternalName(), bme);
+				cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
 			}
 
 		} catch (Exception ex) {

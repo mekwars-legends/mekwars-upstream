@@ -100,19 +100,21 @@ public class SetUnitAmmoByCritCommand implements Command {
 		}
 		
 		String munitionType = Long.toString(at.getMunitionType());
+		//dont make players confirm the command on a server which doesnt charge for ammo
+		double ammoCharge = CampaignMain.cm.getAmmoCost(currAmmo.getInternalName());
 		
 		
-		if ( CampaignMain.cm.getData().getServerBannedAmmo().get(munitionType) != null || faction.getBannedAmmo().get(munitionType) != null)	{
-			CampaignMain.cm.toUser("AM:<font color=green>Quartermaster Command regretfully informs you that "+ammoName+" is out of stock.</font>",Username,true);
+		
+		if ( CampaignMain.cm.getData().getServerBannedAmmo().get(munitionType) != null 
+				|| faction.getBannedAmmo().get(munitionType) != null
+				|| (ammoCharge < 0 && !usingCrits))	{
+			CampaignMain.cm.toUser("AM:<font color=green>Quartermaster Command regretfully informs you that "+at.getName()+" is out of stock.</font>",Username,true);
 			return;
 		}
 		
 		String strConfirm = "";
 		if (command.hasMoreTokens())
 			strConfirm = command.nextToken();
-		
-		//dont make players confirm the command on a server which doesnt charge for ammo
-		double ammoCharge = CampaignMain.cm.getAmmoCost(currAmmo.getInternalName());
 		
 		if (ammoCharge > 0 || usingCrits){
 			
@@ -128,6 +130,7 @@ public class SetUnitAmmoByCritCommand implements Command {
                 refillShots = 1;
             }//Parital Reloads
             else {
+            	refillShots -= shotsLeft;
             	ammoCharge *= (double)refillShots;;
             }
             

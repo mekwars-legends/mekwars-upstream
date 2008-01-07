@@ -76,7 +76,7 @@ public class AdminSaveBlackMarketConfigsCommand implements Command {
 			MWServ.mwlog.errLog(ex);
 		}   
 
-		CampaignMain.cm.toUser("Black Market Settings saved!",Username,true);
+		CampaignMain.cm.toUser("AM:Black Market Settings saved!",Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has saved the Black Market Settings");
 		
 	}//end process
