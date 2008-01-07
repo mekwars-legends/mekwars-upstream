@@ -155,7 +155,28 @@ public class PlayerHandler {
 		try {
 			// Remove armies
 			stmt = con.createStatement();
+			ResultSet rs = null;
+			
 			stmt.executeUpdate("DELETE from playerarmies WHERE playerID = " + p.getDBId());
+			// Remove units - if they should have been donated, SHouse.removePlayer will have done that
+			rs = stmt.executeQuery("SELECT ID from units WHERE uPlayerID = " + p.getDBId());
+			while(rs.next()) {
+				CampaignMain.cm.MySQL.deleteUnit(rs.getInt("ID"));
+			}
+			rs.close();
+			
+			// Remove pilots
+			rs = stmt.executeQuery("SELECT pilotID from pilots WHERE playerID = " + p.getDBId());
+			while (rs.next()) {
+				CampaignMain.cm.MySQL.deletePilot(rs.getInt("pilotID"));
+			}
+			rs.close();
+			
+			// Remove from phpBB database
+			//			if(CampaignMain.cm.isSynchingBB()) 
+			//				CampaignMain.cm.MySQL.deleteForumAccount(p.getForumID());
+			// This has its own set of issues right now - I need to talk to Orca before I put this in.
+			
 			// Remove player
 			stmt.executeUpdate("DELETE from players WHERE playerID = " + p.getDBId());
 			stmt.close();

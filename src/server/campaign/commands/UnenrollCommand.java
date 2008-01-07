@@ -101,6 +101,7 @@ public class UnenrollCommand implements Command {
 		}
 		hisfaction.removePlayer(p, CampaignMain.cm.getBooleanConfig("DonateUnitsUponUnenrollment"));
 
+		
 		//tell the user
 		CampaignMain.cm.toUser("AM:You've been unenrolled.", Username, true);
 		

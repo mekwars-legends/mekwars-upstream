@@ -311,6 +311,10 @@ public class mysqlHandler{
 	  plh.deletePlayer(p);
   }
   
+  public void deleteForumAccount(int forumID) {
+	  phpBBCon.deleteForumAccount(forumID);
+  }
+  
   public void purgeStalePlayers(long days) {
 	  plh.purgeStalePlayers(days);
   }

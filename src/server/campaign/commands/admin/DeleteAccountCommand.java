@@ -65,7 +65,7 @@ public class DeleteAccountCommand implements Command {
 		//non-null player, delete the account
 		p.getMyHouse().removePlayer(p,!scrapUnits);
 		
-		//delte the pfile
+		//delete the pfile
 		if(CampaignMain.cm.isUsingMySQL())
 			CampaignMain.cm.MySQL.deletePlayer(p);
 		

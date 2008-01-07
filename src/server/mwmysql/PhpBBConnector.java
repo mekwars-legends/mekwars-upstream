@@ -71,6 +71,8 @@ public class PhpBBConnector {
 		  }  
 	  }
 	  
+	  
+	  
 	  private boolean userExistsInForum(String name, String email) {
 		  PreparedStatement ps = null;
 		  ResultSet rs = null;
@@ -94,6 +96,21 @@ public class PhpBBConnector {
 		  } catch (SQLException e) {
 			  MWServ.mwlog.dbLog("SQL Error in PhpBBConnector.userExistsInForum: " + e.getMessage());
 			  return false;
+		  }
+	  }
+	  
+	  public void deleteForumAccount(int forumID) {
+		  PreparedStatement ps = null;
+		  
+		  try {
+			  // First, the user groups
+			  ps = con.prepareStatement("DELETE from " + userGroupTable + " WHERE user_id = " + forumID);
+			  ps.executeUpdate();
+			  ps.executeUpdate("DELETE from " + userTable + " WHERE user_id = " + forumID);
+			  
+			  ps.close();
+		  } catch (SQLException e) {
+			  MWServ.mwlog.dbLog("SQLException in PhpBBConnector.deleteForumAccount: " + e.getMessage());
 		  }
 	  }
 	  
