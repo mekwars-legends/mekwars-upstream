@@ -212,8 +212,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
                 // creates the playboard*/
                 MapSettings mySettings = new MapSettings(mwclient.getMapSize().width,mwclient.getMapSize().height, 1, 1);
                 //MapSettings mySettings = new MapSettings(16, 17, 2, 2);
-                AdvancedTerrain aTerrain = new AdvancedTerrain();
-                aTerrain = this.mwclient.getCurrentAdvancedTerrain();
+                AdvancedTerrain aTerrain = this.mwclient.getCurrentAdvancedTerrain();
             
                 if ( (aTerrain != null ) && aTerrain.isStaticMap() ){
                     

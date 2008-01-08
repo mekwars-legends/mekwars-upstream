@@ -83,7 +83,6 @@ public class UnitFactory implements Serializable {
 	 * Least significant bit = Mek
 	 * Next Bit = Vehicle
 	 * Next Bit = Infantry
-	 * TODO: Fixme.. this is no bitmask... this only think it is (Imi)
 	 */
 	private int type;
 	
@@ -201,7 +200,11 @@ public class UnitFactory implements Serializable {
 	 * @param type The type to set.
 	 */
 	public void setType(int type) {
-		this.type = type;
+	    
+	    if ( type < BUILDALL || type > BUILDVTOL )
+	        this.type = BUILDMEK;
+	    else
+	        this.type = type;
 	}
 	
 	/**

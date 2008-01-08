@@ -2,6 +2,11 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.14.x
++ TokenReader added to SHouse, SPlayer, SUnit, SUnitFactory, SPlanet, SArmy
++ New Class TokenReader.java used to encapsulate all StringTokenizer calls
++ RFE: added server/faction param for how long a player has to wait before
+  they can be promoted again.
++ RFE: added promtion date/time to SPlayer
 + Bug: getMyHouse was being used instead of getHouseFighting for in Ops
 + RFE 1848468: Fixed Maps for Operations
 + Fixed Typo in Server config dialog

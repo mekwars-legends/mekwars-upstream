@@ -889,6 +889,7 @@ public class DefaultServerOptions {
 		//SubFactions
 		defaults.setProperty("autoPromoteSubFaction", "true");
 		defaults.setProperty("factionLeaderLevel", "30");
+		defaults.setProperty("daysbetweenpromotions", "7");
     }
 
 /**

@@ -45,6 +45,7 @@ public class PM extends Command {
 	public void execute(String input) {
 		StringTokenizer st = decode(input);
         JPanel mailTab = null;
+
         if (st.hasMoreElements()) {
         	
             String name = st.nextToken(); // Parse the name
@@ -59,8 +60,10 @@ public class PM extends Command {
                 String usercolor = mwclient.getUser(name).getColor();//preferred colour
                 String addon = mwclient.getUser(name).getAddon();//addon
                 String message = st.nextToken(); // Parse the message --Torren
-    			String factioncolor = "";
+    			String factioncolor = mwclient.getConfig().getParam("CHATFONTCOLOR");
                 String tabName = name;
+        		String fontSize = mwclient.getConfig().getParam("CHATFONTSIZE");
+
                 
                 if (mwclient.getConfig().isParam("USEMULTIPLEPM")) {
                     int maxTabs =  mwclient.getConfig().getIntParam("MAXPMTABS");
@@ -82,8 +85,6 @@ public class PM extends Command {
                 //draw a factioncolour from the datafeed
 				if (sender.getHouse().length() > 1 && mwclient.getData().getHouseByName(sender.getHouse()) != null )
 					factioncolor = mwclient.getData().getHouseByName(sender.getHouse()).getHouseColor();
-				else
-					factioncolor = "black";
 				
 					//set up the name and addon colours
                 String colorSetting = mwclient.getConfig().getParam("PLAYERCHATCOLORMODE").toLowerCase();
@@ -104,11 +105,12 @@ public class PM extends Command {
 						message = "*** " + name + message.substring(3);
 					else
 						message = "*** " + tabName + message.substring(3);
+					message = "<font size=\""+fontSize+"\">" + message +"</font>";
 				}	
 				else {
 					//load and set chat font colour
-					String fontcolor = mwclient.getConfig().getParam("CHATFONTCOLOR");
-					message = name + addon + "<font color=\""+fontcolor+"\"><b>:</b> " + message.trim() + "</font>";
+					message = "<font size=\""+fontSize+"\">" + message +"</font>";
+					message = name + addon + "<b>:</b> " + message.trim();
 				}
 				
 				//if the user wants to, remove any img tags
@@ -130,7 +132,7 @@ public class PM extends Command {
 				
 				//add timestamp
 				if (mwclient.getConfig().isParam("TIMESTAMP")) 
-					message ="<font color=\"" + mwclient.getConfig().isParam("CHATFONTCOLOR") + "\">" + mwclient.getShortTime()+"</font>" + message;
+					message = mwclient.getShortTime() + message;
 				
 				//put the message in PM panel
 				mwclient.addToChat(message, CCommPanel.CHANNEL_PMAIL,tabName);

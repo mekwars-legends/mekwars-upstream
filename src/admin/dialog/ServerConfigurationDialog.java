@@ -2435,6 +2435,12 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("factionLeaderLevel");
         factionSpring2.add(baseTextField);
         
+        baseTextField = new JTextField(5);
+        factionSpring2.add(new JLabel("Days Between Promotions:",SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Integer Field, How many days a player has to wait before they can be promoted again<br>after their last promotion/demotion.</html>");
+        baseTextField.setName("daysbetweenpromotions");
+        factionSpring2.add(baseTextField);
+        
 		SpringLayoutHelper.setupSpringGrid(factionSpring2,2);
 		
 		//setup CBoxes

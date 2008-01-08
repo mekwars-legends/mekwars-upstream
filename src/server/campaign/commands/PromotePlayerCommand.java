@@ -49,6 +49,7 @@ public class PromotePlayerCommand implements Command {
 		SPlayer grunt = null;
 		String subFactionName;
 		SubFaction subFaction = null;
+		boolean isMod = CampaignMain.cm.getServer().isModerator(Username);
 		
 		try{
 			grunt = CampaignMain.cm.getPlayer(command.nextToken());
@@ -60,6 +61,12 @@ public class PromotePlayerCommand implements Command {
 		
 		if ( grunt == null ){
 			CampaignMain.cm.toUser("AM:Unknown Player", Username);
+			return;
+		}
+		
+		
+		if ( !grunt.canBePromoted() && !isMod){
+			CampaignMain.cm.toUser("AM:"+grunt.getName()+" cannot be promoted at this time.", Username);
 			return;
 		}
 		
@@ -95,5 +102,10 @@ public class PromotePlayerCommand implements Command {
 		CampaignMain.cm.toUser("AM:Congratulations you have been promoted to SubFaction "+subFactionName+".", grunt.getName());
 		CampaignMain.cm.doSendHouseMail(grunt.getMyHouse(), "NOTE", grunt.getName()+" has been promoted to subfaction "+subFactionName+" by "+leader.getName()+"!");
 	
+		CampaignMain.cm.toUser("AM:You've promoted "+grunt.getName()+" to SubFaction "+subFactionName+".", Username);
+		
+		if ( isMod )
+			CampaignMain.cm.doSendModMail("NOTE",Username + " prmoted " + grunt.getName() + " to SubFaction "+subFactionName+".");
+
 	}
 }//end RequestSubFactionPromotionCommand class

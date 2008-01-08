@@ -40,6 +40,8 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.Constructor;
 import java.net.ConnectException;
 import java.net.InetAddress;
@@ -356,6 +358,12 @@ public final class MWClient implements IClient {
         		splash = new SplashWindow();
         }
         
+		try{
+		    RuntimeMXBean rt = ManagementFactory.getRuntimeMXBean();
+		    MWClient.mwClientLog.clientErrLog("RT Info: "+rt.getName());
+		}catch(Exception ex){
+		    MWClient.mwClientLog.clientErrLog(ex);
+		}
 		Connector = new CConnector(this);
 		Connector.setSplashWindow(splash);//may set null if ded.
 		
