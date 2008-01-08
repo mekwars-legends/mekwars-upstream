@@ -1013,7 +1013,7 @@ public class ShortOperation implements Comparable {
 			 */
 			TreeMap<String, SHouse> houseMap = new TreeMap<String, SHouse>();
 			for (String currN : this.getAllPlayerNames()) {
-				SHouse currH = CampaignMain.cm.getPlayer(currN).getMyHouse();			
+				SHouse currH = CampaignMain.cm.getPlayer(currN).getHouseFightingFor();			
 				if (houseMap.get(currH.getName()) == null)
 					houseMap.put(currH.getName(), currH);
 			}
@@ -1423,7 +1423,7 @@ public class ShortOperation implements Comparable {
                     
 				//send terrain
 				if (aTerrain != null){
-					CampaignMain.cm.toUser("APE|" + aTerrain.toString() + "|" + mapsize.width + "|" + mapsize.height,currN,false);
+					CampaignMain.cm.toUser("APE|" + aTerrain.toString(),currN,false);
                     CampaignMain.cm.toUser("PE|" + playEnvironment.toString(cityBuilder.toString()) + "|" + mapsize.width + "|" + mapsize.height,currN,false);
 				} else { 
 			        CampaignMain.cm.toUser("PE|" + playEnvironment.toString(cityBuilder.toString()) + "|" + mapsize.width + "|" + mapsize.height,currN,false);
@@ -1536,7 +1536,7 @@ public class ShortOperation implements Comparable {
 			 */
 			TreeMap<String, SHouse> houseMap = new TreeMap<String, SHouse>();
 			for (String currN : this.getAllPlayerNames()) {
-				SHouse currH = CampaignMain.cm.getPlayer(currN).getMyHouse();		
+				SHouse currH = CampaignMain.cm.getPlayer(currN).getHouseFightingFor();		
 				if (houseMap.get(currH.getName()) == null)
 					houseMap.put(currH.getName(), currH);
 			}
@@ -2167,7 +2167,7 @@ public class ShortOperation implements Comparable {
 				SPlayer currPlayer = CampaignMain.cm.getPlayer((String)i.next());
 				currAttacker++;//increment counter
 				
-				attackString += currPlayer.getColoredName() + currPlayer.getMyHouse().getColoredAbbreviation(true);
+				attackString += currPlayer.getColoredName() + currPlayer.getHouseFightingFor().getColoredAbbreviation(true);
 				
 				if (numAttackers == 2 && i.hasNext())
 					attackString += " and ";
@@ -2184,7 +2184,7 @@ public class ShortOperation implements Comparable {
 			if (showName && numAttackers == 1)
 				nameString = initiator.getColoredName() + initiator.getHouseFightingFor().getColoredAbbreviation(true);
 			else
-				nameString = initiator.getMyHouse().getColoredNameAsLink();
+				nameString = initiator.getHouseFightingFor().getColoredNameAsLink();
 			
 			if (numAttackers == 1)
 				attackString += nameString;
@@ -2225,7 +2225,7 @@ public class ShortOperation implements Comparable {
 				SPlayer currPlayer = CampaignMain.cm.getPlayer((String)i.next());
 				currDefender++;//increment counter
 				
-				defendString += currPlayer.getColoredName() + currPlayer.getMyHouse().getColoredAbbreviation(true);
+				defendString += currPlayer.getColoredName() + currPlayer.getHouseFightingFor().getColoredAbbreviation(true);
 				
 				if (numDefenders == 2 && i.hasNext())
 					defendString += " and ";
@@ -2299,7 +2299,7 @@ public class ShortOperation implements Comparable {
 	public boolean hasPlayerFrom(SHouse h) {
 		for (String currN : this.getAllPlayerNames()) {
 			SPlayer currP = CampaignMain.cm.getPlayer(currN);
-			if (currP.getMyHouse().equals(h))
+			if (currP.getHouseFightingFor().equals(h))
 				return true;
 		}
 		return false;
@@ -2317,7 +2317,7 @@ public class ShortOperation implements Comparable {
 	public boolean hasPlayerWhoseHouseBeginsWith(String s) {
 		for (String currN : this.getAllPlayerNames()) {
 			SPlayer currP = CampaignMain.cm.getPlayer(currN);
-			if (currP.getMyHouse().getName().toLowerCase().startsWith(s))
+			if (currP.getHouseFightingFor().getName().toLowerCase().startsWith(s))
 				return true;
 		}
 		return false;

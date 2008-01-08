@@ -435,7 +435,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
         				entity.setCrew(createEntityPilot(autoUnit));
         			}
         			
-                    MWClient.mwClientLog.clientErrLog(entity.getModel()+" direction "+entity.getOffBoardDirection());
+                    //MWClient.mwClientLog.clientErrLog(entity.getModel()+" direction "+entity.getOffBoardDirection());
 					//add the unit to the game.
                     if ( bot != null )
                         bot.sendAddEntity(entity);
@@ -528,7 +528,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
                 mwclient.setUsingBots(false);
                 //clear out everything from this game
                 mwclient.setEnvironment(null,null,null);
-                mwclient.setAdvancedTerrain(null,null);
+                mwclient.setAdvancedTerrain(null);
                 mwclient.setPlayerStartingEdge(Buildings.EDGE_UNKNOWN);
                 //get rid of any and all bots.
                 for (Iterator<Client> i = gui.getBots().values().iterator(); i.hasNext();) {

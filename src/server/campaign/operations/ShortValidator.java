@@ -531,17 +531,17 @@ public class ShortValidator {
 		
 		boolean solCanAttack = o.getBooleanValue("AllowSOLToUse");
 		boolean nonConqCanAttack = o.getBooleanValue("AllowNonConqToUse");
-		if (ap.getMyHouse().isNewbieHouse() && !solCanAttack)
+		if (ap.getHouseFightingFor().isNewbieHouse() && !solCanAttack)
 			failureReasons.add(SFAIL_ATTACK_SOLCANTATT);
-		if (!ap.getMyHouse().isConquerable() && !nonConqCanAttack)
+		if (!ap.getHouseFightingFor().isConquerable() && !nonConqCanAttack)
 			failureReasons.add(SFAIL_ATTACK_NON_CONQ_A);
 		
 		//faction checks
 		String allowed = o.getValue("LegalAttackFactions");
 		String notAllowed = o.getValue("IllegalAttackFactions");
-		if (allowed.trim().length() != 0 && allowed.indexOf(ap.getMyHouse().getName()) == -1)
+		if (allowed.trim().length() != 0 && allowed.indexOf(ap.getHouseFightingFor().getName()) == -1)
 			failureReasons.add(SFAIL_ATTACK_FACTION);
-		else if (notAllowed.trim().length() != 0 && notAllowed.indexOf(ap.getMyHouse().getName()) >= 0)
+		else if (notAllowed.trim().length() != 0 && notAllowed.indexOf(ap.getHouseFightingFor().getName()) >= 0)
 			failureReasons.add(SFAIL_ATTACK_FACTION);
 		
 		if (ap.getRating() > o.getDoubleValue("MaxAttackerRating"))
@@ -855,9 +855,9 @@ public class ShortValidator {
 
         if (target != null && target.getInfluence().getInfluence(dp.getHouseFightingFor().getId()) < o.getIntValue("MinPlanetOwnership")) 
             failureReasons.add(SFAIL_DEFEND_NOTPLANDEF);
-		if (dp.getMyHouse().isNewbieHouse() && !solCanDefend)
+		if (dp.getHouseFightingFor().isNewbieHouse() && !solCanDefend)
 			failureReasons.add(SFAIL_DEFEND_SOLCANTDEF);
-		if (!dp.getMyHouse().isConquerable() && !nonConqCanDefend)
+		if (!dp.getHouseFightingFor().isConquerable() && !nonConqCanDefend)
 			failureReasons.add(SFAIL_DEFEND_NON_CONQ_D);
 		
 		if ( (o.getIntValue("AttackerBaseConquestAmount") > 0
@@ -872,9 +872,9 @@ public class ShortValidator {
 		//faction checks
 		String allowed = o.getValue("LegalDefendFactions");
 		String notAllowed = o.getValue("IllegalDefendFactions");
-		if (allowed.trim().length() != 0 && allowed.indexOf(dp.getMyHouse().getName()) == -1)
+		if (allowed.trim().length() != 0 && allowed.indexOf(dp.getHouseFightingFor().getName()) == -1)
 			failureReasons.add(SFAIL_DEFEND_FACTION);
-		else if (notAllowed.trim().length() != 0 && notAllowed.indexOf(dp.getMyHouse().getName()) >= 0)
+		else if (notAllowed.trim().length() != 0 && notAllowed.indexOf(dp.getHouseFightingFor().getName()) >= 0)
 			failureReasons.add(SFAIL_DEFEND_FACTION);
 		
 		if (dp.getRating() > o.getDoubleValue("MaxDefenderRating"))

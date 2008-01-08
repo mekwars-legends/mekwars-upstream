@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.14.x
++ Bug: getMyHouse was being used instead of getHouseFighting for in Ops
++ RFE 1848468: Fixed Maps for Operations
 + Fixed Typo in Server config dialog
 + Fixed typo in Operations Editor
 + New Ammo cost code finished

@@ -2517,9 +2517,8 @@ public final class MWClient implements IClient {
 	/**
 	 * Sets the current advanced terrain and map size that will be used on next playboard
 	 */
-	public void setAdvancedTerrain(AdvancedTerrain aTerrain, Dimension dim) {
+	public void setAdvancedTerrain(AdvancedTerrain aTerrain) {
 		this.aTerrain = aTerrain;
-		MapSize = dim;
 	}
 	
 	/**

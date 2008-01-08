@@ -28,7 +28,7 @@ import common.util.BinWriter;
  * 
  * @@author Torren (Jason Tighe)
  * 
- * allows So's to sup up each indivual terrain on a planet.
+ * allows So's to set up each individual terrain on a planet.
  */
 
 final public class AdvancedTerrain{
@@ -52,7 +52,6 @@ final public class AdvancedTerrain{
     private int minVisibility = 100;
     private int maxVisibility = 100;
 
-    @Override
 	public String toString(){
         String result = "";
         result += "$"+ displayName

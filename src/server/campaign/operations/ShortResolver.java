@@ -1298,7 +1298,7 @@ public class ShortResolver {
 		for (String currName : allPlayers.keySet()) {
 
 			SPlayer currP = CampaignMain.cm.getPlayer(currName);
-			if (!currP.getMyHouse().isNewbieHouse())
+			if (!currP.getHouseFightingFor().isNewbieHouse())
 				continue;
 
 			if (currP.getExperience() >= CampaignMain.cm
@@ -1734,7 +1734,7 @@ public class ShortResolver {
 					CampaignMain.cm.getMWCC().unitChangeOwnerShip(
 							Integer.toString(currU.getId()),
 							newOwner.getName(),
-							newOwner.getMyHouse().getName(),
+							newOwner.getHouseFightingFor().getName(),
 							so.getOpCyclopsID(), "Salvage");
 
 				// do the actual unit move
@@ -2364,7 +2364,7 @@ public class ShortResolver {
 							totalConquest = conquestCap;
 
 						// Drop % to 0 if either group is non-conquer
-						if (!aWinner.getMyHouse().isConquerable() || !aLoser.getMyHouse().isConquerable())
+						if (!aWinner.getHouseFightingFor().isConquerable() || !aLoser.getHouseFightingFor().isConquerable())
 							totalConquest = 0;
 
 						// Drop to 0 is the planet is non-conquerable
@@ -2431,7 +2431,7 @@ public class ShortResolver {
 						if (so.getTargetWorld().getOwner() == null
 								|| !so.getTargetWorld().getOwner().getName()
 										.equalsIgnoreCase(
-												aLoser.getMyHouse().getName())) {
+												aLoser.getHouseFightingFor().getName())) {
 							totalDelay = 0;
 						}
 
@@ -2740,7 +2740,7 @@ public class ShortResolver {
 						if (so.getTargetWorld().getOwner() == null
 								|| !so.getTargetWorld().getOwner().getName()
 										.equalsIgnoreCase(
-												aLoser.getMyHouse().getName())) {
+												aLoser.getHouseFightingFor().getName())) {
 							ppToCapture = 0;
 						}
 
@@ -2976,7 +2976,7 @@ public class ShortResolver {
 						if (so.getTargetWorld().getOwner() == null
 								|| !so.getTargetWorld().getOwner().getName()
 										.equalsIgnoreCase(
-												aLoser.getMyHouse().getName())) {
+												aLoser.getHouseFightingFor().getName())) {
 							ppToDestroy = 0;
 						}
 
@@ -3084,7 +3084,7 @@ public class ShortResolver {
 							totalConquest = conquestCap;
 
 						// Drop % to 0 if either group is non-conquer
-						if (!aWinner.getMyHouse().isConquerable()|| !aLoser.getMyHouse().isConquerable())
+						if (!aWinner.getHouseFightingFor().isConquerable()|| !aLoser.getHouseFightingFor().isConquerable())
 							totalConquest = 0;
 
 						// Drop % to 0 if the planet is non-conquerable
@@ -3139,7 +3139,7 @@ public class ShortResolver {
 						if (so.getTargetWorld().getOwner() == null
 								|| !so.getTargetWorld().getOwner().getName()
 										.equalsIgnoreCase(
-												aWinner.getMyHouse().getName())) {
+												aWinner.getHouseFightingFor().getName())) {
 							totalRefreshBoost = 0;
 						}
 
@@ -3211,7 +3211,7 @@ public class ShortResolver {
 							if (so.getTargetWorld().getOwner() == null
 									|| !so.getTargetWorld().getOwner()
 											.getName().equalsIgnoreCase(
-													aWinner.getMyHouse()
+													aWinner.getHouseFightingFor()
 															.getName())) {
 								ppToGenerate = 0;
 							}
@@ -3716,7 +3716,7 @@ public class ShortResolver {
 
 			else {
 
-				unit.setPilot(owner.getMyHouse().getNewPilot(unit.getType()));
+				unit.setPilot(owner.getHouseFightingFor().getNewPilot(unit.getType()));
 				if (entity.getType() == Unit.MEK
 						|| entity.getType() == Unit.QUAD
 						|| entity.getType() == Unit.PROTOMEK)
@@ -3877,7 +3877,7 @@ public class ShortResolver {
 															// dead
 						toReturn[2] = currUnit.getPilot().getName()
 								+ " was captured by your forces and has decided to join "
-								+ pickupPlayer.getMyHouse()
+								+ pickupPlayer.getHouseFightingFor()
 										.getColoredNameAsLink() + ".";
 						return toReturn;
 					}
@@ -3960,7 +3960,7 @@ public class ShortResolver {
 														// that he is dead.
 					toReturn[2] = ((SPilot) currUnit.getPilot())
 							.getPilotCaptureAndDefectedMessage(currUnit,
-									pickupPlayer.getMyHouse());
+									pickupPlayer.getHouseFightingFor());
 					return toReturn;
 				}
 
@@ -4184,7 +4184,7 @@ public class ShortResolver {
 													// purposes
 				toReturn[2] = ((SPilot) currUnit.getPilot())
 						.getPilotCaptureAndDefectedMessage(currUnit,
-								pickupPlayer.getMyHouse());
+								pickupPlayer.getHouseFightingFor());
 				return toReturn;
 			}
 
@@ -4276,7 +4276,7 @@ public class ShortResolver {
 				.getFloatConfig("BaseUnitLossPayment");
 
 		// store the cost of a similar unit from the faction
-		int newPrice = p.getMyHouse().getPriceForUnit(u.getWeightclass(),
+		int newPrice = p.getHouseFightingFor().getPriceForUnit(u.getWeightclass(),
 				u.getType());
 
 		// add a multiple of a similar new unit's cost from the player's faction
@@ -4438,8 +4438,7 @@ public class ShortResolver {
 		if (!player.getMyHouse().isMercHouse())
 			return;
 
-		ContractInfo contract = (((MercHouse) player.getMyHouse())
-				.getContractInfo(player));
+		ContractInfo contract = (((MercHouse) player.getMyHouse()).getContractInfo(player));
 
 		if (contract == null)
 			return;
@@ -4456,8 +4455,7 @@ public class ShortResolver {
 		if (!player.getMyHouse().isMercHouse())
 			return;
 
-		ContractInfo contract = (((MercHouse) player.getMyHouse())
-				.getContractInfo(player));
+		ContractInfo contract = (((MercHouse) player.getMyHouse()).getContractInfo(player));
 
 		if (contract == null)
 			return;
@@ -4607,8 +4605,7 @@ public class ShortResolver {
 					.getBooleanValue("HousePilotsCheckLevelUp");
 			if ((owner.getMyHouse().isNewbieHouse() && solPilotCanLevel)
 					|| (!owner.getMyHouse().isNewbieHouse() && housePilotCanLevel))
-				append.append(((SPilot) currU.getPilot())
-						.checkForPilotSkillImprovement(currU, owner));
+				append.append(((SPilot) currU.getPilot()).checkForPilotSkillImprovement(currU, owner));
 		}
 
 		// if the unit failes to level, tell the owner about earned XP.

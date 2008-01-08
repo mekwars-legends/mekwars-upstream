@@ -17,7 +17,6 @@
 
 package client.cmd;
 
-import java.awt.Dimension;
 import java.util.StringTokenizer;
 
 import common.AdvancedTerrain;
@@ -47,19 +46,7 @@ public class APE extends Command {
 	public void execute(String input) {
 		StringTokenizer st = decode(input);
 		AdvancedTerrain aTerrain = new AdvancedTerrain(st.nextToken());
-    	aTerrain.setXSize(Integer.parseInt(st.nextToken()));
-    	aTerrain.setYSize(Integer.parseInt(st.nextToken()));
-    	aTerrain.setStaticMap(Boolean.parseBoolean(st.nextToken()));
-    	aTerrain.setXBoardSize(Integer.parseInt(st.nextToken()));
-    	aTerrain.setYBoardSize(Integer.parseInt(st.nextToken()));
-    	st.nextToken(); //low temp
-    	st.nextToken(); //hi temp
-    	st.nextToken(); //gravity
-    	st.nextToken(); //vaccum
-    	st.nextToken(); //Night Chance
-    	st.nextToken(); //Night Temp Mod
-    	aTerrain.setStaticMapName(st.nextToken());
 
-		mwclient.setAdvancedTerrain(aTerrain, new Dimension(aTerrain.getXSize(),aTerrain.getYSize()));
+		mwclient.setAdvancedTerrain(aTerrain);
 	}
 }
