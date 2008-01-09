@@ -544,11 +544,11 @@ public final class SUnit extends Unit implements Serializable {
                 ps.setString(5, getProducer());
                 ps.setInt(6, getWeightclass());
                 if (ent instanceof Mech)
-                    ps.setString(7, Boolean.toString(((Mech) ent).isAutoEject()));
+                    ps.setBoolean(7, ((Mech) ent).isAutoEject());
                 else
-                    ps.setString(7, "false");
-                ps.setString(8, Boolean.toString(ent.hasSpotlight()));
-                ps.setString(9, Boolean.toString(ent.isUsingSpotlight()));
+                    ps.setBoolean(7, false);
+                ps.setBoolean(8, ent.hasSpotlight());
+                ps.setBoolean(9, ent.isUsingSpotlight());
                 if (CampaignMain.cm.getData().getBannedTargetingSystems().containsKey(getEntity().getTargSysType())) {
                     ps.setInt(10, MiscType.T_TARGSYS_STANDARD);
                     getEntity().setTargSysType(MiscType.T_TARGSYS_STANDARD);
@@ -565,11 +565,14 @@ public final class SUnit extends Unit implements Serializable {
                 ps.setInt(15, getLifeTimeRepairCost());
                 ps.setInt(16, getType());
                 ps.executeUpdate();
-                setDBId(getId());
+                ResultSet rs = ps.getGeneratedKeys();
+                rs.next();
+                setDBId(rs.getInt(1));
+                rs.close();
             } else {
                 // Unit's already there - update it
                 sql.setLength(0);
-                sql.append("UPDATE units set uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, uType = ? where MWID=?");
+                sql.append("UPDATE units set uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, uType = ?, MWID=? WHERE ID = ?");
                 ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
                 ps.setString(1, getUnitFilename());
                 ps.setInt(2, getPosId());
@@ -577,11 +580,11 @@ public final class SUnit extends Unit implements Serializable {
                 ps.setString(4, getProducer());
                 ps.setInt(5, getWeightclass());
                 if (ent instanceof Mech)
-                    ps.setString(6, Boolean.toString(((Mech) ent).isAutoEject()));
+                    ps.setBoolean(6, ((Mech) ent).isAutoEject());
                 else
-                    ps.setString(6, "false");
-                ps.setString(7, Boolean.toString(ent.hasSpotlight()));
-                ps.setString(8, Boolean.toString(ent.isUsingSpotlight()));
+                    ps.setBoolean(6, false);
+                ps.setBoolean(7, ent.hasSpotlight());
+                ps.setBoolean(8, ent.isUsingSpotlight());
                 if (CampaignMain.cm.getData().getBannedTargetingSystems().containsKey(getEntity().getTargSysType())) {
                     ps.setInt(9, MiscType.T_TARGSYS_STANDARD);
                     getEntity().setTargSysType(MiscType.T_TARGSYS_STANDARD);
@@ -598,10 +601,11 @@ public final class SUnit extends Unit implements Serializable {
                 ps.setInt(14, getLifeTimeRepairCost());
                 ps.setInt(15, getType());
                 ps.setInt(16, getId());
+                ps.setInt(17, getDBId());
                 ps.executeUpdate();
             }
             // Now do Machine Guns
-            ps.executeUpdate("DELETE from unit_mgs WHERE unitID = " + getId());
+            ps.executeUpdate("DELETE from unit_mgs WHERE unitID = " + getDBId());
             ArrayList<Mounted> en_Weapon = ent.getWeaponList();
             int location = 0;
             for (Mounted mWeapon : en_Weapon) {
@@ -611,7 +615,7 @@ public final class SUnit extends Unit implements Serializable {
                     sql.append("INSERT into unit_mgs set unitID=?, mgLocation=?, mgRapidFire=?");
                     ps.close();
                     ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
-                    ps.setInt(1, getId());
+                    ps.setInt(1, getDBId());
                     ps.setInt(2, location);
                     ps.setString(3, Boolean.toString(mWeapon.isRapidfire()));
                     ps.executeUpdate();
@@ -619,7 +623,7 @@ public final class SUnit extends Unit implements Serializable {
                 location++;
             }
             // Do Ammo
-            ps.executeUpdate("DELETE from unit_ammo WHERE unitID = " + getId());
+            ps.executeUpdate("DELETE from unit_ammo WHERE unitID = " + getDBId());
 
             ArrayList<Mounted> en_Ammo = ent.getAmmo();
             int AmmoLoc = 0;
@@ -632,7 +636,7 @@ public final class SUnit extends Unit implements Serializable {
                 sql.append("INSERT into unit_ammo set unitID = ?, ammoLocation = ?, ammoHotLoaded=?, ammoType=?, ammoInternalName=?, ammoShotsLeft=?");
                 ps.close();
                 ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
-                ps.setInt(1, getId());
+                ps.setInt(1, getDBId());
                 ps.setInt(2, AmmoLoc);
                 ps.setString(3, Boolean.toString(hotloaded));
                 ps.setInt(4, at.getAmmoType());
@@ -804,14 +808,14 @@ public final class SUnit extends Unit implements Serializable {
             ResultSet rs;
             Statement stmt = CampaignMain.cm.MySQL.getStatement();
 
-            rs = stmt.executeQuery("SELECT * from units WHERE MWID = " + unitID);
+            rs = stmt.executeQuery("SELECT * from units WHERE ID = " + unitID);
             if (rs.next()) {
                 setUnitFilename(rs.getString("uFileName"));
                 setPosId(rs.getInt("uPosID"));
                 int newstate = rs.getInt("uStatus");
                 setProducer(rs.getString("uProducer"));
                 setWeightclass(rs.getInt("uWeightClass"));
-                setId(unitID);
+                setId(rs.getInt("MWID"));
                 setDBId(unitID);
                 if (CampaignMain.cm.getCurrentUnitID() <= getId())
                     CampaignMain.cm.setCurrentUnitID(getId() + 1);
@@ -829,9 +833,9 @@ public final class SUnit extends Unit implements Serializable {
 
                 if (unitEntity instanceof Mech)
                     ((Mech) unitEntity).setAutoEject(Boolean.parseBoolean(rs.getString("uAutoEject")));
-                unitEntity.setSpotlight(Boolean.parseBoolean(rs.getString("uHasSpotlight")));
+                unitEntity.setSpotlight(rs.getBoolean("uHasSpotlight"));
 
-                unitEntity.setSpotlightState(Boolean.parseBoolean(rs.getString("uIsUsingSpotlight")));
+                unitEntity.setSpotlightState(rs.getBoolean("uIsUsingSpotlight"));
 
                 if (CampaignMain.cm.isUsingAdvanceRepair() && (unitEntity instanceof Mech || unitEntity instanceof Tank))
                     UnitUtils.applyBattleDamage(unitEntity, rs.getString("uBattleDamage"), (CampaignMain.cm.getRTT() != null & CampaignMain.cm.getRTT().unitRepairTimes(getId()) != null));

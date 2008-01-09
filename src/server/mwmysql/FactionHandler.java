@@ -35,8 +35,8 @@ public class FactionHandler {
 			rs = stmt.executeQuery("SELECT * from factions ORDER BY ID");
 			while(rs.next()) {
 				SHouse h;
-				boolean newbieHouse = Boolean.parseBoolean(rs.getString("fIsNewbieHouse"));
-				boolean mercHouse = Boolean.parseBoolean(rs.getString("fIsMercHouse"));
+				boolean newbieHouse = rs.getBoolean("fIsNewbieHouse");
+				boolean mercHouse = rs.getBoolean("fIsMercHouse");
 				if (newbieHouse)
 					h = new NewbieHouse(data.getUnusedHouseID());
 				else if (mercHouse)
@@ -80,12 +80,12 @@ public class FactionHandler {
 					h.getComponents().get(Unit.BATTLEARMOR).add(0);
 				}
 				h.setInitialHouseRanking(rs.getInt("fInitialHouseRanking"));
-				h.setConquerable(Boolean.parseBoolean(rs.getString("fConquerable")));
-				h.setInHouseAttacks(Boolean.parseBoolean(rs.getString("fInHouseAttacks")));
+				h.setConquerable(rs.getBoolean("fConquerable"));
+				h.setInHouseAttacks(rs.getBoolean("fInHouseAttacks"));
 				h.setId(-1);
 				h.setHousePlayerColors(rs.getString("fPlayerColors"));
-				h.setHouseDefectionFrom(Boolean.parseBoolean(rs.getString("fAllowDefectionsFrom")));
-				h.setHouseDefectionTo(Boolean.parseBoolean(rs.getString("fAllowDefectionsTo")));
+				h.setHouseDefectionFrom(rs.getBoolean("fAllowDefectionsFrom"));
+				h.setHouseDefectionTo(rs.getBoolean("fAllowDefectionsTo"));
 				h.setHouseFluFile(rs.getString("fFluFile"));
 				h.setMotd(rs.getString("fMOTD"));
 				h.setTechLevel(rs.getInt("fTechLevel"));
@@ -93,10 +93,10 @@ public class FactionHandler {
 				
 				//Load the Meks
 				MWServ.mwlog.dbLog("Loading Meks");
-				rs1 = stmt2.executeQuery("SELECT MWID from units WHERE uType = " + Unit.MEK + " AND uFactionID = " + h.getDBId());
+				rs1 = stmt2.executeQuery("SELECT ID from units WHERE uType = " + Unit.MEK + " AND uFactionID = " + h.getDBId());
 				while(rs1.next()) {
 					SUnit u = new SUnit();
-					u.fromDB(rs1.getInt("MWID"));
+					u.fromDB(rs1.getInt("ID"));
 					if ( newbieHouse ){
 						int priceForUnit = h.getPriceForUnit(u.getWeightclass(), u.getType());
 						int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
@@ -114,10 +114,10 @@ public class FactionHandler {
 				
 				//Load the Vees
 				MWServ.mwlog.dbLog("Loading Vees");
-				rs1 = stmt2.executeQuery("SELECT MWID from units WHERE uType = " + Unit.VEHICLE + " AND uFactionID = " + h.getDBId());
+				rs1 = stmt2.executeQuery("SELECT ID from units WHERE uType = " + Unit.VEHICLE + " AND uFactionID = " + h.getDBId());
 				while(rs1.next()) {
 					SUnit u = new SUnit();
-					u.fromDB(rs1.getInt("MWID"));
+					u.fromDB(rs1.getInt("ID"));
 					if ( newbieHouse ){
 						int priceForUnit = h.getPriceForUnit(u.getWeightclass(), u.getType());
 						int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
@@ -131,10 +131,10 @@ public class FactionHandler {
 				//Load the Infantry
 				MWServ.mwlog.dbLog("Loading Infantry");
 				if (Boolean.parseBoolean(h.getConfig("UseInfantry"))) {
-					rs1 = stmt2.executeQuery("SELECT MWID from units WHERE uType = " + Unit.INFANTRY + " AND uFactionID = " + h.getDBId());
+					rs1 = stmt2.executeQuery("SELECT ID from units WHERE uType = " + Unit.INFANTRY + " AND uFactionID = " + h.getDBId());
 					while(rs1.next()) {
 						SUnit u = new SUnit();
-						u.fromDB(rs1.getInt("MWID"));
+						u.fromDB(rs1.getInt("ID"));
 
 						if ( newbieHouse ){
 							int priceForUnit = h.getPriceForUnit(u.getWeightclass(), u.getType());
@@ -149,10 +149,10 @@ public class FactionHandler {
 				
 				//Load the Protomeks
 				MWServ.mwlog.dbLog("Loading Protos");
-				rs1 = stmt2.executeQuery("SELECT MWID from units WHERE uType = " + Unit.PROTOMEK + " AND uFactionID = " + h.getDBId());
+				rs1 = stmt2.executeQuery("SELECT ID from units WHERE uType = " + Unit.PROTOMEK + " AND uFactionID = " + h.getDBId());
 				while(rs1.next()) {
 					SUnit u = new SUnit();
-					u.fromDB(rs1.getInt("MWID"));
+					u.fromDB(rs1.getInt("ID"));
 					if ( newbieHouse ){
 						int priceForUnit = h.getPriceForUnit(u.getWeightclass(), u.getType());
 						int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
@@ -165,10 +165,10 @@ public class FactionHandler {
 				
 				//Load the BattleArmor
 				MWServ.mwlog.dbLog("Loading BA");
-				rs1 = stmt2.executeQuery("SELECT MWID from units WHERE uType = " + Unit.BATTLEARMOR + " AND uFactionID = " + h.getDBId());
+				rs1 = stmt2.executeQuery("SELECT ID from units WHERE uType = " + Unit.BATTLEARMOR + " AND uFactionID = " + h.getDBId());
 				while(rs1.next()) {
 					SUnit u = new SUnit();
-					u.fromDB(rs1.getInt("MWID"));
+					u.fromDB(rs1.getInt("ID"));
 					if ( newbieHouse ){
 						int priceForUnit = h.getPriceForUnit(u.getWeightclass(), u.getType());
 						int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));

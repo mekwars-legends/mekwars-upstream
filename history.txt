@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.14.x
++ Fixed storage of booleans in SHouse, SUnit, and SPlayer.
++ Fixed deleteUnit to use DBId instead of Id.
++ Updated DB to v19
 + TokenReader added to SHouse, SPlayer, SUnit, SUnitFactory, SPlanet, SArmy
 + New Class TokenReader.java used to encapsulate all StringTokenizer calls
 + RFE: added server/faction param for how long a player has to wait before

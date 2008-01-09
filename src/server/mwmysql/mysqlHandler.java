@@ -25,12 +25,16 @@ public class mysqlHandler{
   private PlayerHandler plh = null;
   private PhpBBConnector phpBBCon = null;
 
-  private final int currentDBVersion = 18;
+  private final int currentDBVersion = 19;
   
   public void closeMySQL(){
 	  MySQLCon.close();
 	  if(CampaignMain.cm.isSynchingBB())
 		  phpBBCon.close();
+  }
+  
+  public int getUnitDBIdFromMWId(int MWId) {
+	  return uh.getUnitDBIdFromMWId(MWId);
   }
   
   public void clearArmies(int userID) {

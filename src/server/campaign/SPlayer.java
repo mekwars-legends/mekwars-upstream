@@ -370,7 +370,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
      */
     public void removeUnit(int unitid, boolean sendArmyUpdate) {
         if (CampaignMain.cm.isUsingMySQL())
-            CampaignMain.cm.MySQL.unlinkUnit(unitid);
+            CampaignMain.cm.MySQL.unlinkUnit(CampaignMain.cm.MySQL.getUnitDBIdFromMWId(unitid));
 
         SUnit Mech = null;
         for (int i = 0; i < units.size(); i++) {
@@ -2954,11 +2954,9 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 sql.append("playerInfluence = ?, ");
                 sql.append("playerFluff = ?, ");
                 if (CampaignMain.cm.isUsingAdvanceRepair())
-                    sql
-                            .append("playerBaysOwned = ?, playerTechnicians = NULL, ");
+                    sql.append("playerBaysOwned = ?, playerTechnicians = NULL, ");
                 else
-                    sql
-                            .append("playerBaysOwned = NULL, playerTechnicians = ?, ");
+                    sql.append("playerBaysOwned = NULL, playerTechnicians = ?, ");
                 sql.append("playerRP = ?, ");
                 sql.append("playerXPToReward = ?, ");
                 sql.append("playerTotalTechsString = ?, ");
@@ -3008,13 +3006,13 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 ps.setDouble(17, getLastAttackFromReserve());
                 ps.setInt(18, getGroupAllowance());
                 ps.setString(19, getLastISP());
-                ps.setString(20, Boolean.toString(isInvisible()));
+                ps.setBoolean(20, isInvisible());
                 ps.setString(21, getUnitParts().toString());
                 if (getPassword() != null)
                     ps.setInt(22, getPassword().getAccess());
                 else
                     ps.setInt(22, 1);
-                ps.setString(23, Boolean.toString(getAutoReorder()));
+                ps.setBoolean(23, getAutoReorder());
                 ps.setInt(24, getTeamNumber());
 
                 ps.setString(25,
@@ -3101,13 +3099,13 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 ps.setDouble(17, getLastAttackFromReserve());
                 ps.setInt(18, getGroupAllowance());
                 ps.setString(19, getLastISP());
-                ps.setString(20, Boolean.toString(isInvisible()));
+                ps.setBoolean(20, isInvisible());
                 if (getPassword() != null)
                     ps.setInt(21, getPassword().getAccess());
                 else
                     ps.setInt(21, 1);
                 ps.setString(22, getUnitParts().toString());
-                ps.setString(23, Boolean.toString(getAutoReorder()));
+                ps.setBoolean(23, getAutoReorder());
                 if (getPassword() != null)
                     ps.setString(24, this.password.getPasswd());
                 else
@@ -3478,11 +3476,11 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 forumID = rs.getInt("playerForumID");
 
                 rs1 = stmt1
-                        .executeQuery("SELECT MWID from units WHERE uplayerID = "
+                        .executeQuery("SELECT ID from units WHERE uplayerID = "
                                 + playerID);
                 while (rs1.next()) {
                     SUnit m = new SUnit();
-                    m.fromDB(rs1.getInt("MWID"));
+                    m.fromDB(rs1.getInt("ID"));
                     units.add(m);
                     CampaignMain.cm.toUser("PL|HD|" + m.toString(true), name,
                             false);
@@ -3554,8 +3552,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
 
                     setLastISP(rs.getString("playerLastISP"));
 
-                    this.setInvisible(Boolean.parseBoolean(rs
-                            .getString("playerIsInvisible")));
+                    this.setInvisible(rs.getBoolean("playerIsInvisible"));
 
                     this.setGroupAllowance(rs.getInt("playerGroupAllowance"));
                 } catch (Exception ex) {
@@ -3576,8 +3573,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
 
                 this.subFaction = rs.getString("playerSubfactionName");
 
-                this.setAutoReorder(Boolean.parseBoolean(rs
-                        .getString("playerAutoReorder")));
+                this.setAutoReorder(rs.getBoolean("playerAutoReorder"));
 
                 if (this.password != null
                         && this.password.getPasswd().trim().length() <= 2) {
