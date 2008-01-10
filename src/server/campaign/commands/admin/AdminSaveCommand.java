@@ -42,7 +42,7 @@ public class AdminSaveCommand implements Command {
 		CampaignMain.cm.toFile();
 		CampaignMain.cm.forceSavePlayers(Username);
         CampaignMain.cm.saveBannedAmmo();
-		CampaignMain.cm.toUser("Status saved!",Username,true);
+		CampaignMain.cm.toUser("AM:Status saved!",Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has saved the status files");
 		
 	}

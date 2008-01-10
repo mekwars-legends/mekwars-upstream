@@ -71,7 +71,7 @@ public class AdminSaveCommandLevelsCommand implements Command {
 		    MWServ.mwlog.errLog(ex);
 		    MWServ.mwlog.errLog("Unable to save command levels");
 		}
-		CampaignMain.cm.toUser("Command levels saved!",Username,true);
+		CampaignMain.cm.toUser("AM:Command levels saved!",Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has saved the command levels to file.");
 		
 	}

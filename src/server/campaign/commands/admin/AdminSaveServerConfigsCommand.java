@@ -45,7 +45,7 @@ public class AdminSaveServerConfigsCommand implements Command {
 		
 		DefaultServerOptions dso = new DefaultServerOptions();
 		dso.createConfig();
-		CampaignMain.cm.toUser("Status saved!",Username,true);
+		CampaignMain.cm.toUser("AM:Status saved!",Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has saved the server configs");
 		
 	}//end process
