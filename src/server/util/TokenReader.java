@@ -23,15 +23,13 @@ package server.util;
 
 import java.util.StringTokenizer;
 
-import server.MWServ;
-
 public class TokenReader{
     
     public static String readString(StringTokenizer st){
         try{
             return st.nextToken();
         }catch(Exception ex){
-            MWServ.mwlog.errLog(ex);
+            //MWServ.mwlog.errLog(ex);
             return "-1";
         }
     }
@@ -40,7 +38,7 @@ public class TokenReader{
         try{
             return Integer.parseInt(st.nextToken());
         }catch(Exception ex){
-            MWServ.mwlog.errLog(ex);
+            //MWServ.mwlog.errLog(ex);
             return -1;
         }
     }
@@ -49,7 +47,7 @@ public class TokenReader{
         try{
             return Long.parseLong(st.nextToken());
         }catch(Exception ex){
-            MWServ.mwlog.errLog(ex);
+            //MWServ.mwlog.errLog(ex);
             return -1;
         }
     }
@@ -58,7 +56,7 @@ public class TokenReader{
         try{
             return Float.parseFloat(st.nextToken());
         }catch(Exception ex){
-            MWServ.mwlog.errLog(ex);
+            //MWServ.mwlog.errLog(ex);
             return -1;
         }
     }
@@ -67,7 +65,7 @@ public class TokenReader{
         try{
             return Double.parseDouble(st.nextToken());
         }catch(Exception ex){
-            MWServ.mwlog.errLog(ex);
+            //MWServ.mwlog.errLog(ex);
             return -1;
         }
     }
@@ -76,7 +74,7 @@ public class TokenReader{
         try{
             return Boolean.parseBoolean(st.nextToken());
         }catch(Exception ex){
-            MWServ.mwlog.errLog(ex);
+            //MWServ.mwlog.errLog(ex);
             return false;
         }
     }
