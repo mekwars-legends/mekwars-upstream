@@ -25,47 +25,55 @@ import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
 
 public class AdminLockCampaignCommand implements Command {
-	
-	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "";
-	public int getExecutionLevel(){return accessLevel;}
-	public void setExecutionLevel(int i) {accessLevel = i;}
-	public String getSyntax() { return syntax;}
-	
-	public void process(StringTokenizer command,String Username) {
-		
-		//access level check
-		int userLevel = CampaignMain.cm.getServer().getUserLevel(Username);
-		if(userLevel < getExecutionLevel()) {
-			CampaignMain.cm.toUser("AM:Insufficient access level for command. Level: " + userLevel + ". Required: " + accessLevel + ".",Username,true);
-			return;
-		}
-		
-		if (new Boolean(CampaignMain.cm.getConfig("CampaignLock")).booleanValue() == true) {
-			CampaignMain.cm.toUser("Campaign is already locked.",Username,true);
-			return;
-		}
-		
-		//deactivate all active players, and tell them why.
-		for (House house : CampaignMain.cm.getData().getAllHouses()) {
-			SHouse h = (SHouse)house;
-			for (SPlayer p : h.getActivePlayers().values()) {
-				p.setActive(false);
-				CampaignMain.cm.toUser("AM:"+Username + " locked the campaign. You were deactivated.",p.getName(),true);
-				CampaignMain.cm.sendPlayerStatusUpdate(p,!new Boolean(CampaignMain.cm.getConfig("HideActiveStatus")).booleanValue());
-			}//end while (act members remain)
-			
-		}//end while(factions remain)
-		
-		//set the lock property, so no new players can activate
-		CampaignMain.cm.getConfig().setProperty("CampaignLock","true");
-		
-		//tell the admin he has locked the campaign
-		CampaignMain.cm.doSendToAllOnlinePlayers("AM:"+Username + " locked the campaign!", true);
-		CampaignMain.cm.toUser("AM:You locked the campaign. Players can no longer activate, and all active " +
-				"players were deactivated. Use 'adminunlockcampaign' to release the activity lock.",Username,true);
-		CampaignMain.cm.doSendModMail("NOTE",Username + " locked the campaign.");
-		
-	}//end Process()
-	
+
+    int accessLevel = IAuthenticator.ADMIN;
+    String syntax = "";
+
+    public int getExecutionLevel() {
+        return accessLevel;
+    }
+
+    public void setExecutionLevel(int i) {
+        accessLevel = i;
+    }
+
+    public String getSyntax() {
+        return syntax;
+    }
+
+    public void process(StringTokenizer command, String Username) {
+
+        // access level check
+        int userLevel = CampaignMain.cm.getServer().getUserLevel(Username);
+        if (userLevel < getExecutionLevel()) {
+            CampaignMain.cm.toUser("AM:Insufficient access level for command. Level: " + userLevel + ". Required: " + accessLevel + ".", Username, true);
+            return;
+        }
+
+        if (new Boolean(CampaignMain.cm.getConfig("CampaignLock")).booleanValue() == true) {
+            CampaignMain.cm.toUser("Campaign is already locked.", Username, true);
+            return;
+        }
+
+        // deactivate all active players, and tell them why.
+        for (House house : CampaignMain.cm.getData().getAllHouses()) {
+            SHouse h = (SHouse) house;
+            for (SPlayer p : h.getActivePlayers().values()) {
+                p.setActive(false);
+                CampaignMain.cm.toUser("AM:" + Username + " locked the campaign. You were deactivated.", p.getName(), true);
+                CampaignMain.cm.sendPlayerStatusUpdate(p, !new Boolean(CampaignMain.cm.getConfig("HideActiveStatus")).booleanValue());
+            }// end while (act members remain)
+
+        }// end while(factions remain)
+
+        // set the lock property, so no new players can activate
+        CampaignMain.cm.getConfig().setProperty("CampaignLock", "true");
+
+        // tell the admin he has locked the campaign
+        CampaignMain.cm.doSendToAllOnlinePlayers("AM:" + Username + " locked the campaign!", true);
+        CampaignMain.cm.toUser("AM:You locked the campaign. Players can no longer activate, and all active players were deactivated. Use 'adminunlockcampaign' to release the activity lock.", Username, true);
+        CampaignMain.cm.doSendModMail("NOTE", Username + " locked the campaign.");
+
+    }// end Process()
+
 }

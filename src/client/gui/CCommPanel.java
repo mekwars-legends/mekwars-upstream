@@ -180,7 +180,7 @@ public class CCommPanel extends JPanel implements ChangeListener, ComponentListe
 		
 		CommTPane.addMouseListener(this);
 		
-		TabForeground = Color.white;
+		TabForeground = StringUtils.html2Color(mwclient.getConfigParam("SYSMESSAGECOLOR"));
 		TabBackground = new JList().getSelectionBackground().darker();
 		autoTextUpdate = mwclient.getConfig().isParam("AUTOSCROLL");
 		setLayout(new BorderLayout());
@@ -774,7 +774,7 @@ public class CCommPanel extends JPanel implements ChangeListener, ComponentListe
 				CommTPane.setDisplayedMnemonicIndexAt(tabChannel, mnemo);
 				if (CommTPane.getComponentAt(tabChannel) != PLogPanel && CommTPane.getComponentAt(tabChannel) != SLogPanel) {
 					CommTPane.setForegroundAt(tabChannel, TabForeground); // invert tab text
-					CommTPane.setBackgroundAt(tabChannel, TabBackground);
+					//CommTPane.setBackgroundAt(tabChannel, TabBackground);
 				}
 			}
 		}

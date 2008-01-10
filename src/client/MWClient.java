@@ -156,7 +156,7 @@ public final class MWClient implements IClient {
 	
 	CConfig Config;
 	
-	public static final String CLIENT_VERSION = "0.2.14.1"; //change this with all client changes @Torren
+	public static final String CLIENT_VERSION = "0.2.15.0"; //change this with all client changes @Torren
 
 	CConnector Connector;
 	TimeOutThread TO;
@@ -2827,7 +2827,7 @@ public final class MWClient implements IClient {
 		
 		if (amount < 0){
 			amount *= -1;
-			result = Integer.toString(amount);
+			result = "";
 			sign = "-";
 		}
 		

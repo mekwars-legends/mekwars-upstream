@@ -24,7 +24,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
-import java.util.Vector;
 
 import megamek.common.IEntityRemovalConditions;
 import megamek.common.Mech;
@@ -269,6 +268,14 @@ public class ShortResolver {
         // set to reporting status
         so.changeStatus(ShortOperation.STATUS_REPORTING);
 
+
+        if ( so.preCapturedUnits.size() > 0){
+            
+            SPlayer winner = CampaignMain.cm.getPlayer(so.getAttackers().firstKey());
+            for ( SUnit unit : so.preCapturedUnits )
+                winner.addUnit(unit, true);
+        }
+            
         // break units in living/salvagable/dead, etc.
         this.possibleSalvageFromReport(reportTokenizer, so);
 
@@ -294,6 +301,9 @@ public class ShortResolver {
          */
         this.assemblePaymentStrings(o, so, null);
 
+
+        processCapturedUnits(so);
+        
         /*
          * Check to see if this resolves a long operation.
          */
@@ -483,6 +493,13 @@ public class ShortResolver {
         allArmies.put(winnerName.toLowerCase(), winnerA);
         allArmies.put(loserName.toLowerCase(), loserA);
 
+        if ( so.preCapturedUnits.size() > 0){
+            
+            winner = CampaignMain.cm.getPlayer(so.getAttackers().firstKey());
+            for ( SUnit unit : so.preCapturedUnits )
+                winner.addUnit(unit, true);
+        }
+            
         // break units in living/salvagable/dead, etc.
         this.possibleSalvageFromInProgressInfo(so, loser);
 
@@ -508,6 +525,8 @@ public class ShortResolver {
          */
         this.assemblePaymentStrings(o, so, loser);
 
+
+        processCapturedUnits(so);
         /*
          * Check to see if this resolves a long operation.
          */
@@ -1245,6 +1264,12 @@ public class ShortResolver {
             }
 
             SUnit currU = owner.getUnit(currEntity.getID());
+            
+            //Attacker was able to flee the unit so that means they get to keep it even if they 
+            //Lost the battle
+            if ( currEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_IN_RETREAT
+                    || currEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_PUSHED )
+                removePreCaptured(so, currU.getId());
 
             // apply battle damage if there is any to be applied.
             try {
@@ -2244,63 +2269,22 @@ public class ShortResolver {
                         if (unitsToCapture > unitCaptureCap)
                             unitsToCapture = unitCaptureCap;
 
+                        if ( o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts") )
+                            unitsToCapture = 0;
+                        
                         ArrayList<SUnit> capturedUnits = new ArrayList<SUnit>();
                         if (unitsToCapture > 0) {
 
+                            capturedUnits = so.captureUnits(unitsToCapture, target, aLoser.getHouseFightingFor(), false);
                             // for (all unit types, mek preferred)
-                            int numCaptured = 0;
-
-                            /*
-                             * Try every factory on the world, at random, until
-                             * we've taken what we can. This may mean getting
-                             * inf or vehs on a planet than can produce assault
-                             * mechs.
-                             */
-                            ArrayList<SUnitFactory> factoriesSearched = new ArrayList<SUnitFactory>();
-                            while (factoriesSearched.size() < target.getFactoryCount()) {
-
-                                // get a random factory
-                                SUnitFactory currFacility = target.getRandomUnitFactory();
-
-                                // if we've already searched this factory
-                                // before, skip
-                                if (factoriesSearched.contains(currFacility))
-                                    continue;
-
-                                // we've not searched the facility before. add
-                                // it to the searchlist
-                                factoriesSearched.add(currFacility);
-
-                                // get the factory's weightclass, then try
-                                // all types in order of preference.
-                                int currWeight = currFacility.getWeightclass();
-
-                                for (int type = Unit.MEK; type <= Unit.BATTLEARMOR; type++) {
-
-                                    // skip this type if the facility cannot
-                                    // produce
-                                    if (!currFacility.canProduce(type))
-                                        continue;
-
-                                    boolean noUnits = false;
-                                    while (!noUnits && numCaptured < unitsToCapture) {
-                                        SUnit captured = aLoser.getHouseFightingFor().getEntity(currWeight, type);
-                                        if (captured == null)
-                                            noUnits = true;
-                                        else {
-                                            capturedUnits.add(captured);
-                                            loserHSUpdates.append(aLoser.getHouseFightingFor().getHSUnitRemovalString(captured));
-                                            winnerHSUpdates.append(aWinner.getHouseFightingFor().addUnit(captured, false));
-                                            numCaptured++;
-                                        }
-                                    }// end while(units remain in this
-                                    // factories' pool)
-                                }// end for(all types)
-
-                            }// end while(factories remain)
+                            int numCaptured = capturedUnits.size();
 
                             // add to metaString if anything was actually taken
                             if (numCaptured >= 1) {
+                                for (SUnit unit : capturedUnits) {
+                                    loserHSUpdates.append(aLoser.getHouseFightingFor().getHSUnitRemovalString(unit));
+                                    winnerHSUpdates.append(aWinner.getHouseFightingFor().addUnit(unit, false));
+                                }
 
                                 // setup leadin
                                 if (hasLoss) {
@@ -2344,62 +2328,23 @@ public class ShortResolver {
                         if (unitsToCapture > unitCaptureCap)
                             unitsToCapture = unitCaptureCap;
 
-                        capturedUnits = new ArrayList<SUnit>();
+                        if ( o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts") )
+                            unitsToCapture = 0;
+                        
                         if (unitsToCapture > 0) {
 
-                            // for (all unit types, mek preferred)
-                            int numCaptured = 0;
+                            capturedUnits = new ArrayList<SUnit>();
 
-                            /*
-                             * Try every factory on the world, at random, until
-                             * we've taken what we can. This may mean getting
-                             * inf or vehs on a planet than can produce assault
-                             * mechs.
-                             */
-                            ArrayList<UnitFactory> factoriesSearched = new ArrayList<UnitFactory>(target.getUnitFactories());
-                            while (factoriesSearched.size() > 0) {
-
-                                // get a random factory
-                                SUnitFactory currFacility = (SUnitFactory) factoriesSearched.remove(CampaignMain.cm.getRandomNumber(factoriesSearched.size()));
-
-                                // if we've already searched this factory
-                                /*
-                                 * before, skip if
-                                 * (factoriesSearched.contains(currFacility))
-                                 * continue;
-                                 *  // we've not searched the facility before.
-                                 * add // it to the searchlist
-                                 * factoriesSearched.add(currFacility);
-                                 */
-                                for (int type = Unit.MEK; type <= Unit.BATTLEARMOR; type++) {
-
-                                    // skip this type if the facility cannot
-                                    // produce
-                                    if (!currFacility.canProduce(type))
-                                        continue;
-
-                                    boolean noUnits = false;
-                                    while (!noUnits && numCaptured < unitsToCapture) {
-                                        SPilot pilot = new SPilot("Vacant", 99, 99);
-                                        Vector<SUnit> captured = currFacility.getMechProduced(type, pilot);
-                                        if (captured == null || captured.size() < 1)
-                                            noUnits = true;
-                                        else {
-                                            capturedUnits.addAll(captured);
-                                            for (SUnit unit : captured) {
-                                                loserHSUpdates.append(aLoser.getHouseFightingFor().getHSUnitRemovalString(unit));
-                                                winnerHSUpdates.append(aWinner.getHouseFightingFor().addUnit(unit, false));
-                                            }
-                                            numCaptured += captured.size();
-                                        }
-                                    }// end while(units remain in this
-                                    // factories' pool)
-                                }// end for(all types)
-
-                            }// end while(factories remain)
+                            capturedUnits = so.captureUnits(unitsToCapture, target, aLoser.getHouseFightingFor(), true);
+                            int numCaptured = capturedUnits.size();
 
                             // add to metaString if anything was actually taken
                             if (numCaptured >= 1) {
+
+                                for (SUnit unit : capturedUnits) {
+                                    loserHSUpdates.append(aLoser.getHouseFightingFor().getHSUnitRemovalString(unit));
+                                    winnerHSUpdates.append(aWinner.getHouseFightingFor().addUnit(unit, false));
+                                }
 
                                 // setup leadin
                                 if (hasLoss) {
@@ -4031,4 +3976,70 @@ public class ShortResolver {
 
         return append.toString();
     }// calculatePilotEXP
+    
+    private void processCapturedUnits(ShortOperation so){
+        
+        if ( so.preCapturedUnits.size() > 0 )
+            return;
+        SPlayer attacker = CampaignMain.cm.getPlayer(so.getAttackers().firstKey());
+        SPlayer defender = CampaignMain.cm.getPlayer(so.getDefenders().firstKey());
+
+        if ( !attackerisWinner(so) ){
+            StringBuilder results = new StringBuilder("You managed to recover the following ");
+            StringBuilder unitList = new StringBuilder();
+            
+            int savedUnitCount = 0;
+            for ( SUnit unit : so.preCapturedUnits ){
+                if ( attacker.getUnit(unit.getId()) != null ){
+                    attacker.removeUnit(unit.getId(), false);
+                    unitList.append(unit.getModelName());
+                    unitList.append(", ");
+                    savedUnitCount++;
+                    defender.getHouseFightingFor().addUnit(unit, true);
+                }else if ( defender.getUnit(unit.getId()) != null ){
+                    defender.removeUnit(unit.getId(), false);
+                    unitList.append(unit.getModelName());
+                    unitList.append(", ");
+                    savedUnitCount++;
+                    defender.getHouseFightingFor().addUnit(unit, true);
+                }
+
+            }
+            so.preCapturedUnits.clear();
+
+            if ( savedUnitCount > 1)
+                results.append("units ");
+            else
+                results.append("unit ");
+            
+            unitList.replace(unitList.length()-2, unitList.length(), ".");
+            results.append(unitList.toString());
+            
+            if ( savedUnitCount > 0 ){
+                for ( String player : so.getDefenders().keySet() )
+                CampaignMain.cm.toUser(results.toString(), player);
+            }
+        }else{
+            for ( SUnit unit : so.preCapturedUnits ){
+                if ( attacker.getUnit(unit.getId()) != null ){
+                    SPilot pilot = new SPilot("Vacant",99,99);
+                    unit.setPilot(pilot);
+                }
+
+            }
+        }
+
+    }
+    
+    private void removePreCaptured(ShortOperation so, int unitId){
+        for ( int pos = 0; pos < so.preCapturedUnits.size(); pos++ ){
+            if ( so.preCapturedUnits.elementAt(pos).getId() == unitId){
+                SPilot pilot = new SPilot("Vacant",99,99);
+                so.preCapturedUnits.elementAt(pos).setPilot(pilot);
+                so.preCapturedUnits.removeElementAt(pos);
+                break;
+            }
+        }
+    }
+    
 }// end ShortResolver

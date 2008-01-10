@@ -1,7 +1,13 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.14.x
+v 0.2.15.x
+Release Client/Server0.2.15.0
++ New MegaMek.jar 0.33.15-011008-5362
++ Added new Operation Type, allows players to receive stolen units at the 
+	on set of the game.
++ RFE: Army Viewer Dialog now checks to see if you've selected a team and warns
+	you if you have not.
 + Bug: deleting the account of a connected player would not disconnect the player
 + Fixed storage of booleans in SHouse, SUnit, and SPlayer.
 + Fixed deleteUnit to use DBId instead of Id.
@@ -53,6 +59,7 @@ v 0.2.14.x
 - Removed XMLWriter.java no longer used
 - Removed TreeWriter.java no longer used
 - Removed TreeReader.java no longer used
+v 0.2.14.x
 Release Client 0.2.14.1 & Server 0.2.14.2
 + Added more missing system message tags
 + RFE: check if player still meets min requirements for subfaction after Ops.

@@ -866,7 +866,7 @@ public class ShortValidator {
 				|| o.getIntValue("DefenderBaseConquestAmount") > 0
 				|| o.getIntValue("DefenderConquestBVAdjustment") > 0
 				|| o.getIntValue("DefenderConquestUnitAdjustment") > 0) 
-				&& !target.isConquerable() )
+				&& ( target != null &&!target.isConquerable()) )
 			failureReasons.add(SFAIL_DEFEND_NON_CONQ_PLANET);
 		
 		//faction checks

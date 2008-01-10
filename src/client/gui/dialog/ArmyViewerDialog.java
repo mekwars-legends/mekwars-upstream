@@ -41,14 +41,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowListener;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpringLayout;
@@ -74,7 +72,7 @@ import client.campaign.CUnit;
  * Allows a user to sort through a list of MechSummaries and select one
  */
 
-public class ArmyViewerDialog extends JDialog implements ActionListener, KeyListener, ListSelectionListener, WindowListener, ItemListener {
+public class ArmyViewerDialog extends JDialog implements ActionListener, ListSelectionListener, ItemListener {
 	
 	/**
      * 
@@ -82,13 +80,6 @@ public class ArmyViewerDialog extends JDialog implements ActionListener, KeyList
     private static final long serialVersionUID = -3851019509649287454L;
 
 
-    //how long after a key is typed does a new search begin
-	private final static int KEY_TIMEOUT = 1000;
-
-	
-	private StringBuilder m_sbSearch = new StringBuilder();
-	private long m_nLastSearch = 0;
-	
 	private DefaultListModel defaultModel = null;
 	private ListSelectionModel listSelectionModel= null;
 	private JList armyList = null;
@@ -184,8 +175,10 @@ public class ArmyViewerDialog extends JDialog implements ActionListener, KeyList
 		
 		//set up the overall SpringLayout
 		JPanel springHolder = new JPanel(new SpringLayout());
-		if ( this.teamNumbers > 1)
+		if ( this.teamNumbers > 1){
 			springHolder.add(teamBox);
+			teamBox.setSelectedIndex(-1);
+		}
 		springHolder.add(textBoxSpring);
 		springHolder.add(buttonHolder);
 		SpringLayoutHelper.setupSpringGrid(springHolder,1);
@@ -198,10 +191,8 @@ public class ArmyViewerDialog extends JDialog implements ActionListener, KeyList
 		
 		//add all the listeners
 		armyList.addListSelectionListener(this);
-		armyList.addKeyListener(this);
 		bCancel.addActionListener(this);
 		bSelect.addActionListener(this);
-		addWindowListener(this);
 
         armyList.setSelectedIndex(-1);
         this.setModal(false);
@@ -230,18 +221,9 @@ public class ArmyViewerDialog extends JDialog implements ActionListener, KeyList
     		}
         }
 		repaint();
-	}
-	
-	private void searchFor(String search) {
-        int i =0;
-        for (CArmy army : player.getArmies()) {
-			if (army.getName().toLowerCase().startsWith(search)) {
-				armyList.setSelectedIndex(i);
-				armyList.ensureIndexIsVisible(i);
-				break;
-			}
-            i++;
-		}
+		
+		if ( defaultModel.getSize() > 0)
+		    armyList.setSelectedIndex(0);
 	}
 	
 	@Override
@@ -269,6 +251,11 @@ public class ArmyViewerDialog extends JDialog implements ActionListener, KeyList
 		if (ae.getSource() == bSelect){
 			try{
 			    
+			    if ( armyList.getSelectedIndex() < 0){
+                    JOptionPane.showMessageDialog(this, "Select an army to defend with or click cancel");
+                    return;
+                }
+			    
                 String armyID = (String)armyList.getSelectedValue();
                 
                 armyID = armyID.substring(1,armyID.indexOf(" "));
@@ -278,8 +265,16 @@ public class ArmyViewerDialog extends JDialog implements ActionListener, KeyList
                 if ( viewerMode == AVD_DEFEND ) {
                 	int team = -1;
                 	
-                	if ( this.teamNumbers > 1 )
-                		team = teamBox.getSelectedIndex()+1;
+                	if ( this.teamNumbers > 1 ){
+                		team = teamBox.getSelectedIndex();
+                		
+                		if ( team == -1){
+                		    JOptionPane.showMessageDialog(this, "You must pick a Team!");
+                		    return;
+                		}
+                		else
+                		    team++;
+                	}
                     mwclient.sendChat("/c defend#" + opID  + "#" + armyID+"#"+team);
                 }
                 else if ( viewerMode == AVD_ATTACK)
@@ -366,43 +361,5 @@ public class ArmyViewerDialog extends JDialog implements ActionListener, KeyList
 			return s.substring(0, nLength - 2) + "..";
 		else
 			return s + SPACES.substring(0, nLength - s.length());
-	}
-	
-	public void keyReleased(java.awt.event.KeyEvent ke) {
-		//no action on release
-	}
-	
-	public void keyPressed(java.awt.event.KeyEvent ke) {
-		if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
-			ActionEvent event = new ActionEvent(bCancel,ActionEvent.ACTION_PERFORMED,"");
-			actionPerformed(event);
-		}
-		long curTime = System.currentTimeMillis();
-		if (curTime - m_nLastSearch > KEY_TIMEOUT) {
-			m_sbSearch = new StringBuilder();
-		}
-		m_nLastSearch = curTime;
-		m_sbSearch.append(ke.getKeyChar());
-		searchFor(m_sbSearch.toString().toLowerCase());
-	}
-	
-	public void keyTyped(java.awt.event.KeyEvent ke) {
-	}
-	
-	// WindowListener
-	public void windowActivated(java.awt.event.WindowEvent windowEvent) {
-	}    
-	public void windowClosed(java.awt.event.WindowEvent windowEvent) {
-	}    
-	public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-		this.dispose();
-	}    
-	public void windowDeactivated(java.awt.event.WindowEvent windowEvent) {
-	}    
-	public void windowDeiconified(java.awt.event.WindowEvent windowEvent) {
-	}    
-	public void windowIconified(java.awt.event.WindowEvent windowEvent) {
-	}    
-	public void windowOpened(java.awt.event.WindowEvent windowEvent) {
-	}
+	}	
 }

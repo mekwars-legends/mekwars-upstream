@@ -2493,6 +2493,11 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         destructionBox.setBorder(BorderFactory.createLineBorder(Color.black));
         
         attackerBox.add(new JLabel("Attacker"));
+        BaseCheckBox = new JCheckBox("Units Taken First");
+        BaseCheckBox.setToolTipText("<html>If enabled then the attacker will start the game with<br>the stolen units and must get them off the battle field.</html>");
+        BaseCheckBox.setName("AttackerUnitsTakenBeforeFightStarts");
+        attackerBox.add(BaseCheckBox);
+        
 		attackerBox.add(attackerPanel);
 		
 		attackerBox.setBorder(BorderFactory.createLineBorder(Color.black));

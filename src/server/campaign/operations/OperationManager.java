@@ -48,6 +48,7 @@ import server.campaign.SArmy;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.SPlayer;
+import server.campaign.SUnit;
 
 import server.MWServ;
 
@@ -547,6 +548,17 @@ public class OperationManager {
 			else
 				toPlayer += ".";
 			
+            if ( o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts") ){
+                try{
+                    SHouse faction = CampaignMain.cm.getHouseForPlayer(so.getDefenders().firstKey());
+                    for(SUnit unit : so.preCapturedUnits )
+                        faction.addUnit(unit, true);
+                }catch(Exception ex){
+                    MWServ.mwlog.errLog(ex);
+                }
+                    
+            }
+            
 			CampaignMain.cm.toUser(toPlayer,currName,true);
 			CampaignMain.cm.toUser("PL|STN|"+-1, toPlayer,false);
 		}
