@@ -173,13 +173,14 @@ public class PlayerHandler {
 			rs.close();
 			
 			// Remove from phpBB database
-			//			if(CampaignMain.cm.isSynchingBB()) 
-			//				CampaignMain.cm.MySQL.deleteForumAccount(p.getForumID());
+			if(CampaignMain.cm.isSynchingBB()) 
+				CampaignMain.cm.MySQL.deleteForumAccount(p.getForumID());
 			// This has its own set of issues right now - I need to talk to Orca before I put this in.
 			
 			// Remove player
 			stmt.executeUpdate("DELETE from players WHERE playerID = " + p.getDBId());
 			stmt.close();
+			MWServ.mwlog.dbLog("Deleted account " + p.getName() + " from database.");
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.deletePlayer: " + e.getMessage());
 		}

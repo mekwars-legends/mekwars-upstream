@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.14.x
++ Bug: deleting the account of a connected player would not disconnect the player
 + Fixed storage of booleans in SHouse, SUnit, and SPlayer.
 + Fixed deleteUnit to use DBId instead of Id.
 + Updated DB to v19

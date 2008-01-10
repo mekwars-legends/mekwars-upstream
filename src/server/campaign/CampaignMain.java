@@ -1203,16 +1203,19 @@ public final class CampaignMain implements Serializable {
 
 			try {
 				if(CampaignMain.cm.isUsingMySQL()) {
-					boolean playerFound = false;
 					if(CampaignMain.cm.MySQL.playerExists(name)) {
-						playerFound = true;
-					}
-					if(playerFound) {
 						SPlayer p = new SPlayer();
 						int pid = CampaignMain.cm.MySQL.getPlayerIDByName(name);
 						p.fromDB(pid);
 						return p;
-					}
+					} 
+					if (!name.toLowerCase().startsWith("nobody")
+							&& !name.equals("SERVER")
+							&& !name.toLowerCase().startsWith("war bot")
+							&& !name.toLowerCase().startsWith("[dedicated]")) {
+						MWServ.mwlog.errLog("Player not in database: " + name);
+						}
+					return null;					
 				}
 				// log the load attempt & create readers
 				MWServ.mwlog.mainLog("Loading pfile for: " + name);
