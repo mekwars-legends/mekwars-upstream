@@ -249,7 +249,8 @@ public class ShortOperation implements Comparable {
         
         // load the terrain for the randomly selected environment
         if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")) {
-            aTerrain = targetWorld.getAdvancedTerrain().get(new Integer(playEnvironment.getId()));
+            aTerrain = targetWorld.getAdvancedTerrain().get(new Integer(playEnvironment.getId())).clone();
+            
             if (o.getBooleanValue("UseOperationMap")) {
                 aTerrain.setStaticMap(true);
                 aTerrain.setStaticMapName(o.getValue("MapName"));
@@ -1645,7 +1646,7 @@ public class ShortOperation implements Comparable {
 
         // send terrain
         if (aTerrain != null) {
-            CampaignMain.cm.toUser("APE|" + aTerrain.toString() + "|" + mapsize.width + "|" + mapsize.height, lowerName, false);
+            CampaignMain.cm.toUser("APE|" + aTerrain.toString(), lowerName, false);
             CampaignMain.cm.toUser("PE|" + playEnvironment.toString(cityBuilder.toString()) + "|" + mapsize.width + "|" + mapsize.height, lowerName, false);
         } else {
             CampaignMain.cm.toUser("PE|" + playEnvironment.toString(cityBuilder.toString()) + "|" + mapsize.width + "|" + mapsize.height, lowerName, false);
@@ -2738,8 +2739,11 @@ public class ShortOperation implements Comparable {
                     Vector<SUnit> captured = new Vector<SUnit>(1,1);
                     if ( forced )
                         captured.addAll(currFacility.getMechProduced(type, pilot));
-                    else
-                        captured.add(losingHouse.getEntity(currWeight, type));
+                    else{
+                        SUnit capturedUnit = losingHouse.getEntity(currWeight, type);
+                        if ( UnitUtils.canStartUp(capturedUnit.getEntity()))
+                            captured.add(capturedUnit);
+                    }
                     if (captured.size() < 1)
                         noUnits = true;
                     else {

@@ -60,6 +60,7 @@ import java.util.Vector;
 
 import megamek.client.Client;
 import megamek.common.AmmoType;
+import megamek.common.CriticalSlot;
 import megamek.common.IOffBoardDirections;
 import megamek.common.Mech;
 import megamek.common.Infantry;
@@ -498,29 +499,34 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
         int mgRows = 0;
         panMachineGuns.setLayout(new SpringLayout());
 
-        //int row = 0;
-        int location = -1;
-        
-        for (Mounted m : entity.getWeaponList()) {
-            WeaponType wt = (WeaponType)m.getType();
-			//MWClient.mwClientLog.clientErrLog("Weapon: "+wt.getName());
+        for (int location = Mech.LOC_HEAD; location <= Mech.LOC_LLEG; location++) {
+            for (int slot = 0; slot < entity.getNumberOfCriticals(location); slot++) {
+                CriticalSlot crit = entity.getCritical(location, slot);
 
-            location++;
-            
-            if (!wt.hasFlag(WeaponType.F_MG))
-                continue;
-            
-            //Protomechs need special choice panels.
-            MachineGunChoicePanel mgcp = new MachineGunChoicePanel(m,location);
-            panMachineGuns.add(mgcp);
-            m_vMachineGuns.addElement(mgcp);
-            
-            mgRows++;
+                if (crit == null || crit.getType() != CriticalSlot.TYPE_EQUIPMENT)
+                    continue;
+
+                Mounted m = entity.getEquipment(crit.getIndex());
+
+                if (m == null || !(m.getType() instanceof WeaponType))
+                    continue;
+
+                WeaponType wt = (WeaponType) m.getType();
+                if (!wt.hasFlag(WeaponType.F_MG))
+                    continue;
+
+                // Protomechs need special choice panels.
+                MachineGunChoicePanel mgcp = new MachineGunChoicePanel(m, location, slot);
+                panMachineGuns.add(mgcp);
+                m_vMachineGuns.addElement(mgcp);
+
+                mgRows++;
+            }
         }
         
         /*
-         * setup the spring grid. If there are >6 combo
-         * boxes in play, split into two columns.
+         * setup the spring grid. If there are >6 combo boxes in play, split
+         * into two columns.
          */
         if (mgRows >= 6) {
         	SpringLayoutHelper.setupSpringGrid(panMachineGuns,2);
@@ -685,23 +691,21 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
     	
         private Mounted m_mounted;
         private int location = 0;
+        private int slot = 0;
         protected JCheckBox chBurst = new JCheckBox();
         
-        public MachineGunChoicePanel(Mounted m, int location) {
+        public MachineGunChoicePanel(Mounted m, int location, int slot) {
             
         	//store params
         	m_mounted = m;
         	this.location = location;
+        	this.slot = slot;
         	
-        	//mount hodler int
-            int loc;
-            loc = m.getLocation();
-            
             //restore previous setting
             chBurst.setSelected(m_mounted.isRapidfire());
             
             //setup
-            chBurst.setText("Rapid Fire MG (" + entity.getLocationAbbr(loc) + ")");
+            chBurst.setText("Rapid Fire MG (" + entity.getLocationAbbr(location) + ")");
             add(chBurst);
         }
 
@@ -715,7 +719,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
         
         public void applyChoice() {
             if ( m_mounted.isRapidfire() != chBurst.isSelected() )
-                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setunitburst#"+entity.getExternalId()+"#"+this.location+"#"+chBurst.isSelected());
+                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setunitburst#"+entity.getExternalId()+"#"+this.location+"#"+this.slot+"#"+chBurst.isSelected());
         }
 
         @Override

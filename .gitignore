@@ -1,10 +1,16 @@
 /.classpath
 /.project
+/EXPRanking.htm
+/Mechstats.htm
 /MekWars*.jar
 /MekWarsAdmin.jar
 /MekWarsServer.jar
 /MekWarsTracker.jar
+/News.rdf
+/Ranking.htm
 /bin
+/campaign
 /classes
 /data
 /data.dat
+/logs

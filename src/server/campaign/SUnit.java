@@ -136,7 +136,7 @@ public final class SUnit extends Unit implements Serializable {
         Entity ent = loadMech(getUnitFilename());
         this.setEntity(ent);
         new SPilot("Vacant", 99, 99);// only used for repods. A real pilot is
-                                        // transferred in later.
+        // transferred in later.
         setId(replaceId);
         setProducer(p);
         unitEntity = ent;
@@ -258,7 +258,7 @@ public final class SUnit extends Unit implements Serializable {
             result = CampaignMain.cm.getIntegerConfig(techAmount);
 
         if (!CampaignMain.cm.isUsingAdvanceRepair())// Apply Pilot Mods (Astech
-                                                    // skill)
+            // skill)
             result += baymod;
 
         // no negative techs
@@ -469,20 +469,39 @@ public final class SUnit extends Unit implements Serializable {
             result.append("$");
         }
 
-        ArrayList<Mounted> en_Weapon = unitEntity.getWeaponList();
-        result.append(CampaignMain.cm.getMachineGunCount(unitEntity.getWeaponList()));
+        int mgCount = CampaignMain.cm.getMachineGunCount(unitEntity.getWeaponList());
+        result.append(mgCount);
         result.append("$");
 
-        for (int location = 0; location < unitEntity.getWeaponList().size(); location++) {
-            WeaponType weapon = (WeaponType) unitEntity.getWeaponList().get(location).getType();
-            // MWServ.mwlog.errLog("Weapon: "+weapon.getName());
-            if (weapon.hasFlag(WeaponType.F_MG)) {
-                result.append(location);
-                result.append("$");
-                result.append(en_Weapon.get(location).isRapidfire());
-                result.append("$");
+        if (mgCount > 0) {
+
+            for (int location = Mech.LOC_HEAD; location <= Mech.LOC_LLEG; location++) {
+                for (int slot = 0; slot < unitEntity.getNumberOfCriticals(location); slot++) {
+                    CriticalSlot crit = unitEntity.getCritical(location, slot);
+
+                    if (crit == null || crit.getType() != CriticalSlot.TYPE_EQUIPMENT)
+                        continue;
+
+                    Mounted m = unitEntity.getEquipment(crit.getIndex());
+
+                    if (m == null || !(m.getType() instanceof WeaponType))
+                        continue;
+
+                    WeaponType wt = (WeaponType) m.getType();
+                    
+                    if (!wt.hasFlag(WeaponType.F_MG))
+                        continue;
+
+                    result.append(location);
+                    result.append("$");
+                    result.append(slot);
+                    result.append("$");
+                    result.append(m.isRapidfire());
+                    result.append("$");
+                }
             }
         }
+
         result.append(unitEntity.hasSpotlight());
         result.append("$");
         result.append(unitEntity.isUsingSpotlight());
@@ -737,7 +756,7 @@ public final class SUnit extends Unit implements Serializable {
 
                     AmmoType at = this.getEntityAmmo(weaponType, ammoName);
                     if (at == null) // saved ammo no longer found use Entity
-                                    // loaded --Torren.
+                        // loaded --Torren.
                         continue;
                     String munition = Long.toString(at.getMunitionType());
 
@@ -751,36 +770,35 @@ public final class SUnit extends Unit implements Serializable {
                 }
                 setEntity(en);
             }
-            if (ST.hasMoreElements()) {
-                int maxMachineGuns = Integer.parseInt(defaultField);
-                Entity en = this.getEntity();
-                ArrayList<Mounted> enWeapons = en.getWeaponList();
-                for (int count = 0; count < maxMachineGuns; count++) {
-                    int location = TokenReader.readInt(ST);
-                    boolean selection = TokenReader.readBoolean(ST);
-                    enWeapons.get(location).setRapidfire(selection);
-                }
-                setEntity(en);
+            int maxMachineGuns = Integer.parseInt(defaultField);
+            Entity en = this.getEntity();
+            for (int count = 0; count < maxMachineGuns; count++) {
+                int location = TokenReader.readInt(ST);
+                int slot = TokenReader.readInt(ST);
+                boolean selection = TokenReader.readBoolean(ST);
+                try{
+                    CriticalSlot cs = en.getCritical(location, slot);
+                    Mounted m = en.getEquipment(cs.getIndex());
+                    m.setRapidfire(selection);
+                }catch(Exception ex){}
             }
-            if (ST.hasMoreElements())
-                unitEntity.setSpotlight(TokenReader.readBoolean(ST));
-            if (ST.hasMoreElements())
-                unitEntity.setSpotlightState(TokenReader.readBoolean(ST));
-            if (ST.hasMoreElements()) {// if allow level 3 targeting is enabled
-                                        // for all units then apply the saved
-                                        // one else use the entitie default.
-                if (CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("allow_level_3_targsys")) {
-                    int targetingType = TokenReader.readInt(ST);
-                    // check if the targeting type has become banned. if so then
-                    // set the system to standard.
-                    if (CampaignMain.cm.getData().getBannedTargetingSystems().containsKey(targetingType) || this.getEntity().hasC3() || this.getEntity().hasC3i() || UnitUtils.hasTargettingComputer(this.getEntity()))
-                        unitEntity.setTargSysType(MiscType.T_TARGSYS_STANDARD);
-                    else
-                        unitEntity.setTargSysType(targetingType);
+            setEntity(en);
+            unitEntity.setSpotlight(TokenReader.readBoolean(ST));
+            unitEntity.setSpotlightState(TokenReader.readBoolean(ST));
+            // if allow level 3 targeting is enabled
+            // for all units then apply the saved
+            // one else use the entity default.
+            if (CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("allow_level_3_targsys")) {
+                int targetingType = TokenReader.readInt(ST);
+                // check if the targeting type has become banned. if so then
+                // set the system to standard.
+                if (CampaignMain.cm.getData().getBannedTargetingSystems().containsKey(targetingType) || this.getEntity().hasC3() || this.getEntity().hasC3i() || UnitUtils.hasTargettingComputer(this.getEntity()))
+                    unitEntity.setTargSysType(MiscType.T_TARGSYS_STANDARD);
+                else
+                    unitEntity.setTargSysType(targetingType);
 
-                } else
-                    ST.nextElement();
-            }
+            } else
+                ST.nextElement();
 
             this.setScrappableFor(TokenReader.readInt(ST));
 

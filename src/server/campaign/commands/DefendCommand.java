@@ -256,7 +256,7 @@ public class DefendCommand implements Command {
 		CampaignMain.cm.toUser(toSend,Username,true);
         
         if ( o.getBooleanValue("FreeForAllOperation") ){
-            CampaignMain.cm.toUser(dp.getName()+"AM: has joined the operation, as a defender. <a href=\"MEKWARS/c commenceoperation#" + opID + "#CONFIRM\">Click here to commence</a>",so.getInitiator().getName(),true);
+            CampaignMain.cm.toUser("AM:"+dp.getName()+" has joined the operation, as a defender. <a href=\"MEKWARS/c commenceoperation#" + opID + "#CONFIRM\">Click here to commence</a>",so.getInitiator().getName(),true);
         }
 		
 	}//end process

@@ -194,12 +194,16 @@ public class CUnit extends Unit {
 		//setup rapid fire Machine guns, if any
 		if ( ST.hasMoreElements()){
 		    int maxMachineGuns = Integer.parseInt(ST.nextToken());
-		    Entity en = UnitEntity;
-		    ArrayList<Mounted> enWeapons = en.getWeaponList();
 		    for ( int count = 0; count < maxMachineGuns; count++ ){
 		        int location = Integer.parseInt(ST.nextToken());
+		        int slot = Integer.parseInt(ST.nextToken());
 		        boolean selection = Boolean.parseBoolean(ST.nextToken());
-		        enWeapons.get(location).setRapidfire(selection);
+		        CriticalSlot cs = UnitEntity.getCritical(location, slot);
+		        
+		        Mounted mg = UnitEntity.getEquipment(cs.getIndex());
+		        
+		        mg.setRapidfire(selection);
+		        
 		    }
 		}//Machine Guns
 

@@ -2,6 +2,12 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.15.x
++ New MegaMek.jar 0.33.16-MW011108-5387
++ Bug: rapid fire machine guns not being set correctly.
+- removed backing up of the megameklogs.txt from the deds. recreating any
+	issue should be done from the save game.
++ Bug: Operation Map overriding Advanced Terrain even after op was finished.
++ Patch 1869601: correction for AM Tag in Lobby /roll Command
 + Added MAILHOST, MAILPASSREQUIRED, MAILUSER, MAILPASS to serverconfig.txt
 	to allow for smtp servers requiring authentication
 + Framework for email validation in place

@@ -887,29 +887,6 @@ public final class MWClient implements IClient {
 					mwClientLog.clientOutputLog("Restart command received from " + name);
 					stopHost();//kill the host
 					
-					//make a copy of the current log in the backup folder
-					File log = new File("./logs/megameklog.txt");
-					if ( log.exists() ){
-						File folder = new File("./logs/backup");
-						if (!folder.exists())
-							folder.mkdir();
-						
-						String newFile = "./logs/backup/megameklog.txt."+System.currentTimeMillis();
-						try{
-							FileInputStream in = new FileInputStream(log.getPath());
-							FileOutputStream out = new FileOutputStream(newFile);
-							int c;
-							while ((c = in.read()) != -1)
-								out.write(c);
-							in.close();
-							out.close();
-						} catch(Exception ex){
-							MWClient.mwClientLog.clientErrLog("Error writing megameklog to backup.");
-							MWClient.mwClientLog.clientErrLog(ex);
-						}
-						
-					}
-					
 					//Remove any MM option files that deds may have.
 					File localGameOptions = new File("./mmconf");
 					try {
@@ -953,15 +930,6 @@ public final class MWClient implements IClient {
 					
 				} else if (command.equals("die")) { //shut the dedicated down
 					
-					mwClientLog.clientOutputLog("Die command received from " + name);
-					sendChat(PROTOCOL_PREFIX + "c mm# " + name + " used the die command on "+myUsername);
-					File log = new File("./logs/megameklog.txt");
-					if ( log.exists() ){
-						File folder = new File("./logs/backup");
-						if ( !folder.exists() )
-							folder.mkdir();
-						log.renameTo(new File("./logs/backup/megameklog.txt."+System.currentTimeMillis()));
-					}
 					goodbye();
 					System.exit(0);
 					
@@ -979,14 +947,6 @@ public final class MWClient implements IClient {
 					if (myServer != null)
 						stopHost();
 					
-					//backup megameklog.txt
-					File log = new File("./logs/megameklog.txt");
-					if ( log.exists() ){
-						File folder = new File("./logs/backup");
-						if ( !folder.exists() )
-							folder.mkdir();
-						log.renameTo(new File("./logs/backup/megameklog.txt."+System.currentTimeMillis()));
-					}
 					//sleep, then wait around for a start command ...
 					try {Thread.sleep(5000);}
 					catch (Exception ex) {MWClient.mwClientLog.clientErrLog(ex);}

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
+import megamek.common.CriticalSlot;
 import megamek.common.IOffBoardDirections;
 
 import client.MWClient;
@@ -268,9 +269,12 @@ public class CPlayer extends Player {
 		try {
 			CUnit currUnit = this.getUnit(Integer.parseInt(st.nextToken()));
 			int location = Integer.parseInt(st.nextToken());
+			int slot = Integer.parseInt(st.nextToken());
 			boolean selection = Boolean.parseBoolean(st.nextToken());
 			
-			currUnit.getEntity().getWeaponList().get(location).setRapidfire(selection);
+			
+			CriticalSlot crit = currUnit.getEntity().getCritical(location, slot);
+			currUnit.getEntity().getEquipment(crit.getIndex()).setRapidfire(selection);
 			
 			this.sortHangar();// properties have changes. sort. YARR!
 		} catch (Exception e) {

@@ -1867,13 +1867,13 @@ public final class CampaignMain implements Serializable {
 		}
 
 		if (dice < 1 || sides < 2) {
-			this.doSendToAllOnlinePlayers("AM"+Username
+			this.doSendToAllOnlinePlayers("AM:"+Username
 					+ " loves the smell of napalm in the morning.", true);
 			return;
 		}
 
 		if (dice > 20 || sides > 100) {
-			this.doSendToAllOnlinePlayers("AM"+Username + " is a stupid haxx0r!",
+			this.doSendToAllOnlinePlayers("AM:"+Username + " is a stupid haxx0r!",
 					true);
 			return;
 		}
@@ -1901,11 +1901,11 @@ public final class CampaignMain implements Serializable {
 			}
 		}
 		if (text != "")
-			this.doSendToAllOnlinePlayers("AM"+Username
+			this.doSendToAllOnlinePlayers("AM:"+Username
 					+ " rolled " + diceBuffer + " for a total of " + total
 					+ ", using " + text + ".", true);
 		else
-			this.doSendToAllOnlinePlayers("AM"+Username
+			this.doSendToAllOnlinePlayers("AM:"+Username
 					+ " rolled " + diceBuffer + " for a total of " + total
 					+ ", using 2d6.", true);
 	}

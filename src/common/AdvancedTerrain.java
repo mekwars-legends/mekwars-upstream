@@ -255,5 +255,29 @@ final public class AdvancedTerrain{
     public void setMaxVisibility(int maxVisibility) {
         this.maxVisibility = maxVisibility;
     }
+    
+    public AdvancedTerrain clone(){
+        AdvancedTerrain clone = new AdvancedTerrain();
+        
+        clone.setDisplayName(displayName);
+        clone.setGravity(gravity);
+        clone.setHighTemp(highTemp);
+        clone.setLowTemp(lowTemp);
+        clone.setMaxVisibility(maxVisibility);
+        clone.setMinVisibility(minVisibility);
+        clone.setNightChance(nightChance);
+        clone.setNightTempMod(nightTempMod);
+        clone.setStaticMap(staticMap);
+        clone.setStaticMapName(staticMapName);
+        clone.setVacuum(vacuum);
+        clone.setXBoardSize(xBoardSize);
+        clone.setXSize(xSize);
+        clone.setYBoardSize(yBoardSize);
+        clone.setYSize(ySize);
+        
+        
+        return clone;
+        
+    }
  }
 
