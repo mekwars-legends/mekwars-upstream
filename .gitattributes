@@ -1115,6 +1115,7 @@ server-dist/dump_db.bat -text
 server-dist/dump_db.sh -text
 server-dist/lib/Ostermiller.jar -text
 server-dist/lib/TinyXML.jar -text
+server-dist/lib/mailapi.jar -text
 server-dist/lib/mysql-connector-java-5.0.6-bin.jar -text
 server-dist/lib/xstream.jar -text
 server-dist/server/campaign/dataFiles/PlayerData.hbm.xml -text

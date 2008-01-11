@@ -6,6 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.MimeMessage;
 
 import server.MWServ;
 import server.campaign.CampaignMain;
@@ -310,6 +318,32 @@ public class PhpBBConnector {
 		  		break;
 		  }
 		  
+	  }
+	  
+	  public void sendEmailValidation(String emailAddress, String activationKey) {
+		  Properties props = new Properties();
+		  String smtphost=null;
+		  if((smtphost=CampaignMain.cm.getServer().getConfigParam("MAILHOST")) == null) {
+			  MWServ.mwlog.errLog("SMTPHOST not set in serverconfig");
+			  CampaignMain.cm.doSendModMail("NOTE", "SMTPHOST not set in serverconfig.");
+			  return;
+		  }
+		  props.put("mail.smtp.host", smtphost);
+		  props.put("mail.from", "MekWars Server Admins<donotreply@mekwars.org>");
+		  Session session = Session.getInstance(props, null);
+		  
+		  try {
+			  MimeMessage msg = new MimeMessage(session);
+			  msg.setFrom();
+			  msg.setRecipients(Message.RecipientType.TO, emailAddress);
+			  msg.setSubject("Test Email");
+			  msg.setSentDate(new Date());
+			  msg.setText("This is a test");
+			  Transport.send(msg);
+		  } catch (MessagingException e) {
+			  MWServ.mwlog.errLog("Email send failed:");
+			  MWServ.mwlog.errLog(e);
+		  }
 	  }
 	  
 	  public PhpBBConnector(){

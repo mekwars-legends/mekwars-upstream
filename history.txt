@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.15.x
++ Framework for email validation in place
++ Added mailapi.jar to server-dist/lib
 + More missing AM: tags
 Release Client/Server0.2.15.0
 + New MegaMek.jar 0.33.15-011008-5362
