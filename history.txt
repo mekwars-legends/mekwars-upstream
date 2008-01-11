@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.15.x
++ Added MAILHOST, MAILPASSREQUIRED, MAILUSER, MAILPASS to serverconfig.txt
+	to allow for smtp servers requiring authentication
 + Framework for email validation in place
 + Added mailapi.jar to server-dist/lib
 + More missing AM: tags

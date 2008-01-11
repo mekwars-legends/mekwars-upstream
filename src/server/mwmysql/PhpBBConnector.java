@@ -328,10 +328,13 @@ public class PhpBBConnector {
 			  CampaignMain.cm.doSendModMail("NOTE", "SMTPHOST not set in serverconfig.");
 			  return;
 		  }
+		  
+		  String protocol = "smtp";
+		  props.put("mail.smtp.auth", Boolean.toString(Boolean.parseBoolean(CampaignMain.cm.getServer().getConfigParam("MAILPASSREQUIRED"))));
 		  props.put("mail.smtp.host", smtphost);
 		  props.put("mail.from", "MekWars Server Admins<donotreply@mekwars.org>");
 		  Session session = Session.getInstance(props, null);
-		  
+
 		  try {
 			  MimeMessage msg = new MimeMessage(session);
 			  msg.setFrom();
@@ -339,7 +342,13 @@ public class PhpBBConnector {
 			  msg.setSubject("Test Email");
 			  msg.setSentDate(new Date());
 			  msg.setText("This is a test");
-			  Transport.send(msg);
+			  if(Boolean.parseBoolean(props.get("mail.smtp.auth").toString())) {
+				  Transport trans = session.getTransport(protocol);
+				  trans.connect(CampaignMain.cm.getServer().getConfigParam("MAILUSER"), CampaignMain.cm.getServer().getConfigParam("MAILPASS"));
+				  trans.sendMessage(msg, msg.getAllRecipients());
+			  } else {
+				  Transport.send(msg);
+			  }
 		  } catch (MessagingException e) {
 			  MWServ.mwlog.errLog("Email send failed:");
 			  MWServ.mwlog.errLog(e);

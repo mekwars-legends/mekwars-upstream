@@ -78,5 +78,8 @@ PHPBB_DB=phpbb
 PHPBB_MAJOR_VERSION=2
 PHPBB_TABLE_PREFIX=phpbb_
 PHPBB_URL=http://localhost/phpbb/index.php
-
+MAILHOST=localhost
+MAILPASSREQUIRED=false
+MAILUSER=mailuser
+MAILPASS=mailpassword
 
