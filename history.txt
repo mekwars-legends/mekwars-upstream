@@ -1,7 +1,8 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.15.x
+v 0.2.16.x
+Release Client/Server 0.2.16.0
 + New MegaMek.jar 0.33.16-MW011108-5387
 + Bug: rapid fire machine guns not being set correctly.
 - removed backing up of the megameklogs.txt from the deds. recreating any
@@ -13,6 +14,7 @@ v 0.2.15.x
 + Framework for email validation in place
 + Added mailapi.jar to server-dist/lib
 + More missing AM: tags
+v 0.2.15.x
 Release Client/Server0.2.15.0
 + New MegaMek.jar 0.33.15-011008-5362
 + Added new Operation Type, allows players to receive stolen units at the 
