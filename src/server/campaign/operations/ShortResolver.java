@@ -3979,7 +3979,7 @@ public class ShortResolver {
     
     private void processCapturedUnits(ShortOperation so){
         
-        if ( so.preCapturedUnits.size() > 0 )
+        if ( so.preCapturedUnits.size() < 1 )
             return;
         SPlayer attacker = CampaignMain.cm.getPlayer(so.getAttackers().firstKey());
         SPlayer defender = CampaignMain.cm.getPlayer(so.getDefenders().firstKey());

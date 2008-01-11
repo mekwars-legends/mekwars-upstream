@@ -3,6 +3,7 @@ VERSION HISTORY:
 
 v 0.2.16.x
 Release Client/Server 0.2.16.0
++ Bug: processing captured units when none existed.
 + New MegaMek.jar 0.33.16-MW011108-5387
 + Bug: rapid fire machine guns not being set correctly.
 - removed backing up of the megameklogs.txt from the deds. recreating any
