@@ -469,37 +469,46 @@ public final class SUnit extends Unit implements Serializable {
             result.append("$");
         }
 
-        int mgCount = CampaignMain.cm.getMachineGunCount(unitEntity.getWeaponList());
-        result.append(mgCount);
-        result.append("$");
+        if (unitEntity instanceof Mech || unitEntity instanceof Tank) {
+            int mgCount = CampaignMain.cm.getMachineGunCount(unitEntity.getWeaponList());
+            result.append(mgCount);
+            result.append("$");
 
-        if (mgCount > 0) {
+            if (mgCount > 0) {
+                
+                int endLocation = Mech.LOC_LLEG;
+                
+                if ( unitEntity instanceof Tank )
+                    endLocation = Tank.LOC_TURRET;
 
-            for (int location = Mech.LOC_HEAD; location <= Mech.LOC_LLEG; location++) {
-                for (int slot = 0; slot < unitEntity.getNumberOfCriticals(location); slot++) {
-                    CriticalSlot crit = unitEntity.getCritical(location, slot);
+                for (int location = 0; location <= endLocation; location++) {
+                    for (int slot = 0; slot < unitEntity.getNumberOfCriticals(location); slot++) {
+                        CriticalSlot crit = unitEntity.getCritical(location, slot);
 
-                    if (crit == null || crit.getType() != CriticalSlot.TYPE_EQUIPMENT)
-                        continue;
+                        if (crit == null || crit.getType() != CriticalSlot.TYPE_EQUIPMENT)
+                            continue;
 
-                    Mounted m = unitEntity.getEquipment(crit.getIndex());
+                        Mounted m = unitEntity.getEquipment(crit.getIndex());
 
-                    if (m == null || !(m.getType() instanceof WeaponType))
-                        continue;
+                        if (m == null || !(m.getType() instanceof WeaponType))
+                            continue;
 
-                    WeaponType wt = (WeaponType) m.getType();
-                    
-                    if (!wt.hasFlag(WeaponType.F_MG))
-                        continue;
+                        WeaponType wt = (WeaponType) m.getType();
 
-                    result.append(location);
-                    result.append("$");
-                    result.append(slot);
-                    result.append("$");
-                    result.append(m.isRapidfire());
-                    result.append("$");
+                        if (!wt.hasFlag(WeaponType.F_MG))
+                            continue;
+
+                        result.append(location);
+                        result.append("$");
+                        result.append(slot);
+                        result.append("$");
+                        result.append(m.isRapidfire());
+                        result.append("$");
+                    }
                 }
             }
+        } else {
+            result.append("0$");
         }
 
         result.append(unitEntity.hasSpotlight());
@@ -776,11 +785,12 @@ public final class SUnit extends Unit implements Serializable {
                 int location = TokenReader.readInt(ST);
                 int slot = TokenReader.readInt(ST);
                 boolean selection = TokenReader.readBoolean(ST);
-                try{
+                try {
                     CriticalSlot cs = en.getCritical(location, slot);
                     Mounted m = en.getEquipment(cs.getIndex());
                     m.setRapidfire(selection);
-                }catch(Exception ex){}
+                } catch (Exception ex) {
+                }
             }
             setEntity(en);
             unitEntity.setSpotlight(TokenReader.readBoolean(ST));

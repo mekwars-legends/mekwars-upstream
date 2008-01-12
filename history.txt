@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.16.x
+Release Server 0.2.16.1
++ Bug: Tanks with MG's not saving correctly
 Release Client/Server 0.2.16.0
 + Bug: processing captured units when none existed.
 + New MegaMek.jar 0.33.16-MW011108-5387
