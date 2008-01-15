@@ -23,12 +23,11 @@ import server.campaign.SPlayer;
 import server.campaign.SPlanet;
 import server.campaign.CampaignMain;
 
-@SuppressWarnings({"unchecked","serial"})
 public class MercHouse extends SHouse {
 	
     
     //merc vars
-    private Hashtable OutstandingContracts = new Hashtable();
+    private Hashtable<String,ContractInfo> OutstandingContracts = new Hashtable<String,ContractInfo>();
 	
 	//constructor
 	public MercHouse (int id, String name, String HouseColor, int BaseGunner, int BasePilot, String abbreviation) {
@@ -82,7 +81,7 @@ public class MercHouse extends SHouse {
 	@Override
 	public SHouse getHouseFightingFor(SPlayer player) {
 		
-		ContractInfo playerContract = (ContractInfo)getOutstandingContracts().get(player.getName());
+		ContractInfo playerContract = getOutstandingContracts().get(player.getName().toLowerCase());
 		if (playerContract != null) { //if a contract exists, return employer
 			return playerContract.getEmployingHouse();
 		}
@@ -96,7 +95,7 @@ public class MercHouse extends SHouse {
 	 */
 	public void setContract(ContractInfo cToAdd, SPlayer player) {
 		//add contract to hash, with player as key.
-		getOutstandingContracts().put(player.getName(), cToAdd);
+		getOutstandingContracts().put(player.getName().toLowerCase(), cToAdd);
 		setOutstandingContracts(getOutstandingContracts());
 	}
 	
@@ -107,8 +106,8 @@ public class MercHouse extends SHouse {
 	 */
 	public boolean endContract(SPlayer player) {
 		boolean terminated = false;
-		if (getOutstandingContracts().containsKey(player.getName())) { // proced to remove
-			getOutstandingContracts().remove(player.getName());
+		if (getOutstandingContracts().containsKey(player.getName().toLowerCase())) { // proced to remove
+			getOutstandingContracts().remove(player.getName().toLowerCase());
 			//and then add the player to the potential hires list
 			//UnemployedPlayers.put(player, player.getName());
 			//and set a boolean to return..
@@ -124,7 +123,7 @@ public class MercHouse extends SHouse {
 	 */
 	public ContractInfo getContractInfo(SPlayer player) {
 		ContractInfo currentContract = null;
-		currentContract = (ContractInfo)getOutstandingContracts().get(player.getName());
+		currentContract = getOutstandingContracts().get(player.getName().toLowerCase());
 		return currentContract;
 	}
 	
@@ -172,13 +171,13 @@ public class MercHouse extends SHouse {
 		result.append(super.toString());
 		//Also save the contracts
 		//First check all contracts if they're legal and delete illegal ones
-		Enumeration e = getOutstandingContracts().elements();
+		Enumeration<ContractInfo> e = getOutstandingContracts().elements();
 		while (e.hasMoreElements())
 		{
-			ContractInfo ci = (ContractInfo)e.nextElement();
+			ContractInfo ci = e.nextElement();
 			if (!ci.isLegal())
 			{
-				getOutstandingContracts().remove(ci.getOfferingPlayer().getName());
+				getOutstandingContracts().remove(ci.getOfferingPlayerName().toLowerCase());
 				
 			}
 		}
@@ -197,21 +196,21 @@ public class MercHouse extends SHouse {
 	
 	public void toDB() {
 		super.toDB();
-		Enumeration e = getOutstandingContracts().elements();
+		Enumeration<ContractInfo> e = getOutstandingContracts().elements();
 		while (e.hasMoreElements()) {
-			ContractInfo ci = (ContractInfo)e.nextElement();
+			ContractInfo ci = e.nextElement();
 			if(!ci.isLegal()) {
-				getOutstandingContracts().remove(ci.getOfferingPlayer().getName());
+				getOutstandingContracts().remove(ci.getOfferingPlayerName().toLowerCase());
 			}
 			ci.toDB();
 		}
 	}
 	
-	public Hashtable getOutstandingContracts(){
+	public Hashtable<String,ContractInfo> getOutstandingContracts(){
 		return OutstandingContracts;
 	}
 	
-	public void setOutstandingContracts(Hashtable h) {
+	public void setOutstandingContracts(Hashtable<String,ContractInfo> h) {
 		OutstandingContracts = h;
 	}
 	

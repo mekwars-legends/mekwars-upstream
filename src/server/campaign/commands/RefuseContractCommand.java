@@ -18,7 +18,6 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 import server.campaign.CampaignMain;
-import server.campaign.SPlayer;
 import server.campaign.mercenaries.ContractInfo;
 
 public class RefuseContractCommand implements Command {
@@ -42,11 +41,11 @@ public class RefuseContractCommand implements Command {
 		boolean contractCancelled = false;
 		String receivingPlayerName = "";
 		boolean offeringPlayerFound = false;
-		String offeringPlayerName = (String)command.nextElement();
-		SPlayer offeringPlayer = CampaignMain.cm.getPlayer(offeringPlayerName);
+		String offeringPlayerName = command.nextToken();
+
 		for (int i = 0; i < CampaignMain.cm.getUnresolvedContracts().size(); i++) {
 			ContractInfo info = CampaignMain.cm.getUnresolvedContracts().get(i);
-			if (info.getOfferingPlayer() == offeringPlayer) {
+			if (info.getOfferingPlayerName().equalsIgnoreCase(offeringPlayerName)) {
 				offeringPlayerFound = true;
 				//MWServ.mwlog.mainLog("CANCEL: Offering player found set to true");
 				//if contract belong to offering player, check to see if it is for this player.

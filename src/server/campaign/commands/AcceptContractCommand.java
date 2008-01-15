@@ -51,7 +51,7 @@ public class AcceptContractCommand implements Command {
 			String receivingPlayerName = info.getPlayerName();
 			if (CampaignMain.cm.getPlayer(receivingPlayerName) == claimingPlayer) {//player can attempt to take offer
 				//check to see if offer is from player merc wants to accept from
-				if (info.getOfferingPlayer() == CampaignMain.cm.getPlayer(offeringPlayerName)) {
+				if (info.getOfferingPlayerName().equalsIgnoreCase(offeringPlayerName)) {
 					//save contract
 					MercHouse factionToSaveContract = (MercHouse)(claimingPlayer.getMyHouse());
 					factionToSaveContract.setContract(info, claimingPlayer);

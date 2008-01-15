@@ -3843,7 +3843,7 @@ public class ShortResolver {
             player.addMoney(payoff);
 
             CampaignMain.cm.toUser("You completed your contract with " + contract.getEmployingHouse().getName() + " and received the final payment (" + CampaignMain.cm.moneyOrFluMessage(true, true, payoff, false) + ").", player.getName(), true);
-            CampaignMain.cm.toUser(player.getName() + " completed his contract and received his final payment.", contract.getOfferingPlayer().getName(), true);
+            CampaignMain.cm.toUser(player.getName() + " completed his contract and received his final payment.", contract.getOfferingPlayerName(), true);
             ((MercHouse) player.getMyHouse()).endContract(player);
         }
     }

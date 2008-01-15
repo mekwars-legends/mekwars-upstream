@@ -18,7 +18,6 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 import server.campaign.CampaignMain;
-import server.campaign.SPlayer;
 import server.campaign.mercenaries.ContractInfo;
 
 public class CancelOfferCommand implements Command {
@@ -38,12 +37,11 @@ public class CancelOfferCommand implements Command {
 			}
 		}
 		
-		SPlayer offeringPlayer = CampaignMain.cm.getPlayer(Username);
 		boolean contractRemoved = false;
 		String receivingPlayerName = "";
 		for (int i = 0; i < CampaignMain.cm.getUnresolvedContracts().size(); i++) {
 			ContractInfo info = CampaignMain.cm.getUnresolvedContracts().get(i);
-			if (info.getOfferingPlayer() == offeringPlayer) {
+			if (info.getOfferingPlayerName().equalsIgnoreCase(Username)) {
 				//if contract belong to offering player, remove the contract and set boolean to true
 				receivingPlayerName = info.getPlayerName();
 				CampaignMain.cm.getUnresolvedContracts().remove(i);
@@ -54,7 +52,7 @@ public class CancelOfferCommand implements Command {
 		}//end for(length of vector)
 		if (contractRemoved == true) {
 			CampaignMain.cm.toUser("AM:You have cancelled your offer to " + receivingPlayerName,Username,true);
-			CampaignMain.cm.toUser(offeringPlayer.getName() + " has rescinded his contract offer",receivingPlayerName,true);
+			CampaignMain.cm.toUser(Username + " has rescinded his contract offer",receivingPlayerName,true);
 		}//end if(a contract was removed)
 		else if (contractRemoved == false) {
 			CampaignMain.cm.toUser("AM:There was no outstanding contract to cancel!",Username,true);
