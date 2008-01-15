@@ -2974,7 +2974,8 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 sql.append("playerTeamNumber = ?, ");
 
                 sql.append("playerSubFactionName = ?, ");
-                sql.append("playerForumID = ?");
+                sql.append("playerForumID = ?, ");
+                sql.append("playerLastPromoted = ?");
                 ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(),
                         PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setString(1, getName());
@@ -3020,7 +3021,8 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                         this.getSubFactionName().trim().length() < 1 ? " "
                                 : getSubFactionName());
                 ps.setInt(26, getForumID());
-
+                ps.setLong(27, getLastPromoted());
+                
                 ps.executeUpdate();
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
@@ -3064,7 +3066,8 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 sql.append("playerTeamNumber= ?, ");
 
                 sql.append("playerSubFactionName = ?, ");
-                sql.append("playerForumID = ? ");
+                sql.append("playerForumID = ?, ");
+                sql.append("playerLastPromoted = ? ");
                 sql.append("WHERE playerID = ?");
 
                 ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
@@ -3121,7 +3124,8 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                         (this.getSubFactionName().trim().length() < 1) ? " "
                                 : getSubFactionName());
                 ps.setInt(28, getForumID());
-                ps.setInt(29, getDBId());
+                ps.setLong(29, getLastPromoted());
+                ps.setInt(30, getDBId());
                 ps.executeUpdate();
 
             }
@@ -3575,7 +3579,8 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 this.subFaction = rs.getString("playerSubfactionName");
 
                 this.setAutoReorder(rs.getBoolean("playerAutoReorder"));
-
+                this.setLastPromoted(rs.getLong("playerLastPromoted"));
+                
                 if (this.password != null
                         && this.password.getPasswd().trim().length() <= 2) {
                     this.password.setAccess(IAuthenticator.GUEST);

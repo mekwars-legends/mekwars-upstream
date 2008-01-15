@@ -634,22 +634,33 @@ public final class SUnit extends Unit implements Serializable {
             }
             // Now do Machine Guns
             ps.executeUpdate("DELETE from unit_mgs WHERE unitID = " + getDBId());
-            ArrayList<Mounted> en_Weapon = ent.getWeaponList();
-            int location = 0;
-            for (Mounted mWeapon : en_Weapon) {
-                WeaponType weapon = (WeaponType) mWeapon.getType();
-                if (weapon.hasFlag(WeaponType.F_MG)) {
-                    sql.setLength(0);
-                    sql.append("INSERT into unit_mgs set unitID=?, mgLocation=?, mgRapidFire=?");
-                    ps.close();
-                    ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
-                    ps.setInt(1, getDBId());
-                    ps.setInt(2, location);
-                    ps.setString(3, Boolean.toString(mWeapon.isRapidfire()));
-                    ps.executeUpdate();
-                }
-                location++;
+            
+            if (unitEntity instanceof Mech || unitEntity instanceof Tank) {
+            	int mgCount = CampaignMain.cm.getMachineGunCount(unitEntity.getWeaponList());
+            	if(mgCount > 0) {
+            		int endLocation = Mech.LOC_LLEG;
+            		if(unitEntity instanceof Tank)
+            			endLocation = Tank.LOC_TURRET;
+            		
+            		for (int location = 0; location <= endLocation; location++) {
+            			for (int slot = 0; slot < unitEntity.getNumberOfCriticals(location); slot++) {
+            				CriticalSlot crit = unitEntity.getCritical(location, slot);
+            				if (crit == null || crit.getType() != CriticalSlot.TYPE_EQUIPMENT)
+            					continue;
+            				Mounted m = unitEntity.getEquipment(crit.getIndex());
+            				if (m == null || !(m.getType() instanceof WeaponType))
+            					continue;
+            				
+            				WeaponType wt = (WeaponType) m.getType();
+            				
+            				if (!wt.hasFlag(WeaponType.F_MG))
+            					continue;
+            				ps.executeUpdate("INSERT into unit_mgs set unitID = " + getDBId() + ", mgLocation = " + location + ", mgSlot = " + slot + ", mgRapidFire = " + m.isRapidfire());
+            			}
+            		}
+            	}
             }
+            
             // Do Ammo
             ps.executeUpdate("DELETE from unit_ammo WHERE unitID = " + getDBId());
 
@@ -680,7 +691,7 @@ public final class SUnit extends Unit implements Serializable {
                 CampaignMain.cm.MySQL.linkPilotToUnit(((SPilot) getPilot()).getDBId(), getDBId());
             }
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQL Exception in SaveUnit.toDB: " + e.getMessage());
+            MWServ.mwlog.dbLog("SQL Exception in SUnit.toDB: " + e.getMessage());
         }
     }
 
@@ -913,19 +924,18 @@ public final class SUnit extends Unit implements Serializable {
                 setEntity(unitEntity);
 
                 // Load MGs
-                ArrayList<Mounted> enWeapons = unitEntity.getWeaponList();
                 rs = stmt.executeQuery("SELECT * from unit_mgs WHERE unitID = " + unitID + " ORDER BY mgLocation");
+                Entity en = this.getEntity();
                 while (rs.next()) {
                     int location = rs.getInt("mgLocation");
-                    int currentLocation = 0;
-                    for (Mounted mWeapon : enWeapons) {
-                        if (currentLocation == location) {
-                            mWeapon.setRapidfire(Boolean.parseBoolean(rs.getString("mgRapidFire")));
-                            currentLocation++;
-                            break;
-                        }
-                        currentLocation++;
-                    }
+                    int slot = rs.getInt("mgSlot");
+                    boolean selection = rs.getBoolean("mgRapidFire");
+                    try {
+                    	CriticalSlot cs = en.getCritical(location, slot);
+                    	Mounted m = en.getEquipment(cs.getIndex());
+                    	m.setRapidfire(selection);
+                    }catch (Exception ex) {
+                    }                   
                 }
 
                 setEntity(unitEntity);
