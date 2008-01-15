@@ -962,7 +962,7 @@ public class OperationManager {
 	 * stopped w/ stopChicken() it is also removed from the ShortOperation's tree, so we should
 	 * only check for nulls and may ignore the thread's shouldContinue boolean.
 	 * 
-	 * Used by ShortValidator to determine whether or not a player is udner attack and to stop
+	 * Used by ShortValidator to determine whether or not a player is under attack and to stop
 	 * counterattacks if they're not allowed by a given operation.
 	 */
 	public boolean playerHasActiveChickenThread(SPlayer p) {

@@ -775,22 +775,33 @@ public final class CampaignMain implements Serializable {
 		// Then check the name of the first player in the report string which
 		// is the second element in a * delimited string
 		// -Torren
+	    TreeSet<String>players = new TreeSet<String>();
+	    
 		StringTokenizer report = new StringTokenizer(s, "#");
 		SPlayer reporter = this.getPlayer(report.nextToken());
 
-		if (reporter == null) {
-			StringTokenizer report2 = new StringTokenizer(s, "*");
+		while(report.hasMoreElements()){
+		    StringTokenizer report2 = new StringTokenizer(report.nextToken(), "*");
 
+		    report2.nextElement();
 			// keep parsing until we find a players name!
 			while (report2.hasMoreTokens()) {
-				reporter = this.getPlayer(report2.nextToken());
-				if (reporter != null)
+				SPlayer player = this.getPlayer(report2.nextToken());
+				if (player != null){
+				    if ( !players.contains(player.getName().toLowerCase()) )
+				        players.add(player.getName().toLowerCase());
+				    
+				    if (reporter != null)
+				        reporter = player;
 					break;
+				}
 			}
 		}
 
-		if (reporter == null)
+		if (reporter == null){
+		    MWServ.mwlog.errLog("reporter is null!");
 			return;
+		}
 
 		/*
 		 * If the player isn't in any ShortOperations, he obviously has no
@@ -801,6 +812,9 @@ public final class CampaignMain implements Serializable {
 		if (so == null)
 			return;
 
+		if ( !so.validatePlayers(players) )
+		    return;
+		
 		if (so.hasPlayer(reporter)) {
 			Operation o = this.getOpsManager().getOperation(so.getName());
 			this.getOpsManager().resolveShortAttack(o, so, s);

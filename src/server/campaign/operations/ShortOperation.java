@@ -2666,14 +2666,18 @@ public class ShortOperation implements Comparable {
         }
         deploymentChoices.trimToSize();
 
-        if (deploymentChoices.size() < 1)
+        if (deploymentChoices.size() < 1){
             return position;
+        }
 
-        if (deploymentChoices.size() == 1)
+        if (deploymentChoices.size() == 1){
             return deploymentChoices.firstElement();
+        }
 
         int rand = CampaignMain.cm.getRandomNumber(deploymentChoices.size());
-        return deploymentChoices.elementAt(rand);
+        position = deploymentChoices.elementAt(rand);
+        
+        return position; 
     }
 
     private Vector<SUnit> createMulArmy(int number, String list) {
@@ -2805,5 +2809,18 @@ public class ShortOperation implements Comparable {
         
         CampaignMain.cm.doSendToAllOnlinePlayers(defendingHouse, results.toString(), false);
         return units;
+    }
+    
+    public boolean validatePlayers(TreeSet<String> players){
+        
+        //TreeSet<String> allPlayerNames = new TreeSet<String>(getAllPlayerNames());
+        
+        Collection<String> allPlayersNames = getAllPlayerNames();
+        for ( String name : allPlayersNames ){
+            if ( !players.contains(name) )
+                return false;
+        }
+        
+        return true;
     }
 }// end OperationsManager class
