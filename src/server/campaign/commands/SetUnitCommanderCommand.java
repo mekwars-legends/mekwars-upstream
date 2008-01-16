@@ -109,7 +109,7 @@ public class SetUnitCommanderCommand implements Command {
 		}
 		
 		if ( army.isCommander(m.getId()) && commander ){
-			CampaignMain.cm.toUser(m.getModelName()+"AM: is already a unit commander for this army!",Username);
+			CampaignMain.cm.toUser("AM:"+m.getModelName()+" is already a unit commander for this army!",Username);
 			return;
 		}
 

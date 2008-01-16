@@ -80,13 +80,13 @@ public class TransferMoneyCommand implements Command {
 		// check for same-ip interaction
 		boolean ipcheck = Boolean.parseBoolean(house.getConfig("IPCheck"));
 		if (ipcheck && CampaignMain.cm.getServer().getIP(player.getName()).toString().equals(CampaignMain.cm.getServer().getIP(targetplayer.getName()).toString())) {
-			CampaignMain.cm.toUser(targetplayer.getName() + "AM: has the same IP as you do. You can't send them "+house.getConfig("MoneyLongName"), Username, true);
+			CampaignMain.cm.toUser("AM:"+targetplayer.getName() + " has the same IP as you do. You can't send them "+house.getConfig("MoneyLongName"), Username, true);
 			return;
 		}
 		
 		// if the player is neither in the faction of the target, nor fighting for that faction
 		if (!targetplayer.getHouseFightingFor().equals(player.getMyHouse()) && !targetplayer.getMyHouse().equals(player.getMyHouse())) {
-			CampaignMain.cm.toUser(targetplayer.getName() + "AM: is not from your faction! You can't send them "+house.getConfig("MoneyLongName"), Username, true);
+			CampaignMain.cm.toUser("AM:"+targetplayer.getName() + " is not from your faction! You can't send them "+house.getConfig("MoneyLongName"), Username, true);
 			return;
 		} 
 		
@@ -100,7 +100,7 @@ public class TransferMoneyCommand implements Command {
 		player.addMoney(-amount);
 		targetplayer.addMoney(amount);
 		CampaignMain.cm.toUser("AM:You've transferred " + CampaignMain.cm.moneyOrFluMessage(true,true,amount)+" to " + targetplayer.getName(), Username, true);
-		CampaignMain.cm.toUser(player.getName() + "AM: sends you " +CampaignMain.cm.moneyOrFluMessage(true,true,amount)+".", targetPlayer, true);
+		CampaignMain.cm.toUser("AM:"+player.getName() + " sends you " +CampaignMain.cm.moneyOrFluMessage(true,true,amount)+".", targetPlayer, true);
 
 	}
 }

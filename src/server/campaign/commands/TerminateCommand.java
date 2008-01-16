@@ -103,7 +103,7 @@ public class TerminateCommand implements Command {
 		}else{
 			CampaignMain.cm.toUser("AM:Informing all other participants of your wish to cancel the operation.", Username);
 
-			String msg = Username+"AM: wishes to cancel Operation #"+so.getShortID()+" "+so.getName()+ " <a href=\"MEKWARS/c terminate#"+so.getShortID()+"\">click here to confirm</a>";
+			String msg = "AM:"+Username+" wishes to cancel Operation #"+so.getShortID()+" "+so.getName()+ " <a href=\"MEKWARS/c terminate#"+so.getShortID()+"\">click here to confirm</a>";
 			for (String currPlayerName : so.getAllPlayerNames()) {
 				
 				if ( !so.getCancelledPlayers().contains(currPlayerName.toLowerCase()) && !Username.equalsIgnoreCase(currPlayerName) )

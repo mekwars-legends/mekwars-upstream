@@ -56,7 +56,7 @@ public class DeclineAttackFromReserveCommand implements Command {
         
         ap.setLastAttackFromReserve(launchTime-(Long.parseLong(CampaignMain.cm.getConfig("AttackFromReserveResponseTime"))*60000));
         
-        CampaignMain.cm.toUser(Username+"AM: has declined your proposal.",ap.getName(),true);
+        CampaignMain.cm.toUser("AM:"+Username+" has declined your proposal.",ap.getName(),true);
         CampaignMain.cm.toUser("AM:You have declined "+ap.getName()+"'s proposal.",Username,true);
         
 	}//end process

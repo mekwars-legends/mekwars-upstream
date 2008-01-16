@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.16.x
++ More AM Tag typos
 + RFE: 1870270 Anti 'Mech skill viewable
 + New MegaMek.jar 0.33.16-MW011508-5387
 + Bug: Finished Games getting reprocessed.

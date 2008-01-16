@@ -79,8 +79,8 @@ public class TransferPilotCommand implements Command {
 
 		//The receiving player must have enough room
 		if (targetplayer.getPersonalPilotQueue().getPilotQueue(pUnitType,pWeightClass).size()+1 > Integer.parseInt(house.getConfig("MaxAllowedPilotsInQueueToBuyFromHouse"))){
-			CampaignMain.cm.toUser(Username + "AM:tried to send you a pilot, but your faction allows only "+new Integer(house.getConfig("MaxAllowedPilotsInQueueToBuyFromHouse")).intValue()+" pilots of each type in your barracks.",targetplayer.getName(),true);
-			CampaignMain.cm.toUser(targetplayer.getName()+"AM:'s barracks are currently full!",Username,true);
+			CampaignMain.cm.toUser("AM:"+Username + " tried to send you a pilot, but your faction allows only "+new Integer(house.getConfig("MaxAllowedPilotsInQueueToBuyFromHouse")).intValue()+" pilots of each type in your barracks.",targetplayer.getName(),true);
+			CampaignMain.cm.toUser("AM:"+targetplayer.getName()+"'s barracks are currently full!",Username,true);
 			return;
 		}
 
@@ -102,18 +102,18 @@ public class TransferPilotCommand implements Command {
 
 		//Not the same faction?
 		if (!targetplayer.getMyHouse().equals(player.getMyHouse()) && !targetplayer.getMyHouse().getHouseFightingFor(targetplayer).equals(player.getMyHouse())) {
-			CampaignMain.cm.toUser(targetplayer.getName() + "AM: is not in your faction. You cannot send him units.", Username, true);
+			CampaignMain.cm.toUser("AM:"+targetplayer.getName() + " is not in your faction. You cannot send him units.", Username, true);
 			player.getPersonalPilotQueue().addPilot(pilot, pWeightClass);
 			return;
 			//Target has no room?
 		} else if (!targetplayer.getMyHouse().isLoggedIntoFaction(targetplayer.getName())) {
-			CampaignMain.cm.toUser(targetplayer.getName() + "AM: is not logged in. You may only transfer to players who are online.", Username, true);
+			CampaignMain.cm.toUser("AM:"+targetplayer.getName() + " is not logged in. You may only transfer to players who are online.", Username, true);
 			player.getPersonalPilotQueue().addPilot(pilot, pWeightClass);
 			return;
 			//Same IP address?
 		} else if (new Boolean(house.getConfig("IPCheck")).booleanValue()) {
 			if (CampaignMain.cm.getServer().getIP(player.getName()).toString().equals(CampaignMain.cm.getServer().getIP(targetplayer.getName()).toString())) {
-				CampaignMain.cm.toUser(targetplayer.getName() + "AM: has the same IP as you do. You can't send them pilots.", Username, true);
+				CampaignMain.cm.toUser("AM:"+targetplayer.getName() + " has the same IP as you do. You can't send them pilots.", Username, true);
 				player.getPersonalPilotQueue().addPilot(pilot, pWeightClass);
 				return;
 			}
@@ -149,7 +149,7 @@ public class TransferPilotCommand implements Command {
 
 		//tell the players in main. include unit type and skills, per RFE 1535927
 		CampaignMain.cm.toUser("AM:You transferred a " + Unit.getTypeClassDesc(pUnitType) + " pilot, " + pilot.getName() + " " + description + ", to " + targetplayer.getName() + ".", Username, true);
-		CampaignMain.cm.toUser(player.getName() + "AM: transferred a " + Unit.getTypeClassDesc(pUnitType) + "pilot, " + pilot.getName() + " " + description + ", to your command.", targetPlayer, true);
+		CampaignMain.cm.toUser("AM:"+player.getName() + " transferred a " + Unit.getTypeClassDesc(pUnitType) + "pilot, " + pilot.getName() + " " + description + ", to your command.", targetPlayer, true);
 
 	}
 }
