@@ -47,6 +47,7 @@ import megamek.common.CriticalSlot;
 import megamek.common.Entity;
 import megamek.common.EquipmentMode;
 import megamek.common.EquipmentType;
+import megamek.common.Infantry;
 import megamek.common.Mech;
 import megamek.common.MechFileParser;
 import megamek.common.MechSummary;
@@ -209,7 +210,8 @@ class GeneralPanel extends JPanel{
 
         weightR.setText(Integer.toString((int)en.getWeight()));
         pilotR.setText(en.crew.getDesc());
-        if ( en instanceof Mech || en instanceof Tank ){
+        if ( en instanceof Mech || en instanceof Tank 
+                || (en instanceof Infantry && ((Infantry)en).isAntiMek()) ){
             skillsR.setText(en.crew.getGunnery()+"/"+en.crew.getPiloting());
         }
         else{

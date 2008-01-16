@@ -18,6 +18,8 @@ package server.campaign.commands.mod;
 
 import java.util.StringTokenizer;
 
+import megamek.common.Infantry;
+
 import common.Unit;
 
 import server.campaign.SPlayer;
@@ -83,6 +85,13 @@ public class GetPlayerUnitsCommand implements Command {
     		for (SUnit unit : target.getUnits()) {
     			 if (unit.getType() == Unit.MEK || unit.getType() == Unit.VEHICLE)
      		        result += unit.getId()+" "+unit.getModelName()+" ("+unit.getPilot().getGunnery()+"/"+unit.getPilot().getPiloting()+")#";
+                 else if ( unit.getType() == Unit.INFANTRY || unit.getType() == Unit.BATTLEARMOR ){
+                     if ( ((Infantry)unit.getEntity()).isAntiMek() )
+                         result += unit.getId()+" "+unit.getModelName()+" ("+unit.getPilot().getGunnery()+"/"+unit.getPilot().getPiloting()+")#";
+                     else
+                         result += unit.getId()+" "+unit.getModelName()+" ("+unit.getPilot().getGunnery()+")#";
+                 }
+
      		    else
      		        result += unit.getId()+" "+unit.getModelName()+" ("+unit.getPilot().getGunnery()+")#";
     		}

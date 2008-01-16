@@ -19,7 +19,6 @@ package client.gui;
 
 import java.util.StringTokenizer;
 
-import common.Unit;
 import common.campaign.pilot.Pilot;
 
 import megamek.common.BattleArmor;
@@ -63,8 +62,16 @@ public class HSMek {
 		 */
 		int factionGunnery = mwclient.getCampaign().getPlayer().getMyHouse().getBaseGunner();
 		int factionPiloting = mwclient.getCampaign().getPlayer().getMyHouse().getBasePilot();
-		if (embeddedUnit.getType() == Unit.MEK || embeddedUnit.getType() == Unit.VEHICLE)
-			embeddedUnit.setPilot(new Pilot("BM Unit",factionGunnery,factionPiloting));
+		if (embeddedUnit.getType() != CUnit.PROTOMEK )
+		    
+		    if ( embeddedUnit.getType() == CUnit.INFANTRY  ){
+		        if ( ((Infantry)embeddedUnit.getEntity()).isAntiMek() )
+    		        embeddedUnit.setPilot(new Pilot("BM Unit",factionGunnery,factionPiloting));
+    		    else
+    		        embeddedUnit.setPilot(new Pilot("BM Unit",factionGunnery,5));
+		    }
+		    else
+		        embeddedUnit.setPilot(new Pilot("BM Unit",factionGunnery,factionPiloting));
 		else 
 			embeddedUnit.setPilot(new Pilot("BM Unit",factionGunnery,5));
 		

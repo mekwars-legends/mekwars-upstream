@@ -34,6 +34,8 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import megamek.common.Infantry;
+
 import common.Unit;
 
 //mekwars imports
@@ -86,6 +88,12 @@ public class UnitSelectionDialog extends JDialog implements ActionListener {
 				CUnit mm = (CUnit)super.getElementAt(index);
 				if ( mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE )
 				    return (mm.getId() +" "+ mm.getModelName() + " [" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting()+"]");
+				
+				if ( mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR ){
+				    if ( ((Infantry)mm.getEntity()).isAntiMek() )
+				        return (mm.getId() +" "+ mm.getModelName() + " [" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting()+"]");
+	                return (mm.getId() +" "+ mm.getModelName() + " [" + mm.getPilot().getGunnery() +"]");
+				}
 				return (mm.getId() +" "+ mm.getModelName() + " [" + mm.getPilot().getGunnery() +"]");
 			}
 		});

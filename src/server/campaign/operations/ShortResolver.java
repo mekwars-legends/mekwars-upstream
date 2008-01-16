@@ -26,6 +26,7 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 
 import megamek.common.IEntityRemovalConditions;
+import megamek.common.Infantry;
 import megamek.common.Mech;
 
 import common.Unit;
@@ -3796,6 +3797,12 @@ public class ShortResolver {
             result = u.getPilot().getName() + " ";
             if (u.getType() == Unit.MEK || u.getType() == Unit.VEHICLE)
                 result = "[" + u.getPilot().getGunnery() + "/" + u.getPilot().getPiloting();
+            else if ( u.getType() == Unit.INFANTRY || u.getType() == Unit.BATTLEARMOR ){
+                if ( ((Infantry)u.getEntity()).isAntiMek() )
+                    result = "[" + u.getPilot().getGunnery() + "/" + u.getPilot().getPiloting();
+                else
+                    result = u.getModelName() + " [" + u.getPilot().getGunnery();
+            }
             else
                 result = u.getModelName() + " [" + u.getPilot().getGunnery();
             if (!u.getPilot().getSkillString(true).equals(" "))

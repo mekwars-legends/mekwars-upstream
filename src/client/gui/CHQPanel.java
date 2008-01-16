@@ -59,6 +59,7 @@ import javax.swing.table.TableCellRenderer;
 
 import megamek.client.ui.AWT.MechTileset;
 import megamek.common.Entity;
+import megamek.common.Infantry;
 import megamek.common.Mech;
 
 import client.MWClient;
@@ -1159,6 +1160,12 @@ public class CHQPanel extends JPanel {
 									hasUnitsFree = true;
 								    if ( mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE )
 								        menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV()+  " BV");
+								    else if ( mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR ){
+								        if ( ((Infantry)mm.getEntity()).isAntiMek() )
+								            menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV()+  " BV");
+								        else
+								            menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBV()+  " BV");
+								    }
 								    else
 								        menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBV()+  " BV");
 									menuItem.setActionCommand("EXM|"+lid+"|"+ "-1" +"|"+mm.getId());
@@ -1270,6 +1277,12 @@ public class CHQPanel extends JPanel {
 									continue;
 								if ( mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE )
 								    menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV()+  " BV");
+                                else if ( mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR ){
+                                    if ( ((Infantry)mm.getEntity()).isAntiMek() )
+                                        menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV()+  " BV");
+                                    else
+                                        menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBV()+  " BV");
+                                }
 								else
 								    menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBV()+  " BV");
 								
@@ -1369,6 +1382,12 @@ public class CHQPanel extends JPanel {
 									if (l.getUnit(mm.getId()) == null) {//only allow exchange if unit isn't already in army 
 									    if ( mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE )
 											menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV()+  " BV");
+		                                   else if ( mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR ){
+		                                        if ( ((Infantry)mm.getEntity()).isAntiMek() )
+		                                            menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV()+  " BV");
+		                                        else
+		                                            menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBV()+  " BV");
+		                                    }
 									    else
 									        menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBV()+  " BV");
 										menuItem.setActionCommand("EXM|"+lid+"|"+ cm.getId() +"|"+mm.getId());
@@ -1480,6 +1499,12 @@ public class CHQPanel extends JPanel {
 										continue;
 									if ( mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE )
 									    menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV()+  " BV");
+	                                   else if ( mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR ){
+	                                        if ( ((Infantry)mm.getEntity()).isAntiMek() )
+	                                            menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV()+  " BV");
+	                                        else
+	                                            menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBV()+  " BV");
+	                                    }
 									else
 									    menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBV()+  " BV");
 									menuItem.setActionCommand("EXM|"+lid+"|"+ cm.getId() + "|" + mm.getId());

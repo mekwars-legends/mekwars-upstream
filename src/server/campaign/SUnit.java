@@ -48,6 +48,7 @@ import megamek.common.AmmoType;
 import megamek.common.CriticalSlot;
 import megamek.common.Entity;
 import megamek.common.EntityListFile;
+import megamek.common.Infantry;
 import megamek.common.Mech;
 import megamek.common.MechFileParser;
 import megamek.common.MechSummary;
@@ -979,6 +980,10 @@ public final class SUnit extends Unit implements Serializable {
         if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE)
             return idToShow + " " + dialogBox + " (" + this.getPilot().getGunnery() + "/" + this.getPilot().getPiloting() + ") [" + getPilot().getExperience() + " EXP " + this.getPilot().getSkillString(false) + "] Kills: " + this.getPilot().getKills() + " " + this.getProducer() + ". BV: " + this.getBV() + " " + status;
 
+        if ( this.getType() == Unit.INFANTRY || this.getType() == Unit.BATTLEARMOR ){
+            if ( ((Infantry)this.getEntity()).isAntiMek() )
+                return idToShow + " " + dialogBox + " (" + this.getPilot().getGunnery() + "/" + this.getPilot().getPiloting() + ") [" + getPilot().getExperience() + " EXP " + this.getPilot().getSkillString(false) + "] Kills: " + this.getPilot().getKills() + " " + this.getProducer() + ". BV: " + this.getBV() + " " + status;
+        }
         // else
         return idToShow + " " + dialogBox + " (" + this.getPilot().getGunnery() + ") [" + getPilot().getExperience() + " EXP " + this.getPilot().getSkillString(false) + "] Kills: " + this.getPilot().getKills() + " " + this.getProducer() + ". BV: " + this.getBV() + " " + status;
     }
@@ -991,6 +996,12 @@ public final class SUnit extends Unit implements Serializable {
         String result;
         if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE)
             result = getModelName() + " [" + this.getPilot().getGunnery() + "/" + this.getPilot().getPiloting();
+        else if ( this.getType() == Unit.INFANTRY || this.getType() == Unit.BATTLEARMOR ){
+            if ( ((Infantry)this.getEntity()).isAntiMek() )
+                result = getModelName() + " [" + this.getPilot().getGunnery() + "/" + this.getPilot().getPiloting();
+            else
+                result = getModelName() + " [" + this.getPilot().getGunnery();
+        }
         else
             result = getModelName() + " [" + this.getPilot().getGunnery();
 
@@ -1017,6 +1028,12 @@ public final class SUnit extends Unit implements Serializable {
         // Includes Pilot Stats in ModelName
         if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE)
             return getModelName() + " (" + this.getPilot().getGunnery() + "/" + this.getPilot().getPiloting() + ")";
+
+        if ( this.getType() == Unit.INFANTRY || this.getType() == Unit.BATTLEARMOR ){
+            if ( ((Infantry)this.getEntity()).isAntiMek())
+                return getModelName() + " (" + this.getPilot().getGunnery() + "/" + this.getPilot().getPiloting() + ")";
+        }
+        
         return getModelName() + " (" + this.getPilot().getGunnery() + ")";
     }
 

@@ -26,6 +26,7 @@ import java.util.StringTokenizer;
 import megamek.common.AmmoType;
 import megamek.common.CriticalSlot;
 import megamek.common.Entity;
+import megamek.common.Infantry;
 import megamek.common.Mech;
 import megamek.common.MechFileParser;
 import megamek.common.MechSummary;
@@ -258,6 +259,12 @@ public class CUnit extends Unit {
 	public String getSmallDescription() {
 		if ( this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE)
 			return getModelName() + " [" + getPilot().getGunnery() + "/" + getPilot().getPiloting() + "]";
+		
+		if ( this.getType() == Unit.INFANTRY || this.getType() == Unit.BATTLEARMOR){
+		    if ( ((Infantry)this.UnitEntity).isAntiMek())
+		        return getModelName() + " [" + getPilot().getGunnery() + "/" + getPilot().getPiloting() + "]";
+		    return getModelName() + " [" + getPilot().getGunnery() + "]";
+		}
 		return getModelName() + " [" + getPilot().getGunnery() + "]";
 	}
 	
@@ -271,7 +278,13 @@ public class CUnit extends Unit {
 		
 		if ( this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE)
 			tinfo += " (" + getPilot().getName() + ", " + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ") <br>";
-		else
+		else if ( this.getType() == Unit.BATTLEARMOR || this.getType() == Unit.INFANTRY){
+		    
+		    if ( ((Infantry)this.UnitEntity).isAntiMek())
+		        tinfo += " (" + getPilot().getName() + ", " + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ") <br>";
+		    else
+		        tinfo += " (" + getPilot().getName() + ", " + getPilot().getGunnery() + ") <br>";
+		}else
 			tinfo += " (" + getPilot().getName() + ", " + getPilot().getGunnery() + ") <br>";
 		
 		if ( this.getType() == Unit.VEHICLE )

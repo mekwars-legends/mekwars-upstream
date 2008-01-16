@@ -31,6 +31,8 @@ import java.sql.SQLException;
 import java.util.Random;
 import java.util.StringTokenizer;
 
+import megamek.common.Infantry;
+
 import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
 
@@ -95,17 +97,23 @@ public class SPilot extends Pilot {
 
         int startingSkillAmount = 10;// 4/6 and 5/5 are worst possible green
                                         // units
-        int currentSkillAmount = getGunnery() + getPiloting();
+        
+        int currentSkillAmount = getGunnery()+ getPiloting(); 
         SPilotSkill skillToAdd = null;
 
         /*
          * - If the differential is positive, we will always level gunnery. - If
          * the differential is negative, we will always level piloting. - If the
-         * differential is 0, we we'll level gunnery 70% of the time and
+         * differential is 0, we'll level gunnery 70% of the time and
          * piloting 30% of the time.
          */
-        int differential = getGunnery() - getPiloting();
+        int  differential = getGunnery() - getPiloting();
 
+        if ( unit.getEntity() instanceof Infantry ){
+            //Give AntiMek and Non Anti Mek infantry an equal chance of leveling 
+            // Gunnery and Piloting.
+            differential = 0;
+    }
         /*
          * Adjust the differential for NaturalAptitudes. Push the differential
          * towards the skill we want to get.
@@ -232,9 +240,9 @@ public class SPilot extends Pilot {
                 levelGunnery = true;
             else if (differential < 0)
                 levelPiloting = true;
-            else if (random < 3)// 0-2, 30% chance for piloting on push
-                                // differential
-                levelPiloting = true;
+            else if (random < 3 // 0-2, 30% chance for piloting on push
+                    || (unit.getEntity() instanceof Infantry && random < 5)) // differential
+                levelPiloting = true;   //50/50 for Infantry
             else
                 levelGunnery = true;
 
@@ -265,8 +273,16 @@ public class SPilot extends Pilot {
             // do the actual level ups
             if (levelGunnery)
                 setGunnery(getGunnery() - 1);
-            else if (levelPiloting)
-                setPiloting(getPiloting() - 1);
+            else if (levelPiloting){
+                
+                if ( unit.getEntity() instanceof Infantry ){
+                    if ( ((Infantry)unit.getEntity()).isAntiMek() )
+                        setPiloting(getPiloting() - 1);
+                    else //do not change piloting for Non-AntiMek Infantry
+                        levelPiloting = false;
+                }else
+                    setPiloting(getPiloting() - 1);
+            }
 
             // only send returns if the pilot was actually changed (might have
             // been untouched because of caps)
@@ -277,7 +293,7 @@ public class SPilot extends Pilot {
         }
 
         /*
-         * Do actual levelling down, if necessary.
+         * Do actual leveling down, if necessary.
          */
         else if (shouldLevelDown) {
 

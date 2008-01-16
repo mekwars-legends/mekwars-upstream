@@ -35,6 +35,8 @@ import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.SwingConstants;
 
+import megamek.common.Infantry;
+
 import common.Unit;
 
 import client.MWClient;
@@ -122,6 +124,12 @@ public class SellUnitDialog extends JDialog implements ActionListener {
 				CUnit mm = (CUnit)super.getElementAt(index);
 				if ( mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE )
 				    return (mm.getId() +" "+ mm.getModelName() + " [" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting()+"]");
+				
+				if ( mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR ){
+				    if ( ((Infantry)mm.getEntity()).isAntiMek() )
+				        return (mm.getId() +" "+ mm.getModelName() + " [" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting()+"]");
+				    return (mm.getId() +" "+ mm.getModelName() + " [" + mm.getPilot().getGunnery() +"]");
+				}
 				return (mm.getId() +" "+ mm.getModelName() + " [" + mm.getPilot().getGunnery() +"]");
 			}
 		});

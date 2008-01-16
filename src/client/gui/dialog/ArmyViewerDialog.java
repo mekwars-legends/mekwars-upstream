@@ -59,6 +59,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import megamek.common.Infantry;
+
 import common.Unit;
 import common.util.SpringLayoutHelper;
 
@@ -337,6 +339,13 @@ public class ArmyViewerDialog extends JDialog implements ActionListener, ListSel
                 armyText.append(makeLength("#"+unit.getId(),7)+" "+makeLength(((CUnit)unit).getModelName(),12)+" ");
                 if ( unit.getType() == Unit.VEHICLE || unit.getType() == Unit.MEK )
                     armyText.append(" ("+unit.getPilot().getGunnery()+"/"+unit.getPilot().getPiloting()+")");
+                else if ( unit.getType() == Unit.INFANTRY || unit.getType() == Unit.BATTLEARMOR){
+                    if ( ((Infantry)((CUnit)unit).getEntity()).isAntiMek() ){
+                        armyText.append(" ("+unit.getPilot().getGunnery()+"/"+unit.getPilot().getPiloting()+")");
+                    }
+                    else
+                        armyText.append(" ("+unit.getPilot().getGunnery()+")");
+                }
                 else
                    armyText.append(" ("+unit.getPilot().getGunnery()+")");
                 armyText.append(" BV: "+((CUnit)unit).getBV()+"\n");
