@@ -103,6 +103,8 @@ public class CMainFrame extends JFrame{
 	JMenu jMenuCampaignSubAttack = new JMenu();
 	JMenu jMenuCampaignSubMerc = new JMenu();
 	JMenu jMenuCampaignSubOther = new JMenu();
+    JMenu jMenuCampaignPersonnelTechSubMenu = new JMenu("Techs");
+    JMenu jMenuCampaignPersonnelPilotsSubMenu = new JMenu("Pilots");
     
 	JMenuItem jMenuCampaignMyStatus = new JMenuItem();
 	
@@ -694,7 +696,7 @@ public class CMainFrame extends JFrame{
 			}
 		});
 		
-		jMenuCampaignDonatePersonalPilot.setText("Donate Pilot");
+		jMenuCampaignDonatePersonalPilot.setText("Fire Pilot");
 		jMenuCampaignDonatePersonalPilot.setMnemonic('o');
 		jMenuCampaignDonatePersonalPilot.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -710,7 +712,7 @@ public class CMainFrame extends JFrame{
 			}
 		});
 		
-		jMenuCampaignTransferPilot.setText("Send Pilot");
+		jMenuCampaignTransferPilot.setText("Transfer Pilot");
 		jMenuCampaignTransferPilot.setMnemonic('T');
 		jMenuCampaignTransferPilot.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -761,7 +763,7 @@ public class CMainFrame extends JFrame{
 		}
 		
 		if ( usePersonalPilotQueues ) {
-			jMenuCampaignBuyPilots.setText("Buy Pilots");
+			jMenuCampaignBuyPilots.setText("Hire Pilots");
 			jMenuCampaignBuyPilots.setMnemonic('P');
 			jMenuCampaignBuyPilots.addActionListener(new ActionListener() {
 			    public void actionPerformed(ActionEvent e) {
@@ -1077,13 +1079,16 @@ public class CMainFrame extends JFrame{
 		jMenuCampaignSubTransfer.add(jMenuCampaignTransferPilot);
 		
 		//techs sub menu
-		jMenuCampaignSubTechs.add(jMenuSubCampaignHireTechs);
-		jMenuCampaignSubTechs.add(jMenuSubCampaignFireTechs);
+		jMenuCampaignPersonnelTechSubMenu.add(jMenuSubCampaignHireTechs);
+		jMenuCampaignPersonnelTechSubMenu.add(jMenuSubCampaignFireTechs);
+		jMenuCampaignSubTechs.add(jMenuCampaignPersonnelTechSubMenu);
+		
         //Pilots sub menus.
 		if ( usePersonalPilotQueues ) {
-			jMenuCampaignSubTechs.add(jMenuCampaignPersonalPilotQueue);
-			jMenuCampaignSubTechs.add(jMenuCampaignBuyPilots);
-			jMenuCampaignSubTechs.add(jMenuCampaignDonatePersonalPilot);
+			jMenuCampaignPersonnelPilotsSubMenu.add(jMenuCampaignPersonalPilotQueue);
+			jMenuCampaignPersonnelPilotsSubMenu.add(jMenuCampaignBuyPilots);
+			jMenuCampaignPersonnelPilotsSubMenu.add(jMenuCampaignDonatePersonalPilot);
+            jMenuCampaignSubTechs.add(jMenuCampaignPersonnelPilotsSubMenu);
 		}
 		
 		//Bay sub menu

@@ -1144,11 +1144,10 @@ server-dist/startserver.bat -text
 /serverDescription.xml -text
 src/OperationsEditor/MainOperations.java -text
 src/OperationsEditor/dialog/OperationsDialog.java -text
-src/admin/AdminMapPopupMenu.java -text
 src/admin/AdminMenu.java -text
 src/admin/AdminUserlistPopupMenu.java -text
 src/admin/ModeratorMenu.java -text
-src/admin/ModeratorUserlistPopupMenu.java -text
+src/admin/StaffUserlistPopupMenu.java -text
 src/admin/dialog/BanTargetingDialog.java -text
 src/admin/dialog/BannedAmmoDialog.java -text
 src/admin/dialog/CommandNameDialog.java -text

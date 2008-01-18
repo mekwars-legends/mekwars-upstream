@@ -343,6 +343,38 @@ public class CUserListPanel extends JPanel implements ActionListener{
 					//don't show mail/money/mute/noplay for player himself
                     CUser user = ((CUserListModel)UserList.getModel()).getUser(row);
                     userName = user.getName(); 
+                    
+                    /*
+                     * MOD MENU @Torren 4.7.05
+                     * 
+                     * Most of the mod menu moved into a seperate
+                     * admin package, since its a waste if bytes to
+                     * have all players downloading things that only
+                     * a handful have access to. 
+                     */
+                    if (mwclient.isMod()) {
+                        
+                        try {
+                            File loadJar = new File("./MekWarsAdmin.jar");
+                            if (!loadJar.exists())
+                                MWClient.mwClientLog.clientErrLog("StaffUserlistPopupMenu creation skipped. No MekWarsAdmin.jar present.");
+                            else {
+                                URLClassLoader loader = new URLClassLoader(new URL[] {loadJar.toURI().toURL()});
+                                Class c = loader.loadClass("admin.StaffUserlistPopupMenu");
+                                Object o = c.newInstance();
+                                c.getDeclaredMethod("createMenu", new Class[] {MWClient.class, CUser.class}).invoke(o,
+                                        new Object[] {mwclient, user});
+                                popup.add((JMenu)o);
+                            }
+                        } catch (Exception ex) {
+                            MWClient.mwClientLog.clientErrLog("StaffUserlistPopupMenu creation FAILED!");
+                            MWClient.mwClientLog.clientErrLog(ex);
+                        }
+                    
+                        popup.addSeparator();
+                    }
+                    
+
 					if (!userName.equalsIgnoreCase(mwclient.getPlayer().getName())) {
 						item = new JMenuItem("<HTML>Mail " + userName + "</b></HTML>");
 						item.setActionCommand("MA|"+userName);
@@ -501,54 +533,6 @@ public class CUserListPanel extends JPanel implements ActionListener{
 						
 					
 					}//end if(clicked player isn't THE player)
-					/*
-					 * MOD MENU @Torren 4.7.05
-					 * 
-					 * Most of the mod menu moved into a seperate
-					 * admin package, since its a waste if bytes to
-					 * have all players downloading things that only
-					 * a handful have access to. 
-					 */
-					if (mwclient.isMod()) {
-						
-						try {
-							File loadJar = new File("./MekWarsAdmin.jar");
-							if (!loadJar.exists())
-								MWClient.mwClientLog.clientErrLog("ModeratorUserlistPopupMenu creation skipped. No MekWarsAdmin.jar present.");
-							else {
-								URLClassLoader loader = new URLClassLoader(new URL[] {loadJar.toURI().toURL()});
-								Class c = loader.loadClass("admin.ModeratorUserlistPopupMenu");
-								Object o = c.newInstance();
-								c.getDeclaredMethod("createMenu", new Class[] {MWClient.class, CUser.class}).invoke(o,
-										new Object[] {mwclient, user});
-								popup.add((JMenu)o);
-							}
-						} catch (Exception ex) {
-							MWClient.mwClientLog.clientErrLog("ModeratorUserlistPopupMenu creation FAILED!");
-							MWClient.mwClientLog.clientErrLog(ex);
-						}
-					
-						try {
-							File loadJar = new File("./MekWarsAdmin.jar");
-							if (!loadJar.exists())
-								MWClient.mwClientLog.clientErrLog("AdminUserlistPopupMenu creation skipped. No MekWarsAdmin.jar present.");
-							else {
-								URLClassLoader loader = new URLClassLoader(new URL[] {loadJar.toURI().toURL()});
-								Class c = loader.loadClass("admin.AdminUserlistPopupMenu");
-								Object o = c.newInstance();
-								c.getDeclaredMethod("createMenu", new Class[] {MWClient.class, CUser.class}).invoke(o,
-										new Object[] {mwclient, user});
-								if ( ((JMenu)o).getItemCount() > 0)
-								    popup.add((JMenu)o);
-							}
-						} catch (Exception ex) {
-							MWClient.mwClientLog.clientErrLog("AdminUserlistPopupMenu creation FAILED!");
-							MWClient.mwClientLog.clientErrLog(ex);
-						}
-	
-						popup.addSeparator();
-					}
-					
 					//Toggle ascending/decending order
 					if (((CUserListModel)UserList.getModel()).getSortOrder() == SORTORDER_DESCENDING) {
 						item = new JMenuItem("Ascending Order");

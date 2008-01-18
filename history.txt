@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.16.x
++ Added Tech and Pilot submenus to Personnel menu
++ change name on buy and donate pilot to Hire and Fire
++ Refactored Admin and Mod User List Menus into 1 Staff menu
 + NPE when trying to steal a unit from bays and non-exists
 + New MegaMek.jar 0.33.16-MW011608-5387
 + More AM Tag typos
