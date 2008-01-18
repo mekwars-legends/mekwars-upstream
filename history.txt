@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.16.x
++ NPE when trying to steal a unit from bays and non-exists
 + New MegaMek.jar 0.33.16-MW011608-5387
 + More AM Tag typos
 + RFE: 1870270 Anti 'Mech skill viewable

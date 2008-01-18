@@ -2745,7 +2745,7 @@ public class ShortOperation implements Comparable {
                         captured.addAll(currFacility.getMechProduced(type, pilot));
                     else{
                         SUnit capturedUnit = losingHouse.getEntity(currWeight, type);
-                        if ( UnitUtils.canStartUp(capturedUnit.getEntity()))
+                        if ( capturedUnit != null && UnitUtils.canStartUp(capturedUnit.getEntity()))
                             captured.add(capturedUnit);
                     }
                     if (captured.size() < 1)
