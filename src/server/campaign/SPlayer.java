@@ -75,8 +75,7 @@ import common.util.UnitUtils;
  * @author Helge Richter (McWizard)
  */
 @SuppressWarnings( { "unchecked", "serial", "unused" })
-public final class SPlayer extends Player implements Serializable, Comparable,
-        IBuyer, ISeller {
+public final class SPlayer extends Player implements Serializable, Comparable, IBuyer, ISeller {
 
     // STATIC VARIABLES
     // STATUS_DISCONNECTED, which is used by the client, is 0
@@ -129,7 +128,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
     private String sellingto = "";
     private String lastSentStatus = "";
     private String clientVersion = "";// version gets sent by the player and
-                                        // set
+    // set
 
     private SHouse myHouse;
     private MWPasswdRecord password = null;
@@ -140,7 +139,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
     private int forumID = 0;
 
     boolean isLoading = false; // Player was getting saved multiple times
-                                // during loading. Just seemed silly.
+    // during loading. Just seemed silly.
 
     private String subFaction = "";
 
@@ -163,9 +162,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 getTotalTechs().add(0);
             }
         }
-        this.myHouse = CampaignMain.cm
-                .getHouseFromPartialString(CampaignMain.cm
-                        .getConfig("NewbieHouseName"));
+        this.myHouse = CampaignMain.cm.getHouseFromPartialString(CampaignMain.cm.getConfig("NewbieHouseName"));
     }
 
     /**
@@ -242,15 +239,13 @@ public final class SPlayer extends Player implements Serializable, Comparable,
      */
     public boolean mayUse(int weightClass) {
         if (weightClass == Unit.MEDIUM)
-            if (Integer
-                    .parseInt(this.getMyHouse().getConfig("MinEXPforMedium")) > experience)
+            if (Integer.parseInt(this.getMyHouse().getConfig("MinEXPforMedium")) > experience)
                 return false;
         if (weightClass == Unit.HEAVY)
             if (Integer.parseInt(this.getMyHouse().getConfig("MinEXPforHeavy")) > experience)
                 return false;
         if (weightClass == Unit.ASSAULT)
-            if (Integer.parseInt(this.getMyHouse()
-                    .getConfig("MinEXPforAssault")) > experience)
+            if (Integer.parseInt(this.getMyHouse().getConfig("MinEXPforAssault")) > experience)
                 return false;
         return true;// LIGHT is always usable.
     }
@@ -276,10 +271,8 @@ public final class SPlayer extends Player implements Serializable, Comparable,
     public String addUnit(SUnit m, boolean isNew, boolean sendUpdates) {
 
         if (isNew) {
-            long immunityTime = Long.parseLong(this.getMyHouse().getConfig(
-                    "ImmunityTime")) * 1000;
-            m.setPassesMaintainanceUntil(System.currentTimeMillis()
-                    + immunityTime * 2);
+            long immunityTime = Long.parseLong(this.getMyHouse().getConfig("ImmunityTime")) * 1000;
+            m.setPassesMaintainanceUntil(System.currentTimeMillis() + immunityTime * 2);
         }
 
         // clear any scrap allowance
@@ -289,10 +282,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
          * OK if there's room, unmaintained if not. This also strips any
          * FOR_SALE from units purchased via the market.
          */
-        if (this.getFreeBays() < (CampaignMain.cm.isUsingIncreasedTechs() ? SUnit
-                .getHangarSpaceRequired(m, getMyHouse().houseSupportsUnit(
-                        m.getUnitFilename()), getMyHouse())
-                : SUnit.getHangarSpaceRequired(m, getMyHouse())))
+        if (this.getFreeBays() < (CampaignMain.cm.isUsingIncreasedTechs() ? SUnit.getHangarSpaceRequired(m, getMyHouse().houseSupportsUnit(m.getUnitFilename()), getMyHouse()) : SUnit.getHangarSpaceRequired(m, getMyHouse())))
             m.setUnmaintainedStatus();
         else
             m.setStatus(Unit.STATUS_OK);
@@ -313,10 +303,8 @@ public final class SPlayer extends Player implements Serializable, Comparable,
          */
         if (sendUpdates) {
             CampaignMain.cm.toUser("PL|HD|" + m.toString(true), name, false);
-            CampaignMain.cm.toUser("PL|SUS|" + m.getId() + "#" + m.getStatus(),
-                    name, false);
-            CampaignMain.cm.toUser("PL|SB|" + this.getTotalMekBays(), name,
-                    false);
+            CampaignMain.cm.toUser("PL|SUS|" + m.getId() + "#" + m.getStatus(), name, false);
+            CampaignMain.cm.toUser("PL|SB|" + this.getTotalMekBays(), name, false);
             CampaignMain.cm.toUser("PL|SF|" + this.getFreeBays(), name, false);
         }
         if (CampaignMain.cm.isUsingMySQL()) {
@@ -384,10 +372,10 @@ public final class SPlayer extends Player implements Serializable, Comparable,
             if (currA.getUnitPosition(unitid) > -1) {
                 currA.removeUnit(unitid);
                 if (sendArmyUpdate) {
-                    CampaignMain.cm.toUser("PL|SAD|"
-                            + currA.toString(true, "%"), name, false);
-                    CampaignMain.cm.getOpsManager()
-                            .checkOperations(currA, true);// update legal ops
+                    CampaignMain.cm.toUser("PL|SAD|" + currA.toString(true, "%"), name, false);
+                    CampaignMain.cm.getOpsManager().checkOperations(currA, true);// update
+                                                                                    // legal
+                                                                                    // ops
                 }
             }
         }// end for(all armies)
@@ -421,19 +409,15 @@ public final class SPlayer extends Player implements Serializable, Comparable,
          */
         for (SUnit currU : units) {
 
-            if (currU.getStatus() == Unit.STATUS_OK
-                    || currU.getStatus() == Unit.STATUS_FORSALE) {
+            if (currU.getStatus() == Unit.STATUS_OK || currU.getStatus() == Unit.STATUS_FORSALE) {
                 if (CampaignMain.cm.isUsingIncreasedTechs())
-                    free -= SUnit.getHangarSpaceRequired(currU, getMyHouse()
-                            .houseSupportsUnit(currU.getUnitFilename()),
-                            getMyHouse());
+                    free -= SUnit.getHangarSpaceRequired(currU, getMyHouse().houseSupportsUnit(currU.getUnitFilename()), getMyHouse());
                 else
                     free -= SUnit.getHangarSpaceRequired(currU, getMyHouse());
 
                 // proto counting
                 if (currU.getEntity() instanceof Protomech && !advanceRep) {
-                    if (!currU.getPilot().getSkills().has(
-                            PilotSkill.AstechSkillID))
+                    if (!currU.getPilot().getSkills().has(PilotSkill.AstechSkillID))
                         totalProtos++;
                 } else if (currU.getEntity() instanceof Protomech)
                     totalProtos++;
@@ -445,8 +429,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
          * Adjust for proto points.
          */
         if (totalProtos > 0) {
-            int techRatio = Integer.parseInt(CampaignMain.cm
-                    .getConfig("TechsToProtoPointRatio"));
+            int techRatio = Integer.parseInt(CampaignMain.cm.getConfig("TechsToProtoPointRatio"));
             double ppoints = totalProtos / 5.0;// 5 protos in a point
             int ptechs = (int) (ppoints * techRatio);
 
@@ -471,10 +454,8 @@ public final class SPlayer extends Player implements Serializable, Comparable,
     public int getTotalMekBays() {// return bay/support number
         int numBays = 0;// amount to return
 
-        boolean usesXP = Boolean.parseBoolean(this.getMyHouse().getConfig(
-                "UseExperience"));
-        boolean usesTechs = Boolean.parseBoolean(this.getMyHouse().getConfig(
-                "UseTechnicians"));
+        boolean usesXP = Boolean.parseBoolean(this.getMyHouse().getConfig("UseExperience"));
+        boolean usesTechs = Boolean.parseBoolean(this.getMyHouse().getConfig("UseTechnicians"));
         boolean usesAdvanceRepairs = CampaignMain.cm.isUsingAdvanceRepair();
 
         if (usesAdvanceRepairs)
@@ -493,18 +474,15 @@ public final class SPlayer extends Player implements Serializable, Comparable,
          * Don't give these to mercenaries.
          */
         if (!myHouse.isMercHouse()) {
-            int minBays = Integer.parseInt(this.getMyHouse().getConfig(
-                    "MinimumHouseBays"));
+            int minBays = Integer.parseInt(this.getMyHouse().getConfig("MinimumHouseBays"));
             if (numBays < minBays)
                 numBays = minBays;
         }// end if(non-merc)
 
         // then add the bays from XP, if the config says to...
         if (usesXP) {
-            int experienceForBay = Integer.parseInt(this.getMyHouse()
-                    .getConfig("ExperienceForBay"));
-            int maxBaysFromXP = Integer.parseInt(this.getMyHouse().getConfig(
-                    "MaxBaysFromEXP"));
+            int experienceForBay = Integer.parseInt(this.getMyHouse().getConfig("ExperienceForBay"));
+            int maxBaysFromXP = Integer.parseInt(this.getMyHouse().getConfig("MaxBaysFromEXP"));
             int expBays = (experience / experienceForBay);
             if (expBays > maxBaysFromXP)
                 expBays = maxBaysFromXP;
@@ -552,10 +530,8 @@ public final class SPlayer extends Player implements Serializable, Comparable,
         float amountToPay = 0;
 
         // load config variables needed to do the math ...
-        float additive = Float.parseFloat(this.getMyHouse().getConfig(
-                "AdditivePerTech"));
-        float ceiling = Float.parseFloat(this.getMyHouse().getConfig(
-                "AdditiveCostCeiling"));
+        float additive = Float.parseFloat(this.getMyHouse().getConfig("AdditivePerTech"));
+        float ceiling = Float.parseFloat(this.getMyHouse().getConfig("AdditiveCostCeiling"));
 
         /*
          * divide the ceiling by the addiive. techs past this number are all
@@ -631,10 +607,8 @@ public final class SPlayer extends Player implements Serializable, Comparable,
         this.setCurrentTechPayment(-1);
 
         // load config variables needed to do the calculations
-        float additive = Float.parseFloat(this.getMyHouse().getConfig(
-                "AdditivePerTech"));
-        float ceiling = Float.parseFloat(this.getMyHouse().getConfig(
-                "AdditiveCostCeiling"));
+        float additive = Float.parseFloat(this.getMyHouse().getConfig("AdditivePerTech"));
+        float ceiling = Float.parseFloat(this.getMyHouse().getConfig("AdditiveCostCeiling"));
 
         int currentTechs = this.getTechnicians();// current number of techs
         int techCeiling = (int) (ceiling / additive);// the ceiling
@@ -680,8 +654,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
      */
     public int getTechHiringFee() {
         // get the starting tech cost
-        int techCost = Integer.parseInt(CampaignMain.cm
-                .getConfig("BaseTechCost"));
+        int techCost = Integer.parseInt(CampaignMain.cm.getConfig("BaseTechCost"));
 
         /*
          * Check to see if tech hiring costs should be decreased with
@@ -690,14 +663,11 @@ public final class SPlayer extends Player implements Serializable, Comparable,
          * cost until the floor is reached, or there isnt enough XP to reduce
          * price further.
          */
-        boolean decreaseWithXP = Boolean.parseBoolean(this.getMyHouse()
-                .getConfig("DecreasingTechCost"));
+        boolean decreaseWithXP = Boolean.parseBoolean(this.getMyHouse().getConfig("DecreasingTechCost"));
         if (decreaseWithXP) {
             // if it decreases, see how much
-            int xpToDecrease = Integer.parseInt(this.getMyHouse().getConfig(
-                    "XPForDecrease"));
-            int minTechCost = Integer.parseInt(this.getMyHouse().getConfig(
-                    "MinimumTechCost"));
+            int xpToDecrease = Integer.parseInt(this.getMyHouse().getConfig("XPForDecrease"));
+            int minTechCost = Integer.parseInt(this.getMyHouse().getConfig("MinimumTechCost"));
 
             int numDecreases = (int) Math.floor(experience / xpToDecrease);
             techCost -= numDecreases;
@@ -747,8 +717,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
             SUnit unit = okUnitsData.elementAt(rnd);// get unit @ rnd location
             unit.setUnmaintainedStatus();// make it unmaintained
             numUnmaintained++;
-            CampaignMain.cm.toUser("PL|UU|" + unit.getId() + "|"
-                    + unit.toString(true), name, false);
+            CampaignMain.cm.toUser("PL|UU|" + unit.getId() + "|" + unit.toString(true), name, false);
             okUnitsData.remove(rnd);// and remove it from the vector
 
         }// end while(no free bays)
@@ -776,10 +745,8 @@ public final class SPlayer extends Player implements Serializable, Comparable,
 
         if (CampaignMain.cm.isUsingAdvanceRepair())
             return;
-        int increase = Integer.parseInt(this.getMyHouse().getConfig(
-                "MaintainanceIncrease"));
-        int decrease = Integer.parseInt(this.getMyHouse().getConfig(
-                "MaintainanceDecrease"));
+        int increase = Integer.parseInt(this.getMyHouse().getConfig("MaintainanceIncrease"));
+        int decrease = Integer.parseInt(this.getMyHouse().getConfig("MaintainanceDecrease"));
 
         ArrayList<SUnit> unitsToDestroy = new ArrayList<SUnit>();
         for (SUnit currUnit : units) {// loops through all units
@@ -794,8 +761,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
 
                 // immediately after a game, only decrement. don't scrap.
                 long currTime = System.currentTimeMillis();
-                if (CampaignMain.cm.getIThread().isImmune(this)
-                        || currUnit.getPassesMaintainanceUntil() > currTime)
+                if (CampaignMain.cm.getIThread().isImmune(this) || currUnit.getPassesMaintainanceUntil() > currTime)
                     currUnit.addToMaintainanceLevel(-decrease);
 
                 // unmaintained, not immune, but luckily passed scrap check
@@ -807,22 +773,13 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 else {
 
                     if (myHouse.isNewbieHouse()) {
-                        CampaignMain.cm
-                                .toUser(
-                                        "Your "
-                                                + currUnit.getModelName()
-                                                + " is badly maintained and failed a survival roll. In a normal faction, "
-                                                + "failing these rolls <b>destroys</b> the unit. In the training faction you simply get this warning. Take heed.",
-                                        name, true);
+                        CampaignMain.cm.toUser("Your " + currUnit.getModelName() + " is badly maintained and failed a survival roll. In a normal faction, " + "failing these rolls <b>destroys</b> the unit. In the training faction you simply get this warning. Take heed.", name, true);
                         return;
                     }// break out if trying to scrap a SOL mech
 
                     // if scrapping costs bills, subtract the appropriate
                     // amount.
-                    int mechscrapprice = Math.round(myHouse.getPriceForUnit(
-                            currUnit.getWeightclass(), currUnit.getType())
-                            * Float.parseFloat(this.getMyHouse().getConfig(
-                                    "ScrapCostMultiplier")));
+                    int mechscrapprice = Math.round(myHouse.getPriceForUnit(currUnit.getWeightclass(), currUnit.getType()) * Float.parseFloat(this.getMyHouse().getConfig("ScrapCostMultiplier")));
                     if (this.getMoney() < mechscrapprice)
                         mechscrapprice = this.getMoney();
                     if (mechscrapprice > 0)
@@ -832,24 +789,16 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                     int flutolose = this.getInfluence();
                     this.addInfluence(-flutolose);
 
-                    String toSend = "Lack of maintainance has forced your techs to scrap "
-                            + currUnit.getPilot().getName()
-                            + "'s "
-                            + currUnit.getModelName()
-                            + " for parts. HQ is displeased (";
+                    String toSend = "Lack of maintainance has forced your techs to scrap " + currUnit.getPilot().getName() + "'s " + currUnit.getModelName() + " for parts. HQ is displeased (";
                     if (mechscrapprice > 0)
-                        toSend += CampaignMain.cm.moneyOrFluMessage(true,
-                                false, -mechscrapprice, true)
-                                + ", ";
-                    toSend += CampaignMain.cm.moneyOrFluMessage(false, false,
-                            -flutolose, true)
-                            + ").";
+                        toSend += CampaignMain.cm.moneyOrFluMessage(true, false, -mechscrapprice, true) + ", ";
+                    toSend += CampaignMain.cm.moneyOrFluMessage(false, false, -flutolose, true) + ").";
                     CampaignMain.cm.toUser(toSend, name, true);
 
                     myHouse.addDispossessedPilot(currUnit, false);
                     unitsToDestroy.add(currUnit);// actually removing now
-                                                    // would cause conc mod
-                                                    // error
+                    // would cause conc mod
+                    // error
                 }// end else(failed scrap check)
 
             }// end else if(isnt maintained)
@@ -911,10 +860,8 @@ public final class SPlayer extends Player implements Serializable, Comparable,
              * longer an eligible attack target. Need to remove his oplists and
              * clear his entries on other players oplists.
              */
-            OpponentListHelper olh = new OpponentListHelper(this,
-                    OpponentListHelper.MODE_REMOVE);
-            olh
-                    .sendInfoToOpponents("left the front lines and may no longer be attacked");
+            OpponentListHelper olh = new OpponentListHelper(this, OpponentListHelper.MODE_REMOVE);
+            olh.sendInfoToOpponents("left the front lines and may no longer be attacked");
 
             /*
              * The player also needs to be removed as a possible defender from
@@ -930,8 +877,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
              * lets the first thread to hit the leach ceiling turn off any other
              * attacks against the player.
              */
-            CampaignMain.cm.getOpsManager()
-                    .removePlayerFromAllPossibleDefenderLists(this.name, true);
+            CampaignMain.cm.getOpsManager().removePlayerFromAllPossibleDefenderLists(this.name, true);
 
             /*
              * Remove the player from all attacker lists. It is presumed that a
@@ -940,8 +886,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
              * status, so we remove the player from the games and cancel if they
              * hit 0 attackers.
              */
-            CampaignMain.cm.getOpsManager().removePlayerFromAllAttackerLists(
-                    this, null, true);
+            CampaignMain.cm.getOpsManager().removePlayerFromAllAttackerLists(this, null, true);
 
             // all done. remove the player from the active hash and put him in
             // reserve
@@ -967,10 +912,8 @@ public final class SPlayer extends Player implements Serializable, Comparable,
              * [NOTE: actual checks moved into a helper class so they can be run
              * as a player logs in w/ a running game and after games as well].
              */
-            OpponentListHelper olh = new OpponentListHelper(this,
-                    OpponentListHelper.MODE_ADD);
-            olh
-                    .sendInfoToOpponents("is headed to the front lines. You may attack it with ");
+            OpponentListHelper olh = new OpponentListHelper(this, OpponentListHelper.MODE_ADD);
+            olh.sendInfoToOpponents("is headed to the front lines. You may attack it with ");
 
             // make the hash switch
             myHouse.getReservePlayers().remove(lowerName);
@@ -1008,8 +951,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
             myHouse.getFightingPlayers().put(lowerName, this);
 
             // send status update to the user
-            CampaignMain.cm.toUser("CS|" + +SPlayer.STATUS_FIGHTING, name,
-                    false);
+            CampaignMain.cm.toUser("CS|" + +SPlayer.STATUS_FIGHTING, name, false);
 
             /*
              * Player is being moved to busy status. This means he is no longer
@@ -1020,10 +962,8 @@ public final class SPlayer extends Player implements Serializable, Comparable,
              * immediately after logging in because they disconnected mid-game
              * since they have empty op lists.
              */
-            OpponentListHelper olh = new OpponentListHelper(this,
-                    OpponentListHelper.MODE_REMOVE);
-            olh
-                    .sendInfoToOpponents(" entered combat and may no longer be attacked");
+            OpponentListHelper olh = new OpponentListHelper(this, OpponentListHelper.MODE_REMOVE);
+            olh.sendInfoToOpponents(" entered combat and may no longer be attacked");
         }
 
         // de-fight from AFR. Move to reserve.
@@ -1052,10 +992,8 @@ public final class SPlayer extends Player implements Serializable, Comparable,
              * immunity and updates should be sent to all players immediately.
              */
             if (!CampaignMain.cm.getIThread().isImmune(this)) {
-                OpponentListHelper olh = new OpponentListHelper(this,
-                        OpponentListHelper.MODE_ADD);
-                olh
-                        .sendInfoToOpponents(" halted combat operations and returned to its post. You may attack it with ");
+                OpponentListHelper olh = new OpponentListHelper(this, OpponentListHelper.MODE_ADD);
+                olh.sendInfoToOpponents(" halted combat operations and returned to its post. You may attack it with ");
             }
         }
 
@@ -1108,12 +1046,10 @@ public final class SPlayer extends Player implements Serializable, Comparable,
      */
     protected String addInfluenceAtSlice() {
 
-        MWServ.mwlog.debugLog("Starting addInfluenceAtSlice for "
-                + this.getName());
+        MWServ.mwlog.debugLog("Starting addInfluenceAtSlice for " + this.getName());
 
         // cant get any inf beyond ceiling, so no reason to do the math
-        int fluCeiling = Integer.parseInt(this.getMyHouse().getConfig(
-                "InfluenceCeiling"));
+        int fluCeiling = Integer.parseInt(this.getMyHouse().getConfig("InfluenceCeiling"));
         MWServ.mwlog.debugLog("getting max flu");
         if (influence >= fluCeiling) {
             MWServ.mwlog.debugLog("returning");
@@ -1130,20 +1066,16 @@ public final class SPlayer extends Player implements Serializable, Comparable,
          * sure he has at least 1 (after weighting) eligible army.
          */
         double weightedNumArmies = this.getWeightedArmyNumber();
-        boolean activeLongEnough = (System.currentTimeMillis() - activeSince) > Integer
-                .parseInt(this.getMyHouse().getConfig("InfluenceTimeMin"));
+        boolean activeLongEnough = (System.currentTimeMillis() - activeSince) > Integer.parseInt(this.getMyHouse().getConfig("InfluenceTimeMin"));
 
-        MWServ.mwlog
-                .debugLog("check active status, army number/weight, activelong enough");
-        if (this.getDutyStatus() == STATUS_ACTIVE && weightedNumArmies > 0
-                && activeLongEnough) {
+        MWServ.mwlog.debugLog("check active status, army number/weight, activelong enough");
+        if (this.getDutyStatus() == STATUS_ACTIVE && weightedNumArmies > 0 && activeLongEnough) {
 
             MWServ.mwlog.debugLog(this.getName() + " is active!");
             // if player has been on long enough to get influece,
             // do all of the math to determine influence grant amount
             double totalInfluenceGrant = 0;
-            double baseFlu = Double.parseDouble(this.getMyHouse().getConfig(
-                    "BaseInfluence"));
+            double baseFlu = Double.parseDouble(this.getMyHouse().getConfig("BaseInfluence"));
             totalInfluenceGrant = (baseFlu * weightedNumArmies);
 
             /*
@@ -1178,24 +1110,20 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 if (faction == null)
                     fileName = "./data/influencemessages/CommonInfluenceMessages.txt";
                 else
-                    fileName = "./data/influencemessages/"
-                            + faction.getHouseFluFile()
-                            + "InfluenceMessages.txt";
+                    fileName = "./data/influencemessages/" + faction.getHouseFluFile() + "InfluenceMessages.txt";
 
                 File messageFile = new File(fileName);
                 if (!messageFile.exists()) {
                     fileName = "./data/influencemessages/CommonInfluenceMessages.txt";
                     messageFile = new File(fileName);
                     if (!messageFile.exists()) {
-                        MWServ.mwlog
-                                .errLog("A problem occured with your CommonInfluenceMessages File!");
+                        MWServ.mwlog.errLog("A problem occured with your CommonInfluenceMessages File!");
                         return "";
                     }
                 }
 
                 FileInputStream fis = new FileInputStream(messageFile);
-                BufferedReader dis = new BufferedReader(new InputStreamReader(
-                        fis));
+                BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
 
                 MWServ.mwlog.debugLog("getting random flu message");
                 int messages = Integer.parseInt(dis.readLine());
@@ -1215,23 +1143,16 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 int unitId = rand.nextInt(units.size());// random
                 SUnit unitForMessages = units.elementAt(unitId);
                 MWServ.mwlog.debugLog("Adding Subs for unitid: " + unitId);
-                String fluMessageWithPilotName = fluMessage.replaceAll("PILOT",
-                        unitForMessages.getPilot().getName());
-                String fluMessageWithModelName = fluMessageWithPilotName
-                        .replaceAll("UNIT", unitForMessages.getModelName());
-                String fluMessageWithPlayerName = fluMessageWithModelName
-                        .replaceAll("PLAYER", name);
+                String fluMessageWithPilotName = fluMessage.replaceAll("PILOT", unitForMessages.getPilot().getName());
+                String fluMessageWithModelName = fluMessageWithPilotName.replaceAll("UNIT", unitForMessages.getModelName());
+                String fluMessageWithPlayerName = fluMessageWithModelName.replaceAll("PLAYER", name);
 
-                fluMessageWithPlayerName += " ("
-                        + CampaignMain.cm.moneyOrFluMessage(false, false,
-                                intFluToAdd, true) + ")";
-                MWServ.mwlog.debugLog("returning [" + fluMessageWithPlayerName
-                        + "] for " + this.getName());
+                fluMessageWithPlayerName += " (" + CampaignMain.cm.moneyOrFluMessage(false, false, intFluToAdd, true) + ")";
+                MWServ.mwlog.debugLog("returning [" + fluMessageWithPlayerName + "] for " + this.getName());
                 return fluMessageWithPlayerName;
 
             } catch (Exception e) {
-                MWServ.mwlog
-                        .errLog("A problem occured with your CommonInfluenceMessages File!");
+                MWServ.mwlog.errLog("A problem occured with your CommonInfluenceMessages File!");
                 return "";
             }
         }
@@ -1268,14 +1189,10 @@ public final class SPlayer extends Player implements Serializable, Comparable,
 
             Vector<SArmy> orderedArmies = new Vector<SArmy>(1, 1);
 
-            int MinCount = this.getMyHouse()
-                    .getIntegerConfig("MinCountForTick");
-            int MaxCount = this.getMyHouse()
-                    .getIntegerConfig("MaxCountForTick");
-            int MaxFlatDiff = this.getMyHouse().getIntegerConfig(
-                    "MaxBVDifference");
-            double MaxPercentDiff = this.getMyHouse().getDoubleConfig(
-                    "MaxBVPercent");
+            int MinCount = this.getMyHouse().getIntegerConfig("MinCountForTick");
+            int MaxCount = this.getMyHouse().getIntegerConfig("MaxCountForTick");
+            int MaxFlatDiff = this.getMyHouse().getIntegerConfig("MaxBVDifference");
+            double MaxPercentDiff = this.getMyHouse().getDoubleConfig("MaxBVPercent");
 
             for (SArmy currentArmy : this.getArmies()) {
 
@@ -1296,8 +1213,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 // anything.
                 boolean fLegalOp = false;
                 for (String Opname : currentArmy.getLegalOperations().keySet()) {
-                    if (!CampaignMain.cm.getOpsManager().getOperation(Opname)
-                            .getBooleanValue("DoesNotCountForPP")) {
+                    if (!CampaignMain.cm.getOpsManager().getOperation(Opname).getBooleanValue("DoesNotCountForPP")) {
                         fLegalOp = true;
                         break;
                     }
@@ -1325,8 +1241,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                     int forceNumber = 0;// number of current army
                     boolean forceSorted = false;
                     while (f.hasMoreElements() && !forceSorted) {
-                        if (currentArmy.getOperationsBV(null) < ((SArmy) f
-                                .nextElement()).getOperationsBV(null)) {
+                        if (currentArmy.getOperationsBV(null) < ((SArmy) f.nextElement()).getOperationsBV(null)) {
                             orderedArmies.add(forceNumber, currentArmy);
                             forceSorted = true;
                         } else
@@ -1348,8 +1263,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
 
             weightedArmyNumber = orderedArmies.size();
 
-            double weightMod = Math.max(0, this.getMyHouse().getDoubleConfig(
-                    "BaseCountForProduction"));
+            double weightMod = Math.max(0, this.getMyHouse().getDoubleConfig("BaseCountForProduction"));
             weightedArmyNumber *= weightMod;
 
             if (weightedArmyNumber > 0) {
@@ -1372,11 +1286,9 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                     currentMaxDiff = caPercentDiff;
 
                 if (currentBV - MinCount < currentMaxDiff) {
-                    weightedArmyNumber -= this.getMyHouse().getDoubleConfig(
-                            "FloorPenalty");
+                    weightedArmyNumber -= this.getMyHouse().getDoubleConfig("FloorPenalty");
                     int overlap = currentBV - MinCount;
-                    weightedArmyNumber -= (currentMaxDiff - overlap)
-                            / currentMaxDiff;
+                    weightedArmyNumber -= (currentMaxDiff - overlap) / currentMaxDiff;
                 }
 
                 /*
@@ -1409,11 +1321,9 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                     }
 
                     if (nextBV - currentBV < currentMaxDiff) {
-                        weightedArmyNumber -= this.getMyHouse()
-                                .getDoubleConfig("OverlapPenalty");
+                        weightedArmyNumber -= this.getMyHouse().getDoubleConfig("OverlapPenalty");
                         int overlap = nextBV - currentBV;
-                        weightedArmyNumber -= (currentMaxDiff - overlap)
-                                / currentMaxDiff;
+                        weightedArmyNumber -= (currentMaxDiff - overlap) / currentMaxDiff;
                     }
                     currentArmy = nextArmy;// set up for the next iteration
                     currentBV = nextBV;// set up for the next iteration
@@ -1428,11 +1338,9 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 else
                     currentMaxDiff = caPercentDiff;
                 if (MaxCount - currentBV < currentMaxDiff) {
-                    weightedArmyNumber -= this.getMyHouse().getDoubleConfig(
-                            "CeilingPenalty");
+                    weightedArmyNumber -= this.getMyHouse().getDoubleConfig("CeilingPenalty");
                     int overlap = MaxCount - currentBV;
-                    weightedArmyNumber -= (currentMaxDiff - overlap)
-                            / currentMaxDiff;
+                    weightedArmyNumber -= (currentMaxDiff - overlap) / currentMaxDiff;
                 }
 
                 /*
@@ -1486,8 +1394,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
         this.currentReward = 0;
         this.groupAllowance = 0;
         this.influence = 0;
-        this.myHouse = CampaignMain.cm.getHouseFromPartialString(this
-                .getMyHouse().getConfig("NewbieHouseName"), null);
+        this.myHouse = CampaignMain.cm.getHouseFromPartialString(this.getMyHouse().getConfig("NewbieHouseName"), null);
         this.myLogo = " ";
         this.personalPilotQueue.flushQueue();
         this.rating = 1600;
@@ -1508,8 +1415,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
         int moneyToSet = money + i;
 
         // don't let SOL exceed cap, or anyone have negative cash
-        int maxNewbieCbills = Integer.parseInt(this.getMyHouse().getConfig(
-                "MaxSOLCBills"));
+        int maxNewbieCbills = Integer.parseInt(this.getMyHouse().getConfig("MaxSOLCBills"));
         if (myHouse.isNewbieHouse() && moneyToSet > maxNewbieCbills)
             moneyToSet = maxNewbieCbills;
         if (moneyToSet < 0)
@@ -1614,12 +1520,9 @@ public final class SPlayer extends Player implements Serializable, Comparable,
      */
     public int getNumberOfVotesAllowed() {
 
-        int voteTotal = Integer.parseInt(this.getMyHouse().getConfig(
-                "StartingVotes"));
-        int xpForVote = Integer.parseInt(this.getMyHouse().getConfig(
-                "XPForAdditionalVote"));
-        int maxVotes = Integer.parseInt(this.getMyHouse().getConfig(
-                "MaximumVotes"));
+        int voteTotal = Integer.parseInt(this.getMyHouse().getConfig("StartingVotes"));
+        int xpForVote = Integer.parseInt(this.getMyHouse().getConfig("XPForAdditionalVote"));
+        int maxVotes = Integer.parseInt(this.getMyHouse().getConfig("MaximumVotes"));
 
         voteTotal += (int) Math.floor(experience / xpForVote);
         if (voteTotal > maxVotes)
@@ -1680,16 +1583,12 @@ public final class SPlayer extends Player implements Serializable, Comparable,
             experience = 0;
 
         // check SOL cap
-        if (myHouse.isNewbieHouse()
-                && experience > Integer.parseInt(this.getMyHouse().getConfig(
-                        "MaxSOLExp")))
-            experience = Integer.parseInt(this.getMyHouse().getConfig(
-                    "MaxSOLExp"));
+        if (myHouse.isNewbieHouse() && experience > Integer.parseInt(this.getMyHouse().getConfig("MaxSOLExp")))
+            experience = Integer.parseInt(this.getMyHouse().getConfig("MaxSOLExp"));
 
         // update client & all userlists
         CampaignMain.cm.toUser("PL|SE|" + experience, name, false);
-        CampaignMain.cm.doSendToAllOnlinePlayers("PI|EX|" + name + "|"
-                + experience, false);
+        CampaignMain.cm.doSendToAllOnlinePlayers("PI|EX|" + name + "|" + experience, false);
 
         // update corresponding small player.
         SmallPlayer smallp = myHouse.getSmallPlayers().get(name.toLowerCase());
@@ -1704,8 +1603,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
         if (!modAdded && i > 0) {
 
             int currentXP = xpToReward + i;
-            int rollOver = (Integer.parseInt(this.getMyHouse().getConfig(
-                    "XPRollOverCap")));
+            int rollOver = (Integer.parseInt(this.getMyHouse().getConfig("XPRollOverCap")));
 
             // if XP is over rollover point, reduce until below again
             if (currentXP >= rollOver) {
@@ -1808,10 +1706,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
      */
     public boolean mayAcquireWelfareUnits() {
 
-        if (this.getHangarBV() < Integer.parseInt(this.getMyHouse().getConfig(
-                "WelfareTotalUnitBVCeiling"))
-                && this.getMoney() < Integer.parseInt(this.getMyHouse()
-                        .getConfig("WelfareCeiling")))
+        if (this.getHangarBV() < Integer.parseInt(this.getMyHouse().getConfig("WelfareTotalUnitBVCeiling")) && this.getMoney() < Integer.parseInt(this.getMyHouse().getConfig("WelfareCeiling")))
             return true;
 
         // else
@@ -1905,8 +1800,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
 
         this.getAvailableTechs().set(type, techs);
 
-        CampaignMain.cm.toUser("PL|UAT|" + this.availableTechsToString(), name,
-                false);
+        CampaignMain.cm.toUser("PL|UAT|" + this.availableTechsToString(), name, false);
 
     }
 
@@ -1917,8 +1811,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
 
         this.getAvailableTechs().set(type, number);
 
-        CampaignMain.cm.toUser("PL|UAT|" + this.availableTechsToString(), name,
-                false);
+        CampaignMain.cm.toUser("PL|UAT|" + this.availableTechsToString(), name, false);
 
     }
 
@@ -1931,8 +1824,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
         techs += number;
         this.getTotalTechs().set(type, techs);
 
-        CampaignMain.cm.toUser("PL|UTT|" + this.totalTechsToString(), name,
-                false);
+        CampaignMain.cm.toUser("PL|UTT|" + this.totalTechsToString(), name, false);
     }
 
     public void setTotalTechs(int type, int number) {
@@ -1940,8 +1832,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
             return;
 
         this.getTotalTechs().set(type, number);
-        CampaignMain.cm.toUser("PL|UTT|" + this.totalTechsToString(), name,
-                false);
+        CampaignMain.cm.toUser("PL|UTT|" + this.totalTechsToString(), name, false);
     }
 
     public void updateAvailableTechs(String data) {
@@ -1949,8 +1840,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
             StringTokenizer techs = new StringTokenizer(data, "%");
             int techType = UnitUtils.TECH_GREEN;
             while (techs.hasMoreTokens()) {
-                this.setAvailableTechs(techType, Integer.parseInt(techs
-                        .nextToken()));
+                this.setAvailableTechs(techType, Integer.parseInt(techs.nextToken()));
                 techType++;
             }
         } catch (Exception ex) {
@@ -1981,8 +1871,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
         int maxBays = 0;
 
         if (this.getMyHouse() != null)
-            maxBays = Integer.parseInt(this.getMyHouse().getConfig(
-                    "MaxBaysToBuy"));
+            maxBays = Integer.parseInt(this.getMyHouse().getConfig("MaxBaysToBuy"));
         else
             maxBays = CampaignMain.cm.getIntegerConfig("MaxBaysToBuy");
 
@@ -2044,8 +1933,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
     }
 
     public String getColoredName() {
-        return "<font color=\"" + getHouseFightingFor().getHouseColor() + "\">"
-                + name + "</font>";
+        return "<font color=\"" + getHouseFightingFor().getHouseColor() + "\">" + name + "</font>";
     }
 
     public void setName(String s) {
@@ -2141,9 +2029,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
             // update the corresponding small player.
             smallp = myHouse.getSmallPlayers().get(name.toLowerCase());
         else {
-            smallp = new SmallPlayer(this.getExperience(), lastOnline, this
-                    .getRating(), this.getName(), this.getFluffText(), this
-                    .getMyHouse());
+            smallp = new SmallPlayer(this.getExperience(), lastOnline, this.getRating(), this.getName(), this.getFluffText(), this.getMyHouse());
             myHouse.getSmallPlayers().put(name.toLowerCase(), smallp);
         }
 
@@ -2173,16 +2059,14 @@ public final class SPlayer extends Player implements Serializable, Comparable,
         if (!Boolean.parseBoolean(this.getMyHouse().getConfig("HideELO"))) {
             Double rounded = this.getRatingRounded();
             CampaignMain.cm.toUser("PL|SR|" + rounded, name, false);
-            CampaignMain.cm.doSendToAllOnlinePlayers("PI|RA|" + name + "|"
-                    + rounded, false);
+            CampaignMain.cm.doSendToAllOnlinePlayers("PI|RA|" + name + "|" + rounded, false);
         }
 
         setSave();
     }
 
     public String getFluffText() {
-        if (fluffText.length() > 0 && !fluffText.equals(" ")
-                && !fluffText.equals("0"))
+        if (fluffText.length() > 0 && !fluffText.equals(" ") && !fluffText.equals("0"))
             return fluffText;
         return "";
     }
@@ -2228,8 +2112,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
         for (SArmy army : armies) {
             if (army.isUnitInArmy(unit)) {
                 army.setBV(0);
-                CampaignMain.cm.toUser("PL|SABV|" + army.getID() + "#"
-                        + army.getBV(), name, false);
+                CampaignMain.cm.toUser("PL|SABV|" + army.getID() + "#" + army.getBV(), name, false);
             }
         }
     }// end checkAndUpdateArmies
@@ -2252,10 +2135,12 @@ public final class SPlayer extends Player implements Serializable, Comparable,
      */
     public void setInfluence(int i) {
         influence = i;
-        if (influence > Integer.parseInt(this.getMyHouse().getConfig(
-                "InfluenceCeiling")))
-            influence = (Integer.parseInt(this.getMyHouse().getConfig(
-                    "InfluenceCeiling")));// set to ceiling if above
+        if (influence > Integer.parseInt(this.getMyHouse().getConfig("InfluenceCeiling")))
+            influence = (Integer.parseInt(this.getMyHouse().getConfig("InfluenceCeiling")));// set
+                                                                                            // to
+                                                                                            // ceiling
+                                                                                            // if
+                                                                                            // above
 
         if (influence < 0)
             influence = 0; // Set to 0 if below
@@ -2280,10 +2165,8 @@ public final class SPlayer extends Player implements Serializable, Comparable,
     // set the current amount of reward points a player has.
     public void setReward(int i) {
         currentReward = i;
-        if (currentReward > (Integer.parseInt(this.getMyHouse().getConfig(
-                "XPRewardCap"))))
-            currentReward = (Integer.parseInt(this.getMyHouse().getConfig(
-                    "XPRewardCap")));
+        if (currentReward > (Integer.parseInt(this.getMyHouse().getConfig("XPRewardCap"))))
+            currentReward = (Integer.parseInt(this.getMyHouse().getConfig("XPRewardCap")));
 
         CampaignMain.cm.toUser("PL|SRP|" + currentReward, name, false);
         setSave();
@@ -2421,11 +2304,10 @@ public final class SPlayer extends Player implements Serializable, Comparable,
      */
     public void healAllPilots() {
         try {
-            if (!Boolean.parseBoolean(this.getMyHouse().getConfig(
-                    "AllowPilotDamageToTransfer")))
+            if (!Boolean.parseBoolean(this.getMyHouse().getConfig("AllowPilotDamageToTransfer")))
                 return;
             Long timeGone = System.currentTimeMillis() - lastOnline;// timeGone
-                                                                    // /=60000;
+            // /=60000;
             int tickTime = CampaignMain.cm.getIntegerConfig("TickTime");
             if (timeGone > tickTime)
                 healAllPilots((int) (timeGone / tickTime));
@@ -2435,22 +2317,15 @@ public final class SPlayer extends Player implements Serializable, Comparable,
     }
 
     public void healAllPilots(int numberOfHeals) {
-        if (!Boolean.parseBoolean(this.getMyHouse().getConfig(
-                "AllowPilotDamageToTransfer")))
+        if (!Boolean.parseBoolean(this.getMyHouse().getConfig("AllowPilotDamageToTransfer")))
             return;
-        int health = Integer.parseInt(this.getMyHouse().getConfig(
-                "PilotAmountHealedPerTick"))
-                * numberOfHeals;
-        int medtechHeal = Integer.parseInt(this.getMyHouse().getConfig(
-                "MedTechAmountHealedPerTick"))
-                * numberOfHeals;
+        int health = Integer.parseInt(this.getMyHouse().getConfig("PilotAmountHealedPerTick")) * numberOfHeals;
+        int medtechHeal = Integer.parseInt(this.getMyHouse().getConfig("MedTechAmountHealedPerTick")) * numberOfHeals;
 
-        if (Boolean.parseBoolean(this.getMyHouse().getConfig(
-                "AllowPersonalPilotQueues"))) {
+        if (Boolean.parseBoolean(this.getMyHouse().getConfig("AllowPersonalPilotQueues"))) {
             for (int type = 0; type < 2; type++) {
                 for (int weight = 0; weight <= Unit.ASSAULT; weight++) {
-                    List<Pilot> list = personalPilotQueue.getPilotQueue(type,
-                            weight);
+                    List<Pilot> list = personalPilotQueue.getPilotQueue(type, weight);
                     for (Pilot pilot : list) {
                         if (pilot.getHits() <= 0)
                             continue;
@@ -2482,20 +2357,15 @@ public final class SPlayer extends Player implements Serializable, Comparable,
     }// end healAllPilots
 
     public void healPilots() {
-        if (!Boolean.parseBoolean(this.getMyHouse().getConfig(
-                "AllowPilotDamageToTransfer")))
+        if (!Boolean.parseBoolean(this.getMyHouse().getConfig("AllowPilotDamageToTransfer")))
             return;
-        int health = Integer.parseInt(this.getMyHouse().getConfig(
-                "PilotAmountHealedPerTick"));
-        int medtechHeal = Integer.parseInt(this.getMyHouse().getConfig(
-                "MedTechAmountHealedPerTick"));
+        int health = Integer.parseInt(this.getMyHouse().getConfig("PilotAmountHealedPerTick"));
+        int medtechHeal = Integer.parseInt(this.getMyHouse().getConfig("MedTechAmountHealedPerTick"));
 
-        if (Boolean.parseBoolean(this.getMyHouse().getConfig(
-                "AllowPersonalPilotQueues"))) {
+        if (Boolean.parseBoolean(this.getMyHouse().getConfig("AllowPersonalPilotQueues"))) {
             for (int type = 0; type < 2; type++) {
                 for (int weight = 0; weight <= Unit.ASSAULT; weight++) {
-                    List<Pilot> list = personalPilotQueue.getPilotQueue(type,
-                            weight);
+                    List<Pilot> list = personalPilotQueue.getPilotQueue(type, weight);
                     for (Pilot pilot : list) {
                         if (pilot.getHits() <= 0)
                             continue;
@@ -2539,8 +2409,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
      */
     public String getReadableStatus(boolean adminStatus) {
         DecimalFormat myFormatter = new DecimalFormat("####.##");
-        StringBuilder s = new StringBuilder("<br><b>Status for: "
-                + getColoredName() + " (" + myHouse.getColoredName());
+        StringBuilder s = new StringBuilder("<br><b>Status for: " + getColoredName() + " (" + myHouse.getColoredName());
 
         if (getSubFactionName().trim().length() > 0) {
             s.append("::");
@@ -2560,80 +2429,40 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 s.append("inactive<br>");
 
             if (this.getGroupAllowance() > 0)
-                s.append("IP Group Allowance: " + this.getGroupAllowance()
-                        + "<br>");
+                s.append("IP Group Allowance: " + this.getGroupAllowance() + "<br>");
         }
 
-        s.append("  "
-                + CampaignMain.cm.moneyOrFluMessage(true, false, getMoney())
-                + " //  "
-                + CampaignMain.cm.moneyOrFluMessage(false, false, influence)
-                + " // " + experience + " Experience<br>");
+        s.append("  " + CampaignMain.cm.moneyOrFluMessage(true, false, getMoney()) + " //  " + CampaignMain.cm.moneyOrFluMessage(false, false, influence) + " // " + experience + " Experience<br>");
 
         // advanced repair
         if (CampaignMain.cm.isUsingAdvanceRepair()) {
-            s.append("Technicians (Green/Reg/Vet/Elite): "
-                    + this.getTotalTechs().elementAt(UnitUtils.TECH_GREEN)
-                    + "/" + this.getTotalTechs().elementAt(UnitUtils.TECH_REG)
-                    + "/" + this.getTotalTechs().elementAt(UnitUtils.TECH_VET)
-                    + "/"
-                    + this.getTotalTechs().elementAt(UnitUtils.TECH_ELITE)
-                    + "<br>");
-            s.append("Idle Techs (Green/Reg/Vet/Elite):  "
-                    + this.getAvailableTechs().elementAt(UnitUtils.TECH_GREEN)
-                    + "/"
-                    + this.getAvailableTechs().elementAt(UnitUtils.TECH_REG)
-                    + "/"
-                    + this.getAvailableTechs().elementAt(UnitUtils.TECH_VET)
-                    + "/"
-                    + this.getAvailableTechs().elementAt(UnitUtils.TECH_ELITE)
-                    + "<br>");
-            s.append("Bays: " + this.getFreeBays() + "/"
-                    + this.getTotalMekBays() + "<br>");
-            s.append("Leased Bays: "
-                    + getBaysOwned()
-                    + " (Cost: "
-                    + CampaignMain.cm.moneyOrFluMessage(true, false,
-                            getCurrentTechPayment()) + "/Game)<br>");
+            s.append("Technicians (Green/Reg/Vet/Elite): " + this.getTotalTechs().elementAt(UnitUtils.TECH_GREEN) + "/" + this.getTotalTechs().elementAt(UnitUtils.TECH_REG) + "/" + this.getTotalTechs().elementAt(UnitUtils.TECH_VET) + "/" + this.getTotalTechs().elementAt(UnitUtils.TECH_ELITE) + "<br>");
+            s.append("Idle Techs (Green/Reg/Vet/Elite):  " + this.getAvailableTechs().elementAt(UnitUtils.TECH_GREEN) + "/" + this.getAvailableTechs().elementAt(UnitUtils.TECH_REG) + "/" + this.getAvailableTechs().elementAt(UnitUtils.TECH_VET) + "/" + this.getAvailableTechs().elementAt(UnitUtils.TECH_ELITE) + "<br>");
+            s.append("Bays: " + this.getFreeBays() + "/" + this.getTotalMekBays() + "<br>");
+            s.append("Leased Bays: " + getBaysOwned() + " (Cost: " + CampaignMain.cm.moneyOrFluMessage(true, false, getCurrentTechPayment()) + "/Game)<br>");
         }
 
         // normal techs
         else {
-            s.append("Technicians (Idle/Total): " + this.getFreeBays() + "/"
-                    + getTotalMekBays() + "<br>");
-            s.append("Paid Technicians: "
-                    + getTechnicians()
-                    + " (Cost: "
-                    + CampaignMain.cm.moneyOrFluMessage(true, false,
-                            getCurrentTechPayment()) + "/Game)<br>");
+            s.append("Technicians (Idle/Total): " + this.getFreeBays() + "/" + getTotalMekBays() + "<br>");
+            s.append("Paid Technicians: " + getTechnicians() + " (Cost: " + CampaignMain.cm.moneyOrFluMessage(true, false, getCurrentTechPayment()) + "/Game)<br>");
         }
 
         // give the players some basic vote info. should use /c myvotes to get
         // full vote info
         if (Boolean.parseBoolean(this.getMyHouse().getConfig("VotingEnabled"))) {
-            int votesCast = CampaignMain.cm.getVoteManager()
-                    .getAllVotesBy(this).size();
+            int votesCast = CampaignMain.cm.getVoteManager().getAllVotesBy(this).size();
             int votesAllowed = this.getNumberOfVotesAllowed();
             if (votesAllowed == votesCast)
-                s.append("Votes: All votes cast (" + votesCast + "/"
-                        + votesAllowed + ").<br>");
+                s.append("Votes: All votes cast (" + votesCast + "/" + votesAllowed + ").<br>");
             else
-                s.append("Votes: " + votesCast + " votes cast. " + votesAllowed
-                        + " votes allowed. (" + votesCast + "/" + votesAllowed
-                        + ").<br>");
+                s.append("Votes: " + votesCast + " votes cast. " + votesAllowed + " votes allowed. (" + votesCast + "/" + votesAllowed + ").<br>");
         }// end if(voting is allowed)
 
-        if (!Boolean.parseBoolean(this.getMyHouse().getConfig("HideELO"))
-                && !adminStatus)
-            s
-                    .append("Rating: " + myFormatter.format(this.getRating())
-                            + "<br>");
+        if (!Boolean.parseBoolean(this.getMyHouse().getConfig("HideELO")) && !adminStatus)
+            s.append("Rating: " + myFormatter.format(this.getRating()) + "<br>");
         if (Boolean.parseBoolean(this.getMyHouse().getConfig("ShowReward")))
-            s.append("Current Reward Points: "
-                    + getReward()
-                    + " (Maximum  of "
-                    + Integer.parseInt(this.getMyHouse().getConfig(
-                            "XPRewardCap")) + ")<br>");
+            s.append("Current Reward Points: " + getReward() + " (Maximum  of " + Integer.parseInt(this.getMyHouse().getConfig("XPRewardCap")) + ")<br>");
 
         // if merc show their status.
         if (myHouse.isMercHouse())
@@ -2641,8 +2470,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
 
         s.append("<br>");
 
-        if (Integer.parseInt(this.getMyHouse().getConfig("NoPlayListSize")) > 0
-                || exclusionList.getAdminExcludes().size() > 0) {
+        if (Integer.parseInt(this.getMyHouse().getConfig("NoPlayListSize")) > 0 || exclusionList.getAdminExcludes().size() > 0) {
 
             // player no-play
             s.append("<b>No-Play List:</b> ");
@@ -2726,11 +2554,10 @@ public final class SPlayer extends Player implements Serializable, Comparable,
         String s = "";
         if (myHouse.isMercHouse()) {// if a merc
             s = "Mercenary information for " + getName() + ": <br>";// list name
-            s += "Currently fighting for: "
-                    + (((MercHouse) myHouse).getHouseFightingFor(this))
-                            .getName() + "<br>";// list employing faction
-            ContractInfo contract = (((MercHouse) myHouse)
-                    .getContractInfo(this));
+            s += "Currently fighting for: " + (((MercHouse) myHouse).getHouseFightingFor(this)).getName() + "<br>";// list
+                                                                                                                    // employing
+                                                                                                                    // faction
+            ContractInfo contract = (((MercHouse) myHouse).getContractInfo(this));
             if (contract != null)
                 s += contract.getInfo(this);
             else
@@ -2938,8 +2765,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
         PreparedStatement ps = null;
         StringBuffer sql = new StringBuffer();
         try {
-            MWServ.mwlog.dbLog("Saving player " + getName() + " (DBID: "
-                    + getDBId() + ")");
+            MWServ.mwlog.dbLog("Saving player " + getName() + " (DBID: " + getDBId() + ")");
             if (getDBId() == 0) {
                 // Not in the database - INSERT it
                 sql.setLength(0);
@@ -2976,8 +2802,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 sql.append("playerSubFactionName = ?, ");
                 sql.append("playerForumID = ?, ");
                 sql.append("playerLastPromoted = ?");
-                ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(),
-                        PreparedStatement.RETURN_GENERATED_KEYS);
+                ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setString(1, getName());
                 ps.setInt(2, getMoney());
                 ps.setInt(3, getExperience());
@@ -3017,12 +2842,10 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 ps.setBoolean(23, getAutoReorder());
                 ps.setInt(24, getTeamNumber());
 
-                ps.setString(25,
-                        this.getSubFactionName().trim().length() < 1 ? " "
-                                : getSubFactionName());
+                ps.setString(25, this.getSubFactionName().trim().length() < 1 ? " " : getSubFactionName());
                 ps.setInt(26, getForumID());
                 ps.setLong(27, getLastPromoted());
-                
+
                 ps.executeUpdate();
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
@@ -3044,11 +2867,9 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 sql.append("playerInfluence = ?, ");
                 sql.append("playerFluff = ?, ");
                 if (CampaignMain.cm.isUsingAdvanceRepair())
-                    sql
-                            .append("playerBaysOwned = ?, playerTechnicians = NULL, ");
+                    sql.append("playerBaysOwned = ?, playerTechnicians = NULL, ");
                 else
-                    sql
-                            .append("playerTechnicians = ?, playerBaysOwned = NULL, ");
+                    sql.append("playerTechnicians = ?, playerBaysOwned = NULL, ");
                 sql.append("playerRP = ?, ");
                 sql.append("playerXPToReward = ?, ");
                 sql.append("playerTotalTechsString = ?, ");
@@ -3120,9 +2941,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                     ps.setLong(25, 0);
                 ps.setInt(26, getTeamNumber());
 
-                ps.setString(27,
-                        (this.getSubFactionName().trim().length() < 1) ? " "
-                                : getSubFactionName());
+                ps.setString(27, (this.getSubFactionName().trim().length() < 1) ? " " : getSubFactionName());
                 ps.setInt(28, getForumID());
                 ps.setLong(29, getLastPromoted());
                 ps.setInt(30, getDBId());
@@ -3141,51 +2960,37 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                     pilot.setCurrentFaction(getMyHouse().getName());
                     pilot.toDB(currU.getType(), currU.getWeightclass());
                     currU.toDB();
-                    CampaignMain.cm.MySQL.linkUnitToPlayer(currU.getDBId(),
-                            getDBId());
+                    CampaignMain.cm.MySQL.linkUnitToPlayer(currU.getDBId(), getDBId());
                 }
             }
             if (getArmies().size() > 0) {
                 ps.close();
-                ps = CampaignMain.cm.MySQL
-                        .getPreparedStatement("DELETE from playerarmies WHERE playerID = "
-                                + getDBId());
+                ps = CampaignMain.cm.MySQL.getPreparedStatement("DELETE from playerarmies WHERE playerID = " + getDBId());
                 ps.executeUpdate();
                 for (int i = 0; i < getArmies().size(); i++) {
                     ps.close();
                     sql.setLength(0);
-                    sql.append("INSERT into playerarmies set playerID = "
-                            + getDBId() + ", armyID = "
-                            + getArmies().elementAt(i).getID()
-                            + ", armyString = ?");
-                    ps = CampaignMain.cm.MySQL.getPreparedStatement(sql
-                            .toString());
-                    ps.setString(1, getArmies().elementAt(i).toString(false,
-                            "%"));
+                    sql.append("INSERT into playerarmies set playerID = " + getDBId() + ", armyID = " + getArmies().elementAt(i).getID() + ", armyString = ?");
+                    ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
+                    ps.setString(1, getArmies().elementAt(i).toString(false, "%"));
                     ps.executeUpdate();
                 }
             }
             // Save Personal Pilots Queues
             for (int weightClass = Unit.LIGHT; weightClass < Unit.ASSAULT; weightClass++) {
-                LinkedList<Pilot> currList = getPersonalPilotQueue()
-                        .getPilotQueue(Unit.MEK, weightClass);
+                LinkedList<Pilot> currList = getPersonalPilotQueue().getPilotQueue(Unit.MEK, weightClass);
                 int numPilots = currList.size();
                 for (int position = 0; position < numPilots; position++) {
-                    ((SPilot) currList.get(position)).toDB(Unit.MEK,
-                            weightClass);
-                    CampaignMain.cm.MySQL.linkPilotToPlayer(((SPilot) currList
-                            .get(position)).getDBId(), getDBId());
+                    ((SPilot) currList.get(position)).toDB(Unit.MEK, weightClass);
+                    CampaignMain.cm.MySQL.linkPilotToPlayer(((SPilot) currList.get(position)).getDBId(), getDBId());
                 }
             }
             for (int weightClass = Unit.LIGHT; weightClass < Unit.ASSAULT; weightClass++) {
-                LinkedList<Pilot> currList = getPersonalPilotQueue()
-                        .getPilotQueue(Unit.PROTOMEK, weightClass);
+                LinkedList<Pilot> currList = getPersonalPilotQueue().getPilotQueue(Unit.PROTOMEK, weightClass);
                 int numPilots = currList.size();
                 for (int position = 0; position < numPilots; position++) {
-                    ((SPilot) currList.get(position)).toDB(Unit.PROTOMEK,
-                            weightClass);
-                    CampaignMain.cm.MySQL.linkPilotToPlayer(((SPilot) currList
-                            .get(position)).getDBId(), getDBId());
+                    ((SPilot) currList.get(position)).toDB(Unit.PROTOMEK, weightClass);
+                    CampaignMain.cm.MySQL.linkPilotToPlayer(((SPilot) currList.get(position)).getDBId(), getDBId());
                 }
             }
             ps.close();
@@ -3240,8 +3045,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 SUnit m = new SUnit();
                 m.fromString((String) ST.nextElement());
                 units.add(m);
-                CampaignMain.cm
-                        .toUser("PL|HD|" + m.toString(true), name, false);
+                CampaignMain.cm.toUser("PL|HD|" + m.toString(true), name, false);
             }
 
             numofarmies = (Integer.parseInt((String) ST.nextElement()));
@@ -3252,12 +3056,10 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                     armies.add(a);
                 else
                     armies.add(a.getID(), a);
-                CampaignMain.cm.toUser("PL|SAD|" + a.toString(true, "%"), name,
-                        false);
+                CampaignMain.cm.toUser("PL|SAD|" + a.toString(true, "%"), name, false);
             }
 
-            this.setMyHouse(CampaignMain.cm.getHouseFromPartialString(
-                    TokenReader.readString(ST), null));
+            this.setMyHouse(CampaignMain.cm.getHouseFromPartialString(TokenReader.readString(ST), null));
 
             lastOnline = TokenReader.readLong(ST);
             // Just read it. It's not necessary to use it on the server..
@@ -3267,7 +3069,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
 
             rating = TokenReader.readDouble(ST);
             influence = TokenReader.readInt(ST);
-            
+
             fluffText = TokenReader.readString(ST).trim();
 
             /*
@@ -3281,69 +3083,64 @@ public final class SPlayer extends Player implements Serializable, Comparable,
             int numberOfOptions = TokenReader.readInt(ST);
             for (int i = 0; i < numberOfOptions; i++) {
                 TokenReader.readString(ST);// eat the option's Description
-                                            // token
+                // token
                 TokenReader.readString(ST);// eat the options Setting token
             }
             if (CampaignMain.cm.isUsingAdvanceRepair()) {
                 int greenTechs = TokenReader.readInt(ST);
                 int regTechs = greenTechs / 5;
                 greenTechs -= regTechs;
-                this.updateAvailableTechs(greenTechs + "%" + regTechs
-                        + "%0%0%");
+                this.updateAvailableTechs(greenTechs + "%" + regTechs + "%0%0%");
                 this.getTotalTechs().addAll(getAvailableTechs());
                 // give them some bays
                 this.setBaysOwned(greenTechs + regTechs);
             } else
                 technicians = TokenReader.readInt(ST);
-           
+
             currentReward = TokenReader.readInt(ST);
 
             /*
              * Eat the next two tokens. Formerly used to save mezzo data. Can be
              * reclaimed soon-ish, as no server used the feature. @urgru 9/30/06
              */
-            
-                if (CampaignMain.cm.isUsingMySQL())
-                    setDBId(TokenReader.readInt(ST));
-                else
-                    TokenReader.readString(ST);
-            
+
+            if (CampaignMain.cm.isUsingMySQL())
+                setDBId(TokenReader.readInt(ST));
+            else
                 TokenReader.readString(ST);
 
-            // TODO: Remove this after the next few updates from 0.1.51.2
-            
-                myHouse = CampaignMain.cm.getHouseFromPartialString(TokenReader
-                        .readString(ST), getName());
-            
-                this.setXPToReward(TokenReader.readInt(ST));
-            
-                TokenReader.readString(ST);// faction logo not saved.
-            
-                this.getPersonalPilotQueue().fromString(
-                        TokenReader.readString(ST), "$");
-            
-                this.getExclusionList().adminExcludeFromString(
-                        TokenReader.readString(ST), "$");
-            
-                this.getExclusionList().playerExcludeFromString(
-                        TokenReader.readString(ST), "$");
+            TokenReader.readString(ST);
 
-             {
+            // TODO: Remove this after the next few updates from 0.1.51.2
+
+            myHouse = CampaignMain.cm.getHouseFromPartialString(TokenReader.readString(ST), getName());
+
+            this.setXPToReward(TokenReader.readInt(ST));
+
+            TokenReader.readString(ST);// faction logo not saved.
+
+            this.getPersonalPilotQueue().fromString(TokenReader.readString(ST), "$");
+
+            this.getExclusionList().adminExcludeFromString(TokenReader.readString(ST), "$");
+
+            this.getExclusionList().playerExcludeFromString(TokenReader.readString(ST), "$");
+
+            {
                 try {
                     if (CampaignMain.cm.isUsingAdvanceRepair()) {
                         updateTotalTechs(TokenReader.readString(ST));
-                        
-                            updateAvailableTechs(TokenReader.readString(ST));
-                        
-                            setBaysOwned(TokenReader.readInt(ST));
+
+                        updateAvailableTechs(TokenReader.readString(ST));
+
+                        setBaysOwned(TokenReader.readInt(ST));
                     }// get rid of the 3 blanks
                     else {
                         TokenReader.readString(ST);
-                        
-                            TokenReader.readString(ST);
+
+                        TokenReader.readString(ST);
                         // allow servers to go back and forth using Bays as
                         // techs since bays are what techs are.
-                         {
+                        {
                             if (technicians <= 0)
                                 technicians = TokenReader.readInt(ST);
                             else
@@ -3351,7 +3148,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                         }
                     }
                 }// Had alot of problems with advanced repair so lets just
-                    // use this.
+                // use this.
                 catch (Exception ex) {
                 }
             }// get rid of the 2 blanks
@@ -3380,8 +3177,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 long time = TokenReader.readLong(ST);
 
                 if (passwd.trim().length() > 2)
-                    this.setPassword(new MWPasswdRecord(this.name, access,
-                            passwd, time, ""));
+                    this.setPassword(new MWPasswdRecord(this.name, access, passwd, time, ""));
             } catch (Exception ex) {
                 // Issue with password loading just stop now.
                 this.isLoading = false;
@@ -3397,42 +3193,34 @@ public final class SPlayer extends Player implements Serializable, Comparable,
             this.subFaction = TokenReader.readString(ST);
             this.lastPromoted = TokenReader.readLong(ST);
 
-            if (this.password != null
-                    && this.password.getPasswd().trim().length() <= 2) {
+            if (this.password != null && this.password.getPasswd().trim().length() <= 2) {
                 this.password.setAccess(IAuthenticator.GUEST);
             }
 
             if (CampaignMain.cm.isUsingCyclops()) {
                 CampaignMain.cm.getMWCC().playerWrite(this);
                 // CampaignMain.cm.getMWCC().unitWrite(this.getUnitsData().firstElement(),name,this.getHouseName());
-                CampaignMain.cm.getMWCC().unitWriteFromList(this.getUnits(),
-                        name, myHouse.getName());
-                CampaignMain.cm.getMWCC().pilotWriteFromList(
-                        this.getPersonalPilotQueue(), name);
+                CampaignMain.cm.getMWCC().unitWriteFromList(this.getUnits(), name, myHouse.getName());
+                CampaignMain.cm.getMWCC().pilotWriteFromList(this.getPersonalPilotQueue(), name);
                 // CampaignMain.cm.getMWCC().pilotWrite((SPilot)this.getUnitsData().firstElement().getPilot(),name);
             }
 
-            CampaignMain.cm.toUser("PL|SB|" + this.getTotalMekBays(), name,
-                    false);
+            CampaignMain.cm.toUser("PL|SB|" + this.getTotalMekBays(), name, false);
             CampaignMain.cm.toUser("PL|SF|" + this.getFreeBays(), name, false);
             if (CampaignMain.cm.isUsingAdvanceRepair()) {
 
                 if (!this.hasRepairingUnits()) {
-                    CampaignMain.cm.toUser("PL|UTT|"
-                            + this.totalTechsToString(), name, false);
-                    CampaignMain.cm.toUser("PL|UAT|"
-                            + this.totalTechsToString(), name, false);
+                    CampaignMain.cm.toUser("PL|UTT|" + this.totalTechsToString(), name, false);
+                    CampaignMain.cm.toUser("PL|UAT|" + this.totalTechsToString(), name, false);
                     this.updateAvailableTechs(this.totalTechsToString());// make
-                                                                            // sure
-                                                                            // techs
-                                                                            // are
-                                                                            // in
-                                                                            // synch
+                    // sure
+                    // techs
+                    // are
+                    // in
+                    // synch
                 } else {
-                    CampaignMain.cm.toUser("PL|UTT|"
-                            + this.totalTechsToString(), name, false);
-                    CampaignMain.cm.toUser("PL|UAT|"
-                            + this.availableTechsToString(), name, false);
+                    CampaignMain.cm.toUser("PL|UTT|" + this.totalTechsToString(), name, false);
+                    CampaignMain.cm.toUser("PL|UAT|" + this.availableTechsToString(), name, false);
                 }
             }
 
@@ -3465,8 +3253,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
             ResultSet rs = null, rs1 = null;
             Statement stmt = CampaignMain.cm.MySQL.getStatement();
             Statement stmt1 = CampaignMain.cm.MySQL.getStatement();
-            rs = stmt.executeQuery("SELECT * from players WHERE playerID = "
-                    + playerID);
+            rs = stmt.executeQuery("SELECT * from players WHERE playerID = " + playerID);
             if (rs.next()) {
                 this.armies.clear();
 
@@ -3480,20 +3267,15 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 units = new Vector<SUnit>(1, 1);
                 forumID = rs.getInt("playerForumID");
 
-                rs1 = stmt1
-                        .executeQuery("SELECT ID from units WHERE uplayerID = "
-                                + playerID);
+                rs1 = stmt1.executeQuery("SELECT ID from units WHERE uplayerID = " + playerID);
                 while (rs1.next()) {
                     SUnit m = new SUnit();
                     m.fromDB(rs1.getInt("ID"));
                     units.add(m);
-                    CampaignMain.cm.toUser("PL|HD|" + m.toString(true), name,
-                            false);
+                    CampaignMain.cm.toUser("PL|HD|" + m.toString(true), name, false);
                 }
                 rs1.close();
-                rs1 = stmt1
-                        .executeQuery("SELECT * from playerarmies WHERE playerID = "
-                                + playerID);
+                rs1 = stmt1.executeQuery("SELECT * from playerarmies WHERE playerID = " + playerID);
                 while (rs1.next()) {
                     SArmy a = new SArmy(name);
                     a.fromString(rs1.getString("armyString"), "%", this);
@@ -3502,12 +3284,10 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                     else
                         armies.add(a.getID(), a);
 
-                    CampaignMain.cm.toUser("PL|SAD|" + a.toString(true, "%"),
-                            name, false);
+                    CampaignMain.cm.toUser("PL|SAD|" + a.toString(true, "%"), name, false);
                 }
 
-                this.setMyHouse(CampaignMain.cm.getHouseFromPartialString(rs
-                        .getString("playerHouseName"), null));
+                this.setMyHouse(CampaignMain.cm.getHouseFromPartialString(rs.getString("playerHouseName"), null));
 
                 lastOnline = rs.getLong("playerLastOnline");
 
@@ -3523,8 +3303,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
 
                 currentReward = rs.getInt("playerRP");
 
-                myHouse = CampaignMain.cm.getHouseFromPartialString(rs
-                        .getString("playerHouseName"), getName());
+                myHouse = CampaignMain.cm.getHouseFromPartialString(rs.getString("playerHouseName"), getName());
                 this.setXPToReward(rs.getInt("playerXPToReward"));
 
                 this.getPersonalPilotQueue().fromDB(getDBId());
@@ -3534,8 +3313,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                 try {
                     if (CampaignMain.cm.isUsingAdvanceRepair()) {
                         updateTotalTechs(rs.getString("playerTotalTechsString"));
-                        updateAvailableTechs(rs
-                                .getString("playerAvailableTechsString"));
+                        updateAvailableTechs(rs.getString("playerAvailableTechsString"));
                     } else {
                         // allow servers to go back and forth using Bays as
                         // techs since bays are what techs are.
@@ -3568,8 +3346,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
                     String passwd = rs.getString("playerPassword");
                     long time = System.currentTimeMillis();
                     if (access >= 2)
-                        this.password = new MWPasswdRecord(this.name, access,
-                                passwd, time, "");
+                        this.password = new MWPasswdRecord(this.name, access, passwd, time, "");
                 } catch (Exception ex) {
                 }
 
@@ -3580,42 +3357,33 @@ public final class SPlayer extends Player implements Serializable, Comparable,
 
                 this.setAutoReorder(rs.getBoolean("playerAutoReorder"));
                 this.setLastPromoted(rs.getLong("playerLastPromoted"));
-                
-                if (this.password != null
-                        && this.password.getPasswd().trim().length() <= 2) {
+
+                if (this.password != null && this.password.getPasswd().trim().length() <= 2) {
                     this.password.setAccess(IAuthenticator.GUEST);
                 }
 
                 if (CampaignMain.cm.isUsingCyclops()) {
                     CampaignMain.cm.getMWCC().playerWrite(this);
-                    CampaignMain.cm.getMWCC().unitWriteFromList(
-                            this.getUnits(), name, myHouse.getName());
-                    CampaignMain.cm.getMWCC().pilotWriteFromList(
-                            this.getPersonalPilotQueue(), name);
+                    CampaignMain.cm.getMWCC().unitWriteFromList(this.getUnits(), name, myHouse.getName());
+                    CampaignMain.cm.getMWCC().pilotWriteFromList(this.getPersonalPilotQueue(), name);
                 }
 
-                CampaignMain.cm.toUser("PL|SB|" + this.getTotalMekBays(), name,
-                        false);
-                CampaignMain.cm.toUser("PL|SF|" + this.getFreeBays(), name,
-                        false);
+                CampaignMain.cm.toUser("PL|SB|" + this.getTotalMekBays(), name, false);
+                CampaignMain.cm.toUser("PL|SF|" + this.getFreeBays(), name, false);
                 if (CampaignMain.cm.isUsingAdvanceRepair()) {
 
                     if (!this.hasRepairingUnits()) {
-                        CampaignMain.cm.toUser("PL|UTT|"
-                                + this.totalTechsToString(), name, false);
-                        CampaignMain.cm.toUser("PL|UAT|"
-                                + this.totalTechsToString(), name, false);
+                        CampaignMain.cm.toUser("PL|UTT|" + this.totalTechsToString(), name, false);
+                        CampaignMain.cm.toUser("PL|UAT|" + this.totalTechsToString(), name, false);
                         this.updateAvailableTechs(this.totalTechsToString());// make
-                                                                                // sure
-                                                                                // techs
-                                                                                // are
-                                                                                // in
-                                                                                // synch
+                        // sure
+                        // techs
+                        // are
+                        // in
+                        // synch
                     } else {
-                        CampaignMain.cm.toUser("PL|UTT|"
-                                + this.totalTechsToString(), name, false);
-                        CampaignMain.cm.toUser("PL|UAT|"
-                                + this.availableTechsToString(), name, false);
+                        CampaignMain.cm.toUser("PL|UTT|" + this.totalTechsToString(), name, false);
+                        CampaignMain.cm.toUser("PL|UAT|" + this.availableTechsToString(), name, false);
                     }
                 }
 
@@ -3641,8 +3409,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
             stmt.close();
             stmt1.close();
         } catch (SQLException e) {
-            MWServ.mwlog
-                    .dbLog("SQL Error in SPlayer.fromDB: " + e.getMessage());
+            MWServ.mwlog.dbLog("SQL Error in SPlayer.fromDB: " + e.getMessage());
         } finally {
             this.isLoading = false;
         }
@@ -3659,9 +3426,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
         if (!unit.hasVacantPilot())
             return;
 
-        if (Boolean.parseBoolean(this.getMyHouse().getConfig(
-                "AllowPersonalPilotQueues"))
-                && (unit.getType() == Unit.MEK || unit.getType() == Unit.PROTOMEK))
+        if (Boolean.parseBoolean(this.getMyHouse().getConfig("AllowPersonalPilotQueues")) && (unit.getType() == Unit.MEK || unit.getType() == Unit.PROTOMEK))
             return;
 
         // set a new pilot
@@ -3669,18 +3434,16 @@ public final class SPlayer extends Player implements Serializable, Comparable,
         unit.setPilot(pilot);
 
         // send an update to the player
-        CampaignMain.cm.toUser("PL|UU|" + unit.getId() + " |"
-                + unit.toString(true), name, false);
+        CampaignMain.cm.toUser("PL|UU|" + unit.getId() + " |" + unit.toString(true), name, false);
 
         // correct the BV of any army which contains the unit
         for (SArmy currA : armies) {
             if (currA.getUnit(unit.getId()) != null) {
                 currA.setBV(0);
-                CampaignMain.cm.toUser("PL|SAD|" + currA.toString(true, "%"),
-                        name, false);
+                CampaignMain.cm.toUser("PL|SAD|" + currA.toString(true, "%"), name, false);
                 CampaignMain.cm.getOpsManager().checkOperations(currA, true);// update
-                                                                                // legal
-                                                                                // operations
+                // legal
+                // operations
             }
         }
 
@@ -3695,8 +3458,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
             this.getUnitParts().remove(part, amount);
         else
             this.getUnitParts().add(part, amount);
-        CampaignMain.cm.toUser("PL|UPPC|" + part + "#" + amount,
-                this.getName(), false);
+        CampaignMain.cm.toUser("PL|UPPC|" + part + "#" + amount, this.getName(), false);
 
     }
 
@@ -3740,8 +3502,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
 
     public SubFaction getSubFaction() {
 
-        SubFaction sub = this.getMyHouse().getSubFactionList().get(
-                this.subFaction);
+        SubFaction sub = this.getMyHouse().getSubFactionList().get(this.subFaction);
 
         if (sub == null)
             return new SubFaction();
@@ -3750,8 +3511,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
     }
 
     public int getSubFactionAccess() {
-        SubFaction sub = this.getMyHouse().getSubFactionList().get(
-                this.subFaction);
+        SubFaction sub = this.getMyHouse().getSubFactionList().get(this.subFaction);
 
         if (sub == null)
             return 0;
@@ -3778,9 +3538,7 @@ public final class SPlayer extends Player implements Serializable, Comparable,
         long day = 1000 * 60 * 60 * 24;
 
         try {
-            long daysSinceLastPromoted = (System.currentTimeMillis() - this
-                    .getLastPromoted())
-                    / day;
+            long daysSinceLastPromoted = (System.currentTimeMillis() - this.getLastPromoted()) / day;
 
             // They've been promoted in the last number of days so they are not
             // eligible for a check.
@@ -3804,20 +3562,8 @@ public final class SPlayer extends Player implements Serializable, Comparable,
 
         for (SubFaction subFaction : getMyHouse().getSubFactionList().values()) {
 
-            if (currentAccessLevel < Integer.parseInt(subFaction
-                    .getConfig("AccessLevel"))
-                    && getRating() >= Integer.parseInt(subFaction
-                            .getConfig("MinELO"))
-                    && getExperience() >= Integer.parseInt(subFaction
-                            .getConfig("MinExp"))) {
-                CampaignMain.cm
-                        .toUser(
-                                "You are eligible for a promotion to subFaction "
-                                        + subFaction.getConfig("Name")
-                                        + ". <a href=\"MEKWARS/c RequestSubFactionPromotion#"
-                                        + subFaction.getConfig("Name")
-                                        + "\">Click here to request promotion.</a>",
-                                getName());
+            if (currentAccessLevel < Integer.parseInt(subFaction.getConfig("AccessLevel")) && getRating() >= Integer.parseInt(subFaction.getConfig("MinELO")) && getExperience() >= Integer.parseInt(subFaction.getConfig("MinExp"))) {
+                CampaignMain.cm.toUser("You are eligible for a promotion to subFaction " + subFaction.getConfig("Name") + ". <a href=\"MEKWARS/c RequestSubFactionPromotion#" + subFaction.getConfig("Name") + "\">Click here to request promotion.</a>", getName());
             }
 
         }
@@ -3837,19 +3583,12 @@ public final class SPlayer extends Player implements Serializable, Comparable,
 
         if (elo > getRating() || exp > getExperience()) {
             StringBuilder message = new StringBuilder(this.name);
-            message
-                    .append(" no longer meets the eligbility requirements for subfaction ");
+            message.append(" no longer meets the eligbility requirements for subfaction ");
             message.append(subfaction.getConfig("Name"));
             message.append(". He is eligible for the following:<br>");
-            for (SubFaction subFaction : getMyHouse().getSubFactionList()
-                    .values()) {
+            for (SubFaction subFaction : getMyHouse().getSubFactionList().values()) {
 
-                if (access > Integer.parseInt(subFaction
-                        .getConfig("AccessLevel"))
-                        && getRating() >= Integer.parseInt(subFaction
-                                .getConfig("MinELO"))
-                        && getExperience() >= Integer.parseInt(subFaction
-                                .getConfig("MinExp"))) {
+                if (access > Integer.parseInt(subFaction.getConfig("AccessLevel")) && getRating() >= Integer.parseInt(subFaction.getConfig("MinELO")) && getExperience() >= Integer.parseInt(subFaction.getConfig("MinExp"))) {
                     message.append(subFaction.getConfig("Name"));
                     message.append(". <a href=\"MEKWARS/c demoteplayer#");
                     message.append(getName());
@@ -3876,6 +3615,26 @@ public final class SPlayer extends Player implements Serializable, Comparable,
 
     public void setLastPromoted(long promotedTime) {
         this.lastPromoted = promotedTime;
+    }
+    
+    /**
+     * A player may only have 1 army locked at a time.
+     * This will lock that army and unlock any others
+     * Passing an armyId of -1 will unlock all armies.
+     * @param armyId
+     */
+    public void lockArmy(int armyId){
+        
+        for ( SArmy army : this.getArmies() ){
+            
+            if ( army.getID() == armyId){
+                army.setLocked(true);
+                CampaignMain.cm.toUser("PL|SAL|"+armyId+"#"+true,getName(),false);
+            }else if ( army.isLocked() ){
+                army.setLocked(false);
+                CampaignMain.cm.toUser("PL|SAL|"+army.getID()+"#"+false,getName(),false);
+            }
+        }
     }
 
 }// end SPlayer()

@@ -74,7 +74,7 @@ public class OpsChickenThread extends Thread {
 	 * 
 	 * Note - the thread will not take note of the change until
 	 * it next wakes. At that point it will terminate. This means
-	 * that a thread with a long waittime can stick around for
+	 * that a thread with a long wait time can stick around for
 	 * several minutes after it is supposedly "stopped."
 	 */
 	public synchronized void stopChicken() {

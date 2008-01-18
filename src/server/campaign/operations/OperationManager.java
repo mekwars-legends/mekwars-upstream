@@ -569,9 +569,7 @@ public class OperationManager {
 		TreeMap<String,Integer> allArmies = so.getAllPlayersAndArmies();
 		for (String currN : allArmies.keySet()) {
             try{
-    			SArmy currA = CampaignMain.cm.getPlayer(currN).getArmy(allArmies.get(currN));
-    			currA.setLocked(false);
-    			CampaignMain.cm.toUser("PL|SAL|"+ currA.getID() + "#" + false, currA.getPlayerName(),false);
+    			CampaignMain.cm.getPlayer(currN).lockArmy(allArmies.get(currN));
             }catch(Exception ex){
                 MWServ.mwlog.errLog(currN+" had a null army while terminating. Continuing to next player.");
                 continue;

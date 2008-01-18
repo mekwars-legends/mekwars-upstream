@@ -20,7 +20,6 @@ import java.util.StringTokenizer;
 
 import server.campaign.commands.Command;
 import server.campaign.CampaignMain;
-import server.campaign.SArmy;
 import server.campaign.SPlayer;
 
 import server.MWChatServer.auth.IAuthenticator;
@@ -45,13 +44,7 @@ public class UnlockLancesCommand implements Command {
 		//get the player
 		SPlayer p = CampaignMain.cm.getPlayer(command.nextToken());
 		
-		//unlock all of his armies
-		int count = p.getArmies().size();
-		for (int i = 0; i < count; i++) {
-			SArmy currArmy = p.getArmies().elementAt(i);
-			currArmy.setLocked(false);
-            CampaignMain.cm.toUser("PL|SAL|"+i+"#"+false,p.getName(),false);
-		}
+		p.lockArmy(-1);
 		
 		CampaignMain.cm.toUser("You unlocked " + p.getName() + "'s armies.",Username,true);
 		//server.MWServ.mwlog.modLog(Username + " unlocked " + p.getName() + "'s armies.");

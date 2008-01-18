@@ -285,8 +285,7 @@ public class ShortOperation implements Comparable {
             playerModifyingOps.put(p.getName().toLowerCase(), modName);
 
         // also, lock the participating army and update the client GUI
-        a.setLocked(true);
-        CampaignMain.cm.toUser("PL|SAL|" + a.getID() + "#" + true, p.getName(), false);
+        p.lockArmy(a.getID());
 
         // increase the unit and BV counts
         startingBV += a.getOperationsBV(null);
@@ -339,8 +338,7 @@ public class ShortOperation implements Comparable {
             playerModifyingOps.put(p.getName().toLowerCase(), modName);
 
         // also, lock the participating army and update the client GUI
-        a.setLocked(true);
-        CampaignMain.cm.toUser("PL|SAL|" + a.getID() + "#" + true, p.getName(), false);
+        p.lockArmy(a.getID());
 
         // increase the unit and BV counts
         startingBV += a.getOperationsBV(null);
@@ -1637,9 +1635,7 @@ public class ShortOperation implements Comparable {
          * offline, so make sure that the player's army is still locked and send
          * the lock status.
          */
-        SArmy lockArmy = p.getArmy(this.getAllPlayersAndArmies().get(p.getName().toLowerCase()));
-        lockArmy.setLocked(true);
-        CampaignMain.cm.toUser("PL|SAL|" + lockArmy.getID() + "#" + true, p.getName(), false);
+        p.lockArmy(this.getAllPlayersAndArmies().get(p.getName().toLowerCase()));
 
         // send options
         CampaignMain.cm.toUser(gameOptions.toString(), lowerName, false);

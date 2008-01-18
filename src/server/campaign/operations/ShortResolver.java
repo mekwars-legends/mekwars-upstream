@@ -535,7 +535,7 @@ public class ShortResolver {
         // this.checkStatusOfRelatedLong();
         /*
          * Unlock all participating armies. This may result in some oddities for
-         * players who are no logner connected, but its not going to kill the
+         * players who are no longer connected, but its not going to kill the
          * server.
          */
         for (SArmy currA : allArmies.values()) {
