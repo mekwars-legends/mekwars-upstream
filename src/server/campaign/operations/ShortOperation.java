@@ -499,8 +499,8 @@ public class ShortOperation implements Comparable {
              */
             else if (o.getBooleanValue("RandomDeployment")) {
                 int pos = getRandomDeployment(o);
-                defenderEdge = playerEdge[pos];
-                attackerEdge = playerEdgeReverse[pos];
+                attackerEdge = playerEdge[pos];
+                defenderEdge = playerEdgeReverse[pos];
                 if (pos >= Buildings.NORTHWESTDEEP)
                     gameOptions.append("|deep_deployment|true");
             }
