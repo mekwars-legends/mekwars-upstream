@@ -126,7 +126,7 @@ public class SetUnitAmmoCommand implements Command {
 		String munitionType = Long.toString(at.getMunitionType());
 		
 		//dont make players confirm the command on a server which doesnt charge for ammo
-		double ammoCharge = CampaignMain.cm.getAmmoCost(currAmmo.getInternalName());
+		double ammoCharge = CampaignMain.cm.getAmmoCost(at.getInternalName());
 		
 		if ( CampaignMain.cm.getData().getServerBannedAmmo().get(munitionType) != null 
 				|| faction.getBannedAmmo().get(munitionType) != null
@@ -150,7 +150,7 @@ public class SetUnitAmmoCommand implements Command {
             if ( shotsLeft == refillShots )
             	return;
             
-            //Single shot weapons should only cost 1 shot i.e. total shots = 10 then price is 1/10th minium 1.
+            //Single shot weapons should only cost 1 shot.
             if ( mWeapon.getLocation() == Entity.LOC_NONE ){
                 refillShots = 1;
             }//Parital Reloads
