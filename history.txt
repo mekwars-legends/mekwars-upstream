@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.16.x
++ New MegaMek.jar 0.33.17-MW012108-5426
 + Bug: Defender edge being set in Op Deployment instead of attacker
 + Bug: More then one army being locked
 + Added Tech and Pilot submenus to Personnel menu
