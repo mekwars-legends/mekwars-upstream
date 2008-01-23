@@ -215,7 +215,7 @@ public class CUnit extends Unit {
 		if ( ST.hasMoreElements() )
 		    pilotBV = Integer.parseInt(ST.nextToken());
 		if ( ST.hasMoreElements())
-            UnitEntity.setTargSysType(Integer.parseInt(ST.nextToken()));
+            UnitEntity.setTargSysType(Math.max(0,Integer.parseInt(ST.nextToken())));
 		if ( ST.hasMoreElements())
 			scrappableFor = Integer.parseInt(ST.nextToken());
 
