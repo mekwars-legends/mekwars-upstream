@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.16.x
++ Added debugging messages to games not reporting issue
 + Fix to not allow less then standard targetting system types in client
 + Bug: Old ammo cost was being used for cost check when changing ammo types
 	instead of new ammo.

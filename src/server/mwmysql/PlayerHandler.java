@@ -38,7 +38,7 @@ public class PlayerHandler {
 			stmt = con.createStatement();
 			rs = stmt.executeQuery("SELECT playerName from players WHERE playerLastModified < (CURRENT_TIMESTAMP() - INTERVAL " + days + " DAY)");
 			while(rs.next()) {
-				SPlayer p = CampaignMain.cm.getPlayer(rs.getString("playerName"), false);
+				SPlayer p = CampaignMain.cm.getPlayer(rs.getString("playerName"), false, false);
 				p.addExperience(100, true);
 				Command c = CampaignMain.cm.getServerCommands().get("UNENROLL");
 				c.process(new StringTokenizer("CONFIRMED", "#"), rs.getString("playerName"));
