@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.17.x
++ parsed out | in SendToMiscCommand
 + ValidateEmailCommand will now exit if already-validated user issues it
 + Registration Dialog sized dynamically, depending on whether email address
     is required.

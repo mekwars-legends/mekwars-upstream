@@ -37,8 +37,14 @@ public class SendToMiscCommand implements Command {
 		if ( !Username.startsWith("[Dedicated]"))
 		    return;
 		
-		if ( command.hasMoreTokens() )
-			CampaignMain.cm.toUser("DMML|"+Username+"|"+command.nextToken(),endUser,false);
+		if ( command.hasMoreTokens() ){
+		    StringBuilder result = new StringBuilder();
+		    while( command.hasMoreElements() ){
+		        result.append(command.nextToken());
+		        result.append(" ");
+		    }
+			CampaignMain.cm.toUser("DMML|"+Username+"|"+result.toString(),endUser,false);
+		}
 	}
 }
 	
