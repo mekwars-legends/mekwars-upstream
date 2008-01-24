@@ -198,6 +198,12 @@ public final class CampaignMain implements Serializable {
             // before you load in the
             // campaign stuff
             config.load(new FileInputStream(this.myServer.getConfigParam("CAMPAIGNCONFIG")));
+            if(isUsingMySQL()) {
+				if(this.isSynchingBB())
+					config.put("REQUIREEMAILFORREGISTRATION", "true");
+				else
+					config.put("REQUIREEMAILFORREGISTRATION", "false");
+			}
         } catch (Exception ex) {
             MWServ.mwlog.errLog("Problems with loading campaign config");
             MWServ.mwlog.errLog(ex);
@@ -1549,6 +1555,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("UNITPOSITION", new UnitPositionCommand());
         Commands.put("UNLOCKLANCES", new UnlockLancesCommand());
         Commands.put("USEREWARDPOINTS", new UseRewardPointsCommand());
+        Commands.put("VALIDATEEMAIL", new ValidateEmailCommand());
         Commands.put("VIEWPLAYERPARTS", new ViewPlayerPartsCommand());
         Commands.put("VIEWPLAYERPERSONALPILOTQUEUE", new ViewPlayerPersonalPilotQueueCommand());
         Commands.put("VIEWPLAYERUNIT", new ViewPlayerUnitCommand());

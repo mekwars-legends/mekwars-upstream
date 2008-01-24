@@ -2,6 +2,16 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.16.x
++ Updated DB to v21
++ Added validateEmail command
++ Added server-dist/docs/phpBB Synchronization.pdf with instructions
+    for synchronizing user accounts between phpBB 2.0.22 and MW
++ Defection now requires a validated forum account if the server is 
+    synching with phpBB
++ Added server-dist/lib/smtp.jar
++ Added integrated javamail to server
++ Completed phpBB account activation code
++ Unenrolling will no longer remove phpBB accounts (deletion will)
 + Added debugging messages to games not reporting issue
 + Fix to not allow less then standard targetting system types in client
 + Bug: Old ammo cost was being used for cost check when changing ammo types

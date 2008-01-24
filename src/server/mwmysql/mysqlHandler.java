@@ -25,7 +25,7 @@ public class mysqlHandler{
   private PlayerHandler plh = null;
   private PhpBBConnector phpBBCon = null;
 
-  private final int currentDBVersion = 20;
+  private final int currentDBVersion = 21;
   
   public void closeMySQL(){
 	  MySQLCon.close();
@@ -64,8 +64,8 @@ public class mysqlHandler{
 	  }
   }
   
-  public void addUserToForum(String name, String pass, String email) {
-	  phpBBCon.addToForum(name, pass, email);
+  public boolean addUserToForum(String name, String pass, String email) {
+	  return phpBBCon.addToForum(name, pass, email);
   }
   
   public void addUserToHouseForum(int userID, int forumID) {
@@ -312,7 +312,11 @@ public class mysqlHandler{
   }
   
   public void deletePlayer(SPlayer p) {
-	  plh.deletePlayer(p);
+	  plh.deletePlayer(p, true);
+  }
+  
+  public void deletePlayer(SPlayer p, boolean deleteForumAccount) {
+	  plh.deletePlayer(p, deleteForumAccount);
   }
   
   public void deleteForumAccount(int forumID) {
@@ -473,6 +477,14 @@ public class mysqlHandler{
   
   public int getUserForumID(String userName, String userEmail) {
 	  return phpBBCon.getUserForumID(userName, userEmail);
+  }
+  
+  public String getActivationKey(int userID) {
+	  return phpBBCon.getActivationKey(userID);
+  }
+  
+  public void validateUser(int forumID) {
+	  phpBBCon.validateUser(forumID);
   }
   
   public mysqlHandler(){

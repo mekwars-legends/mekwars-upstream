@@ -66,6 +66,11 @@ public class DefectCommand implements Command {
 				return;
 			}	
 			
+			if (CampaignMain.cm.isSynchingBB() && !p.isValidated()) {
+				CampaignMain.cm.toUser("AM:You are not allowed to defect until you validate your account.  You received an email when you registered, please use the validateemail command to enter the required code.",Username, true);
+				return;
+			}
+			
 			if (CampaignMain.cm.getData().getHouseByName(HouseName) == null) {
 				CampaignMain.cm.toUser("AM:Could not find a faction with that name. Try again?",Username,true);
 				return;

@@ -110,7 +110,7 @@ public class UnenrollCommand implements Command {
 		if (fp.exists())
 			fp.delete();
 		if(CampaignMain.cm.isUsingMySQL()) {
-			CampaignMain.cm.MySQL.deletePlayer(p);
+			CampaignMain.cm.MySQL.deletePlayer(p, false);
 		}
 		//tell the mods and add to iplog.0
 		InetAddress ip = CampaignMain.cm.getServer().getIP(Username);

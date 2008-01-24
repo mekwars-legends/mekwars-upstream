@@ -137,6 +137,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 
     private int DBId = 0;
     private int forumID = 0;
+    private boolean userValidated = false;
 
     boolean isLoading = false; // Player was getting saved multiple times
     // during loading. Just seemed silly.
@@ -2801,7 +2802,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 
                 sql.append("playerSubFactionName = ?, ");
                 sql.append("playerForumID = ?, ");
-                sql.append("playerLastPromoted = ?");
+                sql.append("playerLastPromoted = ?, ");
+                sql.append("playerValidated = ?");
                 ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setString(1, getName());
                 ps.setInt(2, getMoney());
@@ -2845,6 +2847,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
                 ps.setString(25, this.getSubFactionName().trim().length() < 1 ? " " : getSubFactionName());
                 ps.setInt(26, getForumID());
                 ps.setLong(27, getLastPromoted());
+                ps.setBoolean(28, isValidated());
 
                 ps.executeUpdate();
                 ResultSet rs = ps.getGeneratedKeys();
@@ -2888,7 +2891,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 
                 sql.append("playerSubFactionName = ?, ");
                 sql.append("playerForumID = ?, ");
-                sql.append("playerLastPromoted = ? ");
+                sql.append("playerLastPromoted = ?, ");
+                sql.append("playerValidated = ? ");
                 sql.append("WHERE playerID = ?");
 
                 ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
@@ -2944,7 +2948,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
                 ps.setString(27, (this.getSubFactionName().trim().length() < 1) ? " " : getSubFactionName());
                 ps.setInt(28, getForumID());
                 ps.setLong(29, getLastPromoted());
-                ps.setInt(30, getDBId());
+                ps.setBoolean(30, isValidated());
+                ps.setInt(31, getDBId());
                 ps.executeUpdate();
 
             }
@@ -3357,6 +3362,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 
                 this.setAutoReorder(rs.getBoolean("playerAutoReorder"));
                 this.setLastPromoted(rs.getLong("playerLastPromoted"));
+                this.setUserValidated(rs.getBoolean("playerValidated"));
 
                 if (this.password != null && this.password.getPasswd().trim().length() <= 2) {
                     this.password.setAccess(IAuthenticator.GUEST);
@@ -3635,6 +3641,14 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
                 CampaignMain.cm.toUser("PL|SAL|"+army.getID()+"#"+false,getName(),false);
             }
         }
+    }
+    
+    public void setUserValidated(boolean validated) {
+    	this.userValidated = validated;
+    }
+    
+    public boolean isValidated() {
+    	return this.userValidated;
     }
 
 }// end SPlayer()

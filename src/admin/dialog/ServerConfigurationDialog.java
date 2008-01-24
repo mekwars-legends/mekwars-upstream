@@ -4734,6 +4734,8 @@ public final class ServerConfigurationDialog implements ActionListener {
 		 */
         JPanel dbSpring = new JPanel(new SpringLayout());
 
+/*
+  
         BaseCheckBox = new JCheckBox("Require email address for registration: ");
 
         BaseCheckBox.setToolTipText("Adds email address to forum registration");
@@ -4742,7 +4744,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         
 		SpringLayoutHelper.setupSpringGrid(dbSpring, 2);
         dbPanel.add(dbSpring);
-        
+*/        
         
 		// Set the actions to generate
 		okayButton.setActionCommand(okayCommand);

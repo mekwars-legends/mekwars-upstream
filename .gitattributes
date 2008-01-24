@@ -978,6 +978,7 @@ client-dist/startClient.bat -text
 /olderhistory.txt -text
 server-dist/CreateUpdate.bat -text
 server-dist/MegaMek.jar -text
+server-dist/data/activationemail.txt -text
 server-dist/data/buildtables/omnivehiclelist.txt -text
 server-dist/data/buildtables/standard/Common_Assault.txt -text
 server-dist/data/buildtables/standard/Common_AssaultVehicle.txt -text
@@ -1078,9 +1079,8 @@ server-dist/data/db_schemas/db_schema_16to17.txt -text
 server-dist/data/db_schemas/db_schema_17to18.txt -text
 server-dist/data/db_schemas/db_schema_18to19.txt -text
 server-dist/data/db_schemas/db_schema_19to20.txt -text
-server-dist/data/db_schemas/full_db_schema_18.txt -text
-server-dist/data/db_schemas/full_db_schema_19.txt -text
-server-dist/data/db_schemas/full_db_schema_20.txt -text
+server-dist/data/db_schemas/db_schema_20to21.txt -text
+server-dist/data/db_schemas/full_db_schema_21.txt -text
 server-dist/data/factions.dtd -text
 server-dist/data/factions.xml -text
 server-dist/data/influencemessages/CommonInfluenceMessages.txt -text
@@ -1113,12 +1113,14 @@ server-dist/data/unitfiles/Infantry.zip -text
 server-dist/data/unitfiles/Meks.zip -text
 server-dist/data/unitfiles/Vehicles.zip -text
 server-dist/docs/IncreasedTechForNonFactionUnits.txt -text
+server-dist/docs/phpBB[!!-~]Synchronization.pdf -text
 server-dist/dump_db.bat -text
 server-dist/dump_db.sh -text
 server-dist/lib/Ostermiller.jar -text
 server-dist/lib/TinyXML.jar -text
 server-dist/lib/mailapi.jar -text
 server-dist/lib/mysql-connector-java-5.0.6-bin.jar -text
+server-dist/lib/smtp.jar -text
 server-dist/lib/xstream.jar -text
 server-dist/server/campaign/dataFiles/PlayerData.hbm.xml -text
 server-dist/server/campaign/dataFiles/SArmyData.hbm.xml -text
@@ -1531,6 +1533,7 @@ src/server/campaign/commands/UnemployedMercsCommand.java -text
 src/server/campaign/commands/UnenrollCommand.java -text
 src/server/campaign/commands/UnitPositionCommand.java -text
 src/server/campaign/commands/UseRewardPointsCommand.java -text
+src/server/campaign/commands/ValidateEmailCommand.java -text
 src/server/campaign/commands/VoteCommand.java -text
 src/server/campaign/commands/admin/AddOmniVariantModCommand.java -text
 src/server/campaign/commands/admin/AddSongCommand.java -text

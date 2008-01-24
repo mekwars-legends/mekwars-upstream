@@ -151,6 +151,10 @@ public class PlayerHandler {
 	}
 	
 	public void deletePlayer(SPlayer p) {
+		deletePlayer(p, true);
+	}
+	
+	public void deletePlayer(SPlayer p, boolean deleteForumAccount) {
 		Statement stmt;
 		try {
 			// Remove armies
@@ -173,7 +177,7 @@ public class PlayerHandler {
 			rs.close();
 			
 			// Remove from phpBB database
-			if(CampaignMain.cm.isSynchingBB()) 
+			if(CampaignMain.cm.isSynchingBB() && deleteForumAccount) 
 				CampaignMain.cm.MySQL.deleteForumAccount(p.getForumID());
 			// This has its own set of issues right now - I need to talk to Orca before I put this in.
 			

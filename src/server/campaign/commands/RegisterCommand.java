@@ -93,6 +93,11 @@ public class RegisterCommand implements Command {
             	CampaignMain.cm.toUser("AM:Passwords must be between 4 and 10 characters!", Username);
             	return;
             }
+            
+            // Check for phpBB integration - there are a lot of possible outcomes here.
+            if(CampaignMain.cm.isSynchingBB()) 
+            	if(!CampaignMain.cm.MySQL.addUserToForum(Username, pw, email))
+            		return;
                 	
             //change userlevel
             int level = -1;
@@ -117,7 +122,7 @@ public class RegisterCommand implements Command {
             	CampaignMain.cm.MySQL.setPlayerPassword(CampaignMain.cm.MySQL.getPlayerIDByName(Username), pw);
             	CampaignMain.cm.MySQL.setPlayerAccess(CampaignMain.cm.MySQL.getPlayerIDByName(Username), level);
             	if(CampaignMain.cm.isSynchingBB()) {
-           			CampaignMain.cm.MySQL.addUserToForum(Username, pw, email);
+           			//CampaignMain.cm.MySQL.addUserToForum(Username, pw, email);
            			player.setForumID(CampaignMain.cm.MySQL.getUserForumID(Username, email));
            			CampaignMain.cm.MySQL.addUserToHouseForum(player.getForumID(), player.getMyHouse().getForumID());
             	}
