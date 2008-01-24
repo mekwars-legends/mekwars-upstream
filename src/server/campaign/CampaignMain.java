@@ -752,7 +752,7 @@ public final class CampaignMain implements Serializable {
             report2.nextElement();
             // keep parsing until we find a players name!
             while (report2.hasMoreTokens()) {
-                SPlayer player = this.getPlayer(report2.nextToken(),false,false);
+                SPlayer player = this.getPlayer(report2.nextToken(),false,true);
                 if (player != null) {
                     if (!players.contains(player.getName().toLowerCase()))
                         players.add(player.getName().toLowerCase());
