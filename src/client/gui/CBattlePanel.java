@@ -221,11 +221,25 @@ public class CBattlePanel extends JPanel {
 					menuItem.addActionListener(this);
 					serviceMenu.add(menuItem);
 					
+					JMenu logMenu = new JMenu("Logs");
+					
 					menuItem = new JMenuItem("Display MegaMek Log");
 					menuItem.setActionCommand("DMML|" + curName);
 					menuItem.addActionListener(this);
-					serviceMenu.add(menuItem);
+					logMenu.add(menuItem);
 
+					menuItem = new JMenuItem("Display Error Log");
+                    menuItem.setActionCommand("DDEL|" + curName);
+                    menuItem.addActionListener(this);
+                    logMenu.add(menuItem);
+                    
+                    menuItem = new JMenuItem("Display Log");
+                    menuItem.setActionCommand("DELL|" + curName);
+                    menuItem.addActionListener(this);
+                    logMenu.add(menuItem);
+
+                    serviceMenu.add(logMenu);
+                    
 					menuItem = new JMenuItem("Ping Dedicated");
 					menuItem.setActionCommand("PING|" + curName);
 					menuItem.addActionListener(this);
@@ -389,7 +403,13 @@ public class CBattlePanel extends JPanel {
 			} else if (s.startsWith("DMML|")){
 				String currName = s.substring(s.indexOf('|') + 1);
 				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "mail "+currName+",displaymegameklog");
-			} else if (s.startsWith("LOADGAME|")){
+			} else if (s.startsWith("DDEL|")){
+                String currName = s.substring(s.indexOf('|') + 1);
+                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "mail "+currName+",displaydederrorlog");
+            } else if (s.startsWith("DELL|")){
+                String currName = s.substring(s.indexOf('|') + 1);
+                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "mail "+currName+",displaydedlog");
+            } else if (s.startsWith("LOADGAME|")){
 				String currName = s.substring(s.indexOf('|') + 1);
 	            String result = null;
 	            result = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Enter name of the save file on\n\r"+currName+"\n\r(leave blank to load autosave.sav)","Load Game", JOptionPane.OK_CANCEL_OPTION);

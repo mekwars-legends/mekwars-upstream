@@ -755,7 +755,12 @@ public final class CampaignMain implements Serializable {
         while (report.hasMoreElements()) {
             StringTokenizer report2 = new StringTokenizer(report.nextToken(), "*");
 
-            report2.nextElement();
+            String test = report2.nextToken();
+            
+            //dont bother trying to process auto army or MechWarriors.
+            if ( test.equals("MW") || test.equals("-1") )
+                    continue;
+                  
             // keep parsing until we find a players name!
             while (report2.hasMoreTokens()) {
                 SPlayer player = this.getPlayer(report2.nextToken(),false,true);

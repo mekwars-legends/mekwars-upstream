@@ -870,7 +870,68 @@ public final class MWClient implements IClient {
 			}
 			this.sendChat(PROTOCOL_PREFIX + "c mm# " + name + " used the display megamek logs command on "+myUsername);
 			return;
-		}
+		}else if (command.equals("displaydederrorlog")) { // display
+            // error.0
+            mwClientLog.clientOutputLog("display ded error command received from " + name);
+            try {
+                File logFile = new File("./logs/error.0");
+                FileInputStream fis = new FileInputStream(logFile);
+                BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+                sendChat(PROTOCOL_PREFIX + "c sendtomisc#" + name + "#Error Log from " + myUsername);
+                int counter = 0;
+                while (dis.ready()) {
+                    sendChat(PROTOCOL_PREFIX + "c sendtomisc#" + name + "#" + dis.readLine());
+                    // problems with huge logs getting shoved down players
+                    // throats so a 100ms delay should allow
+                    // the message queue to breath.
+                    if ((counter++ % 100) == 0) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (Exception ex) {
+                            // Do nothing
+                        }
+                    }
+                }
+                fis.close();
+                dis.close();
+
+            } catch (Exception ex) {
+                // do nothing?
+            }
+            this.sendChat(PROTOCOL_PREFIX + "c mm# " + name + " used the display ded error log command on " + myUsername);
+            return;
+        } else if (command.equals("displaydedlog")) { // display
+            // log.0
+            mwClientLog.clientOutputLog("display ded log command received from " + name);
+            try {
+                File logFile = new File("./logs/log.0");
+                FileInputStream fis = new FileInputStream(logFile);
+                BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+                sendChat(PROTOCOL_PREFIX + "c sendtomisc#" + name + "#Ded Log from " + myUsername);
+                int counter = 0;
+                while (dis.ready()) {
+                    sendChat(PROTOCOL_PREFIX + "c sendtomisc#" + name + "#" + dis.readLine());
+                    // problems with huge logs getting shoved down players
+                    // throats so a 100ms delay should allow
+                    // the message queue to breath.
+                    if ((counter++ % 100) == 0) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (Exception ex) {
+                            // Do nothing
+                        }
+                    }
+                }
+                fis.close();
+                dis.close();
+
+            } catch (Exception ex) {
+                // do nothing?
+            }
+            this.sendChat(PROTOCOL_PREFIX + "c mm# " + name + " used the display ded log command on " + myUsername);
+            return;
+        }
+
 		
 		/*
 		 * Commands that can only be executed by owners, mods, or in the absence of an owner list.

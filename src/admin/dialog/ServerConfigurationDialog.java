@@ -4732,7 +4732,7 @@ public final class ServerConfigurationDialog implements ActionListener {
 		/*
 		 * Database Configuration Panel Construction
 		 */
-        JPanel dbSpring = new JPanel(new SpringLayout());
+        //JPanel dbSpring = new JPanel(new SpringLayout());
 
 /*
   

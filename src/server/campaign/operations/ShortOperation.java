@@ -2715,15 +2715,6 @@ public class ShortOperation implements Comparable {
             // get a random factory
             SUnitFactory currFacility = (SUnitFactory) factoriesSearched.remove(CampaignMain.cm.getRandomNumber(factoriesSearched.size()));
 
-            // if we've already searched this factory
-            if (factoriesSearched.contains(currFacility))
-                continue;
-            // we've not searched the facility before.
-            // it to the searchlist
-
-            if (!forced)
-                factoriesSearched.add(currFacility);
-
             int currWeight = currFacility.getWeightclass();
             
             for (int type = Unit.MEK; type <= Unit.BATTLEARMOR; type++) {

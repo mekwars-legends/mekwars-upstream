@@ -642,6 +642,7 @@ public class MWServ {
 				}
 			} else if (task.equals("CR")) {
 				String result = st.nextToken();
+				mwlog.gameLog("Starting report process by " + name);
 				this.getCampaign().doProcessAutomaticReport(result, name);
 				mwlog.gameLog(name + " reported: " + result);
 			} else if (task.equals("IPU")) {//InProgressUpdate

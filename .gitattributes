@@ -1146,8 +1146,8 @@ server-dist/startserver.bat -text
 /serverDescription.xml -text
 src/OperationsEditor/MainOperations.java -text
 src/OperationsEditor/dialog/OperationsDialog.java -text
+src/admin/AdminMapPopupMenu.java -text
 src/admin/AdminMenu.java -text
-src/admin/AdminUserlistPopupMenu.java -text
 src/admin/ModeratorMenu.java -text
 src/admin/StaffUserlistPopupMenu.java -text
 src/admin/dialog/BanTargetingDialog.java -text
@@ -1336,6 +1336,7 @@ src/dedicatedhost/cmd/RGTS.java -text
 src/dedicatedhost/cmd/SAS.java -text
 src/dedicatedhost/cmd/TL.java -text
 src/dedicatedhost/cmd/UG.java -text
+src/dedicatedhost/cmd/US.java -text
 src/dedicatedhost/protocol/CConnector.java -text
 src/dedicatedhost/protocol/ConnectionHandlerLocal.java -text
 src/dedicatedhost/protocol/DataFetchClient.java -text

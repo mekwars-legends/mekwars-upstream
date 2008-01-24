@@ -69,7 +69,7 @@ public class RGTS extends Command {
 					}
                     //some of the players set themselves as a team of 1. 
                     //This keeps that from happening.
-                    if ( numberOfWinners > 1 )
+                    if ( numberOfWinners > 0 )
                         winnerName += "*";
 					numberOfWinners++;
 					

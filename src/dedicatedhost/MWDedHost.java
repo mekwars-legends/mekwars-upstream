@@ -72,8 +72,8 @@ public final class MWDedHost implements IClient {
     public static final int STATUS_LOGGEDOUT = 1;
 
     public static final String CLIENT_VERSION = "0.2.16.0"; // change this with
-                                                            // all client
-                                                            // changes @Torren
+    // all client
+    // changes @Torren
 
     CConnector Connector;
     TimeOutThread TO;
@@ -83,21 +83,21 @@ public final class MWDedHost implements IClient {
     Date mytime = new Date(System.currentTimeMillis());
     Vector<IOption> GameOptions = new Vector<IOption>(1, 1);
     Vector<String> decodeBuffer = new Vector<String>(1, 1);// used to buffer
-                                                            // incoming data
-                                                            // until CMainFrame
-                                                            // is built
+    // incoming data
+    // until CMainFrame
+    // is built
 
     boolean SignOff = false;
     public String myUsername = "";// public b/c used in RGTS command to set
-                                    // server status. HACK!
+    // server status. HACK!
     String password = "";
     String myDedOwners = "";
     int myPort = -1;
     int gameCount = 0; // number of games played on a ded
     int dedRestartAt = 50; // number of games played on a ded before auto
-                            // restart.
+    // restart.
     int savedGamesMaxDays = 30; // max number of days a save game can be before
-                                // its deleted.
+    // its deleted.
     long TimeOut = 120;
     long LastPing = 0;
     int Status = 0;
@@ -108,15 +108,15 @@ public final class MWDedHost implements IClient {
     public static final String CAMPAIGN_PATH = "data/campaign/";
 
     public static final String PROTOCOL_DELIMITER = "\t"; // delimiter for
-                                                            // protocol commands
+    // protocol commands
     public static final String PROTOCOL_PREFIX = "/"; // prefix for protocol
-                                                        // commands
+    // commands
     public static final String COMMAND_DELIMITER = "|"; // delimiter for client
-                                                        // commands
+    // commands
     public static final String GUI_PREFIX = "/"; // prefix for commands in
-                                                    // GUI
+    // GUI
     public static final String CAMPAIGN_PREFIX = "/"; // prefix for campaign
-                                                        // commands
+    // commands
 
     TreeMap<String, IProtCommand> ProtCommands = new TreeMap<String, IProtCommand>();
 
@@ -384,7 +384,7 @@ public final class MWDedHost implements IClient {
          */
         if (data.startsWith("US|") || data.startsWith("NU|") || data.startsWith("UG|") || data.startsWith("RGTS|") || data.startsWith("DSD|") || data.startsWith("USD|")) {
             this.doParseDataHelper(data);// bypass the buffering process -
-                                            // ded's never have a main fraime
+            // ded's never have a main fraime
             return;
         }
 
@@ -412,7 +412,7 @@ public final class MWDedHost implements IClient {
             this.checkForRestart();
             return;
         } else if (command.equals("displaymegameklog")) { // display
-                                                            // megameklog.txt
+            // megameklog.txt
             MWDedHostLog.clientOutputLog("display megameklog command received from " + name);
             try {
                 File logFile = new File("./logs/megameklog.txt");
@@ -441,6 +441,66 @@ public final class MWDedHost implements IClient {
             }
             this.sendChat(PROTOCOL_PREFIX + "c mm# " + name + " used the display megamek logs command on " + myUsername);
             return;
+        } else if (command.equals("displaydederrorlog")) { // display
+            // error.0
+            MWDedHostLog.clientOutputLog("display ded error command received from " + name);
+            try {
+                File logFile = new File("./logs/error.0");
+                FileInputStream fis = new FileInputStream(logFile);
+                BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+                sendChat(PROTOCOL_PREFIX + "c sendtomisc#" + name + "#Error Log from " + myUsername);
+                int counter = 0;
+                while (dis.ready()) {
+                    sendChat(PROTOCOL_PREFIX + "c sendtomisc#" + name + "#" + dis.readLine());
+                    // problems with huge logs getting shoved down players
+                    // throats so a 100ms delay should allow
+                    // the message queue to breath.
+                    if ((counter++ % 100) == 0) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (Exception ex) {
+                            // Do nothing
+                        }
+                    }
+                }
+                fis.close();
+                dis.close();
+
+            } catch (Exception ex) {
+                // do nothing?
+            }
+            this.sendChat(PROTOCOL_PREFIX + "c mm# " + name + " used the display ded error log command on " + myUsername);
+            return;
+        } else if (command.equals("displaydedlog")) { // display
+            // log.0
+            MWDedHostLog.clientOutputLog("display ded log command received from " + name);
+            try {
+                File logFile = new File("./logs/log.0");
+                FileInputStream fis = new FileInputStream(logFile);
+                BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+                sendChat(PROTOCOL_PREFIX + "c sendtomisc#" + name + "#Ded Log from " + myUsername);
+                int counter = 0;
+                while (dis.ready()) {
+                    sendChat(PROTOCOL_PREFIX + "c sendtomisc#" + name + "#" + dis.readLine());
+                    // problems with huge logs getting shoved down players
+                    // throats so a 100ms delay should allow
+                    // the message queue to breath.
+                    if ((counter++ % 100) == 0) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (Exception ex) {
+                            // Do nothing
+                        }
+                    }
+                }
+                fis.close();
+                dis.close();
+
+            } catch (Exception ex) {
+                // do nothing?
+            }
+            this.sendChat(PROTOCOL_PREFIX + "c mm# " + name + " used the display ded log command on " + myUsername);
+            return;
         }
 
         /*
@@ -456,16 +516,16 @@ public final class MWDedHost implements IClient {
             }
 
             if (myDedOwners.equals("") || name.equals(owner) || this.getUser(name).getUserlevel() >= 100) { // if
-                                                                                                            // no
-                                                                                                            // owners
-                                                                                                            // set,
-                                                                                                            // anyone
-                                                                                                            // can
-                                                                                                            // send
-                                                                                                            // commands
+                // no
+                // owners
+                // set,
+                // anyone
+                // can
+                // send
+                // commands
 
                 if (command.equals("restart")) { // Restart the dedicated
-                                                    // server
+                    // server
 
                     MWDedHostLog.clientOutputLog("Restart command received from " + name);
                     stopHost();// kill the host
@@ -507,7 +567,7 @@ public final class MWDedHost implements IClient {
                     return;
 
                 } else if (command.equals("reset")) { // server reset (like
-                                                        // /reset in MM)
+                    // /reset in MM)
 
                     MWDedHostLog.clientOutputLog("Reset command received from " + name);
                     if (myServer != null) {
@@ -522,7 +582,7 @@ public final class MWDedHost implements IClient {
                     System.exit(0);
 
                 } else if (command.equals("start")) { // start hosting a MM
-                                                        // game
+                    // game
 
                     MWDedHostLog.clientOutputLog("Start command received from " + name);
                     if (myServer == null) {
@@ -532,8 +592,8 @@ public final class MWDedHost implements IClient {
                     return;
 
                 } else if (command.equals("stop")) { // stop MM host, but w/o
-                                                        // killing ded's
-                                                        // connection
+                    // killing ded's
+                    // connection
 
                     // stop the host
                     MWDedHostLog.clientOutputLog("Stop command received from " + name);
@@ -550,7 +610,7 @@ public final class MWDedHost implements IClient {
                     return;
 
                 } else if (command.equals("owners")) { // return a list of
-                                                        // owners
+                    // owners
 
                     MWDedHostLog.clientOutputLog("Owners command received from " + name);
                     sendChat(PROTOCOL_PREFIX + "mail " + name + ", My owners: " + myDedOwners.replace('$', ' '));
@@ -571,7 +631,7 @@ public final class MWDedHost implements IClient {
                     return;
 
                 } else if (command.equals("clearowners")) { // clear owners, and
-                                                            // send feedback.
+                    // send feedback.
 
                     MWDedHostLog.clientOutputLog("Clearowners command received from " + name);
                     myDedOwners = "";
@@ -613,7 +673,7 @@ public final class MWDedHost implements IClient {
                     return;
 
                 } else if (command.equals("savegamepurge")) {// server days
-                                                                // to purge
+                    // to purge
 
                     MWDedHostLog.clientOutputLog("Save game purge command received from " + name);
                     sendChat(PROTOCOL_PREFIX + "mail " + name + ", I purge saved games that are " + this.savedGamesMaxDays + " days old, or older.");
@@ -621,11 +681,11 @@ public final class MWDedHost implements IClient {
                     return;
 
                 } else if (command.startsWith("savegamepurge ")) { // set
-                                                                    // number of
-                                                                    // days to
-                                                                    // delete is
-                                                                    // purge is
-                                                                    // called
+                    // number of
+                    // days to
+                    // delete is
+                    // purge is
+                    // called
 
                     int mySavedGamesMaxDays = 7;
                     MWDedHostLog.clientOutputLog("Savegamepurge command received from " + name);
@@ -645,8 +705,8 @@ public final class MWDedHost implements IClient {
                     return;
 
                 } else if (command.equals("displaysavedgames")) { // display
-                                                                    // saved
-                                                                    // games
+                    // saved
+                    // games
 
                     MWDedHostLog.clientOutputLog("displaysavedgames command received from " + name);
                     File[] fileList;
@@ -671,8 +731,8 @@ public final class MWDedHost implements IClient {
                     return;
 
                 } else if (command.equals("update")) { // update the dedicated
-                                                        // host using
-                                                        // MWAutoUpdate
+                    // host using
+                    // MWAutoUpdate
 
                     sendChat(PROTOCOL_PREFIX + "c mm# " + name + " used the update command on " + myUsername);
                     MWDedHostLog.clientOutputLog("Update command received from " + name);
@@ -700,9 +760,9 @@ public final class MWDedHost implements IClient {
 
                 }
                 if (command.equals("loadgame") || command.startsWith("loadgame ")) { // load
-                                                                                        // game
-                                                                                        // from
-                                                                                        // file
+                    // game
+                    // from
+                    // file
 
                     MWDedHostLog.clientOutputLog("Loadgame command received from " + name);
                     String filename = "";
@@ -723,12 +783,12 @@ public final class MWDedHost implements IClient {
                     return;
 
                 } else if (command.startsWith("loadgamewithfullpath ")) { // load
-                                                                            // game
-                                                                            // from
-                                                                            // file,
-                                                                            // using
-                                                                            // full
-                                                                            // path
+                    // game
+                    // from
+                    // file,
+                    // using
+                    // full
+                    // path
 
                     MWDedHostLog.clientOutputLog("Loadgamewithfullpath command received from " + name);
                     String filename = "";
@@ -749,8 +809,8 @@ public final class MWDedHost implements IClient {
                     return;
 
                 } else if (command.equals("loadautosave")) { // load the most
-                                                                // recent auto
-                                                                // save file
+                    // recent auto
+                    // save file
 
                     MWDedHostLog.clientOutputLog("Loadautosave command received from " + name);
                     String filename = "autosave.sav";
@@ -766,7 +826,7 @@ public final class MWDedHost implements IClient {
                     return;
 
                 } else if (command.startsWith("name ")) { // new command
-                                                            // prefix
+                    // prefix
 
                     MWDedHostLog.clientOutputLog("Name command received from " + name);
                     String myComName = command.substring(("name ").length()).trim();
@@ -779,7 +839,7 @@ public final class MWDedHost implements IClient {
                     return;
 
                 } else if (command.startsWith("comment ")) { // new command
-                                                                // prefix
+                    // prefix
 
                     MWDedHostLog.clientOutputLog("Prefix command received from " + name);
                     String myComComment = command.substring(("comment ").length()).trim();
@@ -790,7 +850,7 @@ public final class MWDedHost implements IClient {
                     return;
 
                 } else if (command.startsWith("players ")) { // new command
-                                                                // prefix
+                    // prefix
 
                     MWDedHostLog.clientOutputLog("Prefix command received from " + name);
                     try {
@@ -814,8 +874,8 @@ public final class MWDedHost implements IClient {
                     return;
 
                 } else if (command.startsWith("restartcount ")) {// new
-                                                                    // server
-                                                                    // port
+                    // server
+                    // port
 
                     MWDedHostLog.clientOutputLog("restartcount change command received from " + name);
                     try {
@@ -832,8 +892,8 @@ public final class MWDedHost implements IClient {
                     return;
 
                 } else if (command.equals("getupdateurl")) {// find out what url
-                                                            // the ded is set to
-                                                            // update with
+                    // the ded is set to
+                    // update with
 
                     MWDedHostLog.clientOutputLog("GetUpdateUrl command received from " + name);
                     String updateURL = getConfigParam("UPDATEURL");
@@ -1184,11 +1244,11 @@ public final class MWDedHost implements IClient {
         // reread the config to allow the user to change setting during runtime
         String ip = "127.0.0.1";
         if (!getConfigParam("IP:").equals("")) {// IP Setting set, override IP
-                                                // detection.
+            // detection.
             try {
                 ip = getConfigParam("IP:");
                 InetAddress IA = InetAddress.getByName(ip); // Resolve Dyndns
-                                                            // Entries
+                // Entries
                 ip = IA.getHostAddress();
             } catch (Exception ex) {
                 return;
