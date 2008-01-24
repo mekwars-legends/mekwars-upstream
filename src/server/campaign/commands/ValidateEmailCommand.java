@@ -60,6 +60,11 @@ public class ValidateEmailCommand implements Command {
 		SPlayer player = CampaignMain.cm.getPlayer(Username);
 		String validationCode = CampaignMain.cm.MySQL.getActivationKey(player.getForumID());
 		
+		if(player.isValidated()) {
+			CampaignMain.cm.toUser("AM: Your account has already been validated.", Username, true);
+			return;
+		}
+		
 		if(!validationCode.equals(codeEntered)) {
 			CampaignMain.cm.toUser("AM: Invalid validation code, unable to validate your account.", Username, true);
 			return;

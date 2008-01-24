@@ -72,7 +72,10 @@ public final class RegisterNameDialog implements ActionListener {
 		emailField2.setToolTipText("Confirm email address.");
 		
 		//Create the panel holding the labels and text fields
-		JPanel fieldPanel = new JPanel(new GridLayout(5,2), false);
+		int panelRows = 3;
+		if(Boolean.parseBoolean(mwclient.getserverConfigs("REQUIREEMAILFORREGISTRATION")))
+			panelRows = 5;
+		JPanel fieldPanel = new JPanel(new GridLayout(panelRows,2), false);
 		fieldPanel.add(new JLabel("Username: ", SwingConstants.LEFT));
 		fieldPanel.add(usernameField);
 		fieldPanel.add(new JLabel("Password1: ", SwingConstants.LEFT));
