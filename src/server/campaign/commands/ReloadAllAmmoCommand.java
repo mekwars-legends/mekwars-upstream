@@ -70,16 +70,16 @@ public class ReloadAllAmmoCommand implements Command {
 				
 	            refillShots = baseAmmo.getShots();
 	    		ammoCharge = CampaignMain.cm.getAmmoCost(baseAmmo.getInternalName());
-	            //Single shot weapons should only cost 1 shot i.e. total shots = 10 then price is 1/10th minium 1.
+	            //Single shot weapons should only cost 1 shot
 	            if ( ammo.getLocation() == Entity.LOC_NONE ){
 		                refillShots = 1;
 	            }//Parital Reloads
 	            else if ( refillShots != ammo.getShotsLeft() ){
-	            	ammoCharge *= (double)refillShots;
+	            	 refillShots -= ammo.getShotsLeft();
 
 	            } else 
 	            	continue;
-	        
+	            ammoCharge *= (double)refillShots; 
 	            cost += ammoCharge;
 			}
 	

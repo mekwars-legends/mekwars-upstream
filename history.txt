@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.17.x
++ Bug: ReloadAllAmmo charging for full ton instead of partial.
 + Bug: Attackers loser Precapture mission but fled destroyed
 + parsed out | in SendToMiscCommand
 + ValidateEmailCommand will now exit if already-validated user issues it
