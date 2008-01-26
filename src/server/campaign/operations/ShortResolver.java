@@ -4014,6 +4014,11 @@ public class ShortResolver {
             }
             so.preCapturedUnits.clear();
 
+            
+            if ( savedUnitCount == 0 ) {
+                for ( String player : so.getDefenders().keySet() )
+                    CampaignMain.cm.toUser("You did not manage to recover any of the stolen units!", player);
+            }
             if ( savedUnitCount > 1)
                 results.append("units ");
             else
