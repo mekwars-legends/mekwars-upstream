@@ -88,157 +88,159 @@ import megamek.client.CloseClientListener;
 import megamek.common.preference.IClientPreferences;
 import megamek.common.preference.PreferenceManager;
 
+class ClientThread extends Thread implements GameListener, CloseClientListener {
 
-class ClientThread extends Thread implements GameListener, CloseClientListener  {
-	
-	//VARIABLES
-	private String myname;
-	private String serverip;
-	private String serverName;
-	private int serverport;
-	private MWClient mwclient;
-	private Client client;
+    // VARIABLES
+    private String myname;
+    private String serverip;
+    private String serverName;
+    private int serverport;
+    private MWClient mwclient;
+    private Client client;
     private ClientGUI gui;
-	private int turn = 0;
-	private ArrayList<Unit> mechs = new ArrayList<Unit>();
-	private ArrayList<CUnit> autoarmy = new ArrayList<CUnit>();//from server's auto army
-	CArmy army = null;
+    private int turn = 0;
+    private ArrayList<Unit> mechs = new ArrayList<Unit>();
+    private ArrayList<CUnit> autoarmy = new ArrayList<CUnit>();// from server's
+                                                                // auto army
+    CArmy army = null;
     BotClient bot = null;
     private int currentPhase = IGame.PHASE_DEPLOYMENT;
-    
-    final int N  = 0;
+
+    final int N = 0;
     final int NE = 1;
     final int SE = 2;
-    final int S  = 3;
+    final int S = 3;
     final int SW = 4;
     final int NW = 5;
-    
-    //CONSTRUCTOR	
-	public ClientThread(String name, String servername, String ip, int port, MWClient mwclient, ArrayList<Unit> mechs, ArrayList<CUnit> autoarmy) {
-		myname = name;
-		serverName = servername;
-		serverip = ip;
-		serverport = port;
-		this.mwclient = mwclient;
-		this.mechs = mechs;
-		this.autoarmy = autoarmy;
-		if (serverip.indexOf("127.0.0.1") != -1) {
-			this.serverip = "127.0.0.1";
-		}
-	}
-	
-	//METHODS
-	public int getTurn() {
-		return turn;
-	}
 
-	public Client getClient() {
-		return client;
-	}
-	
-	@Override
-	public void run() {
+    // CONSTRUCTOR
+    public ClientThread(String name, String servername, String ip, int port, MWClient mwclient, ArrayList<Unit> mechs, ArrayList<CUnit> autoarmy) {
+        myname = name;
+        serverName = servername;
+        serverip = ip;
+        serverport = port;
+        this.mwclient = mwclient;
+        this.mechs = mechs;
+        this.autoarmy = autoarmy;
+        if (serverip.indexOf("127.0.0.1") != -1) {
+            this.serverip = "127.0.0.1";
+        }
+    }
+
+    // METHODS
+    public int getTurn() {
+        return turn;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    @Override
+    public void run() {
         boolean playerUpdate = false;
         boolean nightGame = false;
         CArmy currA = mwclient.getPlayer().getLockedArmy();
-		client = new Client(myname, serverip, serverport);
-		client.game.addGameListener(this);
-		client.addCloseClientListener(this);
-		gui = new ClientGUI(client);
-		gui.initialize();
-		//client.game.getOptions().
-        Vector<IBasicOption> xmlGameOptions = new Vector<IBasicOption>(1,1);
+        client = new Client(myname, serverip, serverport);
+        client.game.addGameListener(this);
+        client.addCloseClientListener(this);
+        gui = new ClientGUI(client);
+        gui.initialize();
+        // client.game.getOptions().
+        Vector<IBasicOption> xmlGameOptions = new Vector<IBasicOption>(1, 1);
         Vector<IOption> loadOptions = client.game.getOptions().loadOptions();
-        
-        //Load Defaults first.
+
+        // Load Defaults first.
         Enumeration<IOption> options = client.game.getOptions().getOptions();
-        while ( options.hasMoreElements() ) {
-        	IOption option = (IOption)options.nextElement();
-        	switch ( option.getType() ) {
-        	case IOption.BOOLEAN: 
-        		xmlGameOptions.add((new Option(new GameOptions(),option.getName(),(Boolean)option.getDefault())));
-        		break;
-        	case IOption.FLOAT:
-        		xmlGameOptions.add((new Option(new GameOptions(),option.getName(),(Float)option.getDefault())));
-        		break;
-        	case IOption.STRING:
-        		xmlGameOptions.add((new Option(new GameOptions(),option.getName(),(String)option.getDefault())));
-        		break;
-        	case IOption.INTEGER:
-        		xmlGameOptions.add((new Option(new GameOptions(),option.getName(),(Integer)option.getDefault())));
-        		break;	
-        	case IOption.CHOICE:
-        		xmlGameOptions.add((new Option(new GameOptions(),option.getName(),(String)option.getDefault())));
-        		break;
-        	}
-        }
-        
-        xmlGameOptions = sortAndShrinkGameOptions(xmlGameOptions, loadOptions, this.mwclient.getGameOptions());
-        
-        //Check for a night game and set nightGame Variable.
-        //This needed to be done since it was possible that a slow connection would
-        //keep the client from getting an update from the server before the entities
-        //where added to the game.
-        for ( IBasicOption option : xmlGameOptions ){
-            if ( ( option.getName().equalsIgnoreCase("night_battle") 
-            		|| option.getName().equalsIgnoreCase("dusk") )
-            		&& option.getValue().toString().equalsIgnoreCase("true") ){
-            	nightGame = true;
-            	break;
+        while (options.hasMoreElements()) {
+            IOption option = (IOption) options.nextElement();
+            switch (option.getType()) {
+            case IOption.BOOLEAN:
+                xmlGameOptions.add((new Option(new GameOptions(), option.getName(), (Boolean) option.getDefault())));
+                break;
+            case IOption.FLOAT:
+                xmlGameOptions.add((new Option(new GameOptions(), option.getName(), (Float) option.getDefault())));
+                break;
+            case IOption.STRING:
+                xmlGameOptions.add((new Option(new GameOptions(), option.getName(), (String) option.getDefault())));
+                break;
+            case IOption.INTEGER:
+                xmlGameOptions.add((new Option(new GameOptions(), option.getName(), (Integer) option.getDefault())));
+                break;
+            case IOption.CHOICE:
+                xmlGameOptions.add((new Option(new GameOptions(), option.getName(), (String) option.getDefault())));
+                break;
             }
         }
-        
-		try {
-			client.connect();
-		} catch (Exception ex) {
-			client = null;
-			mwclient.showInfoWindow("Couldn't join this game!");
-			MWClient.mwClientLog.clientOutputLog(serverip + " " + serverport);
-			return;
-		}
-		//client.retrieveServerInfo();
-		try {
-			while (client.getLocalPlayer() == null) {
-				sleep(50);
-			}
 
-			//if game is running, shouldn't do the following, so detect the phase
-			for (int i = 0; i < 1000 && client.game.getPhase() == IGame.PHASE_UNKNOWN; i++) {
-				sleep(50);
-			}
+        xmlGameOptions = sortAndShrinkGameOptions(xmlGameOptions, loadOptions, this.mwclient.getGameOptions());
 
-            //Lets start with the environment set first then do everything else.
+        // Check for a night game and set nightGame Variable.
+        // This needed to be done since it was possible that a slow connection
+        // would
+        // keep the client from getting an update from the server before the
+        // entities
+        // where added to the game.
+        for (IBasicOption option : xmlGameOptions) {
+            if ((option.getName().equalsIgnoreCase("night_battle") || option.getName().equalsIgnoreCase("dusk")) && option.getValue().toString().equalsIgnoreCase("true")) {
+                nightGame = true;
+                break;
+            }
+        }
+
+        try {
+            client.connect();
+        } catch (Exception ex) {
+            client = null;
+            mwclient.showInfoWindow("Couldn't join this game!");
+            MWClient.mwClientLog.clientOutputLog(serverip + " " + serverport);
+            return;
+        }
+        // client.retrieveServerInfo();
+        try {
+            while (client.getLocalPlayer() == null) {
+                sleep(50);
+            }
+
+            // if game is running, shouldn't do the following, so detect the
+            // phase
+            for (int i = 0; i < 1000 && client.game.getPhase() == IGame.PHASE_UNKNOWN; i++) {
+                sleep(50);
+            }
+
+            // Lets start with the environment set first then do everything
+            // else.
             if (this.mwclient.getCurrentEnvironment() != null) {
                 // creates the playboard*/
-                MapSettings mySettings = new MapSettings(mwclient.getMapSize().width,mwclient.getMapSize().height, 1, 1);
-                //MapSettings mySettings = new MapSettings(16, 17, 2, 2);
+                MapSettings mySettings = new MapSettings(mwclient.getMapSize().width, mwclient.getMapSize().height, 1, 1);
+                // MapSettings mySettings = new MapSettings(16, 17, 2, 2);
                 AdvancedTerrain aTerrain = this.mwclient.getCurrentAdvancedTerrain();
-            
-                if ( (aTerrain != null ) && aTerrain.isStaticMap() ){
-                    
-                    mySettings = new MapSettings(aTerrain.getXSize(),aTerrain.getYSize(), aTerrain.getXBoardSize(),aTerrain.getYBoardSize());
-                    
-                    //MMClient.mwClientLog.clientErrLog("Board x: "+myClient.getBoardSize().width+"Board y: "+myClient.getBoardSize().height+"Map x: "+myClient.getMapSize().width+"Map y: "+myClient.getMapSize().height);
-                    Vector<String> boardvec = new Vector<String>(1,1);
-                    if (aTerrain.getStaticMapName().equalsIgnoreCase("surprise") )
-                    {
+
+                if ((aTerrain != null) && aTerrain.isStaticMap()) {
+
+                    mySettings = new MapSettings(aTerrain.getXSize(), aTerrain.getYSize(), aTerrain.getXBoardSize(), aTerrain.getYBoardSize());
+
+                    // MMClient.mwClientLog.clientErrLog("Board x:
+                    // "+myClient.getBoardSize().width+"Board y:
+                    // "+myClient.getBoardSize().height+"Map x:
+                    // "+myClient.getMapSize().width+"Map y:
+                    // "+myClient.getMapSize().height);
+                    Vector<String> boardvec = new Vector<String>(1, 1);
+                    if (aTerrain.getStaticMapName().equalsIgnoreCase("surprise")) {
                         int maxBoards = aTerrain.getXBoardSize() * aTerrain.getYBoardSize();
                         for (int i = 0; i < maxBoards; i++)
                             boardvec.add(MapSettings.BOARD_SURPRISE);
-                        
+
                         mySettings.setBoardsSelectedVector(boardvec);
-                        mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(),aTerrain.getYSize()));
-                    }
-                    else 
-                    {
+                        mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize()));
+                    } else {
                         boardvec.add(aTerrain.getStaticMapName());
                         mySettings.setBoardsSelectedVector(boardvec);
                     }
                     client.sendMapSettings(mySettings);
                 }
-                
-                else
-                {
+
+                else {
                     PlanetEnvironment env = this.mwclient.getCurrentEnvironment();
                     /* Set the map-gen values */
                     mySettings.setElevationParams(env.getHillyness(), env.getHillElevationRange(), env.getHillInvertProb());
@@ -250,64 +252,64 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
                     mySettings.setIceParams(env.getIceMinSpots(), env.getIceMaxSpots(), env.getIceMinHexes(), env.getIceMaxHexes());
                     mySettings.setRubbleParams(env.getRubbleMinSpots(), env.getRubbleMaxSpots(), env.getRubbleMinHexes(), env.getRubbleMaxHexes());
                     mySettings.setFortifiedParams(env.getFortifiedMinSpots(), env.getFortifiedMaxSpots(), env.getFortifiedMinHexes(), env.getFortifiedMaxHexes());
-                    mySettings.setSpecialFX(env.getFxMod(),env.getProbForestFire(),env.getProbFreeze(), env.getProbFlood(),env.getProbDrought());
+                    mySettings.setSpecialFX(env.getFxMod(), env.getProbForestFire(), env.getProbFreeze(), env.getProbFlood(), env.getProbDrought());
                     mySettings.setRiverParam(env.getRiverProb());
                     mySettings.setCliffParam(env.getCliffProb());
                     mySettings.setRoadParam(env.getRoadProb());
                     mySettings.setCraterParam(env.getCraterProb(), env.getCraterMinNum(), env.getCraterMaxNum(), env.getCraterMinRadius(), env.getCraterMaxRadius());
                     mySettings.setAlgorithmToUse(env.getAlgorithm());
                     mySettings.setInvertNegativeTerrain(env.getInvertNegativeTerrain());
-                    mySettings.setMountainParams(env.getMountPeaks(), env.getMountWidthMin(),env.getMountWidthMax(), env.getMountHeightMin(), env.getMountHeightMax(), env.getMountStyle());
-                    if ( env.getTheme().length() > 1 )
+                    mySettings.setMountainParams(env.getMountPeaks(), env.getMountWidthMin(), env.getMountWidthMax(), env.getMountHeightMin(), env.getMountHeightMax(), env.getMountStyle());
+                    if (env.getTheme().length() > 1)
                         mySettings.setTheme(env.getTheme());
                     else
-                    	mySettings.setTheme("");
-                    
+                        mySettings.setTheme("");
+
                     /* select the map */
-                    Vector<String> boardvec = new Vector<String>(1,1);
+                    Vector<String> boardvec = new Vector<String>(1, 1);
                     boardvec.add(MapSettings.BOARD_GENERATED);
                     mySettings.setBoardsSelectedVector(boardvec);
 
-                    if ( mwclient.getBuildingTemplate() != null && mwclient.getBuildingTemplate().getTotalBuildings() > 0){
-                        Vector<BuildingTemplate> buildingList = generateRandomBuildings(mySettings,mwclient.getBuildingTemplate());
+                    if (mwclient.getBuildingTemplate() != null && mwclient.getBuildingTemplate().getTotalBuildings() > 0) {
+                        Vector<BuildingTemplate> buildingList = generateRandomBuildings(mySettings, mwclient.getBuildingTemplate());
                         mySettings.setBoardBuildings(buildingList);
-                    }
-                    else if ( !env.getCityType().equalsIgnoreCase("NONE") ){
+                    } else if (!env.getCityType().equalsIgnoreCase("NONE")) {
                         mySettings.setRoadParam(0);
-                        mySettings.setCityParams(env.getRoads(),env.getCityType(),env.getMinCF(),env.getMaxCF(),env.getMinFloors(),env.getMaxFloors(),env.getCityDensity(),env.getTownSize());
+                        mySettings.setCityParams(env.getRoads(), env.getCityType(), env.getMinCF(), env.getMaxCF(), env.getMinFloors(), env.getMaxFloors(), env.getCityDensity(), env.getTownSize());
                     }
-                    
+
                     /* sent to server */
                     client.sendMapSettings(mySettings);
                 }
-                
+
             }
 
             /*
              * Add bots, if being used in this game.
              */
-            if ( mwclient.isUsingBots() ){
-                String name = "War Bot"+client.getLocalPlayer().getId();
+            if (mwclient.isUsingBots()) {
+                String name = "War Bot" + client.getLocalPlayer().getId();
                 bot = new TestBot(name, client.getHost(), client.getPort());
                 bot.game.addGameListener(new BotGUI(bot));
-                try{
+                try {
                     bot.connect();
                     sleep(125);
                     while (bot.getLocalPlayer() == null) {
                         sleep(50);
                     }
-                    //if game is running, shouldn't do the following, so detect the phase
+                    // if game is running, shouldn't do the following, so detect
+                    // the phase
                     for (int i = 0; i < 1000 && bot.game.getPhase() == IGame.PHASE_UNKNOWN; i++) {
                         sleep(50);
                     }
-                }catch (Exception ex){
+                } catch (Exception ex) {
                     MWClient.mwClientLog.clientErrLog("Bot Error!");
                     MWClient.mwClientLog.clientErrLog(ex);
                 }
                 bot.retrieveServerInfo();
                 sleep(125);
                 gui.getBots().put(name, bot);
-                if ( mwclient.isBotsOnSameTeam() )
+                if (mwclient.isBotsOnSameTeam())
                     bot.getLocalPlayer().setTeam(5);
                 Random r = new Random();
 
@@ -316,61 +318,59 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
                 sleep(125);
             }
 
-			if ((client.game != null && client.game.getPhase() == IGame.PHASE_LOUNGE)) {
-				if (this.mechs.size() > 0 && xmlGameOptions.size() > 0 ){
-					/*Vector<IBasicOption> tempVector = new Vector<IBasicOption>(10,1);
-					while ( xmlGameOptions.size() > 0 ){
-						tempVector.clear();
-						int count = Math.min(10, xmlGameOptions.size());
-						for (; count > 0 ; count-- )
-							tempVector.add(xmlGameOptions.remove(0));
-						client.sendGameOptions("",tempVector);
-						sleep(150);
-					}*/
-					client.sendGameOptions("",xmlGameOptions);
-				}
+            if ((client.game != null && client.game.getPhase() == IGame.PHASE_LOUNGE)) {
+                if (this.mechs.size() > 0 && xmlGameOptions.size() > 0) {
+                    /*
+                     * Vector<IBasicOption> tempVector = new Vector<IBasicOption>(10,1);
+                     * while ( xmlGameOptions.size() > 0 ){ tempVector.clear();
+                     * int count = Math.min(10, xmlGameOptions.size()); for (;
+                     * count > 0 ; count-- )
+                     * tempVector.add(xmlGameOptions.remove(0));
+                     * client.sendGameOptions("",tempVector); sleep(150); }
+                     */
+                    client.sendGameOptions("", xmlGameOptions);
+                }
 
-				IClientPreferences cs = PreferenceManager.getClientPreferences();
-				cs.setStampFilenames(Boolean.parseBoolean(mwclient.getserverConfigs("MMTimeStampLogFile")));
-				cs.setShowUnitId(Boolean.parseBoolean(mwclient.getserverConfigs("MMShowUnitId")));
-				cs.setKeepGameLog(Boolean.parseBoolean(mwclient.getserverConfigs("MMKeepGameLog")));
-				cs.setGameLogFilename(mwclient.getserverConfigs("MMGameLogName"));
-				if (mwclient.getConfig().getParam("UNITCAMO").length() > 0 ){
-					client.getLocalPlayer().setCamoCategory(Player.ROOT_CAMO);
-					client.getLocalPlayer().setCamoFileName(mwclient.getConfig().getParam("UNITCAMO"));
+                IClientPreferences cs = PreferenceManager.getClientPreferences();
+                cs.setStampFilenames(Boolean.parseBoolean(mwclient.getserverConfigs("MMTimeStampLogFile")));
+                cs.setShowUnitId(Boolean.parseBoolean(mwclient.getserverConfigs("MMShowUnitId")));
+                cs.setKeepGameLog(Boolean.parseBoolean(mwclient.getserverConfigs("MMKeepGameLog")));
+                cs.setGameLogFilename(mwclient.getserverConfigs("MMGameLogName"));
+                if (mwclient.getConfig().getParam("UNITCAMO").length() > 0) {
+                    client.getLocalPlayer().setCamoCategory(Player.ROOT_CAMO);
+                    client.getLocalPlayer().setCamoFileName(mwclient.getConfig().getParam("UNITCAMO"));
                     playerUpdate = true;
-				}
+                }
 
-                if ( bot != null ){
+                if (bot != null) {
                     bot.getLocalPlayer().setNbrMFConventional(mwclient.getPlayer().getConventionalMinesAllowed());
                     bot.getLocalPlayer().setNbrMFVibra(mwclient.getPlayer().getVibraMinesAllowed());
-                }
-                else{
+                } else {
                     client.getLocalPlayer().setNbrMFConventional(mwclient.getPlayer().getConventionalMinesAllowed());
                     client.getLocalPlayer().setNbrMFVibra(mwclient.getPlayer().getVibraMinesAllowed());
                 }
 
                 for (Iterator<Unit> i = this.mechs.iterator(); i.hasNext();) {
-					// Get the Mek
-					CUnit mek = (CUnit) i.next();
-					// Get the Entity
-					Entity entity = mek.getEntity();
-					// Set the TempID for autoreporting
-					entity.setExternalId(mek.getId());
-					entity.setId(mek.getId());
-					//Set the owner
-					entity.setOwner(client.getLocalPlayer());
-					//Set if unit is a commander in this army.
-					entity.setCommander(currA.isCommander(mek.getId()));
-					
-					//if not a night game no reason to have the slites set.
-					if ( !nightGame ){
-						entity.setSpotlight(false);
-						entity.setSpotlightState(false);
-					}
-					
-                    //Set the correct home edge for off board units
-                    if ( entity.isOffBoard() ){
+                    // Get the Mek
+                    CUnit mek = (CUnit) i.next();
+                    // Get the Entity
+                    Entity entity = mek.getEntity();
+                    // Set the TempID for autoreporting
+                    entity.setExternalId(mek.getId());
+                    entity.setId(mek.getId());
+                    // Set the owner
+                    entity.setOwner(client.getLocalPlayer());
+                    // Set if unit is a commander in this army.
+                    entity.setCommander(currA.isCommander(mek.getId()));
+
+                    // if not a night game no reason to have the slites set.
+                    if (!nightGame) {
+                        entity.setSpotlight(false);
+                        entity.setSpotlightState(false);
+                    }
+
+                    // Set the correct home edge for off board units
+                    if (entity.isOffBoard()) {
                         int direction = IOffBoardDirections.NORTH;
                         switch (mwclient.getPlayerStartingEdge()) {
                         case 0:
@@ -392,379 +392,400 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
                             direction = IOffBoardDirections.WEST;
                             break;
                         }
-                        entity.setOffBoard(entity.getOffBoardDistance(),direction);
+                        entity.setOffBoard(entity.getOffBoardDistance(), direction);
                     }
-                    
-					//Add Pilot to entity
-					entity.setCrew(createEntityPilot(mek));
-					// Add Mek to game
-					client.sendAddEntity(entity);
-					// Wait a few secs to not overuse bandwith
-					sleep(125);
-				}
-				
-				/*
-				 * Army mechs already loaded (see previous for loop). Now try to load
-				 * the artillery units generated by the server (see AutoArmy.java in
-				 * the server.campaign pacakage for generation details).
-				 */
-				Iterator<CUnit> autoIt = this.autoarmy.iterator();
-				while (autoIt.hasNext()) {
-					
-					//get the unit
-					CUnit autoUnit = autoIt.next();
-					
-					//get the entity
-					Entity entity = autoUnit.getEntity();
-					
-					//ignore the id. allow megamek to assign one. we dont care how these units report.
-					
-					//Set the owner
-                    if ( bot != null )
+
+                    // Add Pilot to entity
+                    entity.setCrew(createEntityPilot(mek));
+                    // Add Mek to game
+                    client.sendAddEntity(entity);
+                    // Wait a few secs to not overuse bandwith
+                    sleep(125);
+                }
+
+                /*
+                 * Army mechs already loaded (see previous for loop). Now try to
+                 * load the artillery units generated by the server (see
+                 * AutoArmy.java in the server.campaign pacakage for generation
+                 * details).
+                 */
+                Iterator<CUnit> autoIt = this.autoarmy.iterator();
+                while (autoIt.hasNext()) {
+
+                    // get the unit
+                    CUnit autoUnit = autoIt.next();
+
+                    // get the entity
+                    Entity entity = autoUnit.getEntity();
+
+                    // ignore the id. allow megamek to assign one. we dont care
+                    // how these units report.
+
+                    // Set the owner
+                    if (bot != null)
                         entity.setOwner(bot.getLocalPlayer());
                     else
                         entity.setOwner(client.getLocalPlayer());
-                    
-        			if (entity.getCrew().getName().equalsIgnoreCase("Unnamed")
-        					|| entity.getCrew().getName().equalsIgnoreCase("vacant")) {
-						//set the pilot
-						Pilot pilot = new Pilot("AutoArtillery", 4, 5);
-						entity.setCrew(pilot);
-        			}else{
-        				entity.setCrew(createEntityPilot(autoUnit));
-        			}
-        			
-                    //MWClient.mwClientLog.clientErrLog(entity.getModel()+" direction "+entity.getOffBoardDirection());
-					//add the unit to the game.
-                    if ( bot != null )
+
+                    if (entity.getCrew().getName().equalsIgnoreCase("Unnamed") || entity.getCrew().getName().equalsIgnoreCase("vacant")) {
+                        // set the pilot
+                        Pilot pilot = new Pilot("AutoArtillery", 4, 5);
+                        entity.setCrew(pilot);
+                    } else {
+                        entity.setCrew(createEntityPilot(autoUnit));
+                    }
+
+                    // MWClient.mwClientLog.clientErrLog(entity.getModel()+"
+                    // direction "+entity.getOffBoardDirection());
+                    // add the unit to the game.
+                    if (bot != null)
                         bot.sendAddEntity(entity);
                     else
                         client.sendAddEntity(entity);
 
-					// Wait a few secs to not overuse bandwith
-					sleep(125);
-				}//end while(more autoarty)
+                    // Wait a few secs to not overuse bandwith
+                    sleep(125);
+                }// end while(more autoarty)
 
-                if ( mwclient.getPlayerStartingEdge() != Buildings.EDGE_UNKNOWN ){
+                if (mwclient.getPlayerStartingEdge() != Buildings.EDGE_UNKNOWN) {
                     client.getLocalPlayer().setStartingPos(mwclient.getPlayerStartingEdge());
                     playerUpdate = true;
                 }
 
                 if (this.mechs.size() > 0) {
-					//check armies for C3Network mechs
-					
-					synchronized (currA) {
-						
-						if (currA.getC3Network().size() > 0) {
-							//Thread.sleep(125);
-							playerUpdate = true;
-							for (int slave : currA.getC3Network().keySet()) {
-								linkMegaMekC3Units(currA,slave,currA.getC3Network().get(slave));
-							}
-							
-							gui.chatlounge.refreshEntities();
-						}
-					}
-				}
+                    // check armies for C3Network mechs
 
-                if ( mwclient.getPlayer().getTeamNumber() > 0 ) {
-                	client.getLocalPlayer().setTeam(mwclient.getPlayer().getTeamNumber());
-                	playerUpdate = true;
+                    synchronized (currA) {
+
+                        if (currA.getC3Network().size() > 0) {
+                            // Thread.sleep(125);
+                            playerUpdate = true;
+                            for (int slave : currA.getC3Network().keySet()) {
+                                linkMegaMekC3Units(currA, slave, currA.getC3Network().get(slave));
+                            }
+
+                            gui.chatlounge.refreshEntities();
+                        }
+                    }
                 }
 
-                if ( playerUpdate ){
+                if (mwclient.getPlayer().getTeamNumber() > 0) {
+                    client.getLocalPlayer().setTeam(mwclient.getPlayer().getTeamNumber());
+                    playerUpdate = true;
+                }
+
+                if (playerUpdate) {
                     client.sendPlayerInfo();
-                    if ( bot != null)
+                    if (bot != null)
                         bot.sendPlayerInfo();
                 }
 
-			}
+            }
 
-		} catch (Exception e) {
-			MWClient.mwClientLog.clientErrLog(e);
-		}
-	}
-	
-	/**
-	 * redundant code since MM does not always send a discon event.
-	 */
-	public void gamePlayerStatusChange(GameEvent e) {}
-	
-	public void gameTurnChange(GameTurnChangeEvent e) {
-		if (client != null) {
-			if (this.getTurn() == 0 && (myname.equals(serverName) || serverName.startsWith("[Dedicated]")))
-				mwclient.serverSend("SHS|" + serverName + "|Running");
-			else if ( client.game.getPhase() != currentPhase
-					&& client.game.getOptions().booleanOption("paranoid_autosave") 
-					&& !client.getLocalPlayer().isObserver()){
-				sendServerGameUpdate();
-				currentPhase = client.game.getPhase();
-			}
-			turn += 1;
-			
-		}
-	}
-	
-	public void gamePhaseChange(GamePhaseChangeEvent e) {
-		
-		//String result = "";
-		//String winnerName ="";
-		String name = "";
-		
-		try{
-			
-			if (client.game.getPhase() == IGame.PHASE_VICTORY) {
+        } catch (Exception e) {
+            MWClient.mwClientLog.clientErrLog(e);
+        }
+    }
 
-                //Make sure the player is fully connected.
+    /**
+     * redundant code since MM does not always send a discon event.
+     */
+    public void gamePlayerStatusChange(GameEvent e) {
+    }
+
+    public void gameTurnChange(GameTurnChangeEvent e) {
+        if (client != null) {
+            if (this.getTurn() == 0 && (myname.equals(serverName) || serverName.startsWith("[Dedicated]")))
+                mwclient.serverSend("SHS|" + serverName + "|Running");
+            else if (client.game.getPhase() != currentPhase && client.game.getOptions().booleanOption("paranoid_autosave") && !client.getLocalPlayer().isObserver()) {
+                sendServerGameUpdate();
+                currentPhase = client.game.getPhase();
+            }
+            turn += 1;
+
+        }
+    }
+
+    public void gamePhaseChange(GamePhaseChangeEvent e) {
+
+        // String result = "";
+        // String winnerName ="";
+        String name = "";
+
+        try {
+
+            if (client.game.getPhase() == IGame.PHASE_VICTORY) {
+
+                // Make sure the player is fully connected.
                 while (client.getLocalPlayer() == null) {
                     sleep(50);
                 }
 
-
-                //clear out everything.
+                // clear out everything.
                 mwclient.getPlayer().setConventionalMinesAllowed(0);
                 mwclient.getPlayer().setVibraMinesAllowed(0);
                 mwclient.setUsingBots(false);
-                //clear out everything from this game
-                mwclient.setEnvironment(null,null,null);
+                // clear out everything from this game
+                mwclient.setEnvironment(null, null, null);
                 mwclient.setAdvancedTerrain(null);
                 mwclient.setPlayerStartingEdge(Buildings.EDGE_UNKNOWN);
-                //get rid of any and all bots.
+                // get rid of any and all bots.
                 for (Iterator<Client> i = gui.getBots().values().iterator(); i.hasNext();) {
                     i.next().die();
                 }
                 gui.getBots().clear();
-                
-                //observers need not report
-				if (client.game.getAllEntitiesOwnedBy(client.getLocalPlayer()) < 1)
-					return;
 
-				MMGame toUse = mwclient.getServers().get(serverName);
-                mwclient.serverSend("SGR|"+toUse.getHostName());
-				MWClient.mwClientLog.clientOutputLog("GAME END");
-				
-				if (mwclient.getPlayer().getName().equalsIgnoreCase(name) ){
-					if (toUse.getHostName().startsWith("[Dedicated]"))
-						mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "mail "+toUse.getHostName()+",checkrestartcount");
-				}
-				
-			}//end victory
-			
-			/*
-			 * Reporting phases show deaths - units that try to stand and
-			 * blow their ammo, units that have ammo explode from head, etc.
-			 * 
-			 * This is also an opportune time to correct isses with the
-			 * gameRemoveEntity ISU's. Removals happen ASAP, even if the
-			 * removal condition and final condition of the unit are not
-			 * the same (ie - remove on Engine crits even when a CT core
-			 * comes later in the round).
-			 */
-			else if( client.game.getPhase() == IGame.PHASE_END_REPORT ) {
-				
-				//observers need not report
-				if (client.getLocalPlayer().isObserver())
-					return;
-				
+                // observers need not report
+                if (client.game.getAllEntitiesOwnedBy(client.getLocalPlayer()) < 1)
+                    return;
 
-				sendServerGameUpdate();
-				
-				/*
-				 * Wrecked entities include all those which were
-				 * devastated, ejected, or removed but salvagable
-				 * according to MegaMek. We want to check them for
-				 * CT-cores.
-				 *
-				Enumeration en = client.game.getWreckedEntities();
-				while (en.hasMoreElements()) {
-					Entity currEntity = (Entity)en.nextElement();
-					
-					/*
-					 * MM is now reporting post-attack IS instead of pre-attack IS
-					 * in gameEntityRemove, so this check shouldn't be necessary anymore.
-					 *
-					//if (currEntity instanceof Mech || currEntity instanceof QuadMech) {
-					//	//if a mech-type, override grouping if its salvage and CT 0
-					//	if (currEntity.getInternal(Mech.LOC_CT) <= 0)
-					//		mwclient.serverSend("IPU|" + this.serializeEntity(currEntity, false, true));
-					//	
-					//}
-					
-					if (currEntity instanceof MechWarrior)
-						mwclient.serverSend("IPU|" + this.serializeEntity(currEntity, false, false));
-				}
-				
-				//constantly update the onfield warriors.
-				en = client.game.getEntities();
-				while (en.hasMoreElements()) {
-					Entity currEntity = (Entity)en.nextElement();
-                    if ( currEntity.getOwner().getName().startsWith("War Bot"))
-                        continue;
-					if (currEntity instanceof MechWarrior)
-						mwclient.serverSend("IPU|" + this.serializeEntity(currEntity, false, false));
-				}
-				
-				/*
-				 * This is probably extraneous - retreats should be properly handled
-				 * in the movement phase and do not involve damage transferal which
-				 * could lead to a final status different from the removal status.
-				 *
-				//en = client.game.getRetreatedEntities();
-				//while (en.hasMoreElements()) {
-				//	Entity currEntity = (Entity)en.nextElement();
-				//	mwclient.serverSend("IPU|" + this.serializeEntity(currEntity, false));
-				//}*/
-			}
-			
-		}//end try
-		catch (Exception ex){
-			MWClient.mwClientLog.clientErrLog("Error reporting game!");
-			MWClient.mwClientLog.clientErrLog(ex);
-		}
-	}
-	
-	/*
-	 * When an entity is removed from play, check the reason. If 
-	 * the unit is ejected, captured or devestated and the player
-	 * is invovled in the game at hand, report the removal to the
-	 * server.
-	 * 
-	 * The server stores these reports in pilotTree and deathTree
-	 * in order to auto-resolve games after a player disconnects. 
-	 * 
-	 * NOTE: This send the *first possible* removal condition, which
-	 * means that a unit which is simultanously head killed and then
-	 * CT cored will show as salvageable.
-	 */
-	public void gameEntityRemove(GameEntityRemoveEvent e) {//only send if the player is actually involved in the game
-		
-		if (client.getLocalPlayer().isObserver())
-			return;
-		
-		//get the entity
-		megamek.common.Entity removedE = e.getEntity();
-        if ( removedE.getOwner().getName().startsWith("War Bot"))
+                MMGame toUse = mwclient.getServers().get(serverName);
+                mwclient.serverSend("SGR|" + toUse.getHostName());
+                MWClient.mwClientLog.clientOutputLog("GAME END");
+
+                if (mwclient.getPlayer().getName().equalsIgnoreCase(name)) {
+                    if (toUse.getHostName().startsWith("[Dedicated]"))
+                        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "mail " + toUse.getHostName() + ",checkrestartcount");
+                }
+
+            }// end victory
+
+            /*
+             * Reporting phases show deaths - units that try to stand and blow
+             * their ammo, units that have ammo explode from head, etc.
+             * 
+             * This is also an opportune time to correct isses with the
+             * gameRemoveEntity ISU's. Removals happen ASAP, even if the removal
+             * condition and final condition of the unit are not the same (ie -
+             * remove on Engine crits even when a CT core comes later in the
+             * round).
+             */
+            else if (client.game.getPhase() == IGame.PHASE_END_REPORT) {
+
+                // observers need not report
+                if (client.getLocalPlayer().isObserver())
+                    return;
+
+                sendServerGameUpdate();
+
+                /*
+                 * Wrecked entities include all those which were devastated,
+                 * ejected, or removed but salvagable according to MegaMek. We
+                 * want to check them for CT-cores.
+                 * 
+                 * Enumeration en = client.game.getWreckedEntities(); while
+                 * (en.hasMoreElements()) { Entity currEntity =
+                 * (Entity)en.nextElement();
+                 *  /* MM is now reporting post-attack IS instead of pre-attack
+                 * IS in gameEntityRemove, so this check shouldn't be necessary
+                 * anymore.
+                 * 
+                 * //if (currEntity instanceof Mech || currEntity instanceof
+                 * QuadMech) { // //if a mech-type, override grouping if its
+                 * salvage and CT 0 // if (currEntity.getInternal(Mech.LOC_CT) <=
+                 * 0) // mwclient.serverSend("IPU|" +
+                 * this.serializeEntity(currEntity, false, true)); // //}
+                 * 
+                 * if (currEntity instanceof MechWarrior)
+                 * mwclient.serverSend("IPU|" + this.serializeEntity(currEntity,
+                 * false, false)); }
+                 * 
+                 * //constantly update the onfield warriors. en =
+                 * client.game.getEntities(); while (en.hasMoreElements()) {
+                 * Entity currEntity = (Entity)en.nextElement(); if (
+                 * currEntity.getOwner().getName().startsWith("War Bot"))
+                 * continue; if (currEntity instanceof MechWarrior)
+                 * mwclient.serverSend("IPU|" + this.serializeEntity(currEntity,
+                 * false, false)); }
+                 *  /* This is probably extraneous - retreats should be properly
+                 * handled in the movement phase and do not involve damage
+                 * transferal which could lead to a final status different from
+                 * the removal status.
+                 * 
+                 * //en = client.game.getRetreatedEntities(); //while
+                 * (en.hasMoreElements()) { // Entity currEntity =
+                 * (Entity)en.nextElement(); // mwclient.serverSend("IPU|" +
+                 * this.serializeEntity(currEntity, false)); //}
+                 */
+            }
+
+        }// end try
+        catch (Exception ex) {
+            MWClient.mwClientLog.clientErrLog("Error reporting game!");
+            MWClient.mwClientLog.clientErrLog(ex);
+        }
+    }
+
+    /*
+     * When an entity is removed from play, check the reason. If the unit is
+     * ejected, captured or devestated and the player is invovled in the game at
+     * hand, report the removal to the server.
+     * 
+     * The server stores these reports in pilotTree and deathTree in order to
+     * auto-resolve games after a player disconnects.
+     * 
+     * NOTE: This send the *first possible* removal condition, which means that
+     * a unit which is simultanously head killed and then CT cored will show as
+     * salvageable.
+     */
+    public void gameEntityRemove(GameEntityRemoveEvent e) {// only send if the
+                                                            // player is
+                                                            // actually involved
+                                                            // in the game
+
+        if (client.getLocalPlayer().isObserver())
             return;
 
-		String toSend = SerializeEntity.serializeEntity(removedE, true, false,mwclient.isUsingAdvanceRepairs());
-		mwclient.serverSend("IPU|" + toSend);
-	}
-	
-  public void gamePlayerConnected(GamePlayerConnectedEvent e) {}
-  public void gamePlayerDisconnected(GamePlayerDisconnectedEvent e) {}
-  public void gamePlayerChange(GamePlayerChangeEvent e) {}
-  public void gamePlayerChat(GamePlayerChatEvent e) {}
+        // get the entity
+        megamek.common.Entity removedE = e.getEntity();
+        if (removedE.getOwner().getName().startsWith("War Bot"))
+            return;
 
-  public void gameReport(GameReportEvent e) {}
-  public void gameEnd(GameEndEvent e) {}
+        String toSend = SerializeEntity.serializeEntity(removedE, true, false, mwclient.isUsingAdvanceRepairs());
+        mwclient.serverSend("IPU|" + toSend);
+    }
 
-  public void gameBoardNew(GameBoardNewEvent e) {}
-  public void gameBoardChanged(GameBoardChangeEvent e) {}
-  public void gameSettingsChange(GameSettingsChangeEvent e) {}
-  public void gameMapQuery(GameMapQueryEvent e) {}
+    public void gamePlayerConnected(GamePlayerConnectedEvent e) {
+    }
 
-  public void gameEntityNew(GameEntityNewEvent e) {}
-  public void gameEntityNewOffboard(GameEntityNewOffboardEvent e) {}
-  public void gameEntityChange(GameEntityChangeEvent e) {}
-  public void gameNewAction(GameNewActionEvent e) {}
-	
-	/* 
-	 * from megamek.client.CloseClientListener clientClosed()
-	 * Thanks to MM for adding the listener.
-	 * And to MMNet for the poorly documented code change.
-	 */
-	public void clientClosed() {
-		
-	    PreferenceManager.getInstance().save();
-	    
-	    if (bot != null){
+    public void gamePlayerDisconnected(GamePlayerDisconnectedEvent e) {
+    }
+
+    public void gamePlayerChange(GamePlayerChangeEvent e) {
+    }
+
+    public void gamePlayerChat(GamePlayerChatEvent e) {
+    }
+
+    public void gameReport(GameReportEvent e) {
+    }
+
+    public void gameEnd(GameEndEvent e) {
+    }
+
+    public void gameBoardNew(GameBoardNewEvent e) {
+    }
+
+    public void gameBoardChanged(GameBoardChangeEvent e) {
+    }
+
+    public void gameSettingsChange(GameSettingsChangeEvent e) {
+    }
+
+    public void gameMapQuery(GameMapQueryEvent e) {
+    }
+
+    public void gameEntityNew(GameEntityNewEvent e) {
+    }
+
+    public void gameEntityNewOffboard(GameEntityNewOffboardEvent e) {
+    }
+
+    public void gameEntityChange(GameEntityChangeEvent e) {
+    }
+
+    public void gameNewAction(GameNewActionEvent e) {
+    }
+
+    /*
+     * from megamek.client.CloseClientListener clientClosed() Thanks to MM for
+     * adding the listener. And to MMNet for the poorly documented code change.
+     */
+    public void clientClosed() {
+
+        PreferenceManager.getInstance().save();
+
+        if (bot != null) {
             bot.die();
             bot = null;
         }
 
-	    //client.die();
-	    client = null;//explicit null of the MM client. Wasn't/isn't being GC'ed.
-		mwclient.closingGame(serverName);
-		System.gc();
-	}
-	
-	/**
-	 * @author jtighe
-	 * @param army
-	 * @param slaveid
-	 * @param masterid
-	 * 
-	 * This function goes through and makes sure the slave is linked to the master unit
-	 */
-	public void linkMegaMekC3Units(CArmy army, Integer slaveid, Integer masterid){
-		Entity c3Unit = null;
-		Entity c3Master = null;
-		
-		while ( c3Unit == null || c3Master == null )
-		{
-			try {
-				if ( c3Unit == null )
-					c3Unit = client.game.getEntity(slaveid);
-				
-				if ( c3Master == null )
-					c3Master = client.game.getEntity(masterid);
-				
-				sleep(10);//give the queue time to refresh
-			}
-			catch( Exception ex){
-			    MWClient.mwClientLog.clientErrLog("Error in linkMegaMekC3Units");
-			    MWClient.mwClientLog.clientErrLog(ex);
-			}
-		}
-		
-		//catch for some funky stuff
-		if ( c3Unit == null || c3Master == null ) {
-			MWClient.mwClientLog.clientErrLog("Null Units c3Unit: "+c3Unit+" C3Master: "+c3Master);
-		    return;
-		}
-		
-		try {
-		    CUnit masterUnit = (CUnit)army.getUnit(masterid.intValue());
-		    //MWClient.mwClientLog.clientErrLog("Master Unit: "+masterUnit.getModelName());
-//		    MWClient.mwClientLog.clientErrLog("Slave Unit: "+c3Unit.getModel());
-			if ( !masterUnit.hasC3SlavesLinkedTo(army) 
-			        && masterUnit.hasBeenC3LinkedTo(army) 
-			        && (masterUnit.getC3Level() == Unit.C3_MASTER || masterUnit.getC3Level() == Unit.C3_MMASTER) ){
-		//		MWClient.mwClientLog.clientErrLog("Unit: "+c3Master.getModel()+" id: "+c3Master.getExternalId());
-				if ( c3Master.getC3MasterId() == Entity.NONE ) {
-					c3Master.setShutDown(false);
-					c3Master.setC3Master(c3Master);
-					client.sendUpdateEntity(c3Master);
-				}
-				/*if ( c3Master.hasC3MM() )
-					MWClient.mwClientLog.clientErrLog("hasC3MM");
-				else
-					MWClient.mwClientLog.clientErrLog("!hasC3MM");*/
-			}else if ( c3Master.getC3MasterId() != Entity.NONE){
-				c3Master.setShutDown(false);
-				c3Master.setC3Master(Entity.NONE);
-				client.sendUpdateEntity(c3Master);
-			}
-//			MWClient.mwClientLog.clientErrLog("c3Unit: "+c3Unit.getModel()+" Master: "+c3Master.getModel());
-			c3Unit.setShutDown(false);
-			c3Unit.setC3Master(c3Master);
-	//		MWClient.mwClientLog.clientErrLog("c3Master Set to "+c3Unit.getC3MasterId()+" "+c3Unit.getC3NetId());
-			client.sendUpdateEntity(c3Unit);
-		} catch (Exception ex) {
-			MWClient.mwClientLog.clientErrLog(ex);
-			MWClient.mwClientLog.clientErrLog("Error in setting up C3Network");
-		}
-	}
-	
-	/*
-	 * Taken form Megamek Code for use with MekWars The call was private
-	 * and was needed. 
-	 * Thanks to Ben Mazur and all of the MM coders we hope for a long
-	 * and happy relation ship.
-	 * 
-	 * Torren.
-	 */
-    
+        // client.die();
+        client = null;// explicit null of the MM client. Wasn't/isn't being
+                        // GC'ed.
+        mwclient.closingGame(serverName);
+        System.gc();
+    }
+
+    /**
+     * @author jtighe
+     * @param army
+     * @param slaveid
+     * @param masterid
+     * 
+     * This function goes through and makes sure the slave is linked to the
+     * master unit
+     */
+    public void linkMegaMekC3Units(CArmy army, Integer slaveid, Integer masterid) {
+        Entity c3Unit = null;
+        Entity c3Master = null;
+
+        while (c3Unit == null || c3Master == null) {
+            try {
+                if (c3Unit == null)
+                    c3Unit = client.game.getEntity(slaveid);
+
+                if (c3Master == null)
+                    c3Master = client.game.getEntity(masterid);
+
+                sleep(10);// give the queue time to refresh
+            } catch (Exception ex) {
+                MWClient.mwClientLog.clientErrLog("Error in linkMegaMekC3Units");
+                MWClient.mwClientLog.clientErrLog(ex);
+            }
+        }
+
+        // catch for some funky stuff
+        if (c3Unit == null || c3Master == null) {
+            MWClient.mwClientLog.clientErrLog("Null Units c3Unit: " + c3Unit + " C3Master: " + c3Master);
+            return;
+        }
+
+        try {
+            CUnit masterUnit = (CUnit) army.getUnit(masterid.intValue());
+            // MWClient.mwClientLog.clientErrLog("Master Unit:
+            // "+masterUnit.getModelName());
+            // MWClient.mwClientLog.clientErrLog("Slave Unit:
+            // "+c3Unit.getModel());
+            if (!masterUnit.hasC3SlavesLinkedTo(army) && masterUnit.hasBeenC3LinkedTo(army) && (masterUnit.getC3Level() == Unit.C3_MASTER || masterUnit.getC3Level() == Unit.C3_MMASTER)) {
+                // MWClient.mwClientLog.clientErrLog("Unit:
+                // "+c3Master.getModel()+" id: "+c3Master.getExternalId());
+                if (c3Master.getC3MasterId() == Entity.NONE) {
+                    c3Master.setShutDown(false);
+                    c3Master.setC3Master(c3Master);
+                    client.sendUpdateEntity(c3Master);
+                }
+                /*
+                 * if ( c3Master.hasC3MM() )
+                 * MWClient.mwClientLog.clientErrLog("hasC3MM"); else
+                 * MWClient.mwClientLog.clientErrLog("!hasC3MM");
+                 */
+            } else if (c3Master.getC3MasterId() != Entity.NONE) {
+                c3Master.setShutDown(false);
+                c3Master.setC3Master(Entity.NONE);
+                client.sendUpdateEntity(c3Master);
+            }
+            // MWClient.mwClientLog.clientErrLog("c3Unit: "+c3Unit.getModel()+"
+            // Master: "+c3Master.getModel());
+            c3Unit.setShutDown(false);
+            c3Unit.setC3Master(c3Master);
+            // MWClient.mwClientLog.clientErrLog("c3Master Set to
+            // "+c3Unit.getC3MasterId()+" "+c3Unit.getC3NetId());
+            client.sendUpdateEntity(c3Unit);
+        } catch (Exception ex) {
+            MWClient.mwClientLog.clientErrLog(ex);
+            MWClient.mwClientLog.clientErrLog("Error in setting up C3Network");
+        }
+    }
+
+    /*
+     * Taken form Megamek Code for use with MekWars The call was private and was
+     * needed. Thanks to Ben Mazur and all of the MM coders we hope for a long
+     * and happy relation ship.
+     * 
+     * Torren.
+     */
+
     public static Comparator<? super Object> stringComparator() {
         return new Comparator<Object>() {
             public int compare(Object o1, Object o2) {
@@ -775,73 +796,72 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
         };
     }
 
+    /**
+     * 
+     * Scans the boards directory for map boards of the appropriate size and
+     * returns them.
+     */
+    private Vector<String> scanForBoards(int boardWidth, int boardHeight) {
+        Vector<String> boards = new Vector<String>(1, 1);
+        // Board Board = client.game.getBoard();
+        File boardDir = new File("data/boards");
 
-	/**
-	 * 
-	 * Scans the boards directory for map boards of the appropriate size
-	 * and returns them.
-	 */
-	private Vector<String> scanForBoards(int boardWidth, int boardHeight) {
-		Vector<String> boards = new Vector<String>(1,1);
-		//Board Board = client.game.getBoard();
-		File boardDir = new File("data/boards");
-		
-		// just a check...
-		if (!boardDir.isDirectory()) {
-			return boards;
-		}
-		
-		// scan files
-		String[] fileList = boardDir.list();
-		Vector<String> tempList = new Vector<String>(1,1);
-		Comparator<? super String> sortComp = ClientThread.stringComparator();
-		for (int i = 0; i < fileList.length; i++) {
-			if (fileList[i].indexOf(".board") == -1) {
-				continue;
-			}
-			if (Board.boardIsSize(fileList[i], boardWidth, boardHeight)) {
-				tempList.addElement(fileList[i].substring(0, fileList[i].lastIndexOf(".board")));
-			}
-		}
-		
-		// if there are any boards, add these:
-		if (tempList.size() > 0) {
-			boards.addElement( MapSettings.BOARD_RANDOM );
-			boards.addElement( MapSettings.BOARD_SURPRISE );
-			boards.addElement(MapSettings.BOARD_GENERATED);
+        // just a check...
+        if (!boardDir.isDirectory()) {
+            return boards;
+        }
+
+        // scan files
+        String[] fileList = boardDir.list();
+        Vector<String> tempList = new Vector<String>(1, 1);
+        Comparator<? super String> sortComp = ClientThread.stringComparator();
+        for (int i = 0; i < fileList.length; i++) {
+            if (fileList[i].indexOf(".board") == -1) {
+                continue;
+            }
+            if (Board.boardIsSize(fileList[i], boardWidth, boardHeight)) {
+                tempList.addElement(fileList[i].substring(0, fileList[i].lastIndexOf(".board")));
+            }
+        }
+
+        // if there are any boards, add these:
+        if (tempList.size() > 0) {
+            boards.addElement(MapSettings.BOARD_RANDOM);
+            boards.addElement(MapSettings.BOARD_SURPRISE);
+            boards.addElement(MapSettings.BOARD_GENERATED);
             Collections.sort(tempList, sortComp);
-			for ( int loop = 0; loop < tempList.size(); loop++ ) {
-				boards.addElement( tempList.elementAt(loop) );
-			}
-		} else {
-			boards.addElement(MapSettings.BOARD_GENERATED);
-		}
-		
-		return boards;
-	}
+            for (int loop = 0; loop < tempList.size(); loop++) {
+                boards.addElement(tempList.elementAt(loop));
+            }
+        } else {
+            boards.addElement(MapSettings.BOARD_GENERATED);
+        }
 
-    private Vector<BuildingTemplate> generateRandomBuildings(MapSettings mapSettings, Buildings buildingTemplate){
-        
+        return boards;
+    }
+
+    private Vector<BuildingTemplate> generateRandomBuildings(MapSettings mapSettings, Buildings buildingTemplate) {
+
         Vector<BuildingTemplate> buildingList = new Vector<BuildingTemplate>();
-        Vector<String> buildingTypes = new Vector<String>(1,1);
-        
+        Vector<String> buildingTypes = new Vector<String>(1, 1);
+
         int width = mapSettings.getBoardWidth();
         int height = mapSettings.getBoardHeight();
         int minHeight = 0;
         int minWidth = 0;
-        
-        switch(buildingTemplate.getStartingEdge()){
+
+        switch (buildingTemplate.getStartingEdge()) {
         case Buildings.NORTH:
             height = 5;
             minHeight = 1;
             break;
         case Buildings.SOUTH:
-            if ( height > 5)
+            if (height > 5)
                 minHeight = height - 5;
             height = 5;
             break;
         case Buildings.EAST:
-            if ( width > 5)
+            if (width > 5)
                 minWidth = width - 5;
             width = 5;
             break;
@@ -852,12 +872,12 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
         default:
             break;
         }
-        
-        StringTokenizer types = new StringTokenizer(buildingTemplate.getBuildingType(),",");
-        
-        while ( types.hasMoreTokens() )
+
+        StringTokenizer types = new StringTokenizer(buildingTemplate.getBuildingType(), ",");
+
+        while (types.hasMoreTokens())
             buildingTypes.add(types.nextToken());
-        
+
         int typeSize = buildingTypes.size();
 
         Random r = new Random();
@@ -865,218 +885,200 @@ class ClientThread extends Thread implements GameListener, CloseClientListener  
         TreeSet<String> tempMap = new TreeSet<String>();
         Coords coord = new Coords();
         String stringCoord = "";
-        
-        for ( int count = 0; count < buildingTemplate.getTotalBuildings(); count++){
+
+        for (int count = 0; count < buildingTemplate.getTotalBuildings(); count++) {
             int loops = 0;
             boolean CFx2 = false;
-            Vector<Coords> coordList = new Vector<Coords>(1,1);
-            do{
-                if ( loops++ > 100 ){
+            Vector<Coords> coordList = new Vector<Coords>(1, 1);
+            do {
+                if (loops++ > 100) {
                     CFx2 = true;
                     break;
                 }
 
-                int x = r.nextInt(width)+minWidth;
-                int y = r.nextInt(height)+minHeight;
-                
-                
-                if ( x >= mapSettings.getBoardWidth() )
-                    x = mapSettings.getBoardWidth()-2;
-                else if ( x <= 1 )
+                int x = r.nextInt(width) + minWidth;
+                int y = r.nextInt(height) + minHeight;
+
+                if (x >= mapSettings.getBoardWidth())
+                    x = mapSettings.getBoardWidth() - 2;
+                else if (x <= 1)
                     x = 2;
-                
-                if ( y >= mapSettings.getBoardHeight() )
-                    y = mapSettings.getBoardHeight()-2;
-                else if ( y <= 1)
+
+                if (y >= mapSettings.getBoardHeight())
+                    y = mapSettings.getBoardHeight() - 2;
+                else if (y <= 1)
                     y = 2;
-    
-                coord = new Coords(x,y);
-                    
-                stringCoord = x+","+y;
-            }while(tempMap.contains(stringCoord) );
-                
+
+                coord = new Coords(x, y);
+
+                stringCoord = x + "," + y;
+            } while (tempMap.contains(stringCoord));
+
             tempMap.add(stringCoord);
             coordList.add(coord);
 
-            int floors = buildingTemplate.getMaxFloors()-buildingTemplate.getMinFloors();
-            
-            if ( floors <= 0 )
+            int floors = buildingTemplate.getMaxFloors() - buildingTemplate.getMinFloors();
+
+            if (floors <= 0)
                 floors = buildingTemplate.getMinFloors();
             else
-                floors = r.nextInt(floors)+buildingTemplate.getMinFloors();
-            
-            int totalCF = buildingTemplate.getMaxCF()-buildingTemplate.getMinCF();
-            
-            if ( totalCF <= 0)
+                floors = r.nextInt(floors) + buildingTemplate.getMinFloors();
+
+            int totalCF = buildingTemplate.getMaxCF() - buildingTemplate.getMinCF();
+
+            if (totalCF <= 0)
                 totalCF = buildingTemplate.getMinCF();
             else
-                totalCF = r.nextInt(totalCF)+buildingTemplate.getMinCF();
-            
-            if ( CFx2 )
+                totalCF = r.nextInt(totalCF) + buildingTemplate.getMinCF();
+
+            if (CFx2)
                 totalCF *= 2;
-            
-            
+
             int type = 1;
-            try{
-                if (typeSize == 1 )
+            try {
+                if (typeSize == 1)
                     type = Integer.parseInt(buildingTypes.elementAt(0));
-                else 
+                else
                     type = Integer.parseInt(buildingTypes.elementAt(r.nextInt(typeSize)));
-            }catch(Exception ex){} //someone entered a bad building type.
-            
-            buildingList.add(new BuildingTemplate(type,coordList,totalCF,floors,-1));
+            } catch (Exception ex) {
+            } // someone entered a bad building type.
+
+            buildingList.add(new BuildingTemplate(type, coordList, totalCF, floors, -1));
         }
-        
+
         return buildingList;
     }
-    
-    public int getBuildingsLeft(){
+
+    public int getBuildingsLeft() {
         Enumeration<Building> buildings = client.game.getBoard().getBuildings();
         int buildingCount = 0;
-        while ( buildings.hasMoreElements() ){
+        while (buildings.hasMoreElements()) {
             buildings.nextElement();
             buildingCount++;
         }
         return buildingCount;
     }
-    
-    private void sendServerGameUpdate(){
-		//Report the mech stat
-		/*Enumeration<Entity> en = client.game.getDevastatedEntities();
-		while (en.hasMoreElements()) {
-			Entity ent = en.nextElement();
-			if ( ent.getOwner().getName().startsWith("War Bot")
-					|| ( !(ent instanceof MechWarrior) 
-							&& !UnitUtils.hasArmorDamage(ent)
-							&& !UnitUtils.hasISDamage(ent)
-							&& !UnitUtils.hasCriticalDamage(ent)
-							&& !UnitUtils.hasLowAmmo(ent)
-							&& !UnitUtils.hasEmptyAmmo(ent)))
-				continue;
-			mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, false));
-		}
-		en = client.game.getGraveyardEntities();
-		while (en.hasMoreElements()) {
-			Entity ent = en.nextElement();
-			if ( ent.getOwner().getName().startsWith("War Bot")
-					|| ( !(ent instanceof MechWarrior) 
-							&& !UnitUtils.hasArmorDamage(ent)
-							&& !UnitUtils.hasISDamage(ent)
-							&& !UnitUtils.hasCriticalDamage(ent)
-							&& !UnitUtils.hasLowAmmo(ent)
-							&& !UnitUtils.hasEmptyAmmo(ent)))
-				continue;
-			if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0)
-				mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, true));              
-			else
-				mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, false));
-			
-		}*/
-    	
-    	//Only send data for units currently on the board.
-    	//any units removed from play will have already sent thier final update.
-    	Enumeration<Entity> en = client.game.getEntities();
-		while (en.hasMoreElements()) {
-			Entity ent = en.nextElement();
-			if ( ent.getOwner().getName().startsWith("War Bot")
-					|| ( !(ent instanceof MechWarrior) 
-							&& !UnitUtils.hasArmorDamage(ent)
-							&& !UnitUtils.hasISDamage(ent)
-							&& !UnitUtils.hasCriticalDamage(ent)
-							&& !UnitUtils.hasLowAmmo(ent)
-							&& !UnitUtils.hasEmptyAmmo(ent)))
-				continue;
-			if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0)
-				mwclient.serverSend("IPU|"+SerializeEntity.serializeEntity(ent, true, true,mwclient.isUsingAdvanceRepairs()));          
-			else
-				mwclient.serverSend("IPU|"+SerializeEntity.serializeEntity(ent, true, false,mwclient.isUsingAdvanceRepairs()));
-		}
-		/*en = client.game.getRetreatedEntities();
-		while (en.hasMoreElements()) {
-			Entity ent = en.nextElement();
-			if ( ent.getOwner().getName().startsWith("War Bot")
-					|| ( !(ent instanceof MechWarrior) 
-							&& !UnitUtils.hasArmorDamage(ent)
-							&& !UnitUtils.hasISDamage(ent)
-							&& !UnitUtils.hasCriticalDamage(ent)
-							&& !UnitUtils.hasLowAmmo(ent)
-							&& !UnitUtils.hasEmptyAmmo(ent)))
-				continue;
-			if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0)
-				mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, true));          
-			else
-				mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, false));
-		}*/
-    }
-    
-    private Vector<IBasicOption> sortAndShrinkGameOptions(Vector<IBasicOption> defaults, Vector<IOption>serverGameOptions, Vector<IOption>OperationGameOptions){
-    	
-    	Vector<IBasicOption> returnedOptions = new Vector<IBasicOption>(OperationGameOptions.size(),1);
-    	Hashtable<String, IBasicOption> gameHash = new Hashtable<String, IBasicOption>();
-    	
 
-    	//Start with a base of Server options
-		for (IOption option: serverGameOptions){
-			gameHash.put(option.getName(),option);
-		}
-		//Over write the server options with the Operation options
-    	for (IOption option:OperationGameOptions){
-			gameHash.put(option.getName(),option);
-    	}
-    	
-    	//Only add options to the return list that are different from the game defaults.
-    	for (IBasicOption option: defaults){
-    		
-    		IBasicOption currentOption = gameHash.get(option.getName() );
- 
-    		if ( currentOption != null && !option.getValue().toString().equals(currentOption.getValue().toString()) ){
-				returnedOptions.add(currentOption);
-    		}
-    	}
+    private void sendServerGameUpdate() {
+        // Report the mech stat
+        /*
+         * Enumeration<Entity> en = client.game.getDevastatedEntities(); while
+         * (en.hasMoreElements()) { Entity ent = en.nextElement(); if (
+         * ent.getOwner().getName().startsWith("War Bot") || ( !(ent instanceof
+         * MechWarrior) && !UnitUtils.hasArmorDamage(ent) &&
+         * !UnitUtils.hasISDamage(ent) && !UnitUtils.hasCriticalDamage(ent) &&
+         * !UnitUtils.hasLowAmmo(ent) && !UnitUtils.hasEmptyAmmo(ent)))
+         * continue; mwclient.serverSend("IPU|"+this.serializeEntity(ent, true,
+         * false)); } en = client.game.getGraveyardEntities(); while
+         * (en.hasMoreElements()) { Entity ent = en.nextElement(); if (
+         * ent.getOwner().getName().startsWith("War Bot") || ( !(ent instanceof
+         * MechWarrior) && !UnitUtils.hasArmorDamage(ent) &&
+         * !UnitUtils.hasISDamage(ent) && !UnitUtils.hasCriticalDamage(ent) &&
+         * !UnitUtils.hasLowAmmo(ent) && !UnitUtils.hasEmptyAmmo(ent)))
+         * continue; if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <=
+         * 0) mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, true));
+         * else mwclient.serverSend("IPU|"+this.serializeEntity(ent, true,
+         * false));
+         *  }
+         */
 
-    	returnedOptions.trimToSize();
-    	
-    	return returnedOptions;
+        // Only send data for units currently on the board.
+        // any units removed from play will have already sent thier final
+        // update.
+        Enumeration<Entity> en = client.game.getEntities();
+        while (en.hasMoreElements()) {
+            Entity ent = en.nextElement();
+            if (ent.getOwner().getName().startsWith("War Bot") || (!(ent instanceof MechWarrior) && !UnitUtils.hasArmorDamage(ent) && !UnitUtils.hasISDamage(ent) && !UnitUtils.hasCriticalDamage(ent) && !UnitUtils.hasLowAmmo(ent) && !UnitUtils.hasEmptyAmmo(ent)))
+                continue;
+            if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0)
+                mwclient.serverSend("IPU|" + SerializeEntity.serializeEntity(ent, true, true, mwclient.isUsingAdvanceRepairs()));
+            else
+                mwclient.serverSend("IPU|" + SerializeEntity.serializeEntity(ent, true, false, mwclient.isUsingAdvanceRepairs()));
+        }
+        /*
+         * en = client.game.getRetreatedEntities(); while (en.hasMoreElements()) {
+         * Entity ent = en.nextElement(); if (
+         * ent.getOwner().getName().startsWith("War Bot") || ( !(ent instanceof
+         * MechWarrior) && !UnitUtils.hasArmorDamage(ent) &&
+         * !UnitUtils.hasISDamage(ent) && !UnitUtils.hasCriticalDamage(ent) &&
+         * !UnitUtils.hasLowAmmo(ent) && !UnitUtils.hasEmptyAmmo(ent)))
+         * continue; if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <=
+         * 0) mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, true));
+         * else mwclient.serverSend("IPU|"+this.serializeEntity(ent, true,
+         * false)); }
+         */
     }
-    
-    public Pilot createEntityPilot(Unit mek){
-	    //get and set the options
-	    IOptionGroup group = null;
-		Pilot pilot = null;
-	    pilot = new Pilot(mek.getPilot().getName(), mek.getPilot().getGunnery(), mek.getPilot().getPiloting());
-	    
-	    //Hits defaults to 0 so no reason to keep checking over and over again.
-	    pilot.setHits(mek.getPilot().getHits());
-		//No reason to keep searching for the same group over and over and over again
-		//find it once and search through it each time for the pilots skill
-		for (Enumeration<IOptionGroup> enumeration = pilot.getOptions().getGroups(); enumeration.hasMoreElements();) {
-			group = enumeration.nextElement();
-		    //MWClient.mwClientLog.clientErrLog("Checking: " + pilot.getName()+" Key: "+group.getKey());
-			if (group.getKey().equalsIgnoreCase(PilotOptions.LVL3_ADVANTAGES)) break;
-		}
-		
-		Iterator<?> iter = mek.getPilot().getMegamekOptions().iterator();
-		while (iter.hasNext()) {
-		    MegaMekPilotOption po = (MegaMekPilotOption) iter.next();
-			for (Enumeration<IOption> j = group.getOptions(); j.hasMoreElements();) {
-				IOption option = j.nextElement();
-				//MWClient.mwClientLog.clientErrLog("Unit: "+mek.getModelName()+" Checking: " + option.getName() + " with " + po.getMmname());
-	            if (option.getName().equals(po.getMmname())){
-	                if ( po.getMmname().equals("weapon_specialist")){
-	                    option.setValue(mek.getPilot().getWeapon());
-	                }
-	                else if ( po.getMmname().equals("edge")){
-	                    option.setValue(mek.getPilot().getSkills().getPilotSkill(PilotSkill.EdgeSkillID).getLevel());
-	                }
-	                else{
-	                    option.setValue(po.isValue());
-	                }
-	                break;
-	            }
-			}
-		}
-	    
-	    
-	    return pilot;
+
+    private Vector<IBasicOption> sortAndShrinkGameOptions(Vector<IBasicOption> defaults, Vector<IOption> serverGameOptions, Vector<IOption> OperationGameOptions) {
+
+        Vector<IBasicOption> returnedOptions = new Vector<IBasicOption>(OperationGameOptions.size(), 1);
+        Hashtable<String, IBasicOption> gameHash = new Hashtable<String, IBasicOption>();
+
+        // Start with a base of Server options
+        for (IOption option : serverGameOptions) {
+            gameHash.put(option.getName(), option);
+        }
+        // Over write the server options with the Operation options
+        for (IOption option : OperationGameOptions) {
+            gameHash.put(option.getName(), option);
+        }
+
+        // Only add options to the return list that are different from the game
+        // defaults.
+        for (IBasicOption option : defaults) {
+
+            IBasicOption currentOption = gameHash.get(option.getName());
+
+            if (currentOption != null && !option.getValue().toString().equals(currentOption.getValue().toString())) {
+                returnedOptions.add(currentOption);
+            }
+        }
+
+        returnedOptions.trimToSize();
+
+        return returnedOptions;
+    }
+
+    public Pilot createEntityPilot(Unit mek) {
+        // get and set the options
+        IOptionGroup group = null;
+        Pilot pilot = null;
+        pilot = new Pilot(mek.getPilot().getName(), mek.getPilot().getGunnery(), mek.getPilot().getPiloting());
+
+        // Hits defaults to 0 so no reason to keep checking over and over again.
+        pilot.setHits(mek.getPilot().getHits());
+        // No reason to keep searching for the same group over and over and over
+        // again
+        // find it once and search through it each time for the pilots skill
+        for (Enumeration<IOptionGroup> enumeration = pilot.getOptions().getGroups(); enumeration.hasMoreElements();) {
+            group = enumeration.nextElement();
+            // MWClient.mwClientLog.clientErrLog("Checking: " +
+            // pilot.getName()+" Key: "+group.getKey());
+            if (group.getKey().equalsIgnoreCase(PilotOptions.LVL3_ADVANTAGES))
+                break;
+        }
+
+        Iterator<?> iter = mek.getPilot().getMegamekOptions().iterator();
+        while (iter.hasNext()) {
+            MegaMekPilotOption po = (MegaMekPilotOption) iter.next();
+            for (Enumeration<IOption> j = group.getOptions(); j.hasMoreElements();) {
+                IOption option = j.nextElement();
+                // MWClient.mwClientLog.clientErrLog("Unit:
+                // "+mek.getModelName()+" Checking: " + option.getName() + "
+                // with " + po.getMmname());
+                if (option.getName().equals(po.getMmname())) {
+                    if (po.getMmname().equals("weapon_specialist")) {
+                        option.setValue(mek.getPilot().getWeapon());
+                    } else if (po.getMmname().equals("edge")) {
+                        option.setValue(mek.getPilot().getSkills().getPilotSkill(PilotSkill.EdgeSkillID).getLevel());
+                    } else {
+                        option.setValue(po.isValue());
+                    }
+                    break;
+                }
+            }
+        }
+
+        return pilot;
     }
 }
