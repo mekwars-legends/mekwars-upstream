@@ -75,6 +75,9 @@ public class ChangeNameCommand implements Command {
 		
 		//change the name
 		p.setName(newName);
+		if(CampaignMain.cm.isSynchingBB()) {
+			CampaignMain.cm.MySQL.changeForumName(oldName, newName);
+		}
         CampaignMain.cm.forceSavePlayer(p);
 
 		CampaignMain.cm.toUser("You changed " + oldName + "'s name to '" + newName + "'.",Username,true);

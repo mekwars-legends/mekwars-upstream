@@ -559,6 +559,19 @@ public class PhpBBConnector {
 		  }
 	  }
 	  
+	  public void changeForumName(String oldname, String newname) {
+		 PreparedStatement ps = null;
+		 try {
+			ps = con.prepareStatement("UPDATE " + userTable + " SET username = ? WHERE username = ?");
+			ps.setString(1, newname);
+			ps.setString(2, oldname);
+			ps.executeUpdate();
+			ps.close();
+		 } catch (SQLException e) {
+			 MWServ.mwlog.dbLog("SQLException in PhpBBConnector.changeForumName: " + e.getMessage());
+		 }
+	  }
+	  
 	  public PhpBBConnector(){
 	    String url = "jdbc:mysql://" + CampaignMain.cm.getServer().getConfigParam("PHPBB_HOST") + "/" + CampaignMain.cm.getServer().getConfigParam("PHPBB_DB") + "?user=" + CampaignMain.cm.getServer().getConfigParam("PHPBB_USER") + "&password=" + CampaignMain.cm.getServer().getConfigParam("PHPBB_PASS");
 	    MWServ.mwlog.dbLog("Attempting phpBB Connection");

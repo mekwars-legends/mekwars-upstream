@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.17.x
++ AdminChangeName command now changes forum account name
+    in phpBB-synching server.
 + Bug: ReloadAllAmmo charging for full ton instead of partial.
 + Bug: Attackers loser Precapture mission but fled destroyed
 + parsed out | in SendToMiscCommand

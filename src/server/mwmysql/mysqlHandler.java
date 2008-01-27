@@ -487,6 +487,10 @@ public class mysqlHandler{
 	  phpBBCon.validateUser(forumID);
   }
   
+  public void changeForumName(String oldname, String newname) {
+	  phpBBCon.changeForumName(oldname, newname);
+  }
+  
   public mysqlHandler(){
     this.MySQLCon = new MWmysql();
     if(CampaignMain.cm.isSynchingBB()) {
