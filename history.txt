@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.17.x
++ Added client-dist/docs folder
++ Added short how-to on ded setup in client-dist/docs folder
 + AdminChangeName command now changes forum account name
     in phpBB-synching server.
 + Bug: ReloadAllAmmo charging for full ton instead of partial.

@@ -957,6 +957,7 @@ client-dist/data/sounds/menu[!!-~]popup.wav -text
 client-dist/data/sounds/menu.wav -text
 client-dist/data/sounds/radarping.wav -text
 client-dist/data/sounds/winner.wav -text
+client-dist/docs/How[!!-~]to[!!-~]set[!!-~]up[!!-~]a[!!-~]Dedicated[!!-~]Server.pdf -text
 client-dist/lib/PngEncoder.jar -text
 client-dist/lib/TabPanel.jar -text
 client-dist/lib/TinyXML.jar -text
