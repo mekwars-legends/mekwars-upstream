@@ -429,5 +429,16 @@ ALTER TABLE `players` ADD COLUMN `playerValidated` BOOLEAN NOT NULL DEFAULT 0 AF
 ALTER TABLE `unit_history` MODIFY COLUMN `event_id` BIGINT UNSIGNED NOT NULL DEFAULT NULL AUTO_INCREMENT,
  ADD COLUMN `unit_id` INTEGER UNSIGNED NOT NULL AFTER `event_fluff`;
  
-UPDATE config set config_value='22' WHERE config_key='mekwars_database_version';
+CREATE TABLE `pilot_history` (
+  `history_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `pilot_id` INTEGER UNSIGNED NOT NULL,
+  `event_date` DATETIME NOT NULL,
+  `event_fluff` TEXT NOT NULL,
+  PRIMARY KEY (`history_id`)
+)
+ENGINE = MyISAM;
+
+ALTER TABLE `pilot_history` MODIFY COLUMN `event_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+UPDATE config set config_value='23' WHERE config_key='mekwars_database_version';
  
