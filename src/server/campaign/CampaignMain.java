@@ -774,7 +774,7 @@ public final class CampaignMain implements Serializable {
         }
 
         if (reporter == null) {
-            MWServ.mwlog.errLog("reporter is null!");
+            MWServ.mwlog.errLog("reporter is null! "+s);
             return;
         }
 
