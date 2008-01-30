@@ -766,7 +766,7 @@ public final class CampaignMain implements Serializable {
                     if (!players.contains(player.getName().toLowerCase()))
                         players.add(player.getName().toLowerCase());
 
-                    if (reporter != null)
+                    if (reporter == null)
                         reporter = player;
                     break;
                 }

@@ -67,15 +67,17 @@ public class RGTS extends Command {
 					while (st.hasMoreElements()) {
 						name = st.nextToken().trim();
 					}
-					numberOfWinners++;
-					
-					winnerName += name;
-					//some of the players set themselves as a team of 1. 
-					//This keeps that from happening.
-					if ( numberOfWinners > 0 )
-						winnerName += "*";
-				}
-			}
+                    //some of the players set themselves as a team of 1. 
+                    //This keeps that from happening.
+                    if ( numberOfWinners > 0 )
+                        winnerName += "*";
+                    numberOfWinners++;
+                    
+                    winnerName += name;
+                }
+            }
+            if ( winnerName.endsWith("*") )
+                winnerName = winnerName.substring(0,winnerName.length()-1);
 			winnerName += "#";
 		} 
 		
