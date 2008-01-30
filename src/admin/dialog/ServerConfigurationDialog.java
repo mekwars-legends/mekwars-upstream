@@ -4732,19 +4732,17 @@ public final class ServerConfigurationDialog implements ActionListener {
 		/*
 		 * Database Configuration Panel Construction
 		 */
-        //JPanel dbSpring = new JPanel(new SpringLayout());
+        JPanel dbSpring = new JPanel(new SpringLayout());
 
-/*
-  
-        BaseCheckBox = new JCheckBox("Require email address for registration: ");
+        BaseCheckBox = new JCheckBox("Store Unit/Pilot Histories");
 
-        BaseCheckBox.setToolTipText("Adds email address to forum registration");
-        BaseCheckBox.setName("REQUIREEMAILFORREGISTRATION");
+        BaseCheckBox.setToolTipText("Stores Unit and Pilot histories in the database");
+        BaseCheckBox.setName("StoreUnitHistoryInDatabase");
         dbSpring.add(BaseCheckBox);
         
 		SpringLayoutHelper.setupSpringGrid(dbSpring, 2);
         dbPanel.add(dbSpring);
-*/        
+       
         
 		// Set the actions to generate
 		okayButton.setActionCommand(okayCommand);

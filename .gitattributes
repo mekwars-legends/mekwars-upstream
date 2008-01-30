@@ -1084,7 +1084,8 @@ server-dist/data/db_schemas/db_schema_20to21.txt -text
 server-dist/data/db_schemas/db_schema_21to22.txt -text
 server-dist/data/db_schemas/db_schema_22to23.txt -text
 server-dist/data/db_schemas/db_schema_23to24.txt -text
-server-dist/data/db_schemas/full_db_schema_24.txt -text
+server-dist/data/db_schemas/db_schema_24to25.txt -text
+server-dist/data/db_schemas/full_db_schema_25.txt -text
 server-dist/data/factions.dtd -text
 server-dist/data/factions.xml -text
 server-dist/data/influencemessages/CommonInfluenceMessages.txt -text
@@ -1814,6 +1815,7 @@ src/server/mwcyclopscomm/MWCyclopsUnit.java -text
 src/server/mwcyclopscomm/MWCyclopsUnitTemplate.java -text
 src/server/mwcyclopscomm/MWCyclopsUtils.java -text
 src/server/mwmysql/FactionHandler.java -text
+src/server/mwmysql/HistoryHandler.java -text
 src/server/mwmysql/MWmysql.java -text
 src/server/mwmysql/PhpBBConnector.java -text
 src/server/mwmysql/PilotHandler.java -text

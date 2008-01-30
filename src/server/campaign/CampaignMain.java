@@ -230,8 +230,6 @@ public final class CampaignMain implements Serializable {
          */
 
         cm.isUsingMySQL();
-        // if(cm.isSynchingBB())
-        // cm.MySQL.
 
         market = new Market2();
         partsmarket = new PartsMarket();
@@ -2212,6 +2210,10 @@ public final class CampaignMain implements Serializable {
         return (isUsingMySQL() && isSynchingBB() && Boolean.parseBoolean(cm.getConfig("REQUIREEMAILFORREGISTRATION")));
     }
 
+    public boolean isKeepingUnitHistory() {
+    	return Boolean.parseBoolean(myServer.getConfigParam("StoreUnitHistoryInDatabase"));
+    }
+    
     public void turnOffBBSynch() {
         this.validBBVersion = false;
     }

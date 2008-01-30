@@ -41,8 +41,9 @@ public class mysqlHandler{
   private FactionHandler fah = null;
   private PlayerHandler plh = null;
   private PhpBBConnector phpBBCon = null;
+  private HistoryHandler hh = null;
 
-  private final int currentDBVersion = 24;
+  private final int currentDBVersion = 25;
   
   public void closeMySQL(){
 	  MySQLCon.close();
@@ -386,20 +387,6 @@ public class mysqlHandler{
 	  MWServ.mwlog.dbLog("Database out of date");
 	  MWServ.mwlog.mainLog("Database out of date.  Shutting down to avoid data corruption.");
 	  System.exit(0);
-
-/*
-
-	  int dbVersion = getDBVersion();
-	  
-	  MWServ.mwlog.dbLog("Updating Database from version " + dbVersion + " to " + currentDBVersion);
-	  while (dbVersion != currentDBVersion) {
-		  int targetVersion = dbVersion + 1;
-		  MWServ.mwlog.dbLog("Starting update: " + dbVersion + " to " + targetVersion);
-
-		  dbVersion = targetVersion;
-		  
-	  }
-*/
   }
 
   public PreparedStatement BBgetPreparedStatement(String sql) {
@@ -520,6 +507,9 @@ public class mysqlHandler{
     this.uh = new UnitHandler(MySQLCon.con);
     this.fah = new FactionHandler(MySQLCon.con);
     this.plh = new PlayerHandler(MySQLCon.con);
+    if(CampaignMain.cm.isKeepingUnitHistory()) {
+    	this.hh = new HistoryHandler(MySQLCon.con);
+    }
     this.checkAndUpdateDB();
   }
 }
