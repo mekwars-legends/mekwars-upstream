@@ -440,5 +440,7 @@ ENGINE = MyISAM;
 
 ALTER TABLE `pilot_history` MODIFY COLUMN `event_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
-UPDATE config set config_value='23' WHERE config_key='mekwars_database_version';
+ALTER TABLE `mechstats` ENGINE = MyISAM;
+
+UPDATE config set config_value='24' WHERE config_key='mekwars_database_version';
  

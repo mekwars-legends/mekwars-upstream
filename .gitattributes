@@ -1083,7 +1083,8 @@ server-dist/data/db_schemas/db_schema_19to20.txt -text
 server-dist/data/db_schemas/db_schema_20to21.txt -text
 server-dist/data/db_schemas/db_schema_21to22.txt -text
 server-dist/data/db_schemas/db_schema_22to23.txt -text
-server-dist/data/db_schemas/full_db_schema_23.txt -text
+server-dist/data/db_schemas/db_schema_23to24.txt -text
+server-dist/data/db_schemas/full_db_schema_24.txt -text
 server-dist/data/factions.dtd -text
 server-dist/data/factions.xml -text
 server-dist/data/influencemessages/CommonInfluenceMessages.txt -text
