@@ -495,6 +495,10 @@ public class mysqlHandler{
 	  phpBBCon.changeForumName(oldname, newname);
   }
   
+  public void addHistoryEntry(int historyType, int unitID, int eventType, String fluff) {
+	  hh.addHistoryEntry(historyType, unitID, eventType, fluff);
+  }
+  
   public mysqlHandler(){
     this.MySQLCon = new MWmysql();
     if(CampaignMain.cm.isSynchingBB()) {

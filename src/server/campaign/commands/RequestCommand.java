@@ -33,6 +33,7 @@ import server.campaign.SUnitFactory;
 import server.campaign.SHouse;
 import server.campaign.NewbieHouse;
 import server.campaign.pilot.SPilot;
+import server.mwmysql.HistoryHandler;
 
 public class RequestCommand implements Command {
 
@@ -343,6 +344,11 @@ public class RequestCommand implements Command {
 				p.addUnit(mech, true);//give the actual unit...
 				results.append(mech.getModelName());
 				results.append(", ");
+				
+				// Add unit history, if it's being kept
+				if(CampaignMain.cm.isKeepingUnitHistory()) {
+					CampaignMain.cm.MySQL.addHistoryEntry(HistoryHandler.HISTORY_TYPE_UNIT, mech.getDBId(), HistoryHandler.UNIT_PRODUCED, mech.getProducer());
+				}
 			}
 			
 			results.delete(results.length()-2, results.length());
@@ -371,6 +377,7 @@ public class RequestCommand implements Command {
 
 			//send update to all players
 			CampaignMain.cm.doSendToAllOnlinePlayers(playerHouse, "HS|" + hsUpdates.toString(), false);
+			
 			return;
 		}//end if(enough money/influence/pp)
 

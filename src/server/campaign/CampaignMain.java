@@ -2211,7 +2211,7 @@ public final class CampaignMain implements Serializable {
     }
 
     public boolean isKeepingUnitHistory() {
-    	return Boolean.parseBoolean(myServer.getConfigParam("StoreUnitHistoryInDatabase"));
+    	return Boolean.parseBoolean(CampaignMain.cm.getConfig("StoreUnitHistoryInDatabase"));
     }
     
     public void turnOffBBSynch() {
