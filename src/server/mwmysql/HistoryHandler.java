@@ -32,8 +32,9 @@ import server.MWServ;
 
 public class HistoryHandler {
   Connection con = null;
-
-  public static final int UNIT_PRODUCED = 1;
+  
+  public static final int UNIT_CREATED = 0;
+  public static final int UNIT_AUTOPRODUCED = 1;
   public static final int UNIT_RAIDED = 2;
   public static final int UNIT_SALVAGED = 3;
   public static final int UNIT_DONATED = 4;
@@ -50,7 +51,6 @@ public class HistoryHandler {
   public static final int UNIT_KILLED_UNIT = 15;
   public static final int UNIT_PILOT_ASSIGNED = 16;
   public static final int UNIT_PILOT_KILLED = 17;
-  
   public static final int PILOT_ASSIGNED = 18;
   public static final int PILOT_LEVEL_UP = 19;
   public static final int PILOT_SKILL_GAIN = 20;
@@ -61,6 +61,7 @@ public class HistoryHandler {
   public static final int PILOT_DIED = 25;
   public static final int PILOT_IMPRISONED = 26;
   public static final int PILOT_DEFECTED = 27;
+  public static final int UNIT_PRODUCED_BY_WELFARE = 28;
   
   public static final int HISTORY_TYPE_UNIT = 1;
   public static final int HISTORY_TYPE_PILOT = 2;

@@ -113,7 +113,12 @@ public class RequestCommand implements Command {
 			unit.setPilot(pilot);
 			p.addUnit(unit, true);
 			CampaignMain.cm.toUser("AM:High Command has given you a new unit from its welfare rolls to help you get back on your feet!",Username,true);
-
+			if(CampaignMain.cm.isKeepingUnitHistory()) {
+				CampaignMain.cm.MySQL.addHistoryEntry(HistoryHandler.HISTORY_TYPE_UNIT, unit.getDBId(), HistoryHandler.UNIT_CREATED, unit.getProducer());
+				CampaignMain.cm.MySQL.addHistoryEntry(HistoryHandler.HISTORY_TYPE_UNIT, unit.getDBId(), HistoryHandler.UNIT_PRODUCED_BY_WELFARE, "Activated from garrison duty and assigned to combat duty.");
+				CampaignMain.cm.MySQL.addHistoryEntry(HistoryHandler.HISTORY_TYPE_PILOT, pilot.getDBId(), HistoryHandler.PILOT_ASSIGNED, "Assigned to " + unit.getModelName());
+				CampaignMain.cm.MySQL.addHistoryEntry(HistoryHandler.HISTORY_TYPE_UNIT, unit.getDBId(), HistoryHandler.PILOT_ASSIGNED, pilot.getName() + " assigned to unit");
+			}
 			return;
 		}
 
@@ -347,7 +352,8 @@ public class RequestCommand implements Command {
 				
 				// Add unit history, if it's being kept
 				if(CampaignMain.cm.isKeepingUnitHistory()) {
-					CampaignMain.cm.MySQL.addHistoryEntry(HistoryHandler.HISTORY_TYPE_UNIT, mech.getDBId(), HistoryHandler.UNIT_PRODUCED, mech.getProducer());
+					CampaignMain.cm.MySQL.addHistoryEntry(HistoryHandler.HISTORY_TYPE_UNIT, mech.getDBId(), HistoryHandler.UNIT_CREATED, mech.getProducer());
+					CampaignMain.cm.MySQL.addHistoryEntry(HistoryHandler.HISTORY_TYPE_UNIT, mech.getDBId(), HistoryHandler.UNIT_BOUGHT_FROM_FACTORY, "Purchased from " + factory.getName() + " on " + factory.getPlanet().getName());
 				}
 			}
 			
