@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.17.x
++ Added server-dist/WebTools directory for administrative and informational
+     webpages
++ Added WebTools/MechStats.php to take the place of /output/MechStats.html
++ DB-enabled server no longer outputs MechStats.html
 + Bug: Downed MechWarriors in a DRAW game causeing NPE
 + Debugger Logging sending Exception.Message to Error logging.
 - Removed setTime call in MWPasswd.getRecord() not needed.

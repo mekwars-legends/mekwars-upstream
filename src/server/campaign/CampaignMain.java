@@ -433,20 +433,23 @@ public final class CampaignMain implements Serializable {
                 out.close();
             }
 
-            try {
-                // Save the Readable Mechstats
-                out = new FileOutputStream(getConfig("MechstatPath"));
-                p = new PrintStream(out);
-                p.println("<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"format.css\"><style type=\"text/css\"></style></head><body><font face=\"Verdana, Arial, Helvetica, sans-serif\">");
-                for (int i = 0; i <= 3; i++) {
-                    p.println(Statistics.doGetMechStats(i));
-                    p.println("<br>");
-                }
-                p.println("</font></body></style></html>");
-                p.close();
-                out.close();
-            } catch (FileNotFoundException efnf) {
-                // ignore
+        	if(!CampaignMain.cm.isUsingMySQL()) {
+        		try {
+        			// Save the Readable Mechstats
+
+            		out = new FileOutputStream(getConfig("MechstatPath"));
+                	p = new PrintStream(out);
+                	p.println("<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"format.css\"><style type=\"text/css\"></style></head><body><font face=\"Verdana, Arial, Helvetica, sans-serif\">");
+                	for (int i = 0; i <= 3; i++) {
+                    	p.println(Statistics.doGetMechStats(i));
+                    	p.println("<br>");
+                	}
+                	p.println("</font></body></style></html>");
+                	p.close();
+                	out.close();
+            	} catch (FileNotFoundException efnf) {
+                	// ignore
+            	}
             }
 
             MWServ.mwlog.mainLog("STATUS SAVED");
