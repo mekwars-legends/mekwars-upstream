@@ -3566,6 +3566,12 @@ public class ShortResolver {
             // didn't survive. can set up the message to owner and select a
             // random pickup player
             SPlayer pickupPlayer = this.selectRandomWinner();
+            if ( pickupPlayer == null )
+                pickupPlayer = this.selectRandomLoser();
+            
+            if ( pickupPlayer == null )
+                return toReturn;
+            
             toReturn[1] = ((SPilot) currUnit.getPilot()).getPilotCaptureMessageToOwner(currUnit);
             toReturn[3] = "The pilot was captured.";
             toReturn[4] = pickupPlayer;

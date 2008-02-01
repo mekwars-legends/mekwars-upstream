@@ -54,7 +54,7 @@ public class RGTS extends Command {
 		String name = "";
 		//Parse the real playername from the Modified In game one..
 		String winnerName = "";
-		if ( server.getGame().getVictoryTeam() != 0 ) {
+		if ( server.getGame().getVictoryTeam() != Player.TEAM_NONE) {
 			
 			int numberOfWinners = 0;
 			//Multiple Winners
