@@ -279,7 +279,9 @@ public class DefaultOperation {
 		 *                       set to have protos move in groupd of 5, and someone has 8
 		 *                       protos, attacks will fail if ProtosMustbeGrouped is true.
 		 *                       CFC=001
-		 *                       
+		 * RepodOmniUnitsToBase - string. Omni's that where used in this op are repodded back to base configuration
+		 *                        Leave blank to disable this option 
+		 *                        
 		 * AttackerPoweredInfAllowed  - boolean. Overrides AttackerAllowedInf and admits BA/Protos. - AFC=210
 		 * DefenderPoweredInfAllowed  - boolean. Overrides DefenderAllowedInf and admits BA/Protos. - DFC=410
 		 * AttackerStandardInfAllowed - boolean. Overrides AttackerAllowedInf and admits conventional units - AFC=246
@@ -889,6 +891,8 @@ public class DefaultOperation {
 		operationsDefaults.put("CountInfForSpread"   , "true");
 		
 		operationsDefaults.put("ProtosMustbeGrouped" , "true");
+		
+		operationsDefaults.put("RepodOmniUnitsToBase" , "");
 		
 		operationsDefaults.put("MaxTotalAttackerTonnage", "10000000");
 		operationsDefaults.put("MaxTotalDefenderTonnage", "10000000");

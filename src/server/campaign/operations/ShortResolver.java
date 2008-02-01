@@ -20,23 +20,36 @@
  */
 package server.campaign.operations;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
+import java.util.Vector;
 
+import megamek.common.Entity;
 import megamek.common.IEntityRemovalConditions;
 import megamek.common.Infantry;
 import megamek.common.Mech;
+import megamek.common.MiscType;
 
+import common.House;
 import common.Unit;
 import common.UnitFactory;
 import common.campaign.pilot.skills.PilotSkill;
+import common.util.StringUtils;
 import common.util.UnitUtils;
 
 import server.MWServ;
+import server.campaign.BuildTable;
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
+import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
@@ -269,14 +282,13 @@ public class ShortResolver {
         // set to reporting status
         so.changeStatus(ShortOperation.STATUS_REPORTING);
 
+        if (so.preCapturedUnits.size() > 0) {
 
-        if ( so.preCapturedUnits.size() > 0){
-            
             SPlayer winner = CampaignMain.cm.getPlayer(so.getAttackers().firstKey());
-            for ( SUnit unit : so.preCapturedUnits )
+            for (SUnit unit : so.preCapturedUnits)
                 winner.addUnit(unit, true);
         }
-            
+
         // break units in living/salvagable/dead, etc.
         this.possibleSalvageFromReport(reportTokenizer, so);
 
@@ -302,9 +314,10 @@ public class ShortResolver {
          */
         this.assemblePaymentStrings(o, so, null);
 
-
         processCapturedUnits(so);
-        
+
+        this.repodUnits(so, o);
+
         /*
          * Check to see if this resolves a long operation.
          */
@@ -494,13 +507,13 @@ public class ShortResolver {
         allArmies.put(winnerName.toLowerCase(), winnerA);
         allArmies.put(loserName.toLowerCase(), loserA);
 
-        if ( so.preCapturedUnits.size() > 0){
-            
+        if (so.preCapturedUnits.size() > 0) {
+
             winner = CampaignMain.cm.getPlayer(so.getAttackers().firstKey());
-            for ( SUnit unit : so.preCapturedUnits )
+            for (SUnit unit : so.preCapturedUnits)
                 winner.addUnit(unit, true);
         }
-            
+
         // break units in living/salvagable/dead, etc.
         this.possibleSalvageFromInProgressInfo(so, loser);
 
@@ -526,8 +539,9 @@ public class ShortResolver {
          */
         this.assemblePaymentStrings(o, so, loser);
 
-
         processCapturedUnits(so);
+
+        this.repodUnits(so, o);
         /*
          * Check to see if this resolves a long operation.
          */
@@ -551,7 +565,7 @@ public class ShortResolver {
         // send message
         String winName = winner.getName().toLowerCase();
         String toSend = "Time expired. GAME RESOLVED AUTOMATICALLY.<br>" + metaStrings.get(winName) + unitStrings.get(winName) + payStrings.get(winName);// +
-                                                                                                                                                            // longStrings.get(winName);
+        // longStrings.get(winName);
         CampaignMain.cm.toUser(toSend, winName, true);
 
         // stick the result into the human readable result log, per RFE1479311.
@@ -608,7 +622,7 @@ public class ShortResolver {
          */
         String loseName = loser.getName().toLowerCase();
         toSend = "You were disconnected too long. GAME RESOLVED AUTOMATICALLY.<br>" + metaStrings.get(loseName) + unitStrings.get(loseName) + payStrings.get(loseName);// +
-                                                                                                                                                                        // longStrings.get(loseName);
+        // longStrings.get(loseName);
         CampaignMain.cm.toUser(toSend, loseName, true);
 
         winner.setSave();
@@ -1265,11 +1279,11 @@ public class ShortResolver {
             }
 
             SUnit currU = owner.getUnit(currEntity.getID());
-            
-            //Attacker was able to flee the unit so that means they get to keep it even if they 
-            //Lost the battle
-            if ( currEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_IN_RETREAT
-                    || currEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_PUSHED )
+
+            // Attacker was able to flee the unit so that means they get to keep
+            // it even if they
+            // Lost the battle
+            if (currEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_IN_RETREAT || currEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_PUSHED)
                 removePreCaptured(so, currU.getId());
 
             // apply battle damage if there is any to be applied.
@@ -2270,9 +2284,9 @@ public class ShortResolver {
                         if (unitsToCapture > unitCaptureCap)
                             unitsToCapture = unitCaptureCap;
 
-                        if ( o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts") )
+                        if (o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts"))
                             unitsToCapture = 0;
-                        
+
                         ArrayList<SUnit> capturedUnits = new ArrayList<SUnit>();
                         if (unitsToCapture > 0) {
 
@@ -2329,9 +2343,9 @@ public class ShortResolver {
                         if (unitsToCapture > unitCaptureCap)
                             unitsToCapture = unitCaptureCap;
 
-                        if ( o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts") )
+                        if (o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts"))
                             unitsToCapture = 0;
-                        
+
                         if (unitsToCapture > 0) {
 
                             capturedUnits = new ArrayList<SUnit>();
@@ -3566,12 +3580,12 @@ public class ShortResolver {
             // didn't survive. can set up the message to owner and select a
             // random pickup player
             SPlayer pickupPlayer = this.selectRandomWinner();
-            if ( pickupPlayer == null )
+            if (pickupPlayer == null)
                 pickupPlayer = this.selectRandomLoser();
-            
-            if ( pickupPlayer == null )
+
+            if (pickupPlayer == null)
                 return toReturn;
-            
+
             toReturn[1] = ((SPilot) currUnit.getPilot()).getPilotCaptureMessageToOwner(currUnit);
             toReturn[3] = "The pilot was captured.";
             toReturn[4] = pickupPlayer;
@@ -3803,13 +3817,12 @@ public class ShortResolver {
             result = u.getPilot().getName() + " ";
             if (u.getType() == Unit.MEK || u.getType() == Unit.VEHICLE)
                 result = "[" + u.getPilot().getGunnery() + "/" + u.getPilot().getPiloting();
-            else if ( u.getType() == Unit.INFANTRY || u.getType() == Unit.BATTLEARMOR ){
-                if ( ((Infantry)u.getEntity()).isAntiMek() )
+            else if (u.getType() == Unit.INFANTRY || u.getType() == Unit.BATTLEARMOR) {
+                if (((Infantry) u.getEntity()).isAntiMek())
                     result = "[" + u.getPilot().getGunnery() + "/" + u.getPilot().getPiloting();
                 else
                     result = u.getModelName() + " [" + u.getPilot().getGunnery();
-            }
-            else
+            } else
                 result = u.getModelName() + " [" + u.getPilot().getGunnery();
             if (!u.getPilot().getSkillString(true).equals(" "))
                 result += u.getPilot().getSkillString(true);
@@ -3989,27 +4002,27 @@ public class ShortResolver {
 
         return append.toString();
     }// calculatePilotEXP
-    
-    private void processCapturedUnits(ShortOperation so){
-        
-        if ( so.preCapturedUnits.size() < 1 )
+
+    private void processCapturedUnits(ShortOperation so) {
+
+        if (so.preCapturedUnits.size() < 1)
             return;
         SPlayer attacker = CampaignMain.cm.getPlayer(so.getAttackers().firstKey());
         SPlayer defender = CampaignMain.cm.getPlayer(so.getDefenders().firstKey());
 
-        if ( !attackerisWinner(so) ){
+        if (!attackerisWinner(so)) {
             StringBuilder results = new StringBuilder("You managed to recover the following ");
             StringBuilder unitList = new StringBuilder();
-            
+
             int savedUnitCount = 0;
-            for ( SUnit unit : so.preCapturedUnits ){
-                if ( attacker.getUnit(unit.getId()) != null ){
+            for (SUnit unit : so.preCapturedUnits) {
+                if (attacker.getUnit(unit.getId()) != null) {
                     attacker.removeUnit(unit.getId(), false);
                     unitList.append(unit.getModelName());
                     unitList.append(", ");
                     savedUnitCount++;
                     defender.getHouseFightingFor().addUnit(unit, true);
-                }else if ( defender.getUnit(unit.getId()) != null ){
+                } else if (defender.getUnit(unit.getId()) != null) {
                     defender.removeUnit(unit.getId(), false);
                     unitList.append(unit.getModelName());
                     unitList.append(", ");
@@ -4020,27 +4033,26 @@ public class ShortResolver {
             }
             so.preCapturedUnits.clear();
 
-            
-            if ( savedUnitCount == 0 ) {
-                for ( String player : so.getDefenders().keySet() )
+            if (savedUnitCount == 0) {
+                for (String player : so.getDefenders().keySet())
                     CampaignMain.cm.toUser("You did not manage to recover any of the stolen units!", player);
             }
-            if ( savedUnitCount > 1)
+            if (savedUnitCount > 1)
                 results.append("units ");
             else
                 results.append("unit ");
-            
-            unitList.replace(unitList.length()-2, unitList.length(), ".");
+
+            unitList.replace(unitList.length() - 2, unitList.length(), ".");
             results.append(unitList.toString());
-            
-            if ( savedUnitCount > 0 ){
-                for ( String player : so.getDefenders().keySet() )
-                CampaignMain.cm.toUser(results.toString(), player);
+
+            if (savedUnitCount > 0) {
+                for (String player : so.getDefenders().keySet())
+                    CampaignMain.cm.toUser(results.toString(), player);
             }
-        }else{
-            for ( SUnit unit : so.preCapturedUnits ){
-                if ( attacker.getUnit(unit.getId()) != null ){
-                    SPilot pilot = new SPilot("Vacant",99,99);
+        } else {
+            for (SUnit unit : so.preCapturedUnits) {
+                if (attacker.getUnit(unit.getId()) != null) {
+                    SPilot pilot = new SPilot("Vacant", 99, 99);
                     unit.setPilot(pilot);
                 }
 
@@ -4048,16 +4060,177 @@ public class ShortResolver {
         }
 
     }
-    
-    private void removePreCaptured(ShortOperation so, int unitId){
-        for ( int pos = 0; pos < so.preCapturedUnits.size(); pos++ ){
-            if ( so.preCapturedUnits.elementAt(pos).getId() == unitId){
-                SPilot pilot = new SPilot("Vacant",99,99);
+
+    private void removePreCaptured(ShortOperation so, int unitId) {
+        for (int pos = 0; pos < so.preCapturedUnits.size(); pos++) {
+            if (so.preCapturedUnits.elementAt(pos).getId() == unitId) {
+                SPilot pilot = new SPilot("Vacant", 99, 99);
                 so.preCapturedUnits.elementAt(pos).setPilot(pilot);
                 so.preCapturedUnits.removeElementAt(pos);
                 break;
             }
         }
     }
-    
+
+    private void repodUnits(ShortOperation so, Operation o) {
+
+        String repodChassie;
+        String repodModel = o.getValue("RepodOmniUnitsToBase");
+
+        if (repodModel.trim().length() < 1)
+            return;
+
+        for (String player : so.getAllPlayersAndArmies().keySet()) {
+            SPlayer currp = CampaignMain.cm.getPlayer(player);
+            if (currp == null)
+                continue;
+
+            SArmy curra = currp.getArmy(so.getAllPlayersAndArmies().get(player));
+
+            try {
+                Enumeration<Unit> units = curra.getUnits().elements();
+                while (units.hasMoreElements()) {
+                    SUnit unit = (SUnit) units.nextElement();
+                    Entity en = unit.getEntity();
+                    if (!en.isOmni())
+                        continue;
+
+                    if (unit.getModelName().equalsIgnoreCase(repodModel))
+                        continue;
+
+                    repodChassie = en.getChassis();
+
+                    Vector<String> tables = new Vector<String>(1, 1);
+
+                    String buildFile = "";
+                    String timeZone = currp.getMyHouse().getConfig("RewardsRepodFolder");
+                    String repodFileName = "";
+                    for ( House house : CampaignMain.cm.getData().getAllHouses()){
+                        SHouse faction = (SHouse)house;
+                        
+                        buildFile = BuildTable.getFileName(faction.getName(), Unit.getWeightClassDesc(unit.getWeightclass()), timeZone, unit.getType() );
+                        //MWServ.mwlog.errLog("File: "+fileName);
+                        
+                        if (!tables.contains(buildFile))
+                            tables.add(buildFile);
+
+                        buildFile = BuildTable.getFileName("Common", Unit.getWeightClassDesc(unit.getWeightclass()), timeZone, unit.getType() );
+                        if (!tables.contains(buildFile))
+                            tables.add(buildFile);   
+                        
+                        timeZone = currp.getMyHouse().getConfig("NoFactoryRepodFolder");
+                        //MWServ.mwlog.errLog("TimeZone: "+timeZone);
+                        buildFile = BuildTable.getFileName(faction.getName(), Unit.getWeightClassDesc(unit.getWeightclass()), timeZone, unit.getType() );
+                        //MWServ.mwlog.errLog("File: "+fileName);
+                        
+                        if (!tables.contains(buildFile))
+                            tables.add(buildFile);
+
+                    }
+                    
+                    tablesloop: for (String buildTable : tables) {
+
+                        try {
+
+                            FileInputStream fis = new FileInputStream(buildTable);
+                            BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+
+                            while (dis.ready()) {
+
+                                String l = dis.readLine();
+                                StringTokenizer ST = new StringTokenizer(l);
+
+                                if (ST.hasMoreElements()) {
+
+                                    // although we don't use it here, we need to
+                                    // eat the weight
+                                    ST.nextElement();
+
+                                    String unitFile = "";
+                                    while (ST.hasMoreElements()) {
+                                        unitFile += (String) ST.nextElement();
+                                        if (ST.hasMoreElements())
+                                            unitFile += " ";
+                                    }
+
+                                    // compare this File name to the chassis
+                                    // type of our Omni
+                                    if (unitFile.toLowerCase().startsWith(repodChassie.toLowerCase())) {
+
+                                        // now, check actual mech in this file,
+                                        // to see if it is Omni & same Chassis
+                                        SUnit cm = new SUnit(unit.getId(), unit.getProducer(), unitFile);
+
+                                        Entity cme = cm.getEntity();
+                                        String chassis = cme.getChassis();
+                                        if (cm.isOmni() && chassis.equalsIgnoreCase(repodChassie)) {
+
+                                            // good Omni possibility
+                                            String model = cm.getModelName();
+
+                                            if (model.equalsIgnoreCase(repodModel)) {
+                                                repodFileName = unitFile;
+                                                break tablesloop;
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }// end dis.ready()
+                            dis.close();
+                            fis.close();
+                        } catch (FileNotFoundException ex) {
+                            MWServ.mwlog.mainLog("File " + buildTable + " was not Found");
+                        } catch (IOException ex) {
+                            MWServ.mwlog.mainLog("File " + buildTable + " had an I/O error");
+                        } catch (Exception ex) {
+                            MWServ.mwlog.errLog(ex);
+                            MWServ.mwlog.mainLog("File " + buildTable + " has a problem");
+                        }
+
+                        finally {
+                            // nothing
+                        }
+                    }
+                    if (repodFileName.trim().length() > 0) {
+                        SUnit cm = new SUnit(unit.getId(), unit.getProducer(), repodFileName);
+
+                        cm.setPilot((SPilot)unit.getPilot());
+                        cm.setExperience(((SUnit)unit).getExperience());
+
+                        //remove the old unit *before* adding the new one, since they share a unit id.
+                        if (cm.getType() == Unit.MEK) {
+                            ((Mech)cm.getEntity()).setAutoEject(((Mech)en).isAutoEject());
+                        }
+                        
+                        if ( UnitUtils.hasTargettingComputer(cm.getEntity()) )
+                            cm.getEntity().setTargSysType(MiscType.T_TARGSYS_TARGCOMP);
+                        else{
+                            cm.getEntity().setTargSysType(en.getTargetType());
+                        }
+                        
+
+                        cm.getEntity().setSpotlight(en.hasSpotlight());
+                        cm.getEntity().setSpotlightState(en.isUsingSpotlight());
+                        cm.setWeightclass(unit.getWeightclass());
+                        cm.setType(unit.getType());
+
+                        
+                        currp.removeUnit(unit.getId(), false);
+
+                        // and the unit and send informational messages to
+                        // player.
+                        currp.addUnit(cm, true);
+                        curra.addUnit(cm);
+                        
+                        CampaignMain.cm.toUser("Your " + unit.getVerboseModelName() +"#"+unit.getId() + " is now " + StringUtils.aOrAn(cm.getVerboseModelName(), true) + ".", currp.getName(), true);
+
+                    }
+                }
+            } catch (Exception ex) {
+                MWServ.mwlog.errLog(ex);
+            }
+
+        }
+    }
 }// end ShortResolver

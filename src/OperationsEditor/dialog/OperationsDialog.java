@@ -703,7 +703,13 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseCheckBox.setName("CountInfForSpread");
         spreadPanel.add(BaseCheckBox);
 		
-		SpringLayoutHelper.setupSpringGrid(spreadPanel,1);
+        BaseTextField = new JTextField(5);
+        spreadPanel.add(new JLabel("Repod Omni to Base:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<HTML>String. Omni's that where used in this op are repodded<br>back to this base configuration.<br>Leave blank to disable this option </HTML>");
+        BaseTextField.setName("RepodOmniUnitsToBase");
+        spreadPanel.add(BaseTextField);
+
+		SpringLayoutHelper.setupSpringGrid(spreadPanel,2);
 		
 		//attacker box stuff
                 BaseCheckBox = new JCheckBox("Allow Meks");
