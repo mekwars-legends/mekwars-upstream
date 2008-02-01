@@ -73,6 +73,12 @@ public class ForcedDefectCommand implements Command {
 		}
 		
 		//make the move
+		
+		if(CampaignMain.cm.isSynchingBB()) {
+			CampaignMain.cm.MySQL.removeUserFromHouseForum(p.getForumID(), p.getMyHouse().getForumID());
+		}
+
+		
 		String clientVersion = p.getPlayerClientVersion();
 		p.getMyHouse().removeLeader(p.getName());
 		p.getMyHouse().removePlayer(p,false);
@@ -84,7 +90,11 @@ public class ForcedDefectCommand implements Command {
 			CampaignMain.cm.getPlayer(p.getName());
 			CampaignMain.cm.doLoginPlayer(p.getName());
 		}
-		
+
+		if (CampaignMain.cm.isSynchingBB()) {
+			CampaignMain.cm.MySQL.addUserToHouseForum(p.getForumID(), p
+					.getMyHouse().getForumID());
+		}
 		//send appropraite messages
 		CampaignMain.cm.toUser("AM:"+Username + " forced you to defect to " + h.getName(),p.getName(),true);
 		CampaignMain.cm.toUser("AM:You forced " + p.getName() + " to defect to " + h.getName(),Username,true);

@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.17.x
++ Force defect now synchs house forum access
 + Added server-dist/WebTools directory for administrative and informational
      webpages
 + Added WebTools/MechStats.php to take the place of /output/MechStats.html
