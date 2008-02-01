@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.17.x
++ Debugger Logging sending Exception.Message to Error logging.
+- Removed setTime call in MWPasswd.getRecord() not needed.
 + Added unit and pilot history entries on factory and welfare purchase
 + New MegaMek.jar 0.33.17-MW013008-5441
 + Bug: Draw games not reporting

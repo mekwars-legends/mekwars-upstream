@@ -68,6 +68,7 @@ import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
 import common.util.UnitComponents;
 import common.util.UnitUtils;
+import dedicatedhost.MWDedHost;
 
 /**
  * A class representing a Player DOCU is not finished

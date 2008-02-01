@@ -96,8 +96,8 @@ public class MWPasswd implements ICommands{
         try{
 	        String salt = r.passwd.substring(0, 2);
 	        if (jcrypt.crypt(salt, password).equals(r.passwd)) {
-	        	r.setTime(System.currentTimeMillis());
-	        	writeRecord(r,userId);
+	        	//r.setTime(System.currentTimeMillis());
+	        	//writeRecord(r,userId);
 	            return r;
 	        }
         }catch(Exception ex){
