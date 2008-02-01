@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.17.x
++ RFE: Customize Class/Type in House Bays Display table
 + RFE 1546765: Reset Omni Option In Operations
 + Updated phpBB Synchronization.pdf
 + Force defect now synchs house forum access

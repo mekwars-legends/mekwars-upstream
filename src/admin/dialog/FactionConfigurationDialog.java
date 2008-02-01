@@ -1905,7 +1905,64 @@ public final class FactionConfigurationDialog implements ActionListener {
         baseTextField.setName("NonOriginalComponentMultiplier");
         unit2TextFlow.add(baseTextField);
 		
-		
+        JPanel unit3TextFlow = new JPanel();
+        
+        baseTextField = new JTextField(5);
+        unit3TextFlow.add(new JLabel("Light Type:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Title to be displayed of light factories<br>in the Client House Bays Tab</html>");
+        baseTextField.setName("LightFactoryTypeTitle");
+        unit3TextFlow.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        unit3TextFlow.add(new JLabel("Medium Type:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Title to be displayed of medium factories<br>in the Client House Bays Tab</html>");
+        baseTextField.setName("MediumFactoryTypeTitle");
+        unit3TextFlow.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        unit3TextFlow.add(new JLabel("Heavy Type:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Title to be displayed of heavy factories<br>in the Client House Bays Tab</html>");
+        baseTextField.setName("HeavyFactoryTypeTitle");
+        unit3TextFlow.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        unit3TextFlow.add(new JLabel("Assault Type:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Title to be displayed of assault factories<br>in the Client House Bays Tab</html>");
+        baseTextField.setName("AssaultFactoryTypeTitle");
+        unit3TextFlow.add(baseTextField);
+        
+        JPanel unit4TextFlow = new JPanel();
+        
+        baseTextField = new JTextField(5);
+        unit4TextFlow.add(new JLabel("Mek Class:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Title to be displayed of mek factories<br>in the Client House Bays Tab</html>");
+        baseTextField.setName("MekFactoryClassTitle");
+        unit4TextFlow.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        unit4TextFlow.add(new JLabel("Vee Class:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Title to be displayed of vee factories<br>in the Client House Bays Tab</html>");
+        baseTextField.setName("VehicleFactoryClassTitle");
+        unit4TextFlow.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        unit4TextFlow.add(new JLabel("Inf Class:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Title to be displayed of infantry factories<br>in the Client House Bays Tab</html>");
+        baseTextField.setName("InfantryFactoryClassTitle");
+        unit4TextFlow.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        unit4TextFlow.add(new JLabel("Proto Class:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Title to be displayed of ProtoMek factories<br>in the Client House Bays Tab</html>");
+        baseTextField.setName("ProtoMekFactoryClassTitle");
+        unit4TextFlow.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        unit4TextFlow.add(new JLabel("BA Class:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Title to be displayed of battlearmor factories<br>in the Client House Bays Tab</html>");
+        baseTextField.setName("BattleArmorFactoryClassTitle");
+        unit4TextFlow.add(baseTextField);
+        
         BaseCheckBox = new JCheckBox("Allow Mek Commanders");
         BaseCheckBox.setToolTipText("<html>Allow meks to be set as unit commanders<br>for the kill all unit commanders operation victory condition</html>");
         BaseCheckBox.setName("allowUnitCommanderMek");
@@ -1947,6 +2004,8 @@ public final class FactionConfigurationDialog implements ActionListener {
         unit2Box.setLayout(new BoxLayout(unit2Box, BoxLayout.Y_AXIS));
         unit2Box.add(unit2SpringGrid);
         unit2Box.add(unit2TextFlow);
+        unit2Box.add(unit3TextFlow);
+        unit2Box.add(unit4TextFlow);
         unit2Box.add(unitCommanderSpring);
         
 		unit2Panel.add(unit2Box);

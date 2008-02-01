@@ -468,13 +468,16 @@ public class CHSPanel extends JPanel {
 		StringBuilder result = new StringBuilder("<BODY  TEXT=\"" + mwclient.getConfigParam("CHATFONTCOLOR") + "\" BGCOLOR=\""+mwclient.getConfigParam("BACKGROUNDCOLOR")+"\">");
 		boolean usingAdvanceRepairs = mwclient.isUsingAdvanceRepairs();
         int playerAccessLevel = mwclient.getPlayer().getSubFactionAccess();
-		result.append("<TABLE Border=\"1\"><TR><TH>"+ this.HouseName +"</TH><TH>Light</TH><TH>Medium</TH><TH>Heavy</TH><TH>Assault</TH></TR>");
+		result.append("<TABLE Border=\"1\"><TR><TH>"+ this.HouseName +"</TH><TH>"+mwclient.getserverConfigs("LightFactoryTypeTitle")+"</TH><TH>"+mwclient.getserverConfigs("MediumFactoryTypeTitle")+"</TH><TH>"+mwclient.getserverConfigs("HeavyFactoryTypeTitle")+"</TH><TH>"+mwclient.getserverConfigs("AssaultFactoryTypeTitle")+"</TH></TR>");
 		for (int type_id = 0; type_id < Unit.TOTALTYPES; type_id++) {
 		    
 			//hide unit types that aren't in use on the server
 			String useIt = "Use" + Unit.getTypeClassDesc(type_id);
 
-			result.append("<TR><TD VALIGN=MIDDLE><b>" + Unit.getTypeClassDesc(type_id) + "</b></TD>");
+			if ( !Boolean.parseBoolean(mwclient.getserverConfigs(useIt)) )
+			        continue;
+			
+			result.append("<TR><TD VALIGN=MIDDLE><b>" + mwclient.getserverConfigs(Unit.getTypeClassDesc(type_id)+"FactoryClassTitle") + "</b></TD>");
 			for (int weight = 0; weight < 4; weight++) {
 									
 				String buyNew = "CanBuyNew"+CUnit.getWeightClassDesc(weight)+CUnit.getTypeClassDesc(type_id);
@@ -491,7 +494,7 @@ public class CHSPanel extends JPanel {
 					int typetocheck = type_id;
 					
 					TreeMap<String,String> facs = factoriesInfo.get(weight + "$" + typetocheck);
-					if (facs != null && Boolean.parseBoolean(thePlayer.getSubFaction().getConfig(buyNew)) && Boolean.parseBoolean(mwclient.getserverConfigs(useIt))) {
+					if (facs != null && Boolean.parseBoolean(thePlayer.getSubFaction().getConfig(buyNew)) ) {
 						
 						boolean hasOpen = false;
 						int minrefresh = Integer.MAX_VALUE;
