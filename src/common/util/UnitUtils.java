@@ -2481,7 +2481,7 @@ public class UnitUtils  {
 	            }
 	
 	        }
-	        return Math.min(mount.getFoundCrits(), damagedCrits);
+	        return damagedCrits;
 
         }
         
