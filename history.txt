@@ -1,7 +1,9 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.17.x
+v 0.2.18.x
+Release Client/Server 0.2.18.0
++ New MegaMek.jar 0.33.18-MW020208-5463
 + Unit/Pilot histories recorded in CreateUnitCommand
 + RFE: Customize Class/Type in House Bays Display table
 + RFE 1546765: Reset Omni Option In Operations
@@ -34,6 +36,7 @@ v 0.2.17.x
 + ValidateEmailCommand will now exit if already-validated user issues it
 + Registration Dialog sized dynamically, depending on whether email address
     is required.
+v 0.2.17.x
 Release Server/Client 0.2.17.0 
 + Turned on mute flag when looking for player names in doProcessAutomaticReport
 + Added empty US command back to dedicatedhost
