@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -205,6 +206,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 	
 	private void loadAmmoPanelType(int tech) {
 		Enumeration<EquipmentType> list = EquipmentType.getAllTypes();
+        TreeMap<String, AmmoType> equipmentSort = new TreeMap<String, AmmoType>();
 
 		int count = 0;
 		int tabNumber = 0;
@@ -243,23 +245,28 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 				break;
 			}
 
-		while ( list.hasMoreElements() ){
-			Object eq = list.nextElement();
-			
-			if ( !(eq instanceof AmmoType) )
-				continue;
-			
-			if ( ((AmmoType)eq).getTechLevel() != tech ) {
-				//This is done for Unknown and all tech level. Make them all IS Level 1
-				if ( tech == TechConstants.T_IS_LEVEL_1 && ((AmmoType)eq).getTechLevel() > tech )
-					continue;
-				if ( tech != TechConstants.T_IS_LEVEL_1  )
-					continue;
+        while ( list.hasMoreElements() ){
+            EquipmentType eq = list.nextElement();
+            
+            if ( !(eq instanceof AmmoType) )
+                continue;
+            
+            if ( ((AmmoType)eq).getTechLevel() != tech ) {
+                //This is done for Unknown and all tech level. Make them all IS Level 1
+                if ( tech == TechConstants.T_IS_LEVEL_1 && ((AmmoType)eq).getTechLevel() > tech )
+                    continue;
+                if ( tech != TechConstants.T_IS_LEVEL_1  )
+                    continue;
 
-			}
-			
-			String name = ((AmmoType)eq).getName();
-			String intName = ((AmmoType)eq).getInternalName();
+            }
+        
+            equipmentSort.put(eq.getName(), (AmmoType)eq);
+
+        }
+        
+        for ( AmmoType eq : equipmentSort.values() ){
+			String name = eq.getName();
+			String intName = eq.getInternalName();
 			panel.add(new JLabel(name));
 			
 			textField = new JTextField("0");
@@ -320,6 +327,8 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 	private void loadAmmoCostPanelType(int tech) {
 		Enumeration<EquipmentType> list = EquipmentType.getAllTypes();
 
+		TreeMap<String, AmmoType> equipmentSort = new TreeMap<String, AmmoType>();
+		
 		int count = 0;
 		int tabNumber = 0;
 		JPanel panel = new JPanel(new SpringLayout());
@@ -356,7 +365,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 			}
 
 		while ( list.hasMoreElements() ){
-			Object eq = list.nextElement();
+		    EquipmentType eq = list.nextElement();
 			
 			if ( !(eq instanceof AmmoType) )
 				continue;
@@ -369,9 +378,14 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 					continue;
 
 			}
-			
-			String name = ((AmmoType)eq).getName();
-			String intName = ((AmmoType)eq).getInternalName();
+		
+            equipmentSort.put(eq.getName(), (AmmoType)eq);
+
+		}
+		
+		for ( AmmoType eq : equipmentSort.values() ){
+			String name = eq.getName();
+			String intName = eq.getInternalName();
 			panel.add(new JLabel(name));
 			
 			textField = new JTextField("0");
@@ -411,6 +425,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 
 	private void loadWeaponPanelType(int tech) {
 		Enumeration<EquipmentType> list = EquipmentType.getAllTypes();
+		TreeMap<String, WeaponType> equipmentSort = new TreeMap<String, WeaponType>();
 
 		int count = 0;
 		int tabNumber = 0;
@@ -448,23 +463,28 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 				break;
 			}
 
-		while ( list.hasMoreElements() ){
-			Object eq = list.nextElement();
-			
-			if ( !(eq instanceof WeaponType) )
-				continue;
-			
-			if ( ((WeaponType)eq).getTechLevel() != tech ) {
-				//This is done for Unknown and all tech level. Make them all IS Level 1
-				if ( tech == TechConstants.T_IS_LEVEL_1 && ((WeaponType)eq).getTechLevel() > tech )
-					continue;
+        while ( list.hasMoreElements() ){
+            EquipmentType eq = list.nextElement();
+            
+            if ( !(eq instanceof WeaponType) )
+                continue;
+            
+            if ( ((WeaponType)eq).getTechLevel() != tech ) {
+                //This is done for Unknown and all tech level. Make them all IS Level 1
+                if ( tech == TechConstants.T_IS_LEVEL_1 && ((WeaponType)eq).getTechLevel() > tech )
+                    continue;
+                if ( tech != TechConstants.T_IS_LEVEL_1  )
+                    continue;
 
-				if ( tech != TechConstants.T_IS_LEVEL_1  )
-					continue;
-			}
-			
-			String name = ((WeaponType)eq).getName();
-			String intName = ((WeaponType)eq).getInternalName();
+            }
+        
+            equipmentSort.put(eq.getName(), (WeaponType)eq);
+
+        }
+        
+        for ( WeaponType eq : equipmentSort.values() ){
+            String name = eq.getName();
+            String intName = eq.getInternalName();              
 			panel.add(new JLabel(name));
 			
 			textField = new JTextField("0");
@@ -522,6 +542,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 
 	private void loadMiscPanelType(int tech) {
 		Enumeration<EquipmentType> list = EquipmentType.getAllTypes();
+		TreeMap<String, MiscType> equipmentSort = new TreeMap<String, MiscType>();
 
 		int count = 0;
 		int tabNumber = 0;
@@ -747,23 +768,28 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 				ConfigPane.addTab(tabPrefix,null,panel,tabPrefix);
 		}
 		else {
-			while ( list.hasMoreElements() ){
-				Object eq = list.nextElement();
-				
-				if ( !(eq instanceof MiscType) )
-					continue;
-				
-				if ( ((MiscType)eq).getTechLevel() != tech ) {
-					//This is done for Unknown and all tech level. Make them all IS Level 1
-					if ( tech == TechConstants.T_IS_LEVEL_1 && ((MiscType)eq).getTechLevel() > tech )
-						continue;
-					if ( tech != TechConstants.T_IS_LEVEL_1  )
-						continue;
-				}
-				
-				String name = ((MiscType)eq).getName();
-				String intName = ((MiscType)eq).getInternalName();
-				
+		        while ( list.hasMoreElements() ){
+		            EquipmentType eq = list.nextElement();
+		            
+		            if ( !(eq instanceof MiscType) )
+		                continue;
+		            
+		            if ( ((MiscType)eq).getTechLevel() != tech ) {
+		                //This is done for Unknown and all tech level. Make them all IS Level 1
+		                if ( tech == TechConstants.T_IS_LEVEL_1 && ((MiscType)eq).getTechLevel() > tech )
+		                    continue;
+		                if ( tech != TechConstants.T_IS_LEVEL_1  )
+		                    continue;
+
+		            }
+		        
+		            equipmentSort.put(eq.getName(), (MiscType)eq);
+
+		        }
+		        
+		        for ( MiscType eq : equipmentSort.values() ){
+		            String name = eq.getName();
+		            String intName = eq.getInternalName();				
 				if ( name.equalsIgnoreCase("standard")) {
 					name = "Armor (STD)";
 					intName = "Armor (STD)";

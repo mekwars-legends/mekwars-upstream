@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.18.x
++ Alphabetized columns in Ammo Cost and Parts Black Market Dialogs. 
 + Changed setVisibleRowCount for ArmyList in ArmyViewerDialog from
 	dynamic to static.
 Release Server 0.2.18.1
