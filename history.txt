@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.18.x
++ Changed setVisibleRowCount for ArmyList in ArmyViewerDialog from
+	dynamic to static.
 Release Server 0.2.18.1
 + Bug: 0 parts damaged being returned
 Release Client/Server 0.2.18.0

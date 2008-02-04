@@ -145,7 +145,7 @@ public class ArmyViewerDialog extends JDialog implements ActionListener, ListSel
 		armyList = new JList(defaultModel);
         
 		listSelectionModel = armyList.getSelectionModel();
-		armyList.setVisibleRowCount(Integer.parseInt(mwclient.getserverConfigs("MaxLancesPerPlayer")));
+		armyList.setVisibleRowCount(5);
 		listSelectionModel.addListSelectionListener(this);
 
 		//place the list and text boxes in scroll panes
