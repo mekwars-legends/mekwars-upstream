@@ -49,9 +49,6 @@ import megamek.common.EquipmentMode;
 import megamek.common.EquipmentType;
 import megamek.common.Infantry;
 import megamek.common.Mech;
-import megamek.common.MechFileParser;
-import megamek.common.MechSummary;
-import megamek.common.MechSummaryCache;
 import megamek.common.MiscType;
 import megamek.common.Mounted;
 import megamek.common.Protomech;
@@ -124,8 +121,8 @@ class GeneralPanel extends JPanel{
         super();
         
         try {
-            MechSummary ms = MechSummaryCache.getInstance().getMech("Error OMG-UR-FD");
-            ent = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
+            //MechSummary ms = MechSummaryCache.getInstance().getMech("Error OMG-UR-FD");
+            ent = UnitUtils.createOMG();//new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
         } catch (Exception e) {
         	System.out.println("ERROR UNIT MISSING!");
         }

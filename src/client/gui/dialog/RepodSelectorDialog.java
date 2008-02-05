@@ -78,6 +78,7 @@ import megamek.common.loaders.EntityLoadingException;
 import client.MWClient;
 import client.gui.MechInfo;
 import common.util.SpringLayoutHelper;
+import common.util.UnitUtils;
 import client.gui.CMainFrame;
 
 /* 
@@ -422,10 +423,10 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
 		//null entity, so load a default unit.
 		if (entity == null) {
 			try {
-                MechSummary ms = MechSummaryCache.getInstance().getMech("Error OMG-UR-FD");
-                currEntity = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
+                //MechSummary ms = MechSummaryCache.getInstance().getMech("Error OMG-UR-FD");
+                currEntity = UnitUtils.createOMG();//new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
 				populateTextFields = false;
-			} catch (EntityLoadingException e) {
+			} catch (Exception e) {
 				//this would be very very bad ...
 			}
 		}

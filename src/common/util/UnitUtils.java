@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import megamek.common.AmmoType;
+import megamek.common.BipedMech;
 import megamek.common.CriticalSlot;
 import megamek.common.Engine;
 import megamek.common.Entity;
@@ -2590,5 +2591,33 @@ public class UnitUtils  {
 		}
 		
 		return true;
+    }
+    
+    public static Entity createOMG(){
+        Mech entity = new BipedMech(Mech.GYRO_STANDARD, Mech.COCKPIT_STANDARD);
+
+        entity.setYear(2075);
+        entity.setTechLevel(TechConstants.T_IS_LEVEL_1);
+        entity.setWeight(25);
+        entity.setEngine(new Engine(325,Engine.NORMAL_ENGINE,0));
+        entity.setArmorType(EquipmentType.T_ARMOR_STANDARD);
+        entity.setStructureType(EquipmentType.T_STRUCTURE_STANDARD);
+
+        entity.addGyro();
+        entity.addEngineCrits();
+        entity.addCockpit();
+        entity.addEngineSinks(entity.getEngine().integralHeatSinkCapacity(), false);
+        
+        entity.autoSetInternal();
+        for ( int loc = 0; loc <= Mech.LOC_LLEG; loc++ ) {
+            entity.initializeArmor(1, loc);
+            if ( entity.hasRearArmor(loc) )
+                entity.initializeRearArmor(1, loc);
+        }
+
+        entity.setFluff("This is an Error Unit! If you've recieved this unit in error please let someone know.");
+        entity.setModel("OMG-UR-FD");
+        entity.setChassis("Error");
+        return entity;
     }
 }

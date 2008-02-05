@@ -1300,7 +1300,6 @@ public class CCommPanel extends JPanel implements ChangeListener, ComponentListe
                     try {
                         int index = Integer.parseInt(ae.getActionCommand());
                         JEditorPane pane = getEditorPane(index);
-                        String text = pane.getText();
                         pane.selectAll();
                     } catch (Exception ex) {
                         MWClient.mwClientLog.clientErrLog(ex);

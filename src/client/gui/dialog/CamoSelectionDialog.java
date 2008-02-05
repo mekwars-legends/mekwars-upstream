@@ -43,10 +43,9 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import common.util.UnitUtils;
+
 import megamek.common.Entity;
-import megamek.common.MechFileParser;
-import megamek.common.MechSummary;
-import megamek.common.MechSummaryCache;
 import client.CConfig;
 import client.MWClient;
 
@@ -108,9 +107,9 @@ public class CamoSelectionDialog extends JDialog implements ListSelectionListene
 				oldEntity = toShow.getEntity();
 				newEntity = toShow.getEntity();
 			} else {
-				MechSummary ms = MechSummaryCache.getInstance().getMech("Error OMG-UR-FD");
-				oldEntity = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
-				newEntity = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
+				//MechSummary ms = MechSummaryCache.getInstance().getMech("Error OMG-UR-FD");
+				oldEntity = UnitUtils.createOMG();//new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
+				newEntity = UnitUtils.createOMG();//new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
 			}
            
 		} catch (Exception e) {

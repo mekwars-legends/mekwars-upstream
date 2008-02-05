@@ -399,9 +399,9 @@ public class CUnit extends Unit {
 		}
 		catch (Exception exep) {
 			try {
-				MWClient.mwClientLog.clientErrLog("Error loading unit: " + getUnitFilename() + ". Try replacing with OMG.");
-                MechSummary ms = MechSummaryCache.getInstance().getMech("Error OMG-UR-FD");
-                UnitEntity = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
+				//MWClient.mwClientLog.clientErrLog("Error loading unit: " + getUnitFilename() + ". Try replacing with OMG.");
+                //MechSummary ms = MechSummaryCache.getInstance().getMech("Error OMG-UR-FD");
+                UnitEntity = UnitUtils.createOMG();//new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
                 setProducer("Unable to find "+getUnitFilename()+" on clients system!");
                 //UnitEntity = new MechFileParser (new File("./data/mechfiles/Meks.zip"),"Error OMG-UR-FD.hmp").getEntity();
 			}

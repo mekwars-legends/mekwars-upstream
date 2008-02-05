@@ -68,6 +68,7 @@ import common.campaign.pilot.Pilot;
 import client.MWClient;
 import client.campaign.CUnit;
 import common.util.SpringLayoutHelper;
+import common.util.UnitUtils;
 import client.gui.TableSorter;
 import client.util.CUnitComparator;
 
@@ -1055,8 +1056,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 	            	} catch (Exception exc) {
 	            		try {
 	                        MWClient.mwClientLog.clientErrLog("Error loading unit: " + fn + ". Try replacing with OMG.");
-	                        MechSummary ms = MechSummaryCache.getInstance().getMech("Error OMG-UR-FD");
-	                        UnitEntity = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
+	                        //MechSummary ms = MechSummaryCache.getInstance().getMech("Error OMG-UR-FD");
+	                        UnitEntity = UnitUtils.createOMG();//new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
 	                        //UnitEntity = new MechFileParser (new File("./data/mechfiles/Meks.zip"),"Error OMG-UR-FD.hmp").getEntity();
 	                    }
 	                    catch (Exception exepe) {
