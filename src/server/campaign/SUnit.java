@@ -1266,7 +1266,7 @@ public final class SUnit extends Unit implements Serializable {
                     MWServ.mwlog.errLog("Error loading: " + Filename);
 
                     try {
-                        ent = new MechFileParser(new File("./data/unitfiles/Meks.zip"), "Error OMG-UR-FD.hmp").getEntity();
+                        ent = UnitUtils.createOMG();//new MechFileParser(new File("./data/unitfiles/Meks.zip"), "Error OMG-UR-FD.hmp").getEntity();
                     } catch (Exception exep) {
 
                         /*

@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.18.x
++ Client/Server now creates an OMG unit on the fly and no longer needs the HMP
 + Fixed potential NPEs in ShortResolver
 + RFE: Added Cut, Copy, Paste, Delete and Select all Popup menu items to chat box
 + RFE: Added Copy and Select all popup menu items to Chat windows
