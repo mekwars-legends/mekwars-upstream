@@ -406,9 +406,9 @@ public final class SUnit extends Unit implements Serializable {
 
         StringBuilder result = new StringBuilder();
         result.append("CM$");
-        if (toPlayer)
+        /*if (toPlayer)
             result.append(getEntity().getChassis() + " " + getEntity().getModel());
-        else
+        else*/
             result.append(getUnitFilename());
         result.append("$");
         result.append(getPosId());
@@ -476,10 +476,10 @@ public final class SUnit extends Unit implements Serializable {
             result.append("$");
 
             if (mgCount > 0) {
-                
+
                 int endLocation = Mech.LOC_LLEG;
-                
-                if ( unitEntity instanceof Tank )
+
+                if (unitEntity instanceof Tank)
                     endLocation = Tank.LOC_TURRET;
 
                 for (int location = 0; location <= endLocation; location++) {
@@ -635,33 +635,33 @@ public final class SUnit extends Unit implements Serializable {
             }
             // Now do Machine Guns
             ps.executeUpdate("DELETE from unit_mgs WHERE unitID = " + getDBId());
-            
+
             if (unitEntity instanceof Mech || unitEntity instanceof Tank) {
-            	int mgCount = CampaignMain.cm.getMachineGunCount(unitEntity.getWeaponList());
-            	if(mgCount > 0) {
-            		int endLocation = Mech.LOC_LLEG;
-            		if(unitEntity instanceof Tank)
-            			endLocation = Tank.LOC_TURRET;
-            		
-            		for (int location = 0; location <= endLocation; location++) {
-            			for (int slot = 0; slot < unitEntity.getNumberOfCriticals(location); slot++) {
-            				CriticalSlot crit = unitEntity.getCritical(location, slot);
-            				if (crit == null || crit.getType() != CriticalSlot.TYPE_EQUIPMENT)
-            					continue;
-            				Mounted m = unitEntity.getEquipment(crit.getIndex());
-            				if (m == null || !(m.getType() instanceof WeaponType))
-            					continue;
-            				
-            				WeaponType wt = (WeaponType) m.getType();
-            				
-            				if (!wt.hasFlag(WeaponType.F_MG))
-            					continue;
-            				ps.executeUpdate("INSERT into unit_mgs set unitID = " + getDBId() + ", mgLocation = " + location + ", mgSlot = " + slot + ", mgRapidFire = " + m.isRapidfire());
-            			}
-            		}
-            	}
+                int mgCount = CampaignMain.cm.getMachineGunCount(unitEntity.getWeaponList());
+                if (mgCount > 0) {
+                    int endLocation = Mech.LOC_LLEG;
+                    if (unitEntity instanceof Tank)
+                        endLocation = Tank.LOC_TURRET;
+
+                    for (int location = 0; location <= endLocation; location++) {
+                        for (int slot = 0; slot < unitEntity.getNumberOfCriticals(location); slot++) {
+                            CriticalSlot crit = unitEntity.getCritical(location, slot);
+                            if (crit == null || crit.getType() != CriticalSlot.TYPE_EQUIPMENT)
+                                continue;
+                            Mounted m = unitEntity.getEquipment(crit.getIndex());
+                            if (m == null || !(m.getType() instanceof WeaponType))
+                                continue;
+
+                            WeaponType wt = (WeaponType) m.getType();
+
+                            if (!wt.hasFlag(WeaponType.F_MG))
+                                continue;
+                            ps.executeUpdate("INSERT into unit_mgs set unitID = " + getDBId() + ", mgLocation = " + location + ", mgSlot = " + slot + ", mgRapidFire = " + m.isRapidfire());
+                        }
+                    }
+                }
             }
-            
+
             // Do Ammo
             ps.executeUpdate("DELETE from unit_ammo WHERE unitID = " + getDBId());
 
@@ -932,11 +932,11 @@ public final class SUnit extends Unit implements Serializable {
                     int slot = rs.getInt("mgSlot");
                     boolean selection = rs.getBoolean("mgRapidFire");
                     try {
-                    	CriticalSlot cs = en.getCritical(location, slot);
-                    	Mounted m = en.getEquipment(cs.getIndex());
-                    	m.setRapidfire(selection);
-                    }catch (Exception ex) {
-                    }                   
+                        CriticalSlot cs = en.getCritical(location, slot);
+                        Mounted m = en.getEquipment(cs.getIndex());
+                        m.setRapidfire(selection);
+                    } catch (Exception ex) {
+                    }
                 }
 
                 setEntity(unitEntity);
@@ -980,8 +980,8 @@ public final class SUnit extends Unit implements Serializable {
         if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE)
             return idToShow + " " + dialogBox + " (" + this.getPilot().getGunnery() + "/" + this.getPilot().getPiloting() + ") [" + getPilot().getExperience() + " EXP " + this.getPilot().getSkillString(false) + "] Kills: " + this.getPilot().getKills() + " " + this.getProducer() + ". BV: " + this.getBV() + " " + status;
 
-        if ( this.getType() == Unit.INFANTRY || this.getType() == Unit.BATTLEARMOR ){
-            if ( ((Infantry)this.getEntity()).isAntiMek() )
+        if (this.getType() == Unit.INFANTRY || this.getType() == Unit.BATTLEARMOR) {
+            if (((Infantry) this.getEntity()).isAntiMek())
                 return idToShow + " " + dialogBox + " (" + this.getPilot().getGunnery() + "/" + this.getPilot().getPiloting() + ") [" + getPilot().getExperience() + " EXP " + this.getPilot().getSkillString(false) + "] Kills: " + this.getPilot().getKills() + " " + this.getProducer() + ". BV: " + this.getBV() + " " + status;
         }
         // else
@@ -996,13 +996,12 @@ public final class SUnit extends Unit implements Serializable {
         String result;
         if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE)
             result = getModelName() + " [" + this.getPilot().getGunnery() + "/" + this.getPilot().getPiloting();
-        else if ( this.getType() == Unit.INFANTRY || this.getType() == Unit.BATTLEARMOR ){
-            if ( ((Infantry)this.getEntity()).isAntiMek() )
+        else if (this.getType() == Unit.INFANTRY || this.getType() == Unit.BATTLEARMOR) {
+            if (((Infantry) this.getEntity()).isAntiMek())
                 result = getModelName() + " [" + this.getPilot().getGunnery() + "/" + this.getPilot().getPiloting();
             else
                 result = getModelName() + " [" + this.getPilot().getGunnery();
-        }
-        else
+        } else
             result = getModelName() + " [" + this.getPilot().getGunnery();
 
         if (!getPilot().getSkillString(true).equals(" "))
@@ -1029,11 +1028,11 @@ public final class SUnit extends Unit implements Serializable {
         if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE)
             return getModelName() + " (" + this.getPilot().getGunnery() + "/" + this.getPilot().getPiloting() + ")";
 
-        if ( this.getType() == Unit.INFANTRY || this.getType() == Unit.BATTLEARMOR ){
-            if ( ((Infantry)this.getEntity()).isAntiMek())
+        if (this.getType() == Unit.INFANTRY || this.getType() == Unit.BATTLEARMOR) {
+            if (((Infantry) this.getEntity()).isAntiMek())
                 return getModelName() + " (" + this.getPilot().getGunnery() + "/" + this.getPilot().getPiloting() + ")";
         }
-        
+
         return getModelName() + " (" + this.getPilot().getGunnery() + ")";
     }
 
@@ -1242,6 +1241,37 @@ public final class SUnit extends Unit implements Serializable {
 
         Entity ent = null;
 
+        if (new File("./data/mechfiles").exists()) {
+
+            try {
+                MechSummary ms = MechSummaryCache.getInstance().getMech(Filename.trim());
+                if (ms == null) {
+                    MechSummary[] units = MechSummaryCache.getInstance().getAllMechs();
+                    // System.err.println("unit: "+getUnitFilename());
+                    for (MechSummary unit : units) {
+                        // System.err.println("Source file:
+                        // "+unit.getSourceFile().getName());
+                        // System.err.println("Model: "+unit.getModel());
+                        // System.err.println("Chassis:
+                        // "+unit.getChassis());
+                        // System.err.flush();
+                        if (unit.getEntryName().equalsIgnoreCase(Filename) || unit.getModel().trim().equalsIgnoreCase(Filename.trim()) || unit.getChassis().trim().equalsIgnoreCase(Filename.trim())) {
+                            ms = unit;
+                            break;
+                        }
+                    }
+                }
+
+                ent = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
+            } catch (Exception exep) {
+                ent = null;
+            }
+
+        }
+
+        if (ent != null)
+            return ent;
+
         // look for a mek first
         try {
             ent = new MechFileParser(new File("./data/unitfiles/Meks.zip"), Filename).getEntity();
@@ -1266,7 +1296,10 @@ public final class SUnit extends Unit implements Serializable {
                     MWServ.mwlog.errLog("Error loading: " + Filename);
 
                     try {
-                        ent = UnitUtils.createOMG();//new MechFileParser(new File("./data/unitfiles/Meks.zip"), "Error OMG-UR-FD.hmp").getEntity();
+                        ent = UnitUtils.createOMG();// new MechFileParser(new
+                        // File("./data/unitfiles/Meks.zip"),
+                        // "Error
+                        // OMG-UR-FD.hmp").getEntity();
                     } catch (Exception exep) {
 
                         /*

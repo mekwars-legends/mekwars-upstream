@@ -384,7 +384,7 @@ public class CUnit extends Unit {
 	                    //System.err.println("Model: "+unit.getModel());
 	                    //System.err.println("Chassis: "+unit.getChassis());
 	                    //System.err.flush();
-	                    if ( unit.getSourceFile().getName().equalsIgnoreCase(getUnitFilename()) 
+	                    if ( unit.getEntryName().equalsIgnoreCase(getUnitFilename()) 
 	                    		|| unit.getModel().trim().equalsIgnoreCase(getUnitFilename().trim())
 	                    		|| unit.getChassis().trim().equalsIgnoreCase(getUnitFilename().trim())
 	                    		) {

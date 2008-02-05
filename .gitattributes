@@ -903,13 +903,11 @@ client-dist/data/images/wood2.gif -text
 client-dist/data/images/wood3.gif -text
 client-dist/data/images/wrench.gif -text
 client-dist/data/mapoverlay.txt -text
-client-dist/data/mechfiles/Error[!!-~]OMG-UR-FD.hmp -text
 client-dist/data/mechfiles/Infantry.zip -text
 client-dist/data/mechfiles/Meks.zip -text
 client-dist/data/mechfiles/OfficialUnitList.txt -text
 client-dist/data/mechfiles/UnitVerifierOptions.xml -text
 client-dist/data/mechfiles/Vehicles.zip -text
-client-dist/data/mechfiles/mechfiles/OfficialUnitList.txt -text
 client-dist/data/scenarios/Example.mms -text
 client-dist/data/skins/BeOSthemepack.zip -text
 client-dist/data/skins/amarachthemepack.zip -text
@@ -1095,6 +1093,9 @@ server-dist/data/factions.dtd -text
 server-dist/data/factions.xml -text
 server-dist/data/influencemessages/CommonInfluenceMessages.txt -text
 server-dist/data/iplist.txt -text
+server-dist/data/mechfiles/Infantry.zip -text
+server-dist/data/mechfiles/Meks.zip -text
+server-dist/data/mechfiles/Vehicles.zip -text
 server-dist/data/pilotmessages/pilotcaptureanddefectedmessages.txt -text
 server-dist/data/pilotmessages/pilotcaptureandremovedmessages.txt -text
 server-dist/data/pilotmessages/pilotcapturemessagestoowner.txt -text
@@ -1118,10 +1119,6 @@ server-dist/data/serverconfig.txt -text
 server-dist/data/tasknames/Tasknames.txt -text
 server-dist/data/terrain.dtd -text
 server-dist/data/terrain.xml -text
-server-dist/data/unitfiles/Error[!!-~]OMG-UR-FD.hmp -text
-server-dist/data/unitfiles/Infantry.zip -text
-server-dist/data/unitfiles/Meks.zip -text
-server-dist/data/unitfiles/Vehicles.zip -text
 server-dist/docs/IncreasedTechForNonFactionUnits.txt -text
 server-dist/docs/phpBB[!!-~]Synchronization.pdf -text
 server-dist/dump_db.bat -text
