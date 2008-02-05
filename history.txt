@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.18.x
++ Bug: Return mail message not using correct font color
 + New MegaMek.jar 0.33.18-MW020508-5464
 + Server now sends full unit file name, i.e. entity.hmp/entity.mtf, to client
 + Server Now uses data/mechfiles folder and MegaMek cache code for finding files

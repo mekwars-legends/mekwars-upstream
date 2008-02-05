@@ -117,10 +117,12 @@ public class MailGCmd extends CGUICommand {
 		//load and set chat font colour
 		String fontcolor = mwclient.getConfig().getParam("CHATFONTCOLOR");
 		
-		message = "=> " + name + addon + "<font color=\""+fontcolor+"\"><b>:</b> " + message.trim() + "</font>";
+		message = "=> " + name + addon + "<b>:</b> " + message.trim();
 		
 		if (Config.isParam("TIMESTAMP"))
-			message = "<font color=\"" + mwclient.getConfig().isParam("CHATFONTCOLOR") + "\">" + mwclient.getShortTime() + "</font>" + message;
+			message = mwclient.getShortTime() + message;
+		
+		message = "<font color=\""+fontcolor+"\">" + message + "</font>";
 		
 		if (mwclient.getConfig().isParam("USEMULTIPLEPM")) {
 			mailTab = mwclient.getMainFrame().getMainPanel().getCommPanel().findMailTab(tabName); 
