@@ -489,9 +489,14 @@ public class ShortResolver {
 
         allPlayers.put(winnerName.toLowerCase(), winner);
         allPlayers.put(loserName.toLowerCase(), loser);
-
-        SArmy winnerA = winner.getArmy(so.getAllPlayersAndArmies().get(winnerName.toLowerCase()));
-        SArmy loserA = loser.getArmy(so.getAllPlayersAndArmies().get(loserName.toLowerCase()));
+        
+        SArmy winnerA = null;
+        SArmy loserA = null;
+        if (winner != null)
+        	winnerA = winner.getArmy(so.getAllPlayersAndArmies().get(winnerName.toLowerCase()));
+        if (loser != null)
+        	loserA = loser.getArmy(so.getAllPlayersAndArmies().get(loserName.toLowerCase()));
+        
         if (winnerA == null || winnerA.getPlayerName().trim().length() == 0) {
             CampaignMain.cm.toUser("Autoreporting error: Winner army null or had empty owner name.", winnerName, true);
             CampaignMain.cm.getOpsManager().terminateOperation(so, OperationManager.TERM_REPORTINGERROR, null);
@@ -563,7 +568,9 @@ public class ShortResolver {
          */
 
         // send message
-        String winName = winner.getName().toLowerCase();
+        String winName = "";
+        if(winner != null)
+        	winName = winner.getName().toLowerCase();
         String toSend = "Time expired. GAME RESOLVED AUTOMATICALLY.<br>" + metaStrings.get(winName) + unitStrings.get(winName) + payStrings.get(winName);// +
         // longStrings.get(winName);
         CampaignMain.cm.toUser(toSend, winName, true);
@@ -573,11 +580,12 @@ public class ShortResolver {
 
         // update operations and set unbusy. we know the loser isn't
         // online, so we only need to send to the winner.
-        for (SArmy currA : winner.getArmies()) {
-            currA.setBV(0);
-            CampaignMain.cm.toUser("PL|SAD|" + currA.toString(true, "%"), currA.getPlayerName(), false);
-            CampaignMain.cm.getOpsManager().checkOperations(currA, true);
-        }
+        if (winner != null)
+        	for (SArmy currA : winner.getArmies()) {
+        		currA.setBV(0);
+        		CampaignMain.cm.toUser("PL|SAD|" + currA.toString(true, "%"), currA.getPlayerName(), false);
+        		CampaignMain.cm.getOpsManager().checkOperations(currA, true);
+        	}
 
         // start scrap thread
         if (scrapThreads.containsKey(winName)) {
@@ -592,14 +600,15 @@ public class ShortResolver {
             // move the thread to the manager
             CampaignMain.cm.getOpsManager().getScrapThreads().put(winName, scrapThreads.remove(winName));
         }
-
-        winner.resetWeightedArmyNumber();
+        
+        if (winner != null)
+        	winner.resetWeightedArmyNumber();
 
         // set immunity && make unbusy
         CampaignMain.cm.getIThread().addImmunePlayer(winner);
-        if (so.isFromReserve())
+        if (so.isFromReserve() && winner != null)
             winner.setFighting(false, true);// return AFR players to reserve
-        else
+        else if (winner != null)
             winner.setFighting(false);
 
         /*
@@ -608,7 +617,7 @@ public class ShortResolver {
          * to avoid games, so they can scrap units without cost and reset in
          * SOL.
          */
-        if (!so.isFromReserve() && CampaignMain.cm.getBooleanConfig("ForcedDeactivation")) {
+        if (!so.isFromReserve() && CampaignMain.cm.getBooleanConfig("ForcedDeactivation") && winner != null) {
             winner.setActive(false);
             CampaignMain.cm.toUser("You've left the front lines to repair and refit, and are now in reserve.", winner.getName());
         }
@@ -620,13 +629,17 @@ public class ShortResolver {
          * Send the message to the loser/disconnector. The player is offline, so
          * their status and immunity time are not concerns at the moment.
          */
-        String loseName = loser.getName().toLowerCase();
+        String loseName = "";
+        if(loser != null)
+        	loseName = loser.getName().toLowerCase();
         toSend = "You were disconnected too long. GAME RESOLVED AUTOMATICALLY.<br>" + metaStrings.get(loseName) + unitStrings.get(loseName) + payStrings.get(loseName);// +
         // longStrings.get(loseName);
         CampaignMain.cm.toUser(toSend, loseName, true);
 
-        winner.setSave();
-        loser.setSave();
+        if (winner != null)
+        	winner.setSave();
+        if(loser != null)
+        	loser.setSave();
         // stick the result into the human readable result log, per RFE1479311.
         MWServ.mwlog.resultsLog(toSend);
 
@@ -650,12 +663,17 @@ public class ShortResolver {
         // game
         if (o.getBooleanValue("ReportOpToNewsFeed"))
             CampaignMain.cm.addToNewsFeed(newsFeedTitle, newsFeedBody);
-        winner.checkForPromotion();
-        winner.checkForDemotion();
-        winner.setSave();
-        loser.checkForPromotion();
-        loser.checkForDemotion();
-        loser.setSave();
+        
+        if(winner != null) {
+        	winner.checkForPromotion();
+        	winner.checkForDemotion();
+        	winner.setSave();
+        }
+        if(loser != null) {
+        	loser.checkForPromotion();
+        	loser.checkForDemotion();
+        	loser.setSave();
+        }
 
     }
 
@@ -4196,7 +4214,7 @@ public class ShortResolver {
                         SUnit cm = new SUnit(unit.getId(), unit.getProducer(), repodFileName);
 
                         cm.setPilot((SPilot)unit.getPilot());
-                        cm.setExperience(((SUnit)unit).getExperience());
+                        cm.setExperience(unit.getExperience());
 
                         //remove the old unit *before* adding the new one, since they share a unit id.
                         if (cm.getType() == Unit.MEK) {
