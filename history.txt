@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.18.x
++ RFE: Added Cut, Copy, Paste, Delete and Select all Popup menu items to chat box
++ RFE: Added Copy and Select all popup menu items to Chat windows
 + Alphabetized columns in Ammo Cost and Parts Black Market Dialogs. 
 + Changed setVisibleRowCount for ArmyList in ArmyViewerDialog from
 	dynamic to static.

@@ -553,14 +553,6 @@ public final class MWClient implements IClient {
 			try {MainFrame.setIconImage(Config.getImage("LOGOUT").getImage());}
 			catch (Exception ex) {MWClient.mwClientLog.clientOutputLog(ex);}
 			
-			System.err.println("splash screen destruction Time: "+System.currentTimeMillis());
-			System.err.flush();
-			//init the gui
-			if ( splash != null)
-				splash.setStatus(splash.STATUS_CONSTRUCTINGGUI);
-			System.err.println("Splash Screen Destruction done Time: "+System.currentTimeMillis());
-			System.err.flush();
-
 			System.err.println("Packing/Validating CMainFrame Time: "+System.currentTimeMillis());
 			System.err.flush();
 
@@ -613,6 +605,9 @@ public final class MWClient implements IClient {
 			try{
 				System.err.println("making mainframe visible: "+System.currentTimeMillis());
 				System.err.flush();
+	            //init the gui
+	            if ( splash != null)
+	                splash.setStatus(splash.STATUS_CONSTRUCTINGGUI);
 
 				MainFrame.setVisible(true);
 				
