@@ -1564,6 +1564,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("TRANSFERPILOT", new TransferPilotCommand());
         Commands.put("TRANSFERUNIT", new TransferUnitCommand());
         Commands.put("UPDATEOPERATIONS", new UpdateOperationsCommand());
+        Commands.put("UPDATESERVERUNITSCACHE", new UpdateServerUnitsCacheCommand());
         Commands.put("UPLOADMUL", new UploadMulCommand());
         Commands.put("UNEMPLOYEDMERCS", new UnemployedMercsCommand());
         Commands.put("UNENROLL", new UnenrollCommand());

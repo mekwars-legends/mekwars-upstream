@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.18.x
+- AmmoCostTimeStamp.java
+- AmmoCost.java
++ added UpdateServerUnitsCache menu item to mod menu.
++ New mod command UpdateServerUnitsCache
 + Added WebTools/ELORanking.php
 + DB-Enabled server no longer writes EXPRanking.htm or Ranking.htm
 + Added WebTools/EXPRanking.php
