@@ -1403,12 +1403,15 @@ public class ShortResolver {
                  * Check the pilot's death. If he passed away, call the death
                  * handler and append the result to the owners' pilotString.
                  */
-                Boolean pilotLived = (Boolean) pilotinformation[0];
-                if (!pilotLived.booleanValue()) {
-                    String deathString = this.handleDeadPilot(oldOwner, currU, currEntity, so);
+                String pilotAppend;
+                
+                boolean pilotLived = (Boolean) pilotinformation[0];
+                if (!pilotLived) {
+                    pilotAppend = this.handleDeadPilot(oldOwner, currU, currEntity, so);
                     String workingS = (String) pilotinformation[1];
-                    pilotinformation[1] = workingS + deathString;
-                }
+                    pilotinformation[1] = workingS + pilotAppend;
+                }else
+                    pilotAppend = "<br>"+this.calculatePilotEXP(o, so, currEntity, oldOwner, true);
 
                 /*
                  * loop through all players, adding the unit's outcome to their
@@ -1424,7 +1427,7 @@ public class ShortResolver {
                     // to
                     // otherstring
                     if (currName.equals(oldOwnerName))
-                        toSet = toOwner + pilotinformation[1];// set the
+                        toSet = toOwner + pilotinformation[1] + pilotAppend;// set the
                     // "owner"
                     // string
                     else {
@@ -1532,16 +1535,23 @@ public class ShortResolver {
              * Only check for a replacement pilot if the unit is returning to
              * its original owner!
              */
-            Boolean pilotLived = (Boolean) pilotinformation[0];
-            if (!pilotLived.booleanValue() && newOwner == null) {
+            boolean pilotLived = (Boolean) pilotinformation[0];
+            if (!pilotLived && newOwner == null) {
                 String deathString = this.handleDeadPilot(oldOwner, currU, currEntity, so);
                 String workingS = (String) pilotinformation[1];
                 workingS += deathString;
             }
 
+            String pilotAppend = "";
+            
+            if ( pilotLived )
+                pilotAppend = "<br>"+calculatePilotEXP(o, so, currEntity, oldOwner, false);
+
             // If the pilot is alive, and has no unit ...
-            if (pilotLived.booleanValue() && newOwner != null)
+            if (pilotLived && newOwner != null){
                 this.handleDispossesedPilot(oldOwner, currU);
+            }
+
 
             // setup the strings to show players
             String toOriginalOwner = "";
@@ -1575,9 +1585,8 @@ public class ShortResolver {
                 String toSet = toOthers + pilotinformation[3];// default to
                 // otherstring
                 if (currName.equals(oldOwnerName))
-                    toSet = toOriginalOwner + pilotinformation[1];// set the
-                // "owner"
-                // string
+                    toSet = toOriginalOwner + pilotinformation[1] + pilotAppend;
+                // set the "owner" string
                 else if (newOwner != null && currName.equals(newOwner.getName().toLowerCase())) {
                     if (captor != null && currName.equals(captor.getName().toLowerCase()))
                         toSet = toNewOwner + pilotinformation[2];
@@ -1601,6 +1610,7 @@ public class ShortResolver {
                     unitStrings.put(currName, toSet + "<br>");
 
             }// end foreach(name in allplayers)
+            
 
             /*
              * If the newowner is not null, move the unit from its old master to
@@ -1646,17 +1656,6 @@ public class ShortResolver {
              * kill XP, but do not attempt to level up.
              */
             else {// old owner
-
-                // if the pilot lived, check for kills.
-                if (pilotLived) {
-                    String append = calculatePilotEXP(o, so, currEntity, oldOwner, false);
-                    if (unitStrings.containsKey(oldOwnerName)) {
-                        String s = unitStrings.get(oldOwnerName);
-                        unitStrings.put(oldOwnerName, s + "The " + currU.getModelName() + " survived the battle" + append + ".<br>");
-                    } else {
-                        unitStrings.put(oldOwnerName, "The " + currU.getModelName() + " survived the battle" + append + ".<br>");
-                    }
-                }// end if(pilot lived)
 
                 // whether pilot lived or not, send a PL|UU
                 CampaignMain.cm.toUser("PL|UU|" + currU.getId() + "|" + currU.toString(true), oldOwnerName, false);

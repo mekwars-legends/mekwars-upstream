@@ -1324,11 +1324,11 @@ public final class SUnit extends Unit implements Serializable {
         return passesMaintainanceUntil;
     }
 
-    public Integer getScrappableFor() {
+    public int getScrappableFor() {
         return scrappableFor;
     }
 
-    public void setScrappableFor(Integer i) {
+    public void setScrappableFor(int i) {
         scrappableFor = i;
     }
 
@@ -1336,8 +1336,8 @@ public final class SUnit extends Unit implements Serializable {
      * 
      * @return the amount of EXP the pilot has
      */
-    public Integer getExperience() {
-        return new Integer(getPilot().getExperience());
+    public int getExperience() {
+        return getPilot().getExperience();
     }
 
     /**

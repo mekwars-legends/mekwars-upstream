@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.18.x
++ Bug high amount of Cbills for donanting/scrapping salvaged units.
++ Bug 1851185: Pilot of Destroyed Mech and XP
 - AmmoCostTimeStamp.java
 - AmmoCost.java
 + added UpdateServerUnitsCache menu item to mod menu.

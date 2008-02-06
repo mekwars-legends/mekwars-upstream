@@ -142,11 +142,7 @@ public class OpsScrapThread extends Thread {
 				salvagedUnits.remove(currID);
 				continue;
 			}
-			//cost gets set to 0 for advanced repair but you still need to be able to scrap multiple units.
-			if ( CampaignMain.cm.isUsingAdvanceRepair() )
-				currU.setScrappableFor(1);
-			else
-				currU.setScrappableFor(maxScrapValue);
+			currU.setScrappableFor(maxScrapValue);
 			salvagedUnits.put(currID, toReplace.get(currID));
 			CampaignMain.cm.toUser("PL|UU|"+currU.getId()+"|"+currU.toString(true),playerName,false);
 		}
@@ -175,8 +171,9 @@ public class OpsScrapThread extends Thread {
 		
 		//Player is real. Send the requisite unit updates.
 		for (int currID : salvagedUnits.keySet()) {
-			SUnit currU = currPlayer.getUnit(currID);			
-			currU.setScrappableFor(salvagedUnits.get(currID));
+			SUnit currU = currPlayer.getUnit(currID);		
+			if ( currU.getScrappableFor() < 1 )
+			    currU.setScrappableFor(1);
 			CampaignMain.cm.toUser("PL|UU|"+currU.getId()+"|"+currU.toString(true),playerName,false);
 		}
 		
