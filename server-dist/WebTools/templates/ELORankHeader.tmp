@@ -4,6 +4,7 @@
 <tr bgcolor="#0066FF">
 	<th><font color="#FFFFFF">Rank</font></th>
 	<th><font color="#FFFFFF">Name</font></th>
+	<th><font color="#FFFFFF">Rating</font></th>
 	<th><font color="#FFFFFF">Experience</font></th>
 	<th><font color="#FFFFFF">House</font></th>
 	<th><font color="#FFFFFF">Comment</font></th>

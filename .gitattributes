@@ -977,9 +977,13 @@ client-dist/startClient.bat -text
 /olderhistory.txt -text
 server-dist/CreateUpdate.bat -text
 server-dist/MegaMek.jar -text
+server-dist/WebTools/ELORanking.php -text
 server-dist/WebTools/EXPRanking.php -text
 server-dist/WebTools/MechStats.php -text
 server-dist/WebTools/includes/config.php -text
+server-dist/WebTools/templates/ELORankFooter.tmp -text
+server-dist/WebTools/templates/ELORankHeader.tmp -text
+server-dist/WebTools/templates/ELORankRow.tmp -text
 server-dist/WebTools/templates/EXPRankFooter.tmp -text
 server-dist/WebTools/templates/EXPRankHeader.tmp -text
 server-dist/WebTools/templates/EXPRankRow.tmp -text

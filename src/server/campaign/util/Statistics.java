@@ -87,6 +87,8 @@ public class Statistics {
 	}
 
 	public static void doRanking() {
+		if(CampaignMain.cm.isUsingMySQL())
+			return;
 		try{
 		    //String result = "<html><body bgcolor=\"#000000\" text=\"#009900\">";
 		    StringBuilder result = new StringBuilder();
@@ -148,10 +150,7 @@ public class Statistics {
 	        p.println(result.toString());
 	        p.close();
 	        out.close();
-	        if(!CampaignMain.cm.isUsingMySQL()) {
-	        	// The database keeps its own stats.  No need to output them here.
-	        	Statistics.doEXPRanking();
-	        }
+        	Statistics.doEXPRanking();
 	    } catch (Exception ex) {
 	    	MWServ.mwlog.errLog(ex);
 	    }

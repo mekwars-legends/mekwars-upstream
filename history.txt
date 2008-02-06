@@ -2,7 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.18.x
-+ DB-Enabled server no longer writes EXPRanking.html
++ Added WebTools/ELORanking.php
++ DB-Enabled server no longer writes EXPRanking.htm or Ranking.htm
 + Added WebTools/EXPRanking.php
 + Bug: Return mail message not using correct font color
 + New MegaMek.jar 0.33.18-MW020508-5464
