@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.18.x
++ DB-Enabled server no longer writes EXPRanking.html
++ Added WebTools/EXPRanking.php
 + Bug: Return mail message not using correct font color
 + New MegaMek.jar 0.33.18-MW020508-5464
 + Server now sends full unit file name, i.e. entity.hmp/entity.mtf, to client

@@ -148,7 +148,10 @@ public class Statistics {
 	        p.println(result.toString());
 	        p.close();
 	        out.close();
-		    Statistics.doEXPRanking();
+	        if(!CampaignMain.cm.isUsingMySQL()) {
+	        	// The database keeps its own stats.  No need to output them here.
+	        	Statistics.doEXPRanking();
+	        }
 	    } catch (Exception ex) {
 	    	MWServ.mwlog.errLog(ex);
 	    }

@@ -24,7 +24,7 @@
 	
 	// For each weight class, send out a class header, then pull the mechs.
 	for ($size = 0; $size < 4; $size++) {
-		require('templates/MechStatsUnitHeader.php');
+		require('templates/MechStatsUnitHeader.tmp');
 		$sql = "SELECT * from mechstats WHERE mechSize = $size ORDER BY mechFileName ASC";
 		$result = mysql_query($sql) or die(mysql_error());
 		while($row = mysql_fetch_array($result)) {
@@ -36,8 +36,8 @@
 			$unit['scrapped']=$row['timesScrapped'];
 			$unit['BV']=$row['originalBV'];
 			$unit['lastUsed']=($row['lastTimeUpdated']==0 ? "unknown" : $row['lastTimeUpdated']);
-			require('templates/MechStatsRow.php');
+			require('templates/MechStatsRow.tmp');
 		}
-		require('templates/MechStatsTableFooter.php');
+		require('templates/MechStatsTableFooter.tmp');
 	}
 ?>
