@@ -2,7 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.18.x
-+ Bug high amount of Cbills for doanting/scraping salvaged units.
++ Bug high amount of Cbills for donating/scraping salvaged units.
 + Bug 1851185: Pilot of Destroyed Mech and XP
 - AmmoCostTimeStamp.java
 - AmmoCost.java
