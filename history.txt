@@ -1,7 +1,10 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.18.x
+v 0.2.19.x
+Release Server/Client 0.2.19.0
++ New MegaMek.jar 0.33.18-MW020708-5466
++ Updated MekWars code to Reflect removal of F_PROTOMECH flag
 + Bug high amount of Cbills for donating/scraping salvaged units.
 + Bug 1851185: Pilot of Destroyed Mech and XP
 - AmmoCostTimeStamp.java
@@ -15,7 +18,7 @@ v 0.2.18.x
 + New MegaMek.jar 0.33.18-MW020508-5464
 + Server now sends full unit file name, i.e. entity.hmp/entity.mtf, to client
 + Server Now uses data/mechfiles folder and MegaMek cache code for finding files
-   NOTE: this is still backwards compat with data/unitfiles.
+   NOTE: this is still backwards compatible with data/unitfiles.
 + Client/Server now creates an OMG unit on the fly and no longer needs the HMP
 + Fixed potential NPEs in ShortResolver
 + RFE: Added Cut, Copy, Paste, Delete and Select all Popup menu items to chat box
@@ -23,6 +26,7 @@ v 0.2.18.x
 + Alphabetized columns in Ammo Cost and Parts Black Market Dialogs. 
 + Changed setVisibleRowCount for ArmyList in ArmyViewerDialog from
 	dynamic to static.
+v 0.2.18.x
 Release Server 0.2.18.1
 + Bug: 0 parts damaged being returned
 Release Client/Server 0.2.18.0

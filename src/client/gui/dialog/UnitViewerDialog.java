@@ -537,8 +537,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
                     || (et.getTechLevel() == TechConstants.T_IS_LEVEL_2))))) {
                 if (!(nUnitType == UnitType.SIZE) && ((UnitType.getTypeName(nUnitType).equals("Mek")
                         || UnitType.getTypeName(nUnitType).equals("Tank"))
-                        && (et.hasFlag(WeaponType.F_PROTOMECH)
-                        || et.hasFlag(WeaponType.F_INFANTRY)
+                        && (et.hasFlag(WeaponType.F_INFANTRY)
                         || et.hasFlag(WeaponType.F_BATTLEARMOR)))) {
                     continue;
                 }
