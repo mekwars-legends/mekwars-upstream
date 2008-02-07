@@ -225,15 +225,12 @@ public class OperationEntity {
 	public boolean isSalvagable() {
 		
 		
-		if ( this.getRemovalReason() == IEntityRemovalConditions.REMOVE_STACKPOLE )
-			return false;
-		
+        if (this.getRemovalReason() == IEntityRemovalConditions.REMOVE_DEVASTATED)
+            return false;
+        
 		if ( CampaignMain.cm.getBooleanConfig("UsePartsRepair") &&
 				(MMUnitType == Unit.MEK || MMUnitType == Unit.QUAD || MMUnitType == Unit.VEHICLE) )
 			return true;
-		
-		if (this.getRemovalReason() == IEntityRemovalConditions.REMOVE_DEVASTATED)
-			return false;
 		
 		if (MMUnitType == Unit.MEK || MMUnitType == Unit.QUAD)
 			return (this.getCTint() > 0);
@@ -261,7 +258,6 @@ public class OperationEntity {
 		switch (this.getRemovalReason()){
 		//destroyed, devastated, ejected and salvage units aren't living
 		case IEntityRemovalConditions.REMOVE_DEVASTATED:
-		case IEntityRemovalConditions.REMOVE_STACKPOLE:
 		case IEntityRemovalConditions.REMOVE_EJECTED:
 		case IEntityRemovalConditions.REMOVE_SALVAGEABLE:
 			return false;

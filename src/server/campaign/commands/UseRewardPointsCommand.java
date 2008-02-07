@@ -328,6 +328,12 @@ public class UseRewardPointsCommand implements Command {
             }
             
             Entity entity = unit.getEntity();
+            
+            if ( entity.getInternal(Mech.LOC_CT) < 1 ){
+                CampaignMain.cm.toUser("AM:Sorry but cored units cannot be repaired with reward points!", Username);
+                return;
+            }
+            
             for (int x = 0; x < entity.locations(); x++) {
                 entity.setArmor(entity.getOArmor(x),x);
                 if ( entity.hasRearArmor(x) )

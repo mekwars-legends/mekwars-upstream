@@ -2964,14 +2964,14 @@ public class ShortResolver {
                                 oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_SALVAGEABLE);
                                 oEntity.setSalvage(true);
                             } else if (CampaignMain.cm.getRandomNumber(100) <= fledScrappedChance) {
-                                oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_STACKPOLE);
+                                oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
                             }
                         } else if ((pushedSalvageChance > 0 || pushedScrappedChance > 0) && oEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_PUSHED) {
                             if (CampaignMain.cm.getRandomNumber(100) <= fledSalvageChance) {
                                 oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_SALVAGEABLE);
                                 oEntity.setSalvage(true);
                             } else if (CampaignMain.cm.getRandomNumber(100) <= fledScrappedChance) {
-                                oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_STACKPOLE);
+                                oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
                             }
                         }
 
@@ -3176,7 +3176,7 @@ public class ShortResolver {
                         OperationEntity randomEntity = dropLivingUnits.remove(CampaignMain.cm.getRandomNumber(dropLivingUnits.size()));
 
                         // destroy the unit, killing pilot
-                        randomEntity.setRemovalReason(megamek.common.IEntityRemovalConditions.REMOVE_STACKPOLE);
+                        randomEntity.setRemovalReason(megamek.common.IEntityRemovalConditions.REMOVE_DEVASTATED);
                         randomEntity.setSalvage(false);// for vehs
                         livingUnits.remove(randomEntity.getID());
                         destroyedUnits.put(randomEntity.getID(), randomEntity);
