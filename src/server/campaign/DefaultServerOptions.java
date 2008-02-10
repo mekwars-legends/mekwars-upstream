@@ -952,6 +952,8 @@ public class DefaultServerOptions {
 
         // Only used when commands are saved to the DB
         defaults.setProperty("ServerOptionsSavedToDB", "false");
+        
+        defaults.setProperty("StoreUnitHistoryInDatabase", "false");
 
         // Mod Mail Message of the Day
         defaults.setProperty("MMOTD", "");
