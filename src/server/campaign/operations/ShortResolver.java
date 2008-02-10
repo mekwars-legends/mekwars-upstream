@@ -58,6 +58,7 @@ import server.campaign.mercenaries.ContractInfo;
 import server.campaign.mercenaries.MercHouse;
 import server.campaign.pilot.SPilot;
 import server.campaign.util.ELORanking;
+import server.mwmysql.HistoryHandler;
 
 public class ShortResolver {
 
@@ -3971,6 +3972,15 @@ public class ShortResolver {
                 if (bvForBonusXP > 0)
                     totalXPforUnit += Math.floor(killedUnit.getBV() / bvForBonusXP);
 
+                if(CampaignMain.cm.isKeepingUnitHistory()){
+                	String model = killedUnit.getModelName();
+                	String insertString = "Killed " + model;
+                	int unitID = currU.getDBId();
+                	int pilotID = ((SPilot)currU.getPilot()).getDBId();
+                	CampaignMain.cm.MySQL.addHistoryEntry(HistoryHandler.HISTORY_TYPE_UNIT, unitID, HistoryHandler.UNIT_KILLED_UNIT, insertString);
+                	CampaignMain.cm.MySQL.addHistoryEntry(HistoryHandler.HISTORY_TYPE_PILOT, pilotID, HistoryHandler.PILOT_KILLED_UNIT, insertString);
+                }
+                
                 // add the kill
                 realKills++;
             }
