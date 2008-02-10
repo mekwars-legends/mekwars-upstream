@@ -19,7 +19,8 @@ public class Version
     {
         if( manifest_ == null )
         {
-            manifest_ = new VersionManifest(getCharFile("Manifest.txt.jar!/Manifest.txt"));
+            //manifest_ = new VersionManifest(getCharFile("Manifest.txt.jar!/Manifest.txt"));
+            manifest_ = new VersionManifest(getCharFile("Manifest.txt"));
         }
 
         return manifest_;

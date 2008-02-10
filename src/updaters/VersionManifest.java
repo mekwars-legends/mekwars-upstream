@@ -61,8 +61,7 @@ public class VersionManifest {
                 StringBuilder tempManifest = new StringBuilder("./");
                 tempManifest.append(AutoUpdater.UPDATE_TMP_DIR);
                 tempManifest.append(File.separator);
-                tempManifest.append(IOUtil.removeLeadingDotSlash(file
-                        .getLocalOffset()));
+                tempManifest.append(IOUtil.removeLeadingDotSlash(file.getLocalOffset()));
                 tempManifest.append(VersionManifest.separator);
                 tempManifest.append(file.getRemoteOffset());
                 tempManifest.append(VersionManifest.separator);
@@ -77,8 +76,7 @@ public class VersionManifest {
                 } catch (FileNotFoundException fnfe) {
                     // File does not exist in tmp directory, proceed
                     // as usual.
-                    System.err.println("File " + file.getLocalOffset()
-                            + " is not in the temp directory.");
+                    System.err.println("File " + file.getLocalOffset() + " is not in the temp directory.");
                 }
 
                 InputStream is = updater.getLocalFileStream(file);
@@ -86,41 +84,30 @@ public class VersionManifest {
                 is.close();
 
                 if (localCRC != file.getCRC32()) {
-                    System.err.println("Noting difference between remote file "
-                            + file.getRemoteOffset() + " and local file "
-                            + file.getLocalOffset());
+                    System.err.println("Noting difference between remote file " + file.getRemoteOffset() + " and local file " + file.getLocalOffset());
 
                     // If there is not a difference between the remote and
                     // local temporary file, set flag so we don't download.
                     if (tempCRC == file.getCRC32()) {
                         file.setTempFileUpToDate(true);
-                        System.err.println("The file " + file.getLocalOffset()
-                                + " is different, but there is an up to date "
-                                + " file in the tmp directory.");
+                        System.err.println("The file " + file.getLocalOffset() + " is different, but there is an up to date " + " file in the tmp directory.");
                     } else {
                         file.setTempFileUpToDate(false);
                     }
                     retval.add(file);
                 } else {
-                    System.err.println("Remote file " + file.getRemoteOffset()
-                            + " and local file " + file.getLocalOffset()
-                            + " appear to be the same.");
+                    System.err.println("Remote file " + file.getRemoteOffset() + " and local file " + file.getLocalOffset() + " appear to be the same.");
                 }
             }
             // File does not exist locally; retrieve it
             catch (FileNotFoundException e) {
-                System.err.println("File " + file.getLocalOffset()
-                        + " doesn't exist locally.  Retrieving.");
+                System.err.println("File " + file.getLocalOffset() + " doesn't exist locally.  Retrieving.");
 
                 // check the temp CRC to see if we need to flag for
                 // no download
                 if (tempCRC == file.getCRC32()) {
                     file.setTempFileUpToDate(true);
-                    System.err
-                            .println("File "
-                                    + file.getLocalOffset()
-                                    + " doesn't exist locally, but it is up "
-                                    + "to date in the temp directory, no need to download.");
+                    System.err.println("File " + file.getLocalOffset() + " doesn't exist locally, but it is up " + "to date in the temp directory, no need to download.");
                 } else {
                     file.setTempFileUpToDate(false);
                 }
@@ -175,15 +162,15 @@ public class VersionManifest {
          */
         String rootDir = fc.getSelectedFile().getPath() + File.separatorChar;
         String outFileName = rootDir + "files.txt";
-        
-        //Remove old manifest files
-        if ( new File(outFileName).exists() )
-        	new File(outFileName).delete();
-        if ( new File(rootDir+"Manifest.txt").exists() )
-        	new File(rootDir+"Manifest.txt").delete();
-        if ( new File(rootDir+"Manifest.txt.jar").exists() )
-        	new File(rootDir+"Manifest.txt.jar").delete();
-        
+
+        // Remove old manifest files
+        if (new File(outFileName).exists())
+            new File(outFileName).delete();
+        if (new File(rootDir + "Manifest.txt").exists())
+            new File(rootDir + "Manifest.txt").delete();
+        // if ( new File(rootDir+"Manifest.txt.jar").exists() )
+        // new File(rootDir+"Manifest.txt.jar").delete();
+
         // want to leave that last \ or / on
         // rootDir = rootDir.substring(0,rootDir.length()-1);
 
@@ -209,33 +196,29 @@ public class VersionManifest {
 
         try {
             if (file.isDirectory()) {
-            	//Dont bother sending the logs folder.
-            	if ( file.getAbsolutePath().endsWith("logs") 
-            			|| file.getAbsolutePath().endsWith("servers")
-            			|| file.getAbsolutePath().endsWith("campaign")
-            			|| file.getAbsolutePath().endsWith("mmconf") )
-            		return;
+                // Dont bother sending the logs folder.
+                if (file.getAbsolutePath().endsWith("logs") 
+                        || file.getAbsolutePath().endsWith("servers") 
+                        || file.getAbsolutePath().endsWith("campaign") 
+                        || file.getAbsolutePath().endsWith("mmconf"))
+                    return;
 
-            	File[] listFiles = file.listFiles();
+                File[] listFiles = file.listFiles();
                 for (File newFile : listFiles)
                     VersionManifest.printOutFiles(ps, newFile, root);
             } else {
 
                 String path = file.getAbsolutePath();
-                
-                //Dont want any windows Thumbs.db files
-                //are mwconfig files as those could 
-                //screw over the end users.
-                if ( path.endsWith("Thumbs.db") 
-                		|| path.endsWith("mwconfig.txt") 
-                		|| path.endsWith("mwconfig.txt.bak")
-                		|| path.endsWith("files.txt")
-                		|| path.endsWith("Manifest.txt")
-                		|| path.endsWith("Manifest.txt.jar"))
-                	return;
-                
+
+                // Dont want any windows Thumbs.db files
+                // are mwconfig files as those could
+                // screw over the end users.
+                if (path.endsWith("Thumbs.db") || path.endsWith("mwconfig.txt") || path.endsWith("mwconfig.txt.bak") || path.endsWith("files.txt") || path.endsWith("Manifest.txt") || path.endsWith("units.cache"))
+                    // || path.endsWith("Manifest.txt.jar"))
+                    return;
+
                 int index = path.indexOf(root);
-                
+
                 if (index > -1)
                     path = "./" + path.substring(index + root.length());
                 ps.println(path);
@@ -247,32 +230,26 @@ public class VersionManifest {
     }
 
     public static void main(String[] args) throws Exception {
-        BufferedReader manifestList = new BufferedReader(
-                new FileReader(args[0]));
+        BufferedReader manifestList = new BufferedReader(new FileReader(args[0]));
         String line;
         while ((line = manifestList.readLine()) != null) {
-            long crc32 = IOUtil.getCRC32(new BufferedInputStream(
-                    new FileInputStream(line)));
+            long crc32 = IOUtil.getCRC32(new BufferedInputStream(new FileInputStream(line)));
             System.out.println(line + separator + line + separator + crc32);
         }
     }
 
     private static void createManifestFile(String outPutFileName) {
         try {
-            BufferedReader manifestList = new BufferedReader(new FileReader(
-                    outPutFileName));
+            BufferedReader manifestList = new BufferedReader(new FileReader(outPutFileName));
 
-            String manifestFileName = outPutFileName.substring(0,
-                    outPutFileName.indexOf("files.txt"))
-                    + "Manifest.txt";
+            String manifestFileName = outPutFileName.substring(0, outPutFileName.indexOf("files.txt")) + "Manifest.txt";
             FileOutputStream out = new FileOutputStream(manifestFileName);
             PrintStream ps = new PrintStream(out);
 
-            String line,newLine  = "";
+            String line, newLine = "";
             while ((line = manifestList.readLine()) != null) {
-                long crc32 = IOUtil.getCRC32(new BufferedInputStream(
-                        new FileInputStream(line)));
-                newLine = IOUtil.replaceString(line,"\\", "/");
+                long crc32 = IOUtil.getCRC32(new BufferedInputStream(new FileInputStream(line)));
+                newLine = IOUtil.replaceString(line, "\\", "/");
                 ps.println(newLine + separator + newLine + separator + crc32);
             }
             // Basic folders that should be cleaned up regularly.
@@ -289,14 +266,14 @@ public class VersionManifest {
             out.flush();
             ps.close();
             out.close();
-            Runtime runtime = Runtime.getRuntime();
-            String[] call = { "jar", "-cf", "Manifest.txt.jar", "Manifest.txt" };
-            Process event = runtime.exec(call);
-            ProcessLogger outLogger = new ProcessLogger(event.getInputStream());
-            ProcessLogger errLogger = new ProcessLogger(event.getErrorStream());
-            outLogger.start();
-            errLogger.start();
-            event.waitFor();
+            /*
+             * Runtime runtime = Runtime.getRuntime(); String[] call = { "jar",
+             * "-cf", "Manifest.txt.jar", "Manifest.txt" }; Process event =
+             * runtime.exec(call); ProcessLogger outLogger = new
+             * ProcessLogger(event.getInputStream()); ProcessLogger errLogger =
+             * new ProcessLogger(event.getErrorStream()); outLogger.start();
+             * errLogger.start(); event.waitFor();
+             */
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -308,27 +285,15 @@ public class VersionManifest {
 
     public static String separator = "*";
 }
-
-class ProcessLogger extends Thread {
-
-    private InputStream m_in;
-
-    ProcessLogger(InputStream in) {
-        m_in = in;
-    }
-
-    @Override
-	public void run() {
-        try {
-            int c = 1;
-            while ((c = m_in.read()) != -1) {
-                System.out.print((char) c);
-                // System.out.flush();
-            }
-            m_in.close();
-        } catch (Exception e) {
-            System.err.println("Problem getting output");
-            e.printStackTrace();
-        }
-    }
-}
+/*
+ * class ProcessLogger extends Thread {
+ * 
+ * private InputStream m_in;
+ * 
+ * ProcessLogger(InputStream in) { m_in = in; }
+ * 
+ * @Override public void run() { try { int c = 1; while ((c = m_in.read()) !=
+ * -1) { System.out.print((char) c); // System.out.flush(); } m_in.close(); }
+ * catch (Exception e) { System.err.println("Problem getting output");
+ * e.printStackTrace(); } } }
+ */

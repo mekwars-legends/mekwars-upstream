@@ -42,7 +42,7 @@ public class MekWarsAutoUpdate {
      */
     private static final String CONFIG_FILE = "./data/mwconfig.txt";
     private static final String logFileName = "./logs/mekwarsautoupdate.log";
-    private static final String VERSION = "1.0";
+    private static final String VERSION = "2.0";
     private Properties config = null;
     private SplashWindow splash = null;
     

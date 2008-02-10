@@ -24,7 +24,12 @@ public class ReplaceFileDiff extends FileDiff
     @Override
 	public void apply(AutoUpdater updater, Repository repository)
     {
-        updater.setProgressNote("Updating " + localFileOffset_);
+        String file = localFileOffset_;
+        
+        if ( file.indexOf("/") > -1 )
+            file = ".."+file.substring(file.lastIndexOf("/"));
+        
+        updater.setProgressNote("Updating " + file);
         try
         {
             //get a stream to the remote file

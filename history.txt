@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.19.x
++ New MekWarAutoUpdate 2.0 no longer needs JDK to build manifest
++ RFE: MekWarsAutoUpdate no longer creates or uses Manifest.txt.jar 
 + New MegaMek.jar 0.33.18-MW020808-5475
 + Removed all References to MM removal Code Stack Pole
 Release Server/Client 0.2.19.0

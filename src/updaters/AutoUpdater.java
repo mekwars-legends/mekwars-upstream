@@ -64,7 +64,6 @@ import java.util.Hashtable;
 import java.io.BufferedInputStream;
 import java.net.URL;
 import java.io.IOException;
-import javax.swing.ProgressMonitor;
 import java.util.ArrayList;
 
 import updaters.utils.IOUtil;
@@ -94,20 +93,18 @@ public class AutoUpdater
         throws IOException
     {
         //set up progress monitor for getting manifest
-        int stepsCompleted = 0;
-        setMaximumSteps(1);
-        setProgress(stepsCompleted);
+        int stepsCompleted = 1;
 
+        
         setProgressNote("Updating to version " + version.getName());
 
         setProgressNote("Retrieving remote manifest");
         VersionManifest manifest = version.getManifest();
-        ++stepsCompleted;
 
         List<FileInfo> fileDiffInfos = manifest.getDiffInfos(this);
 
         //set up progress monitor for getting the rest of the files
-        setMaximumSteps(fileDiffInfos.size()+stepsCompleted);
+        setMaximumSteps(fileDiffInfos.size());
         setProgress(stepsCompleted);
 
         //for each file that differs, update it
@@ -119,6 +116,7 @@ public class AutoUpdater
             setProgress(++stepsCompleted);
         }
 
+        
         cleanUpLocalFiles(manifest);
     }
 
@@ -274,10 +272,10 @@ public class AutoUpdater
 
 
     public void setMaximumSteps(int max) {
-        /*if( progressMonitor_ != null )
+        if( splash != null )
         {
-            progressMonitor_.setMaximum(max);
-        }*/
+            splash.getProgressBar().setMaximum(max);
+        }
     }
 
     public void setProgressNote(String note) {
@@ -287,14 +285,14 @@ public class AutoUpdater
 
     public void setProgress(int stepsCompleted)
     {
-        /*if( progressMonitor_ != null )
+        if( splash != null )
         {
-            progressMonitor_.setProgress(stepsCompleted);
-        }*/
+            
+            splash.getProgressBar().setValue(stepsCompleted);
+        }
     }
 
     protected File localDir_;
     protected Hashtable<String,File> copyMap_ = new Hashtable<String,File>();
-    protected ProgressMonitor progressMonitor_;
 }
 
