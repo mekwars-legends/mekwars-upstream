@@ -89,7 +89,7 @@ public class RemoveVoteCommand implements Command {
 		boolean hasVoteForRecipient = false;
 		Vote v = null;
 		while (e.hasMoreElements() && !hasVoteForRecipient) {
-			v = (Vote)e.nextElement();
+			v = e.nextElement();
 			if (v.getRecipient().equals(recipientName)) {
 				hasVoteForRecipient = true;
 			}

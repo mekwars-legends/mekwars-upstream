@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.19.x
+- Removed unneccessary casts in various files
++ Fixed potential NPEs in various files
 + Unit / Pilot kills saved to database historical data
 + New MekWarAutoUpdate 2.0 no longer needs JDK to build manifest
 + RFE: MekWarsAutoUpdate no longer creates or uses Manifest.txt.jar 

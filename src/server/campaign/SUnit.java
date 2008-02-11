@@ -1262,7 +1262,8 @@ public final class SUnit extends Unit implements Serializable {
                     }
                 }
 
-                ent = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
+                if(ms != null)
+                	ent = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
             } catch (Exception exep) {
                 ent = null;
             }

@@ -87,6 +87,9 @@ public class SetUnitAmmoCommand implements Command {
 			location++;
 		}
 		
+		if(mWeapon == null)
+			return;
+		
 		AmmoType currAmmo = (AmmoType)mWeapon.getType();
 		AmmoType at = unit.getEntityAmmo(weaponType,ammoName);
 

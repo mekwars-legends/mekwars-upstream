@@ -188,7 +188,7 @@ public class AttackCommand implements Command {
 	        		SPlayer joiningPlayer = attackingFaction.getActivePlayers().get(player);
 	        		for ( SArmy army : joiningPlayer.getArmies() ) {
 		        		String failures = manager.validateShortAttack(joiningPlayer, army, o, target, longID,true);
-		        		if ( failures != null && !s.trim().equals("") )
+		        		if ( failures != null && s != null && !s.trim().equals("") )
 		        			continue;
 		        		sendCommand = true;
 						toSend.append("<a href=\"MEKWARS/c joinattack#" + ap.getName()  + "#" + army.getID()+ "\">Army #"

@@ -187,7 +187,7 @@ public class MercHouse extends SHouse {
 		e = getOutstandingContracts().elements();
 		while (e.hasMoreElements())
 		{
-			ContractInfo ci = (ContractInfo)e.nextElement();
+			ContractInfo ci = e.nextElement();
 			result.append(ci.toString());
 			result.append("|");
 		}

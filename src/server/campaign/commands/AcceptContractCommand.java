@@ -62,6 +62,12 @@ public class AcceptContractCommand implements Command {
 				}
 			}//end if(reciev = user)
 		}//end for(search vector)
+		
+		if(info == null) {
+			// No contract found
+			return;
+		}
+		
 		if (contractAccepted) {
 			CampaignMain.cm.toUser("AM:You have accepted the contract offered by " + offeringPlayerName + " and are now in the employment of " + (offeringPlayer.getMyHouse()).getName(),Username,true);
 			CampaignMain.cm.toUser(claimingPlayerName + "has accepted your contract offer.",offeringPlayerName,true);

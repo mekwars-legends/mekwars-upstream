@@ -335,7 +335,8 @@ public class ExclusionList {
 		} catch(SQLException e) {
 			MWServ.mwlog.dbLog("SQLException in ExclusionList.toDB: " + e.getMessage());
 			MWServ.mwlog.dbLog("  -> " + sql);
-			MWServ.mwlog.dbLog("    -> " + ps.toString());
+			if(ps != null)
+				MWServ.mwlog.dbLog("    -> " + ps.toString());
 		}
 	}
 	

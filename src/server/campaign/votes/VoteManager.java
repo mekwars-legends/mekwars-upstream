@@ -56,7 +56,7 @@ public class VoteManager {
 		//dupe has already been found, no need to continue
 		while (e.hasMoreElements() && !dupeFound) {
 			//get next element and reset booleans
-			nextVote = (Vote)e.nextElement();
+			nextVote = e.nextElement();
 			
 			if (nextVote.isEqualTo(v, false)) {
 				dupeFound = true;
@@ -132,7 +132,7 @@ public class VoteManager {
 		//look while elements remain, but stop once there
 		//has been a removal.
 		while (i.hasNext() && !voteRemoved) {
-			Vote nextVote = (Vote)i.next();
+			Vote nextVote = i.next();
 			if (nextVote.isEqualTo(v, true)) {
 				i.remove();//remove the vote from the voteVector
 				voteRemoved = true;//change the return value
