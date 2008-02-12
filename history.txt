@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.19.x
++ Bug: Player name not being trimed when creating MegaMek Connection
+- Removed ClientThread from MWDed
 + new MegaMek.jar 0.33.18-MW021208-5477
 + Fixed Code Broken hooks into MegaMek.
 - Removed unneccessary casts in various files

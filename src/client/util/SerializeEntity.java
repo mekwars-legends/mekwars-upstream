@@ -41,7 +41,7 @@ public class SerializeEntity{
 			if ( !(e instanceof MechWarrior))
 			{
 				result.append(e.getExternalId() + "*");
-				result.append(e.getOwner().getName() + "*");
+				result.append(e.getOwner().getName().trim() + "*");
 				result.append(e.getCrew().getHits() + "*");
 				
 				if (forceDevastate)

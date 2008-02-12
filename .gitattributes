@@ -1338,7 +1338,6 @@ src/common/util/UnitUtils.java -text
 src/dedicatedhost/CConfig.java -text
 src/dedicatedhost/CMWLogger.java -text
 src/dedicatedhost/CUser.java -text
-src/dedicatedhost/ClientThread.java -text
 src/dedicatedhost/MWDedHost.java -text
 src/dedicatedhost/cmd/CS.java -text
 src/dedicatedhost/cmd/Command.java -text

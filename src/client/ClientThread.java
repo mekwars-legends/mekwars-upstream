@@ -115,7 +115,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
     // CONSTRUCTOR
     public ClientThread(String name, String servername, String ip, int port, MWClient mwclient, ArrayList<Unit> mechs, ArrayList<CUnit> autoarmy) {
-        myname = name;
+        myname = name.trim();
         serverName = servername;
         serverip = ip;
         serverport = port;
