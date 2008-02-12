@@ -71,7 +71,7 @@ public final class MWDedHost implements IClient {
     public static final int STATUS_DISCONNECTED = 0;
     public static final int STATUS_LOGGEDOUT = 1;
 
-    public static final String CLIENT_VERSION = "0.2.17.0"; // change this with
+    public static final String CLIENT_VERSION = "0.2.19.0"; // change this with
     // all client
     // changes @Torren
 
