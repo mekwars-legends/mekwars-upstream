@@ -225,7 +225,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     // "+myClient.getBoardSize().height+"Map x:
                     // "+myClient.getMapSize().width+"Map y:
                     // "+myClient.getMapSize().height);
-                    Vector<String> boardvec = new Vector<String>(1, 1);
+                    ArrayList<String> boardvec = new ArrayList<String>();
                     if (aTerrain.getStaticMapName().equalsIgnoreCase("surprise")) {
                         int maxBoards = aTerrain.getXBoardSize() * aTerrain.getYBoardSize();
                         for (int i = 0; i < maxBoards; i++)
@@ -266,12 +266,12 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                         mySettings.setTheme("");
 
                     /* select the map */
-                    Vector<String> boardvec = new Vector<String>(1, 1);
+                    ArrayList<String> boardvec = new ArrayList<String>();
                     boardvec.add(MapSettings.BOARD_GENERATED);
                     mySettings.setBoardsSelectedVector(boardvec);
 
                     if (mwclient.getBuildingTemplate() != null && mwclient.getBuildingTemplate().getTotalBuildings() > 0) {
-                        Vector<BuildingTemplate> buildingList = generateRandomBuildings(mySettings, mwclient.getBuildingTemplate());
+                        ArrayList<BuildingTemplate> buildingList = generateRandomBuildings(mySettings, mwclient.getBuildingTemplate());
                         mySettings.setBoardBuildings(buildingList);
                     } else if (!env.getCityType().equalsIgnoreCase("NONE")) {
                         mySettings.setRoadParam(0);
@@ -801,8 +801,8 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
      * Scans the boards directory for map boards of the appropriate size and
      * returns them.
      */
-    private Vector<String> scanForBoards(int boardWidth, int boardHeight) {
-        Vector<String> boards = new Vector<String>(1, 1);
+    private ArrayList<String> scanForBoards(int boardWidth, int boardHeight) {
+        ArrayList<String> boards = new ArrayList<String>();
         // Board Board = client.game.getBoard();
         File boardDir = new File("data/boards");
 
@@ -826,24 +826,24 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
         // if there are any boards, add these:
         if (tempList.size() > 0) {
-            boards.addElement(MapSettings.BOARD_RANDOM);
-            boards.addElement(MapSettings.BOARD_SURPRISE);
-            boards.addElement(MapSettings.BOARD_GENERATED);
+            boards.add(MapSettings.BOARD_RANDOM);
+            boards.add(MapSettings.BOARD_SURPRISE);
+            boards.add(MapSettings.BOARD_GENERATED);
             Collections.sort(tempList, sortComp);
             for (int loop = 0; loop < tempList.size(); loop++) {
-                boards.addElement(tempList.elementAt(loop));
+                boards.add(tempList.elementAt(loop));
             }
         } else {
-            boards.addElement(MapSettings.BOARD_GENERATED);
+            boards.add(MapSettings.BOARD_GENERATED);
         }
 
         return boards;
     }
 
-    private Vector<BuildingTemplate> generateRandomBuildings(MapSettings mapSettings, Buildings buildingTemplate) {
+    private ArrayList<BuildingTemplate> generateRandomBuildings(MapSettings mapSettings, Buildings buildingTemplate) {
 
-        Vector<BuildingTemplate> buildingList = new Vector<BuildingTemplate>();
-        Vector<String> buildingTypes = new Vector<String>(1, 1);
+        ArrayList<BuildingTemplate> buildingList = new ArrayList<BuildingTemplate>();
+        ArrayList<String> buildingTypes = new ArrayList<String>();
 
         int width = mapSettings.getBoardWidth();
         int height = mapSettings.getBoardHeight();
@@ -889,7 +889,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
         for (int count = 0; count < buildingTemplate.getTotalBuildings(); count++) {
             int loops = 0;
             boolean CFx2 = false;
-            Vector<Coords> coordList = new Vector<Coords>(1, 1);
+            ArrayList<Coords> coordList = new ArrayList<Coords>();
             do {
                 if (loops++ > 100) {
                     CFx2 = true;
@@ -937,9 +937,9 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
             int type = 1;
             try {
                 if (typeSize == 1)
-                    type = Integer.parseInt(buildingTypes.elementAt(0));
+                    type = Integer.parseInt(buildingTypes.get(0));
                 else
-                    type = Integer.parseInt(buildingTypes.elementAt(r.nextInt(typeSize)));
+                    type = Integer.parseInt(buildingTypes.get(r.nextInt(typeSize)));
             } catch (Exception ex) {
             } // someone entered a bad building type.
 

@@ -52,7 +52,7 @@ import java.awt.event.WindowListener;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.Map;
 import java.util.Vector;
 import java.util.Arrays;
 
@@ -301,7 +301,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
 		filterMechs();
 		unitLoadingDialog.setVisible(false);
 		
-		final Hashtable hFailedFiles = MechSummaryCache.getInstance().getFailedFiles();
+		final Map<String,String> hFailedFiles = MechSummaryCache.getInstance().getFailedFiles();
 		if (hFailedFiles != null && hFailedFiles.size() > 0) {
 			new UnitFailureDialog(clientgui, hFailedFiles); // self-showing dialog
 		}

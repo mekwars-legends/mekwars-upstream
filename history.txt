@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.19.x
++ new MegaMek.jar 0.33.18-MW021208-5477
++ Fixed Code Broken hooks into MegaMek.
 - Removed unneccessary casts in various files
 + Fixed potential NPEs in various files
 + Unit / Pilot kills saved to database historical data

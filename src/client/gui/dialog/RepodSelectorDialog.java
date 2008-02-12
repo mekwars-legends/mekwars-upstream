@@ -46,7 +46,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowListener;
 
-import java.util.Hashtable;
+import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.Vector;
@@ -239,7 +239,7 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
 		sortMechs();
 		unitLoadingDialog.setVisible(false);
 		
-		final Hashtable hFailedFiles = MechSummaryCache.getInstance().getFailedFiles();
+		final Map<String, String> hFailedFiles = MechSummaryCache.getInstance().getFailedFiles();
 		if (hFailedFiles != null && hFailedFiles.size() > 0) {
 			new UnitFailureDialog(clientgui, hFailedFiles); // self-showing dialog
 		}
