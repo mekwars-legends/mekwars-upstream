@@ -19,6 +19,7 @@ package server.campaign.commands.admin;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import common.House;
 import common.Planet;
 
 import server.campaign.commands.Command;
@@ -54,6 +55,11 @@ public class AdminReturnPlanetsToOriginalOwnersCommand implements Command {
 		if (!command.hasMoreTokens() || !command.nextToken().equalsIgnoreCase("confirm")) {
 			CampaignMain.cm.toUser("Are you *ABSOLUTELY SURE* you want to return planets to their original owners? This cannot be easily reversed. If so, [<a href=\"MEKWARS/c adminreturnplanetstooriginalowners#confirm#confirm\">click to re-confirm.</a>",Username,true);
 			return;
+		}
+		
+		for ( House currH : CampaignMain.cm.getData().getAllHouses() ){
+		    SHouse h = (SHouse)currH;
+		    h.getPlanets().clear();
 		}
 		
 		//doubly confirmed. loop through every planet and restore it to the original owner
