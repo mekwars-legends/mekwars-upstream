@@ -60,6 +60,8 @@ public class AdminReturnPlanetsToOriginalOwnersCommand implements Command {
 		for ( House currH : CampaignMain.cm.getData().getAllHouses() ){
 		    SHouse h = (SHouse)currH;
 		    h.getPlanets().clear();
+		    h.setComponentProduction(0);
+		    
 		}
 		
 		//doubly confirmed. loop through every planet and restore it to the original owner
