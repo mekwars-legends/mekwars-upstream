@@ -247,13 +247,15 @@ public class CUserListPanel extends JPanel implements ActionListener{
 		
 		if ( activate ) {
 			setActivateButtonText("Activate");
-			mwclient.doPlaySound("./data/sounds/deactivate.wav");
+			if ( mwclient.getConfig().isParam("ENABLEDEACTIVATESOUND"))
+			    mwclient.doPlaySound(mwclient.getConfigParam("SOUNDONDEACTIVATE"));
 			ActivationThread  animator = new ActivationThread(mwclient,ActivityButton,deactivateFlashIcon,activateIcon,mouseActivateIcon);
 			animator.start();
 
 		}else {
 			setActivateButtonText("Deactivate");
-			mwclient.doPlaySound("./data/sounds/activate.wav");
+            if ( mwclient.getConfig().isParam("ENABLEACTIVATESOUND"))
+                mwclient.doPlaySound(mwclient.getConfigParam("SOUNDONACTIVATE"));
 			ActivationThread  animator = new ActivationThread(mwclient,ActivityButton,activateFlashIcon,deactivateIcon,mouseDeactivateIcon);
 			animator.start();
 		}

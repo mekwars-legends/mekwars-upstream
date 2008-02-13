@@ -596,7 +596,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                     	cost = (int)Math.ceil(ammoCost*(double)refillShots);
                     }
 
-                    MWClient.mwClientLog.clientErrLog("Cost: "+cost+" string: "+mwclient.moneyOrFluMessage(true,true,cost));
+                    //MWClient.mwClientLog.clientErrLog("Cost: "+cost+" string: "+mwclient.moneyOrFluMessage(true,true,cost));
                 	if ( usingCrits )
                 		m_choice.addItem(at.getName()+" ("+shotsLeft+"/"+refillShots+"/"+mwclient.getPlayer().getPartsCache().getPartsCritCount(at.getInternalName())+")");
                 	else

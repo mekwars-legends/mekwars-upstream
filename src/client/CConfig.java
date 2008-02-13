@@ -187,11 +187,25 @@ public class CConfig {
 		defaults.setProperty("SOUNDONMESSAGE", "./data/sounds/mail.wav");
 		defaults.setProperty("SOUNDONATTACK", "./data/sounds/attack.wav");
 		defaults.setProperty("SOUNDONBMWIN", "./data/sounds/radarping.wav");
-		defaults.setProperty("ENABLECALLSOUND","YES");
+		defaults.setProperty("SOUNDONACTIVATE", "./data/sounds/activate.wav");
+        defaults.setProperty("SOUNDONDEACTIVATE", "./data/sounds/deactivate.wav");
+        defaults.setProperty("SOUNDONENEMYDETECTED", "./data/sounds/enemy detected.wav");
+        defaults.setProperty("SOUNDONEXITCLIENT", "./data/sounds/exit client.wav");
+        defaults.setProperty("SOUNDONMENU", "./data/sounds/menu.wav");
+        defaults.setProperty("SOUNDONMENUPOPUP", "./data/sounds/menu popup.wav");
+
+        defaults.setProperty("ENABLECALLSOUND","YES");
 		defaults.setProperty("ENABLEKEYWORDSOUND","YES");
 		defaults.setProperty("ENABLEMESSAGESOUND","YES");
 		defaults.setProperty("ENABLEATTACKSOUND","YES");
 		defaults.setProperty("ENABLEBMSOUND","YES");
+        defaults.setProperty("ENABLEACTIVATESOUND", "YES");
+        defaults.setProperty("ENABLEDEACTIVATESOUND", "YES");
+        defaults.setProperty("ENABLEENEMYDETECTEDSOUND", "YES");
+        defaults.setProperty("ENABLEEXITCLIENTSOUND", "YES");
+        defaults.setProperty("ENABLEMENUSOUND", "YES");
+        defaults.setProperty("ENABLEMENUPOPUPSOUND", "YES");
+        
 		defaults.setProperty("SOUNDSFROMSYSMESSAGES","NO");
 		//tab properties
 		defaults.setProperty("HQTABVISIBLE", "YES");

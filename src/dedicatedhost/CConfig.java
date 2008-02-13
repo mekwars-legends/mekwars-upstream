@@ -17,7 +17,6 @@
 
 package dedicatedhost;
 
-import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -25,9 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Properties;
-import java.util.TreeMap;
 
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -35,20 +32,15 @@ import javax.swing.JOptionPane;
  */
 public class CConfig {
 	
-	//VARIABLES
-	public static final String IMAGE_PATH = "data/images/";
-	public static final String CAMO_PATH = "data/images/camo/";
 	public static final String CONFIG_FILE = "./data/mwconfig.txt";
     public static final String CONFIG_BACKUP_FILE = "./data/mwconfig.txt.bak";
 	
 	private Properties config;                //config. player values.
-	private TreeMap<String,ImageIcon> images; // treemap with images
 	
 	//CONSTRUCTOR
 	public CConfig(boolean dedicated) {
 		
 		config = setDefaults();		
-		images = new TreeMap<String,ImageIcon>();
 
 		//check to see if a config is present. if not, make one.
         if ( !(new File(CONFIG_FILE).exists()) && !(new File(CONFIG_BACKUP_FILE).exists()) )
@@ -105,26 +97,8 @@ public class CConfig {
             MWDedHost.MWDedHostLog.clientErrLog(ex);
         }
 		
-		//if a -d arg was passed, set dedicated to true
-		if (dedicated)
-			setParam("DEDICATED","TRUE");
+		setParam("DEDICATED","TRUE");
 		
-		//deds have no gui, so dont load images.
-		if (this.isParam("DEDICATED"))
-			return;
-			
-		//not a ded, so fill the images treemap
-		images = new TreeMap<String,ImageIcon>();
-		
-		loadImage(IMAGE_PATH + "logout_colored.gif", "LOGOUT", 20, 20);
-		loadImage(IMAGE_PATH + "reserve_colored.gif", "RESERVE", 20, 20);
-		loadImage(IMAGE_PATH + "active_colored.gif", "ACTIVE", 20, 20);
-		loadImage(IMAGE_PATH + "fighting_colored.gif", "FIGHT", 20, 20);
-		loadImage(IMAGE_PATH + getParam("LOGOIMAGE"), "LOGO", 100, 100);
-		loadImage(IMAGE_PATH + getParam("TRAYIMAGE"), "TRAY", 20, 20);
-		loadImage(IMAGE_PATH + getParam("REPAIRIMAGE"), "REPAIR",100,100);
-		if (getParam("UNITCAMO").trim().length() != 0)
-			loadImage(CAMO_PATH + getParam("UNITCAMO"), "CAMO", 84, 72);
 	}
 	
 	//METHODS
@@ -142,243 +116,18 @@ public class CConfig {
 		defaults.setProperty("SERVERIP", "");
 		defaults.setProperty("SERVERPORT", "2347");
 		defaults.setProperty("DATAPORT", "4867");
-		defaults.setProperty("AUTOCONNECT", "NO");
 		defaults.setProperty("TIMEOUT", "180");
-		//GUI properties
-		defaults.setProperty("LOOKANDFEEL", "system"); // look and feel type
-		defaults.setProperty("TIMESTAMP", "YES");
 		//dedicated properties
-		defaults.setProperty("DEDICATED", "NO");
+		defaults.setProperty("DEDICATED", "YES");
 		defaults.setProperty("DEDICATEDOWNERNAME", "");
-		//MainFrame properties
-		defaults.setProperty("SPLITTERSIZE", "7"); // divider thickness
-		defaults.setProperty("PLAYERPANEL", "YES"); // visible player panel
-		defaults.setProperty("PLAYERPANELHEIGHT", "130"); // player panel height (excluding logo height)
-		defaults.setProperty("LOGO", "NO"); // logo visible
-		//defaults.setProperty("LOGOIMAGE","logo.jpg");
-		defaults.setProperty("POPUPONATTACK", "YES"); // pop up dialog on attack
-		defaults.setProperty("POPUPONMESSAGE", "NO"); // pop up dialog on popup message
-		//HQ Panel properties
-		defaults.setProperty("UNITCAMO", "Flame.jpg"); // camouflage for units in hangar bay
-		defaults.setProperty("UNITHEX", "NO"); // hexes for units in hangar bay
-		defaults.setProperty("HQCOLORSCHEME", "grey");//colors for unit backgrounds in HQ
-		defaults.setProperty("UNITAMOUNT", "10"); // hexes for units in hangar bay
-		//UserList properties
-		defaults.setProperty("USERLISTBOLD", "YES"); // bold names on userlist
-		defaults.setProperty("USERLISTCOLOR", "YES"); // colored names on userlist
-		defaults.setProperty("USERLISTIMAGE", "YES"); // images on userlist
-		defaults.setProperty("USERLISTCOUNT", "YES"); // player count on userlist
-		defaults.setProperty("USERLISTDEDICATEDS", "NO"); // show dedicated hosts on userlist
-		defaults.setProperty("USERLISTACTIVITYBTN","YES");//show activate/deactivate button
-		//Chat properties
-		defaults.setProperty("MAINCHANNELHM", "NO"); // show factionmail in main channel
-		defaults.setProperty("MAINCHANNELPM", "NO"); // show privatemail in main channel
-		defaults.setProperty("MAINCHANNELSM", "NO"); // show system messages in main channel
-		defaults.setProperty("MAINCHANNELMISC", "NO"); // show misc messages in main channel
-		defaults.setProperty("MAINCHANNELRPG", "NO"); //show in char messages in main channel
-		defaults.setProperty("AUTOSCROLL", "NO"); // automatic chat scrolling
-		defaults.setProperty("REPLYTOSENDER", "YES"); // PM tab replies to last mail sender
-		defaults.setProperty("REPLYTORECEIVER", "NO"); // PM tab replies to last mail sender
-		defaults.setProperty("CHATFONTSIZE", "+0");
-		defaults.setProperty("CHATFONTCOLOR", "black");
-		//sound properties
-		defaults.setProperty("SOUNDONCALL", "./data/sounds/call.wav");
-		defaults.setProperty("SOUNDONKEYWORD", "./data/sounds/call.wav");
-		defaults.setProperty("SOUNDONMESSAGE", "./data/sounds/mail.wav");
-		defaults.setProperty("SOUNDONATTACK", "./data/sounds/attack.wav");
-		defaults.setProperty("SOUNDONBMWIN", "./data/sounds/radarping.wav");
-		defaults.setProperty("ENABLECALLSOUND","YES");
-		defaults.setProperty("ENABLEKEYWORDSOUND","YES");
-		defaults.setProperty("ENABLEMESSAGESOUND","YES");
-		defaults.setProperty("ENABLEATTACKSOUND","YES");
-		defaults.setProperty("ENABLEBMSOUND","YES");
-		defaults.setProperty("SOUNDSFROMSYSMESSAGES","NO");
-		//tab properties
-		defaults.setProperty("HQTABVISIBLE", "YES");
-		defaults.setProperty("HQTABNAME", "Headquarters");
-		defaults.setProperty("HQINTOPROW", "YES");
-		defaults.setProperty("HQMNEMONIC", "Q");
-		defaults.setProperty("BMTABVISIBLE", "YES");
-		defaults.setProperty("BMTABNAME", "Black Market");
-		defaults.setProperty("BMINTOPROW", "YES");
-		defaults.setProperty("BMMNEMONIC", "L");
-		defaults.setProperty("BMETABVISIBLE", "YES");
-		defaults.setProperty("BMETABNAME", "Parts Black Market");
-		defaults.setProperty("BMEINTOPROW", "YES");
-		defaults.setProperty("BMEMNEMONIC", "P");
-		defaults.setProperty("HSTATUSTABVISIBLE", "YES");
-		defaults.setProperty("HSTATUSTABNAME", "Faction Status");
-		defaults.setProperty("HSTATUSINTOPROW", "Yes");
-		defaults.setProperty("HSTATUSMNEMONIC", "U");
-		defaults.setProperty("BATTLETABVISIBLE", "YES");
-		defaults.setProperty("BATTLETABNAME", "Battles");
-		defaults.setProperty("BATTLEINTOPROW", "YES");
-		defaults.setProperty("BATTLEMNEMONIC", "B");
-		defaults.setProperty("MAPTABVISIBLE", "YES");
-		defaults.setProperty("MAPTABONCLICK","YES");
-		defaults.setProperty("MAPTABNAME", "Map");
-		defaults.setProperty("MAPINTOPROW", "NO");
-		defaults.setProperty("MAPMNEMONIC", "A");
-		defaults.setProperty("PANELDIVIDER", "200");
-		defaults.setProperty("PLAYERPANELDIVIDER", "-1");
-		defaults.setProperty("VERTICALDIVIDER", "800");
-		defaults.setProperty("MAINCHANNELTABNAME", "Main Channel");
-		defaults.setProperty("MAINCHANNELMNEMONIC", "M");
-		defaults.setProperty("HOUSEMAILVISIBLE", "YES");
-		defaults.setProperty("HOUSEMAILTABNAME", "Faction Channel");
-		defaults.setProperty("HOUSEMAILMNEMONIC", "H");
-		defaults.setProperty("PRIVATEMAILVISIBLE", "YES");
-		defaults.setProperty("PRIVATEMAILTABNAME", "Private Channel");
-		defaults.setProperty("PRIVATEMAILMNEMONIC", "P");
-		defaults.setProperty("PERSONALLOGVISIBLE", "YES");
-		defaults.setProperty("PERSONALLOGTABNAME", "Personal Log");
-		defaults.setProperty("PERSONALLOGMNEMONIC", "L");
-		defaults.setProperty("SYSTEMLOGVISIBLE", "NO");
-		defaults.setProperty("SYSTEMLOGTABNAME", "System Log");
-		defaults.setProperty("SYSTEMLOGMNEMONIC", "Y");
-		defaults.setProperty("MISCELLANEOUSVISIBLE", "YES");
-		defaults.setProperty("MISCELLANEOUSTABNAME", "Miscellaneous");
-		defaults.setProperty("MISCELLANEOUSMNEMONIC", "A");
-		defaults.setProperty("RPGVISIBLE", "NO");
-		defaults.setProperty("RPGTABNAME", "RP Channel");
-		defaults.setProperty("RPGMNEMONIC", "R");
-		defaults.setProperty("F1BIND", "mystatus");
-		defaults.setProperty("F2BIND", "");
-		defaults.setProperty("F3BIND", "");
-		defaults.setProperty("F4BIND", "");
-		defaults.setProperty("F5BIND", "");
-		defaults.setProperty("DEFAULTARMYNAME", "");
 		defaults.setProperty("DEDAUTORESTART", "10");
-		defaults.setProperty("CAMPAIGNSERVERNAME", "MekWars Server");
-		defaults.setProperty("STATUSINTRAYICON", "NO");
-		defaults.setProperty("TRAYIMAGE", "reserve_colored.gif");
-		defaults.setProperty("REPAIRIMAGE", "repair.gif");
-		defaults.setProperty("DISABLEALLSOUND", "false");//option menu, mute.
-		defaults.setProperty("SORTMODE","NAME");//player list sort
-		defaults.setProperty("SORTORDER","ASCENDING");//player list order
-		defaults.setProperty("BMSORTCOLUMN","-2");
-		defaults.setProperty("BMSORTORDER","true");
-		defaults.setProperty("BATTLESSORTCOLUMN","0");
-		defaults.setProperty("BATTLESSORTORDER","true");
-		defaults.setProperty("TABLEBROWSERSORTCOLUMN","3");
-		defaults.setProperty("TABLEBROWSERSORTORDER","false");
-		defaults.setProperty("BMESORTCOLUMN","-2");
-		defaults.setProperty("BMESORTORDER","true");
-		defaults.setProperty("UNITVIEWERWEIGHT","All");
-		defaults.setProperty("UNITVIEWERTECH","All");
-		defaults.setProperty("UNITVIEWERTYPE","Mek");
-		defaults.setProperty("UNITVIEWERSORT","Name");
-		defaults.setProperty("UNITVIEWERUNIT","-1");
-		
-		defaults.setProperty("TABLEVIEWERFACTION","");
-		defaults.setProperty("TABLEVIEWERTYPE","Mek");
-		defaults.setProperty("TALEVIEWERWEIGHT","Light");
-		
-		defaults.setProperty("PRIMARYHQSORTORDER","name");
-		defaults.setProperty("SECONDARYHQSORTORDER","none");
-		defaults.setProperty("TERTIARYHQSORTORDER","none");
-		defaults.setProperty("PRIMARYARMYSORTORDER","id number");
-		defaults.setProperty("DARKERMAP","false");
-		defaults.setProperty("BMPREVIEWIMAGE","false");
-		defaults.setProperty("PLAYERCHATCOLORMODE","playercolors");
-		defaults.setProperty("COLOREDEMOTES","false");
-		defaults.setProperty("SELECTEDPLANET","");
-		defaults.setProperty("MAPZOOMLEVEL","1");
-		defaults.setProperty("MAPYOFFSET","0");
-		defaults.setProperty("MAPXOFFSET","0");
-		defaults.setProperty("SHOWENTERANDEXIT", "true");
-		defaults.setProperty("CHALLENGESTRING","Looking for a game at");
-		defaults.setProperty("SYSMESSAGECOLOR","red");
-		defaults.setProperty("NOIMGINCHAT","false");
 		defaults.setProperty("SERVERPORT","2347");
 		defaults.setProperty("DATAPORT","4867");
 		defaults.setProperty("PORT","2346");
 		defaults.setProperty("MAXPLAYERS","12");
-		defaults.setProperty("MAXSAVEDGAMEDAYS","30");
-		defaults.setProperty("VIEWFLUFF","false");
-		defaults.setProperty("USEMULTIPLEPM","false");
-		defaults.setProperty("MAXPMTABS","5");
-		defaults.setProperty("MAXPMMESSAGE","Sorry I Am Busy Try Again Later.");
-		defaults.setProperty("MAPFILTER1","true$false$true$true$true$true$true");
-		defaults.setProperty("MAPFILTER2","true$false$true$true$true$true$true");
-		defaults.setProperty("TRAYIMAGE","reserve_colored.gif");
-				
-		//empty ignore & keyword lists
-		defaults.setProperty("IGNOREPUBLIC","");
-		defaults.setProperty("IGNOREHOUSE","");
-		defaults.setProperty("IGNOREPRIVATE","");
-		defaults.setProperty("KEYWORDS","");
-		
-        defaults.setProperty("DEDUPDATECOMMANDFILE","");
-        defaults.setProperty("AUTOUPDATECOMMANDFILE","");
-
-        defaults.setProperty("MAPOVERLAYCOLOR","#D3D3D3");
-        defaults.setProperty("SOCKETTIMEOUTDELAY","2000");
-
-        //Star Map Image Over Lay Settings
-        defaults.setProperty("MAPIMAGEX","0");
-        defaults.setProperty("MAPIMAGEY","0");
-        defaults.setProperty("MAPIMAGEHEIGHT","100");
-        defaults.setProperty("MAPIMAGEWIDTH","100");
-        
+		defaults.setProperty("MAXSAVEDGAMEDAYS","7");
         defaults.setProperty("UPDATEKEY","-1");
         
-        //unitstatus setting
-        //Right column
-        defaults.setProperty("RIGHTCOLUMNDYNAMIC", "false");
-        defaults.setProperty("RIGHTPILOTEJECT", "false");
-        defaults.setProperty("RIGHTREPAIR", "false");
-        defaults.setProperty("RIGHTENGINE", "false");
-        defaults.setProperty("RIGHTEQUIPMENT", "false");
-        defaults.setProperty("RIGHTARMOR", "false");
-        defaults.setProperty("RIGHTSLITE", "false");
-        defaults.setProperty("RIGHTAMMO", "false");
-        defaults.setProperty("RIGHTCOMMANDER", "false");
-        //Left Column
-        defaults.setProperty("LEFTCOLUMNDYNAMIC", "false");
-        defaults.setProperty("LEFTPILOTEJECT", "false");
-        defaults.setProperty("LEFTREPAIR", "false");
-        defaults.setProperty("LEFTENGINE", "false");
-        defaults.setProperty("LEFTEQUIPMENT", "false");
-        defaults.setProperty("LEFTARMOR", "false");
-        defaults.setProperty("LEFTSLITE", "false");
-        defaults.setProperty("LEFTAMMO", "false");
-        defaults.setProperty("LEFTCOMMANDER", "false");
-        
-        //enable or disable splash screen
-        defaults.setProperty("ENABLESPLASHSCREEN", "true");
-        
-        //Window Locations
-        defaults.setProperty("WINDOWSTATE", "0");
-        defaults.setProperty("WINDOWHEIGHT", "100");
-        defaults.setProperty("WINDOWWIDTH", "100");
-        defaults.setProperty("WINDOWLEFT", "0");
-        defaults.setProperty("WINDOWTOP", "0");
-        
-        //Bulk Repair Options
-        defaults.setProperty("REPAIRARMORTECH", "0");
-        defaults.setProperty("REPAIRARMORROLL", "9");
-        defaults.setProperty("REPAIRINTERNALTECH", "0");
-        defaults.setProperty("REPAIRINTERNALROLL", "9");
-        defaults.setProperty("REPAIRWEAPONSTECH", "0");
-        defaults.setProperty("REPAIRWEAPONSROLL", "9");
-        defaults.setProperty("REPAIREQUIPMENTTECH", "0");
-        defaults.setProperty("REPAIREQUIPMENTROLL", "9");
-        defaults.setProperty("REPAIRSYSTEMSTECH", "0");
-        defaults.setProperty("REPAIRSYSTEMSROLL", "9");
-        defaults.setProperty("REPAIRENGINESTECH", "0");
-        defaults.setProperty("REPAIRENGINESROLL", "9");
-
-        //Salvage Options
-        defaults.setProperty("SALVAGEARMORTECH", "0");
-        defaults.setProperty("SALVAGEINTERNALTECH", "0");
-        defaults.setProperty("SALVAGEWEAPONSTECH", "0");
-        defaults.setProperty("SALVAGEEQUIPMENTTECH", "0");
-        defaults.setProperty("SALVAGESYSTEMSTECH", "0");
-        defaults.setProperty("SALVAGEENGINESTECH", "0");
-        
-        //Client colors
-        defaults.setProperty("BACKGROUNDCOLOR", "#FFFFFF");
         return defaults;
 	}
 	
@@ -497,32 +246,6 @@ public class CConfig {
 	}
 	
 	/**
-	 * Load an image. Used by the CConfig constructor to load
-	 * client images (eg - player list icons). Only external
-	 * call is from the camo dialog and is used to replace the
-	 * UNITCAMO image with the newly selected imageicon.
-	 */
-	public void loadImage(String imagename, String image, int width, int height) {
-		if (imagename.equals(""))
-			return;
-		try {
-			images.put(image, new ImageIcon(new ImageIcon(imagename).getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT)));
-		} catch (Exception ex) {
-			MWDedHost.MWDedHostLog.clientErrLog(ex);
-		}
-	}
-		
-	/**
-	 * Get an ImageIcon from the client image cache.
-	 * 
-	 * @param image - name of image to fetch
-	 * @return an ImageIcon. Null if no match.
-	 */
-	public ImageIcon getImage(String image) {
-		return images.get(image);
-	}
-	
-	/**
 	 * Get a config value.
 	 */
 	public String getParam(String param) {
@@ -555,40 +278,6 @@ public class CConfig {
 		return false;
 	}
 	
-	public boolean isUsingStatusIcons(){
-		
-	    if ( Boolean.parseBoolean(getParam("RIGHTPILOTEJECT")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("RIGHTREPAIR")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("RIGHTENGINE")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("RIGHTEQUIPMENT")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("RIGHTARMOR")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("RIGHTSLITE")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("RIGHTAMMO")))
-    		return true;
-
-        if ( Boolean.parseBoolean(getParam("LEFTPILOTEJECT")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("LEFTREPAIR")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("LEFTENGINE")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("LEFTEQUIPMENT")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("LEFTARMOR")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("LEFTSLITE")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("LEFTAMMO")))
-    		return true;
-    
-		return false;
-	}
 	/**
 	 * Return the int value of a given config property. Return
 	 * a 0 if the property is a non-number. Used mostly by the

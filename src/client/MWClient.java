@@ -2016,7 +2016,8 @@ public final class MWClient implements IClient {
 			Connector.closeConnection();
 		}
 		
-		doPlaySound("./data/sounds/exit client.wav",false);
+		if ( getConfig().isParam("ENABLEEXITCLIENTSOUND") )
+		    doPlaySound(getConfigParam("SOUNDONEXITCLIENT"),false);
 	}
 	
 	public CConnector getConnector() {return Connector;}

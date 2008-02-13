@@ -2848,7 +2848,8 @@ class menuSound implements MenuListener{
 
 	public void menuSelected(MenuEvent arg0) {
 		
-		mwclient.doPlaySound("./data/sounds/menu.wav");
+	    if (mwclient.getConfig().isParam("ENABLEMENUSOUND"))
+	        mwclient.doPlaySound(mwclient.getConfigParam("SOUNDONMENU"));
 	}
 }
 
@@ -2868,7 +2869,8 @@ class menuPopupSound implements MenuListener{
 
 	public void menuSelected(MenuEvent arg0) {
 		
-		mwclient.doPlaySound("./data/sounds/menu popup.wav");
+        if (mwclient.getConfig().isParam("ENABLEMENUPOPUPSOUND"))
+            mwclient.doPlaySound(mwclient.getConfigParam("SOUNDONMENUPOPUP"));
 	}
 	
 }

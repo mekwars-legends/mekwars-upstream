@@ -123,6 +123,12 @@ public final class ConfigurationDialog implements ActionListener {
     private final JTextField soundOnMessageField = new JTextField();
     private final JTextField soundOnAttackField = new JTextField();
     private final JTextField soundOnBMWinField = new JTextField();
+    private final JTextField soundOnActivateField = new JTextField();
+    private final JTextField soundOnDeactivateField = new JTextField();
+    private final JTextField soundOnEnemyDetectedField = new JTextField();
+    private final JTextField soundOnExitClientField = new JTextField();
+    private final JTextField soundOnMenuPopupField = new JTextField();
+    private final JTextField soundOnMenuField = new JTextField();
 
     //host options
     private final JTextField maxPlayersField = new JTextField(11);
@@ -207,6 +213,12 @@ public final class ConfigurationDialog implements ActionListener {
     private final JCheckBox enableSoundOnAttack = new JCheckBox();
     private final JCheckBox enableSoundOnKeyword = new JCheckBox();
     private final JCheckBox enableSoundOnBMWin = new JCheckBox();
+    private final JCheckBox enableSoundOnActivate = new JCheckBox();
+    private final JCheckBox enableSoundOnDeactivate = new JCheckBox();
+    private final JCheckBox enableSoundOnEnemyDetected = new JCheckBox();
+    private final JCheckBox enableSoundOnExitClient = new JCheckBox();
+    private final JCheckBox enableSoundOnMenuPopup = new JCheckBox();
+    private final JCheckBox enableSoundOnMenu = new JCheckBox();
     private final JCheckBox systemMessageKeyword = new JCheckBox();
 
     //Dedicated Setup Tab
@@ -760,8 +772,38 @@ public final class ConfigurationDialog implements ActionListener {
         enableSoundOnBMWin.setHorizontalAlignment(SwingConstants.CENTER);
         soundFieldsPanel.add(enableSoundOnBMWin);
 
+        soundFieldsPanel.add(new JLabel("Activate:", SwingConstants.TRAILING));
+        soundFieldsPanel.add(soundOnActivateField);
+        enableSoundOnActivate.setHorizontalAlignment(SwingConstants.CENTER);
+        soundFieldsPanel.add(enableSoundOnActivate);
+
+        soundFieldsPanel.add(new JLabel("Deactivate:", SwingConstants.TRAILING));
+        soundFieldsPanel.add(soundOnDeactivateField);
+        enableSoundOnDeactivate.setHorizontalAlignment(SwingConstants.CENTER);
+        soundFieldsPanel.add(enableSoundOnDeactivate);
+
+        soundFieldsPanel.add(new JLabel("Enemy Detected:", SwingConstants.TRAILING));
+        soundFieldsPanel.add(soundOnEnemyDetectedField);
+        enableSoundOnEnemyDetected.setHorizontalAlignment(SwingConstants.CENTER);
+        soundFieldsPanel.add(enableSoundOnEnemyDetected);
+
+        soundFieldsPanel.add(new JLabel("Exit Client:", SwingConstants.TRAILING));
+        soundFieldsPanel.add(soundOnExitClientField);
+        enableSoundOnExitClient.setHorizontalAlignment(SwingConstants.CENTER);
+        soundFieldsPanel.add(enableSoundOnExitClient);
+
+        soundFieldsPanel.add(new JLabel("Menu Popup:", SwingConstants.TRAILING));
+        soundFieldsPanel.add(soundOnMenuPopupField);
+        enableSoundOnMenuPopup.setHorizontalAlignment(SwingConstants.CENTER);
+        soundFieldsPanel.add(enableSoundOnMenuPopup);
+
+        soundFieldsPanel.add(new JLabel("Menu:", SwingConstants.TRAILING));
+        soundFieldsPanel.add(soundOnMenuField);
+        enableSoundOnMenu.setHorizontalAlignment(SwingConstants.CENTER);
+        soundFieldsPanel.add(enableSoundOnMenu);
+
         //run the spring layout
-        SpringLayoutHelper.setupSpringGrid(soundFieldsPanel, 6, 3);
+        SpringLayoutHelper.setupSpringGrid(soundFieldsPanel, 3);
 
         //set up additional checkboxes
         systemMessageKeyword.setText("Check System Messages for Keywords");
@@ -1145,6 +1187,12 @@ public final class ConfigurationDialog implements ActionListener {
         soundOnMessageField.setText(mwclient.getConfig().getParam("SOUNDONMESSAGE"));
         soundOnAttackField.setText(mwclient.getConfig().getParam("SOUNDONATTACK"));
         soundOnBMWinField.setText(mwclient.getConfig().getParam("SOUNDONBMWIN"));
+        soundOnActivateField.setText(mwclient.getConfig().getParam("SOUNDONACTIVATE"));
+        soundOnDeactivateField.setText(mwclient.getConfig().getParam("SOUNDONDEACTIVATE"));
+        soundOnEnemyDetectedField.setText(mwclient.getConfig().getParam("SOUNDONENEMYDETECTED"));
+        soundOnExitClientField.setText(mwclient.getConfig().getParam("SOUNDONEXITCLIENT"));
+        soundOnMenuPopupField.setText(mwclient.getConfig().getParam("SOUNDONMENUPOPUP"));
+        soundOnMenuField.setText(mwclient.getConfig().getParam("SOUNDONMENU"));
         keywordsField.setText(mwclient.getConfig().getParam("KEYWORDS"));
 
         //Set the selected HQ color scheme button
@@ -1220,6 +1268,13 @@ public final class ConfigurationDialog implements ActionListener {
         enableSoundOnAttack.setSelected(mwclient.getConfig().isParam("ENABLEATTACKSOUND"));
         enableSoundOnKeyword.setSelected(mwclient.getConfig().isParam("ENABLEKEYWORDSOUND"));
         enableSoundOnBMWin.setSelected(mwclient.getConfig().isParam("ENABLEBMSOUND"));
+        enableSoundOnActivate.setSelected(mwclient.getConfig().isParam("ENABLEACTIVATESOUND"));
+        enableSoundOnDeactivate.setSelected(mwclient.getConfig().isParam("ENABLEDEACTIVATESOUND"));
+        enableSoundOnEnemyDetected.setSelected(mwclient.getConfig().isParam("ENABLEENEMYDETECTEDSOUND"));
+        enableSoundOnExitClient.setSelected(mwclient.getConfig().isParam("ENABLEEXITCLIENTSOUND"));
+        enableSoundOnMenuPopup.setSelected(mwclient.getConfig().isParam("ENABLEMENUPOPUPSOUND"));
+        enableSoundOnMenu.setSelected(mwclient.getConfig().isParam("ENABLEMENUSOUND"));
+        
         systemMessageKeyword.setSelected(mwclient.getConfig().isParam("SOUNDSFROMSYSMESSAGES"));
         colorEmotesBox.setSelected(mwclient.getConfig().isParam("COLOREDEMOTES"));
         showEnterExitBox.setSelected(mwclient.getConfig().isParam("SHOWENTERANDEXIT"));
@@ -1382,6 +1437,12 @@ public final class ConfigurationDialog implements ActionListener {
             mwclient.getConfig().setParam("SOUNDONMESSAGE",soundOnMessageField.getText());
             mwclient.getConfig().setParam("SOUNDONATTACK",soundOnAttackField.getText());
             mwclient.getConfig().setParam("SOUNDONBMWIN",soundOnBMWinField.getText());
+            mwclient.getConfig().setParam("SOUNDONACTIVATE",soundOnActivateField.getText());
+            mwclient.getConfig().setParam("SOUNDONDEACTIVATE",soundOnDeactivateField.getText());
+            mwclient.getConfig().setParam("SOUNDONENEMYDETECTED",soundOnEnemyDetectedField.getText());
+            mwclient.getConfig().setParam("SOUNDONEXITCLIENT",soundOnExitClientField.getText());
+            mwclient.getConfig().setParam("SOUNDONMENUPOPUP",soundOnMenuPopupField.getText());
+            mwclient.getConfig().setParam("SOUNDONMENU",soundOnMenuField.getText());
             mwclient.getConfig().setParam("MAXPLAYERS",maxPlayersField.getText());
             mwclient.getConfig().setParam("COMMENT",hostCommentsField.getText());
             mwclient.getConfig().setParam("KEYWORDS", keywordsField.getText());
@@ -1462,6 +1523,12 @@ public final class ConfigurationDialog implements ActionListener {
             mwclient.getConfig().setParam("ENABLEATTACKSOUND",Boolean.toString(enableSoundOnAttack.isSelected()));
             mwclient.getConfig().setParam("ENABLEKEYWORDSOUND",Boolean.toString(enableSoundOnKeyword.isSelected()));
             mwclient.getConfig().setParam("ENABLEBMSOUND", Boolean.toString(enableSoundOnBMWin.isSelected()));
+            mwclient.getConfig().setParam("ENABLEACTIVATESOUND", Boolean.toString(enableSoundOnActivate.isSelected()));
+            mwclient.getConfig().setParam("ENABLEDEACTIVATESOUND", Boolean.toString(enableSoundOnDeactivate.isSelected()));
+            mwclient.getConfig().setParam("ENABLEENEMYDETECTEDSOUND", Boolean.toString(enableSoundOnEnemyDetected.isSelected()));
+            mwclient.getConfig().setParam("ENABLEEXITCLIENTSOUND", Boolean.toString(enableSoundOnExitClient.isSelected()));
+            mwclient.getConfig().setParam("ENABLEMENUSOUND", Boolean.toString(enableSoundOnMenu.isSelected()));
+            mwclient.getConfig().setParam("ENABLEMENUPOPUPSOUND", Boolean.toString(enableSoundOnMenuPopup.isSelected()));
             mwclient.getConfig().setParam("SOUNDSFROMSYSMESSAGES",Boolean.toString(systemMessageKeyword.isSelected()));
             mwclient.getConfig().setParam("COLOREDEMOTES",Boolean.toString(colorEmotesBox.isSelected()));
             mwclient.getConfig().setParam("SHOWENTERANDEXIT",Boolean.toString(showEnterExitBox.isSelected()));
