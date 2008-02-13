@@ -480,9 +480,9 @@ public class PhpBBConnector {
 		  String bodyString = body.toString().replaceAll("%USERACTKEY%", activationKey);
 		  Properties props = new Properties();
 		  String smtphost=null;
-		  if((smtphost=CampaignMain.cm.getServer().getConfigParam("SMTPHOST")) == null) {
-			  MWServ.mwlog.errLog("SMTPHOST not set in serverconfig");
-			  CampaignMain.cm.doSendModMail("NOTE", "SMTPHOST not set in serverconfig.");
+		  if((smtphost=CampaignMain.cm.getServer().getConfigParam("MAILHOST")) == null) {
+			  MWServ.mwlog.errLog("MAILHOST not set in serverconfig");
+			  CampaignMain.cm.doSendModMail("NOTE", "MAILHOST not set in serverconfig.");
 			  return false;
 		  }
 		  
