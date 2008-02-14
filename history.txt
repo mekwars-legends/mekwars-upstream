@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.19.x
++ New MegaMek.jar 0.33.19-MW021408-5486
 + Bug: AdminReturnPlanetsToOriginalOwners does not clear each houses Planet queue
 + SMTPHOST changed to MAILHOST
 + New MegaMek.jar 0.33.18-MW021308-5480
