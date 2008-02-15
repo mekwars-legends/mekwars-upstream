@@ -1748,6 +1748,8 @@ src/server/campaign/operations/Operation.java -text
 src/server/campaign/operations/OperationEntity.java -text
 src/server/campaign/operations/OperationLoader.java -text
 src/server/campaign/operations/OperationManager.java -text
+src/server/campaign/operations/OperationReportEntry.java -text
+src/server/campaign/operations/OperationReporter.java -text
 src/server/campaign/operations/OperationWriter.java -text
 src/server/campaign/operations/OpsChickenThread.java -text
 src/server/campaign/operations/OpsDisconnectionThread.java -text
