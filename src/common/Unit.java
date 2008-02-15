@@ -30,7 +30,6 @@ import megamek.common.Entity;
 import megamek.common.EntityWeightClass;
 import megamek.common.Mech;
 import megamek.common.Protomech;
-import megamek.common.QuadMech;
 import megamek.common.Tank;
 
 
@@ -118,11 +117,11 @@ public class Unit {
 	public static int getWeightIDForName(String name) {
 		if (name.equalsIgnoreCase("LIGHT"))
 			return LIGHT;
-		else if (name.equalsIgnoreCase("MEDIUM"))
+		if (name.equalsIgnoreCase("MEDIUM"))
 			return MEDIUM;
-		else if (name.equalsIgnoreCase("HEAVY"))
+		if (name.equalsIgnoreCase("HEAVY"))
 			return HEAVY;
-		else if (name.equalsIgnoreCase("ASSAULT"))
+		if (name.equalsIgnoreCase("ASSAULT"))
 			return ASSAULT;
 		return 0;
 	}
@@ -142,7 +141,7 @@ public class Unit {
 	}
 	
 	public static int getEntityType(Entity ent){
-		if ( ent instanceof Mech || ent instanceof QuadMech)
+		if ( ent instanceof Mech )
 			return Unit.MEK;
 		
 		if ( ent instanceof Tank)

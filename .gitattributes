@@ -1630,6 +1630,7 @@ src/server/campaign/commands/admin/ChangeHouseColorCommand.java -text
 src/server/campaign/commands/admin/ChangeNameCommand.java -text
 src/server/campaign/commands/admin/CreateArmyFromMulCommand.java -text
 src/server/campaign/commands/admin/CreateMercFactionCommand.java -text
+src/server/campaign/commands/admin/CreatePilotCommand.java -text
 src/server/campaign/commands/admin/CreateUnitCommand.java -text
 src/server/campaign/commands/admin/CyclopsCheckupCommand.java -text
 src/server/campaign/commands/admin/CyclopsOptimizeCommand.java -text

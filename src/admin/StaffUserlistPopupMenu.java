@@ -215,12 +215,20 @@ public class StaffUserlistPopupMenu extends JMenu implements ActionListener {
         item.addActionListener(this);
         if (userLevel >= mwclient.getData().getAccessLevel("ViewPlayerPersonalPilotQueue"))
             pilotsMen.add(item);
+
         item = new JMenuItem("Remove Pilot");
         item.setActionCommand("RPPQ|" + userName);
         item.addActionListener(this);
         if (userLevel >= mwclient.getData().getAccessLevel("RemovePilot"))
             pilotsMen.add(item);
-        if (pilotsMen.getItemCount() > 0)
+
+        item = new JMenuItem("Create Pilot");
+        item.setActionCommand("CPPQ|" + userName);
+        item.addActionListener(this);
+        if (userLevel >= mwclient.getData().getAccessLevel("CreatePilot"))
+            pilotsMen.add(item);
+
+        if (pilotsMen.getItemCount() > 0 && Boolean.parseBoolean(mwclient.getserverConfigs("AllowPersonalPilotQueues")) )
             this.add(pilotsMen);
 
         // Parts submenu
@@ -478,6 +486,42 @@ public class StaffUserlistPopupMenu extends JMenu implements ActionListener {
                     return;
             }
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c RemovePilot#" + userName + "#" + Typestr + "#" + Sizestr + "#" + position);
+        }
+        if (command.equals("CPPQ") && st.hasMoreElements()) {
+
+            userName = st.nextToken();
+            Object[] Types = { "Mek", "ProtoMek" };
+            Object[] Size = { "Light", "Medium", "Heavy", "Assault" };
+
+            String Typestr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(), "Select pilot type", "Pilot Type", JOptionPane.INFORMATION_MESSAGE, null, Types, Types[0]);
+
+            if (Typestr == null || Typestr.length() == 0)
+                return;
+
+            String Sizestr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(), "Select a pilot size", "Pilot Size", JOptionPane.INFORMATION_MESSAGE, null, Size, Size[0]);
+            if (Sizestr == null || Sizestr.length() == 0)
+                return;
+
+            String gunnery = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Gunnery skill",4);
+
+            if (gunnery == null || gunnery.length() == 0){
+                return;
+            }
+
+            String piloting = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Piloting Mod",5);
+
+            if (piloting == null || piloting.length() == 0){
+                return;
+            }
+
+            String skills = null;
+            skills = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Skills Mod (comma delimited)");
+
+            if (skills == null){
+                return;
+            }
+
+            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c createpilot#"+userName+"#"+gunnery+"#"+piloting+"#"+Typestr+"#"+Sizestr+"#"+skills);
         }
         if (command.equals("VPC") && st.hasMoreElements()) {
 

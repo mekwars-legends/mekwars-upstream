@@ -35,7 +35,6 @@ import javax.swing.SpringLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JList;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -96,7 +95,7 @@ public class CommandNameDialog extends JDialog implements ActionListener {
 		 */
         
 		//super, and variable saves
-		super(new JFrame(),boxText,true);//dummy frame as owner
+		super(mwclient.getMainFrame(),boxText,true);//dummy frame as owner
         loadCommands(mwclient);
         accessLevel = mwclient.getUser(mwclient.getPlayer().getName()).getUserlevel();
         commands = mwclient.getData().getCommandTable().keySet();

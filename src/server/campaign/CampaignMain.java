@@ -1361,6 +1361,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("CREATEARMYFROMMUL", new CreateArmyFromMulCommand());
         Commands.put("CREATEMERCFACTION", new CreateMercFactionCommand());
         Commands.put("CREATESUBFACTION", new CreateSubFactionCommand());
+        Commands.put("CREATEPILOT", new CreatePilotCommand());
         Commands.put("CREATEUNIT", new CreateUnitCommand());
         Commands.put("CYCLOPSCHECKUP", new CyclopsCheckupCommand());
         Commands.put("CYCLOPSOPTIMIZE", new CyclopsOptimizeCommand());

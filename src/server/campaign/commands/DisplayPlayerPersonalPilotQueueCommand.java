@@ -105,7 +105,7 @@ public class DisplayPlayerPersonalPilotQueueCommand implements Command {
 		}
 		
         if ( hasQueuedPilots )
-            toReturn.insert(0,"<font color=black><u>Mek Pilots</u>:<br>");
+            toReturn.insert(0,"<u>Mek Pilots</u>:<br>");
         
 		//now process the PROTOMEK pilots
         
@@ -152,11 +152,10 @@ public class DisplayPlayerPersonalPilotQueueCommand implements Command {
 		}
 		
         if ( toReturnProtos.length() > 1){
-            toReturnProtos.insert(0,"<font color=black><u>ProtoMek Pilots</u>:<br>");
+            toReturnProtos.insert(0,"<u>ProtoMek Pilots</u>:<br>");
             toReturn.append(toReturnProtos);
         }
 
-        toReturn.append("</font>");
 		
 		if (hasQueuedPilots)
 			CampaignMain.cm.toUser("SM|"+toReturn.toString(),Username,false);
