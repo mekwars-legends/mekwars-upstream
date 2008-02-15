@@ -122,6 +122,8 @@ public class ShortOperation implements Comparable {
     private int intelVisibility = 999;
 
     private String[] intelTimeFrameString = { "Day", "Dusk", "Night" };
+    private String[] intelWeatherString = { "Blizzard", "Blowing Sands", "Heavy Snow", "Light Rain", "Heavy Rain", "Moderate Winds", "High Winds" };
+    private Vector<Boolean> weatherPattern;
 
     private TreeSet<String> cancellingPlayers = new TreeSet<String>();
     /*
@@ -262,6 +264,7 @@ public class ShortOperation implements Comparable {
         }
 
         this.pdlist = possibleDefenders;
+        this.weatherPattern = new Vector<Boolean>(7);
         // inform the defenders
         // Faction Team Ops have a delay in defender informing.
         if ((!fromReserve && !o.getBooleanValue("TeamOperation") && !o.getBooleanValue("TeamsMustBeSameFaction")) || (o.getBooleanValue("TeamOperation") && !o.getBooleanValue("TeamsMustBeSameFaction")))
@@ -1276,6 +1279,77 @@ public class ShortOperation implements Comparable {
                         this.intelTimeFrame = ShortOperation.TIME_DAY;
                     }
 
+                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getBlizzardChance()) {
+                        this.weatherPattern.add(true);
+                        gameOptions.append("|blizzard|");
+                        gameOptions.append(true);
+                    }
+                    else{
+                        this.weatherPattern.add(false);
+                        gameOptions.append("|blizzard|");
+                        gameOptions.append(false);
+                    }
+                    
+                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getBlowingSandChance()) {
+                        this.weatherPattern.add(true);
+                        gameOptions.append("|blowing_sand|");
+                        gameOptions.append(true);
+                    }
+                    else{
+                        this.weatherPattern.add(false);
+                        gameOptions.append("|blowing_sand|");
+                        gameOptions.append(false);
+                    }
+                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHeavySnowfallChance()) {
+                        this.weatherPattern.add(true);
+                        gameOptions.append("|heavy_snowfall|");
+                        gameOptions.append(true);
+                    }
+                    else{
+                        this.weatherPattern.add(false);
+                        gameOptions.append("|heavy_snowfall|");
+                        gameOptions.append(false);
+                    }
+                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getLightRainfallChance()) {
+                        this.weatherPattern.add(true);
+                        gameOptions.append("|light_rainfall|");
+                        gameOptions.append(true);
+                    }
+                    else{
+                        this.weatherPattern.add(false);
+                        gameOptions.append("|light_rainfall|");
+                        gameOptions.append(false);
+                    }
+                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHeavyRainfallChance()) {
+                        this.weatherPattern.add(true);
+                        gameOptions.append("|heavy_rainfall|");
+                        gameOptions.append(true);
+                    }
+                    else{
+                        this.weatherPattern.add(false);
+                        gameOptions.append("|heavy_rainfall|");
+                        gameOptions.append(false);
+                    }
+                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getModerateWindsChance()) {
+                        this.weatherPattern.add(true);
+                        gameOptions.append("|moderate_winds|");
+                        gameOptions.append(true);
+                    }
+                    else{
+                        this.weatherPattern.add(false);
+                        gameOptions.append("|moderate_winds|");
+                        gameOptions.append(false);
+                    }
+                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHighWindsChance()) {
+                        this.weatherPattern.add(true);
+                        gameOptions.append("|high_winds|");
+                        gameOptions.append(true);
+                    }
+                    else{
+                        this.weatherPattern.add(false);
+                        gameOptions.append("|high_winds|");
+                        gameOptions.append(false);
+                    }
                     // add the temp/gravity/vacuum. disable fire if in vacuum.
                     gameOptions.append("|temperature|");
                     gameOptions.append(tempToSet);
@@ -2454,9 +2528,9 @@ public class ShortOperation implements Comparable {
         int chanceGravity = CampaignMain.cm.getRandomNumber(100);
         int chanceTemp = CampaignMain.cm.getRandomNumber(100);
         int chanceTime = CampaignMain.cm.getRandomNumber(100);
+        int chanceWeather = CampaignMain.cm.getRandomNumber(100);
 
-        if (factionOwnerShip < basedOwnerShip)
-            factionOwnerShip = basedOwnerShip;
+        factionOwnerShip = Math.max(factionOwnerShip, basedOwnerShip);
 
         // Extra planet intel
         // Attacker
@@ -2477,6 +2551,21 @@ public class ShortOperation implements Comparable {
         if (this.doubleBlind && factionOwnerShip >= chanceTime)
             result += "<b>Visibility is :</b> " + (this.intelVisibility * 30) + " meters<br>";
 
+        String weatherResult = "<b>Weather Conditions :</b>";
+        boolean hasWeather = false;
+        for (int pos = 0; pos < 7; pos++){
+            if ( weatherPattern.elementAt(pos) ){
+                hasWeather = true;
+                weatherResult += intelWeatherString[pos]+", ";
+            }
+        }
+        
+        if (hasWeather && factionOwnerShip >= chanceWeather){
+            if ( weatherResult.indexOf(",") > -1 ){
+                weatherResult = weatherResult.substring(0,weatherResult.lastIndexOf(","));
+            }
+            result += weatherResult+".<br>";
+        }
         return result;
 
     }
