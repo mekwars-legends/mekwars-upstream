@@ -872,7 +872,7 @@ public final class SUnit extends Unit implements Serializable {
                 Entity unitEntity = loadMech(getUnitFilename());
 
                 if (unitEntity instanceof Mech)
-                    ((Mech) unitEntity).setAutoEject(Boolean.parseBoolean(rs.getString("uAutoEject")));
+                    ((Mech) unitEntity).setAutoEject(rs.getBoolean("uAutoEject"));
                 unitEntity.setSpotlight(rs.getBoolean("uHasSpotlight"));
 
                 unitEntity.setSpotlightState(rs.getBoolean("uIsUsingSpotlight"));
