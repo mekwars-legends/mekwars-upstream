@@ -97,11 +97,14 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
     private int serverport;
     private MWClient mwclient;
     private Client client;
-    private ClientGUI gui;
+    private ClientGUI awtGui;
+    private megamek.client.ui.swing.ClientGUI swingGui;
+    private boolean awtGUI = false;
+
     private int turn = 0;
     private ArrayList<Unit> mechs = new ArrayList<Unit>();
     private ArrayList<CUnit> autoarmy = new ArrayList<CUnit>();// from server's
-                                                                // auto army
+    // auto army
     CArmy army = null;
     BotClient bot = null;
     private int currentPhase = IGame.PHASE_DEPLOYMENT;
@@ -140,12 +143,20 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
     public void run() {
         boolean playerUpdate = false;
         boolean nightGame = false;
+        awtGUI = mwclient.getConfig().isParam("USEAWTINTERFACE");
         CArmy currA = mwclient.getPlayer().getLockedArmy();
         client = new Client(myname, serverip, serverport);
         client.game.addGameListener(this);
         client.addCloseClientListener(this);
-        gui = new ClientGUI(client);
-        gui.initialize();
+        if (awtGUI) {
+            awtGui = new ClientGUI(client);
+            awtGui.initialize();
+            swingGui = null;
+        } else {
+            awtGui = null;
+            swingGui = new megamek.client.ui.swing.ClientGUI(client);
+            swingGui.initialize();
+        }
         // client.game.getOptions().
         Vector<IBasicOption> xmlGameOptions = new Vector<IBasicOption>(1, 1);
         Vector<IOption> loadOptions = client.game.getOptions().loadOptions();
@@ -308,7 +319,12 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                 }
                 bot.retrieveServerInfo();
                 sleep(125);
-                gui.getBots().put(name, bot);
+
+                if (awtGUI)
+                    awtGui.getBots().put(name, bot);
+                else
+                    swingGui.getBots().put(name, bot);
+
                 if (mwclient.isBotsOnSameTeam())
                     bot.getLocalPlayer().setTeam(5);
                 Random r = new Random();
@@ -464,7 +480,10 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                                 linkMegaMekC3Units(currA, slave, currA.getC3Network().get(slave));
                             }
 
-                            gui.chatlounge.refreshEntities();
+                            if (awtGUI)
+                                awtGui.chatlounge.refreshEntities();
+                            else
+                                swingGui.chatlounge.refreshEntities();
                         }
                     }
                 }
@@ -530,11 +549,18 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                 mwclient.setAdvancedTerrain(null);
                 mwclient.setPlayerStartingEdge(Buildings.EDGE_UNKNOWN);
                 // get rid of any and all bots.
-                for (Iterator<Client> i = gui.getBots().values().iterator(); i.hasNext();) {
-                    i.next().die();
-                }
-                gui.getBots().clear();
 
+                if (awtGUI) {
+                    for (Iterator<Client> i = awtGui.getBots().values().iterator(); i.hasNext();) {
+                        i.next().die();
+                    }
+                    awtGui.getBots().clear();
+                } else {
+                    for (Iterator<Client> i = swingGui.getBots().values().iterator(); i.hasNext();) {
+                        i.next().die();
+                    }
+                    swingGui.getBots().clear();
+                }
                 // observers need not report
                 if (client.game.getAllEntitiesOwnedBy(client.getLocalPlayer()) < 1)
                     return;
@@ -575,10 +601,9 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                  * 
                  * Enumeration en = client.game.getWreckedEntities(); while
                  * (en.hasMoreElements()) { Entity currEntity =
-                 * (Entity)en.nextElement();
-                 *  /* MM is now reporting post-attack IS instead of pre-attack
-                 * IS in gameEntityRemove, so this check shouldn't be necessary
-                 * anymore.
+                 * (Entity)en.nextElement(); /* MM is now reporting post-attack
+                 * IS instead of pre-attack IS in gameEntityRemove, so this
+                 * check shouldn't be necessary anymore.
                  * 
                  * //if (currEntity instanceof Mech || currEntity instanceof
                  * QuadMech) { // //if a mech-type, override grouping if its
@@ -596,11 +621,10 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                  * currEntity.getOwner().getName().startsWith("War Bot"))
                  * continue; if (currEntity instanceof MechWarrior)
                  * mwclient.serverSend("IPU|" + this.serializeEntity(currEntity,
-                 * false, false)); }
-                 *  /* This is probably extraneous - retreats should be properly
-                 * handled in the movement phase and do not involve damage
-                 * transferal which could lead to a final status different from
-                 * the removal status.
+                 * false, false)); } /* This is probably extraneous - retreats
+                 * should be properly handled in the movement phase and do not
+                 * involve damage transferal which could lead to a final status
+                 * different from the removal status.
                  * 
                  * //en = client.game.getRetreatedEntities(); //while
                  * (en.hasMoreElements()) { // Entity currEntity =
@@ -629,9 +653,9 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
      * salvageable.
      */
     public void gameEntityRemove(GameEntityRemoveEvent e) {// only send if the
-                                                            // player is
-                                                            // actually involved
-                                                            // in the game
+        // player is
+        // actually involved
+        // in the game
 
         if (client.getLocalPlayer().isObserver())
             return;
@@ -702,7 +726,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
         // client.die();
         client = null;// explicit null of the MM client. Wasn't/isn't being
-                        // GC'ed.
+        // GC'ed.
         mwclient.closingGame(serverName);
         System.gc();
     }
@@ -978,8 +1002,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
          * continue; if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <=
          * 0) mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, true));
          * else mwclient.serverSend("IPU|"+this.serializeEntity(ent, true,
-         * false));
-         *  }
+         * false)); }
          */
 
         // Only send data for units currently on the board.

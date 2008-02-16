@@ -393,6 +393,9 @@ public class CConfig {
         
         //Client colors
         defaults.setProperty("BACKGROUNDCOLOR", "#FFFFFF");
+        
+        //MegaMek User Interface Type
+        defaults.setProperty("USEAWTINTERFACE", "YES");
         return defaults;
 	}
 	

@@ -136,8 +136,8 @@ final public class AdvancedTerrain {
         setNightChance(Integer.parseInt(command.nextToken()));
         setNightTempMod(Integer.parseInt(command.nextToken()));
         setStaticMapName(command.nextToken());
-        setMinVisibility(minVisibility);
-        setMaxVisibility(maxVisibility);
+        setMinVisibility(Integer.parseInt(command.nextToken()));
+        setMaxVisibility(Integer.parseInt(command.nextToken()));
         if (command.hasMoreTokens())
             this.setBlizzardChance(Integer.parseInt(command.nextToken()));
         if (command.hasMoreTokens())

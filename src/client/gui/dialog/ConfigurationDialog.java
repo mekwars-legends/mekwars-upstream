@@ -193,6 +193,7 @@ public final class ConfigurationDialog implements ActionListener {
     private final JCheckBox viewLogoBox = new JCheckBox();
     private final JCheckBox armyPopUpBox = new JCheckBox();
     private final JCheckBox autoReOrder = new JCheckBox();
+    private final JCheckBox useAWTInterfaceBox = new JCheckBox();
 
     
     //chat options
@@ -403,7 +404,11 @@ public final class ConfigurationDialog implements ActionListener {
         	upperCBoxesCounter++;
         }
         
-      	SpringLayoutHelper.setupSpringGrid(playerUpperCBoxesPanel, 2);
+        useAWTInterfaceBox.setText("Use AWT Interface");
+        useAWTInterfaceBox.setToolTipText("<html>When checked the AWT MM interface is used<br>Uncheck to use MM's Swing Interface.</html>");
+        playerUpperCBoxesPanel.add(useAWTInterfaceBox);
+        
+        SpringLayoutHelper.setupSpringGrid(playerUpperCBoxesPanel, 2);
 
         //set up the color scheme panel/radio buttons
         JPanel schemeWrapper = new JPanel();
@@ -1163,6 +1168,7 @@ public final class ConfigurationDialog implements ActionListener {
         darkenMapBox.setSelected(mwclient.getConfig().isParam("DARKERMAP"));
         bmPreviewImageBox.setSelected(mwclient.getConfig().isParam("BMPREVIEWIMAGE"));
         useStatusForIconBox.setSelected(mwclient.getConfig().isParam("STATUSINTRAYICON"));
+        useAWTInterfaceBox.setSelected(mwclient.getConfig().isParam("USEAWTINTERFACE"));
         hqColumnsField.setText(mwclient.getConfig().getParam("UNITAMOUNT"));
         defaultArmyNameField.setText(mwclient.getConfig().getParam("DEFAULTARMYNAME"));
         mapOverLayField.setText(mwclient.getConfig().getParam("MAPOVERLAYCOLOR"));
@@ -1408,6 +1414,7 @@ public final class ConfigurationDialog implements ActionListener {
 
             mwclient.getConfig().setParam("UNITHEX",Boolean.toString(showHexinHQBox.isSelected()));
             mwclient.getConfig().setParam("STATUSINTRAYICON",Boolean.toString(useStatusForIconBox.isSelected()));
+            mwclient.getConfig().setParam("USEAWTINTERFACE",Boolean.toString(useAWTInterfaceBox.isSelected()));
             mwclient.getConfig().setParam("DARKERMAP",Boolean.toString(darkenMapBox.isSelected()));
             mwclient.getConfig().setParam("BMPREVIEWIMAGE",Boolean.toString(bmPreviewImageBox.isSelected()));
 

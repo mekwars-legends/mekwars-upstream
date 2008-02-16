@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.19.x
++ Added ability to select which MegaMek UI the player wants Swing vs. AWT
 + BUG: All units loaded with autoeject disabled in DB-enabled server
 + Stared adding Weather Info to advanced Terrain
 + RFE 188985: Admin ability to create pilots
