@@ -82,9 +82,9 @@ public class RequestSubFactionPromotionCommand implements Command {
 			CampaignMain.cm.doSendHouseMail(player.getMyHouse(), "NOTE", player.getName()+" has been promoted to subfaction "+subFactionName+"!");
 		}else{
 			CampaignMain.cm.toUser("AM:Your request for a promotion has been noted. Someone will be in touch.", Username);
-			String msg = Username+" has requested for a promtion to subfaction "+subFactionName+"<a href=\"MEKWARS/c promoteplayer#" + Username + "#" + subFactionName +"\">Click here to promote.</a>";
+			String msg = Username+" has requested for a promtion to subfaction "+subFactionName+" <a href=\"MEKWARS/c promoteplayer#" + Username + "#" + subFactionName +"\">Click here to promote.</a>";
 			faction.sendMessageToHouseLeaders(msg);
-			CampaignMain.cm.doSendModMail("Note", msg);
+			CampaignMain.cm.doSendModMail("NOTE", msg);
 			
 		}
 	

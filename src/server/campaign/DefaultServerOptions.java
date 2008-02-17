@@ -86,13 +86,10 @@ public class DefaultServerOptions {
 
         defaults.setProperty("MinEXPforMercenaries", "7500");
         defaults.setProperty("HideELO", "true");
+        defaults.setProperty("AllowLowerLevelUsersToSeeUpperLevelUsersDoings", "false");
         defaults.setProperty("FreeMinticksOnStartup", "0");
-        defaults.setProperty("ShowVehWeightclassInChallenges", "false");// TODO:
-                                                                        // Make
-                                                                        // this
-                                                                        // a
-                                                                        // client
-                                                                        // option.
+        // TODO: Make this a client option
+        defaults.setProperty("ShowVehWeightclassInChallenges", "false");
 
         defaults.setProperty("VotingEnabled", "true");
         defaults.setProperty("StartingVotes", "2");
@@ -108,19 +105,19 @@ public class DefaultServerOptions {
         defaults.setProperty("MinEXPforAssault", "0");
 
         defaults.setProperty("ScrapsAllowed", "1");// nee "ScrappingAllowed",
-                                                    // 6.12.05 @urgru
+        // 6.12.05 @urgru
         defaults.setProperty("ScrapCostMultiplier", ".40");// nee
-                                                            // "ScrappingCostsBills",
-                                                            // 11.12.06 @urgru
+        // "ScrappingCostsBills",
+        // 11.12.06 @urgru
         defaults.setProperty("DonationsAllowed", "2");// nee
-                                                        // "DonatingAllowed",
-                                                        // 6.12.05 @urgru
+        // "DonatingAllowed",
+        // 6.12.05 @urgru
         defaults.setProperty("DonationCostMultiplier", ".20");// nee
-                                                                // "DonatingCostsBills",
-                                                                // 11.12.06
-                                                                // @urgru
+        // "DonatingCostsBills",
+        // 11.12.06
+        // @urgru
         defaults.setProperty("UsedPurchaseCostMulti", ".50");// @urgru
-                                                                // 11.12.06
+        // 11.12.06
         defaults.setProperty("SelectableSalvage", "true");
         defaults.setProperty("TimeToSelectSalvage", "300");
 
@@ -134,8 +131,8 @@ public class DefaultServerOptions {
         defaults.setProperty("InfMultiToUnitLossPayment", "1.0");// float
         defaults.setProperty("NewCostMultiMaxUnitLossPayment", "1.0");// float
         defaults.setProperty("FlatMaxUnitLossPayment", "0");// int. 0 ensures no
-                                                            // payment by
-                                                            // default.
+        // payment by
+        // default.
 
         defaults.setProperty("MinEXPforBMSelling", "800");
         defaults.setProperty("MinEXPforBMBuying", "300");
@@ -148,22 +145,22 @@ public class DefaultServerOptions {
         defaults.setProperty("BMFluSizeCost", "5");
 
         defaults.setProperty("InfantryMayBeSoldOnBM", "false");// 10.23.05
-                                                                // @urgru
+        // @urgru
         defaults.setProperty("BAMayBeSoldOnBM", "true");// 10.23.05 @urgru
         defaults.setProperty("ProtosMayBeSoldOnBM", "true");// 10.23.05 @urgru
         defaults.setProperty("VehsMayBeSoldOnBM", "true");// 10.23.05 @urgru
         defaults.setProperty("MeksMayBeSoldOnBM", "true");// 10.23.05 @urgru
 
         defaults.setProperty("WelfareCeiling", "30");// go above this and you
-                                                        // no longer can pull
-                                                        // welfare units
+        // no longer can pull
+        // welfare units
         defaults.setProperty("WelfareTotalUnitBVCeiling", "3000");// Go above
-                                                                    // this and
-                                                                    // you no
-                                                                    // longer
-                                                                    // can pull
-                                                                    // welfare
-                                                                    // units
+        // this and
+        // you no
+        // longer
+        // can pull
+        // welfare
+        // units
 
         defaults.setProperty("InfluenceCeiling", "2000000");
         defaults.setProperty("InfluenceTimeMin", "150000");
@@ -390,7 +387,7 @@ public class DefaultServerOptions {
 
         // BLIND DROPS (MM option: real_blind_drop)
         defaults.setProperty("UseBlindDrops", "false");// TODO: move this into
-                                                        // ops
+        // ops
 
         // SOL unit defaults & legal fights
         defaults.setProperty("NumUnitsToQualifyForNew", "5");
@@ -461,15 +458,15 @@ public class DefaultServerOptions {
 
         // ratios TODO: Remove? Move into ops? Are these still used?
         defaults.setProperty("AllowRatios", "false"); // if turned off you can
-                                                        // have as many units as
-                                                        // you want and also
-                                                        // non-mek armies
+        // have as many units as
+        // you want and also
+        // non-mek armies
         defaults.setProperty("MekToInfantryRatio", "100");// with AllowRatios
-                                                            // on this well set
-                                                            // your inf to mek
-                                                            // Ratio 100% 50% if
-                                                            // 50% then 1 inf
-                                                            // for every 2 meks
+        // on this well set
+        // your inf to mek
+        // Ratio 100% 50% if
+        // 50% then 1 inf
+        // for every 2 meks
         defaults.setProperty("MekToVehicleRatio", "100");
 
         // Pilot skill selectable settings
@@ -556,11 +553,11 @@ public class DefaultServerOptions {
         defaults.setProperty("LowerLimitBuffer", "1");
         defaults.setProperty("UpperLimitBuffer", "1");
         defaults.setProperty("DefaultUpperLimit", "4");// make this client
-                                                        // configurable
-                                                        // eventually
+        // configurable
+        // eventually
         defaults.setProperty("DefaultLowerLimit", "4");// make this client
-                                                        // configurable
-                                                        // eventually
+        // configurable
+        // eventually
         defaults.setProperty("AllowLimiters", "true");
 
         // Pesonal Pilot Queues
@@ -569,64 +566,64 @@ public class DefaultServerOptions {
         defaults.setProperty("CostToBuyNewProtoPilot", "1");
         defaults.setProperty("AllowPlayerToBuyPilotsFromHouseWhenPoolIsFull", "false");
         defaults.setProperty("MaxAllowedPilotsInQueueToBuyFromHouse", "2"); // if
-                                                                            // the
-                                                                            // player
-                                                                            // has
-                                                                            // more
-                                                                            // then
-                                                                            // 2
-                                                                            // pilots
-                                                                            // in
-                                                                            // their
-                                                                            // queue
-                                                                            // of a
-                                                                            // size
-                                                                            // and
-                                                                            // wieght
-                                                                            // they
-                                                                            // cannot
-                                                                            // buy
-                                                                            // from
-                                                                            // the
-                                                                            // faction.
+        // the
+        // player
+        // has
+        // more
+        // then
+        // 2
+        // pilots
+        // in
+        // their
+        // queue
+        // of a
+        // size
+        // and
+        // wieght
+        // they
+        // cannot
+        // buy
+        // from
+        // the
+        // faction.
         defaults.setProperty("BasePilotSurvival", "20"); // if the player has
-                                                            // more then 2
-                                                            // pilots in their
-                                                            // queue of a size
-                                                            // and wieght they
-                                                            // cannot buy from
-                                                            // the faction.
+        // more then 2
+        // pilots in their
+        // queue of a size
+        // and wieght they
+        // cannot buy from
+        // the faction.
         defaults.setProperty("TrappedInMechSurvivalMod", "-20"); // If the
-                                                                    // pilot was
-                                                                    // still in
-                                                                    // his mek
-                                                                    // when it
-                                                                    // died this
-                                                                    // mod is
-                                                                    // applied
-                                                                    // to the
-                                                                    // surival
-                                                                    // rate.
+        // pilot was
+        // still in
+        // his mek
+        // when it
+        // died this
+        // mod is
+        // applied
+        // to the
+        // surival
+        // rate.
         defaults.setProperty("DownPilotsMustRollForSurvival", "false"); // engined
-                                                                        // and
-                                                                        // cored
-                                                                        // meks
-                                                                        // whoes
-                                                                        // pilots
-                                                                        // are
-                                                                        // alive
-                                                                        // may
-                                                                        // have
-                                                                        // to
-                                                                        // check
-                                                                        // for
-                                                                        // survival
+        // and
+        // cored
+        // meks
+        // whoes
+        // pilots
+        // are
+        // alive
+        // may
+        // have
+        // to
+        // check
+        // for
+        // survival
         defaults.setProperty("ChanceToConvertCapturedPilots", "10");// capture a
-                                                                    // pilot and
-                                                                    // you have
-                                                                    // chance to
-                                                                    // convert
-                                                                    // them
+        // pilot and
+        // you have
+        // chance to
+        // convert
+        // them
 
         // no-play options
         defaults.setProperty("NoPlayListSize", "1");
@@ -746,18 +743,18 @@ public class DefaultServerOptions {
         defaults.setProperty("BestTotalPilot", "4");
         defaults.setProperty("BaseRollToLevel", "250");
         defaults.setProperty("MultiplierPerPreviousLevel", "1");// 0 to use only
-                                                                // base
+        // base
         defaults.setProperty("UseRandomPilotLevelups", "true");
 
         // Disconnection auto-report settings
         defaults.setProperty("DisconnectionAddUnitsDestroyed", "0");
         defaults.setProperty("DisconnectionAddUnitsSalvage", "1");
         defaults.setProperty("DisconnectionTimeToReport", "600");// 10
-                                                                    // minutes
-                                                                    // to report
+        // minutes
+        // to report
         defaults.setProperty("DisconnectionGracePeriod", "120");// 2 minute
-                                                                // grace period
-                                                                // after crash
+        // grace period
+        // after crash
         defaults.setProperty("DisconnectionPayPercentage", "55");
 
         // Prelim Reports
@@ -767,11 +764,11 @@ public class DefaultServerOptions {
         // Use Calculated costs instead of static cost for units.
         defaults.setProperty("UseCalculatedCosts", "false");
         defaults.setProperty("CostModifier", "1.0"); // this is set to off
-                                                        // lower or raise the
-                                                        // calculated cost. i.e.
-                                                        // cost is 10 mil for a
-                                                        // unit .1(10%) will set
-                                                        // it to 1 mil.
+        // lower or raise the
+        // calculated cost. i.e.
+        // cost is 10 mil for a
+        // unit .1(10%) will set
+        // it to 1 mil.
 
         // Disputed plants
         defaults.setProperty("DisputedPlanetColor", "999999");
@@ -881,9 +878,9 @@ public class DefaultServerOptions {
         defaults.setProperty("AllowAttackFromReserve", "false");
         defaults.setProperty("AttackFromReserveResponseTime", "5");
         defaults.setProperty("AttackFromReserveSleepTime", "60");// time
-                                                                    // between
-                                                                    // each
-                                                                    // attack.
+        // between
+        // each
+        // attack.
 
         // Pilot Damage Transfers
         defaults.setProperty("AllowPilotDamageToTransfer", "false");
@@ -895,11 +892,11 @@ public class DefaultServerOptions {
         defaults.setProperty("UseVickeryAuctionType", "true");
         defaults.setProperty("UseHighestSealedBidAuctionType", "false");
         defaults.setProperty("AuctionFee", "0.15");// double, so .15 = 15% of
-                                                    // the price is taken as fee
+        // the price is taken as fee
         defaults.setProperty("RareMinSaleTime", "30");// in ticks
         defaults.setProperty("ChanceToSendUnitToBM", "40");// int % chance to
-                                                            // sell instead of
-                                                            // autoscrapping
+        // sell instead of
+        // autoscrapping
 
         /*
          * BM blocking.
@@ -952,7 +949,7 @@ public class DefaultServerOptions {
 
         // Only used when commands are saved to the DB
         defaults.setProperty("ServerOptionsSavedToDB", "false");
-        
+
         defaults.setProperty("StoreUnitHistoryInDatabase", "false");
 
         // Mod Mail Message of the Day
@@ -1013,7 +1010,7 @@ public class DefaultServerOptions {
         defaults.setProperty("ProtoMekFactoryClassTitle", "ProtoMek");
         defaults.setProperty("BattleArmorFactoryClassTitle", "BattleArmor");
         defaults.setProperty("InfantryFactoryClassTitle", "Infantry");
-        
+
     }
 
     /**

@@ -675,8 +675,11 @@ public final class CampaignMain implements Serializable {
         int commandLevel = CampaignMain.cm.getServerCommands().get("MM").getExecutionLevel();
         int userLevel = 0;
         try {
-            if (Username.equalsIgnoreCase("NOTE")) {
-                sendCommandLevel = CampaignMain.cm.getServer().getUserLevel(text.substring(0, text.indexOf(" ")).trim());
+            if (Username.equalsIgnoreCase("NOTE") ) {
+                if ( !CampaignMain.cm.getBooleanConfig("AllowLowerLevelUsersToSeeUpperLevelUsersDoings") ) 
+                    sendCommandLevel = CampaignMain.cm.getServer().getUserLevel(text.substring(0, text.indexOf(" ")).trim());
+                else
+                    sendCommandLevel = 100;
             }
         } catch (Exception ex) {
             MWServ.mwlog.errLog(ex);

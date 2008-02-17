@@ -344,6 +344,9 @@ public final class SUnit extends Unit implements Serializable {
         if (CampaignMain.cm.getBooleanConfig("UsePartsRepair"))
             return 0;
 
+        if ( crit == null )
+            return 0;
+        
         if (crit.isBreached() && !crit.isDamaged())
             return 0;
 

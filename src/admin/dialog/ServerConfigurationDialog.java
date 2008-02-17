@@ -3280,6 +3280,11 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setName("ShowVehWeightclassInChallenges");
 		miscCBoxSpring.add(BaseCheckBox);
 		
+        BaseCheckBox = new JCheckBox("Allow Staff to See all Messages");
+        BaseCheckBox.setToolTipText("<HTML>If checked all Staff Memebers<br>, despite user level, will be able to see all command messages<br>from other staff</html>");
+        BaseCheckBox.setName("AllowLowerLevelUsersToSeeUpperLevelUsersDoings");
+        miscCBoxSpring.add(BaseCheckBox);
+        
 		SpringLayoutHelper.setupSpringGrid(miscCBoxSpring,3);
 		
 		//finalize layout

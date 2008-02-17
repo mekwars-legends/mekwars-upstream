@@ -228,6 +228,7 @@ public final class ConfigurationDialog implements ActionListener {
     private final JTextField nameField = new JTextField();
     private final JTextField restartField = new JTextField();
     private final JTextField ownersField = new JTextField();
+    private final JTextField memoryField = new JTextField();
     private final JTextField socketTimeOutField = new JTextField();
 
     //Unit Status Icons
@@ -615,6 +616,11 @@ public final class ConfigurationDialog implements ActionListener {
         ownersField.setToolTipText("<HTML>List of people, sperated by $,<br>that you want to give control of your ded too</HTML>");
         dedInfoPanel.add(ownersField);
 
+        dedInfoPanel.add(new JLabel("Memory:", SwingConstants.TRAILING));
+        memoryField.setMaximumSize(newDim);
+        memoryField.setToolTipText("<HTML>The Maximum amount of memory, in MBs, that you want the ded to use<br> Note this will be translated into the -Xmx#m command line</HTML>");
+        dedInfoPanel.add(memoryField);
+        
         //run the spring layout
         SpringLayoutHelper.setupSpringGrid(dedInfoPanel, 2);
         hostPanelWrapper.add(enableDedicatedServerCB);
@@ -1375,7 +1381,8 @@ public final class ConfigurationDialog implements ActionListener {
         restartField.setText(mwclient.getConfig().getParam("DEDAUTORESTART").trim());
         ownersField.setText(mwclient.getConfig().getParam("DEDICATEDOWNERNAME").trim());
         socketTimeOutField.setText(mwclient.getConfig().getParam("SOCKETTIMEOUTDELAY").trim());
-
+        memoryField.setText(mwclient.getConfig().getParam("DEDMEMORY").trim());
+        
         pmReplyToSender.setSelected(mwclient.getConfig().isParam("REPLYTOSENDER"));
 
         rightColumnDynamicCB.setSelected(mwclient.getConfig().isParam("RIGHTCOLUMNDYNAMIC"));
@@ -1630,6 +1637,7 @@ public final class ConfigurationDialog implements ActionListener {
             
             mwclient.getConfig().setParam("DEDAUTORESTART",restartField.getText().trim());
             mwclient.getConfig().setParam("DEDICATEDOWNERNAME",ownersField.getText().trim());
+            mwclient.getConfig().setParam("DEDMEMORY",memoryField.getText().trim());
 
             //Right Column
             mwclient.getConfig().setParam("RIGHTCOLUMNDYNAMIC",Boolean.toString(rightColumnDynamicCB.isSelected()));

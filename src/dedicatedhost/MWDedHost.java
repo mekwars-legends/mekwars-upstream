@@ -549,30 +549,14 @@ public final class MWDedHost implements IClient {
                         MWDedHost.MWDedHostLog.clientErrLog(ex);
                     }
                     sendChat(PROTOCOL_PREFIX + "c mm# " + name + " used the restart command on " + myUsername);
-                    if(Boolean.parseBoolean(Config.getParam("UseLegacyRestartCode"))) {
-                		try {Thread.sleep(5000);}//give people time to vacate
-            			catch (Exception ex) {MWClient.mwClientLog.clientErrLog(ex);}
-            			stopHost();
-            			try {Thread.sleep(5000);}
-            			catch (Exception ex) {MWClient.mwClientLog.clientErrLog(ex);}
-            			startHost(true, false, false);
-            			gameCount = 0;
-            			return;	
-                    } else {
-                    	try {
-                    		Runtime runTime = Runtime.getRuntime();
-                    		if (new File("MekWarsDed.jar").exists()) {
-                    			String[] call = { "java", "-Xmx512m", "-jar", "MekWarsDed.jar" };
-                    			runTime.exec(call);
-                    		} else {
-                    			String[] call = { "java", "-Xmx512m", "-jar", "MekWarsClient.jar" };
-                    			runTime.exec(call);
-                    		}
-                    		System.exit(0);
-
-                    	} catch (Exception ex) {
-                    		MWClient.mwClientLog.clientErrLog("Unable to find MekWarsDed.jar");
-                    	}
+                    try {
+                        String memory = Config.getParam("DEDMEMORY");
+                        Runtime runTime = Runtime.getRuntime();
+                        String[] call = { "java", "-Xmx"+memory+"m", "-jar", "MekWarsDed.jar" };
+                        runTime.exec(call);
+                        System.exit(0);
+                    } catch (Exception ex) {
+                        MWDedHostLog.clientErrLog("Unable to find MekWarsDed.jar");
                     }
                     return;
 
@@ -1271,9 +1255,11 @@ public final class MWDedHost implements IClient {
             try {
                 this.stopHost();
                 this.goodbye();
-                Runtime runtime = Runtime.getRuntime();
-                String[] call = { "java", "-jar", "MekWarsAutoUpdate.jar", "DEDICATED" };
-                runtime.exec(call);
+                String memory = Config.getParam("DEDMEMORY");
+                Runtime runTime = Runtime.getRuntime();
+                String[] call = { "java", "-Xmx"+memory+"m", "-jar", "MekWarsDed.jar" };
+                runTime.exec(call);
+                System.exit(0);
             } catch (Exception ex) {
                 MWDedHost.MWDedHostLog.clientErrLog(ex);
             }
@@ -1491,25 +1477,15 @@ public final class MWDedHost implements IClient {
             } catch (Exception ex) {
                 MWClient.mwClientLog.clientErrLog(ex);
             }
-            if(Boolean.parseBoolean(Config.getParam("UseLegacyRestartCode"))) {
-        		try {Thread.sleep(5000);}//give people time to vacate
-    			catch (Exception ex) {MWClient.mwClientLog.clientErrLog(ex);}
-    			stopHost();
-    			try {Thread.sleep(5000);}
-    			catch (Exception ex) {MWClient.mwClientLog.clientErrLog(ex);}
-    			startHost(true, false, false);
-    			gameCount = 0;
-    			return;
-            } else {		
-            	try {
-                	Runtime runTime = Runtime.getRuntime();
-                	String[] call = { "java", "-Xmx512m", "-jar", "MekWarsDed.jar" };
-                	runTime.exec(call);
-                	System.exit(0);
+            try {
+                String memory = Config.getParam("DEDMEMORY");
+                Runtime runTime = Runtime.getRuntime();
+                String[] call = { "java", "-Xmx"+memory+"m", "-jar", "MekWarsDed.jar" };
+                runTime.exec(call);
+                System.exit(0);
 
-            	} catch (Exception ex) {
-                	MWClient.mwClientLog.clientErrLog("Unable to find MekWarsDed.jar");
-            	}
+            } catch (Exception ex) {
+                MWClient.mwClientLog.clientErrLog("Unable to find MekWarsDed.jar");
             }
         }
     }

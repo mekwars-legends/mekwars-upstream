@@ -336,6 +336,7 @@ public class CConfig {
         defaults.setProperty("MAPIMAGEWIDTH","100");
         
         defaults.setProperty("UPDATEKEY","-1");
+        defaults.setProperty("DEDMEMORY","64");
         
         //unitstatus setting
         //Right column

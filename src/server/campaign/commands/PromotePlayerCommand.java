@@ -105,7 +105,7 @@ public class PromotePlayerCommand implements Command {
 		CampaignMain.cm.toUser("AM:You've promoted "+grunt.getName()+" to SubFaction "+subFactionName+".", Username);
 		
 		if ( isMod )
-			CampaignMain.cm.doSendModMail("NOTE",Username + " prmoted " + grunt.getName() + " to SubFaction "+subFactionName+".");
+			CampaignMain.cm.doSendModMail("NOTE",Username + " promoted " + grunt.getName() + " to SubFaction "+subFactionName+".");
 
 	}
 }//end RequestSubFactionPromotionCommand class
