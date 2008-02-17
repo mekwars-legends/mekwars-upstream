@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.19.x
++ Added legacy restart code as an option to dedicated server
+    because of memory issues with the hardcoded startup values
 + Added ability to select which MegaMek UI the player wants Swing vs. AWT
 + BUG: All units loaded with autoeject disabled in DB-enabled server
 + Stared adding Weather Info to advanced Terrain
