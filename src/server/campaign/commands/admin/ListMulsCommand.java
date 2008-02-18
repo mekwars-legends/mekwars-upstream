@@ -56,7 +56,7 @@ public class ListMulsCommand implements Command {
 			clientCommand = command.nextToken();
 		
 		if ( !mulDir.exists() ) {
-			CampaignMain.cm.toUser("./data/armies/ folder found.", Username);
+			CampaignMain.cm.toUser("AM:./data/armies/ folder not found.", Username);
 			return;
 		}
 		
