@@ -123,6 +123,15 @@ public class AdminSavePlanetsToXMLCommand implements Command {
                             p.println("                         <NIGHTCHANCE>"+aTerrain.getNightChance()+"</NIGHTCHANCE>");
                             p.println("                         <NIGHTMOD>"+aTerrain.getNightTempMod()+"</NIGHTMOD>");
                             p.println("                         <MAPNAME>"+aTerrain.getStaticMapName()+"</MAPNAME>");
+                            p.println("                         <MINVISIBILITY>"+aTerrain.getMinVisibility()+"</MINVISIBILITY>");
+                            p.println("                         <MAXVISIBILITY>"+aTerrain.getMaxVisibility()+"</MAXVISIBILITY>");
+                            p.println("                         <BLIZZARDCHANCE>"+aTerrain.getBlizzardChance()+"</BLIZZARDCHANCE>");
+                            p.println("                         <BLOWINGSANDCHANCE>"+aTerrain.getBlowingSandChance()+"</BLOWINGSANDCHANCE>");
+                            p.println("                         <HEAVYSNOWFALLCHANCE>"+aTerrain.getHeavySnowfallChance()+"</HEAVYSNOWFALLCHANCE>");
+                            p.println("                         <LIGHTRAINFALLCHANCE>"+aTerrain.getLightRainfallChance()+"</LIGHTRAINFALLCHANCE>");
+                            p.println("                         <HEAVYRAINFALLCHANCE>"+aTerrain.getHeavyRainfallChance()+"</HEAVYRAINFALLCHANCE>");
+                            p.println("                         <MODERATEWINDSCHANCE>"+aTerrain.getModerateWindsChance()+"</MODERATEWINDSCHANCE>");
+                            p.println("                         <HIGHWINDSCHANCE>"+aTerrain.getHighWindsChance()+"</HIGHWINDSCHANCE>");
                             p.println("                 </ADVANCETERRAIN>");
                         }
                     }

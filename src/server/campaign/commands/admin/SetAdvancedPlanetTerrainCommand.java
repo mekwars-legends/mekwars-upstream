@@ -30,7 +30,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class SetAdvancedPlanetTerrainCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "Planet Name#Terrain ID#Display Name#XSize#YSize#StaticMap(bool)#Xboard#YBoard#Low Temp#High Temp#Gravity(Double)#Vaccum(bool)#Night Chance#Night Temp Mod#Static Map(bool)#Min Visibility#Max Visibility#";
+	String syntax = "Planet Name$Terrain ID$Display Name$XSize$YSize$StaticMap(bool)$Xboard$YBoard$Low Temp$High Temp$Gravity(Double)$Vaccum(bool)$Night Chance$Night Temp Mod$Static Map(bool)$Min Visibility$Max Visibility$";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}
@@ -52,34 +52,14 @@ public class SetAdvancedPlanetTerrainCommand implements Command {
 		
 		int id = Integer.parseInt(command.nextToken());
 		
-		AdvancedTerrain aTerrain = new AdvancedTerrain();
-		
-		aTerrain = planet.getAdvancedTerrain().get(new Integer(id));
+		AdvancedTerrain aTerrain = planet.getAdvancedTerrain().get(new Integer(id));
 		
 		if ( aTerrain == null){
 			CampaignMain.cm.toUser("Could not find that terrain on planet "+planet.getName(),Username,true);
 			return;
 		}
 		
-		aTerrain.setDisplayName(command.nextToken());
-		aTerrain.setXSize(Integer.parseInt(command.nextToken()));
-		aTerrain.setYSize(Integer.parseInt(command.nextToken()));
-		aTerrain.setStaticMap(new Boolean(command.nextToken()).booleanValue());
-		aTerrain.setXBoardSize(Integer.parseInt(command.nextToken()));
-		aTerrain.setYBoardSize(Integer.parseInt(command.nextToken()));
-		aTerrain.setLowTemp(Integer.parseInt(command.nextToken()));
-		aTerrain.setHighTemp(Integer.parseInt(command.nextToken()));
-		aTerrain.setGravity(Double.parseDouble(command.nextToken()));
-		aTerrain.setVacuum(new Boolean(command.nextToken()).booleanValue());
-		aTerrain.setNightChance(Integer.parseInt(command.nextToken()));
-		aTerrain.setNightTempMod(Integer.parseInt(command.nextToken()));
-		aTerrain.setStaticMapName(command.nextToken());
-		
-		if ( command.hasMoreTokens() )
-			aTerrain.setMinVisibility(Integer.parseInt(command.nextToken()));
-		
-		if ( command.hasMoreTokens() )
-			aTerrain.setMaxVisibility(Integer.parseInt(command.nextToken()));
+		aTerrain = new AdvancedTerrain(command.nextToken());
 		
 		planet.getAdvancedTerrain().put(new Integer(id),aTerrain);
 		planet.setAdvancedTerrain(planet.getAdvancedTerrain());

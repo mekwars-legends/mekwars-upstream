@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.19.x
++ RFE 1894532: Integration of Weather Effects into Planet Editor
 + BUG: NPE when calculating costs for Simple Repair
 + RFE: Ability to allow all staffers to to see all commands being used.
 + Added ability for Ded users to set max memory usage for deds with MWDed.jar

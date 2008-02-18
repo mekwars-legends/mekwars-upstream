@@ -118,6 +118,13 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 	private final JTextField NightTempModText = new JTextField(5);
     private final JTextField MinVisibilityText = new JTextField(5);
     private final JTextField MaxVisibilityText = new JTextField(5);
+    private final JTextField BlizzardChanceText = new JTextField(5);
+    private final JTextField blowingSandChanceText = new JTextField(5);
+    private final JTextField heavySnowfallChanceText = new JTextField(5);
+    private final JTextField lightRainfallChanceText = new JTextField(5);
+    private final JTextField heavyRainfallChanceText = new JTextField(5);
+    private final JTextField moderateWindsChanceText = new JTextField(5);
+    private final JTextField highWindsChanceText = new JTextField(5);
 	private final JTextField planetBays = new JTextField(5);
 	private final JTextField planetComps = new JTextField(5);
 	private final JTextField planetXPosition = new JTextField(5);
@@ -775,8 +782,43 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 	        MaxVisibilityText.addKeyListener(this);
 	        textPanel.add(MaxVisibilityText);
 	
+            textPanel.add(new JLabel("Blizzard:", SwingConstants.TRAILING));
+            BlizzardChanceText.setToolTipText("<html>Chance for Blizzards</html>");
+            BlizzardChanceText.addKeyListener(this);
+            textPanel.add(BlizzardChanceText);
+    
+            textPanel.add(new JLabel("Blowing Sand:", SwingConstants.TRAILING));
+            blowingSandChanceText.setToolTipText("<html>Chance for Blowing Sands</html>");
+            blowingSandChanceText.addKeyListener(this);
+            textPanel.add(blowingSandChanceText);
+    
+            textPanel.add(new JLabel("Heavy Snowfall:", SwingConstants.TRAILING));
+            heavySnowfallChanceText.setToolTipText("<html>Chance for Heavy Snowfall</html>");
+            heavySnowfallChanceText.addKeyListener(this);
+            textPanel.add(heavySnowfallChanceText);
+    
+            textPanel.add(new JLabel("Light Rainfall:", SwingConstants.TRAILING));
+            lightRainfallChanceText.setToolTipText("<html>Chance for Light Rainfall</html>");
+            lightRainfallChanceText.addKeyListener(this);
+            textPanel.add(lightRainfallChanceText);
+    
+            textPanel.add(new JLabel("Heavy Rainfall:", SwingConstants.TRAILING));
+            heavyRainfallChanceText.setToolTipText("<html>Chance for Heavy Rainfall</html>");
+            heavyRainfallChanceText.addKeyListener(this);
+            textPanel.add(heavyRainfallChanceText);
+    
+            textPanel.add(new JLabel("Moderate Winds:", SwingConstants.TRAILING));
+            moderateWindsChanceText.setToolTipText("<html>Chance for Moderate Winds</html>");
+            moderateWindsChanceText.addKeyListener(this);
+            textPanel.add(moderateWindsChanceText);
+    
+            textPanel.add(new JLabel("High Winds:", SwingConstants.TRAILING));
+            highWindsChanceText.setToolTipText("<html>Chance for High Winds</html>");
+            highWindsChanceText.addKeyListener(this);
+            textPanel.add(highWindsChanceText);
+    
 			//run the spring layout
-			SpringLayoutHelper.setupSpringGrid(textPanel,4);
+			SpringLayoutHelper.setupSpringGrid(textPanel,6);
 			
 			
 			isStaticMapCB.setText("Use Static Maps");
@@ -834,6 +876,13 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			NightTempModText.setText(Integer.toString(aTerrain.getNightTempMod()));
 	        MinVisibilityText.setText(Integer.toString(aTerrain.getMinVisibility()));
 	        MaxVisibilityText.setText(Integer.toString(aTerrain.getMaxVisibility()));
+            blowingSandChanceText.setText(Integer.toString(aTerrain.getBlowingSandChance()));
+            BlizzardChanceText.setText(Integer.toString(aTerrain.getBlizzardChance()));
+            heavyRainfallChanceText.setText(Integer.toString(aTerrain.getHeavyRainfallChance()));
+            heavySnowfallChanceText.setText(Integer.toString(aTerrain.getHeavySnowfallChance()));
+            lightRainfallChanceText.setText(Integer.toString(aTerrain.getLightRainfallChance()));
+            moderateWindsChanceText.setText(Integer.toString(aTerrain.getModerateWindsChance()));
+            highWindsChanceText.setText(Integer.toString(aTerrain.getHighWindsChance()));
 			
 			isStaticMapCB.setSelected(aTerrain.isStaticMap());
 			isVacuumCB.setSelected(aTerrain.isVacuum());
@@ -994,7 +1043,14 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			NightTempModText.setText(Integer.toString(aTerrain.getNightTempMod()));
 	        MinVisibilityText.setText(Integer.toString(aTerrain.getMinVisibility()));
 	        MaxVisibilityText.setText(Integer.toString(aTerrain.getMaxVisibility()));
-			
+            blowingSandChanceText.setText(Integer.toString(aTerrain.getBlowingSandChance()));
+            BlizzardChanceText.setText(Integer.toString(aTerrain.getBlizzardChance()));
+            heavyRainfallChanceText.setText(Integer.toString(aTerrain.getHeavyRainfallChance()));
+            heavySnowfallChanceText.setText(Integer.toString(aTerrain.getHeavySnowfallChance()));
+            lightRainfallChanceText.setText(Integer.toString(aTerrain.getLightRainfallChance()));
+            moderateWindsChanceText.setText(Integer.toString(aTerrain.getModerateWindsChance()));
+            highWindsChanceText.setText(Integer.toString(aTerrain.getHighWindsChance()));
+
 			isStaticMapCB.setSelected(aTerrain.isStaticMap());
 			isVacuumCB.setSelected(aTerrain.isVacuum());
 		}else {
@@ -1012,7 +1068,14 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			NightTempModText.setText(Integer.toString(this.selectedPlanet.getNightTempMod()));
 	        MinVisibilityText.setText("");
 	        MaxVisibilityText.setText("");
-	        
+            blowingSandChanceText.setText("");
+            BlizzardChanceText.setText("");
+            heavyRainfallChanceText.setText("");
+            heavySnowfallChanceText.setText("");
+            lightRainfallChanceText.setText("");
+            moderateWindsChanceText.setText("");
+            highWindsChanceText.setText("");
+
 			isStaticMapCB.setSelected(false);
 			isVacuumCB.setSelected(false);
 		}
@@ -1096,6 +1159,13 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 				|| e.getComponent().equals(this.NightChanceText)
 				|| e.getComponent().equals(this.NightTempModText)
 				|| e.getComponent().equals(this.GravityText)
+				|| e.getComponent().equals(this.blowingSandChanceText)
+				|| e.getComponent().equals(this.BlizzardChanceText)
+				|| e.getComponent().equals(this.lightRainfallChanceText)
+				|| e.getComponent().equals(this.heavyRainfallChanceText)
+				|| e.getComponent().equals(this.heavySnowfallChanceText)
+				|| e.getComponent().equals(this.moderateWindsChanceText)
+				|| e.getComponent().equals(this.highWindsChanceText)
 				){
 			updateAdvancedTerrain();
 		}
@@ -1126,6 +1196,13 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		aTerrain.setNightTempMod(Integer.parseInt(NightTempModText.getText()));
 		aTerrain.setMinVisibility(Integer.parseInt(MinVisibilityText.getText()));
 		aTerrain.setMaxVisibility(Integer.parseInt(MaxVisibilityText.getText()));
+        aTerrain.setBlizzardChance(Integer.parseInt(BlizzardChanceText.getText()));
+        aTerrain.setBlowingSandChance(Integer.parseInt(blowingSandChanceText.getText()));
+        aTerrain.setHeavySnowfallChance(Integer.parseInt(heavySnowfallChanceText.getText()));
+        aTerrain.setLightRainfallChance(Integer.parseInt(lightRainfallChanceText.getText()));
+        aTerrain.setHeavyRainfallChance(Integer.parseInt(heavyRainfallChanceText.getText()));
+        aTerrain.setModerateWindsChance(Integer.parseInt(moderateWindsChanceText.getText()));
+        aTerrain.setHighWindsChance(Integer.parseInt(highWindsChanceText.getText()));
 		aTerrain.setStaticMap(isStaticMapCB.isSelected());
 		aTerrain.setVacuum(isVacuumCB.isSelected());
 	}
@@ -1218,27 +1295,23 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 					aTerrain.setNightTempMod(Integer.parseInt(NightTempModText.getText()));
 					aTerrain.setMinVisibility(Integer.parseInt(MinVisibilityText.getText()));
 					aTerrain.setMaxVisibility(Integer.parseInt(MaxVisibilityText.getText()));
+			        aTerrain.setBlizzardChance(Integer.parseInt(BlizzardChanceText.getText()));
+			        aTerrain.setBlowingSandChance(Integer.parseInt(blowingSandChanceText.getText()));
+			        aTerrain.setHeavySnowfallChance(Integer.parseInt(heavySnowfallChanceText.getText()));
+			        aTerrain.setLightRainfallChance(Integer.parseInt(lightRainfallChanceText.getText()));
+			        aTerrain.setHeavyRainfallChance(Integer.parseInt(heavyRainfallChanceText.getText()));
+			        aTerrain.setModerateWindsChance(Integer.parseInt(moderateWindsChanceText.getText()));
+			        aTerrain.setHighWindsChance(Integer.parseInt(highWindsChanceText.getText()));
 					aTerrain.setStaticMap(isStaticMapCB.isSelected());
 					aTerrain.setVacuum(isVacuumCB.isSelected());
 				}
-				
+
+				if ( aTerrain.getDisplayName().trim().length() < 1 )
+				    aTerrain.setDisplayName(terrain);
 				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c SetAdvancedPlanetTerrain#"+planetName
 		        +"#"+ id
-		        +"#"+ (aTerrain.getDisplayName().trim().length() < 1 ? terrain : aTerrain.getDisplayName())
-		    	+"#"+ aTerrain.getXSize()
-		    	+"#"+ aTerrain.getYSize()
-		    	+"#"+ aTerrain.isStaticMap()
-		    	+"#"+ aTerrain.getXBoardSize()
-		    	+"#"+ aTerrain.getYBoardSize()
-		    	+"#"+ aTerrain.getLowTemp()
-		    	+"#"+ aTerrain.getHighTemp()
-		    	+"#"+ aTerrain.getGravity()
-		    	+"#"+ aTerrain.isVacuum()
-		    	+"#"+ aTerrain.getNightChance()
-		    	+"#"+ aTerrain.getNightTempMod()
-		    	+"#"+ aTerrain.getStaticMapName()
-		        +"#"+ aTerrain.getMinVisibility()
-		        +"#"+ aTerrain.getMaxVisibility());
+		        +"#"+ aTerrain.toString());
+				
 			}
 		}else{
 			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminSetPlanetBoardSize#"+planetName+"#"+XBoardSizeText.getText()+"#"+YBoardSizeText.getText());
