@@ -1,7 +1,9 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.19.x
+v 0.2.20.x
+Release Client/Server 0.2.20.0
++ New MegaMek.jar 0.33.19-MW021808-5493
 + Bug: Pilots losing skills after battles
 + Bug: Newly bought units have pilots with high hits
 + RFE 1894532: Integration of Weather Effects into Planet Editor
@@ -33,6 +35,7 @@ v 0.2.19.x
 + RFE: MekWarsAutoUpdate no longer creates or uses Manifest.txt.jar 
 + New MegaMek.jar 0.33.18-MW020808-5475
 + Removed all References to MM removal Code Stack Pole
+v 0.2.19.x
 Release Server/Client 0.2.19.0
 + New MegaMek.jar 0.33.18-MW020708-5466
 + Updated MekWars code to Reflect removal of F_PROTOMECH flag
