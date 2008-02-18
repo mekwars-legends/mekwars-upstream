@@ -164,7 +164,7 @@ public class CUnit extends Unit {
         }
 			
 		//set autoeject if its a mech
-		if (UnitEntity instanceof Mech)
+		if (UnitEntity instanceof Mech && ST.hasMoreElements())
 			((Mech)UnitEntity).setAutoEject(Boolean.parseBoolean(ST.nextToken()));
 		
 		//then set up ammo loadout

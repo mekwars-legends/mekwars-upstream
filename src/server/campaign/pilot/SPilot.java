@@ -96,24 +96,25 @@ public class SPilot extends Pilot {
         int bestTotal = CampaignMain.cm.getIntegerConfig("BestTotalPilot");
 
         int startingSkillAmount = 10;// 4/6 and 5/5 are worst possible green
-                                        // units
-        
-        int currentSkillAmount = getGunnery()+ getPiloting(); 
+        // units
+
+        int currentSkillAmount = getGunnery() + getPiloting();
         SPilotSkill skillToAdd = null;
 
         /*
          * - If the differential is positive, we will always level gunnery. - If
          * the differential is negative, we will always level piloting. - If the
-         * differential is 0, we'll level gunnery 70% of the time and
-         * piloting 30% of the time.
+         * differential is 0, we'll level gunnery 70% of the time and piloting
+         * 30% of the time.
          */
-        int  differential = getGunnery() - getPiloting();
+        int differential = getGunnery() - getPiloting();
 
-        if ( unit.getEntity() instanceof Infantry ){
-            //Give AntiMek and Non Anti Mek infantry an equal chance of leveling 
+        if (unit.getEntity() instanceof Infantry) {
+            // Give AntiMek and Non Anti Mek infantry an equal chance of
+            // leveling
             // Gunnery and Piloting.
             differential = 0;
-    }
+        }
         /*
          * Adjust the differential for NaturalAptitudes. Push the differential
          * towards the skill we want to get.
@@ -242,7 +243,7 @@ public class SPilot extends Pilot {
                 levelPiloting = true;
             else if (random < 3 // 0-2, 30% chance for piloting on push
                     || (unit.getEntity() instanceof Infantry && random < 5)) // differential
-                levelPiloting = true;   //50/50 for Infantry
+                levelPiloting = true; // 50/50 for Infantry
             else
                 levelGunnery = true;
 
@@ -273,14 +274,15 @@ public class SPilot extends Pilot {
             // do the actual level ups
             if (levelGunnery)
                 setGunnery(getGunnery() - 1);
-            else if (levelPiloting){
-                
-                if ( unit.getEntity() instanceof Infantry ){
-                    if ( ((Infantry)unit.getEntity()).isAntiMek() )
+            else if (levelPiloting) {
+
+                if (unit.getEntity() instanceof Infantry) {
+                    if (((Infantry) unit.getEntity()).isAntiMek())
                         setPiloting(getPiloting() - 1);
-                    else //do not change piloting for Non-AntiMek Infantry
+                    else
+                        // do not change piloting for Non-AntiMek Infantry
                         levelPiloting = false;
-                }else
+                } else
                     setPiloting(getPiloting() - 1);
             }
 
@@ -420,7 +422,10 @@ public class SPilot extends Pilot {
         }
         result.append(getKills());
         result.append(delimiter);
-        result.append(getCurrentFaction());
+        if ( getCurrentFaction().trim().length() > 0 )
+            result.append(getCurrentFaction());
+        else
+            result.append(CampaignMain.cm.getConfig("NewbieHouseName"));
         result.append(delimiter);
         result.append(getPilotId());
         result.append(delimiter);
@@ -441,11 +446,15 @@ public class SPilot extends Pilot {
         } else
             result.append(0);
         result.append(delimiter);
-        if (CampaignMain.cm.isUsingMySQL())
-            result.append(getDBId());
-        else
-            result.append(false);// unused var
-        result.append(delimiter);
+
+        if (!toPlayer) {
+            if (CampaignMain.cm.isUsingMySQL())
+                result.append(getDBId());
+            else
+                result.append(0);// unused var
+            result.append(delimiter);
+        }
+        
         return result.toString();
     }
 

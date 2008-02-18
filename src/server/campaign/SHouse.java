@@ -1104,7 +1104,9 @@ public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuy
     }
 
     public SPilot getNewPilot(int uType) {
-        return getPilotQueues().getPilot(uType);
+        SPilot pilot = getPilotQueues().getPilot(uType);
+        pilot.setCurrentFaction(this.getName());
+        return pilot;
     }
 
     /**

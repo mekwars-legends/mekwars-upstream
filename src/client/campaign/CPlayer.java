@@ -817,10 +817,15 @@ public class CPlayer extends Player {
 		if (ST.hasMoreTokens()) {
 			int unitid = Integer.parseInt(ST.nextToken());
 			int status = Integer.parseInt(ST.nextToken());
+			CUnit unit = this.getUnit(unitid);
+			
+			if ( unit == null )
+			    return;
+			
 			if (mwclient.isUsingAdvanceRepairs() && status == Unit.STATUS_UNMAINTAINED)
-				this.getUnit(unitid).setStatus(Unit.STATUS_OK);
+				unit.setStatus(Unit.STATUS_OK);
 			else
-				this.getUnit(unitid).setStatus(status);
+				unit.setStatus(status);
 		}
 	}
 	
