@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
++ Bug: Pilot Skill being loaded/saved incorrectly in DB
++ Updated DB to v26
 Release Client/Server 0.2.20.0
 + New MegaMek.jar 0.33.19-MW021808-5493
 + Bug: Pilots losing skills after battles

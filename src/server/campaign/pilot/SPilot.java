@@ -506,7 +506,7 @@ public class SPilot extends Pilot {
 
             // Update pilot skills
             sql.setLength(0);
-            sql.append("DELETE from pilotskills WHERE pilotID = " + getPilotId());
+            sql.append("DELETE from pilotskills WHERE pilotID = " + getDBId());
             ps.executeUpdate(sql.toString());
 
             if (getSkills().size() > 0) {
@@ -514,7 +514,7 @@ public class SPilot extends Pilot {
                     SPilotSkill sk = (SPilotSkill) skill;
                     sql.setLength(0);
                     sql.append("INSERT into pilotskills set ");
-                    sql.append("pilotID = " + getPilotId() + ", ");
+                    sql.append("pilotID = " + getDBId() + ", ");
                     sql.append("SkillNum = " + sk.getId() + ", ");
                     sql.append("SkillLevel = " + sk.getLevel());
                     if (sk instanceof WeaponSpecialistSkill) {
