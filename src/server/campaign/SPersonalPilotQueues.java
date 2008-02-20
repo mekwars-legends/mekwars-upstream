@@ -280,6 +280,7 @@ public class SPersonalPilotQueues implements Serializable{
 
 		}catch(SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in SPersonalPilotQueues.fromDB: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 		
 	}

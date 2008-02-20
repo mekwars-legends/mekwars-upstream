@@ -2977,6 +2977,7 @@ public final class SPlayer extends Player implements  Comparable<Object>, IBuyer
             MWServ.mwlog.dbLog("Finished saving player");
         } catch (SQLException e) {
             MWServ.mwlog.dbLog("SQL error in SPlayer.toDB: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
         }
     }
 
@@ -3391,6 +3392,7 @@ public final class SPlayer extends Player implements  Comparable<Object>, IBuyer
             stmt1.close();
         } catch (SQLException e) {
             MWServ.mwlog.dbLog("SQL Error in SPlayer.fromDB: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
         } finally {
             this.isLoading = false;
         }

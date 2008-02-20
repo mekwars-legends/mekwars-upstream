@@ -378,6 +378,9 @@ public final class SMWLogger {// final - no extension of the server logger
             StackTraceElement[] t = e.getStackTrace();
             for (int i = 0; i < t.length; i++) {
                 debugLog.warning("   " + t[i].toString());
+                if (CampaignMain.cm != null)
+                    CampaignMain.cm.doSendErrLog("   " + t[i].toString());
+
             }
         }
     }
@@ -400,6 +403,18 @@ public final class SMWLogger {// final - no extension of the server logger
     public void dbLog(String s) {
         if (logging)
             dbLog.info(s);
+    }
+
+    public void dbLog(Exception e) {
+        if (logging) {
+            dbLog.warning("[" + e.toString() + "]");
+            StackTraceElement[] t = e.getStackTrace();
+            for (int i = 0; i < t.length; i++) {
+                dbLog.warning("   " + t[i].toString());
+                if (CampaignMain.cm != null)
+                    CampaignMain.cm.doSendErrLog("   " + t[i].toString());
+            }
+        }
     }
 
     public void enableSeconds(boolean b) {

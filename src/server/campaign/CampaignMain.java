@@ -3976,6 +3976,7 @@ public final class CampaignMain implements Serializable {
             stmt.close();
         } catch (SQLException e) {
             MWServ.mwlog.dbLog("SQL Error in UnitHandler.loadMechStats: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
         }
     }
 

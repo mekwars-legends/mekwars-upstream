@@ -87,6 +87,7 @@ public class HistoryHandler {
 		  ps.close();
 	  } catch(SQLException e) {
 		  MWServ.mwlog.dbLog("SQLException in HistoryHandler.addHistoryEntry: " + e.getMessage());
+          MWServ.mwlog.dbLog(e);
 		  try {
 			  if(ps != null)
 				  ps.close();

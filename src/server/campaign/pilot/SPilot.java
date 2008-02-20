@@ -539,6 +539,7 @@ public class SPilot extends Pilot{
             ps.close();
         } catch (SQLException e) {
             MWServ.mwlog.dbLog("SQL Error in PilotHandler.savePilot: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
         }
     }
 

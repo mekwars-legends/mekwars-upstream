@@ -76,6 +76,7 @@ public class SArmy extends Army{
             ps.close();
         } catch (SQLException e) {
             MWServ.mwlog.dbLog("SQLException in SArmy.toDB: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
         }
     }
 
@@ -88,6 +89,7 @@ public class SArmy extends Army{
             ps.close();
         } catch (SQLException e) {
             MWServ.mwlog.dbLog("SQLException in SArmy.deleteFromDB: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
         }
     }
 

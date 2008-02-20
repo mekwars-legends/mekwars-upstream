@@ -124,6 +124,7 @@ public class PilotHandler {
 			stmt.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PilotHandler.loadUnitPilot: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 		return p;
 	}
@@ -135,6 +136,7 @@ public class PilotHandler {
 			stmt.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PilotHandler.unlinkPilot: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 	
@@ -145,6 +147,7 @@ public class PilotHandler {
 		stmt.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PilotHandler.linkPilotToUnit: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 	
@@ -155,6 +158,7 @@ public class PilotHandler {
 			stmt.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PilotHandler.linkPilotToFaction: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 
@@ -166,6 +170,7 @@ public class PilotHandler {
 			ps.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PilotHandler.linkPilotToPlayer: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 	
@@ -177,6 +182,7 @@ public class PilotHandler {
 			stmt.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PilotHandler.deletePilot: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 	
@@ -194,6 +200,7 @@ public class PilotHandler {
 			stmt.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 		
@@ -213,6 +220,7 @@ public class PilotHandler {
 			rs.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 	
@@ -232,6 +240,7 @@ public class PilotHandler {
 			stmt1.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 	
@@ -251,6 +260,7 @@ public class PilotHandler {
 			stmt1.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 	

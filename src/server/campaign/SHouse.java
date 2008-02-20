@@ -546,6 +546,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             ps.close();
         } catch (SQLException e) {
             MWServ.mwlog.dbLog("SQL Error in FactionHandler.saveFaction: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
         }
     }
 
@@ -2765,6 +2766,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             ps.close();
         } catch (SQLException e) {
             MWServ.mwlog.dbLog("SQL Error in SHouse.saveConfigFileToDB: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
         }
     }
 
@@ -2801,6 +2803,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             stmt.close();
         } catch (SQLException e) {
             MWServ.mwlog.dbLog("SQL Error in SHouse.loadConfigFileFromDB: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
         }
     }
 

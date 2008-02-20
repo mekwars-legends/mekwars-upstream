@@ -108,6 +108,7 @@ public String toString()
 		  }
 	  } catch(SQLException e){
 		  MWServ.mwlog.dbLog("SQL Error in MechStatistics.fromDB: " + e.getMessage());
+          MWServ.mwlog.dbLog(e);
 	  }
   }
   
@@ -150,6 +151,7 @@ public String toString()
 			 ps.close();
 		 } catch (SQLException e) {
 			 MWServ.mwlog.dbLog("SQLException in MechStatistics.toDB: " + e.getMessage());
+             MWServ.mwlog.dbLog(e);
 		 }
 		 
 	 } else {
@@ -183,6 +185,7 @@ public String toString()
 			 ps.close();
 		 } catch (SQLException e) {
 			 MWServ.mwlog.dbLog("SQLException in MechStatistics.toDB: " + e.getMessage());
+             MWServ.mwlog.dbLog(e);
 		 }
 	 }	 
   }

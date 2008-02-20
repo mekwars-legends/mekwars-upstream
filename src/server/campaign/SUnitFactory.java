@@ -189,6 +189,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
             stmt.close();
         } catch (SQLException e) {
             MWServ.mwlog.dbLog("SQL ERROR in SUnitFactory.toDB: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
         }
     }
 

@@ -44,6 +44,7 @@ public class PlayerHandler {
 			return numplayers;
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.countPlayers: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 			return 0;
 		}
 	}
@@ -65,6 +66,7 @@ public class PlayerHandler {
 			stmt.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.purgeStalePlayers: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 	
@@ -85,6 +87,7 @@ public class PlayerHandler {
 			return -1;
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.getPlayerIDByName: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 			return -1;
 		}
 	}
@@ -96,6 +99,7 @@ public class PlayerHandler {
 			ps.close();
 		} catch(SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.setPassword: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 	
@@ -107,6 +111,7 @@ public class PlayerHandler {
 			ps.close();
 		} catch(SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.setPlayerAccess: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 	
@@ -136,6 +141,7 @@ public class PlayerHandler {
 				}
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.matchPassword: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 			return false;
 		}
 	}
@@ -163,6 +169,7 @@ public class PlayerHandler {
 			return false;
 		} catch(SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in playerHandler.playerExists: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 			return false;
 		}
 	}
@@ -204,6 +211,7 @@ public class PlayerHandler {
 			MWServ.mwlog.dbLog("Deleted account " + p.getName() + " from database.");
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.deletePlayer: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 	

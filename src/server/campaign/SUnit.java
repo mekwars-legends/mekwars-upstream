@@ -20,7 +20,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -68,7 +67,7 @@ import megamek.common.WeaponType;
  * new SUnit with the same UnitID as an existing Mech to facilitate repodding
  */
 
-public final class SUnit extends Unit implements Serializable {
+public final class SUnit extends Unit{
 
     // VARIABLES
     private Integer BV = 0;
@@ -187,12 +186,12 @@ public final class SUnit extends Unit implements Serializable {
 
             if (CampaignMain.cm.getData().getServerBannedAmmo().containsKey(munition) || h.getBannedAmmo().containsKey(munition)) {
 
-                Vector types = AmmoType.getMunitionsFor(at.getAmmoType());
-                Enumeration allTypes = types.elements();
+                Vector<AmmoType> types = AmmoType.getMunitionsFor(at.getAmmoType());
+                Enumeration<AmmoType> allTypes = types.elements();
 
                 boolean defaultFound = false;
                 while (allTypes.hasMoreElements() && !defaultFound) {
-                    AmmoType currType = (AmmoType) allTypes.nextElement();
+                    AmmoType currType = allTypes.nextElement();
 
                     if (currType.getTechLevel() <= en.getTechLevel() && currType.getMunitionType() == AmmoType.M_STANDARD && currType.getRackSize() == at.getRackSize()) {
                         mAmmo.changeAmmoType(currType);
@@ -423,12 +422,12 @@ public final class SUnit extends Unit implements Serializable {
         result.append(((SPilot) getPilot()).toFileFormat("#", toPlayer));
         result.append("$");
         if (toPlayer) {
-            LinkedList mmoptions = getPilot().getMegamekOptions();
+            LinkedList<MegaMekPilotOption> mmoptions = getPilot().getMegamekOptions();
             result.append(mmoptions.size());
             result.append("$");
-            Iterator i = mmoptions.iterator();
+            Iterator<MegaMekPilotOption> i = mmoptions.iterator();
             while (i.hasNext()) {
-                MegaMekPilotOption mmo = (MegaMekPilotOption) i.next();
+                MegaMekPilotOption mmo = i.next();
                 result.append(mmo.getMmname());
                 result.append("$");
                 result.append(mmo.isValue());
@@ -696,6 +695,7 @@ public final class SUnit extends Unit implements Serializable {
             }
         } catch (SQLException e) {
             MWServ.mwlog.dbLog("SQL Exception in SUnit.toDB: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
         }
     }
 
@@ -1111,7 +1111,7 @@ public final class SUnit extends Unit implements Serializable {
         this.setEntity(entity);
 
         if (p.getSkills().has(PilotSkill.WeaponSpecialistSkillID)) {
-            Iterator ski = p.getSkills().getSkillIterator();
+            Iterator<PilotSkill> ski = p.getSkills().getSkillIterator();
             while (ski.hasNext()) {
                 SPilotSkill skill = (SPilotSkill) ski.next();
                 if (skill.getName().equals("Weapon Specialist") && p.getWeapon().equals("Default")) {
@@ -1413,7 +1413,7 @@ public final class SUnit extends Unit implements Serializable {
     public int getPilotSkillBV() {
 
         int skillBV = 0;
-        Iterator pilotSkills = this.getPilot().getSkills().getSkillIterator();
+        Iterator<PilotSkill> pilotSkills = this.getPilot().getSkills().getSkillIterator();
 
         while (pilotSkills.hasNext()) {
             SPilotSkill skill = (SPilotSkill) pilotSkills.next();

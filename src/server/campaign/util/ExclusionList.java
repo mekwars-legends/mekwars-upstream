@@ -267,6 +267,7 @@ public class ExclusionList{
 			
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQLException in ExclusionList.fromDB: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		} finally {
 			try {
 				if(ps != null)
@@ -275,6 +276,7 @@ public class ExclusionList{
 					rs.close();
 			} catch (SQLException ex) {
 				MWServ.mwlog.dbLog("Exception in ExclusionList.fromDB: " + ex.getMessage());
+                MWServ.mwlog.dbLog(ex);
 			}
 		}
 	}
@@ -337,6 +339,7 @@ public class ExclusionList{
 			MWServ.mwlog.dbLog("  -> " + sql);
 			if(ps != null)
 				MWServ.mwlog.dbLog("    -> " + ps.toString());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 	

@@ -348,6 +348,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
             }
         } catch (SQLException e) {
             MWServ.mwlog.dbLog(e.getMessage());
+            MWServ.mwlog.dbLog(e);
         }
 
     }

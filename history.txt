@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
++ Added exception logging to all SQLExceptions
++ Added SMWLogger#dbLog(Exception e)
 + Started work on RFE 1815469 
 + RFE 1897024: Word wrap for UnitViewerDialog Fluff text
 + Moved SPlayer#playerLevelDescription to MWCyclopsPlayer

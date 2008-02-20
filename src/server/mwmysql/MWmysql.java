@@ -66,6 +66,7 @@ public class MWmysql{
 		  }		  
 	  } catch (IOException ex){
 		  MWServ.mwlog.dbLog("Error in backupDB: " + ex.toString());
+          MWServ.mwlog.dbLog(ex);
 	  }
   }
 
@@ -78,6 +79,7 @@ public class MWmysql{
     }
     catch(ClassNotFoundException e){
       MWServ.mwlog.dbLog("ClassNotFoundException: " + e.getMessage());
+      MWServ.mwlog.dbLog(e);
     }
     try{
     	con=DriverManager.getConnection(url);
@@ -86,6 +88,7 @@ public class MWmysql{
     }
     catch(SQLException ex){
     	MWServ.mwlog.dbLog("SQLException: " + ex.getMessage());
+        MWServ.mwlog.dbLog(ex);
     }
   }
 }

@@ -42,7 +42,7 @@ public class Pilot {
 	private String name = "John Doe";
 	private int experience = 0;
 	private int hits = 0; 
-	private LinkedList megamekOptions = new LinkedList();
+	private LinkedList<MegaMekPilotOption> megamekOptions = new LinkedList<MegaMekPilotOption>();
 	private String weapon = "Default";//for Weapon Specialist skill
 	private String currentFaction = "none";
 	private String traitName = "none";
@@ -97,7 +97,7 @@ public class Pilot {
 		
 		StringBuilder result = new StringBuilder();
 		
-		Iterator i = getSkills().getSkillIterator();
+		Iterator<PilotSkill> i = getSkills().getSkillIterator();
 		if (!i.hasNext())
 			return "";
 		
@@ -228,7 +228,7 @@ public class Pilot {
 	/**
 	 * @return Returns the megamekOptions.
 	 */
-	public LinkedList getMegamekOptions() {
+	public LinkedList<MegaMekPilotOption> getMegamekOptions() {
 		return megamekOptions;
 	}
 	

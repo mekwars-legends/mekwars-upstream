@@ -124,9 +124,7 @@ public class FactionHandler {
 						h.addUnit(u, false);
 					} catch (Exception ex) {
 						MWServ.mwlog.dbLog("Exception at addUnit: ");
-						MWServ.mwlog.dbLog(ex.toString());
-						MWServ.mwlog.dbLog(ex.getStackTrace().toString());
-					}
+		                MWServ.mwlog.dbLog(ex);					}
 				}
 				
 				//Load the Vees
@@ -266,8 +264,8 @@ public class FactionHandler {
 			stmt.close();
 			stmt2.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
 			MWServ.mwlog.dbLog("SQL Error in FactionHandler.loadFaction: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 	
@@ -282,6 +280,7 @@ public class FactionHandler {
 			return num;
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in FactionHandler.countFactions: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 			return 0;
 		}
 	}
@@ -322,6 +321,7 @@ public class FactionHandler {
 			ps.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQLException in FactionHandler.saveSubFaction: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 	
@@ -335,6 +335,7 @@ public class FactionHandler {
 			ps.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQLException in FactionHandler.deleteSubFaction: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 
 	}

@@ -37,6 +37,7 @@ public class UnitHandler {
 			stmt.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in UnitHandler.linkUnitToFaction: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 	
@@ -53,6 +54,7 @@ public class UnitHandler {
 			ps.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in UnitHandler.getDBIdFromMWId: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		} 
 		return uID;
 	}
@@ -64,6 +66,7 @@ public class UnitHandler {
 			stmt.close();
 		} catch(SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in UnitHandler.unlinkUnit: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 	
@@ -76,6 +79,7 @@ public class UnitHandler {
 			ps.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in UnitHandler.linkUnitToPlayer: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 	
@@ -88,6 +92,7 @@ public class UnitHandler {
 			stmt.close();
 		} catch (SQLException e) {
 			MWServ.mwlog.dbLog("SQL Error in UnitHandler.deleteUnit: " + e.getMessage());
+            MWServ.mwlog.dbLog(e);
 		}
 	}
 	
