@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
++ Added operation config AttackerAllowAgainstUnclaimedLand allows a Player
+  to steal Unclaimed CP from any planet in range
 + New MegaMek.jar 0.33.19-MW022008-5498
 + RFE 1815469: Uncontrolled Planets
 + Added exception logging to all SQLExceptions

@@ -2504,6 +2504,11 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseCheckBox.setName("AttackerUnitsTakenBeforeFightStarts");
         attackerBox.add(BaseCheckBox);
         
+        BaseCheckBox = new JCheckBox("Unclaimed Land");
+        BaseCheckBox.setToolTipText("<html>If enabled then the attacker can target a planet without claimed land and will automatically capture CP.</html>");
+        BaseCheckBox.setName("AttackerAllowAgainstUnclaimedLand");
+        attackerBox.add(BaseCheckBox);
+        
 		attackerBox.add(attackerPanel);
 		
 		attackerBox.setBorder(BorderFactory.createLineBorder(Color.black));

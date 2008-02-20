@@ -2611,6 +2611,10 @@ public final class CampaignMain implements Serializable {
         return null;
     }
 
+    public SHouse getHouseById(int id){
+        return (SHouse)data.getHouse(id);
+    }
+    
     public SHouse getHouseFromPartialString(String HouseString, String Username) {
 
         // store matches so we can tell player if there's more than one

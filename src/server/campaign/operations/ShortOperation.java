@@ -53,6 +53,8 @@ import server.campaign.SPlayer;
 import server.campaign.SArmy;
 import server.campaign.SUnit;
 import server.campaign.SUnitFactory;
+import server.campaign.mercenaries.ContractInfo;
+import server.campaign.mercenaries.MercHouse;
 import server.campaign.pilot.SPilot;
 
 import common.AdvancedTerrain;
@@ -65,7 +67,7 @@ import common.util.UnitUtils;
 
 // IMPORTS
 
-public class ShortOperation implements Comparable {
+public class ShortOperation implements Comparable<Object> {
 
     // IVARS
 
@@ -204,7 +206,8 @@ public class ShortOperation implements Comparable {
     private String bots;
     private String botTeams;
 
-    public Vector<SUnit>preCapturedUnits = null;
+    public Vector<SUnit> preCapturedUnits = null;
+
     // CONSTRUCTOR
     public ShortOperation(String opName, SPlanet target, SPlayer initiator, SArmy attackingArmy, ArrayList<SArmy> possibleDefenders, int shortID, int longID, boolean fromReserve) {
 
@@ -247,12 +250,12 @@ public class ShortOperation implements Comparable {
 
         Operation o = CampaignMain.cm.getOpsManager().getOperation(opName);
 
-        preCapturedUnits = new Vector<SUnit>(1,1);
-        
+        preCapturedUnits = new Vector<SUnit>(1, 1);
+
         // load the terrain for the randomly selected environment
         if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")) {
             aTerrain = targetWorld.getAdvancedTerrain().get(new Integer(playEnvironment.getId())).clone();
-            
+
             if (o.getBooleanValue("UseOperationMap")) {
                 aTerrain.setStaticMap(true);
                 aTerrain.setStaticMapName(o.getValue("MapName"));
@@ -293,6 +296,7 @@ public class ShortOperation implements Comparable {
         // increase the unit and BV counts
         startingBV += a.getOperationsBV(null);
         startingUnits += a.getAmountOfUnits();
+
         if (o.getBooleanValue("TeamOperation")) {
 
             if (o.getBooleanValue("TeamsMustBeSameFaction")) {
@@ -310,6 +314,7 @@ public class ShortOperation implements Comparable {
                 // Current Players: "+this.getAllPlayerNames().size());
                 if (this.getAllPlayerNames().size() >= maxPlayers)
                     this.changeStatus(STATUS_INPROGRESS);
+
             }
         }
     }
@@ -441,7 +446,7 @@ public class ShortOperation implements Comparable {
      * Absolutely massive method :-(
      * 
      * <br>
-     * Should the contens here be moved to the OperationManager?
+     * Should the contents here be moved to the OperationManager?
      * 
      */
     public void changeStatus(int newStatus) {
@@ -462,9 +467,10 @@ public class ShortOperation implements Comparable {
 
             // Should always have at least 1 attacker if not well then this is
             // More fubared then anything I can come up with.
-            if (defenders.size() < 1) {
-                for (String currP : attackers.keySet())
-                    CampaignMain.cm.toUser("No defenders are listed for this op, someone screwed up!", currP, false);
+            if (defenders.size() < 1 ) {
+                if ( !o.getBooleanValue("AttackerAllowAgainstUnclaimedLand") )
+                    for (String currP : attackers.keySet())
+                        CampaignMain.cm.toUser("No defenders are listed for this op, someone screwed up!", currP);
                 return;
             }
 
@@ -522,12 +528,12 @@ public class ShortOperation implements Comparable {
             // position
             // More then 9 and you start doubling up.
             else if (o.getBooleanValue("FreeForAllOperation") && this.getAllPlayerNames().size() > 2) { // 2
-                                                                                                        // player
-                                                                                                        // FFA
-                                                                                                        // start
-                                                                                                        // on
-                                                                                                        // opposite
-                                                                                                        // ends
+                // player
+                // FFA
+                // start
+                // on
+                // opposite
+                // ends
                 ArrayList<Integer> edges = new ArrayList<Integer>(10);
                 int countDown = 9;
                 boolean found = false;
@@ -941,37 +947,36 @@ public class ShortOperation implements Comparable {
                     Vector<SUnit> units = new Vector<SUnit>(1, 1);
                     units.addAll(createMulArmy(numOfArmies, attackerArmyList));
 
-                    
-                    if ( o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts") ){
+                    if (o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts")) {
                         preCapturedUnits.addAll(getPreOperationUnits(o));
                         units.addAll(preCapturedUnits);
                     }
-                    
+
                     attackerMULs = "PL|SMA|";
 
-                    for (SUnit unit : units){
+                    for (SUnit unit : units) {
                         attackerMULs += unit.toString(true) + "|";
                     }
 
                     for (String currN : attackers.keySet()) {
                         CampaignMain.cm.toUser(attackerMULs, currN, false);
                     }
-                    
-                } else{
-                    if ( o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts") ){
+
+                } else {
+                    if (o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts")) {
 
                         preCapturedUnits.addAll(getPreOperationUnits(o));
                         attackerMULs = "PL|SMA|";
 
-                        for (SUnit unit : preCapturedUnits){
+                        for (SUnit unit : preCapturedUnits) {
                             attackerMULs += unit.toString(true) + "|";
                         }
 
                         for (String currN : attackers.keySet()) {
                             CampaignMain.cm.toUser(attackerMULs, currN, false);
                         }
-                        
-                    }else
+
+                    } else
                         attackerMULs = "PL|SMA|CLEAR";
                 }
 
@@ -992,20 +997,20 @@ public class ShortOperation implements Comparable {
                     defenderMULs = "PL|SMA|CLEAR";
 
             } else {
-                if ( o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts") ){
+                if (o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts")) {
 
                     preCapturedUnits.addAll(getPreOperationUnits(o));
                     attackerMULs = "PL|SMA|";
 
-                    for (SUnit unit : preCapturedUnits){
+                    for (SUnit unit : preCapturedUnits) {
                         attackerMULs += unit.toString(true) + "|";
                     }
 
                     for (String currN : attackers.keySet()) {
                         CampaignMain.cm.toUser(attackerMULs, currN, false);
                     }
-                    
-                }else
+
+                } else
                     attackerMULs = "PL|SMA|CLEAR";
                 defenderMULs = "PL|SMA|CLEAR";
             }
@@ -1020,9 +1025,9 @@ public class ShortOperation implements Comparable {
 
                 currP.setFighting(true);
                 CampaignMain.cm.sendPlayerStatusUpdate(currP, true);// send
-                                                                    // fighting
-                                                                    // info to
-                                                                    // all
+                // fighting
+                // info to
+                // all
                 CampaignMain.cm.toUser("TL|" + getInfo(true, false), currN, false);
 
                 CampaignMain.cm.getOpsManager().removePlayerFromAllPossibleDefenderLists(currN, false);
@@ -1134,32 +1139,31 @@ public class ShortOperation implements Comparable {
                 defendIntel += "<br><b>Mission Objectives:</b><br>You must defend all " + o.getValue("TotalBuildings") + " of your facilities.";
             }
 
-            if ( o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts") && preCapturedUnits.size() > 0){
-                
+            if (o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts") && preCapturedUnits.size() > 0) {
+
                 StringBuilder unitList = new StringBuilder();
-                
+
                 attackIntel += "<br><b>You've managed to steal the following ";
-                if ( preCapturedUnits.size() > 1)
+                if (preCapturedUnits.size() > 1)
                     unitList.append("units ");
                 else
                     unitList.append("unit ");
-                
-                for ( SUnit unit: preCapturedUnits ){
+
+                for (SUnit unit : preCapturedUnits) {
                     unitList.append(unit.getModelName());
                     unitList.append(", ");
                 }
-                
-                unitList.replace(unitList.length()-2, unitList.length(), ".");
-                
+
+                unitList.replace(unitList.length() - 2, unitList.length(), ".");
+
                 attackIntel += unitList.toString();
                 attackIntel += "  Now you need to get away with them!";
-                
+
                 defendIntel += "<br><b>The attackers have managed to steal the following ";
                 defendIntel += unitList.toString();
                 defendIntel += "  You must stop them, at all costs, before they get away!";
             }
-            
-            
+
             /*
              * Send GameOptions to the player.
              * 
@@ -1246,7 +1250,7 @@ public class ShortOperation implements Comparable {
                             visibility /= 2;
                         }
                     } // half as likely to get dusk as outright night. helf
-                        // temp drop.
+                    // temp drop.
                     else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getNightChance() / 2) {
                         gameOptions.append("|night_battle|");
                         gameOptions.append(true);
@@ -1283,19 +1287,17 @@ public class ShortOperation implements Comparable {
                         this.weatherPattern.add(true);
                         gameOptions.append("|blizzard|");
                         gameOptions.append(true);
-                    }
-                    else{
+                    } else {
                         this.weatherPattern.add(false);
                         gameOptions.append("|blizzard|");
                         gameOptions.append(false);
                     }
-                    
+
                     if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getBlowingSandChance()) {
                         this.weatherPattern.add(true);
                         gameOptions.append("|blowing_sand|");
                         gameOptions.append(true);
-                    }
-                    else{
+                    } else {
                         this.weatherPattern.add(false);
                         gameOptions.append("|blowing_sand|");
                         gameOptions.append(false);
@@ -1304,8 +1306,7 @@ public class ShortOperation implements Comparable {
                         this.weatherPattern.add(true);
                         gameOptions.append("|heavy_snowfall|");
                         gameOptions.append(true);
-                    }
-                    else{
+                    } else {
                         this.weatherPattern.add(false);
                         gameOptions.append("|heavy_snowfall|");
                         gameOptions.append(false);
@@ -1314,8 +1315,7 @@ public class ShortOperation implements Comparable {
                         this.weatherPattern.add(true);
                         gameOptions.append("|light_rainfall|");
                         gameOptions.append(true);
-                    }
-                    else{
+                    } else {
                         this.weatherPattern.add(false);
                         gameOptions.append("|light_rainfall|");
                         gameOptions.append(false);
@@ -1324,8 +1324,7 @@ public class ShortOperation implements Comparable {
                         this.weatherPattern.add(true);
                         gameOptions.append("|heavy_rainfall|");
                         gameOptions.append(true);
-                    }
-                    else{
+                    } else {
                         this.weatherPattern.add(false);
                         gameOptions.append("|heavy_rainfall|");
                         gameOptions.append(false);
@@ -1334,8 +1333,7 @@ public class ShortOperation implements Comparable {
                         this.weatherPattern.add(true);
                         gameOptions.append("|moderate_winds|");
                         gameOptions.append(true);
-                    }
-                    else{
+                    } else {
                         this.weatherPattern.add(false);
                         gameOptions.append("|moderate_winds|");
                         gameOptions.append(false);
@@ -1344,8 +1342,7 @@ public class ShortOperation implements Comparable {
                         this.weatherPattern.add(true);
                         gameOptions.append("|high_winds|");
                         gameOptions.append(true);
-                    }
-                    else{
+                    } else {
                         this.weatherPattern.add(false);
                         gameOptions.append("|high_winds|");
                         gameOptions.append(false);
@@ -1449,7 +1446,7 @@ public class ShortOperation implements Comparable {
                 for (String currN : defenders.keySet()) {
                     SPlayer currP = CampaignMain.cm.getPlayer(currN);
                     SArmy currA = currP.getArmy(defenders.get(currN));
-                    Enumeration units = currA.getUnits().elements();
+                    Enumeration<Unit> units = currA.getUnits().elements();
                     while (units.hasMoreElements()) {
                         SUnit u = (SUnit) units.nextElement();
                         if (UnitUtils.isRepairing(u.getEntity()))
@@ -1461,7 +1458,7 @@ public class ShortOperation implements Comparable {
                 for (String currN : attackers.keySet()) {
                     SPlayer currP = CampaignMain.cm.getPlayer(currN);
                     SArmy currA = currP.getArmy(attackers.get(currN));
-                    Enumeration units = currA.getUnits().elements();
+                    Enumeration<Unit> units = currA.getUnits().elements();
                     while (units.hasMoreElements()) {
                         SUnit u = (SUnit) units.nextElement();
                         if (UnitUtils.isRepairing(u.getEntity()))
@@ -1479,7 +1476,7 @@ public class ShortOperation implements Comparable {
             for (String currN : defenders.keySet()) {
                 SPlayer currP = CampaignMain.cm.getPlayer(currN);
                 SArmy currA = currP.getArmy(defenders.get(currN));
-                Enumeration units = currA.getUnits().elements();
+                Enumeration<Unit> units = currA.getUnits().elements();
                 defenderArmyCount += currA.getRawForceSize();
 
                 while (units.hasMoreElements()) {
@@ -1494,7 +1491,7 @@ public class ShortOperation implements Comparable {
                 SArmy currA = currP.getArmy(attackers.get(currN));
                 attackerArmyCount += currA.getRawForceSize();
 
-                Enumeration units = currA.getUnits().elements();
+                Enumeration<Unit> units = currA.getUnits().elements();
                 while (units.hasMoreElements()) {
                     SUnit u = (SUnit) units.nextElement();
                     totalWeight += SUnit.getMapSizeModification(u);
@@ -1675,7 +1672,7 @@ public class ShortOperation implements Comparable {
             else
                 toSend = incompleteFinishedString.replaceAll("<br>", " ");
             for (SHouse currH : houseMap.values())
-                CampaignMain.cm.doSendHouseMail(currH, "Finished Game:", toSend);
+                CampaignMain.cm.doSendHouseMail(currH, "Finished Game", toSend);
 
             // we now return to our regularly scheduled program ...
             defenders.clear();
@@ -1755,7 +1752,7 @@ public class ShortOperation implements Comparable {
 
         // tell all players that we're fighting
         CampaignMain.cm.sendPlayerStatusUpdate(p, true);// send fighting info to
-                                                        // all
+        // all
 
     }// end send reconnectInfo
 
@@ -2022,11 +2019,11 @@ public class ShortOperation implements Comparable {
         if (numAttackers == 1) {
             SArmy attackArm = CampaignMain.cm.getPlayer(attackers.firstKey()).getArmy(attackers.get(attackers.firstKey()));
             resultString += attackArm.getInaccurateDescription();// show same
-                                                                    // for
-                                                                    // complete
-                                                                    // and
-                                                                    // incomplete,
-                                                                    // for now?
+            // for
+            // complete
+            // and
+            // incomplete,
+            // for now?
         }
 
         else if (numAttackers > 1) {
@@ -2083,22 +2080,22 @@ public class ShortOperation implements Comparable {
             SArmy attackArm = CampaignMain.cm.getPlayer(attackers.firstKey()).getArmy(attackers.get(attackers.firstKey()));
             if (complete)
                 resultString += attackArm.getInaccurateDescription();// show
-                                                                        // same
-                                                                        // for
-                                                                        // complete
-                                                                        // and
-                                                                        // incomplete,
-                                                                        // for
-                                                                        // now?
+            // same
+            // for
+            // complete
+            // and
+            // incomplete,
+            // for
+            // now?
             else
                 resultString += attackArm.getInaccurateDescription();// show
-                                                                        // same
-                                                                        // for
-                                                                        // complete
-                                                                        // and
-                                                                        // incomplete,
-                                                                        // for
-                                                                        // now?
+            // same
+            // for
+            // complete
+            // and
+            // incomplete,
+            // for
+            // now?
         }
 
         else if (numAttackers > 1) {
@@ -2294,11 +2291,11 @@ public class ShortOperation implements Comparable {
 
         // show everything in faction, unless using blind drops
         if (complete && !blindDrop) {
-            Iterator i = attackers.keySet().iterator();
+            Iterator<String> i = attackers.keySet().iterator();
             while (i.hasNext()) {
 
                 // load next (or first) player
-                SPlayer currPlayer = CampaignMain.cm.getPlayer((String) i.next());
+                SPlayer currPlayer = CampaignMain.cm.getPlayer(i.next());
                 currAttacker++;// increment counter
 
                 attackString += currPlayer.getColoredName() + currPlayer.getHouseFightingFor().getColoredAbbreviation(true);
@@ -2351,11 +2348,11 @@ public class ShortOperation implements Comparable {
 
         // show everything in faction
         if (mod || (complete && !blindDrop)) {
-            Iterator i = defenders.keySet().iterator();
+            Iterator<String> i = defenders.keySet().iterator();
             while (i.hasNext()) {
 
                 // load next (or first) player
-                SPlayer currPlayer = CampaignMain.cm.getPlayer((String) i.next());
+                SPlayer currPlayer = CampaignMain.cm.getPlayer(i.next());
                 currDefender++;// increment counter
 
                 defendString += currPlayer.getColoredName() + currPlayer.getHouseFightingFor().getColoredAbbreviation(true);
@@ -2461,7 +2458,7 @@ public class ShortOperation implements Comparable {
      * Suitable for iterating.
      */
     public Collection<String> getAllPlayerNames() {
-        TreeMap<String, Integer> c = new TreeMap();
+        TreeMap<String, Integer> c = new TreeMap<String, Integer>();
         c.putAll(attackers);
         c.putAll(defenders);
         return c.keySet();
@@ -2474,7 +2471,7 @@ public class ShortOperation implements Comparable {
      * Suitable for iterating.
      */
     public TreeMap<String, Integer> getAllPlayersAndArmies() {
-        TreeMap<String, Integer> c = new TreeMap();
+        TreeMap<String, Integer> c = new TreeMap<String, Integer>();
         c.putAll(attackers);
         c.putAll(defenders);
         return c;
@@ -2553,18 +2550,18 @@ public class ShortOperation implements Comparable {
 
         String weatherResult = "<b>Weather Conditions :</b>";
         boolean hasWeather = false;
-        for (int pos = 0; pos < 7; pos++){
-            if ( weatherPattern.elementAt(pos) ){
+        for (int pos = 0; pos < 7; pos++) {
+            if (weatherPattern.elementAt(pos)) {
                 hasWeather = true;
-                weatherResult += intelWeatherString[pos]+", ";
+                weatherResult += intelWeatherString[pos] + ", ";
             }
         }
-        
-        if (hasWeather && factionOwnerShip >= chanceWeather){
-            if ( weatherResult.indexOf(",") > -1 ){
-                weatherResult = weatherResult.substring(0,weatherResult.lastIndexOf(","));
+
+        if (hasWeather && factionOwnerShip >= chanceWeather) {
+            if (weatherResult.indexOf(",") > -1) {
+                weatherResult = weatherResult.substring(0, weatherResult.lastIndexOf(","));
             }
-            result += weatherResult+".<br>";
+            result += weatherResult + ".<br>";
         }
         return result;
 
@@ -2751,18 +2748,18 @@ public class ShortOperation implements Comparable {
         }
         deploymentChoices.trimToSize();
 
-        if (deploymentChoices.size() < 1){
+        if (deploymentChoices.size() < 1) {
             return position;
         }
 
-        if (deploymentChoices.size() == 1){
+        if (deploymentChoices.size() == 1) {
             return deploymentChoices.firstElement();
         }
 
         int rand = CampaignMain.cm.getRandomNumber(deploymentChoices.size());
         position = deploymentChoices.elementAt(rand);
-        
-        return position; 
+
+        return position;
     }
 
     private Vector<SUnit> createMulArmy(int number, String list) {
@@ -2799,13 +2796,13 @@ public class ShortOperation implements Comparable {
          */
         ArrayList<UnitFactory> factoriesSearched = new ArrayList<UnitFactory>(target.getUnitFactories());
         ArrayList<SUnit> capturedUnits = new ArrayList<SUnit>();
-        while (factoriesSearched.size() > 0  && numCaptured < unitsToCapture) {
+        while (factoriesSearched.size() > 0 && numCaptured < unitsToCapture) {
 
             // get a random factory
             SUnitFactory currFacility = (SUnitFactory) factoriesSearched.remove(CampaignMain.cm.getRandomNumber(factoriesSearched.size()));
 
             int currWeight = currFacility.getWeightclass();
-            
+
             for (int type = Unit.MEK; type <= Unit.BATTLEARMOR; type++) {
 
                 // skip this type if the facility cannot
@@ -2816,12 +2813,12 @@ public class ShortOperation implements Comparable {
                 boolean noUnits = false;
                 while (!noUnits && numCaptured < unitsToCapture) {
                     SPilot pilot = new SPilot("Vacant", 99, 99);
-                    Vector<SUnit> captured = new Vector<SUnit>(1,1);
-                    if ( forced )
+                    Vector<SUnit> captured = new Vector<SUnit>(1, 1);
+                    if (forced)
                         captured.addAll(currFacility.getMechProduced(type, pilot));
-                    else{
+                    else {
                         SUnit capturedUnit = losingHouse.getEntity(currWeight, type);
-                        if ( capturedUnit != null && UnitUtils.canStartUp(capturedUnit.getEntity()))
+                        if (capturedUnit != null && UnitUtils.canStartUp(capturedUnit.getEntity()))
                             captured.add(capturedUnit);
                     }
                     if (captured.size() < 1)
@@ -2839,12 +2836,12 @@ public class ShortOperation implements Comparable {
         return capturedUnits;
     }
 
-    public Vector<SUnit>getPreOperationUnits(Operation o){
-        Vector<SUnit>units = new Vector<SUnit>(1,1);
-        
+    public Vector<SUnit> getPreOperationUnits(Operation o) {
+        Vector<SUnit> units = new Vector<SUnit>(1, 1);
+
         int unitCaptureCap = o.getIntValue("UnitCaptureCap");
         SHouse defendingHouse = CampaignMain.cm.getPlayer(defenders.firstKey()).getHouseFightingFor();
-        
+
         int unitsToCapture = o.getIntValue("AttackerBaseUnitsTaken");
         int unitUnitAdjust = o.getIntValue("AttackerUnitsUnitAdjustment");
         int unitBVAdjust = o.getIntValue("AttackerUnitsBVAdjustment");
@@ -2872,31 +2869,50 @@ public class ShortOperation implements Comparable {
         units.addAll(captureUnits(unitsToCapture, targetWorld, defendingHouse, true));
 
         StringBuilder results = new StringBuilder("HS|");
-        
-        for (SUnit unit : units){
-            
-            if ( unit.hasVacantPilot() ){
+
+        for (SUnit unit : units) {
+
+            if (unit.hasVacantPilot()) {
                 SHouse attackingHouse = initiator.getHouseFightingFor();
-                SPilot pilot = new SPilot(SPilot.getRandomPilotName(CampaignMain.cm.getR()),attackingHouse.getBaseGunner(SUnit.MEK),attackingHouse.getBasePilot(SUnit.MEK));
+                SPilot pilot = new SPilot(SPilot.getRandomPilotName(CampaignMain.cm.getR()), attackingHouse.getBaseGunner(SUnit.MEK), attackingHouse.getBasePilot(SUnit.MEK));
                 unit.setPilot(pilot);
             }
             results.append(defendingHouse.removeUnit(unit, false));
         }
-        
+
         CampaignMain.cm.doSendToAllOnlinePlayers(defendingHouse, results.toString(), false);
         return units;
     }
-    
-    public boolean validatePlayers(TreeSet<String> players){
-        
-        //TreeSet<String> allPlayerNames = new TreeSet<String>(getAllPlayerNames());
-        
+
+    public boolean validatePlayers(TreeSet<String> players) {
+
+        // TreeSet<String> allPlayerNames = new
+        // TreeSet<String>(getAllPlayerNames());
+
         Collection<String> allPlayersNames = getAllPlayerNames();
-        for ( String name : allPlayersNames ){
-            if ( !players.contains(name) )
+        for (String name : allPlayersNames) {
+            if (!players.contains(name))
                 return false;
         }
-        
+
         return true;
     }
+
+    public void checkMercContracts(SPlayer player, int contractType, int amount) {
+
+        if (!player.getMyHouse().isMercHouse())
+            return;
+
+        ContractInfo contract = (((MercHouse) player.getMyHouse()).getContractInfo(player));
+
+        if (contract == null)
+            return;
+
+        if (contract.getType() != contractType)
+            return;
+
+        contract.setEarnedAmount(contract.getEarnedAmount() + amount);
+
+    }
+
 }// end OperationsManager class

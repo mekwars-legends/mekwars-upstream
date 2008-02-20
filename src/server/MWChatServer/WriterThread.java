@@ -49,11 +49,13 @@ public class WriterThread extends Thread {
     protected byte[] _deflatedBytes = new byte[WriterThread.MAX_DEFLATED_SIZE];
     protected boolean _keepGoing = true;
 	protected LinkedList<String> _messages = new LinkedList<String>();
-
-    public WriterThread(Socket socket, PrintWriter out) {
+	protected String _host;
+	
+    public WriterThread(Socket socket, PrintWriter out, String host) {
         super("ReaderThread");
         _socket = socket;
         _out = out;
+        _host = host;
     }
     
     
@@ -131,7 +133,7 @@ public class WriterThread extends Thread {
 	                _out.print(s);
 	                _out.flush();
             	}catch (Exception ex){
-                    MWServ.mwlog.errLog("Socket error; shutting down client");
+                    MWServ.mwlog.errLog("Socket error; shutting down client at "+_host);
                     MWServ.mwlog.errLog(ex);
                     pleaseStop();
                     try{

@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.StringTokenizer;
@@ -69,7 +68,7 @@ import common.util.UnitUtils;
  * @author Helge Richter (McWizard)
  */
 
-public final class SPlayer extends Player implements  Comparable<Object>, IBuyer, ISeller {
+public final class SPlayer extends Player implements Comparable<Object>, IBuyer, ISeller {
 
     // STATIC VARIABLES
     // STATUS_DISCONNECTED, which is used by the client, is 0
@@ -350,8 +349,8 @@ public final class SPlayer extends Player implements  Comparable<Object>, IBuyer
                 if (sendArmyUpdate) {
                     CampaignMain.cm.toUser("PL|SAD|" + currA.toString(true, "%"), name, false);
                     CampaignMain.cm.getOpsManager().checkOperations(currA, true);// update
-                                                                                    // legal
-                                                                                    // ops
+                    // legal
+                    // ops
                 }
             }
         }// end for(all armies)
@@ -576,7 +575,7 @@ public final class SPlayer extends Player implements  Comparable<Object>, IBuyer
      */
     public int doFireUnpaidTechnicians(float amountOfShortFall) {
 
-        //String toReturn = "";
+        // String toReturn = "";
 
         // layoffs all around! well, at least some. so reset the
         // currentTechPayment
@@ -2113,10 +2112,10 @@ public final class SPlayer extends Player implements  Comparable<Object>, IBuyer
         influence = i;
         if (influence > Integer.parseInt(this.getMyHouse().getConfig("InfluenceCeiling")))
             influence = (Integer.parseInt(this.getMyHouse().getConfig("InfluenceCeiling")));// set
-                                                                                            // to
-                                                                                            // ceiling
-                                                                                            // if
-                                                                                            // above
+        // to
+        // ceiling
+        // if
+        // above
 
         if (influence < 0)
             influence = 0; // Set to 0 if below
@@ -2452,7 +2451,7 @@ public final class SPlayer extends Player implements  Comparable<Object>, IBuyer
             s.append("<b>No-Play List:</b> ");
             Enumeration<String> en = exclusionList.getPlayerExcludes().elements();
             if (en.hasMoreElements())
-                s.append( en.nextElement());
+                s.append(en.nextElement());
             else
                 s.append("empty");
 
@@ -2531,8 +2530,8 @@ public final class SPlayer extends Player implements  Comparable<Object>, IBuyer
         if (myHouse.isMercHouse()) {// if a merc
             s = "Mercenary information for " + getName() + ": <br>";// list name
             s += "Currently fighting for: " + (((MercHouse) myHouse).getHouseFightingFor(this)).getName() + "<br>";// list
-                                                                                                                    // employing
-                                                                                                                    // faction
+            // employing
+            // faction
             ContractInfo contract = (((MercHouse) myHouse).getContractInfo(this));
             if (contract != null)
                 s += contract.getInfo(this);
@@ -2958,19 +2957,17 @@ public final class SPlayer extends Player implements  Comparable<Object>, IBuyer
             }
             // Save Personal Pilots Queues
             for (int weightClass = Unit.LIGHT; weightClass < Unit.ASSAULT; weightClass++) {
-                LinkedList<Pilot> currList = getPersonalPilotQueue().getPilotQueue(Unit.MEK, weightClass);
-                int numPilots = currList.size();
-                for (int position = 0; position < numPilots; position++) {
-                    ((SPilot) currList.get(position)).toDB(Unit.MEK, weightClass);
-                    CampaignMain.cm.MySQL.linkPilotToPlayer(((SPilot) currList.get(position)).getDBId(), getDBId());
+                Iterator<Pilot> mekList = getPersonalPilotQueue().getPilotQueue(Unit.MEK, weightClass).iterator();
+                while (mekList.hasNext()) {
+                    SPilot pilot = (SPilot) mekList.next();
+                    pilot.toDB(Unit.MEK, weightClass);
+                    CampaignMain.cm.MySQL.linkPilotToPlayer(pilot.getDBId(), getDBId());
                 }
-            }
-            for (int weightClass = Unit.LIGHT; weightClass < Unit.ASSAULT; weightClass++) {
-                LinkedList<Pilot> currList = getPersonalPilotQueue().getPilotQueue(Unit.PROTOMEK, weightClass);
-                int numPilots = currList.size();
-                for (int position = 0; position < numPilots; position++) {
-                    ((SPilot) currList.get(position)).toDB(Unit.PROTOMEK, weightClass);
-                    CampaignMain.cm.MySQL.linkPilotToPlayer(((SPilot) currList.get(position)).getDBId(), getDBId());
+                Iterator<Pilot> protoList = getPersonalPilotQueue().getPilotQueue(Unit.PROTOMEK, weightClass).iterator();
+                while (protoList.hasNext()) {
+                    SPilot pilot = (SPilot) protoList.next();
+                    pilot.toDB(Unit.PROTOMEK, weightClass);
+                    CampaignMain.cm.MySQL.linkPilotToPlayer(pilot.getDBId(), getDBId());
                 }
             }
             ps.close();
@@ -3599,33 +3596,33 @@ public final class SPlayer extends Player implements  Comparable<Object>, IBuyer
     public void setLastPromoted(long promotedTime) {
         this.lastPromoted = promotedTime;
     }
-    
+
     /**
-     * A player may only have 1 army locked at a time.
-     * This will lock that army and unlock any others
-     * Passing an armyId of -1 will unlock all armies.
+     * A player may only have 1 army locked at a time. This will lock that army
+     * and unlock any others Passing an armyId of -1 will unlock all armies.
+     * 
      * @param armyId
      */
-    public void lockArmy(int armyId){
-        
-        for ( SArmy army : this.getArmies() ){
-            
-            if ( army.getID() == armyId){
+    public void lockArmy(int armyId) {
+
+        for (SArmy army : this.getArmies()) {
+
+            if (army.getID() == armyId) {
                 army.setLocked(true);
-                CampaignMain.cm.toUser("PL|SAL|"+armyId+"#"+true,getName(),false);
-            }else if ( army.isLocked() ){
+                CampaignMain.cm.toUser("PL|SAL|" + armyId + "#" + true, getName(), false);
+            } else if (army.isLocked()) {
                 army.setLocked(false);
-                CampaignMain.cm.toUser("PL|SAL|"+army.getID()+"#"+false,getName(),false);
+                CampaignMain.cm.toUser("PL|SAL|" + army.getID() + "#" + false, getName(), false);
             }
         }
     }
-    
+
     public void setUserValidated(boolean validated) {
-    	this.userValidated = validated;
+        this.userValidated = validated;
     }
-    
+
     public boolean isValidated() {
-    	return this.userValidated;
+        return this.userValidated;
     }
 
 }// end SPlayer()

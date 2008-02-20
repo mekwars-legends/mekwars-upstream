@@ -616,6 +616,8 @@ public class DefaultOperation {
 		 * AttackerFactoryUnitsUnitAdjustment	- units to take an additional unit (confusing!)
 		 * AttackerUnitsTakenBeforeFightStarts  - The units are taken before the fight starts and the player must get them
 		 *                                        off the field
+		 * AttackerAllowAgainstUnclaimedLand    - If checked then this operation will be launched agianst a planet that has 
+		 *                                        CP that is unclaimed and the Faction will automatically claim it.
 		 *                                        
 		 * NOTE: No defender insta-production. Ops might want to consider using PP or
 		 *       delay payouts to defenders of unit-raid heavy attacks.
@@ -1135,6 +1137,7 @@ public class DefaultOperation {
 		operationsDefaults.put("AttackerFactoryUnitsBVAdjustment","0");
 		operationsDefaults.put("AttackerFactoryUnitsUnitAdjustment","0");
         operationsDefaults.put("AttackerUnitsTakenBeforeFightStarts","false");
+        operationsDefaults.put("AttackerAllowAgainstUnclaimedLand","false");
 		
 		operationsDefaults.put("AttackerTargetOpAdjustment","0");
 		operationsDefaults.put("DefenderTargetOpAdjustment","0");

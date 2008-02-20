@@ -1135,7 +1135,7 @@ public class ShortResolver {
 
                 tempBuilder.append(earnedXP + "XP");
                 currP.addExperience(earnedXP, false);
-                checkMercContracts(currP, ContractInfo.CONTRACT_EXP, earnedXP);
+                so.checkMercContracts(currP, ContractInfo.CONTRACT_EXP, earnedXP);
                 hasOtherGain = true;
             }
 
@@ -2202,9 +2202,12 @@ public class ShortResolver {
 
                         if (totalConquest > 0) {
                             hasLoss = true;
-                            winnerMetaString += " gained " + totalConquest + " points of " + target.getNameAsColoredLink();
-                            loserMetaString += " lost " + totalConquest + " points  of " + target.getNameAsColoredLink();
-                            checkMercContracts(aWinner, ContractInfo.CONTRACT_LAND, totalConquest);
+                            String point = "points";
+                            if ( totalConquest == 1)
+                                point = "point";
+                            winnerMetaString += " gained " + totalConquest + " "+point+" of " + target.getNameAsColoredLink();
+                            loserMetaString += " lost " + totalConquest + " "+point+" of " + target.getNameAsColoredLink();
+                            so.checkMercContracts(aWinner, ContractInfo.CONTRACT_LAND, totalConquest);
                         }
 
                         /*
@@ -2262,7 +2265,7 @@ public class ShortResolver {
                             winnerMetaString += " stopped production on " + target.getNameAsColoredLink() + " for " + totalDelay + " miniticks";
                             loserMetaString += " allowed " + aWinner.getHouseFightingFor().getColoredNameAsLink() + " to stop production on " + target.getNameAsColoredLink() + " for " + totalDelay + " miniticks";
                             hasLoss = true;
-                            checkMercContracts(aWinner, ContractInfo.CONTRACT_DELAY, totalDelay);
+                            so.checkMercContracts(aWinner, ContractInfo.CONTRACT_DELAY, totalDelay);
                         }
 
                         /*
@@ -2343,7 +2346,7 @@ public class ShortResolver {
                                     loserMetaString += " lost " + numCaptured + " units [" + unitString + "]";
                                 }
                             }
-                            checkMercContracts(aWinner, ContractInfo.CONTRACT_UNITS, numCaptured);
+                            so.checkMercContracts(aWinner, ContractInfo.CONTRACT_UNITS, numCaptured);
                         }// end if(unitsToCapture > 0)
 
                         /*
@@ -2403,7 +2406,7 @@ public class ShortResolver {
                                     loserMetaString += " had " + numCaptured + " units force produced [" + unitString + "]";
                                 }
                             }
-                            checkMercContracts(aWinner, ContractInfo.CONTRACT_UNITS, numCaptured);
+                            so.checkMercContracts(aWinner, ContractInfo.CONTRACT_UNITS, numCaptured);
                         }// end if(unitsToCapture > 0)
 
                         /*
@@ -2496,7 +2499,7 @@ public class ShortResolver {
                                 // pool)
                             }// end for(all types)
                         }// end while(factories remain)
-                        checkMercContracts(aWinner, ContractInfo.CONTRACT_COMPONENTS, ppCaptured);
+                        so.checkMercContracts(aWinner, ContractInfo.CONTRACT_COMPONENTS, ppCaptured);
 
                         // Start Destruction of Units and Components
 
@@ -2596,7 +2599,7 @@ public class ShortResolver {
                                     loserMetaString += " lost " + numDestroyed + " units [" + unitString + "]";
                                 }
                             }
-                            checkMercContracts(aWinner, ContractInfo.CONTRACT_UNITS, numDestroyed);
+                            so.checkMercContracts(aWinner, ContractInfo.CONTRACT_UNITS, numDestroyed);
                         }// end if(unitsToDestroy > 0)
 
                         /*
@@ -2684,7 +2687,7 @@ public class ShortResolver {
                                 // pool)
                             }// end for(all types)
                         }// end while(factories remain)
-                        checkMercContracts(aWinner, ContractInfo.CONTRACT_COMPONENTS, ppDestroyed);
+                        so.checkMercContracts(aWinner, ContractInfo.CONTRACT_COMPONENTS, ppDestroyed);
                     } catch (Exception ex) {
                         MWServ.mwlog.errLog(ex);
                     }
@@ -2722,9 +2725,12 @@ public class ShortResolver {
 
                         if (totalConquest > 0) {
                             hasLoss = true;
-                            winnerMetaString += " gained " + totalConquest + " points of " + target.getNameAsColoredLink();
-                            loserMetaString += " lost " + totalConquest + " points of " + target.getNameAsColoredLink();
-                            checkMercContracts(aWinner, ContractInfo.CONTRACT_LAND, totalConquest);
+                            String point = "points";
+                            if ( totalConquest == 1)
+                                point = "point";
+                            winnerMetaString += " gained " + totalConquest + " "+point+" of " + target.getNameAsColoredLink();
+                            loserMetaString += " lost " + totalConquest + " "+point+" of " + target.getNameAsColoredLink();
+                            so.checkMercContracts(aWinner, ContractInfo.CONTRACT_LAND, totalConquest);
                         }
 
                         /*
@@ -2768,7 +2774,7 @@ public class ShortResolver {
                             winnerMetaString += " sped up production on " + target.getNameAsColoredLink() + " by " + totalRefreshBoost + " miniticks";
                             loserMetaString += " encouraged the workers on " + target.getNameAsColoredLink() + " to speed up the production lines for " + totalRefreshBoost + "miniticks";
                             hasLoss = true;
-                            checkMercContracts(aWinner, ContractInfo.CONTRACT_DELAY, totalRefreshBoost);
+                            so.checkMercContracts(aWinner, ContractInfo.CONTRACT_DELAY, totalRefreshBoost);
 
                         }
 
@@ -2834,7 +2840,7 @@ public class ShortResolver {
                                     winnerMetaString += " generated an extra " + ppToGenerate + " " + Unit.getWeightClassDesc(currFacility.getWeightclass()) + " " + Unit.getTypeClassDesc(type) + " components";
                                     loserMetaString += " inspired the workers on " + target.getNameAsColoredLink() + " to manufacture " + ppToGenerate + " " + Unit.getWeightClassDesc(currFacility.getWeightclass()) + " " + Unit.getTypeClassDesc(type) + " components";
                                     hasLoss = true;
-                                    checkMercContracts(aWinner, ContractInfo.CONTRACT_COMPONENTS, ppToGenerate);
+                                    so.checkMercContracts(aWinner, ContractInfo.CONTRACT_COMPONENTS, ppToGenerate);
                                 }
                             }// end if ppToGenerate > 0
                         }// end if(defender has factories on world)
@@ -3412,6 +3418,9 @@ public class ShortResolver {
                 // didn't survive. can set up the message to owner and select a
                 // random pickup player
                 pickupPlayer = this.selectRandomWinner();
+                
+                if ( pickupPlayer == null )
+                    return toReturn;
                 toReturn[1] = ((SPilot) currUnit.getPilot()).getPilotCaptureMessageToOwner(currUnit);
                 toReturn[3] = "The pilot was captured.";
                 toReturn[4] = pickupPlayer;
@@ -3850,23 +3859,6 @@ public class ShortResolver {
             MWServ.mwlog.errLog(ex);
             return result;
         }
-
-    }
-
-    private void checkMercContracts(SPlayer player, int contractType, int amount) {
-
-        if (!player.getMyHouse().isMercHouse())
-            return;
-
-        ContractInfo contract = (((MercHouse) player.getMyHouse()).getContractInfo(player));
-
-        if (contract == null)
-            return;
-
-        if (contract.getType() != contractType)
-            return;
-
-        contract.setEarnedAmount(contract.getEarnedAmount() + amount);
 
     }
 
