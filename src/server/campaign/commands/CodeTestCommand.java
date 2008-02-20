@@ -16,6 +16,7 @@
 
 package server.campaign.commands;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -50,23 +51,28 @@ public class CodeTestCommand implements Command {
 		
 		int id = Integer.parseInt(command.nextToken());
 		String cmd = command.nextToken();
-        String file = "testFile.dat";
+        String file = "./campaign/entites/entity"+id+".dat";
         SPlayer player = null;
+		Entity en = null;
+		File dirFile = new File("./campaign/entites"); 
+		
+		if ( !dirFile.exists() )
+		    dirFile.mkdir();
 		
 		if ( cmd.equalsIgnoreCase("load") ) {
 		    try {
 	            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
-	            player = (SPlayer) ois.readObject();
+	            en = (Entity) ois.readObject();
 	            ois.close();
 		    }catch(Exception ex) {
 		        MWServ.mwlog.errLog(ex);
 		    }
-		    CampaignMain.cm.doSendModMail("NOTE", "Player loaded: "+player.getName());
+		    CampaignMain.cm.doSendModMail("NOTE", "Entity loaded: "+en.getShortNameRaw());
 		}else {
 		    player = CampaignMain.cm.getPlayer(Username);		    
 		    try {
 		        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
-		        oos.writeObject(player);
+		        oos.writeObject(player.getUnit(id).getEntity());
 		        oos.close();
 		    }catch(Exception ex) {
 		        MWServ.mwlog.errLog(ex);

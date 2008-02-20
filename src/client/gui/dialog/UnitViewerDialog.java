@@ -105,7 +105,11 @@ import client.gui.MechInfo;
 
 public class UnitViewerDialog extends JFrame implements ActionListener, KeyListener, ListSelectionListener, Runnable, WindowListener, ItemListener {
 	
-	//how long after a key is typed does a new search begin
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -7210333306969855153L;
+    //how long after a key is typed does a new search begin
 	private final static int KEY_TIMEOUT = 1000;
 	public static final int UNIT_VIEWER = 0;
 	public static final int OMNI_VARIANT_SELECTOR = 1;
@@ -417,7 +421,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
     }
 	private void filterMechs(boolean calledByAdvancedSearch) {
 		
-		Vector vMechs = new Vector(1,1);
+		Vector<MechSummary> vMechs = new Vector<MechSummary>(1,1);
 		
         int nType = chType.getSelectedIndex();
         int nUnitType = chUnitType.getSelectedIndex();
@@ -522,8 +526,8 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
         m_chkEquipment.setSelected(false);
         int nType = chType.getSelectedIndex();
         int nUnitType = chUnitType.getSelectedIndex();
-        for (Enumeration e = EquipmentType.getAllTypes(); e.hasMoreElements();) {
-            EquipmentType et = (EquipmentType) e.nextElement();
+        for (Enumeration<EquipmentType> e = EquipmentType.getAllTypes(); e.hasMoreElements();) {
+            EquipmentType et = e.nextElement();
             if (et instanceof WeaponType
                     && (et.getTechLevel() == nType
                     || (nType == TechConstants.T_ALL)
@@ -981,7 +985,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
             if ( currEntity.getFluff() != null && viewFluff ){
                 unitFluff.setEditable(false);
                 unitFluff.setLineWrap(true);
-                //unitFluff.setText(parseFluff(currEntity.getFluff()));
+                unitFluff.setWrapStyleWord(true);
                 unitFluff.setText(currEntity.getFluff());
                 unitFluff.setCaretPosition(0);
                
