@@ -73,6 +73,8 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
         result.append("#");
         for (House house : getInfluence().getHouses()) {
             SHouse next = (SHouse) house;
+            if ( next == null )
+                continue;
             result.append(next.getName());
             result.append("$"); // change for unusual influence
             result.append(getInfluence().getInfluence(next.getId()));
@@ -382,6 +384,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
             HashMap<Integer, Integer> influence = new HashMap<Integer, Integer>();
             {
                 StringTokenizer influences = new StringTokenizer(TokenReader.readString(ST), "$");
+                
                 while (influences.hasMoreElements()) {
                     String HouseName = influences.nextToken();
                     SHouse h = (SHouse) data.getHouseByName(HouseName);
@@ -500,8 +503,9 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
         }
         this.setPlanetFlags(map);
 
-        if (ST.hasMoreElements())
-            this.setConquestPoints(TokenReader.readInt(ST));
+        this.setConquestPoints(TokenReader.readInt(ST));
+
+        updateInfluences();
 
         setOwner(null, checkOwner(), false);
 

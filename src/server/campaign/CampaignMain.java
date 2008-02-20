@@ -2082,6 +2082,8 @@ public final class CampaignMain implements Serializable {
 
             for (House currH : p.getInfluence().getHouses()) {
                 SHouse hs = (SHouse) currH;
+                if ( hs == null )
+                    continue;
                 if (!hs.isNewbieHouse() && !hs.isMercHouse())
                     factionContainer.get(hs.getName()).addAmount(p.getInfluence().getInfluence(hs.getId()));
             }

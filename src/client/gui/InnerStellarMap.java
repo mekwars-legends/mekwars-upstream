@@ -84,6 +84,11 @@ public class InnerStellarMap extends JComponent implements  MouseListener,
 MouseMotionListener, MouseWheelListener, ActionListener {
 	
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 8655078955521790260L;
+
+    /**
 	 * All configuration behaviour of InterStellarMap are saved here.
 	 * 
 	 * @author Imi (immanuel.scholz@gmx.de)
@@ -162,8 +167,13 @@ MouseMotionListener, MouseWheelListener, ActionListener {
 	/**
 	 * A cache for image icons. key=filename(String), value=ImageIcon
 	 */
-	private static class IconProvider extends TreeMap {
-		public ImageIcon get(String key) {
+	private static class IconProvider extends TreeMap<String,ImageIcon> {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 4594828039895948331L;
+
+        public ImageIcon get(String key) {
 			if (!containsKey(key)) put(key, new ImageIcon(key));
 			return (ImageIcon)super.get(key);
 		}
@@ -172,7 +182,7 @@ MouseMotionListener, MouseWheelListener, ActionListener {
 	
 	private Planet selectedPlanet = null;
 	
-	ArrayList<ArrayList<Position>> overlayLines = new ArrayList();
+	ArrayList<ArrayList<Position>> overlayLines = new ArrayList<ArrayList<Position>>();
     
 	private static final String[] displayStr = {
 			"Planet Names",
@@ -272,9 +282,16 @@ MouseMotionListener, MouseWheelListener, ActionListener {
 					JEditorPane label;
 					if (Boolean.parseBoolean(mwclient.getserverConfigs("UseStaticMaps"))) {
                         House h = mwclient.getData().getHouseByName(mp.getPPanel().getPlanet().getOriginalOwner());
+                        String color = mwclient.getserverConfigs("DisputedPlanetColor");
+                        String name = "None";
+                         
+                        if ( h != null ) {
+                            color = h.getHouseColor();
+                            name = h.getName();
+                        }
 						label = new JEditorPane("text/html","<html"
 								+ mp.getPPanel().getPlanet().getAdvanceDescription(mwclient.getUser(mwclient.getUsername()).getUserlevel())
-                                + "<b>Original Owner:</b><br><font color="+h.getHouseColor()+">"+h.getName() + "</font>"
+                                + "<b>Original Owner:</b><br><font color="+color+">"+name+ "</font>"
 								+ "</html>");
 						label.setEditable(false);
 						label.setCaretPosition(0);
@@ -285,8 +302,16 @@ MouseMotionListener, MouseWheelListener, ActionListener {
 								JOptionPane.INFORMATION_MESSAGE);
 					} else {
                         House h = mwclient.getData().getHouseByName(mp.getPPanel().getPlanet().getOriginalOwner());
+                        String color = mwclient.getserverConfigs("DisputedPlanetColor");
+                        String name = "None";
+                         
+                        if ( h != null ) {
+                            color = h.getHouseColor();
+                            name = h.getName();
+                        }
+
 						label = new JEditorPane("text/html","<html>"+ mp.getPPanel().getPlanet().getLongDescription(true)                                
-                                + "<b>Original Owner:</b><br><font color="+h.getHouseColor()+">"+h.getName() + "</font>"
+                                + "<b>Original Owner:</b><br><font color="+color+">"+name+ "</font>"
                                 + "</html>");
 						label.setEditable(false);
 						label.setCaretPosition(0);
@@ -388,7 +413,7 @@ MouseMotionListener, MouseWheelListener, ActionListener {
 						MWClient.mwClientLog.clientErrLog("AdminMapPopupMenu creation skipped. No MekWarsAdmin.jar present.");
 					else {
 		        		URLClassLoader loader = new URLClassLoader(new URL[] {loadJar.toURI().toURL()});
-		        		Class c = loader.loadClass("admin.AdminMapPopupMenu");
+		        		Class<?> c = loader.loadClass("admin.AdminMapPopupMenu");
 		        		Object o = c.newInstance();
 		        		c.getDeclaredMethod("createMenu", 
 		        				new Class[] {MWClient.class, InnerStellarMap.class, Integer.class, Integer.class, Planet.class}).invoke(o,
@@ -412,9 +437,17 @@ MouseMotionListener, MouseWheelListener, ActionListener {
 				JEditorPane label;
 				if (Boolean.parseBoolean(mwclient.getserverConfigs("UseStaticMaps"))){
                     House h = mwclient.getData().getHouseByName(mp.getPPanel().getPlanet().getOriginalOwner());
+                    String color = mwclient.getserverConfigs("DisputedPlanetColor");
+                    String name = "None";
+                     
+                    if ( h != null ) {
+                        color = h.getHouseColor();
+                        name = h.getName();
+                    }
+
 					label = new JEditorPane("text/html","<html"
 							+ mp.getPPanel().getPlanet().getAdvanceDescription(mwclient.getUser(mwclient.getUsername()).getUserlevel())
-                            + "<b>Original Owner:</b><br><font color="+h.getHouseColor()+">"+h.getName() + "</font>"
+                            + "<b>Original Owner:</b><br><font color="+color+">"+name+ "</font>"
                             + "</html>");
 					label.setEditable(false);
 					label.setCaretPosition(0);
@@ -427,10 +460,17 @@ MouseMotionListener, MouseWheelListener, ActionListener {
 				}
 				else{
                     House h = mwclient.getData().getHouseByName(mp.getPPanel().getPlanet().getOriginalOwner());
-                        
+                    String color = mwclient.getserverConfigs("DisputedPlanetColor");
+                    String name = "None";
+                     
+                    if ( h != null ) {
+                        color = h.getHouseColor();
+                        name = h.getName();
+                    }
+
 					label = new JEditorPane("text/html","<html>"+
 							mp.getPPanel().getPlanet().getLongDescription(true)
-							+ "<b>Original Owner:</b><br><font color="+h.getHouseColor()+">"+h.getName() + "</font>"
+							+ "<b>Original Owner:</b><br><font color="+color+">"+name+ "</font>"
 							+"</html>");
                     //mwclient.getData().getHouseByName("hi").getName();
 					label.setEditable(false);
@@ -566,13 +606,13 @@ MouseMotionListener, MouseWheelListener, ActionListener {
         StreamTokenizer st = new StreamTokenizer(r);
         st.eolIsSignificant(true);
         st.commentChar('#');
-        ArrayList<Position> line=new ArrayList();
+        ArrayList<Position> line=new ArrayList<Position>();
         while(st.nextToken() != StreamTokenizer.TT_EOF) {
             if(st.ttype == StreamTokenizer.TT_WORD 
                     && st.sval.equals("LINE") 
                     && line.size() > 0) {
                         overlayLines.add(line);
-                        line=new ArrayList();
+                        line=new ArrayList<Position>();
             }
             else if(st.ttype == StreamTokenizer.TT_NUMBER) {
                 double x = st.nval;
@@ -600,12 +640,12 @@ MouseMotionListener, MouseWheelListener, ActionListener {
 	 * Steven Fortune.
 	 */
 	private Planet nearestNeighbour(double x, double y) {
-		Iterator it = mp.getData().getAllPlanets().iterator();
+		Iterator<Planet> it = mp.getData().getAllPlanets().iterator();
 		double minDiff = Double.MAX_VALUE;
 		double diff = 0.0; 
 		Planet minPlanet = null;
 		while (it.hasNext()) {
-			Planet p = (Planet) it.next();
+			Planet p = it.next();
 			diff = p.getPosition().distanceSq(x,y);
 			if (diff < minDiff && this.planetIsVisible(p)) {
 				minDiff = diff;
@@ -695,7 +735,7 @@ MouseMotionListener, MouseWheelListener, ActionListener {
             Integer houseID = p.getInfluence().getOwner();
             String houseColor = "";
             
-            if (houseID == null || p.getInfluence().getInfluence(houseID) < mwclient.getMinPlanetOwnerShip(p))
+            if (houseID == null || houseID == -1 || p.getInfluence().getInfluence(houseID) < mwclient.getMinPlanetOwnerShip(p))
                 houseColor = mwclient.getserverConfigs("DisputedPlanetColor");
             else
                 houseColor = mwclient.getData().getHouse(houseID).getHouseColor();
@@ -752,14 +792,20 @@ MouseMotionListener, MouseWheelListener, ActionListener {
 			if (conf.display[DISPLAY_INFLUENCE] && (conf.showInfluenceThreshold == 0 || 
 					conf.scale > conf.showInfluenceThreshold)) {
 				int pos = 0;
-				Iterator infIt = p.getInfluence().getHouses().iterator();
+				Iterator<House> infIt = p.getInfluence().getHouses().iterator();
 				while (infIt.hasNext()) {
-					House h = (House)infIt.next();
-					if( h == null )
-						continue;
-					int flu = p.getInfluence().getInfluence(new Integer(h.getId()))/10;
+					House h = infIt.next();
+	                String color = mwclient.getserverConfigs("DisputedPlanetColor");
+	                int id = -1;
+	                 
+	                if ( h != null ) {
+	                    color = h.getHouseColor();
+	                    id = h.getId();
+	                }
+
+					int flu = p.getInfluence().getInfluence(id)/10;
 					if (flu != 10) {
-						Color factionColor = StringUtils.html2Color(h.getHouseColor());
+						Color factionColor = StringUtils.html2Color(color);
 						// g.setColor(mplanet.getMap().adjustColor(factionColor));
 						g.setColor(factionColor);
 						g.fillRect(x-10, y+size+pos, 10, flu);
@@ -1035,10 +1081,20 @@ MouseMotionListener, MouseWheelListener, ActionListener {
             StringBuilder result = new StringBuilder("<html><center><b><u>" + planet.getName() + "</b></u></center>");
             result.append("<TABLE CELLPADDING=1 CELLSPACING=1>");
             
-            Iterator it = planet.getInfluence().getHouses().iterator();
+            Iterator<House> it = planet.getInfluence().getHouses().iterator();
             while (it.hasNext()) {
-            	House h = (House) it.next();
-            	result.append("<TR><TD><font color="+h.getHouseColor()+">"+h.getName() + "</font></TD><TD>" +planet.getInfluence().getInfluence(h.getId()) + "%</TD></TR>");
+            	House h = it.next();
+                String color = mwclient.getserverConfigs("DisputedPlanetColor");
+                String name = "None";
+                int id = -1;
+                 
+                if ( h != null ) {
+                    color = h.getHouseColor();
+                    name = h.getName();
+                    id = h.getId();
+                }
+
+            	result.append("<TR><TD><font color="+color+">"+name+ "</font></TD><TD>" +planet.getInfluence().getInfluence(id) + "%</TD></TR>");
             }
             result.append("</TABLE></html>");
             

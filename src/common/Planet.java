@@ -390,6 +390,23 @@ public class Planet implements Comparable<Object>, MutableSerializable {
     }
     
     /**
+     * checks for any unused CP and assignes them 
+     * to House None id -1
+     */
+    public void updateInfluences() {
+        int totalCP = getConquestPoints();
+        
+        for (House house: getInfluence().getHouses() ) {
+            totalCP -= getInfluence().getInfluence(house.getId());
+        }
+        
+        if ( totalCP > 0 ) {
+            getInfluence().updateHouse(-1,totalCP);
+        }
+            
+    }
+    
+    /**
      * Comparable after the id
      */
     public int compareTo(Object o) {
@@ -584,7 +601,17 @@ public class Planet implements Comparable<Object>, MutableSerializable {
         // influence
         result.append("<br><b>Influence:</b><br>");
         for (House h : getInfluence().getHouses()) {
-            result.append("<font color="+h.getHouseColor()+">"+h.getName() + "</font> (" + getInfluence().getInfluence(h.getId()) + ")");
+            String color = "#999999";
+            String name = "None";
+            int id = -1;
+            
+            if ( h != null ) {
+                color = h.getHouseColor();
+                name = h.getName();
+                id = h.getId();
+            }
+
+            result.append("<font color="+color+">"+name+ "</font> (" + getInfluence().getInfluence(id) + ")");
             result.append(", ");
         } // End for Each
         
@@ -755,7 +782,18 @@ public class Planet implements Comparable<Object>, MutableSerializable {
         // influence
         result.append("<br><br><b>Influence:</b><br>");
         for (House h  : getInfluence().getHouses()) {
-            result.append("<font color="+h.getHouseColor()+">"+h.getName() + "</font> (" + getInfluence().getInfluence(h.getId()) + ")");
+            
+            String color = "#999999";
+            String name = "None";
+            int id = -1;
+            
+            if ( h != null ) {
+                color = h.getHouseColor();
+                name = h.getName();
+                id = h.getId();
+            }
+            
+            result.append("<font color="+color+">"+name+ "</font> (" + getInfluence().getInfluence(id) + ")");
             result.append(", ");
         } // while*/
         result.replace(result.length()-2, result.length(),"<br>");

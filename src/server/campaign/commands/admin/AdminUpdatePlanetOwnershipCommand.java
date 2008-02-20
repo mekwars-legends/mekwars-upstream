@@ -50,11 +50,14 @@ public class AdminUpdatePlanetOwnershipCommand implements Command {
 		//vars
 		SPlanet planet = null;
 		House house = null;
+		String houseName;
 		int ownerShip = 0;
+		int id = -1;
 		
 		try {
 			planet = CampaignMain.cm.getPlanetFromPartialString(command.nextToken(),Username);
-			house = CampaignMain.cm.getHouseFromPartialString(command.nextToken(),Username);
+			houseName = command.nextToken();
+			house = CampaignMain.cm.getHouseFromPartialString(houseName,null);
 			ownerShip = Integer.parseInt(command.nextToken());
 			
 		} catch (Exception e) {
@@ -67,7 +70,7 @@ public class AdminUpdatePlanetOwnershipCommand implements Command {
 			return;
 		}
 		
-		if ( house == null ){
+		if ( house == null && !houseName.equalsIgnoreCase("none") ){
 			CampaignMain.cm.toUser("Could not find a matching faction to remove.",Username,true);
 			return;
 		}
@@ -77,15 +80,18 @@ public class AdminUpdatePlanetOwnershipCommand implements Command {
 			return;
 		}
 		
-		if ( ownerShip == planet.getInfluence().getInfluence(house.getId()) )
+		if ( house != null )
+		    id = house.getId();
+		
+		if ( ownerShip == planet.getInfluence().getInfluence(id) )
 			return;
 		
-		planet.getInfluence().updateHouse(house.getId(), ownerShip);
+		planet.getInfluence().updateHouse(id, ownerShip);
 		planet.updated();
 		
         if(CampaignMain.cm.isUsingMySQL())
         	planet.toDB();
 		
-		CampaignMain.cm.doSendModMail("NOTE",Username + " updated "+house.getName()+" ownership of "+ planet.getName()+" to "+ownerShip+".");
+		CampaignMain.cm.doSendModMail("NOTE",Username + " updated "+houseName+" ownership of "+ planet.getName()+" to "+ownerShip+".");
 	}
 }

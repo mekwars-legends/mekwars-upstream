@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
++ Started work on RFE 1815469 
 + RFE 1897024: Word wrap for UnitViewerDialog Fluff text
 + Moved SPlayer#playerLevelDescription to MWCyclopsPlayer
 + removed all @supress comments
