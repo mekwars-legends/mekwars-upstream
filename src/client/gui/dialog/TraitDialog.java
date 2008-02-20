@@ -46,7 +46,7 @@ import common.campaign.pilot.skills.PilotSkill;
 
 import client.MWClient;
 import common.util.SpringLayoutHelper;
-@SuppressWarnings({"unchecked","serial"})
+
 public final class TraitDialog implements ActionListener, KeyListener{
 	
 	//store the client backlink for other things to use

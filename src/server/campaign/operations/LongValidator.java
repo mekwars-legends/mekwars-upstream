@@ -27,7 +27,7 @@ import server.campaign.SPlayer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-@SuppressWarnings({"unchecked","serial","unused"})//TODO: remove "unused" once longs are running
+//TODO: remove "unused" once longs are running
 public class LongValidator {
 	
 	//IVARS

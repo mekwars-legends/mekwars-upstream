@@ -35,7 +35,7 @@ import server.MWChatServer.auth.IAuthenticator;
  * @author Helge Richter
  *
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class AdminCreateFactoryCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;

@@ -46,7 +46,7 @@ import common.House;
  * Each activate command creates a new Helper, looping all of the
  * activating players.
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class OpponentListHelper {
 
 	//VARIABLES
@@ -218,9 +218,9 @@ public class OpponentListHelper {
 		for (SArmy currArmy : searchPlayer.getArmies()) {
 
 			//remove curr army from all opparmies which link it.
-			Enumeration j = currArmy.getOpponents().elements();
+			Enumeration<SArmy> j = currArmy.getOpponents().elements();
 			while (j.hasMoreElements()) {
-				SArmy oppArmy = (SArmy)j.nextElement();
+				SArmy oppArmy = j.nextElement();
 				oppArmy.removeOpponent(currArmy);
 
 				//add to the 
@@ -230,7 +230,7 @@ public class OpponentListHelper {
 			}
 
 			//reset currArmy's OpponentList
-			currArmy.setOpponents(new Vector(1,1));
+			currArmy.setOpponents(new Vector<SArmy>(1,1));
 
 		}//end while(more armies to unlink)
 	}//end removeOpponentsForAll()

@@ -27,7 +27,7 @@ import server.campaign.operations.ShortOperation;
 import server.campaign.util.PlanetNameComparator;
 
 import java.util.Vector;
-@SuppressWarnings({"unchecked","serial"})
+
 public class HouseCommand implements Command {
 	
 	int accessLevel = 0;

@@ -83,7 +83,7 @@ import common.util.UnitUtils;
 /**
  * Headquarters Panel
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class CHQPanel extends JPanel {
 	
 	MWClient mwclient;

@@ -49,7 +49,7 @@ import dedicatedhost.protocol.IConnectionListener;
  * they are passed to the ChatServerLocal via it's incomingMessage() method
  * @see ChatServerLocal#incomingMessage
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class ConnectionHandlerLocal implements IConnectionHandler {
     protected PrintStream _out;
     protected Socket _socket;
@@ -159,7 +159,7 @@ class WriterThread extends Thread {
         _out.flush();
     }
 
-    @SuppressWarnings("unchecked")
+    
     synchronized void queueMessage(String s) {
         outgoingMessages.addElement(s);
         // notify the writer thread that there is at least one new message

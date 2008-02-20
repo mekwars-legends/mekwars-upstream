@@ -65,7 +65,7 @@ import common.Planet;
  *  
  * @Torren 5.6.05
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class PlanetNameDialog extends JDialog implements ActionListener {
 
 	//variables

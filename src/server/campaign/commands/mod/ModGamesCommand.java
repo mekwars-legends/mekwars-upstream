@@ -23,7 +23,7 @@ import server.campaign.operations.ShortOperation;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
 
-@SuppressWarnings({"unchecked","serial"})
+
 public class ModGamesCommand implements Command {
 	
 	int accessLevel = IAuthenticator.MODERATOR;

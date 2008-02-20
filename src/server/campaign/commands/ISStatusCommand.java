@@ -25,7 +25,7 @@ import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.util.PlanetNameComparator;
-@SuppressWarnings({"unchecked","serial"})
+
 public class ISStatusCommand implements Command {
 	
 	int accessLevel = 0;

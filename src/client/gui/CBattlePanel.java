@@ -47,7 +47,7 @@ import common.MMGame;
  * @author Imi (immanuel.scholz@gmx.de)
  */
 
-@SuppressWarnings("serial")
+
 public class CBattlePanel extends JPanel {
 	
     private final MWClient mwclient;
@@ -459,7 +459,7 @@ public class CBattlePanel extends JPanel {
 	}
 	
 	
-	@SuppressWarnings("serial")
+	
 	class BattlesModel extends AbstractTableModel {
 		
 		public Object[] sortedGames; //not really though, sort is handled elsewhere...
@@ -556,7 +556,7 @@ public class CBattlePanel extends JPanel {
 		/*
 		 * Renderer cannot be static because it uses parent data structs.
 		 */
-		@SuppressWarnings("serial")
+		
 		class Renderer extends DefaultTableCellRenderer {
 	
 			@Override

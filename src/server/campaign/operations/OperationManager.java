@@ -52,7 +52,7 @@ import server.campaign.SUnit;
 
 import server.MWServ;
 
-@SuppressWarnings({"unchecked","serial"})
+
 public class OperationManager {
 	
 	//statics

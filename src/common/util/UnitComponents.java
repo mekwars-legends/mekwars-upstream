@@ -28,9 +28,9 @@ import megamek.common.EquipmentType;
 import megamek.common.Mounted;
 import megamek.common.TechConstants;
 
-public class UnitComponents  {
+public class UnitComponents{
 
-	Hashtable<String, Integer> components = new Hashtable<String, Integer>();
+    Hashtable<String, Integer> components = new Hashtable<String, Integer>();
 		
 	public String tableizeComponents() {
 		return tableizeComponents(components);

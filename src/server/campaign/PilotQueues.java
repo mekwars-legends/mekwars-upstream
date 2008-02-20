@@ -40,10 +40,10 @@ import server.campaign.pilot.skills.TraitSkill;
 /**
  * @author Helge Richter
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class PilotQueues {
 	
-	private Vector<LinkedList<SPilot>> queues = new Vector<LinkedList<SPilot>>(Unit.MAXBUILD,1);
+    private Vector<LinkedList<SPilot>> queues = new Vector<LinkedList<SPilot>>(Unit.MAXBUILD,1);
 	private Vector<Integer> baseGunnery = new Vector<Integer>(Unit.MAXBUILD,1);
 	private Vector<Integer> basePiloting = new Vector<Integer>(Unit.MAXBUILD,1);
 	private Vector<String>  basePilotSkills = new Vector<String>(Unit.MAXBUILD,1);
@@ -88,7 +88,7 @@ public class PilotQueues {
 	    if ( p.getSkills().has(PilotSkill.WeaponSpecialistSkillID)
 	            && !p.getWeapon().equals("Default")){
 	        
-	        Iterator ski = p.getSkills().getSkillIterator();
+	        Iterator<PilotSkill> ski = p.getSkills().getSkillIterator();
 	        while ( ski.hasNext() ){
 	            SPilotSkill skill = (SPilotSkill)ski.next();
 	            if ( skill.getName().equals("Weapon Specialist")){
@@ -136,7 +136,7 @@ public class PilotQueues {
 		if ( p.getSkills().has(PilotSkill.WeaponSpecialistSkillID)
 	            && !p.getWeapon().equals("Default")){
 	        
-	        Iterator ski = p.getSkills().getSkillIterator();
+	        Iterator<PilotSkill> ski = p.getSkills().getSkillIterator();
 	        while ( ski.hasNext() ){
 	            SPilotSkill skill = (SPilotSkill)ski.next();
 	            if ( skill.getName().equals("Weapon Specialist")){

@@ -52,7 +52,10 @@ import server.util.TokenReader;
  * @author Helge Richter
  * 
  */
-public class SPilot extends Pilot {
+public class SPilot extends Pilot{
+    /**
+     * 
+     */
     private int originalID;
     private int pickedUpID;
     private boolean death = false;

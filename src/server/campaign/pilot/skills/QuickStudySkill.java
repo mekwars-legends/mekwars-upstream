@@ -33,7 +33,7 @@ import common.campaign.pilot.Pilot;
  *  XP earned.
  * @author Torren (Jason Tighe)
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class QuickStudySkill extends SPilotSkill {
 	
 	public QuickStudySkill(int id) {

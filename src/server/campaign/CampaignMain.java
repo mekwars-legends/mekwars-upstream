@@ -1608,6 +1608,8 @@ public final class CampaignMain implements Serializable {
         Commands.put("UNBAN", new UnBanCommand());
         Commands.put("UNBANIP", new UnBanIPCommand());
 
+        //command for testing
+        Commands.put("CODETEST", new CodeTestCommand());
         // ok we've put all the commands in the command hash now lets set the
         // levels
         try {
@@ -3155,7 +3157,7 @@ public final class CampaignMain implements Serializable {
         return this.isArchiving;
     }
 
-    @SuppressWarnings("unchecked")
+    
     public void saveConfigureFile(Properties config, String fileName) {
 
         try {

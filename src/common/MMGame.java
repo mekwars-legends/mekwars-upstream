@@ -24,7 +24,7 @@ import java.io.Serializable;
 import java.util.TreeSet;
 import java.util.StringTokenizer;
 
-@SuppressWarnings({"unchecked","serial"})
+
 public class MMGame implements Serializable {
 	
 	//VARIABLES

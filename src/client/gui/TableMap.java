@@ -17,7 +17,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.event.TableModelListener; 
 import javax.swing.event.TableModelEvent; 
-@SuppressWarnings({"unchecked","serial"})
+
 public class TableMap extends AbstractTableModel implements TableModelListener {
     
 	protected TableModel model; 

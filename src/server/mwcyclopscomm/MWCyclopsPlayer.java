@@ -61,7 +61,7 @@ import server.campaign.SPlayer;
              message += MWCyclopsUtils.structMember("logo",player.getMyLogo());
              message += MWCyclopsUtils.structMember("camo"," ");
              message += MWCyclopsUtils.structMember("passwd"," ");
-             message += MWCyclopsUtils.structMember("access",SPlayer.playerLevelDescription(CampaignMain.cm.getServer().getUserLevel(player.getName())));
+             message += MWCyclopsUtils.structMember("access",MWCyclopsPlayer.playerLevelDescription(CampaignMain.cm.getServer().getUserLevel(player.getName())));
              message += MWCyclopsUtils.structMember("level",CampaignMain.cm.getServer().getUserLevel(player.getName()));
              message += MWCyclopsUtils.structMember("lastseen",player.getLastOnline());
 
@@ -79,5 +79,24 @@ import server.campaign.SPlayer;
          return message;
      }
       
+     /**
+      * Return a descriptive string.
+      * Cyclops writer.
+      */
+     public static String playerLevelDescription(int level) {
+
+         if (level >= 200)
+             return "Admin";
+
+         if (level >= 100)
+             return "Moderator";
+
+         if (level >= 30)
+             return "Enhanced Player";
+
+         return "Player";
+
+     }
+
 }
  

@@ -34,7 +34,6 @@ import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,8 +42,7 @@ import java.text.DecimalFormat;
 
 import megamek.common.Entity;
 
-import common.CampaignData;
-import common.House;
+import common.Planet;
 import common.SubFaction;
 import common.Unit;
 import common.util.StringUtils;
@@ -62,8 +60,7 @@ import server.campaign.operations.ShortOperation;
 import server.campaign.pilot.SPilot;
 import server.util.TokenReader;
 
-@SuppressWarnings( { "unchecked", "serial", "unused" })
-public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuyer {
+public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISeller, IBuyer {
 
     // store all online players in *THREE* hashes, one for each primary status
     private ConcurrentHashMap<String, SPlayer> reservePlayers = new ConcurrentHashMap<String, SPlayer>();
@@ -75,7 +72,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuy
 
     private Hashtable<String, SmallPlayer> SmallPlayers = new Hashtable<String, SmallPlayer>();
     private Hashtable<Integer, Vector<Integer>> Components = new Hashtable<Integer, Vector<Integer>>();
-    private Hashtable unitComponents = new Hashtable();
+    private Hashtable<Integer, Integer> unitComponents = new Hashtable<Integer, Integer>();
 
     private int Money;
     private int BaysProvided = 0;
@@ -172,9 +169,9 @@ public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuy
 
         // Write the Components / BuildingPP's
         result.append("Components" + "|");
-        Enumeration e = getComponents().keys();
+        Enumeration<Integer> e = getComponents().keys();
         while (e.hasMoreElements()) {
-            Integer id = (Integer) e.nextElement();
+            Integer id = e.nextElement();
             Vector<Integer> v = getComponents().get(id);
             result.append(id.intValue() + "|" + v.size() + "|");
             for (int i = 0; i < v.size(); i++)
@@ -491,9 +488,9 @@ public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuy
 
             // Components
             ps.executeUpdate("DELETE from factioncomponents WHERE factionID = " + getDBId());
-            Enumeration en = getComponents().keys();
+            Enumeration<Integer> en = getComponents().keys();
             while (en.hasMoreElements()) {
-                Integer id = (Integer) en.nextElement();
+                Integer id = en.nextElement();
                 Vector<Integer> v = getComponents().get(id);
                 for (int i = 0; i < v.size(); i++) {
                     ps.executeUpdate("INSERT into factioncomponents set factionID = " + getDBId() + ", unitType = " + id.intValue() + ", unitWeight = " + i + ", components = " + v.elementAt(i).intValue());
@@ -606,11 +603,11 @@ public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuy
 
             setAbbreviation(TokenReader.readString(ST));
 
-            getHangar().put(new Integer(Unit.MEK), new Vector(5, 1));
-            getHangar().put(new Integer(Unit.VEHICLE), new Vector(5, 1));
-            getHangar().put(new Integer(Unit.INFANTRY), new Vector(5, 1));
-            getHangar().put(new Integer(Unit.PROTOMEK), new Vector(5, 1));
-            getHangar().put(new Integer(Unit.BATTLEARMOR), new Vector(5, 1));
+            getHangar().put(Unit.MEK, new Vector<Vector<SUnit>>(5, 1));
+            getHangar().put(Unit.VEHICLE, new Vector<Vector<SUnit>>(5, 1));
+            getHangar().put(Unit.INFANTRY, new Vector<Vector<SUnit>>(5, 1));
+            getHangar().put(Unit.PROTOMEK, new Vector<Vector<SUnit>>(5, 1));
+            getHangar().put(Unit.BATTLEARMOR, new Vector<Vector<SUnit>>(5, 1));
             // Init all of the hangars
             for (int i = 0; i < 4; i++) {
 
@@ -725,7 +722,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuy
                     Integer id = new Integer(next);
                     int count = TokenReader.readInt(ST);
                     for (int i = 0; i < count; i++) {
-                        Vector v = getComponents().get(new Integer(id));
+                        Vector<Integer> v = getComponents().get(id);
                         int val = TokenReader.readInt(ST);
                         v.setElementAt(val, i);
                     }
@@ -898,7 +895,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuy
                 int contractamount = 0;
 
                 contractamount = TokenReader.readInt(ST);
-                Hashtable merctable = new Hashtable();
+                Hashtable<String, ContractInfo> merctable = new Hashtable<String, ContractInfo>();
                 for (int i = 0; i < contractamount; i++) {
                     ContractInfo ci = new ContractInfo();
                     ci.fromString(TokenReader.readString(ST));
@@ -989,42 +986,27 @@ public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuy
 
         for (int j = 0; j < 5; j++) // Type
         {
-            Vector v = new Vector();
+            Vector<Integer> v = new Vector<Integer>();
             for (int i = 0; i < 4; i++) // Weight
             {
-                v.add(new Integer(0));
+                v.add(0);
             }
             v.trimToSize();
-            getComponents().put(new Integer(j), v);
+            getComponents().put(j, v);
         }
         // currentPP = new Vector();
         setMoney(0);
-        getHangar().put(new Integer(Unit.MEK), new Vector(1, 1));
-        getHangar().put(new Integer(Unit.VEHICLE), new Vector(1, 1));
-        getHangar().put(new Integer(Unit.INFANTRY), new Vector(1, 1));
-        getHangar().put(new Integer(Unit.PROTOMEK), new Vector(1, 1));
-        getHangar().put(new Integer(Unit.BATTLEARMOR), new Vector(1, 1));
+        getHangar().put(Unit.MEK, new Vector<Vector<SUnit>>(1, 1));
+        getHangar().put(Unit.VEHICLE, new Vector<Vector<SUnit>>(1, 1));
+        getHangar().put(Unit.INFANTRY, new Vector<Vector<SUnit>>(1, 1));
+        getHangar().put(Unit.PROTOMEK, new Vector<Vector<SUnit>>(1, 1));
+        getHangar().put(Unit.BATTLEARMOR, new Vector<Vector<SUnit>>(1, 1));
         for (int i = 0; i < 4; i++) {
-            Vector v = new Vector(1, 1);
-            getHangar(Unit.MEK).add(v);
-        }
-        for (int i = 0; i < 4; i++) {
-            Vector v = new Vector(1, 1);
-            getHangar(Unit.VEHICLE).add(v);
-        }
-        if (Boolean.parseBoolean(this.getConfig("UseInfantry"))) {
-            for (int i = 0; i < 4; i++) {
-                Vector v = new Vector(1, 1);
-                getHangar(Unit.INFANTRY).add(v);
-            }
-        }
-        for (int i = 0; i < 4; i++) {
-            Vector v = new Vector(1, 1);
-            getHangar(Unit.PROTOMEK).add(v);
-        }
-        for (int i = 0; i < 4; i++) {
-            Vector v = new Vector(1, 1);
-            getHangar(Unit.BATTLEARMOR).add(v);
+            getHangar(Unit.MEK).add(new Vector<SUnit>(1, 1));
+            getHangar(Unit.VEHICLE).add(new Vector<SUnit>(1, 1));
+            getHangar(Unit.INFANTRY).add(new Vector<SUnit>(1, 1));
+            getHangar(Unit.PROTOMEK).add(new Vector<SUnit>(1, 1));
+            getHangar(Unit.BATTLEARMOR).add(new Vector<SUnit>(1, 1));
         }
 
         // init the componet array(vectors)
@@ -1647,12 +1629,12 @@ public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuy
 
     public Vector<SUnitFactory> getPossibleFactoryForProduction(int type, int weight, boolean ignoreRefresh) {
         Vector<SUnitFactory> possible = new Vector<SUnitFactory>(1, 1);
-        Iterator e = Planets.values().iterator();
+        Iterator<SPlanet> e = Planets.values().iterator();
         while (e.hasNext()) {
-            SPlanet p = (SPlanet) e.next();
-            Vector v = p.getFactoriesOfWeighclass(weight);
+            SPlanet p = e.next();
+            Vector<SUnitFactory> v = p.getFactoriesOfWeighclass(weight);
             for (int i = 0; i < v.size(); i++) {
-                SUnitFactory MF = (SUnitFactory) v.elementAt(i);
+                SUnitFactory MF = v.elementAt(i);
                 if (MF.canProduce(type) && (ignoreRefresh || MF.getTicksUntilRefresh() < 1)) {
                     possible.add(MF);
                 }
@@ -1753,12 +1735,12 @@ public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuy
             MWServ.mwlog.errLog(ex);
             MWServ.mwlog.errLog("Error in addPP()");
             MWServ.mwlog.errLog("weight: " + weight + " type: " + type_id + " value: " + val);
-            Vector v = new Vector(1, 1);
+            Vector<Integer> v = new Vector<Integer>(4, 1);
             for (int i = 0; i < 4; i++)
                 // Weight
-                v.add(new Integer(0));
+                v.add(0);
 
-            getComponents().put(new Integer(type_id), v);
+            getComponents().put(type_id, v);
         }
 
         // if PP is unchanged, no need to send a real update
@@ -1850,9 +1832,9 @@ public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuy
             for (int i = Unit.LIGHT; i <= Unit.ASSAULT; i++) {
 
                 // Loop through all units of the current type/weightclass
-                Iterator it = ((Vector) this.getHangar(type_id).elementAt(i)).iterator();
+                Iterator<SUnit> it = ((Vector<SUnit>) this.getHangar(type_id).elementAt(i)).iterator();
                 while (it.hasNext()) {
-                    SUnit currU = (SUnit) it.next();
+                    SUnit currU = it.next();
                     if (currU.getId() == unitIDtoFind)
                         return currU;
                 }
@@ -2338,7 +2320,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuy
     }// end removePlayer()
 
     /*
-     * Used by RangeCommand and CheckDistCommand. TODO: Refactor and remove.
+     * Used by RangeCommand and CheckDistCommand.
      */
     public int getDistanceTo(SPlanet p, SPlayer player) {
         // Is the faction on the planet?
@@ -2348,7 +2330,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuy
         double distSq = Integer.MAX_VALUE;
         double tdist;
 
-        Iterator e = CampaignMain.cm.getData().getAllPlanets().iterator();
+        Iterator<Planet> e = CampaignMain.cm.getData().getAllPlanets().iterator();
         while (e.hasNext()) {
             SPlanet pl = (SPlanet) e.next();
             // Only consider planet if we control at least 25%
@@ -2536,11 +2518,11 @@ public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuy
     }
 
     public int getComponentsProduced(int unitType) {
-        Integer component = (Integer) unitComponents.get(unitType);
-        if (component == null)
+        if (!unitComponents.containsKey(unitType))
             return 0;
         // else
-        return component.intValue();
+        int component = unitComponents.get(unitType);
+        return component;
     }
 
     public int getShowProductionCountNext() {
@@ -2606,7 +2588,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuy
     }
 
     public void setComponentsProduced(int unitType, int components) {
-        this.unitComponents.put(new Integer(unitType), new Integer(components));
+        this.unitComponents.put(unitType, components);
     }
 
     public void setShowProductionCountNext(int i) {
@@ -2771,7 +2753,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable, ISeller, IBuy
             ps = CampaignMain.cm.MySQL.getPreparedStatement("DELETE from faction_configs WHERE factionID = " + dbId);
             ps.executeUpdate();
             config.setProperty("TIMESTAMP", Long.toString((System.currentTimeMillis())));
-            for (Enumeration e = config.keys(); e.hasMoreElements();) {
+            for (Enumeration<Object> e = config.keys(); e.hasMoreElements();) {
                 String key = (String) e.nextElement();
                 String val = config.getProperty(key);
                 String sql = "INSERT into faction_configs SET factionID = " + dbId + ", configKey = ?, configValue = ?";

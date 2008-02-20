@@ -69,7 +69,7 @@ import client.MWClient;
 /**
  * User List panel
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class CUserListPanel extends JPanel implements ActionListener{
 	
 	public static int SORTMODE_NAME = 0;

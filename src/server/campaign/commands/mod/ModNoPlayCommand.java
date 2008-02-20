@@ -24,7 +24,7 @@ import server.campaign.SPlayer;
 import server.campaign.util.ExclusionList;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
-@SuppressWarnings({"unchecked","serial"})
+
 public class ModNoPlayCommand implements Command {
 	
 	int accessLevel = IAuthenticator.MODERATOR;

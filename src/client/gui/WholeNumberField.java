@@ -29,7 +29,7 @@ import java.awt.Toolkit;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
-@SuppressWarnings({"unchecked","serial"})
+
 public class WholeNumberField extends JTextField {
     private Toolkit toolkit;
     private NumberFormat integerFormatter;

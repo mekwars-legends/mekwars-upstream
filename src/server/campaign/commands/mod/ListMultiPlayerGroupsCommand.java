@@ -30,7 +30,7 @@ import common.House;
 
 import server.MWChatServer.auth.IAuthenticator;
 
-@SuppressWarnings({"unchecked","serial"})
+
 public class ListMultiPlayerGroupsCommand implements Command {
 	
 	int accessLevel = IAuthenticator.MODERATOR;

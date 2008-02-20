@@ -20,6 +20,7 @@
  */
 package server.campaign;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -41,10 +42,14 @@ import common.campaign.pilot.Pilot;
  * is a collection of pilots, managed by a player, which may be moved
  * between eligible units (restricted by type and weightclass). 
  */
-@SuppressWarnings({"serial"})
-public class SPersonalPilotQueues {
+
+public class SPersonalPilotQueues implements Serializable{
 	
-	//VARIABLES
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 8106810403277431436L;
+    //VARIABLES
 	/*
 	 * In the past, we've stored pilots in a master vector of types. This worked
 	 * well; however, it forced a unit-type catch and transition every time a Proto

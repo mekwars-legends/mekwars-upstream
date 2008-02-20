@@ -55,7 +55,7 @@ import java.io.UnsupportedEncodingException;
  * @author Stephen Ostermiller http://ostermiller.org/contact.pl?regarding=Java+Utilities
  * @since ostermillerutils 1.00.00
  */
-@SuppressWarnings({"unchecked","serial","unused"})
+
 public class MD5 {
 
 	/**

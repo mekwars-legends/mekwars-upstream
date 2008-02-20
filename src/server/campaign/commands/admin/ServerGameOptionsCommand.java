@@ -32,7 +32,7 @@ import server.MWServ;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
-@SuppressWarnings({"unchecked","serial"})
+
 public class ServerGameOptionsCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;

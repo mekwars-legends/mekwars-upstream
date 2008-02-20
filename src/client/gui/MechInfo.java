@@ -58,7 +58,7 @@ import client.campaign.CUnit;
  *
  * @author  Steve Hawkins
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class MechInfo extends JPanel {
 
   protected static MechTileset mt;

@@ -41,7 +41,7 @@ import common.campaign.pilot.Pilot;
  * A pilot who specializes in a particular weapon receives a -2 to hit modifier on all attacks with that weapon.
  * @@author Torren (Jason Tighe)
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class WeaponSpecialistSkill extends SPilotSkill {
 	
 	public WeaponSpecialistSkill(int id) {

@@ -26,7 +26,7 @@ import java.io.IOException;
  *
  * @author Imi (immanuel.scholz@gmx.de)
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class BinReader {
     private BufferedReader in;
 

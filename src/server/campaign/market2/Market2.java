@@ -31,7 +31,7 @@ import server.campaign.SPlayer;
 import server.campaign.SUnit;
 import server.campaign.pilot.SPilot;
 
-@SuppressWarnings( { "unchecked", "serial" })
+
 /**
  * A marketplace, where players may sell their units to one another. Admins may
  * configure the type of auction used, min/max list price, min/max list time,

@@ -61,7 +61,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.event.DocumentEvent;
 
 import client.MWClient;
-@SuppressWarnings({"unchecked","serial"})
+
 public class MyImageView extends View implements ImageObserver, MouseListener, MouseMotionListener {
 	
 	// --- Attribute Values ------------------------------------------

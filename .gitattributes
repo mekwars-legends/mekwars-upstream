@@ -1439,6 +1439,7 @@ src/server/campaign/commands/CheckArmyEligibilityCommand.java -text
 src/server/campaign/commands/CheckArmyLinkCommand.java -text
 src/server/campaign/commands/CheckAttackCommand.java -text
 src/server/campaign/commands/CheckDistCommand.java -text
+src/server/campaign/commands/CodeTestCommand.java -text
 src/server/campaign/commands/ColorCommand.java -text
 src/server/campaign/commands/Command.java -text
 src/server/campaign/commands/CommenceOperationCommand.java -text

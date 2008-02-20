@@ -51,7 +51,7 @@ import megamek.common.MiscType;
  * incrememnting the unitID needlessly.
  * 
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class RepodCommand implements Command {
 	
 	int accessLevel = 0;

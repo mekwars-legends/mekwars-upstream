@@ -50,7 +50,7 @@ import common.util.SpringLayoutHelper;
  * 
  * inner class which sets up a camo selection dialog.
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class SellUnitDialog extends JDialog implements ActionListener { 
 	
 	//IVARS

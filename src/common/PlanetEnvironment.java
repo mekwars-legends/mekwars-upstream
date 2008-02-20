@@ -31,7 +31,7 @@ import common.util.BinWriter;
  * Final simple because you should be aware to overwrite binIn and binOut properly 
  * if you subclass PlanetEnvironment.
  */
-@SuppressWarnings({"unchecked","serial"})
+
 final public class PlanetEnvironment{
     // id
     private int id = -1;

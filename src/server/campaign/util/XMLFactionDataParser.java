@@ -32,7 +32,7 @@ import server.campaign.NewbieHouse;
 import server.campaign.SHouse;
 import server.campaign.mercenaries.MercHouse;
 
-@SuppressWarnings({"unchecked","serial"})
+
 public class XMLFactionDataParser implements XMLResponder {
 	
 	String lastElement = "";

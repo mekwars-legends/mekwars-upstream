@@ -82,7 +82,7 @@ import common.util.SpringLayoutHelper;
  * @author  Ben
  * @version 
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class CustomUnitDialog extends JDialog implements ActionListener{ 
 
     private JLabel labAutoEject = new JLabel("Disable Autoeject", SwingConstants.TRAILING);

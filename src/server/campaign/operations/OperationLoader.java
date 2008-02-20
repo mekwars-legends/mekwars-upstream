@@ -37,7 +37,7 @@ import common.DefaultOperation;
 
 import server.MWServ;
 
-@SuppressWarnings({"unchecked","serial"})
+
 public class OperationLoader {
 	
 	//IVARS

@@ -21,7 +21,7 @@ import server.campaign.SPlayer;
 import server.campaign.CampaignMain;
 import server.campaign.mercenaries.ContractInfo;
 import server.campaign.mercenaries.MercHouse;
-@SuppressWarnings({"unchecked","serial"})
+
 public class OfferContractCommand implements Command {
 	int accessLevel = 0;
 	String syntax = "";

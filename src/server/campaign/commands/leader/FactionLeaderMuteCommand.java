@@ -24,7 +24,7 @@ import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
 
-@SuppressWarnings({"unchecked","serial"})
+
 public class FactionLeaderMuteCommand implements Command {
 	
 	int accessLevel = IAuthenticator.MODERATOR;

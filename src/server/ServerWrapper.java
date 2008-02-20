@@ -30,7 +30,7 @@ import server.MWChatServer.MWChatServer;
 import server.MWChatServer.auth.Auth;
 import server.MWChatServer.commands.ICommands;
 
-@SuppressWarnings({"unchecked","serial"})
+
 public class ServerWrapper extends MWChatServer{
 	
 	MWServ myServer;

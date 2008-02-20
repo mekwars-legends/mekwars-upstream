@@ -42,7 +42,7 @@ import client.campaign.CPlayer;
 /**
  * Player panel
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class CPlayerPanel extends JScrollPane {
 	
     MWClient mwclient;

@@ -29,7 +29,7 @@ import server.campaign.SPlayer;
 import server.campaign.SUnit;
 import server.campaign.CampaignMain;
 
-@SuppressWarnings({"serial"})
+
 public class OperationEntity {
 	
 	//IVARS

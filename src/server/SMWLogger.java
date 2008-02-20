@@ -31,7 +31,7 @@ import java.io.PrintStream;
 import server.MWServ;
 import server.campaign.CampaignMain;
 
-@SuppressWarnings( { "unchecked", "serial" })
+
 public final class SMWLogger {// final - no extension of the server logger
 
     private static final int rotations = 5; // Configurable

@@ -67,7 +67,7 @@ import megamek.common.WeaponType;
  * Jun 10/04 - Dave Poole added an overloaded constructor to allow creation of a
  * new SUnit with the same UnitID as an existing Mech to facilitate repodding
  */
-@SuppressWarnings( { "unchecked", "serial" })
+
 public final class SUnit extends Unit implements Serializable {
 
     // VARIABLES

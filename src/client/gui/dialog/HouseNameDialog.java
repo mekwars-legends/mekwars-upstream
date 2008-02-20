@@ -62,7 +62,7 @@ import common.House;
  *  
  * @Torren 5.6.05
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class HouseNameDialog extends JDialog implements ActionListener {
 
 	//variables

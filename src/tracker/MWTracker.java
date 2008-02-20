@@ -41,7 +41,7 @@ import java.util.StringTokenizer;
  * 
  * Final b/c threads start in constructor.
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public final class MWTracker {
 	
 	//VARIABLES

@@ -34,7 +34,7 @@ import server.dataProvider.ServerCommand;
  * 
  * @author Imi (immanuel.scholz@gmx.de)
  */
-@SuppressWarnings( { "unchecked", "serial" })
+
 public class PDiff implements ServerCommand {
 
 	public void execute(Date timestamp, BinWriter out, CampaignData data)

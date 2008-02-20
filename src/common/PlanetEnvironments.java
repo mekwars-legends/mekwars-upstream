@@ -34,7 +34,7 @@ import common.util.BinWriter;
  * Imi: *crhm*..."totally bad"... ;-)
  * TODO: simplify this class. subclass it from ArrayList or something like that   
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class PlanetEnvironments {
 
     /**

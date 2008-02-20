@@ -71,7 +71,7 @@ import megamek.common.TechConstants;
 import client.MWClient;
 import client.campaign.CUnit;
 
-@SuppressWarnings({"unchecked","serial"})
+
     public class AdvancedRepairDialog extends JFrame implements ActionListener, MouseListener, KeyListener, ChangeListener{
 	
 	//store the client backlink for other things to use

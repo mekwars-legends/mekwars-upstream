@@ -25,7 +25,7 @@ import server.campaign.SPlayer;
 import server.campaign.SArmy;
 import server.campaign.SUnit;
 
-@SuppressWarnings({"unchecked","serial"})
+
 public class UnitPositionCommand implements Command {
 	
 	//conforming methods

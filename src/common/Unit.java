@@ -37,7 +37,7 @@ import megamek.common.Tank;
  * @author Helge Richter
  *
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class Unit {
 	
 	//STATIC VARIABLES

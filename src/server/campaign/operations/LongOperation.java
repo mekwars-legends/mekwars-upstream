@@ -36,7 +36,7 @@ import java.util.Collections;
 import server.campaign.SPlanet;
 import server.campaign.SHouse;
 
-@SuppressWarnings({"unchecked","serial","unused"})//TODO: Remove "unused" once longs are running
+//TODO: Remove "unused" once longs are running
 public class LongOperation implements Comparable {
 	
 	//IVARS

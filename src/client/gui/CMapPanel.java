@@ -39,7 +39,7 @@ import common.CampaignData;
  *
  * @author Imi (immanuel.scholz@gmx.de)
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class CMapPanel extends JPanel {
 
     private class ZoomSlider extends JSlider implements ChangeListener {

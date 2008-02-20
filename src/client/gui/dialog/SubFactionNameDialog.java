@@ -48,7 +48,7 @@ import common.util.SpringLayoutHelper;
 import common.House;
 
 
-@SuppressWarnings({"unchecked","serial"})
+
 public class SubFactionNameDialog extends JDialog implements ActionListener {
 
 	//variables

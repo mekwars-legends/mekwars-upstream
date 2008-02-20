@@ -102,7 +102,7 @@ import client.gui.MechInfo;
 /* 
  * Allows a user to sort through a list of MechSummaries and select one
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class UnitViewerDialog extends JFrame implements ActionListener, KeyListener, ListSelectionListener, Runnable, WindowListener, ItemListener {
 	
 	//how long after a key is typed does a new search begin

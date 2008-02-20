@@ -27,7 +27,7 @@ import java.util.StringTokenizer;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
-@SuppressWarnings({"unchecked","serial"})
+
 //Syntax removesong#songname
 public class RemoveSongCommand implements Command {
     

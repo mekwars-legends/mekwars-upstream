@@ -25,7 +25,7 @@ import java.util.StringTokenizer;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
-@SuppressWarnings({"unchecked","serial"})
+
 //Syntax retrievealloperations#optype
 public class RetrieveAllOperationsCommand implements Command {
     

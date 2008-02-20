@@ -39,8 +39,8 @@ import server.campaign.CampaignMain;
  * Included in the utilities package because this is really just a glorified
  * vector bag which can to/from string itself. Not worthy of server.campaign.* =)
  */
-@SuppressWarnings({"unchecked","serial"})
-public class ExclusionList {
+
+public class ExclusionList{
 	
 	//final vars
 	public static final int NO_EXCLUSION = 0;
@@ -142,9 +142,9 @@ public class ExclusionList {
 	private void validateExcludes() {
 		
 		//first, look for missing players on the admin list.
-		Iterator e = adminExcludes.iterator();
+		Iterator<String> e = adminExcludes.iterator();
 		while (e.hasNext()) {
-			String currName = (String)e.next();
+			String currName = e.next();
 			boolean playerExists = new File("./campaign/players/" + currName + ".dat").exists();
 			if (!playerExists) {
 				e.remove();

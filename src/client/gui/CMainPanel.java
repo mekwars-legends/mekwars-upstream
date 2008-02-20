@@ -42,7 +42,7 @@ import client.gui.CCommPanel;
 /**
  * Main panel
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class CMainPanel extends JPanel implements ChangeListener, ComponentListener {
 	JSplitPane MainSPane;
 	JSplitPane TabSPane;

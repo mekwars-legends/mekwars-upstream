@@ -40,7 +40,7 @@ import common.util.BinWriter;
  * 
  * @author Imi (immanuel.scholz@gmx.de)
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class Influences implements MutableSerializable {
 
     /**

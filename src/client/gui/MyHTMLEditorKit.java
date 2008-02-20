@@ -23,7 +23,7 @@ import javax.swing.text.ViewFactory;
 import javax.swing.text.View;
 import javax.swing.text.Element;
 import javax.swing.text.StyleConstants;
-@SuppressWarnings({"unchecked","serial"})
+
 public class MyHTMLEditorKit extends HTMLEditorKit {
 
   @Override

@@ -54,7 +54,7 @@ import megamek.common.WeaponType;
 import client.MWClient;
 import client.campaign.CUnit;
 
-@SuppressWarnings({"unchecked","serial"})
+
     public class BulkRepairDialog extends JFrame implements ActionListener, KeyListener, ChangeListener{
 	
 	//store the client backlink for other things to use

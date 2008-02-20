@@ -72,7 +72,7 @@ import common.util.UnitUtils;
 import client.gui.TableSorter;
 import client.util.CUnitComparator;
 
-@SuppressWarnings({"unchecked","serial"})
+
 public class TableViewerDialog extends JFrame implements ItemListener {
 	
 	//ivars

@@ -23,7 +23,7 @@ package server;
 import java.net.InetAddress;
 import java.io.Serializable;
 
-@SuppressWarnings({"unchecked","serial"})
+
 
 /*
  * TODO: As of 7.9.06, this class is referenced only by the server. Can

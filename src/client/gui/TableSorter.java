@@ -32,7 +32,7 @@ import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 
 import client.MWClient;
-@SuppressWarnings({"unchecked","serial"})
+
 public class TableSorter extends TableMap {
 	
 	//VARIABLES

@@ -43,7 +43,7 @@ import common.Influences;
 import common.PlanetEnvironments;
 import common.UnitFactory;
 
-@SuppressWarnings( { "unchecked", "serial" })
+
 public class XMLPlanetDataParser implements XMLResponder {
     String lastElement = "";
     String lastInfFaction = "";

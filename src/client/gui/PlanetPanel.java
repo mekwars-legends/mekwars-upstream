@@ -33,7 +33,7 @@ import common.Planet;
  * Draws statistic for a specific CPlanet in the stellar map
  * @author Imi
  */
-@SuppressWarnings({"unchecked","serial"})
+
 class PlanetPanel extends JPanel {
 
     private CMapPanel map;

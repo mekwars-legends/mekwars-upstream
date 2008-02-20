@@ -77,7 +77,7 @@ public class planetHandler {
 	  
   }
 
-  @SuppressWarnings("unchecked")
+  
 public void loadPlanets(CampaignData data) {
 	
 	  try {
@@ -146,7 +146,7 @@ public void loadPlanets(CampaignData data) {
 		}
   }
   
-  @SuppressWarnings("unchecked")
+  
 public void loadInfluences(SPlanet p, CampaignData data) {
 	  try {
 		  ResultSet rs1 = null;

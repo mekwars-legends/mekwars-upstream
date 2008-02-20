@@ -59,7 +59,7 @@ import common.Planet;
  * 
  * @urgru 5.2.05
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class PlanetSearchDialog extends JDialog implements ActionListener {
 
 	//variables

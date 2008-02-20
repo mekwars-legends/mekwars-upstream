@@ -25,10 +25,14 @@ import client.MWClient;
 /**
  * Ping command
  */
-@SuppressWarnings({"unchecked","serial"})
 public class PingGCmd extends CGUICommand
 {
-	public PingGCmd(MWClient mwclient)
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -1052902282489028283L;
+
+    public PingGCmd(MWClient mwclient)
 	{
 		super(mwclient);
 		name = "ping";

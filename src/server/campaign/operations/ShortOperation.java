@@ -64,7 +64,7 @@ import common.util.StringUtils;
 import common.util.UnitUtils;
 
 // IMPORTS
-@SuppressWarnings( { "unchecked", "serial" })
+
 public class ShortOperation implements Comparable {
 
     // IVARS

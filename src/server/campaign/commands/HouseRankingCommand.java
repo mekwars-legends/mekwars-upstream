@@ -20,7 +20,7 @@ import java.util.StringTokenizer;
 import server.campaign.CampaignMain;
 import server.campaign.util.Statistics;
 
-@SuppressWarnings({"unchecked","serial"})
+
 public class HouseRankingCommand implements Command{
 	
 	int accessLevel = 0;

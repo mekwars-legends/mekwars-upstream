@@ -48,7 +48,7 @@ import client.MWClient;
 import client.campaign.CUnit;
 import common.util.SpringLayoutHelper;
 
-@SuppressWarnings({"unchecked","serial"})
+
 public final class RewardPointsDialog implements ActionListener, KeyListener{
 	
 	//store the client backlink for other things to use

@@ -34,7 +34,7 @@ import common.campaign.pilot.skills.PilotSkills;
  * @author Helge Richter
  *
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class Pilot {
 
 	private int gunnery = 4;

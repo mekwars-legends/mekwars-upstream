@@ -43,7 +43,7 @@ import server.campaign.pilot.SPilot;
 import server.campaign.SUnit;
 import server.util.TokenReader;
 
-@SuppressWarnings( { "unchecked", "serial" })
+
 public class SUnitFactory extends UnitFactory implements Serializable {
 
     // VARIABLES

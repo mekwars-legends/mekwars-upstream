@@ -37,7 +37,7 @@ public class AdminSaveCommandLevelsCommand implements Command {
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}
 	
-	@SuppressWarnings("unchecked")
+	
     public void process(StringTokenizer command,String Username) {
 		
 		//access level check

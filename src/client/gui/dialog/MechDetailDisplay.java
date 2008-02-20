@@ -62,7 +62,7 @@ import client.gui.MechInfo;
  * Displays the info for a mech.  This is also a sort
  * of interface for special movement and firing actions.
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class MechDetailDisplay extends JTabbedPane {
 
 	public GeneralPanel mPan;
@@ -104,7 +104,7 @@ public class MechDetailDisplay extends JTabbedPane {
  * and gizmos relating to general things and moving around on the
  * battlefield.
  */
-@SuppressWarnings({"unchecked","serial"})
+
 class GeneralPanel extends JPanel{
     
     public JPanel statusP, terrainP, moveP;
@@ -262,7 +262,7 @@ class GeneralPanel extends JPanel{
 /**
  * This panel contains the armor readout display.
  */
-@SuppressWarnings({"unchecked","serial"})
+
 class ArmorPanel extends JPanel {
 	public JLabel armorTotal, internalTotal;
     public JLabel locHL, internalHL, armorHL;
@@ -357,7 +357,7 @@ class ArmorPanel extends JPanel {
  * This class contains the all the gizmos for firing the
  * mech's weapons.
  */
-@SuppressWarnings({"unchecked","serial"})
+
 class WeaponPanel extends JPanel implements ListSelectionListener {
     public JList weaponList;
     public JComboBox ammoList;
@@ -642,7 +642,7 @@ class WeaponPanel extends JPanel implements ListSelectionListener {
 /**
  * This class shows the critical hits and systems for a mech
  */
-@SuppressWarnings({"unchecked","serial"})
+
 class SystemPanel extends JPanel implements ListSelectionListener {
     private static Object SYSTEM = new Object();
 

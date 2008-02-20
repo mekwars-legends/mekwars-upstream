@@ -36,7 +36,7 @@ import client.MWClient;
  * Calls to the data retrieving server and gets data for planets and factions
  * @author Imi (immanuel.scholz@gmx.de)
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class DataFetchClient {
 	
 	private String hostAddr;

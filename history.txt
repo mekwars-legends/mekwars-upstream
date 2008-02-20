@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
++ Moved SPlayer#playerLevelDescription to MWCyclopsPlayer
++ removed all @supress comments
 + Moved Leader commands to new leader sub folder
 + Bug: Pilot Skill being loaded/saved incorrectly in DB
 + Updated DB to v26

@@ -79,7 +79,7 @@ import common.util.Position;
  * 
  * @author Imi
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class InnerStellarMap extends JComponent implements  MouseListener,
 MouseMotionListener, MouseWheelListener, ActionListener {
 	

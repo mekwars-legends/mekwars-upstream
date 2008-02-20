@@ -24,7 +24,7 @@ import java.util.zip.ZipInputStream;
 import common.Unit;
 import server.MWServ;
 
-@SuppressWarnings("unchecked")
+
 public class UnitCosts {
 	
 	Vector<Vector> minCostUnitList = new Vector<Vector>(4,1);

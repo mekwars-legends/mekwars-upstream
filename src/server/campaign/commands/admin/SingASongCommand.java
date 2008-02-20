@@ -28,7 +28,7 @@ import server.campaign.SPlayer;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
-@SuppressWarnings({"unchecked","serial"})
+
 public class SingASongCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;

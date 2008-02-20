@@ -31,7 +31,7 @@ import server.campaign.CampaignMain;
 import server.campaign.SmallPlayer;
 import server.campaign.SHouse;
 
-@SuppressWarnings({"unchecked","serial"})
+
 public class Statistics {
 
 	public static String doGetMechStats(int size) {

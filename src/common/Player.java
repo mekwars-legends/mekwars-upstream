@@ -21,7 +21,7 @@
 
 package common;
 
-@SuppressWarnings({"unchecked","serial"})
+
 public class Player {
 	
 	private int technicians = 0;//@urgru 7/17/04

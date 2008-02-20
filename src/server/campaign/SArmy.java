@@ -41,8 +41,8 @@ import server.util.TokenReader;
  * @author Helge Richter
  * 
  */
-@SuppressWarnings( { "unchecked", "serial" })
-public class SArmy extends Army {
+
+public class SArmy extends Army{
 
     // VARIABLES
     private float rawForceSize = 0;
@@ -127,7 +127,7 @@ public class SArmy extends Army {
     }
 
     public int getUnitPosition(int id) {
-        Vector v = getUnits();
+        Vector<Unit> v = getUnits();
         for (int i = 0; i < v.size(); i++) {
             SUnit unit = (SUnit) v.elementAt(i);
             if (unit.getId() == id)
@@ -737,7 +737,7 @@ public class SArmy extends Army {
     public boolean isUnitInArmy(SUnit unit) {
         if (unit == null)
             return false;
-        Vector v = getUnits();
+        Vector<Unit> v = getUnits();
         for (int i = 0; i < v.size(); i++) {
             SUnit newUnit = (SUnit) v.elementAt(i);
             if (newUnit.equals(unit)) {

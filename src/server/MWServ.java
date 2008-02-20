@@ -50,7 +50,7 @@ import server.MWClientInfo;
 import common.MMGame;
 import common.comm.Command;
 import common.comm.ServerCommand;
-@SuppressWarnings({"unchecked","serial"})
+
 public class MWServ {
 	
 	//Static logging engine, and static version info.

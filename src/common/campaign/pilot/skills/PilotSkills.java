@@ -24,7 +24,7 @@ import java.util.LinkedList;
  * Encapsulates a set of piloting skills.
  * @author Immanuel Scholz (immanuel.scholz@gmx.de)
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class PilotSkills {
     /**
      * The data storage for the skills.
@@ -41,7 +41,7 @@ public class PilotSkills {
     }
     
     public boolean has(int id) {
-    	Iterator it = getSkillIterator();
+    	Iterator<PilotSkill> it = getSkillIterator();
     	while (it.hasNext()) {
     		if (((PilotSkill) it.next()).getId() == id)
 				return true;
@@ -80,7 +80,7 @@ public class PilotSkills {
      * @author Helge Richter
      *
      */
-    public Iterator getSkillIterator() {
+    public Iterator<PilotSkill> getSkillIterator() {
     	return skills.iterator();
     }
     
@@ -91,7 +91,7 @@ public class PilotSkills {
     public PilotSkill getPilotSkill(int skillid){
         
     	PilotSkill pSkill;
-        Iterator skills = this.getSkillIterator();
+        Iterator<PilotSkill> skills = this.getSkillIterator();
         
         while (skills.hasNext()){
             pSkill = (PilotSkill)skills.next();
@@ -106,7 +106,7 @@ public class PilotSkills {
      *
      */
     public String getDescription() {
-    	Iterator i = getSkillIterator();
+    	Iterator<PilotSkill> i = getSkillIterator();
     	String result = "";
     	if (i.hasNext()) {
     		result = " Skills: ";

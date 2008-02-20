@@ -34,7 +34,7 @@ import client.MWClient;
  *
  * @author Steve Hawkins
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public abstract class Command extends Thread implements ClientCommand, ServerCommand {
 	
 	public static final String DELIM = "|";

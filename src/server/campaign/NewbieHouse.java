@@ -21,7 +21,7 @@ import java.util.Vector;
 
 import common.Unit;
 
-@SuppressWarnings({"unchecked","serial"})
+
 public class NewbieHouse extends NonConqHouse {
 	
 	//VARIABLES

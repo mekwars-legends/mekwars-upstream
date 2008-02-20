@@ -43,7 +43,7 @@ import common.Unit;
 import megamek.common.BattleArmor;
 import megamek.common.Protomech;
 
-@SuppressWarnings({"unchecked","serial"})
+
 public class ShortValidator {
 	
 	//IVARS

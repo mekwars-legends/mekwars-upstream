@@ -33,7 +33,7 @@ import common.util.BinWriter;
  * @author Helge Richter
  *
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class UnitFactory implements Serializable {
 	
 	private String name;

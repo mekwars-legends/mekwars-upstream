@@ -44,7 +44,7 @@ import common.util.SpringLayoutHelper;
 
 import client.MWClient;
 
-@SuppressWarnings({"unchecked","serial"})
+
 public final class ConfigurationDialog implements ActionListener {
 
     //store the client backlink for other things to use

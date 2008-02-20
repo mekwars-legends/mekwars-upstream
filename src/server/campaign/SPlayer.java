@@ -20,9 +20,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,7 +29,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.EventListener;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,9 +36,6 @@ import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import megamek.common.AmmoType;
-import megamek.common.Entity;
-import megamek.common.Mounted;
 import megamek.common.Protomech;
 
 import server.MWServ;
@@ -68,15 +62,14 @@ import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
 import common.util.UnitComponents;
 import common.util.UnitUtils;
-import dedicatedhost.MWDedHost;
 
 /**
  * A class representing a Player DOCU is not finished
  * 
  * @author Helge Richter (McWizard)
  */
-@SuppressWarnings( { "unchecked", "serial", "unused" })
-public final class SPlayer extends Player implements Serializable, Comparable, IBuyer, ISeller {
+
+public final class SPlayer extends Player implements  Comparable<Object>, IBuyer, ISeller {
 
     // STATIC VARIABLES
     // STATUS_DISCONNECTED, which is used by the client, is 0
@@ -173,25 +166,6 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
     public void setSave() {
         if (!this.isLoading)
             CampaignMain.cm.savePlayerFile(this);
-    }
-
-    /**
-     * Return a desctiptive string. TODO: Factor this out? Is only used by
-     * cyclops writer.
-     */
-    public static String playerLevelDescription(int level) {
-
-        if (level >= 200)
-            return "Admin";
-
-        if (level >= 100)
-            return "Moderator";
-
-        if (level >= 30)
-            return "Enhanced Player";
-
-        return "Player";
-
     }
 
     // PUBLIC METHODS
@@ -602,7 +576,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
      */
     public int doFireUnpaidTechnicians(float amountOfShortFall) {
 
-        String toReturn = "";
+        //String toReturn = "";
 
         // layoffs all around! well, at least some. so reset the
         // currentTechPayment
@@ -1239,7 +1213,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
                     orderedArmies.add(currentArmy);
 
                 else {// size > 0
-                    Enumeration f = orderedArmies.elements();
+                    Enumeration<SArmy> f = orderedArmies.elements();
                     int forceNumber = 0;// number of current army
                     boolean forceSorted = false;
                     while (f.hasMoreElements() && !forceSorted) {
@@ -1270,8 +1244,8 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 
             if (weightedArmyNumber > 0) {
 
-                Enumeration e = orderedArmies.elements();
-                SArmy currentArmy = (SArmy) e.nextElement();// get first army
+                Enumeration<SArmy> e = orderedArmies.elements();
+                SArmy currentArmy = e.nextElement();// get first army
                 int currentBV = currentArmy.getOperationsBV(null);
 
                 // holder for whichever is greater - flat diff or percent
@@ -2100,7 +2074,7 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 
     public int getAmountOfTimesUnitExistsInArmies(int unitID) {
         int result = 0;
-        Vector v = getArmies();
+        Vector<SArmy> v = getArmies();
         for (int i = 0; i < v.size(); i++) {
             SArmy a = (SArmy) v.elementAt(i);
             if (a.getUnit(unitID) != null)
@@ -2476,9 +2450,9 @@ public final class SPlayer extends Player implements Serializable, Comparable, I
 
             // player no-play
             s.append("<b>No-Play List:</b> ");
-            Enumeration en = exclusionList.getPlayerExcludes().elements();
+            Enumeration<String> en = exclusionList.getPlayerExcludes().elements();
             if (en.hasMoreElements())
-                s.append((String) en.nextElement());
+                s.append( en.nextElement());
             else
                 s.append("empty");
 

@@ -66,7 +66,7 @@ import common.util.UnitUtils;
 /**
  * SHouse Status Panel
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class CHSPanel extends JPanel {
 	
 	MWClient mwclient;

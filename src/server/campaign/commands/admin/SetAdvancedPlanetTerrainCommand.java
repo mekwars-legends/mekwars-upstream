@@ -26,7 +26,7 @@ import server.campaign.SPlanet;
 import server.MWChatServer.auth.IAuthenticator;
 
 
-@SuppressWarnings({"unchecked","serial"})
+
 public class SetAdvancedPlanetTerrainCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;

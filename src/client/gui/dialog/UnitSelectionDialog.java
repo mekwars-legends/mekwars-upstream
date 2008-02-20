@@ -51,7 +51,7 @@ import common.util.SpringLayoutHelper;
  * 
  * @urgru 6.17.05
  */
-@SuppressWarnings({"unchecked","serial"})
+
 public class UnitSelectionDialog extends JDialog implements ActionListener {
 	
 	//variables

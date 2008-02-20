@@ -47,7 +47,7 @@ import server.MWServ;
  * 
  * @originalauthor Helge Richter
  */
-@SuppressWarnings("unused") 
+ 
 public class BuildTable {
 
 	//VARIABLES
