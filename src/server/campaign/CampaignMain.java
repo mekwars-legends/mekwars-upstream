@@ -52,6 +52,7 @@ import megamek.common.WeaponType;
 import server.MWServ;
 import server.campaign.commands.*;
 import server.campaign.commands.admin.*;
+import server.campaign.commands.leader.*;
 import server.campaign.commands.mod.*;
 import server.campaign.commands.helpers.*;
 import server.campaign.market2.Market2;

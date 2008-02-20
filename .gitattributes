@@ -1447,7 +1447,6 @@ src/server/campaign/commands/DeactivateCommand.java -text
 src/server/campaign/commands/DeclineAttackFromReserveCommand.java -text
 src/server/campaign/commands/DefectCommand.java -text
 src/server/campaign/commands/DefendCommand.java -text
-src/server/campaign/commands/DemotePlayerCommand.java -text
 src/server/campaign/commands/DirectSellUnitCommand.java -text
 src/server/campaign/commands/DisplayPlayerPersonalPilotQueueCommand.java -text
 src/server/campaign/commands/DisplayUnitRepairJobsCommand.java -text
@@ -1457,8 +1456,6 @@ src/server/campaign/commands/EmployeeHouseMailCommand.java -text
 src/server/campaign/commands/EnrollCommand.java -text
 src/server/campaign/commands/ExchangePilotInUnitCommand.java -text
 src/server/campaign/commands/ExchangeUnitCommand.java -text
-src/server/campaign/commands/FactionLeaderFluffCommand.java -text
-src/server/campaign/commands/FactionLeaderMuteCommand.java -text
 src/server/campaign/commands/FireTechsCommand.java -text
 src/server/campaign/commands/GamesCommand.java -text
 src/server/campaign/commands/GetFactionConfigsCommand.java -text
@@ -1495,7 +1492,6 @@ src/server/campaign/commands/PlanetCommand.java -text
 src/server/campaign/commands/PlayerLockArmyCommand.java -text
 src/server/campaign/commands/PlayerUnlockArmyCommand.java -text
 src/server/campaign/commands/PlayersCommand.java -text
-src/server/campaign/commands/PromotePlayerCommand.java -text
 src/server/campaign/commands/RangeCommand.java -text
 src/server/campaign/commands/RecallBidCommand.java -text
 src/server/campaign/commands/RecallCommand.java -text
@@ -1677,6 +1673,10 @@ src/server/campaign/commands/helpers/HireAndMaintainHelper.java -text
 src/server/campaign/commands/helpers/HireAndRequestNewHelper.java -text
 src/server/campaign/commands/helpers/HireAndRequestUsedHelper.java -text
 src/server/campaign/commands/helpers/RemoveAndAddNoPlayHelper.java -text
+src/server/campaign/commands/leader/DemotePlayerCommand.java -text
+src/server/campaign/commands/leader/FactionLeaderFluffCommand.java -text
+src/server/campaign/commands/leader/FactionLeaderMuteCommand.java -text
+src/server/campaign/commands/leader/PromotePlayerCommand.java -text
 src/server/campaign/commands/mod/AddLeaderCommand.java -text
 src/server/campaign/commands/mod/AddPartsCommand.java -text
 src/server/campaign/commands/mod/BanCommand.java -text

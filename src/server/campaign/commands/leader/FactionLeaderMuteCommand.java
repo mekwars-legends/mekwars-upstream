@@ -14,7 +14,7 @@
  * for more details.
  */
 
-package server.campaign.commands;
+package server.campaign.commands.leader;
 
 import java.util.StringTokenizer;
 import java.util.Vector;

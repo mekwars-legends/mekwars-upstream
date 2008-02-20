@@ -13,7 +13,7 @@
  * details.
  */
 
-package server.campaign.commands;
+package server.campaign.commands.leader;
 
 import java.util.StringTokenizer;
 
@@ -22,6 +22,7 @@ import common.SubFaction;
 import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.SPlayer;
 import server.campaign.CampaignMain;
+import server.campaign.commands.Command;
 
 public class DemotePlayerCommand implements Command {
 
