@@ -36,10 +36,19 @@ import common.Planet;
 
 class PlanetPanel extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2092699724451823560L;
     private CMapPanel map;
     private MWClient mwclient;
     
     private static class WhiteLabel extends JLabel {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -8911863558331233209L;
+
         WhiteLabel(String name) {
             super(name);
             setOpaque(false);

@@ -89,9 +89,20 @@ public class Influences implements MutableSerializable {
         try {
             TreeSet<House> sset = new TreeSet<House>(new Comparator<Object>() {
                 public int compare(Object o1, Object o2) {
-                    int i1 = ((House) o1).getId();
-                    int i2 = ((House) o2).getId();
-                    return (i1 < i2) ? -1 : (i1 == i2 ? 0 : 1);
+                    try {
+                        int i1 = -1;
+                        int i2 = -1;
+                        
+                        if ( o1 != null )
+                            i1 = ((House) o1).getId();
+                        
+                        if ( o2 != null )
+                            i2 = ((House) o2).getId();
+                        
+                        return (i1 < i2) ? -1 : (i1 == i2 ? 0 : 1);
+                    } catch (Exception ex) {
+                        return 0;
+                    }
                 }
             });
             sset.addAll(this.getHouses());
@@ -102,8 +113,17 @@ public class Influences implements MutableSerializable {
                 factions[i++] = it.next();
             Arrays.sort(factions, new Comparator<Object>() {
                 public int compare(Object o1, Object o2) {
-                    int i1 = getInfluence((((House) o1).getId()));
-                    int i2 = getInfluence((((House) o2).getId()));
+                    int h1Id = -1;
+                    int h2Id = -2;
+                    
+                    if ( o1 != null )
+                        h1Id = ((House) o1).getId();
+                    
+                    if ( o2 != null )
+                        h2Id = ((House) o2).getId();
+                    
+                    int i1 = getInfluence(h1Id);
+                    int i2 = getInfluence(h2Id);
                     return (i1 > i2) ? -1 : (i1 == i2 ? 0 : 1);
                 }
             });
@@ -174,7 +194,7 @@ public class Influences implements MutableSerializable {
     public int houseCount() {
         return influences.size();
     }
-    
+
     /**
      * Move influence from one faction to a new faction. Note, that this make
      * sure, that nobody can have more influence than 100% and nobody may drop
@@ -186,7 +206,7 @@ public class Influences implements MutableSerializable {
 
         int winnerId = winner.getId();
         int loserId = -1;
-        
+
         int oldwinnerinfluence = 0;
         int oldloserinfluence = 0;
 
@@ -195,14 +215,14 @@ public class Influences implements MutableSerializable {
 
         if (oldwinnerinfluence + amount >= maxInfluence)
             amount = maxInfluence - oldwinnerinfluence;
-        
-        if ( amount > oldloserinfluence ) {
-            influences.put(loserId,0);
-            amount -= oldloserinfluence;
+
+        if (amount > oldloserinfluence) {
+            influences.put(loserId, 0);
             loserId = loser.getId();
+            influences.put(loserId, getInfluence(loserId)+oldloserinfluence);
             oldloserinfluence = getInfluence(loserId);
         }
-        
+
         if (oldloserinfluence < amount)
             amount = oldloserinfluence;
 

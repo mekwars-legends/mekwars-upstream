@@ -1111,7 +1111,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 	
 	private void addAllItems(JComboBox combo, TreeSet<String> list){
 
-	    combo.addItem("None");
+	    //combo.addItem("None");
 		for ( String name : list )
 			combo.addItem(name);
 	}

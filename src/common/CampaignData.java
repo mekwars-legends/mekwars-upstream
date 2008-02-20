@@ -237,10 +237,10 @@ public class CampaignData implements TerrainProvider {
      * @TODO You should use XStream to initialize CampaignData
      */
     public void addHouse(House faction) {
-    	if (faction.getId() == -1)
+    	if (faction.getId() == -1 && !faction.getName().equalsIgnoreCase("None"))
     		faction.setId(getUnusedHouseID());
-    	factions.put(new Integer(faction.getId()), faction);
-    	factionid.put(faction.getName().toLowerCase(),new Integer(faction.getId()));
+    	factions.put(faction.getId(), faction);
+    	factionid.put(faction.getName().toLowerCase(),faction.getId());
     }
 
     /**

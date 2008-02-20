@@ -1670,6 +1670,9 @@ public final class CampaignMain implements Serializable {
             // Add the Newbie-SHouse
             SHouse solaris = new NewbieHouse(data.getUnusedHouseID(), CampaignMain.cm.getConfig("NewbieHouseName"), "#33CCCC", 4, 5, "SOL");
             addHouse(solaris);
+            SHouse none = new SHouse();
+            none.createNoneHouse();
+            addHouse(none);
         }
 
         // No Planets Data yet? Parse XML and create world.
@@ -3758,6 +3761,12 @@ public final class CampaignMain implements Serializable {
             }
         }
 
+        if ( data.getHouse(-1) == null ){
+            SHouse none = new SHouse();
+            none.createNoneHouse();
+            addHouse(none);
+        }
+        
         // load the various construction modifiers for the houses added above
         factionFile = new File("./campaign/costmodifiers");
         if (!factionFile.exists())

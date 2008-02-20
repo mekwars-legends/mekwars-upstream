@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
++ New MegaMek.jar 0.33.19-MW022008-5498
++ RFE 1815469: Uncontrolled Planets
 + Added exception logging to all SQLExceptions
 + Added SMWLogger#dbLog(Exception e)
 + Started work on RFE 1815469 

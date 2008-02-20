@@ -982,6 +982,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         setHouseColor(HouseColor);
         setName(name);
 
+        
         MWServ.mwlog.createFactionLogger(this.getName());
         // Vehicles = new Vector();
 
@@ -2898,4 +2899,56 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         forumID = fID;
     }
 
+    public void createNoneHouse(){
+        this.setName("None");
+        this.setId(-1);
+        this.setConquerable(false);
+        this.setHouseDefectionTo(false);
+        this.setHouseDefectionFrom(false);
+        this.setAbbreviation("None");
+        this.setHouseColor(CampaignMain.cm.getConfig("DisputedPlanetColor"));
+        MWServ.mwlog.createFactionLogger(this.getName());
+        // Vehicles = new Vector();
+
+        for (int j = 0; j < 5; j++) // Type
+        {
+            Vector<Integer> v = new Vector<Integer>();
+            for (int i = 0; i < 4; i++) // Weight
+            {
+                v.add(0);
+            }
+            v.trimToSize();
+            getComponents().put(j, v);
+        }
+        // currentPP = new Vector();
+        setMoney(0);
+        getHangar().put(Unit.MEK, new Vector<Vector<SUnit>>(1, 1));
+        getHangar().put(Unit.VEHICLE, new Vector<Vector<SUnit>>(1, 1));
+        getHangar().put(Unit.INFANTRY, new Vector<Vector<SUnit>>(1, 1));
+        getHangar().put(Unit.PROTOMEK, new Vector<Vector<SUnit>>(1, 1));
+        getHangar().put(Unit.BATTLEARMOR, new Vector<Vector<SUnit>>(1, 1));
+        for (int i = 0; i < 4; i++) {
+            getHangar(Unit.MEK).add(new Vector<SUnit>(1, 1));
+            getHangar(Unit.VEHICLE).add(new Vector<SUnit>(1, 1));
+            getHangar(Unit.INFANTRY).add(new Vector<SUnit>(1, 1));
+            getHangar(Unit.PROTOMEK).add(new Vector<SUnit>(1, 1));
+            getHangar(Unit.BATTLEARMOR).add(new Vector<SUnit>(1, 1));
+        }
+
+        // init the componet array(vectors)
+        getComponents().put(Unit.MEK, new Vector<Integer>(4, 1));
+        getComponents().put(Unit.VEHICLE, new Vector<Integer>(4, 1));
+        getComponents().put(Unit.INFANTRY, new Vector<Integer>(4, 1));
+        getComponents().put(Unit.BATTLEARMOR, new Vector<Integer>(4, 1));
+        getComponents().put(Unit.PROTOMEK, new Vector<Integer>(4, 1));
+
+        for (int i = 0; i < 4; i++) {
+            getComponents().get(Unit.MEK).add(0);
+            getComponents().get(Unit.VEHICLE).add(0);
+            getComponents().get(Unit.INFANTRY).add(0);
+            getComponents().get(Unit.BATTLEARMOR).add(0);
+            getComponents().get(Unit.PROTOMEK).add(0);
+        }
+        this.updated();
+    }
 }// end SHouse.java
