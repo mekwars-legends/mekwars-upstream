@@ -315,7 +315,7 @@ public class OperationManager {
 	 * after validateShortAttack was called ...
 	 */
 	public String validateShortAttack(SPlayer ap, SArmy aa, Operation o, SPlanet target, int longID, boolean joiningAttack) {
-		ArrayList failures = this.shortValidator.validateShortAttacker(ap, aa, o, target, longID, joiningAttack);
+		ArrayList<Integer> failures = this.shortValidator.validateShortAttacker(ap, aa, o, target, longID, joiningAttack);
 		if (failures.size() > 0)
 			return this.shortValidator.failuresToString(failures);
 
@@ -331,7 +331,7 @@ public class OperationManager {
 	 * this works.
 	 */
 	public String validateShortDefense(SPlayer dp, SArmy da, Operation o,SPlanet target) {
-		ArrayList failures = this.shortValidator.validateShortDefender(dp, da, o,target);
+		ArrayList<Integer> failures = this.shortValidator.validateShortDefender(dp, da, o,target);
 		if (failures.size() > 0)
 			return this.shortValidator.failuresToString(failures);
 		return null;
@@ -648,9 +648,9 @@ public class OperationManager {
 	 */
 	public int getLongID(SHouse h, SPlanet p) {
 	
-		Iterator i = activeLongOps.values().iterator();
+		Iterator<LongOperation> i = activeLongOps.values().iterator();
 		while (i.hasNext()) {
-			LongOperation currL = (LongOperation)i.next();
+			LongOperation currL = i.next();
 			SHouse attacker = currL.getAttackingHouse();
 			SPlanet planet = currL.getTargetWorld();
 			if (attacker.equals(h) && planet.equals(p))
@@ -664,9 +664,9 @@ public class OperationManager {
 	 * operation, from any faction, running on a planet.
 	 */
 	public boolean isLongOnPlanet(SPlanet p) {
-		Iterator i = activeLongOps.values().iterator();
+		Iterator<LongOperation> i = activeLongOps.values().iterator();
 		while (i.hasNext()) {
-			LongOperation currL = (LongOperation)i.next();
+			LongOperation currL = i.next();
 			SPlanet planet = currL.getTargetWorld();
 			if (planet.equals(p))
 				return true;
@@ -680,9 +680,9 @@ public class OperationManager {
 	 */
 	public boolean hasLongOnPlanet(SHouse h, SPlanet p) {
 			
-		Iterator i = activeLongOps.values().iterator();
+		Iterator<LongOperation> i = activeLongOps.values().iterator();
 		while (i.hasNext()) {
-			LongOperation currL = (LongOperation)i.next();
+			LongOperation currL = i.next();
 			SHouse attacker = currL.getAttackingHouse();
 			SPlanet planet = currL.getTargetWorld();
 			if (attacker.equals(h) && planet.equals(p))
@@ -699,9 +699,9 @@ public class OperationManager {
 	 */
 	public boolean hasSpecificLongOnPlanet(SHouse h, SPlanet p, Operation o) {
 		
-		Iterator i = activeLongOps.values().iterator();
+		Iterator<LongOperation> i = activeLongOps.values().iterator();
 		while (i.hasNext()) {
-			LongOperation currL = (LongOperation)i.next();
+			LongOperation currL = i.next();
 			SHouse attacker = currL.getAttackingHouse();
 			SPlanet planet = currL.getTargetWorld();
 			//String opName = currL.getName();
@@ -717,9 +717,9 @@ public class OperationManager {
 	 */
 	public boolean hasShortOnPlanet(SHouse h, SPlanet p) {
 			
-		Iterator i = runningOperations.values().iterator();
+		Iterator<ShortOperation> i = runningOperations.values().iterator();
 		while (i.hasNext()) {
-			ShortOperation currS = (ShortOperation)i.next();
+			ShortOperation currS = i.next();
 			SPlayer anAttacker = CampaignMain.cm.getPlayer(currS.getAttackers().firstKey());
 			SHouse attacker = anAttacker.getHouseFightingFor();
 			SPlanet planet = currS.getTargetWorld();

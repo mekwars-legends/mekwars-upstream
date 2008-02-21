@@ -53,7 +53,11 @@ import common.util.SpringLayoutHelper;
 
 public class SellUnitDialog extends JDialog implements ActionListener { 
 	
-	//IVARS
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 7292249744702852873L;
+    //IVARS
 	private MWClient mwclient;
 	private final JButton okayButton = new JButton("OK");
 	private final JButton cancelButton = new JButton("Cancel");	
@@ -67,7 +71,7 @@ public class SellUnitDialog extends JDialog implements ActionListener {
 	private JComboBox possibleSaleUnits = new JComboBox();
 	
 	//CONSTRUCTOR
-	public SellUnitDialog(JFrame parent, MWClient mwclient, Vector toSell) {
+	public SellUnitDialog(JFrame parent, MWClient mwclient, Vector<CUnit> toSell) {
 		
 		//init superclass
 		super(parent, "Sell Unit", true);
@@ -88,7 +92,7 @@ public class SellUnitDialog extends JDialog implements ActionListener {
 		//load all legal units, if no set is given
 		if (toSell == null || toSell.size() == 0) {
 			
-			toSell = new Vector(1,1);
+			toSell = new Vector<CUnit>(1,1);
 			for(CUnit currU : mwclient.getPlayer().getHangar()) {
 				
 				if(currU.getType() == Unit.MEK && !Boolean.parseBoolean(mwclient.getserverConfigs("MeksMayBeSoldOnBM")))
@@ -119,7 +123,12 @@ public class SellUnitDialog extends JDialog implements ActionListener {
 		
 		//populate the combo box
 		possibleSaleUnits.setModel(new DefaultComboBoxModel(toSell) {
-			@Override
+			/**
+             * 
+             */
+            private static final long serialVersionUID = 2012355422040841647L;
+
+            @Override
 			public Object getElementAt(int index) {
 				CUnit mm = (CUnit)super.getElementAt(index);
 				if ( mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE )

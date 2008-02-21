@@ -31,6 +31,10 @@ import java.text.ParseException;
 import java.util.Locale;
 
 public class WholeNumberField extends JTextField {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3640879107242018821L;
     private Toolkit toolkit;
     private NumberFormat integerFormatter;
 
@@ -64,6 +68,11 @@ public class WholeNumberField extends JTextField {
     }
 
     protected class WholeNumberDocument extends PlainDocument {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -6680227995973307297L;
+
         @Override
 		public void insertString(int offs, 
                                  String str,
