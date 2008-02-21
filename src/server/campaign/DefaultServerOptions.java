@@ -1060,6 +1060,31 @@ public class DefaultServerOptions {
         defaults.setProperty("ResearchFluModifierAssault", "1.0");
         defaults.setProperty("ResearchTechLevelCostModifer", "1.0");
         defaults.setProperty("ResearchTechLevelFluModifer", "1.0");
+        defaults.setProperty("MaxFactionName", "20");
+        defaults.setProperty("MaxFactionShortName", "5");
+        defaults.setProperty("StartingLightMekFactory", "1");
+        defaults.setProperty("StartingMediumMekFactory", "1");
+        defaults.setProperty("StartingHeavyMekFactory", "1");
+        defaults.setProperty("StartingAssaultMekFactory", "1");
+        defaults.setProperty("StartingLightInfantryFactory", "1");
+        defaults.setProperty("StartingMediumInfantryFactory", "1");
+        defaults.setProperty("StartingHeavyInfantryFactory", "1");
+        defaults.setProperty("StartingAssaultInfantryFactory", "1");
+        defaults.setProperty("StartingLightVehicleFactory", "1");
+        defaults.setProperty("StartingMediumVehicleFactory", "1");
+        defaults.setProperty("StartingHeavyVehicleFactory", "1");
+        defaults.setProperty("StartingAssaultVehicleFactory", "1");
+        defaults.setProperty("StartingLightBattleArmorFactory", "1");
+        defaults.setProperty("StartingMediumBattleArmorFactory", "1");
+        defaults.setProperty("StartingHeavyBattleArmorFactory", "1");
+        defaults.setProperty("StartingAssaultBattleArmorFactory", "1");
+        defaults.setProperty("StartingLightProtoMekFactory", "1");
+        defaults.setProperty("StartingMediumProtoMekFactory", "1");
+        defaults.setProperty("StartingHeavyProtoMekFactory", "1");
+        defaults.setProperty("StartingAssaultProtoMekFactory", "1");
+        defaults.setProperty("BaseFactoryRefreshRate", "100");
+        defaults.setProperty("BaseCommonBuildTableShares", "100");
+        
     }
 
     /**

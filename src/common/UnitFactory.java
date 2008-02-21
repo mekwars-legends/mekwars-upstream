@@ -36,7 +36,11 @@ import common.util.BinWriter;
 
 public class UnitFactory implements Serializable {
 	
-	private String name;
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -5221016867627976085L;
+    private String name;
 	private String size;
 	private String founder;
 

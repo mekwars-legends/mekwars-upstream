@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -60,8 +61,12 @@ import server.campaign.operations.ShortOperation;
 import server.campaign.pilot.SPilot;
 import server.util.TokenReader;
 
-public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISeller, IBuyer {
+public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISeller, IBuyer, Serializable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -1558672678021355218L;
     // store all online players in *THREE* hashes, one for each primary status
     private ConcurrentHashMap<String, SPlayer> reservePlayers = new ConcurrentHashMap<String, SPlayer>();
     private ConcurrentHashMap<String, SPlayer> activePlayers = new ConcurrentHashMap<String, SPlayer>();

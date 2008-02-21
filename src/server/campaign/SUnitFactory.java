@@ -46,6 +46,10 @@ import server.util.TokenReader;
 
 public class SUnitFactory extends UnitFactory implements Serializable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1735176578439214960L;
     // VARIABLES
     private SPlanet planet;
 

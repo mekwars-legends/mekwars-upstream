@@ -176,7 +176,7 @@ public class XMLFactionDataParser implements XMLResponder {
 	
 	public void recordDocEnd() {
 		MWServ.mwlog.mainLog("");
-		MWServ.mwlog.mainLog("Parsing finished without error");
+		MWServ.mwlog.mainLog("Faction Parsing finished without error");
 	}
 	
 	public void recordElementStart(String name, Hashtable attr) throws ParseException {

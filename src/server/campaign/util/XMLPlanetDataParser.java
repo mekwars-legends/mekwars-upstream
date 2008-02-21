@@ -114,6 +114,7 @@ public class XMLPlanetDataParser implements XMLResponder {
     String OpFlag = "";
     String OpName = "";
     boolean isHomeWorld = false;
+    boolean singlePlayerFactions = CampaignMain.cm.getBooleanConfig("AllowSinglePlayerFactions");
 
     public XMLPlanetDataParser(String filename) {
 
@@ -182,7 +183,7 @@ public class XMLPlanetDataParser implements XMLResponder {
 
     public void recordDocEnd() {
         MWServ.mwlog.mainLog("");
-        MWServ.mwlog.mainLog("Parsing finished without error");
+        MWServ.mwlog.mainLog("Planet Parsing finished without error");
     }
 
     public void recordElementStart(String name, Hashtable attr) throws ParseException {
@@ -305,7 +306,10 @@ public class XMLPlanetDataParser implements XMLResponder {
              * for ( Integer id: AdvTerrTreeMap.keySet() ){
              * p.getAdvancedTerrain().put(id,AdvTerrTreeMap.get(id)); }
              */
-            p.setOriginalOwner(OriginalOwner);
+            if ( singlePlayerFactions && !OriginalOwner.equalsIgnoreCase(CampaignMain.cm.getConfig("NewbieHouseName")) )
+                p.setOriginalOwner("None");
+            else
+                p.setOriginalOwner(OriginalOwner);
             p.setPlanetFlags(OpFlags);
             p.setHomeWorld(isHomeWorld);
 
@@ -363,10 +367,9 @@ public class XMLPlanetDataParser implements XMLResponder {
     }
 
     public void recordCharData(String charData) {
-        // MWServ.mwlog.mainLog(prefix+charData);
+        MWServ.mwlog.mainLog(prefix+charData);
         if (!charData.equalsIgnoreCase("")) {
-            // do nothing; //MWServ.mwlog.mainLog(lastElement + " --> " +
-            // charData);
+            MWServ.mwlog.mainLog(lastElement + " --> " +charData);
         } else
             lastElement = "";
 
@@ -381,8 +384,11 @@ public class XMLPlanetDataParser implements XMLResponder {
             YCood = charData;
         else if (lastElement.equalsIgnoreCase("WAREHOUSE"))
             Warehousesize = Integer.parseInt(charData);
-        else if (lastElement.equalsIgnoreCase("FACTION"))
+        else if (lastElement.equalsIgnoreCase("FACTION")) {
             lastInfFaction = charData;
+            if ( singlePlayerFactions && !lastInfFaction.equalsIgnoreCase(CampaignMain.cm.getConfig("NewbieHouseName")) )
+                lastInfFaction = "None";
+        }
         else if (lastElement.equalsIgnoreCase("AMOUNT")) {
             SHouse h = CampaignMain.cm.getHouseFromPartialString(lastInfFaction, null);
             if (h != null) {
