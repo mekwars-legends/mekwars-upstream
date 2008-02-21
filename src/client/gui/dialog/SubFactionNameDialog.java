@@ -51,7 +51,11 @@ import common.House;
 
 public class SubFactionNameDialog extends JDialog implements ActionListener {
 
-	//variables
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 3552906075410667280L;
+    //variables
 	private final TreeSet<String>subFactionNames;
 	private House faction = null;
 	
@@ -78,7 +82,7 @@ public class SubFactionNameDialog extends JDialog implements ActionListener {
 		this.faction = mwclient.getData().getHouseByName(factionName);
 		
 		//setup the a list of names to feed into a list
-		this.subFactionNames = new TreeSet();//tree to alpha sort
+		this.subFactionNames = new TreeSet<String>();//tree to alpha sort
 
 		if ( faction == null )
 			return;
@@ -106,7 +110,7 @@ public class SubFactionNameDialog extends JDialog implements ActionListener {
 							matchingHousesList.setListData(allSubFactionNames);
 							return;
 						}
-						ArrayList possibleHouses = new ArrayList();
+						ArrayList<String> possibleHouses = new ArrayList<String>();
 						text = text.toLowerCase();
 						for (String subFaction : faction.getSubFactionList().keySet()) {	
 							if (subFaction.toLowerCase().indexOf(text) != -1)
@@ -122,9 +126,9 @@ public class SubFactionNameDialog extends JDialog implements ActionListener {
 						 */
 						boolean shouldContinue = true;
 						int element = 0;
-						Iterator it = possibleHouses.iterator();
+						Iterator<String> it = possibleHouses.iterator();
 						while (it.hasNext() && shouldContinue) {
-							String name = (String)it.next();
+							String name = it.next();
 							if (name.toLowerCase().startsWith(text)) {
 								matchingHousesList.setSelectedIndex(element);
 								shouldContinue = false;

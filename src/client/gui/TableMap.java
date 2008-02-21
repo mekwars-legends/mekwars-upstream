@@ -20,7 +20,11 @@ import javax.swing.event.TableModelEvent;
 
 public class TableMap extends AbstractTableModel implements TableModelListener {
     
-	protected TableModel model; 
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 4993341398579103253L;
+    protected TableModel model; 
 
     public TableModel getModel() {
         return model;
@@ -57,7 +61,7 @@ public class TableMap extends AbstractTableModel implements TableModelListener {
     }
 
     @Override
-	public Class getColumnClass(int aColumn) {
+	public Class<?> getColumnClass(int aColumn) {
         return model.getColumnClass(aColumn); 
     }
         

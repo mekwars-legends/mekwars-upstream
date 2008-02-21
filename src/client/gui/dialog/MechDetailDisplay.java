@@ -65,7 +65,11 @@ import client.gui.MechInfo;
 
 public class MechDetailDisplay extends JTabbedPane {
 
-	public GeneralPanel mPan;
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 3496116338039123904L;
+    public GeneralPanel mPan;
     public ArmorPanel aPan;
     public WeaponPanel wPan;
     public SystemPanel sPan;
@@ -107,6 +111,10 @@ public class MechDetailDisplay extends JTabbedPane {
 
 class GeneralPanel extends JPanel{
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 4029105940787569233L;
     public JPanel statusP, terrainP, moveP;
     public JLabel mechTypeL;
     public JLabel weightL, weightR, pilotL, pilotR, skillsL, skillsR;
@@ -264,7 +272,11 @@ class GeneralPanel extends JPanel{
  */
 
 class ArmorPanel extends JPanel {
-	public JLabel armorTotal, internalTotal;
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -295959624523910179L;
+    public JLabel armorTotal, internalTotal;
     public JLabel locHL, internalHL, armorHL;
     public JLabel[] locL, internalL, armorL;
 
@@ -359,6 +371,10 @@ class ArmorPanel extends JPanel {
  */
 
 class WeaponPanel extends JPanel implements ListSelectionListener {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 7514191383557659135L;
     public JList weaponList;
     public JComboBox ammoList;
     public JPanel displayP, rangeP, targetP;
@@ -371,7 +387,7 @@ class WeaponPanel extends JPanel implements ListSelectionListener {
 
     // I need to keep a pointer to the weapon list of the
     // currently selected mech.
-    private Vector ammo;
+    private Vector<Mounted> ammo;
     private Entity entity;
 
     public WeaponPanel() {
@@ -505,7 +521,7 @@ class WeaponPanel extends JPanel implements ListSelectionListener {
         weaponList.removeAll();
         ammoList.removeAllItems();
         ammoList.setEnabled(false);
-        ArrayList data = new ArrayList();
+        ArrayList<String> data = new ArrayList<String>();
         for(Mounted mounted : entity.getWeaponList()) {
             WeaponType wtype = (WeaponType)mounted.getType();
             String wn = mounted.getDesc()
@@ -590,7 +606,7 @@ class WeaponPanel extends JPanel implements ListSelectionListener {
             ammoList.setEnabled(false);
         else {
             ammoList.setEnabled(true);
-            ammo = new Vector(1,1);
+            ammo = new Vector<Mounted>(1,1);
             int nCur = -1;
             int i = 0;
             for (Mounted mountedAmmo : entity.getAmmo()) {
@@ -644,6 +660,11 @@ class WeaponPanel extends JPanel implements ListSelectionListener {
  */
 
 class SystemPanel extends JPanel implements ListSelectionListener {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7227285486467055350L;
+
     private static Object SYSTEM = new Object();
 
     public JLabel locLabel;
@@ -651,7 +672,7 @@ class SystemPanel extends JPanel implements ListSelectionListener {
     public JList slotList;
     public JList locList;
 
-    private Vector equipment = new Vector(16,1);
+    private Vector<Object> equipment = new Vector<Object>(16,1);
 
     public JLabel modeLabel;
     public JComboBox modeList;
@@ -741,7 +762,7 @@ class SystemPanel extends JPanel implements ListSelectionListener {
     	this.en = ent;
 
         locList.removeAll();
-        ArrayList data = new ArrayList();
+        ArrayList<String> data = new ArrayList<String>();
         for(int i = 0; i < en.locations(); i++) {
             if(en.getNumberOfCriticals(i) > 0) {
                 data.add(en.getLocationName(i));
@@ -755,8 +776,8 @@ class SystemPanel extends JPanel implements ListSelectionListener {
     public void displaySlots() {
         int loc = locList.getSelectedIndex();
         slotList.removeAll();
-        equipment = new Vector(16,1);
-        ArrayList data = new ArrayList();
+        equipment = new Vector<Object>(16,1);
+        ArrayList<String> data = new ArrayList<String>();
         for (int i = 0; i < en.getNumberOfCriticals(loc); i++) {
             final CriticalSlot cs = en.getCritical(loc, i);
             StringBuilder sb = new StringBuilder(32);
@@ -788,9 +809,9 @@ class SystemPanel extends JPanel implements ListSelectionListener {
         }
         if (en instanceof Tank) {
             if (en.hasTargComp()) {
-                Iterator equip = en.getEquipment().iterator();
+                Iterator<Mounted> equip = en.getEquipment().iterator();
                 while (equip.hasNext()) {
-                    Mounted m = (Mounted)equip.next();
+                    Mounted m = equip.next();
                     if (m.getType() instanceof MiscType && 
                         m.getType().hasFlag(MiscType.F_TARGCOMP) ) {
                         StringBuilder sb = new StringBuilder(32);
@@ -815,8 +836,8 @@ class SystemPanel extends JPanel implements ListSelectionListener {
                 modeLabel.setEnabled(true);
                 modeList.setEnabled(true);
                 modeList.removeAllItems();
-                for (Enumeration e = m.getType().getModes(); e.hasMoreElements();) {
-                    EquipmentMode em = (EquipmentMode) e.nextElement();
+                for (Enumeration<EquipmentMode> e = m.getType().getModes(); e.hasMoreElements();) {
+                    EquipmentMode em = e.nextElement();
                     modeList.addItem(em.getDisplayableName());
                 }
             } else {

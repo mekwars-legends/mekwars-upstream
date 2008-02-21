@@ -68,9 +68,13 @@ import common.Planet;
 
 public class PlanetNameDialog extends JDialog implements ActionListener {
 
-	//variables
-	private final TreeSet planetNames;
-	private final Collection planets;
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 3344329118582475184L;
+    //variables
+	private final TreeSet<String> planetNames;
+	private final Collection<Planet> planets;
 	
 	private JList matchingPlanetsList;
 	private JScrollPane scrollPane;//holds the JList
@@ -93,7 +97,7 @@ public class PlanetNameDialog extends JDialog implements ActionListener {
 		super(mwclient.getMainFrame(),boxText, true);//dummy frame as owner
 		this.planets = mwclient.getData().getAllPlanets();
 		//setup the a list of names to feed into a list
-		planetNames = new TreeSet();//tree to alpha sort
+		planetNames = new TreeSet<String>();//tree to alpha sort
 		
 		/*
 		 * Loop thorugh planets. If there is no range info, the menu is
@@ -102,13 +106,13 @@ public class PlanetNameDialog extends JDialog implements ActionListener {
 		 */
 		
 		if (opProps == null) { //no filtering needed
-			for (Iterator it = planets.iterator(); it.hasNext();)
-				planetNames.add(((Planet)it.next()).getName());
+			for (Iterator<Planet> it = planets.iterator(); it.hasNext();)
+				planetNames.add(it.next().getName());
 		} 
 		
 		else {//we need to filter. ugh.
 			
-			Iterator i = planets.iterator();
+			Iterator<Planet> i = planets.iterator();
 			while (i.hasNext()) {
 				
 				//get the planet
@@ -136,10 +140,10 @@ public class PlanetNameDialog extends JDialog implements ActionListener {
 					while (legalDefTokenizer.hasMoreTokens())
 						legalDefTree.put(legalDefTokenizer.nextToken(),null);
 					
-					Iterator houseIt = tp.getInfluence().getHouses().iterator();
+					Iterator<House> houseIt = tp.getInfluence().getHouses().iterator();
 					boolean foundDefender = false;
 					while (houseIt.hasNext() && !foundDefender) {
-						House currH = (House)houseIt.next();
+						House currH = houseIt.next();
 						if (legalDefTree.containsKey(currH.getName()))
 							foundDefender = true;
 					}
@@ -220,7 +224,7 @@ public class PlanetNameDialog extends JDialog implements ActionListener {
 				//launchpads to the target world. Better to do this client side and
 				//verify once on the server than to force the server to repeatedly
 				//make this loop, but my skin still crawls. @urgru 10.10.05
-				Iterator i2 = planets.iterator();
+				Iterator<Planet> i2 = planets.iterator();
 				boolean launchFound = false;
 				while (i2.hasNext() && !launchFound) {
 					
@@ -259,10 +263,10 @@ public class PlanetNameDialog extends JDialog implements ActionListener {
 							matchingPlanetsList.setListData(allPlanetNames);
 							return;
 						}
-						ArrayList possiblePlanets = new ArrayList();
+						ArrayList<String> possiblePlanets = new ArrayList<String>();
 						text = text.toLowerCase();
-						for (Iterator it = planetNames.iterator(); it.hasNext();) {
-							String curPlanet = ((String)it.next());
+						for (Iterator<String> it = planetNames.iterator(); it.hasNext();) {
+							String curPlanet = it.next();
 							if (curPlanet.toLowerCase().indexOf(text) != -1)
 								possiblePlanets.add(curPlanet);
 						}
@@ -276,9 +280,9 @@ public class PlanetNameDialog extends JDialog implements ActionListener {
 						 */
 						boolean shouldContinue = true;
 						int element = 0;
-						Iterator it = possiblePlanets.iterator();
+						Iterator<String> it = possiblePlanets.iterator();
 						while (it.hasNext() && shouldContinue) {
-							String name = (String)it.next();
+							String name = it.next();
 							if (name.toLowerCase().startsWith(text)) {
 								matchingPlanetsList.setSelectedIndex(element);
 								shouldContinue = false;
@@ -351,8 +355,8 @@ public class PlanetNameDialog extends JDialog implements ActionListener {
 		        	return;
 		        if (matchingPlanetsList.getModel().getSize() == 1)
 		        	selectedPlanet = (String)matchingPlanetsList.getModel().getElementAt(0);
-		        for (Iterator it = planets.iterator(); it.hasNext();) {
-		        	Planet planet = (Planet)it.next();
+		        for (Iterator<Planet> it = planets.iterator(); it.hasNext();) {
+		        	Planet planet = it.next();
 		        	if (selectedPlanet.equals(planet.getName())) {
 		        	    this.setPlanetName(planet.getName());
 		        		//this.dispose();

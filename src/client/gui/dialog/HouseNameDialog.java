@@ -65,9 +65,13 @@ import common.House;
 
 public class HouseNameDialog extends JDialog implements ActionListener {
 
-	//variables
-	private final Collection factions;
-	private final TreeSet factionNames;
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -1908461615647395978L;
+    //variables
+	private final Collection<House> factions;
+	private final TreeSet<String> factionNames;
 	
 	private JList matchingHousesList;
 	private JScrollPane scrollPane;//holds the JList
@@ -93,8 +97,8 @@ public class HouseNameDialog extends JDialog implements ActionListener {
 		this.addblank = addblank;
 		
 		//setup the a list of names to feed into a list
-		factionNames = new TreeSet();//tree to alpha sort
-		for (Iterator it = factions.iterator(); it.hasNext();) {
+		factionNames = new TreeSet<String>();//tree to alpha sort
+		for (Iterator<House> it = factions.iterator(); it.hasNext();) {
 			House house = (House) it.next();
 			if ( showCanDefectTo && !house.getHouseDefectionTo() )
 				continue;
@@ -120,10 +124,10 @@ public class HouseNameDialog extends JDialog implements ActionListener {
 							matchingHousesList.setListData(allHouseNames);
 							return;
 						}
-						ArrayList possibleHouses = new ArrayList();
+						ArrayList<String> possibleHouses = new ArrayList<String>();
 						text = text.toLowerCase();
-						for (Iterator it = factionNames.iterator(); it.hasNext();) {
-							String curHouse = ((String)it.next());
+						for (Iterator<String> it = factionNames.iterator(); it.hasNext();) {
+							String curHouse = it.next();
 							if (curHouse.toLowerCase().indexOf(text) != -1)
 								possibleHouses.add(curHouse);
 						}
@@ -137,9 +141,9 @@ public class HouseNameDialog extends JDialog implements ActionListener {
 						 */
 						boolean shouldContinue = true;
 						int element = 0;
-						Iterator it = possibleHouses.iterator();
+						Iterator<String> it = possibleHouses.iterator();
 						while (it.hasNext() && shouldContinue) {
-							String name = (String)it.next();
+							String name = it.next();
 							if (name.toLowerCase().startsWith(text)) {
 								matchingHousesList.setSelectedIndex(element);
 								shouldContinue = false;
@@ -212,8 +216,8 @@ public class HouseNameDialog extends JDialog implements ActionListener {
 		        	return;
 		        if (matchingHousesList.getModel().getSize() == 1)
 		        	selectedHouse = (String)matchingHousesList.getModel().getElementAt(0);
-		        for (Iterator it = factions.iterator(); it.hasNext();) {
-		        	House faction = (House)it.next();
+		        for (Iterator<House> it = factions.iterator(); it.hasNext();) {
+		        	House faction = it.next();
 		        	if (selectedHouse.equals(faction.getName())) {
 		        	    this.setHouseName(faction.getName());
 		        	    this.setVisible(false);

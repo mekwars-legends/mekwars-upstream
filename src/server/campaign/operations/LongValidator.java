@@ -66,7 +66,7 @@ public class LongValidator {
 	 * 
 	 * Returns a vector of failure codes.
 	 */
-	public ArrayList validateLongOp(SPlayer p, SHouse ah, SPlanet pl, Operation o) {
+	public ArrayList<Integer> validateLongOp(SPlayer p, SHouse ah, SPlanet pl, Operation o) {
 		
 		/*
 		 * Failure list. Elsewhere in code you'd probably see a Vector for
@@ -74,7 +74,7 @@ public class LongValidator {
 		 * structure here. Replacing vectors, where possible, with ArrayLists
 		 * will be an ongoing performance improvement thrust ...
 		 */
-		ArrayList failList = new ArrayList();
+		ArrayList<Integer> failList = new ArrayList<Integer>();
 		
 		
 		//first, make sure the player has the authority to start long ops.
@@ -107,7 +107,7 @@ public class LongValidator {
 		 * faction/player launch requirements (money, etc).
 		 */
 		int requiredMoney = o.getIntValue("LHouseLaunchMoney");
-		int requiredActions = o.getIntValue("LHouseLaunchActions");
+		//int requiredActions = o.getIntValue("LHouseLaunchActions");
 		
 		int reqPlayerMoney = o.getIntValue("LPlayerLaunchMoney");
 		int reqPlayerRP = o.getIntValue("LPlayerLaunchReward");
@@ -117,7 +117,7 @@ public class LongValidator {
 		if (requiredMoney > ah.getMoney())
 			failList.add(new Integer(LFAILS_HOUSEMONEY));
 		//if (requiredActions > ah.getActions())
-		//	failList.add(new Integer(LFAILS_HOUSEACTIONS));
+			//failList.add(new Integer(LFAILS_HOUSEACTIONS));
 		
 		if (reqPlayerMoney > p.getMoney())
 			failList.add(new Integer(LFAILS_PLAYERMONEY));
@@ -135,7 +135,7 @@ public class LongValidator {
 	 * Method which converts Integer failure list into
 	 * a human readible failure string.
 	 */
-	public String failuresToString(ArrayList failList) {
+	public String failuresToString(ArrayList<Integer> failList) {
 	
 		String s = "Launch failed ";
 		if (failList == null)
@@ -145,9 +145,9 @@ public class LongValidator {
 			return s += " because " + this.decodeFailure((Integer)failList.get(0)) + ".";
 		
 		s += "because:<br>";
-		Iterator i = failList.iterator();
+		Iterator<Integer> i = failList.iterator();
 		while (i.hasNext()) {
-			s += "- " + this.decodeFailure((Integer)i.next());
+			s += "- " + this.decodeFailure(i.next());
 			if (i.hasNext())
 				s += "<br>";
 		}

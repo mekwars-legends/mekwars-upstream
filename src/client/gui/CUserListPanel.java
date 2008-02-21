@@ -72,7 +72,11 @@ import client.MWClient;
 
 public class CUserListPanel extends JPanel implements ActionListener{
 	
-	public static int SORTMODE_NAME = 0;
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 6676029823454849117L;
+    public static int SORTMODE_NAME = 0;
 	public static int SORTMODE_HOUSE = 1;
 	public static int SORTMODE_EXP = 2;
 	public static int SORTMODE_RATING = 3;
@@ -362,7 +366,7 @@ public class CUserListPanel extends JPanel implements ActionListener{
                                 MWClient.mwClientLog.clientErrLog("StaffUserlistPopupMenu creation skipped. No MekWarsAdmin.jar present.");
                             else {
                                 URLClassLoader loader = new URLClassLoader(new URL[] {loadJar.toURI().toURL()});
-                                Class c = loader.loadClass("admin.StaffUserlistPopupMenu");
+                                Class<?> c = loader.loadClass("admin.StaffUserlistPopupMenu");
                                 Object o = c.newInstance();
                                 c.getDeclaredMethod("createMenu", new Class[] {MWClient.class, CUser.class}).invoke(o,
                                         new Object[] {mwclient, user});
@@ -863,7 +867,11 @@ public class CUserListPanel extends JPanel implements ActionListener{
 	}
 	
 	public static class CUserListModel extends AbstractListModel {
-		SortedSet Users;  //users set
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 9141928592065940657L;
+        SortedSet<CUser> Users;  //users set
 		UserListCellRenderer Renderer;  //list cells renderer
 		MWClient mwclient;  //client owning this model
 		boolean Dedicateds; //dedicated hosts visible
@@ -872,17 +880,17 @@ public class CUserListPanel extends JPanel implements ActionListener{
 		public CUserListModel(MWClient client) {
 			mwclient = client;
 			Dedicateds = mwclient.getConfig().isParam("USERLISTDEDICATEDS");
-			Users = Collections.synchronizedSortedSet(new TreeSet(new UserComparator()));
+			Users = Collections.synchronizedSortedSet(new TreeSet<CUser>(new UserComparator()));
 			Renderer = new UserListCellRenderer(this);
 		}
 		
 		public synchronized void clear() {Users.clear();}
 		
-		public void add(Object o) {Users.add(o);}
+		public void add(CUser user) {Users.add(user);}
 		
-		public synchronized void remove(Object o) {Users.remove(o);}
+		public synchronized void remove(CUser user) {Users.remove(user);}
 		
-		public synchronized void addAll(Collection c) {Users.addAll(c);}
+		public synchronized void addAll(Collection<CUser> c) {Users.addAll(c);}
 		
 		public synchronized int getSize() {return Users.size();}
 		
@@ -943,8 +951,8 @@ public class CUserListPanel extends JPanel implements ActionListener{
 		}
 		
 		public synchronized CUser getUser(String name) {
-			for (Iterator i = Users.iterator(); i.hasNext();) {
-				CUser user = (CUser)i.next();
+			for (Iterator<CUser> i = Users.iterator(); i.hasNext();) {
+				CUser user = i.next();
 				if (user.getName().equals(name)) {return user;}
 			}
 			return new CUser();
@@ -954,7 +962,11 @@ public class CUserListPanel extends JPanel implements ActionListener{
 		
 		static class UserListCellRenderer extends JLabel implements ListCellRenderer {
 			
-			MWClient ulMwclient;
+			/**
+             * 
+             */
+            private static final long serialVersionUID = 4400213401819469963L;
+            MWClient ulMwclient;
 			CUserListModel Owner;
 			boolean LoggedIn = false;
 			boolean TextBold = true;
@@ -1110,7 +1122,7 @@ public class CUserListPanel extends JPanel implements ActionListener{
 			}
 		}
 		
-		public class UserComparator implements Comparator {
+		public class UserComparator implements Comparator<CUser> {
 			
 			int Mode;
 			int Order;
@@ -1120,17 +1132,17 @@ public class CUserListPanel extends JPanel implements ActionListener{
 				Order = SORTORDER_ASCENDING;
 			}
 			
-			public int compare(Object o1, Object o2) {
+			public int compare(CUser o1, CUser o2) {
 				CUser user1 = null;
 				CUser user2 = null;
 				int result = 0;
 				
 				if (Order == SORTORDER_DESCENDING) {
-					user1 = (CUser)o2;
-					user2 = (CUser)o1;
+					user1 = o2;
+					user2 = o1;
 				} else {
-					user1 = (CUser)o1;
-					user2 = (CUser)o2;
+					user1 = o1;
+					user2 = o2;
 				}
 				
 				if (Mode == SORTMODE_NAME) {return(user1.getName().compareToIgnoreCase(user2.getName()));}

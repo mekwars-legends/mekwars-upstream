@@ -86,7 +86,12 @@ import common.util.UnitUtils;
 
 public class CHQPanel extends JPanel {
 	
-	MWClient mwclient;
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -5137503055464771160L;
+
+    MWClient mwclient;
 	
 	CPlayer Player;
 	
@@ -1140,7 +1145,7 @@ public class CHQPanel extends JPanel {
 					if (mwclient.getPlayer().getHangar().size() > 0 && !l.isLocked()) {
 						Object[] mechArray = mwclient.getPlayer().getHangar().toArray();
 						if (mechArray.length > 0) {
-							Vector SubMenus = new Vector(1,1);
+							Vector<Vector<JMenuItem>> SubMenus = new Vector<Vector<JMenuItem>>(1,1);
 							
 							/*
 							 * 6 entries
@@ -1148,7 +1153,7 @@ public class CHQPanel extends JPanel {
 							 * Protomech: 4
 							 * Infantry: 5
 							 */
-							for (int i = 0; i < 6; i++) {SubMenus.add(new Vector(1,1));}
+							for (int i = 0; i < 6; i++) {SubMenus.add(new Vector<JMenuItem>(1,1));}
 							
 							for(int i = 0; i < mechArray.length; i++) {
 								CUnit mm = (CUnit)mechArray[i];
@@ -1172,17 +1177,17 @@ public class CHQPanel extends JPanel {
 									menuItem.addActionListener(this);
 									
 									if (mm.getType() == Unit.PROTOMEK) {
-										((Vector)SubMenus.elementAt(4)).add(menuItem);//into proto slot
+										SubMenus.elementAt(4).add(menuItem);//into proto slot
 									} else if (mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR) {
-										((Vector)SubMenus.elementAt(5)).add(menuItem);//into BA slot
+										SubMenus.elementAt(5).add(menuItem);//into BA slot
 									} else {//else, sort by weightclass
 										int size = mm.getWeightclass();
-										((Vector)SubMenus.elementAt(size)).add(menuItem);
+										SubMenus.elementAt(size).add(menuItem);
 									}
 								}
 							}
 							for (int i = 0; i < SubMenus.size();i++) {
-								Vector SizeMenu = (Vector)SubMenus.elementAt(i);
+								Vector<JMenuItem> SizeMenu = SubMenus.elementAt(i);
 								if (SizeMenu.size() > 10) {
 									//More than one menu of the given size class is needed
 									int iterations = SizeMenu.size() / 10 + 1;
@@ -1308,8 +1313,8 @@ public class CHQPanel extends JPanel {
 						 */
 						JMenu linkMenu = new JMenu("Link");
 						if (l.getUnits().size() > 0 && !l.isLocked()) {
-								Vector Masters = new Vector(1,1);
-								Enumeration c3M = l.getUnits().elements();
+								Vector<CUnit> Masters = new Vector<CUnit>(1,1);
+								Enumeration<Unit> c3M = l.getUnits().elements();
 								while ( c3M.hasMoreElements()) {
 								    CUnit c3Unit = (CUnit)c3M.nextElement();
 								    if (c3Unit.equals(cm))
@@ -1363,7 +1368,7 @@ public class CHQPanel extends JPanel {
 							popup.add(jm);
 							Object[] mechs = mwclient.getPlayer().getHangar().toArray();
 							if (mechs.length > 0) {
-								Vector SubMenus = new Vector();
+								Vector<Vector<JMenuItem>> SubMenus = new Vector<Vector<JMenuItem>>();
 								
 								/*
 								 * 6 entries
@@ -1371,7 +1376,7 @@ public class CHQPanel extends JPanel {
 								 * Protomech: 4
 								 * Infantry: 5
 								 */
-								for (int i = 0; i < 6; i++) {SubMenus.add(new Vector(1,1));}
+								for (int i = 0; i < 6; i++) {SubMenus.add(new Vector<JMenuItem>(1,1));}
 								
 								for(int i = 0; i < mechs.length; i++) {
 									CUnit mm = (CUnit)mechs[i];
@@ -1394,17 +1399,17 @@ public class CHQPanel extends JPanel {
 										menuItem.addActionListener(this);
 										
 										if (mm.getType() == Unit.PROTOMEK) {
-											((Vector)SubMenus.elementAt(4)).add(menuItem);//into proto slot
+											SubMenus.elementAt(4).add(menuItem);//into proto slot
 										} else if (mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR) {
-											((Vector)SubMenus.elementAt(5)).add(menuItem);//into BA slot
+											SubMenus.elementAt(5).add(menuItem);//into BA slot
 										} else {//else, sort by weightclass
 											int size = mm.getWeightclass();
-											((Vector)SubMenus.elementAt(size)).add(menuItem);
+											SubMenus.elementAt(size).add(menuItem);
 										}
 									}
 								}
 								for (int i = 0; i < SubMenus.size();i++) {
-									Vector SizeMenu = (Vector)SubMenus.elementAt(i);
+									Vector<JMenuItem> SizeMenu = SubMenus.elementAt(i);
 									JMenu menux = null;
 									if (SizeMenu.size() > 10) {
 										//More than one menu of the given size class is needed
@@ -2133,7 +2138,7 @@ public class CHQPanel extends JPanel {
     					
     					boolean showVeeWeights = Boolean.parseBoolean(mwclient.getserverConfigs("ShowVehWeightclassInChallenges"));
     					
-    					Enumeration e = currArmy.getUnits().elements();
+    					Enumeration<Unit> e = currArmy.getUnits().elements();
     					//boolean firstUnit = true;
     					while (e.hasMoreElements()) {
     						
@@ -2219,7 +2224,7 @@ public class CHQPanel extends JPanel {
     				
                     else if ( mode == 4){
                         int Tonnage = 0;
-                        Enumeration e = currArmy.getUnits().elements();
+                        Enumeration<Unit> e = currArmy.getUnits().elements();
                         while (e.hasMoreElements()) {
                             CUnit unit = (CUnit)e.nextElement();
                             Tonnage += (int)unit.getEntity().getWeight();
@@ -2230,7 +2235,7 @@ public class CHQPanel extends JPanel {
                     
                     else if ( mode == 5 ){
                         int Tonnage = 0;
-                        Enumeration e = currArmy.getUnits().elements();
+                        Enumeration<Unit> e = currArmy.getUnits().elements();
                         while (e.hasMoreElements()) {
                             CUnit unit = (CUnit)e.nextElement();
                             Tonnage += (int)unit.getEntity().getWeight();
@@ -2243,7 +2248,7 @@ public class CHQPanel extends JPanel {
                     
                     else if ( mode == 6 ){
                         int Tonnage = 0;
-                        Enumeration e = currArmy.getUnits().elements();
+                        Enumeration<Unit> e = currArmy.getUnits().elements();
                         while (e.hasMoreElements()) {
                             CUnit unit = (CUnit)e.nextElement();
                             Tonnage += (int)unit.getEntity().getWeight();
@@ -2257,7 +2262,7 @@ public class CHQPanel extends JPanel {
                     
                     else if ( mode == 7 ){
                         int Tonnage = 0;
-                        Enumeration e = currArmy.getUnits().elements();
+                        Enumeration<Unit> e = currArmy.getUnits().elements();
                         while (e.hasMoreElements()) {
                             CUnit unit = (CUnit)e.nextElement();
                             Tonnage += (int)unit.getEntity().getWeight();
@@ -2278,7 +2283,7 @@ public class CHQPanel extends JPanel {
                         int medium = 0;
                         int light = 0;
     
-                        Enumeration e = currArmy.getUnits().elements();
+                        Enumeration<Unit> e = currArmy.getUnits().elements();
                         while (e.hasMoreElements()) {
                             CUnit unit = (CUnit)e.nextElement();
                             switch (unit.getWeightclass()){
@@ -2308,7 +2313,7 @@ public class CHQPanel extends JPanel {
                         int medium = 0;
                         int light = 0;
     
-                        Enumeration e = currArmy.getUnits().elements();
+                        Enumeration<Unit> e = currArmy.getUnits().elements();
                         while (e.hasMoreElements()) {
                             CUnit unit = (CUnit)e.nextElement();
                             switch (unit.getWeightclass()){
@@ -2337,7 +2342,7 @@ public class CHQPanel extends JPanel {
                     }
     
                     else if ( mode == 10 ){
-                        Enumeration e = currArmy.getUnits().elements();
+                        Enumeration<Unit> e = currArmy.getUnits().elements();
                         while (e.hasMoreElements()) {
                             CUnit unit = (CUnit)e.nextElement();
                             toSend += " <a href=\"MEKINFO" + unit.getUnitFilename()+ "#" + unit.getBV() + "#" + unit.getPilot().getGunnery() + "#" + unit.getPilot().getPiloting() + "\">"+ unit.getModelName() + "</a>,";
@@ -2354,7 +2359,7 @@ public class CHQPanel extends JPanel {
     					if ( forceSizeMod > 1 )
     						toSend += " vs "+opForceSize+" units";
     					toSend += ",";
-                        Enumeration e = currArmy.getUnits().elements();
+                        Enumeration<Unit> e = currArmy.getUnits().elements();
                         while (e.hasMoreElements()) {
                             CUnit unit = (CUnit)e.nextElement();
                             toSend += " <a href=\"MEKINFO" + unit.getUnitFilename() + "#" + unit.getBV() + "#" + unit.getPilot().getGunnery() + "#" + unit.getPilot().getPiloting() + "\">"+ unit.getModelName() + "</a>,";
@@ -2367,7 +2372,7 @@ public class CHQPanel extends JPanel {
                     
                     else if ( mode == 12 ){
                         
-                        Enumeration e = currArmy.getUnits().elements();
+                        Enumeration<Unit> e = currArmy.getUnits().elements();
                         TreeMap<Float,Integer> unitWeights = new TreeMap<Float,Integer>();
                         while (e.hasMoreElements()) {
                             CUnit unit = (CUnit)e.nextElement();
@@ -2389,7 +2394,7 @@ public class CHQPanel extends JPanel {
                     else if ( mode == 13 ){
                         
                         toSend += " "+currArmy.getBV()+" BV,";
-                        Enumeration e = currArmy.getUnits().elements();
+                        Enumeration<Unit> e = currArmy.getUnits().elements();
                         TreeMap<Float,Integer> unitWeights = new TreeMap<Float,Integer>();
                         while (e.hasMoreElements()) {
                             CUnit unit = (CUnit)e.nextElement();
@@ -2764,7 +2769,12 @@ public class CHQPanel extends JPanel {
 	
 	public class MekTableModel extends AbstractTableModel {
 		
-		public int getColumnCount() {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = -7918520064078379615L;
+
+        public int getColumnCount() {
 			int count = Integer.parseInt(mwclient.getConfigParam("UNITAMOUNT")) + 1;
 			return count;
 			//return this.columnNames.length;
@@ -2848,7 +2858,7 @@ public class CHQPanel extends JPanel {
 			if (col != 0) {
 				if (row < getRowsForArmies()) {
 					CArmy army = getArmyAt(row);
-					Vector mechs = new Vector(army.getUnits());
+					Vector<Unit> mechs = new Vector<Unit>(army.getUnits());
 					int offset = getOffset(row) + col - 1;
 					if (offset < mechs.size()) {return (CUnit)mechs.elementAt(offset);}
 					return null;
@@ -3015,7 +3025,12 @@ public class CHQPanel extends JPanel {
 		
 		public class Renderer extends MechInfo implements TableCellRenderer {
 			
-			int meknum;
+			/**
+             * 
+             */
+            private static final long serialVersionUID = -300922977373422309L;
+
+            int meknum;
 			
 			MechTileset mt = new MechTileset("data/images/units/");
 			Color dcolor = new Color(220,220,220);
@@ -3082,11 +3097,11 @@ public class CHQPanel extends JPanel {
 							else
 								C3Text.append(" for");
 							
-							Enumeration c3Key = l.getC3Network().keys();
-							Enumeration c3Unit = l.getC3Network().elements();
+							Enumeration<Integer> c3Key = l.getC3Network().keys();
+							Enumeration<Integer> c3Unit = l.getC3Network().elements();
 							while ( c3Key.hasMoreElements()) {
-								Integer slave = (Integer)c3Key.nextElement();
-								Integer master = (Integer)c3Unit.nextElement();
+								Integer slave = c3Key.nextElement();
+								Integer master = c3Unit.nextElement();
 								if ( master.intValue() == cm.getId())
 									C3Text.append(" #"+slave.intValue());
 							}

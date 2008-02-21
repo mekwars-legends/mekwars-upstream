@@ -62,10 +62,14 @@ import common.Planet;
 
 public class PlanetSearchDialog extends JDialog implements ActionListener {
 
-	//variables
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -7897295866660184584L;
+    //variables
 	private final InnerStellarMap map;
-	private final Collection planets;
-	private final TreeSet planetNames;
+	private final Collection<Planet> planets;
+	private final TreeSet<String> planetNames;
 	
 	private JList matchingPlanetsList;
 	private JScrollPane scrollPane;//holds the JList
@@ -88,9 +92,9 @@ public class PlanetSearchDialog extends JDialog implements ActionListener {
 		this.planets = mwclient.getData().getAllPlanets();
 		
 		//setup the a list of names to feed into a list
-		planetNames = new TreeSet();//tree to alpha sort
-		for (Iterator it = planets.iterator(); it.hasNext();)
-            planetNames.add(((Planet)it.next()).getName());
+		planetNames = new TreeSet<String>();//tree to alpha sort
+		for (Iterator<Planet> it = planets.iterator(); it.hasNext();)
+            planetNames.add(it.next().getName());
 		final Object[] allPlanetNames = planetNames.toArray();
 		
 		//construct the planet name list
@@ -111,10 +115,10 @@ public class PlanetSearchDialog extends JDialog implements ActionListener {
 							matchingPlanetsList.setListData(allPlanetNames);
 							return;
 						}
-						ArrayList possiblePlanets = new ArrayList();
+						ArrayList<String> possiblePlanets = new ArrayList<String>();
 						text = text.toLowerCase();
-						for (Iterator it = planetNames.iterator(); it.hasNext();) {
-							String curPlanet = ((String)it.next());
+						for (Iterator<String> it = planetNames.iterator(); it.hasNext();) {
+							String curPlanet = it.next();
 							if (curPlanet.toLowerCase().indexOf(text) != -1)
 								possiblePlanets.add(curPlanet);
 						}
@@ -128,9 +132,9 @@ public class PlanetSearchDialog extends JDialog implements ActionListener {
 						 */
 						boolean shouldContinue = true;
 						int element = 0;
-						Iterator it = possiblePlanets.iterator();
+						Iterator<String> it = possiblePlanets.iterator();
 						while (it.hasNext() && shouldContinue) {
-							String name = (String)it.next();
+							String name = it.next();
 							if (name.toLowerCase().startsWith(text)) {
 								matchingPlanetsList.setSelectedIndex(element);
 								shouldContinue = false;
@@ -203,8 +207,8 @@ public class PlanetSearchDialog extends JDialog implements ActionListener {
 		        	return;
 		        if (matchingPlanetsList.getModel().getSize() == 1)
 		        	selectedPlanet = (String)matchingPlanetsList.getModel().getElementAt(0);
-		        for (Iterator it = planets.iterator(); it.hasNext();) {
-		        	Planet planet = (Planet)it.next();
+		        for (Iterator<Planet> it = planets.iterator(); it.hasNext();) {
+		        	Planet planet = it.next();
 		        	if (selectedPlanet.equals(planet.getName())) {
 		        		map.setSelectedPlanet(planet);
 		        		map.activate(planet, true);

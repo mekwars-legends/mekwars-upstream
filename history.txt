@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
++ More Raw Data Type References fixes
 + RFE 1898995: A way for meks to keep their pilots on donation
 + Updated factions.dtd and planets.dtd
 + Bug: Duplicate Scrap Allotment field in Admin Server Config Dialog

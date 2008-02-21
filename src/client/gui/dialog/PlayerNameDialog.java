@@ -55,7 +55,11 @@ import common.util.SpringLayoutHelper;
 
 public class PlayerNameDialog extends JDialog implements ActionListener {
 	
-	//variables
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -2185532842152633162L;
+    //variables
 	private JList matchingPlayersList;
 	private JScrollPane scrollPane;//holds the JList
 	private JTextField nameField;//input field
@@ -69,7 +73,7 @@ public class PlayerNameDialog extends JDialog implements ActionListener {
     public static final int MERCS_ONLY = 2;
     
 	private String toReturn = null;
-	private ArrayList possiblePlayers = null;
+	private ArrayList<String> possiblePlayers = null;
 	
 	//constructor
 	public PlayerNameDialog(MWClient client, String boxText, int playerType) {
@@ -83,11 +87,11 @@ public class PlayerNameDialog extends JDialog implements ActionListener {
 		super(client.getMainFrame(),boxText, true);//dummy frame as owner
 		
 		//loop through all players, checking faction, if needed
-		Vector factionPlayers = new Vector(1,1);
-		Iterator i = client.getUsers().iterator();
+		Vector<String> factionPlayers = new Vector<String>(1,1);
+		Iterator<CUser> i = client.getUsers().iterator();
 		if (playerType == FACTION_ONLY) {
 			while (i.hasNext()) {
-				CUser user = (CUser)i.next();
+				CUser user = i.next();
                 if ( user.isInvis() && user.getUserlevel() > client.getUser(client.getPlayer().getName()).getUserlevel() )
                     continue;
 				if (user.getHouse().equalsIgnoreCase(client.getPlayer().getHouse()) && !user.getName().equals(client.getPlayer().getName()))
@@ -137,7 +141,7 @@ public class PlayerNameDialog extends JDialog implements ActionListener {
 							return;
 						}
 						
-						possiblePlayers = new ArrayList();
+						possiblePlayers = new ArrayList<String>();
 						text = text.toLowerCase();
 						
 						int until = playerNames.length;
@@ -157,9 +161,9 @@ public class PlayerNameDialog extends JDialog implements ActionListener {
 						 */
 						boolean shouldContinue = true;
 						int element = 0;
-						Iterator it = possiblePlayers.iterator();
+						Iterator<String> it = possiblePlayers.iterator();
 						while (it.hasNext() && shouldContinue) {
-							String name = (String)it.next();
+							String name = it.next();
 							if (name.toLowerCase().startsWith(text)) {
 								matchingPlayersList.setSelectedIndex(element);
 								shouldContinue = false;
