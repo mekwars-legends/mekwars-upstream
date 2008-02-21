@@ -1042,10 +1042,10 @@ public final class SUnit extends Unit{
     /**
      * @return the BV of this entity including all modifications
      */
-    public int calcBV(boolean C3Network) {
+    public int calcBV() {
 
         // get a base BV from MegaMek
-        int calcedBV = this.getEntity().calculateBattleValue(C3Network, false);
+        int calcedBV = this.getEntity().calculateBattleValue(false);
 
         // Boost BV of super-fast tanks if the "FastHoverBVMod" is a positive
         // number.
@@ -1193,18 +1193,13 @@ public final class SUnit extends Unit{
     }// end setUnmaintainedStatus()
 
     // GETTER AND SETTER
-    public int getBV() {
-        return this.getBV(false);
-    }
 
-    public int getBV(boolean C3Network) {
+    public int getBV() {
 
         int toReturn = 0;
 
-        if (C3Network)
-            toReturn = calcBV(C3Network);
-        else if (BV <= 0) {
-            toReturn = calcBV(false);
+        if (BV <= 0) {
+            toReturn = calcBV();
             BV = toReturn;
         } else
             toReturn = BV;

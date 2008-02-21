@@ -130,7 +130,7 @@ public class HSMek {
     }
     
     public int getBV() {
-    	return embeddedUnit.getEntity().calculateBattleValue(false,false);
+    	return embeddedUnit.getEntity().calculateBattleValue(false);
     }
  
 }
