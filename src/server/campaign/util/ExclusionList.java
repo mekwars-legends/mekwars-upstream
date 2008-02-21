@@ -155,7 +155,7 @@ public class ExclusionList{
 		//next, look for missing players on the player list.
 		e = playerExcludes.iterator();
 		while (e.hasNext()) {
-			String currName = (String)e.next();
+			String currName = e.next();
 			boolean playerExists = new File("./campaign/players/" + currName + ".dat").exists();
 			if (!playerExists) {
 				e.remove();

@@ -1839,7 +1839,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             for (int i = Unit.LIGHT; i <= Unit.ASSAULT; i++) {
 
                 // Loop through all units of the current type/weightclass
-                Iterator<SUnit> it = ((Vector<SUnit>) this.getHangar(type_id).elementAt(i)).iterator();
+                Iterator<SUnit> it = (this.getHangar(type_id).elementAt(i)).iterator();
                 while (it.hasNext()) {
                     SUnit currU = it.next();
                     if (currU.getId() == unitIDtoFind)

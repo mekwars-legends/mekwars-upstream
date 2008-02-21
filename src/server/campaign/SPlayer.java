@@ -1216,7 +1216,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                     int forceNumber = 0;// number of current army
                     boolean forceSorted = false;
                     while (f.hasMoreElements() && !forceSorted) {
-                        if (currentArmy.getOperationsBV(null) < ((SArmy) f.nextElement()).getOperationsBV(null)) {
+                        if (currentArmy.getOperationsBV(null) < (f.nextElement()).getOperationsBV(null)) {
                             orderedArmies.add(forceNumber, currentArmy);
                             forceSorted = true;
                         } else
@@ -1274,7 +1274,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 while (e.hasMoreElements()) {// loop through remaining forces
 
                     // get the next army, and its BV
-                    nextArmy = (SArmy) e.nextElement();
+                    nextArmy = e.nextElement();
                     nextBV = nextArmy.getOperationsBV(null);
 
                     /*
@@ -2075,7 +2075,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         int result = 0;
         Vector<SArmy> v = getArmies();
         for (int i = 0; i < v.size(); i++) {
-            SArmy a = (SArmy) v.elementAt(i);
+            SArmy a = v.elementAt(i);
             if (a.getUnit(unitID) != null)
                 result++;
         }
@@ -2456,18 +2456,18 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 s.append("empty");
 
             while (en.hasMoreElements())
-                s.append(", " + (String) en.nextElement());
+                s.append(", " + en.nextElement());
             s.append("<br>");
 
             // admin no-plays
             s.append("<b>No-Play (Admin):</b> ");
             en = exclusionList.getAdminExcludes().elements();
             if (en.hasMoreElements())
-                s.append((String) en.nextElement());
+                s.append(en.nextElement());
             else
                 s.append("empty");
             while (en.hasMoreElements())
-                s.append(", " + (String) en.nextElement());
+                s.append(", " + en.nextElement());
 
             s.append("<br><br>");
         }

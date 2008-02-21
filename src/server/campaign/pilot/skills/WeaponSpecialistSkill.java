@@ -94,7 +94,7 @@ public class WeaponSpecialistSkill extends SPilotSkill {
 	}
 	
 	public void assignWeapon(Entity entity, Pilot pilot){
-		Hashtable uniqueWeapons = new Hashtable();
+		Hashtable<String, Boolean> uniqueWeapons = new Hashtable<String, Boolean>();
 		String bannedWeapons = CampaignMain.cm.getConfig("BannedWSWeapons");
 		for (Mounted m : entity.getWeaponList()) {
 			if ( bannedWeapons.indexOf(m.getDesc()) >= 0)
@@ -111,8 +111,8 @@ public class WeaponSpecialistSkill extends SPilotSkill {
 			selectedWeapon = CampaignMain.cm.getRandomNumber(uniqueWeapons.size());
 		
 		
-		for (Enumeration e = uniqueWeapons.keys(); e.hasMoreElements(); selectedWeapon--) {
-			String weaponName = (String) e.nextElement();
+		for (Enumeration<String> e = uniqueWeapons.keys(); e.hasMoreElements(); selectedWeapon--) {
+			String weaponName = e.nextElement();
 			if ( selectedWeapon == 0){
 				pilot.setWeapon(weaponName);
 				break;

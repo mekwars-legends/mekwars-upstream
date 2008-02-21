@@ -45,7 +45,7 @@ public class PlanetEnvironments {
     /**
      * The list of all continents. Type=Continent
      */
-    private ArrayList continents = new ArrayList();
+    private ArrayList<Continent> continents = new ArrayList<Continent>();
 
     /**
      * Iterate over all terrains in this set.
@@ -68,8 +68,8 @@ public class PlanetEnvironments {
     public Continent[] toArray() {
         Continent[] ret = new Continent[size()];
         int i = 0;
-        for (Iterator it = iterator(); it.hasNext();)
-            ret[i++] = (Continent)it.next();
+        for (Iterator<Continent> it = iterator(); it.hasNext();)
+            ret[i++] = it.next();
         return ret;
     }
 
@@ -109,8 +109,8 @@ public class PlanetEnvironments {
      */
     public Continent getBiggestEnvironment() {
         Continent result = new Continent(0,new PlanetEnvironment());
-        for (Iterator it = iterator(); it.hasNext();) {
-            Continent p = (Continent)it.next();
+        for (Iterator<Continent> it = iterator(); it.hasNext();) {
+            Continent p = it.next();
             if (p.getSize() > result.getSize()) result = p;
         }
         return result;
@@ -121,8 +121,8 @@ public class PlanetEnvironments {
      */
     public int getTotalEnivronmentPropabilities() {
         int result = 0;
-        for (Iterator it = iterator(); it.hasNext();)
-            result += ((Continent)it.next()).getSize();
+        for (Iterator<Continent> it = iterator(); it.hasNext();)
+            result += (it.next()).getSize();
         return result;
     }
 
@@ -133,8 +133,8 @@ public class PlanetEnvironments {
     public PlanetEnvironment getRandomEnvironment(Random r) {
         // use the skewer draw algorithm from Knuth.
         int probs = getTotalEnivronmentPropabilities();
-        for (Iterator it = iterator(); it.hasNext();) {
-            Continent pe = (Continent) it.next();
+        for (Iterator<Continent> it = iterator(); it.hasNext();) {
+            Continent pe = it.next();
             if (r.nextInt(probs) < pe.getSize())
                 return pe.getEnvironment();
             probs -= pe.getSize();
@@ -145,10 +145,10 @@ public class PlanetEnvironments {
     /**
      * Writes as binary stream
      */
-    public void binOut(BinWriter out) throws IOException {
+    public void binOut(BinWriter out){
         out.println(size(), "terrain.size");
-        for (Iterator it = continents.iterator(); it.hasNext();) {
-            Continent cont =(Continent)it.next(); 
+        for (Iterator<Continent> it = continents.iterator(); it.hasNext();) {
+            Continent cont =it.next(); 
             out.println(cont.getSize(),"size");
             out.println(cont.getEnvironment().getId(),"id");
         }

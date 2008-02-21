@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import common.House;
 import common.Unit;
 
 import server.MWServ;
@@ -35,14 +36,14 @@ import server.campaign.SHouse;
 public class Statistics {
 
 	public static String doGetMechStats(int size) {
-	    TreeSet Sorted = new TreeSet();
-	    Enumeration e = CampaignMain.cm.getMechStats().elements();
+	    TreeSet<MechStatistics> Sorted = new TreeSet<MechStatistics>();
+	    Enumeration<MechStatistics> e = CampaignMain.cm.getMechStats().elements();
 	    while (e.hasMoreElements()) {
-	        MechStatistics m = (MechStatistics) e.nextElement();
+	        MechStatistics m = e.nextElement();
 	        if (m.getMechSize() == size) Sorted.add(m);
 	    }
 	    boolean color = false;
-	    Iterator i = Sorted.iterator();
+	    Iterator<MechStatistics> i = Sorted.iterator();
 	    StringBuilder result = new StringBuilder();
 	    result.append("<h2>" + Unit.getWeightClassDesc(size) + " Units</h2>");
 	    result.append("<table cellpadding=\"3\" cellspacing=\"0\"><tr bgcolor=\"#0066FF\">" +
@@ -54,7 +55,7 @@ public class Statistics {
 	    		"<th width=\"50\" align=\"center\"><font color=\"#FFFFFF\">BV</th>" +
 	    		"</font><th><font color=\"#FFFFFF\">Last Used</font></th></tr>");
 	    while (i.hasNext()) {
-	        MechStatistics m = (MechStatistics) i.next();
+	        MechStatistics m = i.next();
 	        //Get the color for this line
 	        if (color)
 	            result.append("<tr class=\"trcolored\"><td>");
@@ -95,17 +96,17 @@ public class Statistics {
 		    result.append("<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"format.css\"><style type=\"text/css\"></style></head><body><font face=\"Verdana, Arial, Helvetica, sans-serif\">");
 		    result.append("<h2>Player Ranking:</h2><p>");
 		    //result.append("(Only Players with more than 1000 EXP shown)<p>";
-		    Iterator e = CampaignMain.cm.getData().getAllHouses().iterator();
-		    Hashtable allplayers = new Hashtable();
+		    Iterator<House> e = CampaignMain.cm.getData().getAllHouses().iterator();
+		    Hashtable<String, SmallPlayer> allplayers = new Hashtable<String, SmallPlayer>();
 		    //Player DefaultPlayer = null;
 		    while (e.hasNext()) {
 		        SHouse h = (SHouse) e.next();
 		        if (!h.isNewbieHouse())
 		        	allplayers.putAll(h.getSmallPlayers());
 		    }
-		    TreeSet Sorted = new TreeSet(allplayers.values());
-		    Iterator i = Sorted.iterator();
-		    Vector v = new Vector(1,1);
+		    TreeSet<SmallPlayer> Sorted = new TreeSet<SmallPlayer>(allplayers.values());
+		    Iterator<SmallPlayer> i = Sorted.iterator();
+		    Vector<SmallPlayer> v = new Vector<SmallPlayer>(1,1);
 		    boolean color = false;
 		    while (i.hasNext())
 		        v.add(i.next());
@@ -113,7 +114,7 @@ public class Statistics {
 		    int rank = 1;
 		    //  for (int j = v.size() - 1;j >= 0 && j >= v.size() - 1000;j--) {
 		    for (int j = v.size() - 1; j >= 0; j--) {
-		        SmallPlayer p = (SmallPlayer)v.elementAt(j);
+		        SmallPlayer p = v.elementAt(j);
 		        try{
 			        //Show the limiter at the END of all Players with the limited Rating.
 			        if (color)
@@ -161,23 +162,23 @@ public class Statistics {
 	    result.append("<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"format.css\"><style type=\"text/css\"></style></head><body><font face=\"Verdana, Arial, Helvetica, sans-serif\">");
 	    result.append("<h2>Player Ranking:</h2><p>");
 	    //  result.append("(Only Players with more than 1000 EXP shown)<p>";
-	    Iterator e = CampaignMain.cm.getData().getAllHouses().iterator();
-	    Hashtable allplayers = new Hashtable();
+	    Iterator<House> e = CampaignMain.cm.getData().getAllHouses().iterator();
+	    Hashtable<String, EXPRankingContainer> allplayers = new Hashtable<String, EXPRankingContainer>();
 	    //Player DefaultPlayer = null;
 	    while (e.hasNext()) {
 	        SHouse h = (SHouse) e.next();
 	        if (!h.isNewbieHouse()) {
-	            Enumeration en = h.getSmallPlayers().elements();
+	            Enumeration<SmallPlayer> en = h.getSmallPlayers().elements();
 	            while (en.hasMoreElements()) {
-	                EXPRankingContainer EXPRankPlayer = new EXPRankingContainer((SmallPlayer)en.nextElement());
+	                EXPRankingContainer EXPRankPlayer = new EXPRankingContainer(en.nextElement());
 	                allplayers.put(EXPRankPlayer.getName(), EXPRankPlayer);
 	            }
 	        }
 	    }
-	    TreeSet Sorted = new TreeSet(allplayers.values());
+	    TreeSet<EXPRankingContainer> Sorted = new TreeSet<EXPRankingContainer>(allplayers.values());
 	
-	    Iterator i = Sorted.iterator();
-	    Vector v = new Vector(1,1);
+	    Iterator<EXPRankingContainer> i = Sorted.iterator();
+	    Vector<EXPRankingContainer> v = new Vector<EXPRankingContainer>(1,1);
 	    while (i.hasNext())
 	        v.add(i.next());
 	    result.append("<table cellpadding=\"3\" cellspacing=\"0\"><tr bgcolor=\"#0066FF\"><th><font color=\"#FFFFFF\">Rank</font></th><th><font color=\"#FFFFFF\">Name</th><th><font color=\"#FFFFFF\">Experience</th><th><font color=\"#FFFFFF\">House</th><th><font color=\"#FFFFFF\">House Rank</th><th><font color=\"#FFFFFF\">Comment</th></tr>");
@@ -189,7 +190,7 @@ public class Statistics {
 	        else
 	            result.append("<tr class=\"truncolored\">");
 	        color = !color;
-	        EXPRankingContainer p = (EXPRankingContainer)v.elementAt(j);
+	        EXPRankingContainer p = v.elementAt(j);
 	        result.append("<td>" + rank + "</td>");
 	        result.append("<td>" + p.getName() + "</td>");
 	        result.append("<td>" + p.getExperience() + "</td>");
