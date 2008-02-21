@@ -2397,15 +2397,14 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setToolTipText("Number of scraps players are allowed each tick.");
         baseTextField.setName("ScrapsAllowed");
 		factionSpring1.add(baseTextField);
-		
         baseTextField = new JTextField(5);
-		factionSpring1.add(new JLabel("Scraps Allowed:",SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Number of scraps players are allowed each tick.");
-        baseTextField.setName("ScrapsAllowed");
-		factionSpring1.add(baseTextField);
-		
 
-		SpringLayoutHelper.setupSpringGrid(factionSpring1, 2);
+        factionSpring1.add(new JLabel("Max MOTD Length:",SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Max number of characters allowed in the MOTD.");
+        baseTextField.setName("MaxMOTDLength");
+        factionSpring1.add(baseTextField);
+        
+        SpringLayoutHelper.setupSpringGrid(factionSpring1, 2);
 		
 		//faction spring #2
         baseTextField = new JTextField(5);
