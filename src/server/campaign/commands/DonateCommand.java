@@ -168,12 +168,13 @@ public class DonateCommand implements Command {
 			CampaignMain.cm.toUser("PL|AP2PPQ|"+m.getType() + "|" + m.getWeightclass() + "|" + oldPilot.toFileFormat("#",true),Username,false);
             CampaignMain.cm.toUser(oldPilot.getName() + " was moved to your barracks.",Username,true);
     	    p.getPersonalPilotQueue().checkQueueAndWarn(p.getName(), m.getType(), m.getWeightclass());
-		} else {
+            //Stick a vacant pilot into the unit before sending to the house
+            m.setPilot(new SPilot("Vacant",99,99));
+		} else if ( !CampaignMain.cm.getBooleanConfig("CrewsStayWithUnits")){
 			p.getMyHouse().addDispossessedPilot(m, false);
+            m.setPilot(new SPilot("Vacant",99,99));
 		}
 		
-		//Stick a vacant pilot into the unit before sending to the house
-		m.setPilot(new SPilot("Vacant",99,99));
 		p.getMyHouse().addUnit(m,true);
 	
 	}

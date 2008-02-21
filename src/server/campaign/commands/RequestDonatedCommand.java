@@ -200,10 +200,7 @@ public class RequestDonatedCommand implements Command {
 			return;//break out ...
 		}//end if (needsMoreTechs)
 		
-		//We're going to be giving the player the unit. Include a pilot, if we're not using queues or its a non-mek
-		boolean needsPilotAlways = !Boolean.parseBoolean(house.getConfig("AllowPersonalPilotQueues"));
-		boolean needsPilotWithPPQ = (u.getType() != Unit.MEK) && (u.getType() != Unit.PROTOMEK);
-		if (needsPilotAlways || needsPilotWithPPQ)
+		if ( u.hasVacantPilot() )
 			u.setPilot(p.getMyHouse().getNewPilot(type_id));
 		
 		p.addUnit(u, true);//if both tests were passed, give the unit

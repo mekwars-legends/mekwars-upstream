@@ -562,10 +562,10 @@ public class Unit {
 	}
 	
 	public AmmoType getEntityAmmo(int weaponType, String ammoName){
-		Vector v_Ammo = AmmoType.getMunitionsFor(weaponType);
+		Vector<AmmoType> v_Ammo = AmmoType.getMunitionsFor(weaponType);
 		AmmoType at = null;
 		for ( int count = 0; count < v_Ammo.size();count++){
-			at = (AmmoType)v_Ammo.elementAt(count);
+			at = v_Ammo.elementAt(count);
 			if ( at.getInternalName().equalsIgnoreCase(ammoName) )
 				return at;
 		}

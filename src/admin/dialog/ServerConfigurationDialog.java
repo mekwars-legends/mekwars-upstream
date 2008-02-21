@@ -1488,6 +1488,11 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setName("AllowPilotDamageToTransfer");
         pilotCBoxGrid.add(BaseCheckBox);
 		
+        BaseCheckBox = new JCheckBox("Crews Stay With Units");
+        BaseCheckBox.setToolTipText("<html>If Checked Crews stay with thier units after being donated.</html>");
+        BaseCheckBox.setName("CrewsStayWithUnits");
+        pilotCBoxGrid.add(BaseCheckBox);
+        
 		//finalize the layout
 		JPanel pilotBox = new JPanel(new SpringLayout());
 		JPanel pilotFlow = new JPanel();

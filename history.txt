@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
++ RFE 1898995: A way for meks to keep their pilots on donation
 + Updated factions.dtd and planets.dtd
 + Bug: Duplicate Scrap Allotment field in Admin Server Config Dialog
 + Fixed several potential NPEs and one guaranteed NPE in RepairTrackingThread.java

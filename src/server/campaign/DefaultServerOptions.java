@@ -560,6 +560,9 @@ public class DefaultServerOptions {
         // eventually
         defaults.setProperty("AllowLimiters", "true");
 
+        //Pilots/Crews stay with their units after donation
+        defaults.setProperty("CrewsStayWithUnits", "false");
+
         // Pesonal Pilot Queues
         defaults.setProperty("AllowPersonalPilotQueues", "false");
         defaults.setProperty("CostToBuyNewPilot", "1");
@@ -1084,7 +1087,7 @@ public class DefaultServerOptions {
         defaults.setProperty("StartingAssaultProtoMekFactory", "1");
         defaults.setProperty("BaseFactoryRefreshRate", "100");
         defaults.setProperty("BaseCommonBuildTableShares", "100");
-        
+
     }
 
     /**
