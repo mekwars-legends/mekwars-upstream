@@ -27,8 +27,8 @@ import server.MWServ;
 
 public class UnitCosts {
 	
-	Vector<Vector> minCostUnitList = new Vector<Vector>(4,1);
-	Vector<Vector> maxCostUnitList = new Vector<Vector>(4,1);
+	Vector<Vector<Double>> minCostUnitList = new Vector<Vector<Double>>(4,1);
+	Vector<Vector<Double>> maxCostUnitList = new Vector<Vector<Double>>(4,1);
 	
 	public UnitCosts(){
 		for (int weight = Unit.LIGHT; weight <= Unit.ASSAULT; weight++){
@@ -57,11 +57,11 @@ public class UnitCosts {
 		this.setMinCost(weight,minCost);
 	}
 	
-	public Vector getMaxCost(int weight){
+	public Vector<Double> getMaxCost(int weight){
 		return maxCostUnitList.get(weight);
 	}
 	
-	public Vector getMinCost(int weight){
+	public Vector<Double> getMinCost(int weight){
 		return minCostUnitList.get(weight);
 	}
 	
@@ -75,12 +75,12 @@ public class UnitCosts {
 		return minCostVector.get(type);
 	}
 	
-	public void setMaxCost(int weight, Vector cost){
+	public void setMaxCost(int weight, Vector<Double> cost){
 		maxCostUnitList.removeElementAt(weight);
 		maxCostUnitList.add(weight,cost);
 	}
 	
-	public void setMinCost(int weight, Vector cost){
+	public void setMinCost(int weight, Vector<Double> cost){
 		minCostUnitList.removeElementAt(weight);
 		minCostUnitList.add(weight,cost);
 	}

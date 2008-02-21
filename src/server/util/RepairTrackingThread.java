@@ -376,7 +376,8 @@ class Repair{
             MWServ.mwlog.errLog("Could not find unit # "+unitID+" for player "+player.getName()+ " removing repair job from queue.");
             return true;
         }
-
+        pilot = mek.getPilot();
+        
         try{
             int roll = 12;
             

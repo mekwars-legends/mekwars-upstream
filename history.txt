@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
++ Fixed several potential NPEs and one guaranteed NPE in RepairTrackingThread.java
 + Added operation config AttackerAllowAgainstUnclaimedLand allows a Player
   to steal Unclaimed CP from any planet in range
 + New MegaMek.jar 0.33.19-MW022008-5498

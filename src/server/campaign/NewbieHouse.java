@@ -73,7 +73,7 @@ public class NewbieHouse extends NonConqHouse {
 		//Should never be anything in training faction bay.
 		for (int type = 0; type < 3;type++) {
 			for (int size = 0; size < 4;size++) {
-				Vector Weightclass = getHangar(type).elementAt(size);
+				Vector<SUnit> Weightclass = getHangar(type).elementAt(size);
 				Weightclass.clear();
 			}
 		}

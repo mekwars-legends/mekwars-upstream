@@ -129,7 +129,8 @@ public class CommandTaskThread extends Thread {
                 try {
                     MWServ.mwlog.infoLog("Closing DataProvider call from "+client.getInetAddress());
                     in.close();
-                    out.close();
+                    if(out != null)
+                    	out.close();
                 	client.close();
                     client = null;
                 }catch (SocketException se ){
@@ -145,8 +146,9 @@ public class CommandTaskThread extends Thread {
                 return;
             }catch (SocketTimeoutException ste){
                 try{
-                    in.close();
-                    out.close();
+                    //in.close(); // This can only be null at this point - guaranteed NPE
+                    if(out != null)
+                    	out.close();
                     client.close();
                     MWServ.mwlog.infoLog("TimeOut DataProvider call from "+client.getInetAddress());
                 }catch(Exception ex){}

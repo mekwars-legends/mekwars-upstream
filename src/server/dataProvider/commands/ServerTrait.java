@@ -56,7 +56,7 @@ public class ServerTrait implements ServerCommand {
             out.println(factionName,"TraitLine");
             out.println(traits.size(),"TraitLine");
             for ( int i = 0; i < traits.size(); i++){
-                out.println((String)traits.elementAt(i),"TraitLine");
+                out.println(traits.elementAt(i),"TraitLine");
             }
         }
     }
