@@ -203,8 +203,8 @@ public class MWServ {
 			try {
 				config.store(new FileOutputStream("./data/serverconfig.txt"), "Server config File");
 			} catch (Exception e1) {
-				mwlog.errLog("config file could not be read or written, defaults will be used.");
-				mwlog.errLog(e1);
+			    MWServ.mwlog.errLog("config file could not be read or written, defaults will be used.");
+			    MWServ.mwlog.errLog(e1);
 			}
 		}
 		
@@ -216,14 +216,13 @@ public class MWServ {
 	//this will just loop and take in info...
 	public void startServer(String[] args) {
 		if (args == null) {
-			mwlog.infoLog("Server started without parameters");
+		    MWServ.mwlog.infoLog("Server started without parameters");
 		}
 		try {
 			this.myCommunicator = ServerWrapper.createServer(this);
 			this.myCommunicator.start();
 		} catch (Exception e) {
-			mwlog.errLog("== PROBLEM STARTING SERVER WRAPPER ==");
-			mwlog.errLog(e);
+		    MWServ.mwlog.errLog("== PROBLEM STARTING SERVER WRAPPER ==");
 			MWServ.mwlog.errLog(e);
 		}
 	}
@@ -238,7 +237,7 @@ public class MWServ {
 			fis.close();
 		} catch (Exception ex) {
 			try {
-				mwlog.infoLog("Creating new File");
+			    MWServ.mwlog.infoLog("Creating new File");
 				MWServ.mwlog.mainLog("Creating new File");
 				if (filename.equals("./data/mails.txt")) {
 					FileOutputStream out = new FileOutputStream(filename);
@@ -248,8 +247,6 @@ public class MWServ {
 					out.close();
 				}
 			} catch (Exception e) {
-				mwlog.errLog(e);
-				mwlog.errLog("No file named " + filename + " was found and cannot create one!");
 				MWServ.mwlog.errLog(e);
 				MWServ.mwlog.mainLog("No file named " + filename + " was found and cannot create one!");
 				System.exit(1);
