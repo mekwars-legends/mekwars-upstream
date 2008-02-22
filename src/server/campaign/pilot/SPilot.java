@@ -52,7 +52,7 @@ import server.util.TokenReader;
  * @author Helge Richter
  * 
  */
-public class SPilot extends Pilot{
+public class SPilot extends Pilot {
     /**
      * 
      */
@@ -425,13 +425,15 @@ public class SPilot extends Pilot{
         }
         result.append(getKills());
         result.append(delimiter);
-        if ( getCurrentFaction().trim().length() > 0 )
-            result.append(getCurrentFaction());
-        else
-            result.append(CampaignMain.cm.getConfig("NewbieHouseName"));
-        result.append(delimiter);
-        result.append(getPilotId());
-        result.append(delimiter);
+        if (!toPlayer) {
+            if (getCurrentFaction().trim().length() > 0)
+                result.append(getCurrentFaction());
+            else
+                result.append(CampaignMain.cm.getConfig("NewbieHouseName"));
+            result.append(delimiter);
+            result.append(getPilotId());
+            result.append(delimiter);
+        }
         if (CampaignMain.cm.getBooleanConfig("AllowPilotDamageToTransfer")) {
             if (toPlayer) {
 
@@ -457,7 +459,7 @@ public class SPilot extends Pilot{
                 result.append(0);// unused var
             result.append(delimiter);
         }
-        
+
         return result.toString();
     }
 
