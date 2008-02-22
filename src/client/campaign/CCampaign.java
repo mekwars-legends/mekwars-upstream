@@ -23,6 +23,7 @@ import java.util.TreeMap;
 
 import common.BMEquipment;
 import common.CampaignData;
+import common.util.TokenReader;
 
 import client.MWClient;
 import client.gui.CCommPanel;
@@ -56,9 +57,9 @@ public class CCampaign {
 		String element;
 		
 		ST = new StringTokenizer(command, "|");
-		element = ST.nextToken();
+		element = TokenReader.readString(ST);
 		/*    if (!element.equals("CC")) {return(false);}
-		 element = ST.nextToken();*/
+		 element = TokenReader.readString(ST);*/
 		command = command.substring(3);
 		
 		if (element.equals("PS")) {
@@ -71,7 +72,7 @@ public class CCampaign {
 		
 		if (element.equals("CC")) // Campaign Command
 		{
-			String commandid = ST.nextToken();
+			String commandid = TokenReader.readString(ST);
 			if (commandid.equals("AT")) {//incoming attack
 				
 				if (mwclient.getConfig().isParam("ENABLEATTACKSOUND"))
@@ -80,16 +81,16 @@ public class CCampaign {
 				mwclient.addToChat("<font color=\"red\"><b>Your forces are under attack!</b></font>", CCommPanel.CHANNEL_HMAIL);
 				mwclient.addToChat("<font color=\"red\"><b>Your forces are under attack!</b></font>", CCommPanel.CHANNEL_PMAIL,"Server");
 				if (mwclient.getConfig().isParam("POPUPONATTACK")) {
-                    int opID = Integer.parseInt(ST.nextToken());
-                    int teams = Integer.parseInt(ST.nextToken());
+                    int opID = TokenReader.readInt(ST);
+                    int teams = TokenReader.readInt(ST);
                     //mwclient.showInfoWindow("Your forces are under attack!");
                     new ArmyViewerDialog(mwclient,null,ST,ArmyViewerDialog.AVD_DEFEND,null,null,opID,teams);
 				}
 			}
 			if (commandid.equals("NT")) {//next tick
 				
-				int time = Integer.parseInt(ST.nextToken());
-				boolean decrement = Boolean.parseBoolean(ST.nextToken());
+				int time = TokenReader.readInt(ST);
+				boolean decrement = TokenReader.readBoolean(ST);
 				mwclient.processTick(time);
 				
 				/*
@@ -163,7 +164,7 @@ public class CCampaign {
 		BlackMarket.clear();
 		
 		while(mainTokenizer.hasMoreTokens()) {
-			CBMUnit currBMUnit = new CBMUnit(mainTokenizer.nextToken(), this);
+			CBMUnit currBMUnit = new CBMUnit(TokenReader.readString(mainTokenizer), this);
 			BlackMarket.put(currBMUnit.getAuctionID(), currBMUnit);
 		}
 	}

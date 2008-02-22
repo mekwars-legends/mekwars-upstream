@@ -1841,7 +1841,6 @@ src/server/util/IpCountry.java -text
 src/server/util/MWPasswd.java -text
 src/server/util/MWPasswdRecord.java -text
 src/server/util/RepairTrackingThread.java -text
-src/server/util/TokenReader.java -text
 src/server/util/TrackerThread.java -text
 src/tracker/MWTracker.java -text
 src/updaters/AutoUpdater.java -text

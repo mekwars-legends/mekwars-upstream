@@ -46,7 +46,7 @@ import server.campaign.pilot.skills.EdgeSkill;
 import server.campaign.pilot.skills.SPilotSkill;
 import server.campaign.pilot.skills.TraitSkill;
 import server.campaign.pilot.skills.WeaponSpecialistSkill;
-import server.util.TokenReader;
+import common.util.TokenReader;
 
 /**
  * @author Helge Richter

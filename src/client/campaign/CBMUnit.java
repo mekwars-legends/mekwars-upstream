@@ -21,6 +21,7 @@ import java.util.StringTokenizer;
 
 import common.Unit;
 import common.campaign.pilot.Pilot;
+import common.util.TokenReader;
 
 /**
  * Client-side market unit. The market uses the filenames and other data
@@ -55,15 +56,15 @@ public class CBMUnit {
 	public CBMUnit(String listingData, CCampaign campaign) {
 		
 		//read data
-		StringTokenizer subTokenizer = new StringTokenizer(listingData,"*");
-		auctionID = Integer.parseInt(subTokenizer.nextToken());
-		unitID = Integer.parseInt(subTokenizer.nextToken());
-		modelName = subTokenizer.nextToken();
-		fileName = subTokenizer.nextToken();
-		salesTicksRemaining = Integer.parseInt(subTokenizer.nextToken());
-		minBid = Integer.parseInt(subTokenizer.nextToken());
-		soldByPlayer = Boolean.parseBoolean(subTokenizer.nextToken());
-		playersBid = Integer.parseInt(subTokenizer.nextToken());
+		StringTokenizer ST = new StringTokenizer(listingData,"*");
+		auctionID = TokenReader.readInt(ST);
+		unitID = TokenReader.readInt(ST);
+		modelName = TokenReader.readString(ST);
+		fileName = TokenReader.readString(ST);
+		salesTicksRemaining = TokenReader.readInt(ST);
+		minBid = TokenReader.readInt(ST);
+		soldByPlayer = TokenReader.readBoolean(ST);
+		playersBid = TokenReader.readInt(ST);
         
 		//bury a CUnit
 		embeddedUnit = new CUnit();
