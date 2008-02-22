@@ -40,6 +40,7 @@ import java.util.Vector;
 
 import server.MWChatServer.MWChatClient;
 import server.MWChatServer.MWChatServer;
+import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.MWChatServer.auth.IAuthenticator;
 import server.util.IpCountry;
@@ -59,18 +60,18 @@ public class MWServ {
 	private ServerWrapper myCommunicator;
 	private Hashtable<String,MMGame> games = new Hashtable<String,MMGame>();
 	private Hashtable<String,MWClientInfo> users = new Hashtable<String,MWClientInfo>();
-	private Hashtable ips = new Hashtable();
+	private Hashtable<InetAddress,Vector<MWClientInfo>> ips = new Hashtable<InetAddress, Vector<MWClientInfo>>();
 	private Hashtable<InetAddress,Long> banips = new Hashtable<InetAddress,Long>();
 	private Hashtable<String,String> banaccounts = new Hashtable<String,String>();
     private Hashtable<String,Long> ISPlog = new Hashtable<String,Long>();
 	private Hashtable<MWClientInfo, InetAddress> iphelp = new Hashtable<MWClientInfo, InetAddress>();
 	private Properties config = new Properties();
 	private Hashtable<String, String>mails = new Hashtable<String, String>();
-	private Hashtable iplog = new Hashtable();
+	private Hashtable<InetAddress,String> iplog = new Hashtable<InetAddress, String>();
 	//private Hashtable versionsubids = new Hashtable();
 	private IpCountry ipToCountry = null;
 	//private String log = "";
-	private server.campaign.CampaignMain campaign;
+	private CampaignMain campaign;
 	private Command.Table myCommands = new Command.Table();
 	private Vector<String> ignoreList = new Vector<String>(1,1);
     private Vector<String> factionLeaderIgnoreList = new Vector<String>(1,1);
@@ -103,6 +104,7 @@ public class MWServ {
 				
 		String logFileName = "./logs/logFile.txt";
 		String errorFileName = "./logs/errorFile.txt";
+		CampaignData.mwlog.setServer(true);
 		
 		try {
 			//CampaignData.mwlog.mainLog("Redirecting output to " + logFileName);
@@ -367,7 +369,7 @@ public class MWServ {
 		//Double IP Check
 		if (!originalName.startsWith("[Dedicated]")) {
 			if (ips.get(hisip) != null) {
-				Vector allthose = (Vector) ips.get(hisip);
+				Vector<MWClientInfo> allthose = ips.get(hisip);
 				StringBuilder result = new StringBuilder("Warning: " + originalName + " has the same IP as ");
 				boolean allowed = true;
 				int groupid = 0;
@@ -398,7 +400,7 @@ public class MWServ {
 					this.getCampaign().doSendModMail("NOTE:", result.toString());
 				allthose.add(newUser);
 			} else {
-				Vector allthose = new Vector(1,1);
+				Vector<MWClientInfo> allthose = new Vector<MWClientInfo>(1,1);
 				allthose.add(newUser);
 				ips.put(hisip, allthose);
 			}
@@ -418,10 +420,10 @@ public class MWServ {
 		}		
 		
 		//send all online users to the client. future updates incremental.
-		Enumeration u = users.elements();
+		Enumeration<MWClientInfo> u = users.elements();
 		String toSend = "US";
 		while (u.hasMoreElements()) {
-			toSend = toSend.concat("|" + ((MWClientInfo) u.nextElement()).toString());
+			toSend = toSend.concat("|" + u.nextElement().toString());
 		}
 		clientSend(toSend, name);
 		
@@ -490,7 +492,7 @@ public class MWServ {
 		
 		InetAddress hisip = iphelp.get(user);
 		if (hisip != null) {
-			Vector all = (Vector) ips.get(hisip);
+			Vector<MWClientInfo> all = ips.get(hisip);
 			if (all != null) {
 				if (all.size() == 1)
 					ips.remove(hisip);
@@ -792,7 +794,7 @@ public class MWServ {
 		try {
 			FileOutputStream out = new FileOutputStream("./data/mails.txt");
 			PrintStream p = new PrintStream(out);
-			Enumeration e = mails.keys();
+			Enumeration<String> e = mails.keys();
 			while (e.hasMoreElements()) {
 				String key = (String) e.nextElement();
 				p.println(key + "|" + (String) mails.get(key));
@@ -948,7 +950,7 @@ public class MWServ {
 			// Updating ban file for account names
 			FileOutputStream out = new FileOutputStream("./data/accountbans.txt");
 			PrintStream p = new PrintStream(out);
-			for (Enumeration e = banaccounts.keys(); e.hasMoreElements();) {
+			for (Enumeration<String> e = banaccounts.keys(); e.hasMoreElements();) {
 				Object q = e.nextElement();
 				p.println(q + "=" + banaccounts.get(q));
 			}
@@ -957,7 +959,7 @@ public class MWServ {
 			// Updating ban file for IP addresses
 			out = new FileOutputStream("./data/ipbans.txt");
 			p = new PrintStream(out);
-			for (Enumeration e = banips.keys(); e.hasMoreElements();) {
+			for (Enumeration<InetAddress> e = banips.keys(); e.hasMoreElements();) {
 				Object q = e.nextElement();
 				p.println(q + "=" + banips.get(q));
 			}

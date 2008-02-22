@@ -1195,10 +1195,14 @@ MouseMotionListener, MouseWheelListener, ActionListener {
 	 */
 	public void dataFetched(Map<Integer,Influences> changes) {
 		for (int id : changes.keySet()) {
-			Influences addinf = changes.get(id);
-			Influences oldinf = changesSinceLastRefresh.get(id);
-			if (oldinf != null) addinf.add(oldinf);
-			changesSinceLastRefresh.put(id,addinf);
+		    try{
+    			Influences addinf = changes.get(id);
+    			Influences oldinf = changesSinceLastRefresh.get(id);
+    			if (oldinf != null) addinf.add(oldinf);
+    			changesSinceLastRefresh.put(id,addinf);
+		    }catch(Exception ex){
+		        CampaignData.mwlog.errLog("Error with Planet: "+mwclient.getData().getPlanet(id).getName());
+		    }
 		}
 	}
 	/**

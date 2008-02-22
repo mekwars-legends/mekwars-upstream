@@ -29,9 +29,13 @@ import java.io.Serializable;
  * TODO: As of 7.9.06, this class is referenced only by the server. Can
  *       probably be safely repackaged as a server.* class.
  */
-public class MWClientInfo implements Serializable, java.lang.Comparable {
+public class MWClientInfo implements Serializable, Comparable<MWClientInfo> {
 	
-	//VARIABLES
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 831681934723434725L;
+    //VARIABLES
 	String name ="Nobody";//should be unique
 	String color = "black";
 	String country = "unknown";
@@ -130,8 +134,8 @@ public class MWClientInfo implements Serializable, java.lang.Comparable {
 		this.country = country;
 	}
 	
-	public int compareTo(Object obj) {
-		return this.name.compareTo(((MWClientInfo)obj).getName());
+	public int compareTo(MWClientInfo info) {
+		return this.name.compareTo(info.getName());
 	}
 	
 	public int getLevel() {

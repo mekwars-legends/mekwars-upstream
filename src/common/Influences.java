@@ -217,7 +217,7 @@ public class Influences implements MutableSerializable {
             amount = maxInfluence - oldwinnerinfluence;
 
         if (amount > oldloserinfluence) {
-            influences.put(loserId, 0);
+            influences.remove(loserId);
             loserId = loser.getId();
             influences.put(loserId, getInfluence(loserId)+oldloserinfluence);
             oldloserinfluence = getInfluence(loserId);

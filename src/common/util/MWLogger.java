@@ -22,16 +22,10 @@ import java.util.logging.SimpleFormatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 
 import common.CampaignData;
-
-import server.campaign.CampaignMain;
-
 
 public final class MWLogger {// final - no extension of the server logger
 
@@ -42,6 +36,8 @@ public final class MWLogger {// final - no extension of the server logger
 
     private static boolean logging = false;
     private static boolean addSeconds = true;
+    private static boolean isServer = false;
+    
     // private static boolean clientlog = false;
 
     private File logDir;
@@ -348,21 +344,21 @@ public final class MWLogger {// final - no extension of the server logger
     public void errLog(String s) {
         if (logging) {
             errLog.info(s);
-            if (CampaignMain.cm != null)
-                CampaignMain.cm.doSendErrLog(s);
+            if ( isServer && server.campaign.CampaignMain.cm != null)
+                server.campaign.CampaignMain.cm.doSendErrLog(s);
         }
     }
 
     public void errLog(Exception e) {
         if (logging) {
             errLog.warning("[" + e.toString() + "]");
-            if (CampaignMain.cm != null)
-                CampaignMain.cm.doSendErrLog("[" + e.toString() + "]");
+            if (isServer && server.campaign.CampaignMain.cm != null)
+                server.campaign.CampaignMain.cm.doSendErrLog("[" + e.toString() + "]");
             StackTraceElement[] t = e.getStackTrace();
             for (int i = 0; i < t.length; i++) {
                 errLog.warning("   " + t[i].toString());
-                if (CampaignMain.cm != null)
-                    CampaignMain.cm.doSendErrLog("   " + t[i].toString());
+                if (isServer && server.campaign.CampaignMain.cm != null)
+                    server.campaign.CampaignMain.cm.doSendErrLog("   " + t[i].toString());
             }
         }
     }
@@ -379,8 +375,8 @@ public final class MWLogger {// final - no extension of the server logger
             StackTraceElement[] t = e.getStackTrace();
             for (int i = 0; i < t.length; i++) {
                 debugLog.warning("   " + t[i].toString());
-                if (CampaignMain.cm != null)
-                    CampaignMain.cm.doSendErrLog("   " + t[i].toString());
+                if (isServer && server.campaign.CampaignMain.cm != null)
+                    server.campaign.CampaignMain.cm.doSendErrLog("   " + t[i].toString());
 
             }
         }
@@ -412,8 +408,8 @@ public final class MWLogger {// final - no extension of the server logger
             StackTraceElement[] t = e.getStackTrace();
             for (int i = 0; i < t.length; i++) {
                 dbLog.warning("   " + t[i].toString());
-                if (CampaignMain.cm != null)
-                    CampaignMain.cm.doSendErrLog("   " + t[i].toString());
+                if (isServer && server.campaign.CampaignMain.cm != null)
+                    server.campaign.CampaignMain.cm.doSendErrLog("   " + t[i].toString());
             }
         }
     }
@@ -426,6 +422,10 @@ public final class MWLogger {// final - no extension of the server logger
         MWLogger.logging = b;
     }
 
+    public void setServer(boolean b){
+        MWLogger.isServer = b;
+    }
+    
     public void createFactionLogger(String logName) {
 
         try {
@@ -441,20 +441,5 @@ public final class MWLogger {// final - no extension of the server logger
             CampaignData.mwlog.errLog(ex);
         }
 
-    }
-
-    public synchronized static void addToModeratorLog(String s) {
-        try {
-            FileOutputStream out = new FileOutputStream("./campaign/moderator.log", true);
-            PrintStream p = new PrintStream(out);
-            Date d = new Date(System.currentTimeMillis());
-            p.println(d + ":" + s);
-            p.close();
-            out.close();
-            CampaignMain.cm.doSendModMail("MODLOG: ", s);
-        } catch (Exception ex) {
-            CampaignData.mwlog.errLog("Problems writing modlog to file");
-            CampaignData.mwlog.errLog(ex);
-        }
     }
 }

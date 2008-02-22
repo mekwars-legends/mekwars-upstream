@@ -403,7 +403,9 @@ public class DefectCommand implements Command {
 				
 			}//end if(unconfirmed)
 			
-			newHouse = createSingleFaction(HouseName, shortName);
+			if ( newHouse == null && isSingleFaction )
+			    newHouse = createSingleFaction(HouseName, shortName);
+			
 			//setup the return info
 			String toReturn = "You succesfully defected to " + HouseName + ". ";
 			
