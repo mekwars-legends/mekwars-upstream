@@ -34,6 +34,8 @@ package dedicatedhost.protocol;
 import java.io.IOException;
 import java.net.Socket;
 
+import common.CampaignData;
+
 import dedicatedhost.MWDedHost;
 
 /**
@@ -81,7 +83,7 @@ public class CConnector implements IConnectionListener
      */
     public void send(String message) {
     	if ( message.indexOf("CH%7c%2fc+sendclientdata%23") < 0)
-    		MWDedHost.MWDedHostLog.clientOutputLog("SENT: " + message);
+    		CampaignData.mwlog.infoLog("SENT: " + message);
       _connectionHandler.queueMessage(message);
     }
 
@@ -103,24 +105,24 @@ public class CConnector implements IConnectionListener
     	
       try {
         if (_connected) {
-            MWDedHost.MWDedHostLog.clientErrLog("already connected...");
+            CampaignData.mwlog.errLog("already connected...");
             return;
         }
 
         if (_host.equals("") || _port == -1)
         {
-            MWDedHost.MWDedHostLog.clientErrLog("no host or port set...");
+            CampaignData.mwlog.errLog("no host or port set...");
             return;
         }
 
         IOException ioexception = null;
 
-        MWDedHost.MWDedHostLog.clientErrLog("Opening socket connection to " + _host + ":" + _port);
+        CampaignData.mwlog.errLog("Opening socket connection to " + _host + ":" + _port);
         Socket s = null;
         try {
           s = new Socket(_host, _port);
-          MWDedHost.MWDedHostLog.clientErrLog("CConnector: connected to " + _host + ":" + _port);
-          //MWDedHost.MWDedHostLog.clientErrLog("setting NO_DELAY = true");
+          CampaignData.mwlog.errLog("CConnector: connected to " + _host + ":" + _port);
+          //CampaignData.mwlog.errLog("setting NO_DELAY = true");
           s.setTcpNoDelay(true);
           _connectionHandler = new ConnectionHandlerLocal(s);
           _connectionHandler.setListener(this);
@@ -129,12 +131,12 @@ public class CConnector implements IConnectionListener
           return;
         }
         catch (IOException e) {ioexception = e;}
-        MWDedHost.MWDedHostLog.clientErrLog("giving up");
+        CampaignData.mwlog.errLog("giving up");
         if (ioexception != null) {throw ioexception;}
       }
       catch (IOException e) {
       	
-        MWDedHost.MWDedHostLog.clientErrLog(e);
+        CampaignData.mwlog.errLog(e);
         /*Object[] options = {"Exit"};
         int selectedValue = JOptionPane.showOptionDialog(null,"Could not connect to " + _host + ":" + _port,"Connection error!",JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,null,options,options[0]);
         if (selectedValue == 0)

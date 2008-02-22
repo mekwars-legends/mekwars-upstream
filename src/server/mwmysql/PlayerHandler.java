@@ -24,7 +24,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.StringTokenizer;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.commands.Command;
@@ -43,8 +43,8 @@ public class PlayerHandler {
 			stmt.close();
 			return numplayers;
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.countPlayers: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in PlayerHandler.countPlayers: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 			return 0;
 		}
 	}
@@ -60,13 +60,13 @@ public class PlayerHandler {
 				p.addExperience(100, true);
 				Command c = CampaignMain.cm.getServerCommands().get("UNENROLL");
 				c.process(new StringTokenizer("CONFIRMED", "#"), rs.getString("playerName"));
-				MWServ.mwlog.infoLog(rs.getString("playerName") + " purged.");
+				CampaignData.mwlog.infoLog(rs.getString("playerName") + " purged.");
 			}
 			rs.close();
 			stmt.close();
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.purgeStalePlayers: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in PlayerHandler.purgeStalePlayers: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		}
 	}
 	
@@ -86,8 +86,8 @@ public class PlayerHandler {
 			ps.close();
 			return -1;
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.getPlayerIDByName: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in PlayerHandler.getPlayerIDByName: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 			return -1;
 		}
 	}
@@ -98,8 +98,8 @@ public class PlayerHandler {
 			ps.executeUpdate();
 			ps.close();
 		} catch(SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.setPassword: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in PlayerHandler.setPassword: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		}
 	}
 	
@@ -110,8 +110,8 @@ public class PlayerHandler {
 			ps.executeUpdate();
 			ps.close();
 		} catch(SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.setPlayerAccess: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in PlayerHandler.setPlayerAccess: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		}
 	}
 	
@@ -140,8 +140,8 @@ public class PlayerHandler {
 					return false;
 				}
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.matchPassword: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in PlayerHandler.matchPassword: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 			return false;
 		}
 	}
@@ -168,8 +168,8 @@ public class PlayerHandler {
 			ps.close();
 			return false;
 		} catch(SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in playerHandler.playerExists: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in playerHandler.playerExists: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 			return false;
 		}
 	}
@@ -208,10 +208,10 @@ public class PlayerHandler {
 			// Remove player
 			stmt.executeUpdate("DELETE from players WHERE playerID = " + p.getDBId());
 			stmt.close();
-			MWServ.mwlog.dbLog("Deleted account " + p.getName() + " from database.");
+			CampaignData.mwlog.dbLog("Deleted account " + p.getName() + " from database.");
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in PlayerHandler.deletePlayer: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in PlayerHandler.deletePlayer: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		}
 	}
 	

@@ -400,7 +400,7 @@ public class Unit {
 			if ( master.getC3Level() != C3_MASTER && master.getC3Level() != C3_MMASTER)//master is really a slave or doesn't have C3
 				return -1;
 			
-			//System.err.println("Return 7");
+			//CampaignData.mwlog.errLog("Return 7");
 			
 			/* if ( master.getId() == this.getId() )//master is a company master
 			 return master.getId();*/

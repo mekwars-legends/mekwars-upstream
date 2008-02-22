@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.StringTokenizer;
 
+import common.CampaignData;
+
 import client.MWClient;
 import client.gui.CCommPanel;
 
@@ -56,7 +58,7 @@ public class BT extends Command {
 			while(folderT.hasMoreTokens()) {
 				//Token 1 is the folder
 				String dName = folderT.nextToken();
-				MWClient.mwClientLog.clientOutputLog(dName);
+				CampaignData.mwlog.infoLog(dName);
 				// Token 2 is the names of the lists
 				if(folderT.hasMoreTokens()) {
 					StringTokenizer listT = new StringTokenizer(folderT.nextToken(), "*");
@@ -95,11 +97,11 @@ public class BT extends Command {
 					out.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					CampaignData.mwlog.errLog(e);
 				}
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				CampaignData.mwlog.errLog(e);
 			}
 		}
 	}

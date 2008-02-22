@@ -22,7 +22,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Connection;
 import server.campaign.SUnitFactory;
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.SPlanet;
 
 public class factoryHandler {
@@ -57,7 +57,7 @@ public class factoryHandler {
             rs.close();
             ps.close();
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQL Error in factoryHandler.java: " + e.getMessage());
+            CampaignData.mwlog.dbLog("SQL Error in factoryHandler.java: " + e.getMessage());
         }
     }
 
@@ -80,8 +80,8 @@ public class factoryHandler {
             ps.close();
             return fid;
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQLException in factoryHandler.getFactoryByNameAndPlanet: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQLException in factoryHandler.getFactoryByNameAndPlanet: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
             return 0;
         }
 
@@ -92,14 +92,14 @@ public class factoryHandler {
         String sql;
 
         try {
-            MWServ.mwlog.dbLog("Deleting factory " + factoryID);
+            CampaignData.mwlog.dbLog("Deleting factory " + factoryID);
             stmt = con.createStatement();
             sql = "DELETE from factories where FactoryID = " + factoryID;
             stmt.executeUpdate(sql);
             stmt.close();
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQL ERROR in factoryHandler.java: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQL ERROR in factoryHandler.java: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
         }
     }
 
@@ -112,8 +112,8 @@ public class factoryHandler {
             stmt.executeUpdate();
             stmt.close();
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQL ERROR in factoryHandler.java: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQL ERROR in factoryHandler.java: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
         }
     }
 

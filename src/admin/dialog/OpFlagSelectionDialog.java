@@ -150,7 +150,7 @@ public class OpFlagSelectionDialog extends JDialog implements ActionListener {
 							}
 							element++;
 						}
-                       // MWClient.mwClientLog.clientErrLog("7");
+                       // CampaignData.mwlog.errLog("7");
 
 						//looped through without finding a starting match. set 0.
 						if (shouldContinue) {

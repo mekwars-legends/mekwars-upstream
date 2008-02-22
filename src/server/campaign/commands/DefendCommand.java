@@ -16,7 +16,7 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SPlayer;
@@ -252,7 +252,7 @@ public class DefendCommand implements Command {
 			toSend += ".";
 		
 		//tell the defender that he has succesfully joined the attack.
-		MWServ.mwlog.gameLog("Defend: " + so.getShortID() + "/" + dp.getName() + " w. Army #" + da.getID());
+		CampaignData.mwlog.gameLog("Defend: " + so.getShortID() + "/" + dp.getName() + " w. Army #" + da.getID());
 		CampaignMain.cm.toUser(toSend,Username,true);
         
         if ( o.getBooleanValue("FreeForAllOperation") ){

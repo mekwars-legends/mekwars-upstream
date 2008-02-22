@@ -33,7 +33,7 @@ import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
 import common.util.UnitUtils;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
@@ -129,7 +129,7 @@ public class SimpleRepairCommand implements Command {
             
             if ( CampaignMain.cm.getRTT().getState() == Thread.State.TERMINATED ){
                 CampaignMain.cm.toUser("FSM|Sorry your repair order could not be processed the repair thread has been terminated. Staff has been notified.",Username,false);
-                MWServ.mwlog.errLog("AM:NOTE: Repair Thread has been terminated! Use the restartrepairthread command to restart it! If all else fails reboot!");
+                CampaignData.mwlog.errLog("AM:NOTE: Repair Thread has been terminated! Use the restartrepairthread command to restart it! If all else fails reboot!");
                 return;
             }
 
@@ -140,15 +140,15 @@ public class SimpleRepairCommand implements Command {
             unit.addRepairCost(-1);
             player.setSave();
             time = setWorkHours(rolls,techs,unit.getEntity(),player.getMyHouse());
-            MWServ.mwlog.errLog("Repair Time: "+time);
+            CampaignData.mwlog.errLog("Repair Time: "+time);
             CampaignMain.cm.getRTT().getRepairList().add(
                     RepairTrackingThread.Repair(player, unitID, techs, time,false));
             CampaignMain.cm.toUser("FSM|Repairs have begone on your "+unit.getModelName()+" <b>At a Cost of "+CampaignMain.cm.moneyOrFluMessage(true,true,cost)+"</b>",Username,false);
             CampaignMain.cm.toUser("PL|UU|"+unitID+"|"+unit.toString(true),Username,false);
 
         }catch(Exception ex){
-            MWServ.mwlog.errLog("Unable to Process Repair Unit Command!");
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog("Unable to Process Repair Unit Command!");
+            CampaignData.mwlog.errLog(ex);
         }
         
 	}//end process()

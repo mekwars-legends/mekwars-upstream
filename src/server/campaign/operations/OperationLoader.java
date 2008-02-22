@@ -35,7 +35,7 @@ import java.util.Properties;
 
 import common.DefaultOperation;
 
-import server.MWServ;
+import common.CampaignData;
 
 
 public class OperationLoader {
@@ -85,8 +85,8 @@ public class OperationLoader {
 		try {
 			opValues.load(new FileInputStream(shortFilename));
 		} catch (Exception e) {
-			MWServ.mwlog.errLog("Problems loading short op: " + opName);
-			MWServ.mwlog.errLog(e);
+			CampaignData.mwlog.errLog("Problems loading short op: " + opName);
+			CampaignData.mwlog.errLog(e);
 		}
 		
 		//attempt to load longvals
@@ -126,8 +126,8 @@ public class OperationLoader {
 		try {
 			modValues.load(new FileInputStream(modFilename));
 		} catch (Exception e) {
-			MWServ.mwlog.errLog("Problems loading mod op: " + opName);
-			MWServ.mwlog.errLog(e);
+			CampaignData.mwlog.errLog("Problems loading mod op: " + opName);
+			CampaignData.mwlog.errLog(e);
 		}
 		
 		opName = opName.substring(0, opName.length() - 5);//remove ".txt"

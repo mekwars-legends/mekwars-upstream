@@ -204,7 +204,7 @@
          
          for (int pos = 0; pos < end; pos++ ){
              index = tempMessage.indexOf("<",index);
-             //MWServ.mwlog.errLog("pos: "+pos+" end: "+end+" index: "+index);
+             //CampaignData.mwlog.errLog("pos: "+pos+" end: "+end+" index: "+index);
              if ( index < 0 )
                  break;
              if ( tempMessage.substring(index).startsWith("</")){
@@ -218,7 +218,7 @@
              }
              else
                  tabs = getTabs(tabCount++);
-             //MWServ.mwlog.errLog("tabs: "+tabs.length());
+             //CampaignData.mwlog.errLog("tabs: "+tabs.length());
              if ( tabs.length() > 0 ){
                  tempMessage = tempMessage.substring(0,index)+tabs+tempMessage.substring(index);
              }

@@ -61,6 +61,7 @@ import megamek.common.MechFileParser;
 import megamek.common.MechSummary;
 import megamek.common.MechSummaryCache;
 
+import common.CampaignData;
 import common.House;
 import common.Unit;
 import common.campaign.pilot.Pilot;
@@ -620,8 +621,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 			//System.out.println("Attempting to find ./data/buildtables.zip");
 			tableZip = new ZipFile("./data/buildtables.zip");
 		} catch (IOException io) {
-			MWClient.mwClientLog.clientErrLog("Could not find build tables.");
-			MWClient.mwClientLog.clientErrLog(io);
+			CampaignData.mwlog.errLog("Could not find build tables.");
+			CampaignData.mwlog.errLog(io);
 			return;
 		}
 		
@@ -989,7 +990,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 				UnitEntity = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity(); 
 				
 			} catch (Exception e) {
-				//MWClient.mwClientLog.clientErrLog(e);
+				//CampaignData.mwlog.errLog(e);
 				createEntityFromFileNameWithCache(fn.trim());//make the entity
 			}
 			
@@ -1055,13 +1056,13 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 	            	    UnitEntity = new MechFileParser(new File("./data/mechfiles/Infantry.zip"),fn).getEntity();
 	            	} catch (Exception exc) {
 	            		try {
-	                        MWClient.mwClientLog.clientErrLog("Error loading unit: " + fn + ". Try replacing with OMG.");
+	                        CampaignData.mwlog.errLog("Error loading unit: " + fn + ". Try replacing with OMG.");
 	                        //MechSummary ms = MechSummaryCache.getInstance().getMech("Error OMG-UR-FD");
 	                        UnitEntity = UnitUtils.createOMG();//new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
 	                        //UnitEntity = new MechFileParser (new File("./data/mechfiles/Meks.zip"),"Error OMG-UR-FD.hmp").getEntity();
 	                    }
 	                    catch (Exception exepe) {
-	                        MWClient.mwClientLog.clientErrLog("Error unit failed to load. Exiting.");
+	                        CampaignData.mwlog.errLog("Error unit failed to load. Exiting.");
 	                        System.exit(1);
 	                    }
 	            	}

@@ -96,7 +96,7 @@ public class SubFaction{
 			if ( SubFaction.getDefault().containsKey(key) )
 				return SubFaction.getDefault().getProperty(key);
 			
-			System.err.println("Unable to find subfaction config: "+key);
+			CampaignData.mwlog.errLog("Unable to find subfaction config: "+key);
 			return "-1";
 		}
 		

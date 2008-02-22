@@ -40,6 +40,8 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.zip.Inflater;
 
+import common.CampaignData;
+
 import client.MWClient;
 import client.protocol.IConnectionListener;
 
@@ -71,7 +73,7 @@ class ReaderThread extends Thread {
         try {
             _sis = s.getInputStream();
         } catch (Exception ex) {
-            MWClient.mwClientLog.clientErrLog(ex);
+            CampaignData.mwlog.errLog(ex);
         }
         _connectionHandler = handler;
     }
@@ -139,17 +141,17 @@ class ReaderThread extends Thread {
         // debugging output
         /*
          * checksum.reset(); checksum.update(compressedBytes, 0, size);
-         * MWClient.mwClientLog.clientOutputLog("\t...Checksum of /deflated is " +
+         * CampaignData.mwlog.infoLog("\t...Checksum of /deflated is " +
          * checksum.getValue()); BufferedReader cbr = new BufferedReader(new
          * InputStreamReader(new ByteArrayInputStream(compressedBytes, 0,
          * size))); // ... more debugging StringBuilder sb2 = new StringBuilder();
          * for (int i = 0; i < Math.min(size, 10); i++) {
          * sb2.append(compressedBytes[i]); sb2.append(" "); }
-         * //MWClient.mwClientLog.clientOutputLog("\tfirst bytes are " +
+         * //CampaignData.mwlog.infoLog("\tfirst bytes are " +
          * sb2.toString()); // ... still more String s;
-         * //MWClient.mwClientLog.clientOutputLog("Probably useless /deflate
+         * //CampaignData.mwlog.infoLog("Probably useless /deflate
          * payload follows:"); while ((s = cbr.readLine()) != null) {
-         * MWClient.mwClientLog.clientOutputLog("\t" + s); }
+         * CampaignData.mwlog.infoLog("\t" + s); }
          */
         inflater.reset();
         inflater.setInput(compressedBytes, 0, size);
@@ -182,7 +184,7 @@ class ReaderThread extends Thread {
                             try {
                                 inflate(newLine);
                             } catch (Exception ex) {
-                                MWClient.mwClientLog.clientErrLog(ex);
+                                CampaignData.mwlog.errLog(ex);
                             }
                             continue;
                         }
@@ -193,16 +195,16 @@ class ReaderThread extends Thread {
                     _listener.incomingMessage(newLine);
                     
                 } else {
-                    MWClient.mwClientLog.clientErrLog("Null listener: " + newLine);
+                    CampaignData.mwlog.errLog("Null listener: " + newLine);
                 }
             }
-            MWClient.mwClientLog.clientErrLog("ReaderThread: stopping gracefully.");
+            CampaignData.mwlog.errLog("ReaderThread: stopping gracefully.");
             
         } catch (IOException e) {
             if (keepGoing) {
             	pleaseStop();
-                MWClient.mwClientLog.clientErrLog("ReaderThread Error");
-                MWClient.mwClientLog.clientErrLog(e);
+                CampaignData.mwlog.errLog("ReaderThread Error");
+                CampaignData.mwlog.errLog(e);
                 _connectionHandler.shutdown(true);
             }
         }

@@ -177,7 +177,7 @@ public class MWChatClient implements IConnectionListener, ICommands {
 	 */
 	public void incomingMessage(String msg) {
 		// deal with message
-		// MWServ.mwlog.infoLog("incoming mesage: "+msg);
+		// CampaignData.mwlog.infoLog("incoming mesage: "+msg);
 		CommandProcessorRemote.process(msg, this);
 	}
 

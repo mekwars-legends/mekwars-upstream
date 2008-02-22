@@ -143,8 +143,8 @@ public class Influences implements MutableSerializable {
 
             return faction.getId();
         } catch (Exception ex) {
-            ex.printStackTrace();
-            System.err.println("Error in Influenes.getOwner()");
+            CampaignData.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog("Error in Influenes.getOwner()");
             return null;
         }
 

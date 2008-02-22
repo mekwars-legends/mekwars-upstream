@@ -61,7 +61,7 @@ public class AdminSetPlanetTemperatureCommand implements Command {
         	planet.toDB();
 		
 		CampaignMain.cm.toUser("Temperature range set for "+planet.getName(),Username,true);
-		//server.MWServ.mwlog.modLog(Username + " set the Temperature range for "+planet.getName());
+		//server.CampaignData.mwlog.modLog(Username + " set the Temperature range for "+planet.getName());
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has set the Temperature range for "+planet.getName());
 	}
 }

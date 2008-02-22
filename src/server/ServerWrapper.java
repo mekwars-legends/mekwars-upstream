@@ -24,6 +24,8 @@ package server;
 
 import java.net.InetAddress;
 
+import common.CampaignData;
+
 import server.MWChatServer.auth.IAuthenticator;
 import server.MWChatServer.MWChatClient;
 import server.MWChatServer.MWChatServer;
@@ -45,7 +47,7 @@ public class ServerWrapper extends MWChatServer{
 	}
 	
 	public void start() {
-		MWServ.mwlog.mainLog("Starting");
+		CampaignData.mwlog.mainLog("Starting");
 		this.acceptConnections();
 	}
 	
@@ -58,7 +60,7 @@ public class ServerWrapper extends MWChatServer{
 		try {
 			this.myServer.clientRecieve(command, username);
 		} catch (Exception e) {
-			MWServ.mwlog.errLog(e);
+			CampaignData.mwlog.errLog(e);
 		}
 	}
 	
@@ -68,7 +70,7 @@ public class ServerWrapper extends MWChatServer{
 			try {
 				client.sendRaw("/comm" + ICommands.DELIMITER + common.comm.TransportCodec.encode(msg));
 			} catch (Exception e) {
-				MWServ.mwlog.errLog(e);
+				CampaignData.mwlog.errLog(e);
 			}
 		}
 	}
@@ -89,7 +91,7 @@ public class ServerWrapper extends MWChatServer{
 		try {
 			MWChatClient c = this.getClient(username);
 			if (c == null) {
-				MWServ.mwlog.mainLog("WARNING: Tried to get the IP from " + username + ", who is not here.");
+				CampaignData.mwlog.mainLog("WARNING: Tried to get the IP from " + username + ", who is not here.");
 				
 				/*
 				 * We don't want to log out player who we can't find - logout uses getIP
@@ -109,7 +111,7 @@ public class ServerWrapper extends MWChatServer{
 				try {
 					return InetAddress.getLocalHost();
 				} catch (Exception ex) {
-					MWServ.mwlog.errLog(ex);
+					CampaignData.mwlog.errLog(ex);
 					return null;
 				}
 			}
@@ -117,7 +119,7 @@ public class ServerWrapper extends MWChatServer{
 		}
 		
 		catch (Exception e) {
-			MWServ.mwlog.errLog(e);
+			CampaignData.mwlog.errLog(e);
 			try {
 				return InetAddress.getLocalHost();
 			} catch (Exception ex) {
@@ -136,7 +138,7 @@ public class ServerWrapper extends MWChatServer{
 	@Override
 	public boolean signOn(MWChatClient client, String password) throws Exception{
 		
-		MWServ.mwlog.infoLog(client.getUserId() + " is attempting a signon: ");
+		CampaignData.mwlog.infoLog(client.getUserId() + " is attempting a signon: ");
 		String userId = client.getUserId();
 		validateUserId(userId);
 		
@@ -157,7 +159,7 @@ public class ServerWrapper extends MWChatServer{
 			int access = auth.getAccess();
 			client.setAccessLevel(access);
 			_users.put(clientKey(client), client);
-			MWServ.mwlog.infoLog(client.getUserId() + " is authenticated.  Access = " + access + (client.getTunneling() ? " (tunneling)" : ""));
+			CampaignData.mwlog.infoLog(client.getUserId() + " is authenticated.  Access = " + access + (client.getTunneling() ? " (tunneling)" : ""));
 			_cumulativeLogins++;
 		}
 		
@@ -171,7 +173,7 @@ public class ServerWrapper extends MWChatServer{
 		try {
 			this.myServer.clientLogout(client.getUserId());
 		} catch (Exception e) {
-			MWServ.mwlog.errLog(e);
+			CampaignData.mwlog.errLog(e);
 		}
 	}
 	

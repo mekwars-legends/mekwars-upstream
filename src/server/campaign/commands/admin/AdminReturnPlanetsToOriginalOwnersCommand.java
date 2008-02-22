@@ -89,7 +89,7 @@ public class AdminReturnPlanetsToOriginalOwnersCommand implements Command {
 			
 		}
 		
-		//server.MWServ.mwlog.modLog(Username + " restored all plants to their original owners.");
+		//server.CampaignData.mwlog.modLog(Username + " restored all plants to their original owners.");
 		CampaignMain.cm.toUser("You restored all plants to their original owners.",Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " restored all plants to their original owners.");
 		

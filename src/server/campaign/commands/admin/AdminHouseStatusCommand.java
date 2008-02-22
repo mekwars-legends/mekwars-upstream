@@ -57,7 +57,7 @@ public class AdminHouseStatusCommand implements Command {
 		//feed back the faction status
 		CampaignMain.cm.toUser("HS|CA|0", Username, false);//clear old data
 		CampaignMain.cm.toUser(h.getCompleteStatus(),Username,false);
-		//server.MWServ.mwlog.modLog(Username + " checked " + h.getName());
+		//server.CampaignData.mwlog.modLog(Username + " checked " + h.getName());
 		CampaignMain.cm.doSendModMail("NOTE",Username + " checked " + h.getName());
 		
 	}

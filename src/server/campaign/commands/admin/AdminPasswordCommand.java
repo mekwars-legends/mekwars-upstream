@@ -18,7 +18,7 @@ package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.commands.Command;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
@@ -77,7 +77,7 @@ public class AdminPasswordCommand implements Command {
 			try {
 				MWPasswd.save();
 			}  catch (Exception ex) {
-				MWServ.mwlog.errLog(ex);
+				CampaignData.mwlog.errLog(ex);
 			}
 			CampaignMain.cm.toUser("Password for " + target + " removed!",Username,true);
 			CampaignMain.cm.doSendModMail("NOTE",Username + " has removed "+ target+"'s password");
@@ -107,7 +107,7 @@ public class AdminPasswordCommand implements Command {
                 	CampaignMain.cm.doSendToAllOnlinePlayers("PI|DA|" + CampaignMain.cm.getPlayerUpdateString(p),false);
                 
 			} catch (Exception ex) {
-				MWServ.mwlog.errLog(ex);
+				CampaignData.mwlog.errLog(ex);
 			}
 			
 			CampaignMain.cm.toUser("Level for " + target + " set to " + level + "!",Username,true);

@@ -23,7 +23,7 @@ import common.Unit;
 import common.UnitFactory;
 import common.util.StringUtils;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SHouse;
@@ -78,7 +78,7 @@ public class OpsChickenThread extends Thread {
 	 * several minutes after it is supposedly "stopped."
 	 */
 	public synchronized void stopChicken() {
-		MWServ.mwlog.gameLog("ChickenThread " + opID + "/" + pdefender.getName() + " turned off.");
+		CampaignData.mwlog.gameLog("ChickenThread " + opID + "/" + pdefender.getName() + " turned off.");
 		shouldContinue = false;
 	}
 	
@@ -211,7 +211,7 @@ public class OpsChickenThread extends Thread {
 		//get the actual ShortOperation. Catch any nulls.
 		ShortOperation parentOp = CampaignMain.cm.getOpsManager().getRunningOps().get(opID);
 		if (parentOp == null) {
-			MWServ.mwlog.errLog("Tried to do a leech with a null ShortOperation!");
+			CampaignData.mwlog.errLog("Tried to do a leech with a null ShortOperation!");
 			return;
 		}
 		
@@ -398,7 +398,7 @@ public class OpsChickenThread extends Thread {
 			CampaignMain.cm.doSendToAllOnlinePlayers(defendH, "HS|" + loserHSUpdates.toString(), false);
 		
 		//and add the info to the log
-		MWServ.mwlog.gameLog("Leech: " + this.opID + "/" + pdefender.getName() + "<br> Player saw: " + toMain + "<br> Main saw: " + toMain);
+		CampaignData.mwlog.gameLog("Leech: " + this.opID + "/" + pdefender.getName() + "<br> Player saw: " + toMain + "<br> Main saw: " + toMain);
 	}
 	
 	@Override
@@ -434,7 +434,7 @@ public class OpsChickenThread extends Thread {
 			try {
 				this.wait(waittime * 1000);//time given in seconds
 			} catch (Exception ex) {
-				MWServ.mwlog.errLog(ex);
+				CampaignData.mwlog.errLog(ex);
 			}
 			
 			//if the stop signal was sent while we were

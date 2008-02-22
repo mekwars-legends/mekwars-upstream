@@ -21,7 +21,7 @@ import java.util.StringTokenizer;
 
 import common.Unit;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SPlayer;
@@ -109,7 +109,7 @@ public class ExchangePilotInUnitCommand implements Command {
 							return;
 						}
 					} catch(Exception ex){
-						MWServ.mwlog.errLog(ex);
+						CampaignData.mwlog.errLog(ex);
 						CampaignMain.cm.toUser("AM:Invalid Pilot try again!",Username,true);
 						return;
 					}

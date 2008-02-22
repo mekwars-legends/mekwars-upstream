@@ -37,7 +37,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 
 /*
@@ -66,13 +66,13 @@ public class PhpBBConnector {
     private String bbUrl = "";
 
     public void close() {
-        MWServ.mwlog.dbLog("Attempting to close MySQL phpBB Connection");
+        CampaignData.mwlog.dbLog("Attempting to close MySQL phpBB Connection");
         try {
             this.con.close();
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQL Exception in PhpBBConnector.close: " + e.getMessage());
-            MWServ.mwlog.errLog("SQL Exception in PhpBBConnector.close: ");
-            MWServ.mwlog.errLog(e);
+            CampaignData.mwlog.dbLog("SQL Exception in PhpBBConnector.close: " + e.getMessage());
+            CampaignData.mwlog.errLog("SQL Exception in PhpBBConnector.close: ");
+            CampaignData.mwlog.errLog(e);
         }
     }
 
@@ -96,8 +96,8 @@ public class PhpBBConnector {
             ps.close();
             return exists;
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQL Error in PhpBBConnector.userExistsInForum: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQL Error in PhpBBConnector.userExistsInForum: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
             return false;
         }
     }
@@ -122,8 +122,8 @@ public class PhpBBConnector {
             ps.close();
             return exists;
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQLException in PhpBBConnector.emailExistsInForum: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQLException in PhpBBConnector.emailExistsInForum: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
             return false;
         }
     }
@@ -149,8 +149,8 @@ public class PhpBBConnector {
             ps.close();
             return exists;
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQL Error in PhpBBConnector.userExistsInForum: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQL Error in PhpBBConnector.userExistsInForum: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
             return false;
         }
     }
@@ -177,15 +177,15 @@ public class PhpBBConnector {
             ps.close();
             return exists;
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQLException in PhpBBConnector.userExistsInForum(String, String, String): " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQLException in PhpBBConnector.userExistsInForum(String, String, String): " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
             try {
                 if (rs != null)
                     rs.close();
                 if (ps != null)
                     ps.close();
             } catch (SQLException ex) {
-                MWServ.mwlog.dbLog(ex);
+                CampaignData.mwlog.dbLog(ex);
             }
             return false;
         }
@@ -202,14 +202,14 @@ public class PhpBBConnector {
 
             ps.close();
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQLException in PhpBBConnector.deleteForumAccount: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQLException in PhpBBConnector.deleteForumAccount: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
         }
     }
 
     public void addToHouseForum(int userID, int houseForumID) {
         if (userID < 1) {
-            MWServ.mwlog.dbLog("User ID < 1 in addToHouseForum, exiting");
+            CampaignData.mwlog.dbLog("User ID < 1 in addToHouseForum, exiting");
             return;
         }
         try {
@@ -224,14 +224,14 @@ public class PhpBBConnector {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQLException in PhpBBConnector.addToHouseForum: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQLException in PhpBBConnector.addToHouseForum: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
         }
     }
 
     public void removeFromHouseForum(int userID, int forumID) {
         if (userID < 1) {
-            MWServ.mwlog.dbLog("User ID < 1 in removeFromHouseForum, exiting");
+            CampaignData.mwlog.dbLog("User ID < 1 in removeFromHouseForum, exiting");
             return;
         }
         try {
@@ -239,8 +239,8 @@ public class PhpBBConnector {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQLException in PhpBBConnector.removeFromHouseForum: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQLException in PhpBBConnector.removeFromHouseForum: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
         }
     }
 
@@ -255,10 +255,10 @@ public class PhpBBConnector {
             }
             rs.close();
             ps.close();
-            MWServ.mwlog.dbLog("Searching for forumID for house " + houseForumName + ": " + forumID);
+            CampaignData.mwlog.dbLog("Searching for forumID for house " + houseForumName + ": " + forumID);
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQLException in PhpBBConnector.getHouseForumID: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQLException in PhpBBConnector.getHouseForumID: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
         }
         return forumID;
     }
@@ -276,8 +276,8 @@ public class PhpBBConnector {
             rs.close();
             ps.close();
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQLException in PhpBBConnector.getUserForumID: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQLException in PhpBBConnector.getUserForumID: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
         }
         return userID;
     }
@@ -393,8 +393,8 @@ public class PhpBBConnector {
                     ps.close();
 
             } catch (SQLException e) {
-                MWServ.mwlog.dbLog("SQL Error in PhpBBConnector.addToForum: " + e.getMessage());
-                MWServ.mwlog.dbLog(e);
+                CampaignData.mwlog.dbLog("SQL Error in PhpBBConnector.addToForum: " + e.getMessage());
+                CampaignData.mwlog.dbLog(e);
             }
         }
         if (toReturn) {
@@ -421,8 +421,8 @@ public class PhpBBConnector {
             ps.close();
             return ret;
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQL Error in PhpBBConnector.getBBConfigVar: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQL Error in PhpBBConnector.getBBConfigVar: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
             return null;
         }
     }
@@ -436,15 +436,15 @@ public class PhpBBConnector {
                 this.groupsTable = tablePrefix + "groups";
                 this.userGroupTable = tablePrefix + "user_group";
                 this.userTable = tablePrefix + "users";
-                MWServ.mwlog.dbLog("Valid phpBB Version");
+                CampaignData.mwlog.dbLog("Valid phpBB Version");
 
             } else {
-                MWServ.mwlog.dbLog("Unsupported phpBB Version");
+                CampaignData.mwlog.dbLog("Unsupported phpBB Version");
                 CampaignMain.cm.turnOffBBSynch();
             }
             break;
         default:
-            MWServ.mwlog.dbLog("Unsupported phpBB Version");
+            CampaignData.mwlog.dbLog("Unsupported phpBB Version");
             CampaignMain.cm.turnOffBBSynch();
             break;
         }
@@ -456,7 +456,7 @@ public class PhpBBConnector {
         // Set up the body of the email
         File file = new File("./data/activationemail.txt");
         if (!file.exists()) {
-            MWServ.mwlog.errLog("/data/activationemail.txt does not exist");
+            CampaignData.mwlog.errLog("/data/activationemail.txt does not exist");
             return false;
         }
         String line = "";
@@ -482,17 +482,17 @@ public class PhpBBConnector {
             dis.close();
             fis.close();
         } catch (FileNotFoundException fnfe) {
-            MWServ.mwlog.errLog("FileNotFoundException in PhpBBConnector.sendActivationEmail: " + fnfe.getMessage());
+            CampaignData.mwlog.errLog("FileNotFoundException in PhpBBConnector.sendActivationEmail: " + fnfe.getMessage());
             return false;
         } catch (IOException ioe) {
-            MWServ.mwlog.errLog("IOException in PhpBBConnector.sendActivationEmail: " + ioe.getMessage());
+            CampaignData.mwlog.errLog("IOException in PhpBBConnector.sendActivationEmail: " + ioe.getMessage());
             return false;
         }
         String bodyString = body.toString().replaceAll("%USERACTKEY%", activationKey);
         Properties props = new Properties();
         String smtphost = null;
         if ((smtphost = CampaignMain.cm.getServer().getConfigParam("MAILHOST")) == null) {
-            MWServ.mwlog.errLog("MAILHOST not set in serverconfig");
+            CampaignData.mwlog.errLog("MAILHOST not set in serverconfig");
             CampaignMain.cm.doSendModMail("NOTE", "MAILHOST not set in serverconfig.");
             return false;
         }
@@ -519,8 +519,8 @@ public class PhpBBConnector {
                 Transport.send(msg);
             }
         } catch (MessagingException e) {
-            MWServ.mwlog.errLog("Email send failed:");
-            MWServ.mwlog.errLog(e);
+            CampaignData.mwlog.errLog("Email send failed:");
+            CampaignData.mwlog.errLog(e);
             return false;
         }
         return true;
@@ -539,13 +539,13 @@ public class PhpBBConnector {
 
             ps.close();
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQLException in PhpBBConnector.addActivationKey: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQLException in PhpBBConnector.addActivationKey: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
             try {
                 if (ps != null)
                     ps.close();
             } catch (SQLException ex) {
-                MWServ.mwlog.dbLog(ex);
+                CampaignData.mwlog.dbLog(ex);
             }
         }
         return toReturn;
@@ -584,8 +584,8 @@ public class PhpBBConnector {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQLException in PhpBBConnector.validateUser: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQLException in PhpBBConnector.validateUser: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
         }
     }
 
@@ -598,28 +598,28 @@ public class PhpBBConnector {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQLException in PhpBBConnector.changeForumName: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQLException in PhpBBConnector.changeForumName: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
         }
     }
 
     public PhpBBConnector() {
         String url = "jdbc:mysql://" + CampaignMain.cm.getServer().getConfigParam("PHPBB_HOST") + "/" + CampaignMain.cm.getServer().getConfigParam("PHPBB_DB") + "?user=" + CampaignMain.cm.getServer().getConfigParam("PHPBB_USER") + "&password=" + CampaignMain.cm.getServer().getConfigParam("PHPBB_PASS");
-        MWServ.mwlog.dbLog("Attempting phpBB Connection");
+        CampaignData.mwlog.dbLog("Attempting phpBB Connection");
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            MWServ.mwlog.dbLog("ClassNotFoundException: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("ClassNotFoundException: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
         }
         try {
             this.con = DriverManager.getConnection(url);
             if (con != null)
-                MWServ.mwlog.dbLog("phpBB Connection established");
+                CampaignData.mwlog.dbLog("phpBB Connection established");
         } catch (SQLException ex) {
-            MWServ.mwlog.dbLog("SQLException in PhpBBConnector: " + ex.getMessage());
-            MWServ.mwlog.dbLog(ex);
+            CampaignData.mwlog.dbLog("SQLException in PhpBBConnector: " + ex.getMessage());
+            CampaignData.mwlog.dbLog(ex);
         }
     }
 }

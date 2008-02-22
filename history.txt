@@ -2,6 +2,11 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
++ New MegaMek.jar 0.33.19-MW022108-5501
++ Have not tested all the MWLogger changes
+- Removed MWLogger from MWClient
+- Removed MWLogger from MWServ
++ moved MWLogger to Common
 - Removed unused Pilot variables being sent to client
 - Removed pilotSkill bv being sent down twice to Client
 + More Raw Data Type References fixes

@@ -43,6 +43,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import common.CampaignData;
 import common.util.UnitUtils;
 
 import megamek.common.Entity;
@@ -113,7 +114,7 @@ public class CamoSelectionDialog extends JDialog implements ListSelectionListene
 			}
            
 		} catch (Exception e) {
-            MWClient.mwClientLog.clientErrLog(e);
+            CampaignData.mwlog.errLog(e);
 			this.dispose();
             return;
 		}

@@ -100,7 +100,7 @@ public class CreateUnitCommand implements Command {
 		
 		p.addUnit(cm, true);
 		CampaignMain.cm.toUser("Unit created: " + filename + " " + FlavorText + " " + gunnery + " " + piloting+" "+pilot.getSkillString(true) + ". ID #" + cm.getId(),Username,true);
-		//server.MWServ.mwlog.modLog(Username + " created a unit: " + filename + " " + FlavorText + " " + gunnery + " " + piloting+" "+pilot.getSkillString(true));	
+		//server.CampaignData.mwlog.modLog(Username + " created a unit: " + filename + " " + FlavorText + " " + gunnery + " " + piloting+" "+pilot.getSkillString(true));	
 		CampaignMain.cm.doSendModMail("NOTE",Username + " created a unit: " + filename + " " + FlavorText + " " + gunnery + " " + piloting+" "+pilot.getSkillString(true));
 		if(CampaignMain.cm.isKeepingUnitHistory()) {
 			CampaignMain.cm.MySQL.addHistoryEntry(HistoryHandler.HISTORY_TYPE_UNIT, cm.getDBId(), HistoryHandler.UNIT_CREATED, cm.getProducer());

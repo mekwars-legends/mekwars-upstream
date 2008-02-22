@@ -22,6 +22,7 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 
 import common.BMEquipment;
+import common.CampaignData;
 
 import client.MWClient;
 import client.gui.CCommPanel;
@@ -46,7 +47,7 @@ public class CCampaign {
 		if (f.exists() && !f.isDirectory()) {f.delete();}
 		if (!f.exists()) {
 			try {f.mkdirs();}
-			catch (Exception e) {MWClient.mwClientLog.clientErrLog(e);}
+			catch (Exception e) {CampaignData.mwlog.errLog(e);}
 		}
 	}
 	

@@ -26,6 +26,10 @@ import server.campaign.CampaignMain;
 public class MercHouse extends SHouse {
 	
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5440419107794020517L;
     //merc vars
     private Hashtable<String,ContractInfo> OutstandingContracts = new Hashtable<String,ContractInfo>();
 	

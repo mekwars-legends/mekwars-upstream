@@ -17,7 +17,7 @@
  */
 package server.MWChatServer.commands;
 
-import server.MWServ;
+import common.CampaignData;
 import server.ServerWrapper;
 import server.MWChatServer.MWChatClient;
 import server.MWChatServer.MWChatServer;
@@ -36,8 +36,8 @@ public class Command extends CommandBase implements ICommands {
     try {
 		((ServerWrapper)client.getServer()).processCommand(client.getUserId(), common.comm.TransportCodec.unescape(args[1]));
     } catch (Exception e) {
-      MWServ.mwlog.errLog(e);
-      MWServ.mwlog.errLog("Not supposed to happen");
+      CampaignData.mwlog.errLog(e);
+      CampaignData.mwlog.errLog("Not supposed to happen");
     }
     return false;
   }

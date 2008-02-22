@@ -17,7 +17,7 @@ package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.SPlanet;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
@@ -54,10 +54,10 @@ public class AdminRemoveAllFactoriesCommand implements Command {
             	p.toDB();
             }
             
-			//server.MWServ.mwlog.modLog(Username + "  removed " + factoryname + " from " + p.getName() + ".");
+			//server.CampaignData.mwlog.modLog(Username + "  removed " + factoryname + " from " + p.getName() + ".");
 			CampaignMain.cm.doSendModMail("NOTE",Username + "  removed all factories  from " + p.getName() + ".");
 		} catch (Exception ex){
-			MWServ.mwlog.errLog(ex);
+			CampaignData.mwlog.errLog(ex);
 		}//end catch
 		
 	}

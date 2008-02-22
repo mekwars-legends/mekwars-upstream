@@ -47,7 +47,7 @@ public class RefuseContractCommand implements Command {
 			ContractInfo info = CampaignMain.cm.getUnresolvedContracts().get(i);
 			if (info.getOfferingPlayerName().equalsIgnoreCase(offeringPlayerName)) {
 				offeringPlayerFound = true;
-				//MWServ.mwlog.mainLog("CANCEL: Offering player found set to true");
+				//CampaignData.mwlog.mainLog("CANCEL: Offering player found set to true");
 				//if contract belong to offering player, check to see if it is for this player.
 				receivingPlayerName = info.getPlayerName();
 				if (CampaignMain.cm.getPlayer(receivingPlayerName) == CampaignMain.cm.getPlayer(Username)) {//player can kill contract offer

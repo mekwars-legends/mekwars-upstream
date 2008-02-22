@@ -21,7 +21,7 @@
  */ 
 package server.MWChatServer.commands;
 
-import server.MWServ;
+import common.CampaignData;
 import server.ServerWrapper;
 import server.MWChatServer.MWChatClient;
 import server.MWChatServer.Translator;
@@ -112,17 +112,17 @@ public class SignOn extends CommandBase implements ICommands {
 			return true;
 			
 		} catch (NullPointerException NPE) {
-			MWServ.mwlog.errLog("Sign On Error");
-			MWServ.mwlog.errLog(NPE);
+			CampaignData.mwlog.errLog("Sign On Error");
+			CampaignData.mwlog.errLog(NPE);
 		} catch (Exception e) {//even though access is denied, find an acceptable nobody
 			
 			if (e.getMessage() == null) {
-				MWServ.mwlog.errLog("Sign On Error: Null exception message");
-				MWServ.mwlog.errLog(e);
+				CampaignData.mwlog.errLog("Sign On Error: Null exception message");
+				CampaignData.mwlog.errLog(e);
 			}
 			
 			else if (e.getMessage().equals(ACCESS_DENIED)){
-				//MWServ.mwlog.errLog("SignOn error: "+client.getUserId()+" is a dumbfuck and forgot thier password");
+				//CampaignData.mwlog.errLog("SignOn error: "+client.getUserId()+" is a dumbfuck and forgot thier password");
 				client.setUserId(null);
 				client.error(ACCESS_DENIED, e.getMessage());
 				String key;
@@ -134,7 +134,7 @@ public class SignOn extends CommandBase implements ICommands {
 				return this.process(client, args);
 			}
 			else
-				MWServ.mwlog.errLog(e);
+				CampaignData.mwlog.errLog(e);
 			String userId = client.getUserId();
 			client.setUserId(null);
 			client.signOnError(e.getMessage(), userId);

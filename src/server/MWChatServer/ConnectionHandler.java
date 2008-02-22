@@ -33,9 +33,10 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import common.CampaignData;
 import common.util.ThreadManager;
 
-import server.MWServ;
+import common.CampaignData;
 
 /**
  * The keeper of the Socket on the server side. Spawns a thread for reading from
@@ -121,11 +122,11 @@ public class ConnectionHandler extends AbstractConnectionHandler {
         		_writer = new WriterThread(_socket,_out,_client.getHost());
         		ThreadManager.getInstance().runInThreadFromPool(_writer);
     		} catch (Exception e) {
-    			MWServ.mwlog.errLog(e);
+    			CampaignData.mwlog.errLog(e);
     		}
     		
     	}catch (Exception ex) {
-    		MWServ.mwlog.errLog(ex);
+    		CampaignData.mwlog.errLog(ex);
     	} 
     	
     }//end init()
@@ -138,7 +139,7 @@ public class ConnectionHandler extends AbstractConnectionHandler {
     @Override
 	public void queuePriorityMessage(String message) {
         synchronized (message) {
-    //        MWServ.mwlog.warnLog("queuePriorityMessage Client: "
+    //        CampaignData.mwlog.warnLog("queuePriorityMessage Client: "
       //              + _client.getUserId() + "Size: " + message.length()
         //            + " Host: " + _client.getHost());
             _out.print(message + "\n");
@@ -169,8 +170,8 @@ public class ConnectionHandler extends AbstractConnectionHandler {
             try {
                 _socket.close();
             } catch (IOException e) {
-                MWServ.mwlog.errLog("connection shutdown due to error");
-                MWServ.mwlog.errLog(e);
+                CampaignData.mwlog.errLog("connection shutdown due to error");
+                CampaignData.mwlog.errLog(e);
             }
 
             super.shutdown(notify);

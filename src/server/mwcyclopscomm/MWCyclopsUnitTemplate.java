@@ -40,7 +40,7 @@ import megamek.common.TechConstants;
 import common.Unit;
 import common.util.MD5;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.SUnit;
  
  public class  MWCyclopsUnitTemplate{
@@ -64,7 +64,7 @@ import server.campaign.SUnit;
              
              message.append(MWCyclopsUtils.methodCallEnd());
          }catch(Exception ex){
-             MWServ.mwlog.errLog(ex);
+             CampaignData.mwlog.errLog(ex);
          }
  
          return message.toString();
@@ -96,7 +96,7 @@ import server.campaign.SUnit;
              
              message.append(MWCyclopsUtils.methodCallEnd());
          }catch(Exception ex){
-             MWServ.mwlog.errLog(ex);
+             CampaignData.mwlog.errLog(ex);
          }
  
          return message.toString();

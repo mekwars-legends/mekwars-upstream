@@ -103,7 +103,7 @@ public class ModGamesCommand implements Command {
 		CampaignMain.cm.toUser("SM|" + runningGames + finishedGames, Username, false);
 		
 		//show use of command to mods.
-		//server.MWServ.mwlog.modLog(Username + " used /c modgames.");
+		//server.CampaignData.mwlog.modLog(Username + " used /c modgames.");
 		CampaignMain.cm.doSendModMail("NOTE",Username + " used /c modgames.");
 	}
 }

@@ -34,7 +34,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import server.MWServ;
+import common.CampaignData;
+
+import common.CampaignData;
 import server.MWChatServer.commands.ICommandProcessorRemote;
 import server.MWChatServer.commands.ICommands;
 import server.MWChatServer.commands.UnknownCommand;
@@ -53,7 +55,7 @@ public class CommandProcessorRemote implements ICommands{
 
     public static void init(Properties p) {
         if (_processors != null && _idleTimeImmune != null) {
-            MWServ.mwlog.infoLog("CommandProcessorRemote: Warning: init() called a second time");
+            CampaignData.mwlog.infoLog("CommandProcessorRemote: Warning: init() called a second time");
         }
         
         _processors = new HashMap<String,ICommandProcessorRemote>();
@@ -63,13 +65,13 @@ public class CommandProcessorRemote implements ICommands{
             String name = (String)e.nextElement();
             int idx = name.indexOf(".");
             if (idx < 1) {
-                MWServ.mwlog.infoLog("CommandProcessorRemote: unknown property: " + name);
+                CampaignData.mwlog.infoLog("CommandProcessorRemote: unknown property: " + name);
                 continue;
             }
             String command = name.substring(0, idx);
             if (name.endsWith(".class")) {
                 String className = p.getProperty(name);
-                MWServ.mwlog.infoLog("CommandProcessorRemote: initting the " + command + " command processor");
+                CampaignData.mwlog.infoLog("CommandProcessorRemote: initting the " + command + " command processor");
                 try {
                     ICommandProcessorRemote cp = 
                             (ICommandProcessorRemote)Class.forName(className).newInstance();
@@ -91,9 +93,9 @@ public class CommandProcessorRemote implements ICommands{
                     CommandProcessorRemote.extendCommandSet("/" + command, cp);
                 }
                 catch (Exception ex) {
-                    MWServ.mwlog.errLog("Unable to install the " + command + " command");
-                    MWServ.mwlog.errLog(ex);
-                    MWServ.mwlog.errLog("Continuing despite error(s)");
+                    CampaignData.mwlog.errLog("Unable to install the " + command + " command");
+                    CampaignData.mwlog.errLog(ex);
+                    CampaignData.mwlog.errLog("Continuing despite error(s)");
                 }
             } else if (name.endsWith(".idleImmune")) {
                 _idleTimeImmune.add("/" + command);

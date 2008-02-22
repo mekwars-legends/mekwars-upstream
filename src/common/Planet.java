@@ -506,11 +506,11 @@ public class Planet implements Comparable<Object>, MutableSerializable {
         this.setHomeWorld(in.readBoolean("homeworld"));
         this.setOriginalOwner(in.readLine("originalowner"));
         size = in.readInt("AdvancedTerrain.size");
-        //System.err.println("AdvancedTerrain.size");
+        //CampaignData.mwlog.errLog("AdvancedTerrain.size");
         for (int i = 0; i < size; ++i) {
             AdvancedTerrain aTerrain = new AdvancedTerrain();
             int id = in.readInt("AdvancedTerrainId");
-            //System.err.println("AdvancedTerrainId "+id);
+            //CampaignData.mwlog.errLog("AdvancedTerrainId "+id);
             aTerrain.binIn(in);
             this.getAdvancedTerrain().put(new Integer(id),aTerrain);
         }

@@ -45,7 +45,7 @@ public class SetEloCommand implements Command {
 			p.setRating(amount);
 			CampaignMain.cm.toUser("AM:"+Username + " set your ELO to: " + amount + ".", p.getName(), true);
 			CampaignMain.cm.toUser("AM:You set " + p.getName() +  "'s ELO to "  + amount + ".",Username,true);
-			//server.MWServ.mwlog.modLog(Username + " set " + p.getName() + "'s ELO to " + amount + ".");
+			//server.CampaignData.mwlog.modLog(Username + " set " + p.getName() + "'s ELO to " + amount + ".");
 			CampaignMain.cm.doSendModMail("NOTE",Username + " set " + p.getName() +  "'s ELO to "  + amount + ".");
 		}
 		

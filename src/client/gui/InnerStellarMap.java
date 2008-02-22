@@ -67,6 +67,7 @@ import client.campaign.CArmy;
 import client.gui.dialog.PlanetSearchDialog;
 import client.gui.AttackMenu;
 
+import common.CampaignData;
 import common.House;
 import common.Influences;
 import common.Planet;
@@ -410,7 +411,7 @@ MouseMotionListener, MouseWheelListener, ActionListener {
 					
 					File loadJar = new File("./MekWarsAdmin.jar");
 					if (!loadJar.exists())
-						MWClient.mwClientLog.clientErrLog("AdminMapPopupMenu creation skipped. No MekWarsAdmin.jar present.");
+						CampaignData.mwlog.errLog("AdminMapPopupMenu creation skipped. No MekWarsAdmin.jar present.");
 					else {
 		        		URLClassLoader loader = new URLClassLoader(new URL[] {loadJar.toURI().toURL()});
 		        		Class<?> c = loader.loadClass("admin.AdminMapPopupMenu");
@@ -421,8 +422,8 @@ MouseMotionListener, MouseWheelListener, ActionListener {
 		        		popup.add((JMenu)o);
 					}
 	        	} catch (Exception ex) {
-	        		MWClient.mwClientLog.clientErrLog("AdminMapPopupMenu creation FAILED!");
-					MWClient.mwClientLog.clientErrLog(ex);
+	        		CampaignData.mwlog.errLog("AdminMapPopupMenu creation FAILED!");
+					CampaignData.mwlog.errLog(ex);
 	        	}		
 			}
 			
@@ -510,8 +511,8 @@ MouseMotionListener, MouseWheelListener, ActionListener {
 				throw new RuntimeException("not my file");
 		} catch (Throwable e) {
 			if (!(e instanceof FileNotFoundException))
-				MWClient.mwClientLog.clientErrLog(e);
-			MWClient.mwClientLog.clientOutputLog("could not read map config file. Will use defaults");
+				CampaignData.mwlog.errLog((Exception)e);
+			CampaignData.mwlog.infoLog("could not read map config file. Will use defaults");
 			conf = new InnerStellarMapConfig();
 		}
 		
@@ -519,8 +520,8 @@ MouseMotionListener, MouseWheelListener, ActionListener {
             parseOverlayFile();
         } catch (Throwable e) {
             if (!(e instanceof FileNotFoundException))
-                MWClient.mwClientLog.clientErrLog(e);
-            MWClient.mwClientLog.clientOutputLog("could not read map overlay file.");
+                CampaignData.mwlog.errLog((Exception)e);
+            CampaignData.mwlog.infoLog("could not read map overlay file.");
         }
         
 		for (int i = 0; i < displayStr.length; ++i) {
@@ -714,7 +715,7 @@ MouseMotionListener, MouseWheelListener, ActionListener {
                 g.drawImage(ic.getImage(),map2scrX(x),map2scrY(y),width,height,ic.getImageObserver());
             
             }catch(Exception ex){
-                MWClient.mwClientLog.clientErrLog(ex);
+                CampaignData.mwlog.errLog(ex);
             }
             
         }
@@ -746,15 +747,15 @@ MouseMotionListener, MouseWheelListener, ActionListener {
 				try{
 					c = StringUtils.html2Color(houseColor);
 				} catch(Exception ex) {
-					MWClient.mwClientLog.clientErrLog(ex);
-					MWClient.mwClientLog.clientErrLog("Bad House for planet: "+p.getName());
+					CampaignData.mwlog.errLog(ex);
+					CampaignData.mwlog.errLog("Bad House for planet: "+p.getName());
 				}
 			} else {
 				try {
 					c = adjustColor(StringUtils.html2Color(houseColor));
 				} catch (Exception ex) {
-					MWClient.mwClientLog.clientErrLog(ex);
-					MWClient.mwClientLog.clientErrLog("Bad House for planet: "+p.getName());
+					CampaignData.mwlog.errLog(ex);
+					CampaignData.mwlog.errLog("Bad House for planet: "+p.getName());
 				}
 			}
 			
@@ -882,7 +883,7 @@ MouseMotionListener, MouseWheelListener, ActionListener {
 			}//end if(should display)
 		
 		} catch (Exception ex){
-			MWClient.mwClientLog.clientErrLog(ex);
+			CampaignData.mwlog.errLog(ex);
 		}
 
 	}
@@ -1042,8 +1043,6 @@ MouseMotionListener, MouseWheelListener, ActionListener {
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		
-		MWClient.mwClientLog.clientErrLog(keyCode);
-		
 		if (keyCode == 37 )//left arrow
 		{
 			conf.offset.y -= conf.scale;
@@ -1186,7 +1185,7 @@ MouseMotionListener, MouseWheelListener, ActionListener {
 		try {
 			new MMNetXStream().toXML(conf, new FileWriter(mwclient.getCacheDir()+"/mapconf.xml"));
 		} catch (IOException e1) {
-			MWClient.mwClientLog.clientErrLog(e1);
+			CampaignData.mwlog.errLog(e1);
 		}
 	}
 	

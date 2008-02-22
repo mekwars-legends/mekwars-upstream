@@ -19,7 +19,7 @@ package server.campaign.commands.admin;
 import java.util.StringTokenizer;
 
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
@@ -55,13 +55,13 @@ public class ShutdownCommand implements Command {
         if ( CampaignMain.cm.isUsingMySQL() )
         	CampaignMain.cm.MySQL.closeMySQL();
         CampaignMain.cm.toUser("AM:You halted the server. Have a nice day.", Username,true);
-        MWServ.mwlog.infoLog(Username + " halted the server. Have a nice day!");
+        CampaignData.mwlog.infoLog(Username + " halted the server. Have a nice day!");
         CampaignMain.cm.addToNewsFeed("Server halted!");
         try {
             MWPasswd.save();
         } catch(Exception ex) {
-            MWServ.mwlog.errLog("Unable to save passwords before shutdown!");
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog("Unable to save passwords before shutdown!");
+            CampaignData.mwlog.errLog(ex);
         }
         
         System.exit(0);

@@ -59,7 +59,7 @@ public class StripUnitsCommand implements Command {
 		CampaignMain.cm.toUser("You stripped all units from " + p.getName() + ".", Username, true);
 		CampaignMain.cm.toUser(Username + " removed all of your units.", p.getName(), true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " stripped all units from " + p.getName() + ".");
-		//server.MWServ.mwlog.modLog(Username + " stripped all units from " + p.getName());
+		//server.CampaignData.mwlog.modLog(Username + " stripped all units from " + p.getName());
 		
 	}
 }

@@ -36,7 +36,7 @@ import common.Unit;
 import common.campaign.pilot.skills.PilotSkill;
 import common.util.UnitUtils;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.PainResistanceSkill;
 import server.campaign.pilot.skills.SPilotSkill;
@@ -690,8 +690,8 @@ public final class SUnit extends Unit{
                 CampaignMain.cm.MySQL.linkPilotToUnit(((SPilot) getPilot()).getDBId(), getDBId());
             }
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQL Exception in SUnit.toDB: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQL Exception in SUnit.toDB: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
         }
     }
 
@@ -835,8 +835,8 @@ public final class SUnit extends Unit{
 
             return s;
         } catch (Exception ex) {
-            MWServ.mwlog.errLog(ex);
-            MWServ.mwlog.errLog("Unable to Load SUnit: " + s);
+            CampaignData.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog("Unable to Load SUnit: " + s);
             // the unit should still be good return what did get set
             return s;
         }
@@ -916,8 +916,8 @@ public final class SUnit extends Unit{
                         unitEntity.getAmmo().get(AmmoLoc).setShotsLeft(shots);
                         unitEntity.getAmmo().get(AmmoLoc).setHotLoad(hotloaded);
                     } catch (Exception ex) {
-                        MWServ.mwlog.dbLog("Exception: " + ex.toString());
-                        MWServ.mwlog.dbLog(ex.getStackTrace().toString());
+                        CampaignData.mwlog.dbLog("Exception: " + ex.toString());
+                        CampaignData.mwlog.dbLog(ex.getStackTrace().toString());
                     }
                 }
 
@@ -943,7 +943,7 @@ public final class SUnit extends Unit{
             rs.close();
             stmt.close();
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQL Error in SUnit.fromDB: " + e.getMessage());
+            CampaignData.mwlog.dbLog("SQL Error in SUnit.fromDB: " + e.getMessage());
         }
     }
 
@@ -1111,7 +1111,7 @@ public final class SUnit extends Unit{
             while (ski.hasNext()) {
                 SPilotSkill skill = (SPilotSkill) ski.next();
                 if (skill.getName().equals("Weapon Specialist") && p.getWeapon().equals("Default")) {
-                    // MWServ.mwlog.errLog("setPilot inside");
+                    // CampaignData.mwlog.errLog("setPilot inside");
                     p.getSkills().remove(skill);
                     ((WeaponSpecialistSkill) skill).assignWeapon(this.getEntity(), p);
                     skill.addToPilot(p);
@@ -1288,7 +1288,7 @@ public final class SUnit extends Unit{
                      * missing unit. Either way, need to set up and return a
                      * failsafe unit.
                      */
-                    MWServ.mwlog.errLog("Error loading: " + Filename);
+                    CampaignData.mwlog.errLog("Error loading: " + Filename);
 
                     try {
                         ent = UnitUtils.createOMG();// new MechFileParser(new
@@ -1301,8 +1301,8 @@ public final class SUnit extends Unit{
                          * Can't even find the default unit file. Are all the
                          * .zip files missing? Misnamed? Read access is denied?
                          */
-                        MWServ.mwlog.errLog("Unable to find default unit file. Server Exiting");
-                        MWServ.mwlog.errLog(exep);
+                        CampaignData.mwlog.errLog("Unable to find default unit file. Server Exiting");
+                        CampaignData.mwlog.errLog(exep);
                         System.exit(1);
                     }
                 }
@@ -1392,7 +1392,7 @@ public final class SUnit extends Unit{
 
     public boolean hasSemiGuided() {
         for (Mounted ammo : this.getEntity().getAmmo()) {
-            // MWServ.mwlog.errLog("ammo type:
+            // CampaignData.mwlog.errLog("ammo type:
             // "+((AmmoType)ammo.getType()).getMunitionType());
             if (((AmmoType) ammo.getType()).getMunitionType() == AmmoType.M_SEMIGUIDED)
                 return true;
@@ -1463,8 +1463,8 @@ public final class SUnit extends Unit{
             loadedUnits = EntityListFile.loadFrom(entityFile);
             loadedUnits.trimToSize();
         } catch (Exception ex) {
-            MWServ.mwlog.errLog("Unable to load file " + entityFile.getName());
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog("Unable to load file " + entityFile.getName());
+            CampaignData.mwlog.errLog(ex);
             return mulUnits;
         }
 

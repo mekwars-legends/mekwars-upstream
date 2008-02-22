@@ -22,7 +22,7 @@ import java.util.StringTokenizer;
 
 import common.House;
 
-import server.MWServ;
+import common.CampaignData;
 import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.NewbieHouse;
@@ -161,8 +161,8 @@ public class EnrollCommand implements Command {
 		
 		//tell the mods and add to the IP log
 		InetAddress ip = CampaignMain.cm.getServer().getIP(Username);
-		//MWServ.mwlog.modLog(Username + " enrolled in the campaign (IP: " + ip + ").");
-		MWServ.mwlog.ipLog("ENROLL: " + Username + " IP: " + ip);
+		//CampaignData.mwlog.modLog(Username + " enrolled in the campaign (IP: " + ip + ").");
+		CampaignData.mwlog.ipLog("ENROLL: " + Username + " IP: " + ip);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " enrolled in the campaign (IP: " + ip + ").");
 		
 	}//end process()

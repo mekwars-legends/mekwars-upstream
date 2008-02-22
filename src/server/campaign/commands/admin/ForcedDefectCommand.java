@@ -99,7 +99,7 @@ public class ForcedDefectCommand implements Command {
 		CampaignMain.cm.toUser("AM:"+Username + " forced you to defect to " + h.getName(),p.getName(),true);
 		CampaignMain.cm.toUser("AM:You forced " + p.getName() + " to defect to " + h.getName(),Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " forced " + p.getName() + " to defect to " + h.getName());
-		//server.MWServ.mwlog.modLog(Username + " forced " + p.getName() + " to defect to " + h.getName());
+		//server.CampaignData.mwlog.modLog(Username + " forced " + p.getName() + " to defect to " + h.getName());
 		p.setPlayerClientVersion(clientVersion);
 		
 	}

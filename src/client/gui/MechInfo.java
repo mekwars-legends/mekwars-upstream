@@ -42,6 +42,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import common.CampaignData;
 import common.Unit;
 import common.util.UnitUtils;
 
@@ -544,7 +545,7 @@ public class MechInfo extends JPanel {
       try { 
       mt.loadFromFile("mechset.txt"); 
       } catch (IOException ex) {
-      	MWClient.mwClientLog.clientErrLog("Unable to read data/images/units/mechset.txt");
+      	CampaignData.mwlog.errLog("Unable to read data/images/units/mechset.txt");
       }
     }//end if(null tileset)
     return mt.imageFor(m, c);
@@ -850,11 +851,11 @@ public class MechInfo extends JPanel {
       try {
         pgMech.grabPixels();
       } catch (InterruptedException e) {
-        MWClient.mwClientLog.clientErrLog("EntityImage.applyColor(): Failed to grab pixels for mech image." + e.getMessage());
+        CampaignData.mwlog.errLog("EntityImage.applyColor(): Failed to grab pixels for mech image." + e.getMessage());
         return image;
       }
       if ((pgMech.getStatus() & ImageObserver.ABORT) != 0) {
-        MWClient.mwClientLog.clientErrLog("EntityImage.applyColor(): Failed to grab pixels for mech image. ImageObserver aborted.");
+        CampaignData.mwlog.errLog("EntityImage.applyColor(): Failed to grab pixels for mech image. ImageObserver aborted.");
         return image;
       }
       
@@ -863,11 +864,11 @@ public class MechInfo extends JPanel {
         try {
           pgCamo.grabPixels();
         } catch (InterruptedException e) {
-          MWClient.mwClientLog.clientErrLog("EntityImage.applyColor(): Failed to grab pixels for camo image." + e.getMessage());
+          CampaignData.mwlog.errLog("EntityImage.applyColor(): Failed to grab pixels for camo image." + e.getMessage());
           return image;
         }
         if ((pgCamo.getStatus() & ImageObserver.ABORT) != 0) {
-          MWClient.mwClientLog.clientErrLog("EntityImage.applyColor(): Failed to grab pixels for mech image. ImageObserver aborted.");
+          CampaignData.mwlog.errLog("EntityImage.applyColor(): Failed to grab pixels for mech image. ImageObserver aborted.");
           return image;
         }
       }

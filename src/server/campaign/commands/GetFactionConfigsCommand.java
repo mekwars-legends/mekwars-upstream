@@ -23,7 +23,7 @@ package server.campaign.commands;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
@@ -102,7 +102,7 @@ public class GetFactionConfigsCommand implements Command {
 		}
 		catch(Exception ex) {
 			CampaignMain.cm.toUser("PL|FC|DONE#DONE", Username,false);
-			MWServ.mwlog.errLog(ex);
+			CampaignData.mwlog.errLog(ex);
 		}
 	}
 }//end GetFactionConfigsCommand 

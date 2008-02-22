@@ -133,7 +133,7 @@ public class CMapPanel extends JPanel {
         	try {
             	map.activate(client.getData().getPlanet(map.conf.planetID));
             } catch (Exception ex) {
-            	MWClient.mwClientLog.clientErrLog(ex);
+            	CampaignData.mwlog.errLog(ex);
             }
         }
         

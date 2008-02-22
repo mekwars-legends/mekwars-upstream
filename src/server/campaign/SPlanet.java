@@ -39,7 +39,7 @@ import common.Unit;
 import common.UnitFactory;
 import common.util.Position;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.data.TimeUpdatePlanet;
 import server.util.TokenReader;
 
@@ -347,8 +347,8 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
                     stmt.close();
             }
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog(e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog(e.getMessage());
+            CampaignData.mwlog.dbLog(e);
         }
 
     }
@@ -358,7 +358,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
      */
     public String fromString(String s, Random r, CampaignData data) {
         // debug
-        MWServ.mwlog.mainLog(s);
+        CampaignData.mwlog.mainLog(s);
         s = s.substring(3);
         StringTokenizer ST = new StringTokenizer(s, "#");
         setName(TokenReader.readString(ST));
@@ -394,14 +394,14 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
                     if (h != null)
                         influence.put(h.getId(), HouseInf);
                     else
-                        MWServ.mwlog.errLog("House not found: " + HouseName);
+                        CampaignData.mwlog.errLog("House not found: " + HouseName);
                 }
             }
             // getInfluence().setInfluence(influence);
             setInfluence(new Influences(influence));
         } catch (RuntimeException ex) {
-            MWServ.mwlog.errLog("Problem on Planet: " + this.getName());
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog("Problem on Planet: " + this.getName());
+            CampaignData.mwlog.errLog(ex);
         }
         int Envs = TokenReader.readInt(ST);
         for (int i = 0; i < Envs; i++) {
@@ -462,8 +462,8 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
             setTimestamp(sdf.parse(TokenReader.readString(ST)));
         } catch (Exception ex) {
             // No biggy, but will cause senseless Data transfer, so:
-            MWServ.mwlog.errLog("The following excepion is not critical, but will cause useless bandwith usage: please fix!");
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog("The following excepion is not critical, but will cause useless bandwith usage: please fix!");
+            CampaignData.mwlog.errLog(ex);
             setTimestamp(new Date(0));
         }
 
@@ -666,7 +666,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
     public SHouse checkOwner() {
 
         if (getInfluence() == null) {
-            MWServ.mwlog.errLog("getINF == null Planet: " + getName());
+            CampaignData.mwlog.errLog("getINF == null Planet: " + getName());
             return null;
         }
 

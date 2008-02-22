@@ -26,7 +26,6 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.TreeMap;
 
-
 import megamek.common.AmmoType;
 
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -34,6 +33,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import common.util.BinReader;
 import common.util.BinWriter;
 import common.util.MMNetXStream;
+import common.util.MWLogger;
 
 
 
@@ -58,7 +58,8 @@ import common.util.MMNetXStream;
 public class CampaignData implements TerrainProvider {
 	
     public static CampaignData cd;
-    
+    public static final MWLogger mwlog = new MWLogger();
+
     /**
      * All different Houses are stored here.
      * key=Integer (id), value=House
@@ -113,8 +114,8 @@ public class CampaignData implements TerrainProvider {
         	Integer planetID = planetid.get(name.toLowerCase());
             return getPlanet(planetID);
         } catch(Exception ex) {
-            System.err.println("Looking for planet: " + name);
-            //ex.printStackTrace();
+            CampaignData.mwlog.errLog("Looking for planet: " + name);
+            //CampaignData.mwlog.errLog(ex);
             return null;
         }
     }
@@ -509,7 +510,7 @@ public class CampaignData implements TerrainProvider {
 
     public PlanetEnvironment getTerrainByName(String TerrainName) {
     	for (PlanetEnvironment env  : terrains) {
-    		if (env.getName().equals(TerrainName))
+    		if (env.getName().equalsIgnoreCase(TerrainName))
     			return env;
     	}
     	return null;
@@ -551,11 +552,11 @@ public class CampaignData implements TerrainProvider {
                 in.readObject(h, this, "faction");
                 factions.put(new Integer(h.getId()), h);
             } catch (InstantiationException e) {
-                e.printStackTrace();
+                CampaignData.mwlog.errLog(e);
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                CampaignData.mwlog.errLog(e);
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                CampaignData.mwlog.errLog(e);
             }
         }
         in.endDataBlock("factions");
@@ -570,11 +571,11 @@ public class CampaignData implements TerrainProvider {
                 in.readObject(p, this, "planet");
                 planets.put(new Integer(p.getId()), p);
             } catch (InstantiationException e) {
-                e.printStackTrace();
+                CampaignData.mwlog.errLog(e);
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                CampaignData.mwlog.errLog(e);
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                CampaignData.mwlog.errLog(e);
             }
         }
         in.endDataBlock("planets");
@@ -778,7 +779,7 @@ public class CampaignData implements TerrainProvider {
         
         if ( getCommandTable().get(command.toUpperCase()) != null ){
             level = getCommandTable().get(command.toUpperCase()).intValue();
-            //System.err.println("Command: "+command+" level: "+level);
+            //CampaignData.mwlog.errLog("Command: "+command+" level: "+level);
         }
             
         return level;

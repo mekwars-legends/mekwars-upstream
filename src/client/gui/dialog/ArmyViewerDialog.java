@@ -61,6 +61,7 @@ import javax.swing.event.ListSelectionListener;
 
 import megamek.common.Infantry;
 
+import common.CampaignData;
 import common.Unit;
 import common.util.SpringLayoutHelper;
 
@@ -287,7 +288,7 @@ public class ArmyViewerDialog extends JDialog implements ActionListener, ListSel
                 
 			}
 			catch(Exception ex){
-				MWClient.mwClientLog.clientErrLog(ex);
+				CampaignData.mwlog.errLog(ex);
 				//MMClient.mwClientLog.clientErrLog("Problem with actionPerformed in RepodDialog");
 			}
 		}// end unit selector if.

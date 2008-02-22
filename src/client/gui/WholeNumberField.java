@@ -23,6 +23,8 @@ import javax.swing.text.PlainDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 
+import common.CampaignData;
+
 import client.MWClient;
 
 import java.awt.Toolkit;
@@ -87,7 +89,7 @@ public class WholeNumberField extends JTextField {
                     result[j++] = source[i];
                 else {
                     toolkit.beep();
-                    MWClient.mwClientLog.clientErrLog("insertString: " + source[i]);
+                    CampaignData.mwlog.errLog("insertString: " + source[i]);
                 }
             }
             super.insertString(offs, new String(result, 0, j), a);

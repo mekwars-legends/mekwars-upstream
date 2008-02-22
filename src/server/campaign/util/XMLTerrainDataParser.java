@@ -34,7 +34,7 @@ import java.util.StringTokenizer;
 
 import common.PlanetEnvironment;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 
 
@@ -151,7 +151,7 @@ public class XMLTerrainDataParser implements XMLResponder{
 			XMLParser xp = new XMLParser();
 			xp.parseXML(this);
 		} catch (Exception ex) {
-			MWServ.mwlog.errLog(ex);
+			CampaignData.mwlog.errLog(ex);
 		}
 	}
 	
@@ -159,7 +159,7 @@ public class XMLTerrainDataParser implements XMLResponder{
 		System.out.print(prefix+"!NOTATION: "+name);
 		if (pubID!=null) System.out.print("  pubID = "+pubID);
 		if (sysID!=null) System.out.print("  sysID = "+sysID);
-		MWServ.mwlog.mainLog("");
+		CampaignData.mwlog.mainLog("");
 	}
 	
 	public void recordEntityDeclaration(String name, String value, String pubID, String sysID, String notation) throws ParseException {
@@ -168,12 +168,12 @@ public class XMLTerrainDataParser implements XMLResponder{
 		if (pubID!=null) System.out.print("  pubID = "+pubID);
 		if (sysID!=null) System.out.print("  sysID = "+sysID);
 		if (notation!=null) System.out.print("  notation = "+notation);
-		MWServ.mwlog.mainLog("");
+		CampaignData.mwlog.mainLog("");
 	}
 	
 	public void recordElementDeclaration(String name, String content) throws ParseException {
 		System.out.print(prefix+"!ELEMENT: "+name);
-		MWServ.mwlog.mainLog("  content = "+content);
+		CampaignData.mwlog.mainLog("  content = "+content);
 	}
 	
 	public void recordAttlistDeclaration(String element, String attr, boolean notation, String type, String defmod, String def) throws ParseException {
@@ -181,14 +181,14 @@ public class XMLTerrainDataParser implements XMLResponder{
 		System.out.print("  attr = "+attr);
 		System.out.print("  type = " + ((notation) ? "NOTATIONS " : "") + type);
 		System.out.print("  def. modifier = "+defmod);
-		MWServ.mwlog.mainLog( (def==null) ? "" : "  def = "+notation);
+		CampaignData.mwlog.mainLog( (def==null) ? "" : "  def = "+notation);
 	}
 	
 	public void recordDoctypeDeclaration(String name, String pubID, String sysID) throws ParseException {
 		System.out.print(prefix+"!DOCTYPE: "+name);
 		if (pubID!=null) System.out.print("  pubID = "+pubID);
 		if (sysID!=null) System.out.print("  sysID = "+sysID);
-		MWServ.mwlog.mainLog("");
+		CampaignData.mwlog.mainLog("");
 		prefix = "";
 	}
 	
@@ -198,19 +198,19 @@ public class XMLTerrainDataParser implements XMLResponder{
 	}
 	
 	public void recordDocEnd() {
-		MWServ.mwlog.mainLog("");
-		MWServ.mwlog.mainLog("Parsing finished without error");
+		CampaignData.mwlog.mainLog("");
+		CampaignData.mwlog.mainLog("Parsing finished without error");
 	}
 	
 	
 	public void recordElementStart(String name, Hashtable attr) throws ParseException {
-		//MWServ.mwlog.mainLog(prefix+"Element: "+name);
+		//CampaignData.mwlog.mainLog(prefix+"Element: "+name);
 		lastElement = name;
 	}
 	
 	public void recordElementEnd(String tagName) throws ParseException {
 		if (tagName.equals("TERRAIN")) {
-			MWServ.mwlog.mainLog("ENVIRONMENT READ");
+			CampaignData.mwlog.mainLog("ENVIRONMENT READ");
 			PlanetEnvironment PE = new PlanetEnvironment();
 			PE.setCraterProb(CraterProb);
 			PE.setCraterMinNum(CraterMinNum);
@@ -397,18 +397,18 @@ public class XMLTerrainDataParser implements XMLResponder{
 	}
 	
 	public void recordPI(String name, String pValue) {
-		MWServ.mwlog.mainLog(prefix+"*"+name+" PI: "+pValue);
+		CampaignData.mwlog.mainLog(prefix+"*"+name+" PI: "+pValue);
 	}
 	
 	public void recordCharData(String charData) {
-		//MWServ.mwlog.mainLog(prefix+charData);
+		//CampaignData.mwlog.mainLog(prefix+charData);
 		if (!charData.equalsIgnoreCase("")) {
-			//do nothing; //MWServ.mwlog.mainLog(lastElement + " --> " + charData);
+			//do nothing; //CampaignData.mwlog.mainLog(lastElement + " --> " + charData);
 		} else
 			lastElement = "";
 		if (lastElement.equalsIgnoreCase("NAME")) {	
 			name = charData;
-			MWServ.mwlog.mainLog(name);
+			CampaignData.mwlog.mainLog(name);
 		}
 		else if (lastElement.equalsIgnoreCase("CRATERPROB"))
 			CraterProb = Integer.parseInt(charData);
@@ -560,7 +560,7 @@ public class XMLTerrainDataParser implements XMLResponder{
 	}
 	
 	public void recordComment(String comment) {
-		MWServ.mwlog.mainLog(prefix+"*Comment: "+comment);
+		CampaignData.mwlog.mainLog(prefix+"*Comment: "+comment);
 	}
 	
 	

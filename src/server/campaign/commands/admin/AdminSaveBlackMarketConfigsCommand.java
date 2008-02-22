@@ -27,7 +27,7 @@ import java.util.StringTokenizer;
 
 import common.Equipment;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.commands.Command;
 import server.campaign.CampaignMain;
 import server.MWChatServer.auth.IAuthenticator;
@@ -71,9 +71,9 @@ public class AdminSaveBlackMarketConfigsCommand implements Command {
 			}
 			ps.close();
 		} catch (FileNotFoundException fe) {
-			MWServ.mwlog.errLog("blackmarketsettings.dat not found");
+			CampaignData.mwlog.errLog("blackmarketsettings.dat not found");
 		} catch (Exception ex) {
-			MWServ.mwlog.errLog(ex);
+			CampaignData.mwlog.errLog(ex);
 		}   
 
 		CampaignMain.cm.toUser("AM:Black Market Settings saved!",Username,true);

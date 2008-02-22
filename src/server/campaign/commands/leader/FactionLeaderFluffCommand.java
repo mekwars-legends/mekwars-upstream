@@ -83,7 +83,7 @@ public class FactionLeaderFluffCommand implements Command {
         
 		CampaignMain.cm.toUser("AM:New fluff text for " + p.getName() + ": " + fluff,Username,true);
 		CampaignMain.cm.toUser(Username + " set your fluff to: " + fluff,p.getName(),true);
-		//server.MWServ.mwlog.modLog(Username + " set " + p.getName() + "'s fluff to '" + fluff + "'.");
+		//server.CampaignData.mwlog.modLog(Username + " set " + p.getName() + "'s fluff to '" + fluff + "'.");
 		CampaignMain.cm.doSendModMail("NOTE",Username + " set " + p.getName() + "'s fluff to '" + fluff + "'.");
         CampaignMain.cm.doSendToAllOnlinePlayers("PI|FT|"+p.getName()+"|"+p.getFluffText(),false);
 	}

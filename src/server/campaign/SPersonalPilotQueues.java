@@ -28,7 +28,7 @@ import java.util.LinkedList;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.pilot.SPilot;
 
 import common.Unit;
@@ -279,8 +279,8 @@ public class SPersonalPilotQueues implements Serializable{
 		    }
 
 		}catch(SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in SPersonalPilotQueues.fromDB: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in SPersonalPilotQueues.fromDB: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		}
 		
 	}

@@ -25,7 +25,7 @@ import java.util.StringTokenizer;
 
 import megamek.common.Entity;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
@@ -65,7 +65,7 @@ public class CodeTestCommand implements Command {
 	            en = (Entity) ois.readObject();
 	            ois.close();
 		    }catch(Exception ex) {
-		        MWServ.mwlog.errLog(ex);
+		        CampaignData.mwlog.errLog(ex);
 		    }
 		    CampaignMain.cm.doSendModMail("NOTE", "Entity loaded: "+en.getShortNameRaw());
 		}else {
@@ -75,7 +75,7 @@ public class CodeTestCommand implements Command {
 		        oos.writeObject(player.getUnit(id).getEntity());
 		        oos.close();
 		    }catch(Exception ex) {
-		        MWServ.mwlog.errLog(ex);
+		        CampaignData.mwlog.errLog(ex);
 		    }
 		}
 	}

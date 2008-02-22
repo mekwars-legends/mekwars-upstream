@@ -23,7 +23,7 @@ import java.util.Vector;
 import common.Unit;
 import common.util.UnitUtils;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.BuildTable;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
@@ -88,7 +88,7 @@ public class Market2 {
 			sellingPlayer = CampaignMain.cm.getPlayer(sellername);
 		
 		if (unit.getModelName().startsWith("Error") || unit.getModelName().startsWith("OMG")) {
-			MWServ.mwlog.errLog("OMG unit trying to be sold on the BM " + unit.getProducer());
+			CampaignData.mwlog.errLog("OMG unit trying to be sold on the BM " + unit.getProducer());
 			return;
 		}
 		
@@ -96,7 +96,7 @@ public class Market2 {
 				|| UnitUtils.hasArmorDamage(unit.getEntity())
 				|| UnitUtils.hasCriticalDamage(unit.getEntity()))
 				&& !CampaignMain.cm.getBooleanConfig("AllowDonatingOfDamagedUnits")) {
-			MWServ.mwlog.errLog("Damaged unit trying to be sold on the BM " + unit.getProducer());
+			CampaignData.mwlog.errLog("Damaged unit trying to be sold on the BM " + unit.getProducer());
 			
 			if (sellingPlayer != null)
 				CampaignMain.cm.toUser("You cannot sell damaged units on the Black Market!",sellername, true);
@@ -424,7 +424,7 @@ public class Market2 {
 					SUnit unitForSale = sellingActor.getUnit(currList.getListedUnitID());
 					
 					if (unitForSale == null) {
-						MWServ.mwlog.errLog("Unable to get unit for sale "+ currList.getListedModelName() + " seller " + currList.getSellerName());
+						CampaignData.mwlog.errLog("Unable to get unit for sale "+ currList.getListedModelName() + " seller " + currList.getSellerName());
 						listingsToRemove.add(currAuctionID);
 						continue;
 					}
@@ -541,7 +541,7 @@ public class Market2 {
 						// send the unit to its new owner, and log the transition
 						sellingActor.removeUnit(unitForSale, false);//BM units already removed from the SHouse display
 						buyingActor.addUnit(unitForSale, true, true);
-						server.MWServ.mwlog.bmLog(winningBid.getBidderName()+ " bought a " + currList.getListedModelName()+ " from " + currList.getSellerName() + " for "+ winningBidAmt);
+						CampaignData.mwlog.bmLog(winningBid.getBidderName()+ " bought a " + currList.getListedModelName()+ " from " + currList.getSellerName() + " for "+ winningBidAmt);
 					
 						/*
 						 * Add to listings to remove. The seller will be non-null, but the unit
@@ -555,8 +555,8 @@ public class Market2 {
 				}// end if(auction is over)
 				
 			} catch (Exception ex) {
-				MWServ.mwlog.errLog("Error during Market Tick for unit " + currList.getListedModelName());
-				MWServ.mwlog.errLog(ex);
+				CampaignData.mwlog.errLog("Error during Market Tick for unit " + currList.getListedModelName());
+				CampaignData.mwlog.errLog(ex);
 			}
 		}// end for(all auctions)
 

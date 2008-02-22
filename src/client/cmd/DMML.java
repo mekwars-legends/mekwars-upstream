@@ -22,6 +22,8 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.StringTokenizer;
 
+import common.CampaignData;
+
 import client.MWClient;
 
 /**
@@ -58,7 +60,7 @@ public class DMML extends Command {
     			p.flush();
     			p.close();
         	}catch(Exception ex) {
-        		MWClient.mwClientLog.clientErrLog(ex);
+        		CampaignData.mwlog.errLog(ex);
         	}
         }
 	}

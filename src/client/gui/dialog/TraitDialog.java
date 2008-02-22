@@ -41,6 +41,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
+import common.CampaignData;
 import common.House;
 import common.campaign.pilot.skills.PilotSkill;
 
@@ -388,8 +389,8 @@ public final class TraitDialog implements ActionListener, KeyListener{
 	        for ( int i =0; i < tempArray.length; i++)
 	            traitComboBox.addItem(tempArray[i]);
 	    }catch (Exception ex){
-	        MWClient.mwClientLog.clientErrLog("Unable to load faction "+faction);
-	        MWClient.mwClientLog.clientErrLog(ex);
+	        CampaignData.mwlog.errLog("Unable to load faction "+faction);
+	        CampaignData.mwlog.errLog(ex);
 	    }
 	    if ( traitComboBox.getItemCount() > 0 )
 	        traitComboBox.setSelectedIndex(0);
@@ -474,8 +475,8 @@ public final class TraitDialog implements ActionListener, KeyListener{
 	                
 	        }
 	    }catch (Exception ex){
-	        MWClient.mwClientLog.clientErrLog("populate Traits error");
-	        MWClient.mwClientLog.clientErrLog(ex);
+	        CampaignData.mwlog.errLog("populate Traits error");
+	        CampaignData.mwlog.errLog(ex);
         }
 	}
 	

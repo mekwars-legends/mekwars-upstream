@@ -24,8 +24,7 @@ import java.util.LinkedList;
 import java.util.StringTokenizer;
 import java.util.ArrayList;
 
-import client.MWClient;
-
+import common.CampaignData;
 import common.Unit;
 import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
@@ -140,8 +139,8 @@ public class CPersonalPilotQueues {
             
             this.getUnitTypeQueue(pilotType).get(pilotClass).addLast(pilot);
         } catch(Exception ex) {
-            MWClient.mwClientLog.clientErrLog("Error while adding pilot to PPQ");
-            MWClient.mwClientLog.clientErrLog(ex);
+            CampaignData.mwlog.errLog("Error while adding pilot to PPQ");
+            CampaignData.mwlog.errLog(ex);
         }
         
     }
@@ -163,8 +162,8 @@ public class CPersonalPilotQueues {
             
             this.getUnitTypeQueue(pilotType).get(pilotClass).remove(pilotPosition);
         } catch(Exception ex){
-            MWClient.mwClientLog.clientErrLog("Unable to remove pilot form queue");
-            MWClient.mwClientLog.clientErrLog(ex);
+            CampaignData.mwlog.errLog("Unable to remove pilot form queue");
+            CampaignData.mwlog.errLog(ex);
         }
     }
 	

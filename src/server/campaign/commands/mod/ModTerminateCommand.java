@@ -92,7 +92,7 @@ public class ModTerminateCommand implements Command {
 		}
 		
 		CampaignMain.cm.toUser("AM:You terminated Attack #" + opID + ". " + players,Username,true);
-		//server.MWServ.mwlog.modLog(Username + " terminated Attack #" + opID + ". " + players);
+		//server.CampaignData.mwlog.modLog(Username + " terminated Attack #" + opID + ". " + players);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " terminated Attack #" + opID + ". " + players);
 		
 	}//end process()

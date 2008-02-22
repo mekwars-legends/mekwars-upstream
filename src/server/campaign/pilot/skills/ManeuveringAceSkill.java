@@ -76,7 +76,7 @@ public class ManeuveringAceSkill extends SPilotSkill {
             return (int)total;
         }
         catch (Exception ex){
-            //MWServ.mwlog.errLog(ex);
+            //CampaignData.mwlog.errLog(ex);
             return 0;
         }
     }

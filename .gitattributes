@@ -1178,7 +1178,6 @@ src/admin/dialog/ServerConfigurationDialog.java -text
 src/admin/dialog/SubFactionConfigurationDialog.java -text
 src/admin/dialog/TerrainSelectionDialog.java -text
 src/client/CConfig.java -text
-src/client/CMWLogger.java -text
 src/client/CUser.java -text
 src/client/ClientThread.java -text
 src/client/MWClient.java -text
@@ -1329,6 +1328,7 @@ src/common/util/HTML.java -text
 src/common/util/MD5.java -text
 src/common/util/MD5OutputStream.java -text
 src/common/util/MMNetXStream.java -text
+src/common/util/MWLogger.java -text
 src/common/util/Position.java -text
 src/common/util/SpringLayoutHelper.java -text
 src/common/util/StringUtils.java -text
@@ -1337,7 +1337,6 @@ src/common/util/ThreadManager.java -text
 src/common/util/UnitComponents.java -text
 src/common/util/UnitUtils.java -text
 src/dedicatedhost/CConfig.java -text
-src/dedicatedhost/CMWLogger.java -text
 src/dedicatedhost/CUser.java -text
 src/dedicatedhost/MWDedHost.java -text
 src/dedicatedhost/cmd/CS.java -text
@@ -1397,7 +1396,6 @@ src/server/MWChatServer/translator/Translator.java -text
 src/server/MWChatServer/translator/jcrypt.java -text
 src/server/MWClientInfo.java -text
 src/server/MWServ.java -text
-src/server/SMWLogger.java -text
 src/server/ServerWrapper.java -text
 src/server/campaign/AutoArmy.java -text
 src/server/campaign/BuildTable.java -text

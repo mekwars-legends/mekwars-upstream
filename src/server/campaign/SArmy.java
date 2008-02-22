@@ -33,7 +33,7 @@ import megamek.common.Mounted;
 import common.Army;
 import common.Unit;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.operations.Operation;
 import server.util.TokenReader;
 
@@ -75,8 +75,8 @@ public class SArmy extends Army{
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQLException in SArmy.toDB: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQLException in SArmy.toDB: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
         }
     }
 
@@ -88,8 +88,8 @@ public class SArmy extends Army{
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQLException in SArmy.deleteFromDB: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQLException in SArmy.deleteFromDB: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
         }
     }
 
@@ -206,14 +206,14 @@ public class SArmy extends Army{
                 if (u.hasHoming())
                     hasHoming = true;
 
-                // MWServ.mwlog.errLog(" Unit: "+u.getModelName()+" TAG:
+                // CampaignData.mwlog.errLog(" Unit: "+u.getModelName()+" TAG:
                 // "+hasTAG+" Homing: "+hasHoming);
                 if (hasTAG && hasHoming)
                     return true;
             }
         } catch (Exception ex) {
-            MWServ.mwlog.errLog("Bad unit in army for TAGandHomingCombo. Returning false.");
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog("Bad unit in army for TAGandHomingCombo. Returning false.");
+            CampaignData.mwlog.errLog(ex);
             return false;
         }
         return false;
@@ -232,14 +232,14 @@ public class SArmy extends Army{
                 if (u.hasSemiGuided())
                     hasSemiGuided = true;
 
-                // MWServ.mwlog.errLog(" Unit: "+u.getModelName()+" TAG:
+                // CampaignData.mwlog.errLog(" Unit: "+u.getModelName()+" TAG:
                 // "+hasTAG+" SemiGuided: "+hasSemiGuided);
                 if (hasTAG && hasSemiGuided)
                     return true;
             }
         } catch (Exception ex) {
-            MWServ.mwlog.errLog("Bad unit in army for hasTAGAndSemiGuidedCombo. Returning false.");
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog("Bad unit in army for hasTAGAndSemiGuidedCombo. Returning false.");
+            CampaignData.mwlog.errLog(ex);
             return false;
         }
         return false;
@@ -306,10 +306,10 @@ public class SArmy extends Army{
             total += subTotal;
         }
 
-        // MWServ.mwlog.errLog("Count: "+ c3Count+" BV: "+total+" Modifier:
+        // CampaignData.mwlog.errLog("Count: "+ c3Count+" BV: "+total+" Modifier:
         // "+c3Count * ( c3BV * .05));///this.getNumberOfNetworks());
         total += c3Count * (c3BV * .05);// /this.getNumberOfNetworks();
-        // MWServ.mwlog.errLog("Army BV: "+total);
+        // CampaignData.mwlog.errLog("Army BV: "+total);
 
         if (hasSemiGuided)
             total += this.getSemiGuidedBV();
@@ -573,8 +573,8 @@ public class SArmy extends Army{
             opponents.add(a);
             opponents.trimToSize();
         } catch (Exception e) {
-            MWServ.mwlog.errLog("Error adding army to opponentList. Trace follows.");
-            MWServ.mwlog.errLog(e);
+            CampaignData.mwlog.errLog("Error adding army to opponentList. Trace follows.");
+            CampaignData.mwlog.errLog(e);
         }
     }// end addOpponent
 
@@ -583,8 +583,8 @@ public class SArmy extends Army{
             opponents.remove(a);
             opponents.trimToSize();
         } catch (Exception e) {
-            MWServ.mwlog.errLog("Error removing army from opponentList. Trace follows.");
-            MWServ.mwlog.errLog(e);
+            CampaignData.mwlog.errLog("Error removing army from opponentList. Trace follows.");
+            CampaignData.mwlog.errLog(e);
         }
     }// end removeOpponent()
 

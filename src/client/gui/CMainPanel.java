@@ -35,6 +35,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import common.BMEquipment;
+import common.CampaignData;
 
 import client.MWClient;
 import client.gui.CCommPanel;
@@ -362,7 +363,7 @@ public class CMainPanel extends JPanel implements ChangeListener, ComponentListe
 		((CBMPartsPanel)BMETabbed.getComponentAt(2)).refresh();
 		((CBMPartsPanel)BMETabbed.getComponentAt(3)).refresh();
 		}catch (Exception ex){
-			MWClient.mwClientLog.clientErrLog(ex);
+			CampaignData.mwlog.errLog(ex);
 		}
 	}
 	

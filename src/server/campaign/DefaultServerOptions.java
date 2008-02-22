@@ -22,7 +22,7 @@
 package server.campaign;
 
 import java.util.Properties;
-import server.MWServ;
+import common.CampaignData;
 
 /**
  * 
@@ -1099,9 +1099,9 @@ public class DefaultServerOptions {
         try {
             CampaignMain.cm.saveConfigureFile(CampaignMain.cm.getConfig(), CampaignMain.cm.getServer().getConfigParam("CAMPAIGNCONFIG"));
         } catch (Exception ex) {
-            MWServ.mwlog.errLog("Unable to save config file.");
-            MWServ.mwlog.errLog(ex);
-            MWServ.mwlog.errLog(ex.getMessage());
+            CampaignData.mwlog.errLog("Unable to save config file.");
+            CampaignData.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog(ex.getMessage());
         }
     }
 

@@ -2,6 +2,8 @@ package client.protocol.commands;
 
 import java.util.StringTokenizer;
 
+import common.CampaignData;
+
 import client.MWClient;
 
 /**
@@ -25,7 +27,7 @@ public class PingPCmd extends CProtCommand {
 			String sender = ST.nextToken();
 			String stamp = ST.nextToken();
 
-			MWClient.mwClientLog.clientOutputLog("Received server ping.");
+			CampaignData.mwlog.infoLog("Received server ping.");
 
 			Connector.send(prefix + "pong" + delimiter + sender + delimiter + stamp);
 			if (!sender.equals("server")) {echo(input);}

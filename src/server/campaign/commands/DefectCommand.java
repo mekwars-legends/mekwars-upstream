@@ -28,7 +28,7 @@ import megamek.common.TechConstants;
 import common.Planet;
 import common.util.UnitUtils;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.BuildTable;
 import server.campaign.CampaignMain;
 import server.campaign.NewbieHouse;
@@ -636,7 +636,7 @@ public class DefectCommand implements Command {
 	    }
 	    
 	    if ( planetList.size() < 1 ) {
-	        MWServ.mwlog.errLog("Error Unable to find planet for new faction "+house.getName());
+	        CampaignData.mwlog.errLog("Error Unable to find planet for new faction "+house.getName());
 	        CampaignMain.cm.doSendModMail("NOTE", "Error Unable to find planet for new faction "+house.getName());
 	    }
 
@@ -672,7 +672,7 @@ public class DefectCommand implements Command {
                     ps.close();
                     out.close();
 	            }catch(Exception ex) {
-	                MWServ.mwlog.errLog(ex);
+	                CampaignData.mwlog.errLog(ex);
 	            }
 	        }
 	    }

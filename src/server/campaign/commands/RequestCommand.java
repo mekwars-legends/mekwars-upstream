@@ -23,7 +23,7 @@ import java.util.StringTokenizer;
 
 import common.Unit;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.BuildTable;
 import server.campaign.SPlayer;
 import server.campaign.CampaignMain;
@@ -377,7 +377,7 @@ public class RequestCommand implements Command {
 
 			result = "AM:You've been granted the following " + results.toString() + ". (-";
 			result += CampaignMain.cm.moneyOrFluMessage(true,false,mechCbills)+" / -" + CampaignMain.cm.moneyOrFluMessage(false,true,mechInfluence)+")";
-			MWServ.mwlog.mainLog(p.getName() + " bought the following " + results.toString() + " from " + factory.getName() + " on " + planet.getName());
+			CampaignData.mwlog.mainLog(p.getName() + " bought the following " + results.toString() + " from " + factory.getName() + " on " + planet.getName());
 			CampaignMain.cm.toUser(result,Username,true);
 			CampaignMain.cm.doSendHouseMail(playerHouse,"NOTE",p.getName() + " bought the following " + results.toString() + " from " + factory.getName() + " on " + planet.getName() + "!");
 

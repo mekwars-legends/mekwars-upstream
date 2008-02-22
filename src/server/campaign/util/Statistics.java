@@ -27,7 +27,7 @@ import java.util.Vector;
 import common.House;
 import common.Unit;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SmallPlayer;
 import server.campaign.SHouse;
@@ -136,8 +136,8 @@ public class Statistics {
 			        result.append("</tr>");
 			        rank++;
 		        }catch(Exception ex){
-		        	MWServ.mwlog.errLog("Error while Referencing player: "+p.getName());
-		        	MWServ.mwlog.errLog(ex);
+		        	CampaignData.mwlog.errLog("Error while Referencing player: "+p.getName());
+		        	CampaignData.mwlog.errLog(ex);
 		        }
 		    }
 		    result.append("</table>");
@@ -153,7 +153,7 @@ public class Statistics {
 	        out.close();
         	Statistics.doEXPRanking();
 	    } catch (Exception ex) {
-	    	MWServ.mwlog.errLog(ex);
+	    	CampaignData.mwlog.errLog(ex);
 	    }
 	}
 
@@ -225,6 +225,9 @@ public class Statistics {
 	    	result += "Faction Ranking: ";
 	    
 	    TreeSet<HouseRankingHelpContainer> s = CampaignMain.cm.getHouseRanking();
+	    if ( s.size() < 1)
+	        return "";
+	    
 	    for (HouseRankingHelpContainer h : s) {
 	    	if (useHTML)
 	        	result += h.getHouse().getColoredNameAsLink() + " (";

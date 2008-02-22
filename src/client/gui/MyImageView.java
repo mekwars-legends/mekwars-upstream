@@ -60,6 +60,8 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.event.DocumentEvent;
 
+import common.CampaignData;
+
 import client.MWClient;
 
 public class MyImageView extends View implements ImageObserver, MouseListener, MouseMotionListener {
@@ -359,7 +361,7 @@ public class MyImageView extends View implements ImageObserver, MouseListener, M
 	/** My attributes may have changed. */
 	@Override
 	public void changedUpdate(DocumentEvent e, Shape a, ViewFactory f) {
-		if(DEBUG) MWClient.mwClientLog.clientOutputLog("ImageView: changedUpdate begin...");
+		if(DEBUG) CampaignData.mwlog.infoLog("ImageView: changedUpdate begin...");
 		super.changedUpdate(e,a,f);
 		float align = getVerticalAlignment();
 		
@@ -372,11 +374,11 @@ public class MyImageView extends View implements ImageObserver, MouseListener, M
 		boolean wChanged = fWidth!=width;
 		if( hChanged || wChanged || getVerticalAlignment()!=align ) {
 			if(DEBUG)
-				MWClient.mwClientLog.clientOutputLog("ImageView: calling preferenceChanged");
+				CampaignData.mwlog.infoLog("ImageView: calling preferenceChanged");
 			getParent().preferenceChanged(this,hChanged,wChanged);
 		}
 		if(DEBUG)
-			MWClient.mwClientLog.clientOutputLog("ImageView: changedUpdate end; valign="+getVerticalAlignment());
+			CampaignData.mwlog.infoLog("ImageView: changedUpdate end; valign="+getVerticalAlignment());
 	}
 	
 	
@@ -553,7 +555,7 @@ public class MyImageView extends View implements ImageObserver, MouseListener, M
 		if( changed != 0 ) {
 			// May need to resize myself, asynchronously:
 			if( DEBUG )
-				MWClient.mwClientLog.clientOutputLog("ImageView: resized to "+fWidth+"x"+fHeight);
+				CampaignData.mwlog.infoLog("ImageView: resized to "+fWidth+"x"+fHeight);
 			
 			Document doc = getDocument();
 			try {
@@ -726,7 +728,7 @@ public class MyImageView extends View implements ImageObserver, MouseListener, M
 				&& getSelectionState()==2 ) {
 			// Click in selected grow-box:
 			if(DEBUG)
-				MWClient.mwClientLog.clientOutputLog("ImageView: grow!!! Size="+fWidth+"x"+fHeight);
+				CampaignData.mwlog.infoLog("ImageView: grow!!! Size="+fWidth+"x"+fHeight);
 			Point loc = fComponent.getLocationOnScreen();
 			fGrowBase = new Point(loc.x+e.getX() - fWidth,
 					loc.y+e.getY() - fHeight);
@@ -830,7 +832,7 @@ public class MyImageView extends View implements ImageObserver, MouseListener, M
 		
 		buffer = out.toByteArray();
 		if (buffer.length == 0) {
-			MWClient.mwClientLog.clientErrLog("warning: " + gifFile +
+			CampaignData.mwlog.errLog("warning: " + gifFile +
 			" is zero-length");
 			return null;
 		}
@@ -844,7 +846,7 @@ public class MyImageView extends View implements ImageObserver, MouseListener, M
 			if( sMissingImageIcon == null )
 				sMissingImageIcon = makeIcon(MISSING_IMAGE_SRC);
 		}catch( Exception x ) {
-			MWClient.mwClientLog.clientErrLog("ImageView: Couldn't load image icons");
+			CampaignData.mwlog.errLog("ImageView: Couldn't load image icons");
 		}
 	}
 	

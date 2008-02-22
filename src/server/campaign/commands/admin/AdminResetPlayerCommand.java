@@ -73,7 +73,7 @@ public class AdminResetPlayerCommand implements Command {
                 CampaignMain.cm.doLogoutPlayer(player.getName());
                 
             }
-            //server.MWServ.mwlog.modLog(Username + " has reset all player accounts.");
+            //server.CampaignData.mwlog.modLog(Username + " has reset all player accounts.");
             CampaignMain.cm.doSendModMail("NOTE",Username + " has reset all player accounts.");
         }else if ( CampaignMain.cm.getHouseFromPartialString(resetType,null) != null ){
             File[] playerList = new File("./campaign/players").listFiles();
@@ -94,13 +94,13 @@ public class AdminResetPlayerCommand implements Command {
                 }
                 
             }
-            //server.MWServ.mwlog.modLog(Username + " has reset all player accounts for faction "+resetType);
+            //server.CampaignData.mwlog.modLog(Username + " has reset all player accounts for faction "+resetType);
             CampaignMain.cm.doSendModMail("NOTE",Username + " has reset all player accounts for faction "+resetType);
         }else if (CampaignMain.cm.getPlayer(resetType) != null ) {
             SPlayer player = CampaignMain.cm.getPlayer(resetType);
             player.reset("CONFIRM");
             CampaignMain.cm.doLogoutPlayer(player.getName());
-            //server.MWServ.mwlog.modLog(Username + " has reset "+player.getName()+"'s account.");
+            //server.CampaignData.mwlog.modLog(Username + " has reset "+player.getName()+"'s account.");
             CampaignMain.cm.doSendModMail("NOTE",Username + " has reset "+player.getName()+"'s account.");
 		}
 		

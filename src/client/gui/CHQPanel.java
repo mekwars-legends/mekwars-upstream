@@ -75,6 +75,7 @@ import client.gui.dialog.CustomUnitDialog;
 import client.gui.AttackMenu;
 
 import common.Army;
+import common.CampaignData;
 import common.Unit;
 import common.campaign.pilot.Pilot;
 import common.util.SpringLayoutHelper;
@@ -3040,7 +3041,7 @@ public class CHQPanel extends JPanel {
 				try { 
 					mt.loadFromFile("mechset.txt"); 
 				} catch (IOException ex) {
-					MWClient.mwClientLog.clientErrLog("Unable to read data/images/units/mechset.txt");
+					CampaignData.mwlog.errLog("Unable to read data/images/units/mechset.txt");
 				}
 			}
 			

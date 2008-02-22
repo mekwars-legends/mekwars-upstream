@@ -181,10 +181,10 @@ class BrowserCommandLexer {
             BrowserCommandLexer shredder = new BrowserCommandLexer(in);
             String t;
             while ((t = shredder.getNextToken()) != null) {
-                MWClient.mwClientLog.clientOutputLog(t);
+                CampaignData.mwlog.infoLog(t);
             }
         } catch (IOException e){
-            MWClient.mwClientLog.clientOutputLog(e.getMessage());
+            CampaignData.mwlog.infoLog(e.getMessage());
         }
     }
 */

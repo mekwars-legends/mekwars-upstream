@@ -26,16 +26,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.sun.corba.se.impl.protocol.MinimalServantCacheLocalCRDImpl;
-
 import common.Unit;
 
-import server.MWServ;
+import common.CampaignData;
 
 
 /**
@@ -129,7 +126,7 @@ public class BuildTable {
 		String result = "./data/buildtables/"+dir+"/" + faction + "_" + weightclass + addon + ".txt";
 		if (!new File(result).exists()){
 			if ( !result.trim().toLowerCase().endsWith(".txt") )
-				MWServ.mwlog.errLog("Unable to find build table file "+result+" using ./data/buildtables/"+dir+"/Common_" + weightclass + addon + ".txt");
+				CampaignData.mwlog.errLog("Unable to find build table file "+result+" using ./data/buildtables/"+dir+"/Common_" + weightclass + addon + ".txt");
 			result = "./data/buildtables/"+dir+"/Common_" + weightclass + addon + ".txt";
 		}
 		return result;
@@ -227,146 +224,9 @@ public class BuildTable {
 			}
 			result.trimToSize();
 		} catch (Exception ex) {
-			MWServ.mwlog.errLog(ex);
+			CampaignData.mwlog.errLog(ex);
 		}
 		return result;
-	}
-	
-	private static void addTech(String faction, int weightclass, int type, String unitName, int chances){
-		ConcurrentHashMap<String, Integer> unitHolder = new ConcurrentHashMap<String, Integer>();
-		
-		if ( chances < 1 )
-			return;
-		
-		try {
-			
-			String techFileName = getTechFileName(faction, SUnit.getWeightClassDesc(weightclass), type);
-			if ( techFileName.trim().length() < 1 )
-				return;
-			File techFile = new File(techFileName); 
-			FileInputStream fis = new FileInputStream(techFile);
-			BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
-			while (dis.ready()) {
-
-				/*
-				 * Read the line and remove excess whitespace. Removing whitespace
-				 * sensitivity will allow ops to make more readable files; however,
-				 * any unit file name that contains 2 spaces consecutively (is there
-				 * such a thing?) will be broken. 
-				 */
-				String l = dis.readLine();
-				if (l == null || l.trim().length() == 0)
-					continue;
-				
-				l = l.trim();
-				l = l.replaceAll("\\s+"," ");//reduce multi-spaces to one space
-				if (l.indexOf(" ") == 0)
-					l = l.substring(1,l.length());
-				
-				StringTokenizer ST = new StringTokenizer(l.trim());
-				if (ST.hasMoreElements()) {
-					int amount = Integer.parseInt((String)ST.nextElement());
-					StringBuilder filename = new StringBuilder();
-					while (ST.hasMoreElements()) {
-						filename.append(ST.nextToken());
-						if (ST.hasMoreTokens())
-							filename.append(" ");
-					}
-					unitHolder.put(filename.toString(),amount);
-				}
-			}
-			dis.close();
-			fis.close();
-			
-			if ( unitHolder.containsKey(unitName) )
-				unitHolder.put(unitName,unitHolder.get(unitName)+chances);
-			else
-				unitHolder.put(unitName,chances);
-			
-			BuildTable.saveBuildTableFile(techFile, unitHolder);
-		} catch (Exception ex) {
-			MWServ.mwlog.errLog(ex);
-		}
-
-	}
-	
-	private static String destroyTech(String faction, int weightclass, int type, int amountToDestroy){
-		Vector<String>  result = new Vector<String>();
-		ConcurrentHashMap<String, Integer> unitHolder = new ConcurrentHashMap<String, Integer>();
-		StringBuffer destroyedTech = new StringBuffer();
-
-		if ( amountToDestroy < 1 )
-			return "Nothing to destroy";
-		
-		try {
-			
-			String techFileName = getTechFileName(faction, SUnit.getWeightClassDesc(weightclass), type);
-			if ( techFileName.trim().length() < 1 )
-				return "Nothing to destroy";
-			File techFile = new File(techFileName); 
-			FileInputStream fis = new FileInputStream(techFile);
-			BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
-			while (dis.ready()) {
-
-				/*
-				 * Read the line and remove excess whitespace. Removing whitespace
-				 * sensitivity will allow ops to make more readable files; however,
-				 * any unit file name that contains 2 spaces consecutively (is there
-				 * such a thing?) will be broken. 
-				 */
-				String l = dis.readLine();
-				if (l == null || l.trim().length() == 0)
-					continue;
-				
-				l = l.trim();
-				l = l.replaceAll("\\s+"," ");//reduce multi-spaces to one space
-				if (l.indexOf(" ") == 0)
-					l = l.substring(1,l.length());
-				
-				StringTokenizer ST = new StringTokenizer(l.trim());
-				if (ST.hasMoreElements()) {
-					int amount = Integer.parseInt((String)ST.nextElement());
-					StringBuilder filename = new StringBuilder();
-					while (ST.hasMoreElements()) {
-						filename.append(ST.nextToken());
-						if (ST.hasMoreTokens())
-							filename.append(" ");
-					}
-					result.add(filename.toString());
-				}
-			}
-			dis.close();
-			fis.close();
-
-			if ( result.size() <= amountToDestroy ){
-				techFile.delete();
-				return "all technological advances have been wiped out";
-			}
-			
-			for ( ; amountToDestroy > 0; amountToDestroy-- ){
-				int ran = CampaignMain.cm.getRandomNumber(result.size());
-				destroyedTech.append(result.elementAt(ran));
-				destroyedTech.append(", " );
-				result.removeElementAt(ran);
-			}
-			result.trimToSize();
-			
-			//get rid of the ending ", "
-			destroyedTech.delete(destroyedTech.length()-3, destroyedTech.length()-1);
-			destroyedTech.append(".");
-			
-			for (String filename : result){
-				if ( unitHolder.containsKey(filename) )
-					unitHolder.put(filename,unitHolder.get(filename)+1);
-				else
-					unitHolder.put(filename,1);
-			}
-
-			BuildTable.saveBuildTableFile(techFile, unitHolder);
-		} catch (Exception ex) {
-			MWServ.mwlog.errLog(ex);
-		}
-		return destroyedTech.toString();
 	}
 	
 	public static void saveBuildTableFile(File file, ConcurrentHashMap<String,Integer> unitHolder){
@@ -381,7 +241,7 @@ public class BuildTable {
 			fos.close();
 		}
 		catch(Exception ex){
-			MWServ.mwlog.errLog(ex);
+			CampaignData.mwlog.errLog(ex);
 		}
 
 	}

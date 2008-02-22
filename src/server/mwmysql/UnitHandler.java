@@ -23,7 +23,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import server.MWServ;
+import common.CampaignData;
 
 public class UnitHandler {
 	
@@ -36,8 +36,8 @@ public class UnitHandler {
 			stmt.executeUpdate("UPDATE units set uPlayerID = NULL, uFactionID = " + factionID + " WHERE ID = " + unitID);
 			stmt.close();
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in UnitHandler.linkUnitToFaction: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in UnitHandler.linkUnitToFaction: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		}
 	}
 	
@@ -53,8 +53,8 @@ public class UnitHandler {
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in UnitHandler.getDBIdFromMWId: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in UnitHandler.getDBIdFromMWId: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		} 
 		return uID;
 	}
@@ -65,8 +65,8 @@ public class UnitHandler {
 			stmt.executeUpdate("UPDATE units set uFactionID = NULL, uPlayerID = NULL WHERE ID = " + unitID);
 			stmt.close();
 		} catch(SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in UnitHandler.unlinkUnit: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in UnitHandler.unlinkUnit: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		}
 	}
 	
@@ -78,8 +78,8 @@ public class UnitHandler {
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in UnitHandler.linkUnitToPlayer: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in UnitHandler.linkUnitToPlayer: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		}
 	}
 	
@@ -91,8 +91,8 @@ public class UnitHandler {
 			stmt.executeUpdate("DELETE from units WHERE ID = " + unitID);
 			stmt.close();
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in UnitHandler.deleteUnit: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in UnitHandler.deleteUnit: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		}
 	}
 	

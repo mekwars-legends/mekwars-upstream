@@ -24,7 +24,7 @@ import java.util.StringTokenizer;
 
 import megamek.common.Entity;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SUnit;
 
@@ -74,7 +74,7 @@ public class BuildTableListCommand implements Command {
 					    SUnit m = new SUnit();
 					    Entity ent = m.loadMech(fileWithOutChance);
 						if ( ent.getModel().equals("OMG-UR-FD") ){
-						    MWServ.mwlog.errLog(fileWithOutChance+" errored in Build Table: "+filePath);
+						    CampaignData.mwlog.errLog(fileWithOutChance+" errored in Build Table: "+filePath);
 						    results += fileWithOutChance.trim()+"<br>";
 						}
 						else
@@ -99,8 +99,8 @@ public class BuildTableListCommand implements Command {
 		}
 		catch(Exception ex){
 		    CampaignMain.cm.toUser("AM:Unknown path try again!",Username,true);
-		    MWServ.mwlog.errLog("Error with build table list");
-		    MWServ.mwlog.errLog(ex);
+		    CampaignData.mwlog.errLog("Error with build table list");
+		    CampaignData.mwlog.errLog(ex);
 		    return;
 		}
 		

@@ -76,12 +76,12 @@ public class TraitSkill extends SPilotSkill {
         String Trait = "none";
         String faction = p.getCurrentFaction();
 
-        //MWServ.mwlog.errLog("Trait Skill Faction: "+faction);
+        //CampaignData.mwlog.errLog("Trait Skill Faction: "+faction);
         Vector<String> traitNames = CampaignMain.cm.getFactionTraits(faction);
 
         size = traitNames.size();
         
-        //MWServ.mwlog.errLog("Trait Skill size: "+size);
+        //CampaignData.mwlog.errLog("Trait Skill size: "+size);
         
         if ( size < 1 )
             return;

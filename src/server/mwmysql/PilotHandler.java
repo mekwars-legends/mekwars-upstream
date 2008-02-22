@@ -26,7 +26,7 @@ import java.util.StringTokenizer;
 
 import common.campaign.pilot.skills.PilotSkill;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.AstechSkill;
@@ -100,12 +100,12 @@ public class PilotHandler {
 				rs.close();
 				stmt.close();
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in PilotHandler.loadPilot: " + e.getMessage());
+			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.loadPilot: " + e.getMessage());
 			p = new SPilot("Vacant", 99, 99);
 			return p;
 		} } catch (Exception ex) {
-			MWServ.mwlog.errLog("Error loading Pilot " + p.getPilotId());
-			MWServ.mwlog.errLog(ex);
+			CampaignData.mwlog.errLog("Error loading Pilot " + p.getPilotId());
+			CampaignData.mwlog.errLog(ex);
 			p = new SPilot("Vacant", 99, 99);
 			return p;
 		}
@@ -123,8 +123,8 @@ public class PilotHandler {
 			rs.close();
 			stmt.close();
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in PilotHandler.loadUnitPilot: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.loadUnitPilot: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		}
 		return p;
 	}
@@ -135,8 +135,8 @@ public class PilotHandler {
 			stmt.executeUpdate("UPDATE pilots set factionID = NULL, playerName = NULL, unitID = NULL WHERE pilotID = " + pilotID);
 			stmt.close();
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in PilotHandler.unlinkPilot: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.unlinkPilot: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		}
 	}
 	
@@ -146,8 +146,8 @@ public class PilotHandler {
 		stmt.executeUpdate("UPDATE pilots SET factionID = NULL, playerID = NULL, unitID = " + unitID + " WHERE pilotID = " + pilotID);
 		stmt.close();
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in PilotHandler.linkPilotToUnit: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.linkPilotToUnit: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		}
 	}
 	
@@ -157,8 +157,8 @@ public class PilotHandler {
 			stmt.executeUpdate("UPDATE pilots SET playerID = NULL, unitID = NULL, factionID = " + factionId + " WHERE pilotID = " + pilotID);
 			stmt.close();
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in PilotHandler.linkPilotToFaction: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.linkPilotToFaction: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		}
 	}
 
@@ -169,8 +169,8 @@ public class PilotHandler {
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in PilotHandler.linkPilotToPlayer: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.linkPilotToPlayer: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		}
 	}
 	
@@ -181,8 +181,8 @@ public class PilotHandler {
 			stmt.executeUpdate("DELETE from pilots WHERE pilotID = " + pilotID);
 			stmt.close();
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in PilotHandler.deletePilot: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.deletePilot: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		}
 	}
 	
@@ -199,8 +199,8 @@ public class PilotHandler {
 			rs.close();
 			stmt.close();
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		}
 	}
 		
@@ -219,8 +219,8 @@ public class PilotHandler {
 			stmt1.close();
 			rs.close();
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		}
 	}
 	
@@ -239,8 +239,8 @@ public class PilotHandler {
 			stmt.close();
 			stmt1.close();
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		}
 	}
 	
@@ -259,8 +259,8 @@ public class PilotHandler {
 			stmt.close();
 			stmt1.close();
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		}
 	}
 	

@@ -43,6 +43,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
 import common.AdvancedTerrain;
+import common.CampaignData;
 import common.Continent;
 import common.House;
 import common.Planet;
@@ -255,8 +256,8 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 				removedTerrain.clear();
 				removedOwners.clear();
 			}catch(Exception ex){
-				MWClient.mwClientLog.clientErrLog("PlanetEditorDialog Save Error!");
-				MWClient.mwClientLog.clientErrLog(ex);
+				CampaignData.mwlog.errLog("PlanetEditorDialog Save Error!");
+				CampaignData.mwlog.errLog(ex);
 			}
 			refreshAllPanels();
 		}
@@ -324,7 +325,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 				if ( planetOwnersList.getItemCount() > 0)
 					planetOwnersList.setSelectedIndex(0);
 			}catch (Exception ex){
-				ex.printStackTrace();
+				CampaignData.mwlog.errLog(ex);
 			}
 			
 		}else if ( command.equals(addFactoryCommand) ){
@@ -375,7 +376,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 					advancedTerrainMap.put(allTerrains.getSelectedItem().toString(),at);
 				}
 			}catch(Exception ex){
-				ex.printStackTrace();
+				CampaignData.mwlog.errLog(ex);
 			}
 		}else if ( command.equals(RemoveTerrainCommand) ){
 			currentTerrainPercent.setText("");
@@ -1138,14 +1139,14 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 				int percent = Integer.parseInt(currentFactionOwnerShip.getText().trim().replaceAll("%", ""));
 				ownersMap.put(planetOwnersList.getSelectedItem().toString(), percent);
 			}catch(Exception ex){
-				ex.printStackTrace();
+				CampaignData.mwlog.errLog(ex);
 			}
 		}else if ( e.getComponent().equals(currentTerrainPercent) ){
 			try{
 				int percent = Integer.parseInt(currentTerrainPercent.getText().trim().replaceAll("%", ""));
 				terrainMap.put(planetTerrains.getSelectedItem().toString(), percent);
 			}catch(Exception ex){
-				ex.printStackTrace();
+				CampaignData.mwlog.errLog(ex);
 			}
 		}else if ( e.getComponent().equals(this.StaticMapNameText)
 				|| e.getComponent().equals(this.DisplayNameText)
@@ -1222,7 +1223,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			saveMisc();
 			
 		}catch (Exception ex){
-			MWClient.mwClientLog.clientErrLog(ex);
+			CampaignData.mwlog.errLog(ex);
 			return false;
 		}
 		
@@ -1275,7 +1276,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 				AdvancedTerrain aTerrain = advancedTerrainMap.get(terrain);
 				PlanetEnvironment pTerrain = mwclient.getData().getTerrainByName(terrain);
 				if ( pTerrain == null ){
-					MWClient.mwClientLog.clientErrLog("Unable to find Terrain "+terrain+" on planet "
+					CampaignData.mwlog.errLog("Unable to find Terrain "+terrain+" on planet "
 							+selectedPlanet.getName());
 					throw new NullPointerException();
 				}

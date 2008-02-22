@@ -24,7 +24,11 @@ import common.Unit;
 
 public class NewbieHouse extends NonConqHouse {
 	
-	//VARIABLES
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -6530126180469336846L;
+    //VARIABLES
 	TreeMap<String,Integer> resetPlayers;//<lowerName,numResetsRemaning>
 	
 	//CONSTRUCTORS

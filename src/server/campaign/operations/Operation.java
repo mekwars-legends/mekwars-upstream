@@ -41,7 +41,7 @@ import java.util.TreeMap;
 
 import common.DefaultOperation;
 
-import server.MWServ;
+import common.CampaignData;
 
 public class Operation {
 	
@@ -117,11 +117,11 @@ public class Operation {
 		
 		//catastrophic failue. sysexit.
 		if (toReturn == null) {
-			MWServ.mwlog.errLog("Failed getting value \"" + valToGet + "\" from " + this.getName() + " and DefaultOp. Returning null.");
+			CampaignData.mwlog.errLog("Failed getting value \"" + valToGet + "\" from " + this.getName() + " and DefaultOp. Returning null.");
 			try{
 				throw new Exception();
 			}catch(Exception ex){
-				MWServ.mwlog.errLog(ex);
+				CampaignData.mwlog.errLog(ex);
 			}
 		}
 			

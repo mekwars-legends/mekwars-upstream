@@ -15,7 +15,7 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import server.MWServ;
+import common.CampaignData;
 
 public class SendClientDataCommand implements Command {
 	
@@ -38,7 +38,7 @@ public class SendClientDataCommand implements Command {
 				userData.append(";");
 			}
 			
-			MWServ.mwlog.ipLog(userData.toString());
+			CampaignData.mwlog.ipLog(userData.toString());
 		}catch (Exception ex){
 			//do nothing
 		}

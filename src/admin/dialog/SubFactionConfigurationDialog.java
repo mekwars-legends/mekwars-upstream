@@ -38,6 +38,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
+import common.CampaignData;
 import common.House;
 import common.SubFaction;
 import common.util.SpringLayoutHelper;
@@ -267,7 +268,7 @@ public final class SubFactionConfigurationDialog implements ActionListener {
                 
                 key = checkBox.getName();
                 if ( key == null ){
-                    MWClient.mwClientLog.clientErrLog("Null Checkbox: "+checkBox.getToolTipText());
+                    CampaignData.mwlog.errLog("Null Checkbox: "+checkBox.getToolTipText());
                     continue;
                 }
                 checkBox.setSelected(Boolean.parseBoolean(this.subFactionConfig.getConfig(key)));
@@ -277,7 +278,7 @@ public final class SubFactionConfigurationDialog implements ActionListener {
                 
                 key = radioButton.getName();
                 if ( key == null ){
-                    MWClient.mwClientLog.clientErrLog("Null RadioButton: "+radioButton.getToolTipText());
+                    CampaignData.mwlog.errLog("Null RadioButton: "+radioButton.getToolTipText());
                     continue;
                 }
                 radioButton.setSelected(Boolean.parseBoolean(this.subFactionConfig.getConfig(key)));

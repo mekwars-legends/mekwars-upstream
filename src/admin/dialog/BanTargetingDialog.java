@@ -31,6 +31,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import common.CampaignData;
 import common.util.SpringLayoutHelper;
 
 import megamek.common.MiscType;
@@ -157,7 +158,7 @@ public final class BanTargetingDialog implements ActionListener{
         try{
             return mwclient.getData().getBannedTargetingSystems().containsKey(targetingType);
         }catch(Exception ex){
-            MWClient.mwClientLog.clientErrLog("Unable to find ammo "+MiscType.getTargetSysName(targetingType));
+            CampaignData.mwlog.errLog("Unable to find ammo "+MiscType.getTargetSysName(targetingType));
             return false;
         }
 

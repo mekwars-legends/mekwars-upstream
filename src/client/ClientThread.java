@@ -34,6 +34,7 @@ import client.campaign.CArmy;
 import client.util.SerializeEntity;
 
 import common.AdvancedTerrain;
+import common.CampaignData;
 import common.MegaMekPilotOption;
 import common.MMGame;
 import common.PlanetEnvironment;
@@ -204,7 +205,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
         } catch (Exception ex) {
             client = null;
             mwclient.showInfoWindow("Couldn't join this game!");
-            MWClient.mwClientLog.clientOutputLog(serverip + " " + serverport);
+            CampaignData.mwlog.infoLog(serverip + " " + serverport);
             return;
         }
         // client.retrieveServerInfo();
@@ -314,8 +315,8 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                         sleep(50);
                     }
                 } catch (Exception ex) {
-                    MWClient.mwClientLog.clientErrLog("Bot Error!");
-                    MWClient.mwClientLog.clientErrLog(ex);
+                    CampaignData.mwlog.errLog("Bot Error!");
+                    CampaignData.mwlog.errLog(ex);
                 }
                 bot.retrieveServerInfo();
                 sleep(125);
@@ -451,7 +452,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                         entity.setCrew(createEntityPilot(autoUnit));
                     }
 
-                    // MWClient.mwClientLog.clientErrLog(entity.getModel()+"
+                    // CampaignData.mwlog.errLog(entity.getModel()+"
                     // direction "+entity.getOffBoardDirection());
                     // add the unit to the game.
                     if (bot != null)
@@ -502,7 +503,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
             }
 
         } catch (Exception e) {
-            MWClient.mwClientLog.clientErrLog(e);
+            CampaignData.mwlog.errLog(e);
         }
     }
 
@@ -567,7 +568,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
                 MMGame toUse = mwclient.getServers().get(serverName);
                 mwclient.serverSend("SGR|" + toUse.getHostName());
-                MWClient.mwClientLog.clientOutputLog("GAME END");
+                CampaignData.mwlog.infoLog("GAME END");
 
                 if (mwclient.getPlayer().getName().equalsIgnoreCase(name)) {
                     if (toUse.getHostName().startsWith("[Dedicated]"))
@@ -635,8 +636,8 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
         }// end try
         catch (Exception ex) {
-            MWClient.mwClientLog.clientErrLog("Error reporting game!");
-            MWClient.mwClientLog.clientErrLog(ex);
+            CampaignData.mwlog.errLog("Error reporting game!");
+            CampaignData.mwlog.errLog(ex);
         }
     }
 
@@ -754,25 +755,25 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
                 sleep(10);// give the queue time to refresh
             } catch (Exception ex) {
-                MWClient.mwClientLog.clientErrLog("Error in linkMegaMekC3Units");
-                MWClient.mwClientLog.clientErrLog(ex);
+                CampaignData.mwlog.errLog("Error in linkMegaMekC3Units");
+                CampaignData.mwlog.errLog(ex);
             }
         }
 
         // catch for some funky stuff
         if (c3Unit == null || c3Master == null) {
-            MWClient.mwClientLog.clientErrLog("Null Units c3Unit: " + c3Unit + " C3Master: " + c3Master);
+            CampaignData.mwlog.errLog("Null Units c3Unit: " + c3Unit + " C3Master: " + c3Master);
             return;
         }
 
         try {
             CUnit masterUnit = (CUnit) army.getUnit(masterid.intValue());
-            // MWClient.mwClientLog.clientErrLog("Master Unit:
+            // CampaignData.mwlog.errLog("Master Unit:
             // "+masterUnit.getModelName());
-            // MWClient.mwClientLog.clientErrLog("Slave Unit:
+            // CampaignData.mwlog.errLog("Slave Unit:
             // "+c3Unit.getModel());
             if (!masterUnit.hasC3SlavesLinkedTo(army) && masterUnit.hasBeenC3LinkedTo(army) && (masterUnit.getC3Level() == Unit.C3_MASTER || masterUnit.getC3Level() == Unit.C3_MMASTER)) {
-                // MWClient.mwClientLog.clientErrLog("Unit:
+                // CampaignData.mwlog.errLog("Unit:
                 // "+c3Master.getModel()+" id: "+c3Master.getExternalId());
                 if (c3Master.getC3MasterId() == Entity.NONE) {
                     c3Master.setShutDown(false);
@@ -781,24 +782,24 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                 }
                 /*
                  * if ( c3Master.hasC3MM() )
-                 * MWClient.mwClientLog.clientErrLog("hasC3MM"); else
-                 * MWClient.mwClientLog.clientErrLog("!hasC3MM");
+                 * CampaignData.mwlog.errLog("hasC3MM"); else
+                 * CampaignData.mwlog.errLog("!hasC3MM");
                  */
             } else if (c3Master.getC3MasterId() != Entity.NONE) {
                 c3Master.setShutDown(false);
                 c3Master.setC3Master(Entity.NONE);
                 client.sendUpdateEntity(c3Master);
             }
-            // MWClient.mwClientLog.clientErrLog("c3Unit: "+c3Unit.getModel()+"
+            // CampaignData.mwlog.errLog("c3Unit: "+c3Unit.getModel()+"
             // Master: "+c3Master.getModel());
             c3Unit.setShutDown(false);
             c3Unit.setC3Master(c3Master);
-            // MWClient.mwClientLog.clientErrLog("c3Master Set to
+            // CampaignData.mwlog.errLog("c3Master Set to
             // "+c3Unit.getC3MasterId()+" "+c3Unit.getC3NetId());
             client.sendUpdateEntity(c3Unit);
         } catch (Exception ex) {
-            MWClient.mwClientLog.clientErrLog(ex);
-            MWClient.mwClientLog.clientErrLog("Error in setting up C3Network");
+            CampaignData.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog("Error in setting up C3Network");
         }
     }
 
@@ -1075,7 +1076,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
         // find it once and search through it each time for the pilots skill
         for (Enumeration<IOptionGroup> enumeration = pilot.getOptions().getGroups(); enumeration.hasMoreElements();) {
             group = enumeration.nextElement();
-            // MWClient.mwClientLog.clientErrLog("Checking: " +
+            // CampaignData.mwlog.errLog("Checking: " +
             // pilot.getName()+" Key: "+group.getKey());
             if (group.getKey().equalsIgnoreCase(PilotOptions.LVL3_ADVANTAGES))
                 break;
@@ -1086,7 +1087,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
             MegaMekPilotOption po = (MegaMekPilotOption) iter.next();
             for (Enumeration<IOption> j = group.getOptions(); j.hasMoreElements();) {
                 IOption option = j.nextElement();
-                // MWClient.mwClientLog.clientErrLog("Unit:
+                // CampaignData.mwlog.errLog("Unit:
                 // "+mek.getModelName()+" Checking: " + option.getName() + "
                 // with " + po.getMmname());
                 if (option.getName().equals(po.getMmname())) {

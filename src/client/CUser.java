@@ -20,6 +20,7 @@ package client;
 import java.util.StringTokenizer;
 import java.awt.Color;
 
+import common.CampaignData;
 import common.House;
 import common.util.StringUtils;
 
@@ -100,7 +101,7 @@ public class CUser implements Comparable<Object> {
 			Userlevel = Integer.parseInt(ST.nextToken());
 			isInvis = Boolean.parseBoolean(ST.nextToken());
 		} catch (Exception ex) {
-			MWClient.mwClientLog.clientErrLog("Error in deserializing user");
+			CampaignData.mwlog.errLog("Error in deserializing user");
 		}
 	}
 
@@ -217,7 +218,7 @@ public class CUser implements Comparable<Object> {
 			RGBColor = Color.black;
 			RGBColor = StringUtils.html2Color(playerH.getHousePlayerColor());
 		} catch (Exception ex) {
-			MWClient.mwClientLog.clientErrLog(ex);
+			CampaignData.mwlog.errLog(ex);
 		}
 	}
 

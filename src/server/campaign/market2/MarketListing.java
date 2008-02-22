@@ -18,7 +18,7 @@ package server.campaign.market2;
 
 import java.util.TreeMap;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
 
@@ -119,7 +119,7 @@ public final class MarketListing {
     			bidsReceived.remove(lowerName);
     		
         } catch(Exception ex) {
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog(ex);
         }
 	}
 	

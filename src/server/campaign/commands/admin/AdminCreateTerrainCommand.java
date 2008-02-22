@@ -20,7 +20,7 @@ import java.util.StringTokenizer;
 
 import common.AdvancedTerrain;
 import common.Continent;
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.commands.Command;
 import server.campaign.CampaignMain;
 import server.campaign.SPlanet;
@@ -62,13 +62,13 @@ public class AdminCreateTerrainCommand implements Command {
 			}
 			p.updated();
 			
-			//server.MWServ.mwlog.modLog(Username + " added terrain to " + p.getName() + " (" + terraintype + ").");
+			//server.CampaignData.mwlog.modLog(Username + " added terrain to " + p.getName() + " (" + terraintype + ").");
 			CampaignMain.cm.toUser("Terrain added to " + p.getName() + "(" + terraintype + ").",Username,true);
 			CampaignMain.cm.doSendModMail("NOTE",Username + " added terrain to planet " + p.getName() + "(" + terraintype + ").");
 		}
 		
 		catch (Exception ex){
-			MWServ.mwlog.errLog(ex);
+			CampaignData.mwlog.errLog(ex);
 		}
 	}
 }

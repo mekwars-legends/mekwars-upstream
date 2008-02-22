@@ -31,6 +31,7 @@ import client.MWClient;
 import client.util.CArmyComparator;
 import client.util.CUnitComparator;
 
+import common.CampaignData;
 import common.House;
 import common.Player;
 import common.SubFaction;
@@ -246,7 +247,7 @@ public class CPlayer extends Player {
 				this.sortHangar();// sort it!
 			}
 		} catch (Exception e) {
-			MWClient.mwClientLog.clientErrLog(e);
+			CampaignData.mwlog.errLog(e);
 			return;
 		}
 	}
@@ -260,7 +261,7 @@ public class CPlayer extends Player {
 			currUnit.setData(st.nextToken());
 			this.sortHangar();// properties have changes. sort. YARR!
 		} catch (Exception e) {
-			MWClient.mwClientLog.clientErrLog(e);
+			CampaignData.mwlog.errLog(e);
 			return;
 		}
 	}
@@ -278,7 +279,7 @@ public class CPlayer extends Player {
 			
 			this.sortHangar();// properties have changes. sort. YARR!
 		} catch (Exception e) {
-			MWClient.mwClientLog.clientErrLog(e);
+			CampaignData.mwlog.errLog(e);
 			return;
 		}
 	}
@@ -862,7 +863,7 @@ public class CPlayer extends Player {
             if ( this.getArmy(army) != null)
                 this.getArmy(army).setBV(Integer.parseInt(ST.nextToken()));
             else
-                MWClient.mwClientLog.clientErrLog("Bad Army id: "+army);
+                CampaignData.mwlog.errLog("Bad Army id: "+army);
 		}
 	}
 	

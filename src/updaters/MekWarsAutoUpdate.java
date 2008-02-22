@@ -34,6 +34,8 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
+import common.CampaignData;
+
 public class MekWarsAutoUpdate {
 
     // Main-Method
@@ -55,7 +57,7 @@ public class MekWarsAutoUpdate {
                 System.setOut(ps);
                 System.setErr(ps);
             } catch (Exception ex) {
-                ex.printStackTrace();
+                CampaignData.mwlog.errLog(ex);
             }
         } // End log-to-file
 
@@ -132,7 +134,7 @@ public class MekWarsAutoUpdate {
             copyTempFiles("./update-tmp");
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            CampaignData.mwlog.errLog(ex);
         }
 
         // have a command file to process as well. wahoo
@@ -154,7 +156,7 @@ public class MekWarsAutoUpdate {
          * ProcessLogger(event.getInputStream()); ProcessLogger errLogger = new
          * ProcessLogger(event.getErrorStream()); outLogger.start();
          * errLogger.start(); event.waitFor(); } } }catch (Exception e) {
-         * e.printStackTrace(); } }
+         * CampaignData.mwlog.errLog(e); } }
          */
         if (splash != null)
             splash.dispose();
@@ -170,7 +172,7 @@ public class MekWarsAutoUpdate {
 	            runTime.exec(call);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            CampaignData.mwlog.errLog(ex);
 
         }
     }
@@ -190,7 +192,7 @@ public class MekWarsAutoUpdate {
                     String newFile = "." + file.toString().substring(12);
                     copier.copyFile(file, new File(newFile));
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    CampaignData.mwlog.errLog(ex);
                 }
             }
         }
@@ -208,7 +210,7 @@ public class MekWarsAutoUpdate {
         } catch (Exception ex) {
             System.err.println("Unable to load config file: " + CONFIG_FILE);
             System.err.flush();
-            ex.printStackTrace();
+            CampaignData.mwlog.errLog(ex);
             return;
         }
     }
@@ -233,7 +235,7 @@ class JCopy {
                 fos.write(buf, 0, i);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            CampaignData.mwlog.errLog(ex);
         } finally {
             fis.close();
             fos.close();

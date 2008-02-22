@@ -22,7 +22,7 @@ import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import common.Unit;
-import server.MWServ;
+import common.CampaignData;
 
 
 public class UnitCosts {
@@ -117,10 +117,10 @@ public class UnitCosts {
 			in.close();
 			
 		} catch(FileNotFoundException fnf) {
-			MWServ.mwlog.errLog("Unable to load Meks.zip for UnitCosts.loadUnitCosts");
+			CampaignData.mwlog.errLog("Unable to load Meks.zip for UnitCosts.loadUnitCosts");
 		} catch(Exception ex) {
-			MWServ.mwlog.errLog("Error with Meks.zip file "+ entityName);
-			MWServ.mwlog.errLog(ex);
+			CampaignData.mwlog.errLog("Error with Meks.zip file "+ entityName);
+			CampaignData.mwlog.errLog(ex);
 		}
 		
 		try {
@@ -149,10 +149,10 @@ public class UnitCosts {
 			in.close();
 			
 		} catch(FileNotFoundException fnf){
-			MWServ.mwlog.errLog("Unable to load Vehicles.zip for UnitCosts.loadUnitCosts");
+			CampaignData.mwlog.errLog("Unable to load Vehicles.zip for UnitCosts.loadUnitCosts");
 		} catch(Exception ex){
-			MWServ.mwlog.errLog("Error with Vehicles.zip file "+ entityName);
-			MWServ.mwlog.errLog(ex);
+			CampaignData.mwlog.errLog("Error with Vehicles.zip file "+ entityName);
+			CampaignData.mwlog.errLog(ex);
 		}
 		
 		try {
@@ -180,10 +180,10 @@ public class UnitCosts {
 			in.close();
 			
 		} catch(FileNotFoundException fnf){
-			MWServ.mwlog.errLog("Unable to load Infantry.zip for UnitCosts.loadUnitCosts");
+			CampaignData.mwlog.errLog("Unable to load Infantry.zip for UnitCosts.loadUnitCosts");
 		} catch(Exception ex){
-			MWServ.mwlog.errLog("Error with Infantry.zip file "+ entityName);
-			MWServ.mwlog.errLog(ex);
+			CampaignData.mwlog.errLog("Error with Infantry.zip file "+ entityName);
+			CampaignData.mwlog.errLog(ex);
 		}
 	}
 	

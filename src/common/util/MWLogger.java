@@ -14,7 +14,7 @@
  * for more details.
  */
 
-package server;
+package common.util;
 
 import java.util.logging.Logger;
 import java.util.logging.FileHandler;
@@ -28,11 +28,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 
-import server.MWServ;
+import common.CampaignData;
+
 import server.campaign.CampaignMain;
 
 
-public final class SMWLogger {// final - no extension of the server logger
+public final class MWLogger {// final - no extension of the server logger
 
     private static final int rotations = 5; // Configurable
     private static final int normFileSize = 1000000; // Configurable
@@ -120,7 +121,7 @@ public final class SMWLogger {// final - no extension of the server logger
         }
     }
 
-    public SMWLogger() {
+    public MWLogger() {
 
         if (logging)
             return;
@@ -129,22 +130,22 @@ public final class SMWLogger {// final - no extension of the server logger
         if (!logDir.exists()) {
             try {
                 if (!logDir.mkdirs()) {
-                    MWServ.mwlog.errLog("WARNING: logging directory cannot be created!");
-                    MWServ.mwlog.errLog("WARNING: disabling log subsystem");
+                    CampaignData.mwlog.errLog("WARNING: logging directory cannot be created!");
+                    CampaignData.mwlog.errLog("WARNING: disabling log subsystem");
                     return;
                 }
             } catch (Exception e) {
-                MWServ.mwlog.errLog(e);
+                CampaignData.mwlog.errLog(e);
             }
         } else if (!logDir.isDirectory()) {
-            MWServ.mwlog.errLog("WARNING: logging directory is not a directory!");
-            MWServ.mwlog.errLog("WARNING: disabling log subsystem");
+            CampaignData.mwlog.errLog("WARNING: logging directory is not a directory!");
+            CampaignData.mwlog.errLog("WARNING: disabling log subsystem");
             return;
         }
 
         if (!logDir.canWrite()) {
-            MWServ.mwlog.errLog("WARNING: cannot write in logging directory!");
-            MWServ.mwlog.errLog("WARNING: disabling log subsystem");
+            CampaignData.mwlog.errLog("WARNING: cannot write in logging directory!");
+            CampaignData.mwlog.errLog("WARNING: disabling log subsystem");
             return;
         }
 
@@ -282,7 +283,7 @@ public final class SMWLogger {// final - no extension of the server logger
             logging = true;
 
         } catch (Exception e) {
-            MWServ.mwlog.errLog(e);
+            CampaignData.mwlog.errLog(e);
         }
     }
 
@@ -418,11 +419,11 @@ public final class SMWLogger {// final - no extension of the server logger
     }
 
     public void enableSeconds(boolean b) {
-        SMWLogger.addSeconds = b;
+        MWLogger.addSeconds = b;
     }
 
     public void enableLogging(boolean b) {
-        SMWLogger.logging = b;
+        MWLogger.logging = b;
     }
 
     public void createFactionLogger(String logName) {
@@ -437,7 +438,7 @@ public final class SMWLogger {// final - no extension of the server logger
             factionLog.addHandler(factionHandler);
             factionLog.info(logName + " log touched");
         } catch (Exception ex) {
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog(ex);
         }
 
     }
@@ -452,8 +453,8 @@ public final class SMWLogger {// final - no extension of the server logger
             out.close();
             CampaignMain.cm.doSendModMail("MODLOG: ", s);
         } catch (Exception ex) {
-            MWServ.mwlog.errLog("Problems writing modlog to file");
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog("Problems writing modlog to file");
+            CampaignData.mwlog.errLog(ex);
         }
     }
 }

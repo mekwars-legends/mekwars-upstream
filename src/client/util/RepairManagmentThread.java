@@ -31,6 +31,7 @@ import megamek.common.CriticalSlot;
 import megamek.common.Mech;
 import megamek.common.Mounted;
 
+import common.CampaignData;
 import common.campaign.pilot.skills.PilotSkill;
 import common.util.UnitUtils;
 
@@ -65,8 +66,8 @@ public class RepairManagmentThread extends Thread{
                 processWorkOrders();
             }catch(Exception ex){
                 client.systemMessage("Error proccessing Repair Management queue. Alert an SO and check your ./logs/error.0 for the error");
-                MWClient.mwClientLog.clientErrLog("Error in Repair Management Queue");
-                MWClient.mwClientLog.clientErrLog(ex);
+                CampaignData.mwlog.errLog("Error in Repair Management Queue");
+                CampaignData.mwlog.errLog(ex);
             }
         }
     }
@@ -191,7 +192,7 @@ public class RepairManagmentThread extends Thread{
                     boolean armor = ( slot >= UnitUtils.LOC_FRONT_ARMOR);
                     
                     if ( unit == null ){
-                        MWClient.mwClientLog.clientErrLog("Unable to find unit to repair. removing repair job");
+                        CampaignData.mwlog.errLog("Unable to find unit to repair. removing repair job");
                         client.systemMessage("Unable to find unit to repair. removing repair job");
                         workQueue.remove();
                         continue;

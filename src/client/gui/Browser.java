@@ -32,6 +32,9 @@ import javax.swing.JPanel;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.BorderFactory;
+
+import common.CampaignData;
+
 import java.awt.Window;
 import java.awt.Frame;
 import java.awt.GridBagLayout;
@@ -315,7 +318,7 @@ public class Browser {
                          openURL.invoke(null, new Object[] {url});
                          //com.apple.mrj.MRJFileUtils.openURL(url);
                     } catch (Exception x){
-                         MWClient.mwClientLog.clientErrLog(x.getMessage());
+                         CampaignData.mwlog.errLog(x.getMessage());
                          throw new IOException(labels.getString("failed"));
                     }
                 }
@@ -428,7 +431,7 @@ public class Browser {
                         }
                     } catch (IOException x){
                         // the command was not a valid command.
-                    	MWClient.mwClientLog.clientErrLog(labels.getString("warning") + " " + x.getMessage());
+                    	CampaignData.mwlog.errLog(labels.getString("warning") + " " + x.getMessage());
                     }
                 }
                 if (!found){
@@ -690,7 +693,7 @@ public class Browser {
             } catch (InterruptedException x){
             }
         } catch (IOException e){
-        	MWClient.mwClientLog.clientErrLog(e.getMessage());
+        	CampaignData.mwlog.errLog(e.getMessage());
         }
         System.exit(0);
     }

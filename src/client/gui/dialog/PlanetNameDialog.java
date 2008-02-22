@@ -48,6 +48,7 @@ import javax.swing.event.CaretListener;
 //mekwars imports
 import client.MWClient;
 import common.util.SpringLayoutHelper;
+import common.CampaignData;
 import common.House;
 import common.Planet;
 
@@ -180,7 +181,7 @@ public class PlanetNameDialog extends JDialog implements ActionListener {
 				
                 //Check for allowed planet flags. the planet most have these flags.
                 if ( allowPlanetFlags.length() > 0 ){
-                    //MWClient.mwClientLog.clientErrLog(currOpName+" AllowPlanetFlags: "+allowPlanetFlags);
+                    //CampaignData.mwlog.errLog(currOpName+" AllowPlanetFlags: "+allowPlanetFlags);
                     boolean allowOp = true;
                     StringTokenizer st = new StringTokenizer(allowPlanetFlags,"^");
                     while ( st.hasMoreTokens() ){
@@ -189,7 +190,7 @@ public class PlanetNameDialog extends JDialog implements ActionListener {
                         if ( key.trim().length() < 1 )
                             continue;
                         if ( !tp.getPlanetFlags().containsKey(key) ){
-                            MWClient.mwClientLog.clientErrLog(tp.getName()+" does not have flag: "+key);
+                            CampaignData.mwlog.errLog(tp.getName()+" does not have flag: "+key);
                             allowOp = false;
                             break;
                         }
@@ -201,7 +202,7 @@ public class PlanetNameDialog extends JDialog implements ActionListener {
                 //Check for disallowed planet flags. If the planet has one of these flags
                 // The planet will not be allowed.
                 if ( disallowPlanetFlags.length() > 0){
-                    //MWClient.mwClientLog.clientErrLog(currOpName+" DisallowPlanetFlags: "+disallowPlanetFlags);
+                    //CampaignData.mwlog.errLog(currOpName+" DisallowPlanetFlags: "+disallowPlanetFlags);
                     
                     boolean allowOp = true;
                     StringTokenizer st = new StringTokenizer(disallowPlanetFlags,"^");
@@ -212,7 +213,7 @@ public class PlanetNameDialog extends JDialog implements ActionListener {
                             continue;
                         if ( tp.getPlanetFlags().containsKey(key)){
                             allowOp = false;
-                            MWClient.mwClientLog.clientErrLog(tp.getName()+" has flag: "+key);
+                            CampaignData.mwlog.errLog(tp.getName()+" has flag: "+key);
                             break;
                         }
                     }

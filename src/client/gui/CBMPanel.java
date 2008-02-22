@@ -37,6 +37,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import common.CampaignData;
 import common.util.SpringLayoutHelper;
 
 import megamek.common.Entity;
@@ -415,7 +416,7 @@ public class CBMPanel extends JPanel {
                     mwclient.doParseDataInput(toUser);
                     return;
                 }catch (Exception ex){
-                    MWClient.mwClientLog.clientErrLog(ex);
+                    CampaignData.mwlog.errLog(ex);
                 }
             }
         }

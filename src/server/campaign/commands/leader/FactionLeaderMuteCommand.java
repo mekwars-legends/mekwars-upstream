@@ -19,6 +19,8 @@ package server.campaign.commands.leader;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import common.CampaignData;
+
 import server.campaign.SPlayer;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
@@ -69,12 +71,12 @@ public class FactionLeaderMuteCommand implements Command {
 		//do the actual mute
 		if (factionIgnores.indexOf(p.getName()) == -1) {
 			factionIgnores.add(p.getName());
-			//server.MWServ.mwlog.modLog(Username + " faction muted " + p.getName());
+			//server.CampaignData.mwlog.modLog(Username + " faction muted " + p.getName());
 			CampaignMain.cm.doSendModMail("NOTE",Username + " faction muted " + p.getName());
 			CampaignMain.cm.getServer().sendChat(Username + " muted " + p.getName() + " (faction mute).");
 		} else { //unmute
 			factionIgnores.remove(p.getName());
-			server.MWServ.mwlog.modLog(Username + " faction unmuted " + p.getName());
+			CampaignData.mwlog.modLog(Username + " faction unmuted " + p.getName());
 			CampaignMain.cm.doSendModMail("NOTE",Username + " faction unmuted " + p.getName());
 			CampaignMain.cm.getServer().sendChat(Username + " unmuted " + p.getName() + " (faction mute).");
 		}

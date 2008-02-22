@@ -18,7 +18,7 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.commands.Command;
@@ -63,7 +63,7 @@ public class RegisterCommand implements Command {
                 	email = str.nextToken();
                 pw = str.nextToken();
             }catch (Exception ex){
-                MWServ.mwlog.errLog("Failure to register: "+regname);
+                CampaignData.mwlog.errLog("Failure to register: "+regname);
                 return;
             }
             
@@ -77,13 +77,13 @@ public class RegisterCommand implements Command {
             		regged = true;
             } catch (Exception ex) {
                 //Username already registered, ignore error.
-                //MWServ.mwlog.errLog(ex);
+                //CampaignData.mwlog.errLog(ex);
                 regged = true;
             }
              
             if (regged && !CampaignMain.cm.getServer().isAdmin(Username)) {
             	CampaignMain.cm.toUser("AM:Nickname \"" + regname + "\" is already registered!", Username);
-                //MWServ.mwlog.modLog(Username + " tried to register the nickname \"" + regname + "\", which was already registered.");
+                //CampaignData.mwlog.modLog(Username + " tried to register the nickname \"" + regname + "\", which was already registered.");
                 CampaignMain.cm.doSendModMail("NOTE",Username + " tried to register the nickname \"" + regname + "\", which was already registered.");
                 return;
             }
@@ -129,14 +129,14 @@ public class RegisterCommand implements Command {
             }
             //acknowledge registration
             CampaignMain.cm.toUser("AM:\"" + regname + "\" successfully registered.", Username);
-            MWServ.mwlog.modLog("New nickname registered: " + regname);
+            CampaignData.mwlog.modLog("New nickname registered: " + regname);
             CampaignMain.cm.doSendModMail("NOTE","New nickname registered: " + regname + " by: " + Username);
     	
         } catch (Exception e) {
-            MWServ.mwlog.errLog(e);
-            MWServ.mwlog.errLog("^ Not supposed to happen! ^");
-            MWServ.mwlog.errLog(e);
-            MWServ.mwlog.errLog("Not supposed to happen");
+            CampaignData.mwlog.errLog(e);
+            CampaignData.mwlog.errLog("^ Not supposed to happen! ^");
+            CampaignData.mwlog.errLog(e);
+            CampaignData.mwlog.errLog("Not supposed to happen");
         }
     }
 }

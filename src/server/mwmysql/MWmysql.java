@@ -25,7 +25,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 
 public class MWmysql{
@@ -33,14 +33,14 @@ public class MWmysql{
 
  
   public void close(){
-    MWServ.mwlog.dbLog("Attempting to close MySQL Connection");
+    CampaignData.mwlog.dbLog("Attempting to close MySQL Connection");
     try {
     	this.con.close();
 
     } catch (SQLException e) {
-    	MWServ.mwlog.dbLog("SQL Exception: " + e.getMessage());
-    	MWServ.mwlog.errLog("SQL Exception:");
-    	MWServ.mwlog.errLog(e);
+    	CampaignData.mwlog.dbLog("SQL Exception: " + e.getMessage());
+    	CampaignData.mwlog.errLog("SQL Exception:");
+    	CampaignData.mwlog.errLog(e);
     }
   } 
 
@@ -65,30 +65,30 @@ public class MWmysql{
 			  runtime.exec(call);
 		  }		  
 	  } catch (IOException ex){
-		  MWServ.mwlog.dbLog("Error in backupDB: " + ex.toString());
-          MWServ.mwlog.dbLog(ex);
+		  CampaignData.mwlog.dbLog("Error in backupDB: " + ex.toString());
+          CampaignData.mwlog.dbLog(ex);
 	  }
   }
 
   public MWmysql(){
     String url = "jdbc:mysql://" + CampaignMain.cm.getServer().getConfigParam("MYSQLHOST") + "/" + CampaignMain.cm.getServer().getConfigParam("MYSQLDB") + "?user=" + CampaignMain.cm.getServer().getConfigParam("MYSQLUSER") + "&password=" + CampaignMain.cm.getServer().getConfigParam("MYSQLPASS");
-    MWServ.mwlog.dbLog("Attempting MySQL Connection");
+    CampaignData.mwlog.dbLog("Attempting MySQL Connection");
     
     try{
       Class.forName("com.mysql.jdbc.Driver");
     }
     catch(ClassNotFoundException e){
-      MWServ.mwlog.dbLog("ClassNotFoundException: " + e.getMessage());
-      MWServ.mwlog.dbLog(e);
+      CampaignData.mwlog.dbLog("ClassNotFoundException: " + e.getMessage());
+      CampaignData.mwlog.dbLog(e);
     }
     try{
     	con=DriverManager.getConnection(url);
       	if(con != null)
-    	  MWServ.mwlog.dbLog("Connection established");
+    	  CampaignData.mwlog.dbLog("Connection established");
     }
     catch(SQLException ex){
-    	MWServ.mwlog.dbLog("SQLException: " + ex.getMessage());
-        MWServ.mwlog.dbLog(ex);
+    	CampaignData.mwlog.dbLog("SQLException: " + ex.getMessage());
+        CampaignData.mwlog.dbLog(ex);
     }
   }
 }

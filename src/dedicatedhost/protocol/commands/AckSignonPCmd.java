@@ -2,6 +2,8 @@ package dedicatedhost.protocol.commands;
 
 import java.util.StringTokenizer;
 
+import common.CampaignData;
+
 import dedicatedhost.MWDedHost;
 
 /**
@@ -28,13 +30,13 @@ public class AckSignonPCmd extends CProtCommand {
 				
 				try {Thread.sleep(5000);}
 				catch (Exception ex) {
-					ex.printStackTrace();
+					CampaignData.mwlog.errLog(ex);
 				}
 				
 				try {
 					dedHost.startHost(true,false,false);
 				} catch (Exception ex) {
-					ex.printStackTrace();
+					CampaignData.mwlog.errLog(ex);
 				}
 			}
 			

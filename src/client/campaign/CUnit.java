@@ -36,6 +36,7 @@ import megamek.common.WeaponType;
 
 import client.MWClient;
 
+import common.CampaignData;
 import common.House;
 import common.MegaMekPilotOption;
 import common.Unit;
@@ -80,7 +81,7 @@ public class CUnit extends Unit {
         StringTokenizer ST;
         String element;
         String unitDamage = null;
-        MWClient.mwClientLog.clientOutputLog("PDATA: " + data);
+        CampaignData.mwlog.infoLog("PDATA: " + data);
 
         ST = new StringTokenizer(data,"$");
         element = (String)ST.nextElement();
@@ -145,7 +146,7 @@ public class CUnit extends Unit {
 
         createEntity();
         if (UnitEntity == null) {
-            MWClient.mwClientLog.clientErrLog("Cannot load entity!");
+            CampaignData.mwlog.errLog("Cannot load entity!");
             return(false);
         }
 
@@ -381,14 +382,14 @@ public class CUnit extends Unit {
         }
         catch (Exception exep) {
             try {
-                //MWClient.mwClientLog.clientErrLog("Error loading unit: " + getUnitFilename() + ". Try replacing with OMG.");
+                //CampaignData.mwlog.errLog("Error loading unit: " + getUnitFilename() + ". Try replacing with OMG.");
                 //MechSummary ms = MechSummaryCache.getInstance().getMech("Error OMG-UR-FD");
                 UnitEntity = UnitUtils.createOMG();//new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
                 setProducer("Unable to find "+getUnitFilename()+" on clients system!");
                 //UnitEntity = new MechFileParser (new File("./data/mechfiles/Meks.zip"),"Error OMG-UR-FD.hmp").getEntity();
             }
             catch (Exception exepe) {
-                MWClient.mwClientLog.clientErrLog("Error unit failed to load. Exiting.");
+                CampaignData.mwlog.errLog("Error unit failed to load. Exiting.");
                 System.exit(1);
             }
         }
@@ -462,7 +463,7 @@ public class CUnit extends Unit {
             if (result < 0)
                 result = 0;
         }catch(Exception ex){
-            MWClient.mwClientLog.clientErrLog(ex);
+            CampaignData.mwlog.errLog(ex);
         }
         return result;
     }// end getPriceForCUnit()

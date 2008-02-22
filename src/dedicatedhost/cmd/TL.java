@@ -21,6 +21,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
+import common.CampaignData;
+
 import dedicatedhost.MWDedHost;
 
 /**
@@ -48,7 +50,7 @@ public class TL extends Command {
             out.write("\n");
             out.close();
         } catch (IOException e) {
-            MWDedHost.MWDedHostLog.clientErrLog(e);
+            CampaignData.mwlog.errLog(e);
         }
 	}
 }

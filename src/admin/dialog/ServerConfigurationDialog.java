@@ -44,6 +44,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
+import common.CampaignData;
 import common.util.SpringLayoutHelper;
 
 import client.MWClient;
@@ -4941,7 +4942,7 @@ public final class ServerConfigurationDialog implements ActionListener {
                 
                 key = checkBox.getName();
                 if ( key == null ){
-                    MWClient.mwClientLog.clientErrLog("Null Checkbox: "+checkBox.getToolTipText());
+                    CampaignData.mwlog.errLog("Null Checkbox: "+checkBox.getToolTipText());
                     continue;
                 }
                 checkBox.setSelected(Boolean.parseBoolean(mwclient.getserverConfigs(key)));
@@ -4951,7 +4952,7 @@ public final class ServerConfigurationDialog implements ActionListener {
                 
                 key = radioButton.getName();
                 if ( key == null ){
-                    MWClient.mwClientLog.clientErrLog("Null RadioButton: "+radioButton.getToolTipText());
+                    CampaignData.mwlog.errLog("Null RadioButton: "+radioButton.getToolTipText());
                     continue;
                 }
                 radioButton.setSelected(Boolean.parseBoolean(mwclient.getserverConfigs(key)));

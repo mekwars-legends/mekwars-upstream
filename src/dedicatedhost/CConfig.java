@@ -27,6 +27,8 @@ import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
+import common.CampaignData;
+
 /**
  * Class for Client's configuration.
  */
@@ -58,7 +60,7 @@ public class CConfig {
                         config.load(backupStream);
                         backupStream.close();
                     } catch (Exception ex) {
-                        MWDedHost.MWDedHostLog.clientErrLog(ex);
+                        CampaignData.mwlog.errLog(ex);
                         JOptionPane.showMessageDialog(null, "Unable to load Backup config file");
                     }
                     
@@ -74,12 +76,12 @@ public class CConfig {
                 config.load(fis);
                 fis.close();
             } catch (Exception ex) {
-                MWDedHost.MWDedHostLog.clientErrLog(ex);
+                CampaignData.mwlog.errLog(ex);
                 JOptionPane.showMessageDialog(null,
                         "Unable to load Backup config file");
             }
         } catch (Exception ex) {
-			MWDedHost.MWDedHostLog.clientErrLog(ex);
+			CampaignData.mwlog.errLog(ex);
 			JOptionPane.showMessageDialog(null, "Unable to load main config file");
 		}
 		
@@ -94,7 +96,7 @@ public class CConfig {
 		} catch (FileNotFoundException fnfe) {
 			//Exception simply means serverdata.dat is not present.
 		}catch ( Exception ex){
-            MWDedHost.MWDedHostLog.clientErrLog(ex);
+            CampaignData.mwlog.errLog(ex);
         }
 		
 		setParam("DEDICATED","TRUE");
@@ -307,8 +309,8 @@ public class CConfig {
             fos.close();
             ps.close();
         } catch (Exception ex) {
-            MWDedHost.MWDedHostLog.clientErrLog(ex);
-            MWDedHost.MWDedHostLog.clientErrLog("Failed backingup config file");
+            CampaignData.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog("Failed backingup config file");
             return;
         }
         try {
@@ -318,8 +320,8 @@ public class CConfig {
 			fos.close();
 			ps.close();
 		} catch (Exception ex) {
-			MWDedHost.MWDedHostLog.clientErrLog(ex);
-			MWDedHost.MWDedHostLog.clientErrLog("Failed saving config file");
+			CampaignData.mwlog.errLog(ex);
+			CampaignData.mwlog.errLog("Failed saving config file");
 		}
 	}
 	

@@ -27,6 +27,7 @@ import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 
+import common.CampaignData;
 import common.Planet;
 
 import client.MWClient;
@@ -74,23 +75,23 @@ class MMNetHyperLinkListener implements HyperlinkListener {
 			try
 			{
 				Tooltip = (String)e.getSourceElement().getAttributes().getAttribute(HTML.getAttributeKey("alt"));
-				MWClient.mwClientLog.clientOutputLog(Tooltip);
+				CampaignData.mwlog.infoLog(Tooltip);
 				if (HSPanel != null)
 					HSPanel.setInfoText(Tooltip);
 			}
 			catch (Exception ex)
 			{
-				MWClient.mwClientLog.clientErrLog(ex);
+				CampaignData.mwlog.errLog(ex);
 			}
-			//MWClient.mwClientLog.clientOutputLog("hyperlinkUpdate fired");
-			//MWClient.mwClientLog.clientOutputLog("     entered->");
+			//CampaignData.mwlog.infoLog("hyperlinkUpdate fired");
+			//CampaignData.mwlog.infoLog("     entered->");
 		}
 		else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
 			isHovering = false;
 			if (HSPanel != null)
 				HSPanel.setInfoText("");
 			Tooltip = null;
-			//MWClient.mwClientLog.clientOutputLog("     <-exited");
+			//CampaignData.mwlog.infoLog("     <-exited");
 		}
 		
 		
@@ -113,7 +114,7 @@ class MMNetHyperLinkListener implements HyperlinkListener {
 						command = command.substring(7);
 						StringTokenizer commandStr = new StringTokenizer(command,"*");
 						command = commandStr.nextToken() +", "+commandStr.nextToken(); 
-						MWClient.mwClientLog.clientErrLog("Command "+command);	
+						CampaignData.mwlog.errLog("Command "+command);	
 						mwclient.sendChat("/mail "+command);
 					}
 					else if (e.getDescription().startsWith("MEKINFO")) {
@@ -210,7 +211,7 @@ class MMNetHyperLinkListener implements HyperlinkListener {
 					}
 				}
 				catch (Throwable t) {
-					MWClient.mwClientLog.clientErrLog(t);
+					CampaignData.mwlog.errLog((Exception)t);
 				}
 			}
 		}

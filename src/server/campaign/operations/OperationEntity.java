@@ -24,7 +24,7 @@ import common.Unit;
 import megamek.common.IEntityRemovalConditions;
 import megamek.common.Mech;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
 import server.campaign.CampaignMain;
@@ -135,8 +135,8 @@ public class OperationEntity {
     			this.setOffBoardRange(Integer.parseInt(ST.nextToken()));
         }
         catch(Exception ex){
-            MWServ.mwlog.errLog("Error while parsing the following String: "+s);
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog("Error while parsing the following String: "+s);
+            CampaignData.mwlog.errLog(ex);
         }
 	}//end OperationEntity()
 	

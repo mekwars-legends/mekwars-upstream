@@ -21,7 +21,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import server.MWServ;
+import common.CampaignData;
 
 import common.CampaignData;
 
@@ -48,7 +48,7 @@ public class Server implements Runnable {
 	 * @throws IOException
 	 */
 	public void run() {
-		MWServ.mwlog.mainLog("DataProvider: startup...");
+		CampaignData.mwlog.mainLog("DataProvider: startup...");
 		
 		//open and bind a socket and wait for incoming calls     
 		//If bindip is "-1", we want to bind to all available interfaces.
@@ -62,14 +62,14 @@ public class Server implements Runnable {
 				server = new ServerSocket(dataPort,0,InetAddress.getByName(IpAddress));
 			
 		} catch (IOException e) {
-			MWServ.mwlog.errLog("Shutting down because:");
-			MWServ.mwlog.errLog(e);
-			MWServ.mwlog.mainLog("DataProvider: Could not create server socket. Shutting down.");
-			MWServ.mwlog.infoLog("DataProvider: Could not create server socket. Shutting down.");
+			CampaignData.mwlog.errLog("Shutting down because:");
+			CampaignData.mwlog.errLog(e);
+			CampaignData.mwlog.mainLog("DataProvider: Could not create server socket. Shutting down.");
+			CampaignData.mwlog.infoLog("DataProvider: Could not create server socket. Shutting down.");
 			return;
 		}
 		
-		MWServ.mwlog.mainLog("DataProvider: server created at port "+dataPort+". Address "+IpAddress+". Waiting for calls...");
+		CampaignData.mwlog.mainLog("DataProvider: server created at port "+dataPort+". Address "+IpAddress+". Waiting for calls...");
 		
 		//listen for new data requests until an error occurs, or forever.
 		while(true) {
@@ -81,8 +81,8 @@ public class Server implements Runnable {
 			
 			} catch(OutOfMemoryError OOM) {
 				
-				MWServ.mwlog.errLog("Out of Memory while opening dataprovider socket:");
-				MWServ.mwlog.errLog(OOM.toString());
+				CampaignData.mwlog.errLog("Out of Memory while opening dataprovider socket:");
+				CampaignData.mwlog.errLog(OOM.toString());
 				
 				/*
                  * Ok so too many socket connections lets try a reset
@@ -97,17 +97,17 @@ public class Server implements Runnable {
                     else
                         server = new ServerSocket(dataPort,0,InetAddress.getByName(IpAddress));
                 } catch(Exception ex){
-                    MWServ.mwlog.errLog("Shutting down because:");
-                    MWServ.mwlog.errLog(ex);
-                    MWServ.mwlog.mainLog("DataProvider: Could not create server socket. Shutting down.");
-                    MWServ.mwlog.infoLog("DataProvider: Could not create server socket. Shutting down.");
+                    CampaignData.mwlog.errLog("Shutting down because:");
+                    CampaignData.mwlog.errLog(ex);
+                    CampaignData.mwlog.mainLog("DataProvider: Could not create server socket. Shutting down.");
+                    CampaignData.mwlog.infoLog("DataProvider: Could not create server socket. Shutting down.");
                     return;
                 }
 			} catch (IOException e) {
-				MWServ.mwlog.errLog("Dataprovider IO Exception:");
-				MWServ.mwlog.errLog(e);
+				CampaignData.mwlog.errLog("Dataprovider IO Exception:");
+				CampaignData.mwlog.errLog(e);
 			} catch(Exception ex) {
-				MWServ.mwlog.errLog(ex);
+				CampaignData.mwlog.errLog(ex);
 			}
 		}
 		

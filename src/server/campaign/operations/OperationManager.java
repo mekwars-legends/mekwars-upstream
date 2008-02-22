@@ -50,7 +50,7 @@ import server.campaign.SPlanet;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
 
-import server.MWServ;
+import common.CampaignData;
 
 
 public class OperationManager {
@@ -368,7 +368,7 @@ public class OperationManager {
 		
 		//nullcheck, just in case.
 		if (so == null) {
-			MWServ.mwlog.errLog("Error: Tried to add a null ShortOperation to the Manager");
+			CampaignData.mwlog.errLog("Error: Tried to add a null ShortOperation to the Manager");
 			return;
 		}
 		
@@ -426,7 +426,7 @@ public class OperationManager {
 	public void terminateOperation(ShortOperation so, int termCode, SPlayer terminator, boolean ignoreStatus) {
 		
 		if (so == null) {
-			MWServ.mwlog.errLog("Attempted to terminate null ShortOperation");
+			CampaignData.mwlog.errLog("Attempted to terminate null ShortOperation");
 			return;
 		}
 		
@@ -554,7 +554,7 @@ public class OperationManager {
                     for(SUnit unit : so.preCapturedUnits )
                         faction.addUnit(unit, true);
                 }catch(Exception ex){
-                    MWServ.mwlog.errLog(ex);
+                    CampaignData.mwlog.errLog(ex);
                 }
                     
             }
@@ -571,7 +571,7 @@ public class OperationManager {
             try{
     			CampaignMain.cm.getPlayer(currN).lockArmy(-1);
             }catch(Exception ex){
-                MWServ.mwlog.errLog(currN+" had a null army while terminating. Continuing to next player.");
+                CampaignData.mwlog.errLog(currN+" had a null army while terminating. Continuing to next player.");
                 continue;
             }
 		}
@@ -1039,7 +1039,7 @@ public class OperationManager {
 			if (!modDir.exists())
 				modDir.mkdir();
 		} catch (Exception e) {
-			MWServ.mwlog.errLog("Error while creating operations directories.");
+			CampaignData.mwlog.errLog("Error while creating operations directories.");
 		}
 		
 		ops.clear();
@@ -1077,7 +1077,7 @@ public class OperationManager {
 				String currTarget = st.nextToken().trim();
 				Operation currOp = ops.get(currTarget);
 				if (currOp == null)
-					MWServ.mwlog.errLog("Error assigning modop target. Mod: " + currMod.getName() + " Target: " + currTarget);
+					CampaignData.mwlog.errLog("Error assigning modop target. Mod: " + currMod.getName() + " Target: " + currTarget);
 				else
 					currOp.addModifyingOperation(currMod);
 			}//end while(more targets)

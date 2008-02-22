@@ -51,7 +51,7 @@ public class AdminAddServerOpFlagsCommand implements Command {
                 String value = command.nextToken();
                 CampaignMain.cm.getData().getPlanetOpFlags().put(key, value);
                 CampaignMain.cm.toUser("Op flag "+key+"/"+value+" added to the server.",Username,true);
-                //server.MWServ.mwlog.modLog(Username + " added op flag "+key+"/"+value+".");
+                //server.CampaignData.mwlog.modLog(Username + " added op flag "+key+"/"+value+".");
                 CampaignMain.cm.doSendModMail("NOTE",Username + " added op flag "+key+"/"+value+".");
             }
         }catch (Exception ex){

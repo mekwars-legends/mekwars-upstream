@@ -18,7 +18,7 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 
@@ -38,7 +38,7 @@ public class SignOffCommand implements Command {
 
 	public void process(StringTokenizer command,String Username) {
 		
-        MWServ.mwlog.errLog(Username+" has sent signoff command");
+        CampaignData.mwlog.errLog(Username+" has sent signoff command");
         CampaignMain.cm.getServer().clientLogout(Username);
 	}
 }

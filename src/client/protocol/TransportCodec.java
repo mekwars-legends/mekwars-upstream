@@ -11,6 +11,8 @@ import java.io.ObjectOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
 
+import common.CampaignData;
+
 import client.MWClient;
 /**
  * Provides a method to encode any string into a URL-safe
@@ -64,7 +66,7 @@ public class TransportCodec {
       oos.close();
       return TransportCodec.encode(baos.toString());
     } catch (Exception e) {
-      MWClient.mwClientLog.clientErrLog(e);
+      CampaignData.mwlog.errLog(e);
     }
     return "";
   }
@@ -79,7 +81,7 @@ public class TransportCodec {
       ois.close();
       return result;
     } catch (Exception e) {
-      MWClient.mwClientLog.clientErrLog(e);
+      CampaignData.mwlog.errLog(e);
     }
     return null;
   }

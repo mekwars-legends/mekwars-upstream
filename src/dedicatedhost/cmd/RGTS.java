@@ -20,6 +20,8 @@ package dedicatedhost.cmd;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 
+import common.CampaignData;
+
 import dedicatedhost.MWDedHost;
 import dedicatedhost.util.SerializeEntity;
 
@@ -48,7 +50,7 @@ public class RGTS extends Command {
 	@Override
 	public void execute(String input) {
 		
-		//MWDedHost.MWDedHostLog.clientErrLog("Inside RGTS");
+		//CampaignData.mwlog.errLog("Inside RGTS");
 		server = mwclient.getMyServer();
 		StringBuilder result = new StringBuilder();
 		String name = "";
@@ -139,7 +141,7 @@ public class RGTS extends Command {
 		
 		if ( mwclient.getBuildingTemplate()!= null )
 			result.append("BL*"+this.getBuildingsLeft());
-		MWDedHost.MWDedHostLog.clientOutputLog("CR|" + result);
+		CampaignData.mwlog.infoLog("CR|" + result);
 		
 		//send the autoreport
 		mwclient.serverSend("CR|" + result.toString());

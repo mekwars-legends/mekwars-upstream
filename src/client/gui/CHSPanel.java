@@ -56,6 +56,7 @@ import client.campaign.CPlayer;
 import client.campaign.CUnit;
 import client.gui.dialog.MechDetailDisplay;
 
+import common.CampaignData;
 import common.House;
 import common.Unit;
 import common.UnitFactory;
@@ -401,14 +402,14 @@ public class CHSPanel extends JPanel {
 		
 		//if weight and type map is null, there is no way to change the factory.
 		if (weightAndTypeMap == null) {
-			MWClient.mwClientLog.clientErrLog("Error updating factory: null treemap at weight & type.");
+			CampaignData.mwlog.errLog("Error updating factory: null treemap at weight & type.");
 			return;
 		}
 		
 		//no factory with matching name on planet. return.
 		String oldFactoryInfo = weightAndTypeMap.get(planet + "$" + factoryName);
 		if (oldFactoryInfo == null) {
-			MWClient.mwClientLog.clientErrLog("Error updating factory: null oldFactory.");
+			CampaignData.mwlog.errLog("Error updating factory: null oldFactory.");
 			return;
 		}
 		

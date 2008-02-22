@@ -45,7 +45,7 @@ import common.campaign.pilot.skills.PilotSkill;
 import common.util.StringUtils;
 import common.util.UnitUtils;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.BuildTable;
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
@@ -348,7 +348,7 @@ public class ShortResolver {
 
             // stick the result into the human readable result log, per
             // RFE1479311.
-            MWServ.mwlog.resultsLog(toSend);
+            CampaignData.mwlog.resultsLog(toSend);
 
             // deal with scrapThread for player, if he has one.
             if (scrapThreads.containsKey(currName)) {
@@ -577,7 +577,7 @@ public class ShortResolver {
         CampaignMain.cm.toUser(toSend, winName, true);
 
         // stick the result into the human readable result log, per RFE1479311.
-        MWServ.mwlog.resultsLog(toSend);
+        CampaignData.mwlog.resultsLog(toSend);
 
         // update operations and set unbusy. we know the loser isn't
         // online, so we only need to send to the winner.
@@ -642,7 +642,7 @@ public class ShortResolver {
         if(loser != null)
         	loser.setSave();
         // stick the result into the human readable result log, per RFE1479311.
-        MWServ.mwlog.resultsLog(toSend);
+        CampaignData.mwlog.resultsLog(toSend);
 
         /*
          * Set the finished strings for the ShortOperation.
@@ -1006,10 +1006,10 @@ public class ShortResolver {
             // reduced.
             double minBVDifference = o.getDoubleValue("MinBVDifferenceForFullPay");
             /*
-             * MWServ.mwlog.debugLog("Loser BV: Current: "+currentBV+" Starting
+             * CampaignData.mwlog.debugLog("Loser BV: Current: "+currentBV+" Starting
              * BV: "+loserBV+" minBVDiff: "+minBVDifference);
-             * MWServ.mwlog.debugLog("Total BV Lost: "+(1.0 - ((double)
-             * currentBV / (double) loserBV))); MWServ.mwlog.debugLog("Money
+             * CampaignData.mwlog.debugLog("Total BV Lost: "+(1.0 - ((double)
+             * currentBV / (double) loserBV))); CampaignData.mwlog.debugLog("Money
              * Earned: "+earnedMoney);
              */
             if (minBVDifference > 0 && (1.0 - ((double) currentBV / (double) loserBV)) < minBVDifference && disconnector == null && so.getLosers().containsKey(currName)) {
@@ -1019,7 +1019,7 @@ public class ShortResolver {
                 // earnedXP = (earnedXP * minBVvPenaltyMod)/100;
                 // earnedRP = (earnedRP * minBVvPenaltyMod)/100;
             }
-            // MWServ.mwlog.debugLog("Money Earned: "+earnedMoney);
+            // CampaignData.mwlog.debugLog("Money Earned: "+earnedMoney);
 
             /*
              * Determine how much to play the players technicians (or, if using
@@ -1293,7 +1293,7 @@ public class ShortResolver {
              * resolution.
              */
             if (owner == null) {
-                MWServ.mwlog.errLog("Null _owner_ while processing post-game salvage for " + " Attack #" + so.getShortID() + ". Needed to find Player: " + ownerName + " Unit #" + currEntity.getID() + "/Type: " + currEntity.getType());
+                CampaignData.mwlog.errLog("Null _owner_ while processing post-game salvage for " + " Attack #" + so.getShortID() + ". Needed to find Player: " + ownerName + " Unit #" + currEntity.getID() + "/Type: " + currEntity.getType());
                 continue;
             }
 
@@ -1310,8 +1310,8 @@ public class ShortResolver {
                 if (!o.getBooleanValue("NoDestructionMode") && currEntity.getUnitDamage().trim().length() > 0)
                     UnitUtils.applyBattleDamage(currU.getEntity(), currEntity.getUnitDamage(), false);
             } catch (Exception ex) {
-                MWServ.mwlog.errLog("Unable to apply damage to unit " + currU.getModelName());
-                MWServ.mwlog.errLog(ex);
+                CampaignData.mwlog.errLog("Unable to apply damage to unit " + currU.getModelName());
+                CampaignData.mwlog.errLog(ex);
             }
 
             // If damaged is transfered from Game to campaign then save it the
@@ -1379,8 +1379,8 @@ public class ShortResolver {
                 if (currEntity.getUnitDamage().trim().length() > 0)
                     UnitUtils.applyBattleDamage(currU.getEntity(), currEntity.getUnitDamage(), false);
             } catch (Exception ex) {
-                MWServ.mwlog.errLog("Unable to apply damage to unit " + currU.getModelName());
-                MWServ.mwlog.errLog(ex);
+                CampaignData.mwlog.errLog("Unable to apply damage to unit " + currU.getModelName());
+                CampaignData.mwlog.errLog(ex);
             }
 
             /*
@@ -1996,7 +1996,7 @@ public class ShortResolver {
                      */
                     return;
                 } catch (Exception ex) {
-                    MWServ.mwlog.errLog(ex);
+                    CampaignData.mwlog.errLog(ex);
                 }
             }// end if(polluted)
 
@@ -2120,7 +2120,7 @@ public class ShortResolver {
                 newsFeedBody += " on " + so.getTargetWorld().getName() + " (" + so.getName() + ").";
                 newsFeedTitle += " on " + so.getTargetWorld().getName();
             } catch (Exception ex) {
-                MWServ.mwlog.errLog(ex);
+                CampaignData.mwlog.errLog(ex);
             }
 
             /*
@@ -2689,7 +2689,7 @@ public class ShortResolver {
                         }// end while(factories remain)
                         so.checkMercContracts(aWinner, ContractInfo.CONTRACT_COMPONENTS, ppDestroyed);
                     } catch (Exception ex) {
-                        MWServ.mwlog.errLog(ex);
+                        CampaignData.mwlog.errLog(ex);
                     }
 
                 }// end if(attackerWon)
@@ -2845,7 +2845,7 @@ public class ShortResolver {
                             }// end if ppToGenerate > 0
                         }// end if(defender has factories on world)
                     } catch (Exception ex) {
-                        MWServ.mwlog.errLog(ex);
+                        CampaignData.mwlog.errLog(ex);
                     }
 
                 }// end elseif(defenderWon)
@@ -2900,11 +2900,11 @@ public class ShortResolver {
                     CampaignMain.cm.doSendToAllOnlinePlayers(aLoser.getHouseFightingFor(), "HS|" + loserHSUpdates, false);
 
             } catch (Exception ex) {
-                MWServ.mwlog.errLog(ex);
+                CampaignData.mwlog.errLog(ex);
             }
 
         } catch (Exception ex) {
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog(ex);
         }
     }// end this.assembleMetaStrings()
 
@@ -3025,7 +3025,7 @@ public class ShortResolver {
                 so.setFinishingBV(currentBV);
 
             } catch (Exception ex) {
-                MWServ.mwlog.errLog(ex);
+                CampaignData.mwlog.errLog(ex);
             }
 
             /*
@@ -3079,11 +3079,11 @@ public class ShortResolver {
                     }// end if
                 }// end while(More To Check)
             } catch (Exception ex) {
-                MWServ.mwlog.errLog(ex);
+                CampaignData.mwlog.errLog(ex);
             }
 
         } catch (Exception ex) {
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog(ex);
         }
 
     }// end possibleSalvageFromReport
@@ -3122,7 +3122,7 @@ public class ShortResolver {
                         destroyedUnits.put(currEntity.getID(), currEntity);
                 }
             } catch (Exception ex) {
-                MWServ.mwlog.errLog(ex);
+                CampaignData.mwlog.errLog(ex);
             }
 
             /*
@@ -3141,7 +3141,7 @@ public class ShortResolver {
                     }// end for(all units in currArmy)
                 }// end for(all armies)
             } catch (Exception ex) {
-                MWServ.mwlog.errLog(ex);
+                CampaignData.mwlog.errLog(ex);
             }
 
             /*
@@ -3161,7 +3161,7 @@ public class ShortResolver {
                         dropLivingUnits.add(currE);
                 }
             } catch (Exception ex) {
-                MWServ.mwlog.errLog(ex);
+                CampaignData.mwlog.errLog(ex);
             }
 
             /*
@@ -3212,11 +3212,11 @@ public class ShortResolver {
 
                 }// end if(no units to shift)
             } catch (Exception ex) {
-                MWServ.mwlog.errLog(ex);
+                CampaignData.mwlog.errLog(ex);
             }
 
         } catch (Exception ex) {
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog(ex);
         }
 
     }// end possibleSalvageFromInProgressInfo
@@ -3255,7 +3255,7 @@ public class ShortResolver {
                 toReturn += " " + newPilotDescription(unit);
             }
         } catch (Exception ex) {
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog(ex);
             return toReturn;
         }
 
@@ -3285,7 +3285,7 @@ public class ShortResolver {
             else
                 owner.getHouseFightingFor().addDispossessedPilot(unit, false);
         } catch (Exception ex) {
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog(ex);
         }
     }
 
@@ -3637,7 +3637,7 @@ public class ShortResolver {
             // captured, but did not defect
             toReturn[2] = ((SPilot) currUnit.getPilot()).getPilotCaptureAndRemovedMessage(currUnit);
         } catch (Exception ex) {
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog(ex);
             return toReturn;
         }
 
@@ -3694,7 +3694,7 @@ public class ShortResolver {
                 repairCost = repairCost * o.getFloatValue("DefenderSalvageCostModifier");
 
         } catch (Exception ex) {
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog(ex);
             return Math.round(repairCost);
         }
 
@@ -3796,7 +3796,7 @@ public class ShortResolver {
 
             return null;
         } catch (Exception ex) {
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog(ex);
             return null;
         }
 
@@ -3832,7 +3832,7 @@ public class ShortResolver {
 
             return null;
         } catch (Exception ex) {
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog(ex);
             return null;
         }
 
@@ -3856,7 +3856,7 @@ public class ShortResolver {
             result += "]";
             return result;
         } catch (Exception ex) {
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog(ex);
             return result;
         }
 
@@ -3892,7 +3892,7 @@ public class ShortResolver {
             }
             return false;
         } catch (Exception ex) {
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog(ex);
             return false;
         }
 
@@ -4128,7 +4128,7 @@ public class ShortResolver {
                         SHouse faction = (SHouse)house;
                         
                         buildFile = BuildTable.getFileName(faction.getName(), Unit.getWeightClassDesc(unit.getWeightclass()), timeZone, unit.getType() );
-                        //MWServ.mwlog.errLog("File: "+fileName);
+                        //CampaignData.mwlog.errLog("File: "+fileName);
                         
                         if (!tables.contains(buildFile))
                             tables.add(buildFile);
@@ -4138,9 +4138,9 @@ public class ShortResolver {
                             tables.add(buildFile);   
                         
                         timeZone = currp.getMyHouse().getConfig("NoFactoryRepodFolder");
-                        //MWServ.mwlog.errLog("TimeZone: "+timeZone);
+                        //CampaignData.mwlog.errLog("TimeZone: "+timeZone);
                         buildFile = BuildTable.getFileName(faction.getName(), Unit.getWeightClassDesc(unit.getWeightclass()), timeZone, unit.getType() );
-                        //MWServ.mwlog.errLog("File: "+fileName);
+                        //CampaignData.mwlog.errLog("File: "+fileName);
                         
                         if (!tables.contains(buildFile))
                             tables.add(buildFile);
@@ -4199,12 +4199,12 @@ public class ShortResolver {
                             dis.close();
                             fis.close();
                         } catch (FileNotFoundException ex) {
-                            MWServ.mwlog.mainLog("File " + buildTable + " was not Found");
+                            CampaignData.mwlog.mainLog("File " + buildTable + " was not Found");
                         } catch (IOException ex) {
-                            MWServ.mwlog.mainLog("File " + buildTable + " had an I/O error");
+                            CampaignData.mwlog.mainLog("File " + buildTable + " had an I/O error");
                         } catch (Exception ex) {
-                            MWServ.mwlog.errLog(ex);
-                            MWServ.mwlog.mainLog("File " + buildTable + " has a problem");
+                            CampaignData.mwlog.errLog(ex);
+                            CampaignData.mwlog.mainLog("File " + buildTable + " has a problem");
                         }
 
                         finally {
@@ -4247,7 +4247,7 @@ public class ShortResolver {
                     }
                 }
             } catch (Exception ex) {
-                MWServ.mwlog.errLog(ex);
+                CampaignData.mwlog.errLog(ex);
             }
 
         }

@@ -20,6 +20,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import common.CampaignData;
+
 
 /**
  * Used to write the data fields of common data classes
@@ -44,7 +46,7 @@ public class BinWriter {
             this.out = new PrintWriter(new TeePrinter(out,new FileWriter(debugFilename)));
             System.setProperty("line.seperator",ls);
         } catch (IOException e) {
-            e.printStackTrace();
+            CampaignData.mwlog.errLog(e);
             this.out = new PrintWriter(out);
         }
         debug = true;

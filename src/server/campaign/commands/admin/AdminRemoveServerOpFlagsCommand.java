@@ -50,7 +50,7 @@ public class AdminRemoveServerOpFlagsCommand implements Command {
                 String key = command.nextToken();
                 if ( CampaignMain.cm.getData().getPlanetOpFlags().remove(key) != null ){
                     CampaignMain.cm.toUser("Op flag "+key+" removed from the server.",Username,true);
-                    //server.MWServ.mwlog.modLog(Username + " removed op flag "+key+".");
+                    //server.CampaignData.mwlog.modLog(Username + " removed op flag "+key+".");
                     CampaignMain.cm.doSendModMail("NOTE",Username + " removed op flag "+key+".");
                 }
             }

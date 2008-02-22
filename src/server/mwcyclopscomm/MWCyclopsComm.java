@@ -47,7 +47,7 @@ import java.util.Vector;
 import common.House;
 import common.Planet;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPersonalPilotQueues;
@@ -105,8 +105,8 @@ import server.campaign.pilot.skills.SPilotSkill;
                      sendMessage(messageQueue.remove(0),debug);
              }
          }catch(Exception ex){
-             MWServ.mwlog.errLog("Error while trying to sleep in MWCyclopsComm.run()");
-             MWServ.mwlog.errLog(ex);
+             CampaignData.mwlog.errLog("Error while trying to sleep in MWCyclopsComm.run()");
+             CampaignData.mwlog.errLog(ex);
          }
 
      }
@@ -464,7 +464,7 @@ import server.campaign.pilot.skills.SPilotSkill;
       */
      public String sendMessage(String message,boolean log){
          
-         //MWServ.mwlog.infoLog("Sending Message to Cyclops: "+message);
+         //CampaignData.mwlog.infoLog("Sending Message to Cyclops: "+message);
          StringBuilder ret;
          try{
              
@@ -485,10 +485,10 @@ import server.campaign.pilot.skills.SPilotSkill;
              PrintWriter _out = new PrintWriter(urlConnection.getOutputStream());
              
              if (log){
-                 MWServ.mwlog.infoLog("Sending Message: "+MWCyclopsUtils.formatMessage(message));
+                 CampaignData.mwlog.infoLog("Sending Message: "+MWCyclopsUtils.formatMessage(message));
              }
              else
-                 MWServ.mwlog.infoLog("Sending Message: "+message);
+                 CampaignData.mwlog.infoLog("Sending Message: "+message);
              _out.println(message);
              _out.flush();
              _out.close();
@@ -504,7 +504,7 @@ import server.campaign.pilot.skills.SPilotSkill;
                 	 ret.append(input+"\n");
                  
     
-                 MWServ.mwlog.infoLog(ret.toString());
+                 CampaignData.mwlog.infoLog(ret.toString());
                  _in.close();
              }
              
@@ -524,7 +524,7 @@ import server.campaign.pilot.skills.SPilotSkill;
              return ret.toString();
              
          }catch(Exception ex){
-             MWServ.mwlog.errLog(ex);
+             CampaignData.mwlog.errLog(ex);
          }
          
          return "";

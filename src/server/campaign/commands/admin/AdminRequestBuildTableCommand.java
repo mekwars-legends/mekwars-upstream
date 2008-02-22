@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-import server.MWServ;
+import common.CampaignData;
 import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
@@ -79,7 +79,7 @@ public class AdminRequestBuildTableCommand implements Command {
 				toReturn.append(folderDelimiter);
 			}
 			CampaignMain.cm.toUser("BT|LS|"+ toReturn.toString(), Username, false);
-			MWServ.mwlog.dbLog("Sending: " + toReturn.toString());				
+			CampaignData.mwlog.dbLog("Sending: " + toReturn.toString());				
 			
 			return;
 		} else if (subcommand.equalsIgnoreCase("get")) {
@@ -114,7 +114,7 @@ public class AdminRequestBuildTableCommand implements Command {
 				}
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				CampaignData.mwlog.errLog(e);
 			}
 			CampaignMain.cm.toUser("BT|BT|" + folder + "|" + table + toReturn.toString(), Username, false);
 			

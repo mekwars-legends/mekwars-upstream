@@ -24,7 +24,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.Iterator;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 
 /**
@@ -201,7 +201,7 @@ public class ExclusionList{
 	 */
 	public void adminExcludeFromString(String buffer, String delimiter){
 		
-		//MWServ.mwlog.mainLog("** adminExcludeFROMStringCalled");
+		//CampaignData.mwlog.mainLog("** adminExcludeFROMStringCalled");
 		
 		StringTokenizer ST = new StringTokenizer(buffer,delimiter);
 		while (ST.hasMoreElements()) {
@@ -215,7 +215,7 @@ public class ExclusionList{
 	
 	public void playerExcludeFromString(String buffer, String delimiter) {
 		
-		//MWServ.mwlog.mainLog("** playerExcludeFROMStringCalled");
+		//CampaignData.mwlog.mainLog("** playerExcludeFROMStringCalled");
 		
 		StringTokenizer ST = new StringTokenizer(buffer,delimiter);
 		while (ST.hasMoreElements()) {
@@ -237,7 +237,7 @@ public class ExclusionList{
 	
 	public String adminExcludeToString(String token) {
 		
-		//MWServ.mwlog.mainLog("** adminExcludeToStringCalled");
+		//CampaignData.mwlog.mainLog("** adminExcludeToStringCalled");
 		
 		StringBuilder result = new StringBuilder();
 		
@@ -266,8 +266,8 @@ public class ExclusionList{
 			}
 			
 		} catch (SQLException e) {
-			MWServ.mwlog.dbLog("SQLException in ExclusionList.fromDB: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+			CampaignData.mwlog.dbLog("SQLException in ExclusionList.fromDB: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
 		} finally {
 			try {
 				if(ps != null)
@@ -275,15 +275,15 @@ public class ExclusionList{
 				if(rs != null)
 					rs.close();
 			} catch (SQLException ex) {
-				MWServ.mwlog.dbLog("Exception in ExclusionList.fromDB: " + ex.getMessage());
-                MWServ.mwlog.dbLog(ex);
+				CampaignData.mwlog.dbLog("Exception in ExclusionList.fromDB: " + ex.getMessage());
+                CampaignData.mwlog.dbLog(ex);
 			}
 		}
 	}
 	
 	public String playerExcludeToString(String token) {
 		
-		//MWServ.mwlog.mainLog("** playerExcludeToStringCalled");
+		//CampaignData.mwlog.mainLog("** playerExcludeToStringCalled");
 		
 		StringBuilder result = new StringBuilder();
 		
@@ -335,11 +335,11 @@ public class ExclusionList{
 				}
 			}
 		} catch(SQLException e) {
-			MWServ.mwlog.dbLog("SQLException in ExclusionList.toDB: " + e.getMessage());
-			MWServ.mwlog.dbLog("  -> " + sql);
+			CampaignData.mwlog.dbLog("SQLException in ExclusionList.toDB: " + e.getMessage());
+			CampaignData.mwlog.dbLog("  -> " + sql);
 			if(ps != null)
-				MWServ.mwlog.dbLog("    -> " + ps.toString());
-            MWServ.mwlog.dbLog(e);
+				CampaignData.mwlog.dbLog("    -> " + ps.toString());
+            CampaignData.mwlog.dbLog(e);
 		}
 	}
 	

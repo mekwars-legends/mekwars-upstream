@@ -33,7 +33,7 @@ import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 
 public class AutomaticBackup implements Runnable{
@@ -66,7 +66,7 @@ public class AutomaticBackup implements Runnable{
         if (lastBackup > time - backupHours )
             return;
         
-        MWServ.mwlog.mainLog("Archiving Started at "+time);
+        CampaignData.mwlog.mainLog("Archiving Started at "+time);
         CampaignMain.cm.setArchiving(true);
         
         if(CampaignMain.cm.isUsingMySQL()) {
@@ -96,8 +96,8 @@ public class AutomaticBackup implements Runnable{
 	        	zipFile.close();
         	}
         	catch(Exception ex){
-            	MWServ.mwlog.errLog("Unable to create factions zip file");
-            	MWServ.mwlog.errLog(ex);
+            	CampaignData.mwlog.errLog("Unable to create factions zip file");
+            	CampaignData.mwlog.errLog(ex);
         	}
 
         	try{
@@ -107,8 +107,8 @@ public class AutomaticBackup implements Runnable{
             	zipFile.close();
         	}
         	catch(Exception ex){
-            	MWServ.mwlog.errLog("Unable to create planets zip file");
-            	MWServ.mwlog.errLog(ex);
+            	CampaignData.mwlog.errLog("Unable to create planets zip file");
+            	CampaignData.mwlog.errLog(ex);
         	}
             try{
     	        out = new FileOutputStream(playerZipFileName);
@@ -117,8 +117,8 @@ public class AutomaticBackup implements Runnable{
     	        zipFile.close();
             }
             catch(Exception ex){
-                MWServ.mwlog.errLog("Unable to create player zip file");
-                MWServ.mwlog.errLog(ex);
+                CampaignData.mwlog.errLog("Unable to create player zip file");
+                CampaignData.mwlog.errLog(ex);
             }
         }
 
@@ -129,13 +129,13 @@ public class AutomaticBackup implements Runnable{
             zipFile.close();
         }
         catch(Exception ex){
-            MWServ.mwlog.errLog("Unable to create data zip file");
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog("Unable to create data zip file");
+            CampaignData.mwlog.errLog(ex);
         }
 		CampaignMain.cm.getConfig().setProperty("LastAutomatedBackup",Long.toString(time));
 		CampaignMain.dso.createConfig();
         CampaignMain.cm.setArchiving(false);
-        MWServ.mwlog.mainLog("Archiving Ended.");
+        CampaignData.mwlog.mainLog("Archiving Ended.");
     }
     
     /**
@@ -163,11 +163,11 @@ public class AutomaticBackup implements Runnable{
                     in.close();
                 }
                 catch ( FileNotFoundException fnfe ){
-                    MWServ.mwlog.errLog("Unable to backup faction file: "+files[i].getName());
+                    CampaignData.mwlog.errLog("Unable to backup faction file: "+files[i].getName());
                 }
                 catch (Exception ex){
-                    MWServ.mwlog.errLog("Unable to backup faction files");
-                    MWServ.mwlog.errLog(ex);
+                    CampaignData.mwlog.errLog("Unable to backup faction files");
+                    CampaignData.mwlog.errLog(ex);
                 }
             }
         
@@ -192,8 +192,8 @@ public class AutomaticBackup implements Runnable{
             }
         }
         catch (Exception ex){
-            MWServ.mwlog.errLog("Unable to backup planet files");
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog("Unable to backup planet files");
+            CampaignData.mwlog.errLog(ex);
         }
         
     }
@@ -217,8 +217,8 @@ public class AutomaticBackup implements Runnable{
 	        }
         }
         catch (Exception ex){
-            MWServ.mwlog.errLog("Unable to backup player files");
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog("Unable to backup player files");
+            CampaignData.mwlog.errLog(ex);
         }
         
     }
@@ -254,8 +254,8 @@ public class AutomaticBackup implements Runnable{
             }
         }
         catch (Exception ex){
-            MWServ.mwlog.errLog("Unable to backup server data files: "+path);
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog("Unable to backup server data files: "+path);
+            CampaignData.mwlog.errLog(ex);
         }
         
     }

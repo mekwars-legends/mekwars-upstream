@@ -20,6 +20,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
+import common.CampaignData;
+
 
 /**
  * Helper to encode and decode typical fields of classes
@@ -62,7 +64,7 @@ public class BinReader {
             if (!debug)
                 this.in.reset();
         } catch (IOException e) {
-            e.printStackTrace();
+            CampaignData.mwlog.errLog(e);
             debug = false;
         }
     }

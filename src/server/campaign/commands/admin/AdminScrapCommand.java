@@ -77,7 +77,7 @@ public class AdminScrapCommand implements Command {
 		//tell the player you're going to scrap the unit ...
 		CampaignMain.cm.toUser("AM:"+targetName + "'s " + m.getModelName() + " was scrapped.", Username, true);
 		CampaignMain.cm.toUser("AM:"+Username + " scrapped your " + m.getModelName() + " (ID#" + m.getId() + ")", targetName, true);
-		//server.MWServ.mwlog.modLog(Username + " scrapped a "+ m.getModelName() + " belonging to " + targetName);	
+		//server.CampaignData.mwlog.modLog(Username + " scrapped a "+ m.getModelName() + " belonging to " + targetName);	
 		CampaignMain.cm.doSendModMail("NOTE",Username + " scrapped a "+ m.getModelName() + " belonging to " + targetName);
 		
 		//then do it

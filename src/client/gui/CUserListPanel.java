@@ -56,6 +56,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 
+import common.CampaignData;
 import common.util.StringUtils;
 
 import client.CConfig;
@@ -231,7 +232,7 @@ public class CUserListPanel extends JPanel implements ActionListener{
 	
 	public synchronized void refresh() {
 		try {((CUserListModel)UserList.getModel()).refreshModel();}
-		catch (Exception ex) {MWClient.mwClientLog.clientErrLog(ex);}
+		catch (Exception ex) {CampaignData.mwlog.errLog(ex);}
 		CountLabel.setText("Player Count: " + UserList.getModel().getSize());
 	}
 	
@@ -363,7 +364,7 @@ public class CUserListPanel extends JPanel implements ActionListener{
                         try {
                             File loadJar = new File("./MekWarsAdmin.jar");
                             if (!loadJar.exists())
-                                MWClient.mwClientLog.clientErrLog("StaffUserlistPopupMenu creation skipped. No MekWarsAdmin.jar present.");
+                                CampaignData.mwlog.errLog("StaffUserlistPopupMenu creation skipped. No MekWarsAdmin.jar present.");
                             else {
                                 URLClassLoader loader = new URLClassLoader(new URL[] {loadJar.toURI().toURL()});
                                 Class<?> c = loader.loadClass("admin.StaffUserlistPopupMenu");
@@ -373,8 +374,8 @@ public class CUserListPanel extends JPanel implements ActionListener{
                                 popup.add((JMenu)o);
                             }
                         } catch (Exception ex) {
-                            MWClient.mwClientLog.clientErrLog("StaffUserlistPopupMenu creation FAILED!");
-                            MWClient.mwClientLog.clientErrLog(ex);
+                            CampaignData.mwlog.errLog("StaffUserlistPopupMenu creation FAILED!");
+                            CampaignData.mwlog.errLog(ex);
                         }
                     
                         popup.addSeparator();
@@ -1093,16 +1094,16 @@ public class CUserListPanel extends JPanel implements ActionListener{
 						
 						//logged out users are never bold
 						setFont(getFont().deriveFont(Font.PLAIN));
-						if (TextImage) {try {setIcon(LogoutImage);} catch (Exception ex) {MWClient.mwClientLog.clientErrLog(ex);}}
+						if (TextImage) {try {setIcon(LogoutImage);} catch (Exception ex) {CampaignData.mwlog.errLog(ex);}}
 					}
 					else {
 						if (TextBold) {setFont(getFont().deriveFont(Font.BOLD));}
 						else {setFont(getFont().deriveFont(Font.PLAIN));}
 							
 						if (TextImage) {
-							if (status == MWClient.STATUS_RESERVE) {try {setIcon(ReserveImage);} catch (Exception ex) {MWClient.mwClientLog.clientErrLog(ex);}}
-							if (status == MWClient.STATUS_ACTIVE) {try {setIcon(ActiveImage);} catch (Exception ex) {MWClient.mwClientLog.clientErrLog(ex);}}
-							if (status == MWClient.STATUS_FIGHTING) {try {setIcon(FightImage);} catch (Exception ex) {MWClient.mwClientLog.clientErrLog(ex);}}
+							if (status == MWClient.STATUS_RESERVE) {try {setIcon(ReserveImage);} catch (Exception ex) {CampaignData.mwlog.errLog(ex);}}
+							if (status == MWClient.STATUS_ACTIVE) {try {setIcon(ActiveImage);} catch (Exception ex) {CampaignData.mwlog.errLog(ex);}}
+							if (status == MWClient.STATUS_FIGHTING) {try {setIcon(FightImage);} catch (Exception ex) {CampaignData.mwlog.errLog(ex);}}
 						} else {
 							setIcon(null);
 						}

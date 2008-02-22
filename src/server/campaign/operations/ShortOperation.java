@@ -44,7 +44,7 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.AutoArmy;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
@@ -246,7 +246,7 @@ public class ShortOperation implements Comparable<Object> {
         String toLog = "Attack: #" + shortID + "/" + initiator.getName() + "/" + opName + "/" + target.getName() + ".<br> - Potential Defenders: ";
         for (SArmy currA : possibleDefenders)
             toLog += currA.getName() + "/" + currA.getID() + " ";
-        MWServ.mwlog.gameLog(toLog);
+        CampaignData.mwlog.gameLog(toLog);
 
         Operation o = CampaignMain.cm.getOpsManager().getOperation(opName);
 
@@ -309,7 +309,7 @@ public class ShortOperation implements Comparable<Object> {
                 int maxPlayersPerTeam = o.getIntValue("TeamSize");
                 int maxPlayers = Math.max(2, Math.min(8, maxTeams)) * maxPlayersPerTeam;
 
-                // MWServ.mwlog.errLog("Max Teams: "+maxTeams+" Players Per
+                // CampaignData.mwlog.errLog("Max Teams: "+maxTeams+" Players Per
                 // Team: "+maxPlayersPerTeam+" Max Players: "+maxPlayers+"
                 // Current Players: "+this.getAllPlayerNames().size());
                 if (this.getAllPlayerNames().size() >= maxPlayers)
@@ -364,7 +364,7 @@ public class ShortOperation implements Comparable<Object> {
             int maxPlayers = Math.max(2, Math.min(8, maxTeams)) * maxPlayersPerTeam;
 
             isTeamOp = true;
-            // MWServ.mwlog.errLog("Max Teams: "+maxTeams+" Players Per Team:
+            // CampaignData.mwlog.errLog("Max Teams: "+maxTeams+" Players Per Team:
             // "+maxPlayersPerTeam+" Max Players: "+maxPlayers+" Current
             // Players: "+this.getAllPlayerNames().size());
             if (this.getAllPlayerNames().size() >= maxPlayers)
@@ -1365,8 +1365,8 @@ public class ShortOperation implements Comparable<Object> {
                     gameOptions.append("|visibility|");
                     gameOptions.append(intelVisibility);
                 } catch (Exception ex) {
-                    MWServ.mwlog.errLog("Unable to retrieve advanced terrain data for Planet: " + targetWorld.getName() + " Terrain: " + playEnvironment.getName());
-                    MWServ.mwlog.errLog(ex);
+                    CampaignData.mwlog.errLog("Unable to retrieve advanced terrain data for Planet: " + targetWorld.getName() + " Terrain: " + playEnvironment.getName());
+                    CampaignData.mwlog.errLog(ex);
                 }
             }
 
@@ -1650,7 +1650,7 @@ public class ShortOperation implements Comparable<Object> {
                     toStore.append(")");
                 }
             }
-            MWServ.mwlog.resultsLog(toStore.toString());
+            CampaignData.mwlog.resultsLog(toStore.toString());
 
             /*
              * send a Finished Game entry to faction mates. same as when
@@ -1721,9 +1721,9 @@ public class ShortOperation implements Comparable<Object> {
 
         if (isTeamOp) {
             CampaignMain.cm.toUser("PL|STN|" + p.getTeamNumber(), lowerName, false);
-            MWServ.mwlog.debugLog(p.getName() + " Team: " + p.getTeamNumber());
+            CampaignData.mwlog.debugLog(p.getName() + " Team: " + p.getTeamNumber());
             CampaignMain.cm.toUser("GMEP|" + teamEdge[p.getTeamNumber() - 1], lowerName, false);
-            MWServ.mwlog.debugLog("Sent team edge to " + p.getName());
+            CampaignData.mwlog.debugLog("Sent team edge to " + p.getName());
         }
         // send starting edge and autoarmy
         else if (defenders.containsKey(lowerName)) {
@@ -1913,7 +1913,7 @@ public class ShortOperation implements Comparable<Object> {
                 chickenThreads.put(playername, newThread);
 
                 // add creation to log
-                MWServ.mwlog.gameLog("Created chicken thread for " + shortID + "/" + currPlayer.getName() + "(" + opName + ")");
+                CampaignData.mwlog.gameLog("Created chicken thread for " + shortID + "/" + currPlayer.getName() + "(" + opName + ")");
             }
         }// end while(poss defenders remain)
 
@@ -1922,7 +1922,7 @@ public class ShortOperation implements Comparable<Object> {
          * those players who have multiple armies able to defend, start the
          * threads.
          */
-        MWServ.mwlog.gameLog("Starting all chicken threads for #" + shortID + " (" + opName + ")");
+        CampaignData.mwlog.gameLog("Starting all chicken threads for #" + shortID + " (" + opName + ")");
         for (OpsChickenThread ct : chickenThreads.values())
             ct.start();
     }
@@ -2402,8 +2402,8 @@ public class ShortOperation implements Comparable<Object> {
                 else if (numDefenders > 1)
                     defendString += nameString + " players ";
             } catch (Exception ex) {
-                MWServ.mwlog.errLog("Unable to find defenders for operation: " + this.opName);
-                MWServ.mwlog.errLog(ex);
+                CampaignData.mwlog.errLog("Unable to find defenders for operation: " + this.opName);
+                CampaignData.mwlog.errLog(ex);
             }
         }
 

@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.commands.Command;
 import server.campaign.CampaignMain;
 import server.MWChatServer.auth.IAuthenticator;
@@ -68,8 +68,8 @@ public class AdminSaveCommandLevelsCommand implements Command {
 			}	
 		}
 		catch (Exception ex){
-		    MWServ.mwlog.errLog(ex);
-		    MWServ.mwlog.errLog("Unable to save command levels");
+		    CampaignData.mwlog.errLog(ex);
+		    CampaignData.mwlog.errLog("Unable to save command levels");
 		}
 		CampaignMain.cm.toUser("AM:Command levels saved!",Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has saved the command levels to file.");

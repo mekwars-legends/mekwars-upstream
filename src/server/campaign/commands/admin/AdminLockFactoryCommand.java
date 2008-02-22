@@ -18,7 +18,7 @@ package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.SPlanet;
 import server.campaign.SUnitFactory;
 import server.campaign.CampaignMain;
@@ -75,7 +75,7 @@ public class AdminLockFactoryCommand implements Command {
 				
 				//send messages
 				CampaignMain.cm.toUser("You locked "+ uf.getName()+" on planet "+p.getName(),Username,true);
-				//server.MWServ.mwlog.modLog(Username + " has locked "+ uf.getName()+" on planet "+p.getName());
+				//server.CampaignData.mwlog.modLog(Username + " has locked "+ uf.getName()+" on planet "+p.getName());
 				CampaignMain.cm.doSendModMail("NOTE",Username + " has locked "+ uf.getName()+" on planet "+p.getName());
 				
 			}
@@ -87,7 +87,7 @@ public class AdminLockFactoryCommand implements Command {
 				
 				//send messages
 				CampaignMain.cm.toUser("You unlocked "+ uf.getName()+" on planet "+p.getName(),Username,true);
-				//server.MWServ.mwlog.modLog(Username + " has unlocked "+ uf.getName()+" on planet "+p.getName());
+				//server.CampaignData.mwlog.modLog(Username + " has unlocked "+ uf.getName()+" on planet "+p.getName());
 				CampaignMain.cm.doSendModMail("NOTE",Username + " has unlocked "+ uf.getName()+" on planet "+p.getName());
 			}
 		if (CampaignMain.cm.isUsingMySQL())
@@ -95,7 +95,7 @@ public class AdminLockFactoryCommand implements Command {
 
 		} catch (Exception ex){
 			CampaignMain.cm.toUser("Command failed. Make sure format was: /c adminlockfactory#planetname#factoryname", Username, true);
-			MWServ.mwlog.errLog(ex);
+			CampaignData.mwlog.errLog(ex);
 		}
 		
 	}

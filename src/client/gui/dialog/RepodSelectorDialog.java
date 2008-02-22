@@ -77,6 +77,7 @@ import megamek.common.loaders.EntityLoadingException;
 
 import client.MWClient;
 import client.gui.MechInfo;
+import common.CampaignData;
 import common.util.SpringLayoutHelper;
 import common.util.UnitUtils;
 import client.gui.CMainFrame;
@@ -141,7 +142,7 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
 		    	global = true;
 		    else{
 		        String chassieMods = ST.nextToken();
-		        //MWClient.mwClientLog.clientErrLog("Chassie: "+tempstr+" mods: "+chassieMods+" ChassieList: "+chassieList);
+		        //CampaignData.mwlog.errLog("Chassie: "+tempstr+" mods: "+chassieMods+" ChassieList: "+chassieList);
 		        this.chassieList.put(tempstr,chassieMods);
 		    }
 		}
@@ -276,7 +277,7 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
 			}//end for(all mechs)
 		}
 		catch (Exception ex){
-			ex.printStackTrace();
+			CampaignData.mwlog.errLog(ex);
 			System.err.println("mechs size: "+mechs.length+" x: "+x);
 		}
 		mechsCurrent = new MechSummary[vMechs.size()];
@@ -324,7 +325,7 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
 		makeLength("" + ms.getBV(),5);
 		
 		String chassieMods = (String)chassieList.get(ms.getName());
-		//MWClient.mwClientLog.clientErrLog("Name: "+ms.getName()+" Mods: "+chassieMods);
+		//CampaignData.mwlog.errLog("Name: "+ms.getName()+" Mods: "+chassieMods);
 		
 		StringTokenizer mods = new StringTokenizer(chassieMods,"$");
 		result += " " + makeLength(mods.nextToken()+mwclient.moneyOrFluMessage(true,true,-1),5);
@@ -350,7 +351,7 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
 				this.dispose();
 			}
 			catch(Exception ex){
-				MWClient.mwClientLog.clientErrLog(ex);
+				CampaignData.mwlog.errLog(ex);
 				//MMClient.mwClientLog.clientErrLog("Problem with actionPerformed in RepodDialog");
 			}
 		}
@@ -363,7 +364,7 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
 				Thread.sleep(125);
 				this.dispose();
 			} catch (Exception ex) {
-				MWClient.mwClientLog.clientErrLog(ex);
+				CampaignData.mwlog.errLog(ex);
 				//MMClient.mwClientLog.clientErrLog("Problem with actionPerformed in RepodDialog");
 			}
 		}
@@ -386,7 +387,7 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
 			previewMech(entity);
 		} catch (EntityLoadingException ex) {
 			System.out.println("Unable to load mech: " + ms.getSourceFile() + ": " + ms.getEntryName() + ": " + ex.getMessage());
-			ex.printStackTrace();
+			CampaignData.mwlog.errLog(ex);
 			clearMechPreview();
 			return;
 		} 

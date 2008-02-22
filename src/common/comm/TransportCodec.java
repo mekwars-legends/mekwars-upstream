@@ -10,6 +10,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
+
+import common.CampaignData;
 /**
  * Provides a method to encode any string into a URL-safe
  * form.
@@ -62,7 +64,7 @@ public class TransportCodec {
       oos.close();
       return TransportCodec.encode(baos.toString());
     } catch (Exception e) {
-      e.printStackTrace();
+      CampaignData.mwlog.errLog(e);
     }
     return "";
   }
@@ -77,7 +79,7 @@ public class TransportCodec {
       ois.close();
       return result;
     } catch (Exception e) {
-      e.printStackTrace();
+      CampaignData.mwlog.errLog(e);
     }
     return null;
   }

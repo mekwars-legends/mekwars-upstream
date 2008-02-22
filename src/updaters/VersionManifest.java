@@ -15,6 +15,8 @@ import java.util.StringTokenizer;
 
 import javax.swing.JFileChooser;
 
+import common.CampaignData;
+
 import updaters.utils.IOUtil;
 
 public class VersionManifest {
@@ -37,7 +39,7 @@ public class VersionManifest {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            CampaignData.mwlog.errLog(e);
         }
     }
 
@@ -113,7 +115,7 @@ public class VersionManifest {
                 }
                 retval.add(file);
             } catch (Exception e) {
-                e.printStackTrace();
+                CampaignData.mwlog.errLog(e);
             }
         }
 
@@ -187,7 +189,7 @@ public class VersionManifest {
             ps.close();
             out.close();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            CampaignData.mwlog.errLog(ex);
         }
         createManifestFile(outFileName);
     }
@@ -225,7 +227,7 @@ public class VersionManifest {
                 ps.flush();
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            CampaignData.mwlog.errLog(ex);
         }
     }
 
@@ -275,7 +277,7 @@ public class VersionManifest {
              * errLogger.start(); event.waitFor();
              */
         } catch (Exception ex) {
-            ex.printStackTrace();
+            CampaignData.mwlog.errLog(ex);
         }
     }
 
@@ -295,5 +297,5 @@ public class VersionManifest {
  * @Override public void run() { try { int c = 1; while ((c = m_in.read()) !=
  * -1) { System.out.print((char) c); // System.out.flush(); } m_in.close(); }
  * catch (Exception e) { System.err.println("Problem getting output");
- * e.printStackTrace(); } } }
+ * CampaignData.mwlog.errLog(e); } } }
  */

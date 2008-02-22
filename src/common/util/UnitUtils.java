@@ -19,6 +19,8 @@ package common.util;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import common.CampaignData;
+
 import megamek.common.AmmoType;
 import megamek.common.BipedMech;
 import megamek.common.CriticalSlot;
@@ -270,8 +272,8 @@ public class UnitUtils  {
 
         }
         catch (Exception ex){
-            System.err.println("Entity: "+unit.getShortNameRaw());
-            ex.printStackTrace();
+            CampaignData.mwlog.errLog("Entity: "+unit.getShortNameRaw());
+            CampaignData.mwlog.errLog(ex);
             return "%%-%%-%%";
         }
         return result.toString();
@@ -485,8 +487,8 @@ public class UnitUtils  {
 
         }
         catch (Exception ex){
-            System.err.println("Entity: "+unit.getShortNameRaw());
-            ex.printStackTrace();
+            CampaignData.mwlog.errLog("Entity: "+unit.getShortNameRaw());
+            CampaignData.mwlog.errLog(ex);
             return "%%-%%-%%";
         }
         return result.toString();
@@ -497,7 +499,7 @@ public class UnitUtils  {
     }
     
     public static void applyTankBattleDamage(Entity unit, String report, boolean isRepairing) {
-        //System.err.println(System.currentTimeMillis()+" Unit "+unit.getModel()+" applyBattleDamage: "+report);
+        //CampaignData.mwlog.errLog(System.currentTimeMillis()+" Unit "+unit.getModel()+" applyBattleDamage: "+report);
         StringTokenizer entry = new StringTokenizer(report,"-");
 
         StringTokenizer externalArmor = new StringTokenizer(entry.nextToken(),"%");
@@ -593,7 +595,7 @@ public class UnitUtils  {
                         weapon.setShotsLeft(ammoLeft);
                     }
                 }catch(Exception ex){
-                     System.err.println("Error while parsing ammo Moving along");
+                     CampaignData.mwlog.errLog("Error while parsing ammo Moving along");
                 }
             }
         }
@@ -609,7 +611,7 @@ public class UnitUtils  {
     	if ( unit instanceof Protomech || unit instanceof Infantry )
     		return;
     	
-        //System.err.println(System.currentTimeMillis()+" Unit "+unit.getModel()+" applyBattleDamage: "+report);
+        //CampaignData.mwlog.errLog(System.currentTimeMillis()+" Unit "+unit.getModel()+" applyBattleDamage: "+report);
         StringTokenizer entry = new StringTokenizer(report,"-");
 
         StringTokenizer externalArmor = new StringTokenizer(entry.nextToken(),"%");
@@ -697,7 +699,7 @@ public class UnitUtils  {
 	            }
 	            unit.setCritical(location,slot,critSlot);
         	}catch(Exception ex) {
-        		ex.printStackTrace();
+        		CampaignData.mwlog.errLog(ex);
         	}
         }
         
@@ -723,7 +725,7 @@ public class UnitUtils  {
                         weapon.setShotsLeft(ammoLeft);
                     }
                 }catch(Exception ex){
-                     System.err.println("Error while parsing ammo Moving along");
+                     CampaignData.mwlog.errLog("Error while parsing ammo Moving along");
                 }
             }
         }
@@ -1468,8 +1470,8 @@ public class UnitUtils  {
                 return true;
             
         }catch (Exception ex){
-            System.err.println("Error in UnitUtils.isNonRepairableCrit");
-            ex.printStackTrace();
+            CampaignData.mwlog.errLog("Error in UnitUtils.isNonRepairableCrit");
+            CampaignData.mwlog.errLog(ex);
             return false;
         }
         return false;
@@ -1597,13 +1599,13 @@ public class UnitUtils  {
             
         }else{
             CriticalSlot cs = unit.getCritical(location,slot);
-            //System.err.println("Location: "+location+" slot:"+slot);
+            //CampaignData.mwlog.errLog("Location: "+location+" slot:"+slot);
             
             if ( cs == null ) {
                 return roll;
             }
 
-            //System.err.println("Crit: "+cs.getIndex()+"/"+cs.getType());
+            //CampaignData.mwlog.errLog("Crit: "+cs.getIndex()+"/"+cs.getType());
            /* if ( !cs.isDamaged() && !cs.isBreached()) {
                 	return roll;
             }*/
@@ -1644,7 +1646,7 @@ public class UnitUtils  {
             }// end CS type if
             else{
 
-            	//System.err.println("CS is Type System!");
+            	//CampaignData.mwlog.errLog("CS is Type System!");
             	//System.err.flush();
             	
                 if ( UnitUtils.isEngineCrit(cs) ){
@@ -1664,7 +1666,7 @@ public class UnitUtils  {
                             roll++;
                     }
                     else if ( cs.getIndex() == Mech.SYSTEM_GYRO ){
-                  //  	System.err.println("Gyro!");
+                  //  	CampaignData.mwlog.errLog("Gyro!");
                     //	System.err.flush();
                         if ( cs.isMissing() )
                             roll++;
@@ -2268,7 +2270,7 @@ public class UnitUtils  {
 	                    ammo.getShotsLeft() > 0 )
 	                return true;
         	}catch(Exception ex){
-        		ex.printStackTrace();
+        		CampaignData.mwlog.errLog(ex);
         		continue;
         	}
         }

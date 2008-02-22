@@ -19,6 +19,8 @@ package client.cmd;
 
 import java.util.StringTokenizer;
 
+import common.CampaignData;
+
 import client.MWClient;
 
 /**
@@ -50,7 +52,7 @@ public class HS extends Command {
 			try{
 				this.issueSubCommand(cmdName, cmdData);
 			}catch(Exception ex){
-				MWClient.mwClientLog.clientErrLog(ex);
+				CampaignData.mwlog.errLog(ex);
 			}
 			
 			if(cmdName.equals("CA"))
@@ -68,7 +70,7 @@ public class HS extends Command {
 	 */
 	private void issueSubCommand(String cmdName, String cmdData) {
 		
-		//MWClient.mwClientLog.clientErrLog("HS Subcommand: " + cmdName + " Data: " + cmdData);
+		//CampaignData.mwlog.errLog("HS Subcommand: " + cmdName + " Data: " + cmdData);
 		
 		if (cmdName.equals("FN")) //set faction name, HS|FN 
 			mwclient.getMainFrame().getMainPanel().getHSPanel().setFactionName(cmdData);

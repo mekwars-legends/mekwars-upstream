@@ -19,6 +19,7 @@ package client.cmd;
 
 import java.util.StringTokenizer;
 
+import common.CampaignData;
 import common.campaign.pilot.Pilot;
 import common.util.UnitUtils;
 
@@ -223,11 +224,11 @@ public class PL extends Command {
         			}
         		}
         	}
-        	MWClient.mwClientLog.clientOutputLog(player.getMyHouse().getSupportedUnits().toString());       	
+        	CampaignData.mwlog.infoLog(player.getMyHouse().getSupportedUnits().toString());       	
         }
         else if (cmd.equals("CSU")) {
         	// clear supported units
-        	MWClient.mwClientLog.clientOutputLog("Clearing Supported Units");
+        	CampaignData.mwlog.infoLog("Clearing Supported Units");
         	player.getMyHouse().supportedUnits.clear();
         	player.getMyHouse().setNonFactionUnitsCostMore(Boolean.parseBoolean(mwclient.getserverConfigs("UseNonFactionUnitsIncreasedTechs")));
         }

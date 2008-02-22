@@ -37,7 +37,7 @@ import java.util.Vector;
 
 import megamek.common.Protomech;
 
-import server.MWServ;
+import common.CampaignData;
 
 import server.campaign.market2.IBuyer;
 import server.campaign.market2.ISeller;
@@ -1021,21 +1021,21 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
      */
     protected String addInfluenceAtSlice() {
 
-        MWServ.mwlog.debugLog("Starting addInfluenceAtSlice for " + this.getName());
+        CampaignData.mwlog.debugLog("Starting addInfluenceAtSlice for " + this.getName());
 
         // cant get any inf beyond ceiling, so no reason to do the math
         int fluCeiling = Integer.parseInt(this.getMyHouse().getConfig("InfluenceCeiling"));
-        MWServ.mwlog.debugLog("getting max flu");
+        CampaignData.mwlog.debugLog("getting max flu");
         if (influence >= fluCeiling) {
-            MWServ.mwlog.debugLog("returning");
+            CampaignData.mwlog.debugLog("returning");
             return "";
         }
 
-        MWServ.mwlog.debugLog("checking for merc house");
+        CampaignData.mwlog.debugLog("checking for merc house");
         // mercs who are active but w/o contract get no flu
         if (this.getHouseFightingFor().isMercHouse())
             return "";
-        MWServ.mwlog.debugLog("not in merc house");
+        CampaignData.mwlog.debugLog("not in merc house");
         /*
          * Passed simple returns. Now check the player's activity time and make
          * sure he has at least 1 (after weighting) eligible army.
@@ -1043,10 +1043,10 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         double weightedNumArmies = this.getWeightedArmyNumber();
         boolean activeLongEnough = (System.currentTimeMillis() - activeSince) > Integer.parseInt(this.getMyHouse().getConfig("InfluenceTimeMin"));
 
-        MWServ.mwlog.debugLog("check active status, army number/weight, activelong enough");
+        CampaignData.mwlog.debugLog("check active status, army number/weight, activelong enough");
         if (this.getDutyStatus() == STATUS_ACTIVE && weightedNumArmies > 0 && activeLongEnough) {
 
-            MWServ.mwlog.debugLog(this.getName() + " is active!");
+            CampaignData.mwlog.debugLog(this.getName() + " is active!");
             // if player has been on long enough to get influece,
             // do all of the math to determine influence grant amount
             double totalInfluenceGrant = 0;
@@ -1070,18 +1070,18 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             if (newFlu > fluCeiling)
                 intFluToAdd -= (newFlu - fluCeiling);
 
-            MWServ.mwlog.debugLog("Adding Flue");
+            CampaignData.mwlog.debugLog("Adding Flue");
             // then give him the flu
             this.addInfluence(intFluToAdd);
 
             // flu added. send the player a nice fluffy message about it.
             try {
-                MWServ.mwlog.debugLog("staring up flu message");
+                CampaignData.mwlog.debugLog("staring up flu message");
                 String fileName = "";
-                MWServ.mwlog.debugLog("getting house");
+                CampaignData.mwlog.debugLog("getting house");
                 SHouse faction = this.getHouseFightingFor();
 
-                MWServ.mwlog.debugLog("getting flu message file");
+                CampaignData.mwlog.debugLog("getting flu message file");
                 if (faction == null)
                     fileName = "./data/influencemessages/CommonInfluenceMessages.txt";
                 else
@@ -1092,7 +1092,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                     fileName = "./data/influencemessages/CommonInfluenceMessages.txt";
                     messageFile = new File(fileName);
                     if (!messageFile.exists()) {
-                        MWServ.mwlog.errLog("A problem occured with your CommonInfluenceMessages File!");
+                        CampaignData.mwlog.errLog("A problem occured with your CommonInfluenceMessages File!");
                         return "";
                     }
                 }
@@ -1100,7 +1100,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 FileInputStream fis = new FileInputStream(messageFile);
                 BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
 
-                MWServ.mwlog.debugLog("getting random flu message");
+                CampaignData.mwlog.debugLog("getting random flu message");
                 int messages = Integer.parseInt(dis.readLine());
                 Random rand = new Random();
                 int messageLine = rand.nextInt(messages);
@@ -1117,17 +1117,17 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
                 int unitId = rand.nextInt(units.size());// random
                 SUnit unitForMessages = units.elementAt(unitId);
-                MWServ.mwlog.debugLog("Adding Subs for unitid: " + unitId);
+                CampaignData.mwlog.debugLog("Adding Subs for unitid: " + unitId);
                 String fluMessageWithPilotName = fluMessage.replaceAll("PILOT", unitForMessages.getPilot().getName());
                 String fluMessageWithModelName = fluMessageWithPilotName.replaceAll("UNIT", unitForMessages.getModelName());
                 String fluMessageWithPlayerName = fluMessageWithModelName.replaceAll("PLAYER", name);
 
                 fluMessageWithPlayerName += " (" + CampaignMain.cm.moneyOrFluMessage(false, false, intFluToAdd, true) + ")";
-                MWServ.mwlog.debugLog("returning [" + fluMessageWithPlayerName + "] for " + this.getName());
+                CampaignData.mwlog.debugLog("returning [" + fluMessageWithPlayerName + "] for " + this.getName());
                 return fluMessageWithPlayerName;
 
             } catch (Exception e) {
-                MWServ.mwlog.errLog("A problem occured with your CommonInfluenceMessages File!");
+                CampaignData.mwlog.errLog("A problem occured with your CommonInfluenceMessages File!");
                 return "";
             }
         }
@@ -1416,7 +1416,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             try {
                 throw new Exception();
             } catch (Exception ex) {
-                MWServ.mwlog.errLog(ex);
+                CampaignData.mwlog.errLog(ex);
             }
         }
         this.password = pass;
@@ -2287,7 +2287,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             if (timeGone > tickTime)
                 healAllPilots((int) (timeGone / tickTime));
         } catch (Exception ex) {
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog(ex);
         }
     }
 
@@ -2740,7 +2740,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         PreparedStatement ps = null;
         StringBuffer sql = new StringBuffer();
         try {
-            MWServ.mwlog.dbLog("Saving player " + getName() + " (DBID: " + getDBId() + ")");
+            CampaignData.mwlog.dbLog("Saving player " + getName() + " (DBID: " + getDBId() + ")");
             if (getDBId() == 0) {
                 // Not in the database - INSERT it
                 sql.setLength(0);
@@ -2971,10 +2971,10 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 }
             }
             ps.close();
-            MWServ.mwlog.dbLog("Finished saving player");
+            CampaignData.mwlog.dbLog("Finished saving player");
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQL error in SPlayer.toDB: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQL error in SPlayer.toDB: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
         }
     }
 
@@ -2988,7 +2988,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     public void fromString(String s) {
 
         // print the player into the info log. only for Debug
-        // MWServ.mwlog.infoLog("CSPlayer: " + s);
+        // CampaignData.mwlog.infoLog("CSPlayer: " + s);
         this.isLoading = true;
 
         try {
@@ -3217,7 +3217,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 this.fixPilot(currU);
             }
         } catch (Exception ex) {
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog(ex);
         } finally {
             this.isLoading = false;
         }
@@ -3388,8 +3388,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             stmt.close();
             stmt1.close();
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQL Error in SPlayer.fromDB: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQL Error in SPlayer.fromDB: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
         } finally {
             this.isLoading = false;
         }
@@ -3525,7 +3525,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             if (daysSinceLastPromoted < days)
                 return false;
         } catch (Exception ex) {
-            MWServ.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog(ex);
             return false;
         }
 

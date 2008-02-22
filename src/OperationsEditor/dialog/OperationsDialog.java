@@ -60,6 +60,7 @@ import javax.swing.SpringLayout;
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 
+import common.CampaignData;
 import common.DefaultOperation;
 import common.util.SpringLayoutHelper;
 
@@ -139,7 +140,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 			System.setOut(ps);
 			System.setErr(ps);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			CampaignData.mwlog.errLog(ex);
 		}
 		
 
@@ -3368,7 +3369,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 			}
 		}catch (Exception ex){
 			System.err.println("Error loading file "+filePathName);
-			ex.printStackTrace();
+			CampaignData.mwlog.errLog(ex);
 		}
         
         for ( int pos = ConfigPane.getComponentCount()-1; pos >= 0; pos-- ){
@@ -3647,7 +3648,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
             fis.close();
             
         }catch(Exception ex){
-        	client.MWClient.mwClientLog.clientErrLog("Unable to read "+opFile);
+        	CampaignData.mwlog.errLog("Unable to read "+opFile);
             return;
         }
 

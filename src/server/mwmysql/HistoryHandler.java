@@ -28,7 +28,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import server.MWServ;
+import common.CampaignData;
 
 public class HistoryHandler {
   Connection con = null;
@@ -86,8 +86,8 @@ public class HistoryHandler {
 		  ps.executeUpdate();
 		  ps.close();
 	  } catch(SQLException e) {
-		  MWServ.mwlog.dbLog("SQLException in HistoryHandler.addHistoryEntry: " + e.getMessage());
-          MWServ.mwlog.dbLog(e);
+		  CampaignData.mwlog.dbLog("SQLException in HistoryHandler.addHistoryEntry: " + e.getMessage());
+          CampaignData.mwlog.dbLog(e);
 		  try {
 			  if(ps != null)
 				  ps.close();

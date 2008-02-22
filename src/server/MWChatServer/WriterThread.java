@@ -33,7 +33,9 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.zip.Deflater;
 
-import server.MWServ;
+import common.CampaignData;
+
+import common.CampaignData;
 import server.MWChatServer.commands.ICommands;
 
 /**
@@ -80,9 +82,9 @@ public class WriterThread extends Thread {
                 }
             }
             catch (InterruptedException e) { 
-                MWServ.mwlog.errLog(e);
+                CampaignData.mwlog.errLog(e);
             }catch ( Exception ex){
-                MWServ.mwlog.errLog(ex);
+                CampaignData.mwlog.errLog(ex);
             }
         }
     }
@@ -129,17 +131,17 @@ public class WriterThread extends Thread {
             //If the message is brief (under 200 chars), send uncompressed, then return.
             if (s.length() < 200) {
             	try{
-	              //  MWServ.mwlog.warnLog("Client: " + _client.getUserId() + " /" + _client.getHost() + " Size: " + s.length() + " Message: " + s);
+	              //  CampaignData.mwlog.warnLog("Client: " + _client.getUserId() + " /" + _client.getHost() + " Size: " + s.length() + " Message: " + s);
 	                _out.print(s);
 	                _out.flush();
             	}catch (Exception ex){
-                    MWServ.mwlog.errLog("Socket error; shutting down client at "+_host);
-                    MWServ.mwlog.errLog(ex);
+                    CampaignData.mwlog.errLog("Socket error; shutting down client at "+_host);
+                    CampaignData.mwlog.errLog(ex);
                     pleaseStop();
                     try{
                     	_socket.close();
                     }catch(Exception se){
-                    	MWServ.mwlog.errLog(se);
+                    	CampaignData.mwlog.errLog(se);
                     }
             	}   
             	return;
@@ -166,7 +168,7 @@ public class WriterThread extends Thread {
 
             int n = _deflater.deflate(_deflatedBytes);// should always be nonzero since we called finish()
 
-            //MWServ.mwlog.warnLog("Deflating Message for " + _client.getUserId()+ "/" + _client.getHost() + " from " + s.length() + " to " + n + " Message: " + s);
+            //CampaignData.mwlog.warnLog("Deflating Message for " + _client.getUserId()+ "/" + _client.getHost() + " from " + s.length() + " to " + n + " Message: " + s);
             
             /*
              * @NFC comment
@@ -194,13 +196,13 @@ public class WriterThread extends Thread {
             _socket.getOutputStream().flush();
             
         } catch (Exception e) {
-            MWServ.mwlog.errLog("Socket error; shutting down client");
-            MWServ.mwlog.errLog(e);
+            CampaignData.mwlog.errLog("Socket error; shutting down client");
+            CampaignData.mwlog.errLog(e);
             pleaseStop();
             try{
             	_socket.close();
             }catch(Exception se){
-            	MWServ.mwlog.errLog(se);
+            	CampaignData.mwlog.errLog(se);
             }
             //Commenting out for now. letting the socket get closed in the 
             //readerthread code. --Torren

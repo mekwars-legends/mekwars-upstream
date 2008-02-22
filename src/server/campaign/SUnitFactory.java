@@ -38,7 +38,7 @@ import common.Planet;
 import common.Unit;
 import common.UnitFactory;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.pilot.SPilot;
 import server.campaign.SUnit;
 import server.util.TokenReader;
@@ -192,8 +192,8 @@ public class SUnitFactory extends UnitFactory implements Serializable {
             ps.close();
             stmt.close();
         } catch (SQLException e) {
-            MWServ.mwlog.dbLog("SQL ERROR in SUnitFactory.toDB: " + e.getMessage());
-            MWServ.mwlog.dbLog(e);
+            CampaignData.mwlog.dbLog("SQL ERROR in SUnitFactory.toDB: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
         }
     }
 
@@ -290,7 +290,7 @@ public class SUnitFactory extends UnitFactory implements Serializable {
         if (type_id != Unit.MEK)
             buildtableName += Unit.getTypeClassDesc(type_id);
 
-        MWServ.mwlog.infoLog("New unit for " + this.getPlanet().getOwner().getName() + " on " + this.getPlanet().getName() + ": " + Filename + "(Table: " + buildtableName + ")");
+        CampaignData.mwlog.infoLog("New unit for " + this.getPlanet().getOwner().getName() + " on " + this.getPlanet().getName() + ": " + Filename + "(Table: " + buildtableName + ")");
 
         if (Filename.toLowerCase().trim().endsWith(".mul")) {
             units.addAll(SUnit.createMULUnits(Filename, producer));

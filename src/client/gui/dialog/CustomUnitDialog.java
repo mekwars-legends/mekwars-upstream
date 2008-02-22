@@ -42,6 +42,7 @@ import javax.swing.BoxLayout;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
+import common.CampaignData;
 import common.House;
 import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
@@ -338,21 +339,21 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 String munition = Long.toString(atCheck.getMunitionType());
                 House faction = mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse());
                 
-                //MWClient.mwClientLog.clientErrLog("Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
+                //CampaignData.mwlog.errLog("Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
                 //check banned ammo
                 if ( mwclient.getData().getServerBannedAmmo().containsKey(munition)
                         || faction.getBannedAmmo().containsKey(munition) 
                         || (mwclient.getAmmoCost(atCheck.getInternalName()) < 0 && !usingCrits))
                     continue;
                 
-                //MWClient.mwClientLog.clientErrLog("2.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
+                //CampaignData.mwlog.errLog("2.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
                 
                 //System.err.println(atCheck.getName()+"/"+atCheck.getInternalName());
                 if ( usingCrits && 
                 		mwclient.getPlayer().getPartsCache().getPartsCritCount(atCheck.getInternalName()) < 1 &&
                 		!ammoAlreadyLoaded(atCheck))
                 	continue;
-                //MWClient.mwClientLog.clientErrLog("3.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
+                //CampaignData.mwlog.errLog("3.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
 
                 // allow all lvl2 IS units to use level 1 ammo
                 // lvl1 IS units don't need to be allowed to use lvl1 ammo,
@@ -413,14 +414,14 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 	AmmoType.canDeliverMinefield(atCheck) ) {
                     continue;
                 }
-                //MWClient.mwClientLog.clientErrLog("4.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
+                //CampaignData.mwlog.errLog("4.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
 
                 // Only Protos can use Proto-specific ammo
                 if ( atCheck.hasFlag(AmmoType.F_PROTOMECH) &&
                      !(entity instanceof Protomech) ) {
                     continue;
                 }
-                //MWClient.mwClientLog.clientErrLog("5.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
+                //CampaignData.mwlog.errLog("5.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
 
                 // When dealing with machine guns, Protos can only
                 //  use proto-specific machine gun ammo
@@ -429,7 +430,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                      !atCheck.hasFlag(AmmoType.F_PROTOMECH) ) {
                     continue;
                 }
-                //MWClient.mwClientLog.clientErrLog("6.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
+                //CampaignData.mwlog.errLog("6.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
 
                 // BattleArmor ammo can't be selected at all.
                 // All other ammo types need to match on rack size and tech.
@@ -574,8 +575,8 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 try{
                     ammoCost = mwclient.getAmmoCost(at.getInternalName());
                 }catch (Exception ex){
-                    MWClient.mwClientLog.clientErrLog("error finding cost for: "+at.getName());
-                    MWClient.mwClientLog.clientErrLog(ex);
+                    CampaignData.mwlog.errLog("error finding cost for: "+at.getName());
+                    CampaignData.mwlog.errLog(ex);
                 }
                 if ( m.getLocation() == Entity.LOC_NONE ){
                     if ( usingCrits )
@@ -596,7 +597,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                     	cost = (int)Math.ceil(ammoCost*(double)refillShots);
                     }
 
-                    //MWClient.mwClientLog.clientErrLog("Cost: "+cost+" string: "+mwclient.moneyOrFluMessage(true,true,cost));
+                    //CampaignData.mwlog.errLog("Cost: "+cost+" string: "+mwclient.moneyOrFluMessage(true,true,cost));
                 	if ( usingCrits )
                 		m_choice.addItem(at.getName()+" ("+shotsLeft+"/"+refillShots+"/"+mwclient.getPlayer().getPartsCache().getPartsCritCount(at.getInternalName())+")");
                 	else

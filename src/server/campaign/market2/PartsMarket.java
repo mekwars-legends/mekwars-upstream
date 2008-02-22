@@ -29,7 +29,7 @@ import java.util.StringTokenizer;
 import common.BMEquipment;
 import common.Equipment;
 
-import server.MWServ;
+import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 
@@ -112,7 +112,7 @@ public class PartsMarket {
 				eq.setAmount(Math.abs(eq.getAmount()));
 			}catch (Exception ex) {
 
-				MWServ.mwlog.errLog(ex);
+				CampaignData.mwlog.errLog(ex);
 			}
 			eq.setAmount(Math.max(eq.getAmount(), masterEq.getMinProduction()));
 			this.lastTickList.put(key, eq.clone());
@@ -158,7 +158,7 @@ public class PartsMarket {
 				
 			}
 		}catch(Exception ex) {
-			MWServ.mwlog.errLog(ex);
+			CampaignData.mwlog.errLog(ex);
 		}
 		
 		return result.toString();
@@ -189,9 +189,9 @@ public class PartsMarket {
 			}
 			ps.close();
 		} catch (FileNotFoundException fe) {
-			MWServ.mwlog.errLog("partsblackmarket.dat not found");
+			CampaignData.mwlog.errLog("partsblackmarket.dat not found");
 		} catch (Exception ex) {
-			MWServ.mwlog.errLog(ex);
+			CampaignData.mwlog.errLog(ex);
 		}   
 
 	}
@@ -224,7 +224,7 @@ public class PartsMarket {
 			}
 			
 		}catch (Exception ex){
-			MWServ.mwlog.errLog(ex);
+			CampaignData.mwlog.errLog(ex);
 		}
 	}
 	

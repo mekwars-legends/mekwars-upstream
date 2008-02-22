@@ -74,12 +74,12 @@ public class AdminAllowHouseDefectionCommand implements Command {
 			
 			if ( !lock ) {
 				CampaignMain.cm.toUser("You've blocked defection "+toFrom.toLowerCase()+" "+ faction.getName(),Username,true);
-				//server.MWServ.mwlog.modLog(Username + " has blocked defection "+toFrom.toLowerCase()+" "+ faction.getName());
+				//server.CampaignData.mwlog.modLog(Username + " has blocked defection "+toFrom.toLowerCase()+" "+ faction.getName());
 				CampaignMain.cm.doSendModMail("NOTE",Username + " has blocked defection "+toFrom.toLowerCase()+" "+ faction.getName());
 			}
 			else {	
 				CampaignMain.cm.toUser("You've allowed defection "+toFrom.toLowerCase()+" "+ faction.getName(),Username,true);
-				//server.MWServ.mwlog.modLog(Username + " has allowed defection "+toFrom.toLowerCase()+" "+ faction.getName());
+				//server.CampaignData.mwlog.modLog(Username + " has allowed defection "+toFrom.toLowerCase()+" "+ faction.getName());
 				CampaignMain.cm.doSendModMail("NOTE",Username + " has allowed defections "+toFrom.toLowerCase()+" "+ faction.getName());
 			}
 			

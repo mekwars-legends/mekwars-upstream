@@ -31,6 +31,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 
+import common.CampaignData;
+
 import client.MWClient;
 
 public class TableSorter extends TableMap {
@@ -225,7 +227,7 @@ public class TableSorter extends TableMap {
 
     public void checkModel() {
         if (indexes.length != model.getRowCount()) {
-            MWClient.mwClientLog.clientErrLog("Sorter not informed of a change in model.");
+            CampaignData.mwlog.errLog("Sorter not informed of a change in model.");
         }
     }
 

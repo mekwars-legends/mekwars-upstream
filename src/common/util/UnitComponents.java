@@ -22,6 +22,8 @@ import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import common.CampaignData;
+
 import megamek.common.CriticalSlot;
 import megamek.common.Entity;
 import megamek.common.EquipmentType;
@@ -116,7 +118,7 @@ public class UnitComponents{
 				components.put(key, value);
 			}
 		}catch(Exception ex) {
-			ex.printStackTrace();
+			CampaignData.mwlog.errLog(ex);
 		}
 	
 	}
@@ -129,7 +131,7 @@ public class UnitComponents{
 				components.put(st.nextToken(), Integer.parseInt(st.nextToken()));
 			}
 		}catch(Exception ex) {
-			ex.printStackTrace();
+			CampaignData.mwlog.errLog(ex);
 		}
 	
 	}

@@ -35,6 +35,7 @@ import javax.swing.JFileChooser;
 import megamek.client.ui.AWT.UnitLoadingDialog;
 import megamek.common.TechConstants;
 
+import common.CampaignData;
 import common.Planet;
 import common.PlanetEnvironment;
 import common.UnitFactory;
@@ -228,10 +229,10 @@ public class AdminMenu extends JMenu {
     	        try {
     	        	while ( mwclient.isWaiting() ){
     	        		Thread.sleep(10);
-    	        		//MWClient.mwClientLog.clientErrLog("Waiting for faction config");
+    	        		//CampaignData.mwlog.errLog("Waiting for faction config");
     	        	}
     	        }catch (Exception ex) {
-    	        	ex.printStackTrace();
+    	        	CampaignData.mwlog.errLog(ex);
     	        }
     	        
             	new FactionConfigurationDialog(mwclient,faction);
@@ -267,7 +268,7 @@ public class AdminMenu extends JMenu {
 		        try{
 		        	mwclient.refreshData();
 		        }catch (Exception ex) {
-		        	ex.printStackTrace();
+		        	CampaignData.mwlog.errLog(ex);
 		        }
 		        SubFactionNameDialog subFactionDialog = new SubFactionNameDialog(mwclient, "SubFaction",faction);
 		        subFactionDialog.setVisible(true);
@@ -1220,10 +1221,10 @@ public class AdminMenu extends JMenu {
         				br.close();
         				in.close();
         			} catch (IOException ioex) {
-        				MWClient.mwClientLog.clientErrLog("IOException: " + line.toString());
+        				CampaignData.mwlog.errLog("IOException: " + line.toString());
         			}
         		} catch (FileNotFoundException fnfex) {
-    				MWClient.mwClientLog.clientErrLog("FileNotFoundException: " + line.toString());    			    
+    				CampaignData.mwlog.errLog("FileNotFoundException: " + line.toString());    			    
         		}
         		line.append("#");
 	            mwclient.sendChat(line.toString());
@@ -1263,10 +1264,10 @@ public class AdminMenu extends JMenu {
         				br.close();
         				in.close();
         			} catch (IOException ioex) {
-        				MWClient.mwClientLog.clientErrLog("IOException: " + line.toString());
+        				CampaignData.mwlog.errLog("IOException: " + line.toString());
         			}
         		} catch (FileNotFoundException fnfex) {
-    				MWClient.mwClientLog.clientErrLog("FileNotFoundException: " + line.toString());    			    
+    				CampaignData.mwlog.errLog("FileNotFoundException: " + line.toString());    			    
         		}
         		line.append("#");
 	            mwclient.sendChat(line.toString());

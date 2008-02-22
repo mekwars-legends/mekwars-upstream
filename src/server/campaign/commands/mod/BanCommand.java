@@ -142,7 +142,7 @@ public class BanCommand implements Command {
 			//CampaignMain.cm.getServer().ISPlog.put(CampaignMain.cm.getServer().myCommunicator.getClient(toKill).getClientVersion(),until);
 			//retreiveISPS(until,toKill);
 			CampaignMain.cm.getServer().bansUpdate();
-			//MWServ.mwlog.modLog(Username + " banned " + toKill + " " +timeName+".");
+			//CampaignData.mwlog.modLog(Username + " banned " + toKill + " " +timeName+".");
 			CampaignMain.cm.getServer().sendChat("AM:"+Username + " banned " + toKill + " " +timeName+".");
 			
 			CampaignMain.cm.getOpsManager().doDisconnectCheckOnPlayer(toKill);
