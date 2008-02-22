@@ -518,10 +518,6 @@ public final class SUnit extends Unit{
         result.append("$");
         result.append(unitEntity.isUsingSpotlight());
         result.append("$");
-        if (toPlayer) {
-            result.append(this.getPilotSkillBV());
-            result.append("$");
-        }
         if (CampaignMain.cm.getData().getBannedTargetingSystems().containsKey(this.getEntity().getTargSysType())) {
             result.append(MiscType.T_TARGSYS_STANDARD);
             this.getEntity().setTargSysType(MiscType.T_TARGSYS_STANDARD);

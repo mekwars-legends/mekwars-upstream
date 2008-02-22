@@ -52,7 +52,6 @@ public class CUnit extends Unit {
     protected Entity UnitEntity;
 
     private int BV;
-    private int pilotBV = 0;
     private int scrappableFor = 0;//value if scrapped
     private boolean pilotIsRepairing = false;
     private MWClient mwclient;
@@ -124,10 +123,6 @@ public class CUnit extends Unit {
         }
         if ( STR.hasMoreElements() )
             p.setKills(Integer.parseInt(STR.nextToken()));
-        if ( STR.hasMoreElements() )
-            STR.nextElement();//Pilot Faction not used client side
-        if ( STR.hasMoreElements() )
-            STR.nextElement();//Pilot ID not used
 
         if ( STR.hasMoreElements() )
             p.setHits(Integer.parseInt(STR.nextToken()));
@@ -212,8 +207,6 @@ public class CUnit extends Unit {
             UnitEntity.setSpotlight(Boolean.parseBoolean(ST.nextToken()));
         if ( ST.hasMoreElements())
             UnitEntity.setSpotlightState(Boolean.parseBoolean(ST.nextToken()));
-        if ( ST.hasMoreElements() )
-            pilotBV = Integer.parseInt(ST.nextToken());
         if ( ST.hasMoreElements())
             UnitEntity.setTargSysType(Math.max(0,Integer.parseInt(ST.nextToken())));
         if ( ST.hasMoreElements())
@@ -348,7 +341,7 @@ public class CUnit extends Unit {
             return 0;
 
         //else
-        return BV + pilotBV;
+        return BV;
     }
 
     public Entity getEntity() {
