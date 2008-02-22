@@ -41,7 +41,7 @@ import common.UnitFactory;
 import common.CampaignData;
 import server.campaign.pilot.SPilot;
 import server.campaign.SUnit;
-import server.util.TokenReader;
+import common.util.TokenReader;
 
 
 public class SUnitFactory extends UnitFactory implements Serializable {

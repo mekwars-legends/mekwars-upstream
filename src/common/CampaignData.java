@@ -252,13 +252,8 @@ public class CampaignData implements TerrainProvider {
      * work with transmitting the factions name instead of its id.
      */
     public House getHouseByName(String name) {
-    	/*for (Iterator iter = factions.values().iterator(); iter.hasNext();) {
-    		House e = (House) iter.next();
-    		if (e.getName().equals(name))
-    			return e;
-    	}*/
         try{
-            House h = getHouse(factionid.get(name.toLowerCase()).intValue());
+            House h = getHouse(factionid.get(name.toLowerCase()));
             return h;
         }
         catch (Exception ex){

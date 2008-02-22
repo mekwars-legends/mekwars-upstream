@@ -25,8 +25,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.io.File;
 
-import common.CampaignData;
-
 public final class MWLogger {// final - no extension of the server logger
 
     private static final int rotations = 5; // Configurable
@@ -126,22 +124,22 @@ public final class MWLogger {// final - no extension of the server logger
         if (!logDir.exists()) {
             try {
                 if (!logDir.mkdirs()) {
-                    CampaignData.mwlog.errLog("WARNING: logging directory cannot be created!");
-                    CampaignData.mwlog.errLog("WARNING: disabling log subsystem");
+                    System.err.println("WARNING: logging directory cannot be created!");
+                    System.err.println("WARNING: disabling log subsystem");
                     return;
                 }
             } catch (Exception e) {
-                CampaignData.mwlog.errLog(e);
+                e.printStackTrace();
             }
         } else if (!logDir.isDirectory()) {
-            CampaignData.mwlog.errLog("WARNING: logging directory is not a directory!");
-            CampaignData.mwlog.errLog("WARNING: disabling log subsystem");
+            System.err.println("WARNING: logging directory is not a directory!");
+            System.err.println("WARNING: disabling log subsystem");
             return;
         }
 
         if (!logDir.canWrite()) {
-            CampaignData.mwlog.errLog("WARNING: cannot write in logging directory!");
-            CampaignData.mwlog.errLog("WARNING: disabling log subsystem");
+            System.err.println("WARNING: cannot write in logging directory!");
+            System.err.println("WARNING: disabling log subsystem");
             return;
         }
 
@@ -279,7 +277,7 @@ public final class MWLogger {// final - no extension of the server logger
             logging = true;
 
         } catch (Exception e) {
-            CampaignData.mwlog.errLog(e);
+            e.printStackTrace();
         }
     }
 
@@ -438,7 +436,7 @@ public final class MWLogger {// final - no extension of the server logger
             factionLog.addHandler(factionHandler);
             factionLog.info(logName + " log touched");
         } catch (Exception ex) {
-            CampaignData.mwlog.errLog(ex);
+            ex.printStackTrace();
         }
 
     }

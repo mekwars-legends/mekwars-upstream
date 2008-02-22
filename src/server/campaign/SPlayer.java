@@ -52,7 +52,7 @@ import server.campaign.SArmy;
 import server.campaign.SHouse;
 import server.MWChatServer.auth.IAuthenticator;
 import server.util.MWPasswdRecord;
-import server.util.TokenReader;
+import common.util.TokenReader;
 
 import common.Player;
 import common.SubFaction;

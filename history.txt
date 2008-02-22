@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
++ Added TokenReader usage to Client side.
++ Moved TokenReader to common#util
 + Bug: Logger not logging correctly
 + Bug: Single Faction used even when turned off
 + New MegaMek.jar 0.33.19-MW022108-5501

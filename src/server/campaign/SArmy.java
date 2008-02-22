@@ -35,7 +35,7 @@ import common.Unit;
 
 import common.CampaignData;
 import server.campaign.operations.Operation;
-import server.util.TokenReader;
+import common.util.TokenReader;
 
 /**
  * @author Helge Richter

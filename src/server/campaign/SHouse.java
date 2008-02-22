@@ -59,7 +59,7 @@ import server.campaign.mercenaries.MercHouse;
 import server.campaign.operations.Operation;
 import server.campaign.operations.ShortOperation;
 import server.campaign.pilot.SPilot;
-import server.util.TokenReader;
+import common.util.TokenReader;
 
 public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISeller, IBuyer, Serializable {
 

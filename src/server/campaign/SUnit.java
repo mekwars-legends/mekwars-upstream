@@ -41,7 +41,7 @@ import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.PainResistanceSkill;
 import server.campaign.pilot.skills.SPilotSkill;
 import server.campaign.pilot.skills.WeaponSpecialistSkill;
-import server.util.TokenReader;
+import common.util.TokenReader;
 
 import megamek.common.AmmoType;
 import megamek.common.CriticalSlot;

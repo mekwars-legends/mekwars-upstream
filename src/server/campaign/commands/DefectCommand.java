@@ -403,8 +403,14 @@ public class DefectCommand implements Command {
 				
 			}//end if(unconfirmed)
 			
-			if ( newHouse == null && isSingleFaction )
+			if ( newHouse == null && isSingleFaction ){
 			    newHouse = createSingleFaction(HouseName, shortName);
+			 
+			    if ( newHouse == null ){
+			        CampaignMain.cm.toUser("Sorry but their is already a house with the name of "+HouseName+" please try again.", Username);
+			        return;
+			    }
+			}
 			
 			//setup the return info
 			String toReturn = "You succesfully defected to " + HouseName + ". ";
@@ -613,6 +619,10 @@ public class DefectCommand implements Command {
 	    
 	    if ( shortName.length() > maxShortName )
 	        shortName = shortName.substring(0,maxShortName);
+	    
+	    if ( CampaignMain.cm.getData().getHouseByName(houseName) != null ){
+	        return null;
+	    }
 	    
 	    house.createNoneHouse();
 	    house.setName(houseName);

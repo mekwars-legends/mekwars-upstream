@@ -41,7 +41,7 @@ import common.util.Position;
 
 import common.CampaignData;
 import server.campaign.data.TimeUpdatePlanet;
-import server.util.TokenReader;
+import common.util.TokenReader;
 
 public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparable<Object> {
 
