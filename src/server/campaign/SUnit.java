@@ -557,6 +557,7 @@ public final class SUnit extends Unit{
         PreparedStatement ps = null;
         StringBuffer sql = new StringBuffer();
         Entity ent = getEntity();
+        ResultSet rs = null;
 
         try {
             if (getDBId() == 0) {
@@ -592,7 +593,7 @@ public final class SUnit extends Unit{
                 ps.setInt(15, getLifeTimeRepairCost());
                 ps.setInt(16, getType());
                 ps.executeUpdate();
-                ResultSet rs = ps.getGeneratedKeys();
+                rs = ps.getGeneratedKeys();
                 rs.next();
                 setDBId(rs.getInt(1));
                 rs.close();
@@ -692,6 +693,12 @@ public final class SUnit extends Unit{
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL Exception in SUnit.toDB: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+            try {
+            	if(ps != null)
+            		ps.close();
+            	if (rs != null)
+            		rs.close();
+            } catch (SQLException ex) {}
         }
     }
 
