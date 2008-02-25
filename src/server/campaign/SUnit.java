@@ -674,6 +674,7 @@ public final class SUnit extends Unit{
                 sql.setLength(0);
                 sql.append("INSERT into unit_ammo set unitID = ?, ammoLocation = ?, ammoHotLoaded=?, ammoType=?, ammoInternalName=?, ammoShotsLeft=?");
                 ps.close();
+                
                 ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
                 ps.setInt(1, getDBId());
                 ps.setInt(2, AmmoLoc);

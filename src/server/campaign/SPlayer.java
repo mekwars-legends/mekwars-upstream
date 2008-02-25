@@ -2740,7 +2740,6 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         PreparedStatement ps = null;
         StringBuffer sql = new StringBuffer();
         try {
-            CampaignData.mwlog.dbLog("Saving player " + getName() + " (DBID: " + getDBId() + ")");
             if (getDBId() == 0) {
                 // Not in the database - INSERT it
                 sql.setLength(0);
@@ -2949,7 +2948,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 for (int i = 0; i < getArmies().size(); i++) {
                     ps.close();
                     sql.setLength(0);
-                    sql.append("INSERT into playerarmies set playerID = " + getDBId() + ", armyID = " + getArmies().elementAt(i).getID() + ", armyString = ?");
+                    sql.append("INSERT into playerarmies set playerID = " + getDBId() + ", armyID = " + i + ", armyString = ?");
                     ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
                     ps.setString(1, getArmies().elementAt(i).toString(false, "%"));
                     ps.executeUpdate();
@@ -2971,10 +2970,15 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 }
             }
             ps.close();
-            CampaignData.mwlog.dbLog("Finished saving player");
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL error in SPlayer.toDB: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+            try {
+            	if(ps != null)
+            		ps.close();
+            } catch (SQLException ex) {
+            	
+            }
         }
     }
 
