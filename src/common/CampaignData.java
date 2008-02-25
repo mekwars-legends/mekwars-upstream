@@ -190,12 +190,11 @@ public class CampaignData implements TerrainProvider {
      */
     public void removePlanet(int id) {
         planetid.remove(getPlanet(id).getName().toLowerCase());
-        planets.remove(new Integer(id));
+        planets.remove(id);
     }
 
     /**
      * Remove all planets.
-     * @deprecated You should use XStream to initialize CampaignData
      */
     public void clearPlanets() {
         planets.clear();
@@ -245,6 +244,17 @@ public class CampaignData implements TerrainProvider {
     }
 
     /**
+     * Remove a house from the server
+     * this is normally only for single faction servers
+     * 
+     * @param Integer id
+     */
+    public void removeHouse(int id) {
+        factions.remove(getHouse(id).getName().toLowerCase());
+        factionid.remove(id);
+    }
+
+    /**
      * Retrieve a faction by its name.
      * @param name
      * @return 
@@ -263,7 +273,6 @@ public class CampaignData implements TerrainProvider {
 
     /**
      * Remove all factions.
-     * @deprecated You should use XStream to initialize CampaignData
      */
     public void clearHouses() {
         factions.clear();

@@ -1016,53 +1016,6 @@ public class DefaultServerOptions {
 
         // Single Player Faction Configs
         defaults.setProperty("AllowSinglePlayerFactions", "false");
-        defaults.setProperty("NewFactoryBaseCost", "100");
-        defaults.setProperty("NewFactoryCostModifierMek", "1.0");
-        defaults.setProperty("NewFactoryCostModifierVehicle", "1.0");
-        defaults.setProperty("NewFactoryCostModifierInfantry", "1.0");
-        defaults.setProperty("NewFactoryCostModifierBattleArmor", "1.0");
-        defaults.setProperty("NewFactoryCostModifierProtoMek", "1.0");
-        defaults.setProperty("NewFactoryCostModifierLight", "1.0");
-        defaults.setProperty("NewFactoryCostModifierMedium", "1.0");
-        defaults.setProperty("NewFactoryCostModifierHeavy", "1.0");
-        defaults.setProperty("NewFactoryCostModifierAssault", "1.0");
-        defaults.setProperty("NewFactoryBaseFlu", "100");
-        defaults.setProperty("NewFactoryFluModifierMek", "1.0");
-        defaults.setProperty("NewFactoryFluModifierVehicle", "1.0");
-        defaults.setProperty("NewFactoryFluModifierInfantry", "1.0");
-        defaults.setProperty("NewFactoryFluModifierBattleArmor", "1.0");
-        defaults.setProperty("NewFactoryFluModifierProtoMek", "1.0");
-        defaults.setProperty("NewFactoryFluModifierLight", "1.0");
-        defaults.setProperty("NewFactoryFluModifierMedium", "1.0");
-        defaults.setProperty("NewFactoryFluModifierHeavy", "1.0");
-        defaults.setProperty("NewFactoryFluModifierAssault", "1.0");
-        defaults.setProperty("TechPointsNeedToLevel", "100");
-        defaults.setProperty("TechPointCost", "100");
-        defaults.setProperty("TechPointFlu", "100");
-        defaults.setProperty("TechLevelTechPointCostModifier", "1.0");
-        defaults.setProperty("TechLevelTechPointFluModifier", "1.0");
-        defaults.setProperty("BaseResearchCost", "1.0");
-        defaults.setProperty("BaseResearchFlu", "1.0");
-        defaults.setProperty("ResearchCostModifierMek", "1.0");
-        defaults.setProperty("ResearchCostModifierVehicle", "1.0");
-        defaults.setProperty("ResearchCostModifierInfantry", "1.0");
-        defaults.setProperty("ResearchCostModifierBattleArmor", "1.0");
-        defaults.setProperty("ResearchCostModifierProtoMek", "1.0");
-        defaults.setProperty("ResearchCostModifierLight", "1.0");
-        defaults.setProperty("ResearchCostModifierMedium", "1.0");
-        defaults.setProperty("ResearchCostModifierHeavy", "1.0");
-        defaults.setProperty("ResearchCostModifierAssault", "1.0");
-        defaults.setProperty("ResearchFluModifierMek", "1.0");
-        defaults.setProperty("ResearchFluModifierVehicle", "1.0");
-        defaults.setProperty("ResearchFluModifierInfantry", "1.0");
-        defaults.setProperty("ResearchFluModifierBattleArmor", "1.0");
-        defaults.setProperty("ResearchFluModifierProtoMek", "1.0");
-        defaults.setProperty("ResearchFluModifierLight", "1.0");
-        defaults.setProperty("ResearchFluModifierMedium", "1.0");
-        defaults.setProperty("ResearchFluModifierHeavy", "1.0");
-        defaults.setProperty("ResearchFluModifierAssault", "1.0");
-        defaults.setProperty("ResearchTechLevelCostModifer", "1.0");
-        defaults.setProperty("ResearchTechLevelFluModifer", "1.0");
         defaults.setProperty("MaxFactionName", "20");
         defaults.setProperty("MaxFactionShortName", "5");
         defaults.setProperty("StartingLightMekFactory", "1");
@@ -1087,7 +1040,61 @@ public class DefaultServerOptions {
         defaults.setProperty("StartingAssaultProtoMekFactory", "1");
         defaults.setProperty("BaseFactoryRefreshRate", "100");
         defaults.setProperty("BaseCommonBuildTableShares", "100");
-
+        defaults.setProperty("BaseFactoryComponents", "1000");
+        
+        //Buying Factory options
+        defaults.setProperty("NewFactoryBaseCost", "100");
+        defaults.setProperty("NewFactoryCostModifierMek", "1.0");
+        defaults.setProperty("NewFactoryCostModifierVehicle", "1.0");
+        defaults.setProperty("NewFactoryCostModifierInfantry", "1.0");
+        defaults.setProperty("NewFactoryCostModifierBattleArmor", "1.0");
+        defaults.setProperty("NewFactoryCostModifierProtoMek", "1.0");
+        defaults.setProperty("NewFactoryCostModifierLight", "1.0");
+        defaults.setProperty("NewFactoryCostModifierMedium", "1.0");
+        defaults.setProperty("NewFactoryCostModifierHeavy", "1.0");
+        defaults.setProperty("NewFactoryCostModifierAssault", "1.0");
+        defaults.setProperty("NewFactoryBaseFlu", "100");
+        defaults.setProperty("NewFactoryFluModifierMek", "1.0");
+        defaults.setProperty("NewFactoryFluModifierVehicle", "1.0");
+        defaults.setProperty("NewFactoryFluModifierInfantry", "1.0");
+        defaults.setProperty("NewFactoryFluModifierBattleArmor", "1.0");
+        defaults.setProperty("NewFactoryFluModifierProtoMek", "1.0");
+        defaults.setProperty("NewFactoryFluModifierLight", "1.0");
+        defaults.setProperty("NewFactoryFluModifierMedium", "1.0");
+        defaults.setProperty("NewFactoryFluModifierHeavy", "1.0");
+        defaults.setProperty("NewFactoryFluModifierAssault", "1.0");
+        
+        //Technology Research Options
+        defaults.setProperty("TechPointsNeedToLevel", "100");
+        defaults.setProperty("TechPointCost", "100");
+        defaults.setProperty("TechPointFlu", "100");
+        defaults.setProperty("TechLevelTechPointCostModifier", "1.0");
+        defaults.setProperty("TechLevelTechPointFluModifier", "1.0");
+        
+        //Unit Research Options
+        defaults.setProperty("BaseResearchCost", "1.0");
+        defaults.setProperty("BaseResearchFlu", "1.0");
+        defaults.setProperty("MaxUnitResearchPoints", "10");
+        defaults.setProperty("ResearchTechLevelCostModifer", "1.0");
+        defaults.setProperty("ResearchTechLevelFluModifer", "1.0");
+        defaults.setProperty("ResearchCostModifierMek", "1.0");
+        defaults.setProperty("ResearchCostModifierVehicle", "1.0");
+        defaults.setProperty("ResearchCostModifierInfantry", "1.0");
+        defaults.setProperty("ResearchCostModifierBattleArmor", "1.0");
+        defaults.setProperty("ResearchCostModifierProtoMek", "1.0");
+        defaults.setProperty("ResearchCostModifierLight", "1.0");
+        defaults.setProperty("ResearchCostModifierMedium", "1.0");
+        defaults.setProperty("ResearchCostModifierHeavy", "1.0");
+        defaults.setProperty("ResearchCostModifierAssault", "1.0");
+        defaults.setProperty("ResearchFluModifierMek", "1.0");
+        defaults.setProperty("ResearchFluModifierVehicle", "1.0");
+        defaults.setProperty("ResearchFluModifierInfantry", "1.0");
+        defaults.setProperty("ResearchFluModifierBattleArmor", "1.0");
+        defaults.setProperty("ResearchFluModifierProtoMek", "1.0");
+        defaults.setProperty("ResearchFluModifierLight", "1.0");
+        defaults.setProperty("ResearchFluModifierMedium", "1.0");
+        defaults.setProperty("ResearchFluModifierHeavy", "1.0");
+        defaults.setProperty("ResearchFluModifierAssault", "1.0");
     }
 
     /**

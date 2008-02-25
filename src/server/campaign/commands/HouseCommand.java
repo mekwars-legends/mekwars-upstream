@@ -28,6 +28,8 @@ import server.campaign.util.PlanetNameComparator;
 
 import java.util.Vector;
 
+import common.Planet;
+
 public class HouseCommand implements Command {
 	
 	int accessLevel = 0;
@@ -53,7 +55,7 @@ public class HouseCommand implements Command {
 		
 		String Name = (String)command.nextElement();
 		SHouse h = (SHouse) CampaignMain.cm.getData().getHouseByName(Name);
-		if (h == null) {
+		if (h == null || h.getId() < 0) {
 			CampaignMain.cm.toUser("AM:Could not find faction. Command fails.",Username,false);
 			return;
 		}
@@ -69,11 +71,11 @@ public class HouseCommand implements Command {
 		
 		//sort out planets owned/fighting on, etc.
 		//use this loop to generate a ranking as well.
-		Vector ownedWorlds = new Vector(1,1);
-		Vector contestedWorlds = new Vector(1,1);
+		Vector<SPlanet> ownedWorlds = new Vector<SPlanet>(1,1);
+		Vector<SPlanet> contestedWorlds = new Vector<SPlanet>(1,1);
 		int totalOwnership = 0;
 		
-		Iterator it = CampaignMain.cm.getData().getAllPlanets().iterator();
+		Iterator<Planet> it = CampaignMain.cm.getData().getAllPlanets().iterator();
 		while (it.hasNext()) {
 			SPlanet p = (SPlanet)it.next();
 			
@@ -118,7 +120,7 @@ public class HouseCommand implements Command {
 		Collections.sort(ownedWorlds, new PlanetNameComparator());
 		Collections.sort(contestedWorlds, new PlanetNameComparator());
 		
-		Iterator i = ownedWorlds.iterator();
+		Iterator<SPlanet> i = ownedWorlds.iterator();
 		s += "<b>Planets (Owned):</b>";
 		
 		if (!i.hasNext())
@@ -174,7 +176,7 @@ public class HouseCommand implements Command {
 		s +=  "<br><b>Current Games: </b>";
 		String gameStrings = "";
 		
-		Iterator games = CampaignMain.cm.getOpsManager().getRunningOps().values().iterator();
+		Iterator<ShortOperation> games = CampaignMain.cm.getOpsManager().getRunningOps().values().iterator();
 		while (games.hasNext()) {
 			ShortOperation so = (ShortOperation)games.next();
 			if (so.hasPlayerWhoseHouseBeginsWith(h.getName()))

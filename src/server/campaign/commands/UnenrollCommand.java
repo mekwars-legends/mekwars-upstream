@@ -18,10 +18,13 @@ package server.campaign.commands;
 
 import java.io.File;
 import java.net.InetAddress;
+import java.util.Enumeration;
 import java.util.StringTokenizer;
 
 import common.CampaignData;
+import common.UnitFactory;
 import server.campaign.CampaignMain;
+import server.campaign.SPlanet;
 import server.campaign.SPlayer;
 import server.campaign.SHouse;
 
@@ -112,13 +115,36 @@ public class UnenrollCommand implements Command {
 		if(CampaignMain.cm.isUsingMySQL()) {
 			CampaignMain.cm.MySQL.deletePlayer(p, false);
 		}
+		
+		removeFaction(hisfaction);
 		//tell the mods and add to iplog.0
 		InetAddress ip = CampaignMain.cm.getServer().getIP(Username);
 		//CampaignData.mwlog.modLog(Username + " unenrolled from the campaign (IP: " + ip + ").");
 		CampaignData.mwlog.ipLog("UNENROLL: " + Username + " IP: " + ip);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " unenrolled from the campaign (IP: " + ip + ").");
-		
-		
 	}//end process
 	
+	private void removeFaction(SHouse faction) {
+	    
+	    if ( !CampaignMain.cm.getBooleanConfig("AllowSinglePlayerFactions") )
+	        return;
+	    
+	    Enumeration<SPlanet> planets = faction.getPlanets().elements();
+	    while ( planets.hasMoreElements() ) {
+	        SPlanet planet = planets.nextElement();
+	        planet.doGainInfluence(CampaignMain.cm.getHouseById(-1), faction, Integer.MAX_VALUE, true);
+	        Enumeration<UnitFactory> factories = planet.getUnitFactories().elements();
+	        while ( factories.hasMoreElements() ) {
+	            UnitFactory factory = factories.nextElement();
+	            if ( factory.getFounder().equalsIgnoreCase(faction.getName()) )
+	                planet.getUnitFactories().removeElement(factory);
+	        }
+	        planet.updated();
+	        planet.updateInfluences();
+	    }
+	    CampaignMain.cm.getData().removeHouse(faction.getId());
+	    CampaignMain.cm.updateHousePlanetUpdate();
+	    CampaignMain.cm.doSendToAllOnlinePlayers("PL|RPF|"+faction.getId(), true);
+	    
+	}
 }//end UnenrollCommand

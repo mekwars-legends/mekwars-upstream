@@ -168,6 +168,8 @@ public final class CampaignMain implements Serializable {
 
     private boolean validBBVersion = true;
 
+    private Date housePlanetDate = new Date();
+    
     /**
      * This is a hash collection of all the players that have yet to log into
      * their houses This catch all is to keep from having to load the player
@@ -915,7 +917,9 @@ public final class CampaignMain implements Serializable {
         SHouse loginHouse = toLogin.getMyHouse();
         if (loginHouse == null) {
             toUser("Null login faction referenced from SPlayer. Major problem. Report ASAP.", Username, true);
-            return;
+            CampaignMain.cm.doSendModMail("NOTE", toLogin.getName()+" has a null login faction! Moving to "+CampaignMain.cm.getConfig("NewbieHouseName"));
+            loginHouse = CampaignMain.cm.getHouseFromPartialString(CampaignMain.cm.getConfig("NewbieHouseName"));
+            toLogin.setMyHouse(loginHouse);
         }
         String s = loginHouse.doLogin(toLogin);
 
@@ -4022,6 +4026,14 @@ public final class CampaignMain implements Serializable {
         cm.lostSouls.remove(soul.toLowerCase());
     }
 
+    public Date getHousePlanetUpdate() {
+        return housePlanetDate;
+    }
+    
+    public void updateHousePlanetUpdate() {
+        this.housePlanetDate = new Date();
+    }
+    
     // Save Planets
     public void savePlanetData() {
 

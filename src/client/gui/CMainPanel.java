@@ -45,7 +45,11 @@ import client.gui.CCommPanel;
  */
 
 public class CMainPanel extends JPanel implements ChangeListener, ComponentListener {
-	JSplitPane MainSPane;
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -7817596095411018999L;
+    JSplitPane MainSPane;
 	JSplitPane TabSPane;
 	JSplitPane SideSPane;
 	CPlayerPanel PlayerPanel;
@@ -399,7 +403,11 @@ public class CMainPanel extends JPanel implements ChangeListener, ComponentListe
 	
 	private class CTabForwardAction extends AbstractAction {
 		
-		public CTabForwardAction() {}
+		/**
+         * 
+         */
+        private static final long serialVersionUID = -6816947698919825957L;
+        public CTabForwardAction() {}
 		public void actionPerformed(ActionEvent e) {
 			
 			int count = MainTPane.getTabCount();
@@ -418,7 +426,11 @@ public class CMainPanel extends JPanel implements ChangeListener, ComponentListe
 	
 	private class CTabBackwardAction extends AbstractAction {
 		
-		public CTabBackwardAction() {}
+		/**
+         * 
+         */
+        private static final long serialVersionUID = -507793785645622171L;
+        public CTabBackwardAction() {}
 		public void actionPerformed(ActionEvent e) {
 			int count = MainTPane.getTabCount();
 			if (count < 2) {return;}
@@ -436,7 +448,11 @@ public class CMainPanel extends JPanel implements ChangeListener, ComponentListe
 	
 	private class CSelectTabAction extends AbstractAction {
 		
-		Component Tab = null;
+		/**
+         * 
+         */
+        private static final long serialVersionUID = -1191343876143323182L;
+        Component Tab = null;
 		public CSelectTabAction(Component tab) {Tab = tab;}
 		public void actionPerformed(ActionEvent e) {
 			try{

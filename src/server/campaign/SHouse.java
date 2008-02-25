@@ -1907,10 +1907,18 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
         if (Boolean.parseBoolean(this.getConfig("UseCalculatedCosts"))) {
             double cost = 0;
-            if (type_id == Unit.VEHICLE || type_id == Unit.MEK)
+            if ( type_id == Unit.MEK) {
                 cost = CampaignMain.cm.getUnitCostLists().getMinCostValue(weightclass, type_id);
-            else
+                cost = Math.max(cost, this.getDoubleConfig(Unit.getWeightClassDesc(weightclass) + "Price"));
+            }
+            else if ( type_id == Unit.VEHICLE ) {
+                cost = CampaignMain.cm.getUnitCostLists().getMinCostValue(weightclass, type_id);
+                cost = Math.max(cost, this.getDoubleConfig(classtype));
+            }
+            else {
                 cost = CampaignMain.cm.getUnitCostLists().getMinCostValue(Unit.LIGHT, type_id);
+                cost = Math.max(cost, this.getDoubleConfig(classtype));
+            }
             result = (int) (cost * Double.valueOf(this.getConfig("CostModifier")));
             return result;
         }
@@ -2912,6 +2920,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         this.setHouseDefectionFrom(false);
         this.setAbbreviation("None");
         this.setHouseColor(CampaignMain.cm.getConfig("DisputedPlanetColor"));
+        this.setHousePlayerColors(CampaignMain.cm.getConfig("DisputedPlanetColor"));
         
         CampaignData.mwlog.createFactionLogger(this.getName());
         // Vehicles = new Vector();

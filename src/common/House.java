@@ -33,64 +33,63 @@ import common.util.HTML;
 
 /**
  * @author Helge Richter
- *
+ * 
  */
 public class House {
 
-	public static final int RED_VALUE = 0;
-	public static final int GREEN_VALUE = 1;
-	public static final int BLUE_VALUE = 2;
-	
-	private String name = "none";
-	private String logo = "";
-	private String factionFluFile = "Common";
-	
-	private Integer id;
-	private int dbId = 0;
-	private Vector<Integer>baseGunner = new Vector<Integer>(Unit.MAXBUILD,1);
-	private Vector<Integer>basePilot = new Vector<Integer>(Unit.MAXBUILD,1);
-	private Vector<String>basePilotSkills = new Vector<String>(Unit.MAXBUILD,1);
-		
-	//private int factionPlayerColors[] = new int[3]; // [red,green,blue]
-	
-	private int factionUnitPriceMod[][] = new int[5][4]; //[Type][Weight]
-	private int factionUnitFluMod[][] = new int[5][4]; //[Type][Weight]
-	private int factionUnitComponentMod[][] = new int[5][4]; //[Type][Weight]
-	
-	private String factionColor = "#000000";
-	private String abbreviation = "";
-	private String factionPlayerColors = "#000000";
-	
-	private boolean conquerable = true;
-	     
-	private Hashtable<String,String> BannedAmmo = new Hashtable<String,String>();
-	private int techLevel = TechConstants.T_ALLOWED_ALL;
+    public static final int RED_VALUE = 0;
+    public static final int GREEN_VALUE = 1;
+    public static final int BLUE_VALUE = 2;
+
+    private String name = "none";
+    private String logo = "";
+    private String factionFluFile = "Common";
+
+    private Integer id;
+    private int dbId = 0;
+    private Vector<Integer> baseGunner = new Vector<Integer>(Unit.MAXBUILD, 1);
+    private Vector<Integer> basePilot = new Vector<Integer>(Unit.MAXBUILD, 1);
+    private Vector<String> basePilotSkills = new Vector<String>(Unit.MAXBUILD, 1);
+
+    // private int factionPlayerColors[] = new int[3]; // [red,green,blue]
+
+    private int factionUnitPriceMod[][] = new int[5][4]; // [Type][Weight]
+    private int factionUnitFluMod[][] = new int[5][4]; // [Type][Weight]
+    private int factionUnitComponentMod[][] = new int[5][4]; // [Type][Weight]
+
+    private String factionColor = "#000000";
+    private String abbreviation = "";
+    private String factionPlayerColors = "#000000";
+
+    private boolean conquerable = true;
+
+    private Hashtable<String, String> BannedAmmo = new Hashtable<String, String>();
+    private int techLevel = TechConstants.T_ALLOWED_ALL;
     private boolean allowDefectionsFrom = true;
     private boolean allowDefectionsTo = true;
 
-    private ConcurrentHashMap<String,SubFaction> subFactionList = new ConcurrentHashMap<String,SubFaction>();
+    private ConcurrentHashMap<String, SubFaction> subFactionList = new ConcurrentHashMap<String, SubFaction>();
 
     public float usedMekBayMultiplier;
-    
-	public ConcurrentHashMap<String, Integer> supportedUnits = new ConcurrentHashMap<String, Integer>();
 
-	private boolean nonFactionUnitsCostMore = false;
-    
-	
-	/**
-	 * @return Returns the baseGunner.
-	 */
-	public int getBaseGunner() {
-		return baseGunner.elementAt(0);
-	}
+    public ConcurrentHashMap<String, Integer> supportedUnits = new ConcurrentHashMap<String, Integer>();
+
+    private boolean nonFactionUnitsCostMore = false;
+
+    /**
+     * @return Returns the baseGunner.
+     */
+    public int getBaseGunner() {
+        return baseGunner.elementAt(0);
+    }
 
     /**
      * @return baseGunner vector
      */
-    public Vector<Integer> getBaseGunnerVect(){
+    public Vector<Integer> getBaseGunnerVect() {
         return baseGunner;
     }
-    
+
     /**
      * @return Returns the baseGunner.
      */
@@ -101,10 +100,10 @@ public class House {
     /**
      * @return basePilotSkills vector
      */
-    public Vector<String> getBasePilotSkillVect(){
+    public Vector<String> getBasePilotSkillVect() {
         return basePilotSkills;
     }
-    
+
     /**
      * @return Returns the basePilotSkill String.
      */
@@ -113,21 +112,24 @@ public class House {
     }
 
     /**
-     * @param baseGunner The baseGunner to set.
+     * @param baseGunner
+     *            The baseGunner to set.
      */
     public void setBaseGunner(int baseGunner) {
-    	this.baseGunner.set(0, baseGunner);
+        this.baseGunner.set(0, baseGunner);
     }
-    
+
     /**
-     * @param basePilotSkill The base piloting skill for unit <code>type</code> to set.
+     * @param basePilotSkill
+     *            The base piloting skill for unit <code>type</code> to set.
      */
     public void setBasePilotSkill(String basePilotSkill, int type) {
         this.basePilotSkills.set(type, basePilotSkill);
     }
 
     /**
-     * @param baseGunner The baseGunner to set.
+     * @param baseGunner
+     *            The baseGunner to set.
      */
     public void setBaseGunner(int baseGunner, int type) {
         this.baseGunner.set(type, baseGunner);
@@ -137,7 +139,7 @@ public class House {
      * @return Returns the basePilot.
      */
     public int getBasePilot() {
-    	return basePilot.elementAt(0);
+        return basePilot.elementAt(0);
     }
 
     /**
@@ -150,134 +152,143 @@ public class House {
     /**
      * @return basePilot vector
      */
-    public Vector<Integer>getBasePilotVect(){
+    public Vector<Integer> getBasePilotVect() {
         return basePilot;
     }
-    
+
     /**
-     * @param basePilot The basePilot to set.
+     * @param basePilot
+     *            The basePilot to set.
      */
     public void setBasePilot(int basePilot) {
-    	this.basePilot.set(0,basePilot);
+        this.basePilot.set(0, basePilot);
     }
-    
+
     /**
-     * @param basePilot The basePilot to set.
+     * @param basePilot
+     *            The basePilot to set.
      */
     public void setBasePilot(int basePilot, int type) {
-        this.basePilot.set(type,basePilot);
+        this.basePilot.set(type, basePilot);
     }
 
-	/**
-	 * @return Returns the myAbbreviation.
-	 */
-	public String getAbbreviation() {
-		return abbreviation;
-	}
+    /**
+     * @return Returns the myAbbreviation.
+     */
+    public String getAbbreviation() {
+        return abbreviation;
+    }
 
-	/**
-	 * @param myAbbreviation The myAbbreviation to set.
-	 */
-	public void setAbbreviation(String myAbbreviation) {
-		abbreviation = myAbbreviation;
-	}
+    /**
+     * @param myAbbreviation
+     *            The myAbbreviation to set.
+     */
+    public void setAbbreviation(String myAbbreviation) {
+        abbreviation = myAbbreviation;
+    }
 
-	/**
-	 * @return Returns the conquerable.
-	 */
-	public boolean isConquerable() {
-		return conquerable;
-	}
+    /**
+     * @return Returns the conquerable.
+     */
+    public boolean isConquerable() {
+        return conquerable;
+    }
 
-	/**
-	 * @param conquerable The conquerable to set.
-	 */
-	public void setConquerable(boolean conquerable) {
-		this.conquerable = conquerable;
-	}
+    /**
+     * @param conquerable
+     *            The conquerable to set.
+     */
+    public void setConquerable(boolean conquerable) {
+        this.conquerable = conquerable;
+    }
 
-	/**
-	 * @return Returns the factionColor.
-	 */
-	public String getHouseColor() {
-		return factionColor;
-	}
+    /**
+     * @return Returns the factionColor.
+     */
+    public String getHouseColor() {
+        return factionColor;
+    }
 
-	/**
-	 * @param factionColor The factionColor to set.
-	 */
-	public void setHouseColor(String factionColor) {
-		this.factionColor = factionColor;
-	}
+    /**
+     * @param factionColor
+     *            The factionColor to set.
+     */
+    public void setHouseColor(String factionColor) {
+        this.factionColor = factionColor;
+    }
 
-	/**
-	 * @return Returns the logo.
-	 */
-	public String getLogo() {
-		return logo;
-	}
+    /**
+     * @return Returns the logo.
+     */
+    public String getLogo() {
+        return logo;
+    }
 
-	/**
-	 * @param logo The logo to set.
-	 */
-	public void setLogo(String logo) {
-		this.logo = logo;
-	}
+    /**
+     * @param logo
+     *            The logo to set.
+     */
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
 
-	/**
-	 * @return Returns the logo.
-	 */
-	public String getHouseFluFile() {
-		return factionFluFile;
-	}
+    /**
+     * @return Returns the logo.
+     */
+    public String getHouseFluFile() {
+        return factionFluFile;
+    }
 
-	/**
-	 * @param logo The logo to set.
-	 */
-	public void setHouseFluFile(String factionFlu) {
-		this.factionFluFile = factionFlu;
-	}
-	
-	/**
-	 * @return Returns the name.
-	 */
-	public String getName() {
-		return name;
-	}
-	
-	public String getNameAsLink() {
-		return "<a href=\"MEKWARS/c faction#" + name + "\">" + name + "</a>";
-	}
+    /**
+     * @param logo
+     *            The logo to set.
+     */
+    public void setHouseFluFile(String factionFlu) {
+        this.factionFluFile = factionFlu;
+    }
 
-	/**
-	 * @param name The name to set.
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
+    /**
+     * @return Returns the name.
+     */
+    public String getName() {
+        return name;
+    }
+
+    public String getNameAsLink() {
+        return "<a href=\"MEKWARS/c faction#" + name + "\">" + name + "</a>";
+    }
+
+    /**
+     * @param name
+     *            The name to set.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
     /**
      * @return Returns the id.
      */
     public int getId() {
-    	if (id == null)
-    		return -1;
+        if (id == null)
+            return -1;
         return id.intValue();
     }
-    
+
     public int getDBId() {
-    	return dbId;
+        return dbId;
     }
-    
+
     public void setDBId(int id) {
-    	dbId = id;
+        dbId = id;
     }
 
     /**
      * @param id
      */
     public House(int id) {
-    	this.id = id;
-        for( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
+        this.id = id;
+        for (int pos = 0; pos < Unit.MAXBUILD; pos++) {
             baseGunner.add(4);
             basePilot.add(5);
             basePilotSkills.add(" ");
@@ -288,7 +299,7 @@ public class House {
      * Constructor used for serialization
      */
     public House() {
-        for( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
+        for (int pos = 0; pos < Unit.MAXBUILD; pos++) {
             baseGunner.add(4);
             basePilot.add(5);
             basePilotSkills.add(" ");
@@ -299,90 +310,90 @@ public class House {
      * Write itself to an binary stream.
      */
     public void binOut(BinWriter out) throws IOException {
-    	
+
         out.println(id.intValue(), "id");
         out.println(name, "name");
         out.println(logo, "logo");
         out.println(getBaseGunner(), "baseGunner");
         out.println(getBasePilot(), "basePilot");
         out.println(factionColor, "factionColor");
-        
-        out.println(factionPlayerColors,"factionPlayerColor");
-        
+
+        out.println(factionPlayerColors, "factionPlayerColor");
+
         out.println(abbreviation, "abbreviation");
         out.println(conquerable, "conquerable");
-        
-        for ( int type = 0; type < 5; type++ )
-            for ( int weight = 0; weight < 4; weight++)
-                out.println(this.getHouseUnitComponentMod(type,weight),"componentMod"+type+weight);
-        for ( int type = 0; type < 5; type++ )
-            for ( int weight = 0; weight < 4; weight++)
-                out.println(this.getHouseUnitPriceMod(type,weight),"priceMod"+type+weight);
-        for ( int type = 0; type < 5; type++ )
-            for ( int weight = 0; weight < 4; weight++)
-                out.println(this.getHouseUnitFluMod(type,weight),"fluMod"+type+weight);
- 
-        out.println(this.getBannedAmmo().size(),"factionbannedammosize");
-        for (String munition : this.getBannedAmmo().keySet()){
-            out.println(munition,"munition");
+
+        for (int type = 0; type < 5; type++)
+            for (int weight = 0; weight < 4; weight++)
+                out.println(this.getHouseUnitComponentMod(type, weight), "componentMod" + type + weight);
+        for (int type = 0; type < 5; type++)
+            for (int weight = 0; weight < 4; weight++)
+                out.println(this.getHouseUnitPriceMod(type, weight), "priceMod" + type + weight);
+        for (int type = 0; type < 5; type++)
+            for (int weight = 0; weight < 4; weight++)
+                out.println(this.getHouseUnitFluMod(type, weight), "fluMod" + type + weight);
+
+        out.println(this.getBannedAmmo().size(), "factionbannedammosize");
+        for (String munition : this.getBannedAmmo().keySet()) {
+            out.println(munition, "munition");
         }
-        
-        for( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
-        	out.println(basePilotSkills.elementAt(pos), "factionBasePilotSkill");
+
+        for (int pos = 0; pos < Unit.MAXBUILD; pos++) {
+            out.println(basePilotSkills.elementAt(pos), "factionBasePilotSkill");
         }
-        
+
         out.println(this.getTechLevel(), "techLevel");
         out.println(this.getHouseDefectionFrom(), "defectFrom");
         out.println(this.getHouseDefectionTo(), "defectTo");
         out.println(this.getUsedMekBayMultiplier(), "usedMekBayMultiplier");
-        
-        out.println(this.getSubFactionList().size(),"subfactionsize");
-        
-        for (SubFaction subFaction : this.getSubFactionList().values()){
-        	out.println(subFaction.getConfig("Name"),"SubFactionName");
-        	out.println(subFaction.getConfig("AccessLevel"), "SubFactionAccessLevel");
-    		out.println(subFaction.getConfig("CanBuyNewLightMek"), "SubFactionCanBuyNewLightMek");
-    		out.println(subFaction.getConfig("CanBuyNewMediumMek"), "SubFactionCanBuyNewMediumMek");
-    		out.println(subFaction.getConfig("CanBuyNewHeavyMek"), "SubFactionCanBuyNewHeavyMek");
-    		out.println(subFaction.getConfig("CanBuyNewAssaultMek"), "SubFactionCanBuyNewAssaultMek");
-    		out.println(subFaction.getConfig("CanBuyUsedLightMek"), "SubFactionCanBuyUsedLightMek");
-    		out.println(subFaction.getConfig("CanBuyUsedMediumMek"), "SubFactionCanBuyUsedMediumMek");
-    		out.println(subFaction.getConfig("CanBuyUsedHeavyMek"), "SubFactionCanBuyUsedHeavyMek");
-    		out.println(subFaction.getConfig("CanBuyUsedAssaultMek"), "SubFactionCanBuyUsedAssaultMek");
-    		out.println(subFaction.getConfig("CanBuyNewLightVehicle"), "SubFactionCanBuyNewLightVehicle");
-    		out.println(subFaction.getConfig("CanBuyNewMediumVehicle"), "SubFactionCanBuyNewMediumVehicle");
-    		out.println(subFaction.getConfig("CanBuyNewHeavyVehicle"), "SubFactionCanBuyNewHeavyVehicle");
-    		out.println(subFaction.getConfig("CanBuyNewAssaultVehicle"), "SubFactionCanBuyNewAssaultVehicle");
-    		out.println(subFaction.getConfig("CanBuyUsedLightVehicle"), "SubFactionCanBuyUsedLightVehicle");
-    		out.println(subFaction.getConfig("CanBuyUsedMediumVehicle"), "SubFactionCanBuyUsedMediumVehicle");
-    		out.println(subFaction.getConfig("CanBuyUsedHeavyVehicle"), "SubFactionCanBuyUsedHeavyVehicle");
-    		out.println(subFaction.getConfig("CanBuyUsedAssaultVehicle"), "SubFactionCanBuyUsedAssaultVehicle");
-    		out.println(subFaction.getConfig("CanBuyNewLightInfantry"), "SubFactionCanBuyNewLightInfantry");
-    		out.println(subFaction.getConfig("CanBuyNewMediumInfantry"), "SubFactionCanBuyNewMediumInfantry");
-    		out.println(subFaction.getConfig("CanBuyNewHeavyInfantry"), "SubFactionCanBuyNewHeavyInfantry");
-    		out.println(subFaction.getConfig("CanBuyNewAssaultInfantry"), "SubFactionCanBuyNewAssaultInfantry");
-    		out.println(subFaction.getConfig("CanBuyUsedLightInfantry"), "SubFactionCanBuyUsedLightInfantry");
-    		out.println(subFaction.getConfig("CanBuyUsedMediumInfantry"), "SubFactionCanBuyUsedMediumInfantry");
-    		out.println(subFaction.getConfig("CanBuyUsedHeavyInfantry"), "SubFactionCanBuyUsedHeavyInfantry");
-    		out.println(subFaction.getConfig("CanBuyUsedAssaultInfantry"), "SubFactionCanBuyUsedAssaultInfantry");
-    		out.println(subFaction.getConfig("CanBuyNewLightProtoMek"), "SubFactionCanBuyNewLightProtoMek");
-    		out.println(subFaction.getConfig("CanBuyNewMediumProtoMek"), "SubFactionCanBuyNewMediumProtoMek");
-    		out.println(subFaction.getConfig("CanBuyNewHeavyProtoMek"), "SubFactionCanBuyNewHeavyProtoMek");
-    		out.println(subFaction.getConfig("CanBuyNewAssaultProtoMek"), "SubFactionCanBuyNewAssaultProtoMek");
-    		out.println(subFaction.getConfig("CanBuyUsedLightProtoMek"), "SubFactionCanBuyUsedLightProtoMek");
-    		out.println(subFaction.getConfig("CanBuyUsedMediumProtoMek"), "SubFactionCanBuyUsedMediumProtoMek");
-    		out.println(subFaction.getConfig("CanBuyUsedHeavyProtoMek"), "SubFactionCanBuyUsedHeavyProtoMek");
-    		out.println(subFaction.getConfig("CanBuyUsedAssaultProtoMek"), "SubFactionCanBuyUsedAssaultProtoMek");
-    		out.println(subFaction.getConfig("CanBuyNewLightBattleArmor"), "SubFactionCanBuyNewLightBattleArmor");
-    		out.println(subFaction.getConfig("CanBuyNewMediumBattleArmor"), "SubFactionCanBuyNewMediumBattleArmor");
-    		out.println(subFaction.getConfig("CanBuyNewHeavyBattleArmor"), "SubFactionCanBuyNewHeavyBattleArmor");
-    		out.println(subFaction.getConfig("CanBuyNewAssaultBattleArmor"), "SubFactionCanBuyNewAssaultBattleArmor");
-    		out.println(subFaction.getConfig("CanBuyUsedLightBattleArmor"), "SubFactionCanBuyUsedLightBattleArmor");
-    		out.println(subFaction.getConfig("CanBuyUsedMediumBattleArmor"), "SubFactionCanBuyUsedMediumBattleArmor");
-    		out.println(subFaction.getConfig("CanBuyUsedHeavyBattleArmor"), "SubFactionCanBuyUsedHeavyBattleArmor");
-    		out.println(subFaction.getConfig("CanBuyUsedAssaultBattleArmor"), "SubFactionCanBuyUsedAssaultBattleArmor");
-    		out.println(subFaction.getConfig("MinELO"), "SubFactionMinELO");
-    		out.println(subFaction.getConfig("MinExp"), "SubFactionMinExp");
+
+        out.println(this.getSubFactionList().size(), "subfactionsize");
+
+        for (SubFaction subFaction : this.getSubFactionList().values()) {
+            out.println(subFaction.getConfig("Name"), "SubFactionName");
+            out.println(subFaction.getConfig("AccessLevel"), "SubFactionAccessLevel");
+            out.println(subFaction.getConfig("CanBuyNewLightMek"), "SubFactionCanBuyNewLightMek");
+            out.println(subFaction.getConfig("CanBuyNewMediumMek"), "SubFactionCanBuyNewMediumMek");
+            out.println(subFaction.getConfig("CanBuyNewHeavyMek"), "SubFactionCanBuyNewHeavyMek");
+            out.println(subFaction.getConfig("CanBuyNewAssaultMek"), "SubFactionCanBuyNewAssaultMek");
+            out.println(subFaction.getConfig("CanBuyUsedLightMek"), "SubFactionCanBuyUsedLightMek");
+            out.println(subFaction.getConfig("CanBuyUsedMediumMek"), "SubFactionCanBuyUsedMediumMek");
+            out.println(subFaction.getConfig("CanBuyUsedHeavyMek"), "SubFactionCanBuyUsedHeavyMek");
+            out.println(subFaction.getConfig("CanBuyUsedAssaultMek"), "SubFactionCanBuyUsedAssaultMek");
+            out.println(subFaction.getConfig("CanBuyNewLightVehicle"), "SubFactionCanBuyNewLightVehicle");
+            out.println(subFaction.getConfig("CanBuyNewMediumVehicle"), "SubFactionCanBuyNewMediumVehicle");
+            out.println(subFaction.getConfig("CanBuyNewHeavyVehicle"), "SubFactionCanBuyNewHeavyVehicle");
+            out.println(subFaction.getConfig("CanBuyNewAssaultVehicle"), "SubFactionCanBuyNewAssaultVehicle");
+            out.println(subFaction.getConfig("CanBuyUsedLightVehicle"), "SubFactionCanBuyUsedLightVehicle");
+            out.println(subFaction.getConfig("CanBuyUsedMediumVehicle"), "SubFactionCanBuyUsedMediumVehicle");
+            out.println(subFaction.getConfig("CanBuyUsedHeavyVehicle"), "SubFactionCanBuyUsedHeavyVehicle");
+            out.println(subFaction.getConfig("CanBuyUsedAssaultVehicle"), "SubFactionCanBuyUsedAssaultVehicle");
+            out.println(subFaction.getConfig("CanBuyNewLightInfantry"), "SubFactionCanBuyNewLightInfantry");
+            out.println(subFaction.getConfig("CanBuyNewMediumInfantry"), "SubFactionCanBuyNewMediumInfantry");
+            out.println(subFaction.getConfig("CanBuyNewHeavyInfantry"), "SubFactionCanBuyNewHeavyInfantry");
+            out.println(subFaction.getConfig("CanBuyNewAssaultInfantry"), "SubFactionCanBuyNewAssaultInfantry");
+            out.println(subFaction.getConfig("CanBuyUsedLightInfantry"), "SubFactionCanBuyUsedLightInfantry");
+            out.println(subFaction.getConfig("CanBuyUsedMediumInfantry"), "SubFactionCanBuyUsedMediumInfantry");
+            out.println(subFaction.getConfig("CanBuyUsedHeavyInfantry"), "SubFactionCanBuyUsedHeavyInfantry");
+            out.println(subFaction.getConfig("CanBuyUsedAssaultInfantry"), "SubFactionCanBuyUsedAssaultInfantry");
+            out.println(subFaction.getConfig("CanBuyNewLightProtoMek"), "SubFactionCanBuyNewLightProtoMek");
+            out.println(subFaction.getConfig("CanBuyNewMediumProtoMek"), "SubFactionCanBuyNewMediumProtoMek");
+            out.println(subFaction.getConfig("CanBuyNewHeavyProtoMek"), "SubFactionCanBuyNewHeavyProtoMek");
+            out.println(subFaction.getConfig("CanBuyNewAssaultProtoMek"), "SubFactionCanBuyNewAssaultProtoMek");
+            out.println(subFaction.getConfig("CanBuyUsedLightProtoMek"), "SubFactionCanBuyUsedLightProtoMek");
+            out.println(subFaction.getConfig("CanBuyUsedMediumProtoMek"), "SubFactionCanBuyUsedMediumProtoMek");
+            out.println(subFaction.getConfig("CanBuyUsedHeavyProtoMek"), "SubFactionCanBuyUsedHeavyProtoMek");
+            out.println(subFaction.getConfig("CanBuyUsedAssaultProtoMek"), "SubFactionCanBuyUsedAssaultProtoMek");
+            out.println(subFaction.getConfig("CanBuyNewLightBattleArmor"), "SubFactionCanBuyNewLightBattleArmor");
+            out.println(subFaction.getConfig("CanBuyNewMediumBattleArmor"), "SubFactionCanBuyNewMediumBattleArmor");
+            out.println(subFaction.getConfig("CanBuyNewHeavyBattleArmor"), "SubFactionCanBuyNewHeavyBattleArmor");
+            out.println(subFaction.getConfig("CanBuyNewAssaultBattleArmor"), "SubFactionCanBuyNewAssaultBattleArmor");
+            out.println(subFaction.getConfig("CanBuyUsedLightBattleArmor"), "SubFactionCanBuyUsedLightBattleArmor");
+            out.println(subFaction.getConfig("CanBuyUsedMediumBattleArmor"), "SubFactionCanBuyUsedMediumBattleArmor");
+            out.println(subFaction.getConfig("CanBuyUsedHeavyBattleArmor"), "SubFactionCanBuyUsedHeavyBattleArmor");
+            out.println(subFaction.getConfig("CanBuyUsedAssaultBattleArmor"), "SubFactionCanBuyUsedAssaultBattleArmor");
+            out.println(subFaction.getConfig("MinELO"), "SubFactionMinELO");
+            out.println(subFaction.getConfig("MinExp"), "SubFactionMinExp");
         }
     }
 
@@ -390,336 +401,365 @@ public class House {
      * Read itself from a stream.
      */
     public House(BinReader in) throws IOException {
-    	
-        for( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
+
+        for (int pos = 0; pos < Unit.MAXBUILD; pos++) {
             baseGunner.add(4);
             basePilot.add(5);
             basePilotSkills.add(" ");
         }
 
-     	id = new Integer(in.readInt("id"));
-    	name = HTML.br2cr(in.readLine("name"));
-    	logo = HTML.br2cr(in.readLine("logo"));
-    	setBaseGunner(in.readInt("baseGunner"));
-    	setBasePilot(in.readInt("basePilot"));
-    	factionColor = in.readLine("factionColor");
-    	
-    	factionPlayerColors = in.readLine("factionPlayerColor");
-    	
-    	abbreviation = in.readLine("abbreviation");
-    	conquerable = in.readBoolean("conquerable");
+        id = new Integer(in.readInt("id"));
+        name = HTML.br2cr(in.readLine("name"));
+        logo = HTML.br2cr(in.readLine("logo"));
+        setBaseGunner(in.readInt("baseGunner"));
+        setBasePilot(in.readInt("basePilot"));
+        factionColor = in.readLine("factionColor");
 
-        for ( int type = 0; type < 5; type++ )
-            for ( int weight = 0; weight < 4; weight++)
-                this.setHouseUnitComponentMod(type,weight,in.readInt("componentMod"+type+weight));
-        for ( int type = 0; type < 5; type++ )
-            for ( int weight = 0; weight < 4; weight++)
-                this.setHouseUnitPriceMod(type,weight,in.readInt("priceMod"+type+weight));
-        for ( int type = 0; type < 5; type++ )
-            for ( int weight = 0; weight < 4; weight++)
-                this.setHouseUnitFluMod(type,weight,in.readInt("fluMod"+type+weight));
-    
+        factionPlayerColors = in.readLine("factionPlayerColor");
+
+        abbreviation = in.readLine("abbreviation");
+        conquerable = in.readBoolean("conquerable");
+
+        for (int type = 0; type < 5; type++)
+            for (int weight = 0; weight < 4; weight++)
+                this.setHouseUnitComponentMod(type, weight, in.readInt("componentMod" + type + weight));
+        for (int type = 0; type < 5; type++)
+            for (int weight = 0; weight < 4; weight++)
+                this.setHouseUnitPriceMod(type, weight, in.readInt("priceMod" + type + weight));
+        for (int type = 0; type < 5; type++)
+            for (int weight = 0; weight < 4; weight++)
+                this.setHouseUnitFluMod(type, weight, in.readInt("fluMod" + type + weight));
+
         int size = in.readInt("factionbannedammosize");
-        for( ; size > 0; size--)
-            BannedAmmo.put(in.readLine("munition"),"Banned");
-        
-        for( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
-        	basePilotSkills.set(pos,in.readLine("factionBasePilotSkill"));
+        for (; size > 0; size--)
+            BannedAmmo.put(in.readLine("munition"), "Banned");
+
+        for (int pos = 0; pos < Unit.MAXBUILD; pos++) {
+            basePilotSkills.set(pos, in.readLine("factionBasePilotSkill"));
         }
-        
+
         this.setTechLevel(in.readInt("techLevel"));
         this.setHouseDefectionFrom(in.readBoolean("defectFrom"));
         this.setHouseDefectionTo(in.readBoolean("defectTo"));
-        this.setUsedMekBayMultiplier((float)in.readDouble("usedMekBayMultiplier"));
-        
+        this.setUsedMekBayMultiplier((float) in.readDouble("usedMekBayMultiplier"));
+
         size = in.readInt("subfactionsize");
-        
+
         this.subFactionList.clear();
-        for (; size > 0; size--){
-        	SubFaction subFaction = new SubFaction(in.readLine("SubFactionName"));
-        	subFaction.setConfig("AccessLevel", in.readLine("SubFactionAccessLevel"));
-    		subFaction.setConfig("CanBuyNewLightMek", in.readLine("SubFactionCanBuyNewLightMek"));
-    		subFaction.setConfig("CanBuyNewMediumMek", in.readLine("SubFactionCanBuyNewMediumMek"));
-    		subFaction.setConfig("CanBuyNewHeavyMek", in.readLine("SubFactionCanBuyNewHeavyMek"));
-    		subFaction.setConfig("CanBuyNewAssaultMek", in.readLine("SubFactionCanBuyNewAssaultMek"));
-    		subFaction.setConfig("CanBuyUsedLightMek", in.readLine("SubFactionCanBuyUsedLightMek"));
-    		subFaction.setConfig("CanBuyUsedMediumMek", in.readLine("SubFactionCanBuyUsedMediumMek"));
-    		subFaction.setConfig("CanBuyUsedHeavyMek", in.readLine("SubFactionCanBuyUsedHeavyMek"));
-    		subFaction.setConfig("CanBuyUsedAssaultMek", in.readLine("SubFactionCanBuyUsedAssaultMek"));
-    		subFaction.setConfig("CanBuyNewLightVehicle", in.readLine("SubFactionCanBuyNewLightVehicle"));
-    		subFaction.setConfig("CanBuyNewMediumVehicle", in.readLine("SubFactionCanBuyNewMediumVehicle"));
-    		subFaction.setConfig("CanBuyNewHeavyVehicle", in.readLine("SubFactionCanBuyNewHeavyVehicle"));
-    		subFaction.setConfig("CanBuyNewAssaultVehicle", in.readLine("SubFactionCanBuyNewAssaultVehicle"));
-    		subFaction.setConfig("CanBuyUsedLightVehicle", in.readLine("SubFactionCanBuyUsedLightVehicle"));
-    		subFaction.setConfig("CanBuyUsedMediumVehicle", in.readLine("SubFactionCanBuyUsedMediumVehicle"));
-    		subFaction.setConfig("CanBuyUsedHeavyVehicle", in.readLine("SubFactionCanBuyUsedHeavyVehicle"));
-    		subFaction.setConfig("CanBuyUsedAssaultVehicle", in.readLine("SubFactionCanBuyUsedAssaultVehicle"));
-    		subFaction.setConfig("CanBuyNewLightInfantry", in.readLine("SubFactionCanBuyNewLightInfantry"));
-    		subFaction.setConfig("CanBuyNewMediumInfantry", in.readLine("SubFactionCanBuyNewMediumInfantry"));
-    		subFaction.setConfig("CanBuyNewHeavyInfantry", in.readLine("SubFactionCanBuyNewHeavyInfantry"));
-    		subFaction.setConfig("CanBuyNewAssaultInfantry", in.readLine("SubFactionCanBuyNewAssaultInfantry"));
-    		subFaction.setConfig("CanBuyUsedLightInfantry", in.readLine("SubFactionCanBuyUsedLightInfantry"));
-    		subFaction.setConfig("CanBuyUsedMediumInfantry", in.readLine("SubFactionCanBuyUsedMediumInfantry"));
-    		subFaction.setConfig("CanBuyUsedHeavyInfantry", in.readLine("SubFactionCanBuyUsedHeavyInfantry"));
-    		subFaction.setConfig("CanBuyUsedAssaultInfantry", in.readLine("SubFactionCanBuyUsedAssaultInfantry"));
-    		subFaction.setConfig("CanBuyNewLightProtoMek", in.readLine("SubFactionCanBuyNewLightProtoMek"));
-    		subFaction.setConfig("CanBuyNewMediumProtoMek", in.readLine("SubFactionCanBuyNewMediumProtoMek"));
-    		subFaction.setConfig("CanBuyNewHeavyProtoMek", in.readLine("SubFactionCanBuyNewHeavyProtoMek"));
-    		subFaction.setConfig("CanBuyNewAssaultProtoMek", in.readLine("SubFactionCanBuyNewAssaultProtoMek"));
-    		subFaction.setConfig("CanBuyUsedLightProtoMek", in.readLine("SubFactionCanBuyUsedLightProtoMek"));
-    		subFaction.setConfig("CanBuyUsedMediumProtoMek", in.readLine("SubFactionCanBuyUsedMediumProtoMek"));
-    		subFaction.setConfig("CanBuyUsedHeavyProtoMek", in.readLine("SubFactionCanBuyUsedHeavyProtoMek"));
-    		subFaction.setConfig("CanBuyUsedAssaultProtoMek", in.readLine("SubFactionCanBuyUsedAssaultProtoMek"));
-    		subFaction.setConfig("CanBuyNewLightBattleArmor", in.readLine("SubFactionCanBuyNewLightBattleArmor"));
-    		subFaction.setConfig("CanBuyNewMediumBattleArmor", in.readLine("SubFactionCanBuyNewMediumBattleArmor"));
-    		subFaction.setConfig("CanBuyNewHeavyBattleArmor", in.readLine("SubFactionCanBuyNewHeavyBattleArmor"));
-    		subFaction.setConfig("CanBuyNewAssaultBattleArmor", in.readLine("SubFactionCanBuyNewAssaultBattleArmor"));
-    		subFaction.setConfig("CanBuyUsedLightBattleArmor", in.readLine("SubFactionCanBuyUsedLightBattleArmor"));
-    		subFaction.setConfig("CanBuyUsedMediumBattleArmor", in.readLine("SubFactionCanBuyUsedMediumBattleArmor"));
-    		subFaction.setConfig("CanBuyUsedHeavyBattleArmor", in.readLine("SubFactionCanBuyUsedHeavyBattleArmor"));
-    		subFaction.setConfig("CanBuyUsedAssaultBattleArmor", in.readLine("SubFactionCanBuyUsedAssaultBattleArmor"));
-    		subFaction.setConfig("MinELO", in.readLine("SubFactionMinELO"));
-    		subFaction.setConfig("MinExp", in.readLine("SubFactionMinExp"));
-    		this.subFactionList.put(subFaction.getConfig("Name"), subFaction);
+        for (; size > 0; size--) {
+            SubFaction subFaction = new SubFaction(in.readLine("SubFactionName"));
+            subFaction.setConfig("AccessLevel", in.readLine("SubFactionAccessLevel"));
+            subFaction.setConfig("CanBuyNewLightMek", in.readLine("SubFactionCanBuyNewLightMek"));
+            subFaction.setConfig("CanBuyNewMediumMek", in.readLine("SubFactionCanBuyNewMediumMek"));
+            subFaction.setConfig("CanBuyNewHeavyMek", in.readLine("SubFactionCanBuyNewHeavyMek"));
+            subFaction.setConfig("CanBuyNewAssaultMek", in.readLine("SubFactionCanBuyNewAssaultMek"));
+            subFaction.setConfig("CanBuyUsedLightMek", in.readLine("SubFactionCanBuyUsedLightMek"));
+            subFaction.setConfig("CanBuyUsedMediumMek", in.readLine("SubFactionCanBuyUsedMediumMek"));
+            subFaction.setConfig("CanBuyUsedHeavyMek", in.readLine("SubFactionCanBuyUsedHeavyMek"));
+            subFaction.setConfig("CanBuyUsedAssaultMek", in.readLine("SubFactionCanBuyUsedAssaultMek"));
+            subFaction.setConfig("CanBuyNewLightVehicle", in.readLine("SubFactionCanBuyNewLightVehicle"));
+            subFaction.setConfig("CanBuyNewMediumVehicle", in.readLine("SubFactionCanBuyNewMediumVehicle"));
+            subFaction.setConfig("CanBuyNewHeavyVehicle", in.readLine("SubFactionCanBuyNewHeavyVehicle"));
+            subFaction.setConfig("CanBuyNewAssaultVehicle", in.readLine("SubFactionCanBuyNewAssaultVehicle"));
+            subFaction.setConfig("CanBuyUsedLightVehicle", in.readLine("SubFactionCanBuyUsedLightVehicle"));
+            subFaction.setConfig("CanBuyUsedMediumVehicle", in.readLine("SubFactionCanBuyUsedMediumVehicle"));
+            subFaction.setConfig("CanBuyUsedHeavyVehicle", in.readLine("SubFactionCanBuyUsedHeavyVehicle"));
+            subFaction.setConfig("CanBuyUsedAssaultVehicle", in.readLine("SubFactionCanBuyUsedAssaultVehicle"));
+            subFaction.setConfig("CanBuyNewLightInfantry", in.readLine("SubFactionCanBuyNewLightInfantry"));
+            subFaction.setConfig("CanBuyNewMediumInfantry", in.readLine("SubFactionCanBuyNewMediumInfantry"));
+            subFaction.setConfig("CanBuyNewHeavyInfantry", in.readLine("SubFactionCanBuyNewHeavyInfantry"));
+            subFaction.setConfig("CanBuyNewAssaultInfantry", in.readLine("SubFactionCanBuyNewAssaultInfantry"));
+            subFaction.setConfig("CanBuyUsedLightInfantry", in.readLine("SubFactionCanBuyUsedLightInfantry"));
+            subFaction.setConfig("CanBuyUsedMediumInfantry", in.readLine("SubFactionCanBuyUsedMediumInfantry"));
+            subFaction.setConfig("CanBuyUsedHeavyInfantry", in.readLine("SubFactionCanBuyUsedHeavyInfantry"));
+            subFaction.setConfig("CanBuyUsedAssaultInfantry", in.readLine("SubFactionCanBuyUsedAssaultInfantry"));
+            subFaction.setConfig("CanBuyNewLightProtoMek", in.readLine("SubFactionCanBuyNewLightProtoMek"));
+            subFaction.setConfig("CanBuyNewMediumProtoMek", in.readLine("SubFactionCanBuyNewMediumProtoMek"));
+            subFaction.setConfig("CanBuyNewHeavyProtoMek", in.readLine("SubFactionCanBuyNewHeavyProtoMek"));
+            subFaction.setConfig("CanBuyNewAssaultProtoMek", in.readLine("SubFactionCanBuyNewAssaultProtoMek"));
+            subFaction.setConfig("CanBuyUsedLightProtoMek", in.readLine("SubFactionCanBuyUsedLightProtoMek"));
+            subFaction.setConfig("CanBuyUsedMediumProtoMek", in.readLine("SubFactionCanBuyUsedMediumProtoMek"));
+            subFaction.setConfig("CanBuyUsedHeavyProtoMek", in.readLine("SubFactionCanBuyUsedHeavyProtoMek"));
+            subFaction.setConfig("CanBuyUsedAssaultProtoMek", in.readLine("SubFactionCanBuyUsedAssaultProtoMek"));
+            subFaction.setConfig("CanBuyNewLightBattleArmor", in.readLine("SubFactionCanBuyNewLightBattleArmor"));
+            subFaction.setConfig("CanBuyNewMediumBattleArmor", in.readLine("SubFactionCanBuyNewMediumBattleArmor"));
+            subFaction.setConfig("CanBuyNewHeavyBattleArmor", in.readLine("SubFactionCanBuyNewHeavyBattleArmor"));
+            subFaction.setConfig("CanBuyNewAssaultBattleArmor", in.readLine("SubFactionCanBuyNewAssaultBattleArmor"));
+            subFaction.setConfig("CanBuyUsedLightBattleArmor", in.readLine("SubFactionCanBuyUsedLightBattleArmor"));
+            subFaction.setConfig("CanBuyUsedMediumBattleArmor", in.readLine("SubFactionCanBuyUsedMediumBattleArmor"));
+            subFaction.setConfig("CanBuyUsedHeavyBattleArmor", in.readLine("SubFactionCanBuyUsedHeavyBattleArmor"));
+            subFaction.setConfig("CanBuyUsedAssaultBattleArmor", in.readLine("SubFactionCanBuyUsedAssaultBattleArmor"));
+            subFaction.setConfig("MinELO", in.readLine("SubFactionMinELO"));
+            subFaction.setConfig("MinExp", in.readLine("SubFactionMinExp"));
+            this.subFactionList.put(subFaction.getConfig("Name"), subFaction);
         }
-        	
+
     }
-	
-	/**
-	 * @TODO This is only a hack and should ONLY be used by experienced personnel!
-	 * @param id The id to set.
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
+
+    /**
+     * @TODO This is only a hack and should ONLY be used by experienced
+     *       personnel!
+     * @param id
+     *            The id to set.
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
 
     /**
      * @see common.persistence.MMNetSerializable#binOut(common.persistence.TreeWriter)
-     *
-    public void binOut(TreeWriter out) {
-    	
-    	out.write(id.intValue(), "id");
-        out.write(name, "name");
-        out.write(logo, "logo");
-        out.write(baseGunner, "baseGunner");
-        out.write(basePilot, "basePilot");
-        out.write(factionColor, "factionColor");
-        
-        out.write(factionPlayerColors,"factionPlayerColor");
-        
-        out.write(abbreviation, "abbreviation");
-        out.write(conquerable, "conquerable");
+     * 
+     * public void binOut(TreeWriter out) {
+     * 
+     * out.write(id.intValue(), "id"); out.write(name, "name"); out.write(logo,
+     * "logo"); out.write(baseGunner, "baseGunner"); out.write(basePilot,
+     * "basePilot"); out.write(factionColor, "factionColor");
+     * 
+     * out.write(factionPlayerColors,"factionPlayerColor");
+     * 
+     * out.write(abbreviation, "abbreviation"); out.write(conquerable,
+     * "conquerable");
+     * 
+     * for ( int type = 0; type < 5; type++ ) for ( int weight = 0; weight < 4;
+     * weight++)
+     * out.write(this.getHouseUnitComponentMod(type,weight),"componentMod"+type+weight);
+     * for ( int type = 0; type < 5; type++ ) for ( int weight = 0; weight < 4;
+     * weight++)
+     * out.write(this.getHouseUnitPriceMod(type,weight),"priceMod"+type+weight);
+     * for ( int type = 0; type < 5; type++ ) for ( int weight = 0; weight < 4;
+     * weight++)
+     * out.write(this.getHouseUnitFluMod(type,weight),"fluMod"+type+weight);
+     * 
+     * out.write(this.getBannedAmmo().size(),"factionbannedammosize"); for
+     * (String banned : this.getBannedAmmo().keySet())
+     * out.write(banned,"munition");
+     * 
+     * for( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
+     * out.write(basePilotSkills.elementAt(pos),"factionBasePilotSkill"); }
+     *  }
+     * 
+     * /**
+     * @see common.persistence.MMNetSerializable#binIn(common.persistence.TreeReader)
+     * 
+     * public void binIn(TreeReader in, CampaignData dataProvider)throws
+     * IOException {
+     * 
+     * for( int pos = 0; pos < Unit.MAXBUILD; pos++ ){ baseGunner.add(4);
+     * basePilot.add(5); basePilotSkills.add(" "); }
+     * 
+     * id = new Integer(in.readInt("id")); name =
+     * HTML.br2cr(in.readString("name")); logo =
+     * HTML.br2cr(in.readString("logo"));
+     * setBaseGunner(in.readInt("baseGunner"));
+     * setBasePilot(in.readInt("basePilot")); factionColor =
+     * in.readString("factionColor");
+     * 
+     * factionPlayerColors = in.readString("factionPlayerColor");
+     * 
+     * abbreviation = in.readString("abbreviation"); conquerable =
+     * in.readBoolean("conquerable");
+     * 
+     * for ( int type = 0; type < 5; type++ ) for ( int weight = 0; weight < 4;
+     * weight++)
+     * this.setHouseUnitComponentMod(type,weight,in.readInt("componentMod"+type+weight));
+     * for ( int type = 0; type < 5; type++ ) for ( int weight = 0; weight < 4;
+     * weight++)
+     * this.setHouseUnitPriceMod(type,weight,in.readInt("priceMod"+type+weight));
+     * for ( int type = 0; type < 5; type++ ) for ( int weight = 0; weight < 4;
+     * weight++)
+     * this.setHouseUnitFluMod(type,weight,in.readInt("fluMod"+type+weight));
+     * 
+     * int size = in.readInt("factionbannedammosize"); for( ; size > 0; size--)
+     * BannedAmmo.put(in.readString("munition"),"Banned");
+     * 
+     * for( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
+     * basePilotSkills.set(pos,in.readString("factionBasePilotSkill")); } }
+     */
 
-        for ( int type = 0; type < 5; type++ )
-            for ( int weight = 0; weight < 4; weight++)
-                out.write(this.getHouseUnitComponentMod(type,weight),"componentMod"+type+weight);
-        for ( int type = 0; type < 5; type++ )
-            for ( int weight = 0; weight < 4; weight++)
-                out.write(this.getHouseUnitPriceMod(type,weight),"priceMod"+type+weight);
-        for ( int type = 0; type < 5; type++ )
-            for ( int weight = 0; weight < 4; weight++)
-                out.write(this.getHouseUnitFluMod(type,weight),"fluMod"+type+weight);
-        
-        out.write(this.getBannedAmmo().size(),"factionbannedammosize");
-        for (String banned : this.getBannedAmmo().keySet())
-            out.write(banned,"munition");
-
-        for( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
-        	out.write(basePilotSkills.elementAt(pos),"factionBasePilotSkill");
-        }
-
+    /**
+     * @get the unit price mod for a faction
+     */
+    public int getHouseUnitPriceMod(int type, int weight) {
+        return this.factionUnitPriceMod[type][weight];
     }
 
     /**
-     * @see common.persistence.MMNetSerializable#binIn(common.persistence.TreeReader)
-     *
-    public void binIn(TreeReader in, CampaignData dataProvider)throws IOException {
-    	
-    	for( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
-            baseGunner.add(4);
-            basePilot.add(5);
-            basePilotSkills.add(" ");
-        }
-    	
-    	id = new Integer(in.readInt("id"));
-    	name = HTML.br2cr(in.readString("name"));
-    	logo = HTML.br2cr(in.readString("logo"));
-    	setBaseGunner(in.readInt("baseGunner"));
-    	setBasePilot(in.readInt("basePilot"));
-    	factionColor = in.readString("factionColor");
-    	
-    	factionPlayerColors = in.readString("factionPlayerColor");
-    	
-    	abbreviation = in.readString("abbreviation");
-    	conquerable = in.readBoolean("conquerable");
-    	
-        for ( int type = 0; type < 5; type++ )
-            for ( int weight = 0; weight < 4; weight++)
-                this.setHouseUnitComponentMod(type,weight,in.readInt("componentMod"+type+weight));
-        for ( int type = 0; type < 5; type++ )
-            for ( int weight = 0; weight < 4; weight++)
-                this.setHouseUnitPriceMod(type,weight,in.readInt("priceMod"+type+weight));
-        for ( int type = 0; type < 5; type++ )
-            for ( int weight = 0; weight < 4; weight++)
-                this.setHouseUnitFluMod(type,weight,in.readInt("fluMod"+type+weight));
-        
-        int size = in.readInt("factionbannedammosize");
-        for( ; size > 0; size--)
-            BannedAmmo.put(in.readString("munition"),"Banned");
+     * sets the unit price mod for a faction
+     */
+    public void setHouseUnitPriceMod(int type, int weight, int mod) {
+        this.factionUnitPriceMod[type][weight] = mod;
+    }
 
-        for( int pos = 0; pos < Unit.MAXBUILD; pos++ ){
-        	basePilotSkills.set(pos,in.readString("factionBasePilotSkill"));
-        }
-    }*/
-    
-	/**
+    /**
      * @get the unit price mod for a faction
      */
-	public int getHouseUnitPriceMod(int type, int weight) {
-		return this.factionUnitPriceMod[type][weight];
-	}
-	
-	/**
+    public int getHouseUnitFluMod(int type, int weight) {
+        return this.factionUnitFluMod[type][weight];
+    }
+
+    /**
      * sets the unit price mod for a faction
      */
-	public void setHouseUnitPriceMod(int type, int weight, int mod) {
-		this.factionUnitPriceMod[type][weight] = mod;
-	}
-	
-	/**
-     * @get the unit price mod for a faction
-     */
-	public int getHouseUnitFluMod(int type, int weight) {
-		return this.factionUnitFluMod[type][weight];
-	}
-	
-	/**
-     * sets the unit price mod for a faction
-     */
-	public void setHouseUnitFluMod(int type, int weight, int mod) {
-		this.factionUnitFluMod[type][weight] = mod;
-	}
-	
-	/**
+    public void setHouseUnitFluMod(int type, int weight, int mod) {
+        this.factionUnitFluMod[type][weight] = mod;
+    }
+
+    /**
      * gets the unit component mod for a faction
      */
-	public int getHouseUnitComponentMod(int type, int weight) {
-		return factionUnitComponentMod[type][weight];
-	}
-	
-	/**
+    public int getHouseUnitComponentMod(int type, int weight) {
+        return factionUnitComponentMod[type][weight];
+    }
+
+    /**
      * sets the unit component mod for a faction.
      */
-	public void setHouseUnitComponentMod(int type, int weight, int mod) {
-		this.factionUnitComponentMod[type][weight] = mod;
-	}
-	
-	public void setHousePlayerColors(String factionPlayerColor ){
-		if ( factionPlayerColor.startsWith("#") )
-			this.factionPlayerColors = factionPlayerColor;
-		else
-			this.factionPlayerColors = "#"+factionPlayerColor;
-	}
-	
-	public String getHousePlayerColor(){
-		return this.factionPlayerColors;
-	}
+    public void setHouseUnitComponentMod(int type, int weight, int mod) {
+        this.factionUnitComponentMod[type][weight] = mod;
+    }
 
-	//public void setBannedAmmo(Hashtable<String,String> ban){
-	//    BannedAmmo = ban;
-	//}
-	
-	public Hashtable<String,String> getBannedAmmo(){
-	    return BannedAmmo;
-	}
-	
+    public void setHousePlayerColors(String factionPlayerColor) {
+        if (factionPlayerColor.startsWith("#"))
+            this.factionPlayerColors = factionPlayerColor;
+        else
+            this.factionPlayerColors = "#" + factionPlayerColor;
+    }
+
+    public String getHousePlayerColor() {
+        return this.factionPlayerColors;
+    }
+
+    // public void setBannedAmmo(Hashtable<String,String> ban){
+    // BannedAmmo = ban;
+    // }
+
+    public Hashtable<String, String> getBannedAmmo() {
+        return BannedAmmo;
+    }
+
     public void setTechLevel(int level) {
-    	if ( level < TechConstants.T_IS_LEVEL_1 )
-    		this.techLevel = TechConstants.T_ALL;
-    	else
-    		this.techLevel = level;
+        if (level < TechConstants.T_IS_LEVEL_1)
+            this.techLevel = TechConstants.T_ALL;
+        else
+            this.techLevel = level;
     }
-    
+
     public int getTechLevel() {
-    	return this.techLevel;
+        return this.techLevel;
     }
-    
-	public boolean getHouseDefectionFrom() {
-		return allowDefectionsFrom;
-	}
 
-	public void setHouseDefectionFrom(boolean defection) {
-		allowDefectionsFrom = defection;
-	}
+    public boolean getHouseDefectionFrom() {
+        return allowDefectionsFrom;
+    }
 
-	public boolean getHouseDefectionTo() {
-		return allowDefectionsTo;
-	}
+    public void setHouseDefectionFrom(boolean defection) {
+        allowDefectionsFrom = defection;
+    }
 
-	public void setHouseDefectionTo(boolean defection) {
-		allowDefectionsTo = defection;
-	}
-	
-	public void setUsedMekBayMultiplier(float mult) {
-		this.usedMekBayMultiplier = mult;
-	}
-	
-	public float getUsedMekBayMultiplier() {
-		return this.usedMekBayMultiplier;
-	}
+    public boolean getHouseDefectionTo() {
+        return allowDefectionsTo;
+    }
 
-	public ConcurrentHashMap<String,SubFaction> getSubFactionList(){
-		return subFactionList;
-	}
-	
-	public boolean houseSupportsUnit(String fileName) {
-		if(fileName.indexOf(".") > 0)
-			fileName = fileName.substring(0, fileName.indexOf("."));
-		return supportedUnits.containsKey(fileName);
-	}
-	
-	public ConcurrentHashMap<String, Integer> getSupportedUnits() {
-		return supportedUnits;
-	}
-	
-	public void addUnitSupported(String fileName) {
-		if (fileName.trim().length() < 1)
-			return;
-		fileName = fileName.trim();
-		if(houseSupportsUnit(fileName)) {
-			int num = getSupportedUnits().get(fileName);
-			supportedUnits.put(fileName, num + 1);
-		} else {
-			supportedUnits.put(fileName, 1);
-		}
-	}
-	
-	public void removeUnitSupported(String fileName) {
-		if (fileName.trim().length() < 1)
-			return;
-		fileName = fileName.trim();
-		if(houseSupportsUnit(fileName)) {
-			int num = supportedUnits.get(fileName);
-			if (num == 1) {
-				// Remove it from the HashMap
-				supportedUnits.remove(fileName);
-			} else {
-				supportedUnits.put(fileName, num - 1);
-			}
-		} else {
-			// Error.  We should never get here.
-			// Fix the logging here.  How to determine if it's being called from CHouse or SHouse?
-			//MWServ.mwlog.mainLog("Error in House.removeUnitProduction(): trying to remove a unit that is not produced.");
-			//MWServ.mwlog.mainLog("  --> House: " + getName() + ", Unit: " + fileName);
-		}
-	}
-	
-	public boolean getNonFactionUnitsCostMore() {
-		return nonFactionUnitsCostMore;
-	}
-	
-	public void setNonFactionUnitsCostMore(boolean answer) {
-		nonFactionUnitsCostMore = answer;
-	}
+    public void setHouseDefectionTo(boolean defection) {
+        allowDefectionsTo = defection;
+    }
+
+    public void setUsedMekBayMultiplier(float mult) {
+        this.usedMekBayMultiplier = mult;
+    }
+
+    public float getUsedMekBayMultiplier() {
+        return this.usedMekBayMultiplier;
+    }
+
+    public ConcurrentHashMap<String, SubFaction> getSubFactionList() {
+        return subFactionList;
+    }
+
+    public boolean houseSupportsUnit(String fileName) {
+        if (fileName.indexOf(".") > 0)
+            fileName = fileName.substring(0, fileName.indexOf("."));
+        return supportedUnits.containsKey(fileName);
+    }
+
+    public ConcurrentHashMap<String, Integer> getSupportedUnits() {
+        return supportedUnits;
+    }
+
+    public void addUnitSupported(String fileName) {
+        if (fileName.trim().length() < 1)
+            return;
+        fileName = fileName.trim();
+        if (houseSupportsUnit(fileName)) {
+            int num = getSupportedUnits().get(fileName);
+            supportedUnits.put(fileName, num + 1);
+        } else {
+            supportedUnits.put(fileName, 1);
+        }
+    }
+
+    public void removeUnitSupported(String fileName) {
+        if (fileName.trim().length() < 1)
+            return;
+        fileName = fileName.trim();
+        if (houseSupportsUnit(fileName)) {
+            int num = supportedUnits.get(fileName);
+            if (num == 1) {
+                // Remove it from the HashMap
+                supportedUnits.remove(fileName);
+            } else {
+                supportedUnits.put(fileName, num - 1);
+            }
+        } else {
+            // Error. We should never get here.
+            // Fix the logging here. How to determine if it's being called from
+            // CHouse or SHouse?
+            // MWServ.mwlog.mainLog("Error in House.removeUnitProduction():
+            // trying to remove a unit that is not produced.");
+            // MWServ.mwlog.mainLog(" --> House: " + getName() + ", Unit: " +
+            // fileName);
+        }
+    }
+
+    public boolean getNonFactionUnitsCostMore() {
+        return nonFactionUnitsCostMore;
+    }
+
+    public void setNonFactionUnitsCostMore(boolean answer) {
+        nonFactionUnitsCostMore = answer;
+    }
+
+    public String addNewHouse() {
+        StringBuilder result = new StringBuilder();
+
+        result.append(id);
+        result.append("|");
+        
+        result.append(name);
+        result.append("|");
+        result.append(logo);
+        result.append("|");
+        result.append(getBaseGunner());
+        result.append("|");
+        result.append(getBasePilot());
+        result.append("|");
+        result.append(factionColor);
+        result.append("|");
+        result.append(factionPlayerColors);
+        result.append("|");
+        result.append(abbreviation);
+        result.append("|");
+        result.append(conquerable);
+        result.append("|");
+        result.append(this.getTechLevel());
+        result.append("|");
+        result.append(this.getHouseDefectionFrom());
+        result.append("|");
+        result.append(this.getHouseDefectionTo());
+        result.append("|");
+        result.append(this.getUsedMekBayMultiplier());
+        result.append("|");
+
+        return result.toString();
+    }
 }
-

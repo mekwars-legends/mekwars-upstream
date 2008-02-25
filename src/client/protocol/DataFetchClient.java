@@ -652,7 +652,13 @@ public class DataFetchClient {
             try{
             	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
                 lastTimestamp = sdf.parse(in.readLine("lasttimestamp"));
-
+                boolean fullUpdate = in.readBoolean("FullUpdate");
+                
+                if ( fullUpdate ) {
+                    data.clearHouses();
+                    data.clearPlanets();
+                }
+                
             	int size = in.readInt("planets.size");
                 for ( int count = 0; count < size; count++){
                 	Planet planet = new Planet();

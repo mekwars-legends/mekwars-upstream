@@ -62,8 +62,6 @@ import javax.swing.event.DocumentEvent;
 
 import common.CampaignData;
 
-import client.MWClient;
-
 public class MyImageView extends View implements ImageObserver, MouseListener, MouseMotionListener {
 	
 	// --- Attribute Values ------------------------------------------
@@ -109,7 +107,8 @@ public class MyImageView extends View implements ImageObserver, MouseListener, M
 			if (isURL()) {
 				URL src = getSourceURL();
 				if( src != null ) {
-					Dictionary cache = (Dictionary) getDocument().getProperty(IMAGE_CACHE_PROPERTY);
+				    Object object =  getDocument().getProperty(IMAGE_CACHE_PROPERTY);
+					Dictionary<URL,Image> cache = (Dictionary<URL,Image>)object;
 					if( cache != null )
 						fImage = (Image) cache.get(src);
 					else

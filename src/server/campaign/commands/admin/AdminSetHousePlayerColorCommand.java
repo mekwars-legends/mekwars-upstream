@@ -19,6 +19,7 @@ package server.campaign.commands.admin;
 import java.util.StringTokenizer;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
+import server.campaign.SPlayer;
 import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
 
@@ -42,6 +43,7 @@ public class AdminSetHousePlayerColorCommand implements Command {
 		String HouseName = "";
 		SHouse faction = null;
 		String houseColor;
+		SPlayer player = CampaignMain.cm.getPlayer(Username);
 		
 		try {
 			HouseName = command.nextToken();
@@ -50,11 +52,14 @@ public class AdminSetHousePlayerColorCommand implements Command {
 			return;
 		}
 		
-		faction = CampaignMain.cm.getHouseFromPartialString(HouseName,Username);
+		faction = CampaignMain.cm.getHouseFromPartialString(HouseName);
 		if (faction == null) {
 			CampaignMain.cm.toUser("Couldn't find a faction with that name.", Username, true);
 			return;
 		}
+		
+		if ( userLevel < IAuthenticator.MODERATOR )
+		    faction = player.getMyHouse();
 		
 		try {
 			houseColor = command.nextToken();

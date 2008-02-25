@@ -68,6 +68,9 @@ public class BuildTable {
 			String fileToRead = getFileName(unitProducer,size,dir,type_id);
 			table = getListFromFile(new File(fileToRead));
 
+			if ( table.size() < 1)
+			    return "Error OMG URFD.mtf";
+			
 			int ran = CampaignMain.cm.getRandomNumber(table.size());
 
 			Filename = table.elementAt(ran);

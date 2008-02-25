@@ -25,6 +25,7 @@ import common.House;
 import common.Planet;
 import common.util.BinWriter;
 
+import server.campaign.CampaignMain;
 import server.campaign.data.TimeUpdateHouse;
 import server.campaign.data.TimeUpdatePlanet;
 import server.dataProvider.ServerCommand;
@@ -40,10 +41,14 @@ public class PDiff implements ServerCommand {
 	public void execute(Date timestamp, BinWriter out, CampaignData data)
 			throws Exception {
 
+	    boolean fullUpdate = false;
 		// System.err.println("PDiff Timestamp: "+timestamp.toString());
-		if (timestamp == null)
+		if (timestamp == null || CampaignMain.cm.getHousePlanetUpdate().compareTo(timestamp)  > 0 ) {
 			// make a date far in the past to retrieve all..
 			timestamp = new Date(0);
+			fullUpdate = true;
+		}
+
 		ArrayList<Planet> planets = new ArrayList<Planet>();
 		synchronized (data.getAllPlanets()) {
 
@@ -59,7 +64,8 @@ public class PDiff implements ServerCommand {
 			}
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 			out.println(sdf.format(new Date()), "lasttimestamp");
-
+			out.println(fullUpdate, "FullUpdate");
+			
 			data.binPlanetsOut(planets, out);
 			ArrayList<House> houses = new ArrayList<House>();
 			for (House e : data.getAllHouses()) {

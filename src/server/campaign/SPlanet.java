@@ -38,10 +38,9 @@ import common.PlanetEnvironment;
 import common.Unit;
 import common.UnitFactory;
 import common.util.Position;
-
-import common.CampaignData;
-import server.campaign.data.TimeUpdatePlanet;
 import common.util.TokenReader;
+
+import server.campaign.data.TimeUpdatePlanet;
 
 public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparable<Object> {
 
@@ -358,6 +357,8 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
      */
     public String fromString(String s, Random r, CampaignData data) {
         // debug
+        
+        boolean singleFaction = CampaignMain.cm.getBooleanConfig("AllowSinglePlayerFactions");
         CampaignData.mwlog.mainLog(s);
         s = s.substring(3);
         StringTokenizer ST = new StringTokenizer(s, "#");
@@ -369,6 +370,8 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
             for (int i = 0; i < hasMF; i++) {
                 SUnitFactory mft = new SUnitFactory();
                 mft.fromString(TokenReader.readString(ST), this, r);
+                if ( singleFaction && CampaignMain.cm.getHouseFromPartialString(mft.getFounder()) == null)
+                    continue;
                 getUnitFactories().add(mft);
             }
         } else {
@@ -508,8 +511,18 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
 
         updateInfluences();
 
-        setOwner(null, checkOwner(), false);
+        if ( singleFaction ) {
+            
+            if ( isNullOwner() ) {
+                this.setConquestPoints(100);
+                this.setCompProduction(0);
+                SHouse house = CampaignMain.cm.getHouseById(-1);
+                this.getInfluence().moveInfluence(house, house, 100,100);
+            }
+        }
 
+        setOwner(null, checkOwner(), false);
+        
         return s;
     }
 
@@ -809,6 +822,14 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
             ownership = CampaignMain.cm.getIntegerConfig("MinPlanetOwnerShip");
 
         return ownership;
+    }
+    
+    public boolean isNullOwner() {
+        
+        if ( this.getInfluence().getInfluence(-1) == this.getConquestPoints() )
+                return true;
+        
+        return false;
     }
 
 }

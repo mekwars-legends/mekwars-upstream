@@ -48,6 +48,8 @@ public class HouseStatusCommand implements Command {
 		Iterator<House> e = CampaignMain.cm.getData().getAllHouses().iterator();
 		while (e.hasNext()) {
 			SHouse h = (SHouse)e.next();
+			if ( h.getId() < 0)
+			    continue;
 			result += "<FONT Color=\"" + h.getHouseColor() + "\">";
 			result += h.getName() + " Tech Level: "+TechConstants.getLevelDisplayableName(h.getTechLevel()) + " has " + h.getPlanets().size(); 
 			result += " Planets and " + h.getSmallPlayers().size() + " Members. The total economy value is: "+ h.getComponentProduction() + "</font><br>";

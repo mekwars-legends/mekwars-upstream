@@ -76,7 +76,11 @@ import client.util.CUnitComparator;
 
 public class TableViewerDialog extends JFrame implements ItemListener {
 	
-	//ivars
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -5449211786198003020L;
+    //ivars
 	JComboBox weightClassCombo;
 	JComboBox factionCombo;
 	JComboBox unitTypeCombo;
@@ -103,8 +107,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 	TableViewerModel tvModel;
 	
 	//maps and sorts
-	TreeMap currentUnits;
-	Object[] sortedUnits = {};//sorts generated from the map.
+	TreeMap<Object,TableUnit> currentUnits;
+	TableUnit[] sortedUnits = {};//sorts generated from the map.
 	
 	MWClient mwclient;
 	
@@ -113,14 +117,14 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 		super("Table Browser");
 		
 		mwclient = client;
-		currentUnits = new TreeMap();
+		currentUnits = new TreeMap<Object, TableUnit>();
 		generalScrollPane = new JScrollPane();
 			
 		//alpha sorted faction array. hacky and evil.
-		TreeSet factionNames = new TreeSet();//tree to alpha sort
-		Iterator i = mwclient.getData().getAllHouses().iterator();
+		TreeSet<String> factionNames = new TreeSet<String>();//tree to alpha sort
+		Iterator<House> i = mwclient.getData().getAllHouses().iterator();
 		while (i.hasNext())
-			factionNames.add(((House)i.next()).getName());
+			factionNames.add(i.next().getName());
 		factionArray = factionNames.toArray();
 		
 		//CONSTRUCT GUI
@@ -424,16 +428,16 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 	 * first and last map levels) more complex than they would
 	 * otherwise.
 	 */
-	public void doTableLayer(TreeMap curr, TreeMap next, String add, ZipFile zip, boolean commonOverride) {
+	public void doTableLayer(TreeMap<String,Double> curr, TreeMap<String,Double> next, String add, ZipFile zip, boolean commonOverride) {
 		
 		/*
 		 * Set up an iterator of target tables. Note that
 		 * the first level (base table) is put into a dummy
 		 * treemap in order to have an iterator.
 		 */
-		Iterator it = curr.keySet().iterator();
+		Iterator<String> it = curr.keySet().iterator();
 		while (it.hasNext()) {
-			String currTableName = (String)it.next();
+			String currTableName = it.next();
 			
 			//get zip entry for the new file.
 			ZipEntry tableEntry = null;
@@ -674,9 +678,9 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 		 * in perpetuity, so stopping after 3 hops will generate
 		 * some minor rounding errors.
 		 */
-		TreeMap crossMap1 = new TreeMap();
-		TreeMap crossMap2 = new TreeMap();
-		TreeMap crossMap3 = new TreeMap();
+		TreeMap<String,Double> crossMap1 = new TreeMap<String, Double>();
+		TreeMap<String,Double> crossMap2 = new TreeMap<String, Double>();
+		TreeMap<String,Double> crossMap3 = new TreeMap<String, Double>();
 		
 		/*
 		 * Original Table.
@@ -685,7 +689,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 		 * a treemap to the doTableLayer method. The initial
 		 * table is the only value and carries a 100% weight.
 		 */
-		TreeMap temp = new TreeMap();
+		TreeMap<String,Double> temp = new TreeMap<String, Double>();
 		temp.put(factionString, new Double(100.0));//using 100 makes things %'s instead of decimals ...
 		//System.out.println("this.doTableLayer - base");
 		this.doTableLayer(temp, crossMap1, addOnString, tableZip, overrideWithCommon);
@@ -713,9 +717,9 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 		 * Update the total percentage counter.
 		 */
 		double totalPercent = 0;
-		Iterator it = currentUnits.values().iterator();
+		Iterator<TableUnit> it = currentUnits.values().iterator();
 		while (it.hasNext()) {
-			TableUnit currUnit = (TableUnit)it.next();
+			TableUnit currUnit = it.next();
 			totalPercent += currUnit.getFrequency();
 		}
 		DecimalFormat myFormatter = new DecimalFormat("###.#####");
@@ -732,7 +736,11 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 	 */
 	static class TableViewerModel extends AbstractTableModel {
 		
-		//IVARS
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 4544580878221428391L;
+        //IVARS
 		//static ints
 		public final static int UNIT = 0;//model/name
 		public final static int WEIGHT = 1;
@@ -740,8 +748,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 		public final static int FREQUENCY = 3;
 		public final static int FILENAME = 4;
 		
-		TreeMap currentUnits;
-		Object[] sortedUnits;
+		TreeMap<Object,TableUnit> currentUnits;
+		TableUnit[] sortedUnits;
 		
 		int currentSortMode = TableViewerModel.FREQUENCY;
 		
@@ -752,7 +760,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 		MWClient mwclient;
 		
 		//CONSTRUCTOR
-		public TableViewerModel(MWClient c, TreeMap current, Object[] sorted) {
+		public TableViewerModel(MWClient c, TreeMap<Object,TableUnit> current, TableUnit[] sorted) {
 			this.mwclient = c;
 			currentUnits = current;
 			sortedUnits = sorted;
@@ -840,7 +848,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 		/*
 		 * Method which sorts the units in currentUnits. 
 		 */
-		public Object[] sortUnits(int sortMode) {
+		public TableUnit[] sortUnits(int sortMode) {
 			
 			//a comparator
 			CUnitComparator comparator = null;
@@ -848,32 +856,32 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 			switch (sortMode) {
 			case TableViewerModel.UNIT:
 				
-				sortedUnits = currentUnits.values().toArray();
+				sortedUnits = currentUnits.values().toArray(sortedUnits);
 				comparator = new CUnitComparator(CUnitComparator.HQSORT_NAME);
 				Arrays.sort(sortedUnits, comparator);
 				return sortedUnits;
 			
 			case TableViewerModel.WEIGHT:
 				
-				sortedUnits = currentUnits.values().toArray();
+				sortedUnits = currentUnits.values().toArray(sortedUnits);
 				comparator = new CUnitComparator(CUnitComparator.HQSORT_WEIGHTTONS);
 				Arrays.sort(sortedUnits, comparator);
 				return sortedUnits;
 			
 			case TableViewerModel.BATTLEVALUE:
 				
-				sortedUnits = currentUnits.values().toArray();
+				sortedUnits = currentUnits.values().toArray(sortedUnits);
 				comparator = new CUnitComparator(CUnitComparator.HQSORT_BV);
 				Arrays.sort(sortedUnits, comparator);
 				return sortedUnits;
 			
 			case TableViewerModel.FREQUENCY:
 				
-				sortedUnits = currentUnits.values().toArray();
-				Arrays.sort(sortedUnits, new Comparator() {
-					public int compare(Object o1, Object o2) {
-						TableUnit t1 = (TableUnit)o1;
-						TableUnit t2 = (TableUnit)o2;
+				sortedUnits = currentUnits.values().toArray(sortedUnits);
+				Arrays.sort(sortedUnits, new Comparator<TableUnit>() {
+					public int compare(TableUnit o1, TableUnit o2) {
+					    TableUnit t1 = o1;
+					    TableUnit t2 = o2;
 						Double d1 = new Double(t1.getFrequency());
 						Double d2 = new Double(t2.getFrequency());
 						return d1.compareTo(d2);
@@ -884,7 +892,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 			}//end switch
 			
 			//failsafe return
-			return new Object[] {};
+			return new TableUnit[] {};
 		}
 		
 		/*
@@ -894,7 +902,12 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 		 */
 		private class TableViewerRenderer extends DefaultTableCellRenderer {
 			
-			@Override
+			/**
+             * 
+             */
+            private static final long serialVersionUID = -8249928200262506117L;
+
+            @Override
 			public java.awt.Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				java.awt.Component d =  super.getTableCellRendererComponent(table,value,isSelected,hasFocus,row,column);
 				
@@ -923,11 +936,11 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 				//show the percent frequency for each table
 				description.append("Sources:");
 				
-				Iterator i = currU.getTables().keySet().iterator();
+				Iterator<String> i = currU.getTables().keySet().iterator();
 				DecimalFormat formatter = new DecimalFormat("##0.0##");
 				while (i.hasNext()) {
-					String tableName = (String)i.next();
-					Double freq = (Double)currU.getTables().get(tableName);
+					String tableName = i.next();
+					Double freq = currU.getTables().get(tableName);
 					description.append("<br>- " + tableName + ": " + formatter.format(freq.doubleValue()) + "%");
 				}
 				
@@ -958,7 +971,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 		//IVARS
 		double frequency;
 		String realFilename;
-		TreeMap tables;
+		TreeMap<String,Double> tables;
 		
 		//CONSTRUCTOR
 		public TableUnit(String fn, double f) {
@@ -997,7 +1010,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 			realFilename = fn;
 			frequency = f;
 			
-			tables = new TreeMap();
+			tables = new TreeMap<String,Double>();
 		}
 		
 		//METHODS
@@ -1013,7 +1026,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 			return realFilename;
 		}
 		
-		public TreeMap getTables() {
+		public TreeMap<String,Double> getTables() {
 			return tables;
 		}
 		

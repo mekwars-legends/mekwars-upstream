@@ -477,68 +477,6 @@ public class DataFetchClient {
 	}
 	
 	/**
-	 * Transfer only the differential planets since last timestamp.
-	 */
-	public boolean getPlanetsUpdate(CampaignData Data) {
-		try {
-			BinReader in = openConnection("PDiff",60000);
-			data = Data;
-			if ( data == null )
-			{
-				CampaignData.mwlog.errLog("data is null getPlanetsUpdate");
-				return false;
-			}
-            try{
-            	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-                lastTimestamp = sdf.parse(in.readLine("lasttimestamp"));
-
-            	int size = in.readInt("planets.size");
-                for ( int count = 0; count < size; count++){
-                	Planet planet = new Planet();
-                	planet.binIn(in, data);
-                	data.addPlanet(planet);
-                	changesSinceLastRefresh.put(planet.getId(), planet.getInfluence());
-                }
-            	size = in.readInt("houses.size");
-                for ( int count = 0; count < size; count++){
-                	House house = new House(in);
-                	data.addHouse(house);
-                }
-            }catch(Exception ex){
-            	CampaignData.mwlog.errLog(ex);
-            }//Bin empty
-
-			/*changesSinceLastRefresh = new HashMap();
-			data.decodeMutablePlanets(in, changesSinceLastRefresh);
-			String serverMD5 = in.readLine("md5");
-			CampaignData.mwlog.infoLog("read MD5 checksum: "+serverMD5);
-			MD5OutputStream md5 = new MD5OutputStream();
-			BinWriter md5Writer = new BinWriter(new PrintWriter(md5));
-			data.binOut(md5Writer);
-			md5Writer.close();
-			CampaignData.mwlog.infoLog("own checksum: "+md5.getHashString());
-			if (!serverMD5.equals(md5.getHashString())) {
-				md5.close();
-				return false;
-			}
-			//else
-			md5.close();
-			//in.close();*/
-		} catch (IOException e) {
-			CampaignData.mwlog.errLog(e);
-			return false;
-		} catch (RuntimeException e) {
-			CampaignData.mwlog.errLog(e);
-			return false;
-		}
-		//this.data = data;
-
-		store();
-		return true;
-	}
-	
-	
-	/**
 	 * Transfer the Access levels of all the commands
 	 * but only save the ones that matchs the users.
 	 * 

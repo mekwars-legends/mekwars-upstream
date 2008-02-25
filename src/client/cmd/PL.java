@@ -236,6 +236,13 @@ public class PL extends Command {
         else if (cmd.equals("SMA")){
         	mwclient.getPlayer().setMULCreatedArmy(st);
         }
+        else if (cmd.equals("ANH") ) {
+            mwclient.createNewHouse(st);
+        }
+        else if (cmd.equals("RPF") ) {
+            int id = TokenReader.readInt(st);
+            mwclient.getData().removeHouse(id);
+        }
 		else
 			return;
 		
