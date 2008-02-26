@@ -655,7 +655,7 @@ public final class SUnit extends Unit{
 
                             if (!wt.hasFlag(WeaponType.F_MG))
                                 continue;
-                            ps.executeUpdate("INSERT into unit_mgs set unitID = " + getDBId() + ", mgLocation = " + location + ", mgSlot = " + slot + ", mgRapidFire = " + m.isRapidfire());
+                            ps.executeUpdate("REPLACE into unit_mgs set unitID = " + getDBId() + ", mgLocation = " + location + ", mgSlot = " + slot + ", mgRapidFire = " + m.isRapidfire());
                         }
                     }
                 }
@@ -672,7 +672,7 @@ public final class SUnit extends Unit{
                     hotloaded = false;
                 AmmoType at = (AmmoType) mAmmo.getType();
                 sql.setLength(0);
-                sql.append("INSERT into unit_ammo set unitID = ?, ammoLocation = ?, ammoHotLoaded=?, ammoType=?, ammoInternalName=?, ammoShotsLeft=?");
+                sql.append("REPLACE into unit_ammo set unitID = ?, ammoLocation = ?, ammoHotLoaded=?, ammoType=?, ammoInternalName=?, ammoShotsLeft=?");
                 ps.close();
                 
                 ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());

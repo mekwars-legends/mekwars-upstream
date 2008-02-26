@@ -2948,7 +2948,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 for (int i = 0; i < getArmies().size(); i++) {
                     ps.close();
                     sql.setLength(0);
-                    sql.append("INSERT into playerarmies set playerID = " + getDBId() + ", armyID = " + i + ", armyString = ?");
+                    sql.append("REPLACE into playerarmies set playerID = " + getDBId() + ", armyID = " + i + ", armyString = ?");
                     ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
                     ps.setString(1, getArmies().elementAt(i).toString(false, "%"));
                     ps.executeUpdate();
