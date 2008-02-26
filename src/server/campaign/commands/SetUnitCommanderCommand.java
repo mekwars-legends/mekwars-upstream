@@ -112,10 +112,8 @@ public class SetUnitCommanderCommand implements Command {
 			CampaignMain.cm.toUser("AM:"+m.getModelName()+" is already a unit commander for this army!",Username);
 			return;
 		}
-
-		if(CampaignMain.cm.isUsingMySQL())
-			p.toDB();
 		
+		p.setSave();
 		
 		if ( commander ){
 			army.addCommander(m.getId());

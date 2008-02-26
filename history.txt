@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
++ Consolidated all SPlayer.toDB() calls into CampaignMain#savePlayerFile()
++ Save Disk I/O SPlayers are not saved a maximum of once every 60 seconds.
 + Fixed SQLExceptions in SPlayer.toDB() and SUnit.toDB()
 + Added ValidateUser command
 + Bug: Player Leech Penalties not being used correctly

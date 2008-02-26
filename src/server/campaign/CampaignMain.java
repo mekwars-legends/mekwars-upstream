@@ -2693,10 +2693,7 @@ public final class CampaignMain implements Serializable {
         for (House vh : CampaignMain.cm.getData().getAllHouses()) {
             SHouse currH = (SHouse) vh;
             for (SPlayer currP : currH.getAllOnlinePlayers().values()) {
-                if (CampaignMain.cm.isUsingMySQL())
-                    currP.toDB();
-                else
-                    this.savePlayerFile(currP);
+                this.savePlayerFile(currP,true);
             }
         }
 
@@ -2733,10 +2730,7 @@ public final class CampaignMain implements Serializable {
         for (House vh : CampaignMain.cm.getData().getAllHouses()) {
             SHouse currH = (SHouse) vh;
             for (SPlayer currP : currH.getAllOnlinePlayers().values()) {
-                if (CampaignMain.cm.isUsingMySQL())
-                    currP.toDB();
-                else
-                    this.savePlayerFile(currP);
+                this.savePlayerFile(currP,true);
                 if (Username != null)
                     CampaignMain.cm.toUser("AM:" + currP.getName() + " saved", Username, true);
             }
@@ -2748,10 +2742,8 @@ public final class CampaignMain implements Serializable {
      * commands This is used so the players have a Pfile created right away
      */
     public void forceSavePlayer(SPlayer p) {
-        if (CampaignMain.cm.isUsingMySQL())
-            p.toDB();
-        else
-            savePlayerFile(p);
+
+        savePlayerFile(p,true);
     }
 
     /**
@@ -2761,7 +2753,13 @@ public final class CampaignMain implements Serializable {
      * 
      * @author nmorris 1/13/06
      */
-    protected void savePlayerFile(SPlayer p) {
+    protected void savePlayerFile(SPlayer p, boolean forced) {
+
+        if ( System.currentTimeMillis() - p.getLastSaved() > 60 && !forced )
+            return;
+        
+
+        p.setLastSaved(System.currentTimeMillis());
 
         try {
             if (CampaignMain.cm.isUsingMySQL()) {
@@ -4012,7 +4010,7 @@ public final class CampaignMain implements Serializable {
             cm.doSendToAllOnlinePlayers("PI|DA|" + cm.getPlayerUpdateString(player), false);
         } catch (Exception ex) {
         }
-        player.setSave();
+        forceSavePlayer(player);
     }
 
     /**

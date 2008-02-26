@@ -2281,6 +2281,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         activePlayers.remove(lowerName);
         fightingPlayers.remove(lowerName);
 
+        CampaignMain.cm.forceSavePlayer(p);
         // add info to logs
         Date d = new Date(System.currentTimeMillis());
         CampaignData.mwlog.mainLog(d + ":" + "User Logged out: " + realName);

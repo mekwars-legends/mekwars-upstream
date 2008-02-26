@@ -139,6 +139,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
     private long lastPromoted = 0;
 
+    private long lastSaved = 0;
+    
     // CONSTRUCTORS
     /**
      * Stock constructor. Note that an SPlayer is data-less unless/until
@@ -164,7 +166,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
      */
     public void setSave() {
         if (!this.isLoading)
-            CampaignMain.cm.savePlayerFile(this);
+            CampaignMain.cm.savePlayerFile(this,false);
     }
 
     // PUBLIC METHODS
@@ -3629,4 +3631,11 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         return this.userValidated;
     }
 
+    public void setLastSaved(long time){
+        this.lastSaved = time;
+    }
+    
+    public long getLastSaved(){
+        return this.lastSaved;
+    }
 }// end SPlayer()
