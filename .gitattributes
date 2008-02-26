@@ -1726,6 +1726,7 @@ src/server/campaign/commands/mod/UnBanCommand.java -text
 src/server/campaign/commands/mod/UnBanIPCommand.java -text
 src/server/campaign/commands/mod/UnlockLancesCommand.java -text
 src/server/campaign/commands/mod/UpdateServerUnitsCacheCommand.java -text
+src/server/campaign/commands/mod/ValidateUserCommand.java -text
 src/server/campaign/commands/mod/ViewPlayerPartsCommand.java -text
 src/server/campaign/commands/mod/ViewPlayerPersonalPilotQueueCommand.java -text
 src/server/campaign/commands/mod/ViewPlayerUnitCommand.java -text

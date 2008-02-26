@@ -1581,6 +1581,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("UNLOCKLANCES", new UnlockLancesCommand());
         Commands.put("USEREWARDPOINTS", new UseRewardPointsCommand());
         Commands.put("VALIDATEEMAIL", new ValidateEmailCommand());
+        Commands.put("VALIDATEUSER", new ValidateUserCommand());
         Commands.put("VIEWPLAYERPARTS", new ViewPlayerPartsCommand());
         Commands.put("VIEWPLAYERPERSONALPILOTQUEUE", new ViewPlayerPersonalPilotQueueCommand());
         Commands.put("VIEWPLAYERUNIT", new ViewPlayerUnitCommand());

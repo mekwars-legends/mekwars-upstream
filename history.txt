@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
++ Added ValidateUser command
 + Bug: Player Leech Penalities not being used correctly
 + Added Single Player Faction Server Configs
 + Added Unit Research Server configs
