@@ -4,7 +4,7 @@ VERSION HISTORY:
 v 0.2.20.x
 + Fixed SQLExceptions in SPlayer.toDB() and SUnit.toDB()
 + Added ValidateUser command
-+ Bug: Player Leech Penalities not being used correctly
++ Bug: Player Leech Penalties not being used correctly
 + Added Single Player Faction Server Configs
 + Added Unit Research Server configs
 + Added Technology Research Server configs
