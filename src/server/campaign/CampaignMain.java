@@ -2755,7 +2755,7 @@ public final class CampaignMain implements Serializable {
      */
     protected void savePlayerFile(SPlayer p, boolean forced) {
 
-        if ( System.currentTimeMillis() - p.getLastSaved() > 60 && !forced )
+        if ( System.currentTimeMillis() - p.getLastSaved() < 500 && !forced )
             return;
         
 

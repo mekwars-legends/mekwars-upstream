@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
++ Bug: Players were not being saved if time since last save was greater than
+       60 milliseconds.  Changed save frequency to not more than twice per
+       second.  This should be plenty frequent to avoid data loss and still
+       give the database / file system time to write
 - Removed old hibernation files from server-dist
 + Bug: not creating reward build table correctly for single player factions
 + New MegaMek.jar 0.33.20-MW022608-5521
