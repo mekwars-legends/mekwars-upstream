@@ -141,7 +141,8 @@ public final class ServerConfigurationDialog implements ActionListener {
         JPanel technologyResearchPanel = new JPanel(); // Technology Reseach
                                                         // Panel
         JPanel unitResearchPanel = new JPanel(); // Research Unit Panel
-
+        JPanel factoryPurchasePanel = new JPanel(); //Allow players to purchase new factories.
+        
         /*
          * PGMH PANEL CONSTRUCTION
          * 
@@ -4801,7 +4802,7 @@ public final class ServerConfigurationDialog implements ActionListener {
             researchPanel1.add(baseTextField);
         }
 
-        for (int size = 0; size < Unit.ASSAULT; size++) {
+        for (int size = 0; size <= Unit.ASSAULT; size++) {
             baseTextField = new JTextField(5);
             researchPanel1.add(new JLabel(Unit.getWeightClassDesc(size)+" unit "+ mwclient.moneyOrFluMessage(true, false, -1, false) + ":", SwingConstants.TRAILING));
             baseTextField.setToolTipText("<HTML>" + mwclient.moneyOrFluMessage(true, false, -1, false) + " modifier for "+Unit.getWeightClassDesc(size)+" units</html>");
@@ -4817,7 +4818,7 @@ public final class ServerConfigurationDialog implements ActionListener {
             researchPanel2.add(baseTextField);
         }
 
-        for (int size = 0; size < Unit.ASSAULT; size++) {
+        for (int size = 0; size <= Unit.ASSAULT; size++) {
             baseTextField = new JTextField(5);
             researchPanel2.add(new JLabel(Unit.getWeightClassDesc(size)+" unit "+ mwclient.moneyOrFluMessage(false, false, -1, false) + ":", SwingConstants.TRAILING));
             baseTextField.setToolTipText("<HTML>" + mwclient.moneyOrFluMessage(false, false, -1, false) + " modifier for "+Unit.getWeightClassDesc(size)+" units</html>");
@@ -4832,6 +4833,70 @@ public final class ServerConfigurationDialog implements ActionListener {
         masterPanel.add(researchPanel1);
         masterPanel.add(researchPanel2);
         unitResearchPanel.add(masterPanel);
+
+        /*
+         * Unit Research Configuration Panel Construction
+         */
+        JPanel mainPurchasePanel = new JPanel(new SpringLayout());
+        JPanel purchasePanel1= new JPanel(new SpringLayout());
+        JPanel purchasePanel2 = new JPanel(new SpringLayout());
+        masterPanel = new JPanel();
+        masterPanel.setLayout(new BoxLayout(masterPanel, BoxLayout.Y_AXIS));
+
+        baseTextField = new JTextField(5);
+        mainPurchasePanel.add(new JLabel("New Factory " + mwclient.moneyOrFluMessage(true, false, -1, false) + ":", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<HTML>" + mwclient.moneyOrFluMessage(true, false, -1, false) + " to buy 1 factory</html>");
+        baseTextField.setName("NewFactoryBaseCost");
+        mainPurchasePanel.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        mainPurchasePanel.add(new JLabel("New Factory " + mwclient.moneyOrFluMessage(false, false, -1, false) + ":", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<HTML>" + mwclient.moneyOrFluMessage(true, false, -1, false) + " to buy 1 factory</html>");
+        baseTextField.setName("NewFactoryBaseFlu");
+        mainPurchasePanel.add(baseTextField);
+
+        SpringLayoutHelper.setupSpringGrid(mainPurchasePanel, 4);
+
+        for (int type = 0; type < Unit.MAXBUILD; type++) {
+            baseTextField = new JTextField(5);
+            purchasePanel1.add(new JLabel(Unit.getDescriptionForID(type)+" unit "+ mwclient.moneyOrFluMessage(true, false, -1, false) + ":", SwingConstants.TRAILING));
+            baseTextField.setToolTipText("<HTML>" + mwclient.moneyOrFluMessage(true, false, -1, false) + " modifier for "+Unit.getDescriptionForID(type)+" unit factory</html>");
+            baseTextField.setName("NewFactoryCostModifier"+Unit.getDescriptionForID(type));
+            purchasePanel1.add(baseTextField);
+        }
+
+        for (int size = 0; size <= Unit.ASSAULT; size++) {
+            baseTextField = new JTextField(5);
+            purchasePanel1.add(new JLabel(Unit.getWeightClassDesc(size)+" unit "+ mwclient.moneyOrFluMessage(true, false, -1, false) + ":", SwingConstants.TRAILING));
+            baseTextField.setToolTipText("<HTML>" + mwclient.moneyOrFluMessage(true, false, -1, false) + " modifier for "+Unit.getWeightClassDesc(size)+" unit factory</html>");
+            baseTextField.setName("NewFactoryCostModifier"+Unit.getWeightClassDesc(size));
+            purchasePanel1.add(baseTextField);
+        }
+        SpringLayoutHelper.setupSpringGrid(purchasePanel1, 6);
+
+        for (int type = 0; type < Unit.MAXBUILD; type++) {
+            baseTextField = new JTextField(5);
+            purchasePanel2.add(new JLabel(Unit.getDescriptionForID(type)+" unit "+ mwclient.moneyOrFluMessage(true, false, -1, false) + ":", SwingConstants.TRAILING));
+            baseTextField.setToolTipText("<HTML>" + mwclient.moneyOrFluMessage(true, false, -1, false) + " modifier for "+Unit.getDescriptionForID(type)+" unit factory</html>");
+            baseTextField.setName("NewFactoryFluModifier"+Unit.getDescriptionForID(type));
+            purchasePanel2.add(baseTextField);
+        }
+
+        for (int size = 0; size <= Unit.ASSAULT; size++) {
+            baseTextField = new JTextField(5);
+            purchasePanel2.add(new JLabel(Unit.getWeightClassDesc(size)+" unit "+ mwclient.moneyOrFluMessage(false, false, -1, false) + ":", SwingConstants.TRAILING));
+            baseTextField.setToolTipText("<HTML>" + mwclient.moneyOrFluMessage(false, false, -1, false) + " modifier for "+Unit.getWeightClassDesc(size)+" unit factory</html>");
+            baseTextField.setName("NewFactoryFluModifier"+Unit.getWeightClassDesc(size));
+            purchasePanel2.add(baseTextField);
+        }
+
+        SpringLayoutHelper.setupSpringGrid(purchasePanel2, 6);
+
+        masterPanel.add(mainPurchasePanel);
+        masterPanel.add(purchasePanel1);
+        masterPanel.add(purchasePanel2);
+        factoryPurchasePanel.add(masterPanel);
+
         // Set the actions to generate
         okayButton.setActionCommand(okayCommand);
         cancelButton.setActionCommand(cancelCommand);
@@ -4857,6 +4922,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         ConfigPane.addTab("Disconnection", null, disconenctionPanel, "Disconnection autoresolution settings");
         ConfigPane.addTab("Faction", null, factionPanel, "House Stuff");
         ConfigPane.addTab("Factory Options", null, productionPanel, "Factories That Can Do");
+        ConfigPane.addTab("Factory Purchase", null, factoryPurchasePanel, "Factories For Sale");
         ConfigPane.addTab("File Paths", null, pathsPanel, "Paths");
         ConfigPane.addTab("Influence", null, influencePanel, "Influence");
         ConfigPane.addTab("Loss Compensation", null, lossCompensationPanel, "Extra Payments for salvaged/destroyed units.");

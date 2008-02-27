@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
++ New MegaMek.jar 0.33.20-MW022608-5521
++ Bug: Defect command defecting players back to Newbie House
++ Bug: Switching planet owner ship was not setting total conquest points
++ Added Factory Purchasing Variables to MWAdmin#ServerConfig Dialog
 + Consolidated all SPlayer.toDB() calls into CampaignMain#savePlayerFile()
 + Save Disk I/O SPlayers are not saved a maximum of once every 60 seconds.
 + Fixed SQLExceptions in SPlayer.toDB() and SUnit.toDB()

@@ -67,7 +67,7 @@ public class AdminChangePlanetOwnerCommand implements Command {
 		p.setOwner(p.getOwner(), h, true);//pass in old owner using p.getOwner so people get status updates 
 		
 		HashMap<Integer,Integer> flu = new HashMap<Integer,Integer>();
-		flu.put(h.getId(),100);
+		flu.put(h.getId(),p.getConquestPoints());
 		p.getInfluence().setInfluence(flu);
 		p.updated();
 		

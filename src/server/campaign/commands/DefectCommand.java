@@ -18,6 +18,7 @@ package server.campaign.commands;
 
 import java.io.FileOutputStream;
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
@@ -124,27 +125,13 @@ public class DefectCommand implements Command {
 
             // establish XP minimums
             int mercEXPRequired = CampaignMain.cm.getIntegerConfig("MinEXPforMercenaries") - 10 * (int) (p.getRating() - 1600); // Min
-                                                                                                                                // EXP
-                                                                                                                                // to
-                                                                                                                                // become
-                                                                                                                                // a
-                                                                                                                                // merc
-                                                                                                                                // is
-                                                                                                                                // that
-                                                                                                                                // standard
-                                                                                                                                // amount
-                                                                                                                                // (7500)
-                                                                                                                                // minus
-                                                                                                                                // 10
-                                                                                                                                // per
-                                                                                                                                // ELO
-                                                                                                                                // above
-                                                                                                                                // 1600.
+            // EXP to become a merc is that standard amount (7500) minus 10 per
+            // ELO above 1600.
             int minEXPRequired = CampaignMain.cm.getIntegerConfig("MinEXPforDefecting"); // basic
-                                                                                            // start
-                                                                                            // for
-                                                                                            // exp
-                                                                                            // needed
+            // start
+            // for
+            // exp
+            // needed
 
             TreeSet<HouseRankingHelpContainer> s = CampaignMain.cm.getHouseRanking();
             int factionPlace = s.size();
@@ -476,10 +463,10 @@ public class DefectCommand implements Command {
 
                     // set new values. simple.
                     p.addExperience(-expLoss, false);// pos number for string
-                                                        // setup. negate to
-                                                        // reduce.
+                    // setup. negate to
+                    // reduce.
                     p.addMoney(-mnyLoss);// pos number for string setup.
-                                            // negate to reduce.
+                    // negate to reduce.
                     p.setInfluence(newFlu);
                     p.setReward(newRP);
 
@@ -535,11 +522,11 @@ public class DefectCommand implements Command {
                             if ((damaged && allowDamagedUnits) || !damaged)
                                 hsUpdates.append(oldHouse.addUnit(toRemove, false));
                             p.removeUnit(toRemove.getId(), false);// check ops
-                                                                    // will
-                                                                    // execute
-                                                                    // on login
-                                                                    // to new
-                                                                    // house
+                            // will
+                            // execute
+                            // on login
+                            // to new
+                            // house
 
                             // increment counter
                             numRemoved++;
@@ -594,7 +581,7 @@ public class DefectCommand implements Command {
             // let people defect and retain faction leadership access, etc. May
             // be
             // a problem for mods, but better than the alternative ...
-            if (p.getMyHouse().equals(newHouse) && !CampaignMain.cm.getServer().isAdmin(Username))
+            if (p.getMyHouse().equals(newHouse) && !CampaignMain.cm.getServer().isAdmin(Username) && !isSingleFaction)
                 MWPasswd.getRecord(Username).setAccess(2);
 
             /*
@@ -618,7 +605,7 @@ public class DefectCommand implements Command {
             if (CampaignMain.cm.isUsingMySQL())
                 CampaignMain.cm.MySQL.clearArmies(p.getDBId());
 
-            // CampaignMain.cm.getPlayer(Username);
+            CampaignMain.cm.forceSavePlayer(p);
             CampaignMain.cm.doLoginPlayer(Username);
             CampaignMain.cm.toUser("SP|Welcome to " + HouseName + "!", p.getName(), false);
 
@@ -649,8 +636,7 @@ public class DefectCommand implements Command {
             }// end if(defection leaves player with negative bays)
 
             p.setPlayerClientVersion(clientVersion);
-            // save the player in his new house
-            p.setSave();
+            CampaignMain.cm.forceSavePlayer(p);
 
         }// end if(more tokens)
 
@@ -681,14 +667,14 @@ public class DefectCommand implements Command {
         house.setTechLevel(TechConstants.T_IS_LEVEL_1);
         CampaignMain.cm.addHouse(house);
         CampaignMain.cm.doSendToAllOnlinePlayers("PL|ANH|" + house.toString(), false);
-
-        findEmptyPlanet(house);
-        
-        for ( int type = 0; type < SUnit.MAXBUILD; type++ ) {
-            for ( int weight = 0; weight <= SUnit.ASSAULT; weight++ ) {
-                house.addPP(weight, type, CampaignMain.cm.getIntegerConfig("BaseFactoryComponents"), true);
+        for (int type = 0; type < SUnit.MAXBUILD; type++) {
+            for (int weight = 0; weight <= SUnit.ASSAULT; weight++) {
+                house.addPP(weight, type, CampaignMain.cm.getIntegerConfig("BaseFactoryComponents"), false);
             }
         }
+
+        findEmptyPlanet(house);
+
         house.updated();
 
         return house;
@@ -771,9 +757,14 @@ public class DefectCommand implements Command {
                 } catch (Exception ex) {
                     CampaignData.mwlog.errLog(ex);
                 }
-            } 
+            }
         }
 
-        planet.doGainInfluence(house, CampaignMain.cm.getHouseById(-1), planet.getConquestPoints(), true);
+        HashMap<Integer,Integer> flu = new HashMap<Integer,Integer>();
+        flu.put(house.getId(),planet.getConquestPoints());
+        planet.getInfluence().setInfluence(flu);
+        
+        planet.setOwner(null, planet.checkOwner(), true);
+        planet.updated();
     }
 }// end DefectCommand.java

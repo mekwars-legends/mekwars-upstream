@@ -916,7 +916,7 @@ public final class CampaignMain implements Serializable {
          */
         SHouse loginHouse = toLogin.getMyHouse();
         if (loginHouse == null) {
-            toUser("Null login faction referenced from SPlayer. Major problem. Report ASAP.", Username, true);
+            toUser("    . Major problem. Report ASAP.", Username, true);
             CampaignMain.cm.doSendModMail("NOTE", toLogin.getName()+" has a null login faction! Moving to "+CampaignMain.cm.getConfig("NewbieHouseName"));
             loginHouse = CampaignMain.cm.getHouseFromPartialString(CampaignMain.cm.getConfig("NewbieHouseName"));
             toLogin.setMyHouse(loginHouse);

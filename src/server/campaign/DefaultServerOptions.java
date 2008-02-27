@@ -1044,6 +1044,10 @@ public class DefaultServerOptions {
         
         //Buying Factory options
         defaults.setProperty("NewFactoryBaseCost", "100");
+        defaults.setProperty("NewFactoryCostModifierLight", "1.0");
+        defaults.setProperty("NewFactoryCostModifierMedium", "1.0");
+        defaults.setProperty("NewFactoryCostModifierHeavy", "1.0");
+        defaults.setProperty("NewFactoryCostModifierAssault", "1.0");
         defaults.setProperty("NewFactoryCostModifierMek", "1.0");
         defaults.setProperty("NewFactoryCostModifierVehicle", "1.0");
         defaults.setProperty("NewFactoryCostModifierInfantry", "1.0");
@@ -1054,6 +1058,10 @@ public class DefaultServerOptions {
         defaults.setProperty("NewFactoryCostModifierHeavy", "1.0");
         defaults.setProperty("NewFactoryCostModifierAssault", "1.0");
         defaults.setProperty("NewFactoryBaseFlu", "100");
+        defaults.setProperty("NewFactoryFluModifierLight", "1.0");
+        defaults.setProperty("NewFactoryFluModifierMedium", "1.0");
+        defaults.setProperty("NewFactoryFluModifierHeavy", "1.0");
+        defaults.setProperty("NewFactoryFluModifierAssault", "1.0");
         defaults.setProperty("NewFactoryFluModifierMek", "1.0");
         defaults.setProperty("NewFactoryFluModifierVehicle", "1.0");
         defaults.setProperty("NewFactoryFluModifierInfantry", "1.0");
