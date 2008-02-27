@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
+- Removed unused data.xml loader from CampaignData
+- Removed  ./lib/xstream.jar entry in DedHostManifest.txt
 + Bug: Fixed missing entry in DedHostManifest.txt
 + Bug: Players were not being saved if time since last save was greater than
        60 milliseconds.  Changed save frequency to not more than twice per

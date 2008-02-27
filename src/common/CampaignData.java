@@ -16,8 +16,6 @@
 
 package common;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,11 +26,8 @@ import java.util.TreeMap;
 
 import megamek.common.AmmoType;
 
-import com.thoughtworks.xstream.io.xml.DomDriver;
-
 import common.util.BinReader;
 import common.util.BinWriter;
-import common.util.MMNetXStream;
 import common.util.MWLogger;
 
 
@@ -470,19 +465,6 @@ public class CampaignData implements TerrainProvider {
         datWriter.write(this,"CampaignData");
         datWriter.close();
     }*/
-
-    /**
-     * Loads itself back from disk.
-     * A state written with saveData is loaded.
-     */
-    public static CampaignData loadData(File directory) throws IOException {
-        if (directory == null || !directory.isDirectory())
-            throw new IllegalArgumentException("Please specify a directory.");
-        MMNetXStream xml = new MMNetXStream(new DomDriver());
-        CampaignData data = (CampaignData)xml.fromXML(
-                new FileReader(directory.getPath()+"/data.xml"));
-        return data;
-    }
 
     /**
      * @see common.TerrainProvider#getTerrain(int)
