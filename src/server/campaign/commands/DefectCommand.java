@@ -735,8 +735,8 @@ public class DefectCommand implements Command {
                 }
 
                 try {
-                    String buildTableName = "./data/buildtables/standard/";
-                    String rewardbuildTableName = "./data/buildtables/reward";
+                    String buildTableName = "./data/buildtables/"+BuildTable.STANDARD+"/";
+                    String rewardbuildTableName = "./data/buildtables/"+BuildTable.REWARD+"/";
                     if (type == SUnit.MEK) {
                         buildTableName += house.getName() + "_" + weightName + ".txt";
                         rewardbuildTableName += house.getName() + "_" + weightName + ".txt";
