@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
++ Bug: Fixed missing entry in DedHostManifest.txt
 + Bug: Players were not being saved if time since last save was greater than
        60 milliseconds.  Changed save frequency to not more than twice per
        second.  This should be plenty frequent to avoid data loss and still
