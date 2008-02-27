@@ -17,6 +17,9 @@
 
 package dedicatedhost.cmd;
 
+import java.util.StringTokenizer;
+
+import dedicatedhost.CUser;
 import dedicatedhost.MWDedHost;
 
 /**
@@ -32,6 +35,13 @@ public class US extends Command {
 	    super(client);
 	}
 	
-	public void execute(String input) {}
+	public void execute(String input) {
+	       StringTokenizer st = decode(input);
+	       mwclient.getUsers().clear();
+	        
+	        //add all users to the list
+	        while (st.hasMoreElements()) 
+	            mwclient.getUsers().add(new CUser(st.nextToken()));
+	}
 	
 }

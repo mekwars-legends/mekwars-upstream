@@ -217,8 +217,8 @@ public final class MWDedHost implements IClient {
         }
 
         // set New timestamp
-        this.dataFetcher.setLastTimestamp(new Date(System.currentTimeMillis()));
-        this.dataFetcher.store();
+        //this.dataFetcher.setLastTimestamp(new Date(System.currentTimeMillis()));
+        //this.dataFetcher.store();
 
         this.getServerConfigData();
 

@@ -21,9 +21,7 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 
 import common.CampaignData;
-import common.House;
 import common.Influences;
-import common.Planet;
 import common.util.BinReader;
 import common.util.BinWriter;
 import common.util.MD5;
