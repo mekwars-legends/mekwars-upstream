@@ -1,4 +1,5 @@
 * text=auto !eol
+.settings/org.eclipse.jdt.ui.prefs -text
 /AdminManifest.txt -text
 /ClientManifest.txt -text
 /DedHostManifest.txt -text
