@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
++ Added visibility settings for Leadership menu and menu items
++ Added PurchaseFactoryCommand.java
 + Bug: MWDedHost not saving CUsers, I thought they didn't need them duh.
 - Removed unused data.xml loader from CampaignData
 - Removed  ./lib/xstream.jar entry in DedHostManifest.txt

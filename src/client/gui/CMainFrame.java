@@ -476,11 +476,15 @@ public class CMainFrame extends JFrame {
         // jMenuTask.setVisible(loggedin);
         jMenuHost.setVisible(!disconnected);
 
-        if (userLevel >= Integer.parseInt(mwclient.getserverConfigs("factionLeaderLevel")))
-            jMenuLeaderShip.setVisible(true);
-        else
-            jMenuLeaderShip.setVisible(false);
-
+        jMenuLeaderShip.setVisible(userLevel >= Integer.parseInt(mwclient.getserverConfigs("factionLeaderLevel")));
+        
+        jMenuLeaderDemote.setVisible(userLevel >= mwclient.getData().getAccessLevel("DemotePlayer"));
+        jMenuLeaderFluff.setVisible(userLevel >= mwclient.getData().getAccessLevel("FactionLeaderFluff"));
+        jMenuLeaderMute.setVisible(userLevel >= mwclient.getData().getAccessLevel("FactionLeaderMute"));
+        jMenuLeaderPromote.setVisible(userLevel >= mwclient.getData().getAccessLevel("PromotePlayer"));
+        jMenuLeaderFactionColor.setVisible(userLevel >= mwclient.getData().getAccessLevel("ChangeHouseColor"));
+        jMenuLeaderPlayerColor.setVisible(userLevel >= mwclient.getData().getAccessLevel("AdminSetHousePlayerColor"));
+        
         jMenuFileConnect.setVisible(disconnected);
         jMenuFileDisconnect.setVisible(!disconnected);
         jMenuFileRegister.setVisible(!disconnected);
