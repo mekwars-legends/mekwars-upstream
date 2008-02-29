@@ -65,7 +65,7 @@ public class Operation {
 	
 	//TreeMap of modifiers. As modifiers are loaded, those
 	//targetting an operation are added to this map.
-	TreeMap modifyingOperations;
+	TreeMap<String,ModifyingOperation> modifyingOperations;
 	
 	//Operation properties (hashtable of configured params)
 	Properties opValues;
@@ -93,7 +93,7 @@ public class Operation {
 		mods_indicator = Operation.MODS_NOTACCEPTED;
 		
 		//create mod map
-		modifyingOperations = new TreeMap();
+		modifyingOperations = new TreeMap<String, ModifyingOperation>();
 		
 		//set the value tables
 		opValues = params;

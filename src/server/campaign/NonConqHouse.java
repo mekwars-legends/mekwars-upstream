@@ -19,7 +19,12 @@ package server.campaign;
 
 public class NonConqHouse extends SHouse {
 	
-	public NonConqHouse (int id, String name, String HouseColor, int BaseGunner, int BasePilot, String abbreviation) {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 7378173181135107451L;
+
+    public NonConqHouse (int id, String name, String HouseColor, int BaseGunner, int BasePilot, String abbreviation) {
 		super(id,name,HouseColor,BaseGunner,BasePilot,abbreviation);
 		setConquerable(false);
 	}

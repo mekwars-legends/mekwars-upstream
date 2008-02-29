@@ -27,7 +27,11 @@ import java.util.StringTokenizer;
 
 public class MMGame implements Serializable {
 	
-	//VARIABLES
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -7500735952739732172L;
+    //VARIABLES
 	int port;
 	int maxPlayers;
 	String ip;

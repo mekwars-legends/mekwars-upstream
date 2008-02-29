@@ -56,7 +56,12 @@ public class UnitSelectionDialog extends JDialog implements ActionListener {
 	
 	//variables
 	
-	//combo box to pick unit from
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 16880146524838545L;
+
+    //combo box to pick unit from
 	private JComboBox possibleUnits = new JComboBox();
 	
 	//buttons
@@ -83,7 +88,12 @@ public class UnitSelectionDialog extends JDialog implements ActionListener {
 		
 		//populate the combo box
 		possibleUnits.setModel(new DefaultComboBoxModel(mwclient.getPlayer().getHangar()) {
-			@Override
+			/**
+             * 
+             */
+            private static final long serialVersionUID = -3752642922668363196L;
+
+            @Override
 			public Object getElementAt(int index) {
 				CUnit mm = (CUnit)super.getElementAt(index);
 				if ( mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE )

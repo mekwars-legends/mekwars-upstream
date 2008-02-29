@@ -40,6 +40,7 @@ import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.net.MalformedURLException;
 import java.util.Dictionary;
+
 import javax.swing.ImageIcon;
 import javax.swing.Icon;
 import javax.swing.JEditorPane;
@@ -90,7 +91,8 @@ public class MyImageView extends View implements ImageObserver, MouseListener, M
 	}
 	
 	
-	private void initialize( Element elem ) {
+	@SuppressWarnings("unchecked")
+    private void initialize( Element elem ) {
 		synchronized(this) {
 			loading = true;
 			fWidth = fHeight = 0;
@@ -107,8 +109,7 @@ public class MyImageView extends View implements ImageObserver, MouseListener, M
 			if (isURL()) {
 				URL src = getSourceURL();
 				if( src != null ) {
-				    Object object =  getDocument().getProperty(IMAGE_CACHE_PROPERTY);
-					Dictionary<URL,Image> cache = (Dictionary<URL,Image>)object;
+				    Dictionary<URL,Image> cache = (Dictionary<URL,Image>)getDocument().getProperty(IMAGE_CACHE_PROPERTY);
 					if( cache != null )
 						fImage = (Image) cache.get(src);
 					else

@@ -88,7 +88,13 @@ import client.gui.CMainFrame;
 
 public class RepodSelectorDialog extends JFrame implements ActionListener, KeyListener, ListSelectionListener, Runnable, WindowListener, ItemListener {
 	
-	//how long after a key is typed does a new search begin
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -6467246609231845514L;
+
+
+    //how long after a key is typed does a new search begin
 	private final static int KEY_TIMEOUT = 1000;
 	
 	
@@ -121,7 +127,7 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
 	
 	private MWClient mwclient = null;
 	
-	private TreeMap chassieList = new TreeMap();
+	private TreeMap<String,String> chassieList = new TreeMap<String, String>();
 	
 	private String unitId = "";
 	
@@ -258,7 +264,7 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
 	
 	private void filterMechs() {
 		
-		Vector vMechs = new Vector(1,1);
+		Vector<MechSummary> vMechs = new Vector<MechSummary>(1,1);
 		MechSummary[] mechs = MechSummaryCache.getInstance().getAllMechs();
 		
 		//break out if there are no units to filter

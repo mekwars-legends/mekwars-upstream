@@ -53,9 +53,9 @@ public final class MWTracker {
 	private String outputPath;
 	
 	//blocking booleans.
-	private Vector processingThreads;
-	private Vector purgingThreads;
-	private Vector htmlThreads;
+	private Vector<Thread> processingThreads;
+	private Vector<Thread> purgingThreads;
+	private Vector<Thread> htmlThreads;
 
 	private int oneWeek = (7*24*60*60*1000);
 	
@@ -76,9 +76,9 @@ public final class MWTracker {
 		addToLog("MWTracker initiated. Version " + MWTracker.VERSION);
 		
 		//initialize vectors (thread safe! yay!)
-		processingThreads = new Vector(1,1);
-		purgingThreads = new Vector(1,1);
-		htmlThreads = new Vector(1,1);
+		processingThreads = new Vector<Thread>(1,1);
+		purgingThreads = new Vector<Thread>(1,1);
+		htmlThreads = new Vector<Thread>(1,1);
 		
 		/*
 		 * Ensure that required directories are in place. If
@@ -154,15 +154,15 @@ public final class MWTracker {
 		return recordFilePath;
 	}
 	
-	public Vector getProcessingThreads() {
+	public Vector<Thread> getProcessingThreads() {
 		return processingThreads;
 	}
 	
-	public Vector getPurgingThreads() {
+	public Vector<Thread> getPurgingThreads() {
 		return purgingThreads;
 	}
 	
-	public Vector getHTMLThreads() {
+	public Vector<Thread> getHTMLThreads() {
 		return htmlThreads;
 	}
 	

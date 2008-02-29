@@ -1050,6 +1050,9 @@ public final class SUnit extends Unit{
 
         // get a base BV from MegaMek
         int calcedBV = this.getEntity().calculateBattleValue(false);
+        
+        this.getEntity().setShutDown(false);
+        int startupBV = this.getEntity().calculateBattleValue(false);
 
         // Boost BV of super-fast tanks if the "FastHoverBVMod" is a positive
         // number.
@@ -1207,7 +1210,8 @@ public final class SUnit extends Unit{
             BV = toReturn;
         } else
             toReturn = BV;
-
+        
+        
         // if the BV is negative, send a 0 instead.
         return (toReturn < 0) ? 0 : toReturn;
     }

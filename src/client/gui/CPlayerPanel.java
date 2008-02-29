@@ -46,6 +46,10 @@ import client.campaign.CPlayer;
 
 public class CPlayerPanel extends JScrollPane {
 	
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7036003412110367753L;
     MWClient mwclient;
     CPlayer player;
     CConfig config;

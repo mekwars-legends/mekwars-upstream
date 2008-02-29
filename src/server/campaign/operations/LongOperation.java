@@ -36,6 +36,7 @@ import server.campaign.SPlanet;
 import server.campaign.SHouse;
 
 // TODO: Remove "unused" once longs are running
+@SuppressWarnings("unused")
 public class LongOperation implements Comparable<LongOperation> {
 
     // IVARS

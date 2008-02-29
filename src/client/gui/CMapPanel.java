@@ -42,7 +42,16 @@ import common.CampaignData;
 
 public class CMapPanel extends JPanel {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5547551465585402891L;
     private class ZoomSlider extends JSlider implements ChangeListener {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -2214264904474265394L;
+
         ZoomSlider() {
             super(HORIZONTAL, map.conf.reverseScaleMin,map.conf.reverseScaleMax, 
                     map.conf.reverseScaleMin + 

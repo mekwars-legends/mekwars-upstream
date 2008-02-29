@@ -57,7 +57,11 @@ import client.campaign.CUnit;
 
     public class BulkRepairDialog extends JFrame implements ActionListener, KeyListener, ChangeListener{
 	
-	//store the client backlink for other things to use
+	/**
+         * 
+         */
+        private static final long serialVersionUID = 2053155152906533410L;
+    //store the client backlink for other things to use
 	private MWClient mwclient = null;
     private Entity unit = null;
     private CUnit playerUnit = null;

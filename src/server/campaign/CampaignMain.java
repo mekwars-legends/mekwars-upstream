@@ -2522,7 +2522,7 @@ public final class CampaignMain implements Serializable {
         for (House vh : CampaignMain.cm.getData().getAllHouses()) {
             SHouse currH = (SHouse) vh;
             for (SPlayer currP : currH.getAllOnlinePlayers().values()) {
-                this.savePlayerFile(currP, true);
+                this.savePlayerFile(currP);
             }
         }
 
@@ -2546,7 +2546,7 @@ public final class CampaignMain implements Serializable {
         for (House vh : CampaignMain.cm.getData().getAllHouses()) {
             SHouse currH = (SHouse) vh;
             for (SPlayer currP : currH.getAllOnlinePlayers().values()) {
-                this.savePlayerFile(currP, true);
+                this.savePlayerFile(currP);
                 if (Username != null)
                     CampaignMain.cm.toUser("AM:" + currP.getName() + " saved", Username, true);
             }
@@ -2558,7 +2558,7 @@ public final class CampaignMain implements Serializable {
      */
     public void forceSavePlayer(SPlayer p) {
 
-        savePlayerFile(p, true);
+        savePlayerFile(p);
     }
 
     /**
@@ -2566,12 +2566,7 @@ public final class CampaignMain implements Serializable {
      * 
      * @author nmorris 1/13/06
      */
-    protected void savePlayerFile(SPlayer p, boolean forced) {
-
-        if (System.currentTimeMillis() - p.getLastSaved() < 500 && !forced)
-            return;
-
-        p.setLastSaved(System.currentTimeMillis());
+    private void savePlayerFile(SPlayer p) {
 
         try {
             if (CampaignMain.cm.isUsingMySQL()) {

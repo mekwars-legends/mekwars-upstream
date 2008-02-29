@@ -50,6 +50,10 @@ import common.MMGame;
 
 public class CBattlePanel extends JPanel {
 	
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -1556406945897698254L;
     private final MWClient mwclient;
 	private final JTable BattleTable;
 	private final BattlesModel battleTableModel;
@@ -462,7 +466,12 @@ public class CBattlePanel extends JPanel {
 	
 	class BattlesModel extends AbstractTableModel {
 		
-		public Object[] sortedGames; //not really though, sort is handled elsewhere...
+		/**
+         * 
+         */
+        private static final long serialVersionUID = -6384905445657195650L;
+
+        public Object[] sortedGames; //not really though, sort is handled elsewhere...
 		
 		public final static int NAME = 0;
 		public final static int PLAYERCOUNT = 1;
@@ -559,7 +568,12 @@ public class CBattlePanel extends JPanel {
 		
 		class Renderer extends DefaultTableCellRenderer {
 	
-			@Override
+			/**
+             * 
+             */
+            private static final long serialVersionUID = -2353501701911884548L;
+
+            @Override
 			public java.awt.Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				java.awt.Component c =  super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 				

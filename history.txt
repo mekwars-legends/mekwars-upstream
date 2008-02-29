@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
+- Removed LastSaved code. More trouble then its worth.
 + Rev Client/Server 0.2.21.0
 + New MegaMek.jar 0.33.20-MW022908-5522
 + Added Purchase Factory GUI

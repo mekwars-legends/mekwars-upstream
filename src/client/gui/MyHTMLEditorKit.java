@@ -26,7 +26,13 @@ import javax.swing.text.StyleConstants;
 
 public class MyHTMLEditorKit extends HTMLEditorKit {
 
-  @Override
+  /**
+     * 
+     */
+    private static final long serialVersionUID = -891227318566572289L;
+
+
+@Override
 public ViewFactory getViewFactory() {
     return new HTMLFactoryX();
   }

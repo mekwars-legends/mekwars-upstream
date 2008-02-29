@@ -74,7 +74,11 @@ import client.campaign.CUnit;
 
     public class AdvancedRepairDialog extends JFrame implements ActionListener, MouseListener, KeyListener, ChangeListener{
 	
-	//store the client backlink for other things to use
+	/**
+         * 
+         */
+        private static final long serialVersionUID = 381067715464633969L;
+    //store the client backlink for other things to use
 	private MWClient mwclient = null;
     private Entity unit = null;
     private CUnit playerUnit = null;
@@ -375,7 +379,7 @@ import client.campaign.CUnit;
                         CriticalSlot cs = unit.getCritical(critLocation,critSlot);
                         AmmoType at = (AmmoType)unit.getEquipmentType(cs);
     
-                        Vector vAllTypes = AmmoType.getMunitionsFor(at.getAmmoType());
+                        Vector<AmmoType> vAllTypes = AmmoType.getMunitionsFor(at.getAmmoType());
                         //location++;
                         
                         boolean canDump = mmClient.game.getOptions().booleanOption("lobby_ammo_dump");
@@ -387,7 +391,7 @@ import client.campaign.CUnit;
                             return;
                         
                         for (int x = 0, n = vAllTypes.size(); x < n; x++) {
-                            AmmoType atCheck = (AmmoType)vAllTypes.elementAt(x);
+                            AmmoType atCheck = vAllTypes.elementAt(x);
                             boolean bTechMatch = TechConstants.isLegal(unit.getTechLevel(), atCheck.getTechLevel());//(unit.getTechLevel() == atCheck.getTechLevel());
                             
                             String munition = Long.toString(atCheck.getMunitionType());

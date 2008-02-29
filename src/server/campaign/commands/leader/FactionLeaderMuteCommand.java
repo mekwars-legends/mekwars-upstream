@@ -66,7 +66,7 @@ public class FactionLeaderMuteCommand implements Command {
 		}
 		
 		
-		Vector factionIgnores = CampaignMain.cm.getServer().getFactionLeaderIgnoreList();
+		Vector<String> factionIgnores = CampaignMain.cm.getServer().getFactionLeaderIgnoreList();
 		
 		//do the actual mute
 		if (factionIgnores.indexOf(p.getName()) == -1) {
