@@ -45,6 +45,7 @@ import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.Constructor;
 import java.net.ConnectException;
 import java.net.InetAddress;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -3112,7 +3113,7 @@ public final class MWClient implements IClient {
     }
 
     public String moneyOrFluMessage(boolean money, boolean shortname, int amount, boolean showSign) {
-        String result = Integer.toString(amount);
+        String result = NumberFormat.getInstance().format(amount);
 
         String moneyShort = getserverConfigs("MoneyShortName");
         String moneyLong = getserverConfigs("MoneyLongName");

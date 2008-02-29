@@ -28,6 +28,7 @@ import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -2849,7 +2850,7 @@ public final class CampaignMain implements Serializable {
     }
 
     public String moneyOrFluMessage(boolean money, boolean shortname, int amount, boolean showSign) {
-        String result = Integer.toString(amount);
+        String result = NumberFormat.getInstance().format(amount);
         String moneyShort = cm.getConfig("MoneyShortName").toLowerCase();
         String moneyLong = cm.getConfig("MoneyLongName");
         String fluShort = cm.getConfig("FluShortName").toLowerCase();
@@ -2860,7 +2861,7 @@ public final class CampaignMain implements Serializable {
         if (amount < 0) {
             amount *= -1;
             sign = "-";
-            result = Integer.toString(amount);
+            result = NumberFormat.getInstance().format(amount);
         }
 
         if (!shortname)

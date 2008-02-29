@@ -16,6 +16,7 @@
 
 package common.util;
 
+import java.text.DecimalFormat;
 import java.util.logging.Logger;
 import java.util.logging.FileHandler;
 import java.util.logging.SimpleFormatter;
@@ -24,6 +25,7 @@ import java.util.logging.LogRecord;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.io.File;
+
 
 public final class MWLogger {// final - no extension of the server logger
 
@@ -86,30 +88,27 @@ public final class MWLogger {// final - no extension of the server logger
             now.setTimeInMillis(record.getMillis());
             StringBuilder sb = new StringBuilder();
 
+            DecimalFormat mills = new DecimalFormat("###");
+            DecimalFormat secs = new DecimalFormat("##");
+            
             sb.append(now.get(Calendar.YEAR));
-            if (now.get(Calendar.MONTH) < 9)
-                sb.append("0");
-            sb.append((now.get(Calendar.MONTH) + 1));
-            if (now.get(Calendar.DAY_OF_MONTH) < 10)
-                sb.append("0");
-            sb.append(now.get(Calendar.DAY_OF_MONTH) + " ");
-            if (now.get(Calendar.HOUR_OF_DAY) < 10)
-                sb.append("0");
-            sb.append(now.get(Calendar.HOUR_OF_DAY) + ":");
-            if (now.get(Calendar.MINUTE) < 10)
-                sb.append("0");
+            sb.append(secs.format(now.get(Calendar.MONTH) + 1));
+            sb.append(secs.format(now.get(Calendar.DAY_OF_MONTH)));
+            sb.append(" ");
+            sb.append(now.get(Calendar.HOUR_OF_DAY));
+            sb.append(":");
+            sb.append(secs.format(now.get(Calendar.MINUTE)));
             if (addSeconds) {
-                sb.append(now.get(Calendar.MINUTE) + ":");
-                if (now.get(Calendar.SECOND) < 10)
-                    sb.append("0");
-                sb.append(now.get(Calendar.SECOND) /* +"|" + record.getLevel() */);
+                sb.append(":");
+                sb.append(secs.format(now.get(Calendar.SECOND)));
                 sb.append(".");
-                sb.append(now.get(Calendar.MILLISECOND));
-                sb.append("|");
+                sb.append(mills.format(now.get(Calendar.MILLISECOND)));
+                sb.append(" ");
                 sb.append(formatMessage(record));
                 sb.append("\n");
             } else {
-                sb.append(now.get(Calendar.MINUTE) /* +"|" + record.getLevel() */+ "|" + formatMessage(record) + "\n");
+                sb.append(" ");
+                sb.append(formatMessage(record) + "\n");
             }
             return sb.toString();
         }

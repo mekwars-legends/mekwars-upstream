@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.21.x
++ Defect command now gives link to new planet in single faction mode
++ Added Number formatting to Logger time
++ Added Number formating to Money and Flue
 + New MegaMek.jar 0.33.20-MW022908-5526
 + Bug: Images not showing up in Planet info dialog
 - Removed LastSaved code. More trouble then its worth.

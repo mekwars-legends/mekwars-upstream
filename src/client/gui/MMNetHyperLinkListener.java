@@ -173,7 +173,7 @@ class MMNetHyperLinkListener implements HyperlinkListener {
 						
 						//open a warning dialog
 						Object[] options = { " Defect ", " Cancel " };
-						int confirmed = JOptionPane.showOptionDialog(null,"Are you SURE you want to defect?",
+						int confirmed = JOptionPane.showOptionDialog(mwclient.getMainFrame(),"Are you SURE you want to defect?",
 					                        "Defection Confirmation", JOptionPane.DEFAULT_OPTION,
 					                        JOptionPane.WARNING_MESSAGE, null, options, options[1]);
 

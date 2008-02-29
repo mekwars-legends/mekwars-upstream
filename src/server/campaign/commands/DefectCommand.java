@@ -448,7 +448,14 @@ public class DefectCommand implements Command {
             }
 
             // setup the return info
-            String toReturn = "You succesfully defected to " + HouseName + ". ";
+            String toReturn = "You succesfully defected to " + HouseName + ".<br>";
+            
+            if ( isSingleFaction && !newHouse.getPlanets().values().isEmpty()){
+                toReturn += "You've inherited planet ";
+                for ( SPlanet planet : newHouse.getPlanets().values() )
+                    toReturn += planet.getNameAsColoredLink();
+                toReturn += "<br>";
+            }
 
             // should be penalized, and the player is actually losing something
             // ...
@@ -775,6 +782,7 @@ public class DefectCommand implements Command {
         planet.getInfluence().setInfluence(flu);
         
         planet.setOwner(null, planet.checkOwner(), true);
+        house.setInitialHouseRanking(planet.getConquestPoints());
         planet.updated();
     }
 }// end DefectCommand.java

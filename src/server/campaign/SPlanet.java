@@ -385,9 +385,9 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
                 StringTokenizer influences = new StringTokenizer(TokenReader.readString(ST), "$");
 
                 while (influences.hasMoreElements()) {
-                    String HouseName = influences.nextToken();
+                    String HouseName = TokenReader.readString(influences);
                     SHouse h = (SHouse) data.getHouseByName(HouseName);
-                    Integer HouseInf = new Integer(influences.nextToken());
+                    int HouseInf = TokenReader.readInt(influences);
                     Infcount += HouseInf;
                     if (h != null)
                         influence.put(h.getId(), HouseInf);
@@ -492,7 +492,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
         StringTokenizer str = new StringTokenizer(TokenReader.readString(ST), "^");
         TreeMap<String, String> map = new TreeMap<String, String>();
         while (str.hasMoreTokens()) {
-            String key = str.nextToken();
+            String key = TokenReader.readString(str);
             if (CampaignMain.cm.getData().getPlanetOpFlags().containsKey(key))
                 map.put(key, CampaignMain.cm.getData().getPlanetOpFlags().get(key));
         }

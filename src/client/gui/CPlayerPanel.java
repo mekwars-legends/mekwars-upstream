@@ -24,6 +24,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.StringReader;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import javax.swing.BoxLayout;
 import javax.swing.JEditorPane;
@@ -209,11 +210,11 @@ public class CPlayerPanel extends JScrollPane {
         if ( player.getMoney() ==  0 )
             lblMoney.setText(mwclient.moneyOrFluMessage(true,false,-2)+": " + player.getMoney());
         else
-            lblMoney.setText(mwclient.moneyOrFluMessage(true,false,-player.getMoney())+": " + player.getMoney());
+            lblMoney.setText(mwclient.moneyOrFluMessage(true,false,-player.getMoney())+": " + NumberFormat.getInstance().format(player.getMoney()));
         if ( player.getInfluence() == 0)
             lblInfluence.setText(mwclient.moneyOrFluMessage(false,false,-2) + ": " + player.getInfluence());
         else
-            lblInfluence.setText(mwclient.moneyOrFluMessage(false,false,-player.getInfluence()) + ": " + player.getInfluence());
+            lblInfluence.setText(mwclient.moneyOrFluMessage(false,false,-player.getInfluence()) + ": " + NumberFormat.getInstance().format(player.getInfluence()));
         
         if ( mwclient.isUsingAdvanceRepairs() ){
             //when the client first loads it doesn't have data in the vectors.

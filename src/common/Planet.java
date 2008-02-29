@@ -398,6 +398,8 @@ public class Planet implements Comparable<Object>, MutableSerializable {
         int totalCP = getConquestPoints();
 
         for (House house : getInfluence().getHouses()) {
+            if ( house.getId() == -1 )
+                continue;
             totalCP -= getInfluence().getInfluence(house.getId());
         }
 

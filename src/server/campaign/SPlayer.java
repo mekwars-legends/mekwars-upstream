@@ -3095,8 +3095,13 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
             // TODO: Remove this after the next few updates from 0.1.51.2
 
-            myHouse = CampaignMain.cm.getHouseFromPartialString(TokenReader.readString(ST), getName());
+            myHouse = CampaignMain.cm.getHouseFromPartialString(TokenReader.readString(ST));
 
+            
+            if ( myHouse == null ){
+                myHouse = CampaignMain.cm.getHouseFromPartialString(CampaignMain.cm.getConfig("NewbieHouseName"));
+            }
+            
             this.setXPToReward(TokenReader.readInt(ST));
 
             TokenReader.readString(ST);// faction logo not saved.
