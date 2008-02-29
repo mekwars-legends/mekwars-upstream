@@ -925,10 +925,13 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
             this.loadConfigFile();
             this.setUsedMekBayMultiplier(Float.parseFloat(getConfig("UsedPurchaseCostMulti")));
+            
+            this.updated();
             return s;
         } catch (Exception ex) {
             CampaignData.mwlog.errLog(ex);
             CampaignData.mwlog.errLog("Error while loading faction: " + this.getName() + " Going forward anyway ...");
+            this.updated();
             return s;
         }
     }

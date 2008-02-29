@@ -1053,10 +1053,6 @@ public class DefaultServerOptions {
         defaults.setProperty("NewFactoryCostModifierInfantry", "1.0");
         defaults.setProperty("NewFactoryCostModifierBattleArmor", "1.0");
         defaults.setProperty("NewFactoryCostModifierProtoMek", "1.0");
-        defaults.setProperty("NewFactoryCostModifierLight", "1.0");
-        defaults.setProperty("NewFactoryCostModifierMedium", "1.0");
-        defaults.setProperty("NewFactoryCostModifierHeavy", "1.0");
-        defaults.setProperty("NewFactoryCostModifierAssault", "1.0");
         defaults.setProperty("NewFactoryBaseFlu", "100");
         defaults.setProperty("NewFactoryFluModifierLight", "1.0");
         defaults.setProperty("NewFactoryFluModifierMedium", "1.0");
@@ -1067,10 +1063,6 @@ public class DefaultServerOptions {
         defaults.setProperty("NewFactoryFluModifierInfantry", "1.0");
         defaults.setProperty("NewFactoryFluModifierBattleArmor", "1.0");
         defaults.setProperty("NewFactoryFluModifierProtoMek", "1.0");
-        defaults.setProperty("NewFactoryFluModifierLight", "1.0");
-        defaults.setProperty("NewFactoryFluModifierMedium", "1.0");
-        defaults.setProperty("NewFactoryFluModifierHeavy", "1.0");
-        defaults.setProperty("NewFactoryFluModifierAssault", "1.0");
         
         //Technology Research Options
         defaults.setProperty("TechPointsNeedToLevel", "100");

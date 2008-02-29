@@ -72,7 +72,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
         result.append("#");
         for (House house : getInfluence().getHouses()) {
             SHouse next = (SHouse) house;
-            if ( next == null )
+            if (next == null)
                 continue;
             result.append(next.getName());
             result.append("$"); // change for unusual influence
@@ -232,11 +232,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
                     setDBID(pid);
 
                     /**
-                     * If it didn't get us an ID, there's not much point in
-                     * doing the following:
-                     * 
-                     * Now, we need to save all the vectors: Factories Influence
-                     * Environments planet flags
+                     * If it didn't get us an ID, there's not much point in doing the following: Now, we need to save all the vectors: Factories Influence Environments planet flags
                      */
                     if (getUnitFactories() != null) {
                         for (int i = 0; i < getUnitFactories().size(); i++) {
@@ -322,8 +318,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
                 ps.executeUpdate();
 
                 /**
-                 * Now, we need to save all the vectors: Factories Influence
-                 * Environments planet flags
+                 * Now, we need to save all the vectors: Factories Influence Environments planet flags
                  */
                 if (getUnitFactories() != null) {
                     for (int i = 0; i < getUnitFactories().size(); i++) {
@@ -357,7 +352,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
      */
     public String fromString(String s, Random r, CampaignData data) {
         // debug
-        
+
         boolean singleFaction = CampaignMain.cm.getBooleanConfig("AllowSinglePlayerFactions");
         CampaignData.mwlog.mainLog(s);
         s = s.substring(3);
@@ -370,7 +365,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
             for (int i = 0; i < hasMF; i++) {
                 SUnitFactory mft = new SUnitFactory();
                 mft.fromString(TokenReader.readString(ST), this, r);
-                if ( singleFaction && CampaignMain.cm.getHouseFromPartialString(mft.getFounder()) == null)
+                if (singleFaction && CampaignMain.cm.getHouseFromPartialString(mft.getFounder()) == null)
                     continue;
                 getUnitFactories().add(mft);
             }
@@ -388,7 +383,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
             HashMap<Integer, Integer> influence = new HashMap<Integer, Integer>();
             {
                 StringTokenizer influences = new StringTokenizer(TokenReader.readString(ST), "$");
-                
+
                 while (influences.hasMoreElements()) {
                     String HouseName = influences.nextToken();
                     SHouse h = (SHouse) data.getHouseByName(HouseName);
@@ -414,11 +409,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
             PlanetEnvironment planetEnvironment = null;
 
             /*
-             * Bug reported if you screw with the positions of the terrains in
-             * terrain.xml you'll screw up the planet terrains this will now
-             * allow you to load via int and then save via name so the terrain
-             * will always be correct no matter the position of the terrain in
-             * the terrain.xml.
+             * Bug reported if you screw with the positions of the terrains in terrain.xml you'll screw up the planet terrains this will now allow you to load via int and then save via name so the terrain will always be correct no matter the position of the terrain in the terrain.xml.
              */
             try {
                 terrainNumber = Integer.parseInt(terrain);
@@ -467,7 +458,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
             // No biggy, but will cause senseless Data transfer, so:
             CampaignData.mwlog.errLog("The following excepion is not critical, but will cause useless bandwith usage: please fix!");
             CampaignData.mwlog.errLog(ex);
-            setTimestamp(new Date(0));
+            setTimestamp(new Date(System.currentTimeMillis()));
         }
 
         TokenReader.readString(ST);
@@ -511,25 +502,23 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
 
         updateInfluences();
 
-        if ( singleFaction ) {
-            
-            if ( isNullOwner() ) {
+        if (singleFaction) {
+
+            if (isNullOwner()) {
                 this.setConquestPoints(100);
                 this.setCompProduction(0);
                 SHouse house = CampaignMain.cm.getHouseById(-1);
-                this.getInfluence().moveInfluence(house, house, 100,100);
+                this.getInfluence().moveInfluence(house, house, 100, 100);
             }
         }
 
         setOwner(null, checkOwner(), false);
-        
+
         return s;
     }
 
     /**
-     * Use the other constructor as soon as you do not need the manual
-     * serialization support through fromString() anymore.
-     * 
+     * Use the other constructor as soon as you do not need the manual serialization support through fromString() anymore.
      */
     public SPlanet() {
         // super(CampaignMain.cm.getData().getUnusedPlanetID(),"", new
@@ -596,16 +585,13 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
     /**
      * @param Attacker -
      *            attacking faction
-     * @return potential defending houses (ie - those with territory on the
-     *         world)
+     * @return potential defending houses (ie - those with territory on the world)
      */
     public Vector<House> getDefenders(SHouse Attacker) {
         Vector<House> result = new Vector<House>(getInfluence().getHouses());
         result.trimToSize();
         /*
-         * Iterator it = getInfluence().getHouses().iterator(); while
-         * (it.hasNext()) { SHouse h = (SHouse) it.next(); //if
-         * (!h.equals(Attacker) || Attacker.isInHouseAttacks()) result.add(h); }
+         * Iterator it = getInfluence().getHouses().iterator(); while (it.hasNext()) { SHouse h = (SHouse) it.next(); //if (!h.equals(Attacker) || Attacker.isInHouseAttacks()) result.add(h); }
          */
         return result;
     }
@@ -627,9 +613,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
     }
 
     /**
-     * Do a tick - call tick on he planets MF, if it has one, and return the
-     * amount of income generated by the planet Income = base income * the
-     * number of miniticks registered at a tick
+     * Do a tick - call tick on he planets MF, if it has one, and return the amount of income generated by the planet Income = base income * the number of miniticks registered at a tick
      */
     public String tick(int refreshminiticks) {
         // Tick all Factories
@@ -699,8 +683,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
 
     public SHouse getOwner() {
         /*
-         * Null owner is possible, but should be uncommon. Check the owner again
-         * to make sure the this is true before returning.
+         * Null owner is possible, but should be uncommon. Check the owner again to make sure the this is true before returning.
          */
         if (owner == null)
             checkOwner();
@@ -742,8 +725,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
     }
 
     /*
-     * Helper method that sends updates to online players when a world changes
-     * hands.
+     * Helper method that sends updates to online players when a world changes hands.
      */
     private void sendHouseStatusUpdate(SHouse oldOwner, SHouse newOwner) {
 
@@ -760,7 +742,18 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
 
             oldOwnerHSUpdates.append("RF|" + currUF.getWeightclass() + "$" + currUF.getType() + "$" + this.getName() + "$" + currUF.getName() + "|");
 
-            newOwnerHSUpdates.append("AF|" + currUF.getWeightclass() + "$" + currUF.getType() + "$" + currUF.getFounder() + "$" + this.getName() + "$" + currUF.getName() + "$" + currUF.getTicksUntilRefresh() + "|");
+            newOwnerHSUpdates.append("AF|" + currUF.getWeightclass());
+            newOwnerHSUpdates.append("$");
+            newOwnerHSUpdates.append(currUF.getType());
+            newOwnerHSUpdates.append("$");
+            newOwnerHSUpdates.append(currUF.getFounder());
+            newOwnerHSUpdates.append("$");
+            newOwnerHSUpdates.append(this.getName());
+            newOwnerHSUpdates.append("$");
+            newOwnerHSUpdates.append(currUF.getName());
+            newOwnerHSUpdates.append("$");
+            newOwnerHSUpdates.append(currUF.getTicksUntilRefresh());
+            newOwnerHSUpdates.append("$");
             newOwnerHSUpdates.append(currUF.getAccessLevel());
             newOwnerHSUpdates.append("|");
         }
@@ -823,12 +816,12 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
 
         return ownership;
     }
-    
+
     public boolean isNullOwner() {
-        
-        if ( this.getInfluence().getInfluence(-1) == this.getConquestPoints() )
-                return true;
-        
+
+        if (this.getInfluence().getInfluence(-1) == this.getConquestPoints())
+            return true;
+
         return false;
     }
 

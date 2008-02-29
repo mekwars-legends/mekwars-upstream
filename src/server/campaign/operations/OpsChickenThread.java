@@ -387,7 +387,7 @@ public class OpsChickenThread extends Thread {
             CampaignMain.cm.doSendToAllOnlinePlayers(defendH, "HS|" + loserHSUpdates.toString(), false);
 
         // and add the info to the log
-        CampaignData.mwlog.gameLog("Leech: " + this.opID + "/" + pdefender.getName() + "<br> Player saw: " + toMain + "<br> Main saw: " + toMain);
+        CampaignData.mwlog.gameLog("Leech: " + this.opID + "/" + pdefender.getName() + "<br> Player saw: " + toPlayer + "<br> Main saw: " + toMain);
     }
 
     @Override

@@ -1200,6 +1200,8 @@ MouseMotionListener, MouseWheelListener, ActionListener {
     			Influences oldinf = changesSinceLastRefresh.get(id);
     			if (oldinf != null) addinf.add(oldinf);
     			changesSinceLastRefresh.put(id,addinf);
+    			if ( mp != null )
+    			    mp.repaint();
 		    }catch(Exception ex){
 		        CampaignData.mwlog.errLog("Error with Planet: "+mwclient.getData().getPlanet(id).getName());
 		    }

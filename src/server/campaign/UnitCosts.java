@@ -16,11 +16,17 @@
 
 package server.campaign;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import megamek.common.Entity;
+import megamek.common.MechFileParser;
+import megamek.common.MechSummary;
+import megamek.common.MechSummaryCache;
 import common.Unit;
 import common.CampaignData;
 
@@ -88,6 +94,23 @@ public class UnitCosts {
 	public void loadUnitCosts(){
 		
 		String entityName = "";
+		
+		if ( new File("./data/mechfiles").exists() ){
+            try {
+                    MechSummary[] units = MechSummaryCache.getInstance().getAllMechs();
+                    for (MechSummary unit : units) {
+                        Entity ent = new MechFileParser(unit.getSourceFile(), unit.getEntryName()).getEntity();
+                        double cost = unit.getCost();
+                        double maxCost = this.getMaxCostValue(Unit.getEntityWeight(ent),Unit.getEntityType(ent));
+                        double minCost = this.getMinCostValue(Unit.getEntityWeight(ent),Unit.getEntityType(ent));
+                        this.addMaxCost(Unit.getEntityWeight(ent),Unit.getEntityType(ent),Math.max(cost, maxCost));
+                        this.addMinCost(Unit.getEntityWeight(ent),Unit.getEntityType(ent),Math.min(cost, minCost));
+                    }
+                }catch(Exception ex){
+                    
+                }
+                return;
+		}
 		try {
 			FileInputStream in = new FileInputStream("./data/unitfiles/Meks.zip");
 			ZipInputStream zipFile = new ZipInputStream(in);

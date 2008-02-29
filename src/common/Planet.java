@@ -720,10 +720,10 @@ public class Planet implements Comparable<Object>, MutableSerializable {
                 result.append("<br><b>Factories:</b><br>");
             for (UnitFactory u : getUnitFactories()) {
                 founder = u.getFounder();
-                String openImage = "data/images/open" + founder + ".gif";
+                String openImage = "./data/images/open" + founder + ".gif";
 
                 if (!new File(openImage).exists())
-                    openImage = "data/images/open.gif";
+                    openImage = "./data/images/open.gif";
 
                 result.append("<img src=\"" + openImage + "\">" + u.getSize() + " " + u.getFullTypeString() + u.getName() + " built by " + founder + "<br>");
             }

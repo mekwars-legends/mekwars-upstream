@@ -116,7 +116,7 @@ public class PurchaseFactoryCommand implements Command {
 
         flu = CampaignMain.cm.getDoubleConfig("NewFactoryBaseFlu");
         flu *= CampaignMain.cm.getDoubleConfig("NewFactoryFluModifier" + SUnit.getWeightClassDesc(weight));
-        flu *= CampaignMain.cm.getDoubleConfig("NewFactoryFlutModifier" + SUnit.getTypeClassDesc(type));
+        flu *= CampaignMain.cm.getDoubleConfig("NewFactoryFluModifier" + SUnit.getTypeClassDesc(type));
 
         flu = Math.round(flu);
 
@@ -137,17 +137,17 @@ public class PurchaseFactoryCommand implements Command {
         Vector<UnitFactory> uf = planet.getUnitFactories();
         uf.add(fac);
         fac.setPlanet(planet);
-        house.removePlanet(planet);
-        house.addPlanet(planet);
+        planet.setOwner(null,house, true);
         
         house.updated();
         planet.updated();
+        
         if (CampaignMain.cm.isUsingMySQL()) {
             fac.setID(CampaignMain.cm.MySQL.getFactoryIdByNameAndPlanet(name, planet.getName()));
             fac.toDB();
         }
 
-        CampaignMain.cm.toUser("You have purchased factory "+name+" on planet "+planet.getName()+".", Username, true);
-        CampaignMain.cm.doSendToAllOnlinePlayers(house, Username+" has purchased factory "+name+" on planet "+planet.getName()+".", true);
+        CampaignMain.cm.toUser("AM:You have purchased a factory, "+name+", on planet "+planet.getName()+" for "+CampaignMain.cm.moneyOrFluMessage(true, true, (int) cost) + " and "+CampaignMain.cm.moneyOrFluMessage(false, true, (int) flu), Username, true);
+        CampaignMain.cm.doSendHouseMail(house,"NOTE", Username+" has purchased a factory, "+name+", on planet "+planet.getName()+".");
     }
 }// end RequestSubFactionPromotionCommand class

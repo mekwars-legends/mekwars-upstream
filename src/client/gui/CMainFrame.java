@@ -177,6 +177,7 @@ public class CMainFrame extends JFrame {
     JMenuItem jMenuLeaderMute = new JMenuItem();
     JMenuItem jMenuLeaderFactionColor = new JMenuItem();
     JMenuItem jMenuLeaderPlayerColor = new JMenuItem();
+    JMenuItem jMenuLeaderPurchaseFactory = new JMenuItem();
     JMenuItem jMenuLeaderResearchTech = new JMenuItem();
 
     // HELP Menu
@@ -221,9 +222,7 @@ public class CMainFrame extends JFrame {
         popupSound = new menuPopupSound(mwclient);
 
         /*
-         * ATTACK/GAME Menu is a class unto itself and needs constant update
-         * calls. Have to build it here so its mwclient isn't null and it isn't
-         * being handed to createMenu() as a null itself.
+         * ATTACK/GAME Menu is a class unto itself and needs constant update calls. Have to build it here so its mwclient isn't null and it isn't being handed to createMenu() as a null itself.
          */
         jMenuAttackMenu = new AttackMenu(mwclient, -1, "-1");
 
@@ -305,36 +304,11 @@ public class CMainFrame extends JFrame {
         }
 
         /*
-         * jMenuCampaign.setEnabled(!disconnected);
-         * jMenuCommander.setEnabled(loggedin); jMenuTask.setEnabled(active);
-         * jMenuHost.setEnabled(!disconnected);
-         * 
-         * jMenuFileConnect.setEnabled(disconnected);
-         * jMenuFileConnectTo.setEnabled(disconnected);
-         * jMenuFileRegister.setEnabled(!disconnected);
-         * jMenuFileMail.setEnabled(!disconnected);
-         * jMenuFileLastOnline.setEnabled(!disconnected);
-         * 
-         * jMenuCampaignTasks.setEnabled(loggedin);
-         * jMenuCampaignPlayers.setEnabled(loggedin);
-         * jMenuCampaignISStatus.setEnabled(loggedin);
-         * jMenuCampaignHouses.setEnabled(loggedin);
-         * jMenuCampaignPlanet.setEnabled(loggedin);
-         * jMenuCampaignPlanetRange.setEnabled(loggedin);
-         * jMenuCampaignBMStatus.setEnabled(loggedin);
+         * jMenuCampaign.setEnabled(!disconnected); jMenuCommander.setEnabled(loggedin); jMenuTask.setEnabled(active); jMenuHost.setEnabled(!disconnected); jMenuFileConnect.setEnabled(disconnected); jMenuFileConnectTo.setEnabled(disconnected); jMenuFileRegister.setEnabled(!disconnected); jMenuFileMail.setEnabled(!disconnected); jMenuFileLastOnline.setEnabled(!disconnected); jMenuCampaignTasks.setEnabled(loggedin); jMenuCampaignPlayers.setEnabled(loggedin); jMenuCampaignISStatus.setEnabled(loggedin); jMenuCampaignHouses.setEnabled(loggedin); jMenuCampaignPlanet.setEnabled(loggedin); jMenuCampaignPlanetRange.setEnabled(loggedin); jMenuCampaignBMStatus.setEnabled(loggedin);
          */
         // jMenuCampaignTraderStatus.setEnabled(loggedin);
         /*
-         * jMenuCampaignMercStatus.setEnabled(loggedin);
-         * jMenuCampaignUMercs.setEnabled(loggedin);
-         * jMenuCampaignTick.setEnabled(loggedin);
-         * 
-         * jMenuCampaignLogin.setEnabled(loggedout);
-         * jMenuCampaignActivate.setEnabled(reserve);
-         * jMenuCampaignDeactivate.setEnabled(active);
-         * jMenuCampaignLogout.setEnabled(loggedin);
-         * 
-         * jMenuCampaignEnroll.setEnabled(loggedout);
+         * jMenuCampaignMercStatus.setEnabled(loggedin); jMenuCampaignUMercs.setEnabled(loggedin); jMenuCampaignTick.setEnabled(loggedin); jMenuCampaignLogin.setEnabled(loggedout); jMenuCampaignActivate.setEnabled(reserve); jMenuCampaignDeactivate.setEnabled(active); jMenuCampaignLogout.setEnabled(loggedin); jMenuCampaignEnroll.setEnabled(loggedout);
          */
         // jMenuCampaignUnenroll.setEnabled(loggedin);
         // Client.errorMessage("Mod "+mod+" Admin "+admin+" Level
@@ -359,9 +333,7 @@ public class CMainFrame extends JFrame {
                     JMenu tempMenu = (JMenu) o;
                     jMenuMod.setText(tempMenu.getText());
                     /*
-                     * for ( int i = 0; i <
-                     * tempMenu.getMenuComponentCount();i++)
-                     * jMenuMod.add(tempMenu.getItem(i));
+                     * for ( int i = 0; i < tempMenu.getMenuComponentCount();i++) jMenuMod.add(tempMenu.getItem(i));
                      */
                     jMenuBar1.add(tempMenu);
                     jMenuBar1.remove(jMenuMod);
@@ -478,13 +450,14 @@ public class CMainFrame extends JFrame {
         jMenuHost.setVisible(!disconnected);
 
         jMenuLeaderShip.setVisible(userLevel >= Integer.parseInt(mwclient.getserverConfigs("factionLeaderLevel")));
-        
+
         jMenuLeaderDemote.setVisible(userLevel >= mwclient.getData().getAccessLevel("DemotePlayer"));
         jMenuLeaderFluff.setVisible(userLevel >= mwclient.getData().getAccessLevel("FactionLeaderFluff"));
         jMenuLeaderMute.setVisible(userLevel >= mwclient.getData().getAccessLevel("FactionLeaderMute"));
         jMenuLeaderPromote.setVisible(userLevel >= mwclient.getData().getAccessLevel("PromotePlayer"));
         jMenuLeaderFactionColor.setVisible(userLevel >= mwclient.getData().getAccessLevel("ChangeHouseColor"));
         jMenuLeaderPlayerColor.setVisible(userLevel >= mwclient.getData().getAccessLevel("AdminSetHousePlayerColor"));
+        jMenuLeaderPurchaseFactory.setVisible(userLevel >= mwclient.getData().getAccessLevel("PurchaseFactory"));
         jMenuLeaderResearchTech.setVisible(userLevel >= mwclient.getData().getAccessLevel("ResearchTechLevel"));
         
         jMenuFileConnect.setVisible(disconnected);
@@ -971,6 +944,13 @@ public class CMainFrame extends JFrame {
             }
         });
 
+        jMenuLeaderPurchaseFactory.setText("Purchase Factory");
+        jMenuLeaderPurchaseFactory.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                jMenuLeaderPurchaseFactory_actionPerformed();
+            }
+        });
+
         jMenuHelp.setText("Help");
         jMenuHelp.setMnemonic('E');
 
@@ -1003,8 +983,7 @@ public class CMainFrame extends JFrame {
         jMenuHelpViewBuildTables.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 /*
-                 * Show the client side GUI if the requisite file is available.
-                 * Otherwise, make use of server commands.
+                 * Show the client side GUI if the requisite file is available. Otherwise, make use of server commands.
                  */
                 File f = new File("./data/buildtables.zip");
                 if (f.exists()) {
@@ -1032,11 +1011,7 @@ public class CMainFrame extends JFrame {
         });
 
         /*
-         * Display Report "MekWars Bug" and "Report MegaMek Bug" links in the
-         * Help Menu. Create the actual menu options, with browsers calls, here
-         * in order to add them to the menu in the formatting blocks that
-         * follow. These are hardcoded. Server ops can add their own links with
-         * the links.txt detailed above. @urgru 12.5.04
+         * Display Report "MekWars Bug" and "Report MegaMek Bug" links in the Help Menu. Create the actual menu options, with browsers calls, here in order to add them to the menu in the formatting blocks that follow. These are hardcoded. Server ops can add their own links with the links.txt detailed above. @urgru 12.5.04
          */
         JMenuItem jMenuMekwarsBug = new JMenuItem("Report Bug (MekWars)");
         JMenuItem jMenuMegamekBug = new JMenuItem("Report Bug (MegaMek)");
@@ -1097,8 +1072,7 @@ public class CMainFrame extends JFrame {
         // jMenuFile.add(jMenuFileDebugPlayer);
 
         /*
-         * Put together the campaign menu. Start by assembling the sub-menus,
-         * then add the manus and line items all together ...
+         * Put together the campaign menu. Start by assembling the sub-menus, then add the manus and line items all together ...
          */
 
         // front-line submenu
@@ -1186,6 +1160,7 @@ public class CMainFrame extends JFrame {
         jMenuLeaderShip.add(jMenuLeaderDemote);
         jMenuLeaderShip.add(jMenuLeaderFactionColor);
         jMenuLeaderShip.add(jMenuLeaderPlayerColor);
+        jMenuLeaderShip.add(jMenuLeaderPurchaseFactory);
         jMenuLeaderShip.add(jMenuLeaderResearchTech);
         
         jMenuHelp.add(jMenuHelpAbout);
@@ -1194,9 +1169,7 @@ public class CMainFrame extends JFrame {
         jMenuHelp.add(jMenuHelpViewBuildTables);
 
         /*
-         * Only add the trait viewer if the server allows traits. We'll use
-         * BattleMech traits as a proxy for ALL trait types when deciding
-         * whether or not to show.
+         * Only add the trait viewer if the server allows traits. We'll use BattleMech traits as a proxy for ALL trait types when deciding whether or not to show.
          */
         if (Integer.parseInt(mwclient.getserverConfigs("chanceforTNforMek")) > 0)
             jMenuHelp.add(jMenuHelpViewTraits);
@@ -1410,8 +1383,7 @@ public class CMainFrame extends JFrame {
     }
 
     /*
-     * Only called from HQ, via MechTableMouseAdapter. Will always have valid
-     * unit id.
+     * Only called from HQ, via MechTableMouseAdapter. Will always have valid unit id.
      */
     public void jMenuCommanderNamePilot_actionPerformed(int uid) {
         String newName = JOptionPane.showInputDialog(this.getContentPane(), "Pilot's Name?");
@@ -1421,8 +1393,7 @@ public class CMainFrame extends JFrame {
     }
 
     /*
-     * Only called from HQ, via MechTableMouseAdapter. Will always have valid
-     * army id.
+     * Only called from HQ, via MechTableMouseAdapter. Will always have valid army id.
      */
     public void jMenuCommanderNameArmy_actionPerformed(int aid) {
         CArmy selectedArmy = mwclient.getPlayer().getArmies().get(aid);
@@ -1460,8 +1431,7 @@ public class CMainFrame extends JFrame {
     }
 
     /*
-     * Only called from HQ, via MechTableMouseAdapter. Will always have valid
-     * army id.
+     * Only called from HQ, via MechTableMouseAdapter. Will always have valid army id.
      */
     public void jMenuCommanderSetLowerUnitLimit_actionPerformed(int aid) {
 
@@ -1483,8 +1453,7 @@ public class CMainFrame extends JFrame {
     }
 
     /*
-     * Only called from HQ, via MechTableMouseAdapter. Will always have valid
-     * army id.
+     * Only called from HQ, via MechTableMouseAdapter. Will always have valid army id.
      */
     public void jMenuCommanderSetUpperUnitLimit_actionPerformed(int aid) {
 
@@ -1507,8 +1476,7 @@ public class CMainFrame extends JFrame {
     }
 
     /*
-     * Only called from HQ, via MechTableMouseAdapter. Will always have valid
-     * army id.
+     * Only called from HQ, via MechTableMouseAdapter. Will always have valid army id.
      */
     public void jMenuCommanderSetForceSizeToFace_actionPerformed(int aid) {
 
@@ -2078,10 +2046,70 @@ public class CMainFrame extends JFrame {
     }
 
     public void jMenuLeaderPlayerColor_actionPerformed() {
-        String newColor = JOptionPane.showInputDialog(this, "Player Color?", "Player Color?");
+        String newColor = JOptionPane.showInputDialog(this, "Player Color?", "Player Color?", JOptionPane.QUESTION_MESSAGE);
 
         if (newColor != null)
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminSetHousePlayerColor#" + mwclient.getPlayer().getHouse() + "#" + newColor);
+    }
+
+    public void jMenuLeaderPurchaseFactory_actionPerformed() {
+        String[] units = { CUnit.getTypeClassDesc(CUnit.MEK), CUnit.getTypeClassDesc(CUnit.VEHICLE), CUnit.getTypeClassDesc(CUnit.INFANTRY), CUnit.getTypeClassDesc(CUnit.PROTOMEK), CUnit.getTypeClassDesc(CUnit.BATTLEARMOR) };
+        String[] weight = { CUnit.getWeightClassDesc(CUnit.LIGHT), CUnit.getWeightClassDesc(CUnit.MEDIUM), CUnit.getWeightClassDesc(CUnit.HEAVY), CUnit.getWeightClassDesc(CUnit.ASSAULT) };
+
+        String factoryName = JOptionPane.showInputDialog(this, "Factory Name?", "Factory Name?", JOptionPane.QUESTION_MESSAGE);
+
+        if ( factoryName == null )
+            return;
+        
+        JComboBox combo = new JComboBox(units);
+        combo.setEditable(false);
+        JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+
+        JDialog dlg = jop.createDialog(mwclient.getMainFrame(), "Unit Type");
+        combo.grabFocus();
+        combo.getEditor().selectAll();
+
+        dlg.setVisible(true);
+
+        int unitType = combo.getSelectedIndex();
+
+        if (unitType < 0)
+            return;
+
+        int value = ((Integer) jop.getValue()).intValue();
+
+        if (value == JOptionPane.CANCEL_OPTION)
+            return;
+
+        combo = new JComboBox(weight);
+        combo.setEditable(false);
+        jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+
+        dlg = jop.createDialog(mwclient.getMainFrame(), "Unit Weight");
+        combo.grabFocus();
+        combo.getEditor().selectAll();
+
+        dlg.setVisible(true);
+
+        int unitWeight = combo.getSelectedIndex();
+
+        if (unitWeight < 0)
+            return;
+
+        value = ((Integer) jop.getValue()).intValue();
+
+        if (value == JOptionPane.CANCEL_OPTION)
+            return;
+
+        PlanetNameDialog planetDialog = new PlanetNameDialog(mwclient, "Choose a planet", null);
+        planetDialog.setVisible(true);
+        String planet = planetDialog.getPlanetName();
+        planetDialog.dispose();
+
+        if (planet == null)
+            return;
+
+        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c purchaseFactory#" + factoryName + "#" + unitType + "#" + unitWeight + "#" + planet);
     }
 
     // Show data about the mek wars client and server
@@ -2278,15 +2306,10 @@ public class CMainFrame extends JFrame {
         }
 
         /*
-         * for ( Object prop : System.getProperties().keySet()){
-         * 
-         * result.append(prop.toString()); result.append(" = ");
-         * result.append(System.getProperty(prop.toString())); result.append("<br>"); }
+         * for ( Object prop : System.getProperties().keySet()){ result.append(prop.toString()); result.append(" = "); result.append(System.getProperty(prop.toString())); result.append("<br>"); }
          */
         /*
-         * use process incoming, instead of adding directly to misc, so that
-         * output is directly to main if misc in main is enabled or players has
-         * the misc. tab off.
+         * use process incoming, instead of adding directly to misc, so that output is directly to main if misc in main is enabled or players has the misc. tab off.
          */
         mwclient.doParseDataInput("SM|" + result.toString());
     }
@@ -2369,9 +2392,7 @@ public class CMainFrame extends JFrame {
         result += "</table>";
 
         /*
-         * use process incoming, instead of adding directly to misc, so that
-         * output is directly to main if misc in main is enabled or player's
-         * misc. tab is disabled.
+         * use process incoming, instead of adding directly to misc, so that output is directly to main if misc in main is enabled or player's misc. tab is disabled.
          */
         mwclient.doParseDataInput("SM|" + result);
 
@@ -2409,13 +2430,11 @@ public class CMainFrame extends JFrame {
     }
 
     /*
-     * Admin methods used to be here. These have been extracted into a seperate
-     * .jar file. @urgru
+     * Admin methods used to be here. These have been extracted into a seperate .jar file. @urgru
      */
 
     /*
-     * Moderator-specific methods used to be here. These have been extracted
-     * into a seperate .jar file. @urgru
+     * Moderator-specific methods used to be here. These have been extracted into a seperate .jar file. @urgru
      */
 
     public void refreshBattleTable() {
