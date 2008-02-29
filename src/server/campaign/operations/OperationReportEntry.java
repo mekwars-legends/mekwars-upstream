@@ -16,8 +16,6 @@
 
 package server.campaign.operations;
 
-import server.campaign.CampaignMain;
-
 public class OperationReportEntry {
 
 	private String attackerName = "";
@@ -34,6 +32,61 @@ public class OperationReportEntry {
 	private boolean attackerWon = false;
 	
 	private long gameLength = 0;
+	
+	private String opType = "";
+	
+	
+	public String getOpType() {
+		return opType;
+	}
+	
+	public void setOpType(String op) {
+		opType = op;
+	}
+	
+	public int getAttackerStartBV() {
+		return attackerStartBV;
+	}
+	
+	public int getAttackerEndBV() {
+		return attackerEndBV;
+	}
+	
+	public int getDefenderStartBV() {
+		return defenderStartBV;
+	}
+	
+	public int getDefenderEndBV() {
+		return defenderEndBV;
+	}
+	
+	public boolean attackerIsWinner() {
+		return attackerWon;
+	}
+	
+	public long getGameLength() {
+		return gameLength;
+	}
+	
+	public String getAttackers() {
+		return attackerName;
+	}
+	
+	public String getDefenders() {
+		return defenderName;
+	}
+	
+	public String getPlanet() {
+		return planetName;
+	}
+	
+	public String getTheme() {
+		return themeName;
+	}
+	
+	public String getTerrain() {
+		return terrainName;
+	}
 	
 	public void setAttackerName(String name) {
 		attackerName = name;
@@ -65,13 +118,6 @@ public class OperationReportEntry {
 	
 	public void setAttackerWon(boolean aWon) {
 		attackerWon = aWon;
-	}
-	
-	public void commit() {
-		// Write this to the database
-		if(!CampaignMain.cm.isUsingMySQL())
-			return;
-		
 	}
 	
 	public OperationReportEntry() {

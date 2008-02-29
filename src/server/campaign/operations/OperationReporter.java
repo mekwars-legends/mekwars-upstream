@@ -20,6 +20,10 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
 
+import server.campaign.CampaignMain;
+import server.campaign.SArmy;
+import server.campaign.SPlayer;
+
 public class OperationReporter {
 
 	private OperationReportEntry opData = new OperationReportEntry();
@@ -56,6 +60,65 @@ public class OperationReporter {
 		opData.setDefenderName(dNames.toString());
 	}
 		
+	public void setPlanetInfo(String pName, String tName, String thName) {
+		opData.setPlanetInfo(pName, tName, thName);
+	}
+	
+	public void setAttackerStartBV(int BV) {
+		opData.setBV(true, true, BV);
+	}
+	
+	public void setDefenderStartBV(int BV) {
+		opData.setBV(false, true, BV);
+	}
+	
+	public void setAttackerEndBV(int BV) {
+		opData.setBV(true, false, BV);
+	}
+	
+	public void setDefenderEndBV(int BV) {
+		opData.setBV(false, false, BV);
+	}
+	
+	public void commit() {
+// Not yet ready for prime time
+//		if(CampaignMain.cm.isUsingMySQL()) {
+//			CampaignMain.cm.MySQL.commitBattleReport(opData);
+//		} else {
+//		}
+	}
+	
+	public void setUpOperation(String operationName, TreeMap<String, Integer> attackers, TreeMap<String, Integer> defenders, String planetName, String terrainName, String themeName) {
+		 setAttackers(attackers);
+         setDefenders(defenders);
+         setPlanetInfo(planetName, terrainName, themeName);
+         calculateStartingBVs(attackers, defenders);
+         opData.setOpType(operationName);
+	}
+	
+	public void calculateStartingBVs(TreeMap<String, Integer> attackers, TreeMap<String, Integer> defenders) {
+        int bv = 0;
+        for (String attacker : attackers.keySet()) {
+        	SPlayer player = CampaignMain.cm.getPlayer(attacker);
+        	if(player != null) {
+        		SArmy army = player.getArmy(attackers.get(attacker));
+        		if (army != null)
+        			bv += army.getBV();
+        	}
+        }
+        setAttackerStartBV(bv);
+        
+        bv = 0;
+        for (String defender : defenders.keySet()) {
+        	SPlayer player = CampaignMain.cm.getPlayer(defender);
+        	if(player != null) {
+        		SArmy army = player.getArmy(defenders.get(defender));
+        		if (army != null)
+        			bv += army.getBV();
+        	}
+        }
+        setDefenderStartBV(bv);     
+	}
 	
 	public OperationReporter () {
 		

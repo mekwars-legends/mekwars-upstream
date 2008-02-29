@@ -208,6 +208,8 @@ public class ShortOperation implements Comparable<Object> {
 
     public Vector<SUnit> preCapturedUnits = null;
 
+    private OperationReporter reporter = new OperationReporter();
+    
     // CONSTRUCTOR
     public ShortOperation(String opName, SPlanet target, SPlayer initiator, SArmy attackingArmy, ArrayList<SArmy> possibleDefenders, int shortID, int longID, boolean fromReserve) {
 
@@ -268,6 +270,7 @@ public class ShortOperation implements Comparable<Object> {
 
         this.pdlist = possibleDefenders;
         this.weatherPattern = new Vector<Boolean>(7);
+        
         // inform the defenders
         // Faction Team Ops have a delay in defender informing.
         if ((!fromReserve && !o.getBooleanValue("TeamOperation") && !o.getBooleanValue("TeamsMustBeSameFaction")) || (o.getBooleanValue("TeamOperation") && !o.getBooleanValue("TeamsMustBeSameFaction")))
@@ -473,7 +476,11 @@ public class ShortOperation implements Comparable<Object> {
                         CampaignMain.cm.toUser("No defenders are listed for this op, someone screwed up!", currP);
                 return;
             }
-
+            
+            // Set up the operations reporter
+            reporter.setUpOperation(getName(), getAttackers(), getDefenders(), getTargetWorld().getName(), getEnvironment().getName(), getEnvironment().getTheme());
+            reporter.commit();
+            
             isBuildingOperation = o.getIntValue("TotalBuildings") > 0;
             /*
              * Check to see if this is a building operation. If so, build an

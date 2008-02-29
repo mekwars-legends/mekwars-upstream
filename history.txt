@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
++ More work on advanced reporting
++ Fixed potential memory leak in saving / loading planetary terrains
++ Fixed SQL error when saving / loading planetary terrains
 + Added GUI for ResearchTechLevelCommand
 + Added ResearchTechLevelCommand
 + Promote and Demote Player commands now cycle through all armies and check for

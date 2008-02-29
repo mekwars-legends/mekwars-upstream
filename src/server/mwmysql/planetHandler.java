@@ -197,11 +197,11 @@ public class planetHandler {
     }
 
     public void loadEnvironments(SPlanet p, CampaignData data) {
+        ResultSet rs3 = null;
+        Statement stmt = null;
+        
         try {
-
-            ResultSet rs3 = null;
-            Statement stmt = con.createStatement();
-
+        	stmt = con.createStatement();
             rs3 = stmt.executeQuery("SELECT * from planetenvironments WHERE PlanetID = " + p.getDBID());
 
             while (rs3.next()) {
@@ -219,7 +219,7 @@ public class planetHandler {
                 if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")) {
                     AdvancedTerrain aTerrain = new AdvancedTerrain();
 
-                    String tempHolder = rs3.getString("AdvancedTerrainData");
+                    String tempHolder = rs3.getString("AdvanceTerrainData");
                     if (tempHolder.length() > 0) {
                         StringTokenizer ST = new StringTokenizer(tempHolder, "$");
                         aTerrain.setDisplayName(ST.nextToken());
@@ -248,6 +248,12 @@ public class planetHandler {
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL Error in loadEnvironments: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+            try {
+                if(rs3 != null)
+                	rs3.close();
+                if (stmt != null)
+                	stmt.close();
+            } catch (SQLException ex) {}
         }
     }
 
@@ -288,7 +294,7 @@ public class planetHandler {
                 sql.append("ContinentSize = " + size + ", ");
                 sql.append("TerrainData = '" + tId + "'");
                 if (CampaignMain.cm.getBooleanConfig("UseStaticMaps"))
-                    sql.append(", AdvancedTerrainData = '" + atData.toString() + "'");
+                    sql.append(", AdvanceTerrainData = '" + atData.toString() + "'");
                 stmt.executeUpdate(sql.toString());
             }
             stmt.close();

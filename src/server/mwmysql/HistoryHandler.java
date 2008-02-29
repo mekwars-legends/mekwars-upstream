@@ -28,6 +28,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import server.campaign.operations.OperationReportEntry;
+
 import common.CampaignData;
 
 public class HistoryHandler {
@@ -92,6 +94,26 @@ public class HistoryHandler {
 			  if(ps != null)
 				  ps.close();
 		  } catch (Exception ex) {}
+	  }
+  }
+  
+  public void commitBattleReport(OperationReportEntry opData) {
+	  PreparedStatement ps = null;
+	  try {
+		  CampaignData.mwlog.dbLog("New Operation!!!");
+		  CampaignData.mwlog.dbLog("Attacker(s): " + opData.getAttackers() + " (" + opData.getAttackerStartBV() + " / " + opData.getAttackerEndBV() + ")");
+		  CampaignData.mwlog.dbLog("Defender(s): " + opData.getDefenders() + " (" + opData.getDefenderStartBV() + " / " + opData.getDefenderEndBV() + ")");
+		  CampaignData.mwlog.dbLog("Planet Info: " + opData.getPlanet() + " / " + opData.getTerrain() + " / " + opData.getTheme());
+
+		  ps = con.prepareStatement("blah");
+	  } catch (SQLException e) {
+		  CampaignData.mwlog.dbLog("SQLException in HistoryHandler.commitBattleReport: " + e.getMessage());
+		  CampaignData.mwlog.dbLog(e);
+	  } finally {
+		  try {
+			  if(ps != null)
+				  ps.close();  
+		  } catch (SQLException ex) {}
 	  }
   }
   

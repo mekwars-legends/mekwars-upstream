@@ -27,6 +27,7 @@ import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.SPlayer;
+import server.campaign.operations.OperationReportEntry;
 import server.campaign.pilot.SPilot;
 
 import common.Unit;
@@ -518,6 +519,10 @@ public class mysqlHandler{
   
   public void addHistoryEntry(int historyType, int unitID, int eventType, String fluff) {
 	  hh.addHistoryEntry(historyType, unitID, eventType, fluff);
+  }
+  
+  public void commitBattleReport(OperationReportEntry opData) {
+	  hh.commitBattleReport(opData);
   }
   
   public mysqlHandler(){
