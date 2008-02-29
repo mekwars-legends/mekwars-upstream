@@ -219,7 +219,7 @@ public class planetHandler {
                 if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")) {
                     AdvancedTerrain aTerrain = new AdvancedTerrain();
 
-                    String tempHolder = rs3.getString("AdvanceTerrainData");
+                    String tempHolder = rs3.getString("AdvancedTerrainData");
                     if (tempHolder.length() > 0) {
                         StringTokenizer ST = new StringTokenizer(tempHolder, "$");
                         aTerrain.setDisplayName(ST.nextToken());
@@ -294,7 +294,7 @@ public class planetHandler {
                 sql.append("ContinentSize = " + size + ", ");
                 sql.append("TerrainData = '" + tId + "'");
                 if (CampaignMain.cm.getBooleanConfig("UseStaticMaps"))
-                    sql.append(", AdvanceTerrainData = '" + atData.toString() + "'");
+                    sql.append(", AdvancedTerrainData = '" + atData.toString() + "'");
                 stmt.executeUpdate(sql.toString());
             }
             stmt.close();
