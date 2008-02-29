@@ -4876,7 +4876,7 @@ public final class ServerConfigurationDialog implements ActionListener {
 
         for (int type = 0; type < Unit.MAXBUILD; type++) {
             baseTextField = new JTextField(5);
-            purchasePanel2.add(new JLabel(Unit.getDescriptionForID(type)+" unit "+ mwclient.moneyOrFluMessage(true, false, -1, false) + ":", SwingConstants.TRAILING));
+            purchasePanel2.add(new JLabel(Unit.getDescriptionForID(type)+" unit "+ mwclient.moneyOrFluMessage(false, false, -1, false) + ":", SwingConstants.TRAILING));
             baseTextField.setToolTipText("<HTML>" + mwclient.moneyOrFluMessage(true, false, -1, false) + " modifier for "+Unit.getDescriptionForID(type)+" unit factory</html>");
             baseTextField.setName("NewFactoryFluModifier"+Unit.getDescriptionForID(type));
             purchasePanel2.add(baseTextField);
