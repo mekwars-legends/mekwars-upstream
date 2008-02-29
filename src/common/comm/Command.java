@@ -126,7 +126,7 @@ public abstract class Command extends Thread implements ClientCommand, ServerCom
 		this.myServer.clientSend(txt, this.username);
 	}
 	
-	public static class Table extends Hashtable {
+	public static class Table extends Hashtable<String,ICommand> {
 		/**
          * 
          */

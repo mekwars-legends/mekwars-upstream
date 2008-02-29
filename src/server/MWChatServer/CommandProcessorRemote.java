@@ -36,7 +36,6 @@ import java.util.StringTokenizer;
 
 import common.CampaignData;
 
-import common.CampaignData;
 import server.MWChatServer.commands.ICommandProcessorRemote;
 import server.MWChatServer.commands.ICommands;
 import server.MWChatServer.commands.UnknownCommand;

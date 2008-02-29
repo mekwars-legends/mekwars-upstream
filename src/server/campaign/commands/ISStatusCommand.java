@@ -21,6 +21,8 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import common.Planet;
+
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
@@ -68,7 +70,7 @@ public class ISStatusCommand implements Command {
 	
 	public void doShowISStatus(String User, String h, String h2, boolean onlyOwner) {
 		String result = "<h2>Universe Status";
-		TreeSet Sorted = new TreeSet(new PlanetNameComparator());
+		TreeSet<SPlanet> Sorted = new TreeSet<SPlanet>(new PlanetNameComparator());
 		int hID=  CampaignMain.cm.getData().getHouseByName(h).getId();
 		int hID2 = -1;
 		if ( CampaignMain.cm.getData().getHouseByName(h2) != null )
@@ -82,7 +84,7 @@ public class ISStatusCommand implements Command {
 				result += " and Faction " + h2;
 		}
 		result += ":</h2>";
-		Iterator e = CampaignMain.cm.getData().getAllPlanets().iterator();
+		Iterator<Planet> e = CampaignMain.cm.getData().getAllPlanets().iterator();
 		while (e.hasNext()) {
 			SPlanet p = (SPlanet)e.next();
 			boolean show = false;
@@ -115,9 +117,9 @@ public class ISStatusCommand implements Command {
 				Sorted.add(p);
 		}
 		
-		Iterator it = Sorted.iterator();
+		Iterator<SPlanet> it = Sorted.iterator();
 		while (it.hasNext()) {
-			result += ((SPlanet)it.next()).getSmallStatus(true);
+			result += it.next().getSmallStatus(true);
 		}
 		CampaignMain.cm.toUser("SM|" + result,User,false);
 	}

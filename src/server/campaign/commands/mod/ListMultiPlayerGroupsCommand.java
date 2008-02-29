@@ -63,28 +63,28 @@ public class ListMultiPlayerGroupsCommand implements Command {
 		 * End PHENOMENAL EVIL.
 		 */
 		
-		Hashtable result = new Hashtable();
-		Enumeration e = allPlayers.elements();
+		Hashtable<Integer,Vector<SPlayer>> result = new Hashtable<Integer, Vector<SPlayer>>();
+		Enumeration<SPlayer> e = allPlayers.elements();
 		while (e.hasMoreElements())
 		{
 			//Check all players for equal Groupentries..
-			SPlayer p = (SPlayer)e.nextElement();
+			SPlayer p = e.nextElement();
 			if (p.getGroupAllowance() != 0)
 			{
-				Vector v;
+				Vector<SPlayer> v;
 				if (result.get(p.getGroupAllowance()) == null)
-					v = new Vector(1,1);
+					v = new Vector<SPlayer>(1,1);
 				else
-					v = (Vector)result.get(p.getGroupAllowance());
+					v = result.get(p.getGroupAllowance());
 				v.add(p);
 				result.put(p.getGroupAllowance(),v);
 			}
 		}
 		
-		e = result.keys();
-		while (e.hasMoreElements()) {
-			Integer GroupID = (Integer)e.nextElement();
-			Vector members = (Vector)(result.get(GroupID));
+		Enumeration<Integer> groups = result.keys();
+		while (groups.hasMoreElements()) {
+			Integer GroupID = groups.nextElement();
+			Vector<SPlayer> members = result.get(GroupID);
 			toSend += "<br>Group #" + GroupID + ":";
 			for (int i=0; i < members.size();i++) {
 				SPlayer p = (SPlayer)members.elementAt(i);

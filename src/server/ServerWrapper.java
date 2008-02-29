@@ -23,6 +23,7 @@
 package server;
 
 import java.net.InetAddress;
+import java.util.Iterator;
 
 import common.CampaignData;
 
@@ -79,8 +80,8 @@ public class ServerWrapper extends MWChatServer{
 	//there should be comm objects
 	public void broadcastComm(String command) {
 		synchronized (_users) {
-			for (java.util.Iterator i = _users.values().iterator(); i.hasNext(); ) {
-				MWChatClient cc = (MWChatClient)i.next();
+			for (Iterator<MWChatClient> i = _users.values().iterator(); i.hasNext(); ) {
+				MWChatClient cc = i.next();
 				this.sendServerMessage(command, MWChatServer.clientKey(cc));
 			}
 		}

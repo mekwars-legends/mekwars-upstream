@@ -42,7 +42,6 @@ import java.util.zip.Inflater;
 
 import common.CampaignData;
 
-import client.MWClient;
 import client.protocol.IConnectionListener;
 
 /**

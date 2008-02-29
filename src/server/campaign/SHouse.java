@@ -42,6 +42,7 @@ import java.sql.Statement;
 import java.text.DecimalFormat;
 
 import megamek.common.Entity;
+import megamek.common.TechConstants;
 
 import common.Planet;
 import common.SubFaction;
@@ -96,6 +97,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
     private int forumID = 0;
 
     private Vector<String> leaders = new Vector<String>(1, 1);
+    private int techResearchPoints = 0;
 
     @Override
     public String toString() {
@@ -310,6 +312,8 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             result.append(leader);
             result.append("|");
         }
+        result.append(this.techResearchPoints);
+        result.append("|");
 
         return result.toString();
     }
@@ -889,6 +893,8 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                 leaders.add(TokenReader.readString(ST));
             }
 
+            techResearchPoints = TokenReader.readInt(ST);
+
             setPilotQueues(new PilotQueues(this.getBaseGunnerVect(), this.getBasePilotVect(), this.getBasePilotSkillVect()));
             getPilotQueues().setFactionString(this.getName());// set the
             // faction name
@@ -987,7 +993,6 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         setHouseColor(HouseColor);
         setName(name);
 
-        
         CampaignData.mwlog.createFactionLogger(this.getName());
         // Vehicles = new Vector();
 
@@ -1907,15 +1912,13 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
         if (Boolean.parseBoolean(this.getConfig("UseCalculatedCosts"))) {
             double cost = 0;
-            if ( type_id == Unit.MEK) {
+            if (type_id == Unit.MEK) {
                 cost = CampaignMain.cm.getUnitCostLists().getMinCostValue(weightclass, type_id);
                 cost = Math.max(cost, this.getDoubleConfig(Unit.getWeightClassDesc(weightclass) + "Price"));
-            }
-            else if ( type_id == Unit.VEHICLE ) {
+            } else if (type_id == Unit.VEHICLE) {
                 cost = CampaignMain.cm.getUnitCostLists().getMinCostValue(weightclass, type_id);
                 cost = Math.max(cost, this.getDoubleConfig(classtype));
-            }
-            else {
+            } else {
                 cost = CampaignMain.cm.getUnitCostLists().getMinCostValue(Unit.LIGHT, type_id);
                 cost = Math.max(cost, this.getDoubleConfig(classtype));
             }
@@ -2913,7 +2916,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         forumID = fID;
     }
 
-    public void createNoneHouse(){
+    public void createNoneHouse() {
         this.setName("None");
         this.setId(-1);
         this.setConquerable(false);
@@ -2922,7 +2925,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         this.setAbbreviation("None");
         this.setHouseColor(CampaignMain.cm.getConfig("DisputedPlanetColor"));
         this.setHousePlayerColors(CampaignMain.cm.getConfig("DisputedPlanetColor"));
-        
+
         CampaignData.mwlog.createFactionLogger(this.getName());
         // Vehicles = new Vector();
 
@@ -2966,5 +2969,72 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             getComponents().get(Unit.PROTOMEK).add(0);
         }
         this.updated();
+    }
+
+    public void addTechResearchPoint(int points) {
+        setTechResearchPoints(points + getTechResearchPoints());
+    }
+
+    public void setTechResearchPoints(int points) {
+        this.techResearchPoints = points;
+    }
+
+    public int getTechResearchPoints() {
+        return this.techResearchPoints;
+    }
+
+    public int getTechResearchLevel() {
+
+        int techLevel = 1;
+        switch (this.getTechLevel()) {
+        case TechConstants.T_IS_LEVEL_1:
+            techLevel = 1;
+            break;
+        case TechConstants.T_IS_LEVEL_2:
+        case TechConstants.T_IS_LEVEL_2_ALL:
+            techLevel = 2;
+            break;
+        case TechConstants.T_IS_LEVEL_3:
+            techLevel = 3;
+            break;
+        case TechConstants.T_CLAN_LEVEL_2:
+            techLevel = 4;
+            break;
+        case TechConstants.T_CLAN_LEVEL_3:
+            techLevel = 5;
+            break;
+        case TechConstants.T_ALL:
+        case TechConstants.T_ALLOWED_ALL:
+            techLevel = 6;
+            break;
+        default:
+            techLevel = 1;
+        }
+
+        return techLevel;
+    }
+
+    public void updateHouseTechLevel() {
+        switch (getTechResearchLevel()) {
+        case 1:
+            this.setTechLevel(TechConstants.T_IS_LEVEL_2);
+            break;
+        case 2:
+            this.setTechLevel(TechConstants.T_IS_LEVEL_3);
+            break;
+        case 3:
+            this.setTechLevel(TechConstants.T_CLAN_LEVEL_2);
+            break;
+        case 4:
+            this.setTechLevel(TechConstants.T_CLAN_LEVEL_3);
+            break;
+        case 5:
+            this.setTechLevel(TechConstants.T_ALL);
+            break;
+        default:
+            this.setTechLevel(TechConstants.T_IS_LEVEL_1);
+            break;
+        }
+        techResearchPoints = 0;
     }
 }// end SHouse.java

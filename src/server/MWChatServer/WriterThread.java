@@ -35,7 +35,6 @@ import java.util.zip.Deflater;
 
 import common.CampaignData;
 
-import common.CampaignData;
 import server.MWChatServer.commands.ICommands;
 
 /**

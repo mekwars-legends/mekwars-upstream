@@ -332,33 +332,6 @@ public class MD5 {
 	}
 
 	/**
-	 * Update this hash with a long.
-	 * This hash will be updated in a little endian order with the
-	 * the least significant byte going first.
-	 *
-	 * @param l long to be hashed.
-	 *
-	 * @since ostermillerutils 1.00.00
-	 */
-	private void update (MD5State state, long l) {
-		update(
-			state, 
-			new byte[] {
-				(byte)((l >>> 0) & 0xff),
-				(byte)((l >>> 8) & 0xff),
-				(byte)((l >>> 16) & 0xff),
-				(byte)((l >>> 24) & 0xff),
-				(byte)((l >>> 32) & 0xff),
-				(byte)((l >>> 40) & 0xff),
-				(byte)((l >>> 48) & 0xff),
-				(byte)((l >>> 56) & 0xff),
-			},
-			0,
-			8
-		);
-	}
-
-	/**
 	 * Update this hash with a String.
 	 * The string is converted to bytes using the current
 	 * platform's default character encoding.

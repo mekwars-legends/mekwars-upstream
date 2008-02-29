@@ -36,7 +36,6 @@ import java.net.Socket;
 
 import common.CampaignData;
 
-import client.MWClient;
 import client.gui.SplashWindow;
 import client.protocol.IConnectionListener;
 

@@ -86,6 +86,10 @@ import common.util.SpringLayoutHelper;
 
 public class CustomUnitDialog extends JDialog implements ActionListener{ 
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 4035217132830883530L;
     private JLabel labAutoEject = new JLabel("Disable Autoeject", SwingConstants.TRAILING);
     private JCheckBox chAutoEject = new JCheckBox();
     private JCheckBox chSearchLight = new JCheckBox();
@@ -102,10 +106,10 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
     private JButton butOkay = new JButton("Okay");
     private JButton butCancel = new JButton("Cancel");
 
-    private Vector m_vMunitions = new Vector(1,1);
+    private Vector<MunitionChoicePanel> m_vMunitions = new Vector<MunitionChoicePanel>(1,1);
     private JPanel panMunitions = new JPanel();
     
-    private Vector m_vMachineGuns = new Vector(1,1);
+    private Vector<MachineGunChoicePanel> m_vMachineGuns = new Vector<MachineGunChoicePanel>(1,1);
     private JPanel panMachineGuns = new JPanel();
         
     private JLabel labTargSys = new JLabel("Targeting System", SwingConstants.TRAILING);
@@ -312,10 +316,10 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
         /*
          * Loop through all ammo?
          */
-        Iterator e = entity.getAmmo().iterator();
+        Iterator<Mounted> e = entity.getAmmo().iterator();
         while (e.hasNext()) {
         	
-            Mounted m = (Mounted)e.next();
+            Mounted m = e.next();
             AmmoType at = (AmmoType)m.getType();
             
             Vector<AmmoType> vTypes = new Vector<AmmoType>(1,1);
@@ -543,7 +547,11 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
      * enough for our purposes. @urgru 7/30/05
      */
     class MunitionChoicePanel extends JPanel {
-        private Vector m_vTypes;
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -5861067242226106955L;
+        private Vector<AmmoType> m_vTypes;
         private JComboBox m_choice;
         private Mounted m_mounted;
         private int location = 0;
@@ -551,7 +559,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
         protected JCheckBox chDump = new JCheckBox();
         protected JCheckBox chHotLoad = new JCheckBox();
         
-        public MunitionChoicePanel(Mounted m, Vector vTypes, int location) {
+        public MunitionChoicePanel(Mounted m, Vector<AmmoType> vTypes, int location) {
             
         	//save params
             m_vTypes = vTypes;
@@ -561,10 +569,10 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
             //setup panel
             AmmoType curType = (AmmoType)m.getType();
             m_choice = new JComboBox();
-            Enumeration e = m_vTypes.elements();
+            Enumeration<AmmoType> e = m_vTypes.elements();
             
             for (int x = 0; e.hasMoreElements(); x++) {
-            	AmmoType at = (AmmoType)e.nextElement();
+            	AmmoType at = e.nextElement();
                 m_choice.setMaximumSize(new Dimension(5,5));
                 int cost = Integer.MAX_VALUE;
                 int shotsLeft = m.getShotsLeft();
@@ -690,6 +698,10 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
 
     class MachineGunChoicePanel extends JPanel {
     	
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -2207765894385312209L;
         private Mounted m_mounted;
         private int location = 0;
         private int slot = 0;
@@ -731,6 +743,10 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
 
     class HotLoadChoicePanel extends JPanel {
         
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -4801226845131401403L;
         private Mounted m_mounted;
         private int location = 0;
         protected JCheckBox chHotLoad = new JCheckBox();
@@ -777,10 +793,14 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
      * unit for the weight of the selected munition.
      */
     class ProtomechMunitionChoicePanel extends MunitionChoicePanel {
-    	private final float m_origShotsLeft;
+    	/**
+         * 
+         */
+        private static final long serialVersionUID = 3984045407240841489L;
+        private final float m_origShotsLeft;
     	private final AmmoType m_origAmmo;
     	
-    	public ProtomechMunitionChoicePanel(Mounted m, Vector vTypes, int row) {
+    	public ProtomechMunitionChoicePanel(Mounted m, Vector<AmmoType> vTypes, int row) {
     		super( m, vTypes, row );
     		m_origAmmo = (AmmoType) m.getType();
     		m_origShotsLeft = m.getShotsLeft();
@@ -880,13 +900,13 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 
             okay = true;
 
-	        for (Enumeration e = m_vMunitions.elements(); e.hasMoreElements(); ) {
-	            ((MunitionChoicePanel)e.nextElement()).applyChoice();
+	        for (Enumeration<MunitionChoicePanel> e = m_vMunitions.elements(); e.hasMoreElements(); ) {
+	            e.nextElement().applyChoice();
 	        }
 	        
 	        
-	        for (Enumeration e = m_vMachineGuns.elements(); e.hasMoreElements(); ) {
-	            ((MachineGunChoicePanel)e.nextElement()).applyChoice();
+	        for (Enumeration<MachineGunChoicePanel> e = m_vMachineGuns.elements(); e.hasMoreElements(); ) {
+	            e.nextElement().applyChoice();
 	        }
 
         }

@@ -33,7 +33,6 @@ import common.Unit;
 
 
 
-import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SUnit;

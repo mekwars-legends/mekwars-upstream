@@ -35,7 +35,6 @@ import common.House;
 import common.Influences;
 import common.PlanetEnvironment;
 import common.util.Position;
-import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;

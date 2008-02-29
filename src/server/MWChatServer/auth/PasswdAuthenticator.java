@@ -36,7 +36,6 @@ import java.io.IOException;
 
 import common.CampaignData;
 
-import common.CampaignData;
 import server.MWChatServer.MWChatClient;
 import server.MWChatServer.MWChatServer;
 import server.MWChatServer.auth.IAuthenticator;

@@ -1659,6 +1659,7 @@ src/server/campaign/commands/leader/FactionLeaderFluffCommand.java -text
 src/server/campaign/commands/leader/FactionLeaderMuteCommand.java -text
 src/server/campaign/commands/leader/PromotePlayerCommand.java -text
 src/server/campaign/commands/leader/PurchaseFactoryCommand.java -text
+src/server/campaign/commands/leader/ResearchTechLevelCommand.java -text
 src/server/campaign/commands/mod/AddLeaderCommand.java -text
 src/server/campaign/commands/mod/AddPartsCommand.java -text
 src/server/campaign/commands/mod/BanCommand.java -text

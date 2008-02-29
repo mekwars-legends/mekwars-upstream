@@ -23,8 +23,6 @@ import java.net.Socket;
 
 import common.CampaignData;
 
-import common.CampaignData;
-
 
 /**
  * Starts a server which provides diffs to data files for the clients.  

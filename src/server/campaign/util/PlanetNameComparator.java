@@ -24,21 +24,17 @@ import java.util.Comparator;
 
 import server.campaign.SPlanet;
 
-
 /**
  * @author Helge Richter
- *
+ * 
  */
-public class PlanetNameComparator implements Comparator<Object> {
-	/* (non-Javadoc)
-	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-	 */
-	public int compare(Object o1, Object o2) {
-		if (o1 instanceof SPlanet && o2 instanceof SPlanet){
-			SPlanet a = (SPlanet) o1;
-			SPlanet b = (SPlanet) o2;
-			return a.getName().compareTo(b.getName());
-		}
-		return -1;
-	}
+public class PlanetNameComparator implements Comparator<SPlanet> {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+     */
+    public int compare(SPlanet p1, SPlanet p2) {
+        return p1.getName().compareTo(p2.getName());
+    }
 }

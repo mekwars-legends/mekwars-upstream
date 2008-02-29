@@ -39,7 +39,6 @@ import java.net.Socket;
 
 import common.CampaignData;
 
-import dedicatedhost.MWDedHost;
 import dedicatedhost.protocol.IConnectionListener;
 
 /**

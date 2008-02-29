@@ -50,7 +50,6 @@ import java.util.Locale;
 import java.io.StringReader;
 import java.lang.reflect.Method;
 
-import client.MWClient;
 /**
  * Allows URLs to be opened in the system browser on Windows and Unix.
  * More information about this class is available from <a target="_top" href=

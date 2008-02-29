@@ -121,12 +121,12 @@ public class PurchaseFactoryCommand implements Command {
         flu = Math.round(flu);
 
         if (player.getMoney() < cost) {
-            CampaignMain.cm.toUser("You need " + CampaignMain.cm.moneyOrFluMessage(true, true, (int) cost) + " to purchase a factory.", Username);
+            CampaignMain.cm.toUser("AM:You need " + CampaignMain.cm.moneyOrFluMessage(true, true, (int) cost) + " to purchase a factory.", Username);
             return;
         }
 
         if (player.getInfluence() < flu) {
-            CampaignMain.cm.toUser("You need " + CampaignMain.cm.moneyOrFluMessage(false, true, (int) flu) + " to purchase a factory.", Username);
+            CampaignMain.cm.toUser("AM:You need " + CampaignMain.cm.moneyOrFluMessage(false, true, (int) flu) + " to purchase a factory.", Username);
             return;
         }
 

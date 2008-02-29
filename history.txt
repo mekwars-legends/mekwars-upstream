@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.20.x
++ Added GUI for ResearchTechLevelCommand
++ Added ResearchTechLevelCommand
 + Promote and Demote Player commands now cycle through all armies and check for
 	legal operations.
 + Added visibility settings for Leadership menu and menu items

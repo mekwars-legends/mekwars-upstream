@@ -12,8 +12,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
 
 import common.CampaignData;
-
-import dedicatedhost.MWDedHost;
 /**
  * Provides a method to encode any string into a URL-safe
  * form.

@@ -26,7 +26,6 @@ import common.CampaignData;
 import common.util.BinWriter;
 import common.util.MD5;
 
-import common.CampaignData;
 import server.dataProvider.ServerCommand;
 //import server.campaign.CampaignMain;
 

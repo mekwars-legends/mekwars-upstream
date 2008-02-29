@@ -42,7 +42,6 @@ import java.util.zip.Inflater;
 
 import common.CampaignData;
 
-import dedicatedhost.MWDedHost;
 import dedicatedhost.protocol.IConnectionListener;
 
 /**

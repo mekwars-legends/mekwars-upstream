@@ -115,10 +115,10 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
 		this.mwclient = c;
 		
 		//COMBO BOXES
-		TreeSet names = new TreeSet();
+		TreeSet<String> names = new TreeSet<String>();
 		names.add("Common"); //start with the common faction
-		for (Iterator factions = mwclient.getData().getAllHouses().iterator(); factions.hasNext();)
-			names.add(((House) factions.next()).getName());
+		for (Iterator<House> factions = mwclient.getData().getAllHouses().iterator(); factions.hasNext();)
+			names.add( factions.next().getName());
 		
 		//check for the use of rare and add if used
 		if (Boolean.parseBoolean(mwclient.getserverConfigs("AllowRareUnitsForRewards")))
@@ -126,7 +126,7 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
 		
 		factionComboBox = new JComboBox(names.toArray());
 		
-		names = new TreeSet();
+		names = new TreeSet<String>();
 		if (Boolean.parseBoolean(mwclient.getserverConfigs("AllowTechsForRewards")))
 		    names.add("Techs");
 		if (Boolean.parseBoolean(mwclient.getserverConfigs("AllowInfluenceForRewards")))
@@ -152,7 +152,7 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
         
 		if (Boolean.parseBoolean(mwclient.getserverConfigs("GlobalRepodAllowed"))) {
 		    names.add(repodCommand);
-		    TreeSet repodOptions = new TreeSet();
+		    TreeSet<String> repodOptions = new TreeSet<String>();
 		    
 		    if (Boolean.parseBoolean(mwclient.getserverConfigs("RandomRepodOnly")))
 		        repodOptions.add("Random");
@@ -164,9 +164,9 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
 		    
 		    repodComboBox = new JComboBox(repodOptions.toArray());
 		    repodOptions.clear();
-		    Iterator units = c.getPlayer().getHangar().iterator();
+		    Iterator<CUnit> units = c.getPlayer().getHangar().iterator();
 		    while (units.hasNext()){
-		        CUnit unit = (CUnit)units.next();
+		        CUnit unit = units.next();
 		        if ( !unit.isOmni() )
 		            continue;
 		        repodOptions.add("#"+unit.getId()+" "+unit.getModelName());
@@ -175,7 +175,7 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
 		}
         if (Boolean.parseBoolean(mwclient.getserverConfigs("AllowRepairsForRewards"))){
             names.add(repairCommand);
-            TreeSet damagedUnits = new TreeSet();
+            TreeSet<String> damagedUnits = new TreeSet<String>();
             for ( CUnit unit: mwclient.getPlayer().getHangar() ){
                 if ( UnitUtils.hasArmorDamage(unit.getEntity()) || UnitUtils.hasCriticalDamage(unit.getEntity()) )
                     damagedUnits.add("#"+unit.getId()+" "+unit.getModelName());
@@ -184,17 +184,17 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
         }
 
         if ( Boolean.parseBoolean(mwclient.getserverConfigs("AllowFactoryRefreshForRewards"))){
-		    TreeSet factories = new TreeSet();
+		    TreeSet<String> factories = new TreeSet<String>();
 		    House faction = mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse());
-		    Iterator planets = mwclient.getData().getAllPlanets().iterator();
+		    Iterator<Planet> planets = mwclient.getData().getAllPlanets().iterator();
 		    names.add(refreshCommand);
 		    while ( planets.hasNext() ){
-		        Planet planet = (Planet)planets.next();
+		        Planet planet = planets.next();
 		        if ( !planet.isOwner(faction.getId()) )
 		            continue;
-		        Iterator unitFactories = planet.getUnitFactories().iterator();
+		        Iterator<UnitFactory> unitFactories = planet.getUnitFactories().iterator();
 		        while (unitFactories.hasNext()){
-		            UnitFactory factory = (UnitFactory)unitFactories.next();
+		            UnitFactory factory = unitFactories.next();
 		            if ( factory.getTicksUntilRefresh() > 0)
 		                factories.add(planet.getName()+": "+factory.getName()+ "("+factory.getTicksUntilRefresh()+")");
 		        }

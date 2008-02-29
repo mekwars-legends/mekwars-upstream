@@ -177,6 +177,7 @@ public class CMainFrame extends JFrame {
     JMenuItem jMenuLeaderMute = new JMenuItem();
     JMenuItem jMenuLeaderFactionColor = new JMenuItem();
     JMenuItem jMenuLeaderPlayerColor = new JMenuItem();
+    JMenuItem jMenuLeaderResearchTech = new JMenuItem();
 
     // HELP Menu
     JMenu jMenuHelp = new JMenu();
@@ -484,6 +485,7 @@ public class CMainFrame extends JFrame {
         jMenuLeaderPromote.setVisible(userLevel >= mwclient.getData().getAccessLevel("PromotePlayer"));
         jMenuLeaderFactionColor.setVisible(userLevel >= mwclient.getData().getAccessLevel("ChangeHouseColor"));
         jMenuLeaderPlayerColor.setVisible(userLevel >= mwclient.getData().getAccessLevel("AdminSetHousePlayerColor"));
+        jMenuLeaderResearchTech.setVisible(userLevel >= mwclient.getData().getAccessLevel("ResearchTechLevel"));
         
         jMenuFileConnect.setVisible(disconnected);
         jMenuFileDisconnect.setVisible(!disconnected);
@@ -962,6 +964,13 @@ public class CMainFrame extends JFrame {
             }
         });
 
+        jMenuLeaderResearchTech.setText("Research Tech");
+        jMenuLeaderResearchTech.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c researchtechlevel");
+            }
+        });
+
         jMenuHelp.setText("Help");
         jMenuHelp.setMnemonic('E');
 
@@ -1177,7 +1186,8 @@ public class CMainFrame extends JFrame {
         jMenuLeaderShip.add(jMenuLeaderDemote);
         jMenuLeaderShip.add(jMenuLeaderFactionColor);
         jMenuLeaderShip.add(jMenuLeaderPlayerColor);
-
+        jMenuLeaderShip.add(jMenuLeaderResearchTech);
+        
         jMenuHelp.add(jMenuHelpAbout);
         jMenuHelp.addSeparator();
         jMenuHelp.add(jMenuHelpViewUnit);

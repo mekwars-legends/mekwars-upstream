@@ -126,10 +126,10 @@ public final class TraitDialog implements ActionListener, KeyListener{
 		this.mwclient = c;
 		
 		//COMBO BOXES
-		TreeSet names = new TreeSet();
+		TreeSet<String> names = new TreeSet<String>();
 		names.add("Common"); //start with the common faction
-		for (Iterator factions = mwclient.getData().getAllHouses().iterator(); factions.hasNext();)
-			names.add(((House) factions.next()).getName());
+		for (Iterator<House> factions = mwclient.getData().getAllHouses().iterator(); factions.hasNext();)
+			names.add( factions.next().getName());
 		
 		factionComboBox = new JComboBox(names.toArray());
 		traitComboBox.setEditable(!player);
@@ -374,7 +374,7 @@ public final class TraitDialog implements ActionListener, KeyListener{
 	
 	private void loadFactionTraits(String faction){
 	    File traitFile = new File(mwclient.getCacheDir() + "/"+faction.toLowerCase()+"traitnames.txt");
-	    TreeSet names = new TreeSet();
+	    TreeSet<String> names = new TreeSet<String>();
 	    if ( traitComboBox.getItemCount() > 0)
 	        traitComboBox.removeAllItems();
 	    try{	

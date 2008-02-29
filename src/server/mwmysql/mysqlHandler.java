@@ -29,7 +29,6 @@ import server.campaign.SPlanet;
 import server.campaign.SPlayer;
 import server.campaign.pilot.SPilot;
 
-import common.CampaignData;
 import common.Unit;
 
 public class mysqlHandler{

@@ -13,7 +13,6 @@ import java.io.ObjectInputStream;
 
 import common.CampaignData;
 
-import client.MWClient;
 /**
  * Provides a method to encode any string into a URL-safe
  * form.

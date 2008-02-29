@@ -40,7 +40,6 @@ import java.util.Properties;
 
 import common.CampaignData;
 
-import common.CampaignData;
 import server.MWChatServer.auth.IAuthenticator;
 import server.MWChatServer.auth.IRoomAuthenticator;
 import server.MWChatServer.auth.NullRoomAuthenticator;

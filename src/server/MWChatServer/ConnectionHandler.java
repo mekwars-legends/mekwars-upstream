@@ -36,8 +36,6 @@ import java.net.Socket;
 import common.CampaignData;
 import common.util.ThreadManager;
 
-import common.CampaignData;
-
 /**
  * The keeper of the Socket on the server side. Spawns a thread for reading from
  * the socket.

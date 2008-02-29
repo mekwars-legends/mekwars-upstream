@@ -23,6 +23,8 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import common.House;
+
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
 import server.campaign.CampaignMain;
@@ -91,7 +93,7 @@ public class SingASongCommand implements Command {
 						Thread.sleep(1000);
 					}
 				}
-				Iterator factions = CampaignMain.cm.getData().getAllHouses().iterator();  
+				Iterator<House> factions = CampaignMain.cm.getData().getAllHouses().iterator();  
 				while (factions.hasNext()){
                     faction = (SHouse) factions.next();
                     for (SPlayer player : faction.getAllOnlinePlayers().values() ){

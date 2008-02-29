@@ -23,7 +23,6 @@ import java.io.InputStreamReader;
 import common.CampaignData;
 import common.util.BinWriter;
 
-import common.CampaignData;
 import server.dataProvider.ServerCommand;
 
 /**

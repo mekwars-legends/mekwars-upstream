@@ -47,7 +47,7 @@ public class AdminSaveCommandLevelsCommand implements Command {
 			return;
 		}
 		
-		TreeMap commandTable = new TreeMap(CampaignMain.cm.getServerCommands());
+		TreeMap<String,Command> commandTable = new TreeMap<String, Command>(CampaignMain.cm.getServerCommands());
         
         try{
 		    
@@ -59,7 +59,7 @@ public class AdminSaveCommandLevelsCommand implements Command {
 			PrintStream p = new PrintStream(out);
 			
             String commandName = "";
-			for(Iterator i = commandTable.keySet().iterator(); i.hasNext(); commandName = (String)i.next() )
+			for(Iterator<String> i = commandTable.keySet().iterator(); i.hasNext(); commandName = (String)i.next() )
 			{
 				Command commandMethod = CampaignMain.cm.getServerCommands().get(commandName);
                 if ( commandName == null || commandMethod == null)

@@ -1510,6 +1510,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("REQUESTDONATED", new RequestDonatedCommand());
         Commands.put("REQUESTSERVERMAIL", new RequestServerMailCommand());
         Commands.put("REQUESTSUBFACTIONPROMOTION", new RequestSubFactionPromotionCommand());
+        Commands.put("RESEARCHTECHLEVEL", new ResearchTechLevelCommand());
         Commands.put("RESTARTREPAIRTHREAD", new RestartRepairThreadCommand());
         Commands.put("RETRIEVEALLOPERATIONS", new RetrieveAllOperationsCommand());
         Commands.put("RETRIEVEOPERATION", new RetrieveOperationCommand());

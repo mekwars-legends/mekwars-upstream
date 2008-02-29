@@ -27,7 +27,6 @@ import java.util.Date;
 
 import common.CampaignData;
 
-import common.CampaignData;
 //import common.util.BinReader;
 import common.util.BinWriter;
 

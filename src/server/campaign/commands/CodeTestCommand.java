@@ -28,7 +28,6 @@ import megamek.common.Entity;
 import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
-import server.campaign.SUnit;
 import server.campaign.commands.Command;
 
 public class CodeTestCommand implements Command {

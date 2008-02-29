@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import common.House;
 import common.Unit;
 import common.util.StringUtils;
 import common.util.UnitUtils;
@@ -137,7 +138,7 @@ public class RepodCommand implements Command {
 			//now, to find the build tables, let's make a vector of them...
 			Vector<String> tables = new Vector<String>(1,1);
 			if ( global ){
-				Iterator Houses = CampaignMain.cm.getData().getAllHouses().iterator();
+				Iterator<House> Houses = CampaignMain.cm.getData().getAllHouses().iterator();
 				String fileName = "";
 				String timeZone = h.getConfig("RewardsRepodFolder");
 				while ( Houses.hasNext() ){
@@ -203,7 +204,7 @@ public class RepodCommand implements Command {
 			
 			//now, fetch the actual lines from the files
 			String result = "";
-			Vector variants = new Vector(1,1); 
+			Vector<String> variants = new Vector<String>(1,1); 
 			//variants.add(mEnt.getModel());
 			int i = tables.size();
 			
@@ -318,13 +319,13 @@ public class RepodCommand implements Command {
 					return;
 				}
 				if (size == 1){
-					String Filename =(String)variants.elementAt(0); 
+					String Filename = variants.elementAt(0); 
 					createOmni(m,Filename,m.getId(),p,possible,true);
 					return;
 				}
 				
 				int number = CampaignMain.cm.getRandomNumber(size);
-				String Filename =(String)variants.elementAt(number); 
+				String Filename = variants.elementAt(number); 
 				createOmni(m,Filename,m.getId(),p,possible,true);
 				return;
 			}
@@ -339,7 +340,7 @@ public class RepodCommand implements Command {
 		return;
 	}
 	
-	private void createOmni(SUnit m, String Filename, int unitid,SPlayer p, Vector possible,boolean random){
+	private void createOmni(SUnit m, String Filename, int unitid,SPlayer p, Vector<SUnitFactory> possible,boolean random){
 		
 		//CampaignData.mwlog.errLog("Filename "+Filename);
 		SHouse h = p.getHouseFightingFor();
@@ -425,7 +426,7 @@ public class RepodCommand implements Command {
 				
 				StringBuilder hsUpdates = new StringBuilder();
 				if ( Boolean.parseBoolean(h.getConfig("RepodUsesFactory"))) {
-					SUnitFactory working = (SUnitFactory)possible.elementAt(0);
+					SUnitFactory working = possible.elementAt(0);
 					refreshTime = Integer.parseInt(h.getConfig(repodRefreshCfg));
 					if (random)
 						refreshTime = (refreshTime*repodRandomMod)/100;

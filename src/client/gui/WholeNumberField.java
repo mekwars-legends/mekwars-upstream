@@ -25,8 +25,6 @@ import javax.swing.text.BadLocationException;
 
 import common.CampaignData;
 
-import client.MWClient;
-
 import java.awt.Toolkit;
 import java.text.NumberFormat;
 import java.text.ParseException;
