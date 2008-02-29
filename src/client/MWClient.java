@@ -292,7 +292,6 @@ public final class MWClient implements IClient {
         int i;
 
         CampaignData.mwlog.enableLogging(true);
-
         /*
          * put StdErr and StdOut into ./logs/megameklog.txt, because MegaMek
          * uses StdOut and StdErr, but the part of MegaMek that sets that up

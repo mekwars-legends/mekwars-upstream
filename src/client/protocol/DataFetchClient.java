@@ -595,8 +595,6 @@ public class DataFetchClient {
 						options.delete();
 						return;
 					}
-					System.err.println(tempString);
-					out.println(tempString);
 				}
 			} catch (Exception e) {
 				//close the streams
