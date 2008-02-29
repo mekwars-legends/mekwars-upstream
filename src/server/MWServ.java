@@ -407,7 +407,7 @@ public class MWServ {
 			iphelp.put(newUser, hisip);
 		}
 		
-		String clientVersion = "any "+SERVER_VERSION.substring(0,SERVER_VERSION.lastIndexOf("."))+"x";
+		String clientVersion = "any "+SERVER_VERSION.substring(0,SERVER_VERSION.lastIndexOf("."))+".x";
 		clientSend("CH|Welcome to " + getConfigParam("SERVERNAME") +  " (Server Version: " + SERVER_VERSION + ", Compatible Clients: " +clientVersion+")", name);
 		clientSend("CH|" + getConfigParam("INFOMESSAGE"), name);
 

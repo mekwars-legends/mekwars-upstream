@@ -559,7 +559,7 @@ public class Planet implements Comparable<Object>, MutableSerializable {
                 if ( !new File(openImage).exists() )
                     openImage = "./data/images/open.gif";
 
-                    result.append("<img src=\""+openImage+"\">"+u.getSize()+" "+u.getFullTypeString() + u.getName() + " built by " + founder +"<br>");
+                    result.append("<img src=file:///"+ new File(openImage).getAbsolutePath()+"\">"+u.getSize()+" "+u.getFullTypeString() + u.getName() + " built by " + founder +"<br>");
             }
         }
 
@@ -701,7 +701,9 @@ public class Planet implements Comparable<Object>, MutableSerializable {
      */
     public StringBuilder getAdvanceDescription(int level) {
 
-        StringBuilder result = new StringBuilder("Information for Planet: <b>");
+        StringBuilder result = new StringBuilder();
+
+        result.append("Information for Planet: <b>");
         result.append(getName() + "</b><br><br>");
         // result.append("</b> ("+ getDescription() + ")<br><br>");
         result.append("<b>Location:</b> " + (int) getPosition().x + " x " + (int) getPosition().y + " y<br>" + Math.round(getPosition().distanceSq(0.0, 0.0)) + " Lightyears from the galaxy center <br><br>");
@@ -724,8 +726,8 @@ public class Planet implements Comparable<Object>, MutableSerializable {
 
                 if (!new File(openImage).exists())
                     openImage = "./data/images/open.gif";
-
-                result.append("<img src=\"" + openImage + "\">" + u.getSize() + " " + u.getFullTypeString() + u.getName() + " built by " + founder + "<br>");
+                
+                result.append("<img src=\"file:///"+ new File(openImage).getAbsolutePath()+ "\">" + u.getSize() + " " + u.getFullTypeString() + u.getName() + " built by " + founder + "<br>");
             }
         }
 
@@ -795,6 +797,7 @@ public class Planet implements Comparable<Object>, MutableSerializable {
             result.delete(result.length() - 2, result.length());
             result.append("<br><br>");
         }// end if planet has flags
+        
         return result;
     }
 

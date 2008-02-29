@@ -290,10 +290,9 @@ MouseMotionListener, MouseWheelListener, ActionListener {
                             color = h.getHouseColor();
                             name = h.getName();
                         }
-						label = new JEditorPane("text/html","<html"
-								+ mp.getPPanel().getPlanet().getAdvanceDescription(mwclient.getUser(mwclient.getUsername()).getUserlevel())
-                                + "<b>Original Owner:</b><br><font color="+color+">"+name+ "</font>"
-								+ "</html>");
+						label = new JEditorPane("text/html",mp.getPPanel().getPlanet().getAdvanceDescription(mwclient.getUser(mwclient.getUsername()).getUserlevel())
+                                + "<b>Original Owner:</b><br><font color="+color+">"+name+ "</font>");
+						label.setEditorKit(new MyHTMLEditorKit());
 						label.setEditable(false);
 						label.setCaretPosition(0);
 						label.setPreferredSize(new Dimension(500,400));

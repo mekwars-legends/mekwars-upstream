@@ -428,6 +428,16 @@ public class DefectCommand implements Command {
             }// end if(unconfirmed)
 
             if (newHouse == null && isSingleFaction) {
+                if ( HouseName.trim().length() < 5){
+                    CampaignMain.cm.toUser("Your faction name must be Greater then 4 characters long!", Username);
+                    return;
+                }
+                    
+                if ( shortName.trim().length() < 2){
+                    CampaignMain.cm.toUser("Your factions short name needs be to 2 or more characters long!", Username);
+                    return;
+                }
+                
                 newHouse = createSingleFaction(HouseName, shortName);
 
                 if (newHouse == null) {

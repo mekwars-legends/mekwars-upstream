@@ -1,7 +1,8 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.20.x
+v 0.2.21.x
++ Bug: Images not showing up in Planet info dialog
 - Removed LastSaved code. More trouble then its worth.
 + Rev Client/Server 0.2.21.0
 + New MegaMek.jar 0.33.20-MW022908-5522
@@ -69,6 +70,7 @@ v 0.2.20.x
 + Moved Leader commands to new leader sub folder
 + Bug: Pilot Skill being loaded/saved incorrectly in DB
 + Updated DB to v26
+v 0.2.20.x
 Release Client/Server 0.2.20.0
 + New MegaMek.jar 0.33.19-MW021808-5493
 + Bug: Pilots losing skills after battles
