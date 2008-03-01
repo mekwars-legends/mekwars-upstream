@@ -1899,7 +1899,7 @@ public final class CampaignMain implements Serializable {
 
         // send the combined & spaced string to players
         if (generalResult.toLowerCase().replace("<br>", " ").trim().length() > 0)
-            this.doSendToAllOnlinePlayers(generalResult, true);
+            this.doSendToAllOnlinePlayers("PL|UDT|"+generalResult, false);
 
         /*
          * Tick the market. This will resolve any auctions w/ 0 ticks remaining and decrement all others.

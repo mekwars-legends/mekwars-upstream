@@ -243,6 +243,9 @@ public class PL extends Command {
             int id = TokenReader.readInt(st);
             mwclient.getData().removeHouse(id);
         }
+        else if (cmd.equals("UDT") ){
+            mwclient.addToChat(TokenReader.readString(st),mwclient.getConfig().getIntParam("USERDEFINDMESSAGETAB"));
+        }
 		else
 			return;
 		

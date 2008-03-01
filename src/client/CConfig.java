@@ -399,6 +399,9 @@ public class CConfig {
         
         //MegaMek User Interface Type
         defaults.setProperty("USEAWTINTERFACE", "YES");
+
+        defaults.setProperty("USERDEFINDMESSAGETAB", "0");
+
         return defaults;
 	}
 	
