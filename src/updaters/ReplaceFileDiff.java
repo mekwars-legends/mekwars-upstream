@@ -7,8 +7,6 @@ import java.io.FileOutputStream;
 import java.util.StringTokenizer;
 import java.io.FileNotFoundException;
 
-import common.CampaignData;
-
 import sun.tools.jar.Main;
 import updaters.utils.IOUtil;
 public class ReplaceFileDiff extends FileDiff
@@ -153,7 +151,7 @@ public class ReplaceFileDiff extends FileDiff
         }
         catch(Exception e)
         {
-            CampaignData.mwlog.errLog(e);
+            e.printStackTrace();
         }
     }
 

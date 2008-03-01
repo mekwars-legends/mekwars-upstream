@@ -71,8 +71,7 @@ public class BuildTableListCommand implements Command {
 					    continue;
 					if ( line.indexOf(".") != -1 ){
 						String fileWithOutChance = line.substring(line.indexOf(" ")).trim();
-					    SUnit m = new SUnit();
-					    Entity ent = m.loadMech(fileWithOutChance);
+					    Entity ent = SUnit.loadMech(fileWithOutChance);
 						if ( ent.getModel().equals("OMG-UR-FD") ){
 						    CampaignData.mwlog.errLog(fileWithOutChance+" errored in Build Table: "+filePath);
 						    results += fileWithOutChance.trim()+"<br>";

@@ -90,6 +90,9 @@ public class ResearchTechLevelCommand implements Command {
             return;
         }
 
+        cost = Math.max(0, cost);
+        flu = Math.max(0, flu);
+
         player.addMoney((int)-cost);
         player.addInfluence((int)-flu);
 

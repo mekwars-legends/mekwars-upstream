@@ -95,7 +95,7 @@ public class FixAmmoCommand implements Command {
 		Entity baseLine = null;
 		Entity en = unit.getEntity();
 		
-		baseLine = unit.loadMech(unit.getUnitFilename());
+		baseLine = SUnit.loadMech(unit.getUnitFilename());
 		
 		ArrayList<Mounted> baseLineAmmo = baseLine.getAmmo();
 		ArrayList<Mounted> currentAmmo = en.getAmmo();

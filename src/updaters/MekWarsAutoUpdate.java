@@ -34,8 +34,6 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-import common.CampaignData;
-
 public class MekWarsAutoUpdate {
 
     // Main-Method
@@ -44,7 +42,7 @@ public class MekWarsAutoUpdate {
      */
     private static final String CONFIG_FILE = "./data/mwconfig.txt";
     private static final String logFileName = "./logs/mekwarsautoupdate.log";
-    private static final String VERSION = "2.0";
+    private static final String VERSION = "3.0";
     private Properties config = null;
     private SplashWindow splash = null;
     
@@ -57,7 +55,7 @@ public class MekWarsAutoUpdate {
                 System.setOut(ps);
                 System.setErr(ps);
             } catch (Exception ex) {
-                CampaignData.mwlog.errLog(ex);
+                ex.printStackTrace();
             }
         } // End log-to-file
 
@@ -134,46 +132,27 @@ public class MekWarsAutoUpdate {
             copyTempFiles("./update-tmp");
 
         } catch (Exception ex) {
-            CampaignData.mwlog.errLog(ex);
+            ex.printStackTrace();
         }
 
-        // have a command file to process as well. wahoo
-        // Commenting this out for now with the discovery of the <CLEANUP> tag
-        // --Torren
-        /*
-         * if ( args.length > 1 ){ try { String commandFile = args[1];
-         * 
-         * System.err.println("Command file: "+commandFile); System.err.flush();
-         * File updateInfoFile = new File("./"+commandFile);
-         * 
-         * if ( updateInfoFile.exists() ){ Runtime runTime =
-         * Runtime.getRuntime(); FileInputStream fis = new
-         * FileInputStream(updateInfoFile); BufferedReader dis = new
-         * BufferedReader(new InputStreamReader(fis)); while (dis.ready()) {
-         * String command = dis.readLine(); System.err.println("Running:
-         * "+command); System.err.flush(); Process event =
-         * runTime.exec(command); ProcessLogger outLogger = new
-         * ProcessLogger(event.getInputStream()); ProcessLogger errLogger = new
-         * ProcessLogger(event.getErrorStream()); outLogger.start();
-         * errLogger.start(); event.waitFor(); } } }catch (Exception e) {
-         * CampaignData.mwlog.errLog(e); } }
-         */
         if (splash != null)
             splash.dispose();
         try {
             System.out.println("Restarting");
             System.out.flush();
             Runtime runTime = Runtime.getRuntime();
+            String memory = config.getProperty("DEDMEMORY");
             if ( !new File("MekWarsDed.jar").exists() && !args[0].equals("PLAYER")) {
-	            String[] call = { "java", "-jar", "MekWarsDed.jar" };
+	            String[] call = { "java", "-Xmx" + memory + "m", "-jar", "MekWarsDed.jar" };
 	            runTime.exec(call);
             }else {
 	            String[] call = { "java", "-jar", "MekWarsClient.jar" };
 	            runTime.exec(call);
             }
+            System.exit(0);
         } catch (Exception ex) {
-            CampaignData.mwlog.errLog(ex);
-
+            ex.printStackTrace();
+            System.exit(0);
         }
     }
 
@@ -192,7 +171,7 @@ public class MekWarsAutoUpdate {
                     String newFile = "." + file.toString().substring(12);
                     copier.copyFile(file, new File(newFile));
                 } catch (Exception ex) {
-                    CampaignData.mwlog.errLog(ex);
+                    ex.printStackTrace();
                 }
             }
         }
@@ -210,7 +189,7 @@ public class MekWarsAutoUpdate {
         } catch (Exception ex) {
             System.err.println("Unable to load config file: " + CONFIG_FILE);
             System.err.flush();
-            CampaignData.mwlog.errLog(ex);
+            ex.printStackTrace();
             return;
         }
     }
@@ -235,7 +214,7 @@ class JCopy {
                 fos.write(buf, 0, i);
             }
         } catch (Exception ex) {
-            CampaignData.mwlog.errLog(ex);
+            ex.printStackTrace();
         } finally {
             fis.close();
             fos.close();

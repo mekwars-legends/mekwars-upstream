@@ -1041,6 +1041,7 @@ public class DefaultServerOptions {
         defaults.setProperty("BaseFactoryRefreshRate", "100");
         defaults.setProperty("BaseCommonBuildTableShares", "100");
         defaults.setProperty("BaseFactoryComponents", "1000");
+        defaults.setProperty("StartingPlanetBays", "20");
         
         //Buying Factory options
         defaults.setProperty("NewFactoryBaseCost", "100");

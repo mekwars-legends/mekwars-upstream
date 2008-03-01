@@ -138,8 +138,7 @@ public class BuildTableValidatorCommand implements Command {
 					
 					
 					String unitToBuild = line.substring(line.indexOf(" ")).trim();
-					SUnit m = new SUnit();
-					Entity ent = m.loadMech(unitToBuild);
+					Entity ent = SUnit.loadMech(unitToBuild);
 					if (ent.getModel().equals("OMG-UR-FD"))
 						toReturn.append("Error loading: " + unitToBuild.trim()+" [Table: "+fileList[i].getPath()+"]<br>");
 

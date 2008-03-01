@@ -1024,7 +1024,7 @@ public final class SUnit extends Unit{
      */
     public String getModelName() {
         if (checkModelName() == null) {
-            unitEntity = this.loadMech(getUnitFilename());
+            unitEntity = SUnit.loadMech(getUnitFilename());
             this.init();
         }
         return checkModelName();
@@ -1237,7 +1237,7 @@ public final class SUnit extends Unit{
         this.unitEntity = unitEntity;
     }
 
-    public Entity loadMech(String Filename) {
+    public static Entity loadMech(String Filename) {
 
         if (Filename == null)
             return null;

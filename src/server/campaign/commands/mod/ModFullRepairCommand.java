@@ -65,7 +65,7 @@ public class ModFullRepairCommand implements Command {
 			return;
 		}
 		
-        Entity unitEntity = m.loadMech(m.getUnitFilename());
+        Entity unitEntity = SUnit.loadMech(m.getUnitFilename());
         m.setEntity(unitEntity);
 		
 		//tell the player you're going to scrap the unit ...

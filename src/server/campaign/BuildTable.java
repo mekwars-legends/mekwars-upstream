@@ -232,6 +232,12 @@ public class BuildTable {
 		return result;
 	}
 	
+	public static void saveBuildTableFile(String name, String folder, ConcurrentHashMap<String,Integer> unitHolder) {
+	    File prodFile = new File("./data/buildtables/"+folder+"/"+name);
+	    
+	    BuildTable.saveBuildTableFile(prodFile, unitHolder);
+	}
+
 	public static void saveBuildTableFile(File file, ConcurrentHashMap<String,Integer> unitHolder){
 		try{
 			FileOutputStream fos = new FileOutputStream(file);
@@ -247,5 +253,50 @@ public class BuildTable {
 			CampaignData.mwlog.errLog(ex);
 		}
 
+	}
+	
+	public static ConcurrentHashMap<String, Integer> loadBuildTable(File prodFile){
+        ConcurrentHashMap<String, Integer> unitHolder = new ConcurrentHashMap<String, Integer>();
+        try {
+            
+            FileInputStream fis = new FileInputStream(prodFile);
+            BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+            while (dis.ready()) {
+
+                /*
+                 * Read the line and remove excess whitespace. Removing whitespace
+                 * sensitivity will allow ops to make more readable files; however,
+                 * any unit file name that contains 2 spaces consecutively (is there
+                 * such a thing?) will be broken. 
+                 */
+                String l = dis.readLine();
+                if (l == null || l.trim().length() == 0)
+                    continue;
+                
+                l = l.trim();
+                l = l.replaceAll("\\s+"," ");//reduce multi-spaces to one space
+                if (l.indexOf(" ") == 0)
+                    l = l.substring(1,l.length());
+                
+                StringTokenizer ST = new StringTokenizer(l.trim());
+                if (ST.hasMoreElements()) {
+                    int amount = Integer.parseInt((String)ST.nextElement());
+                    StringBuilder filename = new StringBuilder();
+                    while (ST.hasMoreElements()) {
+                        filename.append(ST.nextToken());
+                        if (ST.hasMoreTokens())
+                            filename.append(" ");
+                    }
+                    if ( amount > 0 )
+                        unitHolder.put(filename.toString(), amount);
+                }
+            }
+            dis.close();
+            fis.close();
+
+        } catch (Exception ex) {
+            CampaignData.mwlog.errLog(ex);
+        }
+        return unitHolder;
 	}
 }

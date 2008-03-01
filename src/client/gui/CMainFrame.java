@@ -179,7 +179,8 @@ public class CMainFrame extends JFrame {
     JMenuItem jMenuLeaderPlayerColor = new JMenuItem();
     JMenuItem jMenuLeaderPurchaseFactory = new JMenuItem();
     JMenuItem jMenuLeaderResearchTech = new JMenuItem();
-
+    JMenuItem jMenuLeaderResearchUnit = new JMenuItem();
+    
     // HELP Menu
     JMenu jMenuHelp = new JMenu();
 
@@ -459,6 +460,7 @@ public class CMainFrame extends JFrame {
         jMenuLeaderPlayerColor.setVisible(userLevel >= mwclient.getData().getAccessLevel("AdminSetHousePlayerColor"));
         jMenuLeaderPurchaseFactory.setVisible(userLevel >= mwclient.getData().getAccessLevel("PurchaseFactory"));
         jMenuLeaderResearchTech.setVisible(userLevel >= mwclient.getData().getAccessLevel("ResearchTechLevel"));
+        jMenuLeaderResearchUnit.setVisible(userLevel >= mwclient.getData().getAccessLevel("ResearchUnit"));
         
         jMenuFileConnect.setVisible(disconnected);
         jMenuFileDisconnect.setVisible(!disconnected);
@@ -936,7 +938,14 @@ public class CMainFrame extends JFrame {
                 jMenuLeaderPlayerColor_actionPerformed();
             }
         });
-
+        
+        jMenuLeaderResearchUnit.setText("Research Unit");
+        jMenuLeaderResearchUnit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                jMenuLeaderResearchUnit_actionPerformed();
+            }
+        });
+        
         jMenuLeaderResearchTech.setText("Research Tech");
         jMenuLeaderResearchTech.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -1162,6 +1171,7 @@ public class CMainFrame extends JFrame {
         jMenuLeaderShip.add(jMenuLeaderPlayerColor);
         jMenuLeaderShip.add(jMenuLeaderPurchaseFactory);
         jMenuLeaderShip.add(jMenuLeaderResearchTech);
+        jMenuLeaderShip.add(jMenuLeaderResearchUnit);
         
         jMenuHelp.add(jMenuHelpAbout);
         jMenuHelp.addSeparator();
@@ -2052,6 +2062,13 @@ public class CMainFrame extends JFrame {
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminSetHousePlayerColor#" + mwclient.getPlayer().getHouse() + "#" + newColor);
     }
 
+    public void jMenuLeaderResearchUnit_actionPerformed() {
+        UnitLoadingDialog unitLoadingDialog = new UnitLoadingDialog(mwclient.getMainFrame());
+        UnitViewerDialog unitSelector = new UnitViewerDialog(mwclient.getMainFrame(), unitLoadingDialog, mwclient, UnitViewerDialog.UNIT_RESEARCH);
+        unitSelector.setName("Unit Selector");
+        new Thread(unitSelector).start();
+    }
+    
     public void jMenuLeaderPurchaseFactory_actionPerformed() {
         String[] units = { CUnit.getTypeClassDesc(CUnit.MEK), CUnit.getTypeClassDesc(CUnit.VEHICLE), CUnit.getTypeClassDesc(CUnit.INFANTRY), CUnit.getTypeClassDesc(CUnit.PROTOMEK), CUnit.getTypeClassDesc(CUnit.BATTLEARMOR) };
         String[] weight = { CUnit.getWeightClassDesc(CUnit.LIGHT), CUnit.getWeightClassDesc(CUnit.MEDIUM), CUnit.getWeightClassDesc(CUnit.HEAVY), CUnit.getWeightClassDesc(CUnit.ASSAULT) };

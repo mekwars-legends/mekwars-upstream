@@ -2987,9 +2987,13 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
     }
 
     public int getTechResearchLevel() {
+        return this.getTechResearchLevel(this.getTechLevel());
+    }
+    
+    public int getTechResearchLevel(int tech) {
 
         int techLevel = 1;
-        switch (this.getTechLevel()) {
+        switch (tech) {
         case TechConstants.T_IS_LEVEL_1:
             techLevel = 1;
             break;

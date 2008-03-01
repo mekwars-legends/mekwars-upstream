@@ -1392,6 +1392,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("REQUESTSERVERMAIL", new RequestServerMailCommand());
         Commands.put("REQUESTSUBFACTIONPROMOTION", new RequestSubFactionPromotionCommand());
         Commands.put("RESEARCHTECHLEVEL", new ResearchTechLevelCommand());
+        Commands.put("RESEARCHUNIT", new ResearchUnitCommand());
         Commands.put("RESTARTREPAIRTHREAD", new RestartRepairThreadCommand());
         Commands.put("RETRIEVEALLOPERATIONS", new RetrieveAllOperationsCommand());
         Commands.put("RETRIEVEOPERATION", new RetrieveOperationCommand());
@@ -1709,9 +1710,7 @@ public final class CampaignMain implements Serializable {
             m = new MechStatistics(Filename, mechsize);
         } else
             m = this.MechStats.get(Filename);
-        SUnit unit = new SUnit();
-        m.setOriginalBV(unit.loadMech(Filename).calculateBattleValue());
-        unit = null;// clear the unused unit
+        m.setOriginalBV(SUnit.loadMech(Filename).calculateBattleValue());
 
         m.addStats(gameplayed, gamewon, m.getOriginalBV());
         m.setTimesScrapped(m.getTimesScrapped() + scrapped);

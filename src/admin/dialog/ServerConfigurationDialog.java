@@ -4696,6 +4696,12 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("BaseCommonBuildTableShares");
         playerFactionPanel.add(baseTextField);
 
+        baseTextField = new JTextField(5);
+        playerFactionPanel.add(new JLabel("Starting Bays:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<HTML>Number of bays the players starting planet gets.</html>");
+        baseTextField.setName("StartingPlanetBays");
+        playerFactionPanel.add(baseTextField);
+
         SpringLayoutHelper.setupSpringGrid(playerFactionPanel, 4);
 
         for (int type = 0; type < Unit.MAXBUILD; type++) {
@@ -4812,9 +4818,9 @@ public final class ServerConfigurationDialog implements ActionListener {
 
         for (int type = 0; type < Unit.MAXBUILD; type++) {
             baseTextField = new JTextField(5);
-            researchPanel2.add(new JLabel(Unit.getDescriptionForID(type)+" unit "+ mwclient.moneyOrFluMessage(true, false, -1, false) + ":", SwingConstants.TRAILING));
+            researchPanel2.add(new JLabel(Unit.getDescriptionForID(type)+" unit "+ mwclient.moneyOrFluMessage(false, false, -1, false) + ":", SwingConstants.TRAILING));
             baseTextField.setToolTipText("<HTML>" + mwclient.moneyOrFluMessage(true, false, -1, false) + " modifier for "+Unit.getDescriptionForID(type)+" units</html>");
-            baseTextField.setName("ResearchCostModifier"+Unit.getDescriptionForID(type));
+            baseTextField.setName("ResearchFluModifier"+Unit.getDescriptionForID(type));
             researchPanel2.add(baseTextField);
         }
 

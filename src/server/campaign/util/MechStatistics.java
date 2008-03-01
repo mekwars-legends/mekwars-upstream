@@ -345,9 +345,7 @@ public String toString()
   	if (OriginalBV == 0 && getMechFileName() != null)
   	{
   		// make a MegaMek entity and get it's BV
-  	    SUnit unit = new SUnit();
-  		OriginalBV = unit.loadMech(getMechFileName()).calculateBattleValue();
-  		unit = null;//clear the unused unit
+  		OriginalBV = SUnit.loadMech(getMechFileName()).calculateBattleValue();
   	}
     return OriginalBV;
   }

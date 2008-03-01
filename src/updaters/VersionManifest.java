@@ -15,8 +15,6 @@ import java.util.StringTokenizer;
 
 import javax.swing.JFileChooser;
 
-import common.CampaignData;
-
 import updaters.utils.IOUtil;
 
 public class VersionManifest {
@@ -39,7 +37,7 @@ public class VersionManifest {
                 }
             }
         } catch (Exception e) {
-            CampaignData.mwlog.errLog(e);
+            e.printStackTrace();
         }
     }
 
@@ -115,7 +113,7 @@ public class VersionManifest {
                 }
                 retval.add(file);
             } catch (Exception e) {
-                CampaignData.mwlog.errLog(e);
+                e.printStackTrace();
             }
         }
 
@@ -189,7 +187,7 @@ public class VersionManifest {
             ps.close();
             out.close();
         } catch (Exception ex) {
-            CampaignData.mwlog.errLog(ex);
+            ex.printStackTrace();
         }
         createManifestFile(outFileName);
     }
@@ -227,7 +225,7 @@ public class VersionManifest {
                 ps.flush();
             }
         } catch (Exception ex) {
-            CampaignData.mwlog.errLog(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -277,7 +275,7 @@ public class VersionManifest {
              * errLogger.start(); event.waitFor();
              */
         } catch (Exception ex) {
-            CampaignData.mwlog.errLog(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -287,15 +285,3 @@ public class VersionManifest {
 
     public static String separator = "*";
 }
-/*
- * class ProcessLogger extends Thread {
- * 
- * private InputStream m_in;
- * 
- * ProcessLogger(InputStream in) { m_in = in; }
- * 
- * @Override public void run() { try { int c = 1; while ((c = m_in.read()) !=
- * -1) { System.out.print((char) c); // System.out.flush(); } m_in.close(); }
- * catch (Exception e) { System.err.println("Problem getting output");
- * CampaignData.mwlog.errLog(e); } } }
- */

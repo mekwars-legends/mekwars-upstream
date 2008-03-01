@@ -115,6 +115,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
 	public static final int UNIT_VIEWER = 0;
 	public static final int OMNI_VARIANT_SELECTOR = 1;
 	public static final int UNIT_SELECTOR = 2;
+    public static final int UNIT_RESEARCH = 3;
 	
 	//these indices should match up with the static values in the MechSummaryComparator
 	private String[] saSorts = { "Name", "Ref", "Weight", "BV" };//, "Year" };
@@ -716,7 +717,20 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
 					CampaignData.mwlog.errLog(ex);
 					//MMClient.mwClientLog.clientErrLog("Problem with actionPerformed in RepodDialog");
 				}
-			}// end unit selector if.
+			}else if ( viewerType == UnitViewerDialog.UNIT_RESEARCH ) {
+                MechSummary ms = mechsCurrent[mechList.getSelectedIndex()];
+                String unitFile = ms.getEntryName();
+                this.setVisible(false);
+                
+                if ( unitFile != null && !unitFile.equals("null") ){
+                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c researchunit#"+unitFile);
+                }
+
+
+                this.dispose();
+			    
+			}
+		    // end unit selector if.
 			else
 			    this.dispose();
 		}else if (ae.getSource().equals(m_bSearch)) {

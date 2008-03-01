@@ -780,9 +780,11 @@ public class DefectCommand implements Command {
         HashMap<Integer,Integer> flu = new HashMap<Integer,Integer>();
         flu.put(house.getId(),planet.getConquestPoints());
         planet.getInfluence().setInfluence(flu);
+        planet.setBaysProvided(CampaignMain.cm.getIntegerConfig("StartingPlanetBays"));
         
         planet.setOwner(null, planet.checkOwner(), true);
         house.setInitialHouseRanking(planet.getConquestPoints());
+        
         planet.updated();
     }
 }// end DefectCommand.java

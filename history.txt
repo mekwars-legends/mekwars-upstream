@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.21.x
++ Added Unit Research command and GUI
 + Defect command now gives link to new planet in single faction mode
 + Added Number formatting to Logger time
 + Added Number formating to Money and Flue
