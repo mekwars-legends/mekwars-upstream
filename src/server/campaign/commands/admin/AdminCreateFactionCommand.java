@@ -58,6 +58,7 @@ public class AdminCreateFactionCommand implements Command {
 			newfaction.updated();
 			
 			CampaignMain.cm.addHouse(newfaction);
+	        CampaignMain.cm.doSendToAllOnlinePlayers("PL|ANH|" + newfaction.addNewHouse(), false);
 			CampaignMain.cm.toUser("Faction created!",Username,true);
 			CampaignMain.cm.doSendModMail("NOTE",Username + " has created faction " + newfaction.getName());
 		}

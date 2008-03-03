@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.21.x
++ Bug: Newly created factions not getting processed by connected players
 + Added Unit Research command and GUI
 + Defect command now gives link to new planet in single faction mode
 + Added Number formatting to Logger time
