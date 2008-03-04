@@ -88,8 +88,8 @@ public final class MWLogger {// final - no extension of the server logger
             now.setTimeInMillis(record.getMillis());
             StringBuilder sb = new StringBuilder();
 
-            DecimalFormat mills = new DecimalFormat("###");
-            DecimalFormat secs = new DecimalFormat("##");
+            DecimalFormat mills = new DecimalFormat("000");
+            DecimalFormat secs = new DecimalFormat("00");
             
             sb.append(now.get(Calendar.YEAR));
             sb.append(secs.format(now.get(Calendar.MONTH) + 1));

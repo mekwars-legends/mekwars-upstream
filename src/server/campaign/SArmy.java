@@ -350,9 +350,13 @@ public class SArmy extends Army{
 
             // use smaller army to determine percentage; gives narrowest legal
             // range possible
-            percentDiff = bvDiff / Math.min(enemyOpBV, myOpBV);
+            double smallestDiff = Math.min(enemyOpBV, myOpBV);
+            double smallestBV = Math.min(enemyOpBV, myOpBV);
+            double precentTotal = percentCap * smallestBV; 
 
-            if (percentCap * Math.min(enemyOpBV, myOpBV) < flatCap) {
+            percentDiff = bvDiff / smallestDiff;
+
+            if (  precentTotal < flatCap) {
                 if (bvDiff > flatCap)
                     return false;
             } else {// percent cap is greater than flat

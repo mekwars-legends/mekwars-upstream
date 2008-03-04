@@ -653,7 +653,6 @@ public class DataFetchClient {
                 boolean fullUpdate = in.readBoolean("FullUpdate");
                 
                 if ( fullUpdate ) {
-                    data.clearHouses();
                     data.clearPlanets();
                 }
                 
@@ -664,6 +663,7 @@ public class DataFetchClient {
                 	data.addPlanet(planet);
                 	changesSinceLastRefresh.put(planet.getId(), planet.getInfluence());
                 }
+                data.clearHouses();
             	size = in.readInt("houses.size");
                 for ( int count = 0; count < size; count++){
                 	House house = new House(in);

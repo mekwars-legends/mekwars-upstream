@@ -69,11 +69,7 @@ public class PDiff implements ServerCommand {
 			data.binPlanetsOut(planets, out);
 			ArrayList<House> houses = new ArrayList<House>();
 			for (House e : data.getAllHouses()) {
-				TimeUpdateHouse tHouse = (TimeUpdateHouse) e;
-				if (tHouse.getLastChanged() != null
-						&& tHouse.getLastChanged().compareTo(timestamp) > 0) {
 					houses.add(e);
-				}
 			}
 			data.binHousesOut(houses, out);
 		}

@@ -278,6 +278,7 @@ public class CMainFrame extends JFrame {
         boolean mod = false;
 
         userLevel = mwclient.getUser(mwclient.getPlayer().getName()).getUserlevel();
+        mwclient.loadServerCommmands();
 
         if (mwclient.getMyStatus() == MWClient.STATUS_DISCONNECTED) {
             disconnected = true;
@@ -317,7 +318,6 @@ public class CMainFrame extends JFrame {
         // "+this.getClient().getMyStatus()+" StatusII: "+Client.getMyStatus());
         if ((mod || admin) && !hasAdminMenus) {
 
-            mwclient.loadServerCommmands();
 
             File loadJar = new File("./MekWarsAdmin.jar");
 
