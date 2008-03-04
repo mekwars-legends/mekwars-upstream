@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.21.x
+Release Client & Server 0.2.21.1
++ New MegaMek.jar 0.33.21-MW0300408-5543
 + Bug: Max BV Percent difference not working
 + Bug: Newly created factions not getting processed by connected players
 + Added Unit Research command and GUI
