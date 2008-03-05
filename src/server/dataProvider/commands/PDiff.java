@@ -26,7 +26,6 @@ import common.Planet;
 import common.util.BinWriter;
 
 import server.campaign.CampaignMain;
-import server.campaign.data.TimeUpdateHouse;
 import server.campaign.data.TimeUpdatePlanet;
 import server.dataProvider.ServerCommand;
 

@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.21.x
++ Added new command AutoFillBlackMarketSetting
 + Added IsLeader() method to MWClient
 + added getUserLevel() method to MWClient
 + Added Purchase Factory gui option for Interstellar map

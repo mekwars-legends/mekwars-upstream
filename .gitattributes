@@ -1603,6 +1603,7 @@ src/server/campaign/commands/admin/AdminUpdateClientParamCommand.java -text
 src/server/campaign/commands/admin/AdminUpdatePlanetOwnershipCommand.java -text
 src/server/campaign/commands/admin/AdminUploadBuildTableCommand.java -text
 src/server/campaign/commands/admin/AdminViewLogCommand.java -text
+src/server/campaign/commands/admin/AutoFillBlackMarketSettingCommand.java -text
 src/server/campaign/commands/admin/CampaignConfigCommand.java -text
 src/server/campaign/commands/admin/ChangeHouseColorCommand.java -text
 src/server/campaign/commands/admin/ChangeNameCommand.java -text

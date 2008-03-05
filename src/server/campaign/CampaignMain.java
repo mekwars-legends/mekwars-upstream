@@ -1221,6 +1221,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("AUL", new ArmyUpperLimiterCommand());
         Commands.put("ATTACK", new AttackCommand());
         Commands.put("ATTACKFROMRESERVE", new AttackFromReserveCommand());
+        Commands.put("AUTOFILLBLACKMARKETSETTING", new AutoFillBlackMarketSettingCommand());
         Commands.put("AUTOPLANETSTATUS", new AutoPlanetStatusCommand());
         Commands.put("BID", new BidCommand());
         Commands.put("BMSTATUS", new BMStatusCommand());
