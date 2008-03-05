@@ -104,6 +104,7 @@ public class MWServ {
 				
 		String logFileName = "./logs/logFile.txt";
 		String errorFileName = "./logs/errorFile.txt";
+		CampaignData.mwlog.createServerLoggers();
 		CampaignData.mwlog.setServer(true);
 		
 		try {

@@ -144,6 +144,38 @@ public final class MWLogger {// final - no extension of the server logger
 
         mmnetFormatter = new MMNetFormatter();
 
+    }
+
+    public void createClientLoggers(){
+        try {
+
+            infoHandler = new FileHandler(logDir.getPath() + "/infolog", normFileSize, rotations, true);
+            infoHandler.setLevel(Level.INFO);
+            infoHandler.setFilter(null);
+            infoHandler.setFormatter(mmnetFormatter);
+            infoHandler.setEncoding("UTF8");
+            infoLog = Logger.getLogger("infoLogger");
+            infoLog.setUseParentHandlers(false);
+            infoLog.addHandler(infoHandler);
+
+            errHandler = new FileHandler(logDir.getPath() + "/errlog", normFileSize, rotations, true);
+            errHandler.setLevel(Level.INFO);
+            errHandler.setFilter(null);
+            errHandler.setEncoding("UTF8");
+            errHandler.setFormatter(mmnetFormatter);
+            errLog = Logger.getLogger("errLogger");
+            errLog.setUseParentHandlers(false);
+            errLog.addHandler(errHandler);
+
+            logging = true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    
+    public void createServerLoggers(){
         try {
 
             mainHandler = new FileHandler(logDir.getPath() + "/mainlog", bigFileSize, rotations, true);
@@ -278,8 +310,8 @@ public final class MWLogger {// final - no extension of the server logger
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
 
+    }
     public void mainLog(String s) {
         if (logging)
             mainLog.info(s);

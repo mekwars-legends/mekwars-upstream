@@ -277,7 +277,7 @@ public class CMainFrame extends JFrame {
         boolean admin = false;
         boolean mod = false;
 
-        userLevel = mwclient.getUser(mwclient.getPlayer().getName()).getUserlevel();
+        userLevel = mwclient.getUserLevel();
         mwclient.loadServerCommmands();
 
         if (mwclient.getMyStatus() == MWClient.STATUS_DISCONNECTED) {
@@ -419,7 +419,7 @@ public class CMainFrame extends JFrame {
                     }
                 });
 
-                int userLevel = this.mwclient.getUser(this.mwclient.getUsername()).getUserlevel();
+                int userLevel = this.mwclient.getUserLevel();
                 if (userLevel >= mwclient.getData().getAccessLevel("RetrieveOperation"))
                     jMenuOperations.add(jMenuRetrieveOperationFile);
                 if (userLevel >= mwclient.getData().getAccessLevel("SetOperation")) {
@@ -450,7 +450,7 @@ public class CMainFrame extends JFrame {
         // jMenuTask.setVisible(loggedin);
         jMenuHost.setVisible(!disconnected);
 
-        jMenuLeaderShip.setVisible(userLevel >= Integer.parseInt(mwclient.getserverConfigs("factionLeaderLevel")));
+        jMenuLeaderShip.setVisible(mwclient.isLeader());
 
         jMenuLeaderDemote.setVisible(userLevel >= mwclient.getData().getAccessLevel("DemotePlayer"));
         jMenuLeaderFluff.setVisible(userLevel >= mwclient.getData().getAccessLevel("FactionLeaderFluff"));
@@ -956,7 +956,7 @@ public class CMainFrame extends JFrame {
         jMenuLeaderPurchaseFactory.setText("Purchase Factory");
         jMenuLeaderPurchaseFactory.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                jMenuLeaderPurchaseFactory_actionPerformed();
+                jMenuLeaderPurchaseFactory_actionPerformed(null);
             }
         });
 
@@ -2049,7 +2049,7 @@ public class CMainFrame extends JFrame {
     }
 
     public void jMenuLeaderFactionColor_actionPerformed() {
-        String newColor = JOptionPane.showInputDialog(this, "Faction Color?", "Faction Color?");
+        String newColor = JOptionPane.showInputDialog(this, "Faction Color?", "Faction Color?",JOptionPane.QUESTION_MESSAGE);
 
         if (newColor != null)
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c ChangeHouseColor#" + mwclient.getPlayer().getHouse() + "#" + newColor);
@@ -2069,7 +2069,7 @@ public class CMainFrame extends JFrame {
         new Thread(unitSelector).start();
     }
     
-    public void jMenuLeaderPurchaseFactory_actionPerformed() {
+    public void jMenuLeaderPurchaseFactory_actionPerformed(String planet) {
         String[] units = { CUnit.getTypeClassDesc(CUnit.MEK), CUnit.getTypeClassDesc(CUnit.VEHICLE), CUnit.getTypeClassDesc(CUnit.INFANTRY), CUnit.getTypeClassDesc(CUnit.PROTOMEK), CUnit.getTypeClassDesc(CUnit.BATTLEARMOR) };
         String[] weight = { CUnit.getWeightClassDesc(CUnit.LIGHT), CUnit.getWeightClassDesc(CUnit.MEDIUM), CUnit.getWeightClassDesc(CUnit.HEAVY), CUnit.getWeightClassDesc(CUnit.ASSAULT) };
 
@@ -2118,13 +2118,15 @@ public class CMainFrame extends JFrame {
         if (value == JOptionPane.CANCEL_OPTION)
             return;
 
-        PlanetNameDialog planetDialog = new PlanetNameDialog(mwclient, "Choose a planet", null);
-        planetDialog.setVisible(true);
-        String planet = planetDialog.getPlanetName();
-        planetDialog.dispose();
-
-        if (planet == null)
-            return;
+        if ( planet == null ){
+            PlanetNameDialog planetDialog = new PlanetNameDialog(mwclient, "Choose a planet", null);
+            planetDialog.setVisible(true);
+            planet = planetDialog.getPlanetName();
+            planetDialog.dispose();
+    
+            if (planet == null)
+                return;
+        }
 
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c purchaseFactory#" + factoryName + "#" + unitType + "#" + unitWeight + "#" + planet);
     }

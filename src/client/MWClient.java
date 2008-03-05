@@ -292,7 +292,8 @@ public final class MWClient implements IClient {
         boolean dedicated = false;
         int i;
 
-        CampaignData.mwlog.enableLogging(true);
+        CampaignData.mwlog.createClientLoggers();
+       
         /*
          * put StdErr and StdOut into ./logs/megameklog.txt, because MegaMek
          * uses StdOut and StdErr, but the part of MegaMek that sets that up
@@ -2896,13 +2897,21 @@ public final class MWClient implements IClient {
     }
 
     public boolean isAdmin() {
-        return this.getUser(this.getUsername()).getUserlevel() == 200;
+        return getUserLevel() == 200;
     }
 
     public boolean isMod() {
-        return this.getUser(this.getUsername()).getUserlevel() >= 100;
+        return getUserLevel() >= 100;
     }
 
+    public boolean isLeader() {
+        return getUserLevel() >= Integer.parseInt(getserverConfigs("factionLeaderLevel"));
+    }
+
+    public int getUserLevel(){
+        return this.getUser(this.getUsername()).getUserlevel();   
+    }
+    
     // this adds 1 to the number of games played and if it matched the restart
     // amount it restarts the ded.
     public void checkForRestart() {

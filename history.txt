@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.21.x
++ Added IsLeader() method to MWClient
++ added getUserLevel() method to MWClient
++ Added Purchase Factory gui option for Interstellar map
++ Client side logging only creates Info and Error
 Release Client & Server 0.2.21.1
 + New MegaMek.jar 0.33.21-MW0300408-5543
 + Bug: Max BV Percent difference not working

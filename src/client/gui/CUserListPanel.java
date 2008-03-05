@@ -899,7 +899,7 @@ public class CUserListPanel extends JPanel implements ActionListener{
 						
 			fireIntervalRemoved(this, 0, Users.size());
 			clear();
-            int myLevel = mwclient.getUser(mwclient.getPlayer().getName()).getUserlevel();
+            int myLevel = mwclient.getUserLevel();
             
             /*
              * Synch on mwclient.getUsers() to prevent ConcurrentModError
