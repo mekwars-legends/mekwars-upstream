@@ -47,7 +47,12 @@ public class PDiff implements ServerCommand {
 			timestamp = new Date(-1);
 			fullUpdate = true;
 		}
-
+		ArrayList<House> houses = new ArrayList<House>();
+		for (House e : data.getAllHouses()) {
+				houses.add(e);
+		}
+		data.binHousesOut(houses, out);
+		
 		ArrayList<Planet> planets = new ArrayList<Planet>();
 		synchronized (data.getAllPlanets()) {
 
@@ -66,11 +71,7 @@ public class PDiff implements ServerCommand {
 			out.println(fullUpdate, "FullUpdate");
 			
 			data.binPlanetsOut(planets, out);
-			ArrayList<House> houses = new ArrayList<House>();
-			for (House e : data.getAllHouses()) {
-					houses.add(e);
-			}
-			data.binHousesOut(houses, out);
+
 		}
 	}
 }

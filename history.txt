@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.21.x
++ Bug: Fixed PDiff to send houses before planets to fix login bug
 + Updates to AutoFillBlackMarketSetting
 + Added new command AutoFillBlackMarketSetting
 + Added IsLeader() method to MWClient

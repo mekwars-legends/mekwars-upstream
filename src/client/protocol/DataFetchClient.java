@@ -651,24 +651,26 @@ public class DataFetchClient {
             	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
                 lastTimestamp = sdf.parse(in.readLine("lasttimestamp"));
                 boolean fullUpdate = in.readBoolean("FullUpdate");
+   
+                data.clearHouses();
+            	int size = in.readInt("houses.size");
+                for ( int count = 0; count < size; count++){
+                	House house = new House(in);
+                	data.addHouse(house);
+                }
                 
                 if ( fullUpdate ) {
                     data.clearPlanets();
                 }
                 
-            	int size = in.readInt("planets.size");
+            	size = in.readInt("planets.size");
                 for ( int count = 0; count < size; count++){
                 	Planet planet = new Planet();
                 	planet.binIn(in, data);
                 	data.addPlanet(planet);
                 	changesSinceLastRefresh.put(planet.getId(), planet.getInfluence());
                 }
-                data.clearHouses();
-            	size = in.readInt("houses.size");
-                for ( int count = 0; count < size; count++){
-                	House house = new House(in);
-                	data.addHouse(house);
-                }
+   
             }catch(Exception ex){
             	CampaignData.mwlog.errLog(ex);
             }//Bin empty
