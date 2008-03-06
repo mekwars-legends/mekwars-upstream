@@ -1,7 +1,9 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.21.x
+v 0.2.22.x
+Release Client & Server 0.2.22.0
++ Bug: MM game options not saving to client
 + Moved where timestamp and fullupdate flag is read by client
 + Bug: Fixed PDiff to send houses before planets to fix login bug
 + Updates to AutoFillBlackMarketSetting
@@ -10,6 +12,7 @@ v 0.2.21.x
 + added getUserLevel() method to MWClient
 + Added Purchase Factory gui option for Interstellar map
 + Client side logging only creates Info and Error
+v 0.2.21.x
 Release Client & Server 0.2.21.1
 + New MegaMek.jar 0.33.21-MW0300408-5543
 + Bug: Max BV Percent difference not working

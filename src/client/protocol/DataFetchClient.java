@@ -591,16 +591,15 @@ public class DataFetchClient {
 					if ( tempString.equals("NoFileFound")){
 						out.close();
 						fops.close();
-						//in.close();
 						options.delete();
 						return;
 					}
+					out.println(tempString);
 				}
 			} catch (Exception e) {
 				//close the streams
 				out.close();
 				fops.close();
-				//in.close();
 			}
 		} catch (Exception ex){
 			CampaignData.mwlog.errLog(ex);
