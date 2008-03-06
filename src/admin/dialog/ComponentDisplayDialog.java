@@ -19,6 +19,7 @@ package admin.dialog;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
@@ -931,6 +932,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
     public void findAndPopulateTextAndCheckBoxes(JPanel panel){
         String key = null;
         
+        DecimalFormat format = new DecimalFormat("#.##");
         for ( int fieldPos = panel.getComponentCount()-1; fieldPos >= 0; fieldPos--){
             
             Object field = panel.getComponent(fieldPos);
@@ -956,9 +958,9 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
                 		String type = keys.nextToken();
                 		
                 		if ( type.equalsIgnoreCase("mincost") )
-                			textBox.setText(Double.toString(equipment.getMinCost()));
+                			textBox.setText(format.format(equipment.getMinCost()));
                 		else if ( type.equalsIgnoreCase("maxcost"))
-                			textBox.setText(Double.toString(equipment.getMaxCost()));
+                			textBox.setText(format.format(equipment.getMaxCost()));
                 		else if ( type.equalsIgnoreCase("minparts"))
                 			textBox.setText(Integer.toString(equipment.getMinProduction()));
                 		else 

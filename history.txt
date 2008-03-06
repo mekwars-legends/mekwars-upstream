@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.22.x
++ Updates to AutoFillBlackMarketSettingCommand
 Release Client & Server 0.2.22.0
 + New MegaMek.jar 0.33.21-MW030608-5545
 + Bug: MM game options not saving to client

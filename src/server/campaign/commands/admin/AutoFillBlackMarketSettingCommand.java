@@ -27,6 +27,9 @@ import java.util.StringTokenizer;
 import megamek.common.AmmoType;
 import megamek.common.Entity;
 import megamek.common.EquipmentType;
+import megamek.common.Mech;
+import megamek.common.MiscType;
+import megamek.common.TechConstants;
 
 import common.Equipment;
 import common.util.UnitUtils;
@@ -38,7 +41,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AutoFillBlackMarketSettingCommand implements Command {
 
     int accessLevel = IAuthenticator.ADMIN;
-    String syntax = "Min Cost Modifer#Max Cost Modifer#Min Production#Max Production";
+    String syntax = "Min Cost Modifer#Max Cost Modifer#Min Production#Max Production#Unit Weight(optional)";
 
     public int getExecutionLevel() {
         return accessLevel;
@@ -70,13 +73,16 @@ public class AutoFillBlackMarketSettingCommand implements Command {
 
         Entity ent = UnitUtils.createOMG();
 
-        String minProduction = "";
-        String maxProduction = "";
+        int minProduction = 0;
+        int maxProduction = 0;
 
         minCostMod = Double.parseDouble(command.nextToken());
         maxCostMod = Double.parseDouble(command.nextToken());
-        minProduction = command.nextToken();
-        maxProduction = command.nextToken();
+        minProduction = Integer.parseInt(command.nextToken());
+        maxProduction = Integer.parseInt(command.nextToken());
+
+        if (command.hasMoreElements())
+            ent.setWeight(Float.parseFloat(command.nextToken()));
 
         Enumeration<EquipmentType> list = EquipmentType.getAllTypes();
         double crits = 1;
@@ -97,7 +103,7 @@ public class AutoFillBlackMarketSettingCommand implements Command {
                 try {
                     crits = eq.getCriticals(ent);
                 } catch (Exception ex) {
-                    continue;
+                    crits = 1;
                 }
             }
 
@@ -110,6 +116,24 @@ public class AutoFillBlackMarketSettingCommand implements Command {
                 baseCost = EquipmentType.getArmorCost(EquipmentType.getArmorType(eq.getName()));
             } else if (isStructure(eq)) {
                 baseCost = EquipmentType.getStructureCost(EquipmentType.getStructureType(eq.getName()));
+            } else if (eq instanceof MiscType) {
+                if (eq.hasFlag(MiscType.F_HEAT_SINK) || eq.hasFlag(MiscType.F_DOUBLE_HEAT_SINK)) {
+                    if (eq.getName().equals("1 Compact Heat Sink"))
+                        baseCost = 3000;
+                    else if (eq.getName().equals("Heat Sink"))
+                        baseCost = 2000;
+                    else
+                        baseCost = 6000;
+                } else if (eq.hasFlag(MiscType.F_JUMP_BOOSTER)) {
+                    baseCost = 6.0 * ent.getWeight() * 150;
+                } else if (eq.hasFlag(MiscType.F_JUMP_JET)) {
+                    if (eq.getTechLevel() > TechConstants.T_IS_LEVEL_1)
+                        baseCost = 6.0 * ent.getWeight() * 500;
+                    else
+                        baseCost = 6.0 * ent.getWeight() * 200;
+                } else if (eq.hasFlag(MiscType.F_UMU)) {
+                    baseCost = 6.0 * ent.getWeight() * 200;
+                }
             }
 
             baseCost /= crits;
@@ -127,9 +151,13 @@ public class AutoFillBlackMarketSettingCommand implements Command {
 
             bme.setMinCost(minCost);
             bme.setMaxCost(maxCost);
-            bme.setMinProduction(Integer.parseInt(minProduction));
-            bme.setMaxProduction(Integer.parseInt(maxProduction));
-
+            if (maxCost <= 0) {
+                bme.setMinProduction(0);
+                bme.setMaxProduction(0);
+            } else {
+                bme.setMinProduction(minProduction);
+                bme.setMaxProduction(maxProduction);
+            }
             CampaignMain.cm.getBlackMarketEquipmentTable().put(key, bme);
         }
 
@@ -141,21 +169,252 @@ public class AutoFillBlackMarketSettingCommand implements Command {
         maxCost = baseCost * maxCostMod;
         bme.setMinCost(minCost);
         bme.setMaxCost(maxCost);
-        bme.setMinProduction(Integer.parseInt(minProduction));
-        bme.setMaxProduction(Integer.parseInt(maxProduction));
-        CampaignMain.cm.getBlackMarketEquipmentTable().put("Armor (STD)", bme);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
 
         bme = new Equipment();
         bme.setEquipmentInternalName("IS (STD)");
-        baseCost = EquipmentType.getStructureCost(EquipmentType.T_STRUCTURE_STANDARD);
+        baseCost = EquipmentType.getStructureCost(EquipmentType.T_STRUCTURE_STANDARD) * ent.getWeight();
         baseCost /= 8;
         minCost = baseCost * minCostMod;
         maxCost = baseCost * maxCostMod;
         bme.setMinCost(minCost);
         bme.setMaxCost(maxCost);
-        bme.setMinProduction(Integer.parseInt(minProduction));
-        bme.setMaxProduction(Integer.parseInt(maxProduction));
-        CampaignMain.cm.getBlackMarketEquipmentTable().put("IS (STD)", bme);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName(Mech.systemNames[Mech.SYSTEM_LIFE_SUPPORT]);
+        baseCost = 25000;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName(Mech.systemNames[Mech.SYSTEM_SENSORS]);
+        baseCost = 1000 * ent.getWeight();
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName(Mech.getCockpitTypeString(Mech.COCKPIT_TORSO_MOUNTED));
+        baseCost = 750000;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName(Mech.getCockpitTypeString(Mech.COCKPIT_COMMAND_CONSOLE));
+        baseCost = 700000;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName(Mech.getCockpitTypeString(Mech.COCKPIT_DUAL));
+        baseCost = 700000;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName(Mech.getCockpitTypeString(Mech.COCKPIT_STANDARD));
+        baseCost = 200000;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName(Mech.getCockpitTypeString(Mech.COCKPIT_SMALL));
+        baseCost = 175000;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName(Mech.getCockpitTypeString(Mech.COCKPIT_SMALL));
+        baseCost = 175000;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName("Actuator");
+        baseCost = 100 * ent.getWeight();
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName(Mech.getGyroTypeString(Mech.GYRO_STANDARD));
+        baseCost = 300000 * (int) Math.ceil(ent.getOriginalWalkMP() * ent.getWeight() / 100f);
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName(Mech.getGyroTypeString(Mech.GYRO_HEAVY_DUTY));
+        baseCost = 500000 * (int) Math.ceil(ent.getOriginalWalkMP() * ent.getWeight() / 100f) * 2;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName(Mech.getGyroTypeString(Mech.GYRO_XL));
+        baseCost = 750000 * (int) Math.ceil(ent.getOriginalWalkMP() * ent.getWeight() / 100f) * 0.5;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName(Mech.getGyroTypeString(Mech.GYRO_COMPACT));
+        baseCost = 400000 * (int) Math.ceil(ent.getOriginalWalkMP() * ent.getWeight() / 100f) * 1.5;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName(UnitUtils.ENGINE_TECH_STRING[UnitUtils.STANDARD_ENGINE]);
+        baseCost = 5000 * ent.getEngine().getRating() * ent.getWeight() / 75.0;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName(UnitUtils.ENGINE_TECH_STRING[UnitUtils.IS_LIGHT_ENGINE]);
+        baseCost = 15000 * ent.getEngine().getRating() * ent.getWeight() / 75.0;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName(UnitUtils.ENGINE_TECH_STRING[UnitUtils.IS_XL_ENGINE]);
+        baseCost = 20000 * ent.getEngine().getRating() * ent.getWeight() / 75.0;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName(UnitUtils.ENGINE_TECH_STRING[UnitUtils.IS_XXL_ENGINE]);
+        baseCost = 100000 * ent.getEngine().getRating() * ent.getWeight() / 75.0;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName(UnitUtils.ENGINE_TECH_STRING[UnitUtils.CLAN_XL_ENGINE]);
+        baseCost = 20000 * ent.getEngine().getRating() * ent.getWeight() / 75.0;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName(UnitUtils.ENGINE_TECH_STRING[UnitUtils.CLAN_XXL_ENGINE]);
+        baseCost = 100000 * ent.getEngine().getRating() * ent.getWeight() / 75.0;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName("ISTargeting Computer");
+        baseCost = 10000;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName("CLTargeting Computer");
+        baseCost = 10000;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(minProduction);
+        bme.setMaxProduction(maxProduction);
+        CampaignMain.cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
 
         CampaignMain.cm.toUser("AM:Done setting equipment costs for the black market.", Username);
     }// end process
