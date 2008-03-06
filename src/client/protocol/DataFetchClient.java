@@ -648,9 +648,6 @@ public class DataFetchClient {
 				return false;
 			}
             try{
-            	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-                lastTimestamp = sdf.parse(in.readLine("lasttimestamp"));
-                boolean fullUpdate = in.readBoolean("FullUpdate");
    
                 data.clearHouses();
             	int size = in.readInt("houses.size");
@@ -659,6 +656,10 @@ public class DataFetchClient {
                 	data.addHouse(house);
                 }
                 
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+                lastTimestamp = sdf.parse(in.readLine("lasttimestamp"));
+                boolean fullUpdate = in.readBoolean("FullUpdate");
+
                 if ( fullUpdate ) {
                     data.clearPlanets();
                 }
