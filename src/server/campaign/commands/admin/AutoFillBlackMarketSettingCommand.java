@@ -25,9 +25,11 @@ import java.util.Enumeration;
 import java.util.StringTokenizer;
 
 import megamek.common.AmmoType;
+import megamek.common.Entity;
 import megamek.common.EquipmentType;
 
 import common.Equipment;
+import common.util.UnitUtils;
 
 import server.campaign.commands.Command;
 import server.campaign.CampaignMain;
@@ -66,6 +68,8 @@ public class AutoFillBlackMarketSettingCommand implements Command {
         double minCostMod = 1.0;
         double baseCost = 1.0;
 
+        Entity ent = UnitUtils.createOMG();
+
         String minProduction = "";
         String maxProduction = "";
 
@@ -81,24 +85,40 @@ public class AutoFillBlackMarketSettingCommand implements Command {
 
             EquipmentType eq = list.nextElement();
 
+            String key = eq.getInternalName();
 
             if (eq instanceof AmmoType) {
                 crits = ((AmmoType) eq).getRackSize();
+            } else if (isArmor(eq)) {
+                crits = 16.0 * EquipmentType.getArmorPointMultiplier(EquipmentType.getArmorType(eq.getName()));
+            } else if (isStructure(eq)) {
+                crits = 8;
             } else {
                 try {
-                    crits = eq.getCriticals(null);
+                    crits = eq.getCriticals(ent);
                 } catch (Exception ex) {
                     continue;
                 }
             }
 
             crits = Math.max(crits, 1);
-            baseCost = eq.getCost() / crits;
+            baseCost = eq.getCost();
+
+            if (baseCost == EquipmentType.COST_VARIABLE) {
+                baseCost = eq.resolveVariableCost(ent);
+            } else if (isArmor(eq)) {
+                baseCost = EquipmentType.getArmorCost(EquipmentType.getArmorType(eq.getName()));
+            } else if (isStructure(eq)) {
+                baseCost = EquipmentType.getStructureCost(EquipmentType.getStructureType(eq.getName()));
+            }
+
+            baseCost /= crits;
+            baseCost = Math.max(0, baseCost);
 
             minCost = baseCost * minCostMod;
             maxCost = baseCost * maxCostMod;
 
-            Equipment bme = CampaignMain.cm.getBlackMarketEquipmentTable().get(eq.getInternalName());
+            Equipment bme = CampaignMain.cm.getBlackMarketEquipmentTable().get(key);
 
             if (bme == null) {
                 bme = new Equipment();
@@ -110,9 +130,49 @@ public class AutoFillBlackMarketSettingCommand implements Command {
             bme.setMinProduction(Integer.parseInt(minProduction));
             bme.setMaxProduction(Integer.parseInt(maxProduction));
 
-            CampaignMain.cm.getBlackMarketEquipmentTable().put(eq.getInternalName(), bme);
+            CampaignMain.cm.getBlackMarketEquipmentTable().put(key, bme);
         }
+
+        Equipment bme = new Equipment();
+        bme.setEquipmentInternalName("Armor (STD)");
+        baseCost = EquipmentType.getStructureCost(EquipmentType.T_ARMOR_STANDARD);
+        baseCost /= 16;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(Integer.parseInt(minProduction));
+        bme.setMaxProduction(Integer.parseInt(maxProduction));
+        CampaignMain.cm.getBlackMarketEquipmentTable().put("Armor (STD)", bme);
+
+        bme = new Equipment();
+        bme.setEquipmentInternalName("IS (STD)");
+        baseCost = EquipmentType.getStructureCost(EquipmentType.T_STRUCTURE_STANDARD);
+        baseCost /= 8;
+        minCost = baseCost * minCostMod;
+        maxCost = baseCost * maxCostMod;
+        bme.setMinCost(minCost);
+        bme.setMaxCost(maxCost);
+        bme.setMinProduction(Integer.parseInt(minProduction));
+        bme.setMaxProduction(Integer.parseInt(maxProduction));
+        CampaignMain.cm.getBlackMarketEquipmentTable().put("IS (STD)", bme);
 
         CampaignMain.cm.toUser("AM:Done setting equipment costs for the black market.", Username);
     }// end process
+
+    private boolean isArmor(EquipmentType eq) {
+        for (String armor : EquipmentType.armorNames) {
+            if (eq.getName().equalsIgnoreCase(armor))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean isStructure(EquipmentType eq) {
+        for (String IS : EquipmentType.structureNames) {
+            if (eq.getName().equalsIgnoreCase(IS))
+                return true;
+        }
+        return false;
+    }
 }
