@@ -737,7 +737,11 @@ public class House {
         
         result.append(name);
         result.append("|");
-        result.append(logo);
+        
+        if (logo.trim().length() < 1)
+            result.append(" ");
+        else
+            result.append(logo);
         result.append("|");
         result.append(getBaseGunner());
         result.append("|");
