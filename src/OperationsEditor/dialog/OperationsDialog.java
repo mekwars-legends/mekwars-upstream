@@ -865,6 +865,42 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField.setName("MinAttackerUnitBVSpread");
 		attackerPanel.add(BaseTextField);
 		
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Highest Pilot Skill:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Highest total skill, Gunnery + Piloting, that an<br>attacking Units pilot can have<br>NOTE: Units will not be checked if they<br>are not counted for the BV Spread</html>");
+        BaseTextField.setName("HighestAttackerPilotSkillTotal");
+        attackerPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Lowest Pilot Skill:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Lowest total skill, Gunnery + Piloting, that an<br>attacking Units pilot can have<br>NOTE: Units will not be checked if they<br>are not counted for the BV Spread</html>");
+        BaseTextField.setName("LowestAttackerPilotSkillTotal");
+        attackerPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Highest Piloting:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Highest Piloting that an<br>attacking Units pilot can have<br>NOTE: Units will not be checked if they<br>are not counted for the BV Spread</html>");
+        BaseTextField.setName("HighestAttackerPiloting");
+        attackerPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Lowest Piloting:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Lowest Piloting that an<br>attacking Units pilot can have<br>NOTE: Units will not be checked if they<br>are not counted for the BV Spread</html>");
+        BaseTextField.setName("LowestAttackerPiloting");
+        attackerPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Highest Gunnery:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Highest Gunnery that an<br>attacking Units pilot can have<br>NOTE: Units will not be checked if they<br>are not counted for the BV Spread</html>");
+        BaseTextField.setName("HighestAttackerGunnery");
+        attackerPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Lowest Gunnery:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Lowest Gunnery that an<br>attacking Units pilot can have<br>NOTE: Units will not be checked if they<br>are not counted for the BV Spread</html>");
+        BaseTextField.setName("LowestAttackerGunnery");
+        attackerPanel.add(BaseTextField);
+        
 		SpringLayoutHelper.setupSpringGrid(attackerPanel,4);
 
         BaseCheckBox = new JCheckBox("Allow Meks");
@@ -1019,6 +1055,42 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField.setName("MinDefenderUnitBVSpread");
 		defenderPanel.add(BaseTextField);
 		
+        BaseTextField = new JTextField(5);
+        defenderPanel.add(new JLabel("Highest Pilot Skill:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Highest total skill, Gunnery + Piloting, that a<br>defending Units pilot can have<br>NOTE: Units will not be checked if they<br>are not counted for the BV Spread</html>");
+        BaseTextField.setName("HighestDefenderPilotSkillTotal");
+        defenderPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        defenderPanel.add(new JLabel("Lowest Pilot Skill:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Lowest total skill, Gunnery + Piloting, that a<br>defending Units pilot can have<br>NOTE: Units will not be checked if they<br>are not counted for the BV Spread</html>");
+        BaseTextField.setName("LowestDefenderPilotSkillTotal");
+        defenderPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        defenderPanel.add(new JLabel("Highest Piloting:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Highest Piloting that a<br>defending Units pilot can have<br>NOTE: Units will not be checked if they<br>are not counted for the BV Spread</html>");
+        BaseTextField.setName("HighestDefenderPiloting");
+        defenderPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        defenderPanel.add(new JLabel("Lowest Piloting:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Lowest Piloting that a<br>defending Units pilot can have<br>NOTE: Units will not be checked if they<br>are not counted for the BV Spread</html>");
+        BaseTextField.setName("LowestDefenderPiloting");
+        defenderPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        defenderPanel.add(new JLabel("Highest Gunnery:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Highest Gunnery that a<br>defending Units pilot can have<br>NOTE: Units will not be checked if they<br>are not counted for the BV Spread</html>");
+        BaseTextField.setName("HighestDefenderGunnery");
+        defenderPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        defenderPanel.add(new JLabel("Lowest Gunnery:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Lowest Gunnery that a<br>defending Units pilot can have<br>NOTE: Units will not be checked if they<br>are not counted for the BV Spread</html>");
+        BaseTextField.setName("LowestDefenderGunnery");
+        defenderPanel.add(BaseTextField);
+        
 		SpringLayoutHelper.setupSpringGrid(defenderPanel,4);
 		
 		attackerBox.add(new JLabel("Attacker"));

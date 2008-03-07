@@ -289,7 +289,10 @@ public class ShortValidator {
     // - unit floor,
     // contruction
     // prop
-    // public static final int SFAIL_ATTACK = 252;
+    public static final int SFAIL_ATTACK_ELITE_PILOTS = 252;// Attacker has pilots that are below the
+                                                            //  lowest skill total allowed thresh hold
+    public static final int SFAIL_ATTACK_GREEN_PILOTS = 253;// Attacker has pilots that are above the
+                                                            // highest skill total allowed thresh hold
 
     /*
      * Failure codes for defender-specific checks.
@@ -425,22 +428,15 @@ public class ShortValidator {
     // public static final int SFAIL_DEFEND = 449; --- HOLD! This synchs with
     // ATTACK_ACTIVEONLY. Skip/hold so others props can match.
     public static final int SFAIL_DEFEND_MAXNONINFANTRY = 450;// MaxDefenderInfantry
-    // - unit
-    // ceiling,
-    // contruction
-    // prop
+    // - unit ceiling, contruction prop
     public static final int SFAIL_DEFEND_MINNONINFANTRY = 451;// MinDefenderInfantry
-    // - unit floor,
-    // contruction
-    // prop
+    // - unit floor, contruction prop
     public static final int SFAIL_DEFEND_NON_CONQ_PLANET = 452;// Defending
-
-    // this op would
-    // allow for
-    // conquer point
-    // exchange and
-    // planet is
-    // non-conquer
+    // this op would allow for conquer point exchange and planet isnon-conquer
+    public static final int SFAIL_DEFEND_ELITE_PILOTS = 453;// Defender has pilots that are below the
+                                                            // lowest skill total allowed thresh hold
+    public static final int SFAIL_DEFEND_GREEN_PILOTS = 454;// Defender has pilots that are above the
+                                                            // highest skill total allowed thresh hold
 
     // CONSTRUCTORS
     public ShortValidator(OperationManager m) {
@@ -583,14 +579,14 @@ public class ShortValidator {
 
                 if (totalConquest > 0) {
                     String point = "points";
-                    if ( totalConquest == 1)
+                    if (totalConquest == 1)
                         point = "point";
-                    String winnerMetaString = " gained " + totalConquest + " "+point+" of " + newOp.getTargetWorld().getNameAsColoredLink();
+                    String winnerMetaString = " gained " + totalConquest + " " + point + " of " + newOp.getTargetWorld().getNameAsColoredLink();
                     newOp.checkMercContracts(ap, ContractInfo.CONTRACT_LAND, totalConquest);
                     CampaignMain.cm.toUser("You've" + winnerMetaString, ap.getName());
-                    for ( House house : newOp.getTargetWorld().getInfluence().getHouses() ){
-                        SHouse h = (SHouse)house;
-                        if ( h.equals(ap.getHouseFightingFor()) )
+                    for (House house : newOp.getTargetWorld().getInfluence().getHouses()) {
+                        SHouse h = (SHouse) house;
+                        if (h.equals(ap.getHouseFightingFor()))
                             continue;
                         CampaignMain.cm.doSendToAllOnlinePlayers(h, ap.getName() + winnerMetaString, true);
                     }
@@ -953,6 +949,8 @@ public class ShortValidator {
         boolean minBVFail = false;
         boolean omniFail = false;
         boolean checkOmni = o.getBooleanValue("AttackerOmniMeksOnly");
+        boolean vetPilots = false;
+        boolean greenPilots = false;
 
         Iterator<Unit> i = aa.getUnits().iterator();
         while (i.hasNext()) {
@@ -1034,6 +1032,32 @@ public class ShortValidator {
             else if ((type == Unit.BATTLEARMOR || type == Unit.INFANTRY) && !o.getBooleanValue("CountInfForSpread"))
                 continue;
 
+            if ( !currUnit.hasVacantPilot() ) {
+                int piloting = currUnit.getPilot().getPiloting();
+                int gunnery = currUnit.getPilot().getGunnery();
+                int totalSkills = gunnery+piloting;
+                
+                if ( piloting > o.getIntValue("HighestAttackerPiloting") )
+                    greenPilots = true;
+                
+                if ( piloting < o.getIntValue("LowestAttackerPiloting") )
+                    vetPilots = true;
+                
+                if ( gunnery > o.getIntValue("HighestAttackerGunnery") )
+                    greenPilots = true;
+                
+                if ( gunnery < o.getIntValue("LowestAttackerGunnery") )
+                    vetPilots = true;
+
+                
+                if ( totalSkills > o.getIntValue("HighestAttackerPilotSkillTotal") )
+                    greenPilots = true;
+                
+                if ( totalSkills < o.getIntValue("LowestAttackerPilotSkillTotal") )
+                    vetPilots = true;
+            }
+            
+
             lowUnitBV = Math.min(lowUnitBV, currBV);
             highUnitBV = Math.max(highUnitBV, currBV);
 
@@ -1098,6 +1122,12 @@ public class ShortValidator {
             failureReasons.add(SFAIL_ATTACK_MAXSPREAD);
         if (minAllowedSpread > 0 && (highUnitBV - lowUnitBV) < minAllowedSpread)
             failureReasons.add(SFAIL_ATTACK_MINSPREAD);
+        
+        if ( vetPilots )
+            failureReasons.add(SFAIL_ATTACK_ELITE_PILOTS );
+        
+        if ( greenPilots )
+            failureReasons.add(SFAIL_ATTACK_GREEN_PILOTS );
 
     }// end CheckAttackerConstruction
 
@@ -1267,6 +1297,8 @@ public class ShortValidator {
         boolean minBVFail = false;
         boolean omniFail = false;
         boolean checkOmni = o.getBooleanValue("DefenderOmniMeksOnly");
+        boolean vetPilots = false;
+        boolean greenPilots = false;
 
         Iterator<Unit> i = da.getUnits().iterator();
         while (i.hasNext()) {
@@ -1334,6 +1366,32 @@ public class ShortValidator {
             else if ((type == Unit.BATTLEARMOR || type == Unit.INFANTRY) && !o.getBooleanValue("CountInfForSpread"))
                 continue;
 
+            
+            
+            if ( !currUnit.hasVacantPilot() ) {
+                int piloting = currUnit.getPilot().getPiloting();
+                int gunnery = currUnit.getPilot().getGunnery();
+                int totalSkills = gunnery+piloting;
+                
+                if ( piloting > o.getIntValue("HighestDefenderPiloting") )
+                    greenPilots = true;
+                
+                if ( piloting < o.getIntValue("LowestDefenderPiloting") )
+                    vetPilots = true;
+                
+                if ( gunnery > o.getIntValue("HighestDefenderGunnery") )
+                    greenPilots = true;
+                
+                if ( gunnery < o.getIntValue("LowestDefenderGunnery") )
+                    vetPilots = true;
+
+                if ( totalSkills > o.getIntValue("HighestDefenderPilotSkillTotal") )
+                    greenPilots = true;
+                
+                if ( totalSkills < o.getIntValue("LowestDefenderPilotSkillTotal") )
+                    vetPilots = true;
+            }
+            
             lowUnitBV = Math.min(lowUnitBV, currBV);
             highUnitBV = Math.max(highUnitBV, currBV);
 
@@ -1397,7 +1455,12 @@ public class ShortValidator {
             failureReasons.add(SFAIL_DEFEND_MAXSPREAD);
         if (minAllowedSpread > 0 && (highUnitBV - lowUnitBV) < minAllowedSpread)
             failureReasons.add(SFAIL_DEFEND_MINSPREAD);
-
+        
+        if ( vetPilots )
+            failureReasons.add(SFAIL_DEFEND_ELITE_PILOTS);
+        
+        if ( greenPilots )
+            failureReasons.add(SFAIL_DEFEND_GREEN_PILOTS );
     }// end checkDefenderConstruction
 
     /**
@@ -1760,10 +1823,14 @@ public class ShortValidator {
             // trying to use while active
             return " this operation must be initiated by a player on reserve duty (use AFR)";
 
-        case SFAIL_ATTACK_ACTIVEONLY:// "OnlyAllowedFromActive", but player
-            // is trying to use via
-            // AttackFromReserve
+        case SFAIL_ATTACK_ACTIVEONLY:// "OnlyAllowedFromActive", but player is trying to use via AttackFromReserve
             return " this operation may only be initated by a player on active duty";
+
+        case SFAIL_ATTACK_ELITE_PILOTS:// Army has pilots whoes total skill is lower then the lowest allowed
+            return " this army has eilte pilots.";
+
+        case SFAIL_ATTACK_GREEN_PILOTS:// Army has pilots whoes total skill is higher then the highest allowed
+            return " this army has green pilots.";
 
             /*
              * DEFENSE failure causes
@@ -1912,6 +1979,12 @@ public class ShortValidator {
             // conquest points and the planet
             // cannot be conquered
             return " the planet is non-conqerable and this operation allows for conqest";
+
+        case SFAIL_DEFEND_ELITE_PILOTS:// Army has pilots whoes total skill is lower then the lowest allowed
+            return " this army has eilte pilots.";
+
+        case SFAIL_DEFEND_GREEN_PILOTS:// Army has pilots whoes total skill is higher then the highest allowed
+            return " this army has green pilots.";
 
         }
 

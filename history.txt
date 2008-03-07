@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.22.x
++ RFE 1901440: Piloting/Gunnery settings for Operations
 + Updates to AutoFillBlackMarketSettingCommand
 Release Client & Server 0.2.22.0
 + New MegaMek.jar 0.33.21-MW030608-5545

@@ -244,7 +244,34 @@ public class DefaultOperation {
 		 *                           [interesting to create "Buddy" games where a high BV
 		 *                           [mech has to pair with a low in a tag team.
 		 *                           [Set <= 0 to DISABLE. Defaults to 0.
-		 *                           
+		 * 
+		 * HighestAttackerPilotSkillTotal - Highest total skill, Gunnery + Piloting, that an 
+		 *                                    attacking Units pilot can have
+		 * LowestAttackerPilotSkillTotal  - Lowest total skill, Gunnery + Piloting, that an 
+		 *                                    attacking Units pilot can have
+         * HighestAttackerPiloting - Highest Piloting that an 
+         *                                    attacking Units pilot can have
+         * LowestAttackerPiloting  - Lowest Piloting that an 
+         *                                    attacking Units pilot can have
+         * HighestAttackerGunnery - Highest Gunnery that an 
+         *                                    attacking Units pilot can have
+         * LowestAttackerGunnery  - Lowest = Gunnery that an 
+         *                                    attacking Units pilot can have
+         *
+		 * HighestDefenderPilotSkillTotal - Highest total skill, Gunnery + Piloting, that a 
+		 *                                    defending Units pilot can have
+		 * LowestDefenderPilotSkillTotal  - Lowest total skill, Gunnery + Piloting, that a 
+		 *                                    defending Units pilot can have
+         * HighestDefenderPiloting - Highest Piloting that an 
+         *                                    defending Units pilot can have
+         * LowestDefenderPiloting  - Lowest Piloting that an 
+         *                                    defending Units pilot can have
+         * HighestDefenderGunnery - Highest Gunnery that an 
+         *                                    defending Units pilot can have
+         * LowestDefenderGunnery  - Lowest = Gunnery that an 
+         *                                    defending Units pilot can have
+         *
+		 * 
 		 * CountVehsForSpread   - self evident
 		 * CountProtosForSpread - self evident
 		 * CountInfForSpread    - self evident
@@ -888,6 +915,21 @@ public class DefaultOperation {
 		operationsDefaults.put("MaxDefenderUnitBVSpread", "10000000");
 		operationsDefaults.put("MinAttackerUnitBVSpread", "0");
 		operationsDefaults.put("MinDefenderUnitBVSpread", "0");
+		
+        operationsDefaults.put("HighestAttackerPilotSkillTotal", "20");
+        operationsDefaults.put("LowestAttackerPilotSkillTotal", "0");
+        operationsDefaults.put("HighestAttackerPiloting", "9");
+        operationsDefaults.put("LowestAttackerPiloting", "0");
+        operationsDefaults.put("HighestAttackerGunnery", "9");
+        operationsDefaults.put("LowestAttackerGunnery", "0");
+
+        operationsDefaults.put("HighestDefenderPilotSkillTotal", "20");
+        operationsDefaults.put("LowestDefenderPilotSkillTotal", "0");
+        operationsDefaults.put("HighestDefenderPiloting", "9");
+        operationsDefaults.put("LowestDefenderPiloting", "0");
+        operationsDefaults.put("HighestDefenderGunnery", "9");
+        operationsDefaults.put("LowestDefenderGunnery", "0");
+		
 		operationsDefaults.put("CountVehsForSpread"  , "true");
 		operationsDefaults.put("CountProtosForSpread", "true");
 		operationsDefaults.put("CountInfForSpread"   , "true");
