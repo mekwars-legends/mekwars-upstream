@@ -142,6 +142,8 @@ public final class MWDedHost implements IClient {
         CampaignData.mwlog.enableLogging(true);
         CampaignData.mwlog.enableSeconds(true);
         
+        CampaignData.mwlog.createClientLoggers();
+        
         /*
          * put StdErr and StdOut into ./logs/megameklog.txt, because MegaMek
          * uses StdOut and StdErr, but the part of MegaMek that sets that up
