@@ -464,11 +464,12 @@ public class SPilot extends Pilot {
     }
 
     public void toDB(int unitType, int unitSize) {
-        try {
+    	PreparedStatement ps = null;
+    	try {
             if (getName().equalsIgnoreCase("Vacant"))
                 return;
             StringBuffer sql = new StringBuffer();
-            PreparedStatement ps = null;
+            
 
             if (getDBId() == 0) {
                 // No pilot with this id, so INSERT
@@ -518,7 +519,7 @@ public class SPilot extends Pilot {
                 for (PilotSkill skill : getSkills().getPilotSkills()) {
                     SPilotSkill sk = (SPilotSkill) skill;
                     sql.setLength(0);
-                    sql.append("INSERT into pilotskills set ");
+                    sql.append("REPLACE into pilotskills set ");
                     sql.append("pilotID = " + getDBId() + ", ");
                     sql.append("SkillNum = " + sk.getId() + ", ");
                     sql.append("SkillLevel = " + sk.getLevel());
@@ -542,6 +543,10 @@ public class SPilot extends Pilot {
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL Error in PilotHandler.savePilot: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+            try {
+                if(ps != null)
+                	ps.close();         	
+            } catch (SQLException ex) {}
         }
     }
 
