@@ -507,6 +507,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
             if (isNullOwner()) {
                 this.setConquestPoints(100);
                 this.setCompProduction(0);
+                this.setBaysProvided(0);
                 SHouse house = CampaignMain.cm.getHouseById(-1);
                 this.getInfluence().moveInfluence(house, house, 100, 100);
             }

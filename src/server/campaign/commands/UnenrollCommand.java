@@ -107,6 +107,7 @@ public class UnenrollCommand implements Command {
 		
 		//tell the user
 		CampaignMain.cm.toUser("AM:You've been unenrolled.", Username, true);
+        removeFaction(hisfaction);
 		
 		//delete the player's saved info, if a pfile exists
 		File fp = new File("./campaign/players/" + p.getName().toLowerCase() + ".dat");
@@ -116,7 +117,6 @@ public class UnenrollCommand implements Command {
 			CampaignMain.cm.MySQL.deletePlayer(p, false);
 		}
 		
-		removeFaction(hisfaction);
 		//tell the mods and add to iplog.0
 		InetAddress ip = CampaignMain.cm.getServer().getIP(Username);
 		//CampaignData.mwlog.modLog(Username + " unenrolled from the campaign (IP: " + ip + ").");
@@ -139,12 +139,13 @@ public class UnenrollCommand implements Command {
 	            if ( factory.getFounder().equalsIgnoreCase(faction.getName()) )
 	                planet.getUnitFactories().removeElement(factory);
 	        }
+	        planet.setBaysProvided(0);
 	        planet.updated();
 	        planet.updateInfluences();
 	    }
 	    CampaignMain.cm.getData().removeHouse(faction.getId());
 	    CampaignMain.cm.updateHousePlanetUpdate();
-	    CampaignMain.cm.doSendToAllOnlinePlayers("PL|RPF|"+faction.getId(), true);
+	    CampaignMain.cm.doSendToAllOnlinePlayers("PL|RPF|"+faction.getId(), false);
 	    
 	}
 }//end UnenrollCommand

@@ -238,7 +238,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     // "+myClient.getMapSize().width+"Map y:
                     // "+myClient.getMapSize().height);
                     ArrayList<String> boardvec = new ArrayList<String>();
-                    if (aTerrain.getStaticMapName().equalsIgnoreCase("surprise")) {
+                    if (aTerrain.getStaticMapName().toLowerCase().endsWith("surprise")) {
                         int maxBoards = aTerrain.getXBoardSize() * aTerrain.getYBoardSize();
                         for (int i = 0; i < maxBoards; i++)
                             boardvec.add(MapSettings.BOARD_SURPRISE);
@@ -830,6 +830,8 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
         ArrayList<String> boards = new ArrayList<String>();
         // Board Board = client.game.getBoard();
         File boardDir = new File("data/boards");
+        
+        
 
         // just a check...
         if (!boardDir.isDirectory()) {

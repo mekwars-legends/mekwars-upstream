@@ -16,6 +16,7 @@
 
 package common;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -245,8 +246,17 @@ public class CampaignData implements TerrainProvider {
      * @param Integer id
      */
     public void removeHouse(int id) {
-        factions.remove(getHouse(id).getName().toLowerCase());
-        factionid.remove(id);
+        String factionName = getHouse(id).getName().toLowerCase(); 
+        factionid.remove(factionName);
+        factions.remove(id);
+        
+        File factionFile = new File("./campaign/factions/"+factionName+".dat");
+        if ( factionFile.exists() )
+            factionFile.delete();
+        
+        factionFile = new File("./campaign/factions/"+factionName+".bak");
+        if ( factionFile.exists() )
+            factionFile.delete();
     }
 
     /**
