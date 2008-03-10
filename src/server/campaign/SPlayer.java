@@ -3442,9 +3442,28 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         return this.unitParts;
     }
 
+    public int getPartsAmount(String part) {
+        int amount = 0;
+        amount += this.getHouseFightingFor().getPartsAmount(part);
+        amount += this.getUnitParts().getPartsCritCount(part);
+        return amount;
+    }
+    
     public void updatePartsCache(String part, int amount) {
-        if (amount < 0)
-            this.getUnitParts().remove(part, amount);
+        
+        
+        if (amount < 0) {
+            int playerAmount = this.getUnitParts().getPartsCritCount(part);
+            
+            if ( playerAmount >= amount ) {
+                this.getUnitParts().remove(part,amount);
+            }else {
+                amount -= playerAmount;
+                this.getHouseFightingFor().updatePartsCache(part,amount);
+                this.getUnitParts().remove(part, playerAmount);
+                amount = playerAmount;
+            }
+        }
         else
             this.getUnitParts().add(part, amount);
         CampaignMain.cm.toUser("PL|UPPC|" + part + "#" + amount, this.getName(), false);

@@ -117,13 +117,13 @@ public class ReloadAllAmmoCommand implements Command {
 	           	}
 	            else if ( refillShots != ammo.getShotsLeft() ){
 	            	ammoAmount = (refillShots - ammo.getShotsLeft());
-	            	if ( p.getUnitParts().getPartsCritCount(baseAmmo.getInternalName()) < ammoAmount ) {
+	            	if ( p.getPartsAmount(baseAmmo.getInternalName()) < ammoAmount ) {
 	            		
 						if ( p.getAutoReorder() ){
 							String newCommand = baseAmmo.getInternalName()+"#"+ammoAmount;
 							CampaignMain.cm.getServerCommands().get("BUYPARTS").process(new StringTokenizer(newCommand,"#"), Username);
 						}
-						ammoAmount = p.getUnitParts().getPartsCritCount(baseAmmo.getInternalName());
+						ammoAmount = p.getPartsAmount(baseAmmo.getInternalName());
 	            	}
 	            	refillShots = ammoAmount+ammo.getShotsLeft();
 	            } else 

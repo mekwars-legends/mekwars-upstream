@@ -71,12 +71,14 @@ public class ResearchTechLevelCommand implements Command {
         
         
         cost = CampaignMain.cm.getDoubleConfig("TechPointCost");
-        cost *= CampaignMain.cm.getDoubleConfig("TechLevelTechPointCostModifier") * currentTech;
+        if ( currentTech > 1)
+            cost *= CampaignMain.cm.getDoubleConfig("TechLevelTechPointCostModifier") * (currentTech-1);
 
         cost = Math.round(cost);
 
         flu = CampaignMain.cm.getDoubleConfig("TechPointFlu");
-        flu *= CampaignMain.cm.getDoubleConfig("TechLevelTechPointFluModifier") * currentTech;
+        if ( currentTech > 1)
+            flu *= CampaignMain.cm.getDoubleConfig("TechLevelTechPointFluModifier") * (currentTech-1);
 
         flu = Math.round(flu);
 

@@ -130,14 +130,14 @@ public class RepairUnitCommand implements Command {
 				String crit = UnitUtils.getCritName(entity, slot, location, armor);
 				int damagedCrits = UnitUtils.getNumberOfDamagedCrits(entity,slot,location,armor);
 				//CampaignData.mwlog.errLog(crit+" Crits: "+player.getUnitParts().getPartsCritCount(crit)+" Needed: "+damagedCrits);
-				if ( player.getUnitParts().getPartsCritCount(crit) < damagedCrits  ) {
+				if ( player.getPartsAmount(crit) < damagedCrits  ) {
 					
 					if ( player.getAutoReorder() ){
 						
 						String newCommand = crit+"#"+damagedCrits;
 						
 						CampaignMain.cm.getServerCommands().get("BUYPARTS").process(new StringTokenizer(newCommand,"#"), Username);
-						if ( player.getUnitParts().getPartsCritCount(crit) >= damagedCrits ) {
+						if ( player.getPartsAmount(crit) >= damagedCrits ) {
 							newCommand = unitID+"#"+location+"#"+slot+"#"+armor+"#"+techType+"#"+retries+"#"+techWorkMod+"#"+sendDialogUpdate;
 							CampaignMain.cm.getServerCommands().get("REPAIRUNIT").process(new StringTokenizer(newCommand,"#"), Username);
 							return;

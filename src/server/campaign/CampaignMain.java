@@ -1174,6 +1174,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("ADMINPLAYERSTATUS", new AdminPlayerStatusCommand());
         Commands.put("ADMINPURGEHOUSEBAYS", new AdminPurgeHouseBaysCommand());
         Commands.put("ADMINPURGEHOUSECONFIGS", new AdminPurgeHouseConfigsCommand());
+        Commands.put("ADMINRANDOMLYSETPLANETPRODUCTION", new AdminRandomlySetPlanetProductionCommand());
         Commands.put("ADMINRELOADHOUSECONFIGS", new AdminReloadHouseConfigsCommand());
         Commands.put("ADMINREMOVEALLFACTORIES", new AdminRemoveAllFactoriesCommand());
         Commands.put("ADMINREMOVEALLTERRAIN", new AdminRemoveAllTerrainCommand());
@@ -1467,6 +1468,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("USEREWARDPOINTS", new UseRewardPointsCommand());
         Commands.put("VALIDATEEMAIL", new ValidateEmailCommand());
         Commands.put("VALIDATEUSER", new ValidateUserCommand());
+        Commands.put("VIEWFACTIONPARTSCACHE", new ViewFactionPartsCacheCommand());
         Commands.put("VIEWPLAYERPARTS", new ViewPlayerPartsCommand());
         Commands.put("VIEWPLAYERPERSONALPILOTQUEUE", new ViewPlayerPersonalPilotQueueCommand());
         Commands.put("VIEWPLAYERUNIT", new ViewPlayerUnitCommand());

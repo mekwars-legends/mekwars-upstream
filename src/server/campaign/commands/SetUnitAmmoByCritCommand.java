@@ -147,12 +147,12 @@ public class SetUnitAmmoByCritCommand implements Command {
             	ammoCharge = 0;
             	//unload all of old ammo
             	p.getUnitParts().add(currAmmo.getInternalName(),mWeapon.getShotsLeft());
-            	int newAmmoAmount = p.getUnitParts().getPartsCritCount(at.getInternalName());
+            	int newAmmoAmount = p.getPartsAmount(at.getInternalName());
             	
             	if ( p.getAutoReorder() && newAmmoAmount < refillShots ){
 					String newCommand = at.getInternalName()+"#"+(refillShots-newAmmoAmount);
 					CampaignMain.cm.getServerCommands().get("BUYPARTS").process(new StringTokenizer(newCommand,"#"), Username);
-					newAmmoAmount = p.getUnitParts().getPartsCritCount(at.getInternalName());
+					newAmmoAmount = p.getPartsAmount(at.getInternalName());
 				}
             	if ( newAmmoAmount == 0 ) {
             		String result = "AM:After unloading "+currAmmo.getDesc()+"("+en.getLocationAbbr(loc)+") from unit #"+unit.getId()+" "+unit.getModelName()+" your techs realize you do not have any "+at.getDesc()+" to reload with!";

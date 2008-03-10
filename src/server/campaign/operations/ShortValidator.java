@@ -606,6 +606,7 @@ public class ShortValidator {
 
                 }
                 newOp.changeStatus(ShortOperation.STATUS_FINISHED);
+                aa.setLocked(false);
 
                 return failureReasons;
             }

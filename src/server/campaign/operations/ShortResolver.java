@@ -2764,7 +2764,7 @@ public class ShortResolver {
                         if (totalRefreshBoost > 0) {
                             for (UnitFactory UF : target.getUnitFactories()) {
                                 SUnitFactory currFacility = (SUnitFactory) UF;
-                                winnerHSUpdates.append(currFacility.addRefresh(totalRefreshBoost, false));
+                                winnerHSUpdates.append(currFacility.addRefresh(-totalRefreshBoost, true));
                             }
 
                             if (hasLoss) {

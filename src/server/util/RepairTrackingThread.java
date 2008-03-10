@@ -785,12 +785,12 @@ class Repair{
                         techType = UnitUtils.TECH_PILOT;
                     
                     int cost = CampaignMain.cm.getRepairCost(unit,location,slot,techType,armor,techWorkMod,salvage);
-                    if ( player.getAutoReorder() && player.getUnitParts().getPartsCritCount(critName) < damagedCrits ) {
+                    if ( player.getAutoReorder() && player.getPartsAmount(critName) < damagedCrits ) {
                     	String newCommand = critName+"#"+damagedCrits;
                     	CampaignMain.cm.getServerCommands().get("BUYPARTS").process(new StringTokenizer(newCommand,"#"), Username);
                     }
 
-                    if ( cost < player.getMoney() && player.getUnitParts().getPartsCritCount(critName) >= damagedCrits){
+                    if ( cost < player.getMoney() && player.getPartsAmount(critName) >= damagedCrits){
 
                         retries--;
                         this.setRepairTime();

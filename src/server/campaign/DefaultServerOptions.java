@@ -1096,6 +1096,18 @@ public class DefaultServerOptions {
         defaults.setProperty("ResearchFluModifierMedium", "1.0");
         defaults.setProperty("ResearchFluModifierHeavy", "1.0");
         defaults.setProperty("ResearchFluModifierAssault", "1.0");
+        
+        //Components to Parts Conversion
+        defaults.setProperty("BaseComponentToMoneyRatio", "1.0");
+        defaults.setProperty("ComponentToPartsModifierMek", "1.0");
+        defaults.setProperty("ComponentToPartsModifierVehicle", "1.0");
+        defaults.setProperty("ComponentToPartsModifierInfantry", "1.0");
+        defaults.setProperty("ComponentToPartsModifierBattleArmor", "1.0");
+        defaults.setProperty("ComponentToPartsModifierProtoMek", "1.0");
+        defaults.setProperty("ComponentToPartsModifierLight", "1.0");
+        defaults.setProperty("ComponentToPartsModifierMedium", "1.0");
+        defaults.setProperty("ComponentToPartsModifierHeavy", "1.0");
+        defaults.setProperty("ComponentToPartsModifierAssault", "1.0");
     }
 
     /**

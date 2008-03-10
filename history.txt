@@ -2,6 +2,12 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.22.x
+Release Server 0.2.22.2
++ Bug ResearchTechLevel was using tech level modifer on level 1 factions
++ Added new command ViewFactionPartsCacheCommand
++ Added new command AdminRandomlySetPlanetProductionCommand
++ Added faction parts cache
++ Bug: factory refresh causes delays
 Release Client & Server 0.2.22.1
 + Bug: Single Player factions not being deleted when players unenroll
 + Bug: Research unit not working when client not using zips

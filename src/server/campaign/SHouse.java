@@ -48,6 +48,7 @@ import common.Planet;
 import common.SubFaction;
 import common.Unit;
 import common.util.StringUtils;
+import common.util.UnitComponents;
 import common.util.UnitUtils;
 
 import common.CampaignData;
@@ -98,6 +99,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
     private Vector<String> leaders = new Vector<String>(1, 1);
     private int techResearchPoints = 0;
+    private UnitComponents unitParts = new UnitComponents();
 
     @Override
     public String toString() {
@@ -314,6 +316,10 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         }
         result.append(this.techResearchPoints);
         result.append("|");
+        
+        result.append(unitParts.toString());
+        result.append("|");
+        
 
         return result.toString();
     }
@@ -894,6 +900,11 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             }
 
             techResearchPoints = TokenReader.readInt(ST);
+
+            if (CampaignMain.cm.getBooleanConfig("UsePartsRepair"))
+                unitParts.fromString(TokenReader.readString(ST));
+            else
+                TokenReader.readString(ST);
 
             setPilotQueues(new PilotQueues(this.getBaseGunnerVect(), this.getBasePilotVect(), this.getBasePilotSkillVect()));
             getPilotQueues().setFactionString(this.getName());// set the
@@ -3042,4 +3053,22 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         }
         techResearchPoints = 0;
     }
+    
+    public UnitComponents getUnitParts() {
+        return this.unitParts;
+    }
+
+    public void updatePartsCache(String part, int amount) {
+        if (amount < 0)
+            this.getUnitParts().remove(part, amount);
+        else
+            this.getUnitParts().add(part, amount);
+    }
+
+    public int getPartsAmount(String part) {
+        int amount = 0;
+        amount += this.getUnitParts().getPartsCritCount(part);
+        return amount;
+    }
+
 }// end SHouse.java

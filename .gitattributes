@@ -1561,6 +1561,7 @@ src/server/campaign/commands/admin/AdminPasswordCommand.java -text
 src/server/campaign/commands/admin/AdminPlayerStatusCommand.java -text
 src/server/campaign/commands/admin/AdminPurgeHouseBaysCommand.java -text
 src/server/campaign/commands/admin/AdminPurgeHouseConfigsCommand.java -text
+src/server/campaign/commands/admin/AdminRandomlySetPlanetProductionCommand.java -text
 src/server/campaign/commands/admin/AdminReloadHouseConfigsCommand.java -text
 src/server/campaign/commands/admin/AdminRemoveAllFactoriesCommand.java -text
 src/server/campaign/commands/admin/AdminRemoveAllTerrainCommand.java -text
@@ -1662,6 +1663,7 @@ src/server/campaign/commands/leader/PromotePlayerCommand.java -text
 src/server/campaign/commands/leader/PurchaseFactoryCommand.java -text
 src/server/campaign/commands/leader/ResearchTechLevelCommand.java -text
 src/server/campaign/commands/leader/ResearchUnitCommand.java -text
+src/server/campaign/commands/leader/ViewFactionPartsCacheCommand.java -text
 src/server/campaign/commands/mod/AddLeaderCommand.java -text
 src/server/campaign/commands/mod/AddPartsCommand.java -text
 src/server/campaign/commands/mod/BanCommand.java -text
