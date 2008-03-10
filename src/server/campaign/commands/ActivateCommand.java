@@ -199,6 +199,8 @@ public class ActivateCommand implements Command {
 		}
 		
 		
+		for (SArmy army : p.getArmies() )
+		    CampaignMain.cm.getOpsManager().checkOperations(army,false);
 		
 		p.setActive(true);
 		

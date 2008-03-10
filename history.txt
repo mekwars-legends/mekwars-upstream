@@ -2,6 +2,11 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.22.x
++ Activate command now rebuilds legal ops for players
++ Bug: Production amount not taking into effect each legal ops BV diff 
++ Bug: PromtePlayer command not telling Mods when someone is promoted by a 
+	leader
++ RFE: Client setting to define where certain system messages go
 + New code for converting components to crits
 Release Server 0.2.22.2
 + Bug ResearchTechLevel was using tech level modifer on level 1 factions

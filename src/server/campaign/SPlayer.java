@@ -1166,8 +1166,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
             int MinCount = this.getMyHouse().getIntegerConfig("MinCountForTick");
             int MaxCount = this.getMyHouse().getIntegerConfig("MaxCountForTick");
-            int MaxFlatDiff = this.getMyHouse().getIntegerConfig("MaxBVDifference");
-            double MaxPercentDiff = this.getMyHouse().getDoubleConfig("MaxBVPercent");
+            int MaxFlatDiff = 1;
+            double MaxPercentDiff = 0.0;
 
             for (SArmy currentArmy : this.getArmies()) {
 
@@ -1187,10 +1187,13 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 // legal for component production then the player doesnt get
                 // anything.
                 boolean fLegalOp = false;
+                int legalOps = 0;
                 for (String Opname : currentArmy.getLegalOperations().keySet()) {
                     if (!CampaignMain.cm.getOpsManager().getOperation(Opname).getBooleanValue("DoesNotCountForPP")) {
                         fLegalOp = true;
-                        break;
+                        MaxFlatDiff += Math.max(0, CampaignMain.cm.getOpsManager().getOperation(Opname).getIntValue("MaxBVDifference"));
+                        MaxPercentDiff += Math.max(0,CampaignMain.cm.getOpsManager().getOperation(Opname).getIntValue("MaxBVPercent"));
+                        legalOps++;
                     }
                 }
 
@@ -1198,6 +1201,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 if (!fLegalOp)
                     continue;
 
+                MaxFlatDiff /= legalOps;
+                MaxPercentDiff /= legalOps;
+                
                 /*
                  * Sort the armies into BV order, least to greatest. Take an
                  * enumeration of all armies. 1st is added to orderedArmies by
