@@ -1825,6 +1825,7 @@ src/server/mwmysql/factoryHandler.java -text
 src/server/mwmysql/mysqlHandler.java -text
 src/server/mwmysql/planetHandler.java -text
 src/server/util/AutomaticBackup.java -text
+src/server/util/ComponentToCritsConverter.java -text
 src/server/util/IpCountry.java -text
 src/server/util/MWPasswd.java -text
 src/server/util/MWPasswdRecord.java -text

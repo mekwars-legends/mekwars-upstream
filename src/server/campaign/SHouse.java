@@ -44,6 +44,7 @@ import java.text.DecimalFormat;
 import megamek.common.Entity;
 import megamek.common.TechConstants;
 
+import common.BMEquipment;
 import common.Planet;
 import common.SubFaction;
 import common.Unit;
@@ -61,6 +62,7 @@ import server.campaign.mercenaries.MercHouse;
 import server.campaign.operations.Operation;
 import server.campaign.operations.ShortOperation;
 import server.campaign.pilot.SPilot;
+import server.util.ComponentToCritsConverter;
 import common.util.TokenReader;
 
 public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISeller, IBuyer, Serializable {
@@ -100,6 +102,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
     private Vector<String> leaders = new Vector<String>(1, 1);
     private int techResearchPoints = 0;
     private UnitComponents unitParts = new UnitComponents();
+    private Hashtable<String, ComponentToCritsConverter> componentConverter = new Hashtable<String, ComponentToCritsConverter>();
 
     @Override
     public String toString() {
@@ -1400,6 +1403,12 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             }// end weight class loop
         }// end unit type loop
 
+        /*
+         * Ok we've created components now lets see if we covert them into crits.
+         */
+        if ( getComponentConverter().size() > 0 )
+            produceCrits();
+        
         CampaignData.mwlog.debugLog("Doing Component Overflow");
         /*
          * Loop through all types/weightclasses as above, but look for component
@@ -3071,4 +3080,55 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         return amount;
     }
 
+    public void addComponentConverter(ComponentToCritsConverter converter) {
+        componentConverter.put(converter.getCritName(),converter);
+    }
+    
+    public Hashtable<String, ComponentToCritsConverter> getComponentConverter() {
+        return this.componentConverter;
+    }
+    
+    private void produceCrits() {
+
+        if ( !CampaignMain.cm.getBooleanConfig("UsePartsRepair") )
+            return;
+        
+        double baseCost = CampaignMain.cm.getDoubleConfig("BaseComponentToMoneyRatio");
+        
+        if ( getComponentConverter().containsKey("All") ) {
+            ComponentToCritsConverter converter = this.getComponentConverter().get("All");
+            int minCrits = converter.getMinCritLevel();
+            baseCost *= CampaignMain.cm.getDoubleConfig("ComponentToPartsModifier"+SUnit.getTypeClassDesc(converter.getComponentUsedType()));
+            baseCost *= CampaignMain.cm.getDoubleConfig("ComponentToPartsModifier"+SUnit.getWeightClassDesc(converter.getComponentUsedWeight()));
+            
+            for (  BMEquipment eq : CampaignMain.cm.getPartsMarket().getEquipmentList().values() ) {
+                
+                //do bother producing what you cannot use.
+                if ( this.getTechResearchLevel() < 6 && !eq.getTech().equalsIgnoreCase("all") ) {
+                    if (eq.getTech().equals("IS") && this.getTechResearchLevel() > 3 )
+                        continue;
+                    if ( eq.getTech().equalsIgnoreCase("clan") && this.getTechResearchLevel() < 4 )
+                        continue;
+                }
+                
+                if ( this.getPartsAmount(eq.getEquipmentInternalName()) < minCrits ) {
+                    int critsToAdd = minCrits - this.getPartsAmount(eq.getEquipmentInternalName());
+                    
+                    double costInComponents = eq.getCost()/baseCost;
+                    double components = critsToAdd * costInComponents;
+                    
+                    components = Math.ceil(components);
+                    
+                    components = Math.max(1, components);
+                    
+                    if ( this.getComponents().get(converter.getComponentUsedType()).get(converter.getComponentUsedWeight()) < components )
+                        continue;
+                    
+                    this.addPP(converter.getComponentUsedWeight(), converter.getComponentUsedType(), (int)-components, true);
+                    this.updatePartsCache(eq.getEquipmentInternalName(), critsToAdd);
+                    CampaignMain.cm.doSendHouseMail(this, "NOTE", critsToAdd+" crits of "+eq.getEquipmentName()+" have been produced and placed in the factions parts cache.");
+                }
+            }
+        }
+    }
 }// end SHouse.java

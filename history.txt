@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.22.x
++ New code for converting components to crits
 Release Server 0.2.22.2
 + Bug ResearchTechLevel was using tech level modifer on level 1 factions
 + Added new command ViewFactionPartsCacheCommand

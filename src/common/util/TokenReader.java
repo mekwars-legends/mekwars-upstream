@@ -27,7 +27,7 @@ public class TokenReader{
     
     public static String readString(StringTokenizer st){
         try{
-            return st.nextToken();
+            return st.nextToken().trim();
         }catch(Exception ex){
             //CampaignData.mwlog.errLog(ex);
             return "-1";
