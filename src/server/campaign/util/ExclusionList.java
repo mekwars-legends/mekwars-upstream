@@ -313,7 +313,7 @@ public class ExclusionList{
 			
 			if(playerExcludes.size() > 0) {
 				for (String currName : playerExcludes) {
-					sql = "INSERT into noplay_lists set player_id = ?, np_name = ?, admin_exclude = 'n'";
+					sql = "REPLACE into noplay_lists set player_id = ?, np_name = ?, admin_exclude = 'n'";
 					ps = CampaignMain.cm.MySQL.getPreparedStatement(sql);
 					ps.setInt(1, playerID);
 					ps.setString(2, currName);

@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.22.x
++ Bug: SQL error in ExclusionList.toDB()
 + Activate command now rebuilds legal ops for players
 + Bug: Production amount not taking into effect each legal ops BV diff 
 + Bug: PromtePlayer command not telling Mods when someone is promoted by a 
