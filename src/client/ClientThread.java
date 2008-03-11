@@ -374,7 +374,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     Entity entity = mek.getEntity();
                     // Set the TempID for autoreporting
                     entity.setExternalId(mek.getId());
-                    entity.setId(mek.getId());
+                    //entity.setId(mek.getId());
                     // Set the owner
                     entity.setOwner(client.getLocalPlayer());
                     // Set if unit is a commander in this army.
@@ -436,7 +436,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     Entity entity = autoUnit.getEntity();
 
                     //Had issues with Id's so we are now setting them.
-                    entity.setId(autoUnit.getId());
+                    //entity.setId(autoUnit.getId());
                     entity.setExternalId(autoUnit.getId());
 
                     // Set the owner
