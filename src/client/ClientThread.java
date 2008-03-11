@@ -435,8 +435,9 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     // get the entity
                     Entity entity = autoUnit.getEntity();
 
-                    // ignore the id. allow megamek to assign one. we dont care
-                    // how these units report.
+                    //Had issues with Id's so we are now setting them.
+                    entity.setId(autoUnit.getId());
+                    entity.setExternalId(autoUnit.getId());
 
                     // Set the owner
                     if (bot != null)

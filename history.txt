@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.22.x
++ Bug: AutoArmy having MM set id.
 + Bug: Database not backing up on some Unix systems
 + Bug: SQL error in ExclusionList.toDB()
 + Activate command now rebuilds legal ops for players
