@@ -2479,6 +2479,16 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         result.append(u.getId());// ID used to remove units. Never shown to
         // players in GUI.
 
+        if ( !u.hasVacantPilot() ){
+            result.append(u.getPilot().getGunnery());
+            result.append("$");
+            result.append(u.getPilot().getPiloting());
+        }
+        else{
+            result.append(getBaseGunner(u.getType()));
+            result.append("$");
+            result.append(getBasePilot(u.getType()));
+        }            
         // if using AR, send damage information
         if (CampaignMain.cm.isUsingAdvanceRepair())
             result.append("$" + UnitUtils.unitBattleDamage(currE));

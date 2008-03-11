@@ -20,6 +20,7 @@ package client.gui;
 import java.util.StringTokenizer;
 
 import common.campaign.pilot.Pilot;
+import common.util.TokenReader;
 
 import megamek.common.BattleArmor;
 import megamek.common.Entity;
@@ -44,11 +45,14 @@ public class HSMek {
 	
 	public HSMek(MWClient mwclient, StringTokenizer tokenizer) {
 		
-		this.MekFile = tokenizer.nextToken();
-		unitID = Integer.valueOf(tokenizer.nextToken());
+		this.MekFile = TokenReader.readString(tokenizer);
+		unitID =  TokenReader.readInt(tokenizer);
 		
+        int factionGunnery = TokenReader.readInt(tokenizer);
+        int factionPiloting = TokenReader.readInt(tokenizer);
+
         if (tokenizer.hasMoreTokens())
-            battleDamage = tokenizer.nextToken();
+            battleDamage = TokenReader.readString(tokenizer);
         		
 		//bury a CUnit
 		embeddedUnit = new CUnit();
@@ -60,8 +64,6 @@ public class HSMek {
 		 * type in, we know if we need to set piloting and gunnery (meks,
 		 * vehicles) or just gunnery (misc. infantry types).
 		 */
-		int factionGunnery = mwclient.getCampaign().getPlayer().getMyHouse().getBaseGunner();
-		int factionPiloting = mwclient.getCampaign().getPlayer().getMyHouse().getBasePilot();
 		if (embeddedUnit.getType() != CUnit.PROTOMEK )
 		    
 		    if ( embeddedUnit.getType() == CUnit.INFANTRY  ){

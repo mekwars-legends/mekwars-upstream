@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.22.x
++ RFE: Show units true pilot and gunnery in House bays
 + Change ClientThread.java to only set Entity external Id and not the
 	internal id as well
 + Bug: AutoArmy having MM set id.

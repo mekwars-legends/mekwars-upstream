@@ -1335,8 +1335,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
                 // make sure at least 1 is returned, in case penalties create <1
                 // cases.
-                if (weightedArmyNumber < 1)
-                    weightedArmyNumber = 1;
+                if (weightedArmyNumber < 0)
+                    weightedArmyNumber = weightMod;
 
             }// end if(armies were ordered)
         }// end if (weighted <= 0)

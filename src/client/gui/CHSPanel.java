@@ -630,6 +630,23 @@ public class CHSPanel extends JPanel {
                             // if the names are the same, check for damage
                             if (a.getName().compareTo(b.getName()) == 0) {
 
+                                Integer gunneryA = a.getEntity().getCrew().getGunnery();
+                                Integer gunneryB = b.getEntity().getCrew().getGunnery();
+                                
+                                int compare = gunneryA.compareTo(gunneryB);
+                                
+                                if ( compare != 0 )
+                                    return compare;
+                                
+                                Integer pilotingA = a.getEntity().getCrew().getPiloting();
+                                Integer pilotingB = b.getEntity().getCrew().getPiloting();
+                                
+                                compare = pilotingA.compareTo(pilotingB);
+                                
+                                if ( compare != 0 )
+                                    return compare;
+                                
+                                
                                 String damA = a.getBattleDamage();
                                 String damB = b.getBattleDamage();
 
