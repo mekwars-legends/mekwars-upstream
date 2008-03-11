@@ -57,7 +57,7 @@ public class MWmysql{
 		  if(fs.equalsIgnoreCase("/"))
 		  {
 			  // It's Unix
-			  String[] call={"dump_db.sh", dateTime};
+			  String[] call={"./dump_db.sh", dateTime};
 			  runtime.exec(call);
 		  } else {
 			  // It's Windows

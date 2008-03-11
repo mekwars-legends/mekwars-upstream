@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.22.x
++ Bug: Database not backing up on some Unix systems
 + Bug: SQL error in ExclusionList.toDB()
 + Activate command now rebuilds legal ops for players
 + Bug: Production amount not taking into effect each legal ops BV diff 
