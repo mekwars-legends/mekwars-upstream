@@ -1131,8 +1131,10 @@ public final class SUnit extends Unit{
 
         p.setUnitType(this.getType());
         super.setPilot(p);
-        if (CampaignMain.cm.isUsingMySQL() && !p.getName().equalsIgnoreCase("Vacant"))
+        if (CampaignMain.cm.isUsingMySQL() && !p.getName().equalsIgnoreCase("Vacant")) {
+        	this.toDB();
             CampaignMain.cm.MySQL.linkPilotToUnit(p.getDBId(), this.getDBId());
+        }
     }
 
     public void init() {

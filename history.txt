@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.22.x
++ Bug: Pilots not being linked to units in DB occasionally.
 + Added tags to Threads
 + RFE: Show units true pilot and gunnery in House bays
 + Change ClientThread.java to only set Entity external Id and not the
