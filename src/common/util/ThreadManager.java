@@ -40,7 +40,7 @@ public class ThreadManager{
 		return instance;
 	}
 	
-	public void runInThreadFromPool(Runnable runnable){
+	public void runInThreadFromPool(Thread runnable){
 		try{
 			executor.execute(runnable);
 		}catch(Exception ex ){

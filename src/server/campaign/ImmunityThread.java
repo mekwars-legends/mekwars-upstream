@@ -36,6 +36,7 @@ public final class ImmunityThread extends Thread {//no extension
 	
 	//CONSTRUCTOR
 	public ImmunityThread() {
+	    super("Immunity Thread");
 		this.immunePlayers = new TreeMap<String,Long>();
 	}
 	

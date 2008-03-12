@@ -45,6 +45,7 @@ public class CommandTaskThread extends Thread {
      * Create a new thread to handle an incoming call
      */
     public CommandTaskThread(Socket client, CampaignData data) {
+        super("Command Task Thread");
         try{
             this.client = client;
             this.data = data;

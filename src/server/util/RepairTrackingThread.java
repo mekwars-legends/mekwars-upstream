@@ -56,6 +56,7 @@ public class RepairTrackingThread extends Thread{
 
     
     public RepairTrackingThread(long Time) {
+        super("Repair Tracking Thread");
         repairtime = Time;
     }
     

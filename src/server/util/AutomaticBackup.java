@@ -36,7 +36,7 @@ import java.util.zip.ZipOutputStream;
 import common.CampaignData;
 import server.campaign.CampaignMain;
 
-public class AutomaticBackup implements Runnable{
+public class AutomaticBackup extends Thread{
 
 
     String dateTime = "";
@@ -50,7 +50,7 @@ public class AutomaticBackup implements Runnable{
     long time;
 
     public AutomaticBackup(long time) {
-        super();
+        super("Automatic Backup");
         this.time = time;
     }
     

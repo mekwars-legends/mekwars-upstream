@@ -53,7 +53,7 @@ public class WriterThread extends Thread {
 	protected String _host;
 	
     public WriterThread(Socket socket, PrintWriter out, String host) {
-        super("ReaderThread");
+        super("WriterThread "+ host);
         _socket = socket;
         _out = out;
         _host = host;

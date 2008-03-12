@@ -80,6 +80,7 @@ import server.campaign.pilot.skills.SPilotSkill;
      
      //Initalize the main Comm class.
      public MWCyclopsComm(String ip, String servername, String URL, boolean debug){
+         super("MW Cyclops Comm Thread");
          this.ip = ip;
          this.serverName = servername;
          this.stringURL = URL;

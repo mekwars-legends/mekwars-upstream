@@ -50,7 +50,7 @@ public class ReaderThread extends Thread {
     protected ConnectionHandler _connectionHandler;
     
     public ReaderThread(ConnectionHandler handler, IConnectionListener listener, InputStream in) {
-        super("ReaderThread");
+        super("ReaderThread "+ handler._client.getUserId());
         _connectionHandler = handler;
         _connectionListener = listener;
         _inputStream = in;

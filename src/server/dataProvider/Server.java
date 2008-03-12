@@ -28,13 +28,14 @@ import common.CampaignData;
  * Starts a server which provides diffs to data files for the clients.  
  * @author Imi (immanuel.scholz@gmx.de)
  */
-public class Server implements Runnable {
+public class Server extends Thread {
 	
 	private CampaignData data;
 	private int dataPort;
 	private String IpAddress;
 	
 	public Server(CampaignData data, int dataPort, String IpAddress) {
+	    super("Server");
 		this.data = data;
 		this.dataPort = dataPort;
 		this.IpAddress = IpAddress;

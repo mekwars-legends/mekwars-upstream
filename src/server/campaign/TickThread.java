@@ -30,6 +30,7 @@ public class TickThread extends Thread {
 	private int tickid = 0;
 	
 	public TickThread(server.campaign.CampaignMain main, int Duration) {
+	    super("Tick Thread");
 		this.Duration = Duration;
 		myCampaign = main;
 	}

@@ -30,6 +30,7 @@ public class TrackerThread extends Thread {
 	
 	//CONSTRUCTOS
 	public TrackerThread(MWServ s) {
+	    super("Tracker Thread");
 		serv = s;
 		CampaignData.mwlog.infoLog("Created TrackerThread");
 	}
