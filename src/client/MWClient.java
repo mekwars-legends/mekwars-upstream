@@ -81,12 +81,10 @@ import javax.swing.UIManager;
 import megamek.MegaMek;
 import megamek.client.Client;
 import megamek.client.ui.AWT.GameOptionsDialog;
-import megamek.common.AmmoType;
 import megamek.common.CriticalSlot;
 import megamek.common.Entity;
 import megamek.common.EquipmentType;
 import megamek.common.Mech;
-import megamek.common.WeaponType;
 import megamek.common.options.GameOptions;
 import megamek.common.options.IOption;
 import megamek.common.preference.IClientPreferences;
@@ -159,7 +157,7 @@ public final class MWClient implements IClient {
 
     CConfig Config;
 
-    public static final String CLIENT_VERSION = "0.2.22.1"; // change this with
+    public static final String CLIENT_VERSION = "0.2.23.0"; // change this with
                                                             // all client
                                                             // changes @Torren
 
@@ -3450,32 +3448,10 @@ public final class MWClient implements IClient {
             bme.setCost(Double.parseDouble(ST.nextToken()));
             bme.setCostUp(Boolean.parseBoolean(ST.nextToken()));
 
-            EquipmentType eq = EquipmentType.get(bme.getEquipmentInternalName());
-
-            // Armor,IS,Engines,Actuators,Cockpit,Sensors anything that doesn't
-            // make a normal object in MM
-            if (eq == null) {
-                bme.setEquipmentName(bme.getEquipmentInternalName());
-
-                if (bme.getEquipmentName().toLowerCase().indexOf("armor") > -1 || bme.getEquipmentName().equalsIgnoreCase("IS (STD)") || EquipmentType.getArmorType(bme.getEquipmentName()) != EquipmentType.T_ARMOR_UNKNOWN || EquipmentType.getStructureType(bme.getEquipmentName()) != EquipmentType.T_STRUCTURE_UNKNOWN)
-                    bme.setEquipmentType(BMEquipment.PART_ARMOR);
-                else
-                    bme.setEquipmentType(BMEquipment.PART_MISC);
-            } else {
-
-                bme.setEquipmentName(eq.getName());
-
-                if (eq instanceof AmmoType)
-                    bme.setEquipmentType(BMEquipment.PART_AMMO);
-                else if (eq instanceof WeaponType)
-                    bme.setEquipmentType(BMEquipment.PART_WEAPON);
-                else if (bme.getEquipmentName().toLowerCase().indexOf("armor") > -1 || EquipmentType.getArmorType(bme.getEquipmentName()) != EquipmentType.T_ARMOR_UNKNOWN || EquipmentType.getStructureType(bme.getEquipmentName()) != EquipmentType.T_STRUCTURE_UNKNOWN)
-                    bme.setEquipmentType(BMEquipment.PART_ARMOR);
-                else
-                    bme.setEquipmentType(BMEquipment.PART_MISC);
-            }
-
-            if (!allowTechCrossOver && !UnitUtils.isSameTech(bme.getTech(), techLevel))
+            bme.getEquipmentName();
+            bme.getTech();
+            
+            if (!allowTechCrossOver && !UnitUtils.isSameTech(bme.getTechLevel(), techLevel))
                 continue;
 
             this.getCampaign().getBlackMarketParts().put(bme.getEquipmentName(), bme);

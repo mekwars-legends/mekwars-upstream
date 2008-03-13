@@ -137,9 +137,15 @@ public class RequestDonatedCommand implements Command {
         if (unitInfluence < 0)
         	unitInfluence = 0;
         
-        if (Boolean.parseBoolean(house.getConfig("UseCalculatedCosts")))
-            unitCbills = Math.round(Float.parseFloat(house.getConfig("UsedPurchaseCostMulti")) * house.getHighestUnitCost(u.getWeightclass(),u.getType()) * Float.parseFloat(house.getConfig("CostModifier")));
-		
+        if (Boolean.parseBoolean(house.getConfig("UseCalculatedCosts"))) {
+            double costMulti = house.getDoubleConfig("UsedPurchaseCostMulti");
+            double unitCost = u.getEntity().getCost();
+            if ( unitCost < 1)
+                unitCost = house.getPriceForUnit(u.getWeightclass(),u.getType());
+            double costMod = house.getDoubleConfig("CostModifier");
+            
+            unitCbills = (int)Math.round(costMulti*unitCost*costMod );
+        }
         if (CampaignMain.cm.isUsingAdvanceRepair()) {
             if ( !UnitUtils.canStartUp(u.getEntity()) )
                 unitCbills = Math.round(unitCbills * Float.parseFloat(house.getConfig("CostModifierToBuyEnginedUnit")));

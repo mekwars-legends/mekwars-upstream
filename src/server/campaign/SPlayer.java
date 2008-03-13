@@ -3177,7 +3177,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 return;
             }
             if (CampaignMain.cm.getBooleanConfig("UsePartsRepair"))
-                unitParts.fromString(TokenReader.readString(ST));
+                unitParts.fromString(TokenReader.readString(ST),"|");
             else
                 TokenReader.readString(ST);
 
@@ -3344,7 +3344,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 }
 
                 if (CampaignMain.cm.getBooleanConfig("UsePartsRepair"))
-                    unitParts.fromString(rs.getString("playerUnitParts"));
+                    unitParts.fromString(rs.getString("playerUnitParts"),"|");
 
                 this.subFaction = rs.getString("playerSubfactionName");
 

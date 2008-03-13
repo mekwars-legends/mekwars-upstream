@@ -81,7 +81,7 @@ public class ResearchUnitCommand implements Command {
         int unitTechLevel = house.getTechResearchLevel(ent.getTechLevel());
 
         if ( unitTechLevel > house.getTechResearchLevel() ) {
-            CampaignMain.cm.toUser("AM:Your faction is unable to research "+StringUtils.aOrAn(ent.getShortNameRaw(), true, true)+" at this time!", Username);
+            CampaignMain.cm.toUser("AM:Your faction is unable to research "+StringUtils.aOrAn(ent.getShortNameRaw(), true, true)+" at this time, as your factions technology level is to low!", Username);
             return;
         }
         
@@ -96,14 +96,16 @@ public class ResearchUnitCommand implements Command {
         }
 
         cost = CampaignMain.cm.getDoubleConfig("BaseResearchCost");
-        cost *= CampaignMain.cm.getDoubleConfig("ResearchTechLevelCostModifer") * unitTechLevel;
+        if ( unitTechLevel > 1)
+            cost *= CampaignMain.cm.getDoubleConfig("ResearchTechLevelCostModifer") * unitTechLevel;
         cost *= CampaignMain.cm.getDoubleConfig("ResearchCostModifier" + SUnit.getTypeClassDesc(SUnit.getEntityType(ent)));
         cost *= CampaignMain.cm.getDoubleConfig("ResearchCostModifier" + SUnit.getWeightClassDesc(SUnit.getEntityWeight(ent)));
 
         cost = Math.round(cost);
 
         flu = CampaignMain.cm.getDoubleConfig("BaseResearchFlu");
-        flu *= CampaignMain.cm.getDoubleConfig("ResearchTechLevelFluModifer") * unitTechLevel;
+        if ( unitTechLevel > 1)
+            flu *= CampaignMain.cm.getDoubleConfig("ResearchTechLevelFluModifer") * unitTechLevel;
         flu *= CampaignMain.cm.getDoubleConfig("ResearchFluModifier" + SUnit.getTypeClassDesc(SUnit.getEntityType(ent)));
         flu *= CampaignMain.cm.getDoubleConfig("ResearchFluModifier" + SUnit.getWeightClassDesc(SUnit.getEntityWeight(ent)));
 

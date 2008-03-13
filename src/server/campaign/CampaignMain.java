@@ -1413,6 +1413,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("SETAUTOEJECT", new SetAutoEjectCommand());
         Commands.put("SETAUTOREORDER", new SetAutoReorderCommand());
         Commands.put("SETCLIENTVERSION", new SetClientVersionCommand());
+        Commands.put("SETCOMPONENTCONVERSION", new SetComponentConversionCommand());
         Commands.put("SETEDGESKILLS", new SetEdgeSkillsCommand());
         Commands.put("SETELO", new SetEloCommand());
         Commands.put("SETFACTIONTOFACTIONREWARDPOINTMULTIPLIER", new SetFactionToFactionRewardPointMultiplierCommand());

@@ -1,7 +1,14 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.22.x
+v 0.2.23.x
+Release Client/Server 0.2.23.0
++ New MegaMek.jar 0.33.21-MW031208-5552
++ Added code to produce crits from house components
++ Bug: HSMek not displaying gunnery/piloting
++ Bug: Request Donated giving 0 cost for last unit in bay
++ Added gui to MekWarsAdmin for component to crit conversion vars
++ Added SetComponentConversionCommand
 + Bug: Pilots not being linked to units in DB occasionally.
 + Added tags to Threads
 + RFE: Show units true pilot and gunnery in House bays
@@ -16,6 +23,7 @@ v 0.2.22.x
 	leader
 + RFE: Client setting to define where certain system messages go
 + New code for converting components to crits
+v 0.2.22.x
 Release Server 0.2.22.2
 + Bug ResearchTechLevel was using tech level modifer on level 1 factions
 + Added new command ViewFactionPartsCacheCommand

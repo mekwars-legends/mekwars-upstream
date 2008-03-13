@@ -64,7 +64,7 @@ public class BuyPartsCommand implements Command {
 		boolean allowTechCrossOver = CampaignMain.cm.getBooleanConfig("AllowCrossOverTech");
 		BMEquipment bme = CampaignMain.cm.getPartsMarket().getEquipmentList().get(partName);
 		
-		if ( bme == null || (!allowTechCrossOver && !UnitUtils.isSameTech(bme.getTech(), player.getMyHouse().getTechLevel()))) {
+		if ( bme == null || (!allowTechCrossOver && !UnitUtils.isSameTech(bme.getTechLevel(), player.getMyHouse().getTechLevel()))) {
 			CampaignMain.cm.toUser("AM:"+partName+" not found on the black market", Username);
 			return;
 		}

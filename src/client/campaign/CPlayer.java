@@ -214,7 +214,7 @@ public class CPlayer extends Player {
         this.setInvisible(TokenReader.readBoolean(ST));
 
         if (Boolean.parseBoolean(mwclient.getserverConfigs("UsePartsRepair")))
-            partsCache.fromString(TokenReader.readString(ST));
+            partsCache.fromString(TokenReader.readString(ST),"|");
         else
             TokenReader.readString(ST);
 

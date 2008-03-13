@@ -76,6 +76,8 @@ public class PartsMarket {
 					eq.setAmount(Math.max(masterEq.getMinProduction(),CampaignMain.cm.getRandomNumber(masterEq.getMaxProduction())+1));
 					eq.setCost(Math.max(masterEq.getMinCost(), CampaignMain.cm.getR().nextDouble()*masterEq.getMaxCost()));
 					eq.setCostUp(false);
+					eq.getEquipmentName();
+					eq.getTech();
 					
 					this.lastTickList.put(key, eq.clone());
 					this.equipmentList.put(key,eq);
@@ -115,6 +117,8 @@ public class PartsMarket {
 				CampaignData.mwlog.errLog(ex);
 			}
 			eq.setAmount(Math.max(eq.getAmount(), masterEq.getMinProduction()));
+			eq.getEquipmentName();
+			eq.getTech();
 			this.lastTickList.put(key, eq.clone());
 			this.equipmentList.put(key,eq);
 			
@@ -217,7 +221,8 @@ public class PartsMarket {
 					bme.setEquipmentInternalName(data.nextToken());
 					bme.setCost(Double.parseDouble(data.nextToken()));
 					bme.setAmount(Integer.parseInt(data.nextToken()));
-					
+					bme.getEquipmentName();
+					bme.getTech();
 					this.equipmentList.put(bme.getEquipmentInternalName(),bme);
 					this.lastTickList.put(bme.getEquipmentInternalName(),bme.clone());
 				}

@@ -50,6 +50,7 @@ import javax.swing.SpringLayout;
 import javax.swing.BoxLayout;
 
 import megamek.common.Entity;
+import megamek.common.Infantry;
 
 import client.MWClient;
 import client.campaign.CCampaign;
@@ -686,9 +687,13 @@ public class CHSPanel extends JPanel {
                         }
 
                         if (m.getType().equalsIgnoreCase("mek") || m.getType().equalsIgnoreCase("vehicle"))
-                            unitString.append("<a href=\"MEKINFO" + m.getMekFile() + "#" + m.getBV() + "#" + m.getEntity().getCrew().getGunnery() + "#" + m.getEntity().getCrew().getPiloting() + "#" + m.getBattleDamage() + "\">" + m.getName());
-                        else
-                            unitString.append("<a href=\"MEKINFO" + m.getMekFile() + "#" + m.getBV() + "#" + m.getEntity().getCrew().getGunnery() + "#" + m.getEntity().getCrew().getPiloting() + "#" + m.getBattleDamage() + "\">" + m.getName());
+                            unitString.append("<a href=\"MEKINFO" + m.getMekFile() + "#" + m.getBV() + "#" + m.getEntity().getCrew().getGunnery() + "#" + m.getEntity().getCrew().getPiloting() + "#" + m.getBattleDamage() + "\">" + m.getName()+ "("+m.getEntity().getCrew().getGunnery()+"/"+m.getEntity().getCrew().getPiloting()+")");
+                        else {
+                            if ( m.getEntity() instanceof Infantry && ((Infantry) m.getEntity()).isAntiMek() )
+                                unitString.append("<a href=\"MEKINFO" + m.getMekFile() + "#" + m.getBV() + "#" + m.getEntity().getCrew().getGunnery() + "#" + m.getEntity().getCrew().getPiloting() + "#" + m.getBattleDamage() + "\">" + m.getName()+ "("+m.getEntity().getCrew().getGunnery()+"/"+m.getEntity().getCrew().getPiloting()+")");
+                            else
+                                unitString.append("<a href=\"MEKINFO" + m.getMekFile() + "#" + m.getBV() + "#" + m.getEntity().getCrew().getGunnery() + "#" + m.getEntity().getCrew().getPiloting() + "#" + m.getBattleDamage() + "\">" + m.getName()+"("+m.getEntity().getCrew().getGunnery()+")");
+                        }
 
                         // frontload the dupe indicator, to reduce confusion
                         // with mono-skill units

@@ -2579,20 +2579,12 @@ public class UnitUtils  {
         return true;
     }
     
-    public static boolean isSameTech(String tech, int techLevel) {
+    public static boolean isSameTech(int tech, int techLevel) {
     	
-		if ( !tech.equalsIgnoreCase("all") && techLevel != TechConstants.T_ALL ){
-			if ( tech.equalsIgnoreCase("clan") &&
-					techLevel != TechConstants.T_CLAN_LEVEL_2 && 
-					techLevel != TechConstants.T_CLAN_LEVEL_3)
-				return false;
-			if ( tech.equalsIgnoreCase("IS") &&
-					(techLevel == TechConstants.T_CLAN_LEVEL_2 ||
-					 techLevel == TechConstants.T_CLAN_LEVEL_3) )
-				return false;
-		}
-		
-		return true;
+        if ( tech >= TechConstants.T_ALL || tech < TechConstants.T_IS_LEVEL_1 )
+            return true;
+        
+        return techLevel >= tech;
     }
     
     public static Entity createOMG(){

@@ -86,27 +86,27 @@ public class UnitComponents{
 		return result.toString();
 	}
 	
-	public String toString() {
+	public String toString(String token) {
 		StringBuffer result = new StringBuffer();
 		
 		if ( components.size() < 1 )
-			return "| |";
+			return token+" "+token;
 		for ( String key : components.keySet() ) {
 			
 			if ( components.get(key) < 1)
 				continue;
 			result.append(key);
-			result.append("|");
+			result.append(token);
 			result.append(components.get(key));
-			result.append("|");
+			result.append(token);
 		}
 		return result.toString();
 
 	}
 	
-	public void fromString(String data) {
+	public void fromString(String data, String token) {
 		
-		StringTokenizer st = new StringTokenizer(data,"|");
+		StringTokenizer st = new StringTokenizer(data,token);
 		
 		try {
 			components.clear();

@@ -320,10 +320,16 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         result.append(this.techResearchPoints);
         result.append("|");
         
-        result.append(unitParts.toString());
+        result.append(unitParts.toString("#"));
         result.append("|");
-        
 
+        result.append(componentConverter.size());
+        result.append("|");
+
+        for ( String key : componentConverter.keySet() ) {
+            result.append(componentConverter.get(key).toString());
+        }
+        
         return result.toString();
     }
 
@@ -904,11 +910,29 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
             techResearchPoints = TokenReader.readInt(ST);
 
-            if (CampaignMain.cm.getBooleanConfig("UsePartsRepair"))
-                unitParts.fromString(TokenReader.readString(ST));
+            if (CampaignMain.cm.getBooleanConfig("UsePartsRepair")) {
+                unitParts.fromString(TokenReader.readString(ST),"#");
+            }
             else
                 TokenReader.readString(ST);
 
+            int size = TokenReader.readInt(ST);
+            for (; size > 0; size--) {
+                ComponentToCritsConverter converter = new ComponentToCritsConverter();
+                converter.setCritName(TokenReader.readString(ST));
+                converter.setMinCritLevel(TokenReader.readInt(ST));
+                converter.setComponentUsedType(TokenReader.readInt(ST));
+                converter.setComponentUsedWeight(TokenReader.readInt(ST));
+            }
+
+            if ( getComponentConverter().size() < 1 && CampaignMain.cm.getBooleanConfig("UsePartsRepair") ) {
+                ComponentToCritsConverter converter = new ComponentToCritsConverter();
+                converter.setComponentUsedType(SUnit.MEK);
+                converter.setComponentUsedWeight(SUnit.LIGHT);
+                converter.setMinCritLevel(100);
+                this.getComponentConverter().put(converter.getCritName(),converter);
+            }
+            
             setPilotQueues(new PilotQueues(this.getBaseGunnerVect(), this.getBasePilotVect(), this.getBasePilotSkillVect()));
             getPilotQueues().setFactionString(this.getName());// set the
             // faction name
@@ -2480,11 +2504,13 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         // players in GUI.
 
         if ( !u.hasVacantPilot() ){
+            result.append("$");
             result.append(u.getPilot().getGunnery());
             result.append("$");
             result.append(u.getPilot().getPiloting());
         }
         else{
+            result.append("$");
             result.append(getBaseGunner(u.getType()));
             result.append("$");
             result.append(getBasePilot(u.getType()));
@@ -3102,6 +3128,8 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
         if ( !CampaignMain.cm.getBooleanConfig("UsePartsRepair") )
             return;
+
+        boolean cacheUpdate = false;
         
         double baseCost = CampaignMain.cm.getDoubleConfig("BaseComponentToMoneyRatio");
         
@@ -3113,11 +3141,14 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             
             for (  BMEquipment eq : CampaignMain.cm.getPartsMarket().getEquipmentList().values() ) {
                 
+                //do not produce something that the is allowed in the BM
+                if ( eq.getCost() <= 0 && eq.getAmount() <= 0 )
+                    continue;
+
                 //do bother producing what you cannot use.
-                if ( this.getTechResearchLevel() < 6 && !eq.getTech().equalsIgnoreCase("all") ) {
-                    if (eq.getTech().equals("IS") && this.getTechResearchLevel() > 3 )
-                        continue;
-                    if ( eq.getTech().equalsIgnoreCase("clan") && this.getTechResearchLevel() < 4 )
+                if ( !CampaignMain.cm.getBooleanConfig("AllowCrossOverTech") ) {
+                    eq.getTech();
+                    if ( eq.getTechLevel() != TechConstants.T_ALL && eq.getTechLevel() > this.getTechLevel() )
                         continue;
                 }
                 
@@ -3134,11 +3165,58 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                     if ( this.getComponents().get(converter.getComponentUsedType()).get(converter.getComponentUsedWeight()) < components )
                         continue;
                     
-                    this.addPP(converter.getComponentUsedWeight(), converter.getComponentUsedType(), (int)-components, true);
+                    this.addPP(converter.getComponentUsedWeight(), converter.getComponentUsedType(), (int)-components, false);
                     this.updatePartsCache(eq.getEquipmentInternalName(), critsToAdd);
-                    CampaignMain.cm.doSendHouseMail(this, "NOTE", critsToAdd+" crits of "+eq.getEquipmentName()+" have been produced and placed in the factions parts cache.");
+                    cacheUpdate = true;
+                }
+            }
+        }else {
+            
+            for (  ComponentToCritsConverter converter : this.getComponentConverter().values()) {
+                
+                int minCrits = converter.getMinCritLevel();
+                baseCost *= CampaignMain.cm.getDoubleConfig("ComponentToPartsModifier"+SUnit.getTypeClassDesc(converter.getComponentUsedType()));
+                baseCost *= CampaignMain.cm.getDoubleConfig("ComponentToPartsModifier"+SUnit.getWeightClassDesc(converter.getComponentUsedWeight()));
+
+                BMEquipment eq = CampaignMain.cm.getPartsMarket().getEquipmentList().get(converter.getCritName());
+                
+                if ( eq == null )
+                    continue;
+
+                //do not produce something that the is allowed in the BM
+                if ( eq.getCost() <= 0 && eq.getAmount() <= 0 )
+                    continue;
+                //do bother producing what you cannot use.
+                if ( !CampaignMain.cm.getBooleanConfig("AllowCrossOverTech") ) {
+                    eq.getTech();
+                    if ( eq.getTechLevel() != TechConstants.T_ALL && eq.getTechLevel() > this.getTechLevel() )
+                        continue;
+                }
+                
+                
+                if ( this.getPartsAmount(eq.getEquipmentInternalName()) < minCrits ) {
+                    int critsToAdd = minCrits - this.getPartsAmount(eq.getEquipmentInternalName());
+                    
+                    double costInComponents = eq.getCost()/baseCost;
+                    double components = critsToAdd * costInComponents;
+                    
+                    components = Math.ceil(components);
+                    
+                    components = Math.max(1, components);
+                    
+                    if ( this.getComponents().get(converter.getComponentUsedType()).get(converter.getComponentUsedWeight()) < components )
+                        continue;
+                    
+                    this.addPP(converter.getComponentUsedWeight(), converter.getComponentUsedType(), (int)-components, false);
+                    this.updatePartsCache(eq.getEquipmentInternalName(), critsToAdd);
+                    cacheUpdate = true;
                 }
             }
         }
+        if ( cacheUpdate ) {
+            CampaignMain.cm.doSendHouseMail(this, "NOTE", "The house crits have been updated");
+            CampaignMain.cm.doSendToAllOnlinePlayers(this, this.getCompleteStatus(), false);
+        }
+        
     }
 }// end SHouse.java

@@ -28,6 +28,8 @@ import server.campaign.util.PlanetNameComparator;
 
 import java.util.Vector;
 
+import megamek.common.TechConstants;
+
 import common.Planet;
 
 public class HouseCommand implements Command {
@@ -116,6 +118,14 @@ public class HouseCommand implements Command {
 		"  - Avg. Planet: " + h.getComponentProduction()/ownedWorldsSize + "<br>" +
 		"  - Per Capita: " + h.getComponentProduction()/sinceLastRestart + "<br><br>";
 		
+        s += "<br><b>Tech Level: <b>"+TechConstants.getLevelDisplayableName(h.getTechLevel())+".";
+        
+        if ( CampaignMain.cm.getPlayer(Username).getMyHouse().equals(h) || CampaignMain.cm.getServer().isModerator(Username) ) {
+            s += " Current Research: "+h.getTechResearchLevel()+" of "+CampaignMain.cm.getConfig("TechPointsNeedToLevel");
+        }
+        
+        s += "<br>";
+        
 		//sort planets by alpha, instead of ID
 		Collections.sort(ownedWorlds, new PlanetNameComparator());
 		Collections.sort(contestedWorlds, new PlanetNameComparator());

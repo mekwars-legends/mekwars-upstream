@@ -2543,6 +2543,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         JPanel apSpringPanel = new JPanel(new SpringLayout());
         JPanel prodMiscPanel = new JPanel(new SpringLayout());
         JPanel prodCBoxSpring = new JPanel(new SpringLayout());
+        JPanel prodCrit = new JPanel(new SpringLayout());
 
         // refresh spring
         baseTextField = new JTextField(5);
@@ -2674,22 +2675,86 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setName("ShowOutputMultiplierOnTick");
         prodCBoxSpring.add(BaseCheckBox);
 
+        baseTextField = new JTextField(5);
+        prodCrit.add(new JLabel("Base Component to Money:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Double Field: Number of Cbills for 1 component</html>");
+        baseTextField.setName("BaseComponentToMoneyRatio");
+        prodCrit.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        prodCrit.add(new JLabel("Component Mek Mod:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Modifer for Mek Components to the base cost</html>");
+        baseTextField.setName("ComponentToPartsModifierMek");
+        prodCrit.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        prodCrit.add(new JLabel("Component Vehicle Mod:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Modifer for Vehicle Components to the base cost</html>");
+        baseTextField.setName("ComponentToPartsModifierVehicle");
+        prodCrit.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        prodCrit.add(new JLabel("Component Infantry Mod:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Modifer for Infantry Components to the base cost</html>");
+        baseTextField.setName("ComponentToPartsModifierInfantry");
+        prodCrit.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        prodCrit.add(new JLabel("Component BA Mod:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Modifer for BA Components to the base cost</html>");
+        baseTextField.setName("ComponentToPartsModifierBattleArmor");
+        prodCrit.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        prodCrit.add(new JLabel("Component Proto Mod:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Modifer for ProtoMek Components to the base cost</html>");
+        baseTextField.setName("ComponentToPartsModifierProtoMek");
+        prodCrit.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        prodCrit.add(new JLabel("Component Light Mod:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Modifer for Light Components to the base cost</html>");
+        baseTextField.setName("ComponentToPartsModifierLight");
+        prodCrit.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        prodCrit.add(new JLabel("Component Medium Mod:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Modifer for Medium Components to the base cost</html>");
+        baseTextField.setName("ComponentToPartsModifierMedium");
+        prodCrit.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        prodCrit.add(new JLabel("Component Heavy Mod:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Modifer for Heavy Components to the base cost</html>");
+        baseTextField.setName("ComponentToPartsModifierHeavy");
+        prodCrit.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        prodCrit.add(new JLabel("Component Assault Mod:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Modifer for Assault Components to the base cost</html>");
+        baseTextField.setName("ComponentToPartsModifierAssault");
+        prodCrit.add(baseTextField);
+
         // lay out the springs
         SpringLayoutHelper.setupSpringGrid(refreshSpringPanel, 4, 2);
         SpringLayoutHelper.setupSpringGrid(salesSpringPanel, 4, 2);
         SpringLayoutHelper.setupSpringGrid(apSpringPanel, 5, 2);
         SpringLayoutHelper.setupSpringGrid(prodMiscPanel, 2);
         SpringLayoutHelper.setupSpringGrid(prodCBoxSpring, 1, 4);
+        SpringLayoutHelper.setupSpringGrid(prodCrit, 4);
 
         // finalize the layout
-        JPanel prodGrid = new JPanel(new GridLayout(3, 2));
+        JPanel prodGrid = new JPanel(new GridLayout(2, 2));
         prodGrid.add(refreshSpringPanel);
         prodGrid.add(salesSpringPanel);
         prodGrid.add(apSpringPanel);
         prodGrid.add(prodMiscPanel);
-        prodGrid.add(prodCBoxSpring);
+        
+        productionPanel.setLayout(new BoxLayout(productionPanel,BoxLayout.Y_AXIS));
 
         productionPanel.add(prodGrid);
+        productionPanel.add(prodCBoxSpring);
+        productionPanel.add(prodCrit);
 
         /*
          * REWARD MENU CONSTRUCTION
