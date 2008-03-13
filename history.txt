@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.23.x
++ Update DB to v27
++ CampaignConfig now saved to/loaded from database.
 Release Client/Server 0.2.23.0
 + New MegaMek.jar 0.33.21-MW031208-5552
 + Added code to produce crits from house components

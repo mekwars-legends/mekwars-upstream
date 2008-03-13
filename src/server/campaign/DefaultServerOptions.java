@@ -970,23 +970,6 @@ public class DefaultServerOptions {
         defaults.setProperty("ForumGroupName", "");
         defaults.setProperty("REQUIREEMAILFORREGISTRATION", "false");
 
-        /*
-         * //My SQL Settings defaults.setProperty("USEMYSQL", "false");
-         * defaults.setProperty("MYSQLUSER", "");
-         * defaults.setProperty("MYSQLPASS", "");
-         * defaults.setProperty("MYSQLHOST", "");
-         * defaults.setProperty("MYSQLDB", "mekwars");
-         * 
-         * //PHPBB Settings defaults.setProperty("MYSQL_SYNCHPHPBB", "false");
-         * defaults.setProperty("PHPBB_USER", "");
-         * defaults.setProperty("PHPBB_PASS", "");
-         * defaults.setProperty("PHPBB_HOST", "");
-         * defaults.setProperty("PHPBB_DB", "phpbb");
-         * defaults.setProperty("PHPBB_TABLE_PREFIX", "phpbb_");
-         * defaults.setProperty("PHPBB_MAJOR_VERSION", "2");
-         * defaults.setProperty("PHPBB_URL",
-         * "http://localhost/phpbb/index.php");
-         */
         // Victory Condition Kill Unit Commanders Settings.
         defaults.setProperty("allowUnitCommanderMek", "true");
         defaults.setProperty("allowUnitCommanderVehicle", "false");

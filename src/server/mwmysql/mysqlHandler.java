@@ -21,6 +21,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.Set;
 
 import common.CampaignData;
 import server.campaign.CampaignMain;
@@ -43,7 +47,7 @@ public class mysqlHandler{
   private PhpBBConnector phpBBCon = null;
   private HistoryHandler hh = null;
 
-  private final int currentDBVersion = 26;
+  private final int currentDBVersion = 27;
   
   public void closeMySQL(){
 	  MySQLCon.close();
@@ -397,8 +401,8 @@ public class mysqlHandler{
   public void checkAndUpdateDB() {
 	  if(databaseIsUpToDate())
 		  return;
-	  CampaignData.mwlog.dbLog("Database out of date");
 	  CampaignData.mwlog.mainLog("Database out of date.  Shutting down to avoid data corruption.");
+	  CampaignData.mwlog.mainLog("Required version: " + currentDBVersion + ", your version: " + getDBVersion());
 	  System.exit(0);
   }
 
@@ -523,6 +527,84 @@ public class mysqlHandler{
   
   public void commitBattleReport(OperationReportEntry opData) {
 	  hh.commitBattleReport(opData);
+  }
+  
+  public void saveConfig() {
+	  PreparedStatement ps = null;
+	  Properties configs = CampaignMain.cm.getConfig();
+	  Set<Object> keys = configs.keySet();
+	  String key = "";
+	  Iterator<Object> keyIterator = keys.iterator();
+	  
+	  try {
+		while(keyIterator.hasNext()) {  
+			ps = MySQLCon.con.prepareStatement("REPLACE into campaign_config SET config_name=?, config_value=?");
+			key = (String) keyIterator.next();
+			ps.setString(1, key);
+			ps.setString(2, configs.getProperty(key));
+			ps.executeUpdate();
+			ps.close();
+		}
+	  } catch (SQLException e) {
+		  CampaignData.mwlog.dbLog("SQLException in mysqlHandler.saveConfig: " + e.getMessage());
+		  CampaignData.mwlog.dbLog(e);
+	  } finally {
+		  if(ps != null)
+			  try {
+				  ps.close();
+			  } catch (SQLException ex) {
+				  
+			  }
+	  }
+  }
+  
+  public boolean configIsSaved() {
+	  PreparedStatement ps = null;
+	  ResultSet rs = null;
+	  boolean isSaved = false;
+	  try {
+		ps = MySQLCon.con.prepareStatement("SELECT COUNT(*) as num from campaign_config");
+		rs = ps.executeQuery();
+		if(rs.next()) {
+			if(rs.getInt("num") > 0) {
+				isSaved = true;
+			}
+		}
+	  } catch (SQLException e) {
+		  CampaignData.mwlog.dbLog("SQLException in mysqlHandler.configIsSaved: " + e.getMessage());
+		  CampaignData.mwlog.dbLog(e);
+	  } finally {
+		  try {
+			  if(rs != null)
+				  rs.close();
+			  if(ps != null)
+				  ps.close();
+		  } catch (SQLException ex) {  }
+	  }
+	  CampaignData.mwlog.dbLog("Campaign saved in DB: " + Boolean.toString(isSaved));
+	  return isSaved;
+  }
+  
+  public void loadConfig(Properties config) {
+	  PreparedStatement ps = null;
+	  ResultSet rs = null;
+	  try {
+		  ps = MySQLCon.con.prepareStatement("SELECT * from campaign_config");
+		  rs = ps.executeQuery();
+		  while(rs.next()) {
+			  config.put(rs.getString("config_name"), rs.getString("config_value"));
+		  }
+	  } catch (SQLException e) {
+		  CampaignData.mwlog.dbLog("SQLException in mysqlHandler.loadConfig: " + e.getMessage());
+		  CampaignData.mwlog.dbLog(e);
+	  } finally {
+		  try {
+			  if(rs != null)
+				  rs.close();
+			  if(ps != null)
+				  ps.close();
+		  } catch (SQLException ex) {}
+	  }
   }
   
   public mysqlHandler(){
