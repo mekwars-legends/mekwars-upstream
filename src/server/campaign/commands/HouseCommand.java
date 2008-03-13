@@ -118,10 +118,10 @@ public class HouseCommand implements Command {
 		"  - Avg. Planet: " + h.getComponentProduction()/ownedWorldsSize + "<br>" +
 		"  - Per Capita: " + h.getComponentProduction()/sinceLastRestart + "<br><br>";
 		
-        s += "<br><b>Tech Level: <b>"+TechConstants.getLevelDisplayableName(h.getTechLevel())+".";
+        s += "<br><b>Tech Level: </b>"+TechConstants.getLevelDisplayableName(h.getTechLevel())+".";
         
         if ( CampaignMain.cm.getPlayer(Username).getMyHouse().equals(h) || CampaignMain.cm.getServer().isModerator(Username) ) {
-            s += " Current Research: "+h.getTechResearchLevel()+" of "+CampaignMain.cm.getConfig("TechPointsNeedToLevel");
+            s += " Current Research: "+h.getTechResearchPoints()+" of "+CampaignMain.cm.getConfig("TechPointsNeedToLevel");
         }
         
         s += "<br>";
