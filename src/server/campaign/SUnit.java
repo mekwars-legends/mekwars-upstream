@@ -109,13 +109,14 @@ public final class SUnit extends Unit{
 
         this.setWeightclass(weightclass); // default weight class.
 
+        setProducer(p);
+        setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
+
         if (house != null)
             setPilot(house.getNewPilot(this.getType()));
         else
             setPilot(new SPilot(SPilot.getRandomPilotName(CampaignMain.cm.getR()), gunnery, piloting));
 
-        setProducer(p);
-        setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
     }
 
     /**
@@ -687,7 +688,7 @@ public final class SUnit extends Unit{
             }
             ps.close();
             // Save the pilot
-            if (getPilot().getGunnery() != 99) {
+            if (!this.hasVacantPilot()) {
                 ((SPilot) getPilot()).toDB(getType(), getWeightclass());
                 CampaignMain.cm.MySQL.linkPilotToUnit(((SPilot) getPilot()).getDBId(), getDBId());
             }
@@ -1131,9 +1132,9 @@ public final class SUnit extends Unit{
 
         p.setUnitType(this.getType());
         super.setPilot(p);
-        if (CampaignMain.cm.isUsingMySQL() && !p.getName().equalsIgnoreCase("Vacant")) {
+        if ( CampaignMain.cm.isUsingMySQL() ) {
         	this.toDB();
-            CampaignMain.cm.MySQL.linkPilotToUnit(p.getDBId(), this.getDBId());
+            //CampaignMain.cm.MySQL.linkPilotToUnit(p.getDBId(), this.getDBId());
         }
     }
 
