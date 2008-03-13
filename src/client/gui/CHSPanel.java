@@ -666,7 +666,10 @@ public class CHSPanel extends JPanel {
                         HSMek m = entities[j];
                         int num = 1;
 
-                        while (j < entities.length - 1 && m.getName().equalsIgnoreCase(entities[j + 1].getName()) && (m.getBattleDamage().equalsIgnoreCase(entities[j + 1].getBattleDamage()))) {
+                        while (j < entities.length - 1 && m.getName().equalsIgnoreCase(entities[j + 1].getName()) 
+                                && (m.getBattleDamage().equalsIgnoreCase(entities[j + 1].getBattleDamage()))
+                                && m.getEntity().getCrew().getPiloting() == entities[j+1].getEntity().getCrew().getPiloting()
+                                && m.getEntity().getCrew().getGunnery() == entities[j+1].getEntity().getCrew().getGunnery()) {
                             j++;
                             num++;
                         }

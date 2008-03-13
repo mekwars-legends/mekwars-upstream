@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.23.x
++ Bug: multiple units showing in house bays when only 1 exists.
++ Bug: OMG showing in house bays
 + Bug: Units saving before getting Id's set
 + Bug: HouseCommand Show the wrong number of Tech Points Researched 
 + Update DB to v27

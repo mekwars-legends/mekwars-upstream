@@ -2495,11 +2495,15 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
         // header info
         result.append("AU|");
-        result.append(u.getWeightclass() + "$" + u.getType() + "$");
+        result.append(u.getWeightclass());
+        result.append("$");
+        result.append(u.getType());
+        result.append("$");
 
         // unit information (note: no pilot info included)
         Entity currE = u.getEntity();
-        result.append(currE.getChassis() + " " + currE.getModel() + "$");
+        result.append(u.getUnitFilename());
+        result.append("$");
         result.append(u.getId());// ID used to remove units. Never shown to
         // players in GUI.
 
