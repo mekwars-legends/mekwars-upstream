@@ -409,10 +409,7 @@ public final class SUnit extends Unit{
 
         StringBuilder result = new StringBuilder();
         result.append("CM$");
-        /*if (toPlayer)
-            result.append(getEntity().getChassis() + " " + getEntity().getModel());
-        else*/
-            result.append(getUnitFilename());
+        result.append(getUnitFilename());
         result.append("$");
         result.append(getPosId());
         result.append("$");
