@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.23.x
++ Bug: NPE when a Unit does not have an explicitly set ID.
+    Now it defaults to 0.
 + Bug: not calculating army weight correctly
 + Bug: Typo in Configuration Dialog
 + Bug: Planet Information not working from popup menu
