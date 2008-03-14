@@ -213,7 +213,6 @@ public class PlanetNameDialog extends JDialog implements ActionListener {
                             continue;
                         if ( tp.getPlanetFlags().containsKey(key)){
                             allowOp = false;
-                            CampaignData.mwlog.errLog(tp.getName()+" has flag: "+key);
                             break;
                         }
                     }

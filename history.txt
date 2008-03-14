@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.23.x
++ Bug: Typo in Configuration Dialog
++ Bug: Planet Information not working from popup menu
 + Bug: Temporary reversion of config save-to-DB
 + Bug: multiple units showing in house bays when only 1 exists.
 + Bug: OMG showing in house bays

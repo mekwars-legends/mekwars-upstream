@@ -268,7 +268,7 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
                             color = h.getHouseColor();
                             name = h.getName();
                         }
-                        label = new JEditorPane("text/html", mp.getPPanel().getPlanet().getAdvanceDescription(mwclient.getUserLevel()) + "<b>Original Owner:</b><br><font color=" + color + ">" + name + "</font>");
+                        label = new JEditorPane("text/html", "<html>" + mp.getPPanel().getPlanet().getAdvanceDescription(mwclient.getUser(mwclient.getUsername()).getUserlevel()) + "<b>Original Owner:</b><br><font color=" + color + ">" + name + "</font>" + "</html>");
                         label.setEditorKit(new MyHTMLEditorKit());
                         label.setEditable(false);
                         label.setCaretPosition(0);
@@ -421,7 +421,7 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
                         name = h.getName();
                     }
 
-                    label = new JEditorPane("text/html", "<html" + mp.getPPanel().getPlanet().getAdvanceDescription(mwclient.getUser(mwclient.getUsername()).getUserlevel()) + "<b>Original Owner:</b><br><font color=" + color + ">" + name + "</font>" + "</html>");
+                    label = new JEditorPane("text/html", "<html>" + mp.getPPanel().getPlanet().getAdvanceDescription(mwclient.getUser(mwclient.getUsername()).getUserlevel()) + "<b>Original Owner:</b><br><font color=" + color + ">" + name + "</font>" + "</html>");
                     label.setEditable(false);
                     label.setCaretPosition(0);
                     label.setPreferredSize(new Dimension(500, 400));

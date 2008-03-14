@@ -681,7 +681,7 @@ public final class ConfigurationDialog implements ActionListener {
         // set up the chat tab combo box
         comboDim.setSize(playerMessageTabComboBox.getMinimumSize().getWidth() * 1.2, playerMessageTabComboBox.getMinimumSize().getHeight() + 2);
 
-        JLabel playerMessageTabHeader = new JLabel("Chat Name Color Modes:");
+        JLabel playerMessageTabHeader = new JLabel("Tick Info Tab:");
         playerMessageTabHeader.setAlignmentX(Component.CENTER_ALIGNMENT);
         playerMessageTabComboBox.setAlignmentX(Component.CENTER_ALIGNMENT);
         playerMessageTabComboBox.setMaximumSize(comboDim);
