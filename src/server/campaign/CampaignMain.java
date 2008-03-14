@@ -197,14 +197,16 @@ public final class CampaignMain implements Serializable {
             // into the config file
             // before you load in the
             // campaign stuff
-            if(!isUsingMySQL())
+//            if(!isUsingMySQL())
             	config.load(new FileInputStream(this.myServer.getConfigParam("CAMPAIGNCONFIG")));
+/*
             else {
             	if(cm.MySQL.configIsSaved())
             		cm.MySQL.loadConfig(config);
             	else
                 	config.load(new FileInputStream(this.myServer.getConfigParam("CAMPAIGNCONFIG")));          		
             }
+*/
             if (isUsingMySQL()) {
                 if (this.isSynchingBB())
                     config.put("REQUIREEMAILFORREGISTRATION", "true");
@@ -2979,10 +2981,13 @@ public final class CampaignMain implements Serializable {
     }
 
     public void saveConfigureFile(Properties config, String fileName) {
+/*
+ 
     	if(CampaignMain.cm.isUsingMySQL()) {
     		CampaignMain.cm.MySQL.saveConfig();
     		return;
     	}
+*/
         try {
             PrintStream ps = new PrintStream(new FileOutputStream(fileName));
             ps.println("#Timestamp=" + System.currentTimeMillis());
