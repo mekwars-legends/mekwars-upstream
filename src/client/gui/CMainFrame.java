@@ -953,6 +953,12 @@ public class CMainFrame extends JFrame {
         jMenuLeaderResearchTech.setText("Research Tech");
         jMenuLeaderResearchTech.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                
+                int option = JOptionPane.showConfirmDialog(mwclient.getMainFrame(), "Do you wish to research tech?", "Research?", JOptionPane.YES_NO_OPTION);
+
+                if ( option == JOptionPane.NO_OPTION )
+                    return;
+
                 mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c researchtechlevel");
             }
         });

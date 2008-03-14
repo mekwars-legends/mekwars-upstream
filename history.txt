@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.23.x
++ Bug: not calculating army weight correctly
 + Bug: Typo in Configuration Dialog
 + Bug: Planet Information not working from popup menu
 + Bug: Temporary reversion of config save-to-DB
