@@ -1238,9 +1238,10 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
              * Reduce payout modifier if forces cover similar value ranges. Only
              * do this if there are actually ordered armies!
              */
-
-            MaxFlatDiff /= legalOps;
-            MaxPercentDiff /= legalOps;
+            if(legalOps != 0) {
+            	MaxFlatDiff /= legalOps;
+            	MaxPercentDiff /= legalOps;
+            }
             weightedArmyNumber = orderedArmies.size();
 
             double weightMod = Math.max(0, this.getMyHouse().getDoubleConfig("BaseCountForProduction"));
