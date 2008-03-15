@@ -870,6 +870,11 @@ public class AdminMenu extends JMenu {
 	        if (factoryName == null || factoryName.length() == 0)
 	            return;
 
+            int value = ((Integer) jop.getValue()).intValue();
+
+            if (value == JOptionPane.CANCEL_OPTION)
+                return;
+
 	        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c admindestroyfactory#" + planetNamestr + "#" + factoryName);
 	        mwclient.reloadData();
 
