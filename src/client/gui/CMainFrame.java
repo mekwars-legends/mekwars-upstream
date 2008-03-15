@@ -117,6 +117,7 @@ public class CMainFrame extends JFrame {
     JMenuItem jMenuCampaignPlayers = new JMenuItem();
     JMenuItem jMenuCampaignISStatus = new JMenuItem();
     JMenuItem jMenuCampaignHouses = new JMenuItem();
+    JMenuItem jMenuCampaignFactionStatus = new JMenuItem();
 
     JMenuItem jMenuCampaignHouseStatus = new JMenuItem();
     JMenuItem jMenuCampaignCheckAttack = new JMenuItem();
@@ -597,8 +598,16 @@ public class CMainFrame extends JFrame {
             }
         });
 
-        jMenuCampaignHouses.setText("Houses Status");
-        jMenuCampaignHouses.setMnemonic('H');
+        jMenuCampaignFactionStatus.setText("Faction Status");
+        jMenuCampaignFactionStatus.setMnemonic('F');
+        jMenuCampaignFactionStatus.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                jMenuCampaignFactionStatus_actionPerformed();
+            }
+        });
+
+        jMenuCampaignHouses.setText("Factions List");
+        jMenuCampaignHouses.setMnemonic('L');
         jMenuCampaignHouses.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c housestatus");
@@ -1136,6 +1145,7 @@ public class CMainFrame extends JFrame {
 
         // status sub menu
         jMenuCampaignSubStatus.add(jMenuCampaignPlayers);
+        jMenuCampaignSubStatus.add(jMenuCampaignFactionStatus);
         jMenuCampaignSubStatus.add(jMenuCampaignISStatus);
         jMenuCampaignSubStatus.add(jMenuCampaignHouses);
 
@@ -1307,6 +1317,21 @@ public class CMainFrame extends JFrame {
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c isstatus#" + House + "#" + House2);
         } else
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c isstatus");
+    }
+
+    public void jMenuCampaignFactionStatus_actionPerformed() {
+
+        String House = "";
+        
+        HouseNameDialog factionDialog = new HouseNameDialog(mwclient, "Faction", true, false);
+        factionDialog.setVisible(true);
+        House = factionDialog.getHouseName();
+        factionDialog.dispose();
+
+        if (House == null)
+            return;
+
+        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c faction#"+House);
     }
 
     public void jMenuMercStatus_actionPerformed() {

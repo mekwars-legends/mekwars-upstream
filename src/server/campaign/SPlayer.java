@@ -2646,17 +2646,16 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         }
 
         result.append(myHouse.getName());
-        result.append("~");
+        result.append(" ~");
         if (toClient) {
             result.append(getHouseFightingFor().getName());
-            result.append("~");
+            result.append(" ~");
             if (getMyLogo().length() == 0)
                 result.append(myHouse.getLogo());
             else
                 result.append(getMyLogo());
-            result.append("~");
-        }
-        if (!toClient) {
+            result.append(" ~");
+        } else {
             result.append(xpToReward);
             result.append("~");
             result.append("0");
@@ -2683,13 +2682,11 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 result.append("~");
             }
             if (getMyLogo().trim().length() == 0) {
-                if (myHouse.getLogo().trim().length() < 1)
-                    result.append(" ");
-                else
-                    result.append(myHouse.getLogo());
-            } else
+                result.append(myHouse.getLogo());
+            } else {
                 result.append(getMyLogo());
-            result.append("~");
+            }
+            result.append(" ~");
             result.append(getLastAttackFromReserve());
             result.append("~");
             result.append(getGroupAllowance());
@@ -2718,7 +2715,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             }
         }
 
-        result.append(unitParts.toString());
+        result.append(unitParts.toString("|"));
         result.append("~");
 
         result.append(this.getAutoReorder());
