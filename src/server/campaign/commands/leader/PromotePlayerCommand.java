@@ -19,7 +19,6 @@ import java.util.StringTokenizer;
 
 import common.SubFaction;
 
-import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.SArmy;
 import server.campaign.SPlayer;
 import server.campaign.CampaignMain;
@@ -27,8 +26,7 @@ import server.campaign.commands.Command;
 
 public class PromotePlayerCommand implements Command {
 
-    // Starting out at mod level this can be lowered as needed
-    int accessLevel = IAuthenticator.MODERATOR;
+    int accessLevel = CampaignMain.cm.getIntegerConfig("factionLeaderLevel");
 
     public int getExecutionLevel() {
         return accessLevel;

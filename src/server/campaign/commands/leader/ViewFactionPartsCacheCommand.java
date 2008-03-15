@@ -17,7 +17,6 @@ package server.campaign.commands.leader;
 
 import java.util.StringTokenizer;
 
-import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
 import server.campaign.CampaignMain;
@@ -25,8 +24,7 @@ import server.campaign.commands.Command;
 
 public class ViewFactionPartsCacheCommand implements Command {
 
-    // Starting out at mod level this can be lowered as needed
-    int accessLevel = IAuthenticator.MODERATOR;
+    int accessLevel = CampaignMain.cm.getIntegerConfig("factionLeaderLevel");
 
     public int getExecutionLevel() {
         return accessLevel;

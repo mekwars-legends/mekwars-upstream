@@ -1303,6 +1303,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("FORCEDDEFECT", new ForcedDefectCommand());
         Commands.put("FORCEUPDATE", new ForceUpdateCommand());
         Commands.put("GAMES", new GamesCommand());
+        Commands.put("GETCOMPONENTCONVERSION", new GetComponentConversionCommand());
         Commands.put("GETFACTIONCONFIGS", new GetFactionConfigsCommand());
         Commands.put("GETMODLOG", new GetModLogCommand());
         Commands.put("GETPLAYERUNITS", new GetPlayerUnitsCommand());

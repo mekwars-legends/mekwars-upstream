@@ -20,15 +20,15 @@
  * 
  */
 
-package server.util;
+package common.util;
 
-import server.campaign.SUnit;
+import common.Unit;
 
 public class ComponentToCritsConverter{
 
     private int minCritLevel = 10;
-    private int componentUsedType = SUnit.MEK;
-    private int componentUsedWeight = SUnit.LIGHT;
+    private int componentUsedType = Unit.MEK;
+    private int componentUsedWeight = Unit.LIGHT;
     private String critName = "All";
     
     /**
@@ -94,19 +94,25 @@ public class ComponentToCritsConverter{
     public String getCritName() {
         return this.critName;
     }
-    
+
     public String toString() {
+        return this.toString("|");
+    }
+    
+    public String toString(String token) {
         StringBuffer results = new StringBuffer();
         
         results.append(critName);
-        results.append(" |");
+        results.append(" ");
+        results.append(token);
         results.append(minCritLevel);
-        results.append("|");
+        results.append(token);
         results.append(componentUsedType);
-        results.append("|");
+        results.append(token);
         results.append(componentUsedWeight);
-        results.append("|");
+        results.append(token);
         
         return results.toString();
     }
+    
 }

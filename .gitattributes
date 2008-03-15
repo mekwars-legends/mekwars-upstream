@@ -1236,6 +1236,7 @@ src/client/gui/dialog/AdvancedRepairDialog.java -text
 src/client/gui/dialog/ArmyViewerDialog.java -text
 src/client/gui/dialog/BulkRepairDialog.java -text
 src/client/gui/dialog/CamoSelectionDialog.java -text
+src/client/gui/dialog/ComponentConverterDialog.java -text
 src/client/gui/dialog/ConfigurationDialog.java -text
 src/client/gui/dialog/CustomUnitDialog.java -text
 src/client/gui/dialog/HouseNameDialog.java -text
@@ -1306,6 +1307,7 @@ src/common/persistence/BinReader.java -text
 src/common/persistence/BinWriter.java -text
 src/common/util/BinReader.java -text
 src/common/util/BinWriter.java -text
+src/common/util/ComponentToCritsConverter.java -text
 src/common/util/HTML.java -text
 src/common/util/MD5.java -text
 src/common/util/MD5OutputStream.java -text
@@ -1660,6 +1662,7 @@ src/server/campaign/commands/helpers/RemoveAndAddNoPlayHelper.java -text
 src/server/campaign/commands/leader/DemotePlayerCommand.java -text
 src/server/campaign/commands/leader/FactionLeaderFluffCommand.java -text
 src/server/campaign/commands/leader/FactionLeaderMuteCommand.java -text
+src/server/campaign/commands/leader/GetComponentConversionCommand.java -text
 src/server/campaign/commands/leader/PromotePlayerCommand.java -text
 src/server/campaign/commands/leader/PurchaseFactoryCommand.java -text
 src/server/campaign/commands/leader/ResearchTechLevelCommand.java -text
@@ -1827,7 +1830,6 @@ src/server/mwmysql/factoryHandler.java -text
 src/server/mwmysql/mysqlHandler.java -text
 src/server/mwmysql/planetHandler.java -text
 src/server/util/AutomaticBackup.java -text
-src/server/util/ComponentToCritsConverter.java -text
 src/server/util/IpCountry.java -text
 src/server/util/MWPasswd.java -text
 src/server/util/MWPasswdRecord.java -text

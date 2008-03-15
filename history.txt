@@ -1,8 +1,12 @@
 VERSION HISTORY:
 ----------------
 
+v 0.2.25.x
+Release Client/Server 0.2.25.0
++ Added GUI for Component Conversion
++ Bug: Advanced Component conversion was not resetting base cost
 v 0.2.24.x
-Release Client/Sever 0.2.24.0
+Release Client/Server 0.2.24.0
 + Added Gui menu item for faction command
 + Bug: Components not getting sent to player
 + Bug: Components not saving for player

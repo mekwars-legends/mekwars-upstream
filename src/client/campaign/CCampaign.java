@@ -23,6 +23,7 @@ import java.util.TreeMap;
 
 import common.BMEquipment;
 import common.CampaignData;
+import common.util.ComponentToCritsConverter;
 import common.util.TokenReader;
 
 import client.MWClient;
@@ -40,6 +41,7 @@ public class CCampaign {
 	CPlayer Player;
 	TreeMap<Integer,CBMUnit> BlackMarket = new TreeMap<Integer,CBMUnit>();
 	TreeMap<String,BMEquipment> BlackMarketParts = new TreeMap<String, BMEquipment>();
+	TreeMap<String, ComponentToCritsConverter> ComponentConverter = new TreeMap<String, ComponentToCritsConverter>();
 	
 	public CCampaign(MWClient client) {
 		mwclient = client;
@@ -209,4 +211,24 @@ public class CCampaign {
 	public TreeMap<Integer,CBMUnit> getBlackMarket() {return BlackMarket;}
 	
 	public TreeMap<String,BMEquipment> getBlackMarketParts() { return BlackMarketParts; }
+	
+	public TreeMap<String, ComponentToCritsConverter> getComponentConverter() { return ComponentConverter; }
+	
+	public void setComponentConverter(String converterData) {
+	    try {
+	        StringTokenizer st = new StringTokenizer(converterData,"#");
+	        
+	        ComponentConverter.clear();
+	        while (st.hasMoreTokens()) {
+	            ComponentToCritsConverter converter = new ComponentToCritsConverter();
+	            converter.setCritName(TokenReader.readString(st));
+	            converter.setMinCritLevel(TokenReader.readInt(st));
+	            converter.setComponentUsedType(TokenReader.readInt(st));
+	            converter.setComponentUsedWeight(TokenReader.readInt(st));
+	            ComponentConverter.put(converter.getCritName(), converter);
+	        }
+	    }catch(Exception ex) {
+	        CampaignData.mwlog.errLog(ex);
+	    }
+	}
 }

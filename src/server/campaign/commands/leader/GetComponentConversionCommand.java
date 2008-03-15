@@ -22,10 +22,9 @@ import common.util.ComponentToCritsConverter;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
 import server.campaign.CampaignMain;
-import server.campaign.SUnit;
 import server.campaign.commands.Command;
 
-public class SetComponentConversionCommand implements Command {
+public class GetComponentConversionCommand implements Command {
 
     int accessLevel = CampaignMain.cm.getIntegerConfig("factionLeaderLevel");
 
@@ -37,7 +36,7 @@ public class SetComponentConversionCommand implements Command {
         accessLevel = i;
     }
 
-    String syntax = "Crit Name#Weight#Type#Max Production#House[Optional Staff Only]";
+    String syntax = "[house name option Staff only]";
 
     public String getSyntax() {
         return syntax;
@@ -55,31 +54,16 @@ public class SetComponentConversionCommand implements Command {
         
         SPlayer player = CampaignMain.cm.getPlayer(Username);
         SHouse house = player.getMyHouse();
-        String crit = command.nextToken();
-        int weight = Integer.parseInt(command.nextToken());
-        int type = Integer.parseInt(command.nextToken());
-        int maxProduction = Integer.parseInt(command.nextToken());
         
         if ( CampaignMain.cm.getServer().isModerator(Username) && command.hasMoreElements() )
             house = CampaignMain.cm.getHouseFromPartialString(command.nextToken(),Username);
         
-        if( crit.equalsIgnoreCase("all") ) {
-            house.getComponentConverter().clear();
-            ComponentToCritsConverter converter = new ComponentToCritsConverter();
-            converter.setComponentUsedType(type);
-            converter.setComponentUsedWeight(weight);
-            converter.setMinCritLevel(maxProduction);
-            house.getComponentConverter().put(converter.getCritName(),converter);
-        }else {
-            house.getComponentConverter().remove("All");
-            ComponentToCritsConverter converter = new ComponentToCritsConverter();
-            converter.setCritName(crit);
-            converter.setComponentUsedType(type);
-            converter.setComponentUsedWeight(weight);
-            converter.setMinCritLevel(maxProduction);
-            house.getComponentConverter().put(converter.getCritName(),converter);
+        
+        StringBuffer results = new StringBuffer("PL|CCC|");
+        for ( ComponentToCritsConverter converter :  house.getComponentConverter().values() ) {
+            results.append(converter.toString("#"));
         }
         
-        CampaignMain.cm.doSendHouseMail(house, "NOTE", player.getName()+" has set components to crit conversion for "+crit+" for "+SUnit.getWeightClassDesc(weight)+"/"+SUnit.getTypeClassDesc(type)+" to a max of "+maxProduction+"  crits.");
+        CampaignMain.cm.toUser(results.toString(), Username, false);
     }
 }

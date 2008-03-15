@@ -246,6 +246,9 @@ public class PL extends Command {
         else if (cmd.equals("UDT") ){
             mwclient.addToChat(TokenReader.readString(st),mwclient.getConfig().getIntParam("USERDEFINDMESSAGETAB"));
         }
+        else if ( cmd.equals("CCC") ) {
+            mwclient.getCampaign().setComponentConverter(st.nextToken());
+        }
 		else
 			return;
 		

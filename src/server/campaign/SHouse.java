@@ -48,11 +48,13 @@ import common.BMEquipment;
 import common.Planet;
 import common.SubFaction;
 import common.Unit;
+import common.util.ComponentToCritsConverter;
 import common.util.StringUtils;
 import common.util.UnitComponents;
 import common.util.UnitUtils;
-
+import common.util.TokenReader;
 import common.CampaignData;
+
 import server.campaign.commands.Command;
 import server.campaign.data.TimeUpdateHouse;
 import server.campaign.market2.IBuyer;
@@ -62,8 +64,6 @@ import server.campaign.mercenaries.MercHouse;
 import server.campaign.operations.Operation;
 import server.campaign.operations.ShortOperation;
 import server.campaign.pilot.SPilot;
-import server.util.ComponentToCritsConverter;
-import common.util.TokenReader;
 
 public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISeller, IBuyer, Serializable {
 
@@ -2295,6 +2295,11 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             CampaignMain.cm.doSendModMail("NOTE", p.getName() + " does not have a valid forum account.");
         }
 
+        if ( isLeader(p.getName()) && CampaignMain.cm.getBooleanConfig("UsePartsRepair") ) {
+            Command cmd = CampaignMain.cm.getServerCommands().get("GETCOMPONENTCONVERSION");
+            cmd.process(new StringTokenizer("", "#"), p.getName());
+        }
+        
         // send the player the latest data from the factionbays
         p.setLastOnline(System.currentTimeMillis());// must be done after
         // smallplayer creation
@@ -3179,6 +3184,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             for (  ComponentToCritsConverter converter : this.getComponentConverter().values()) {
                 
                 int minCrits = converter.getMinCritLevel();
+                baseCost = CampaignMain.cm.getDoubleConfig("BaseComponentToMoneyRatio");
                 baseCost *= CampaignMain.cm.getDoubleConfig("ComponentToPartsModifier"+SUnit.getTypeClassDesc(converter.getComponentUsedType()));
                 baseCost *= CampaignMain.cm.getDoubleConfig("ComponentToPartsModifier"+SUnit.getWeightClassDesc(converter.getComponentUsedWeight()));
 

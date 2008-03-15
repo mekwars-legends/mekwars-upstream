@@ -20,11 +20,10 @@ import java.util.StringTokenizer;
 import server.campaign.SPlayer;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
-import server.MWChatServer.auth.IAuthenticator;
 
 public class FactionLeaderFluffCommand implements Command {
 	
-	int accessLevel = IAuthenticator.MODERATOR;
+    int accessLevel = CampaignMain.cm.getIntegerConfig("factionLeaderLevel");
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	String syntax = "";

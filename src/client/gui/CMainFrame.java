@@ -979,7 +979,7 @@ public class CMainFrame extends JFrame {
             }
         });
         
-        jMenuLeaderSetComponentConversion.setText("Set Component Conversion (Basic)");
+        jMenuLeaderSetComponentConversion.setText("Set Component Conversion");
         jMenuLeaderSetComponentConversion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 jMenuLeaderSetComponentConversion_actionPerformed();
@@ -2121,55 +2121,7 @@ public class CMainFrame extends JFrame {
     }
     
     public void jMenuLeaderSetComponentConversion_actionPerformed() {
-        String[] units = { CUnit.getTypeClassDesc(CUnit.MEK), CUnit.getTypeClassDesc(CUnit.VEHICLE), CUnit.getTypeClassDesc(CUnit.INFANTRY), CUnit.getTypeClassDesc(CUnit.PROTOMEK), CUnit.getTypeClassDesc(CUnit.BATTLEARMOR) };
-        String[] weight = { CUnit.getWeightClassDesc(CUnit.LIGHT), CUnit.getWeightClassDesc(CUnit.MEDIUM), CUnit.getWeightClassDesc(CUnit.HEAVY), CUnit.getWeightClassDesc(CUnit.ASSAULT) };
-        
-        JComboBox combo = new JComboBox(units);
-        combo.setEditable(false);
-        JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
-
-        JDialog dlg = jop.createDialog(mwclient.getMainFrame(), "Unit Type");
-        combo.grabFocus();
-        combo.getEditor().selectAll();
-
-        dlg.setVisible(true);
-
-        int unitType = combo.getSelectedIndex();
-
-        if (unitType < 0)
-            return;
-
-        int value = ((Integer) jop.getValue()).intValue();
-
-        if (value == JOptionPane.CANCEL_OPTION)
-            return;
-
-        combo = new JComboBox(weight);
-        combo.setEditable(false);
-        jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
-
-        dlg = jop.createDialog(mwclient.getMainFrame(), "Unit Weight");
-        combo.grabFocus();
-        combo.getEditor().selectAll();
-
-        dlg.setVisible(true);
-
-        int unitWeight = combo.getSelectedIndex();
-
-        if (unitWeight < 0)
-            return;
-
-        value = ((Integer) jop.getValue()).intValue();
-
-        if (value == JOptionPane.CANCEL_OPTION)
-            return;
-
-        String amount = JOptionPane.showInputDialog(this, "Max Crit Amount?", "Max Crit Amount?", JOptionPane.QUESTION_MESSAGE);
-
-        if ( amount == null )
-            return;
-
-        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c SetComponentConversion#All#" +  unitWeight + "#" + unitType+ "#" + amount);
+        new ComponentConverterDialog(mwclient);
     }
     
     public void jMenuLeaderPurchaseFactory_actionPerformed(String planet) {
