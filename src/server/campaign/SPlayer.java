@@ -1330,7 +1330,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                  */
                 for (SArmy currA : orderedArmies) {
                     if (currA.getLegalOperations().size() <= 0)
-                        weightedArmyNumber--;
+                        weightedArmyNumber -= weightMod;
                 }
 
                 // make sure at least 1 is returned, in case penalties create <1
