@@ -95,7 +95,7 @@ public class DonatePilotCommand implements Command {
 
 		p.getMyHouse().getPilotQueues().addPilot(unitType,(SPilot)pilot);
 		if(CampaignMain.cm.isUsingMySQL())
-			CampaignMain.cm.MySQL.linkPilotToFaction(((SPilot)pilot).getDBId(), p.getMyHouse().getDBId());
+			CampaignMain.cm.MySQL.linkPilotToFaction(((SPilot)pilot).getPilotId(), p.getMyHouse().getDBId());
         CampaignMain.cm.toUser("PL|RPPPQ|"+unitType+"|"+weightClass+"|"+pilotLocation,Username,false);
 		CampaignMain.cm.doSendHouseMail(p.getMyHouse(), "NOTE", p.getName() + " donated a " + pilot.getName().trim() + " to the faction pools!");
 

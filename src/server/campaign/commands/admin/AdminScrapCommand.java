@@ -84,7 +84,7 @@ public class AdminScrapCommand implements Command {
 		if(CampaignMain.cm.isUsingMySQL()) {
 			// If there's a pilot, remove him first
 			SPilot p = (SPilot)m.getPilot();
-			CampaignMain.cm.MySQL.deletePilot(p.getDBId());
+			CampaignMain.cm.MySQL.deletePilot(p.getPilotId());
 			CampaignMain.cm.MySQL.deleteUnit(m.getDBId());			
 		}
 		target.removeUnit(unitID, true);

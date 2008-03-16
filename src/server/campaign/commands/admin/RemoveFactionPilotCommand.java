@@ -66,14 +66,14 @@ public class RemoveFactionPilotCommand implements Command {
                     //search backwards through the queue so you stay ahead of the shrinkinage.
                     for (int pos = start ;pos >= end; pos--){
                     	if(CampaignMain.cm.isUsingMySQL())
-                    		CampaignMain.cm.MySQL.deletePilot(h.getPilotQueues().getPilotQueue(Unit.getTypeIDForName(type)).get(pos).getDBId());
+                    		CampaignMain.cm.MySQL.deletePilot(h.getPilotQueues().getPilotQueue(Unit.getTypeIDForName(type)).get(pos).getPilotId());
                         h.getPilotQueues().getPilotQueue(Unit.getTypeIDForName(type)).remove(pos);
                     }
                 }
                 else {
                     h.getPilotQueues().getPilotQueue(Unit.getTypeIDForName(type)).remove(Integer.parseInt(position));
                     if(CampaignMain.cm.isUsingMySQL())
-                    	CampaignMain.cm.MySQL.deletePilot(h.getPilotQueues().getPilotQueue(Unit.getTypeIDForName(type)).get(Integer.parseInt(position)).getDBId());
+                    	CampaignMain.cm.MySQL.deletePilot(h.getPilotQueues().getPilotQueue(Unit.getTypeIDForName(type)).get(Integer.parseInt(position)).getPilotId());
                 }
             }
         }catch(Exception ex) {

@@ -106,7 +106,7 @@ public class PilotQueues {
 			if(CampaignMain.cm.isUsingMySQL()) {
 				if (!p.getName().equalsIgnoreCase("Vacant")){
 						p.toDB(type, -1);
-						CampaignMain.cm.MySQL.linkPilotToFaction(p.getDBId(), factionID);
+						CampaignMain.cm.MySQL.linkPilotToFaction(p.getPilotId(), factionID);
 				}
 			}
 			
@@ -210,7 +210,7 @@ public class PilotQueues {
 		if(CampaignMain.cm.isUsingMySQL()) {
 			if (!p.getName().equalsIgnoreCase("Vacant")){
 					p.toDB(type, -1);
-					CampaignMain.cm.MySQL.linkPilotToFaction(p.getDBId(), factionID);
+					CampaignMain.cm.MySQL.linkPilotToFaction(p.getPilotId(), factionID);
 			}
 		}
 

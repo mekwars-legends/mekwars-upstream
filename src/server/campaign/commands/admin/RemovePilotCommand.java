@@ -74,7 +74,7 @@ public class RemovePilotCommand implements Command {
             	if(CampaignMain.cm.isUsingMySQL()) {
             		int numpilots = p.getPersonalPilotQueue().getPilotQueue(Unit.getTypeIDForName(type), Unit.getWeightIDForName(weight)).size();
             		for(int x = 0; x < numpilots; x++)
-            			CampaignMain.cm.MySQL.deletePilot(((SPilot)p.getPersonalPilotQueue().getPilotQueue(Unit.getTypeIDForName(type), Unit.getWeightIDForName(weight)).get(x)).getDBId());
+            			CampaignMain.cm.MySQL.deletePilot(((SPilot)p.getPersonalPilotQueue().getPilotQueue(Unit.getTypeIDForName(type), Unit.getWeightIDForName(weight)).get(x)).getPilotId());
             	}
                 p.getPersonalPilotQueue().getPilotQueue(Unit.getTypeIDForName(type),Unit.getWeightIDForName(weight)).clear();
             }
@@ -84,14 +84,14 @@ public class RemovePilotCommand implements Command {
                 //search backwards through the queue so you stay ahead of the shrinkinage.
                 for (int pos = start ;pos >= end; pos--){
                 	if(CampaignMain.cm.isUsingMySQL()) {
-                		CampaignMain.cm.MySQL.deletePilot(((SPilot)p.getPersonalPilotQueue().getPilotQueue(Unit.getTypeIDForName(type), Unit.getWeightIDForName(weight)).get(pos)).getDBId());
+                		CampaignMain.cm.MySQL.deletePilot(((SPilot)p.getPersonalPilotQueue().getPilotQueue(Unit.getTypeIDForName(type), Unit.getWeightIDForName(weight)).get(pos)).getPilotId());
                 	}
                     p.getPersonalPilotQueue().getPilot(Unit.getTypeIDForName(type),Unit.getWeightIDForName(weight),pos);
                 }
             }
             else {
                	if(CampaignMain.cm.isUsingMySQL()) {
-            		CampaignMain.cm.MySQL.deletePilot(((SPilot)p.getPersonalPilotQueue().getPilotQueue(Unit.getTypeIDForName(type), Unit.getWeightIDForName(weight)).get(Integer.parseInt(position))).getDBId());
+            		CampaignMain.cm.MySQL.deletePilot(((SPilot)p.getPersonalPilotQueue().getPilotQueue(Unit.getTypeIDForName(type), Unit.getWeightIDForName(weight)).get(Integer.parseInt(position))).getPilotId());
             	}   
                 p.getPersonalPilotQueue().getPilot(Unit.getTypeIDForName(type),Unit.getWeightIDForName(weight),Integer.parseInt(position));
             }

@@ -138,7 +138,7 @@ public class SPersonalPilotQueues implements Serializable{
 	    	int type = p.getUnitType();
     		((SPilot)p).toDB(type, weightClass);
 	    		
-	    	CampaignMain.cm.MySQL.linkPilotToPlayer(((SPilot)p).getDBId(), this.playerID);
+	    	CampaignMain.cm.MySQL.linkPilotToPlayer(((SPilot)p).getPilotId(), this.playerID);
 	    }
 	}
 	

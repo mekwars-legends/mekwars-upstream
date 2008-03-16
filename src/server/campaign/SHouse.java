@@ -1129,7 +1129,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             // normal de-levalling addition
             getPilotQueues().addPilot(u.getType(), (SPilot) u.getPilot());
         if (CampaignMain.cm.isUsingMySQL())
-            CampaignMain.cm.MySQL.linkPilotToFaction(((SPilot) u.getPilot()).getDBId(), this.getDBId());
+            CampaignMain.cm.MySQL.linkPilotToFaction(((SPilot) u.getPilot()).getPilotId(), this.getDBId());
     }
 
     public PilotQueues getPilotQueues() {
@@ -2139,7 +2139,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         if (Boolean.parseBoolean(this.getConfig("AllowPersonalPilotQueues")) && (unit.getType() == Unit.MEK || unit.getType() == Unit.PROTOMEK) && !unit.hasVacantPilot()) {
             this.getPilotQueues().addPilot(unit.getType(), (SPilot) unit.getPilot());
             if (CampaignMain.cm.isUsingMySQL()) {
-                CampaignMain.cm.MySQL.linkPilotToFaction(((SPilot) unit.getPilot()).getDBId(), this.getDBId());
+                CampaignMain.cm.MySQL.linkPilotToFaction(((SPilot) unit.getPilot()).getPilotId(), this.getDBId());
             }
             unit.setPilot(new SPilot("Vacant", 99, 99));
         }

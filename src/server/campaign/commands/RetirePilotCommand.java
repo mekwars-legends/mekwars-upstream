@@ -183,7 +183,7 @@ public class RetirePilotCommand implements Command {
                 CampaignMain.cm.getMWCC().pilotRetire((SPilot)m.getPilot());
             
             if (CampaignMain.cm.isUsingMySQL())
-            	CampaignMain.cm.MySQL.deletePilot(((SPilot)m.getPilot()).getDBId());
+            	CampaignMain.cm.MySQL.deletePilot(((SPilot)m.getPilot()).getPilotId());
             
 			//now, handle the pilot. if PPQs are in use leave the unit vacant,
 			//otherwise add a new pilot from the faction queue.

@@ -1529,7 +1529,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             CampaignMain.cm.MySQL.clearArmies(getDBId());
             for (SUnit currU : units) {
                 SPilot p = (SPilot) currU.getPilot();
-                CampaignMain.cm.MySQL.deletePilot(p.getDBId());
+                CampaignMain.cm.MySQL.deletePilot(p.getPilotId());
                 CampaignMain.cm.MySQL.deleteUnit(currU.getDBId());
             }
         }
@@ -2963,13 +2963,13 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 while (mekList.hasNext()) {
                     SPilot pilot = (SPilot) mekList.next();
                     pilot.toDB(Unit.MEK, weightClass);
-                    CampaignMain.cm.MySQL.linkPilotToPlayer(pilot.getDBId(), getDBId());
+                    CampaignMain.cm.MySQL.linkPilotToPlayer(pilot.getPilotId(), getDBId());
                 }
                 Iterator<Pilot> protoList = getPersonalPilotQueue().getPilotQueue(Unit.PROTOMEK, weightClass).iterator();
                 while (protoList.hasNext()) {
                     SPilot pilot = (SPilot) protoList.next();
                     pilot.toDB(Unit.PROTOMEK, weightClass);
-                    CampaignMain.cm.MySQL.linkPilotToPlayer(pilot.getDBId(), getDBId());
+                    CampaignMain.cm.MySQL.linkPilotToPlayer(pilot.getPilotId(), getDBId());
                 }
             }
             ps.close();

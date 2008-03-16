@@ -687,7 +687,7 @@ public final class SUnit extends Unit{
             // Save the pilot
             if (!this.hasVacantPilot()) {
                 ((SPilot) getPilot()).toDB(getType(), getWeightclass());
-                CampaignMain.cm.MySQL.linkPilotToUnit(((SPilot) getPilot()).getDBId(), getDBId());
+                CampaignMain.cm.MySQL.linkPilotToUnit(((SPilot) getPilot()).getPilotId(), getDBId());
             }
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL Exception in SUnit.toDB: " + e.getMessage());

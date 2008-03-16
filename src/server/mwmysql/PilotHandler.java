@@ -141,9 +141,10 @@ public class PilotHandler {
 	}
 	
 	public void linkPilotToUnit(int pilotID, int unitID) {
+		int DBId = getPilotDBId(pilotID);
 		try {
 		Statement stmt = con.createStatement();
-		stmt.executeUpdate("UPDATE pilots SET factionID = NULL, playerID = NULL, unitID = " + unitID + " WHERE pilotID = " + pilotID);
+		stmt.executeUpdate("UPDATE pilots SET factionID = NULL, playerID = NULL, unitID = " + unitID + " WHERE pilotID = " + DBId);
 		stmt.close();
 		} catch (SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.linkPilotToUnit: " + e.getMessage());
@@ -152,9 +153,10 @@ public class PilotHandler {
 	}
 	
 	public void linkPilotToFaction(int pilotID, int factionId) {
+		int DBId = getPilotDBId(pilotID);
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("UPDATE pilots SET playerID = NULL, unitID = NULL, factionID = " + factionId + " WHERE pilotID = " + pilotID);
+			stmt.executeUpdate("UPDATE pilots SET playerID = NULL, unitID = NULL, factionID = " + factionId + " WHERE pilotID = " + DBId);
 			stmt.close();
 		} catch (SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.linkPilotToFaction: " + e.getMessage());
@@ -163,8 +165,9 @@ public class PilotHandler {
 	}
 
 	public void linkPilotToPlayer(int pilotID, int playerID) {
+		int DBId = getPilotDBId(pilotID);
 		try {
-			PreparedStatement ps = con.prepareStatement("UPDATE pilots SET factionID = NULL, unitID = NULL, playerID = ? WHERE pilotID = " + pilotID);
+			PreparedStatement ps = con.prepareStatement("UPDATE pilots SET factionID = NULL, unitID = NULL, playerID = ? WHERE pilotID = " + DBId);
 			ps.setInt(1, playerID);
 			ps.executeUpdate();
 			ps.close();
@@ -175,10 +178,11 @@ public class PilotHandler {
 	}
 	
 	public void deletePilot(int pilotID) {
+		int DBId = getPilotDBId(pilotID);
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE from pilotskills WHERE pilotID = " + pilotID);
-			stmt.executeUpdate("DELETE from pilots WHERE pilotID = " + pilotID);
+			stmt.executeUpdate("DELETE from pilotskills WHERE pilotID = " + DBId);
+			stmt.executeUpdate("DELETE from pilots WHERE pilotID = " + DBId);
 			stmt.close();
 		} catch (SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.deletePilot: " + e.getMessage());
@@ -262,6 +266,34 @@ public class PilotHandler {
 			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
 		}
+	}
+	
+	public int getPilotDBId(int pilotID) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int DBId = -1;
+		try {
+			ps = con.prepareStatement("SELECT pilotID from pilots WHERE MWID = ?");
+			ps.setInt(1, pilotID);
+			rs = ps.executeQuery();
+			if(rs.next())
+				DBId = rs.getInt("pilotID");
+		} catch (SQLException e) {
+			CampaignData.mwlog.dbLog("SQLException in PilotHandler.getPilotDBID: " + e.getMessage());
+			CampaignData.mwlog.dbLog(e);
+		} finally {
+			try {
+				if(rs != null)
+					rs.close();
+				if(ps != null)
+					ps.close();
+			} catch (SQLException ex) {
+				
+			}
+			if(DBId == -1)
+				CampaignData.mwlog.dbLog("GetPilotDBId returned -1 for pilotID: " + pilotID);
+		}
+	return DBId;
 	}
 	
 	public PilotHandler(Connection c) {

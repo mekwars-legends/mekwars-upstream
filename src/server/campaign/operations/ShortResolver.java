@@ -3237,7 +3237,7 @@ public class ShortResolver {
             if (CampaignMain.cm.isUsingCyclops())
                 CampaignMain.cm.getMWCC().pilotKill((SPilot) unit.getPilot(), op.getOpCyclopsID());
             if (CampaignMain.cm.isUsingMySQL())
-                CampaignMain.cm.MySQL.deletePilot(((SPilot) unit.getPilot()).getDBId());
+                CampaignMain.cm.MySQL.deletePilot(((SPilot) unit.getPilot()).getPilotId());
             if (isPilotChangeable && personalQueues) {
                 SPilot pilot = new SPilot("Vacant", 99, 99);
                 unit.setPilot(pilot);

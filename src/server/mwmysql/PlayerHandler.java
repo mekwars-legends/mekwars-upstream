@@ -194,9 +194,9 @@ public class PlayerHandler {
 			rs.close();
 			
 			// Remove pilots
-			rs = stmt.executeQuery("SELECT pilotID from pilots WHERE playerID = " + p.getDBId());
+			rs = stmt.executeQuery("SELECT MWID from pilots WHERE playerID = " + p.getDBId());
 			while (rs.next()) {
-				CampaignMain.cm.MySQL.deletePilot(rs.getInt("pilotID"));
+				CampaignMain.cm.MySQL.deletePilot(rs.getInt("MWID"));
 			}
 			rs.close();
 			
