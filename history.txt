@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.25.x
++ Bug: Faction names unable to use apostrophes in DB-enabled version
 + Bug: Pilots being incorrectly linked to units.
 + Bug: weightedArmyNumber subtracting 1 when army cannot attack 
 	instead of weightMod

@@ -17,6 +17,7 @@
 package server.mwmysql;
 
 import java.awt.Dimension;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -330,29 +331,38 @@ public class planetHandler {
 
     public void saveInfluences(SPlanet p) {
         Iterator<House> it = p.getInfluence().getHouses().iterator();
-        Statement stmt;
+        PreparedStatement ps = null;
         StringBuffer sql = new StringBuffer();
         int pid = p.getDBID();
 
         try {
-            stmt = con.createStatement();
-            sql.append("DELETE from planetinfluences WHERE PlanetID = " + pid);
-            stmt.executeUpdate(sql.toString());
+            ps = con.prepareStatement("DELETE from planetinfluences WHERE PlanetID = " + pid);
+            ps.executeUpdate();
             while (it.hasNext()) {
+            	ps.close();
                 SHouse next = (SHouse) it.next();
                 String iName = next.getName().replace("'", "\'");
 
                 int iInf = p.getInfluence().getInfluence(next.getId());
                 sql.setLength(0);
-                sql.append("INSERT into planetinfluences set PlanetID = " + pid + ", ");
-                sql.append("FactionName = '" + iName + "', ");
-                sql.append("Influence = " + iInf);
-                stmt.executeUpdate(sql.toString());
+                sql.append("INSERT into planetinfluences set PlanetID = ?, ");
+                sql.append("FactionName = ?, ");
+                sql.append("Influence = ?");
+                ps = con.prepareStatement(sql.toString());
+                ps.setInt(1, pid);
+                ps.setString(2, iName);
+                ps.setInt(3, iInf);
+                ps.execute();
             }
-            stmt.close();
+            
         } catch (SQLException e) {
-            CampaignData.mwlog.dbLog("Error closing resources in saveInfluences: " + e.getMessage());
+            CampaignData.mwlog.dbLog("SQLException in planetHandler.saveInfluences: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+        } finally {
+        	try {
+        		if(ps != null)
+        			ps.close();
+        	} catch (SQLException ex) {}
         }
     }
 
