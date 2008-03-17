@@ -560,9 +560,10 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                 rs.close();
             for (String leader : leaders) {
                 ps.close();
-                ps = CampaignMain.cm.MySQL.getPreparedStatement("INSERT into faction_leaders set faction_id = ?, leader_name=?");
+                ps = CampaignMain.cm.MySQL.getPreparedStatement("REPLACE into faction_leaders set faction_id = ?, leader_name=?");
                 ps.setInt(1, getDBId());
                 ps.setString(2, leader);
+                ps.execute();
             }
 
             if (rs != null)
