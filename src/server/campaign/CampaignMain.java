@@ -2822,13 +2822,15 @@ public final class CampaignMain implements Serializable {
      */
     public void purgePlayerFiles() {
         long days = Long.parseLong(CampaignMain.cm.getConfig("PurgePlayerFilesDays"));
+        // Turn purging off by setting it to 0 or less days
+        if (days <= 0)
+            return;
+
         if (CampaignMain.cm.isUsingMySQL()) {
             CampaignMain.cm.MySQL.purgeStalePlayers(days);
             return;
         }
-        // Turn purging off by setting it to 0 or less days
-        if (days <= 0)
-            return;
+
         // convert days to milliseconds
         days *= 24;
         days *= 60;
