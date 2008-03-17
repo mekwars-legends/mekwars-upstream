@@ -206,7 +206,7 @@ public class RequestDonatedCommand implements Command {
 			return;//break out ...
 		}//end if (needsMoreTechs)
 		
-		if ( u.hasVacantPilot() )
+		if ( u.hasVacantPilot() && u.getType() != SUnit.MEK && u.getType() != SUnit.PROTOMEK)
 			u.setPilot(p.getMyHouse().getNewPilot(type_id));
 		
 		p.addUnit(u, true);//if both tests were passed, give the unit

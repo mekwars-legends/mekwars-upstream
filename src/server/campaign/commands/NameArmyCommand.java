@@ -69,43 +69,43 @@ public class NameArmyCommand implements Command {
 		if (name.indexOf("%") != -1) {
 			CampaignMain.cm.toUser("AM:Illegal army name (% forbidden).",Username,true);
 			return;
-		} else if (name.indexOf("~") != -1) {
+		} if (name.indexOf("~") != -1) {
 			CampaignMain.cm.toUser("AM:Illegal army name (~ forbidden).",Username,true);
 			return;
-		} else if (name.indexOf("$") != -1) {
+		} if (name.indexOf("$") != -1) {
 			CampaignMain.cm.toUser("AM:Illegal army name ($ forbidden).",Username,true);
 			return;
-		} else if (name.indexOf("|") != -1) {
+		} if (name.indexOf("|") != -1) {
 			CampaignMain.cm.toUser("AM:Illegal army name (| forbidden).",Username,true);
 			return;
-		} else if (name.indexOf("!") != -1) {
+		} if (name.indexOf("!") != -1) {
 			CampaignMain.cm.toUser("AM:Illegal army name (! forbidden).",Username,true);
 			return;
-		} else if (name.indexOf("*") != -1) {
+		} if (name.indexOf("*") != -1) {
 			CampaignMain.cm.toUser("AM:Illegal army name (* forbidden).",Username,true);
 			return;
-		} else if (name.indexOf("#") != -1) {
+		} if (name.indexOf("#") != -1) {
 			CampaignMain.cm.toUser("AM:Illegal army name (# forbidden).",Username,true);
 			return;
-		} else if (name.indexOf(">") != -1) {
+		} if (name.indexOf(">") != -1) {
 			CampaignMain.cm.toUser("AM:Illegal army name (> forbidden).",Username,true);
 			return;
-		} else if (name.indexOf("<") != -1) {
+		} if (name.indexOf("<") != -1) {
 			CampaignMain.cm.toUser("AM:Illegal army name (< forbidden).",Username,true);
 			return;
-		} else if (name.indexOf("@") != -1) {
+		} if (name.indexOf("@") != -1) {
 			CampaignMain.cm.toUser("AM:Illegal army name (@ forbidden).",Username,true);
 			return;
-		} else if (name.indexOf("&") != -1) {
+		} if (name.indexOf("&") != -1) {
 			CampaignMain.cm.toUser("AM:Illegal army name (& forbidden).",Username,true);
 			return;
-		} else if (name.indexOf("^") != -1) {
+		} if (name.indexOf("^") != -1) {
 			CampaignMain.cm.toUser("AM:Illegal army name (^ forbidden).",Username,true);
 			return;
-		} else if (name.indexOf("+") != -1) {
+		} if (name.indexOf("+") != -1) {
 			CampaignMain.cm.toUser("AM:Illegal army name (+ forbidden).",Username,true);
 			return;
-		} else if (name.indexOf("=") != -1) {
+		} if (name.indexOf("=") != -1) {
 			CampaignMain.cm.toUser("AM:Illegal army name (= forbidden).",Username,true);
 			return;
 		}

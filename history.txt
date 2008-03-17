@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.25.x
++ Bug: Buy new infantry with real cost not costing anything
++ Bug: Parts not getting removed from House Cache
++ Bug: buying donated pilots comes with units.
 + Bug: SQL purge Stale player being called before checking if purge was disabled
 + Bug: House leaders not saved in DB-enabled version
 + Bug: Faction names unable to use apostrophes in DB-enabled version

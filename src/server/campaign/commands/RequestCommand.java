@@ -331,11 +331,18 @@ public class RequestCommand implements Command {
 			Vector<SUnit> mechs = factory.getMechProduced(type_id,pilot);
 			StringBuffer results = new StringBuffer();
 			for (SUnit mech : mechs ){
-				if (CampaignMain.cm.getBooleanConfig("UseCalculatedCosts")) {
-						mechCbills = (int)(mech.getEntity().getCost()*Double.valueOf(CampaignMain.cm.getConfig("CostModifier")));
-						if ( mechCbills > p.getMoney() )
-							return;
-				}
+		        if (Boolean.parseBoolean(playerHouse.getConfig("UseCalculatedCosts"))) {
+		            double unitCost = mech.getEntity().getCost();
+		            if ( unitCost < 1)
+		                unitCost = playerHouse.getPriceForUnit(mech.getWeightclass(),mech.getType());
+		            double costMod = playerHouse.getDoubleConfig("CostModifier");
+		            
+		            mechCbills += (int)Math.round(unitCost*costMod );
+                    if ( mechCbills > p.getMoney() ){
+                        CampaignMain.cm.toUser("You could not afford the selected unit. Please try again", Username);
+                        return;
+                    }
+		        }
 	
 				if (CampaignMain.cm.getBooleanConfig("AllowPersonalPilotQueues") && (mech.getType() == Unit.MEK || mech.getType() == Unit.PROTOMEK) ){
 					SPilot pilot1 = (SPilot)mech.getPilot();
