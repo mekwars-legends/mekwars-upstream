@@ -268,8 +268,8 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
                             color = h.getHouseColor();
                             name = h.getName();
                         }
+
                         label = new JEditorPane("text/html", "<html>" + mp.getPPanel().getPlanet().getAdvanceDescription(mwclient.getUser(mwclient.getUsername()).getUserlevel()) + "<b>Original Owner:</b><br><font color=" + color + ">" + name + "</font>" + "</html>");
-                        label.setEditorKit(new MyHTMLEditorKit());
                         label.setEditable(false);
                         label.setCaretPosition(0);
                         label.setPreferredSize(new Dimension(500, 400));
@@ -285,6 +285,7 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
                         }
 
                         label = new JEditorPane("text/html", "<html>" + mp.getPPanel().getPlanet().getLongDescription(true) + "<b>Original Owner:</b><br><font color=" + color + ">" + name + "</font>" + "</html>");
+                        // mwclient.getData().getHouseByName("hi").getName();
                         label.setEditable(false);
                         label.setCaretPosition(0);
                         label.setPreferredSize(new Dimension(500, 400));

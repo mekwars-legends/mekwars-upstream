@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.25.x
++ Bug: Information Menu item on Star Map not showing anything
 + Bug: Buy new infantry with real cost not costing anything
 + Bug: Parts not getting removed from House Cache
 + Bug: buying donated pilots comes with units.
