@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.25.x
+Release Server 0.2.25.1
++ Bug: Faction Cache not removing parts
++ Error if defending army is deleted short ops do not report.
 + Bug: Information Menu item on Star Map not showing anything
 + Bug: Buy new infantry with real cost not costing anything
 + Bug: Parts not getting removed from House Cache

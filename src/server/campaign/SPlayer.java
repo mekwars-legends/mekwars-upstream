@@ -3464,7 +3464,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 amount += playerAmount;
                 this.getHouseFightingFor().updatePartsCache(part,amount);
                 this.getUnitParts().remove(part, playerAmount);
-                amount = playerAmount;
+                amount = -playerAmount;
             }
         }
         else

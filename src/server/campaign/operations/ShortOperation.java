@@ -209,7 +209,7 @@ public class ShortOperation implements Comparable<Object> {
     public Vector<SUnit> preCapturedUnits = null;
 
     private OperationReporter reporter = new OperationReporter();
-    
+
     // CONSTRUCTOR
     public ShortOperation(String opName, SPlanet target, SPlayer initiator, SArmy attackingArmy, ArrayList<SArmy> possibleDefenders, int shortID, int longID, boolean fromReserve) {
 
@@ -270,7 +270,7 @@ public class ShortOperation implements Comparable<Object> {
 
         this.pdlist = possibleDefenders;
         this.weatherPattern = new Vector<Boolean>(7);
-        
+
         // inform the defenders
         // Faction Team Ops have a delay in defender informing.
         if ((!fromReserve && !o.getBooleanValue("TeamOperation") && !o.getBooleanValue("TeamsMustBeSameFaction")) || (o.getBooleanValue("TeamOperation") && !o.getBooleanValue("TeamsMustBeSameFaction")))
@@ -312,7 +312,8 @@ public class ShortOperation implements Comparable<Object> {
                 int maxPlayersPerTeam = o.getIntValue("TeamSize");
                 int maxPlayers = Math.max(2, Math.min(8, maxTeams)) * maxPlayersPerTeam;
 
-                // CampaignData.mwlog.errLog("Max Teams: "+maxTeams+" Players Per
+                // CampaignData.mwlog.errLog("Max Teams: "+maxTeams+" Players
+                // Per
                 // Team: "+maxPlayersPerTeam+" Max Players: "+maxPlayers+"
                 // Current Players: "+this.getAllPlayerNames().size());
                 if (this.getAllPlayerNames().size() >= maxPlayers)
@@ -367,7 +368,8 @@ public class ShortOperation implements Comparable<Object> {
             int maxPlayers = Math.max(2, Math.min(8, maxTeams)) * maxPlayersPerTeam;
 
             isTeamOp = true;
-            // CampaignData.mwlog.errLog("Max Teams: "+maxTeams+" Players Per Team:
+            // CampaignData.mwlog.errLog("Max Teams: "+maxTeams+" Players Per
+            // Team:
             // "+maxPlayersPerTeam+" Max Players: "+maxPlayers+" Current
             // Players: "+this.getAllPlayerNames().size());
             if (this.getAllPlayerNames().size() >= maxPlayers)
@@ -470,17 +472,17 @@ public class ShortOperation implements Comparable<Object> {
 
             // Should always have at least 1 attacker if not well then this is
             // More fubared then anything I can come up with.
-            if (defenders.size() < 1 ) {
-                if ( !o.getBooleanValue("AttackerAllowAgainstUnclaimedLand") )
+            if (defenders.size() < 1) {
+                if (!o.getBooleanValue("AttackerAllowAgainstUnclaimedLand"))
                     for (String currP : attackers.keySet())
                         CampaignMain.cm.toUser("No defenders are listed for this op, someone screwed up!", currP);
                 return;
             }
-            
+
             // Set up the operations reporter
             reporter.setUpOperation(getName(), getAttackers(), getDefenders(), getTargetWorld().getName(), getEnvironment().getName(), getEnvironment().getTheme());
             reporter.commit();
-            
+
             isBuildingOperation = o.getIntValue("TotalBuildings") > 0;
             /*
              * Check to see if this is a building operation. If so, build an
@@ -2203,13 +2205,17 @@ public class ShortOperation implements Comparable<Object> {
 
         // add unit info
         if (numDefenders == 1 && numAttackers < 2) {
+            try {
+                SArmy attackArm = CampaignMain.cm.getPlayer(attackers.firstKey()).getArmy(attackers.get(attackers.firstKey()));
+                SArmy defendArm = CampaignMain.cm.getPlayer(defenders.firstKey()).getArmy(defenders.get(defenders.firstKey()));
 
-            SArmy attackArm = CampaignMain.cm.getPlayer(attackers.firstKey()).getArmy(attackers.get(attackers.firstKey()));
-            SArmy defendArm = CampaignMain.cm.getPlayer(defenders.firstKey()).getArmy(defenders.get(defenders.firstKey()));
-            if (mod || (complete && !blindDrop))
-                resultString += " with " + defendArm.getDescription(true, attackArm);
-            else
-                resultString += defendArm.getInaccurateDescription();
+                if (mod || (complete && !blindDrop))
+                    resultString += " with " + defendArm.getDescription(true, attackArm);
+                else
+                    resultString += defendArm.getInaccurateDescription();
+            } catch (Exception ex) {
+
+            }
         }
 
         else if (numAttackers > 1 || numDefenders > 1) {
@@ -2218,9 +2224,13 @@ public class ShortOperation implements Comparable<Object> {
             int totalUnits = 0;
 
             for (String currN : defenders.keySet()) {
-                SArmy currArmy = CampaignMain.cm.getPlayer(currN).getArmy(defenders.get(currN));
-                totalBV = totalBV + currArmy.getOperationsBV(null);
-                totalUnits = totalUnits + currArmy.getAmountOfUnits();
+                try {
+                    SArmy currArmy = CampaignMain.cm.getPlayer(currN).getArmy(defenders.get(currN));
+                    totalBV = totalBV + currArmy.getOperationsBV(null);
+                    totalUnits = totalUnits + currArmy.getAmountOfUnits();
+                }catch(Exception ex) {
+                    
+                }
             }
 
             multiPlayerString += " - Total Defender Units: " + totalUnits + " / BV: " + totalBV;

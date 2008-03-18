@@ -632,10 +632,6 @@ class Repair{
 	                        UnitUtils.removeArmorRepair(unit,slot,location);
 	                        armorToRepair = unit.getOArmor(location,rear)-unit.getArmor(location,rear);
 	                        
-	                        if ( techType != UnitUtils.TECH_REWARD_POINTS && useCrits) {
-	                        	player.updatePartsCache(critName, -armorToRepair);
-	                        }
-	
 	                        if ( armorToRepair <= 3)
 	                            armorRepaired = 1;
 	                        else
