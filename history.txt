@@ -2,6 +2,11 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.25.x
+Release Client 0.2.25.1 & Server 0.2.25.2
++ Single Faction Servers process 1+ factions per slice
++ Purchase Factory GUI now shows owned Planets only.
++ Cannot Purchase factories that do not have Common build tables
++ Bug: Not calculating planet owned % with new conquest code
 Release Server 0.2.25.1
 + Bug: Faction Cache not removing parts
 + Error if defending army is deleted short ops do not report.

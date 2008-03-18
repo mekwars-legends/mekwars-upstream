@@ -167,10 +167,11 @@ public class PlanetNameDialog extends JDialog implements ActionListener {
                 //save our player's house ID, since we'll be using it frequently.
 				int houseID = mwclient.getPlayer().getMyHouse().getId();
 				
+                double tpOwned = (double)100 * ((double)tp.getInfluence().getInfluence(houseID) / (double)tp.getConquestPoints()); 
 				//check the ownership requirements
-				if (tp.getInfluence().getInfluence(houseID) < minOwn)
+				if (tpOwned < minOwn)
 					continue;
-				if (tp.getInfluence().getInfluence(houseID) > maxOwn)
+				if ( tpOwned > maxOwn)
 					continue;
 				
 				//check the on-planet launch

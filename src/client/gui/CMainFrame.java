@@ -2174,7 +2174,8 @@ public class CMainFrame extends JFrame {
             return;
 
         if ( planet == null ){
-            PlanetNameDialog planetDialog = new PlanetNameDialog(mwclient, "Choose a planet", null);
+            String[] opString = {"20000"," "," "," "," ","100","100","0",Integer.toString(Integer.MAX_VALUE),mwclient.getPlayer().getHouse(),"",""};
+            PlanetNameDialog planetDialog = new PlanetNameDialog(mwclient, "Choose a planet", opString);
             planetDialog.setVisible(true);
             planet = planetDialog.getPlanetName();
             planetDialog.dispose();

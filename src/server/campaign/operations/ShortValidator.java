@@ -719,7 +719,7 @@ public class ShortValidator {
 
         // store the percent owned, since it's checked multiple times
         int ahID = ap.getHouseFightingFor().getId();
-        int percentOwned = target.getInfluence().getInfluence(ahID);
+        double percentOwned = (double)100 * ((double)target.getInfluence().getInfluence(ahID) / (double)target.getConquestPoints()); 
 
         /*
          * Check the ownership limitations.
@@ -794,7 +794,9 @@ public class ShortValidator {
         Iterator<Planet> e = CampaignMain.cm.getData().getAllPlanets().iterator();
         while (e.hasNext()) {
             SPlanet currP = (SPlanet) e.next();
-            if (currP.getInfluence().getInfluence(ahID) >= percToAttackOffWorld && currP.getPosition().distanceSq(target.getPosition()) <= opRange)
+            percentOwned = (double)100 * ((double)currP.getInfluence().getInfluence(ahID) / (double)currP.getConquestPoints()); 
+
+            if ( percentOwned >= percToAttackOffWorld && currP.getPosition().distanceSq(target.getPosition()) <= opRange)
                 return;
         }// end while(planets remain)
 
@@ -1166,8 +1168,9 @@ public class ShortValidator {
 
         boolean solCanDefend = o.getBooleanValue("AllowAgainstSOL");
         boolean nonConqCanDefend = o.getBooleanValue("AllowAgainstNonConq");
-
-        if (target != null && target.getInfluence().getInfluence(dp.getHouseFightingFor().getId()) < o.getIntValue("MinPlanetOwnership"))
+        double percentOwned = (double)100 * ((double)target.getInfluence().getInfluence(dp.getHouseFightingFor().getId()) / (double)target.getConquestPoints());
+        
+        if (target != null && percentOwned < o.getIntValue("MinPlanetOwnership"))
             failureReasons.add(SFAIL_DEFEND_NOTPLANDEF);
         if (dp.getHouseFightingFor().isNewbieHouse() && !solCanDefend)
             failureReasons.add(SFAIL_DEFEND_SOLCANTDEF);

@@ -15,6 +15,7 @@
 
 package server.campaign.commands.leader;
 
+import java.io.File;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -101,7 +102,14 @@ public class PurchaseFactoryCommand implements Command {
             CampaignMain.cm.toUser("You do not own " + planet.getName(), Username);
             return;
         }
-
+        
+        String buildTable = BuildTable.getFileName("Common", SUnit.getWeightClassDesc(weight), BuildTable.STANDARD, type);
+        
+        if ( !new File(buildTable).exists() ) {
+            CampaignMain.cm.toUser("Sorry but That type of factory cannot be built.", Username);
+            return;
+        }
+        
         switch (type) {
         case SUnit.MEK:
             buildType = UnitFactory.BUILDMEK;

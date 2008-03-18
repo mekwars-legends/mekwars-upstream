@@ -19,59 +19,80 @@ package server.campaign;
 import common.CampaignData;
 
 /**
- * @author urgru
- * A barebones timing thread which calls slices in CampaignMain.
+ * @author urgru A barebones timing thread which calls slices in CampaignMain.
  * 
- * Created in CM as follows:
- * SThread = new SliceThread(this, Integer.parseInt(getConfig("SliceTime")));
- *       SThread.start();//it slices, it dices, it chops!
+ * Created in CM as follows: SThread = new SliceThread(this,
+ * Integer.parseInt(getConfig("SliceTime"))); SThread.start();//it slices, it
+ * dices, it chops!
  */
 
 public class SliceThread extends Thread {
-	server.campaign.CampaignMain myCampaign;
-	long until;
-	int Duration;
-	int sliceid = 0;
-	
-	public SliceThread(server.campaign.CampaignMain main, int Duration) {
-		super("slicethread");
-		this.Duration = Duration; //set length when thread is spun
-		myCampaign = main;
-	}
-	
-	public int getSliceID() {
-		return sliceid;
-	}
-	
-	public void extendedWait(int time) {
-		until = System.currentTimeMillis() + time;
-		try {
-			this.wait(time);
-		} catch (Exception ex) {
-			CampaignData.mwlog.errLog(ex);
-		}
-	}//end ExtendedWait(time)
-	
-	public long getRemainingSleepTime() {
-		return Math.max(0, until - System.currentTimeMillis());
-	}
-	
-	@Override
-	public synchronized void run() {
-		try {
-			while (true) {
-				this.extendedWait(Duration); 
-				sliceid++;
-				try {
-					myCampaign.slice(getSliceID());
-				} catch (Exception ex) {
-					CampaignData.mwlog.errLog(ex);
-					myCampaign.doSendToAllOnlinePlayers("Slice skipped. Errors occured", true);
-				}
-			}
-		}
-		catch (Exception ex) {
-			CampaignData.mwlog.errLog(ex);
-		}
-	}
+    server.campaign.CampaignMain myCampaign;
+    long until;
+    int Duration;
+    int sliceid = 0;
+    int lastHouseId = 0;
+
+    public SliceThread(server.campaign.CampaignMain main, int Duration) {
+        super("slicethread");
+        this.Duration = Duration; // set length when thread is spun
+        myCampaign = main;
+    }
+
+    public int getSliceID() {
+        return sliceid;
+    }
+
+    public void extendedWait(int time) {
+        until = System.currentTimeMillis() + time;
+        try {
+            this.wait(time);
+        } catch (Exception ex) {
+            CampaignData.mwlog.errLog(ex);
+        }
+    }// end ExtendedWait(time)
+
+    public long getRemainingSleepTime() {
+        return Math.max(0, until - System.currentTimeMillis());
+    }
+
+    @Override
+    public synchronized void run() {
+        try {
+            int sleepTime = Duration;
+            long startTime = 0;
+            while (true) {
+                this.extendedWait(sleepTime);
+                startTime = System.currentTimeMillis();
+                sliceid++;
+                try {
+                    myCampaign.slice(getSliceID());
+
+                    if (CampaignMain.cm.getBooleanConfig("AllowSinglePlayerFactions")) {
+                        long endTime = startTime + Duration/2;
+                        while ( endTime > System.currentTimeMillis()) {
+                            if ( lastHouseId > CampaignMain.cm.getData().getAllHouses().size() ) {
+                                lastHouseId = 0;
+                            }
+                            SHouse house = CampaignMain.cm.getHouseById(lastHouseId);
+                            if ( house != null && house.getAllOnlinePlayers().size() > 0 ) {
+                                CampaignMain.cm.getHouseById(lastHouseId).tick(true, sliceid );
+                                lastHouseId++;
+                            }else {
+                                lastHouseId++;
+                            }
+                        }
+                    }
+                } catch (Exception ex) {
+                    CampaignData.mwlog.errLog(ex);
+                    myCampaign.doSendToAllOnlinePlayers("Slice skipped. Errors occured", true);
+                }
+                sleepTime = (int)(Duration - (System.currentTimeMillis() - startTime));
+                sleepTime = Math.max(100, sleepTime);
+                
+            }
+        } catch (Exception ex) {
+            CampaignData.mwlog.errLog(ex);
+        }
+    }
 }

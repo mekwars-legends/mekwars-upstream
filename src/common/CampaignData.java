@@ -291,7 +291,7 @@ public class CampaignData implements TerrainProvider {
      * @return An House id not used yet.
      */
     public int getUnusedHouseID() {
-        int id = 0;
+        int id = -1;
         int hid = 0;
         for (House e : factions.values()) {
         	hid = e.getId();
