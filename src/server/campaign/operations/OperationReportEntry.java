@@ -38,6 +38,8 @@ public class OperationReportEntry {
 	private boolean drawGame = false;
 	
 	private long gameLength = 0;
+	private long startTime = 0;
+	private long endTime = 0;
 	
 	private String opType = "";
 	
@@ -178,6 +180,29 @@ public class OperationReportEntry {
 	
 	public void setAttackerWon(boolean aWon) {
 		attackerWon = aWon;
+	}
+	
+	public void setStartTime(long time) {
+		startTime = time;
+	}
+	
+	public void setEndTime(long time) {
+		endTime = time;
+		gameLength = endTime - startTime;
+	}
+	
+	public String getHumanReadableGameLength() {
+		int seconds = (int)(gameLength / 1000);
+		int hours = seconds / (60 * 60);
+		seconds -= (hours * 60 * 60);
+		int minutes = seconds / 60;
+		seconds -= (minutes * 60);
+		StringBuilder timeString = new StringBuilder();
+		if(hours > 0)
+			timeString.append(hours + "h");
+		timeString.append(minutes + "m");
+		timeString.append(seconds + "s");
+		return timeString.toString();
 	}
 	
 	public OperationReportEntry() {

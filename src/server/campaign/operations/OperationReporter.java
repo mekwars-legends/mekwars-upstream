@@ -101,12 +101,14 @@ public class OperationReporter {
 	}
 	
 	public void commit() {
-		boolean actually_commit = false;
+		opData.setEndTime(System.currentTimeMillis());
+				
 // Not yet ready for prime time
 //		if(CampaignMain.cm.isUsingMySQL()) {
 //			CampaignMain.cm.MySQL.commitBattleReport(opData);
 //		} else {
 //		}
+		boolean actually_commit = false;
 		if(actually_commit) {
 			CampaignData.mwlog.dbLog("Operation Finished: ");
 			CampaignData.mwlog.dbLog("  OpType: " + opData.getOpType());
@@ -114,7 +116,8 @@ public class OperationReporter {
 			CampaignData.mwlog.dbLog("  Attacker(s): " + opData.getAttackers() + " (" + opData.getAttackerSize() + " units)  --  Defender(s): " + opData.getDefenders() + " (" + opData.getDefenderSize() + " units)");
 			CampaignData.mwlog.dbLog("  BVs: Attacker: " + opData.getAttackerStartBV() + " / " + opData.getAttackerEndBV() + "  --  Defender: " + opData.getDefenderStartBV() + " / " + opData.getDefenderEndBV());
 			CampaignData.mwlog.dbLog("  Attacker Won: " + Boolean.toString(opData.attackerIsWinner()));
-			CampaignData.mwlog.dbLog("  Winner(s): " + opData.getWinners() + "  --  Losers: " + opData.getLosers());
+			CampaignData.mwlog.dbLog("  Winner(s): " + opData.getWinners() + "  --  Loser(s): " + opData.getLosers());
+			CampaignData.mwlog.dbLog("  Game Length: " + opData.getHumanReadableGameLength());
 		}
 	}
 	
@@ -127,6 +130,7 @@ public class OperationReporter {
 	public void setUpOperation(String operationName, String planetName, String terrainName, String themeName) {
          setPlanetInfo(planetName, terrainName, themeName);
          opData.setOpType(operationName);
+         opData.setStartTime(System.currentTimeMillis());
 	}
 	
 	public void addAttacker(String playerName, int armyID) {
