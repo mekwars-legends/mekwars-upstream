@@ -121,7 +121,8 @@ public class OperationEntity {
                     unitDamage = ST.nextToken();
                 if ( player != null && ID != -1){
                     SUnit currUnit = player.getUnit(ID);
-                    currUnit.setLastCombatPilot(currUnit.getPilot().getPilotId());
+                    if(currUnit.getPilot() != null)
+                    	currUnit.setLastCombatPilot(currUnit.getPilot().getPilotId());
                 }
             }
     		
