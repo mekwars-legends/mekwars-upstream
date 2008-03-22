@@ -33,13 +33,13 @@ import server.campaign.SUnit;
 public class OperationReporter {
 
 	private OperationReportEntry opData = new OperationReportEntry();
-	private Vector<String> attackerSet = new Vector<String>();
-	private Vector<String> defenderSet = new Vector<String>();
 	private Vector<String> winnerSet = new Vector<String>();
 	private Vector<String> loserSet = new Vector<String>();
 	
 	private TreeMap<Integer, String> attackerUnits = new TreeMap<Integer, String>();
 	private TreeMap<Integer, String> defenderUnits = new TreeMap<Integer, String>();
+	private TreeMap<String, String> attackerMap = new TreeMap<String, String>();
+	private TreeMap<String, String> defenderMap = new TreeMap<String, String>();
 	
 	private void setWinners(TreeMap<String, SPlayer> winners) {
 		
@@ -108,8 +108,9 @@ public class OperationReporter {
 //			CampaignMain.cm.MySQL.commitBattleReport(opData);
 //		} else {
 //		}
-		boolean actually_commit = false;
-		if(actually_commit) {
+		boolean actually_commit = false;  
+		// Just skip this for now - using for debugging purposes only
+			if(actually_commit) {
 			CampaignData.mwlog.dbLog("Operation Finished: ");
 			CampaignData.mwlog.dbLog("  OpType: " + opData.getOpType());
 			CampaignData.mwlog.dbLog("  Planet: " + opData.getPlanet() + ", Terrain: " + opData.getTerrain() + ", Theme: " + opData.getTheme());
@@ -134,30 +135,32 @@ public class OperationReporter {
 	}
 	
 	public void addAttacker(String playerName, int armyID) {
-		attackerSet.add(playerName);
+		attackerMap.put(playerName, CampaignMain.cm.getPlayer(playerName).getHouseFightingFor().getName());
+		String playerString = playerName + " (" + attackerMap.get(playerName) + ")"; 
 		SArmy army = CampaignMain.cm.getPlayer(playerName).getArmy(armyID);
 		if(army != null) {
 			opData.addStartingBV(true, army.getBV());
 			addArmy(true, army);
 			String s = opData.getAttackers();
 			if(s.length() == 0)
-				opData.setAttackerName(playerName);
+				opData.setAttackerName(playerString);
 			else
-				opData.setAttackerName(s + ", " + playerName);
+				opData.setAttackerName(s + ", " + playerString);
 		}
 	}
 	
 	public void addDefender(String playerName, int armyID) {
-		defenderSet.add(playerName);
+		defenderMap.put(playerName, CampaignMain.cm.getPlayer(playerName).getHouseFightingFor().getName());
+		String playerString = playerName + " (" + defenderMap.get(playerName) + ")"; 
 		SArmy army = CampaignMain.cm.getPlayer(playerName).getArmy(armyID);
 		if(army != null) {
 			opData.addStartingBV(false, army.getBV());
 			addArmy(false, army);
 			String s = opData.getDefenders();
 			if(s.length() == 0)
-				opData.setDefenderName(playerName);
+				opData.setDefenderName(playerString);
 			else
-				opData.setDefenderName(s + ", " + playerName);
+				opData.setDefenderName(s + ", " + playerString);
 		}
 	}
 		
