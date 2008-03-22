@@ -20,6 +20,8 @@ public class OperationReportEntry {
 
 	private String attackerName = "";
 	private String defenderName = "";
+	private String winnerName = "";
+	private String loserName = "";
 	private String planetName = "";
 	private String terrainName = "";
 	private String themeName = "";
@@ -29,12 +31,40 @@ public class OperationReportEntry {
 	private int defenderStartBV = 0;
 	private int defenderEndBV = 0;
 	
+	private int attackerSize = 0;
+	private int defenderSize = 0;
+	
 	private boolean attackerWon = false;
+	private boolean drawGame = false;
 	
 	private long gameLength = 0;
 	
 	private String opType = "";
 	
+	
+	public boolean gameIsDraw() {
+		return drawGame;
+	}
+	
+	public void setDrawGame(boolean draw) {
+		drawGame = draw;
+	}
+	
+	public int getAttackerSize() {
+		return attackerSize;
+	}
+	
+	public void setAttackerSize(int size) {
+		attackerSize = size;
+	}
+	
+	public int getDefenderSize() {
+		return defenderSize;
+	}
+	
+	public void setDefenderSize(int size) {
+		defenderSize = size;
+	}
 	
 	public String getOpType() {
 		return opType;
@@ -76,6 +106,14 @@ public class OperationReportEntry {
 		return defenderName;
 	}
 	
+	public String getWinners() {
+		return winnerName;
+	}
+	
+	public String getLosers() {
+		return loserName;
+	}
+	
 	public String getPlanet() {
 		return planetName;
 	}
@@ -96,6 +134,14 @@ public class OperationReportEntry {
 		defenderName = name;
 	}
 	
+	public void setWinnerName(String name) {
+		winnerName = name;
+	}
+	
+	public void setLoserName(String name) {
+		loserName = name;
+	}
+	
 	public void setBV (boolean attacker, boolean start, int BV) {
 		if (attacker) {
 			if(start)
@@ -108,6 +154,20 @@ public class OperationReportEntry {
 			else
 				defenderEndBV = BV;
 		}
+	}
+	
+	public void addEndingBV(boolean attacker, int BV) {
+		if(attacker)
+			attackerEndBV += BV;
+		else
+			defenderEndBV += BV;
+	}
+	
+	public void addStartingBV(boolean attacker, int BV) {
+		if(attacker)
+			attackerStartBV += BV;
+		else
+			defenderStartBV += BV;
 	}
 	
 	public void setPlanetInfo (String pName, String tName, String thName) {

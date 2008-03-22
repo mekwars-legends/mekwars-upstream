@@ -258,7 +258,7 @@ public class ShortResolver {
             if (!so.getWinners().containsKey(currName) && !so.getLosers().containsKey(currName))
                 so.getLosers().put(currName, allPlayers.get(currName));
         }
-
+        so.getReporter().setWinnersAndLosers(so.getWinners(), so.getLosers());
         /*
          * Before establishing which units are saveable/killed and moving
          * anything between players or changing the pilots in units, save the
@@ -422,6 +422,8 @@ public class ShortResolver {
             CampaignMain.cm.getMWCC().opConclude(so);
         if (o.getBooleanValue("ReportOpToNewsFeed"))
             CampaignMain.cm.addToNewsFeed(newsFeedTitle, newsFeedBody);
+        so.getReporter().closeOperation(drawGame, attackersWon);
+        so.getReporter().commit();     
 
     }// end resolveShortAttack
 
@@ -675,7 +677,7 @@ public class ShortResolver {
         	loser.checkForDemotion();
         	loser.setSave();
         }
-
+        
     }
 
     /**
@@ -2965,7 +2967,7 @@ public class ShortResolver {
                         // autoartillery. continue to next loop.
                         if (unit == null)
                             continue;
-
+                        so.getReporter().addEndingUnit(unit, oEntity.getRemovalReason());
                         if ((fledSalvageChance > 0 || fledScrappedChance > 0) && oEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_IN_RETREAT) {
                             if (CampaignMain.cm.getRandomNumber(100) <= fledSalvageChance) {
                                 oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_SALVAGEABLE);

@@ -290,6 +290,7 @@ public class ShortOperation implements Comparable<Object> {
         Operation o = CampaignMain.cm.getOpsManager().getOperation(opName);
 
         attackers.put(p.getName().toLowerCase(), a.getID());
+        reporter.addAttacker(p.getName(), a.getID());
         if (!modName.equals(""))
             playerModifyingOps.put(p.getName().toLowerCase(), modName);
 
@@ -321,6 +322,7 @@ public class ShortOperation implements Comparable<Object> {
 
             }
         }
+
     }
 
     /**
@@ -346,6 +348,7 @@ public class ShortOperation implements Comparable<Object> {
     public void addDefender(SPlayer p, SArmy a, String modName) {
         Operation o = CampaignMain.cm.getOpsManager().getOperation(opName);
         defenders.put(p.getName().toLowerCase(), a.getID());
+        reporter.addDefender(p.getName(), a.getID());
         if (!modName.equals(""))
             playerModifyingOps.put(p.getName().toLowerCase(), modName);
 
@@ -478,10 +481,6 @@ public class ShortOperation implements Comparable<Object> {
                         CampaignMain.cm.toUser("No defenders are listed for this op, someone screwed up!", currP);
                 return;
             }
-
-            // Set up the operations reporter
-            reporter.setUpOperation(getName(), getAttackers(), getDefenders(), getTargetWorld().getName(), getEnvironment().getName(), getEnvironment().getTheme());
-            reporter.commit();
 
             isBuildingOperation = o.getIntValue("TotalBuildings") > 0;
             /*
@@ -1601,6 +1600,9 @@ public class ShortOperation implements Comparable<Object> {
             // Generic info
             modHeader += " / Type: " + this.getName();
             modHeader += " / Start BV: " + startingBV;
+            
+            reporter.setUpOperation(getName(), getTargetWorld().getName(), getEnvironment().getName(), getEnvironment().getTheme());
+
 
         }// end newStatus = IN_PROGRESS
 
@@ -2930,6 +2932,10 @@ public class ShortOperation implements Comparable<Object> {
 
         contract.setEarnedAmount(contract.getEarnedAmount() + amount);
 
+    }
+    
+    public OperationReporter getReporter() {
+    	return reporter;
     }
 
 }// end OperationsManager class

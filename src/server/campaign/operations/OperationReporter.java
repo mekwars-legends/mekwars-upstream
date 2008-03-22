@@ -17,49 +17,69 @@
 package server.campaign.operations;
 
 import java.util.Iterator;
-import java.util.Set;
 import java.util.TreeMap;
+import java.util.Vector;
+
+import megamek.common.IEntityRemovalConditions;
+
+import common.CampaignData;
+import common.Unit;
 
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SPlayer;
+import server.campaign.SUnit;
 
 public class OperationReporter {
 
 	private OperationReportEntry opData = new OperationReportEntry();
-	private Set<String> attackerSet;
-	private Set<String> defenderSet;
+	private Vector<String> attackerSet = new Vector<String>();
+	private Vector<String> defenderSet = new Vector<String>();
+	private Vector<String> winnerSet = new Vector<String>();
+	private Vector<String> loserSet = new Vector<String>();
 	
-	public void setAttackers(TreeMap<String, Integer> attackers) {
-		attackerSet = attackers.keySet();
-		Iterator<String> it = attackerSet.iterator();
+	private TreeMap<Integer, String> attackerUnits = new TreeMap<Integer, String>();
+	private TreeMap<Integer, String> defenderUnits = new TreeMap<Integer, String>();
+	
+	private void setWinners(TreeMap<String, SPlayer> winners) {
+		
+		for(String winner : winners.keySet()) {
+			winnerSet.add(winner);
+		}
+		Iterator<String> it = winnerSet.iterator();
 		int count = 0;
-		StringBuilder aNames = new StringBuilder();
+		StringBuilder wNames = new StringBuilder();
 		
 		while(it.hasNext()) {
-			if(count > 0)
-				aNames.append(", ");
-			aNames.append(it.next());
-			count ++;
+			if (count > 0)
+				wNames.append(", ");
+			wNames.append(winners.get(it.next()).getName());
+			count++;
 		}
-		opData.setAttackerName(aNames.toString());
+		opData.setWinnerName(wNames.toString());
 	}
 	
-	public void setDefenders(TreeMap<String, Integer> defenders) {
-		defenderSet = defenders.keySet();
-		Iterator<String> it = defenderSet.iterator();
+	private void setLosers(TreeMap<String, SPlayer> losers) {
+		for (String loser : losers.keySet())
+			loserSet.add(loser);
+		Iterator<String> it = loserSet.iterator();
 		int count = 0;
-		StringBuilder dNames = new StringBuilder();
+		StringBuilder lNames = new StringBuilder();
 		
 		while(it.hasNext()) {
-			if(count > 0)
-				dNames.append(", ");
-			dNames.append(it.next());
-			count ++;
+			if (count > 0)
+				lNames.append(", ");
+			lNames.append(losers.get(it.next()).getName());
+			count++;
 		}
-		opData.setDefenderName(dNames.toString());
+		opData.setLoserName(lNames.toString());
 	}
-		
+	
+	public void setWinnersAndLosers(TreeMap<String, SPlayer> winners, TreeMap<String, SPlayer> losers) {
+		setWinners(winners);
+		setLosers(losers);
+	}
+	
 	public void setPlanetInfo(String pName, String tName, String thName) {
 		opData.setPlanetInfo(pName, tName, thName);
 	}
@@ -81,46 +101,99 @@ public class OperationReporter {
 	}
 	
 	public void commit() {
+		boolean actually_commit = false;
 // Not yet ready for prime time
 //		if(CampaignMain.cm.isUsingMySQL()) {
 //			CampaignMain.cm.MySQL.commitBattleReport(opData);
 //		} else {
 //		}
+		if(actually_commit) {
+			CampaignData.mwlog.dbLog("Operation Finished: ");
+			CampaignData.mwlog.dbLog("  OpType: " + opData.getOpType());
+			CampaignData.mwlog.dbLog("  Planet: " + opData.getPlanet() + ", Terrain: " + opData.getTerrain() + ", Theme: " + opData.getTheme());
+			CampaignData.mwlog.dbLog("  Attacker(s): " + opData.getAttackers() + " (" + opData.getAttackerSize() + " units)  --  Defender(s): " + opData.getDefenders() + " (" + opData.getDefenderSize() + " units)");
+			CampaignData.mwlog.dbLog("  BVs: Attacker: " + opData.getAttackerStartBV() + " / " + opData.getAttackerEndBV() + "  --  Defender: " + opData.getDefenderStartBV() + " / " + opData.getDefenderEndBV());
+			CampaignData.mwlog.dbLog("  Attacker Won: " + Boolean.toString(opData.attackerIsWinner()));
+			CampaignData.mwlog.dbLog("  Winner(s): " + opData.getWinners() + "  --  Losers: " + opData.getLosers());
+		}
 	}
 	
-	public void setUpOperation(String operationName, TreeMap<String, Integer> attackers, TreeMap<String, Integer> defenders, String planetName, String terrainName, String themeName) {
-		 setAttackers(attackers);
-         setDefenders(defenders);
+	public void closeOperation(boolean draw, boolean attackerWon) {
+		opData.setDrawGame(draw);
+		opData.setAttackerWon(attackerWon);
+		
+	}
+	
+	public void setUpOperation(String operationName, String planetName, String terrainName, String themeName) {
          setPlanetInfo(planetName, terrainName, themeName);
-         calculateStartingBVs(attackers, defenders);
          opData.setOpType(operationName);
 	}
 	
-	public void calculateStartingBVs(TreeMap<String, Integer> attackers, TreeMap<String, Integer> defenders) {
-        int bv = 0;
-        for (String attacker : attackers.keySet()) {
-        	SPlayer player = CampaignMain.cm.getPlayer(attacker);
-        	if(player != null) {
-        		SArmy army = player.getArmy(attackers.get(attacker));
-        		if (army != null)
-        			bv += army.getBV();
-        	}
-        }
-        setAttackerStartBV(bv);
-        
-        bv = 0;
-        for (String defender : defenders.keySet()) {
-        	SPlayer player = CampaignMain.cm.getPlayer(defender);
-        	if(player != null) {
-        		SArmy army = player.getArmy(defenders.get(defender));
-        		if (army != null)
-        			bv += army.getBV();
-        	}
-        }
-        setDefenderStartBV(bv);     
+	public void addAttacker(String playerName, int armyID) {
+		attackerSet.add(playerName);
+		SArmy army = CampaignMain.cm.getPlayer(playerName).getArmy(armyID);
+		if(army != null) {
+			opData.addStartingBV(true, army.getBV());
+			addArmy(true, army);
+			String s = opData.getAttackers();
+			if(s.length() == 0)
+				opData.setAttackerName(playerName);
+			else
+				opData.setAttackerName(s + ", " + playerName);
+		}
+	}
+	
+	public void addDefender(String playerName, int armyID) {
+		defenderSet.add(playerName);
+		SArmy army = CampaignMain.cm.getPlayer(playerName).getArmy(armyID);
+		if(army != null) {
+			opData.addStartingBV(false, army.getBV());
+			addArmy(false, army);
+			String s = opData.getDefenders();
+			if(s.length() == 0)
+				opData.setDefenderName(playerName);
+			else
+				opData.setDefenderName(s + ", " + playerName);
+		}
+	}
+		
+	public void addArmy(boolean attackerArmy, SArmy army) {
+		// Keep a list of units for each side
+		int numUnits = army.getAmountOfUnits();
+		if(attackerArmy)
+			opData.setAttackerSize(numUnits);
+		else
+			opData.setDefenderSize(numUnits);
+		
+		for(Unit currU : army.getUnits()) {
+			int ID = currU.getId();
+			String model = ((SUnit)currU).getModelName();
+			CampaignData.mwlog.dbLog("Adding Unit " + ID + ": " + model);
+			if(attackerArmy)
+				attackerUnits.put(ID, model);
+			else
+				defenderUnits.put(ID, model);
+		}
+	}
+	
+	public void addEndingUnit(SUnit unit, int removalReason) {
+		if(removalReason == IEntityRemovalConditions.REMOVE_DEVASTATED || removalReason == IEntityRemovalConditions.REMOVE_PUSHED || removalReason == IEntityRemovalConditions.REMOVE_EJECTED || removalReason == IEntityRemovalConditions.REMOVE_NEVER_JOINED) {
+			// Nothing to do here, as the unit doesn't count for BV
+			return;
+		}
+		// The unit is still part of an army.  Add it's current BV to the ending BVs
+		addEndingBV(unit.getId(), unit.calcBV());
+	}
+
+	private void addEndingBV(int unitID, int BV) {
+		// First, figure if it's an attacking or defending unit
+		if(attackerUnits.containsKey(unitID))
+			opData.addEndingBV(true, BV);
+		else if(defenderUnits.containsKey(unitID))
+			opData.addEndingBV(false, BV);
 	}
 	
 	public OperationReporter () {
-		
+
 	}
 }
