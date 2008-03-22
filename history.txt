@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.25.x
++ Bug: NPE on activation
 Release Client 0.2.25.1 & Server 0.2.25.2
 + Single Faction Servers process 1+ factions per slice
 + Purchase Factory GUI now shows owned Planets only.

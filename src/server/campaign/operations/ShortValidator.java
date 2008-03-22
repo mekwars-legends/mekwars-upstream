@@ -1168,8 +1168,11 @@ public class ShortValidator {
 
         boolean solCanDefend = o.getBooleanValue("AllowAgainstSOL");
         boolean nonConqCanDefend = o.getBooleanValue("AllowAgainstNonConq");
-        double percentOwned = (double)100 * ((double)target.getInfluence().getInfluence(dp.getHouseFightingFor().getId()) / (double)target.getConquestPoints());
-        
+        double percentOwned = 0;
+        if(target != null)
+        	percentOwned = (double)100 * ((double)target.getInfluence().getInfluence(dp.getHouseFightingFor().getId()) / (double)target.getConquestPoints());
+        else
+        	percentOwned = 0;
         if (target != null && percentOwned < o.getIntValue("MinPlanetOwnership"))
             failureReasons.add(SFAIL_DEFEND_NOTPLANDEF);
         if (dp.getHouseFightingFor().isNewbieHouse() && !solCanDefend)
