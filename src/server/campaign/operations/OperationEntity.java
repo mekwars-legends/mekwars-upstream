@@ -121,7 +121,7 @@ public class OperationEntity {
                     unitDamage = ST.nextToken();
                 if ( player != null && ID != -1){
                     SUnit currUnit = player.getUnit(ID);
-                    if(currUnit != null && currUnit.getPilot() != null)
+                    if(currUnit != null && currUnit.getPilot() != null) //auto-assigned artillery throwing NPEs
                     	currUnit.setLastCombatPilot(currUnit.getPilot().getPilotId());
                 }
             }
