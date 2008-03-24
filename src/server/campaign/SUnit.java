@@ -80,6 +80,7 @@ public final class SUnit extends Unit{
     private int lastCombatPilot = -1;
 
     private int dbId = 0;
+    private boolean isLoading = false;
 
     // CONSTRUCTOR
     /**
@@ -552,6 +553,8 @@ public final class SUnit extends Unit{
     }
 
     public void toDB() {
+    	if(isLoading)
+    		return;
         PreparedStatement ps = null;
         StringBuffer sql = new StringBuffer();
         Entity ent = getEntity();
@@ -849,10 +852,26 @@ public final class SUnit extends Unit{
     }
 
     public void fromDB(int unitID) {
-        try {
-            ResultSet rs;
-            Statement stmt = CampaignMain.cm.MySQL.getStatement();
+    	isLoading = true;
 
+    	ResultSet rs = null;
+        ResultSet ammoRS = null;
+        ResultSet mgRS = null;
+    	Statement ammoStmt = null;
+    	Statement mgStmt = null;
+    	Statement stmt = null;
+    	
+        try {
+            
+            ammoStmt = CampaignMain.cm.MySQL.getStatement();
+            mgStmt = CampaignMain.cm.MySQL.getStatement();
+            stmt = CampaignMain.cm.MySQL.getStatement();
+            // MG and ammo are being reset during unit load.
+            // So get the resultSets now and save them for later.
+            
+            ammoRS = ammoStmt.executeQuery("SELECT * from unit_ammo WHERE unitID = " + unitID + " ORDER BY ammoLocation");
+            mgRS = mgStmt.executeQuery("SELECT * from unit_mgs WHERE unitID = " + unitID + " ORDER BY mgLocation");
+            
             rs = stmt.executeQuery("SELECT * from units WHERE ID = " + unitID);
             if (rs.next()) {
                 setUnitFilename(rs.getString("uFileName"));
@@ -901,17 +920,16 @@ public final class SUnit extends Unit{
                 init();
 
                 // Load ammo
-                rs = stmt.executeQuery("SELECT * from unit_ammo WHERE unitID = " + unitID + " ORDER BY ammoLocation");
-
-                while (rs.next()) {
-                    int weaponType = rs.getInt("ammoType");
-                    String ammoName = rs.getString("ammoInternalName");
-                    int shots = rs.getInt("ammoShotsLeft");
-                    int AmmoLoc = rs.getInt("ammoLocation");
-                    boolean hotloaded = Boolean.parseBoolean(rs.getString("ammoHotLoaded"));
+                unitEntity = getEntity();
+                while (ammoRS.next()) {
+                	
+                    int weaponType = ammoRS.getInt("ammoType");
+                    String ammoName = ammoRS.getString("ammoInternalName");
+                    int shots = ammoRS.getInt("ammoShotsLeft");
+                    int AmmoLoc = ammoRS.getInt("ammoLocation");
+                    boolean hotloaded = Boolean.parseBoolean(ammoRS.getString("ammoHotLoaded"));
                     if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("maxtech_hotload"))
                         hotloaded = false;
-
                     AmmoType at = getEntityAmmo(weaponType, ammoName);
                     String munition = Long.toString(at.getMunitionType());
 
@@ -925,17 +943,18 @@ public final class SUnit extends Unit{
                         CampaignData.mwlog.dbLog("Exception: " + ex.toString());
                         CampaignData.mwlog.dbLog(ex.getStackTrace().toString());
                     }
+
                 }
 
                 setEntity(unitEntity);
 
                 // Load MGs
-                rs = stmt.executeQuery("SELECT * from unit_mgs WHERE unitID = " + unitID + " ORDER BY mgLocation");
+
                 Entity en = this.getEntity();
-                while (rs.next()) {
-                    int location = rs.getInt("mgLocation");
-                    int slot = rs.getInt("mgSlot");
-                    boolean selection = rs.getBoolean("mgRapidFire");
+                while (mgRS.next()) {
+                    int location = mgRS.getInt("mgLocation");
+                    int slot = mgRS.getInt("mgSlot");
+                    boolean selection = mgRS.getBoolean("mgRapidFire");
                     try {
                         CriticalSlot cs = en.getCritical(location, slot);
                         Mounted m = en.getEquipment(cs.getIndex());
@@ -947,10 +966,30 @@ public final class SUnit extends Unit{
                 setEntity(unitEntity);
             }
             rs.close();
+            mgRS.close();
+            ammoRS.close();
             stmt.close();
+            mgStmt.close();
+            ammoStmt.close();
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL Error in SUnit.fromDB: " + e.getMessage());
+            CampaignData.mwlog.dbLog(e);
+            try {
+            	if(rs!=null)
+            		rs.close();
+            	if(mgRS!=null)
+            		mgRS.close();
+            	if(ammoRS != null)
+            		ammoRS.close();
+            	if(stmt!=null)
+            		stmt.close();
+            	if(mgStmt!=null)
+            		mgStmt.close();
+            	if(ammoStmt!=null)
+            		ammoStmt.close();
+            } catch (SQLException ex) {}
         }
+        isLoading = false;
     }
 
     /**

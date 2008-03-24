@@ -3239,6 +3239,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         if (this.isLoading)
             return;
         this.isLoading = true;
+    
         try {
             ResultSet rs = null, rs1 = null;
             Statement stmt = CampaignMain.cm.MySQL.getStatement();
@@ -3248,7 +3249,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 this.armies.clear();
 
                 name = rs.getString("playerName");
-
+                CampaignData.mwlog.dbLog("Loading player " + name);
                 exclusionList.setOwnerName(name);
                 setDBId(playerID);
                 money = rs.getInt("playerMoney");

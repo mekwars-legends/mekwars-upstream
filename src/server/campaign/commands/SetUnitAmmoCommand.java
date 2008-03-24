@@ -123,6 +123,8 @@ public class SetUnitAmmoCommand implements Command {
 			CampaignMain.cm.toUser("PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
 			p.checkAndUpdateArmies(unit);
 			CampaignMain.cm.toUser("AM:Ammo dumped. BV Recalculated",Username,true);
+			if(CampaignMain.cm.isUsingMySQL())
+				unit.toDB();
 			return;
 		}
 		
@@ -202,6 +204,8 @@ public class SetUnitAmmoCommand implements Command {
         		CampaignMain.cm.toUser("PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
         		
         		CampaignMain.cm.toUser("AM:Ammo set for " + unit.getModelName() + " (#" +unit.getId()+").",Username,true);
+    			if(CampaignMain.cm.isUsingMySQL())
+    				unit.toDB();
         		return;
     		}
             int cost =  (int)Math.ceil(ammoCharge);
@@ -231,6 +235,7 @@ public class SetUnitAmmoCommand implements Command {
 		CampaignMain.cm.toUser("PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);
 		
 		CampaignMain.cm.toUser("AM:Ammo set for " + unit.getModelName() + " (#" +unit.getId()+").",Username,true);
-		
+		if(CampaignMain.cm.isUsingMySQL())
+			unit.toDB();
 	}//end process() 
 }//end SetMaintainedCommand class
