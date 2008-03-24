@@ -1686,6 +1686,7 @@ src/server/campaign/commands/mod/GrantEXPCommand.java -text
 src/server/campaign/commands/mod/GrantInfluenceCommand.java -text
 src/server/campaign/commands/mod/GrantMoneyCommand.java -text
 src/server/campaign/commands/mod/GrantRewardCommand.java -text
+src/server/campaign/commands/mod/GrantTechsCommand.java -text
 src/server/campaign/commands/mod/HardTerminateCommand.java -text
 src/server/campaign/commands/mod/IPListCommand.java -text
 src/server/campaign/commands/mod/IgnoreCommand.java -text

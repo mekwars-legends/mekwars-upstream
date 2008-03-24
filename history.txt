@@ -1,7 +1,8 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.25.x
+v 0.2.25.xd
++ RFE 1899256: Admin ability to grant techs
 + Bug: Unit Customization not surviving client restart.
 + Bug: NPE with setLastCombatPilot
 + Bug: NPE on activation

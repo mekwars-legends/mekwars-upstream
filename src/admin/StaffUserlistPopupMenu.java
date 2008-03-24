@@ -15,6 +15,8 @@
  */
 package admin;
 
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -67,9 +69,9 @@ public class StaffUserlistPopupMenu extends JMenu implements ActionListener {
         if (userLevel >= mwclient.getData().getAccessLevel("Ignore"))
             this.add(item);
         this.addSeparator();
-        
+
         JMenu playerMenu = new JMenu("Player");
-        
+
         item = new JMenuItem("Check");
         item.setActionCommand("CKU|" + userName);
         item.addActionListener(this);
@@ -87,7 +89,6 @@ public class StaffUserlistPopupMenu extends JMenu implements ActionListener {
         item.addActionListener(this);
         if (userLevel >= mwclient.getData().getAccessLevel("Fluff"))
             playerMenu.add(item);
-
 
         item = new JMenuItem("Deactivate");
         item.setActionCommand("DAU|" + userName);
@@ -108,7 +109,6 @@ public class StaffUserlistPopupMenu extends JMenu implements ActionListener {
             playerMenu.add(item);
         if (playerMenu.getItemCount() > 0)
             this.add(playerMenu);
-
 
         JMenu grantMenu = new JMenu();
         grantMenu.setText("Grant");
@@ -132,6 +132,11 @@ public class StaffUserlistPopupMenu extends JMenu implements ActionListener {
         item.setActionCommand("GRP|" + userName);
         item.addActionListener(this);
         if (userLevel >= mwclient.getData().getAccessLevel("GrantReward"))
+            grantMenu.add(item);
+        item = new JMenuItem("Techs");
+        item.setActionCommand("GTCH|" + userName);
+        item.addActionListener(this);
+        if (userLevel >= mwclient.getData().getAccessLevel("GrantTechs"))
             grantMenu.add(item);
         if (grantMenu.getItemCount() > 0)
             this.add(grantMenu);
@@ -228,7 +233,7 @@ public class StaffUserlistPopupMenu extends JMenu implements ActionListener {
         if (userLevel >= mwclient.getData().getAccessLevel("CreatePilot"))
             pilotsMen.add(item);
 
-        if (pilotsMen.getItemCount() > 0 && Boolean.parseBoolean(mwclient.getserverConfigs("AllowPersonalPilotQueues")) )
+        if (pilotsMen.getItemCount() > 0 && Boolean.parseBoolean(mwclient.getserverConfigs("AllowPersonalPilotQueues")))
             this.add(pilotsMen);
 
         // Parts submenu
@@ -356,6 +361,36 @@ public class StaffUserlistPopupMenu extends JMenu implements ActionListener {
 
                 mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c grantreward#" + userName + "#" + exp);
             }
+        }
+
+        if (command.equals("GTCH") && st.hasMoreElements()) {
+
+            userName = st.nextToken();
+            String[] techTypes = {"Green","Reg","Vet","Elite"};
+            
+            JComboBox combo = new JComboBox(techTypes);
+
+            combo.setEditable(false);
+            JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+
+            JDialog dlg = jop.createDialog(mwclient.getMainFrame(), "Select Tech Type.");
+            combo.grabFocus();
+            combo.getEditor().selectAll();
+
+            dlg.setVisible(true);
+
+            int type = combo.getSelectedIndex();
+
+            int value = ((Integer) jop.getValue()).intValue();
+
+            if (value == JOptionPane.CANCEL_OPTION)
+                return;
+
+            String amount = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Tech Amount,- to remove");
+            if (amount == null || amount.length() == 0)
+                return;
+
+            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c granttechs#" + userName + "#" + type + "#" + amount);
         }
 
         // mod commands
@@ -502,26 +537,26 @@ public class StaffUserlistPopupMenu extends JMenu implements ActionListener {
             if (Sizestr == null || Sizestr.length() == 0)
                 return;
 
-            String gunnery = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Gunnery skill",4);
+            String gunnery = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Gunnery skill", 4);
 
-            if (gunnery == null || gunnery.length() == 0){
+            if (gunnery == null || gunnery.length() == 0) {
                 return;
             }
 
-            String piloting = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Piloting Mod",5);
+            String piloting = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Piloting Mod", 5);
 
-            if (piloting == null || piloting.length() == 0){
+            if (piloting == null || piloting.length() == 0) {
                 return;
             }
 
             String skills = null;
             skills = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Skills Mod (comma delimited)");
 
-            if (skills == null){
+            if (skills == null) {
                 return;
             }
 
-            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c createpilot#"+userName+"#"+gunnery+"#"+piloting+"#"+Typestr+"#"+Sizestr+"#"+skills);
+            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c createpilot#" + userName + "#" + gunnery + "#" + piloting + "#" + Typestr + "#" + Sizestr + "#" + skills);
         }
         if (command.equals("VPC") && st.hasMoreElements()) {
 
