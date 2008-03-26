@@ -8,6 +8,7 @@
 /OpEditorManifest.txt -text
 /ServerManifest.txt -text
 /TrackerManifest.txt -text
+/build.bat -text
 /build.xml -text
 client-dist/MegaMek.jar -text
 client-dist/data/boards/devilsrun.board -text
