@@ -463,7 +463,7 @@ public class SPilot extends Pilot {
         return result.toString();
     }
 
-    public void toDB(int unitType, int unitSize) {
+    public synchronized void toDB(int unitType, int unitSize) {
     	PreparedStatement ps = null;
     	try {
             if (getName().equalsIgnoreCase("Vacant"))

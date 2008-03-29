@@ -251,7 +251,7 @@ public class SPersonalPilotQueues implements Serializable{
 	 * @param delimiter
 	 */
 	
-	public void fromDB(int playerID) {
+	public synchronized void fromDB(int playerID) {
 		int capSize = CampaignMain.cm.getIntegerConfig("MaxAllowedPilotsInQueueToBuyFromHouse");
 		ResultSet rs;
 		Statement stmt;

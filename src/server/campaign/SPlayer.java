@@ -2737,7 +2737,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         return result.toString();
     }
 
-    public void toDB() {
+    public synchronized void toDB() {
         if (this.isLoading)
             return;
         PreparedStatement ps = null;
@@ -3235,7 +3235,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         }
     }
 
-    public void fromDB(int playerID) {
+    public synchronized void fromDB(int playerID) {
         if (this.isLoading)
             return;
         this.isLoading = true;

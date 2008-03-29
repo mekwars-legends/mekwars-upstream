@@ -64,7 +64,7 @@ public class SArmy extends Army{
         playerName = ownerName;
     }
 
-    public void toDB() {
+    public synchronized void toDB() {
         this.deleteFromDB();
         try {
             StringBuffer sql = new StringBuffer();

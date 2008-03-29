@@ -80,7 +80,7 @@ public final class SUnit extends Unit{
     private int lastCombatPilot = -1;
 
     private int dbId = 0;
-    private boolean isLoading = false;
+
 
     // CONSTRUCTOR
     /**
@@ -552,10 +552,8 @@ public final class SUnit extends Unit{
         return result.toString();
     }
 
-    public void toDB() {
-    	if(isLoading)
-    		return;
-        PreparedStatement ps = null;
+    public synchronized void toDB() {
+    	PreparedStatement ps = null;
         StringBuffer sql = new StringBuffer();
         Entity ent = getEntity();
         ResultSet rs = null;
@@ -851,8 +849,7 @@ public final class SUnit extends Unit{
         }
     }
 
-    public void fromDB(int unitID) {
-    	isLoading = true;
+    public synchronized void fromDB(int unitID) {
 
     	ResultSet rs = null;
         ResultSet ammoRS = null;
@@ -989,7 +986,6 @@ public final class SUnit extends Unit{
             		ammoStmt.close();
             } catch (SQLException ex) {}
         }
-        isLoading = false;
     }
 
     /**

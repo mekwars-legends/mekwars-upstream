@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.25.x
++ Synchronized SUnit, SPlayer, SPersonalPilotQueues, SPilot and SArmy toDB()
+    methods to avoid ConcurrentModification errors and resulting save failures
+    which were leaking memory
 + RFE 1901445: REPAIR ALL Client Buttom
 + RFE 1899256: Admin ability to grant techs
 + Bug: Unit Customization not surviving client restart.
