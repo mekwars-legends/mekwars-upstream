@@ -199,16 +199,22 @@ public class Market2 {
 				p.setSave();
 			} else{
 				SHouse h = (SHouse) seller;
-				if (destroyFactionUnits)
+				if (destroyFactionUnits) {
 					h.removeUnit(auctionU,false);
+					if(CampaignMain.cm.isUsingMySQL())
+						CampaignMain.cm.MySQL.deleteUnit(auctionU.getDBId());
+				}
 				else
 					CampaignMain.cm.doSendToAllOnlinePlayers(h, "HS|" + h.getHSUnitAdditionString(auctionU), false);
 			}
 		} else {
             SHouse sellingFaction = CampaignMain.cm.getHouseFromPartialString(CampaignMain.cm.getConfig("NewbieHouseName"), null);
             SUnit auctionU = sellingFaction.getUnit(currAuction.getListedUnitID());
-            if (auctionU != null)
+            if (auctionU != null) {
             	sellingFaction.removeUnit(auctionU,false);
+            	if(CampaignMain.cm.isUsingMySQL())
+            		CampaignMain.cm.MySQL.deleteUnit(auctionU.getDBId());
+            }
         }
 		
 		// Remove the auction from the hash
