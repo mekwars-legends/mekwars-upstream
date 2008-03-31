@@ -468,6 +468,10 @@ public class SPilot extends Pilot {
     	try {
             if (getName().equalsIgnoreCase("Vacant"))
                 return;
+            if (getPilotId() == -1) {
+            	// Pilot hasn't been assigned an ID yet.
+            	setPilotId(CampaignMain.cm.getAndUpdateCurrentPilotID());
+            }
             StringBuffer sql = new StringBuffer();
             
 

@@ -687,6 +687,10 @@ public final class SUnit extends Unit{
             ps.close();
             // Save the pilot
             if (!this.hasVacantPilot()) {
+            	if (getPilot().getPilotId() == -1) {
+            		// Pilot not in database
+            		getPilot().setPilotId(CampaignMain.cm.getAndUpdateCurrentPilotID());
+            	}
                 ((SPilot) getPilot()).toDB(getType(), getWeightclass());
                 CampaignMain.cm.MySQL.linkPilotToUnit(((SPilot) getPilot()).getPilotId(), getDBId());
             }

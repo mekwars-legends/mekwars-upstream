@@ -141,7 +141,15 @@ public class PilotHandler {
 	}
 	
 	public void linkPilotToUnit(int pilotID, int unitID) {
+		if(pilotID == -1) {
+			CampaignData.mwlog.dbLog("Pilot being linked with no MW ID");
+			return;
+		}
 		int DBId = getPilotDBId(pilotID);
+		if(DBId == -1) {
+			CampaignData.mwlog.dbLog("Pilot " + pilotID + " being linked, but is not in database.");
+			return;
+		}
 		try {
 		Statement stmt = con.createStatement();
 		stmt.executeUpdate("UPDATE pilots SET factionID = NULL, playerID = NULL, unitID = " + unitID + " WHERE pilotID = " + DBId);
