@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.25.x
+Release Server 0.2.25.3
++ RFE: New option to allow Faction ticks to run at the slice.
 + Bug: Pilots with no ID being saved to database.
 + Bug: Units not removed from database after failed BM run
 + Synchronized SUnit, SPlayer, SPersonalPilotQueues, SPilot and SArmy toDB()

@@ -1962,7 +1962,7 @@ public final class CampaignMain implements Serializable {
 
                 String houseTickInfo = "";
 
-                if (!CampaignMain.cm.getBooleanConfig("AllowSinglePlayerFactions")) {
+                if (!CampaignMain.cm.getBooleanConfig("ProcessHouseTicksAtSlice")) {
                     try {
                         CampaignData.mwlog.debugLog("Starting Faction Tick");
                         houseTickInfo = currH.tick(real, tickid);

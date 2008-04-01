@@ -3295,6 +3295,11 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setName("AllowLowerLevelUsersToSeeUpperLevelUsersDoings");
         miscCBoxSpring.add(BaseCheckBox);
 
+        BaseCheckBox = new JCheckBox("House ticks done at slice");
+        BaseCheckBox.setToolTipText("<HTML>If checked house ticks are done incrementally each slice from 1 to X<br>will be done depending on how many can be processed in the 1/2 the slice time.</html>");
+        BaseCheckBox.setName("ProcessHouseTicksAtSlice");
+        miscCBoxSpring.add(BaseCheckBox);
+
         SpringLayoutHelper.setupSpringGrid(miscCBoxSpring, 3);
 
         // finalize layout

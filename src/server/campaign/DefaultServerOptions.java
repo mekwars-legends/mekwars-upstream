@@ -1091,6 +1091,10 @@ public class DefaultServerOptions {
         defaults.setProperty("ComponentToPartsModifierMedium", "1.0");
         defaults.setProperty("ComponentToPartsModifierHeavy", "1.0");
         defaults.setProperty("ComponentToPartsModifierAssault", "1.0");
+
+        //Slice Settings
+        defaults.setProperty("ProcessHouseTicksAtSlice", "false");
+
     }
 
     /**

@@ -68,7 +68,7 @@ public class SliceThread extends Thread {
                 try {
                     myCampaign.slice(getSliceID());
 
-                    if (CampaignMain.cm.getBooleanConfig("AllowSinglePlayerFactions")) {
+                    if (CampaignMain.cm.getBooleanConfig("ProcessHouseTicksAtSlice")) {
                         long endTime = startTime + Duration/2;
                         while ( endTime > System.currentTimeMillis()) {
                             if ( lastHouseId > CampaignMain.cm.getData().getAllHouses().size() ) {
