@@ -128,6 +128,9 @@ public class Influences implements MutableSerializable {
                 }
             });
 
+            if ( factions.length < 1)
+                return null;
+            
             House faction = factions[0];
             if (faction == null)
                 return null;
