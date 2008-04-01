@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.25.x
++ new MegaMek.jar 0.33.22-MW040108-5564
 Release Server 0.2.25.3
 + RFE: New option to allow Faction ticks to run at the slice.
 + Bug: Pilots with no ID being saved to database.
