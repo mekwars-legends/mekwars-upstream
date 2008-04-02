@@ -330,6 +330,7 @@ public class RequestCommand implements Command {
 
 			Vector<SUnit> mechs = factory.getMechProduced(type_id,pilot);
 			StringBuffer results = new StringBuffer();
+			mechCbills = 0;
 			for (SUnit mech : mechs ){
 		        if (Boolean.parseBoolean(playerHouse.getConfig("UseCalculatedCosts"))) {
 		            double unitCost = mech.getEntity().getCost();
