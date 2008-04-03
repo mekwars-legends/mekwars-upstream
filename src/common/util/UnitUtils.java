@@ -30,6 +30,9 @@ import megamek.common.EquipmentType;
 import megamek.common.IArmorState;
 import megamek.common.Infantry;
 import megamek.common.Mech;
+import megamek.common.MechFileParser;
+import megamek.common.MechSummary;
+import megamek.common.MechSummaryCache;
 import megamek.common.MiscType;
 import megamek.common.Mounted;
 import megamek.common.Protomech;
@@ -2614,4 +2617,44 @@ public class UnitUtils  {
         entity.setChassis("Error");
         return entity;
     }
+    
+    /**
+     * Tries to set UnitEntity from the global MekFileName
+     */
+    public static Entity createEntity(String fileName) {
+        // MMClient.mwClientLog.clientErrLog("Filename: " + getUnitFilename());
+        Entity UnitEntity = null;
+        try {
+            MechSummary ms = MechSummaryCache.getInstance().getMech(fileName);
+            if (ms == null) {
+                ms = MechSummaryCache.getInstance().getMech(fileName.trim());
+                if (ms == null) {
+                    MechSummary[] units = MechSummaryCache.getInstance().getAllMechs();
+                    // System.err.println("unit: "+getUnitFilename());
+                    for (MechSummary unit : units) {
+                        // System.err.println("Source file:
+                        // "+unit.getSourceFile().getName());
+                        // System.err.println("Model: "+unit.getModel());
+                        // System.err.println("Chassis: "+unit.getChassis());
+                        // System.err.flush();
+                        if (unit.getEntryName().equalsIgnoreCase(fileName) || unit.getModel().trim().equalsIgnoreCase(fileName.trim()) || unit.getChassis().trim().equalsIgnoreCase(fileName.trim())) {
+                            ms = unit;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            UnitEntity = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
+        } catch (Exception exep) {
+            try {
+                UnitEntity = UnitUtils.createOMG();// new
+            } catch (Exception exepe) {
+                CampaignData.mwlog.errLog("Error unit failed to load. Exiting.");
+                return null;
+            }
+        }
+        return UnitEntity;
+    }
+
 }

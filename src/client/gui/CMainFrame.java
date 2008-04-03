@@ -1027,7 +1027,7 @@ public class CMainFrame extends JFrame {
                 /*
                  * Show the client side GUI if the requisite file is available. Otherwise, make use of server commands.
                  */
-                File f = new File("./data/buildtables.zip");
+                File f = new File("./data/buildtables/standard");
                 if (f.exists()) {
                     // TableViewerDialog tvDialog =
                     new TableViewerDialog(mwclient);

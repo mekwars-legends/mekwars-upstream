@@ -28,9 +28,6 @@ import megamek.common.CriticalSlot;
 import megamek.common.Entity;
 import megamek.common.Infantry;
 import megamek.common.Mech;
-import megamek.common.MechFileParser;
-import megamek.common.MechSummary;
-import megamek.common.MechSummaryCache;
 import megamek.common.Mounted;
 import megamek.common.WeaponType;
 
@@ -351,46 +348,15 @@ public class CUnit extends Unit {
      */
     public void createEntity() {
         // MMClient.mwClientLog.clientErrLog("Filename: " + getUnitFilename());
-        UnitEntity = null;
-        try {
-            MechSummary ms = MechSummaryCache.getInstance().getMech(getUnitFilename());
-            if (ms == null) {
-                ms = MechSummaryCache.getInstance().getMech(getUnitFilename().trim());
-                if (ms == null) {
-                    MechSummary[] units = MechSummaryCache.getInstance().getAllMechs();
-                    // System.err.println("unit: "+getUnitFilename());
-                    for (MechSummary unit : units) {
-                        // System.err.println("Source file:
-                        // "+unit.getSourceFile().getName());
-                        // System.err.println("Model: "+unit.getModel());
-                        // System.err.println("Chassis: "+unit.getChassis());
-                        // System.err.flush();
-                        if (unit.getEntryName().equalsIgnoreCase(getUnitFilename()) || unit.getModel().trim().equalsIgnoreCase(getUnitFilename().trim()) || unit.getChassis().trim().equalsIgnoreCase(getUnitFilename().trim())) {
-                            ms = unit;
-                            break;
-                        }
-                    }
-                }
-            }
+        UnitEntity = UnitUtils.createEntity(getUnitFilename());
 
-            UnitEntity = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
-        } catch (Exception exep) {
-            try {
-                // CampaignData.mwlog.errLog("Error loading unit: " +
-                // getUnitFilename() + ". Try replacing with OMG.");
-                // MechSummary ms =
-                // MechSummaryCache.getInstance().getMech("Error OMG-UR-FD");
-                UnitEntity = UnitUtils.createOMG();// new
-                // MechFileParser(ms.getSourceFile(),
-                // ms.getEntryName()).getEntity();
-                setProducer("Unable to find " + getUnitFilename() + " on clients system!");
-                // UnitEntity = new MechFileParser (new
-                // File("./data/mechfiles/Meks.zip"),"Error
-                // OMG-UR-FD.hmp").getEntity();
-            } catch (Exception exepe) {
-                CampaignData.mwlog.errLog("Error unit failed to load. Exiting.");
-                System.exit(1);
-            }
+        if (UnitEntity == null) {
+            CampaignData.mwlog.errLog("Error unit failed to load. Exiting.");
+            System.exit(1);
+        }
+
+        if ( UnitEntity.getChassis().equals("Error") ) {
+            setProducer("Unable to find " + getUnitFilename() + " on clients system!");
         }
         // setType(getEntityType(UnitEntity));
         this.getC3Type(UnitEntity);
