@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.25.x
+Release Server 0.2.25.4
 + Bug: request command costing more with real cost then normal. 
 + Bug: ArrayIndexOutOfBoundsException in Influences.getOwner
 + new MegaMek.jar 0.33.22-MW040108-5564
