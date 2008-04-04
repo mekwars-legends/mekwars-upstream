@@ -3152,7 +3152,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             for (  BMEquipment eq : CampaignMain.cm.getPartsMarket().getEquipmentList().values() ) {
                 
                 //do not produce something that the is allowed in the BM
-                if ( eq.getCost() <= 0 && eq.getAmount() <= 0 )
+                if ( eq.getCost() <= 0 )
                     continue;
 
                 //do bother producing what you cannot use.
@@ -3195,7 +3195,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                     continue;
 
                 //do not produce something that the is allowed in the BM
-                if ( eq.getCost() <= 0 && eq.getAmount() <= 0 )
+                if ( eq.getCost() <= 0 )
                     continue;
                 //do bother producing what you cannot use.
                 if ( !CampaignMain.cm.getBooleanConfig("AllowCrossOverTech") ) {
