@@ -304,11 +304,11 @@ public class CampaignData implements TerrainProvider {
     /**
      * Retrieve an unused id for terrains.
      * Only used upon start up of a new server using XML files.
-     * @return An House id not used yet.
+     * @return An terrain id not used yet.
      */
     public int getUnusedTerrainID() {
-        int id = 0;
-        int hid = 0;
+        int id = -1;
+        int hid = -1;
         for (PlanetEnvironment e : terrains) {
         	hid = e.getId();
         	if (hid > id) id = hid;

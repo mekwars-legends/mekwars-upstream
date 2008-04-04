@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.25.x
++ Bug: if terrain no longer exists planet does not load, now loads first terrrain in list
 + Bug: 0 factory refreshing occurs if player has less then 1 production weight 
 + RFE: Allow Losing pilots to Level
 + Bug: isKeepingUnitHistory() did not check if SQL Back was being used.

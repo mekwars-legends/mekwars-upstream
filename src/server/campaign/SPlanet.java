@@ -99,10 +99,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
             if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")) {
                 AdvancedTerrain aTerrain = this.getAdvancedTerrain().get(new Integer(t.getEnvironment().getId()));
                 if (aTerrain == null)
-                    aTerrain = new AdvancedTerrain(); // no data start it
-                // over. first time
-                // starting advanced
-                // maps.
+                    aTerrain = new AdvancedTerrain(); // no data start it over. first time starting advanced maps.
                 if (aTerrain.getDisplayName().length() <= 1)
                     aTerrain.setDisplayName(t.getEnvironment().getName());
                 result.append(aTerrain.toString());
@@ -417,6 +414,9 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
             } catch (Exception ex) {
                 planetEnvironment = data.getTerrainByName(terrain);
             }
+            
+            if ( planetEnvironment == null )
+                planetEnvironment = data.getTerrain(0);
 
             Continent PE = new Continent(size, planetEnvironment);
             if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")) {
