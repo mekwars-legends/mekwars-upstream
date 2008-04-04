@@ -518,6 +518,14 @@ public final class CampaignMain implements Serializable {
         }
     }
 
+    public long getLongConfig(String key) {
+        try {
+            return Long.parseLong(cm.getConfig(key));
+        } catch (Exception ex) {
+            return -1;
+        }
+    }
+
     public double getDoubleConfig(String key) {
         try {
             return Double.parseDouble(cm.getConfig(key));
@@ -2216,7 +2224,7 @@ public final class CampaignMain implements Serializable {
     }
 
     public boolean isUsingIncreasedTechs() {
-        return (Boolean.parseBoolean(CampaignMain.cm.getConfig("UseNonFactionUnitsIncreasedTechs")) && !CampaignMain.cm.isUsingAdvanceRepair());
+        return (CampaignMain.cm.getBooleanConfig("UseNonFactionUnitsIncreasedTechs") && !CampaignMain.cm.isUsingAdvanceRepair());
     }
 
     public boolean isSynchingBB() {
@@ -2226,11 +2234,11 @@ public final class CampaignMain implements Serializable {
     }
 
     public boolean requireEmailForRegistration() {
-        return (isUsingMySQL() && isSynchingBB() && Boolean.parseBoolean(cm.getConfig("REQUIREEMAILFORREGISTRATION")));
+        return (isUsingMySQL() && isSynchingBB() && cm.getBooleanConfig("REQUIREEMAILFORREGISTRATION"));
     }
 
     public boolean isKeepingUnitHistory() {
-        return Boolean.parseBoolean(CampaignMain.cm.getConfig("StoreUnitHistoryInDatabase"));
+        return (CampaignMain.cm.getBooleanConfig("StoreUnitHistoryInDatabase") && isUsingMySQL());
     }
 
     public void turnOffBBSynch() {
@@ -2242,9 +2250,9 @@ public final class CampaignMain implements Serializable {
      * thread if it is null
      */
     public boolean isUsingAdvanceRepair() {
-        boolean isUsing = Boolean.parseBoolean(cm.getConfig("UseAdvanceRepair")) || Boolean.parseBoolean(cm.getConfig("UseSimpleRepair"));
+        boolean isUsing = cm.getBooleanConfig("UseAdvanceRepair") || cm.getBooleanConfig("UseSimpleRepair");
         if (isUsing && RTT == null) {
-            RTT = new RepairTrackingThread(Long.parseLong(cm.getConfig("TimeForEachRepairPoint")) * 1000);
+            RTT = new RepairTrackingThread(cm.getLongConfig("TimeForEachRepairPoint") * 1000);
             RTT.start();
         } else if (!isUsing && RTT != null) {
             RTT.interrupt();
@@ -2255,10 +2263,10 @@ public final class CampaignMain implements Serializable {
     }
 
     public void restartRTT() {
-        boolean isUsing = Boolean.parseBoolean(cm.getConfig("UseAdvanceRepair")) || Boolean.parseBoolean(cm.getConfig("UseSimpleRepair"));
+        boolean isUsing = cm.getBooleanConfig("UseAdvanceRepair") || cm.getBooleanConfig("UseSimpleRepair");
         if (isUsing) {
             RTT = null;
-            RTT = new RepairTrackingThread(Long.parseLong(cm.getConfig("TimeForEachRepairPoint")) * 1000);
+            RTT = new RepairTrackingThread(cm.getLongConfig("TimeForEachRepairPoint") * 1000);
             RTT.start();
         }
     }
