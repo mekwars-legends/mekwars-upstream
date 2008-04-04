@@ -2,7 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.25.x
-+ Bug: if terrain no longer exists planet does not load, now loads first terrrain in list
+Release Client 0.2.25.2 & Server 0.2.25.5
++ Bug: ComponentConverterDialog did not show parts when  they where 
+	all purchased from the BM
++ Bug: if terrain no longer exists planet does not load, now loads first terrain in list
 + Bug: 0 factory refreshing occurs if player has less then 1 production weight 
 + RFE: Allow Losing pilots to Level
 + Bug: isKeepingUnitHistory() did not check if SQL Back was being used.

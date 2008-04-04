@@ -230,11 +230,11 @@ public final class ComponentConverterDialog implements ActionListener {
         } else {
             for (BMEquipment eq : mwclient.getCampaign().getBlackMarketParts().values()) {
 
-                if ((Boolean.parseBoolean(mwclient.getserverConfigs("AllowCrossOverTech")) 
+                if ( (Boolean.parseBoolean(mwclient.getserverConfigs("AllowCrossOverTech")) 
                         || mwclient.getPlayer().getHouseFightingFor().getTechLevel() == TechConstants.T_ALL 
                         || eq.getTechLevel() == TechConstants.T_ALL
                         || mwclient.getPlayer().getHouseFightingFor().getTechLevel() >= eq.getTechLevel()) 
-                        && eq.getCost() > 0 && eq.getAmount() > 0) {
+                        && eq.getCost() > 0 ) {
 
                     ComponentToCritsConverter converter = mwclient.getCampaign().getComponentConverter().get(eq.getEquipmentInternalName());
                     
