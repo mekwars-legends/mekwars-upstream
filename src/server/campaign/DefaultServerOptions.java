@@ -25,11 +25,7 @@ import java.util.Properties;
 import common.CampaignData;
 
 /**
- * 
- * @author Torren Oct 22, 2004
- * 
- * Loads the default settings for the server config If any configs are added
- * please add them to this function as well as createConfig().
+ * @author Torren Oct 22, 2004 Loads the default settings for the server config If any configs are added please add them to this function as well as createConfig().
  */
 public class DefaultServerOptions {
     private Properties defaults; // default server config
@@ -50,8 +46,7 @@ public class DefaultServerOptions {
         defaults.setProperty("MechstatPath", "./Mechstats.htm");
 
         /*
-         * defaults.setProperty("MaxBVDifference", "150");
-         * defaults.setProperty("MaxBVPercent", "0");
+         * defaults.setProperty("MaxBVDifference", "150"); defaults.setProperty("MaxBVPercent", "0");
          */
 
         // Op: Stinger BV mods
@@ -560,7 +555,7 @@ public class DefaultServerOptions {
         // eventually
         defaults.setProperty("AllowLimiters", "true");
 
-        //Pilots/Crews stay with their units after donation
+        // Pilots/Crews stay with their units after donation
         defaults.setProperty("CrewsStayWithUnits", "false");
 
         // Pesonal Pilot Queues
@@ -568,65 +563,11 @@ public class DefaultServerOptions {
         defaults.setProperty("CostToBuyNewPilot", "1");
         defaults.setProperty("CostToBuyNewProtoPilot", "1");
         defaults.setProperty("AllowPlayerToBuyPilotsFromHouseWhenPoolIsFull", "false");
-        defaults.setProperty("MaxAllowedPilotsInQueueToBuyFromHouse", "2"); // if
-        // the
-        // player
-        // has
-        // more
-        // then
-        // 2
-        // pilots
-        // in
-        // their
-        // queue
-        // of a
-        // size
-        // and
-        // wieght
-        // they
-        // cannot
-        // buy
-        // from
-        // the
-        // faction.
-        defaults.setProperty("BasePilotSurvival", "20"); // if the player has
-        // more then 2
-        // pilots in their
-        // queue of a size
-        // and wieght they
-        // cannot buy from
-        // the faction.
-        defaults.setProperty("TrappedInMechSurvivalMod", "-20"); // If the
-        // pilot was
-        // still in
-        // his mek
-        // when it
-        // died this
-        // mod is
-        // applied
-        // to the
-        // surival
-        // rate.
-        defaults.setProperty("DownPilotsMustRollForSurvival", "false"); // engined
-        // and
-        // cored
-        // meks
-        // whoes
-        // pilots
-        // are
-        // alive
-        // may
-        // have
-        // to
-        // check
-        // for
-        // survival
-        defaults.setProperty("ChanceToConvertCapturedPilots", "10");// capture a
-        // pilot and
-        // you have
-        // chance to
-        // convert
-        // them
+        defaults.setProperty("MaxAllowedPilotsInQueueToBuyFromHouse", "2"); // if the player has more then 2 pilots in their queue of size and wieght they cannot buy from the faction.
+        defaults.setProperty("BasePilotSurvival", "20"); // if the player has more then 2 pilots in their queue of a size and wieght they cannot buy from the faction.
+        defaults.setProperty("TrappedInMechSurvivalMod", "-20"); // If the pilot was still in his mek when it died this mod is applied to the surival rate.
+        defaults.setProperty("DownPilotsMustRollForSurvival", "false"); // engined and cored meks whoes pilots are alive may have to check for survival
+        defaults.setProperty("ChanceToConvertCapturedPilots", "10");// capture a pilot and you have chance to convert them
 
         // no-play options
         defaults.setProperty("NoPlayListSize", "1");
@@ -745,9 +686,9 @@ public class DefaultServerOptions {
         defaults.setProperty("BestPilotingSkill", "2");
         defaults.setProperty("BestTotalPilot", "4");
         defaults.setProperty("BaseRollToLevel", "250");
-        defaults.setProperty("MultiplierPerPreviousLevel", "1");// 0 to use only
-        // base
+        defaults.setProperty("MultiplierPerPreviousLevel", "1");// 0 to use only base
         defaults.setProperty("UseRandomPilotLevelups", "true");
+        defaults.setProperty("LosingPilotsCheckToLevel", "false");
 
         // Disconnection auto-report settings
         defaults.setProperty("DisconnectionAddUnitsDestroyed", "0");
@@ -808,18 +749,12 @@ public class DefaultServerOptions {
         defaults.setProperty("MaxBaysToBuy", "-1");
 
         /*
-         * Number of seconds it will take to repair a crit/weapon Based on
-         * Maxtech repairs i.e. engines take longer to repair then Medium Lasers
-         * or Actuators.
+         * Number of seconds it will take to repair a crit/weapon Based on Maxtech repairs i.e. engines take longer to repair then Medium Lasers or Actuators.
          */
         defaults.setProperty("TimeForEachRepairPoint", "60");
 
         /*
-         * What it costs to repair each crit. Note this will be accumulative as
-         * all the crits will be counted i.e. Large Laser with 2 cirts will cost
-         * more to repair then a medium Laser. Engines are based on the total
-         * number of crits for the engine not just the number of crits damaged.
-         * i.e. a STD engine costs less to repair then an XL engine.
+         * What it costs to repair each crit. Note this will be accumulative as all the crits will be counted i.e. Large Laser with 2 cirts will cost more to repair then a medium Laser. Engines are based on the total number of crits for the engine not just the number of crits damaged. i.e. a STD engine costs less to repair then an XL engine.
          */
         defaults.setProperty("EngineCritRepairCost", "1.0");
 
@@ -862,9 +797,7 @@ public class DefaultServerOptions {
         defaults.setProperty("UseRealRepairCosts", "false");
 
         /*
-         * This is used to modify the cost of real repairs. i.e. scale them up
-         * or down depending on the SO's choice value of .75 would use 75% of
-         * the real cost.
+         * This is used to modify the cost of real repairs. i.e. scale them up or down depending on the SO's choice value of .75 would use 75% of the real cost.
          */
         defaults.setProperty("RealRepairCostMod", "1.0");
 
@@ -902,29 +835,14 @@ public class DefaultServerOptions {
         // autoscrapping
 
         /*
-         * BM blocking.
-         * 
-         * Lists are $ delimited and case sensitive, such that a value of
-         * "Liao$Marik$Davion" for BMNoSell would stop all sales attempts by
-         * players in factions w/ those exact names.
-         * 
-         * "NoClanTech" is a boolean. If true, no *player* will be able to sell
-         * clan units on the BM, but house overflows (unless NoSell is enabled
-         * for the house) and rare production can still go on.
+         * BM blocking. Lists are $ delimited and case sensitive, such that a value of "Liao$Marik$Davion" for BMNoSell would stop all sales attempts by players in factions w/ those exact names. "NoClanTech" is a boolean. If true, no *player* will be able to sell clan units on the BM, but house overflows (unless NoSell is enabled for the house) and rare production can still go on.
          */
         defaults.setProperty("BMNoBuy", "");
         defaults.setProperty("BMNoSell", "");
         defaults.setProperty("BMNoClan", "false");
 
         /*
-         * Price adjustments for purchases from factories not originally owned
-         * by the faction. This adjustment stacks with any faction penalty
-         * already attached to the factory. Float values, used as multipliers.
-         * Examples:
-         * 
-         * 80 CBill Faction Base * 1.15 CBillMultiplier = 92 CBill final cost.
-         * 80 CBill Faction Base * 1.00 CBillMultiplier = 80 CBill final cost.
-         * 80 CBill Faction Base * 0.75 CBillMultiplier = 60 CBill final cost.
+         * Price adjustments for purchases from factories not originally owned by the faction. This adjustment stacks with any faction penalty already attached to the factory. Float values, used as multipliers. Examples: 80 CBill Faction Base * 1.15 CBillMultiplier = 92 CBill final cost. 80 CBill Faction Base * 1.00 CBillMultiplier = 80 CBill final cost. 80 CBill Faction Base * 0.75 CBillMultiplier = 60 CBill final cost.
          */
         defaults.setProperty("NonOriginalCBillMultiplier", "1.0");
         defaults.setProperty("NonOriginalInfluenceMultiplier", "1.0");
@@ -1025,8 +943,8 @@ public class DefaultServerOptions {
         defaults.setProperty("BaseCommonBuildTableShares", "100");
         defaults.setProperty("BaseFactoryComponents", "1000");
         defaults.setProperty("StartingPlanetBays", "20");
-        
-        //Buying Factory options
+
+        // Buying Factory options
         defaults.setProperty("NewFactoryBaseCost", "100");
         defaults.setProperty("NewFactoryCostModifierLight", "1.0");
         defaults.setProperty("NewFactoryCostModifierMedium", "1.0");
@@ -1047,15 +965,15 @@ public class DefaultServerOptions {
         defaults.setProperty("NewFactoryFluModifierInfantry", "1.0");
         defaults.setProperty("NewFactoryFluModifierBattleArmor", "1.0");
         defaults.setProperty("NewFactoryFluModifierProtoMek", "1.0");
-        
-        //Technology Research Options
+
+        // Technology Research Options
         defaults.setProperty("TechPointsNeedToLevel", "100");
         defaults.setProperty("TechPointCost", "100");
         defaults.setProperty("TechPointFlu", "100");
         defaults.setProperty("TechLevelTechPointCostModifier", "1.0");
         defaults.setProperty("TechLevelTechPointFluModifier", "1.0");
-        
-        //Unit Research Options
+
+        // Unit Research Options
         defaults.setProperty("BaseResearchCost", "1.0");
         defaults.setProperty("BaseResearchFlu", "1.0");
         defaults.setProperty("MaxUnitResearchPoints", "10");
@@ -1079,8 +997,8 @@ public class DefaultServerOptions {
         defaults.setProperty("ResearchFluModifierMedium", "1.0");
         defaults.setProperty("ResearchFluModifierHeavy", "1.0");
         defaults.setProperty("ResearchFluModifierAssault", "1.0");
-        
-        //Components to Parts Conversion
+
+        // Components to Parts Conversion
         defaults.setProperty("BaseComponentToMoneyRatio", "1.0");
         defaults.setProperty("ComponentToPartsModifierMek", "1.0");
         defaults.setProperty("ComponentToPartsModifierVehicle", "1.0");
@@ -1092,15 +1010,13 @@ public class DefaultServerOptions {
         defaults.setProperty("ComponentToPartsModifierHeavy", "1.0");
         defaults.setProperty("ComponentToPartsModifierAssault", "1.0");
 
-        //Slice Settings
+        // Slice Settings
         defaults.setProperty("ProcessHouseTicksAtSlice", "false");
 
     }
 
     /**
-     * @author jtighe
-     * 
-     * Saves the current server configs to the configfile.
+     * @author jtighe Saves the current server configs to the configfile.
      */
     public void createConfig() {
         try {

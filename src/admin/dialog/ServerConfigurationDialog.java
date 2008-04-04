@@ -1477,6 +1477,11 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setName("CrewsStayWithUnits");
         pilotCBoxGrid.add(BaseCheckBox);
 
+        BaseCheckBox = new JCheckBox("All Pilots Level");
+        BaseCheckBox.setToolTipText("<html>If Checked Then even losing pilots will have a chance to level.</html>");
+        BaseCheckBox.setName("LosingPilotsCheckToLevel");
+        pilotCBoxGrid.add(BaseCheckBox);
+
         // finalize the layout
         JPanel pilotBox = new JPanel(new SpringLayout());
         JPanel pilotFlow = new JPanel();

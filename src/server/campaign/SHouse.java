@@ -1297,11 +1297,11 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         CampaignData.mwlog.debugLog("Calculating refresh points");
         double cComp = getComponentProduction();
         int componentsToAdd = (int) (tickworth * cComp);
-        int refreshToAdd = (int) Math.round(tickworth);
+        int refreshToAdd = (int) Math.ceil(tickworth);
 
-        if (Integer.parseInt(this.getConfig("FactoryRefreshPoints")) > -1)
+        if (this.getIntegerConfig("FactoryRefreshPoints") > -1)
             // Allow Servers to refresh factories without having active players.
-            refreshToAdd = Integer.parseInt(this.getConfig("FactoryRefreshPoints"));
+            refreshToAdd = this.getIntegerConfig("FactoryRefreshPoints");
 
         CampaignData.mwlog.debugLog("     -> " + refreshToAdd);
 

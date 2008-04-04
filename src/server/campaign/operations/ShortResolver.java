@@ -4005,7 +4005,7 @@ public class ShortResolver {
         currU.getPilot().setExperience(currU.getPilot().getExperience() + totalXPforUnit);
 
         // if the player is a winner, check for level up
-        if (so.getWinners().containsKey(ownerName) && allowLevelUp) {
+        if ((so.getWinners().containsKey(ownerName) || CampaignMain.cm.getBooleanConfig("LosingPilotsCheckToLevel")) && allowLevelUp) {
             boolean solPilotCanLevel = o.getBooleanValue("SOLPilotsCheckLevelUp");
             boolean housePilotCanLevel = o.getBooleanValue("HousePilotsCheckLevelUp");
             if ((owner.getMyHouse().isNewbieHouse() && solPilotCanLevel) || (!owner.getMyHouse().isNewbieHouse() && housePilotCanLevel))
