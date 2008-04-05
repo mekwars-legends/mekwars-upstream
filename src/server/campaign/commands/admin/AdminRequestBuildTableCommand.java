@@ -118,6 +118,19 @@ public class AdminRequestBuildTableCommand implements Command {
 			}
 			CampaignMain.cm.toUser("BT|BT|" + folder + "|" + table + toReturn.toString(), Username, false);
 			
+		} else if (subcommand.equalsIgnoreCase("prune")) {
+			String[] folderList = {"standard","rare","reward"};
+			for (int i = 0; i < folderList.length; i++) {
+				File currF = new File("./data/buildtables/" + folderList[i]);
+				if(!currF.exists() || !currF.isDirectory())
+					continue;
+				File fileNames[] = currF.listFiles();
+				for (File currFile : fileNames) {
+					if(currFile.getName().endsWith("bak"))
+						currFile.delete();
+				}
+			}
+			CampaignMain.cm.toUser("AM: Build table backups removed.", Username, true);
 		}
 	}
 }

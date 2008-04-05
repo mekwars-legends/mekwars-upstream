@@ -618,9 +618,8 @@ public class mysqlHandler{
     this.uh = new UnitHandler(MySQLCon.con);
     this.fah = new FactionHandler(MySQLCon.con);
     this.plh = new PlayerHandler(MySQLCon.con);
-    if(CampaignMain.cm.isKeepingUnitHistory()) {
-    	this.hh = new HistoryHandler(MySQLCon.con);
-    }
+  	this.hh = new HistoryHandler(MySQLCon.con);
+
     this.checkAndUpdateDB();
   }
 }

@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.25.x
++ Added ability to prune server-side build table backups
 Release Client 0.2.25.2 & Server 0.2.25.5
 + Bug: ComponentConverterDialog did not show parts when  they where 
 	all purchased from the BM

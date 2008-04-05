@@ -121,6 +121,7 @@ public class AdminMenu extends JMenu {
     JMenuItem jMenuAdminSetHouseBasePilotSkill = new JMenuItem();
     JMenuItem jMenuAdminUploadBuildTable = new JMenuItem();
     JMenuItem jMenuAdminSynchBuildTables = new JMenuItem();
+    JMenuItem jMenuAdminPruneBuildTables = new JMenuItem();
     JMenuItem jMenuAdminUploadMul = new JMenuItem();
     JMenuItem jMenuAdminListMuls = new JMenuItem();
     JMenuItem jMenuAdminRetrieveMul = new JMenuItem();
@@ -445,6 +446,13 @@ public class AdminMenu extends JMenu {
         	}
         });
         
+        jMenuAdminPruneBuildTables.setText("Prune server backups");
+        jMenuAdminPruneBuildTables.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		jMenuAdminPruneBuildTable_actionPerformed(e);
+        	}
+        });
+        
         jMenuAdminUploadMul.setText("Upload a Mul File");
         jMenuAdminUploadMul.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -658,8 +666,10 @@ public class AdminMenu extends JMenu {
 
         if ( userLevel >= mwclient.getData().getAccessLevel("AdminUploadBuildTable"))
         	jMenuAdminBuildTables.add(jMenuAdminUploadBuildTable);
-        if ( userLevel >= mwclient.getData().getAccessLevel("AdminRequestBuildTable"))
-        	jMenuAdminBuildTables.add(jMenuAdminSynchBuildTables);
+        if ( userLevel >= mwclient.getData().getAccessLevel("AdminRequestBuildTable")) {
+        	jMenuAdminBuildTables.add(jMenuAdminSynchBuildTables);      
+        	jMenuAdminBuildTables.add(jMenuAdminPruneBuildTables);
+        }
         	
         if ( jMenuAdminBuildTables.getItemCount() > 0)
         	this.add(jMenuAdminBuildTables);	
@@ -1239,6 +1249,10 @@ public class AdminMenu extends JMenu {
 
         public void jMenuAdminRequestBuildTable_actionPerformed(ActionEvent e) {
         	mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "AdminRequestBuildTable list");
+        }
+        
+        public void jMenuAdminPruneBuildTable_actionPerformed(ActionEvent e) {
+        	mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "AdminRequestBuildTable prune");
         }
         
         public void jMenuAdminUploadBuildTable_actionPerformed(ActionEvent e) {

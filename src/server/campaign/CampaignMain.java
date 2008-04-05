@@ -2238,7 +2238,7 @@ public final class CampaignMain implements Serializable {
     }
 
     public boolean isKeepingUnitHistory() {
-        return (CampaignMain.cm.getBooleanConfig("StoreUnitHistoryInDatabase") && isUsingMySQL());
+        return (isUsingMySQL() && CampaignMain.cm.getBooleanConfig("StoreUnitHistoryInDatabase") && isUsingMySQL());
     }
 
     public void turnOffBBSynch() {
