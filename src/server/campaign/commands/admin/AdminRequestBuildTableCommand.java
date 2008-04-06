@@ -43,7 +43,6 @@ public class AdminRequestBuildTableCommand implements Command {
     int accessLevel = IAuthenticator.ADMIN;
     String syntax = "list,get[#folder#filename]";
 
-<<<<<<< .mine
     public int getExecutionLevel() {
         return accessLevel;
     }
@@ -137,77 +136,4 @@ public class AdminRequestBuildTableCommand implements Command {
             CampaignMain.cm.toUser("BT|VS|", Username, false);
         }
     }
-=======
-			for (int i = 0; i < folderList.length; i++) {
-				File currF = new File("./data/buildtables/" + folderList[i]);
-				toReturn.append(folderList[i]);
-				toReturn.append(folderDelimiter);
-				if (!currF.exists() || !currF.isDirectory())
-					continue;
-				File fileNames[] = currF.listFiles();
-				
-				for (File currFile : fileNames) {
-					if(currFile.getName().endsWith("txt")) { 
-						toReturn.append(currFile.getName());
-						toReturn.append(fileDelimiter);
-					}
-				}
-				toReturn.append(folderDelimiter);
-			}
-			CampaignMain.cm.toUser("BT|LS|"+ toReturn.toString(), Username, false);
-			CampaignData.mwlog.dbLog("Sending: " + toReturn.toString());				
-			
-			return;
-		} else if (subcommand.equalsIgnoreCase("get")) {
-			StringBuilder toReturn = new StringBuilder();
-			String folder = "";
-			String table = "";
-			if(command.hasMoreTokens())
-				folder = command.nextToken();
-			if(command.hasMoreTokens())
-				table = command.nextToken();
-			if(folder.length() == 0 || table.length() == 0) {
-				CampaignMain.cm.toUser("Bad Build Table Request: " + (folder.length()==0 ? "Empty folder name" : "Empty file name"), Username, true);
-				return;
-			}
-			File file = new File("./data/buildtables/" + folder + "/" + table);
-			if(!file.exists()) {
-				CampaignMain.cm.toUser("Bad Build Table Request: " + folder + "/" + table + " does not exist.", Username, true);
-				return;
-			}
-			// The request is good, so send it.
-			try {
-				FileInputStream in = new FileInputStream(file);
-				BufferedReader br = new BufferedReader(new InputStreamReader(in));
-				try {
-					while(br.ready()) {
-						toReturn.append("|" + br.readLine());
-					}
-					br.close();
-					in.close();
-				} catch (IOException ex) {
-					
-				}
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				CampaignData.mwlog.errLog(e);
-			}
-			CampaignMain.cm.toUser("BT|BT|" + folder + "|" + table + toReturn.toString(), Username, false);
-			
-		} else if (subcommand.equalsIgnoreCase("prune")) {
-			String[] folderList = {"standard","rare","reward"};
-			for (int i = 0; i < folderList.length; i++) {
-				File currF = new File("./data/buildtables/" + folderList[i]);
-				if(!currF.exists() || !currF.isDirectory())
-					continue;
-				File fileNames[] = currF.listFiles();
-				for (File currFile : fileNames) {
-					if(currFile.getName().endsWith("bak"))
-						currFile.delete();
-				}
-			}
-			CampaignMain.cm.toUser("AM: Build table backups removed.", Username, true);
-		}
-	}
->>>>>>> .r693
 }
