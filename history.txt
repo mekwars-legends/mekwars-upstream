@@ -1,7 +1,10 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.25.x
+v 0.2.26.x
+Release Client/Server 0.2.26.0
++ New Build Table Viewer now more dynamic.
++ Bug: RequestCommand setting price to 0 for non-Real cost using servers
 + Added ability to prune server-side build table backups
 Release Client 0.2.25.2 & Server 0.2.25.5
 + Bug: ComponentConverterDialog did not show parts when  they where 
@@ -12,6 +15,7 @@ Release Client 0.2.25.2 & Server 0.2.25.5
 + Bug: isKeepingUnitHistory() did not check if SQL Back was being used.
 + Moved CreateEntity to common.UnitUtils.
 + Bug: Fixed all references to removed F_BATTLEARMOR flag.
+v 0.2.25.x
 Release Server 0.2.25.4
 + Bug: request command costing more with real cost then normal. 
 + Bug: ArrayIndexOutOfBoundsException in Influences.getOwner

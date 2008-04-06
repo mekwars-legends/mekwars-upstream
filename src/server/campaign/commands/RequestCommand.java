@@ -330,9 +330,11 @@ public class RequestCommand implements Command {
 
 			Vector<SUnit> mechs = factory.getMechProduced(type_id,pilot);
 			StringBuffer results = new StringBuffer();
-			mechCbills = 0;
+            if (playerHouse.getBooleanConfig("UseCalculatedCosts")) {
+                mechCbills = 0;
+            }
 			for (SUnit mech : mechs ){
-		        if (Boolean.parseBoolean(playerHouse.getConfig("UseCalculatedCosts"))) {
+		        if (playerHouse.getBooleanConfig("UseCalculatedCosts")) {
 		            double unitCost = mech.getEntity().getCost();
 		            if ( unitCost < 1)
 		                unitCost = playerHouse.getPriceForUnit(mech.getWeightclass(),mech.getType());
@@ -373,14 +375,7 @@ public class RequestCommand implements Command {
 			StringBuilder hsUpdates = new StringBuilder();
 
 			//set the refresh miniticks
-			if (factory.getWeightclass() == Unit.LIGHT)
-				hsUpdates.append(factory.addRefresh((CampaignMain.cm.getIntegerConfig("LightRefresh") * 100) / factory.getRefreshSpeed(), false));
-			else if (factory.getWeightclass() == Unit.MEDIUM)
-				hsUpdates.append(factory.addRefresh((CampaignMain.cm.getIntegerConfig("MediumRefresh") * 100) / factory.getRefreshSpeed(), false));
-			else if (factory.getWeightclass() == Unit.HEAVY)
-				hsUpdates.append(factory.addRefresh((CampaignMain.cm.getIntegerConfig("HeavyRefresh") * 100) / factory.getRefreshSpeed(), false));
-			else if (factory.getWeightclass() == Unit.ASSAULT)
-				hsUpdates.append(factory.addRefresh((CampaignMain.cm.getIntegerConfig("AssaultRefresh") * 100) / factory.getRefreshSpeed(), false));
+			hsUpdates.append(factory.addRefresh((CampaignMain.cm.getIntegerConfig(SUnit.getWeightClassDesc(factory.getWeightclass())+"Refresh") * 100) / factory.getRefreshSpeed(), false));
 			hsUpdates.append(playerHouse.addPP(weightclass, type_id, -mechPP, false));//remove PP from the faction
 
 			result = "AM:You've been granted the following " + results.toString() + ". (-";

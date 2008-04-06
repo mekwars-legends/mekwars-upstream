@@ -1487,6 +1487,7 @@ src/server/campaign/commands/RemoveArmyCommand.java -text
 src/server/campaign/commands/RemoveVoteCommand.java -text
 src/server/campaign/commands/RepairUnitCommand.java -text
 src/server/campaign/commands/RepodCommand.java -text
+src/server/campaign/commands/RequestBuildTableCommand.java -text
 src/server/campaign/commands/RequestCommand.java -text
 src/server/campaign/commands/RequestDonatedCommand.java -text
 src/server/campaign/commands/RequestServerMailCommand.java -text

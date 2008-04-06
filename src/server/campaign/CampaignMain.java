@@ -1503,6 +1503,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("REMOVEVOTE", new RemoveVoteCommand());
         Commands.put("REPAIRUNIT", new RepairUnitCommand());
         Commands.put("REQUEST", new RequestCommand());
+        Commands.put("REQUESTBUILDTABLE", new RequestBuildTableCommand());
         Commands.put("REQUESTDONATED", new RequestDonatedCommand());
         Commands.put("REQUESTSERVERMAIL", new RequestServerMailCommand());
         Commands.put("REQUESTSUBFACTIONPROMOTION", new RequestSubFactionPromotionCommand());

@@ -157,7 +157,11 @@ public final class MWClient implements IClient {
 
     CConfig Config;
 
+<<<<<<< .mine
+    public static final String CLIENT_VERSION = "0.2.26.0"; // change this with
+=======
     public static final String CLIENT_VERSION = "0.2.25.2"; // change this with
+>>>>>>> .r693
                                                             // all client
                                                             // changes @Torren
 
