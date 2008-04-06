@@ -28,6 +28,7 @@ import common.CampaignData;
 
 import client.MWClient;
 import client.gui.CCommPanel;
+import client.gui.dialog.TableViewerDialog;
 
 /**
  * @author Spork
@@ -52,9 +53,12 @@ public class BT extends Command {
 		StringTokenizer st = decode(input);
 		
 		String cmd = st.nextToken();
-		
+		boolean viewer = false;
 		if(cmd.equalsIgnoreCase("LS")) {
 			StringTokenizer folderT = new StringTokenizer(st.nextToken(), "?");
+			if ( st.hasMoreTokens() ) {
+			    viewer = Boolean.parseBoolean(st.nextToken());
+			}
 			while(folderT.hasMoreTokens()) {
 				//Token 1 is the folder
 				String dName = folderT.nextToken();
@@ -69,7 +73,33 @@ public class BT extends Command {
 				}
 					
 			}
-		} else if (cmd.equalsIgnoreCase("BT")) {
+            if ( viewer ) {
+                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "RequestBuildTable view");
+            }
+
+		} if(cmd.equalsIgnoreCase("PLS")) {
+            StringTokenizer folderT = new StringTokenizer(st.nextToken(), "?");
+            if ( st.hasMoreTokens() ) {
+                viewer = Boolean.parseBoolean(st.nextToken());
+            }
+            while(folderT.hasMoreTokens()) {
+                //Token 1 is the folder
+                String dName = folderT.nextToken();
+                CampaignData.mwlog.infoLog(dName);
+                // Token 2 is the names of the lists
+                if(folderT.hasMoreTokens()) {
+                    StringTokenizer listT = new StringTokenizer(folderT.nextToken(), "*");
+                    while (listT.hasMoreTokens()) {
+                        String fileName = listT.nextToken();
+                        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "RequestBuildTable get#" + dName + "#" + fileName);
+                    }
+                }
+                    
+            }
+            if ( viewer ) {
+                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "RequestBuildTable view");
+            }
+        } else if (cmd.equalsIgnoreCase("BT")) {
 			String folder = st.nextToken();
 			String table = st.nextToken();
 			File file = new File("./data/buildtables");
@@ -103,6 +133,8 @@ public class BT extends Command {
 				// TODO Auto-generated catch block
 				CampaignData.mwlog.errLog(e);
 			}
+		} else if ( cmd.equalsIgnoreCase("VS") ) {
+		    new TableViewerDialog(mwclient);
 		}
 	}
 }
