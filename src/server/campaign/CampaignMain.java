@@ -217,7 +217,7 @@ public final class CampaignMain implements Serializable {
              * FileInputStream(this.myServer.getConfigParam("CAMPAIGNCONFIG"))); }
              */
             if (isUsingMySQL()) {
-                if (this.isSynchingBB())
+                if (Boolean.parseBoolean(getServer().getConfigParam("MYSQL_SYNCHPHPBB")))
                     config.put("REQUIREEMAILFORREGISTRATION", "true");
                 else
                     config.put("REQUIREEMAILFORREGISTRATION", "false");
@@ -2229,9 +2229,7 @@ public final class CampaignMain implements Serializable {
     }
 
     public boolean isSynchingBB() {
-        if (validBBVersion)
-            return Boolean.parseBoolean(myServer.getConfigParam("MYSQL_SYNCHPHPBB"));
-        return false;
+    	return MySQL.isSynchingBB();
     }
 
     public boolean requireEmailForRegistration() {

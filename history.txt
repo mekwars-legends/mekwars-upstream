@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.26.x
++ Added self-healing code to fix sporadic disconnection from the phpBB database
 + RequestBuildTable commands now check time stamps on files and only send down newest ones
 Release Client/Server 0.2.26.0
 + New Build Table Viewer now more dynamic.

@@ -602,7 +602,7 @@ public class PhpBBConnector {
             CampaignData.mwlog.dbLog(e);
         }
     }
-
+    
     public PhpBBConnector() {
         String url = "jdbc:mysql://" + CampaignMain.cm.getServer().getConfigParam("PHPBB_HOST") + "/" + CampaignMain.cm.getServer().getConfigParam("PHPBB_DB") + "?user=" + CampaignMain.cm.getServer().getConfigParam("PHPBB_USER") + "&password=" + CampaignMain.cm.getServer().getConfigParam("PHPBB_PASS");
         CampaignData.mwlog.dbLog("Attempting phpBB Connection");

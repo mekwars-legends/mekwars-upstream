@@ -54,6 +54,30 @@ public class mysqlHandler{
 		  phpBBCon.close();
   }
   
+  public boolean isSynchingBB() {
+      boolean isUsing = Boolean.parseBoolean(CampaignMain.cm.getServer().getConfigParam("MYSQL_SYNCHPHPBB"));
+
+      if (isUsing && phpBBCon == null) {
+          phpBBCon = new PhpBBConnector();
+          phpBBCon.init();
+      } else if (!isUsing && phpBBCon != null) {
+          phpBBCon.close();
+          phpBBCon = null;
+      }
+      
+      try {
+    	  if(phpBBCon.con.isClosed()){
+    		phpBBCon = new PhpBBConnector();
+    		phpBBCon.init();
+    	  }
+      } catch (SQLException e) {
+    	  CampaignData.mwlog.dbLog("SQLException in mysqlHandler.isSynchingBB: " + e.getMessage());
+    	  CampaignData.mwlog.dbLog(e);
+      }
+      
+      return isUsing;
+  }
+  
   public int getUnitDBIdFromMWId(int MWId) {
 	  return uh.getUnitDBIdFromMWId(MWId);
   }
@@ -608,7 +632,7 @@ public class mysqlHandler{
   
   public mysqlHandler(){
     this.MySQLCon = new MWmysql();
-    if(CampaignMain.cm.isSynchingBB()) {
+    if(Boolean.parseBoolean(CampaignMain.cm.getServer().getConfigParam("MYSQL_SYNCHPHPBB"))) {
     	this.phpBBCon = new PhpBBConnector();
     	phpBBCon.init();
     }
