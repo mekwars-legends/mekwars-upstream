@@ -2229,7 +2229,12 @@ public final class CampaignMain implements Serializable {
     }
 
     public boolean isSynchingBB() {
-    	return MySQL.isSynchingBB();
+        
+        if ( isUsingMySQL() ){
+            return MySQL.isSynchingBB();
+        }
+        
+        return false;
     }
 
     public boolean requireEmailForRegistration() {

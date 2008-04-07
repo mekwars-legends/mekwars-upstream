@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.26.x
++ RFE: Mul's now load in BuildTable viewer, however mul files must exist client side.
++ Bug: CampaignMain.isSynchingBB() not checking if MySQL is being used first.
 + Added self-healing code to fix sporadic disconnection from the phpBB database
 + RequestBuildTable commands now check time stamps on files and only send down newest ones
 Release Client/Server 0.2.26.0
