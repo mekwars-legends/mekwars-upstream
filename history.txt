@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.26.x
++ RequestBuildTable commands now check time stamps on files and only send down newest ones
 Release Client/Server 0.2.26.0
 + New Build Table Viewer now more dynamic.
 + Bug: RequestCommand setting price to 0 for non-Real cost using servers

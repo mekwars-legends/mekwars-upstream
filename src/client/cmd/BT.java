@@ -68,13 +68,19 @@ public class BT extends Command {
 					StringTokenizer listT = new StringTokenizer(folderT.nextToken(), "*");
 					while (listT.hasMoreTokens()) {
 						String fileName = listT.nextToken();
-						mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "AdminRequestBuildTable get#" + dName + "#" + fileName);
+						long time = 0;
+						File file = new File("./data/buildtables/" + dName + "/" + fileName);
+						
+						if ( file.exists() ) {
+						    time = file.lastModified();
+						}
+						mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "AdminRequestBuildTable get#" + dName + "#" + fileName + "#" + time);
 					}
 				}
 					
 			}
             if ( viewer ) {
-                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "RequestBuildTable view");
+                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "AdminRequestBuildTable view");
             }
 
 		} if(cmd.equalsIgnoreCase("PLS")) {
@@ -91,7 +97,13 @@ public class BT extends Command {
                     StringTokenizer listT = new StringTokenizer(folderT.nextToken(), "*");
                     while (listT.hasMoreTokens()) {
                         String fileName = listT.nextToken();
-                        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "RequestBuildTable get#" + dName + "#" + fileName);
+                        long time = 0;
+                        File file = new File("./data/buildtables/" + dName + "/" + fileName);
+                        
+                        if ( file.exists() ) {
+                            time = file.lastModified();
+                        }
+                        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "AdminRequestBuildTable get#" + dName + "#" + fileName + "#" + time);
                     }
                 }
                     

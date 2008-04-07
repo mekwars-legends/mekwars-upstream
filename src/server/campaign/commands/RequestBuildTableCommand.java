@@ -90,12 +90,17 @@ public class RequestBuildTableCommand implements Command {
 			StringBuilder toReturn = new StringBuilder();
 			String folder = "";
 			String table = "";
+			long time = 0;
 			
 			if(command.hasMoreTokens())
 				folder = command.nextToken();
 			if(command.hasMoreTokens())
 				table = command.nextToken();
-			    
+			
+			if ( command.hasMoreTokens() ) {
+			    time = Long.parseLong(command.nextToken());
+			}
+			
 			if(folder.length() == 0 || table.length() == 0) {
 				CampaignMain.cm.toUser("Bad Build Table Request: " + (folder.length()==0 ? "Empty folder name" : "Empty file name"), Username, true);
 				return;
@@ -105,6 +110,11 @@ public class RequestBuildTableCommand implements Command {
 				CampaignMain.cm.toUser("Bad Build Table Request: " + folder + "/" + table + " does not exist.", Username, true);
 				return;
 			}
+			
+			if ( time >= file.lastModified() ) {
+			    return;
+			}
+			
 			// The request is good, so send it.
 			try {
 				FileInputStream in = new FileInputStream(file);
