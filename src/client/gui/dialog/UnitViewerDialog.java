@@ -1032,7 +1032,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
     }
 
     public void keyPressed(java.awt.event.KeyEvent ke) {
-        if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
+        if (ke.getKeyCode() == KeyEvent.VK_ENTER || ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
             ActionEvent event = new ActionEvent(bCancel, ActionEvent.ACTION_PERFORMED, "");
             actionPerformed(event);
         }

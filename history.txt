@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.26.x
++ RFE: Added Default Access Level of 0 for create factory dialogs.
 + RFE: Mul's now load in BuildTable viewer, however mul files must exist client side.
 + Bug: CampaignMain.isSynchingBB() not checking if MySQL is being used first.
 + Added self-healing code to fix sporadic disconnection from the phpBB database

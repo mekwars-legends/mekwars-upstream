@@ -828,15 +828,13 @@ public class AdminMenu extends JMenu {
 	        if (factoryBuildTable == null )
 	            return;
 
-	        String factoryAccessLevel = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Factory Access Level");
+	        String factoryAccessLevel = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Factory Access Level",0);
 
 	        if (factoryAccessLevel == null || factoryAccessLevel.length() == 0)
 	            return;
 
 	        StringBuilder sendCommand = new StringBuilder();
-	        sendCommand.append(planetNamestr.trim() + "#" + factoryName.trim()
-	                + "#" + factorySizestr.trim() + "#" + factionName.trim() + "#"
-	                + factoryTypeint);
+	        sendCommand.append(planetNamestr.trim() + "#" + factoryName.trim()+ "#" + factorySizestr.trim() + "#" + factionName.trim() + "#" + factoryTypeint);
 	        sendCommand.append("#");
 	        sendCommand.append(factoryBuildTable);
 	        sendCommand.append("#");
