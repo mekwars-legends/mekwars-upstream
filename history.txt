@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.27.x
+Release Client 0.2.27.1
++ removed Build Table viewer spam from Misc for Non-Staff
++ Bug: Build Table viewer not working for Players
++ Bug: Cored Meks not being left for salvage.
 Release Client/Server 0.2.27.0 
 + New MegaMek.jar 0.33.22-MW040708-5570
 + RFE: Added Default Access Level of 0 for create factory dialogs.

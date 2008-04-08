@@ -112,10 +112,7 @@ public class RGTS extends Command {
 			Entity ent = en.nextElement();
 			if ( ent.getOwner().getName().startsWith("War Bot"))
 				continue;
-			if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0)
-				result.append(SerializeEntity.serializeEntity(ent, true, true,mwclient.isUsingAdvanceRepairs()) + "#");              
-			else
-				result.append(SerializeEntity.serializeEntity(ent, true, false,mwclient.isUsingAdvanceRepairs()) + "#");
+			result.append(SerializeEntity.serializeEntity(ent, true, false,mwclient.isUsingAdvanceRepairs()) + "#");
 			
 		}
 		en = server.getGame().getEntities();
@@ -123,20 +120,14 @@ public class RGTS extends Command {
 			Entity ent = en.nextElement();
 			if ( ent.getOwner().getName().startsWith("War Bot"))
 				continue;
-			if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0)
-				result.append(SerializeEntity.serializeEntity(ent, true, false,mwclient.isUsingAdvanceRepairs()) + "#");          
-			else
-				result.append(SerializeEntity.serializeEntity(ent, true, false,mwclient.isUsingAdvanceRepairs()) + "#");
+			result.append(SerializeEntity.serializeEntity(ent, true, false,mwclient.isUsingAdvanceRepairs()) + "#");
 		}
 		en = server.getGame().getRetreatedEntities();
 		while (en.hasMoreElements()) {
 			Entity ent = en.nextElement();
 			if ( ent.getOwner().getName().startsWith("War Bot"))
 				continue;
-			if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0)
-				result.append(SerializeEntity.serializeEntity(ent, true, false,mwclient.isUsingAdvanceRepairs()) + "#");          
-			else
-				result.append(SerializeEntity.serializeEntity(ent, true, false,mwclient.isUsingAdvanceRepairs()) + "#");
+			result.append(SerializeEntity.serializeEntity(ent, true, false,mwclient.isUsingAdvanceRepairs()) + "#");
 		}
 		
 		if ( mwclient.getBuildingTemplate()!= null )

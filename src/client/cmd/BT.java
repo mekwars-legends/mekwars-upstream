@@ -103,7 +103,7 @@ public class BT extends Command {
                         if ( file.exists() ) {
                             time = file.lastModified();
                         }
-                        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "AdminRequestBuildTable get#" + dName + "#" + fileName + "#" + time);
+                        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "RequestBuildTable get#" + dName + "#" + fileName + "#" + time);
                     }
                 }
                     
@@ -114,6 +114,7 @@ public class BT extends Command {
         } else if (cmd.equalsIgnoreCase("BT")) {
 			String folder = st.nextToken();
 			String table = st.nextToken();
+			boolean isMod = mwclient.isMod();
 			File file = new File("./data/buildtables");
 			if(!file.exists())
 				file.mkdir();
@@ -133,7 +134,9 @@ public class BT extends Command {
 				PrintStream p = new PrintStream(out);
 				while(st.hasMoreTokens())
 					p.println(st.nextToken());
-				mwclient.addToChat("Received build table " + folder + "/" + table,CCommPanel.CHANNEL_MISC);				
+				if ( isMod ){
+				    mwclient.addToChat("Received build table " + folder + "/" + table,CCommPanel.CHANNEL_MISC);
+				}
 				p.close();
 				try {
 					out.close();
