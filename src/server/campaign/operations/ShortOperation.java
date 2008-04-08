@@ -1291,17 +1291,20 @@ public class ShortOperation implements Comparable<Object> {
                         this.intelTimeFrame = ShortOperation.TIME_DAY;
                     }
 
+                    boolean hasWeather = false;
+                    
                     if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getBlizzardChance()) {
                         this.weatherPattern.add(true);
                         gameOptions.append("|blizzard|");
                         gameOptions.append(true);
+                        hasWeather = true;
                     } else {
                         this.weatherPattern.add(false);
                         gameOptions.append("|blizzard|");
                         gameOptions.append(false);
                     }
 
-                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getBlowingSandChance()) {
+                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getBlowingSandChance() && !hasWeather) {
                         this.weatherPattern.add(true);
                         gameOptions.append("|blowing_sand|");
                         gameOptions.append(true);
@@ -1310,7 +1313,7 @@ public class ShortOperation implements Comparable<Object> {
                         gameOptions.append("|blowing_sand|");
                         gameOptions.append(false);
                     }
-                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHeavySnowfallChance()) {
+                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHeavySnowfallChance() && !hasWeather) {
                         this.weatherPattern.add(true);
                         gameOptions.append("|heavy_snowfall|");
                         gameOptions.append(true);
@@ -1319,7 +1322,7 @@ public class ShortOperation implements Comparable<Object> {
                         gameOptions.append("|heavy_snowfall|");
                         gameOptions.append(false);
                     }
-                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getLightRainfallChance()) {
+                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getLightRainfallChance() && !hasWeather) {
                         this.weatherPattern.add(true);
                         gameOptions.append("|light_rainfall|");
                         gameOptions.append(true);
@@ -1328,7 +1331,7 @@ public class ShortOperation implements Comparable<Object> {
                         gameOptions.append("|light_rainfall|");
                         gameOptions.append(false);
                     }
-                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHeavyRainfallChance()) {
+                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHeavyRainfallChance() && !hasWeather) {
                         this.weatherPattern.add(true);
                         gameOptions.append("|heavy_rainfall|");
                         gameOptions.append(true);
@@ -1337,7 +1340,7 @@ public class ShortOperation implements Comparable<Object> {
                         gameOptions.append("|heavy_rainfall|");
                         gameOptions.append(false);
                     }
-                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getModerateWindsChance()) {
+                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getModerateWindsChance() && !hasWeather) {
                         this.weatherPattern.add(true);
                         gameOptions.append("|moderate_winds|");
                         gameOptions.append(true);
@@ -1346,7 +1349,7 @@ public class ShortOperation implements Comparable<Object> {
                         gameOptions.append("|moderate_winds|");
                         gameOptions.append(false);
                     }
-                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHighWindsChance()) {
+                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHighWindsChance() && !hasWeather) {
                         this.weatherPattern.add(true);
                         gameOptions.append("|high_winds|");
                         gameOptions.append(true);
@@ -2623,11 +2626,11 @@ public class ShortOperation implements Comparable<Object> {
         return fromReserve;
     }
 
-    public boolean checkTeam(int teamNumber) {
+    public String checkTeam(int teamNumber) {
         return checkTeam(teamNumber, 0, false);
     }
 
-    public boolean checkTeam(int teamNumber, int bv, boolean attacker) {
+    public String checkTeam(int teamNumber, int bv, boolean attacker) {
         Operation o = CampaignMain.cm.getOpsManager().getOperation(opName);
         int maxPlayersPerTeam = o.getIntValue("TeamSize");
         int teamCount = 0;
@@ -2650,9 +2653,12 @@ public class ShortOperation implements Comparable<Object> {
         }
         // teams full return false.
         if (teamCount >= maxPlayersPerTeam)
-            return false;
+            return "The Team is already Full";
 
-        return totalBV + bv <= maxOpBV;
+        if ( totalBV + bv <= maxOpBV )
+            return "The BV of your selected army is too large!";
+        
+        return "";
     }
 
     public int getAttackersTeam() {

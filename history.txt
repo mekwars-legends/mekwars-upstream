@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.27.x
++ Bug: Multiple Weather patterns happening at once.
 Release Client 0.2.27.1
 + removed Build Table viewer spam from Misc for Non-Staff
 + Bug: Build Table viewer not working for Players

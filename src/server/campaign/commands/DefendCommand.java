@@ -160,9 +160,9 @@ public class DefendCommand implements Command {
 			if ( o.getBooleanValue("TeamOperation") && o.getBooleanValue("TeamsMustBeSameFaction") ) {
 				teamNumber = so.getFactionTeam(dp.getHouseFightingFor().getName());
 				bv = da.getBV();
-				message = "AM:You are not able to join that team to defend!";
+				message = so.checkTeam(teamNumber,bv,false);
 			}
-			if ( !so.checkTeam(teamNumber,bv,false) ) {
+			if ( message.trim().length() > 0 ) {
 				CampaignMain.cm.toUser(message, Username);
 				CampaignMain.cm.toUser(so.getChickenThreads().get(Username.toLowerCase()).generateAttackDialogCall(),Username,false);
 				return;
@@ -175,7 +175,7 @@ public class DefendCommand implements Command {
 			int numberOfTeams = Math.max(2,Math.min(8,o.getIntValue("NumberOfTeams")));
 
 			for (int team = 1; team <= numberOfTeams; team++ ) {
-				if ( so.checkTeam(team) ) {
+				if ( so.checkTeam(team).trim().length() < 1 ) {
 					teamNumber = team;
 					break;
 				}

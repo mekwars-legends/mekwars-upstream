@@ -87,6 +87,11 @@ public class OpsChickenThread extends Thread {
      */
     public synchronized void doPenalty() {
 
+        // if the stop signal was sent while we were
+        // waiting, return and end.
+        if (!shouldContinue)
+            return;
+
         // new players lose nothing, but get a warning.
         if (pdefender.getMyHouse().isNewbieHouse()) {
             String toPlayer = "You did not defend Attack #" + opID + ". You've not been punished because " + "you are in the training faction; however, if you leave an attack undefended in a normal " + "faction you may lose money, units, experience, influence, rewards, or some combination thereof.";
@@ -458,7 +463,8 @@ public class OpsChickenThread extends Thread {
              * SPlayer is reloaded as currP in case the person quit and
              * rejoined, creating a new SPlayer instance.
              */
-            if (leechCount >= CampaignMain.cm.getOpsManager().getOperation(opName).getIntValue("LeechesToDeactivate")) {
+            if (leechCount > CampaignMain.cm.getOpsManager().getOperation(opName).getIntValue("LeechesToDeactivate")) {
+                shouldContinue = false;
                 SPlayer currP = CampaignMain.cm.getPlayer(pdefender.getName());
                 currP.setActive(false);
                 CampaignMain.cm.sendPlayerStatusUpdate(currP, !new Boolean(CampaignMain.cm.getConfig("HideActiveStatus")).booleanValue());

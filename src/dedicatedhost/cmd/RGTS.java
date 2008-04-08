@@ -27,7 +27,6 @@ import dedicatedhost.util.SerializeEntity;
 
 import megamek.common.Building;
 import megamek.common.Entity;
-import megamek.common.Mech;
 import megamek.common.Player;
 import megamek.server.Server;
 

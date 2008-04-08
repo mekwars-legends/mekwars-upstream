@@ -123,9 +123,7 @@ public class JoinAttackCommand implements Command {
 			return;
 		}
 
-		if ( !o.checkTeam(ap.getTeamNumber(),aa.getBV(),true) ) {
-			CampaignMain.cm.toUser("AM:That Joint Operational Force is full.", Username);
-		}
+		CampaignMain.cm.toUser("AM:"+o.checkTeam(ap.getTeamNumber(),aa.getBV(),true), Username);
 		/*
 		 * Breaks passed. lets validate the attack =)
 		 * 

@@ -3096,7 +3096,7 @@ public final class ServerConfigurationDialog implements ActionListener {
 
         BaseCheckBox = new JCheckBox("SOL Faction Units");
 
-        BaseCheckBox.setToolTipText("<HTML>" + "If both this box and \"Reset Leaving SOL\" are checked, players will<br>" + "receive faction units drawn from their new faction's tables instead of<br>" + "of SOL units on defection. Units will be taken from the 3025 era ONLY.</HTML>");
+        BaseCheckBox.setToolTipText("<HTML>" + "If both this box and \"Reset Leaving SOL\" are checked, players will<br>receive faction units drawn from their new faction's tables instead of<br> SOL units on defection. Units will be taken from the Standard Folder ONLY.</HTML>");
         BaseCheckBox.setName("FactionUnitsLeavingSOL");
         defectionBoxPanel.add(BaseCheckBox);
 
@@ -3643,7 +3643,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("SOLAssaultProtoMek");
         newbiePMSpring.add(baseTextField);
 
-        SpringLayoutHelper.setupSpringGrid(newbiePMSpring, 4, 2);
+        SpringLayoutHelper.setupSpringGrid(newbiePMSpring,2);
 
         // and the battle Armor spring
         baseTextField = new JTextField(5);
@@ -3670,7 +3670,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("SOLAssaultBattleArmor");
         newbieBASpring.add(baseTextField);
 
-        SpringLayoutHelper.setupSpringGrid(newbieBASpring, 4, 2);
+        SpringLayoutHelper.setupSpringGrid(newbieBASpring, 2);
 
         // and last, the reset spring
         baseTextField = new JTextField(5);
@@ -3685,7 +3685,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("NumResetsWhileImmune");
         resetUnitsSpring.add(baseTextField);
 
-        SpringLayoutHelper.setupSpringGrid(resetUnitsSpring, 1);
+        SpringLayoutHelper.setupSpringGrid(resetUnitsSpring, 2);
 
         // finalize the layout
         JPanel newbieBox = new JPanel();
