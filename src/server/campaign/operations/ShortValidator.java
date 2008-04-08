@@ -954,7 +954,9 @@ public class ShortValidator {
         boolean checkOmni = o.getBooleanValue("AttackerOmniMeksOnly");
         boolean vetPilots = false;
         boolean greenPilots = false;
-
+        double averageArmySkills = 0.0;
+        int numberOfValidUnits = 0;
+        
         Iterator<Unit> i = aa.getUnits().iterator();
         while (i.hasNext()) {
 
@@ -1039,6 +1041,9 @@ public class ShortValidator {
                 int piloting = currUnit.getPilot().getPiloting();
                 int gunnery = currUnit.getPilot().getGunnery();
                 int totalSkills = gunnery+piloting;
+                
+                averageArmySkills += totalSkills;
+                numberOfValidUnits++;
                 
                 if ( piloting > o.getIntValue("HighestAttackerPiloting") )
                     greenPilots = true;
@@ -1126,10 +1131,12 @@ public class ShortValidator {
         if (minAllowedSpread > 0 && (highUnitBV - lowUnitBV) < minAllowedSpread)
             failureReasons.add(SFAIL_ATTACK_MINSPREAD);
         
-        if ( vetPilots )
+        averageArmySkills /= numberOfValidUnits;
+        
+        if ( vetPilots || averageArmySkills > o.getDoubleValue("AttackerAverageArmySkillMax"))
             failureReasons.add(SFAIL_ATTACK_ELITE_PILOTS );
         
-        if ( greenPilots )
+        if ( greenPilots || averageArmySkills < o.getDoubleValue("AttackerAverageArmySkillMin") )
             failureReasons.add(SFAIL_ATTACK_GREEN_PILOTS );
 
     }// end CheckAttackerConstruction
@@ -1306,7 +1313,9 @@ public class ShortValidator {
         boolean checkOmni = o.getBooleanValue("DefenderOmniMeksOnly");
         boolean vetPilots = false;
         boolean greenPilots = false;
-
+        double averageArmySkills = 0.0;
+        int numberOfValidUnits = 0;
+        
         Iterator<Unit> i = da.getUnits().iterator();
         while (i.hasNext()) {
 
@@ -1379,6 +1388,9 @@ public class ShortValidator {
                 int piloting = currUnit.getPilot().getPiloting();
                 int gunnery = currUnit.getPilot().getGunnery();
                 int totalSkills = gunnery+piloting;
+                
+                numberOfValidUnits++;
+                averageArmySkills += totalSkills;
                 
                 if ( piloting > o.getIntValue("HighestDefenderPiloting") )
                     greenPilots = true;
@@ -1463,11 +1475,14 @@ public class ShortValidator {
         if (minAllowedSpread > 0 && (highUnitBV - lowUnitBV) < minAllowedSpread)
             failureReasons.add(SFAIL_DEFEND_MINSPREAD);
         
-        if ( vetPilots )
-            failureReasons.add(SFAIL_DEFEND_ELITE_PILOTS);
+        averageArmySkills /= numberOfValidUnits;
         
-        if ( greenPilots )
+        if ( vetPilots || averageArmySkills > o.getDoubleValue("DefenderAverageArmySkillMax"))
+            failureReasons.add(SFAIL_DEFEND_ELITE_PILOTS );
+        
+        if ( greenPilots || averageArmySkills < o.getDoubleValue("DefenderAverageArmySkillMin") )
             failureReasons.add(SFAIL_DEFEND_GREEN_PILOTS );
+
     }// end checkDefenderConstruction
 
     /**

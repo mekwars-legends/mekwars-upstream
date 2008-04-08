@@ -901,6 +901,19 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField.setName("LowestAttackerGunnery");
         attackerPanel.add(BaseTextField);
         
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Average Army Skill Max:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Max Average piloting skills a attacking army can have<br>NOTE: Units will not be checked if they<br>are not counted for the BV Spread</html>");
+        BaseTextField.setName("AttackerAverageArmySkillMax");
+        attackerPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Average Army Skill Min:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Min Average piloting skills a attacking army can have<br>NOTE: Units will not be checked if they<br>are not counted for the BV Spread</html>");
+        BaseTextField.setName("AttackerAverageArmySkillMin");
+        attackerPanel.add(BaseTextField);
+        
+
 		SpringLayoutHelper.setupSpringGrid(attackerPanel,4);
 
         BaseCheckBox = new JCheckBox("Allow Meks");
@@ -1089,6 +1102,18 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         defenderPanel.add(new JLabel("Lowest Gunnery:",SwingConstants.TRAILING));
         BaseTextField.setToolTipText("<html>Lowest Gunnery that a<br>defending Units pilot can have<br>NOTE: Units will not be checked if they<br>are not counted for the BV Spread</html>");
         BaseTextField.setName("LowestDefenderGunnery");
+        defenderPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        defenderPanel.add(new JLabel("Average Army Skill Max:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Max Average piloting skills a defending army can have<br>NOTE: Units will not be checked if they<br>are not counted for the BV Spread</html>");
+        BaseTextField.setName("DefenderAverageArmySkillMax");
+        defenderPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        defenderPanel.add(new JLabel("Average Army Skill Min:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Min Average piloting skills a defending army can have<br>NOTE: Units will not be checked if they<br>are not counted for the BV Spread</html>");
+        BaseTextField.setName("DefenderAverageArmySkillMin");
         defenderPanel.add(BaseTextField);
         
 		SpringLayoutHelper.setupSpringGrid(defenderPanel,4);

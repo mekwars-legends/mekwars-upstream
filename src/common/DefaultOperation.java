@@ -271,7 +271,11 @@ public class DefaultOperation {
          * LowestDefenderGunnery  - Lowest = Gunnery that an 
          *                                    defending Units pilot can have
          *
-		 * 
+		 * AttackerAverageArmySkillMax - The Max average total skills for the Attacker army
+         * AttackerAverageArmySkillMin - The Min average total skills for the Attacker army 
+         * DefenderAverageArmySkillMax - The Max average total skills for the Defender army
+         * DefenderAverageArmySkillMin - The Min average total skills for the Defender army
+         *  
 		 * CountVehsForSpread   - self evident
 		 * CountProtosForSpread - self evident
 		 * CountInfForSpread    - self evident
@@ -922,6 +926,8 @@ public class DefaultOperation {
         operationsDefaults.put("LowestAttackerPiloting", "0");
         operationsDefaults.put("HighestAttackerGunnery", "9");
         operationsDefaults.put("LowestAttackerGunnery", "0");
+        operationsDefaults.put("AttackerAverageArmySkillMax", "20");
+        operationsDefaults.put("AttackerAverageArmySkillMin", "0");
 
         operationsDefaults.put("HighestDefenderPilotSkillTotal", "20");
         operationsDefaults.put("LowestDefenderPilotSkillTotal", "0");
@@ -929,6 +935,8 @@ public class DefaultOperation {
         operationsDefaults.put("LowestDefenderPiloting", "0");
         operationsDefaults.put("HighestDefenderGunnery", "9");
         operationsDefaults.put("LowestDefenderGunnery", "0");
+        operationsDefaults.put("DefenderAverageArmySkillMax", "20");
+        operationsDefaults.put("DefenderAverageArmySkillMin", "0");
 		
 		operationsDefaults.put("CountVehsForSpread"  , "true");
 		operationsDefaults.put("CountProtosForSpread", "true");

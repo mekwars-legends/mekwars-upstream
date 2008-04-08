@@ -1233,7 +1233,7 @@ public class ShortOperation implements Comparable<Object> {
                     visRoll2 = CampaignMain.cm.getRandomNumber((int) Math.floor(visibility / 2));
                     visibility = visRoll1 + minVisibility + visRoll2;
 
-                    // only get random if there's an actual tempdiff
+                    // only get random if there's an actual temp diff
                     if (tempdiff > 0)
                         tempToSet = CampaignMain.cm.getRandomNumber(tempdiff) + lowTemp;
 
@@ -1257,8 +1257,7 @@ public class ShortOperation implements Comparable<Object> {
                             // Visibility cut in half at night
                             visibility /= 2;
                         }
-                    } // half as likely to get dusk as outright night. helf
-                    // temp drop.
+                    } // half as likely to get dusk as outright night. half temp drop.
                     else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getNightChance() / 2) {
                         gameOptions.append("|night_battle|");
                         gameOptions.append(true);

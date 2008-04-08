@@ -156,7 +156,7 @@ public class DefendCommand implements Command {
 		
 		if ( teamNumber > 0 ) {
 			int bv = 0;
-			String message = "AM:That team is already full pick another one!";
+			String message = "";
 			if ( o.getBooleanValue("TeamOperation") && o.getBooleanValue("TeamsMustBeSameFaction") ) {
 				teamNumber = so.getFactionTeam(dp.getHouseFightingFor().getName());
 				bv = da.getBV();
