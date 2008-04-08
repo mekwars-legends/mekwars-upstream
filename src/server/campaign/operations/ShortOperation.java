@@ -536,12 +536,7 @@ public class ShortOperation implements Comparable<Object> {
             // position
             // More then 9 and you start doubling up.
             else if (o.getBooleanValue("FreeForAllOperation") && this.getAllPlayerNames().size() > 2) { // 2
-                // player
-                // FFA
-                // start
-                // on
-                // opposite
-                // ends
+                // player FFA start on opposite ends
                 ArrayList<Integer> edges = new ArrayList<Integer>(10);
                 int countDown = 9;
                 boolean found = false;

@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.27.x
++ Bug: Defend command was setting negative team numbers
 + RFE 1926953: Operation requirement army average total sills
 Release Server 0.2.27.1
 + Bug: Players getting leeched if leeching is set to 0
