@@ -102,6 +102,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
     JScrollPane generalScrollPane = new JScrollPane();
 
     JButton closeButton = new JButton("Close");
+    JButton refreshButton = new JButton("Refresh");
 
     // model and whatnot for refreshing
     TableViewerModel tvModel;
@@ -203,6 +204,14 @@ public class TableViewerDialog extends JFrame implements ItemListener {
             }
         });
 
+        refreshButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        refreshButton.setAlignmentY(Component.CENTER_ALIGNMENT);
+        refreshButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                refreshButton_ActionPerformed();
+            }
+        });
+
         // set up the BM-style table
         tvModel = new TableViewerModel(mwclient, currentUnits, sortedUnits);
         TableSorter sorter = new TableSorter(tvModel, client, TableSorter.SORTER_BUILDTABLES);
@@ -249,7 +258,9 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         generalTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         /*
-         * Unlike the BM table, the BuildTableTable (huh?) doesn't need a ListSelectionListener. No buttons to activate/deactivate and no images to update w/ proper .gifs.
+         * Unlike the BM table, the BuildTableTable (huh?) doesn't need a
+         * ListSelectionListener. No buttons to activate/deactivate and no
+         * images to update w/ proper .gifs.
          */
 
         // make the table double buffered
@@ -263,7 +274,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         // make a box layout to hold the combos and table
         JPanel boxPanel = new JPanel();
         boxPanel.setLayout(new BoxLayout(boxPanel, BoxLayout.Y_AXIS));
-
+        JPanel buttonPanel = new JPanel(new SpringLayout());
+        
         // center the percentage label
         percentageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         percentageLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
@@ -273,8 +285,13 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         boxPanel.add(comboPanel);
         boxPanel.add(generalScrollPane);
         boxPanel.add(percentageLabel);
-        boxPanel.add(closeButton);
+        buttonPanel.add(refreshButton);
+        buttonPanel.add(closeButton);
 
+        SpringLayoutHelper.setupSpringGrid(buttonPanel, 2);
+        
+        boxPanel.add(buttonPanel);
+            
         // give the box a small border
         boxPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
@@ -320,12 +337,14 @@ public class TableViewerDialog extends JFrame implements ItemListener {
     }
 
     /**
-     * Method to conform with ItemListener. Takes item events from the combo boxes and triggers table loads.
+     * Method to conform with ItemListener. Takes item events from the combo
+     * boxes and triggers table loads.
      */
     public void itemStateChanged(ItemEvent i) {
 
         /*
-         * Do not re-load tables and units if there is no actual change in the selection.
+         * Do not re-load tables and units if there is no actual change in the
+         * selection.
          */
         JComboBox source = (JComboBox) i.getSource();
         if (source == unitTypeCombo && unitSort == unitTypeCombo.getSelectedIndex())
@@ -355,7 +374,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
     }
 
     /**
-     * Helper which checks strings to see if they end with a known-good unit file extension.
+     * Helper which checks strings to see if they end with a known-good unit
+     * file extension.
      */
     public boolean hasValidExtension(String l) {
         String lc = l.toLowerCase();
@@ -366,7 +386,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
     }
 
     /**
-     * Helper which takes a File entry and returns an input stream. Handles errors, etc. to reduce clutter in loadTables().
+     * Helper which takes a File entry and returns an input stream. Handles
+     * errors, etc. to reduce clutter in loadTables().
      */
     public InputStream getEntryInputStream(File bf) {
         InputStream is = null;
@@ -379,7 +400,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
     }
 
     /**
-     * Helper which loops through a table, ignoring filenames and tablenames. Returns total table weighting for use when analyzing names.
+     * Helper which loops through a table, ignoring filenames and tablenames.
+     * Returns total table weighting for use when analyzing names.
      */
     public int getTotalWeightForTable(File bf) {
 
@@ -414,12 +436,16 @@ public class TableViewerDialog extends JFrame implements ItemListener {
     }
 
     /**
-     * Helper method which reads a given layer of tables. Extracted from loadTables to reduce repetition; however, doing do actually makes each check (inparticular, the first and last map levels) more complex than they would otherwise.
+     * Helper method which reads a given layer of tables. Extracted from
+     * loadTables to reduce repetition; however, doing do actually makes each
+     * check (inparticular, the first and last map levels) more complex than
+     * they would otherwise.
      */
     public void doTableLayer(TreeMap<String, Double> curr, TreeMap<String, Double> next, String add, File buildTablePath, boolean commonOverride) {
 
         /*
-         * Set up an iterator of target tables. Note that the first level (base table) is put into a dummy treemap in order to have an iterator.
+         * Set up an iterator of target tables. Note that the first level (base
+         * table) is put into a dummy treemap in order to have an iterator.
          */
         Iterator<String> it = curr.keySet().iterator();
         while (it.hasNext()) {
@@ -443,18 +469,24 @@ public class TableViewerDialog extends JFrame implements ItemListener {
             if (tableEntry.exists()) {
 
                 /*
-                 * Loop through the target table once to determine the total weighting of all entries. This total is used to determine the fractional values of each line on a second pass.
+                 * Loop through the target table once to determine the total
+                 * weighting of all entries. This total is used to determine the
+                 * fractional values of each line on a second pass.
                  */
                 int totaltableweight = this.getTotalWeightForTable(tableEntry);
 
                 /*
-                 * InputStream and Buffered reader for a second pass through the file.
+                 * InputStream and Buffered reader for a second pass through the
+                 * file.
                  */
                 InputStream is = this.getEntryInputStream(tableEntry);
                 BufferedReader dis = new BufferedReader(new InputStreamReader(is));
 
                 /*
-                 * TableMultiplier is used to determine the relative value of each entry. For example, if the Orion ONI-1K appears on a target table at 50%, and the tableweight is .10 (aka - 10%), the ONI's actual frequncy is 5%.
+                 * TableMultiplier is used to determine the relative value of
+                 * each entry. For example, if the Orion ONI-1K appears on a
+                 * target table at 50%, and the tableweight is .10 (aka - 10%),
+                 * the ONI's actual frequncy is 5%.
                  */
                 double tablemultiplier = ((Double) curr.get(currTableName)).doubleValue();
                 // System.out.println("TableMultiplier for " + currTableName +
@@ -475,13 +507,19 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                             l = l.substring(1, l.length());
 
                         /*
-                         * All lines should have weights. Set up a StringTokenizer and grab common data before seperate file/table work is done.
+                         * All lines should have weights. Set up a
+                         * StringTokenizer and grab common data before seperate
+                         * file/table work is done.
                          */
                         StringTokenizer ST = new StringTokenizer(l);
                         double weight = Double.parseDouble((String) ST.nextElement());
 
                         /*
-                         * Determine whether this line is a cross-linked table or an actual unit file. Assume a valid file if the entry ends with a known unit file extension. If no known extension is present, assume a crosslinked table.
+                         * Determine whether this line is a cross-linked table
+                         * or an actual unit file. Assume a valid file if the
+                         * entry ends with a known unit file extension. If no
+                         * known extension is present, assume a crosslinked
+                         * table.
                          */
                         if (this.hasValidExtension(l) && weight != 0) {
 
@@ -493,7 +531,11 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                             }
 
                             /*
-                             * Now that we have a filename, create a TableUnit. Check for duplication before adding to currentUnits. If the file in question is a dupe, simply add its frequency to that of the existing unit.
+                             * Now that we have a filename, create a TableUnit.
+                             * Check for duplication before adding to
+                             * currentUnits. If the file in question is a dupe,
+                             * simply add its frequency to that of the existing
+                             * unit.
                              */
                             double frequency = (weight / totaltableweight) * tablemultiplier;
 
@@ -553,7 +595,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                                     eu.addFrequencyFrom(tu);
                                 } else {
                                     currentUnits.put(Filename, tu);
-                                } 
+                                }
 
                                 /*
                                  * Add this table as a source.
@@ -578,7 +620,10 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                             }
 
                             /*
-                             * Put the crosslink into the map, if another layer exists. Check for duplication. If next is null there are no more crosslink hops to be mode, which means sorting would be a waste of time.
+                             * Put the crosslink into the map, if another layer
+                             * exists. Check for duplication. If next is null
+                             * there are no more crosslink hops to be mode,
+                             * which means sorting would be a waste of time.
                              */
                             if (next != null) {
                                 if (next.containsKey("crossTableName")) {
@@ -603,7 +648,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
     }// end doTableLayer()
 
     /**
-     * Method which loads tables and TableUnits, based on current ComboBox selections. This is the beef of the class ...
+     * Method which loads tables and TableUnits, based on current ComboBox
+     * selections. This is the beef of the class ...
      */
     public void loadTables() {
 
@@ -652,7 +698,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         currentUnits.clear();
 
         /*
-         * Found the zip. Now extract an appropriate entry. Try normal casing and lowercasing/
+         * Found the zip. Now extract an appropriate entry. Try normal casing
+         * and lowercasing/
          */
         boolean overrideWithCommon = false;
         // System.out.println("Attempting to find base table entry.");
@@ -664,7 +711,10 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         }
 
         /*
-         * Server defaults to common if a table isnt present. For example, if Davion_AssaultBattleArmor isn't present, Common_AssaultBattleArmor.txt is used instead. So, check that here as well.
+         * Server defaults to common if a table isnt present. For example, if
+         * Davion_AssaultBattleArmor isn't present,
+         * Common_AssaultBattleArmor.txt is used instead. So, check that here as
+         * well.
          */
         if (tableEntry == null) {
             // System.out.println("Didn't find Faction table in lower case
@@ -689,14 +739,18 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         }
 
         /*
-         * A clutch of treemaps. These are used to store info on crosslinked tables. Note that linkage hops could extend in perpetuity, so stopping after 3 hops will generate some minor rounding errors.
+         * A clutch of treemaps. These are used to store info on crosslinked
+         * tables. Note that linkage hops could extend in perpetuity, so
+         * stopping after 3 hops will generate some minor rounding errors.
          */
         TreeMap<String, Double> crossMap1 = new TreeMap<String, Double>();
         TreeMap<String, Double> crossMap2 = new TreeMap<String, Double>();
         // TreeMap<String, Double> crossMap3 = new TreeMap<String, Double>();
 
         /*
-         * Original Table. A dummy treemap is used here in order to pass a treemap to the doTableLayer method. The initial table is the only value and carries a 100% weight.
+         * Original Table. A dummy treemap is used here in order to pass a
+         * treemap to the doTableLayer method. The initial table is the only
+         * value and carries a 100% weight.
          */
         TreeMap<String, Double> temp = new TreeMap<String, Double>();
         temp.put(factionString, new Double(100.0));// using 100 makes things
@@ -718,14 +772,19 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         }
         // 2nd layer cross linkages (3rd degree)
         // System.out.println("this.doTableLayer - map2");
-        // this.doTableLayer(crossMap2, crossMap3, addOnString, buildTablePath, false);
+        // this.doTableLayer(crossMap2, crossMap3, addOnString, buildTablePath,
+        // false);
 
         // 3rd layer cross linkages (4th degree)
         // System.out.println("this.doTableLayer - map3");
-        // this.doTableLayer(crossMap3, null, addOnString, buildTablePath, false);
+        // this.doTableLayer(crossMap3, null, addOnString, buildTablePath,
+        // false);
 
         /*
-         * Table, and 3 degrees of seperation, processed as well as possible. Holes may exist if linked tables are given bad pointers on the tables, or if linkages are pervasive and 3 hops are insufficient to cover most of the crosstalk.
+         * Table, and 3 degrees of seperation, processed as well as possible.
+         * Holes may exist if linked tables are given bad pointers on the
+         * tables, or if linkages are pervasive and 3 hops are insufficient to
+         * cover most of the crosstalk.
          */
 
         /*
@@ -743,7 +802,9 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 
     // inner classes
     /*
-     * TableViewerModel is a model extention which sets up proper table viewer sorting columns - name, weight, model, % frequency, etc. Modeled along the BlackMarketModel from client.gui
+     * TableViewerModel is a model extention which sets up proper table viewer
+     * sorting columns - name, weight, model, % frequency, etc. Modeled along
+     * the BlackMarketModel from client.gui
      */
     static class TableViewerModel extends AbstractTableModel {
 
@@ -804,14 +865,16 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         }
 
         /*
-         * getRenderer, overridden from AbstractModel in order to use custom renderer.
+         * getRenderer, overridden from AbstractModel in order to use custom
+         * renderer.
          */
         public TableViewerModel.TableViewerRenderer getRenderer() {
             return new TableViewerRenderer();
         }
 
         /*
-         * refresh model in order to draw new contents, reorder existin contents.
+         * refresh model in order to draw new contents, reorder existin
+         * contents.
          */
         public void refreshModel() {
             sortedUnits = new TableUnit[] {};
@@ -995,7 +1058,9 @@ public class TableViewerDialog extends JFrame implements ItemListener {
     }// end TableViewerModel class
 
     /**
-     * TableUnit is a CUnit with added stat-tracking for ongoing frequency calculations. Much like the BMUnit; however, the TableUnit is less complex.
+     * TableUnit is a CUnit with added stat-tracking for ongoing frequency
+     * calculations. Much like the BMUnit; however, the TableUnit is less
+     * complex.
      */
     static class TableUnit extends CUnit {
 
@@ -1009,13 +1074,17 @@ public class TableViewerDialog extends JFrame implements ItemListener {
             super();
 
             /*
-             * Since the TableUnit has no data string to set things with, hardflag necessary values.
+             * Since the TableUnit has no data string to set things with,
+             * hardflag necessary values.
              */
             setUnitFilename(fn.trim());
             setPilot(new Pilot("Autopilot", 4, 5));
 
             /*
-             * Try to get an entity from the unit cache, given a filename. This makes it possible to use the build table viewer with unzipped file structures (like that in use on the new MMNET). If this fails, use normal server-style zip loading.
+             * Try to get an entity from the unit cache, given a filename. This
+             * makes it possible to use the build table viewer with unzipped
+             * file structures (like that in use on the new MMNET). If this
+             * fails, use normal server-style zip loading.
              */
             try {
 
@@ -1047,8 +1116,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
             if (ms == null) {
                 MechSummary[] units = MechSummaryCache.getInstance().getAllMechs();
                 for (MechSummary unit : units) {
-                    if (unit.getModel().trim().equalsIgnoreCase(en.getModel().trim()) 
-                            && unit.getChassis().trim().equalsIgnoreCase(en.getChassis().trim())) {
+                    if (unit.getModel().trim().equalsIgnoreCase(en.getModel().trim()) && unit.getChassis().trim().equalsIgnoreCase(en.getChassis().trim())) {
                         unitFile = ms.getEntryName();
                         break;
                     }
@@ -1059,15 +1127,15 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                 // "+ms.getSourceFile().getName());
                 unitFile = ms.getEntryName();
             }
-            
+
             if (unitFile == null || unitFile.equals("null")) {
                 unitFile = ms.getSourceFile().getName();
             }
 
-            if ( unitFile.indexOf("/") > -1) {
-                unitFile = unitFile.substring(unitFile.lastIndexOf("/")+1);
-            }else if ( unitFile.indexOf("\\") > -1) {
-                unitFile = unitFile.substring(unitFile.lastIndexOf("\\")+1);
+            if (unitFile.indexOf("/") > -1) {
+                unitFile = unitFile.substring(unitFile.lastIndexOf("/") + 1);
+            } else if (unitFile.indexOf("\\") > -1) {
+                unitFile = unitFile.substring(unitFile.lastIndexOf("\\") + 1);
             }
 
             setUnitFilename(unitFile);
@@ -1109,7 +1177,11 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         }
 
         /**
-         * Tries to setUnitEntity from a filename w/ extension. This used to be the default way of getting units, but CUnit was changed to use the MegaMek summary cache. Because the table viewer reads the tables the same way the server does, it needs a server-style loading cascade, ugly as it may be :-(
+         * Tries to setUnitEntity from a filename w/ extension. This used to be
+         * the default way of getting units, but CUnit was changed to use the
+         * MegaMek summary cache. Because the table viewer reads the tables the
+         * same way the server does, it needs a server-style loading cascade,
+         * ugly as it may be :-(
          */
         private void createEntityFromFilename(String fn) {
 
@@ -1148,4 +1220,28 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 
     }// end TableUnit
 
+    public void refreshButton_ActionPerformed() {
+
+        int userLevel = mwclient.getUserLevel();
+        
+        refreshButton.setEnabled(false);
+        if (userLevel >= mwclient.getData().getAccessLevel("AdminRequestBuildTable")) {
+            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminRequestBuildTable#list#true");
+        } 
+        else if (userLevel >= mwclient.getData().getAccessLevel("RequestBuildTable")) {
+            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c RequestBuildTable#list#true");
+        } 
+
+        mwclient.setWaiting(true);
+        while (mwclient.isWaiting()) {
+            try {
+                Thread.sleep(100);
+            } catch (Exception ex) {
+
+            }
+        }
+        this.loadTables();
+        this.refresh();
+        refreshButton.setEnabled(true);
+    }
 }// end TableViewerDialog class

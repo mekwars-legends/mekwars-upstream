@@ -2036,11 +2036,8 @@ public class CMainFrame extends JFrame {
          * Show the client side GUI if the requisite file is available.
          * Otherwise, make use of server commands.
          */
-        if (userLevel >= mwclient.getData().getAccessLevel("AdminRequestBuildTable")) {
-            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminRequestBuildTable#list#true");
-        } 
-        else if (userLevel >= mwclient.getData().getAccessLevel("RequestBuildTable")) {
-            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c RequestBuildTable#list#true");
+        if (userLevel >= mwclient.getData().getAccessLevel("AdminRequestBuildTable") || userLevel >= mwclient.getData().getAccessLevel("RequestBuildTable")) {
+            new TableViewerDialog(mwclient);
         } else {
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c buildtablelist");
         }

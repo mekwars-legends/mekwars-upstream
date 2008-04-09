@@ -135,7 +135,7 @@ public class RequestBuildTableCommand implements Command {
 			CampaignMain.cm.toUser("BT|BT|" + folder + "|" + table + toReturn.toString(), Username, false);
 			
 		} else if ( subcommand.equalsIgnoreCase("view") ) {
-		    CampaignMain.cm.toUser("BT|VS|", Username, false);
+		    CampaignMain.cm.toUser("BT|VS|DONE#DONE", Username, false);
 		}
 	}
 }

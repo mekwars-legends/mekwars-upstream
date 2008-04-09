@@ -28,7 +28,6 @@ import common.CampaignData;
 
 import client.MWClient;
 import client.gui.CCommPanel;
-import client.gui.dialog.TableViewerDialog;
 
 /**
  * @author Spork
@@ -149,7 +148,7 @@ public class BT extends Command {
 				CampaignData.mwlog.errLog(e);
 			}
 		} else if ( cmd.equalsIgnoreCase("VS") ) {
-		    new TableViewerDialog(mwclient);
+		    mwclient.setWaiting(false);
 		}
 	}
 }
