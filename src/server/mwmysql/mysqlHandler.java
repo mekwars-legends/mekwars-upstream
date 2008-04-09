@@ -65,16 +65,17 @@ public class mysqlHandler{
           phpBBCon = null;
       }
       
-      try {
-    	  if(phpBBCon.con.isClosed()){
-    		phpBBCon = new PhpBBConnector();
-    		phpBBCon.init();
+      if(isUsing) {
+    	  try {
+    		  if(phpBBCon.con.isClosed()){
+    			  phpBBCon = new PhpBBConnector();
+    			  phpBBCon.init();
+    		  }
+    	  } catch (SQLException e) {
+    		  CampaignData.mwlog.dbLog("SQLException in mysqlHandler.isSynchingBB: " + e.getMessage());
+    		  CampaignData.mwlog.dbLog(e);
     	  }
-      } catch (SQLException e) {
-    	  CampaignData.mwlog.dbLog("SQLException in mysqlHandler.isSynchingBB: " + e.getMessage());
-    	  CampaignData.mwlog.dbLog(e);
       }
-      
       return isUsing;
   }
   
