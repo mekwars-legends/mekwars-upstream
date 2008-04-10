@@ -132,6 +132,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                 factionNames.add(house.getName());
             }
         }
+        factionNames.add("Common");
         factionArray = factionNames.toArray();
 
         // CONSTRUCT GUI

@@ -2657,4 +2657,19 @@ public class UnitUtils  {
         return UnitEntity;
     }
 
+    public static boolean isCored(Entity unit){
+        
+        if ( unit instanceof Tank ){
+            
+            for ( int loc = Tank.LOC_BODY; loc <= Tank.LOC_TURRET; loc++ ){
+                if ( unit.getInternal(loc) < 0){
+                    return true;
+                }
+            }
+        }else if ( unit instanceof Mech ){
+            return !UnitUtils.canStartUp(unit);
+        }
+        
+        return false;
+    }
 }

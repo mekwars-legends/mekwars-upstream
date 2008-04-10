@@ -62,5 +62,6 @@ public class GO extends Command {
             }
 		}//end while
 		
+		mwclient.setWaiting(false);
 	}//end execute
 }//end GO.java

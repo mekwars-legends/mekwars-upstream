@@ -1415,6 +1415,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("GRANTINFLUENCE", new GrantInfluenceCommand());
         Commands.put("GRANTMONEY", new GrantMoneyCommand());
         Commands.put("GRANTREWARD", new GrantRewardCommand());
+        Commands.put("GRANTTECHPOINTS", new GrantTechPointsCommand());
         Commands.put("GRANTTECHS", new GrantTechsCommand());
         Commands.put("HARDTERMINATE", new HardTerminateCommand());
         Commands.put("HIREANDMAINTAIN", new HireAndMaintainHelper());
@@ -1505,6 +1506,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("REQUEST", new RequestCommand());
         Commands.put("REQUESTBUILDTABLE", new RequestBuildTableCommand());
         Commands.put("REQUESTDONATED", new RequestDonatedCommand());
+        Commands.put("REQUESTOPERATIONSETTINGS", new RequestOperationSettingsCommand());
         Commands.put("REQUESTSERVERMAIL", new RequestServerMailCommand());
         Commands.put("REQUESTSUBFACTIONPROMOTION", new RequestSubFactionPromotionCommand());
         Commands.put("RESEARCHTECHLEVEL", new ResearchTechLevelCommand());

@@ -25,6 +25,7 @@ import megamek.common.CriticalSlot;
 import megamek.common.Entity;
 import megamek.common.Mech;
 import megamek.common.Mounted;
+import megamek.common.TechConstants;
 
 import common.Unit;
 import common.util.StringUtils;
@@ -191,8 +192,8 @@ public class UseRewardPointsCommand implements Command {
 			SPilot newPilot = null;
 			String factionstring = "common";
 			
-			if ( new Boolean(house.getConfig("AllowRareUnitsForRewards")).booleanValue())
-				rareCost = (Double.parseDouble(house.getConfig("RewardPointMultiplierForRare")));
+			if ( house.getBooleanConfig("AllowRareUnitsForRewards") )
+				rareCost = (house.getDoubleConfig("RewardPointMultiplierForRare"));
 			
 			try {
 				unitType = Integer.parseInt(typestring);
@@ -245,12 +246,20 @@ public class UseRewardPointsCommand implements Command {
 						unitWeight = Unit.LIGHT;
 					break;
 				case Unit.PROTOMEK:
+                    if ( faction.getTechLevel() < TechConstants.T_CLAN_LEVEL_2 ){
+                        CampaignMain.cm.toUser(faction.getName()+" is unable to produce Proto Meks!", Username);
+                        return;
+                    }
 					typeCost = (Integer.parseInt(house.getConfig("RewardPointsForProto")));
 					if (new Boolean(house.getConfig("UseOnlyLightInfantry")).booleanValue())
 						unitWeight = Unit.LIGHT;
 					break;
 				case Unit.BATTLEARMOR:
-					typeCost = (Integer.parseInt(house.getConfig("RewardPointsForBA")));
+				    if ( faction.getTechLevel() < TechConstants.T_IS_LEVEL_2 ){
+				        CampaignMain.cm.toUser(faction.getName()+" is unable to produce Battle Armor!", Username);
+				        return;
+				    }
+				        typeCost = (Integer.parseInt(house.getConfig("RewardPointsForBA")));
 					if (new Boolean(house.getConfig("UseOnlyLightInfantry")).booleanValue() )
 						unitWeight = Unit.LIGHT;
 					break;

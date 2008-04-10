@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.27.x
++ Bug: Cored tanks are going back into battle.
++ REF: Grant Tech Research Points to Factions
++ Bug: Game Options not always getting to Client before they enter a game
 + Added Refresh button to Build Table viewer.
 + Bug: Defend command was setting negative team numbers
 + RFE 1926953: Operation requirement army average total sills

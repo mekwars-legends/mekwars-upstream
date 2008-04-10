@@ -139,7 +139,7 @@ public class ActivateCommand implements Command {
 		if (CampaignMain.cm.isUsingAdvanceRepair()) {
 			
 			if (this.armiesContainEnginedUnit(p.getArmies())){
-				CampaignMain.cm.toUser("AM:You may not activate with an engine-disabled unit in an army.",Username,true);
+				CampaignMain.cm.toUser("AM:You may not activate with a cored or engine-disabled unit in an army.",Username,true);
 				return;
 			}
 			
@@ -229,7 +229,7 @@ public class ActivateCommand implements Command {
 			Iterator<Unit> units = army.getUnits().iterator();
 			while (units.hasNext()) {
 				SUnit unit = (SUnit) units.next();
-				if (!UnitUtils.canStartUp(unit.getEntity()))
+				if (UnitUtils.isCored(unit.getEntity()))
 					return true;
 			}
 		}

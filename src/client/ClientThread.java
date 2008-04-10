@@ -158,6 +158,21 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
             swingGui = new megamek.client.ui.swing.ClientGUI(client);
             swingGui.initialize();
         }
+        
+        if ( mwclient.getGameOptions().size() < 1 ){
+            mwclient.setWaiting(true);
+            
+            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c RequestOperationSettings");
+            while ( mwclient.isWaiting() ){
+                try{
+                    mwclient.sendChat("Retrieving Operation Data Please Wait..");
+                    Thread.sleep(1000);
+                }catch (Exception ex){
+                    
+                }
+            }
+        }
+        
         // client.game.getOptions().
         Vector<IBasicOption> xmlGameOptions = new Vector<IBasicOption>(1, 1);
         Vector<IOption> loadOptions = client.game.getOptions().loadOptions();
@@ -550,6 +565,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                 mwclient.setEnvironment(null, null, null);
                 mwclient.setAdvancedTerrain(null);
                 mwclient.setPlayerStartingEdge(Buildings.EDGE_UNKNOWN);
+                mwclient.getGameOptions().clear();
                 // get rid of any and all bots.
 
                 if (awtGUI) {

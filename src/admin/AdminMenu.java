@@ -92,6 +92,7 @@ public class AdminMenu extends JMenu {
 	JMenuItem jMenuAdminSetFactionTraits = new JMenuItem();
 	JMenuItem jMenuAdminSetSubFactionConfigs = new JMenuItem();
 	JMenuItem jMenuAdminSetFactionToFactionRewardPointMultiplier = new JMenuItem();
+    JMenuItem jMenuAdminSetFactionTechPoints = new JMenuItem();
 	JMenuItem jMenuAdminSaveTheUniverse = new JMenuItem();
 	JMenuItem jMenuAdminSaveBlackMaketSettings = new JMenuItem();
 	JMenuItem jMenuAdminSavePlanetsToXML = new JMenuItem();
@@ -289,6 +290,14 @@ public class AdminMenu extends JMenu {
             }
         });
         
+        jMenuAdminSetFactionTechPoints.setText("Grant Faction Tech Points");
+        jMenuAdminSetFactionTechPoints.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                jMenuAdminSetFactionTechPoints_actionPerformed(e);
+            }
+        });
+
+
         jMenuAdminSetHouseFluFile.setText("Set House Flu File");
         jMenuAdminSetHouseFluFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -979,6 +988,24 @@ public class AdminMenu extends JMenu {
 
 	    }
 	    
+	    public void jMenuAdminSetFactionTechPoints_actionPerformed(ActionEvent e){
+            HouseNameDialog factionDialog = new HouseNameDialog(mwclient, "Faction", false,false);
+            factionDialog.setVisible(true);
+            String factionName = factionDialog.getHouseName();
+            factionDialog.dispose();
+
+            if (factionName == null || factionName.length() == 0)
+                return;
+
+            String points = JOptionPane.showInputDialog(mwclient.getMainFrame(),"Number of Points(Negative to remove Points)","0");
+
+            if (points == null || points.length() == 0)
+                return;
+
+            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c GrantTechPoints#" + factionName + "#" + points);
+
+	    }
+	    
 	    public void jMenuAdminTerminateAll_actionPerformed(ActionEvent e) {
 	    	int confirm = JOptionPane.showConfirmDialog(mwclient.getMainFrame(),"Are you sure you want to terminate all waiting/running games?");
 	    	if (confirm != JOptionPane.YES_OPTION)
@@ -988,14 +1015,15 @@ public class AdminMenu extends JMenu {
 
 	    public void jMenuAdminSetHouseFluFile_actionPerformed(ActionEvent e) {
 
-	        String factionName = JOptionPane.showInputDialog(mwclient.getMainFrame(), "House Name:");
+            HouseNameDialog factionDialog = new HouseNameDialog(mwclient, "Faction", false,false);
+            factionDialog.setVisible(true);
+            String factionName = factionDialog.getHouseName();
+            factionDialog.dispose();
 
-	        if (factionName == null || factionName.length() == 0)
-	            return;
+            if (factionName == null || factionName.length() == 0)
+                return;
 
-	        String fluFilePrefix = JOptionPane.showInputDialog(mwclient.getMainFrame(), mwclient
-	                .moneyOrFluMessage(false,true,-1)
-	                + " File Prefix:");
+            String fluFilePrefix = JOptionPane.showInputDialog(mwclient.getMainFrame(), mwclient.moneyOrFluMessage(false,true,-1)+ " File Prefix:");
 
 	        if (fluFilePrefix == null || fluFilePrefix.length() == 0)
 	            return;
