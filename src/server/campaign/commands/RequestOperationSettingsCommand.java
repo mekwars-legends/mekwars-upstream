@@ -43,7 +43,11 @@ public class RequestOperationSettingsCommand implements Command {
 		SPlayer p = CampaignMain.cm.getPlayer(Username);
 		ShortOperation so = CampaignMain.cm.getOpsManager().getShortOpForPlayer(p);
 		
-		if ( so != null )
+		if ( so != null ){
 		    so.sendReconnectInfoToPlayer(p);
+		}
+		else{
+		    CampaignMain.cm.toUser("GO|DONE|DONE", Username,false);
+		}
 	}//end process() 
 }//end SetMaintainedCommand class

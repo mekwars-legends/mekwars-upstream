@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.28.x
+Release Client 0.2.28.1 & Server 0.2.28.2
++ Bug: Viewing games causes client to lockup.
 Release Server 0.2.28.1
 + RFE: Default amounts in the Omni Variant Cost Dialogs.
 + Bug: Cannot Activate with Tanks

@@ -165,7 +165,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c RequestOperationSettings");
             while ( mwclient.isWaiting() ){
                 try{
-                    mwclient.sendChat("Retrieving Operation Data Please Wait..");
+                    mwclient.addToChat("Retrieving Operation Data Please Wait..");
                     Thread.sleep(1000);
                 }catch (Exception ex){
                     
