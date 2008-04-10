@@ -2661,7 +2661,7 @@ public class UnitUtils  {
         
         if ( unit instanceof Tank ){
             
-            for ( int loc = Tank.LOC_BODY; loc <= Tank.LOC_TURRET; loc++ ){
+            for ( int loc = Tank.LOC_FRONT; loc < Tank.LOC_TURRET; loc++ ){
                 if ( unit.getInternal(loc) < 0){
                     return true;
                 }

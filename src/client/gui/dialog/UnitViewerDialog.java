@@ -612,21 +612,21 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
                     MechSummary ms = mechsCurrent[mechList.getSelectedIndex()];
                     String unit = ms.getName();
                     this.setVisible(false);
-                    String moneyMod = JOptionPane.showInputDialog(clientgui, "Money Mod for " + unit);
+                    String moneyMod = JOptionPane.showInputDialog(clientgui, "Money Mod for " + unit, 0);
 
                     if (moneyMod == null || moneyMod.length() == 0) {
                         this.dispose();
                         return;
                     }
 
-                    String compMod = JOptionPane.showInputDialog(clientgui, "Comp Mod for " + unit);
+                    String compMod = JOptionPane.showInputDialog(clientgui, "Comp Mod for " + unit, 0);
 
                     if (compMod == null || compMod.length() == 0) {
                         this.dispose();
                         return;
                     }
 
-                    String fluMod = JOptionPane.showInputDialog(clientgui, "Flu Mod for " + unit);
+                    String fluMod = JOptionPane.showInputDialog(clientgui, "Flu Mod for " + unit, 0);
 
                     if (fluMod == null || fluMod.length() == 0) {
                         this.dispose();
