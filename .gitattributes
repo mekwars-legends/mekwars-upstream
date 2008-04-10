@@ -1490,6 +1490,7 @@ src/server/campaign/commands/RepodCommand.java -text
 src/server/campaign/commands/RequestBuildTableCommand.java -text
 src/server/campaign/commands/RequestCommand.java -text
 src/server/campaign/commands/RequestDonatedCommand.java -text
+src/server/campaign/commands/RequestOperationSettingsCommand.java -text
 src/server/campaign/commands/RequestServerMailCommand.java -text
 src/server/campaign/commands/RequestSubFactionPromotionCommand.java -text
 src/server/campaign/commands/RetirePilotCommand.java -text
@@ -1687,6 +1688,7 @@ src/server/campaign/commands/mod/GrantEXPCommand.java -text
 src/server/campaign/commands/mod/GrantInfluenceCommand.java -text
 src/server/campaign/commands/mod/GrantMoneyCommand.java -text
 src/server/campaign/commands/mod/GrantRewardCommand.java -text
+src/server/campaign/commands/mod/GrantTechPointsCommand.java -text
 src/server/campaign/commands/mod/GrantTechsCommand.java -text
 src/server/campaign/commands/mod/HardTerminateCommand.java -text
 src/server/campaign/commands/mod/IPListCommand.java -text
