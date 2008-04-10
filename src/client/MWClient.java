@@ -2420,21 +2420,14 @@ public final class MWClient implements IClient {
         ArrayList<Unit> meks = new ArrayList<Unit>();
         ArrayList<CUnit> autoArmy = new ArrayList<CUnit>();
 
-        if (servers.size() > 0 && hostName != null && hostName.trim().length() > 0) {// If a
-                                                                                        // row
-                                                                                        // is
-                                                                                        // selected
+        //If a row is selected
+        if (servers.size() > 0 && hostName != null && hostName.trim().length() > 0) {
 
             // get server from tree
             MMGame toJoin = servers.get(hostName);
 
-            if ((toJoin.getCurrentPlayers().size() >= toJoin.getMaxPlayers()) && !toJoin.getCurrentPlayers().contains(myUsername)// allow
-                                                                                                                                    // people
-                                                                                                                                    // to
-                                                                                                                                    // re-enter
-                                                                                                                                    // games
-                                                                                                                                    // they're
-                                                                                                                                    // in
+         // allow people to re-enter games they're in
+            if ((toJoin.getCurrentPlayers().size() >= toJoin.getMaxPlayers()) && !toJoin.getCurrentPlayers().contains(myUsername)
                     && !isMod()) {
                 showInfoWindow("This game is already full");
                 return;
