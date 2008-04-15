@@ -50,6 +50,7 @@ import megamek.client.bot.ui.AWT.BotGUI;
 import megamek.client.ui.AWT.ClientGUI;
 import megamek.common.Board;
 import megamek.common.Entity;
+import megamek.common.IGame.Phase;
 import megamek.common.event.GameBoardChangeEvent;
 import megamek.common.event.GameBoardNewEvent;
 import megamek.common.event.GameEndEvent;
@@ -108,7 +109,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
     // auto army
     CArmy army = null;
     BotClient bot = null;
-    private int currentPhase = IGame.PHASE_DEPLOYMENT;
+    private Phase currentPhase = IGame.Phase.PHASE_DEPLOYMENT;
 
     final int N = 0;
     final int NE = 1;
@@ -231,7 +232,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
             // if game is running, shouldn't do the following, so detect the
             // phase
-            for (int i = 0; i < 1000 && client.game.getPhase() == IGame.PHASE_UNKNOWN; i++) {
+            for (int i = 0; i < 1000 && client.game.getPhase() == IGame.Phase.PHASE_UNKNOWN; i++) {
                 sleep(50);
             }
 
@@ -326,7 +327,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     }
                     // if game is running, shouldn't do the following, so detect
                     // the phase
-                    for (int i = 0; i < 1000 && bot.game.getPhase() == IGame.PHASE_UNKNOWN; i++) {
+                    for (int i = 0; i < 1000 && bot.game.getPhase() == IGame.Phase.PHASE_UNKNOWN; i++) {
                         sleep(50);
                     }
                 } catch (Exception ex) {
@@ -350,7 +351,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                 sleep(125);
             }
 
-            if ((client.game != null && client.game.getPhase() == IGame.PHASE_LOUNGE)) {
+            if ((client.game != null && client.game.getPhase() == IGame.Phase.PHASE_LOUNGE)) {
                 if (this.mechs.size() > 0 && xmlGameOptions.size() > 0) {
                     /*
                      * Vector<IBasicOption> tempVector = new Vector<IBasicOption>(10,1);
@@ -550,7 +551,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
         try {
 
-            if (client.game.getPhase() == IGame.PHASE_VICTORY) {
+            if (client.game.getPhase() == IGame.Phase.PHASE_VICTORY) {
 
                 // Make sure the player is fully connected.
                 while (client.getLocalPlayer() == null) {
@@ -604,7 +605,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
              * remove on Engine crits even when a CT core comes later in the
              * round).
              */
-            else if (client.game.getPhase() == IGame.PHASE_END_REPORT) {
+            else if (client.game.getPhase() == IGame.Phase.PHASE_END_REPORT) {
 
                 // observers need not report
                 if (client.getLocalPlayer().isObserver())
