@@ -214,8 +214,14 @@ public class planetHandler {
                     terrainNumber = rs3.getInt("TerrainData");
                     planetEnvironment = data.getTerrain(terrainNumber);
                 } catch (Exception ex) {
-                    planetEnvironment = data.getTerrain(terrainNumber);
+                    CampaignData.mwlog.dbLog(ex);
+                    CampaignData.mwlog.dbLog("Unable to load Terrain #"+terrainNumber);
+                    planetEnvironment = data.getTerrain(0);
                 }
+                
+                if ( planetEnvironment == null )
+                    planetEnvironment = data.getTerrain(0);
+
                 Continent PE = new Continent(size, planetEnvironment);
                 if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")) {
                     AdvancedTerrain aTerrain = new AdvancedTerrain();

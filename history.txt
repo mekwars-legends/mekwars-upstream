@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.28.x
++ Bug: Terrains not loading from DB.
 + Spot Lights are now set at game time based on Night/Dusk game options
 + New MegaMek.jar 0.33.22-MW041508-5572
 + Changed phases from int to Phase object for new MegaMek Phase enum
