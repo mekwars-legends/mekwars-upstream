@@ -137,7 +137,7 @@ public class SellCommand implements Command {
 		 * this unit (base cost + weight mod), then check amount.
 		 */
 		int sellFluCost = Integer.parseInt(house.getConfig("BMSellFlu"));
-		sellFluCost = sellFluCost + (unitToSell.getWeightclass()) * Integer.parseInt(house.getConfig("BMFluSizeCost"));
+		sellFluCost = sellFluCost + (unitToSell.getWeightclass()) * house.getIntegerConfig("BMFluSizeCost");
 		if(p.getInfluence() < sellFluCost) {
 			CampaignMain.cm.toUser("AM:You need " + CampaignMain.cm.moneyOrFluMessage(false,true,sellFluCost)
 					+ " to sell the " + unitToSell.getModelName() + ".", Username, true);
@@ -169,8 +169,8 @@ public class SellCommand implements Command {
 			return;
 		}
 		if (minBid > maxprice && maxprice > 0) {
-			CampaignMain.cm.toUser("AM:Units may not have an asking price of more that  "
-					+ CampaignMain.cm.moneyOrFluMessage(true,false,minprice) + ".", Username, true);
+			CampaignMain.cm.toUser("AM:Units may not have an asking price of more than  "
+					+ CampaignMain.cm.moneyOrFluMessage(true,false,maxprice) + ".", Username, true);
 			return;
 		}
 		

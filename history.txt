@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.28.x
++ Typo in the SellCommand
 + Bug: games options not getting reset after game.
 + Bug: Terrains not loading from DB.
 + Spot Lights are now set at game time based on Night/Dusk game options
