@@ -204,9 +204,9 @@ public class CUnit extends Unit {
             }
         }// Machine Guns
 
-        UnitEntity.setSpotlight(Boolean.parseBoolean(TokenReader.readString(ST)));
+        TokenReader.readString(ST);//unused
 
-        UnitEntity.setSpotlightState(Boolean.parseBoolean(TokenReader.readString(ST)));
+        TokenReader.readString(ST);//unused
 
         UnitEntity.setTargSysType(Math.max(0, TokenReader.readInt(ST)));
 

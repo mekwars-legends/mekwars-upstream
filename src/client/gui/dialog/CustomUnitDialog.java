@@ -92,8 +92,6 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
     private static final long serialVersionUID = 4035217132830883530L;
     private JLabel labAutoEject = new JLabel("Disable Autoeject", SwingConstants.TRAILING);
     private JCheckBox chAutoEject = new JCheckBox();
-    private JCheckBox chSearchLight = new JCheckBox();
-    private JCheckBox chSearchLightSetting = new JCheckBox();
     private JLabel labOffBoard = new JLabel("Deploy Offboard", SwingConstants.TRAILING);
     private JCheckBox chOffBoard = new JCheckBox();
     private JLabel labOffBoardDistance = new JLabel("Offboard Distance (Hexes):", SwingConstants.TRAILING);
@@ -195,15 +193,6 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
         	boxRows += 1;
         }
         
-        //searchlight option and current entity status
-        chSearchLight.setText("Add Spotlight?");
-        boxPanel.add(chSearchLight);
-        chSearchLightSetting.setText("Default On?");
-    	boxPanel.add(chSearchLightSetting);
-    	chSearchLightSetting.setSelected(entity.isUsingSpotlight());
-    	chSearchLight.setSelected(entity.hasSpotlight());
-    	boxRows += 1;//up rowcount
-    	
         if ( pilot.getSkills().has(PilotSkill.EdgeSkillID) ){
             setupEdgeSkills();
             boxPanel.add(new JLabel("Edge Selections",SwingConstants.TRAILING));
@@ -838,8 +827,6 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
             //String name = fldName.getText();
             int offBoardDistance;
             boolean autoEject = chAutoEject.isSelected();
-            boolean searchLight = chSearchLight.isSelected();
-            boolean searchLightSetting = chSearchLightSetting.isSelected();
             
             if (chOffBoard.isSelected()){
                 try {
@@ -891,13 +878,6 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                }
            }           
           
-            if ( entity.hasSpotlight() != searchLight 
-                    || entity.isUsingSpotlight() != searchLightSetting ){
-                entity.setSpotlight(searchLight);
-                entity.setSpotlightState(searchLightSetting);
-                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setsearchlight#"+entity.getExternalId()+"#"+searchLight+"#"+searchLightSetting);
-            }
-                
             okay = true;
 
 	        for (Enumeration<MunitionChoicePanel> e = m_vMunitions.elements(); e.hasMoreElements(); ) {

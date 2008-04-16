@@ -513,10 +513,7 @@ public final class SUnit extends Unit{
             result.append("0$");
         }
 
-        result.append(unitEntity.hasSpotlight());
-        result.append("$");
-        result.append(unitEntity.isUsingSpotlight());
-        result.append("$");
+        result.append("0$0$"); //unused Slite info
         if (CampaignMain.cm.getData().getBannedTargetingSystems().containsKey(this.getEntity().getTargSysType())) {
             result.append(MiscType.T_TARGSYS_STANDARD);
             this.getEntity().setTargSysType(MiscType.T_TARGSYS_STANDARD);
@@ -574,8 +571,8 @@ public final class SUnit extends Unit{
                     ps.setBoolean(7, ((Mech) ent).isAutoEject());
                 else
                     ps.setBoolean(7, false);
-                ps.setBoolean(8, ent.hasSpotlight());
-                ps.setBoolean(9, ent.isUsingSpotlight());
+                ps.setBoolean(8, false);
+                ps.setBoolean(9, false);
                 if (CampaignMain.cm.getData().getBannedTargetingSystems().containsKey(getEntity().getTargSysType())) {
                     ps.setInt(10, MiscType.T_TARGSYS_STANDARD);
                     getEntity().setTargSysType(MiscType.T_TARGSYS_STANDARD);
@@ -815,8 +812,8 @@ public final class SUnit extends Unit{
                 }
             }
             setEntity(en);
-            unitEntity.setSpotlight(TokenReader.readBoolean(ST));
-            unitEntity.setSpotlightState(TokenReader.readBoolean(ST));
+            TokenReader.readString(ST);//unused
+            TokenReader.readString(ST);//unused
             // if allow level 3 targeting is enabled
             // for all units then apply the saved
             // one else use the entity default.

@@ -1510,7 +1510,6 @@ src/server/campaign/commands/SetEdgeSkillsCommand.java -text
 src/server/campaign/commands/SetMOTDCommand.java -text
 src/server/campaign/commands/SetMaintainedCommand.java -text
 src/server/campaign/commands/SetMyLogoCommand.java -text
-src/server/campaign/commands/SetSearchLightCommand.java -text
 src/server/campaign/commands/SetTargetSystemTypeCommand.java -text
 src/server/campaign/commands/SetUnitAmmoByCritCommand.java -text
 src/server/campaign/commands/SetUnitAmmoCommand.java -text

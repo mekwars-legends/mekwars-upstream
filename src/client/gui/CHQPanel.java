@@ -1626,36 +1626,6 @@ public class CHQPanel extends JPanel {
                             }
                         }
 
-                        JMenu sliteMenu = new JMenu("SpotLights");
-                        if (cm.getEntity().hasSpotlight()) {
-                            menuItem = new JMenuItem("Remove Spotlight");
-                            menuItem.setActionCommand("RESL|" + row + "|" + col);
-                            menuItem.addActionListener(this);
-                            sliteMenu.add(menuItem);
-
-                            if (cm.getEntity().isUsingSpotlight()) {
-                                menuItem = new JMenuItem("Disable Spotlight");
-                                menuItem.setActionCommand("DESL|" + row + "|" + col);
-                                menuItem.addActionListener(this);
-                                sliteMenu.add(menuItem);
-                            } else {
-                                menuItem = new JMenuItem("Enable Spotlight");
-                                menuItem.setActionCommand("EESL|" + row + "|" + col);
-                                menuItem.addActionListener(this);
-                                sliteMenu.add(menuItem);
-                            }
-                        } else {
-                            menuItem = new JMenuItem("Add Spotlight");
-                            menuItem.setActionCommand("AESL|" + row + "|" + col);
-                            menuItem.addActionListener(this);
-                            sliteMenu.add(menuItem);
-                            menuItem = new JMenuItem("Add/Enable Spotlight");
-                            menuItem.setActionCommand("AEESL|" + row + "|" + col);
-                            menuItem.addActionListener(this);
-                            sliteMenu.add(menuItem);
-                        }
-                        popup.add(sliteMenu);
-
                         if (l.isCommander(cm.getId())) {
                             menuItem = new JMenuItem("Remove Commander");
                             menuItem.setActionCommand("REMOVEUNITCOMMANDER|" + row + "|" + col + "|" + lid);

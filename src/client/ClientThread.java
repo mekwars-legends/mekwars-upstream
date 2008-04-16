@@ -400,6 +400,9 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     if (!nightGame) {
                         entity.setSpotlight(false);
                         entity.setSpotlightState(false);
+                    }else{
+                        entity.setSpotlight(true);
+                        entity.setSpotlightState(true);
                     }
 
                     // Set the correct home edge for off board units
