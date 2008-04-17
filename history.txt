@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.28.x
++ Release Server 0.2.28.3 & client 0.2.28.2
 + Component Conversion Dialog now checks if you where using Basic/Advance at 
 	startup
 + RFE 1941975: Setting Component Conversion
