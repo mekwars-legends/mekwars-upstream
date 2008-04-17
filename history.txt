@@ -2,6 +2,11 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.28.x
++ Component Conversion Dialog now checks if you where using Basic/Advance at 
+	startup
++ RFE 1941975: Setting Component Conversion
++ Bug: Old faction logo not being replaced by new faction logo when player 
+	defected.
 + Typo in the SellCommand
 + Bug: games options not getting reset after game.
 + Bug: Terrains not loading from DB.

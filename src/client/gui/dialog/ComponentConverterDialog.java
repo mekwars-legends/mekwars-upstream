@@ -65,6 +65,10 @@ public final class ComponentConverterDialog implements ActionListener {
     private final JButton modeButton = new JButton("Basic");
     private boolean isAdvanced = false;
 
+    private int basicWeight = CUnit.LIGHT;
+    private int basicType = CUnit.MEK;
+    private int basicAmount = 100;
+    
     private JDialog dialog;
     private JOptionPane pane;
 
@@ -100,6 +104,8 @@ public final class ComponentConverterDialog implements ActionListener {
         dialog = pane.createDialog(scrollPane, windowName);
         dialog.getRootPane().setDefaultButton(cancelButton);
 
+        isAdvanced = !mwclient.getCampaign().getComponentConverter().containsKey("All");
+        
         // Show the dialog and get the user's input
         dialog.setLocation(mwclient.getMainFrame().getLocation().x + 10, mwclient.getMainFrame().getLocation().y);
         dialog.setModal(true);
@@ -167,6 +173,33 @@ public final class ComponentConverterDialog implements ActionListener {
 
     }
 
+    public void findAndBasicConfigs(JPanel panel) {
+        for (int fieldPos = panel.getComponentCount() - 1; fieldPos >= 0; fieldPos--) {
+
+            Object field = panel.getComponent(fieldPos);
+
+            // found another JPanel keep digging!
+            if (field instanceof JPanel)
+                findAndBasicConfigs((JPanel) field);
+            else if (field instanceof JTextField) {
+                JTextField textBox = (JTextField) field;
+
+                if (textBox.getName().equals("amount")) {
+                    basicAmount = Integer.parseInt(textBox.getText());
+                } 
+            } else if (field instanceof JComboBox) {
+
+                JComboBox combo = (JComboBox) field;
+                if (combo.getName().equals("weight")) {
+                    basicWeight = combo.getSelectedIndex();
+                } else {
+                    basicType = combo.getSelectedIndex();
+                }
+
+            }
+        }
+    }
+
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         if (command.equals(okayCommand)) {
@@ -182,9 +215,9 @@ public final class ComponentConverterDialog implements ActionListener {
     }
 
     public void refresh() {
-        mainPanel.removeAll();
 
         if (!isAdvanced) {
+            mainPanel.removeAll();
             scrollPane.setSize(300, 40);
             scrollPane.setPreferredSize(scrollPane.getSize());
             scrollPane.setMinimumSize(scrollPane.getSize());
@@ -228,6 +261,8 @@ public final class ComponentConverterDialog implements ActionListener {
             modeButton.setText("Advanced");
             isAdvanced = !isAdvanced;
         } else {
+            findAndBasicConfigs(mainPanel);
+            mainPanel.removeAll();
             for (BMEquipment eq : mwclient.getCampaign().getBlackMarketParts().values()) {
 
                 if ( (Boolean.parseBoolean(mwclient.getserverConfigs("AllowCrossOverTech")) 
@@ -241,9 +276,9 @@ public final class ComponentConverterDialog implements ActionListener {
                     if ( converter == null ) {
                         converter = new ComponentToCritsConverter();
                         converter.setCritName(eq.getEquipmentInternalName());
-                        converter.setComponentUsedType(CUnit.MEK);
-                        converter.setComponentUsedWeight(CUnit.LIGHT);
-                        converter.setMinCritLevel(100);
+                        converter.setComponentUsedType(basicType);
+                        converter.setComponentUsedWeight(basicWeight);
+                        converter.setMinCritLevel(basicAmount);
                     }
 
                     critPanel = new JPanel();

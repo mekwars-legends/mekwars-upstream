@@ -593,6 +593,10 @@ public class DefectCommand implements Command {
             // do we really want to keep the RSS feed?
             CampaignMain.cm.addToNewsFeed(Username + " defected from " + oldHouse.getName() + " to " + HouseName);
 
+            if ( p.getMyLogo().trim().equals(oldHouse.getLogo().trim()) ){
+                p.setMyLogo(newHouse.getLogo().trim());
+            }
+            
             // for now, move defecting players back to standard-user access.
             // Don't
             // let people defect and retain faction leadership access, etc. May

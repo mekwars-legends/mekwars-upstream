@@ -95,7 +95,7 @@ public class ConnectionHandler extends AbstractConnectionHandler {
     		_writer = new WriterThread(_socket,_out,_client.getHost());
     		ThreadManager.getInstance().runInThreadFromPool(_writer);
     	} catch (OutOfMemoryError OOM) {
-    		
+    	    CampaignData.mwlog.errLog(OOM.getMessage());
     		/*
     		 * OOM usually mean there are no remaining threads or
     		 * sockets. This is generally not a problem.
@@ -115,10 +115,7 @@ public class ConnectionHandler extends AbstractConnectionHandler {
     			_writer = null;
     			//garbage collect and try again
     			System.gc();
-        		_reader = new ReaderThread(this, _client, _inputStream);
-        		ThreadManager.getInstance().runInThreadFromPool(_reader);
-        		_writer = new WriterThread(_socket,_out,_client.getHost());
-        		ThreadManager.getInstance().runInThreadFromPool(_writer);
+    			shutdown(true);
     		} catch (Exception e) {
     			CampaignData.mwlog.errLog(e);
     		}
