@@ -60,7 +60,14 @@ final public class AdvancedTerrain {
 
     public String toString() {
         String result = "";
-        result += "$" + displayName + "$" + xSize + "$" + ySize + "$" + staticMap + "$" + xBoardSize 
+        result = "$";
+        
+        if ( displayName.trim().length() < 1 )
+            result += "Terrain";
+        else
+            result += displayName;
+        
+        result += "$" + xSize + "$" + ySize + "$" + staticMap + "$" + xBoardSize 
         + "$" + yBoardSize + "$" + lowTemp + "$" + highTemp + "$" + gravity + "$" + vacuum + "$" + nightChance 
         + "$" + nightTempMod + "$" + staticMapName + "$" + minVisibility + "$" + maxVisibility + "$" 
         + blizzardChance + "$" + blowingSandChance + "$" + heavySnowfallChance + "$" + lightRainfallChance + "$" 

@@ -714,7 +714,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
              * player saves. these saves have been replaced with seperate
              * PFiles, and the node can now be used ...
              */
-            ST.nextElement();// burn the membercount
+            TokenReader.readString(ST);// burn the membercount
 
             /*
              * Another bad-old-code feature. "Components" will be the next token

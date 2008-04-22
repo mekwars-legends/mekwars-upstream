@@ -47,7 +47,7 @@ import common.CampaignData;
 import common.Continent;
 import common.House;
 import common.Planet;
-import common.PlanetEnvironment;
+import common.Terrain;
 import common.UnitFactory;
 import common.util.SpringLayoutHelper;
 
@@ -288,8 +288,9 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			
 			for (int pos = 0; pos < planetOwnersList.getItemCount(); pos++){
 				String name = planetOwnersList.getItemAt(pos).toString();
-				if ( name.equals(houseNames.getSelectedItem().toString()))
-					continue;
+				if ( name.equals(houseNames.getSelectedItem().toString())){
+				    ownersMap.put(houseNames.getSelectedItem().toString(),selectedPlanet.getConquestPoints());	
+				}
 				removedOwners.add(name);
 			}
 			
@@ -666,7 +667,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		JPanel panel2 = new JPanel();
 		allTerrains = new JComboBox();
 		terrainList = new TreeSet<String>();
-		for ( PlanetEnvironment terrain : mwclient.getData().getAllTerrains() ){
+		for ( Terrain terrain : mwclient.getData().getAllTerrains() ){
 			if ( terrainMap.containsKey(terrain.getName()))
 				continue;
 			terrainList.add(terrain.getName());
@@ -1011,7 +1012,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 
 		allTerrains.removeAllItems();
 		terrainList = new TreeSet<String>();
-		for ( PlanetEnvironment terrain : mwclient.getData().getAllTerrains() ){
+		for ( Terrain terrain : mwclient.getData().getAllTerrains() ){
 			if ( terrainMap.containsKey(terrain.getName()))
 				continue;
 			terrainList.add(terrain.getName());
@@ -1274,7 +1275,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		if ( useAdvancedTerrain ){
 			for ( String terrain : terrainMap.keySet() ){
 				AdvancedTerrain aTerrain = advancedTerrainMap.get(terrain);
-				PlanetEnvironment pTerrain = mwclient.getData().getTerrainByName(terrain);
+				Terrain pTerrain = mwclient.getData().getTerrainByName(terrain);
 				if ( pTerrain == null ){
 					CampaignData.mwlog.errLog("Unable to find Terrain "+terrain+" on planet "
 							+selectedPlanet.getName());

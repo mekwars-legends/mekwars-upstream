@@ -34,7 +34,7 @@ import common.CampaignData;
 import common.Continent;
 import common.House;
 import common.Influences;
-import common.PlanetEnvironment;
+import common.Terrain;
 import common.Unit;
 import common.UnitFactory;
 import common.util.Position;
@@ -403,7 +403,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
             int size = TokenReader.readInt(ST);
             String terrain = TokenReader.readString(ST);
             int terrainNumber = 0;
-            PlanetEnvironment planetEnvironment = null;
+            Terrain planetEnvironment = null;
 
             /*
              * Bug reported if you screw with the positions of the terrains in terrain.xml you'll screw up the planet terrains this will now allow you to load via int and then save via name so the terrain will always be correct no matter the position of the terrain in the terrain.xml.
@@ -772,9 +772,9 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
         StringBuilder result = new StringBuilder(getName());
         if (withTerrain) {
             Continent p = getEnvironments().getBiggestEnvironment();
-            PlanetEnvironment pe = p.getEnvironment();
-            if (pe != null)
-                result.append(" " + pe.toImageDescription());
+            Terrain pe = p.getEnvironment();
+            if (pe != null && pe.getEnviroments().size() > 0)
+                result.append(" " + pe.getEnviroments().get(0).toImageDescription());
 
             if (this.getUnitFactories().size() > 0) {
                 for (int i = 0; i < this.getUnitFactories().size(); i++) {

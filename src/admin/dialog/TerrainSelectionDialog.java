@@ -44,6 +44,7 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
 import common.PlanetEnvironment;
+import common.Terrain;
 import common.util.SpringLayoutHelper;
 
 //mekwars imports
@@ -96,7 +97,7 @@ public class TerrainSelectionDialog extends JDialog implements ActionListener {
 		//super, and variable saves
 		super(new JFrame(),boxText,true);//dummy frame as owner
         names = new TreeSet<String>();
-        for (PlanetEnvironment it : mwclient.getData().getAllTerrains())
+        for (Terrain it : mwclient.getData().getAllTerrains())
             names.add(it.getName());
 
         final Object[] allCommandNames = names.toArray();

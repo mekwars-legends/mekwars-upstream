@@ -24,10 +24,10 @@ package common;
  * @author Helge Richter
  */
 public class Continent {
-	private PlanetEnvironment environment;
+	private Terrain environment;
 	private int size = 1;
 	
-	public Continent(int Size, PlanetEnvironment env) {
+	public Continent(int Size, Terrain env) {
 		this.size = Size;
 		environment = env;
 	}
@@ -65,7 +65,7 @@ public class Continent {
 	/**
 	 * @return Returns the envID.
 	 */
-	public PlanetEnvironment getEnvironment() {
+	public Terrain getEnvironment() {
 		return environment;
 	}
 	

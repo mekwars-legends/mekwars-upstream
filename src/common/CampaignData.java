@@ -83,7 +83,7 @@ public class CampaignData implements TerrainProvider {
     /**
      * List of all terrains that can occur on surfaces of planets.
      */
-    private  ArrayList<PlanetEnvironment> terrains = new ArrayList<PlanetEnvironment>();
+    private  ArrayList<Terrain> terrains = new ArrayList<Terrain>();
     
    
     private Hashtable<String,String> ServerBannedAmmo = new Hashtable<String,String>();
@@ -309,7 +309,7 @@ public class CampaignData implements TerrainProvider {
     public int getUnusedTerrainID() {
         int id = -1;
         int hid = -1;
-        for (PlanetEnvironment e : terrains) {
+        for (Terrain e : terrains) {
         	hid = e.getId();
         	if (hid > id) id = hid;
         }
@@ -368,7 +368,7 @@ public class CampaignData implements TerrainProvider {
      */
     public void binTerrainsOut(BinWriter out) throws IOException {
         out.println(terrains.size(), "terrains.size");
-        for (PlanetEnvironment pe : terrains)
+        for (Terrain pe : terrains)
             pe.binOut(out);
     }
 
@@ -411,7 +411,7 @@ public class CampaignData implements TerrainProvider {
         PlanetEnvironments.data = this;
         int size = in.readInt("terrains.size");
         for (int i = 0; i < size; ++i) {
-            PlanetEnvironment pe = new PlanetEnvironment();
+            Terrain pe = new Terrain();
             pe.binIn(in, this);
             terrains.add(pe);
         }
@@ -479,8 +479,8 @@ public class CampaignData implements TerrainProvider {
     /**
      * @see common.TerrainProvider#getTerrain(int)
      */
-    public PlanetEnvironment getTerrain(int id) {
-    	for (PlanetEnvironment env : terrains) {
+    public Terrain getTerrain(int id) {
+    	for (Terrain env : terrains) {
     		if (env.getId() == id)
     			return env;
     	}
@@ -491,21 +491,21 @@ public class CampaignData implements TerrainProvider {
     /**
      * @see common.TerrainProvider#getAllTerrains()
      */
-    public Collection<PlanetEnvironment> getAllTerrains() {
+    public Collection<Terrain> getAllTerrains() {
         return terrains;
     }
 
     /**
      * @see common.TerrainProvider#addTerrain(common.PlanetEnvironment)
      */
-    public void addTerrain(PlanetEnvironment pe) {
-    	  pe.setId(getUnusedTerrainID());
-        terrains.add(pe);
+    public void addTerrain(Terrain terrain) {
+        terrain.setId(getUnusedTerrainID());
+        terrains.add(terrain);
         terrains.trimToSize();
     }
 
-    public PlanetEnvironment getTerrainByName(String TerrainName) {
-    	for (PlanetEnvironment env  : terrains) {
+    public Terrain getTerrainByName(String TerrainName) {
+    	for (Terrain env  : terrains) {
     		if (env.getName().equalsIgnoreCase(TerrainName))
     			return env;
     	}

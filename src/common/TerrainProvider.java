@@ -29,15 +29,15 @@ public interface TerrainProvider {
     /**
      * Return the terrain to a given id.
      */
-    public PlanetEnvironment getTerrain(int id);
+    public Terrain getTerrain(int id);
 
     /**
      * Return all terrains
      */
-    public Collection<PlanetEnvironment> getAllTerrains();
+    public Collection<Terrain> getAllTerrains();
 
     /**
      * Add a terrain to the list
      */
-    public void addTerrain(PlanetEnvironment pe);
+    public void addTerrain(Terrain terrain);
 }

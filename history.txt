@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.28.x
++ RFE: allow multiple environments per terrain to allow for different theme 
+	usage and slight terrain variations.
 + Release Server 0.2.28.3 & client 0.2.28.2
 + Component Conversion Dialog now checks if you where using Basic/Advance at 
 	startup

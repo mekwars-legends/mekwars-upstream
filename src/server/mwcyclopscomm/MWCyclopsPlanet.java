@@ -188,16 +188,16 @@ import server.campaign.SPlanet;
          
          environmentStruct.append(MWCyclopsUtils.structMember("id",MD5.getHashString(continent.getEnvironment().getName())));
          environmentStruct.append(MWCyclopsUtils.structMember("weight",(continent.getSize()*100)/MaxSize));
-         environmentStruct.append(MWCyclopsUtils.structMember("hill",continent.getEnvironment().getHillyness()-1/25));
-         environmentStruct.append(MWCyclopsUtils.structMember("vegetation",continent.getEnvironment().getForestHeavyProb()-1/25));
-         environmentStruct.append(MWCyclopsUtils.structMember("water",continent.getEnvironment().getWaterDeepProb()-1/25));
-         environmentStruct.append(MWCyclopsUtils.structMember("river",continent.getEnvironment().getRiverProb()>0));
-         environmentStruct.append(MWCyclopsUtils.structMember("road",continent.getEnvironment().getRoadProb()>0));
-         environmentStruct.append(MWCyclopsUtils.structMember("crater",continent.getEnvironment().getCraterProb()>0));
-         environmentStruct.append(MWCyclopsUtils.structMember("rough",continent.getEnvironment().getRoughMinHexes()>0 && continent.getEnvironment().getRoughMaxHexes()>0));
-         environmentStruct.append(MWCyclopsUtils.structMember("swamp",continent.getEnvironment().getSwampMinHexes()>0 && continent.getEnvironment().getSwampMaxHexes()>0));
-         environmentStruct.append(MWCyclopsUtils.structMember("ice",continent.getEnvironment().getIceMinHexes()>0 && continent.getEnvironment().getIceMaxHexes()>0));
-         environmentStruct.append(MWCyclopsUtils.structMember("build",continent.getEnvironment().getMinBuildings()>0 && continent.getEnvironment().getMaxBuildings()>0));
+         environmentStruct.append(MWCyclopsUtils.structMember("hill",continent.getEnvironment().getEnviroments().get(0).getHillyness()-1/25));
+         environmentStruct.append(MWCyclopsUtils.structMember("vegetation",continent.getEnvironment().getEnviroments().get(0).getForestHeavyProb()-1/25));
+         environmentStruct.append(MWCyclopsUtils.structMember("water",continent.getEnvironment().getEnviroments().get(0).getWaterDeepProb()-1/25));
+         environmentStruct.append(MWCyclopsUtils.structMember("river",continent.getEnvironment().getEnviroments().get(0).getRiverProb()>0));
+         environmentStruct.append(MWCyclopsUtils.structMember("road",continent.getEnvironment().getEnviroments().get(0).getRoadProb()>0));
+         environmentStruct.append(MWCyclopsUtils.structMember("crater",continent.getEnvironment().getEnviroments().get(0).getCraterProb()>0));
+         environmentStruct.append(MWCyclopsUtils.structMember("rough",continent.getEnvironment().getEnviroments().get(0).getRoughMinHexes()>0 && continent.getEnvironment().getEnviroments().get(0).getRoughMaxHexes()>0));
+         environmentStruct.append(MWCyclopsUtils.structMember("swamp",continent.getEnvironment().getEnviroments().get(0).getSwampMinHexes()>0 && continent.getEnvironment().getEnviroments().get(0).getSwampMaxHexes()>0));
+         environmentStruct.append(MWCyclopsUtils.structMember("ice",continent.getEnvironment().getEnviroments().get(0).getIceMinHexes()>0 && continent.getEnvironment().getEnviroments().get(0).getIceMaxHexes()>0));
+         environmentStruct.append(MWCyclopsUtils.structMember("build",continent.getEnvironment().getEnviroments().get(0).getMinBuildings()>0 && continent.getEnvironment().getEnviroments().get(0).getMaxBuildings()>0));
          environmentStruct.append(MWCyclopsUtils.structEnd());
          
          return environmentStruct.toString();

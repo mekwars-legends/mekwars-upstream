@@ -34,7 +34,7 @@ import common.CampaignData;
 import common.Continent;
 import common.House;
 import common.Influences;
-import common.PlanetEnvironment;
+import common.Terrain;
 import common.util.Position;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
@@ -207,7 +207,7 @@ public class planetHandler {
 
             while (rs3.next()) {
                 int size = rs3.getInt("ContinentSize");
-                PlanetEnvironment planetEnvironment = null;
+                Terrain planetEnvironment = null;
                 int terrainNumber = 0;
 
                 try {

@@ -37,7 +37,7 @@ import megamek.common.TechConstants;
 
 import common.CampaignData;
 import common.Planet;
-import common.PlanetEnvironment;
+import common.Terrain;
 import common.UnitFactory;
 
 import client.MWClient;
@@ -907,7 +907,7 @@ public class AdminMenu extends JMenu {
 	        if (planetNamestr == null || planetNamestr.length() == 0)
 	            return;
 
-	        for (PlanetEnvironment pe : mwclient.getData().getAllTerrains())
+	        for (Terrain pe : mwclient.getData().getAllTerrains())
 	            names.add(pe.getName());
 
 	        /*

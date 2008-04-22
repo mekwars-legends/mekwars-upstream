@@ -108,7 +108,7 @@ public class PlanetEnvironments {
      * Return the environment with the most probability to occour.
      */
     public Continent getBiggestEnvironment() {
-        Continent result = new Continent(0,new PlanetEnvironment());
+        Continent result = new Continent(0,new Terrain());
         for (Iterator<Continent> it = iterator(); it.hasNext();) {
             Continent p = it.next();
             if (p.getSize() > result.getSize()) result = p;
@@ -135,8 +135,16 @@ public class PlanetEnvironments {
         int probs = getTotalEnivronmentPropabilities();
         for (Iterator<Continent> it = iterator(); it.hasNext();) {
             Continent pe = it.next();
-            if (r.nextInt(probs) < pe.getSize())
-                return pe.getEnvironment();
+            if (r.nextInt(probs) < pe.getSize()){
+                
+                probs = pe.getEnvironment().getTotalEnivronmentPropabilities();
+                for ( PlanetEnvironment env : pe.getEnvironment().getEnviroments() ){
+                    if (r.nextInt(probs) < env.getEnvironmentalProb()){
+                        return env;
+                    }
+                    probs -= env.getEnvironmentalProb();
+                }
+            }
             probs -= pe.getSize();
         }
         return new PlanetEnvironment();
