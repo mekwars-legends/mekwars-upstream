@@ -1290,6 +1290,7 @@ src/common/PlanetEnvironment.java -text
 src/common/PlanetEnvironments.java -text
 src/common/Player.java -text
 src/common/SubFaction.java -text
+src/common/Terrain.java -text
 src/common/TerrainProvider.java -text
 src/common/Unit.java -text
 src/common/UnitFactory.java -text
