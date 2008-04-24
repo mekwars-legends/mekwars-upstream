@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.28.x
++ Bug: Multiple Weather conditions where being allowed per operation.
 + RFE: allow multiple environments per terrain to allow for different theme 
 	usage and slight terrain variations.
 + Release Server 0.2.28.3 & client 0.2.28.2

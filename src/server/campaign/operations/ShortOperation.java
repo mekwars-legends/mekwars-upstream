@@ -1302,6 +1302,7 @@ public class ShortOperation implements Comparable<Object> {
                         this.weatherPattern.add(true);
                         gameOptions.append("|blowing_sand|");
                         gameOptions.append(true);
+                        hasWeather = true;
                     } else {
                         this.weatherPattern.add(false);
                         gameOptions.append("|blowing_sand|");
@@ -1311,6 +1312,7 @@ public class ShortOperation implements Comparable<Object> {
                         this.weatherPattern.add(true);
                         gameOptions.append("|heavy_snowfall|");
                         gameOptions.append(true);
+                        hasWeather = true;
                     } else {
                         this.weatherPattern.add(false);
                         gameOptions.append("|heavy_snowfall|");
@@ -1320,6 +1322,7 @@ public class ShortOperation implements Comparable<Object> {
                         this.weatherPattern.add(true);
                         gameOptions.append("|light_rainfall|");
                         gameOptions.append(true);
+                        hasWeather = true;
                     } else {
                         this.weatherPattern.add(false);
                         gameOptions.append("|light_rainfall|");
@@ -1328,16 +1331,19 @@ public class ShortOperation implements Comparable<Object> {
                     if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHeavyRainfallChance() && !hasWeather) {
                         this.weatherPattern.add(true);
                         gameOptions.append("|heavy_rainfall|");
+                        hasWeather = true;
                         gameOptions.append(true);
                     } else {
                         this.weatherPattern.add(false);
                         gameOptions.append("|heavy_rainfall|");
                         gameOptions.append(false);
+                        hasWeather = true;
                     }
                     if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getModerateWindsChance() && !hasWeather) {
                         this.weatherPattern.add(true);
                         gameOptions.append("|moderate_winds|");
                         gameOptions.append(true);
+                        hasWeather = true;
                     } else {
                         this.weatherPattern.add(false);
                         gameOptions.append("|moderate_winds|");
@@ -1347,6 +1353,7 @@ public class ShortOperation implements Comparable<Object> {
                         this.weatherPattern.add(true);
                         gameOptions.append("|high_winds|");
                         gameOptions.append(true);
+                        hasWeather = true;
                     } else {
                         this.weatherPattern.add(false);
                         gameOptions.append("|high_winds|");
