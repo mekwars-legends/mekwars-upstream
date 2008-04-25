@@ -21,6 +21,8 @@ import java.util.StringTokenizer;
 
 import javax.swing.JPanel;
 
+import common.util.StringUtils;
+
 import client.CUser;
 import client.MWClient;
 import client.gui.CCommPanel;
@@ -64,7 +66,11 @@ public class PM extends Command {
                 String tabName = name;
         		String fontSize = mwclient.getConfig().getParam("CHATFONTSIZE");
 
-                
+                if (Boolean.parseBoolean(mwclient.getConfigParam("INVERTCHATCOLOR"))) {
+                    factioncolor = StringUtils.color2html(StringUtils.invertColor(StringUtils.html2Color(factioncolor)));
+                    usercolor = StringUtils.color2html(StringUtils.invertColor(StringUtils.html2Color(usercolor)));
+                }
+
                 if (mwclient.getConfig().isParam("USEMULTIPLEPM")) {
                     int maxTabs =  mwclient.getConfig().getIntParam("MAXPMTABS");
                     //Check to see if the Mail tab exists if not create a new one.
