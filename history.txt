@@ -1,10 +1,13 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.28.x
+v 0.2.29.x
+Release Server&Client 0.2.29.0
++ New MegaMek.jar 0.33.23-MW042508-5617
 + Bug: Multiple Weather conditions where being allowed per operation.
 + RFE: allow multiple environments per terrain to allow for different theme 
 	usage and slight terrain variations.
+v 0.2.28.x
 + Release Server 0.2.28.3 & client 0.2.28.2
 + Component Conversion Dialog now checks if you where using Basic/Advance at 
 	startup
