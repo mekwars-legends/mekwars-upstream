@@ -712,6 +712,10 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
                 }
             }
 
+            if ( (c.getRed() == 0 && c.getBlue() == 0) ){
+                c = Color.white;
+            }
+            
             // calculate the current screen position
             int x = map2scrX(p.getPosition().x) - size / 2;
             int y = map2scrY(p.getPosition().y) - size / 2;
