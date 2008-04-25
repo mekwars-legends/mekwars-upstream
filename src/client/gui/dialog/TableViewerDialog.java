@@ -102,7 +102,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
     JScrollPane generalScrollPane = new JScrollPane();
 
     JButton closeButton = new JButton("Close");
-    JButton refreshButton = new JButton("Refresh");
+    JButton refreshButton = new JButton("Reload Data");
 
     // model and whatnot for refreshing
     TableViewerModel tvModel;
