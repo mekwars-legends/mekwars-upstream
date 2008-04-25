@@ -256,7 +256,13 @@ public class ShortOperation implements Comparable<Object> {
 
         // load the terrain for the randomly selected environment
         if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")) {
-            aTerrain = targetWorld.getAdvancedTerrain().get(new Integer(playEnvironment.getId())).clone();
+            try{
+                aTerrain = targetWorld.getAdvancedTerrain().get(new Integer(playEnvironment.getId())).clone();
+            }catch(Exception ex){
+                CampaignData.mwlog.modLog("Unable to find terrain on planet "+targetWorld.getName()+" using blank terrain");
+                aTerrain = new AdvancedTerrain();
+            }
+            
 
             if (o.getBooleanValue("UseOperationMap")) {
                 aTerrain.setStaticMap(true);

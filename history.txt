@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.29.x
++ Bug: Planets with no terrain causing NPE's
 + RFE: Change planet color if black on map.
 Release Server&Client 0.2.29.0
 + New MegaMek.jar 0.33.23-MW042508-5617
