@@ -43,7 +43,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
-import common.PlanetEnvironment;
 import common.Terrain;
 import common.util.SpringLayoutHelper;
 

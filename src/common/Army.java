@@ -149,7 +149,7 @@ public class Army {
 	 * @param name The name to set.
 	 */
 	public void setName(String s) {
-		name = s;
+		name = s.trim();
 	}
 	
 

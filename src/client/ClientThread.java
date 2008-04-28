@@ -405,23 +405,24 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     if (entity.isOffBoard()) {
                         int direction = IOffBoardDirections.NORTH;
                         switch (mwclient.getPlayerStartingEdge()) {
-                        case 0:
-                            break;
-                        case 1:
-                        case 2:
-                        case 3:
-                            direction = IOffBoardDirections.NORTH;
-                            break;
                         case 4:
+                        case 14:
                             direction = IOffBoardDirections.EAST;
                             break;
                         case 5:
                         case 6:
                         case 7:
+                        case 15:
+                        case 16:
+                        case 17:
                             direction = IOffBoardDirections.SOUTH;
                             break;
                         case 8:
+                        case 18:
                             direction = IOffBoardDirections.WEST;
+                            break;
+                        default:
+                            direction = IOffBoardDirections.NORTH;
                             break;
                         }
                         entity.setOffBoard(entity.getOffBoardDistance(), direction);
@@ -1040,8 +1041,8 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
     private void clearGameOptions() {
 
-        Vector<IBasicOption> defaultOptions = new Vector<IBasicOption>(10,1);
-        
+        Vector<IBasicOption> defaultOptions = new Vector<IBasicOption>(10, 1);
+
         for (Enumeration<IOptionGroup> i = client.game.getOptions().getGroups(); i.hasMoreElements();) {
             IOptionGroup group = i.nextElement();
 

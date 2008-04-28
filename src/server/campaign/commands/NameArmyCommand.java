@@ -112,7 +112,7 @@ public class NameArmyCommand implements Command {
 		
 		//check for a clear
 		if (name.equals("clear"))
-			name = "";
+			name = " ";
 		
 		//set the name
 		army.setName(name);
