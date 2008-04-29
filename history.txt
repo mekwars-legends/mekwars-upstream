@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.29.x
++ Removed more spotlight code that was no longer used
 + Bug: Arty not setting correct side when deep deployment is used.
 + Bug: Cannot clear army name without logging out and in.
 + Bug: Planets with no terrain causing NPE's

@@ -22,6 +22,8 @@ import java.util.StringTokenizer;
 
 import javax.swing.JPanel;
 
+import common.util.StringUtils;
+
 import client.CConfig;
 import client.CUser;
 import client.MWClient;
@@ -116,7 +118,12 @@ public class MailGCmd extends CGUICommand {
 		
 		//load and set chat font colour
 		String fontcolor = mwclient.getConfig().getParam("CHATFONTCOLOR");
-		
+        
+		if (Boolean.parseBoolean(mwclient.getConfigParam("INVERTCHATCOLOR"))) {
+            factioncolor = StringUtils.color2html(StringUtils.invertColor(StringUtils.html2Color(factioncolor)));
+            usercolor = StringUtils.color2html(StringUtils.invertColor(StringUtils.html2Color(usercolor)));
+        }
+
 		message = "=> " + name + addon + "<b>:</b> " + message.trim();
 		
 		if (Config.isParam("TIMESTAMP"))

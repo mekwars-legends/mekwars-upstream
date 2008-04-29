@@ -348,7 +348,6 @@ public class CConfig {
         defaults.setProperty("RIGHTENGINE", "false");
         defaults.setProperty("RIGHTEQUIPMENT", "false");
         defaults.setProperty("RIGHTARMOR", "false");
-        defaults.setProperty("RIGHTSLITE", "false");
         defaults.setProperty("RIGHTAMMO", "false");
         defaults.setProperty("RIGHTCOMMANDER", "false");
         //Left Column
@@ -358,7 +357,6 @@ public class CConfig {
         defaults.setProperty("LEFTENGINE", "false");
         defaults.setProperty("LEFTEQUIPMENT", "false");
         defaults.setProperty("LEFTARMOR", "false");
-        defaults.setProperty("LEFTSLITE", "false");
         defaults.setProperty("LEFTAMMO", "false");
         defaults.setProperty("LEFTCOMMANDER", "false");
         
@@ -401,7 +399,8 @@ public class CConfig {
         defaults.setProperty("USEAWTINTERFACE", "YES");
 
         defaults.setProperty("USERDEFINDMESSAGETAB", "0");
-
+        defaults.setProperty("INVERTCHATCOLOR", "NO");
+        
         return defaults;
 	}
 	
@@ -590,8 +589,6 @@ public class CConfig {
     		return true;
         if ( Boolean.parseBoolean(getParam("RIGHTARMOR")))
     		return true;
-        if ( Boolean.parseBoolean(getParam("RIGHTSLITE")))
-    		return true;
         if ( Boolean.parseBoolean(getParam("RIGHTAMMO")))
     		return true;
 
@@ -604,8 +601,6 @@ public class CConfig {
         if ( Boolean.parseBoolean(getParam("LEFTEQUIPMENT")))
     		return true;
         if ( Boolean.parseBoolean(getParam("LEFTARMOR")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("LEFTSLITE")))
     		return true;
         if ( Boolean.parseBoolean(getParam("LEFTAMMO")))
     		return true;

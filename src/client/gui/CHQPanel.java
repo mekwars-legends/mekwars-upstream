@@ -1742,35 +1742,6 @@ public class CHQPanel extends JPanel {
                             }
                         }
 
-                        JMenu sliteMenu = new JMenu("SpotLights");
-                        if (cm.getEntity().hasSpotlight()) {
-                            menuItem = new JMenuItem("Remove Spotlight");
-                            menuItem.setActionCommand("RESL|" + row + "|" + col);
-                            menuItem.addActionListener(this);
-                            sliteMenu.add(menuItem);
-
-                            if (cm.getEntity().isUsingSpotlight()) {
-                                menuItem = new JMenuItem("Disable Spotlight");
-                                menuItem.setActionCommand("DESL|" + row + "|" + col);
-                                menuItem.addActionListener(this);
-                                sliteMenu.add(menuItem);
-                            } else {
-                                menuItem = new JMenuItem("Enable Spotlight");
-                                menuItem.setActionCommand("EESL|" + row + "|" + col);
-                                menuItem.addActionListener(this);
-                                sliteMenu.add(menuItem);
-                            }
-                        } else {
-                            menuItem = new JMenuItem("Add Spotlight");
-                            menuItem.setActionCommand("AESL|" + row + "|" + col);
-                            menuItem.addActionListener(this);
-                            sliteMenu.add(menuItem);
-                            menuItem = new JMenuItem("Add/Enable Spotlight");
-                            menuItem.setActionCommand("AEESL|" + row + "|" + col);
-                            menuItem.addActionListener(this);
-                            sliteMenu.add(menuItem);
-                        }
-                        popup.add(sliteMenu);
 
                         popup.addSeparator();
 
@@ -2660,46 +2631,6 @@ public class CHQPanel extends JPanel {
                 Mech mech = (Mech) mek.getEntity();
                 mech.setAutoEject(false);
                 mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setautoeject#" + mech.getExternalId() + "#" + false);
-                // Enable Spotlight
-            } else if (command.equalsIgnoreCase("RESL")) {
-                int row = Integer.parseInt(st.nextToken());
-                int col = Integer.parseInt(st.nextToken());
-                CUnit mek = MekTable.getMekAt(row, col);
-                mek.getEntity().setSpotlight(false);
-                mek.getEntity().setSpotlightState(false);
-                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setsearchlight#" + mek.getId() + "#false#false");
-                // Turn SpotLight on
-            } else if (command.equalsIgnoreCase("EESL")) {
-                int row = Integer.parseInt(st.nextToken());
-                int col = Integer.parseInt(st.nextToken());
-                CUnit mek = MekTable.getMekAt(row, col);
-                mek.getEntity().setSpotlight(true);
-                mek.getEntity().setSpotlightState(true);
-                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setsearchlight#" + mek.getId() + "#true#true");
-                // turn Spotlight off
-            } else if (command.equalsIgnoreCase("DESL")) {
-                int row = Integer.parseInt(st.nextToken());
-                int col = Integer.parseInt(st.nextToken());
-                CUnit mek = MekTable.getMekAt(row, col);
-                mek.getEntity().setSpotlight(true);
-                mek.getEntity().setSpotlightState(false);
-                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setsearchlight#" + mek.getId() + "#true#false");
-                // add SpotLight
-            } else if (command.equalsIgnoreCase("AESL")) {
-                int row = Integer.parseInt(st.nextToken());
-                int col = Integer.parseInt(st.nextToken());
-                CUnit mek = MekTable.getMekAt(row, col);
-                mek.getEntity().setSpotlight(true);
-                mek.getEntity().setSpotlightState(false);
-                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setsearchlight#" + mek.getId() + "#true#false");
-                // Add and enable Spotlight
-            } else if (command.equalsIgnoreCase("AEESL")) {
-                int row = Integer.parseInt(st.nextToken());
-                int col = Integer.parseInt(st.nextToken());
-                CUnit mek = MekTable.getMekAt(row, col);
-                mek.getEntity().setSpotlight(true);
-                mek.getEntity().setSpotlightState(true);
-                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setsearchlight#" + mek.getId() + "#true#true");
                 // exchange pilot
             } else if (command.equalsIgnoreCase("EXP")) {
                 int uid = Integer.parseInt(st.nextToken());

@@ -218,6 +218,7 @@ public final class ConfigurationDialog implements ActionListener {
     private final JCheckBox enableSoundOnMenuPopup = new JCheckBox();
     private final JCheckBox enableSoundOnMenu = new JCheckBox();
     private final JCheckBox systemMessageKeyword = new JCheckBox();
+    private final JCheckBox invertChatColors = new JCheckBox("Invert Chat Colors");
 
     // Dedicated Setup Tab
     private final JCheckBox enableDedicatedServerCB = new JCheckBox();
@@ -235,7 +236,6 @@ public final class ConfigurationDialog implements ActionListener {
     private final JCheckBox leftEngineCB = new JCheckBox();
     private final JCheckBox leftEquipmentCB = new JCheckBox();
     private final JCheckBox leftArmorCB = new JCheckBox();
-    private final JCheckBox leftSliteCB = new JCheckBox();
     private final JCheckBox leftAmmoCB = new JCheckBox();
     private final JCheckBox leftCommanderCB = new JCheckBox();
 
@@ -245,7 +245,6 @@ public final class ConfigurationDialog implements ActionListener {
     private final JCheckBox rightEngineCB = new JCheckBox();
     private final JCheckBox rightEquipmentCB = new JCheckBox();
     private final JCheckBox rightArmorCB = new JCheckBox();
-    private final JCheckBox rightSliteCB = new JCheckBox();
     private final JCheckBox rightAmmoCB = new JCheckBox();
     private final JCheckBox rightCommanderCB = new JCheckBox();
 
@@ -703,6 +702,8 @@ public final class ConfigurationDialog implements ActionListener {
         chatPanelWrapper.add(chatNameColorHeader);
         chatPanelWrapper.add(playerChatColorComboBox);
         chatPanelWrapper.add(new JLabel("\n"));
+        chatPanelWrapper.add(invertChatColors);
+        chatPanelWrapper.add(new JLabel("\n"));
         chatPanelWrapper.add(miscChatBoxesPanel);
         chatPanelWrapper.add(playerMessageTabHeader);
         chatPanelWrapper.add(playerMessageTabComboBox);
@@ -828,10 +829,6 @@ public final class ConfigurationDialog implements ActionListener {
         mainHUDSpring.add(new JLabel("Armor & Structure"));
         mainHUDSpring.add(leftArmorCB);
         mainHUDSpring.add(rightArmorCB);
-
-        mainHUDSpring.add(new JLabel("Searchlight"));
-        mainHUDSpring.add(leftSliteCB);
-        mainHUDSpring.add(rightSliteCB);
 
         mainHUDSpring.add(new JLabel("Ammunition"));
         mainHUDSpring.add(leftAmmoCB);
@@ -1248,6 +1245,8 @@ public final class ConfigurationDialog implements ActionListener {
         blockImagesBox.setSelected(mwclient.getConfig().isParam("NOIMGINCHAT"));
         mapOnClickBox.setSelected(mwclient.getConfig().isParam("MAPTABONCLICK"));
 
+        invertChatColors.setSelected(mwclient.getConfig().isParam("INVERTCHATCOLOR"));
+        
         maxPlayersField.setText(mwclient.getConfig().getParam("MAXPLAYERS"));
         hostCommentsField.setText(mwclient.getConfig().getParam("COMMENT"));
 
@@ -1346,7 +1345,6 @@ public final class ConfigurationDialog implements ActionListener {
         rightEngineCB.setSelected(mwclient.getConfig().isParam("RIGHTENGINE"));
         rightEquipmentCB.setSelected(mwclient.getConfig().isParam("RIGHTEQUIPMENT"));
         rightArmorCB.setSelected(mwclient.getConfig().isParam("RIGHTARMOR"));
-        rightSliteCB.setSelected(mwclient.getConfig().isParam("RIGHTSLITE"));
         rightAmmoCB.setSelected(mwclient.getConfig().isParam("RIGHTAMMO"));
         rightCommanderCB.setSelected(mwclient.getConfig().isParam("RIGHTCOMMANDER"));
         // Left Column
@@ -1356,7 +1354,6 @@ public final class ConfigurationDialog implements ActionListener {
         leftEngineCB.setSelected(mwclient.getConfig().isParam("LEFTENGINE"));
         leftEquipmentCB.setSelected(mwclient.getConfig().isParam("LEFTEQUIPMENT"));
         leftArmorCB.setSelected(mwclient.getConfig().isParam("LEFTARMOR"));
-        leftSliteCB.setSelected(mwclient.getConfig().isParam("LEFTSLITE"));
         leftAmmoCB.setSelected(mwclient.getConfig().isParam("LEFTAMMO"));
         leftCommanderCB.setSelected(mwclient.getConfig().isParam("LEFTCOMMANDER"));
 
@@ -1518,6 +1515,8 @@ public final class ConfigurationDialog implements ActionListener {
             mwclient.getConfig().setParam("NOIMGINCHAT", Boolean.toString(blockImagesBox.isSelected()));
             mwclient.getConfig().setParam("MAPTABONCLICK", Boolean.toString(mapOnClickBox.isSelected()));
 
+            mwclient.getConfig().setParam("INVERTCHATCOLOR", Boolean.toString(invertChatColors.isSelected()));
+            
             mwclient.getConfig().setParam("HQTABNAME", hqTabNameField.getText());
             mwclient.getConfig().setParam("HQMNEMONIC", hqTabMnemonicField.getText());
             mwclient.getConfig().setParam("HQINTOPROW", Boolean.toString(hqTabonTopBox.isSelected()));
@@ -1615,7 +1614,6 @@ public final class ConfigurationDialog implements ActionListener {
             mwclient.getConfig().setParam("RIGHTENGINE", Boolean.toString(rightEngineCB.isSelected()));
             mwclient.getConfig().setParam("RIGHTEQUIPMENT", Boolean.toString(rightEquipmentCB.isSelected()));
             mwclient.getConfig().setParam("RIGHTARMOR", Boolean.toString(rightArmorCB.isSelected()));
-            mwclient.getConfig().setParam("RIGHTSLITE", Boolean.toString(rightSliteCB.isSelected()));
             mwclient.getConfig().setParam("RIGHTAMMO", Boolean.toString(rightAmmoCB.isSelected()));
             mwclient.getConfig().setParam("RIGHTCOMMANDER", Boolean.toString(rightCommanderCB.isSelected()));
             // Left Column
@@ -1625,7 +1623,6 @@ public final class ConfigurationDialog implements ActionListener {
             mwclient.getConfig().setParam("LEFTENGINE", Boolean.toString(leftEngineCB.isSelected()));
             mwclient.getConfig().setParam("LEFTEQUIPMENT", Boolean.toString(leftEquipmentCB.isSelected()));
             mwclient.getConfig().setParam("LEFTARMOR", Boolean.toString(leftArmorCB.isSelected()));
-            mwclient.getConfig().setParam("LEFTSLITE", Boolean.toString(leftSliteCB.isSelected()));
             mwclient.getConfig().setParam("LEFTAMMO", Boolean.toString(leftAmmoCB.isSelected()));
             mwclient.getConfig().setParam("LEFTCOMMANDER", Boolean.toString(leftCommanderCB.isSelected()));
 

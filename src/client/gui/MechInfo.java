@@ -228,25 +228,6 @@ public class MechInfo extends JPanel {
                             }
                         }
 
-                        // slite block
-                        if (Config.isParam("LEFTSLITE")) {
-                            if (m.hasSpotlight() && m.isUsingSpotlight()) {
-                                ic = new ImageIcon("data/images/status/searchon.gif");
-                                g.drawImage(ic.getImage(), 0, height, ic.getImageObserver());
-                                height += ic.getIconHeight();
-                            } else if (m.hasSpotlight()) {
-                                ic = new ImageIcon("data/images/status/search.gif");
-                                g.drawImage(ic.getImage(), 0, height, ic.getImageObserver());
-                                height += ic.getIconHeight();
-                            } else {
-                                if (!dynamic) {
-                                    ic = new ImageIcon("data/images/status/blank.gif");
-                                    g.drawImage(ic.getImage(), 0, height, ic.getImageObserver());
-                                    height += ic.getIconHeight();
-                                }
-                            }
-                        }
-
                         // ammo block
                         if (Config.isParam("LEFTAMMO")) {
                             if (UnitUtils.isAmmoless(m)) {
@@ -385,25 +366,6 @@ public class MechInfo extends JPanel {
                                 height += ic.getIconHeight();
                             } else if (UnitUtils.hasArmorDamage(m)) {
                                 ic = new ImageIcon("data/images/status/armor.gif");
-                                g.drawImage(ic.getImage(), cellWidth - ic.getIconWidth(), height, ic.getImageObserver());
-                                height += ic.getIconHeight();
-                            } else {
-                                if (!dynamic) {
-                                    ic = new ImageIcon("data/images/status/blank.gif");
-                                    g.drawImage(ic.getImage(), cellWidth - ic.getIconWidth(), height, ic.getImageObserver());
-                                    height += ic.getIconHeight();
-                                }
-                            }
-                        }
-
-                        // slite block
-                        if (Config.isParam("RIGHTSLITE")) {
-                            if (m.hasSpotlight() && m.isUsingSpotlight()) {
-                                ic = new ImageIcon("data/images/status/searchon.gif");
-                                g.drawImage(ic.getImage(), cellWidth - ic.getIconWidth(), height, ic.getImageObserver());
-                                height += ic.getIconHeight();
-                            } else if (m.hasSpotlight()) {
-                                ic = new ImageIcon("data/images/status/search.gif");
                                 g.drawImage(ic.getImage(), cellWidth - ic.getIconWidth(), height, ic.getImageObserver());
                                 height += ic.getIconHeight();
                             } else {
@@ -622,104 +584,6 @@ public class MechInfo extends JPanel {
         lblImage.setVisible(flag);
     }
 
-    /*
-     * public void setRightStatusIcons(Graphics g){
-     * 
-     * if ( this.cm == null ) return;
-     * 
-     * boolean dynamic = mwclient.getConfig().isParam("RIGHTCOLUMNDYNAMIC"); int
-     * iconCount = 0; JLabel pilotImage = new JLabel(); JLabel repairImage = new
-     * JLabel(); JLabel engineImage = new JLabel(); JLabel equipmentImage = new
-     * JLabel(); JLabel armorImage = new JLabel(); JLabel sliteImage = new
-     * JLabel(); JLabel ammoImage = new JLabel();
-     * 
-     * 
-     * GridBagConstraints gridBagConstraints = new GridBagConstraints();
-     * gridBagConstraints = new GridBagConstraints(); gridBagConstraints.gridx =
-     * 0; gridBagConstraints.gridy = iconCount;
-     * 
-     * Entity m = cm.getEntity();
-     * 
-     * if ( lblImage.isVisible() && m instanceof Mech){
-     * 
-     * boolean useAdvanceRepairs = mwclient.isUsingAdvanceRepairs();
-     *  // Pilot Block if ( mwclient.getConfig().isParam("RIGHTPILOTEJECT") ){
-     * if (cm.hasVacantPilot()){ ImageIcon ic = new
-     * ImageIcon("data/images/status/nopilot.gif"); }else if (
-     * cm.getPilot().getHits() > 0){ pilotImage.setIcon(new
-     * ImageIcon("data/images/status/wound.gif")); }else if (
-     * ((Mech)m).isAutoEject() ){ if ( !dynamic ) pilotImage.setIcon(new
-     * ImageIcon("data/images/status/eject.gif")); }else{ pilotImage.setIcon(new
-     * ImageIcon("data/images/status/noeject.gif")); } gridBagConstraints.gridy =
-     * iconCount++; rightStatusPanel.add(pilotImage, gridBagConstraints); }
-     * 
-     * //Repairing status if ( mwclient.getConfig().isParam("RIGHTREPAIR") ){ if (
-     * useAdvanceRepairs ){ if ( UnitUtils.isRepairing(m) ){
-     * repairImage.setIcon(new ImageIcon("data/images/status/repairing.gif"));
-     * }else if (mwclient.getRMT() != null &&
-     * mwclient.getRMT().hasQueuedOrders(cm.getId())){ repairImage.setIcon(new
-     * ImageIcon("data/images/status/pending.gif")); } }else{ if (cm.getStatus() ==
-     * Unit.STATUS_UNMAINTAINED) { repairImage.setIcon(new
-     * ImageIcon("data/images/status/unmaint.gif")); }else { if ( !dynamic )
-     * repairImage.setIcon(new ImageIcon("data/images/status/maint.gif")); } }
-     * gridBagConstraints.gridy = iconCount++; rightStatusPanel.add(repairImage,
-     * gridBagConstraints); }
-     * 
-     * //Engine Damage if ( mwclient.getConfig().isParam("RIGHTENGINE") ){
-     * gridBagConstraints.gridy = iconCount++; //Engine Block if (
-     * UnitUtils.getNumberOfDamagedEngineCrits(m) >= 1 ){
-     * rightStatusPanel.add(engineImage, gridBagConstraints);
-     * engineImage.setIcon(new ImageIcon("data/images/status/engine.gif"));
-     * }else{ if ( !dynamic ){ engineImage.setIcon(new
-     * ImageIcon("data/images/status/blank.gif"));
-     * rightStatusPanel.add(engineImage, gridBagConstraints); } } }
-     * 
-     * //Equipiment/Crit Damage if (
-     * mwclient.getConfig().isParam("RIGHTEQUIPMENT") ){
-     * gridBagConstraints.gridy = iconCount++; if
-     * (UnitUtils.hasCriticalDamage(m)){ rightStatusPanel.add(equipmentImage,
-     * gridBagConstraints); equipmentImage.setIcon(new
-     * ImageIcon("data/images/status/critical.gif")); }else{ if ( !dynamic ){
-     * equipmentImage.setIcon(new ImageIcon("data/images/status/blank.gif"));
-     * rightStatusPanel.add(equipmentImage, gridBagConstraints); } } }
-     * 
-     * //Armor/IS Damage if ( mwclient.getConfig().isParam("RIGHTARMOR")){
-     * gridBagConstraints.gridy = iconCount++; if (UnitUtils.hasISDamage(m)){
-     * rightStatusPanel.add(armorImage, gridBagConstraints);
-     * armorImage.setIcon(new ImageIcon("data/images/status/structure.gif")); }
-     * else if (UnitUtils.hasArmorDamage(m)) { rightStatusPanel.add(armorImage,
-     * gridBagConstraints); armorImage.setIcon(new
-     * ImageIcon("data/images/status/armor.gif")); }else { if ( !dynamic ){
-     * armorImage.setIcon(new ImageIcon("data/images/status/blank.gif"));
-     * rightStatusPanel.add(armorImage, gridBagConstraints); } } }
-     * 
-     * //slite block if ( mwclient.getConfig().isParam("RIGHTSLITE") && (
-     * iconCount <= 5 || dynamic) ){ gridBagConstraints.gridy = iconCount++; if (
-     * m.hasSpotlight() && m.isUsingSpotlight() ){
-     * rightStatusPanel.add(sliteImage, gridBagConstraints);
-     * sliteImage.setIcon(new ImageIcon("data/images/status/searchon.gif"));
-     * }else if ( m.hasSpotlight() ){ rightStatusPanel.add(sliteImage,
-     * gridBagConstraints); sliteImage.setIcon(new
-     * ImageIcon("data/images/status/search.gif")); }else{ if ( !dynamic ){
-     * sliteImage.setIcon(new ImageIcon("data/images/status/blank.gif"));
-     * rightStatusPanel.add(sliteImage, gridBagConstraints); } } }
-     * 
-     * 
-     * //ammo block if ( mwclient.getConfig().isParam("RIGHTAMMO") && (
-     * iconCount <=5 || dynamic) ){ gridBagConstraints.gridy = iconCount++; if (
-     * UnitUtils.isAmmoless(m) ){ if ( !dynamic ){ ammoImage.setIcon(new
-     * ImageIcon("data/images/status/blank.gif"));
-     * rightStatusPanel.add(ammoImage, gridBagConstraints); } } else if (
-     * UnitUtils.hasEmptyAmmo(m) ){ ammoImage.setIcon(new
-     * ImageIcon("data/images/status/empty.gif"));
-     * rightStatusPanel.add(ammoImage, gridBagConstraints); } else if (
-     * UnitUtils.hasLowAmmo(m) ){ ammoImage.setIcon(new
-     * ImageIcon("data/images/status/low.gif")); rightStatusPanel.add(ammoImage,
-     * gridBagConstraints); } else{ if ( !dynamic ){ ammoImage.setIcon(new
-     * ImageIcon("data/images/status/blank.gif"));
-     * rightStatusPanel.add(ammoImage, gridBagConstraints); } } } }
-     *  }
-     */
     /**
      * A class to handle the image permutations for an entity (Code from
      * megamek.common.TilesetManager class)
