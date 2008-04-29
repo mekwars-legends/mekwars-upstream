@@ -2200,6 +2200,9 @@ public class ShortOperation implements Comparable<Object> {
                 SArmy currArmy = CampaignMain.cm.getPlayer(currN).getArmy(attackers.get(currN));
                 totalBV = totalBV + currArmy.getOperationsBV(null);
                 totalUnits = totalUnits + currArmy.getAmountOfUnits();
+                if ( mod || (complete && !blindDrop) ){
+                    resultString += "with " + currArmy.getDescription(true, null);
+                }
             }
 
             multiPlayerString += " - Total Attacker Units: " + totalUnits + " / BV: " + totalBV + "<br>";
@@ -2240,6 +2243,10 @@ public class ShortOperation implements Comparable<Object> {
                     SArmy currArmy = CampaignMain.cm.getPlayer(currN).getArmy(defenders.get(currN));
                     totalBV = totalBV + currArmy.getOperationsBV(null);
                     totalUnits = totalUnits + currArmy.getAmountOfUnits();
+                    if ( mod || (complete && !blindDrop) ){
+                        resultString += "with " + currArmy.getDescription(true, null);
+                    }
+
                 }catch(Exception ex) {
                     
                 }
