@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.29.x
++ Bug: purgeing player file used CONFIRMED instead of CONFIRM in unenroll command
 + New MegaMek.jar 0.33.23-MW043008-5623
 + RFE: have units displayed in games of more then 2 for /modgames command
 + Removed more spotlight code that was no longer used

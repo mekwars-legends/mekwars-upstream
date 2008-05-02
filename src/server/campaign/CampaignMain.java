@@ -3013,7 +3013,7 @@ public final class CampaignMain implements Serializable {
                 SPlayer p = this.getPlayer(playerName, false, true);
                 p.addExperience(100, true);
                 Command c = CampaignMain.cm.getServerCommands().get("UNENROLL");
-                c.process(new StringTokenizer("CONFIRMED", "#"), playerName);
+                c.process(new StringTokenizer("CONFIRM", "#"), playerName);
                 CampaignData.mwlog.infoLog(playerName + " purged.");
             }
         }
