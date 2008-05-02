@@ -53,7 +53,7 @@ public class AddOmniVariantModCommand implements Command {
 		String comp = modlist.nextToken();
 		String flu = modlist.nextToken();
 		
-		CampaignMain.cm.toUser("Variant " + variant+" had been given the following repod mods "+CampaignMain.cm.moneyOrFluMessage(true,true,Integer.parseInt(money))+" "+comp+" components "+CampaignMain.cm.moneyOrFluMessage(false,true,Integer.parseInt(flu))+".",Username,true);
+		CampaignMain.cm.toUser("AM:Variant " + variant+" has been given the following repod mods "+CampaignMain.cm.moneyOrFluMessage(true,true,Integer.parseInt(money))+" "+comp+" components "+CampaignMain.cm.moneyOrFluMessage(false,true,Integer.parseInt(flu))+".",Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has given variant " + variant+" the following repod mods "+CampaignMain.cm.moneyOrFluMessage(true,true,Integer.parseInt(money))+" "+comp+" components "+CampaignMain.cm.moneyOrFluMessage(false,true,Integer.parseInt(flu))+".");
 	}
 	

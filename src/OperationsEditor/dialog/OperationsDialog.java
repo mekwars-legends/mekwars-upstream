@@ -1783,10 +1783,11 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         penaltyBox.setMaximumSize(new Dimension(700,50));
 
         JPanel fleeingBox = new JPanel();
+        Dimension dim = new Dimension(700,100);
         fleeingBox.setLayout(new BoxLayout(fleeingBox, BoxLayout.Y_AXIS));
-        fleeingBox.setPreferredSize(new Dimension(700,75));
-        fleeingBox.setMinimumSize(new Dimension(700,75));
-        fleeingBox.setMaximumSize(new Dimension(700,75));
+        fleeingBox.setPreferredSize(dim);
+        fleeingBox.setMinimumSize(dim);
+        fleeingBox.setMaximumSize(dim);
 
         attackerPanel = new JPanel(new SpringLayout());
 		defenderPanel = new JPanel(new SpringLayout());
@@ -2071,7 +2072,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         
         BaseTextField = new JTextField(5);
         fleeingPanel.add(new JLabel("Fled Slavage Chance:",SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html><b>NOTE:</b>This is a double field. 0.25 = 25%<br>Chance that a unit that flees the field is put into the salvage pool. Default 0</html>");
+        BaseTextField.setToolTipText("<html><b>NOTE:</b>This is an Integer Field. 25 = 25%<br>Chance that a unit that flees the field is put into the salvage pool. Default 0</html>");
         BaseTextField.setName("FledUnitSalvageChance");
         fleeingPanel.add(BaseTextField);
 
@@ -2083,7 +2084,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         BaseTextField = new JTextField(5);
         fleeingPanel.add(new JLabel("Pushed Slavage Chance:",SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html><b>NOTE:</b>This is a double field. 0.25 = 25%<br>Chance that a unit that is pushed off the field is put into the salvage pool. Default 0</html>");
+        BaseTextField.setToolTipText("<html><b>NOTE:</b>This is an Integer Field. 25 = 25%<br>Chance that a unit that is pushed off the field is put into the salvage pool. Default 0</html>");
         BaseTextField.setName("PushedUnitSalvageChance");
         fleeingPanel.add(BaseTextField);
 
@@ -2091,6 +2092,18 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         fleeingPanel.add(new JLabel("Pushed Scrapped Chance:",SwingConstants.TRAILING));
         BaseTextField.setToolTipText("<html><b>NOTE:</b>This is an Integer Field. 25 = 25%<br>Chance, out of 100, that a unit that is pushed off the field is scrapped. Default 0.</html>");
         BaseTextField.setName("PushedUnitScrappedChance");
+        fleeingPanel.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        fleeingPanel.add(new JLabel("Engined Units Scrapped:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html><b>NOTE:</b>This is an Integer Field. 25 = 25%<br>Chance, out of 100, that an engined unit is utterly<br>destroyed while trying to be salvaged. Default 0</html>");
+        BaseTextField.setName("EnginedUnitsScrappedChance");
+        fleeingPanel.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        fleeingPanel.add(new JLabel("Forced Salvaged Units Scrapped:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html><html><b>NOTE:</b>This is an Integer Field. 25 = 25%<br>Chance, out of 100, that a legged/gyroed unit is utterly destroyed while trying to be salvaged. Default 0</html>");
+        BaseTextField.setName("ForcedSalvageUnitsScrappedChance");
         fleeingPanel.add(BaseTextField);
 
         SpringLayoutHelper.setupSpringGrid(fleeingPanel,4);

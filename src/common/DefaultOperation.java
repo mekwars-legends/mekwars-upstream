@@ -533,6 +533,9 @@ public class DefaultOperation {
          * PushedUnitSalvageChance		 - Chance that a unit that is pushed off the field is put into the salvage pool. Default 0
          * PushedUnitScrappedChance		 - Chance, out of 100, that a unit that is pushed off the field is scrapped. Default 0.
          * 
+         * EnginedUnitsScrappedChance    - Chance, out of 100, that an engined unit is utterly destroyed while trying to be salvaged. Default 0
+         * ForcedSalvageUnitsScrappedChance - Chance, out of 100, that a legged/gyroed unit is utterly destroyed while trying to be salvaged. Default 0
+         * 
 		 * [player result params finished]
 		 * 
 		 * [Salvage props]
@@ -1134,7 +1137,10 @@ public class DefaultOperation {
 		operationsDefaults.put("PushedUnitSalvageChance","0");
 		operationsDefaults.put("PushedUnitScrappedChance","0");
 
-		//newbie-match flags
+        operationsDefaults.put("EnginedUnitsScrappedChance","0");
+        operationsDefaults.put("ForcedSalvageUnitsScrappedChance","0");
+
+        //newbie-match flags
 		operationsDefaults.put("AllowSOLToUse", "false");
 		operationsDefaults.put("AllowAgainstSOL", "false");
 		

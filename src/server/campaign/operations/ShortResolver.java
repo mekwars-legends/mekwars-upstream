@@ -2928,6 +2928,8 @@ public class ShortResolver {
             int fledScrappedChance = o.getIntValue("FledUnitScrappedChance");
             int pushedSalvageChance = o.getIntValue("PushedUnitSalvageChance");
             int pushedScrappedChance = o.getIntValue("PushedUnitScrappedChance");
+            int enginedScrappedChance = o.getIntValue("EnginedUnitsScrappedChance");
+            int forcedSalvageScrappedChance = o.getIntValue("ForcedSalvageUnitsScrappedChance");
 
             try {
                 // loop through all units in the string
@@ -2967,7 +2969,7 @@ public class ShortResolver {
                         // autoartillery. continue to next loop.
                         if (unit == null)
                             continue;
-                        so.getReporter().addEndingUnit(unit, oEntity.getRemovalReason());
+
                         if ((fledSalvageChance > 0 || fledScrappedChance > 0) && oEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_IN_RETREAT) {
                             if (CampaignMain.cm.getRandomNumber(100) <= fledSalvageChance) {
                                 oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_SALVAGEABLE);
@@ -2976,13 +2978,19 @@ public class ShortResolver {
                                 oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
                             }
                         } else if ((pushedSalvageChance > 0 || pushedScrappedChance > 0) && oEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_PUSHED) {
-                            if (CampaignMain.cm.getRandomNumber(100) <= fledSalvageChance) {
+                            if (CampaignMain.cm.getRandomNumber(100) <= pushedSalvageChance) {
                                 oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_SALVAGEABLE);
                                 oEntity.setSalvage(true);
-                            } else if (CampaignMain.cm.getRandomNumber(100) <= fledScrappedChance) {
+                            } else if (CampaignMain.cm.getRandomNumber(100) <= pushedScrappedChance) {
                                 oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
                             }
+                        }else if ( UnitUtils.getNumberOfDamagedEngineCrits(unit.getEntity()) >= 3 && CampaignMain.cm.getRandomNumber(100) <= enginedScrappedChance ){
+                            oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
+                        }else if ( !oEntity.canStand() && CampaignMain.cm.getRandomNumber(100) < forcedSalvageScrappedChance ){
+                            oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
                         }
+                        
+                        so.getReporter().addEndingUnit(unit, oEntity.getRemovalReason());
 
                         if (oEntity.isLiving()) {
                             livingUnits.put(oEntity.getID(), oEntity);

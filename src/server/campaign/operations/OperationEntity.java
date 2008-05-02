@@ -268,31 +268,37 @@ public class OperationEntity {
 			return true; 
 		}
 
-		/*
-		 * Retreating units have already been returned as living. Anything on board
-		 * with no leg or a destroyed gyro is presumed salvageable. Vehicles which
-		 * are immobile are also returned as potential salvage.
-		 */
-		if (CampaignMain.cm.getBooleanConfig("ForceSalvage")) {
-			if (MMUnitType == Unit.MEK){ 
-				if (this.getLLint() <= 0 || this.getRLint() <= 0 || this.getGyrohits() >= 2)
-					return false;
-			} else if (MMUnitType == Unit.QUAD){
-				//Quads
-				int missingLegsCount = 0;
-				if (getLLint() <= 0) missingLegsCount++;
-				if (getRLint() <= 0) missingLegsCount++;
-				if (getRAint() <= 0) missingLegsCount++;
-				if (getLAint() <= 0) missingLegsCount++;
-				if (missingLegsCount >= 2 || this.getGyrohits() >= 2)
-					return false;
-			} else if (MMUnitType == Unit.VEHICLE){
-			    return !isImmobile;
-            }
-		}
-		return true;
+		
+		return canStand();
 	}
 	
+	public boolean canStand(){
+	    
+        /*
+         * Retreating units have already been returned as living. Anything on board
+         * with no leg or a destroyed gyro is presumed salvageable. Vehicles which
+         * are immobile are also returned as potential salvage.
+         */
+        if (CampaignMain.cm.getBooleanConfig("ForceSalvage")) {
+            if (MMUnitType == Unit.MEK){ 
+                if (this.getLLint() <= 0 || this.getRLint() <= 0 || this.getGyrohits() >= 2)
+                    return false;
+            } else if (MMUnitType == Unit.QUAD){
+                //Quads
+                int missingLegsCount = 0;
+                if (getLLint() <= 0) missingLegsCount++;
+                if (getRLint() <= 0) missingLegsCount++;
+                if (getRAint() <= 0) missingLegsCount++;
+                if (getLAint() <= 0) missingLegsCount++;
+                if (missingLegsCount >= 2 || this.getGyrohits() >= 2)
+                    return false;
+            } else if (MMUnitType == Unit.VEHICLE){
+                return !isImmobile;
+            }
+        }
+        
+        return true;
+	}
 	/**
 	 * @return Returns the isSalvage.
 	 */

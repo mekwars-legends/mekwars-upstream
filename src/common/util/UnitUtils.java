@@ -191,7 +191,6 @@ public class UnitUtils  {
                         hasData = true;
                     }
 
-                    //TODO:Fix
                     //the cs is damaged lets see if the whole Mounted has taken enough
                     //damage to it to be labeled destroyed
                     if ( cs.isDamaged() && isDestroyedOrDamaged(unit,cs) )
@@ -404,7 +403,6 @@ public class UnitUtils  {
                         hasData = true;
                     }
 
-                    //TODO:Fix
                     //the cs is damaged lets see if the whole Mounted has taken enough
                     //damage to it to be labeled destroyed
                     if ( cs.isDamaged() && isDestroyedOrDamaged(unit,cs) )
