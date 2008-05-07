@@ -53,7 +53,9 @@ client-dist/data/images/engined.gif -text
 client-dist/data/images/fighting_colored.gif -text
 client-dist/data/images/hexes/artyadj.gif -text
 client-dist/data/images/hexes/artyauto.gif -text
+client-dist/data/images/hexes/artyhit.gif -text
 client-dist/data/images/hexes/artyinc.gif -text
+client-dist/data/images/hexes/artytarget.gif -text
 client-dist/data/images/hexes/boring/beige_plains_0.gif -text
 client-dist/data/images/hexes/boring/beige_plains_1.gif -text
 client-dist/data/images/hexes/boring/beige_plains_10.gif -text
