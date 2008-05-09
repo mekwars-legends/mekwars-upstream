@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.29.x
++ Bug: Concurrent Modification error while trying to save house to DB.
 + RFE 1883865: Chance for Salvageable mechs to get Destroyed
 + Bug: purging player file used CONFIRMED instead of CONFIRM in unenroll command
 + New MegaMek.jar 0.33.23-MW043008-5623

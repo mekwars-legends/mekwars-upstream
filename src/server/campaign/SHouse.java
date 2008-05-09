@@ -35,6 +35,7 @@ import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -482,30 +483,30 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             }
             // Pilot Queues
             // Mechs
-            LinkedList<SPilot> PilotList = getPilotQueues().getPilotQueue(Unit.MEK);
+            ConcurrentLinkedQueue<SPilot> PilotList = new ConcurrentLinkedQueue<SPilot>(getPilotQueues().getPilotQueue(Unit.MEK));
             for (SPilot currP : PilotList) {
                 currP.toDB(Unit.MEK, -1);
             }
             // Vehicles
-            PilotList = getPilotQueues().getPilotQueue(Unit.VEHICLE);
+            PilotList = new ConcurrentLinkedQueue<SPilot>(getPilotQueues().getPilotQueue(Unit.VEHICLE));
             for (SPilot currP : PilotList) {
                 currP.toDB(Unit.VEHICLE, -1);
             }
 
             // Infantry
-            PilotList = getPilotQueues().getPilotQueue(Unit.INFANTRY);
+            PilotList = new ConcurrentLinkedQueue<SPilot>(getPilotQueues().getPilotQueue(Unit.INFANTRY));
             for (SPilot currP : PilotList) {
                 currP.toDB(Unit.INFANTRY, -1);
             }
 
             // BattleArmor
-            PilotList = getPilotQueues().getPilotQueue(Unit.BATTLEARMOR);
+            PilotList = new ConcurrentLinkedQueue<SPilot>(getPilotQueues().getPilotQueue(Unit.BATTLEARMOR));
             for (SPilot currP : PilotList) {
                 currP.toDB(Unit.BATTLEARMOR, -1);
             }
 
             // ProtoMechs
-            PilotList = getPilotQueues().getPilotQueue(Unit.PROTOMEK);
+            PilotList = new ConcurrentLinkedQueue<SPilot>(getPilotQueues().getPilotQueue(Unit.PROTOMEK));
             for (SPilot currP : PilotList) {
                 currP.toDB(Unit.PROTOMEK, -1);
             }
