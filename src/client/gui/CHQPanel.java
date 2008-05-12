@@ -41,6 +41,8 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.Vector;
 
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.SpringLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -135,8 +137,7 @@ public class CHQPanel extends JPanel {
     }
 
     /**
-     * Public call which reinitializes the HQ panel. Hacky and evil, but lets
-     * camo and # columns in HQ display get updated on the fly.
+     * Public call which reinitializes the HQ panel. Hacky and evil, but lets camo and # columns in HQ display get updated on the fly.
      */
     public void reinitialize() {
 
@@ -213,11 +214,7 @@ public class CHQPanel extends JPanel {
         tblMeks.setModel(this.MekTable);
         tblMeks.getColumnModel().getColumn(0).setPreferredWidth(120);
         /*
-         * tblMeks.getColumnModel().getColumn(1).setPreferredWidth(90);
-         * tblMeks.getColumnModel().getColumn(2).setPreferredWidth(90);
-         * tblMeks.getColumnModel().getColumn(3).setPreferredWidth(90);
-         * tblMeks.getColumnModel().getColumn(4).setPreferredWidth(90);
-         * tblMeks.getColumnModel().getColumn(5).setPreferredWidth(30);
+         * tblMeks.getColumnModel().getColumn(1).setPreferredWidth(90); tblMeks.getColumnModel().getColumn(2).setPreferredWidth(90); tblMeks.getColumnModel().getColumn(3).setPreferredWidth(90); tblMeks.getColumnModel().getColumn(4).setPreferredWidth(90); tblMeks.getColumnModel().getColumn(5).setPreferredWidth(30);
          */
         tblMeks.getTableHeader().setReorderingAllowed(false);
         for (int i = 0; i < tblMeks.getColumnCount(); i++) {
@@ -278,11 +275,11 @@ public class CHQPanel extends JPanel {
     }
 
     private void repairAllUnitsButtonActionPerformed(ActionEvent evt) {
-        if ( mwclient.getPlayer().getHangar().size() > 0 ) {
+        if (mwclient.getPlayer().getHangar().size() > 0) {
             new BulkRepairDialog(mwclient, mwclient.getPlayer().getHangar().firstElement().getId(), BulkRepairDialog.TYPE_BULK, BulkRepairDialog.UNIT_TYPE_ALL);
         }
     };
-    
+
     private void btnAddLanceActionPerformed(ActionEvent evt) {
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c cra#" + mwclient.getConfigParam("DEFAULTARMYNAME"));
     }
@@ -314,9 +311,7 @@ public class CHQPanel extends JPanel {
         hqButtonSpring.add(btnRemoveAllArmies);
 
         /*
-         * Inefficient block of code used to check and see if a "Reset Units"
-         * button should be displayed. Hacky and ugly, but by no means unduly
-         * burdensome for the Client.
+         * Inefficient block of code used to check and see if a "Reset Units" button should be displayed. Hacky and ugly, but by no means unduly burdensome for the Client.
          */
         int numButtons = 3;
         CPlayer player = mwclient.getPlayer();
@@ -417,7 +412,7 @@ public class CHQPanel extends JPanel {
 
                 // determine the offset
                 offset = new Point(28, 22);// TODO: Make this a real offset,
-                                            // not a simple re-centering.
+                // not a simple re-centering.
 
                 // Get a MechInfo image from the table cell renderer. The
                 // renderer sets entity, camo etc. as part of normal drawing.
@@ -444,8 +439,7 @@ public class CHQPanel extends JPanel {
         public void mouseReleased(MouseEvent e) {
 
             /*
-             * If this was a drag, try to drop the unit into a target army or
-             * the hangar.
+             * If this was a drag, try to drop the unit into a target army or the hangar.
              */
             if (isDrag) {
 
@@ -521,9 +515,7 @@ public class CHQPanel extends JPanel {
                 g.drawImage(dragImage, AffineTransform.getTranslateInstance(dragRect.getX(), dragRect.getY()), null);
 
                 /*
-                 * Update the cursor depending on current drag status. If
-                 * dragging a unit into an army which already contains the unit,
-                 * mark ineligible. Else, show the drag cursor.
+                 * Update the cursor depending on current drag status. If dragging a unit into an army which already contains the unit, mark ineligible. Else, show the drag cursor.
                  */
                 int row = tblMeks.rowAtPoint(e.getPoint());
                 int col = tblMeks.columnAtPoint(e.getPoint());
@@ -611,9 +603,7 @@ public class CHQPanel extends JPanel {
         }
 
         /**
-         * Private method called on click and release. Checks to see if if mouse
-         * event should open a contextual menu (right click, OS X control+click,
-         * etc) and shows a popup menu if appropriate.
+         * Private method called on click and release. Checks to see if if mouse event should open a contextual menu (right click, OS X control+click, etc) and shows a popup menu if appropriate.
          */
         private void maybeShowPopup(MouseEvent e) {
             JPopupMenu popup = new JPopupMenu();
@@ -709,14 +699,7 @@ public class CHQPanel extends JPanel {
                         if (l.getBV() > 0) {
 
                             /*
-                             * if (!l.isReady()){ menuItem = new JMenuItem("Set
-                             * Active"); menuItem.setActionCommand("SA|"+lid);
-                             * menuItem.addActionListener(this);
-                             * popup.add(menuItem); } else { menuItem = new
-                             * JMenuItem("Set Inactive");
-                             * menuItem.setActionCommand("SI|"+lid);
-                             * menuItem.addActionListener(this);
-                             * popup.add(menuItem); }
+                             * if (!l.isReady()){ menuItem = new JMenuItem("Set Active"); menuItem.setActionCommand("SA|"+lid); menuItem.addActionListener(this); popup.add(menuItem); } else { menuItem = new JMenuItem("Set Inactive"); menuItem.setActionCommand("SI|"+lid); menuItem.addActionListener(this); popup.add(menuItem); }
                              */
 
                             menuItem = new JMenuItem("Attack Options");
@@ -726,6 +709,11 @@ public class CHQPanel extends JPanel {
                             if (mwclient.getMyStatus() != MWClient.STATUS_ACTIVE && !canCheckFromReserve) {
                                 menuItem.setEnabled(false);
                             }
+                            popup.add(menuItem);
+
+                            menuItem = new JMenuItem("Check Access");
+                            menuItem.setActionCommand("CAA|" + lid);
+                            menuItem.addActionListener(this);
                             popup.add(menuItem);
 
                             // only show "Limits" option if limits allowed
@@ -828,35 +816,8 @@ public class CHQPanel extends JPanel {
                         // selectionFound = true;
 
                         /*
-                         * secondary sort menu construction for (int i = 0; i <
-                         * choices.length; i++) {
-                         * 
-                         * menuName = choices[i]; if
-                         * (mwclient.getConfigParam("SECONDARYARMYSORTORDER").equals(choices[i])) {
-                         * menuName = "<HTML><i>" + menuName + "</i></HTML>";
-                         * //selectionFound = false; } menuItem = new
-                         * JMenuItem(menuName); menuItem.setActionCommand("SAS|" +
-                         * choices[i]); menuItem.addActionListener(this);
-                         * secondarySortMenu.add(menuItem);
-                         * 
-                         * if (i + 2 == choices.length)
-                         * secondarySortMenu.addSeparator(); }
-                         * 
-                         * //reset selectionFound //selectionFound = true;
-                         * 
-                         * //tertiary sort menu construction for (int i = 0; i <
-                         * choices.length; i++) {
-                         * 
-                         * menuName = choices[i]; if
-                         * (mwclient.getConfigParam("TERTIARYARMYSORTORDER").equals(choices[i])) {
-                         * menuName = "<HTML><i>" + menuName + "</i></HTML>";
-                         * //selectionFound = false; } menuItem = new
-                         * JMenuItem(menuName); menuItem.setActionCommand("TAS|" +
-                         * choices[i]); menuItem.addActionListener(this);
-                         * tertiarySortMenu.add(menuItem);
-                         * 
-                         * if (i + 2 == choices.length)
-                         * tertiarySortMenu.addSeparator(); }
+                         * secondary sort menu construction for (int i = 0; i < choices.length; i++) { menuName = choices[i]; if (mwclient.getConfigParam("SECONDARYARMYSORTORDER").equals(choices[i])) { menuName = "<HTML><i>" + menuName + "</i></HTML>"; //selectionFound = false; } menuItem = new JMenuItem(menuName); menuItem.setActionCommand("SAS|" + choices[i]); menuItem.addActionListener(this); secondarySortMenu.add(menuItem); if (i + 2 == choices.length) secondarySortMenu.addSeparator(); } //reset selectionFound //selectionFound = true; //tertiary sort menu construction for (int i = 0; i < choices.length; i++) { menuName = choices[i]; if (mwclient.getConfigParam("TERTIARYARMYSORTORDER").equals(choices[i])) { menuName = "<HTML><i>" + menuName + "</i></HTML>"; //selectionFound = false; } menuItem = new JMenuItem(menuName); menuItem.setActionCommand("TAS|" + choices[i]);
+                         * menuItem.addActionListener(this); tertiarySortMenu.add(menuItem); if (i + 2 == choices.length) tertiarySortMenu.addSeparator(); }
                          */
                         popup.addSeparator();
 
@@ -1154,8 +1115,7 @@ public class CHQPanel extends JPanel {
                     boolean hasUnitsFree = false;
 
                     /*
-                     * CONSTRUCT the ADD menu here. It will be added to the
-                     * actual format later. @urgru 12/7/04
+                     * CONSTRUCT the ADD menu here. It will be added to the actual format later. @urgru 12/7/04
                      */
                     JMenu addMenu = new JMenu("Add");
                     if (mwclient.getPlayer().getHangar().size() > 0 && !l.isLocked()) {
@@ -1177,10 +1137,10 @@ public class CHQPanel extends JPanel {
                                 if (Player.getAmountOfTimesUnitExistsInArmies(mm.getId()) >= Integer.parseInt(mwclient.getserverConfigs("UnitsInMultipleArmiesAmount")))
                                     continue;
                                 if (l.getUnit(mm.getId()) == null) {// only add
-                                                                    // if unit
-                                                                    // isn't
-                                                                    // already
-                                                                    // in army
+                                    // if unit
+                                    // isn't
+                                    // already
+                                    // in army
                                     hasUnitsFree = true;
                                     if (mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE)
                                         menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV() + " BV");
@@ -1196,12 +1156,12 @@ public class CHQPanel extends JPanel {
 
                                     if (mm.getType() == Unit.PROTOMEK) {
                                         SubMenus.elementAt(4).add(menuItem);// into
-                                                                            // proto
-                                                                            // slot
+                                        // proto
+                                        // slot
                                     } else if (mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR) {
                                         SubMenus.elementAt(5).add(menuItem);// into
-                                                                            // BA
-                                                                            // slot
+                                        // BA
+                                        // slot
                                     } else {// else, sort by weightclass
                                         int size = mm.getWeightclass();
                                         SubMenus.elementAt(size).add(menuItem);
@@ -1223,7 +1183,7 @@ public class CHQPanel extends JPanel {
                                         } else if (i == 4) {// proto
                                             menux = new JMenu("Proto " + (j + 1));
                                         } else {// BA, can assume this is i ==
-                                                // 5.
+                                            // 5.
                                             menux = new JMenu("Infantry " + (j + 1));
                                         }
 
@@ -1261,7 +1221,7 @@ public class CHQPanel extends JPanel {
                                         addMenu.add(menux);
                                     }
                                 } else {// Only one menu for the given size
-                                        // class is needed
+                                    // class is needed
 
                                     JMenu menux = null;
                                     if (i < 4) {
@@ -1330,9 +1290,7 @@ public class CHQPanel extends JPanel {
                     if (cm != null) {
 
                         /*
-                         * the unit isnt null, so construct the link menu here.
-                         * It will be added to the actual format later. @Torren
-                         * 12/19/04
+                         * the unit isnt null, so construct the link menu here. It will be added to the actual format later. @Torren 12/19/04
                          */
                         JMenu linkMenu = new JMenu("Link");
                         if (l.getUnits().size() > 0 && !l.isLocked()) {
@@ -1360,13 +1318,7 @@ public class CHQPanel extends JPanel {
                                 }
                             }
                             /*
-                             * if ( cm.getC3Level() == CUnit.C3_MASTER ){
-                             * linkMenu.addSeparator(); menuItem = new
-                             * JMenuItem("Set as Company Commander");
-                             * menuItem.setActionCommand("LCN|"+lid+"|"+
-                             * cm.getId() +"|"+cm.getId());
-                             * menuItem.addActionListener(this);
-                             * linkMenu.add(menuItem); }
+                             * if ( cm.getC3Level() == CUnit.C3_MASTER ){ linkMenu.addSeparator(); menuItem = new JMenuItem("Set as Company Commander"); menuItem.setActionCommand("LCN|"+lid+"|"+ cm.getId() +"|"+cm.getId()); menuItem.addActionListener(this); linkMenu.add(menuItem); }
                              */
                         }// end Link menu contruction
 
@@ -1384,8 +1336,7 @@ public class CHQPanel extends JPanel {
                         }
 
                         /*
-                         * EXCHANGE. Derived from ADD. Same, but returns clicked
-                         * unit to hangar.
+                         * EXCHANGE. Derived from ADD. Same, but returns clicked unit to hangar.
                          */
                         if (mwclient.getPlayer().getHangar().size() > 0 && !l.isLocked()) {
                             JMenu jm = new JMenu("Exchange");
@@ -1395,8 +1346,7 @@ public class CHQPanel extends JPanel {
                                 Vector<Vector<JMenuItem>> SubMenus = new Vector<Vector<JMenuItem>>();
 
                                 /*
-                                 * 6 entries Weights: 0-3 Protomech: 4 Infantry:
-                                 * 5
+                                 * 6 entries Weights: 0-3 Protomech: 4 Infantry: 5
                                  */
                                 for (int i = 0; i < 6; i++) {
                                     SubMenus.add(new Vector<JMenuItem>(1, 1));
@@ -1409,14 +1359,14 @@ public class CHQPanel extends JPanel {
                                     if (Player.getAmountOfTimesUnitExistsInArmies(mm.getId()) >= Integer.parseInt(mwclient.getserverConfigs("UnitsInMultipleArmiesAmount")))
                                         continue;
                                     if (l.getUnit(mm.getId()) == null) {// only
-                                                                        // allow
-                                                                        // exchange
-                                                                        // if
-                                                                        // unit
-                                                                        // isn't
-                                                                        // already
-                                                                        // in
-                                                                        // army
+                                        // allow
+                                        // exchange
+                                        // if
+                                        // unit
+                                        // isn't
+                                        // already
+                                        // in
+                                        // army
                                         if (mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE)
                                             menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV() + " BV");
                                         else if (mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR) {
@@ -1431,12 +1381,12 @@ public class CHQPanel extends JPanel {
 
                                         if (mm.getType() == Unit.PROTOMEK) {
                                             SubMenus.elementAt(4).add(menuItem);// into
-                                                                                // proto
-                                                                                // slot
+                                            // proto
+                                            // slot
                                         } else if (mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR) {
                                             SubMenus.elementAt(5).add(menuItem);// into
-                                                                                // BA
-                                                                                // slot
+                                            // BA
+                                            // slot
                                         } else {// else, sort by weightclass
                                             int size = mm.getWeightclass();
                                             SubMenus.elementAt(size).add(menuItem);
@@ -1496,7 +1446,7 @@ public class CHQPanel extends JPanel {
                                             jm.add(menux);
                                         }
                                     } else {// Only one menu for the given size
-                                            // class is needed
+                                        // class is needed
 
                                         if (i < 4) {
                                             menux = new JMenu(Unit.getWeightClassDesc(i));
@@ -1565,9 +1515,7 @@ public class CHQPanel extends JPanel {
                             popup.add(addMenu);
 
                             /*
-                             * The POSITION menu. Moves units around -within-
-                             * the army. Only shown if there are enough units to
-                             * warrant movement (>1).
+                             * The POSITION menu. Moves units around -within- the army. Only shown if there are enough units to warrant movement (>1).
                              */
                             if (l.getAmountOfUnits() > 1) {
                                 JMenu pjm = new JMenu("Position");
@@ -1742,7 +1690,6 @@ public class CHQPanel extends JPanel {
                             }
                         }
 
-
                         popup.addSeparator();
 
                         if (!useAdvanceRepairs) {
@@ -1862,16 +1809,14 @@ public class CHQPanel extends JPanel {
                                 jm = new JMenu("Assign");
 
                             /*
-                             * Set up the actual menu, *IF* the pilot queue has
-                             * a non-zero size.
+                             * Set up the actual menu, *IF* the pilot queue has a non-zero size.
                              */
                             if (pilots.length == 0)
                                 jm.setEnabled(false);
                             else {
 
                                 /*
-                                 * Contruction of EXCHANGE pilot. Derived from
-                                 * the other exchange options.
+                                 * Contruction of EXCHANGE pilot. Derived from the other exchange options.
                                  */
                                 pm.add(jm);
 
@@ -1919,8 +1864,7 @@ public class CHQPanel extends JPanel {
                         popup.add(menuItem);
 
                         /*
-                         * Disable RFAA option if unit isnt actually IN any of
-                         * the player's armies.
+                         * Disable RFAA option if unit isnt actually IN any of the player's armies.
                          */
                         boolean isInArmy = false;
                         for (CArmy currA : mwclient.getPlayer().getArmies()) {
@@ -1939,11 +1883,11 @@ public class CHQPanel extends JPanel {
                     else if (Player.getFreeBays() > 0) {
                         int hangernum = (row - MekTable.getRowsForArmies()) * (MekTable.getColumnCount() - 1) + col - 1;
                         if (hangernum == mwclient.getPlayer().getHangar().size()) {// only
-                                                                                    // show
-                                                                                    // in
-                                                                                    // first
-                                                                                    // free
-                                                                                    // cell
+                            // show
+                            // in
+                            // first
+                            // free
+                            // cell
                             if (useAdvanceRepairs) {
                                 menuItem = new JMenuItem("Sell Excess Bays");
                                 menuItem.setActionCommand("SEB");
@@ -2010,7 +1954,27 @@ public class CHQPanel extends JPanel {
             } else if (command.equalsIgnoreCase("AO")) {
                 int lid = Integer.parseInt(st.nextToken());
                 mwclient.getMainFrame().jMenuCommanderCheckAttack_actionPerformed(lid);
-                // launch conquer
+                // check access
+            } else if (command.equalsIgnoreCase("CAA")) {
+                int armyID = Integer.parseInt(st.nextToken());
+                JComboBox attackCombo = new JComboBox(mwclient.getAllOps().keySet().toArray());
+                attackCombo.setEditable(false);
+
+                attackCombo.grabFocus();
+                attackCombo.getEditor().selectAll();
+
+                JOptionPane jop = new JOptionPane(attackCombo, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+                JDialog dlg = jop.createDialog(mwclient.getMainFrame(), "Select Operation.");
+                attackCombo.grabFocus();
+                attackCombo.getEditor().selectAll();
+                dlg.setVisible(true);
+
+                if ((Integer) jop.getValue() == JOptionPane.CANCEL_OPTION)
+                    return;
+
+                String attackName = (String) attackCombo.getSelectedItem();
+                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c checkarmyeligibility#" + armyID + "#" + attackName);
+                // Remove Army
             } else if (command.equalsIgnoreCase("RA")) {
                 int lid = Integer.parseInt(st.nextToken());
                 mwclient.getMainFrame().jMenuCommanderRemoveLance_actionPerformed(lid);
@@ -2071,7 +2035,7 @@ public class CHQPanel extends JPanel {
                     // load the default if a non-entry is set.
                     if (toSend.trim().equals(""))
                         toSend = "Looking for a game at";// matches default
-                                                            // config
+                    // config
 
                     // BV only
                     if (mode == 1) {
@@ -2426,7 +2390,7 @@ public class CHQPanel extends JPanel {
             } else if (command.equalsIgnoreCase("RT")) {
                 int mid = Integer.parseInt(st.nextToken());
                 mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c retirepilot#" + mid);// send
-                                                                                        // directly
+                // directly
                 // show mek
             } else if (command.equalsIgnoreCase("SM")) {
                 int row = Integer.parseInt(st.nextToken());
@@ -2690,8 +2654,7 @@ public class CHQPanel extends JPanel {
     }
 
     /*
-     * Original source: http://docs.rinet.ru/J21/ch25.htm#AnAlphaImageFilter
-     * Original author: Michael Morrison
+     * Original source: http://docs.rinet.ru/J21/ch25.htm#AnAlphaImageFilter Original author: Michael Morrison
      */
     private static class AlphaFilter extends RGBImageFilter {
         int alphaLevel;
@@ -2744,9 +2707,7 @@ public class CHQPanel extends JPanel {
         public int getRowsForHangar() {
 
             /*
-             * no matter how many free bays a person has, return only one. this
-             * this solitary space shows players' remaining technicians. also -
-             * do not allow any adjustment in HQ display for negative bays.
+             * no matter how many free bays a person has, return only one. this this solitary space shows players' remaining technicians. also - do not allow any adjustment in HQ display for negative bays.
              */
             int freebays = Player.getFreeBays();
             if (freebays > 1) {
@@ -2930,8 +2891,8 @@ public class CHQPanel extends JPanel {
             else if (cm == null) {// and in hangar row
                 int hangernum = (row - this.getRowsForArmies()) * (getColumnCount() - 1) + col - 1;
                 if (hangernum == Player.getHangar().size()) {// only show in
-                                                                // first free
-                                                                // cell
+                    // first free
+                    // cell
                     if (useAdvanceRepairs)
                         return "Free Bays: " + mwclient.getPlayer().getFreeBays();
                     // else
@@ -3100,12 +3061,12 @@ public class CHQPanel extends JPanel {
                     } else if (!mwclient.getConfig().isUsingStatusIcons()) {
 
                         if (cm.getPilot().getName().equals("Vacant")) {// RFE
-                                                                        // 1545928
-                                                                        // -
-                                                                        // Color
-                                                                        // for
-                                                                        // pilotless
-                                                                        // units
+                            // 1545928
+                            // -
+                            // Color
+                            // for
+                            // pilotless
+                            // units
                             c.setBackground(new Color(160, 190, 115));
                         } else if (useAdvanceRepairs && UnitUtils.isRepairing(cm.getEntity()))
                             c.setBackground(new Color(0, 255, 127));
@@ -3126,7 +3087,7 @@ public class CHQPanel extends JPanel {
                         } else if (l == null && inNumberofArmies > 0) {
                             if (scheme.equals("classic"))
                                 c.setBackground(new Color(65, 170, 55));// dark
-                                                                        // green
+                            // green
                             else
                                 // all non-classic sets (light blue)
                                 c.setBackground(new Color(dcolor.getRed() - 43, dcolor.getBlue() - 33, dcolor.getGreen() - 4));
@@ -3195,7 +3156,7 @@ public class CHQPanel extends JPanel {
                     } else if (l == null && inNumberofArmies > 0) {
                         if (scheme.equals("classic"))
                             c.setBackground(new Color(65, 170, 55));// dark
-                                                                    // green
+                        // green
                         else
                             // all non-classic sets (light blue)
                             c.setBackground(new Color(dcolor.getRed() - 43, dcolor.getBlue() - 33, dcolor.getGreen() - 4));

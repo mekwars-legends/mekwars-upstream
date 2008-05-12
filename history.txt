@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.29.x
++ RFE: Deds that do not have the correct MM version no longer spam Main with 
+	connect and disconnect. They now set max players to 0 and ask to be 
+	manually updated.
++ RFE: add Check Access to army popup menu in HQ 
 + Bug: Concurrent Modification error while trying to save house to DB.
 + RFE 1883865: Chance for Salvageable mechs to get Destroyed
 + Bug: purging player file used CONFIRMED instead of CONFIRM in unenroll command

@@ -230,22 +230,31 @@ public class DataFetchClient {
                         CampaignData.mwlog.errLog(ex);
                     }
                 }
+                System.exit(0);
 
             }else{//is Ded
                 try{
-                    dedHost.stopHost();
+                    /*dedHost.stopHost();
                     dedHost.goodbye();
                     Runtime runtime = Runtime.getRuntime();
                     String[] call = {"java","-jar","MekWarsAutoUpdate.jar","DEDICATED"};
-                    runtime.exec(call);
+                    runtime.exec(call);*/
+                    
+                    if ( Integer.parseInt(dedHost.getConfigParam("MAXPLAYERS")) > 0  ){
+                        dedHost.getConfig().setParam("MAXPLAYERS", "0");
+                        dedHost.getConfig().saveConfig();
+                        dedHost.setConfig();
+                        dedHost.resetGame();
+                        dedHost.stopHost();
+                        dedHost.startHost(true, false, false);
+                        dedHost.sendChat(MWDedHost.PROTOCOL_PREFIX + "c mm# I need to be updated manually!");
+                    }
+   
                 }catch(Exception ex){
                     CampaignData.mwlog.errLog(ex);
                 }
 
             }
-            
-            System.exit(0);
-            
         }
     }
 

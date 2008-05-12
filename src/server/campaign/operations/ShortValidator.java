@@ -1605,9 +1605,10 @@ public class ShortValidator {
     public String failuresToString(ArrayList<Integer> failList) {
 
         String s = "";
-        if (failList.size() == 1)
-            return s += " because: " + this.decodeFailure((Integer) failList.get(0)) + ".";
-
+        if (failList.size() == 1){
+            return s += " because:<br>- " + this.decodeFailure((Integer) failList.get(0)) + ".";
+        }
+        
         s += "because:<br>";
         Iterator<Integer> i = failList.iterator();
         while (i.hasNext()) {
