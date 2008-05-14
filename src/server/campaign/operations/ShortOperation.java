@@ -2683,6 +2683,11 @@ public class ShortOperation implements Comparable<Object> {
 
     }
 
+    /**
+     * Get the team number of the current faction for this op.
+     * @param factionName
+     * @return Factions team number or an unused team number.
+     */
     public int getFactionTeam(String factionName) {
         int team = 1;
 
@@ -2690,9 +2695,11 @@ public class ShortOperation implements Comparable<Object> {
             SPlayer player = CampaignMain.cm.getPlayer(playerName);
 
             if (factionName.equalsIgnoreCase(player.getHouseFightingFor().getName())) {
-                team = player.getTeamNumber();
-                break;
-            } else if (team == player.getTeamNumber()) {
+                return player.getTeamNumber();
+            } 
+            //Increase the current team number incase this is the first faction memeber to join
+            //That way they will get an unused team number. 
+            if (team == player.getTeamNumber()) {
                 team++;
             }
         }

@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.29.x
++ Cleaned up code that checks team numbers
 + Bug: Team ops bv check using <= intead of >=
 + RFE: Deds that do not have the correct MM version no longer spam Main with 
 	connect and disconnect. They now set max players to 0 and ask to be 
