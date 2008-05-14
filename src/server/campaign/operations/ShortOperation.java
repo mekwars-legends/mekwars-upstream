@@ -2669,7 +2669,7 @@ public class ShortOperation implements Comparable<Object> {
         if (teamCount >= maxPlayersPerTeam)
             return "The Team is already Full";
 
-        if ( totalBV + bv <= maxOpBV )
+        if ( totalBV + bv >= maxOpBV )
             return "The BV of your selected army is too large!";
         
         return "";
