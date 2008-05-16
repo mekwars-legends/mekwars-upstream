@@ -62,7 +62,7 @@ public final class MarketListing {
 		 * Fill in the temp unit data.
 		 */
 		modelName = unit.getModelName();
-		fileName = unit.getEntity().getChassis() + " " +  unit.getEntity().getModel();
+		fileName = unit.getUnitFilename();
 	}
 	
 	//METHODS
