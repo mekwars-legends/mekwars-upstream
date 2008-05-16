@@ -1,7 +1,10 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.29.x
+v 0.2.30.x
+Release Client&Server 0.2.30.0
++ new MekWarsDed.jar 0.2.30.0
++ new MegaMek.jar 0.33.25-MW05162008-5673
 + Bug: BM Units shows as OMG for Show Unit button
 + Bug: Disabled armies still counting towards production
 + Cleaned up code that checks team numbers
@@ -20,6 +23,7 @@ v 0.2.29.x
 + Bug: Cannot clear army name without logging out and in.
 + Bug: Planets with no terrain causing NPE's
 + RFE: Change planet color if black on map.
+v 0.2.29.x
 Release Server&Client 0.2.29.0
 + New MegaMek.jar 0.33.23-MW042508-5617
 + Bug: Multiple Weather conditions where being allowed per operation.
