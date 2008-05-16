@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.29.x
++ Bug: Disabled armies still counting towards production
 + Cleaned up code that checks team numbers
 + Bug: Team ops bv check using <= intead of >=
 + RFE: Deds that do not have the correct MM version no longer spam Main with 

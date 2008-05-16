@@ -69,6 +69,7 @@ public class ToggleArmyDisabledCommand implements Command {
 		}
 		
 		army.toggleArmyDisabled();
+		p.resetWeightedArmyNumber();
 		CampaignMain.cm.toUser("AM:Army " + army.getID() + (army.isDisabled() ? " disabled." : " enabled."),Username,true);
 	}
 }
