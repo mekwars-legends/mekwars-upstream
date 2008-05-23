@@ -30,6 +30,7 @@ import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.SPlayer;
+import server.campaign.SUnit;
 import server.campaign.operations.OperationReportEntry;
 import server.campaign.pilot.SPilot;
 
@@ -46,7 +47,7 @@ public class mysqlHandler{
   private PhpBBConnector phpBBCon = null;
   private HistoryHandler hh = null;
 
-  private final int currentDBVersion = 27;
+  private final int currentDBVersion = 28;
   
   public void closeMySQL(){
 	  MySQLCon.close();
@@ -309,8 +310,8 @@ public class mysqlHandler{
 	  return pih.loadPilot(pilotID);
   }
   
-  public void linkPilotToUnit(int pilotID, int unitID) {
-	  pih.linkPilotToUnit(pilotID, unitID);
+  public void linkPilotToUnit(SPilot p, SUnit u) {
+	  pih.linkPilotToUnit(p, u);
   }
   
   public void linkPilotToFaction(int pilotID, int factionID) {

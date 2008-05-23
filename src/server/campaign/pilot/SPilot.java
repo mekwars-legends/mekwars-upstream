@@ -59,7 +59,6 @@ public class SPilot extends Pilot {
     private int originalID;
     private int pickedUpID;
     private boolean death = false;
-    private int dbId;
 
     public SPilot(String name, int gunnery, int piloting) {
         super(name, gunnery, piloting);
@@ -67,14 +66,6 @@ public class SPilot extends Pilot {
 
     public SPilot() {
         // TODO: remove when possible
-    }
-
-    public void setDBId(int id) {
-        this.dbId = id;
-    }
-
-    public int getDBId() {
-        return this.dbId;
     }
 
     /**
@@ -471,11 +462,12 @@ public class SPilot extends Pilot {
             if (getPilotId() == -1) {
             	// Pilot hasn't been assigned an ID yet.
             	setPilotId(CampaignMain.cm.getAndUpdateCurrentPilotID());
+            	CampaignData.mwlog.dbLog("Getting new Pilot ID: " + getPilotId());
             }
             StringBuffer sql = new StringBuffer();
             
 
-            if (getDBId() == 0) {
+            if (getDBId() < 1) {
                 // No pilot with this id, so INSERT
                 sql.setLength(0);
 
@@ -493,6 +485,7 @@ public class SPilot extends Pilot {
                 ps.executeUpdate();
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
+                //CampaignData.mwlog.dbLog("New Pilot ID " + rs.getInt(1) + " for pilot " + getName());
                 setDBId(rs.getInt(1));
             } else {
                 // Pilot already saved, so UPDATE
@@ -539,6 +532,7 @@ public class SPilot extends Pilot {
                         sql.append(((EdgeSkill) sk).getHeadHit() + "$");
                         sql.append(((EdgeSkill) sk).getExplosion() + "'");
                     }
+                    CampaignData.mwlog.dbLog("SQL: " + sql.toString());
                     ps.executeUpdate(sql.toString());
 
                 }

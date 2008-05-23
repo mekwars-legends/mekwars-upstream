@@ -68,7 +68,8 @@ public class Unit {
     public static final int TOTALTYPES = 5;
 
     //VARIABLES
-    protected int id;    
+    protected int id;
+    protected int DBId;
     private Pilot pilot;
     private int type;
     private int weightclass;
@@ -342,6 +343,14 @@ public class Unit {
         id = i;
     }
 
+    public int getDBId() {
+    	return DBId;
+    }
+    
+    public void setDBId(int i) {
+    	DBId = i;
+    }
+    
     /**
      * @return return the maintainance status
      */

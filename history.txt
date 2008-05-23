@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.30.x
++ Bug: Pilots still resetting.  Hopefully fixed now.
++ Updated database to v28
 Release Client&Server 0.2.30.0
 + new MekWarsDed.jar 0.2.30.0
 + new MegaMek.jar 0.33.25-MW05162008-5673

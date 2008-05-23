@@ -79,9 +79,6 @@ public final class SUnit extends Unit{
     private Entity unitEntity = null;
     private int lastCombatPilot = -1;
 
-    private int dbId = 0;
-
-
     // CONSTRUCTOR
     /**
      * For Serialization.
@@ -683,6 +680,8 @@ public final class SUnit extends Unit{
             }
             ps.close();
             // Save the pilot
+/*
+ 
             if (!this.hasVacantPilot()) {
             	if (getPilot().getPilotId() == -1) {
             		// Pilot not in database
@@ -691,6 +690,7 @@ public final class SUnit extends Unit{
                 ((SPilot) getPilot()).toDB(getType(), getWeightclass());
                 CampaignMain.cm.MySQL.linkPilotToUnit(((SPilot) getPilot()).getPilotId(), getDBId());
             }
+*/
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL Exception in SUnit.toDB: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
@@ -1167,7 +1167,7 @@ public final class SUnit extends Unit{
         super.setPilot(p);
         if ( CampaignMain.cm.isUsingMySQL() ) {
         	this.toDB();
-            //CampaignMain.cm.MySQL.linkPilotToUnit(p.getDBId(), this.getDBId());
+            CampaignMain.cm.MySQL.linkPilotToUnit(p, this);
         }
     }
 
@@ -1476,14 +1476,6 @@ public final class SUnit extends Unit{
 
     public void setLastCombatPilot(int pilot) {
         lastCombatPilot = pilot;
-    }
-
-    public int getDBId() {
-        return dbId;
-    }
-
-    public void setDBId(int newId) {
-        dbId = newId;
     }
 
     public void setWeightclass(int i) {

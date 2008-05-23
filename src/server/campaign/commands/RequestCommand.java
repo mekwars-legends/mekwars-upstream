@@ -327,7 +327,14 @@ public class RequestCommand implements Command {
 			}
 
 			SPilot pilot = playerHouse.getNewPilot(type_id);
+			CampaignData.mwlog.dbLog("Pulled pilot: " + pilot.toFileFormat("$", false) + " (DBId: " + pilot.getDBId() + ")");
 
+			if(CampaignMain.cm.isUsingMySQL()) {
+				pilot.toDB(type_id, -1);
+			}
+			
+			CampaignData.mwlog.dbLog("Pilot saved: " + pilot.toFileFormat("$", false) + " (DBId: " + pilot.getDBId() + ")");
+			
 			Vector<SUnit> mechs = factory.getMechProduced(type_id,pilot);
 			StringBuffer results = new StringBuffer();
             if (playerHouse.getBooleanConfig("UseCalculatedCosts")) {

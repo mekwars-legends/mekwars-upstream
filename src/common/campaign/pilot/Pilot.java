@@ -47,6 +47,7 @@ public class Pilot {
 	private String currentFaction = "none";
 	private String traitName = "none";
 	private int id = -1;
+	private int DBId = -1;
     boolean edge_when_tac = true;
     boolean edge_when_ko = true;
     boolean edge_when_headhit = true;
@@ -284,6 +285,14 @@ public class Pilot {
         this.id = id;
     }
 
+    public int getDBId() {
+    	return this.DBId;
+    }
+    
+    public void setDBId(int i) {
+    	this.DBId = i;
+    }
+    
     public boolean getTac(){return edge_when_tac;}
     public boolean getKO(){return edge_when_ko;}
     public boolean getHeadHit(){return edge_when_headhit;}

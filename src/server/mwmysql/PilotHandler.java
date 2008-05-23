@@ -28,6 +28,7 @@ import common.campaign.pilot.skills.PilotSkill;
 
 import common.CampaignData;
 import server.campaign.CampaignMain;
+import server.campaign.SUnit;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.AstechSkill;
 import server.campaign.pilot.skills.EdgeSkill;
@@ -140,16 +141,22 @@ public class PilotHandler {
 		}
 	}
 	
-	public void linkPilotToUnit(int pilotID, int unitID) {
+	public void linkPilotToUnit(SPilot p, SUnit u) {
+		int pilotID = p.getPilotId();
+		int unitID = u.getDBId();
+		
 		if(pilotID == -1) {
+			pilotID = CampaignMain.cm.getAndUpdateCurrentPilotID();
 			CampaignData.mwlog.dbLog("Pilot being linked with no MW ID");
-			return;
+			CampaignData.mwlog.dbLog("New MWID: " + pilotID + " for pilot " + p.getName());
+			p.toDB(p.getUnitType(), -1);
 		}
 		int DBId = getPilotDBId(pilotID);
 		if(DBId == -1) {
 			CampaignData.mwlog.dbLog("Pilot " + pilotID + " being linked, but is not in database.");
-			return;
+			p.toDB(p.getUnitType(), -1);
 		}
+		CampaignData.mwlog.dbLog("Linking pilot " + pilotID + " (DBID: " + DBId + ") to unit " + unitID);
 		try {
 		Statement stmt = con.createStatement();
 		stmt.executeUpdate("UPDATE pilots SET factionID = NULL, playerID = NULL, unitID = " + unitID + " WHERE pilotID = " + DBId);
