@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.30.x
++ Bug: No Play not working for DB
 + Bug: Pilots still resetting.  Hopefully fixed now.
 + Updated database to v28
 Release Client&Server 0.2.30.0

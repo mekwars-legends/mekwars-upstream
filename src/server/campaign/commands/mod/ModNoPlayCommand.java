@@ -86,14 +86,18 @@ public class ModNoPlayCommand implements Command {
 		//ADD BLOCK
 		if (mode.equals("add")) {
 			
-			//check to make sure the player who will be excluded exists
-			boolean playerExists = new File("./campaign/players/" + excludeName + ".dat").exists();
-			if (!playerExists) {
-				CampaignMain.cm.toUser(excludeName + " does not have a player file. cannot add to a no-play list.", Username, true);
-				return;
-			}
-			
-			//check to make sure the player isn't no-play'ing himself
+            boolean playerExists = false;
+            if(!CampaignMain.cm.isUsingMySQL())
+                playerExists = new File("./campaign/players/" + excludeName.toLowerCase() + ".dat").exists();
+            else
+                playerExists = CampaignMain.cm.MySQL.playerExists(excludeName);
+            
+            if (!playerExists) {
+                CampaignMain.cm.toUser(excludeName + " does not have a player file. cannot add to your no-play list.", Username, true);
+                return;
+            }
+
+            //check to make sure the player isn't no-play'ing himself
 			if (listerName.toLowerCase().equals(excludeName)) {
 				CampaignMain.cm.toUser("You can't put someone on his own no-play list. Jackass.", Username, true);
 				return;

@@ -145,8 +145,13 @@ public class ExclusionList{
 		Iterator<String> e = adminExcludes.iterator();
 		while (e.hasNext()) {
 			String currName = e.next();
-			boolean playerExists = new File("./campaign/players/" + currName + ".dat").exists();
-			if (!playerExists) {
+            boolean playerExists = false;
+            if(!CampaignMain.cm.isUsingMySQL())
+                playerExists = new File("./campaign/players/" + currName.toLowerCase() + ".dat").exists();
+            else
+                playerExists = CampaignMain.cm.MySQL.playerExists(currName);
+            
+            if (!playerExists) {
 				e.remove();
 				CampaignMain.cm.toUser(currName + " has left the campaign. No-Play list updated.",owner,true);
 			}
@@ -156,8 +161,13 @@ public class ExclusionList{
 		e = playerExcludes.iterator();
 		while (e.hasNext()) {
 			String currName = e.next();
-			boolean playerExists = new File("./campaign/players/" + currName + ".dat").exists();
-			if (!playerExists) {
+	         boolean playerExists = false;
+	            if(!CampaignMain.cm.isUsingMySQL())
+	                playerExists = new File("./campaign/players/" + currName.toLowerCase() + ".dat").exists();
+	            else
+	                playerExists = CampaignMain.cm.MySQL.playerExists(currName);
+	            
+	            if (!playerExists) {
 				e.remove();
 				CampaignMain.cm.toUser(currName + " has left the campaign. No-Play list updated.",owner,true);
 			}
