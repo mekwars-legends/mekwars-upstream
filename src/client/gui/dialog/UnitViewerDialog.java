@@ -978,7 +978,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
 
         MechView mechView = null;
         try {
-            mechView = new MechView(currEntity);
+            mechView = new MechView(currEntity,true);
         } catch (Exception e) {
             // error unit didn't load right. this is bad news.
             populateTextFields = false;
