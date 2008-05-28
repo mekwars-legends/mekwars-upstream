@@ -1761,6 +1761,7 @@ src/server/campaign/operations/ShortResolver.java -text
 src/server/campaign/operations/ShortValidator.java -text
 src/server/campaign/pilot/SPilot.java -text
 src/server/campaign/pilot/skills/AstechSkill.java -text
+src/server/campaign/pilot/skills/BufferedVDNI.java -text
 src/server/campaign/pilot/skills/ClanPilotTrainingSkill.java -text
 src/server/campaign/pilot/skills/DodgeManeuverSkill.java -text
 src/server/campaign/pilot/skills/EdgeSkill.java -text
@@ -1776,12 +1777,14 @@ src/server/campaign/pilot/skills/MeleeSpecialistSkill.java -text
 src/server/campaign/pilot/skills/NaturalAptitudeGunnerySkill.java -text
 src/server/campaign/pilot/skills/NaturalAptitudePilotingSkill.java -text
 src/server/campaign/pilot/skills/PainResistanceSkill.java -text
+src/server/campaign/pilot/skills/PainShunt.java -text
 src/server/campaign/pilot/skills/QuickStudySkill.java -text
 src/server/campaign/pilot/skills/SLevelPilotSkill.java -text
 src/server/campaign/pilot/skills/SPilotSkill.java -text
 src/server/campaign/pilot/skills/SurvivalistSkill.java -text
 src/server/campaign/pilot/skills/TacticalGeniusSkill.java -text
 src/server/campaign/pilot/skills/TraitSkill.java -text
+src/server/campaign/pilot/skills/VDNI.java -text
 src/server/campaign/pilot/skills/WeaponSpecialistSkill.java -text
 src/server/campaign/util/ELORanking.java -text
 src/server/campaign/util/EXPRankingContainer.java -text
