@@ -2376,6 +2376,9 @@ public final class CampaignMain implements Serializable {
         pilotSkills.put(new Integer(PilotSkill.MedTechID), (new MedTechSkill(PilotSkill.MedTechID)));
         pilotSkills.put(new Integer(PilotSkill.EdgeSkillID), (new EdgeSkill(PilotSkill.EdgeSkillID)));
         pilotSkills.put(new Integer(PilotSkill.ClanPilotTraingID), (new ClanPilotTrainingSkill(PilotSkill.ClanPilotTraingID)));
+        pilotSkills.put(new Integer(PilotSkill.VDNIID), (new VDNI(PilotSkill.VDNIID)));
+        pilotSkills.put(new Integer(PilotSkill.BufferedVDNIID), (new BufferedVDNI(PilotSkill.BufferedVDNIID)));
+        pilotSkills.put(new Integer(PilotSkill.PainShuntID), (new PainShunt(PilotSkill.PainShuntID)));
     }
 
     public Properties getConfig() {

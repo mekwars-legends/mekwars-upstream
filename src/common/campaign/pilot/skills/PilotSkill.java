@@ -45,7 +45,10 @@ public class PilotSkill {
     public final static int MedTechID = 19;
     public final static int EdgeSkillID = 20;
     public final static int ClanPilotTraingID = 21;
-    
+    public final static int VDNIID = 22;
+    public final static int BufferedVDNIID = 23;
+    public final static int PainShuntID = 24;
+
     /**
      * The unique ID of this skill
      */
@@ -169,6 +172,12 @@ public class PilotSkill {
         	return PilotSkill.ClanPilotTraingID;
         if ( skill.equals("edge") )
         	return PilotSkill.EdgeSkillID;
+        if ( skill.equals("vdni") )
+            return PilotSkill.VDNIID;
+        if ( skill.equals("bvdni") )
+            return PilotSkill.BufferedVDNIID;
+        if ( skill.equals("pain_shunt") )
+            return PilotSkill.PainShuntID;
 
     	
     	return skillID;

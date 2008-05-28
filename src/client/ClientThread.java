@@ -75,7 +75,6 @@ import megamek.common.Mech;
 import megamek.common.options.GameOptions;
 import megamek.common.options.IBasicOption;
 import megamek.common.options.Option;
-import megamek.common.options.PilotOptions;
 import megamek.common.options.IOption;
 import megamek.common.options.IOptionGroup;
 import megamek.common.Building;
@@ -1004,34 +1003,27 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
         // Hits defaults to 0 so no reason to keep checking over and over again.
         pilot.setHits(mek.getPilot().getHits());
-        // No reason to keep searching for the same group over and over and over
-        // again
-        // find it once and search through it each time for the pilots skill
-        for (Enumeration<IOptionGroup> enumeration = pilot.getOptions().getGroups(); enumeration.hasMoreElements();) {
-            group = enumeration.nextElement();
-            // CampaignData.mwlog.errLog("Checking: " +
-            // pilot.getName()+" Key: "+group.getKey());
-            if (group.getKey().equalsIgnoreCase(PilotOptions.LVL3_ADVANTAGES))
-                break;
-        }
 
-        Iterator<?> iter = mek.getPilot().getMegamekOptions().iterator();
-        while (iter.hasNext()) {
-            MegaMekPilotOption po = (MegaMekPilotOption) iter.next();
-            for (Enumeration<IOption> j = group.getOptions(); j.hasMoreElements();) {
-                IOption option = j.nextElement();
-                // CampaignData.mwlog.errLog("Unit:
-                // "+mek.getModelName()+" Checking: " + option.getName() + "
-                // with " + po.getMmname());
-                if (option.getName().equals(po.getMmname())) {
-                    if (po.getMmname().equals("weapon_specialist")) {
-                        option.setValue(mek.getPilot().getWeapon());
-                    } else if (po.getMmname().equals("edge")) {
-                        option.setValue(mek.getPilot().getSkills().getPilotSkill(PilotSkill.EdgeSkillID).getLevel());
-                    } else {
-                        option.setValue(po.isValue());
+        for (Enumeration<IOptionGroup> enumeration = pilot.getOptions().getGroups(); enumeration.hasMoreElements(); group = enumeration.nextElement()) {
+
+            Iterator<MegaMekPilotOption> iter = mek.getPilot().getMegamekOptions().iterator();
+            while (iter.hasNext()) {
+                MegaMekPilotOption po = iter.next();
+                for (Enumeration<IOption> j = group.getOptions(); j.hasMoreElements();) {
+                    IOption option = j.nextElement();
+                    // CampaignData.mwlog.errLog("Unit:
+                    // "+mek.getModelName()+" Checking: " + option.getName() + "
+                    // with " + po.getMmname());
+                    if (option.getName().equals(po.getMmname())) {
+                        if (po.getMmname().equals("weapon_specialist")) {
+                            option.setValue(mek.getPilot().getWeapon());
+                        } else if (po.getMmname().equals("edge")) {
+                            option.setValue(mek.getPilot().getSkills().getPilotSkill(PilotSkill.EdgeSkillID).getLevel());
+                        } else {
+                            option.setValue(po.isValue());
+                        }
+                        break;
                     }
-                    break;
                 }
             }
         }

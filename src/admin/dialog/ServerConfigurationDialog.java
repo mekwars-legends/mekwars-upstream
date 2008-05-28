@@ -126,7 +126,10 @@ public final class ServerConfigurationDialog implements ActionListener {
                                                     // game.
         JPanel pilotSkillsPanel = new JPanel();// allows SO's to select what
                                                 // pilot skills they want for
-                                                // what unit types.
+                                                // non-Mek unit types.
+        JPanel mekPilotSkillsPanel = new JPanel();// allows SO's to select what
+                                                  // pilot skills they want for Meks
+
         JPanel noPlayPanel = new JPanel();
         JPanel blackMarketPanel = new JPanel();
         JPanel defectionPanel = new JPanel();// control defection access,
@@ -687,382 +690,372 @@ public final class ServerConfigurationDialog implements ActionListener {
         /*
          * PILOT SKILLS Panel
          */
-        JPanel mekPilotSkillsSpring = new JPanel(new SpringLayout());
         JPanel vehiclePilotSkillsSpring = new JPanel(new SpringLayout());
         JPanel infantryPilotSkillsSpring = new JPanel(new SpringLayout());
         JPanel protomechPilotSkillsSpring = new JPanel(new SpringLayout());
         JPanel battlearmorPilotSkillsSpring = new JPanel(new SpringLayout());
         JPanel bannedWSWeaponsSpring = new JPanel(new SpringLayout());
-
+        Dimension fieldSize = new Dimension(5,10);
+        
         JPanel mainSpring = new JPanel(new SpringLayout());
-
-        mekPilotSkillsSpring.add(new JLabel("Mek", SwingConstants.TRAILING));
-        mekPilotSkillsSpring.add(new JLabel("Pilot Skills"));
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("DM", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Meks Only:<br>Set Chance for a pilot to gain dodge maneuver</body></html>");
-        baseTextField.setName("chanceforDMforMek");
-        mekPilotSkillsSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("MS", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Meks Only:<br>Set Chance for a pilot to gain melee specialist</body></html>");
-        baseTextField.setName("chanceforMSforMek");
-        mekPilotSkillsSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("PR", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Meks Only:<br>Set Chance for a pilot to gain pain resistance</body></html>");
-        baseTextField.setName("chanceforPRforMek");
-        mekPilotSkillsSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("SV", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain survivalist</body></html>");
-        baseTextField.setName("chanceforSVforMek");
-        mekPilotSkillsSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("IM", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain iron man</body></html>");
-        baseTextField.setName("chanceforIMforMek");
-        mekPilotSkillsSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("MA", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain maneuvering ace</body></html>");
-        baseTextField.setName("chanceforMAforMek");
-        mekPilotSkillsSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("NAP", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Natural Aptitude Piloting</body></html>");
-        baseTextField.setName("chanceforNAPforMek");
-        mekPilotSkillsSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("NAG", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Natural Aptitude Gunnery</body></html>");
-        baseTextField.setName("chanceforNAGforMek");
-        mekPilotSkillsSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("AT", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/missile</body></html>");
-        baseTextField.setName("chanceforATforMek");
-        mekPilotSkillsSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("TG", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain tactical genius</body></html>");
-        baseTextField.setName("chanceforTGforMek");
-        mekPilotSkillsSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("WS", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain weapon specialist</body></html>");
-        baseTextField.setName("chanceforWSforMek");
-        mekPilotSkillsSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("G/B", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/Ballistic</body></html>");
-        baseTextField.setName("chanceforGBforMek");
-        mekPilotSkillsSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("G/L", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/laser</body></html>");
-        baseTextField.setName("chanceforGLforMek");
-        mekPilotSkillsSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("G/M", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/missile</body></html>");
-        baseTextField.setName("chanceforGMforMek");
-        mekPilotSkillsSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("Trait", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain a trait</body></html>");
-        baseTextField.setName("chanceforTNforMek");
-        mekPilotSkillsSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("EI", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Enhanced Interface</body></html>");
-        baseTextField.setName("chanceforEIforMek");
-        mekPilotSkillsSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("GT", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gifted</body></html>");
-        baseTextField.setName("chanceforGTforMek");
-        mekPilotSkillsSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("QS", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Quick Study</body></html>");
-        baseTextField.setName("chanceforQSforMek");
-        mekPilotSkillsSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("MT", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain the Med Tech skill</body></html>");
-        baseTextField.setName("chanceforMTforMek");
-        mekPilotSkillsSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        mekPilotSkillsSpring.add(new JLabel("Edge", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html>Allows Pilot to reroll 1 roll(per level) per game.</html>");
-        baseTextField.setName("chanceforEDforMek");
-        mekPilotSkillsSpring.add(baseTextField);
 
         vehiclePilotSkillsSpring.add(new JLabel("Vee", SwingConstants.TRAILING));
         vehiclePilotSkillsSpring.add(new JLabel("Crew Skills", SwingConstants.LEADING));
-
-        baseTextField = new JTextField(5);
+        
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        baseTextField.setMinimumSize(fieldSize);
         vehiclePilotSkillsSpring.add(new JLabel("MA", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain maneuvering ace</body></html>");
         baseTextField.setName("chanceforMAforVehicle");
         vehiclePilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         vehiclePilotSkillsSpring.add(new JLabel("NAP", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Natural Aptitude Piloting</body></html>");
         baseTextField.setName("chanceforNAPforVehicle");
         vehiclePilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         vehiclePilotSkillsSpring.add(new JLabel("NAG", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Natural Aptitude Gunnery</body></html>");
         baseTextField.setName("chanceforNAGforVehicle");
         vehiclePilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         vehiclePilotSkillsSpring.add(new JLabel("AT", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/missile</body></html>");
         baseTextField.setName("chanceforATforVehicle");
         vehiclePilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         vehiclePilotSkillsSpring.add(new JLabel("TG", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain tactical genius</body></html>");
         baseTextField.setName("chanceforTGforVehicle");
         vehiclePilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         vehiclePilotSkillsSpring.add(new JLabel("WS", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain weapon specialist</body></html>");
         baseTextField.setName("chanceforWSforVehicle");
         vehiclePilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         vehiclePilotSkillsSpring.add(new JLabel("G/B", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/ballistic</body></html>");
         baseTextField.setName("chanceforGBforVehicle");
         vehiclePilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         vehiclePilotSkillsSpring.add(new JLabel("G/L", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/laser</body></html>");
         baseTextField.setName("chanceforGLforVehicle");
         vehiclePilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         vehiclePilotSkillsSpring.add(new JLabel("G/M", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/missile</body></html>");
         baseTextField.setName("chanceforGMforVehicle");
         vehiclePilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         vehiclePilotSkillsSpring.add(new JLabel("Trait", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain trait</body></html>");
         baseTextField.setName("chanceforTNforVehicle");
         vehiclePilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         vehiclePilotSkillsSpring.add(new JLabel("EI", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Enhanced Interface</body></html>");
         baseTextField.setName("chanceforEIforVehicle");
         vehiclePilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         vehiclePilotSkillsSpring.add(new JLabel("GT", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gifted</body></html>");
         baseTextField.setName("chanceforGTforVehicle");
         vehiclePilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         vehiclePilotSkillsSpring.add(new JLabel("QS", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Quick Study</body></html>");
         baseTextField.setName("chanceforQSforVehicle");
         vehiclePilotSkillsSpring.add(baseTextField);
 
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        vehiclePilotSkillsSpring.add(new JLabel("VDNI", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain the VDNI skill</body></html>");
+        baseTextField.setName("chanceforVDNIforVehicle");
+        vehiclePilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        vehiclePilotSkillsSpring.add(new JLabel("BVDNI", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain the buffered VDNI skill</body></html>");
+        baseTextField.setName("chanceforBVDNIforVehicle");
+        vehiclePilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        vehiclePilotSkillsSpring.add(new JLabel("PS", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain the Pain Shunt skill</body></html>");
+        baseTextField.setName("chanceforPSforVehicle");
+        vehiclePilotSkillsSpring.add(baseTextField);
+
         infantryPilotSkillsSpring.add(new JLabel("Inf", SwingConstants.TRAILING));
         infantryPilotSkillsSpring.add(new JLabel("Squad Skills", SwingConstants.LEADING));
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         infantryPilotSkillsSpring.add(new JLabel("MA", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain maneuvering ace</body></html>");
         baseTextField.setName("chanceforMAforInfantry");
         infantryPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         infantryPilotSkillsSpring.add(new JLabel("NAP", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Natural Aptitude Piloting</body></html>");
         baseTextField.setName("chanceforNAPforInfantry");
         infantryPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         infantryPilotSkillsSpring.add(new JLabel("NAG", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Natural Aptitude Gunnery</body></html>");
         baseTextField.setName("chanceforNAGforInfantry");
         infantryPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         infantryPilotSkillsSpring.add(new JLabel("AT", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain astech</body></html>");
         baseTextField.setName("chanceforATforInfantry");
         infantryPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         infantryPilotSkillsSpring.add(new JLabel("TG", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain tactical genius</body></html>");
         baseTextField.setName("chanceforTGforInfantry");
         infantryPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         infantryPilotSkillsSpring.add(new JLabel("WS", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain weapon specialist</body></html>");
         baseTextField.setName("chanceforWSforInfantry");
         infantryPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         infantryPilotSkillsSpring.add(new JLabel("G/B", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/ballistic</body></html>");
         baseTextField.setName("chanceforGBforInfantry");
         infantryPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         infantryPilotSkillsSpring.add(new JLabel("G/L", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/laser</body></html>");
         baseTextField.setName("chanceforGLforInfantry");
         infantryPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         infantryPilotSkillsSpring.add(new JLabel("G/M", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/missile</body></html>");
         baseTextField.setName("chanceforGMforInfantry");
         infantryPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         infantryPilotSkillsSpring.add(new JLabel("Trait", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain a trait</body></html>");
         baseTextField.setName("chanceforTNforInfantry");
         infantryPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         infantryPilotSkillsSpring.add(new JLabel("EI", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Enhanced Interface</body></html>");
         baseTextField.setName("chanceforEIforInfantry");
         infantryPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         infantryPilotSkillsSpring.add(new JLabel("GT", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gifted</body></html>");
         baseTextField.setName("chanceforGTforInfantry");
         infantryPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         infantryPilotSkillsSpring.add(new JLabel("QS", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Quick Study</body></html>");
         baseTextField.setName("chanceforQSforInfantry");
         infantryPilotSkillsSpring.add(baseTextField);
 
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        infantryPilotSkillsSpring.add(new JLabel("PS", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain the Pain Shunt skill</body></html>");
+        baseTextField.setName("chanceforPSforInfantry");
+        infantryPilotSkillsSpring.add(baseTextField);
+
         protomechPilotSkillsSpring.add(new JLabel("Proto", SwingConstants.TRAILING));
         protomechPilotSkillsSpring.add(new JLabel("Pilot Skills", SwingConstants.LEADING));
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         protomechPilotSkillsSpring.add(new JLabel("MA", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain maneuvering ace</body></html>");
         baseTextField.setName("chanceforMAforProtoMek");
         protomechPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         protomechPilotSkillsSpring.add(new JLabel("NAP", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Natural Aptitude Piloting</body></html>");
         baseTextField.setName("chanceforNAPforProtoMek");
         protomechPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         protomechPilotSkillsSpring.add(new JLabel("NAG", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Natural Aptitude Gunnery</body></html>");
         baseTextField.setName("chanceforNAGforProtoMek");
         protomechPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         protomechPilotSkillsSpring.add(new JLabel("AT", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain astech</body></html>");
         baseTextField.setName("chanceforATforProtoMek");
         protomechPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         protomechPilotSkillsSpring.add(new JLabel("TG", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain tactical genius</body></html>");
         baseTextField.setName("chanceforTGforProtoMek");
         protomechPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         protomechPilotSkillsSpring.add(new JLabel("WS", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain weapon specialist</body></html>");
         baseTextField.setName("chanceforWSforProtoMek");
         protomechPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         protomechPilotSkillsSpring.add(new JLabel("G/B", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/ballistic</body></html>");
         baseTextField.setName("chanceforGBforProtoMek");
         protomechPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         protomechPilotSkillsSpring.add(new JLabel("G/L", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/laser</body></html>");
         baseTextField.setName("chanceforGLforProtoMek");
         protomechPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         protomechPilotSkillsSpring.add(new JLabel("G/M", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/missile</body></html>");
         baseTextField.setName("chanceforGMforProtoMek");
         protomechPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         protomechPilotSkillsSpring.add(new JLabel("Trait", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to a trait</body></html>");
         baseTextField.setName("chanceforTNforProtoMek");
         protomechPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         protomechPilotSkillsSpring.add(new JLabel("EI", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Enhanced Interface</body></html>");
         baseTextField.setName("chanceforEIforProtoMek");
         protomechPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         protomechPilotSkillsSpring.add(new JLabel("GT", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gifted</body></html>");
         baseTextField.setName("chanceforGTforProtoMek");
         protomechPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         protomechPilotSkillsSpring.add(new JLabel("QS", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Quick Study</body></html>");
         baseTextField.setName("chanceforQSforProtoMek");
         protomechPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         protomechPilotSkillsSpring.add(new JLabel("MT", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain the Med Tech Skill</body></html>");
         baseTextField.setName("chanceforMTforProtoMek");
@@ -1071,85 +1064,118 @@ public final class ServerConfigurationDialog implements ActionListener {
         battlearmorPilotSkillsSpring.add(new JLabel("BA", SwingConstants.TRAILING));
         battlearmorPilotSkillsSpring.add(new JLabel("Squad Skills", SwingConstants.LEADING));
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         battlearmorPilotSkillsSpring.add(new JLabel("MA", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain maneuvering ace</body></html>");
         baseTextField.setName("chanceforMAforBattleArmor");
         battlearmorPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         battlearmorPilotSkillsSpring.add(new JLabel("NAP", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Natural Aptitude Piloting</body></html>");
         baseTextField.setName("chanceforNAPforBattleArmor");
         battlearmorPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         battlearmorPilotSkillsSpring.add(new JLabel("NAG", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Natural Aptitude Gunnery</body></html>");
         baseTextField.setName("chanceforNAGforBattleArmor");
         battlearmorPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         battlearmorPilotSkillsSpring.add(new JLabel("AT", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain astech</body></html>");
         baseTextField.setName("chanceforATforBattleArmor");
         battlearmorPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         battlearmorPilotSkillsSpring.add(new JLabel("TG", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain tactical genius</body></html>");
         baseTextField.setName("chanceforTGforBattleArmor");
         battlearmorPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         battlearmorPilotSkillsSpring.add(new JLabel("WS", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain weapon specialist</body></html>");
         baseTextField.setName("chanceforWSforBattleArmor");
         battlearmorPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         battlearmorPilotSkillsSpring.add(new JLabel("G/B", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/ballistic</body></html>");
         baseTextField.setName("chanceforGBforBattleArmor");
         battlearmorPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         battlearmorPilotSkillsSpring.add(new JLabel("G/L", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/laser</body></html>");
         baseTextField.setName("chanceforGLforBattleArmor");
         battlearmorPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         battlearmorPilotSkillsSpring.add(new JLabel("G/M", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/missile</body></html>");
         baseTextField.setName("chanceforGMforBattleArmor");
         battlearmorPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         battlearmorPilotSkillsSpring.add(new JLabel("Trait", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain a trait</body></html>");
         baseTextField.setName("chanceforTNforBattleArmor");
         battlearmorPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         battlearmorPilotSkillsSpring.add(new JLabel("EI", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Enhanced Interface</body></html>");
         baseTextField.setName("chanceforEIforBattleArmor");
         battlearmorPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         battlearmorPilotSkillsSpring.add(new JLabel("GT", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gifted</body></html>");
         baseTextField.setName("chanceforGTforBattleArmor");
         battlearmorPilotSkillsSpring.add(baseTextField);
 
-        baseTextField = new JTextField(5);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
         battlearmorPilotSkillsSpring.add(new JLabel("QS", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Quick Study</body></html>");
         baseTextField.setName("chanceforQSforBattleArmor");
         battlearmorPilotSkillsSpring.add(baseTextField);
 
-        SpringLayoutHelper.setupSpringGrid(mekPilotSkillsSpring, 2);
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        battlearmorPilotSkillsSpring.add(new JLabel("PS", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain the Pain Shunt skill</body></html>");
+        baseTextField.setName("chanceforPSforBattleArmor");
+        battlearmorPilotSkillsSpring.add(baseTextField);
+
         SpringLayoutHelper.setupSpringGrid(vehiclePilotSkillsSpring, 2);
         SpringLayoutHelper.setupSpringGrid(infantryPilotSkillsSpring, 2);
         SpringLayoutHelper.setupSpringGrid(protomechPilotSkillsSpring, 2);
@@ -1164,9 +1190,8 @@ public final class ServerConfigurationDialog implements ActionListener {
         SpringLayoutHelper.setupSpringGrid(bannedWSWeaponsSpring, 2);
 
         // 1x5 grid
-        JPanel skillGrid = new JPanel(new GridLayout(1, 5));
+        JPanel skillGrid = new JPanel(new GridLayout(1, 4));
 
-        skillGrid.add(mekPilotSkillsSpring);
         skillGrid.add(vehiclePilotSkillsSpring);
         skillGrid.add(infantryPilotSkillsSpring);
         skillGrid.add(protomechPilotSkillsSpring);
@@ -1179,8 +1204,208 @@ public final class ServerConfigurationDialog implements ActionListener {
 
         pilotSkillsPanel.add(mainSpring);
 
+        
         /*
-         * Pilot Skills Panel
+         * Mek Pilot Skills Panel
+         */
+        
+        JPanel mekPilotSkillsSpring = new JPanel(new SpringLayout());
+
+        mekPilotSkillsSpring.add(new JLabel(" ", SwingConstants.TRAILING));
+        mekPilotSkillsSpring.add(new JLabel("Mek", SwingConstants.TRAILING));
+        mekPilotSkillsSpring.add(new JLabel("Pilot Skills", SwingConstants.TRAILING));
+        mekPilotSkillsSpring.add(new JLabel(" ", SwingConstants.TRAILING));
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("DM", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Meks Only:<br>Set Chance for a pilot to gain dodge maneuver</body></html>");
+        baseTextField.setName("chanceforDMforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("MS", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Meks Only:<br>Set Chance for a pilot to gain melee specialist</body></html>");
+        baseTextField.setName("chanceforMSforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("PR", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Meks Only:<br>Set Chance for a pilot to gain pain resistance</body></html>");
+        baseTextField.setName("chanceforPRforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("SV", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain survivalist</body></html>");
+        baseTextField.setName("chanceforSVforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("IM", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain iron man</body></html>");
+        baseTextField.setName("chanceforIMforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("MA", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain maneuvering ace</body></html>");
+        baseTextField.setName("chanceforMAforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("NAP", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Natural Aptitude Piloting</body></html>");
+        baseTextField.setName("chanceforNAPforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("NAG", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Natural Aptitude Gunnery</body></html>");
+        baseTextField.setName("chanceforNAGforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("AT", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/missile</body></html>");
+        baseTextField.setName("chanceforATforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("TG", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain tactical genius</body></html>");
+        baseTextField.setName("chanceforTGforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("WS", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain weapon specialist</body></html>");
+        baseTextField.setName("chanceforWSforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("G/B", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/Ballistic</body></html>");
+        baseTextField.setName("chanceforGBforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("G/L", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/laser</body></html>");
+        baseTextField.setName("chanceforGLforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("G/M", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/missile</body></html>");
+        baseTextField.setName("chanceforGMforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("Trait", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain a trait</body></html>");
+        baseTextField.setName("chanceforTNforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("EI", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Enhanced Interface</body></html>");
+        baseTextField.setName("chanceforEIforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("GT", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gifted</body></html>");
+        baseTextField.setName("chanceforGTforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("QS", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Quick Study</body></html>");
+        baseTextField.setName("chanceforQSforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("MT", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain the Med Tech skill</body></html>");
+        baseTextField.setName("chanceforMTforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("Edge", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Allows Pilot to reroll 1 roll(per level) per game.</html>");
+        baseTextField.setName("chanceforEDforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("VDNI", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain the VDNI skill</body></html>");
+        baseTextField.setName("chanceforVDNIforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("BVDNI", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain the buffered VDNI skill</body></html>");
+        baseTextField.setName("chanceforBVDNIforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        mekPilotSkillsSpring.add(new JLabel("PS", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain the Pain Shunt skill</body></html>");
+        baseTextField.setName("chanceforPSforMek");
+        mekPilotSkillsSpring.add(baseTextField);
+
+        SpringLayoutHelper.setupSpringGrid(mekPilotSkillsSpring, 4);
+
+        mekPilotSkillsPanel.add(mekPilotSkillsSpring);
+
+        /*
+         * Pilot Skills Panel BV mods
          * 
          */
 
@@ -1274,6 +1499,24 @@ public final class ServerConfigurationDialog implements ActionListener {
         SkillModSpring.add(new JLabel("Max Edge", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html>Max number of edges a pilot can have per game<br>This is akin to levels.</html>");
         baseTextField.setName("MaxEdgeChanges");
+        SkillModSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        SkillModSpring.add(new JLabel("VDNI", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>BV mod added to the unit due to VDNI.</html>");
+        baseTextField.setName("VDNIBaseBVMod");
+        SkillModSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        SkillModSpring.add(new JLabel("BVDNI", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>BV mod added to the unit due to Buffered VDNI.</html>");
+        baseTextField.setName("BufferedVDNIBaseBVMod");
+        SkillModSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        SkillModSpring.add(new JLabel("Pain Shunt", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>BV mod added to the unit due to Pain Shunt.</html>");
+        baseTextField.setName("PainShuntBaseBVMod");
         SkillModSpring.add(baseTextField);
 
         SpringLayoutHelper.setupSpringGrid(SkillModSpring, 4);
@@ -5009,6 +5252,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         ConfigPane.addTab("Loss Compensation", null, lossCompensationPanel, "Extra Payments for salvaged/destroyed units.");
         ConfigPane.addTab("No Play", null, noPlayPanel, "Personal Blacklist/Exclusion options");
         ConfigPane.addTab("Pilots", null, pilotsPanel, "Pilot Options");
+        ConfigPane.addTab("Pilot Skills(Mek)", null, mekPilotSkillsPanel, "Server Configurable Pilot Skills (Mek)");
         ConfigPane.addTab("Pilot Skills", null, pilotSkillsPanel, "Server Configurable Pilot Skills");
         ConfigPane.addTab("Pilot Skill Mods", null, pilotSkillsModPanel, "Server Configurable Pilot Skills Modifiers");
         ConfigPane.addTab("Repodding", null, repodPanel, "Repod");

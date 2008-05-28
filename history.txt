@@ -1,12 +1,15 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.30.x
+v 0.2.31.x
+Release Client/Server 0.2.31.0
++ RFE: Added MD skills to MekWars Pilots
 + New MegaMek.jar 0.33.26-MW052708-5703
 + New MegaMek.jar 0.33.26-MW052408-5698
 + Bug: No Play not working for DB
 + Bug: Pilots still resetting.  Hopefully fixed now.
 + Updated database to v28
+v 0.2.30.x
 Release Client&Server 0.2.30.0
 + new MekWarsDed.jar 0.2.30.0
 + new MegaMek.jar 0.33.25-MW05162008-5673

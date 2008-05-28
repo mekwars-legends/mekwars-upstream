@@ -932,7 +932,7 @@ public class CMainFrame extends JFrame {
             }
         });
 
-        jMenuLeaderShip.setText("LeaderShip");
+        jMenuLeaderShip.setText("Leadership");
 
         jMenuLeaderPromote.setText("Promote Player");
         jMenuLeaderPromote.addActionListener(new ActionListener() {

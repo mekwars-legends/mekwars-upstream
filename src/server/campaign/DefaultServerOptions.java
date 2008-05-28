@@ -541,6 +541,14 @@ public class DefaultServerOptions {
         defaults.setProperty("chanceforQSforBattleArmor", "0");
         defaults.setProperty("chanceforMTforMek", "20");
         defaults.setProperty("chanceforMTforProtoMek", "20");
+        defaults.setProperty("chanceforVDNIforMek", "0");
+        defaults.setProperty("chanceforVDNIforVehicle", "0");
+        defaults.setProperty("chanceforBVDNIforMek", "0");
+        defaults.setProperty("chanceforBVDNIforVehicle", "0");
+        defaults.setProperty("chanceforPSforMek", "0");
+        defaults.setProperty("chanceforPSforVehicle", "0");
+        defaults.setProperty("chanceforPSforInfantry", "0");
+        defaults.setProperty("chanceforPSforBattleArmor", "0");
 
         // limiter settings
         defaults.setProperty("ShowInfInCheckAttack", "true");
@@ -669,6 +677,9 @@ public class DefaultServerOptions {
         defaults.setProperty("EnhancedInterfaceBaseBVMod", "50");
         defaults.setProperty("EdgeBaseBVMod", "50");
         defaults.setProperty("MaxEdgeChanges", "5");
+        defaults.setProperty("VDNIBaseBVMod", "50");
+        defaults.setProperty("BufferedVDNIBaseBVMod", "50");
+        defaults.setProperty("PainShuntBaseBVMod", "50");
 
         // Mega Mek Client Settings
         defaults.setProperty("MMTimeStampLogFile", "false");

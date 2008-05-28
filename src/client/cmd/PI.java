@@ -49,12 +49,14 @@ public class PI extends Command {
                 if (user != null) {
                 	user.setCampaignData(mwclient, st.nextToken());
                 }
-                	
             }
         } else if (task.equals("DA")) {
             user = mwclient.getUser(st.nextToken());
             if (user != null) {
             	user.setCampaignData(mwclient, st.nextToken());
+            	if ( user.getName().equalsIgnoreCase(mwclient.getPlayer().getName())){
+            	    mwclient.getMainFrame().enableMenu();
+            	}
             }
         } else if (task.equals("CS")) {
         	user = mwclient.getUser(st.nextToken());
@@ -65,6 +67,11 @@ public class PI extends Command {
             user = mwclient.getUser(st.nextToken());
             if (user != null && st.hasMoreTokens()) {
                 user.setFluff(st.nextToken());
+            }
+        } else if (task.equals("SSN")) {
+            user = mwclient.getUser(st.nextToken());
+            if (user != null && st.hasMoreTokens()) {
+                user.setSubFactionName(st.nextToken());
             }
         } else if (task.equals("EX")) {
         	user = mwclient.getUser(st.nextToken());
