@@ -356,15 +356,15 @@ public class CMainFrame extends JFrame {
                     Class<?> c = loader.loadClass("admin.ModeratorMenu");
                     Object o = c.newInstance();
                     c.getDeclaredMethod("createMenu", new Class[] { MWClient.class }).invoke(o, new Object[] { mwclient });
-                    JMenu tempMenu = (JMenu) o;
-                    jMenuMod.setText(tempMenu.getText());
+                    jMenuMod = (JMenu) o;
+                    
                     /*
                      * for ( int i = 0; i <
                      * tempMenu.getMenuComponentCount();i++)
                      * jMenuMod.add(tempMenu.getItem(i));
                      */
-                    jMenuBar1.add(tempMenu);
-                    jMenuBar1.remove(jMenuMod);
+                    jMenuBar1.add(jMenuMod);
+                    //jMenuBar1.remove(jMenuMod);
                     // jMenuBar1.add((JMenu)o);
                 } catch (Exception ex) {
                     CampaignData.mwlog.errLog("ModeratorMenu creation FAILED!");
@@ -375,10 +375,11 @@ public class CMainFrame extends JFrame {
                     Class<?> c = loader.loadClass("admin.AdminMenu");
                     Object o = c.newInstance();
                     c.getDeclaredMethod("createMenu", new Class[] { MWClient.class }).invoke(o, new Object[] { mwclient });
-                    JMenu tempMenu = (JMenu) o;
-                    if (tempMenu.getItemCount() > 0)
-                        jMenuBar1.add(tempMenu);
-                    // jMenuBar1.remove(jMenuAdmin);
+                    jMenuAdmin = (JMenu) o;
+                    if (jMenuAdmin.getItemCount() > 0){
+                        jMenuBar1.add(jMenuAdmin);
+                    }
+                    // jMenuBar1.remove();
                 } catch (Exception ex) {
                     CampaignData.mwlog.errLog("AdminMenu creation FAILED!");
                     CampaignData.mwlog.errLog(ex);
@@ -462,9 +463,10 @@ public class CMainFrame extends JFrame {
             this.hasAdminMenus = true;
         }// end if(is admin or mod)
 
-        // jMenuAdmin.setVisible(admin);
+        jMenuAdmin.setVisible(admin);
         jMenuMod.setVisible(mod);
-
+        jMenuOperations.setVisible(mod);
+        
         jMenuCampaign.setVisible(!disconnected);
         jMenuCampaignMyStatus.setVisible(loggedin);
         jMenuCampaignSubAttack.setVisible(loggedin);
@@ -508,6 +510,7 @@ public class CMainFrame extends JFrame {
         jMenuCampaignDirectSell.setVisible(Boolean.parseBoolean(mwclient.getserverConfigs("UseDirectSell")));
 
         addMenuListener(jMenuBar1.getComponents());
+        this.repaint();
     }
 
     protected void createMenu() throws Exception {
@@ -2571,6 +2574,18 @@ public class CMainFrame extends JFrame {
         jMenuOptionsMute.setState(b);
     }
 
+    public void refreshMenu(){
+        this.hasAdminMenus = false;
+        jMenuBar1.removeAll();
+        try{
+            this.createMenu();
+        }
+        catch(Exception ex){
+            CampaignData.mwlog.errLog(ex);
+        }
+        this.enableMenu();
+        this.repaint();
+    }
     public void updateAttackMenu() {
 
         // login call of UOE occures before the menu is

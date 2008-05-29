@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.31.x
++ RFE: admin/mod/leader menus dynamically appear when user level changes
 Release Client 0.2.31.1
 + Bug: Units with MegaMek Skills not loading.
 + Bug: Multiple pilots occasionally linked to a single unit in DB
