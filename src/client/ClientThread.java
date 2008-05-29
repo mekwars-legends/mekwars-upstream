@@ -997,34 +997,21 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
     public Pilot createEntityPilot(Unit mek) {
         // get and set the options
-        IOptionGroup group = null;
         Pilot pilot = null;
         pilot = new Pilot(mek.getPilot().getName(), mek.getPilot().getGunnery(), mek.getPilot().getPiloting());
 
         // Hits defaults to 0 so no reason to keep checking over and over again.
         pilot.setHits(mek.getPilot().getHits());
 
-        for (Enumeration<IOptionGroup> enumeration = pilot.getOptions().getGroups(); enumeration.hasMoreElements(); group = enumeration.nextElement()) {
-
-            Iterator<MegaMekPilotOption> iter = mek.getPilot().getMegamekOptions().iterator();
-            while (iter.hasNext()) {
-                MegaMekPilotOption po = iter.next();
-                for (Enumeration<IOption> j = group.getOptions(); j.hasMoreElements();) {
-                    IOption option = j.nextElement();
-                    // CampaignData.mwlog.errLog("Unit:
-                    // "+mek.getModelName()+" Checking: " + option.getName() + "
-                    // with " + po.getMmname());
-                    if (option.getName().equals(po.getMmname())) {
-                        if (po.getMmname().equals("weapon_specialist")) {
-                            option.setValue(mek.getPilot().getWeapon());
-                        } else if (po.getMmname().equals("edge")) {
-                            option.setValue(mek.getPilot().getSkills().getPilotSkill(PilotSkill.EdgeSkillID).getLevel());
-                        } else {
-                            option.setValue(po.isValue());
-                        }
-                        break;
-                    }
-                }
+        Iterator<MegaMekPilotOption> iter = mek.getPilot().getMegamekOptions().iterator();
+        while (iter.hasNext()) {
+            MegaMekPilotOption po = iter.next();
+            if (po.getMmname().equals("weapon_specialist")) {
+                pilot.getOptions().getOption(po.getMmname()).setValue(mek.getPilot().getWeapon());
+            } else if (po.getMmname().equals("edge")) {
+                pilot.getOptions().getOption(po.getMmname()).setValue(mek.getPilot().getSkills().getPilotSkill(PilotSkill.EdgeSkillID).getLevel());
+            } else {
+                pilot.getOptions().getOption(po.getMmname()).setValue(po.isValue());
             }
         }
 

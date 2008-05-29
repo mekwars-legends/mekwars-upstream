@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.31.x
+Release Client 0.2.31.1
++ Bug: Units with MegaMek Skills not loading.
 + Bug: Multiple pilots occasionally linked to a single unit in DB
 + Disabled saving during player load, to avoid saving partial data to the database
       I believe this is causing the un-registration bug.
