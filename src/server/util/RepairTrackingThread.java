@@ -394,7 +394,7 @@ class Repair{
             boolean useCrits = CampaignMain.cm.getBooleanConfig("UsePartsRepair");
             String critName = "";
             int damagedCrits = 0;
-            
+            boolean disableTechAdvancement = CampaignMain.cm.getBooleanConfig("DisableTechAdvancement");
            
             
             if ( useCrits ) {
@@ -472,10 +472,12 @@ class Repair{
                     // CampaignData.mwlog.errLog("tech level roll: "+(die1+die2)+"
                     // base: "+(10+techType));
 
-                    if ((die1 + die2) >= (10 + techType) && !pilotIsRepairing && !repairTech) {
-                        levelTech = true;
-                    } else if ((die1 + die2) >= (11 + techType) && pilotIsRepairing) {
-                        levelTech = true;
+                    if(!disableTechAdvancement) {
+                    	if ((die1 + die2) >= (10 + techType) && !pilotIsRepairing && !repairTech) {
+                    		levelTech = true;
+                    	} else if ((die1 + die2) >= (11 + techType) && pilotIsRepairing) {
+                    		levelTech = true;
+                    	}
                     }
 
                     // Roll to see if the Tech Retires.
@@ -484,7 +486,7 @@ class Repair{
 
                     if (techType > UnitUtils.TECH_GREEN
                             && (die1 + die2) <= (9 + techType) / 4// Regs & Vets retire on 2. Elites on 3.
-                            && !pilotIsRepairing && !levelTech && !repairTech) {
+                            && !pilotIsRepairing && !levelTech && !repairTech && !disableTechAdvancement) {
                         retireTech = true;
                     }
 
@@ -976,12 +978,13 @@ class Repair{
                 
                 //CampaignData.mwlog.errLog("tech level roll: "+(die1+die2)+" base: "+(10+techType));
                 
-                if ( (die1+die2) >= (10+techType) && !pilotIsRepairing && !repairTech){
-                    levelTech = true;
-                }else if ( (die1+die2) >= (11+techType) && pilotIsRepairing){
-                    levelTech = true;
+                if(!disableTechAdvancement) {
+                	if ( (die1+die2) >= (10+techType) && !pilotIsRepairing && !repairTech){
+                    	levelTech = true;
+                	}else if ( (die1+die2) >= (11+techType) && pilotIsRepairing){
+                    	levelTech = true;
+                	}
                 }
-                
                 //Roll to see if the Tech Retires.
                 die1 = CampaignMain.cm.getRandomNumber(6)+1;
                 die2 = CampaignMain.cm.getRandomNumber(6)+1;
@@ -990,7 +993,8 @@ class Repair{
                         && (die1+die2) <= (9+techType)/4//Regs and Vets retire on 2 Elites on 3 
                         && !pilotIsRepairing 
                         && !levelTech
-                        && !repairTech){
+                        && !repairTech
+                        && !disableTechAdvancement){
                     retireTech = true;
                 }
     

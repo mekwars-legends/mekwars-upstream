@@ -532,7 +532,6 @@ public class SPilot extends Pilot {
                         sql.append(((EdgeSkill) sk).getHeadHit() + "$");
                         sql.append(((EdgeSkill) sk).getExplosion() + "'");
                     }
-                    CampaignData.mwlog.dbLog("SQL: " + sql.toString());
                     ps.executeUpdate(sql.toString());
 
                 }

@@ -78,6 +78,7 @@ public class DefaultServerOptions {
         defaults.setProperty("TransferScrapLevel", "75");
         defaults.setProperty("TechsToProtoPointRatio", "1");
         defaults.setProperty("FootInfTakeNoBays", "true");
+        defaults.setProperty("DisableTechAdvancement", "false");
 
         defaults.setProperty("MinEXPforMercenaries", "7500");
         defaults.setProperty("HideELO", "true");

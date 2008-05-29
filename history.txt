@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.31.x
++ RFE 1899255: Option for no tech levelling or retiring
++ Removed extraneous SQL logging
 Release Client/Server 0.2.31.0
 + RFE: Added MD skills to MekWars Pilots
 + New MegaMek.jar 0.33.26-MW052708-5703

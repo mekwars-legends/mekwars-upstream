@@ -493,6 +493,11 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setToolTipText("Checking lowers tech hiring costs w/ XP.");
         BaseCheckBox.setName("DecreasingTechCost");
         techsCBoxFlow.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Disable Tech Advancement");
+        BaseCheckBox.setToolTipText("Checking disables tech advancement and retiring");
+        BaseCheckBox.setName("DisableTechAdvancement");
+        techsCBoxFlow.add(BaseCheckBox);
 
         // the sendRecPay flow.
         BaseCheckBox = new JCheckBox("Sender Pays");
