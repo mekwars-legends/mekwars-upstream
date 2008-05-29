@@ -132,8 +132,10 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     private int forumID = 0;
     private boolean userValidated = false;
 
-    //boolean isLoading = false; // Player was getting saved multiple times
-    // during loading. Just seemed silly.
+    boolean isLoading = false; // Player was getting saved multiple times
+    						   // during loading. Just seemed silly.  Adding this
+    						   // back in, as saving during load is causing DB
+    						   // issues.
 
     private String subFaction = "";
 
@@ -163,7 +165,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
      * Save player file immediatly.
      */
     public void setSave() {
-//        if (!this.isLoading)
+        if (!this.isLoading)
             CampaignMain.cm.forceSavePlayer(this);
     }
 
@@ -2738,8 +2740,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     public synchronized void toDB() {
-//        if (this.isLoading)
-//            return;
+        if (this.isLoading)
+            return;
         PreparedStatement ps = null;
         StringBuffer sql = new StringBuffer();
         try {
@@ -2996,7 +2998,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
         // print the player into the info log. only for Debug
         // CampaignData.mwlog.infoLog("CSPlayer: " + s);
-//        this.isLoading = true;
+        this.isLoading = true;
 
         try {
             this.armies.clear();
@@ -3170,7 +3172,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                     this.setPassword(new MWPasswdRecord(this.name, access, passwd, time, ""));
             } catch (Exception ex) {
                 // Issue with password loading just stop now.
-//                this.isLoading = false;
+                this.isLoading = false;
                 return;
             }
             if (CampaignMain.cm.getBooleanConfig("UsePartsRepair"))
@@ -3231,14 +3233,14 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         } catch (Exception ex) {
             CampaignData.mwlog.errLog(ex);
         } finally {
-//            this.isLoading = false;
+            this.isLoading = false;
         }
     }
 
     public synchronized void fromDB(int playerID) {
-//        if (this.isLoading)
-//           return;
-//        this.isLoading = true;
+        if (this.isLoading)
+           return;
+        this.isLoading = true;
     
         try {
             ResultSet rs = null, rs1 = null;
@@ -3404,7 +3406,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             CampaignData.mwlog.dbLog("SQL Error in SPlayer.fromDB: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
         } finally {
-//            this.isLoading = false;
+            this.isLoading = false;
         }
     }
 
@@ -3536,9 +3538,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         return this.subFaction;
     }
 
-//    public boolean playerIsLoading() {
-//        return this.isLoading;
-//    }
+    public boolean playerIsLoading() {
+        return this.isLoading;
+    }
 
     public boolean canBePromoted() {
 
