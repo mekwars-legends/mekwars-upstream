@@ -159,6 +159,10 @@ public class PilotHandler {
 		CampaignData.mwlog.dbLog("Linking pilot " + pilotID + " (DBID: " + DBId + ") to unit " + unitID);
 		try {
 		Statement stmt = con.createStatement();
+		// Occasionally, multiple pilots were being assigned to the same unit.  That's no good.
+		stmt.executeUpdate("UPDATE pilots SET unitID = NULL WHERE unitID = " + unitID);
+		stmt.close();
+		stmt = con.createStatement();
 		stmt.executeUpdate("UPDATE pilots SET factionID = NULL, playerID = NULL, unitID = " + unitID + " WHERE pilotID = " + DBId);
 		stmt.close();
 		} catch (SQLException e) {
