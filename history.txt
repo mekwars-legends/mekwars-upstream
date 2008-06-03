@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.31.x
++ Bug: Unit transfers don't stick if players log out before the tick
++ Bug: Armies saving during load occasionally cause army corruption in the DB
 + RFE: admin/mod/leader menus dynamically appear when user level changes
 Release Client 0.2.31.1
 + Bug: Units with MegaMek Skills not loading.

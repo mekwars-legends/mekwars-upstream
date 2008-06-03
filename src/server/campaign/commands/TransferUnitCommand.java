@@ -201,6 +201,12 @@ public class TransferUnitCommand implements Command {
 		player.removeUnit(m.getId(), true);
 		targetplayer.addUnit(m, true);
 		
+		// Should fix the issue of units reverting to original owners
+		if(CampaignMain.cm.isUsingMySQL()) {
+			player.toDB();
+			targetplayer.toDB();
+		}
+		
 		//check to see if this put the player into welfare
 		if (player.mayAcquireWelfareUnits())
 			CampaignMain.cm.doSendModMail("NOTE",Username + " has used the Transfer Unit Command to send himself into welfare.");

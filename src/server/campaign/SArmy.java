@@ -49,6 +49,7 @@ public class SArmy extends Army{
     private Vector<SArmy> opponents = new Vector<SArmy>(1, 1);
     private TreeMap<String, String> legalOperations = new TreeMap<String, String>();
     private String playerName = "";
+    private boolean isLoading = false;
 
     // CONSTRUCTORS
     public SArmy(String ownerName) {
@@ -65,6 +66,8 @@ public class SArmy extends Army{
     }
 
     public synchronized void toDB() {
+    	if(isLoading)
+    		return;
         this.deleteFromDB();
         try {
             StringBuffer sql = new StringBuffer();
@@ -503,6 +506,7 @@ public class SArmy extends Army{
     }
 
     public void fromString(String s, String delimiter, SPlayer p) {
+    	isLoading=true;
         StringTokenizer ST = new StringTokenizer(s, delimiter);
         setID(TokenReader.readInt(ST));
         setName(TokenReader.readString(ST));
@@ -539,6 +543,8 @@ public class SArmy extends Army{
             disableArmy();
         else
             enableArmy();
+        
+        isLoading=false;
     }
 
     public String getMinimalInfo() {
