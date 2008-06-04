@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.31.x
++ Change user data transfer to have the server ask for it instead of client 
+	sending it blind.
 + Bug: Unit transfers don't stick if players log out before the tick
 + Bug: Armies saving during load occasionally cause army corruption in the DB
 + RFE: admin/mod/leader menus dynamically appear when user level changes

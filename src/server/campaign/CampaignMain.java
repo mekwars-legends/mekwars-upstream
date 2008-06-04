@@ -1006,6 +1006,7 @@ public final class CampaignMain implements Serializable {
              * draw the IP, this should work. @urgru 1.29.06 :-(
              */
             CampaignData.mwlog.ipLog("Name: " + Username + " IP: " + CampaignMain.cm.getServer().getIP(Username));
+            CampaignMain.cm.toUser("PL|SUD", Username);
 
         }
     }// end CampaignMain.doLogin(String userName)

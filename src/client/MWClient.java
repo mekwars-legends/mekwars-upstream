@@ -677,20 +677,6 @@ public final class MWClient implements IClient {
             this.sendChat(MWClient.CAMPAIGN_PREFIX + "c setclientversion#" + this.myUsername.trim() + "#" + CLIENT_VERSION);
             this.sendChat("/getsavedmail");
 
-            try {
-                StringBuilder userData = new StringBuilder(MWClient.CAMPAIGN_PREFIX + "c sendclientdata#");
-
-                String[] userDataSet = { "user.name", "user.language", "user.country", "user.timezone", "os.name", "os.arch", "os.version", "java.version" };
-
-                for (int pos = 0; pos < userDataSet.length; pos++) {
-                    String property = System.getProperty(userDataSet[pos], "Unknown");
-                    userData.append(property);
-                    userData.append("#");
-                }
-                this.sendChat(userData.toString());
-            } catch (Exception ex) {
-            }
-
             // Lets start the repair thread
             if (Boolean.parseBoolean(getserverConfigs("UseAdvanceRepair"))) {
                 RMT = new RepairManagmentThread(Long.parseLong(getserverConfigs("TimeForEachRepairPoint")) * 1000, this);
