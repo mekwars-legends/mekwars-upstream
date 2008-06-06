@@ -1,12 +1,16 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.31.x
+v 0.2.32.x
+Release Client/Server 0.2.32.0
++ Bug: PL|SUD sent as chat instead of as a command
++ Bug: Attacking Player not getting flu back when they defend another attack.
 + Change user data transfer to have the server ask for it instead of client 
 	sending it blind.
 + Bug: Unit transfers don't stick if players log out before the tick
 + Bug: Armies saving during load occasionally cause army corruption in the DB
 + RFE: admin/mod/leader menus dynamically appear when user level changes
+v 0.2.31.x
 Release Client 0.2.31.1
 + Bug: Units with MegaMek Skills not loading.
 + Bug: Multiple pilots occasionally linked to a single unit in DB

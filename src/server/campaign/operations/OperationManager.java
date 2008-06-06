@@ -764,7 +764,7 @@ public class OperationManager {
         		toTerminate.add(so);
 		}
 		
-		//terminate any operations which may no lonegr be defended.
+		//terminate any operations which may no longer be defended.
 		for (ShortOperation so : toTerminate)
 			this.terminateOperation(so, TERM_NOPOSSIBLEDEFENDERS, null);
 		

@@ -21,6 +21,7 @@ import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SPlayer;
 import server.campaign.operations.Operation;
+import server.campaign.operations.OperationManager;
 import server.campaign.operations.OpsChickenThread;
 import server.campaign.operations.ShortOperation;
 
@@ -247,7 +248,7 @@ public class DefendCommand implements Command {
         else
             toSend += ".";
 
-        // tell the defender that he has succesfully joined the attack.
+        // tell the defender that he has successfully joined the attack.
         CampaignData.mwlog.gameLog("Defend: " + so.getShortID() + "/" + dp.getName() + " w. Army #" + da.getID());
         CampaignMain.cm.toUser(toSend, Username, true);
 
@@ -255,6 +256,13 @@ public class DefendCommand implements Command {
             CampaignMain.cm.toUser("AM:" + dp.getName() + " has joined the operation, as a defender. <a href=\"MEKWARS/c commenceoperation#" + opID + "#CONFIRM\">Click here to commence</a>", so.getInitiator().getName(), true);
         }
 
+        //Defender had an outstanding attack and that attack needs to be terminated.
+        int altID = CampaignMain.cm.getOpsManager().playerIsAnAttacker(dp);
+        if ( altID > 0 ){
+            ShortOperation attackingOp = CampaignMain.cm.getOpsManager().getRunningOps().get(altID);
+            CampaignMain.cm.getOpsManager().terminateOperation(attackingOp, OperationManager.TERM_NOATTACKERS, null);
+        }
+        
     }// end process
 
 }// end DefendCommand
