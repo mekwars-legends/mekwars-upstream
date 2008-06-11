@@ -682,6 +682,31 @@ public final class ServerConfigurationDialog implements ActionListener {
         techSpring.add(baseTextField);
 
         baseTextField = new JTextField(5);
+        techSpring.add(new JLabel("Techs per Light Aero:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<HTML>Number of Techs it takes to maintain a light Aero</HTML>");
+        baseTextField.setName("TechsForLightAero");
+        techSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        techSpring.add(new JLabel("Techs per Medium Aero:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<HTML>Number of Techs it takes to maintain a medium Aero</HTML>");
+        baseTextField.setName("TechsForMediumAero");
+        techSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        techSpring.add(new JLabel("Techs per Heavy Aero:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<HTML>Number of Techs it takes to maintain a heavy Aero</HTML>");
+        baseTextField.setName("TechsForHeavyAero");
+        techSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        techSpring.add(new JLabel("Techs per Assault Aero:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<HTML>Number of Techs it takes to maintain an assault Aero</HTML>");
+        baseTextField.setName("TechsForAssaultAero");
+        techSpring.add(baseTextField);
+
+
+        baseTextField = new JTextField(5);
         techSpring.add(new JLabel("Non-House Unit Increased Techs:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("Float field.  Multiplier to tech cost of non-house units.  Only used with Tech Repair.");
         baseTextField.setName("NonFactionUnitsIncreasedTechs");
@@ -2203,6 +2228,10 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setName("UseProtoMek");
         unitCBoxGrid.add(BaseCheckBox);
 
+        BaseCheckBox.setToolTipText("Uncheck to disable Aero.");
+        BaseCheckBox.setName("UseAero");
+        unitCBoxGrid.add(BaseCheckBox);
+
         BaseCheckBox = new JCheckBox("Real Cost");
 
         BaseCheckBox.setToolTipText("<html>Check to use MM calculated costs for each unit.<br>The calculated cost will be used or the unit set price which ever is higher<br>Requires a reboot of the server.</html>");
@@ -2623,6 +2652,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         JPanel InfantrySpring = new JPanel(new SpringLayout());
         JPanel BattleArmorSpring = new JPanel(new SpringLayout());
         JPanel ProtoMekSpring = new JPanel(new SpringLayout());
+        JPanel AeroSpring = new JPanel(new SpringLayout());
 
         JPanel buySellSpring = new JPanel(new SpringLayout());
 
@@ -2731,6 +2761,32 @@ public final class ServerConfigurationDialog implements ActionListener {
         SpringLayoutHelper.setupSpringGrid(BattleArmorSpring, 4, 2);
 
         baseTextField = new JTextField(5);
+        AeroSpring.add(new JLabel("Light Aero Pricemod:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Amount added to pricemod to direct sell a Aero.");
+        baseTextField.setName("SellDirectLightAeroPrice");
+        AeroSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        AeroSpring.add(new JLabel("Medium Aero Pricemod:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Amount added to pricemod to direct sell a Aero.");
+        baseTextField.setName("SellDirectMediumAeroPrice");
+        AeroSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        AeroSpring.add(new JLabel("Heavy Aero Pricemod:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Amount added to pricemod to direct sell a Aero.");
+        baseTextField.setName("SellDirectHeavyAeroPrice");
+        AeroSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        AeroSpring.add(new JLabel("Assault Aero Pricemod:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Amount added to pricemod to direct sell a Aero.");
+        baseTextField.setName("SellDirectAssaultAeroPrice");
+        AeroSpring.add(baseTextField);
+
+        SpringLayoutHelper.setupSpringGrid(AeroSpring, 4, 2);
+
+        baseTextField = new JTextField(5);
         ProtoMekSpring.add(new JLabel("Light ProtoMek Pricemod:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("Amount added to pricemod to direct sell a ProtoMek.");
         baseTextField.setName("SellDirectLightProtoMekPrice");
@@ -2761,6 +2817,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         buySellSpring.add(InfantrySpring);
         buySellSpring.add(BattleArmorSpring);
         buySellSpring.add(ProtoMekSpring);
+        buySellSpring.add(AeroSpring);
 
         SpringLayoutHelper.setupSpringGrid(buySellSpring, 2, 3);
 
@@ -3343,6 +3400,12 @@ public final class ServerConfigurationDialog implements ActionListener {
         rewardSpring1.add(new JLabel("RP for BA:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html>RP to get a battle armor squad<br> For final cost, add to RP for desired weightclass.</html>");
         baseTextField.setName("RewardPointsForBA");
+        rewardSpring1.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        rewardSpring1.add(new JLabel("RP for Aero:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>RP to get an Aero<br> For final cost, add to RP for desired weightclass.</html>");
+        baseTextField.setName("RewardPointsForAero");
         rewardSpring1.add(baseTextField);
 
         baseTextField = new JTextField(5);
@@ -4006,14 +4069,16 @@ public final class ServerConfigurationDialog implements ActionListener {
         JPanel newbieInfSpring = new JPanel(new SpringLayout());
         JPanel newbiePMSpring = new JPanel(new SpringLayout());
         JPanel newbieBASpring = new JPanel(new SpringLayout());
+        JPanel newbieAeroSpring = new JPanel(new SpringLayout());
         JPanel resetUnitsSpring = new JPanel(new SpringLayout());
 
-        JPanel newbieSpringGrid = new JPanel(new GridLayout(3, 2));
+        JPanel newbieSpringGrid = new JPanel(new GridLayout(4, 2));
         newbieSpringGrid.add(newbieMekSpring);
         newbieSpringGrid.add(newbieVehSpring);
         newbieSpringGrid.add(newbieInfSpring);
         newbieSpringGrid.add(newbiePMSpring);
         newbieSpringGrid.add(newbieBASpring);
+        newbieSpringGrid.add(newbieAeroSpring);
         newbieSpringGrid.add(resetUnitsSpring);
 
         // set up the mek spring
@@ -4150,6 +4215,34 @@ public final class ServerConfigurationDialog implements ActionListener {
         newbieBASpring.add(baseTextField);
 
         SpringLayoutHelper.setupSpringGrid(newbieBASpring, 2);
+
+        // set up the mek spring
+        baseTextField = new JTextField(5);
+        newbieAeroSpring.add(new JLabel("Light Aeros:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Number of light aeros given to SOL players");
+        baseTextField.setName("SOLLightAero");
+        newbieAeroSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        newbieAeroSpring.add(new JLabel("Medium Aeros:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Number of medium aeros given to SOL players");
+        baseTextField.setName("SOLMediumAero");
+        newbieAeroSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        newbieAeroSpring.add(new JLabel("Heavy Aeros:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Number of heavy aeros given to SOL players");
+        baseTextField.setName("SOLHeavyAero");
+        newbieAeroSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        newbieAeroSpring.add(new JLabel("Assault Aeros:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Number of assault aeros given to SOL players");
+        baseTextField.setName("SOLAssaultAero");
+        newbieAeroSpring.add(baseTextField);
+
+        SpringLayoutHelper.setupSpringGrid(newbieAeroSpring, 4, 2);
+
 
         // and last, the reset spring
         baseTextField = new JTextField(5);
@@ -4324,6 +4417,12 @@ public final class ServerConfigurationDialog implements ActionListener {
         combatSpring2.add(baseTextField);
 
         baseTextField = new JTextField(5);
+        baseTextField.setToolTipText("Map Size Factors (Those determine how big a map will be)");
+        combatSpring2.add(new JLabel("Aero Map Factor", SwingConstants.TRAILING));
+        baseTextField.setName("AeroMapSizeFactor");
+        combatSpring2.add(baseTextField);
+
+        baseTextField = new JTextField(5);
         combatSpring2.add(new JLabel("Game Log Name", SwingConstants.TRAILING));
         baseTextField.setToolTipText("Name of the game log to save to the users system");
         baseTextField.setName("MMGameLogName");
@@ -4463,6 +4562,13 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setToolTipText("<html>This is how much of an element a inf unit counts as for the Force Size Calculation<br>Note this is a double field.</html>");
         baseTextField.setName("InfantryOperationsBVMod");
         battleValueSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        battleValueSpring.add(new JLabel("Aero Force Size:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>This is how much of an element an aero counts as for the Force Size Calculation<br>Note this is a double field.</html>");
+        baseTextField.setName("AeroOperationsBVMod");
+        battleValueSpring.add(baseTextField);
+
 
         SpringLayoutHelper.setupSpringGrid(battleValueSpring, 4);
 
@@ -4649,6 +4755,12 @@ public final class ServerConfigurationDialog implements ActionListener {
 
         BaseCheckBox.setToolTipText("Check to allow player&houses to sell Meks on the BM");
         BaseCheckBox.setName("MeksMayBeSoldOnBM");
+        bmCBoxSpring.add(BaseCheckBox);
+
+        BaseCheckBox = new JCheckBox("Aeros Allowed");
+
+        BaseCheckBox.setToolTipText("Check to allow player&houses to sell Aeros on the BM");
+        BaseCheckBox.setName("AerosMayBeSoldOnBM");
         bmCBoxSpring.add(BaseCheckBox);
 
         BaseCheckBox = new JCheckBox("Clan Unit Ban");
@@ -5171,6 +5283,12 @@ public final class ServerConfigurationDialog implements ActionListener {
         lossCompSpring.add(new JLabel("Inf Multi:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("See Mek Multi and Veh Multi examples. float value.");
         baseTextField.setName("InfMultiToUnitLossPayment");
+        lossCompSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        lossCompSpring.add(new JLabel("Aero Multi:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("See Mek Multi and Veh Multi examples. float value.");
+        baseTextField.setName("AeroMultiToUnitLossPayment");
         lossCompSpring.add(baseTextField);
 
         baseTextField = new JTextField(5);

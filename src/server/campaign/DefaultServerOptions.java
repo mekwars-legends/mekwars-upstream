@@ -304,7 +304,7 @@ public class DefaultServerOptions {
         defaults.setProperty("InfantryMapSizeFactor", "10");
         defaults.setProperty("BattleArmorMapSizeFactor", "10");
         defaults.setProperty("ProtoMekMapSizeFactor", "10");
-        defaults.setProperty("AeroMapSizeFactor", "10");
+        defaults.setProperty("AeroMapSizeFactor", "100");
         
         defaults.setProperty("MinCountForTick", "2000");
         defaults.setProperty("MaxCountForTick", "6000");
