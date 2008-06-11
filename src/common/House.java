@@ -53,9 +53,9 @@ public class House {
 
     // private int factionPlayerColors[] = new int[3]; // [red,green,blue]
 
-    private int factionUnitPriceMod[][] = new int[5][4]; // [Type][Weight]
-    private int factionUnitFluMod[][] = new int[5][4]; // [Type][Weight]
-    private int factionUnitComponentMod[][] = new int[5][4]; // [Type][Weight]
+    private int factionUnitPriceMod[][] = new int[Unit.MAXBUILD][4]; // [Type][Weight]
+    private int factionUnitFluMod[][] = new int[Unit.MAXBUILD][4]; // [Type][Weight]
+    private int factionUnitComponentMod[][] = new int[Unit.MAXBUILD][4]; // [Type][Weight]
 
     private String factionColor = "#000000";
     private String abbreviation = "";
@@ -323,13 +323,13 @@ public class House {
         out.println(abbreviation, "abbreviation");
         out.println(conquerable, "conquerable");
 
-        for (int type = 0; type < 5; type++)
+        for (int type = 0; type < Unit.MAXBUILD; type++)
             for (int weight = 0; weight < 4; weight++)
                 out.println(this.getHouseUnitComponentMod(type, weight), "componentMod" + type + weight);
-        for (int type = 0; type < 5; type++)
+        for (int type = 0; type < Unit.MAXBUILD; type++)
             for (int weight = 0; weight < 4; weight++)
                 out.println(this.getHouseUnitPriceMod(type, weight), "priceMod" + type + weight);
-        for (int type = 0; type < 5; type++)
+        for (int type = 0; type < Unit.MAXBUILD; type++)
             for (int weight = 0; weight < 4; weight++)
                 out.println(this.getHouseUnitFluMod(type, weight), "fluMod" + type + weight);
 
@@ -352,46 +352,14 @@ public class House {
         for (SubFaction subFaction : this.getSubFactionList().values()) {
             out.println(subFaction.getConfig("Name"), "SubFactionName");
             out.println(subFaction.getConfig("AccessLevel"), "SubFactionAccessLevel");
-            out.println(subFaction.getConfig("CanBuyNewLightMek"), "SubFactionCanBuyNewLightMek");
-            out.println(subFaction.getConfig("CanBuyNewMediumMek"), "SubFactionCanBuyNewMediumMek");
-            out.println(subFaction.getConfig("CanBuyNewHeavyMek"), "SubFactionCanBuyNewHeavyMek");
-            out.println(subFaction.getConfig("CanBuyNewAssaultMek"), "SubFactionCanBuyNewAssaultMek");
-            out.println(subFaction.getConfig("CanBuyUsedLightMek"), "SubFactionCanBuyUsedLightMek");
-            out.println(subFaction.getConfig("CanBuyUsedMediumMek"), "SubFactionCanBuyUsedMediumMek");
-            out.println(subFaction.getConfig("CanBuyUsedHeavyMek"), "SubFactionCanBuyUsedHeavyMek");
-            out.println(subFaction.getConfig("CanBuyUsedAssaultMek"), "SubFactionCanBuyUsedAssaultMek");
-            out.println(subFaction.getConfig("CanBuyNewLightVehicle"), "SubFactionCanBuyNewLightVehicle");
-            out.println(subFaction.getConfig("CanBuyNewMediumVehicle"), "SubFactionCanBuyNewMediumVehicle");
-            out.println(subFaction.getConfig("CanBuyNewHeavyVehicle"), "SubFactionCanBuyNewHeavyVehicle");
-            out.println(subFaction.getConfig("CanBuyNewAssaultVehicle"), "SubFactionCanBuyNewAssaultVehicle");
-            out.println(subFaction.getConfig("CanBuyUsedLightVehicle"), "SubFactionCanBuyUsedLightVehicle");
-            out.println(subFaction.getConfig("CanBuyUsedMediumVehicle"), "SubFactionCanBuyUsedMediumVehicle");
-            out.println(subFaction.getConfig("CanBuyUsedHeavyVehicle"), "SubFactionCanBuyUsedHeavyVehicle");
-            out.println(subFaction.getConfig("CanBuyUsedAssaultVehicle"), "SubFactionCanBuyUsedAssaultVehicle");
-            out.println(subFaction.getConfig("CanBuyNewLightInfantry"), "SubFactionCanBuyNewLightInfantry");
-            out.println(subFaction.getConfig("CanBuyNewMediumInfantry"), "SubFactionCanBuyNewMediumInfantry");
-            out.println(subFaction.getConfig("CanBuyNewHeavyInfantry"), "SubFactionCanBuyNewHeavyInfantry");
-            out.println(subFaction.getConfig("CanBuyNewAssaultInfantry"), "SubFactionCanBuyNewAssaultInfantry");
-            out.println(subFaction.getConfig("CanBuyUsedLightInfantry"), "SubFactionCanBuyUsedLightInfantry");
-            out.println(subFaction.getConfig("CanBuyUsedMediumInfantry"), "SubFactionCanBuyUsedMediumInfantry");
-            out.println(subFaction.getConfig("CanBuyUsedHeavyInfantry"), "SubFactionCanBuyUsedHeavyInfantry");
-            out.println(subFaction.getConfig("CanBuyUsedAssaultInfantry"), "SubFactionCanBuyUsedAssaultInfantry");
-            out.println(subFaction.getConfig("CanBuyNewLightProtoMek"), "SubFactionCanBuyNewLightProtoMek");
-            out.println(subFaction.getConfig("CanBuyNewMediumProtoMek"), "SubFactionCanBuyNewMediumProtoMek");
-            out.println(subFaction.getConfig("CanBuyNewHeavyProtoMek"), "SubFactionCanBuyNewHeavyProtoMek");
-            out.println(subFaction.getConfig("CanBuyNewAssaultProtoMek"), "SubFactionCanBuyNewAssaultProtoMek");
-            out.println(subFaction.getConfig("CanBuyUsedLightProtoMek"), "SubFactionCanBuyUsedLightProtoMek");
-            out.println(subFaction.getConfig("CanBuyUsedMediumProtoMek"), "SubFactionCanBuyUsedMediumProtoMek");
-            out.println(subFaction.getConfig("CanBuyUsedHeavyProtoMek"), "SubFactionCanBuyUsedHeavyProtoMek");
-            out.println(subFaction.getConfig("CanBuyUsedAssaultProtoMek"), "SubFactionCanBuyUsedAssaultProtoMek");
-            out.println(subFaction.getConfig("CanBuyNewLightBattleArmor"), "SubFactionCanBuyNewLightBattleArmor");
-            out.println(subFaction.getConfig("CanBuyNewMediumBattleArmor"), "SubFactionCanBuyNewMediumBattleArmor");
-            out.println(subFaction.getConfig("CanBuyNewHeavyBattleArmor"), "SubFactionCanBuyNewHeavyBattleArmor");
-            out.println(subFaction.getConfig("CanBuyNewAssaultBattleArmor"), "SubFactionCanBuyNewAssaultBattleArmor");
-            out.println(subFaction.getConfig("CanBuyUsedLightBattleArmor"), "SubFactionCanBuyUsedLightBattleArmor");
-            out.println(subFaction.getConfig("CanBuyUsedMediumBattleArmor"), "SubFactionCanBuyUsedMediumBattleArmor");
-            out.println(subFaction.getConfig("CanBuyUsedHeavyBattleArmor"), "SubFactionCanBuyUsedHeavyBattleArmor");
-            out.println(subFaction.getConfig("CanBuyUsedAssaultBattleArmor"), "SubFactionCanBuyUsedAssaultBattleArmor");
+            for (int type = 0; type < Unit.MAXBUILD; type++ ){
+                for ( int weight = 0; weight <= Unit.ASSAULT; weight++){
+                    String setting = "CanBuyNew"+Unit.getWeightClassDesc(weight)+Unit.getTypeClassDesc(type);
+                    out.println(subFaction.getConfig(setting), setting);
+                    setting = "CanBuyUsed"+Unit.getWeightClassDesc(weight)+Unit.getTypeClassDesc(type);
+                    out.println(subFaction.getConfig(setting), setting);
+                }
+            }
             out.println(subFaction.getConfig("MinELO"), "SubFactionMinELO");
             out.println(subFaction.getConfig("MinExp"), "SubFactionMinExp");
         }
@@ -420,13 +388,13 @@ public class House {
         abbreviation = in.readLine("abbreviation");
         conquerable = in.readBoolean("conquerable");
 
-        for (int type = 0; type < 5; type++)
+        for (int type = 0; type < Unit.MAXBUILD; type++)
             for (int weight = 0; weight < 4; weight++)
                 this.setHouseUnitComponentMod(type, weight, in.readInt("componentMod" + type + weight));
-        for (int type = 0; type < 5; type++)
+        for (int type = 0; type < Unit.MAXBUILD; type++)
             for (int weight = 0; weight < 4; weight++)
                 this.setHouseUnitPriceMod(type, weight, in.readInt("priceMod" + type + weight));
-        for (int type = 0; type < 5; type++)
+        for (int type = 0; type < Unit.MAXBUILD; type++)
             for (int weight = 0; weight < 4; weight++)
                 this.setHouseUnitFluMod(type, weight, in.readInt("fluMod" + type + weight));
 
@@ -449,46 +417,14 @@ public class House {
         for (; size > 0; size--) {
             SubFaction subFaction = new SubFaction(in.readLine("SubFactionName"));
             subFaction.setConfig("AccessLevel", in.readLine("SubFactionAccessLevel"));
-            subFaction.setConfig("CanBuyNewLightMek", in.readLine("SubFactionCanBuyNewLightMek"));
-            subFaction.setConfig("CanBuyNewMediumMek", in.readLine("SubFactionCanBuyNewMediumMek"));
-            subFaction.setConfig("CanBuyNewHeavyMek", in.readLine("SubFactionCanBuyNewHeavyMek"));
-            subFaction.setConfig("CanBuyNewAssaultMek", in.readLine("SubFactionCanBuyNewAssaultMek"));
-            subFaction.setConfig("CanBuyUsedLightMek", in.readLine("SubFactionCanBuyUsedLightMek"));
-            subFaction.setConfig("CanBuyUsedMediumMek", in.readLine("SubFactionCanBuyUsedMediumMek"));
-            subFaction.setConfig("CanBuyUsedHeavyMek", in.readLine("SubFactionCanBuyUsedHeavyMek"));
-            subFaction.setConfig("CanBuyUsedAssaultMek", in.readLine("SubFactionCanBuyUsedAssaultMek"));
-            subFaction.setConfig("CanBuyNewLightVehicle", in.readLine("SubFactionCanBuyNewLightVehicle"));
-            subFaction.setConfig("CanBuyNewMediumVehicle", in.readLine("SubFactionCanBuyNewMediumVehicle"));
-            subFaction.setConfig("CanBuyNewHeavyVehicle", in.readLine("SubFactionCanBuyNewHeavyVehicle"));
-            subFaction.setConfig("CanBuyNewAssaultVehicle", in.readLine("SubFactionCanBuyNewAssaultVehicle"));
-            subFaction.setConfig("CanBuyUsedLightVehicle", in.readLine("SubFactionCanBuyUsedLightVehicle"));
-            subFaction.setConfig("CanBuyUsedMediumVehicle", in.readLine("SubFactionCanBuyUsedMediumVehicle"));
-            subFaction.setConfig("CanBuyUsedHeavyVehicle", in.readLine("SubFactionCanBuyUsedHeavyVehicle"));
-            subFaction.setConfig("CanBuyUsedAssaultVehicle", in.readLine("SubFactionCanBuyUsedAssaultVehicle"));
-            subFaction.setConfig("CanBuyNewLightInfantry", in.readLine("SubFactionCanBuyNewLightInfantry"));
-            subFaction.setConfig("CanBuyNewMediumInfantry", in.readLine("SubFactionCanBuyNewMediumInfantry"));
-            subFaction.setConfig("CanBuyNewHeavyInfantry", in.readLine("SubFactionCanBuyNewHeavyInfantry"));
-            subFaction.setConfig("CanBuyNewAssaultInfantry", in.readLine("SubFactionCanBuyNewAssaultInfantry"));
-            subFaction.setConfig("CanBuyUsedLightInfantry", in.readLine("SubFactionCanBuyUsedLightInfantry"));
-            subFaction.setConfig("CanBuyUsedMediumInfantry", in.readLine("SubFactionCanBuyUsedMediumInfantry"));
-            subFaction.setConfig("CanBuyUsedHeavyInfantry", in.readLine("SubFactionCanBuyUsedHeavyInfantry"));
-            subFaction.setConfig("CanBuyUsedAssaultInfantry", in.readLine("SubFactionCanBuyUsedAssaultInfantry"));
-            subFaction.setConfig("CanBuyNewLightProtoMek", in.readLine("SubFactionCanBuyNewLightProtoMek"));
-            subFaction.setConfig("CanBuyNewMediumProtoMek", in.readLine("SubFactionCanBuyNewMediumProtoMek"));
-            subFaction.setConfig("CanBuyNewHeavyProtoMek", in.readLine("SubFactionCanBuyNewHeavyProtoMek"));
-            subFaction.setConfig("CanBuyNewAssaultProtoMek", in.readLine("SubFactionCanBuyNewAssaultProtoMek"));
-            subFaction.setConfig("CanBuyUsedLightProtoMek", in.readLine("SubFactionCanBuyUsedLightProtoMek"));
-            subFaction.setConfig("CanBuyUsedMediumProtoMek", in.readLine("SubFactionCanBuyUsedMediumProtoMek"));
-            subFaction.setConfig("CanBuyUsedHeavyProtoMek", in.readLine("SubFactionCanBuyUsedHeavyProtoMek"));
-            subFaction.setConfig("CanBuyUsedAssaultProtoMek", in.readLine("SubFactionCanBuyUsedAssaultProtoMek"));
-            subFaction.setConfig("CanBuyNewLightBattleArmor", in.readLine("SubFactionCanBuyNewLightBattleArmor"));
-            subFaction.setConfig("CanBuyNewMediumBattleArmor", in.readLine("SubFactionCanBuyNewMediumBattleArmor"));
-            subFaction.setConfig("CanBuyNewHeavyBattleArmor", in.readLine("SubFactionCanBuyNewHeavyBattleArmor"));
-            subFaction.setConfig("CanBuyNewAssaultBattleArmor", in.readLine("SubFactionCanBuyNewAssaultBattleArmor"));
-            subFaction.setConfig("CanBuyUsedLightBattleArmor", in.readLine("SubFactionCanBuyUsedLightBattleArmor"));
-            subFaction.setConfig("CanBuyUsedMediumBattleArmor", in.readLine("SubFactionCanBuyUsedMediumBattleArmor"));
-            subFaction.setConfig("CanBuyUsedHeavyBattleArmor", in.readLine("SubFactionCanBuyUsedHeavyBattleArmor"));
-            subFaction.setConfig("CanBuyUsedAssaultBattleArmor", in.readLine("SubFactionCanBuyUsedAssaultBattleArmor"));
+            for (int type = 0; type < Unit.MAXBUILD; type++ ){
+                for ( int weight = 0; weight <= Unit.ASSAULT; weight++){
+                    String setting = "CanBuyNew"+Unit.getWeightClassDesc(weight)+Unit.getTypeClassDesc(type);
+                    subFaction.setConfig(setting, in.readLine(setting));
+                    setting = "CanBuyUsed"+Unit.getWeightClassDesc(weight)+Unit.getTypeClassDesc(type);
+                    subFaction.setConfig(setting, in.readLine(setting));
+                }
+            }
             subFaction.setConfig("MinELO", in.readLine("SubFactionMinELO"));
             subFaction.setConfig("MinExp", in.readLine("SubFactionMinExp"));
             this.subFactionList.put(subFaction.getConfig("Name"), subFaction);

@@ -19,8 +19,6 @@ package server.campaign.commands;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 
-import common.Unit;
-
 import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
@@ -61,7 +59,7 @@ public class ExchangePilotInUnitCommand implements Command {
 			if (m != null)
 			{
                 
-                if ( m.getType() != Unit.MEK && m.getType() != Unit.PROTOMEK ){
+                if ( !m.isSinglePilotUnit() ){
                     CampaignMain.cm.toUser("AM:You may not remove that pilot from this unit.",Username,true);
                     return;
                 }

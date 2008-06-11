@@ -53,7 +53,7 @@ public class SetHouseBasePilotingSkillsCommand implements Command {
                 skills = command.nextToken()+"$";
             }catch (Exception ex ){
                 CampaignMain.cm.toUser("Invalid Syntax: sethousebasepilotskills house#pilotType#PilotingSkill$PilotingSkill", Username);
-                CampaignMain.cm.toUser("Invalid unit type:<br>Mek "+Unit.MEK+"<br>Vehicle "+Unit.VEHICLE+"<br>Infantry "+Unit.INFANTRY+"<br>Battle Armor "+Unit.BATTLEARMOR+"<br>ProtoMek "+Unit.PROTOMEK, Username);
+                CampaignMain.cm.toUser("Invalid unit type:<br>Mek "+Unit.MEK+"<br>Vehicle "+Unit.VEHICLE+"<br>Infantry "+Unit.INFANTRY+"<br>Battle Armor "+Unit.BATTLEARMOR+"<br>ProtoMek "+Unit.PROTOMEK+"<br>Aero "+Unit.AERO, Username);
                 return;
             }
     
@@ -61,7 +61,7 @@ public class SetHouseBasePilotingSkillsCommand implements Command {
                 return;
             
             if ( pilotType >= Unit.MAXBUILD || pilotType < 0){
-                CampaignMain.cm.toUser("Invalid unit type:<br>Mek "+Unit.MEK+"<br>Vehicle "+Unit.VEHICLE+"<br>Infantry "+Unit.INFANTRY+"<br>Battle Armor "+Unit.BATTLEARMOR+"<br>ProtoMek "+Unit.PROTOMEK, Username);
+                CampaignMain.cm.toUser("Invalid unit type:<br>Mek "+Unit.MEK+"<br>Vehicle "+Unit.VEHICLE+"<br>Infantry "+Unit.INFANTRY+"<br>Battle Armor "+Unit.BATTLEARMOR+"<br>ProtoMek "+Unit.PROTOMEK+"<br>Aero "+Unit.AERO, Username);
                 return;
             }
 

@@ -169,7 +169,7 @@ public class ScrapCommand implements Command {
 		//if PPQ's are on the pilot goes to the players barraks - no free getting rid of pilots.
         if ( Boolean.parseBoolean(house.getConfig("AllowPersonalPilotQueues")) 
         		&& !m.hasVacantPilot() 
-        		&& (m.getType() == Unit.MEK || m.getType() == Unit.PROTOMEK) ){
+        		&& m.isSinglePilotUnit() ){
             SPilot pilot = (SPilot)m.getPilot();
             p.getPersonalPilotQueue().addPilot(m.getPilot(), m.getWeightclass());
             CampaignMain.cm.toUser("PL|AP2PPQ|"+m.getType()+"|"+m.getWeightclass()+"|"+pilot.toFileFormat("#",true),Username,false);

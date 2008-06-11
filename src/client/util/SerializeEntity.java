@@ -18,6 +18,7 @@ package client.util;
 
 import java.util.Enumeration;
 
+import megamek.common.Aero;
 import megamek.common.BattleArmor;
 import megamek.common.BipedMech;
 import megamek.common.CriticalSlot;
@@ -59,6 +60,8 @@ public class SerializeEntity{
 					result.append(Unit.PROTOMEK +"*");
 				else if ( e instanceof BattleArmor )
 					result.append(Unit.BATTLEARMOR+"*");
+                else if ( e instanceof Aero )
+                    result.append(Unit.AERO+"*");
 				else
 					result.append(Unit.INFANTRY +"*");
 				//result.append(e.getMovementType() + "*"); bad code
@@ -97,7 +100,11 @@ public class SerializeEntity{
 				if ( useRepairs ){
 					result.append(UnitUtils.unitBattleDamage(e)+"*");
 				}
-			}
+			}else if (e instanceof Aero ) {
+                result.append(e.isRepairable() + "*");
+                result.append(e.isImmobile() + "*");
+                result.append(e.getCrew().isDead() + "*");
+            }
 			else if (e instanceof MechWarrior) {
 				MechWarrior mw = (MechWarrior)e;
 				result.append("MW*");

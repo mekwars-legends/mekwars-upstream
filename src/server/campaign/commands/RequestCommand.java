@@ -354,7 +354,7 @@ public class RequestCommand implements Command {
                     }
 		        }
 	
-				if (CampaignMain.cm.getBooleanConfig("AllowPersonalPilotQueues") && (mech.getType() == Unit.MEK || mech.getType() == Unit.PROTOMEK) ){
+				if (CampaignMain.cm.getBooleanConfig("AllowPersonalPilotQueues") && mech.isSinglePilotUnit() ){
 					SPilot pilot1 = (SPilot)mech.getPilot();
 					SPilot pilot2 = new SPilot("Vacant",99,99);
 					mech.setPilot(pilot2);
@@ -398,7 +398,7 @@ public class RequestCommand implements Command {
 		}//end if(enough money/influence/pp)
 
 		else if (!hasEnoughMoney || !hasEnoughInfluence){//tell the player what he needs to buy the unit
-			result = "AM:You need at least " + CampaignMain.cm.moneyOrFluMessage(true,false,mechCbills)+ " and " + CampaignMain.cm.moneyOrFluMessage(false,true,mechInfluence)+" to request a " + Unit.getDescriptionForID(type_id) + " of this weight class from a factory.";
+			result = "AM:You need at least " + CampaignMain.cm.moneyOrFluMessage(true,false,mechCbills)+ " and " + CampaignMain.cm.moneyOrFluMessage(false,true,mechInfluence)+" to request a " + Unit.getTypeClassDesc(type_id) + " of this weight class from a factory.";
 			CampaignMain.cm.toUser(result,Username,true);
 			return;//break out ...
 		}//end else(player has too few money or too little Influence)

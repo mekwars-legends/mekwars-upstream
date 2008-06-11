@@ -52,7 +52,8 @@ public void modifyPilot(Pilot p) {
     		return 0;
         
         if ( unitType != Unit.MEK
-                && unitType != Unit.PROTOMEK )
+                && unitType != Unit.PROTOMEK 
+                && unitType != Unit.AERO)
             return 0;
 
     	String chance = "chancefor"+this.getAbbreviation()+"for"+Unit.getTypeClassDesc(unitType);

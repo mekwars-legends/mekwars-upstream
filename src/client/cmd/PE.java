@@ -20,6 +20,8 @@ package client.cmd;
 import java.awt.Dimension;
 import java.util.StringTokenizer;
 
+import common.util.TokenReader;
+
 import client.MWClient;
 
 /**
@@ -41,8 +43,9 @@ public class PE extends Command {
 	public void execute(String input) {
 		StringTokenizer st = decode(input);
 		common.PlanetEnvironment pe = new common.PlanetEnvironment(st.nextToken());
-		int xsize = Integer.parseInt(st.nextToken());
-		int ysize = Integer.parseInt(st.nextToken());
+		int xsize = TokenReader.readInt(st);
+		int ysize = TokenReader.readInt(st);
+		int mapMedium = TokenReader.readInt(st);
 		/*if (Boolean.parseBoolean(client.getserverConfigs("UseStaticMaps")).booleanValue() ){
 		    int xboard = Integer.parseInt(st.nextToken());
 		    int yboard = Integer.parseInt(st.nextToken());
@@ -50,6 +53,6 @@ public class PE extends Command {
 		}
 		
 		else*/
-		mwclient.setEnvironment(pe, new Dimension(xsize,ysize));
+		mwclient.setEnvironment(pe, new Dimension(xsize,ysize), mapMedium);
 	}
 }

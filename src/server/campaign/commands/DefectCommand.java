@@ -741,6 +741,9 @@ public class DefectCommand implements Command {
                 case SUnit.BATTLEARMOR:
                     factoryType = UnitFactory.BUILDBATTLEARMOR;
                     break;
+                case SUnit.AERO:
+                    factoryType = UnitFactory.BUILDAERO;
+                    break;
                 case SUnit.PROTOMEK:
                     factoryType = UnitFactory.BUILDPROTOMECHS;
                     break;

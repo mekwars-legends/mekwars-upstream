@@ -156,6 +156,55 @@ public class DisplayPlayerPersonalPilotQueueCommand implements Command {
             toReturn.append(toReturnProtos);
         }
 
+        //process Aero pilots
+        StringBuilder toReturnAero = new StringBuilder();
+        for (int weightClass = Unit.LIGHT; weightClass <= Unit.ASSAULT; weightClass++) {
+            
+            LinkedList<Pilot> currList = p.getPersonalPilotQueue().getPilotQueue(Unit.AERO,weightClass);
+            if (currList.size() != 0) {
+                
+                //we have a pilot, so set the bool
+                hasQueuedPilots = true;
+                
+                //add the weight class descrpition to table
+                toReturn.append(Unit.getWeightClassDesc(weightClass)+":<UL>");
+                
+                //add all pilots in the list to the table
+                for (int i = 0; i < currList.size(); i++) {
+                    
+                    //mek, so show gunnery AND piloting
+                    Pilot currPil = currList.get(i);
+                    toReturnAero.append("<LI>#"+currPil.getPilotId() + " "
+                            + currPil.getName() +" (" + currPil.getGunnery() + "/"
+                            + currPil.getPiloting());
+                    
+                    //append skill descriptions
+                    String skills = currPil.getSkillString(true);
+                    if (skills != null && skills.trim().length() != 0) {
+                        toReturnAero.append(", ");
+                        toReturnAero.append(skills);
+                    }
+                    
+                    //close the description block.
+                    toReturnAero.append(")");
+                    
+                    //show hits, if tracking and > 0
+                    if (currPil.getHits() > 0)
+                        toReturnAero.append(" Hits: "+ currPil.getHits());
+                    
+                    toReturnAero.append("</LI>");
+                }
+                
+                //close the weight class table block
+                toReturnAero.append("</UL>");
+            }
+            
+        }
+        
+        if ( hasQueuedPilots ){
+            toReturnAero.insert(0,"<u>Aero Pilots</u>:<br>");
+            toReturn.append(toReturnAero);
+        }
 		
 		if (hasQueuedPilots)
 			CampaignMain.cm.toUser("SM|"+toReturn.toString(),Username,false);

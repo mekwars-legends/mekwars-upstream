@@ -19,8 +19,6 @@ package server.campaign.commands;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 
-import common.Unit;
-
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SPlayer;
@@ -188,7 +186,7 @@ public class RetirePilotCommand implements Command {
 			//now, handle the pilot. if PPQs are in use leave the unit vacant,
 			//otherwise add a new pilot from the faction queue.
 			boolean allowPPQs = new Boolean(CampaignMain.cm.getConfig("AllowPersonalPilotQueues")).booleanValue();
-			if (allowPPQs && (m.getType() == Unit.MEK || m.getType() == Unit.PROTOMEK)) {
+			if (allowPPQs && m.isSinglePilotUnit()) {
 				SPilot pilot = new SPilot("Vacant",99,99);
 			    m.setPilot(pilot);
 			}

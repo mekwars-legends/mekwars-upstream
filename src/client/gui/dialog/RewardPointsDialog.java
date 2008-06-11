@@ -146,6 +146,8 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
               unitList.add("ProtoMek");
           if ( Boolean.parseBoolean(mwclient.getserverConfigs("UseBattleArmor")))
               unitList.add("BattleArmor");
+          if ( Boolean.parseBoolean(mwclient.getserverConfigs("UseAero")))
+              unitList.add("Aero");
 
           unitComboBox = new JComboBox(unitList.toArray());
        }
@@ -578,6 +580,8 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
 	        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForInf"));
 	    else if ( type == Unit.PROTOMEK)
 	        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForProto"));
+        else if ( type == Unit.AERO)
+            cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForAero"));
 	    else
 	        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForBA"));
 		    

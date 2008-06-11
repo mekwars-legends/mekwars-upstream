@@ -249,6 +249,8 @@ public class SUnitFactory extends UnitFactory implements Serializable {
             sizeid += "b";
         else if (canProduce(Unit.PROTOMEK))
             sizeid += "p";
+        else if (canProduce(Unit.AERO))
+            sizeid += "ae";
 
         result += "<img src=\"data/images/" + sizeid + ".gif\">";
         return result;

@@ -1568,9 +1568,9 @@ public class ShortOperation implements Comparable<Object> {
                 // send terrain
                 if (aTerrain != null) {
                     CampaignMain.cm.toUser("APE|" + aTerrain.toString(), currN, false);
-                    CampaignMain.cm.toUser("PE|" + playEnvironment.toString(cityBuilder.toString()) + "|" + mapsize.width + "|" + mapsize.height, currN, false);
+                    CampaignMain.cm.toUser("PE|" + playEnvironment.toString(cityBuilder.toString()) + "|" + mapsize.width + "|" + mapsize.height + "|" + o.getValue("MapMedium"), currN, false);
                 } else {
-                    CampaignMain.cm.toUser("PE|" + playEnvironment.toString(cityBuilder.toString()) + "|" + mapsize.width + "|" + mapsize.height, currN, false);
+                    CampaignMain.cm.toUser("PE|" + playEnvironment.toString(cityBuilder.toString()) + "|" + mapsize.width + "|" + mapsize.height + "|" + o.getValue("MapMedium"), currN, false);
                 }
 
                 if (buildingOptions.length() > 1)
@@ -1732,12 +1732,13 @@ public class ShortOperation implements Comparable<Object> {
         // send options
         CampaignMain.cm.toUser(gameOptions.toString(), lowerName, false);
 
+        Operation o = CampaignMain.cm.getOpsManager().getOperation(CampaignMain.cm.getOpsManager().getShortOpForPlayer(p).getName());
         // send terrain
         if (aTerrain != null) {
             CampaignMain.cm.toUser("APE|" + aTerrain.toString(), lowerName, false);
-            CampaignMain.cm.toUser("PE|" + playEnvironment.toString(cityBuilder.toString()) + "|" + mapsize.width + "|" + mapsize.height, lowerName, false);
+            CampaignMain.cm.toUser("PE|" + playEnvironment.toString(cityBuilder.toString()) + "|" + mapsize.width + "|" + mapsize.height + "|" + o.getValue("MapMedium"), lowerName, false);
         } else {
-            CampaignMain.cm.toUser("PE|" + playEnvironment.toString(cityBuilder.toString()) + "|" + mapsize.width + "|" + mapsize.height, lowerName, false);
+            CampaignMain.cm.toUser("PE|" + playEnvironment.toString(cityBuilder.toString()) + "|" + mapsize.width + "|" + mapsize.height + "|" + o.getValue("MapMedium"), lowerName, false);
         }
 
         if (isTeamOp) {
@@ -2849,7 +2850,7 @@ public class ShortOperation implements Comparable<Object> {
 
             int currWeight = currFacility.getWeightclass();
 
-            for (int type = Unit.MEK; type <= Unit.BATTLEARMOR; type++) {
+            for (int type = Unit.MEK; type < Unit.MAXBUILD; type++) {
 
                 // skip this type if the facility cannot
                 // produce

@@ -125,6 +125,18 @@ public class OperationEntity {
                     	currUnit.setLastCombatPilot(currUnit.getPilot().getPilotId());
                 }
             }
+
+    		else if (MMUnitType == Unit.AERO){
+                isSalvage = Boolean.parseBoolean(ST.nextToken());
+                isImmobile = Boolean.parseBoolean(ST.nextToken());
+                crewDead = Boolean.parseBoolean(ST.nextToken());
+                SPlayer player = CampaignMain.cm.getPlayer(ownerName);
+                if ( player != null && ID != -1){
+                    SUnit currUnit = player.getUnit(ID);
+                    if(currUnit != null && currUnit.getPilot() != null) //auto-assigned artillery throwing NPEs
+                        currUnit.setLastCombatPilot(currUnit.getPilot().getPilotId());
+                }
+            }
     		
     		/*
     		 * Note: don't need to do anything special for infantry.

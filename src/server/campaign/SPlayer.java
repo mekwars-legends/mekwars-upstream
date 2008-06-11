@@ -3421,7 +3421,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         if (!unit.hasVacantPilot())
             return;
 
-        if (Boolean.parseBoolean(this.getMyHouse().getConfig("AllowPersonalPilotQueues")) && (unit.getType() == Unit.MEK || unit.getType() == Unit.PROTOMEK))
+        if (Boolean.parseBoolean(this.getMyHouse().getConfig("AllowPersonalPilotQueues")) && unit.isSinglePilotUnit())
             return;
 
         // set a new pilot

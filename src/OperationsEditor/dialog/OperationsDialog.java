@@ -44,6 +44,7 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 
 import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -89,6 +90,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 	
 	private JTextField BaseTextField = new JTextField(10);
 	private JCheckBox BaseCheckBox = new JCheckBox();
+    private JComboBox BaseComboBox = new JComboBox();
     
 	private String filePathName = "./data/operations"; 
 	private JOptionPane pane;
@@ -694,6 +696,11 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseCheckBox.setName("CountVehsForSpread");
         spreadPanel.add(BaseCheckBox);
 		
+        BaseCheckBox = new JCheckBox("Count Aeros in Spread");
+        BaseCheckBox.setToolTipText("If true, aeros are included when checking BV spreads between high/low units.");
+        BaseCheckBox.setName("CountAerosForSpread");
+        spreadPanel.add(BaseCheckBox);
+        
         BaseCheckBox = new JCheckBox("Count Protos in Spread");
         BaseCheckBox.setToolTipText("If true, protos are included when checking BV spreads between high/low units.");
         BaseCheckBox.setName("CountProtosForSpread");
@@ -704,6 +711,8 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseCheckBox.setName("CountInfForSpread");
         spreadPanel.add(BaseCheckBox);
 		
+        spreadPanel.add(new JLabel(" ",SwingConstants.TRAILING));
+
         BaseTextField = new JTextField(5);
         spreadPanel.add(new JLabel("Repod Omni to Base:",SwingConstants.TRAILING));
         BaseTextField.setToolTipText("<HTML>String. Omni's that where used in this op are repodded<br>back to this base configuration.<br>Leave blank to disable this option </HTML>");
@@ -723,6 +732,11 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseCheckBox.setName("AttackerAllowedVehs");
 		attackerCBoxPanel.add(BaseCheckBox);
 		
+        BaseCheckBox = new JCheckBox("Allow Aero");
+        BaseCheckBox.setToolTipText("Allow Aeros in this operation for the attacker");
+        BaseCheckBox.setName("AttackerAllowedAeros");
+        attackerCBoxPanel.add(BaseCheckBox);
+        
         BaseCheckBox = new JCheckBox("Allow Inf");
         BaseCheckBox.setToolTipText("Allow Infantry in this operation for the attacker");
         BaseCheckBox.setName("AttackerAllowedInf");
@@ -779,6 +793,18 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         attackerPanel.add(new JLabel("Min Vehicles:",SwingConstants.TRAILING));
         BaseTextField.setToolTipText("Min number of Vehicles in the attackers army");
         BaseTextField.setName("MinAttackerVehicles");
+        attackerPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Max Aero:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("Max number of Aero in the attackers army");
+        BaseTextField.setName("MaxAttackerAero");
+        attackerPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Min Aero:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("Min number of Aero in the attackers army");
+        BaseTextField.setName("MinAttackerAero");
         attackerPanel.add(BaseTextField);
         
         BaseTextField = new JTextField(5);
@@ -926,6 +952,11 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseCheckBox.setName("DefenderAllowedVehs");
 		defenderCBoxPanel.add(BaseCheckBox);
 		
+        BaseCheckBox = new JCheckBox("Allow Aero");
+        BaseCheckBox.setToolTipText("Allow Defender to use Aeros in this Op");
+        BaseCheckBox.setName("DefenderAllowedAeros");
+        defenderCBoxPanel.add(BaseCheckBox);
+        
         BaseCheckBox = new JCheckBox("Allow Inf");
         BaseCheckBox.setToolTipText("Allow Defender to use infantry in this Op");
         BaseCheckBox.setName("DefenderAllowedInf");
@@ -982,6 +1013,18 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         defenderPanel.add(new JLabel("Min Vehicles:",SwingConstants.TRAILING));
         BaseTextField.setToolTipText("Min number of Vehicles a defender must use in this op");
         BaseTextField.setName("MinDefenderVehicles");
+        defenderPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        defenderPanel.add(new JLabel("Max Aero:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("Max Number of Aero a Defender my use in this op");
+        BaseTextField.setName("MaxDefenderAero");
+        defenderPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        defenderPanel.add(new JLabel("Min Aero:",SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("Min number of Aero a defender must use in this op");
+        BaseTextField.setName("MinDefenderAero");
         defenderPanel.add(BaseTextField);
         
         BaseTextField = new JTextField(5);
@@ -3377,6 +3420,13 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField.setName("MapSizeY");
         mapParamsPanel2.add(BaseTextField);
 
+        String[] mediumNames = { "Ground", "Atmosphere", "Space" };
+        BaseComboBox = new JComboBox(mediumNames);
+        mapParamsPanel2.add(new JLabel("Map Medium:",SwingConstants.TRAILING));
+        BaseComboBox.setToolTipText("<html>Ground, Space, Atmosphere</html>");
+        BaseComboBox.setName("MapMedium");
+        mapParamsPanel2.add(BaseComboBox);
+
         SpringLayoutHelper.setupSpringGrid(mapParamsPanel2,4);
         
         masterBox.add(checkBoxBox);
@@ -3575,6 +3625,17 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
                 }
                 checkBox.setSelected(Boolean.parseBoolean(defaultOperationInfo.getDefault(key)));
                 checkBox.addKeyListener(this);
+            }else if ( field instanceof JComboBox){
+                JComboBox combo = (JComboBox)field;
+                
+                key = combo.getName();
+
+                if ( key == null ){
+                    System.err.println("Null Checkbox: "+combo.getToolTipText());
+                    continue;
+                }
+                combo.setSelectedIndex(Integer.parseInt(defaultOperationInfo.getDefault(key)));
+                
             }//else continue
         }
     }
@@ -3618,6 +3679,17 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
                 }
                 checkBox.setSelected(Boolean.parseBoolean(OperationInfo.getV(key)));
                 
+            }else if ( field instanceof JComboBox){
+                JComboBox combo = (JComboBox)field;
+                
+                key = combo.getName();
+
+                if ( key == null ){
+                    System.err.println("Null Checkbox: "+combo.getToolTipText());
+                    continue;
+                }
+                combo.setSelectedIndex(Integer.parseInt(OperationInfo.getV(key)));
+                
             }//else continue
         }
     }
@@ -3659,6 +3731,16 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
                 if ( key == null || value == null )
                     continue;
                 if ( Boolean.parseBoolean(value) != Boolean.parseBoolean(defaultOperationInfo.getDefault(key)) )
+                    p.println(key+"="+value);
+            }else if ( field instanceof JComboBox){
+                JComboBox combo = (JComboBox)field;
+                
+                value = Integer.toString(combo.getSelectedIndex());
+                key = combo.getName();
+                
+                if ( key == null || value == null )
+                    continue;
+                if ( Integer.parseInt(value) != Integer.parseInt(defaultOperationInfo.getDefault(key)) )
                     p.println(key+"="+value);
             }//else continue
         }

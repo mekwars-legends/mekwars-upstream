@@ -43,46 +43,14 @@ public class SubFaction{
 	public static Properties getDefault(){
 		defaultSettings.setProperty("Name", "");
 		defaultSettings.setProperty("AccessLevel", "0");
-		defaultSettings.setProperty("CanBuyNewLightMek", "true");
-		defaultSettings.setProperty("CanBuyNewMediumMek", "true");
-		defaultSettings.setProperty("CanBuyNewHeavyMek", "true");
-		defaultSettings.setProperty("CanBuyNewAssaultMek", "true");
-		defaultSettings.setProperty("CanBuyUsedLightMek", "true");
-		defaultSettings.setProperty("CanBuyUsedMediumMek", "true");
-		defaultSettings.setProperty("CanBuyUsedHeavyMek", "true");
-		defaultSettings.setProperty("CanBuyUsedAssaultMek", "true");
-		defaultSettings.setProperty("CanBuyNewLightVehicle", "true");
-		defaultSettings.setProperty("CanBuyNewMediumVehicle", "true");
-		defaultSettings.setProperty("CanBuyNewHeavyVehicle", "true");
-		defaultSettings.setProperty("CanBuyNewAssaultVehicle", "true");
-		defaultSettings.setProperty("CanBuyUsedLightVehicle", "true");
-		defaultSettings.setProperty("CanBuyUsedMediumVehicle", "true");
-		defaultSettings.setProperty("CanBuyUsedHeavyVehicle", "true");
-		defaultSettings.setProperty("CanBuyUsedAssaultVehicle", "true");
-		defaultSettings.setProperty("CanBuyNewLightInfantry", "true");
-		defaultSettings.setProperty("CanBuyNewMediumInfantry", "true");
-		defaultSettings.setProperty("CanBuyNewHeavyInfantry", "true");
-		defaultSettings.setProperty("CanBuyNewAssaultInfantry", "true");
-		defaultSettings.setProperty("CanBuyUsedLightInfantry", "true");
-		defaultSettings.setProperty("CanBuyUsedMediumInfantry", "true");
-		defaultSettings.setProperty("CanBuyUsedHeavyInfantry", "true");
-		defaultSettings.setProperty("CanBuyUsedAssaultInfantry", "true");
-		defaultSettings.setProperty("CanBuyNewLightProtoMek", "true");
-		defaultSettings.setProperty("CanBuyNewMediumProtoMek", "true");
-		defaultSettings.setProperty("CanBuyNewHeavyProtoMek", "true");
-		defaultSettings.setProperty("CanBuyNewAssaultProtoMek", "true");
-		defaultSettings.setProperty("CanBuyUsedLightProtoMek", "true");
-		defaultSettings.setProperty("CanBuyUsedMediumProtoMek", "true");
-		defaultSettings.setProperty("CanBuyUsedHeavyProtoMek", "true");
-		defaultSettings.setProperty("CanBuyUsedAssaultProtoMek", "true");
-		defaultSettings.setProperty("CanBuyNewLightBattleArmor", "true");
-		defaultSettings.setProperty("CanBuyNewMediumBattleArmor", "true");
-		defaultSettings.setProperty("CanBuyNewHeavyBattleArmor", "true");
-		defaultSettings.setProperty("CanBuyNewAssaultBattleArmor", "true");
-		defaultSettings.setProperty("CanBuyUsedLightBattleArmor", "true");
-		defaultSettings.setProperty("CanBuyUsedMediumBattleArmor", "true");
-		defaultSettings.setProperty("CanBuyUsedHeavyBattleArmor", "true");
-		defaultSettings.setProperty("CanBuyUsedAssaultBattleArmor", "true");
+		for (int type = 0; type < Unit.MAXBUILD; type++ ){
+		    for ( int weight = 0; weight <= Unit.ASSAULT; weight++){
+		        String setting = "CanBuyNew"+Unit.getWeightClassDesc(weight)+Unit.getTypeClassDesc(type);
+		        defaultSettings.setProperty(setting, "true");
+		        setting = "CanBuyUsed"+Unit.getWeightClassDesc(weight)+Unit.getTypeClassDesc(type);
+		        defaultSettings.setProperty(setting, "true");
+		    }
+		}
 		defaultSettings.setProperty("MinELO", "0");
 		defaultSettings.setProperty("MinExp", "0");
 		

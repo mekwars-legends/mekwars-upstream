@@ -68,7 +68,7 @@ public class AdminPurgeHouseBaysCommand implements Command {
 		// Delete them from the database
 		if(CampaignMain.cm.isUsingMySQL()) {
 			if (strType.equals("ALL")) {
-				for (int type = Unit.MEK; type <= Unit.BATTLEARMOR; type ++){
+				for (int type = Unit.MEK; type < Unit.MAXBUILD; type ++){
 					for (int i = 0; i < 4; i++) {
 						Vector<SUnit> tmpVec = h.getHangar(type).elementAt(i);
 						tmpVec.trimToSize();

@@ -62,7 +62,7 @@ public class SetHouseBasePilotSkillsCommand implements Command {
             return;
         
         if ( pilotType >= Unit.MAXBUILD || pilotType < 0){
-            CampaignMain.cm.toUser("Invalid unit type:<br>Mek "+Unit.MEK+"<br>Vehicle "+Unit.VEHICLE+"<br>Infantry "+Unit.INFANTRY+"<br>Battle Armor "+Unit.BATTLEARMOR+"<br>ProtoMek "+Unit.PROTOMEK, Username);
+            CampaignMain.cm.toUser("Invalid unit type:<br>Mek "+Unit.MEK+"<br>Vehicle "+Unit.VEHICLE+"<br>Infantry "+Unit.INFANTRY+"<br>Battle Armor "+Unit.BATTLEARMOR+"<br>ProtoMek "+Unit.PROTOMEK+"<br>Aero "+Unit.AERO, Username);
             return;
         }
         

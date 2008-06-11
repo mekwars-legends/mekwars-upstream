@@ -2232,6 +2232,9 @@ public final class CampaignMain implements Serializable {
 
     public boolean isSynchingBB() {
         
+        if ( !validBBVersion )
+            return false;
+        
         if ( isUsingMySQL() ){
             return MySQL.isSynchingBB();
         }

@@ -263,6 +263,9 @@ public class UseRewardPointsCommand implements Command {
 					if (new Boolean(house.getConfig("UseOnlyLightInfantry")).booleanValue() )
 						unitWeight = Unit.LIGHT;
 					break;
+                case Unit.AERO:
+                        typeCost = (Integer.parseInt(house.getConfig("RewardPointsForAero")));
+                    break;
 			}
 			
 			switch (unitWeight) {

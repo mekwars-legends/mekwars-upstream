@@ -508,7 +508,7 @@ public class Market2 {
 						 * pilot from the faction stack.
 						 */
 						if (new Boolean(CampaignMain.cm.getConfig("AllowPersonalPilotQueues")).booleanValue()
-								&& (unitForSale.getType() == Unit.MEK || unitForSale.getType() == Unit.PROTOMEK)) {
+								&& unitForSale.isSinglePilotUnit()) {
 							
 							// If the old owner is human, he keeps the pilot and gets an updated PPQ. If a
 							// faction, just eat the pilot. They'll make more. =)

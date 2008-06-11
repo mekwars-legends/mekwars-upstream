@@ -331,6 +331,29 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             result.append(componentConverter.get(key).toString());
         }
         
+        // Store the Aero (Units)
+        for (int i = 0; i < 4; i++) {
+            Vector<SUnit> tmpVec = getHangar(Unit.AERO).elementAt(i);
+
+            tmpVec.trimToSize();
+            result.append(tmpVec.size());
+            result.append("|");
+
+            for (SUnit currU : tmpVec) {
+                result.append(currU.toString(false));
+                result.append("|");
+            }
+        }
+
+        // Store Aero (Pilots)
+        result.append(this.getPilotQueues().getQueueSize(Unit.AERO ));
+        result.append("|");
+        PilotList = this.getPilotQueues().getPilotQueue(Unit.AERO);
+        for (SPilot currPilot : PilotList) {
+            result.append(currPilot.toFileFormat("#", false));
+            result.append("|");
+        }
+
         return result.toString();
     }
 
@@ -635,6 +658,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             getHangar().put(Unit.INFANTRY, new Vector<Vector<SUnit>>(5, 1));
             getHangar().put(Unit.PROTOMEK, new Vector<Vector<SUnit>>(5, 1));
             getHangar().put(Unit.BATTLEARMOR, new Vector<Vector<SUnit>>(5, 1));
+            getHangar().put(Unit.AERO, new Vector<Vector<SUnit>>(5, 1));
             // Init all of the hangars
             for (int i = 0; i < 4; i++) {
 
@@ -643,6 +667,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                 getHangar(Unit.INFANTRY).add(new Vector<SUnit>(1, 1));
                 getHangar(Unit.BATTLEARMOR).add(new Vector<SUnit>(1, 1));
                 getHangar(Unit.PROTOMEK).add(new Vector<SUnit>(1, 1));
+                getHangar(Unit.AERO).add(new Vector<SUnit>(1, 1));
             }
 
             boolean newbieHouse = this.isNewbieHouse();
@@ -733,6 +758,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             getComponents().put(Unit.INFANTRY, new Vector<Integer>(4, 1));
             getComponents().put(Unit.BATTLEARMOR, new Vector<Integer>(4, 1));
             getComponents().put(Unit.PROTOMEK, new Vector<Integer>(4, 1));
+            getComponents().put(Unit.AERO, new Vector<Integer>(4,1));
 
             for (int i = 0; i < 4; i++) {
                 getComponents().get(Unit.MEK).add(0);
@@ -740,6 +766,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                 getComponents().get(Unit.INFANTRY).add(0);
                 getComponents().get(Unit.BATTLEARMOR).add(0);
                 getComponents().get(Unit.PROTOMEK).add(0);
+                getComponents().get(Unit.AERO).add(0);
             }
 
             boolean finished = false;
@@ -926,6 +953,35 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                 converter.setComponentUsedType(TokenReader.readInt(ST));
                 converter.setComponentUsedWeight(TokenReader.readInt(ST));
             }
+            
+            // READ THE Aero units on the BM
+           
+            for (int i = 0; i < 4; i++) {
+                int numofmechs = TokenReader.readInt(ST);
+                SUnit m = null;
+                for (int j = 0; j < numofmechs; j++) {
+                    m = new SUnit();
+                    m.fromString(TokenReader.readString(ST));
+
+                    if (newbieHouse) {
+                        int priceForUnit = this.getPriceForUnit(m.getWeightclass(), m.getType());
+                        int rareSalesTime = Integer.parseInt(this.getConfig("RareMinSaleTime"));
+                        CampaignMain.cm.getMarket().addListing("Faction_" + this.getName(), m, priceForUnit, rareSalesTime);
+                        m.setStatus(Unit.STATUS_FORSALE);
+                    }
+                    addUnit(m, false);
+
+                }
+            }
+
+
+            // Aero's
+            pilotCount = TokenReader.readInt(ST);
+            for (; pilotCount > 0; pilotCount--) {
+                SPilot p = new SPilot();
+                p.fromFileFormat(TokenReader.readString(ST), "#");
+                this.getPilotQueues().loadPilot(Unit.AERO, p);
+            }
 
             if ( getComponentConverter().size() < 1 && CampaignMain.cm.getBooleanConfig("UsePartsRepair") ) {
                 ComponentToCritsConverter converter = new ComponentToCritsConverter();
@@ -1054,12 +1110,14 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         getHangar().put(Unit.INFANTRY, new Vector<Vector<SUnit>>(1, 1));
         getHangar().put(Unit.PROTOMEK, new Vector<Vector<SUnit>>(1, 1));
         getHangar().put(Unit.BATTLEARMOR, new Vector<Vector<SUnit>>(1, 1));
+        getHangar().put(Unit.AERO, new Vector<Vector<SUnit>>(1, 1));
         for (int i = 0; i < 4; i++) {
             getHangar(Unit.MEK).add(new Vector<SUnit>(1, 1));
             getHangar(Unit.VEHICLE).add(new Vector<SUnit>(1, 1));
             getHangar(Unit.INFANTRY).add(new Vector<SUnit>(1, 1));
             getHangar(Unit.PROTOMEK).add(new Vector<SUnit>(1, 1));
             getHangar(Unit.BATTLEARMOR).add(new Vector<SUnit>(1, 1));
+            getHangar(Unit.AERO).add(new Vector<SUnit>(1, 1));
         }
 
         // init the componet array(vectors)
@@ -1067,6 +1125,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         getComponents().put(Unit.VEHICLE, new Vector<Integer>(4, 1));
         getComponents().put(Unit.INFANTRY, new Vector<Integer>(4, 1));
         getComponents().put(Unit.BATTLEARMOR, new Vector<Integer>(4, 1));
+        getComponents().put(Unit.AERO, new Vector<Integer>(4, 1));
         getComponents().put(Unit.PROTOMEK, new Vector<Integer>(4, 1));
 
         for (int i = 0; i < 4; i++) {
@@ -1075,6 +1134,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             getComponents().get(Unit.INFANTRY).add(0);
             getComponents().get(Unit.BATTLEARMOR).add(0);
             getComponents().get(Unit.PROTOMEK).add(0);
+            getComponents().get(Unit.AERO).add(0);
         }
 
     }
@@ -1325,7 +1385,8 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         boolean useInfantryPP = Boolean.parseBoolean(this.getConfig("UseInfantry"));
         boolean useProtoMekPP = Boolean.parseBoolean(this.getConfig("UseProtoMek"));
         boolean useBattleArmorPP = Boolean.parseBoolean(this.getConfig("UseBattleArmor"));
-
+        boolean useAeroPP = Boolean.parseBoolean(this.getConfig("UseAero"));
+        
         for (int i = 0; i < 4; i++) {// loop through each weight class,
             // adding PP
             if (useMekPP) {
@@ -1357,6 +1418,12 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                 CampaignData.mwlog.debugLog("Updating House BA: " + i);
                 hsUpdates.append(this.addPP(i, Unit.BATTLEARMOR, componentsToAdd, false));
                 addComponentsProduced(Unit.BATTLEARMOR, componentsToAdd);
+            }
+
+            if (useAeroPP) {
+                CampaignData.mwlog.debugLog("Updating House Aero: " + i);
+                hsUpdates.append(this.addPP(i, Unit.AERO, componentsToAdd, false));
+                addComponentsProduced(Unit.AERO, componentsToAdd);
             }
         }
 
@@ -1522,6 +1589,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             int InfComponents = getComponentsProduced(Unit.INFANTRY);
             int ProtoComponents = getComponentsProduced(Unit.PROTOMEK);
             int BAComponents = getComponentsProduced(Unit.BATTLEARMOR);
+            int AeroComponents = getComponentsProduced(Unit.AERO);
 
             DecimalFormat myFormatter = new DecimalFormat("###.##");
 
@@ -1565,6 +1633,13 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                 result += myFormatter.format(BAComponents / (Double.parseDouble(this.getConfig("AssaultBattleArmorPP")))) + " Assault battle armor<br>";
             }
 
+            if (Boolean.parseBoolean(this.getConfig("UseAero"))) {
+                result += myFormatter.format(AeroComponents / (Double.parseDouble(this.getConfig("LightAeroPP")))) + " Light aero<br>";
+                result += myFormatter.format(AeroComponents / (Double.parseDouble(this.getConfig("MediumAeroPP")))) + " Medium aero<br>";
+                result += myFormatter.format(AeroComponents / (Double.parseDouble(this.getConfig("HeavyAeroPP")))) + " Heavy aero<br>";
+                result += myFormatter.format(AeroComponents / (Double.parseDouble(this.getConfig("AssaultAeroPP")))) + " Assault aero<br>";
+            }
+
             CampaignData.mwlog.debugLog("SetComponentsProduced");
             // and return the result to CampaignMain in order to have it sent to
             // the players
@@ -1573,6 +1648,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             setComponentsProduced(Unit.INFANTRY, 0);
             setComponentsProduced(Unit.PROTOMEK, 0);
             setComponentsProduced(Unit.BATTLEARMOR, 0);
+            setComponentsProduced(Unit.AERO, 0);
         } else
             addShowProductionCountNext(-1);
 
@@ -1609,6 +1685,9 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
         else if (m.getType() == Unit.INFANTRY)
             return this.scrapExcuseHelper("./data/scrapmessages/infantryscrapmessages.txt", m);
+
+        else if (m.getType() == Unit.AERO)
+            return this.scrapExcuseHelper("./data/scrapmessages/aeroscrapmessages.txt", m);
 
         // This should never be reached :)
         return "A " + m.getModelName() + " was kidnapped by aliens from outer space";
@@ -2942,6 +3021,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         parseSupportFile("./campaign/factions/support/common_infantry.txt", true);
         parseSupportFile("./campaign/factions/support/common_battlearmor.txt", true);
         parseSupportFile("./campaign/factions/support/common_protomeks.txt", true);
+        parseSupportFile("./campaign/factions/support/common_aero.txt", true);
     }
 
     private void modifyUnitSupport(SPlanet p, boolean addProduction) {
@@ -2965,6 +3045,9 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                     }
                     if (typeString.contains("B")) {
                         parseSupportFile(dirName + "battlearmor.txt", addProduction);
+                    }
+                    if (typeString.contains("A")) {
+                        parseSupportFile(dirName + "aero.txt", addProduction);
                     }
                 }
             }
@@ -3014,12 +3097,14 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         getHangar().put(Unit.INFANTRY, new Vector<Vector<SUnit>>(1, 1));
         getHangar().put(Unit.PROTOMEK, new Vector<Vector<SUnit>>(1, 1));
         getHangar().put(Unit.BATTLEARMOR, new Vector<Vector<SUnit>>(1, 1));
+        getHangar().put(Unit.AERO, new Vector<Vector<SUnit>>(1, 1));
         for (int i = 0; i < 4; i++) {
             getHangar(Unit.MEK).add(new Vector<SUnit>(1, 1));
             getHangar(Unit.VEHICLE).add(new Vector<SUnit>(1, 1));
             getHangar(Unit.INFANTRY).add(new Vector<SUnit>(1, 1));
             getHangar(Unit.PROTOMEK).add(new Vector<SUnit>(1, 1));
             getHangar(Unit.BATTLEARMOR).add(new Vector<SUnit>(1, 1));
+            getHangar(Unit.AERO).add(new Vector<SUnit>(1, 1));
         }
 
         // init the componet array(vectors)
@@ -3028,6 +3113,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         getComponents().put(Unit.INFANTRY, new Vector<Integer>(4, 1));
         getComponents().put(Unit.BATTLEARMOR, new Vector<Integer>(4, 1));
         getComponents().put(Unit.PROTOMEK, new Vector<Integer>(4, 1));
+        getComponents().put(Unit.AERO, new Vector<Integer>(4, 1));
 
         for (int i = 0; i < 4; i++) {
             getComponents().get(Unit.MEK).add(0);
@@ -3035,6 +3121,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             getComponents().get(Unit.INFANTRY).add(0);
             getComponents().get(Unit.BATTLEARMOR).add(0);
             getComponents().get(Unit.PROTOMEK).add(0);
+            getComponents().get(Unit.AERO).add(0);
         }
         this.updated();
     }

@@ -294,6 +294,10 @@ public class ShortValidator {
     public static final int SFAIL_ATTACK_GREEN_PILOTS = 253;// Attacker has pilots that are above the
                                                             // highest skill total allowed thresh hold
 
+    public static final int SFAIL_ATTACK_MAX_AERO = 254;// Max Number of Aeros an Attacker can have in an army
+    public static final int SFAIL_ATTACK_MIN_AERO = 255;// Min Number of Aeros an Attacker can have in an army
+    public static final int SFAIL_ATTACK_NOAEROS = 256;// "AttackerAllowedAeros",
+
     /*
      * Failure codes for defender-specific checks.
      * 
@@ -438,6 +442,10 @@ public class ShortValidator {
     public static final int SFAIL_DEFEND_GREEN_PILOTS = 454;// Defender has pilots that are above the
                                                             // highest skill total allowed thresh hold
 
+    public static final int SFAIL_DEFEND_MAX_AERO = 455;// Max Number of Aeros a defender can have in an army
+    public static final int SFAIL_DEFEND_MIN_AERO = 456;// Min Number of Aeros a defender can have in an army
+    public static final int SFAIL_DEFEND_NOAEROS  = 457;// "DefenderAllowedAeros",
+    
     // CONSTRUCTORS
     public ShortValidator(OperationManager m) {
         manager = m;
@@ -909,6 +917,13 @@ public class ShortValidator {
         else if (aa.getNumberOfUnitTypes(Unit.VEHICLE) < o.getIntValue("MinAttackerVehicles"))
             failureReasons.add(new Integer(SFAIL_ATTACK_MINVEHICLES));
 
+        // Aero min/max. Remember - these are for op qualification, not
+        // related to limiters.
+        if (aa.getNumberOfUnitTypes(Unit.AERO) > o.getIntValue("MaxAttackerAero"))
+            failureReasons.add(new Integer(SFAIL_ATTACK_MAX_AERO));
+        else if (aa.getNumberOfUnitTypes(Unit.AERO) < o.getIntValue("MinAttackerAero"))
+            failureReasons.add(new Integer(SFAIL_ATTACK_MIN_AERO));
+
         int infCount = aa.getNumberOfUnitTypes(Unit.INFANTRY);
         int protoCount = aa.getNumberOfUnitTypes(Unit.PROTOMEK);
         if (protoCount > 0)
@@ -924,9 +939,9 @@ public class ShortValidator {
 
         // NonInfantry min/max. Remember - these are for op qualification, not
         // related to limiters.
-        if (aa.getNumberOfUnitTypes(Unit.MEK) + aa.getNumberOfUnitTypes(Unit.VEHICLE) > o.getIntValue("MaxAttackerNonInfantry"))
+        if (aa.getNumberOfUnitTypes(Unit.MEK) + aa.getNumberOfUnitTypes(Unit.VEHICLE) + aa.getNumberOfUnitTypes(Unit.AERO) > o.getIntValue("MaxAttackerNonInfantry"))
             failureReasons.add(new Integer(SFAIL_ATTACK_MAXNONINFANTRY));
-        else if (aa.getNumberOfUnitTypes(Unit.MEK) + aa.getNumberOfUnitTypes(Unit.VEHICLE) < o.getIntValue("MinAttackerNonInfantry"))
+        else if (aa.getNumberOfUnitTypes(Unit.MEK) + aa.getNumberOfUnitTypes(Unit.VEHICLE) + aa.getNumberOfUnitTypes(Unit.AERO) < o.getIntValue("MinAttackerNonInfantry"))
             failureReasons.add(new Integer(SFAIL_ATTACK_MINNONINFANTRY));
 
         /*
@@ -942,6 +957,7 @@ public class ShortValidator {
         int numberOfCommanders = 0;
         boolean hasMeks = false;
         boolean hasVehs = false;
+        boolean hasAeros = false;
         boolean hasInf = false;
         boolean normInf = false;
         boolean powerInf = false;
@@ -982,7 +998,9 @@ public class ShortValidator {
             // or, if it is a vehicle
             else if (currUnit.getType() == Unit.VEHICLE)
                 hasVehs = true;
-
+            else if (currUnit.getType() == Unit.AERO)
+                hasAeros = true;
+            
             // if infantry, check to see if powered or foot
             // and set the normInf variable, as appropriate.
             else if (currUnit.getType() == Unit.INFANTRY || currUnit.getType() == Unit.BATTLEARMOR || currUnit.getType() == Unit.PROTOMEK) {
@@ -1013,7 +1031,7 @@ public class ShortValidator {
              * armie and add inf support Infantry/Protos can be regulated with
              * out options more easily.
              */
-            if (currUnit.getType() == Unit.MEK || currUnit.getType() == Unit.VEHICLE) {
+            if (currUnit.getType() == Unit.MEK || currUnit.getType() == Unit.VEHICLE || currUnit.getType() == Unit.AERO ) {
                 if (currWeight > o.getIntValue("MaxAttackerUnitTonnage"))
                     maxTonFail = true;
                 else if (currWeight < o.getIntValue("MinAttackerUnitTonnage"))
@@ -1036,7 +1054,9 @@ public class ShortValidator {
                 continue;
             else if ((type == Unit.BATTLEARMOR || type == Unit.INFANTRY) && !o.getBooleanValue("CountInfForSpread"))
                 continue;
-
+            else if ( type == Unit.AERO && !o.getBooleanValue("CountAerosForSpread") )
+                continue;
+            
             if ( !currUnit.hasVacantPilot() ) {
                 int piloting = currUnit.getPilot().getPiloting();
                 int gunnery = currUnit.getPilot().getGunnery();
@@ -1076,6 +1096,8 @@ public class ShortValidator {
             failureReasons.add(new Integer(SFAIL_ATTACK_NOMEKS));
         if (hasVehs && !o.getBooleanValue("AttackerAllowedVehs"))
             failureReasons.add(new Integer(SFAIL_ATTACK_NOVEHS));
+        if (hasAeros && !o.getBooleanValue("AttackerAllowedAeros"))
+            failureReasons.add(new Integer(SFAIL_ATTACK_NOAEROS));
         if (hasInf && !o.getBooleanValue("AttackerAllowedInf")) {
             // powered allowed, but there's unarmored inf too
             if (o.getBooleanValue("AttackerPoweredInfAllowed") && normInf)
@@ -1268,6 +1290,13 @@ public class ShortValidator {
         else if (da.getNumberOfUnitTypes(Unit.VEHICLE) < o.getIntValue("MinDefenderVehicles"))
             failureReasons.add(new Integer(SFAIL_DEFEND_MINVEHICLES));
 
+        // Aero min/max. Remember - these are for op qualification, not
+        // related to limiters.
+        if (da.getNumberOfUnitTypes(Unit.AERO) > o.getIntValue("MaxDefenderAero"))
+            failureReasons.add(new Integer(SFAIL_DEFEND_MAX_AERO));
+        else if (da.getNumberOfUnitTypes(Unit.AERO) < o.getIntValue("MinDefenderAero"))
+            failureReasons.add(new Integer(SFAIL_DEFEND_MIN_AERO));
+
         int infCount = da.getNumberOfUnitTypes(Unit.INFANTRY);
         infCount += da.getNumberOfUnitTypes(Unit.BATTLEARMOR);
         int protoCount = da.getNumberOfUnitTypes(Unit.PROTOMEK);
@@ -1283,9 +1312,9 @@ public class ShortValidator {
 
         // NonInfantry min/max. Remember - these are for op qualification, not
         // related to limiters.
-        if (da.getNumberOfUnitTypes(Unit.MEK) + da.getNumberOfUnitTypes(Unit.VEHICLE) > o.getIntValue("MaxDefenderNonInfantry"))
+        if (da.getNumberOfUnitTypes(Unit.MEK) + da.getNumberOfUnitTypes(Unit.VEHICLE) + da.getNumberOfUnitTypes(Unit.AERO) > o.getIntValue("MaxDefenderNonInfantry"))
             failureReasons.add(new Integer(SFAIL_DEFEND_MAXNONINFANTRY));
-        else if (da.getNumberOfUnitTypes(Unit.MEK) + da.getNumberOfUnitTypes(Unit.VEHICLE) < o.getIntValue("MinDefenderNonInfantry"))
+        else if (da.getNumberOfUnitTypes(Unit.MEK) + da.getNumberOfUnitTypes(Unit.VEHICLE) + da.getNumberOfUnitTypes(Unit.AERO) < o.getIntValue("MinDefenderNonInfantry"))
             failureReasons.add(new Integer(SFAIL_DEFEND_MINNONINFANTRY));
 
         /*
@@ -1301,6 +1330,7 @@ public class ShortValidator {
         int numberOfCommanders = 0;
         boolean hasMeks = false;
         boolean hasVehs = false;
+        boolean hasAeros = false;
         boolean hasInf = false;
         boolean normInf = false;
         boolean powerInf = false;
@@ -1338,6 +1368,8 @@ public class ShortValidator {
                         omniFail = true;
             } else if (currUnit.getType() == Unit.VEHICLE)
                 hasVehs = true;
+            else if ( currUnit.getType() == Unit.AERO )
+                hasAeros = true;
             else if (currUnit.getType() == Unit.INFANTRY || currUnit.getType() == Unit.BATTLEARMOR || currUnit.getType() == Unit.PROTOMEK) {
                 hasInf = true;
                 if ((currUnit.getEntity() instanceof BattleArmor) || (currUnit.getEntity() instanceof Protomech))
@@ -1381,9 +1413,9 @@ public class ShortValidator {
                 continue;
             else if ((type == Unit.BATTLEARMOR || type == Unit.INFANTRY) && !o.getBooleanValue("CountInfForSpread"))
                 continue;
+            else if (type == Unit.AERO && !o.getBooleanValue("CountAerosForSpread"))
+                continue;
 
-            
-            
             if ( !currUnit.hasVacantPilot() ) {
                 int piloting = currUnit.getPilot().getPiloting();
                 int gunnery = currUnit.getPilot().getGunnery();
@@ -1421,6 +1453,8 @@ public class ShortValidator {
             failureReasons.add(new Integer(SFAIL_DEFEND_NOMEKS));
         if (hasVehs && !o.getBooleanValue("DefenderAllowedVehs"))
             failureReasons.add(new Integer(SFAIL_DEFEND_NOVEHS));
+        if (hasAeros && !o.getBooleanValue("DefenderAllowedAeros"))
+            failureReasons.add(new Integer(SFAIL_DEFEND_NOAEROS));
         if (hasInf && !o.getBooleanValue("DefenderAllowedInf")) {
             // powered allowed, but there's unarmored inf too
             if (o.getBooleanValue("DefenderPoweredInfAllowed") && normInf)
@@ -1855,6 +1889,15 @@ public class ShortValidator {
         case SFAIL_ATTACK_GREEN_PILOTS:// Army has pilots whoes total skill is higher then the highest allowed
             return " this army has green pilots.";
 
+        case SFAIL_ATTACK_MAX_AERO:
+            return " the army has too many aeros";
+
+        case SFAIL_ATTACK_MIN_AERO:
+            return " the army does not have enough aeros";
+        
+        case SFAIL_ATTACK_NOAEROS:
+            return " the army contains aeros, which may not participate in this type of attack";
+
             /*
              * DEFENSE failure causes
              */
@@ -2009,6 +2052,14 @@ public class ShortValidator {
         case SFAIL_DEFEND_GREEN_PILOTS:// Army has pilots whoes total skill is higher then the highest allowed
             return " this army has green pilots.";
 
+        case SFAIL_DEFEND_MAX_AERO:
+            return " the army has too many aeros";
+
+        case SFAIL_DEFEND_MIN_AERO:
+            return " the army does not have enough aeros";
+        
+        case SFAIL_DEFEND_NOAEROS:
+            return " the army contains aeros, which may not participate in this type of defense";
         }
 
         return "";

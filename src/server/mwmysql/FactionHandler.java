@@ -73,6 +73,7 @@ public class FactionHandler {
 				h.getHangar().put(new Integer(Unit.INFANTRY), new Vector<Vector<SUnit>>(5, 1));
 				h.getHangar().put(new Integer(Unit.PROTOMEK), new Vector<Vector<SUnit>>(5, 1));
 				h.getHangar().put(new Integer(Unit.BATTLEARMOR), new Vector<Vector<SUnit>>(5, 1));
+                h.getHangar().put(new Integer(Unit.AERO), new Vector<Vector<SUnit>>(5, 1));
 				// Init all of the hangars
 				for (int i = 0; i < 4; i++) {
 
@@ -81,12 +82,14 @@ public class FactionHandler {
 					h.getHangar(Unit.INFANTRY).add(new Vector<SUnit>(1,1));
 					h.getHangar(Unit.BATTLEARMOR).add(new Vector<SUnit>(1,1));
 					h.getHangar(Unit.PROTOMEK).add(new Vector<SUnit>(1,1));
+                    h.getHangar(Unit.AERO).add(new Vector<SUnit>(1,1));
 				}
 				h.getComponents().put(Unit.MEK, new Vector<Integer>(4, 1));
 				h.getComponents().put(Unit.VEHICLE, new Vector<Integer>(4, 1));
 				h.getComponents().put(Unit.INFANTRY, new Vector<Integer>(4, 1));
 				h.getComponents().put(Unit.PROTOMEK, new Vector<Integer>(4, 1));
 				h.getComponents().put(Unit.BATTLEARMOR, new Vector<Integer>(4, 1));
+                h.getComponents().put(Unit.AERO, new Vector<Integer>(4, 1));
 				
 				for (int i = 0; i < 4; i++) {
 					h.getComponents().get(Unit.MEK).add(0);
@@ -94,6 +97,7 @@ public class FactionHandler {
 					h.getComponents().get(Unit.INFANTRY).add(0);
 					h.getComponents().get(Unit.PROTOMEK).add(0);
 					h.getComponents().get(Unit.BATTLEARMOR).add(0);
+                    h.getComponents().get(Unit.AERO).add(0);
 				}
 				h.setInitialHouseRanking(rs.getInt("fInitialHouseRanking"));
 				h.setConquerable(rs.getBoolean("fConquerable"));

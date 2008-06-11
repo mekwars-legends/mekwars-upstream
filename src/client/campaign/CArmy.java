@@ -201,6 +201,8 @@ public class CArmy extends Army {
                 rawForceSize += Float.parseFloat(mwclient.getserverConfigs("VehicleOperationsBVMod"));
             else if (u.getType() == Unit.BATTLEARMOR)
                 rawForceSize += Float.parseFloat(mwclient.getserverConfigs("BAOperationsBVMod"));
+            else if (u.getType() == Unit.AERO)
+                rawForceSize += Float.parseFloat(mwclient.getserverConfigs("AeroOperationsBVMod"));
             else if (u.getType() == Unit.PROTOMEK)
                 rawForceSize += Float.parseFloat(mwclient.getserverConfigs("ProtoOperationsBVMod"));
             else

@@ -157,7 +157,7 @@ public final class MWClient implements IClient {
 
     CConfig Config;
 
-    public static final String CLIENT_VERSION = "0.2.32.0"; // change this with
+    public static final String CLIENT_VERSION = "0.2.33.0"; // change this with
                                                             // all client
                                                             // changes @Torren
 
@@ -196,8 +196,8 @@ public final class MWClient implements IClient {
     TreeMap<String, String[]> allOps;// all operations, from OpList.txt
 
     Dimension MapSize;
-    Dimension BoardSize;
-
+    int mapMedium = 0;
+    
     SplashWindow splash = null;
 
     Buildings buildingTemplate = null;
@@ -2459,10 +2459,10 @@ public final class MWClient implements IClient {
         return MapSize;
     }
 
-    public Dimension getBoardSize() {
-        return BoardSize;
+    public int getMapMedium(){
+        return mapMedium;
     }
-
+    
     public PlanetEnvironment getCurrentEnvironment() {
         return currentEnvironment;
     }
@@ -2782,15 +2782,6 @@ public final class MWClient implements IClient {
     }
 
     /**
-     * Sets the current environment and map size that will be used on next
-     * playboard
-     */
-    public void setEnvironment(PlanetEnvironment pe, Dimension dim) {
-        currentEnvironment = pe;
-        MapSize = dim;
-    }
-
-    /**
      * Sets the current advanced terrain and map size that will be used on next
      * playboard
      */
@@ -2799,13 +2790,13 @@ public final class MWClient implements IClient {
     }
 
     /**
-     * Sets the current environment and map size that will be used on next
+     * Sets the current environment, map size and map medium that will be used on next
      * playboard
      */
-    public void setEnvironment(PlanetEnvironment pe, Dimension map, Dimension board) {
+    public void setEnvironment(PlanetEnvironment pe, Dimension map, int mapMedium) {
         currentEnvironment = pe;
         MapSize = map;
-        BoardSize = board;
+        this.mapMedium = mapMedium;
     }
 
     public void setBuildingTemplate(Buildings buildingTemplate) {

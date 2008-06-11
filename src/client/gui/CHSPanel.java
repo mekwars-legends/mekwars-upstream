@@ -304,6 +304,8 @@ public class CHSPanel extends JPanel {
             this.addFactoryHelper(weight, new Integer(Unit.PROTOMEK), timeToRefresh, founder, planet, factoryName, accessLevel);
         if (canProduce(Unit.BATTLEARMOR, type))
             this.addFactoryHelper(weight, new Integer(Unit.BATTLEARMOR), timeToRefresh, founder, planet, factoryName, accessLevel);
+        if (canProduce(Unit.AERO, type))
+            this.addFactoryHelper(weight, new Integer(Unit.AERO), timeToRefresh, founder, planet, factoryName, accessLevel);
     }
 
     /**
@@ -337,6 +339,8 @@ public class CHSPanel extends JPanel {
             this.removeFactoryHelper(weight, Unit.PROTOMEK, planet, factoryName);
         if (canProduce(Unit.BATTLEARMOR, type))
             this.removeFactoryHelper(weight, Unit.BATTLEARMOR, planet, factoryName);
+        if (canProduce(Unit.AERO, type))
+            this.removeFactoryHelper(weight, Unit.AERO, planet, factoryName);
     }
 
     /**
@@ -371,6 +375,8 @@ public class CHSPanel extends JPanel {
             this.changeFactoryHelper(weight, Unit.PROTOMEK, planet, factoryName, timeToRefresh, accessLevel);
         if (canProduce(Unit.BATTLEARMOR, type))
             this.changeFactoryHelper(weight, Unit.BATTLEARMOR, planet, factoryName, timeToRefresh, accessLevel);
+        if (canProduce(Unit.AERO, type))
+            this.changeFactoryHelper(weight, Unit.AERO, planet, factoryName, timeToRefresh, accessLevel);
     }
 
     /**
@@ -457,6 +463,12 @@ public class CHSPanel extends JPanel {
             return true;
 
         int test = productionCapabilities;
+        if (test - UnitFactory.BUILDAERO >= 0) {
+            test -= UnitFactory.BUILDAERO;
+            if (type_id == Unit.AERO)
+                return true;
+        }
+
         if (test - UnitFactory.BUILDBATTLEARMOR >= 0) {
             test -= UnitFactory.BUILDBATTLEARMOR;
             if (type_id == Unit.BATTLEARMOR)
@@ -919,6 +931,27 @@ public class CHSPanel extends JPanel {
             tmenu.add(menuItem);
         }
 
+        if (Boolean.parseBoolean(mwclient.getserverConfigs("UseAero"))) {
+            tmenu = new JMenu("Aero");
+            buy.add(tmenu);
+            menuItem = new JMenuItem("Light Aero");
+            menuItem.setActionCommand("BUY|LIGHT|" + Unit.AERO);
+            menuItem.addActionListener(this.myPopup);
+            tmenu.add(menuItem);
+            menuItem = new JMenuItem("Medium Aero");
+            menuItem.setActionCommand("BUY|MEDIUM|" + Unit.AERO);
+            menuItem.addActionListener(this.myPopup);
+            tmenu.add(menuItem);
+            menuItem = new JMenuItem("Heavy Aero");
+            menuItem.setActionCommand("BUY|HEAVY|" + Unit.AERO);
+            menuItem.addActionListener(this.myPopup);
+            tmenu.add(menuItem);
+            menuItem = new JMenuItem("Assault Aero");
+            menuItem.setActionCommand("BUY|ASSAULT|" + Unit.AERO);
+            menuItem.addActionListener(this.myPopup);
+            tmenu.add(menuItem);
+        }
+
         if (Boolean.parseBoolean(mwclient.getserverConfigs("AllowPersonalPilotQueues"))) {
             tmenu = new JMenu("Pilots");
             buy.add(tmenu);
@@ -1069,6 +1102,27 @@ public class CHSPanel extends JPanel {
             tmenu.add(menuItem);
             menuItem = new JMenuItem("Assault Battle Armor");
             menuItem.setActionCommand("BUYU|ASSAULT|" + Unit.BATTLEARMOR);
+            menuItem.addActionListener(this.myPopup);
+            tmenu.add(menuItem);
+        }
+
+        if (Boolean.parseBoolean(mwclient.getserverConfigs("UseAero"))) {
+            tmenu = new JMenu("Aero");
+            buy.add(tmenu);
+            menuItem = new JMenuItem("Light Aero");
+            menuItem.setActionCommand("BUYU|LIGHT|" + Unit.AERO);
+            menuItem.addActionListener(this.myPopup);
+            tmenu.add(menuItem);
+            menuItem = new JMenuItem("Medium Aero");
+            menuItem.setActionCommand("BUYU|MEDIUM|" + Unit.AERO);
+            menuItem.addActionListener(this.myPopup);
+            tmenu.add(menuItem);
+            menuItem = new JMenuItem("Heavy Aero");
+            menuItem.setActionCommand("BUYU|HEAVY|" + Unit.AERO);
+            menuItem.addActionListener(this.myPopup);
+            tmenu.add(menuItem);
+            menuItem = new JMenuItem("Assault Aero");
+            menuItem.setActionCommand("BUYU|ASSAULT|" + Unit.AERO);
             menuItem.addActionListener(this.myPopup);
             tmenu.add(menuItem);
         }

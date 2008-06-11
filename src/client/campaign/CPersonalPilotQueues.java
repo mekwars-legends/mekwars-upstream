@@ -48,6 +48,7 @@ public class CPersonalPilotQueues {
      */
     private ArrayList<LinkedList<Pilot>> mekPilots = new ArrayList<LinkedList<Pilot>>();
     private ArrayList<LinkedList<Pilot>> protoPilots = new ArrayList<LinkedList<Pilot>>();
+    private ArrayList<LinkedList<Pilot>> aeroPilots = new ArrayList<LinkedList<Pilot>>();
 
     // CONSTRUCTOR
     /**
@@ -59,6 +60,7 @@ public class CPersonalPilotQueues {
         for (int i = Unit.LIGHT; i <= Unit.ASSAULT; i++) {// for (0 - 3)
             mekPilots.add(i, new LinkedList<Pilot>());
             protoPilots.add(i, new LinkedList<Pilot>());
+            aeroPilots.add(i, new LinkedList<Pilot>());
         }
 
     }
@@ -73,6 +75,9 @@ public class CPersonalPilotQueues {
 
         if (typeToGet == Unit.PROTOMEK)
             return protoPilots;
+        //else if
+        if (typeToGet == Unit.AERO)
+            return aeroPilots;
         // else
         return mekPilots;
     }
@@ -195,6 +200,8 @@ public class CPersonalPilotQueues {
             currList.clear();
         for (LinkedList<Pilot> currList : protoPilots)
             currList.clear();
+        for (LinkedList<Pilot> currList : aeroPilots)
+            currList.clear();
 
         // loop once to read in meks (light -> assault lists)
         for (int weightClass = Unit.LIGHT; weightClass <= Unit.ASSAULT; weightClass++) {
@@ -213,6 +220,16 @@ public class CPersonalPilotQueues {
             for (int count = 0; count < listSize; count++) {
                 Pilot toAdd = this.getPilotFromString(TokenReader.readString(mainTokenizer));
                 this.getUnitTypeQueue(Unit.PROTOMEK).get(weightClass).addLast(toAdd);
+            }
+        }
+
+        // loop a third time to read in Aeros (light -> assault lists)
+        for (int weightClass = Unit.LIGHT; weightClass <= Unit.ASSAULT; weightClass++) {
+
+            int listSize = TokenReader.readInt(mainTokenizer);
+            for (int count = 0; count < listSize; count++) {
+                Pilot toAdd = this.getPilotFromString(TokenReader.readString(mainTokenizer));
+                this.getUnitTypeQueue(Unit.AERO).get(weightClass).addLast(toAdd);
             }
         }
     }

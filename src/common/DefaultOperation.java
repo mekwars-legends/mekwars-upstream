@@ -193,6 +193,12 @@ public class DefaultOperation {
          * MinAttackerInfantry  - self evident - AFC= 242
          * MinDefenderInfantry  - self evident - DFC= 440
          * 
+         * MaxAttackerAero  - self evident - AFC= 254
+         * MaxDefenderAero  - self evident - DFC= 255
+         * 
+         * MinAttackerAero  - self evident - AFC= 455
+         * MinDefenderAero  - self evident - DFC= 456
+         * 
          * MaxAttackerNonInfantry  - self evident - AFC= 250
          * MaxDefenderNonInfantry  - self evident - DFC= 450
          * 
@@ -279,6 +285,7 @@ public class DefaultOperation {
 		 * CountVehsForSpread   - self evident
 		 * CountProtosForSpread - self evident
 		 * CountInfForSpread    - self evident
+         * CountAerosForSpread    - self evident
 		 *         
 		 * [NOTE: Spreads are a very dangerous feature. They're GREAT for stopping high/low
 		 *  unit pairs and "init sinks." However, they also make it virtually impossible to
@@ -298,11 +305,13 @@ public class DefaultOperation {
 		 * AttackerAllowedMeks - boolean, whether or not attacker can use meks - AFC=207
 		 * AttackerAllowedVehs - boolean, whether or not attacker can use vehs - AFC=208
 		 * AttackerAllowedInf  - boolean, whether or not attacker can use inf  - AFC=209
+         * AttackerAllowedAeros - boolean, whether or not attacker can use inf  - AFC=256
 		 * AttackerOmniMeksOnly- boolean, whether or not attacker must use omnimeks only - AFC=243
 		 * 
 		 * DefenderAllowedMeks - boolean, whether or not defender can use meks - DFC=407
 		 * DefenderAllowedVehs - boolean, whether or not defender can use vehs - DFC=408
 		 * DefenderAllowedInf  - boolean, whether or not defender can use inf  - DFC=409
+         * DefenderAllowedAeros - boolean, whether or not defender can use inf  - DFC=457
 		 * DefenderOmniMeksOnly- boolean, whether or not defender must use omnimeksonly - DFC=443
 		 * 
 		 * ProtosMustbeGrouped - boolean. If enabled, protos must be present in multiples
@@ -870,6 +879,7 @@ public class DefaultOperation {
          * BoardSizeY					- Number of maps along the Y axis of the board
          * MapSizeX						- X Size of the map
          * MapSizeY						- Y Size of the map
+         * MaxMedium                    - "Ground", "Atmosphere", "Space"
          * 
          * [End Map Settings
          */
@@ -894,6 +904,11 @@ public class DefaultOperation {
         operationsDefaults.put("MinAttackerInfantry", "0");
         operationsDefaults.put("MaxDefenderInfantry", "10000000");
         operationsDefaults.put("MinDefenderInfantry", "0");
+
+        operationsDefaults.put("MaxAttackerAero", "0");
+        operationsDefaults.put("MinAttackerAero", "0");
+        operationsDefaults.put("MaxDefenderAero", "0");
+        operationsDefaults.put("MinDefenderAero", "0");
 
         operationsDefaults.put("MaxAttackerNonInfantry", "10000000");
         operationsDefaults.put("MinAttackerNonInfantry", "0");
@@ -944,6 +959,7 @@ public class DefaultOperation {
 		operationsDefaults.put("CountVehsForSpread"  , "true");
 		operationsDefaults.put("CountProtosForSpread", "true");
 		operationsDefaults.put("CountInfForSpread"   , "true");
+        operationsDefaults.put("CountAerosForSpread"   , "true");
 		
 		operationsDefaults.put("ProtosMustbeGrouped" , "true");
 		
@@ -966,11 +982,13 @@ public class DefaultOperation {
 		operationsDefaults.put("AttackerAllowedMeks", "true");
 		operationsDefaults.put("AttackerAllowedVehs", "true");
 		operationsDefaults.put("AttackerAllowedInf", "true");
+        operationsDefaults.put("AttackerAllowedAeros", "false");
 		operationsDefaults.put("AttackerOmniMeksOnly", "false");
 		
 		operationsDefaults.put("DefenderAllowedMeks", "true");
 		operationsDefaults.put("DefenderAllowedVehs", "true");
 		operationsDefaults.put("DefenderAllowedInf", "true");
+        operationsDefaults.put("DefenderAllowedAeros", "false");
 		operationsDefaults.put("DefenderOmniMeksOnly", "false");
 		
 		operationsDefaults.put("AttackerPoweredInfAllowed", "false");
@@ -1328,6 +1346,7 @@ public class DefaultOperation {
         operationsDefaults.put("BoardSizeY","0");
         operationsDefaults.put("MapSizeX","0");
         operationsDefaults.put("MapSizeY","0");
+        operationsDefaults.put("MapMedium","0");
 
 		/*
 		 * LONG VARIABLES. These params are necessary for operations

@@ -1709,6 +1709,9 @@ public final class FactionConfigurationDialog implements ActionListener {
 		JPanel baCbillsSpring = new JPanel(new SpringLayout());
 		JPanel baFluSpring = new JPanel(new SpringLayout());
 		JPanel baComponentSpring = new JPanel(new SpringLayout());
+        JPanel aeroCbillsSpring = new JPanel(new SpringLayout());
+        JPanel aeroFluSpring = new JPanel(new SpringLayout());
+        JPanel aeroComponentSpring = new JPanel(new SpringLayout());
 		JPanel unitCommanderSpring = new JPanel(new SpringLayout());
 		
 		JPanel unit2SpringGrid = new JPanel(new GridLayout(2,3));
@@ -1720,6 +1723,10 @@ public final class FactionConfigurationDialog implements ActionListener {
 		unit2SpringGrid.add(baFluSpring);
 		unit2SpringGrid.add(baComponentSpring);
 		
+        unit2SpringGrid.add(aeroCbillsSpring);
+        unit2SpringGrid.add(aeroFluSpring);
+        unit2SpringGrid.add(aeroComponentSpring);
+        
         baseTextField = new JTextField(5);
 		protoCbillsSpring.add(new JLabel("Light Proto Cost:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("Base "+mwclient.moneyOrFluMessage(true,true,-1)+" for light proto.");
@@ -1876,6 +1883,84 @@ public final class FactionConfigurationDialog implements ActionListener {
 		
 		SpringLayoutHelper.setupSpringGrid(baComponentSpring,4,2);
 
+        baseTextField = new JTextField(5);
+        aeroCbillsSpring.add(new JLabel("Light Aero Cost:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base "+mwclient.moneyOrFluMessage(true,true,-1)+" for light aero.");
+        baseTextField.setName("LightAeroPrice");
+        aeroCbillsSpring.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        aeroCbillsSpring.add(new JLabel("Medium Aero Cost:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base "+mwclient.moneyOrFluMessage(true,true,-1)+" for medium aero.");
+        baseTextField.setName("MediumAeroPrice");
+        aeroCbillsSpring.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        aeroCbillsSpring.add(new JLabel("Heavy Aero Cost:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base "+mwclient.moneyOrFluMessage(true,true,-1)+" for heavy aero.");
+        baseTextField.setName("HeavyAeroPrice");
+        aeroCbillsSpring.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        aeroCbillsSpring.add(new JLabel("Assault Aero Cost:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base "+mwclient.moneyOrFluMessage(true,true,-1)+" for assault aero.");
+        baseTextField.setName("AssaultAeroPrice");
+        aeroCbillsSpring.add(baseTextField);
+        
+        SpringLayoutHelper.setupSpringGrid(aeroCbillsSpring,4,2);
+        
+        baseTextField = new JTextField(5);
+        aeroFluSpring.add(new JLabel("Light Aero Flu:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base flu for light aero.");
+        baseTextField.setName("LightAeroInf");
+        aeroFluSpring.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        aeroFluSpring.add(new JLabel("Medium Aero Flu:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base flu for medium aero.");
+        baseTextField.setName("MediumAeroInf");
+        aeroFluSpring.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        aeroFluSpring.add(new JLabel("Heavy Aero Flu:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base flu for heavy aero.");
+        baseTextField.setName("HeavyAeroInf");
+        aeroFluSpring.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        aeroFluSpring.add(new JLabel("Assault Aero Flu:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base flu for assault aero.");
+        baseTextField.setName("AssaultAeroInf");
+        aeroFluSpring.add(baseTextField);
+        
+        SpringLayoutHelper.setupSpringGrid(aeroFluSpring,4,2);
+        
+        baseTextField = new JTextField(5);
+        aeroComponentSpring.add(new JLabel("Light Aero PP:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base components to make light aero.");
+        baseTextField.setName("LightAeroPP");
+        aeroComponentSpring.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        aeroComponentSpring.add(new JLabel("Medium Aero PP:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base components to make medium aero.");
+        baseTextField.setName("MediumAeroPP");
+        aeroComponentSpring.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        aeroComponentSpring.add(new JLabel("Heavy Aero PP:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base components to make heavy aero.");
+        baseTextField.setName("HeavyAeroPP");
+        aeroComponentSpring.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        aeroComponentSpring.add(new JLabel("Assault Aero PP:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base components to make assault aero.");
+        baseTextField.setName("AssaultAeroPP");
+        aeroComponentSpring.add(baseTextField);
+        
+        SpringLayoutHelper.setupSpringGrid(aeroComponentSpring,4,2);
+
 		//flow layout of labels and text boxes w/ non-original multipliers
 		JPanel unit2TextFlow = new JPanel();
 		
@@ -1964,6 +2049,12 @@ public final class FactionConfigurationDialog implements ActionListener {
         baseTextField.setName("BattleArmorFactoryClassTitle");
         unit4TextFlow.add(baseTextField);
         
+        baseTextField = new JTextField(5);
+        unit4TextFlow.add(new JLabel("Aero Class:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Title to be displayed of aero factories<br>in the Client House Bays Tab</html>");
+        baseTextField.setName("AeroFactoryClassTitle");
+        unit4TextFlow.add(baseTextField);
+        
         BaseCheckBox = new JCheckBox("Allow Mek Commanders");
         BaseCheckBox.setToolTipText("<html>Allow meks to be set as unit commanders<br>for the kill all unit commanders operation victory condition</html>");
         BaseCheckBox.setName("allowUnitCommanderMek");
@@ -1992,6 +2083,11 @@ public final class FactionConfigurationDialog implements ActionListener {
         BaseCheckBox = new JCheckBox("Allow VTOL Commanders");
         BaseCheckBox.setToolTipText("<html>Allow VTOL to be set as unit commanders<br>for the kill all unit commanders operation victory condition</html>");
         BaseCheckBox.setName("allowUnitCommanderVTOL");
+        unitCommanderSpring.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Allow Aero Commanders");
+        BaseCheckBox.setToolTipText("<html>Allow Aero to be set as unit commanders<br>for the kill all unit commanders operation victory condition</html>");
+        BaseCheckBox.setName("allowUnitCommanderAero");
         unitCommanderSpring.add(BaseCheckBox);
         
         BaseCheckBox = new JCheckBox("Allow Fighting Without Commanders");

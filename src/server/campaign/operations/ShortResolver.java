@@ -2469,7 +2469,7 @@ public class ShortResolver {
                             // all types in order of preference.
                             int currWeight = currFacility.getWeightclass();
 
-                            for (int type = Unit.MEK; type <= Unit.BATTLEARMOR; type++) {
+                            for (int type = Unit.MEK; type < Unit.MAXBUILD; type++) {
 
                                 // skip this type if the facility cannot produce
                                 if (!currFacility.canProduce(type))
@@ -2550,7 +2550,7 @@ public class ShortResolver {
                                 // all types in order of preference.
                                 int currWeight = currFacility.getWeightclass();
 
-                                for (int type = Unit.MEK; type <= Unit.BATTLEARMOR; type++) {
+                                for (int type = Unit.MEK; type < Unit.MAXBUILD; type++) {
 
                                     // skip this type if the facility cannot
                                     // produce
@@ -2656,7 +2656,7 @@ public class ShortResolver {
                             // all types in order of preference.
                             int currWeight = currFacility.getWeightclass();
 
-                            for (int type = Unit.MEK; type <= Unit.BATTLEARMOR; type++) {
+                            for (int type = Unit.MEK; type < Unit.MAXBUILD; type++) {
 
                                 // skip this type if the facility cannot produce
                                 if (!currFacility.canProduce(type))
@@ -2823,7 +2823,7 @@ public class ShortResolver {
                                 // get a random factory
                                 SUnitFactory currFacility = target.getRandomUnitFactory();
 
-                                for (int type = Unit.MEK; type <= Unit.BATTLEARMOR; type++) {
+                                for (int type = Unit.MEK; type < Unit.MAXBUILD; type++) {
 
                                     // skip this type if the facility cannot
                                     // produce
@@ -3243,7 +3243,7 @@ public class ShortResolver {
         try {
             // if PPQs are on and the unit is a mek, vacate
             boolean personalQueues = CampaignMain.cm.getBooleanConfig("AllowPersonalPilotQueues");
-            boolean isPilotChangeable = (entity.getType() == Unit.MEK || entity.getType() == Unit.QUAD || entity.getType() == Unit.PROTOMEK);
+            boolean isPilotChangeable = unit.isSinglePilotUnit();
             if (CampaignMain.cm.isUsingCyclops())
                 CampaignMain.cm.getMWCC().pilotKill((SPilot) unit.getPilot(), op.getOpCyclopsID());
             if (CampaignMain.cm.isUsingMySQL())
@@ -3256,7 +3256,7 @@ public class ShortResolver {
             else {
 
                 unit.setPilot(owner.getHouseFightingFor().getNewPilot(unit.getType()));
-                if (entity.getType() == Unit.MEK || entity.getType() == Unit.QUAD || entity.getType() == Unit.PROTOMEK)
+                if (unit.isSinglePilotUnit())
                     toReturn += " New Pilot: " + unit.getPilot().getName();
                 else if (entity.getType() == Unit.VEHICLE)
                     toReturn += " New Crew:";
@@ -3281,7 +3281,7 @@ public class ShortResolver {
         try {
 
             boolean personalQueues = CampaignMain.cm.getBooleanConfig("AllowPersonalPilotQueues");
-            boolean isPilotChangeable = (unit.getType() == Unit.MEK || unit.getType() == Unit.QUAD || unit.getType() == Unit.PROTOMEK);
+            boolean isPilotChangeable = unit.isSinglePilotUnit();
 
             // if PPQs are on, insert the pilot in the owner's queue
             if (isPilotChangeable && personalQueues) {
@@ -3754,6 +3754,8 @@ public class ShortResolver {
             compensation *= CampaignMain.cm.getFloatConfig("BAMultiToUnitLossPayment");
         else if (u.getType() == Unit.INFANTRY)
             compensation *= CampaignMain.cm.getFloatConfig("InfMultiToUnitLossPayment");
+        else if (u.getType() == Unit.AERO)
+            compensation *= CampaignMain.cm.getFloatConfig("AeroMultiToUnitLossPayment");
 
         // check the compensation caps. 1st check reduces compensation to a
         // portion of a new unit's cost.
@@ -3852,7 +3854,7 @@ public class ShortResolver {
         String result = " ";
         try {
             result = u.getPilot().getName() + " ";
-            if (u.getType() == Unit.MEK || u.getType() == Unit.VEHICLE)
+            if (u.getType() == Unit.MEK || u.getType() == Unit.VEHICLE || u.getType() == Unit.AERO)
                 result = "[" + u.getPilot().getGunnery() + "/" + u.getPilot().getPiloting();
             else if (u.getType() == Unit.INFANTRY || u.getType() == Unit.BATTLEARMOR) {
                 if (((Infantry) u.getEntity()).isAntiMek())

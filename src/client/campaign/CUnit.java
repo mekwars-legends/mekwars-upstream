@@ -248,7 +248,7 @@ public class CUnit extends Unit {
      * @return a smaller description
      */
     public String getSmallDescription() {
-        if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE)
+        if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE || this.getType() == Unit.AERO)
             return getModelName() + " [" + getPilot().getGunnery() + "/" + getPilot().getPiloting() + "]";
 
         if (this.getType() == Unit.INFANTRY || this.getType() == Unit.BATTLEARMOR) {
@@ -267,7 +267,7 @@ public class CUnit extends Unit {
         else
             tinfo = "<html><body>#" + getId() + " " + getModelName();
 
-        if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE)
+        if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE || this.getType() == Unit.AERO)
             tinfo += " (" + getPilot().getName() + ", " + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ") <br>";
         else if (this.getType() == Unit.BATTLEARMOR || this.getType() == Unit.INFANTRY) {
 

@@ -80,6 +80,7 @@ public class UnitFactory implements Serializable {
 	static public final int BUILDVEHICLESnINFANTRYnPROTOMECHnBATTLEARMOR = 30;
 	static public final int BUILDMEKnVEHICLESnINFANTRYnPROTOMECHnBATTLEARMOR = 31;
 	static public final int BUILDVTOL = 32;
+	static public final int BUILDAERO = 33;
 	
 	
 	/**
@@ -205,7 +206,7 @@ public class UnitFactory implements Serializable {
 	 */
 	public void setType(int type) {
 	    
-	    if ( type < BUILDALL || type > BUILDVTOL )
+	    if ( type < BUILDALL || type > BUILDAERO )
 	        this.type = BUILDMEK;
 	    else
 	        this.type = type;
@@ -221,6 +222,13 @@ public class UnitFactory implements Serializable {
 		
 		if ( test == BUILDALL )
 			return true;
+		
+		if ( test - BUILDAERO >= 0 ){
+		    test -= BUILDAERO;
+		    if ( type_id == Unit.AERO ){
+		        return true;
+		    }
+		}
 		
 		if ( test - BUILDBATTLEARMOR >= 0){
 			
@@ -302,6 +310,8 @@ public class UnitFactory implements Serializable {
 			result += "P";
 		if (this.canProduce(Unit.BATTLEARMOR))
 			result += "B";
+        if (this.canProduce(Unit.AERO))
+            result += "A";
 		
 		return result;
 	}
@@ -319,6 +329,8 @@ public class UnitFactory implements Serializable {
 			result += "ProtoMek ";
 		if (this.canProduce(Unit.BATTLEARMOR))
 			result += "BattleArmor ";
+        if (this.canProduce(Unit.AERO))
+            result += "Aero ";
 		return result;
 	}
 	
@@ -352,6 +364,8 @@ public class UnitFactory implements Serializable {
 			result += "ProtoMek ";
 		if (this.canProduce(Unit.BATTLEARMOR))
 			result += "BattleArmor ";
+        if (this.canProduce(Unit.AERO))
+            result += "Aero ";
 		return result;
 	}
 	
@@ -387,6 +401,8 @@ public class UnitFactory implements Serializable {
 			return Unit.MEK;
 		if (this.canProduce(Unit.VEHICLE))
 			return Unit.VEHICLE;
+        if (this.canProduce(Unit.AERO))
+            return Unit.AERO;
 		if (this.canProduce(Unit.BATTLEARMOR))
 			return Unit.BATTLEARMOR;
 		if (this.canProduce(Unit.PROTOMEK))

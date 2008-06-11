@@ -56,9 +56,11 @@ public class RemovePilotCommand implements Command {
            else{
                p.getPersonalPilotQueue().getPilotQueue(Unit.MEK,Unit.getWeightIDForName(weight)).clear();
                p.getPersonalPilotQueue().getPilotQueue(Unit.PROTOMEK,Unit.getWeightIDForName(weight)).clear();
+               p.getPersonalPilotQueue().getPilotQueue(Unit.AERO,Unit.getWeightIDForName(weight)).clear();
                if(CampaignMain.cm.isUsingMySQL()) {
             	   CampaignMain.cm.MySQL.deletePlayerPilots(p.getDBId(), Unit.MEK, Unit.getWeightIDForName(weight));
             	   CampaignMain.cm.MySQL.deletePlayerPilots(p.getDBId(), Unit.PROTOMEK, Unit.getWeightIDForName(weight));
+                   CampaignMain.cm.MySQL.deletePlayerPilots(p.getDBId(), Unit.AERO, Unit.getWeightIDForName(weight));
                }
            }
         }else if (weight.equalsIgnoreCase("all") ){

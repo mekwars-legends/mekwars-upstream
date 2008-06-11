@@ -264,10 +264,9 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                         boardvec.add(aTerrain.getStaticMapName());
                         mySettings.setBoardsSelectedVector(boardvec);
                     }
+                    mySettings.setMedium(mwclient.getMapMedium());
                     client.sendMapSettings(mySettings);
-                }
-
-                else {
+                } else {
                     PlanetEnvironment env = this.mwclient.getCurrentEnvironment();
                     /* Set the map-gen values */
                     mySettings.setElevationParams(env.getHillyness(), env.getHillElevationRange(), env.getHillInvertProb());
@@ -296,7 +295,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     ArrayList<String> boardvec = new ArrayList<String>();
                     boardvec.add(MapSettings.BOARD_GENERATED);
                     mySettings.setBoardsSelectedVector(boardvec);
-
+                    
                     if (mwclient.getBuildingTemplate() != null && mwclient.getBuildingTemplate().getTotalBuildings() > 0) {
                         ArrayList<BuildingTemplate> buildingList = generateRandomBuildings(mySettings, mwclient.getBuildingTemplate());
                         mySettings.setBoardBuildings(buildingList);
@@ -305,6 +304,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                         mySettings.setCityParams(env.getRoads(), env.getCityType(), env.getMinCF(), env.getMaxCF(), env.getMinFloors(), env.getMaxFloors(), env.getCityDensity(), env.getTownSize());
                     }
 
+                    mySettings.setMedium(mwclient.getMapMedium());
                     /* sent to server */
                     client.sendMapSettings(mySettings);
                 }
@@ -559,7 +559,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                 mwclient.getPlayer().setVibraMinesAllowed(0);
                 mwclient.setUsingBots(false);
                 // clear out everything from this game
-                mwclient.setEnvironment(null, null, null);
+                mwclient.setEnvironment(null, null, 0);
                 mwclient.setAdvancedTerrain(null);
                 mwclient.setPlayerStartingEdge(Buildings.EDGE_UNKNOWN);
                 mwclient.getGameOptions().clear();

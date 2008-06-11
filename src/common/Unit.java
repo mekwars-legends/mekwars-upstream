@@ -24,6 +24,7 @@ import java.util.Vector;
 
 import common.campaign.pilot.Pilot;
 
+import megamek.common.Aero;
 import megamek.common.AmmoType;
 import megamek.common.BattleArmor;
 import megamek.common.Entity;
@@ -51,9 +52,10 @@ public class Unit {
     public static final int INFANTRY = 2;
     public static final int PROTOMEK = 3;
     public static final int BATTLEARMOR = 4;
-    public static final int QUAD = 5;
-    public static final int MEKWARRIOR = 6;
-    public static final int MAXBUILD = 5;
+    public static final int AERO = 5;
+    public static final int QUAD = 6;
+    public static final int MEKWARRIOR = 7;
+    public static final int MAXBUILD = 6;
 
     public static final int C3_NONE 	= 0;
     public static final int C3_SLAVE    = 1;
@@ -65,7 +67,7 @@ public class Unit {
     public static final int STATUS_UNMAINTAINED = 2;//@urgru 7/18/04
     public static final int STATUS_FORSALE = 3;//@urgru 12.29.05
 
-    public static final int TOTALTYPES = 5;
+    public static final int TOTALTYPES = 6;
 
     //VARIABLES
     protected int id;
@@ -154,10 +156,13 @@ public class Unit {
         if ( ent instanceof Protomech)
             return Unit.PROTOMEK;
 
+        if ( ent instanceof Aero )
+            return Unit.AERO;
+        
         return Unit.INFANTRY;
     }
 
-    public static String getDescriptionForID(int type) {
+    public static String getTypeClassDesc(int type) {
         if (type == Unit.MEK)
             return "Mek";
         if (type == Unit.VEHICLE)
@@ -168,22 +173,10 @@ public class Unit {
             return "BattleArmor";
         if (type == Unit.PROTOMEK)
             return "ProtoMek";
+        if ( type == Unit.AERO )
+            return "Aero";
+        
         return "Unknown";
-    }
-
-    public static String getTypeClassDesc(int type_id) {
-        if (type_id  == MEK)
-            return "Mek";
-        if (type_id == VEHICLE)
-            return "Vehicle";
-        if (type_id == INFANTRY)
-            return "Infantry";
-        if (type_id == BATTLEARMOR)
-            return "BattleArmor";
-        if (type_id == PROTOMEK)
-            return "ProtoMek";
-
-        return "unknown";
     }
 
     public static int getTypeIDForName(String name) {
@@ -203,6 +196,10 @@ public class Unit {
         //B = BattleArmor
         if ( name.toLowerCase().startsWith("b"))
             return BATTLEARMOR;
+
+        //A = Aero
+        if ( name.toLowerCase().startsWith("a"))
+            return AERO;
 
         //Default = Mek
         return MEK;
@@ -610,6 +607,15 @@ public class Unit {
 
     public int getLifeTimeRepairCost () {
         return lifeTimeRepairCost;
+    }
+    
+    public boolean isSinglePilotUnit(){
+        
+        if ( this.getType() == Unit.MEK || this.getType() == Unit.PROTOMEK || this.getType() == Unit.QUAD || this.getType() == Unit.AERO ){
+            return true;
+        }
+        
+        return false;
     }
 
 }

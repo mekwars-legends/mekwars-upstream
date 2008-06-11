@@ -56,6 +56,7 @@ public class DefaultServerOptions {
         defaults.setProperty("ProtoOperationsBVMod", "1.0");
         defaults.setProperty("VehicleOperationsBVMod", "1.0");
         defaults.setProperty("MekOperationsBVMod", "1.0");
+        defaults.setProperty("AeroOperationsBVMod", "1.0");
 
         defaults.setProperty("MinimumHouseBays", "20");
         defaults.setProperty("NewbieHouseBays", "30");
@@ -125,6 +126,7 @@ public class DefaultServerOptions {
         defaults.setProperty("ProtoMultiToUnitLossPayment", "1.0");// float
         defaults.setProperty("BAMultiToUnitLossPayment", "1.0");// float
         defaults.setProperty("InfMultiToUnitLossPayment", "1.0");// float
+        defaults.setProperty("AeroMultiToUnitLossPayment", "1.0");// float
         defaults.setProperty("NewCostMultiMaxUnitLossPayment", "1.0");// float
         defaults.setProperty("FlatMaxUnitLossPayment", "0");// int. 0 ensures no
         // payment by
@@ -146,6 +148,7 @@ public class DefaultServerOptions {
         defaults.setProperty("ProtosMayBeSoldOnBM", "true");// 10.23.05 @urgru
         defaults.setProperty("VehsMayBeSoldOnBM", "true");// 10.23.05 @urgru
         defaults.setProperty("MeksMayBeSoldOnBM", "true");// 10.23.05 @urgru
+        defaults.setProperty("AerosMayBeSoldOnBM", "true");
 
         defaults.setProperty("WelfareCeiling", "30");// go above this and you
         // no longer can pull
@@ -220,6 +223,19 @@ public class DefaultServerOptions {
         defaults.setProperty("HeavyBattleArmorPrice", "30");
         defaults.setProperty("AssaultBattleArmorPrice", "40");
 
+        defaults.setProperty("LightAeroInf", "1");
+        defaults.setProperty("MediumAeroInf", "2");
+        defaults.setProperty("HeavyAeroInf", "3");
+        defaults.setProperty("AssaultAeroInf", "4");
+        defaults.setProperty("LightAeroPP", "10000");
+        defaults.setProperty("MediumAeroPP", "20000");
+        defaults.setProperty("HeavyAeroPP", "45000");
+        defaults.setProperty("AssaultAeroPP", "95000");
+        defaults.setProperty("LightAeroPrice", "5");
+        defaults.setProperty("MediumAeroPrice", "15");
+        defaults.setProperty("HeavyAeroPrice", "30");
+        defaults.setProperty("AssaultAeroPrice", "40");
+
         defaults.setProperty("LightProtoMekInf", "1");
         defaults.setProperty("MediumProtoMekInf", "2");
         defaults.setProperty("HeavyProtoMekInf", "3");
@@ -240,7 +256,8 @@ public class DefaultServerOptions {
         defaults.setProperty("UseBattleArmor", "true");
         defaults.setProperty("UseProtoMek", "true");
         defaults.setProperty("UseInfantry", "true");
-
+        defaults.setProperty("UseAero", "true");
+        
         defaults.setProperty("UseOnlyLightInfantry", "true");
         defaults.setProperty("UseOnlyOneVehicleSize", "false");
 
@@ -287,7 +304,8 @@ public class DefaultServerOptions {
         defaults.setProperty("InfantryMapSizeFactor", "10");
         defaults.setProperty("BattleArmorMapSizeFactor", "10");
         defaults.setProperty("ProtoMekMapSizeFactor", "10");
-
+        defaults.setProperty("AeroMapSizeFactor", "10");
+        
         defaults.setProperty("MinCountForTick", "2000");
         defaults.setProperty("MaxCountForTick", "6000");
         defaults.setProperty("MinActiveTime", "40");
@@ -316,6 +334,7 @@ public class DefaultServerOptions {
         defaults.setProperty("RewardPointsForInf", "1");
         defaults.setProperty("RewardPointsForProto", "1");
         defaults.setProperty("RewardPointsForBA", "1");
+        defaults.setProperty("RewardPointsForAero", "1");
         defaults.setProperty("RewardPointsForALight", "2");
         defaults.setProperty("RewardPointsForAMed", "4");
         defaults.setProperty("RewardPointsForAHeavy", "6");
@@ -408,6 +427,10 @@ public class DefaultServerOptions {
         defaults.setProperty("SOLMediumBattleArmor", "0");
         defaults.setProperty("SOLHeavyBattleArmor", "0");
         defaults.setProperty("SOLAssaultBattleArmor", "0");
+        defaults.setProperty("SOLLightAero", "0");
+        defaults.setProperty("SOLMediumAero", "0");
+        defaults.setProperty("SOLHeavyAero", "0");
+        defaults.setProperty("SOLAssaultAero", "0");
 
         // artillery defaults
         defaults.setProperty("AssaultArtilleryFile", "ArrowIV.blk");
@@ -480,76 +503,92 @@ public class DefaultServerOptions {
         defaults.setProperty("chanceforMAforInfantry", "20");
         defaults.setProperty("chanceforMAforProtoMek", "20");
         defaults.setProperty("chanceforMAforBattleArmor", "20");
+        defaults.setProperty("chanceforMAforAero", "20");
         defaults.setProperty("chanceforNAPforMek", "20");
         defaults.setProperty("chanceforNAPforVehicle", "20");
         defaults.setProperty("chanceforNAPforInfantry", "20");
         defaults.setProperty("chanceforNAPforProtoMek", "20");
         defaults.setProperty("chanceforNAPforBattleArmor", "20");
+        defaults.setProperty("chanceforNAPforAero", "20");
         defaults.setProperty("chanceforNAGforMek", "20");
         defaults.setProperty("chanceforNAGforVehicle", "20");
         defaults.setProperty("chanceforNAGforInfantry", "20");
         defaults.setProperty("chanceforNAGforProtoMek", "20");
         defaults.setProperty("chanceforNAGforBattleArmor", "20");
+        defaults.setProperty("chanceforNAGforAero", "20");
         defaults.setProperty("chanceforATforMek", "20");
         defaults.setProperty("chanceforATforVehicle", "20");
         defaults.setProperty("chanceforATforInfantry", "20");
         defaults.setProperty("chanceforATforProtoMek", "20");
         defaults.setProperty("chanceforATforBattleArmor", "20");
+        defaults.setProperty("chanceforATforAero", "20");
         defaults.setProperty("chanceforWSforMek", "0");
         defaults.setProperty("chanceforWSforVehicle", "0");
         defaults.setProperty("chanceforWSforInfantry", "0");
         defaults.setProperty("chanceforWSforProtoMek", "0");
         defaults.setProperty("chanceforWSforBattleArmor", "0");
+        defaults.setProperty("chanceforWSforAero", "0");
         defaults.setProperty("chanceforTGforMek", "0");
         defaults.setProperty("chanceforTGforVehicle", "0");
         defaults.setProperty("chanceforTGforInfantry", "0");
         defaults.setProperty("chanceforTGforProtoMek", "0");
         defaults.setProperty("chanceforTGforBattleArmor", "0");
+        defaults.setProperty("chanceforTGforAero", "0");
         defaults.setProperty("chanceforGMforMek", "0");
         defaults.setProperty("chanceforGMforVehicle", "0");
         defaults.setProperty("chanceforGMforInfantry", "0");
         defaults.setProperty("chanceforGMforProtoMek", "0");
         defaults.setProperty("chanceforGMforBattleArmor", "0");
+        defaults.setProperty("chanceforGMforAero", "0");
         defaults.setProperty("chanceforGBforMek", "0");
         defaults.setProperty("chanceforGBforVehicle", "0");
         defaults.setProperty("chanceforGBforInfantry", "0");
         defaults.setProperty("chanceforGBforProtoMek", "0");
         defaults.setProperty("chanceforGBforBattleArmor", "0");
+        defaults.setProperty("chanceforGBforAero", "0");
         defaults.setProperty("chanceforGLforMek", "0");
         defaults.setProperty("chanceforGLforVehicle", "0");
         defaults.setProperty("chanceforGLforInfantry", "0");
         defaults.setProperty("chanceforGLforProtoMek", "0");
         defaults.setProperty("chanceforGLforBattleArmor", "0");
+        defaults.setProperty("chanceforGLforAero", "0");
         defaults.setProperty("chanceforTNforMek", "0");
         defaults.setProperty("chanceforTNforVehicle", "0");
         defaults.setProperty("chanceforTNforInfantry", "0");
         defaults.setProperty("chanceforTNforProtoMek", "0");
         defaults.setProperty("chanceforTNforBattleArmor", "0");
+        defaults.setProperty("chanceforTNforAero", "0");
         defaults.setProperty("chanceforEIforMek", "0");
         defaults.setProperty("chanceforEIforVehicle", "0");
         defaults.setProperty("chanceforEIforInfantry", "0");
         defaults.setProperty("chanceforEIforProtoMek", "0");
         defaults.setProperty("chanceforEIforBattleArmor", "0");
+        defaults.setProperty("chanceforEIforAero", "0");
         defaults.setProperty("chanceforGTforMek", "0");
         defaults.setProperty("chanceforGTforVehicle", "0");
         defaults.setProperty("chanceforGTforInfantry", "0");
         defaults.setProperty("chanceforGTforProtoMek", "0");
         defaults.setProperty("chanceforGTforBattleArmor", "0");
+        defaults.setProperty("chanceforGTforAero", "0");
         defaults.setProperty("chanceforQSforMek", "0");
         defaults.setProperty("chanceforQSforVehicle", "0");
         defaults.setProperty("chanceforQSforInfantry", "0");
         defaults.setProperty("chanceforQSforProtoMek", "0");
         defaults.setProperty("chanceforQSforBattleArmor", "0");
+        defaults.setProperty("chanceforQSforAero", "0");
         defaults.setProperty("chanceforMTforMek", "20");
         defaults.setProperty("chanceforMTforProtoMek", "20");
         defaults.setProperty("chanceforVDNIforMek", "0");
         defaults.setProperty("chanceforVDNIforVehicle", "0");
+        defaults.setProperty("chanceforVDNIforAero", "0");
         defaults.setProperty("chanceforBVDNIforMek", "0");
         defaults.setProperty("chanceforBVDNIforVehicle", "0");
+        defaults.setProperty("chanceforBVDNIforAero", "0");
         defaults.setProperty("chanceforPSforMek", "0");
         defaults.setProperty("chanceforPSforVehicle", "0");
         defaults.setProperty("chanceforPSforInfantry", "0");
         defaults.setProperty("chanceforPSforBattleArmor", "0");
+        defaults.setProperty("chanceforPSforAero", "0");
 
         // limiter settings
         defaults.setProperty("ShowInfInCheckAttack", "true");
@@ -616,6 +655,10 @@ public class DefaultServerOptions {
         defaults.setProperty("TechsForMediumBattleArmor", "1");
         defaults.setProperty("TechsForHeavyBattleArmor", "1");
         defaults.setProperty("TechsForAssaultBattleArmor", "1");
+        defaults.setProperty("TechsForLightAero", "1");
+        defaults.setProperty("TechsForMediumAero", "1");
+        defaults.setProperty("TechsForHeavyAero", "1");
+        defaults.setProperty("TechsForAssaultAero", "1");
 
         // Defection penalties @urgru 6.13.05
         defaults.setProperty("DefectionUnitLossPercent", "100");
@@ -661,6 +704,10 @@ public class DefaultServerOptions {
         defaults.setProperty("SellDirectMediumProtoMekPrice", "0");
         defaults.setProperty("SellDirectHeavyProtoMekPrice", "0");
         defaults.setProperty("SellDirectAssaultProtoMekPrice", "0");
+        defaults.setProperty("SellDirectLightAeroPrice", "0");
+        defaults.setProperty("SellDirectMediumAeroPrice", "0");
+        defaults.setProperty("SellDirectHeavyAeroPrice", "0");
+        defaults.setProperty("SellDirectAssaultAeroPrice", "0");
 
         // Level 3 MaxTech Pilot Skill BV Mods.
         defaults.setProperty("GunneryBallisticBaseBVMod", "50");
@@ -907,6 +954,7 @@ public class DefaultServerOptions {
         defaults.setProperty("allowUnitCommanderProtoMek", "false");
         defaults.setProperty("allowUnitCommanderBattleArmor", "false");
         defaults.setProperty("allowUnitCommanderVTOL", "false");
+        defaults.setProperty("allowUnitCommanderAero", "false");
         defaults.setProperty("allowGoingActiveWithoutUnitCommanders", "true");
 
         // SubFactions
@@ -926,6 +974,7 @@ public class DefaultServerOptions {
         defaults.setProperty("ProtoMekFactoryClassTitle", "ProtoMek");
         defaults.setProperty("BattleArmorFactoryClassTitle", "BattleArmor");
         defaults.setProperty("InfantryFactoryClassTitle", "Infantry");
+        defaults.setProperty("AeroFactoryClassTitle", "Aero");
 
         // Single Player Faction Configs
         defaults.setProperty("AllowSinglePlayerFactions", "false");
@@ -951,6 +1000,10 @@ public class DefaultServerOptions {
         defaults.setProperty("StartingMediumProtoMekFactory", "1");
         defaults.setProperty("StartingHeavyProtoMekFactory", "1");
         defaults.setProperty("StartingAssaultProtoMekFactory", "1");
+        defaults.setProperty("StartingLightAeroFactory", "1");
+        defaults.setProperty("StartingMediumAeroFactory", "1");
+        defaults.setProperty("StartingHeavyAeroFactory", "1");
+        defaults.setProperty("StartingAssaultAeroFactory", "1");
         defaults.setProperty("BaseFactoryRefreshRate", "100");
         defaults.setProperty("BaseCommonBuildTableShares", "100");
         defaults.setProperty("BaseFactoryComponents", "1000");
@@ -966,6 +1019,7 @@ public class DefaultServerOptions {
         defaults.setProperty("NewFactoryCostModifierVehicle", "1.0");
         defaults.setProperty("NewFactoryCostModifierInfantry", "1.0");
         defaults.setProperty("NewFactoryCostModifierBattleArmor", "1.0");
+        defaults.setProperty("NewFactoryCostModifierAero", "1.0");
         defaults.setProperty("NewFactoryCostModifierProtoMek", "1.0");
         defaults.setProperty("NewFactoryBaseFlu", "100");
         defaults.setProperty("NewFactoryFluModifierLight", "1.0");
@@ -977,6 +1031,7 @@ public class DefaultServerOptions {
         defaults.setProperty("NewFactoryFluModifierInfantry", "1.0");
         defaults.setProperty("NewFactoryFluModifierBattleArmor", "1.0");
         defaults.setProperty("NewFactoryFluModifierProtoMek", "1.0");
+        defaults.setProperty("NewFactoryFluModifierAero", "1.0");
 
         // Technology Research Options
         defaults.setProperty("TechPointsNeedToLevel", "100");
@@ -996,6 +1051,7 @@ public class DefaultServerOptions {
         defaults.setProperty("ResearchCostModifierInfantry", "1.0");
         defaults.setProperty("ResearchCostModifierBattleArmor", "1.0");
         defaults.setProperty("ResearchCostModifierProtoMek", "1.0");
+        defaults.setProperty("ResearchCostModifierAero", "1.0");
         defaults.setProperty("ResearchCostModifierLight", "1.0");
         defaults.setProperty("ResearchCostModifierMedium", "1.0");
         defaults.setProperty("ResearchCostModifierHeavy", "1.0");
@@ -1004,6 +1060,7 @@ public class DefaultServerOptions {
         defaults.setProperty("ResearchFluModifierVehicle", "1.0");
         defaults.setProperty("ResearchFluModifierInfantry", "1.0");
         defaults.setProperty("ResearchFluModifierBattleArmor", "1.0");
+        defaults.setProperty("ResearchFluModifierAero", "1.0");
         defaults.setProperty("ResearchFluModifierProtoMek", "1.0");
         defaults.setProperty("ResearchFluModifierLight", "1.0");
         defaults.setProperty("ResearchFluModifierMedium", "1.0");
@@ -1016,6 +1073,7 @@ public class DefaultServerOptions {
         defaults.setProperty("ComponentToPartsModifierVehicle", "1.0");
         defaults.setProperty("ComponentToPartsModifierInfantry", "1.0");
         defaults.setProperty("ComponentToPartsModifierBattleArmor", "1.0");
+        defaults.setProperty("ComponentToPartsModifierAero", "1.0");
         defaults.setProperty("ComponentToPartsModifierProtoMek", "1.0");
         defaults.setProperty("ComponentToPartsModifierLight", "1.0");
         defaults.setProperty("ComponentToPartsModifierMedium", "1.0");

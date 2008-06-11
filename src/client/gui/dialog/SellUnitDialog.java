@@ -131,7 +131,7 @@ public class SellUnitDialog extends JDialog implements ActionListener {
             @Override
 			public Object getElementAt(int index) {
 				CUnit mm = (CUnit)super.getElementAt(index);
-				if ( mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE )
+				if ( mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE || mm.getType() == Unit.AERO )
 				    return (mm.getId() +" "+ mm.getModelName() + " [" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting()+"]");
 				
 				if ( mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR ){

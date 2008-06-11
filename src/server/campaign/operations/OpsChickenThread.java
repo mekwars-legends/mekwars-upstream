@@ -290,7 +290,7 @@ public class OpsChickenThread extends Thread {
 
             // for (all unit types, mek preferred)
             int numCaptured = 0;
-            for (int type = Unit.MEK; type <= Unit.BATTLEARMOR; type++) {
+            for (int type = Unit.MEK; type < Unit.MAXBUILD; type++) {
 
                 // for all weights (assault preferred)
                 for (int weight = Unit.ASSAULT; weight >= Unit.LIGHT; weight--) {

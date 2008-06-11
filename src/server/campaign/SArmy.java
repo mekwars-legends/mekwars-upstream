@@ -160,6 +160,8 @@ public class SArmy extends Army{
                 rawForceSize += CampaignMain.cm.getFloatConfig("BAOperationsBVMod");
             else if (u.getType() == Unit.PROTOMEK)
                 rawForceSize += CampaignMain.cm.getFloatConfig("ProtoOperationsBVMod");
+            else if (u.getType() == Unit.AERO)
+                rawForceSize += CampaignMain.cm.getFloatConfig("AeroOperationsBVMod");
             else
                 // all other allowed types have a 1.0 weight
                 rawForceSize += CampaignMain.cm.getFloatConfig("MekOperationsBVMod");

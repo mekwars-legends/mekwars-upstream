@@ -699,6 +699,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         JPanel infantryPilotSkillsSpring = new JPanel(new SpringLayout());
         JPanel protomechPilotSkillsSpring = new JPanel(new SpringLayout());
         JPanel battlearmorPilotSkillsSpring = new JPanel(new SpringLayout());
+        JPanel aeroPilotSkillsSpring = new JPanel(new SpringLayout());
         JPanel bannedWSWeaponsSpring = new JPanel(new SpringLayout());
         Dimension fieldSize = new Dimension(5,10);
         
@@ -1181,10 +1182,144 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("chanceforPSforBattleArmor");
         battlearmorPilotSkillsSpring.add(baseTextField);
 
+        aeroPilotSkillsSpring.add(new JLabel("Aero", SwingConstants.TRAILING));
+        aeroPilotSkillsSpring.add(new JLabel("Pilot Skills", SwingConstants.LEADING));
+        
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        baseTextField.setMinimumSize(fieldSize);
+        aeroPilotSkillsSpring.add(new JLabel("MA", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain maneuvering ace</body></html>");
+        baseTextField.setName("chanceforMAforAero");
+        aeroPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        aeroPilotSkillsSpring.add(new JLabel("NAP", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Natural Aptitude Piloting</body></html>");
+        baseTextField.setName("chanceforNAPforAero");
+        aeroPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        aeroPilotSkillsSpring.add(new JLabel("NAG", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Natural Aptitude Gunnery</body></html>");
+        baseTextField.setName("chanceforNAGforAero");
+        aeroPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        aeroPilotSkillsSpring.add(new JLabel("AT", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/missile</body></html>");
+        baseTextField.setName("chanceforATforAero");
+        aeroPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        aeroPilotSkillsSpring.add(new JLabel("TG", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain tactical genius</body></html>");
+        baseTextField.setName("chanceforTGforAero");
+        aeroPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        aeroPilotSkillsSpring.add(new JLabel("WS", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain weapon specialist</body></html>");
+        baseTextField.setName("chanceforWSforAero");
+        aeroPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        aeroPilotSkillsSpring.add(new JLabel("G/B", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/ballistic</body></html>");
+        baseTextField.setName("chanceforGBforAero");
+        aeroPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        aeroPilotSkillsSpring.add(new JLabel("G/L", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/laser</body></html>");
+        baseTextField.setName("chanceforGLforAero");
+        aeroPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        aeroPilotSkillsSpring.add(new JLabel("G/M", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gunnery/missile</body></html>");
+        baseTextField.setName("chanceforGMforAero");
+        aeroPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        aeroPilotSkillsSpring.add(new JLabel("Trait", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain trait</body></html>");
+        baseTextField.setName("chanceforTNforAero");
+        aeroPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        aeroPilotSkillsSpring.add(new JLabel("EI", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Enhanced Interface</body></html>");
+        baseTextField.setName("chanceforEIforAero");
+        aeroPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        aeroPilotSkillsSpring.add(new JLabel("GT", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain gifted</body></html>");
+        baseTextField.setName("chanceforGTforAero");
+        aeroPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        aeroPilotSkillsSpring.add(new JLabel("QS", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain Quick Study</body></html>");
+        baseTextField.setName("chanceforQSforAero");
+        aeroPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        aeroPilotSkillsSpring.add(new JLabel("VDNI", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain the VDNI skill</body></html>");
+        baseTextField.setName("chanceforVDNIforAero");
+        aeroPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        aeroPilotSkillsSpring.add(new JLabel("BVDNI", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain the buffered VDNI skill</body></html>");
+        baseTextField.setName("chanceforBVDNIforAero");
+        aeroPilotSkillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        aeroPilotSkillsSpring.add(new JLabel("PS", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain the Pain Shunt skill</body></html>");
+        baseTextField.setName("chanceforPSforAero");
+        aeroPilotSkillsSpring.add(baseTextField);
+
+
         SpringLayoutHelper.setupSpringGrid(vehiclePilotSkillsSpring, 2);
         SpringLayoutHelper.setupSpringGrid(infantryPilotSkillsSpring, 2);
         SpringLayoutHelper.setupSpringGrid(protomechPilotSkillsSpring, 2);
         SpringLayoutHelper.setupSpringGrid(battlearmorPilotSkillsSpring, 2);
+        SpringLayoutHelper.setupSpringGrid(aeroPilotSkillsSpring, 2);
 
         baseTextField = new JTextField(5);
         bannedWSWeaponsSpring.add(new JLabel("Banned WS Weapons:", SwingConstants.TRAILING));
@@ -1201,6 +1336,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         skillGrid.add(infantryPilotSkillsSpring);
         skillGrid.add(protomechPilotSkillsSpring);
         skillGrid.add(battlearmorPilotSkillsSpring);
+        skillGrid.add(aeroPilotSkillsSpring);
 
         mainSpring.add(skillGrid);
         mainSpring.add(bannedWSWeaponsSpring);
@@ -2091,6 +2227,9 @@ public final class ServerConfigurationDialog implements ActionListener {
         JPanel baCbillsSpring = new JPanel(new SpringLayout());
         JPanel baFluSpring = new JPanel(new SpringLayout());
         JPanel baComponentSpring = new JPanel(new SpringLayout());
+        JPanel aeroCbillsSpring = new JPanel(new SpringLayout());
+        JPanel aeroFluSpring = new JPanel(new SpringLayout());
+        JPanel aeroComponentSpring = new JPanel(new SpringLayout());
         JPanel unitCommanderSpring = new JPanel(new SpringLayout());
 
         JPanel unit2SpringGrid = new JPanel(new GridLayout(2, 3));
@@ -2101,6 +2240,10 @@ public final class ServerConfigurationDialog implements ActionListener {
         unit2SpringGrid.add(baCbillsSpring);
         unit2SpringGrid.add(baFluSpring);
         unit2SpringGrid.add(baComponentSpring);
+
+        unit2SpringGrid.add(aeroCbillsSpring);
+        unit2SpringGrid.add(aeroFluSpring);
+        unit2SpringGrid.add(aeroComponentSpring);
 
         baseTextField = new JTextField(5);
         protoCbillsSpring.add(new JLabel("Light Proto Cost:", SwingConstants.TRAILING));
@@ -2258,6 +2401,83 @@ public final class ServerConfigurationDialog implements ActionListener {
 
         SpringLayoutHelper.setupSpringGrid(baComponentSpring, 4, 2);
 
+        baseTextField = new JTextField(5);
+        aeroCbillsSpring.add(new JLabel("Light Aero Cost:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base " + mwclient.moneyOrFluMessage(true, true, -1) + " for light aero.");
+        baseTextField.setName("LightAeroPrice");
+        aeroCbillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        aeroCbillsSpring.add(new JLabel("Medium Aero Cost:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base " + mwclient.moneyOrFluMessage(true, true, -1) + " for medium aero.");
+        baseTextField.setName("MediumAeroPrice");
+        aeroCbillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        aeroCbillsSpring.add(new JLabel("Heavy Aero Cost:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base " + mwclient.moneyOrFluMessage(true, true, -1) + " for heavy aero.");
+        baseTextField.setName("HeavyAeroPrice");
+        aeroCbillsSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        aeroCbillsSpring.add(new JLabel("Assault Aero Cost:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base " + mwclient.moneyOrFluMessage(true, true, -1) + " for assault aero.");
+        baseTextField.setName("AssaultAeroPrice");
+        aeroCbillsSpring.add(baseTextField);
+
+        SpringLayoutHelper.setupSpringGrid(aeroCbillsSpring, 4, 2);
+
+        baseTextField = new JTextField(5);
+        baFluSpring.add(new JLabel("Light Aero Flu:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base flu for light aero.");
+        baseTextField.setName("LightAeroInf");
+        baFluSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        baFluSpring.add(new JLabel("Medium Aero Flu:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base flu for medium aero.");
+        baseTextField.setName("MediumAeroInf");
+        baFluSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        baFluSpring.add(new JLabel("Heavy Aero Flu:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base flu for heavy aero.");
+        baseTextField.setName("HeavyAeroInf");
+        baFluSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        baFluSpring.add(new JLabel("Assault Aero Flu:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base flu for assault aero.");
+        baseTextField.setName("AssaultAeroInf");
+        baFluSpring.add(baseTextField);
+
+        SpringLayoutHelper.setupSpringGrid(aeroFluSpring, 4, 2);
+
+        baseTextField = new JTextField(5);
+        aeroComponentSpring.add(new JLabel("Light Aero PP:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base components to make light aero.");
+        baseTextField.setName("LightAeroPP");
+        aeroComponentSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        aeroComponentSpring.add(new JLabel("Medium Aero PP:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base components to make medium aero.");
+        baseTextField.setName("MediumAeroPP");
+        aeroComponentSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        aeroComponentSpring.add(new JLabel("Heavy Aero PP:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base components to make heavy aero.");
+        baseTextField.setName("HeavyAeroPP");
+        aeroComponentSpring.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        aeroComponentSpring.add(new JLabel("Assault Aero PP:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Base components to make assault aero.");
+        baseTextField.setName("AssaultAeroPP");
+        aeroComponentSpring.add(baseTextField);
+
+        SpringLayoutHelper.setupSpringGrid(aeroComponentSpring, 4, 2);
         // flow layout of labels and text boxes w/ non-original multipliers
         JPanel unit2TextFlow = new JPanel();
 
@@ -2337,6 +2557,12 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("BattleArmorFactoryClassTitle");
         unit4TextFlow.add(baseTextField);
 
+        baseTextField = new JTextField(5);
+        unit4TextFlow.add(new JLabel("Aero Class:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Title to be displayed of aero factories<br>in the Client House Bays Tab</html>");
+        baseTextField.setName("AeroFactoryClassTitle");
+        unit4TextFlow.add(baseTextField);
+
         BaseCheckBox = new JCheckBox("Allow Mek Commanders");
         BaseCheckBox.setToolTipText("<html>Allow meks to be set as unit commanders<br>for the kill all unit commanders operation victory condition</html>");
         BaseCheckBox.setName("allowUnitCommanderMek");
@@ -2365,6 +2591,11 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox = new JCheckBox("Allow VTOL Commanders");
         BaseCheckBox.setToolTipText("<html>Allow VTOL to be set as unit commanders<br>for the kill all unit commanders operation victory condition</html>");
         BaseCheckBox.setName("allowUnitCommanderVTOL");
+        unitCommanderSpring.add(BaseCheckBox);
+
+        BaseCheckBox = new JCheckBox("Allow Aero Commanders");
+        BaseCheckBox.setToolTipText("<html>Allow aero to be set as unit commanders<br>for the kill all unit commanders operation victory condition</html>");
+        BaseCheckBox.setName("allowUnitCommanderAero");
         unitCommanderSpring.add(BaseCheckBox);
 
         BaseCheckBox = new JCheckBox("Allow Fighting Without Commanders");
@@ -5030,9 +5261,9 @@ public final class ServerConfigurationDialog implements ActionListener {
         for (int type = 0; type < Unit.MAXBUILD; type++) {
             for (int weight = 0; weight <= Unit.ASSAULT; weight++) {
                 baseTextField = new JTextField(5);
-                playerFactionPanel2.add(new JLabel("Starting " + Unit.getWeightClassDesc(weight) + " " + Unit.getDescriptionForID(type) + " Factory:", SwingConstants.TRAILING));
-                baseTextField.setToolTipText("Number of " + Unit.getWeightClassDesc(weight) + " " + Unit.getDescriptionForID(type) + " factories a new faction starts with.");
-                baseTextField.setName("Starting" + Unit.getWeightClassDesc(weight) + Unit.getDescriptionForID(type) + "Factory");
+                playerFactionPanel2.add(new JLabel("Starting " + Unit.getWeightClassDesc(weight) + " " + Unit.getTypeClassDesc(type) + " Factory:", SwingConstants.TRAILING));
+                baseTextField.setToolTipText("Number of " + Unit.getWeightClassDesc(weight) + " " + Unit.getTypeClassDesc(type) + " factories a new faction starts with.");
+                baseTextField.setName("Starting" + Unit.getWeightClassDesc(weight) + Unit.getTypeClassDesc(type) + "Factory");
                 playerFactionPanel2.add(baseTextField);
             }
         }
@@ -5125,9 +5356,9 @@ public final class ServerConfigurationDialog implements ActionListener {
 
         for (int type = 0; type < Unit.MAXBUILD; type++) {
             baseTextField = new JTextField(5);
-            researchPanel1.add(new JLabel(Unit.getDescriptionForID(type)+" unit "+ mwclient.moneyOrFluMessage(true, false, -1, false) + ":", SwingConstants.TRAILING));
-            baseTextField.setToolTipText("<HTML>" + mwclient.moneyOrFluMessage(true, false, -1, false) + " modifier for "+Unit.getDescriptionForID(type)+" units</html>");
-            baseTextField.setName("ResearchCostModifier"+Unit.getDescriptionForID(type));
+            researchPanel1.add(new JLabel(Unit.getTypeClassDesc(type)+" unit "+ mwclient.moneyOrFluMessage(true, false, -1, false) + ":", SwingConstants.TRAILING));
+            baseTextField.setToolTipText("<HTML>" + mwclient.moneyOrFluMessage(true, false, -1, false) + " modifier for "+Unit.getTypeClassDesc(type)+" units</html>");
+            baseTextField.setName("ResearchCostModifier"+Unit.getTypeClassDesc(type));
             researchPanel1.add(baseTextField);
         }
 
@@ -5141,9 +5372,9 @@ public final class ServerConfigurationDialog implements ActionListener {
 
         for (int type = 0; type < Unit.MAXBUILD; type++) {
             baseTextField = new JTextField(5);
-            researchPanel2.add(new JLabel(Unit.getDescriptionForID(type)+" unit "+ mwclient.moneyOrFluMessage(false, false, -1, false) + ":", SwingConstants.TRAILING));
-            baseTextField.setToolTipText("<HTML>" + mwclient.moneyOrFluMessage(true, false, -1, false) + " modifier for "+Unit.getDescriptionForID(type)+" units</html>");
-            baseTextField.setName("ResearchFluModifier"+Unit.getDescriptionForID(type));
+            researchPanel2.add(new JLabel(Unit.getTypeClassDesc(type)+" unit "+ mwclient.moneyOrFluMessage(false, false, -1, false) + ":", SwingConstants.TRAILING));
+            baseTextField.setToolTipText("<HTML>" + mwclient.moneyOrFluMessage(true, false, -1, false) + " modifier for "+Unit.getTypeClassDesc(type)+" units</html>");
+            baseTextField.setName("ResearchFluModifier"+Unit.getTypeClassDesc(type));
             researchPanel2.add(baseTextField);
         }
 
@@ -5188,9 +5419,9 @@ public final class ServerConfigurationDialog implements ActionListener {
 
         for (int type = 0; type < Unit.MAXBUILD; type++) {
             baseTextField = new JTextField(5);
-            purchasePanel1.add(new JLabel(Unit.getDescriptionForID(type)+" unit "+ mwclient.moneyOrFluMessage(true, false, -1, false) + ":", SwingConstants.TRAILING));
-            baseTextField.setToolTipText("<HTML>" + mwclient.moneyOrFluMessage(true, false, -1, false) + " modifier for "+Unit.getDescriptionForID(type)+" unit factory</html>");
-            baseTextField.setName("NewFactoryCostModifier"+Unit.getDescriptionForID(type));
+            purchasePanel1.add(new JLabel(Unit.getTypeClassDesc(type)+" unit "+ mwclient.moneyOrFluMessage(true, false, -1, false) + ":", SwingConstants.TRAILING));
+            baseTextField.setToolTipText("<HTML>" + mwclient.moneyOrFluMessage(true, false, -1, false) + " modifier for "+Unit.getTypeClassDesc(type)+" unit factory</html>");
+            baseTextField.setName("NewFactoryCostModifier"+Unit.getTypeClassDesc(type));
             purchasePanel1.add(baseTextField);
         }
 
@@ -5205,9 +5436,9 @@ public final class ServerConfigurationDialog implements ActionListener {
 
         for (int type = 0; type < Unit.MAXBUILD; type++) {
             baseTextField = new JTextField(5);
-            purchasePanel2.add(new JLabel(Unit.getDescriptionForID(type)+" unit "+ mwclient.moneyOrFluMessage(false, false, -1, false) + ":", SwingConstants.TRAILING));
-            baseTextField.setToolTipText("<HTML>" + mwclient.moneyOrFluMessage(true, false, -1, false) + " modifier for "+Unit.getDescriptionForID(type)+" unit factory</html>");
-            baseTextField.setName("NewFactoryFluModifier"+Unit.getDescriptionForID(type));
+            purchasePanel2.add(new JLabel(Unit.getTypeClassDesc(type)+" unit "+ mwclient.moneyOrFluMessage(false, false, -1, false) + ":", SwingConstants.TRAILING));
+            baseTextField.setToolTipText("<HTML>" + mwclient.moneyOrFluMessage(true, false, -1, false) + " modifier for "+Unit.getTypeClassDesc(type)+" unit factory</html>");
+            baseTextField.setName("NewFactoryFluModifier"+Unit.getTypeClassDesc(type));
             purchasePanel2.add(baseTextField);
         }
 

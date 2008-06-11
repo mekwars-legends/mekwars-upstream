@@ -2308,7 +2308,7 @@ public class CMainFrame extends JFrame {
 
         int typeamount = Unit.MAXBUILD;
         for (int type = 0; type < typeamount; type++) {
-            String useIt = "Use" + Unit.getDescriptionForID(type);
+            String useIt = "Use" + Unit.getTypeClassDesc(type);
 
             if (!Boolean.parseBoolean(mwclient.getserverConfigs(useIt)))
                 continue;

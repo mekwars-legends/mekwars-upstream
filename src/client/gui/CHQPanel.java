@@ -1142,7 +1142,7 @@ public class CHQPanel extends JPanel {
                                     // already
                                     // in army
                                     hasUnitsFree = true;
-                                    if (mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE)
+                                    if (mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE || mm.getType() == Unit.AERO)
                                         menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV() + " BV");
                                     else if (mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR) {
                                         if (((Infantry) mm.getEntity()).isAntiMek())
@@ -1197,7 +1197,7 @@ public class CHQPanel extends JPanel {
                                         // if adding proto or infantry menu,
                                         // check previous elements
                                         // to see if a divider should be added
-                                        if (i == 4 || i == 5) {
+                                        if (i >= 4) {
 
                                             Component[] components = addMenu.getMenuComponents();
                                             if (i == 4 && components.length != 0)
@@ -1265,7 +1265,7 @@ public class CHQPanel extends JPanel {
                                 CUnit mm = (CUnit) mechArray[i];
                                 if (mm.getStatus() == Unit.STATUS_UNMAINTAINED || mm.getStatus() == Unit.STATUS_FORSALE)
                                     continue;
-                                if (mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE)
+                                if (mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE || mm.getType() == Unit.AERO)
                                     menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV() + " BV");
                                 else if (mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR) {
                                     if (((Infantry) mm.getEntity()).isAntiMek())
@@ -1346,7 +1346,7 @@ public class CHQPanel extends JPanel {
                                 Vector<Vector<JMenuItem>> SubMenus = new Vector<Vector<JMenuItem>>();
 
                                 /*
-                                 * 6 entries Weights: 0-3 Protomech: 4 Infantry: 5
+                                 * 6 entries Weights: 0-3 Protomech: 4 Infantry: 5 
                                  */
                                 for (int i = 0; i < 6; i++) {
                                     SubMenus.add(new Vector<JMenuItem>(1, 1));
@@ -1367,7 +1367,7 @@ public class CHQPanel extends JPanel {
                                         // already
                                         // in
                                         // army
-                                        if (mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE)
+                                        if (mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE || mm.getType() == Unit.AERO)
                                             menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV() + " BV");
                                         else if (mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR) {
                                             if (((Infantry) mm.getEntity()).isAntiMek())
@@ -1422,7 +1422,7 @@ public class CHQPanel extends JPanel {
                                             // check previous elements
                                             // to see if a divider should be
                                             // added
-                                            if (i == 4 || i == 5) {
+                                            if (i >= 4) {
 
                                                 Component[] components = addMenu.getMenuComponents();
                                                 if (i == 4 && components.length != 0)
@@ -1490,7 +1490,7 @@ public class CHQPanel extends JPanel {
                                     CUnit mm = (CUnit) mechs[i];
                                     if (mm.getStatus() == Unit.STATUS_UNMAINTAINED || mm.getStatus() == Unit.STATUS_FORSALE)
                                         continue;
-                                    if (mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE)
+                                    if (mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE || mm.getType() == Unit.AERO )
                                         menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV() + " BV");
                                     else if (mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR) {
                                         if (((Infantry) mm.getEntity()).isAntiMek())
@@ -1735,6 +1735,8 @@ public class CHQPanel extends JPanel {
                             canSellUnit = false;
                         else if (cm.getType() == Unit.BATTLEARMOR && !Boolean.parseBoolean(mwclient.getserverConfigs("BAMayBeSoldOnBM")))
                             canSellUnit = false;
+                        else if (cm.getType() == Unit.AERO && !Boolean.parseBoolean(mwclient.getserverConfigs("AerosMayBeSoldOnBM")))
+                            canSellUnit = false;
                         else if (cm.getType() == Unit.PROTOMEK && !Boolean.parseBoolean(mwclient.getserverConfigs("ProtosMayBeSoldOnBM")))
                             canSellUnit = false;
                         else if (cm.getType() == Unit.INFANTRY && !Boolean.parseBoolean(mwclient.getserverConfigs("InfantryMayBeSoldOnBM")))
@@ -1786,7 +1788,7 @@ public class CHQPanel extends JPanel {
 
                         // Pilot Queues Block
                         boolean ppqsEnabled = Boolean.parseBoolean(mwclient.getserverConfigs("AllowPersonalPilotQueues"));
-                        if (ppqsEnabled && (cm.getType() == Unit.MEK || cm.getType() == Unit.PROTOMEK)) {
+                        if (ppqsEnabled && (cm.isSinglePilotUnit())) {
 
                             // load possible pilots
                             Object[] pilots = Player.getPersonalPilotQueue().getPilotQueue(cm.getType(), cm.getWeightclass()).toArray();
@@ -2067,6 +2069,7 @@ public class CHQPanel extends JPanel {
                         int protoM = 0;
                         int ba = 0;
                         int vehs = 0;
+                        int aero = 0;
                         int assaultV = 0;
                         int heavyV = 0;
                         int mediumV = 0;
@@ -2114,6 +2117,9 @@ public class CHQPanel extends JPanel {
                             // Ba's
                             else if (currUnit.getType() == Unit.BATTLEARMOR)
                                 ba++;
+                            // aeros
+                            else if (currUnit.getType() == Unit.AERO)
+                                aero++;
                             else
                                 // assume infantry
                                 inf++;
@@ -2136,6 +2142,8 @@ public class CHQPanel extends JPanel {
                             toSend += " " + protoM + " Protos,";
                         if (ba > 0)
                             toSend += " " + ba + " BAs,";
+                        if (ba > 0)
+                            toSend += " " + aero + " Aeros,";
                         if (vehs > 0) {
                             if (showVeeWeights) {
                                 if (assaultV > 0)

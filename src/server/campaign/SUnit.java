@@ -219,6 +219,9 @@ public final class SUnit extends Unit{
         else if (u.getType() == Unit.PROTOMEK && !CampaignMain.cm.getBooleanConfig("ProtosMayBeSoldOnBM"))
             return false;
 
+        else if (u.getType() == Unit.AERO && !CampaignMain.cm.getBooleanConfig("AerosMayBeSoldOnBM"))
+            return false;
+
         else if (u.getType() == Unit.INFANTRY && !CampaignMain.cm.getBooleanConfig("InfantryMayBeSoldOnBM"))
             return false;
 
@@ -304,6 +307,8 @@ public final class SUnit extends Unit{
             return CampaignMain.cm.getIntegerConfig("MekMapSizeFactor");
         if (u.getType() == Unit.BATTLEARMOR)
             return CampaignMain.cm.getIntegerConfig("BattleArmorMapSizeFactor");
+        if (u.getType() == Unit.AERO)
+            return CampaignMain.cm.getIntegerConfig("AeroMapSizeFactor");
         if (u.getType() == Unit.PROTOMEK)
             return CampaignMain.cm.getIntegerConfig("ProtoMekMapSizeFactor");
         return 0;// no known type? return 0.
@@ -1035,7 +1040,7 @@ public final class SUnit extends Unit{
      */
     public String getSmallDescription() {
         String result;
-        if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE)
+        if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE || this.getType() == Unit.AERO)
             result = getModelName() + " [" + this.getPilot().getGunnery() + "/" + this.getPilot().getPiloting();
         else if (this.getType() == Unit.INFANTRY || this.getType() == Unit.BATTLEARMOR) {
             if (((Infantry) this.getEntity()).isAntiMek())
@@ -1066,7 +1071,7 @@ public final class SUnit extends Unit{
 
     public String getVerboseModelName() {
         // Includes Pilot Stats in ModelName
-        if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE)
+        if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE || this.getType() == Unit.AERO)
             return getModelName() + " (" + this.getPilot().getGunnery() + "/" + this.getPilot().getPiloting() + ")";
 
         if (this.getType() == Unit.INFANTRY || this.getType() == Unit.BATTLEARMOR) {

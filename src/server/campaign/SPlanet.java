@@ -632,6 +632,8 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
                 total += refreshminiticks;
             if (MF.canProduce(Unit.BATTLEARMOR))
                 total += refreshminiticks;
+            if (MF.canProduce(Unit.AERO))
+                total += refreshminiticks;
             hsUpdates.append(MF.addRefresh(-total, false));
         }
         return hsUpdates.toString();

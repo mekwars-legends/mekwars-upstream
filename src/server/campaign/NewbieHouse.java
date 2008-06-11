@@ -278,7 +278,13 @@ public class NewbieHouse extends NonConqHouse {
 		int numHBA = CampaignMain.cm.getIntegerConfig("SOLHeavyBattleArmor");
 		int numABA = CampaignMain.cm.getIntegerConfig("SOLAssaultBattleArmor");
 		
-		//for loops.
+        //Aero
+        int numLAero = CampaignMain.cm.getIntegerConfig("SOLLightAero");
+        int numMAero = CampaignMain.cm.getIntegerConfig("SOLMediumAero");
+        int numHAero = CampaignMain.cm.getIntegerConfig("SOLHeavyAero");
+        int numAAero = CampaignMain.cm.getIntegerConfig("SOLAssaultAero");
+
+        //for loops.
 		for (int i = 0; i < numLMeks; i++) {
 			units.addAll(this.getRandomUnit(Unit.MEK, Unit.LIGHT, houseName));
 		}
@@ -359,6 +365,22 @@ public class NewbieHouse extends NonConqHouse {
 			units.addAll(this.getRandomUnit(Unit.BATTLEARMOR, Unit.ASSAULT, houseName));
 		}
 		
+        for (int i = 0; i < numLAero; i++) {
+            units.addAll(this.getRandomUnit(Unit.AERO, Unit.LIGHT, houseName));
+        }
+        
+        for (int i = 0; i < numMAero; i++) {
+            units.addAll(this.getRandomUnit(Unit.AERO, Unit.MEDIUM, houseName));
+        }
+        
+        for (int i = 0; i < numHAero; i++) {
+            units.addAll(this.getRandomUnit(Unit.AERO, Unit.HEAVY, houseName));
+        }
+        
+        for (int i = 0; i < numAAero; i++) {
+            units.addAll(this.getRandomUnit(Unit.AERO, Unit.ASSAULT, houseName));
+        }
+        
 		//now add the units to player and get a return string
 		StringBuilder toReturn = new StringBuilder();
 		for (SUnit currUnit : units) {

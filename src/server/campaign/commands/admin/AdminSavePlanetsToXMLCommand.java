@@ -95,6 +95,8 @@ public class AdminSavePlanetsToXMLCommand implements Command {
                         p.println("         <TYPE>PROTOMEK</TYPE>");
                     if ( factory.canProduce(Unit.BATTLEARMOR))
                         p.println("         <TYPE>BATTLEARMOR</TYPE>");                   
+                    if ( factory.canProduce(Unit.AERO))
+                        p.println("         <TYPE>AERO</TYPE>");                   
 					p.println("		</UNITFACTORY>");	
 				}
 				

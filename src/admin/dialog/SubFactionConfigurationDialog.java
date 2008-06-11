@@ -143,18 +143,18 @@ public final class SubFactionConfigurationDialog implements ActionListener {
 		
 		for (int type = 0; type < CUnit.MAXBUILD; type++) {
 			for (int weight = 0; weight <= CUnit.ASSAULT; weight++) {
-				BaseCheckBox = new JCheckBox("Can buy new "+CUnit.getWeightClassDesc(weight)+" "+CUnit.getDescriptionForID(type));
-				BaseCheckBox.setToolTipText("<html>Check to allow subfaction memebers to buy new<br>"+CUnit.getWeightClassDesc(weight)+" "+CUnit.getDescriptionForID(type)+"</html>");
-				BaseCheckBox.setName("CanBuyNew"+CUnit.getWeightClassDesc(weight)+CUnit.getDescriptionForID(type));
+				BaseCheckBox = new JCheckBox("Can buy new "+CUnit.getWeightClassDesc(weight)+" "+CUnit.getTypeClassDesc(type));
+				BaseCheckBox.setToolTipText("<html>Check to allow subfaction memebers to buy new<br>"+CUnit.getWeightClassDesc(weight)+" "+CUnit.getTypeClassDesc(type)+"</html>");
+				BaseCheckBox.setName("CanBuyNew"+CUnit.getWeightClassDesc(weight)+CUnit.getTypeClassDesc(type));
 				mainCBoxGridPanel.add(BaseCheckBox);
 			}
 		}
 		
 		for (int type = 0; type < CUnit.MAXBUILD; type++) {
 			for (int weight = 0; weight <= CUnit.ASSAULT; weight++) {
-				BaseCheckBox = new JCheckBox("Can buy used "+CUnit.getWeightClassDesc(weight)+" "+CUnit.getDescriptionForID(type));
-				BaseCheckBox.setToolTipText("<html>Check to allow subfaction memebers to buy used<br>"+CUnit.getWeightClassDesc(weight)+" "+CUnit.getDescriptionForID(type)+"</html>");
-				BaseCheckBox.setName("CanBuyUsed"+CUnit.getWeightClassDesc(weight)+CUnit.getDescriptionForID(type));
+				BaseCheckBox = new JCheckBox("Can buy used "+CUnit.getWeightClassDesc(weight)+" "+CUnit.getTypeClassDesc(type));
+				BaseCheckBox.setToolTipText("<html>Check to allow subfaction memebers to buy used<br>"+CUnit.getWeightClassDesc(weight)+" "+CUnit.getTypeClassDesc(type)+"</html>");
+				BaseCheckBox.setName("CanBuyUsed"+CUnit.getWeightClassDesc(weight)+CUnit.getTypeClassDesc(type));
 				mainCBoxGridPanel.add(BaseCheckBox);
 			}
 		}

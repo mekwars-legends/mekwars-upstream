@@ -40,7 +40,7 @@ public class UnitCosts {
 		for (int weight = Unit.LIGHT; weight <= Unit.ASSAULT; weight++){
 			Vector<Double> maxVector = new Vector<Double>(4,1);
 			Vector<Double> minVector = new Vector<Double>(4,1);
-			for (int type = Unit.MEK; type <= Unit.BATTLEARMOR; type++){
+			for (int type = Unit.MEK; type < Unit.MAXBUILD; type++){
 				maxVector.add(0.0);
 				minVector.add(0.0);
 			}
@@ -213,7 +213,7 @@ public class UnitCosts {
 	public String displayUnitCostsLists(){
 		StringBuilder result = new StringBuilder("<b>Max Costs</b><br>");
 		for (int weight = 0; weight <= Unit.ASSAULT; weight++)
-			for (int type = 0; type <= Unit.BATTLEARMOR; type++)
+			for (int type = 0; type < Unit.MAXBUILD; type++)
 				result.append(Unit.getWeightClassDesc(weight)+" " + Unit.getTypeClassDesc(type)+" MaxCost: " + this.getMaxCostValue(weight,type)+" MinCost: " + this.getMinCostValue(weight,type) + ".<br>");
 		return result.toString();
 	}

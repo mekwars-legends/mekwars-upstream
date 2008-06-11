@@ -163,7 +163,7 @@ public class DonateCommand implements Command {
 				
 		//Save the pilot
 		SPilot oldPilot = (SPilot)m.getPilot();
-		if (Boolean.parseBoolean(house.getConfig("AllowPersonalPilotQueues")) && !m.hasVacantPilot() && (m.getType() == Unit.MEK || m.getType() == Unit.PROTOMEK)) {
+		if (Boolean.parseBoolean(house.getConfig("AllowPersonalPilotQueues")) && !m.hasVacantPilot() && m.isSinglePilotUnit()) {
 			p.getPersonalPilotQueue().addPilot(m.getPilot(), m.getWeightclass());
 			CampaignMain.cm.toUser("PL|AP2PPQ|"+m.getType() + "|" + m.getWeightclass() + "|" + oldPilot.toFileFormat("#",true),Username,false);
             CampaignMain.cm.toUser(oldPilot.getName() + " was moved to your barracks.",Username,true);
