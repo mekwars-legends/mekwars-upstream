@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.33.x
++ Bug: Build table viewer not displaying Aeros.
 + Updated DB to v29
 + Game results now saved to database
 + Added Fields to Admin Server Config dialog for Aeros

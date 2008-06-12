@@ -414,10 +414,10 @@ public class PilotQueues {
 	 * Obliterate all queued pilots.
 	 */
 	public void flushQueue() {
-            queues.clear();
+            queues.removeAllElements();
             for (int i = Unit.MEK; i < Unit.MAXBUILD; i++) {
             	LinkedList<SPilot> v = new LinkedList<SPilot>();
-            	queues.add(i,v);
+            	queues.add(v);
             }
 	}
 
