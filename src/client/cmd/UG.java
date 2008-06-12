@@ -43,19 +43,22 @@ public class UG extends Command {
         //UG = User Gone (UG|<MMClientInfo.toString>|[Gone]) Gone is used when the client didn't just change his name
         //Create a new MMClienrInfo-Object from the String
         CUser mmci = new CUser((String) st.nextElement());
+
+        //Check the Users and remove the User
+        CUser user = mwclient.getUser(mmci.getName());
+        //delete every instance of that user from the list
+        while ( mwclient.getUsers().remove(user) ){
+            user = mwclient.getUser(mmci.getName());
+        }
+
+        mwclient.refreshGUI(MWClient.REFRESH_USERLIST);
+
         if (mwclient.isDedicated()){
-        	mwclient.getUsers().remove(mwclient.getUser(mmci.getName()));
             return;
         }
         
-        if ( mmci.isInvis() && mmci.getUserlevel() > mwclient.getUser(mwclient.getPlayer().getName()).getUserlevel() ){
-            //Check the Users and remove the User
-        	CUser user = mwclient.getUser(mmci.getName());
-        	//delete every instance of that user from the list
-        	while ( mwclient.getUsers().remove(user) );
-        		
-            mwclient.refreshGUI(MWClient.REFRESH_USERLIST);
-
+        if ( (mmci.isInvis() && mmci.getUserlevel() > mwclient.getUserLevel())
+                || mmci.getName().startsWith("[Dedicated]") ){
             return;
         }
 
@@ -67,14 +70,11 @@ public class UG extends Command {
             if (mwclient.getConfig().isParam("TIMESTAMP"))
             	toSend = mwclient.getShortTime() + toSend;
             
-            if (mwclient.getConfig().isParam("SHOWENTERANDEXIT"))
+            if (mwclient.getConfig().isParam("SHOWENTERANDEXIT") )
             	mwclient.addToChat(toSend);
             
             //Play the sound
             mwclient.doPlaySound(mwclient.getConfigParam("SOUNDONEXIT"));
         }
-        //Check the Users and remove the User
-        mwclient.getUsers().remove(mwclient.getUser(mmci.getName()));
-        mwclient.refreshGUI(MWClient.REFRESH_USERLIST);
 	}
 }

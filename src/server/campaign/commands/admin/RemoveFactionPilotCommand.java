@@ -14,7 +14,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class RemoveFactionPilotCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "Faction Name#Type[Mek,Vehicle,Infantry,Proto,BattleArmor]/ALL#Position[Not used if ALL is selected]";
+	String syntax = "Faction Name#Type[Mek,Vehicle,Infantry,Proto,BattleArmor,Aero]/ALL#Position[Not used if ALL is selected]";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}
@@ -38,7 +38,7 @@ public class RemoveFactionPilotCommand implements Command {
             house = command.nextToken();
             type = command.nextToken();
         }catch (Exception ex){
-            CampaignMain.cm.toUser("Syntanx RemoveFactionPilot#House#Type[Mek,Vehicle,Infantry,Proto,BattleArmor]/ALL#Position[Not used if ALL is selected].",Username);
+            CampaignMain.cm.toUser(syntax,Username);
             return;
         }
         SHouse h =  CampaignMain.cm.getHouseFromPartialString(house,Username);
@@ -77,7 +77,7 @@ public class RemoveFactionPilotCommand implements Command {
                 }
             }
         }catch(Exception ex) {
-            CampaignMain.cm.toUser("Syntanx RemoveFactionPilot#House#Type[Mek,Vehicle,Infantry,Proto,BattleArmor]/ALL#Position[Not used if ALL is selected].",Username);
+            CampaignMain.cm.toUser(syntax,Username);
             return;
         }
 

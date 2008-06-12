@@ -2457,28 +2457,28 @@ public final class ServerConfigurationDialog implements ActionListener {
         SpringLayoutHelper.setupSpringGrid(aeroCbillsSpring, 4, 2);
 
         baseTextField = new JTextField(5);
-        baFluSpring.add(new JLabel("Light Aero Flu:", SwingConstants.TRAILING));
+        aeroFluSpring.add(new JLabel("Light Aero Flu:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("Base flu for light aero.");
         baseTextField.setName("LightAeroInf");
-        baFluSpring.add(baseTextField);
+        aeroFluSpring.add(baseTextField);
 
         baseTextField = new JTextField(5);
-        baFluSpring.add(new JLabel("Medium Aero Flu:", SwingConstants.TRAILING));
+        aeroFluSpring.add(new JLabel("Medium Aero Flu:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("Base flu for medium aero.");
         baseTextField.setName("MediumAeroInf");
-        baFluSpring.add(baseTextField);
+        aeroFluSpring.add(baseTextField);
 
         baseTextField = new JTextField(5);
-        baFluSpring.add(new JLabel("Heavy Aero Flu:", SwingConstants.TRAILING));
+        aeroFluSpring.add(new JLabel("Heavy Aero Flu:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("Base flu for heavy aero.");
         baseTextField.setName("HeavyAeroInf");
-        baFluSpring.add(baseTextField);
+        aeroFluSpring.add(baseTextField);
 
         baseTextField = new JTextField(5);
-        baFluSpring.add(new JLabel("Assault Aero Flu:", SwingConstants.TRAILING));
+        aeroFluSpring.add(new JLabel("Assault Aero Flu:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("Base flu for assault aero.");
         baseTextField.setName("AssaultAeroInf");
-        baFluSpring.add(baseTextField);
+        aeroFluSpring.add(baseTextField);
 
         SpringLayoutHelper.setupSpringGrid(aeroFluSpring, 4, 2);
 

@@ -47,8 +47,14 @@ public class NU extends Command {
 		
 		CUser newUser = new CUser(st.nextToken());
 		
-		if ( !mwclient.getUsers().contains(newUser) )
-			mwclient.getUsers().add(newUser);
+        //Check the Users and remove the User
+        CUser user = mwclient.getUser(newUser.getName());
+        //delete every instance of that user from the list
+        while ( mwclient.getUsers().remove(user) ){
+            user = mwclient.getUser(newUser.getName());
+        }
+
+		mwclient.getUsers().add(newUser);
 		
 		if (mwclient.isDedicated())
 			return;
@@ -57,11 +63,15 @@ public class NU extends Command {
             mwclient.refreshGUI(MWClient.REFRESH_USERLIST);
             return;
         }
+
+        if ( newUser.getName().startsWith("[Dedicated]") )
+            return;
         
 		//Print an entry message if the information is followed by NEW (NU and UG are used for name changing, too)
 		if (st.hasMoreTokens()) {
 		
 			String name = newUser.getName();
+			
 			if (!newUser.getCountry().equals("unknown"))
 				name += " (" + newUser.getCountry() + ")";
 			

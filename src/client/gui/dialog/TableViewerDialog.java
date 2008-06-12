@@ -91,7 +91,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
     JLabel percentageLabel = new JLabel("Total Percentage: ", SwingConstants.CENTER);
 
     Object[] factionArray;
-    String[] unitTypeArray = { "Mek", "Vehicle", "BattleArmor", "Infantry", "ProtoMek" };
+    String[] unitTypeArray = { "Mek", "Vehicle", "BattleArmor", "Infantry", "ProtoMek", "Aero" };
     String[] weightClassArray = { "Light", "Medium", "Heavy", "Assault" };
 
     int factionSort = 0;
@@ -139,7 +139,11 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         // make combo boxes
         weightClassCombo = new JComboBox(weightClassArray);
         factionCombo = new JComboBox(factionArray);
-        unitTypeCombo = new JComboBox(unitTypeArray);
+        unitTypeCombo = new JComboBox();
+        
+        for ( int type = Unit.MEK; type < Unit.MAXBUILD; type++ ){
+            unitTypeCombo.addItem(Unit.getTypeClassDesc(type));
+        }
 
         // set max combo heights
         Dimension comboDim = new Dimension();
@@ -318,7 +322,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
     public void setVisible(boolean show) {
 
         this.pack();
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(mwclient.getMainFrame());
 
         this.setSize(720, 575);
         setResizable(false);

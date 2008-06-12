@@ -29,7 +29,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class SetHouseBasePilotingSkillsCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "Faction Name#pilotType#PilotingSkill$PilotingSkill";
+	String syntax = "Faction Name#[Mek,Vehicle,Infantry,Proto,BattleArmor,Aero]#PilotingSkill$PilotingSkill";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}
@@ -49,11 +49,10 @@ public class SetHouseBasePilotingSkillsCommand implements Command {
             
             try{
                 house = CampaignMain.cm.getHouseFromPartialString(command.nextToken(), Username);
-                pilotType = Integer.parseInt(command.nextToken());
+                pilotType = Unit.getTypeIDForName(command.nextToken());
                 skills = command.nextToken()+"$";
             }catch (Exception ex ){
-                CampaignMain.cm.toUser("Invalid Syntax: sethousebasepilotskills house#pilotType#PilotingSkill$PilotingSkill", Username);
-                CampaignMain.cm.toUser("Invalid unit type:<br>Mek "+Unit.MEK+"<br>Vehicle "+Unit.VEHICLE+"<br>Infantry "+Unit.INFANTRY+"<br>Battle Armor "+Unit.BATTLEARMOR+"<br>ProtoMek "+Unit.PROTOMEK+"<br>Aero "+Unit.AERO, Username);
+                CampaignMain.cm.toUser(syntax, Username);
                 return;
             }
     
@@ -61,7 +60,7 @@ public class SetHouseBasePilotingSkillsCommand implements Command {
                 return;
             
             if ( pilotType >= Unit.MAXBUILD || pilotType < 0){
-                CampaignMain.cm.toUser("Invalid unit type:<br>Mek "+Unit.MEK+"<br>Vehicle "+Unit.VEHICLE+"<br>Infantry "+Unit.INFANTRY+"<br>Battle Armor "+Unit.BATTLEARMOR+"<br>ProtoMek "+Unit.PROTOMEK+"<br>Aero "+Unit.AERO, Username);
+                CampaignMain.cm.toUser(syntax, Username);
                 return;
             }
 

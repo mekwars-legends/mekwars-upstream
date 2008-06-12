@@ -235,8 +235,8 @@ public class TableSorter extends TableMap {
         checkModel();
 
         compares = 0;
-        // n2sort();
-        // qsort(0, indexes.length-1);
+        //n2sort();
+        //qsort(0, indexes.length-1);
         shuttlesort(indexes.clone(), indexes, 0, indexes.length);
         // MMClient.mwClientLog.clientOutputLog("Compares: "+compares);
     }
