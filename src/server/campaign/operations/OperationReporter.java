@@ -103,23 +103,18 @@ public class OperationReporter {
 	public void commit() {
 		opData.setEndTime(System.currentTimeMillis());
 				
-// Not yet ready for prime time
-//		if(CampaignMain.cm.isUsingMySQL()) {
-//			CampaignMain.cm.MySQL.commitBattleReport(opData);
-//		} else {
-//		}
-		boolean actually_commit = false;  
-		// Just skip this for now - using for debugging purposes only
-			if(actually_commit) {
-			CampaignData.mwlog.dbLog("Operation Finished: ");
-			CampaignData.mwlog.dbLog("  OpType: " + opData.getOpType());
-			CampaignData.mwlog.dbLog("  Planet: " + opData.getPlanet() + ", Terrain: " + opData.getTerrain() + ", Theme: " + opData.getTheme());
-			CampaignData.mwlog.dbLog("  Attacker(s): " + opData.getAttackers() + " (" + opData.getAttackerSize() + " units)  --  Defender(s): " + opData.getDefenders() + " (" + opData.getDefenderSize() + " units)");
-			CampaignData.mwlog.dbLog("  BVs: Attacker: " + opData.getAttackerStartBV() + " / " + opData.getAttackerEndBV() + "  --  Defender: " + opData.getDefenderStartBV() + " / " + opData.getDefenderEndBV());
-			CampaignData.mwlog.dbLog("  Attacker Won: " + Boolean.toString(opData.attackerIsWinner()));
-			CampaignData.mwlog.dbLog("  Winner(s): " + opData.getWinners() + "  --  Loser(s): " + opData.getLosers());
-			CampaignData.mwlog.dbLog("  Game Length: " + opData.getHumanReadableGameLength());
-		}
+		if(CampaignMain.cm.isUsingMySQL()) {
+			CampaignMain.cm.MySQL.commitBattleReport(opData);
+			return;
+		} 
+			CampaignData.mwlog.resultsLog("Operation Finished: ");
+			CampaignData.mwlog.resultsLog("  OpType: " + opData.getOpType());
+			CampaignData.mwlog.resultsLog("  Planet: " + opData.getPlanet() + ", Terrain: " + opData.getTerrain() + ", Theme: " + opData.getTheme());
+			CampaignData.mwlog.resultsLog("  Attacker(s): " + opData.getAttackers() + " (" + opData.getAttackerSize() + " units)  --  Defender(s): " + opData.getDefenders() + " (" + opData.getDefenderSize() + " units)");
+			CampaignData.mwlog.resultsLog("  BVs: Attacker: " + opData.getAttackerStartBV() + " / " + opData.getAttackerEndBV() + "  --  Defender: " + opData.getDefenderStartBV() + " / " + opData.getDefenderEndBV());
+			CampaignData.mwlog.resultsLog("  Attacker Won: " + Boolean.toString(opData.attackerIsWinner()));
+			CampaignData.mwlog.resultsLog("  Winner(s): " + opData.getWinners() + "  --  Loser(s): " + opData.getLosers());
+			CampaignData.mwlog.resultsLog("  Game Length: " + opData.getHumanReadableGameLength());
 	}
 	
 	public void closeOperation(boolean draw, boolean attackerWon) {

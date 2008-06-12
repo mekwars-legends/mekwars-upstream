@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.33.x
++ Updated DB to v29
++ Game results now saved to database
 + Added Fields to Admin Server Config dialog for Aeros
 Release Client/Server 0.2.33.0
 + Added Map Medium selection to Operations

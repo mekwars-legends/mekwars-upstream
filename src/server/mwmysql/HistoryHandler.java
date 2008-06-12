@@ -104,8 +104,50 @@ public class HistoryHandler {
 		  CampaignData.mwlog.dbLog("Attacker(s): " + opData.getAttackers() + " (" + opData.getAttackerStartBV() + " / " + opData.getAttackerEndBV() + ")");
 		  CampaignData.mwlog.dbLog("Defender(s): " + opData.getDefenders() + " (" + opData.getDefenderStartBV() + " / " + opData.getDefenderEndBV() + ")");
 		  CampaignData.mwlog.dbLog("Planet Info: " + opData.getPlanet() + " / " + opData.getTerrain() + " / " + opData.getTheme());
-
-		  ps = con.prepareStatement("blah");
+		  
+		  StringBuilder sql = new StringBuilder();
+		  
+		  sql.append("INSERT into task_history SET ");
+		  sql.append("type = ?, ");
+		  sql.append("planet = ?, ");
+		  sql.append("terrain = ?, ");
+		  sql.append("theme = ?, ");
+		  sql.append("attackers = ?, ");
+		  sql.append("defenders = ?, ");
+		  sql.append("attackerStartBV = ?, ");
+		  sql.append("attackerEndBV = ?, ");
+		  sql.append("attackerNumUnits = ?, ");
+		  sql.append("defenderStartBV = ?, ");
+		  sql.append("defenderEndBV = ?, ");
+		  sql.append("defenderNumUnits = ?, ");
+		  sql.append("attackerWon = ?, ");
+		  sql.append("drawGame = ?, ");
+		  sql.append("winner = ?, ");
+		  sql.append("loser = ?, ");
+		  sql.append("gameLength = ?");
+		  
+		  ps = con.prepareStatement(sql.toString());
+		  
+		  ps.setString(1, opData.getOpType());
+		  ps.setString(2, opData.getPlanet());
+		  ps.setString(3, opData.getTerrain());
+		  ps.setString(4, opData.getTheme());
+		  ps.setString(5, opData.getAttackers());
+		  ps.setString(6, opData.getDefenders());
+		  ps.setInt(7, opData.getAttackerStartBV());
+		  ps.setInt(8, opData.getAttackerEndBV());
+		  ps.setInt(9, opData.getAttackerSize());
+		  ps.setInt(10, opData.getDefenderStartBV());
+		  ps.setInt(11, opData.getDefenderEndBV());
+		  ps.setInt(12, opData.getDefenderSize());
+		  ps.setBoolean(13, opData.attackerIsWinner());
+		  ps.setBoolean(14, opData.gameIsDraw());
+		  ps.setString(15, opData.getWinners());
+		  ps.setString(16, opData.getLosers());
+		  ps.setString(17, opData.getHumanReadableGameLength());
+		  
+		  ps.executeUpdate();
+		  ps.close();
 	  } catch (SQLException e) {
 		  CampaignData.mwlog.dbLog("SQLException in HistoryHandler.commitBattleReport: " + e.getMessage());
 		  CampaignData.mwlog.dbLog(e);
