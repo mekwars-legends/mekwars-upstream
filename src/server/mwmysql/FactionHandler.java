@@ -196,7 +196,20 @@ public class FactionHandler {
 					h.addUnit(u, false);
 				}
 				
-			
+				//Load the Aeros
+				CampaignData.mwlog.dbLog("Loading Aeros");
+				rs1 = stmt2.executeQuery("SELECT ID from units WHERE uType = " + Unit.AERO + " AND uFactionID = " + h.getDBId());
+				while(rs1.next()) {
+					SUnit u = new SUnit();
+					u.fromDB(rs1.getInt("ID"));
+					if ( newbieHouse ){
+						int priceForUnit = h.getPriceForUnit(u.getWeightclass(), u.getType());
+						int rareSalesTime = Integer.parseInt(h.getConfig("RareMinSaleTime"));
+						CampaignMain.cm.getMarket().addListing("Faction_" + h.getName(), u,priceForUnit, rareSalesTime);
+						u.setStatus(Unit.STATUS_FORSALE);
+					}
+					h.addUnit(u, false);
+				}
 				
 				//Load the components
 				CampaignData.mwlog.dbLog("Loading Components");
