@@ -356,16 +356,13 @@ public class CMainFrame extends JFrame {
                     Class<?> c = loader.loadClass("admin.ModeratorMenu");
                     Object o = c.newInstance();
                     c.getDeclaredMethod("createMenu", new Class[] { MWClient.class }).invoke(o, new Object[] { mwclient });
-                    jMenuMod = (JMenu) o;
-                    
-                    /*
-                     * for ( int i = 0; i <
-                     * tempMenu.getMenuComponentCount();i++)
-                     * jMenuMod.add(tempMenu.getItem(i));
-                     */
+                    jMenuBar1.remove(jMenuMod);
+                    jMenuMod = (JMenu)o;
                     jMenuBar1.add(jMenuMod);
-                    //jMenuBar1.remove(jMenuMod);
-                    // jMenuBar1.add((JMenu)o);
+                    
+/*                    if ( jMenuMod.getItemCount() < 1 ){
+                        mod = false;
+                    }*/
                 } catch (Exception ex) {
                     CampaignData.mwlog.errLog("ModeratorMenu creation FAILED!");
                     CampaignData.mwlog.errLog(ex);
@@ -375,11 +372,9 @@ public class CMainFrame extends JFrame {
                     Class<?> c = loader.loadClass("admin.AdminMenu");
                     Object o = c.newInstance();
                     c.getDeclaredMethod("createMenu", new Class[] { MWClient.class }).invoke(o, new Object[] { mwclient });
+                    jMenuBar1.remove(jMenuAdmin);
                     jMenuAdmin = (JMenu) o;
-                    if (jMenuAdmin.getItemCount() > 0){
-                        jMenuBar1.add(jMenuAdmin);
-                    }
-                    // jMenuBar1.remove();
+                    jMenuBar1.add(jMenuAdmin);
                 } catch (Exception ex) {
                     CampaignData.mwlog.errLog("AdminMenu creation FAILED!");
                     CampaignData.mwlog.errLog(ex);
@@ -387,6 +382,7 @@ public class CMainFrame extends JFrame {
             }// end else(Admin.jar exists)
 
             if (new File("./MekWarsOpEditor.jar").exists()) {
+                jMenuBar1.remove(jMenuOperations);
                 jMenuOperations.setText("Operations");
                 JMenuItem item = new JMenuItem("Op Editor");
                 item.addActionListener(new ActionListener() {
@@ -1269,7 +1265,9 @@ public class CMainFrame extends JFrame {
         jMenuBar1.add(jMenuOptions);
         jMenuBar1.add(jMenuLeaderShip);
         jMenuBar1.add(jMenuHelp);
-        jMenuBar1.add(jMenuMod);
+/*        jMenuBar1.add(jMenuMod);
+        jMenuBar1.add(jMenuAdmin);*/
+        jMenuBar1.add(jMenuOperations);
 
         // jMenuBar1.add(jMenuAdmin);
     }

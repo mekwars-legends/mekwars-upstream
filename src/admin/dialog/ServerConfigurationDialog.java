@@ -118,17 +118,10 @@ public final class ServerConfigurationDialog implements ActionListener {
                                                 // categorized
         JPanel artilleryPanel = new JPanel();
         JPanel combatPanel = new JPanel();// mm options, etc
-        JPanel pilotsPanel = new JPanel();// allows SO's set up pilot options
-                                            // and personal pilot queue options
-        JPanel pilotSkillsModPanel = new JPanel();// Allows the SO's to set
-                                                    // the mods for each skill
-                                                    // type that affects the MM
-                                                    // game.
-        JPanel pilotSkillsPanel = new JPanel();// allows SO's to select what
-                                                // pilot skills they want for
-                                                // non-Mek unit types.
-        JPanel mekPilotSkillsPanel = new JPanel();// allows SO's to select what
-                                                  // pilot skills they want for Meks
+        JPanel pilotsPanel = new JPanel();// allows SO's set up pilot options and personal pilot queue options
+        JPanel pilotSkillsModPanel = new JPanel();// Allows the SO's to set the mods for each skill type that affects the MM game.
+        JPanel pilotSkillsPanel = new JPanel();// allows SO's to select what pilot skills they want for non-Mek unit types.
+        JPanel mekPilotSkillsPanel = new JPanel();// allows SO's to select what pilot skills they want for Meks
 
         JPanel noPlayPanel = new JPanel();
         JPanel blackMarketPanel = new JPanel();
@@ -139,10 +132,8 @@ public final class ServerConfigurationDialog implements ActionListener {
         JPanel advancedRepairPanel = new JPanel();// Advanced Repair
         JPanel lossCompensationPanel = new JPanel();// battle loss compensation
         JPanel dbPanel = new JPanel(); // Database configuration
-        JPanel singlePlayerFactionPanel = new JPanel(); // Single Player Faction
-                                                        // Configs
-        JPanel technologyResearchPanel = new JPanel(); // Technology Reseach
-                                                        // Panel
+        JPanel singlePlayerFactionPanel = new JPanel(); // Single Player Faction Configs
+        JPanel technologyResearchPanel = new JPanel(); // Technology Reseach Panel
         JPanel unitResearchPanel = new JPanel(); // Research Unit Panel
         JPanel factoryPurchasePanel = new JPanel(); //Allow players to purchase new factories.
         
@@ -712,7 +703,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("NonFactionUnitsIncreasedTechs");
         techSpring.add(baseTextField);
 
-        SpringLayoutHelper.setupSpringGrid(techSpring, 15, 4);
+        SpringLayoutHelper.setupSpringGrid(techSpring, 4);
 
         // finalize the layout
         technicianPanel.add(techsBox);
