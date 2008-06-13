@@ -874,7 +874,7 @@ public class DefaultOperation {
          * [Map Settings
          * 
          * UseOperationMap				- Use the Operation map instead of the terrain on the planet
-         * MapName						- Name of the map to use or surprise if using sizes
+         * MapName						- Name of the map to use or surprise/generated if using sizes
          * BoardSizeX					- Number of maps along the X axis of the Board
          * BoardSizeY					- Number of maps along the Y axis of the board
          * MapSizeX						- X Size of the map
@@ -1341,7 +1341,7 @@ public class DefaultOperation {
 
         //Map Settings
         operationsDefaults.put("UseOperationMap","false");
-        operationsDefaults.put("MapName","surprise");
+        operationsDefaults.put("MapName","generated");
         operationsDefaults.put("BoardSizeX","0");
         operationsDefaults.put("BoardSizeY","0");
         operationsDefaults.put("MapSizeX","0");

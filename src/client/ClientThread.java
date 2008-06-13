@@ -255,11 +255,53 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     ArrayList<String> boardvec = new ArrayList<String>();
                     if (aTerrain.getStaticMapName().toLowerCase().endsWith("surprise")) {
                         int maxBoards = aTerrain.getXBoardSize() * aTerrain.getYBoardSize();
-                        for (int i = 0; i < maxBoards; i++)
+                        for (int i = 0; i < maxBoards; i++) {
                             boardvec.add(MapSettings.BOARD_SURPRISE);
-
+                        }
+                        
                         mySettings.setBoardsSelectedVector(boardvec);
                         mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize()));
+                    } else if (aTerrain.getStaticMapName().toLowerCase().endsWith("generated")) {
+                        PlanetEnvironment env = this.mwclient.getCurrentEnvironment();
+                        /* Set the map-gen values */
+                        mySettings.setElevationParams(env.getHillyness(), env.getHillElevationRange(), env.getHillInvertProb());
+                        mySettings.setWaterParams(env.getWaterMinSpots(), env.getWaterMaxSpots(), env.getWaterMinHexes(), env.getWaterMaxHexes(), env.getWaterDeepProb());
+                        mySettings.setForestParams(env.getForestMinSpots(), env.getForestMaxSpots(), env.getForestMinHexes(), env.getForestMaxHexes(), env.getForestHeavyProb());
+                        mySettings.setRoughParams(env.getRoughMinSpots(), env.getRoughMaxSpots(), env.getRoughMinHexes(), env.getRoughMaxHexes());
+                        mySettings.setSwampParams(env.getSwampMinSpots(), env.getSwampMaxSpots(), env.getSwampMinHexes(), env.getSwampMaxHexes());
+                        mySettings.setPavementParams(env.getPavementMinSpots(), env.getPavementMaxSpots(), env.getPavementMinHexes(), env.getPavementMaxHexes());
+                        mySettings.setIceParams(env.getIceMinSpots(), env.getIceMaxSpots(), env.getIceMinHexes(), env.getIceMaxHexes());
+                        mySettings.setRubbleParams(env.getRubbleMinSpots(), env.getRubbleMaxSpots(), env.getRubbleMinHexes(), env.getRubbleMaxHexes());
+                        mySettings.setFortifiedParams(env.getFortifiedMinSpots(), env.getFortifiedMaxSpots(), env.getFortifiedMinHexes(), env.getFortifiedMaxHexes());
+                        mySettings.setSpecialFX(env.getFxMod(), env.getProbForestFire(), env.getProbFreeze(), env.getProbFlood(), env.getProbDrought());
+                        mySettings.setRiverParam(env.getRiverProb());
+                        mySettings.setCliffParam(env.getCliffProb());
+                        mySettings.setRoadParam(env.getRoadProb());
+                        mySettings.setCraterParam(env.getCraterProb(), env.getCraterMinNum(), env.getCraterMaxNum(), env.getCraterMinRadius(), env.getCraterMaxRadius());
+                        mySettings.setAlgorithmToUse(env.getAlgorithm());
+                        mySettings.setInvertNegativeTerrain(env.getInvertNegativeTerrain());
+                        mySettings.setMountainParams(env.getMountPeaks(), env.getMountWidthMin(), env.getMountWidthMax(), env.getMountHeightMin(), env.getMountHeightMax(), env.getMountStyle());
+
+                        if (env.getTheme().length() > 1)
+                            mySettings.setTheme(env.getTheme());
+                        else
+                            mySettings.setTheme("");
+                        
+                        int maxBoards = aTerrain.getXBoardSize() * aTerrain.getYBoardSize();
+                        for (int i = 0; i < maxBoards; i++) {
+                            boardvec.add(MapSettings.BOARD_GENERATED);
+                        }
+                        
+                        mySettings.setBoardsSelectedVector(boardvec);
+                        mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize()));
+
+                        if (mwclient.getBuildingTemplate() != null && mwclient.getBuildingTemplate().getTotalBuildings() > 0) {
+                            ArrayList<BuildingTemplate> buildingList = generateRandomBuildings(mySettings, mwclient.getBuildingTemplate());
+                            mySettings.setBoardBuildings(buildingList);
+                        } else if (!env.getCityType().equalsIgnoreCase("NONE")) {
+                            mySettings.setRoadParam(0);
+                            mySettings.setCityParams(env.getRoads(), env.getCityType(), env.getMinCF(), env.getMaxCF(), env.getMinFloors(), env.getMaxFloors(), env.getCityDensity(), env.getTownSize());
+                        }
                     } else {
                         boardvec.add(aTerrain.getStaticMapName());
                         mySettings.setBoardsSelectedVector(boardvec);

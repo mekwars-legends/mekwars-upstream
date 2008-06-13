@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.33.x
++ RFE: allow setting of Static map size for Generated maps per operation
 + Updated Faction config dialog with Aero settings
 + DB-enabled server should save and load aeros now.
 + Bug: Build table viewer not displaying Aeros.

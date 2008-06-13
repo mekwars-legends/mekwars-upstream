@@ -3390,7 +3390,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         
         BaseTextField = new JTextField(5);
         mapParamsPanel.add(new JLabel("Map Name:",SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>Name of the map to use or surprise if using sizes</html>");
+        BaseTextField.setToolTipText("<html>Name of the map to use or surprise/generated if using sizes</html>");
         BaseTextField.setName("MapName");
         mapParamsPanel.add(BaseTextField);
 
