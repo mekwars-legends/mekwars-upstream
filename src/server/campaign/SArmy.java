@@ -332,7 +332,7 @@ public class SArmy extends Army{
         double percentCap = o.getDoubleValue("MaxBVPercent");
 
         // catch a 0 BV, just in case getBV(false) calls lead here
-        if (enemy.getBV() == 0)
+        if (enemy.getBV() == 0 && !o.getBooleanValue("MULArmiesOnly"))
             return false;
 
         // determine BV difference between the two armies

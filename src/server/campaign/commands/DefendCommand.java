@@ -26,7 +26,8 @@ import server.campaign.operations.OpsChickenThread;
 import server.campaign.operations.ShortOperation;
 
 /**
- * DefendCommand is analagous to the Task system's "join" command - it allows a player to register himself as the defender for an attack.
+ * DefendCommand is analagous to the Task system's "join" command - it allows a
+ * player to register himself as the defender for an attack.
  */
 public class DefendCommand implements Command {
 
@@ -78,6 +79,8 @@ public class DefendCommand implements Command {
 
         // check the attack
         ShortOperation so = CampaignMain.cm.getOpsManager().getRunningOps().get(opID);
+        Operation o = CampaignMain.cm.getOpsManager().getOperation(so.getName());
+
         if (so == null) {
             CampaignMain.cm.toUser("AM:Defend failed. Attack #" + opID + " does not exist.", Username, true);
             return;
@@ -86,8 +89,12 @@ public class DefendCommand implements Command {
         // check the army
         SArmy da = dp.getArmy(armyID);
         if (da == null) {
-            CampaignMain.cm.toUser("AM:Defend failed. Army #" + armyID + " does not exist.", Username, true);
-            return;
+            if (o.getBooleanValue("MULArmiesOnly")) {
+                da = new SArmy(-1,Username);
+            } else {
+                CampaignMain.cm.toUser("AM:Defend failed. Army #" + armyID + " does not exist.", Username, true);
+                return;
+            }
         }
 
         // don't let players defend multiple games
@@ -97,7 +104,7 @@ public class DefendCommand implements Command {
         }
 
         // Don't defend with a disabled army
-        if (da.isDisabled()) {
+        if (da == null && da.isDisabled()) {
             CampaignMain.cm.toUser("AM: Defend failed.  Army #" + armyID + " is disabled and cannot be used to defend.", Username, true);
             return;
         }
@@ -123,10 +130,15 @@ public class DefendCommand implements Command {
         }
 
         /*
-         * Make sure the defender can actually defend this attack. If the player is in this chickenTree, with this army, we can assume that he/it have already passed validation. If not, he's probably trying to defend illegally. Run him through the validator and give him failure reasons. If he doesn't fail he probably activated after the attack, and we should let him defend ...
+         * Make sure the defender can actually defend this attack. If the player
+         * is in this chickenTree, with this army, we can assume that he/it have
+         * already passed validation. If not, he's probably trying to defend
+         * illegally. Run him through the validator and give him failure
+         * reasons. If he doesn't fail he probably activated after the attack,
+         * and we should let him defend ...
          */
         OpsChickenThread pThread = so.getChickenThreads().get(dp.getName().toLowerCase());
-        Operation o = CampaignMain.cm.getOpsManager().getOperation(so.getName());
+
         if (pThread == null || !pThread.getArmies().contains(da)) {
 
             // check to see if the attacking army is on the da's oplist
@@ -176,15 +188,15 @@ public class DefendCommand implements Command {
             } else if (o.getBooleanValue("RandomTeamDetermination")) {
                 int numberOfTeams = Math.max(2, Math.min(8, o.getIntValue("NumberOfTeams")));
 
-                teamNumber = numberOfTeams+1;
+                teamNumber = numberOfTeams + 1;
                 for (int team = 1; team <= numberOfTeams; team++) {
                     if (so.checkTeam(team).trim().length() < 1) {
                         teamNumber = team;
                         break;
                     }
                 }
-                
-                if ( teamNumber > numberOfTeams ){
+
+                if (teamNumber > numberOfTeams) {
                     CampaignMain.cm.toUser("Sorry but a team could not be found for you.", Username);
                     return;
                 }
@@ -196,12 +208,16 @@ public class DefendCommand implements Command {
 
         }
         /*
-         * At this point, we can assume that we have a valid army - Add the defender to the ShortOperation. - Remove the defender from any other ShortOperations he is involved in. This stops any running chicken threads and may cancel cancel other attacks.
+         * At this point, we can assume that we have a valid army - Add the
+         * defender to the ShortOperation. - Remove the defender from any other
+         * ShortOperations he is involved in. This stops any running chicken
+         * threads and may cancel cancel other attacks.
          */
         CampaignMain.cm.getOpsManager().removePlayerFromAllAttackerLists(dp, so, true);
         CampaignMain.cm.getOpsManager().removePlayerFromAllDefenderLists(dp, so, true);
 
-        // If you join the attackers team then you will be added to the attackers array.
+        // If you join the attackers team then you will be added to the
+        // attackers array.
 
         if (teamNumber > 0 && so.getAttackersTeam() == teamNumber)
             so.addAttacker(dp, da, "");
@@ -209,7 +225,14 @@ public class DefendCommand implements Command {
             so.addDefender(dp, da, "");// add defender
 
         /*
-         * We can assume that the player has enough money/etc to defend the game, or he would not have passed the checks. This is a VERY VERY dangerous step. It is possible for people to have enough when they go active and then drop under (ie - buy a unit). This is a massive hole, as the returns when an op is terminated are flat. This means a player can defend, transfer and then cancel to get huge stacks of cash ... This is why defender costs for non-modifying operations are so strongly discouraged in the DefaultOperation comments.
+         * We can assume that the player has enough money/etc to defend the
+         * game, or he would not have passed the checks. This is a VERY VERY
+         * dangerous step. It is possible for people to have enough when they go
+         * active and then drop under (ie - buy a unit). This is a massive hole,
+         * as the returns when an op is terminated are flat. This means a player
+         * can defend, transfer and then cancel to get huge stacks of cash ...
+         * This is why defender costs for non-modifying operations are so
+         * strongly discouraged in the DefaultOperation comments.
          */
         int money = o.getIntValue("DefenderCostMoney");
         int flu = o.getIntValue("DefenderCostInfluence");
@@ -256,13 +279,14 @@ public class DefendCommand implements Command {
             CampaignMain.cm.toUser("AM:" + dp.getName() + " has joined the operation, as a defender. <a href=\"MEKWARS/c commenceoperation#" + opID + "#CONFIRM\">Click here to commence</a>", so.getInitiator().getName(), true);
         }
 
-        //Defender had an outstanding attack and that attack needs to be terminated.
+        // Defender had an outstanding attack and that attack needs to be
+        // terminated.
         int altID = CampaignMain.cm.getOpsManager().playerIsAnAttacker(dp);
-        if ( altID > 0 ){
+        if (altID > 0) {
             ShortOperation attackingOp = CampaignMain.cm.getOpsManager().getRunningOps().get(altID);
             CampaignMain.cm.getOpsManager().terminateOperation(attackingOp, OperationManager.TERM_NOATTACKERS, null);
         }
-        
+
     }// end process
 
 }// end DefendCommand

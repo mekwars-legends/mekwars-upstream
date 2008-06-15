@@ -891,6 +891,11 @@ public class ShortValidator {
      */
     public void checkAttackerConstruction(ArrayList<Integer> failureReasons, SArmy aa, Operation o) {
 
+        //There is no army to check the army will be provided by the server.
+        if ( o.getBooleanValue("MULArmiesOnly") ) {
+            return;
+        }
+        
         /*
          * Can have too many units, or too few, but not both. As such, can use
          * "else if" here and skip the mincheck in some cases. Similar logic
@@ -1269,6 +1274,12 @@ public class ShortValidator {
      */
     private void checkDefenderConstruction(ArrayList<Integer> failureReasons, SArmy da, Operation o) {
 
+        
+        //There is no army to check. The army will be provided by the server
+        if ( o.getBooleanValue("MULArmiesOnly")) {
+            return;
+        }
+        
         // BV min/max. Remember - these are for op qualification, not army
         // matching.
         if (da.getBV() > o.getIntValue("MaxDefenderBV"))

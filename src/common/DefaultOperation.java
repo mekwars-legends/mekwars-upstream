@@ -321,6 +321,9 @@ public class DefaultOperation {
 		 *                       CFC=001
 		 * RepodOmniUnitsToBase - string. Omni's that where used in this op are repodded back to base configuration
 		 *                        Leave blank to disable this option 
+		 * 
+		 * MULArmiesOnly        - Players do not need armies to activate or attack/defend. All armies will be created
+		 *                        via MUL files.
 		 *                        
 		 * AttackerPoweredInfAllowed  - boolean. Overrides AttackerAllowedInf and admits BA/Protos. - AFC=210
 		 * DefenderPoweredInfAllowed  - boolean. Overrides DefenderAllowedInf and admits BA/Protos. - DFC=410
@@ -962,6 +965,7 @@ public class DefaultOperation {
         operationsDefaults.put("CountAerosForSpread"   , "true");
 		
 		operationsDefaults.put("ProtosMustbeGrouped" , "true");
+		operationsDefaults.put("MULArmiesOnly" , "false");
 		
 		operationsDefaults.put("RepodOmniUnitsToBase" , "");
 		

@@ -91,9 +91,10 @@ public class ActivateCommand implements Command {
 			CampaignMain.cm.toUser("AM:You are logged out and may not activate.",Username,true);
 			return;
 		}
-		
+
+		boolean MULOnlyOps = CampaignMain.cm.getOpsManager().hasMULOnlyOps();
 		//if player has no armies, break out
-		if (p.getArmies().size() == 0){
+		if (p.getArmies().size() == 0 && !MULOnlyOps ){
 			CampaignMain.cm.toUser("AM:You must have armies constructed in order to activate.",Username,true);
 			return;
 		}
@@ -107,6 +108,7 @@ public class ActivateCommand implements Command {
 				break;
 			}
 		}
+		
 		if (enabledArmies == 0) {
 			CampaignMain.cm.toUser("AM:You must have at least 1 enabled army to activate.", Username, true);
 			return;
@@ -115,7 +117,7 @@ public class ActivateCommand implements Command {
 		//check for empty armies, pilotless units
 		for (SArmy currA : p.getArmies()) {
 			
-			if (currA.getAmountOfUnits() == 0) {
+			if (currA.getAmountOfUnits() == 0 && !MULOnlyOps) {
 				CampaignMain.cm.toUser("AM:You may not activate with empty armies.",Username,true);
 				return;
 			}

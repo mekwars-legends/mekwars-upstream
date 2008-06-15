@@ -691,6 +691,11 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseCheckBox.setName("ProtosMustbeGrouped");
         spreadPanel.add(BaseCheckBox);
 		
+        BaseCheckBox = new JCheckBox("Mul Armies Only");
+        BaseCheckBox.setToolTipText("<html>If enabled players can go active without armies as they will be provided with muls.</html>");
+        BaseCheckBox.setName("MULArmiesOnly");
+        spreadPanel.add(BaseCheckBox);
+        
         BaseCheckBox = new JCheckBox("Count Vehs in Spread");
         BaseCheckBox.setToolTipText("If true, vehicles are included when checking BV spreads between high/low units.");
         BaseCheckBox.setName("CountVehsForSpread");
@@ -711,8 +716,6 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseCheckBox.setName("CountInfForSpread");
         spreadPanel.add(BaseCheckBox);
 		
-        spreadPanel.add(new JLabel(" ",SwingConstants.TRAILING));
-
         BaseTextField = new JTextField(5);
         spreadPanel.add(new JLabel("Repod Omni to Base:",SwingConstants.TRAILING));
         BaseTextField.setToolTipText("<HTML>String. Omni's that where used in this op are repodded<br>back to this base configuration.<br>Leave blank to disable this option </HTML>");

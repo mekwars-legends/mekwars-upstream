@@ -92,6 +92,8 @@ public class OperationManager {
 	//ISSUE: should these be somehow sorted by faction?
 	private TreeMap<Integer, LongOperation> activeLongOps;
 	
+	private boolean MULOnlyArmiesOpsLoad = false;
+	
 	/**
 	 * Construction of the Manager is keystone event for
 	 * Operations system. Construction triggers attempts to
@@ -1044,6 +1046,7 @@ public class OperationManager {
 		
 		ops.clear();
 		mods.clear();
+		MULOnlyArmiesOpsLoad = false;
 		
 		/*
 		 * read the shortoperation's subdir and do loads. since every
@@ -1054,6 +1057,9 @@ public class OperationManager {
 		for (int i = 0; i < shortNames.length; i++) {
 			Operation currOp = opLoader.loadOpValues(shortNames[i]);
 			ops.put(currOp.getName(), currOp);
+			if ( currOp.getBooleanValue("MULArmiesOnly") ) {
+			    MULOnlyArmiesOpsLoad = true;
+			}
 		}
 		
 		/*
@@ -1089,4 +1095,15 @@ public class OperationManager {
 		opWriter.writeOpList(ops);
 
 	}
+	
+	/**
+	 * Lets us know if MUL only ops have been loaded
+	 * This effects the status of commands like activate
+	 * attack and defend.
+	 * @return
+	 */
+	public boolean hasMULOnlyOps() {
+	    return MULOnlyArmiesOpsLoad;
+	}
+	
 }//end OperationsManager class
