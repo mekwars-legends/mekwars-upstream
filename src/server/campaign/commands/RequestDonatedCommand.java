@@ -206,7 +206,7 @@ public class RequestDonatedCommand implements Command {
 			return;//break out ...
 		}//end if (needsMoreTechs)
 		
-		if ( u.hasVacantPilot() && !u.isSinglePilotUnit() )
+		if ( u.hasVacantPilot() && ( !u.isSinglePilotUnit() || !CampaignMain.cm.getBooleanConfig("AllowPersonalPilotQueues") ) )
 			u.setPilot(p.getMyHouse().getNewPilot(type_id));
 		
 		p.addUnit(u, true);//if both tests were passed, give the unit
