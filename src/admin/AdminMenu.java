@@ -1032,7 +1032,8 @@ public class AdminMenu extends JMenu {
 	    }
 
 	    public void jMenuAdminGrantComponents_actionPerformed(ActionEvent e) {
-	        Object[] Types = { "Mek", "Vehicles", "Infantry", "ProtoMek", "BattleArmor" };
+	        Object[] Types = { "Mek", "Vehicles", "Infantry", "ProtoMek", "BattleArmor", "Aero" };
+	        
 	        Object[] Size = { "Light", "Medium", "Heavy", "Assault" };
 
 	        HouseNameDialog factionDialog = new HouseNameDialog(mwclient, "Faction", false,false);
@@ -1100,7 +1101,7 @@ public class AdminMenu extends JMenu {
 	    }
 
 	    public void jMenuAdminSetHousePriceMod_actionPerformed(ActionEvent e) {
-	        Object[] unitTypes = { "Mek", "Vehicles", "Infantry", "ProtoMek", "BattleArmor" };
+	        Object[] unitTypes = { "Mek", "Vehicles", "Infantry", "ProtoMek", "BattleArmor", "Aero" };
 	        Object[] unitClass = { "Light", "Medium", "Heavy", "Assault" };
 
 	        HouseNameDialog factionDialog = new HouseNameDialog(mwclient, "Faction", false,false);
@@ -1135,7 +1136,7 @@ public class AdminMenu extends JMenu {
 	    }
 	    
 	    public void jMenuAdminSetHouseFluMod_actionPerformed(ActionEvent e) {
-	        Object[] unitTypes = { "Mek", "Vehicles", "Infantry", "ProtoMek", "BattleArmor" };
+	        Object[] unitTypes = { "Mek", "Vehicles", "Infantry", "ProtoMek", "BattleArmor", "Aero" };
 	        Object[] unitClass = { "Light", "Medium", "Heavy", "Assault" };
 
 	        HouseNameDialog factionDialog = new HouseNameDialog(mwclient, "Faction", false,false);
@@ -1341,7 +1342,7 @@ public class AdminMenu extends JMenu {
             if (factionName == null || factionName.length() == 0)
                 return;
             
-            Object[] unitTypes = { "Mek", "Vehicles", "Infantry", "ProtoMeks", "BattleArmor"};
+            Object[] unitTypes = { "Mek", "Vehicles", "Infantry", "ProtoMeks", "BattleArmor", "Aero"};
 
             String unitTypestr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(),
                     "Select Unit Type", "Unit Type",
