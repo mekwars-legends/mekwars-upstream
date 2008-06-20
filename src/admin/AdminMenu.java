@@ -41,6 +41,7 @@ import common.Terrain;
 import common.UnitFactory;
 
 import client.MWClient;
+import client.campaign.CUnit;
 import client.gui.dialog.HouseNameDialog;
 import client.gui.dialog.PlanetNameDialog;
 import client.gui.dialog.SubFactionNameDialog;
@@ -1352,12 +1353,7 @@ public class AdminMenu extends JMenu {
             if (unitTypestr == null || unitTypestr.length() == 0)
                 return;
 
-            int i;
-            for ( i = 0; i < unitTypes.length; i++)
-                if (unitTypestr.equals(unitTypes[i]))
-                    break;
-
-            int unitTypeint = i;
+            int unitTypeint = CUnit.getTypeIDForName(unitTypestr);
 
             String gunnery = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Base Gunnery");
 
