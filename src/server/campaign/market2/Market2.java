@@ -19,6 +19,8 @@ package server.campaign.market2;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.Vector;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import common.Unit;
 import common.util.UnitUtils;
@@ -44,7 +46,6 @@ public class Market2 {
 	// IVARS
 	private IAuction auctionType;// set in constructor
 	private TreeMap<Integer, MarketListing> currentAuctions;
-	boolean tickProcessing = false;
 	
 	// CONSTRUCTOR
 	/**
@@ -154,13 +155,6 @@ public class Market2 {
 	 */
 	private void removeListing(int auctionID, boolean destroyFactionUnits) {
 		
-	    while ( tickProcessing ) {
-	        try {
-	        Thread.sleep(1000);
-	        }catch (Exception ex) {
-	            CampaignData.mwlog.errLog(ex);
-	        }
-	    }
 		// get the auction and seller name
 		MarketListing currAuction = currentAuctions.get(auctionID);
 		String sellerName = currAuction.getSellerName();
@@ -399,7 +393,9 @@ public class Market2 {
 		 * removal after the finishing loop.
 		 */
 		ArrayList<Integer> listingsToRemove = new ArrayList<Integer>();
-		tickProcessing = true;
+		Lock lock = new ReentrantLock();
+		
+		lock.lock();
 		for (Integer currAuctionID : currentAuctions.keySet()) {
 			
 			// get the ID and actual listing
@@ -574,7 +570,7 @@ public class Market2 {
 			}
 		}// end for(all auctions)
 
-		tickProcessing = false;
+		lock.unlock();
        // remove failed auction using the standard removeListing, which will send client updates
 		for (Integer idToRemove : listingsToRemove)
 			this.removeListing(idToRemove,true);
