@@ -1006,7 +1006,7 @@ public final class CampaignMain implements Serializable {
              * draw the IP, this should work. @urgru 1.29.06 :-(
              */
             CampaignData.mwlog.ipLog("Name: " + Username + " IP: " + CampaignMain.cm.getServer().getIP(Username));
-            CampaignMain.cm.toUser("PL|SUD|1", Username,false);
+            CampaignMain.cm.toUser("PL|SUD|1", Username, false);
 
         }
     }// end CampaignMain.doLogin(String userName)
@@ -2039,10 +2039,18 @@ public final class CampaignMain implements Serializable {
          * Tick the market. This will resolve any auctions w/ 0 ticks remaining
          * and decrement all others.
          */
-        market.tick();
+        try {
+            market.tick();
+        } catch (Exception ex) {
+            CampaignData.mwlog.errLog(ex);
+        }
 
         CampaignData.mwlog.tickLog("Parts Market Tick Started");
-        partsmarket.tick();
+        try {
+            partsmarket.tick();
+        } catch (Exception ex) {
+            CampaignData.mwlog.errLog(ex);
+        }
         CampaignData.mwlog.tickLog("Parts Market Tick Finished");
 
         CampaignData.mwlog.tickLog("doRanking");
@@ -2231,14 +2239,14 @@ public final class CampaignMain implements Serializable {
     }
 
     public boolean isSynchingBB() {
-        
-        if ( !validBBVersion )
+
+        if (!validBBVersion)
             return false;
-        
-        if ( isUsingMySQL() ){
+
+        if (isUsingMySQL()) {
             return MySQL.isSynchingBB();
         }
-        
+
         return false;
     }
 

@@ -44,6 +44,7 @@ public class Market2 {
 	// IVARS
 	private IAuction auctionType;// set in constructor
 	private TreeMap<Integer, MarketListing> currentAuctions;
+	boolean tickProcessing = false;
 	
 	// CONSTRUCTOR
 	/**
@@ -153,6 +154,13 @@ public class Market2 {
 	 */
 	private void removeListing(int auctionID, boolean destroyFactionUnits) {
 		
+	    while ( tickProcessing ) {
+	        try {
+	        Thread.sleep(1000);
+	        }catch (Exception ex) {
+	            CampaignData.mwlog.errLog(ex);
+	        }
+	    }
 		// get the auction and seller name
 		MarketListing currAuction = currentAuctions.get(auctionID);
 		String sellerName = currAuction.getSellerName();
@@ -391,7 +399,7 @@ public class Market2 {
 		 * removal after the finishing loop.
 		 */
 		ArrayList<Integer> listingsToRemove = new ArrayList<Integer>();
-		
+		tickProcessing = true;
 		for (Integer currAuctionID : currentAuctions.keySet()) {
 			
 			// get the ID and actual listing
@@ -566,6 +574,7 @@ public class Market2 {
 			}
 		}// end for(all auctions)
 
+		tickProcessing = false;
        // remove failed auction using the standard removeListing, which will send client updates
 		for (Integer idToRemove : listingsToRemove)
 			this.removeListing(idToRemove,true);

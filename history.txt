@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.33.x
++ Concurrent Modification errors in Market.tick()
 + Bug: Admin UI commands not accessing Aero class
 + Bug: possible to get donated units without pilots
 + RFE: allow 0 unit armies for MUL only ops
