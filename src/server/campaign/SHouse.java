@@ -2217,7 +2217,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
      */
     public String addUnit(SUnit unit, boolean sendUpdate) {
 
-        if (Boolean.parseBoolean(this.getConfig("AllowPersonalPilotQueues")) && (unit.getType() == Unit.MEK || unit.getType() == Unit.PROTOMEK) && !unit.hasVacantPilot()) {
+        if (Boolean.parseBoolean(this.getConfig("AllowPersonalPilotQueues")) && unit.isSinglePilotUnit() && !unit.hasVacantPilot()) {
             this.getPilotQueues().addPilot(unit.getType(), (SPilot) unit.getPilot());
             if (CampaignMain.cm.isUsingMySQL()) {
                 CampaignMain.cm.MySQL.linkPilotToFaction(((SPilot) unit.getPilot()).getPilotId(), this.getDBId());
