@@ -590,7 +590,7 @@ public class CampaignData implements TerrainProvider {
         munitions.put("Standard",AmmoType.M_STANDARD);
 
         // AC Munition Types
-        munitions.put("LBX Clutser",AmmoType.M_CLUSTER);
+        munitions.put("LBX Cluster",AmmoType.M_CLUSTER);
         munitions.put("AC Armor Piercing",AmmoType.M_ARMOR_PIERCING);
         munitions.put("AC Flechette",AmmoType.M_FLECHETTE);
         munitions.put("AC Incendiary",AmmoType.M_INCENDIARY_AC);
