@@ -444,7 +444,7 @@ public final class MWDedHost implements IClient {
             // error.0
             CampaignData.mwlog.infoLog("display ded error command received from " + name);
             try {
-                File logFile = new File("./logs/error.0");
+                File logFile = new File("./logs/errlog.0");
                 FileInputStream fis = new FileInputStream(logFile);
                 BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
                 sendChat(PROTOCOL_PREFIX + "c sendtomisc#" + name + "#Error Log from " + myUsername);
@@ -474,7 +474,7 @@ public final class MWDedHost implements IClient {
             // log.0
             CampaignData.mwlog.infoLog("display ded log command received from " + name);
             try {
-                File logFile = new File("./logs/log.0");
+                File logFile = new File("./logs/infolog.0");
                 FileInputStream fis = new FileInputStream(logFile);
                 BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
                 sendChat(PROTOCOL_PREFIX + "c sendtomisc#" + name + "#Ded Log from " + myUsername);

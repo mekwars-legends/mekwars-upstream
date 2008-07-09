@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.33.x
++ Bug: Deds sending data from old log.0 and error.0 instead of new errlog.0 and infolog.0
 + Typo Cluster ammo
 + Concurrent Modification errors in Market.tick()
 + Bug: Admin UI commands not accessing Aero class
