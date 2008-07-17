@@ -430,8 +430,8 @@ public final class ServerConfigurationDialog implements ActionListener {
         // and last, the random modifier
         JPanel repodRandomFlowTemp = new JPanel(new SpringLayout());
         baseTextField = new JTextField(5);
-        repodRandomFlowTemp.add(new JLabel("Percent Discount for Random:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Amount to reduce repod costs when a pod is random, instead of targetted");
+        repodRandomFlowTemp.add(new JLabel("Percent of Cost for Random:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<HTML>Amount to reduce repod costs when a pod is random, instead of targeted.<br>Example 70 would give you 70% of the current cost.</HTML>");
         baseTextField.setName("RepodRandomMod");
         repodRandomFlowTemp.add(baseTextField);
 

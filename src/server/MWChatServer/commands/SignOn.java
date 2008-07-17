@@ -80,8 +80,10 @@ public class SignOn extends CommandBase implements ICommands {
 		try {
 			
 			if (args.length < 3){
-				if ( !client.getServer().signOn(client, null) )
+				if ( !client.getServer().signOn(client, null) ){
+				    client.getServer().kill(client.getUserId(), "Bye Bye");
 					return false;
+				}
 			//megamek.net stuff
 			}else {
 				ProtocolVersion = args[3];
@@ -89,8 +91,10 @@ public class SignOn extends CommandBase implements ICommands {
 				if (args.length > 4) UserColor = args[4];
 			}
 			
-			if ( !client.getServer().signOn(client, args[2]) )
+			if ( !client.getServer().signOn(client, args[2]) ){
+                client.getServer().kill(client.getUserId(), "Bye Bye");
 				return false;
+			}
 			server.MWServ server = ((ServerWrapper)client.getServer()).getMWServ();
 			server.getUser(username).setColor(UserColor);
 			server.sendNewUserToAll(username, true);

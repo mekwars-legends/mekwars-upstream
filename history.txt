@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.33.x
++ Bug: Banned players reseting auto-resolve timer 
++ Confusing Text for Random Repost cost Discount
 + Bug: Deds sending data from old log.0 and error.0 instead of new errlog.0 and infolog.0
 + Typo Cluster ammo
 + Concurrent Modification errors in Market.tick()
