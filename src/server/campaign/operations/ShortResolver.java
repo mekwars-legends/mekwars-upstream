@@ -2988,7 +2988,9 @@ public class ShortResolver {
                             oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
                         }else if ( !oEntity.canStand() && CampaignMain.cm.getRandomNumber(100) < forcedSalvageScrappedChance ){
                             oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
-                        }else if ( oEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_EJECTED && CampaignMain.cm.isUsingAdvanceRepair()){
+                        }
+                        
+                        if ( oEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_EJECTED && CampaignMain.cm.isUsingAdvanceRepair()){
                             UnitUtils.destroyCockPit(unit.getEntity());
                         }
                         
