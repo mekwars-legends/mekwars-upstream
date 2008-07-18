@@ -158,8 +158,8 @@ public class TransferUnitCommand implements Command {
 
 				//if scrapping costs bills, subtract the appropriate amount.
 				int mechscrapprice = 0;
-				if (new Boolean(house.getConfig("ScrappingCostsBills"))) {
-					mechscrapprice = (int)(player.getMyHouse().getPriceForUnit(m.getWeightclass(), m.getType()) * Double.parseDouble(house.getConfig("CostToScrapFullyFunctional")));
+				if (house.getIntegerConfig("ScrapsAllowed") > 0) {
+					mechscrapprice = (int)(player.getMyHouse().getPriceForUnit(m.getWeightclass(), m.getType()) * Double.parseDouble(house.getConfig("ScrapCostMultiplier")));
 					if (player.getMoney() < mechscrapprice)
 						mechscrapprice = player.getMoney();
 					player.addMoney(-mechscrapprice);
