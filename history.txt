@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.33.x
++ RFE: Ejected Meks now have destroyed cockpits.
 + Bug: Old Server Config Variables still being used.
 + Bug: Banned players reseting auto-resolve timer 
 + Confusing Text for Random Repost cost Discount
