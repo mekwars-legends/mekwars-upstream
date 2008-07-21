@@ -155,8 +155,9 @@ public class ServerWrapper extends MWChatServer{
 					//this should trigger the assignment of a nobody
 					throw new Exception(ACCESS_DENIED);
 				}*/
-			    client.getServer().kill(client.getUserId(),"Terminated by signing on elsewhere");
+			    //client.getServer().kill(client.getUserId(),"Terminated by signing on elsewhere");
                 CampaignData.mwlog.errLog("Terminated by signing on elsewhere");
+                signOff(client.getServer().getClient(clientKey(client)));
 			}
 			int access = auth.getAccess();
 			client.setAccessLevel(access);
