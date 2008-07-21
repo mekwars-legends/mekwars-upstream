@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.33.x
++ More ConnectionHandler Roll backs.
 + More Attempts to fix WSOD issue
 + RFE: Ejected Meks now have destroyed cockpits.
 + Bug: Old Server Config Variables still being used.

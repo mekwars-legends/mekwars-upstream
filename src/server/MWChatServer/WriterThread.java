@@ -70,11 +70,7 @@ public class WriterThread extends Thread {
         while (_keepGoing) {
             try {
             	if ( _socket == null 
-            			|| _socket.isClosed() 
-            			|| !_socket.isBound()
-            			|| !_socket.isConnected()
-            			|| _socket.isOutputShutdown()
-            			|| _socket.isInputShutdown()) {
+            			|| _socket.isClosed() ) {
             		pleaseStop();
             		continue;
             	}

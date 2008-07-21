@@ -65,7 +65,7 @@ public abstract class AbstractConnectionHandler {
 
 		if (notify) {
 			_client.socketClosed();
-			_client.getServer().signOff(_client);
+			//_client.getServer().signOff(_client);
 		}
 	}
 	
