@@ -51,6 +51,7 @@ public class WriterThread extends Thread {
     protected boolean _keepGoing = true;
 	protected LinkedList<String> _messages = new LinkedList<String>();
 	protected String _host;
+
 	
     public WriterThread(Socket socket, PrintWriter out, String host) {
         super("WriterThread "+ host);
@@ -69,7 +70,11 @@ public class WriterThread extends Thread {
         while (_keepGoing) {
             try {
             	if ( _socket == null 
-            			|| _socket.isClosed() ) {
+            			|| _socket.isClosed() 
+            			|| !_socket.isBound()
+            			|| !_socket.isConnected()
+            			|| _socket.isOutputShutdown()
+            			|| _socket.isInputShutdown()) {
             		pleaseStop();
             		continue;
             	}

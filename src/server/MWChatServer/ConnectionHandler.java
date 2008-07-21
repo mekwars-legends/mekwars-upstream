@@ -68,7 +68,7 @@ public class ConnectionHandler extends AbstractConnectionHandler {
     	_client = client;
         _socket = socket;
         _socket.setKeepAlive(true);
-        
+
         // Trying a 2 second time out on reading the socket --Torren
         _socket.setSoTimeout(2000);
         _socket.setTcpNoDelay(true);

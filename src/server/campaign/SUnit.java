@@ -57,17 +57,15 @@ import megamek.common.Mounted;
 import megamek.common.Pilot;
 import megamek.common.Tank;
 import megamek.common.WeaponType;
+import megamek.common.weapons.ISVehicleFlamer;
 
 /**
  * A class representing an MM.Net Entity
  * 
- * @author Helge Richter (McWizard)
- * 
- * Jun 10/04 - Dave Poole added an overloaded constructor to allow creation of a
- * new SUnit with the same UnitID as an existing Mech to facilitate repodding
+ * @author Helge Richter (McWizard) Jun 10/04 - Dave Poole added an overloaded constructor to allow creation of a new SUnit with the same UnitID as an existing Mech to facilitate repodding
  */
 
-public final class SUnit extends Unit{
+public final class SUnit extends Unit {
 
     // VARIABLES
     private Integer BV = 0;
@@ -144,13 +142,7 @@ public final class SUnit extends Unit{
 
     // STATIC METHODS
     /**
-     * Method which checks a unit for illegal ammo and replaces it with default
-     * ammo loads. useful for removing faction banned ammo from salvage.
-     * 
-     * Note that this is primarily designed to strip L2 ammo from L2 units (eg -
-     * precision AC) and replace it with normal ammo. L3 ammos may lead to some
-     * oddities and should be banned or allowed server wide rather than on a
-     * house-by-house basis.
+     * Method which checks a unit for illegal ammo and replaces it with default ammo loads. useful for removing faction banned ammo from salvage. Note that this is primarily designed to strip L2 ammo from L2 units (eg - precision AC) and replace it with normal ammo. L3 ammos may lead to some oddities and should be banned or allowed server wide rather than on a house-by-house basis.
      * 
      * @param u -
      *            unit to check
@@ -207,9 +199,7 @@ public final class SUnit extends Unit{
     }
 
     /**
-     * Method which determines whether or not a given unit may be sold on the
-     * black market. Any "false" return prevents house listings as well as
-     * player sales.
+     * Method which determines whether or not a given unit may be sold on the black market. Any "false" return prevents house listings as well as player sales.
      */
     public static boolean mayBeSoldOnMarket(SUnit u) {
 
@@ -277,9 +267,7 @@ public final class SUnit extends Unit{
     }
 
     /**
-     * Pass-through method that gets the number of bays/techs required for a
-     * given unit by drawing its characteristics and feeding them to
-     * getHangarSpaceRequired(int,int,int,String).
+     * Pass-through method that gets the number of bays/techs required for a given unit by drawing its characteristics and feeding them to getHangarSpaceRequired(int,int,int,String).
      */
     public static int getHangarSpaceRequired(SUnit u, SHouse faction) {
         return SUnit.getHangarSpaceRequired(u.getType(), u.getWeightclass(), u.getPilot().getBayModifier(), u.getModelName(), faction);
@@ -292,9 +280,7 @@ public final class SUnit extends Unit{
     }
 
     /**
-     * Simple static method that access configs and returns a unit's influence
-     * on map size. Called by ShortOperation when changing status from Waiting ->
-     * In_Progress.
+     * Simple static method that access configs and returns a unit's influence on map size. Called by ShortOperation when changing status from Waiting -> In_Progress.
      * 
      * @return - configured map weighting
      */
@@ -347,9 +333,9 @@ public final class SUnit extends Unit{
         if (CampaignMain.cm.getBooleanConfig("UsePartsRepair"))
             return 0;
 
-        if ( crit == null )
+        if (crit == null)
             return 0;
-        
+
         if (crit.isBreached() && !crit.isDamaged())
             return 0;
 
@@ -515,7 +501,7 @@ public final class SUnit extends Unit{
             result.append("0$");
         }
 
-        result.append("0$0$"); //unused Slite info
+        result.append("0$0$"); // unused Slite info
         if (CampaignMain.cm.getData().getBannedTargetingSystems().containsKey(this.getEntity().getTargSysType())) {
             result.append(MiscType.T_TARGSYS_STANDARD);
             this.getEntity().setTargSysType(MiscType.T_TARGSYS_STANDARD);
@@ -552,7 +538,7 @@ public final class SUnit extends Unit{
     }
 
     public synchronized void toDB() {
-    	PreparedStatement ps = null;
+        PreparedStatement ps = null;
         StringBuffer sql = new StringBuffer();
         Entity ent = getEntity();
         ResultSet rs = null;
@@ -672,7 +658,7 @@ public final class SUnit extends Unit{
                 sql.setLength(0);
                 sql.append("REPLACE into unit_ammo set unitID = ?, ammoLocation = ?, ammoHotLoaded=?, ammoType=?, ammoInternalName=?, ammoShotsLeft=?");
                 ps.close();
-                
+
                 ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
                 ps.setInt(1, getDBId());
                 ps.setInt(2, AmmoLoc);
@@ -685,26 +671,19 @@ public final class SUnit extends Unit{
             }
             ps.close();
             // Save the pilot
-/*
- 
-            if (!this.hasVacantPilot()) {
-            	if (getPilot().getPilotId() == -1) {
-            		// Pilot not in database
-            		getPilot().setPilotId(CampaignMain.cm.getAndUpdateCurrentPilotID());
-            	}
-                ((SPilot) getPilot()).toDB(getType(), getWeightclass());
-                CampaignMain.cm.MySQL.linkPilotToUnit(((SPilot) getPilot()).getPilotId(), getDBId());
-            }
-*/
+            /*
+             * if (!this.hasVacantPilot()) { if (getPilot().getPilotId() == -1) { // Pilot not in database getPilot().setPilotId(CampaignMain.cm.getAndUpdateCurrentPilotID()); } ((SPilot) getPilot()).toDB(getType(), getWeightclass()); CampaignMain.cm.MySQL.linkPilotToUnit(((SPilot) getPilot()).getPilotId(), getDBId()); }
+             */
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL Exception in SUnit.toDB: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
             try {
-            	if(ps != null)
-            		ps.close();
-            	if (rs != null)
-            		rs.close();
-            } catch (SQLException ex) {}
+                if (ps != null)
+                    ps.close();
+                if (rs != null)
+                    rs.close();
+            } catch (SQLException ex) {
+            }
         }
     }
 
@@ -739,10 +718,7 @@ public final class SUnit extends Unit{
                 setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
             }
             /*
-             * Handle unit status. FOR_SALE and AdvanceRepair both require
-             * special handling. If the unit is FOR_SALE, make sure a listing
-             * still exists. If not, the server probably crashed and the unit
-             * should be returned to normal.
+             * Handle unit status. FOR_SALE and AdvanceRepair both require special handling. If the unit is FOR_SALE, make sure a listing still exists. If not, the server probably crashed and the unit should be returned to normal.
              */
             if (newstate == STATUS_FORSALE && CampaignMain.cm.getMarket().getListingForUnit(this.getId()) == null)
                 setStatus(STATUS_OK);
@@ -817,8 +793,8 @@ public final class SUnit extends Unit{
                 }
             }
             setEntity(en);
-            TokenReader.readString(ST);//unused
-            TokenReader.readString(ST);//unused
+            TokenReader.readString(ST);// unused
+            TokenReader.readString(ST);// unused
             // if allow level 3 targeting is enabled
             // for all units then apply the saved
             // one else use the entity default.
@@ -857,24 +833,24 @@ public final class SUnit extends Unit{
 
     public synchronized void fromDB(int unitID) {
 
-    	ResultSet rs = null;
+        ResultSet rs = null;
         ResultSet ammoRS = null;
         ResultSet mgRS = null;
-    	Statement ammoStmt = null;
-    	Statement mgStmt = null;
-    	Statement stmt = null;
-    	
+        Statement ammoStmt = null;
+        Statement mgStmt = null;
+        Statement stmt = null;
+
         try {
-            
+
             ammoStmt = CampaignMain.cm.MySQL.getStatement();
             mgStmt = CampaignMain.cm.MySQL.getStatement();
             stmt = CampaignMain.cm.MySQL.getStatement();
             // MG and ammo are being reset during unit load.
             // So get the resultSets now and save them for later.
-            
+
             ammoRS = ammoStmt.executeQuery("SELECT * from unit_ammo WHERE unitID = " + unitID + " ORDER BY ammoLocation");
             mgRS = mgStmt.executeQuery("SELECT * from unit_mgs WHERE unitID = " + unitID + " ORDER BY mgLocation");
-            
+
             rs = stmt.executeQuery("SELECT * from units WHERE ID = " + unitID);
             if (rs.next()) {
                 setUnitFilename(rs.getString("uFileName"));
@@ -925,7 +901,7 @@ public final class SUnit extends Unit{
                 // Load ammo
                 unitEntity = getEntity();
                 while (ammoRS.next()) {
-                	
+
                     int weaponType = ammoRS.getInt("ammoType");
                     String ammoName = ammoRS.getString("ammoInternalName");
                     int shots = ammoRS.getInt("ammoShotsLeft");
@@ -978,19 +954,20 @@ public final class SUnit extends Unit{
             CampaignData.mwlog.dbLog("SQL Error in SUnit.fromDB: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
             try {
-            	if(rs!=null)
-            		rs.close();
-            	if(mgRS!=null)
-            		mgRS.close();
-            	if(ammoRS != null)
-            		ammoRS.close();
-            	if(stmt!=null)
-            		stmt.close();
-            	if(mgStmt!=null)
-            		mgStmt.close();
-            	if(ammoStmt!=null)
-            		ammoStmt.close();
-            } catch (SQLException ex) {}
+                if (rs != null)
+                    rs.close();
+                if (mgRS != null)
+                    mgRS.close();
+                if (ammoRS != null)
+                    ammoRS.close();
+                if (stmt != null)
+                    stmt.close();
+                if (mgStmt != null)
+                    mgStmt.close();
+                if (ammoStmt != null)
+                    ammoStmt.close();
+            } catch (SQLException ex) {
+            }
         }
     }
 
@@ -1035,7 +1012,6 @@ public final class SUnit extends Unit{
     }
 
     /**
-     * 
      * @return a smaller description
      */
     public String getSmallDescription() {
@@ -1087,29 +1063,41 @@ public final class SUnit extends Unit{
      */
     public int calcBV() {
 
-        // get a base BV from MegaMek
-        int calcedBV = this.getEntity().calculateBattleValue(false);
-        
-        // Boost BV of super-fast tanks if the "FastHoverBVMod" is a positive
-        // number.
-        int FastHoverBVMod = CampaignMain.cm.getIntegerConfig("FastHoverBVMod");
-        if (FastHoverBVMod > 0 && this.getType() == Unit.VEHICLE && this.getEntity().getMovementMode() == megamek.common.IEntityMovementMode.HOVER) {
-            if (this.getEntity().getWalkMP() >= 8)
-                calcedBV += FastHoverBVMod;
+        try {
+            if (this.hasVacantPilot()) {
+                this.getEntity().getCrew().setGunnery(4);
+                this.getEntity().getCrew().setPiloting(5);
+            }
+            // get a base BV from MegaMek
+            int calcedBV = this.getEntity().calculateBattleValue(false);
+
+            if (this.hasVacantPilot()) {
+                this.getEntity().getCrew().setGunnery(99);
+                this.getEntity().getCrew().setPiloting(99);
+            }
+            // Boost BV of super-fast tanks if the "FastHoverBVMod" is a positive
+            // number.
+            int FastHoverBVMod = CampaignMain.cm.getIntegerConfig("FastHoverBVMod");
+            if (FastHoverBVMod > 0 && this.getType() == Unit.VEHICLE && this.getEntity().getMovementMode() == megamek.common.IEntityMovementMode.HOVER) {
+                if (this.getEntity().getWalkMP() >= 8)
+                    calcedBV += FastHoverBVMod;
+            }
+
+            // Increase elite BV's by 5% if the "ElitePilotsBVMod" is enabled.
+            if (CampaignMain.cm.getBooleanConfig("ElitePilotsBVMod")) {
+                if (getPilot().getGunnery() < 3)
+                    calcedBV = (int) Math.round(calcedBV * 1.05);
+                else if (getPilot().getPiloting() < 3)
+                    calcedBV = (int) Math.round(calcedBV * 1.05);
+            }
+
+            // Increase BV if the pilot has MaxTech/MechWarrior skills.
+            calcedBV += getPilotSkillBV();
+
+            return calcedBV;
+        } catch (Exception ex) {
+            return Integer.MAX_VALUE;
         }
-
-        // Increase elite BV's by 5% if the "ElitePilotsBVMod" is enabled.
-        if (CampaignMain.cm.getBooleanConfig("ElitePilotsBVMod")) {
-            if (getPilot().getGunnery() < 3)
-                calcedBV = (int) Math.round(calcedBV * 1.05);
-            else if (getPilot().getPiloting() < 3)
-                calcedBV = (int) Math.round(calcedBV * 1.05);
-        }
-
-        // Increase BV if the pilot has MaxTech/MechWarrior skills.
-        calcedBV += getPilotSkillBV();
-
-        return calcedBV;
     }
 
     @Override
@@ -1170,8 +1158,8 @@ public final class SUnit extends Unit{
 
         p.setUnitType(this.getType());
         super.setPilot(p);
-        if ( CampaignMain.cm.isUsingMySQL() ) {
-        	this.toDB();
+        if (CampaignMain.cm.isUsingMySQL()) {
+            this.toDB();
             CampaignMain.cm.MySQL.linkPilotToUnit(p, this);
         }
     }
@@ -1181,8 +1169,7 @@ public final class SUnit extends Unit{
         setType(Unit.getEntityType(this.getEntity()));
 
         /*
-         * if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE)
-         * setWeightclass(getEntityWeight(this.getEntity()));
+         * if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE) setWeightclass(getEntityWeight(this.getEntity()));
          */
         // Set Modelname
         if (getType() == Unit.PROTOMEK || getType() == Unit.BATTLEARMOR || getType() == Unit.INFANTRY || getType() == Unit.VEHICLE || this.getEntity().isOmni())
@@ -1202,13 +1189,7 @@ public final class SUnit extends Unit{
     }
 
     /**
-     * Sets status to unmaintained. Factors out repetetive code checking
-     * maintainance status and decreasing as unit is moved to unmaintained.
-     * Called from both Player and SetUnmaintainedCommand.
-     * 
-     * It would possible to bypass this code and set a unit as unmaintained
-     * without incurring any maintainance penalty w/
-     * Unit.setStatus(STATUS_UNMAINTAINED).
+     * Sets status to unmaintained. Factors out repetetive code checking maintainance status and decreasing as unit is moved to unmaintained. Called from both Player and SetUnmaintainedCommand. It would possible to bypass this code and set a unit as unmaintained without incurring any maintainance penalty w/ Unit.setStatus(STATUS_UNMAINTAINED).
      * 
      * @urgru 8/4/04
      */
@@ -1227,8 +1208,7 @@ public final class SUnit extends Unit{
         this.setStatus(STATUS_UNMAINTAINED);
 
         /*
-         * now change the maintainance levels. if the unit is well maintained,
-         * drop it to the basevalue. otherwise, apply the standard penalty.
+         * now change the maintainance levels. if the unit is well maintained, drop it to the basevalue. otherwise, apply the standard penalty.
          */
         if (getMaintainanceLevel() >= baseUnmaintained + unmaintPenalty)
             setMaintainanceLevel(baseUnmaintained);
@@ -1248,8 +1228,7 @@ public final class SUnit extends Unit{
             BV = toReturn;
         } else
             toReturn = BV;
-        
-        
+
         // if the BV is negative, send a 0 instead.
         return (toReturn < 0) ? 0 : toReturn;
     }
@@ -1306,8 +1285,8 @@ public final class SUnit extends Unit{
                     }
                 }
 
-                if(ms != null)
-                	ent = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
+                if (ms != null)
+                    ent = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
             } catch (Exception exep) {
                 ent = null;
             }
@@ -1333,10 +1312,7 @@ public final class SUnit extends Unit{
                 } catch (Exception exei) {
 
                     /*
-                     * Unit cannot be found in Meks.zip, Vehicles.zip or
-                     * Infantry.zip. Probably a bad filename (table type) or a
-                     * missing unit. Either way, need to set up and return a
-                     * failsafe unit.
+                     * Unit cannot be found in Meks.zip, Vehicles.zip or Infantry.zip. Probably a bad filename (table type) or a missing unit. Either way, need to set up and return a failsafe unit.
                      */
                     CampaignData.mwlog.errLog("Error loading: " + Filename);
 
@@ -1348,8 +1324,7 @@ public final class SUnit extends Unit{
                     } catch (Exception exep) {
 
                         /*
-                         * Can't even find the default unit file. Are all the
-                         * .zip files missing? Misnamed? Read access is denied?
+                         * Can't even find the default unit file. Are all the .zip files missing? Misnamed? Read access is denied?
                          */
                         CampaignData.mwlog.errLog("Unable to find default unit file. Server Exiting");
                         CampaignData.mwlog.errLog(exep);
@@ -1378,7 +1353,6 @@ public final class SUnit extends Unit{
     }
 
     /**
-     * 
      * @return the amount of EXP the pilot has
      */
     public int getExperience() {
@@ -1386,7 +1360,6 @@ public final class SUnit extends Unit{
     }
 
     /**
-     * 
      * @param experience
      *            the experience to set the pilot to
      */
