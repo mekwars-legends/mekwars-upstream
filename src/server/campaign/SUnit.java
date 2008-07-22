@@ -57,7 +57,6 @@ import megamek.common.Mounted;
 import megamek.common.Pilot;
 import megamek.common.Tank;
 import megamek.common.WeaponType;
-import megamek.common.weapons.ISVehicleFlamer;
 
 /**
  * A class representing an MM.Net Entity

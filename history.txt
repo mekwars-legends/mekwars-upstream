@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.33.x
++ Updated duplication connection message to display clients name and print in 
+     Debug log instead of error.
++ Bug: boards in sub folders not loading correctly.
 + More ConnectionHandler Roll backs.
 + More Attempts to fix WSOD issue
 + RFE: Ejected Meks now have destroyed cockpits.

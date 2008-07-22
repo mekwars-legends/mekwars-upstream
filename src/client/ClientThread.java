@@ -258,9 +258,17 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                         for (int i = 0; i < maxBoards; i++) {
                             boardvec.add(MapSettings.BOARD_SURPRISE);
                         }
-                        
+
                         mySettings.setBoardsSelectedVector(boardvec);
-                        mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize()));
+
+                        if (aTerrain.getStaticMapName().indexOf("/") > -1) {
+                            String folder = aTerrain.getStaticMapName().substring(0, aTerrain.getStaticMapName().lastIndexOf("/"));
+                            mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), folder));
+                        } else if (aTerrain.getStaticMapName().indexOf("\\") > -1) {
+                            String folder = aTerrain.getStaticMapName().substring(0, aTerrain.getStaticMapName().lastIndexOf("\\"));
+                            mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), folder));
+                        } else
+                            mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), ""));
                     } else if (aTerrain.getStaticMapName().toLowerCase().endsWith("generated")) {
                         PlanetEnvironment env = this.mwclient.getCurrentEnvironment();
                         /* Set the map-gen values */
@@ -286,14 +294,21 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                             mySettings.setTheme(env.getTheme());
                         else
                             mySettings.setTheme("");
-                        
+
                         int maxBoards = aTerrain.getXBoardSize() * aTerrain.getYBoardSize();
                         for (int i = 0; i < maxBoards; i++) {
                             boardvec.add(MapSettings.BOARD_GENERATED);
                         }
-                        
+
                         mySettings.setBoardsSelectedVector(boardvec);
-                        mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize()));
+                        if (aTerrain.getStaticMapName().indexOf("/") > -1) {
+                            String folder = aTerrain.getStaticMapName().substring(0, aTerrain.getStaticMapName().lastIndexOf("/"));
+                            mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), folder));
+                        } else if (aTerrain.getStaticMapName().indexOf("\\") > -1) {
+                            String folder = aTerrain.getStaticMapName().substring(0, aTerrain.getStaticMapName().lastIndexOf("\\"));
+                            mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), folder));
+                        } else
+                            mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), ""));
 
                         if (mwclient.getBuildingTemplate() != null && mwclient.getBuildingTemplate().getTotalBuildings() > 0) {
                             ArrayList<BuildingTemplate> buildingList = generateRandomBuildings(mySettings, mwclient.getBuildingTemplate());
@@ -337,7 +352,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     ArrayList<String> boardvec = new ArrayList<String>();
                     boardvec.add(MapSettings.BOARD_GENERATED);
                     mySettings.setBoardsSelectedVector(boardvec);
-                    
+
                     if (mwclient.getBuildingTemplate() != null && mwclient.getBuildingTemplate().getTotalBuildings() > 0) {
                         ArrayList<BuildingTemplate> buildingList = generateRandomBuildings(mySettings, mwclient.getBuildingTemplate());
                         mySettings.setBoardBuildings(buildingList);
@@ -824,10 +839,11 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
     /**
      * Scans the boards directory for map boards of the appropriate size and returns them.
      */
-    private ArrayList<String> scanForBoards(int boardWidth, int boardHeight) {
+    private ArrayList<String> scanForBoards(int boardWidth, int boardHeight, String folder) {
         ArrayList<String> boards = new ArrayList<String>();
         // Board Board = client.game.getBoard();
-        File boardDir = new File("data/boards");
+
+        File boardDir = new File("data/boards/"+folder);
 
         // just a check...
         if (!boardDir.isDirectory()) {
@@ -842,8 +858,13 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
             if (fileList[i].indexOf(".board") == -1) {
                 continue;
             }
-            if (Board.boardIsSize(fileList[i], boardWidth, boardHeight)) {
-                tempList.addElement(fileList[i].substring(0, fileList[i].lastIndexOf(".board")));
+            
+            String path = fileList[i];
+            if ( folder.trim().length() > 0 )
+                path = folder+"/"+fileList[i];
+            
+            if (Board.boardIsSize(path, boardWidth, boardHeight)) {
+                tempList.addElement(path.substring(0, fileList[i].lastIndexOf(".board")));
             }
         }
 
