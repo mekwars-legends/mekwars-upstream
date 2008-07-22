@@ -2219,6 +2219,8 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setName("UseProtoMek");
         unitCBoxGrid.add(BaseCheckBox);
 
+        BaseCheckBox = new JCheckBox("Use Aero");
+
         BaseCheckBox.setToolTipText("Uncheck to disable Aero.");
         BaseCheckBox.setName("UseAero");
         unitCBoxGrid.add(BaseCheckBox);
