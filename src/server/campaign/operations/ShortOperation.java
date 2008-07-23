@@ -2187,7 +2187,7 @@ public class ShortOperation implements Comparable<Object> {
             SArmy attackArm = CampaignMain.cm.getPlayer(attackers.firstKey()).getArmy(attackers.get(attackers.firstKey()));
             SArmy defendArm = CampaignMain.cm.getPlayer(defenders.firstKey()).getArmy(defenders.get(defenders.firstKey()));
             if (mod || (complete && !blindDrop))
-                resultString += "with " + attackArm.getDescription(true, defendArm);
+                resultString += " with " + attackArm.getDescription(true, defendArm);
             else
                 resultString += attackArm.getInaccurateDescription();
         }
