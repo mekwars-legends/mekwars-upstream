@@ -84,7 +84,9 @@ public class CConnector implements IConnectionListener
      * Construct and queue an outgoing message.
      */
     public void send(String message) {
-    	if ( message.indexOf("CH%7c%2fc+sendclientdata%23") < 0)
+    	if ( message.indexOf("CH%7c%2fc+sendclientdata%23") < 0
+    	        && message.indexOf("CH%7c%2fc+sendtomisc%23") < 0
+    	        && message.indexOf("/pong") < 0)
     		CampaignData.mwlog.infoLog("SENT: " + message);
       _connectionHandler.queueMessage(message);
     }

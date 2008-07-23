@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.33.x
++ kept deds from logging send to misc command as well as pong.
++ Issues with draw games. added more debug logging.
 + Bug: Incomplete board name being sent to MegaMek if in a sub folder
 + Bug: Use Aero check box not showing up in server config dialog
 + Updated duplication connection message to display clients name and print in 

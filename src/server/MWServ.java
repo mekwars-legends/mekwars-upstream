@@ -55,7 +55,7 @@ import common.comm.ServerCommand;
 public class MWServ {
 	
 	//Static logging engine, and static version info.
-	public static final String SERVER_VERSION = "0.2.33.3";//Sync this with the clientVersion in MMClient @Torren 
+	public static final String SERVER_VERSION = "0.2.33.4";//Sync this with the clientVersion in MMClient @Torren 
 	
 	private ServerWrapper myCommunicator;
 	private Hashtable<String,MMGame> games = new Hashtable<String,MMGame>();
@@ -643,7 +643,7 @@ public class MWServ {
 				String result = st.nextToken();
 				CampaignData.mwlog.gameLog("Starting report process by " + name);
 				this.getCampaign().doProcessAutomaticReport(result, name);
-				CampaignData.mwlog.gameLog(name + " reported: " + result);
+				CampaignData.mwlog.gameLog(name + " reported: " + lineIn);
 			} else if (task.equals("IPU")) {//InProgressUpdate
 				String result = st.nextToken();
 				this.getCampaign().addInProgressUpdate(result, name);
