@@ -864,7 +864,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                 path = folder+"/"+fileList[i];
             
             if (Board.boardIsSize(path, boardWidth, boardHeight)) {
-                tempList.addElement(path.substring(0, fileList[i].lastIndexOf(".board")));
+                tempList.addElement(path.substring(0, path.lastIndexOf(".board")));
             }
         }
 

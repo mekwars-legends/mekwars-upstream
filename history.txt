@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.33.x
++ Bug: Incomplete board name being sent to MegaMek if in a sub folder
 + Bug: Use Aero check box not showing up in server config dialog
 + Updated duplication connection message to display clients name and print in 
      Debug log instead of error.
