@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.33.x
++ Bug: DisplayPlayerPersonalPilotQueue showing aero pilots list when none exists.
 + RFE: Change Client code to show Unit Chassie name if Model name does not exist.
 + Fixed message syntax for team games
 + kept deds from logging send to misc command as well as pong.

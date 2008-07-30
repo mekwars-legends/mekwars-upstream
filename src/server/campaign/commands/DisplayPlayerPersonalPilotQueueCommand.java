@@ -108,7 +108,7 @@ public class DisplayPlayerPersonalPilotQueueCommand implements Command {
             toReturn.insert(0,"<u>Mek Pilots</u>:<br>");
         
 		//now process the PROTOMEK pilots
-        
+        hasQueuedPilots = false;
         StringBuilder toReturnProtos = new StringBuilder();
 		for (int weightClass = Unit.LIGHT; weightClass <= Unit.ASSAULT; weightClass++) {
 			
@@ -151,12 +151,13 @@ public class DisplayPlayerPersonalPilotQueueCommand implements Command {
 			
 		}
 		
-        if ( toReturnProtos.length() > 1){
+        if ( hasQueuedPilots){
             toReturnProtos.insert(0,"<u>ProtoMek Pilots</u>:<br>");
             toReturn.append(toReturnProtos);
         }
 
         //process Aero pilots
+        hasQueuedPilots = false;
         StringBuilder toReturnAero = new StringBuilder();
         for (int weightClass = Unit.LIGHT; weightClass <= Unit.ASSAULT; weightClass++) {
             
@@ -206,7 +207,7 @@ public class DisplayPlayerPersonalPilotQueueCommand implements Command {
             toReturn.append(toReturnAero);
         }
 		
-		if (hasQueuedPilots)
+		if (toReturn.length() > 0)
 			CampaignMain.cm.toUser("SM|"+toReturn.toString(),Username,false);
 		else
 			CampaignMain.cm.toUser("SM|You don't have any reserve pilots at the moment.",Username,false);
