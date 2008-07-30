@@ -89,7 +89,7 @@ public class AdminRemoveUnitsOnMarketCommand implements Command {
     		}
     		
     		if (!CampaignMain.cm.getMarket().hasActiveListings(p)) {
-    			CampaignMain.cm.toUser(p.getName() + "doesn't have any running auctions.", Username, true);
+    			CampaignMain.cm.toUser(p.getName() + " doesn't have any running auctions.", Username, true);
     			return;
     		}
     		
