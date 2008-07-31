@@ -1173,14 +1173,14 @@ public final class SUnit extends Unit {
          */
         // Set Modelname
         if (getType() == Unit.PROTOMEK || getType() == Unit.BATTLEARMOR || getType() == Unit.INFANTRY || getType() == Unit.VEHICLE || this.getEntity().isOmni())
-            setModelname(unitEntity.getChassis() + " " + unitEntity.getModel());
+            setModelname(new String(unitEntity.getChassis() + " " + unitEntity.getModel()).trim());
         else{
             
             if ( unitEntity.getModel().trim().length() > 0 ){
-                setModelname(unitEntity.getModel());
+                setModelname(unitEntity.getModel().trim());
             }
             else{
-                setModelname(unitEntity.getChassis());
+                setModelname(unitEntity.getChassis().trim());
             }
                 
         }

@@ -320,19 +320,17 @@ public class CUnit extends Unit {
     public String getModelName() {
 
         if (getType() != MEK) {
-            StringBuilder name = new StringBuilder(new StringTokenizer(this.getEntity().getShortNameRaw()).nextToken());
-            name.append(" ").append(this.getEntity().getModel());
-            return name.toString();
+            return new String(getEntity().getChassis() + " " + getEntity().getModel()).trim();
         }
 
         if (this.getEntity().isOmni())
-            return getEntity().getChassis() + " " + UnitEntity.getModel();
+            return new String(getEntity().getChassis() + " " + getEntity().getModel()).trim();
         
         if ( this.getEntity().getModel().trim().length() > 0)
-            return this.getEntity().getModel();
+            return this.getEntity().getModel().trim();
 
         // else
-        return this.getEntity().getChassis();
+        return this.getEntity().getChassis().trim();
 
     }
 
