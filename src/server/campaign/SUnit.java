@@ -1041,6 +1041,7 @@ public final class SUnit extends Unit {
             unitEntity = SUnit.loadMech(getUnitFilename());
             this.init();
         }
+        
         return checkModelName();
     }
 
@@ -1173,8 +1174,16 @@ public final class SUnit extends Unit {
         // Set Modelname
         if (getType() == Unit.PROTOMEK || getType() == Unit.BATTLEARMOR || getType() == Unit.INFANTRY || getType() == Unit.VEHICLE || this.getEntity().isOmni())
             setModelname(unitEntity.getChassis() + " " + unitEntity.getModel());
-        else
-            setModelname(unitEntity.getModel());
+        else{
+            
+            if ( unitEntity.getModel().trim().length() > 0 ){
+                setModelname(unitEntity.getModel());
+            }
+            else{
+                setModelname(unitEntity.getChassis());
+            }
+                
+        }
         this.getC3Type(unitEntity);
 
         if (this.getModelName().equals("OMG-UR-FD")) {

@@ -326,7 +326,7 @@ public class CUnit extends Unit {
         }
 
         if (this.getEntity().isOmni())
-            return UnitEntity.getChassis() + " " + UnitEntity.getModel();
+            return getEntity().getChassis() + " " + UnitEntity.getModel();
         
         if ( this.getEntity().getModel().trim().length() > 0)
             return this.getEntity().getModel();
