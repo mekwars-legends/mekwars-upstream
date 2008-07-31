@@ -183,7 +183,7 @@ public class DirectSellUnitCommand implements Command {
 		String result = "AM:The " + m.getModelName() + " was sold to " + pBuyer.getName()+" for "+CampaignMain.cm.moneyOrFluMessage(true,true,costToRecipient);
 
 		if (costToRecipient-sellPrice > 0)
-			result += "AM:.  However your contacts took "+CampaignMain.cm.moneyOrFluMessage(true,true,(costToRecipient-sellPrice))+" for themselves.";
+			result += ".  However your contacts took "+CampaignMain.cm.moneyOrFluMessage(true,true,(costToRecipient-sellPrice))+" for themselves.";
 
 		CampaignMain.cm.toUser(result, seller, true);
 		CampaignMain.cm.toUser(pSeller.getName() + " has sold you "+ StringUtils.aOrAn(m.getModelName(),true) + " for " + CampaignMain.cm.moneyOrFluMessage(true,true,costToRecipient)+".", pBuyer.getName(), true);
