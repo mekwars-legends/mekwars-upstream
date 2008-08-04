@@ -93,6 +93,11 @@ public class BuildTable {
 		Vector<String> table = null;
 		while (!fileFound){
 			table = getListFromFile(new File(unitFileName));
+
+			if ( table.size() < 1) {
+			    return "Error OMG URFD.mtf";
+			}
+			
 			int ran = CampaignMain.cm.getRandomNumber(table.size());
 			Filename = table.elementAt(ran);
 			if (Filename.indexOf(".") == -1)

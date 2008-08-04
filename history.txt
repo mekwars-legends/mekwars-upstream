@@ -2,7 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.33.x
-+ More Unit Name formatting isssues
++ Bug: Possible Build table Inf Loop
++ More Unit Name formatting issues
 + RFE: Change Server code to show Unit Chassie name if Model name does not exist.
 + Typo in AdminRemoveUnitsOnMarketCommand.java
 + Bug: DisplayPlayerPersonalPilotQueue showing aero pilots list when none exists.
