@@ -1103,6 +1103,7 @@ server-dist/data/db_schemas/db_schema_25to26.txt -text
 server-dist/data/db_schemas/db_schema_26to27.txt -text
 server-dist/data/db_schemas/db_schema_27to28.txt -text
 server-dist/data/db_schemas/db_schema_28to29.txt -text
+server-dist/data/db_schemas/db_schema_29to30.txt -text
 server-dist/data/db_schemas/full_db_schema_29.txt -text
 server-dist/data/factions.dtd -text
 server-dist/data/factions.xml -text

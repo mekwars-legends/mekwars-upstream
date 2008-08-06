@@ -59,6 +59,29 @@ public class FactionHandler {
 					h = new MercHouse(data.getUnusedHouseID());
 				else
 					h = new SHouse(data.getUnusedHouseID());
+				String fString = rs.getString("fString");
+				if(fString != null && fString.trim().length() > 0) {
+					// new save format
+					if(fString.startsWith("[N]"))
+						fString = fString.substring(3);
+					if(fString.startsWith("[C]"))
+						fString = fString.substring(3);
+					if(fString.startsWith("[M]"))
+						fString = fString.substring(3);
+					h.fromString(fString, CampaignMain.cm.getR());
+					CampaignMain.cm.addHouse(h);
+					h.loadConfigFileFromDB();
+					h.setUsedMekBayMultiplier(Float.parseFloat(h.getConfig("UsedPurchaseCostMulti")));
+					if(CampaignMain.cm.isUsingIncreasedTechs())
+						h.addCommonUnitSupport();
+					if(CampaignMain.cm.isSynchingBB()) {
+						h.setForumName(h.getConfig("ForumGroupName"));
+						h.setForumID(CampaignMain.cm.MySQL.getHouseForumID(h.getForumName()));
+					}
+
+					CampaignData.mwlog.dbLog("Faction " + h.getName() + " loaded");
+					continue;
+				}
 				h.setName(rs.getString("fName"));
 				CampaignData.mwlog.createFactionLogger(h.getName());
 				CampaignData.mwlog.dbLog("Loading faction " + h.getName());

@@ -2781,7 +2781,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 sql.append("playerSubFactionName = ?, ");
                 sql.append("playerForumID = ?, ");
                 sql.append("playerLastPromoted = ?, ");
-                sql.append("playerValidated = ?");
+                sql.append("playerValidated = ?, ");
+                sql.append("playerString = ?");
                 ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setString(1, getName());
                 ps.setInt(2, getMoney());
@@ -2826,6 +2827,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 ps.setInt(26, getForumID());
                 ps.setLong(27, getLastPromoted());
                 ps.setBoolean(28, isValidated());
+                ps.setString(29, toString(false));
 
                 ps.executeUpdate();
                 ResultSet rs = ps.getGeneratedKeys();
@@ -2870,7 +2872,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 sql.append("playerSubFactionName = ?, ");
                 sql.append("playerForumID = ?, ");
                 sql.append("playerLastPromoted = ?, ");
-                sql.append("playerValidated = ? ");
+                sql.append("playerValidated = ?, ");
+                sql.append("playerString = ? ");
                 sql.append("WHERE playerID = ?");
 
                 ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
@@ -2927,7 +2930,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 ps.setInt(28, getForumID());
                 ps.setLong(29, getLastPromoted());
                 ps.setBoolean(30, isValidated());
-                ps.setInt(31, getDBId());
+                ps.setString(31, toString(false));
+                ps.setInt(32, getDBId());
                 ps.executeUpdate();
 
             }
@@ -2943,35 +2947,23 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                     pilot.setCurrentFaction(getMyHouse().getName());
                     pilot.toDB(currU.getType(), currU.getWeightclass());
                     currU.toDB();
-                    CampaignMain.cm.MySQL.linkUnitToPlayer(currU.getDBId(), getDBId());
                 }
             }
-            if (getArmies().size() > 0) {
                 ps.close();
                 ps = CampaignMain.cm.MySQL.getPreparedStatement("DELETE from playerarmies WHERE playerID = " + getDBId());
                 ps.executeUpdate();
-                for (int i = 0; i < getArmies().size(); i++) {
-                    ps.close();
-                    sql.setLength(0);
-                    sql.append("REPLACE into playerarmies set playerID = " + getDBId() + ", armyID = " + i + ", armyString = ?");
-                    ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
-                    ps.setString(1, getArmies().elementAt(i).toString(false, "%"));
-                    ps.executeUpdate();
-                }
-            }
-            // Save Personal Pilots Queues
+    
+                // Save Personal Pilots Queues
             for (int weightClass = Unit.LIGHT; weightClass < Unit.ASSAULT; weightClass++) {
                 Iterator<Pilot> mekList = getPersonalPilotQueue().getPilotQueue(Unit.MEK, weightClass).iterator();
                 while (mekList.hasNext()) {
                     SPilot pilot = (SPilot) mekList.next();
                     pilot.toDB(Unit.MEK, weightClass);
-                    CampaignMain.cm.MySQL.linkPilotToPlayer(pilot.getPilotId(), getDBId());
                 }
                 Iterator<Pilot> protoList = getPersonalPilotQueue().getPilotQueue(Unit.PROTOMEK, weightClass).iterator();
                 while (protoList.hasNext()) {
                     SPilot pilot = (SPilot) protoList.next();
                     pilot.toDB(Unit.PROTOMEK, weightClass);
-                    CampaignMain.cm.MySQL.linkPilotToPlayer(pilot.getPilotId(), getDBId());
                 }
             }
             ps.close();
@@ -3248,6 +3240,15 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             Statement stmt1 = CampaignMain.cm.MySQL.getStatement();
             rs = stmt.executeQuery("SELECT * from players WHERE playerID = " + playerID);
             if (rs.next()) {
+            	String pString = rs.getString("playerString");
+            	if(pString != null && pString.trim().length() > 0) {
+            		// player is using the newer save type
+            		this.fromString(rs.getString("playerString"));
+            		rs.close();
+            		stmt.close();
+            		stmt1.close();
+            		return;
+            	}
                 this.armies.clear();
 
                 name = rs.getString("playerName");

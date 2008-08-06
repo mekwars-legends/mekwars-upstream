@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.33.x
++ Changed database load/saves to speed initial player loading considerably.
++ Updated database to v30
 + Bug: Possible Build table Inf Loop
 + More Unit Name formatting issues
 + RFE: Change Server code to show Unit Chassie name if Model name does not exist.

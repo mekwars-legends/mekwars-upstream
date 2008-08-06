@@ -618,61 +618,10 @@ public final class SUnit extends Unit {
             // Now do Machine Guns
             ps.executeUpdate("DELETE from unit_mgs WHERE unitID = " + getDBId());
 
-            if (unitEntity instanceof Mech || unitEntity instanceof Tank) {
-                int mgCount = CampaignMain.cm.getMachineGunCount(unitEntity.getWeaponList());
-                if (mgCount > 0) {
-                    int endLocation = Mech.LOC_LLEG;
-                    if (unitEntity instanceof Tank)
-                        endLocation = Tank.LOC_TURRET;
-
-                    for (int location = 0; location <= endLocation; location++) {
-                        for (int slot = 0; slot < unitEntity.getNumberOfCriticals(location); slot++) {
-                            CriticalSlot crit = unitEntity.getCritical(location, slot);
-                            if (crit == null || crit.getType() != CriticalSlot.TYPE_EQUIPMENT)
-                                continue;
-                            Mounted m = unitEntity.getEquipment(crit.getIndex());
-                            if (m == null || !(m.getType() instanceof WeaponType))
-                                continue;
-
-                            WeaponType wt = (WeaponType) m.getType();
-
-                            if (!wt.hasFlag(WeaponType.F_MG))
-                                continue;
-                            ps.executeUpdate("REPLACE into unit_mgs set unitID = " + getDBId() + ", mgLocation = " + location + ", mgSlot = " + slot + ", mgRapidFire = " + m.isRapidfire());
-                        }
-                    }
-                }
-            }
-
             // Do Ammo
             ps.executeUpdate("DELETE from unit_ammo WHERE unitID = " + getDBId());
 
-            ArrayList<Mounted> en_Ammo = ent.getAmmo();
-            int AmmoLoc = 0;
-            for (Mounted mAmmo : en_Ammo) {
-                boolean hotloaded = mAmmo.isHotLoaded();
-                if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("maxtech_hotload"))
-                    hotloaded = false;
-                AmmoType at = (AmmoType) mAmmo.getType();
-                sql.setLength(0);
-                sql.append("REPLACE into unit_ammo set unitID = ?, ammoLocation = ?, ammoHotLoaded=?, ammoType=?, ammoInternalName=?, ammoShotsLeft=?");
-                ps.close();
-
-                ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
-                ps.setInt(1, getDBId());
-                ps.setInt(2, AmmoLoc);
-                ps.setString(3, Boolean.toString(hotloaded));
-                ps.setInt(4, at.getAmmoType());
-                ps.setString(5, at.getInternalName());
-                ps.setInt(6, mAmmo.getShotsLeft());
-                ps.executeUpdate();
-                AmmoLoc++;
-            }
             ps.close();
-            // Save the pilot
-            /*
-             * if (!this.hasVacantPilot()) { if (getPilot().getPilotId() == -1) { // Pilot not in database getPilot().setPilotId(CampaignMain.cm.getAndUpdateCurrentPilotID()); } ((SPilot) getPilot()).toDB(getType(), getWeightclass()); CampaignMain.cm.MySQL.linkPilotToUnit(((SPilot) getPilot()).getPilotId(), getDBId()); }
-             */
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL Exception in SUnit.toDB: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
@@ -1160,7 +1109,6 @@ public final class SUnit extends Unit {
         super.setPilot(p);
         if (CampaignMain.cm.isUsingMySQL()) {
             this.toDB();
-            CampaignMain.cm.MySQL.linkPilotToUnit(p, this);
         }
     }
 

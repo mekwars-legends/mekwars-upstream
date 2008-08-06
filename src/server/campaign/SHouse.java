@@ -362,6 +362,8 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
     }
 
     public void toDB() {
+    	if (getName().equalsIgnoreCase("None"))
+    		return;
         CampaignData.mwlog.dbLog("Saving Faction " + getName());
 
         PreparedStatement ps = null;
@@ -389,7 +391,8 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                 sql.append("fBaseGunner = ?, ");
                 sql.append("fBasePilot = ?, ");
                 sql.append("fIsNewbieHouse = ?, ");
-                sql.append("fIsMercHouse = ?");
+                sql.append("fIsMercHouse = ?, ");
+                sql.append("fString = ?");
 
                 ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setString(1, getName());
@@ -410,6 +413,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                 ps.setInt(16, getBasePilot());
                 ps.setBoolean(17, isNewbieHouse());
                 ps.setBoolean(18, isMercHouse());
+                ps.setString(19, toString());
                 ps.executeUpdate();
                 rs = ps.getGeneratedKeys();
                 rs.next();
@@ -435,7 +439,8 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                 sql.append("fBaseGunner = ?, ");
                 sql.append("fBasePilot = ?, ");
                 sql.append("fIsNewbieHouse = ?, ");
-                sql.append("fIsMercHouse = ? ");
+                sql.append("fIsMercHouse = ?, ");
+                sql.append("fString = ? ");
                 sql.append("WHERE ID = ?");
                 ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
                 ps.setString(1, getName());
@@ -456,7 +461,8 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                 ps.setInt(16, getBasePilot());
                 ps.setBoolean(17, isNewbieHouse());
                 ps.setBoolean(18, isMercHouse());
-                ps.setInt(19, getDBId());
+                ps.setString(19, toString());
+                ps.setInt(20, getDBId());
                 ps.executeUpdate();
             }
 
@@ -1190,8 +1196,6 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         else
             // normal de-levalling addition
             getPilotQueues().addPilot(u.getType(), (SPilot) u.getPilot());
-        if (CampaignMain.cm.isUsingMySQL())
-            CampaignMain.cm.MySQL.linkPilotToFaction(((SPilot) u.getPilot()).getPilotId(), this.getDBId());
     }
 
     public PilotQueues getPilotQueues() {
@@ -2219,9 +2223,6 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
         if (Boolean.parseBoolean(this.getConfig("AllowPersonalPilotQueues")) && unit.isSinglePilotUnit() && !unit.hasVacantPilot()) {
             this.getPilotQueues().addPilot(unit.getType(), (SPilot) unit.getPilot());
-            if (CampaignMain.cm.isUsingMySQL()) {
-                CampaignMain.cm.MySQL.linkPilotToFaction(((SPilot) unit.getPilot()).getPilotId(), this.getDBId());
-            }
             unit.setPilot(new SPilot("Vacant", 99, 99));
         }
 

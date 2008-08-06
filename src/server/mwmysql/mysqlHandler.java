@@ -47,7 +47,7 @@ public class mysqlHandler{
   private PhpBBConnector phpBBCon = null;
   private HistoryHandler hh = null;
 
-  private final int currentDBVersion = 29;
+  private final int currentDBVersion = 30;
   
   public void closeMySQL(){
 	  MySQLCon.close();
@@ -308,18 +308,6 @@ public class mysqlHandler{
   
   public SPilot loadPilot(int pilotID) {
 	  return pih.loadPilot(pilotID);
-  }
-  
-  public void linkPilotToUnit(SPilot p, SUnit u) {
-	  pih.linkPilotToUnit(p, u);
-  }
-  
-  public void linkPilotToFaction(int pilotID, int factionID) {
-	  pih.linkPilotToFaction(pilotID, factionID);
-  }
-  
-  public void linkPilotToPlayer(int pilotID, int playerID) {
-	  pih.linkPilotToPlayer(pilotID, playerID);
   }
   
   public void unlinkUnit(int unitID) {
