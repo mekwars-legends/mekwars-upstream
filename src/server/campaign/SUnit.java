@@ -44,6 +44,7 @@ import server.campaign.pilot.skills.WeaponSpecialistSkill;
 import common.util.TokenReader;
 
 import megamek.common.AmmoType;
+import megamek.common.BattleArmor;
 import megamek.common.CriticalSlot;
 import megamek.common.Entity;
 import megamek.common.EntityListFile;
@@ -1137,6 +1138,13 @@ public final class SUnit extends Unit {
         if (this.getModelName().equals("OMG-UR-FD")) {
             this.setProducer("Error loading unit. Tried to build from " + this.getUnitFilename());
             this.setWeightclass(SUnit.LIGHT);
+        }
+        
+        //Lazy Bug report. non Anti-Mek BA should not have a Piloting skill better/worse then 5
+        if ( this.getEntity() instanceof BattleArmor && !((BattleArmor)this.getEntity()).isAntiMek() ){
+            SPilot pilot = (SPilot) this.getPilot();
+            pilot.setPiloting(5);
+            this.setPilot(pilot);
         }
 
         /*

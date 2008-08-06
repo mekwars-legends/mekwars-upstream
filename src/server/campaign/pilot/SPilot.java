@@ -105,8 +105,7 @@ public class SPilot extends Pilot {
 
         if (unit.getEntity() instanceof Infantry) {
             // Give AntiMek and Non Anti Mek infantry an equal chance of
-            // leveling
-            // Gunnery and Piloting.
+            // leveling Gunnery and Piloting.
             differential = 0;
         }
         /*
@@ -271,13 +270,16 @@ public class SPilot extends Pilot {
             else if (levelPiloting) {
 
                 if (unit.getEntity() instanceof Infantry) {
-                    if (((Infantry) unit.getEntity()).isAntiMek())
+                    if (((Infantry) unit.getEntity()).isAntiMek()){
                         setPiloting(getPiloting() - 1);
-                    else
+                    }
+                    else{
                         // do not change piloting for Non-AntiMek Infantry
                         levelPiloting = false;
-                } else
+                    }
+                } else{
                     setPiloting(getPiloting() - 1);
+                }
             }
 
             // only send returns if the pilot was actually changed (might have
