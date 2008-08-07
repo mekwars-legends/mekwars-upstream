@@ -718,7 +718,7 @@ public class DefaultOperation {
 		 *       into consideration if allowing >1 leech before deactivation.
 		 * 
 		 * ConquestPerLeech 	- % control transferred on each leech
-		 * DelayPerLeech			- delay to on-target facilities w/ each leech
+		 * DelayPerLeech		- delay to on-target facilities w/ each leech
 		 * ProdPointsPerLeech	- PP taken with each leech
 		 * UnitsPerLeech		- Units taken with each leech
 		 * FailurePenalty		- [PP taken if no other penalty is applied. Use it
