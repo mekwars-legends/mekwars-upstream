@@ -98,6 +98,10 @@ public class SPersonalPilotQueues implements Serializable {
         this.playerID = ID;
     }
 
+    public int getOwnerID(){
+        return this.playerID;
+    }
+    
     /**
      * Add a pilot to the queue. Many different events can trigger an addition, including game resolution, sale via market, the hiring/purchase of a new pilot, and more. The type of unit that the pilot may use is embedded within the Pilot/SPilot that is passed as a param; however, the weight class is not and must be set here.
      * 

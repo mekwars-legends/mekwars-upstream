@@ -365,6 +365,11 @@ public class PilotQueues {
 	public void setFactionID(int factionID) {
 		this.factionID = factionID;
 	}
+	
+	public int getFactionID(){
+	    return this.factionID;
+	}
+	
 	/**
 	 * @return a pilot name
 	 * 

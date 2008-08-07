@@ -203,19 +203,6 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
         xmlGameOptions = sortAndShrinkGameOptions(xmlGameOptions, loadOptions, this.mwclient.getGameOptions());
 
-        // Check for a night game and set nightGame Variable.
-        // This needed to be done since it was possible that a slow connection
-        // would
-        // keep the client from getting an update from the server before the
-        // entities
-        // where added to the game.
-        for (IBasicOption option : xmlGameOptions) {
-            if ((option.getName().equalsIgnoreCase("night_battle") || option.getName().equalsIgnoreCase("dusk")) && option.getValue().toString().equalsIgnoreCase("true")) {
-                nightGame = true;
-                break;
-            }
-        }
-
         try {
             client.connect();
         } catch (Exception ex) {
@@ -338,6 +325,12 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     planetCondition.setWindDirection(aTerrain.getWindDirection());
                     planetCondition.setWindStrength(aTerrain.getWindStrength());
                     
+                    // Check for a night game and set nightGame Variable.
+                    // This is needed to be done since it was possible that a slow connection
+                    // would keep the client from getting an update from the server before the
+                    // entities where added to the game.
+                    nightGame = aTerrain.getLightConditions() > PlanetaryConditions.L_DAY;
+
                     client.sendPlanetaryConditions(planetCondition);
                     
                     mySettings.setMedium(mwclient.getMapMedium());
@@ -467,14 +460,9 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     // Set if unit is a commander in this army.
                     entity.setCommander(currA.isCommander(mek.getId()));
 
-                    // if not a night game no reason to have the slites set.
-                    if (!nightGame) {
-                        entity.setSpotlight(false);
-                        entity.setSpotlightState(false);
-                    } else {
-                        entity.setSpotlight(true);
-                        entity.setSpotlightState(true);
-                    }
+                    // Set slights based on games light conditions.
+                    entity.setSpotlight(nightGame);
+                    entity.setSpotlightState(nightGame);
 
                     // Set the correct home edge for off board units
                     if (entity.isOffBoard()) {
