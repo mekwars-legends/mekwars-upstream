@@ -445,7 +445,7 @@ public final class SUnit extends Unit {
         for (Mounted mAmmo : en_Ammo) {
 
             boolean hotloaded = mAmmo.isHotLoaded();
-            if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("maxtech_hotload"))
+            if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("tacops_hotload"))
                 hotloaded = false;
 
             AmmoType at = (AmmoType) mAmmo.getType();
@@ -622,6 +622,27 @@ public final class SUnit extends Unit {
             // Do Ammo
             ps.executeUpdate("DELETE from unit_ammo WHERE unitID = " + getDBId());
 
+            ArrayList<Mounted> en_Ammo = ent.getAmmo();
+            int AmmoLoc = 0;
+            for (Mounted mAmmo : en_Ammo) {
+                boolean hotloaded = mAmmo.isHotLoaded();
+                if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("tacops_hotload"))
+                    hotloaded = false;
+                AmmoType at = (AmmoType) mAmmo.getType();
+                sql.setLength(0);
+                sql.append("REPLACE into unit_ammo set unitID = ?, ammoLocation = ?, ammoHotLoaded=?, ammoType=?, ammoInternalName=?, ammoShotsLeft=?");
+                ps.close();
+
+                ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
+                ps.setInt(1, getDBId());
+                ps.setInt(2, AmmoLoc);
+                ps.setString(3, Boolean.toString(hotloaded));
+                ps.setInt(4, at.getAmmoType());
+                ps.setString(5, at.getInternalName());
+                ps.setInt(6, mAmmo.getShotsLeft());
+                ps.executeUpdate();
+                AmmoLoc++;
+            }
             ps.close();
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL Exception in SUnit.toDB: " + e.getMessage());
@@ -707,7 +728,7 @@ public final class SUnit extends Unit {
                         hotloaded = false;
                     }
 
-                    if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("maxtech_hotload"))
+                    if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("tacops_hotload"))
                         hotloaded = false;
 
                     Mounted mWeapon = e.get(count);
@@ -856,7 +877,7 @@ public final class SUnit extends Unit {
                     int shots = ammoRS.getInt("ammoShotsLeft");
                     int AmmoLoc = ammoRS.getInt("ammoLocation");
                     boolean hotloaded = Boolean.parseBoolean(ammoRS.getString("ammoHotLoaded"));
-                    if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("maxtech_hotload"))
+                    if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("tacops_hotload"))
                         hotloaded = false;
                     AmmoType at = getEntityAmmo(weaponType, ammoName);
                     String munition = Long.toString(at.getMunitionType());

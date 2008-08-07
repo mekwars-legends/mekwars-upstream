@@ -44,6 +44,8 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import megamek.common.PlanetaryConditions;
+
 import common.CampaignData;
 import server.campaign.AutoArmy;
 import server.campaign.CampaignMain;
@@ -77,11 +79,6 @@ public class ShortOperation implements Comparable<Object> {
     public static int STATUS_INPROGRESS = 1;
     public static int STATUS_REPORTING = 2;
     public static int STATUS_FINISHED = 4;
-
-    // Time of Day
-    public static int TIME_DAY = 0;
-    public static int TIME_DUSK = 1;
-    public static int TIME_NIGHT = 2;
 
     // Starting values. Used in /c modgames and in ShortResolver. Increased by
     // addAttacker/Defender.
@@ -120,12 +117,8 @@ public class ShortOperation implements Comparable<Object> {
     private boolean doubleBlind = false;
     private double intelGravity = 0;
     private int intelTemp = 0;
-    private int intelTimeFrame = TIME_DAY;
+    private int intelTimeFrame = PlanetaryConditions.L_DAY;
     private int intelVisibility = 999;
-
-    private String[] intelTimeFrameString = { "Day", "Dusk", "Night" };
-    private String[] intelWeatherString = { "Blizzard", "Blowing Sands", "Heavy Snow", "Light Rain", "Heavy Rain", "Moderate Winds", "High Winds" };
-    private Vector<Boolean> weatherPattern;
 
     private TreeSet<String> cancellingPlayers = new TreeSet<String>();
     /*
@@ -275,7 +268,6 @@ public class ShortOperation implements Comparable<Object> {
         }
 
         this.pdlist = possibleDefenders;
-        this.weatherPattern = new Vector<Boolean>(7);
 
         // inform the defenders
         // Faction Team Ops have a delay in defender informing.
@@ -1219,169 +1211,104 @@ public class ShortOperation implements Comparable<Object> {
                     int tempdiff = highTemp - lowTemp;
                     int tempToSet = lowTemp;
 
-                    int minVisibility = aTerrain.getMinVisibility();
-                    int maxVisibility = aTerrain.getMaxVisibility();
-                    int visibility = maxVisibility - minVisibility;
-                    int visRoll1;
-                    int visRoll2;
-
-                    // make it min 2 that way you don't have to worry about
-                    // checking for 1's against the RNG less code!! --Torren
-                    visibility = Math.max(visibility, 2);
-                    // Break visibility into halfs and roll each so we get more
-                    // of a bell curve.
-                    visRoll1 = CampaignMain.cm.getRandomNumber((int) Math.ceil(visibility / 2));
-                    visRoll2 = CampaignMain.cm.getRandomNumber((int) Math.floor(visibility / 2));
-                    visibility = visRoll1 + minVisibility + visRoll2;
-
                     // only get random if there's an actual temp diff
                     if (tempdiff > 0)
                         tempToSet = CampaignMain.cm.getRandomNumber(tempdiff) + lowTemp;
 
                     if (o.getIntValue("DuskChance") > 0 || o.getIntValue("NightChance") > 0) {
                         if (CampaignMain.cm.getRandomNumber(100) + 1 <= o.getIntValue("DuskChance")) {
-                            gameOptions.append("|night_battle|");
-                            gameOptions.append(true);
-                            gameOptions.append("|dusk|");
-                            gameOptions.append(true);
                             tempToSet -= Math.abs(aTerrain.getNightTempMod()) / 2;
-                            this.intelTimeFrame = ShortOperation.TIME_DUSK;
-                            // Visibility cut by 25% at dusk/dawn
-                            visibility = (visibility * 3) / 4;
+                            this.intelTimeFrame = PlanetaryConditions.L_DUSK;
+                            aTerrain.setLightConditions(PlanetaryConditions.L_DUSK);
                         } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= o.getIntValue("NightChance")) {
-                            gameOptions.append("|night_battle|");
-                            gameOptions.append(true);
-                            gameOptions.append("|dusk|");
-                            gameOptions.append(false);
                             tempToSet -= Math.abs(aTerrain.getNightTempMod());
-                            this.intelTimeFrame = ShortOperation.TIME_NIGHT;
-                            // Visibility cut in half at night
-                            visibility /= 2;
+                            this.intelTimeFrame = PlanetaryConditions.L_FULL_MOON;
+                            aTerrain.setLightConditions(PlanetaryConditions.L_FULL_MOON);
                         }
                     } // half as likely to get dusk as outright night. half temp drop.
-                    else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getNightChance() / 2) {
-                        gameOptions.append("|night_battle|");
-                        gameOptions.append(true);
-                        gameOptions.append("|dusk|");
-                        gameOptions.append(true);
+                    else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getDuskChance()) {
                         tempToSet -= Math.abs(aTerrain.getNightTempMod()) / 2;
-                        this.intelTimeFrame = ShortOperation.TIME_DUSK;
-                        // Visibility cut by 25% at dusk/dawn
-                        visibility = (visibility * 3) / 4;
-                    }
-
-                    // else if ... no simultaneous dusk/night. full temp drop.
-                    else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getNightChance()) {
-                        gameOptions.append("|night_battle|");
-                        gameOptions.append(true);
-                        gameOptions.append("|dusk|");
-                        gameOptions.append(false);
+                        this.intelTimeFrame = PlanetaryConditions.L_DUSK;
+                        aTerrain.setLightConditions(PlanetaryConditions.L_DUSK);
+                    }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getNightChance()) {
                         tempToSet -= Math.abs(aTerrain.getNightTempMod());
-                        this.intelTimeFrame = ShortOperation.TIME_NIGHT;
-                        // Visibility cut in half at night
-                        visibility /= 2;
+                        this.intelTimeFrame = PlanetaryConditions.L_FULL_MOON;
+                        aTerrain.setLightConditions(PlanetaryConditions.L_FULL_MOON);
+                    }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getMoonLessNightChance()) {
+                        tempToSet -= Math.abs(aTerrain.getNightTempMod());
+                        this.intelTimeFrame = PlanetaryConditions.L_MOONLESS;
+                        aTerrain.setLightConditions(PlanetaryConditions.L_MOONLESS);
+                    }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getPitchBlackNightChance()) {
+                        tempToSet -= Math.abs(aTerrain.getNightTempMod());
+                        this.intelTimeFrame = PlanetaryConditions.L_PITCH_BLACK;
+                        aTerrain.setLightConditions(PlanetaryConditions.L_PITCH_BLACK);
                     }
-
                     // else normal daylight conditions
                     else {
-                        gameOptions.append("|night_battle|");
-                        gameOptions.append(false);
-                        gameOptions.append("|dusk|");
-                        gameOptions.append(false);
-                        this.intelTimeFrame = ShortOperation.TIME_DAY;
+                        this.intelTimeFrame = PlanetaryConditions.L_DAY;
                     }
 
-                    boolean hasWeather = false;
+                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getLightRainfallChance()) {
+                        aTerrain.setWeatherConditions(PlanetaryConditions.WE_LIGHT_RAIN);
+                    }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getModerateRainFallChance()) {
+                        aTerrain.setWeatherConditions(PlanetaryConditions.WE_MOD_RAIN);
+                    }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHeavyRainfallChance()) {
+                        aTerrain.setWeatherConditions(PlanetaryConditions.WE_HEAVY_RAIN);
+                    }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getDownPourChance()) {
+                        aTerrain.setWeatherConditions(PlanetaryConditions.WE_DOWNPOUR);
+                    }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getLightSnowfallChance()) {
+                        aTerrain.setWeatherConditions(PlanetaryConditions.WE_LIGHT_SNOW);
+                    }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getModerateSnowFallChance()) {
+                        aTerrain.setWeatherConditions(PlanetaryConditions.WE_MOD_SNOW);
+                    }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHeavySnowfallChance()) {
+                        aTerrain.setWeatherConditions(PlanetaryConditions.WE_HEAVY_SNOW);
+                    }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getSleetChance()) {
+                        aTerrain.setWeatherConditions(PlanetaryConditions.WE_SLEET);
+                    }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getIceStormChance()) {
+                        aTerrain.setWeatherConditions(PlanetaryConditions.WE_ICE_STORM);
+                    }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getLightHailChance()) {
+                        aTerrain.setWeatherConditions(PlanetaryConditions.WE_LIGHT_HAIL);
+                    }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHeavyHailChance()) {
+                        aTerrain.setWeatherConditions(PlanetaryConditions.WE_HEAVY_HAIL);
+                    }
                     
-                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getBlizzardChance()) {
-                        this.weatherPattern.add(true);
-                        gameOptions.append("|blizzard|");
-                        gameOptions.append(true);
-                        hasWeather = true;
-                    } else {
-                        this.weatherPattern.add(false);
-                        gameOptions.append("|blizzard|");
-                        gameOptions.append(false);
+                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getLightWindsChance()) {
+                        aTerrain.setWindStrength(PlanetaryConditions.WI_LIGHT_GALE);
+                    }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getModerateWindsChance()) {
+                        aTerrain.setWindStrength(PlanetaryConditions.WI_MOD_GALE);
+                    }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getStrongWindsChance()) {
+                        aTerrain.setWindStrength(PlanetaryConditions.WI_STRONG_GALE);
+                    }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getStormWindsChance()) {
+                        aTerrain.setWindStrength(PlanetaryConditions.WI_STORM);
+                    }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getTornadoF13WindsChance()) {
+                        aTerrain.setWindStrength(PlanetaryConditions.WI_TORNADO_F13);
+                    }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getTornadoF4WindsChance()) {
+                        aTerrain.setWindStrength(PlanetaryConditions.WI_TORNADO_F4);
                     }
-
-                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getBlowingSandChance() && !hasWeather) {
-                        this.weatherPattern.add(true);
-                        gameOptions.append("|blowing_sand|");
-                        gameOptions.append(true);
-                        hasWeather = true;
-                    } else {
-                        this.weatherPattern.add(false);
-                        gameOptions.append("|blowing_sand|");
-                        gameOptions.append(false);
+                    
+                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getLightFogChance()) {
+                        aTerrain.setFog(PlanetaryConditions.FOG_LIGHT);
+                    }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHeavyFogChance()) {
+                        aTerrain.setFog(PlanetaryConditions.FOG_HEAVY);
                     }
-                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHeavySnowfallChance() && !hasWeather) {
-                        this.weatherPattern.add(true);
-                        gameOptions.append("|heavy_snowfall|");
-                        gameOptions.append(true);
-                        hasWeather = true;
-                    } else {
-                        this.weatherPattern.add(false);
-                        gameOptions.append("|heavy_snowfall|");
-                        gameOptions.append(false);
-                    }
-                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getLightRainfallChance() && !hasWeather) {
-                        this.weatherPattern.add(true);
-                        gameOptions.append("|light_rainfall|");
-                        gameOptions.append(true);
-                        hasWeather = true;
-                    } else {
-                        this.weatherPattern.add(false);
-                        gameOptions.append("|light_rainfall|");
-                        gameOptions.append(false);
-                    }
-                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHeavyRainfallChance() && !hasWeather) {
-                        this.weatherPattern.add(true);
-                        gameOptions.append("|heavy_rainfall|");
-                        hasWeather = true;
-                        gameOptions.append(true);
-                    } else {
-                        this.weatherPattern.add(false);
-                        gameOptions.append("|heavy_rainfall|");
-                        gameOptions.append(false);
-                        hasWeather = true;
-                    }
-                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getModerateWindsChance() && !hasWeather) {
-                        this.weatherPattern.add(true);
-                        gameOptions.append("|moderate_winds|");
-                        gameOptions.append(true);
-                        hasWeather = true;
-                    } else {
-                        this.weatherPattern.add(false);
-                        gameOptions.append("|moderate_winds|");
-                        gameOptions.append(false);
-                    }
-                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHighWindsChance() && !hasWeather) {
-                        this.weatherPattern.add(true);
-                        gameOptions.append("|high_winds|");
-                        gameOptions.append(true);
-                        hasWeather = true;
-                    } else {
-                        this.weatherPattern.add(false);
-                        gameOptions.append("|high_winds|");
-                        gameOptions.append(false);
-                    }
-                    // add the temp/gravity/vacuum. disable fire if in vacuum.
-                    gameOptions.append("|temperature|");
-                    gameOptions.append(tempToSet);
-                    gameOptions.append("|gravity|");
-                    gameOptions.append(aTerrain.getGravity());
-                    gameOptions.append("|vacuum|");
-                    gameOptions.append(aTerrain.isVacuum());
-                    if (aTerrain.isVacuum()) {
+                    
+                    if (aTerrain.getAtmosphere() <= PlanetaryConditions.ATMO_TRACE) {
                         gameOptions.append("|fire|false");
                     }
                     this.intelGravity = aTerrain.getGravity();
                     this.intelTemp = tempToSet;
-                    this.intelVacuum = aTerrain.isVacuum();
-                    // make sure visibility never goes below minVisibility
-                    intelVisibility = Math.max(visibility, minVisibility);
-                    gameOptions.append("|visibility|");
-                    gameOptions.append(intelVisibility);
+                    aTerrain.setTemperature(tempToSet);
+                    this.intelVacuum = aTerrain.getAtmosphere() <= PlanetaryConditions.ATMO_TRACE;
+                    
+                    PlanetaryConditions pc = new PlanetaryConditions();
+                    
+                    pc.setAtmosphere(aTerrain.getAtmosphere());
+                    pc.setFog(aTerrain.getFog());
+                    pc.setLight(aTerrain.getLightConditions());
+                    pc.setWindStrength(aTerrain.getWindStrength());
+                    pc.setWeather(aTerrain.getWeatherConditions());
+                    
+                    intelVisibility = pc.getVisualRange(null, false);
                 } catch (Exception ex) {
                     CampaignData.mwlog.errLog("Unable to retrieve advanced terrain data for Planet: " + targetWorld.getName() + " Terrain: " + playEnvironment.getName());
                     CampaignData.mwlog.errLog(ex);
@@ -1567,7 +1494,7 @@ public class ShortOperation implements Comparable<Object> {
 
                 // send terrain
                 if (aTerrain != null) {
-                    CampaignMain.cm.toUser("APE|" + aTerrain.toString(), currN, false);
+                    CampaignMain.cm.toUser("APE|" + aTerrain.toStringPlanetaryConditions(), currN, false);
                     CampaignMain.cm.toUser("PE|" + playEnvironment.toString(cityBuilder.toString()) + "|" + mapsize.width + "|" + mapsize.height + "|" + o.getValue("MapMedium"), currN, false);
                 } else {
                     CampaignMain.cm.toUser("PE|" + playEnvironment.toString(cityBuilder.toString()) + "|" + mapsize.width + "|" + mapsize.height + "|" + o.getValue("MapMedium"), currN, false);
@@ -1735,7 +1662,7 @@ public class ShortOperation implements Comparable<Object> {
         Operation o = CampaignMain.cm.getOpsManager().getOperation(CampaignMain.cm.getOpsManager().getShortOpForPlayer(p).getName());
         // send terrain
         if (aTerrain != null) {
-            CampaignMain.cm.toUser("APE|" + aTerrain.toString(), lowerName, false);
+            CampaignMain.cm.toUser("APE|" + aTerrain.toStringPlanetaryConditions(), lowerName, false);
             CampaignMain.cm.toUser("PE|" + playEnvironment.toString(cityBuilder.toString()) + "|" + mapsize.width + "|" + mapsize.height + "|" + o.getValue("MapMedium"), lowerName, false);
         } else {
             CampaignMain.cm.toUser("PE|" + playEnvironment.toString(cityBuilder.toString()) + "|" + mapsize.width + "|" + mapsize.height + "|" + o.getValue("MapMedium"), lowerName, false);
@@ -2562,7 +2489,6 @@ public class ShortOperation implements Comparable<Object> {
         int chanceGravity = CampaignMain.cm.getRandomNumber(100);
         int chanceTemp = CampaignMain.cm.getRandomNumber(100);
         int chanceTime = CampaignMain.cm.getRandomNumber(100);
-        int chanceWeather = CampaignMain.cm.getRandomNumber(100);
 
         factionOwnerShip = Math.max(factionOwnerShip, basedOwnerShip);
 
@@ -2580,25 +2506,14 @@ public class ShortOperation implements Comparable<Object> {
             result += "<b>Gravity:</b> " + this.intelGravity + "<br>";
         if ((this.intelTemp > 50 || this.intelTemp < -30) && factionOwnerShip >= chanceTemp)
             result += "<b>Current Temp:</b> " + this.intelTemp + "<br>";
-        if (this.intelTimeFrame != ShortOperation.TIME_DAY && factionOwnerShip >= chanceTime)
-            result += "<b>Current Time of Day:</b> " + this.intelTimeFrameString[this.intelTimeFrame] + "<br>";
+        if (this.intelTimeFrame != PlanetaryConditions.L_DAY && factionOwnerShip >= chanceTime)
+            result += "<b>Current Time of Day:</b> " + PlanetaryConditions.getLightDisplayableName(this.intelTimeFrame) + "<br>";
         if (this.doubleBlind && factionOwnerShip >= chanceTime)
             result += "<b>Visibility is :</b> " + (this.intelVisibility * 30) + " meters<br>";
 
-        String weatherResult = "<b>Weather Conditions :</b>";
-        boolean hasWeather = false;
-        for (int pos = 0; pos < 7; pos++) {
-            if (weatherPattern.elementAt(pos)) {
-                hasWeather = true;
-                weatherResult += intelWeatherString[pos] + ", ";
-            }
-        }
-
-        if (hasWeather && factionOwnerShip >= chanceWeather) {
-            if (weatherResult.indexOf(",") > -1) {
-                weatherResult = weatherResult.substring(0, weatherResult.lastIndexOf(","));
-            }
-            result += weatherResult + ".<br>";
+        if ( aTerrain != null && aTerrain.getWeatherConditions() > PlanetaryConditions.WE_NONE ) {
+            result += ("<b>Weather Condition: </b>");
+            result += (PlanetaryConditions.getWeatherDisplayableName(aTerrain.getWeatherConditions()));
         }
         return result;
 

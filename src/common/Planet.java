@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Vector;
 
+import megamek.common.PlanetaryConditions;
+
 import common.util.BinReader;
 import common.util.BinWriter;
 import common.util.Position;
@@ -750,10 +752,8 @@ public class Planet implements Comparable<Object>, MutableSerializable {
                 } else {
                     result.append(" " + aTerrain.getDisplayName());
                     result.append("<br>Atmosphere: ");
-                    if (aTerrain.isVacuum())
-                        result.append("None<br>");
-                    else
-                        result.append("Present<br>");
+                    result.append(PlanetaryConditions.getAtmosphereDisplayableName(aTerrain.getAtmosphere()));
+                    result.append("<br>");
                     result.append("Gravity: " + aTerrain.getGravity());
                     result.append("<br>Average Low: " + aTerrain.getLowTemp());
                     result.append("<br>Average High: " + aTerrain.getHighTemp());
@@ -765,8 +765,6 @@ public class Planet implements Comparable<Object>, MutableSerializable {
                             result.append("<br>Map Size(XxY): " + aTerrain.getXSize() + " x " + aTerrain.getYSize());
                             result.append("<br>Board Size(XxY): " + aTerrain.getXBoardSize() + " x " + aTerrain.getYBoardSize());
                         }
-                        result.append("<br>Min Visibility: " + aTerrain.getMinVisibility());
-                        result.append("<br>Max Visibility: " + aTerrain.getMaxVisibility());
                     }
                 }
                 result.append("<br>");

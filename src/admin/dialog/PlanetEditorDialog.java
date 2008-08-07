@@ -42,6 +42,8 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
+import megamek.common.PlanetaryConditions;
+
 import common.AdvancedTerrain;
 import common.CampaignData;
 import common.Continent;
@@ -85,7 +87,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 	private final static String planetTerrainsCombo = "PlanetTerrainsCombo";
 	private final static String planetOwnersListCommand = "PlanetOwnersList";
 	private final static String staticMapCBCommmand = "StaticMapCB";
-	private final static String vacuumCBCommand = "VacuumCB";
+	private final static String atmosphereCommand = "Atmosphere";
 	
 	private final static String windowName = "Vertigo's Planet Editor";
 	
@@ -115,17 +117,30 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 	private final JTextField LowTempText = new JTextField(5);
 	private final JTextField HighTempText = new JTextField(5);
 	private final JTextField GravityText = new JTextField(5);
-	private final JTextField NightChanceText = new JTextField(5);
+	private final JTextField DuskChanceText = new JTextField(5);
+    private final JTextField NightChanceText = new JTextField(5);
+    private final JTextField MoonLessNightChanceText = new JTextField(5);
+    private final JTextField PitchBlackNightChanceText = new JTextField(5);
 	private final JTextField NightTempModText = new JTextField(5);
-    private final JTextField MinVisibilityText = new JTextField(5);
-    private final JTextField MaxVisibilityText = new JTextField(5);
-    private final JTextField BlizzardChanceText = new JTextField(5);
-    private final JTextField blowingSandChanceText = new JTextField(5);
+    private final JTextField lightSnowfallChanceText = new JTextField(5);
+    private final JTextField moderateSnowfallChanceText = new JTextField(5);
     private final JTextField heavySnowfallChanceText = new JTextField(5);
     private final JTextField lightRainfallChanceText = new JTextField(5);
+    private final JTextField moderateRainfallChanceText = new JTextField(5);
     private final JTextField heavyRainfallChanceText = new JTextField(5);
+    private final JTextField downPourChanceText = new JTextField(5);
+    private final JTextField sleetChanceText = new JTextField(5);
+    private final JTextField iceStormChanceText = new JTextField(5);
+    private final JTextField lightHailChanceText = new JTextField(5);
+    private final JTextField heavyHailChanceText = new JTextField(5);
+    private final JTextField lightWindsChanceText = new JTextField(5);
     private final JTextField moderateWindsChanceText = new JTextField(5);
-    private final JTextField highWindsChanceText = new JTextField(5);
+    private final JTextField strongWindsChanceText = new JTextField(5);
+    private final JTextField stormWindsChanceText = new JTextField(5);
+    private final JTextField tornadoF13WindsChanceText = new JTextField(5);
+    private final JTextField tornadoF4ChanceText = new JTextField(5);
+    private final JTextField lightFogChanceText = new JTextField(5);
+    private final JTextField heavyFogChanceText = new JTextField(5);
 	private final JTextField planetBays = new JTextField(5);
 	private final JTextField planetComps = new JTextField(5);
 	private final JTextField planetXPosition = new JTextField(5);
@@ -187,7 +202,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 	private JComboBox factoryType = new JComboBox(factoryTypes);
 	private JComboBox factoryOwners;
 	private JComboBox ownerNames;
-	
+	private JComboBox atmosphere = new JComboBox(PlanetaryConditions.atmoNames);
 	JTabbedPane ConfigPane = new JTabbedPane(SwingConstants.TOP);
 	
 	public PlanetEditorDialog(MWClient c, String planetName) {
@@ -398,7 +413,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			terrainMap.clear();
 			planetTerrains.removeAllItems();
 			currentTerrainPercent.setText("");
-		}else if ( command.equals(staticMapCBCommmand) || command.equals(vacuumCBCommand)) {
+		}else if ( command.equals(staticMapCBCommmand) || command.equals(atmosphereCommand)) {
 			updateAdvancedTerrain();
 		}
 	}
@@ -749,7 +764,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			YBoardSizeText.addKeyListener(this);
 			textPanel.add(YBoardSizeText);
 	
-			textPanel.add(new JLabel("Low Temp:", SwingConstants.TRAILING));
+            textPanel.add(new JLabel("Low Temp:", SwingConstants.TRAILING));
 			LowTempText.setToolTipText("The Lowest temp for this terrain");
 			LowTempText.addKeyListener(this);
 			textPanel.add(LowTempText);
@@ -764,63 +779,128 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			GravityText.addKeyListener(this);
 			textPanel.add(GravityText);
 	
+            textPanel.add(new JLabel("Dusk Chance:", SwingConstants.TRAILING));
+            DuskChanceText.setToolTipText("Chance for dusk to occur on this terrain");
+            DuskChanceText.addKeyListener(this);
+            textPanel.add(DuskChanceText);
+    
 			textPanel.add(new JLabel("Night Chance:", SwingConstants.TRAILING));
 			NightChanceText.setToolTipText("Chance for night to occur on this terrain");
 			NightChanceText.addKeyListener(this);
 			textPanel.add(NightChanceText);
 	
+            textPanel.add(new JLabel("Moonless Night:", SwingConstants.TRAILING));
+            MoonLessNightChanceText.setToolTipText("Chance for a moonless night to occur on this terrain");
+            MoonLessNightChanceText.addKeyListener(this);
+            textPanel.add(MoonLessNightChanceText);
+    
+            textPanel.add(new JLabel("Pitch Black:", SwingConstants.TRAILING));
+            PitchBlackNightChanceText.setToolTipText("Chance for a pitch black night to occur on this terrain");
+            PitchBlackNightChanceText.addKeyListener(this);
+            textPanel.add(PitchBlackNightChanceText);
+    
 			textPanel.add(new JLabel("Temp Reduction:", SwingConstants.TRAILING));
 			NightTempModText.setToolTipText("<html>Calculated temp is reduced by <br> this much at night and 1/2 as much at dusk/down<br>i.e. if set to 10 and the temp is 50 the new temp with be 40</html>");
 			NightTempModText.addKeyListener(this);
 			textPanel.add(NightTempModText);
 	
-	        textPanel.add(new JLabel("Min Visibility:", SwingConstants.TRAILING));
-	        MinVisibilityText.setToolTipText("The Minium Visibility this map can see");
-	        MinVisibilityText.addKeyListener(this);
-	        textPanel.add(MinVisibilityText);
-	
-	        textPanel.add(new JLabel("Max Visibility:", SwingConstants.TRAILING));
-	        MaxVisibilityText.setToolTipText("<html>The Max Visibility this map can see</html>");
-	        MaxVisibilityText.addKeyListener(this);
-	        textPanel.add(MaxVisibilityText);
-	
-            textPanel.add(new JLabel("Blizzard:", SwingConstants.TRAILING));
-            BlizzardChanceText.setToolTipText("<html>Chance for Blizzards</html>");
-            BlizzardChanceText.addKeyListener(this);
-            textPanel.add(BlizzardChanceText);
-    
-            textPanel.add(new JLabel("Blowing Sand:", SwingConstants.TRAILING));
-            blowingSandChanceText.setToolTipText("<html>Chance for Blowing Sands</html>");
-            blowingSandChanceText.addKeyListener(this);
-            textPanel.add(blowingSandChanceText);
-    
-            textPanel.add(new JLabel("Heavy Snowfall:", SwingConstants.TRAILING));
-            heavySnowfallChanceText.setToolTipText("<html>Chance for Heavy Snowfall</html>");
-            heavySnowfallChanceText.addKeyListener(this);
-            textPanel.add(heavySnowfallChanceText);
-    
             textPanel.add(new JLabel("Light Rainfall:", SwingConstants.TRAILING));
             lightRainfallChanceText.setToolTipText("<html>Chance for Light Rainfall</html>");
             lightRainfallChanceText.addKeyListener(this);
             textPanel.add(lightRainfallChanceText);
+    
+            textPanel.add(new JLabel("Moderate Rainfall:", SwingConstants.TRAILING));
+            moderateRainfallChanceText.setToolTipText("<html>Chance for moderate Rainfall</html>");
+            moderateRainfallChanceText.addKeyListener(this);
+            textPanel.add(moderateRainfallChanceText);
     
             textPanel.add(new JLabel("Heavy Rainfall:", SwingConstants.TRAILING));
             heavyRainfallChanceText.setToolTipText("<html>Chance for Heavy Rainfall</html>");
             heavyRainfallChanceText.addKeyListener(this);
             textPanel.add(heavyRainfallChanceText);
     
+            textPanel.add(new JLabel("Downpour:", SwingConstants.TRAILING));
+            downPourChanceText.setToolTipText("<html>Chance for a downpour</html>");
+            downPourChanceText.addKeyListener(this);
+            textPanel.add(downPourChanceText);
+    
+            textPanel.add(new JLabel("Light Snowfall:", SwingConstants.TRAILING));
+            lightSnowfallChanceText.setToolTipText("<html>Chance for Light Snowfall</html>");
+            lightSnowfallChanceText.addKeyListener(this);
+            textPanel.add(lightSnowfallChanceText);
+
+            textPanel.add(new JLabel("Moderate Snowfall:", SwingConstants.TRAILING));
+            moderateSnowfallChanceText.setToolTipText("<html>Chance for Moderate Snowfall</html>");
+            moderateSnowfallChanceText.addKeyListener(this);
+            textPanel.add(moderateSnowfallChanceText);
+
+            textPanel.add(new JLabel("Heavy Snowfall:", SwingConstants.TRAILING));
+            heavySnowfallChanceText.setToolTipText("<html>Chance for Heavy Snowfall</html>");
+            heavySnowfallChanceText.addKeyListener(this);
+            textPanel.add(heavySnowfallChanceText);
+
+            textPanel.add(new JLabel("Sleet:", SwingConstants.TRAILING));
+            sleetChanceText.setToolTipText("<html>Chance for Sleet</html>");
+            sleetChanceText.addKeyListener(this);
+            textPanel.add(sleetChanceText);
+
+            textPanel.add(new JLabel("Ice Storm:", SwingConstants.TRAILING));
+            iceStormChanceText.setToolTipText("<html>Chance for Ice Storm</html>");
+            iceStormChanceText.addKeyListener(this);
+            textPanel.add(iceStormChanceText);
+
+            textPanel.add(new JLabel("Light Hail:", SwingConstants.TRAILING));
+            lightHailChanceText.setToolTipText("<html>Chance for light hail</html>");
+            lightHailChanceText.addKeyListener(this);
+            textPanel.add(lightHailChanceText);
+
+            textPanel.add(new JLabel("Heavy Hail:", SwingConstants.TRAILING));
+            heavyHailChanceText.setToolTipText("<html>Chance for heavy hail</html>");
+            heavyHailChanceText.addKeyListener(this);
+            textPanel.add(heavyHailChanceText);
+
+            textPanel.add(new JLabel("Light Winds:", SwingConstants.TRAILING));
+            lightWindsChanceText.setToolTipText("<html>Chance for Light Winds</html>");
+            lightWindsChanceText.addKeyListener(this);
+            textPanel.add(lightWindsChanceText);
+    
             textPanel.add(new JLabel("Moderate Winds:", SwingConstants.TRAILING));
             moderateWindsChanceText.setToolTipText("<html>Chance for Moderate Winds</html>");
             moderateWindsChanceText.addKeyListener(this);
             textPanel.add(moderateWindsChanceText);
     
-            textPanel.add(new JLabel("High Winds:", SwingConstants.TRAILING));
-            highWindsChanceText.setToolTipText("<html>Chance for High Winds</html>");
-            highWindsChanceText.addKeyListener(this);
-            textPanel.add(highWindsChanceText);
+            textPanel.add(new JLabel("Strong Winds:", SwingConstants.TRAILING));
+            strongWindsChanceText.setToolTipText("<html>Chance for Strong Winds</html>");
+            strongWindsChanceText.addKeyListener(this);
+            textPanel.add(strongWindsChanceText);
     
+            textPanel.add(new JLabel("Storm Winds:", SwingConstants.TRAILING));
+            stormWindsChanceText.setToolTipText("<html>Chance for Storm Winds</html>");
+            stormWindsChanceText.addKeyListener(this);
+            textPanel.add(stormWindsChanceText);
+    
+            textPanel.add(new JLabel("Tornado F1-F3:", SwingConstants.TRAILING));
+            tornadoF13WindsChanceText.setToolTipText("<html>Chance for an F1-F3 Tornado</html>");
+            tornadoF13WindsChanceText.addKeyListener(this);
+            textPanel.add(tornadoF13WindsChanceText);
+    
+            textPanel.add(new JLabel("Tornado F4+:", SwingConstants.TRAILING));
+            tornadoF4ChanceText.setToolTipText("<html>Chance for an F4+ Tornado</html>");
+            tornadoF4ChanceText.addKeyListener(this);
+            textPanel.add(tornadoF4ChanceText);
+
+            textPanel.add(new JLabel("Light Fog:", SwingConstants.TRAILING));
+            lightFogChanceText.setToolTipText("<html>Chance for light fog</html>");
+            lightFogChanceText.addKeyListener(this);
+            textPanel.add(lightFogChanceText);
+
+            textPanel.add(new JLabel("Heavy Fog:", SwingConstants.TRAILING));
+            heavyFogChanceText.setToolTipText("<html>Chance for heavy fog</html>");
+            heavyFogChanceText.addKeyListener(this);
+            textPanel.add(heavyFogChanceText);
+            
 			//run the spring layout
-			SpringLayoutHelper.setupSpringGrid(textPanel,6);
+			SpringLayoutHelper.setupSpringGrid(textPanel,10);
 			
 			
 			isStaticMapCB.setText("Use Static Maps");
@@ -828,14 +908,16 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			isStaticMapCB.addActionListener(this);
 			isStaticMapCB.setActionCommand(staticMapCBCommmand);
 			checkboxPanel.add(isStaticMapCB);
+
+			checkboxPanel.add(new JLabel("Atmosphere:", SwingConstants.TRAILING));
+            atmosphere.setToolTipText("<html>What type of atmosphere this terrain has.</html>");
+            atmosphere.setActionCommand(atmosphereCommand);
+            atmosphere.addActionListener(this);
+            checkboxPanel.add(atmosphere);
+            
 			
-			isVacuumCB.setText("Has a Vaccum");
-			isVacuumCB.setToolTipText("Check if you want a vacuum for this terrain.");
-			this.isVacuumCB.addActionListener(this);
-			isVacuumCB.setActionCommand(vacuumCBCommand);
-			checkboxPanel.add(isVacuumCB);
 			
-			//SpringLayoutHelper.setupSpringGrid(checkboxPanel,1,2);
+			
 		}else{
 			
 			textPanel.add(new JLabel("Low Temp:", SwingConstants.TRAILING));
@@ -876,18 +958,31 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			GravityText.setText(Double.toString(aTerrain.getGravity()));
 			NightChanceText.setText(Integer.toString(aTerrain.getNightChance()));
 			NightTempModText.setText(Integer.toString(aTerrain.getNightTempMod()));
-	        MinVisibilityText.setText(Integer.toString(aTerrain.getMinVisibility()));
-	        MaxVisibilityText.setText(Integer.toString(aTerrain.getMaxVisibility()));
-            blowingSandChanceText.setText(Integer.toString(aTerrain.getBlowingSandChance()));
-            BlizzardChanceText.setText(Integer.toString(aTerrain.getBlizzardChance()));
             heavyRainfallChanceText.setText(Integer.toString(aTerrain.getHeavyRainfallChance()));
             heavySnowfallChanceText.setText(Integer.toString(aTerrain.getHeavySnowfallChance()));
             lightRainfallChanceText.setText(Integer.toString(aTerrain.getLightRainfallChance()));
             moderateWindsChanceText.setText(Integer.toString(aTerrain.getModerateWindsChance()));
-            highWindsChanceText.setText(Integer.toString(aTerrain.getHighWindsChance()));
-			
+            DuskChanceText.setText(Integer.toString(aTerrain.getDuskChance()));
+            MoonLessNightChanceText.setText(Integer.toString(aTerrain.getMoonLessNightChance()));
+            PitchBlackNightChanceText.setText(Integer.toString(aTerrain.getPitchBlackNightChance()));
+            moderateRainfallChanceText.setText(Integer.toString(aTerrain.getModerateRainFallChance()));
+            downPourChanceText.setText(Integer.toString(aTerrain.getDownPourChance()));
+            lightSnowfallChanceText.setText(Integer.toString(aTerrain.getLightSnowfallChance()));
+            moderateSnowfallChanceText.setText(Integer.toString(aTerrain.getModerateSnowFallChance()));
+            sleetChanceText.setText(Integer.toString(aTerrain.getSleetChance()));
+            iceStormChanceText.setText(Integer.toString(aTerrain.getIceStormChance()));
+            lightHailChanceText.setText(Integer.toString(aTerrain.getLightHailChance()));
+            heavyHailChanceText.setText(Integer.toString(aTerrain.getHeavyHailChance()));
+            lightFogChanceText.setText(Integer.toString(aTerrain.getLightFogChance()));
+            heavyFogChanceText.setText(Integer.toString(aTerrain.getHeavyFogChance()));
+            lightWindsChanceText.setText(Integer.toString(aTerrain.getLightWindsChance()));
+            strongWindsChanceText.setText(Integer.toString(aTerrain.getStrongWindsChance()));
+            stormWindsChanceText.setText(Integer.toString(aTerrain.getStormWindsChance()));
+            tornadoF13WindsChanceText.setText(Integer.toString(aTerrain.getTornadoF13WindsChance()));
+            tornadoF4ChanceText.setText(Integer.toString(aTerrain.getTornadoF4WindsChance()));
+            
+            atmosphere.setSelectedIndex(aTerrain.getAtmosphere());
 			isStaticMapCB.setSelected(aTerrain.isStaticMap());
-			isVacuumCB.setSelected(aTerrain.isVacuum());
 		}else {
 			LowTempText.setText(Integer.toString(this.selectedPlanet.getTemp().width));
 			HighTempText.setText(Double.toString(this.selectedPlanet.getTemp().height));
@@ -1032,29 +1127,42 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			aTerrain = advancedTerrainMap.get(planetTerrains.getSelectedItem().toString());
 
 		if ( aTerrain != null) {
-			DisplayNameText.setText(aTerrain.getDisplayName());
-			StaticMapNameText.setText(aTerrain.getStaticMapName());
-			XSizeText.setText(Integer.toString(aTerrain.getXSize()));
-			YSizeText.setText(Integer.toString(aTerrain.getYSize()));
-			XBoardSizeText.setText(Integer.toString(aTerrain.getXBoardSize()));
-			YBoardSizeText.setText(Integer.toString(aTerrain.getYBoardSize()));
-			LowTempText.setText(Integer.toString(aTerrain.getLowTemp()));
-			HighTempText.setText(Integer.toString(aTerrain.getHighTemp()));
-			GravityText.setText(Double.toString(aTerrain.getGravity()));
-			NightChanceText.setText(Integer.toString(aTerrain.getNightChance()));
-			NightTempModText.setText(Integer.toString(aTerrain.getNightTempMod()));
-	        MinVisibilityText.setText(Integer.toString(aTerrain.getMinVisibility()));
-	        MaxVisibilityText.setText(Integer.toString(aTerrain.getMaxVisibility()));
-            blowingSandChanceText.setText(Integer.toString(aTerrain.getBlowingSandChance()));
-            BlizzardChanceText.setText(Integer.toString(aTerrain.getBlizzardChance()));
+            DisplayNameText.setText(aTerrain.getDisplayName());
+            StaticMapNameText.setText(aTerrain.getStaticMapName());
+            XSizeText.setText(Integer.toString(aTerrain.getXSize()));
+            YSizeText.setText(Integer.toString(aTerrain.getYSize()));
+            XBoardSizeText.setText(Integer.toString(aTerrain.getXBoardSize()));
+            YBoardSizeText.setText(Integer.toString(aTerrain.getYBoardSize()));
+            LowTempText.setText(Integer.toString(aTerrain.getLowTemp()));
+            HighTempText.setText(Integer.toString(aTerrain.getHighTemp()));
+            GravityText.setText(Double.toString(aTerrain.getGravity()));
+            NightChanceText.setText(Integer.toString(aTerrain.getNightChance()));
+            NightTempModText.setText(Integer.toString(aTerrain.getNightTempMod()));
             heavyRainfallChanceText.setText(Integer.toString(aTerrain.getHeavyRainfallChance()));
             heavySnowfallChanceText.setText(Integer.toString(aTerrain.getHeavySnowfallChance()));
             lightRainfallChanceText.setText(Integer.toString(aTerrain.getLightRainfallChance()));
             moderateWindsChanceText.setText(Integer.toString(aTerrain.getModerateWindsChance()));
-            highWindsChanceText.setText(Integer.toString(aTerrain.getHighWindsChance()));
-
-			isStaticMapCB.setSelected(aTerrain.isStaticMap());
-			isVacuumCB.setSelected(aTerrain.isVacuum());
+            DuskChanceText.setText(Integer.toString(aTerrain.getDuskChance()));
+            MoonLessNightChanceText.setText(Integer.toString(aTerrain.getMoonLessNightChance()));
+            PitchBlackNightChanceText.setText(Integer.toString(aTerrain.getPitchBlackNightChance()));
+            moderateRainfallChanceText.setText(Integer.toString(aTerrain.getModerateRainFallChance()));
+            downPourChanceText.setText(Integer.toString(aTerrain.getDownPourChance()));
+            lightSnowfallChanceText.setText(Integer.toString(aTerrain.getLightSnowfallChance()));
+            moderateSnowfallChanceText.setText(Integer.toString(aTerrain.getModerateSnowFallChance()));
+            sleetChanceText.setText(Integer.toString(aTerrain.getSleetChance()));
+            iceStormChanceText.setText(Integer.toString(aTerrain.getIceStormChance()));
+            lightHailChanceText.setText(Integer.toString(aTerrain.getLightHailChance()));
+            heavyHailChanceText.setText(Integer.toString(aTerrain.getHeavyHailChance()));
+            lightFogChanceText.setText(Integer.toString(aTerrain.getLightFogChance()));
+            heavyFogChanceText.setText(Integer.toString(aTerrain.getHeavyFogChance()));
+            lightWindsChanceText.setText(Integer.toString(aTerrain.getLightWindsChance()));
+            strongWindsChanceText.setText(Integer.toString(aTerrain.getStrongWindsChance()));
+            stormWindsChanceText.setText(Integer.toString(aTerrain.getStormWindsChance()));
+            tornadoF13WindsChanceText.setText(Integer.toString(aTerrain.getTornadoF13WindsChance()));
+            tornadoF4ChanceText.setText(Integer.toString(aTerrain.getTornadoF4WindsChance()));
+            
+            atmosphere.setSelectedIndex(aTerrain.getAtmosphere());
+            isStaticMapCB.setSelected(aTerrain.isStaticMap());
 		}else {
 			DisplayNameText.setText("");
 			StaticMapNameText.setText("");
@@ -1068,15 +1176,32 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			GravityText.setText(Double.toString(this.selectedPlanet.getGravity()));
 			NightChanceText.setText(Integer.toString(this.selectedPlanet.getNightChance()));
 			NightTempModText.setText(Integer.toString(this.selectedPlanet.getNightTempMod()));
-	        MinVisibilityText.setText("");
-	        MaxVisibilityText.setText("");
-            blowingSandChanceText.setText("");
-            BlizzardChanceText.setText("");
             heavyRainfallChanceText.setText("");
             heavySnowfallChanceText.setText("");
             lightRainfallChanceText.setText("");
             moderateWindsChanceText.setText("");
-            highWindsChanceText.setText("");
+            heavyRainfallChanceText.setText("");
+            heavySnowfallChanceText.setText("");
+            lightRainfallChanceText.setText("");
+            moderateWindsChanceText.setText("");
+            DuskChanceText.setText("");
+            MoonLessNightChanceText.setText("");
+            PitchBlackNightChanceText.setText("");
+            moderateRainfallChanceText.setText("");
+            downPourChanceText.setText("");
+            lightSnowfallChanceText.setText("");
+            moderateSnowfallChanceText.setText("");
+            sleetChanceText.setText("");
+            iceStormChanceText.setText("");
+            lightHailChanceText.setText("");
+            heavyHailChanceText.setText("");
+            lightFogChanceText.setText("");
+            heavyFogChanceText.setText("");
+            lightWindsChanceText.setText("");
+            strongWindsChanceText.setText("");
+            stormWindsChanceText.setText("");
+            tornadoF13WindsChanceText.setText("");
+            tornadoF4ChanceText.setText("");
 
 			isStaticMapCB.setSelected(false);
 			isVacuumCB.setSelected(false);
@@ -1155,20 +1280,33 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 				|| e.getComponent().equals(this.YBoardSizeText)
 				|| e.getComponent().equals(this.XSizeText)
 				|| e.getComponent().equals(this.YSizeText)
-				|| e.getComponent().equals(this.MinVisibilityText)
-				|| e.getComponent().equals(this.MaxVisibilityText)
 				|| e.getComponent().equals(this.LowTempText)
 				|| e.getComponent().equals(this.HighTempText)
 				|| e.getComponent().equals(this.NightChanceText)
 				|| e.getComponent().equals(this.NightTempModText)
 				|| e.getComponent().equals(this.GravityText)
-				|| e.getComponent().equals(this.blowingSandChanceText)
-				|| e.getComponent().equals(this.BlizzardChanceText)
 				|| e.getComponent().equals(this.lightRainfallChanceText)
 				|| e.getComponent().equals(this.heavyRainfallChanceText)
 				|| e.getComponent().equals(this.heavySnowfallChanceText)
 				|| e.getComponent().equals(this.moderateWindsChanceText)
-				|| e.getComponent().equals(this.highWindsChanceText)
+	            || e.getComponent().equals(DuskChanceText)
+	            || e.getComponent().equals(MoonLessNightChanceText)
+	            || e.getComponent().equals(PitchBlackNightChanceText)
+	            || e.getComponent().equals(moderateRainfallChanceText)
+	            || e.getComponent().equals(downPourChanceText)
+	            || e.getComponent().equals(lightSnowfallChanceText)
+	            || e.getComponent().equals(moderateSnowfallChanceText)
+	            || e.getComponent().equals(sleetChanceText)
+	            || e.getComponent().equals(iceStormChanceText)
+	            || e.getComponent().equals(lightHailChanceText)
+	            || e.getComponent().equals(heavyHailChanceText)
+	            || e.getComponent().equals(lightFogChanceText)
+	            || e.getComponent().equals(heavyFogChanceText)
+	            || e.getComponent().equals(lightWindsChanceText)
+	            || e.getComponent().equals(strongWindsChanceText)
+	            || e.getComponent().equals(stormWindsChanceText)
+	            || e.getComponent().equals(tornadoF13WindsChanceText)
+	            || e.getComponent().equals(tornadoF4ChanceText)
 				){
 			updateAdvancedTerrain();
 		}
@@ -1197,17 +1335,32 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		aTerrain.setGravity(Double.parseDouble(GravityText.getText()));
 		aTerrain.setNightChance(Integer.parseInt(NightChanceText.getText()));
 		aTerrain.setNightTempMod(Integer.parseInt(NightTempModText.getText()));
-		aTerrain.setMinVisibility(Integer.parseInt(MinVisibilityText.getText()));
-		aTerrain.setMaxVisibility(Integer.parseInt(MaxVisibilityText.getText()));
-        aTerrain.setBlizzardChance(Integer.parseInt(BlizzardChanceText.getText()));
-        aTerrain.setBlowingSandChance(Integer.parseInt(blowingSandChanceText.getText()));
         aTerrain.setHeavySnowfallChance(Integer.parseInt(heavySnowfallChanceText.getText()));
         aTerrain.setLightRainfallChance(Integer.parseInt(lightRainfallChanceText.getText()));
         aTerrain.setHeavyRainfallChance(Integer.parseInt(heavyRainfallChanceText.getText()));
         aTerrain.setModerateWindsChance(Integer.parseInt(moderateWindsChanceText.getText()));
-        aTerrain.setHighWindsChance(Integer.parseInt(highWindsChanceText.getText()));
 		aTerrain.setStaticMap(isStaticMapCB.isSelected());
-		aTerrain.setVacuum(isVacuumCB.isSelected());
+		aTerrain.setDuskChance(Integer.parseInt(DuskChanceText.getText()));
+		aTerrain.setMoonLessNightChance(Integer.parseInt(MoonLessNightChanceText.getText()));
+		aTerrain.setPitchBlackNightChance(Integer.parseInt(PitchBlackNightChanceText.getText()));
+		aTerrain.setModerateRainFallChance(Integer.parseInt(moderateRainfallChanceText.getText()));
+		aTerrain.setDownPourChance(Integer.parseInt(downPourChanceText.getText()));
+		aTerrain.setLightSnowfallChance(Integer.parseInt(lightSnowfallChanceText.getText()));
+		aTerrain.setModerateSnowFallChance(Integer.parseInt(moderateSnowfallChanceText.getText()));
+		aTerrain.setSleetChance(Integer.parseInt(sleetChanceText.getText()));
+		aTerrain.setIceStormChance(Integer.parseInt(iceStormChanceText.getText()));
+		aTerrain.setLightHailChance(Integer.parseInt(lightHailChanceText.getText()));
+		aTerrain.setHeavyHailChance(Integer.parseInt(heavyHailChanceText.getText()));
+		aTerrain.setLightFogChance(Integer.parseInt(lightFogChanceText.getText()));
+		aTerrain.setHeavyfogChance(Integer.parseInt(heavyFogChanceText.getText()));
+		aTerrain.setLightWindChance(Integer.parseInt(lightWindsChanceText.getText()));
+		aTerrain.setStrongWindsChance(Integer.parseInt(strongWindsChanceText.getText()));
+		aTerrain.setStormWindsChance(Integer.parseInt(stormWindsChanceText.getText()));
+		aTerrain.setTornadoF13WindChance(Integer.parseInt(tornadoF13WindsChanceText.getText()));
+		aTerrain.setTornadoF4WindsChance(Integer.parseInt(tornadoF4ChanceText.getText()));
+        
+        aTerrain.setAtmosphere(atmosphere.getSelectedIndex());
+
 	}
 	
 	private boolean saveAllData(){
@@ -1285,28 +1438,42 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 				
 				if ( aTerrain == null ){
 					aTerrain = new AdvancedTerrain();
-					aTerrain.setDisplayName(DisplayNameText.getText());
-					aTerrain.setStaticMapName(StaticMapNameText.getText());
-					aTerrain.setXSize(Integer.parseInt(XSizeText.getText()));
-					aTerrain.setYSize(Integer.parseInt(YSizeText.getText()));
-					aTerrain.setXBoardSize(Integer.parseInt(XBoardSizeText.getText()));
-					aTerrain.setYBoardSize(Integer.parseInt(YBoardSizeText.getText()));
-					aTerrain.setLowTemp(Integer.parseInt(LowTempText.getText()));
-					aTerrain.setHighTemp(Integer.parseInt(HighTempText.getText()));
-					aTerrain.setGravity(Double.parseDouble(GravityText.getText()));
-					aTerrain.setNightChance(Integer.parseInt(NightChanceText.getText()));
-					aTerrain.setNightTempMod(Integer.parseInt(NightTempModText.getText()));
-					aTerrain.setMinVisibility(Integer.parseInt(MinVisibilityText.getText()));
-					aTerrain.setMaxVisibility(Integer.parseInt(MaxVisibilityText.getText()));
-			        aTerrain.setBlizzardChance(Integer.parseInt(BlizzardChanceText.getText()));
-			        aTerrain.setBlowingSandChance(Integer.parseInt(blowingSandChanceText.getText()));
+			        aTerrain.setDisplayName(DisplayNameText.getText());
+			        aTerrain.setStaticMapName(StaticMapNameText.getText());
+			        aTerrain.setXSize(Integer.parseInt(XSizeText.getText()));
+			        aTerrain.setYSize(Integer.parseInt(YSizeText.getText()));
+			        aTerrain.setXBoardSize(Integer.parseInt(XBoardSizeText.getText()));
+			        aTerrain.setYBoardSize(Integer.parseInt(YBoardSizeText.getText()));
+			        aTerrain.setLowTemp(Integer.parseInt(LowTempText.getText()));
+			        aTerrain.setHighTemp(Integer.parseInt(HighTempText.getText()));
+			        aTerrain.setGravity(Double.parseDouble(GravityText.getText()));
+			        aTerrain.setNightChance(Integer.parseInt(NightChanceText.getText()));
+			        aTerrain.setNightTempMod(Integer.parseInt(NightTempModText.getText()));
 			        aTerrain.setHeavySnowfallChance(Integer.parseInt(heavySnowfallChanceText.getText()));
 			        aTerrain.setLightRainfallChance(Integer.parseInt(lightRainfallChanceText.getText()));
 			        aTerrain.setHeavyRainfallChance(Integer.parseInt(heavyRainfallChanceText.getText()));
 			        aTerrain.setModerateWindsChance(Integer.parseInt(moderateWindsChanceText.getText()));
-			        aTerrain.setHighWindsChance(Integer.parseInt(highWindsChanceText.getText()));
-					aTerrain.setStaticMap(isStaticMapCB.isSelected());
-					aTerrain.setVacuum(isVacuumCB.isSelected());
+			        aTerrain.setStaticMap(isStaticMapCB.isSelected());
+			        aTerrain.setDuskChance(Integer.parseInt(DuskChanceText.getText()));
+			        aTerrain.setMoonLessNightChance(Integer.parseInt(MoonLessNightChanceText.getText()));
+			        aTerrain.setPitchBlackNightChance(Integer.parseInt(PitchBlackNightChanceText.getText()));
+			        aTerrain.setModerateRainFallChance(Integer.parseInt(moderateRainfallChanceText.getText()));
+			        aTerrain.setDownPourChance(Integer.parseInt(downPourChanceText.getText()));
+			        aTerrain.setLightSnowfallChance(Integer.parseInt(lightSnowfallChanceText.getText()));
+			        aTerrain.setModerateSnowFallChance(Integer.parseInt(moderateSnowfallChanceText.getText()));
+			        aTerrain.setSleetChance(Integer.parseInt(sleetChanceText.getText()));
+			        aTerrain.setIceStormChance(Integer.parseInt(iceStormChanceText.getText()));
+			        aTerrain.setLightHailChance(Integer.parseInt(lightHailChanceText.getText()));
+			        aTerrain.setHeavyHailChance(Integer.parseInt(heavyHailChanceText.getText()));
+			        aTerrain.setLightFogChance(Integer.parseInt(lightFogChanceText.getText()));
+			        aTerrain.setHeavyfogChance(Integer.parseInt(heavyFogChanceText.getText()));
+			        aTerrain.setLightWindChance(Integer.parseInt(lightWindsChanceText.getText()));
+			        aTerrain.setStrongWindsChance(Integer.parseInt(strongWindsChanceText.getText()));
+			        aTerrain.setStormWindsChance(Integer.parseInt(stormWindsChanceText.getText()));
+			        aTerrain.setTornadoF13WindChance(Integer.parseInt(tornadoF13WindsChanceText.getText()));
+			        aTerrain.setTornadoF4WindsChance(Integer.parseInt(tornadoF4ChanceText.getText()));
+			        
+			        aTerrain.setAtmosphere(atmosphere.getSelectedIndex());
 				}
 
 				if ( aTerrain.getDisplayName().trim().length() < 1 )

@@ -433,7 +433,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
                     aTerrain.setLowTemp(TokenReader.readInt(ST));
                     aTerrain.setHighTemp(TokenReader.readInt(ST));
                     aTerrain.setGravity(TokenReader.readDouble(ST));
-                    aTerrain.setVacuum(TokenReader.readBoolean(ST));
+                    TokenReader.readBoolean(ST);
                     aTerrain.setNightChance(TokenReader.readInt(ST));
                     aTerrain.setNightTempMod(TokenReader.readInt(ST));
                     aTerrain.setStaticMapName(TokenReader.readString(ST));

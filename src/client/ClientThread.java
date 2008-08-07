@@ -82,6 +82,7 @@ import megamek.common.Coords;
 import megamek.common.IGame;
 import megamek.common.IOffBoardDirections;
 import megamek.common.Pilot;
+import megamek.common.PlanetaryConditions;
 import megamek.common.Player;
 import megamek.common.MechWarrior;
 import megamek.common.util.BuildingTemplate;
@@ -321,6 +322,24 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                         boardvec.add(aTerrain.getStaticMapName());
                         mySettings.setBoardsSelectedVector(boardvec);
                     }
+                    
+                    PlanetaryConditions planetCondition = new PlanetaryConditions();
+                    
+                    planetCondition.setGravity((float)aTerrain.getGravity());
+                    planetCondition.setTemperature(aTerrain.getTemperature());
+                    planetCondition.setAtmosphere(aTerrain.getAtmosphere());
+                    planetCondition.setEMI(aTerrain.hasEMI());
+                    planetCondition.setFog(aTerrain.getFog());
+                    planetCondition.setLight(aTerrain.getLightConditions());
+                    planetCondition.setShiftingWindDirection(aTerrain.hasShifitingWindDirection());
+                    planetCondition.setShiftingWindStrength(aTerrain.hasShifitingWindStrength());
+                    planetCondition.setTerrainAffected(aTerrain.isTerrainAffected());
+                    planetCondition.setWeather(aTerrain.getWeatherConditions());
+                    planetCondition.setWindDirection(aTerrain.getWindDirection());
+                    planetCondition.setWindStrength(aTerrain.getWindStrength());
+                    
+                    client.sendPlanetaryConditions(planetCondition);
+                    
                     mySettings.setMedium(mwclient.getMapMedium());
                     client.sendMapSettings(mySettings);
                 } else {

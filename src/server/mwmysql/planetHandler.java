@@ -238,7 +238,7 @@ public class planetHandler {
                         aTerrain.setLowTemp(Integer.parseInt(ST.nextToken()));
                         aTerrain.setHighTemp(Integer.parseInt(ST.nextToken()));
                         aTerrain.setGravity(Double.parseDouble(ST.nextToken()));
-                        aTerrain.setVacuum(Boolean.parseBoolean(ST.nextToken()));
+                        ST.nextToken();
                         aTerrain.setNightChance(Integer.parseInt(ST.nextToken()));
                         aTerrain.setNightTempMod(Integer.parseInt(ST.nextToken()));
                         aTerrain.setStaticMapName(ST.nextToken());

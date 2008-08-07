@@ -259,16 +259,10 @@ public class XMLPlanetDataParser implements XMLResponder {
             AdvTerr.setNightTempMod(nightmod);
             AdvTerr.setYBoardSize(yboard);
             AdvTerr.setYSize(ymap);
-            AdvTerr.setVacuum(vacuum);
-            AdvTerr.setMinVisibility(minVisibility);
-            AdvTerr.setMaxVisibility(maxVisibility);
-            AdvTerr.setBlizzardChance(blizzardChance);
-            AdvTerr.setBlowingSandChance(blowingSandChance);
             AdvTerr.setHeavySnowfallChance(heavySnowfallChance);
             AdvTerr.setLightRainfallChance(lightRainfallChance);
             AdvTerr.setHeavyRainfallChance(heavyRainfallChance);
             AdvTerr.setModerateWindsChance(moderateWindsChance);
-            AdvTerr.setHighWindsChance(highWindsChance);
         }
 
         if (name.equalsIgnoreCase("OPNAME")) {

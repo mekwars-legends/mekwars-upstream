@@ -28,7 +28,6 @@ import common.campaign.pilot.skills.PilotSkill;
 
 import common.CampaignData;
 import server.campaign.CampaignMain;
-import server.campaign.SUnit;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.AstechSkill;
 import server.campaign.pilot.skills.EdgeSkill;

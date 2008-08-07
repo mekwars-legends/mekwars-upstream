@@ -274,7 +274,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
          * 
          * Only doso if the server has enabled "maxtech_burst"
          */
-        if ( mmClient.game.getOptions().booleanOption("maxtech_burst") && !(entity instanceof Infantry) ) {
+        if ( mmClient.game.getOptions().booleanOption("tacops_burst") && !(entity instanceof Infantry) ) {
             setupMachineGuns();
             scrollPanel.add(panMachineGuns);
         }
@@ -614,7 +614,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 chDump.setText("Dump");
                 add(chDump);
             }
-            if ( mmClient.game.getOptions().booleanOption("maxtech_hotload") 
+            if ( mmClient.game.getOptions().booleanOption("tacops_hotload") 
                     && ((entity instanceof Mech) || (entity instanceof Tank))
                     && ((AmmoType) m.getType()).hasFlag(AmmoType.F_HOTLOAD) ){
                 chHotLoad.setSelected(m.isHotLoaded());

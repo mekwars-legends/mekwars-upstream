@@ -20,8 +20,11 @@ package common;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
+import megamek.common.PlanetaryConditions;
+
 import common.util.BinReader;
 import common.util.BinWriter;
+import common.util.TokenReader;
 
 /**
  * Advanced Environment for planets.
@@ -46,17 +49,50 @@ final public class AdvancedTerrain {
     private int highTemp = 25;
     private double gravity = 1.0;
     private boolean vacuum = false;
-    private int nightChance = 0;
+    private int duskChance = 0;
+    private int fullMoonChance = 0;
+    private int moonlessChance = 0;
+    private int pitchBlackChance = 0;
     private int nightTempMod = 0;
     private int minVisibility = 100;
     private int maxVisibility = 100;
-    private int blizzardChance = 0;
-    private int blowingSandChance = 0;
-    private int heavySnowfallChance = 0;
+    private int atmosphere = PlanetaryConditions.ATMO_STANDARD;
+    
     private int lightRainfallChance = 0;
+    private int moderateRainfallChance = 0;
     private int heavyRainfallChance = 0;
+    private int downPourChance = 0;
+    
+    private int lightSnowfallChance = 0;
+    private int moderateSnowfallChance = 0;
+    private int heavySnowfallChance = 0;
+    private int sleetChance = 0;
+    private int iceStormChance = 0;
+    private int lightHailChance = 0;
+    private int heavyHailChance = 0;
+
+    private int lightWindsChance = 0;
     private int moderateWindsChance = 0;
-    private int highWindsChance = 0;
+    private int strongWindsChance = 0;
+    private int stormWindsChance = 0;
+    private int tornadoF13WindsChance = 0;
+    private int tornadoF4WindsChance = 0;
+    
+    private int lightFogChance = 0;
+    private int heavyFogChance = 0;
+    
+    //MegaMek Planetary Conditions
+    //set up the specific conditions
+    private int lightConditions = PlanetaryConditions.WI_NONE;
+    private int weatherConditions = PlanetaryConditions.WE_NONE;
+    private int windStrength = PlanetaryConditions.WI_NONE;
+    private int windDirection = -1;
+    private boolean shiftWindDirection = false;
+    private boolean shiftWindStrength = false;
+    private int fog = PlanetaryConditions.FOG_NONE;
+    private int temperature = 25;
+    private boolean emi = false;
+    private boolean terrainAffected = true;
 
     public String toString() {
         String result = "";
@@ -67,11 +103,78 @@ final public class AdvancedTerrain {
         else
             result += displayName;
         
-        result += "$" + xSize + "$" + ySize + "$" + staticMap + "$" + xBoardSize 
-        + "$" + yBoardSize + "$" + lowTemp + "$" + highTemp + "$" + gravity + "$" + vacuum + "$" + nightChance 
-        + "$" + nightTempMod + "$" + staticMapName + "$" + minVisibility + "$" + maxVisibility + "$" 
-        + blizzardChance + "$" + blowingSandChance + "$" + heavySnowfallChance + "$" + lightRainfallChance + "$" 
-        + heavyRainfallChance + "$" + moderateWindsChance + "$" + highWindsChance;
+        result += "$";
+        result += xSize;
+        result += "$";
+        result += ySize;
+        result += "$";
+        result += staticMap;
+        result += "$";
+        result += xBoardSize;
+        result += "$";
+        result +=  yBoardSize;
+        result +=  "$";
+        result +=  lowTemp;
+        result +=  "$";
+        result +=  highTemp;
+        result +=  "$";
+        result +=  gravity;
+        result +=  "$";
+        result +=  vacuum; 
+        result +=  "$"; 
+        result +=  fullMoonChance; 
+        result +=  "$"; 
+        result +=  nightTempMod; 
+        result +=  "$"; 
+        result +=  staticMapName; 
+        result +=  "$"; 
+        result +=  minVisibility; 
+        result +=  "$"; 
+        result +=  maxVisibility; 
+        result +=  "$"; 
+        result +=  moderateRainfallChance; 
+        result +=  "$"; 
+        result +=  moderateSnowfallChance; 
+        result +=  "$"; 
+        result +=  heavySnowfallChance; 
+        result +=  "$"; 
+        result +=  lightRainfallChance; 
+        result +=  "$"; 
+        result +=  heavyRainfallChance; 
+        result +=  "$"; 
+        result +=  moderateWindsChance; 
+        result +=  "$"; 
+        result +=  strongWindsChance;
+        result +=  "$";
+        result +=  downPourChance;
+        result +=  "$";
+        result +=  lightSnowfallChance;
+        result +=  "$";
+        result +=  sleetChance;
+        result +=  "$";
+        result +=  iceStormChance;
+        result +=  "$";
+        result += lightHailChance;
+        result +=  "$";
+        result += heavyHailChance;
+        result +=  "$";
+        result += stormWindsChance;
+        result +=  "$";
+        result += tornadoF13WindsChance;
+        result +=  "$";
+        result += tornadoF4WindsChance;
+        result +=  "$";
+        result += atmosphere;
+        result +=  "$";
+        result += lightFogChance;
+        result +=  "$";
+        result += heavyFogChance;
+        result +=  "$";
+        result += duskChance;
+        result +=  "$";
+        result += moonlessChance;
+        result +=  "$";
+        result += pitchBlackChance;
 
         return result;
     }
@@ -87,18 +190,33 @@ final public class AdvancedTerrain {
         highTemp = in.readInt("highTemp");
         gravity = in.readDouble("gravity");
         vacuum = in.readBoolean("vacuum");
-        nightChance = in.readInt("nightChance");
+        fullMoonChance = in.readInt("nightChance");
         nightTempMod = in.readInt("nightTempMod");
         staticMapName = in.readLine("staticMapName");
         minVisibility = in.readInt("minvisibility");
         maxVisibility = in.readInt("maxvisibility");
-        blizzardChance = in.readInt("blizzardChance");
-        blowingSandChance = in.readInt("blowingSandChance");
+        moderateRainfallChance = in.readInt("moderateRainfallChance");
+        moderateSnowfallChance = in.readInt("moderateSnowfallChance");
         heavySnowfallChance = in.readInt("heavySnowfallChance");
         lightRainfallChance = in.readInt("lightRainfallChance");
         heavyRainfallChance = in.readInt("heavyRainfallChance");
         moderateWindsChance = in.readInt("moderateWindsChance");
-        highWindsChance = in.readInt("highWindsChance");
+        strongWindsChance = in.readInt("strongWindsChance");
+        downPourChance = in.readInt("downPourChance");
+        lightSnowfallChance = in.readInt("lightSnowfallChance");
+        sleetChance = in.readInt("sleetChance");
+        iceStormChance = in.readInt("iceStormChance");
+        lightHailChance = in.readInt("lightHailChance");
+        heavyHailChance = in.readInt("heavyHailChance");
+        stormWindsChance = in.readInt("stormWindsChance");
+        tornadoF13WindsChance = in.readInt("tornadoF13WindsChance");
+        tornadoF4WindsChance = in.readInt("tornadoF4WindsChance");
+        atmosphere = in.readInt("atmosphere");
+        lightFogChance = in.readInt("lightFogChance");
+        heavyFogChance = in.readInt("heavyFogChance");
+        duskChance = in.readInt("duskChance");
+        moonlessChance = in.readInt("moonlessChance");
+        pitchBlackChance = in.readInt("pitchBlackChance");
     }
 
     public void binOut(BinWriter out) throws IOException {
@@ -113,53 +231,88 @@ final public class AdvancedTerrain {
         out.println(highTemp, "highTemp");
         out.println(gravity, "gravity");
         out.println(vacuum, "vacuum");
-        out.println(nightChance, "nightChance");
+        out.println(fullMoonChance, "nightChance");
         out.println(nightTempMod, "nightTempMod");
         out.println(staticMapName, "staticMapName");
         out.println(minVisibility, "minvisibility");
         out.println(maxVisibility, "maxvisibility");
-        out.println(blizzardChance, "blizzardChance");
-        out.println(blowingSandChance, "blowingSandChance");
+        out.println(moderateRainfallChance, "moderateRainfallChance");
+        out.println(moderateSnowfallChance, "moderateSnowfallChance");
         out.println(heavySnowfallChance, "heavySnowfallChance");
         out.println(lightRainfallChance, "lightRainfallChance");
         out.println(heavyRainfallChance, "heavyRainfallChance");
         out.println(moderateWindsChance, "moderateWindsChance");
-        out.println(highWindsChance, "highWindsChance");
+        out.println(strongWindsChance, "strongWindsChance");
+        out.println(downPourChance, "downPourChance");
+        out.println(lightSnowfallChance, "lightSnowfallChance");
+        out.println(sleetChance, "sleetChance");
+        out.println(iceStormChance, "iceStormChance");
+        out.println(lightHailChance, "lightHailChance");
+        out.println(heavyHailChance, "heavyHailChance");
+        out.println(stormWindsChance, "stormWindsChance");
+        out.println(tornadoF13WindsChance, "tornadoF13WindsChance");
+        out.println(tornadoF4WindsChance, "tornadoF4WindsChance");
+        out.println(atmosphere, "atmosphere");
+        out.println(lightFogChance, "lightFogChance");
+        out.println(heavyFogChance, "heavyFogChance");
+        out.println(duskChance, "duskChance");
+        out.println(moonlessChance, "moonlessChance");
+        out.println(pitchBlackChance, "pitchBlackChance");
     }
 
     public AdvancedTerrain(String s) {
         StringTokenizer command = new StringTokenizer(s, "$");
 
-        setDisplayName(command.nextToken());
-        setXSize(Integer.parseInt(command.nextToken()));
-        setYSize(Integer.parseInt(command.nextToken()));
-        setStaticMap(Boolean.parseBoolean(command.nextToken()));
-        setXBoardSize(Integer.parseInt(command.nextToken()));
-        setYBoardSize(Integer.parseInt(command.nextToken()));
-        setLowTemp(Integer.parseInt(command.nextToken()));
-        setHighTemp(Integer.parseInt(command.nextToken()));
-        setGravity(Double.parseDouble(command.nextToken()));
-        setVacuum(Boolean.parseBoolean(command.nextToken()));
-        setNightChance(Integer.parseInt(command.nextToken()));
-        setNightTempMod(Integer.parseInt(command.nextToken()));
-        setStaticMapName(command.nextToken());
-        setMinVisibility(Integer.parseInt(command.nextToken()));
-        setMaxVisibility(Integer.parseInt(command.nextToken()));
-        if (command.hasMoreTokens())
-            this.setBlizzardChance(Integer.parseInt(command.nextToken()));
-        if (command.hasMoreTokens())
-            this.setBlowingSandChance(Integer.parseInt(command.nextToken()));
-        if (command.hasMoreTokens())
-            this.setHeavySnowfallChance(Integer.parseInt(command.nextToken()));
-        if (command.hasMoreTokens())
-            this.setLightRainfallChance(Integer.parseInt(command.nextToken()));
-        if (command.hasMoreTokens())
-            this.setHeavyRainfallChance(Integer.parseInt(command.nextToken()));
-        if (command.hasMoreTokens())
-            this.setModerateWindsChance(Integer.parseInt(command.nextToken()));
-        if (command.hasMoreTokens())
-            this.setHighWindsChance(Integer.parseInt(command.nextToken()));
-
+        setDisplayName(TokenReader.readString(command));
+        setXSize(TokenReader.readInt(command));
+        setYSize(TokenReader.readInt(command));
+        setStaticMap(TokenReader.readBoolean(command));
+        setXBoardSize(TokenReader.readInt(command));
+        setYBoardSize(TokenReader.readInt(command));
+        setLowTemp(TokenReader.readInt(command));
+        setHighTemp(TokenReader.readInt(command));
+        setGravity(TokenReader.readDouble(command));
+        setVacuum(TokenReader.readBoolean(command));
+        setNightChance(TokenReader.readInt(command));
+        setNightTempMod(TokenReader.readInt(command));
+        setStaticMapName(TokenReader.readString(command));
+        setMinVisibility(TokenReader.readInt(command));
+        setMaxVisibility(TokenReader.readInt(command));
+        this.setModerateRainFallChance(TokenReader.readInt(command));
+        this.setModerateSnowFallChance(TokenReader.readInt(command));
+        this.setHeavySnowfallChance(TokenReader.readInt(command));
+        this.setLightRainfallChance(TokenReader.readInt(command));
+        this.setHeavyRainfallChance(TokenReader.readInt(command));
+        this.setModerateWindsChance(TokenReader.readInt(command));
+        this.setStrongWindsChance(TokenReader.readInt(command));
+        setDownPourChance(TokenReader.readInt(command));
+        setLightRainfallChance(TokenReader.readInt(command));
+        setSleetChance(TokenReader.readInt(command));
+        setIceStormChance(TokenReader.readInt(command));
+        setLightHailChance(TokenReader.readInt(command));
+        setHeavyHailChance(TokenReader.readInt(command));
+        setStormWindsChance(TokenReader.readInt(command));
+        setTornadoF13WindChance(TokenReader.readInt(command));
+        setTornadoF4WindsChance(TokenReader.readInt(command));
+        setAtmosphere(TokenReader.readInt(command));
+        setLightFogChance(TokenReader.readInt(command));
+        setHeavyfogChance(TokenReader.readInt(command));
+        setDuskChance(TokenReader.readInt(command));
+        setMoonLessNightChance(TokenReader.readInt(command));
+        setPitchBlackNightChance(TokenReader.readInt(command));
+        
+        //MegaMek Planetary Conditions this should always be last
+        setLightConditions(TokenReader.readInt(command));
+        setWeatherConditions(TokenReader.readInt(command));
+        setWindStrength(TokenReader.readInt(command));
+        setWindDirection(TokenReader.readInt(command));
+        setShiftingWindDirection(TokenReader.readBoolean(command));
+        setShiftingWindStrength(TokenReader.readBoolean(command));
+        setFog(TokenReader.readInt(command));
+        setTemperature(TokenReader.readInt(command));
+        setEMI(TokenReader.readBoolean(command));
+        setTerrainAffected(TokenReader.readBoolean(command));
+        
     }
 
     public AdvancedTerrain() {
@@ -181,10 +334,12 @@ final public class AdvancedTerrain {
         staticMap = map;
     }
 
+    @Deprecated
     public boolean isVacuum() {
         return vacuum;
     }
 
+    @Deprecated
     public void setVacuum(boolean vacuum) {
         this.vacuum = vacuum;
     }
@@ -229,12 +384,36 @@ final public class AdvancedTerrain {
         gravity = grav;
     }
 
+    public int getDuskChance() {
+        return duskChance;
+    }
+
+    public void setDuskChance(int chance) {
+        duskChance = chance;
+    }
+
     public int getNightChance() {
-        return nightChance;
+        return fullMoonChance;
     }
 
     public void setNightChance(int chance) {
-        nightChance = chance;
+        fullMoonChance = chance;
+    }
+
+    public int getMoonLessNightChance() {
+        return moonlessChance;
+    }
+
+    public void setMoonLessNightChance(int chance) {
+        moonlessChance = chance;
+    }
+
+    public int getPitchBlackNightChance() {
+        return pitchBlackChance;
+    }
+
+    public void setPitchBlackNightChance(int chance) {
+        pitchBlackChance = chance;
     }
 
     public int getNightTempMod() {
@@ -269,36 +448,40 @@ final public class AdvancedTerrain {
         this.ySize = ySize;
     }
 
+    @Deprecated
     public int getMinVisibility() {
         return minVisibility;
     }
 
+    @Deprecated
     public int getMaxVisibility() {
         return maxVisibility;
     }
 
+    @Deprecated
     public void setMinVisibility(int minVisibility) {
         this.minVisibility = minVisibility;
     }
 
+    @Deprecated
     public void setMaxVisibility(int maxVisibility) {
         this.maxVisibility = maxVisibility;
     }
 
-    public void setBlizzardChance(int chance){
-        this.blizzardChance = chance;
+    public void setModerateSnowFallChance(int chance){
+        this.moderateSnowfallChance = chance;
     }
     
-    public int getBlizzardChance(){
-        return this.blizzardChance;
+    public int getModerateSnowFallChance(){
+        return this.moderateSnowfallChance;
     }
     
-    public void setBlowingSandChance(int chance){
-        this.blowingSandChance = chance;
+    public void setModerateRainFallChance(int chance){
+        this.moderateRainfallChance = chance;
     }
     
-    public int getBlowingSandChance(){
-        return this.blowingSandChance;
+    public int getModerateRainFallChance(){
+        return this.moderateRainfallChance;
     }
     
     public void setHeavySnowfallChance(int chance){
@@ -333,18 +516,237 @@ final public class AdvancedTerrain {
         return this.moderateWindsChance;
     }
     
-    public void setHighWindsChance(int chance){
-        this.highWindsChance = chance;
+    public void setStrongWindsChance(int chance){
+        this.strongWindsChance = chance;
     }
 
-    public int getHighWindsChance(){
-        return this.highWindsChance;
+    public int getStrongWindsChance(){
+        return this.strongWindsChance;
+    }
+
+    public void setStormWindsChance(int chance){
+        this.stormWindsChance = chance;
+    }
+
+    public int getStormWindsChance(){
+        return this.stormWindsChance;
+    }
+
+    public void setLightWindChance(int chance){
+        this.lightWindsChance = chance;
+    }
+
+    public int getLightWindsChance(){
+        return this.lightWindsChance;
+    }
+
+    public void setTornadoF13WindChance(int chance){
+        this.tornadoF13WindsChance = chance;
+    }
+
+    public int getTornadoF13WindsChance(){
+        return this.tornadoF13WindsChance;
+    }
+
+    public void setTornadoF4WindsChance(int chance){
+        this.tornadoF4WindsChance = chance;
+    }
+
+    public int getTornadoF4WindsChance(){
+        return this.tornadoF4WindsChance;
+    }
+
+    public void setDownPourChance(int chance){
+        this.downPourChance = chance;
+    }
+
+    public int getDownPourChance(){
+        return this.downPourChance;
+    }
+
+    public void setLightSnowfallChance(int chance){
+        this.lightSnowfallChance = chance;
+    }
+
+    public int getLightSnowfallChance(){
+        return this.lightSnowfallChance;
+    }
+
+    public void setSleetChance(int chance){
+        this.sleetChance = chance;
+    }
+
+    public int getSleetChance(){
+        return this.sleetChance;
+    }
+
+    public void setIceStormChance(int chance){
+        this.iceStormChance = chance;
+    }
+
+    public int getIceStormChance(){
+        return this.iceStormChance;
+    }
+
+    public void setLightHailChance(int chance){
+        this.lightHailChance = chance;
+    }
+
+    public int getLightHailChance(){
+        return this.lightHailChance;
+    }
+
+    public void setHeavyHailChance(int chance){
+        this.heavyHailChance = chance;
+    }
+
+    public int getHeavyHailChance(){
+        return this.heavyHailChance;
     }
 
     public AdvancedTerrain clone() {
         AdvancedTerrain clone = new AdvancedTerrain(this.toString());
 
         return clone;
-
     }
+
+    public void setLightConditions(int light) {
+        this.lightConditions = light;
+    }
+    
+    public int getLightConditions() {
+        return this.lightConditions;
+    }
+    
+    public void setWeatherConditions(int weather) {
+        this.weatherConditions = weather;
+    }
+    
+    public int getWeatherConditions() {
+        return this.weatherConditions;
+    }
+    
+    public void setWindStrength(int wind) {
+        this.windStrength = wind;
+    }
+    
+    public int getWindStrength() {
+        return this.windStrength;
+    }
+    
+    public void setWindDirection(int dir) {
+        this.windDirection = dir;
+    }
+    
+    public int getWindDirection() {
+        return this.windDirection;
+    }
+    
+    public void setShiftingWindDirection(boolean shift) {
+        this.shiftWindDirection = shift;
+    }
+    
+    public boolean hasShifitingWindDirection() {
+        return this.shiftWindDirection;
+    }
+    
+    public void setShiftingWindStrength(boolean strength) {
+        this.shiftWindStrength= strength;
+    }
+    
+    public boolean hasShifitingWindStrength() {
+        return this.shiftWindStrength;
+    }
+    
+    public String toStringPlanetaryConditions() {
+        StringBuilder results = new StringBuilder();
+        
+        results.append(this.toString());
+        results.append("$");
+        results.append(lightConditions);
+        results.append("$");
+        results.append(weatherConditions);
+        results.append("$");
+        results.append(windStrength);
+        results.append("$");
+        results.append(windDirection);
+        results.append("$");
+        results.append(shiftWindDirection);
+        results.append("$");
+        results.append(shiftWindStrength);
+        results.append("$");
+        results.append(fog);
+        results.append("$");
+        results.append(temperature);
+        results.append("$");
+        results.append(emi);
+        results.append("$");
+        results.append(terrainAffected);
+
+        return results.toString();
+        
+    }
+
+    public boolean isTerrainAffected() {
+        return this.terrainAffected;
+    }
+    
+    public void setTerrainAffected(boolean terrain) {
+        this.terrainAffected = terrain;
+    }
+
+    public boolean hasEMI() {
+        return this.emi;
+    }
+    
+    public void setEMI(boolean emi) {
+        this.emi = emi;
+    }
+    
+    public int getTemperature() {
+        return this.temperature;
+    }
+    
+    public void setTemperature(int temp) {
+        this.temperature = temp;
+    }
+    
+    public int getFog() {
+        return this.fog;
+    }
+    
+    public void setFog(int fog) {
+        this.fog = fog;
+    }
+    
+    public int getAtmosphere() {
+        return this.atmosphere;
+    }
+    
+    public void setAtmosphere(int atmo) {
+        
+        if ( atmo < 0 || atmo > PlanetaryConditions.ATMO_VHIGH ) {
+            atmo = PlanetaryConditions.ATMO_STANDARD;
+        }
+        this.atmosphere = atmo;
+    }
+    
+    public int getLightFogChance() {
+        return this.lightFogChance;
+    }
+    
+    public void setLightFogChance(int chance) {
+        this.lightFogChance = chance;
+    }
+    
+    public int getHeavyFogChance() {
+        return this.heavyFogChance;
+    }
+    
+    public void setHeavyfogChance(int chance) {
+        this.heavyFogChance = chance;
+    }
+    
+    
+    
 }
