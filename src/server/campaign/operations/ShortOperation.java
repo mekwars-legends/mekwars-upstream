@@ -1292,6 +1292,10 @@ public class ShortOperation implements Comparable<Object> {
                         aTerrain.setFog(PlanetaryConditions.FOG_HEAVY);
                     }
                     
+                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getEMIChance()) {
+                        aTerrain.setEMI(true);
+                    }
+                    
                     if (aTerrain.getAtmosphere() <= PlanetaryConditions.ATMO_TRACE) {
                         gameOptions.append("|fire|false");
                     }

@@ -1,8 +1,11 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.33.x
-+ Changed nightGame Varible to check for Planetary Conditions light condition
+v 0.2.34.x
+Release Client/Server 0.2.34.0
++ New MegaMek.jar 0.33.30-MW080808
++ added EMI Chance to Advanced Terrain and Planet Editor
++ Changed nightGame Variable to check for Planetary Conditions light condition
 + Planetary Conditions Code Added
 + Bug: Non-Anti-Mek BA not using 5 for their Piloting when calculating BV
 + Changed database load/saves to speed initial player loading considerably.
@@ -40,6 +43,7 @@ v 0.2.33.x
 + Updated DB to v29
 + Game results now saved to database
 + Added Fields to Admin Server Config dialog for Aeros
+v 0.2.33.x
 Release Client/Server 0.2.33.0
 + Added Map Medium selection to Operations
 + Added Aero options to Operations

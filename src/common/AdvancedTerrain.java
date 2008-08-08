@@ -80,6 +80,8 @@ final public class AdvancedTerrain {
     
     private int lightFogChance = 0;
     private int heavyFogChance = 0;
+
+    private int emiChance = 0;
     
     //MegaMek Planetary Conditions
     //set up the specific conditions
@@ -175,6 +177,9 @@ final public class AdvancedTerrain {
         result += moonlessChance;
         result +=  "$";
         result += pitchBlackChance;
+        result +=  "$";
+        result += emiChance;
+        
 
         return result;
     }
@@ -217,6 +222,7 @@ final public class AdvancedTerrain {
         duskChance = in.readInt("duskChance");
         moonlessChance = in.readInt("moonlessChance");
         pitchBlackChance = in.readInt("pitchBlackChance");
+        emiChance = in.readInt("emiChance");
     }
 
     public void binOut(BinWriter out) throws IOException {
@@ -258,6 +264,7 @@ final public class AdvancedTerrain {
         out.println(duskChance, "duskChance");
         out.println(moonlessChance, "moonlessChance");
         out.println(pitchBlackChance, "pitchBlackChance");
+        out.println(emiChance, "emiChance");
     }
 
     public AdvancedTerrain(String s) {
@@ -300,6 +307,7 @@ final public class AdvancedTerrain {
         setDuskChance(TokenReader.readInt(command));
         setMoonLessNightChance(TokenReader.readInt(command));
         setPitchBlackNightChance(TokenReader.readInt(command));
+        setEMIChance(TokenReader.readInt(command));
         
         //MegaMek Planetary Conditions this should always be last
         setLightConditions(TokenReader.readInt(command));
@@ -747,6 +755,12 @@ final public class AdvancedTerrain {
         this.heavyFogChance = chance;
     }
     
+    public int getEMIChance(){
+        return this.emiChance;
+    }
     
+    public void setEMIChance(int chance){
+        this.emiChance = chance;
+    }
     
 }

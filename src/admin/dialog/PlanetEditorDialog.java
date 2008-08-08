@@ -141,6 +141,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
     private final JTextField tornadoF4ChanceText = new JTextField(5);
     private final JTextField lightFogChanceText = new JTextField(5);
     private final JTextField heavyFogChanceText = new JTextField(5);
+    private final JTextField emiChanceText = new JTextField(5);
 	private final JTextField planetBays = new JTextField(5);
 	private final JTextField planetComps = new JTextField(5);
 	private final JTextField planetXPosition = new JTextField(5);
@@ -169,6 +170,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 	private JPanel planetProduction;
 	private JPanel planetTerrain;
 	private JPanel planetAdvancedTerrain;
+	private JTabbedPane ConfigPane = new JTabbedPane(SwingConstants.TOP);
 	
     private String[] factoryTypes = { "All", "Mek", "Vee", "Mek & Vee",
             "Inf", "Mek & Inf", "Vee & Inf",
@@ -203,7 +205,6 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 	private JComboBox factoryOwners;
 	private JComboBox ownerNames;
 	private JComboBox atmosphere = new JComboBox(PlanetaryConditions.atmoNames);
-	JTabbedPane ConfigPane = new JTabbedPane(SwingConstants.TOP);
 	
 	public PlanetEditorDialog(MWClient c, String planetName) {
 		
@@ -230,10 +231,20 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		
 		loadAllPanels();
 		masterPanel.add(planets);
-		masterPanel.add(planetInfo);
-		masterPanel.add(planetProduction);
-		masterPanel.add(planetTerrain);
-		masterPanel.add(planetAdvancedTerrain);
+		
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.add(planetInfo);
+        infoPanel.add(planetProduction);
+		
+		JPanel terrainPanel = new JPanel();
+		terrainPanel.setLayout(new BoxLayout(terrainPanel, BoxLayout.Y_AXIS));
+		terrainPanel.add(planetTerrain);
+		terrainPanel.add(planetAdvancedTerrain);
+		
+        ConfigPane.addTab("Info",infoPanel);
+		ConfigPane.addTab("Terrain",terrainPanel);
+		masterPanel.add(ConfigPane);
 		
 		// Set the user's options
 		Object[] options = { refreshButton, okayButton, cancelButton };
@@ -243,19 +254,14 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 
 		// Create the main dialog and set the default button
 		dialog = pane.createDialog(masterPanel, windowName);
-		dialog.getRootPane().setDefaultButton(okayButton);
+		dialog.getRootPane().setDefaultButton(cancelButton);
 
 		//Show the dialog and get the user's input
-		dialog.setLocation(mwclient.getMainFrame().getLocation().x+dialog.getWidth()/2,mwclient.getMainFrame().getLocation().y);
 		dialog.setModal(true);
 		dialog.pack();
+        dialog.setLocation(mwclient.getMainFrame().getLocation().x+dialog.getWidth()/2,mwclient.getMainFrame().getLocation().y+(mwclient.getMainFrame().getLocation().y-dialog.getHeight()));
 		dialog.setVisible(true);
-		
-		/*if (pane.getValue() == okayButton) {
-			
-		}
-		else 
-			dialog.dispose();*/
+
 	}
 	
 
@@ -764,11 +770,16 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			YBoardSizeText.addKeyListener(this);
 			textPanel.add(YBoardSizeText);
 	
-            textPanel.add(new JLabel("Low Temp:", SwingConstants.TRAILING));
-			LowTempText.setToolTipText("The Lowest temp for this terrain");
-			LowTempText.addKeyListener(this);
-			textPanel.add(LowTempText);
+            textPanel.add(new JLabel("EMI Chance:", SwingConstants.TRAILING));
+			emiChanceText.setToolTipText("Chance emi is in effect on the planet.");
+			emiChanceText.addKeyListener(this);
+			textPanel.add(emiChanceText);
 	
+            textPanel.add(new JLabel("Low Temp:", SwingConstants.TRAILING));
+            LowTempText.setToolTipText("The Lowest temp for this terrain");
+            LowTempText.addKeyListener(this);
+            textPanel.add(LowTempText);
+    
 			textPanel.add(new JLabel("High Temp:", SwingConstants.TRAILING));
 			HighTempText.setToolTipText("The Highest temp for this terrain");
 			HighTempText.addKeyListener(this);
@@ -900,7 +911,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
             textPanel.add(heavyFogChanceText);
             
 			//run the spring layout
-			SpringLayoutHelper.setupSpringGrid(textPanel,10);
+			SpringLayoutHelper.setupSpringGrid(textPanel,6);
 			
 			
 			isStaticMapCB.setText("Use Static Maps");
@@ -975,6 +986,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
             heavyHailChanceText.setText(Integer.toString(aTerrain.getHeavyHailChance()));
             lightFogChanceText.setText(Integer.toString(aTerrain.getLightFogChance()));
             heavyFogChanceText.setText(Integer.toString(aTerrain.getHeavyFogChance()));
+            emiChanceText.setText(Integer.toString(aTerrain.getEMIChance()));
             lightWindsChanceText.setText(Integer.toString(aTerrain.getLightWindsChance()));
             strongWindsChanceText.setText(Integer.toString(aTerrain.getStrongWindsChance()));
             stormWindsChanceText.setText(Integer.toString(aTerrain.getStormWindsChance()));
@@ -1155,6 +1167,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
             heavyHailChanceText.setText(Integer.toString(aTerrain.getHeavyHailChance()));
             lightFogChanceText.setText(Integer.toString(aTerrain.getLightFogChance()));
             heavyFogChanceText.setText(Integer.toString(aTerrain.getHeavyFogChance()));
+            emiChanceText.setText(Integer.toString(aTerrain.getEMIChance()));
             lightWindsChanceText.setText(Integer.toString(aTerrain.getLightWindsChance()));
             strongWindsChanceText.setText(Integer.toString(aTerrain.getStrongWindsChance()));
             stormWindsChanceText.setText(Integer.toString(aTerrain.getStormWindsChance()));
@@ -1197,6 +1210,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
             heavyHailChanceText.setText("");
             lightFogChanceText.setText("");
             heavyFogChanceText.setText("");
+            emiChanceText.setText("");
             lightWindsChanceText.setText("");
             strongWindsChanceText.setText("");
             stormWindsChanceText.setText("");
@@ -1302,6 +1316,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 	            || e.getComponent().equals(heavyHailChanceText)
 	            || e.getComponent().equals(lightFogChanceText)
 	            || e.getComponent().equals(heavyFogChanceText)
+                || e.getComponent().equals(emiChanceText)
 	            || e.getComponent().equals(lightWindsChanceText)
 	            || e.getComponent().equals(strongWindsChanceText)
 	            || e.getComponent().equals(stormWindsChanceText)
@@ -1353,6 +1368,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 		aTerrain.setHeavyHailChance(Integer.parseInt(heavyHailChanceText.getText()));
 		aTerrain.setLightFogChance(Integer.parseInt(lightFogChanceText.getText()));
 		aTerrain.setHeavyfogChance(Integer.parseInt(heavyFogChanceText.getText()));
+        aTerrain.setEMIChance(Integer.parseInt(emiChanceText.getText()));
 		aTerrain.setLightWindChance(Integer.parseInt(lightWindsChanceText.getText()));
 		aTerrain.setStrongWindsChance(Integer.parseInt(strongWindsChanceText.getText()));
 		aTerrain.setStormWindsChance(Integer.parseInt(stormWindsChanceText.getText()));
@@ -1467,6 +1483,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			        aTerrain.setHeavyHailChance(Integer.parseInt(heavyHailChanceText.getText()));
 			        aTerrain.setLightFogChance(Integer.parseInt(lightFogChanceText.getText()));
 			        aTerrain.setHeavyfogChance(Integer.parseInt(heavyFogChanceText.getText()));
+			        aTerrain.setEMIChance(Integer.parseInt(emiChanceText.getText()));
 			        aTerrain.setLightWindChance(Integer.parseInt(lightWindsChanceText.getText()));
 			        aTerrain.setStrongWindsChance(Integer.parseInt(strongWindsChanceText.getText()));
 			        aTerrain.setStormWindsChance(Integer.parseInt(stormWindsChanceText.getText()));
