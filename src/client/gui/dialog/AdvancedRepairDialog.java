@@ -202,7 +202,7 @@ import client.campaign.CUnit;
         this.setExtendedState(Frame.NORMAL);
 
         this.repaint();
-        this.setLocation(Math.max(mwclient.getMainFrame().getLocation().x,mwclient.getMainFrame().getLocation().x+((mwclient.getMainFrame().getWidth()/2)-(this.getWidth()/2))),Math.max(mwclient.getMainFrame().getLocation().y+(mwclient.getMainFrame().getHeight()/2)-this.getHeight()/2,mwclient.getMainFrame().getLocation().y));
+        this.setLocationRelativeTo(mwclient.getMainFrame());
         
         this.pack();
         this.setVisible(true);

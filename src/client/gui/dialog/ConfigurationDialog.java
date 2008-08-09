@@ -21,7 +21,6 @@ import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.io.File;
 
@@ -1360,13 +1359,13 @@ public final class ConfigurationDialog implements ActionListener {
         // Show the dialog and get the user's input
         dialog.setModal(true);
         dialog.pack();
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        //Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
         // Determine the new location of the window
-        int h = dialog.getSize().height;
-        int y = (dim.height - h) / 2;
+        //int h = dialog.getSize().height;
+        //int y = (dim.height - h) / 2;
 
-        dialog.setLocation(Math.max(mwclient.getMainFrame().getLocation().x, mwclient.getMainFrame().getLocation().x + ((mwclient.getMainFrame().getWidth() / 2) - (dialog.getWidth() / 2))), y);
+        dialog.setLocationRelativeTo(mwclient.getMainFrame());
         dialog.setVisible(true);
 
         if (pane.getValue() == okayButton) {

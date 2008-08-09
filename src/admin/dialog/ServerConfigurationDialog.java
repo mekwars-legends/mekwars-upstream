@@ -5637,7 +5637,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         }
 
         // Show the dialog and get the user's input
-        dialog.setLocation(mwclient.getMainFrame().getLocation().x + 10, mwclient.getMainFrame().getLocation().y);
+        dialog.setLocationRelativeTo(mwclient.getMainFrame());
         dialog.setModal(true);
         dialog.pack();
         dialog.setVisible(true);

@@ -326,7 +326,7 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
 		// Create the main dialog and set the default button
 		dialog = pane.createDialog(mainPanel, windowName);
 		dialog.getRootPane().setDefaultButton(cancelButton);
-		dialog.setLocation(Math.max(mwclient.getMainFrame().getLocation().x,mwclient.getMainFrame().getLocation().x+((mwclient.getMainFrame().getWidth()/2)-(dialog.getWidth()/2))),Math.max(mwclient.getMainFrame().getLocation().y+(mwclient.getMainFrame().getHeight()/2)-dialog.getHeight()/2,mwclient.getMainFrame().getLocation().y));
+		dialog.setLocationRelativeTo(mwclient.getMainFrame());
 
 		//Show the dialog and get the user's input
 		dialog.setModal(true);
