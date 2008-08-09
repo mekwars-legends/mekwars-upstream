@@ -2150,6 +2150,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         currentReward = i;
         if (currentReward > (Integer.parseInt(this.getMyHouse().getConfig("XPRewardCap"))))
             currentReward = (Integer.parseInt(this.getMyHouse().getConfig("XPRewardCap")));
+        
+        if(currentReward < 0)
+        	currentReward = 0;
 
         CampaignMain.cm.toUser("PL|SRP|" + currentReward, name, false);
         setSave();
