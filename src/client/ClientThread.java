@@ -376,6 +376,31 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     mySettings.setMedium(mwclient.getMapMedium());
                     /* sent to server */
                     client.sendMapSettings(mySettings);
+                    
+                    if ( aTerrain != null ) {
+                        PlanetaryConditions planetCondition = new PlanetaryConditions();
+                        
+                        planetCondition.setGravity((float)aTerrain.getGravity());
+                        planetCondition.setTemperature(aTerrain.getTemperature());
+                        planetCondition.setAtmosphere(aTerrain.getAtmosphere());
+                        planetCondition.setEMI(aTerrain.hasEMI());
+                        planetCondition.setFog(aTerrain.getFog());
+                        planetCondition.setLight(aTerrain.getLightConditions());
+                        planetCondition.setShiftingWindDirection(aTerrain.hasShifitingWindDirection());
+                        planetCondition.setShiftingWindStrength(aTerrain.hasShifitingWindStrength());
+                        planetCondition.setTerrainAffected(aTerrain.isTerrainAffected());
+                        planetCondition.setWeather(aTerrain.getWeatherConditions());
+                        planetCondition.setWindDirection(aTerrain.getWindDirection());
+                        planetCondition.setWindStrength(aTerrain.getWindStrength());
+                        
+                        // Check for a night game and set nightGame Variable.
+                        // This is needed to be done since it was possible that a slow connection
+                        // would keep the client from getting an update from the server before the
+                        // entities where added to the game.
+                        nightGame = aTerrain.getLightConditions() > PlanetaryConditions.L_DAY;
+
+                        client.sendPlanetaryConditions(planetCondition);
+                    }
                 }
 
             }

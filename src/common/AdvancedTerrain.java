@@ -186,7 +186,7 @@ final public class AdvancedTerrain {
 
     public void binIn(BinReader in) throws IOException {
         displayName = in.readLine("displayName");
-        staticMap = in.readBoolean("staticMap");
+        this.setStaticMap(in.readBoolean("staticMap"));
         xSize = in.readInt("xSize");
         ySize = in.readInt("ySize");
         xBoardSize = in.readInt("xBoardSize");

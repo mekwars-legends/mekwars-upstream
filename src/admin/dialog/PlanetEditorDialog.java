@@ -157,7 +157,6 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 	private final JTextField planetConquerPoints = new JTextField(5);
 	
 	private final JCheckBox isStaticMapCB = new JCheckBox();
-	private final JCheckBox isVacuumCB = new JCheckBox();
 	private final JCheckBox isHomeWorldCB = new JCheckBox();
 	private final JCheckBox isConquerable = new JCheckBox();
 	
@@ -916,6 +915,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			
 			isStaticMapCB.setText("Use Static Maps");
 			isStaticMapCB.setToolTipText("Check if you want to use static maps.");
+            isStaticMapCB.setSelected(aTerrain.isStaticMap());
 			isStaticMapCB.addActionListener(this);
 			isStaticMapCB.setActionCommand(staticMapCBCommmand);
 			checkboxPanel.add(isStaticMapCB);
@@ -923,12 +923,10 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			checkboxPanel.add(new JLabel("Atmosphere:", SwingConstants.TRAILING));
             atmosphere.setToolTipText("<html>What type of atmosphere this terrain has.</html>");
             atmosphere.setActionCommand(atmosphereCommand);
+            atmosphere.setSelectedIndex(aTerrain.getAtmosphere());
             atmosphere.addActionListener(this);
             checkboxPanel.add(atmosphere);
             
-			
-			
-			
 		}else{
 			
 			textPanel.add(new JLabel("Low Temp:", SwingConstants.TRAILING));
@@ -993,8 +991,6 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
             tornadoF13WindsChanceText.setText(Integer.toString(aTerrain.getTornadoF13WindsChance()));
             tornadoF4ChanceText.setText(Integer.toString(aTerrain.getTornadoF4WindsChance()));
             
-            atmosphere.setSelectedIndex(aTerrain.getAtmosphere());
-			isStaticMapCB.setSelected(aTerrain.isStaticMap());
 		}else {
 			LowTempText.setText(Integer.toString(this.selectedPlanet.getTemp().width));
 			HighTempText.setText(Double.toString(this.selectedPlanet.getTemp().height));
@@ -1174,8 +1170,13 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
             tornadoF13WindsChanceText.setText(Integer.toString(aTerrain.getTornadoF13WindsChance()));
             tornadoF4ChanceText.setText(Integer.toString(aTerrain.getTornadoF4WindsChance()));
             
+            atmosphere.removeActionListener(this);
             atmosphere.setSelectedIndex(aTerrain.getAtmosphere());
+            atmosphere.addActionListener(this);
+            
+            isStaticMapCB.removeActionListener(this);
             isStaticMapCB.setSelected(aTerrain.isStaticMap());
+            isStaticMapCB.addActionListener(this);
 		}else {
 			DisplayNameText.setText("");
 			StaticMapNameText.setText("");
@@ -1217,8 +1218,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
             tornadoF13WindsChanceText.setText("");
             tornadoF4ChanceText.setText("");
 
-			isStaticMapCB.setSelected(false);
-			isVacuumCB.setSelected(false);
+			//isStaticMapCB.setSelected(false);
 		}
 	}
 	
@@ -1505,7 +1505,6 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminSetPlanetGravity#"+planetName+"#"+GravityText.getText());
 			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminSetPlanetMapSize#"+planetName+"#"+XSizeText.getText()+"#"+YSizeText.getText());
 			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminSetPlanetTemperature#"+planetName+"#"+LowTempText.getText()+"#"+HighTempText.getText());
-			mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminSetPlanetVacuum#"+planetName+"#"+isVacuumCB.isSelected());
 		}
 	}
 	

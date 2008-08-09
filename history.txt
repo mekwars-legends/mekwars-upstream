@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.34.x
+Release Client 0.2.34.1
++ ATerrains without static map not using Planetary Conditions.
++ Bug: Planet editor not working correctly with Atmosphere JComboand Static Map check box
 + Changed Dialog locations to be relative to CMainFrame
 + New MegaMek.jar 0.33.30-MW080908
 + Bug: RP could go below 0
