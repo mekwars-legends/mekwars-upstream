@@ -85,10 +85,10 @@ final public class AdvancedTerrain {
     
     //MegaMek Planetary Conditions
     //set up the specific conditions
-    private int lightConditions = PlanetaryConditions.WI_NONE;
+    private int lightConditions = PlanetaryConditions.L_DAY;
     private int weatherConditions = PlanetaryConditions.WE_NONE;
     private int windStrength = PlanetaryConditions.WI_NONE;
-    private int windDirection = -1;
+    private int windDirection = PlanetaryConditions.WI_NONE;
     private boolean shiftWindDirection = false;
     private boolean shiftWindStrength = false;
     private int fog = PlanetaryConditions.FOG_NONE;
