@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.34.x
+Release Server 0.2.34.2
++ Bug: Planetary Conditions not getting to set to default
 Release Server 0.2.34.1
 + Bug: Planetary Conditions Wind Direction defaulting to -1 instead of 0
 Release Client 0.2.34.1

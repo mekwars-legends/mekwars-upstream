@@ -265,6 +265,18 @@ public class ShortOperation implements Comparable<Object> {
                 aTerrain.setXSize(o.getIntValue("MapSizeX"));
                 aTerrain.setYSize(o.getIntValue("MapSizeY"));
             }
+            
+            //Set Default Planetary Conditions.
+            aTerrain.setLightConditions(PlanetaryConditions.L_DAY);
+            aTerrain.setWeatherConditions(PlanetaryConditions.WE_NONE);
+            aTerrain.setWindStrength(PlanetaryConditions.WI_NONE);
+            aTerrain.setWindDirection(PlanetaryConditions.WI_NONE);
+            aTerrain.setShiftingWindDirection(false);
+            aTerrain.setShiftingWindStrength(false);
+            aTerrain.setFog(PlanetaryConditions.FOG_NONE);
+            aTerrain.setEMI(false);
+            aTerrain.setTerrainAffected(false);
+
         }
 
         this.pdlist = possibleDefenders;
