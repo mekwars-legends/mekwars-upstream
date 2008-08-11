@@ -79,12 +79,13 @@ public class DefendCommand implements Command {
 
         // check the attack
         ShortOperation so = CampaignMain.cm.getOpsManager().getRunningOps().get(opID);
-        Operation o = CampaignMain.cm.getOpsManager().getOperation(so.getName());
 
         if (so == null) {
             CampaignMain.cm.toUser("AM:Defend failed. Attack #" + opID + " does not exist.", Username, true);
             return;
         }
+
+        Operation o = CampaignMain.cm.getOpsManager().getOperation(so.getName());
 
         // check the army
         SArmy da = dp.getArmy(armyID);
