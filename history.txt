@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.34.x
++ New MegaMek.jar 0.33.30-MW081108
 Release Server 0.2.34.2
 + Bug: Planetary Conditions not getting to set to default
 Release Server 0.2.34.1
