@@ -236,8 +236,8 @@ class GeneralPanel extends JPanel{
         }
         mpR.setText(mp.toString());
 
-        int heatCap = en.getHeatCapacity();
-        int heatCapWater = en.getHeatCapacityWithWater();
+        int heatCap = en.getHeatCapacity() - en.getCoolantFailureAmount();
+        int heatCapWater = en.getHeatCapacityWithWater() - en.getCoolantFailureAmount();
         String heatCapacityStr = Integer.toString(heatCap);
 
         if ( heatCap < heatCapWater ) {

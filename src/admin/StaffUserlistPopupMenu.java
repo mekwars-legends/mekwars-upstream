@@ -414,7 +414,7 @@ public class StaffUserlistPopupMenu extends JMenu implements ActionListener {
 
             userName = st.nextToken();
             // fluff to set
-            String newfluff = JOptionPane.showInputDialog(this, "Fluff? (Leave blank to remove)", user.getFluff());
+            String newfluff = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Fluff? (Leave blank to remove)", user.getFluff());
 
             if (newfluff != null)
                 mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c fluff#" + userName + "#" + newfluff);

@@ -1345,19 +1345,11 @@ public class ShortOperation implements Comparable<Object> {
                 if (tempdiff > 0)
                     tempToSet = CampaignMain.cm.getRandomNumber(tempdiff) + lowTemp;
 
-                gameOptions.append("|temperature|");
-                gameOptions.append(tempToSet);
-                gameOptions.append("|gravity|");
-                gameOptions.append(targetWorld.getGravity());
-                gameOptions.append("|vacuum|");
-                gameOptions.append(targetWorld.isVacuum());
                 if (targetWorld.isVacuum())
                     gameOptions.append("|fire|false");
                 this.intelGravity = targetWorld.getGravity();
                 this.intelTemp = tempToSet;
                 this.intelVacuum = targetWorld.isVacuum();
-                // Advanced Terrain is not being used to reset visibility to max
-                gameOptions.append("|visibility|999");
             }
 
             // if this is a DB game then exclusive_db_deployment needs to be
