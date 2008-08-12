@@ -276,6 +276,7 @@ public class ShortResolver {
             // set to reporting status
             so.changeStatus(ShortOperation.STATUS_REPORTING);
             CampaignMain.cm.getOpsManager().terminateOperation(so, OperationManager.TERM_REPORTINGERROR, null);
+            CampaignData.mwlog.errLog("Error while trying to Resolve game: "+so.getShortID()+" Result sent by Game: "+report);
             return;
         }
 
