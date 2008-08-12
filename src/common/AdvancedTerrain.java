@@ -179,6 +179,8 @@ final public class AdvancedTerrain {
         result += pitchBlackChance;
         result +=  "$";
         result += emiChance;
+        result +=  "$"; 
+        result += lightWindsChance; 
         
 
         return result;
@@ -205,6 +207,7 @@ final public class AdvancedTerrain {
         heavySnowfallChance = in.readInt("heavySnowfallChance");
         lightRainfallChance = in.readInt("lightRainfallChance");
         heavyRainfallChance = in.readInt("heavyRainfallChance");
+        lightWindsChance = in.readInt("lightWindsChance");
         moderateWindsChance = in.readInt("moderateWindsChance");
         strongWindsChance = in.readInt("strongWindsChance");
         downPourChance = in.readInt("downPourChance");
@@ -247,6 +250,7 @@ final public class AdvancedTerrain {
         out.println(heavySnowfallChance, "heavySnowfallChance");
         out.println(lightRainfallChance, "lightRainfallChance");
         out.println(heavyRainfallChance, "heavyRainfallChance");
+        out.println(lightWindsChance, "lightWindsChance");
         out.println(moderateWindsChance, "moderateWindsChance");
         out.println(strongWindsChance, "strongWindsChance");
         out.println(downPourChance, "downPourChance");
@@ -293,7 +297,7 @@ final public class AdvancedTerrain {
         this.setModerateWindsChance(TokenReader.readInt(command));
         this.setStrongWindsChance(TokenReader.readInt(command));
         setDownPourChance(TokenReader.readInt(command));
-        setLightRainfallChance(TokenReader.readInt(command));
+        setLightSnowfallChance(TokenReader.readInt(command));
         setSleetChance(TokenReader.readInt(command));
         setIceStormChance(TokenReader.readInt(command));
         setLightHailChance(TokenReader.readInt(command));
@@ -308,6 +312,7 @@ final public class AdvancedTerrain {
         setMoonLessNightChance(TokenReader.readInt(command));
         setPitchBlackNightChance(TokenReader.readInt(command));
         setEMIChance(TokenReader.readInt(command));
+        setLightWindChance(TokenReader.readInt(command));
         
         //MegaMek Planetary Conditions this should always be last
         setLightConditions(TokenReader.readInt(command));
