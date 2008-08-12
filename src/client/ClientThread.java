@@ -489,6 +489,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     entity.setSpotlight(nightGame);
                     entity.setSpotlightState(nightGame);
 
+                    entity.setGameOptions(client.game);
                     // Set the correct home edge for off board units
                     if (entity.isOffBoard()) {
                         int direction = IOffBoardDirections.NORTH;

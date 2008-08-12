@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.34.x
++ Bug: Equipment modes not loading on server side entities
 + Bug: Defend command no checking for Null Short Op Object
 + New MegaMek.jar 0.33.30-MW08112008A
 + New MegaMek.jar 0.33.30-MW081108
