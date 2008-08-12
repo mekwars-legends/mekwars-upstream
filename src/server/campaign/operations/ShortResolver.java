@@ -258,7 +258,6 @@ public class ShortResolver {
             if (!so.getWinners().containsKey(currName) && !so.getLosers().containsKey(currName))
                 so.getLosers().put(currName, allPlayers.get(currName));
         }
-        so.getReporter().setWinnersAndLosers(so.getWinners(), so.getLosers());
         /*
          * Before establishing which units are saveable/killed and moving
          * anything between players or changing the pilots in units, save the
@@ -282,6 +281,7 @@ public class ShortResolver {
 
         // set to reporting status
         so.changeStatus(ShortOperation.STATUS_REPORTING);
+        so.getReporter().setWinnersAndLosers(so.getWinners(), so.getLosers());
 
         if (so.preCapturedUnits.size() > 0) {
 
