@@ -143,7 +143,8 @@ public class RepairUnitCommand implements Command {
 							return;
 						}
 					}
-					CampaignMain.cm.toUser("FSM|You do not have enough "+crit+" crits to repair this.", Username,false);
+	                String critPrettyname = UnitUtils.getCritExternalName(entity, slot, location, armor);
+					CampaignMain.cm.toUser("FSM|You do not have enough "+critPrettyname+" crits to repair this.", Username,false);
 					return;
 				}
 			}

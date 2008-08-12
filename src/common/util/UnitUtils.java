@@ -2460,6 +2460,55 @@ public class UnitUtils {
 
     }
 
+    public static String getCritExternalName(Entity unit, int slot, int location, boolean armor) {
+
+        if (armor) {
+            if (slot == UnitUtils.LOC_INTERNAL_ARMOR) {
+                if (MiscType.getArmorTypeName(unit.getStructureType()).equalsIgnoreCase("Standard"))
+                    return "IS (STD)";
+
+                return MiscType.getStructureTypeName(unit.getStructureType());
+
+            } else {
+                if (MiscType.getArmorTypeName(unit.getArmorType()).equalsIgnoreCase("Standard"))
+                    return "Armor (STD)";
+                return MiscType.getArmorTypeName(unit.getArmorType());
+            }
+        }
+        CriticalSlot crit = unit.getCritical(location, slot);
+        if (crit == null)
+            return "";
+
+        if (UnitUtils.isActuator(crit))
+            return "Actuator";
+
+        if (crit.getType() == CriticalSlot.TYPE_EQUIPMENT) {
+            Mounted mounted = unit.getEquipment(crit.getIndex());
+            if (mounted.getType() instanceof AmmoType) {
+                return "Ammo Bin";
+            }
+            
+            return mounted.getName();
+        }
+
+        if (unit instanceof Mech && crit.getType() == CriticalSlot.TYPE_SYSTEM) {
+
+            if (crit.getIndex() == Mech.SYSTEM_ENGINE)
+                return UnitUtils.ENGINE_TECH_STRING[UnitUtils.getEngineType(unit)];
+
+            if (crit.getIndex() == Mech.SYSTEM_GYRO)
+                return Mech.getGyroTypeString(unit.getGyroType());
+
+            if (crit.getIndex() == Mech.SYSTEM_COCKPIT)
+                return Mech.getCockpitTypeString(((Mech) unit).getCockpitType());
+
+            return ((Mech) unit).getSystemName(crit.getIndex());
+        }// end CS type if
+
+        return unit.getEquipment(crit.getIndex()).getType().getInternalName();
+
+    }
+
     public static boolean isCompatibleTech(Entity unit, int techLevel) {
         // armor and IS are universal everything else gets a +4 to the roll if the tech levels
         // are not compatible.
