@@ -1298,6 +1298,10 @@ public class ShortOperation implements Comparable<Object> {
                         aTerrain.setWindStrength(PlanetaryConditions.WI_TORNADO_F4);
                     }
                     
+                    boolean wind = aTerrain.getLightWindsChance() > 0 || aTerrain.getModerateWindsChance() > 0 || aTerrain.getStrongWindsChance() > 0 || aTerrain.getStormWindsChance() > 0 || aTerrain.getTornadoF13WindsChance() > 0 || aTerrain.getTornadoF4WindsChance() > 0;
+                    aTerrain.setShiftingWindDirection(wind);
+                    aTerrain.setShiftingWindStrength(wind);
+                    
                     if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getLightFogChance()) {
                         aTerrain.setFog(PlanetaryConditions.FOG_LIGHT);
                     }else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHeavyFogChance()) {

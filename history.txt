@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.34.x
+Release Server 0.2.34.3 & Client 0.2.34.2
++ Changing wind direction and strength now set if wind conditions are set
++ Units not loading into MM from MW with correct Modes in their equipment.
++ New MegaMek.jar 0.33.30-MW081208
 + Bug: Equipment modes not loading on server side entities
 + Bug: Defend command no checking for Null Short Op Object
 + New MegaMek.jar 0.33.30-MW08112008A
