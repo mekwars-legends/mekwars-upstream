@@ -2,11 +2,12 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.34.x
++ New MegaMek.jar 0.33.30-MW081308
 Release Client 0.2.34.3
 Release Server 0.2.34.4
 + New MegaMek.jar 0.33.30-MW081208b
 + Bug: Exception thrown when no winner can be found for an op during reporting. 
-+ Crit External Name now showin by Repair unit command when player does not have enough crits
++ Crit External Name now shown by Repair unit command when player does not have enough crits
 + Light wind and Rain chances not getting saved/loaded correctly in Advanced Terrain
 Release Server 0.2.34.3 & Client 0.2.34.2
 + Changing wind direction and strength now set if wind conditions are set
