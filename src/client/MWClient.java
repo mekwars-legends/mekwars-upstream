@@ -2789,7 +2789,7 @@ public final class MWClient implements IClient {
     }
 
     public boolean isAdmin() {
-        return getUserLevel() == 200;
+        return getUserLevel() >= 200;
     }
 
     public boolean isMod() {

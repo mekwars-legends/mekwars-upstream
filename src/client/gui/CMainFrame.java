@@ -2451,6 +2451,9 @@ public class CMainFrame extends JFrame {
                 result += "<td>Reduces the number of techs needed to repair a unit by 1</td>";
             result += "</tr>";
         }
+        if (Integer.parseInt(mwclient.getserverConfigs("chanceforBVDNIforMek")) > 0) {
+            result += "<tr>" + "<td>MD Buffered VDNI</td>" + "<td>BVDNI</td>" + "<td>Allows pilots to take more damage.</td>" + "</tr>";
+        }
         if (Integer.parseInt(mwclient.getserverConfigs("chanceforDMforMek")) > 0) {
             result += "<tr>" + "<td>Dodge Maneuver</td>" + "<td>DM</td>" + "<td>Enables the unit to make a dodge maneuver instead of a physical attack.<br>This maneuver adds +2 to the BTH to physical attacks against the unit.</td>" + "</tr>";
         }
@@ -2493,6 +2496,9 @@ public class CMainFrame extends JFrame {
         if (Integer.parseInt(mwclient.getserverConfigs("chanceforPRforMek")) > 0) {
             result += "<tr>" + "<td>Pain Resistance</td>" + "<td>PR</td>" + "<td>When making consciousness rolls, 1 is added to all rolls. Also, damage received<BR>from ammo explosions is reduced to 1.<BR>Note: This ability is only used for BattleMechs.</td>" + "</tr>";
         }
+        if (Integer.parseInt(mwclient.getserverConfigs("chanceforPSforMek")) > 0) {
+            result += "<tr>" + "<td>Pain Shunt</td>" + "<td>PS</td>" + "<td>When making consciousness rolls, 1 is added to all rolls. Also, damage received<BR>from ammo explosions is reduced to 1.</td>" + "</tr>";
+        }
         if (Integer.parseInt(mwclient.getserverConfigs("chanceforQSforMek")) > 0) {
             result += "<tr>" + "<td>Quick Study</td>" + "<td>QS</td>" + "<td>Pilots with the Quick Study skill gain a 5% bonus to all XP earned.</td>" + "</tr>";
         }
@@ -2504,6 +2510,9 @@ public class CMainFrame extends JFrame {
         }
         if (Integer.parseInt(mwclient.getserverConfigs("chanceforTNforMek")) > 0) {
             result += "<tr>" + "<td>Trait</td>" + "<td>TN</td>" + "<td>Pilot traits for use with moding the gaining of other skills</td>" + "</tr>";
+        }
+        if (Integer.parseInt(mwclient.getserverConfigs("chanceforVDNIforMek")) > 0) {
+            result += "<tr>" + "<td>VDNI MD Skill</td>" + "<td>VDNI</td>" + "<td>Allows Pilot to Take more Damage</td>" + "</tr>";
         }
         if (Integer.parseInt(mwclient.getserverConfigs("chanceforWSforMek")) > 0) {
             result += "<tr>" + "<td>Weapon Specialist</td>" + "<td>WS</td>" + "<td>A pilot who specializes in a particular weapon receives a -2 to hit modifier<br>on all attacks with that weapon.</td>" + "</tr>";

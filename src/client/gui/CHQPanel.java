@@ -74,6 +74,7 @@ import client.gui.dialog.BulkRepairDialog;
 import client.gui.dialog.CamoSelectionDialog;
 import client.gui.dialog.MechDetailDisplay;
 import client.gui.dialog.CustomUnitDialog;
+import client.gui.dialog.PromotePilotDialog;
 import client.gui.AttackMenu;
 
 import common.Army;
@@ -1784,6 +1785,12 @@ public class CHQPanel extends JPanel {
                             menuItem.setActionCommand("RP|" + cm.getId());
                             menuItem.addActionListener(this);
                             pm.add(menuItem);
+                            if ( Boolean.parseBoolean(mwclient.getserverConfigs("PlayersCanBuyPilotUpgrades")) ){
+                                menuItem = new JMenuItem("Promote Pilot");
+                                menuItem.setActionCommand("PP|" + cm.getId());
+                                menuItem.addActionListener(this);
+                                pm.add(menuItem);
+                            }
                         }
 
                         // Pilot Queues Block
@@ -2394,6 +2401,10 @@ public class CHQPanel extends JPanel {
             } else if (command.equalsIgnoreCase("RP")) {
                 int mid = Integer.parseInt(st.nextToken());
                 mwclient.getMainFrame().jMenuCommanderNamePilot_actionPerformed(mid);
+                // Promote Pilot
+            } else if (command.equalsIgnoreCase("PP")) {
+                int mid = Integer.parseInt(st.nextToken());
+                new PromotePilotDialog(mwclient,mid);
                 // retire pilot
             } else if (command.equalsIgnoreCase("RT")) {
                 int mid = Integer.parseInt(st.nextToken());

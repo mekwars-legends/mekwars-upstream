@@ -80,6 +80,10 @@ public class SPilot extends Pilot {
      */
     public String checkForPilotSkillImprovement(SUnit unit, SPlayer owner) {
 
+        if ( CampaignMain.cm.getBooleanConfig("PlayersCanBuyPilotUpgrades") ){
+            return "";
+        }
+        
         /*
          * This is a pretty radical departure from the old Tasks-style levelling
          * chart. People will flip their crap when they see they no longer have
@@ -339,6 +343,11 @@ public class SPilot extends Pilot {
                 if (this.getSkills().has(PilotSkill.EdgeSkillID)) {
                     skillToAdd = (SPilotSkill) this.getSkills().getPilotSkill(PilotSkill.EdgeSkillID);
                     ((EdgeSkill) skillToAdd).setLevel(skillToAdd.getLevel() + 1);
+                }
+            }else if (skillToAdd instanceof AstechSkill) {
+                if (this.getSkills().has(PilotSkill.AstechSkillID)) {
+                    skillToAdd = (SPilotSkill) this.getSkills().getPilotSkill(PilotSkill.AstechSkillID);
+                    ((AstechSkill) skillToAdd).setLevel(skillToAdd.getLevel() + 1);
                 }
             }
 

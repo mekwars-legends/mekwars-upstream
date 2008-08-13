@@ -1,5 +1,4 @@
 /*
- * MekWars - Copyright (C) 2004 
  * 
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  *
@@ -1482,6 +1481,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("PLAYERS", new PlayersCommand());
         Commands.put("PLAYERUNLOCKARMY", new PlayerUnlockArmyCommand());
         Commands.put("PROMOTEPLAYER", new PromotePlayerCommand());
+        Commands.put("PROMOTEPILOT", new PromotePilotCommand());
         Commands.put("PURCHASEFACTORY", new PurchaseFactoryCommand());
         Commands.put("RANGE", new RangeCommand());
         Commands.put("RECALL", new RecallCommand());
