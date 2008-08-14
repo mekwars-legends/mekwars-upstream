@@ -1249,6 +1249,7 @@ src/client/gui/dialog/MechDetailDisplay.java -text
 src/client/gui/dialog/PlanetNameDialog.java -text
 src/client/gui/dialog/PlanetSearchDialog.java -text
 src/client/gui/dialog/PlayerNameDialog.java -text
+src/client/gui/dialog/PromotePilotDialog.java -text
 src/client/gui/dialog/RegisterNameDialog.java -text
 src/client/gui/dialog/RepodSelectorDialog.java -text
 src/client/gui/dialog/RewardPointsDialog.java -text
@@ -1482,6 +1483,7 @@ src/server/campaign/commands/PlanetCommand.java -text
 src/server/campaign/commands/PlayerLockArmyCommand.java -text
 src/server/campaign/commands/PlayerUnlockArmyCommand.java -text
 src/server/campaign/commands/PlayersCommand.java -text
+src/server/campaign/commands/PromotePilotCommand.java -text
 src/server/campaign/commands/RangeCommand.java -text
 src/server/campaign/commands/RecallBidCommand.java -text
 src/server/campaign/commands/RecallCommand.java -text
