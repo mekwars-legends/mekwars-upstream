@@ -235,8 +235,9 @@ public class ShortOperation implements Comparable<Object> {
         // set initial counter, status, strings, etc
         showsToClear = 3;// 3 tick default
         this.currentStatus = STATUS_WAITING;
-        this.gameOptions.append("GO");
-
+        this.gameOptions.append("GO|");
+        this.gameOptions.append(CampaignMain.cm.getMegaMekOptionsToString());
+        
         // add to gamelog
         String toLog = "Attack: #" + shortID + "/" + initiator.getName() + "/" + opName + "/" + target.getName() + ".<br> - Potential Defenders: ";
         for (SArmy currA : possibleDefenders)

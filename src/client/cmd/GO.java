@@ -40,7 +40,6 @@ public class GO extends Command {
 	public void execute(String input) {
 		StringTokenizer st = decode(input);
 		mwclient.getGameOptions().clear();
-		mwclient.loadServerMegaMekGameOptions();
 		
 		while (st.hasMoreElements()) {
 			String option = st.nextToken();
@@ -61,6 +60,8 @@ public class GO extends Command {
                 }
             }
 		}//end while
+		
+		GameOptions.saveOptions(mwclient.getGameOptions());
 		
 		mwclient.setWaiting(false);
 	}//end execute

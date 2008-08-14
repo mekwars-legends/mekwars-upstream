@@ -1451,6 +1451,7 @@ src/server/campaign/commands/FireTechsCommand.java -text
 src/server/campaign/commands/GamesCommand.java -text
 src/server/campaign/commands/GetFactionConfigsCommand.java -text
 src/server/campaign/commands/GetSavedMailCommand.java -text
+src/server/campaign/commands/GetServerMegaMekGameOptionsCommand.java -text
 src/server/campaign/commands/GetServerOpFlagsCommand.java -text
 src/server/campaign/commands/HireTechsCommand.java -text
 src/server/campaign/commands/HouseCommand.java -text
@@ -1819,8 +1820,6 @@ src/server/dataProvider/commands/OpList.java -text
 src/server/dataProvider/commands/OpListTimestamp.java -text
 src/server/dataProvider/commands/PDiff.java -text
 src/server/dataProvider/commands/ServerConfig.java -text
-src/server/dataProvider/commands/ServerMegaMekGameOptions.java -text
-src/server/dataProvider/commands/ServerMegaMekGameOptionsMD5.java -text
 src/server/dataProvider/commands/ServerTrait.java -text
 src/server/dataProvider/commands/ServerVersion.java -text
 src/server/mwcyclopscomm/MWCyclopsComm.java -text

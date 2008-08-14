@@ -27,7 +27,6 @@ import common.Influences;
 import common.Planet;
 import common.util.BinReader;
 import common.util.BinWriter;
-import common.util.MD5;
 
 import client.MWClient;
 
@@ -525,81 +524,6 @@ public class DataFetchClient {
 				
 				//close the streams
 				//in.close();
-			}
-		} catch (Exception ex){
-			CampaignData.mwlog.errLog(ex);
-		} 
-		
-	}
-	
-	public String getServerMegaMekGameOptionsMD5(){
-		String result = "";
-		try{
-			BinReader in = openConnection("ServerMegaMekGameOptionsMD5");
-			result =  in.readLine("ServerMegaMekGameOptionsMD5");
-		}catch (Exception ex){
-			CampaignData.mwlog.errLog("Error retriving MD5 for game options");
-			CampaignData.mwlog.errLog(ex);
-		}
-		return result;
-	}
-	/**
-	 * Transfer the server game options for MegaMek.
-	 */
-	public void getServerMegaMekGameOptions() throws IOException {
-		
-		File localGameOptions = new File("./mmconf");
-		try {
-            if ( !localGameOptions.exists() ){
-                localGameOptions.mkdir();
-            }
-            localGameOptions = new File("./mmconf/gameoptions.xml");
-			if (localGameOptions.exists()) {
-				
-				CampaignData.mwlog.errLog("- local gameoptions.xml exists. checking MD5.");
-				
-				//try to connect
-				try {
-									
-					//get the local MD5
-					String localOptionsMD5 = MD5.getHashString(localGameOptions);
-					
-					//now get the Server MD5
-					String ServerMegaMekGameOptionsMD5 = this.getServerMegaMekGameOptionsMD5();
-					
-					if (localOptionsMD5.equals(ServerMegaMekGameOptionsMD5)){
-						CampaignData.mwlog.errLog("- MD5 matches leaving alone.");
-						return;
-					}
-				}catch(Exception ex){
-					CampaignData.mwlog.errLog("- Error checking gameoptions.xml");
-				}
-			}
-			
-			CampaignData.mwlog.errLog("- MD5 mismatch. Pulling gameoptions.xml from the server!");
-			//MMClient.mwClientLog.clientErrLog("- opening connection to datafeed. requesting Trait Files");
-			BinReader in = openConnection("ServerMegaMekGameOptions");
-			FileOutputStream fops = null;
-			PrintStream out = null;
-			//keep reading until there is an error.
-			try {
-				File options = new File("./mmconf/gameoptions.xml");
-				fops = new FileOutputStream(options);
-				out = new PrintStream(fops);
-				while (true){
-					String tempString =in.readStringLine("GameOption");
-					if ( tempString.equals("NoFileFound")){
-						out.close();
-						fops.close();
-						options.delete();
-						return;
-					}
-					out.println(tempString);
-				}
-			} catch (Exception e) {
-				//close the streams
-				out.close();
-				fops.close();
 			}
 		} catch (Exception ex){
 			CampaignData.mwlog.errLog(ex);

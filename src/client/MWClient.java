@@ -87,7 +87,7 @@ import megamek.common.Entity;
 import megamek.common.EquipmentType;
 import megamek.common.Mech;
 import megamek.common.options.GameOptions;
-import megamek.common.options.IOption;
+import megamek.common.options.IBasicOption;
 import megamek.common.preference.IClientPreferences;
 import megamek.common.preference.PreferenceManager;
 import megamek.server.Server;
@@ -128,7 +128,6 @@ import common.Planet;
 import common.PlanetEnvironment;
 import common.Unit;
 import common.campaign.Buildings;
-import common.util.MD5;
 import common.util.ThreadManager;
 import common.util.TokenReader;
 import common.util.UnitUtils;
@@ -168,7 +167,7 @@ public final class MWClient implements IClient {
     TreeMap<String, MMGame> servers = new TreeMap<String, MMGame>();// hostname,mmgame
     Server myServer = null;
     Date mytime = new Date(System.currentTimeMillis());
-    Vector<IOption> GameOptions = new Vector<IOption>(1, 1);
+    Vector<IBasicOption> GameOptions = new Vector<IBasicOption>(1, 1);
     Vector<String> decodeBuffer = new Vector<String>(1, 1);// used to buffer
     // incoming data
     // until CMainFrame
@@ -2372,7 +2371,7 @@ public final class MWClient implements IClient {
         System.gc();
     }
 
-    public Vector<IOption> getGameOptions() {
+    public Vector<IBasicOption> getGameOptions() {
         return GameOptions;
     }
 
@@ -2517,17 +2516,6 @@ public final class MWClient implements IClient {
         }
     }
 
-    public void loadServerMegaMekGameOptions() {
-        try {
-            dataFetcher.getServerMegaMekGameOptions();
-        } catch (Exception ex) {
-            if (!(ex instanceof SocketException)) {
-                CampaignData.mwlog.errLog("Error loading Server MegaMekGameOptions files");
-                CampaignData.mwlog.errLog(ex);
-            }
-        }
-    }
-
     public void loadBannedAmmo() {
         try {
             dataFetcher.getBannedAmmoData(this);
@@ -2617,13 +2605,6 @@ public final class MWClient implements IClient {
                 dataFetcher.getServerConfigData(this);
             } catch (Exception ex) {
                 CampaignData.mwlog.errLog("Unable to fetch Server configs.");
-                CampaignData.mwlog.errLog(ex);
-            }
-
-            try {
-                this.loadServerMegaMekGameOptions();
-            } catch (Exception ex) {
-                CampaignData.mwlog.errLog("Unable to load MM server game options!");
                 CampaignData.mwlog.errLog(ex);
             }
 
@@ -3059,7 +3040,16 @@ public final class MWClient implements IClient {
 
     public void loadMegaMekClient() {
         try {
-            this.loadServerMegaMekGameOptions();
+            this.setWaiting(true);
+            sendChat(PROTOCOL_PREFIX + "c GetServerMegaMekGameOptions");
+            try {
+                while ( this.isWaiting() ){
+                    Thread.sleep(10);
+                }
+            }catch (Exception ex) {
+                CampaignData.mwlog.errLog(ex);
+            }
+
             Client MegaMekClient = new Client("temp", "None", 0);
             MegaMekClient.game.getOptions().loadOptions();
             GameOptions gameOptions = MegaMekClient.game.getOptions();
@@ -3069,13 +3059,8 @@ public final class MWClient implements IClient {
             MMGOD.setVisible(true);
             MMGOD.dispose();
             File localGameOptions = new File("mmconf/gameoptions.xml");
-            // get the local MD5
-            String localOptionsMD5 = MD5.getHashString(localGameOptions);
 
-            // now get the Server MD5
-            String ServerMegaMekGameOptionsMD5 = this.dataFetcher.getServerMegaMekGameOptionsMD5();
-
-            if (!localOptionsMD5.equals(ServerMegaMekGameOptionsMD5))
+            if ( localGameOptions.lastModified() >= System.currentTimeMillis() - 1000)
                 sendGameOptionsToServer();
         } catch (Exception ex) {
             CampaignData.mwlog.errLog("Unable to pull server MegaMek Logs");

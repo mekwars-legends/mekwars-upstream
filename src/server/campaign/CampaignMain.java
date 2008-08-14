@@ -31,6 +31,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -48,6 +49,7 @@ import megamek.common.Entity;
 import megamek.common.Mech;
 import megamek.common.Mounted;
 import megamek.common.WeaponType;
+import megamek.common.options.IOption;
 
 import common.CampaignData;
 import server.MWServ;
@@ -1409,6 +1411,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("GETFACTIONCONFIGS", new GetFactionConfigsCommand());
         Commands.put("GETMODLOG", new GetModLogCommand());
         Commands.put("GETPLAYERUNITS", new GetPlayerUnitsCommand());
+        Commands.put("GETSERVERMEGAMEKGAMEOPTIONS", new GetServerMegaMekGameOptionsCommand());
         Commands.put("GETSERVEROPFLAGS", new GetServerOpFlagsCommand());
         Commands.put("GOOSE", new GooseCommand());
         Commands.put("GRANTEXP", new GrantEXPCommand());
@@ -4060,6 +4063,19 @@ public final class CampaignMain implements Serializable {
             }
 
         }
+    }
+    
+    public String getMegaMekOptionsToString(){
+        StringBuffer result = new StringBuffer();
+        
+        Enumeration<IOption> options = cm.getMegaMekClient().game.getOptions().getOptions();
+        
+        while ( options.hasMoreElements() ){
+            IOption option = options.nextElement();
+            
+            result.append(option.getName()).append("|").append(option.getValue()).append("|");
+        }
+        return result.toString();
     }
 
     class datFileFilter implements FilenameFilter {

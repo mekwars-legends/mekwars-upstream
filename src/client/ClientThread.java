@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.StringTokenizer;
@@ -72,11 +71,7 @@ import megamek.common.event.GameSettingsChangeEvent;
 import megamek.common.event.GameTurnChangeEvent;
 import megamek.common.MapSettings;
 import megamek.common.Mech;
-import megamek.common.options.GameOptions;
 import megamek.common.options.IBasicOption;
-import megamek.common.options.Option;
-import megamek.common.options.IOption;
-import megamek.common.options.IOptionGroup;
 import megamek.common.Building;
 import megamek.common.Coords;
 import megamek.common.IGame;
@@ -176,10 +171,10 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
         // client.game.getOptions().
         Vector<IBasicOption> xmlGameOptions = new Vector<IBasicOption>(1, 1);
-        Vector<IOption> loadOptions = client.game.getOptions().loadOptions();
+        //Vector<IOption> loadOptions = client.game.getOptions().loadOptions();
 
         // Load Defaults first.
-        Enumeration<IOption> options = client.game.getOptions().getOptions();
+/*        Enumeration<IOption> options = client.game.getOptions().getOptions();
         while (options.hasMoreElements()) {
             IOption option = (IOption) options.nextElement();
             switch (option.getType()) {
@@ -202,7 +197,10 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
         }
 
         xmlGameOptions = sortAndShrinkGameOptions(xmlGameOptions, loadOptions, this.mwclient.getGameOptions());
-
+*/
+        xmlGameOptions = this.mwclient.getGameOptions();
+        xmlGameOptions.trimToSize();
+        
         try {
             client.connect();
         } catch (Exception ex) {
@@ -679,7 +677,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "mail " + toUse.getHostName() + ",checkrestartcount");
                 }
 
-                clearGameOptions();
+                //clearGameOptions();
                 client.game.reset();
             }// end victory
 
@@ -1061,36 +1059,6 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
          */
     }
 
-    private Vector<IBasicOption> sortAndShrinkGameOptions(Vector<IBasicOption> defaults, Vector<IOption> serverGameOptions, Vector<IOption> OperationGameOptions) {
-
-        Vector<IBasicOption> returnedOptions = new Vector<IBasicOption>(OperationGameOptions.size(), 1);
-        Hashtable<String, IBasicOption> gameHash = new Hashtable<String, IBasicOption>();
-
-        // Start with a base of Server options
-        for (IOption option : serverGameOptions) {
-            gameHash.put(option.getName(), option);
-        }
-        // Over write the server options with the Operation options
-        for (IOption option : OperationGameOptions) {
-            gameHash.put(option.getName(), option);
-        }
-
-        // Only add options to the return list that are different from the game
-        // defaults.
-        for (IBasicOption option : defaults) {
-
-            IBasicOption currentOption = gameHash.get(option.getName());
-
-            if (currentOption != null && !option.getValue().toString().equals(currentOption.getValue().toString())) {
-                returnedOptions.add(currentOption);
-            }
-        }
-
-        returnedOptions.trimToSize();
-
-        return returnedOptions;
-    }
-
     public Pilot createEntityPilot(Unit mek) {
         // get and set the options
         Pilot pilot = null;
@@ -1114,7 +1082,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
         return pilot;
     }
 
-    private void clearGameOptions() {
+   /* private void clearGameOptions() {
 
         Vector<IBasicOption> defaultOptions = new Vector<IBasicOption>(10, 1);
 
@@ -1130,5 +1098,5 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
         }
 
         client.sendGameOptions("", defaultOptions);
-    }
+    }*/
 }
