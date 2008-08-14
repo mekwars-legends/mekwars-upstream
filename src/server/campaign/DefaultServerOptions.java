@@ -1086,6 +1086,7 @@ public class DefaultServerOptions {
         //Pilot Upgrade configs
         defaults.setProperty("PlayersCanBuyPilotUpgrades", "false");
         defaults.setProperty("PilotsMustLevelEvenly", "false");
+        defaults.setProperty("GiftedPercent", "5");
         
     }
 

@@ -2464,7 +2464,7 @@ public class CMainFrame extends JFrame {
             result += "<tr>" + "<td>Enhanced Interface</td>" + "<td>EI</td>" + "<td>Neural interface to the clan enhanced imaging system<br>-1 To PSR<br>+2 when targeting with TC instead of +3<br>Can Target without TC at +6<br>Reduces all forest and Smoke mods to 1<br>Pilot receives 1 point of damage every time Units IS is hit,<br>If you fail a roll of 7+<br>BA's recieve 1 extra point of damage every time they are hit</td>" + "</tr>";
         }
         if (Integer.parseInt(mwclient.getserverConfigs("chanceforGTforMek")) > 0) {
-            result += "<tr>" + "<td>Gifted</td>" + "<td>GT</td>" + "<td>Pilots receive an extra 5% chance to gain a skill when they fail<br>to level Piloting or Gunnery after a win.</td>" + "</tr>";
+            result += "<tr>" + "<td>Gifted</td>" + "<td>GT</td>" + "<td>Pilots receive an extra "+mwclient.getserverConfigs("GiftedPercent")+"% chance to gain a skill when they fail<br>to level Piloting or Gunnery after a win.</td>" + "</tr>";
         }
         if (Integer.parseInt(mwclient.getserverConfigs("chanceforGBforMek")) > 0) {
             result += "<tr>" + "<td>Gunnery Ballistic</td>" + "<td>GB</td>" + "<td>NOTE: This is an unofficial rule. Pilot gets a -1 to-hit bonus on all<br>ballistic weapons (MGs, all ACs, Gaussrifles).</td>" + "</tr>";

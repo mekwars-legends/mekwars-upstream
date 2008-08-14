@@ -2064,6 +2064,16 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("PainShuntBaseBVMod");
         SkillModSpring.add(baseTextField);
 
+        baseTextField = new JTextField(5);
+        SkillModSpring.add(new JLabel("Gifted % Mod", SwingConstants.TRAILING));
+        if ( Boolean.parseBoolean(mwclient.getserverConfigs("PlayersCanBuyPilotUpgrades")) ){
+            baseTextField.setToolTipText("<html><body>Note Double Field<br>The amount off the cost of other upgrades a Gifted Pilot gets.<br>Example .05 for 5% off</body></html>");
+        }else{
+            baseTextField.setToolTipText("<html><body>Pilots receive an extra x% chance to gain a skill when they fail<br>to level Piloting or Gunnery after a win</body></html>");
+        }
+        baseTextField.setName("GiftedPercent");
+        SkillModSpring.add(baseTextField);
+
         SpringLayoutHelper.setupSpringGrid(SkillModSpring, 4);
 
         pilotSkillsModPanel.add(SkillModSpring);

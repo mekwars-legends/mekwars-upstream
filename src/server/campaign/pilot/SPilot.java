@@ -213,7 +213,7 @@ public class SPilot extends Pilot {
 
             int chanceToGainSkill = CampaignMain.cm.getIntegerConfig("SkillLevelChance");
             if (unit.getPilot().getSkills().has(PilotSkill.GiftedID))
-                chanceToGainSkill += 5;
+                chanceToGainSkill += CampaignMain.cm.getIntegerConfig("GiftedPercent");
 
             int dieRoll = CampaignMain.cm.getRandomNumber(100) + 1;
             if (dieRoll < chanceToGainSkill)
