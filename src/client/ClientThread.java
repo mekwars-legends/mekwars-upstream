@@ -170,37 +170,8 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
         }
 
         // client.game.getOptions().
-        Vector<IBasicOption> xmlGameOptions = new Vector<IBasicOption>(1, 1);
-        //Vector<IOption> loadOptions = client.game.getOptions().loadOptions();
+        Vector<IBasicOption> xmlGameOptions = this.mwclient.getGameOptions();
 
-        // Load Defaults first.
-/*        Enumeration<IOption> options = client.game.getOptions().getOptions();
-        while (options.hasMoreElements()) {
-            IOption option = (IOption) options.nextElement();
-            switch (option.getType()) {
-            case IOption.BOOLEAN:
-                xmlGameOptions.add((new Option(new GameOptions(), option.getName(), (Boolean) option.getDefault())));
-                break;
-            case IOption.FLOAT:
-                xmlGameOptions.add((new Option(new GameOptions(), option.getName(), (Float) option.getDefault())));
-                break;
-            case IOption.STRING:
-                xmlGameOptions.add((new Option(new GameOptions(), option.getName(), (String) option.getDefault())));
-                break;
-            case IOption.INTEGER:
-                xmlGameOptions.add((new Option(new GameOptions(), option.getName(), (Integer) option.getDefault())));
-                break;
-            case IOption.CHOICE:
-                xmlGameOptions.add((new Option(new GameOptions(), option.getName(), (String) option.getDefault())));
-                break;
-            }
-        }
-
-        xmlGameOptions = sortAndShrinkGameOptions(xmlGameOptions, loadOptions, this.mwclient.getGameOptions());
-*/
-        xmlGameOptions = this.mwclient.getGameOptions();
-        xmlGameOptions.trimToSize();
-        
         try {
             client.connect();
         } catch (Exception ex) {
@@ -444,10 +415,8 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
             if ((client.game != null && client.game.getPhase() == IGame.Phase.PHASE_LOUNGE)) {
 
+                client.game.getOptions().loadOptions();
                 if (this.mechs.size() > 0 && xmlGameOptions.size() > 0) {
-                    /*
-                     * Vector<IBasicOption> tempVector = new Vector<IBasicOption>(10,1); while ( xmlGameOptions.size() > 0 ){ tempVector.clear(); int count = Math.min(10, xmlGameOptions.size()); for (; count > 0 ; count-- ) tempVector.add(xmlGameOptions.remove(0)); client.sendGameOptions("",tempVector); sleep(150); }
-                     */
                     client.sendGameOptions("", xmlGameOptions);
                 }
 
@@ -487,6 +456,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     entity.setSpotlight(nightGame);
                     entity.setSpotlightState(nightGame);
 
+                    //Set the game options so everything is a okay
                     entity.setGameOptions(client.game);
                     // Set the correct home edge for off board units
                     if (entity.isOffBoard()) {
@@ -535,10 +505,16 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     // get the entity
                     Entity entity = autoUnit.getEntity();
 
+                    // Set slights based on games light conditions.
+                    entity.setSpotlight(nightGame);
+                    entity.setSpotlightState(nightGame);
+
                     // Had issues with Id's so we are now setting them.
                     // entity.setId(autoUnit.getId());
                     entity.setExternalId(autoUnit.getId());
 
+                    //Set the game options so everything is a okay
+                    entity.setGameOptions(client.game);
                     // Set the owner
                     if (bot != null)
                         entity.setOwner(bot.getLocalPlayer());

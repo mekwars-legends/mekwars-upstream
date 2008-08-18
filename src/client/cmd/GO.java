@@ -17,9 +17,11 @@
 
 package client.cmd;
 
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
 import megamek.common.options.GameOptions;
+import megamek.common.options.IBasicOption;
 import megamek.common.options.Option;
 import client.MWClient;
 
@@ -40,6 +42,8 @@ public class GO extends Command {
 	public void execute(String input) {
 		StringTokenizer st = decode(input);
 		mwclient.getGameOptions().clear();
+		HashMap<String, IBasicOption> optionsHash = new HashMap<String, IBasicOption>();
+        IBasicOption gameOption = null;
 		
 		while (st.hasMoreElements()) {
 			String option = st.nextToken();
@@ -47,19 +51,25 @@ public class GO extends Command {
             
             
             try{
-                mwclient.getGameOptions().add(new Option(new GameOptions(),option,Integer.parseInt(value)));
+                gameOption = new Option(new GameOptions(),option,Integer.parseInt(value));
+                optionsHash.put(gameOption.getName(),gameOption);
             }catch (Exception ex){
                 try{
-                    mwclient.getGameOptions().add(new Option(new GameOptions(),option, Float.parseFloat(value)));
+                    gameOption = new Option(new GameOptions(),option,Float.parseFloat(value));
+                    optionsHash.put(gameOption.getName(),gameOption);
                 }catch (Exception ex1){
                     try{
-                        mwclient.getGameOptions().add(new Option(new GameOptions(),option,Boolean.parseBoolean(value)));
+                        gameOption = new Option(new GameOptions(),option,Boolean.parseBoolean(value));
+                        optionsHash.put(gameOption.getName(),gameOption);
                     }catch (Exception ex2){
-                        mwclient.getGameOptions().add(new Option(new GameOptions(),option,value));
+                        gameOption = new Option(new GameOptions(),option,value);
+                        optionsHash.put(gameOption.getName(),gameOption);
                     }
                 }
             }
 		}//end while
+
+		mwclient.getGameOptions().addAll(optionsHash.values());
 		
 		GameOptions.saveOptions(mwclient.getGameOptions());
 		

@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.35.x
++ Client 0.2.35.1
++ New MegaMek.jar 0.33.30-MW081808
++ Stream Lined GO command for sending MegaMek Game options to Client
++ Bug: Modes not Loading Correctly for MekWars into MegaMek
 + Release Client & Server 0.2.35.0
 + New method to sending and receiving MegaMek Game Options
 + Pilot Promotion Dialog Finished
