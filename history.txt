@@ -1,12 +1,14 @@
 VERSION HISTORY:
 ----------------
 
-v 0.2.34.x
+v 0.2.35.x
++ Release Client & Server 0.2.35.0
 + New method to sending and receiving MegaMek Game Options
 + Pilot Promotion Dialog Finished
 + Initial Check-in of pilot promotion dialog
 + RFE Allow players to promote their pilots
 + New MegaMek.jar 0.33.30-MW081308
+v 0.2.34.x
 Release Client 0.2.34.3
 Release Server 0.2.34.4
 + New MegaMek.jar 0.33.30-MW081208b
