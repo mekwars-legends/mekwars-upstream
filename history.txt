@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.35.x
++ Release Client 0.2.35.2
++ MekWars MegaMek compatibility fix
++ New MegaMek.jar 0.33.30-MW081908
 + Client 0.2.35.1
 + New MegaMek.jar 0.33.30-MW081808
 + Stream Lined GO command for sending MegaMek Game options to Client

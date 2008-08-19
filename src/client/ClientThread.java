@@ -456,8 +456,6 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     entity.setSpotlight(nightGame);
                     entity.setSpotlightState(nightGame);
 
-                    //Set the game options so everything is a okay
-                    entity.setGameOptions(client.game);
                     // Set the correct home edge for off board units
                     if (entity.isOffBoard()) {
                         int direction = IOffBoardDirections.NORTH;
@@ -513,8 +511,6 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     // entity.setId(autoUnit.getId());
                     entity.setExternalId(autoUnit.getId());
 
-                    //Set the game options so everything is a okay
-                    entity.setGameOptions(client.game);
                     // Set the owner
                     if (bot != null)
                         entity.setOwner(bot.getLocalPlayer());
