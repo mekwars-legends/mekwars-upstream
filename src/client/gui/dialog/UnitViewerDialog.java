@@ -277,6 +277,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
         populateJComboBoxs();
         buildSouthParams(false);
 
+        this.setLocationRelativeTo(mwclient.getMainFrame());
         this.getContentPane().add(springHolder);
 
         clearMechPreview();

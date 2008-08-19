@@ -188,7 +188,7 @@ public class SellUnitDialog extends JDialog implements ActionListener {
 		this.setResizable(true);
 		
 		//center the dialog.
-		this.setLocationRelativeTo(null);
+		this.setLocationRelativeTo(mwclient.getMainFrame());
 	}
 	
 	

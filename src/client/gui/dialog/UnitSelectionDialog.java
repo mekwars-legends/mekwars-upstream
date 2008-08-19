@@ -136,12 +136,10 @@ public class UnitSelectionDialog extends JDialog implements ActionListener {
 		generalLayout.add(new JLabel("\n"));
 		this.getContentPane().add(generalLayout);
 		this.pack();
-		
+		this.setLocationRelativeTo(mwclient.getMainFrame());
 		this.checkMinimumSize();
 		this.setResizable(true);
 		
-		//center the dialog.
-		this.setLocationRelativeTo(null);
 	}
 	
 	/**

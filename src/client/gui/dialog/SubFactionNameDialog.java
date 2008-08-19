@@ -180,7 +180,7 @@ public class SubFactionNameDialog extends JDialog implements ActionListener {
 		this.getRootPane().setDefaultButton(okayButton);
 		
 		//center the dialog.
-		this.setLocationRelativeTo(null);
+		this.setLocationRelativeTo(mwclient.getMainFrame());
        
 	}
 	

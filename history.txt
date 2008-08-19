@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.35.x
++ Bug: C3 not linking in MM via MW.
++ Bug 1809594: MW isn't forcing MM to refresh
 + Release Client 0.2.35.2
 + MekWars MegaMek compatibility fix
 + New MegaMek.jar 0.33.30-MW081908

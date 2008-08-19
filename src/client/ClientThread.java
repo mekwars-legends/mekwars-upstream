@@ -771,12 +771,16 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
         while (c3Unit == null || c3Master == null) {
             try {
-                if (c3Unit == null)
-                    c3Unit = client.game.getEntity(slaveid);
-
-                if (c3Master == null)
-                    c3Master = client.game.getEntity(masterid);
-
+                
+                for ( Entity en : client.game.getEntitiesVector() ){
+                    if (c3Unit == null && en.getExternalId() == slaveid){
+                        c3Unit = en;
+                    }
+    
+                    if (c3Master == null && en.getExternalId() == masterid){
+                        c3Master = en;
+                    }
+                }
                 sleep(10);// give the queue time to refresh
             } catch (Exception ex) {
                 CampaignData.mwlog.errLog("Error in linkMegaMekC3Units");
@@ -791,7 +795,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
         }
 
         try {
-            CUnit masterUnit = (CUnit) army.getUnit(masterid.intValue());
+            CUnit masterUnit = (CUnit) army.getUnit(masterid);
             // CampaignData.mwlog.errLog("Master Unit:
             // "+masterUnit.getModelName());
             // CampaignData.mwlog.errLog("Slave Unit:

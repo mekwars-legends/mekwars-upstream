@@ -130,7 +130,7 @@ public final class SignonDialog implements ActionListener {
 		dialog.setVisible(true);
 		dialog.requestFocus();
 		usernameField.requestFocus();
-		
+		dialog.setLocationRelativeTo(mwclient.getMainFrame());
 		if (pane.getValue() == okayButton) {
 			mwclient.getConfig().setParam("NAME",usernameField.getText());
 			mwclient.setUsername(usernameField.getText());

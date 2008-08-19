@@ -306,7 +306,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         // load the default tables/units
         this.loadTables();
         this.refresh();
-
+        this.setLocationRelativeTo(mwclient.getMainFrame());
         this.setVisible(true);
     }
 
