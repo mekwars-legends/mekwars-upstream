@@ -53,7 +53,13 @@ public class OperationReporter {
 		while(it.hasNext()) {
 			if (count > 0)
 				wNames.append(", ");
-			wNames.append(winners.get(it.next()).getName());
+			String name = it.next();
+			
+			if (name.equalsIgnoreCase("Draw") ) {
+			    wNames.append("Draw");
+			} else {
+			    wNames.append(winners.get(name).getName());
+			}
 			count++;
 		}
 		opData.setWinnerName(wNames.toString());
