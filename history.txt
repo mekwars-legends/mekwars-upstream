@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.35.x
++ Release Client 0.2.35.3 & Server 0.2.35.1
++ Bug: Team games not initiating due to attacks no longer being found
 + Bug: Operation report not able to deal with Draws
 + Bug: C3 not linking in MM via MW.
 + Bug 1809594: MW isn't forcing MM to refresh

@@ -60,7 +60,8 @@ public class DefendCommand implements Command {
         int opID = -1;
         int armyID = -1;
         int teamNumber = -1;
-
+        boolean isAttacker = false;
+        
         try {
             opID = Integer.parseInt(command.nextToken());
             armyID = Integer.parseInt(command.nextToken());
@@ -208,22 +209,31 @@ public class DefendCommand implements Command {
             CampaignMain.cm.toUser("AM:You've been assigned to team #" + teamNumber + ".", Username);
 
         }
-        /*
-         * At this point, we can assume that we have a valid army - Add the
-         * defender to the ShortOperation. - Remove the defender from any other
-         * ShortOperations he is involved in. This stops any running chicken
-         * threads and may cancel cancel other attacks.
-         */
-        CampaignMain.cm.getOpsManager().removePlayerFromAllAttackerLists(dp, so, true);
-        CampaignMain.cm.getOpsManager().removePlayerFromAllDefenderLists(dp, so, true);
 
         // If you join the attackers team then you will be added to the
         // attackers array.
 
-        if (teamNumber > 0 && so.getAttackersTeam() == teamNumber)
+        if (teamNumber > 0 && so.getAttackersTeam() == teamNumber){
             so.addAttacker(dp, da, "");
-        else
+            /*
+             * At this point, we can assume that we have a valid army - Add the
+             * player to the ShortOperation as an attacker. 
+             * This stops any running chicken threads and may cancel other attacks.
+             */
+            CampaignMain.cm.getOpsManager().removePlayerFromAllDefenderLists(dp, so, true);
+            isAttacker = true;
+        }
+        else{
             so.addDefender(dp, da, "");// add defender
+            /*
+             * At this point, we can assume that we have a valid army - Add the
+             * defender to the ShortOperation. - Remove the defender from any other
+             * ShortOperations he is involved in. This stops any running chicken
+             * threads and may cancel other attacks.
+             */
+            CampaignMain.cm.getOpsManager().removePlayerFromAllAttackerLists(dp, so, true);
+            CampaignMain.cm.getOpsManager().removePlayerFromAllDefenderLists(dp, so, true);
+        }
 
         /*
          * We can assume that the player has enough money/etc to defend the
@@ -239,8 +249,15 @@ public class DefendCommand implements Command {
         int flu = o.getIntValue("DefenderCostInfluence");
         int rp = o.getIntValue("DefenderCostReward");
 
-        String toSend = "AM:You are now defending Attack #" + opID;
-
+        String toSend = "AM:You are now ";
+        
+        if ( isAttacker ){
+            toSend += "joining ";
+        } else {
+            toSend += "defending ";
+        }
+        
+        toSend +=  "Attack #" + opID;
         boolean hasCost = false;
 
         if (money > 0) {
@@ -277,7 +294,15 @@ public class DefendCommand implements Command {
         CampaignMain.cm.toUser(toSend, Username, true);
 
         if (o.getBooleanValue("FreeForAllOperation")) {
-            CampaignMain.cm.toUser("AM:" + dp.getName() + " has joined the operation, as a defender. <a href=\"MEKWARS/c commenceoperation#" + opID + "#CONFIRM\">Click here to commence</a>", so.getInitiator().getName(), true);
+            toSend = "AM:" + dp.getName() + " has joined the operation, as ";
+            if ( isAttacker ){
+                toSend += "an attacker.";
+            } else{
+                toSend += "a defender.";
+            }
+            
+            toSend += " <a href=\"MEKWARS/c commenceoperation#" + opID + "#CONFIRM\">Click here to commence</a>";
+            CampaignMain.cm.toUser(toSend, so.getInitiator().getName(), true);
         }
 
         // Defender had an outstanding attack and that attack needs to be
