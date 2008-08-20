@@ -344,12 +344,14 @@ public class ShortOperation implements Comparable<Object> {
 
         // remove from maps
         String pNameLower = p.getName().toLowerCase();
-        int armyID = attackers.remove(pNameLower);
+        if ( attackers.containsKey(pNameLower) ){
+            int armyID = attackers.remove(pNameLower);
+    
+            // decrease starting values
+            startingBV -= p.getArmy(armyID).getOperationsBV(null);
+            startingUnits -= p.getArmy(armyID).getAmountOfUnits();
+        }
         playerModifyingOps.remove(pNameLower);
-
-        // decrease starting values
-        startingBV -= p.getArmy(armyID).getOperationsBV(null);
-        startingUnits -= p.getArmy(armyID).getAmountOfUnits();
     }
 
     /**
@@ -404,17 +406,19 @@ public class ShortOperation implements Comparable<Object> {
 
         // remove from maps
         String pNameLower = p.getName().toLowerCase();
-        int armyID = defenders.remove(pNameLower);
+        if ( defenders.containsKey(pNameLower) ){
+            int armyID = defenders.remove(pNameLower);
+    
+            // decrease starting values
+            startingBV -= p.getArmy(armyID).getOperationsBV(null);
+            startingUnits -= p.getArmy(armyID).getAmountOfUnits();
+        }
         playerModifyingOps.remove(pNameLower);
-
-        // decrease starting values
-        startingBV -= p.getArmy(armyID).getOperationsBV(null);
-        startingUnits -= p.getArmy(armyID).getAmountOfUnits();
     }
 
     /**
      * Method which returns the name of this operation. Used to pull an
-     * Operation (paramater bag) from the manager.
+     * Operation (parameter bag) from the manager.
      */
     public String getName() {
         return opName;

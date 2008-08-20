@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.35.x
++ Misc NPE erorr fixes
 + New MegaMek.jar 0.33.30-MW082008
 + Release Client 0.2.35.3 & Server 0.2.35.1
 + Bug: Team games not initiating due to attacks no longer being found
