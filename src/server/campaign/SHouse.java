@@ -2289,6 +2289,9 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         Date d = new Date(System.currentTimeMillis());
         CampaignData.mwlog.mainLog(d + ":" + "User Logged into House: " + realName);
 
+        //Send the current servers MegaMek game Options
+        CampaignMain.cm.toUser("GO|"+CampaignMain.cm.getMegaMekOptionsToString(),realName, false);
+        
         /*
          * Remove from all status hashes and place in reserve, in case the
          * players was somewho disconnected and not recognized while signing
