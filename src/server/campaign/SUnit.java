@@ -100,6 +100,11 @@ public final class SUnit extends Unit {
 
         SHouse house = CampaignMain.cm.getHouseFromPartialString(p, null);
 
+        if (house != null)
+            setPilot(house.getNewPilot(this.getType()));
+        else
+            setPilot(new SPilot(SPilot.getRandomPilotName(CampaignMain.cm.getR()), gunnery, piloting));
+
         setUnitFilename(Filename);
         init();
 
@@ -108,10 +113,6 @@ public final class SUnit extends Unit {
         setProducer(p);
         setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
 
-        if (house != null)
-            setPilot(house.getNewPilot(this.getType()));
-        else
-            setPilot(new SPilot(SPilot.getRandomPilotName(CampaignMain.cm.getR()), gunnery, piloting));
 
     }
 
@@ -1473,7 +1474,6 @@ public final class SUnit extends Unit {
             SUnit cm = new SUnit();
 
             cm.setEntity(en);
-            cm.init();
 
             MechSummary ms = MechSummaryCache.getInstance().getMech(en.getShortNameRaw());
             if (ms == null) {
@@ -1497,7 +1497,6 @@ public final class SUnit extends Unit {
             }
 
             cm.setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
-            cm.setWeightclass(99);// let the SUnit code handle the weightclass
             cm.setProducer(fluff);
 
             SPilot pilot = null;
@@ -1531,6 +1530,10 @@ public final class SUnit extends Unit {
             }
 
             cm.setPilot(pilot);
+            
+            cm.init();
+            cm.setWeightclass(99);// let the SUnit code handle the weightclass
+
             mulUnits.add(cm);
         }
         return mulUnits;
