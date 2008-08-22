@@ -2,6 +2,10 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.35.x
++ Release Server 0.2.35.4
++ Bug: still having unit pilot issues
++ Release Server 0.2.35.3
++ Bug: Setting pilots blows up new units
 + Release Server 0.2.35.2 
 + New MegaMek.jar 0.33.30-MW082208
 + Bug: Newly created units getting init() before pilot is set.

@@ -100,13 +100,14 @@ public final class SUnit extends Unit {
 
         SHouse house = CampaignMain.cm.getHouseFromPartialString(p, null);
 
+        setUnitFilename(Filename);
+        init();
+
         if (house != null)
             setPilot(house.getNewPilot(this.getType()));
         else
             setPilot(new SPilot(SPilot.getRandomPilotName(CampaignMain.cm.getR()), gunnery, piloting));
 
-        setUnitFilename(Filename);
-        init();
 
         this.setWeightclass(weightclass); // default weight class.
 
@@ -133,12 +134,12 @@ public final class SUnit extends Unit {
         setUnitFilename(Filename);
         Entity ent = loadMech(getUnitFilename());
         this.setEntity(ent);
-        new SPilot("Vacant", 99, 99);// only used for repods. A real pilot is
+        init();
+        setPilot(new SPilot("Vacant", 99, 99));// only used for repods. A real pilot is
         // transferred in later.
         setId(replaceId);
         setProducer(p);
         unitEntity = ent;
-        init();
     }
 
     // STATIC METHODS
@@ -700,8 +701,8 @@ public final class SUnit extends Unit {
 
             unitEntity = loadMech(getUnitFilename());
             this.setEntity(unitEntity);
-            this.setPilot(p);
             this.init();
+            this.setPilot(p);
 
             // if its an OMG unit it won't have Ammo
             if (this.getModelName().equals("OMG-UR-FD"))
@@ -865,9 +866,9 @@ public final class SUnit extends Unit {
                 setEntity(unitEntity);
 
                 SPilot p = CampaignMain.cm.MySQL.loadUnitPilot(unitID);
+                init();
                 setPilot(p);
                 setLastCombatPilot(p.getPilotId());
-                init();
 
                 // Load ammo
                 unitEntity = getEntity();
@@ -1110,6 +1111,13 @@ public final class SUnit extends Unit {
         // any time the pilot changes set the unit commander flag to false.
         Pilot mPilot = new Pilot(p.getName(), p.getGunnery(), p.getPiloting());
         Entity entity = this.getEntity();
+        
+        //Lazy Bug report. non Anti-Mek BA should not have a Piloting skill better/worse then 5
+        if ( this.getEntity() instanceof BattleArmor && !((BattleArmor)this.getEntity()).isAntiMek() && !this.hasVacantPilot()){
+            mPilot.setPiloting(5);
+        }
+
+
         entity.setCrew(mPilot);
         this.setEntity(entity);
 
@@ -1162,13 +1170,6 @@ public final class SUnit extends Unit {
             this.setWeightclass(SUnit.LIGHT);
         }
         
-        //Lazy Bug report. non Anti-Mek BA should not have a Piloting skill better/worse then 5
-        if ( this.getEntity() instanceof BattleArmor && !((BattleArmor)this.getEntity()).isAntiMek() ){
-            SPilot pilot = (SPilot) this.getPilot();
-            pilot.setPiloting(5);
-            this.setPilot(pilot);
-        }
-
         /*
          * //Set Weight this.weight = m.getWeight();
          */
@@ -1497,6 +1498,7 @@ public final class SUnit extends Unit {
             }
 
             cm.setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
+            cm.init();
             cm.setProducer(fluff);
 
             SPilot pilot = null;
@@ -1531,7 +1533,6 @@ public final class SUnit extends Unit {
 
             cm.setPilot(pilot);
             
-            cm.init();
             cm.setWeightclass(99);// let the SUnit code handle the weightclass
 
             mulUnits.add(cm);
