@@ -2,9 +2,11 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.35.x
++ Release Server 0.2.35.2 
++ New MegaMek.jar 0.33.30-MW082208
 + Bug: Newly created units getting init() before pilot is set.
 + MegaMek Game Options not being sent down to the player
-+ Misc NPE erorr fixes
++ Misc. NPE error fixes
 + New MegaMek.jar 0.33.30-MW082008
 + Release Client 0.2.35.3 & Server 0.2.35.1
 + Bug: Team games not initiating due to attacks no longer being found
