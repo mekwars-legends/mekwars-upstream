@@ -1166,6 +1166,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
             Vector<SArmy> orderedArmies = new Vector<SArmy>(1, 1);
 
+            CampaignData.mwlog.debugLog("Start getWeightedArmyNumber for "+this.getName());
             int MinCount = this.getMyHouse().getIntegerConfig("MinCountForTick");
             int MaxCount = this.getMyHouse().getIntegerConfig("MaxCountForTick");
             int MaxFlatDiff = 1;
@@ -1342,7 +1343,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
             }// end if(armies were ordered)
         }// end if (weighted <= 0)
-
+        CampaignData.mwlog.debugLog("End getWeightedArmyNumber for "+this.getName());
         return weightedArmyNumber;
     }
 
