@@ -69,6 +69,7 @@ public class FactionHandler {
 					if(fString.startsWith("[M]"))
 						fString = fString.substring(3);
 					h.fromString(fString, CampaignMain.cm.getR());
+					h.setDBId(rs.getInt("ID"));
 					CampaignMain.cm.addHouse(h);
 					h.loadConfigFileFromDB();
 					h.setUsedMekBayMultiplier(Float.parseFloat(h.getConfig("UsedPurchaseCostMulti")));

@@ -1,7 +1,7 @@
 VERSION HISTORY:
 ----------------
-
 v 0.2.35.x
++ Bug: SHouse.fromDB() not setting DBId
 + DB Schema updates.  
     NOTE: SOs, this will likely b0rk existing databases, so
     pay attention to your updates.  Back up your database, then

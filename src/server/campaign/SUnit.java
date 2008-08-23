@@ -555,7 +555,7 @@ public final class SUnit extends Unit {
                 ps.setString(2, getUnitFilename());
                 ps.setInt(3, getPosId());
                 ps.setInt(4, getStatus());
-                ps.setString(5, getProducer());
+                ps.setString(5, getProducer() == null ? " " : getProducer());
                 ps.setInt(6, getWeightclass());
                 if (ent instanceof Mech)
                     ps.setBoolean(7, ((Mech) ent).isAutoEject());
@@ -591,7 +591,7 @@ public final class SUnit extends Unit {
                 ps.setString(1, getUnitFilename());
                 ps.setInt(2, getPosId());
                 ps.setInt(3, getStatus());
-                ps.setString(4, getProducer());
+                ps.setString(4, getProducer() == null ? " " : getProducer());
                 ps.setInt(5, getWeightclass());
                 if (ent instanceof Mech)
                     ps.setBoolean(6, ((Mech) ent).isAutoEject());
@@ -624,27 +624,6 @@ public final class SUnit extends Unit {
             // Do Ammo
             ps.executeUpdate("DELETE from unit_ammo WHERE unitID = " + getDBId());
 
-            ArrayList<Mounted> en_Ammo = ent.getAmmo();
-            int AmmoLoc = 0;
-            for (Mounted mAmmo : en_Ammo) {
-                boolean hotloaded = mAmmo.isHotLoaded();
-                if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("tacops_hotload"))
-                    hotloaded = false;
-                AmmoType at = (AmmoType) mAmmo.getType();
-                sql.setLength(0);
-                sql.append("REPLACE into unit_ammo set unitID = ?, ammoLocation = ?, ammoHotLoaded=?, ammoType=?, ammoInternalName=?, ammoShotsLeft=?");
-                ps.close();
-
-                ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
-                ps.setInt(1, getDBId());
-                ps.setInt(2, AmmoLoc);
-                ps.setString(3, Boolean.toString(hotloaded));
-                ps.setInt(4, at.getAmmoType());
-                ps.setString(5, at.getInternalName());
-                ps.setInt(6, mAmmo.getShotsLeft());
-                ps.executeUpdate();
-                AmmoLoc++;
-            }
             ps.close();
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL Exception in SUnit.toDB: " + e.getMessage());

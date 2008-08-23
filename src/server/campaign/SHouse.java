@@ -371,6 +371,19 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         ResultSet rs = null;
         try {
             if (getDBId() == 0) {
+            	// For some reason, houses seem to be losing their DBId occasionally - check to see if it's still in there.
+            	CampaignData.mwlog.dbLog("House " + getName() + " has no DBId");
+            	Statement s = CampaignMain.cm.MySQL.getStatement();
+            	ResultSet r = s.executeQuery("SELECT ID from factions WHERE fName = '" + getName() + "'");
+            	if(r.next()) {
+            		setDBId(r.getInt("ID"));
+            		r.close();
+            		s.close();
+            		return;
+            	}
+            	s.close();
+            	r.close();
+            	
                 // Not in the database - INSERT it
                 sql.setLength(0);
                 sql.append("INSERT into factions set ");
