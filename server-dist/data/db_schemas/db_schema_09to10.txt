@@ -3,7 +3,7 @@ CREATE TABLE `faction_leaders` (
   `leader_name` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`faction_id`, `leader_name`)
 )
-ENGINE = MyISAM;
+ENGINE = InnoDB;
 
 ALTER TABLE `merc_contract_info` MODIFY COLUMN `contractHouse` VARCHAR(100) NOT NULL;
 

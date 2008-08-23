@@ -2,6 +2,14 @@ VERSION HISTORY:
 ----------------
 
 v 0.2.35.x
++ DB Schema updates.  
+    NOTE: SOs, this will likely b0rk existing databases, so
+    pay attention to your updates.  Back up your database, then
+    manually remove any create/drop table statements from the
+    backup.  Drop your database, create it, then import
+    full_db_schema_29.txt, import your backup, then import
+    db_schema_29to30.txt.  New full schema will be coming out
+    shortly.
 + Release Server 0.2.35.4
 + Bug: still having unit pilot issues
 + Release Server 0.2.35.3

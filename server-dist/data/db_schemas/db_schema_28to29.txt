@@ -19,6 +19,6 @@ CREATE TABLE `task_history` (
   `gameLength` VARCHAR(45) NOT NULL DEFAULT ' ',
   PRIMARY KEY (`taskID`)
 )
-ENGINE = MyISAM;
+ENGINE = InnoDB;
 
 UPDATE config set config_value='29' WHERE config_key='mekwars_database_version';

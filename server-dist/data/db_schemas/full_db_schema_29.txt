@@ -15,6 +15,9 @@
 --
 -- Table structure for table `faction_base_gunnery_piloting`
 --
+
+ALTER DATABASE mekwars DEFAULT CHARACTER SET utf8;
+
 DROP TABLE IF EXISTS `faction_base_gunnery_piloting`;
 CREATE TABLE `faction_base_gunnery_piloting` (
   `factionID` int(10) unsigned NOT NULL,
@@ -22,7 +25,7 @@ CREATE TABLE `faction_base_gunnery_piloting` (
   `baseGunnery` tinyint(3) unsigned NOT NULL,
   `basePiloting` tinyint(3) unsigned NOT NULL,
   PRIMARY KEY  (`factionID`,`unitType`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB;
 --
 -- Table structure for table `faction_pilot_skills`
 --
@@ -32,7 +35,7 @@ CREATE TABLE `faction_pilot_skills` (
   `pilotSkills` tinytext NOT NULL,
   `skillID` int(10) unsigned NOT NULL,
   PRIMARY KEY  USING BTREE (`factionID`,`skillID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB;
 --
 -- Table structure for table `factioncomponents`
 --
@@ -43,7 +46,7 @@ CREATE TABLE `factioncomponents` (
   `unitWeight` tinyint(3) unsigned NOT NULL,
   `components` int(10) unsigned NOT NULL,
   PRIMARY KEY  (`factionID`,`unitType`,`unitWeight`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB;
 --
 -- Table structure for table `factions`
 --
@@ -70,7 +73,7 @@ CREATE TABLE `factions` (
   `fIsNewbieHouse` varchar(10) NOT NULL,
   `ID` int(10) unsigned NOT NULL auto_increment,
   PRIMARY KEY  USING BTREE (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB;
 --
 -- Table structure for table `factories`
 --
@@ -86,7 +89,7 @@ CREATE TABLE `factories` (
   `FactoryType` int(11) NOT NULL default '0',
   `FactoryisLocked` tinytext NOT NULL,
   PRIMARY KEY  (`FactoryID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB;
 --
 -- Table structure for table `pilots`
 --
@@ -107,7 +110,7 @@ CREATE TABLE `pilots` (
   `pilotSize` int(11) NOT NULL,
   `MWID` int(11) NOT NULL,
   PRIMARY KEY  (`pilotID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB;
 --
 -- Table structure for table `pilotskills`
 --
@@ -118,7 +121,7 @@ CREATE TABLE `pilotskills` (
   `SkillData` text,
   `SkillLevel` tinyint(4) NOT NULL,
   PRIMARY KEY  (`pilotID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB;
 --
 -- Table structure for table `planetenvironments`
 --
@@ -130,7 +133,7 @@ CREATE TABLE `planetenvironments` (
   `TerrainData` int(11) NOT NULL default '0',
   `AdvancedTerrainData` text NOT NULL,
   PRIMARY KEY  (`PTID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB;
 --
 -- Table structure for table `planetflags`
 --
@@ -139,7 +142,7 @@ CREATE TABLE `planetflags` (
   `PlanetID` int(10) unsigned NOT NULL default '0',
   `PlanetFlag` varchar(100) NOT NULL default '',
   PRIMARY KEY  (`PlanetFlag`,`PlanetID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB;
 --
 -- Table structure for table `planetinfluences`
 --
@@ -149,7 +152,7 @@ CREATE TABLE `planetinfluences` (
   `FactionName` varchar(100) NOT NULL default '',
   `Influence` int(11) NOT NULL default '0',
   PRIMARY KEY  (`PlanetID`,`FactionName`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB;
 --
 -- Table structure for table `planets`
 --
@@ -180,7 +183,7 @@ CREATE TABLE `planets` (
   `pName` text NOT NULL,
   `pMaxConquestPoints` int(11) NOT NULL default '0',
   PRIMARY KEY  (`PlanetID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB;
 --
 -- Table structure for table `playerarmies`
 --
@@ -190,7 +193,7 @@ CREATE TABLE `playerarmies` (
   `armyID` int(10) unsigned NOT NULL,
   `armyString` text NOT NULL,
   PRIMARY KEY  USING BTREE (`playerID`,`armyID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB;
 --
 -- Table structure for table `players`
 --
@@ -228,7 +231,7 @@ CREATE TABLE `players` (
   `playerLastModified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   PRIMARY KEY  (`playerID`),
   UNIQUE KEY `playerName` (`playerName`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB;
 --
 -- Table structure for table `unit_ammo`
 --
@@ -241,7 +244,7 @@ CREATE TABLE `unit_ammo` (
   `ammoInternalName` varchar(100) NOT NULL,
   `ammoShotsLeft` tinyint(3) unsigned NOT NULL,
   PRIMARY KEY  (`unitID`,`ammoLocation`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB;
 --
 -- Table structure for table `unit_mgs`
 --
@@ -251,7 +254,7 @@ CREATE TABLE `unit_mgs` (
   `mgLocation` int(10) unsigned NOT NULL,
   `mgRapidFire` tinytext NOT NULL,
   PRIMARY KEY  USING BTREE (`unitID`,`mgLocation`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB;
 --
 -- Table structure for table `units`
 --
@@ -277,7 +280,7 @@ CREATE TABLE `units` (
   `ID` bigint(20) unsigned NOT NULL auto_increment,
   `uType` int(10) unsigned NOT NULL,
   PRIMARY KEY  (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB;
 --
 -- Table structure for table `config`
 --
@@ -286,7 +289,7 @@ CREATE TABLE `config` (
   `config_value` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`config_key`, `config_value`)
 )
-ENGINE = MyISAM;
+ENGINE = InnoDB;
 --
 -- Insert data for table `config`
 --
@@ -313,7 +316,7 @@ CREATE TABLE `faction_configs` (
   `configValue` TEXT,
   PRIMARY KEY (`factionID`, `configKey`)
 )
-ENGINE = MyISAM;
+ENGINE = InnoDB;
 
 ALTER TABLE `players` MODIFY COLUMN `playerAccess` INTEGER NOT NULL DEFAULT 0;
 
@@ -334,7 +337,7 @@ CREATE TABLE `merc_contract_info` (
   `contractType` INTEGER UNSIGNED NOT NULL,
   PRIMARY KEY (`contractID`)
 )
-ENGINE = MyISAM;
+ENGINE = InnoDB;
 
 ALTER TABLE `players` ADD COLUMN `playerSubFactionName` VARCHAR(100) NOT NULL AFTER `playerUnitParts`;
 
@@ -344,7 +347,7 @@ CREATE TABLE `subfactions` (
   `sf_string` TEXT NOT NULL,
   PRIMARY KEY (`subfactionID`)
 )
-ENGINE = MyISAM;
+ENGINE = InnoDB;
 
 ALTER TABLE `subfactions` CHANGE COLUMN `subfactionID` `subfactionName` VARCHAR(100) NOT NULL DEFAULT ' ',
  DROP PRIMARY KEY,
@@ -355,7 +358,7 @@ CREATE TABLE `faction_leaders` (
   `leader_name` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`faction_id`, `leader_name`)
 )
-ENGINE = MyISAM;
+ENGINE = InnoDB;
 
 ALTER TABLE `merc_contract_info` MODIFY COLUMN `contractHouse` VARCHAR(100) NOT NULL;
 
@@ -376,7 +379,7 @@ CREATE TABLE `unit_history` (
   `event_fluff` TEXT NOT NULL,
   PRIMARY KEY (`event_id`)
 )
-ENGINE = MyISAM;
+ENGINE = InnoDB;
 
 CREATE TABLE `noplay_lists` (
   `player_id` INTEGER UNSIGNED NOT NULL,
@@ -384,7 +387,7 @@ CREATE TABLE `noplay_lists` (
   `admin_exclude` ENUM('y','n') NOT NULL DEFAULT 'n',
   PRIMARY KEY (`player_id`)
 )
-ENGINE = MyISAM;
+ENGINE = InnoDB;
 
 ALTER TABLE `noplay_lists` DROP PRIMARY KEY,
  ADD PRIMARY KEY  USING BTREE(`player_id`, `np_name`, `admin_exclude`);
@@ -436,11 +439,11 @@ CREATE TABLE `pilot_history` (
   `event_fluff` TEXT NOT NULL,
   PRIMARY KEY (`history_id`)
 )
-ENGINE = MyISAM;
+ENGINE = InnoDB;
 
 ALTER TABLE `pilot_history` MODIFY COLUMN `event_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
-ALTER TABLE `mechstats` ENGINE = MyISAM;
+ALTER TABLE `mechstats` ENGINE = InnoDB;
 
 ALTER TABLE `unit_history` ADD COLUMN `event_type` INTEGER UNSIGNED NOT NULL DEFAULT 0 AFTER `unit_id`;
 
@@ -454,7 +457,7 @@ CREATE TABLE `mekwars`.`campaign_config` (
   `config_value` TEXT NOT NULL,
   PRIMARY KEY (`config_name`)
 )
-ENGINE = MyISAM;
+ENGINE = InnoDB;
  
 ALTER TABLE `pilotskills` MODIFY COLUMN `pilotID` INTEGER NOT NULL DEFAULT -1;
 
@@ -479,6 +482,6 @@ CREATE TABLE `task_history` (
   `gameLength` VARCHAR(45) NOT NULL DEFAULT ' ',
   PRIMARY KEY (`taskID`)
 )
-ENGINE = MyISAM;
+ENGINE = InnoDB;
 
 UPDATE config set config_value='29' WHERE config_key='mekwars_database_version';

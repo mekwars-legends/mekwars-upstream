@@ -9,7 +9,7 @@ CREATE TABLE `merc_contract_info` (
   `contractType` INTEGER UNSIGNED NOT NULL,
   PRIMARY KEY (`contractID`)
 )
-ENGINE = MyISAM;
+ENGINE = InnoDB;
 
 ALTER TABLE `players` ADD COLUMN `playerSubFactionName` VARCHAR(100) NOT NULL AFTER `playerUnitParts`;
 

@@ -4,7 +4,7 @@ CREATE TABLE `subfactions` (
   `sf_string` TEXT NOT NULL,
   PRIMARY KEY (`subfactionID`)
 )
-ENGINE = MyISAM;
+ENGINE = InnoDB;
 
 ALTER TABLE `subfactions` CHANGE COLUMN `subfactionID` `subfactionName` VARCHAR(100) NOT NULL DEFAULT ' ',
  DROP PRIMARY KEY,

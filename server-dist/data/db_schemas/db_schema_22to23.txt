@@ -5,7 +5,7 @@ CREATE TABLE `pilot_history` (
   `event_fluff` TEXT NOT NULL,
   PRIMARY KEY (`history_id`)
 )
-ENGINE = MyISAM;
+ENGINE = InnoDB;
 
 ALTER TABLE `pilot_history` MODIFY COLUMN `event_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
 

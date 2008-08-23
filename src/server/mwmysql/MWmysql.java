@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -83,8 +84,12 @@ public class MWmysql{
     }
     try{
     	con=DriverManager.getConnection(url);
-      	if(con != null)
+      	if(con != null) {
     	  CampaignData.mwlog.dbLog("Connection established");
+    	  Statement s = con.createStatement();
+    	  s.executeUpdate("SET NAMES 'utf8'");
+
+      	}
     }
     catch(SQLException ex){
     	CampaignData.mwlog.dbLog("SQLException: " + ex.getMessage());
