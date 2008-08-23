@@ -99,10 +99,17 @@ public class HSMek {
 		
 		//vehicles and inf prepend chassis
 		if (type.equalsIgnoreCase("Mek"))
-		    if (e.isOmni())
+		    if (e.isOmni()) {
 		        name = e.getChassis() + " " +  e.getModel();
-		    else
-		        name = e.getModel();
+		    }
+		    else {
+	            if ( e.getModel().trim().length() > 0 ){
+	                name = e.getModel().trim();
+	            }
+	            else{
+	                name = e.getChassis().trim();
+	            }
+		    }
         else
             name = e.getShortNameRaw();
 	}
