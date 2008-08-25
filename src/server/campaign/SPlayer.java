@@ -2971,6 +2971,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 }
             }
             ps.close();
+            CampaignData.mwlog.dbLog("Player " + getName() + " saved");
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL error in SPlayer.toDB: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
@@ -3251,6 +3252,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             		rs.close();
             		stmt.close();
             		stmt1.close();
+            		CampaignData.mwlog.dbLog("Player " + getName() + " loaded");
             		return;
             	}
                 this.armies.clear();
@@ -3407,6 +3409,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 rs1.close();
             stmt.close();
             stmt1.close();
+            CampaignData.mwlog.dbLog("Player " + getName() + " loaded");
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL Error in SPlayer.fromDB: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);

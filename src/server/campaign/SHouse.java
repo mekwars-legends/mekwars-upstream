@@ -612,6 +612,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             if (rs != null)
                 rs.close();
             ps.close();
+            CampaignData.mwlog.dbLog("Faction " + getName() + " saved");
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL Error in FactionHandler.saveFaction: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
