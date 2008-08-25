@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.35.x
++ New MegaMek.jar 0.33.30-MM082408
 + Bug: SHouse.fromDB() not setting DBId
 + DB Schema updates.  
     NOTE: SOs, this will likely b0rk existing databases, so
