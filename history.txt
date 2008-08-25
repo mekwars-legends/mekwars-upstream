@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.35.x
++ Release Client 0.2.35.4
 + Bug 2065513: Edge options not loading.
 + New MegaMek.jar 0.33.30-MM082408
 + Bug: SHouse.fromDB() not setting DBId
