@@ -1050,6 +1050,10 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                 pilot.getOptions().getOption(po.getMmname()).setValue(mek.getPilot().getWeapon());
             } else if (po.getMmname().equals("edge")) {
                 pilot.getOptions().getOption(po.getMmname()).setValue(mek.getPilot().getSkills().getPilotSkill(PilotSkill.EdgeSkillID).getLevel());
+                pilot.getOptions().getOption("edge_when_headhit").setValue(mek.getPilot().getHeadHit());
+                pilot.getOptions().getOption("edge_when_tac").setValue(mek.getPilot().getTac());
+                pilot.getOptions().getOption("edge_when_ko").setValue(mek.getPilot().getKO());
+                pilot.getOptions().getOption("edge_when_explosion").setValue(mek.getPilot().getExplosion());
             } else {
                 pilot.getOptions().getOption(po.getMmname()).setValue(po.isValue());
             }
