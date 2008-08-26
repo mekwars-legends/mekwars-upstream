@@ -915,16 +915,12 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
 			
 			isStaticMapCB.setText("Use Static Maps");
 			isStaticMapCB.setToolTipText("Check if you want to use static maps.");
-            isStaticMapCB.setSelected(aTerrain.isStaticMap());
-			isStaticMapCB.addActionListener(this);
 			isStaticMapCB.setActionCommand(staticMapCBCommmand);
 			checkboxPanel.add(isStaticMapCB);
 
 			checkboxPanel.add(new JLabel("Atmosphere:", SwingConstants.TRAILING));
             atmosphere.setToolTipText("<html>What type of atmosphere this terrain has.</html>");
             atmosphere.setActionCommand(atmosphereCommand);
-            atmosphere.setSelectedIndex(aTerrain.getAtmosphere());
-            atmosphere.addActionListener(this);
             checkboxPanel.add(atmosphere);
             
 		}else{
@@ -990,7 +986,10 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener{
             stormWindsChanceText.setText(Integer.toString(aTerrain.getStormWindsChance()));
             tornadoF13WindsChanceText.setText(Integer.toString(aTerrain.getTornadoF13WindsChance()));
             tornadoF4ChanceText.setText(Integer.toString(aTerrain.getTornadoF4WindsChance()));
-            
+            isStaticMapCB.setSelected(aTerrain.isStaticMap());
+            atmosphere.setSelectedIndex(aTerrain.getAtmosphere());
+            atmosphere.addActionListener(this);
+            isStaticMapCB.addActionListener(this);
 		}else {
 			LowTempText.setText(Integer.toString(this.selectedPlanet.getTemp().width));
 			HighTempText.setText(Double.toString(this.selectedPlanet.getTemp().height));
