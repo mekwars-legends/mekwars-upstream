@@ -4248,6 +4248,11 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setName("ProcessHouseTicksAtSlice");
         miscCBoxSpring.add(BaseCheckBox);
 
+        BaseCheckBox = new JCheckBox("Send single commands at a time");
+        BaseCheckBox.setToolTipText("<HTML>If checked the first message in the message queue is sent to the player instead of appending<br>the whole queue to a single message sent to the player<br>NOTE: This could slow down the messages a player receives</html>");
+        BaseCheckBox.setName("SendSingleCommandAtATime");
+        miscCBoxSpring.add(BaseCheckBox);
+
         SpringLayoutHelper.setupSpringGrid(miscCBoxSpring, 3);
 
         // finalize layout

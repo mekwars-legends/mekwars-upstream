@@ -1082,6 +1082,7 @@ public class DefaultServerOptions {
 
         // Slice Settings
         defaults.setProperty("ProcessHouseTicksAtSlice", "false");
+        defaults.setProperty("SendSingleCommandAtATime", "false");
         
         //Pilot Upgrade configs
         defaults.setProperty("PlayersCanBuyPilotUpgrades", "false");

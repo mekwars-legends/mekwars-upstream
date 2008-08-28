@@ -36,6 +36,7 @@ import java.util.zip.Deflater;
 import common.CampaignData;
 
 import server.MWChatServer.commands.ICommands;
+import server.campaign.CampaignMain;
 
 /**
  * Constantly reads from the BufferedReader.
@@ -114,6 +115,10 @@ public class WriterThread extends Thread {
             	//add to buffer, and break messages with newlines
             	sb.append(_messages.remove());
                 sb.append("\n");
+                
+                if ( CampaignMain.cm.getBooleanConfig("SendSingleCommandAtATime") ){
+                    break;
+                }
                 
                 /*
                  * if the buffer exceeds 9000 chars, compress and send immedaitely. one
