@@ -1921,6 +1921,10 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     public void setName(String s) {
+        
+        if ( s == null ){
+            throw new NullPointerException();
+        }
         name = s;
         setSave();
     }
@@ -3002,7 +3006,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
             s = s.substring(3);
             StringTokenizer ST = new StringTokenizer(s, "~");
-            name = TokenReader.readString(ST);
+            setName(TokenReader.readString(ST));
 
             /*
              * name is set before the exclusion list is un-strung in
@@ -3257,7 +3261,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             	}
                 this.armies.clear();
 
-                name = rs.getString("playerName");
+                setName(rs.getString("playerName"));
                 CampaignData.mwlog.dbLog("Loading player " + name);
                 exclusionList.setOwnerName(name);
                 setDBId(playerID);
@@ -3595,7 +3599,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
         SubFaction subfaction = getSubFaction();
 
-        int access = Integer.parseInt(subfaction.getConfig("AccessLevel"));
+        int access = getSubFactionAccess();
         int elo = Integer.parseInt(subfaction.getConfig("MinELO"));
         int exp = Integer.parseInt(subfaction.getConfig("MinExp"));
 
@@ -3606,7 +3610,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         if (elo > getRating() || exp > getExperience()) {
             StringBuilder message = new StringBuilder(this.name);
             message.append(" no longer meets the eligbility requirements for subfaction ");
-            message.append(subfaction.getConfig("Name"));
+            message.append(getSubFactionName());
             message.append(". He is eligible for the following:<br>");
             for (SubFaction subFaction : getMyHouse().getSubFactionList().values()) {
 

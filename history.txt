@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.35.x
++ Debug: SPlayer.name is getting set to null added to code try and find out why.
 + RFE: Single Message but player option added.
 + New MegaMek.jar 0.33.30-MM082708
 + Bug: Planet Editor Dialog not opening if Advanced Terrain is Null
