@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.35.x
++ New MegaMek.jar 0.33.30-MM082708
 + Bug: Planet Editor Dialog not opening if Advanced Terrain is Null
 + New MegaMek 0.33.30-MM082508
 + Release Client 0.2.35.4
