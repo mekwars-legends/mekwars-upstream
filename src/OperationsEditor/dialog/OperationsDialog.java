@@ -3413,13 +3413,13 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         BaseTextField = new JTextField(5);
         mapParamsPanel2.add(new JLabel("Map Size X:",SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>X Size of the map</html>");
+        BaseTextField.setToolTipText("<html>X Size of the map<br>Also can be used to set the base X size of a generated map.</html>");
         BaseTextField.setName("MapSizeX");
         mapParamsPanel2.add(BaseTextField);
 
         BaseTextField = new JTextField(5);
         mapParamsPanel2.add(new JLabel("Map Size Y:",SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>Y Size of the map</html>");
+        BaseTextField.setToolTipText("<html>Y Size of the map<br>Also can be used to set the base Y size of a generated map.</html>");
         BaseTextField.setName("MapSizeY");
         mapParamsPanel2.add(BaseTextField);
 

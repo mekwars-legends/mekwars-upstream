@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.35.x
++ RFE 2048227: Add a 'base map size' setting for the generated map size 
 + Bug: Mul Files not loading.
 + Debug: SPlayer.name is getting set to null added to code try and find out why.
 + RFE: Single Message but player option added.

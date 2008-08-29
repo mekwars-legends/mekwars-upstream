@@ -1462,9 +1462,10 @@ public class ShortOperation implements Comparable<Object> {
 
             // do the actual math ...
             totalWeight = (int) Math.sqrt(totalWeight);
-            if (totalWeight < 17)
-                totalWeight = 17;
-            mapsize = new Dimension(totalWeight + 3, totalWeight - 2);
+            
+            int sizeX = Math.max(totalWeight + 3, o.getIntValue("MapSizeX"));
+            int sizeY = Math.max(totalWeight -2, o.getIntValue("MapSizeY"));
+            mapsize = new Dimension(sizeX, sizeY);
 
             // send the logos and intel to all players, then send .getInfo()
             for (String currN : attackers.keySet()) {
