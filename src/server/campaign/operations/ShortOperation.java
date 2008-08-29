@@ -2755,11 +2755,15 @@ public class ShortOperation implements Comparable<Object> {
             return returnList;
 
         for (; number > 0; number--) {
-            if (mulFileList.size() == 1)
+            if (mulFileList.size() == 1) {
                 returnList.addAll(SUnit.createMULUnits(mulFileList.firstElement()));
-            else
+            }
+            else {
                 returnList.addAll(SUnit.createMULUnits(mulFileList.remove(CampaignMain.cm.getRandomNumber(mulFileList.size()))));
+            }
         }
+        
+        returnList.trimToSize();
 
         return returnList;
     }
