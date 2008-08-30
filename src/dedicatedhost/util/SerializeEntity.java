@@ -93,6 +93,7 @@ public class SerializeEntity{
 				if ( useRepairs ){
 					result.append(UnitUtils.unitBattleDamage(e)+"*");
 				}
+				result.append(UnitUtils.getEntityFileName(e));
 			} else if (e instanceof Tank ) {
 				result.append(e.isRepairable() + "*");
 				result.append(e.isImmobile() + "*");
@@ -100,10 +101,12 @@ public class SerializeEntity{
 				if ( useRepairs ){
 					result.append(UnitUtils.unitBattleDamage(e)+"*");
 				}
+				result.append(UnitUtils.getEntityFileName(e));
 			} else if ( e instanceof Aero ){
                 result.append(e.isRepairable() + "*");
                 result.append(e.isImmobile() + "*");
                 result.append(e.getCrew().isDead() + "*");
+                result.append(UnitUtils.getEntityFileName(e));
 			}
 			else if (e instanceof MechWarrior) {
 				MechWarrior mw = (MechWarrior)e;
