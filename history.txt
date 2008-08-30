@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.36.x
++ Bug: unable to go active with no armies when MUL only armies operations exist
 Release Client/Server 0.2.36.0
 + New MegaMek.jar 0.33.30-MM083008
 + RFE 2040336: Units loaded from MULS as SALVAGE

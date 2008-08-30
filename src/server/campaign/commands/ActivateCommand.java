@@ -109,7 +109,7 @@ public class ActivateCommand implements Command {
 			}
 		}
 		
-		if (enabledArmies == 0) {
+		if (enabledArmies == 0  && !MULOnlyOps ) {
 			CampaignMain.cm.toUser("AM:You must have at least 1 enabled army to activate.", Username, true);
 			return;
 		}

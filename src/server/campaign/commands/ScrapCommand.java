@@ -145,7 +145,7 @@ public class ScrapCommand implements Command {
 		//Give the player the amount the unit can be scrapped for (post-game), or add/deduct the standard cost
 		if (m.getScrappableFor() >= 0) {
 			p.addMoney(m.getScrappableFor());
-			CampaignMain.cm.toUser("AM:You scrapped the " + m.getModelName() + " (" + CampaignMain.cm.moneyOrFluMessage(true,true,m.getScrappableFor(),true)+ ".", Username, true);
+			CampaignMain.cm.toUser("AM:You scrapped the " + m.getModelName() + " (" + CampaignMain.cm.moneyOrFluMessage(true,true,m.getScrappableFor(),true)+ ").", Username, true);
 		} else {
 			p.addMoney(-moneyToScrap);
 			p.addInfluence(-infToScrap);
