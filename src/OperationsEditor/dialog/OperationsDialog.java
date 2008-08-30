@@ -2267,7 +2267,13 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseCheckBox.setName("WinnerAlwaysSalvagesOwnUnits");
 		masterBox.add(BaseCheckBox);
 		masterBox.add(salvageBox);
-		
+
+        BaseCheckBox = new JCheckBox("Support Units Go To Salvage Pool");
+        BaseCheckBox.setToolTipText("if true support units, arty, mul armies, and others go to the salvage pool instead of going away");
+        BaseCheckBox.setName("SupportUnitsAreSalvageable");
+        masterBox.add(BaseCheckBox);
+        masterBox.add(salvageBox);
+        
 		salvagePanel.add(masterBox);
 		
 		/*

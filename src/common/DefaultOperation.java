@@ -555,6 +555,7 @@ public class DefaultOperation {
 		 * -> and in ShortResolver.assembleSalvageStrings()
 		 * 
 		 * WinnerAlwaysSalvagesOwnUnits - boolean, if true winner gets all his salvageables;
+		 * SupportUnitsAreSalvageable   - boolean, if true then support units can go into the salvage pool
 		 * 
 		 * BaseAttackerSalvagePercent - attacker starting salvage rate if he wins;
 		 * BaseDefenderSalvagePercent - defender starting salvage rate if he wins;

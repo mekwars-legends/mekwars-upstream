@@ -2968,8 +2968,12 @@ public class ShortResolver {
 
                         // if the player doesnt own the unit, its probably
                         // autoartillery. continue to next loop.
-                        if (unit == null)
+                        if (unit == null && !o.getBooleanValue("SupportUnitsAreSalvageable") ) {
                             continue;
+                        } else if ( unit == null && o.getBooleanValue("SupportUnitsAreSalvageable") ) {
+                            unit = new SUnit(oEntity.getID(),"Salvaged Support Unit",oEntity.getUnitFileName());
+                            CampaignMain.cm.getPlayer(oEntity.getOwnerName()).addUnit(unit, true);
+                        }
 
                         if ((fledSalvageChance > 0 || fledScrappedChance > 0) && oEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_IN_RETREAT) {
                             if (CampaignMain.cm.getRandomNumber(100) <= fledSalvageChance) {

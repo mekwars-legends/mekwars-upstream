@@ -1454,39 +1454,7 @@ public final class SUnit extends Unit {
             SUnit cm = new SUnit();
 
             cm.setEntity(en);
-
-            MechSummary ms = MechSummaryCache.getInstance().getMech(en.getShortNameRaw());
-            if (ms == null) {
-                MechSummary[] units = MechSummaryCache.getInstance().getAllMechs();
-                // System.err.println("unit: "+en.getShortNameRaw());
-                for (MechSummary unit : units) {
-                    // System.err.println("Source file:
-                    // "+unit.getSourceFile().getName());
-                    // System.err.println("Model: "+unit.getModel());
-                    // System.err.println("Chassis: "+unit.getChassis());
-                    if (unit.getModel().trim().equalsIgnoreCase(en.getModel().trim()) && unit.getChassis().trim().equalsIgnoreCase(en.getChassis().trim())) {
-                        cm.setUnitFilename(unit.getEntryName());
-                        break;
-                    }
-                }
-
-            } else {
-                // System.err.println("Entry: "+ms.getEntryName()+" source:
-                // "+ms.getSourceFile().getName());
-                String unitFile = ms.getEntryName();
-                if (unitFile == null || unitFile.equals("null")) {
-                    unitFile = ms.getSourceFile().getName();
-                }
-
-                if ( unitFile.indexOf("/") > -1) {
-                    unitFile = unitFile.substring(unitFile.lastIndexOf("/")+1);
-                }else if ( unitFile.indexOf("\\") > -1) {
-                    unitFile = unitFile.substring(unitFile.lastIndexOf("\\")+1);
-                }
-
-                cm.setUnitFilename(unitFile);
-            }
-
+            cm.setUnitFilename(UnitUtils.getEntityFileName(en));
             cm.setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
             cm.init();
             cm.setProducer(fluff);

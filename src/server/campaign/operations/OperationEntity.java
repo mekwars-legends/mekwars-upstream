@@ -54,6 +54,7 @@ public class OperationEntity {
 	private int MMUnitType;
 	private int ID;
 	private int RemovalReason;
+	private String unitFileName = "";
 	private String unitDamage = "";
     
 	private Vector<Integer> kills = new Vector<Integer>(1,1);
@@ -100,14 +101,16 @@ public class OperationEntity {
     			RAint = Integer.parseInt(ST.nextToken());
     			gyrohits = Integer.parseInt(ST.nextToken());
                 cockpitType = Integer.parseInt(ST.nextToken());
-                if ( CampaignMain.cm.isUsingAdvanceRepair() && ST.hasMoreElements() )
+                if ( CampaignMain.cm.isUsingAdvanceRepair() && ST.hasMoreElements() ) {
                     unitDamage = ST.nextToken();
+                }
                 SPlayer player = CampaignMain.cm.getPlayer(ownerName);
                 if ( player != null ){
                     SUnit currUnit = player.getUnit(ID);
                     if ( currUnit != null )
                     	currUnit.setLastCombatPilot(currUnit.getPilot().getPilotId());
                 }
+                unitFileName = ST.nextToken();
 
     		}
     		
@@ -117,13 +120,15 @@ public class OperationEntity {
                 isImmobile = Boolean.parseBoolean(ST.nextToken());
                 crewDead = Boolean.parseBoolean(ST.nextToken());
                 SPlayer player = CampaignMain.cm.getPlayer(ownerName);
-                if ( CampaignMain.cm.isUsingAdvanceRepair() && ST.hasMoreElements() )
+                if ( CampaignMain.cm.isUsingAdvanceRepair() && ST.hasMoreElements() ) {
                     unitDamage = ST.nextToken();
+                }
                 if ( player != null && ID != -1){
                     SUnit currUnit = player.getUnit(ID);
                     if(currUnit != null && currUnit.getPilot() != null) //auto-assigned artillery throwing NPEs
                     	currUnit.setLastCombatPilot(currUnit.getPilot().getPilotId());
                 }
+                unitFileName = ST.nextToken();
             }
 
     		else if (MMUnitType == Unit.AERO){
@@ -136,6 +141,7 @@ public class OperationEntity {
                     if(currUnit != null && currUnit.getPilot() != null) //auto-assigned artillery throwing NPEs
                         currUnit.setLastCombatPilot(currUnit.getPilot().getPilotId());
                 }
+                unitFileName = ST.nextToken();
             }
     		
     		/*
@@ -392,6 +398,10 @@ public class OperationEntity {
 	
     public String getUnitDamage(){
         return unitDamage;
+    }
+    
+    public String getUnitFileName() {
+        return unitFileName;
     }
     
 }//end OperationEntity
