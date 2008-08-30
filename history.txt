@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
-v 0.2.35.x
+v 0.2.36.x
+Release Client/Server 0.2.36.0
++ New MegaMek.jar 0.33.30-MM083008
 + RFE 2040336: Units loaded from MULS as SALVAGE
 + RFE 2048227: Add a 'base map size' setting for the generated map size 
 + Bug: Mul Files not loading.
@@ -9,6 +11,7 @@ v 0.2.35.x
 + New MegaMek.jar 0.33.30-MM082708
 + Bug: Planet Editor Dialog not opening if Advanced Terrain is Null
 + New MegaMek 0.33.30-MM082508
+v 0.2.35.x
 + Release Client 0.2.35.4
 + Bug 2065513: Edge options not loading.
 + New MegaMek.jar 0.33.30-MM082408
