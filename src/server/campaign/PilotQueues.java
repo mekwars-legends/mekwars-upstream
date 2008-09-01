@@ -254,6 +254,7 @@ public class PilotQueues {
 			
 		int rnd = CampaignMain.cm.getRandomNumber(100);//reroll rnd, use to check for improved pilots
 		boolean allowGreenPilots = CampaignMain.cm.getBooleanConfig("AllowGreenPilots");
+		boolean allowVetPilots = CampaignMain.cm.getBooleanConfig("AllowVetPilots");
 			
 		//Green Pilots
 		if (rnd < 10 && allowGreenPilots) {
@@ -265,7 +266,7 @@ public class PilotQueues {
 		}
 			
 		//Improved Pilots
-		if (rnd >= 90) {
+		if (rnd >= 90 && allowVetPilots) {
 			if (rnd >= 90 && rnd < 95)
 				piloting--;
 			else if (rnd >= 95)

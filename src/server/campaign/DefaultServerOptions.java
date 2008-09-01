@@ -741,6 +741,7 @@ public class DefaultServerOptions {
 
         // Pilot level up settings (need GUI)
         defaults.setProperty("AllowGreenPilots", "false");
+        defaults.setProperty("AllowVetPilots", "false");
         defaults.setProperty("BestGunnerySkill", "1");
         defaults.setProperty("BestPilotingSkill", "2");
         defaults.setProperty("BestTotalPilot", "4");

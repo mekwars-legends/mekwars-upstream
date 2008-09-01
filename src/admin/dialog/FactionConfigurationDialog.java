@@ -2142,6 +2142,11 @@ public final class FactionConfigurationDialog implements ActionListener {
         BaseCheckBox.setName("AllowGreenPilots");
         pilotCBoxGrid.add(BaseCheckBox);
 
+        BaseCheckBox = new JCheckBox("Allow Vet Pilots");
+        BaseCheckBox.setToolTipText("Check in order to allow vet pilots. 3/5, 4/4, etc.");
+        BaseCheckBox.setName("AllowVetPilots");
+        pilotCBoxGrid.add(BaseCheckBox);
+
         BaseCheckBox = new JCheckBox("Allow PPQ");
         BaseCheckBox.setToolTipText("<HTML>Allow Personal Pilot Queues<br>Players are allowed to keep their own pilots instead of them going to the faction pools</HTML>");
         BaseCheckBox.setName("AllowPersonalPilotQueues");
