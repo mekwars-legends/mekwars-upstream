@@ -313,23 +313,30 @@ public final class MWLogger {// final - no extension of the server logger
 
     }
     public void mainLog(String s) {
-        if (logging)
+        if (logging) {
             mainLog.info(s);
+            mainHandler.flush();
+        }
     }
 
     public void factionLog(String s, String LogName) {
         factionLog = Logger.getLogger(LogName);
         factionLog.info(s);
+        factionLog.getHandlers()[0].flush();
     }
 
     public void gameLog(String s) {
-        if (logging)
+        if (logging) {
             gameLog.info(s);
+            gameHandler.flush();
+        }
     }
 
     public void resultsLog(String s) {
-        if (logging)
+        if (logging) {
             resultsLog.info(s);
+            resultsHandler.flush();
+        }
     }
 
     public void cmdLog(String s) {
@@ -340,39 +347,52 @@ public final class MWLogger {// final - no extension of the server logger
              * factionlog
              */
             String lower = s.toLowerCase();
-            if (lower.indexOf("hm#") == -1 && lower.indexOf("factionmail#") == -1)
+            if (lower.indexOf("hm#") == -1 && lower.indexOf("factionmail#") == -1) {
                 cmdLog.info(s);
+                cmdHandler.flush();
+            }
         }
     }
 
     public void pmLog(String s) {
-        if (logging)
+        if (logging) {
             pmLog.info(s);
+            pmHandler.flush();
+        }
     }
 
     public void bmLog(String s) {
-        if (logging)
+        if (logging) {
             bmLog.info(s);
+            bmHandler.flush();
+        }
     }
 
     public void infoLog(String s) {
-        if (logging)
+        if (logging) {
             infoLog.info(s);
+            infoHandler.flush();
+        }
     }
 
     public void log(String s) {
-        if (logging)
+        if (logging) {
             infoLog.info(s);
+            infoHandler.flush();
+        }
     }
 
     public void warnLog(String s) {
-        if (logging)
+        if (logging) {
             warnLog.info(s);
+            warnHandler.flush();
+        }
     }
 
     public void errLog(String s) {
         if (logging) {
             errLog.info(s);
+            errHandler.flush();
             if ( isServer && server.campaign.CampaignMain.cm != null)
                 server.campaign.CampaignMain.cm.doSendErrLog(s);
         }
@@ -381,11 +401,13 @@ public final class MWLogger {// final - no extension of the server logger
     public void errLog(Exception e) {
         if (logging) {
             errLog.warning("[" + e.toString() + "]");
+            errHandler.flush();
             if (isServer && server.campaign.CampaignMain.cm != null)
                 server.campaign.CampaignMain.cm.doSendErrLog("[" + e.toString() + "]");
             StackTraceElement[] t = e.getStackTrace();
             for (int i = 0; i < t.length; i++) {
                 errLog.warning("   " + t[i].toString());
+                errHandler.flush();
                 if (isServer && server.campaign.CampaignMain.cm != null)
                     server.campaign.CampaignMain.cm.doSendErrLog("   " + t[i].toString());
             }
@@ -395,48 +417,62 @@ public final class MWLogger {// final - no extension of the server logger
     public void debugLog(String s) {
         if (logging) {
             debugLog.info(s);
+            debugHandler.flush();
         }
     }
 
     public void debugLog(Exception e) {
         if (logging) {
             debugLog.warning("[" + e.toString() + "]");
+            debugHandler.flush();
             StackTraceElement[] t = e.getStackTrace();
             for (int i = 0; i < t.length; i++) {
                 debugLog.warning("   " + t[i].toString());
-                if (isServer && server.campaign.CampaignMain.cm != null)
+                debugHandler.flush();
+                if (isServer && server.campaign.CampaignMain.cm != null) {
                     server.campaign.CampaignMain.cm.doSendErrLog("   " + t[i].toString());
+                }
 
             }
         }
     }
 
     public void modLog(String s) {
-        if (logging)
+        if (logging) {
             modLog.info(s);
+            modHandler.flush();
+        }
     }
 
     public void tickLog(String s) {
-        if (logging)
+        if (logging) {
             tickLog.info(s);
+            tickHandler.flush();
+        }
     }
 
     public void ipLog(String s) {
-        if (logging)
+        if (logging) {
             ipLog.info(s);
+            ipHandler.flush();
+        }
     }
 
     public void dbLog(String s) {
-        if (logging)
+        if (logging) {
             dbLog.info(s);
+            dbHandler.flush();
+        }
     }
 
     public void dbLog(Exception e) {
         if (logging) {
             dbLog.warning("[" + e.toString() + "]");
+            dbHandler.flush();
             StackTraceElement[] t = e.getStackTrace();
             for (int i = 0; i < t.length; i++) {
                 dbLog.warning("   " + t[i].toString());
+                dbHandler.flush();
                 if (isServer && server.campaign.CampaignMain.cm != null)
                     server.campaign.CampaignMain.cm.doSendErrLog("   " + t[i].toString());
             }

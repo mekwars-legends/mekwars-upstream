@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.36.x
++ Added flushing commands for all Loggers
 + Bug: Influence Options not settable in Faction Config dialog
 + Bug: unable to go active with no armies when MUL only armies operations exist
 Release Client/Server 0.2.36.0
