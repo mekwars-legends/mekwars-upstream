@@ -3253,6 +3253,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             	if(pString != null && pString.trim().length() > 0) {
             		// player is using the newer save type
             		this.fromString(rs.getString("playerString"));
+            		this.forumID = rs.getInt("playerForumID");
             		rs.close();
             		stmt.close();
             		stmt1.close();
