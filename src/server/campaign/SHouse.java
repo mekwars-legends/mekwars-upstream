@@ -105,10 +105,16 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
     private UnitComponents unitParts = new UnitComponents();
     private Hashtable<String, ComponentToCritsConverter> componentConverter = new Hashtable<String, ComponentToCritsConverter>();
 
+    public String toDBString() {
+    	String toReturn = toString();
+    	toReturn = toReturn.substring(3);
+    	return toReturn;
+    }
+    
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        result.append("HS§");
+        result.append("HSï¿½");
         result.append(getName());
         result.append("|");
         result.append(getMoney());
@@ -426,7 +432,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                 ps.setInt(16, getBasePilot());
                 ps.setBoolean(17, isNewbieHouse());
                 ps.setBoolean(18, isMercHouse());
-                ps.setString(19, toString());
+                ps.setString(19, toDBString());
                 ps.executeUpdate();
                 rs = ps.getGeneratedKeys();
                 rs.next();
@@ -474,7 +480,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                 ps.setInt(16, getBasePilot());
                 ps.setBoolean(17, isNewbieHouse());
                 ps.setBoolean(18, isMercHouse());
-                ps.setString(19, toString());
+                ps.setString(19, toDBString());
                 ps.setInt(20, getDBId());
                 ps.executeUpdate();
             }
