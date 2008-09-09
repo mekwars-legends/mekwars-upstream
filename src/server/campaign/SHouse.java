@@ -107,7 +107,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
     public String toDBString() {
     	String toReturn = toString();
-    	toReturn = toReturn.substring(3);
+    	toReturn = toReturn.replace("HS�", "");
     	return toReturn;
     }
     
@@ -663,8 +663,9 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
     public String fromString(String s, Random r) {
         try {
 
-            // strip leadin.
-            s = s.substring(3);
+            // strip leadin.  Note: Because the DB doesn't store this, we don't necessarily need it for the DB version
+        	if (s.startsWith("HS�"))
+        		s = s.substring(3);
 
             StringTokenizer ST = new StringTokenizer(s, "|");
             setName(TokenReader.readString(ST));
