@@ -48,7 +48,7 @@ public class ReaderThread extends Thread {
     protected InputStream _inputStream;
     protected boolean _keepGoing = true;
     protected ConnectionHandler _connectionHandler;
-    
+
     public ReaderThread(ConnectionHandler handler, IConnectionListener listener, InputStream in) {
         super("ReaderThread "+ handler._client.getUserId());
         _connectionHandler = handler;

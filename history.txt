@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.2.36.x
++ Character set issue with SHouse.toString() HS removed the HS+Special character
++ Removed old wait code in WriterThread in exchange for scheduler
 + GO command now creates mmconf folder if it does not exist on the players side
 + Added method hasBadChars to StringUtils now used for Player, Pilot, and Army name checks 
 + New MegaMek.jar 0.33.31-MW09082008

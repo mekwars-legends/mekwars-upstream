@@ -53,7 +53,6 @@ public class WriterThread extends Thread {
 	protected LinkedList<String> _messages = new LinkedList<String>();
 	protected String _host;
 
-	
     public WriterThread(Socket socket, PrintWriter out, String host) {
         super("WriterThread "+ host);
         _socket = socket;
@@ -68,23 +67,25 @@ public class WriterThread extends Thread {
 	
     @Override
 	public synchronized void run() {
-        while (_keepGoing) {
+        //while (_keepGoing) {
+        if ( _keepGoing ){
             try {
             	if ( _socket == null 
             			|| _socket.isClosed() ) {
             		pleaseStop();
-            		continue;
+            		return;
             	}
-                long start = System.currentTimeMillis();
+                //long start = System.currentTimeMillis();
                 flush();
-                long elapsed = System.currentTimeMillis() - start;
-                if (elapsed < 20) {
-	                this.wait(20 - elapsed);
-                }
+               // long elapsed = System.currentTimeMillis() - start;
+                //if (elapsed < 20) {
+	              //  this.wait(20 - elapsed);
+               // }
             }
-            catch (InterruptedException e) { 
-                CampaignData.mwlog.errLog(e);
-            }catch ( Exception ex){
+            //catch (InterruptedException e) { 
+              //  CampaignData.mwlog.errLog(e);
+         //   }
+            catch ( Exception ex){
                 CampaignData.mwlog.errLog(ex);
             }
         }

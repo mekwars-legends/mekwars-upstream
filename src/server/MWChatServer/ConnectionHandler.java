@@ -32,6 +32,9 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import common.CampaignData;
 import common.util.ThreadManager;
@@ -54,6 +57,8 @@ public class ConnectionHandler extends AbstractConnectionHandler {
     protected WriterThread _writer = null;
     protected InputStream _inputStream = null;
     protected boolean _isShutDown = false;
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
 //    protected Dispatcher _dispatcher;
 
     /**
@@ -90,10 +95,12 @@ public class ConnectionHandler extends AbstractConnectionHandler {
     	
     	//start reading incoming data
     	try {
+
     		_reader = new ReaderThread(this, _client, _inputStream);
     		ThreadManager.getInstance().runInThreadFromPool(_reader);
     		_writer = new WriterThread(_socket,_out,_client.getHost());
-    		ThreadManager.getInstance().runInThreadFromPool(_writer);
+    		//ThreadManager.getInstance().runInThreadFromPool(_writer);
+    		scheduler.scheduleAtFixedRate(_writer, 0, 20, TimeUnit.MILLISECONDS);
     	} catch (OutOfMemoryError OOM) {
     	    CampaignData.mwlog.errLog(OOM.getMessage());
     		/*

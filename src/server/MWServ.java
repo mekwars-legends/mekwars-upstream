@@ -100,6 +100,10 @@ public class MWServ {
 		new MWServ(argv);
 	}
 	
+	public static void stop(){
+	    System.exit(0);
+	}
+	
 	MWServ(String[] argv) {
 				
 		String logFileName = "./logs/logFile.txt";

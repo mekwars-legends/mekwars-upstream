@@ -107,14 +107,14 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
     public String toDBString() {
     	String toReturn = toString();
-    	toReturn = toReturn.replace("HSï¿½", "");
+    	toReturn = toReturn.replace("HS§", "");
     	return toReturn;
     }
     
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        result.append("HSï¿½");
+        //result.append("HS§");
         result.append(getName());
         result.append("|");
         result.append(getMoney());
@@ -664,7 +664,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         try {
 
             // strip leadin.  Note: Because the DB doesn't store this, we don't necessarily need it for the DB version
-        	if (s.startsWith("HSï¿½"))
+        	if (s.startsWith("HS§"))
         		s = s.substring(3);
 
             StringTokenizer ST = new StringTokenizer(s, "|");
