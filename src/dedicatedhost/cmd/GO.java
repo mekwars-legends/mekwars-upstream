@@ -17,6 +17,7 @@
 
 package dedicatedhost.cmd;
 
+import java.io.File;
 import java.util.StringTokenizer;
 
 import megamek.common.options.GameOptions;
@@ -42,6 +43,12 @@ public class GO extends Command {
 		mwclient.getGameOptions().clear();
 		mwclient.loadServerMegaMekGameOptions();
 		
+        File mmconf = new File("./mmconf");
+        
+        if ( !mmconf.exists() ){
+            mmconf.mkdir();
+        }
+        
 		while (st.hasMoreElements()) {
 			String option = st.nextToken();
             String value = st.nextToken();
