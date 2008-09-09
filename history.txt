@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.36.x
++ New MegaMek.jar 0.33.31-MW09082008
 + RFE Allow vet pilots out of the queue option instead of being hard coded
 + New MegaMek.jar 0.33.31-MW09012008
 + Added flushing commands for all Loggers
