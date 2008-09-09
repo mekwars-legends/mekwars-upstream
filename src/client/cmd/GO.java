@@ -17,6 +17,7 @@
 
 package client.cmd;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
@@ -45,6 +46,12 @@ public class GO extends Command {
 		HashMap<String, IBasicOption> optionsHash = new HashMap<String, IBasicOption>();
         IBasicOption gameOption = null;
 		
+        File mmconf = new File("./mmconf");
+        
+        if ( !mmconf.exists() ){
+            mmconf.mkdir();
+        }
+        
 		while (st.hasMoreElements()) {
 			String option = st.nextToken();
             String value = st.nextToken();

@@ -135,4 +135,28 @@ public final class StringUtils {
 
     }
 
+    public static String hasBadChars(String string){
+        return StringUtils.hasBadChars(string,false);
+    }
+    
+    public static String hasBadChars(String string, boolean pilot){
+        
+        char[] badChars = {'%','~', '$', '|', '!', '*', '#', '>', '<', '@', '&', '^', '+', '=',
+                            ';', ':', '\'', '"', '`', '?', '/', '\\', '{', '}', '[', ']', '-', '_' };
+
+        for (int pos = badChars.length -1; pos >= 0; pos-- ){
+            if (string.indexOf(badChars[pos]) != -1) {
+                return "AM:Illegal string("+badChars[pos]+" forbidden).";
+                
+            }
+        }
+
+        if (string.toLowerCase().startsWith("vacant") && pilot) {
+            return "AM:Illegal pilot name (\"vacant\" forbidden).";
+            
+        }
+        
+        
+        return "";
+    }
 }// end AorAnChecker class

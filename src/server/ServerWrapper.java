@@ -26,6 +26,7 @@ import java.net.InetAddress;
 import java.util.Iterator;
 
 import common.CampaignData;
+import common.util.StringUtils;
 
 import server.MWChatServer.MWChatClient;
 import server.MWChatServer.MWChatServer;
@@ -188,19 +189,9 @@ public class ServerWrapper extends MWChatServer{
 		if (getName().toLowerCase().equals(user.toLowerCase())) 
 			throw new Exception(user+" is a reserved name");
 		
-		//should eventually have an allowable chars property...
-		char[] chars = user.toLowerCase().toCharArray();
-		for (int i=0; i < chars.length; i++) {
-			if (!Character.isLetterOrDigit(chars[i])
-					&& chars[i] != '_' && chars[i] != '-'
-						&& chars[i] != '(' && chars[i] != ')'
-							&& chars[i] != '[' && chars[i] != ']' //this is probably not a good idea
-								&& chars[i] != '{' && chars[i] != '}'
-									&& chars[i] != ' ' && chars[i] != '.'
-										&& chars[i] != '!' && chars[i] != '?'
-			) {
+			if ( StringUtils.hasBadChars(user).trim().length() > 0) {
 				throw new Exception(INVALID_CHARACTER);
 			}
-		}
+		
 	}
 }

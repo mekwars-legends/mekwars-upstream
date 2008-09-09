@@ -22,6 +22,7 @@
 package server.MWChatServer.commands;
 
 import common.CampaignData;
+import common.util.StringUtils;
 import server.ServerWrapper;
 import server.MWChatServer.MWChatClient;
 import server.MWChatServer.Translator;
@@ -75,6 +76,11 @@ public class SignOn extends CommandBase implements ICommands {
 				|| lowername.equals("moderator")) {
 			client.generalError("nobody, admin, administrator, dedicated, [dedicated], mod, moderator, and server are reserved names.");
 			return false;
+		}
+		
+		if ( StringUtils.hasBadChars(lowername).trim().length() > 0){
+		    client.generalError(StringUtils.hasBadChars(lowername));
+		    return false;
 		}
 		
 		try {

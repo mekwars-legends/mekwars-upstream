@@ -18,6 +18,8 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
+import common.util.StringUtils;
+
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
@@ -57,50 +59,8 @@ public class NamePilotCommand implements Command {
 		if (name.length() > 30)
 			name = name.substring(0,30);
 		
-		if (name.indexOf("%") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal pilot name (% forbidden).",Username,true);
-			return;
-		} else if (name.indexOf("~") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal pilot name (~ forbidden).",Username,true);
-			return;
-		} else if (name.indexOf("$") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal pilot name ($ forbidden).",Username,true);
-			return;
-		} else if (name.indexOf("|") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal pilot name (| forbidden).",Username,true);
-			return;
-		} else if (name.indexOf("!") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal pilot name (! forbidden).",Username,true);
-			return;
-		} else if (name.indexOf("*") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal pilot name (* forbidden).",Username,true);
-			return;
-		} else if (name.indexOf("#") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal pilot name (# forbidden).",Username,true);
-			return;
-		} else if (name.indexOf(">") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal pilot name (> forbidden).",Username,true);
-			return;
-		} else if (name.indexOf("<") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal pilot name (< forbidden).",Username,true);
-			return;
-		} else if (name.indexOf("@") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal pilot name (@ forbidden).",Username,true);
-			return;
-		} else if (name.indexOf("&") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal pilot name (& forbidden).",Username,true);
-			return;
-		} else if (name.indexOf("^") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal pilot name (^ forbidden).",Username,true);
-			return;
-		} else if (name.indexOf("+") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal pilot name (+ forbidden).",Username,true);
-			return;
-		} else if (name.indexOf("=") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal pilot name (= forbidden).",Username,true);
-			return;
-		} else if (name.toLowerCase().startsWith("vacant")) {
-			CampaignMain.cm.toUser("AM:Illegal pilot name (\"vacant\" forbidden).",Username,true);
+		if (StringUtils.hasBadChars(name, true).trim().length() > 0 ) {
+			CampaignMain.cm.toUser(StringUtils.hasBadChars(name, true).trim(),Username);
 			return;
 		} 
 		

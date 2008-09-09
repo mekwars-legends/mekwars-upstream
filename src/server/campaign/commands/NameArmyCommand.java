@@ -18,6 +18,8 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
+import common.util.StringUtils;
+
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SArmy;
@@ -66,48 +68,9 @@ public class NameArmyCommand implements Command {
 		if (name.length() > 50)
 			name = name.substring(0,50);
 		
-		if (name.indexOf("%") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal army name (% forbidden).",Username,true);
-			return;
-		} if (name.indexOf("~") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal army name (~ forbidden).",Username,true);
-			return;
-		} if (name.indexOf("$") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal army name ($ forbidden).",Username,true);
-			return;
-		} if (name.indexOf("|") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal army name (| forbidden).",Username,true);
-			return;
-		} if (name.indexOf("!") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal army name (! forbidden).",Username,true);
-			return;
-		} if (name.indexOf("*") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal army name (* forbidden).",Username,true);
-			return;
-		} if (name.indexOf("#") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal army name (# forbidden).",Username,true);
-			return;
-		} if (name.indexOf(">") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal army name (> forbidden).",Username,true);
-			return;
-		} if (name.indexOf("<") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal army name (< forbidden).",Username,true);
-			return;
-		} if (name.indexOf("@") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal army name (@ forbidden).",Username,true);
-			return;
-		} if (name.indexOf("&") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal army name (& forbidden).",Username,true);
-			return;
-		} if (name.indexOf("^") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal army name (^ forbidden).",Username,true);
-			return;
-		} if (name.indexOf("+") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal army name (+ forbidden).",Username,true);
-			return;
-		} if (name.indexOf("=") != -1) {
-			CampaignMain.cm.toUser("AM:Illegal army name (= forbidden).",Username,true);
-			return;
+		if ( StringUtils.hasBadChars(name).trim().length() > 0 ){
+		    CampaignMain.cm.toUser(StringUtils.hasBadChars(name), Username);
+		    return;
 		}
 		
 		//check for a clear
