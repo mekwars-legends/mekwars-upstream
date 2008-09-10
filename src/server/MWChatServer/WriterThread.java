@@ -138,6 +138,7 @@ public class WriterThread extends Thread {
             if (s.length() < 200) {
             	try{
 	              //  CampaignData.mwlog.warnLog("Client: " + _client.getUserId() + " /" + _client.getHost() + " Size: " + s.length() + " Message: " + s);
+            	    CampaignData.mwlog.debugLog("Sending data to "+_host+":Size:"+s.length());
 	                _out.print(s);
 	                _out.flush();
             	}catch (Exception ex){
@@ -197,6 +198,7 @@ public class WriterThread extends Thread {
             /*
              * End of NFC prinln, resumption of deflateAndSend.
              */
+            CampaignData.mwlog.debugLog("Sending deflated data to "+_host+":Size:"+s.length());
             _out.flush();
             _socket.getOutputStream().write(_deflatedBytes, 0, n);
             _socket.getOutputStream().flush();
