@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.36.x
++ Bug: Deds unable to connect due to new Special Character check [ and ] removed from list
 + Character set issue with SHouse.toString() HS removed the HS+Special character
 + Removed old wait code in WriterThread in exchange for scheduler
 + GO command now creates mmconf folder if it does not exist on the players side

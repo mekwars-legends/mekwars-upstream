@@ -113,8 +113,7 @@ public class MWChatServer implements ICommands {
         if (IPAddress == null || IPAddress.equals("-1"))
             _serverSocket = new ServerSocket(_port, -1, null);
         else
-            _serverSocket = new ServerSocket(_port, -1, InetAddress
-                    .getByName(IPAddress));
+            _serverSocket = new ServerSocket(_port, -1, InetAddress.getByName(IPAddress));
 
         // this is called but never initlized.
         _killedUsers = new TimedUserList(60 * 60 * 2);

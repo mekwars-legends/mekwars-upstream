@@ -142,7 +142,7 @@ public final class StringUtils {
     public static String hasBadChars(String string, boolean pilot){
         
         char[] badChars = {'%','~', '$', '|', '!', '*', '#', '>', '<', '@', '&', '^', '+', '=',
-                            ';', ':', '\'', '"', '`', '?', '/', '\\', '{', '}', '[', ']', '-', '_' };
+                            ';', ':', '\'', '"', '`', '?', '/', '\\', '{', '}', '-', '_' };
 
         for (int pos = badChars.length -1; pos >= 0; pos-- ){
             if (string.indexOf(badChars[pos]) != -1) {
