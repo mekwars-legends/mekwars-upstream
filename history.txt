@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.36.x
++ New MegaMek.jar 0.33.31-MW09112008-5930
 + Added more debugging messages Whee
 + Bug: Deds unable to connect due to new Special Character check [ and ] removed from list
 + Character set issue with SHouse.toString() HS removed the HS+Special character
