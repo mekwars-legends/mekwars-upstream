@@ -127,6 +127,8 @@ public class ShortResolver {
 
     private ShortOperation shortOp = null;
 
+    boolean nonDestructionMode = false;
+    
     // CONSTRUCTORS
     public ShortResolver() {
         // contents
@@ -175,6 +177,7 @@ public class ShortResolver {
         saveStats = false;
         freeForAll = false;
 
+        nonDestructionMode = false;
     }// end resetVariables()
 
     /**
@@ -201,6 +204,8 @@ public class ShortResolver {
         // reset any old trees/variables/etc
         this.resetVariables();
 
+        nonDestructionMode = o.getBooleanValue("NoDestructionMode");
+        
         saveStats = !o.getBooleanValue("NoStatisticsMode");
         freeForAll = o.getBooleanValue("FreeForAllOperation");
         // master tokenizer
@@ -482,6 +487,8 @@ public class ShortResolver {
             return;
         }
 
+        nonDestructionMode = o.getBooleanValue("NoDestructionMode");
+        
         /*
          * Set up a Map with all of the players from the game. We know that only
          * 2 players are involved; however, the allPlayers and allArmies maps
@@ -1271,7 +1278,7 @@ public class ShortResolver {
          * move ALL units from salvaged into living and clear out the pilots
          * hash.
          */
-        if (o.getBooleanValue("NoDestructionMode")) {
+        if (nonDestructionMode) {
             livingUnits.putAll(salvagableUnits);
             livingUnits.putAll(destroyedUnits);
             salvagableUnits.clear();
@@ -1310,7 +1317,7 @@ public class ShortResolver {
 
             // apply battle damage if there is any to be applied.
             try {
-                if (!o.getBooleanValue("NoDestructionMode") && currEntity.getUnitDamage().trim().length() > 0)
+                if (!nonDestructionMode && currEntity.getUnitDamage().trim().length() > 0)
                     UnitUtils.applyBattleDamage(currU.getEntity(), currEntity.getUnitDamage(), false);
             } catch (Exception ex) {
                 CampaignData.mwlog.errLog("Unable to apply damage to unit " + currU.getModelName());
@@ -1320,7 +1327,7 @@ public class ShortResolver {
             // If damaged is transfered from Game to campaign then save it the
             // pilot
             if (CampaignMain.cm.getBooleanConfig("AllowPilotDamageToTransfer")) {
-                if (o.getBooleanValue("NoDestructionMode")) {
+                if (nonDestructionMode) {
                     currU.getPilot().setHits(0);
                     currEntity.setPilothits(0);
                 } else {
@@ -2995,7 +3002,7 @@ public class ShortResolver {
                             oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
                         }
                         
-                        if ( oEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_EJECTED && CampaignMain.cm.isUsingAdvanceRepair()){
+                        if ( oEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_EJECTED && CampaignMain.cm.isUsingAdvanceRepair() && !nonDestructionMode){
                             UnitUtils.destroyCockPit(unit.getEntity());
                         }
                         

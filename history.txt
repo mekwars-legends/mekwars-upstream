@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.36.x
++ Bug: cockpit crit being added in nonDestruct mode
 + New MegaMek.jar 0.33.31-MW09112008-5930
 + Added more debugging messages Whee
 + Bug: Deds unable to connect due to new Special Character check [ and ] removed from list
