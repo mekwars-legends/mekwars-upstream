@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.2.36.x
++ refactored Ded Restart code into 1 method
++ Removed legal characters from bad character list
 + BV calculations now include pilot skills.
 + RFE: GUI for buying Aero Pilots and Creating Aero Factories
 + Bug: cockpit crit being added in nonDestruct mode

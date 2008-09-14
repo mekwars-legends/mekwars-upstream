@@ -70,7 +70,7 @@ public final class MWDedHost implements IClient {
     public static final int STATUS_DISCONNECTED = 0;
     public static final int STATUS_LOGGEDOUT = 1;
 
-    public static final String CLIENT_VERSION = "0.2.33.1"; // change this with
+    public static final String CLIENT_VERSION = "0.2.36.0"; // change this with
     // all client
     // changes @Torren
 
@@ -514,14 +514,8 @@ public final class MWDedHost implements IClient {
                 owner = "";
             }
 
-            if (myDedOwners.equals("") || name.equals(owner) || this.getUser(name).getUserlevel() >= 100) { // if
-                // no
-                // owners
-                // set,
-                // anyone
-                // can
-                // send
-                // commands
+            if (myDedOwners.equals("") || name.equals(owner) || this.getUser(name).getUserlevel() >= 100) { 
+                // if no owners set, anyone can send commands
 
                 if (command.equals("restart")) { // Restart the dedicated
                     // server
@@ -548,15 +542,7 @@ public final class MWDedHost implements IClient {
                         CampaignData.mwlog.errLog(ex);
                     }
                     sendChat(PROTOCOL_PREFIX + "c mm# " + name + " used the restart command on " + myUsername);
-                    try {
-                        String memory = Config.getParam("DEDMEMORY");
-                        Runtime runTime = Runtime.getRuntime();
-                        String[] call = { "java", "-Xmx" + memory + "m", "-jar", "MekWarsDed.jar" };
-                        runTime.exec(call);
-                        System.exit(0);
-                    } catch (Exception ex) {
-                        CampaignData.mwlog.errLog("Unable to find MekWarsDed.jar");
-                    }
+                    restartDed();
                     return;
 
                 } else if (command.equals("reset")) { // server reset (like
@@ -1251,18 +1237,8 @@ public final class MWDedHost implements IClient {
         String MMVersion = getserverConfigs("AllowedMegaMekVersion");
         if (!MMVersion.equals("-1") && !MMVersion.equalsIgnoreCase(MegaMek.VERSION)) {
             CampaignData.mwlog.errLog("You are using an invalid version of MegaMek. Please use version " + MMVersion);
-            try {
-                this.stopHost();
-                this.goodbye();
-                String memory = Config.getParam("DEDMEMORY");
-                Runtime runTime = Runtime.getRuntime();
-                String[] call = { "java", "-Xmx" + memory + "m", "-jar", "MekWarsDed.jar" };
-                runTime.exec(call);
-                System.exit(0);
-            } catch (Exception ex) {
-                CampaignData.mwlog.errLog(ex);
-            }
-            System.exit(0);
+            stopHost();
+            restartDed();
             return;
         }
 
@@ -1317,10 +1293,12 @@ public final class MWDedHost implements IClient {
 
         serverSend("CG");// send close game to server
         try {
-            myServer.die();
+            if ( myServer != null ) {
+                myServer.die();
+            }
         } catch (Exception ex) {
-            CampaignData.mwlog.errLog(ex);
             CampaignData.mwlog.errLog("Megamek Error:");
+            CampaignData.mwlog.errLog(ex);
         }
         myServer = null;
     }
@@ -1470,22 +1448,14 @@ public final class MWDedHost implements IClient {
             catch (Exception ex) {
                 CampaignData.mwlog.errLog(ex);
             }
-            stopHost();
             try {
+                stopHost();
                 Thread.sleep(5000);
-            } catch (Exception ex) {
+            }// give people time to vacate
+            catch (Exception ex) {
                 CampaignData.mwlog.errLog(ex);
             }
-            try {
-                String memory = Config.getParam("DEDMEMORY");
-                Runtime runTime = Runtime.getRuntime();
-                String[] call = { "java", "-Xmx" + memory + "m", "-jar", "MekWarsDed.jar" };
-                runTime.exec(call);
-                System.exit(0);
-
-            } catch (Exception ex) {
-                CampaignData.mwlog.errLog("Unable to find MekWarsDed.jar");
-            }
+            restartDed();
         }
     }
 
@@ -1714,6 +1684,19 @@ public final class MWDedHost implements IClient {
 
     public Buildings getBuildingTemplate() {
         return this.buildingTemplate;
+    }
+    
+    private void restartDed() {
+        try {
+            String memory = Config.getParam("DEDMEMORY");
+            Runtime runTime = Runtime.getRuntime();
+            String[] call = { "java", "-Xmx" + memory + "m", "-jar", "MekWarsDed.jar" };
+            runTime.exec(call);
+            System.exit(0);
+
+        } catch (Exception ex) {
+            CampaignData.mwlog.errLog("Unable to find MekWarsDed.jar");
+        }
     }
 
 }
