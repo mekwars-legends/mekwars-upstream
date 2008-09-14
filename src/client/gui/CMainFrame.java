@@ -1954,14 +1954,22 @@ public class CMainFrame extends JFrame {
 
     public void jMenuCampaignSubOtherBuyPilots_actionPerformed() {
         boolean allowProto = Boolean.parseBoolean(mwclient.getserverConfigs("UseProtoMek"));
+        boolean allowAero = Boolean.parseBoolean(mwclient.getserverConfigs("UseAero"));
         int unitType = Unit.MEK;
         int unitClass = Unit.LIGHT;
 
         Object[] pWeightClass = { "Light", "Medium", "Heavy", "Assault" };
         Object[] pUnitType;
 
-        if (allowProto)
+        if (allowProto && allowAero) {
+            pUnitType = new Object[] { "Mek", "Proto", "Aero" };
+        }
+        else if ( allowProto ) {
             pUnitType = new Object[] { "Mek", "Proto" };
+        }
+        else if ( allowAero ) {
+            pUnitType = new Object[] { "Mek", "Aero" };
+        }
         else
             pUnitType = new Object[] { "Mek" };
 
@@ -1971,10 +1979,7 @@ public class CMainFrame extends JFrame {
         if (pUnitTypeString == null || pUnitTypeString.length() == 0)
             return;
 
-        if (pUnitTypeString.equals("Mek"))
-            unitType = Unit.MEK;
-        else
-            unitType = Unit.PROTOMEK;
+        unitType = CUnit.getTypeIDForName(pUnitTypeString);
 
         // determine the weight class to use
         String pWeightClassString = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(), "Select unit size", "Weight Class Selection", JOptionPane.INFORMATION_MESSAGE, null, pWeightClass, pWeightClass[0]);

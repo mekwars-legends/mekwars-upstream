@@ -104,13 +104,13 @@ public class OperationEntity {
                 if ( CampaignMain.cm.isUsingAdvanceRepair() && ST.hasMoreElements() ) {
                     unitDamage = ST.nextToken();
                 }
+                unitFileName = ST.nextToken();
                 SPlayer player = CampaignMain.cm.getPlayer(ownerName);
                 if ( player != null ){
                     SUnit currUnit = player.getUnit(ID);
                     if ( currUnit != null )
                     	currUnit.setLastCombatPilot(currUnit.getPilot().getPilotId());
                 }
-                unitFileName = ST.nextToken();
 
     		}
     		

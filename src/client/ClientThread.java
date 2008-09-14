@@ -34,12 +34,10 @@ import client.util.SerializeEntity;
 
 import common.AdvancedTerrain;
 import common.CampaignData;
-import common.MegaMekPilotOption;
 import common.MMGame;
 import common.PlanetEnvironment;
 import common.Unit;
 import common.campaign.Buildings;
-import common.campaign.pilot.skills.PilotSkill;
 import common.util.UnitUtils;
 
 import megamek.client.Client;
@@ -484,7 +482,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     }
 
                     // Add Pilot to entity
-                    entity.setCrew(createEntityPilot(mek));
+                    entity.setCrew(UnitUtils.createEntityPilot(mek));
                     // Add Mek to game
                     client.sendAddEntity(entity);
                     // Wait a few secs to not overuse bandwith
@@ -522,7 +520,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                         Pilot pilot = new Pilot("AutoArtillery", 4, 5);
                         entity.setCrew(pilot);
                     } else {
-                        entity.setCrew(createEntityPilot(autoUnit));
+                        entity.setCrew(UnitUtils.createEntityPilot(autoUnit));
                     }
 
                     // CampaignData.mwlog.errLog(entity.getModel()+"
@@ -1033,33 +1031,6 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
         /*
          * en = client.game.getRetreatedEntities(); while (en.hasMoreElements()) { Entity ent = en.nextElement(); if ( ent.getOwner().getName().startsWith("War Bot") || ( !(ent instanceof MechWarrior) && !UnitUtils.hasArmorDamage(ent) && !UnitUtils.hasISDamage(ent) && !UnitUtils.hasCriticalDamage(ent) && !UnitUtils.hasLowAmmo(ent) && !UnitUtils.hasEmptyAmmo(ent))) continue; if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0) mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, true)); else mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, false)); }
          */
-    }
-
-    public Pilot createEntityPilot(Unit mek) {
-        // get and set the options
-        Pilot pilot = null;
-        pilot = new Pilot(mek.getPilot().getName(), mek.getPilot().getGunnery(), mek.getPilot().getPiloting());
-
-        // Hits defaults to 0 so no reason to keep checking over and over again.
-        pilot.setHits(mek.getPilot().getHits());
-
-        Iterator<MegaMekPilotOption> iter = mek.getPilot().getMegamekOptions().iterator();
-        while (iter.hasNext()) {
-            MegaMekPilotOption po = iter.next();
-            if (po.getMmname().equals("weapon_specialist")) {
-                pilot.getOptions().getOption(po.getMmname()).setValue(mek.getPilot().getWeapon());
-            } else if (po.getMmname().equals("edge")) {
-                pilot.getOptions().getOption(po.getMmname()).setValue(mek.getPilot().getSkills().getPilotSkill(PilotSkill.EdgeSkillID).getLevel());
-                pilot.getOptions().getOption("edge_when_headhit").setValue(mek.getPilot().getHeadHit());
-                pilot.getOptions().getOption("edge_when_tac").setValue(mek.getPilot().getTac());
-                pilot.getOptions().getOption("edge_when_ko").setValue(mek.getPilot().getKO());
-                pilot.getOptions().getOption("edge_when_explosion").setValue(mek.getPilot().getExplosion());
-            } else {
-                pilot.getOptions().getOption(po.getMmname()).setValue(po.isValue());
-            }
-        }
-
-        return pilot;
     }
 
    /* private void clearGameOptions() {

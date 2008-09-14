@@ -164,6 +164,7 @@ public class SPersonalPilotQueues implements Serializable {
     public void flushQueue() {
         mekPilots.clear();
         protoPilots.clear();
+        aeroPilots.clear();
         for (int i = Unit.LIGHT; i <= Unit.ASSAULT; i++) {// for (0 - 3)
             mekPilots.add(i, new LinkedList<Pilot>());
             protoPilots.add(i, new LinkedList<Pilot>());

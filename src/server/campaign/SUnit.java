@@ -1019,7 +1019,10 @@ public final class SUnit extends Unit {
             if (this.hasVacantPilot()) {
                 this.getEntity().getCrew().setGunnery(4);
                 this.getEntity().getCrew().setPiloting(5);
+            }else {
+                this.getEntity().setCrew(UnitUtils.createEntityPilot(this));
             }
+            
             // get a base BV from MegaMek
             int calcedBV = this.getEntity().calculateBattleValue(false);
 

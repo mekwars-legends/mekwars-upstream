@@ -20,6 +20,9 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import common.CampaignData;
+import common.MegaMekPilotOption;
+import common.Unit;
+import common.campaign.pilot.skills.PilotSkill;
 
 import megamek.common.AmmoType;
 import megamek.common.BipedMech;
@@ -35,6 +38,7 @@ import megamek.common.MechSummary;
 import megamek.common.MechSummaryCache;
 import megamek.common.MiscType;
 import megamek.common.Mounted;
+import megamek.common.Pilot;
 import megamek.common.Protomech;
 import megamek.common.Tank;
 import megamek.common.TechConstants;
@@ -2686,4 +2690,33 @@ public class UnitUtils {
                 UnitUtils.salvageCriticalSlot(cs, unit);
         }
     }
+    
+    public static Pilot createEntityPilot(Unit mek) {
+        // get and set the options
+        Pilot pilot = null;
+        pilot = new Pilot(mek.getPilot().getName(), mek.getPilot().getGunnery(), mek.getPilot().getPiloting());
+
+        // Hits defaults to 0 so no reason to keep checking over and over again.
+        pilot.setHits(mek.getPilot().getHits());
+
+        Iterator<MegaMekPilotOption> iter = mek.getPilot().getMegamekOptions().iterator();
+        while (iter.hasNext()) {
+            MegaMekPilotOption po = iter.next();
+            if (po.getMmname().equals("weapon_specialist")) {
+                pilot.getOptions().getOption(po.getMmname()).setValue(mek.getPilot().getWeapon());
+            } else if (po.getMmname().equals("edge")) {
+                pilot.getOptions().getOption(po.getMmname()).setValue(mek.getPilot().getSkills().getPilotSkill(PilotSkill.EdgeSkillID).getLevel());
+                pilot.getOptions().getOption("edge_when_headhit").setValue(mek.getPilot().getHeadHit());
+                pilot.getOptions().getOption("edge_when_tac").setValue(mek.getPilot().getTac());
+                pilot.getOptions().getOption("edge_when_ko").setValue(mek.getPilot().getKO());
+                pilot.getOptions().getOption("edge_when_explosion").setValue(mek.getPilot().getExplosion());
+            } else {
+                pilot.getOptions().getOption(po.getMmname()).setValue(po.isValue());
+            }
+        }
+
+        return pilot;
+    }
+
+
 }

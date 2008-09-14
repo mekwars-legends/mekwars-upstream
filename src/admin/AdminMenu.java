@@ -785,7 +785,9 @@ public class AdminMenu extends JMenu {
 	                "Mek & Vehicles & ProtoMek & BattleArmor",
 	                "Infantry & ProtoMek & BattleArmor",
 	                "Mek & Infantry & ProtoMek & BattleArmor",
-	                "Vehicles & Infantry & ProtoMek & BattleArmor" };
+	                "Vehicles & Infantry & ProtoMek & BattleArmor",
+                    "Mek & Vehicles & Infantry & ProtoMek & BattleArmor",
+	                "VTOL", "Aero"};
 
 	        Object[] factorySize = { "Light", "Medium", "Heavy", "Assault" };
 	        int i;

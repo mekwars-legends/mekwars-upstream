@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.2.36.x
++ BV calculations now include pilot skills.
++ RFE: GUI for buying Aero Pilots and Creating Aero Factories
 + Bug: cockpit crit being added in nonDestruct mode
 + New MegaMek.jar 0.33.31-MW09112008-5930
 + Added more debugging messages Whee
