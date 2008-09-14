@@ -99,11 +99,13 @@ public class Statistics {
 		    Iterator<House> e = CampaignMain.cm.getData().getAllHouses().iterator();
 		    Hashtable<String, SmallPlayer> allplayers = new Hashtable<String, SmallPlayer>();
 		    //Player DefaultPlayer = null;
-		    while (e.hasNext()) {
-		        SHouse h = (SHouse) e.next();
-		        if (!h.isNewbieHouse())
-		        	allplayers.putAll(h.getSmallPlayers());
-		    }
+		    synchronized (allplayers) {
+	            while (e.hasNext()) {
+	                SHouse h = (SHouse) e.next();
+	                if (!h.isNewbieHouse())
+	                    allplayers.putAll(h.getSmallPlayers());
+	            }
+            }
 		    TreeSet<SmallPlayer> Sorted = new TreeSet<SmallPlayer>(allplayers.values());
 		    Iterator<SmallPlayer> i = Sorted.iterator();
 		    Vector<SmallPlayer> v = new Vector<SmallPlayer>(1,1);

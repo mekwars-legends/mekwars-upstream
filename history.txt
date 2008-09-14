@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.36.x
++ Bug: Concurrent Modification Error
 + refactored Ded Restart code into 1 method
 + Removed legal characters from bad character list
 + BV calculations now include pilot skills.

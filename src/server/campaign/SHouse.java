@@ -2718,7 +2718,9 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
      * @return the small player hashtable
      */
     public Hashtable<String, SmallPlayer> getSmallPlayers() {
-        return SmallPlayers;
+        synchronized (SmallPlayers) {
+            return SmallPlayers;
+        }
     }
 
     // Comparable
