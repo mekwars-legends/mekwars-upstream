@@ -70,6 +70,9 @@ public class ReloadAllAmmoCommand implements Command {
 				
 	            refillShots = baseAmmo.getShots();
 	    		ammoCharge = CampaignMain.cm.getAmmoCost(baseAmmo.getInternalName());
+	    		if ( ammoCharge < 0 ){
+	    		    continue;
+	    		}
 	            //Single shot weapons should only cost 1 shot
 	            if ( ammo.getLocation() == Entity.LOC_NONE ){
 		                refillShots = 1;
@@ -91,7 +94,13 @@ public class ReloadAllAmmoCommand implements Command {
 			for ( Mounted ammo : en.getAmmo()) {
 				
 				AmmoType baseAmmo = (AmmoType)ammo.getType();
-				
+
+				//Do not refill banned ammo
+				ammoCharge = CampaignMain.cm.getAmmoCost(baseAmmo.getInternalName());
+                if ( ammoCharge < 0 ){
+                    continue;
+                }
+
 	            refillShots = baseAmmo.getShots();
 
 	            //Single shot weapons should only cost 1 short i.e. total shots = 10 then price is 1/10th minium 1.
