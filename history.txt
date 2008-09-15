@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.2.36.x
+Release Server 0.2.36.2
++ Temp Removal of duplication user disconnection code
 Release Client/Ded 0.2.36.1
 + Bug: MM Game getting reset before reporting has finished.
 + Bug: Concurrent Modification Error

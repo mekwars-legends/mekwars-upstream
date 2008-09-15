@@ -157,8 +157,8 @@ public class ServerWrapper extends MWChatServer{
 					throw new Exception(ACCESS_DENIED);
 				}*/
 			    //client.getServer().kill(client.getUserId(),"Terminated by signing on elsewhere");
-                CampaignData.mwlog.debugLog(clientKey(client)+"'s duplicate connection terminated by signing on elsewhere");
-                signOff(client.getServer().getClient(clientKey(client)));
+                //CampaignData.mwlog.debugLog(clientKey(client)+"'s duplicate connection terminated by signing on elsewhere");
+                //signOff(client.getServer().getClient(clientKey(client)));
 			}
 			int access = auth.getAccess();
 			client.setAccessLevel(access);
