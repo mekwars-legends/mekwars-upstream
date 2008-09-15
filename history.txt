@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.36.x
++ New MegaMek.jar 0.33.32-MW09152008-5954
 Release Server 0.2.36.2
 + Temp Removal of duplication user disconnection code
 Release Client/Ded 0.2.36.1
