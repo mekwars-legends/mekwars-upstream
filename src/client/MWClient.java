@@ -157,7 +157,7 @@ public final class MWClient implements IClient {
 
     CConfig Config;
 
-    public static final String CLIENT_VERSION = "0.2.36.0"; // change this with
+    public static final String CLIENT_VERSION = "0.2.36.1"; // change this with
     // all client
     // changes @Torren
 
@@ -183,6 +183,7 @@ public final class MWClient implements IClient {
     String myDedOwners = "";
     int myPort = -1;
     int gameCount = 0; // number of games played on a ded
+    long lastResetCheck = System.currentTimeMillis();
     int dedRestartAt = 50; // number of games played on a ded before auto
     // restart.
     int savedGamesMaxDays = 30; // max number of days a save game can be before
@@ -2789,6 +2790,12 @@ public final class MWClient implements IClient {
     // amount it restarts the ded.
     public void checkForRestart() {
         gameCount++;
+        
+        //only check for restart once every 30 seconds.
+        if ( System.currentTimeMillis() - 30000 < lastResetCheck ){
+            return;
+        }
+        
         if (gameCount >= dedRestartAt) {
             CampaignData.mwlog.infoLog("System has reached " + gameCount + " games played and is restarting");
             try {
@@ -2818,6 +2825,8 @@ public final class MWClient implements IClient {
                 CampaignData.mwlog.errLog("Unable to find MekWarsDed.jar");
             }
         }
+        
+        lastResetCheck = System.currentTimeMillis();
     }
 
     public void clearSavedGames() {

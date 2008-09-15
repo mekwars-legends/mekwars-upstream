@@ -599,10 +599,6 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
     public void gamePhaseChange(GamePhaseChangeEvent e) {
 
-        // String result = "";
-        // String winnerName ="";
-        String name = "";
-
         try {
 
             if (client.game.getPhase() == IGame.Phase.PHASE_VICTORY) {
@@ -642,13 +638,6 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                 mwclient.serverSend("SGR|" + toUse.getHostName());
                 CampaignData.mwlog.infoLog("GAME END");
 
-                if (mwclient.getPlayer().getName().equalsIgnoreCase(name)) {
-                    if (toUse.getHostName().startsWith("[Dedicated]"))
-                        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "mail " + toUse.getHostName() + ",checkrestartcount");
-                }
-
-                //clearGameOptions();
-                client.game.reset();
             }// end victory
 
             /*

@@ -2410,11 +2410,10 @@ public final class CampaignMain implements Serializable {
 
     public double getAmmoCost(String ammo) {
 
-        if (!blackMarketEquipmentCostTable.containsKey(ammo))
-            return -1;
-
-        if (blackMarketEquipmentCostTable.get(ammo).getMinCost() > 0)
+        if (blackMarketEquipmentCostTable.containsKey(ammo) && blackMarketEquipmentCostTable.get(ammo).getMinCost() > 0){
             return blackMarketEquipmentCostTable.get(ammo).getMinCost();
+        }
+        
         return -1.0;
     }
 

@@ -70,7 +70,7 @@ public final class MWDedHost implements IClient {
     public static final int STATUS_DISCONNECTED = 0;
     public static final int STATUS_LOGGEDOUT = 1;
 
-    public static final String CLIENT_VERSION = "0.2.36.0"; // change this with
+    public static final String CLIENT_VERSION = "0.2.36.1"; // change this with
     // all client
     // changes @Torren
 
@@ -93,6 +93,7 @@ public final class MWDedHost implements IClient {
     String myDedOwners = "";
     int myPort = -1;
     int gameCount = 0; // number of games played on a ded
+    long lastResetCheck = System.currentTimeMillis(); //how quick a reset check can be done on a ded.
     int dedRestartAt = 50; // number of games played on a ded before auto
     // restart.
     int savedGamesMaxDays = 30; // max number of days a save game can be before
@@ -1440,6 +1441,12 @@ public final class MWDedHost implements IClient {
     // amount it restarts the ded.
     public void checkForRestart() {
         gameCount++;
+        
+        //only check for restart once every 30 seconds.
+        if ( System.currentTimeMillis() - 30000 < lastResetCheck ){
+            return;
+        }
+        
         if (gameCount >= dedRestartAt) {
             CampaignData.mwlog.infoLog("System has reached " + gameCount + " games played and is restarting");
             try {
@@ -1457,6 +1464,8 @@ public final class MWDedHost implements IClient {
             }
             restartDed();
         }
+        
+        lastResetCheck = System.currentTimeMillis();
     }
 
     public void clearSavedGames() {

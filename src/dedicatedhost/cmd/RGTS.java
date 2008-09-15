@@ -142,6 +142,10 @@ public class RGTS extends Command {
 		
 		//we may assume that a server which reports a game is no longer "Running"
 		mwclient.serverSend("SHS|" + mwclient.myUsername + "|Open");
+		
+		server.resetGame();
+		
+		mwclient.checkForRestart();
 	}
 	
 	public int getBuildingsLeft(){

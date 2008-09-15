@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.2.36.x
+Release Client/Ded 0.2.36.1
++ Bug: MM Game getting reset before reporting has finished.
 + Bug: Concurrent Modification Error
 + refactored Ded Restart code into 1 method
 + Removed legal characters from bad character list
