@@ -52,6 +52,14 @@ public class RGTS extends Command {
 
         // CampaignData.mwlog.errLog("Inside RGTS");
         server = mwclient.getMyServer();
+        
+        if ( server != null 
+                && server.getGame().getPlayersVector().size() < 1
+                && server.getGame().getEntitiesVector().size() < 1){
+            return;
+        }
+        
+
         StringBuilder result = new StringBuilder();
         String name = "";
         // Parse the real playername from the Modified In game one..

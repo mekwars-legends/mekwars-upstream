@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.36.x
++ Changed RGTS command to not report if game has been reset
 + Bug: missing § in SHouse
 + New MegaMek.jar 0.33.32-MW09152008-5954
 Release Server 0.2.36.2

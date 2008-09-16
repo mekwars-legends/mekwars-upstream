@@ -51,6 +51,13 @@ public class RGTS extends Command {
 		
 		//CampaignData.mwlog.errLog("Inside RGTS");
 		server = mwclient.getMyServer();
+		
+		if ( server != null 
+		        && server.getGame().getPlayersVector().size() < 1
+		        && server.getGame().getEntitiesVector().size() < 1){
+		    return;
+		}
+		
 		StringBuilder result = new StringBuilder();
 		String name = "";
 		//Parse the real playername from the Modified In game one..
@@ -59,9 +66,7 @@ public class RGTS extends Command {
 			
 			int numberOfWinners = 0;
 			//Multiple Winners
-			Enumeration<Player> en = server.getGame().getPlayers();
-			while (en.hasMoreElements()) {
-				Player p = en.nextElement();
+			for (Player p  : server.getGame().getPlayersVector()) {
 				if (p.getTeam() == server.getGame().getVictoryTeam()) {
 					StringTokenizer st = new StringTokenizer(p.getName().trim(), "~");
 					name = "";
