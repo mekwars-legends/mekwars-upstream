@@ -658,7 +658,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         try {
 
             // strip leadin.  Note: Because the DB doesn't store this, we don't necessarily need it for the DB version
-        	if (s.startsWith("HSï¿½"))
+        	if (s.startsWith("HS§"))
         		s = s.substring(3);
 
             StringTokenizer ST = new StringTokenizer(s, "|");
