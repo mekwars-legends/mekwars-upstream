@@ -221,8 +221,9 @@ public class CUnit extends Unit {
 
         if (unitDamage != null){
             UnitUtils.applyBattleDamage(UnitEntity, unitDamage);
-            this.getC3Type(UnitEntity);
         }
+
+        this.getC3Type(UnitEntity);
 
         return (true);
     }
