@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.2.36.x
++ Release Client/Ded 0.2.36.2
++ Fix for Null Reporting Draws
++ New MegaMek.jar 0.33.33-MW09192008-5965
 + Changed RGTS command to not report if game has been reset
 + Bug: missing § in SHouse
 + New MegaMek.jar 0.33.32-MW09152008-5954

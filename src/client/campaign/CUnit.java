@@ -150,8 +150,6 @@ public class CUnit extends Unit {
             return (false);
         }
 
-        this.getC3Type(UnitEntity);
-
         // don't try to set ammo and eject on an OMG
         if (this.getModelName().startsWith("Error") || this.getModelName().startsWith("OMG")) {
             UnitEntity.setExternalId(this.getId());
@@ -221,8 +219,10 @@ public class CUnit extends Unit {
         UnitEntity.setExternalId(this.getId());
         UnitEntity.setCrew(new megamek.common.Pilot(p.getName(), p.getGunnery(), p.getPiloting()));
 
-        if (unitDamage != null)
+        if (unitDamage != null){
             UnitUtils.applyBattleDamage(UnitEntity, unitDamage);
+            this.getC3Type(UnitEntity);
+        }
 
         return (true);
     }

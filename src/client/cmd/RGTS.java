@@ -54,7 +54,6 @@ public class RGTS extends Command {
         server = mwclient.getMyServer();
         
         if ( server != null 
-                && server.getGame().getPlayersVector().size() < 1
                 && server.getGame().getEntitiesVector().size() < 1){
             return;
         }

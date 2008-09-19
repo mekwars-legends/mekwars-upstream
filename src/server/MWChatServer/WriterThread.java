@@ -198,7 +198,7 @@ public class WriterThread extends Thread {
             /*
              * End of NFC prinln, resumption of deflateAndSend.
              */
-            CampaignData.mwlog.debugLog("Sending deflated data to "+_host+":Size:"+s.length());
+            CampaignData.mwlog.debugLog("Sending deflated data to "+_host+":Size:"+s.length()+":Deflated Size:"+Integer.toString(n));
             _out.flush();
             _socket.getOutputStream().write(_deflatedBytes, 0, n);
             _socket.getOutputStream().flush();
