@@ -118,7 +118,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
     // these indices should match up with the static values in the
     // MechSummaryComparator
     private String[] saSorts = { "Name", "Ref", "Weight", "BV" };// , "Year"
-                                                                    // };
+    // };
 
     // frame which owns the dialog
     private CMainFrame clientgui;
@@ -216,7 +216,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
         mechList = new JList(defaultModel);
         listSelectionModel = mechList.getSelectionModel();
         mechList.setVisibleRowCount(17);// give the list same number of rows as
-                                        // the text boxes
+        // the text boxes
         listSelectionModel.addListSelectionListener(this);
 
         // place the list and text boxes in scroll panes
@@ -311,7 +311,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
         final Map<String, String> hFailedFiles = MechSummaryCache.getInstance().getFailedFiles();
         if (hFailedFiles != null && hFailedFiles.size() > 0) {
             new UnitFailureDialog(clientgui, hFailedFiles); // self-showing
-                                                            // dialog
+            // dialog
         }
 
         try {
@@ -452,17 +452,14 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
                 }
 
                 if (/* Weight */
-                (nClass == EntityWeightClass.SIZE || mechs[x].getWeightClass() == nClass) && /*
-                                                                                                 * Technology
-                                                                                                 * Level
-                                                                                                 */
-                ((nType == TechConstants.T_ALL) || (nType == mechs[x].getType()) || ((nType == TechConstants.T_LEVEL_2_ALL) && ((mechs[x].getType() == TechConstants.T_IS_LEVEL_1) || (mechs[x].getType() == TechConstants.T_IS_LEVEL_2) || (mechs[x].getType() == TechConstants.T_CLAN_LEVEL_2))) || ((nType == TechConstants.T_IS_LEVEL_2_ALL) && ((mechs[x].getType() == TechConstants.T_IS_LEVEL_1) || (mechs[x].getType() == TechConstants.T_IS_LEVEL_2)))) && /*
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Unit
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Type
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * (Mek,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * Infantry,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                     * etc.)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                     */
+                (nClass == EntityWeightClass.SIZE || mechs[x].getWeightClass() == nClass) && 
+                /*
+                 * Technology Level
+                 */
+                ((nType == TechConstants.T_ALL) || (nType == mechs[x].getType()) || ((nType == TechConstants.T_IS_TW_ALL) && ((mechs[x].getType() <= TechConstants.T_IS_TW_NON_BOX) || (mechs[x].getType() == TechConstants.T_IS_ADVANCED) || (mechs[x].getType() == TechConstants.T_CLAN_ADVANCED))) || ((nType == TechConstants.T_IS_TW_ALL) && ((mechs[x].getType() <= TechConstants.T_IS_TW_NON_BOX) || (mechs[x].getType() == TechConstants.T_IS_ADVANCED)))) && 
+                /*
+                 * Unit Type (Mek, Infantry, etc.)
+                 */
                 (nUnitType == UnitType.SIZE || mechs[x].getUnitType().equals(UnitType.getTypeName(nUnitType)))) {
                     vMechs.add(mechs[x]);
                 }
@@ -529,14 +526,23 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
         int nUnitType = chUnitType.getSelectedIndex();
         for (Enumeration<EquipmentType> e = EquipmentType.getAllTypes(); e.hasMoreElements();) {
             EquipmentType et = e.nextElement();
-            if (et instanceof WeaponType && (et.getTechLevel() == nType || (nType == TechConstants.T_ALL) || ((nType == TechConstants.T_LEVEL_2_ALL) && ((et.getTechLevel() == TechConstants.T_IS_LEVEL_1) || (et.getTechLevel() == TechConstants.T_IS_LEVEL_2) || (et.getTechLevel() == TechConstants.T_CLAN_LEVEL_2))) || ((nType == TechConstants.T_IS_LEVEL_2_ALL || nType == TechConstants.T_IS_LEVEL_2) && ((et.getTechLevel() == TechConstants.T_IS_LEVEL_1) || (et.getTechLevel() == TechConstants.T_IS_LEVEL_2))))) {
+            if (et instanceof WeaponType && (et.getTechLevel() == nType 
+                    || (nType == TechConstants.T_ALL) 
+                    || ((nType == TechConstants.T_IS_TW_ALL) 
+                            && ((et.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) 
+                                    || (et.getTechLevel() == TechConstants.T_IS_ADVANCED) 
+                                    || (et.getTechLevel() == TechConstants.T_CLAN_ADVANCED))) 
+                                    || ((nType == TechConstants.T_IS_TW_ALL 
+                                            || nType == TechConstants.T_IS_ADVANCED) 
+                                            && ((et.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) 
+                                                    || (et.getTechLevel() == TechConstants.T_IS_ADVANCED))))) {
                 if (!(nUnitType == UnitType.SIZE) && ((UnitType.getTypeName(nUnitType).equals("Mek") || UnitType.getTypeName(nUnitType).equals("Tank")) && (et.hasFlag(WeaponType.F_INFANTRY) || et.hasFlag(WeaponType.F_INFANTRY_ONLY)))) {
                     continue;
                 }
                 m_cWeapons1.addItem(et.getName());
                 m_cWeapons2.addItem(et.getName());
             }
-            if (et instanceof MiscType && (et.getTechLevel() == nType || (nType == TechConstants.T_ALL) || ((nType == TechConstants.T_LEVEL_2_ALL) && ((et.getTechLevel() == TechConstants.T_IS_LEVEL_1) || (et.getTechLevel() == TechConstants.T_IS_LEVEL_2) || (et.getTechLevel() == TechConstants.T_CLAN_LEVEL_2))) || ((nType == TechConstants.T_IS_LEVEL_2_ALL || nType == TechConstants.T_IS_LEVEL_2) && ((et.getTechLevel() == TechConstants.T_IS_LEVEL_1) || (et.getTechLevel() == TechConstants.T_IS_LEVEL_2))))) {
+            if (et instanceof MiscType && (et.getTechLevel() == nType || (nType == TechConstants.T_ALL) || ((nType == TechConstants.T_TW_ALL) && ((et.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) || (et.getTechLevel() == TechConstants.T_IS_ADVANCED) || (et.getTechLevel() == TechConstants.T_CLAN_ADVANCED))) || ((nType == TechConstants.T_IS_TW_ALL || nType == TechConstants.T_IS_ADVANCED) && ((et.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) || (et.getTechLevel() == TechConstants.T_IS_ADVANCED))))) {
                 m_cEquipment.addItem(et.getName());
             }
         }
@@ -655,13 +661,12 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
                         unitFile = ms.getSourceFile().getName();
                     }
 
-                    if ( unitFile.indexOf("/") > -1) {
-                        unitFile = unitFile.substring(unitFile.lastIndexOf("/")+1);
-                    }else if ( unitFile.indexOf("\\") > -1) {
-                        unitFile = unitFile.substring(unitFile.lastIndexOf("\\")+1);
+                    if (unitFile.indexOf("/") > -1) {
+                        unitFile = unitFile.substring(unitFile.lastIndexOf("/") + 1);
+                    } else if (unitFile.indexOf("\\") > -1) {
+                        unitFile = unitFile.substring(unitFile.lastIndexOf("\\") + 1);
                     }
-                    
-                    
+
                     String fluff = JOptionPane.showInputDialog(clientgui, "Fluff text for " + unit);
 
                     if (fluff == null || fluff.length() == 0) {
@@ -707,9 +712,9 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
                     unitFile = ms.getEntryName();
                 else {
                     unitFile = ms.getSourceFile().getName();
-                    if ( unitFile.indexOf("\\") > 0)
+                    if (unitFile.indexOf("\\") > 0)
                         unitFile = unitFile.substring(unitFile.lastIndexOf("\\"));
-                    if ( unitFile.indexOf("/") > 0)
+                    if (unitFile.indexOf("/") > 0)
                         unitFile = unitFile.substring(unitFile.lastIndexOf("/"));
                 }
                 this.setVisible(false);
@@ -969,8 +974,8 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
                 // MechSummary ms =
                 // MechSummaryCache.getInstance().getMech("Error OMG-UR-FD");
                 currEntity = UnitUtils.createOMG();// new
-                                                    // MechFileParser(ms.getSourceFile(),
-                                                    // ms.getEntryName()).getEntity();
+                // MechFileParser(ms.getSourceFile(),
+                // ms.getEntryName()).getEntity();
                 populateTextFields = false;
             } catch (Exception e) {
                 // this would be very very bad ...
@@ -979,7 +984,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
 
         MechView mechView = null;
         try {
-            mechView = new MechView(currEntity,true);
+            mechView = new MechView(currEntity, true);
         } catch (Exception e) {
             // error unit didn't load right. this is bad news.
             populateTextFields = false;

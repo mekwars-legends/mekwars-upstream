@@ -855,13 +855,12 @@ public class UnitUtils {
      * @return engine type of the Mek Used for getting what engine type the entity has.
      */
     public static int getEngineType(Entity unit) {
-        int techLevel = unit.getTechLevel();
         int engineNumber = UnitUtils.getNumberOfEngineCrits(unit);
 
         // only check mechs everyone else gets STD engine returned
         if (unit instanceof Mech) {
             // Check to see if its a clan unit.
-            if (techLevel == TechConstants.T_CLAN_LEVEL_2 || techLevel == TechConstants.T_CLAN_LEVEL_3) {
+            if (unit.isClan()) {
 
                 if (engineNumber == 12)
                     return UnitUtils.CLAN_XXL_ENGINE;
@@ -1424,7 +1423,7 @@ public class UnitUtils {
             if (mounted.getType() instanceof MiscType && mounted.getType().hasFlag(MiscType.F_TSM))
                 return true;
 
-            if (mounted.getType() instanceof MiscType && mounted.getType().hasFlag(MiscType.F_CASE) && (unit.getTechLevel() == TechConstants.T_CLAN_LEVEL_2 || unit.getTechLevel() == TechConstants.T_CLAN_LEVEL_3))
+            if (mounted.getType() instanceof MiscType && mounted.getType().hasFlag(MiscType.F_CASE) && unit.isClan() )
                 return true;
 
         } catch (Exception ex) {
@@ -1912,7 +1911,7 @@ public class UnitUtils {
 
                 if (m.getDesc().indexOf("Heat Sink") > -1) {
                     if (m.getType().hasFlag(MiscType.F_HEAT_SINK)) {
-                        if (m.getType().getTechLevel() == TechConstants.T_IS_LEVEL_3)
+                        if (m.getType().getTechLevel() == TechConstants.T_IS_ADVANCED || m.getType().getTechLevel() == TechConstants.T_IS_EXPERIMENTAL)
                             cost = 3000;
                         else
                             cost = 2000;
@@ -2519,24 +2518,41 @@ public class UnitUtils {
         if (techLevel != TechConstants.T_ALL && techLevel != TechConstants.T_ALLOWED_ALL && techLevel != TechConstants.T_TECH_UNKNOWN) {
             if (unit.getTechLevel() != techLevel) {
                 switch (unit.getTechLevel()) {
-                case TechConstants.T_CLAN_LEVEL_3:
-                    if (techLevel != TechConstants.T_CLAN_LEVEL_3)
+                case TechConstants.T_CLAN_UNOFFICIAL:
+                    if (techLevel != TechConstants.T_CLAN_UNOFFICIAL)
                         return false;
                     break;
-                case TechConstants.T_CLAN_LEVEL_2:
-                    if (techLevel != TechConstants.T_CLAN_LEVEL_3)
+                case TechConstants.T_CLAN_EXPERIMENTAL:
+                    if (techLevel != TechConstants.T_CLAN_EXPERIMENTAL && techLevel != TechConstants.T_CLAN_UNOFFICIAL)
                         return false;
                     break;
-                case TechConstants.T_IS_LEVEL_3:
-                    if (techLevel != TechConstants.T_IS_LEVEL_3)
+                case TechConstants.T_CLAN_ADVANCED:
+                    if (techLevel != TechConstants.T_CLAN_ADVANCED && techLevel != TechConstants.T_CLAN_EXPERIMENTAL && techLevel != TechConstants.T_CLAN_UNOFFICIAL)
                         return false;
                     break;
-                case TechConstants.T_IS_LEVEL_2:
-                    if (techLevel != TechConstants.T_IS_LEVEL_3 && techLevel != TechConstants.T_IS_LEVEL_2 && techLevel != TechConstants.T_IS_LEVEL_2_ALL && techLevel != TechConstants.T_LEVEL_2_ALL)
+                case TechConstants.T_CLAN_TW:
+                    if (techLevel != TechConstants.T_CLAN_TW && techLevel != TechConstants.T_CLAN_ADVANCED && techLevel != TechConstants.T_CLAN_EXPERIMENTAL && techLevel != TechConstants.T_CLAN_UNOFFICIAL)
                         return false;
                     break;
-                case TechConstants.T_IS_LEVEL_1:
-                    if (techLevel != TechConstants.T_IS_LEVEL_3 && techLevel != TechConstants.T_IS_LEVEL_2 && techLevel != TechConstants.T_IS_LEVEL_2_ALL && techLevel != TechConstants.T_LEVEL_2_ALL && techLevel != TechConstants.T_IS_LEVEL_1)
+                case TechConstants.T_IS_UNOFFICIAL:
+                    if (techLevel != TechConstants.T_IS_UNOFFICIAL)
+                        return false;
+                    break;
+                case TechConstants.T_IS_EXPERIMENTAL:
+                    if (techLevel != TechConstants.T_IS_UNOFFICIAL && techLevel != TechConstants.T_IS_EXPERIMENTAL)
+                        return false;
+                    break;
+                case TechConstants.T_IS_ADVANCED:
+                    if (techLevel != TechConstants.T_IS_ADVANCED && techLevel != TechConstants.T_IS_UNOFFICIAL && techLevel != TechConstants.T_IS_EXPERIMENTAL)
+                        return false;
+                case TechConstants.T_IS_TW_ALL:
+                    if (techLevel != TechConstants.T_IS_TW_ALL && techLevel != TechConstants.T_IS_ADVANCED && techLevel != TechConstants.T_IS_UNOFFICIAL && techLevel != TechConstants.T_IS_EXPERIMENTAL)
+                        return false;
+                case TechConstants.T_IS_TW_NON_BOX:
+                    if (techLevel != TechConstants.T_IS_TW_NON_BOX && techLevel != TechConstants.T_IS_TW_ALL && techLevel != TechConstants.T_IS_ADVANCED && techLevel != TechConstants.T_IS_UNOFFICIAL && techLevel != TechConstants.T_IS_EXPERIMENTAL)
+                        return false;
+                case TechConstants.T_INTRO_BOXSET:
+                    if (techLevel != TechConstants.T_INTRO_BOXSET && techLevel != TechConstants.T_IS_TW_NON_BOX && techLevel != TechConstants.T_IS_TW_ALL && techLevel != TechConstants.T_IS_ADVANCED && techLevel != TechConstants.T_IS_UNOFFICIAL && techLevel != TechConstants.T_IS_EXPERIMENTAL)
                         return false;
                 }
             }
@@ -2547,7 +2563,7 @@ public class UnitUtils {
 
     public static boolean isSameTech(int tech, int techLevel) {
 
-        if (tech >= TechConstants.T_ALL || tech < TechConstants.T_IS_LEVEL_1)
+        if (tech >= TechConstants.T_ALL || tech < TechConstants.T_INTRO_BOXSET)
             return true;
 
         return techLevel >= tech;
@@ -2557,7 +2573,7 @@ public class UnitUtils {
         Mech entity = new BipedMech(Mech.GYRO_STANDARD, Mech.COCKPIT_STANDARD);
 
         entity.setYear(2075);
-        entity.setTechLevel(TechConstants.T_IS_LEVEL_1);
+        entity.setTechLevel(TechConstants.T_INTRO_BOXSET);
         entity.setWeight(25);
         entity.setEngine(new Engine(325, Engine.NORMAL_ENGINE, 0));
         entity.setArmorType(EquipmentType.T_ARMOR_STANDARD);
@@ -2718,5 +2734,14 @@ public class UnitUtils {
         return pilot;
     }
 
+    public static boolean isClanEQ(EquipmentType eq) {
+        if ( eq.getTechLevel() == TechConstants.T_CLAN_ADVANCED 
+        || eq.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL 
+        || eq.getTechLevel() == TechConstants.T_CLAN_TW 
+        || eq.getTechLevel() == TechConstants.T_CLAN_UNOFFICIAL) {
+            return true;
+        }
+            return false;
+    }
 
 }

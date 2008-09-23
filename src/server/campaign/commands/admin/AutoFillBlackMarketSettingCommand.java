@@ -127,7 +127,7 @@ public class AutoFillBlackMarketSettingCommand implements Command {
                 } else if (eq.hasFlag(MiscType.F_JUMP_BOOSTER)) {
                     baseCost = 6.0 * ent.getWeight() * 150;
                 } else if (eq.hasFlag(MiscType.F_JUMP_JET)) {
-                    if (eq.getTechLevel() > TechConstants.T_IS_LEVEL_1)
+                    if (eq.getTechLevel() > TechConstants.T_IS_TW_ALL)
                         baseCost = 6.0 * ent.getWeight() * 500;
                     else
                         baseCost = 6.0 * ent.getWeight() * 200;

@@ -246,7 +246,7 @@ public class UseRewardPointsCommand implements Command {
 						unitWeight = Unit.LIGHT;
 					break;
 				case Unit.PROTOMEK:
-                    if ( faction.getTechLevel() < TechConstants.T_CLAN_LEVEL_2 ){
+                    if ( faction.getTechLevel() < TechConstants.T_CLAN_TW ){
                         CampaignMain.cm.toUser(faction.getName()+" is unable to produce Proto Meks!", Username);
                         return;
                     }
@@ -255,7 +255,7 @@ public class UseRewardPointsCommand implements Command {
 						unitWeight = Unit.LIGHT;
 					break;
 				case Unit.BATTLEARMOR:
-				    if ( faction.getTechLevel() < TechConstants.T_IS_LEVEL_2 ){
+				    if ( faction.getTechLevel() < TechConstants.T_IS_TW_NON_BOX){
 				        CampaignMain.cm.toUser(faction.getName()+" is unable to produce Battle Armor!", Username);
 				        return;
 				    }

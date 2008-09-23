@@ -430,11 +430,10 @@ public class UnitComponents{
 			return "All";
 		}else {
 			
-			if ( eq.getTechLevel() == TechConstants.T_CLAN_LEVEL_2 ||
-					eq.getTechLevel() == TechConstants.T_CLAN_LEVEL_3)
+			if ( UnitUtils.isClanEQ(eq) )
 				return "Clan";
 			if ( eq.getTechLevel() == TechConstants.T_ALL ||
-					eq.getTechLevel() < TechConstants.T_IS_LEVEL_1 )
+					eq.getTechLevel() <= TechConstants.T_TW_ALL )
 				return "All";
 
 			return "IS";

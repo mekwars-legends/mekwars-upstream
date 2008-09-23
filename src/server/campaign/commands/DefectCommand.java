@@ -685,7 +685,7 @@ public class DefectCommand implements Command {
         house.setBaseGunner(4);
         house.setBasePilot(5);
         house.setConquerable(true);
-        house.setTechLevel(TechConstants.T_IS_LEVEL_1);
+        house.setTechLevel(TechConstants.T_INTRO_BOXSET);
         CampaignMain.cm.addHouse(house);
         CampaignMain.cm.doSendToAllOnlinePlayers("PL|ANH|" + house.addNewHouse(), false);
         for (int type = 0; type < SUnit.MAXBUILD; type++) {

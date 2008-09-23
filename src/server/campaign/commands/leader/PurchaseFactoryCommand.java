@@ -88,12 +88,12 @@ public class PurchaseFactoryCommand implements Command {
             return;
         }
 
-        if ( type == SUnit.BATTLEARMOR && house.getTechLevel() < TechConstants.T_IS_LEVEL_2 ) {
+        if ( type == SUnit.BATTLEARMOR && house.getTechLevel() < TechConstants.T_IS_TW_ALL ) {
             CampaignMain.cm.toUser("Your factions tech level is not high enough to purchase Battle Armor factories", Username);
             return;
         }
         
-        if ( type == SUnit.PROTOMEK && house.getTechLevel() < TechConstants.T_CLAN_LEVEL_2) {
+        if ( type == SUnit.PROTOMEK && house.getTechLevel() < TechConstants.T_CLAN_TW) {
             CampaignMain.cm.toUser("Your factions tech level is not high enough to purchase ProtoMek factories", Username);
             return;
         }

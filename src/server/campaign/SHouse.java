@@ -3167,25 +3167,35 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
         int techLevel = 1;
         switch (tech) {
-        case TechConstants.T_IS_LEVEL_1:
+        case TechConstants.T_INTRO_BOXSET:
+        case TechConstants.T_TW_ALL:
+        case TechConstants.T_IS_TW_NON_BOX:
             techLevel = 1;
             break;
-        case TechConstants.T_IS_LEVEL_2:
-        case TechConstants.T_IS_LEVEL_2_ALL:
+        case TechConstants.T_IS_ADVANCED:
             techLevel = 2;
             break;
-        case TechConstants.T_IS_LEVEL_3:
+        case TechConstants.T_IS_EXPERIMENTAL:
             techLevel = 3;
             break;
-        case TechConstants.T_CLAN_LEVEL_2:
+        case TechConstants.T_IS_UNOFFICIAL:
             techLevel = 4;
             break;
-        case TechConstants.T_CLAN_LEVEL_3:
+        case TechConstants.T_CLAN_TW:
             techLevel = 5;
+            break;
+        case TechConstants.T_CLAN_ADVANCED:
+            techLevel = 6;
+            break;
+        case TechConstants.T_CLAN_EXPERIMENTAL:
+            techLevel = 7;
+            break;
+        case TechConstants.T_CLAN_UNOFFICIAL:
+            techLevel = 8;
             break;
         case TechConstants.T_ALL:
         case TechConstants.T_ALLOWED_ALL:
-            techLevel = 6;
+            techLevel = 9;
             break;
         default:
             techLevel = 1;
@@ -3197,22 +3207,34 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
     public void updateHouseTechLevel() {
         switch (getTechResearchLevel()) {
         case 1:
-            this.setTechLevel(TechConstants.T_IS_LEVEL_2);
+            this.setTechLevel(TechConstants.T_IS_TW_ALL);
             break;
         case 2:
-            this.setTechLevel(TechConstants.T_IS_LEVEL_3);
+            this.setTechLevel(TechConstants.T_IS_ADVANCED);
             break;
         case 3:
-            this.setTechLevel(TechConstants.T_CLAN_LEVEL_2);
+            this.setTechLevel(TechConstants.T_IS_EXPERIMENTAL);
             break;
         case 4:
-            this.setTechLevel(TechConstants.T_CLAN_LEVEL_3);
+            this.setTechLevel(TechConstants.T_IS_UNOFFICIAL);
             break;
         case 5:
+            this.setTechLevel(TechConstants.T_CLAN_TW);
+            break;
+        case 6:
+            this.setTechLevel(TechConstants.T_CLAN_ADVANCED);
+            break;
+        case 7:
+            this.setTechLevel(TechConstants.T_CLAN_EXPERIMENTAL);
+            break;
+        case 8:
+            this.setTechLevel(TechConstants.T_CLAN_UNOFFICIAL);
+            break;
+        case 9:
             this.setTechLevel(TechConstants.T_ALL);
             break;
         default:
-            this.setTechLevel(TechConstants.T_IS_LEVEL_1);
+            this.setTechLevel(TechConstants.T_IS_TW_ALL);
             break;
         }
         techResearchPoints = 0;

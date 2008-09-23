@@ -180,28 +180,34 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 	}
 
 	private void loadWeaponPanel(){
-		loadWeaponPanelType(TechConstants.T_IS_LEVEL_1);
-		loadWeaponPanelType(TechConstants.T_IS_LEVEL_2);
-		loadWeaponPanelType(TechConstants.T_IS_LEVEL_3);
-		loadWeaponPanelType(TechConstants.T_CLAN_LEVEL_2);
-		loadWeaponPanelType(TechConstants.T_CLAN_LEVEL_3);
+		loadWeaponPanelType(TechConstants.T_INTRO_BOXSET);
+		loadWeaponPanelType(TechConstants.T_IS_TW_NON_BOX);
+		loadWeaponPanelType(TechConstants.T_IS_ADVANCED);
+        loadWeaponPanelType(TechConstants.T_IS_EXPERIMENTAL);
+		loadWeaponPanelType(TechConstants.T_CLAN_TW);
+		loadWeaponPanelType(TechConstants.T_CLAN_ADVANCED);
+        loadWeaponPanelType(TechConstants.T_CLAN_EXPERIMENTAL);
 	}
 	
 	private void loadAmmoPanel(){
-		loadAmmoPanelType(TechConstants.T_IS_LEVEL_1);
-		loadAmmoPanelType(TechConstants.T_IS_LEVEL_2);
-		loadAmmoPanelType(TechConstants.T_IS_LEVEL_3);
-		loadAmmoPanelType(TechConstants.T_CLAN_LEVEL_2);
-		loadAmmoPanelType(TechConstants.T_CLAN_LEVEL_3);
+        loadAmmoPanelType(TechConstants.T_INTRO_BOXSET);
+        loadAmmoPanelType(TechConstants.T_IS_TW_NON_BOX);
+        loadAmmoPanelType(TechConstants.T_IS_ADVANCED);
+        loadAmmoPanelType(TechConstants.T_IS_EXPERIMENTAL);
+        loadAmmoPanelType(TechConstants.T_CLAN_TW);
+        loadAmmoPanelType(TechConstants.T_CLAN_ADVANCED);
+        loadAmmoPanelType(TechConstants.T_CLAN_EXPERIMENTAL);
 	}
 
 	
 	private void loadAmmoCostPanel(){
-		loadAmmoCostPanelType(TechConstants.T_IS_LEVEL_1);
-		loadAmmoCostPanelType(TechConstants.T_IS_LEVEL_2);
-		loadAmmoCostPanelType(TechConstants.T_IS_LEVEL_3);
-		loadAmmoCostPanelType(TechConstants.T_CLAN_LEVEL_2);
-		loadAmmoCostPanelType(TechConstants.T_CLAN_LEVEL_3);
+        loadAmmoCostPanelType(TechConstants.T_INTRO_BOXSET);
+        loadAmmoCostPanelType(TechConstants.T_IS_TW_NON_BOX);
+        loadAmmoCostPanelType(TechConstants.T_IS_ADVANCED);
+        loadAmmoCostPanelType(TechConstants.T_IS_EXPERIMENTAL);
+        loadAmmoCostPanelType(TechConstants.T_CLAN_TW);
+        loadAmmoCostPanelType(TechConstants.T_CLAN_ADVANCED);
+        loadAmmoCostPanelType(TechConstants.T_CLAN_EXPERIMENTAL);
 	}
 
 	
@@ -227,24 +233,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 		panel.add(new JLabel("Min. Parts"));
 		panel.add(new JLabel("Max. Parts"));
 
-		String tabPrefix = "";
-		switch (tech){
-			case TechConstants.T_IS_LEVEL_2:
-				tabPrefix = "IS Level 2-";
-				break;
-			case TechConstants.T_IS_LEVEL_3:
-				tabPrefix = "IS Level 3-";
-				break;
-			case TechConstants.T_CLAN_LEVEL_2:
-				tabPrefix = "Clan Level 2-";
-				break;
-			case TechConstants.T_CLAN_LEVEL_3:
-				tabPrefix = "Clan Level 3-";
-				break;
-			default:
-				tabPrefix = "IS Level 1-";
-				break;
-			}
+		String tabPrefix = TechConstants.T_NAMES[tech]+"-";
 
         while ( list.hasMoreElements() ){
             EquipmentType eq = list.nextElement();
@@ -254,9 +243,9 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
             
             if ( ((AmmoType)eq).getTechLevel() != tech ) {
                 //This is done for Unknown and all tech level. Make them all IS Level 1
-                if ( tech == TechConstants.T_IS_LEVEL_1 && ((AmmoType)eq).getTechLevel() > tech )
+                if ( tech == TechConstants.T_IS_TW_NON_BOX && ((AmmoType)eq).getTechLevel() > tech )
                     continue;
-                if ( tech != TechConstants.T_IS_LEVEL_1  )
+                if ( tech != TechConstants.T_IS_TW_NON_BOX  )
                     continue;
 
             }
@@ -346,26 +335,9 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 		panel.add(new JLabel("Component"));
 		panel.add(new JLabel("Cost"));
 
-		String tabPrefix = "";
-		switch (tech){
-			case TechConstants.T_IS_LEVEL_2:
-				tabPrefix = "IS Level 2-";
-				break;
-			case TechConstants.T_IS_LEVEL_3:
-				tabPrefix = "IS Level 3-";
-				break;
-			case TechConstants.T_CLAN_LEVEL_2:
-				tabPrefix = "Clan Level 2-";
-				break;
-			case TechConstants.T_CLAN_LEVEL_3:
-				tabPrefix = "Clan Level 3-";
-				break;
-			default:
-				tabPrefix = "IS Level 1-";
-				break;
-			}
+        String tabPrefix = TechConstants.T_NAMES[tech]+"-";
 
-		while ( list.hasMoreElements() ){
+        while ( list.hasMoreElements() ){
 		    EquipmentType eq = list.nextElement();
 			
 			if ( !(eq instanceof AmmoType) )
@@ -373,9 +345,9 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 			
 			if ( ((AmmoType)eq).getTechLevel() != tech ) {
 				//This is done for Unknown and all tech level. Make them all IS Level 1
-				if ( tech == TechConstants.T_IS_LEVEL_1 && ((AmmoType)eq).getTechLevel() > tech )
+				if ( tech == TechConstants.T_IS_TW_NON_BOX && ((AmmoType)eq).getTechLevel() > tech )
 					continue;
-				if ( tech != TechConstants.T_IS_LEVEL_1  )
+				if ( tech != TechConstants.T_IS_TW_NON_BOX  )
 					continue;
 
 			}
@@ -445,24 +417,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 		panel.add(new JLabel("Min. Parts"));
 		panel.add(new JLabel("Max. Parts"));
 
-		String tabPrefix = "";
-		switch (tech){
-			case TechConstants.T_IS_LEVEL_2:
-				tabPrefix = "IS Level 2-";
-				break;
-			case TechConstants.T_IS_LEVEL_3:
-				tabPrefix = "IS Level 3-";
-				break;
-			case TechConstants.T_CLAN_LEVEL_2:
-				tabPrefix = "Clan Level 2-";
-				break;
-			case TechConstants.T_CLAN_LEVEL_3:
-				tabPrefix = "Clan Level 3-";
-				break;
-			default:
-				tabPrefix = "IS Level 1-";
-				break;
-			}
+        String tabPrefix = TechConstants.T_NAMES[tech]+"-";
 
         while ( list.hasMoreElements() ){
             EquipmentType eq = list.nextElement();
@@ -472,9 +427,9 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
             
             if ( ((WeaponType)eq).getTechLevel() != tech ) {
                 //This is done for Unknown and all tech level. Make them all IS Level 1
-                if ( tech == TechConstants.T_IS_LEVEL_1 && ((WeaponType)eq).getTechLevel() > tech )
+                if ( tech == TechConstants.T_IS_TW_NON_BOX && ((WeaponType)eq).getTechLevel() > tech )
                     continue;
-                if ( tech != TechConstants.T_IS_LEVEL_1  )
+                if ( tech != TechConstants.T_IS_TW_NON_BOX  )
                     continue;
 
             }
@@ -562,27 +517,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 		panel.add(new JLabel("Min. Parts"));
 		panel.add(new JLabel("Max. Parts"));
 
-		String tabPrefix = "";
-		switch (tech){
-			case TechConstants.T_IS_LEVEL_2:
-				tabPrefix = "IS Level 2-";
-				break;
-			case TechConstants.T_IS_LEVEL_3:
-				tabPrefix = "IS Level 3-";
-				break;
-			case TechConstants.T_CLAN_LEVEL_2:
-				tabPrefix = "Clan Level 2-";
-				break;
-			case TechConstants.T_CLAN_LEVEL_3:
-				tabPrefix = "Clan Level 3-";
-				break;
-			case ComponentDisplayDialog.SYSTEM:
-				tabPrefix = "Systems";
-				break;
-			default:
-				tabPrefix = "IS Level 1-";
-				break;
-			}
+        String tabPrefix = TechConstants.T_NAMES[tech]+"-";
 
 		if ( tech == ComponentDisplayDialog.SYSTEM ) {
 				String name = Mech.systemNames[Mech.SYSTEM_LIFE_SUPPORT];
@@ -777,9 +712,9 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 		            
 		            if ( ((MiscType)eq).getTechLevel() != tech ) {
 		                //This is done for Unknown and all tech level. Make them all IS Level 1
-		                if ( tech == TechConstants.T_IS_LEVEL_1 && ((MiscType)eq).getTechLevel() > tech )
+		                if ( tech == TechConstants.T_IS_TW_NON_BOX && ((MiscType)eq).getTechLevel() > tech )
 		                    continue;
-		                if ( tech != TechConstants.T_IS_LEVEL_1  )
+		                if ( tech != TechConstants.T_IS_TW_NON_BOX )
 		                    continue;
 
 		            }
@@ -871,7 +806,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 				}
 			}
 			
-			if ( tech == TechConstants.T_IS_LEVEL_1 ) {
+			if ( tech == TechConstants.T_IS_TW_NON_BOX ) {
 				String name = "Ammo Bin";
 				String intName = "Ammo Bin";
 
@@ -914,11 +849,13 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 	}
 
 	private void loadMiscPanel(){
-		loadMiscPanelType(TechConstants.T_IS_LEVEL_1);
-		loadMiscPanelType(TechConstants.T_IS_LEVEL_2);
-		loadMiscPanelType(TechConstants.T_IS_LEVEL_3);
-		loadMiscPanelType(TechConstants.T_CLAN_LEVEL_2);
-		loadMiscPanelType(TechConstants.T_CLAN_LEVEL_3);
+	    loadMiscPanelType(TechConstants.T_INTRO_BOXSET);
+        loadMiscPanelType(TechConstants.T_IS_TW_NON_BOX);
+        loadMiscPanelType(TechConstants.T_IS_ADVANCED);
+        loadMiscPanelType(TechConstants.T_IS_EXPERIMENTAL);
+        loadMiscPanelType(TechConstants.T_CLAN_TW);
+        loadMiscPanelType(TechConstants.T_CLAN_ADVANCED);
+        loadMiscPanelType(TechConstants.T_CLAN_EXPERIMENTAL);
 		loadMiscPanelType(SYSTEM);
 	}
 

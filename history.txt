@@ -1,5 +1,9 @@
 VERSION HISTORY:
 ----------------
+v 0.2.37.x
+Release Client/Server 0.2.37.0
++ New Release for tech level changes from MM.
++ New MegaMek.jar 0.33.33-MW092208-5970
 v 0.2.36.x
 + Release Client/Ded 0.2.36.2
 + Fix for Null Reporting Draws

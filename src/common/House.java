@@ -574,7 +574,7 @@ public class House {
     }
 
     public void setTechLevel(int level) {
-        if (level < TechConstants.T_IS_LEVEL_1)
+        if (level < TechConstants.T_INTRO_BOXSET)
             this.techLevel = TechConstants.T_ALL;
         else
             this.techLevel = level;

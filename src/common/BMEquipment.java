@@ -134,23 +134,29 @@ public class BMEquipment {
         if (eq == null) {
             if (this.getEquipmentInternalName().indexOf("Engine") > 0 && this.getEquipmentInternalName().startsWith("Clan")) {
                 tech = "Clan";
-                techLevel = TechConstants.T_CLAN_LEVEL_2;
+                techLevel = TechConstants.T_CLAN_TW;
             }
             else if (this.getEquipmentInternalName().indexOf("Engine") > 0 && this.getEquipmentInternalName().startsWith("IS")) {
                 tech = "IS";
-                techLevel = TechConstants.T_IS_LEVEL_1;
+                techLevel = TechConstants.T_IS_TW_ALL;
             }
             else {
                 tech = "All";
                 techLevel = TechConstants.T_ALL;
             }
         } else {
-            if (eq.getTechLevel() == TechConstants.T_CLAN_LEVEL_2 || eq.getTechLevel() == TechConstants.T_CLAN_LEVEL_3)
+            if (eq.getTechLevel() == TechConstants.T_CLAN_ADVANCED 
+                    || eq.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL 
+                    || eq.getTechLevel() == TechConstants.T_CLAN_TW 
+                    || eq.getTechLevel() == TechConstants.T_CLAN_UNOFFICIAL) {
                 tech = "Clan";
-            else if (eq.getTechLevel() == TechConstants.T_ALL || eq.getTechLevel() < TechConstants.T_IS_LEVEL_1)
+            }
+            else if (eq.getTechLevel() == TechConstants.T_ALL || eq.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) {
                 tech = "All";
-            else
+            }
+            else {
                 tech = "IS";
+            }
             techLevel = eq.getTechLevel();
         }
 

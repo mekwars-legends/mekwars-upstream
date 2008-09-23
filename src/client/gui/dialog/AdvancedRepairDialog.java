@@ -405,31 +405,31 @@ import client.campaign.CUnit;
                             // lvl1 IS units don't need to be allowed to use lvl1 ammo,
                             // because there is no special lvl1 ammo, therefore it doesn't
                             // need to show up in this display.
-                            if (!bTechMatch && unit.getTechLevel() == TechConstants.T_IS_LEVEL_2 &&
-                                atCheck.getTechLevel() == TechConstants.T_IS_LEVEL_1) {
+                            if (!bTechMatch && unit.getTechLevel() == TechConstants.T_IS_ADVANCED &&
+                                atCheck.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) {
                                 bTechMatch = true;
                             }
                             
                             // if is_eq_limits is unchecked allow L1 units to use L2 munitions
                             if (!mmClient.game.getOptions().booleanOption("is_eq_limits")
-                                && unit.getTechLevel() == TechConstants.T_IS_LEVEL_1
-                                && atCheck.getTechLevel() == TechConstants.T_IS_LEVEL_2) {
+                                && unit.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX
+                                && atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED) {
                                 bTechMatch = true;
                             }
                             
                             // Possibly allow level 3 ammos, possibly not.
                             if (mmClient.game.getOptions().booleanOption("allow_level_3_ammo")) {
                                 if (!mmClient.game.getOptions().booleanOption("is_eq_limits")) {
-                                    if (unit.getTechLevel() == TechConstants.T_CLAN_LEVEL_2
-                                            && atCheck.getTechLevel() == TechConstants.T_CLAN_LEVEL_3) {
+                                    if (unit.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL
+                                            && atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL) {
                                         bTechMatch = true;
                                     }
-                                    if (((unit.getTechLevel() == TechConstants.T_IS_LEVEL_1) || (unit.getTechLevel() == TechConstants.T_IS_LEVEL_2))
-                                            && (atCheck.getTechLevel() == TechConstants.T_IS_LEVEL_3)) {
+                                    if (((unit.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) || (unit.getTechLevel() == TechConstants.T_IS_ADVANCED))
+                                            && (atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL)) {
                                         bTechMatch = true;
                                     }
                                 }
-                            } else if ((atCheck.getTechLevel() == TechConstants.T_IS_LEVEL_3) || (atCheck.getTechLevel() == TechConstants.T_CLAN_LEVEL_3)) {
+                            } else if ((atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL) || (atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL)) {
                                 bTechMatch = false;
                             }
                             
