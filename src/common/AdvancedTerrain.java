@@ -89,6 +89,7 @@ final public class AdvancedTerrain {
     private int weatherConditions = PlanetaryConditions.WE_NONE;
     private int windStrength = PlanetaryConditions.WI_NONE;
     private int windDirection = PlanetaryConditions.WI_NONE;
+    private int maxWindStrength = PlanetaryConditions.WI_TORNADO_F4;
     private boolean shiftWindDirection = false;
     private boolean shiftWindStrength = false;
     private int fog = PlanetaryConditions.FOG_NONE;
@@ -325,6 +326,7 @@ final public class AdvancedTerrain {
         setTemperature(TokenReader.readInt(command));
         setEMI(TokenReader.readBoolean(command));
         setTerrainAffected(TokenReader.readBoolean(command));
+        setMaxWindStrength(TokenReader.readInt(command));
         
     }
 
@@ -695,6 +697,8 @@ final public class AdvancedTerrain {
         results.append(emi);
         results.append("$");
         results.append(terrainAffected);
+        results.append("$");
+        results.append(maxWindStrength);
 
         return results.toString();
         
@@ -766,6 +770,14 @@ final public class AdvancedTerrain {
     
     public void setEMIChance(int chance){
         this.emiChance = chance;
+    }
+    
+    public void setMaxWindStrength(int wind){
+        this.maxWindStrength = wind;
+    }
+    
+    public int getMaxWindStrength(){
+        return this.maxWindStrength;
     }
     
 }

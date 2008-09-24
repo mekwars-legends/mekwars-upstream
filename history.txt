@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.2.37.x
++ Change to set Max Wind Speed in MM games.
++ game with fire but no wind have wind set to Light Gale Max
++ Bug: Customize Unit Dialog now showing all ammo.
 Release Client/Server 0.2.37.0
 + New Release for tech level changes from MM.
 + New MegaMek.jar 0.33.33-MW092208-5970

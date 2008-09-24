@@ -1303,7 +1303,34 @@ public class ShortOperation implements Comparable<Object> {
                         aTerrain.setWindStrength(PlanetaryConditions.WI_TORNADO_F4);
                     }
                     
-                    boolean wind = aTerrain.getLightWindsChance() > 0 || aTerrain.getModerateWindsChance() > 0 || aTerrain.getStrongWindsChance() > 0 || aTerrain.getStormWindsChance() > 0 || aTerrain.getTornadoF13WindsChance() > 0 || aTerrain.getTornadoF4WindsChance() > 0;
+                    boolean wind = false;
+                    
+                    if (  aTerrain.getLightWindsChance() > 0 ){
+                        wind = true;
+                        aTerrain.setMaxWindStrength(PlanetaryConditions.WI_LIGHT_GALE);
+                    }
+                    
+                    if ( aTerrain.getModerateWindsChance() > 0){
+                        wind = true;
+                        aTerrain.setMaxWindStrength(PlanetaryConditions.WI_MOD_GALE);
+                    }
+                    if ( aTerrain.getStrongWindsChance() > 0){
+                        wind = true;
+                        aTerrain.setMaxWindStrength(PlanetaryConditions.WI_STRONG_GALE);
+                    }
+                    if ( aTerrain.getStormWindsChance() > 0) {
+                        wind = true;
+                        aTerrain.setMaxWindStrength(PlanetaryConditions.WI_STORM);
+                    }
+                    if ( aTerrain.getTornadoF13WindsChance() > 0){
+                        wind = true;
+                        aTerrain.setMaxWindStrength(PlanetaryConditions.WI_TORNADO_F13);
+                    }
+                    if ( aTerrain.getTornadoF4WindsChance() > 0 ){
+                        wind = true;
+                        aTerrain.setMaxWindStrength(PlanetaryConditions.WI_TORNADO_F4);
+                    }
+                    
                     aTerrain.setShiftingWindDirection(wind);
                     aTerrain.setShiftingWindStrength(wind);
                     
@@ -1319,7 +1346,15 @@ public class ShortOperation implements Comparable<Object> {
                     
                     if (aTerrain.getAtmosphere() <= PlanetaryConditions.ATMO_TRACE) {
                         gameOptions.append("|fire|false");
+                        aTerrain.setShiftingWindDirection(false);
+                        aTerrain.setShiftingWindStrength(false);
                     }
+                    else if ( CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("tacops_start_fire") && !wind){
+                        aTerrain.setShiftingWindDirection(true);
+                        aTerrain.setShiftingWindStrength(true);
+                        aTerrain.setMaxWindStrength(PlanetaryConditions.WI_LIGHT_GALE);
+                    }
+                    
                     this.intelGravity = aTerrain.getGravity();
                     this.intelTemp = tempToSet;
                     aTerrain.setTemperature(tempToSet);
@@ -1354,8 +1389,9 @@ public class ShortOperation implements Comparable<Object> {
                 if (tempdiff > 0)
                     tempToSet = CampaignMain.cm.getRandomNumber(tempdiff) + lowTemp;
 
-                if (targetWorld.isVacuum())
+                if (targetWorld.isVacuum()){
                     gameOptions.append("|fire|false");
+                }
                 this.intelGravity = targetWorld.getGravity();
                 this.intelTemp = tempToSet;
                 this.intelVacuum = targetWorld.isVacuum();
