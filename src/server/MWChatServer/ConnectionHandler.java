@@ -72,12 +72,11 @@ public class ConnectionHandler extends AbstractConnectionHandler {
         
     	_client = client;
         _socket = socket;
-        _socket.setKeepAlive(true);
+        //_socket.setKeepAlive(true);
 
-        // Trying a 2 second time out on reading the socket --Torren
-        _socket.setSoTimeout(2000);
-        _socket.setTcpNoDelay(true);
-        _socket.setSoLinger(false, 0);
+        //_socket.setTcpNoDelay(true);
+        //_socket.setSoLinger(false, 0);
+        //_socket.setReuseAddress(true);
         
         _out = new PrintWriter(new OutputStreamWriter(_socket.getOutputStream(), "UTF8"));
         _inputStream = socket.getInputStream();

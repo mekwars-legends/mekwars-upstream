@@ -49,7 +49,7 @@ public class CommandTaskThread extends Thread {
         try{
             this.client = client;
             this.data = data;
-            this.client.setSoTimeout(12000);
+            //this.client.setSoTimeout(12000);
         }catch (Exception ex){
             
         }

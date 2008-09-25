@@ -110,10 +110,12 @@ public class MWChatServer implements ICommands {
          * 
          * @urgru 12.4.05
          */
-        if (IPAddress == null || IPAddress.equals("-1"))
+        if (IPAddress == null || IPAddress.equals("-1")){
             _serverSocket = new ServerSocket(_port, -1, null);
-        else
+        }
+        else{
             _serverSocket = new ServerSocket(_port, -1, InetAddress.getByName(IPAddress));
+        }
 
         // this is called but never initlized.
         _killedUsers = new TimedUserList(60 * 60 * 2);
@@ -425,10 +427,10 @@ public class MWChatServer implements ICommands {
         while (true) {
             try {
                 Socket s = _serverSocket.accept();
-                s.setTcpNoDelay(true);// couldn't hurt
-                s.setKeepAlive(true);
-                s.setSoTimeout(15000);// 15 second timeout
-                s.setSoLinger(false, 0);
+                //s.setTcpNoDelay(true);// couldn't hurt
+                //s.setKeepAlive(false);
+                //s.setSoTimeout(15000);// 15 second timeout
+                //s.setSoLinger(false, 0);
                 // MWChatClient client =
                 createMWChatClient(s);
             } catch (IOException e) {

@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.37.x
++ More Socket Changes
 + Change to set Max Wind Speed in MM games.
 + game with fire but no wind have wind set to Light Gale Max
 + Bug: Customize Unit Dialog now showing all ammo.
