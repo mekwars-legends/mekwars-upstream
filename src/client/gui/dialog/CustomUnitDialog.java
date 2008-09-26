@@ -327,7 +327,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
             
             for (int x = 0, n = vAllTypes.size(); x < n; x++) {
                 AmmoType atCheck = vAllTypes.elementAt(x);
-                boolean bTechMatch = TechConstants.isLegal(entity.getTechLevel(), atCheck.getTechLevel());//(entity.getTechLevel() == atCheck.getTechLevel());
+                boolean bTechMatch = TechConstants.isLegal(entity.getTechLevel(), atCheck.getTechLevel(), true);//(entity.getTechLevel() == atCheck.getTechLevel());
                 
                 String munition = Long.toString(atCheck.getMunitionType());
                 House faction = mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse());
@@ -344,7 +344,8 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 //System.err.println(atCheck.getName()+"/"+atCheck.getInternalName());
                 if ( usingCrits && 
                 		mwclient.getPlayer().getPartsCache().getPartsCritCount(atCheck.getInternalName()) < 1 &&
-                		!ammoAlreadyLoaded(atCheck))
+                		!ammoAlreadyLoaded(atCheck) && 
+                		!mwclient.getPlayer().getAutoReorder() )
                 	continue;
                 //CampaignData.mwlog.errLog("3.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
 
@@ -367,14 +368,14 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 // Possibly allow level 3 ammos, possibly not.
                 if (mmClient.game.getOptions().booleanOption("allow_level_3_ammo") 
                         && !mmClient.game.getOptions().booleanOption("is_eq_limits")) {
-                        if ( entity.isClan() && atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL) {
+                        if ( entity.isClan() && (atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_CLAN_ADVANCED)) {
                             bTechMatch = true;
                         }
-                        if (!entity.isClan() && atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL) {
+                        if (!entity.isClan() && (atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED) ) {
                             bTechMatch = true;
                         }
-                } else if ( (atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL && entity.getTechLevel() != TechConstants.T_IS_EXPERIMENTAL) 
-                        || (atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL && entity.getTechLevel() != TechConstants.T_CLAN_EXPERIMENTAL) ) {
+                } else if ( ( (atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED) && entity.getTechLevel() != TechConstants.T_IS_EXPERIMENTAL && entity.getTechLevel() != TechConstants.T_IS_ADVANCED) 
+                        || ((atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_CLAN_ADVANCED) && entity.getTechLevel() != TechConstants.T_CLAN_EXPERIMENTAL && entity.getTechLevel() != TechConstants.T_CLAN_ADVANCED) ) {
                     bTechMatch = false;
                 }
                 
