@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.37.x
++ Bug 2129359: Special Ammo not loading for Introductory Box Set Level
 + More Socket Changes
 + Change to set Max Wind Speed in MM games.
 + game with fire but no wind have wind set to Light Gale Max

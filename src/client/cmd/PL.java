@@ -247,8 +247,11 @@ public class PL extends Command {
                 mwclient.sendChat(userData.toString());
             } catch (Exception ex) {
             }
-        } else
+        } else if (cmd.equals("ROP") ) {
+            mwclient.getPlayer().setAutoReorder(TokenReader.readBoolean(st));
+        }else {
             return;
+        }
 
         mwclient.refreshGUI(MWClient.REFRESH_HQPANEL);
         mwclient.refreshGUI(MWClient.REFRESH_PLAYERPANEL);

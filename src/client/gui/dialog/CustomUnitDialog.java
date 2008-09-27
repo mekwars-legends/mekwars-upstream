@@ -327,6 +327,12 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
             
             for (int x = 0, n = vAllTypes.size(); x < n; x++) {
                 AmmoType atCheck = vAllTypes.elementAt(x);
+                
+                if ( atCheck.getRackSize() != at.getRackSize() ||
+                     atCheck.getTonnage(entity) != at.getTonnage(entity) ) {
+                    continue;
+                }
+                
                 boolean bTechMatch = TechConstants.isLegal(entity.getTechLevel(), atCheck.getTechLevel(), true);//(entity.getTechLevel() == atCheck.getTechLevel());
                 
                 String munition = Long.toString(atCheck.getMunitionType());
@@ -336,7 +342,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 //check banned ammo
                 if ( mwclient.getData().getServerBannedAmmo().containsKey(munition)
                         || faction.getBannedAmmo().containsKey(munition) 
-                        || (mwclient.getAmmoCost(atCheck.getInternalName()) < 0 && !usingCrits))
+                        || (mwclient.getAmmoCost(atCheck.getInternalName()) < 0 && !usingCrits ))
                     continue;
                 
                 //CampaignData.mwlog.errLog("2.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
@@ -345,7 +351,8 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 if ( usingCrits && 
                 		mwclient.getPlayer().getPartsCache().getPartsCritCount(atCheck.getInternalName()) < 1 &&
                 		!ammoAlreadyLoaded(atCheck) && 
-                		!mwclient.getPlayer().getAutoReorder() )
+                		//!mwclient.getPlayer().getAutoReorder() && 
+                		mwclient.getBlackMarketEquipmentList().get(atCheck.getInternalName()) == null )
                 	continue;
                 //CampaignData.mwlog.errLog("3.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
 
@@ -427,9 +434,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 // BattleArmor ammo can't be selected at all.
                 // All other ammo types need to match on rack size and tech.
                 if ( bTechMatch &&
-                     atCheck.getRackSize() == at.getRackSize() &&
-                     !atCheck.hasFlag(AmmoType.F_BATTLEARMOR) &&
-                     atCheck.getTonnage(entity) == at.getTonnage(entity)) {
+                     !atCheck.hasFlag(AmmoType.F_BATTLEARMOR) ) {
                     vTypes.addElement(atCheck);
                 }
             }
@@ -564,9 +569,10 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 m_choice.setMaximumSize(new Dimension(5,5));
                 int cost = Integer.MAX_VALUE;
                 int shotsLeft = m.getShotsLeft();
-                if ( !curType.getInternalName().equalsIgnoreCase(at.getInternalName()) )
+                if ( !curType.getInternalName().equalsIgnoreCase(at.getInternalName()) ) {
                 	shotsLeft = 0;
-
+                }
+                
                 double ammoCost = 0;
                 try{
                     ammoCost = mwclient.getAmmoCost(at.getInternalName());

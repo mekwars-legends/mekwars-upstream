@@ -49,6 +49,7 @@ public class SetAutoReorderCommand implements Command {
 		
 		try {
 			p.setAutoReorder(Boolean.parseBoolean(command.nextToken()));
+			CampaignMain.cm.toUser("PL|ROP|"+p.getAutoReorder(), Username,false);
 		}//end try
 		catch (Exception ex) {
 			CampaignMain.cm.toUser("AM:SetAutoAutoReorder command failed. Check your input. It should be something like this: /c setAutoReorder#True/False",Username);
