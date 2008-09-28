@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.37.x
++ Bug: Level 1 units not allowed to load non-standard ammo
 + Bugs: Null player getting loaded
 + Bugs: Deds not always reporting unit damage for Advanced Repair
 + Bug 2129359: Special Ammo not loading for Introductory Box Set Level
@@ -16,7 +17,7 @@ v 0.2.36.x
 + Fix for Null Reporting Draws
 + New MegaMek.jar 0.33.33-MW09192008-5965
 + Changed RGTS command to not report if game has been reset
-+ Bug: missing § in SHouse
++ Bug: missing ï¿½ in SHouse
 + New MegaMek.jar 0.33.32-MW09152008-5954
 Release Server 0.2.36.2
 + Temp Removal of duplication user disconnection code

@@ -368,7 +368,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 // if is_eq_limits is unchecked allow L1 units to use L2 munitions
                 if (!mmClient.game.getOptions().booleanOption("is_eq_limits")
                     && !entity.isClan()
-                    && ( atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED ) ) {
+                    && ( atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED || atCheck.getTechLevel() == TechConstants.T_IS_TW_NON_BOX) ) {
                     bTechMatch = true;
                 }
                 
