@@ -2211,7 +2211,7 @@ public class ShortOperation implements Comparable<Object> {
                 else
                     resultString += defendArm.getInaccurateDescription();
             } catch (Exception ex) {
-
+                CampaignData.mwlog.errLog(ex);
             }
         }
 
@@ -2230,7 +2230,7 @@ public class ShortOperation implements Comparable<Object> {
                     }
 
                 }catch(Exception ex) {
-                    
+                    CampaignData.mwlog.errLog(ex);
                 }
             }
 

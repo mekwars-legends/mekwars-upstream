@@ -78,7 +78,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     public static final int STATUS_FIGHTING = 4;
 
     // DATA VARIABLES (SAVED. Most have gets and sets.)
-    private String name;
+    private String name = "";
     private String fluffText = "";
     private String myLogo = "";
     private String lastISP = "";
@@ -2997,6 +2997,11 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
      */
     public void fromString(String s) {
 
+        
+        if ( s == null ) {
+            throw new NullPointerException("SPlayer fromString(s) is null");
+        }
+        
         // print the player into the info log. only for Debug
         // CampaignData.mwlog.infoLog("CSPlayer: " + s);
         this.isLoading = true;

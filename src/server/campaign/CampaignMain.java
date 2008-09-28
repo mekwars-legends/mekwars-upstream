@@ -1036,7 +1036,7 @@ public final class CampaignMain implements Serializable {
          * lost Souls hash this is incase someone connected but never logged
          * into thier house or never registered and enrolled.
          */
-        cm.releaseLostSoul(name);
+        this.releaseLostSoul(name);
         // set save, then log the player out of his house
         toLogout.setSave();
         toLogout.getMyHouse().doLogout(toLogout);// hacky.
@@ -1147,15 +1147,7 @@ public final class CampaignMain implements Serializable {
         }
 
         /*
-         * look for players awaiting purge String lowerName =
-         * pName.toLowerCase(); if (savePlayers.containsKey(lowerName)) return
-         * savePlayers.get(lowerName);
-         */
-
-        /*
-         * no online player, so try to read from a file. if we do pull a file,
-         * set it's save value to true. this will make sure that temp-loads are
-         * saved/purged quickly.
+         * no online player, so try to read from a file.
          */
 
         result = this.loadPlayerFile(pName, false, mute);
@@ -1178,6 +1170,9 @@ public final class CampaignMain implements Serializable {
     private SPlayer loadPlayerFile(String name, boolean explicitName, boolean mute) {
 
         if (!name.startsWith("[Dedicated]") && !name.startsWith("War Bot")) {
+
+            FileInputStream fis = null;
+            BufferedReader dis = null;
 
             try {
                 if (CampaignMain.cm.isUsingMySQL()) {
@@ -1203,12 +1198,15 @@ public final class CampaignMain implements Serializable {
                     pFile = new File("./campaign/players/" + name.toLowerCase() + ".dat");
                 }
                 
-                FileInputStream fis = new FileInputStream(pFile);
-                BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+                if ( !pFile.exists() ) {
+                    return null;
+                }
+                
+                fis = new FileInputStream(pFile);
+                dis = new BufferedReader(new InputStreamReader(fis));
 
                 // create player from string read by dis
                 SPlayer p = new SPlayer();
-
                 String pString = dis.readLine();
                 
                 if ( pString == null ) {
@@ -1217,9 +1215,6 @@ public final class CampaignMain implements Serializable {
                 
                 p.fromString(pString);
 
-                // close the streams and return player
-                dis.close();
-                fis.close();
                 return p;
             } catch (FileNotFoundException fnf) {
 
@@ -1235,6 +1230,18 @@ public final class CampaignMain implements Serializable {
                     CampaignData.mwlog.errLog("Unable to load pfile for " + name);
                 }
                 return null;
+            }finally {
+                // close the streams and return player
+                try {
+                    if ( dis != null ) {
+                        dis.close();
+                    }
+                    if ( fis != null ) {
+                        fis.close();
+                    }
+                }catch (Exception ex) {
+                    CampaignData.mwlog.errLog(ex);
+                }
             }
         }
 
@@ -4014,7 +4021,7 @@ public final class CampaignMain implements Serializable {
      * @param soul
      */
     public void releaseLostSoul(String soul) {
-        cm.lostSouls.remove(soul.toLowerCase());
+        lostSouls.remove(soul.toLowerCase());
     }
 
     public Date getHousePlanetUpdate() {

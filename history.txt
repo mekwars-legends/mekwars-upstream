@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.37.x
++ Bugs: Null player getting loaded
 + Bugs: Deds not always reporting unit damage for Advanced Repair
 + Bug 2129359: Special Ammo not loading for Introductory Box Set Level
 + More Socket Changes
