@@ -930,7 +930,7 @@ public final class CampaignMain implements Serializable {
 
         /*
          * String returned from house includes motd, etc. The house performs one
-         * last-ditch check to see if the player is alread in the house and may
+         * last-ditch check to see if the player is already in the house and may
          * return a null if it finds the player present, despite the failure of
          * all of our previous location attempts.
          */
@@ -1160,9 +1160,10 @@ public final class CampaignMain implements Serializable {
 
         result = this.loadPlayerFile(pName, false, mute);
 
-        if (result != null)
+        if (result != null) {
             lostSouls.put(pName.toLowerCase(), result);
-
+        }
+        
         return result;
     }
 
@@ -1195,11 +1196,13 @@ public final class CampaignMain implements Serializable {
                 CampaignData.mwlog.mainLog("Loading pfile for: " + name);
 
                 File pFile = null;
-                if (explicitName)
+                if (explicitName) {
                     pFile = new File("./campaign/players/" + name);
-                else
+                }
+                else {
                     pFile = new File("./campaign/players/" + name.toLowerCase() + ".dat");
-
+                }
+                
                 FileInputStream fis = new FileInputStream(pFile);
                 BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
 
@@ -1207,6 +1210,11 @@ public final class CampaignMain implements Serializable {
                 SPlayer p = new SPlayer();
 
                 String pString = dis.readLine();
+                
+                if ( pString == null ) {
+                    return null;
+                }
+                
                 p.fromString(pString);
 
                 // close the streams and return player

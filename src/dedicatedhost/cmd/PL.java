@@ -54,6 +54,10 @@ public class PL extends Command {
             mwclient.updateParam(st);
         else if ( cmd.equals("RMF") ) {
         	mwclient.retrieveMul(st.nextToken());
+        } else if ( cmd.equals("UAR") ) {
+            mwclient.getConfig().setParam(st.nextToken(), st.nextToken());
+            mwclient.getConfig().setParam(st.nextToken(), st.nextToken());
+            mwclient.getConfig().saveConfig();
         }
 		else
 			return;

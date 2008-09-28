@@ -66,7 +66,7 @@ public class NullAuthenticator implements IAuthenticator {
     
 	public String getUserId(String target) {
 		MWChatClient c = _server.getClient(target);
-    	return c == null ? null : c.getUserId();
+    	return c == null ? target : c.getUserId();
     }
     
 }

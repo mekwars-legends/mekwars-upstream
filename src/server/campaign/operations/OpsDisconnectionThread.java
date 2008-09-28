@@ -31,6 +31,12 @@ public class OpsDisconnectionThread extends Thread {
 	//CONSTRUCTORS
 	public OpsDisconnectionThread(int opID, String w, String l, long waitReduction) {
 		playerReturned = false;
+		
+		if ( loserName == null || loserName.equalsIgnoreCase("null") ||
+		        winnerName == null || winnerName.equalsIgnoreCase("null") ) {
+		    throw new NullPointerException();
+		}
+		    
 		this.winnerName = w;
 		this.loserName = l;
 		this.id = opID;

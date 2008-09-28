@@ -109,15 +109,15 @@ public class SignOn extends CommandBase implements ICommands {
 			if (username.startsWith("Nobody")) {
 				CampaignMain.cm.toUser("<font color=\"navy\"><br>---<br>It appears that you've misentered your password or tried to sign on using a name that is already taken.<br>---<br></font>", username, true);
 			} else if (username.startsWith("[Dedicated]")) {
-				//do nothing
-			} else if (CampaignMain.cm.getPlayer(username) != null) {
+				CampaignMain.cm.toUser("PL|UAR|UseAdvanceRepair|"+CampaignMain.cm.getConfig("UseAdvanceRepair")+"|UseSimpleRepair|"+CampaignMain.cm.getConfig("UseSimpleRepair"), username, false);
+			} else {
 				CampaignMain.cm.doLoginPlayer(username);
 				CampaignMain.cm.getOpsManager().doReconnectCheckOnPlayer(username);
 				if (client.getAccessLevel() < IAuthenticator.REGISTERED)
 					CampaignMain.cm.toUser("<font color=\"navy\"><br>---<br>Warning: Your account is not password protected. [<a href=\"MWREG\">Click to register</a>]<br>---<br></font>", username, true);
-			} else { 
-				CampaignMain.cm.toUser("<font color=\"navy\"><br>---<br>It appears that you have not signed up for this server's campaign. [<a href=\"MEKWARS/c enroll\">Click to get started</a>]<br>---<br></font>", username, true);
-			}
+			}// else { 
+				//CampaignMain.cm.toUser("<font color=\"navy\"><br>---<br>It appears that you have not signed up for this server's campaign. [<a href=\"MEKWARS/c enroll\">Click to get started</a>]<br>---<br></font>", username, true);
+		//	}
 			
 			return true;
 			
