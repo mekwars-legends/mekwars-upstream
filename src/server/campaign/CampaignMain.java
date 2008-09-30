@@ -980,8 +980,6 @@ public final class CampaignMain implements Serializable {
             // Add the logging in player to everyone who is already online
             this.doSendToAllOnlinePlayers("PI|DA|" + getPlayerUpdateString(toLogin), false);
 
-            // Send him the Tick Counter
-            this.toUser("CC|NT|" + this.TThread.getRemainingSleepTime() + "|" + false, Username, false);
 
             /*
              * Once the player is logged in, set his last-command-sent to the
@@ -1008,6 +1006,9 @@ public final class CampaignMain implements Serializable {
              */
             CampaignData.mwlog.ipLog("Name: " + Username + " IP: " + CampaignMain.cm.getServer().getIP(Username));
             CampaignMain.cm.toUser("PL|SUD|1", Username, false);
+
+            // Send him the Tick Counter
+            CampaignMain.cm.toUser("CC|NT|" + this.TThread.getRemainingSleepTime() + "|" + false, Username, false);
 
         }
     }// end CampaignMain.doLogin(String userName)
@@ -1426,6 +1427,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("GETFACTIONCONFIGS", new GetFactionConfigsCommand());
         Commands.put("GETMODLOG", new GetModLogCommand());
         Commands.put("GETPLAYERUNITS", new GetPlayerUnitsCommand());
+        Commands.put("GETSERVERCONFIGS", new GetServerConfigsCommand());
         Commands.put("GETSERVERMEGAMEKGAMEOPTIONS", new GetServerMegaMekGameOptionsCommand());
         Commands.put("GETSERVEROPFLAGS", new GetServerOpFlagsCommand());
         Commands.put("GOOSE", new GooseCommand());

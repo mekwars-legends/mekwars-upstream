@@ -154,7 +154,7 @@ public final class MWClient implements IClient {
     CampaignData data = null;
     DataFetchClient dataFetcher;
     Thread updateDataFetcher;
-
+    Vector<String> messageBackLog = new Vector<String>(5,1);
     CConfig Config;
 
     public static final String CLIENT_VERSION = "0.2.37.0"; // change this with
@@ -528,6 +528,12 @@ public final class MWClient implements IClient {
          */
         if (!isDedicated()) {
 
+            System.err.println("Connecting to Server Time: " + System.currentTimeMillis());
+            System.err.flush();
+            connectToServer(chatServerIP,chatServerPort);
+            System.err.println("Connected to Server Time: " + System.currentTimeMillis());
+            System.err.flush();
+
             // make the main frame
             System.err.println("Creating CMainFrame Time: " + System.currentTimeMillis());
             System.err.flush();
@@ -589,11 +595,6 @@ public final class MWClient implements IClient {
             System.err.println("Browser Created Time: " + System.currentTimeMillis());
             System.err.flush();
 
-            System.err.println("Connecting to Server Time: " + System.currentTimeMillis());
-            System.err.flush();
-            connectToServer(chatServerIP, chatServerPort);
-            System.err.println("Connected to Server Time: " + System.currentTimeMillis());
-            System.err.flush();
             // make the main frame visible
             try {
                 System.err.println("making mainframe visible: " + System.currentTimeMillis());
@@ -602,7 +603,6 @@ public final class MWClient implements IClient {
                 if (splash != null)
                     splash.setStatus(splash.STATUS_CONSTRUCTINGGUI);
 
-                MainFrame.setVisible(true);
 
                 if (splash != null) {
                     System.err.println("splash not null: " + System.currentTimeMillis());
@@ -617,6 +617,10 @@ public final class MWClient implements IClient {
                     System.err.println("splash going bye bye: " + System.currentTimeMillis());
                     System.err.flush();
                 }
+                MainFrame.setVisible(true);
+                System.err.println("MainFrame Visible Done Time: " + System.currentTimeMillis());
+                System.err.flush();
+
                 System.err.println("splash going to null: " + System.currentTimeMillis());
                 System.err.flush();
 
@@ -627,8 +631,6 @@ public final class MWClient implements IClient {
                 CampaignData.mwlog.errLog(ex);
                 CampaignData.mwlog.errLog("Error closing splash / opening main frame.");
             }
-            System.err.println("MainFrame Visible Done Time: " + System.currentTimeMillis());
-            System.err.flush();
 
             // refresh the GUI views one last time
             refreshGUI(REFRESH_STATUS);
@@ -702,36 +704,62 @@ public final class MWClient implements IClient {
         try {
 
             // 0-length input is spurious call from MWClient constructor.
-            if (input.length() == 0)
+            if (input.trim().length() == 0) {
                 return;
-
-            StringTokenizer ST = null;
-            String task = null;
-
-            // debug info
-            CampaignData.mwlog.infoLog(input);
-
-            // Create a String Tokenizer to parse the elements of the input
-            ST = new StringTokenizer(input, COMMAND_DELIMITER);
-            task = ST.nextToken();
-
-            if (!commands.containsKey(task)) {
-                try {
-                    Class<?> cmdClass = Class.forName(getClass().getPackage().getName() + ".cmd." + task);
-                    Constructor<?> c = cmdClass.getConstructor(new Class[] { MWClient.class });
-                    Command cmd = (Command) c.newInstance(new Object[] { this });
-                    commands.put(task, cmd);
-                } catch (Exception e) {
-                    CampaignData.mwlog.errLog(e);
-                }
             }
-            if (commands.containsKey(task))
-                commands.get(task).execute(input);
+
+
+            if ( MainFrame == null 
+                    || !MainFrame.isVisible()) {
+                
+                if ( !input.startsWith("SSC|") ) {
+                    messageBackLog.add(input);
+                    return;
+                }
+                
+                processCommand(input);
+                return;
+            }else {
+                messageBackLog.add(input);
+            }
+            
+            for ( String msg : messageBackLog ) {
+                processCommand(msg);
+            }
+            
+            messageBackLog.clear();
+            
         } catch (Exception ex) {
             CampaignData.mwlog.errLog(ex);
         }
     }
 
+    private void processCommand(String input) {
+        StringTokenizer ST = null;
+        String task = null;
+
+        // debug info
+        CampaignData.mwlog.infoLog(input);
+
+        // Create a String Tokenizer to parse the elements of the input
+        ST = new StringTokenizer(input, COMMAND_DELIMITER);
+        task = ST.nextToken();
+
+        if (!commands.containsKey(task)) {
+            try {
+                Class<?> cmdClass = Class.forName(getClass().getPackage().getName() + ".cmd." + task);
+                Constructor<?> c = cmdClass.getConstructor(new Class[] { MWClient.class });
+                Command cmd = (Command) c.newInstance(new Object[] { this });
+                commands.put(task, cmd);
+            } catch (Exception e) {
+                CampaignData.mwlog.errLog(e);
+            }
+        }
+        if (commands.containsKey(task)) {
+            commands.get(task).execute(input);
+        }
+    }
+        
     public synchronized void parseDedDataInput(String data) {
 
         // Debug info
@@ -1502,9 +1530,14 @@ public final class MWClient implements IClient {
     public void addToChat(String s, int channel, String tabName) {
 
         s = "<BODY  TEXT=\"" + Config.getParam("CHATFONTCOLOR") + "\" BGCOLOR=\"" + Config.getParam("BACKGROUNDCOLOR") + "\"><font size=\"" + Config.getParam("CHATFONTSIZE") + "\">" + s + "</font></BODY>";
+        
+        if ( MainFrame == null ) {
+            return;
+        }
+        
         // CampaignData.mwlog.infoLog("String: "+s);
         try {
-            SwingUtilities.invokeLater(new CAddToChat(s, channel, tabName));
+                SwingUtilities.invokeLater(new CAddToChat(s, channel, tabName));
         } catch (Exception ex) {
             CampaignData.mwlog.errLog(ex);
         }
@@ -2477,11 +2510,12 @@ public final class MWClient implements IClient {
                 CampaignData.mwlog.errLog(ex);
             }
         }
-        try {
+        this.getserverConfigs().clear();
+        /*try {
             dataFetcher.getServerConfigData(this);
         } catch (IOException e1) {
             CampaignData.mwlog.errLog(e1);
-        }
+        }*/
     }
 
     public void getServerConfigData() {
@@ -2602,12 +2636,12 @@ public final class MWClient implements IClient {
                 }
             }
 
-            try {
+           /* try {
                 dataFetcher.getServerConfigData(this);
             } catch (Exception ex) {
                 CampaignData.mwlog.errLog("Unable to fetch Server configs.");
                 CampaignData.mwlog.errLog(ex);
-            }
+            }*/
 
             try {
                 dataFetcher.getBannedAmmoData(this);
@@ -2760,9 +2794,22 @@ public final class MWClient implements IClient {
 
     public String getserverConfigs(String key) {
         if (serverConfigs.getProperty(key) == null) {
-            CampaignData.mwlog.infoLog("You're missing the config variable: " + key + " in serverconfig!");
-            return "-1";
+
+            this.setWaiting(true);
+            this.sendChat(MWClient.CAMPAIGN_PREFIX + "c getserverconfigs#"+key);
+            //while ( this.isWaiting() ) {
+                try {
+                    Thread.sleep(100);
+                }catch (Exception ex) {
+                    CampaignData.mwlog.errLog(ex);
+                }
+            //}
+            
+            if (serverConfigs.getProperty(key) == null) {
+                return "-1";
+            }
         }
+        
         return serverConfigs.getProperty(key).trim();
     }
 

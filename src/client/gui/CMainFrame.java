@@ -220,6 +220,7 @@ public class CMainFrame extends JFrame {
         theCampaign = mwclient.getCampaign();
         thePlayer = mwclient.getPlayer();
         MainPanel = new CMainPanel(mwclient, this);
+        
         useAdvanceRepairs = mwclient.isUsingAdvanceRepairs();
         usePersonalPilotQueues = Boolean.parseBoolean(mwclient.getserverConfigs("AllowPersonalPilotQueues"));
         sound = new menuSound(mwclient);
@@ -239,6 +240,8 @@ public class CMainFrame extends JFrame {
         setTitle(mwclient.getConfigParam("CAMPAIGNSERVERNAME") + " (MekWars Client " + MWClient.CLIENT_VERSION + ")");
         contentPane = (JPanel) this.getContentPane();
         contentPane.setLayout(new BorderLayout());
+        useAdvanceRepairs = mwclient.isUsingAdvanceRepairs();
+        usePersonalPilotQueues = Boolean.parseBoolean(mwclient.getserverConfigs("AllowPersonalPilotQueues"));
         try {
             // factored out to reduce bloat
             createMenu();

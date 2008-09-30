@@ -199,8 +199,7 @@ public class CMainPanel extends JPanel implements ChangeListener, ComponentListe
 		
 		CommPanel = new CCommPanel(mwclient);
 		
-		
-		String tabText="";
+        String tabText="";
 		String mnemonicText="";
 		if ( mwclient.getConfig().isParam("HQTABVISIBLE"))
 		{

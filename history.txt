@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.37.x
++ Server Configs now only sends down configs when needed. Need to double check for Deds
 + Bug: Level 1 units not allowed to load non-standard ammo
 + Bugs: Null player getting loaded
 + Bugs: Deds not always reporting unit damage for Advanced Repair

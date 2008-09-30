@@ -1202,6 +1202,7 @@ src/client/cmd/SAS.java -text
 src/client/cmd/SL.java -text
 src/client/cmd/SM.java -text
 src/client/cmd/SP.java -text
+src/client/cmd/SSC.java -text
 src/client/cmd/TL.java -text
 src/client/cmd/UC.java -text
 src/client/cmd/UG.java -text
@@ -1451,6 +1452,7 @@ src/server/campaign/commands/FireTechsCommand.java -text
 src/server/campaign/commands/GamesCommand.java -text
 src/server/campaign/commands/GetFactionConfigsCommand.java -text
 src/server/campaign/commands/GetSavedMailCommand.java -text
+src/server/campaign/commands/GetServerConfigsCommand.java -text
 src/server/campaign/commands/GetServerMegaMekGameOptionsCommand.java -text
 src/server/campaign/commands/GetServerOpFlagsCommand.java -text
 src/server/campaign/commands/HireTechsCommand.java -text
