@@ -456,7 +456,10 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
                 /*
                  * Technology Level
                  */
-                ((nType == TechConstants.T_ALL) || (nType == mechs[x].getType()) || ((nType == TechConstants.T_IS_TW_ALL) && ((mechs[x].getType() <= TechConstants.T_IS_TW_NON_BOX) || (mechs[x].getType() == TechConstants.T_IS_ADVANCED) || (mechs[x].getType() == TechConstants.T_CLAN_ADVANCED))) || ((nType == TechConstants.T_IS_TW_ALL) && ((mechs[x].getType() <= TechConstants.T_IS_TW_NON_BOX) || (mechs[x].getType() == TechConstants.T_IS_ADVANCED)))) && 
+                ((nType == TechConstants.T_ALL) 
+                        || (nType == mechs[x].getType()) 
+                        || ((nType == TechConstants.T_IS_TW_ALL) && (mechs[x].getType() <= TechConstants.T_IS_TW_NON_BOX || mechs[x].getType() == TechConstants.T_INTRO_BOXSET))
+                        || (nType == TechConstants.T_TW_ALL && ( mechs[x].getType() <= TechConstants.T_IS_TW_NON_BOX || mechs[x].getType() <= TechConstants.T_INTRO_BOXSET || mechs[x].getType() <= TechConstants.T_CLAN_TW)) ) && 
                 /*
                  * Unit Type (Mek, Infantry, etc.)
                  */

@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.37.x
++ Rolled back code change for duplication connection checks.
 + Server Configs now only sends down configs when needed. Need to double check for Deds
 + Bug: Level 1 units not allowed to load non-standard ammo
 + Bugs: Null player getting loaded
