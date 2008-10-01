@@ -394,7 +394,9 @@ public class NewbieHouse extends NonConqHouse {
 			toReturn.append(", ");
 		}
 		//remove last 2 chars (", ")
-		toReturn.delete(toReturn.length() - 2,toReturn.length());
+		if ( units.size() > 0 ){
+		    toReturn.delete(toReturn.length() - 2,toReturn.length());
+		}
 		
 		return toReturn.toString();
 	}//end getNewSOLUnits

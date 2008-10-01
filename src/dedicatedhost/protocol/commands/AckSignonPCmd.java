@@ -26,20 +26,11 @@ public class AckSignonPCmd extends CProtCommand {
 			ST = new StringTokenizer(input, delimiter);
 			dedHost.setUsername(ST.nextToken());
 			echo(input);
-			if (dedHost.isDedicated()) {
-				
-				try {Thread.sleep(5000);}
-				catch (Exception ex) {
-					CampaignData.mwlog.errLog(ex);
-				}
-				
-				try {
-					dedHost.startHost(true,false,false);
-				} catch (Exception ex) {
-					CampaignData.mwlog.errLog(ex);
-				}
+			try {
+				dedHost.startHost(true,false,false);
+			} catch (Exception ex) {
+				CampaignData.mwlog.errLog(ex);
 			}
-			
 			return true;
 		}
 		//else

@@ -39,6 +39,8 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.Vector;
 
+import client.MWClient;
+
 import common.CampaignData;
 import common.MMGame;
 import common.campaign.Buildings;
@@ -70,7 +72,7 @@ public final class MWDedHost implements IClient {
     public static final int STATUS_DISCONNECTED = 0;
     public static final int STATUS_LOGGEDOUT = 1;
 
-    public static final String CLIENT_VERSION = "0.2.37.0"; // change this with
+    public static final String CLIENT_VERSION = "0.2.38.0"; // change this with
     // all client
     // changes @Torren
 
@@ -223,7 +225,7 @@ public final class MWDedHost implements IClient {
         //this.dataFetcher.setLastTimestamp(new Date(System.currentTimeMillis()));
         //this.dataFetcher.store();
 
-        this.getServerConfigData();
+        //this.getServerConfigData();
 
         myUsername = getConfigParam("NAME");
 
@@ -382,7 +384,13 @@ public final class MWDedHost implements IClient {
          * have a main frame, so no null check or buffer needed) and call
          * doParseDataHelper() directly.
          */
-        if (data.startsWith("US|") || data.startsWith("NU|") || data.startsWith("UG|") || data.startsWith("RGTS|") || data.startsWith("DSD|") || data.startsWith("USD|")) {
+        if (data.startsWith("US|") 
+                || data.startsWith("NU|") 
+                || data.startsWith("UG|") 
+                || data.startsWith("RGTS|") 
+                || data.startsWith("DSD|") 
+                || data.startsWith("USD|")
+                || data.startsWith("SSC|")) {
             this.doParseDataHelper(data);// bypass the buffering process -
             // ded's never have a main fraime
             return;
@@ -1235,14 +1243,6 @@ public final class MWDedHost implements IClient {
             }
         }
 
-        String MMVersion = getserverConfigs("AllowedMegaMekVersion");
-        if (!MMVersion.equals("-1") && !MMVersion.equalsIgnoreCase(MegaMek.VERSION)) {
-            CampaignData.mwlog.errLog("You are using an invalid version of MegaMek. Please use version " + MMVersion);
-            stopHost();
-            restartDed();
-            return;
-        }
-
         if (servers.get(myUsername) != null) {
             if (isDedicated()) {
                 CampaignData.mwlog.errLog("Attempted to start a second host while host was already running.");
@@ -1673,20 +1673,30 @@ public final class MWDedHost implements IClient {
 
     }
 
-    public void getServerConfigData() {
-        try {
-            dataFetcher.getServerConfigData(this);
-        } catch (Exception ex) {
-        }
+    public Properties getserverConfigs(){
+        return serverConfigs;
     }
-
+    
     public String getserverConfigs(String key) {
         if (serverConfigs.getProperty(key) == null) {
-            return "-1";
+
+            this.sendChat(MWClient.CAMPAIGN_PREFIX + "c getserverconfigs#"+key);
+            //while ( this.isWaiting() ) {
+                try {
+                    Thread.sleep(100);
+                }catch (Exception ex) {
+                    CampaignData.mwlog.errLog(ex);
+                }
+            //}
+            
+            if (serverConfigs.getProperty(key) == null) {
+                return "-1";
+            }
         }
+        
         return serverConfigs.getProperty(key).trim();
     }
-
+    
     public void setBuildingTemplate(Buildings buildingTemplate) {
         this.buildingTemplate = buildingTemplate;
     }
@@ -1695,7 +1705,7 @@ public final class MWDedHost implements IClient {
         return this.buildingTemplate;
     }
     
-    private void restartDed() {
+    public void restartDed() {
         try {
             String memory = Config.getParam("DEDMEMORY");
             Runtime runTime = Runtime.getRuntime();

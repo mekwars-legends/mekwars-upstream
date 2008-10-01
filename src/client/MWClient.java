@@ -157,7 +157,7 @@ public final class MWClient implements IClient {
     Vector<String> messageBackLog = new Vector<String>(5,1);
     CConfig Config;
 
-    public static final String CLIENT_VERSION = "0.2.37.0"; // change this with
+    public static final String CLIENT_VERSION = "0.2.38.0"; // change this with
     // all client
     // changes @Torren
 
@@ -2795,7 +2795,7 @@ public final class MWClient implements IClient {
     public String getserverConfigs(String key) {
         if (serverConfigs.getProperty(key) == null) {
 
-            this.setWaiting(true);
+            //this.setWaiting(true);
             this.sendChat(MWClient.CAMPAIGN_PREFIX + "c getserverconfigs#"+key);
             //while ( this.isWaiting() ) {
                 try {

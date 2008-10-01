@@ -230,8 +230,8 @@ public class MWChatServer implements ICommands {
                 CampaignData.mwlog.errLog("Unable to join room");
                 CampaignData.mwlog.errLog(ex);
             }
-
         }
+        
         client.ackSignon(auth.getUserId());
         
         return true;

@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
-v 0.2.37.x
+v 0.2.38.x
+Release Client/Server 0.2.38.0
++ New MegaMek.jar 0.33.33-MW100108-5993
++ Deds now receive old the server configs they need
 + Bug: UTF-8 characters not saving properly to database.
 + Rolled back code change for duplication connection checks.
 + Server Configs now only sends down configs when needed. Need to double check for Deds
@@ -12,6 +15,7 @@ v 0.2.37.x
 + Change to set Max Wind Speed in MM games.
 + game with fire but no wind have wind set to Light Gale Max
 + Bug: Customize Unit Dialog now showing all ammo.
+v 0.2.37.x
 Release Client/Server 0.2.37.0
 + New Release for tech level changes from MM.
 + New MegaMek.jar 0.33.33-MW092208-5970
