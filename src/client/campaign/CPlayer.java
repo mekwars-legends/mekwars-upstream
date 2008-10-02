@@ -1224,8 +1224,8 @@ public class CPlayer extends Player {
         }
 
         StringTokenizer ST = new StringTokenizer(data, DELIMITER);
-        mwclient.getserverConfigs().clear();
-        mwclient.getServerConfigData();
+        //mwclient.getserverConfigs().clear();
+        //mwclient.getServerConfigData();
         while (ST.hasMoreTokens()) {
             String key = TokenReader.readString(ST);
             String value = TokenReader.readString(ST);

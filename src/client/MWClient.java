@@ -444,7 +444,7 @@ public final class MWClient implements IClient {
             dataFetcher = new DataFetchClient(Integer.parseInt(Config.getParam("DATAPORT")), Integer.parseInt(Config.getParam("SOCKETTIMEOUTDELAY")));
             dataFetcher.setData(Config.getParam("SERVERIP"), getCacheDir());
             try {
-                dataFetcher.getServerConfigData(this);
+                //dataFetcher.getServerConfigData(this);
             } catch (Exception ex) {
                 CampaignData.mwlog.errLog("Error While getting server config file.");
                 CampaignData.mwlog.errLog(ex);
