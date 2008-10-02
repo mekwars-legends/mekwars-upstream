@@ -226,30 +226,22 @@ public class AdminMenu extends JMenu {
     	        if (faction == null || faction.length() == 0)
     	            return;
 
-                mwclient.setWaiting(true);
-                mwclient.getServerConfigData();
+                try {
+                    mwclient.getServerConfigData();
+                    //Give the server configs a head start.
+                    Thread.sleep(1000);
+                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c GetFactionConfigs#-1#"+faction);
+                    mwclient.setWaiting(true);
     	        
-    	        try {
     	        	while ( mwclient.isWaiting() ){
-    	        		Thread.sleep(10);
+    	        		Thread.sleep(120);
     	        		//CampaignData.mwlog.errLog("Waiting for faction config");
     	        	}
     	        }catch (Exception ex) {
     	        	CampaignData.mwlog.errLog(ex);
+    	        	mwclient.setWaiting(false);
     	        }
     	        
-                mwclient.setWaiting(true);
-                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c GetFactionConfigs#-1#"+faction);
-                
-                try {
-                    while ( mwclient.isWaiting() ){
-                        Thread.sleep(10);
-                        //CampaignData.mwlog.errLog("Waiting for faction config");
-                    }
-                }catch (Exception ex) {
-                    CampaignData.mwlog.errLog(ex);
-                }
-                
             	new FactionConfigurationDialog(mwclient,faction);
             }
         });
