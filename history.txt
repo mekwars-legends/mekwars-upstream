@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.38.x
++ Bug: Factions configs Dialog not loading Server Configs First.
 + Bug: Servers using Faction Configs Caused clients to lockup.
 Release Client/Server 0.2.38.0
 + New MegaMek.jar 0.33.33-MW100108-5993

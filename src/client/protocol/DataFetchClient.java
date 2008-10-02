@@ -70,19 +70,7 @@ public class DataFetchClient {
 	 * get all of the server configs. this is used for Staff
 	 */
 	public void getServerConfigData(MWClient mwclient) throws IOException {
-		
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c getserverconfigs#ALL");
-
-        mwclient.setWaiting(true);
-        while ( mwclient.isWaiting() ) {
-            
-            try {
-                Thread.sleep(1000);
-            }catch (Exception ex) {
-                CampaignData.mwlog.errLog(ex);
-            }
-        }
-
 	}
 	
 	/**
