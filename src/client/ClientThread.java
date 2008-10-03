@@ -143,6 +143,11 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
         client = new Client(myname, serverip, serverport);
         client.game.addGameListener(this);
         client.addCloseClientListener(this);
+        mwclient.getserverConfigs("MMTimeStampLogFile");
+        mwclient.getserverConfigs("MMShowUnitId");
+        mwclient.getserverConfigs("MMKeepGameLog");
+        mwclient.getserverConfigs("MMGameLogName");
+        
         if (awtGUI) {
             awtGui = new ClientGUI(client);
             awtGui.initialize();
@@ -192,7 +197,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
             // Lets start with the environment set first then do everything
             // else.
-            if (this.mwclient.getCurrentEnvironment() != null) {
+            if (this.mwclient.getCurrentEnvironment() != null && client.game.getPhase() == IGame.Phase.PHASE_LOUNGE) {
                 // creates the playboard*/
                 MapSettings mySettings = new MapSettings(mwclient.getMapSize().width, mwclient.getMapSize().height, 1, 1);
                 // MapSettings mySettings = new MapSettings(16, 17, 2, 2);
