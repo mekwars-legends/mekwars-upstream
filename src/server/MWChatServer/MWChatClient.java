@@ -147,7 +147,7 @@ public class MWChatClient implements IConnectionListener, ICommands {
            try{
             throw new NullPointerException();
            }catch (Exception ex){
-               CampaignData.mwlog.errLog("Null user in setUserId");
+               CampaignData.mwlog.errLog("Null user in setUserId report the following error to Torren");
                CampaignData.mwlog.errLog(ex);
            }
         }
