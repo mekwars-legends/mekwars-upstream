@@ -2515,8 +2515,8 @@ public class ShortResolver {
 
                         int unitDestructionCap = o.getIntValue("UnitDestructionCap");
                         int unitsToDestroy = o.getIntValue("BaseUnitsDestroyed");
-                        int unitUnitDestroyAdjust = o.getIntValue("DestroyedUnitsBVAdjustment");
-                        int unitBVDestroyAdjust = o.getIntValue("DestroyedUnitsUnitAdjustment");
+                        int unitBVDestroyAdjust = o.getIntValue("DestroyedUnitsBVAdjustment");
+                        int unitUnitDestroyAdjust = o.getIntValue("DestroyedUnitsUnitAdjustment");
 
                         if (unitUnitDestroyAdjust > 0)
                             unitsToDestroy += so.getStartingUnits() / unitUnitDestroyAdjust;
@@ -2626,8 +2626,8 @@ public class ShortResolver {
                          */
                         double ppDestructionCap = o.getDoubleValue("PPDestructionCap");
                         double ppToDestroyDoub = o.getDoubleValue("BasePPDestroyed");
-                        double ppUnitDestroyAdjust = o.getDoubleValue("DestroyedPPBVAdjustment");
-                        double ppBVDestroyAdjust = o.getDoubleValue("DestroyedPPUnitAdjustment");
+                        double ppBVDestroyAdjust = o.getDoubleValue("DestroyedPPBVAdjustment");
+                        double ppUnitDestroyAdjust = o.getDoubleValue("DestroyedPPUnitAdjustment");
 
                         if (ppUnitDestroyAdjust > 0)
                             ppToDestroyDoub *= so.getStartingUnits() / ppUnitDestroyAdjust;

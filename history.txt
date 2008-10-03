@@ -1,10 +1,13 @@
 VERSION HISTORY:
 ----------------
-v 0.2.38.x
+v 0.2.39.x
+Release Server/Client/Ded 0.2.39.0
++ Rolled back Server Config. Once again data is gained from the Data port.
 + Bug: Disconnect Thread reporting incorrect Null User
 + Bug: Bay info not showing up.
 + Bug: Factions configs Dialog not loading Server Configs First.
 + Bug: Servers using Faction Configs Caused clients to lockup.
+v 0.2.38.x
 Release Client/Server 0.2.38.0
 + New MegaMek.jar 0.33.33-MW100108-5993
 + Deds now receive old the server configs they need

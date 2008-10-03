@@ -49,7 +49,7 @@ public class SSC extends Command {
         if (!MMVersion.equals("-1") && !MMVersion.equalsIgnoreCase(MegaMek.VERSION)) {
             CampaignData.mwlog.errLog("You are using an invalid version of MegaMek. Please use version " + MMVersion);
             mwclient.stopHost();
-            mwclient.restartDed();
+            mwclient.updateDed();
             return;
         }
 

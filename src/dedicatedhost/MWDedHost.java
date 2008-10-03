@@ -72,7 +72,7 @@ public final class MWDedHost implements IClient {
     public static final int STATUS_DISCONNECTED = 0;
     public static final int STATUS_LOGGEDOUT = 1;
 
-    public static final String CLIENT_VERSION = "0.2.38.0"; // change this with
+    public static final String CLIENT_VERSION = "0.2.39.0"; // change this with
     // all client
     // changes @Torren
 
@@ -724,18 +724,7 @@ public final class MWDedHost implements IClient {
 
                     sendChat(PROTOCOL_PREFIX + "c mm# " + name + " used the update command on " + myUsername);
                     CampaignData.mwlog.infoLog("Update command received from " + name);
-                    try {
-                        if (myServer != null) {
-                            myServer.die();
-                        }
-                        goodbye();
-                        Runtime runtime = Runtime.getRuntime();
-                        String[] call = { "java", "-jar", "MekWarsAutoUpdate.jar", "DEDICATED", this.getConfigParam("DEDUPDATECOMMANDFILE") };
-                        runtime.exec(call);
-                    } catch (Exception ex) {
-                        CampaignData.mwlog.errLog(ex);
-                    }
-                    System.exit(0);// restart the ded
+                    this.updateDed();
                     return;
 
                 } else if (command.equals("ping")) { // ping dedicated
@@ -1716,6 +1705,21 @@ public final class MWDedHost implements IClient {
         } catch (Exception ex) {
             CampaignData.mwlog.errLog("Unable to find MekWarsDed.jar");
         }
+    }
+    
+    public void updateDed(){
+        try {
+            if (myServer != null) {
+                myServer.die();
+            }
+            goodbye();
+            Runtime runtime = Runtime.getRuntime();
+            String[] call = { "java", "-jar", "MekWarsAutoUpdate.jar", "DEDICATED", this.getConfigParam("DEDUPDATECOMMANDFILE") };
+            runtime.exec(call);
+        } catch (Exception ex) {
+            CampaignData.mwlog.errLog(ex);
+        }
+        System.exit(0);// restart the ded
     }
 
 }

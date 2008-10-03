@@ -1427,7 +1427,6 @@ public final class CampaignMain implements Serializable {
         Commands.put("GETFACTIONCONFIGS", new GetFactionConfigsCommand());
         Commands.put("GETMODLOG", new GetModLogCommand());
         Commands.put("GETPLAYERUNITS", new GetPlayerUnitsCommand());
-        Commands.put("GETSERVERCONFIGS", new GetServerConfigsCommand());
         Commands.put("GETSERVERMEGAMEKGAMEOPTIONS", new GetServerMegaMekGameOptionsCommand());
         Commands.put("GETSERVEROPFLAGS", new GetServerOpFlagsCommand());
         Commands.put("GOOSE", new GooseCommand());
