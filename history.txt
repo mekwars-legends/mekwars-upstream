@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.38.x
++ Bug: Disconnect Thread reporting incorrect Null User
 + Bug: Bay info not showing up.
 + Bug: Factions configs Dialog not loading Server Configs First.
 + Bug: Servers using Faction Configs Caused clients to lockup.

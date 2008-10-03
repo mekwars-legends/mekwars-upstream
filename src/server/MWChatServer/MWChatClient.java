@@ -29,6 +29,8 @@ package server.MWChatServer;
 
 import java.net.Socket;
 
+import common.CampaignData;
+
 import server.MWChatServer.auth.IAuthenticator;
 import server.MWChatServer.commands.ICommands;
 
@@ -140,6 +142,15 @@ public class MWChatClient implements IConnectionListener, ICommands {
 	 * Set the user's id
 	 */
 	public void setUserId(String userId) {
+	    
+       if ( userId == null || userId.equalsIgnoreCase("null") ) {
+           try{
+            throw new NullPointerException();
+           }catch (Exception ex){
+               CampaignData.mwlog.errLog("Null user in setUserId");
+               CampaignData.mwlog.errLog(ex);
+           }
+        }
 		// it's possible for this to be called multiple times
 		// w/ same userId thanks to the way MWChatServer & auth work.
 		if (_userId == null || !_userId.equals(userId)) {

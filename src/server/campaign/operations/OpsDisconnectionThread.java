@@ -24,16 +24,16 @@ public class OpsDisconnectionThread extends Thread {
 	//VARIABLES
 	private boolean playerReturned;
 	private int id;
-	private String winnerName;
-	private String loserName;
+	private String winnerName = "";
+	private String loserName = "";
 	private long waitReduction;
 	
 	//CONSTRUCTORS
 	public OpsDisconnectionThread(int opID, String w, String l, long waitReduction) {
 		playerReturned = false;
 		
-		if ( loserName == null || loserName.equalsIgnoreCase("null") ||
-		        winnerName == null || winnerName.equalsIgnoreCase("null") ) {
+		if ( l == null || l.equalsIgnoreCase("null") ||
+		        w == null || w.equalsIgnoreCase("null") ) {
 		    throw new NullPointerException();
 		}
 		    
