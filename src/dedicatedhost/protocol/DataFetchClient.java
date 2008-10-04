@@ -65,6 +65,124 @@ public class DataFetchClient {
 	}
 	
 	/**
+	 * Transfer the server configuration files. Used to
+	 * set up verious portions of the GUI, determing proper
+	 * Money/Flu names, and more.
+	 */
+	public void getServerConfigData(MWDedHost dedHost) throws IOException {
+		
+		/* 
+		 * Look for an existing serverconfig.txt in the appropriate
+		 * data dir. If it exists, MD5 is and request the MD5 of its
+		 * server side analog.
+		 * 
+		 * If the MD5's don't match, or the local file doesnt exist,
+		 * force a refresh from the data feeder.
+		 */
+		boolean timestampMatch = false;
+		boolean localConfigExists = false;
+		File localConfig = new File(cacheDir + "/campaignconfig.txt");
+		
+		//loacl read first
+		if (localConfig.exists()) {
+			
+			//note that the config exists
+			localConfigExists = true;
+			
+			//get the local timetamp
+			String localConfigTimestamp = "";
+			
+			try {
+				FileInputStream in = new FileInputStream(cacheDir + "/campaignconfig.txt");
+				BufferedReader br = new BufferedReader(new InputStreamReader(in));
+				String tempTime = br.readLine();
+				br.close();
+				in.close();
+				
+				localConfigTimestamp = tempTime.substring(11);//remove "#Timestamp="
+			} catch (Exception e) {
+				CampaignData.mwlog.errLog("Problems reading timestamp from local configuration.");
+			}
+			
+			//now get the Server MD5
+			String serverConfigTimestamp = "error";
+			try {
+				BinReader in = openConnection("ConfigTimestamp");
+				serverConfigTimestamp = in.readLine("ConfigTimestamp");
+			} catch (Exception e) {
+				CampaignData.mwlog.errLog("Problems connecting to server to get config timestamp.");
+			}
+			
+			CampaignData.mwlog.errLog("Local Config: " + localConfigTimestamp + " Server Config: " + serverConfigTimestamp);	
+			if (localConfigTimestamp.equals(serverConfigTimestamp)) {
+				timestampMatch = true;
+				try {
+					FileInputStream configFile = new FileInputStream(cacheDir + "/campaignconfig.txt");
+					dedHost.serverConfigs.load(configFile);
+					configFile.close();
+				} catch (Exception ex) {
+					timestampMatch = false;
+				}
+			}
+			
+		}//end if(localConfigExists, get MD5)
+		
+		/*
+		 * If the config is missing, or the timestamps dont match, update
+		 */
+		if (!timestampMatch || !localConfigExists) {
+			
+			//delete the old file, if it exists
+			if (localConfigExists) {
+				File f = new File(cacheDir + "/campaignconfig.txt");
+				f.delete();
+			}
+			
+			//open the connection to the server, and write out the config
+			try {
+				
+				BinReader in = openConnection("ServerConfig");
+				FileOutputStream fops = new FileOutputStream(cacheDir + "/campaignconfig.txt");
+				PrintStream out = new PrintStream(fops);
+				
+				//keep reading until there is an error.
+				try {
+					while(true){out.println(in.readLine("ConfigLine"));}
+				} catch (Exception e) {
+					
+					//close the streams
+					//in.close();
+					out.close();
+					fops.close();
+					
+					//read in the "complete" config
+					try {
+						FileInputStream configFile = new FileInputStream(cacheDir + "/campaignconfig.txt");
+						dedHost.serverConfigs.load(configFile);
+						configFile.close();
+					} catch (Exception ex) {
+						CampaignData.mwlog.errLog(ex);
+					}
+				}//end catch for read-in
+			} 
+			
+			//failed to open connection. try to load local defaults.
+			catch (Exception exe) {
+                if ( !dedHost.getConfig().isParam("DEDICATED") ){
+    				Object[] options = { "Exit", "Continue" };
+    				int selectedValue = JOptionPane.showOptionDialog(
+    						null,"No campaignconfig.txt. This usually means that you were unable to\n\r" +
+    						"connect to the server to fetch a copy. Do you wish to exit?","Startup\n\r" +
+    						"error!",JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,null,options,options[0]);
+    				if (selectedValue == 0)
+    					System.exit(0);//exit, if they so choose
+                }
+			}//end catch(Connection Failure)
+			
+		}//end if(!md5Match || !localConfigExists)
+	}
+	
+	/**
      * Check Server version against client if it doesn't match you can't connect
      *
      */

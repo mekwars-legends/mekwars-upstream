@@ -16,8 +16,6 @@ package dedicatedhost.cmd;
 
 import java.util.StringTokenizer;
 
-import megamek.MegaMek;
-
 import common.CampaignData;
 import common.util.TokenReader;
 
@@ -39,20 +37,11 @@ public class SSC extends Command {
 	        StringTokenizer st = decode(input);
 	        
 	        while ( st.hasMoreTokens() ) {
-	            mwclient.getserverConfigs().put(TokenReader.readString(st), TokenReader.readString(st));
+	            mwclient.getServerConfigs().put(TokenReader.readString(st), TokenReader.readString(st));
 	        }
 	    }catch( Exception ex) {
 	        CampaignData.mwlog.errLog(ex);
 	    }
-	    
-        String MMVersion = mwclient.getserverConfigs("AllowedMegaMekVersion");
-        if (!MMVersion.equals("-1") && !MMVersion.equalsIgnoreCase(MegaMek.VERSION)) {
-            CampaignData.mwlog.errLog("You are using an invalid version of MegaMek. Please use version " + MMVersion);
-            mwclient.stopHost();
-            mwclient.updateDed();
-            return;
-        }
-
 		//mwclient.setWaiting(false);
 	}//end execute
 }//end SC.java

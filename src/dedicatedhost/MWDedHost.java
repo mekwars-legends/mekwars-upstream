@@ -39,8 +39,6 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.Vector;
 
-import client.MWClient;
-
 import common.CampaignData;
 import common.MMGame;
 import common.campaign.Buildings;
@@ -225,7 +223,7 @@ public final class MWDedHost implements IClient {
         //this.dataFetcher.setLastTimestamp(new Date(System.currentTimeMillis()));
         //this.dataFetcher.store();
 
-        //this.getServerConfigData();
+        this.getServerConfigData();
 
         myUsername = getConfigParam("NAME");
 
@@ -384,13 +382,7 @@ public final class MWDedHost implements IClient {
          * have a main frame, so no null check or buffer needed) and call
          * doParseDataHelper() directly.
          */
-        if (data.startsWith("US|") 
-                || data.startsWith("NU|") 
-                || data.startsWith("UG|") 
-                || data.startsWith("RGTS|") 
-                || data.startsWith("DSD|") 
-                || data.startsWith("USD|")
-                || data.startsWith("SSC|")) {
+        if (data.startsWith("US|") || data.startsWith("NU|") || data.startsWith("UG|") || data.startsWith("RGTS|") || data.startsWith("DSD|") || data.startsWith("USD|")) {
             this.doParseDataHelper(data);// bypass the buffering process -
             // ded's never have a main fraime
             return;
@@ -724,7 +716,8 @@ public final class MWDedHost implements IClient {
 
                     sendChat(PROTOCOL_PREFIX + "c mm# " + name + " used the update command on " + myUsername);
                     CampaignData.mwlog.infoLog("Update command received from " + name);
-                    this.updateDed();
+                    stopHost();
+                    updateDed();
                     return;
 
                 } else if (command.equals("ping")) { // ping dedicated
@@ -1232,6 +1225,14 @@ public final class MWDedHost implements IClient {
             }
         }
 
+        String MMVersion = getserverConfigs("AllowedMegaMekVersion");
+        if (!MMVersion.equals("-1") && !MMVersion.equalsIgnoreCase(MegaMek.VERSION)) {
+            CampaignData.mwlog.errLog("You are using an invalid version of MegaMek. Please use version " + MMVersion);
+            stopHost();
+            updateDed();
+            return;
+        }
+
         if (servers.get(myUsername) != null) {
             if (isDedicated()) {
                 CampaignData.mwlog.errLog("Attempted to start a second host while host was already running.");
@@ -1662,30 +1663,24 @@ public final class MWDedHost implements IClient {
 
     }
 
-    public Properties getserverConfigs(){
-        return serverConfigs;
+    public void getServerConfigData() {
+        try {
+            dataFetcher.getServerConfigData(this);
+        } catch (Exception ex) {
+        }
     }
-    
+
     public String getserverConfigs(String key) {
         if (serverConfigs.getProperty(key) == null) {
-
-            this.sendChat(MWClient.CAMPAIGN_PREFIX + "c getserverconfigs#"+key);
-            //while ( this.isWaiting() ) {
-                try {
-                    Thread.sleep(100);
-                }catch (Exception ex) {
-                    CampaignData.mwlog.errLog(ex);
-                }
-            //}
-            
-            if (serverConfigs.getProperty(key) == null) {
-                return "-1";
-            }
+            return "-1";
         }
-        
         return serverConfigs.getProperty(key).trim();
     }
-    
+
+    public Properties getServerConfigs() {
+        return serverConfigs;
+    }
+
     public void setBuildingTemplate(Buildings buildingTemplate) {
         this.buildingTemplate = buildingTemplate;
     }
@@ -1694,7 +1689,7 @@ public final class MWDedHost implements IClient {
         return this.buildingTemplate;
     }
     
-    public void restartDed() {
+    private void restartDed() {
         try {
             String memory = Config.getParam("DEDMEMORY");
             Runtime runTime = Runtime.getRuntime();
@@ -1706,8 +1701,8 @@ public final class MWDedHost implements IClient {
             CampaignData.mwlog.errLog("Unable to find MekWarsDed.jar");
         }
     }
-    
-    public void updateDed(){
+
+    private void updateDed() {
         try {
             if (myServer != null) {
                 myServer.die();
@@ -1721,5 +1716,4 @@ public final class MWDedHost implements IClient {
         }
         System.exit(0);// restart the ded
     }
-
 }
