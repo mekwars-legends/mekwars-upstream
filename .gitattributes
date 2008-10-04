@@ -1815,10 +1815,12 @@ src/server/dataProvider/commands/BanTargetingTimeStamp.java -text
 src/server/dataProvider/commands/BannedAmmo.java -text
 src/server/dataProvider/commands/BannedAmmoTimeStamp.java -text
 src/server/dataProvider/commands/CommandAccessLevels.java -text
+src/server/dataProvider/commands/ConfigTimestamp.java -text
 src/server/dataProvider/commands/ForceUpdateKey.java -text
 src/server/dataProvider/commands/OpList.java -text
 src/server/dataProvider/commands/OpListTimestamp.java -text
 src/server/dataProvider/commands/PDiff.java -text
+src/server/dataProvider/commands/ServerConfig.java -text
 src/server/dataProvider/commands/ServerTrait.java -text
 src/server/dataProvider/commands/ServerVersion.java -text
 src/server/mwcyclopscomm/MWCyclopsComm.java -text

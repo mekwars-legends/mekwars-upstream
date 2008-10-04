@@ -1109,9 +1109,10 @@ public class ShortValidator {
                 failureReasons.add(new Integer(SFAIL_ATTACK_NONORMINF));
             else if (o.getBooleanValue("AttackerStandardInfAllowed") && powerInf)
                 failureReasons.add(new Integer(SFAIL_ATTACK_NOPOWERINF));
-            else
+            else if ( !normInf && !powerInf ) {
                 // no infantry allowed, at all
                 failureReasons.add(new Integer(SFAIL_ATTACK_NOINF));
+            }
         }// end if(!AllowedInf)
 
         if (o.getBooleanValue("UseUnitCommander")) {
@@ -1472,9 +1473,10 @@ public class ShortValidator {
                 failureReasons.add(new Integer(SFAIL_DEFEND_NONORMINF));
             if (o.getBooleanValue("DefenderStandardInfAllowed") && powerInf)
                 failureReasons.add(new Integer(SFAIL_DEFEND_NOPOWERINF));
-            else
+            else if ( !normInf && !powerInf ) {
                 // no infantry allowed, at all
-                failureReasons.add(new Integer(SFAIL_DEFEND_NOINF));
+                failureReasons.add(new Integer(SFAIL_ATTACK_NOINF));
+            }
         }// end if(!AllowedInf)
         if (checkOmni && omniFail)
             failureReasons.add(new Integer(SFAIL_DEFEND_OMNIONLY));

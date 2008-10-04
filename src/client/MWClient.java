@@ -731,7 +731,7 @@ public final class MWClient implements IClient {
             CampaignData.mwlog.errLog(ex);
         }
     }
-        
+
     public synchronized void parseDedDataInput(String data) {
 
         // Debug info
