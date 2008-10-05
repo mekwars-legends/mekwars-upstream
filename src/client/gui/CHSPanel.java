@@ -176,8 +176,6 @@ public class CHSPanel extends JPanel {
         componentsInfo = new TreeMap<String, String>();
         factoriesInfo = new TreeMap<String, TreeMap<String, String>>();
         unitsInfo = new TreeMap<String, Vector<HSMek>>();
-        
-        updateDisplay();
     }
 
     /**
