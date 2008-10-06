@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.2.39.x
++ New MegaMek.jar 0.33.33-MW100608-6004
++ Max Wind strength now settable for advanced terrains.
 + Bug: bad logic for only allowing powered or standard inf but not both
 Release Server/Client/Ded 0.2.39.0
 + Rolled back Server Config. Once again data is gained from the Data port.

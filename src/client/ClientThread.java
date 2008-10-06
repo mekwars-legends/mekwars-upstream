@@ -296,6 +296,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     planetCondition.setWeather(aTerrain.getWeatherConditions());
                     planetCondition.setWindDirection(aTerrain.getWindDirection());
                     planetCondition.setWindStrength(aTerrain.getWindStrength());
+                    planetCondition.setMaxWindStrength(aTerrain.getMaxWindStrength());
                     
                     // Check for a night game and set nightGame Variable.
                     // This is needed to be done since it was possible that a slow connection
