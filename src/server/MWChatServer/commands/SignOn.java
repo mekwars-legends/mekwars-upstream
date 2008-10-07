@@ -133,8 +133,7 @@ public class SignOn extends CommandBase implements ICommands {
 			}
 			
 			else if (e.getMessage().equals(ACCESS_DENIED)){
-				//CampaignData.mwlog.errLog("SignOn error: "+client.getUserId()+" is a dumbfuck and forgot thier password");
-				client.setUserId(null);
+				//client.setUserId(null);
 				client.error(ACCESS_DENIED, e.getMessage());
 				String key;
 				do {
@@ -144,10 +143,11 @@ public class SignOn extends CommandBase implements ICommands {
 				args[1] = key;
 				return this.process(client, args);
 			}
-			else
+			else{
 				CampaignData.mwlog.errLog(e);
+			}
 			String userId = client.getUserId();
-			client.setUserId(null);
+			//client.setUserId(null);
 			client.signOnError(e.getMessage(), userId);
 		}
 		
