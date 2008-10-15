@@ -3528,7 +3528,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
     public void setSubFaction(String subFaction) {
         this.subFaction = subFaction;
-        this.setLastPromoted(System.currentTimeMillis());
+        if ( getSubFactionAccess() != 0 ){
+            this.setLastPromoted(System.currentTimeMillis());
+        }
         this.setSave();
     }
 
