@@ -81,16 +81,17 @@ public class WeaponSpecialistSkill extends SPilotSkill {
 	
 	@Override
 	public int getBVMod(Entity unit, SPilot pilot){
-		int totalWeaponBV = 0;
-		int weaponSpecialistBVBaseMod = CampaignMain.cm.getIntegerConfig("WeaponSpecialistBaseBVMod");
+		double totalWeaponBV = 0;
+		double weaponSpecialistBVBaseMod = megamek.common.Pilot.getBVSkillMultiplier(unit.getCrew().getGunnery()-2, unit.getCrew().getPiloting());
 		
 		for (Mounted weapons : unit.getWeaponList()){
 			WeaponType weapon = (WeaponType)weapons.getType();
 			
-			if ( weapon.getName().equalsIgnoreCase(pilot.getWeapon()) )
+			if ( weapon.getName().equalsIgnoreCase(pilot.getWeapon()) ) {
 				totalWeaponBV += weapon.getBV(unit);
+			}
 		}
-		return (totalWeaponBV * weaponSpecialistBVBaseMod)/100;
+		return (int)(totalWeaponBV * weaponSpecialistBVBaseMod);
 	}
 	
 	public void assignWeapon(Entity entity, Pilot pilot){

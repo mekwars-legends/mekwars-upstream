@@ -1026,10 +1026,6 @@ public final class SUnit extends Unit {
             // get a base BV from MegaMek
             int calcedBV = this.getEntity().calculateBattleValue(false);
 
-            if (this.hasVacantPilot()) {
-                this.getEntity().getCrew().setGunnery(99);
-                this.getEntity().getCrew().setPiloting(99);
-            }
             // Boost BV of super-fast tanks if the "FastHoverBVMod" is a positive
             // number.
             int FastHoverBVMod = CampaignMain.cm.getIntegerConfig("FastHoverBVMod");
@@ -1049,6 +1045,10 @@ public final class SUnit extends Unit {
             // Increase BV if the pilot has MaxTech/MechWarrior skills.
             calcedBV += getPilotSkillBV();
 
+            if (this.hasVacantPilot()) {
+                this.getEntity().getCrew().setGunnery(99);
+                this.getEntity().getCrew().setPiloting(99);
+            }
             return calcedBV;
         } catch (Exception ex) {
             return Integer.MAX_VALUE;

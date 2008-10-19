@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.2.39.x
++ Gunnery Laser, Missile, Ballistic and Weapon Specialist BV Mod now
+   calculated by find the weapons total BV and multipling by modified
+   piloting skill modifer. i.e. 4/5 with G/L would use 3/5 modifer.  
 + Bug: last promotion date getting set when a player defects
 + New MegaMek.jar 0.33.33-MW100608-6004
 + Max Wind strength now settable for advanced terrains.

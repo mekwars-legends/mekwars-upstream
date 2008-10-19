@@ -20,6 +20,7 @@
  */
 package server.campaign.pilot.skills;
 
+import megamek.common.Compute;
 import megamek.common.Entity;
 import megamek.common.Mounted;
 import megamek.common.WeaponType;
@@ -68,13 +69,14 @@ public class GunneryLaserSkill extends SPilotSkill {
     
     @Override
 	public int getBVMod(Entity unit){
-        int numberOfLasers = 0;
-        int gunneryLaserBVBaseMod = CampaignMain.cm.getIntegerConfig("GunneryLaserBaseBVMod");
+        double laserBV = 0;
+        double gunneryLaserBVBaseMod = megamek.common.Pilot.getBVSkillMultiplier(unit.getCrew().getGunnery()-1, unit.getCrew().getPiloting());
         
         for(Mounted weapon : unit.getWeaponList() ){
-            if ( weapon.getType().hasFlag(WeaponType.F_ENERGY) )
-                numberOfLasers++;
+            if ( weapon.getType().hasFlag(WeaponType.F_ENERGY) ) {
+                laserBV += weapon.getType().getBV(unit);
+            }
         }
-        return numberOfLasers * gunneryLaserBVBaseMod;
+        return (int)(laserBV * gunneryLaserBVBaseMod);
     }
 }

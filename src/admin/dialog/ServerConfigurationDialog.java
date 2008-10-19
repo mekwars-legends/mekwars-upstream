@@ -2005,30 +2005,6 @@ public final class ServerConfigurationDialog implements ActionListener {
         SkillModSpring.add(baseTextField);
 
         baseTextField = new JTextField(5);
-        SkillModSpring.add(new JLabel("Weapon Specialist Precent", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html>Percent of the Total BV of all<br>the weapons that the WS skill cover<br>is added on to the unit<br>Eample RFL-IIC with WS LPL<br>CLLPL has a bv of 265 if set to 100%<br>the BV add would be 1060 (265x4)*100%</html>");
-        baseTextField.setName("WeaponSpecialistBaseBVMod");
-        SkillModSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        SkillModSpring.add(new JLabel("G/B bv mod", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html>Total number of ballistic weapons<br>are multipled by the BV mod and added to the unit</html>");
-        baseTextField.setName("GunneryBallisticBaseBVMod");
-        SkillModSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        SkillModSpring.add(new JLabel("G/L bv mod", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html>Total number of laser weapons<br>are multipled by the BV mod and added to the unit</html>");
-        baseTextField.setName("GunneryLaserBaseBVMod");
-        SkillModSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        SkillModSpring.add(new JLabel("G/M bv mod", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html>Total number of missile weapons<br>are multipled by the BV mod and added to the unit</html>");
-        baseTextField.setName("GunneryMissileBaseBVMod");
-        SkillModSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
         SkillModSpring.add(new JLabel("EI bv mod", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html>BV mod added to the unit due to EI</html>");
         baseTextField.setName("EnhancedInterfaceBaseBVMod");

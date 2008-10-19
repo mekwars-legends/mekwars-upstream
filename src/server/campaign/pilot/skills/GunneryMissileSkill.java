@@ -67,13 +67,14 @@ public class GunneryMissileSkill extends SPilotSkill {
     }
     @Override
 	public int getBVMod(Entity unit){
-        int numberOfMissles = 0;
-        int gunneryMissleBVBaseMod = CampaignMain.cm.getIntegerConfig("GunneryMissileBaseBVMod");
+        double missileBV = 0;
+        double gunneryMissileBVBaseMod = megamek.common.Pilot.getBVSkillMultiplier(unit.getCrew().getGunnery()-1, unit.getCrew().getPiloting());
         
         for (Mounted weapon : unit.getWeaponList()){
-            if ( weapon.getType().hasFlag(WeaponType.F_MISSILE) )
-                numberOfMissles++;
+            if ( weapon.getType().hasFlag(WeaponType.F_MISSILE) ) {
+                missileBV += weapon.getType().getBV(unit);
+            }
         }
-        return numberOfMissles * gunneryMissleBVBaseMod;
+        return (int)(missileBV * gunneryMissileBVBaseMod);
     }
 }

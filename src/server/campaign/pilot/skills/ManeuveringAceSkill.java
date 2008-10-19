@@ -68,6 +68,7 @@ public class ManeuveringAceSkill extends SPilotSkill {
     @Override
 	public int getBVMod(Entity unit){
         try{
+            
             double topSpeed = unit.getRunMP();
             double baseBVMod = CampaignMain.cm.getDoubleConfig("ManeuveringAceBaseBVMod");
             double speedRating = CampaignMain.cm.getDoubleConfig("ManeuveringAceSpeedRating");
