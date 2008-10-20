@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.39.x
++ Bug: Maximum Wind Strength not getting set for Advanced Terrain without static maps
 + New MegaMek.jar 0.33.34-MW102008-6041
 + Gunnery Laser, Missile, Ballistic and Weapon Specialist BV Mod now
    calculated by find the weapons total BV and multipling by modified
