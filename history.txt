@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.39.x
++ New MegaMek.jar 0.33.34-MW102008-6041
 + Gunnery Laser, Missile, Ballistic and Weapon Specialist BV Mod now
    calculated by find the weapons total BV and multipling by modified
    piloting skill modifer. i.e. 4/5 with G/L would use 3/5 modifer.  
@@ -17,7 +18,7 @@ Release Server/Client/Ded 0.2.39.0
 v 0.2.38.x
 Release Client/Server 0.2.38.0
 + New MegaMek.jar 0.33.33-MW100108-5993
-+ Deds now receive old the server configs they need
++ Deds now receive only the server configs they need
 + Bug: UTF-8 characters not saving properly to database.
 + Rolled back code change for duplication connection checks.
 + Server Configs now only sends down configs when needed. Need to double check for Deds
