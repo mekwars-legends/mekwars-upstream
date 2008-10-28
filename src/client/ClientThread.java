@@ -302,7 +302,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     // This is needed to be done since it was possible that a slow connection
                     // would keep the client from getting an update from the server before the
                     // entities where added to the game.
-                    nightGame = aTerrain.getLightConditions() > PlanetaryConditions.L_DAY;
+                    nightGame = aTerrain.getLightConditions() > PlanetaryConditions.L_DUSK;
 
                     client.sendPlanetaryConditions(planetCondition);
                     
@@ -371,7 +371,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                         // This is needed to be done since it was possible that a slow connection
                         // would keep the client from getting an update from the server before the
                         // entities where added to the game.
-                        nightGame = aTerrain.getLightConditions() > PlanetaryConditions.L_DAY;
+                        nightGame = aTerrain.getLightConditions() > PlanetaryConditions.L_DUSK;
 
                         client.sendPlanetaryConditions(planetCondition);
                     }
