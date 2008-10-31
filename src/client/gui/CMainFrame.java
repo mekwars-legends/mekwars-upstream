@@ -35,6 +35,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.URLClassLoader;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -188,6 +189,7 @@ public class CMainFrame extends JFrame {
     JMenu jMenuHelp = new JMenu();
 
     JMenuItem jMenuHelpAbout = new JMenuItem();
+    JMenuItem jMenuHelpMemory = new JMenuItem();
     JMenuItem jMenuHelpHelp = new JMenuItem();
     JMenuItem jMenuHelpViewUnit = new JMenuItem();
     JMenuItem jMenuHelpViewBuildTables = new JMenuItem();
@@ -1030,6 +1032,14 @@ public class CMainFrame extends JFrame {
             }
         });
 
+        jMenuHelpMemory.setText("Memory");
+        jMenuHelpMemory.setMnemonic('M');
+        jMenuHelpMemory.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                jMenuHelpMemory_actionPerformed();
+            }
+        });
+
         jMenuHelpHelp.setText("Online Help");
         jMenuHelpHelp.setMnemonic('H');
         jMenuHelpHelp.addActionListener(new ActionListener() {
@@ -1232,6 +1242,7 @@ public class CMainFrame extends JFrame {
         jMenuLeaderShip.add(jMenuLeaderViewFactionPartsCache);
 
         jMenuHelp.add(jMenuHelpAbout);
+        jMenuHelp.add(jMenuHelpMemory);
         jMenuHelp.addSeparator();
         jMenuHelp.add(jMenuHelpViewUnit);
         jMenuHelp.add(jMenuHelpViewBuildTables);
@@ -2298,6 +2309,55 @@ public class CMainFrame extends JFrame {
         dlg.setVisible(true);
     }
 
+    // Show data about the mek wars client memory usage
+    public void jMenuHelpMemory_actionPerformed() {
+
+        // make the dialog
+        JDialog dlg = new JDialog(this, "MekWars Memory Usage");
+
+        // set up the contents
+        JPanel child = new JPanel();
+        child.setLayout(new BoxLayout(child, BoxLayout.Y_AXIS));
+
+        Runtime runtime = Runtime.getRuntime();  
+           
+        long maxMemory = runtime.maxMemory();  
+        long allocatedMemory = runtime.totalMemory();  
+        long freeMemory = runtime.freeMemory();  
+           
+        DecimalFormat myFormatter = new DecimalFormat("#,### MB");
+        // set the text up.
+        JLabel freeMem =      new JLabel("Free Memory:          " + myFormatter.format(freeMemory / 1024));
+        JLabel allocatedMem = new JLabel("Allocated Memory:  " + myFormatter.format(allocatedMemory / 1024));
+        JLabel maxMem =       new JLabel("Max Memory:           " + myFormatter.format(maxMemory /1024));
+        JLabel totalFreeMem = new JLabel("Total Free Memory: " + myFormatter.format((freeMemory + (maxMemory - allocatedMemory)) / 1024));
+
+        // center everything
+        freeMem.setAlignmentX(Component.LEFT_ALIGNMENT);
+        allocatedMem.setAlignmentX(Component.LEFT_ALIGNMENT);
+        maxMem.setAlignmentX(Component.LEFT_ALIGNMENT);
+        totalFreeMem.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        // add to child panel
+        child.add(new JLabel("\n"));
+        child.add(freeMem);
+        child.add(allocatedMem);
+        child.add(maxMem);
+        child.add(totalFreeMem);
+        child.add(new JLabel("\n"));
+
+        // then add child panel to the content pane.
+        dlg.getContentPane().add(child);
+
+        // set the location of the dialog
+        dlg.setLocationRelativeTo(this);
+        dlg.setModal(false);
+        dlg.setResizable(false);
+        dlg.pack();
+        dlg.setVisible(true);
+        
+    }
+    
     public void jMenuHelpHelp_actionPerformed() {
         CPlayer p = mwclient.getPlayer();
         boolean trueCost = Boolean.parseBoolean(mwclient.getserverConfigs("UseCalculatedCosts"));
