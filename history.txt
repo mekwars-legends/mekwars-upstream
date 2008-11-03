@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.2.39.x
++ Bug 2160103: Days between promotions doesnt seem to work
++ Bug 2192542: subfaction demotion
 + Added Memory Usage Info Dialog to Help menu
 + Bug: Slites being loaded for Dusk Games
 + Bug: Maximum Wind Strength not getting set for Advanced Terrain without static maps

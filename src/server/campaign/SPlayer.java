@@ -3623,6 +3623,23 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             for (SubFaction subFaction : getMyHouse().getSubFactionList().values()) {
 
                 if (access > Integer.parseInt(subFaction.getConfig("AccessLevel")) && getRating() >= Integer.parseInt(subFaction.getConfig("MinELO")) && getExperience() >= Integer.parseInt(subFaction.getConfig("MinExp"))) {
+                    
+                    if ( CampaignMain.cm.getBooleanConfig("autoPromoteSubFaction") ){
+
+                        String subFactionName = subFaction.getConfig("Name");
+                        this.setSubFaction(subFactionName);
+                        CampaignMain.cm.toUser("PL|SSN|" + subFactionName, getName(), false);
+                        CampaignMain.cm.doSendToAllOnlinePlayers("PI|FT|" + getName() + "|" + getFluffText(), false);
+                        CampaignMain.cm.toUser("HS|CA|0", getName(), false);// clear old data
+                        CampaignMain.cm.toUser(getMyHouse().getCompleteStatus(), getName(), false);
+                        for (SArmy army : getArmies()) {
+                            CampaignMain.cm.getOpsManager().checkOperations(army, true);
+                        }
+
+                        CampaignMain.cm.toUser("AM:You have been demoted to SubFaction " + subFactionName + ".", getName());
+                        CampaignMain.cm.doSendHouseMail(getMyHouse(), "NOTE", getName() + " has been demoted to subfaction " + subFactionName + " by the Faction Leadership!");
+                        return;
+                    }
                     message.append(subFaction.getConfig("Name"));
                     message.append(". <a href=\"MEKWARS/c demoteplayer#");
                     message.append(getName());
@@ -3631,6 +3648,11 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                     message.append("\">Click here to demote.</a><br>");
                 }
 
+            }
+            
+            //Auto Promotes and Demotes no need to inform anyone
+            if ( CampaignMain.cm.getBooleanConfig("autoPromoteSubFaction") ){
+                return;
             }
             message.append("None");
             message.append(". <a href=\"MEKWARS/c demoteplayer#");

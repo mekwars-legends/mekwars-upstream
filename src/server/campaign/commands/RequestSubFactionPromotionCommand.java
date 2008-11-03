@@ -72,6 +72,11 @@ public class RequestSubFactionPromotionCommand implements Command {
 			return;
 		}
 		
+		if ( !player.canBePromoted() ){
+            CampaignMain.cm.toUser("AM:Sorry but you've already been premoted once within a "+player.getMyHouse().getIntegerConfig("daysbetweenpromotions")+" day period.", Username);
+            return;
+		}
+		
 		if ( CampaignMain.cm.getBooleanConfig("autoPromoteSubFaction") ){
 			player.setSubFaction(subFactionName);
 			CampaignMain.cm.toUser("PL|SSN|"+subFactionName, Username,false);
