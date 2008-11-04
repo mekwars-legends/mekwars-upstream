@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.39.x
++ New MegaMek.jar 0.33.35-MW110408-6144
 + Bug 2160103: Days between promotions doesnt seem to work
 + Bug 2192542: subfaction demotion
 + Added Memory Usage Info Dialog to Help menu
