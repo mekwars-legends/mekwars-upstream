@@ -2325,7 +2325,7 @@ public class CMainFrame extends JFrame {
         long allocatedMemory = runtime.totalMemory();  
         long freeMemory = runtime.freeMemory();  
            
-        DecimalFormat myFormatter = new DecimalFormat("#,### MB");
+        DecimalFormat myFormatter = new DecimalFormat("#,### kb");
         // set the text up.
         JLabel freeMem =      new JLabel("Free Memory:          " + myFormatter.format(freeMemory / 1024));
         JLabel allocatedMem = new JLabel("Allocated Memory:  " + myFormatter.format(allocatedMemory / 1024));
