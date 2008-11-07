@@ -20,7 +20,6 @@
  */
 package server.campaign.pilot.skills;
 
-import megamek.common.Compute;
 import megamek.common.Entity;
 import megamek.common.Mounted;
 import megamek.common.WeaponType;

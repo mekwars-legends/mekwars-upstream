@@ -106,7 +106,7 @@ public class DefendCommand implements Command {
         }
 
         // Don't defend with a disabled army
-        if (da == null && da.isDisabled()) {
+        if (da != null && da.isDisabled()) {
             CampaignMain.cm.toUser("AM: Defend failed.  Army #" + armyID + " is disabled and cannot be used to defend.", Username, true);
             return;
         }

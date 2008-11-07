@@ -1572,12 +1572,12 @@ public class UnitUtils {
                 if (m != null) {
                     if (!m.isDestroyed() && !m.isBreached()) {
                         return roll;
+                    } else if (m.getDesc().indexOf("Heat Sink") > -1) {
+                        roll--;
+                    } else if (m.getDesc().indexOf("Jump Jet") > -1) {
+                        roll++;
                     }
-                } else if (m.getDesc().indexOf("Heat Sink") > -1) {
-                    roll--;
-                } else if (m.getDesc().indexOf("Jump Jet") > -1)
-                    roll++;
-                else {
+                }else {
                     if (!cs.isMissing()) {
                         int crits = getNumberOfCrits(unit, cs);
 
