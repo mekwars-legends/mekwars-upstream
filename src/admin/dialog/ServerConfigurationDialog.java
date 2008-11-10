@@ -702,6 +702,12 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setToolTipText("Float field.  Multiplier to tech cost of non-house units.  Only used with Tech Repair.");
         baseTextField.setName("NonFactionUnitsIncreasedTechs");
         techSpring.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        techSpring.add(new JLabel("Max Techs to Hire:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Integer field.  Max number of techs that can be hired.  Set to -1 for unlimited.  Users with more than this number of techs will lose them at next login.");
+        baseTextField.setName("MaxTechsToHire");
+        techSpring.add(baseTextField);
 
         SpringLayoutHelper.setupSpringGrid(techSpring, 4);
 

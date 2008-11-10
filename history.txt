@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.39.x
++ RFE 2090509 - Maximum techs limiter
 + RFE 2218604 - Unit tech base shown
 + New MegaMek.jar 0.33.35-MW110408-6144
 + Bug 2160103: Days between promotions doesnt seem to work

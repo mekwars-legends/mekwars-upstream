@@ -804,6 +804,9 @@ public class DefaultServerOptions {
         // Max number of bays a player is allowed to buy. -1 to disable.
         defaults.setProperty("MaxBaysToBuy", "-1");
 
+        // Max number of techs a player is allowed to hire.  -1 to disable.
+        defaults.setProperty("MaxTechsToHire", "-1");
+        
         /*
          * Number of seconds it will take to repair a crit/weapon Based on Maxtech repairs i.e. engines take longer to repair then Medium Lasers or Actuators.
          */

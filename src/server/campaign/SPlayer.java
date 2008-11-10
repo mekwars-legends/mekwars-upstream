@@ -1884,11 +1884,21 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     @Override
     public void setTechnicians(int t) {
 
+    	int maxTechs = 0;
+    	
         // dont allow negative techs. always set negatives back to 0.
         if (t < 0)
             t = 0;
 
-        technicians = t;
+        if (this.getMyHouse() != null)
+        	maxTechs = Integer.parseInt(this.getMyHouse().getConfig("MaxTechsToHire"));
+        else
+        	maxTechs = CampaignMain.cm.getIntegerConfig("MaxTechsToHire");
+        
+        if (maxTechs != -1)
+        	technicians = Math.min(maxTechs, t);
+        else
+        	technicians = t;
 
         // clear the tech payment any time a new number of techs is set
         this.setCurrentTechPayment(-1);
@@ -3087,9 +3097,13 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 this.getTotalTechs().addAll(getAvailableTechs());
                 // give them some bays
                 this.setBaysOwned(greenTechs + regTechs);
-            } else
-                technicians = TokenReader.readInt(ST);
-
+            } else {
+                //technicians = TokenReader.readInt(ST);
+            	int te = TokenReader.readInt(ST);
+            	int mt = CampaignMain.cm.getIntegerConfig("MaxTechsToHire");
+            	technicians = (mt != -1) ? Math.min(te, mt) : te;
+            }
+            	
             currentReward = TokenReader.readInt(ST);
 
             /*

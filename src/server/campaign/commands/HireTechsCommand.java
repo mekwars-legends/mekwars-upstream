@@ -83,6 +83,13 @@ public class HireTechsCommand implements Command {
 		}//end if(player doenst have enough money) 	
 		
 		
+		int maxTechs = Integer.parseInt(p.getMyHouse().getConfig("MaxTechsToHire"));
+		if (maxTechs != -1 && (p.getTechnicians() + numtohire > maxTechs)) {
+			CampaignMain.cm.toUser("AM:Sorry but the max number of technicians you can hire is " + maxTechs + ".", Username, true);
+			return;
+		}
+		
+		
 		//passed all of the return scenarios, so add the technicians
 		p.addTechnicians(numtohire);
 		// had to do it grammer bad! Torren
