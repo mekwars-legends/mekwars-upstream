@@ -3055,6 +3055,14 @@ public class CHQPanel extends JPanel {
                         C3Text.setLength(0);
                         C3Text.append(techCostString);
                     }
+                    if (Boolean.parseBoolean(mwclient.getConfigParam("ShowUnitTechBase"))) {
+                    	if(cm.getEntity().isClan()) {
+                        	C3Text.append("Tech Base: Clan");
+                        } else {
+                        	C3Text.append("Tech Base: IS");
+                        }
+                    }
+                    
                     // If you have a unit in more then one army, list all the
                     // armies it is in.
                     if (inNumberofArmies > 1) {
