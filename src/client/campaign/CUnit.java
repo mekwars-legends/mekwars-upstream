@@ -395,7 +395,7 @@ public class CUnit extends Unit {
     }
 
     public int getOriginalBV() {
-        return UnitEntity.calculateBattleValue(false);
+        return UnitEntity.calculateBattleValue(false,false);
     }
 
     public void applyRepairs(String data) {

@@ -619,47 +619,8 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         }
     }
 
-    /**
-     * Save itself to a TreeWriter
-     * 
-     * @Override public void binOut(TreeWriter out) { super.binOut(out);
-     *           out.write(getMoney(), "money"); // Store the Meks for (int i =
-     *           0; i < 4; i++) { Vector<SUnit> tmpVec =
-     *           this.getHangar(Unit.MEK).elementAt(i); out.write(tmpVec,
-     *           "hangar" + i); } // Store the Vehicles for (int i = 0; i < 4;
-     *           i++) { Vector<SUnit> tmpVec =
-     *           this.getHangar(Unit.VEHICLE).elementAt(i); out.write(tmpVec,
-     *           "vehicle" + i); } if
-     *           (Boolean.parseBoolean(this.getConfig("UseInfantry"))) { //
-     *           Store the Infantry for (int i = 0; i < 4; i++) { Vector<SUnit>
-     *           tmpVec = this.getHangar(Unit.INFANTRY).elementAt(i);
-     *           out.write(tmpVec, "infantry" + i); } }
-     *           out.write(getAllOnlinePlayers().values(), "members"); // Write
-     *           the BuildingPP's out.startDataBlock("components");
-     *           out.write(Components.size(), "size"); Enumeration e =
-     *           Components.keys(); while (e.hasMoreElements()) { Integer id =
-     *           (Integer) e.nextElement(); Vector<Integer> v =
-     *           Components.get(id); out.startDataBlock("component");
-     *           out.write(id.intValue(), "id"); StringBuilder ids = new
-     *           StringBuilder(); for (int i = 0; i < v.size(); i++)
-     *           ids.append(v.elementAt(i) + ((i + 1 < v.size() ? "," : "")));
-     *           out.write(ids.toString(), "ids");
-     *           out.endDataBlock("component"); }
-     *           out.endDataBlock("components"); }
-     * 
-     * /** Save itself to a TreeWriter
-     * 
-     * @Override public void binIn(TreeReader in, CampaignData data) throws
-     *           IOException { super.binIn(in, data);
-     *           setMoney(in.readInt("money")); }
-     */
-
     public String fromString(String s, Random r) {
         try {
-
-            // strip leadin.  Note: Because the DB doesn't store this, we don't necessarily need it for the DB version
-        	if (s.startsWith("HS§"))
-        		s = s.substring(3);
 
             StringTokenizer ST = new StringTokenizer(s, "|");
             setName(TokenReader.readString(ST));

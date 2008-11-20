@@ -1024,7 +1024,7 @@ public final class SUnit extends Unit {
             }
             
             // get a base BV from MegaMek
-            int calcedBV = this.getEntity().calculateBattleValue(false);
+            int calcedBV = this.getEntity().calculateBattleValue(false,false);
 
             // Boost BV of super-fast tanks if the "FastHoverBVMod" is a positive
             // number.

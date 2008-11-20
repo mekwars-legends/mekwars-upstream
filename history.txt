@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
-v 0.2.39.x
+v 0.2.40.x
+Release Client/Server 0.2.40.0
++ New MegaMek.jar 0.33.36-MW112008-6175
 + RFE 2090509 - Maximum techs limiter
 + RFE 2218604 - Unit tech base shown
 + New MegaMek.jar 0.33.35-MW110408-6144
@@ -17,6 +19,7 @@ v 0.2.39.x
 + New MegaMek.jar 0.33.33-MW100608-6004
 + Max Wind strength now settable for advanced terrains.
 + Bug: bad logic for only allowing powered or standard inf but not both
+v 0.2.39.x
 Release Server/Client/Ded 0.2.39.0
 + Rolled back Server Config. Once again data is gained from the Data port.
 + Bug: Disconnect Thread reporting incorrect Null User
