@@ -74,7 +74,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import megamek.client.ui.AWT.MechView;
+import megamek.client.ui.MechView;
 import megamek.client.ui.AWT.UnitFailureDialog;
 import megamek.client.ui.AWT.UnitLoadingDialog;
 import megamek.common.Entity;

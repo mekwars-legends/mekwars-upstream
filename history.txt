@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.2.40.x
++ New MegaMek.jar 0.33.36-MW120108-6197
++ Updated Import statments for MechView
 Release Client/Server 0.2.40.0
 + New MegaMek.jar 0.33.36-MW112008-6175
 + RFE 2090509 - Maximum techs limiter
