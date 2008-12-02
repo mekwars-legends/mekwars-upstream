@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.2.40.x
++ Release Client 0.2.40.1
++ Bug: Unoffical ammo no being loaded.
 + New MegaMek.jar 0.33.36-MW120108-6197
 + Updated Import statments for MechView
 Release Client/Server 0.2.40.0

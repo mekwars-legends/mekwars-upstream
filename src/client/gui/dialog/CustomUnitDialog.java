@@ -375,14 +375,15 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 // Possibly allow level 3 ammos, possibly not.
                 if (mmClient.game.getOptions().booleanOption("allow_level_3_ammo") 
                         && !mmClient.game.getOptions().booleanOption("is_eq_limits")) {
-                        if ( entity.isClan() && (atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_CLAN_ADVANCED)) {
+                        if ( entity.isClan() && (atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_CLAN_ADVANCED || atCheck
+                                .getTechLevel() == TechConstants.T_CLAN_UNOFFICIAL)) {
                             bTechMatch = true;
                         }
-                        if (!entity.isClan() && (atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED) ) {
+                        if (!entity.isClan() && (atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED || atCheck.getTechLevel() == TechConstants.T_IS_UNOFFICIAL) ) {
                             bTechMatch = true;
                         }
-                } else if ( ( (atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED) && entity.getTechLevel() != TechConstants.T_IS_EXPERIMENTAL && entity.getTechLevel() != TechConstants.T_IS_ADVANCED) 
-                        || ((atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_CLAN_ADVANCED) && entity.getTechLevel() != TechConstants.T_CLAN_EXPERIMENTAL && entity.getTechLevel() != TechConstants.T_CLAN_ADVANCED) ) {
+                } else if ( ( (atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED || atCheck.getTechLevel() == TechConstants.T_IS_UNOFFICIAL) && entity.getTechLevel() != TechConstants.T_IS_EXPERIMENTAL && entity.getTechLevel() != TechConstants.T_IS_ADVANCED) 
+                        || ((atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_CLAN_ADVANCED || atCheck.getTechLevel() == TechConstants.T_CLAN_UNOFFICIAL) && entity.getTechLevel() != TechConstants.T_CLAN_EXPERIMENTAL && entity.getTechLevel() != TechConstants.T_CLAN_ADVANCED) ) {
                     bTechMatch = false;
                 }
                 
