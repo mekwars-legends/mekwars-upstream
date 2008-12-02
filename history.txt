@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.40.x
++ New MegaMek.jar 0.33.36-MW120208-6200
 + Release Client 0.2.40.1
 + Bug: Unoffical ammo no being loaded.
 + New MegaMek.jar 0.33.36-MW120108-6197
