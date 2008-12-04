@@ -138,7 +138,7 @@ public class BlackMarketModel extends AbstractTableModel {
             case MECH:
                 return mm.getModelName();
             case BV:
-                return mm.getEmbeddedUnit().getEntity().calculateBattleValue(false,false);
+                return mm.getEmbeddedUnit().getEntity().calculateBattleValue();
             case MIN:
                 return new Integer(mm.getMinBid());
             case TICKS:
