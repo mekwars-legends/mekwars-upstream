@@ -689,7 +689,7 @@ public final class SUnit extends Unit {
 
             if (unitEntity instanceof Mech)
                 ((Mech) unitEntity).setAutoEject(TokenReader.readBoolean(ST));
-            String defaultField = "";
+            String defaultField = "0";
             if (ST.hasMoreElements()) {
                 Entity en = getEntity();
                 int maxCrits = TokenReader.readInt(ST);
