@@ -3056,6 +3056,8 @@ public class CHQPanel extends JPanel {
                         C3Text.append(techCostString);
                     }
                     if (Boolean.parseBoolean(mwclient.getConfigParam("ShowUnitTechBase"))) {
+                    	if (mwclient.getPlayer().getMyHouse().getNonFactionUnitsCostMore())
+                    		C3Text.append("<br>");
                     	if(cm.getEntity().isClan()) {
                         	C3Text.append("Tech Base: Clan");
                         } else {
