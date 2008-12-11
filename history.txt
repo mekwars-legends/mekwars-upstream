@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.40.x
++ Bug: Planet Intel can grab weather condition that is out of bounds.
 + Bug: When server is set for non-faction units costing more techs
        and client set to show tech base, both lines of info were being
        shown on the same line with no break
