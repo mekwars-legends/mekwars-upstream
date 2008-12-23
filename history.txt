@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.2.40.x
++ New MegaMek.jar 0.33.38-MW122308-6281
++ Changed when client reports game finished
 + Bug 2192540: Free scrap after task completion
 + Bug 2401907: Error in Pilot Skill Descriptions
 + Bug: setting XPRollOverCap to 0 caused Inf loop.

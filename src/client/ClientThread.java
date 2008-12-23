@@ -17,6 +17,7 @@
 
 package client;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,27 +27,25 @@ import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.Vector;
-import java.io.File;
-
-import client.campaign.CUnit;
-import client.campaign.CArmy;
-import client.util.SerializeEntity;
-
-import common.AdvancedTerrain;
-import common.CampaignData;
-import common.MMGame;
-import common.PlanetEnvironment;
-import common.Unit;
-import common.campaign.Buildings;
-import common.util.UnitUtils;
 
 import megamek.client.Client;
+import megamek.client.CloseClientListener;
 import megamek.client.bot.BotClient;
 import megamek.client.bot.TestBot;
 import megamek.client.bot.ui.AWT.BotGUI;
 import megamek.client.ui.AWT.ClientGUI;
 import megamek.common.Board;
+import megamek.common.Building;
+import megamek.common.Coords;
 import megamek.common.Entity;
+import megamek.common.IGame;
+import megamek.common.IOffBoardDirections;
+import megamek.common.MapSettings;
+import megamek.common.Mech;
+import megamek.common.MechWarrior;
+import megamek.common.Pilot;
+import megamek.common.PlanetaryConditions;
+import megamek.common.Player;
 import megamek.common.IGame.Phase;
 import megamek.common.event.GameBoardChangeEvent;
 import megamek.common.event.GameBoardNewEvent;
@@ -55,8 +54,8 @@ import megamek.common.event.GameEntityChangeEvent;
 import megamek.common.event.GameEntityNewEvent;
 import megamek.common.event.GameEntityNewOffboardEvent;
 import megamek.common.event.GameEntityRemoveEvent;
-import megamek.common.event.GameListener;
 import megamek.common.event.GameEvent;
+import megamek.common.event.GameListener;
 import megamek.common.event.GameMapQueryEvent;
 import megamek.common.event.GameNewActionEvent;
 import megamek.common.event.GamePhaseChangeEvent;
@@ -67,21 +66,21 @@ import megamek.common.event.GamePlayerDisconnectedEvent;
 import megamek.common.event.GameReportEvent;
 import megamek.common.event.GameSettingsChangeEvent;
 import megamek.common.event.GameTurnChangeEvent;
-import megamek.common.MapSettings;
-import megamek.common.Mech;
 import megamek.common.options.IBasicOption;
-import megamek.common.Building;
-import megamek.common.Coords;
-import megamek.common.IGame;
-import megamek.common.IOffBoardDirections;
-import megamek.common.Pilot;
-import megamek.common.PlanetaryConditions;
-import megamek.common.Player;
-import megamek.common.MechWarrior;
-import megamek.common.util.BuildingTemplate;
-import megamek.client.CloseClientListener;
 import megamek.common.preference.IClientPreferences;
 import megamek.common.preference.PreferenceManager;
+import megamek.common.util.BuildingTemplate;
+import client.campaign.CArmy;
+import client.campaign.CUnit;
+import client.util.SerializeEntity;
+
+import common.AdvancedTerrain;
+import common.CampaignData;
+import common.MMGame;
+import common.PlanetEnvironment;
+import common.Unit;
+import common.campaign.Buildings;
+import common.util.UnitUtils;
 
 class ClientThread extends Thread implements GameListener, CloseClientListener {
 
@@ -121,7 +120,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
         this.mechs = mechs;
         this.autoarmy = autoarmy;
         if (serverip.indexOf("127.0.0.1") != -1) {
-            this.serverip = "127.0.0.1";
+            serverip = "127.0.0.1";
         }
     }
 
@@ -147,7 +146,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
         mwclient.getserverConfigs("MMShowUnitId");
         mwclient.getserverConfigs("MMKeepGameLog");
         mwclient.getserverConfigs("MMGameLogName");
-        
+
         if (awtGUI) {
             awtGui = new ClientGUI(client);
             awtGui.initialize();
@@ -173,7 +172,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
         }
 
         // client.game.getOptions().
-        Vector<IBasicOption> xmlGameOptions = this.mwclient.getGameOptions();
+        Vector<IBasicOption> xmlGameOptions = mwclient.getGameOptions();
 
         try {
             client.connect();
@@ -197,11 +196,11 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
             // Lets start with the environment set first then do everything
             // else.
-            if (this.mwclient.getCurrentEnvironment() != null && client.game.getPhase() == IGame.Phase.PHASE_LOUNGE) {
+            if (mwclient.getCurrentEnvironment() != null && client.game.getPhase() == IGame.Phase.PHASE_LOUNGE) {
                 // creates the playboard*/
                 MapSettings mySettings = new MapSettings(mwclient.getMapSize().width, mwclient.getMapSize().height, 1, 1);
                 // MapSettings mySettings = new MapSettings(16, 17, 2, 2);
-                AdvancedTerrain aTerrain = this.mwclient.getCurrentAdvancedTerrain();
+                AdvancedTerrain aTerrain = mwclient.getCurrentAdvancedTerrain();
 
                 if ((aTerrain != null) && aTerrain.isStaticMap()) {
 
@@ -227,10 +226,11 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                         } else if (aTerrain.getStaticMapName().indexOf("\\") > -1) {
                             String folder = aTerrain.getStaticMapName().substring(0, aTerrain.getStaticMapName().lastIndexOf("\\"));
                             mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), folder));
-                        } else
+                        } else {
                             mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), ""));
+                        }
                     } else if (aTerrain.getStaticMapName().toLowerCase().endsWith("generated")) {
-                        PlanetEnvironment env = this.mwclient.getCurrentEnvironment();
+                        PlanetEnvironment env = mwclient.getCurrentEnvironment();
                         /* Set the map-gen values */
                         mySettings.setElevationParams(env.getHillyness(), env.getHillElevationRange(), env.getHillInvertProb());
                         mySettings.setWaterParams(env.getWaterMinSpots(), env.getWaterMaxSpots(), env.getWaterMinHexes(), env.getWaterMaxHexes(), env.getWaterDeepProb());
@@ -250,10 +250,11 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                         mySettings.setInvertNegativeTerrain(env.getInvertNegativeTerrain());
                         mySettings.setMountainParams(env.getMountPeaks(), env.getMountWidthMin(), env.getMountWidthMax(), env.getMountHeightMin(), env.getMountHeightMax(), env.getMountStyle());
 
-                        if (env.getTheme().length() > 1)
+                        if (env.getTheme().length() > 1) {
                             mySettings.setTheme(env.getTheme());
-                        else
+                        } else {
                             mySettings.setTheme("");
+                        }
 
                         int maxBoards = aTerrain.getXBoardSize() * aTerrain.getYBoardSize();
                         for (int i = 0; i < maxBoards; i++) {
@@ -267,8 +268,9 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                         } else if (aTerrain.getStaticMapName().indexOf("\\") > -1) {
                             String folder = aTerrain.getStaticMapName().substring(0, aTerrain.getStaticMapName().lastIndexOf("\\"));
                             mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), folder));
-                        } else
+                        } else {
                             mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), ""));
+                        }
 
                         if (mwclient.getBuildingTemplate() != null && mwclient.getBuildingTemplate().getTotalBuildings() > 0) {
                             ArrayList<BuildingTemplate> buildingList = generateRandomBuildings(mySettings, mwclient.getBuildingTemplate());
@@ -281,10 +283,10 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                         boardvec.add(aTerrain.getStaticMapName());
                         mySettings.setBoardsSelectedVector(boardvec);
                     }
-                    
+
                     PlanetaryConditions planetCondition = new PlanetaryConditions();
-                    
-                    planetCondition.setGravity((float)aTerrain.getGravity());
+
+                    planetCondition.setGravity((float) aTerrain.getGravity());
                     planetCondition.setTemperature(aTerrain.getTemperature());
                     planetCondition.setAtmosphere(aTerrain.getAtmosphere());
                     planetCondition.setEMI(aTerrain.hasEMI());
@@ -297,7 +299,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     planetCondition.setWindDirection(aTerrain.getWindDirection());
                     planetCondition.setWindStrength(aTerrain.getWindStrength());
                     planetCondition.setMaxWindStrength(aTerrain.getMaxWindStrength());
-                    
+
                     // Check for a night game and set nightGame Variable.
                     // This is needed to be done since it was possible that a slow connection
                     // would keep the client from getting an update from the server before the
@@ -305,11 +307,11 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     nightGame = aTerrain.getLightConditions() > PlanetaryConditions.L_DUSK;
 
                     client.sendPlanetaryConditions(planetCondition);
-                    
+
                     mySettings.setMedium(mwclient.getMapMedium());
                     client.sendMapSettings(mySettings);
                 } else {
-                    PlanetEnvironment env = this.mwclient.getCurrentEnvironment();
+                    PlanetEnvironment env = mwclient.getCurrentEnvironment();
                     /* Set the map-gen values */
                     mySettings.setElevationParams(env.getHillyness(), env.getHillElevationRange(), env.getHillInvertProb());
                     mySettings.setWaterParams(env.getWaterMinSpots(), env.getWaterMaxSpots(), env.getWaterMinHexes(), env.getWaterMaxHexes(), env.getWaterDeepProb());
@@ -328,10 +330,11 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     mySettings.setAlgorithmToUse(env.getAlgorithm());
                     mySettings.setInvertNegativeTerrain(env.getInvertNegativeTerrain());
                     mySettings.setMountainParams(env.getMountPeaks(), env.getMountWidthMin(), env.getMountWidthMax(), env.getMountHeightMin(), env.getMountHeightMax(), env.getMountStyle());
-                    if (env.getTheme().length() > 1)
+                    if (env.getTheme().length() > 1) {
                         mySettings.setTheme(env.getTheme());
-                    else
+                    } else {
                         mySettings.setTheme("");
+                    }
 
                     /* select the map */
                     ArrayList<String> boardvec = new ArrayList<String>();
@@ -349,11 +352,11 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     mySettings.setMedium(mwclient.getMapMedium());
                     /* sent to server */
                     client.sendMapSettings(mySettings);
-                    
-                    if ( aTerrain != null ) {
+
+                    if (aTerrain != null) {
                         PlanetaryConditions planetCondition = new PlanetaryConditions();
-                        
-                        planetCondition.setGravity((float)aTerrain.getGravity());
+
+                        planetCondition.setGravity((float) aTerrain.getGravity());
                         planetCondition.setTemperature(aTerrain.getTemperature());
                         planetCondition.setAtmosphere(aTerrain.getAtmosphere());
                         planetCondition.setEMI(aTerrain.hasEMI());
@@ -366,7 +369,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                         planetCondition.setWindDirection(aTerrain.getWindDirection());
                         planetCondition.setWindStrength(aTerrain.getWindStrength());
                         planetCondition.setMaxWindStrength(aTerrain.getMaxWindStrength());
-                        
+
                         // Check for a night game and set nightGame Variable.
                         // This is needed to be done since it was possible that a slow connection
                         // would keep the client from getting an update from the server before the
@@ -404,13 +407,15 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                 bot.retrieveServerInfo();
                 sleep(125);
 
-                if (awtGUI)
+                if (awtGUI) {
                     awtGui.getBots().put(name, bot);
-                else
+                } else {
                     swingGui.getBots().put(name, bot);
+                }
 
-                if (mwclient.isBotsOnSameTeam())
+                if (mwclient.isBotsOnSameTeam()) {
                     bot.getLocalPlayer().setTeam(5);
+                }
                 Random r = new Random();
 
                 bot.getLocalPlayer().setStartingPos(r.nextInt(11));
@@ -421,7 +426,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
             if ((client.game != null && client.game.getPhase() == IGame.Phase.PHASE_LOUNGE)) {
 
                 client.game.getOptions().loadOptions();
-                if (this.mechs.size() > 0 && xmlGameOptions.size() > 0) {
+                if (mechs.size() > 0 && xmlGameOptions.size() > 0) {
                     client.sendGameOptions("", xmlGameOptions);
                 }
 
@@ -444,9 +449,9 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     client.getLocalPlayer().setNbrMFVibra(mwclient.getPlayer().getVibraMinesAllowed());
                 }
 
-                for (Iterator<Unit> i = this.mechs.iterator(); i.hasNext();) {
+                for (Unit unit : mechs) {
                     // Get the Mek
-                    CUnit mek = (CUnit) i.next();
+                    CUnit mek = (CUnit) unit;
                     // Get the Entity
                     Entity entity = mek.getEntity();
                     // Set the TempID for autoreporting
@@ -499,7 +504,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                 /*
                  * Army mechs already loaded (see previous for loop). Now try to load the artillery units generated by the server (see AutoArmy.java in the server.campaign pacakage for generation details).
                  */
-                Iterator<CUnit> autoIt = this.autoarmy.iterator();
+                Iterator<CUnit> autoIt = autoarmy.iterator();
                 while (autoIt.hasNext()) {
 
                     // get the unit
@@ -517,10 +522,11 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     entity.setExternalId(autoUnit.getId());
 
                     // Set the owner
-                    if (bot != null)
+                    if (bot != null) {
                         entity.setOwner(bot.getLocalPlayer());
-                    else
+                    } else {
                         entity.setOwner(client.getLocalPlayer());
+                    }
 
                     if (entity.getCrew().getName().equalsIgnoreCase("Unnamed") || entity.getCrew().getName().equalsIgnoreCase("vacant")) {
                         // set the pilot
@@ -533,10 +539,11 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     // CampaignData.mwlog.errLog(entity.getModel()+"
                     // direction "+entity.getOffBoardDirection());
                     // add the unit to the game.
-                    if (bot != null)
+                    if (bot != null) {
                         bot.sendAddEntity(entity);
-                    else
+                    } else {
                         client.sendAddEntity(entity);
+                    }
 
                     // Wait a few secs to not overuse bandwith
                     sleep(125);
@@ -547,7 +554,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     playerUpdate = true;
                 }
 
-                if (this.mechs.size() > 0) {
+                if (mechs.size() > 0) {
                     // check armies for C3Network mechs
 
                     synchronized (currA) {
@@ -559,10 +566,11 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                                 linkMegaMekC3Units(currA, slave, currA.getC3Network().get(slave));
                             }
 
-                            if (awtGUI)
+                            if (awtGUI) {
                                 awtGui.chatlounge.refreshEntities();
-                            else
+                            } else {
                                 swingGui.chatlounge.refreshEntities();
+                            }
                         }
                     }
                 }
@@ -574,8 +582,9 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
                 if (playerUpdate) {
                     client.sendPlayerInfo();
-                    if (bot != null)
+                    if (bot != null) {
                         bot.sendPlayerInfo();
+                    }
                 }
 
             }
@@ -593,9 +602,9 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
     public void gameTurnChange(GameTurnChangeEvent e) {
         if (client != null) {
-            if (this.getTurn() == 0 && (myname.equals(serverName) || serverName.startsWith("[Dedicated]")))
+            if (getTurn() == 0 && (myname.equals(serverName) || serverName.startsWith("[Dedicated]"))) {
                 mwclient.serverSend("SHS|" + serverName + "|Running");
-            else if (client.game.getPhase() != currentPhase && client.game.getOptions().booleanOption("paranoid_autosave") && !client.getLocalPlayer().isObserver()) {
+            } else if (client.game.getPhase() != currentPhase && client.game.getOptions().booleanOption("paranoid_autosave") && !client.getLocalPlayer().isObserver()) {
                 sendServerGameUpdate();
                 currentPhase = client.game.getPhase();
             }
@@ -615,6 +624,12 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                     sleep(50);
                 }
 
+                // observers need not report
+                if (client.game.getAllEntitiesOwnedBy(client.getLocalPlayer()) >= 1) {
+                    MMGame toUse = mwclient.getServers().get(serverName);
+                    mwclient.serverSend("SGR|" + toUse.getHostName());
+                }
+
                 // clear out everything.
                 mwclient.getPlayer().setConventionalMinesAllowed(0);
                 mwclient.getPlayer().setVibraMinesAllowed(0);
@@ -627,22 +642,16 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                 // get rid of any and all bots.
 
                 if (awtGUI) {
-                    for (Iterator<Client> i = awtGui.getBots().values().iterator(); i.hasNext();) {
-                        i.next().die();
+                    for (Client client2 : awtGui.getBots().values()) {
+                        client2.die();
                     }
                     awtGui.getBots().clear();
                 } else {
-                    for (Iterator<Client> i = swingGui.getBots().values().iterator(); i.hasNext();) {
-                        i.next().die();
+                    for (Client client2 : swingGui.getBots().values()) {
+                        client2.die();
                     }
                     swingGui.getBots().clear();
                 }
-                // observers need not report
-                if (client.game.getAllEntitiesOwnedBy(client.getLocalPlayer()) < 1)
-                    return;
-
-                MMGame toUse = mwclient.getServers().get(serverName);
-                mwclient.serverSend("SGR|" + toUse.getHostName());
                 CampaignData.mwlog.infoLog("GAME END");
 
             }// end victory
@@ -653,14 +662,15 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
             else if (client.game.getPhase() == IGame.Phase.PHASE_END_REPORT) {
 
                 // observers need not report
-                if (client.getLocalPlayer().isObserver())
+                if (client.getLocalPlayer().isObserver()) {
                     return;
+                }
 
                 sendServerGameUpdate();
 
                 /*
-                 * Wrecked entities include all those which were devastated, ejected, or removed but salvagable according to MegaMek. We want to check them for CT-cores. Enumeration en = client.game.getWreckedEntities(); while (en.hasMoreElements()) { Entity currEntity = (Entity)en.nextElement(); /* MM is now reporting post-attack IS instead of pre-attack IS in gameEntityRemove, so this check shouldn't be necessary anymore. //if (currEntity instanceof Mech || currEntity instanceof QuadMech) { // //if a mech-type, override grouping if its salvage and CT 0 // if (currEntity.getInternal(Mech.LOC_CT) <= 0) // mwclient.serverSend("IPU|" + this.serializeEntity(currEntity, false, true)); // //} if (currEntity instanceof MechWarrior) mwclient.serverSend("IPU|" + this.serializeEntity(currEntity, false, false)); } //constantly update the onfield warriors. en = client.game.getEntities(); while
-                 * (en.hasMoreElements()) { Entity currEntity = (Entity)en.nextElement(); if ( currEntity.getOwner().getName().startsWith("War Bot")) continue; if (currEntity instanceof MechWarrior) mwclient.serverSend("IPU|" + this.serializeEntity(currEntity, false, false)); } /* This is probably extraneous - retreats should be properly handled in the movement phase and do not involve damage transferal which could lead to a final status different from the removal status. //en = client.game.getRetreatedEntities(); //while (en.hasMoreElements()) { // Entity currEntity = (Entity)en.nextElement(); // mwclient.serverSend("IPU|" + this.serializeEntity(currEntity, false)); //}
+                 * Wrecked entities include all those which were devastated, ejected, or removed but salvagable according to MegaMek. We want to check them for CT-cores. Enumeration en = client.game.getWreckedEntities(); while (en.hasMoreElements()) { Entity currEntity = (Entity)en.nextElement(); / MM is now reporting post-attack IS instead of pre-attack IS in gameEntityRemove, so this check shouldn't be necessary anymore. //if (currEntity instanceof Mech || currEntity instanceof QuadMech) { // //if a mech-type, override grouping if its salvage and CT 0 // if (currEntity.getInternal(Mech.LOC_CT) <= 0) // mwclient.serverSend("IPU|" + this.serializeEntity(currEntity, false, true)); // //} if (currEntity instanceof MechWarrior) mwclient.serverSend("IPU|" + this.serializeEntity(currEntity, false, false)); } //constantly update the onfield warriors. en = client.game.getEntities(); while
+                 * (en.hasMoreElements()) { Entity currEntity = (Entity)en.nextElement(); if ( currEntity.getOwner().getName().startsWith("War Bot")) continue; if (currEntity instanceof MechWarrior) mwclient.serverSend("IPU|" + this.serializeEntity(currEntity, false, false)); } / This is probably extraneous - retreats should be properly handled in the movement phase and do not involve damage transferal which could lead to a final status different from the removal status. //en = client.game.getRetreatedEntities(); //while (en.hasMoreElements()) { // Entity currEntity = (Entity)en.nextElement(); // mwclient.serverSend("IPU|" + this.serializeEntity(currEntity, false)); //}
                  */
             }
 
@@ -672,20 +682,22 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
     }
 
     /*
-     * When an entity is removed from play, check the reason. If the unit is ejected, captured or devestated and the player is invovled in the game at hand, report the removal to the server. The server stores these reports in pilotTree and deathTree in order to auto-resolve games after a player disconnects. NOTE: This send the *first possible* removal condition, which means that a unit which is simultanously head killed and then CT cored will show as salvageable.
+     * When an entity is removed from play, check the reason. If the unit is ejected, captured or devestated and the player is invovled in the game at hand, report the removal to the server. The server stores these reports in pilotTree and deathTree in order to auto-resolve games after a player disconnects. NOTE: This send thefirst possible removal condition, which means that a unit which is simultanously head killed and then CT cored will show as salvageable.
      */
     public void gameEntityRemove(GameEntityRemoveEvent e) {// only send if the
         // player is
         // actually involved
         // in the game
 
-        if (client.getLocalPlayer().isObserver())
+        if (client.getLocalPlayer().isObserver()) {
             return;
+        }
 
         // get the entity
         megamek.common.Entity removedE = e.getEntity();
-        if (removedE.getOwner().getName().startsWith("War Bot"))
+        if (removedE.getOwner().getName().startsWith("War Bot")) {
             return;
+        }
 
         String toSend = SerializeEntity.serializeEntity(removedE, true, false, mwclient.isUsingAdvanceRepairs());
         mwclient.serverSend("IPU|" + toSend);
@@ -765,13 +777,13 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
         while (c3Unit == null || c3Master == null) {
             try {
-                
-                for ( Entity en : client.game.getEntitiesVector() ){
-                    if (c3Unit == null && en.getExternalId() == slaveid){
+
+                for (Entity en : client.game.getEntitiesVector()) {
+                    if (c3Unit == null && en.getExternalId() == slaveid) {
                         c3Unit = en;
                     }
-    
-                    if (c3Master == null && en.getExternalId() == masterid){
+
+                    if (c3Master == null && en.getExternalId() == masterid) {
                         c3Master = en;
                     }
                 }
@@ -844,7 +856,7 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
         ArrayList<String> boards = new ArrayList<String>();
         // Board Board = client.game.getBoard();
 
-        File boardDir = new File("data/boards/"+folder);
+        File boardDir = new File("data/boards/" + folder);
 
         // just a check...
         if (!boardDir.isDirectory()) {
@@ -855,15 +867,15 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
         String[] fileList = boardDir.list();
         Vector<String> tempList = new Vector<String>(1, 1);
         Comparator<? super String> sortComp = ClientThread.stringComparator();
-        for (int i = 0; i < fileList.length; i++) {
-            if (fileList[i].indexOf(".board") == -1) {
+        for (String path : fileList) {
+            if (path.indexOf(".board") == -1) {
                 continue;
             }
-            
-            String path = fileList[i];
-            if ( folder.trim().length() > 0 )
-                path = folder+"/"+fileList[i];
-            
+
+            if (folder.trim().length() > 0) {
+                path = folder + "/" + path;
+            }
+
             if (Board.boardIsSize(path, boardWidth, boardHeight)) {
                 tempList.addElement(path.substring(0, path.lastIndexOf(".board")));
             }
@@ -901,13 +913,15 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
             minHeight = 1;
             break;
         case Buildings.SOUTH:
-            if (height > 5)
+            if (height > 5) {
                 minHeight = height - 5;
+            }
             height = 5;
             break;
         case Buildings.EAST:
-            if (width > 5)
+            if (width > 5) {
                 minWidth = width - 5;
+            }
             width = 5;
             break;
         case Buildings.WEST:
@@ -920,8 +934,9 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
         StringTokenizer types = new StringTokenizer(buildingTemplate.getBuildingType(), ",");
 
-        while (types.hasMoreTokens())
+        while (types.hasMoreTokens()) {
             buildingTypes.add(types.nextToken());
+        }
 
         int typeSize = buildingTypes.size();
 
@@ -944,15 +959,17 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
                 int x = r.nextInt(width) + minWidth;
                 int y = r.nextInt(height) + minHeight;
 
-                if (x >= mapSettings.getBoardWidth())
+                if (x >= mapSettings.getBoardWidth()) {
                     x = mapSettings.getBoardWidth() - 2;
-                else if (x <= 1)
+                } else if (x <= 1) {
                     x = 2;
+                }
 
-                if (y >= mapSettings.getBoardHeight())
+                if (y >= mapSettings.getBoardHeight()) {
                     y = mapSettings.getBoardHeight() - 2;
-                else if (y <= 1)
+                } else if (y <= 1) {
                     y = 2;
+                }
 
                 coord = new Coords(x, y);
 
@@ -964,27 +981,31 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
 
             int floors = buildingTemplate.getMaxFloors() - buildingTemplate.getMinFloors();
 
-            if (floors <= 0)
+            if (floors <= 0) {
                 floors = buildingTemplate.getMinFloors();
-            else
+            } else {
                 floors = r.nextInt(floors) + buildingTemplate.getMinFloors();
+            }
 
             int totalCF = buildingTemplate.getMaxCF() - buildingTemplate.getMinCF();
 
-            if (totalCF <= 0)
+            if (totalCF <= 0) {
                 totalCF = buildingTemplate.getMinCF();
-            else
+            } else {
                 totalCF = r.nextInt(totalCF) + buildingTemplate.getMinCF();
+            }
 
-            if (CFx2)
+            if (CFx2) {
                 totalCF *= 2;
+            }
 
             int type = 1;
             try {
-                if (typeSize == 1)
+                if (typeSize == 1) {
                     type = Integer.parseInt(buildingTypes.get(0));
-                else
+                } else {
                     type = Integer.parseInt(buildingTypes.get(r.nextInt(typeSize)));
+                }
             } catch (Exception ex) {
             } // someone entered a bad building type.
 
@@ -1017,33 +1038,21 @@ class ClientThread extends Thread implements GameListener, CloseClientListener {
         Enumeration<Entity> en = client.game.getEntities();
         while (en.hasMoreElements()) {
             Entity ent = en.nextElement();
-            if (ent.getOwner().getName().startsWith("War Bot") || (!(ent instanceof MechWarrior) && !UnitUtils.hasArmorDamage(ent) && !UnitUtils.hasISDamage(ent) && !UnitUtils.hasCriticalDamage(ent) && !UnitUtils.hasLowAmmo(ent) && !UnitUtils.hasEmptyAmmo(ent)))
+            if (ent.getOwner().getName().startsWith("War Bot") || (!(ent instanceof MechWarrior) && !UnitUtils.hasArmorDamage(ent) && !UnitUtils.hasISDamage(ent) && !UnitUtils.hasCriticalDamage(ent) && !UnitUtils.hasLowAmmo(ent) && !UnitUtils.hasEmptyAmmo(ent))) {
                 continue;
-            if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0)
+            }
+            if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0) {
                 mwclient.serverSend("IPU|" + SerializeEntity.serializeEntity(ent, true, true, mwclient.isUsingAdvanceRepairs()));
-            else
+            } else {
                 mwclient.serverSend("IPU|" + SerializeEntity.serializeEntity(ent, true, false, mwclient.isUsingAdvanceRepairs()));
+            }
         }
         /*
          * en = client.game.getRetreatedEntities(); while (en.hasMoreElements()) { Entity ent = en.nextElement(); if ( ent.getOwner().getName().startsWith("War Bot") || ( !(ent instanceof MechWarrior) && !UnitUtils.hasArmorDamage(ent) && !UnitUtils.hasISDamage(ent) && !UnitUtils.hasCriticalDamage(ent) && !UnitUtils.hasLowAmmo(ent) && !UnitUtils.hasEmptyAmmo(ent))) continue; if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0) mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, true)); else mwclient.serverSend("IPU|"+this.serializeEntity(ent, true, false)); }
          */
     }
 
-   /* private void clearGameOptions() {
-
-        Vector<IBasicOption> defaultOptions = new Vector<IBasicOption>(10, 1);
-
-        for (Enumeration<IOptionGroup> i = client.game.getOptions().getGroups(); i.hasMoreElements();) {
-            IOptionGroup group = i.nextElement();
-
-            for (Enumeration<IOption> j = group.getOptions(); j.hasMoreElements();) {
-                IOption option = j.nextElement();
-
-                option.clearValue();
-                defaultOptions.add(option);
-            }
-        }
-
-        client.sendGameOptions("", defaultOptions);
-    }*/
+    /*
+     * private void clearGameOptions() { Vector<IBasicOption> defaultOptions = new Vector<IBasicOption>(10, 1); for (Enumeration<IOptionGroup> i = client.game.getOptions().getGroups(); i.hasMoreElements();) { IOptionGroup group = i.nextElement(); for (Enumeration<IOption> j = group.getOptions(); j.hasMoreElements();) { IOption option = j.nextElement(); option.clearValue(); defaultOptions.add(option); } } client.sendGameOptions("", defaultOptions); }
+     */
 }
