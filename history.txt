@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.2.40.x
++ Bug 2192540: Free scrap after task completion
++ Bug 2401907: Error in Pilot Skill Descriptions
 + Bug: setting XPRollOverCap to 0 caused Inf loop.
 + Bug: Planet Intel can grab weather condition that is out of bounds.
 + Bug: When server is set for non-faction units costing more techs

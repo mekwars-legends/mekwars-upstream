@@ -37,15 +37,6 @@ import megamek.common.IEntityRemovalConditions;
 import megamek.common.Infantry;
 import megamek.common.Mech;
 import megamek.common.MiscType;
-
-import common.House;
-import common.Unit;
-import common.UnitFactory;
-import common.campaign.pilot.skills.PilotSkill;
-import common.util.StringUtils;
-import common.util.UnitUtils;
-
-import common.CampaignData;
 import server.campaign.BuildTable;
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
@@ -60,15 +51,20 @@ import server.campaign.pilot.SPilot;
 import server.campaign.util.ELORanking;
 import server.mwmysql.HistoryHandler;
 
+import common.CampaignData;
+import common.House;
+import common.Unit;
+import common.UnitFactory;
+import common.campaign.pilot.skills.PilotSkill;
+import common.util.StringUtils;
+import common.util.UnitUtils;
+
 public class ShortResolver {
 
     // IVARS
 
     /*
-     * These variables are NOT true instance variables. They're set when a
-     * resolve() is called - in a specific order - and used in place of gigantic
-     * paramater lists for each method called by a resolve(). They are reset
-     * with each new resolve().
+     * These variables are NOT true instance variables. They're set when a resolve() is called - in a specific order - and used in place of gigantic paramater lists for each method called by a resolve(). They are reset with each new resolve().
      */
     TreeMap<String, SPlayer> allPlayers;
 
@@ -128,7 +124,7 @@ public class ShortResolver {
     private ShortOperation shortOp = null;
 
     boolean nonDestructionMode = false;
-    
+
     // CONSTRUCTORS
     public ShortResolver() {
         // contents
@@ -136,8 +132,7 @@ public class ShortResolver {
 
     // METHODS
     /**
-     * Method which clears or nulls all of the holder variables. Private. Called
-     * when a resolve() is finished.
+     * Method which clears or nulls all of the holder variables. Private. Called when a resolve() is finished.
      */
     private void resetVariables() {
 
@@ -181,50 +176,36 @@ public class ShortResolver {
     }// end resetVariables()
 
     /**
-     * Method which takes in an autoreport string, reads operation
-     * configurations, and sets post-game outcomes as needed.
-     * 
-     * This method does initial processing of the report string, then farms work
-     * out to several private methods for salvage, payment, etc.
-     * 
-     * Using the discrete private methods makes it a bit simpler to track all of
-     * the paramaters and variables in play ... also allows for automagical
-     * disconnection resolution.
+     * Method which takes in an autoreport string, reads operation configurations, and sets post-game outcomes as needed. This method does initial processing of the report string, then farms work out to several private methods for salvage, payment, etc. Using the discrete private methods makes it a bit simpler to track all of the paramaters and variables in play ... also allows for automagical disconnection resolution.
      */
     public void resolveShortAttack(Operation o, ShortOperation so, String report) {
 
-        this.shortOp = so;
+        shortOp = so;
         // return if the game is waiting, already reporting or already finished.
-        if (so.getStatus() != ShortOperation.STATUS_INPROGRESS)
+        if (so.getStatus() != ShortOperation.STATUS_INPROGRESS) {
             return;
+        }
 
-        if (so.getAutoReport() == null)
+        if (so.getAutoReport() == null) {
             so.setAutoReport(report);
+        }
 
         // reset any old trees/variables/etc
-        this.resetVariables();
+        resetVariables();
 
         nonDestructionMode = o.getBooleanValue("NoDestructionMode");
-        
+
         saveStats = !o.getBooleanValue("NoStatisticsMode");
         freeForAll = o.getBooleanValue("FreeForAllOperation");
         // master tokenizer
         StringTokenizer reportTokenizer = new StringTokenizer(report, "#");
 
         /*
-         * Process the winner and loser lists. These should, generally, align
-         * perfectly with the attacker/defender maps; however, doing it this way
-         * makes arena and grand melee style operations theoretically possible.
-         * 
-         * so.getWinners() = new TreeMap<String, SPlayer>(); so.getLosers() =
-         * new TreeMap<String, SPlayer>();
+         * Process the winner and loser lists. These should, generally, align perfectly with the attacker/defender maps; however, doing it this way makes arena and grand melee style operations theoretically possible. so.getWinners() = new TreeMap<String, SPlayer>(); so.getLosers() = new TreeMap<String, SPlayer>();
          */
 
         /*
-         * Set up a Map with all of the players from the game. ShortOperation
-         * has a method which returns all player names; however, we want a map
-         * populated with real SPlayer pointers from the outset in order to
-         * avoid continual calls to CampaignMain's getPlayer() method.
+         * Set up a Map with all of the players from the game. ShortOperation has a method which returns all player names; however, we want a map populated with real SPlayer pointers from the outset in order to avoid continual calls to CampaignMain's getPlayer() method.
          */
         allPlayers = new TreeMap<String, SPlayer>();
         allArmies = new TreeMap<String, SArmy>();
@@ -247,41 +228,41 @@ public class ShortResolver {
          */
         while (winnerTokenizer.hasMoreElements()) {
             String nextName = winnerTokenizer.nextToken().toLowerCase();
-            if (nextName.equalsIgnoreCase("DRAW"))
+            if (nextName.equalsIgnoreCase("DRAW")) {
                 drawGame = true;
-            if (!so.getWinners().containsKey(nextName))
+            }
+            if (!so.getWinners().containsKey(nextName)) {
                 so.getWinners().put(nextName.toLowerCase(), allPlayers.get(nextName.toLowerCase()));
+            }
         }
 
         /*
-         * It is safe to assume that that all players who weren't
-         * so.getWinners() lost. Compare the allPlayers tree to the
-         * so.getWinners() tree and add those from all who aren't already in
-         * so.getWinners() to the so.getLosers() map.
+         * It is safe to assume that that all players who weren't so.getWinners() lost. Compare the allPlayers tree to the so.getWinners() tree and add those from all who aren't already in so.getWinners() to the so.getLosers() map.
          */
         for (String currName : allPlayers.keySet()) {
-            if (!so.getWinners().containsKey(currName) && !so.getLosers().containsKey(currName))
+            if (!so.getWinners().containsKey(currName) && !so.getLosers().containsKey(currName)) {
                 so.getLosers().put(currName, allPlayers.get(currName));
+            }
         }
         /*
-         * Before establishing which units are saveable/killed and moving
-         * anything between players or changing the pilots in units, save the
-         * so.getLosers()'s BV. User to set the level at which he's paid out.
+         * Before establishing which units are saveable/killed and moving anything between players or changing the pilots in units, save the so.getLosers()'s BV. User to set the level at which he's paid out.
          */
         loserBV = 0;
         for (SArmy currArmy : allArmies.values()) {
-            if (so.getLosers().containsKey(currArmy.getPlayerName().toLowerCase()))
+            if (so.getLosers().containsKey(currArmy.getPlayerName().toLowerCase())) {
                 loserBV += currArmy.getBV();
+            }
         }
 
         // return if there is no winner. terminate the game.
         if (so.getWinners().size() == 0) {
-            for (String pname : allPlayers.keySet())
+            for (String pname : allPlayers.keySet()) {
                 CampaignMain.cm.toUser("Reporting error: Game had no winner.", pname, true);
+            }
             // set to reporting status
             so.changeStatus(ShortOperation.STATUS_REPORTING);
             CampaignMain.cm.getOpsManager().terminateOperation(so, OperationManager.TERM_REPORTINGERROR, null);
-            CampaignData.mwlog.errLog("Error while trying to Resolve game: "+so.getShortID()+" Result sent by Game: "+report);
+            CampaignData.mwlog.errLog("Error while trying to Resolve game: " + so.getShortID() + " Result sent by Game: " + report);
             return;
         }
 
@@ -292,38 +273,32 @@ public class ShortResolver {
         if (so.preCapturedUnits.size() > 0) {
 
             SPlayer winner = CampaignMain.cm.getPlayer(so.getAttackers().firstKey());
-            for (SUnit unit : so.preCapturedUnits)
+            for (SUnit unit : so.preCapturedUnits) {
                 winner.addUnit(unit, true);
+            }
         }
 
         // break units in living/salvagable/dead, etc.
-        this.possibleSalvageFromReport(reportTokenizer, so);
+        possibleSalvageFromReport(reportTokenizer, so);
 
         /*
-         * assemble the winner and loser strings, and the final status info
-         * string.
-         * 
-         * NOTE: This is where meta-impacts are applied. See method for more
-         * detailed comments on assignment of conquest %, thefts, etc.
+         * assemble the winner and loser strings, and the final status info string. NOTE: This is where meta-impacts are applied. See method for more detailed comments on assignment of conquest %, thefts, etc.
          */
-        this.assembleDescriptionStrings(o, so);
+        assembleDescriptionStrings(o, so);
 
         /*
-         * put together the salvage strings, and move units around. also
-         * determine cost of player's salvage. save these costs so they may be
-         * used to adjust players' paystrings.
+         * put together the salvage strings, and move units around. also determine cost of player's salvage. save these costs so they may be used to adjust players' paystrings.
          */
-        this.assembleSalvageStrings(o, so);
+        assembleSalvageStrings(o, so);
 
         /*
-         * Put together the payment strings, and pay the players. Adjust the
-         * actual game pay by salvage & tech/bay costs.
+         * Put together the payment strings, and pay the players. Adjust the actual game pay by salvage & tech/bay costs.
          */
-        this.assemblePaymentStrings(o, so, null);
+        assemblePaymentStrings(o, so, null);
 
         processCapturedUnits(so);
 
-        this.repodUnits(so, o);
+        repodUnits(so, o);
 
         /*
          * Check to see if this resolves a long operation.
@@ -339,8 +314,7 @@ public class ShortResolver {
         }
 
         /*
-         * Send messages to the players, remove them from fighting status, and
-         * inform them of any immunity they may have received.
+         * Send messages to the players, remove them from fighting status, and inform them of any immunity they may have received.
          */
         for (SPlayer currPlayer : allPlayers.values()) {
 
@@ -360,21 +334,23 @@ public class ShortResolver {
             if (scrapThreads.containsKey(currName)) {
 
                 // stop existing thread(s)
-                if (CampaignMain.cm.getOpsManager().getScrapThreads().containsKey(currName))
+                if (CampaignMain.cm.getOpsManager().getScrapThreads().containsKey(currName)) {
                     CampaignMain.cm.getOpsManager().getScrapThreads().get(currName).stopScrap();
+                }
 
                 // start new thread
                 Integer maxScrapPay = unitCosts.get(currName);
-                if (maxScrapPay == null)
+                if (maxScrapPay == null) {
                     maxScrapPay = new Integer(0);
+                }
                 scrapThreads.get(currName).setMaxPayment(maxScrapPay);
-                scrapThreads.get(currName).start();
+                scrapThreads.get(currName).run();
 
                 // move to manager
                 CampaignMain.cm.getOpsManager().getScrapThreads().put(currName, scrapThreads.remove(currName));
             }
 
-            this.contractFinishedInfo(currPlayer);
+            contractFinishedInfo(currPlayer);
 
             // refresh all armies and review all legal operations
             for (SArmy currA : currPlayer.getArmies()) {
@@ -387,10 +363,11 @@ public class ShortResolver {
 
             // set immunity && make unbusy
             CampaignMain.cm.getIThread().addImmunePlayer(currPlayer);
-            if (so.isFromReserve())
+            if (so.isFromReserve()) {
                 currPlayer.setFighting(false, true);
-            else
+            } else {
                 currPlayer.setFighting(false);
+            }
 
             CampaignMain.cm.toUser("PL|AAA|CLEAR", currPlayer.getName(), false);
             CampaignMain.cm.toUser("PL|GEA|CLEAR", currPlayer.getName(), false);
@@ -400,10 +377,7 @@ public class ShortResolver {
             currPlayer.checkForDemotion();
             currPlayer.setSave();
             /*
-             * Servers with AR generally force people to deactivate and repair.
-             * We set immunity above, despite the fact that players will never
-             * need it to avoid games, so they can scrap units without cost and
-             * reset in SOL.
+             * Servers with AR generally force people to deactivate and repair. We set immunity above, despite the fact that players will never need it to avoid games, so they can scrap units without cost and reset in SOL.
              */
             if (!so.isFromReserve() && CampaignMain.cm.getBooleanConfig("ForcedDeactivation")) {
                 currPlayer.setActive(false);
@@ -424,54 +398,47 @@ public class ShortResolver {
          */
         so.changeStatus(ShortOperation.STATUS_FINISHED);
         CampaignMain.cm.addGamesCompleted(1);
-        if (CampaignMain.cm.isUsingCyclops())
+        if (CampaignMain.cm.isUsingCyclops()) {
             CampaignMain.cm.getMWCC().opConclude(so);
-        if (o.getBooleanValue("ReportOpToNewsFeed"))
+        }
+        if (o.getBooleanValue("ReportOpToNewsFeed")) {
             CampaignMain.cm.addToNewsFeed(newsFeedTitle, newsFeedBody);
+        }
         so.getReporter().closeOperation(drawGame, attackersWon);
-        so.getReporter().commit();     
+        so.getReporter().commit();
 
     }// end resolveShortAttack
 
     /**
-     * Method which resolves a short operation in the absence of an autoreport -
-     * namely, when one player disconnected from a game for an inordinately long
-     * period of time.
-     * 
-     * Instead of processing a complete autoreport, this resolution pathway
-     * rebuilds the state of the game at the time of the disconnection using a
-     * TreeMap which contains the status of all units removed from the game up
-     * to that point (destroyed, salvage, etc).
-     * 
+     * Method which resolves a short operation in the absence of an autoreport - namely, when one player disconnected from a game for an inordinately long period of time. Instead of processing a complete autoreport, this resolution pathway rebuilds the state of the game at the time of the disconnection using a TreeMap which contains the status of all units removed from the game up to that point (destroyed, salvage, etc).
      */
     public void resolveShortAttack(Operation o, ShortOperation so, String winnerName, String loserName) {
 
         // reset any old trees/variables/etc
-        this.resetVariables();
+        resetVariables();
 
         // get the players
         SPlayer winner = CampaignMain.cm.getPlayer(winnerName);
         SPlayer loser = CampaignMain.cm.getPlayer(loserName);
 
         // return if the game is waiting
-        if (so.getStatus() != ShortOperation.STATUS_INPROGRESS)
+        if (so.getStatus() != ShortOperation.STATUS_INPROGRESS) {
             return;
+        }
 
         // set to reporting status
         so.changeStatus(ShortOperation.STATUS_REPORTING);
 
         /*
-         * Disconnect resolution is used only for games involving 2 players, and
-         * our winner and loser are fed to us here.
-         * 
-         * so.getWinners() = new TreeMap<String, SPlayer>(); so.getLosers() =
-         * new TreeMap<String, SPlayer>();
+         * Disconnect resolution is used only for games involving 2 players, and our winner and loser are fed to us here. so.getWinners() = new TreeMap<String, SPlayer>(); so.getLosers() = new TreeMap<String, SPlayer>();
          */
 
-        if (winner != null)
+        if (winner != null) {
             so.getWinners().put(winnerName.toLowerCase(), winner);
-        if (loser != null)
+        }
+        if (loser != null) {
             so.getLosers().put(loserName.toLowerCase(), loser);
+        }
 
         // return if there is no winner. terminate the game.
         if (so.getWinners().size() == 0) {
@@ -488,26 +455,25 @@ public class ShortResolver {
         }
 
         nonDestructionMode = o.getBooleanValue("NoDestructionMode");
-        
+
         /*
-         * Set up a Map with all of the players from the game. We know that only
-         * 2 players are involved; however, the allPlayers and allArmies maps
-         * are used in the salvage method and elsewhere, so this is needed to
-         * conform and use the same processing methods as an autoreport.
+         * Set up a Map with all of the players from the game. We know that only 2 players are involved; however, the allPlayers and allArmies maps are used in the salvage method and elsewhere, so this is needed to conform and use the same processing methods as an autoreport.
          */
         allPlayers = new TreeMap<String, SPlayer>();
         allArmies = new TreeMap<String, SArmy>();
 
         allPlayers.put(winnerName.toLowerCase(), winner);
         allPlayers.put(loserName.toLowerCase(), loser);
-        
+
         SArmy winnerA = null;
         SArmy loserA = null;
-        if (winner != null)
-        	winnerA = winner.getArmy(so.getAllPlayersAndArmies().get(winnerName.toLowerCase()));
-        if (loser != null)
-        	loserA = loser.getArmy(so.getAllPlayersAndArmies().get(loserName.toLowerCase()));
-        
+        if (winner != null) {
+            winnerA = winner.getArmy(so.getAllPlayersAndArmies().get(winnerName.toLowerCase()));
+        }
+        if (loser != null) {
+            loserA = loser.getArmy(so.getAllPlayersAndArmies().get(loserName.toLowerCase()));
+        }
+
         if (winnerA == null || winnerA.getPlayerName().trim().length() == 0) {
             CampaignMain.cm.toUser("Autoreporting error: Winner army null or had empty owner name.", winnerName, true);
             CampaignMain.cm.getOpsManager().terminateOperation(so, OperationManager.TERM_REPORTINGERROR, null);
@@ -526,47 +492,39 @@ public class ShortResolver {
         if (so.preCapturedUnits.size() > 0) {
 
             winner = CampaignMain.cm.getPlayer(so.getAttackers().firstKey());
-            for (SUnit unit : so.preCapturedUnits)
+            for (SUnit unit : so.preCapturedUnits) {
                 winner.addUnit(unit, true);
+            }
         }
 
         // break units in living/salvagable/dead, etc.
-        this.possibleSalvageFromInProgressInfo(so, loser);
+        possibleSalvageFromInProgressInfo(so, loser);
 
         /*
-         * assemble the winner and loser strings, and the final status info
-         * string.
-         * 
-         * NOTE: This is where meta-impacts are applied. See method for more
-         * detailed comments on assignment of conquest %, thefts, etc.
+         * assemble the winner and loser strings, and the final status info string. NOTE: This is where meta-impacts are applied. See method for more detailed comments on assignment of conquest %, thefts, etc.
          */
-        this.assembleDescriptionStrings(o, so);
+        assembleDescriptionStrings(o, so);
 
         /*
-         * put together the salvage strings, and move units around. also
-         * determine cost of player's salvage. save these costs so they may be
-         * used to adjust players' paystrings.
+         * put together the salvage strings, and move units around. also determine cost of player's salvage. save these costs so they may be used to adjust players' paystrings.
          */
-        this.assembleSalvageStrings(o, so);
+        assembleSalvageStrings(o, so);
 
         /*
-         * Put together the payment strings, and pay the players. Adjust the
-         * actual game pay by the salvage costs.
+         * Put together the payment strings, and pay the players. Adjust the actual game pay by the salvage costs.
          */
-        this.assemblePaymentStrings(o, so, loser);
+        assemblePaymentStrings(o, so, loser);
 
         processCapturedUnits(so);
 
-        this.repodUnits(so, o);
+        repodUnits(so, o);
         /*
          * Check to see if this resolves a long operation.
          */
         // if (so.getLongID() >= 0)
         // this.checkStatusOfRelatedLong();
         /*
-         * Unlock all participating armies. This may result in some oddities for
-         * players who are no longer connected, but its not going to kill the
-         * server.
+         * Unlock all participating armies. This may result in some oddities for players who are no longer connected, but its not going to kill the server.
          */
         for (SArmy currA : allArmies.values()) {
             currA.setLocked(false);
@@ -574,14 +532,14 @@ public class ShortResolver {
         }
 
         /*
-         * Send messages to the winner, remove them from fighting status, and
-         * inform him of any immunity he may have received.
+         * Send messages to the winner, remove them from fighting status, and inform him of any immunity he may have received.
          */
 
         // send message
         String winName = "";
-        if(winner != null)
-        	winName = winner.getName().toLowerCase();
+        if (winner != null) {
+            winName = winner.getName().toLowerCase();
+        }
         String toSend = "Time expired. GAME RESOLVED AUTOMATICALLY.<br>" + metaStrings.get(winName) + unitStrings.get(winName) + payStrings.get(winName);// +
         // longStrings.get(winName);
         CampaignMain.cm.toUser(toSend, winName, true);
@@ -591,42 +549,44 @@ public class ShortResolver {
 
         // update operations and set unbusy. we know the loser isn't
         // online, so we only need to send to the winner.
-        if (winner != null)
-        	for (SArmy currA : winner.getArmies()) {
-        		currA.setBV(0);
-        		CampaignMain.cm.toUser("PL|SAD|" + currA.toString(true, "%"), currA.getPlayerName(), false);
-        		CampaignMain.cm.getOpsManager().checkOperations(currA, true);
-        	}
+        if (winner != null) {
+            for (SArmy currA : winner.getArmies()) {
+                currA.setBV(0);
+                CampaignMain.cm.toUser("PL|SAD|" + currA.toString(true, "%"), currA.getPlayerName(), false);
+                CampaignMain.cm.getOpsManager().checkOperations(currA, true);
+            }
+        }
 
         // start scrap thread
         if (scrapThreads.containsKey(winName)) {
             Integer maxScrapPay = unitCosts.get(winName);
-            if (maxScrapPay == null || maxScrapPay < 0)
+            if (maxScrapPay == null || maxScrapPay < 0) {
                 maxScrapPay = new Integer(0);
+            }
             scrapThreads.get(winName).setMaxPayment(maxScrapPay);
             scrapThreads.get(winName).start();
-            if (CampaignMain.cm.getOpsManager().getScrapThreads().containsKey(winName))
+            if (CampaignMain.cm.getOpsManager().getScrapThreads().containsKey(winName)) {
                 CampaignMain.cm.getOpsManager().getScrapThreads().get(winName).stopScrap();
+            }
 
             // move the thread to the manager
             CampaignMain.cm.getOpsManager().getScrapThreads().put(winName, scrapThreads.remove(winName));
         }
-        
-        if (winner != null)
-        	winner.resetWeightedArmyNumber();
+
+        if (winner != null) {
+            winner.resetWeightedArmyNumber();
+        }
 
         // set immunity && make unbusy
         CampaignMain.cm.getIThread().addImmunePlayer(winner);
-        if (so.isFromReserve() && winner != null)
+        if (so.isFromReserve() && winner != null) {
             winner.setFighting(false, true);// return AFR players to reserve
-        else if (winner != null)
+        } else if (winner != null) {
             winner.setFighting(false);
+        }
 
         /*
-         * Servers with AR generally force people to deactivate and repair. We
-         * set immunity above, despite the fact that players will never need it
-         * to avoid games, so they can scrap units without cost and reset in
-         * SOL.
+         * Servers with AR generally force people to deactivate and repair. We set immunity above, despite the fact that players will never need it to avoid games, so they can scrap units without cost and reset in SOL.
          */
         if (!so.isFromReserve() && CampaignMain.cm.getBooleanConfig("ForcedDeactivation") && winner != null) {
             winner.setActive(false);
@@ -637,20 +597,22 @@ public class ShortResolver {
         CampaignMain.cm.sendPlayerStatusUpdate(winner, true);
 
         /*
-         * Send the message to the loser/disconnector. The player is offline, so
-         * their status and immunity time are not concerns at the moment.
+         * Send the message to the loser/disconnector. The player is offline, so their status and immunity time are not concerns at the moment.
          */
         String loseName = "";
-        if(loser != null)
-        	loseName = loser.getName().toLowerCase();
+        if (loser != null) {
+            loseName = loser.getName().toLowerCase();
+        }
         toSend = "You were disconnected too long. GAME RESOLVED AUTOMATICALLY.<br>" + metaStrings.get(loseName) + unitStrings.get(loseName) + payStrings.get(loseName);// +
         // longStrings.get(loseName);
         CampaignMain.cm.toUser(toSend, loseName, true);
 
-        if (winner != null)
-        	winner.setSave();
-        if(loser != null)
-        	loser.setSave();
+        if (winner != null) {
+            winner.setSave();
+        }
+        if (loser != null) {
+            loser.setSave();
+        }
         // stick the result into the human readable result log, per RFE1479311.
         CampaignData.mwlog.resultsLog(toSend);
 
@@ -667,30 +629,31 @@ public class ShortResolver {
         CampaignMain.cm.addGamesCompleted(1);
 
         // send to cyclops, if using Guibod-style info tracking
-        if (CampaignMain.cm.isUsingCyclops())
+        if (CampaignMain.cm.isUsingCyclops()) {
             CampaignMain.cm.getMWCC().opConclude(so);
+        }
 
         // send to news feed, if the server ops believe this is a "meaningful"
         // game
-        if (o.getBooleanValue("ReportOpToNewsFeed"))
+        if (o.getBooleanValue("ReportOpToNewsFeed")) {
             CampaignMain.cm.addToNewsFeed(newsFeedTitle, newsFeedBody);
-        
-        if(winner != null) {
-        	winner.checkForPromotion();
-        	winner.checkForDemotion();
-        	winner.setSave();
         }
-        if(loser != null) {
-        	loser.checkForPromotion();
-        	loser.checkForDemotion();
-        	loser.setSave();
+
+        if (winner != null) {
+            winner.checkForPromotion();
+            winner.checkForDemotion();
+            winner.setSave();
         }
-        
+        if (loser != null) {
+            loser.checkForPromotion();
+            loser.checkForDemotion();
+            loser.setSave();
+        }
+
     }
 
     /**
-     * Method which determines the payment which should be given to each player,
-     * adjusts the payment for salvage costs, and triggers the pay of techs.
+     * Method which determines the payment which should be given to each player, adjusts the payment for salvage costs, and triggers the pay of techs.
      */
     private void assemblePaymentStrings(Operation o, ShortOperation so, SPlayer disconnector) {
 
@@ -713,30 +676,36 @@ public class ShortResolver {
 
         // adjust the base values for total BV, if configured to do so.
         int attackerTotalBVMoneyAdjustment = o.getIntValue("AttackerPayBVforCBill");
-        if (attackerTotalBVMoneyAdjustment > 0)
+        if (attackerTotalBVMoneyAdjustment > 0) {
             baseAttackerMoneyPay += Math.floor(so.getStartingBV() / attackerTotalBVMoneyAdjustment);
+        }
 
         int defenderTotalBVMoneyAdjustment = o.getIntValue("DefenderPayBVforCBill");
-        if (defenderTotalBVMoneyAdjustment > 0)
+        if (defenderTotalBVMoneyAdjustment > 0) {
             baseDefenderMoneyPay += Math.floor(so.getStartingBV() / defenderTotalBVMoneyAdjustment);
+        }
 
         // do the total influence adjustments
         int attackerTotalBVFluAdjustment = o.getIntValue("AttackerPayBVforInfluence");
-        if (attackerTotalBVFluAdjustment > 0)
+        if (attackerTotalBVFluAdjustment > 0) {
             baseAttackerFluPay += Math.floor(so.getStartingBV() / attackerTotalBVFluAdjustment);
+        }
 
         int defenderTotalBVFluAdjustment = o.getIntValue("DefenderPayBVforInfluence");
-        if (defenderTotalBVFluAdjustment > 0)
+        if (defenderTotalBVFluAdjustment > 0) {
             baseDefenderFluPay += Math.floor(so.getStartingBV() / defenderTotalBVFluAdjustment);
+        }
 
         // do the exp adjustments
         int attackerTotalBVXPAdjustment = o.getIntValue("AttackerPayBVforExperience");
-        if (attackerTotalBVXPAdjustment > 0)
+        if (attackerTotalBVXPAdjustment > 0) {
             baseAttackerExperiencePay += Math.floor(so.getStartingBV() / attackerTotalBVXPAdjustment);
+        }
 
         int defenderTotalBVXPAdjustment = o.getIntValue("DefenderPayBVforExperience");
-        if (defenderTotalBVXPAdjustment > 0)
+        if (defenderTotalBVXPAdjustment > 0) {
             baseDefenderExperiencePay += Math.floor(so.getStartingBV() / defenderTotalBVXPAdjustment);
+        }
 
         // Building Payments.
         // make sure that it wasn't a building map that they fought on and the
@@ -747,58 +716,58 @@ public class ShortResolver {
             buildingsDestroyed = totalBuildings - buildingsLeft;
 
             // attacker won but didn't get to destroy all the buildings.
-            if (attackerisWinner(so))
+            if (attackerisWinner(so)) {
                 buildingsDestroyed = Math.max(buildingsDestroyed, o.getIntValue("AttackerMinBuildingsIfAttackerWins"));
+            }
 
             // attacker only gets paid if they destroyed the minimum amount of
             // buildings.
             if (buildingsDestroyed >= minBuildings) {
                 int attackerBuildingXPAdjustment = o.getIntValue("AttackerExpPerBuilding");
-                if (attackerBuildingXPAdjustment != 0)
+                if (attackerBuildingXPAdjustment != 0) {
                     baseAttackerExperiencePay += (attackerBuildingXPAdjustment * buildingsDestroyed);
+                }
 
                 int attackerBuildingFluAdjustment = o.getIntValue("AttackerFluPerBuilding");
-                if (attackerBuildingFluAdjustment != 0)
+                if (attackerBuildingFluAdjustment != 0) {
                     baseAttackerFluPay += (attackerBuildingFluAdjustment * buildingsDestroyed);
+                }
 
                 int attackerBuildingRPAdjustment = o.getIntValue("AttackerRPPerBuilding");
-                if (attackerBuildingRPAdjustment != 0)
+                if (attackerBuildingRPAdjustment != 0) {
                     baseAttackerRewardPointsPay += (attackerBuildingRPAdjustment * buildingsDestroyed);
+                }
 
                 int attackerBuildingMoneyAdjustment = o.getIntValue("AttackerMoneyPerBuilding");
-                if (attackerBuildingMoneyAdjustment != 0)
+                if (attackerBuildingMoneyAdjustment != 0) {
                     baseAttackerMoneyPay += (attackerBuildingMoneyAdjustment * buildingsDestroyed);
+                }
             }// end if buildingsDestroyed !== minBuildings
 
             // defender gets paid if their are any buildings left
             int defenderBuildingXPAdjustment = o.getIntValue("DefenderExpPerBuilding");
-            if (defenderBuildingXPAdjustment != 0)
+            if (defenderBuildingXPAdjustment != 0) {
                 baseDefenderExperiencePay += (defenderBuildingXPAdjustment * buildingsLeft);
+            }
 
             int defenderBuildingFluAdjustment = o.getIntValue("DefenderFluPerBuilding");
-            if (defenderBuildingFluAdjustment != 0)
+            if (defenderBuildingFluAdjustment != 0) {
                 baseDefenderFluPay += (defenderBuildingFluAdjustment * buildingsLeft);
+            }
 
             int defenderBuildingRPAdjustment = o.getIntValue("DefenderRPPerBuilding");
-            if (defenderBuildingRPAdjustment != 0)
+            if (defenderBuildingRPAdjustment != 0) {
                 baseDefenderRewardPointsPay += (defenderBuildingRPAdjustment * buildingsLeft);
+            }
 
             int defenderBuildingMoneyAdjustment = o.getIntValue("DefenderMoneyPerBuilding");
-            if (defenderBuildingMoneyAdjustment != 0)
+            if (defenderBuildingMoneyAdjustment != 0) {
                 baseDefenderMoneyPay += (defenderBuildingMoneyAdjustment * buildingsLeft);
+            }
         }
 
         /*
-         * Loop through all players in the set. Draw a name from the keyset and
-         * get the latest copy of the SPlayer from campaign main. This is less
-         * than ideal. Once we can guarantee that all SPlayers are updated as
-         * players leave/join. we can use the players directly.
-         * 
-         * Loading ops values in the loop looks inefficient; however, for 1 v 1
-         * games in loop loads are actually more efficient than preloading -
-         * youre going to take a combination of 2 payment paths one time each,
-         * not all 4. Break even in team 2 v 2's, would be better off
-         * prefetching with large melees.
+         * Loop through all players in the set. Draw a name from the keyset and get the latest copy of the SPlayer from campaign main. This is less than ideal. Once we can guarantee that all SPlayers are updated as players leave/join. we can use the players directly. Loading ops values in the loop looks inefficient; however, for 1 v 1 games in loop loads are actually more efficient than preloading - youre going to take a combination of 2 payment paths one time each, not all 4. Break even in team 2 v 2's, would be better off prefetching with large melees.
          */
         int discoPayPercent = CampaignMain.cm.getIntegerConfig("DisconnectionPayPercentage");
         for (String currName : allPlayers.keySet()) {
@@ -809,20 +778,21 @@ public class ShortResolver {
             CampaignMain.cm.toUser("PL|STN|" + -1, currName, false);
 
             /*
-             * If the player disconnected, tell him that he gets no payment or
-             * reduced payment, then continue normally.
+             * If the player disconnected, tell him that he gets no payment or reduced payment, then continue normally.
              */
             if (disconnector != null && disconnector.getName().toLowerCase().equals(currName)) {
 
                 // if the disco pay is 0, no pay
                 String modString = "";
-                if (discoPayPercent <= 0)
+                if (discoPayPercent <= 0) {
                     modString = "You received no pay for the game because you disconnected.";
-                else if (discoPayPercent > 0)
+                } else if (discoPayPercent > 0) {
                     modString = "You received reduced pay for the game because you disconnected.";
+                }
 
-                if (discoPayPercent > 100)
+                if (discoPayPercent > 100) {
                     discoPayPercent = 100;
+                }
 
                 payStrings.put(currName, modString);
             }
@@ -834,11 +804,7 @@ public class ShortResolver {
             int earnedRP = 0;
 
             /*
-             * Check to see if all should be paid as so.getWinners(). Note that
-             * salvage has already happened, as have meta impacts (% exchanges
-             * and unit thefts, for example). At thie point it is safe to move
-             * ALL so.getLosers() into the so.getWinners() tree for payment
-             * purposes.
+             * Check to see if all should be paid as so.getWinners(). Note that salvage has already happened, as have meta impacts (% exchanges and unit thefts, for example). At thie point it is safe to move ALL so.getLosers() into the so.getWinners() tree for payment purposes.
              */
             boolean payAllAsWinners = o.getBooleanValue("PayAllAsWinners");
             if (payAllAsWinners) {
@@ -847,15 +813,7 @@ public class ShortResolver {
             }
 
             /*
-             * Payment breaks into 4 primary situations, each of which has its
-             * own configurable modifiers.
-             * 
-             * 1 - winning attacker 2 - winning defender 3 - losing attacker 4 -
-             * losing defender
-             * 
-             * First determine whether player is an attacker or defender and set
-             * the base. Then check his winner/loser status and modify his
-             * payments.
+             * Payment breaks into 4 primary situations, each of which has its own configurable modifiers. 1 - winning attacker 2 - winning defender 3 - losing attacker 4 - losing defender First determine whether player is an attacker or defender and set the base. Then check his winner/loser status and modify his payments.
              */
 
             // if it was a building op report the damage done.
@@ -879,12 +837,15 @@ public class ShortResolver {
                     double moneyMod = 1 + o.getDoubleValue("AttackerWinModifierCBillsPercent") / 100;
                     double fluMod = 1 + o.getDoubleValue("AttackerWinModifierInfluencePercent") / 100;
                     double expMod = 1 + o.getDoubleValue("AttackerWinModifierExperiencePercent") / 100;
-                    if (moneyMod > 0)
+                    if (moneyMod > 0) {
                         earnedMoney *= moneyMod;
-                    if (fluMod > 0)
+                    }
+                    if (fluMod > 0) {
                         earnedFlu *= fluMod;
-                    if (expMod > 0)
+                    }
+                    if (expMod > 0) {
                         earnedXP *= expMod;
+                    }
 
                 } else if (so.getLosers().containsKey(currName)) {
 
@@ -897,28 +858,33 @@ public class ShortResolver {
                     double moneyMod = 1 - o.getDoubleValue("AttackerLossModifierCBillsPercent") / 100;
                     double fluMod = 1 - o.getDoubleValue("AttackerLossModifierInfluencePercent") / 100;
                     double expMod = 1 - o.getDoubleValue("AttackerLossModifierExperiencePercent") / 100;
-                    if (moneyMod > 0)
+                    if (moneyMod > 0) {
                         earnedMoney *= moneyMod;
-                    if (fluMod > 0)
+                    }
+                    if (fluMod > 0) {
                         earnedFlu *= fluMod;
-                    if (expMod > 0)
+                    }
+                    if (expMod > 0) {
                         earnedXP *= expMod;
+                    }
 
-                    if (o.getBooleanValue("OnlyGiveRPtoWinners"))
+                    if (o.getBooleanValue("OnlyGiveRPtoWinners")) {
                         earnedRP = 0;
+                    }
                 }
                 if (buildingsLeft > -1) {
                     int totalBuildings = so.getTotalBuildings();
                     int minBuildings = so.getMinBuildings();
 
-                    if (buildingsDestroyed == 0)
+                    if (buildingsDestroyed == 0) {
                         buildingReport = "<b>Mission Report: Failed</b><br>You did not manage to destroy a single enemy facility!<br>";
-                    else if (buildingsDestroyed == totalBuildings)
+                    } else if (buildingsDestroyed == totalBuildings) {
                         buildingReport = "<b>Mission Report: Success</b><br>You managed to destroy all of the enemies facilities!<br>";
-                    else if (buildingsDestroyed >= minBuildings)
+                    } else if (buildingsDestroyed >= minBuildings) {
                         buildingReport = "<b>Mission Report: Success</b><br>You managed to destroy " + buildingsDestroyed + " out of " + totalBuildings + " facilities!<br>";
-                    else
+                    } else {
                         buildingReport = "<b>Mission Report: Failed</b><br>You only managed to destroy " + buildingsDestroyed + " out of " + totalBuildings + " facilities!<br>";
+                    }
                 }
             }// end if(is attacker)
 
@@ -941,12 +907,15 @@ public class ShortResolver {
                     double moneyMod = 1 + o.getDoubleValue("DefenderWinModifierCBillsPercent") / 100;
                     double fluMod = 1 + o.getDoubleValue("DefenderWinModifierInfluencePercent") / 100;
                     double expMod = 1 + o.getDoubleValue("DefenderWinModifierExperiencePercent") / 100;
-                    if (moneyMod > 0)
+                    if (moneyMod > 0) {
                         earnedMoney *= moneyMod;
-                    if (fluMod > 0)
+                    }
+                    if (fluMod > 0) {
                         earnedFlu *= fluMod;
-                    if (expMod > 0)
+                    }
+                    if (expMod > 0) {
                         earnedXP *= expMod;
+                    }
 
                 } else if (so.getLosers().containsKey(currName)) {
 
@@ -959,29 +928,34 @@ public class ShortResolver {
                     double moneyMod = 1 - o.getDoubleValue("DefenderLossModifierCBillsPercent") / 100;
                     double fluMod = 1 - o.getDoubleValue("DefenderLossModifierInfluencePercent") / 100;
                     double expMod = 1 - o.getDoubleValue("DefenderLossModifierExperiencePercent") / 100;
-                    if (moneyMod > 0)
+                    if (moneyMod > 0) {
                         earnedMoney *= moneyMod;
-                    if (fluMod > 0)
+                    }
+                    if (fluMod > 0) {
                         earnedFlu *= fluMod;
-                    if (expMod > 0)
+                    }
+                    if (expMod > 0) {
                         earnedXP *= expMod;
+                    }
 
-                    if (o.getBooleanValue("OnlyGiveRPtoWinners"))
+                    if (o.getBooleanValue("OnlyGiveRPtoWinners")) {
                         earnedRP = 0;
+                    }
                 }
 
                 if (buildingsLeft > -1) {
                     int totalBuildings = so.getTotalBuildings();
                     int minBuildings = so.getMinBuildings();
 
-                    if (buildingsDestroyed == 0)
+                    if (buildingsDestroyed == 0) {
                         buildingReport = "<b>Mission Report: Success</b><br>You to stop the enemy from destroing any facilites!<br>";
-                    else if (buildingsDestroyed == totalBuildings)
+                    } else if (buildingsDestroyed == totalBuildings) {
                         buildingReport = "<b>Mission Report: Failed</b><br>You managed to allow the enemy to destroy all our facilites!<br>";
-                    else if (buildingsDestroyed >= minBuildings)
+                    } else if (buildingsDestroyed >= minBuildings) {
                         buildingReport = "<b>Mission Report: Failed</b><br>You managed to allow the enemy to destroy " + buildingsDestroyed + " out of " + totalBuildings + " facilities!<br>";
-                    else
+                    } else {
                         buildingReport = "<b>Mission Report: Success</b><br>The enemy destroyed only " + buildingsDestroyed + " out of " + totalBuildings + " facilities!<br>";
+                    }
                 }
 
             }// end else if(is defender)
@@ -997,18 +971,18 @@ public class ShortResolver {
             }
 
             /*
-             * Now that we know what homeboy is getting paid, we need to check
-             * eligibility for payment (SOL games) and adjust the cash for
-             * repair and salvage costs.
+             * Now that we know what homeboy is getting paid, we need to check eligibility for payment (SOL games) and adjust the cash for repair and salvage costs.
              */
             int salvageAndRepairCosts = 0;
-            if (unitCosts.containsKey(currName) && !CampaignMain.cm.isUsingAdvanceRepair())
+            if (unitCosts.containsKey(currName) && !CampaignMain.cm.isUsingAdvanceRepair()) {
                 salvageAndRepairCosts = unitCosts.get(currName);
+            }
 
             // load his loss compensation, if any.
             int battleLossCompensation = 0;
-            if (lossCompensation.containsKey(currName))
+            if (lossCompensation.containsKey(currName)) {
                 battleLossCompensation = lossCompensation.get(currName);
+            }
 
             // Check to make sure the battle did enough damage to reward
             // everything.
@@ -1016,11 +990,7 @@ public class ShortResolver {
             // reduced.
             double minBVDifference = o.getDoubleValue("MinBVDifferenceForFullPay");
             /*
-             * CampaignData.mwlog.debugLog("Loser BV: Current: "+currentBV+" Starting
-             * BV: "+loserBV+" minBVDiff: "+minBVDifference);
-             * CampaignData.mwlog.debugLog("Total BV Lost: "+(1.0 - ((double)
-             * currentBV / (double) loserBV))); CampaignData.mwlog.debugLog("Money
-             * Earned: "+earnedMoney);
+             * CampaignData.mwlog.debugLog("Loser BV: Current: "+currentBV+" Starting BV: "+loserBV+" minBVDiff: "+minBVDifference); CampaignData.mwlog.debugLog("Total BV Lost: "+(1.0 - ((double) currentBV / (double) loserBV))); CampaignData.mwlog.debugLog("Money Earned: "+earnedMoney);
              */
             if (minBVDifference > 0 && (1.0 - ((double) currentBV / (double) loserBV)) < minBVDifference && disconnector == null && so.getLosers().containsKey(currName)) {
                 int minBVvPenaltyMod = o.getIntValue("BVFailurePaymentModifier");
@@ -1032,22 +1002,22 @@ public class ShortResolver {
             // CampaignData.mwlog.debugLog("Money Earned: "+earnedMoney);
 
             /*
-             * Determine how much to play the players technicians (or, if using
-             * AR, the bay rental fee).
+             * Determine how much to play the players technicians (or, if using AR, the bay rental fee).
              */
             int techPayment = 0;
-            if (o.getBooleanValue("PayTechsForGame"))
+            if (o.getBooleanValue("PayTechsForGame")) {
                 techPayment = currP.getCurrentTechPayment();
+            }
 
             /*
-             * Put together the actual string to show our bold hero, and add the
-             * earned amounts to their accounts.
+             * Put together the actual string to show our bold hero, and add the earned amounts to their accounts.
              */
             StringBuilder toSave = new StringBuilder();
 
             // Prepend the building report, if there is one.
-            if (buildingReport.length() > 1)
+            if (buildingReport.length() > 1) {
                 toSave.append(buildingReport);
+            }
 
             // Don't allow 0 base pay
             earnedMoney = Math.max(earnedMoney, 0);
@@ -1075,10 +1045,7 @@ public class ShortResolver {
                 int availMoney = Math.max(currP.getMoney() + actualPay, 0);
 
                 /*
-                 * If the tech payment is greater than the amount the player has
-                 * available, including both the pay from this game and pre-game
-                 * funds, some of the techs will quit or bays will be seized by
-                 * their owners.
+                 * If the tech payment is greater than the amount the player has available, including both the pay from this game and pre-game funds, some of the techs will quit or bays will be seized by their owners.
                  */
                 int techsLost = 0;
                 if (techPayment > availMoney) {
@@ -1094,8 +1061,7 @@ public class ShortResolver {
                 }
 
                 /*
-                 * If the player loses techs, set some units to be unmaintained
-                 * and store a warning string to add to the final message.
+                 * If the player loses techs, set some units to be unmaintained and store a warning string to add to the final message.
                  */
                 if (techsLost > 0 && currP.getTechnicians() < 0) {
 
@@ -1115,14 +1081,24 @@ public class ShortResolver {
 
                 toSave.append("Net Pay: " + CampaignMain.cm.moneyOrFluMessage(true, false, actualPay, true) + " (");
                 toSave.append("Gross Pay: " + CampaignMain.cm.moneyOrFluMessage(true, false, earnedMoney, true) + ", ");
-                if (battleLossCompensation > 0)
+                if (battleLossCompensation > 0) {
                     toSave.append("Battle Loss Comp: +" + CampaignMain.cm.moneyOrFluMessage(true, false, battleLossCompensation) + ", ");
-                if (salvageAndRepairCosts > 0)
-                    toSave.append("Salvage & Repair: -" + CampaignMain.cm.moneyOrFluMessage(true, false, salvageAndRepairCosts) + ", ");
-                if (techPayment > 0 && CampaignMain.cm.isUsingAdvanceRepair())
-                    toSave.append("Bay Rental: -" + CampaignMain.cm.moneyOrFluMessage(true, false, techPayment) + ", ");
-                else if (techPayment > 0)
-                    toSave.append("Techs: -" + CampaignMain.cm.moneyOrFluMessage(true, false, techPayment) + ", ");
+                }
+                if (salvageAndRepairCosts > 0) {
+
+                    if (CampaignMain.cm.isUsingAdvanceRepair()) {
+                        toSave.append("Salvage Costs: -" + CampaignMain.cm.moneyOrFluMessage(true, false, salvageAndRepairCosts) + ", ");
+                    } else {
+                        toSave.append("Salvage & Repair: -" + CampaignMain.cm.moneyOrFluMessage(true, false, salvageAndRepairCosts) + ", ");
+                    }
+                }
+                if (techPayment > 0) {
+                    if (CampaignMain.cm.isUsingAdvanceRepair()) {
+                        toSave.append("Bay Rental: -" + CampaignMain.cm.moneyOrFluMessage(true, false, techPayment) + ", ");
+                    } else {
+                        toSave.append("Techs: -" + CampaignMain.cm.moneyOrFluMessage(true, false, techPayment) + ", ");
+                    }
+                }
 
                 int commaIndex = toSave.lastIndexOf(", ");
                 toSave = toSave.replace(commaIndex, commaIndex + 2, ")");
@@ -1140,8 +1116,9 @@ public class ShortResolver {
 
             if (earnedXP > 0) {
 
-                if (hasOtherGain)
+                if (hasOtherGain) {
                     tempBuilder.append(", ");
+                }
 
                 tempBuilder.append(earnedXP + "XP");
                 currP.addExperience(earnedXP, false);
@@ -1151,8 +1128,9 @@ public class ShortResolver {
 
             if (earnedRP > 0) {
 
-                if (hasOtherGain)
+                if (hasOtherGain) {
                     tempBuilder.append(", ");
+                }
 
                 tempBuilder.append(earnedRP + "RP");
                 currP.addReward(earnedRP);
@@ -1166,8 +1144,9 @@ public class ShortResolver {
 
                 // try to remove the last instance of ", "
                 int lastComma = tempBuilder.lastIndexOf(", ");
-                if (lastComma >= 0)
+                if (lastComma >= 0) {
                     tempBuilder.replace(lastComma, lastComma + 1, " and");
+                }
 
                 toSave.append("<br>You earned " + tempBuilder.toString());
             }
@@ -1175,14 +1154,17 @@ public class ShortResolver {
             if (hasMoneyGain || hasOtherGain) {
 
                 // add link to use RP, if earned.
-                if (earnedRP > 0)
+                if (earnedRP > 0) {
                     toSave.append(" [<a href=\"MWUSERP\">Use RP</a>]");
+                }
 
                 // add firing and maint info
-                if (techFiringWarning.length() > 0)
+                if (techFiringWarning.length() > 0) {
                     toSave.append("<br>" + techFiringWarning);
-                if (unmaintainedUnitWarning.length() > 0)
+                }
+                if (unmaintainedUnitWarning.length() > 0) {
                     toSave.append("<br>" + unmaintainedUnitWarning);
+                }
 
                 // set the player's payString
                 payStrings.put(currName, toSave.toString());
@@ -1207,10 +1189,7 @@ public class ShortResolver {
             double oldLoserRating = lp.getRating();
 
             /*
-             * Tasks used to give a larger rating change for big games, but it
-             * was an arbitrary unit count ...
-             * 
-             * TODO: Re-approach weighting.
+             * Tasks used to give a larger rating change for big games, but it was an arbitrary unit count ... TODO: Re-approach weighting.
              */
             wp.setRating(ELORanking.getNewRatingWinner(oldWinnerRating, oldLoserRating, 8));
             lp.setRating(ELORanking.getNewRatingLoser(oldWinnerRating, oldLoserRating, 8));
@@ -1237,14 +1216,14 @@ public class ShortResolver {
         }// end if(should adjust ELO)
 
         /*
-         * Add clickable defection link for SOL players, if they have enough XP
-         * to leave the training faction.
+         * Add clickable defection link for SOL players, if they have enough XP to leave the training faction.
          */
         for (String currName : allPlayers.keySet()) {
 
             SPlayer currP = CampaignMain.cm.getPlayer(currName);
-            if (!currP.getHouseFightingFor().isNewbieHouse())
+            if (!currP.getHouseFightingFor().isNewbieHouse()) {
                 continue;
+            }
 
             if (currP.getExperience() >= CampaignMain.cm.getIntegerConfig("MinEXPforDefecting")) {
                 String oldString = payStrings.get(currP.getName().toLowerCase());
@@ -1256,14 +1235,7 @@ public class ShortResolver {
     }// end assemblePaymentStrings
 
     /**
-     * Method which determines player salvage and generates unique strings.
-     * Salvage costs are also determined and saved here; however, they are saved
-     * for use in the mathod which generates payStrings rather than shown
-     * directly to the players.
-     * 
-     * Determination as to which units are salvageable, which pilots survived
-     * the game, etc. should already have been made by one of two methods: -
-     * possibleSalvageFromReport(), or - possibleSalvageFromDisconnection
+     * Method which determines player salvage and generates unique strings. Salvage costs are also determined and saved here; however, they are saved for use in the mathod which generates payStrings rather than shown directly to the players. Determination as to which units are salvageable, which pilots survived the game, etc. should already have been made by one of two methods: - possibleSalvageFromReport(), or - possibleSalvageFromDisconnection
      */
     private void assembleSalvageStrings(Operation o, ShortOperation so) {
 
@@ -1274,9 +1246,7 @@ public class ShortResolver {
         scrapThreads = new TreeMap<String, OpsScrapThread>();
 
         /*
-         * Immediately check to see if this is a no-destruction game. If so,
-         * move ALL units from salvaged into living and clear out the pilots
-         * hash.
+         * Immediately check to see if this is a no-destruction game. If so, move ALL units from salvaged into living and clear out the pilots hash.
          */
         if (nonDestructionMode) {
             livingUnits.putAll(salvagableUnits);
@@ -1287,9 +1257,7 @@ public class ShortResolver {
         }
 
         /*
-         * First, dispose of the living units. Iterate through the survivors,
-         * adding experience to each and trying to level up those which belong
-         * to so.getWinners().
+         * First, dispose of the living units. Iterate through the survivors, adding experience to each and trying to level up those which belong to so.getWinners().
          */
         for (OperationEntity currEntity : livingUnits.values()) {
 
@@ -1298,9 +1266,7 @@ public class ShortResolver {
             SPlayer owner = CampaignMain.cm.getPlayer(ownerName);
 
             /*
-             * Null owners boggle my mind. Lets throw an error and look for some
-             * kind of pattern. Skip to the next unit and allow normal
-             * resolution.
+             * Null owners boggle my mind. Lets throw an error and look for some kind of pattern. Skip to the next unit and allow normal resolution.
              */
             if (owner == null) {
                 CampaignData.mwlog.errLog("Null _owner_ while processing post-game salvage for " + " Attack #" + so.getShortID() + ". Needed to find Player: " + ownerName + " Unit #" + currEntity.getID() + "/Type: " + currEntity.getType());
@@ -1312,13 +1278,15 @@ public class ShortResolver {
             // Attacker was able to flee the unit so that means they get to keep
             // it even if they
             // Lost the battle
-            if (currEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_IN_RETREAT || currEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_PUSHED)
+            if (currEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_IN_RETREAT || currEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_PUSHED) {
                 removePreCaptured(so, currU.getId());
+            }
 
             // apply battle damage if there is any to be applied.
             try {
-                if (!nonDestructionMode && currEntity.getUnitDamage().trim().length() > 0)
+                if (!nonDestructionMode && currEntity.getUnitDamage().trim().length() > 0) {
                     UnitUtils.applyBattleDamage(currU.getEntity(), currEntity.getUnitDamage(), false);
+                }
             } catch (Exception ex) {
                 CampaignData.mwlog.errLog("Unable to apply damage to unit " + currU.getModelName());
                 CampaignData.mwlog.errLog(ex);
@@ -1354,16 +1322,7 @@ public class ShortResolver {
         }// end foreach(living unit)
 
         /*
-         * Now that we've handled the living units, look at the salvageable
-         * units and determine who ends up with the unit. Need to forumulate 2
-         * or 3 Strings. 1 to tell the original player what happened to the
-         * unit, 1 to tell all other players what happened to the unit, and 1
-         * (if the owner is not the same as the original owner) to tell the new
-         * owner of his prize ...
-         * 
-         * Also, salvaged units *may* earn kills if their pilots are still alive
-         * and they are returned to their original owners. In this case, the
-         * pilots get kill XP, but do not gain any game-play XP.
+         * Now that we've handled the living units, look at the salvageable units and determine who ends up with the unit. Need to forumulate 2 or 3 Strings. 1 to tell the original player what happened to the unit, 1 to tell all other players what happened to the unit, and 1 (if the owner is not the same as the original owner) to tell the new owner of his prize ... Also, salvaged unitsmay earn kills if their pilots are still alive and they are returned to their original owners. In this case, the pilots get kill XP, but do not gain any game-play XP.
          */
         boolean winnerAlwaysSalvagesOwn = o.getBooleanValue("WinnerAlwaysSalvagesOwnUnits");
 
@@ -1386,24 +1345,21 @@ public class ShortResolver {
 
             // apply battle damage if there is any to be applied.
             try {
-                if (currEntity.getUnitDamage().trim().length() > 0)
+                if (currEntity.getUnitDamage().trim().length() > 0) {
                     UnitUtils.applyBattleDamage(currU.getEntity(), currEntity.getUnitDamage(), false);
+                }
             } catch (Exception ex) {
                 CampaignData.mwlog.errLog("Unable to apply damage to unit " + currU.getModelName());
                 CampaignData.mwlog.errLog(ex);
             }
 
             /*
-             * See the comments for setupPilotString for array information. This
-             * is a fragile array - needs specific objects in specific indices,
-             * or reporting will fail.
+             * See the comments for setupPilotString for array information. This is a fragile array - needs specific objects in specific indices, or reporting will fail.
              */
-            Object[] pilotinformation = this.setupPilotStringForUnit(currEntity, currU, so.getTargetWorld());
+            Object[] pilotinformation = setupPilotStringForUnit(currEntity, currU, so.getTargetWorld());
 
             /*
-             * If the so.getWinners() always recover their own salvage, pull it
-             * from the queue and send a recovery message to the original owner.
-             * Also check to see if the pilot survived.
+             * If the so.getWinners() always recover their own salvage, pull it from the queue and send a recovery message to the original owner. Also check to see if the pilot survived.
              */
             if (winnerAlwaysSalvagesOwn && so.getWinners().containsKey(oldOwnerName)) {
 
@@ -1411,25 +1367,21 @@ public class ShortResolver {
                 String toOthers = oldOwner.getColoredName() + " recovered his " + currU.getModelName() + ". ";
 
                 /*
-                 * Check the pilot's death. If he passed away, call the death
-                 * handler and append the result to the owners' pilotString.
+                 * Check the pilot's death. If he passed away, call the death handler and append the result to the owners' pilotString.
                  */
                 String pilotAppend;
-                
+
                 boolean pilotLived = (Boolean) pilotinformation[0];
                 if (!pilotLived) {
-                    pilotAppend = this.handleDeadPilot(oldOwner, currU, currEntity, so);
+                    pilotAppend = handleDeadPilot(oldOwner, currU, currEntity, so);
                     String workingS = (String) pilotinformation[1];
                     pilotinformation[1] = workingS + pilotAppend;
-                }else
-                    pilotAppend = "<br>"+this.calculatePilotEXP(o, so, currEntity, oldOwner, true);
+                } else {
+                    pilotAppend = "<br>" + calculatePilotEXP(o, so, currEntity, oldOwner, true);
+                }
 
                 /*
-                 * loop through all players, adding the unit's outcome to their
-                 * salvage message trees. Send the owner his own message and set
-                 * the other message for remaining players. Even though this is
-                 * a winner salvaging his unit, we need to check captors - a
-                 * pilot may have been picked up by an enemy on the field.
+                 * loop through all players, adding the unit's outcome to their salvage message trees. Send the owner his own message and set the other message for remaining players. Even though this is a winner salvaging his unit, we need to check captors - a pilot may have been picked up by an enemy on the field.
                  */
                 for (String currName : allPlayers.keySet()) {
 
@@ -1437,36 +1389,30 @@ public class ShortResolver {
                     String toSet = toOthers + pilotinformation[3];// default
                     // to
                     // otherstring
-                    if (currName.equals(oldOwnerName))
+                    if (currName.equals(oldOwnerName)) {
                         toSet = toOwner + pilotinformation[1] + pilotAppend;// set the
-                    // "owner"
-                    // string
-                    else {
-                        if (captor != null && currName.equals(captor.getName().toLowerCase()))
+                    } else {
+                        if (captor != null && currName.equals(captor.getName().toLowerCase())) {
                             toSet = toOthers + pilotinformation[2];
-                        else
+                        } else {
                             toSet = toOthers + pilotinformation[3];
+                        }
                     }
 
                     // if already part of the tree
                     if (unitStrings.containsKey(currName)) {
                         String workingS = unitStrings.get(currName);
                         unitStrings.put(currName, workingS + toSet + "<br>");
-                    }
-
-                    // put the name in the tree
-                    else
+                    } else {
                         unitStrings.put(currName, toSet + "<br>");
+                    }
 
                 }// end foreach(name in allplayers)
 
                 /*
                  * Add the cost to the player's tree.
                  */
-                int costToRepair = getSalvageCost(oldOwner, currU, currEntity, o, so);
-
-                if (costToRepair < 0 || CampaignMain.cm.isUsingAdvanceRepair())
-                    costToRepair = 0;
+                int costToRepair = Math.max(0, getSalvageCost(oldOwner, currU, currEntity, o, so));
 
                 if (unitCosts.containsKey(oldOwnerName)) {
                     Integer oldCost = unitCosts.get(oldOwnerName);
@@ -1476,9 +1422,7 @@ public class ShortResolver {
                 }
 
                 /*
-                 * Check to see if the player already has a scrap thread. If so,
-                 * add this unit as an entry. If not, create a new
-                 * OpsScrapThread for the player.
+                 * Check to see if the player already has a scrap thread. If so, add this unit as an entry. If not, create a new OpsScrapThread for the player.
                  */
                 if (scrapThreads.containsKey(oldOwnerName)) {
                     scrapThreads.get(oldOwnerName).addScrappableUnit(currU.getId(), costToRepair);
@@ -1492,19 +1436,14 @@ public class ShortResolver {
                 CampaignMain.cm.toUser("PL|UU|" + currU.getId() + "|" + currU.toString(true), oldOwnerName, false);
 
                 /*
-                 * Nothing more to do with this particular unit in the for
-                 * each(OperationEntity : salvagable) loop. continue to next
-                 * unit.
+                 * Nothing more to do with this particular unit in the for each(OperationEntity : salvagable) loop. continue to next unit.
                  */
                 continue;
 
             }// end for winnerSalvage
 
             /*
-             * Either the salvage is mixed (such that defenders can gain
-             * attackers units, even in a loss, much to Kai's consternation), or
-             * we're dealing with a loser's unit. Either way, make a roll to
-             * determine who gains the unit itself.
+             * Either the salvage is mixed (such that defenders can gain attackers units, even in a loss, much to Kai's consternation), or we're dealing with a loser's unit. Either way, make a roll to determine who gains the unit itself.
              */
 
             // Holder. Put a new owner here, or leave
@@ -1515,54 +1454,56 @@ public class ShortResolver {
             if (CampaignMain.cm.getRandomNumber(100) < winnerSalvagePercent) {
 
                 // previous owner wasn't a winner. pick a new owner
-                if (!so.getWinners().containsKey(oldOwnerName))
+                if (!so.getWinners().containsKey(oldOwnerName)) {
                     newOwner = selectRandomWinner();
+                }
 
                 // decrease the so.getWinners() chance to get the next unit
-                if (salvageAdjustment != 0)
+                if (salvageAdjustment != 0) {
                     winnerSalvagePercent -= salvageAdjustment;
-                if (winnerSalvagePercent < 0)
+                }
+                if (winnerSalvagePercent < 0) {
                     winnerSalvagePercent = 0;
+                }
             }
 
             // roll is under loser % and loser gets the unit.
             else {
 
                 // previous owner wasnt a loser. pick a new owner.
-                if (!so.getLosers().containsKey(oldOwnerName))
+                if (!so.getLosers().containsKey(oldOwnerName)) {
                     newOwner = selectRandomLoser();
+                }
 
                 // increase the winner's chance to get next unit
-                if (salvageAdjustment != 0)
+                if (salvageAdjustment != 0) {
                     winnerSalvagePercent += salvageAdjustment;
-                if (winnerSalvagePercent > 100)
+                }
+                if (winnerSalvagePercent > 100) {
                     winnerSalvagePercent = 100;
+                }
             }
 
             /*
-             * Check the pilot's death. If he passed away, add the relevant info
-             * to the owner's string.
-             * 
-             * Only check for a replacement pilot if the unit is returning to
-             * its original owner!
+             * Check the pilot's death. If he passed away, add the relevant info to the owner's string. Only check for a replacement pilot if the unit is returning to its original owner!
              */
             boolean pilotLived = (Boolean) pilotinformation[0];
             if (!pilotLived && newOwner == null) {
-                String deathString = this.handleDeadPilot(oldOwner, currU, currEntity, so);
+                String deathString = handleDeadPilot(oldOwner, currU, currEntity, so);
                 String workingS = (String) pilotinformation[1];
                 workingS += deathString;
             }
 
             String pilotAppend = "";
-            
-            if ( pilotLived )
-                pilotAppend = "<br>"+calculatePilotEXP(o, so, currEntity, oldOwner, false);
 
-            // If the pilot is alive, and has no unit ...
-            if (pilotLived && newOwner != null){
-                this.handleDispossesedPilot(oldOwner, currU);
+            if (pilotLived) {
+                pilotAppend = "<br>" + calculatePilotEXP(o, so, currEntity, oldOwner, false);
             }
 
+            // If the pilot is alive, and has no unit ...
+            if (pilotLived && newOwner != null) {
+                handleDispossesedPilot(oldOwner, currU);
+            }
 
             // setup the strings to show players
             String toOriginalOwner = "";
@@ -1570,8 +1511,7 @@ public class ShortResolver {
             String toOthers = "";
 
             /*
-             * If the new owner is null, we know that the unit was returned to
-             * its previous owner.
+             * If the new owner is null, we know that the unit was returned to its previous owner.
              */
             if (newOwner == null) {
                 toOriginalOwner = " You recovered your " + currU.getModelName() + ". ";
@@ -1588,49 +1528,39 @@ public class ShortResolver {
             for (String currName : allPlayers.keySet()) {
 
                 /*
-                 * determine which string to send. default to the "other"
-                 * message, but check to see if the name is the same as the
-                 * owner.
+                 * determine which string to send. default to the "other" message, but check to see if the name is the same as the owner.
                  */
                 SPlayer captor = (SPlayer) pilotinformation[4];
                 String toSet = toOthers + pilotinformation[3];// default to
                 // otherstring
-                if (currName.equals(oldOwnerName))
+                if (currName.equals(oldOwnerName)) {
                     toSet = toOriginalOwner + pilotinformation[1] + pilotAppend;
-                // set the "owner" string
-                else if (newOwner != null && currName.equals(newOwner.getName().toLowerCase())) {
-                    if (captor != null && currName.equals(captor.getName().toLowerCase()))
+                } else if (newOwner != null && currName.equals(newOwner.getName().toLowerCase())) {
+                    if (captor != null && currName.equals(captor.getName().toLowerCase())) {
                         toSet = toNewOwner + pilotinformation[2];
-                    else
+                    } else {
                         toSet = toNewOwner + pilotinformation[3];
+                    }
                 } else {
-                    if (captor != null && currName.equals(captor.getName().toLowerCase()))
+                    if (captor != null && currName.equals(captor.getName().toLowerCase())) {
                         toSet = toOthers + pilotinformation[2];
-                    else
+                    } else {
                         toSet = toOthers + pilotinformation[3];
+                    }
                 }
 
                 // if already part of the tree
                 if (unitStrings.containsKey(currName)) {
                     String workingS = unitStrings.get(currName);
                     unitStrings.put(currName, workingS + toSet + "<br>");
+                } else {
+                    unitStrings.put(currName, toSet + "<br>");
                 }
 
-                // put the name in the tree
-                else
-                    unitStrings.put(currName, toSet + "<br>");
-
             }// end foreach(name in allplayers)
-            
 
             /*
-             * If the newowner is not null, move the unit from its old master to
-             * the new. This will clear out the pilot if PPQs are in place.
-             * 
-             * If PPQs are not being used, get a new pilot for the unit out of
-             * the newOwner's house queue.
-             * 
-             * No PL|UU sent - unit is sent in string form by SPlayer.addUnit()
+             * If the newowner is not null, move the unit from its old master to the new. This will clear out the pilot if PPQs are in place. If PPQs are not being used, get a new pilot for the unit out of the newOwner's house queue. No PL|UU sent - unit is sent in string form by SPlayer.addUnit()
              */
             if (newOwner != null) {
 
@@ -1646,12 +1576,13 @@ public class ShortResolver {
                 }
 
                 // note change of ownership on cyclops
-                if (CampaignMain.cm.isUsingCyclops())
+                if (CampaignMain.cm.isUsingCyclops()) {
                     CampaignMain.cm.getMWCC().unitChangeOwnerShip(Integer.toString(currU.getId()), newOwner.getName(), newOwner.getHouseFightingFor().getName(), so.getOpCyclopsID(), "Salvage");
+                }
 
                 // do the actual unit move
                 oldOwner.removeUnit(currU.getId(), false);
-                String newPilot = this.handleDeadPilot(newOwner, currU, currEntity, so);
+                String newPilot = handleDeadPilot(newOwner, currU, currEntity, so);
                 newOwner.addUnit(currU, true);// add unit is same as a PL|UU
                 // in most respects ...
 
@@ -1663,8 +1594,7 @@ public class ShortResolver {
             }
 
             /*
-             * Old owner. If the pilot lived throughthe game and grant him his
-             * kill XP, but do not attempt to level up.
+             * Old owner. If the pilot lived throughthe game and grant him his kill XP, but do not attempt to level up.
              */
             else {// old owner
 
@@ -1680,16 +1610,12 @@ public class ShortResolver {
             String nameKey = "";
 
             if (newOwner != null) {
-                costToRepair = getSalvageCost(newOwner, currU, currEntity, o, so);
+                costToRepair = Math.max(0, getSalvageCost(newOwner, currU, currEntity, o, so));
                 nameKey = newOwner.getName().toLowerCase();
             } else {
-                costToRepair = getSalvageCost(oldOwner, currU, currEntity, o, so);
+                costToRepair = Math.max(0, getSalvageCost(oldOwner, currU, currEntity, o, so));
                 nameKey = oldOwnerName;
             }
-
-            // don't charge if using AR, or allow negative repair fees
-            if (costToRepair < 0 || CampaignMain.cm.isUsingAdvanceRepair())
-                costToRepair = 0;
 
             // add to unit costs tree
             if (unitCosts.containsKey(nameKey)) {
@@ -1726,26 +1652,23 @@ public class ShortResolver {
             String toOthers = oldOwner.getColoredName() + "'s " + currU.getModelName() + " was utterly destroyed. ";
 
             // we know the unit is obliterated. how about the pilot?
-            Object[] pilotinformation = this.setupPilotStringForUnit(currEntity, currU, so.getTargetWorld());
+            Object[] pilotinformation = setupPilotStringForUnit(currEntity, currU, so.getTargetWorld());
 
             /*
-             * Check the pilot's death. If he passed away, do nothing. There's
-             * no unit to put a new pilot into.
-             * 
-             * If the pilot lived, put him in the house queue or the PPQ, as
-             * appropriate.
+             * Check the pilot's death. If he passed away, do nothing. There's no unit to put a new pilot into. If the pilot lived, put him in the house queue or the PPQ, as appropriate.
              */
             Boolean pilotLived = (Boolean) pilotinformation[0];
-            if (pilotLived.booleanValue())
-                this.handleDispossesedPilot(oldOwner, currU);
+            if (pilotLived.booleanValue()) {
+                handleDispossesedPilot(oldOwner, currU);
+            }
 
             /*
-             * Added name of player and unit that destroyed unit for better
-             * tracking on cyclops. MM does report this and we can use it.
+             * Added name of player and unit that destroyed unit for better tracking on cyclops. MM does report this and we can use it.
              * @torren
              */
-            if (CampaignMain.cm.isUsingCyclops())
+            if (CampaignMain.cm.isUsingCyclops()) {
                 CampaignMain.cm.getMWCC().unitDestroy(Integer.toString(currU.getId()), "cored", so.getOpCyclopsID(), "", "");
+            }
 
             // check for compensation from the faction.
             int compensation = determineLossCompensation(oldOwner, currU, false);
@@ -1761,43 +1684,38 @@ public class ShortResolver {
             // remove the unit from the player's hangar.
             oldOwner.removeUnit(currU.getId(), false);
             // Remove it from the database
-            if (CampaignMain.cm.isUsingMySQL())
+            if (CampaignMain.cm.isUsingMySQL()) {
                 CampaignMain.cm.MySQL.deleteUnit(currU.getDBId());
+            }
 
             /*
-             * Tell the player if his pilot was killed, saved or captured.
-             * Others are not informed of events, but Captors are given info on
-             * their pickups.
+             * Tell the player if his pilot was killed, saved or captured. Others are not informed of events, but Captors are given info on their pickups.
              */
             for (String currName : allPlayers.keySet()) {
 
                 /*
-                 * determine which string to send. default to the "other"
-                 * message, but check to see if the name is the same as the
-                 * owner.
+                 * determine which string to send. default to the "other" message, but check to see if the name is the same as the owner.
                  */
                 SPlayer captor = (SPlayer) pilotinformation[4];
                 String toSet = toOthers + pilotinformation[3];// default to
                 // otherstring
-                if (currName.equals(oldOwnerName))
+                if (currName.equals(oldOwnerName)) {
                     toSet = toOwner + pilotinformation[1];// set the "owner"
-                // string
-                else {
-                    if (captor != null && currName.equals(captor.getName().toLowerCase()))
+                } else {
+                    if (captor != null && currName.equals(captor.getName().toLowerCase())) {
                         toSet = toOthers + pilotinformation[2];
-                    else
+                    } else {
                         toSet = toOthers + pilotinformation[3];
+                    }
                 }
 
                 // if already part of the tree
                 if (unitStrings.containsKey(currName)) {
                     String workingS = unitStrings.get(currName);
                     unitStrings.put(currName, workingS + toSet + "<br>");
-                }
-
-                // put the name in the tree
-                else
+                } else {
                     unitStrings.put(currName, toSet + "<br>");
+                }
 
             }// end foreach(name in allplayers)
 
@@ -1805,20 +1723,7 @@ public class ShortResolver {
     }// end this.assembleSalvageStrings()
 
     /**
-     * Method which generates general info strings (who attacked whom, which
-     * faction won, etc) for the players and a finished status description for
-     * public viewing.
-     * 
-     * After these general strings are put together, the need to check Operation
-     * values and apply meta effects (% transfers, unit thefts, etc) is checked.
-     * 
-     * If the given ShortOperation is capable of impacting factions (isn't a
-     * mult-faction melee, isn't tied to a long operation), the necessary values
-     * are loaded from the passed Operation and checked/applied.
-     * 
-     * Some have commented that this is too procedural and not very OO; however,
-     * it works. Anyone who cares to beautify the process is more than welcome
-     * to do so.
+     * Method which generates general info strings (who attacked whom, which faction won, etc) for the players and a finished status description for public viewing. After these general strings are put together, the need to check Operation values and apply meta effects (% transfers, unit thefts, etc) is checked. If the given ShortOperation is capable of impacting factions (isn't a mult-faction melee, isn't tied to a long operation), the necessary values are loaded from the passed Operation and checked/applied. Some have commented that this is too procedural and not very OO; however, it works. Anyone who cares to beautify the process is more than welcome to do so.
      * 
      * @urgru 8.26.05
      */
@@ -1829,8 +1734,7 @@ public class ShortResolver {
             metaStrings = new TreeMap<String, String>();
 
             /*
-             * Before we make strings, we need to determine the outcomes.
-             * Determine whether the attacking or defending team was the winner.
+             * Before we make strings, we need to determine the outcomes. Determine whether the attacking or defending team was the winner.
              */
             SPlayer aWinner = so.getWinners().get(so.getWinners().firstKey());
             SPlayer aLoser = so.getLosers().get(so.getLosers().firstKey());
@@ -1847,20 +1751,16 @@ public class ShortResolver {
             }
 
             /*
-             * Throw the entire meta-outcome out if the winner or defender trees
-             * include players from multiple factions - that would mean it was
-             * an arena or a duel.
-             * 
-             * These loops are heinously inefficient - (O)n^n - but we can
-             * pretty safely assume that n will never be larger than 4.
+             * Throw the entire meta-outcome out if the winner or defender trees include players from multiple factions - that would mean it was an arena or a duel. These loops are heinously inefficient - (O)n^n - but we can pretty safely assume that n will never be larger than 4.
              */
             boolean attackersPolluted = false;
             boolean defendersPolluted = false;
             if (!drawGame) {
                 for (SPlayer wp : so.getWinners().values()) {
                     for (SPlayer compareP : so.getWinners().values()) {
-                        if (!compareP.getHouseFightingFor().equals(wp.getHouseFightingFor()))
+                        if (!compareP.getHouseFightingFor().equals(wp.getHouseFightingFor())) {
                             attackersPolluted = true;
+                        }
                     }
                     if (attackersPolluted) {
                         break;
@@ -1880,32 +1780,14 @@ public class ShortResolver {
             }
 
             /*
-             * If there is pollution of the lists (not mono-faction) put
-             * together a melee string which shows the "teams" in play.
-             * 
-             * The code below is actually very simple, although the loops used
-             * to generate some of the strings don't read well and make it
-             * overly long.
-             * 
-             * NOTE: Complete and Incomplete info for Polluted games is
-             * IDENTICAL b/c there is no faction affiliation to attach to the
-             * outcome.
+             * If there is pollution of the lists (not mono-faction) put together a melee string which shows the "teams" in play. The code below is actually very simple, although the loops used to generate some of the strings don't read well and make it overly long. NOTE: Complete and Incomplete info for Polluted games is IDENTICAL b/c there is no faction affiliation to attach to the outcome.
              */
             if (attackersPolluted || defendersPolluted) {
 
                 try {
 
                     /*
-                     * Set up the finished info. Template: "Player A defeated
-                     * Player B and Player C (Arena)."
-                     * 
-                     * Also set up the generic strings at this time. The
-                     * generics are used when generating the messages sent to
-                     * individual players. Template: "You defeated Player B and
-                     * Player C (Arena)", where "Player B and Player C" is the
-                     * genetic loser string.
-                     * 
-                     * In p
+                     * Set up the finished info. Template: "Player A defeated Player B and Player C (Arena)." Also set up the generic strings at this time. The generics are used when generating the messages sent to individual players. Template: "You defeated Player B and Player C (Arena)", where "Player B and Player C" is the genetic loser string. In p
                      */
                     String genericWinnerString = "";
                     int marker = 0;
@@ -1914,10 +1796,11 @@ public class ShortResolver {
                         for (SPlayer wp : so.getWinners().values()) {
                             genericWinnerString += wp.getName();
                             marker++;
-                            if (marker + 1 == total)
+                            if (marker + 1 == total) {
                                 genericWinnerString += " and ";
-                            else if (marker + 1 < total)
+                            } else if (marker + 1 < total) {
                                 genericWinnerString += ", ";
+                            }
                         }
                     }
 
@@ -1930,10 +1813,11 @@ public class ShortResolver {
                     for (SPlayer lp : so.getLosers().values()) {
                         genericLoserString += lp.getName();
                         marker++;
-                        if (marker + 1 == total)
+                        if (marker + 1 == total) {
                             genericLoserString += " and ";
-                        else if (marker + 1 < total)
+                        } else if (marker + 1 < total) {
                             genericLoserString += ", ";
+                        }
                     }
 
                     completeFinishedInfoString += genericLoserString + " (" + so.getName() + ").<br>";
@@ -1941,10 +1825,7 @@ public class ShortResolver {
                     newsFeedBody = newsFeedTitle;
 
                     /*
-                     * Because the winner/loser lists are polluted, we need to
-                     * show all of the players names instead of simply showing
-                     * the victorious faction. This requires some unappealing
-                     * embedded loops.
+                     * Because the winner/loser lists are polluted, we need to show all of the players names instead of simply showing the victorious faction. This requires some unappealing embedded loops.
                      */
                     int numberOfWinners = so.getWinners().size();
                     if (!drawGame) {
@@ -1952,12 +1833,9 @@ public class ShortResolver {
 
                             // if only one winner, send him a singular victory
                             // message.
-                            if (numberOfWinners == 1)
+                            if (numberOfWinners == 1) {
                                 metaStrings.put(wp.getName().toLowerCase(), "You have defeated " + genericLoserString + " (" + so.getName() + ").<br>");
-
-                            // else, send a plural message. ugly, but we need to
-                            // not send the player his own name.
-                            else {
+                            } else {
                                 int i = 0;
                                 int numToList = numberOfWinners - 1;
                                 String toSet = "You worked with ";
@@ -1965,10 +1843,11 @@ public class ShortResolver {
                                     if (!wp.equals(loopP)) {
                                         toSet += loopP.getName();
                                         i++;
-                                        if (i + 1 == numToList)
+                                        if (i + 1 == numToList) {
                                             toSet += " and ";
-                                        else if (marker + 1 < numToList)
+                                        } else if (marker + 1 < numToList) {
                                             toSet += ", ";
+                                        }
                                     } else {
                                         i++;
                                     }
@@ -1981,19 +1860,15 @@ public class ShortResolver {
                         }// end (foreach winner)
                     }
                     /*
-                     * Although the loser metastrings should show complete
-                     * lists, same as the so.getWinners(), "you worked with
-                     * player B to get your ass kicked" sounds wrong. Need to
-                     * give this some thought and revise with a clearer message.
-                     * 
-                     * For now, just say "You were defeated..."
+                     * Although the loser metastrings should show complete lists, same as the so.getWinners(), "you worked with player B to get your ass kicked" sounds wrong. Need to give this some thought and revise with a clearer message. For now, just say "You were defeated..."
                      */
                     for (SPlayer lp : so.getLosers().values()) {
                         if (drawGame) {
                             String toSet = "The match on " + so.getTargetWorld().getNameAsColoredLink() + " ended in a draw! (" + so.getName() + ").<br>";
                             metaStrings.put(lp.getName().toLowerCase(), toSet);
-                        } else
+                        } else {
                             metaStrings.put(lp.getName().toLowerCase(), "You were defeated by " + genericWinnerString + " (" + so.getName() + ").<br>");
+                        }
                     }
 
                     // copy the complete finished info to the incomplete, as
@@ -2001,8 +1876,7 @@ public class ShortResolver {
                     incompleteFinishedInfoString = completeFinishedInfoString;
 
                     /*
-                     * We don't want polluted games to have any impact on the
-                     * player factions. Return.
+                     * We don't want polluted games to have any impact on the player factions. Return.
                      */
                     return;
                 } catch (Exception ex) {
@@ -2011,17 +1885,7 @@ public class ShortResolver {
             }// end if(polluted)
 
             /*
-             * If the winner and loser trees are nor polluted, generate 1 v 1 or
-             * faction strings, as appropriate. These are similar to the
-             * polluted meta strings; however, faction names replace individual
-             * player names in large games.
-             * 
-             * Templates: "You defeated Player A on Solaris VII (TestAttack)."
-             * "Your team was defeated by Davion on New Avalon (Conquer)." "Your
-             * team defeated Liao on Sian (Raid)."
-             * 
-             * These should be fleshed out with more descriptive verbage in the
-             * future; however, this should suffice for the time being ...
+             * If the winner and loser trees are nor polluted, generate 1 v 1 or faction strings, as appropriate. These are similar to the polluted meta strings; however, faction names replace individual player names in large games. Templates: "You defeated Player A on Solaris VII (TestAttack)." "Your team was defeated by Davion on New Avalon (Conquer)." "Your team defeated Liao on Sian (Raid)." These should be fleshed out with more descriptive verbage in the future; however, this should suffice for the time being ...
              */
             try {
                 int numWinners = so.getWinners().size();
@@ -2030,17 +1894,19 @@ public class ShortResolver {
                     for (SPlayer wp : so.getWinners().values()) {
 
                         String toSet = "";
-                        if (numWinners > 1)
+                        if (numWinners > 1) {
                             toSet += "Your team ";
-                        else
+                        } else {
                             toSet += "You ";
+                        }
 
                         toSet += " defeated ";
 
-                        if (numLosers > 1)
+                        if (numLosers > 1) {
                             toSet += aLoser.getHouseFightingFor().getColoredNameAsLink();
-                        else
+                        } else {
                             toSet += aLoser.getColoredName() + aLoser.getHouseFightingFor().getColoredAbbreviation(true);
+                        }
 
                         toSet += " on " + so.getTargetWorld().getNameAsColoredLink() + " (" + so.getName() + ").";
                         metaStrings.put(wp.getName().toLowerCase(), toSet + "<br>");
@@ -2054,15 +1920,17 @@ public class ShortResolver {
                         toSet += "The game ended in a draw!<br>";
                         toSet += so.getTargetWorld().getNameAsColoredLink() + " (" + so.getName() + ").";
                     } else {
-                        if (numLosers > 1)
+                        if (numLosers > 1) {
                             toSet += "Your team was defeated by ";
-                        else
+                        } else {
                             toSet += "You were defeated by ";
+                        }
 
-                        if (numWinners > 1)
+                        if (numWinners > 1) {
                             toSet += aWinner.getHouseFightingFor().getColoredNameAsLink();
-                        else
+                        } else {
                             toSet += aWinner.getColoredName() + aWinner.getHouseFightingFor().getColoredAbbreviation(true);
+                        }
 
                         toSet += " on " + so.getTargetWorld().getNameAsColoredLink() + " (" + so.getName() + ").";
                     }
@@ -2070,12 +1938,7 @@ public class ShortResolver {
                 }
 
                 /*
-                 * Set up the beginning of the finishedInfo string. If the short
-                 * has no long-backing, actual meta info will be tacked onto
-                 * this.
-                 * 
-                 * Use a faction name in lieu of a player name in team games, or
-                 * if the "ShowCompleteGameInfoInNews" option is disabled.
+                 * Set up the beginning of the finishedInfo string. If the short has no long-backing, actual meta info will be tacked onto this. Use a faction name in lieu of a player name in team games, or if the "ShowCompleteGameInfoInNews" option is disabled.
                  */
                 if (numWinners > 1 || !CampaignMain.cm.getBooleanConfig("ShowCompleteGameInfoInNews")) {
                     completeFinishedInfoString += aWinner.getHouseFightingFor().getColoredNameAsLink();
@@ -2134,26 +1997,14 @@ public class ShortResolver {
             }
 
             /*
-             * If this is a component of a long operation, there are no
-             * post-game faction impacts. The status of the long op to which the
-             * ShortOperation must be bound isn't check until after salvage
-             * resolution.
+             * If this is a component of a long operation, there are no post-game faction impacts. The status of the long op to which the ShortOperation must be bound isn't check until after salvage resolution.
              */
-            if (o.getTypeIndicator() == Operation.TYPE_SHORTANDLONG)
+            if (o.getTypeIndicator() == Operation.TYPE_SHORTANDLONG) {
                 return;
+            }
 
             /*
-             * Games with polluted lists (arena matches) have been returned, as
-             * have games which are components of LongOperations. Any ShortOp
-             * which remains at this point may be configured to have
-             * faction-impacts.
-             * 
-             * Its entirely possible that none will be enabled (ie - 1 v 1 duel
-             * for cash/ELO); however, still need to check and apply if
-             * necessary.
-             * 
-             * Check to see whether the attacking group or defending group won.
-             * Only load the variables from Operation that we actually need.
+             * Games with polluted lists (arena matches) have been returned, as have games which are components of LongOperations. Any ShortOp which remains at this point may be configured to have faction-impacts. Its entirely possible that none will be enabled (ie - 1 v 1 duel for cash/ELO); however, still need to check and apply if necessary. Check to see whether the attacking group or defending group won. Only load the variables from Operation that we actually need.
              */
             // metastring is sent to each player, and appended
             // to finishedstring, unless hasLoss is false...
@@ -2183,28 +2034,30 @@ public class ShortResolver {
                 if (attackersWon) {
                     try {
                         /*
-                         * Determine the amount of land which should change
-                         * hands as a result of the Operation. Check to make
-                         * sure there is actually land to gain - an attacker who
-                         * already owns 100% of a world should gain nothing.
+                         * Determine the amount of land which should change hands as a result of the Operation. Check to make sure there is actually land to gain - an attacker who already owns 100% of a world should gain nothing.
                          */
                         int totalConquest = o.getIntValue("AttackerBaseConquestAmount");
                         int conquestUnitAdjust = o.getIntValue("AttackerConquestUnitAdjustment");
                         int conquestBVAdjust = o.getIntValue("AttackerConquestBVAdjustment");
-                        if (conquestUnitAdjust > 0)
+                        if (conquestUnitAdjust > 0) {
                             totalConquest += Math.floor(so.getStartingUnits() / conquestUnitAdjust);
-                        if (conquestBVAdjust > 0)
+                        }
+                        if (conquestBVAdjust > 0) {
                             totalConquest += Math.floor(so.getStartingBV() / conquestBVAdjust);
-                        if (totalConquest > conquestCap)
+                        }
+                        if (totalConquest > conquestCap) {
                             totalConquest = conquestCap;
+                        }
 
                         // Drop % to 0 if either group is non-conquer
-                        if (!aWinner.getHouseFightingFor().isConquerable() || !aLoser.getHouseFightingFor().isConquerable())
+                        if (!aWinner.getHouseFightingFor().isConquerable() || !aLoser.getHouseFightingFor().isConquerable()) {
                             totalConquest = 0;
+                        }
 
                         // Drop to 0 is the planet is non-conquerable
-                        if (!so.getTargetWorld().isConquerable())
+                        if (!so.getTargetWorld().isConquerable()) {
                             totalConquest = 0;
+                        }
 
                         // make the % adjustment. This zeros totalConquest if
                         // there is nothing to gain.
@@ -2213,36 +2066,38 @@ public class ShortResolver {
                         if (totalConquest > 0) {
                             hasLoss = true;
                             String point = "points";
-                            if ( totalConquest == 1)
+                            if (totalConquest == 1) {
                                 point = "point";
-                            winnerMetaString += " gained " + totalConquest + " "+point+" of " + target.getNameAsColoredLink();
-                            loserMetaString += " lost " + totalConquest + " "+point+" of " + target.getNameAsColoredLink();
+                            }
+                            winnerMetaString += " gained " + totalConquest + " " + point + " of " + target.getNameAsColoredLink();
+                            loserMetaString += " lost " + totalConquest + " " + point + " of " + target.getNameAsColoredLink();
                             so.checkMercContracts(aWinner, ContractInfo.CONTRACT_LAND, totalConquest);
                         }
 
                         /*
-                         * Determine the amount of delay to apply to the
-                         * facilities on world. Note that delay is applied to
-                         * *all* facilities under Operations, whereas under
-                         * Tasks is was applied to one random facility on world.
+                         * Determine the amount of delay to apply to the facilities on world. Note that delay is applied toall facilities under Operations, whereas under Tasks is was applied to one random facility on world.
                          */
                         int totalDelay = o.getIntValue("AttackerBaseDelayAmount");
                         int delayUnitAdjust = o.getIntValue("AttackerDelayUnitAdjustment");
                         int delayBVAdjust = o.getIntValue("AttackerDelayBVAdjustment");
-                        if (delayUnitAdjust > 0)
+                        if (delayUnitAdjust > 0) {
                             totalDelay += Math.floor(so.getStartingUnits() / delayUnitAdjust);
-                        if (delayBVAdjust > 0)
+                        }
+                        if (delayBVAdjust > 0) {
                             totalDelay += Math.floor(so.getStartingBV() / delayBVAdjust);
+                        }
 
                         // Building delays for each one the attacker destroyed.
                         if (buildingsLeft > -1 && buildingsLeft <= so.getTotalBuildings()) {
-                            if (attackerisWinner(so))
+                            if (attackerisWinner(so)) {
                                 buildingsDestroyed = Math.max(buildingsDestroyed, o.getIntValue("AttackerMinBuildingsIfAttackerWins"));
+                            }
 
                             if (buildingsDestroyed >= so.getMinBuildings()) {
                                 int buildingDestructionDelayAmount = o.getIntValue("DelayPerBuilding");
-                                if (buildingDestructionDelayAmount != 0)
+                                if (buildingDestructionDelayAmount != 0) {
                                     totalDelay += buildingDestructionDelayAmount * buildingsDestroyed;
+                                }
                             }
 
                         }
@@ -2253,13 +2108,15 @@ public class ShortResolver {
                             totalDelay = 0;
                         }
 
-                        if (totalDelay > delayCap)
+                        if (totalDelay > delayCap) {
                             totalDelay = delayCap;
+                        }
 
                         // if no facilities exist to delay, reduce the total to
                         // 0.
-                        if (target.getFactoryCount() == 0)
+                        if (target.getFactoryCount() == 0) {
                             totalDelay = 0;
+                        }
 
                         // do the delay and string setup
                         if (totalDelay > 0) {
@@ -2279,44 +2136,26 @@ public class ShortResolver {
                         }
 
                         /*
-                         * Determine the number of units stolen. Move the units
-                         * between the houses, but also save their model info in
-                         * an ArrayList of Strings. The AList will be used later
-                         * to generate messages for players and the
-                         * finishedInfo.
-                         * 
-                         * Operations gives all stolen units to the house. None
-                         * go to the player. This is a major deviation from the
-                         * old Task system; however, giving units to the players
-                         * makes very little sense when payments can be
-                         * increased and games can result in several different
-                         * kinds of outcomes.
-                         * 
-                         * Also - If there are no units of a proper type (ie -
-                         * no factory making units on the world or no units of
-                         * types which factories DO make), little it taken.
-                         * Rollover curtailments are in place only
-                         * ShortOperations. LongOps make provision for rollover
-                         * plus-ups, such that the class/type of units taken is
-                         * increased if none remain in the target type. This is
-                         * to discourage factions from clearing out bays in
-                         * response to a multi-game theft operation - not a
-                         * situation which arises frequently with shorts. This,
-                         * they have downward/reduced spillover.
+                         * Determine the number of units stolen. Move the units between the houses, but also save their model info in an ArrayList of Strings. The AList will be used later to generate messages for players and the finishedInfo. Operations gives all stolen units to the house. None go to the player. This is a major deviation from the old Task system; however, giving units to the players makes very little sense when payments can be increased and games can result in several different kinds of outcomes. Also - If there are no units of a proper type (ie - no factory making units on the world or no units of types which factories DO make), little it taken. Rollover curtailments are in place only ShortOperations. LongOps make provision for rollover plus-ups, such that the class/type of units taken is increased if none remain in the target type. This is to discourage factions from
+                         * clearing out bays in response to a multi-game theft operation - not a situation which arises frequently with shorts. This, they have downward/reduced spillover.
                          */
                         int unitsToCapture = o.getIntValue("AttackerBaseUnitsTaken");
                         int unitUnitAdjust = o.getIntValue("AttackerUnitsUnitAdjustment");
                         int unitBVAdjust = o.getIntValue("AttackerUnitsBVAdjustment");
 
-                        if (unitUnitAdjust > 0)
+                        if (unitUnitAdjust > 0) {
                             unitsToCapture += Math.floor(so.getStartingUnits() / unitUnitAdjust);
-                        if (unitBVAdjust > 0)
+                        }
+                        if (unitBVAdjust > 0) {
                             unitsToCapture += Math.floor(so.getStartingBV() / unitBVAdjust);
-                        if (unitsToCapture > unitCaptureCap)
+                        }
+                        if (unitsToCapture > unitCaptureCap) {
                             unitsToCapture = unitCaptureCap;
+                        }
 
-                        if (o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts"))
+                        if (o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts")) {
                             unitsToCapture = 0;
+                        }
 
                         ArrayList<SUnit> capturedUnits = new ArrayList<SUnit>();
                         if (unitsToCapture > 0) {
@@ -2367,15 +2206,19 @@ public class ShortResolver {
                         unitUnitAdjust = o.getIntValue("AttackerFactoryUnitsUnitAdjustment");
                         unitBVAdjust = o.getIntValue("AttackerFactoryUnitsBVAdjustment");
 
-                        if (unitUnitAdjust > 0)
+                        if (unitUnitAdjust > 0) {
                             unitsToCapture += Math.floor(so.getStartingUnits() / unitUnitAdjust);
-                        if (unitBVAdjust > 0)
+                        }
+                        if (unitBVAdjust > 0) {
                             unitsToCapture += Math.floor(so.getStartingBV() / unitBVAdjust);
-                        if (unitsToCapture > unitCaptureCap)
+                        }
+                        if (unitsToCapture > unitCaptureCap) {
                             unitsToCapture = unitCaptureCap;
+                        }
 
-                        if (o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts"))
+                        if (o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts")) {
                             unitsToCapture = 0;
+                        }
 
                         if (unitsToCapture > 0) {
 
@@ -2420,26 +2263,19 @@ public class ShortResolver {
                         }// end if(unitsToCapture > 0)
 
                         /*
-                         * Determine the number and type of components to steal
-                         * from target faction. Much like Unit theft, this is
-                         * handled in a different manner than it was under the
-                         * Task system.
-                         * 
-                         * If a defined target is given (specific factory), take
-                         * only from that target. If nothing is there, no
-                         * rollover. If no factory is given, select random
-                         * factories until the PP amount is reached or all
-                         * options from the world are exhausted.
+                         * Determine the number and type of components to steal from target faction. Much like Unit theft, this is handled in a different manner than it was under the Task system. If a defined target is given (specific factory), take only from that target. If nothing is there, no rollover. If no factory is given, select random factories until the PP amount is reached or all options from the world are exhausted.
                          */
                         double ppToCaptureDoub = o.getDoubleValue("AttackerBasePPAmount");
                         double ppUnitAdjust = o.getDoubleValue("AttackerPPUnitAdjustment");
                         double ppBVAdjust = o.getDoubleValue("AttackerPPBVAdjustment");
 
-                        if (ppUnitAdjust > 0)
+                        if (ppUnitAdjust > 0) {
                             ppToCaptureDoub *= so.getStartingUnits() / ppUnitAdjust;
+                        }
 
-                        if (ppBVAdjust > 0)
+                        if (ppBVAdjust > 0) {
                             ppToCaptureDoub *= so.getStartingBV() / ppBVAdjust;
+                        }
 
                         // convert ppToCapture into an int
                         int ppToCapture = (int) Math.min(ppToCaptureDoub, ppCaptureCap);
@@ -2451,12 +2287,7 @@ public class ShortResolver {
                         }
 
                         /*
-                         * Try every factory on the world, at random, until
-                         * we've taken what we can. This may mean getting inf or
-                         * veh pp on a planet than can produce meks.
-                         * 
-                         * The while loop terminates without running if the
-                         * ppToCapture is 0.
+                         * Try every factory on the world, at random, until we've taken what we can. This may mean getting inf or veh pp on a planet than can produce meks. The while loop terminates without running if the ppToCapture is 0.
                          */
                         int ppCaptured = 0;
                         ArrayList<UnitFactory> factoriesSearched = new ArrayList<UnitFactory>(target.getUnitFactories());
@@ -2480,18 +2311,20 @@ public class ShortResolver {
                             for (int type = Unit.MEK; type < Unit.MAXBUILD; type++) {
 
                                 // skip this type if the facility cannot produce
-                                if (!currFacility.canProduce(type))
+                                if (!currFacility.canProduce(type)) {
                                     continue;
+                                }
 
                                 boolean noPP = false;
                                 while (!noPP && ppCaptured < ppToCapture) {
                                     int ppAvailable = aLoser.getHouseFightingFor().getPP(currWeight, type);
-                                    if (ppAvailable <= 0)
+                                    if (ppAvailable <= 0) {
                                         noPP = true;
-                                    else {
+                                    } else {
                                         int toTake = ppToCapture;
-                                        if (ppToCapture > ppAvailable)
+                                        if (ppToCapture > ppAvailable) {
                                             toTake = ppAvailable;
+                                        }
                                         loserHSUpdates.append(aLoser.getHouseFightingFor().addPP(currWeight, type, -toTake, false));
                                         winnerHSUpdates.append(aWinner.getHouseFightingFor().addPP(currWeight, type, toTake, false));
                                         ppCaptured += toTake;
@@ -2518,11 +2351,13 @@ public class ShortResolver {
                         int unitBVDestroyAdjust = o.getIntValue("DestroyedUnitsBVAdjustment");
                         int unitUnitDestroyAdjust = o.getIntValue("DestroyedUnitsUnitAdjustment");
 
-                        if (unitUnitDestroyAdjust > 0)
+                        if (unitUnitDestroyAdjust > 0) {
                             unitsToDestroy += so.getStartingUnits() / unitUnitDestroyAdjust;
+                        }
 
-                        if (unitBVDestroyAdjust > 0)
+                        if (unitBVDestroyAdjust > 0) {
                             unitsToDestroy += so.getStartingBV() / unitBVDestroyAdjust;
+                        }
 
                         unitsToDestroy = Math.min(unitsToDestroy, unitDestructionCap);
 
@@ -2533,10 +2368,7 @@ public class ShortResolver {
                             int numDestroyed = 0;
 
                             /*
-                             * Try every factory on the world, at random, until
-                             * we've taken what we can. This may mean getting
-                             * inf or vehs on a planet than can produce assault
-                             * mechs.
+                             * Try every factory on the world, at random, until we've taken what we can. This may mean getting inf or vehs on a planet than can produce assault mechs.
                              */
                             factoriesSearched.clear();
                             factoriesSearched.addAll(target.getUnitFactories());
@@ -2562,15 +2394,16 @@ public class ShortResolver {
 
                                     // skip this type if the facility cannot
                                     // produce
-                                    if (!currFacility.canProduce(type))
+                                    if (!currFacility.canProduce(type)) {
                                         continue;
+                                    }
 
                                     boolean noUnits = false;
                                     while (!noUnits && numDestroyed < unitsToDestroy) {
                                         SUnit destroyed = aLoser.getHouseFightingFor().getEntity(currWeight, type);
-                                        if (destroyed == null)
+                                        if (destroyed == null) {
                                             noUnits = true;
-                                        else {
+                                        } else {
                                             opdestroyedUnits.add(destroyed);
                                             loserHSUpdates.append(aLoser.getHouseFightingFor().getHSUnitRemovalString(destroyed));
                                             // aWinner.getHouseFightingFor().addUnit(captured);
@@ -2613,27 +2446,20 @@ public class ShortResolver {
                         }// end if(unitsToDestroy > 0)
 
                         /*
-                         * Determine the number and type of components to
-                         * destroy from target faction. Much like Unit
-                         * destruction, this is handled in a different manner
-                         * than it was under the Task system.
-                         * 
-                         * If a defined target is given (specific factory), take
-                         * only from that target. If nothing is there, no
-                         * rollover. If no factory is given, select random
-                         * factories until the PP amount is reached or all
-                         * options from the world are exhausted.
+                         * Determine the number and type of components to destroy from target faction. Much like Unit destruction, this is handled in a different manner than it was under the Task system. If a defined target is given (specific factory), take only from that target. If nothing is there, no rollover. If no factory is given, select random factories until the PP amount is reached or all options from the world are exhausted.
                          */
                         double ppDestructionCap = o.getDoubleValue("PPDestructionCap");
                         double ppToDestroyDoub = o.getDoubleValue("BasePPDestroyed");
                         double ppBVDestroyAdjust = o.getDoubleValue("DestroyedPPBVAdjustment");
                         double ppUnitDestroyAdjust = o.getDoubleValue("DestroyedPPUnitAdjustment");
 
-                        if (ppUnitDestroyAdjust > 0)
+                        if (ppUnitDestroyAdjust > 0) {
                             ppToDestroyDoub *= so.getStartingUnits() / ppUnitDestroyAdjust;
+                        }
 
-                        if (ppBVDestroyAdjust > 0)
+                        if (ppBVDestroyAdjust > 0) {
                             ppToDestroyDoub *= so.getStartingBV() / ppBVDestroyAdjust;
+                        }
 
                         // convert ppToCapture into an int
                         int ppToDestroy = (int) Math.min(ppToDestroyDoub, ppDestructionCap);
@@ -2645,12 +2471,7 @@ public class ShortResolver {
                         }
 
                         /*
-                         * Try every factory on the world, at random, until
-                         * we've taken what we can. This may mean getting inf or
-                         * veh pp on a planet than can produce meks.
-                         * 
-                         * The while loop terminates without running if the
-                         * ppToDestroy is 0.
+                         * Try every factory on the world, at random, until we've taken what we can. This may mean getting inf or veh pp on a planet than can produce meks. The while loop terminates without running if the ppToDestroy is 0.
                          */
                         int ppDestroyed = 0;
                         factoriesSearched.clear();
@@ -2667,18 +2488,20 @@ public class ShortResolver {
                             for (int type = Unit.MEK; type < Unit.MAXBUILD; type++) {
 
                                 // skip this type if the facility cannot produce
-                                if (!currFacility.canProduce(type))
+                                if (!currFacility.canProduce(type)) {
                                     continue;
+                                }
 
                                 boolean noPP = false;
                                 while (!noPP && ppDestroyed < ppToDestroy) {
                                     int ppAvailable = aLoser.getHouseFightingFor().getPP(currWeight, type);
-                                    if (ppAvailable <= 0)
+                                    if (ppAvailable <= 0) {
                                         noPP = true;
-                                    else {
+                                    } else {
                                         int toDestroy = ppToDestroy;
-                                        if (ppToDestroy > ppAvailable)
+                                        if (ppToDestroy > ppAvailable) {
                                             toDestroy = ppAvailable;
+                                        }
                                         loserHSUpdates.append(aLoser.getHouseFightingFor().addPP(currWeight, type, -toDestroy, false));
                                         // aWinner.getHouseFightingFor().addPP(currWeight,type,
                                         // toTake);
@@ -2708,26 +2531,30 @@ public class ShortResolver {
                 else if (defendersWon) {
                     try {
                         /*
-                         * Determine the amount of land which should change
-                         * hands as a result of the Operation.
+                         * Determine the amount of land which should change hands as a result of the Operation.
                          */
                         int totalConquest = o.getIntValue("DefenderBaseConquestAmount");
                         int conquestUnitAdjust = o.getIntValue("DefenderConquestUnitAdjustment");
                         int conquestBVAdjust = o.getIntValue("DefenderConquestBVAdjustment");
-                        if (conquestUnitAdjust > 0)
+                        if (conquestUnitAdjust > 0) {
                             totalConquest += Math.floor(so.getStartingUnits() / conquestUnitAdjust);
-                        if (conquestBVAdjust > 0)
+                        }
+                        if (conquestBVAdjust > 0) {
                             totalConquest += Math.floor(so.getStartingBV() / conquestBVAdjust);
-                        if (totalConquest > conquestCap)
+                        }
+                        if (totalConquest > conquestCap) {
                             totalConquest = conquestCap;
+                        }
 
                         // Drop % to 0 if either group is non-conquer
-                        if (!aWinner.getHouseFightingFor().isConquerable() || !aLoser.getHouseFightingFor().isConquerable())
+                        if (!aWinner.getHouseFightingFor().isConquerable() || !aLoser.getHouseFightingFor().isConquerable()) {
                             totalConquest = 0;
+                        }
 
                         // Drop % to 0 if the planet is non-conquerable
-                        if (!so.getTargetWorld().isConquerable())
+                        if (!so.getTargetWorld().isConquerable()) {
                             totalConquest = 0;
+                        }
 
                         // make the % adjustment. This zeros totalConquest if
                         // there is nothing to gain.
@@ -2736,33 +2563,35 @@ public class ShortResolver {
                         if (totalConquest > 0) {
                             hasLoss = true;
                             String point = "points";
-                            if ( totalConquest == 1)
+                            if (totalConquest == 1) {
                                 point = "point";
-                            winnerMetaString += " gained " + totalConquest + " "+point+" of " + target.getNameAsColoredLink();
-                            loserMetaString += " lost " + totalConquest + " "+point+" of " + target.getNameAsColoredLink();
+                            }
+                            winnerMetaString += " gained " + totalConquest + " " + point + " of " + target.getNameAsColoredLink();
+                            loserMetaString += " lost " + totalConquest + " " + point + " of " + target.getNameAsColoredLink();
                             so.checkMercContracts(aWinner, ContractInfo.CONTRACT_LAND, totalConquest);
                         }
 
                         /*
-                         * Determine the amount of refresh to add to the
-                         * facilities on world. This is an inverse of what the
-                         * attacker was trying to get - bonus miniticks for the
-                         * factories.
+                         * Determine the amount of refresh to add to the facilities on world. This is an inverse of what the attacker was trying to get - bonus miniticks for the factories.
                          */
                         int totalRefreshBoost = o.getIntValue("DefenderBaseDelayAmount");
                         int delayUnitAdjust = o.getIntValue("DefenderDelayUnitAdjustment");
                         int delayBVAdjust = o.getIntValue("DefenderDelayBVAdjustment");
-                        if (delayUnitAdjust > 0)
+                        if (delayUnitAdjust > 0) {
                             totalRefreshBoost += Math.floor(so.getStartingUnits() / delayUnitAdjust);
-                        if (delayBVAdjust > 0)
+                        }
+                        if (delayBVAdjust > 0) {
                             totalRefreshBoost += Math.floor(so.getStartingBV() / delayBVAdjust);
-                        if (totalRefreshBoost > delayCap)
+                        }
+                        if (totalRefreshBoost > delayCap) {
                             totalRefreshBoost = delayCap;
+                        }
 
                         // if no facilities exist to refresh, reduce the total
                         // to 0.
-                        if (target.getFactoryCount() == 0)
+                        if (target.getFactoryCount() == 0) {
                             totalRefreshBoost = 0;
+                        }
 
                         // not allowed to boost production or decrease factory
                         // delays if the defender doesn't own
@@ -2789,33 +2618,26 @@ public class ShortResolver {
                         }
 
                         /*
-                         * NOTE: This is the point where unit thefts appear in
-                         * the attacker win block. Defenders cannot steal or
-                         * insta-build units, so its been removed.
+                         * NOTE: This is the point where unit thefts appear in the attacker win block. Defenders cannot steal or insta-build units, so its been removed.
                          */
 
                         /*
-                         * Determine the number and type of components to
-                         * produce. The defender cannot choose which type of
-                         * components should be produced. They will always be
-                         * generated at random from the factories available on
-                         * world.
-                         * 
-                         * We only need to do this if the target actually has
-                         * factories. If it doesnt, the attacker was wasting his
-                         * time anyway ...
+                         * Determine the number and type of components to produce. The defender cannot choose which type of components should be produced. They will always be generated at random from the factories available on world. We only need to do this if the target actually has factories. If it doesnt, the attacker was wasting his time anyway ...
                          */
                         if (target.getFactoryCount() > 0) {
 
                             double ppToGenerateDoub = o.getDoubleValue("DefenderBasePPAmount");
                             double ppUnitAdjust = o.getDoubleValue("DefenderPPUnitAdjustment");
                             double ppBVAdjust = o.getDoubleValue("DefenderPPBVAdjustment");
-                            if (ppUnitAdjust > 0)
+                            if (ppUnitAdjust > 0) {
                                 ppToGenerateDoub *= so.getStartingUnits() / ppUnitAdjust;
-                            if (ppBVAdjust > 0)
+                            }
+                            if (ppBVAdjust > 0) {
                                 ppToGenerateDoub *= so.getStartingBV() / ppBVAdjust;
-                            if (ppToGenerateDoub > ppCaptureCap)
+                            }
+                            if (ppToGenerateDoub > ppCaptureCap) {
                                 ppToGenerateDoub = ppCaptureCap;
+                            }
 
                             // convert ppToGenerate into an int
                             int ppToGenerate = (int) ppToGenerateDoub;
@@ -2835,8 +2657,9 @@ public class ShortResolver {
 
                                     // skip this type if the facility cannot
                                     // produce
-                                    if (!currFacility.canProduce(type))
+                                    if (!currFacility.canProduce(type)) {
                                         continue;
+                                    }
 
                                     // it can produce. add some PP.
                                     winnerHSUpdates.append(aWinner.getHouseFightingFor().addPP(currFacility.getWeightclass(), type, ppToGenerate, false));
@@ -2865,10 +2688,7 @@ public class ShortResolver {
                 if (hasLoss) {
 
                     /*
-                     * Strip the the last instance of ", " and insert " and " in
-                     * order to have a properly formatted metastring. After
-                     * correcting the format, append to the finishedInfo and add
-                     * to player's entries in the metaStrings tree.
+                     * Strip the the last instance of ", " and insert " and " in order to have a properly formatted metastring. After correcting the format, append to the finishedInfo and add to player's entries in the metaStrings tree.
                      */
                     String meta1 = "";
                     String meta2 = "";
@@ -2904,10 +2724,12 @@ public class ShortResolver {
                 }
 
                 // all done. send updates to effected houses.
-                if (winnerHSUpdates.length() > 0)
+                if (winnerHSUpdates.length() > 0) {
                     CampaignMain.cm.doSendToAllOnlinePlayers(aWinner.getHouseFightingFor(), "HS|" + winnerHSUpdates, false);
-                if (loserHSUpdates.length() > 0)
+                }
+                if (loserHSUpdates.length() > 0) {
                     CampaignMain.cm.doSendToAllOnlinePlayers(aLoser.getHouseFightingFor(), "HS|" + loserHSUpdates, false);
+                }
 
             } catch (Exception ex) {
                 CampaignData.mwlog.errLog(ex);
@@ -2919,8 +2741,7 @@ public class ShortResolver {
     }// end this.assembleMetaStrings()
 
     /**
-     * Method which parses salvage from the report and saves outcome strings for
-     * the players.
+     * Method which parses salvage from the report and saves outcome strings for the players.
      */
     private void possibleSalvageFromReport(StringTokenizer reportTokenizer, ShortOperation so) {
 
@@ -2964,21 +2785,19 @@ public class ShortResolver {
 
                     // check for builings left this is tacked onto the end of
                     // the results string.
-                    else if (currentUnit.startsWith("BL*"))
+                    else if (currentUnit.startsWith("BL*")) {
                         buildingsLeft = Integer.parseInt(currentUnit.substring(3));
-
-                    // Combat Unit. Make and store an OperationEntity.
-                    else {
+                    } else {
 
                         OperationEntity oEntity = new OperationEntity(currentUnit);
                         SUnit unit = CampaignMain.cm.getPlayer(oEntity.getOwnerName()).getUnit(oEntity.getID());
 
                         // if the player doesnt own the unit, its probably
                         // autoartillery. continue to next loop.
-                        if (unit == null && !o.getBooleanValue("SupportUnitsAreSalvageable") ) {
+                        if (unit == null && !o.getBooleanValue("SupportUnitsAreSalvageable")) {
                             continue;
-                        } else if ( unit == null && o.getBooleanValue("SupportUnitsAreSalvageable") ) {
-                            unit = new SUnit(oEntity.getID(),"Salvaged Support Unit",oEntity.getUnitFileName());
+                        } else if (unit == null && o.getBooleanValue("SupportUnitsAreSalvageable")) {
+                            unit = new SUnit(oEntity.getID(), "Salvaged Support Unit", oEntity.getUnitFileName());
                             CampaignMain.cm.getPlayer(oEntity.getOwnerName()).addUnit(unit, true);
                         }
 
@@ -2996,32 +2815,29 @@ public class ShortResolver {
                             } else if (CampaignMain.cm.getRandomNumber(100) <= pushedScrappedChance) {
                                 oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
                             }
-                        }else if ( UnitUtils.getNumberOfDamagedEngineCrits(unit.getEntity()) >= 3 && CampaignMain.cm.getRandomNumber(100) <= enginedScrappedChance ){
+                        } else if (UnitUtils.getNumberOfDamagedEngineCrits(unit.getEntity()) >= 3 && CampaignMain.cm.getRandomNumber(100) <= enginedScrappedChance) {
                             oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
-                        }else if ( !oEntity.canStand() && CampaignMain.cm.getRandomNumber(100) < forcedSalvageScrappedChance ){
+                        } else if (!oEntity.canStand() && CampaignMain.cm.getRandomNumber(100) < forcedSalvageScrappedChance) {
                             oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
                         }
-                        
-                        if ( oEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_EJECTED && CampaignMain.cm.isUsingAdvanceRepair() && !nonDestructionMode){
+
+                        if (oEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_EJECTED && CampaignMain.cm.isUsingAdvanceRepair() && !nonDestructionMode) {
                             UnitUtils.destroyCockPit(unit.getEntity());
                         }
-                        
+
                         so.getReporter().addEndingUnit(unit, oEntity.getRemovalReason());
 
                         if (oEntity.isLiving()) {
                             livingUnits.put(oEntity.getID(), oEntity);
                             destroyed = 0;
-                            if (so.getLosers().containsKey(oEntity.getOwnerName().toLowerCase()))
+                            if (so.getLosers().containsKey(oEntity.getOwnerName().toLowerCase())) {
                                 currentBV += unit.getBV();
+                            }
                         } else if (oEntity.isSalvagable()) {
                             salvagableUnits.put(oEntity.getID(), oEntity);
                             destroyed = 1;
                             /*
-                             * I've changed the code so that only the BV of
-                             * living units is reported. if the unit was
-                             * destroyed(but not cored) or forced salvage they
-                             * do not get a BV count. Might tweak this later
-                             * --Torren.
+                             * I've changed the code so that only the BV of living units is reported. if the unit was destroyed(but not cored) or forced salvage they do not get a BV count. Might tweak this later --Torren.
                              */
                             // currentBV += unit.getBV();
                         } else {
@@ -3030,8 +2846,7 @@ public class ShortResolver {
                         }
 
                         /*
-                         * Count all real games for mechstats. Do NOT count
-                         * disco resolutions as they are not meritorious.
+                         * Count all real games for mechstats. Do NOT count disco resolutions as they are not meritorious.
                          */
                         if (saveStats) {
                             SUnit currU = CampaignMain.cm.getPlayer(oEntity.getOwnerName()).getUnit(oEntity.getID());
@@ -3055,32 +2870,26 @@ public class ShortResolver {
             }
 
             /*
-             * Check offboard units. Units which are deployed off map will
-             * always return as surviving, which is rather unfair. There are
-             * configurable options to allow destructive overrun to mitigate
-             * this advantage.
-             * 
-             * Base chance of overrun is modified by the distance an artillery
-             * unit is placed off of the board, yeilding a final overrun %.
-             * party, not only the winner.
+             * Check offboard units. Units which are deployed off map will always return as surviving, which is rather unfair. There are configurable options to allow destructive overrun to mitigate this advantage. Base chance of overrun is modified by the distance an artillery unit is placed off of the board, yeilding a final overrun %. party, not only the winner.
              */
             int baseChance = CampaignMain.cm.getIntegerConfig("ArtilleryOffBoardOverRun");
             int captureChance = CampaignMain.cm.getIntegerConfig("OffBoardChanceOfCapture");
 
             /*
-             * Need to use an iterator here b/c it allows for a chance to remove
-             * units (over run) from living units, which foreach does not.
+             * Need to use an iterator here b/c it allows for a chance to remove units (over run) from living units, which foreach does not.
              */
             try {
                 for (OperationEntity currO : livingUnits.values()) {
 
                     // so.getWinners() don't get overrun
-                    if (so.getWinners().containsKey(currO.getOwnerName().toLowerCase()))
+                    if (so.getWinners().containsKey(currO.getOwnerName().toLowerCase())) {
                         continue;
+                    }
 
                     // if a unit isn't actually offboard, no check
-                    if (currO.getOffBoardRange() <= 0)
+                    if (currO.getOffBoardRange() <= 0) {
                         continue;
+                    }
 
                     // integer which reresents this OEntity's likelyhood of
                     // being overrun
@@ -3097,8 +2906,9 @@ public class ShortResolver {
                             currO.setRemovalReason(megamek.common.IEntityRemovalConditions.REMOVE_SALVAGEABLE);
                             salvagableUnits.put(currO.getID(), currO);
                         } else {// destroy the piece
-                            if (currO.getType() == Unit.MEK || currO.getType() == Unit.QUAD)
+                            if (currO.getType() == Unit.MEK || currO.getType() == Unit.QUAD) {
                                 currO.setCTint(0);
+                            }
                             currO.setSalvage(false);
                             destroyedUnits.put(currO.getID(), currO);
                         }
@@ -3115,13 +2925,7 @@ public class ShortResolver {
     }// end possibleSalvageFromReport
 
     /**
-     * Method which builds possible salvage from a Short Operation's death tree.
-     * Since the information stored while a game is in progress is less exact
-     * than a full autoreport, some assumptions must be made.
-     * 
-     * By setting up accurate living, salvage and dead unit treemaps, this
-     * method allows the resolver to use its remaining methods (salvage
-     * assignment, etc) as usual.
+     * Method which builds possible salvage from a Short Operation's death tree. Since the information stored while a game is in progress is less exact than a full autoreport, some assumptions must be made. By setting up accurate living, salvage and dead unit treemaps, this method allows the resolver to use its remaining methods (salvage assignment, etc) as usual.
      */
     public void possibleSalvageFromInProgressInfo(ShortOperation so, SPlayer loser) {
         try {
@@ -3137,24 +2941,24 @@ public class ShortResolver {
 
                     // if the player doesnt own the unit, its probably
                     // autoartillery. continue to next loop.
-                    if (CampaignMain.cm.getPlayer(currEntity.getOwnerName()).getUnit(currEntity.getID()) == null)
+                    if (CampaignMain.cm.getPlayer(currEntity.getOwnerName()).getUnit(currEntity.getID()) == null) {
                         continue;
+                    }
 
-                    if (currEntity.isLiving())
+                    if (currEntity.isLiving()) {
                         livingUnits.put(currEntity.getID(), currEntity);
-                    else if (currEntity.isSalvagable())
+                    } else if (currEntity.isSalvagable()) {
                         salvagableUnits.put(currEntity.getID(), currEntity);
-                    else
+                    } else {
                         destroyedUnits.put(currEntity.getID(), currEntity);
+                    }
                 }
             } catch (Exception ex) {
                 CampaignData.mwlog.errLog(ex);
             }
 
             /*
-             * loop through all units from all armies. any unit which was never
-             * removed from play (ie - isnt already in the units treemaps) is
-             * presumed to be alive for reporting purposes.
+             * loop through all units from all armies. any unit which was never removed from play (ie - isnt already in the units treemaps) is presumed to be alive for reporting purposes.
              */
             try {
                 for (SArmy currArmy : allArmies.values()) {
@@ -3171,30 +2975,26 @@ public class ShortResolver {
             }
 
             /*
-             * Populate the pilots hashtable, using pilots from the
-             * ShortOperation's inProgress TreeMap.
+             * Populate the pilots hashtable, using pilots from the ShortOperation's inProgress TreeMap.
              */
             pilots.putAll(so.getPilotsInProgress());
 
             /*
-             * Build a vector of units which are living and belong to the player
-             * who dropped from the server.
+             * Build a vector of units which are living and belong to the player who dropped from the server.
              */
             ArrayList<OperationEntity> dropLivingUnits = new ArrayList<OperationEntity>();
             try {
                 for (OperationEntity currE : livingUnits.values()) {
-                    if (currE.getOwnerName().toLowerCase().equals(loser.getName().toLowerCase()))
+                    if (currE.getOwnerName().toLowerCase().equals(loser.getName().toLowerCase())) {
                         dropLivingUnits.add(currE);
+                    }
                 }
             } catch (Exception ex) {
                 CampaignData.mwlog.errLog(ex);
             }
 
             /*
-             * If the dropper doesnt have any living units, we move on and do
-             * not apply a penalty. If he had pieces survive the game, check
-             * server settings to see if additional units should be destroyed or
-             * set as salvage.
+             * If the dropper doesnt have any living units, we move on and do not apply a penalty. If he had pieces survive the game, check server settings to see if additional units should be destroyed or set as salvage.
              */
             try {
                 if (dropLivingUnits.size() > 0) {
@@ -3224,8 +3024,9 @@ public class ShortResolver {
                         OperationEntity randomEntity = dropLivingUnits.remove(CampaignMain.cm.getRandomNumber(dropLivingUnits.size()));
 
                         // if the entity if a mech, eject the pilot
-                        if (randomEntity.getType() == Unit.MEK || randomEntity.getType() == Unit.QUAD)
+                        if (randomEntity.getType() == Unit.MEK || randomEntity.getType() == Unit.QUAD) {
                             pilots.put(randomEntity.getID(), SPilot.getMekWarrior(randomEntity.getID(), -1));
+                        }
 
                         // make the unit salvageable
                         randomEntity.setRemovalReason(megamek.common.IEntityRemovalConditions.REMOVE_SALVAGEABLE);
@@ -3248,9 +3049,7 @@ public class ShortResolver {
     }// end possibleSalvageFromInProgressInfo
 
     /**
-     * Method which cleans up when a pilot dies. Determines whether or not
-     * peronal queues are in use, re-BV's the unit and the armies in which it is
-     * resident, and returns a string detailing the outcome.
+     * Method which cleans up when a pilot dies. Determines whether or not peronal queues are in use, re-BV's the unit and the armies in which it is resident, and returns a string detailing the outcome.
      */
     private String handleDeadPilot(SPlayer owner, SUnit unit, OperationEntity entity, ShortOperation op) {
         // holder string
@@ -3260,10 +3059,12 @@ public class ShortResolver {
             // if PPQs are on and the unit is a mek, vacate
             boolean personalQueues = CampaignMain.cm.getBooleanConfig("AllowPersonalPilotQueues");
             boolean isPilotChangeable = unit.isSinglePilotUnit();
-            if (CampaignMain.cm.isUsingCyclops())
+            if (CampaignMain.cm.isUsingCyclops()) {
                 CampaignMain.cm.getMWCC().pilotKill((SPilot) unit.getPilot(), op.getOpCyclopsID());
-            if (CampaignMain.cm.isUsingMySQL())
+            }
+            if (CampaignMain.cm.isUsingMySQL()) {
                 CampaignMain.cm.MySQL.deletePilot(((SPilot) unit.getPilot()).getPilotId());
+            }
             if (isPilotChangeable && personalQueues) {
                 SPilot pilot = new SPilot("Vacant", 99, 99);
                 unit.setPilot(pilot);
@@ -3272,12 +3073,13 @@ public class ShortResolver {
             else {
 
                 unit.setPilot(owner.getHouseFightingFor().getNewPilot(unit.getType()));
-                if (unit.isSinglePilotUnit())
+                if (unit.isSinglePilotUnit()) {
                     toReturn += " New Pilot: " + unit.getPilot().getName();
-                else if (entity.getType() == Unit.VEHICLE)
+                } else if (entity.getType() == Unit.VEHICLE) {
                     toReturn += " New Crew:";
-                else if (entity.getType() == Unit.BATTLEARMOR || entity.getType() == Unit.INFANTRY)
+                } else if (entity.getType() == Unit.BATTLEARMOR || entity.getType() == Unit.INFANTRY) {
                     toReturn += " New Squad:";
+                }
                 toReturn += " " + newPilotDescription(unit);
             }
         } catch (Exception ex) {
@@ -3289,8 +3091,7 @@ public class ShortResolver {
     }
 
     /**
-     * Method which handles living, dispossessed pilots. Called from the salvage
-     * method. Very simple. Broken out to slice repetetive code.
+     * Method which handles living, dispossessed pilots. Called from the salvage method. Very simple. Broken out to slice repetetive code.
      */
     private void handleDispossesedPilot(SPlayer owner, SUnit unit) {
 
@@ -3305,34 +3106,16 @@ public class ShortResolver {
                 CampaignMain.cm.toUser("PL|AP2PPQ|" + unit.getType() + "|" + unit.getWeightclass() + "|" + ((SPilot) unit.getPilot()).toFileFormat("#", true), owner.getName(), false);
                 owner.getPersonalPilotQueue().checkQueueAndWarn(owner.getName(), unit.getType(), unit.getWeightclass());
                 unit.setPilot(new SPilot("Vacant", 99, 99));
-            }
-
-            // else, add it to the owner's house.
-            else
+            } else {
                 owner.getHouseFightingFor().addDispossessedPilot(unit, false);
+            }
         } catch (Exception ex) {
             CampaignData.mwlog.errLog(ex);
         }
     }
 
     /**
-     * Method which checks the status of a pilot. Called when checking on
-     * salvaged and destroyed units.
-     * 
-     * If the pilot is non-null, can check the is dead field for status and
-     * reason for showing on field.
-     * 
-     * If the pilot is null, death is presumed. Can derive the cause of death
-     * from the status of his unit.
-     * 
-     * This method returns an array which has very specific object ordering, as
-     * follows:
-     * 
-     * 0 - Boolean pilotIsDead; indicates status of pilot 1 - String
-     * ownerString; to send to the original owner 2 - String captorString; to
-     * send to capturing player 3 - String otherString; to send to player who
-     * are neither original owners nor captors 4 - SPlayer captor; player who
-     * has captured a pilot
+     * Method which checks the status of a pilot. Called when checking on salvaged and destroyed units. If the pilot is non-null, can check the is dead field for status and reason for showing on field. If the pilot is null, death is presumed. Can derive the cause of death from the status of his unit. This method returns an array which has very specific object ordering, as follows: 0 - Boolean pilotIsDead; indicates status of pilot 1 - String ownerString; to send to the original owner 2 - String captorString; to send to capturing player 3 - String otherString; to send to player who are neither original owners nor captors 4 - SPlayer captor; player who has captured a pilot
      */
     private Object[] setupPilotStringForUnit(OperationEntity currEntity, SUnit currUnit, SPlanet target) {
 
@@ -3361,8 +3144,9 @@ public class ShortResolver {
                 // pickup only matters if it was by a living unit.
                 SPlayer pickupPlayer = null;
                 OperationEntity pickupEntity = livingUnits.get(mw.getPickedUpID());
-                if (pickupEntity != null)
+                if (pickupEntity != null) {
                     pickupPlayer = CampaignMain.cm.getPlayer(pickupEntity.getOwnerName());
+                }
                 if (pickupPlayer != null) {
 
                     // if the player is fighting for the same house, simply
@@ -3390,8 +3174,9 @@ public class ShortResolver {
                             pickupPlayer.getPersonalPilotQueue().addPilot(currUnit.getPilot(), currUnit.getWeightclass());
                             CampaignMain.cm.toUser("PL|AP2PPQ|" + currUnit.getType() + "|" + currUnit.getWeightclass() + "|" + ((SPilot) currUnit.getPilot()).toFileFormat("#", true), pickupPlayer.getName(), false);
                             pickupPlayer.getPersonalPilotQueue().checkQueueAndWarn(pickupPlayer.getName(), currUnit.getType(), currUnit.getWeightclass());
-                        } else
+                        } else {
                             pickupPlayer.getHouseFightingFor().addDispossessedPilot(currUnit, true);
+                        }
 
                         toReturn[0] = new Boolean(false);// although the
                         // pilot is
@@ -3408,8 +3193,7 @@ public class ShortResolver {
                 }// end if(non-null pickup)
 
                 /*
-                 * The pickup was null, but the pilot was not. Check to see if
-                 * the pilot managed to survive or was captured on the field.
+                 * The pickup was null, but the pilot was not. Check to see if the pilot managed to survive or was captured on the field.
                  */
 
                 // allow so.getWinners() to recover all of their pilots outright
@@ -3426,12 +3210,14 @@ public class ShortResolver {
 
                 // always give them a fighting chance.
                 int minChance = CampaignMain.cm.getIntegerConfig("BasePilotSurvival");
-                if (survivalChance < minChance)
+                if (survivalChance < minChance) {
                     survivalChance = minChance;
+                }
 
                 // plus up his survival if he's got ill wilderness traning? huh?
-                if (currUnit.getPilot().getSkills().has(PilotSkill.SurvivalistSkillID))
+                if (currUnit.getPilot().getSkills().has(PilotSkill.SurvivalistSkillID)) {
                     survivalChance += 20;
+                }
 
                 // survived. let the player know and return.
                 if (CampaignMain.cm.getRandomNumber(100) < survivalChance) {
@@ -3443,10 +3229,11 @@ public class ShortResolver {
 
                 // didn't survive. can set up the message to owner and select a
                 // random pickup player
-                pickupPlayer = this.selectRandomWinner();
-                
-                if ( pickupPlayer == null )
+                pickupPlayer = selectRandomWinner();
+
+                if (pickupPlayer == null) {
                     return toReturn;
+                }
                 toReturn[1] = ((SPilot) currUnit.getPilot()).getPilotCaptureMessageToOwner(currUnit);
                 toReturn[3] = "The pilot was captured.";
                 toReturn[4] = pickupPlayer;
@@ -3461,8 +3248,9 @@ public class ShortResolver {
                     if (CampaignMain.cm.getBooleanConfig("AllowPersonalPilotQueues")) {
                         pickupPlayer.getPersonalPilotQueue().addPilot(currUnit.getPilot(), currUnit.getWeightclass());
                         CampaignMain.cm.toUser("PL|PPQ|" + pickupPlayer.getPersonalPilotQueue().toString(true), pickupPlayer.getName(), false);
-                    } else
+                    } else {
                         pickupPlayer.getHouseFightingFor().addDispossessedPilot(currUnit, true);
+                    }
                     toReturn[0] = new Boolean(false);// pilot technically
                     // lives, but we say
                     // that he is dead.
@@ -3477,10 +3265,7 @@ public class ShortResolver {
             }// end (mw != null)
 
             /*
-             * The pilot is null. This generally means that the pilot is dead;
-             * however, it may also mean that the unit was killed in a way which
-             * doesnt trigger an ejection - generally 3 engine crits - of the
-             * unit simply doesn't have an ejectable pilot (proto, BA).
+             * The pilot is null. This generally means that the pilot is dead; however, it may also mean that the unit was killed in a way which doesnt trigger an ejection - generally 3 engine crits - of the unit simply doesn't have an ejectable pilot (proto, BA).
              */
 
             // pilots of non-mech units cannot survive destruction
@@ -3493,16 +3278,12 @@ public class ShortResolver {
             else if (currEntity.getType() == Unit.VEHICLE) {
 
                 /*
-                 * If the vehicle is salvageable and the crew is alive, we have
-                 * to test for winner and loser, same as for a pilot trapped in
-                 * an engine-destroyed mek.
+                 * If the vehicle is salvageable and the crew is alive, we have to test for winner and loser, same as for a pilot trapped in an engine-destroyed mek.
                  */
                 if (currEntity.isSalvage() && !currEntity.isCrewDead()) {
 
                     /*
-                     * Winners always keep their crews. If survival checks for
-                     * trapped pilots and crews are turned off, the crew is
-                     * always returned to its owner.
+                     * Winners always keep their crews. If survival checks for trapped pilots and crews are turned off, the crew is always returned to its owner.
                      */
                     if (shortOp.getWinners().containsKey(currEntity.getOwnerName().toLowerCase()) || !CampaignMain.cm.getBooleanConfig("DownPilotsMustRollForSurvival")) {
                         toReturn[0] = new Boolean(true);
@@ -3517,8 +3298,9 @@ public class ShortResolver {
                     // always give them a fighting chance. no survivalist
                     // adjustment.
                     int minChance = CampaignMain.cm.getIntegerConfig("BasePilotSurvival");
-                    if (survivalChance < minChance)
+                    if (survivalChance < minChance) {
                         survivalChance = minChance;
+                    }
                     survivalChance -= CampaignMain.cm.getIntegerConfig("TrappedInMechSurvivalMod");
 
                     // survived. let the player know and return.
@@ -3534,8 +3316,7 @@ public class ShortResolver {
                 }
 
                 /*
-                 * If the vehicle is salvageable and the crew is dead, set an
-                 * appropriate message and resolve salvage normally.
+                 * If the vehicle is salvageable and the crew is dead, set an appropriate message and resolve salvage normally.
                  */
                 else if (currEntity.isSalvage() && currEntity.isCrewDead()) {
                     toReturn[1] = "The crew of the " + currUnit.getModelName() + " was killed in action.";
@@ -3585,9 +3366,7 @@ public class ShortResolver {
             }
 
             /*
-             * Winners should always recover their engine-killed pilots, and
-             * pilots should always be returned if the survival roll is disabled
-             * by an admin.
+             * Winners should always recover their engine-killed pilots, and pilots should always be returned if the survival roll is disabled by an admin.
              */
             if (shortOp.getWinners().containsKey(currEntity.getOwnerName().toLowerCase()) || !CampaignMain.cm.getBooleanConfig("DownPilotsMustRollForSurvival")) {
                 toReturn[0] = new Boolean(true);
@@ -3597,10 +3376,7 @@ public class ShortResolver {
             }
 
             /*
-             * If pilots in downed units need to roll for survival, check them.
-             * This code is virtually identical to the capture block when a
-             * pilot is left alive on field and could probably be factored out
-             * into a seperate checksurvival method...
+             * If pilots in downed units need to roll for survival, check them. This code is virtually identical to the capture block when a pilot is left alive on field and could probably be factored out into a seperate checksurvival method...
              */
 
             // if not a winner, give the pilot a chance to make it back to base
@@ -3608,17 +3384,17 @@ public class ShortResolver {
 
             // always give them a fighting chance.
             int minChance = CampaignMain.cm.getIntegerConfig("BasePilotSurvival");
-            if (survivalChance < minChance)
+            if (survivalChance < minChance) {
                 survivalChance = minChance;
+            }
 
             // plus up his survival if he's got ill wilderness traning? huh?
-            if (currUnit.getPilot().getSkills().has(PilotSkill.SurvivalistSkillID))
+            if (currUnit.getPilot().getSkills().has(PilotSkill.SurvivalistSkillID)) {
                 survivalChance += 20;
+            }
 
             /*
-             * Unique to in-mech pilots (engine kills). Penalty for being in a
-             * stationary unit when the capture crews come around and sweep the
-             * field.
+             * Unique to in-mech pilots (engine kills). Penalty for being in a stationary unit when the capture crews come around and sweep the field.
              */
             survivalChance -= CampaignMain.cm.getIntegerConfig("TrappedInMechSurvivalMod");
 
@@ -3632,12 +3408,14 @@ public class ShortResolver {
 
             // didn't survive. can set up the message to owner and select a
             // random pickup player
-            SPlayer pickupPlayer = this.selectRandomWinner();
-            if (pickupPlayer == null)
-                pickupPlayer = this.selectRandomLoser();
+            SPlayer pickupPlayer = selectRandomWinner();
+            if (pickupPlayer == null) {
+                pickupPlayer = selectRandomLoser();
+            }
 
-            if (pickupPlayer == null)
+            if (pickupPlayer == null) {
                 return toReturn;
+            }
 
             toReturn[1] = ((SPilot) currUnit.getPilot()).getPilotCaptureMessageToOwner(currUnit);
             toReturn[3] = "The pilot was captured.";
@@ -3651,8 +3429,9 @@ public class ShortResolver {
                 if (CampaignMain.cm.getBooleanConfig("AllowPersonalPilotQueues")) {
                     pickupPlayer.getPersonalPilotQueue().addPilot(currUnit.getPilot(), currUnit.getWeightclass());
                     CampaignMain.cm.toUser("PL|PPQ|" + pickupPlayer.getPersonalPilotQueue().toString(true), pickupPlayer.getName(), false);
-                } else
+                } else {
                     pickupPlayer.getHouseFightingFor().addDispossessedPilot(currUnit, true);
+                }
                 toReturn[0] = new Boolean(false);// technically alive, but
                 // dead for New Pilot
                 // purposes
@@ -3672,9 +3451,7 @@ public class ShortResolver {
     }// end setupPilotString
 
     /**
-     * Method which returns the cost of salvaging a given unit. A unit costs
-     * less to salvage after a headkill, more to salvage if torsos are
-     * destroyed, etc.
+     * Method which returns the cost of salvaging a given unit. A unit costs less to salvage after a headkill, more to salvage if torsos are destroyed, etc.
      */
     private int getSalvageCost(SPlayer owner, SUnit u, OperationEntity oe, Operation o, ShortOperation so) {
 
@@ -3690,34 +3467,40 @@ public class ShortResolver {
                 isAttacker = true;
             }
 
-            if (so.getDefenders().containsKey(owner.getName().toLowerCase()) && defenderMod > 0)
+            if (so.getDefenders().containsKey(owner.getName().toLowerCase()) && defenderMod > 0) {
                 repairCost = u.getBV() / defenderMod;
+            }
 
             // head kills & ejections are easier to repair than most. reduce
             // cost.
-            if (oe.getHDint() <= 0)
+            if (oe.getHDint() <= 0) {
                 repairCost *= 0.7;
-            else if (oe.getRemovalReason() == IEntityRemovalConditions.REMOVE_EJECTED)
+            } else if (oe.getRemovalReason() == IEntityRemovalConditions.REMOVE_EJECTED) {
                 repairCost *= 0.6;
+            }
 
             // if a leg is cleaved, its going to be a bit harder to repair
-            if (oe.getLLint() <= 0)
+            if (oe.getLLint() <= 0) {
                 repairCost *= 1.05;
-            if (oe.getRLint() <= 0)
+            }
+            if (oe.getRLint() <= 0) {
                 repairCost *= 1.05;
+            }
 
             // capturing an enemy unit will be slightly more expensive then
             // recovering one's own
-            if (oe.getOwnerName().toLowerCase().equals(owner.getName().toLowerCase()))
+            if (oe.getOwnerName().toLowerCase().equals(owner.getName().toLowerCase())) {
                 repairCost *= 0.75;
-            else
+            } else {
                 repairCost *= 1.15;
+            }
 
             // pull ops adjustments
-            if (isAttacker)
+            if (isAttacker) {
                 repairCost = repairCost * o.getFloatValue("AttackerSalvageCostModifier");
-            else
+            } else {
                 repairCost = repairCost * o.getFloatValue("DefenderSalvageCostModifier");
+            }
 
         } catch (Exception ex) {
             CampaignData.mwlog.errLog(ex);
@@ -3728,11 +3511,7 @@ public class ShortResolver {
     }
 
     /**
-     * Method which determines how much, if any, compensation a faction will
-     * give a player after a unit is lost (to either irreparable damage or an
-     * enemy) in a game. Flat/Percentage Caps and unit type adjustments allow
-     * admins to give greater amounts (relatively) for smaller units, meks, and
-     * so on.
+     * Method which determines how much, if any, compensation a faction will give a player after a unit is lost (to either irreparable damage or an enemy) in a game. Flat/Percentage Caps and unit type adjustments allow admins to give greater amounts (relatively) for smaller units, meks, and so on.
      */
     private int determineLossCompensation(SPlayer p, SUnit u, boolean salvage) {
 
@@ -3746,47 +3525,46 @@ public class ShortResolver {
         compensation += newPrice * CampaignMain.cm.getFloatConfig("NewCostMultiUnitLossPayment");
 
         /*
-         * If the unit was salvaged by an an enemy, instead of destroyed, check
-         * for a salvage multiplier. We will usually want to reduce the payment
-         * (giving away equipment, etc), but some servers may want to boost the
-         * payout to encourage non-destructive play.
+         * If the unit was salvaged by an an enemy, instead of destroyed, check for a salvage multiplier. We will usually want to reduce the payment (giving away equipment, etc), but some servers may want to boost the payout to encourage non-destructive play.
          */
-        if (salvage)
+        if (salvage) {
             compensation *= CampaignMain.cm.getFloatConfig("SalvageMultiToUnitLossPayment");
+        }
 
         /*
-         * Apply specific type multipliers. Can be used to reduce the
-         * compensation for a class of units. Useful, for example, to give hih
-         * compensation for Light Meks, but reduced compensation for light
-         * vehicles.
+         * Apply specific type multipliers. Can be used to reduce the compensation for a class of units. Useful, for example, to give hih compensation for Light Meks, but reduced compensation for light vehicles.
          */
-        if (u.getType() == Unit.MEK || u.getType() == Unit.QUAD)
+        if (u.getType() == Unit.MEK || u.getType() == Unit.QUAD) {
             compensation *= CampaignMain.cm.getFloatConfig("MekMultiToUnitLossPayment");
-        else if (u.getType() == Unit.VEHICLE)
+        } else if (u.getType() == Unit.VEHICLE) {
             compensation *= CampaignMain.cm.getFloatConfig("VehMultiToUnitLossPayment");
-        else if (u.getType() == Unit.PROTOMEK)
+        } else if (u.getType() == Unit.PROTOMEK) {
             compensation *= CampaignMain.cm.getFloatConfig("ProtoMultiToUnitLossPayment");
-        else if (u.getType() == Unit.BATTLEARMOR)
+        } else if (u.getType() == Unit.BATTLEARMOR) {
             compensation *= CampaignMain.cm.getFloatConfig("BAMultiToUnitLossPayment");
-        else if (u.getType() == Unit.INFANTRY)
+        } else if (u.getType() == Unit.INFANTRY) {
             compensation *= CampaignMain.cm.getFloatConfig("InfMultiToUnitLossPayment");
-        else if (u.getType() == Unit.AERO)
+        } else if (u.getType() == Unit.AERO) {
             compensation *= CampaignMain.cm.getFloatConfig("AeroMultiToUnitLossPayment");
+        }
 
         // check the compensation caps. 1st check reduces compensation to a
         // portion of a new unit's cost.
         float newMultiMax = newPrice * CampaignMain.cm.getFloatConfig("NewCostMultiMaxUnitLossPayment");
-        if (newMultiMax > 0 && compensation > newMultiMax)
+        if (newMultiMax > 0 && compensation > newMultiMax) {
             compensation = newMultiMax;
+        }
 
         // check the compensation against a flat cap.
         int flatMax = CampaignMain.cm.getIntegerConfig("FlatMaxUnitLossPayment");
-        if (compensation > flatMax)
+        if (compensation > flatMax) {
             compensation = flatMax;
+        }
 
         // don't penalize players for deaths.
-        if (compensation < 0)
+        if (compensation < 0) {
             compensation = 0;
+        }
 
         // return a rounded int
         return Math.round(compensation);
@@ -3794,30 +3572,28 @@ public class ShortResolver {
     }
 
     /**
-     * Method which selects a random player from the winner tree. Used to assign
-     * salvage and on-field pilot captures.
+     * Method which selects a random player from the winner tree. Used to assign salvage and on-field pilot captures.
      */
     private SPlayer selectRandomWinner() {
 
         try {
-            if (shortOp.getWinners().size() <= 0)
+            if (shortOp.getWinners().size() <= 0) {
                 return null;
-            else if (shortOp.getWinners().size() == 1) {
+            } else if (shortOp.getWinners().size() == 1) {
                 String key = shortOp.getWinners().firstKey();
                 return CampaignMain.cm.getPlayer(key);
             }
 
             /*
-             * We have a tree with more than one person. Get the size, generate
-             * a random, then iterate until we hit the random number, returning
-             * the SPlayer @ stop.
+             * We have a tree with more than one person. Get the size, generate a random, then iterate until we hit the random number, returning the SPlayer @ stop.
              */
             int random = CampaignMain.cm.getRandomNumber(shortOp.getWinners().size());
             int current = 0;
 
             for (String wn : shortOp.getWinners().keySet()) {
-                if (random == current)
+                if (random == current) {
                     return CampaignMain.cm.getPlayer(wn);
+                }
                 // else
                 current++;
             }
@@ -3831,29 +3607,27 @@ public class ShortResolver {
     }
 
     /**
-     * Method which selects a random player from the so.getLosers() tree. Used
-     * to assign salvage which is gained from so.getWinners() (used rarely).
+     * Method which selects a random player from the so.getLosers() tree. Used to assign salvage which is gained from so.getWinners() (used rarely).
      */
     private SPlayer selectRandomLoser() {
 
         try {
-            if (shortOp.getLosers().size() <= 0)
+            if (shortOp.getLosers().size() <= 0) {
                 return null;
-            else if (shortOp.getLosers().size() == 1) {
+            } else if (shortOp.getLosers().size() == 1) {
                 String key = shortOp.getLosers().firstKey();
                 return CampaignMain.cm.getPlayer(key);
             }
 
             /*
-             * We have a tree with more than one person. Get the size, generate
-             * a random, then iterate until we hit the random number, returning
-             * the SPlayer @ stop.
+             * We have a tree with more than one person. Get the size, generate a random, then iterate until we hit the random number, returning the SPlayer @ stop.
              */
             int random = CampaignMain.cm.getRandomNumber(shortOp.getLosers().size());
             int current = 0;
             for (String ln : shortOp.getLosers().keySet()) {
-                if (random == current)
+                if (random == current) {
                     return CampaignMain.cm.getPlayer(ln);
+                }
                 // else
                 current++;
             }
@@ -3870,17 +3644,20 @@ public class ShortResolver {
         String result = " ";
         try {
             result = u.getPilot().getName() + " ";
-            if (u.getType() == Unit.MEK || u.getType() == Unit.VEHICLE || u.getType() == Unit.AERO)
+            if (u.getType() == Unit.MEK || u.getType() == Unit.VEHICLE || u.getType() == Unit.AERO) {
                 result = "[" + u.getPilot().getGunnery() + "/" + u.getPilot().getPiloting();
-            else if (u.getType() == Unit.INFANTRY || u.getType() == Unit.BATTLEARMOR) {
-                if (((Infantry) u.getEntity()).isAntiMek())
+            } else if (u.getType() == Unit.INFANTRY || u.getType() == Unit.BATTLEARMOR) {
+                if (((Infantry) u.getEntity()).isAntiMek()) {
                     result = "[" + u.getPilot().getGunnery() + "/" + u.getPilot().getPiloting();
-                else
+                } else {
                     result = u.getModelName() + " [" + u.getPilot().getGunnery();
-            } else
+                }
+            } else {
                 result = u.getModelName() + " [" + u.getPilot().getGunnery();
-            if (!u.getPilot().getSkillString(true).equals(" "))
+            }
+            if (!u.getPilot().getSkillString(true).equals(" ")) {
                 result += u.getPilot().getSkillString(true);
+            }
             result += "]";
             return result;
         } catch (Exception ex) {
@@ -3892,13 +3669,15 @@ public class ShortResolver {
 
     private void contractFinishedInfo(SPlayer player) {
 
-        if (!player.getMyHouse().isMercHouse())
+        if (!player.getMyHouse().isMercHouse()) {
             return;
+        }
 
         ContractInfo contract = (((MercHouse) player.getMyHouse()).getContractInfo(player));
 
-        if (contract == null)
+        if (contract == null) {
             return;
+        }
 
         int duration = contract.getContractDuration();
 
@@ -3915,8 +3694,9 @@ public class ShortResolver {
     private boolean attackerisWinner(ShortOperation so) {
         try {
             for (String player : so.getAttackers().keySet()) {
-                if (so.getWinners().containsKey(player))
+                if (so.getWinners().containsKey(player)) {
                     return true;
+                }
             }
             return false;
         } catch (Exception ex) {
@@ -3933,10 +3713,12 @@ public class ShortResolver {
         int unitXP = o.getIntValue("BaseUnitXP");
         int totalUnitsAsjusment = o.getIntValue("UnitXPUnitsAdjustment");
         int totalBVAdjustment = o.getIntValue("UnitXPBVAdjustment");
-        if (totalUnitsAsjusment > 0)
+        if (totalUnitsAsjusment > 0) {
             unitXP += Math.floor(so.getStartingUnits() / totalUnitsAsjusment);
-        if (totalBVAdjustment > 0)
+        }
+        if (totalBVAdjustment > 0) {
             unitXP += Math.floor(so.getStartingBV() / totalBVAdjustment);
+        }
 
         // load simple XP bonuses
         int winnerXP = o.getIntValue("WinnerBonusUnitXP");
@@ -3947,10 +3729,12 @@ public class ShortResolver {
         int totalXPforUnit = unitXP;
 
         // add defender/winner XP
-        if (so.getWinners().containsKey(ownerName))
+        if (so.getWinners().containsKey(ownerName)) {
             totalXPforUnit += winnerXP;
-        if (so.getDefenders().containsKey(ownerName))
+        }
+        if (so.getDefenders().containsKey(ownerName)) {
             totalXPforUnit += defenderXP;
+        }
 
         // check the unit for kills. if it has kills, check their quality
         int realKills = 0;
@@ -3962,45 +3746,49 @@ public class ShortResolver {
 
                 // load the killed unit
                 OperationEntity killed = salvagableUnits.get(id);
-                if (killed == null)
+                if (killed == null) {
                     killed = destroyedUnits.get(id);
+                }
 
                 /*
-                 * if we cant find it, go to the net kill in the loop. auto-arty
-                 * and pilots were weeded out in the possibleSalvageFromReport
-                 * method and will return null here.
+                 * if we cant find it, go to the net kill in the loop. auto-arty and pilots were weeded out in the possibleSalvageFromReport method and will return null here.
                  */
-                if (killed == null)
+                if (killed == null) {
                     continue;
+                }
 
                 // if the owner doesnt have it, its probably an autoassigned
                 // unit or mechwarrior.
                 SUnit killedUnit = currEntity.getOwner().getUnit(currEntity.getID());
-                if (killedUnit == null)
+                if (killedUnit == null) {
                     continue;
+                }
 
                 // if the killed units owner was on the same team as (or is!)
                 // the killer, no XP.
-                if (so.getWinners().containsKey(ownerName) && so.getWinners().containsKey(killed.getOwnerName().toLowerCase()))
+                if (so.getWinners().containsKey(ownerName) && so.getWinners().containsKey(killed.getOwnerName().toLowerCase())) {
                     continue;
-                if (so.getLosers().containsKey(ownerName) && so.getLosers().containsKey(killed.getOwnerName().toLowerCase()) && !drawGame && !freeForAll)
+                }
+                if (so.getLosers().containsKey(ownerName) && so.getLosers().containsKey(killed.getOwnerName().toLowerCase()) && !drawGame && !freeForAll) {
                     continue;
+                }
 
                 // add BV bonus XP
                 totalXPforUnit += flatKillXP;
                 int bvForBonusXP = o.getIntValue("KillBonusXPforBV");
-                if (bvForBonusXP > 0)
+                if (bvForBonusXP > 0) {
                     totalXPforUnit += Math.floor(killedUnit.getBV() / bvForBonusXP);
-
-                if(CampaignMain.cm.isKeepingUnitHistory()){
-                	String model = killedUnit.getModelName();
-                	String insertString = "Killed " + model;
-                	int unitID = currU.getDBId();
-                	int pilotID = ((SPilot)currU.getPilot()).getDBId();
-                	CampaignMain.cm.MySQL.addHistoryEntry(HistoryHandler.HISTORY_TYPE_UNIT, unitID, HistoryHandler.UNIT_KILLED_UNIT, insertString);
-                	CampaignMain.cm.MySQL.addHistoryEntry(HistoryHandler.HISTORY_TYPE_PILOT, pilotID, HistoryHandler.PILOT_KILLED_UNIT, insertString);
                 }
-                
+
+                if (CampaignMain.cm.isKeepingUnitHistory()) {
+                    String model = killedUnit.getModelName();
+                    String insertString = "Killed " + model;
+                    int unitID = currU.getDBId();
+                    int pilotID = ((SPilot) currU.getPilot()).getDBId();
+                    CampaignMain.cm.MySQL.addHistoryEntry(HistoryHandler.HISTORY_TYPE_UNIT, unitID, HistoryHandler.UNIT_KILLED_UNIT, insertString);
+                    CampaignMain.cm.MySQL.addHistoryEntry(HistoryHandler.HISTORY_TYPE_PILOT, pilotID, HistoryHandler.PILOT_KILLED_UNIT, insertString);
+                }
+
                 // add the kill
                 realKills++;
             }
@@ -4015,17 +3803,21 @@ public class ShortResolver {
         boolean solPilotGetsXP = o.getBooleanValue("SOLPilotsGainXP");
 
         // reduce XP to 0 for units should should not get XP
-        if (owner.getMyHouse().isNewbieHouse() && !solPilotGetsXP)
+        if (owner.getMyHouse().isNewbieHouse() && !solPilotGetsXP) {
             totalXPforUnit = 0;
-        if (!owner.getMyHouse().isNewbieHouse() && !housePilotGetsXP)
+        }
+        if (!owner.getMyHouse().isNewbieHouse() && !housePilotGetsXP) {
             totalXPforUnit = 0;
+        }
 
         // on the off chance that XP somehow freakishly became < 0
-        if (totalXPforUnit < 0)
+        if (totalXPforUnit < 0) {
             totalXPforUnit = 0;
+        }
 
-        if (currU.getPilot().getSkills().has(PilotSkill.QuickStudyID))
+        if (currU.getPilot().getSkills().has(PilotSkill.QuickStudyID)) {
             totalXPforUnit = (int) (totalXPforUnit * 1.05);
+        }
 
         // set experience
         currU.getPilot().setExperience(currU.getPilot().getExperience() + totalXPforUnit);
@@ -4034,26 +3826,30 @@ public class ShortResolver {
         if ((so.getWinners().containsKey(ownerName) || CampaignMain.cm.getBooleanConfig("LosingPilotsCheckToLevel")) && allowLevelUp) {
             boolean solPilotCanLevel = o.getBooleanValue("SOLPilotsCheckLevelUp");
             boolean housePilotCanLevel = o.getBooleanValue("HousePilotsCheckLevelUp");
-            if ((owner.getMyHouse().isNewbieHouse() && solPilotCanLevel) || (!owner.getMyHouse().isNewbieHouse() && housePilotCanLevel))
+            if ((owner.getMyHouse().isNewbieHouse() && solPilotCanLevel) || (!owner.getMyHouse().isNewbieHouse() && housePilotCanLevel)) {
                 append.append(((SPilot) currU.getPilot()).checkForPilotSkillImprovement(currU, owner));
+            }
         }
 
         // if the unit failes to level, tell the owner about earned XP.
-        if (append.toString().trim().equals(""))
+        if (append.toString().trim().equals("")) {
             append.append(". " + currU.getPilot().getName() + " gained " + totalXPforUnit + " XP");
+        }
 
-        if (realKills == 1)
+        if (realKills == 1) {
             append.append(". Earned 1 kill");
-        else if (realKills > 1)
+        } else if (realKills > 1) {
             append.append(". Earned " + realKills + " kills");
+        }
 
         return append.toString();
     }// calculatePilotEXP
 
     private void processCapturedUnits(ShortOperation so) {
 
-        if (so.preCapturedUnits.size() < 1)
+        if (so.preCapturedUnits.size() < 1) {
             return;
+        }
         SPlayer attacker = CampaignMain.cm.getPlayer(so.getAttackers().firstKey());
         SPlayer defender = CampaignMain.cm.getPlayer(so.getDefenders().firstKey());
 
@@ -4081,20 +3877,23 @@ public class ShortResolver {
             so.preCapturedUnits.clear();
 
             if (savedUnitCount == 0) {
-                for (String player : so.getDefenders().keySet())
+                for (String player : so.getDefenders().keySet()) {
                     CampaignMain.cm.toUser("You did not manage to recover any of the stolen units!", player);
+                }
             }
-            if (savedUnitCount > 1)
+            if (savedUnitCount > 1) {
                 results.append("units ");
-            else
+            } else {
                 results.append("unit ");
+            }
 
             unitList.replace(unitList.length() - 2, unitList.length(), ".");
             results.append(unitList.toString());
 
             if (savedUnitCount > 0) {
-                for (String player : so.getDefenders().keySet())
+                for (String player : so.getDefenders().keySet()) {
                     CampaignMain.cm.toUser(results.toString(), player);
+                }
             }
         } else {
             for (SUnit unit : so.preCapturedUnits) {
@@ -4124,13 +3923,15 @@ public class ShortResolver {
         String repodChassie;
         String repodModel = o.getValue("RepodOmniUnitsToBase");
 
-        if (repodModel.trim().length() < 1)
+        if (repodModel.trim().length() < 1) {
             return;
+        }
 
         for (String player : so.getAllPlayersAndArmies().keySet()) {
             SPlayer currp = CampaignMain.cm.getPlayer(player);
-            if (currp == null)
+            if (currp == null) {
                 continue;
+            }
 
             SArmy curra = currp.getArmy(so.getAllPlayersAndArmies().get(player));
 
@@ -4139,11 +3940,13 @@ public class ShortResolver {
                 while (units.hasMoreElements()) {
                     SUnit unit = (SUnit) units.nextElement();
                     Entity en = unit.getEntity();
-                    if (!en.isOmni())
+                    if (!en.isOmni()) {
                         continue;
+                    }
 
-                    if (unit.getModelName().equalsIgnoreCase(repodModel))
+                    if (unit.getModelName().equalsIgnoreCase(repodModel)) {
                         continue;
+                    }
 
                     repodChassie = en.getChassis();
 
@@ -4152,29 +3955,32 @@ public class ShortResolver {
                     String buildFile = "";
                     String timeZone = currp.getMyHouse().getConfig("RewardsRepodFolder");
                     String repodFileName = "";
-                    for ( House house : CampaignMain.cm.getData().getAllHouses()){
-                        SHouse faction = (SHouse)house;
-                        
-                        buildFile = BuildTable.getFileName(faction.getName(), Unit.getWeightClassDesc(unit.getWeightclass()), timeZone, unit.getType() );
-                        //CampaignData.mwlog.errLog("File: "+fileName);
-                        
-                        if (!tables.contains(buildFile))
-                            tables.add(buildFile);
+                    for (House house : CampaignMain.cm.getData().getAllHouses()) {
+                        SHouse faction = (SHouse) house;
 
-                        buildFile = BuildTable.getFileName("Common", Unit.getWeightClassDesc(unit.getWeightclass()), timeZone, unit.getType() );
-                        if (!tables.contains(buildFile))
-                            tables.add(buildFile);   
-                        
-                        timeZone = currp.getMyHouse().getConfig("NoFactoryRepodFolder");
-                        //CampaignData.mwlog.errLog("TimeZone: "+timeZone);
-                        buildFile = BuildTable.getFileName(faction.getName(), Unit.getWeightClassDesc(unit.getWeightclass()), timeZone, unit.getType() );
-                        //CampaignData.mwlog.errLog("File: "+fileName);
-                        
-                        if (!tables.contains(buildFile))
+                        buildFile = BuildTable.getFileName(faction.getName(), Unit.getWeightClassDesc(unit.getWeightclass()), timeZone, unit.getType());
+                        // CampaignData.mwlog.errLog("File: "+fileName);
+
+                        if (!tables.contains(buildFile)) {
                             tables.add(buildFile);
+                        }
+
+                        buildFile = BuildTable.getFileName("Common", Unit.getWeightClassDesc(unit.getWeightclass()), timeZone, unit.getType());
+                        if (!tables.contains(buildFile)) {
+                            tables.add(buildFile);
+                        }
+
+                        timeZone = currp.getMyHouse().getConfig("NoFactoryRepodFolder");
+                        // CampaignData.mwlog.errLog("TimeZone: "+timeZone);
+                        buildFile = BuildTable.getFileName(faction.getName(), Unit.getWeightClassDesc(unit.getWeightclass()), timeZone, unit.getType());
+                        // CampaignData.mwlog.errLog("File: "+fileName);
+
+                        if (!tables.contains(buildFile)) {
+                            tables.add(buildFile);
+                        }
 
                     }
-                    
+
                     tablesloop: for (String buildTable : tables) {
 
                         try {
@@ -4196,8 +4002,9 @@ public class ShortResolver {
                                     String unitFile = "";
                                     while (ST.hasMoreElements()) {
                                         unitFile += (String) ST.nextElement();
-                                        if (ST.hasMoreElements())
+                                        if (ST.hasMoreElements()) {
                                             unitFile += " ";
+                                        }
                                     }
 
                                     // compare this File name to the chassis
@@ -4242,35 +4049,33 @@ public class ShortResolver {
                     if (repodFileName.trim().length() > 0) {
                         SUnit cm = new SUnit(unit.getId(), unit.getProducer(), repodFileName);
 
-                        cm.setPilot((SPilot)unit.getPilot());
+                        cm.setPilot((SPilot) unit.getPilot());
                         cm.setExperience(unit.getExperience());
 
-                        //remove the old unit *before* adding the new one, since they share a unit id.
+                        // remove the old unit *before* adding the new one, since they share a unit id.
                         if (cm.getType() == Unit.MEK) {
-                            ((Mech)cm.getEntity()).setAutoEject(((Mech)en).isAutoEject());
+                            ((Mech) cm.getEntity()).setAutoEject(((Mech) en).isAutoEject());
                         }
-                        
-                        if ( UnitUtils.hasTargettingComputer(cm.getEntity()) )
+
+                        if (UnitUtils.hasTargettingComputer(cm.getEntity())) {
                             cm.getEntity().setTargSysType(MiscType.T_TARGSYS_TARGCOMP);
-                        else{
+                        } else {
                             cm.getEntity().setTargSysType(en.getTargetType());
                         }
-                        
 
                         cm.getEntity().setSpotlight(en.hasSpotlight());
                         cm.getEntity().setSpotlightState(en.isUsingSpotlight());
                         cm.setWeightclass(unit.getWeightclass());
                         cm.setType(unit.getType());
 
-                        
                         currp.removeUnit(unit.getId(), false);
 
                         // and the unit and send informational messages to
                         // player.
                         currp.addUnit(cm, true);
                         curra.addUnit(cm);
-                        
-                        CampaignMain.cm.toUser("Your " + unit.getVerboseModelName() +"#"+unit.getId() + " is now " + StringUtils.aOrAn(cm.getVerboseModelName(), true) + ".", currp.getName(), true);
+
+                        CampaignMain.cm.toUser("Your " + unit.getVerboseModelName() + "#" + unit.getId() + " is now " + StringUtils.aOrAn(cm.getVerboseModelName(), true) + ".", currp.getName(), true);
 
                     }
                 }
