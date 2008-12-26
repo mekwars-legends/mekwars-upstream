@@ -1,6 +1,10 @@
 VERSION HISTORY:
 ----------------
 v 0.2.40.x
++ RFE: Deds/Hosts now report games automatically.
++ Bug 2280766: Server ticks
++ Bug 2213581: Salvage being overlooked
++ Bug 2332503: Error log report
 + New MegaMek.jar 0.33.38-MW122308-6281
 + Changed when client reports game finished
 + Bug 2192540: Free scrap after task completion

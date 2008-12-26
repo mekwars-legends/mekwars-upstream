@@ -1168,6 +1168,7 @@ src/admin/dialog/TerrainSelectionDialog.java -text
 src/client/CConfig.java -text
 src/client/CUser.java -text
 src/client/ClientThread.java -text
+src/client/HostThread.java -text
 src/client/MWClient.java -text
 src/client/campaign/CArmy.java -text
 src/client/campaign/CBMUnit.java -text
@@ -1197,7 +1198,6 @@ src/client/cmd/PL.java -text
 src/client/cmd/PM.java -text
 src/client/cmd/PS.java -text
 src/client/cmd/RBP.java -text
-src/client/cmd/RGTS.java -text
 src/client/cmd/RUD.java -text
 src/client/cmd/SAS.java -text
 src/client/cmd/SL.java -text
@@ -1331,6 +1331,7 @@ src/common/util/UnitComponents.java -text
 src/common/util/UnitUtils.java -text
 src/dedicatedhost/CConfig.java -text
 src/dedicatedhost/CUser.java -text
+src/dedicatedhost/HostThread.java -text
 src/dedicatedhost/MWDedHost.java -text
 src/dedicatedhost/cmd/CS.java -text
 src/dedicatedhost/cmd/Command.java -text
@@ -1339,7 +1340,6 @@ src/dedicatedhost/cmd/KI.java -text
 src/dedicatedhost/cmd/NU.java -text
 src/dedicatedhost/cmd/PL.java -text
 src/dedicatedhost/cmd/RBP.java -text
-src/dedicatedhost/cmd/RGTS.java -text
 src/dedicatedhost/cmd/SAS.java -text
 src/dedicatedhost/cmd/SSC.java -text
 src/dedicatedhost/cmd/TL.java -text
