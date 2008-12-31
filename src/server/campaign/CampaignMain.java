@@ -1,16 +1,12 @@
 /*
  * 
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
 
 package server.campaign;
@@ -50,14 +46,78 @@ import megamek.common.Mech;
 import megamek.common.Mounted;
 import megamek.common.WeaponType;
 import megamek.common.options.IOption;
-
-import common.CampaignData;
 import server.MWServ;
 import server.campaign.commands.*;
 import server.campaign.commands.admin.*;
-import server.campaign.commands.leader.*;
-import server.campaign.commands.mod.*;
-import server.campaign.commands.helpers.*;
+import server.campaign.commands.helpers.HireAndMaintainHelper;
+import server.campaign.commands.helpers.HireAndRequestNewHelper;
+import server.campaign.commands.helpers.HireAndRequestUsedHelper;
+import server.campaign.commands.helpers.RemoveAndAddNoPlayHelper;
+import server.campaign.commands.leader.DemotePlayerCommand;
+import server.campaign.commands.leader.FactionLeaderFluffCommand;
+import server.campaign.commands.leader.FactionLeaderMuteCommand;
+import server.campaign.commands.leader.GetComponentConversionCommand;
+import server.campaign.commands.leader.PromotePlayerCommand;
+import server.campaign.commands.leader.PurchaseFactoryCommand;
+import server.campaign.commands.leader.ResearchTechLevelCommand;
+import server.campaign.commands.leader.ResearchUnitCommand;
+import server.campaign.commands.leader.SetComponentConversionCommand;
+import server.campaign.commands.leader.ViewFactionPartsCacheCommand;
+import server.campaign.commands.mod.AddLeaderCommand;
+import server.campaign.commands.mod.AddPartsCommand;
+import server.campaign.commands.mod.BanCommand;
+import server.campaign.commands.mod.BanIPCommand;
+import server.campaign.commands.mod.BanListCommand;
+import server.campaign.commands.mod.BuildTableValidatorCommand;
+import server.campaign.commands.mod.CheckCommand;
+import server.campaign.commands.mod.ConfigCommand;
+import server.campaign.commands.mod.CreateSubFactionCommand;
+import server.campaign.commands.mod.FixAmmoCommand;
+import server.campaign.commands.mod.GetModLogCommand;
+import server.campaign.commands.mod.GetPlayerUnitsCommand;
+import server.campaign.commands.mod.GooseCommand;
+import server.campaign.commands.mod.GrantEXPCommand;
+import server.campaign.commands.mod.GrantInfluenceCommand;
+import server.campaign.commands.mod.GrantMoneyCommand;
+import server.campaign.commands.mod.GrantRewardCommand;
+import server.campaign.commands.mod.GrantTechPointsCommand;
+import server.campaign.commands.mod.GrantTechsCommand;
+import server.campaign.commands.mod.HardTerminateCommand;
+import server.campaign.commands.mod.IPListCommand;
+import server.campaign.commands.mod.IgnoreCommand;
+import server.campaign.commands.mod.IgnoreListCommand;
+import server.campaign.commands.mod.KickCommand;
+import server.campaign.commands.mod.ListMultiPlayerGroupsCommand;
+import server.campaign.commands.mod.MMOTDCommand;
+import server.campaign.commands.mod.ModDeactivateCommand;
+import server.campaign.commands.mod.ModFullRepairCommand;
+import server.campaign.commands.mod.ModGamesCommand;
+import server.campaign.commands.mod.ModLogCommand;
+import server.campaign.commands.mod.ModNoPlayCommand;
+import server.campaign.commands.mod.ModRefreshFactoryCommand;
+import server.campaign.commands.mod.ModTerminateCommand;
+import server.campaign.commands.mod.ModeratorMailCommand;
+import server.campaign.commands.mod.NotifyFightingCommand;
+import server.campaign.commands.mod.RemoveLeaderCommand;
+import server.campaign.commands.mod.RemovePartsCommand;
+import server.campaign.commands.mod.RemoveSubFactionCommand;
+import server.campaign.commands.mod.ServerAnnouncementCommand;
+import server.campaign.commands.mod.SetEloCommand;
+import server.campaign.commands.mod.SetHouseBasePilotSkillsCommand;
+import server.campaign.commands.mod.SetMMOTDCommand;
+import server.campaign.commands.mod.SetSMOTDCommand;
+import server.campaign.commands.mod.SetSubFactionConfigCommand;
+import server.campaign.commands.mod.StripAllPartsCacheCommand;
+import server.campaign.commands.mod.TerminateContractCommand;
+import server.campaign.commands.mod.TouchCommand;
+import server.campaign.commands.mod.UnBanCommand;
+import server.campaign.commands.mod.UnBanIPCommand;
+import server.campaign.commands.mod.UnlockLancesCommand;
+import server.campaign.commands.mod.UpdateServerUnitsCacheCommand;
+import server.campaign.commands.mod.ValidateUserCommand;
+import server.campaign.commands.mod.ViewPlayerPartsCommand;
+import server.campaign.commands.mod.ViewPlayerPersonalPilotQueueCommand;
+import server.campaign.commands.mod.ViewPlayerUnitCommand;
 import server.campaign.market2.Market2;
 import server.campaign.market2.PartsMarket;
 import server.campaign.mercenaries.ContractInfo;
@@ -66,7 +126,31 @@ import server.campaign.operations.Operation;
 import server.campaign.operations.OperationManager;
 import server.campaign.operations.ShortOperation;
 import server.campaign.pilot.SPilot;
-import server.campaign.pilot.skills.*;
+import server.campaign.pilot.skills.AstechSkill;
+import server.campaign.pilot.skills.BufferedVDNI;
+import server.campaign.pilot.skills.ClanPilotTrainingSkill;
+import server.campaign.pilot.skills.DodgeManeuverSkill;
+import server.campaign.pilot.skills.EdgeSkill;
+import server.campaign.pilot.skills.EnhancedInterfaceSkill;
+import server.campaign.pilot.skills.GiftedSkill;
+import server.campaign.pilot.skills.GunneryBallisticSkill;
+import server.campaign.pilot.skills.GunneryLaserSkill;
+import server.campaign.pilot.skills.GunneryMissileSkill;
+import server.campaign.pilot.skills.IronManSkill;
+import server.campaign.pilot.skills.ManeuveringAceSkill;
+import server.campaign.pilot.skills.MedTechSkill;
+import server.campaign.pilot.skills.MeleeSpecialistSkill;
+import server.campaign.pilot.skills.NaturalAptitudeGunnerySkill;
+import server.campaign.pilot.skills.NaturalAptitudePilotingSkill;
+import server.campaign.pilot.skills.PainResistanceSkill;
+import server.campaign.pilot.skills.PainShunt;
+import server.campaign.pilot.skills.QuickStudySkill;
+import server.campaign.pilot.skills.SPilotSkill;
+import server.campaign.pilot.skills.SurvivalistSkill;
+import server.campaign.pilot.skills.TacticalGeniusSkill;
+import server.campaign.pilot.skills.TraitSkill;
+import server.campaign.pilot.skills.VDNI;
+import server.campaign.pilot.skills.WeaponSpecialistSkill;
 import server.campaign.util.HouseRankingHelpContainer;
 import server.campaign.util.MechStatistics;
 import server.campaign.util.Statistics;
@@ -76,11 +160,12 @@ import server.campaign.util.XMLTerrainDataParser;
 import server.campaign.votes.VoteManager;
 import server.dataProvider.Server;
 import server.mwcyclopscomm.MWCyclopsComm;
+import server.mwmysql.mysqlHandler;
 import server.util.AutomaticBackup;
 import server.util.MWPasswd;
 import server.util.RepairTrackingThread;
-import server.mwmysql.mysqlHandler;
 
+import common.CampaignData;
 import common.Equipment;
 import common.House;
 import common.Influences;
@@ -93,14 +178,10 @@ public final class CampaignMain implements Serializable {
     private static final long serialVersionUID = -8671163467590633378L;
 
     /**
-     * I realized, that almost every class needs access to the current global
-     * campaign state. So I decided (after consultation with McWizard) to make
-     * this back reference obsolete by introducing a public static member
-     * (Java's pardon to a global variable). Although this reduces code size,
-     * complexity of code and memory footprint, this is still a HACK! Java
-     * wasn't invented to step back to the old days of global variables. Object
-     * oriented coding should try to minimize cross references.. But someday you
-     * gotta do what you gotta do..... Imi.
+     * I realized, that almost every class needs access to the current global campaign state. So I decided (after consultation with McWizard) to make this back
+     * reference obsolete by introducing a public static member (Java's pardon to a global variable). Although this reduces code size, complexity of code and
+     * memory footprint, this is still a HACK! Java wasn't invented to step back to the old days of global variables. Object oriented coding should try to
+     * minimize cross references.. But someday you gotta do what you gotta do..... Imi.
      */
     public static CampaignMain cm;
 
@@ -172,10 +253,8 @@ public final class CampaignMain implements Serializable {
     private Date housePlanetDate = new Date();
 
     /**
-     * This is a hash collection of all the players that have yet to log into
-     * their houses This catch all is to keep from having to load the player
-     * file over and over again. Once the player has been logged in they are
-     * removed from this hash and added to the houses memory.
+     * This is a hash collection of all the players that have yet to log into their houses This catch all is to keep from having to load the player file over
+     * and over again. Once the player has been logged in they are removed from this hash and added to the houses memory.
      */
     private Hashtable<String, SPlayer> lostSouls = new Hashtable<String, SPlayer>();
 
@@ -189,11 +268,13 @@ public final class CampaignMain implements Serializable {
 
         // make sure vital folders exist
         File f = new File("./campaign/");
-        if (!f.exists())
+        if (!f.exists()) {
             f.mkdir();
+        }
         f = new File("./campaign/players/");
-        if (!f.exists())
+        if (!f.exists()) {
             f.mkdir();
+        }
 
         /*
          * clear any cache'd unit files. these will be rebuilt later in the
@@ -201,8 +282,9 @@ public final class CampaignMain implements Serializable {
          * properly.
          */
         File cache = new File("./data/mechfiles/units.cache");
-        if (cache.exists())
+        if (cache.exists()) {
             cache.delete();
+        }
 
         // Try to read the config file
         try {
@@ -211,24 +293,25 @@ public final class CampaignMain implements Serializable {
             // before you load in the
             // campaign stuff
             // if(!isUsingMySQL())
-            config.load(new FileInputStream(this.myServer.getConfigParam("CAMPAIGNCONFIG")));
+            config.load(new FileInputStream(myServer.getConfigParam("CAMPAIGNCONFIG")));
             /*
              * else { if(cm.MySQL.configIsSaved()) cm.MySQL.loadConfig(config);
              * else config.load(new
              * FileInputStream(this.myServer.getConfigParam("CAMPAIGNCONFIG"))); }
              */
             if (isUsingMySQL()) {
-                if (Boolean.parseBoolean(getServer().getConfigParam("MYSQL_SYNCHPHPBB")))
+                if (Boolean.parseBoolean(getServer().getConfigParam("MYSQL_SYNCHPHPBB"))) {
                     config.put("REQUIREEMAILFORREGISTRATION", "true");
-                else
+                } else {
                     config.put("REQUIREEMAILFORREGISTRATION", "false");
+                }
             }
         } catch (Exception ex) {
             CampaignData.mwlog.errLog("Problems with loading campaign config");
             CampaignData.mwlog.errLog(ex);
             dso.createConfig();
             try {
-                config.load(new FileInputStream(this.myServer.getConfigParam("CAMPAIGNCONFIG")));
+                config.load(new FileInputStream(myServer.getConfigParam("CAMPAIGNCONFIG")));
             } catch (Exception ex1) {
                 CampaignData.mwlog.errLog("Problems with loading campaing config from defaults");
                 CampaignData.mwlog.errLog(ex1);
@@ -236,8 +319,9 @@ public final class CampaignMain implements Serializable {
             }
         }
 
-        if (!getConfig("AllowedMegaMekVersion").equals("-1"))
+        if (!getConfig("AllowedMegaMekVersion").equals("-1")) {
             getConfig().setProperty("AllowedMegaMekVersion", MegaMek.VERSION);
+        }
 
         dso.createConfig(); // save the cofig file so any missed defaults are
         // added
@@ -296,7 +380,7 @@ public final class CampaignMain implements Serializable {
         cm.loadBlackMarketSettings();
 
         // create command hashs
-        this.init();
+        init();
 
         if (Boolean.parseBoolean(cm.getConfig("UseCalculatedCosts"))) {
             unitCostLists = new UnitCosts();
@@ -325,8 +409,9 @@ public final class CampaignMain implements Serializable {
                 CampaignData.mwlog.mainLog("No Mech Statistic Data found");
             }
         }
-        if (Boolean.parseBoolean(getConfig("HTMLOUTPUT")))
+        if (Boolean.parseBoolean(getConfig("HTMLOUTPUT"))) {
             Statistics.doRanking();
+        }
 
         // Start a VoteManager.
         voteManager = new VoteManager(this);
@@ -336,7 +421,7 @@ public final class CampaignMain implements Serializable {
          * creates necessary instances of Validators, Resolvers and other helper
          * objects as part of its construction.
          */
-        this.createNewOpsManager();
+        createNewOpsManager();
 
         /*
          * Load all players in ./campaign/players and create SmallPlayers. This
@@ -428,8 +513,9 @@ public final class CampaignMain implements Serializable {
         try {
 
             // wait for the backup to finsh before you start saving files.
-            while (cm.isArchiving())
+            while (cm.isArchiving()) {
                 Thread.sleep(125);
+            }
 
             saveFactionData();
             savePlanetData();
@@ -441,11 +527,13 @@ public final class CampaignMain implements Serializable {
             FileOutputStream out = new FileOutputStream("./campaign/mechstat.dat");
             PrintStream p = new PrintStream(out);
             if (CampaignMain.cm.isUsingMySQL()) {
-                for (MechStatistics currStats : MechStats.values())
+                for (MechStatistics currStats : MechStats.values()) {
                     currStats.toDB();
+                }
             } else {
-                for (MechStatistics currStats : MechStats.values())
+                for (MechStatistics currStats : MechStats.values()) {
                     p.println(currStats.toString());
+                }
                 p.close();
                 out.close();
             }
@@ -480,8 +568,9 @@ public final class CampaignMain implements Serializable {
     public boolean isLoggedIn(String Username) {
 
         // always treat deds as logged in
-        if (Username.startsWith("[Dedicated]"))
+        if (Username.startsWith("[Dedicated]")) {
             return true;
+        }
 
         /*
          * search all houses, all states, for user with this name. the hash
@@ -491,12 +580,15 @@ public final class CampaignMain implements Serializable {
         String lowerName = Username.toLowerCase();
         for (House vh : data.getAllHouses()) {
             SHouse h = (SHouse) vh;
-            if (h.getReservePlayers().containsKey(lowerName))
+            if (h.getReservePlayers().containsKey(lowerName)) {
                 return true;
-            if (h.getActivePlayers().containsKey(lowerName))
+            }
+            if (h.getActivePlayers().containsKey(lowerName)) {
                 return true;
-            if (h.getFightingPlayers().containsKey(lowerName))
+            }
+            if (h.getFightingPlayers().containsKey(lowerName)) {
                 return true;
+            }
         }
 
         // we couldnt find the player. return false.
@@ -558,8 +650,7 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Method that allows other classes to access the opsManager instance via
-     * the static CampaignMain.
+     * Method that allows other classes to access the opsManager instance via the static CampaignMain.
      */
     public OperationManager getOpsManager() {
         return opsManager;
@@ -573,8 +664,9 @@ public final class CampaignMain implements Serializable {
 
         // if you don't have a client signon to the server then you do not get
         // to send commands
-        if (CampaignMain.cm.getServer().getClient(Username) == null)
+        if (CampaignMain.cm.getServer().getClient(Username) == null) {
             return;
+        }
 
         /*
          * Only a few commands should be accepted from a logged out player.
@@ -605,9 +697,10 @@ public final class CampaignMain implements Serializable {
                 try {
                     this.getPlayer(Username).setLastTimeCommandSent(System.currentTimeMillis());
                 } catch (Exception ex) {
-                    if (!Username.startsWith("[Dedicated]"))// deds send lots of
+                    if (!Username.startsWith("[Dedicated]")) {
                         // commands
                         CampaignData.mwlog.errLog("Command received from a null player (" + Username + ")?");
+                    }
                 }
             }
 
@@ -644,8 +737,9 @@ public final class CampaignMain implements Serializable {
             SPlanet p = (SPlanet) currP;
 
             // exact match
-            if (p.getName().equals(PlanetName))
+            if (p.getName().equals(PlanetName)) {
                 return p;
+            }
 
             // store all matches
             if (p.getName().startsWith(PlanetName)) {
@@ -656,14 +750,16 @@ public final class CampaignMain implements Serializable {
 
         // too many matches
         if (numMatches > 1) {
-            if (Username != null)
+            if (Username != null) {
                 toUser("\"" + PlanetName + "\" is not unique [" + numMatches + " matches]. Please be more specific.", Username);
+            }
             return null;
         }
 
         if (numMatches == 0) {
-            if (Username != null)
+            if (Username != null) {
                 toUser("Couldn't find a planet whose name begins with \"" + PlanetName + "\". Try again.", Username, true);
+            }
             return null;
         }
 
@@ -682,8 +778,7 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Loop through all online players (all houses, all three duty modes) and
-     * send mail to those players who are mods.
+     * Loop through all online players (all houses, all three duty modes) and send mail to those players who are mods.
      */
     public void doSendModMail(String Username, String text) {
 
@@ -692,10 +787,11 @@ public final class CampaignMain implements Serializable {
         int userLevel = 0;
         try {
             if (Username.equalsIgnoreCase("NOTE")) {
-                if (!CampaignMain.cm.getBooleanConfig("AllowLowerLevelUsersToSeeUpperLevelUsersDoings"))
+                if (!CampaignMain.cm.getBooleanConfig("AllowLowerLevelUsersToSeeUpperLevelUsersDoings")) {
                     sendCommandLevel = CampaignMain.cm.getServer().getUserLevel(text.substring(0, text.indexOf(" ")).trim());
-                else
+                } else {
                     sendCommandLevel = 100;
+                }
             }
         } catch (Exception ex) {
             CampaignData.mwlog.errLog(ex);
@@ -709,25 +805,27 @@ public final class CampaignMain implements Serializable {
 
             for (String currName : h.getReservePlayers().keySet()) {
                 userLevel = CampaignMain.cm.getServer().getUserLevel(currName);
-                if (userLevel >= commandLevel && userLevel >= sendCommandLevel)
+                if (userLevel >= commandLevel && userLevel >= sendCommandLevel) {
                     this.toUser(text, currName, true);
+                }
             }
             for (String currName : h.getActivePlayers().keySet()) {
                 userLevel = CampaignMain.cm.getServer().getUserLevel(currName);
-                if (userLevel >= commandLevel && userLevel >= sendCommandLevel)
+                if (userLevel >= commandLevel && userLevel >= sendCommandLevel) {
                     this.toUser(text, currName, true);
+                }
             }
             for (String currName : h.getFightingPlayers().keySet()) {
                 userLevel = CampaignMain.cm.getServer().getUserLevel(currName);
-                if (userLevel >= commandLevel && userLevel >= sendCommandLevel)
+                if (userLevel >= commandLevel && userLevel >= sendCommandLevel) {
                     this.toUser(text, currName, true);
+                }
             }
         }
     }
 
     /**
-     * After an error, loop through all online players and send text of the
-     * error to anyone who has modmail access.
+     * After an error, loop through all online players and send text of the error to anyone who has modmail access.
      */
     public void doSendErrLog(String text) {
         text = "(Error Log): " + text;
@@ -736,18 +834,21 @@ public final class CampaignMain implements Serializable {
 
             for (String currName : h.getReservePlayers().keySet()) {
                 Command command = CampaignMain.cm.getServerCommands().get("MM");
-                if (CampaignMain.cm.getServer().getUserLevel(currName) >= command.getExecutionLevel())
+                if (CampaignMain.cm.getServer().getUserLevel(currName) >= command.getExecutionLevel()) {
                     this.toUser(text, currName, true);
+                }
             }
             for (String currName : h.getActivePlayers().keySet()) {
                 Command command = CampaignMain.cm.getServerCommands().get("MM");
-                if (CampaignMain.cm.getServer().getUserLevel(currName) >= command.getExecutionLevel())
+                if (CampaignMain.cm.getServer().getUserLevel(currName) >= command.getExecutionLevel()) {
                     this.toUser(text, currName, true);
+                }
             }
             for (String currName : h.getFightingPlayers().keySet()) {
                 Command command = CampaignMain.cm.getServerCommands().get("MM");
-                if (CampaignMain.cm.getServer().getUserLevel(currName) >= command.getExecutionLevel())
+                if (CampaignMain.cm.getServer().getUserLevel(currName) >= command.getExecutionLevel()) {
                     this.toUser(text, currName, true);
+                }
             }
 
         }
@@ -787,18 +888,21 @@ public final class CampaignMain implements Serializable {
             String test = report2.nextToken();
 
             // dont bother trying to process auto army or MechWarriors.
-            if (test.equals("MW") || test.equals("-1"))
+            if (test.equals("MW") || test.equals("-1")) {
                 continue;
+            }
 
             // keep parsing until we find a players name!
             while (report2.hasMoreTokens()) {
                 SPlayer player = this.getPlayer(report2.nextToken(), false, true);
                 if (player != null) {
-                    if (!players.contains(player.getName().toLowerCase()))
+                    if (!players.contains(player.getName().toLowerCase())) {
                         players.add(player.getName().toLowerCase());
+                    }
 
-                    if (reporter == null)
+                    if (reporter == null) {
                         reporter = player;
+                    }
                     break;
                 }
             }
@@ -814,9 +918,10 @@ public final class CampaignMain implements Serializable {
          * standing to report. Tasks code used to sort winners and losers at
          * this point, but we handle that in the ShortResovler.
          */
-        ShortOperation so = this.getOpsManager().getShortOpForPlayer(reporter);
-        if (so == null)
+        ShortOperation so = getOpsManager().getShortOpForPlayer(reporter);
+        if (so == null) {
             return;
+        }
 
         if (!so.validatePlayers(players)) {
             CampaignData.mwlog.errLog("Unable to validate all players for: " + s);
@@ -824,35 +929,35 @@ public final class CampaignMain implements Serializable {
         }
 
         if (so.hasPlayer(reporter)) {
-            Operation o = this.getOpsManager().getOperation(so.getName());
-            this.getOpsManager().resolveShortAttack(o, so, s);
+            Operation o = getOpsManager().getOperation(so.getName());
+            getOpsManager().resolveShortAttack(o, so, s);
             return;
         }
 
     }// end doProcessAutomaticReport
 
     /**
-     * Method which pre-processes auto-disconnection info updates. Clients
-     * connected to a host send these updates when a unit is removed from play -
-     * this does not necessarily mean the unit is dead. It could have fled or
-     * been pushed from the field, etc. ClientThread weeds out observers client
-     * side.
+     * Method which pre-processes auto-disconnection info updates. Clients connected to a host send these updates when a unit is removed from play - this does
+     * not necessarily mean the unit is dead. It could have fled or been pushed from the field, etc. ClientThread weeds out observers client side.
      */
     public void addInProgressUpdate(String s, String Username) {
 
         // Return if user isn't an SPlayer.
         SPlayer reporter = this.getPlayer(Username);
-        if (reporter == null)
+        if (reporter == null) {
             return;
+        }
 
         // If the reporting player isnt in a game, toss it.
-        ShortOperation so = this.getOpsManager().getShortOpForPlayer(reporter);
-        if (so == null)
+        ShortOperation so = getOpsManager().getShortOpForPlayer(reporter);
+        if (so == null) {
             return;
+        }
 
         // If the short operation has more than two players
-        if (so.getAllPlayerNames().size() > 2)
+        if (so.getAllPlayerNames().size() > 2) {
             return;
+        }
 
         // now that we have a game for the player, pass the destruction
         // string along to the short operation for handling.
@@ -867,24 +972,20 @@ public final class CampaignMain implements Serializable {
         Vector<MercHouse> result = new Vector<MercHouse>(1, 1);
         for (House currH : data.getAllHouses()) {
             SHouse sh = (SHouse) currH;
-            if (sh.isMercHouse())
+            if (sh.isMercHouse()) {
                 result.add((MercHouse) currH);
+            }
         }
         result.trimToSize();
         return result;
     }
 
     /**
-     * Login a player to the server. Called by login, enroll command and (most
-     * commonly) SignOn. If we find that the player is already in a faction,
-     * leave things as they are. If the player is not present in a house status
-     * hashtable, use this.getPlayer() to check the save queue and, if
-     * necessary, read the player in from text. Any player who logs in should be
-     * put into the Reserve list. If he is reconnecting, the SignOn command will
-     * pass him through a reconnection check and clean up the various Operations
-     * threads, etc. Players with no account (null this.getPlayer()) are also
-     * handled in SignOn, but we need to check there here as well in case the
-     * player ignores the SignOn click-through and attempts to log in anyway.
+     * Login a player to the server. Called by login, enroll command and (most commonly) SignOn. If we find that the player is already in a faction, leave
+     * things as they are. If the player is not present in a house status hashtable, use this.getPlayer() to check the save queue and, if necessary, read the
+     * player in from text. Any player who logs in should be put into the Reserve list. If he is reconnecting, the SignOn command will pass him through a
+     * reconnection check and clean up the various Operations threads, etc. Players with no account (null this.getPlayer()) are also handled in SignOn, but we
+     * need to check there here as well in case the player ignores the SignOn click-through and attempts to log in anyway.
      */
     public void doLoginPlayer(String Username) {
 
@@ -966,20 +1067,22 @@ public final class CampaignMain implements Serializable {
             StringBuilder result = new StringBuilder("PI|PL|");
             for (House vh : data.getAllHouses()) {
                 SHouse currH = (SHouse) vh;
-                for (SPlayer currP : currH.getReservePlayers().values())
-                    result.append(this.getPlayerUpdateString(currP) + "|");
+                for (SPlayer currP : currH.getReservePlayers().values()) {
+                    result.append(getPlayerUpdateString(currP) + "|");
+                }
 
-                for (SPlayer currP : currH.getActivePlayers().values())
-                    result.append(this.getPlayerUpdateString(currP) + "|");
+                for (SPlayer currP : currH.getActivePlayers().values()) {
+                    result.append(getPlayerUpdateString(currP) + "|");
+                }
 
-                for (SPlayer currP : currH.getFightingPlayers().values())
-                    result.append(this.getPlayerUpdateString(currP) + "|");
+                for (SPlayer currP : currH.getFightingPlayers().values()) {
+                    result.append(getPlayerUpdateString(currP) + "|");
+                }
             }
             toUser(result.toString(), Username, false);
 
             // Add the logging in player to everyone who is already online
             this.doSendToAllOnlinePlayers("PI|DA|" + getPlayerUpdateString(toLogin), false);
-
 
             /*
              * Once the player is logged in, set his last-command-sent to the
@@ -993,8 +1096,9 @@ public final class CampaignMain implements Serializable {
             /*
              * Check if Staff Member and send MMOTD if so.
              */
-            if (CampaignMain.cm.getServer().isModerator(Username))
+            if (CampaignMain.cm.getServer().isModerator(Username)) {
                 CampaignMain.cm.toUser("(Moderator Mail) Mod MOTD: " + CampaignMain.cm.getConfig("MMOTD"), Username);
+            }
 
             /*
              * INCREDIBLY BAD HACK! As player's sign into factions, get an IP
@@ -1008,36 +1112,35 @@ public final class CampaignMain implements Serializable {
             CampaignMain.cm.toUser("PL|SUD|1", Username, false);
 
             // Send him the Tick Counter
-            CampaignMain.cm.toUser("CC|NT|" + this.TThread.getRemainingSleepTime() + "|" + false, Username, false);
+            CampaignMain.cm.toUser("CC|NT|" + TThread.getRemainingSleepTime() + "|" + false, Username, false);
 
         }
     }// end CampaignMain.doLogin(String userName)
 
     /**
-     * Log a player out of the campaign. The CampaignMain portion of logout is
-     * markedly simpler than login. All of the more complex code (like
-     * chickening and disconnection thread spinning) is dealt with in SHouse.
-     * Note that all players who log out are inserted into the savePlayer hash
-     * for removal. this.getPlayer() will retreive the memory resident SPlayer
-     * from the save queue if the player returns before the purge.
+     * Log a player out of the campaign. The CampaignMain portion of logout is markedly simpler than login. All of the more complex code (like chickening and
+     * disconnection thread spinning) is dealt with in SHouse. Note that all players who log out are inserted into the savePlayer hash for removal.
+     * this.getPlayer() will retreive the memory resident SPlayer from the save queue if the player returns before the purge.
      */
     public void doLogoutPlayer(String name) {
 
         // if the name is null or blank, return.
-        if (name == null || name.trim().length() == 0)
+        if (name == null || name.trim().length() == 0) {
             return;
+        }
 
         // if there is not player with the given name, return
         SPlayer toLogout = this.getPlayer(name);
-        if (toLogout == null)
+        if (toLogout == null) {
             return;
+        }
 
         /*
          * double check to make sure the SPlayer object does not reside in the
          * lost Souls hash this is incase someone connected but never logged
          * into thier house or never registered and enrolled.
          */
-        this.releaseLostSoul(name);
+        releaseLostSoul(name);
         // set save, then log the player out of his house
         toLogout.setSave();
         toLogout.getMyHouse().doLogout(toLogout);// hacky.
@@ -1048,35 +1151,38 @@ public final class CampaignMain implements Serializable {
     }
 
     public MWServ getServer() {
-        return this.myServer;
+        return myServer;
     }
 
     public String getPlayerUpdateString(SPlayer p) {
 
         StringBuffer result = new StringBuffer();
-        if (p == null)
+        if (p == null) {
             return result.toString();
+        }
 
         // Hide Reserve and Active Status
         int Status = p.getDutyStatus();
-        if (Status == SPlayer.STATUS_RESERVE && Boolean.parseBoolean(getConfig("HideActiveStatus")))
+        if (Status == SPlayer.STATUS_RESERVE && Boolean.parseBoolean(getConfig("HideActiveStatus"))) {
             Status = SPlayer.STATUS_ACTIVE;
+        }
 
         result.append(p.getName());
         result.append("|");
         result.append(p.getExperience());
         result.append("#");
-        if (Boolean.parseBoolean(getConfig("HideELO")))
+        if (Boolean.parseBoolean(getConfig("HideELO"))) {
             result.append("0");
-        else
+        } else {
             result.append(p.getRatingRounded());
+        }
 
         result.append("#");
         result.append(Status);
         result.append("#");
-        if (p.getFluffText().equals(""))
+        if (p.getFluffText().equals("")) {
             result.append(" #");
-        else {
+        } else {
             result.append(p.getFluffText());
             result.append("#");
         }
@@ -1101,27 +1207,23 @@ public final class CampaignMain implements Serializable {
         int sendStatus = realStatus;
 
         // if obfuscating active/deactive status, change sendstatus
-        if (realStatus == SPlayer.STATUS_RESERVE && Boolean.parseBoolean(getConfig("HideActiveStatus")))
+        if (realStatus == SPlayer.STATUS_RESERVE && Boolean.parseBoolean(getConfig("HideActiveStatus"))) {
             sendStatus = SPlayer.STATUS_ACTIVE;
+        }
 
         // send the obfuscated status to everyone, and real status to player
-        if (sendToAll)
+        if (sendToAll) {
             this.doSendToAllOnlinePlayers("PI|CS|" + p.getName() + "|" + sendStatus, false);
+        }
         this.toUser("CS|" + realStatus, p.getName(), false);
     }
 
     /**
-     * Get an SPlayer, by name. This searches the reserve, active and fighting
-     * hashes of all factions until the player is found or factions are
-     * exhausted. If a player is not in a faction, check the to-save hash. Its
-     * entirely possible that the player is already in memory, but logged out
-     * and is awaiting a purge. If no matching player is found online, the
-     * server will attempt to read one in from a text file. If even this fails,
-     * a null is returned. NOTE: A player brought into memory using getPlayer is
-     * not automatically logged into his house. Temporary loads (ex: commands
-     * targetted at offline players) will put the player directly into the save
-     * queue, as if he was logged out. This is why the save queue is/must be
-     * searched prior to* reading the text file.
+     * Get an SPlayer, by name. This searches the reserve, active and fighting hashes of all factions until the player is found or factions are exhausted. If a
+     * player is not in a faction, check the to-save hash. Its entirely possible that the player is already in memory, but logged out and is awaiting a purge.
+     * If no matching player is found online, the server will attempt to read one in from a text file. If even this fails, a null is returned. NOTE: A player
+     * brought into memory using getPlayer is not automatically logged into his house. Temporary loads (ex: commands targetted at offline players) will put the
+     * player directly into the save queue, as if he was logged out. This is why the save queue is/must be searched prior to* reading the text file.
      */
     public SPlayer getPlayer(String pName) {
         return getPlayer(pName, true, false);
@@ -1130,11 +1232,13 @@ public final class CampaignMain implements Serializable {
     public SPlayer getPlayer(String pName, boolean save, boolean mute) {
 
         // Fix for Draw games.
-        if (pName.equalsIgnoreCase("DRAW") || pName.toUpperCase().startsWith("DRAW#"))
+        if (pName.equalsIgnoreCase("DRAW") || pName.toUpperCase().startsWith("DRAW#")) {
             return null;
+        }
 
-        if (lostSouls.containsKey(pName.toLowerCase()))
+        if (lostSouls.containsKey(pName.toLowerCase())) {
             return lostSouls.get(pName.toLowerCase());
+        }
 
         // look for faction players
         SPlayer result = null;
@@ -1151,22 +1255,19 @@ public final class CampaignMain implements Serializable {
          * no online player, so try to read from a file.
          */
 
-        result = this.loadPlayerFile(pName, false, mute);
+        result = loadPlayerFile(pName, false, mute);
 
         if (result != null) {
             lostSouls.put(pName.toLowerCase(), result);
         }
-        
+
         return result;
     }
 
     /**
-     * Method which loads a player file from text. THIS SHOULD NOT BE USED.
-     * CampaignMain.getPlayer(String name) will check to see if a player is
-     * already in memory, and then call this loader if the player needs to be
-     * brought in from text. If you need to get a player, always use
-     * .getPlayer(String name) instead. A player who is loaded is put into the
-     * CampaignMain
+     * Method which loads a player file from text. THIS SHOULD NOT BE USED. CampaignMain.getPlayer(String name) will check to see if a player is already in
+     * memory, and then call this loader if the player needs to be brought in from text. If you need to get a player, always use .getPlayer(String name)
+     * instead. A player who is loaded is put into the CampaignMain
      */
     private SPlayer loadPlayerFile(String name, boolean explicitName, boolean mute) {
 
@@ -1194,26 +1295,25 @@ public final class CampaignMain implements Serializable {
                 File pFile = null;
                 if (explicitName) {
                     pFile = new File("./campaign/players/" + name);
-                }
-                else {
+                } else {
                     pFile = new File("./campaign/players/" + name.toLowerCase() + ".dat");
                 }
-                
-                if ( !pFile.exists() ) {
+
+                if (!pFile.exists()) {
                     return null;
                 }
-                
+
                 fis = new FileInputStream(pFile);
                 dis = new BufferedReader(new InputStreamReader(fis));
 
                 // create player from string read by dis
                 SPlayer p = new SPlayer();
                 String pString = dis.readLine();
-                
-                if ( pString == null ) {
+
+                if (pString == null) {
                     return null;
                 }
-                
+
                 p.fromString(pString);
 
                 return p;
@@ -1231,16 +1331,16 @@ public final class CampaignMain implements Serializable {
                     CampaignData.mwlog.errLog("Unable to load pfile for " + name);
                 }
                 return null;
-            }finally {
+            } finally {
                 // close the streams and return player
                 try {
-                    if ( dis != null ) {
+                    if (dis != null) {
                         dis.close();
                     }
-                    if ( fis != null ) {
+                    if (fis != null) {
                         fis.close();
                     }
-                }catch (Exception ex) {
+                } catch (Exception ex) {
                     CampaignData.mwlog.errLog(ex);
                 }
             }
@@ -1255,10 +1355,11 @@ public final class CampaignMain implements Serializable {
     }
 
     public void toUser(String txt, String Username, boolean isChat) {
-        if (isChat)
+        if (isChat) {
             myServer.fromCampaignMod("CH|" + txt, Username);
-        else
+        } else {
             myServer.fromCampaignMod(txt, Username);
+        }
     }
 
     public void init() {
@@ -1394,6 +1495,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("DEFECT", new DefectCommand());
         Commands.put("DEFEND", new DefendCommand());
         Commands.put("DELETEACCOUNT", new DeleteAccountCommand());
+        Commands.put("DEMOTEPILOT", new DemotePilotCommand());
         Commands.put("DEMOTEPLAYER", new DemotePlayerCommand());
         Commands.put("DIRECTSELLUNIT", new DirectSellUnitCommand());
         Commands.put("DISPLAYPLAYERPERSONALPILOTQUEUE", new DisplayPlayerPersonalPilotQueueCommand());
@@ -1647,8 +1749,9 @@ public final class CampaignMain implements Serializable {
             while (dis.ready()) {
                 StringTokenizer command = new StringTokenizer(dis.readLine(), "#");
                 String commandName = command.nextToken();
-                if (Commands.containsKey(commandName))
+                if (Commands.containsKey(commandName)) {
                     (Commands.get(commandName)).setExecutionLevel(Integer.parseInt(command.nextToken()));
+                }
             }
         } catch (Exception ex) {
             CampaignData.mwlog.errLog("Unable to find commands.dat. Continuing with defaults in place");
@@ -1657,8 +1760,9 @@ public final class CampaignMain implements Serializable {
             try {
 
                 File fp = new File("./data/commands");
-                if (!fp.exists())
+                if (!fp.exists()) {
                     fp.mkdir();
+                }
 
                 FileOutputStream out = new FileOutputStream("./data/commands/commands.dat");
                 PrintStream p = new PrintStream(out);
@@ -1666,8 +1770,9 @@ public final class CampaignMain implements Serializable {
                 for (String commandName : commandTable.keySet()) {
 
                     Command commandMethod = CampaignMain.cm.getServerCommands().get(commandName);
-                    if (commandMethod == null)
+                    if (commandMethod == null) {
                         continue;
+                    }
                     p.println(commandName.toUpperCase() + "#" + commandMethod.getExecutionLevel());
                 }
             } catch (Exception ex1) {
@@ -1678,8 +1783,9 @@ public final class CampaignMain implements Serializable {
         }
 
         // Is the server data already there? (config files)? if not, create one
-        if (data.getAllPlanets().size() > 0 && data.getAllHouses().size() > 0)
+        if (data.getAllPlanets().size() > 0 && data.getAllHouses().size() > 0) {
             return;
+        }
 
         // No SHouse Data yet? Parse the XML file and creathe them
         if ((!CampaignMain.cm.isUsingMySQL() && data.getAllHouses().size() == 0) || (cm.isUsingMySQL() && cm.MySQL.countFactions() == 0)) {
@@ -1729,8 +1835,9 @@ public final class CampaignMain implements Serializable {
                             continue;
                         }
 
-                        if (p.getInfluence().getOwner() != null && sh.getId() == p.getInfluence().getOwner().intValue())
+                        if (p.getInfluence().getOwner() != null && sh.getId() == p.getInfluence().getOwner().intValue()) {
                             sh.addPlanet(p);
+                        }
 
                         sh.setInitialHouseRanking(sh.getInitialHouseRanking() + p.getInfluence().getInfluence(sh.getId()));
                     }
@@ -1752,7 +1859,7 @@ public final class CampaignMain implements Serializable {
         }
 
         // Save it on startup
-        this.toFile();
+        toFile();
     }
 
     public void addHouse(SHouse s) {
@@ -1762,8 +1869,9 @@ public final class CampaignMain implements Serializable {
     public void addPlanet(SPlanet p) {
 
         if (p.getOriginalOwner().trim().equals("")) {
-            if (p.getOwner() == null)
+            if (p.getOwner() == null) {
                 p.setOriginalOwner(cm.getConfig("NewbieHouseName"));
+            }
             p.setOriginalOwner(p.getOwner().getName());
         }
         data.addPlanet(p);
@@ -1833,10 +1941,11 @@ public final class CampaignMain implements Serializable {
                 diceBuffer.append(roll);
             }
         }
-        if (text != "")
+        if (text != "") {
             this.doSendToAllOnlinePlayers("AM:" + Username + " rolled " + diceBuffer + " for a total of " + total + ", using " + text + ".", true);
-        else
+        } else {
             this.doSendToAllOnlinePlayers("AM:" + Username + " rolled " + diceBuffer + " for a total of " + total + ", using 2d6.", true);
+        }
     }
 
     public void addMechStat(String Filename, int mechsize, int gameplayed, int gamewon, int scrapped) {
@@ -1845,10 +1954,11 @@ public final class CampaignMain implements Serializable {
 
     public void addMechStat(String Filename, int mechsize, int gameplayed, int gamewon, int scrapped, int destroyed) {
         MechStatistics m = null;
-        if (this.MechStats.get(Filename) == null) {
+        if (MechStats.get(Filename) == null) {
             m = new MechStatistics(Filename, mechsize);
-        } else
-            m = this.MechStats.get(Filename);
+        } else {
+            m = MechStats.get(Filename);
+        }
         m.setOriginalBV(SUnit.loadMech(Filename).calculateBattleValue());
 
         m.addStats(gameplayed, gamewon, m.getOriginalBV());
@@ -1858,22 +1968,24 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Private method that sends KI| (kick) commands to idle players. Broken
-     * into a seperate method to reduce code repetitiveness in slice().
+     * Private method that sends KI| (kick) commands to idle players. Broken into a seperate method to reduce code repetitiveness in slice().
      */
     private void checkAndRemoveIdle(SPlayer p, long maxIdleTime) {
 
         // dont boot mods
-        if (this.getServer().isModerator(p.getName()))
+        if (getServer().isModerator(p.getName())) {
             return;
+        }
 
         // if he's already logged out, who cares?
-        if (p.getDutyStatus() <= SPlayer.STATUS_LOGGEDOUT)
+        if (p.getDutyStatus() <= SPlayer.STATUS_LOGGEDOUT) {
             return;
+        }
 
         // redundant, but never boot fighting players
-        if (p.getDutyStatus() == SPlayer.STATUS_FIGHTING)
+        if (p.getDutyStatus() == SPlayer.STATUS_FIGHTING) {
             return;
+        }
 
         // reserve or active player. check his times.
         // NOTE: KI| command is actualy campaign logout. GBB| a disco/kill.
@@ -1884,12 +1996,9 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Slicer. Called by SliceThread @ the end of its config.txt defined wait
-     * duration. Gives influence to active players, checks for (and kicks) idle
-     * players, and saves player files. Slices are generally much shorter than
-     * ticks, and involve players and player data much more heavily than
-     * factions/high-end campaign structures. This is the exact opposite of the
-     * .tick() (see below).
+     * Slicer. Called by SliceThread @ the end of its config.txt defined wait duration. Gives influence to active players, checks for (and kicks) idle players,
+     * and saves player files. Slices are generally much shorter than ticks, and involve players and player data much more heavily than factions/high-end
+     * campaign structures. This is the exact opposite of the .tick() (see below).
      */
     public synchronized void slice(int sliceID) {
 
@@ -1907,8 +2016,9 @@ public final class CampaignMain implements Serializable {
 
             // for reserve players, we only check idleness
             if (maxIdleTime > 0) {
-                for (SPlayer currP : currH.getReservePlayers().values())
-                    this.checkAndRemoveIdle(currP, maxIdleTime);
+                for (SPlayer currP : currH.getReservePlayers().values()) {
+                    checkAndRemoveIdle(currP, maxIdleTime);
+                }
             }
 
             /*
@@ -1918,28 +2028,31 @@ public final class CampaignMain implements Serializable {
             for (SPlayer currP : currH.getActivePlayers().values()) {
                 currP.doMaintainance();
                 this.toUser(currP.addInfluenceAtSlice(), currP.getName(), true);
-                if (maxIdleTime > 0)
+                if (maxIdleTime > 0) {
                     checkAndRemoveIdle(currP, maxIdleTime);
+                }
             }
 
             // fighters only have maint. they get influence grants post-game.
             for (SPlayer currP : currH.getFightingPlayers().values()) {
                 currP.doMaintainance();
                 // People fighting are always up to date
-                if (maxIdleTime > 0)
+                if (maxIdleTime > 0) {
                     currP.setLastTimeCommandSent(System.currentTimeMillis() + maxIdleTime);
+                }
             }
 
         }// end all houses
 
         // check to see if we should save on this slice
         int saveOnSlice = CampaignMain.cm.getIntegerConfig("SaveEverySlice");
-        if (saveOnSlice < 1)
+        if (saveOnSlice < 1) {
             saveOnSlice = 1;
+        }
         if (sliceID % saveOnSlice == 0) {
-            this.savePlayers();// Once all of the saving is done clear
+            savePlayers();// Once all of the saving is done clear
             // everything for the next tick.
-            this.saveTopUnitID();
+            saveTopUnitID();
         }
 
         // write log header
@@ -1950,12 +2063,9 @@ public final class CampaignMain implements Serializable {
     }// end the slice...
 
     /**
-     * Tick is the main timekeeping unit of the server. At each tick, various
-     * statistics are checked and shown to players (ex: house ranking) and
-     * various portions of the campaign are cleaned up or finalized (ex: market
-     * sales). Most tick actions involve meta-functions, houses, the market, and
-     * so on. The only tick mechanic that acts directly on players is Mezzo
-     * (pricemod) drain.
+     * Tick is the main timekeeping unit of the server. At each tick, various statistics are checked and shown to players (ex: house ranking) and various
+     * portions of the campaign are cleaned up or finalized (ex: market sales). Most tick actions involve meta-functions, houses, the market, and so on. The
+     * only tick mechanic that acts directly on players is Mezzo (pricemod) drain.
      */
     public synchronized void tick(boolean real, int tickid) {
 
@@ -1966,10 +2076,11 @@ public final class CampaignMain implements Serializable {
 
         // log the number of games underway
         int gameCount = 0;
-        for (ShortOperation currO : this.getOpsManager().getRunningOps().values())
+        for (ShortOperation currO : getOpsManager().getRunningOps().values()) {
             if (currO.getStatus() == ShortOperation.STATUS_INPROGRESS) {
                 gameCount++;
             }
+        }
         CampaignData.mwlog.tickLog(gameCount + " games in progress.");
 
         // tick all houses
@@ -2007,9 +2118,9 @@ public final class CampaignMain implements Serializable {
 
                     // Clear up any users that the server still thinks is
                     // connected.
-                    if (this.getServer().getClient(currP.getName()) == null) {
+                    if (getServer().getClient(currP.getName()) == null) {
                         CampaignData.mwlog.debugLog("Logging out Player " + currP.getName());
-                        this.doLogoutPlayer(currP.getName());
+                        doLogoutPlayer(currP.getName());
                         continue;
                     }
 
@@ -2031,28 +2142,32 @@ public final class CampaignMain implements Serializable {
         }// end for(all houses)
 
         // append the total player count to the logs
-        CampaignData.mwlog.tickLog("Total players: " + this.getServer().userCount(true) + " online, " + totalPlayersOnline + " logged in.");
+        CampaignData.mwlog.tickLog("Total players: " + getServer().userCount(true) + " online, " + totalPlayersOnline + " logged in.");
 
         /*
          * Send the latest game reports to the players, and increment the
          * removal-counters.
          */
         String generalResult = "<br>";
-        String opsTick = this.opsManager.tick();
-        if (opsTick.length() > 0)
+        String opsTick = opsManager.tick();
+        if (opsTick.length() > 0) {
             generalResult += opsTick + "<br><br>";
+        }
 
         // if the relative house rankings should be shown, do so.
         String rankTick = "";
-        if (Boolean.parseBoolean(this.getConfig("ShowFactionRanks")))
+        if (Boolean.parseBoolean(this.getConfig("ShowFactionRanks"))) {
             rankTick = Statistics.getReadableHouseRanking(true);
+        }
 
-        if (rankTick.length() > 0)
+        if (rankTick.length() > 0) {
             generalResult += rankTick + "<br><br>";
+        }
 
         // send the combined & spaced string to players
-        if (generalResult.toLowerCase().replace("<br>", " ").trim().length() > 0)
+        if (generalResult.toLowerCase().replace("<br>", " ").trim().length() > 0) {
             this.doSendToAllOnlinePlayers("PL|UDT|" + generalResult, false);
+        }
 
         /*
          * Tick the market. This will resolve any auctions w/ 0 ticks remaining
@@ -2074,8 +2189,9 @@ public final class CampaignMain implements Serializable {
 
         CampaignData.mwlog.tickLog("doRanking");
         // output player stats to HTML, if enabled.
-        if (Boolean.parseBoolean(getConfig("HTMLOUTPUT")))
+        if (Boolean.parseBoolean(getConfig("HTMLOUTPUT"))) {
             Statistics.doRanking();
+        }
 
         CampaignData.mwlog.tickLog("PurgePlayersFiles");
         // purge old player files
@@ -2117,59 +2233,65 @@ public final class CampaignMain implements Serializable {
 
             for (House currH : p.getInfluence().getHouses()) {
                 SHouse hs = (SHouse) currH;
-                if (hs == null)
+                if (hs == null) {
                     continue;
-                if (!hs.isNewbieHouse() && !hs.isMercHouse())
+                }
+                if (!hs.isNewbieHouse() && !hs.isMercHouse()) {
                     factionContainer.get(hs.getName()).addAmount(p.getInfluence().getInfluence(hs.getId()));
+                }
             }
 
         }
 
         TreeSet<HouseRankingHelpContainer> s = new TreeSet<HouseRankingHelpContainer>();
-        for (HouseRankingHelpContainer currContainer : factionContainer.values())
+        for (HouseRankingHelpContainer currContainer : factionContainer.values()) {
             s.add(currContainer);
+        }
 
         return s;
     }
 
     /**
-     * Send a bit of text to all players who are currently online. Can be chat,
-     * or a command/message.
+     * Send a bit of text to all players who are currently online. Can be chat, or a command/message.
      */
     public void doSendToAllOnlinePlayers(String text, boolean isChat) {
 
         for (House vh : data.getAllHouses()) {
             SHouse h = (SHouse) vh;
-            for (String currName : h.getReservePlayers().keySet())
+            for (String currName : h.getReservePlayers().keySet()) {
                 this.toUser(text, currName, isChat);
+            }
 
-            for (String currName : h.getActivePlayers().keySet())
+            for (String currName : h.getActivePlayers().keySet()) {
                 this.toUser(text, currName, isChat);
+            }
 
-            for (String currName : h.getFightingPlayers().keySet())
+            for (String currName : h.getFightingPlayers().keySet()) {
                 this.toUser(text, currName, isChat);
+            }
         }
     }
 
     /**
-     * Send a bit of text to all players in a given faction. Can be chat, or a
-     * command/message.
+     * Send a bit of text to all players in a given faction. Can be chat, or a command/message.
      */
     public void doSendToAllOnlinePlayers(SHouse h, String text, boolean isChat) {
 
-        for (String currName : h.getReservePlayers().keySet())
+        for (String currName : h.getReservePlayers().keySet()) {
             this.toUser(text, currName, isChat);
+        }
 
-        for (String currName : h.getActivePlayers().keySet())
+        for (String currName : h.getActivePlayers().keySet()) {
             this.toUser(text, currName, isChat);
+        }
 
-        for (String currName : h.getFightingPlayers().keySet())
+        for (String currName : h.getFightingPlayers().keySet()) {
             this.toUser(text, currName, isChat);
+        }
     }
 
     /**
-     * Update all player armies that are online This is normally called after
-     * operations have been updated.
+     * Update all player armies that are online This is normally called after operations have been updated.
      */
     public void updateAllOnlinePlayerArmies() {
 
@@ -2200,28 +2322,28 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Method that returns the SHouse that contains a player with a given name.
-     * If no factions has such a player online, return a null.
+     * Method that returns the SHouse that contains a player with a given name. If no factions has such a player online, return a null.
      */
     public SHouse getHouseForPlayer(String Username) {
         String lowerName = Username.toLowerCase();
         for (House vh : data.getAllHouses()) {
             SHouse h = (SHouse) vh;
-            if (h.getReservePlayers().containsKey(lowerName))
+            if (h.getReservePlayers().containsKey(lowerName)) {
                 return h;
-            if (h.getActivePlayers().containsKey(lowerName))
+            }
+            if (h.getActivePlayers().containsKey(lowerName)) {
                 return h;
-            if (h.getFightingPlayers().containsKey(lowerName))
+            }
+            if (h.getFightingPlayers().containsKey(lowerName)) {
                 return h;
+            }
         }
         return null;
     }
 
     /**
-     * Check to see if the server is currently using cyclops if so then check to
-     * make sure the link is turned on in case the SO's have turned in on while
-     * the server was already running. Also the link is nulled if the SO's turn
-     * off cyclops while the server is running.
+     * Check to see if the server is currently using cyclops if so then check to make sure the link is turned on in case the SO's have turned in on while the
+     * server was already running. Also the link is nulled if the SO's turn off cyclops while the server is running.
      * 
      * @return
      */
@@ -2235,8 +2357,9 @@ public final class CampaignMain implements Serializable {
             mwcc.interrupt();
             mwcc = null;
         }// restart the thread if need be.
-        else if (isUsing && mwcc != null && (mwcc.isInterrupted() || !mwcc.isAlive()))
+        else if (isUsing && mwcc != null && (mwcc.isInterrupted() || !mwcc.isAlive())) {
             mwcc.start();
+        }
 
         return isUsing;
     }
@@ -2259,8 +2382,9 @@ public final class CampaignMain implements Serializable {
 
     public boolean isSynchingBB() {
 
-        if (!validBBVersion)
+        if (!validBBVersion) {
             return false;
+        }
 
         if (isUsingMySQL()) {
             return MySQL.isSynchingBB();
@@ -2278,7 +2402,7 @@ public final class CampaignMain implements Serializable {
     }
 
     public void turnOffBBSynch() {
-        this.validBBVersion = false;
+        validBBVersion = false;
     }
 
     /*
@@ -2313,8 +2437,9 @@ public final class CampaignMain implements Serializable {
 
     public int getRandomNumber(int seed) {
 
-        if (seed < 1)
+        if (seed < 1) {
             return seed;
+        }
 
         float answer = r.nextFloat() * (float) seed;
 
@@ -2338,9 +2463,10 @@ public final class CampaignMain implements Serializable {
         }
 
         title = dateTime + title;
-        this.NewsFeed.put(title, msgBody.toString());
-        if (this.NewsFeed.size() > 200)
-            this.NewsFeed.remove(this.NewsFeed.firstKey());
+        NewsFeed.put(title, msgBody.toString());
+        if (NewsFeed.size() > 200) {
+            NewsFeed.remove(NewsFeed.firstKey());
+        }
 
         try {
             FileOutputStream out = new FileOutputStream(getConfig("NewsPath"));
@@ -2426,10 +2552,10 @@ public final class CampaignMain implements Serializable {
 
     public double getAmmoCost(String ammo) {
 
-        if (blackMarketEquipmentCostTable.containsKey(ammo) && blackMarketEquipmentCostTable.get(ammo).getMinCost() > 0){
+        if (blackMarketEquipmentCostTable.containsKey(ammo) && blackMarketEquipmentCostTable.get(ammo).getMinCost() > 0) {
             return blackMarketEquipmentCostTable.get(ammo).getMinCost();
         }
-        
+
         return -1.0;
     }
 
@@ -2441,9 +2567,8 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * This retuns the blackMarketEquipmentCostTable This hashTable keeps track
-     * of all the mix/max costs and parts production for the Black market. This
-     * is used to allow players to buy spare parts to repair Their units.
+     * This retuns the blackMarketEquipmentCostTable This hashTable keeps track of all the mix/max costs and parts production for the Black market. This is used
+     * to allow players to buy spare parts to repair Their units.
      * 
      * @return blackMarketEquipmentCostTable
      */
@@ -2472,19 +2597,21 @@ public final class CampaignMain implements Serializable {
             // SPilotSkill skill =
             // (SPilotSkill)p.getSkills().getPilotSkill(SPilotSkill.TraitID);
             String trait = p.getTraitName();
-            if (trait.indexOf("*") > -1)
+            if (trait.indexOf("*") > -1) {
                 trait = trait.substring(0, trait.indexOf("*"));
-            Vector<String> traitsList = this.getFactionTraits(p.getCurrentFaction());
+            }
+            Vector<String> traitsList = getFactionTraits(p.getCurrentFaction());
             traitsList.trimToSize();
             for (String traitNames : traitsList) {
                 StringTokenizer traitName = new StringTokenizer(traitNames, "*");
                 String traitString = traitName.nextToken();
-                if (traitString.equalsIgnoreCase(trait))
+                if (traitString.equalsIgnoreCase(trait)) {
                     while (traitName.hasMoreElements()) {
                         int traitid = Integer.parseInt(traitName.nextToken());
                         int traitMod = Integer.parseInt(traitName.nextToken());
                         skilltable.put(traitid, traitMod);
                     }
+                }
             }
         }
 
@@ -2494,8 +2621,9 @@ public final class CampaignMain implements Serializable {
             total += skill.getChance(unitType, p);
         }
 
-        if (total == 0)
+        if (total == 0) {
             return null;
+        }
         /*
          * int rnd = 1; if (total > 1) rnd = getR().nextInt(total) + 1;
          */
@@ -2506,8 +2634,9 @@ public final class CampaignMain implements Serializable {
             while (it.hasNext()) {
                 SPilotSkill skill = it.next();
                 int chance = skill.getChance(unitType, p);
-                if (skilltable.get(new Integer(skill.getId())) != null)
+                if (skilltable.get(new Integer(skill.getId())) != null) {
                     chance += skilltable.get(skill.getId());
+                }
 
                 for (int pos = 0; pos < chance; pos++) {
                     skillBuilder.add(skill);
@@ -2534,8 +2663,9 @@ public final class CampaignMain implements Serializable {
     public SPilotSkill getPilotSkill(String skill) {
 
         for (SPilotSkill pSkill : pilotSkills.values()) {
-            if (pSkill.getName().equalsIgnoreCase(skill) || pSkill.getAbbreviation().equalsIgnoreCase(skill))
+            if (pSkill.getName().equalsIgnoreCase(skill) || pSkill.getAbbreviation().equalsIgnoreCase(skill)) {
                 return pSkill;
+            }
         }
 
         return null;
@@ -2563,11 +2693,13 @@ public final class CampaignMain implements Serializable {
         long elapsedHours = (elapsed % 86400000) / 3600000;
         long elapsedMinutes = (elapsed % 3600000) / 60000;
 
-        if (elapsedDays > 0)
+        if (elapsedDays > 0) {
             result += elapsedDays + "d ";
+        }
 
-        if (elapsedHours > 0 || elapsedDays > 0)
+        if (elapsedHours > 0 || elapsedDays > 0) {
             result += elapsedHours + "h ";
+        }
 
         result += elapsedMinutes + "m";
 
@@ -2575,8 +2707,7 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Method which generates human readible times from miliseconds. Useful only
-     * for times which are known to be minutes or seconds in length. Produces
+     * Method which generates human readible times from miliseconds. Useful only for times which are known to be minutes or seconds in length. Produces
      * full-word output.
      */
     public static String readableTimeWithSeconds(long elapsed) {
@@ -2587,14 +2718,15 @@ public final class CampaignMain implements Serializable {
         long elapsedMinutes = elapsed / 60000;
         long elapsedSeconds = (elapsed % 60000) / 1000;
 
-        if (elapsedMinutes > 0)
+        if (elapsedMinutes > 0) {
             result += elapsedMinutes + " min";
+        }
 
-        if (elapsedSeconds > 0 && elapsedMinutes > 0)
+        if (elapsedSeconds > 0 && elapsedMinutes > 0) {
             result += ", " + elapsedSeconds + " sec";
-
-        else if (elapsedSeconds > 0)
+        } else if (elapsedSeconds > 0) {
             result += elapsedSeconds + " sec";
+        }
 
         return result;
     }
@@ -2628,7 +2760,7 @@ public final class CampaignMain implements Serializable {
     }
 
     public void setCurrentPilotID(int id) {
-        this.currentPilotID = id;
+        currentPilotID = id;
     }
 
     public SHouse getHouseFromPartialString(String HouseString) {
@@ -2638,8 +2770,9 @@ public final class CampaignMain implements Serializable {
     public SHouse getHouseFromDBID(int DBId) {
         for (House currH : data.getAllHouses()) {
             SHouse sh = (SHouse) currH;
-            if (sh.getDBId() == DBId)
+            if (sh.getDBId() == DBId) {
                 return sh;
+            }
         }
         return null;
     }
@@ -2658,8 +2791,9 @@ public final class CampaignMain implements Serializable {
             SHouse sh = (SHouse) currH;
 
             // exact match
-            if (sh.getName().equals(HouseString))
+            if (sh.getName().equals(HouseString)) {
                 return sh;
+            }
 
             // store all matches
             if (sh.getName().startsWith(HouseString)) {
@@ -2670,14 +2804,16 @@ public final class CampaignMain implements Serializable {
 
         // too many matches
         if (numMatches > 1) {
-            if (Username != null)
+            if (Username != null) {
                 toUser("\"" + HouseString + "\" is not unique [" + numMatches + " matches]. Please be more specific.", Username);
+            }
             return null;
         }
 
         if (numMatches == 0) {
-            if (Username != null)
+            if (Username != null) {
                 toUser("Couldn't find a factions whose name begins with \"" + HouseString + "\". Try again.", Username, true);
+            }
             return null;
         }
 
@@ -2697,15 +2833,13 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Private method which writes out players who need to be saved and purges
-     * logged out/removable players from RAM. Should be called only from
-     * .slice() or forceSave. See this.forceSavePlayers() for more info on
-     * admin-initiated player saves.
+     * Private method which writes out players who need to be saved and purges logged out/removable players from RAM. Should be called only from .slice() or
+     * forceSave. See this.forceSavePlayers() for more info on admin-initiated player saves.
      */
     private void savePlayers() {
 
         // go into sleep while the server is archiving player files
-        while (this.isArchiving()) {
+        while (isArchiving()) {
             try {
                 Thread.sleep(125);
             } catch (Exception ex) {
@@ -2719,7 +2853,7 @@ public final class CampaignMain implements Serializable {
         for (House vh : CampaignMain.cm.getData().getAllHouses()) {
             SHouse currH = (SHouse) vh;
             for (SPlayer currP : currH.getAllOnlinePlayers().values()) {
-                this.savePlayerFile(currP);
+                savePlayerFile(currP);
             }
         }
 
@@ -2743,9 +2877,8 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Public save method. Used by admins to save all online players and all
-     * players who are in the save queue. Is called from /save, /shutdown, and
-     * /c adminsave.
+     * Public save method. Used by admins to save all online players and all players who are in the save queue. Is called from /save, /shutdown, and /c
+     * adminsave.
      */
     public void forceSavePlayers(String Username) {
 
@@ -2753,16 +2886,16 @@ public final class CampaignMain implements Serializable {
         for (House vh : CampaignMain.cm.getData().getAllHouses()) {
             SHouse currH = (SHouse) vh;
             for (SPlayer currP : currH.getAllOnlinePlayers().values()) {
-                this.savePlayerFile(currP);
-                if (Username != null)
+                savePlayerFile(currP);
+                if (Username != null) {
                     CampaignMain.cm.toUser("AM:" + currP.getName() + " saved", Username, true);
+                }
             }
         }
     }
 
     /**
-     * Public save method to save one player Used by changename and defect
-     * commands This is used so the players have a Pfile created right away
+     * Public save method to save one player Used by changename and defect commands This is used so the players have a Pfile created right away
      */
     public void forceSavePlayer(SPlayer p) {
 
@@ -2770,8 +2903,7 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Private method which writes a player to the disc. This code was housed in
-     * SPlayer; however, it is only called from CampaignMain and (from an OO
+     * Private method which writes a player to the disc. This code was housed in SPlayer; however, it is only called from CampaignMain and (from an OO
      * standpoint) only CMain should know the hardcoded paths which are used.
      * 
      * @author nmorris 1/13/06
@@ -2817,11 +2949,13 @@ public final class CampaignMain implements Serializable {
             SHouse faction = null;
             if (!HouseName.equalsIgnoreCase("server")) {
                 faction = CampaignMain.cm.getHouseFromPartialString(HouseName, null);
-                while (st.hasMoreTokens())
+                while (st.hasMoreTokens()) {
                     faction.getBannedAmmo().put(st.nextToken(), "Banned");
+                }
             } else {
-                while (st.hasMoreElements())
+                while (st.hasMoreElements()) {
                     CampaignMain.cm.getServerBannedAmmo().put(st.nextToken(), "Banned");
+                }
             }
         } catch (Exception ex) {
         }// make it compatible with people that had the old format,without
@@ -2836,8 +2970,9 @@ public final class CampaignMain implements Serializable {
         try {
             File bmFile = new File("./data/blackmarketsettings.dat");
 
-            if (!bmFile.exists())
+            if (!bmFile.exists()) {
                 return;
+            }
 
             FileInputStream fis = new FileInputStream(bmFile);
             BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
@@ -2904,7 +3039,7 @@ public final class CampaignMain implements Serializable {
     }
 
     public void addGamesCompleted(int i) {
-        this.setGamesCompleted(this.getGamesCompleted() + i);
+        setGamesCompleted(getGamesCompleted() + i);
     }
 
     public int getGamesCompleted() {
@@ -2916,8 +3051,9 @@ public final class CampaignMain implements Serializable {
 
         for (Mounted weapons : weaponList) {
             WeaponType weapon = (WeaponType) weapons.getType();
-            if (weapon.hasFlag(WeaponType.F_MG))
+            if (weapon.hasFlag(WeaponType.F_MG)) {
                 count++;
+            }
         }
         return count;
     }
@@ -2933,16 +3069,18 @@ public final class CampaignMain implements Serializable {
         Vector<String> traits = new Vector<String>(1, 1);
         File traitNames = new File("./data/pilotnames/" + faction.toLowerCase() + "traitnames.txt");
 
-        if (!traitNames.exists())
+        if (!traitNames.exists()) {
             traitNames = new File("./data/pilotnames/commontraitnames.txt");
+        }
 
         try {
 
             FileInputStream fis = new FileInputStream(traitNames);
             BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
 
-            while (dis.ready())
+            while (dis.ready()) {
                 traits.addElement(dis.readLine());
+            }
 
             dis.close();
             fis.close();
@@ -2964,8 +3102,9 @@ public final class CampaignMain implements Serializable {
 
         try {
 
-            if (!traitFile.exists())
+            if (!traitFile.exists()) {
                 traitFile.createNewFile();
+            }
 
             FileOutputStream fos = new FileOutputStream(traitFile);
             PrintStream p = new PrintStream(fos);
@@ -2984,17 +3123,18 @@ public final class CampaignMain implements Serializable {
     }
 
     public void setOmniVariantMods(Hashtable<String, String> table) {
-        this.omniVariantMods = table;
+        omniVariantMods = table;
     }
 
     public Hashtable<String, String> getOmniVariantMods() {
-        return this.omniVariantMods;
+        return omniVariantMods;
     }
 
     public void saveOmniVariantMods() {
 
-        if (this.omniVariantMods.size() < 1)
+        if (omniVariantMods.size() < 1) {
             return;
+        }
 
         try {
 
@@ -3015,15 +3155,15 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * @author Torren (Jason Tighe) This method will go through and check all
-     *         the player files and forceible unenroll anyone that is over
-     *         <code>days</code> idle.
+     * @author Torren (Jason Tighe) This method will go through and check all the player files and forceible unenroll anyone that is over <code>days</code>
+     *         idle.
      */
     public void purgePlayerFiles() {
         long days = Long.parseLong(CampaignMain.cm.getConfig("PurgePlayerFilesDays"));
         // Turn purging off by setting it to 0 or less days
-        if (days <= 0)
+        if (days <= 0) {
             return;
+        }
 
         if (CampaignMain.cm.isUsingMySQL()) {
             CampaignMain.cm.MySQL.purgeStalePlayers(days);
@@ -3039,8 +3179,9 @@ public final class CampaignMain implements Serializable {
         File[] playerList = new File("./campaign/players").listFiles();
 
         for (File player : playerList) {
-            if (player.isDirectory())
+            if (player.isDirectory()) {
                 continue;
+            }
             if (player.lastModified() + days < System.currentTimeMillis()) {
                 String playerName = player.getName().substring(0, player.getName().indexOf(".dat"));
                 SPlayer p = this.getPlayer(playerName, false, true);
@@ -3057,8 +3198,7 @@ public final class CampaignMain implements Serializable {
      * @param money
      * @param shortname
      * @param amount
-     * @return String Hokey function to return the correct syntax for long and
-     *         short money/flu messages to the user.
+     * @return String Hokey function to return the correct syntax for long and short money/flu messages to the user.
      */
     public String moneyOrFluMessage(boolean money, boolean shortname, int amount) {
         return moneyOrFluMessage(money, shortname, amount, false);
@@ -3079,25 +3219,28 @@ public final class CampaignMain implements Serializable {
             result = NumberFormat.getInstance().format(amount);
         }
 
-        if (!shortname)
+        if (!shortname) {
             result += " ";
+        }
 
         if (money) {
             if (shortname) {
-                if (amount == 1 && moneyShort.endsWith("s"))
+                if (amount == 1 && moneyShort.endsWith("s")) {
                     result += moneyShort.substring(0, moneyShort.length() - 1);
-                else if (amount > 1 && !moneyShort.endsWith("s"))
+                } else if (amount > 1 && !moneyShort.endsWith("s")) {
                     result += moneyShort + "s";
-                else
+                } else {
                     result += moneyShort;
+                }
             }// end shortname if
             else {
-                if (amount == 1 && moneyLong.endsWith("s"))
+                if (amount == 1 && moneyLong.endsWith("s")) {
                     result += moneyLong.substring(0, moneyLong.length() - 1);
-                else if (amount > 1 && !moneyLong.endsWith("s"))
+                } else if (amount > 1 && !moneyLong.endsWith("s")) {
                     result += moneyLong + "s";
-                else
+                } else {
                     result += moneyLong;
+                }
             }// end shortname else
         }// end money if
         else {
@@ -3110,8 +3253,9 @@ public final class CampaignMain implements Serializable {
         }// end money else
 
         // add sign, if set
-        if (showSign)
+        if (showSign) {
             return sign + result;
+        }
 
         return result.trim();
     }
@@ -3119,8 +3263,9 @@ public final class CampaignMain implements Serializable {
     public void updateISPLists(SPlayer player) {
         try {
             File file = new File("./data/Providers");
-            if (!file.exists())
+            if (!file.exists()) {
                 file.mkdir();
+            }
 
             file = new File("./data/Providers/" + player.getLastISP() + ".prv");
 
@@ -3176,11 +3321,11 @@ public final class CampaignMain implements Serializable {
     }
 
     public void setArchiving(boolean archive) {
-        this.isArchiving = archive;
+        isArchiving = archive;
     }
 
     public boolean isArchiving() {
-        return this.isArchiving;
+        return isArchiving;
     }
 
     public void saveConfigureFile(Properties config, String fileName) {
@@ -3237,8 +3382,9 @@ public final class CampaignMain implements Serializable {
         if (techType != UnitUtils.TECH_PILOT) {
             techCost = Integer.parseInt(cm.getConfig(UnitUtils.techDescription(techType) + "TechRepairCost"));
             techWorkMod = UnitUtils.getTechRoll(unit, 0, UnitUtils.LOC_FRONT_ARMOR, techType, true, house.getTechLevel()) - baseRoll;
-        } else
+        } else {
             techType = pilotLevel;
+        }
 
         techWorkMod = Math.max(techWorkMod, 0);
 
@@ -3309,10 +3455,12 @@ public final class CampaignMain implements Serializable {
         for (int location = 0; location < unit.locations(); location++) {
             for (int slot = 0; slot < unit.getNumberOfCriticals(location); slot++) {
                 CriticalSlot cs = unit.getCritical(location, slot);
-                if (cs == null)
+                if (cs == null) {
                     continue;
-                if (!cs.isBreached() && !cs.isDamaged())
+                }
+                if (!cs.isBreached() && !cs.isDamaged()) {
                     continue;
+                }
                 if (cs.getType() == CriticalSlot.TYPE_SYSTEM && cs.getIndex() != Mech.SYSTEM_ENGINE) {
                     if (techType != UnitUtils.TECH_PILOT) {
                         techWorkMod = UnitUtils.getTechRoll(unit, location, slot, techType, true, house.getTechLevel()) - baseRoll;
@@ -3352,10 +3500,12 @@ public final class CampaignMain implements Serializable {
         for (int location = 0; location < unit.locations(); location++) {
             for (int slot = 0; slot < unit.getNumberOfCriticals(location); slot++) {
                 CriticalSlot cs = unit.getCritical(location, slot);
-                if (cs == null)
+                if (cs == null) {
                     continue;
-                if (!cs.isBreached() && !cs.isDamaged())
+                }
+                if (!cs.isBreached() && !cs.isDamaged()) {
                     continue;
+                }
                 if (cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
                     Mounted mounted = unit.getEquipment(cs.getIndex());
 
@@ -3400,10 +3550,12 @@ public final class CampaignMain implements Serializable {
         for (int location = 0; location < unit.locations(); location++) {
             for (int slot = 0; slot < unit.getNumberOfCriticals(location); slot++) {
                 CriticalSlot cs = unit.getCritical(location, slot);
-                if (cs == null)
+                if (cs == null) {
                     continue;
-                if (!cs.isBreached() && !cs.isDamaged())
+                }
+                if (!cs.isBreached() && !cs.isDamaged()) {
                     continue;
+                }
                 if (cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
                     Mounted mounted = unit.getEquipment(cs.getIndex());
 
@@ -3452,14 +3604,17 @@ public final class CampaignMain implements Serializable {
             for (int y = 0; y < unit.getNumberOfCriticals(x); y++) {
                 cs = unit.getCritical(x, y);
 
-                if (cs == null)
+                if (cs == null) {
                     continue;
+                }
 
-                if (!cs.isDamaged() && !cs.isBreached())
+                if (!cs.isDamaged() && !cs.isBreached()) {
                     continue;
+                }
 
-                if (!UnitUtils.isEngineCrit(cs))
+                if (!UnitUtils.isEngineCrit(cs)) {
                     continue;
+                }
 
                 location = x;
                 slot = y;
@@ -3467,8 +3622,9 @@ public final class CampaignMain implements Serializable {
                 break;
 
             }
-            if (found)
+            if (found) {
                 break;
+            }
         }
 
         if (techType != UnitUtils.TECH_PILOT) {
@@ -3489,8 +3645,9 @@ public final class CampaignMain implements Serializable {
         engineCost *= payOutIncreaseBasedOnRoll(baseRoll);
         engineCost = Math.max(0, engineCost);
 
-        if (!found)
+        if (!found) {
             engineCost = 0;
+        }
 
         cost = totalArmorCost + engineCost + systemsCost + internalCost + weaponsCost + equipmentCost;
         return (int) cost;
@@ -3516,18 +3673,21 @@ public final class CampaignMain implements Serializable {
         double cost = 1;
         int totalCrits = 1;
 
-        if (techType < UnitUtils.TECH_PILOT)
+        if (techType < UnitUtils.TECH_PILOT) {
             techCost = CampaignMain.cm.getIntegerConfig(UnitUtils.techDescription(techType) + "TechRepairCost");
+        }
 
         if (Boolean.parseBoolean(cm.getConfig("UseRealRepairCosts"))) {
             double realCost = UnitUtils.getPartCost(unit, critLocation, critSlot, armor);
-            if (Boolean.parseBoolean(cm.getConfig("UsePartsRepair")))
+            if (Boolean.parseBoolean(cm.getConfig("UsePartsRepair"))) {
                 realCost = 0;
+            }
 
             double costMod = Double.parseDouble(cm.getConfig("RealRepairCostMod"));
             // modify the cost
-            if (costMod > 0)
+            if (costMod > 0) {
                 realCost *= costMod;
+            }
 
             cost += (techCost * Math.abs(techWorkMod)) + techCost;
         } else {
@@ -3541,8 +3701,9 @@ public final class CampaignMain implements Serializable {
                         cost *= unit.getOArmor(critLocation) - unit.getArmor(critLocation);
                         // Add the repairing armor flag back on.
                         UnitUtils.setArmorRepair(unit, UnitUtils.LOC_FRONT_ARMOR, critLocation);
-                    } else
+                    } else {
                         cost *= unit.getOArmor(critLocation) - unit.getArmor(critLocation);
+                    }
 
                     cost += techCost * Math.abs(techWorkMod);
                     cost += techCost;
@@ -3550,8 +3711,9 @@ public final class CampaignMain implements Serializable {
                 } else if (critSlot == UnitUtils.LOC_REAR_ARMOR) {
                     // tell the repair command its using rear external armor
                     cost = SUnit.getArmorCost(unit);
-                    if (critLocation >= UnitUtils.LOC_CTR)
+                    if (critLocation >= UnitUtils.LOC_CTR) {
                         critLocation -= 7;
+                    }
                     if (unit.getArmor(critLocation, true) > unit.getOArmor(critLocation, true)) {
                         // remove the repairing armor so we can get the real
                         // cost.
@@ -3559,8 +3721,9 @@ public final class CampaignMain implements Serializable {
                         cost *= unit.getOArmor(critLocation, true) - unit.getArmor(critLocation, true);
                         // Add the repairing armor flag back on.
                         UnitUtils.setArmorRepair(unit, UnitUtils.LOC_REAR_ARMOR, critLocation);
-                    } else
+                    } else {
                         cost *= unit.getOArmor(critLocation, true) - unit.getArmor(critLocation, true);
+                    }
 
                     cost += techCost * Math.abs(techWorkMod);
                     cost += techCost;
@@ -3574,8 +3737,9 @@ public final class CampaignMain implements Serializable {
                         cost *= unit.getOInternal(critLocation) - unit.getInternal(critLocation);
                         // Add the repairing armor flag back on.
                         UnitUtils.setArmorRepair(unit, UnitUtils.LOC_INTERNAL_ARMOR, critLocation);
-                    } else
+                    } else {
                         cost *= unit.getOInternal(critLocation) - unit.getInternal(critLocation);
+                    }
 
                     cost += techCost * Math.abs(techWorkMod);
                     cost += techCost;
@@ -3583,10 +3747,11 @@ public final class CampaignMain implements Serializable {
                 }
             } else {
                 CriticalSlot cs = unit.getCritical(critLocation, critSlot);
-                if (salvage)
+                if (salvage) {
                     totalCrits = UnitUtils.getNumberOfCrits(unit, cs) - UnitUtils.getNumberOfDamagedCrits(unit, critSlot, critLocation, armor);
-                else
+                } else {
                     totalCrits = UnitUtils.getNumberOfDamagedCrits(unit, critSlot, critLocation, armor);
+                }
                 cost = SUnit.getCritCost(unit, cs);
                 totalCost = (int) (totalCrits * cost);
                 totalCost += (int) (totalCrits * techCost);
@@ -3624,8 +3789,9 @@ public final class CampaignMain implements Serializable {
             for (House currH : data.getAllHouses()) {
 
                 SHouse h = (SHouse) currH;
-                if (h.getBannedAmmo().size() < 1)
+                if (h.getBannedAmmo().size() < 1) {
                     continue;
+                }
 
                 p.print(h.getName() + "#");
                 for (String ammo : h.getBannedAmmo().keySet()) {
@@ -3654,8 +3820,9 @@ public final class CampaignMain implements Serializable {
 
             dis.readLine();// Time Stamp
             StringTokenizer st = new StringTokenizer(dis.readLine(), "#");
-            while (st.hasMoreTokens())
+            while (st.hasMoreTokens()) {
                 cm.getData().getBannedTargetingSystems().put(Integer.parseInt(st.nextToken()), "Banned");
+            }
 
             dis.close();
             fis.close();
@@ -3705,8 +3872,9 @@ public final class CampaignMain implements Serializable {
             }
 
             StringTokenizer st = new StringTokenizer(nextLine, "#");
-            while (st.hasMoreTokens())
+            while (st.hasMoreTokens()) {
                 data.getPlanetOpFlags().put(st.nextToken(), st.nextToken());
+            }
 
             dis.close();
             fis.close();
@@ -3756,9 +3924,8 @@ public final class CampaignMain implements Serializable {
         File[] factionFileList = factionFile.listFiles(filter);
 
         // load each file
-        for (int pos = 0; pos < factionFileList.length; pos++) {
+        for (File faction : factionFileList) {
             try {
-                File faction = factionFileList[pos];
                 FileInputStream fis = new FileInputStream(faction);
                 BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
                 String line = dis.readLine();
@@ -3772,16 +3939,18 @@ public final class CampaignMain implements Serializable {
                 } else if (line.startsWith("[M]")) {
                     line = line.substring(3);
                     h = new MercHouse(data.getUnusedHouseID());
-                } else
+                } else {
                     h = new SHouse(data.getUnusedHouseID());
+                }
                 h.fromString(line, r);
-                if (isUsingIncreasedTechs())
+                if (isUsingIncreasedTechs()) {
                     h.addCommonUnitSupport();
+                }
                 addHouse(h);
                 dis.close();
                 fis.close();
             } catch (Exception ex) {
-                CampaignData.mwlog.errLog("Unable to load " + factionFileList[pos].getName());
+                CampaignData.mwlog.errLog("Unable to load " + faction.getName());
             }
         }
 
@@ -3793,16 +3962,18 @@ public final class CampaignMain implements Serializable {
 
         // load the various construction modifiers for the houses added above
         factionFile = new File("./campaign/costmodifiers");
-        if (!factionFile.exists())
+        if (!factionFile.exists()) {
             return;// done
+        }
 
         for (House currH : data.getAllHouses()) {
 
             String saveName = currH.getName().toLowerCase().trim() + ".dat";
             File faction = new File("./campaign/costmodifiers/" + saveName);
 
-            if (!faction.exists())
+            if (!faction.exists()) {
                 continue;
+            }
             try {
 
                 FileInputStream fis = new FileInputStream(faction);
@@ -3861,8 +4032,9 @@ public final class CampaignMain implements Serializable {
             }
         }
         factionFile = new File("./campaign/costmodifiers");
-        if (!factionFile.exists())
+        if (!factionFile.exists()) {
             factionFile.mkdir();
+        }
 
         synchronized (data.getAllHouses()) {
             for (House currH : data.getAllHouses()) {
@@ -3879,8 +4051,9 @@ public final class CampaignMain implements Serializable {
                     if (faction.exists()) {
 
                         File backupFile = new File("./campaign/factions/" + backupName);
-                        if (backupFile.exists())
+                        if (backupFile.exists()) {
                             backupFile.delete();
+                        }
 
                         faction.renameTo(backupFile);
                     }
@@ -3894,8 +4067,9 @@ public final class CampaignMain implements Serializable {
                         if (factionCostMod.exists()) {
 
                             File backupFile = new File("./campaign/costmodifiers/" + backupName);
-                            if (backupFile.exists())
+                            if (backupFile.exists()) {
                                 backupFile.delete();
+                            }
 
                             factionCostMod.renameTo(backupFile);
                         }
@@ -3906,12 +4080,15 @@ public final class CampaignMain implements Serializable {
                         for (int type = 0; type < 5; type++) {
                             for (int weight = 0; weight < 4; weight++) {
 
-                                if (h.getHouseUnitPriceMod(type, weight) != 0)
+                                if (h.getHouseUnitPriceMod(type, weight) != 0) {
                                     costModp.println("Price$" + type + "$" + weight + "$" + h.getHouseUnitPriceMod(type, weight));
-                                if (h.getHouseUnitFluMod(type, weight) != 0)
+                                }
+                                if (h.getHouseUnitFluMod(type, weight) != 0) {
                                     costModp.println("Flu$" + type + "$" + weight + "$" + h.getHouseUnitFluMod(type, weight));
-                                if (h.getHouseUnitComponentMod(type, weight) != 0)
+                                }
+                                if (h.getHouseUnitComponentMod(type, weight) != 0) {
                                     costModp.println("Comp$" + type + "$" + weight + "$" + h.getHouseUnitComponentMod(type, weight));
+                                }
 
                             }
                         }
@@ -3957,23 +4134,23 @@ public final class CampaignMain implements Serializable {
 
             // dir and files exist. read them.
             File[] planetFileList = planetFile.listFiles(filter);
-            for (int pos = 0; pos < planetFileList.length; pos++) {
+            for (File planet : planetFileList) {
 
                 try {
-                    File planet = planetFileList[pos];
                     FileInputStream fis = new FileInputStream(planet);
                     BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
                     String line = dis.readLine();
                     SPlanet p;
-                    if (line.startsWith("[N]"))
+                    if (line.startsWith("[N]")) {
                         line = line.substring(3);
+                    }
                     p = new SPlanet();
                     p.fromString(line, r, data);
                     addPlanet(p);
                     dis.close();
                     fis.close();
                 } catch (Exception ex) {
-                    CampaignData.mwlog.errLog("Unable to load " + planetFileList[pos].getName());
+                    CampaignData.mwlog.errLog("Unable to load " + planet.getName());
                     CampaignData.mwlog.errLog(ex);
                 }
             }
@@ -3999,8 +4176,9 @@ public final class CampaignMain implements Serializable {
     public void updatePlayersAccessLevel(String playerName, int accessLevel) {
         SPlayer player = cm.getPlayer(playerName);
 
-        if (player == null)
+        if (player == null) {
             return;
+        }
         try {
             cm.getServer().getClient(playerName).setAccessLevel(accessLevel);
             cm.getServer().getUser(playerName).setLevel(accessLevel);
@@ -4014,10 +4192,8 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * this removes a SPlayer object form the global hash. This is called when a
-     * player logs into a house, in which case the house now stores the object,
-     * or when the player logs off, incase they never bothred to register or
-     * login.
+     * this removes a SPlayer object form the global hash. This is called when a player logs into a house, in which case the house now stores the object, or
+     * when the player logs off, incase they never bothred to register or login.
      * 
      * @param soul
      */
@@ -4030,23 +4206,23 @@ public final class CampaignMain implements Serializable {
     }
 
     public void updateHousePlanetUpdate() {
-        this.housePlanetDate = new Date();
+        housePlanetDate = new Date();
     }
 
     // Save Planets
     public void savePlanetData() {
 
-        if (cm.isUsingMySQL())
+        if (cm.isUsingMySQL()) {
             for (Planet currP : data.getAllPlanets()) {
                 SPlanet p = (SPlanet) currP;
                 p.toDB();
             }
-
-        else {
+        } else {
             savePlanetOpFlags();
             File planetFile = new File("./campaign/planets");
-            if (!planetFile.exists())
+            if (!planetFile.exists()) {
                 planetFile.mkdir();
+            }
             synchronized (data.getAllPlanets()) {
 
                 for (Planet currP : data.getAllPlanets()) {
@@ -4059,8 +4235,9 @@ public final class CampaignMain implements Serializable {
                         if (planet.exists()) {
 
                             File backupFile = new File("./campaign/planets/" + backupName);
-                            if (backupFile.exists())
+                            if (backupFile.exists()) {
                                 backupFile.delete();
+                            }
 
                             planet.renameTo(backupFile);
                         }
@@ -4079,15 +4256,15 @@ public final class CampaignMain implements Serializable {
 
         }
     }
-    
-    public String getMegaMekOptionsToString(){
+
+    public String getMegaMekOptionsToString() {
         StringBuffer result = new StringBuffer();
-        
+
         Enumeration<IOption> options = cm.getMegaMekClient().game.getOptions().getOptions();
-        
-        while ( options.hasMoreElements() ){
+
+        while (options.hasMoreElements()) {
             IOption option = options.nextElement();
-            
+
             result.append(option.getName()).append("|").append(option.getValue()).append("|");
         }
         return result.toString();

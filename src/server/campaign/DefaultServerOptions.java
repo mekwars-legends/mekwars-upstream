@@ -1,31 +1,28 @@
 /*
- * MekWars - Copyright (C) 2004 
+ * MekWars - Copyright (C) 2004
  * 
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
 
 /**
  * @author jtighe
  * 
- * This class loads the default server config options as well as saves
- * the server configs back to the serverconfig  file
+ *         This class loads the default server config options as well as saves the server configs back to the serverconfig file
  */
 package server.campaign;
 
 import java.util.Properties;
+
 import common.CampaignData;
 
 /**
- * @author Torren Oct 22, 2004 Loads the default settings for the server config If any configs are added please add them to this function as well as createConfig().
+ * @author Torren Oct 22, 2004 Loads the default settings for the server config If any configs are added please add them to this function as well as
+ *         createConfig().
  */
 public class DefaultServerOptions {
     private Properties defaults; // default server config
@@ -257,7 +254,7 @@ public class DefaultServerOptions {
         defaults.setProperty("UseProtoMek", "true");
         defaults.setProperty("UseInfantry", "true");
         defaults.setProperty("UseAero", "true");
-        
+
         defaults.setProperty("UseOnlyLightInfantry", "true");
         defaults.setProperty("UseOnlyOneVehicleSize", "false");
 
@@ -305,7 +302,7 @@ public class DefaultServerOptions {
         defaults.setProperty("BattleArmorMapSizeFactor", "10");
         defaults.setProperty("ProtoMekMapSizeFactor", "10");
         defaults.setProperty("AeroMapSizeFactor", "100");
-        
+
         defaults.setProperty("MinCountForTick", "2000");
         defaults.setProperty("MaxCountForTick", "6000");
         defaults.setProperty("MinActiveTime", "40");
@@ -611,8 +608,10 @@ public class DefaultServerOptions {
         defaults.setProperty("CostToBuyNewPilot", "1");
         defaults.setProperty("CostToBuyNewProtoPilot", "1");
         defaults.setProperty("AllowPlayerToBuyPilotsFromHouseWhenPoolIsFull", "false");
-        defaults.setProperty("MaxAllowedPilotsInQueueToBuyFromHouse", "2"); // if the player has more then 2 pilots in their queue of size and wieght they cannot buy from the faction.
-        defaults.setProperty("BasePilotSurvival", "20"); // if the player has more then 2 pilots in their queue of a size and wieght they cannot buy from the faction.
+        defaults.setProperty("MaxAllowedPilotsInQueueToBuyFromHouse", "2"); // if the player has more then 2 pilots in their queue of size and wieght they
+                                                                            // cannot buy from the faction.
+        defaults.setProperty("BasePilotSurvival", "20"); // if the player has more then 2 pilots in their queue of a size and wieght they cannot buy from the
+                                                         // faction.
         defaults.setProperty("TrappedInMechSurvivalMod", "-20"); // If the pilot was still in his mek when it died this mod is applied to the surival rate.
         defaults.setProperty("DownPilotsMustRollForSurvival", "false"); // engined and cored meks whoes pilots are alive may have to check for survival
         defaults.setProperty("ChanceToConvertCapturedPilots", "10");// capture a pilot and you have chance to convert them
@@ -804,9 +803,9 @@ public class DefaultServerOptions {
         // Max number of bays a player is allowed to buy. -1 to disable.
         defaults.setProperty("MaxBaysToBuy", "-1");
 
-        // Max number of techs a player is allowed to hire.  -1 to disable.
+        // Max number of techs a player is allowed to hire. -1 to disable.
         defaults.setProperty("MaxTechsToHire", "-1");
-        
+
         /*
          * Number of seconds it will take to repair a crit/weapon Based on Maxtech repairs i.e. engines take longer to repair then Medium Lasers or Actuators.
          */
@@ -1083,12 +1082,14 @@ public class DefaultServerOptions {
         // Slice Settings
         defaults.setProperty("ProcessHouseTicksAtSlice", "false");
         defaults.setProperty("SendSingleCommandAtATime", "false");
-        
-        //Pilot Upgrade configs
+
+        // Pilot Upgrade configs
         defaults.setProperty("PlayersCanBuyPilotUpgrades", "false");
         defaults.setProperty("PilotsMustLevelEvenly", "false");
         defaults.setProperty("GiftedPercent", "5");
-        
+        defaults.setProperty("PlayersCanSellPilotUpgrades", "false");
+        defaults.setProperty("MaxPilotUpgrades", "-1");
+        defaults.setProperty("PilotUpgradeSellBackPercent", ".5");
     }
 
     /**

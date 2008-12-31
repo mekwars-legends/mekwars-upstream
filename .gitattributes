@@ -1440,6 +1440,7 @@ src/server/campaign/commands/DeactivateCommand.java -text
 src/server/campaign/commands/DeclineAttackFromReserveCommand.java -text
 src/server/campaign/commands/DefectCommand.java -text
 src/server/campaign/commands/DefendCommand.java -text
+src/server/campaign/commands/DemotePilotCommand.java -text
 src/server/campaign/commands/DirectSellUnitCommand.java -text
 src/server/campaign/commands/DisplayPlayerPersonalPilotQueueCommand.java -text
 src/server/campaign/commands/DisplayUnitRepairJobsCommand.java -text

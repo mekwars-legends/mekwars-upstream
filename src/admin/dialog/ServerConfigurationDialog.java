@@ -1,23 +1,18 @@
 /*
- * MekWars - Copyright (C) 2004 
+ * MekWars - Copyright (C) 2004
  * 
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
 
 /**
  * @author jtighe
  * 
- * Server Configuration Page. All new Server Options need to be added
- * To this page as well.
+ *         Server Configuration Page. All new Server Options need to be added To this page as well.
  */
 
 package admin.dialog;
@@ -76,7 +71,12 @@ public final class ServerConfigurationDialog implements ActionListener {
      */
 
     /**
-     * @author Torren (Jason Tighe) 12/29/2005 I've completely redone how the Server config dialog works There are 2 basic fields now baseTextField which is a JTextField and baseCheckBox which is a JCheckBox. When you add a new server config add the labels to the tab then use the base fields to add the ver. make sure to set the base field's name method this is used to populate and save. ex: BaseTextField.setName("DefaultServerOptionsVariable"); Two recursive methods populate and save the data to the server findAndPopulateTextAndCheckBoxes(JPanel) findAndSaveConfigs(JPanel) This change to the code removes the tediousness of having to add a new var to 3 locations when it is use. Now only 1 location needs to added and that is the vars placement on the tab in the UI.
+     * @author Torren (Jason Tighe) 12/29/2005 I've completely redone how the Server config dialog works There are 2 basic fields now baseTextField which is a
+     *         JTextField and baseCheckBox which is a JCheckBox. When you add a new server config add the labels to the tab then use the base fields to add the
+     *         ver. make sure to set the base field's name method this is used to populate and save. ex: BaseTextField.setName("DefaultServerOptionsVariable");
+     *         Two recursive methods populate and save the data to the server findAndPopulateTextAndCheckBoxes(JPanel) findAndSaveConfigs(JPanel) This change to
+     *         the code removes the tediousness of having to add a new var to 3 locations when it is use. Now only 1 location needs to added and that is the
+     *         vars placement on the tab in the UI.
      */
     public ServerConfigurationDialog(MWClient mwclient) {
 
@@ -2028,7 +2028,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         JPanel pilotOptionsSpring1 = new JPanel(new SpringLayout());
         JPanel pilotOptionsSpring2 = new JPanel(new SpringLayout());
 
-        // pilotSpring1, 7 elements
+        // pilotSpring1, 8 elements
         baseTextField = new JTextField(5);
         pilotOptionsSpring1.add(new JLabel("Skill Change:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("% chance for a new pilot to have a maxtech skill");
@@ -2089,7 +2089,13 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("CostToBuyNewProtoPilot");
         pilotOptionsSpring1.add(baseTextField);
 
-        // PilotSpring2 - 7 elements
+        baseTextField = new JTextField(5);
+        pilotOptionsSpring1.add(new JLabel("Pilot Skil Sell Back Mod:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Sets what percent of the original cost the pilot gets back in exp<br>when a skill is sold.<br>NOTE: This is a double filed .5 = 50%</html>");
+        baseTextField.setName("PilotUpgradeSellBackPercent");
+        pilotOptionsSpring1.add(baseTextField);
+
+        // PilotSpring2 - 8 elements
         baseTextField = new JTextField(5);
         pilotOptionsSpring2.add(new JLabel("Total Skill to Retire:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html>Total skill (Piloting + Gunnery) of pilot must be equal to or less than this number in order to retire for free.</html>");
@@ -2142,6 +2148,12 @@ public final class ServerConfigurationDialog implements ActionListener {
         pilotOptionsSpring2.add(new JLabel("MedTech per Tick", SwingConstants.TRAILING));
         baseTextField.setToolTipText("<html>The number of points a pilot will heal in one tick if they have the medtech skill<br>NOTE: with PPQ on pilots must be in the queue to heal<br>With PPQ off pilots will heal while in their units.</html>");
         baseTextField.setName("MedTechAmountHealedPerTick");
+        pilotOptionsSpring2.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        pilotOptionsSpring2.add(new JLabel("Max Pilot Upgrades:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>Set the maximum numbers of skills a player can give a pilot.<br>Set to -1 for unlimited.</html>");
+        baseTextField.setName("MaxPilotUpgrades");
         pilotOptionsSpring2.add(baseTextField);
 
         SpringLayoutHelper.setupSpringGrid(pilotOptionsSpring1, 2);
@@ -2236,6 +2248,11 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox = new JCheckBox("Pilots Must level Evenly");
         BaseCheckBox.setToolTipText("<html>If Checked then players must level their pilots skills via stair step.<br>This means no more then 1 difference between gunnery and piloting<br>unless the Pilot has NAG or NAP.</html>");
         BaseCheckBox.setName("PilotsMustLevelEvenly");
+        pilotCBoxGrid.add(BaseCheckBox);
+
+        BaseCheckBox = new JCheckBox("Players Demote Pilots");
+        BaseCheckBox.setToolTipText("<html>If Checked, as well as Players Level Pilots, Then players can sell back pilots skills.</html>");
+        BaseCheckBox.setName("PlayersCanSellPilotUpgrades");
         pilotCBoxGrid.add(BaseCheckBox);
 
         // finalize the layout
@@ -5991,7 +6008,8 @@ public final class ServerConfigurationDialog implements ActionListener {
     }
 
     /**
-     * This Method tunnels through all of the panels to find the textfields and checkboxes. Once it find one it grabs the Name() param of the object and uses that to find out what the setting should be from the mwclient.getserverConfigs() method.
+     * This Method tunnels through all of the panels to find the textfields and checkboxes. Once it find one it grabs the Name() param of the object and uses
+     * that to find out what the setting should be from the mwclient.getserverConfigs() method.
      * 
      * @param panel
      */
@@ -6051,7 +6069,8 @@ public final class ServerConfigurationDialog implements ActionListener {
     }
 
     /**
-     * This method will tunnel through all of the panels of the config UI to find any changed text fields or checkboxes. Then it will send the new configs to the server.
+     * This method will tunnel through all of the panels of the config UI to find any changed text fields or checkboxes. Then it will send the new configs to
+     * the server.
      * 
      * @param panel
      */

@@ -1,25 +1,18 @@
 /*
- * MekWars - Copyright (C) 2004 
+ * MekWars - Copyright (C) 2004
  * 
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
 
 package server.campaign.commands;
 
 import java.util.StringTokenizer;
-
-import common.campaign.pilot.Pilot;
-import common.campaign.pilot.skills.PilotSkill;
 
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
@@ -30,6 +23,9 @@ import server.campaign.pilot.skills.EdgeSkill;
 import server.campaign.pilot.skills.SPilotSkill;
 import server.campaign.pilot.skills.TraitSkill;
 import server.campaign.pilot.skills.WeaponSpecialistSkill;
+
+import common.Unit;
+import common.campaign.pilot.skills.PilotSkill;
 
 public class PromotePilotCommand implements Command {
 
@@ -88,6 +84,11 @@ public class PromotePilotCommand implements Command {
         }
 
         pilot = (SPilot) unit.getPilot();
+
+        if (CampaignMain.cm.getIntegerConfig("MaxPilotUpgrades") >= 0 && pilot.getSkills().size() >= CampaignMain.cm.getIntegerConfig("MaxPilotUpgrades")) {
+            CampaignMain.cm.toUser("AM:" + pilot.getName() + " already has the maximum allowed skills", Username, true);
+            return;
+        }
 
         if (skill.trim().length() < 1) {
             CampaignMain.cm.toUser("AM:A skill needs to be provided", Username, true);
@@ -155,7 +156,7 @@ public class PromotePilotCommand implements Command {
                         return;
                     }
 
-                    cost = CampaignMain.cm.getIntegerConfig("chancefor" + ps.getAbbreviation() + "for" + SUnit.getTypeClassDesc(unit.getType()));
+                    cost = CampaignMain.cm.getIntegerConfig("chancefor" + ps.getAbbreviation() + "for" + Unit.getTypeClassDesc(unit.getType()));
                     cost *= ps.getLevel() + 2;
                 } else if (ps.getId() == PilotSkill.EdgeSkillID) {
                     ps = (SPilotSkill) pilot.getSkills().getPilotSkill(PilotSkill.EdgeSkillID);
@@ -163,14 +164,14 @@ public class PromotePilotCommand implements Command {
                         CampaignMain.cm.toUser("AM:You cannot raise your pilots Edge any higher!", Username);
                         return;
                     }
-                    cost = CampaignMain.cm.getIntegerConfig("chancefor" + ps.getAbbreviation() + "for" + SUnit.getTypeClassDesc(unit.getType()));
+                    cost = CampaignMain.cm.getIntegerConfig("chancefor" + ps.getAbbreviation() + "for" + Unit.getTypeClassDesc(unit.getType()));
                     cost *= ps.getLevel() + 1;
                 } else {
                     CampaignMain.cm.toUser("AM:Your pilot already has that skill!", Username);
                     return;
                 }
             } else {
-                cost = CampaignMain.cm.getIntegerConfig("chancefor" + ps.getAbbreviation() + "for" + SUnit.getTypeClassDesc(unit.getType()));
+                cost = CampaignMain.cm.getIntegerConfig("chancefor" + ps.getAbbreviation() + "for" + Unit.getTypeClassDesc(unit.getType()));
             }
 
         }
@@ -190,11 +191,11 @@ public class PromotePilotCommand implements Command {
             pilot.setPiloting(pilot.getPiloting() - 1);
         } else {
             // special accomidation for WS and Trait
-            if (ps instanceof WeaponSpecialistSkill)
+            if (ps instanceof WeaponSpecialistSkill) {
                 ((WeaponSpecialistSkill) ps).assignWeapon(unit.getEntity(), pilot);
-            else if (ps instanceof TraitSkill)
+            } else if (ps instanceof TraitSkill) {
                 ((TraitSkill) ps).assignTrait(pilot);
-            else if (ps instanceof EdgeSkill) {
+            } else if (ps instanceof EdgeSkill) {
                 if (pilot.getSkills().has(ps)) {
                     ((EdgeSkill) ps).setLevel(ps.getLevel() + 1);
                 }
@@ -204,8 +205,8 @@ public class PromotePilotCommand implements Command {
                 }
             }
 
-            ((SPilotSkill) ps).addToPilot((Pilot) pilot);
-            ((SPilotSkill) ps).modifyPilot((Pilot) pilot);
+            (ps).addToPilot(pilot);
+            (ps).modifyPilot(pilot);
         }
 
         pilot.setExperience(pilot.getExperience() - cost);
