@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.40.x
++ RFE 2462823: separate mul lists for unit type
 + RFE: Deds/Hosts now report games automatically.
 + Bug 2280766: Server ticks
 + Bug 2213581: Salvage being overlooked
