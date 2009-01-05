@@ -1763,7 +1763,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField = new JTextField(5);
         defenderMULPanel.add(new JLabel("Max Inf:", SwingConstants.TRAILING));
         BaseTextField.setToolTipText("<html>Max number of MUL Infantry a Defender can receive</html>");
-        BaseTextField.setName("MaxDefenderMulArmies");
+        BaseTextField.setName("MaxDefenderMulInf");
         defenderMULPanel.add(BaseTextField);
 
         BaseTextField = new JTextField(5);
@@ -1891,7 +1891,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField = new JTextField(5);
         attackerMULPanel.add(new JLabel("Max Inf:", SwingConstants.TRAILING));
         BaseTextField.setToolTipText("<html>Max number of MUL Infantry a Attacker can receive</html>");
-        BaseTextField.setName("MaxAttackerMulArmies");
+        BaseTextField.setName("MaxAttackerMulInf");
         attackerMULPanel.add(BaseTextField);
 
         BaseTextField = new JTextField(5);

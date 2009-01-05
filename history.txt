@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.40.x
++ Bug: Max Mul Infantry pointing to wrong variable.
 + Bug: Error generating Vehicle MUL lists
 + New MegaMek.jar 0.33.38-MW123108-6287
 + RFE 2150385: SO settable pilot promotion options
