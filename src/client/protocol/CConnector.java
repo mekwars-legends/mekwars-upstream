@@ -3,8 +3,8 @@
  *
  */
 /*
- * MekWars - Copyright (C) 2005 
- * 
+ * MekWars - Copyright (C) 2005
+ *
  * Original author - Torren (torren@users.sourceforge.net)
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -20,24 +20,23 @@
 
 
 /*
- * Derived from NFCChat, a GPL chat client/server. 
+ * Derived from NFCChat, a GPL chat client/server.
  * Original code can be found @ http://nfcchat.sourceforge.net
  * Our thanks to the original authors.
- */ 
+ */
 /**
- * 
- * @author Torren (Jason Tighe) 11.5.05 
- * 
+ *
+ * @author Torren (Jason Tighe) 11.5.05
+ *
  */
 package client.protocol;
 
 import java.io.IOException;
 import java.net.Socket;
 
-import common.CampaignData;
-
 import client.gui.SplashWindow;
-import client.protocol.IConnectionListener;
+
+import common.CampaignData;
 
 /**
  *
@@ -86,8 +85,9 @@ public class CConnector implements IConnectionListener
     public void send(String message) {
     	if ( message.indexOf("CH%7c%2fc+sendclientdata%23") < 0
     	        && message.indexOf("CH%7c%2fc+sendtomisc%23") < 0
-    	        && message.indexOf("/pong") < 0)
-    		CampaignData.mwlog.infoLog("SENT: " + message);
+    	        && message.indexOf("/pong") < 0) {
+            CampaignData.mwlog.infoLog("SENT: " + message);
+        }
       _connectionHandler.queueMessage(message);
     }
 
@@ -106,7 +106,7 @@ public class CConnector implements IConnectionListener
     }
 
     public void connect() {
-    	
+
       try {
         if (_connected) {
             CampaignData.mwlog.errLog("already connected...");
@@ -139,16 +139,17 @@ public class CConnector implements IConnectionListener
         if (ioexception != null) {throw ioexception;}
       }
       catch (IOException e) {
-      	
-      	if (splash != null)
-      		splash.setStatus(splash.STATUS_CONNECTFAILED);
-      	
+
+      	if (splash != null) {
+            splash.setStatus(splash.STATUS_CONNECTFAILED);
+        }
+
         CampaignData.mwlog.errLog(e);
         /*Object[] options = {"Exit"};
         int selectedValue = JOptionPane.showOptionDialog(null,"Could not connect to " + _host + ":" + _port,"Connection error!",JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE,null,options,options[0]);
         if (selectedValue == 0)
         	System.exit(0);//exit, if they so choose*/ //Bad to do to a ded. Deds should retry every 60 seconds. --Torren.
-        
+
         return;
       }
     }
@@ -156,7 +157,7 @@ public class CConnector implements IConnectionListener
     public void closeConnection() {
       _connectionHandler.shutdown(true);
     }
-    
+
     public void setSplashWindow(SplashWindow s) {
     	splash = s;
     }

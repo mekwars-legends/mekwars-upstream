@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2004 
- * 
+ * MekWars - Copyright (C) 2004
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  * Original author Helge Richter (McWizard)
  *
@@ -36,27 +36,32 @@ import common.CampaignData;
  * Class for Client's configuration.
  */
 public class CConfig {
-	
-	//VARIABLES
+
+	/**
+     *
+     */
+    private static final long serialVersionUID = 415432969624634387L;
+    // VARIABLES
 	public static final String IMAGE_PATH = "data/images/";
 	public static final String CAMO_PATH = "data/images/camo/";
 	public static final String CONFIG_FILE = "./data/mwconfig.txt";
     public static final String CONFIG_BACKUP_FILE = "./data/mwconfig.txt.bak";
-	
+
 	private Properties config;                //config. player values.
 	private TreeMap<String,ImageIcon> images; // treemap with images
-	
+
 	//CONSTRUCTOR
 	public CConfig(boolean dedicated) {
-		
-		config = setDefaults();		
+
+		config = setDefaults();
 		images = new TreeMap<String,ImageIcon>();
 
 		//check to see if a config is present. if not, make one.
-        if ( !(new File(CONFIG_FILE).exists()) && !(new File(CONFIG_BACKUP_FILE).exists()) )
-			createConfig();
-		
-		//load the saved mwconfig.txt file 
+        if ( !(new File(CONFIG_FILE).exists()) && !(new File(CONFIG_BACKUP_FILE).exists()) ) {
+            createConfig();
+        }
+
+		//load the saved mwconfig.txt file
 		try {
 			File configfile = new File(CONFIG_FILE);
 			FileInputStream fis = new FileInputStream(configfile);
@@ -71,11 +76,13 @@ public class CConfig {
                         CampaignData.mwlog.errLog(ex);
                         JOptionPane.showMessageDialog(null, "Unable to load Backup config file");
                     }
-                    
-                }else
+
+                } else {
                     config.load(fis);
-            }else
+                }
+            } else {
                 config.load(fis);
+            }
             fis.close();
 		} catch (IOException ie){
             try {
@@ -92,7 +99,7 @@ public class CConfig {
 			CampaignData.mwlog.errLog(ex);
 			JOptionPane.showMessageDialog(null, "Unable to load main config file");
 		}
-		
+
 		//check for a serverdata.dat
 		try {
 			File configfile = new File("serverdata.dat");
@@ -100,24 +107,26 @@ public class CConfig {
 			config.load(fis);
 			fis.close();
 			configfile.delete();
-			this.saveConfig();
+			saveConfig();
 		} catch (FileNotFoundException fnfe) {
 			//Exception simply means serverdata.dat is not present.
 		}catch ( Exception ex){
             CampaignData.mwlog.errLog(ex);
         }
-		
+
 		//if a -d arg was passed, set dedicated to true
-		if (dedicated)
-			setParam("DEDICATED","TRUE");
-		
+		if (dedicated) {
+            setParam("DEDICATED","TRUE");
+        }
+
 		//deds have no gui, so dont load images.
-		if (this.isParam("DEDICATED"))
-			return;
-			
+		if (isParam("DEDICATED")) {
+            return;
+        }
+
 		//not a ded, so fill the images treemap
 		images = new TreeMap<String,ImageIcon>();
-		
+
 		loadImage(IMAGE_PATH + "logout_colored.gif", "LOGOUT", 20, 20);
 		loadImage(IMAGE_PATH + "reserve_colored.gif", "RESERVE", 20, 20);
 		loadImage(IMAGE_PATH + "active_colored.gif", "ACTIVE", 20, 20);
@@ -125,10 +134,11 @@ public class CConfig {
 		loadImage(IMAGE_PATH + getParam("LOGOIMAGE"), "LOGO", 100, 100);
 		loadImage(IMAGE_PATH + getParam("TRAYIMAGE"), "TRAY", 20, 20);
 		loadImage(IMAGE_PATH + getParam("REPAIRIMAGE"), "REPAIR",100,100);
-		if (getParam("UNITCAMO").trim().length() != 0)
-			loadImage(CAMO_PATH + getParam("UNITCAMO"), "CAMO", 84, 72);
+		if (getParam("UNITCAMO").trim().length() != 0) {
+            loadImage(CAMO_PATH + getParam("UNITCAMO"), "CAMO", 84, 72);
+        }
 	}
-	
+
 	//METHODS
 	/**
 	 * Private method that loads hardcoded defaults. These are loaded
@@ -207,7 +217,7 @@ public class CConfig {
         defaults.setProperty("ENABLEEXITCLIENTSOUND", "YES");
         defaults.setProperty("ENABLEMENUSOUND", "YES");
         defaults.setProperty("ENABLEMENUPOPUPSOUND", "YES");
-        
+
 		defaults.setProperty("SOUNDSFROMSYSMESSAGES","NO");
 		//tab properties
 		defaults.setProperty("HQTABVISIBLE", "YES");
@@ -285,11 +295,11 @@ public class CConfig {
 		defaults.setProperty("UNITVIEWERTYPE","Mek");
 		defaults.setProperty("UNITVIEWERSORT","Name");
 		defaults.setProperty("UNITVIEWERUNIT","-1");
-		
+
 		defaults.setProperty("TABLEVIEWERFACTION","");
 		defaults.setProperty("TABLEVIEWERTYPE","Mek");
 		defaults.setProperty("TALEVIEWERWEIGHT","Light");
-		
+
 		defaults.setProperty("PRIMARYHQSORTORDER","name");
 		defaults.setProperty("SECONDARYHQSORTORDER","none");
 		defaults.setProperty("TERTIARYHQSORTORDER","none");
@@ -318,13 +328,13 @@ public class CConfig {
 		defaults.setProperty("MAPFILTER1","true$false$true$true$true$true$true");
 		defaults.setProperty("MAPFILTER2","true$false$true$true$true$true$true");
 		defaults.setProperty("TRAYIMAGE","reserve_colored.gif");
-				
+
 		//empty ignore & keyword lists
 		defaults.setProperty("IGNOREPUBLIC","");
 		defaults.setProperty("IGNOREHOUSE","");
 		defaults.setProperty("IGNOREPRIVATE","");
 		defaults.setProperty("KEYWORDS","");
-		
+
         defaults.setProperty("DEDUPDATECOMMANDFILE","");
         defaults.setProperty("AUTOUPDATECOMMANDFILE","");
 
@@ -336,10 +346,10 @@ public class CConfig {
         defaults.setProperty("MAPIMAGEY","0");
         defaults.setProperty("MAPIMAGEHEIGHT","100");
         defaults.setProperty("MAPIMAGEWIDTH","100");
-        
+
         defaults.setProperty("UPDATEKEY","-1");
         defaults.setProperty("DEDMEMORY","64");
-        
+
         //unitstatus setting
         //Right column
         defaults.setProperty("RIGHTCOLUMNDYNAMIC", "false");
@@ -359,17 +369,17 @@ public class CConfig {
         defaults.setProperty("LEFTARMOR", "false");
         defaults.setProperty("LEFTAMMO", "false");
         defaults.setProperty("LEFTCOMMANDER", "false");
-        
+
         //enable or disable splash screen
         defaults.setProperty("ENABLESPLASHSCREEN", "true");
-        
+
         //Window Locations
         defaults.setProperty("WINDOWSTATE", "0");
         defaults.setProperty("WINDOWHEIGHT", "100");
         defaults.setProperty("WINDOWWIDTH", "100");
         defaults.setProperty("WINDOWLEFT", "0");
         defaults.setProperty("WINDOWTOP", "0");
-        
+
         //Bulk Repair Options
         defaults.setProperty("REPAIRARMORTECH", "0");
         defaults.setProperty("REPAIRARMORROLL", "9");
@@ -391,19 +401,19 @@ public class CConfig {
         defaults.setProperty("SALVAGEEQUIPMENTTECH", "0");
         defaults.setProperty("SALVAGESYSTEMSTECH", "0");
         defaults.setProperty("SALVAGEENGINESTECH", "0");
-        
+
         //Client colors
         defaults.setProperty("BACKGROUNDCOLOR", "#FFFFFF");
-        
+
         //MegaMek User Interface Type
         defaults.setProperty("USEAWTINTERFACE", "YES");
 
         defaults.setProperty("USERDEFINDMESSAGETAB", "0");
         defaults.setProperty("INVERTCHATCOLOR", "NO");
-        
+
         return defaults;
 	}
-	
+
 	//Creates a new config file
 	/*
 	 * All this does ATM is create an empty mwconfig.txt. Lines commented out
@@ -411,12 +421,12 @@ public class CConfig {
 	 * presented to the user in the MekWars client GUI. The vast majority are
 	 * totally unused because the players don't know about them. Over time, the
 	 * options will be made public or removed.
-	 */ 
+	 */
 	public void createConfig() {
 		try {
 			FileOutputStream fos = new FileOutputStream(CONFIG_FILE);
 			PrintStream ps = new PrintStream(fos);
-			
+
 			/*
 			 * Options below are supported in code, but not yet in config dialog.
 			 */
@@ -504,12 +514,12 @@ public class CConfig {
 			//ps.println("F5BIND:");
 			//ps.println("#number of games a ded will play before it restarts");
 			//ps.println("DEDAUTORESTART: 20");
-					
+
 			//these should be pre-empted by the serverdata.dat values set by server op
 			//ps.println("CAMPAIGNSERVERNAME: MekWars Server");
 			//ps.println("TRAYIMAGE: reserve_colored.gif");
 			//ps.println("UPDATEKEY: -1");
-            
+
 			ps.close();
 			fos.close();
 		} catch (Exception ex) {
@@ -517,7 +527,7 @@ public class CConfig {
 			System.exit(0);
 		}
 	}
-	
+
 	/**
 	 * Load an image. Used by the CConfig constructor to load
 	 * client images (eg - player list icons). Only external
@@ -525,31 +535,32 @@ public class CConfig {
 	 * UNITCAMO image with the newly selected imageicon.
 	 */
 	public void loadImage(String imagename, String image, int width, int height) {
-		if (imagename.equals(""))
-			return;
+		if (imagename.equals("")) {
+            return;
+        }
 		try {
 			images.put(image, new ImageIcon(new ImageIcon(imagename).getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT)));
 		} catch (Exception ex) {
 			CampaignData.mwlog.errLog(ex);
 		}
 	}
-		
+
 	/**
 	 * Get an ImageIcon from the client image cache.
-	 * 
+	 *
 	 * @param image - name of image to fetch
 	 * @return an ImageIcon. Null if no match.
 	 */
 	public ImageIcon getImage(String image) {
 		return images.get(image);
 	}
-	
+
 	/**
 	 * Get a config value.
 	 */
 	public String getParam(String param) {
 		String tparam = null;
-		
+
 		if (param.endsWith(":")) {
 			param = param.substring(0, param.lastIndexOf(":"));
 		}
@@ -558,53 +569,66 @@ public class CConfig {
 			tparam = "";
 		}
 		return tparam;
-	}	
-	
+	}
+
 	/**
 	 * Set a config value.
 	 */
 	public void setParam(String param, String value) {
 		config.setProperty(param, value);
 	}
-	
+
 	/**
 	 * See if a paramater is enabled (YES, TRUE or ON).
 	 */
 	public boolean isParam(String param) {
 		String tparam = getParam(param);
-		if (tparam.equalsIgnoreCase("YES") || tparam.equalsIgnoreCase("TRUE") || tparam.equalsIgnoreCase("ON"))
-			return true;
+		if (tparam.equalsIgnoreCase("YES") || tparam.equalsIgnoreCase("TRUE") || tparam.equalsIgnoreCase("ON")) {
+            return true;
+        }
 		return false;
 	}
-	
-	public boolean isUsingStatusIcons(){
-		
-	    if ( Boolean.parseBoolean(getParam("RIGHTPILOTEJECT")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("RIGHTREPAIR")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("RIGHTENGINE")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("RIGHTEQUIPMENT")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("RIGHTARMOR")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("RIGHTAMMO")))
-    		return true;
 
-        if ( Boolean.parseBoolean(getParam("LEFTPILOTEJECT")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("LEFTREPAIR")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("LEFTENGINE")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("LEFTEQUIPMENT")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("LEFTARMOR")))
-    		return true;
-        if ( Boolean.parseBoolean(getParam("LEFTAMMO")))
-    		return true;
-    
+	public boolean isUsingStatusIcons(){
+
+	    if ( Boolean.parseBoolean(getParam("RIGHTPILOTEJECT"))) {
+            return true;
+        }
+        if ( Boolean.parseBoolean(getParam("RIGHTREPAIR"))) {
+            return true;
+        }
+        if ( Boolean.parseBoolean(getParam("RIGHTENGINE"))) {
+            return true;
+        }
+        if ( Boolean.parseBoolean(getParam("RIGHTEQUIPMENT"))) {
+            return true;
+        }
+        if ( Boolean.parseBoolean(getParam("RIGHTARMOR"))) {
+            return true;
+        }
+        if ( Boolean.parseBoolean(getParam("RIGHTAMMO"))) {
+            return true;
+        }
+
+        if ( Boolean.parseBoolean(getParam("LEFTPILOTEJECT"))) {
+            return true;
+        }
+        if ( Boolean.parseBoolean(getParam("LEFTREPAIR"))) {
+            return true;
+        }
+        if ( Boolean.parseBoolean(getParam("LEFTENGINE"))) {
+            return true;
+        }
+        if ( Boolean.parseBoolean(getParam("LEFTEQUIPMENT"))) {
+            return true;
+        }
+        if ( Boolean.parseBoolean(getParam("LEFTARMOR"))) {
+            return true;
+        }
+        if ( Boolean.parseBoolean(getParam("LEFTAMMO"))) {
+            return true;
+        }
+
 		return false;
 	}
 	/**
@@ -621,14 +645,14 @@ public class CConfig {
 		}
 		return toReturn;
 	}
-		
+
 	/**
 	 * Write the config file out to ./data/mwconfig.txt.
 	 */
 	public void saveConfig() {
 
         try {
-            
+
             FileOutputStream fos = new FileOutputStream(CONFIG_BACKUP_FILE);
             PrintStream ps = new PrintStream(fos);
             config.store(ps,"Client Config Backup");
@@ -650,5 +674,5 @@ public class CConfig {
 			CampaignData.mwlog.errLog("Failed saving config file");
 		}
 	}
-	
+
 }

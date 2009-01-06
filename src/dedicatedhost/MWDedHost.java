@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2004 
- * 
+ * MekWars - Copyright (C) 2004
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  * Original author Helge Richter (McWizard)
  *
@@ -32,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -40,15 +41,42 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import megamek.MegaMek;
+import megamek.common.Building;
+import megamek.common.Entity;
+import megamek.common.IGame;
+import megamek.common.Mech;
+import megamek.common.MechWarrior;
+import megamek.common.Player;
+import megamek.common.IGame.Phase;
+import megamek.common.event.GameBoardChangeEvent;
+import megamek.common.event.GameBoardNewEvent;
+import megamek.common.event.GameEndEvent;
+import megamek.common.event.GameEntityChangeEvent;
+import megamek.common.event.GameEntityNewEvent;
+import megamek.common.event.GameEntityNewOffboardEvent;
+import megamek.common.event.GameEntityRemoveEvent;
+import megamek.common.event.GameEvent;
+import megamek.common.event.GameListener;
+import megamek.common.event.GameMapQueryEvent;
+import megamek.common.event.GameNewActionEvent;
+import megamek.common.event.GamePhaseChangeEvent;
+import megamek.common.event.GamePlayerChangeEvent;
+import megamek.common.event.GamePlayerChatEvent;
+import megamek.common.event.GamePlayerConnectedEvent;
+import megamek.common.event.GamePlayerDisconnectedEvent;
+import megamek.common.event.GameReportEvent;
+import megamek.common.event.GameSettingsChangeEvent;
+import megamek.common.event.GameTurnChangeEvent;
 import megamek.common.options.IOption;
 import megamek.common.preference.IClientPreferences;
 import megamek.common.preference.PreferenceManager;
 import megamek.server.Server;
+import client.util.SerializeEntity;
 
 import common.CampaignData;
 import common.MMGame;
 import common.campaign.Buildings;
-import common.util.ThreadManager;
+import common.util.UnitUtils;
 
 import dedicatedhost.cmd.Command;
 import dedicatedhost.protocol.CConnector;
@@ -64,7 +92,7 @@ import dedicatedhost.protocol.commands.PongPCmd;
 // This is the Client used for connecting to the master server.
 // @Author: Helge Richter (McWizard@gmx.de)
 
-public final class MWDedHost implements IClient {
+public final class MWDedHost implements IClient, GameListener {
 
 	CConfig Config;
 	DataFetchClient dataFetcher;
@@ -103,6 +131,9 @@ public final class MWDedHost implements IClient {
 	long TimeOut = 120;
 	long LastPing = 0;
 	int Status = 0;
+
+    private Phase currentPhase = IGame.Phase.PHASE_DEPLOYMENT;
+    private int turn = 0;
 
 	Dimension MapSize;
 	Dimension BoardSize;
@@ -182,7 +213,7 @@ public final class MWDedHost implements IClient {
 			/*
 			 * Config files have been loaded, and command line args have been
 			 * parsed. Construct the actual client.
-			 * 
+			 *
 			 * NOTE: Client constrtuctor attempts to pull the oplist, campaign
 			 * config and other non-interactive data over the DATAPORT before
 			 * client.start() attempts to connect to the chat server on the
@@ -291,15 +322,15 @@ public final class MWDedHost implements IClient {
 
 	/*
 	 * NOTE: this list is ancient. sometimes useful. often out of date.
-	 * 
+	 *
 	 * List of Abreviations for the protocol used by the client only: NG = New
 	 * Game (NG|<IP>|<Port>|<MaxPlayers>|<Version>|<Comment>) CG = Close Game
 	 * (CG) GB = Goodbye (Client exit) (GB) SO = Sign-On
 	 * (SO|<Version>|<UserName>)
-	 * 
+	 *
 	 * Used by Both: CH = Chat Server news:(CH|<text>) Client Chat:
 	 * (CH|<UserName>|<Color>|<Text>)
-	 * 
+	 *
 	 * Used only by the Server: SL|NG = Games
 	 * (GS|<MMGame.toString()>|<MMGame.toString()|...) SL|CG = close game SL|JG
 	 * = add a player to game list SL|LG = remove a player from game list SL|SHS
@@ -336,7 +367,7 @@ public final class MWDedHost implements IClient {
 	 * part, this was called directly. Now we buffer all incoming non-data chat
 	 * and spit it out at once when the GUI draws. Once the GUI is up, this is
 	 * called by a simple pass through from doParseDataInput(), above.
-	 * 
+	 *
 	 * Ded's call the helper directly to bypass the buffer.
 	 */
 	private void doParseDataHelper(String input) {
@@ -388,7 +419,7 @@ public final class MWDedHost implements IClient {
 		 * New users, report requests and data should be sent to standard
 		 * processor. PM's are checked below, and all other commands are tossed
 		 * (e.g. - CH).
-		 * 
+		 *
 		 * Note that ded's bypass the doParseDeda() buffering process (never
 		 * have a main frame, so no null check or buffer needed) and call
 		 * doParseDataHelper() directly.
@@ -1179,7 +1210,7 @@ public final class MWDedHost implements IClient {
 		/*
 		 * If password is blank, send a filler password instead of an empty
 		 * token. This prevents the no-password "whitescreen" error. HACKY.
-		 * 
+		 *
 		 * It would be probably be better to actually fix the server SignOn so
 		 * an empty password creates a nobody, but this does the trick ...
 		 */
@@ -1292,9 +1323,7 @@ public final class MWDedHost implements IClient {
 			return;
 		}
 
-		HostThread MMServerThread = new HostThread(myServer, this);
-		ThreadManager.getInstance().runInThreadFromPool(MMServerThread);
-
+		myServer.getGame().addGameListener(this);
 		// Send the new game info to the Server
 		serverSend("NG|" + new MMGame(myUsername, ip, myPort, MaxPlayers, MegaMek.VERSION + " " + MegaMek.TIMESTAMP, comment).toString());
 		clearSavedGames();
@@ -1441,7 +1470,7 @@ public final class MWDedHost implements IClient {
 
 	/**
 	 * Changes the duty to a new status.
-	 * 
+	 *
 	 * @param newStatus
 	 */
 	public void changeStatus(int newStatus) {
@@ -1749,4 +1778,263 @@ public final class MWDedHost implements IClient {
 		}
 		System.exit(0);// restart the ded
 	}
+
+    /**
+     * redundant code since MM does not always send a discon event.
+     */
+    public void gamePlayerStatusChange(GameEvent e) {
+    }
+
+    public void gameTurnChange(GameTurnChangeEvent e) {
+        if (myServer != null) {
+            if (turn == 0) {
+                serverSend("SHS|" + getUsername() + "|Running");
+            } else if (myServer.getGame().getPhase() != currentPhase && myServer.getGame().getOptions().booleanOption("paranoid_autosave")) {
+                sendServerGameUpdate();
+                currentPhase = myServer.getGame().getPhase();
+            }
+            turn += 1;
+
+        }
+    }
+
+    public void gamePhaseChange(GamePhaseChangeEvent e) {
+
+        try {
+
+            if (myServer.getGame().getPhase() == IGame.Phase.PHASE_VICTORY) {
+
+                sendGameReport();
+                CampaignData.mwlog.infoLog("GAME END");
+
+            }// end victory
+
+            /*
+             * Reporting phases show deaths - units that try to stand and blow
+             * their ammo, units that have ammo explode from head, etc. This is
+             * also an opportune time to correct isses with the gameRemoveEntity
+             * ISU's. Removals happen ASAP, even if the removal condition and
+             * final condition of the unit are not the same (ie - remove on
+             * Engine crits even when a CT core comes later in the round).
+             */
+            else if (myServer.getGame().getPhase() == IGame.Phase.PHASE_END_REPORT) {
+                sendServerGameUpdate();
+            }
+
+        }// end try
+        catch (Exception ex) {
+            CampaignData.mwlog.errLog("Error reporting game!");
+            CampaignData.mwlog.errLog(ex);
+        }
+    }
+
+    /*
+     * When an entity is removed from play, check the reason. If the unit is
+     * ejected, captured or devestated and the player is invovled in the game at
+     * hand, report the removal to the server. The server stores these reports
+     * in pilotTree and deathTree in order to auto-resolve games after a player
+     * disconnects. NOTE: This send thefirst possible removal condition, which
+     * means that a unit which is simultanously head killed and then CT cored
+     * will show as salvageable.
+     */
+    public void gameEntityRemove(GameEntityRemoveEvent e) {// only send if the
+        // player is
+        // actually involved
+        // in the game
+
+        // get the entity
+        megamek.common.Entity removedE = e.getEntity();
+        if (removedE.getOwner().getName().startsWith("War Bot")) {
+            return;
+        }
+
+        String toSend = SerializeEntity.serializeEntity(removedE, true, false, isUsingAdvanceRepairs());
+        serverSend("IPU|" + toSend);
+    }
+
+    public void gamePlayerConnected(GamePlayerConnectedEvent e) {
+    }
+
+    public void gamePlayerDisconnected(GamePlayerDisconnectedEvent e) {
+    }
+
+    public void gamePlayerChange(GamePlayerChangeEvent e) {
+    }
+
+    public void gamePlayerChat(GamePlayerChatEvent e) {
+    }
+
+    public void gameReport(GameReportEvent e) {
+    }
+
+    public void gameEnd(GameEndEvent e) {
+    }
+
+    public void gameBoardNew(GameBoardNewEvent e) {
+    }
+
+    public void gameBoardChanged(GameBoardChangeEvent e) {
+    }
+
+    public void gameSettingsChange(GameSettingsChangeEvent e) {
+    }
+
+    public void gameMapQuery(GameMapQueryEvent e) {
+    }
+
+    public void gameEntityNew(GameEntityNewEvent e) {
+    }
+
+    public void gameEntityNewOffboard(GameEntityNewOffboardEvent e) {
+    }
+
+    public void gameEntityChange(GameEntityChangeEvent e) {
+    }
+
+    public void gameNewAction(GameNewActionEvent e) {
+    }
+
+    public int getBuildingsLeft() {
+        Enumeration<Building> buildings = myServer.getGame().getBoard().getBuildings();
+        int buildingCount = 0;
+        while (buildings.hasMoreElements()) {
+            buildings.nextElement();
+            buildingCount++;
+        }
+        return buildingCount;
+    }
+
+    private void sendServerGameUpdate() {
+        // Report the mech stat
+
+        // Only send data for units currently on the board.
+        // any units removed from play will have already sent thier final
+        // update.
+        Enumeration<Entity> en = myServer.getGame().getEntities();
+        while (en.hasMoreElements()) {
+            Entity ent = en.nextElement();
+            if (ent.getOwner().getName().startsWith("War Bot") || (!(ent instanceof MechWarrior) && !UnitUtils.hasArmorDamage(ent) && !UnitUtils.hasISDamage(ent) && !UnitUtils.hasCriticalDamage(ent) && !UnitUtils.hasLowAmmo(ent) && !UnitUtils.hasEmptyAmmo(ent))) {
+                continue;
+            }
+            if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0) {
+                serverSend("IPU|" + SerializeEntity.serializeEntity(ent, true, true, isUsingAdvanceRepairs()));
+            } else {
+                serverSend("IPU|" + SerializeEntity.serializeEntity(ent, true, false, isUsingAdvanceRepairs()));
+            }
+        }
+    }
+
+    private void sendGameReport() {
+        if (myServer == null) {
+            return;
+        }
+
+        StringBuilder result = new StringBuilder();
+        String name = "";
+        // Parse the real playername from the Modified In game one..
+        String winnerName = "";
+        if (myServer.getGame().getVictoryTeam() != Player.TEAM_NONE) {
+
+            int numberOfWinners = 0;
+            // Multiple Winners
+            Enumeration<Player> en = myServer.getGame().getPlayers();
+            while (en.hasMoreElements()) {
+                Player p = en.nextElement();
+                if (p.getTeam() == myServer.getGame().getVictoryTeam()) {
+                    StringTokenizer st = new StringTokenizer(p.getName().trim(), "~");
+                    name = "";
+                    while (st.hasMoreElements()) {
+                        name = st.nextToken().trim();
+                    }
+                    // some of the players set themselves as a team of 1.
+                    // This keeps that from happening.
+                    if (numberOfWinners > 0) {
+                        winnerName += "*";
+                    }
+                    numberOfWinners++;
+
+                    winnerName += name;
+                }
+            }
+            if (winnerName.endsWith("*")) {
+                winnerName = winnerName.substring(0, winnerName.length() - 1);
+            }
+            winnerName += "#";
+        }
+
+        // Only one winner
+        else {
+            if (myServer.getGame().getVictoryPlayerId() == Player.PLAYER_NONE) {
+                winnerName = "DRAW#";
+            } else {
+                winnerName = myServer.getGame().getPlayer(myServer.getGame().getVictoryPlayerId()).getName();
+                StringTokenizer st = new StringTokenizer(winnerName, "~");
+                name = "";
+                while (st.hasMoreElements()) {
+                    name = st.nextToken().trim();
+                }
+                winnerName = name + "#";
+            }
+        }
+
+        result.append(winnerName);
+
+        // Report the mech stat
+        Enumeration<Entity> en = myServer.getGame().getDevastatedEntities();
+        while (en.hasMoreElements()) {
+            Entity ent = en.nextElement();
+            if (ent.getOwner().getName().startsWith("War Bot")) {
+                continue;
+            }
+            result.append(SerializeEntity.serializeEntity(ent, true, false, isUsingAdvanceRepairs()));
+            result.append("#");
+        }
+        en = myServer.getGame().getGraveyardEntities();
+        while (en.hasMoreElements()) {
+            Entity ent = en.nextElement();
+            if (ent.getOwner().getName().startsWith("War Bot")) {
+                continue;
+            }
+            result.append(SerializeEntity.serializeEntity(ent, true, false, isUsingAdvanceRepairs()));
+            result.append("#");
+
+        }
+        en = myServer.getGame().getEntities();
+        while (en.hasMoreElements()) {
+            Entity ent = en.nextElement();
+            if (ent.getOwner().getName().startsWith("War Bot")) {
+                continue;
+            }
+            result.append(SerializeEntity.serializeEntity(ent, true, false, isUsingAdvanceRepairs()));
+            result.append("#");
+        }
+        en = myServer.getGame().getRetreatedEntities();
+        while (en.hasMoreElements()) {
+            Entity ent = en.nextElement();
+            if (ent.getOwner().getName().startsWith("War Bot")) {
+                continue;
+            }
+            result.append(SerializeEntity.serializeEntity(ent, true, false, isUsingAdvanceRepairs()));
+            result.append("#");
+        }
+
+        if (getBuildingTemplate() != null) {
+            result.append("BL*" + getBuildingsLeft());
+        }
+        CampaignData.mwlog.infoLog("CR|" + result);
+
+        // send the autoreport
+        serverSend("CR|" + result.toString());
+
+        // we may assume that a server which reports a game is no longer
+        // "Running"
+        serverSend("SHS|" + myUsername + "|Open");
+
+        // myServer.resetGame();
+
+        if (isDedicated()) {
+            checkForRestart();
+        }
+    }
+
 }

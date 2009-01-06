@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.2.40.x
++ New MegaMek.jar 0.33.38-MW010609-6307
++ Bug: Saved MM Games not Loading.
 + Bug: Max Mul Infantry pointing to wrong variable.
 + Bug: Error generating Vehicle MUL lists
 + New MegaMek.jar 0.33.38-MW123108-6287

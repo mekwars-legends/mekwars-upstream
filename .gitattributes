@@ -1168,7 +1168,6 @@ src/admin/dialog/TerrainSelectionDialog.java -text
 src/client/CConfig.java -text
 src/client/CUser.java -text
 src/client/ClientThread.java -text
-src/client/HostThread.java -text
 src/client/MWClient.java -text
 src/client/campaign/CArmy.java -text
 src/client/campaign/CBMUnit.java -text
@@ -1331,7 +1330,6 @@ src/common/util/UnitComponents.java -text
 src/common/util/UnitUtils.java -text
 src/dedicatedhost/CConfig.java -text
 src/dedicatedhost/CUser.java -text
-src/dedicatedhost/HostThread.java -text
 src/dedicatedhost/MWDedHost.java -text
 src/dedicatedhost/cmd/CS.java -text
 src/dedicatedhost/cmd/Command.java -text
