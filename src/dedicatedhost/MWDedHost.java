@@ -71,7 +71,6 @@ import megamek.common.options.IOption;
 import megamek.common.preference.IClientPreferences;
 import megamek.common.preference.PreferenceManager;
 import megamek.server.Server;
-import client.util.SerializeEntity;
 
 import common.CampaignData;
 import common.MMGame;
@@ -88,6 +87,7 @@ import dedicatedhost.protocol.commands.CommPCmd;
 import dedicatedhost.protocol.commands.IProtCommand;
 import dedicatedhost.protocol.commands.PingPCmd;
 import dedicatedhost.protocol.commands.PongPCmd;
+import dedicatedhost.util.SerializeEntity;
 
 // This is the Client used for connecting to the master server.
 // @Author: Helge Richter (McWizard@gmx.de)
