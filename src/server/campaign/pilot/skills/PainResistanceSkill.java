@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2004 
- * 
+ * MekWars - Copyright (C) 2004
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -23,6 +23,7 @@ import megamek.common.Entity;
 import megamek.common.Mounted;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
+
 import common.MegaMekPilotOption;
 import common.Unit;
 import common.campaign.pilot.Pilot;
@@ -33,71 +34,77 @@ import common.campaign.pilot.Pilot;
  */
 public class PainResistanceSkill extends SPilotSkill {
 
-	
+
    public PainResistanceSkill() {
     	//TODO: replace with ReflectionProvider
     }
 
     public PainResistanceSkill(int id) {
         super(id, "Pain Resistance","PR");
-        this.setDescription("When making consciousness rolls, 1 is added to all rolls. Also, damage received from ammo explosions is reduced to 1. Note: This ability is only used for BattleMechs.");
+        setDescription("When making consciousness rolls, 1 is added to all rolls. Also, damage received from ammo explosions is reduced to 1. Note: This ability is only used for BattleMechs.");
     }
 
     @Override
 	public void modifyPilot(Pilot p) {
-		super.addToPilot(p);
+		// super.addToPilot(p);
 		p.addMegamekOption(new MegaMekPilotOption("pain_resistance",true));
 		p.setBvMod(p.getBVMod() +  0.01);
 	}
 
 	@Override
 	public int getChance(int unitType, Pilot p) {
-    	if (p.getSkills().has(this))
-    		return 0;
+    	if (p.getSkills().has(this)) {
+            return 0;
+        }
 
-    	if ( unitType != Unit.MEK)
-    	    return 0;
-    	
-    	String chance = "chancefor"+this.getAbbreviation()+"for"+Unit.getTypeClassDesc(unitType);
-    	
+    	if ( unitType != Unit.MEK) {
+            return 0;
+        }
+
+    	String chance = "chancefor"+getAbbreviation()+"for"+Unit.getTypeClassDesc(unitType);
+
 		SHouse house = CampaignMain.cm.getHouseFromPartialString(p.getCurrentFaction());
-		
-		if ( house == null )
-			return CampaignMain.cm.getIntegerConfig(chance);
-		
+
+		if ( house == null ) {
+            return CampaignMain.cm.getIntegerConfig(chance);
+        }
+
 		return Integer.parseInt(house.getConfig(chance));
    }
-	
+
 	@Override
 	public int getBVMod(Entity unit){
         int amountOfAmmo = 0;
         int PainResistanceBVBaseMod = CampaignMain.cm.getIntegerConfig("PainResistanceBaseBVMod");
-        
+
         Iterator<Mounted> ammoList = unit.getAmmo().iterator();
         while ( ammoList.hasNext() ){
             Mounted ammoType = ammoList.next();
-            
-            if ( ammoType.getShotsLeft() <= 0 )
+
+            if ( ammoType.getShotsLeft() <= 0 ) {
                 continue;
+            }
 
             AmmoType ammo = (AmmoType)ammoType.getType();
             if ( ammo.getAmmoType() == AmmoType.T_GAUSS ||
                     ammo.getAmmoType() == AmmoType.T_GAUSS_HEAVY ||
-                    ammo.getAmmoType() == AmmoType.T_GAUSS_LIGHT )
-                continue;           
+                    ammo.getAmmoType() == AmmoType.T_GAUSS_LIGHT ) {
+                continue;
+            }
 
             amountOfAmmo++;
         }
-        
+
         Iterator<Mounted> weaponsList = unit.getWeapons();
         while (weaponsList.hasNext()){
             Mounted weapon = weaponsList.next();
-            if ( weapon.getName().indexOf("Gauss Rifle") != -1 )
+            if ( weapon.getName().indexOf("Gauss Rifle") != -1 ) {
                 amountOfAmmo++;
+            }
         }
         return amountOfAmmo * PainResistanceBVBaseMod;
 
 
     }
-    
+
 }

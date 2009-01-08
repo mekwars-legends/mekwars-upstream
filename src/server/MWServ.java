@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2004 
- * 
+ * MekWars - Copyright (C) 2004
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -54,7 +54,7 @@ import common.comm.ServerCommand;
 public class MWServ {
 
 	// Static logging engine, and static version info.
-	public static final String SERVER_VERSION = "0.2.40.0";// Sync this with the
+    public static final String SERVER_VERSION = "0.2.41.0";// Sync this with the
 															// clientVersion in
 															// MMClient @Torren
 
@@ -938,7 +938,7 @@ public class MWServ {
 		/*
 		 * String country = getLandForIP(ip); if (country.equals("DE")) return
 		 * "Germany";
-		 * 
+		 *
 		 * // || country.length() > 7 if (country.equals("US")) return
 		 * "the USA"; if (country.equals("CA")) return "Canada"; else return
 		 * country;

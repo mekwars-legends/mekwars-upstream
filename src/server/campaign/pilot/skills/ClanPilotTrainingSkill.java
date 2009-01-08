@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2004 
- * 
+ * MekWars - Copyright (C) 2004
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -17,6 +17,7 @@
 package server.campaign.pilot.skills;
 
 import megamek.common.Entity;
+
 import common.MegaMekPilotOption;
 import common.campaign.pilot.Pilot;
 
@@ -26,19 +27,19 @@ import common.campaign.pilot.Pilot;
  */
 public class ClanPilotTrainingSkill extends SPilotSkill {
 
-	
+
    public ClanPilotTrainingSkill() {
     	//TODO: replace with ReflectionProvider
     }
 
     public ClanPilotTrainingSkill(int id) {
         super(id, "Clan Pilot Training","CPT");
-        this.setDescription("Pilot has a +1 penalty for physical attacks, because clans do not train for dishonourable combat.");
+        setDescription("Pilot has a +1 penalty for physical attacks, because clans do not train for dishonourable combat.");
     }
 
     @Override
 	public void modifyPilot(Pilot p) {
-		super.addToPilot(p);
+		// super.addToPilot(p);
 		p.addMegamekOption(new MegaMekPilotOption("clan_pilot_training",true));
 		p.setBvMod(p.getBVMod() +  0.01);
 	}
@@ -47,11 +48,11 @@ public class ClanPilotTrainingSkill extends SPilotSkill {
 	public int getChance(int unitType, Pilot p) {
   		return 0;
    }
-	
+
 	@Override
 	public int getBVMod(Entity unit){
-        
+
         return 0;
     }
-    
+
 }

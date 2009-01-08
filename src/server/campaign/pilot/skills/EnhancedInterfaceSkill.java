@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2004 
- * 
+ * MekWars - Copyright (C) 2004
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -19,6 +19,7 @@ package server.campaign.pilot.skills;
 import megamek.common.Entity;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
+
 import common.MegaMekPilotOption;
 import common.Unit;
 import common.campaign.pilot.Pilot;
@@ -29,49 +30,52 @@ import common.campaign.pilot.Pilot;
  */
 public class EnhancedInterfaceSkill extends SPilotSkill {
 
-	
+
    public EnhancedInterfaceSkill() {
     	//TODO: replace with ReflectionProvider
     }
 
     public EnhancedInterfaceSkill(int id) {
         super(id, "Enhanced Interface","EI");
-        this.setDescription("Neural interface to the clan enhanced imaging system -1 To PSR +2 when targeting with TC instead of +3 Can Target without TC at +6 Reduces all forest and Smoke mods to 1 Pilot receives 1 point of damage every time Units IS is hit, If you fail a roll of 7+ BA's recieve 1 extra point of damage every time they are hit.");
+        setDescription("Neural interface to the clan enhanced imaging system -1 To PSR +2 when targeting with TC instead of +3 Can Target without TC at +6 Reduces all forest and Smoke mods to 1 Pilot receives 1 point of damage every time Units IS is hit, If you fail a roll of 7+ BA's recieve 1 extra point of damage every time they are hit.");
     }
 
     @Override
 	public void modifyPilot(Pilot p) {
-		super.addToPilot(p);
+		// super.addToPilot(p);
 		p.addMegamekOption(new MegaMekPilotOption("ei_implant",true));
 		p.setBvMod(p.getBVMod() +  0.01);
 	}
 
 	@Override
 	public int getChance(int unitType, Pilot p) {
-    	if (p.getSkills().has(this))
-    		return 0;
+    	if (p.getSkills().has(this)) {
+            return 0;
+        }
 
-    	if ( unitType != Unit.MEK)
-    	    return 0;
-    	
-    	String chance = "chancefor"+this.getAbbreviation()+"for"+Unit.getTypeClassDesc(unitType);
-    	
+    	if ( unitType != Unit.MEK) {
+            return 0;
+        }
+
+    	String chance = "chancefor"+getAbbreviation()+"for"+Unit.getTypeClassDesc(unitType);
+
 		SHouse house = CampaignMain.cm.getHouseFromPartialString(p.getCurrentFaction());
-		
-		if ( house == null )
-			return CampaignMain.cm.getIntegerConfig(chance);
-		
+
+		if ( house == null ) {
+            return CampaignMain.cm.getIntegerConfig(chance);
+        }
+
 		return Integer.parseInt(house.getConfig(chance));
    }
-	
+
 	@Override
 	public int getBVMod(Entity unit){
-        
+
 	    int EnhancedInterfaceBVBaseMod = CampaignMain.cm.getIntegerConfig("EnhancedInterfaceBaseBVMod");
-        
+
         return EnhancedInterfaceBVBaseMod;
 
 
     }
-    
+
 }

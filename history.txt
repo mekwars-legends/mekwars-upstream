@@ -1,6 +1,11 @@
 VERSION HISTORY:
 ----------------
-v 0.2.40.x
+v 0.2.41.x
+Release Client/Server 0.2.41.0
+
+v 0.2.40.1
++ New MegaMek.jar 0.33.38-MW010809-6310
++ Bug: Able to resell the same pilot skills over and over again.
 + New MegaMek.jar 0.33.38-MW010609-6307
 + Bug: Saved MM Games not Loading.
 + Bug: Max Mul Infantry pointing to wrong variable.

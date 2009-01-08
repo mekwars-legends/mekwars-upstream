@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2008 
- * 
+ * MekWars - Copyright (C) 2008
+ *
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -29,10 +29,10 @@ public class PainShunt extends SPilotSkill {
         super(id, "Pain Shunt", "PS");
         setDescription("MD Pain Shunt");
     }
-    
+
     @Override
     public void modifyPilot(Pilot p) {
-        super.addToPilot(p);
+        // super.addToPilot(p);
         p.addMegamekOption(new MegaMekPilotOption("pain_shunt",true));
         p.setBvMod(p.getBVMod() +  0.01);
     }
@@ -41,23 +41,26 @@ public class PainShunt extends SPilotSkill {
 	public int getBVMod(Entity unit){
         return CampaignMain.cm.getIntegerConfig("PainShuntBaseBVMod");
     }
-    
+
 	@Override
 	public int getChance(int unitType, Pilot p) {
-    	if (p.getSkills().has(PilotSkill.PainShuntID))
-    		return 0;
-    	
-        if ( unitType == Unit.PROTOMEK )
+    	if (p.getSkills().has(PilotSkill.PainShuntID)) {
             return 0;
+        }
 
-    	String chance = "chancefor"+this.getAbbreviation()+"for"+Unit.getTypeClassDesc(unitType);
+        if ( unitType == Unit.PROTOMEK ) {
+            return 0;
+        }
+
+    	String chance = "chancefor"+getAbbreviation()+"for"+Unit.getTypeClassDesc(unitType);
 
 		SHouse house = CampaignMain.cm.getHouseFromPartialString(p.getCurrentFaction());
-		
-		if ( house == null )
-			return CampaignMain.cm.getIntegerConfig(chance);
-		
+
+		if ( house == null ) {
+            return CampaignMain.cm.getIntegerConfig(chance);
+        }
+
 		return Integer.parseInt(house.getConfig(chance));
 	}
-	
+
 }

@@ -118,10 +118,6 @@ public class DemotePilotCommand implements Command {
             cost = CampaignMain.cm.getIntegerConfig("chancefor" + ps.getAbbreviation() + "for" + Unit.getTypeClassDesc(unit.getType()));
         }
 
-        if (pilot.getSkills().has(PilotSkill.GiftedID)) {
-            cost *= (1 - CampaignMain.cm.getDoubleConfig("GiftedPercent"));
-        }
-
         cost *= CampaignMain.cm.getDoubleConfig("PilotUpgradeSellBackPercent");
 
         if (ps instanceof EdgeSkill) {
