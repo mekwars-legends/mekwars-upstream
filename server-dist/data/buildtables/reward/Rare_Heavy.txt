@@ -1,0 +1,13 @@
+3 Archer ARC-2W.blk
+3 Black Knight BL-7-KNT.blk
+4 Bombardier BMB-10D.blk
+4 Champion CHP-2N.blk
+3 Exterminator EXT-4A.blk
+3 Flashman FLS-7K.blk
+4 Guillotine GLT-4L.blk
+4 Lancelot LNC25-02.blk
+4 Templar CRD-3T.MTF
+4 Thunderbolt TDR-5SE.blk
+4 Marauder MAD-3C.hmp
+4 Orion ON1-G.hmp
+

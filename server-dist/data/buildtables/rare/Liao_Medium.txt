@@ -1,0 +1,10 @@
+50 Common
+1 Rare
+2 Davion
+2 Marik
+5 Cicada CDA-3C.blk
+5 Cicada CDA-2B.blk
+5 Centurion CN9-LL.hmp
+5 Vindicator VND-1R.blk
+5 Phoenix Hawk PXH-1.blk
+1 Vindicator VND-1AA.blk

@@ -1,0 +1,12 @@
+50 Common
+1 Rare
+2 Liao
+2 Kurita
+3 Rifleman RFL-3C.blk
+3 Warhammer WHM-6D.blk
+3 Crusader CRD-3D.blk
+3 Jagermech JM6-A.blk
+3 Marauder MAD-3D.blk
+3 Battleax BTX-7K.hmp
+3 Warhammer WHM-6K.blk
+3 Rifleman RFL-4D.blk

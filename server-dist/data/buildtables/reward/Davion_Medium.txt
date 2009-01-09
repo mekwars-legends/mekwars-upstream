@@ -1,0 +1,11 @@
+50 Common
+1 Rare
+2 Liao
+2 Kurita
+5 Assassin ASN-101.blk
+5 Shadow Hawk SHD-2D.blk
+5 Enforcer ENF-4R.blk
+5 Blackjack BJ-1DB.blk
+5 Blackjack BJ-1DC.blk
+5 Phoenix Hawk PXH-1D.blk
+5 Vulcan VL-5T.blk

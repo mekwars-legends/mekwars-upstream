@@ -1,0 +1,23 @@
+1 Annihilator ANH-1A.blk
+4 Crockett CRK-5003-0.blk
+1 Goliath GOL-1H.blk
+1 Mackie MSK-6S.blk
+4 Highlander HGN-733.blk
+4 King Crab KGC-0000.HMP
+3 Imp IMP-2E.blk
+4 Linesman LMN-1PT.MTF
+3 Marauder II MAD-4A.blk
+4 Shogun SHG-2E.blk
+4 Thug THG-10E.blk
+1 Charger CGR-SB.blk
+3 Atlas AS7-N.hmp
+3 Awesome AWS-8A.hmp
+3 Awesome AWS-8G.hmp
+3 Banshee BNC-3C.hmp
+3 Cyclops CP-10-D.hmp
+3 Goliath GOL-1AA.hmp
+3 Goliath GOL-1M.hmp
+3 Stalker STK-3D.hmp
+3 Stalker STK-3K.hmp
+3 Victor VTR-8A.hmp
+3 Zeus ZEU-6D.hmp

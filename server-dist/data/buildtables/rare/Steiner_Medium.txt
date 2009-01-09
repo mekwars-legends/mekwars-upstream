@@ -1,0 +1,10 @@
+50 Common
+1 Rare
+2 Kurita
+2 Marik
+5 Hatchetman HCT-3F.blk
+5 Centurion CN9-AL.blk
+5 Trebuchet TBT-5S.blk
+5 Hatchetman HCT-3S.xml
+5 Griffin GRF-1S.blk
+5 Whitworth WTH-1S.blk
