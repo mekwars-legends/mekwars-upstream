@@ -99,7 +99,7 @@ public final class MWDedHost implements IClient, GameListener {
 	public static final int STATUS_DISCONNECTED = 0;
 	public static final int STATUS_LOGGEDOUT = 1;
 
-	public static final String CLIENT_VERSION = "0.2.41.0"; // change this with
+	public static final String CLIENT_VERSION = "0.2.41.1"; // change this with
 	// all client
 	// changes @Torren
 
@@ -1355,7 +1355,9 @@ public final class MWDedHost implements IClient, GameListener {
 
 	public boolean loadGame(String filename) {// load saved game
 		if (myServer != null && filename != null && !filename.equals("")) {
-			return myServer.loadGame(new File("./savegames/", filename));
+		    boolean loaded = myServer.loadGame(new File("./savegames/", filename));
+		    myServer.getGame().addGameListener(this);
+			return loaded;
 		}
 
 		// else (null server/filename)
@@ -1373,7 +1375,10 @@ public final class MWDedHost implements IClient, GameListener {
 
 	public boolean loadGameWithFullPath(String filename) {// load saved game
 		if (myServer != null && filename != null && !filename.equals("")) {
-			return myServer.loadGame(new File(filename));
+			boolean loaded = myServer.loadGame(new File(filename));
+            myServer.getGame().addGameListener(this);
+            return loaded;
+
 		}
 
 		// else (null server/filename)
