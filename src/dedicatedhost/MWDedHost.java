@@ -1350,6 +1350,8 @@ public final class MWDedHost implements IClient, GameListener {
 	public void resetGame() { // reset hosted game
 		if (myServer != null) {
 			myServer.resetGame();
+			myServer.getGame().purgeGameListeners();
+            myServer.getGame().addGameListener(this);
 		}
 	}
 
