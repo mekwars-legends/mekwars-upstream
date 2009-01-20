@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ New MegaMek.jar 0.33.39-MW012009-6348
 + Unoffical Equipment now showing in Ammo and Black Market Dialogs
 Release Client/Ded 0.2.41.1 
 + Bug: Reloaded games not adding GameListener
