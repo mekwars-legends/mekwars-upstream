@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ Unoffical Equipment now showing in Ammo and Black Market Dialogs
 Release Client/Ded 0.2.41.1 
 + Bug: Reloaded games not adding GameListener
 Release Client/Server 0.2.41.0
