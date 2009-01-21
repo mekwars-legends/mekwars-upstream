@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2004 
- * 
+ * MekWars - Copyright (C) 2004
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -17,12 +17,13 @@
 package server.campaign.commands;
 
 import java.util.StringTokenizer;
-import server.campaign.SPlayer;
-import server.campaign.CampaignMain;
-import server.campaign.SUnit;
 
 import megamek.common.Entity;
 import megamek.common.Mounted;
+import megamek.common.WeaponType;
+import server.campaign.CampaignMain;
+import server.campaign.SPlayer;
+import server.campaign.SUnit;
 
 public class SetUnitBurstCommand implements Command {
 
@@ -96,8 +97,14 @@ public class SetUnitBurstCommand implements Command {
         try {
 
             Mounted mWeapon = en.getEquipment(en.getCritical(weaponLocation, weaponSlot).getIndex());
-            if (mWeapon.isRapidfire() == selection)
+
+            if (!mWeapon.getType().hasFlag(WeaponType.F_BURST_FIRE)) {
+                CampaignMain.cm.toUser("AM:" + mWeapon.getName() + " cannot be set to rapid fire!", Username, true);
                 return;
+            }
+            if (mWeapon.isRapidfire() == selection) {
+                return;
+            }
             mWeapon.setRapidfire(selection);
         } catch (Exception ex) {
             CampaignMain.cm.toUser("AM:SetBurstAmmo command failed. Check your input. It should be something like this: /c setUnitAmmo#unitid#weaponlocation#slot#true/false", Username, true);

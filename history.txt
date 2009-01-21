@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ Bug: Promote/Demote Dialog showing NAG if pilot has NAP skill
 + New MegaMek.jar 0.33.39-MW012009-6348
 + Unoffical Equipment now showing in Ammo and Black Market Dialogs
 Release Client/Ded 0.2.41.1 

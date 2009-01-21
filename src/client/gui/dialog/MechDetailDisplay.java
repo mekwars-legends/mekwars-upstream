@@ -20,14 +20,13 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
-import javax.swing.SpringLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -35,12 +34,10 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.ImageIcon;
-
-import common.util.UnitUtils;
 
 import megamek.common.AmmoType;
 import megamek.common.CriticalSlot;
@@ -54,9 +51,10 @@ import megamek.common.Mounted;
 import megamek.common.Protomech;
 import megamek.common.Tank;
 import megamek.common.WeaponType;
+import client.gui.MechInfo;
 
 import common.util.SpringLayoutHelper;
-import client.gui.MechInfo;
+import common.util.UnitUtils;
 
 /**
  * Displays the info for a mech.  This is also a sort
@@ -66,7 +64,7 @@ import client.gui.MechInfo;
 public class MechDetailDisplay extends JTabbedPane {
 
 	/**
-     * 
+     *
      */
     private static final long serialVersionUID = 3496116338039123904L;
     public GeneralPanel mPan;
@@ -92,7 +90,7 @@ public class MechDetailDisplay extends JTabbedPane {
     //public void displayEntity(Entity en, int bv) {
     //	displayEntity(en,bv,null) ;
     //}
-    
+
      /**
      * Displays the specified entity in the panel.
      */
@@ -110,9 +108,9 @@ public class MechDetailDisplay extends JTabbedPane {
  */
 
 class GeneralPanel extends JPanel{
-    
+
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 4029105940787569233L;
     public JPanel statusP, terrainP, moveP;
@@ -124,10 +122,10 @@ class GeneralPanel extends JPanel{
     public JCheckBox autoEjectCB;
     public Entity ent = null;
     public MechInfo unitPicture = null;
-    
+
     public GeneralPanel() {
         super();
-        
+
         try {
             //MechSummary ms = MechSummaryCache.getInstance().getMech("Error OMG-UR-FD");
             ent = UnitUtils.createOMG();//new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
@@ -142,11 +140,11 @@ class GeneralPanel extends JPanel{
         weightL = new JLabel("Weight:", SwingConstants.RIGHT);
         pilotL = new JLabel("Pilot:", SwingConstants.RIGHT);
         skillsL = new JLabel("Gun/Pilot:", SwingConstants.RIGHT);
-        
+
         weightR = new JLabel("?", SwingConstants.LEFT);
         pilotR = new JLabel("?", SwingConstants.LEFT);
         skillsR = new JLabel("?/?", SwingConstants.LEFT);
-        
+
         // movement stuff
         mpL = new JLabel("Movement:", SwingConstants.RIGHT);
         heatL = new JLabel("Heat:", SwingConstants.RIGHT);
@@ -156,35 +154,35 @@ class GeneralPanel extends JPanel{
 
         autoEjectCB = new JCheckBox();
         autoEjectCB.setToolTipText("Check to enable autoeject");
-        
+
         statusP = new JPanel();//status panel
-        
+
         //new subpanel for status
         JPanel statusSpringP = new JPanel(new SpringLayout());
-        
+
         //cargo stuff
         cargoL = new JLabel("Cargo:",SwingConstants.RIGHT);
         cargoR = new JLabel("9999",SwingConstants.LEFT);
-        
+
         //bv stuff
         bvL = new JLabel("BV:", SwingConstants.RIGHT);
         bvR = new JLabel("9999", SwingConstants.LEFT);
-        
+
         statusSpringP.add(weightL);
         statusSpringP.add(weightR);
-        
+
         statusSpringP.add(skillsL);
         statusSpringP.add(skillsR);
-        
+
         statusSpringP.add(mpL);
         statusSpringP.add(mpR);
 
         statusSpringP.add(heatL);
         statusSpringP.add(heatR);
-        
+
         statusSpringP.add(bvL);
         statusSpringP.add(bvR);
-        
+
         statusSpringP.add(cargoL);
         statusSpringP.add(cargoR);
 
@@ -192,7 +190,7 @@ class GeneralPanel extends JPanel{
         SpringLayoutHelper.setupSpringGrid(statusSpringP,6,2);
         statusP.setLayout(new BoxLayout(statusP, BoxLayout.Y_AXIS));
         statusP.add(statusSpringP);
-        
+
         //layout main panel
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         add(mechTypeL);
@@ -203,19 +201,19 @@ class GeneralPanel extends JPanel{
      * updates fields for the specified mech
      */
     public void displayMech(Entity en, int bv, ImageIcon currentCamo) {
-        
+
         ent = en;
-        
+
         //reinit the unit picture
         unitPicture = new MechInfo(currentCamo);
         unitPicture.setUnit(en);
-        
+
         String uName = en.getShortNameRaw();//Get Name without ID
         mechTypeL.setText("<HTML><br><b>" + uName + "</b><br></HTML>");
 
         weightR.setText(Integer.toString((int)en.getWeight()));
         pilotR.setText(en.crew.getDesc());
-        if ( en instanceof Mech || en instanceof Tank 
+        if ( en instanceof Mech || en instanceof Tank
                 || (en instanceof Infantry && ((Infantry)en).isAntiMek()) ){
             skillsR.setText(en.crew.getGunnery()+"/"+en.crew.getPiloting());
         }
@@ -223,7 +221,7 @@ class GeneralPanel extends JPanel{
             skillsL.setText("Gunnery:");
             skillsR.setText(Integer.toString(en.crew.getGunnery()));
         }
-        
+
         StringBuilder mp = new StringBuilder();
         try{
             mp.append(en.getWalkMP());
@@ -257,11 +255,12 @@ class GeneralPanel extends JPanel{
         	cargoR.setVisible(false);
         }
 
-        if (bv == 0)
-        	bvR.setText("N/A");
-        else
-        	bvR.setText(Integer.toString(bv));
-        
+        if (bv == 0) {
+            bvR.setText("N/A");
+        } else {
+            bvR.setText(Integer.toString(bv));
+        }
+
         add(unitPicture);
         validate();
     }
@@ -273,7 +272,7 @@ class GeneralPanel extends JPanel{
 
 class ArmorPanel extends JPanel {
 	/**
-     * 
+     *
      */
     private static final long serialVersionUID = -295959624523910179L;
     public JLabel armorTotal, internalTotal;
@@ -312,17 +311,18 @@ class ArmorPanel extends JPanel {
         c.insets = new Insets(2, 2, 2, 2);
 
         c.weightx = 1.0;    c.weighty = 1.0;
-        
+
         c.gridwidth = GridBagConstraints.REMAINDER;
-        if (en instanceof Mech)
-        	armorTotal.setText("Armor: "+en.getTotalArmor()+"/"+(((en.getTotalInternal()-3)*2)+9));
-        else
-        	armorTotal.setText("Armor: "+en.getTotalArmor());
+        if (en instanceof Mech) {
+            armorTotal.setText("Armor: "+en.getTotalArmor()+"/"+(((en.getTotalInternal()-3)*2)+9));
+        } else {
+            armorTotal.setText("Armor: "+en.getTotalArmor());
+        }
         add(armorTotal, c);
-        
+
         internalTotal.setText("Internal: "+en.getTotalInternal());
         add(internalTotal, c);
-        
+
         c.gridwidth = 1;
         add(locHL, c);
         add(armorHL, c);
@@ -345,8 +345,9 @@ class ArmorPanel extends JPanel {
                 UnitUtils.removeArmorRepair(en,UnitUtils.LOC_INTERNAL_ARMOR,i);
                 internalL[i].setText(en.getInternalString(i));
                 UnitUtils.setArmorRepair(en,UnitUtils.LOC_INTERNAL_ARMOR,i);
-            }else
+            } else {
                 internalL[i].setText(en.getInternalString(i));
+            }
             if ( en.getArmor(i) >= 99 ){
                 UnitUtils.removeArmorRepair(en,UnitUtils.LOC_FRONT_ARMOR,i);
                 if ( en.hasRearArmor(i) && en.getArmor(i,true) >= 99){
@@ -354,11 +355,12 @@ class ArmorPanel extends JPanel {
                 }
                 armorL[i].setText(en.getArmorString(i) + (en.hasRearArmor(i) ? " (" + en.getArmorString(i, true) + ")" : ""));
                 UnitUtils.setArmorRepair(en,UnitUtils.LOC_FRONT_ARMOR,i);
-                if ( en.hasRearArmor(i) && en.getArmor(i,true) != en.getOArmor(i,true) )
+                if ( en.hasRearArmor(i) && en.getArmor(i,true) != en.getOArmor(i,true) ) {
                     UnitUtils.setArmorRepair(en,UnitUtils.LOC_REAR_ARMOR,i);
-            }
-            else
+                }
+            } else {
                 armorL[i].setText(en.getArmorString(i) + (en.hasRearArmor(i) ? " (" + en.getArmorString(i, true) + ")" : ""));
+            }
         }
         validate();
     }
@@ -372,7 +374,7 @@ class ArmorPanel extends JPanel {
 
 class WeaponPanel extends JPanel implements ListSelectionListener {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 7514191383557659135L;
     public JList weaponList;
@@ -542,6 +544,10 @@ class WeaponPanel extends JPanel implements ListSelectionListener {
                     wn += " " + mounted.curMode().getDisplayableName();
                 }
             }
+
+            if (mounted.isRapidfire()) {
+                wn += " (Rapid Fire)";
+            }
             data.add(wn);
         }
         weaponList.setListData(data.toArray());
@@ -602,9 +608,9 @@ class WeaponPanel extends JPanel implements ListSelectionListener {
 
         // update ammo selector
         ammoList.removeAllItems();
-        if (wtype.getAmmoType() == AmmoType.T_NA)
+        if (wtype.getAmmoType() == AmmoType.T_NA) {
             ammoList.setEnabled(false);
-        else {
+        } else {
             ammoList.setEnabled(true);
             ammo = new Vector<Mounted>(1,1);
             int nCur = -1;
@@ -623,9 +629,10 @@ class WeaponPanel extends JPanel implements ListSelectionListener {
                 }
             }
             for (int x = 0, n = ammo.size(); x < n; x++) {
-            	String s = formatAmmo((Mounted)ammo.elementAt(x));
-            	if (s.length() > 0)
-            		ammoList.addItem(s);
+            	String s = formatAmmo(ammo.elementAt(x));
+            	if (s.length() > 0) {
+                    ammoList.addItem(s);
+                }
             }
             if (nCur == -1) {
                 ammoList.setEnabled(false);
@@ -661,7 +668,7 @@ class WeaponPanel extends JPanel implements ListSelectionListener {
 
 class SystemPanel extends JPanel implements ListSelectionListener {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -7227285486467055350L;
 
@@ -746,11 +753,13 @@ class SystemPanel extends JPanel implements ListSelectionListener {
 
     public Mounted getSelectedEquipment() {
         int n = slotList.getSelectedIndex();
-        if (n == -1)
+        if (n == -1) {
             return null;
+        }
         Object o = equipment.elementAt(n);
-        if (o == SYSTEM)
+        if (o == SYSTEM) {
             return null;
+        }
         return (Mounted)o;
     }
 
@@ -758,8 +767,8 @@ class SystemPanel extends JPanel implements ListSelectionListener {
      * updates fields for the specified mech
      */
     public void displayMech(Entity ent) {
-        
-    	this.en = ent;
+
+    	en = ent;
 
         locList.removeAll();
         ArrayList<String> data = new ArrayList<String>();
@@ -799,8 +808,9 @@ class SystemPanel extends JPanel implements ListSelectionListener {
                 case CriticalSlot.TYPE_EQUIPMENT :
                     Mounted m = en.getEquipment(cs.getIndex());
                     sb.append(cs.isDestroyed() ? "*" : "").append(m.getDesc());
-                    if (m.getType().hasModes())
+                    if (m.getType().hasModes()) {
                         sb.append(" (").append(m.curMode().getDisplayableName()).append(")");
+                    }
                     equipment.addElement(m);
                     break;
                 }
@@ -812,15 +822,15 @@ class SystemPanel extends JPanel implements ListSelectionListener {
                 Iterator<Mounted> equip = en.getEquipment().iterator();
                 while (equip.hasNext()) {
                     Mounted m = equip.next();
-                    if (m.getType() instanceof MiscType && 
+                    if (m.getType() instanceof MiscType &&
                         m.getType().hasFlag(MiscType.F_TARGCOMP) ) {
                         StringBuilder sb = new StringBuilder(32);
                         sb.append(m.isDestroyed() ? "*" : "").append(m.isBreached() ? "x" : "").append(m.getDesc()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                         if (m.getType().hasModes()) {
                             sb.append(" (").append(m.curMode().getDisplayableName()).append(")"); //$NON-NLS-1$ //$NON-NLS-2$
                         }
-                        data.add(sb.toString());                                                
-                    }                    
+                        data.add(sb.toString());
+                    }
                 }
             }
         }
@@ -828,9 +838,9 @@ class SystemPanel extends JPanel implements ListSelectionListener {
     }
 
 	public void valueChanged(ListSelectionEvent ev) {
-        if(ev.getSource() == locList)
+        if(ev.getSource() == locList) {
             displaySlots();
-        else if (ev.getSource() == slotList) {
+        } else if (ev.getSource() == slotList) {
             Mounted m = getSelectedEquipment();
             if (m != null && m.getType().hasModes()) {
                 modeLabel.setEnabled(true);

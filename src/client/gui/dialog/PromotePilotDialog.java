@@ -1,11 +1,11 @@
 /*
  * MekWars - Copyright (C) 2008
- * 
+ *
  * Original author - Torren (torren@users.sourceforge.net)
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
@@ -41,7 +41,7 @@ import common.util.SpringLayoutHelper;
 public class PromotePilotDialog extends JFrame implements ActionListener, KeyListener {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -8988175448434842033L;
     // store the client backlink for other things to use
@@ -259,7 +259,7 @@ public class PromotePilotDialog extends JFrame implements ActionListener, KeyLis
 
             }
 
-            if (Integer.parseInt(mwclient.getserverConfigs("chanceforNAGfor" + Unit.getTypeClassDesc(playerUnit.getType()))) > 0 && pilot.getSkills().has(PilotSkill.NaturalAptitudePilotingSkillID)) {
+            if (Integer.parseInt(mwclient.getserverConfigs("chanceforNAGfor" + Unit.getTypeClassDesc(playerUnit.getType()))) > 0 && pilot.getSkills().has(PilotSkill.NaturalAptitudeGunnerySkillID)) {
                 masterCB = new JCheckBox("Natural Aptitude Gunnery");
                 masterCB.setName("chanceforNAGfor" + Unit.getTypeClassDesc(playerUnit.getType()));
                 masterCB.addActionListener(this);
@@ -445,7 +445,7 @@ public class PromotePilotDialog extends JFrame implements ActionListener, KeyLis
 
             }
 
-            if (Integer.parseInt(mwclient.getserverConfigs("chanceforNAGfor" + Unit.getTypeClassDesc(playerUnit.getType()))) > 0 && !pilot.getSkills().has(PilotSkill.NaturalAptitudePilotingSkillID)) {
+            if (Integer.parseInt(mwclient.getserverConfigs("chanceforNAGfor" + Unit.getTypeClassDesc(playerUnit.getType()))) > 0 && !pilot.getSkills().has(PilotSkill.NaturalAptitudeGunnerySkillID)) {
                 masterCB = new JCheckBox("Natural Aptitude Gunnery");
                 masterCB.setName("chanceforNAGfor" + Unit.getTypeClassDesc(playerUnit.getType()));
                 masterCB.addActionListener(this);
