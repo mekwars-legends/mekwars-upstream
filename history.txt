@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ Bug: Pilot leveling only reading Server configs not house configs
 + Bug: Targetting systems not staying set for units with Damaged C3 and C3i 
 + Bug: Promote/Demote Dialog showing NAG if pilot has NAP skill
 + New MegaMek.jar 0.33.39-MW012009-6348

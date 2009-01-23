@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2004 
- * 
+ * MekWars - Copyright (C) 2004
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -28,15 +28,11 @@ import java.io.InputStreamReader;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Random;
 import java.util.StringTokenizer;
 
 import megamek.common.Infantry;
-
-import common.campaign.pilot.Pilot;
-import common.campaign.pilot.skills.PilotSkill;
-
-import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
@@ -46,15 +42,19 @@ import server.campaign.pilot.skills.EdgeSkill;
 import server.campaign.pilot.skills.SPilotSkill;
 import server.campaign.pilot.skills.TraitSkill;
 import server.campaign.pilot.skills.WeaponSpecialistSkill;
+
+import common.CampaignData;
+import common.campaign.pilot.Pilot;
+import common.campaign.pilot.skills.PilotSkill;
 import common.util.TokenReader;
 
 /**
  * @author Helge Richter
- * 
+ *
  */
 public class SPilot extends Pilot {
     /**
-     * 
+     *
      */
     private int originalID;
     private int pickedUpID;
@@ -71,7 +71,7 @@ public class SPilot extends Pilot {
     /**
      * Used to check and level up pilot. This should only be called from within
      * ShortResolver.getSalvageStrings()
-     * 
+     *
      * @param the
      *            unit to check
      * @param owner
@@ -83,15 +83,16 @@ public class SPilot extends Pilot {
         if ( CampaignMain.cm.getBooleanConfig("PlayersCanBuyPilotUpgrades") ){
             return "";
         }
-        
+
+        SHouse house = owner.getMyHouse();
         /*
          * This is a pretty radical departure from the old Tasks-style levelling
          * chart. People will flip their crap when they see they no longer have
          * 1/5 units.
          */
-        int bestGunnery = CampaignMain.cm.getIntegerConfig("BestGunnerySkill");
-        int bestPiloting = CampaignMain.cm.getIntegerConfig("BestPilotingSkill");
-        int bestTotal = CampaignMain.cm.getIntegerConfig("BestTotalPilot");
+        int bestGunnery = house.getIntegerConfig("BestGunnerySkill");
+        int bestPiloting = house.getIntegerConfig("BestPilotingSkill");
+        int bestTotal = house.getIntegerConfig("BestTotalPilot");
 
         int startingSkillAmount = 10;// 4/6 and 5/5 are worst possible green
         // units
@@ -115,13 +116,15 @@ public class SPilot extends Pilot {
         /*
          * Adjust the differential for NaturalAptitudes. Push the differential
          * towards the skill we want to get.
-         * 
+         *
          * Note that this "push" creates 2/4 gunners and 4/3 pilots.
          */
-        if (this.getSkills().has(PilotSkill.NaturalAptitudeGunnerySkillID))
+        if (getSkills().has(PilotSkill.NaturalAptitudeGunnerySkillID)) {
             differential++;
-        if (getSkills().has(PilotSkill.NaturalAptitudePilotingSkillID))
+        }
+        if (getSkills().has(PilotSkill.NaturalAptitudePilotingSkillID)) {
             differential--;
+        }
 
         // save BV for before and after comparison
         int oldBV = unit.getBV();
@@ -132,68 +135,75 @@ public class SPilot extends Pilot {
          * construction of a return string.
          */
         boolean pilotIsElite = false;
-        if (getGunnery() <= bestGunnery && getPiloting() <= bestPiloting)
+        if (getGunnery() <= bestGunnery && getPiloting() <= bestPiloting) {
             pilotIsElite = true;
-        if (getGunnery() + getPiloting() <= bestTotal)
+        }
+        if (getGunnery() + getPiloting() <= bestTotal) {
             pilotIsElite = true;
+        }
 
         /*
          * Determine how high a player must roll in order to achieve a level up.
          * This is somewhat configurable, but not exactly the highly ganular
          * control some operators would like to see.
-         * 
+         *
          * Should be revisited at a later date.
          */
-        int baseRollToLevel = CampaignMain.cm.getIntegerConfig("BaseRollToLevel");
-        int rollMultiplier = CampaignMain.cm.getIntegerConfig("MultiplierPerPreviousLevel");
+        int baseRollToLevel = house.getIntegerConfig("BaseRollToLevel");
+        int rollMultiplier = house.getIntegerConfig("MultiplierPerPreviousLevel");
 
         /*
          * Determine the difference between the starting and current skills.
          * Elite pilots should roll for retirement against the same 1dX they
          * rolled their final level up, which means we need to subtract 1 from
          * their multiplier.
-         * 
+         *
          * If the multiplier somehow drops below 0, set it back to 1.
          */
         int multiplier = startingSkillAmount - currentSkillAmount;
-        if (pilotIsElite)
+        if (pilotIsElite) {
             multiplier--;
-        if (multiplier < 1)
+        }
+        if (multiplier < 1) {
             multiplier = 1;
+        }
 
         // set up the size die to roll
         int dieSize = 0;
-        if (rollMultiplier <= 0)
+        if (rollMultiplier <= 0) {
             dieSize = baseRollToLevel;
-        else
+        } else {
             dieSize = baseRollToLevel * rollMultiplier * multiplier;
+        }
 
         /*
          * Check the level up mode. If the pilot isn't elite, we check for level
          * ups. If the pilto is elite, and there's a chance to retire
          * automatically on this server, we check for a level DOWN (back to
          * base).
-         * 
+         *
          * If the levels are fixed, bump the pilot only if the XP is higher than
          * the die size. If the level ups are random, roll the die and change
          * the level if the pilot's XP is greater than the roll.
          */
         boolean shouldLevelUp = false;
         boolean shouldLevelDown = false;
-        boolean useRandomLevels = CampaignMain.cm.getBooleanConfig("UseRandomPilotLevelups");
+        boolean useRandomLevels = house.getBooleanConfig("UseRandomPilotLevelups");
         if (!pilotIsElite) {
 
-            if (!useRandomLevels && getExperience() >= dieSize)
+            if (!useRandomLevels && getExperience() >= dieSize) {
                 shouldLevelUp = true;
-            else if (getExperience() >= CampaignMain.cm.getRandomNumber(dieSize))
+            } else if (getExperience() >= CampaignMain.cm.getRandomNumber(dieSize)) {
                 shouldLevelUp = true;
+            }
 
-        } else if (pilotIsElite && CampaignMain.cm.getBooleanConfig("RandomRetirementOfElites")) {
+        } else if (pilotIsElite && house.getBooleanConfig("RandomRetirementOfElites")) {
 
-            if (!useRandomLevels && getExperience() >= dieSize)
+            if (!useRandomLevels && getExperience() >= dieSize) {
                 shouldLevelDown = true;
-            else if (getExperience() >= CampaignMain.cm.getRandomNumber(dieSize))
+            } else if (getExperience() >= CampaignMain.cm.getRandomNumber(dieSize)) {
                 shouldLevelDown = true;
+            }
 
         }
 
@@ -202,29 +212,32 @@ public class SPilot extends Pilot {
          * chance for skill gain, and does not vary as piloting and gunnery
          * change. A pilot may not gain a skill at the same time that he changes
          * levels.
-         * 
+         *
          * It may be possible for a null skill tobe returned (eg - a total
          * chance of skill acquisition of 0 for a certain unit type, like BA or
          * vehs). Ignore the null here, but don't add the skill later or clear
          * XP.
          */
-        boolean pilotsCanGainSkills = CampaignMain.cm.getBooleanConfig("PilotSkills");
+        boolean pilotsCanGainSkills = house.getBooleanConfig("PilotSkills");
         if (!shouldLevelUp && !shouldLevelDown && pilotsCanGainSkills) {
 
-            int chanceToGainSkill = CampaignMain.cm.getIntegerConfig("SkillLevelChance");
-            if (unit.getPilot().getSkills().has(PilotSkill.GiftedID))
-                chanceToGainSkill += CampaignMain.cm.getIntegerConfig("GiftedPercent");
+            int chanceToGainSkill = house.getIntegerConfig("SkillLevelChance");
+            if (unit.getPilot().getSkills().has(PilotSkill.GiftedID)) {
+                chanceToGainSkill += house.getIntegerConfig("GiftedPercent");
+            }
 
             int dieRoll = CampaignMain.cm.getRandomNumber(100) + 1;
-            if (dieRoll < chanceToGainSkill)
+            if (dieRoll < chanceToGainSkill) {
                 skillToAdd = CampaignMain.cm.getRandomSkill(this, unit.getType());
+            }
         }
 
         /*
          * If the pilot gains a skill or levels up, clear his experience.
          */
-        if (shouldLevelUp || shouldLevelDown || skillToAdd != null)
+        if (shouldLevelUp || shouldLevelDown || skillToAdd != null) {
             setExperience(0);
+        }
 
         /*
          * Do the actual levelling up, if necessary.
@@ -234,44 +247,47 @@ public class SPilot extends Pilot {
             int random = CampaignMain.cm.getRandomNumber(10);
             boolean levelGunnery = false;
             boolean levelPiloting = false;
-            if (differential > 0)
+            if (differential > 0) {
                 levelGunnery = true;
-            else if (differential < 0)
+            } else if (differential < 0) {
                 levelPiloting = true;
-            else if (random < 3 // 0-2, 30% chance for piloting on push
-                    || (unit.getEntity() instanceof Infantry && random < 5)) // differential
+            } else if (random < 3 // 0-2, 30% chance for piloting on push
+                    || (unit.getEntity() instanceof Infantry && random < 5)) {
                 levelPiloting = true; // 50/50 for Infantry
-            else
+            } else {
                 levelGunnery = true;
+            }
 
             /*
              * The natural aptitude skills sometimes make it possible to get an
              * otherwise banned level up. Check to make sure that the
              * piloting/gunnery level rolled isn't going to break the caps.
-             * 
+             *
              * If there is an underage, check the opposite skill and switch the
              * upgrade if possible. If a flip isn't allowed, don't return and
              * send the elite message.
              */
             if (levelGunnery && getGunnery() <= bestGunnery) {
                 levelGunnery = false;
-                if (getPiloting() > bestPiloting)
+                if (getPiloting() > bestPiloting) {
                     levelPiloting = true;
-                else
+                } else {
                     pilotIsElite = true;
+                }
             }
             if (levelPiloting && getPiloting() <= bestPiloting) {
                 levelPiloting = false;
-                if (getGunnery() > bestGunnery)
+                if (getGunnery() > bestGunnery) {
                     levelGunnery = true;
-                else
+                } else {
                     pilotIsElite = true;
+                }
             }
 
             // do the actual level ups
-            if (levelGunnery)
+            if (levelGunnery) {
                 setGunnery(getGunnery() - 1);
-            else if (levelPiloting) {
+            } else if (levelPiloting) {
 
                 if (unit.getEntity() instanceof Infantry) {
                     if (((Infantry) unit.getEntity()).isAntiMek()){
@@ -305,28 +321,29 @@ public class SPilot extends Pilot {
 
             // Store the old name for use in return, and change to successor
             // name
-            String oldName = this.getName();
+            String oldName = getName();
 
             // Age the pilot. Odds of someone getting beyond a 10th generation
             // eliete are so slim that we need not worry.
-            if (oldName.endsWith("Jr."))
+            if (oldName.endsWith("Jr.")) {
                 setName(oldName.substring(0, oldName.lastIndexOf("Jr.")) + "III");
-            else if (oldName.endsWith("III"))
+            } else if (oldName.endsWith("III")) {
                 setName(oldName.substring(0, oldName.lastIndexOf("III")) + "IV");
-            else if (oldName.endsWith("IV"))
+            } else if (oldName.endsWith("IV")) {
                 setName(oldName.substring(0, oldName.lastIndexOf("IV")) + "V");
-            else if (oldName.endsWith("V"))
+            } else if (oldName.endsWith("V")) {
                 setName(oldName + "I");
-            else if (oldName.endsWith("VI"))
+            } else if (oldName.endsWith("VI")) {
                 setName(oldName + "I");
-            else if (oldName.endsWith("VII"))
+            } else if (oldName.endsWith("VII")) {
                 setName(oldName + "I");
-            else if (oldName.endsWith("VIII"))
+            } else if (oldName.endsWith("VIII")) {
                 setName(oldName.substring(0, oldName.lastIndexOf("VIII")) + "IX");
-            else if (oldName.endsWith("IX"))
+            } else if (oldName.endsWith("IX")) {
                 setName(oldName.substring(0, oldName.lastIndexOf("IX")) + "X");
-            else
+            } else {
                 setName(oldName + " Jr.");
+            }
 
             unit.setPilot(this);// refresh pilot! HACKY! CHANGE!
             return ". " + oldName + " grew weary of war and retired from active duty. The unit was passed on to " + getName() + " [" + getGunnery() + "/" + getPiloting() + ", Old BV: " + oldBV + "/New BV: " + unit.getBV() + "]";
@@ -335,18 +352,18 @@ public class SPilot extends Pilot {
         if (skillToAdd != null) {
 
             // special accomidation for WS and Trait
-            if (skillToAdd instanceof WeaponSpecialistSkill)
+            if (skillToAdd instanceof WeaponSpecialistSkill) {
                 ((WeaponSpecialistSkill) skillToAdd).assignWeapon(unit.getEntity(), this);
-            else if (skillToAdd instanceof TraitSkill)
+            } else if (skillToAdd instanceof TraitSkill) {
                 ((TraitSkill) skillToAdd).assignTrait(this);
-            else if (skillToAdd instanceof EdgeSkill) {
-                if (this.getSkills().has(PilotSkill.EdgeSkillID)) {
-                    skillToAdd = (SPilotSkill) this.getSkills().getPilotSkill(PilotSkill.EdgeSkillID);
+            } else if (skillToAdd instanceof EdgeSkill) {
+                if (getSkills().has(PilotSkill.EdgeSkillID)) {
+                    skillToAdd = (SPilotSkill) getSkills().getPilotSkill(PilotSkill.EdgeSkillID);
                     ((EdgeSkill) skillToAdd).setLevel(skillToAdd.getLevel() + 1);
                 }
             }else if (skillToAdd instanceof AstechSkill) {
-                if (this.getSkills().has(PilotSkill.AstechSkillID)) {
-                    skillToAdd = (SPilotSkill) this.getSkills().getPilotSkill(PilotSkill.AstechSkillID);
+                if (getSkills().has(PilotSkill.AstechSkillID)) {
+                    skillToAdd = (SPilotSkill) getSkills().getPilotSkill(PilotSkill.AstechSkillID);
                     ((AstechSkill) skillToAdd).setLevel(skillToAdd.getLevel() + 1);
                 }
             }
@@ -357,12 +374,14 @@ public class SPilot extends Pilot {
 
             int newBV = unit.getBV();
 
-            if (skillToAdd instanceof AstechSkill && !CampaignMain.cm.isUsingAdvanceRepair())
+            if (skillToAdd instanceof AstechSkill && !CampaignMain.cm.isUsingAdvanceRepair()) {
                 CampaignMain.cm.toUser("PL|SF|" + owner.getFreeBays(), owner.getName(), false);
+            }
 
             String toSend = ". " + getName() + " gained the " + skillToAdd.getName() + " skill";
-            if (newBV != oldBV)
+            if (newBV != oldBV) {
                 toSend += " [Old BV: " + oldBV + "/New BV: " + newBV + "]";
+            }
 
             return toSend;
         }
@@ -373,8 +392,9 @@ public class SPilot extends Pilot {
          * simply cannot level. If this message is changed at all, make sure to
          * update the ShortResovler as well.
          */
-        if (pilotIsElite)
+        if (pilotIsElite) {
             return " but could not level up because " + getName() + " is elite";
+        }
         // else
         return "";
     }// end checkForPilotSkillImprovement
@@ -406,11 +426,11 @@ public class SPilot extends Pilot {
                 result.append(delimiter);
             }
             if (sk instanceof WeaponSpecialistSkill) {
-                result.append(this.getWeapon());
+                result.append(getWeapon());
                 result.append(delimiter);
             }
             if (sk instanceof TraitSkill) {
-                result.append(this.getTraitName());
+                result.append(getTraitName());
                 result.append(delimiter);
             }
             if (sk instanceof EdgeSkill) {
@@ -428,10 +448,11 @@ public class SPilot extends Pilot {
         result.append(getKills());
         result.append(delimiter);
         if (!toPlayer) {
-            if (getCurrentFaction().trim().length() > 0)
+            if (getCurrentFaction().trim().length() > 0) {
                 result.append(getCurrentFaction());
-            else
+            } else {
                 result.append(CampaignMain.cm.getConfig("NewbieHouseName"));
+            }
             result.append(delimiter);
             result.append(getPilotId());
             result.append(delimiter);
@@ -448,17 +469,20 @@ public class SPilot extends Pilot {
                     hits = Math.max(1, getHits() / CampaignMain.cm.getIntegerConfig("AmountOfDamagePerPilotHit"));
                 }
                 result.append(hits);
-            } else
+            } else {
                 result.append(getHits());
-        } else
+            }
+        } else {
             result.append(0);
+        }
         result.append(delimiter);
 
         if (!toPlayer) {
-            if (CampaignMain.cm.isUsingMySQL())
+            if (CampaignMain.cm.isUsingMySQL()) {
                 result.append(getDBId());
-            else
+            } else {
                 result.append(0);// unused var
+            }
             result.append(delimiter);
         }
 
@@ -468,21 +492,22 @@ public class SPilot extends Pilot {
     public synchronized void toDB(int unitType, int unitSize) {
     	PreparedStatement ps = null;
     	try {
-            if (getName().equalsIgnoreCase("Vacant"))
+            if (getName().equalsIgnoreCase("Vacant")) {
                 return;
+            }
             if (getPilotId() == -1) {
             	// Pilot hasn't been assigned an ID yet.
             	setPilotId(CampaignMain.cm.getAndUpdateCurrentPilotID());
             	CampaignData.mwlog.dbLog("Getting new Pilot ID: " + getPilotId());
             }
             StringBuffer sql = new StringBuffer();
-            
+
 
             if (getDBId() < 1) {
                 // No pilot with this id, so INSERT
                 sql.setLength(0);
 
-                ps = CampaignMain.cm.MySQL.getPreparedStatement("INSERT into pilots set MWID=?, pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ?", PreparedStatement.RETURN_GENERATED_KEYS);
+                ps = CampaignMain.cm.MySQL.getPreparedStatement("INSERT into pilots set MWID=?, pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ?", Statement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, getPilotId());
                 ps.setString(2, getName());
                 ps.setInt(3, getExperience());
@@ -552,8 +577,9 @@ public class SPilot extends Pilot {
             CampaignData.mwlog.dbLog("SQL Error in PilotHandler.savePilot: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
             try {
-                if(ps != null)
-                	ps.close();         	
+                if(ps != null) {
+                    ps.close();
+                }
             } catch (SQLException ex) {}
         }
     }
@@ -577,19 +603,21 @@ public class SPilot extends Pilot {
             for (int i = 0; i < skills; i++) {
                 SPilotSkill skill = CampaignMain.cm.getPilotSkill(TokenReader.readInt(ST));
                 int level = TokenReader.readInt(ST);
-                if (skill instanceof AstechSkill)
+                if (skill instanceof AstechSkill) {
                     skill = new AstechSkill(PilotSkill.AstechSkillID);
+                }
 
                 if (skill instanceof WeaponSpecialistSkill) {
-                    this.setWeapon(TokenReader.readString(ST));
+                    setWeapon(TokenReader.readString(ST));
                 }
                 if (skill instanceof TraitSkill) {
                     String traitName = TokenReader.readString(ST);
 
-                    if (traitName.equalsIgnoreCase("none"))
+                    if (traitName.equalsIgnoreCase("none")) {
                         traitSkill = (TraitSkill) skill;
-                    else
-                        this.setTraitName(traitName);
+                    } else {
+                        setTraitName(traitName);
+                    }
                 }
 
                 if (skill instanceof EdgeSkill) {
@@ -613,10 +641,11 @@ public class SPilot extends Pilot {
 
             setHits(TokenReader.readInt(ST));
 
-            if (CampaignMain.cm.isUsingMySQL())
+            if (CampaignMain.cm.isUsingMySQL()) {
                 setDBId(TokenReader.readInt(ST));
-            else
+            } else {
                 TokenReader.readString(ST);
+            }
 
             /*
              * some times a pilot doesn't get assigned a skill this code fixes
@@ -627,10 +656,11 @@ public class SPilot extends Pilot {
                 traitSkill.assignTrait(this);
             }
 
-            if (getPilotId() == -1)
+            if (getPilotId() == -1) {
                 setPilotId(CampaignMain.cm.getAndUpdateCurrentPilotID());
+            }
         } catch (Exception ex) {
-            CampaignData.mwlog.errLog("Error loading Pilot " + this.getName());
+            CampaignData.mwlog.errLog("Error loading Pilot " + getName());
             CampaignData.mwlog.errLog(ex);
         }
     }
@@ -671,7 +701,7 @@ public class SPilot extends Pilot {
 
     /**
      * sets Pilots living status
-     * 
+     *
      * @param death -
      *            whether or not the pilot is alive or dead
      */
@@ -704,8 +734,9 @@ public class SPilot extends Pilot {
 
             File folder = new File("./data/pilotmessages");
 
-            if (!folder.exists())
+            if (!folder.exists()) {
                 folder.mkdir();
+            }
 
             String scrapFile = "/pilotcapturemessagestoowner.txt";
             // CampaignData.mwlog.errLog(folder.getPath()+scrapFile);
@@ -717,18 +748,19 @@ public class SPilot extends Pilot {
             String scrapMessage = "";
             while (dis.ready()) {
                 scrapMessage = dis.readLine();
-                if (id <= 0)
+                if (id <= 0) {
                     break;
+                }
                 id--;
             }
-            String scrapMessageWithPilot = scrapMessage.replaceAll("PILOT", this.getName());
+            String scrapMessageWithPilot = scrapMessage.replaceAll("PILOT", getName());
             return scrapMessageWithPilot.replaceAll("UNIT", unit.getModelName());
 
         } catch (FileNotFoundException fnfn) {
-            return this.getName() + " was captured by enemy forces after fleeing the " + unit.getModelName() + ".";
+            return getName() + " was captured by enemy forces after fleeing the " + unit.getModelName() + ".";
         } catch (Exception e) {
             CampaignData.mwlog.errLog("A problem occured with your pilotcapturemessagestoowner File!");
-            return this.getName() + " was captured by enemy forces after fleeing the " + unit.getModelName() + ".";
+            return getName() + " was captured by enemy forces after fleeing the " + unit.getModelName() + ".";
         }// end catch
 
     }
@@ -744,8 +776,9 @@ public class SPilot extends Pilot {
 
             File folder = new File("./data/pilotmessages");
 
-            if (!folder.exists())
+            if (!folder.exists()) {
                 folder.mkdir();
+            }
 
             String scrapFile = "/pilotcaptureanddefectedmessages.txt";
             // CampaignData.mwlog.errLog(folder.getPath()+scrapFile);
@@ -757,19 +790,20 @@ public class SPilot extends Pilot {
             String scrapMessage = "";
             while (dis.ready()) {
                 scrapMessage = dis.readLine();
-                if (id <= 0)
+                if (id <= 0) {
                     break;
+                }
                 id--;
             }
-            String scrapMessageWithPilot = scrapMessage.replaceAll("PILOT", this.getName());
+            String scrapMessageWithPilot = scrapMessage.replaceAll("PILOT", getName());
             String scrapMessageWithHouse = scrapMessageWithPilot.replaceAll("HOUSE", house.getNameAsLink());
             return scrapMessageWithHouse.replaceAll("UNIT", unit.getModelName());
 
         } catch (FileNotFoundException fnfn) {
-            return this.getName() + " was rescued from his unit by our infantry and has decided to join " + house.getColoredNameAsLink() + ".";
+            return getName() + " was rescued from his unit by our infantry and has decided to join " + house.getColoredNameAsLink() + ".";
         } catch (Exception e) {
             CampaignData.mwlog.errLog("A problem occured with your pilotcapturemessagesdefect File!");
-            return this.getName() + " was rescued from his unit by our infantry and has decided to join " + house.getColoredNameAsLink() + ".";
+            return getName() + " was rescued from his unit by our infantry and has decided to join " + house.getColoredNameAsLink() + ".";
         }// end catch
 
     }
@@ -785,8 +819,9 @@ public class SPilot extends Pilot {
 
             File folder = new File("./data/pilotmessages");
 
-            if (!folder.exists())
+            if (!folder.exists()) {
                 folder.mkdir();
+            }
 
             String scrapFile = "/pilotcaptureandremovedmessages.txt";
             // CampaignData.mwlog.errLog(folder.getPath()+scrapFile);
@@ -798,18 +833,19 @@ public class SPilot extends Pilot {
             String scrapMessage = "";
             while (dis.ready()) {
                 scrapMessage = dis.readLine();
-                if (id <= 0)
+                if (id <= 0) {
                     break;
+                }
                 id--;
             }
-            String scrapMessageWithPilot = scrapMessage.replaceAll("PILOT", this.getName());
+            String scrapMessageWithPilot = scrapMessage.replaceAll("PILOT", getName());
             return scrapMessageWithPilot.replaceAll("UNIT", unit.getModelName());
 
         } catch (FileNotFoundException fnfn) {
-            return this.getName() + " captured by our infantry transferred to HQ for interrogation.";
+            return getName() + " captured by our infantry transferred to HQ for interrogation.";
         } catch (Exception e) {
             CampaignData.mwlog.errLog("A problem occured with your pilotcapturemessagesdefect File!");
-            return this.getName() + " captured by our infantry transferred to HQ for interrogation.";
+            return getName() + " captured by our infantry transferred to HQ for interrogation.";
         }// end catch
 
     }
@@ -825,8 +861,9 @@ public class SPilot extends Pilot {
 
             File folder = new File("./data/pilotmessages");
 
-            if (!folder.exists())
+            if (!folder.exists()) {
                 folder.mkdir();
+            }
 
             String scrapFile = "/pilotrescuemessages.txt";
             // CampaignData.mwlog.errLog(folder.getPath()+scrapFile);
@@ -838,18 +875,19 @@ public class SPilot extends Pilot {
             String scrapMessage = "";
             while (dis.ready()) {
                 scrapMessage = dis.readLine();
-                if (id <= 0)
+                if (id <= 0) {
                     break;
+                }
                 id--;
             }
-            String scrapMessageWithPilot = scrapMessage.replaceAll("PILOT", this.getName());
+            String scrapMessageWithPilot = scrapMessage.replaceAll("PILOT", getName());
             return scrapMessageWithPilot.replaceAll("UNIT", unit.getModelName());
 
         } catch (FileNotFoundException fnfn) {
-            return this.getName() + " hiked back to base.";
+            return getName() + " hiked back to base.";
         } catch (Exception e) {
             CampaignData.mwlog.errLog("A problem occured with your pilotcapturemessages File!");
-            return this.getName() + " hiked back to base.";
+            return getName() + " hiked back to base.";
         }// end catch
 
     }
@@ -857,7 +895,7 @@ public class SPilot extends Pilot {
     // STATIC METHODS
     /**
      * Get a random pilot name.
-     * 
+     *
      * @param r
      * @return
      */
@@ -871,8 +909,9 @@ public class SPilot extends Pilot {
             int pilotid = r.nextInt(names);
             while (dis.ready()) {
                 String line = dis.readLine();
-                if (pilotid <= 0)
+                if (pilotid <= 0) {
                     return line;
+                }
 
                 // else
                 pilotid--;

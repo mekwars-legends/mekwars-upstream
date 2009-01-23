@@ -57,7 +57,7 @@ public class GunneryBallisticSkill extends SPilotSkill {
 		if ( house == null )
 			return CampaignMain.cm.getIntegerConfig(chance);
 		
-		return Integer.parseInt(house.getConfig(chance));
+		return house.getIntegerConfig(chance);
     }
 
     @Override

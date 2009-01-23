@@ -56,7 +56,7 @@ public class MedTechSkill extends SPilotSkill {
             return CampaignMain.cm.getIntegerConfig(chance);
         }
 
-        return Integer.parseInt(house.getConfig(chance));
+        return house.getIntegerConfig(chance);
     }
 
     @Override
