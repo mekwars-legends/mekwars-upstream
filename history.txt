@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ RFE: Text dialog only opens with right mouse button click in op editor
++ RFE: Text dialog opens on text fields in op editor
 + RFE: Allow for multiple colors in the overlay map. 
 	use the line COLOR###### after the line LINE to change
 	Example COLORCCCCCC would change the lines to hex color CCCCCC

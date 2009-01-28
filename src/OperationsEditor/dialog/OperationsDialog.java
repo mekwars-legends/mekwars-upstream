@@ -1,17 +1,17 @@
 /*
  * MekWars - Copyright (C) 2004
- * 
- * 
+ *
+ *
  * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
 
 /**
  * @author jtighe
- * 
+ *
  *         Server Configuration Page. All new Server Options need to be added To this page as well.
  */
 
@@ -26,6 +26,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedOutputStream;
@@ -60,10 +62,10 @@ import common.CampaignData;
 import common.DefaultOperation;
 import common.util.SpringLayoutHelper;
 
-public class OperationsDialog extends JFrame implements ActionListener, KeyListener {
+public class OperationsDialog extends JFrame implements ActionListener, KeyListener, MouseListener {
 
     /**
-	 * 
+	 *
 	 */
     private static final long serialVersionUID = -238767483230471330L;
     private final static String windowName = "MekWars Operations Editor";
@@ -102,19 +104,19 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
     /**
      * @author Torren (Jason Tighe) 01/04/2006
-     * 
+     *
      *         I've completely redone how the Operations dialog works There are 2 basic fields now baseTextField which is a JTextField and baseCheckBox which is
      *         a JCheckBox.
-     * 
+     *
      *         When you add a new config add the labels to the tab then use the base fields to add the ver. make sure to set the base field's name method this
      *         is used to populate and save.
-     * 
+     *
      *         ex: BaseTextField.setName("DefaultOperationsOptionsVariable");
-     * 
+     *
      *         Three recursive methods populate, load, and save the data to file
-     * 
+     *
      *         findAndPopulateTextAndCheckBoxes(JPanel) findAndPopulateTextAndCheckBoxes(JPanel, BackedTreeMap) findAndSaveConfigs(JPanel, PrintStream)
-     * 
+     *
      *         This change to the code removes the tediousness of having to add a new var to 3 locations when it is used. Now only 1 location needs to be added
      *         and that is the vars placement on the tab in the UI.
      */
@@ -274,7 +276,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         /*
          * Check for the operations directories.
-         * If they're missing create them. 
+         * If they're missing create them.
          */
         File shortDir = new File("./data/operations/short/");
         File longDir = new File("./data/operations/long/");
@@ -339,13 +341,13 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
          dialog = pane.createDialog(mainConfigPanel, windowName);
          dialog.getRootPane().setDefaultButton(cancelButton);
          dialog.setJMenuBar(menuBar);
-         
+
          //Show the dialog and get the user's input
           dialog.setLocation(dialog.getLocation().x+10,dialog.getLocation().y);
           dialog.setModal(true);
           dialog.pack();
           dialog.setVisible(true);
-          
+
           if (pane.getValue() == okayButton)
           {
           }
@@ -451,7 +453,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         /*
          * Operations Range
-         * 
+         *
          * Set up the Operations Range panel, which sets the max range for this operation
          */
 
@@ -616,7 +618,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         /*
          * Operations FACTIONS
-         * 
+         *
          * Faction panel, which allows Admins to limit which
          * factions have access to certain attack and defense
          * types.
@@ -658,10 +660,10 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         /*
          * Operations Units
-         * 
+         *
          * Set up the Operations Unit panel, Sets the min/max BV speed Movement and
          * other types for the Units allow in an operation.
-         *  
+         *
          */
 
         // give the path panel a box layout. its going to be smaller than some, so
@@ -1185,10 +1187,10 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         /*
          * Operations Cost
-         * 
+         *
          * Set up the Operations Cost panel,Set what it costs to attack or defend an op
          * in Money Flu and/or RP
-         *  
+         *
          */
 
         JPanel costBox = new JPanel();
@@ -1259,10 +1261,10 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         /*
          * Player Properties
-         * 
+         *
          * Set up the Player Properties panel,mins/maxes for players if
          * they can attack/defend an op
-         *  
+         *
          */
 
         JPanel playerPropertiesBox = new JPanel();
@@ -1369,10 +1371,10 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         /*
          * Scenario Addons
-         * 
-         * Set up the Scenario Addons panel,Arty/mines anything given to an 
+         *
+         * Set up the Scenario Addons panel,Arty/mines anything given to an
          * attacker/defender besides their own units
-         *  
+         *
          */
 
         Dimension boxSize = new Dimension(199, 110);
@@ -2002,9 +2004,9 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         /*
          * Operations Results
-         * 
+         *
          * Set up the Operations results panel,who gets payed what and how much
-         *  
+         *
          */
 
         JPanel opResultsBox = new JPanel();
@@ -2386,9 +2388,9 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         /*
          * Salvage
-         * 
+         *
          * Set up the Salvage panel,who gets payed what and how much
-         *  
+         *
          */
 
         JPanel salvageBox = new JPanel();
@@ -2486,9 +2488,9 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         /*
          * Newbie Operations
-         * 
+         *
          * Set up the Newbie Operations panel,How you want to let the noobs play
-         *  
+         *
          */
 
         JPanel newbieBox = new JPanel();
@@ -2592,10 +2594,10 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         /*
          * Meta Awards
-         * 
+         *
          * Set up the Meta Awards panel,Set what your faction gets for this op.
          * Land, Units, Components
-         *  
+         *
          */
 
         JPanel metaBox = new JPanel();
@@ -2903,10 +2905,10 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         /*
          * Chicken/Leech
-         * 
+         *
          * Set up the Chicken/Leech panel,Set up what happens to those that flee and
          * those that don't pay attention to an attack.
-         *  
+         *
          */
 
         JPanel chickenLeechBox = new JPanel();
@@ -3027,9 +3029,9 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         /*
          * Pilot Panel
-         * 
+         *
          * Set up the Pilot Panel,Exp and leveling for pilots
-         *  
+         *
          */
 
         JPanel pilotExpBox = new JPanel();
@@ -3087,9 +3089,9 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         /*
          * Building Panel
-         * 
+         *
          * Set up the Building Panel,Bildings for building raids and ops
-         *  
+         *
          */
 
         JPanel buildingsBox = new JPanel();
@@ -3250,9 +3252,9 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         /*
          * City Panel
-         * 
+         *
          * Set up the City Panel,City Generator Configs.
-         *  
+         *
          */
 
         JPanel checkBoxBox = new JPanel(new SpringLayout());
@@ -3317,9 +3319,9 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         /*
          * Victory Conditions Panel
-         * 
+         *
          * Set up the Victory Conditions that will be sent to MegaMek
-         *  
+         *
          */
 
         JPanel victoryParamsPanel = new JPanel(new SpringLayout());
@@ -3383,9 +3385,9 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         /*
          * Team Panel
-         * 
+         *
          * Set up the Team settings that will be sent to MegaMek
-         *  
+         *
          */
 
         JPanel teamParamsPanel = new JPanel(new SpringLayout());
@@ -3442,9 +3444,9 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         /*
          * Deployment Panel
-         * 
+         *
          * Set up the Deployment settings that will be sent to MegaMek
-         *  
+         *
          */
 
         JPanel deploymentParamsPanel = new JPanel(new SpringLayout());
@@ -3582,9 +3584,9 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         /*
          * Map Settings Panel
-         * 
+         *
          * Set up the map settings that will be sent to MegaMek
-         *  
+         *
          */
 
         JPanel mapParamsPanel = new JPanel(new SpringLayout());
@@ -3802,7 +3804,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
     /**
      * This Method tunnels through all of the panels to find the textfields and checkboxes. Once it find one it grabs the Name() param of the object and uses
      * that to find out what the setting should be from the mwclient.getserverConfigs() method.
-     * 
+     *
      * @param panel
      */
     public void findAndPopulateTextAndCheckBoxes(JPanel panel) {
@@ -3828,7 +3830,8 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
                 textBox.setPreferredSize(textBoxSize);
                 textBox.setMaximumSize(textBoxSize);
                 textBox.setMinimumSize(textBoxSize);
-
+                textBox.removeMouseListener(this);
+                textBox.addMouseListener(this);
             } else if (field instanceof JCheckBox) {
                 JCheckBox checkBox = (JCheckBox) field;
 
@@ -3857,7 +3860,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
     /**
      * This Method tunnels through all of the panels to find the textfields and checkboxes. Once it find one it grabs the Name() param of the object and uses
      * that to find out what the setting should be from the mwclient.getserverConfigs() method.
-     * 
+     *
      * @param panel
      */
     public void findAndPopulateTextAndCheckBoxes(JPanel panel, BackedTreeMap OperationInfo) {
@@ -3911,7 +3914,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
     /**
      * This method will tunnel through all of the panels of the config UI to find any changed text fields or checkboxes. Then it will send the new configs to
      * the server.
-     * 
+     *
      * @param panel
      */
     public void findAndSaveConfigs(JPanel panel, PrintStream p) {
@@ -4068,5 +4071,34 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         }
 
         ((client.MWClient) mwclient).sendChat(client.MWClient.CAMPAIGN_PREFIX + "c setoperation#short#" + opData.toString());
+    }
+
+    public void mouseClicked(MouseEvent arg0) {
+
+        if (arg0.getButton() == MouseEvent.BUTTON3) {
+            JTextField text = (JTextField) arg0.getSource();
+            new TextEditorDialog(this, text);
+        }
+
+    }
+
+    public void mouseEntered(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void mouseExited(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void mousePressed(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void mouseReleased(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+
     }
 }

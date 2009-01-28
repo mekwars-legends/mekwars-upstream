@@ -1306,6 +1306,7 @@ server-dist/startserver.bat -text
 /serverDescription.xml -text
 src/OperationsEditor/MainOperations.java -text
 src/OperationsEditor/dialog/OperationsDialog.java -text
+src/OperationsEditor/dialog/TextEditorDialog.java -text
 src/admin/AdminMapPopupMenu.java -text
 src/admin/AdminMenu.java -text
 src/admin/ModeratorMenu.java -text
