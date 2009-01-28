@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2004 
- * 
+ * MekWars - Copyright (C) 2004
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  * Original author Helge Richter (McWizard)
  *
@@ -23,6 +23,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -30,8 +31,6 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.KeyEvent;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -44,10 +43,10 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.TreeMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import javax.swing.ImageIcon;
@@ -60,37 +59,35 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 
-import com.thoughtworks.xstream.io.xml.DomDriver;
-
 import client.MWClient;
 import client.campaign.CArmy;
 import client.gui.dialog.PlanetSearchDialog;
-import client.gui.AttackMenu;
 
+import com.thoughtworks.xstream.io.xml.DomDriver;
 import common.CampaignData;
 import common.House;
 import common.Influences;
 import common.Planet;
-import common.util.StringUtils;
 import common.util.MMNetXStream;
 import common.util.Position;
+import common.util.StringUtils;
 
 /**
  * Draws the main map component.
- * 
+ *
  * @author Imi
  */
 
 public class InnerStellarMap extends JComponent implements MouseListener, MouseMotionListener, MouseWheelListener, ActionListener {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 8655078955521790260L;
 
     /**
      * All configuration behaviour of InterStellarMap are saved here.
-     * 
+     *
      * @author Imi (immanuel.scholz@gmx.de)
      */
     static public final class InnerStellarMapConfig {
@@ -164,14 +161,15 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
      */
     private static class IconProvider extends TreeMap<String, ImageIcon> {
         /**
-         * 
+         *
          */
         private static final long serialVersionUID = 4594828039895948331L;
 
         public ImageIcon get(String key) {
-            if (!containsKey(key))
+            if (!containsKey(key)) {
                 put(key, new ImageIcon(key));
-            return (ImageIcon) super.get(key);
+            }
+            return super.get(key);
         }
     }
 
@@ -194,7 +192,7 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
 
     /**
      * Various display options
-     * 
+     *
      * @see InnerStellarMapConfig
      */
     private JCheckBoxMenuItem[] display = new JCheckBoxMenuItem[displayStr.length];
@@ -239,7 +237,7 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
 
     /**
      * If right button clicked, open the popup menu
-     * 
+     *
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent e) {
@@ -249,8 +247,9 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
             // popup menu
             final Planet p = nearestNeighbour(scr2mapX(e.getX()), scr2mapY(e.getY()));
 
-            if (p != null)
+            if (p != null) {
                 activate(p);
+            }
 
             JPopupMenu popup = new JPopupMenu();
 
@@ -344,8 +343,9 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
             // DISPLAY options
             JMenu displayMenu = new JMenu("Display");
             popup.add(displayMenu);
-            for (int i = 0; i < displayStr.length; ++i)
+            for (int i = 0; i < displayStr.length; ++i) {
                 displayMenu.add(display[i]);
+            }
 
             // FILTER options
             JMenu filterMenu = new JMenu("Filter");
@@ -388,9 +388,9 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
                 try {
 
                     File loadJar = new File("./MekWarsAdmin.jar");
-                    if (!loadJar.exists())
+                    if (!loadJar.exists()) {
                         CampaignData.mwlog.errLog("AdminMapPopupMenu creation skipped. No MekWarsAdmin.jar present.");
-                    else {
+                    } else {
                         URLClassLoader loader = new URLClassLoader(new URL[] { loadJar.toURI().toURL() });
                         Class<?> c = loader.loadClass("admin.AdminMapPopupMenu");
                         Object o = c.newInstance();
@@ -450,14 +450,14 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
 
     /**
      * Constructs the ISMap.
-     * 
+     *
      * @param panel -
      *            The panel it belongs to.
      */
     InnerStellarMap(CMapPanel panel, MWClient client, CMainFrame mainFrame) {
-        this.mwclient = client;
+        mwclient = client;
         setBackground(Color.BLACK);
-        this.mp = panel;
+        mp = panel;
         setOpaque(true);
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -466,14 +466,17 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
         MMNetXStream xml = new MMNetXStream(new DomDriver());
         try {
             File dir = new File(client.getCacheDir());
-            if (!dir.exists())
+            if (!dir.exists()) {
                 dir.mkdirs();
+            }
             conf = (InnerStellarMapConfig) xml.fromXML(new FileReader(client.getCacheDir() + "/mapconf.xml"));
-            if (conf.display.length != displayStr.length)
+            if (conf.display.length != displayStr.length) {
                 throw new RuntimeException("not my file");
+            }
         } catch (Throwable e) {
-            if (!(e instanceof FileNotFoundException))
+            if (!(e instanceof FileNotFoundException)) {
                 CampaignData.mwlog.errLog((Exception) e);
+            }
             CampaignData.mwlog.infoLog("could not read map config file. Will use defaults");
             conf = new InnerStellarMapConfig();
         }
@@ -481,8 +484,9 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
         try {
             parseOverlayFile();
         } catch (Throwable e) {
-            if (!(e instanceof FileNotFoundException))
+            if (!(e instanceof FileNotFoundException)) {
                 CampaignData.mwlog.errLog((Exception) e);
+            }
             CampaignData.mwlog.infoLog("could not read map overlay file.");
         }
 
@@ -537,8 +541,9 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
                     } catch (InterruptedException e) {
                     }
                     blinkPhase = !blinkPhase;
-                    if (changesSinceLastRefresh.size() > 0)
+                    if (changesSinceLastRefresh.size() > 0) {
                         mp.repaint();
+                    }
                 }
             }
         }.start();
@@ -547,8 +552,9 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
         Double storedZoom = Double.parseDouble(client.getConfigParam("MAPZOOMLEVEL"));
         if (storedZoom != null) {
             double storedValue = storedZoom.doubleValue();
-            if (storedValue != 0)
+            if (storedValue != 0) {
                 conf.scale = storedValue;
+            }
         }
 
         // restore previous offset
@@ -561,8 +567,9 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
         if (storedPlanetName != null && !storedPlanetName.trim().equals("")) {
             // planet setting exists. lets see if the planet does ...
             Planet currPlan = client.getData().getPlanetByName(storedPlanetName);
-            if (currPlan != null)
+            if (currPlan != null) {
                 this.activate(currPlan, false);
+            }
         }
 
     }
@@ -574,14 +581,20 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
         st.eolIsSignificant(true);
         st.commentChar('#');
         ArrayList<Position> line = new ArrayList<Position>();
+        Position position = null;
+        String color = mwclient.getConfigParam("MAPOVERLAYCOLOR");
         while (st.nextToken() != StreamTokenizer.TT_EOF) {
             if (st.ttype == StreamTokenizer.TT_WORD && st.sval.equals("LINE") && line.size() > 0) {
                 overlayLines.add(line);
                 line = new ArrayList<Position>();
+            } else if (st.ttype == StreamTokenizer.TT_WORD && st.sval.startsWith("COLOR")) {
+                color = st.sval.substring("COLOR".length());
             } else if (st.ttype == StreamTokenizer.TT_NUMBER) {
                 double x = st.nval;
                 if (st.nextToken() == StreamTokenizer.TT_NUMBER) {
-                    line.add(new Position(x, st.nval));
+                    position = new Position(x, st.nval);
+                    position.setColor(color);
+                    line.add(position);
                 }
                 while (st.ttype != StreamTokenizer.TT_EOF && st.ttype != StreamTokenizer.TT_EOL) {
                     st.nextToken();
@@ -604,7 +617,7 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
         while (it.hasNext()) {
             Planet p = it.next();
             diff = p.getPosition().distanceSq(x, y);
-            if (diff < minDiff && this.planetIsVisible(p)) {
+            if (diff < minDiff && planetIsVisible(p)) {
                 minDiff = diff;
                 minPlanet = p;
             }
@@ -645,10 +658,10 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
 
         if (conf.display[DISPLAY_OVERLAY] && overlayLines != null) {
             for (ArrayList<Position> points : overlayLines) {
-                g.setColor(StringUtils.html2Color(mwclient.getConfigParam("MAPOVERLAYCOLOR")));
                 Position last = null;
                 for (Position p : points) {
                     if (last != null) {
+                        g.setColor(StringUtils.html2Color(p.getColor()));
                         g.drawLine(map2scrX(last.x), map2scrY(last.y), map2scrX(p.x), map2scrY(p.y));
                     }
                     last = p;
@@ -663,10 +676,11 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
                 ImageIcon ic = null;
 
                 boolean useJPGImage = new File("data/images/mekwarsmap.jpg").exists();
-                if (useJPGImage)
+                if (useJPGImage) {
                     ic = new ImageIcon("data/images/mekwarsmap.jpg");
-                else
+                } else {
                     ic = new ImageIcon("data/images/mekwarsmap.gif");
+                }
 
                 g.drawImage(ic.getImage(), map2scrX(x), map2scrY(y), width, height, ic.getImageObserver());
 
@@ -682,17 +696,19 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
             /*
              * check the visibility of the planet. TODO: Checking on every pait is slow. We should cache the visibility data in a map of some kind and clear it on refresh or viewing option change.
              */
-            if (!this.planetIsVisible(p))
+            if (!planetIsVisible(p)) {
                 continue;
+            }
 
             // calculate the color of the faction owner
             Integer houseID = p.getInfluence().getOwner();
             String houseColor = "";
 
-            if (houseID == null || houseID == -1 || p.getInfluence().getInfluence(houseID) < mwclient.getMinPlanetOwnerShip(p))
+            if (houseID == null || houseID == -1 || p.getInfluence().getInfluence(houseID) < mwclient.getMinPlanetOwnerShip(p)) {
                 houseColor = mwclient.getserverConfigs("DisputedPlanetColor");
-            else
+            } else {
                 houseColor = mwclient.getData().getHouse(houseID).getHouseColor();
+            }
 
             Color c = Color.WHITE;
 
@@ -715,7 +731,7 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
             if ( (c.getRed() == 0 && c.getBlue() == 0) ){
                 c = Color.white;
             }
-            
+
             // calculate the current screen position
             int x = map2scrX(p.getPosition().x) - size / 2;
             int y = map2scrY(p.getPosition().y) - size / 2;
@@ -731,17 +747,21 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
                 g.setColor(Color.WHITE);
                 dotSize++;
                 blink = true;
-            } else
+            } else {
                 g.setColor(c);
-            if (size < 3)
+            }
+            if (size < 3) {
                 g.fillRect(x, y, dotSize, dotSize);
-            else
+            } else {
                 g.fillArc(x, y, dotSize, dotSize, 0, 360);
+            }
             // names
-            if (!blink)
+            if (!blink) {
                 g.setColor(c);
-            if (conf.display[DISPLAY_NAMES] && (conf.showPlanetNamesThreshold == 0 || conf.scale > conf.showPlanetNamesThreshold))
+            }
+            if (conf.display[DISPLAY_NAMES] && (conf.showPlanetNamesThreshold == 0 || conf.scale > conf.showPlanetNamesThreshold)) {
                 g.drawString(p.getName(), x + size, y);
+            }
 
             // influence icon
             if (conf.display[DISPLAY_INFLUENCE] && (conf.showInfluenceThreshold == 0 || conf.scale > conf.showInfluenceThreshold)) {
@@ -800,8 +820,9 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
 
                 // determine which ops the player is eligible for
                 TreeSet<String> legalOps = new TreeSet<String>();
-                for (CArmy currA : mwclient.getPlayer().getArmies())
+                for (CArmy currA : mwclient.getPlayer().getArmies()) {
                     legalOps.addAll(currA.getLegalOperations());
+                }
 
                 // loop and draw
                 for (String typeName : legalOps) {
@@ -816,8 +837,9 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
                         /*
                          * TODO: Replace the constant visibility checks with a map. See earlier comment.
                          */
-                        if (!this.planetIsVisible(p))
+                        if (!planetIsVisible(p)) {
                             continue;
+                        }
 
                         int x = map2scrX(p.getPosition().x);
                         int y = map2scrY(p.getPosition().y);
@@ -840,7 +862,7 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
 
     /**
      * Finds the best factory on a planet
-     * 
+     *
      * @author Torren
      * @param p -
      *            planet to get fac on
@@ -855,13 +877,16 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
      * What we NOT want, is to wash out the color tone by adding simple gray to the color. I preferre the code from Color.brighter() which simple looks good. (But it had to be adjusted a bit) Imi
      */
     private int adj(int r) {
-        if (conf.colorAdjustment == 0)
+        if (conf.colorAdjustment == 0) {
             return r;
-        if (conf.colorAdjustment == 1)
+        }
+        if (conf.colorAdjustment == 1) {
             return 255;
+        }
         int i = (int) (1.0 / conf.colorAdjustment);
-        if (r > 0 && r < i)
+        if (r > 0 && r < i) {
             r = i;
+        }
         return Math.min((int) (r / (1 - conf.colorAdjustment)), 255);
     }
 
@@ -874,14 +899,15 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
 
     /**
      * Activate a specfic planet
-     * 
+     *
      * @param p
      *            This planet becomes the selected one.
      */
     public void activate(Planet p) {
 
-        if (p == null)
+        if (p == null) {
             return;
+        }
 
         if (mp.getPPanel() != null && mp.getPPanel().getPlanet() != p) {
 
@@ -889,7 +915,7 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
             conf.planetID = p.getId();
             mp.repaint();
 
-            this.saveMapSelection(p);
+            saveMapSelection(p);
         }
     }
 
@@ -898,8 +924,9 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
      */
     public void activate(Planet p, boolean center) {
 
-        if (p == null)
+        if (p == null) {
             return;
+        }
 
         // activate normally
         this.activate(p);
@@ -922,8 +949,9 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
 
     public void mousePressed(MouseEvent e) {
         mouseMod = e.getButton();
-        if (e.getButton() != MouseEvent.BUTTON1)
+        if (e.getButton() != MouseEvent.BUTTON1) {
             return;
+        }
         selectedPlanet = nearestNeighbour(scr2mapX(e.getX()), scr2mapY(e.getY()));
         activate(selectedPlanet);
     }
@@ -937,8 +965,9 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
     int mouseMod = 0;
 
     public void mouseDragged(MouseEvent e) {
-        if (mouseMod != MouseEvent.BUTTON3)
+        if (mouseMod != MouseEvent.BUTTON3) {
             return;
+        }
         if (lastMousePos != null) {
             conf.offset.x -= lastMousePos.x - e.getX();
             conf.offset.y -= lastMousePos.y - e.getY();
@@ -963,16 +992,17 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
         } else if (keyCode == 40)// down arrow
         {
             conf.offset.x += conf.scale;
-        } else
+        } else {
             return;
+        }
         mp.repaint();
     }
 
     public void mouseMoved(MouseEvent e) {
 
-        if (lastMousePos == null)
+        if (lastMousePos == null) {
             lastMousePos = new Point(e.getX(), e.getY());
-        else {
+        } else {
             lastMousePos.x = e.getX();
             lastMousePos.y = e.getY();
         }
@@ -1000,11 +1030,10 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
             }
             result.append("</TABLE></html>");
 
-            this.setToolTipText(result.toString());
+            setToolTipText(result.toString());
+        } else {
+            setToolTipText(null);
         }
-
-        else
-            this.setToolTipText(null);
     }
 
     public void mouseWheelMoved(MouseWheelEvent e) {
@@ -1052,7 +1081,7 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
 
     /**
      * The event listener for all the display options...
-     * 
+     *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -1060,8 +1089,9 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
         mp.repaint();
 
         // save display settings
-        for (int i = 0; i < displayStr.length; ++i)
+        for (int i = 0; i < displayStr.length; ++i) {
             conf.display[i] = display[i].isSelected();
+        }
 
         // save filter settings
         String filterString = "";
@@ -1098,11 +1128,13 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
             try {
                 Influences addinf = changes.get(id);
                 Influences oldinf = changesSinceLastRefresh.get(id);
-                if (oldinf != null)
+                if (oldinf != null) {
                     addinf.add(oldinf);
+                }
                 changesSinceLastRefresh.put(id, addinf);
-                if (mp != null)
+                if (mp != null) {
                     mp.repaint();
+                }
             } catch (Exception ex) {
                 CampaignData.mwlog.errLog("Error with Planet: " + mwclient.getData().getPlanet(id).getName());
             }
@@ -1142,43 +1174,50 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
 
     /**
      * Utility method which checks the visibility of a given planet.
-     * 
+     *
      * @param p
      * @return
      */
     private boolean planetIsVisible(Planet p) {
 
         // first, make sure its not "All"
-        if (filterSettings[FILTER_ALL])
+        if (filterSettings[FILTER_ALL]) {
             return true;
+        }
 
         /*
          * Not showing all, so do check all relevant server options and determine whether this particular world should be visible @ this time.
          */
-        if (filterSettings[FILTER_FACTORIES] && p.getFactoryCount() > 0)
+        if (filterSettings[FILTER_FACTORIES] && p.getFactoryCount() > 0) {
             return true;
+        }
 
-        if (filterSettings[FILTER_FACILITIES] && p.getBaysProvided() > 0)
+        if (filterSettings[FILTER_FACILITIES] && p.getBaysProvided() > 0) {
             return true;
+        }
 
         if (filterSettings[FILTER_DISPUTED]) {
 
             Integer houseID = p.getInfluence().getOwner();
 
             // no owner means disputed
-            if (houseID == null)
+            if (houseID == null) {
                 return true;
+            }
 
             // there's a high ID, but it doesn't own enough of the world to be undisputed
-            if (p.getInfluence().getInfluence(houseID) < mwclient.getMinPlanetOwnerShip(p))
+            if (p.getInfluence().getInfluence(houseID) < mwclient.getMinPlanetOwnerShip(p)) {
                 return true;
+            }
         }
 
-        if (filterSettings[FILTER_CONTESTED] && p.getInfluence().getHouses().size() > 1)
+        if (filterSettings[FILTER_CONTESTED] && p.getInfluence().getHouses().size() > 1) {
             return true;
+        }
 
-        if (filterSettings[FILTER_FACTION] && p.getInfluence().getInfluence(mwclient.getPlayer().getMyHouse().getId()) > 0)
+        if (filterSettings[FILTER_FACTION] && p.getInfluence().getInfluence(mwclient.getPlayer().getMyHouse().getId()) > 0) {
             return true;
+        }
 
         // no qualifiers. we shouldn't see the world.
         return false;

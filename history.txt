@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ RFE: Allow for multiple colors in the overlay map. 
+	use the line COLOR###### after the line LINE to change
+	Example COLORCCCCCC would change the lines to hex color CCCCCC
 + Bug: Pilot leveling only reading Server configs not house configs
 + Bug: Targetting systems not staying set for units with Damaged C3 and C3i 
 + Bug: Promote/Demote Dialog showing NAG if pilot has NAP skill
