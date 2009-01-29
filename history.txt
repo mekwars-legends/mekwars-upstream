@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ RFE 2483961: Exchangeable BA Ammo
 + Bug: Wrong tech levels being set as ALL for parts.
 + RFE: Text dialog only opens with right mouse button click in op editor
 + RFE: Text dialog opens on text fields in op editor

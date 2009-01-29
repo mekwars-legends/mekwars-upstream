@@ -418,7 +418,7 @@ import client.campaign.CUnit;
                             }
                             
                             // Possibly allow level 3 ammos, possibly not.
-                            if (mmClient.game.getOptions().booleanOption("allow_level_3_ammo")) {
+                            if (mmClient.game.getOptions().booleanOption("allow_advanced_ammo")) {
                                 if (!mmClient.game.getOptions().booleanOption("is_eq_limits")) {
                                     if (unit.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL
                                             && atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL) {
