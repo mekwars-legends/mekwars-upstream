@@ -1,8 +1,8 @@
 /*
- * MekWars - Copyright (C) 2007 
- * 
+ * MekWars - Copyright (C) 2007
+ *
  * Original author - Torren (torren@users.sourceforge.net)
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
  * Software Foundation; either version 2 of the License, or (at your option)
@@ -34,62 +34,64 @@ public class BMEquipment {
     private String equipmentType = "";
     private String tech = "";
     private int techLevel = TechConstants.T_ALL;
-    
+
     static public String PART_AMMO = "Ammo";
     static public String PART_WEAPON = "Weapons";
     static public String PART_MISC = "Misc";
     static public String PART_ARMOR = "Armor";
 
     public void setEquipmentInternalName(String name) {
-        this.equipmentInternalName = name;
+        equipmentInternalName = name;
     }
 
     public String getEquipmentInternalName() {
-        return this.equipmentInternalName;
+        return equipmentInternalName;
     }
 
     public void setEquipmentName(String name) {
-        this.equipmentName = name;
+        equipmentName = name;
     }
 
     public String getEquipmentName() {
 
-        if (this.equipmentName.trim().length() < 1) {
-            EquipmentType eq = EquipmentType.get(this.getEquipmentInternalName());
+        if (equipmentName.trim().length() < 1) {
+            EquipmentType eq = EquipmentType.get(getEquipmentInternalName());
 
             // Armor,IS,Engines,Actuators,Cockpit,Sensors anything that doesn't
             // make a normal object in MM
             if (eq == null) {
-                this.setEquipmentName(this.getEquipmentInternalName());
+                setEquipmentName(getEquipmentInternalName());
 
-                if (this.getEquipmentName().toLowerCase().indexOf("armor") > -1 || this.getEquipmentName().equalsIgnoreCase("IS (STD)") || EquipmentType.getArmorType(this.getEquipmentName()) != EquipmentType.T_ARMOR_UNKNOWN || EquipmentType.getStructureType(this.getEquipmentName()) != EquipmentType.T_STRUCTURE_UNKNOWN)
-                    this.setEquipmentType(BMEquipment.PART_ARMOR);
-                else
-                    this.setEquipmentType(BMEquipment.PART_MISC);
+                if (getEquipmentName().toLowerCase().indexOf("armor") > -1 || getEquipmentName().equalsIgnoreCase("IS (STD)") || EquipmentType.getArmorType(getEquipmentName()) != EquipmentType.T_ARMOR_UNKNOWN || EquipmentType.getStructureType(getEquipmentName()) != EquipmentType.T_STRUCTURE_UNKNOWN) {
+                    setEquipmentType(BMEquipment.PART_ARMOR);
+                } else {
+                    setEquipmentType(BMEquipment.PART_MISC);
+                }
             } else {
 
-                this.setEquipmentName(eq.getName());
+                setEquipmentName(eq.getName());
 
-                if (eq instanceof AmmoType)
-                    this.setEquipmentType(BMEquipment.PART_AMMO);
-                else if (eq instanceof WeaponType)
-                    this.setEquipmentType(BMEquipment.PART_WEAPON);
-                else if (this.getEquipmentName().toLowerCase().indexOf("armor") > -1 || EquipmentType.getArmorType(this.getEquipmentName()) != EquipmentType.T_ARMOR_UNKNOWN || EquipmentType.getStructureType(this.getEquipmentName()) != EquipmentType.T_STRUCTURE_UNKNOWN)
-                    this.setEquipmentType(BMEquipment.PART_ARMOR);
-                else
-                    this.setEquipmentType(BMEquipment.PART_MISC);
+                if (eq instanceof AmmoType) {
+                    setEquipmentType(BMEquipment.PART_AMMO);
+                } else if (eq instanceof WeaponType) {
+                    setEquipmentType(BMEquipment.PART_WEAPON);
+                } else if (getEquipmentName().toLowerCase().indexOf("armor") > -1 || EquipmentType.getArmorType(getEquipmentName()) != EquipmentType.T_ARMOR_UNKNOWN || EquipmentType.getStructureType(getEquipmentName()) != EquipmentType.T_STRUCTURE_UNKNOWN) {
+                    setEquipmentType(BMEquipment.PART_ARMOR);
+                } else {
+                    setEquipmentType(BMEquipment.PART_MISC);
+                }
             }
 
         }
-        return this.equipmentName;
+        return equipmentName;
     }
 
     public void setEquipmentType(String type) {
-        this.equipmentType = type;
+        equipmentType = type;
     }
 
     public String getEquipmentType() {
-        return this.equipmentType;
+        return equipmentType;
     }
 
     public void setCost(double cost) {
@@ -113,30 +115,31 @@ public class BMEquipment {
     }
 
     public boolean isCostUp() {
-        return this.costUp;
+        return costUp;
     }
 
     public void setCostUp(boolean update) {
-        this.costUp = update;
+        costUp = update;
     }
 
     public int getTechLevel() {
-        return this.techLevel;
+        return techLevel;
     }
-    
+
     public String getTech() {
 
-        if (tech.trim().length() > 0)
+        if (tech.trim().length() > 0) {
             return tech;
+        }
 
         EquipmentType eq = EquipmentType.get(getEquipmentInternalName());
 
         if (eq == null) {
-            if (this.getEquipmentInternalName().indexOf("Engine") > 0 && this.getEquipmentInternalName().startsWith("Clan")) {
+            if (getEquipmentInternalName().indexOf("Engine") > 0 && getEquipmentInternalName().startsWith("Clan")) {
                 tech = "Clan";
                 techLevel = TechConstants.T_CLAN_TW;
             }
-            else if (this.getEquipmentInternalName().indexOf("Engine") > 0 && this.getEquipmentInternalName().startsWith("IS")) {
+            else if (getEquipmentInternalName().indexOf("Engine") > 0 && getEquipmentInternalName().startsWith("IS")) {
                 tech = "IS";
                 techLevel = TechConstants.T_IS_TW_ALL;
             }
@@ -145,13 +148,13 @@ public class BMEquipment {
                 techLevel = TechConstants.T_ALL;
             }
         } else {
-            if (eq.getTechLevel() == TechConstants.T_CLAN_ADVANCED 
-                    || eq.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL 
-                    || eq.getTechLevel() == TechConstants.T_CLAN_TW 
+            if (eq.getTechLevel() == TechConstants.T_CLAN_ADVANCED
+                    || eq.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL
+                    || eq.getTechLevel() == TechConstants.T_CLAN_TW
                     || eq.getTechLevel() == TechConstants.T_CLAN_UNOFFICIAL) {
                 tech = "Clan";
             }
-            else if (eq.getTechLevel() == TechConstants.T_ALL || eq.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) {
+            else if (eq.getTechLevel() == TechConstants.T_ALL || eq.getTechLevel() < TechConstants.T_INTRO_BOXSET) {
                 tech = "All";
             }
             else {
@@ -163,15 +166,16 @@ public class BMEquipment {
         return tech;
     }
 
+    @Override
     public BMEquipment clone() {
         BMEquipment clone = new BMEquipment();
 
-        clone.setAmount(this.getAmount());
-        clone.setCost(this.getCost());
-        clone.setCostUp(this.isCostUp());
-        clone.setEquipmentInternalName(this.getEquipmentInternalName());
-        clone.setEquipmentName(this.getEquipmentName());
-        clone.setEquipmentType(this.getEquipmentType());
+        clone.setAmount(getAmount());
+        clone.setCost(getCost());
+        clone.setCostUp(isCostUp());
+        clone.setEquipmentInternalName(getEquipmentInternalName());
+        clone.setEquipmentName(getEquipmentName());
+        clone.setEquipmentType(getEquipmentType());
         clone.getTech();
 
         return clone;
