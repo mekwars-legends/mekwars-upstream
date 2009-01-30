@@ -98,7 +98,7 @@ public class SetUnitBurstCommand implements Command {
 
             Mounted mWeapon = en.getEquipment(en.getCritical(weaponLocation, weaponSlot).getIndex());
 
-            if (!mWeapon.getType().hasFlag(WeaponType.F_BURST_FIRE)) {
+            if (!mWeapon.getType().hasFlag(WeaponType.F_MG)) {
                 CampaignMain.cm.toUser("AM:" + mWeapon.getName() + " cannot be set to rapid fire!", Username, true);
                 return;
             }
