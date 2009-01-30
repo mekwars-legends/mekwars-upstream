@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2005 
- * 
+ * MekWars - Copyright (C) 2005
+ *
  * Original author - nmorris (urgru@users.sourceforge.net)
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -1435,6 +1435,8 @@ public class ShortResolver {
 		 * game-play XP.
 		 */
 		boolean winnerAlwaysSalvagesOwn = o.getBooleanValue("WinnerAlwaysSalvagesOwnUnits");
+		boolean attackerAlwaysSalvagesOwn = o.getBooleanValue("AttackerAlwaysSalvagesOwnUnits");
+        boolean defenderAlwaysSalvagesOwn = o.getBooleanValue("DefenderAlwaysSalvagesOwnUnits");
 
 		int winnerSalvagePercent = 0;
 		int salvageAdjustment = 0;
@@ -1565,6 +1567,199 @@ public class ShortResolver {
 				continue;
 
 			}// end for winnerSalvage
+
+            /*
+             * If the so.getAttackers() always recover their own salvage, pull it
+             * from the queue and send a recovery message to the original owner.
+             * Also check to see if the pilot survived.
+             */
+            if (attackerAlwaysSalvagesOwn && so.getAttackers().containsKey(oldOwnerName)) {
+
+                String toOwner = " You recovered your " + currU.getModelName() + ". ";
+                String toOthers = oldOwner.getColoredName() + " recovered his " + currU.getModelName() + ". ";
+
+                /*
+                 * Check the pilot's death. If he passed away, call the death
+                 * handler and append the result to the owners' pilotString.
+                 */
+                String pilotAppend;
+
+                boolean pilotLived = (Boolean) pilotinformation[0];
+                if (!pilotLived) {
+                    pilotAppend = handleDeadPilot(oldOwner, currU, currEntity, so);
+                    String workingS = (String) pilotinformation[1];
+                    pilotinformation[1] = workingS + pilotAppend;
+                } else {
+                    pilotAppend = "<br>" + calculatePilotEXP(o, so, currEntity, oldOwner, true);
+                }
+
+                /*
+                 * loop through all players, adding the unit's outcome to their
+                 * salvage message trees. Send the owner his own message and set
+                 * the other message for remaining players. Even though this is
+                 * a winner salvaging his unit, we need to check captors - a
+                 * pilot may have been picked up by an enemy on the field.
+                 */
+                for (String currName : allPlayers.keySet()) {
+
+                    SPlayer captor = (SPlayer) pilotinformation[4];
+                    String toSet = toOthers + pilotinformation[3];// default
+                    // to
+                    // otherstring
+                    if (currName.equals(oldOwnerName)) {
+                        toSet = toOwner + pilotinformation[1] + pilotAppend;// set
+                        // the
+                    } else {
+                        if (captor != null && currName.equals(captor.getName().toLowerCase())) {
+                            toSet = toOthers + pilotinformation[2];
+                        } else {
+                            toSet = toOthers + pilotinformation[3];
+                        }
+                    }
+
+                    // if already part of the tree
+                    if (unitStrings.containsKey(currName)) {
+                        String workingS = unitStrings.get(currName);
+                        unitStrings.put(currName, workingS + toSet + "<br>");
+                    } else {
+                        unitStrings.put(currName, toSet + "<br>");
+                    }
+
+                }// end foreach(name in allplayers)
+
+                /*
+                 * Add the cost to the player's tree.
+                 */
+                int costToRepair = Math.max(0, getSalvageCost(oldOwner, currU, currEntity, o, so));
+
+                if (unitCosts.containsKey(oldOwnerName)) {
+                    Integer oldCost = unitCosts.get(oldOwnerName);
+                    unitCosts.put(oldOwnerName, oldCost + costToRepair);
+                } else {
+                    unitCosts.put(oldOwnerName, costToRepair);
+                }
+
+                /*
+                 * Check to see if the player already has a scrap thread. If so,
+                 * add this unit as an entry. If not, create a new
+                 * OpsScrapThread for the player.
+                 */
+                if (scrapThreads.containsKey(oldOwnerName)) {
+                    scrapThreads.get(oldOwnerName).addScrappableUnit(currU.getId(), costToRepair);
+                } else {
+                    OpsScrapThread ost = new OpsScrapThread(oldOwnerName);
+                    ost.addScrappableUnit(currU.getId(), costToRepair);
+                    scrapThreads.put(oldOwnerName, ost);
+                }
+
+                // winner recovered own unit. send update.
+                CampaignMain.cm.toUser("PL|UU|" + currU.getId() + "|" + currU.toString(true), oldOwnerName, false);
+
+                /*
+                 * Nothing more to do with this particular unit in the for
+                 * each(OperationEntity : salvagable) loop. continue to next
+                 * unit.
+                 */
+                continue;
+
+            }// end for attackerSalvage
+
+            /*
+             * If the so.getDefender() always recover their own salvage, pull it
+             * from the queue and send a recovery message to the original owner.
+             * Also check to see if the pilot survived.
+             */
+            if (defenderAlwaysSalvagesOwn && so.getDefenders().containsKey(oldOwnerName)) {
+
+                String toOwner = " You recovered your " + currU.getModelName() + ". ";
+                String toOthers = oldOwner.getColoredName() + " recovered his " + currU.getModelName() + ". ";
+
+                /*
+                 * Check the pilot's death. If he passed away, call the death
+                 * handler and append the result to the owners' pilotString.
+                 */
+                String pilotAppend;
+
+                boolean pilotLived = (Boolean) pilotinformation[0];
+                if (!pilotLived) {
+                    pilotAppend = handleDeadPilot(oldOwner, currU, currEntity, so);
+                    String workingS = (String) pilotinformation[1];
+                    pilotinformation[1] = workingS + pilotAppend;
+                } else {
+                    pilotAppend = "<br>" + calculatePilotEXP(o, so, currEntity, oldOwner, true);
+                }
+
+                /*
+                 * loop through all players, adding the unit's outcome to their
+                 * salvage message trees. Send the owner his own message and set
+                 * the other message for remaining players. Even though this is
+                 * a winner salvaging his unit, we need to check captors - a
+                 * pilot may have been picked up by an enemy on the field.
+                 */
+                for (String currName : allPlayers.keySet()) {
+
+                    SPlayer captor = (SPlayer) pilotinformation[4];
+                    String toSet = toOthers + pilotinformation[3];// default
+                    // to
+                    // otherstring
+                    if (currName.equals(oldOwnerName)) {
+                        toSet = toOwner + pilotinformation[1] + pilotAppend;// set
+                        // the
+                    } else {
+                        if (captor != null && currName.equals(captor.getName().toLowerCase())) {
+                            toSet = toOthers + pilotinformation[2];
+                        } else {
+                            toSet = toOthers + pilotinformation[3];
+                        }
+                    }
+
+                    // if already part of the tree
+                    if (unitStrings.containsKey(currName)) {
+                        String workingS = unitStrings.get(currName);
+                        unitStrings.put(currName, workingS + toSet + "<br>");
+                    } else {
+                        unitStrings.put(currName, toSet + "<br>");
+                    }
+
+                }// end foreach(name in allplayers)
+
+                /*
+                 * Add the cost to the player's tree.
+                 */
+                int costToRepair = Math.max(0, getSalvageCost(oldOwner, currU, currEntity, o, so));
+
+                if (unitCosts.containsKey(oldOwnerName)) {
+                    Integer oldCost = unitCosts.get(oldOwnerName);
+                    unitCosts.put(oldOwnerName, oldCost + costToRepair);
+                } else {
+                    unitCosts.put(oldOwnerName, costToRepair);
+                }
+
+                /*
+                 * Check to see if the player already has a scrap thread. If so,
+                 * add this unit as an entry. If not, create a new
+                 * OpsScrapThread for the player.
+                 */
+                if (scrapThreads.containsKey(oldOwnerName)) {
+                    scrapThreads.get(oldOwnerName).addScrappableUnit(currU.getId(), costToRepair);
+                } else {
+                    OpsScrapThread ost = new OpsScrapThread(oldOwnerName);
+                    ost.addScrappableUnit(currU.getId(), costToRepair);
+                    scrapThreads.put(oldOwnerName, ost);
+                }
+
+                // winner recovered own unit. send update.
+                CampaignMain.cm.toUser("PL|UU|" + currU.getId() + "|" + currU.toString(true), oldOwnerName, false);
+
+                /*
+                 * Nothing more to do with this particular unit in the for
+                 * each(OperationEntity : salvagable) loop. continue to next
+                 * unit.
+                 */
+                continue;
+
+            }// end for defenderSalvage
+
 
 			/*
 			 * Either the salvage is mixed (such that defenders can gain
@@ -1804,7 +1999,7 @@ public class ShortResolver {
 			/*
 			 * Added name of player and unit that destroyed unit for better
 			 * tracking on cyclops. MM does report this and we can use it.
-			 * 
+			 *
 			 * @torren
 			 */
 			if (CampaignMain.cm.isUsingCyclops()) {
@@ -1878,7 +2073,7 @@ public class ShortResolver {
 	 * checked/applied. Some have commented that this is too procedural and not
 	 * very OO; however, it works. Anyone who cares to beautify the process is
 	 * more than welcome to do so.
-	 * 
+	 *
 	 * @urgru 8.26.05
 	 */
 	private void assembleDescriptionStrings(Operation o, ShortOperation so) {

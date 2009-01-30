@@ -2397,7 +2397,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         salvageBox.setLayout(new BoxLayout(salvageBox, BoxLayout.X_AXIS));
 
         masterBox = new JPanel();
-        masterBox.setLayout(new BoxLayout(masterBox, BoxLayout.Y_AXIS));
+        masterBox.setLayout(new SpringLayout());
 
         attackerBox = new JPanel();
         attackerBox.setLayout(new BoxLayout(attackerBox, BoxLayout.Y_AXIS));
@@ -2472,9 +2472,21 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         salvageBox.add(attackerBox);
         salvageBox.add(defenderBox);
 
+        BaseCheckBox = new JCheckBox("Attacker Salvages Own Units");
+        BaseCheckBox.setToolTipText("if true attacker gets all his salvageables");
+        BaseCheckBox.setName("AttackerAlwaysSalvagesOwnUnits");
+        masterBox.add(BaseCheckBox);
+        masterBox.add(salvageBox);
+
         BaseCheckBox = new JCheckBox("Winner Salvages Own Units");
         BaseCheckBox.setToolTipText("if true winner gets all his salvageables");
         BaseCheckBox.setName("WinnerAlwaysSalvagesOwnUnits");
+        masterBox.add(BaseCheckBox);
+        masterBox.add(salvageBox);
+
+        BaseCheckBox = new JCheckBox("Defender Salvages Own Units");
+        BaseCheckBox.setToolTipText("if true defender gets all his salvageables");
+        BaseCheckBox.setName("DefenderAlwaysSalvagesOwnUnits");
         masterBox.add(BaseCheckBox);
         masterBox.add(salvageBox);
 
@@ -2484,6 +2496,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         masterBox.add(BaseCheckBox);
         masterBox.add(salvageBox);
 
+        SpringLayoutHelper.setupSpringGrid(masterBox, 2);
         salvagePanel.add(masterBox);
 
         /*
