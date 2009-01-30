@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2008 
- * 
+ * MekWars - Copyright (C) 2008
+ *
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -15,14 +15,18 @@
 
 /**
  * @author jtighe
- * 
+ *
  * Basic and advanced dialog for converting components into crits
  */
 
 package client.gui.dialog;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.TreeSet;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -32,14 +36,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 
 import megamek.common.TechConstants;
+import client.MWClient;
 
 import common.BMEquipment;
+import common.House;
+import common.Unit;
 import common.util.ComponentToCritsConverter;
-
-import client.MWClient;
-import client.campaign.CUnit;
 
 public final class ComponentConverterDialog implements ActionListener {
 
@@ -50,25 +55,27 @@ public final class ComponentConverterDialog implements ActionListener {
 
     protected JPanel mainPanel = new JPanel(); // main Panel for everything
     protected JPanel critPanel = new JPanel();
-    protected JScrollPane scrollPane = new JScrollPane(); // the scrolly
-                                                            // thingy
+    protected JScrollPane scrollPane = new JScrollPane(); // the scrolly thingy
+    protected JPanel masterPanel = new JPanel();
 
     private JTextField baseTextField = new JTextField(5);
 
-    String[] units = { CUnit.getTypeClassDesc(CUnit.MEK), CUnit.getTypeClassDesc(CUnit.VEHICLE), CUnit.getTypeClassDesc(CUnit.INFANTRY), CUnit.getTypeClassDesc(CUnit.PROTOMEK), CUnit.getTypeClassDesc(CUnit.BATTLEARMOR), CUnit.getTypeClassDesc(CUnit.AERO) };
-    String[] weight = { CUnit.getWeightClassDesc(CUnit.LIGHT), CUnit.getWeightClassDesc(CUnit.MEDIUM), CUnit.getWeightClassDesc(CUnit.HEAVY), CUnit.getWeightClassDesc(CUnit.ASSAULT) };
+    String[] units = { Unit.getTypeClassDesc(Unit.MEK), Unit.getTypeClassDesc(Unit.VEHICLE), Unit.getTypeClassDesc(Unit.INFANTRY), Unit.getTypeClassDesc(Unit.PROTOMEK), Unit.getTypeClassDesc(Unit.BATTLEARMOR), Unit.getTypeClassDesc(Unit.AERO) };
+    String[] weight = { Unit.getWeightClassDesc(Unit.LIGHT), Unit.getWeightClassDesc(Unit.MEDIUM), Unit.getWeightClassDesc(Unit.HEAVY), Unit.getWeightClassDesc(Unit.ASSAULT) };
     protected JComboBox weightCombo;
     protected JComboBox typeCombo;
+    protected JComboBox factionCombo;
 
     private final JButton okayButton = new JButton("OK");
     private final JButton cancelButton = new JButton("Cancel");
-    private final JButton modeButton = new JButton("Basic");
+    private final JButton modeButton = new JButton("Advanced");
     private boolean isAdvanced = false;
 
-    private int basicWeight = CUnit.LIGHT;
-    private int basicType = CUnit.MEK;
+    private int basicWeight = Unit.LIGHT;
+    private int basicType = Unit.MEK;
     private int basicAmount = 100;
-    
+    private boolean isMod = false;
+
     private JDialog dialog;
     private JOptionPane pane;
 
@@ -78,12 +85,31 @@ public final class ComponentConverterDialog implements ActionListener {
 
         this.mwclient = mwclient;
 
+        isMod = mwclient.isMod() || mwclient.isAdmin();
+
+        Collection<House> factions = mwclient.getData().getAllHouses();
+        TreeSet<String> factionNames = new TreeSet<String>();// tree to alpha sort
+        for (Iterator<House> it = factions.iterator(); it.hasNext();) {
+            House house = it.next();
+            factionNames.add(house.getName());
+        }
+        factionCombo = new JComboBox(factionNames.toArray());
+        factionCombo.addActionListener(this);
+
+        if (isMod) {
+            masterPanel.add(factionCombo);
+        }
+
         scrollPane.add(mainPanel);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setViewportView(mainPanel);
 
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        masterPanel.setLayout(new BoxLayout(masterPanel, BoxLayout.Y_AXIS));
+
+        masterPanel.add(scrollPane);
+
 
         okayButton.setActionCommand(okayCommand);
         okayButton.addActionListener(this);
@@ -98,19 +124,26 @@ public final class ComponentConverterDialog implements ActionListener {
         Object[] options = { okayButton, cancelButton, modeButton };
 
         // Create the pane containing the buttons
-        pane = new JOptionPane(scrollPane, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options, null);
+        pane = new JOptionPane(masterPanel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options, null);
 
+        Dimension maxSize = new Dimension(120, 50);
+
+        factionCombo.setMaximumSize(maxSize);
+        factionCombo.setPreferredSize(maxSize);
         // Create the main dialog and set the default button
         dialog = pane.createDialog(scrollPane, windowName);
         dialog.getRootPane().setDefaultButton(cancelButton);
 
-        isAdvanced = !mwclient.getCampaign().getComponentConverter().containsKey("All");
-        
         // Show the dialog and get the user's input
         dialog.setLocationRelativeTo(mwclient.getMainFrame());
         dialog.setModal(true);
+        dialog.setResizable(true);
+        if (isMod) {
+            factionCombo.setSelectedIndex(0);
+        } else {
+            requestComponents(mwclient.getPlayer().getHouse());
+        }
         dialog.pack();
-        refresh();
         dialog.setVisible(true);
 
         if (pane.getValue() == okayButton) {
@@ -120,15 +153,16 @@ public final class ComponentConverterDialog implements ActionListener {
                 findAndSaveConfigs(panel);
             }
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c getcomponentconversion");
-        } else
+        } else {
             dialog.dispose();
+        }
     }
 
     /**
      * This method will tunnel through all of the panels of the config UI to
      * find any changed text fields or checkboxes. Then it will send the new
      * configs to the server.
-     * 
+     *
      * @param panel
      */
     public void findAndSaveConfigs(JPanel panel) {
@@ -141,9 +175,9 @@ public final class ComponentConverterDialog implements ActionListener {
             Object field = panel.getComponent(fieldPos);
 
             // found another JPanel keep digging!
-            if (field instanceof JPanel)
+            if (field instanceof JPanel) {
                 findAndSaveConfigs((JPanel) field);
-            else if (field instanceof JTextField) {
+            } else if (field instanceof JTextField) {
                 JTextField textBox = (JTextField) field;
 
                 if (textBox.getName().equals("amount")) {
@@ -162,13 +196,18 @@ public final class ComponentConverterDialog implements ActionListener {
 
             }
         }
-        
+
         ComponentToCritsConverter converter = mwclient.getCampaign().getComponentConverter().get(crit);
-        
-        if ( converter == null || converter.getComponentUsedType() != type 
-                || converter.getComponentUsedWeight() != weight 
+
+        if ( converter == null || converter.getComponentUsedType() != type
+                || converter.getComponentUsedWeight() != weight
                 || converter.getMinCritLevel() != Integer.parseInt(amount) ){
-            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c Setcomponentconversion#" + crit+ "#" + weight + "#" + type + "#" + amount);
+
+            if (isMod) {
+                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c Setcomponentconversion#" + crit + "#" + weight + "#" + type + "#" + amount + "#" + factionCombo.getSelectedItem().toString());
+            } else {
+                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c Setcomponentconversion#" + crit + "#" + weight + "#" + type + "#" + amount);
+            }
         }
 
     }
@@ -179,14 +218,14 @@ public final class ComponentConverterDialog implements ActionListener {
             Object field = panel.getComponent(fieldPos);
 
             // found another JPanel keep digging!
-            if (field instanceof JPanel)
+            if (field instanceof JPanel) {
                 findAndBasicConfigs((JPanel) field);
-            else if (field instanceof JTextField) {
+            } else if (field instanceof JTextField) {
                 JTextField textBox = (JTextField) field;
 
                 if (textBox.getName().equals("amount")) {
                     basicAmount = Integer.parseInt(textBox.getText());
-                } 
+                }
             } else if (field instanceof JComboBox) {
 
                 JComboBox combo = (JComboBox) field;
@@ -209,12 +248,32 @@ public final class ComponentConverterDialog implements ActionListener {
             pane.setValue(cancelButton);
             dialog.dispose();
         } else if (command.equals(selectorButtonCommand)) {
-            refresh();
+            switchView();
+        } else if (e.getSource() instanceof JComboBox) {
+            if (isMod) {
+                JComboBox box = (JComboBox) e.getSource();
+                requestComponents(box.getSelectedItem().toString());
+            }
         }
 
     }
 
-    public void refresh() {
+    private void requestComponents(String faction) {
+        mwclient.setWaiting(true);
+        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c getcomponentconversion#" + faction);
+        while (mwclient.isWaiting()) {
+            try {
+                Thread.sleep(100);
+            } catch (Exception ex) {
+
+            }
+        }
+        isAdvanced = !mwclient.getCampaign().getComponentConverter().containsKey("All");
+        switchView();
+    }
+
+
+    public void switchView() {
 
         if (!isAdvanced) {
             mainPanel.removeAll();
@@ -226,15 +285,15 @@ public final class ComponentConverterDialog implements ActionListener {
             dialog.setMinimumSize(dialog.getSize());
 
             ComponentToCritsConverter converter = mwclient.getCampaign().getComponentConverter().get("All");
-            
-            if ( converter == null ) {
+
+            if (converter == null) {
                 converter = new ComponentToCritsConverter();
                 converter.setCritName("All");
-                converter.setComponentUsedType(CUnit.MEK);
-                converter.setComponentUsedWeight(CUnit.LIGHT);
+                converter.setComponentUsedType(Unit.MEK);
+                converter.setComponentUsedWeight(Unit.LIGHT);
                 converter.setMinCritLevel(100);
             }
-            
+
             critPanel = new JPanel();
             baseTextField = new JTextField(5);
             baseTextField.setEditable(false);
@@ -259,20 +318,19 @@ public final class ComponentConverterDialog implements ActionListener {
 
             mainPanel.add(critPanel);
             modeButton.setText("Advanced");
-            isAdvanced = !isAdvanced;
         } else {
             findAndBasicConfigs(mainPanel);
             mainPanel.removeAll();
             for (BMEquipment eq : mwclient.getCampaign().getBlackMarketParts().values()) {
 
-                if ( (Boolean.parseBoolean(mwclient.getserverConfigs("AllowCrossOverTech")) 
-                        || mwclient.getPlayer().getHouseFightingFor().getTechLevel() == TechConstants.T_ALL 
+                if ( (Boolean.parseBoolean(mwclient.getserverConfigs("AllowCrossOverTech"))
+                        || mwclient.getPlayer().getHouseFightingFor().getTechLevel() == TechConstants.T_ALL
                         || eq.getTechLevel() == TechConstants.T_ALL
-                        || mwclient.getPlayer().getHouseFightingFor().getTechLevel() >= eq.getTechLevel()) 
+                        || mwclient.getPlayer().getHouseFightingFor().getTechLevel() >= eq.getTechLevel())
                         && eq.getCost() > 0 ) {
 
                     ComponentToCritsConverter converter = mwclient.getCampaign().getComponentConverter().get(eq.getEquipmentInternalName());
-                    
+
                     if ( converter == null ) {
                         converter = new ComponentToCritsConverter();
                         converter.setCritName(eq.getEquipmentInternalName());
@@ -312,8 +370,10 @@ public final class ComponentConverterDialog implements ActionListener {
             dialog.setSize(500, 500);
             dialog.setPreferredSize(dialog.getSize());
             dialog.setMinimumSize(dialog.getSize());
-            isAdvanced = !isAdvanced;
             modeButton.setText("Basic");
         }
+        isAdvanced = !isAdvanced;
+        masterPanel.setVisible(false);
+        masterPanel.setVisible(true);
     }
 }
