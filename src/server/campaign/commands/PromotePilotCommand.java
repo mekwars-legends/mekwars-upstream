@@ -180,6 +180,11 @@ public class PromotePilotCommand implements Command {
             cost *= (1 - player.getMyHouse().getDoubleConfig("GiftedPercent"));
         }
 
+        if (cost <= 0) {
+            CampaignMain.cm.toUser("AM:" + pilot.getName() + " can not purchase that skill", Username);
+            return;
+        }
+
         if (pilot.getExperience() < cost) {
             CampaignMain.cm.toUser("AM:" + pilot.getName() + " does not have enough experience to purchase that skill", Username);
             return;
