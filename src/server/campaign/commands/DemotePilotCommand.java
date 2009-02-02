@@ -1,11 +1,11 @@
 /*
  * MekWars - Copyright (C) 2004
- * 
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
@@ -59,11 +59,11 @@ public class DemotePilotCommand implements Command {
         SPilot pilot;
         SPilotSkill ps = null;
 
-        if (!CampaignMain.cm.getBooleanConfig("PlayersCanBuyPilotUpgrades")) {
+        if (!player.getMyHouse().getBooleanConfig("PlayersCanBuyPilotUpgrades")) {
             return;
         }
 
-        if (!CampaignMain.cm.getBooleanConfig("PlayersCanSellPilotUpgrades")) {
+        if (!player.getMyHouse().getBooleanConfig("PlayersCanSellPilotUpgrades")) {
             return;
         }
 
@@ -104,21 +104,21 @@ public class DemotePilotCommand implements Command {
             if (ps.getId() == PilotSkill.AstechSkillID) {
 
                 ps = (SPilotSkill) pilot.getSkills().getPilotSkill(PilotSkill.AstechSkillID);
-                cost = CampaignMain.cm.getIntegerConfig("chancefor" + ps.getAbbreviation() + "for" + Unit.getTypeClassDesc(unit.getType()));
+                cost = player.getMyHouse().getIntegerConfig("chancefor" + ps.getAbbreviation() + "for" + Unit.getTypeClassDesc(unit.getType()));
                 cost *= ps.getLevel() + 1;
             } else if (ps.getId() == PilotSkill.EdgeSkillID) {
                 ps = (SPilotSkill) pilot.getSkills().getPilotSkill(PilotSkill.EdgeSkillID);
-                cost = CampaignMain.cm.getIntegerConfig("chancefor" + ps.getAbbreviation() + "for" + Unit.getTypeClassDesc(unit.getType()));
+                cost = player.getMyHouse().getIntegerConfig("chancefor" + ps.getAbbreviation() + "for" + Unit.getTypeClassDesc(unit.getType()));
                 cost *= ps.getLevel();
             } else {
                 CampaignMain.cm.toUser("AM:Your pilot already has that skill!", Username);
                 return;
             }
         } else {
-            cost = CampaignMain.cm.getIntegerConfig("chancefor" + ps.getAbbreviation() + "for" + Unit.getTypeClassDesc(unit.getType()));
+            cost = player.getMyHouse().getIntegerConfig("chancefor" + ps.getAbbreviation() + "for" + Unit.getTypeClassDesc(unit.getType()));
         }
 
-        cost *= CampaignMain.cm.getDoubleConfig("PilotUpgradeSellBackPercent");
+        cost *= player.getMyHouse().getDoubleConfig("PilotUpgradeSellBackPercent");
 
         if (ps instanceof EdgeSkill) {
             if (((EdgeSkill) ps).getLevel() > 1) {

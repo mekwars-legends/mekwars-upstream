@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ Bug: Promot/Demote Pilot commands not using faction configs.
 + RFE 2407684: Auto salvage all of own units
 + REF 2484487: Faction Parts Cache Overhaul
 + Bug: Wrong Flag being checked for Burst Fire MG Option.

@@ -1,11 +1,11 @@
 /*
  * MekWars - Copyright (C) 2004
- * 
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
@@ -61,7 +61,7 @@ public class PromotePilotCommand implements Command {
         SPilot pilot;
         SPilotSkill ps = null;
 
-        if (!CampaignMain.cm.getBooleanConfig("PlayersCanBuyPilotUpgrades")) {
+        if (!player.getMyHouse().getBooleanConfig("PlayersCanBuyPilotUpgrades")) {
             return;
         }
 
@@ -85,7 +85,7 @@ public class PromotePilotCommand implements Command {
 
         pilot = (SPilot) unit.getPilot();
 
-        if (CampaignMain.cm.getIntegerConfig("MaxPilotUpgrades") >= 0 && pilot.getSkills().size() >= CampaignMain.cm.getIntegerConfig("MaxPilotUpgrades")) {
+        if (player.getMyHouse().getIntegerConfig("MaxPilotUpgrades") >= 0 && pilot.getSkills().size() >= player.getMyHouse().getIntegerConfig("MaxPilotUpgrades")) {
             CampaignMain.cm.toUser("AM:" + pilot.getName() + " already has the maximum allowed skills", Username, true);
             return;
         }
@@ -107,7 +107,7 @@ public class PromotePilotCommand implements Command {
                 piloting++;
             }
 
-            if (piloting - (gun - 1) > 1 && CampaignMain.cm.getBooleanConfig("PilotsMustLevelEvenly")) {
+            if (piloting - (gun - 1) > 1 && player.getMyHouse().getBooleanConfig("PilotsMustLevelEvenly")) {
                 CampaignMain.cm.toUser("AM:You must evenly level your pilots skills. Try leveling piloting first.", Username);
                 return;
             }
@@ -116,8 +116,8 @@ public class PromotePilotCommand implements Command {
             // to pay the min exp.
             int totalSkill = Math.min(9, gun + piloting);
 
-            cost = CampaignMain.cm.getIntegerConfig("BaseRollToLevel");
-            cost *= CampaignMain.cm.getIntegerConfig("MultiplierPerPreviousLevel");
+            cost = player.getMyHouse().getIntegerConfig("BaseRollToLevel");
+            cost *= player.getMyHouse().getIntegerConfig("MultiplierPerPreviousLevel");
             cost *= 10 - totalSkill;
 
         } else if (skill.equalsIgnoreCase("piloting")) {
@@ -132,15 +132,15 @@ public class PromotePilotCommand implements Command {
                 piloting++;
             }
 
-            if (gun - (piloting - 1) > 1 && CampaignMain.cm.getBooleanConfig("PilotsMustLevelEvenly")) {
+            if (gun - (piloting - 1) > 1 && player.getMyHouse().getBooleanConfig("PilotsMustLevelEvenly")) {
                 CampaignMain.cm.toUser("AM:You must evenly level your pilots skills. Try leveling gunnery first.", Username);
                 return;
             }
 
             int totalSkill = Math.min(9, gun + piloting);
 
-            cost = CampaignMain.cm.getIntegerConfig("BaseRollToLevel");
-            cost *= CampaignMain.cm.getIntegerConfig("MultiplierPerPreviousLevel");
+            cost = player.getMyHouse().getIntegerConfig("BaseRollToLevel");
+            cost *= player.getMyHouse().getIntegerConfig("MultiplierPerPreviousLevel");
             cost *= 10 - totalSkill;
 
         } else {
@@ -156,28 +156,28 @@ public class PromotePilotCommand implements Command {
                         return;
                     }
 
-                    cost = CampaignMain.cm.getIntegerConfig("chancefor" + ps.getAbbreviation() + "for" + Unit.getTypeClassDesc(unit.getType()));
+                    cost = player.getMyHouse().getIntegerConfig("chancefor" + ps.getAbbreviation() + "for" + Unit.getTypeClassDesc(unit.getType()));
                     cost *= ps.getLevel() + 2;
                 } else if (ps.getId() == PilotSkill.EdgeSkillID) {
                     ps = (SPilotSkill) pilot.getSkills().getPilotSkill(PilotSkill.EdgeSkillID);
-                    if (ps.getLevel() >= CampaignMain.cm.getIntegerConfig("MaxEdgeChanges")) {
+                    if (ps.getLevel() >= player.getMyHouse().getIntegerConfig("MaxEdgeChanges")) {
                         CampaignMain.cm.toUser("AM:You cannot raise your pilots Edge any higher!", Username);
                         return;
                     }
-                    cost = CampaignMain.cm.getIntegerConfig("chancefor" + ps.getAbbreviation() + "for" + Unit.getTypeClassDesc(unit.getType()));
+                    cost = player.getMyHouse().getIntegerConfig("chancefor" + ps.getAbbreviation() + "for" + Unit.getTypeClassDesc(unit.getType()));
                     cost *= ps.getLevel() + 1;
                 } else {
                     CampaignMain.cm.toUser("AM:Your pilot already has that skill!", Username);
                     return;
                 }
             } else {
-                cost = CampaignMain.cm.getIntegerConfig("chancefor" + ps.getAbbreviation() + "for" + Unit.getTypeClassDesc(unit.getType()));
+                cost = player.getMyHouse().getIntegerConfig("chancefor" + ps.getAbbreviation() + "for" + Unit.getTypeClassDesc(unit.getType()));
             }
 
         }
 
         if (pilot.getSkills().has(PilotSkill.GiftedID)) {
-            cost *= (1 - CampaignMain.cm.getDoubleConfig("GiftedPercent"));
+            cost *= (1 - player.getMyHouse().getDoubleConfig("GiftedPercent"));
         }
 
         if (pilot.getExperience() < cost) {
