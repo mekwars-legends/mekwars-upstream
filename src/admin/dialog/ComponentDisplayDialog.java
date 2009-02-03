@@ -962,10 +962,10 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
             } else if ( field instanceof JTextField){
                 JTextField textBox = (JTextField)field;
 
-                value = textBox.getText();
+                value = textBox.getText().replaceAll(",", ".").trim();
                 key = textBox.getName();
 
-                if ( key == null || value == null ) {
+                if (key == null || value == null) {
                     continue;
                 }
 
