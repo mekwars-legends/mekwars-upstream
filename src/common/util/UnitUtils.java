@@ -2066,9 +2066,9 @@ public class UnitUtils {
                         cost = 6000;
                     }
                 } else {
-                    int itemCost = (int) m.getType().getCost();
+                    int itemCost = (int) m.getType().getCost(mek, m.isArmored());
                     if (itemCost == EquipmentType.COST_VARIABLE) {
-                        itemCost = m.getType().resolveVariableCost(mek);
+                        itemCost = m.getType().resolveVariableCost(mek, m.isArmored());
                     }
                     cost = itemCost;
                 }

@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2007 
- * 
+ * MekWars - Copyright (C) 2007
+ *
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -17,7 +17,7 @@
  * @author jtighe
  * This command is used to set Black Market Settings
  * for max/min cost and production.
- * 
+ *
  */
 package server.campaign.commands.admin;
 
@@ -30,13 +30,12 @@ import megamek.common.EquipmentType;
 import megamek.common.Mech;
 import megamek.common.MiscType;
 import megamek.common.TechConstants;
+import server.MWChatServer.auth.IAuthenticator;
+import server.campaign.CampaignMain;
+import server.campaign.commands.Command;
 
 import common.Equipment;
 import common.util.UnitUtils;
-
-import server.campaign.commands.Command;
-import server.campaign.CampaignMain;
-import server.MWChatServer.auth.IAuthenticator;
 
 public class AutoFillBlackMarketSettingCommand implements Command {
 
@@ -81,8 +80,9 @@ public class AutoFillBlackMarketSettingCommand implements Command {
         minProduction = Integer.parseInt(command.nextToken());
         maxProduction = Integer.parseInt(command.nextToken());
 
-        if (command.hasMoreElements())
+        if (command.hasMoreElements()) {
             ent.setWeight(Float.parseFloat(command.nextToken()));
+        }
 
         Enumeration<EquipmentType> list = EquipmentType.getAllTypes();
         double crits = 1;
@@ -108,29 +108,31 @@ public class AutoFillBlackMarketSettingCommand implements Command {
             }
 
             crits = Math.max(crits, 1);
-            baseCost = eq.getCost();
+            baseCost = eq.getCost(ent, false);
 
             if (baseCost == EquipmentType.COST_VARIABLE) {
-                baseCost = eq.resolveVariableCost(ent);
+                baseCost = eq.resolveVariableCost(ent, false);
             } else if (isArmor(eq)) {
                 baseCost = EquipmentType.getArmorCost(EquipmentType.getArmorType(eq.getName()));
             } else if (isStructure(eq)) {
                 baseCost = EquipmentType.getStructureCost(EquipmentType.getStructureType(eq.getName()));
             } else if (eq instanceof MiscType) {
                 if (eq.hasFlag(MiscType.F_HEAT_SINK) || eq.hasFlag(MiscType.F_DOUBLE_HEAT_SINK)) {
-                    if (eq.getName().equals("1 Compact Heat Sink"))
+                    if (eq.getName().equals("1 Compact Heat Sink")) {
                         baseCost = 3000;
-                    else if (eq.getName().equals("Heat Sink"))
+                    } else if (eq.getName().equals("Heat Sink")) {
                         baseCost = 2000;
-                    else
+                    } else {
                         baseCost = 6000;
+                    }
                 } else if (eq.hasFlag(MiscType.F_JUMP_BOOSTER)) {
                     baseCost = 6.0 * ent.getWeight() * 150;
                 } else if (eq.hasFlag(MiscType.F_JUMP_JET)) {
-                    if (eq.getTechLevel() > TechConstants.T_IS_TW_ALL)
+                    if (eq.getTechLevel() > TechConstants.T_IS_TW_ALL) {
                         baseCost = 6.0 * ent.getWeight() * 500;
-                    else
+                    } else {
                         baseCost = 6.0 * ent.getWeight() * 200;
+                    }
                 } else if (eq.hasFlag(MiscType.F_UMU)) {
                     baseCost = 6.0 * ent.getWeight() * 200;
                 }
@@ -421,16 +423,18 @@ public class AutoFillBlackMarketSettingCommand implements Command {
 
     private boolean isArmor(EquipmentType eq) {
         for (String armor : EquipmentType.armorNames) {
-            if (eq.getName().equalsIgnoreCase(armor))
+            if (eq.getName().equalsIgnoreCase(armor)) {
                 return true;
+            }
         }
         return false;
     }
 
     private boolean isStructure(EquipmentType eq) {
         for (String IS : EquipmentType.structureNames) {
-            if (eq.getName().equalsIgnoreCase(IS))
+            if (eq.getName().equalsIgnoreCase(IS)) {
                 return true;
+            }
         }
         return false;
     }

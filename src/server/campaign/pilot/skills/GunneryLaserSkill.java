@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2004 
- * 
+ * MekWars - Copyright (C) 2004
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -25,6 +25,7 @@ import megamek.common.Mounted;
 import megamek.common.WeaponType;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
+
 import common.MegaMekPilotOption;
 import common.Unit;
 import common.campaign.pilot.Pilot;
@@ -38,25 +39,27 @@ public class GunneryLaserSkill extends SPilotSkill {
 
     public GunneryLaserSkill(int id) {
         super(id, "Gunnery/Laser", "GL");
-        this.setDescription("NOTE: This is a unofficial rule. Pilot gets a -1 to-hit bonus on all energy-based weapons (Laser, PPC, and Flamer).");
+        setDescription("NOTE: This is a unofficial rule. Pilot gets a -1 to-hit bonus on all energy-based weapons (Laser, PPC, and Flamer).");
     }
-    
+
     public GunneryLaserSkill() {
     	//TODO: replace with ReflectionProvider
     }
 
     @Override
 	public int getChance(int unitType, Pilot pilot) {
-    	if (pilot.getSkills().has(this))
-    		return 0;
+    	if (pilot.getSkills().has(this)) {
+            return 0;
+        }
 
-    	String chance = "chancefor"+this.getAbbreviation()+"for"+Unit.getTypeClassDesc(unitType);
-    	
+    	String chance = "chancefor"+getAbbreviation()+"for"+Unit.getTypeClassDesc(unitType);
+
 		SHouse house = CampaignMain.cm.getHouseFromPartialString(pilot.getCurrentFaction());
-		
-		if ( house == null )
-			return CampaignMain.cm.getIntegerConfig(chance);
-		
+
+		if ( house == null ) {
+            return CampaignMain.cm.getIntegerConfig(chance);
+        }
+
 		return house.getIntegerConfig(chance);
     }
 
@@ -65,15 +68,15 @@ public class GunneryLaserSkill extends SPilotSkill {
         pilot.addMegamekOption(new MegaMekPilotOption("gunnery_laser",true));
         //pilot.setBvMod(pilot.getBVMod() +  0.02);
     }
-    
+
     @Override
 	public int getBVMod(Entity unit){
         double laserBV = 0;
         double gunneryLaserBVBaseMod = megamek.common.Pilot.getBVSkillMultiplier(unit.getCrew().getGunnery()-1, unit.getCrew().getPiloting());
-        
+
         for(Mounted weapon : unit.getWeaponList() ){
             if ( weapon.getType().hasFlag(WeaponType.F_ENERGY) ) {
-                laserBV += weapon.getType().getBV(unit);
+                laserBV += weapon.getType().getBV(unit, weapon.isArmored());
             }
         }
         return (int)(laserBV * gunneryLaserBVBaseMod);

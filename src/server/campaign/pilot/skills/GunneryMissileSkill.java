@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2004 
- * 
+ * MekWars - Copyright (C) 2004
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -25,6 +25,7 @@ import megamek.common.Mounted;
 import megamek.common.WeaponType;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
+
 import common.MegaMekPilotOption;
 import common.Unit;
 import common.campaign.pilot.Pilot;
@@ -38,25 +39,27 @@ public class GunneryMissileSkill extends SPilotSkill {
 
     public GunneryMissileSkill(int id) {
         super(id, "Gunnery/Missile", "GM");
-        this.setDescription("NOTE: This is a unofficial rule. Pilot gets a -1 to-hit bonus on all ballistic weapons (MGs, all ACs, Gaussrifles).");
+        setDescription("NOTE: This is a unofficial rule. Pilot gets a -1 to-hit bonus on all ballistic weapons (MGs, all ACs, Gaussrifles).");
     }
-    
+
     public GunneryMissileSkill() {
     	//TODO: replace with ReflectionProvider
     }
 
     @Override
 	public int getChance(int unitType, Pilot pilot) {
-    	if (pilot.getSkills().has(this))
-    		return 0;
+    	if (pilot.getSkills().has(this)) {
+            return 0;
+        }
 
-    	String chance = "chancefor"+this.getAbbreviation()+"for"+Unit.getTypeClassDesc(unitType);
-    	
+    	String chance = "chancefor"+getAbbreviation()+"for"+Unit.getTypeClassDesc(unitType);
+
 		SHouse house = CampaignMain.cm.getHouseFromPartialString(pilot.getCurrentFaction());
-		
-		if ( house == null )
-			return CampaignMain.cm.getIntegerConfig(chance);
-		
+
+		if ( house == null ) {
+            return CampaignMain.cm.getIntegerConfig(chance);
+        }
+
 		return house.getIntegerConfig(chance);
     }
 
@@ -69,10 +72,10 @@ public class GunneryMissileSkill extends SPilotSkill {
 	public int getBVMod(Entity unit){
         double missileBV = 0;
         double gunneryMissileBVBaseMod = megamek.common.Pilot.getBVSkillMultiplier(unit.getCrew().getGunnery()-1, unit.getCrew().getPiloting());
-        
+
         for (Mounted weapon : unit.getWeaponList()){
             if ( weapon.getType().hasFlag(WeaponType.F_MISSILE) ) {
-                missileBV += weapon.getType().getBV(unit);
+                missileBV += weapon.getType().getBV(unit, weapon.isArmored());
             }
         }
         return (int)(missileBV * gunneryMissileBVBaseMod);
