@@ -1,11 +1,11 @@
 /*
  * MekWars - Copyright (C) 2004
- * 
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
@@ -33,7 +33,7 @@ import common.util.TokenReader;
 
 /**
  * @author Helge Richter
- * 
+ *
  */
 
 public class SArmy extends Army {
@@ -285,7 +285,6 @@ public class SArmy extends Army {
 
         int total = 0;
         int subTotal = 0;
-        int c3Count = 0;
         int c3BV = 0;
 
         boolean hasTAGHomingCombo = hasTAGAndHomingCombo();
@@ -301,13 +300,24 @@ public class SArmy extends Army {
 
             SUnit u = (SUnit) currU;
 
-            // C3 adjustments
             if (u.hasBeenC3LinkedTo(this) || getC3Network().get(u.getId()) != null) {
-                c3BV += u.getBV();
-                c3Count++;
+                int totalForceBV = 0;
+                totalForceBV += u.getEntity().calculateBattleValue(true, true);
+                for (Unit c3Unit : getUnits()) {
+                    if ( c3Unit == null){
+                        continue;
+                    }
+
+                    SUnit subUnit = (SUnit) c3Unit;
+
+                    if (!u.equals(subUnit) && isSameC3Network(u.getId(), subUnit.getId())) {
+                        totalForceBV += subUnit.getEntity().calculateBattleValue(true, true);
+                    }
+                }
+                c3BV += totalForceBV *= 0.05;
             }
 
-            subTotal = u.getBV();
+            subTotal = c3BV;
 
             // Arrow IV adjustments
             if (hasTAGHomingCombo) {
@@ -323,11 +333,6 @@ public class SArmy extends Army {
             }
             total += subTotal;
         }
-
-        // CampaignData.mwlog.errLog("Count: "+ c3Count+" BV: "+total+" Modifier:
-        // "+c3Count * ( c3BV * .05));///this.getNumberOfNetworks());
-        total += c3Count * (c3BV * .05);// /this.getNumberOfNetworks();
-        // CampaignData.mwlog.errLog("Army BV: "+total);
 
         if (hasSemiGuided) {
             total += getSemiGuidedBV();
@@ -392,47 +397,47 @@ public class SArmy extends Army {
          * CampaignMain.cm.getBooleanConfig("CountInfForLimiters"); boolean
          * allowLimiters = CampaignMain.cm.getBooleanConfig("AllowLimiters"); if
          * (getLowerLimiter() != Army.NO_LIMIT && allowLimiters){
-         * 
+         *
          * int smallest = -1; int enemyNum = -1; if (infCounts) { smallest =
          * getAmountOfUnits() - Math.abs(getLowerLimiter()); enemyNum =
          * enemy.getAmountOfUnits(); } else { smallest =
          * getAmountOfUnitsWithoutInfantry() - Math.abs(getLowerLimiter());
          * enemyNum = enemy.getAmountOfUnitsWithoutInfantry(); }
-         * 
+         *
          * //check for 0 and negatives. if (smallest < 1) smallest = 1;
-         * 
+         *
          * if (enemyNum < smallest) return false; } if (getUpperLimiter() !=
          * Army.NO_LIMIT && allowLimiters){
-         * 
+         *
          * int highest = -1; int enemyNum = -1; if (infCounts) { highest =
          * getAmountOfUnits() + getUpperLimiter(); enemyNum =
          * enemy.getAmountOfUnits(); } else { highest =
          * getAmountOfUnitsWithoutInfantry() + getUpperLimiter(); enemyNum =
          * enemy.getAmountOfUnitsWithoutInfantry(); }
-         * 
+         *
          * if (enemyNum > highest) return false; }
-         * 
+         *
          * //Within Limits of the OTHER army? if (enemy.getLowerLimiter() !=
          * Army.NO_LIMIT && allowLimiters){
-         * 
+         *
          * int smallest = -1; int ownNum = -1; if (infCounts) { smallest =
          * enemy.getAmountOfUnits() - Math.abs(enemy.getLowerLimiter()); ownNum =
          * getAmountOfUnits(); } else { smallest =
          * enemy.getAmountOfUnitsWithoutInfantry() -
          * Math.abs(getLowerLimiter()); ownNum =
          * getAmountOfUnitsWithoutInfantry(); }
-         * 
+         *
          * if (smallest < 1) smallest = 1;
-         * 
+         *
          * if (ownNum < smallest) return false; } if (enemy.getUpperLimiter() !=
          * Army.NO_LIMIT && allowLimiters){
-         * 
+         *
          * int highest = -1; int ownNum = -1; if (infCounts) { highest =
          * enemy.getAmountOfUnits() + enemy.getUpperLimiter(); ownNum =
          * getAmountOfUnits(); } else { highest =
          * enemy.getAmountOfUnitsWithoutInfantry() + enemy.getUpperLimiter();
          * ownNum = getAmountOfUnitsWithoutInfantry(); }
-         * 
+         *
          * if (ownNum > highest) return false; }
          */
         return true;
@@ -580,7 +585,7 @@ public class SArmy extends Army {
 
     /**
      * Conduit which returns legal operations from the SArmyData. Note the lack of a corresponding set().
-     * 
+     *
      * @return legalOperations
      */
     public TreeMap<String, String> getLegalOperations() {
@@ -650,7 +655,7 @@ public class SArmy extends Army {
      * to the SPlayer who owns the army (and, in turn, back to his faction). It
      * is used by checkattack to generate readible output like "Liao(4),
      * Davion(3)."
-     * 
+     *
      * Also used to generate lists of players who should receive notification
      * when SArmy's owner deactivates or joins a game and moves to
      * STATUS_FIGHTING.

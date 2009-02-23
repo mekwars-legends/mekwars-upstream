@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ Bug: C3 BV mod calculating baddly
 + Bug: able to purchase pilot skills that have a 0 cost.
 + Bug: Promot/Demote Pilot commands not using faction configs.
 + RFE 2407684: Auto salvage all of own units
