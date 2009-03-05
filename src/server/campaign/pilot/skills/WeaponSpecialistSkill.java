@@ -88,7 +88,7 @@ public class WeaponSpecialistSkill extends SPilotSkill {
 			WeaponType weapon = (WeaponType)weapons.getType();
 
 			if ( weapon.getName().equalsIgnoreCase(pilot.getWeapon()) ) {
-				totalWeaponBV += weapon.getBV(unit, weapons.isArmored());
+				totalWeaponBV += weapon.getBV(unit);
 			}
 		}
 		return (int)(totalWeaponBV * weaponSpecialistBVBaseMod);

@@ -75,7 +75,7 @@ public class GunneryMissileSkill extends SPilotSkill {
 
         for (Mounted weapon : unit.getWeaponList()){
             if ( weapon.getType().hasFlag(WeaponType.F_MISSILE) ) {
-                missileBV += weapon.getType().getBV(unit, weapon.isArmored());
+                missileBV += weapon.getType().getBV(unit);
             }
         }
         return (int)(missileBV * gunneryMissileBVBaseMod);

@@ -76,7 +76,7 @@ public class GunneryLaserSkill extends SPilotSkill {
 
         for(Mounted weapon : unit.getWeaponList() ){
             if ( weapon.getType().hasFlag(WeaponType.F_ENERGY) ) {
-                laserBV += weapon.getType().getBV(unit, weapon.isArmored());
+                laserBV += weapon.getType().getBV(unit);
             }
         }
         return (int)(laserBV * gunneryLaserBVBaseMod);
