@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2006 
- * 
+ * MekWars - Copyright (C) 2006
+ *
  * Original author - Torren (torren@users.sourceforge.net)
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -15,9 +15,9 @@
  */
 
 /**
- * 
- * @author Torren (Jason Tighe) 02.16.06 
- * 
+ *
+ * @author Torren (Jason Tighe) 02.16.06
+ *
  */
 
 package updaters;
@@ -42,10 +42,10 @@ public class MekWarsAutoUpdate {
      */
     private static final String CONFIG_FILE = "./data/mwconfig.txt";
     private static final String logFileName = "./logs/mekwarsautoupdate.log";
-    private static final String VERSION = "3.0";
+    private static final String VERSION = "4.0";
     private Properties config = null;
     private SplashWindow splash = null;
-    
+
     public static void main(String[] args) {
 
         if (logFileName != null) {
@@ -91,12 +91,13 @@ public class MekWarsAutoUpdate {
             int selection = combo.getSelectedIndex();
             int value = ((Integer) jop.getValue()).intValue();
 
-            if (value == JOptionPane.CANCEL_OPTION)
+            if (value == JOptionPane.CANCEL_OPTION) {
                 System.exit(0);
+            }
 
-            if (selection == 0)
+            if (selection == 0) {
                 args = new String[] { "PLAYER" };
-            else {
+            } else {
                 VersionManifest.createListFile();
                 JOptionPane.showMessageDialog(null, "Manifest Created");
                 System.exit(0);
@@ -108,14 +109,16 @@ public class MekWarsAutoUpdate {
          * count++ ) System.err.print(args[count]+" "); System.err.println();
          */
 
-        if (args[0].equals("PLAYER"))
+        if (args[0].equals("PLAYER")) {
             splash = new SplashWindow();
+        }
 
         try {
             System.out.println("Starting Update");
             System.out.flush();
-            if (splash != null)
+            if (splash != null) {
                 splash.setStatus(splash.STATUS_FETCHINGDATA);
+            }
             String url = config.getProperty("UPDATEURL");
             if (url == null || url.trim().length() < 8 || url.equals("-1")) {
                 System.out
@@ -135,8 +138,9 @@ public class MekWarsAutoUpdate {
             ex.printStackTrace();
         }
 
-        if (splash != null)
+        if (splash != null) {
             splash.dispose();
+        }
         try {
             System.out.println("Restarting");
             System.out.flush();
@@ -163,9 +167,9 @@ public class MekWarsAutoUpdate {
         File[] files = folder.listFiles();
 
         for (File file : files) {
-            if (file.isDirectory())
+            if (file.isDirectory()) {
                 copyTempFiles(file.toString());
-            else {
+            } else {
                 try {
                     // replace ./update-temp with ./
                     String newFile = "." + file.toString().substring(12);

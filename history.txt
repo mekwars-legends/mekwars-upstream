@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ new MegaMek.jar 0.33.44-MW040209-6492
++ Bug 2715228: Parts black market issues
 + Bug: C3 BV mod calculating baddly
 + Bug: able to purchase pilot skills that have a 0 cost.
 + Bug: Promot/Demote Pilot commands not using faction configs.

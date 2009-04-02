@@ -2825,10 +2825,10 @@ public class UnitUtils {
             case TechConstants.T_IS_TW_ALL:
             case TechConstants.T_IS_ADVANCED:
                 return true;
-            case TechConstants.T_IS_EXPERIMENTAL:
-            case TechConstants.T_IS_UNOFFICIAL:
             case TechConstants.T_CLAN_TW:
             case TechConstants.T_CLAN_ADVANCED:
+            case TechConstants.T_IS_EXPERIMENTAL:
+            case TechConstants.T_IS_UNOFFICIAL:
             case TechConstants.T_CLAN_EXPERIMENTAL:
             case TechConstants.T_CLAN_UNOFFICIAL:
                 return false;
@@ -2842,10 +2842,10 @@ public class UnitUtils {
             case TechConstants.T_IS_ADVANCED:
             case TechConstants.T_IS_EXPERIMENTAL:
                 return true;
-            case TechConstants.T_IS_UNOFFICIAL:
             case TechConstants.T_CLAN_TW:
             case TechConstants.T_CLAN_ADVANCED:
             case TechConstants.T_CLAN_EXPERIMENTAL:
+            case TechConstants.T_IS_UNOFFICIAL:
             case TechConstants.T_CLAN_UNOFFICIAL:
                 return false;
             }
@@ -2863,7 +2863,6 @@ public class UnitUtils {
             case TechConstants.T_CLAN_ADVANCED:
             case TechConstants.T_CLAN_EXPERIMENTAL:
             case TechConstants.T_CLAN_UNOFFICIAL:
-                return false;
             }
             break;
         case TechConstants.T_CLAN_TW:

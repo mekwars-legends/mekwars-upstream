@@ -258,7 +258,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 
             }
 
-            equipmentSort.put(eq.getName(), (AmmoType)eq);
+            equipmentSort.put(eq.getInternalName(), (AmmoType) eq);
 
         }
 
@@ -363,7 +363,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 
 			}
 
-            equipmentSort.put(eq.getName(), (AmmoType)eq);
+            equipmentSort.put(eq.getInternalName(), (AmmoType) eq);
 
 		}
 
@@ -437,6 +437,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
                 continue;
             }
 
+
             if ( ((WeaponType)eq).getTechLevel() != tech ) {
                 //This is done for Unknown and all tech level. Make them all IS Level 1
                 if ( tech == TechConstants.T_IS_TW_NON_BOX && ((WeaponType)eq).getTechLevel() > tech ) {
@@ -448,12 +449,15 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 
             }
 
-            equipmentSort.put(eq.getName(), (WeaponType)eq);
+            equipmentSort.put(eq.getInternalName(), (WeaponType)eq);
 
         }
 
         for ( WeaponType eq : equipmentSort.values() ){
             String name = eq.getName();
+            if (eq.hasFlag(WeaponType.F_BA_WEAPON)) {
+                name += " (BA)";
+            }
             String intName = eq.getInternalName();
 			panel.add(new JLabel(name));
 
@@ -736,7 +740,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 
 		            }
 
-		            equipmentSort.put(eq.getName(), (MiscType)eq);
+		            equipmentSort.put(eq.getInternalName(), (MiscType) eq);
 
 		        }
 

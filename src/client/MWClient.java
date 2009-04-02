@@ -2782,12 +2782,12 @@ public final class MWClient implements IClient, GameListener {
             return -1;
         }
 
-        if (!getCampaign().getBlackMarketParts().containsKey(eq.getName())) {
+        if (!getCampaign().getBlackMarketParts().containsKey(eq.getInternalName())) {
             return -1;
         }
 
-        if (getCampaign().getBlackMarketParts().get(eq.getName()).getCost() > 0) {
-            return getCampaign().getBlackMarketParts().get(eq.getName()).getCost();
+        if (getCampaign().getBlackMarketParts().get(eq.getInternalName()).getCost() > 0) {
+            return getCampaign().getBlackMarketParts().get(eq.getInternalName()).getCost();
         }
 
         return -1.0;
@@ -3523,7 +3523,7 @@ public final class MWClient implements IClient, GameListener {
                 continue;
             }
 
-            getCampaign().getBlackMarketParts().put(bme.getEquipmentName(), bme);
+            getCampaign().getBlackMarketParts().put(bme.getEquipmentInternalName(), bme);
         }
 
         getMainFrame().getMainPanel().refreshBME();

@@ -75,6 +75,9 @@ public class BMEquipment {
                     setEquipmentType(BMEquipment.PART_AMMO);
                 } else if (eq instanceof WeaponType) {
                     setEquipmentType(BMEquipment.PART_WEAPON);
+                    if (eq.hasFlag(WeaponType.F_BA_WEAPON)) {
+                        setEquipmentName(eq.getName() + " (BA)");
+                    }
                 } else if (getEquipmentName().toLowerCase().indexOf("armor") > -1 || EquipmentType.getArmorType(getEquipmentName()) != EquipmentType.T_ARMOR_UNKNOWN || EquipmentType.getStructureType(getEquipmentName()) != EquipmentType.T_STRUCTURE_UNKNOWN) {
                     setEquipmentType(BMEquipment.PART_ARMOR);
                 } else {
