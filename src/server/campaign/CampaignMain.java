@@ -178,10 +178,14 @@ public final class CampaignMain implements Serializable {
     private static final long serialVersionUID = -8671163467590633378L;
 
     /**
-     * I realized, that almost every class needs access to the current global campaign state. So I decided (after consultation with McWizard) to make this back
-     * reference obsolete by introducing a public static member (Java's pardon to a global variable). Although this reduces code size, complexity of code and
-     * memory footprint, this is still a HACK! Java wasn't invented to step back to the old days of global variables. Object oriented coding should try to
-     * minimize cross references.. But someday you gotta do what you gotta do..... Imi.
+     * I realized, that almost every class needs access to the current global
+     * campaign state. So I decided (after consultation with McWizard) to make
+     * this back reference obsolete by introducing a public static member
+     * (Java's pardon to a global variable). Although this reduces code size,
+     * complexity of code and memory footprint, this is still a HACK! Java
+     * wasn't invented to step back to the old days of global variables. Object
+     * oriented coding should try to minimize cross references.. But someday you
+     * gotta do what you gotta do..... Imi.
      */
     public static CampaignMain cm;
 
@@ -253,8 +257,10 @@ public final class CampaignMain implements Serializable {
     private Date housePlanetDate = new Date();
 
     /**
-     * This is a hash collection of all the players that have yet to log into their houses This catch all is to keep from having to load the player file over
-     * and over again. Once the player has been logged in they are removed from this hash and added to the houses memory.
+     * This is a hash collection of all the players that have yet to log into
+     * their houses This catch all is to keep from having to load the player
+     * file over and over again. Once the player has been logged in they are
+     * removed from this hash and added to the houses memory.
      */
     private Hashtable<String, SPlayer> lostSouls = new Hashtable<String, SPlayer>();
 
@@ -297,7 +303,8 @@ public final class CampaignMain implements Serializable {
             /*
              * else { if(cm.MySQL.configIsSaved()) cm.MySQL.loadConfig(config);
              * else config.load(new
-             * FileInputStream(this.myServer.getConfigParam("CAMPAIGNCONFIG"))); }
+             * FileInputStream(this.myServer.getConfigParam("CAMPAIGNCONFIG")));
+             * }
              */
             if (isUsingMySQL()) {
                 if (Boolean.parseBoolean(getServer().getConfigParam("MYSQL_SYNCHPHPBB"))) {
@@ -305,6 +312,8 @@ public final class CampaignMain implements Serializable {
                 } else {
                     config.put("REQUIREEMAILFORREGISTRATION", "false");
                 }
+            } else {
+                config.put("REQUIREEMAILFORREGISTRATION", "false");
             }
         } catch (Exception ex) {
             CampaignData.mwlog.errLog("Problems with loading campaign config");
@@ -497,7 +506,7 @@ public final class CampaignMain implements Serializable {
     }
 
     /*
-     * public void saveData() { try { data.saveData(new File("campaign")); /*
+     * public void saveData() { try { data.saveData(new File("campaign")); /
      * MMNetXStream xml = new MMNetXStream(new DomDriver()); for (Iterator i =
      * data.getAllHouses().iterator(); i.hasNext();) { SHouse h = (SHouse)
      * i.next(); xml.toXML(h.getMembers(), new
@@ -650,7 +659,8 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Method that allows other classes to access the opsManager instance via the static CampaignMain.
+     * Method that allows other classes to access the opsManager instance via
+     * the static CampaignMain.
      */
     public OperationManager getOpsManager() {
         return opsManager;
@@ -778,7 +788,8 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Loop through all online players (all houses, all three duty modes) and send mail to those players who are mods.
+     * Loop through all online players (all houses, all three duty modes) and
+     * send mail to those players who are mods.
      */
     public void doSendModMail(String Username, String text) {
 
@@ -825,7 +836,8 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * After an error, loop through all online players and send text of the error to anyone who has modmail access.
+     * After an error, loop through all online players and send text of the
+     * error to anyone who has modmail access.
      */
     public void doSendErrLog(String text) {
         text = "(Error Log): " + text;
@@ -937,8 +949,11 @@ public final class CampaignMain implements Serializable {
     }// end doProcessAutomaticReport
 
     /**
-     * Method which pre-processes auto-disconnection info updates. Clients connected to a host send these updates when a unit is removed from play - this does
-     * not necessarily mean the unit is dead. It could have fled or been pushed from the field, etc. ClientThread weeds out observers client side.
+     * Method which pre-processes auto-disconnection info updates. Clients
+     * connected to a host send these updates when a unit is removed from play -
+     * this does not necessarily mean the unit is dead. It could have fled or
+     * been pushed from the field, etc. ClientThread weeds out observers client
+     * side.
      */
     public void addInProgressUpdate(String s, String Username) {
 
@@ -981,11 +996,16 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Login a player to the server. Called by login, enroll command and (most commonly) SignOn. If we find that the player is already in a faction, leave
-     * things as they are. If the player is not present in a house status hashtable, use this.getPlayer() to check the save queue and, if necessary, read the
-     * player in from text. Any player who logs in should be put into the Reserve list. If he is reconnecting, the SignOn command will pass him through a
-     * reconnection check and clean up the various Operations threads, etc. Players with no account (null this.getPlayer()) are also handled in SignOn, but we
-     * need to check there here as well in case the player ignores the SignOn click-through and attempts to log in anyway.
+     * Login a player to the server. Called by login, enroll command and (most
+     * commonly) SignOn. If we find that the player is already in a faction,
+     * leave things as they are. If the player is not present in a house status
+     * hashtable, use this.getPlayer() to check the save queue and, if
+     * necessary, read the player in from text. Any player who logs in should be
+     * put into the Reserve list. If he is reconnecting, the SignOn command will
+     * pass him through a reconnection check and clean up the various Operations
+     * threads, etc. Players with no account (null this.getPlayer()) are also
+     * handled in SignOn, but we need to check there here as well in case the
+     * player ignores the SignOn click-through and attempts to log in anyway.
      */
     public void doLoginPlayer(String Username) {
 
@@ -1118,9 +1138,12 @@ public final class CampaignMain implements Serializable {
     }// end CampaignMain.doLogin(String userName)
 
     /**
-     * Log a player out of the campaign. The CampaignMain portion of logout is markedly simpler than login. All of the more complex code (like chickening and
-     * disconnection thread spinning) is dealt with in SHouse. Note that all players who log out are inserted into the savePlayer hash for removal.
-     * this.getPlayer() will retreive the memory resident SPlayer from the save queue if the player returns before the purge.
+     * Log a player out of the campaign. The CampaignMain portion of logout is
+     * markedly simpler than login. All of the more complex code (like
+     * chickening and disconnection thread spinning) is dealt with in SHouse.
+     * Note that all players who log out are inserted into the savePlayer hash
+     * for removal. this.getPlayer() will retreive the memory resident SPlayer
+     * from the save queue if the player returns before the purge.
      */
     public void doLogoutPlayer(String name) {
 
@@ -1219,11 +1242,17 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Get an SPlayer, by name. This searches the reserve, active and fighting hashes of all factions until the player is found or factions are exhausted. If a
-     * player is not in a faction, check the to-save hash. Its entirely possible that the player is already in memory, but logged out and is awaiting a purge.
-     * If no matching player is found online, the server will attempt to read one in from a text file. If even this fails, a null is returned. NOTE: A player
-     * brought into memory using getPlayer is not automatically logged into his house. Temporary loads (ex: commands targetted at offline players) will put the
-     * player directly into the save queue, as if he was logged out. This is why the save queue is/must be searched prior to* reading the text file.
+     * Get an SPlayer, by name. This searches the reserve, active and fighting
+     * hashes of all factions until the player is found or factions are
+     * exhausted. If a player is not in a faction, check the to-save hash. Its
+     * entirely possible that the player is already in memory, but logged out
+     * and is awaiting a purge. If no matching player is found online, the
+     * server will attempt to read one in from a text file. If even this fails,
+     * a null is returned. NOTE: A player brought into memory using getPlayer is
+     * not automatically logged into his house. Temporary loads (ex: commands
+     * targetted at offline players) will put the player directly into the save
+     * queue, as if he was logged out. This is why the save queue is/must be
+     * searched prior to* reading the text file.
      */
     public SPlayer getPlayer(String pName) {
         return getPlayer(pName, true, false);
@@ -1265,9 +1294,12 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Method which loads a player file from text. THIS SHOULD NOT BE USED. CampaignMain.getPlayer(String name) will check to see if a player is already in
-     * memory, and then call this loader if the player needs to be brought in from text. If you need to get a player, always use .getPlayer(String name)
-     * instead. A player who is loaded is put into the CampaignMain
+     * Method which loads a player file from text. THIS SHOULD NOT BE USED.
+     * CampaignMain.getPlayer(String name) will check to see if a player is
+     * already in memory, and then call this loader if the player needs to be
+     * brought in from text. If you need to get a player, always use
+     * .getPlayer(String name) instead. A player who is loaded is put into the
+     * CampaignMain
      */
     private SPlayer loadPlayerFile(String name, boolean explicitName, boolean mute) {
 
@@ -1968,7 +2000,8 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Private method that sends KI| (kick) commands to idle players. Broken into a seperate method to reduce code repetitiveness in slice().
+     * Private method that sends KI| (kick) commands to idle players. Broken
+     * into a seperate method to reduce code repetitiveness in slice().
      */
     private void checkAndRemoveIdle(SPlayer p, long maxIdleTime) {
 
@@ -1996,9 +2029,12 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Slicer. Called by SliceThread @ the end of its config.txt defined wait duration. Gives influence to active players, checks for (and kicks) idle players,
-     * and saves player files. Slices are generally much shorter than ticks, and involve players and player data much more heavily than factions/high-end
-     * campaign structures. This is the exact opposite of the .tick() (see below).
+     * Slicer. Called by SliceThread @ the end of its config.txt defined wait
+     * duration. Gives influence to active players, checks for (and kicks) idle
+     * players, and saves player files. Slices are generally much shorter than
+     * ticks, and involve players and player data much more heavily than
+     * factions/high-end campaign structures. This is the exact opposite of the
+     * .tick() (see below).
      */
     public synchronized void slice(int sliceID) {
 
@@ -2063,9 +2099,12 @@ public final class CampaignMain implements Serializable {
     }// end the slice...
 
     /**
-     * Tick is the main timekeeping unit of the server. At each tick, various statistics are checked and shown to players (ex: house ranking) and various
-     * portions of the campaign are cleaned up or finalized (ex: market sales). Most tick actions involve meta-functions, houses, the market, and so on. The
-     * only tick mechanic that acts directly on players is Mezzo (pricemod) drain.
+     * Tick is the main timekeeping unit of the server. At each tick, various
+     * statistics are checked and shown to players (ex: house ranking) and
+     * various portions of the campaign are cleaned up or finalized (ex: market
+     * sales). Most tick actions involve meta-functions, houses, the market, and
+     * so on. The only tick mechanic that acts directly on players is Mezzo
+     * (pricemod) drain.
      */
     public synchronized void tick(boolean real, int tickid) {
 
@@ -2252,7 +2291,8 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Send a bit of text to all players who are currently online. Can be chat, or a command/message.
+     * Send a bit of text to all players who are currently online. Can be chat,
+     * or a command/message.
      */
     public void doSendToAllOnlinePlayers(String text, boolean isChat) {
 
@@ -2273,7 +2313,8 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Send a bit of text to all players in a given faction. Can be chat, or a command/message.
+     * Send a bit of text to all players in a given faction. Can be chat, or a
+     * command/message.
      */
     public void doSendToAllOnlinePlayers(SHouse h, String text, boolean isChat) {
 
@@ -2291,7 +2332,8 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Update all player armies that are online This is normally called after operations have been updated.
+     * Update all player armies that are online This is normally called after
+     * operations have been updated.
      */
     public void updateAllOnlinePlayerArmies() {
 
@@ -2322,7 +2364,8 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Method that returns the SHouse that contains a player with a given name. If no factions has such a player online, return a null.
+     * Method that returns the SHouse that contains a player with a given name.
+     * If no factions has such a player online, return a null.
      */
     public SHouse getHouseForPlayer(String Username) {
         String lowerName = Username.toLowerCase();
@@ -2342,8 +2385,10 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Check to see if the server is currently using cyclops if so then check to make sure the link is turned on in case the SO's have turned in on while the
-     * server was already running. Also the link is nulled if the SO's turn off cyclops while the server is running.
+     * Check to see if the server is currently using cyclops if so then check to
+     * make sure the link is turned on in case the SO's have turned in on while
+     * the server was already running. Also the link is nulled if the SO's turn
+     * off cyclops while the server is running.
      * 
      * @return
      */
@@ -2567,8 +2612,9 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * This retuns the blackMarketEquipmentCostTable This hashTable keeps track of all the mix/max costs and parts production for the Black market. This is used
-     * to allow players to buy spare parts to repair Their units.
+     * This retuns the blackMarketEquipmentCostTable This hashTable keeps track
+     * of all the mix/max costs and parts production for the Black market. This
+     * is used to allow players to buy spare parts to repair Their units.
      * 
      * @return blackMarketEquipmentCostTable
      */
@@ -2644,8 +2690,8 @@ public final class CampaignMain implements Serializable {
                 skillBuilder.trimToSize();
                 /*
                  * //CampaignData.mwlog.errLog("Pilot: "+p.getName()+" Skill:
-                 * "+skill.getName()+" Rnd "+rnd+ " chance: "+chance); if ( rnd <=
-                 * chance ) return skill; //else rnd -=
+                 * "+skill.getName()+" Rnd "+rnd+ " chance: "+chance); if ( rnd
+                 * <= chance ) return skill; //else rnd -=
                  * skill.getChance(unitType,p);
                  */
             }
@@ -2682,6 +2728,7 @@ public final class CampaignMain implements Serializable {
      * Replace original readible time (which oddly adjusted times from MechStats
      * into seconds, but used ms from System.currentTime() for comparison) with
      * similar code from MWTracker.java. This produces abbreviated timenames.
+     * 
      * @urgru 8.6.05
      */
     public static String readableTime(long elapsed) {
@@ -2707,7 +2754,8 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Method which generates human readible times from miliseconds. Useful only for times which are known to be minutes or seconds in length. Produces
+     * Method which generates human readible times from miliseconds. Useful only
+     * for times which are known to be minutes or seconds in length. Produces
      * full-word output.
      */
     public static String readableTimeWithSeconds(long elapsed) {
@@ -2833,8 +2881,10 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Private method which writes out players who need to be saved and purges logged out/removable players from RAM. Should be called only from .slice() or
-     * forceSave. See this.forceSavePlayers() for more info on admin-initiated player saves.
+     * Private method which writes out players who need to be saved and purges
+     * logged out/removable players from RAM. Should be called only from
+     * .slice() or forceSave. See this.forceSavePlayers() for more info on
+     * admin-initiated player saves.
      */
     private void savePlayers() {
 
@@ -2877,8 +2927,9 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Public save method. Used by admins to save all online players and all players who are in the save queue. Is called from /save, /shutdown, and /c
-     * adminsave.
+     * Public save method. Used by admins to save all online players and all
+     * players who are in the save queue. Is called from /save, /shutdown, and
+     * /c adminsave.
      */
     public void forceSavePlayers(String Username) {
 
@@ -2895,7 +2946,8 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Public save method to save one player Used by changename and defect commands This is used so the players have a Pfile created right away
+     * Public save method to save one player Used by changename and defect
+     * commands This is used so the players have a Pfile created right away
      */
     public void forceSavePlayer(SPlayer p) {
 
@@ -2903,7 +2955,8 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * Private method which writes a player to the disc. This code was housed in SPlayer; however, it is only called from CampaignMain and (from an OO
+     * Private method which writes a player to the disc. This code was housed in
+     * SPlayer; however, it is only called from CampaignMain and (from an OO
      * standpoint) only CMain should know the hardcoded paths which are used.
      * 
      * @author nmorris 1/13/06
@@ -3155,8 +3208,9 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * @author Torren (Jason Tighe) This method will go through and check all the player files and forceible unenroll anyone that is over <code>days</code>
-     *         idle.
+     * @author Torren (Jason Tighe) This method will go through and check all
+     *         the player files and forceible unenroll anyone that is over
+     *         <code>days</code> idle.
      */
     public void purgePlayerFiles() {
         long days = Long.parseLong(CampaignMain.cm.getConfig("PurgePlayerFilesDays"));
@@ -3198,7 +3252,8 @@ public final class CampaignMain implements Serializable {
      * @param money
      * @param shortname
      * @param amount
-     * @return String Hokey function to return the correct syntax for long and short money/flu messages to the user.
+     * @return String Hokey function to return the correct syntax for long and
+     *         short money/flu messages to the user.
      */
     public String moneyOrFluMessage(boolean money, boolean shortname, int amount) {
         return moneyOrFluMessage(money, shortname, amount, false);
@@ -4192,8 +4247,10 @@ public final class CampaignMain implements Serializable {
     }
 
     /**
-     * this removes a SPlayer object form the global hash. This is called when a player logs into a house, in which case the house now stores the object, or
-     * when the player logs off, incase they never bothred to register or login.
+     * this removes a SPlayer object form the global hash. This is called when a
+     * player logs into a house, in which case the house now stores the object,
+     * or when the player logs off, incase they never bothred to register or
+     * login.
      * 
      * @param soul
      */
