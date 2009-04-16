@@ -301,6 +301,8 @@ public class SArmy extends Army {
 
             SUnit u = (SUnit) currU;
 
+            c3BV = u.calcBV();
+
             if (u.hasBeenC3LinkedTo(this) || getC3Network().get(u.getId()) != null) {
                 int totalForceBV = 0;
                 totalForceBV += u.getEntity().calculateBattleValue(true, true);
@@ -316,8 +318,6 @@ public class SArmy extends Army {
                     }
                 }
                 c3BV += totalForceBV *= 0.05;
-            } else {
-                c3BV += u.calcBV();
             }
 
             subTotal = c3BV;
