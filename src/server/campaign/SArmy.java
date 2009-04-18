@@ -286,7 +286,7 @@ public class SArmy extends Army {
 
         int total = 0;
         int subTotal = 0;
-        int c3BV = 0;
+        double c3BV = 0;
 
         boolean hasTAGHomingCombo = hasTAGAndHomingCombo();
         boolean hasSemiGuided = hasTAGAndSemiGuidedCombo();
@@ -320,7 +320,7 @@ public class SArmy extends Army {
                 c3BV += totalForceBV *= 0.05;
             }
 
-            subTotal = c3BV;
+            subTotal = (int) Math.round(c3BV);
 
             // Arrow IV adjustments
             if (hasTAGHomingCombo) {

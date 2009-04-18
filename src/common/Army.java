@@ -26,168 +26,178 @@ import java.util.Vector;
 
 /**
  * A virtual army which can contain any combination of units
+ * 
  * @author Helge Richter
- *
+ * 
  */
 public class Army {
 
-	//STATIC VARIABLES
-	public static final int NO_LIMIT = -1;
+    // STATIC VARIABLES
+    public static final int NO_LIMIT = -1;
 
-	//VARIABLES
-	private Vector<Unit> units = new Vector<Unit>(1,1);
-	private String name = " ";
+    // VARIABLES
+    private Vector<Unit> units = new Vector<Unit>(1, 1);
+    private String name = " ";
 
-	private int upperLimiter = NO_LIMIT;
-	private int lowerLimiter = NO_LIMIT;
+    private int upperLimiter = NO_LIMIT;
+    private int lowerLimiter = NO_LIMIT;
 
-	private int bv = 0;
-	private int id;
-	private boolean locked = false;
+    private int bv = 0;
+    private int id;
+    private boolean locked = false;
 
-	private boolean armyPlayerLocked = false; //Used by players to keep armies from being cleared
-	private boolean armyDisabled = false;
+    private boolean armyPlayerLocked = false; // Used by players to keep armies
+    // from being cleared
+    private boolean armyDisabled = false;
 
-	private float opForceSize = NO_LIMIT;
+    private float opForceSize = NO_LIMIT;
 
-	private Hashtable<Integer,Integer> c3Network = new Hashtable<Integer,Integer>();
+    private Hashtable<Integer, Integer> c3Network = new Hashtable<Integer, Integer>();
 
-	private Vector<Integer> commanders = new Vector<Integer>(1,1);
+    private Vector<Integer> commanders = new Vector<Integer>(1, 1);
 
-	//CONSTRUCTORS
-	public Army(){
-		//no content
-	}
+    // CONSTRUCTORS
+    public Army() {
+        // no content
+    }
 
-	//METHODS
-	public int getAmountOfUnits() {
-		return units.size();
-	}
+    // METHODS
+    public int getAmountOfUnits() {
+        return units.size();
+    }
 
-	public boolean isDisabled() {
-		return armyDisabled;
-	}
+    public boolean isDisabled() {
+        return armyDisabled;
+    }
 
-	public void disableArmy() {
-		armyDisabled = true;
-	}
+    public void disableArmy() {
+        armyDisabled = true;
+    }
 
-	public void enableArmy() {
-		armyDisabled = false;
-	}
+    public void enableArmy() {
+        armyDisabled = false;
+    }
 
-	public void toggleArmyDisabled() {
-		armyDisabled = !armyDisabled;
-	}
+    public void toggleArmyDisabled() {
+        armyDisabled = !armyDisabled;
+    }
 
-	public boolean isPlayerLocked() {
-		return armyPlayerLocked;
-	}
+    public boolean isPlayerLocked() {
+        return armyPlayerLocked;
+    }
 
-	public void playerLockArmy() {
-		armyPlayerLocked = true;
-	}
+    public void playerLockArmy() {
+        armyPlayerLocked = true;
+    }
 
-	public void playerUnlockArmy() {
-		armyPlayerLocked = false;
-	}
+    public void playerUnlockArmy() {
+        armyPlayerLocked = false;
+    }
 
-	/**
-	 * @return Returns the locked.
-	 */
-	public boolean isLocked() {
-		return locked;
-	}
+    /**
+     * @return Returns the locked.
+     */
+    public boolean isLocked() {
+        return locked;
+    }
 
-	/**
-	 * @param locked The locked to set.
-	 */
-	public void setLocked(boolean b) {
-		locked = b;
-	}
+    /**
+     * @param locked
+     *            The locked to set.
+     */
+    public void setLocked(boolean b) {
+        locked = b;
+    }
 
-	/**
-	 * @return return the BV.
-	 */
-	public int getBV() {
+    /**
+     * @return return the BV.
+     */
+    public int getBV() {
 
-		if (bv < 0) {
+        if (bv < 0) {
             return 0;
         }
 
-		return bv;
-	}
+        return bv;
+    }
 
-	/**
-	 * @param bv The bV to set.
-	 */
-	public void setBV(int i) {
-		bv = i;
-	}
+    /**
+     * @param bv
+     *            The bV to set.
+     */
+    public void setBV(int i) {
+        bv = i;
+    }
 
-	/**
-	 * @return Returns the lowerLimit.
-	 */
-	public int getLowerLimiter() {
-		return lowerLimiter;
-	}
+    /**
+     * @return Returns the lowerLimit.
+     */
+    public int getLowerLimiter() {
+        return lowerLimiter;
+    }
 
-	/**
-	 * @param lowerLimit The lowerLimit to set.
-	 */
-	public void setLowerLimiter(int lowerLimit) {
-		lowerLimiter = lowerLimit;
-	}
+    /**
+     * @param lowerLimit
+     *            The lowerLimit to set.
+     */
+    public void setLowerLimiter(int lowerLimit) {
+        lowerLimiter = lowerLimit;
+    }
 
-	/**
-	 * @return Returns the name.
-	 */
-	public String getName() {
-		return name;
-	}
+    /**
+     * @return Returns the name.
+     */
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * @param name The name to set.
-	 */
-	public void setName(String s) {
-		name = s.trim();
-	}
-
+    /**
+     * @param name
+     *            The name to set.
+     */
+    public void setName(String s) {
+        name = s.trim();
+    }
 
     /**
      * Add a unit to a specific position.
+     * 
      * @param unit
      * @param Position
      */
-    public void addUnit(Unit unit, int Position){
-        units.add(Position,unit);
+    public void addUnit(Unit unit, int Position) {
+        units.add(Position, unit);
     }
+
     /**
      * add units to the army vector.
+     * 
      * @param unit
      */
-    public void addUnit(Unit unit){
+    public void addUnit(Unit unit) {
         units.add(unit);
     }
 
-	/**
-	 * @return Returns the units.
-	 */
-	public Vector<Unit> getUnits() {
-		return units;
-	}
+    /**
+     * @return Returns the units.
+     */
+    public Vector<Unit> getUnits() {
+        return units;
+    }
 
     /**
-     * This will pull The number of unit types this army holds
-     *    i.e. type = Unit.MEK all meks will be counted.
-     * @param type The unit type to check against. MEK VEHICLE
+     * This will pull The number of unit types this army holds i.e. type =
+     * Unit.MEK all meks will be counted.
+     * 
+     * @param type
+     *            The unit type to check against. MEK VEHICLE
      * @return number of unit type that exist in this army
      */
-    public int getNumberOfUnitTypes(int type){
+    public int getNumberOfUnitTypes(int type) {
         int count = 0;
 
-        for ( Unit unit : getUnits() ){
-            if ( unit.getType() == type ) {
+        for (Unit unit : getUnits()) {
+            if (unit.getType() == type) {
                 count++;
             }
         }
@@ -195,130 +205,132 @@ public class Army {
         return count;
     }
 
-	/**
-	 * @return Returns the upperLimit.
-	 */
-	public int getUpperLimiter() {
-		return upperLimiter;
-	}
+    /**
+     * @return Returns the upperLimit.
+     */
+    public int getUpperLimiter() {
+        return upperLimiter;
+    }
 
-	/**
-	 * @param upperLimit The upperLimit to set.
-	 */
-	public void setUpperLimiter(int upperLimit) {
-		upperLimiter = upperLimit;
-	}
+    /**
+     * @param upperLimit
+     *            The upperLimit to set.
+     */
+    public void setUpperLimiter(int upperLimit) {
+        upperLimiter = upperLimit;
+    }
 
+    /**
+     * @return Returns the iD.
+     */
+    public int getID() {
+        return id;
+    }
 
-	/**
-	 * @return Returns the iD.
-	 */
-	public int getID() {
-		return id;
-	}
+    public Unit getUnit(int unitId) {
 
-	public Unit getUnit(int unitId){
-
-	    for (Unit currU : getUnits()){
-	        if (currU.getId() == unitId) {
+        for (Unit currU : getUnits()) {
+            if (currU.getId() == unitId) {
                 return currU;
             }
-	    }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * @param id The iD to set.
-	 */
-	public void setID(int id) {
-		this.id = id;
-	}
+    /**
+     * @param id
+     *            The iD to set.
+     */
+    public void setID(int id) {
+        this.id = id;
+    }
 
-	public String toString(boolean toClient, String delimiter){
-		StringBuilder result = new StringBuilder();
-		result.append(getID());
-		result.append(delimiter);
-		if (toClient) {
-			result.append(getBV());
-			result.append(delimiter);
-			result.append(isLocked());
-			result.append(delimiter);
-		}
-		if (getName().length() > 0 ) {
+    public String toString(boolean toClient, String delimiter) {
+        StringBuilder result = new StringBuilder();
+        result.append(getID());
+        result.append(delimiter);
+        if (toClient) {
+            result.append(getBV());
+            result.append(delimiter);
+            result.append(isLocked());
+            result.append(delimiter);
+        }
+        if (getName().length() > 0) {
             result.append(getName());
         } else {
             result.append(" ");
         }
-		result.append(delimiter);
-		result.append(getLowerLimiter());
-		result.append(delimiter);
-		result.append(getUpperLimiter());
-		result.append(delimiter);
-		result.append(getUnits().size());
-		result.append(delimiter);
-		for ( Unit unit : getUnits()){
-			result.append(unit.getId());
-			result.append(delimiter);
-		}
-		result.append(delimiter);
-		result.append(getC3Network().size());
-		result.append(delimiter);
-		for (Integer currI : getC3Network().keySet()) {
-			result.append(currI);
-			result.append(delimiter);
-			result.append(getC3Network().get(currI));
-			result.append(delimiter);
-		}
-		result.append(opForceSize);
-		result.append(delimiter);
+        result.append(delimiter);
+        result.append(getLowerLimiter());
+        result.append(delimiter);
+        result.append(getUpperLimiter());
+        result.append(delimiter);
+        result.append(getUnits().size());
+        result.append(delimiter);
+        for (Unit unit : getUnits()) {
+            result.append(unit.getId());
+            result.append(delimiter);
+        }
+        result.append(delimiter);
+        result.append(getC3Network().size());
+        result.append(delimiter);
+        for (Integer currI : getC3Network().keySet()) {
+            result.append(currI);
+            result.append(delimiter);
+            result.append(getC3Network().get(currI));
+            result.append(delimiter);
+        }
+        result.append(opForceSize);
+        result.append(delimiter);
 
-		result.append(commanders.size());
-		result.append(delimiter);
-		for ( Integer unitId : commanders){
-			result.append(unitId);
-			result.append(delimiter);
-		}
-		result.append(Boolean.toString(armyPlayerLocked));
-		result.append(delimiter);
-		result.append(Boolean.toString(armyDisabled));
-		result.append(delimiter);
-		return result.toString();
-	}
+        result.append(commanders.size());
+        result.append(delimiter);
+        for (Integer unitId : commanders) {
+            result.append(unitId);
+            result.append(delimiter);
+        }
+        result.append(Boolean.toString(armyPlayerLocked));
+        result.append(delimiter);
+        result.append(Boolean.toString(armyDisabled));
+        result.append(delimiter);
+        return result.toString();
+    }
 
-	/**
-	 * @return Returns the C3Networks.
-	 */
-	public Hashtable<Integer,Integer> getC3Network() {
-		return c3Network;
-	}
+    /**
+     * @return Returns the C3Networks.
+     */
+    public Hashtable<Integer, Integer> getC3Network() {
+        return c3Network;
+    }
 
-	/**
-	 * @param c3Network The C3Networks to set.
-	 */
-	public void setC3Network(Hashtable<Integer,Integer> network) {
-		c3Network = network;
-	}
+    /**
+     * @param c3Network
+     *            The C3Networks to set.
+     */
+    public void setC3Network(Hashtable<Integer, Integer> network) {
+        c3Network = network;
+    }
 
-	public void removeUnitFromC3Network(int unitID){
+    public void removeUnitFromC3Network(int unitID) {
 
-		if (getC3Network().get(new Integer(unitID)) != null) {
-	        getC3Network().remove(new Integer(unitID));
-	        return;
-	    }
+        if (getC3Network().get(new Integer(unitID)) != null) {
+            getC3Network().remove(new Integer(unitID));
+            return;
+        }
 
-		Iterator<Integer> i = getC3Network().keySet().iterator();
-	    while (i.hasNext()) {
-	        Integer slave = i.next();
-	        Integer master = getC3Network().get(slave);
-	        if (master.intValue() == unitID) {
+        Iterator<Integer> i = getC3Network().keySet().iterator();
+        while (i.hasNext()) {
+            Integer slave = i.next();
+            Integer master = getC3Network().get(slave);
+            if (master.intValue() == unitID) {
                 i.remove();
             }
-	    }
+        }
 
-	}
+    }
 
-	/**
+    /**
      * Finds out if unitOne and unitTwo are in the ame c3 Network
      * 
      * @param unitOne
@@ -327,71 +339,76 @@ public class Army {
      */
     public boolean isSameC3Network(int unitOne, int unitTwo) {
 
-        if (getC3Network().get(unitOne) == null || getC3Network().get(unitTwo) == null) {
-            return false;
-        }
-
-        if (getC3Network().get(unitOne) != getC3Network().get(unitTwo)) {
-            return false;
-        }
-
-        return true;
-    }
-
-	/**
-	 * Return the number of C3 networks in this army.
-	 * @return
-	 */
-	public int getNumberOfNetworks() {
-		int count = 0;
-
-		for ( int uid : c3Network.values() ) {
-
-			try {
-				Unit master = getUnit(uid);
-				if ( !c3Network.containsKey(uid) && master.hasBeenC3LinkedTo(this) ) {
-                    count++;
-                }
-			}catch ( Exception ex)
-			{}
-
-		}
-
-		return Math.max(1, count);
-	}
-
-	public float getOpForceSize() {
-		return opForceSize;
-	}
-
-	public void setOpForceSize(float force) {
-		opForceSize = force;
-	}
-
-	public Vector<Integer> getCommanders(){
-		return commanders;
-	}
-
-	public boolean isCommander(int id){
-
-		if ( commanders.contains(id) ) {
+        if (getC3Network().get(unitOne) != null && getC3Network().get(unitOne) == unitTwo) {
             return true;
         }
 
-		return false;
-	}
+        if (getC3Network().get(unitTwo) != null && getC3Network().get(unitTwo) == unitOne) {
+            return true;
+        }
 
-	public void removeCommander(int id){
-		commanders.removeElement(id);
-		commanders.trimToSize();
-	}
+        if (getC3Network().get(unitOne) != null && getC3Network().get(unitTwo) != null && getC3Network().get(unitOne) == getC3Network().get(unitTwo)) {
+            return true;
+        }
 
-	public void addCommander(int id){
-		if ( isCommander(id) ) {
+        return false;
+    }
+
+    /**
+     * Return the number of C3 networks in this army.
+     * 
+     * @return
+     */
+    public int getNumberOfNetworks() {
+        int count = 0;
+
+        for (int uid : c3Network.values()) {
+
+            try {
+                Unit master = getUnit(uid);
+                if (!c3Network.containsKey(uid) && master.hasBeenC3LinkedTo(this)) {
+                    count++;
+                }
+            } catch (Exception ex) {
+            }
+
+        }
+
+        return Math.max(1, count);
+    }
+
+    public float getOpForceSize() {
+        return opForceSize;
+    }
+
+    public void setOpForceSize(float force) {
+        opForceSize = force;
+    }
+
+    public Vector<Integer> getCommanders() {
+        return commanders;
+    }
+
+    public boolean isCommander(int id) {
+
+        if (commanders.contains(id)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public void removeCommander(int id) {
+        commanders.removeElement(id);
+        commanders.trimToSize();
+    }
+
+    public void addCommander(int id) {
+        if (isCommander(id)) {
             return;
         }
-		commanders.add(id);
-		commanders.trimToSize();
-	}
+        commanders.add(id);
+        commanders.trimToSize();
+    }
 
 }
