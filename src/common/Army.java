@@ -339,15 +339,18 @@ public class Army {
      */
     public boolean isSameC3Network(int unitOne, int unitTwo) {
 
-        if (getC3Network().get(unitOne) != null && getC3Network().get(unitOne) == unitTwo) {
+        if (getC3Network().containsKey(unitOne) && getC3Network().get(unitOne) == unitTwo) {
             return true;
         }
 
-        if (getC3Network().get(unitTwo) != null && getC3Network().get(unitTwo) == unitOne) {
+        if (getC3Network().containsKey(unitTwo) && getC3Network().get(unitTwo) == unitOne) {
             return true;
         }
 
-        if (getC3Network().get(unitOne) != null && getC3Network().get(unitTwo) != null && getC3Network().get(unitOne) == getC3Network().get(unitTwo)) {
+        Integer networkOne = getC3Network().get(unitOne);
+        Integer networkTwo = getC3Network().get(unitTwo);
+
+        if (networkOne != null && networkOne.equals(networkTwo)) {
             return true;
         }
 

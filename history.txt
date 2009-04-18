@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ Bug: C3 BV Calculations not checking all links
 + Bug: C3 BV calculations off when no C3/Linked units are in army
 + Bug: email vaildation not getting turn off if DB was turned off
 + Bug 2750658: Army BV shows as 0
