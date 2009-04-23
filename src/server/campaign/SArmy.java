@@ -507,7 +507,14 @@ public class SArmy extends Army {
 
             Iterator<Unit> i = getUnits().iterator();
             while (i.hasNext()) {
-                result.append(((SUnit) i.next()).getSmallDescription());
+            	SUnit u = (SUnit) i.next();
+            	if (this.isCommander(u.getId())) {
+            		result.append("<i>");
+            	}
+                result.append(u.getSmallDescription());
+                if (this.isCommander(u.getId())) {
+                	result.append("</i>");
+                }
                 if (i.hasNext()) {
                     result.append(", ");
                 }
