@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ RFE 2515673 - Option to allow separate scrap chances based on legged or
+      gyroed units.
 + RFE: Do not alllow the No play command to be used while active
 + RFE 2717451 - Army commanders shown in /adminplayerstatus
 + Bug: C3 BV Calculations not checking all links

@@ -3222,6 +3222,9 @@ public class ShortResolver {
 			int pushedScrappedChance = o.getIntValue("PushedUnitScrappedChance");
 			int enginedScrappedChance = o.getIntValue("EnginedUnitsScrappedChance");
 			int forcedSalvageScrappedChance = o.getIntValue("ForcedSalvageUnitsScrappedChance");
+			boolean separateMobilityScrapChances = o.getBooleanValue("UseSeparateLegAndGyroScrappedChance");
+			int leggedScrapChance = o.getIntValue("LeggedUnitsScrappedChance");
+			int gyroedScrapChance = o.getIntValue("GyroedUnitsScrappedChance");
 
 			try {
 				// loop through all units in the string
@@ -3280,7 +3283,11 @@ public class ShortResolver {
 							}
 						} else if (UnitUtils.getNumberOfDamagedEngineCrits(unit.getEntity()) >= 3 && CampaignMain.cm.getRandomNumber(100) <= enginedScrappedChance) {
 							oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
-						} else if (!oEntity.canStand() && CampaignMain.cm.getRandomNumber(100) < forcedSalvageScrappedChance) {
+						} else if (!oEntity.canStand() && !separateMobilityScrapChances && CampaignMain.cm.getRandomNumber(100) < forcedSalvageScrappedChance) {
+							oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
+						} else if (separateMobilityScrapChances && oEntity.isLegged() && (CampaignMain.cm.getRandomNumber(100) < leggedScrapChance) ) {
+							oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
+						} else if (separateMobilityScrapChances && oEntity.isGyroed() && (CampaignMain.cm.getRandomNumber(100) < gyroedScrapChance) ) {
 							oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
 						}
 

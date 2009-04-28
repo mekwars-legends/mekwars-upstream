@@ -2040,7 +2040,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         penaltyBox.setMaximumSize(new Dimension(700, 50));
 
         JPanel fleeingBox = new JPanel();
-        Dimension dim = new Dimension(700, 100);
+        Dimension dim = new Dimension(700, 170);
         fleeingBox.setLayout(new BoxLayout(fleeingBox, BoxLayout.Y_AXIS));
         fleeingBox.setPreferredSize(dim);
         fleeingBox.setMinimumSize(dim);
@@ -2361,10 +2361,37 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField.setToolTipText("<html><html><b>NOTE:</b>This is an Integer Field. 25 = 25%<br>Chance, out of 100, that a legged/gyroed unit is utterly destroyed while trying to be salvaged. Default 0</html>");
         BaseTextField.setName("ForcedSalvageUnitsScrappedChance");
         fleeingPanel.add(BaseTextField);
+        
+        JPanel separateSalvagePanel = new JPanel();
+        separateSalvagePanel.setLayout(new BoxLayout(separateSalvagePanel, BoxLayout.Y_AXIS));
+        JPanel checkBoxPanel = new JPanel();
+        JPanel salvageOptionsPanel = new JPanel();
+        
+        BaseCheckBox = new JCheckBox("Use Separate Legged/Gyroed Salvage Chance");
+        BaseCheckBox.setName("UseSeparateLegAndGyroScrappedChance");
+        checkBoxPanel.add(BaseCheckBox);
+        
+        BaseTextField = new JTextField(5);
+        salvageOptionsPanel.add(new JLabel("Gyroed Units Scrapped:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html><b>NOTE:</b>This is an Integer Field. 25 = 25%<br> Chance, out of 100, that a gyroed unit is utterly destroyed while trying to be salvaged.  Default 0</html>");
+        BaseTextField.setName("GyroedUnitsScrappedChance");
+        salvageOptionsPanel.add(BaseTextField);
 
+        salvageOptionsPanel.add(new JLabel("    "));
+        
+        BaseTextField = new JTextField(5);
+        salvageOptionsPanel.add(new JLabel("Legged Units Scrapped:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html><b>NOTE:</b>This is an Integer Field. 25 = 25%<br> Chance, out of 100, that a legged unit is utterly destroyed while trying to be salvaged.  Default 0</html>");
+        BaseTextField.setName("LeggedUnitsScrappedChance");
+        salvageOptionsPanel.add(BaseTextField);
+
+        separateSalvagePanel.add(checkBoxPanel);
+        separateSalvagePanel.add(salvageOptionsPanel);
+        
         SpringLayoutHelper.setupSpringGrid(fleeingPanel, 4);
         fleeingBox.add(new JLabel("Fleeing Penalties"));
         fleeingBox.add(fleeingPanel);
+        fleeingBox.add(separateSalvagePanel);
         fleeingBox.setBorder(BorderFactory.createLineBorder(Color.black));
 
         attackerBox.add(new JLabel("Attacker"));

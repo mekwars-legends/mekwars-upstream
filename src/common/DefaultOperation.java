@@ -1255,6 +1255,9 @@ public class DefaultOperation {
 
         operationsDefaults.put("EnginedUnitsScrappedChance", "0");
         operationsDefaults.put("ForcedSalvageUnitsScrappedChance", "0");
+        operationsDefaults.put("GyroedUnitsScrappedChance", "0");
+        operationsDefaults.put("LeggedUnitsScrappedChance", "0");
+        operationsDefaults.put("UseSeparateLegAndGyroScrappedChance", "false");
 
         // newbie-match flags
         operationsDefaults.put("AllowSOLToUse", "false");

@@ -317,6 +317,38 @@ public class OperationEntity {
         
         return true;
 	}
+	
+	/**
+	 * @return true if this is a Mech with one or more missing legs
+	 */
+	public boolean isLegged() {
+		if (MMUnitType == Unit.MEK) {
+			return (this.getLLint() <= 0 || this.getRLint() <= 0);
+		}else if (MMUnitType == Unit.QUAD){
+            //Quads
+            int missingLegsCount = 0;
+            if (getLLint() <= 0) missingLegsCount++;
+            if (getRLint() <= 0) missingLegsCount++;
+            if (getRAint() <= 0) missingLegsCount++;
+            if (getLAint() <= 0) missingLegsCount++;
+            if (missingLegsCount >= 2)
+                return true;
+        }
+		return false;
+	}
+	
+	/**
+	 * @return true if this is a Mech with a missing gyro, or an immobile vehicle
+	 */
+	public boolean isGyroed() {
+		if (MMUnitType == Unit.MEK || MMUnitType == Unit.QUAD) {
+			return (this.getGyrohits() >= 2);
+		} else if (MMUnitType == Unit.VEHICLE) {
+			return isImmobile;
+		}
+		return false;
+	}
+	
 	/**
 	 * @return Returns the isSalvage.
 	 */
