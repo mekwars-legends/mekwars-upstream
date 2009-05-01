@@ -117,7 +117,7 @@ public class SerializeEntity{
 			}
 			
 			if (  e.isOffBoard() ){
-				result.append(e.getOffBoardDistance()+"*");
+				result.append("*" + e.getOffBoardDistance());
 			}
 		}
 		
