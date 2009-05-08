@@ -17,16 +17,15 @@
 
 package client.campaign;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Vector;
 
 import megamek.common.CriticalSlot;
 import megamek.common.IOffBoardDirections;
-
 import client.MWClient;
 import client.util.CArmyComparator;
 import client.util.CUnitComparator;
@@ -144,23 +143,24 @@ public class CPlayer extends Player {
         newArmy.fromString(data, this, "%", mwclient);
 
         // Save the old army's legal operations.
-        CArmy oldArmy = this.getArmy(newArmy.getID());
-        if (oldArmy != null)
+        CArmy oldArmy = getArmy(newArmy.getID());
+        if (oldArmy != null) {
             newArmy.setLegalOperations(oldArmy.getLegalOperations());
+        }
 
         // swap the armies
-        this.removeArmy(newArmy.getID());
-        if (Armies.size() < newArmy.getID())
+        removeArmy(newArmy.getID());
+        if (Armies.size() < newArmy.getID()) {
             Armies.add(newArmy);
-        else
+        } else {
             Armies.add(newArmy.getID(), newArmy);
+        }
     }
 
     /**
      * Complete setData command. Called in response to a PS| sent by the server.
      * 
-     * @param -
-     *            data
+     * @param - data
      * @return - success
      */
     public boolean setData(String data) {
@@ -171,8 +171,9 @@ public class CPlayer extends Player {
 
         ST = new StringTokenizer(data, "~");
         element = TokenReader.readString(ST);
-        if (!element.equals("CP"))
+        if (!element.equals("CP")) {
             return false;
+        }
 
         for (int x = 0; x < UnitUtils.TECH_ELITE; x++) {
             setTotalTechs(x, 0);
@@ -190,8 +191,9 @@ public class CPlayer extends Player {
         Hangarcount = TokenReader.readInt(ST);
         for (i = 0; i < Hangarcount; i++) {
             tmek = new CUnit(mwclient);
-            if (tmek.setData(TokenReader.readString(ST)))
+            if (tmek.setData(TokenReader.readString(ST))) {
                 Hangar.add(tmek);
+            }
         }
 
         Armiescount = (TokenReader.readInt(ST));
@@ -206,23 +208,24 @@ public class CPlayer extends Player {
         Rating = Double.parseDouble(TokenReader.readString(ST));
         Influence = TokenReader.readInt(ST);
         setTechnicians(TokenReader.readInt(ST));
-        this.doPayTechniciansMath();
+        doPayTechniciansMath();
         RewardPoints = TokenReader.readInt(ST);
         House = TokenReader.readString(ST);
         setHouseFightingFor(TokenReader.readString(ST));
         setLogo(TokenReader.readString(ST));
-        this.setInvisible(TokenReader.readBoolean(ST));
+        setInvisible(TokenReader.readBoolean(ST));
 
-        if (Boolean.parseBoolean(mwclient.getserverConfigs("UsePartsRepair")))
-            partsCache.fromString(TokenReader.readString(ST),"|");
-        else
+        if (Boolean.parseBoolean(mwclient.getserverConfigs("UsePartsRepair"))) {
+            partsCache.fromString(TokenReader.readString(ST), "|");
+        } else {
             TokenReader.readString(ST);
+        }
 
-        this.setAutoReorder(TokenReader.readBoolean(ST));
+        setAutoReorder(TokenReader.readBoolean(ST));
 
         // traps run. sort the HQ. this isn't duplicative, b/c
         // direct lods (PS instead of PL) don't trigger sorts.
-        this.sortHangar();
+        sortHangar();
         return true;
     }
 
@@ -234,7 +237,7 @@ public class CPlayer extends Player {
             CUnit unit = new CUnit(mwclient);
             if (unit.setData(data)) {
                 Hangar.add(unit);
-                this.sortHangar();// sort it!
+                sortHangar();// sort it!
             }
         } catch (Exception e) {
             CampaignData.mwlog.errLog(e);
@@ -247,9 +250,9 @@ public class CPlayer extends Player {
      */
     public void updateUnitData(StringTokenizer st) {
         try {
-            CUnit currUnit = this.getUnit(TokenReader.readInt(st));
+            CUnit currUnit = getUnit(TokenReader.readInt(st));
             currUnit.setData(TokenReader.readString(st));
-            this.sortHangar();// properties have changes. sort. YARR!
+            sortHangar();// properties have changes. sort. YARR!
         } catch (Exception e) {
             CampaignData.mwlog.errLog(e);
             return;
@@ -258,7 +261,7 @@ public class CPlayer extends Player {
 
     public void updateUnitMachineGuns(StringTokenizer st) {
         try {
-            CUnit currUnit = this.getUnit(TokenReader.readInt(st));
+            CUnit currUnit = getUnit(TokenReader.readInt(st));
             int location = TokenReader.readInt(st);
             int slot = TokenReader.readInt(st);
             boolean selection = TokenReader.readBoolean(st);
@@ -266,7 +269,7 @@ public class CPlayer extends Player {
             CriticalSlot crit = currUnit.getEntity().getCritical(location, slot);
             currUnit.getEntity().getEquipment(crit.getIndex()).setRapidfire(selection);
 
-            this.sortHangar();// properties have changes. sort. YARR!
+            sortHangar();// properties have changes. sort. YARR!
         } catch (Exception e) {
             CampaignData.mwlog.errLog(e);
             return;
@@ -328,7 +331,7 @@ public class CPlayer extends Player {
     }
 
     public void setRewardPoints(int rewards) {
-        this.RewardPoints = rewards;
+        RewardPoints = rewards;
     }
 
     public void setBays(int tbays) {
@@ -355,21 +358,23 @@ public class CPlayer extends Player {
          * Get the faction configs before starting anything else. I could pause
          * the client and wait for the configs but I'll let it go. --Torren
          */
-        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c getfactionconfigs#" + mwclient.getserverConfigs("TIMESTAMP"));
+        mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c getfactionconfigs#0" + mwclient.getserverConfigs("TIMESTAMP"));
 
         /*
          * Now that we have a house set, we can check for BM access properly. Do
          * the BM buy and sell button checks.
          */
-        if (mwclient.getMainFrame().getMainPanel().getBMPanel() != null)
+        if (mwclient.getMainFrame().getMainPanel().getBMPanel() != null) {
             mwclient.getMainFrame().getMainPanel().getBMPanel().checkFactionAccess();
+        }
 
         /*
          * Same thing for the HQ. We have a house, so we can rebuild the button
          * bar w/ or w/o a reset button, as appropriate.
          */
-        if (mwclient.getMainFrame().getMainPanel().getHQPanel() != null)
+        if (mwclient.getMainFrame().getMainPanel().getHQPanel() != null) {
             mwclient.getMainFrame().getMainPanel().getHQPanel().reinitialize();
+        }
     }
 
     public String getHouse() {
@@ -385,7 +390,7 @@ public class CPlayer extends Player {
     }
 
     public void setLogo(String logo) {
-        this.myLogo = logo;
+        myLogo = logo;
     }
 
     public String getLogo() {
@@ -435,12 +440,13 @@ public class CPlayer extends Player {
     @Override
     public void setTechnicians(int tech) {
         Techs = tech;
-        this.doPayTechniciansMath();
+        doPayTechniciansMath();
     }
 
     public int getTechCost() {
-        if (TechCost < 0)
+        if (TechCost < 0) {
             return 0;
+        }
         // else
         return TechCost;
     }
@@ -458,12 +464,14 @@ public class CPlayer extends Player {
         int newID = -1;
         int possibleNewID = 0;
         while (newID == -1) {
-            for (int i = 0; i < Armies.size(); i++)
-                if ((Armies.get(i)).getID() == possibleNewID)
+            for (int i = 0; i < Armies.size(); i++) {
+                if ((Armies.get(i)).getID() == possibleNewID) {
                     newID = i;
-            if (newID == -1)
+                }
+            }
+            if (newID == -1) {
                 newID = possibleNewID;
-            else {
+            } else {
                 possibleNewID++;
                 newID = -1;
             }
@@ -488,13 +496,15 @@ public class CPlayer extends Player {
         AutoArmy = new ArrayList<CUnit>();
 
         // if its a null, this was just a clearing call.
-        if (st == null)
+        if (st == null) {
             return;
+        }
 
         while (st.hasMoreTokens()) {
             String filename = TokenReader.readString(st);
-            if (filename.equals("CLEAR"))
+            if (filename.equals("CLEAR")) {
                 return;
+            }
 
             // get the distance
             int distInBoards = Integer.parseInt(mwclient.getserverConfigs("DistanceFromMap"));
@@ -545,13 +555,15 @@ public class CPlayer extends Player {
     public void setAutoGunEmplacements(StringTokenizer st) {
 
         // if its a null, this was just a clearing call.
-        if (st == null)
+        if (st == null) {
             return;
+        }
 
         while (st.hasMoreTokens()) {
             String filename = TokenReader.readString(st);
-            if (filename.equals("CLEAR"))
+            if (filename.equals("CLEAR")) {
                 return;
+            }
 
             CUnit currUnit = new CUnit(mwclient);
             currUnit.setAutoUnitData(filename, 0, 0);
@@ -563,8 +575,9 @@ public class CPlayer extends Player {
 
         while (st.hasMoreElements()) {
             String data = TokenReader.readString(st);
-            if (data.equalsIgnoreCase("CLEAR"))
+            if (data.equalsIgnoreCase("CLEAR")) {
                 return;
+            }
 
             CUnit cm = new CUnit();
             cm.setData(data);
@@ -582,8 +595,9 @@ public class CPlayer extends Player {
     public CUnit getUnit(int unitID) {
 
         for (CUnit currU : Hangar) {
-            if (currU.getId() == unitID)
+            if (currU.getId() == unitID) {
                 return currU;
+            }
         }
         return null;
     }
@@ -591,8 +605,9 @@ public class CPlayer extends Player {
     public CArmy getArmy(int id) {
 
         for (CArmy currA : Armies) {
-            if (currA.getID() == id)
+            if (currA.getID() == id) {
                 return currA;
+            }
         }
         return null;
     }
@@ -600,8 +615,9 @@ public class CPlayer extends Player {
     public int getAmountOfTimesUnitExistsInArmies(int unitID) {
         int result = 0;
         for (CArmy currA : Armies) {
-            if (currA.getUnit(unitID) != null)
+            if (currA.getUnit(unitID) != null) {
                 result++;
+            }
         }
         return result;
     }
@@ -609,8 +625,9 @@ public class CPlayer extends Player {
     public String getArmiesUnitIsIn(int unitID) {
         StringBuilder result = new StringBuilder();
         for (CArmy currA : Armies) {
-            if (currA.getUnit(unitID) != null)
+            if (currA.getUnit(unitID) != null) {
                 result.append(currA.getID() + " ");
+            }
         }
         return result.toString();
     }
@@ -619,8 +636,9 @@ public class CPlayer extends Player {
 
         ArrayList<Unit> result = new ArrayList<Unit>();
         for (CArmy currA : Armies) {
-            if (currA.isLocked())
+            if (currA.isLocked()) {
                 result.addAll(currA.getUnits());
+            }
         }
         return result;
     }
@@ -628,8 +646,9 @@ public class CPlayer extends Player {
     public synchronized CArmy getLockedArmy() {
 
         for (CArmy currA : Armies) {
-            if (currA.isLocked())
+            if (currA.isLocked()) {
                 return currA;
+            }
         }
         return null;
     }
@@ -706,12 +725,13 @@ public class CPlayer extends Player {
             int unitid = TokenReader.readInt(ST);
             int bv = TokenReader.readInt(ST);
             int position = TokenReader.readInt(ST);
-            if (position >= 0)
-                this.getArmy(army).addUnit(this.getUnit(unitid), position);
-            else
-                this.getArmy(army).addUnit(this.getUnit(unitid));
-            this.getArmy(army).setBV(bv);
-            this.sortArmies();
+            if (position >= 0) {
+                getArmy(army).addUnit(getUnit(unitid), position);
+            } else {
+                getArmy(army).addUnit(getUnit(unitid));
+            }
+            getArmy(army).setBV(bv);
+            sortArmies();
         }
     }
 
@@ -722,7 +742,7 @@ public class CPlayer extends Player {
             int unitid = TokenReader.readInt(ST);
             int bv = TokenReader.readInt(ST);
 
-            Iterator<Unit> i = this.getArmy(army).getUnits().iterator();
+            Iterator<Unit> i = getArmy(army).getUnits().iterator();
             while (i.hasNext()) {
                 if (i.next().getId() == unitid) {
                     i.remove();
@@ -730,8 +750,8 @@ public class CPlayer extends Player {
                 }
             }
 
-            this.getArmy(army).setBV(bv);
-            this.getArmy(army).getC3Network().remove(unitid);
+            getArmy(army).setBV(bv);
+            getArmy(army).getC3Network().remove(unitid);
         }
         mwclient.refreshGUI(MWClient.REFRESH_HQPANEL);
     }
@@ -742,7 +762,7 @@ public class CPlayer extends Player {
     public void updateOperations(String data) {
 
         if (data.equals("CLEAR")) {
-            for (CArmy army : this.getArmies()) {
+            for (CArmy army : getArmies()) {
                 army.getLegalOperations().clear();
             }
             return;
@@ -750,11 +770,12 @@ public class CPlayer extends Player {
 
         StringTokenizer tokenizer = new StringTokenizer(data, "*");
         int armyID = TokenReader.readInt(tokenizer);
-        CArmy army = this.getArmy(armyID);
+        CArmy army = getArmy(armyID);
 
         // System.err.println(" ArmyID: "+armyID+ " Army: "+army);
-        if (army == null)
+        if (army == null) {
             return;
+        }
 
         while (tokenizer.hasMoreTokens()) {
             String mode = "";
@@ -767,10 +788,11 @@ public class CPlayer extends Player {
                 return;
             }
 
-            if (mode.equals("a"))
+            if (mode.equals("a")) {
                 army.getLegalOperations().add(name);
-            else if (mode.equals("r"))
+            } else if (mode.equals("r")) {
                 army.getLegalOperations().remove(name);
+            }
         }// end while(more tokens)
 
         // update the CMainFrame Attack menu
@@ -785,7 +807,7 @@ public class CPlayer extends Player {
         int unitid = TokenReader.readInt(ST);
         int position = TokenReader.readInt(ST);
 
-        CArmy a = this.getArmy(army);
+        CArmy a = getArmy(army);
 
         // remove the unit
         Iterator<Unit> i = a.getUnits().iterator();
@@ -797,7 +819,7 @@ public class CPlayer extends Player {
         }
 
         // then re-add the unit
-        this.getArmy(army).addUnit(this.getUnit(unitid), position);
+        getArmy(army).addUnit(getUnit(unitid), position);
 
     }
 
@@ -806,15 +828,17 @@ public class CPlayer extends Player {
         if (ST.hasMoreTokens()) {
             int unitid = TokenReader.readInt(ST);
             int status = TokenReader.readInt(ST);
-            CUnit unit = this.getUnit(unitid);
+            CUnit unit = getUnit(unitid);
 
-            if (unit == null)
+            if (unit == null) {
                 return;
+            }
 
-            if (mwclient.isUsingAdvanceRepairs() && status == Unit.STATUS_UNMAINTAINED)
+            if (mwclient.isUsingAdvanceRepairs() && status == Unit.STATUS_UNMAINTAINED) {
                 unit.setStatus(Unit.STATUS_OK);
-            else
+            } else {
                 unit.setStatus(status);
+            }
         }
     }
 
@@ -824,34 +848,39 @@ public class CPlayer extends Player {
             int army = TokenReader.readInt(ST);
             String name = TokenReader.readString(ST);
 
-            if (this.getArmy(army) != null)
-                this.getArmy(army).setName(name);
+            if (getArmy(army) != null) {
+                getArmy(army).setName(name);
+            }
         }
     }
 
     public void playerLockArmy(int aid) {
-        if (this.getArmy(aid) != null)
-            this.getArmy(aid).playerLockArmy();
+        if (getArmy(aid) != null) {
+            getArmy(aid).playerLockArmy();
+        }
     }
 
     public void playerUnlockArmy(int aid) {
-        if (this.getArmy(aid) != null)
-            this.getArmy(aid).playerUnlockArmy();
+        if (getArmy(aid) != null) {
+            getArmy(aid).playerUnlockArmy();
+        }
     }
 
     public void toggleArmyDisabled(int aid) {
-        if (this.getArmy(aid) != null)
-            this.getArmy(aid).toggleArmyDisabled();
+        if (getArmy(aid) != null) {
+            getArmy(aid).toggleArmyDisabled();
+        }
     }
 
     public void setArmyBV(String data) {
         StringTokenizer ST = new StringTokenizer(data, DELIMITER);
         if (ST.hasMoreTokens()) {
             int army = TokenReader.readInt(ST);
-            if (this.getArmy(army) != null)
-                this.getArmy(army).setBV(TokenReader.readInt(ST));
-            else
+            if (getArmy(army) != null) {
+                getArmy(army).setBV(TokenReader.readInt(ST));
+            } else {
                 CampaignData.mwlog.errLog("Bad Army id: " + army);
+            }
         }
     }
 
@@ -862,8 +891,8 @@ public class CPlayer extends Player {
             int lowerLimit = TokenReader.readInt(ST);
             int upperLimit = TokenReader.readInt(ST);
 
-            this.getArmy(army).setLowerLimiter(lowerLimit);
-            this.getArmy(army).setUpperLimiter(upperLimit);
+            getArmy(army).setLowerLimiter(lowerLimit);
+            getArmy(army).setUpperLimiter(upperLimit);
         }
     }
 
@@ -873,7 +902,7 @@ public class CPlayer extends Player {
             int army = TokenReader.readInt(ST);
             float opForceSize = TokenReader.readFloat(ST);
 
-            this.getArmy(army).setOpForceSize(opForceSize);
+            getArmy(army).setOpForceSize(opForceSize);
         }
 
     }
@@ -883,16 +912,16 @@ public class CPlayer extends Player {
         if (ST.hasMoreTokens()) {
             int army = TokenReader.readInt(ST);
             boolean lock = TokenReader.readBoolean(ST);
-            this.getArmy(army).setLocked(lock);
+            getArmy(army).setLocked(lock);
         }
     }
 
     public void setPlayerPersonalPilotQueue(CPersonalPilotQueues queue) {
-        this.personalPilotQueue = queue;
+        personalPilotQueue = queue;
     }
 
     public CPersonalPilotQueues getPersonalPilotQueue() {
-        return this.personalPilotQueue;
+        return personalPilotQueue;
     }
 
     /**
@@ -907,8 +936,9 @@ public class CPlayer extends Player {
         StringTokenizer ST = new StringTokenizer(buffer, token);
         while (ST.hasMoreElements()) {
             String curr = TokenReader.readString(ST);
-            if (!curr.equals("0"))
-                this.adminExcludes.add(curr);
+            if (!curr.equals("0")) {
+                adminExcludes.add(curr);
+            }
         }
         mwclient.getMainFrame().getMainPanel().getUserListPanel().repaint();
     }
@@ -923,8 +953,9 @@ public class CPlayer extends Player {
         StringTokenizer ST = new StringTokenizer(buffer, token);
         while (ST.hasMoreElements()) {
             String curr = TokenReader.readString(ST);
-            if (!curr.equals("0"))
-                this.playerExcludes.add(curr);
+            if (!curr.equals("0")) {
+                playerExcludes.add(curr);
+            }
         }
         mwclient.getMainFrame().getMainPanel().getUserListPanel().repaint();
     }
@@ -969,44 +1000,51 @@ public class CPlayer extends Player {
         // determine which sort will dominate
         int primarySort = CUnitComparator.HQSORT_NONE;
         for (int i = 0; i < choices.length; i++) {
-            if (primeSortOrder.equals(choices[i]))
+            if (primeSortOrder.equals(choices[i])) {
                 primarySort = i;
+            }
         }
 
         // determine secondary sort
         int secondarySort = CUnitComparator.HQSORT_NONE;
         for (int i = 0; i < choices.length; i++) {
-            if (secondarySortOrder.equals(choices[i]))
+            if (secondarySortOrder.equals(choices[i])) {
                 secondarySort = i;
+            }
         }
 
         // determine tertiary sort
         int tertiarySort = CUnitComparator.HQSORT_NONE;
         for (int i = 0; i < choices.length; i++) {
-            if (tertiarySortOrder.equals(choices[i]))
+            if (tertiarySortOrder.equals(choices[i])) {
                 tertiarySort = i;
+            }
         }
 
         // we know this holds CUnits. Can safely cast.
         Object[] unitsArray = Hangar.toArray();
 
         // run third sort
-        if (tertiarySort != primarySort && tertiarySort != secondarySort && tertiarySort != CUnitComparator.HQSORT_NONE)
+        if (tertiarySort != primarySort && tertiarySort != secondarySort && tertiarySort != CUnitComparator.HQSORT_NONE) {
             Arrays.sort(unitsArray, new CUnitComparator(tertiarySort));
+        }
 
         // run the second sort
-        if (primarySort != secondarySort && secondarySort != CUnitComparator.HQSORT_NONE)
+        if (primarySort != secondarySort && secondarySort != CUnitComparator.HQSORT_NONE) {
             Arrays.sort(unitsArray, new CUnitComparator(secondarySort));
+        }
 
         // now the primary sort
-        if (primarySort != CUnitComparator.HQSORT_NONE)
+        if (primarySort != CUnitComparator.HQSORT_NONE) {
             Arrays.sort(unitsArray, new CUnitComparator(primarySort));
+        }
 
         // overwrite the hangar with a new arraylist constructed from the
         // unitsArray.
         Vector<CUnit> Hangar2 = new Vector<CUnit>(1, 1);
-        for (int i = 0; i < unitsArray.length; i++)
-            Hangar2.add((CUnit) unitsArray[i]);
+        for (Object element : unitsArray) {
+            Hangar2.add((CUnit) element);
+        }
 
         // replace the hangar and flush the array
         Hangar = Hangar2;
@@ -1045,44 +1083,51 @@ public class CPlayer extends Player {
         // determine which sort will dominate
         int primarySort = CArmyComparator.ARMYSORT_NONE;
         for (int i = 0; i < choices.length; i++) {
-            if (primeSortOrder.equals(choices[i]))
+            if (primeSortOrder.equals(choices[i])) {
                 primarySort = i;
+            }
         }
 
         // determine secondary sort
         int secondarySort = CArmyComparator.ARMYSORT_NONE;
         for (int i = 0; i < choices.length; i++) {
-            if (secondarySortOrder.equals(choices[i]))
+            if (secondarySortOrder.equals(choices[i])) {
                 secondarySort = i;
+            }
         }
 
         // determine tertiary sort
         int tertiarySort = CArmyComparator.ARMYSORT_NONE;
         for (int i = 0; i < choices.length; i++) {
-            if (tertiarySortOrder.equals(choices[i]))
+            if (tertiarySortOrder.equals(choices[i])) {
                 tertiarySort = i;
+            }
         }
 
         // we know this holds CUnits. Can safely cast.
         Object[] armiesArray = Armies.toArray();
 
         // run third sort
-        if (tertiarySort != primarySort && tertiarySort != secondarySort && tertiarySort != CArmyComparator.ARMYSORT_NONE)
+        if (tertiarySort != primarySort && tertiarySort != secondarySort && tertiarySort != CArmyComparator.ARMYSORT_NONE) {
             Arrays.sort(armiesArray, new CArmyComparator(tertiarySort));
+        }
 
         // run the second sort
-        if (primarySort != secondarySort && secondarySort != CArmyComparator.ARMYSORT_NONE)
+        if (primarySort != secondarySort && secondarySort != CArmyComparator.ARMYSORT_NONE) {
             Arrays.sort(armiesArray, new CArmyComparator(secondarySort));
+        }
 
         // now the primary sort
-        if (primarySort != CArmyComparator.ARMYSORT_NONE)
+        if (primarySort != CArmyComparator.ARMYSORT_NONE) {
             Arrays.sort(armiesArray, new CArmyComparator(primarySort));
+        }
 
         // overwrite the hangar with a new arraylist constructed from the
         // unitsArray.
         Vector<CArmy> Army2 = new Vector<CArmy>(1, 1);
-        for (int i = 0; i < armiesArray.length; i++)
-            Army2.add((CArmy) armiesArray[i]);
+        for (Object element : armiesArray) {
+            Army2.add((CArmy) element);
+        }
 
         // replace the hangar and flush the array
         Armies = Army2;
@@ -1091,8 +1136,9 @@ public class CPlayer extends Player {
 
     public int getHangarSpaceRequired(int typeid, int weightclass, int baymod, String model) {
 
-        if (typeid == Unit.PROTOMEK)
+        if (typeid == Unit.PROTOMEK) {
             return 0;
+        }
 
         if (typeid == Unit.INFANTRY && Boolean.parseBoolean(mwclient.getserverConfigs("FootInfTakeNoBays"))) {
 
@@ -1100,8 +1146,9 @@ public class CPlayer extends Player {
             boolean isFoot = model.startsWith("Foot");
             boolean isAMFoot = model.startsWith("Anti-Mech Foot");
 
-            if (isFoot || isAMFoot)
+            if (isFoot || isAMFoot) {
                 return 0;
+            }
         }
 
         int result = 1;
@@ -1109,12 +1156,14 @@ public class CPlayer extends Player {
         result = Integer.parseInt(mwclient.getserverConfigs(techAmount));
 
         // Apply Pilot Mods (Astech skill)
-        if (!mwclient.isUsingAdvanceRepairs())
+        if (!mwclient.isUsingAdvanceRepairs()) {
             result += baymod;
+        }
 
         // no negative techs
-        if (result < 0)
+        if (result < 0) {
             result = 0;
+        }
 
         return result;
     }// end getHangarSpaceRequired()
@@ -1166,27 +1215,27 @@ public class CPlayer extends Player {
     }
 
     public void setRepairLocation(int loc) {
-        this.repairLocation = loc;
+        repairLocation = loc;
     }
 
     public int getRepairLocation() {
-        return this.repairLocation;
+        return repairLocation;
     }
 
     public void setRepairTechType(int type) {
-        this.repairTechType = type;
+        repairTechType = type;
     }
 
     public int getRepairTechType() {
-        return this.repairTechType;
+        return repairTechType;
     }
 
     public void setRepairRetries(int retries) {
-        this.repairRetries = retries;
+        repairRetries = retries;
     }
 
     public int getRepairRetries() {
-        return this.repairRetries;
+        return repairRetries;
     }
 
     public void resetRepairs() {
@@ -1196,7 +1245,7 @@ public class CPlayer extends Player {
     }
 
     public void setConventionalMinesAllowed(int mines) {
-        this.conventionalMinesAllowed = mines;
+        conventionalMinesAllowed = mines;
     }
 
     public int getConventionalMinesAllowed() {
@@ -1204,11 +1253,11 @@ public class CPlayer extends Player {
     }
 
     public void setVibraMinesAllowed(int mines) {
-        this.vibraMinesAllowed = mines;
+        vibraMinesAllowed = mines;
     }
 
     public int getVibraMinesAllowed() {
-        return this.vibraMinesAllowed;
+        return vibraMinesAllowed;
     }
 
     public void setMines(StringTokenizer st) {
@@ -1224,8 +1273,8 @@ public class CPlayer extends Player {
         }
 
         StringTokenizer ST = new StringTokenizer(data, DELIMITER);
-        //mwclient.getserverConfigs().clear();
-        //mwclient.getServerConfigData();
+        // mwclient.getserverConfigs().clear();
+        // mwclient.getServerConfigData();
         while (ST.hasMoreTokens()) {
             String key = TokenReader.readString(ST);
             String value = TokenReader.readString(ST);
@@ -1236,18 +1285,19 @@ public class CPlayer extends Player {
     }
 
     public UnitComponents getPartsCache() {
-        return this.partsCache;
+        return partsCache;
     }
 
     public void setSubFaction(String name) {
-        this.subFactionName = name;
+        subFactionName = name;
     }
 
     public SubFaction getSubFaction() {
 
         SubFaction mySubFaction = myHouse.getSubFactionList().get(subFactionName);
-        if (mySubFaction == null)
+        if (mySubFaction == null) {
             return new SubFaction();
+        }
 
         return mySubFaction;
     }
