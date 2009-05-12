@@ -111,6 +111,9 @@ public class DirectSellUnitCommand implements Command {
 				CampaignMain.cm.toUser(pBuyer.getName() + " has the same IP as you do. You can't send him units.", Username, true);
 				return;
 			}
+		} else if (!pBuyer.hasRoomForUnit(m.getType(), m.getWeightclass())) {
+			CampaignMain.cm.toUser(pBuyer.getName() + " has no room for another " + m.getWeightClassDesc(m.getWeightclass()) + " " + m.getTypeClassDesc(m.getType()), Username, true);
+			return;
 		}
 		else if(m.getStatus() == Unit.STATUS_UNMAINTAINED) {
 			CampaignMain.cm.toUser("AM:You may not sell unmaintained mechs.", Username, true);
