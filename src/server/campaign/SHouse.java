@@ -104,6 +104,8 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
     private int techResearchPoints = 0;
     private UnitComponents unitParts = new UnitComponents();
     private Hashtable<String, ComponentToCritsConverter> componentConverter = new Hashtable<String, ComponentToCritsConverter>();
+    
+    private int[][] unitLimits = new int[6][4];
 
     @Override
     public String toString() {
@@ -2921,12 +2923,16 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
         File configFile = new File("./data/" + this.getName().toLowerCase() + "_configs.dat");
 
-        if (!configFile.exists())
-            return;
+        if (!configFile.exists()) {
+        	populateUnitLimits();
+        	return;
+        }
+            
 
         try {
             config = new Properties();
             config.load(new FileInputStream(configFile));
+            populateUnitLimits();
         } catch (Exception ex) {
             CampaignData.mwlog.errLog(ex);
         }
@@ -2952,8 +2958,62 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             CampaignData.mwlog.dbLog("SQL Error in SHouse.loadConfigFileFromDB: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
         }
+        populateUnitLimits();
     }
 
+    /**
+     * A method to fill the unitLimits array
+     */
+    public void populateUnitLimits() {
+    	unitLimits[Unit.MEK][Unit.LIGHT] = getIntegerConfig("MaxHangarLightMeks");
+    	unitLimits[Unit.MEK][Unit.MEDIUM] = getIntegerConfig("MaxHangarMediumMeks");
+    	unitLimits[Unit.MEK][Unit.HEAVY] = getIntegerConfig("MaxHangarHeavyMeks");
+    	unitLimits[Unit.MEK][Unit.ASSAULT] = getIntegerConfig("MaxHangarAssaultMeks");
+
+    	unitLimits[Unit.VEHICLE][Unit.LIGHT] = getIntegerConfig("MaxHangarLightVehicles");
+    	unitLimits[Unit.VEHICLE][Unit.MEDIUM] = getIntegerConfig("MaxHangarMediumVehicles");
+    	unitLimits[Unit.VEHICLE][Unit.HEAVY] = getIntegerConfig("MaxHangarHeavyVehicles");
+    	unitLimits[Unit.VEHICLE][Unit.ASSAULT] = getIntegerConfig("MaxHangarAssaultVehicles");
+
+    	unitLimits[Unit.INFANTRY][Unit.LIGHT] = getIntegerConfig("MaxHangarLightInfantry");
+    	unitLimits[Unit.INFANTRY][Unit.MEDIUM] = getIntegerConfig("MaxHangarMediumInfantry");
+    	unitLimits[Unit.INFANTRY][Unit.HEAVY] = getIntegerConfig("MaxHangarHeavyInfantry");
+    	unitLimits[Unit.INFANTRY][Unit.ASSAULT] = getIntegerConfig("MaxHangarAssaultInfantry");
+
+    	unitLimits[Unit.BATTLEARMOR][Unit.LIGHT] = getIntegerConfig("MaxHangarLightBA");
+    	unitLimits[Unit.BATTLEARMOR][Unit.MEDIUM] = getIntegerConfig("MaxHangarMediumBA");
+    	unitLimits[Unit.BATTLEARMOR][Unit.HEAVY] = getIntegerConfig("MaxHangarHeavyBA");
+    	unitLimits[Unit.BATTLEARMOR][Unit.ASSAULT] = getIntegerConfig("MaxHangarAssaultBA");
+
+    	unitLimits[Unit.PROTOMEK][Unit.LIGHT] = getIntegerConfig("MaxHangarLightProtomeks");
+    	unitLimits[Unit.PROTOMEK][Unit.MEDIUM] = getIntegerConfig("MaxHangarMediumProtomeks");
+    	unitLimits[Unit.PROTOMEK][Unit.HEAVY] = getIntegerConfig("MaxHangarHeavyProtomeks");
+    	unitLimits[Unit.PROTOMEK][Unit.ASSAULT] = getIntegerConfig("MaxHangarAssaultProtomeks");
+
+    	unitLimits[Unit.AERO][Unit.LIGHT] = getIntegerConfig("MaxHangarLightAero");
+    	unitLimits[Unit.AERO][Unit.MEDIUM] = getIntegerConfig("MaxHangarMediumAero");
+    	unitLimits[Unit.AERO][Unit.HEAVY] = getIntegerConfig("MaxHangarHeavyAero");
+    	unitLimits[Unit.AERO][Unit.ASSAULT] = getIntegerConfig("MaxHangarAssaultAero");
+    }
+
+    /**
+     * A method that returns the hangar limit for a given weight/type of unit
+     * @param unitType
+     * @param unitWeightClass
+     * @return -1 if it is unlimited or a malformed request, the limit otherwise
+     */
+    public int getUnitLimit(int unitType, int unitWeightClass) {
+    	if (unitType < 0 || unitType > Unit.AERO) {
+    		CampaignData.mwlog.errLog("Request for invalid unitType in SHouse.getUnitLimit: " + unitType);
+    		return -1;
+    	}
+    	if (unitWeightClass < 0 || unitWeightClass > Unit.ASSAULT) {
+    		CampaignData.mwlog.errLog("Request for invalid unitWeightClass in SHouse.getUnitLimit: " + unitWeightClass);
+    		return -1;
+    	}
+    	return unitLimits[unitType][unitWeightClass];
+    }
+    
     public void setForumName(String name) {
         this.forumName = name;
     }

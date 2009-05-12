@@ -106,6 +106,12 @@ public class RequestDonatedCommand implements Command {
 			CampaignMain.cm.toUser(result,Username,true);
 			return;
 		}
+        
+		if ( !p.hasRoomForUnit(type_id, weightclass) ) {
+			CampaignMain.cm.toUser("AM:Sorry, you already have the maximum number of " + Unit.getWeightClassDesc(weightclass) + " " + Unit.getTypeClassDesc(type_id) + "s", Username);
+			return;
+		}
+
 		
 		//get the unit from the faction vector. break out if there is no unit to be had.
 		SUnit u = house.getEntity(weightclass,type_id);

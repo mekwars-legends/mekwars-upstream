@@ -19,7 +19,11 @@ package server.campaign.market2;
 import java.util.TreeMap;
 import java.util.Iterator;
 
+import common.Unit;
+
 import server.campaign.CampaignMain;
+import server.campaign.SPlayer;
+import server.campaign.SUnit;
 
 /**
  * Vickrey auction is a modified highest sealed bid auction. Winner
@@ -54,6 +58,22 @@ public final class VickreyAuction implements IAuction {
 		for (String bidderName : placedBids.keySet())
 			orderedBids.put(placedBids.get(bidderName), bidderName);
 		
+		// Set up for checking for bay space.  Let's just do this once, instead of
+        // every iteration through the loop
+        int unitType;
+        int unitWeightClass;
+        SUnit u;
+        if (listing.getSellerName().toLowerCase().startsWith("faction_") || (CampaignMain.cm.getHouseFromPartialString(listing.getSellerName()) != null)) {
+        	// It's coming from a house
+        	String sellingFaction = listing.getSellerName().replace("Faction_", "");
+        	u = CampaignMain.cm.getHouseFromPartialString(sellingFaction).getUnit(listing.getListedUnitID());
+        } else {
+        	// It's coming from a player
+        	u = CampaignMain.cm.getPlayer(listing.getSellerName()).getUnit(listing.getListedUnitID());
+        }
+    	unitType = u.getType();
+    	unitWeightClass = u.getWeightclass();
+		
 		/*
 		 * Now, loop through the ordered bids until we find someone
 		 * who can actually AFFORD to pay for the unit at this point.
@@ -77,6 +97,14 @@ public final class VickreyAuction implements IAuction {
 						+ CampaignMain.cm.moneyOrFluMessage(true,true,currBid.getAmount())+" you "
 						+ "offered.",currBid.getBidderName(),true);
 				}
+				continue;
+			}
+			
+			if (potentialWinner.isHuman() && !((SPlayer) potentialWinner).hasRoomForUnit(unitType, unitWeightClass)) {
+				CampaignMain.cm.toUser("The " + listing.getListedModelName() 
+						+ " from the BM could have been yours! Unfortunately, you don't have room for another "
+						+ Unit.getWeightClassDesc(unitWeightClass) + " " 
+						+ Unit.getTypeClassDesc(unitType) + ".", currBid.getBidderName(), true);
 				continue;
 			}
 			

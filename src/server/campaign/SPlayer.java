@@ -3599,4 +3599,81 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         return userValidated;
     }
 
+    /**
+     * A method to determine if a player is above or below the hangar limits
+     * for units, based on type and weight.
+     * 
+     * @param uType - type of unit (Unit.MEK, Unit.VEHICLE, etc.)
+     * @param uWeightClass - weightclass of unit (Unit.LIGHT, Unit.MEDIUM, etc)
+     * @return true if the player is below the limit, false if he's at or above
+     */
+    public boolean hasRoomForUnit(int uType, int uWeightClass) {
+    	if (uType < 0 || uType > Unit.AERO) {
+    		CampaignData.mwlog.errLog("Invalid uType in SPlayer.hasRoomForUnit: " + uType);
+    		return false;
+    	}
+    	if (uWeightClass < 0 || uWeightClass > Unit.ASSAULT) {
+    		CampaignData.mwlog.errLog("Invalid uWeightClass in SPlayer.hasRoomForUnit: " + uWeightClass);
+    		return false;
+    	}
+    	int limit = CampaignMain.cm.getHouseFromPartialString(getMyHouse().getName()).getUnitLimit(uType, uWeightClass);
+    	
+    	if (limit < 0) {
+    		// Unlimited
+    		return true;
+    	}
+    	
+    	int inHangar = countUnits(uType, uWeightClass);
+    	
+    	if (inHangar < limit) {
+    		return true;
+    	}
+    	
+    	return false;
+    }
+    
+    /**
+     * A method to count the units of a given type and weight in a player's hangar
+     * 
+     * @param uType
+     * @param uWeightClass
+     * @return number of units
+     */
+    public int countUnits(int uType, int uWeightClass) {
+    	if (uType < 0 || uType > Unit.AERO) {
+    		CampaignData.mwlog.errLog("Invalid uType in SPlayer.countUnits: " + uType);
+    		return 0;
+    	}
+    	if (uWeightClass < 0 || uWeightClass > Unit.ASSAULT) {
+    		CampaignData.mwlog.errLog("Invalid uWeightClass in SPlayer.countUnits: " + uWeightClass);
+    		return 0;
+    	}
+    	// Actually count them now
+    	int count = 0;
+    	for (SUnit u : units) {
+    		if (u.getType() == uType && u.getWeightclass() == uWeightClass) {
+    			count++;
+    		}
+    	}
+    	return count;
+    }
+    
+    /**
+     * A method to determine if any of the unit limits have been exceeded
+     * 
+     * @return true if any limits are exceeded, false otherwise
+     */
+    public boolean isOverAnyUnitLimits() {
+    	for (int t = Unit.MEK; t <= Unit.AERO; t++) {
+    		for (int w = Unit.LIGHT; w <= Unit.ASSAULT; w++) {
+    			int limit = getMyHouse().getUnitLimit(t, w);
+    			int inHangar = countUnits(t, w);
+    			if (inHangar > limit) {
+    				return true;
+    			}
+    		}
+    	}
+    	return false;
+    }
+    
 }// end SPlayer()

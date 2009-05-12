@@ -149,6 +149,11 @@ public class RequestCommand implements Command {
 			return;
 		}
 		
+		if ( !p.hasRoomForUnit(type_id, weightclass) ) {
+			CampaignMain.cm.toUser("AM:Sorry, you already have the maximum number of " + Unit.getWeightClassDesc(weightclass) + " " + Unit.getTypeClassDesc(type_id) + "s", Username);
+			return;
+		}
+		
 		/*
 		 * Check to see if a planet and factory names are specified. If they are,
 		 * fetch the planet and factory and make sure the user entered a legal combo.

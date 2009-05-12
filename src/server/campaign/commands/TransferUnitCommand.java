@@ -22,6 +22,7 @@ import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
+import common.Unit;
 import common.util.StringUtils;
 
 public class TransferUnitCommand implements Command {
@@ -113,7 +114,13 @@ public class TransferUnitCommand implements Command {
 				CampaignMain.cm.toUser("AM:"+targetplayer.getName() + " has the same IP as you do. You can't send him units.", Username, true);
 				return;
 			}
+		} 
+		
+		if ( !targetplayer.hasRoomForUnit(m.getType(), m.getWeightclass()) ) {
+			CampaignMain.cm.toUser("AM:Sorry, " + targetplayer.getName() + " already has the maximum number of " + Unit.getWeightClassDesc(m.getWeightclass()) + " " + Unit.getTypeClassDesc(m.getType()) + "s", Username);
+			return;
 		}
+
 
 		//check transfer charge configuration
 		float transferPayment = Float.parseFloat(house.getConfig("TransferPayment"));

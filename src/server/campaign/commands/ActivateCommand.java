@@ -213,6 +213,13 @@ public class ActivateCommand implements Command {
             return;
         }
 
+        // Check if the SOs have disabled activation while over unit limits
+        if (CampaignMain.cm.getBooleanConfig("DisableActivationIfOverHangarLimits") && p.isOverAnyUnitLimits()) {
+        	CampaignMain.cm.toUser("AM: You have exceeded one or more hangar limits.  Activation is disabled until you get under those limits.", Username, true);
+        	return;
+        }
+        
+        
         for (SArmy army : p.getArmies()) {
             CampaignMain.cm.getOpsManager().checkOperations(army, false);
         }

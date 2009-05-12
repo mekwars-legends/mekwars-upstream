@@ -110,6 +110,12 @@ public class AcceptAttackFromReserveCommand implements Command {
 			CampaignMain.cm.toUser("AM:You are already fighting!", Username, true);
 			return;
 		}
+		
+        // Check if the SOs have disabled AFR while over unit limits
+        if (CampaignMain.cm.getBooleanConfig("DisableAFRIfOverHangarLimits") && dp.isOverAnyUnitLimits()) {
+        	CampaignMain.cm.toUser("AM: Defend failed. You have exceeded one or more hangar limits.  AFR is disabled until you get under those limits.", Username, true);
+        	return;
+        }
         
 		/*
 		 * Check the defending army to make sure it is valid. If not, return. We validate

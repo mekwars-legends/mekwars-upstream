@@ -1090,6 +1090,35 @@ public class DefaultServerOptions {
         defaults.setProperty("PlayersCanSellPilotUpgrades", "false");
         defaults.setProperty("MaxPilotUpgrades", "-1");
         defaults.setProperty("PilotUpgradeSellBackPercent", ".5");
+        
+        // Max Units by Weight Category
+        defaults.setProperty("MaxHangarLightMeks", "-1");
+        defaults.setProperty("MaxHangarMediumMeks", "-1");
+        defaults.setProperty("MaxHangarHeavyMeks", "-1");
+        defaults.setProperty("MaxHangarAssaultMeks", "-1");
+        defaults.setProperty("MaxHangarLightVehicles", "-1");
+        defaults.setProperty("MaxHangarMediumVehicles", "-1");
+        defaults.setProperty("MaxHangarHeavyVehicles", "-1");
+        defaults.setProperty("MaxHangarAssaultVehicles", "-1");
+        defaults.setProperty("MaxHangarLightInfantry", "-1");
+        defaults.setProperty("MaxHangarMediumInfantry", "-1");
+        defaults.setProperty("MaxHangarHeavyInfantry", "-1");
+        defaults.setProperty("MaxHangarAssaultInfantry", "-1");
+        defaults.setProperty("MaxHangarLightProtomeks", "-1");
+        defaults.setProperty("MaxHangarMediumProtomeks", "-1");
+        defaults.setProperty("MaxHangarHeavyProtomeks", "-1");
+        defaults.setProperty("MaxHangarAssaultProtomeks", "-1");
+        defaults.setProperty("MaxHangarLightBA", "-1");
+        defaults.setProperty("MaxHangarMediumBA", "-1");
+        defaults.setProperty("MaxHangarHeavyBA", "-1");
+        defaults.setProperty("MaxHangarAssaultBA", "-1");
+        defaults.setProperty("MaxHangarLightAero", "-1");
+        defaults.setProperty("MaxHangarMediumAero", "-1");
+        defaults.setProperty("MaxHangarHeavyAero", "-1");
+        defaults.setProperty("MaxHangarAssaultAero", "-1");
+        defaults.setProperty("DisableAFRIfOverHangarLimits", "false");
+        defaults.setProperty("DisableActivationIfOverHangarLimits", "false");
+        
     }
 
     /**

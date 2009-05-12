@@ -58,6 +58,9 @@ public class AdminSaveFactionConfigsCommand implements Command {
 		if ( h == null )
 		    return;
 
+		// Need to repopulate this in case they've changed.
+		h.populateUnitLimits();
+		
 		if(CampaignMain.cm.isUsingMySQL())
 			h.saveConfigFileToDB();
 		else

@@ -1,6 +1,10 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
+Release Server 0.2.41.1
++ RFE 2210454 - Option to limit number of units by size/type - allows for
+	simple limit to number of units, or to also disallow AFR and/or
+	activation
 + RFE 2515673 - Option to allow separate scrap chances based on legged or
       gyroed units.
 + RFE: Do not alllow the No play command to be used while active
