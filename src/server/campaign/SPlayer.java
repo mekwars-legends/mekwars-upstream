@@ -3668,7 +3668,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     		for (int w = Unit.LIGHT; w <= Unit.ASSAULT; w++) {
     			int limit = getMyHouse().getUnitLimit(t, w);
     			int inHangar = countUnits(t, w);
-    			if (inHangar > limit) {
+    			if (limit != -1 && inHangar > limit) {
     				return true;
     			}
     		}

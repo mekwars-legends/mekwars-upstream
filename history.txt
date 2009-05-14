@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ Bug in unit limits
 Release Server 0.2.41.1
 + RFE 2210454 - Option to limit number of units by size/type - allows for
 	simple limit to number of units, or to also disallow AFR and/or
