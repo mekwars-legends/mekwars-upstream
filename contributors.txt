@@ -18,7 +18,7 @@
   Thomas Derryberry (Hunter)
   Andrew L. Gray    (Ajax)
   Francesco Munda   (Vertigo)
- 
+  Travis Shade		(Malganis)
 
  ------
  MekWars makes extensive use of MegaMek (original author: Ben Mazur)
