@@ -30,7 +30,6 @@ import megamek.common.Infantry;
 import megamek.common.Mech;
 import megamek.common.Mounted;
 import megamek.common.WeaponType;
-
 import client.MWClient;
 
 import common.CampaignData;
@@ -108,12 +107,13 @@ public class CUnit extends Unit {
         for (int i = 0; i < skillAmount; i++) {
             PilotSkill skill = new PilotSkill(TokenReader.readInt(STR), TokenReader.readString(STR), TokenReader.readInt(STR), TokenReader.readString(STR));
 
-            if (skill.getName().equals("Weapon Specialist"))// WS skill has an
-                // extra var
+            if (skill.getName().equals("Weapon Specialist")) {
                 p.setWeapon(TokenReader.readString(STR));
+            }
 
-            if (skill.getName().equals("Trait"))// Trait skill has an extra var
+            if (skill.getName().equals("Trait")) {
                 p.setTraitName(TokenReader.readString(STR));
+            }
 
             if (skill.getName().equals("Edge")) {
                 p.setTac(TokenReader.readBoolean(STR));
@@ -151,15 +151,16 @@ public class CUnit extends Unit {
         }
 
         // don't try to set ammo and eject on an OMG
-        if (this.getModelName().startsWith("Error") || this.getModelName().startsWith("OMG")) {
-            UnitEntity.setExternalId(this.getId());
+        if (getModelName().startsWith("Error") || getModelName().startsWith("OMG")) {
+            UnitEntity.setExternalId(getId());
             UnitEntity.setCrew(new megamek.common.Pilot(p.getName(), p.getGunnery(), p.getPiloting()));
             return true;
         }
 
         // set autoeject if its a mech
-        if (UnitEntity instanceof Mech && ST.hasMoreElements())
+        if (UnitEntity instanceof Mech && ST.hasMoreElements()) {
             ((Mech) UnitEntity).setAutoEject(Boolean.parseBoolean(TokenReader.readString(ST)));
+        }
 
         // then set up ammo loadout
         {
@@ -174,7 +175,7 @@ public class CUnit extends Unit {
 
                     Mounted mWeapon = e.get(count);
 
-                    AmmoType at = this.getEntityAmmo(weaponType, ammoName);
+                    AmmoType at = getEntityAmmo(weaponType, ammoName);
                     mWeapon.changeAmmoType(at);
                     mWeapon.setShotsLeft(shots);
                     mWeapon.setHotLoad(hotloaded);
@@ -202,11 +203,11 @@ public class CUnit extends Unit {
             }
         }// Machine Guns
 
-        TokenReader.readString(ST);//unused
+        TokenReader.readString(ST);// unused
 
-        TokenReader.readString(ST);//unused
+        TokenReader.readString(ST);// unused
 
-        UnitEntity.setTargSysType(Math.max(0, TokenReader.readInt(ST)));
+        TokenReader.readInt(ST);// unused
 
         scrappableFor = TokenReader.readInt(ST);
 
@@ -214,16 +215,16 @@ public class CUnit extends Unit {
 
         pilotIsRepairing = TokenReader.readBoolean(ST);
 
-        this.setRepairCosts(TokenReader.readInt(ST), TokenReader.readInt(ST));
+        setRepairCosts(TokenReader.readInt(ST), TokenReader.readInt(ST));
 
-        UnitEntity.setExternalId(this.getId());
+        UnitEntity.setExternalId(getId());
         UnitEntity.setCrew(new megamek.common.Pilot(p.getName(), p.getGunnery(), p.getPiloting()));
 
-        if (unitDamage != null){
+        if (unitDamage != null) {
             UnitUtils.applyBattleDamage(UnitEntity, unitDamage);
         }
 
-        this.getC3Type(UnitEntity);
+        getC3Type(UnitEntity);
 
         return (true);
     }
@@ -241,20 +242,23 @@ public class CUnit extends Unit {
         setPilot(new Pilot("Autopilot", 4, 5));
         // setType(Unit.VEHICLE);//auto units are always vehs ...
         createEntity();// make the entity
-        if (distance > 0)
+        if (distance > 0) {
             UnitEntity.setOffBoard(distance, edge);// move it offboard
+        }
     }
 
     /**
      * @return a smaller description
      */
     public String getSmallDescription() {
-        if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE || this.getType() == Unit.AERO)
+        if (getType() == Unit.MEK || getType() == Unit.VEHICLE || getType() == Unit.AERO) {
             return getModelName() + " [" + getPilot().getGunnery() + "/" + getPilot().getPiloting() + "]";
+        }
 
-        if (this.getType() == Unit.INFANTRY || this.getType() == Unit.BATTLEARMOR) {
-            if (((Infantry) this.UnitEntity).isAntiMek())
+        if (getType() == Unit.INFANTRY || getType() == Unit.BATTLEARMOR) {
+            if (((Infantry) UnitEntity).isAntiMek()) {
                 return getModelName() + " [" + getPilot().getGunnery() + "/" + getPilot().getPiloting() + "]";
+            }
             return getModelName() + " [" + getPilot().getGunnery() + "]";
         }
         return getModelName() + " [" + getPilot().getGunnery() + "]";
@@ -263,24 +267,28 @@ public class CUnit extends Unit {
     public String getDisplayInfo(String armyText) {
         String tinfo = "";
 
-        if (this.getType() == Unit.MEK && !UnitEntity.isOmni())
+        if (getType() == Unit.MEK && !UnitEntity.isOmni()) {
             tinfo = "<html><body>#" + getId() + " " + UnitEntity.getChassis() + ", " + getModelName();
-        else
+        } else {
             tinfo = "<html><body>#" + getId() + " " + getModelName();
+        }
 
-        if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE || this.getType() == Unit.AERO)
+        if (getType() == Unit.MEK || getType() == Unit.VEHICLE || getType() == Unit.AERO) {
             tinfo += " (" + getPilot().getName() + ", " + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ") <br>";
-        else if (this.getType() == Unit.BATTLEARMOR || this.getType() == Unit.INFANTRY) {
+        } else if (getType() == Unit.BATTLEARMOR || getType() == Unit.INFANTRY) {
 
-            if (((Infantry) this.UnitEntity).isAntiMek())
+            if (((Infantry) UnitEntity).isAntiMek()) {
                 tinfo += " (" + getPilot().getName() + ", " + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ") <br>";
-            else
+            } else {
                 tinfo += " (" + getPilot().getName() + ", " + getPilot().getGunnery() + ") <br>";
-        } else
+            }
+        } else {
             tinfo += " (" + getPilot().getName() + ", " + getPilot().getGunnery() + ") <br>";
+        }
 
-        if (this.getType() == Unit.VEHICLE)
-            tinfo += " Movement: " + this.getEntity().getMovementModeAsString() + "<br>";
+        if (getType() == Unit.VEHICLE) {
+            tinfo += " Movement: " + getEntity().getMovementModeAsString() + "<br>";
+        }
 
         tinfo += "BV: " + BV + " // Exp: " + getPilot().getExperience() + " // Kills: " + getPilot().getKills() + "<br> ";
 
@@ -291,28 +299,31 @@ public class CUnit extends Unit {
              * (it.hasNext()) { tinfo += ((PilotSkill) it.next()).getName(); if
              * (it.hasNext()) tinfo += ", "; }
              */
-            tinfo += getPilot().getSkillString(false, mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getBasePilotSkill(this.getType()));
+            tinfo += getPilot().getSkillString(false, mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getBasePilotSkill(getType()));
             tinfo += "<br>";
         }
 
-        if (getPilot().getHits() > 0)
+        if (getPilot().getHits() > 0) {
             tinfo += "Hits: " + Integer.toString(getPilot().getHits()) + "<br>";
+        }
 
-        if (!armyText.equals(""))
+        if (!armyText.equals("")) {
             tinfo += armyText + "<br>";
+        }
 
-        String capacity = this.getEntity().getUnusedString();
+        String capacity = getEntity().getUnusedString();
         if (capacity != null && capacity.startsWith("Troops")) {
             capacity = capacity.substring(9);// strip "Troops - " from string
             tinfo += "Cargo: " + capacity + "<br>";
         }
-        if (this.getLifeTimeRepairCost() > 0) {
-            tinfo += "Repair Costs: " + this.getCurrentRepairCost() + "/" + this.getLifeTimeRepairCost() + "<br>";
+        if (getLifeTimeRepairCost() > 0) {
+            tinfo += "Repair Costs: " + getCurrentRepairCost() + "/" + getLifeTimeRepairCost() + "<br>";
         }
         tinfo += getProducer();
 
-        if (scrappableFor > 0 && !Boolean.parseBoolean(mwclient.getserverConfigs("UseAdvanceRepair")) && !Boolean.parseBoolean(mwclient.getserverConfigs("UseSimpleRepair")))
+        if (scrappableFor > 0 && !Boolean.parseBoolean(mwclient.getserverConfigs("UseAdvanceRepair")) && !Boolean.parseBoolean(mwclient.getserverConfigs("UseSimpleRepair"))) {
             tinfo += "<br><br><b>Scrap Value: " + mwclient.moneyOrFluMessage(true, false, scrappableFor) + "</b>";
+        }
 
         tinfo += "</body></html>";
         return (tinfo);
@@ -324,20 +335,23 @@ public class CUnit extends Unit {
             return new String(getEntity().getChassis() + " " + getEntity().getModel()).trim();
         }
 
-        if (this.getEntity().isOmni())
+        if (getEntity().isOmni()) {
             return new String(getEntity().getChassis() + " " + getEntity().getModel()).trim();
-        
-        if ( this.getEntity().getModel().trim().length() > 0)
-            return this.getEntity().getModel().trim();
+        }
+
+        if (getEntity().getModel().trim().length() > 0) {
+            return getEntity().getModel().trim();
+        }
 
         // else
-        return this.getEntity().getChassis().trim();
+        return getEntity().getChassis().trim();
 
     }
 
     public int getBV() {
-        if (BV < 0)
+        if (BV < 0) {
             return 0;
+        }
 
         // else
         return BV;
@@ -359,18 +373,18 @@ public class CUnit extends Unit {
             System.exit(1);
         }
 
-        if ( UnitEntity.getChassis().equals("Error") ) {
+        if (UnitEntity.getChassis().equals("Error")) {
             setProducer("Unable to find " + getUnitFilename() + " on clients system!");
         }
         // setType(getEntityType(UnitEntity));
-        this.getC3Type(UnitEntity);
+        getC3Type(UnitEntity);
     }
 
     public boolean isOmni() {
-        boolean isOmni = this.getEntity().isOmni();
-        String targetChassis = this.getEntity().getChassis();
+        boolean isOmni = getEntity().isOmni();
+        String targetChassis = getEntity().getChassis();
 
-        if (this.getType() == Unit.VEHICLE && !isOmni) {
+        if (getType() == Unit.VEHICLE && !isOmni) {
             try {
                 FileInputStream fis = new FileInputStream("./data/mechfiles/omnivehiclelist.txt");
                 BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
@@ -395,7 +409,7 @@ public class CUnit extends Unit {
     }
 
     public int getOriginalBV() {
-        return UnitEntity.calculateBattleValue(false,false);
+        return UnitEntity.calculateBattleValue(false, false);
     }
 
     public void applyRepairs(String data) {
@@ -419,17 +433,19 @@ public class CUnit extends Unit {
         try {
             String classtype = Unit.getWeightClassDesc(weightclass) + Unit.getTypeClassDesc(type_id) + "Price";
 
-            if (type_id == Unit.MEK)
+            if (type_id == Unit.MEK) {
                 result = Integer.parseInt(mwclient.getserverConfigs(Unit.getWeightClassDesc(weightclass) + "Price"));
-            else
+            } else {
                 result = Integer.parseInt(mwclient.getserverConfigs(classtype));
+            }
 
             // modify the result by the faction price modifier
             result += producer.getHouseUnitPriceMod(type_id, weightclass);
 
             // dont allow negative pricing
-            if (result < 0)
+            if (result < 0) {
                 result = 0;
+            }
         } catch (Exception ex) {
             CampaignData.mwlog.errLog(ex);
         }
@@ -447,17 +463,19 @@ public class CUnit extends Unit {
         int result = Integer.MAX_VALUE;
         String classtype = Unit.getWeightClassDesc(weightclass) + Unit.getTypeClassDesc(type_id) + "Inf";
 
-        if (type_id == Unit.MEK)
+        if (type_id == Unit.MEK) {
             result = Integer.parseInt(mwclient.getserverConfigs(Unit.getWeightClassDesc(weightclass) + "Inf"));
-        else
+        } else {
             result = Integer.parseInt(mwclient.getserverConfigs(classtype));
+        }
 
         // modify the result by the faction price modifier
         result += producer.getHouseUnitFluMod(type_id, weightclass);
 
         // dont allow negative pricing
-        if (result < 0)
+        if (result < 0) {
             result = 0;
+        }
 
         return result;
     }
@@ -466,25 +484,27 @@ public class CUnit extends Unit {
      * A method which returns the PP COST of a unit. Meks and Vehicles are
      * segregated by weightclass. Infantry are flat priced accross
      * 
-     * all weight classes. @ param weight - the weight class to be checked @ return
-     * int - the PP cost
+     * all weight classes. @ param weight - the weight class to be checked @
+     * return int - the PP cost
      */
     public static int getPPForUnit(MWClient mwclient, int weightclass, int type_id, House producer) {
 
         int result = Integer.MAX_VALUE;
         String classtype = Unit.getWeightClassDesc(weightclass) + Unit.getTypeClassDesc(type_id) + "PP";
 
-        if (type_id == Unit.MEK)
+        if (type_id == Unit.MEK) {
             result = Integer.parseInt(mwclient.getserverConfigs(Unit.getWeightClassDesc(weightclass) + "PP"));
-        else
+        } else {
             result = Integer.parseInt(mwclient.getserverConfigs(classtype));
+        }
 
         // adjust PP cost by faction specific mod
         result += producer.getHouseUnitComponentMod(type_id, weightclass);
 
         // dont allow a unit to consume negative PP
-        if (result < 0)
+        if (result < 0) {
             result = 0;
+        }
 
         return result;
     }
@@ -492,8 +512,9 @@ public class CUnit extends Unit {
     public static double getArmorCost(Entity unit, MWClient client) {
         double cost = 0.0;
 
-        if (Boolean.parseBoolean(client.getserverConfigs("UsePartsRepair")))
+        if (Boolean.parseBoolean(client.getserverConfigs("UsePartsRepair"))) {
             return 0;
+        }
 
         String armorCost = "CostPoint" + UnitUtils.getArmorShortName(unit);
         cost = Double.parseDouble(client.getserverConfigs(armorCost));
@@ -504,8 +525,9 @@ public class CUnit extends Unit {
     public static double getStructureCost(Entity unit, MWClient client) {
         double cost = 0.0;
 
-        if (Boolean.parseBoolean(client.getserverConfigs("UsePartsRepair")))
+        if (Boolean.parseBoolean(client.getserverConfigs("UsePartsRepair"))) {
             return 0;
+        }
 
         String armorCost = "CostPoint" + UnitUtils.getInternalShortName(unit) + "IS";
         cost = Double.parseDouble(client.getserverConfigs(armorCost));
@@ -516,52 +538,61 @@ public class CUnit extends Unit {
     public static double getCritCost(Entity unit, MWClient client, CriticalSlot crit) {
         double cost = 0.0;
 
-        if (Boolean.parseBoolean(client.getserverConfigs("UsePartsRepair")))
+        if (Boolean.parseBoolean(client.getserverConfigs("UsePartsRepair"))) {
             return 0;
+        }
 
-        if (crit == null)
+        if (crit == null) {
             return 0;
+        }
 
-        if (crit.isBreached() && !crit.isDamaged())
+        if (crit.isBreached() && !crit.isDamaged()) {
             return 0;
+        }
         // else
-        if (UnitUtils.isEngineCrit(crit))
+        if (UnitUtils.isEngineCrit(crit)) {
             cost = Double.parseDouble(client.getserverConfigs("EngineCritRepairCost"));
-        else if (crit.getType() == CriticalSlot.TYPE_SYSTEM)
-            if (crit.isMissing())
+        } else if (crit.getType() == CriticalSlot.TYPE_SYSTEM) {
+            if (crit.isMissing()) {
                 cost = Double.parseDouble(client.getserverConfigs("SystemCritReplaceCost"));
-            else
+            } else {
                 cost = Double.parseDouble(client.getserverConfigs("SystemCritRepairCost"));
-        else {
+            }
+        } else {
             Mounted mounted = unit.getEquipment(crit.getIndex());
 
             if (mounted.getType() instanceof WeaponType) {
                 WeaponType weapon = (WeaponType) mounted.getType();
-                if (weapon.hasFlag(WeaponType.F_ENERGY))
-                    if (crit.isMissing())
+                if (weapon.hasFlag(WeaponType.F_ENERGY)) {
+                    if (crit.isMissing()) {
                         cost = Double.parseDouble(client.getserverConfigs("EnergyWeaponCritReplaceCost"));
-                    else
+                    } else {
                         cost = Double.parseDouble(client.getserverConfigs("EnergyWeaponCritRepairCost"));
-                else if (weapon.hasFlag(WeaponType.F_BALLISTIC))
-                    if (crit.isMissing())
+                    }
+                } else if (weapon.hasFlag(WeaponType.F_BALLISTIC)) {
+                    if (crit.isMissing()) {
                         cost = Double.parseDouble(client.getserverConfigs("BallisticCritReplaceCost"));
-                    else
+                    } else {
                         cost = Double.parseDouble(client.getserverConfigs("BallisticCritRepairCost"));
-                else if (weapon.hasFlag(WeaponType.F_MISSILE))
-                    if (crit.isMissing())
+                    }
+                } else if (weapon.hasFlag(WeaponType.F_MISSILE)) {
+                    if (crit.isMissing()) {
                         cost = Double.parseDouble(client.getserverConfigs("MissileCritReplaceCost"));
-                    else
+                    } else {
                         cost = Double.parseDouble(client.getserverConfigs("MissileCritRepairCost"));
-                else // use the misc eq costs.
-                if (crit.isMissing())
+                    }
+                } else // use the misc eq costs.
+                if (crit.isMissing()) {
                     cost = Double.parseDouble(client.getserverConfigs("EquipmentCritReplaceCost"));
-                else
+                } else {
                     cost = Double.parseDouble(client.getserverConfigs("EquipmentCritRepairCost"));
+                }
             } else // use the misc eq costs.
-            if (crit.isMissing())
+            if (crit.isMissing()) {
                 cost = Double.parseDouble(client.getserverConfigs("EquipmentCritReplaceCost"));
-            else
+            } else {
                 cost = Double.parseDouble(client.getserverConfigs("EquipmentCritRepairCost"));
+            }
         }
 
         cost = Math.max(cost, 1);

@@ -1311,7 +1311,6 @@ src/admin/AdminMapPopupMenu.java -text
 src/admin/AdminMenu.java -text
 src/admin/ModeratorMenu.java -text
 src/admin/StaffUserlistPopupMenu.java -text
-src/admin/dialog/BanTargetingDialog.java -text
 src/admin/dialog/BannedAmmoDialog.java -text
 src/admin/dialog/CommandNameDialog.java -text
 src/admin/dialog/ComponentDisplayDialog.java -text
@@ -1677,7 +1676,6 @@ src/server/campaign/commands/SetEdgeSkillsCommand.java -text
 src/server/campaign/commands/SetMOTDCommand.java -text
 src/server/campaign/commands/SetMaintainedCommand.java -text
 src/server/campaign/commands/SetMyLogoCommand.java -text
-src/server/campaign/commands/SetTargetSystemTypeCommand.java -text
 src/server/campaign/commands/SetUnitAmmoByCritCommand.java -text
 src/server/campaign/commands/SetUnitAmmoCommand.java -text
 src/server/campaign/commands/SetUnitBurstCommand.java -text
@@ -1750,7 +1748,6 @@ src/server/campaign/commands/admin/AdminSaveFactionConfigsCommand.java -text
 src/server/campaign/commands/admin/AdminSavePlanetsToXMLCommand.java -text
 src/server/campaign/commands/admin/AdminSaveServerConfigsCommand.java -text
 src/server/campaign/commands/admin/AdminScrapCommand.java -text
-src/server/campaign/commands/admin/AdminSetBanTargetingCommand.java -text
 src/server/campaign/commands/admin/AdminSetBlackMarketSettingCommand.java -text
 src/server/campaign/commands/admin/AdminSetCommandLevelCommand.java -text
 src/server/campaign/commands/admin/AdminSetHomeWorldCommand.java -text

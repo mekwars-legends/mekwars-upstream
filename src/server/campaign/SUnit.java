@@ -41,11 +41,11 @@ import megamek.common.Mech;
 import megamek.common.MechFileParser;
 import megamek.common.MechSummary;
 import megamek.common.MechSummaryCache;
-import megamek.common.MiscType;
 import megamek.common.Mounted;
 import megamek.common.Pilot;
 import megamek.common.Tank;
 import megamek.common.WeaponType;
+import megamek.common.options.PilotOptions;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.PainResistanceSkill;
 import server.campaign.pilot.skills.SPilotSkill;
@@ -60,8 +60,10 @@ import common.util.UnitUtils;
 
 /**
  * A class representing an MM.Net Entity
- *
- * @author Helge Richter (McWizard) Jun 10/04 - Dave Poole added an overloaded constructor to allow creation of a new SUnit with the same UnitID as an existing Mech to facilitate repodding
+ * 
+ * @author Helge Richter (McWizard) Jun 10/04 - Dave Poole added an overloaded
+ *         constructor to allow creation of a new SUnit with the same UnitID as
+ *         an existing Mech to facilitate repodding
  */
 
 public final class SUnit extends Unit {
@@ -86,7 +88,7 @@ public final class SUnit extends Unit {
 
     /**
      * Construct a new unit.
-     *
+     * 
      * @param p
      *            flavour string (es: Built by Kurita on An-Ting)
      * @param filename
@@ -108,34 +110,33 @@ public final class SUnit extends Unit {
             setPilot(new SPilot(SPilot.getRandomPilotName(CampaignMain.cm.getR()), gunnery, piloting));
         }
 
-
         setWeightclass(weightclass); // default weight class.
 
         setProducer(p);
         setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
 
-
     }
 
     /**
      * Constructs a new Unit with the id for an existing unit (repod)
-     *
-     * @param p -
-     *            flavour string (es: Built by Kurita on An-Ting)
-     * @param Filename -
-     *            filename to read this entity from
-     * @param weightclass -
-     *            int defining weightclass
-     * @param replaceId -
-     *            unitID to assign a new SUnit
+     * 
+     * @param p
+     *            - flavour string (es: Built by Kurita on An-Ting)
+     * @param Filename
+     *            - filename to read this entity from
+     * @param weightclass
+     *            - int defining weightclass
+     * @param replaceId
+     *            - unitID to assign a new SUnit
      */
     public SUnit(int replaceId, String p, String Filename) {
         super();
         setUnitFilename(Filename);
-        Entity ent = loadMech(getUnitFilename());
+        Entity ent = SUnit.loadMech(getUnitFilename());
         setEntity(ent);
         init();
-        setPilot(new SPilot("Vacant", 99, 99));// only used for repods. A real pilot is
+        setPilot(new SPilot("Vacant", 99, 99));// only used for repods. A real
+        // pilot is
         // transferred in later.
         setId(replaceId);
         setProducer(p);
@@ -144,12 +145,17 @@ public final class SUnit extends Unit {
 
     // STATIC METHODS
     /**
-     * Method which checks a unit for illegal ammo and replaces it with default ammo loads. useful for removing faction banned ammo from salvage. Note that this is primarily designed to strip L2 ammo from L2 units (eg - precision AC) and replace it with normal ammo. L3 ammos may lead to some oddities and should be banned or allowed server wide rather than on a house-by-house basis.
-     *
-     * @param u -
-     *            unit to check
-     * @param h -
-     *            SHouse unit is joining
+     * Method which checks a unit for illegal ammo and replaces it with default
+     * ammo loads. useful for removing faction banned ammo from salvage. Note
+     * that this is primarily designed to strip L2 ammo from L2 units (eg -
+     * precision AC) and replace it with normal ammo. L3 ammos may lead to some
+     * oddities and should be banned or allowed server wide rather than on a
+     * house-by-house basis.
+     * 
+     * @param u
+     *            - unit to check
+     * @param h
+     *            - SHouse unit is joining
      */
     public static void checkAmmoForUnit(SUnit u, SHouse h) {
 
@@ -207,7 +213,9 @@ public final class SUnit extends Unit {
     }
 
     /**
-     * Method which determines whether or not a given unit may be sold on the black market. Any "false" return prevents house listings as well as player sales.
+     * Method which determines whether or not a given unit may be sold on the
+     * black market. Any "false" return prevents house listings as well as
+     * player sales.
      */
     public static boolean mayBeSoldOnMarket(SUnit u) {
 
@@ -271,13 +279,15 @@ public final class SUnit extends Unit {
 
     public static int getHangarSpaceRequired(int typeid, int weightclass, int baymod, String model, boolean unitSupported, SHouse faction) {
         if (unitSupported) {
-            return getHangarSpaceRequired(typeid, weightclass, baymod, model, faction);
+            return SUnit.getHangarSpaceRequired(typeid, weightclass, baymod, model, faction);
         }
-        return (int) (getHangarSpaceRequired(typeid, weightclass, baymod, model, faction) * CampaignMain.cm.getFloatConfig("NonFactionUnitsIncreasedTechs"));
+        return (int) (SUnit.getHangarSpaceRequired(typeid, weightclass, baymod, model, faction) * CampaignMain.cm.getFloatConfig("NonFactionUnitsIncreasedTechs"));
     }
 
     /**
-     * Pass-through method that gets the number of bays/techs required for a given unit by drawing its characteristics and feeding them to getHangarSpaceRequired(int,int,int,String).
+     * Pass-through method that gets the number of bays/techs required for a
+     * given unit by drawing its characteristics and feeding them to
+     * getHangarSpaceRequired(int,int,int,String).
      */
     public static int getHangarSpaceRequired(SUnit u, SHouse faction) {
         return SUnit.getHangarSpaceRequired(u.getType(), u.getWeightclass(), u.getPilot().getBayModifier(), u.getModelName(), faction);
@@ -291,8 +301,10 @@ public final class SUnit extends Unit {
     }
 
     /**
-     * Simple static method that access configs and returns a unit's influence on map size. Called by ShortOperation when changing status from Waiting -> In_Progress.
-     *
+     * Simple static method that access configs and returns a unit's influence
+     * on map size. Called by ShortOperation when changing status from Waiting
+     * -> In_Progress.
+     * 
      * @return - configured map weighting
      */
     public static int getMapSizeModification(SUnit u) {
@@ -535,14 +547,7 @@ public final class SUnit extends Unit {
             result.append("0$");
         }
 
-        result.append("0$0$"); // unused Slite info
-        if (CampaignMain.cm.getData().getBannedTargetingSystems().containsKey(getEntity().getTargSysType())) {
-            result.append(MiscType.T_TARGSYS_STANDARD);
-            getEntity().setTargSysType(MiscType.T_TARGSYS_STANDARD);
-        } else {
-            result.append(getEntity().getTargSysType());
-        }
-        result.append("$");
+        result.append("0$0$0$"); // unused Slite info and targetting.
         result.append(getScrappableFor());
         result.append("$");
         if (CampaignMain.cm.isUsingAdvanceRepair()) {
@@ -598,12 +603,10 @@ public final class SUnit extends Unit {
                 }
                 ps.setBoolean(8, false);
                 ps.setBoolean(9, false);
-                if (CampaignMain.cm.getData().getBannedTargetingSystems().containsKey(getEntity().getTargSysType())) {
-                    ps.setInt(10, MiscType.T_TARGSYS_STANDARD);
-                    getEntity().setTargSysType(MiscType.T_TARGSYS_STANDARD);
-                } else {
-                    ps.setInt(10, ent.getTargSysType());
-                }
+
+                // Old code for Targetting type no longer supported in its only
+                // way.
+                ps.setInt(10, 0);
                 ps.setInt(11, getScrappableFor());
                 if (CampaignMain.cm.isUsingAdvanceRepair()) {
                     ps.setString(12, UnitUtils.unitBattleDamage(getEntity(), false));
@@ -636,12 +639,9 @@ public final class SUnit extends Unit {
                 }
                 ps.setBoolean(7, ent.hasSpotlight());
                 ps.setBoolean(8, ent.isUsingSpotlight());
-                if (CampaignMain.cm.getData().getBannedTargetingSystems().containsKey(getEntity().getTargSysType())) {
-                    ps.setInt(9, MiscType.T_TARGSYS_STANDARD);
-                    getEntity().setTargSysType(MiscType.T_TARGSYS_STANDARD);
-                } else {
-                    ps.setInt(9, ent.getTargSysType());
-                }
+                // Removed the old targetting type code no longer supported by
+                // MM now moved to Quriks
+                ps.setInt(9, 0);
                 ps.setInt(10, getScrappableFor());
                 if (CampaignMain.cm.isUsingAdvanceRepair()) {
                     ps.setString(11, UnitUtils.unitBattleDamage(getEntity(), false));
@@ -680,7 +680,7 @@ public final class SUnit extends Unit {
 
     /**
      * Reads a Entity from a String
-     *
+     * 
      * @param s
      *            A string to read from
      * @return the remaining String
@@ -710,7 +710,10 @@ public final class SUnit extends Unit {
                 setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
             }
             /*
-             * Handle unit status. FOR_SALE and AdvanceRepair both require special handling. If the unit is FOR_SALE, make sure a listing still exists. If not, the server probably crashed and the unit should be returned to normal.
+             * Handle unit status. FOR_SALE and AdvanceRepair both require
+             * special handling. If the unit is FOR_SALE, make sure a listing
+             * still exists. If not, the server probably crashed and the unit
+             * should be returned to normal.
              */
             if (newstate == STATUS_FORSALE && CampaignMain.cm.getMarket().getListingForUnit(getId()) == null) {
                 setStatus(STATUS_OK);
@@ -720,7 +723,7 @@ public final class SUnit extends Unit {
                 setStatus(newstate);
             }
 
-            unitEntity = loadMech(getUnitFilename());
+            unitEntity = SUnit.loadMech(getUnitFilename());
             setEntity(unitEntity);
             init();
             this.setPilot(p);
@@ -793,10 +796,6 @@ public final class SUnit extends Unit {
             setEntity(en);
             TokenReader.readString(ST);// unused
             TokenReader.readString(ST);// unused
-            // if allow level 3 targeting is enabled
-            // for all units then apply the saved
-            // one else use the entity default.
-            int targetingType = TokenReader.readInt(ST);
 
             setScrappableFor(TokenReader.readInt(ST));
 
@@ -810,17 +809,6 @@ public final class SUnit extends Unit {
             setRepairCosts(TokenReader.readInt(ST), TokenReader.readInt(ST));
             if (CampaignMain.cm.isUsingMySQL() && ST.hasMoreTokens()) {
                 setDBId(TokenReader.readInt(ST));
-            }
-
-            // Moved to the end of the SUnit. that way Units with Damage C3 or C3i can set their targetting systems and keep them set.
-            if (CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("allow_level_3_targsys")) {
-                // check if the targeting type has become banned. if so then
-                // set the system to standard.
-                if (CampaignMain.cm.getData().getBannedTargetingSystems().containsKey(targetingType) || getEntity().hasC3() || getEntity().hasC3i() || UnitUtils.hasTargettingComputer(getEntity())) {
-                    unitEntity.setTargSysType(MiscType.T_TARGSYS_STANDARD);
-                } else {
-                    unitEntity.setTargSysType(targetingType);
-                }
             }
 
             return s;
@@ -876,7 +864,7 @@ public final class SUnit extends Unit {
                 }
                 setScrappableFor(rs.getInt("uScrappableFor"));
                 setRepairCosts(rs.getInt("uCurrentRepairCost"), rs.getInt("uLifetimeRepairCost"));
-                Entity unitEntity = loadMech(getUnitFilename());
+                Entity unitEntity = SUnit.loadMech(getUnitFilename());
 
                 if (unitEntity instanceof Mech) {
                     ((Mech) unitEntity).setAutoEject(rs.getBoolean("uAutoEject"));
@@ -887,15 +875,6 @@ public final class SUnit extends Unit {
 
                 if (CampaignMain.cm.isUsingAdvanceRepair() && (unitEntity instanceof Mech || unitEntity instanceof Tank)) {
                     UnitUtils.applyBattleDamage(unitEntity, rs.getString("uBattleDamage"), (CampaignMain.cm.getRTT() != null & CampaignMain.cm.getRTT().unitRepairTimes(getId()) != null));
-                }
-
-                if (CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("allow_level_3_targsys")) {
-                    int targetingType = rs.getInt("uTargetSystem");
-                    if (CampaignMain.cm.getData().getBannedTargetingSystems().containsKey(targetingType) || unitEntity.hasC3() || unitEntity.hasC3i() || UnitUtils.hasTargettingComputer(unitEntity)) {
-                        unitEntity.setTargSysType(MiscType.T_TARGSYS_STANDARD);
-                    } else {
-                        unitEntity.setTargSysType(targetingType);
-                    }
                 }
 
                 setEntity(unitEntity);
@@ -1057,7 +1036,7 @@ public final class SUnit extends Unit {
 
     /**
      * Returns the Modelname for this Unit
-     *
+     * 
      * @return the Modelname
      */
     public String getModelName() {
@@ -1093,14 +1072,15 @@ public final class SUnit extends Unit {
             if (hasVacantPilot()) {
                 getEntity().getCrew().setGunnery(4);
                 getEntity().getCrew().setPiloting(5);
-            }else {
+            } else {
                 getEntity().setCrew(UnitUtils.createEntityPilot(this));
             }
 
             // get a base BV from MegaMek
             int calcedBV = getEntity().calculateBattleValue();
 
-            // Boost BV of super-fast tanks if the "FastHoverBVMod" is a positive
+            // Boost BV of super-fast tanks if the "FastHoverBVMod" is a
+            // positive
             // number.
             int FastHoverBVMod = CampaignMain.cm.getIntegerConfig("FastHoverBVMod");
             if (FastHoverBVMod > 0 && getType() == Unit.VEHICLE && getEntity().getMovementMode() == megamek.common.IEntityMovementMode.HOVER) {
@@ -1155,7 +1135,7 @@ public final class SUnit extends Unit {
 
     /**
      * Sets the Pilot of this entity
-     *
+     * 
      * @param p
      *            A pilot
      */
@@ -1172,11 +1152,11 @@ public final class SUnit extends Unit {
         Pilot mPilot = new Pilot(p.getName(), p.getGunnery(), p.getPiloting());
         Entity entity = getEntity();
 
-        //Lazy Bug report. non Anti-Mek BA should not have a Piloting skill better/worse then 5
-        if ( getEntity() instanceof BattleArmor && !((BattleArmor)getEntity()).isAntiMek() && !hasVacantPilot()){
+        // Lazy Bug report. non Anti-Mek BA should not have a Piloting skill
+        // better/worse then 5
+        if (getEntity() instanceof BattleArmor && !((BattleArmor) getEntity()).isAntiMek() && !hasVacantPilot()) {
             mPilot.setPiloting(5);
         }
-
 
         entity.setCrew(mPilot);
         setEntity(entity);
@@ -1208,17 +1188,17 @@ public final class SUnit extends Unit {
         setType(Unit.getEntityType(getEntity()));
 
         /*
-         * if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE) setWeightclass(getEntityWeight(this.getEntity()));
+         * if (this.getType() == Unit.MEK || this.getType() == Unit.VEHICLE)
+         * setWeightclass(getEntityWeight(this.getEntity()));
          */
         // Set Modelname
         if (getType() == Unit.PROTOMEK || getType() == Unit.BATTLEARMOR || getType() == Unit.INFANTRY || getType() == Unit.VEHICLE || getEntity().isOmni()) {
             setModelname(new String(unitEntity.getChassis() + " " + unitEntity.getModel()).trim());
-        } else{
+        } else {
 
-            if ( unitEntity.getModel().trim().length() > 0 ){
+            if (unitEntity.getModel().trim().length() > 0) {
                 setModelname(unitEntity.getModel().trim());
-            }
-            else{
+            } else {
                 setModelname(unitEntity.getChassis().trim());
             }
 
@@ -1236,8 +1216,12 @@ public final class SUnit extends Unit {
     }
 
     /**
-     * Sets status to unmaintained. Factors out repetetive code checking maintainance status and decreasing as unit is moved to unmaintained. Called from both Player and SetUnmaintainedCommand. It would possible to bypass this code and set a unit as unmaintained without incurring any maintainance penalty w/ Unit.setStatus(STATUS_UNMAINTAINED).
-     *
+     * Sets status to unmaintained. Factors out repetetive code checking
+     * maintainance status and decreasing as unit is moved to unmaintained.
+     * Called from both Player and SetUnmaintainedCommand. It would possible to
+     * bypass this code and set a unit as unmaintained without incurring any
+     * maintainance penalty w/ Unit.setStatus(STATUS_UNMAINTAINED).
+     * 
      * @urgru 8/4/04
      */
     public void setUnmaintainedStatus() {
@@ -1255,7 +1239,8 @@ public final class SUnit extends Unit {
         setStatus(STATUS_UNMAINTAINED);
 
         /*
-         * now change the maintainance levels. if the unit is well maintained, drop it to the basevalue. otherwise, apply the standard penalty.
+         * now change the maintainance levels. if the unit is well maintained,
+         * drop it to the basevalue. otherwise, apply the standard penalty.
          */
         if (getMaintainanceLevel() >= baseUnmaintained + unmaintPenalty) {
             setMaintainanceLevel(baseUnmaintained);
@@ -1300,7 +1285,7 @@ public final class SUnit extends Unit {
         }
 
         // need to load. do so.
-        unitEntity = loadMech(getUnitFilename());
+        unitEntity = SUnit.loadMech(getUnitFilename());
         return unitEntity;
     }
 
@@ -1366,7 +1351,10 @@ public final class SUnit extends Unit {
                 } catch (Exception exei) {
 
                     /*
-                     * Unit cannot be found in Meks.zip, Vehicles.zip or Infantry.zip. Probably a bad filename (table type) or a missing unit. Either way, need to set up and return a failsafe unit.
+                     * Unit cannot be found in Meks.zip, Vehicles.zip or
+                     * Infantry.zip. Probably a bad filename (table type) or a
+                     * missing unit. Either way, need to set up and return a
+                     * failsafe unit.
                      */
                     CampaignData.mwlog.errLog("Error loading: " + Filename);
 
@@ -1378,7 +1366,8 @@ public final class SUnit extends Unit {
                     } catch (Exception exep) {
 
                         /*
-                         * Can't even find the default unit file. Are all the .zip files missing? Misnamed? Read access is denied?
+                         * Can't even find the default unit file. Are all the
+                         * .zip files missing? Misnamed? Read access is denied?
                          */
                         CampaignData.mwlog.errLog("Unable to find default unit file. Server Exiting");
                         CampaignData.mwlog.errLog(exep);
@@ -1523,7 +1512,7 @@ public final class SUnit extends Unit {
     }
 
     public static Vector<SUnit> createMULUnits(String filename) {
-        return createMULUnits(filename, "autoassigned unit");
+        return SUnit.createMULUnits(filename, "autoassigned unit");
     }
 
     public static Vector<SUnit> createMULUnits(String filename, String fluff) {
@@ -1559,7 +1548,7 @@ public final class SUnit extends Unit {
             }
 
             pilot.setCurrentFaction("Common");
-            StringTokenizer skillList = new StringTokenizer(en.getCrew().getAdvantageList(","), ",");
+            StringTokenizer skillList = new StringTokenizer(en.getCrew().getOptionList(",", PilotOptions.LVL3_ADVANTAGES), ",");
 
             while (skillList.hasMoreTokens()) {
                 String skill = skillList.nextToken();
@@ -1576,18 +1565,27 @@ public final class SUnit extends Unit {
                     } catch (Exception ex) {
                         pilot.getSkills().getPilotSkill(PilotSkill.EdgeSkillID).setLevel(1);
                     }
-                } else if (skill.toLowerCase().equals("edge_when_headhit") ){
+                } else if (skill.toLowerCase().equals("edge_when_headhit")) {
                     pilot.setHeadHit(true);
-                }else if (skill.toLowerCase().equals("edge_when_tac") ){
+                } else if (skill.toLowerCase().equals("edge_when_tac")) {
                     pilot.setTac(true);
-                }else if (skill.toLowerCase().equals("edge_when_ko") ){
+                } else if (skill.toLowerCase().equals("edge_when_ko")) {
                     pilot.setKO(true);
-                }else if (skill.toLowerCase().equals("edge_when_explosion") ){
+                } else if (skill.toLowerCase().equals("edge_when_explosion")) {
                     pilot.setExplosion(true);
-                }  else {
+                } else {
                     pilot.getSkills().add(CampaignMain.cm.getPilotSkill(PilotSkill.getMMSkillID(skill)));
                     pilot.addMegamekOption(new MegaMekPilotOption(skill, true));
                 }
+            }
+
+            skillList = new StringTokenizer(en.getCrew().getOptionList(",", PilotOptions.MD_ADVANTAGES), ",");
+
+            while (skillList.hasMoreTokens()) {
+                String skill = skillList.nextToken();
+
+                pilot.getSkills().add(CampaignMain.cm.getPilotSkill(PilotSkill.getMMSkillID(skill)));
+                pilot.addMegamekOption(new MegaMekPilotOption(skill, true));
             }
 
             cm.setPilot(pilot);

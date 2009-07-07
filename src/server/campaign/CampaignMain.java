@@ -384,7 +384,6 @@ public final class CampaignMain implements Serializable {
         }
 
         // misc loads.
-        cm.loadBannedTargetingSystems();
         cm.loadOmniVariantMods();
         cm.loadBlackMarketSettings();
 
@@ -1453,7 +1452,6 @@ public final class CampaignMain implements Serializable {
         Commands.put("ADMINSAVEFACTIONCONFIGS", new AdminSaveFactionConfigsCommand());
         Commands.put("ADMINSAVEPLANETSTOXML", new AdminSavePlanetsToXMLCommand());
         Commands.put("ADMINSAVESERVERCONFIGS", new AdminSaveServerConfigsCommand());
-        Commands.put("ADMINSETBANTARGETING", new AdminSetBanTargetingCommand());
         Commands.put("ADMINSETBLACKMARKETSETTING", new AdminSetBlackMarketSettingCommand());
         Commands.put("ADMINSETCOMMANDLEVEL", new AdminSetCommandLevelCommand());
         Commands.put("ADMINSETHOMEWORLD", new AdminSetHomeWorldCommand());
@@ -1704,7 +1702,6 @@ public final class CampaignMain implements Serializable {
         Commands.put("SETPLANETWAREHOUSE", new SetPlanetWareHouseCommand());
         Commands.put("SETPLANETCOMPPRODUCTION", new SetPlanetCompProductionCommand());
         Commands.put("SETSUBFACTIONCONFIG", new SetSubFactionConfigCommand());
-        Commands.put("SETTARGETSYSTEMTYPE", new SetTargetSystemTypeCommand());
         Commands.put("SETUNITAMMO", new SetUnitAmmoCommand());
         Commands.put("SETUNITAMMOBYCRIT", new SetUnitAmmoByCritCommand());
         Commands.put("SETUNITBURST", new SetUnitBurstCommand());
@@ -3861,46 +3858,6 @@ public final class CampaignMain implements Serializable {
 
         } catch (Exception ex) {
             CampaignData.mwlog.errLog("Error saving banned ammo.");
-            CampaignData.mwlog.errLog(ex);
-        }
-    }
-
-    public void loadBannedTargetingSystems() {
-
-        try {
-
-            File configFile = new File("./campaign/bantargeting.dat");
-            FileInputStream fis = new FileInputStream(configFile);
-            BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
-
-            dis.readLine();// Time Stamp
-            StringTokenizer st = new StringTokenizer(dis.readLine(), "#");
-            while (st.hasMoreTokens()) {
-                cm.getData().getBannedTargetingSystems().put(Integer.parseInt(st.nextToken()), "Banned");
-            }
-
-            dis.close();
-            fis.close();
-
-        } catch (Exception ex) {
-            saveBannedTargetingSystems();
-        }
-    }
-
-    public void saveBannedTargetingSystems() {
-        // Save banned targeting systems
-        try {
-            FileOutputStream out = new FileOutputStream("./campaign/bantargeting.dat");
-            PrintStream p = new PrintStream(out);
-            p.println(System.currentTimeMillis());
-            for (Integer targetingSytem : CampaignMain.cm.getData().getBannedTargetingSystems().keySet()) {
-                p.print(targetingSytem);
-                p.print("#");
-            }
-            p.close();
-            out.close();
-        } catch (Exception ex) {
-            CampaignData.mwlog.errLog("Error saving banned targetting systems.");
             CampaignData.mwlog.errLog(ex);
         }
     }

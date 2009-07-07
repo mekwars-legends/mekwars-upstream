@@ -29,8 +29,6 @@
 
 package client.gui.dialog;
 
-
-import java.awt.Choice;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -60,7 +58,6 @@ import megamek.common.Entity;
 import megamek.common.IOffBoardDirections;
 import megamek.common.Infantry;
 import megamek.common.Mech;
-import megamek.common.MiscType;
 import megamek.common.Mounted;
 import megamek.common.Protomech;
 import megamek.common.Tank;
@@ -73,17 +70,16 @@ import common.House;
 import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
 import common.util.SpringLayoutHelper;
-import common.util.UnitUtils;
 
 /**
  * A dialog that a player can use to customize his mech before battle.
  * Currently, only changing pilots is supported.
- *
- * @author  Ben
+ * 
+ * @author Ben
  * @version
  */
 
-public class CustomUnitDialog extends JDialog implements ActionListener{
+public class CustomUnitDialog extends JDialog implements ActionListener {
 
     /**
      *
@@ -103,14 +99,11 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
     private JButton butOkay = new JButton("Okay");
     private JButton butCancel = new JButton("Cancel");
 
-    private Vector<MunitionChoicePanel> m_vMunitions = new Vector<MunitionChoicePanel>(1,1);
+    private Vector<MunitionChoicePanel> m_vMunitions = new Vector<MunitionChoicePanel>(1, 1);
     private JPanel panMunitions = new JPanel();
 
-    private Vector<MachineGunChoicePanel> m_vMachineGuns = new Vector<MachineGunChoicePanel>(1,1);
+    private Vector<MachineGunChoicePanel> m_vMachineGuns = new Vector<MachineGunChoicePanel>(1, 1);
     private JPanel panMachineGuns = new JPanel();
-
-    private JLabel labTargSys = new JLabel("Targeting System", SwingConstants.TRAILING);
-    private Choice choTargSys = new Choice();
 
     private JPanel panEdgeSkills = new JPanel();
     private JCheckBox tacCB = new JCheckBox("TAC Rolls");
@@ -124,7 +117,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
     private MWClient mwclient;
 
     private boolean canDump = false;
-    private Client mmClient =  new Client("temp","None",0);
+    private Client mmClient = new Client("temp", "None", 0);
     private Pilot pilot = null;
     private boolean usingCrits = false;
 
@@ -138,35 +131,33 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
         usingCrits = Boolean.parseBoolean(mwclient.getserverConfigs("UsePartsRepair"));
 
         mmClient.game.getOptions().loadOptions();
-       	setTitle("Customize Unit");
+        setTitle("Customize Unit");
 
-        //refresh all ammo data
+        // refresh all ammo data
         loadAmmo();
 
         /*
          * Dialog Layout.
-         *
+         * 
          * Generally speaking, dialog's content pane is a holder for a
          * ScrollPane, which itself wraps around a vertical BoxLayout which
          * holds 3 major sub-panels, and a flowpanel containing Okay/Cancel.
-         *
-         * ScrollPane panels are as follows:
-         *  - checkboxes and offboard
-         *  - ammo loads
-         *  - machinegun settings
+         * 
+         * ScrollPane panels are as follows: - checkboxes and offboard - ammo
+         * loads - machinegun settings
          */
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
-        //scroll pane
+        // scroll pane
         JPanel scrollPanel = new JPanel();
         scrollPanel.setLayout(new BoxLayout(scrollPanel, BoxLayout.Y_AXIS));
         scrollPane = new JScrollPane(scrollPanel);
 
-        //add scroll pane and buttons to content pane
+        // add scroll pane and buttons to content pane
         getContentPane().add(scrollPane);
         getContentPane().add(panButtons);
 
-        //button setup
+        // button setup
         butOkay.addActionListener(this);
         butCancel.addActionListener(this);
         getRootPane().setDefaultButton(butOkay);
@@ -178,83 +169,63 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
         int boxRows = 0;
         boxPanel = new JPanel(new SpringLayout());
 
-        //only show autoeject for mechs
+        // only show autoeject for mechs
         if (entity instanceof Mech) {
 
-        	//load mech and set ejection status from entity
-        	Mech mech = (Mech)entity;
-        	chAutoEject.setSelected(!mech.isAutoEject());
+            // load mech and set ejection status from entity
+            Mech mech = (Mech) entity;
+            chAutoEject.setSelected(!mech.isAutoEject());
 
-        	//add autoeject label and cbox
-        	boxPanel.add(labAutoEject);
-        	boxPanel.add(chAutoEject);
+            // add autoeject label and cbox
+            boxPanel.add(labAutoEject);
+            boxPanel.add(chAutoEject);
 
-        	boxRows += 1;
+            boxRows += 1;
         }
 
-        if ( pilot.getSkills().has(PilotSkill.EdgeSkillID) ){
+        if (pilot.getSkills().has(PilotSkill.EdgeSkillID)) {
             setupEdgeSkills();
-            boxPanel.add(new JLabel("Edge Selections",SwingConstants.TRAILING));
+            boxPanel.add(new JLabel("Edge Selections", SwingConstants.TRAILING));
             boxPanel.add(panEdgeSkills);
             boxRows += 1;
         }
 
-        if ( !(UnitUtils.hasTargettingComputer(entity) )
-                && (mmClient.game.getOptions().booleanOption("allow_level_3_targsys"))
-                && ((entity instanceof Mech) || (entity instanceof Tank))
-                && !entity.hasC3()
-                && !entity.hasC3i()) {
-
-            boxPanel.add(labTargSys);
-            for ( int pos = 0; pos < MiscType.targSysNames.length; pos++ ){
-                //No TC's or banned weapons systems allowed in the selection box.
-                if ( pos == MiscType.T_TARGSYS_TARGCOMP
-                        || mwclient.getData().getBannedTargetingSystems().containsKey(pos) ) {
-                    continue;
-                }
-                //Else
-                choTargSys.add(MiscType.getTargetSysName(pos));
-            }
-            boxPanel.add(choTargSys);
-            choTargSys.select(MiscType.getTargetSysName(entity.getTargSysType()));
-            boxRows += 1;
-        }
-
-  	//look for offboard weapons by looping through all weapons
+        // look for offboard weapons by looping through all weapons
         boolean eligibleForOffBoard = false;
         for (Mounted mounted : entity.getWeaponList()) {
-            WeaponType wtype = (WeaponType)mounted.getType();
+            WeaponType wtype = (WeaponType) mounted.getType();
             if (wtype.hasFlag(WeaponType.F_ARTILLERY)) {
                 eligibleForOffBoard = true;
             }
         }
 
-        //set up  the offboard box and text field if appropriate
+        // set up the offboard box and text field if appropriate
         if (eligibleForOffBoard) {
 
-        	//checkbox for offboard
+            // checkbox for offboard
             boxPanel.add(labOffBoard);
             boxPanel.add(chOffBoard);
             chOffBoard.setSelected(entity.isOffBoard());
 
-            //distance
+            // distance
             boxPanel.add(labOffBoardDistance);
             fldOffBoardDistance.setText(Integer.toString(entity.getOffBoardDistance()));
             boxPanel.add(fldOffBoardDistance);
 
-            //rowcount
+            // rowcount
             boxRows += 2;
         }
 
-        //layout the boxpanel. 2 columns. Counted the rows.
+        // layout the boxpanel. 2 columns. Counted the rows.
         SpringLayoutHelper.setupSpringGrid(boxPanel, 2);
 
-        //add the boxPanel to the scroll panel. We know it has contents b/c all units can mount lights.
+        // add the boxPanel to the scroll panel. We know it has contents b/c all
+        // units can mount lights.
         scrollPanel.add(boxPanel);
 
         /*
-         * Build second major subpanel - muntions;
-         * however, only for non-inf units.
+         * Build second major subpanel - muntions; however, only for non-inf
+         * units.
          */
         if (!(entity instanceof Infantry) || entity instanceof BattleArmor) {
             setupMunitions();
@@ -263,7 +234,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
             centeringPanel.add(panMunitions);
             scrollPanel.add(centeringPanel);
 
-            //hide the ammo cost in titlebar if no ammo to set
+            // hide the ammo cost in titlebar if no ammo to set
             if (panMunitions.getComponentCount() == 0) {
                 setTitle("Customize Unit");
             }
@@ -271,24 +242,26 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
         }
 
         /*
-         * Build the third major subpanel - burst MGs - for
-         * Meks and Vehicles. No BA/Inf/Proto bursts!
-         *
+         * Build the third major subpanel - burst MGs - for Meks and Vehicles.
+         * No BA/Inf/Proto bursts!
+         * 
          * Only doso if the server has enabled "maxtech_burst"
          */
-        if ( mmClient.game.getOptions().booleanOption("tacops_burst") && !(entity instanceof Infantry) ) {
+        if (mmClient.game.getOptions().booleanOption("tacops_burst") && !(entity instanceof Infantry)) {
             setupMachineGuns();
             scrollPanel.add(panMachineGuns);
         }
 
-        //add window listener which hides the window on close.
+        // add window listener which hides the window on close.
         addWindowListener(new WindowAdapter() {
-        	@Override
-			public void windowClosing(WindowEvent e) {setVisible(false);}
+            @Override
+            public void windowClosing(WindowEvent e) {
+                setVisible(false);
+            }
         });
 
-        //scrollPane.setMinimumSize(new Dimension(150, 150));
-        //scrollPane.setMaximumSize(new Dimension(780, 580));
+        // scrollPane.setMinimumSize(new Dimension(150, 150));
+        // scrollPane.setMaximumSize(new Dimension(780, 580));
         pack();
 
         setResizable(false);
@@ -297,12 +270,12 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
 
     private void setupMunitions() {
 
-    	int munitionsRows = 0;
+        int munitionsRows = 0;
         panMunitions.setLayout(new SpringLayout());
-        MunitionChoicePanel mcp = null;//replaced repeatedly w/i while loop
+        MunitionChoicePanel mcp = null;// replaced repeatedly w/i while loop
 
-        //int row = 0;
-        int location = -1;//also repeatedly replaced
+        // int row = 0;
+        int location = -1;// also repeatedly replaced
 
         /*
          * Loop through all ammo?
@@ -311,9 +284,9 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
         while (e.hasNext()) {
 
             Mounted m = e.next();
-            AmmoType at = (AmmoType)m.getType();
+            AmmoType at = (AmmoType) m.getType();
 
-            Vector<AmmoType> vTypes = new Vector<AmmoType>(1,1);
+            Vector<AmmoType> vTypes = new Vector<AmmoType>(1, 1);
             Vector<AmmoType> vAllTypes = AmmoType.getMunitionsFor(at.getAmmoType());
             location++;
 
@@ -323,119 +296,101 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 continue;
             }
 
-            //Remove for now Torren and lets see how this works. appears to cause issues with single tech weapons
-            //i.e. HGR's and LGR's
-            /*if (vAllTypes.size() < 2 && !canDump )
-                continue;*/
+            // Remove for now Torren and lets see how this works. appears to
+            // cause issues with single tech weapons
+            // i.e. HGR's and LGR's
+            /*
+             * if (vAllTypes.size() < 2 && !canDump ) continue;
+             */
 
             for (int x = 0, n = vAllTypes.size(); x < n; x++) {
                 AmmoType atCheck = vAllTypes.elementAt(x);
 
-                if ( atCheck.getRackSize() != at.getRackSize() ||
-                     atCheck.getTonnage(entity) != at.getTonnage(entity) ) {
+                if (atCheck.getRackSize() != at.getRackSize() || atCheck.getTonnage(entity) != at.getTonnage(entity)) {
                     continue;
                 }
 
-                boolean bTechMatch = TechConstants.isLegal(entity.getTechLevel(), atCheck.getTechLevel(), true);//(entity.getTechLevel() == atCheck.getTechLevel());
+                boolean bTechMatch = TechConstants.isLegal(entity.getTechLevel(), atCheck.getTechLevel(), true);// (entity.getTechLevel()
+                // ==
+                // atCheck.getTechLevel());
 
                 String munition = Long.toString(atCheck.getMunitionType());
                 House faction = mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse());
 
-                //CampaignData.mwlog.errLog("Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
-                //check banned ammo
-                if ( mwclient.getData().getServerBannedAmmo().containsKey(munition)
-                        || faction.getBannedAmmo().containsKey(munition)
-                        || (mwclient.getAmmoCost(atCheck.getInternalName()) < 0 && !usingCrits )) {
+                // CampaignData.mwlog.errLog("Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
+                // check banned ammo
+                if (mwclient.getData().getServerBannedAmmo().containsKey(munition) || faction.getBannedAmmo().containsKey(munition) || (mwclient.getAmmoCost(atCheck.getInternalName()) < 0 && !usingCrits)) {
                     continue;
                 }
 
-                //CampaignData.mwlog.errLog("2.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
+                // CampaignData.mwlog.errLog("2.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
 
-                //System.err.println(atCheck.getName()+"/"+atCheck.getInternalName());
-                if ( usingCrits &&
-                		mwclient.getPlayer().getPartsCache().getPartsCritCount(atCheck.getInternalName()) < 1 &&
-                		!ammoAlreadyLoaded(atCheck) &&
-                		//!mwclient.getPlayer().getAutoReorder() &&
-                		mwclient.getBlackMarketEquipmentList().get(atCheck.getInternalName()) == null ) {
+                // System.err.println(atCheck.getName()+"/"+atCheck.getInternalName());
+                if (usingCrits && mwclient.getPlayer().getPartsCache().getPartsCritCount(atCheck.getInternalName()) < 1 && !ammoAlreadyLoaded(atCheck) &&
+                // !mwclient.getPlayer().getAutoReorder() &&
+                        mwclient.getBlackMarketEquipmentList().get(atCheck.getInternalName()) == null) {
                     continue;
-                //CampaignData.mwlog.errLog("3.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
+                    // CampaignData.mwlog.errLog("3.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
                 }
 
                 // allow all lvl2 IS units to use level 1 ammo
                 // lvl1 IS units don't need to be allowed to use lvl1 ammo,
                 // because there is no special lvl1 ammo, therefore it doesn't
                 // need to show up in this display.
-                if (!bTechMatch && ( entity.getTechLevel() == TechConstants.T_IS_ADVANCED || entity.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL)
-                        && atCheck.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) {
+                if (!bTechMatch && (entity.getTechLevel() == TechConstants.T_IS_ADVANCED || entity.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL) && atCheck.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) {
                     bTechMatch = true;
                 }
 
-                // if is_eq_limits is unchecked allow L1 units to use L2 munitions
-                if (!mmClient.game.getOptions().booleanOption("is_eq_limits")
-                    && !entity.isClan()
-                    && ( atCheck.getTechLevel() == TechConstants.T_IS_TW_NON_BOX) ) {
+                // if is_eq_limits is unchecked allow L1 units to use L2
+                // munitions
+                if (!mmClient.game.getOptions().booleanOption("is_eq_limits") && !entity.isClan() && (atCheck.getTechLevel() == TechConstants.T_IS_TW_NON_BOX)) {
                     bTechMatch = true;
                 }
 
                 // Possibly allow level 3 ammos, possibly not.
-                if (mmClient.game.getOptions().booleanOption("allow_advanced_ammo")
-                        && !mmClient.game.getOptions().booleanOption("is_eq_limits")) {
-                        if ( entity.isClan() && (atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_CLAN_ADVANCED || atCheck
-                                .getTechLevel() == TechConstants.T_CLAN_UNOFFICIAL)) {
-                            bTechMatch = true;
-                        }
-                        if (!entity.isClan() && (atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED || atCheck.getTechLevel() == TechConstants.T_IS_UNOFFICIAL) ) {
-                            bTechMatch = true;
-                        }
-                } else if ( ( (atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED || atCheck.getTechLevel() == TechConstants.T_IS_UNOFFICIAL) && entity.getTechLevel() != TechConstants.T_IS_EXPERIMENTAL && entity.getTechLevel() != TechConstants.T_IS_ADVANCED)
-                        || ((atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_CLAN_ADVANCED || atCheck.getTechLevel() == TechConstants.T_CLAN_UNOFFICIAL) && entity.getTechLevel() != TechConstants.T_CLAN_EXPERIMENTAL && entity.getTechLevel() != TechConstants.T_CLAN_ADVANCED) ) {
+                if (mmClient.game.getOptions().booleanOption("allow_advanced_ammo") && !mmClient.game.getOptions().booleanOption("is_eq_limits")) {
+                    if (entity.isClan() && (atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_CLAN_ADVANCED || atCheck.getTechLevel() == TechConstants.T_CLAN_UNOFFICIAL)) {
+                        bTechMatch = true;
+                    }
+                    if (!entity.isClan() && (atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED || atCheck.getTechLevel() == TechConstants.T_IS_UNOFFICIAL)) {
+                        bTechMatch = true;
+                    }
+                } else if (((atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED || atCheck.getTechLevel() == TechConstants.T_IS_UNOFFICIAL) && entity.getTechLevel() != TechConstants.T_IS_EXPERIMENTAL && entity.getTechLevel() != TechConstants.T_IS_ADVANCED) || ((atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_CLAN_ADVANCED || atCheck.getTechLevel() == TechConstants.T_CLAN_UNOFFICIAL) && entity.getTechLevel() != TechConstants.T_CLAN_EXPERIMENTAL && entity.getTechLevel() != TechConstants.T_CLAN_ADVANCED)) {
                     bTechMatch = false;
                 }
 
-		        //allow mixed Tech Mechs to use both IS and Clan Ammo
+                // allow mixed Tech Mechs to use both IS and Clan Ammo
                 if (entity.isMixedTech()) {
-                   bTechMatch = true;
+                    bTechMatch = true;
                 }
 
                 // If clan_ignore_eq_limits is unchecked,
                 // do NOT allow Clans to use IS-only ammo.
                 // N.B. play bit-shifting games to allow "incendiary"
-                //      to be combined to other munition types.
+                // to be combined to other munition types.
                 long muniType = atCheck.getMunitionType();
                 muniType &= ~AmmoType.M_INCENDIARY_LRM;
-                if ( !mmClient.game.getOptions().booleanOption("clan_ignore_eq_limits")
-                     && entity.isClan()
-                     && ( muniType == AmmoType.M_SEMIGUIDED ||
-                          muniType == AmmoType.M_THUNDER_AUGMENTED ||
-                          muniType == AmmoType.M_THUNDER_INFERNO   ||
-                          muniType == AmmoType.M_THUNDER_VIBRABOMB ||
-                          muniType == AmmoType.M_THUNDER_ACTIVE ||
-                          muniType == AmmoType.M_INFERNO_IV ||
-                          muniType == AmmoType.M_VIBRABOMB_IV)) {
+                if (!mmClient.game.getOptions().booleanOption("clan_ignore_eq_limits") && entity.isClan() && (muniType == AmmoType.M_SEMIGUIDED || muniType == AmmoType.M_THUNDER_AUGMENTED || muniType == AmmoType.M_THUNDER_INFERNO || muniType == AmmoType.M_THUNDER_VIBRABOMB || muniType == AmmoType.M_THUNDER_ACTIVE || muniType == AmmoType.M_INFERNO_IV || muniType == AmmoType.M_VIBRABOMB_IV)) {
                     bTechMatch = false;
-		        }
+                }
 
-                if (!mmClient.game.getOptions().booleanOption("minefields") &&
-                	AmmoType.canDeliverMinefield(atCheck) ) {
+                if (!mmClient.game.getOptions().booleanOption("minefields") && AmmoType.canDeliverMinefield(atCheck)) {
                     continue;
                 }
-                //CampaignData.mwlog.errLog("4.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
+                // CampaignData.mwlog.errLog("4.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
 
                 // Only Protos can use Proto-specific ammo
-                if ( atCheck.hasFlag(AmmoType.F_PROTOMECH) &&
-                     !(entity instanceof Protomech) ) {
+                if (atCheck.hasFlag(AmmoType.F_PROTOMECH) && !(entity instanceof Protomech)) {
                     continue;
                 }
-                //CampaignData.mwlog.errLog("5.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
+                // CampaignData.mwlog.errLog("5.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
 
                 // When dealing with machine guns, Protos can only
-                //  use proto-specific machine gun ammo
-                if ( entity instanceof Protomech &&
-                     atCheck.hasFlag(AmmoType.F_MG) &&
-                     !atCheck.hasFlag(AmmoType.F_PROTOMECH) ) {
+                // use proto-specific machine gun ammo
+                if (entity instanceof Protomech && atCheck.hasFlag(AmmoType.F_MG) && !atCheck.hasFlag(AmmoType.F_PROTOMECH)) {
                     continue;
                 }
-                //CampaignData.mwlog.errLog("6.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
+                // CampaignData.mwlog.errLog("6.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
 
                 // All other ammo types need to match on rack size and tech.
                 if (bTechMatch) {
@@ -443,36 +398,38 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 }
             }
 
-            //Protomechs need special choice panels.
+            // Protomechs need special choice panels.
             if (entity instanceof Protomech) {
-                mcp = new ProtomechMunitionChoicePanel(m, vTypes,location);
+                mcp = new ProtomechMunitionChoicePanel(m, vTypes, location);
             } else {
                 mcp = new MunitionChoicePanel(m, vTypes, location);
             }
 
-            //get a location name
+            // get a location name
             int loc;
-            if (m.getLocation() == Entity.LOC_NONE){// oneshot weapons don't have a location of their own
+            if (m.getLocation() == Entity.LOC_NONE) {// oneshot weapons don't
+                // have a location of their
+                // own
                 Mounted linkedBy = m.getLinkedBy();
                 loc = linkedBy.getLocation();
             } else {
                 loc = m.getLocation();
             }
 
-            //add location label
+            // add location label
             panMunitions.add(new JLabel(entity.getLocationAbbr(loc) + ":", SwingConstants.TRAILING));
 
             panMunitions.add(mcp);
             m_vMunitions.addElement(mcp);
 
-            //increment the rowcount
+            // increment the rowcount
             munitionsRows++;
 
-        }//end while(ammo remains in enumeration)
+        }// end while(ammo remains in enumeration)
 
         /*
-         * setup the spring grid. If there are > 10 combo
-         * boxes in play, split into two columns.
+         * setup the spring grid. If there are > 10 combo boxes in play, split
+         * into two columns.
          */
         if (munitionsRows > 10) {
             SpringLayoutHelper.setupSpringGrid(panMunitions, 4);
@@ -481,7 +438,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
         }
     }
 
-    private void setupEdgeSkills(){
+    private void setupEdgeSkills() {
 
         panEdgeSkills.setLayout(new SpringLayout());
 
@@ -495,7 +452,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
         panEdgeSkills.add(explosionsCB);
         panEdgeSkills.add(headHitsCB);
 
-        SpringLayoutHelper.setupSpringGrid(panEdgeSkills,4);
+        SpringLayoutHelper.setupSpringGrid(panEdgeSkills, 4);
     }
 
     private void setupMachineGuns() {
@@ -536,18 +493,17 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
          * into two columns.
          */
         if (mgRows >= 6) {
-        	SpringLayoutHelper.setupSpringGrid(panMachineGuns,2);
+            SpringLayoutHelper.setupSpringGrid(panMachineGuns, 2);
         } else {
-            SpringLayoutHelper.setupSpringGrid(panMachineGuns,1);
+            SpringLayoutHelper.setupSpringGrid(panMachineGuns, 1);
         }
     }
 
     /*
-     * In truth, this could be broken down into a method which
-     * returned a JComboBox and the ammo-dumping CBox could be
-     * handled elsewhere; however, the Panel extension is carried
-     * over from the original MegaMek code-path and works well
-     * enough for our purposes. @urgru 7/30/05
+     * In truth, this could be broken down into a method which returned a
+     * JComboBox and the ammo-dumping CBox could be handled elsewhere; however,
+     * the Panel extension is carried over from the original MegaMek code-path
+     * and works well enough for our purposes. @urgru 7/30/05
      */
     class MunitionChoicePanel extends JPanel {
         /**
@@ -564,69 +520,68 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
 
         public MunitionChoicePanel(Mounted m, Vector<AmmoType> vTypes, int location) {
 
-        	//save params
+            // save params
             m_vTypes = vTypes;
             m_mounted = m;
             this.location = location;
 
-            //setup panel
-            AmmoType curType = (AmmoType)m.getType();
+            // setup panel
+            AmmoType curType = (AmmoType) m.getType();
             m_choice = new JComboBox();
             Enumeration<AmmoType> e = m_vTypes.elements();
 
             for (int x = 0; e.hasMoreElements(); x++) {
-            	AmmoType at = e.nextElement();
-                m_choice.setMaximumSize(new Dimension(5,5));
+                AmmoType at = e.nextElement();
+                m_choice.setMaximumSize(new Dimension(5, 5));
                 int cost = Integer.MAX_VALUE;
                 int shotsLeft = m.getShotsLeft();
-                if ( !curType.getInternalName().equalsIgnoreCase(at.getInternalName()) ) {
-                	shotsLeft = 0;
+                if (!curType.getInternalName().equalsIgnoreCase(at.getInternalName())) {
+                    shotsLeft = 0;
                 }
 
                 double ammoCost = 0;
-                try{
+                try {
                     ammoCost = mwclient.getAmmoCost(at.getInternalName());
-                }catch (Exception ex){
-                    CampaignData.mwlog.errLog("error finding cost for: "+at.getName());
+                } catch (Exception ex) {
+                    CampaignData.mwlog.errLog("error finding cost for: " + at.getName());
                     CampaignData.mwlog.errLog(ex);
                 }
-                if ( m.getLocation() == Entity.LOC_NONE ){
-                    if ( usingCrits ) {
-                        m_choice.addItem(at.getName()+" ("+shotsLeft+"/1/"+mwclient.getPlayer().getPartsCache().getPartsCritCount(at.getInternalName())+")");
+                if (m.getLocation() == Entity.LOC_NONE) {
+                    if (usingCrits) {
+                        m_choice.addItem(at.getName() + " (" + shotsLeft + "/1/" + mwclient.getPlayer().getPartsCache().getPartsCritCount(at.getInternalName()) + ")");
                     } else {
-                        m_choice.addItem(at.getName()+" ("+shotsLeft+"/1) "+mwclient.moneyOrFluMessage(true,true,(int)ammoCost));
+                        m_choice.addItem(at.getName() + " (" + shotsLeft + "/1) " + mwclient.moneyOrFluMessage(true, true, (int) ammoCost));
                     }
-                }
-                else {
+                } else {
                     int refillShots = at.getShots();
-                    if ( !curType.getInternalName().equalsIgnoreCase(at.getInternalName()) ) {
+                    if (!curType.getInternalName().equalsIgnoreCase(at.getInternalName())) {
                         shotsLeft = 0;
                     }
 
-                    //No reason to continue if there are not shots to refill.
-                    if ( shotsLeft == refillShots ) {
+                    // No reason to continue if there are not shots to refill.
+                    if (shotsLeft == refillShots) {
                         cost = 0;
-                    } else{
-                    	refillShots -= shotsLeft;
-                    	cost = (int)Math.ceil(ammoCost*refillShots);
+                    } else {
+                        refillShots -= shotsLeft;
+                        cost = (int) Math.ceil(ammoCost * refillShots);
                     }
 
-                    //CampaignData.mwlog.errLog("Cost: "+cost+" string: "+mwclient.moneyOrFluMessage(true,true,cost));
-                	if ( usingCrits ) {
-                        m_choice.addItem(at.getName()+" ("+shotsLeft+"/"+refillShots+"/"+mwclient.getPlayer().getPartsCache().getPartsCritCount(at.getInternalName())+")");
+                    // CampaignData.mwlog.errLog("Cost: "+cost+" string: "+mwclient.moneyOrFluMessage(true,true,cost));
+                    if (usingCrits) {
+                        m_choice.addItem(at.getName() + " (" + shotsLeft + "/" + refillShots + "/" + mwclient.getPlayer().getPartsCache().getPartsCritCount(at.getInternalName()) + ")");
                     } else {
-                        m_choice.addItem(at.getName()+" ("+shotsLeft+"/"+refillShots+") "+mwclient.moneyOrFluMessage(true,true,cost));
+                        m_choice.addItem(at.getName() + " (" + shotsLeft + "/" + refillShots + ") " + mwclient.moneyOrFluMessage(true, true, cost));
                     }
 
                 }
-            	if (at.getInternalName().equalsIgnoreCase(curType.getInternalName())) {
+                if (at.getInternalName().equalsIgnoreCase(curType.getInternalName())) {
                     m_choice.setSelectedIndex(x);
                 }
             }
 
             add(m_choice);
 
-            //set up the dump checkbox, if dumping is allowed
+            // set up the dump checkbox, if dumping is allowed
             if (canDump) {
                 if (m.getShotsLeft() == 0) {
                     chDump.setSelected(true);
@@ -634,77 +589,74 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
                 chDump.setText("Dump");
                 add(chDump);
             }
-            if ( mmClient.game.getOptions().booleanOption("tacops_hotload")
-                    && ((entity instanceof Mech) || (entity instanceof Tank))
-                    && ((AmmoType) m.getType()).hasFlag(AmmoType.F_HOTLOAD) ){
+            if (mmClient.game.getOptions().booleanOption("tacops_hotload") && ((entity instanceof Mech) || (entity instanceof Tank)) && ((AmmoType) m.getType()).hasFlag(AmmoType.F_HOTLOAD)) {
                 chHotLoad.setSelected(m.isHotLoaded());
                 chHotLoad.setText("Hot-Load");
                 add(chHotLoad);
-            }else{
-            	chHotLoad.setEnabled(false);
+            } else {
+                chHotLoad.setEnabled(false);
                 chHotLoad.setText("Hot-Load");
                 add(chHotLoad);
             }
 
         }
 
-        /*  Yes this to load the ammo
-         Save Weapon Type from at.getAmmoType() call weapon type
-         save weapon position with at.getMunitionType() call ammo type
-         Load
-         at.getMunitionsFor(ammoType) returns vector
-         ammo_vector.elementAt(MunitionType);
+        /*
+         * Yes this to load the ammo Save Weapon Type from at.getAmmoType() call
+         * weapon type save weapon position with at.getMunitionType() call ammo
+         * type Load at.getMunitionsFor(ammoType) returns vector
+         * ammo_vector.elementAt(MunitionType);
          */
 
         public void applyChoice() {
             int n = m_choice.getSelectedIndex();
 
-            if ( n < 0 ) {
+            if (n < 0) {
                 return;
             }
             AmmoType at = m_vTypes.elementAt(n);
-            //m_mounted.changeAmmoType(at);
+            // m_mounted.changeAmmoType(at);
 
             int totalShots = at.getShots();
             boolean hotloaded = false;
 
-            if ( chHotLoad != null ) {
+            if (chHotLoad != null) {
                 hotloaded = chHotLoad.isSelected();
             }
 
-            if (chDump.isSelected()){
+            if (chDump.isSelected()) {
                 m_mounted.setShotsLeft(0);
                 totalShots = 0;
-            }
-            else if ( m_mounted.getLocation() == Entity.LOC_NONE ) {
+            } else if (m_mounted.getLocation() == Entity.LOC_NONE) {
                 totalShots = 1;
             }
 
-            //m_mounted.setShotsLeft(totalShots);
-            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setunitammo#"+entity.getExternalId()+"#"+location+"#"+at.getAmmoType()+"#"+at.getInternalName()+"#"+totalShots+"#"+hotloaded);
+            // m_mounted.setShotsLeft(totalShots);
+            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setunitammo#" + entity.getExternalId() + "#" + location + "#" + at.getAmmoType() + "#" + at.getInternalName() + "#" + totalShots + "#" + hotloaded);
         }
 
         @Override
-		public void setEnabled(boolean enabled) {
+        public void setEnabled(boolean enabled) {
             m_choice.setEnabled(enabled);
         }
 
         /**
          * Get the number of shots in the mount.
-         *
-         * @return      the <code>int</code> number of shots in the mount.
+         * 
+         * @return the <code>int</code> number of shots in the mount.
          */
-        /* package */ int getShotsLeft() {
+        /* package */int getShotsLeft() {
             return m_mounted.getShotsLeft();
         }
 
         /**
          * Set the number of shots in the mount.
-         *
-         * @param shots the <code>int</code> number of shots for the mount.
+         * 
+         * @param shots
+         *            the <code>int</code> number of shots for the mount.
          */
-        /* package */ void setShotsLeft( int shots ) {
-            m_mounted.setShotsLeft( shots );
+        /* package */void setShotsLeft(int shots) {
+            m_mounted.setShotsLeft(shots);
         }
     }
 
@@ -721,35 +673,34 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
 
         public MachineGunChoicePanel(Mounted m, int location, int slot) {
 
-        	//store params
-        	m_mounted = m;
-        	this.location = location;
-        	this.slot = slot;
+            // store params
+            m_mounted = m;
+            this.location = location;
+            this.slot = slot;
 
-            //restore previous setting
+            // restore previous setting
             chBurst.setSelected(m_mounted.isRapidfire());
 
-            //setup
+            // setup
             chBurst.setText("Rapid Fire MG (" + entity.getLocationAbbr(location) + ")");
             add(chBurst);
         }
 
-        /*  Yes this to load the ammo
-         Save Weapon Type from at.getAmmoType() call weapon type
-         save weapon position with at.getMunitionType() call ammo type
-         Load
-         at.getMunitionsFor(ammoType) returns vector
-         ammo_vector.elementAt(MunitionType);
+        /*
+         * Yes this to load the ammo Save Weapon Type from at.getAmmoType() call
+         * weapon type save weapon position with at.getMunitionType() call ammo
+         * type Load at.getMunitionsFor(ammoType) returns vector
+         * ammo_vector.elementAt(MunitionType);
          */
 
         public void applyChoice() {
-            if ( m_mounted.isRapidfire() != chBurst.isSelected() ) {
-                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setunitburst#"+entity.getExternalId()+"#"+location+"#"+slot+"#"+chBurst.isSelected());
+            if (m_mounted.isRapidfire() != chBurst.isSelected()) {
+                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setunitburst#" + entity.getExternalId() + "#" + location + "#" + slot + "#" + chBurst.isSelected());
             }
         }
 
         @Override
-		public void setEnabled(boolean enabled) {
+        public void setEnabled(boolean enabled) {
             chBurst.setEnabled(enabled);
         }
     }
@@ -766,176 +717,152 @@ public class CustomUnitDialog extends JDialog implements ActionListener{
 
         public HotLoadChoicePanel(Mounted m, int location) {
 
-            //store params
+            // store params
             m_mounted = m;
             this.location = location;
 
-            //mount hodler int
+            // mount hodler int
             int loc;
             loc = m.getLocation();
 
-            //restore previous setting
+            // restore previous setting
             chHotLoad.setSelected(m_mounted.isHotLoaded());
 
-            //setup
-            chHotLoad.setText("Hot-Load "+m_mounted.getName()+" (" + entity.getLocationAbbr(loc) + ")");
+            // setup
+            chHotLoad.setText("Hot-Load " + m_mounted.getName() + " (" + entity.getLocationAbbr(loc) + ")");
             add(chHotLoad);
         }
 
-        /*  Yes this to load the ammo
-         Save Weapon Type from at.getAmmoType() call weapon type
-         save weapon position with at.getMunitionType() call ammo type
-         Load
-         at.getMunitionsFor(ammoType) returns vector
-         ammo_vector.elementAt(MunitionType);
+        /*
+         * Yes this to load the ammo Save Weapon Type from at.getAmmoType() call
+         * weapon type save weapon position with at.getMunitionType() call ammo
+         * type Load at.getMunitionsFor(ammoType) returns vector
+         * ammo_vector.elementAt(MunitionType);
          */
 
         public void applyChoice() {
-            if ( m_mounted.isHotLoaded() != chHotLoad.isSelected() ) {
-                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setunithotload#"+entity.getExternalId()+"#"+location+"#"+chHotLoad.isSelected());
+            if (m_mounted.isHotLoaded() != chHotLoad.isSelected()) {
+                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setunithotload#" + entity.getExternalId() + "#" + location + "#" + chHotLoad.isSelected());
             }
         }
 
         @Override
-		public void setEnabled(boolean enabled) {
+        public void setEnabled(boolean enabled) {
             chHotLoad.setEnabled(enabled);
         }
     }
 
     /**
-     * When a Protomech selects ammo, you need to adjust the shots on the
-     * unit for the weight of the selected munition.
+     * When a Protomech selects ammo, you need to adjust the shots on the unit
+     * for the weight of the selected munition.
      */
     class ProtomechMunitionChoicePanel extends MunitionChoicePanel {
-    	/**
+        /**
          *
          */
         private static final long serialVersionUID = 3984045407240841489L;
         private final float m_origShotsLeft;
-    	private final AmmoType m_origAmmo;
+        private final AmmoType m_origAmmo;
 
-    	public ProtomechMunitionChoicePanel(Mounted m, Vector<AmmoType> vTypes, int row) {
-    		super( m, vTypes, row );
-    		m_origAmmo = (AmmoType) m.getType();
-    		m_origShotsLeft = m.getShotsLeft();
-    	}
+        public ProtomechMunitionChoicePanel(Mounted m, Vector<AmmoType> vTypes, int row) {
+            super(m, vTypes, row);
+            m_origAmmo = (AmmoType) m.getType();
+            m_origShotsLeft = m.getShotsLeft();
+        }
 
-    	/**
-    	 * All ammo must be applied in ratios to the starting load.
-    	 */
-    	@Override
-		public void applyChoice() {
-    		super.applyChoice();
+        /**
+         * All ammo must be applied in ratios to the starting load.
+         */
+        @Override
+        public void applyChoice() {
+            super.applyChoice();
 
-    		// Calculate the number of shots for the new ammo.
-    		// N.B. Some special ammos are twice as heavy as normal
-    		// so they have half the number of shots (rounded down).
-    		setShotsLeft( Math.round( getShotsLeft() * m_origShotsLeft / m_origAmmo.getShots() ) );
-    		if (chDump.isSelected()) {
+            // Calculate the number of shots for the new ammo.
+            // N.B. Some special ammos are twice as heavy as normal
+            // so they have half the number of shots (rounded down).
+            setShotsLeft(Math.round(getShotsLeft() * m_origShotsLeft / m_origAmmo.getShots()));
+            if (chDump.isSelected()) {
                 setShotsLeft(0);
             }
-    	}
+        }
     }
 
-    /* public void disableMunitionEditing() {
-     for (int i = 0; i < m_vMunitions.size(); i++) {
-     ((MunitionChoicePanel)m_vMunitions.elementAt(i)).setEnabled(false);
-     }
-     }*/
+    /*
+     * public void disableMunitionEditing() { for (int i = 0; i <
+     * m_vMunitions.size(); i++) {
+     * ((MunitionChoicePanel)m_vMunitions.elementAt(i)).setEnabled(false); } }
+     */
 
     public boolean isOkay() {
-    	return okay;
+        return okay;
     }
 
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource() != butCancel) {
-            //get values
-            //String name = fldName.getText();
+            // get values
+            // String name = fldName.getText();
             int offBoardDistance;
             boolean autoEject = chAutoEject.isSelected();
 
-            if (chOffBoard.isSelected()){
+            if (chOffBoard.isSelected()) {
                 try {
                     offBoardDistance = Integer.parseInt(fldOffBoardDistance.getText());
                 } catch (NumberFormatException e) {
-                	mwclient.showInfoWindow("Please enter valid numbers for off board distance.");
+                    mwclient.showInfoWindow("Please enter valid numbers for off board distance.");
                     return;
                 }
                 if (offBoardDistance < 17) {
-                	mwclient.showInfoWindow("Offboard units need to be at least one mapsheet (17 hexes) away.");
+                    mwclient.showInfoWindow("Offboard units need to be at least one mapsheet (17 hexes) away.");
                     return;
                 }
-                entity.setOffBoard(offBoardDistance, IOffBoardDirections.NORTH );
-            }
-            else {
-                entity.setOffBoard( 0, Entity.NONE );
+                entity.setOffBoard(offBoardDistance, IOffBoardDirections.NORTH);
+            } else {
+                entity.setOffBoard(0, Entity.NONE);
             }
 
             // change entity
-           if (entity instanceof Mech) {
-                Mech mech = (Mech)entity;
-                if ( mech.isAutoEject() == autoEject )
-                {
+            if (entity instanceof Mech) {
+                Mech mech = (Mech) entity;
+                if (mech.isAutoEject() == autoEject) {
                     mech.setAutoEject(!autoEject);
-                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setautoeject#"+mech.getExternalId()+"#"+!autoEject);
-                 }
-                if ( pilot.getSkills().has(PilotSkill.EdgeSkillID) ){
-                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setedgeSkills#"+mech.getExternalId()+"#"+tacCB.isSelected()+"#"+koCB.isSelected()+"#"+headHitsCB.isSelected()+"#"+explosionsCB.isSelected());
+                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setautoeject#" + mech.getExternalId() + "#" + !autoEject);
+                }
+                if (pilot.getSkills().has(PilotSkill.EdgeSkillID)) {
+                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setedgeSkills#" + mech.getExternalId() + "#" + tacCB.isSelected() + "#" + koCB.isSelected() + "#" + headHitsCB.isSelected() + "#" + explosionsCB.isSelected());
 
                 }
-          }
-
-           if ((entity instanceof Mech) || (entity instanceof Tank)) {
-               // Update the entity's targetting system type.
-               if (!(UnitUtils.hasTargettingComputer(entity)) && (mmClient.game.getOptions().booleanOption("allow_level_3_targsys"))) {
-
-                   int targSysIndex = MiscType.T_TARGSYS_STANDARD;
-                   if (choTargSys.getSelectedItem() != null) {
-                    targSysIndex = MiscType.getTargetSysType(choTargSys.getSelectedItem());
-                }
-                   if ( entity.getTargSysType() != targSysIndex){
-                       if (targSysIndex >= 0) {
-                        entity.setTargSysType(targSysIndex);
-                    } else {
-                           System.err.println("Illegal targetting system index: "+targSysIndex);
-                           entity.setTargSysType(MiscType.T_TARGSYS_STANDARD);
-                       }
-                       mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c settargetsystemtype#"+entity.getExternalId()+"#"+entity.getTargSysType());
-                   }
-               }
-           }
+            }
 
             okay = true;
 
-	        for (Enumeration<MunitionChoicePanel> e = m_vMunitions.elements(); e.hasMoreElements(); ) {
-	            e.nextElement().applyChoice();
-	        }
+            for (MunitionChoicePanel munitionChoicePanel : m_vMunitions) {
+                munitionChoicePanel.applyChoice();
+            }
 
-
-	        for (Enumeration<MachineGunChoicePanel> e = m_vMachineGuns.elements(); e.hasMoreElements(); ) {
-	            e.nextElement().applyChoice();
-	        }
+            for (MachineGunChoicePanel machineGunChoicePanel : m_vMachineGuns) {
+                machineGunChoicePanel.applyChoice();
+            }
 
         }
 
         setVisible(false);
     }
 
-    private void loadAmmo(){
+    private void loadAmmo() {
         mwclient.loadBannedAmmo();
         mwclient.loadBanTargeting();
     }
 
-    private boolean ammoAlreadyLoaded(AmmoType ammo){
+    private boolean ammoAlreadyLoaded(AmmoType ammo) {
 
-    	for ( Mounted mounted : entity.getAmmo() ){
-    		AmmoType currAmmo = (AmmoType)mounted.getType();
+        for (Mounted mounted : entity.getAmmo()) {
+            AmmoType currAmmo = (AmmoType) mounted.getType();
 
-    		if ( currAmmo.equals(ammo) ) {
+            if (currAmmo.equals(ammo)) {
                 return true;
             }
-    	}
+        }
 
-    	return false;
+        return false;
     }
 }

@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ new MegaMek.jar
+- Removed Targeting systems as MegaMek now uses that as part of its Quirk code. 
+  New quirk related code will be added in the future.
 + Bug in unit limits
 Release Server 0.2.41.1
 + RFE 2210454 - Option to limit number of units by size/type - allows for
