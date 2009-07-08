@@ -60,9 +60,7 @@ class ClientThread extends Thread implements CloseClientListener {
     private int serverport;
     private MWClient mwclient;
     private Client client;
-    private ClientGUI awtGui;
-    private megamek.client.ui.swing.ClientGUI swingGui;
-    private boolean awtGUI = false;
+    private ClientGUI Gui;
 
     private ArrayList<Unit> mechs = new ArrayList<Unit>();
     private ArrayList<CUnit> autoarmy = new ArrayList<CUnit>();// from server's
@@ -100,7 +98,7 @@ class ClientThread extends Thread implements CloseClientListener {
     public void run() {
         boolean playerUpdate = false;
         boolean nightGame = false;
-        awtGUI = mwclient.getConfig().isParam("USEAWTINTERFACE");
+
         CArmy currA = mwclient.getPlayer().getLockedArmy();
         client = new Client(myname, serverip, serverport);
         client.addCloseClientListener(this);
@@ -128,27 +126,14 @@ class ClientThread extends Thread implements CloseClientListener {
             CampaignData.mwlog.errLog(ex);
         }
 
-        if (awtGUI) {
-            if (awtGui != null) {
-                for (Client client2 : awtGui.getBots().values()) {
-                    client2.die();
-                }
-                awtGui.getBots().clear();
+        if (Gui != null) {
+            for (Client client2 : Gui.getBots().values()) {
+                client2.die();
             }
-            awtGui = new ClientGUI(client);
-            awtGui.initialize();
-            swingGui = null;
-        } else {
-            if (swingGui != null) {
-                for (Client client2 : swingGui.getBots().values()) {
-                    client2.die();
-                }
-                swingGui.getBots().clear();
-            }
-            awtGui = null;
-            swingGui = new megamek.client.ui.swing.ClientGUI(client);
-            swingGui.initialize();
+            Gui.getBots().clear();
         }
+        Gui = new ClientGUI(client);
+        Gui.initialize();
 
         if (mwclient.getGameOptions().size() < 1) {
             mwclient.setWaiting(true);
@@ -404,11 +389,7 @@ class ClientThread extends Thread implements CloseClientListener {
                 bot.retrieveServerInfo();
                 Thread.sleep(125);
 
-                if (awtGUI) {
-                    awtGui.getBots().put(name, bot);
-                } else {
-                    swingGui.getBots().put(name, bot);
-                }
+                Gui.getBots().put(name, bot);
 
                 if (mwclient.isBotsOnSameTeam()) {
                     bot.getLocalPlayer().setTeam(5);
@@ -566,11 +547,7 @@ class ClientThread extends Thread implements CloseClientListener {
                                 linkMegaMekC3Units(currA, slave, currA.getC3Network().get(slave));
                             }
 
-                            if (awtGUI) {
-                                awtGui.chatlounge.refreshEntities();
-                            } else {
-                                swingGui.chatlounge.refreshEntities();
-                            }
+                            Gui.chatlounge.refreshEntities();
                         }
                     }
                 }
@@ -620,7 +597,8 @@ class ClientThread extends Thread implements CloseClientListener {
      * @param army
      * @param slaveid
      * @param masterid
-     *            This function goes through and makes sure the slave is linked to the master unit
+     *            This function goes through and makes sure the slave is linked
+     *            to the master unit
      */
     public void linkMegaMekC3Units(CArmy army, Integer slaveid, Integer masterid) {
         Entity c3Unit = null;
@@ -705,7 +683,8 @@ class ClientThread extends Thread implements CloseClientListener {
     }
 
     /**
-     * Scans the boards directory for map boards of the appropriate size and returns them.
+     * Scans the boards directory for map boards of the appropriate size and
+     * returns them.
      */
     private ArrayList<String> scanForBoards(int boardWidth, int boardHeight, String folder) {
         ArrayList<String> boards = new ArrayList<String>();

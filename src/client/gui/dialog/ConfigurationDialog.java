@@ -17,31 +17,31 @@
 
 package client.gui.dialog;
 
-import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.BorderFactory;
-import javax.swing.JComboBox;
-import javax.swing.SpringLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.JCheckBox;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
-import common.util.SpringLayoutHelper;
-
 import client.MWClient;
+
+import common.util.SpringLayoutHelper;
 
 public final class ConfigurationDialog implements ActionListener {
 
@@ -191,7 +191,6 @@ public final class ConfigurationDialog implements ActionListener {
     private final JCheckBox viewLogoBox = new JCheckBox();
     private final JCheckBox armyPopUpBox = new JCheckBox();
     private final JCheckBox autoReOrder = new JCheckBox();
-    private final JCheckBox useAWTInterfaceBox = new JCheckBox();
 
     // chat options
     private final JCheckBox hmInMainBox = new JCheckBox();
@@ -257,7 +256,7 @@ public final class ConfigurationDialog implements ActionListener {
     public ConfigurationDialog(MWClient c) {
 
         // save the client
-        this.mwclient = c;
+        mwclient = c;
 
         // stored values.
         int originalColumns = Integer.parseInt(mwclient.getConfigParam("UNITAMOUNT"));
@@ -265,7 +264,8 @@ public final class ConfigurationDialog implements ActionListener {
         String originalScheme = mwclient.getConfigParam("HQCOLORSCHEME").toLowerCase();
         String originalLookAndFeel = mwclient.getConfigParam("LOOKANDFEEL").toLowerCase();
         String originalSkin = mwclient.getConfigParam("LOOKANDFEELSKIN").toLowerCase();
-        // String originalMapBrightness = mwclient.getConfigParam("DARKERMAP").toLowerCase();
+        // String originalMapBrightness =
+        // mwclient.getConfigParam("DARKERMAP").toLowerCase();
         String originalBMPreview = mwclient.getConfigParam("BMPREVIEWIMAGE").toLowerCase();
 
         // Set the tooltips and actions for dialouge buttons
@@ -358,7 +358,8 @@ public final class ConfigurationDialog implements ActionListener {
         // run the spring layout
         SpringLayoutHelper.setupSpringGrid(playerFieldsPanel, 2);
 
-        // add CBoxes, if relevant. keep a counter and determine how to format at end.
+        // add CBoxes, if relevant. keep a counter and determine how to format
+        // at end.
         int upperCBoxesCounter = 0;
 
         if (mwclient.getConfig().isParam("HQTABVISIBLE")) {
@@ -392,14 +393,10 @@ public final class ConfigurationDialog implements ActionListener {
             upperCBoxesCounter++;
         }
 
-        useAWTInterfaceBox.setText("Use AWT Interface");
-        useAWTInterfaceBox.setToolTipText("<html>When checked the AWT MM interface is used<br>Uncheck to use MM's Swing Interface.</html>");
-        playerUpperCBoxesPanel.add(useAWTInterfaceBox);
-
         showUnitTechBaseCheckBox.setText("Show Unit Tech Base");
         showUnitTechBaseCheckBox.setToolTipText("<html>When checked, unit Tool Tip will include Clan/IS indication.</html>");
         playerUpperCBoxesPanel.add(showUnitTechBaseCheckBox);
-        
+
         SpringLayoutHelper.setupSpringGrid(playerUpperCBoxesPanel, 2);
 
         // set up the color scheme panel/radio buttons
@@ -434,8 +431,9 @@ public final class ConfigurationDialog implements ActionListener {
 
         File skinFiles = new File("./data/skins");
 
-        if (!skinFiles.exists())
+        if (!skinFiles.exists()) {
             skinFiles.mkdir();
+        }
 
         skinComboBox = new JComboBox(skinFiles.list());
 
@@ -446,7 +444,7 @@ public final class ConfigurationDialog implements ActionListener {
             }
         }
         skinComboBox.setEnabled(false);
-        skinWrapper.add(new JLabel("Skins:", JLabel.CENTER));
+        skinWrapper.add(new JLabel("Skins:", SwingConstants.CENTER));
         skinWrapper.add(skinComboBox);
         skinComboBox.setAlignmentX(Component.CENTER_ALIGNMENT);
         skinComboBox.setMaximumSize(comboDim);
@@ -504,8 +502,9 @@ public final class ConfigurationDialog implements ActionListener {
         }
         playerPanel.add(sysMessageWrapper);
         playerPanel.add(skinWrapper);
-        if (!mwclient.getConfig().isParam("HQTABVISIBLE"))
+        if (!mwclient.getConfig().isParam("HQTABVISIBLE")) {
             playerPanel.add(new JLabel("\n"));
+        }
         playerPanel.add(playerLowerCBoxesPanel);
 
         /*
@@ -532,7 +531,10 @@ public final class ConfigurationDialog implements ActionListener {
         genOptSpring.add(hostCommentsField);
 
         /*
-         * NOTE: If we were to include GAMEPASSWORD support on the config dialog, this would the the appropriate place to do it. As of July 2006, no server allows players to password protect theis hosts, so inclusion in the GUI would be counter productive. @urgru 7/11/06
+         * NOTE: If we were to include GAMEPASSWORD support on the config
+         * dialog, this would the the appropriate place to do it. As of July
+         * 2006, no server allows players to password protect theis hosts, so
+         * inclusion in the GUI would be counter productive. @urgru 7/11/06
          */
 
         genOptSpring.add(new JLabel("Port:", SwingConstants.TRAILING));
@@ -591,7 +593,10 @@ public final class ConfigurationDialog implements ActionListener {
         dedicatedHostPanel.add(hostPanelWrapper);
 
         /*
-         * Format the CHAT panel. Box Layout w/ 3 sections. Top pane handles ignores. Middle pane hadles "Include in Main" options. Mail options (last sender, last receiver) added direct to the box layout as radio buttons.
+         * Format the CHAT panel. Box Layout w/ 3 sections. Top pane handles
+         * ignores. Middle pane hadles "Include in Main" options. Mail options
+         * (last sender, last receiver) added direct to the box layout as radio
+         * buttons.
          */
         // set up the box layout
         // chatPanel.setLayout(new BoxLayout(chatPanel,BoxLayout.Y_AXIS));
@@ -715,7 +720,8 @@ public final class ConfigurationDialog implements ActionListener {
         chatPanel.add(chatPanelWrapper);
 
         /*
-         * Format the SOUND panel. File paths and Enable/Disable options for all sounds.
+         * Format the SOUND panel. File paths and Enable/Disable options for all
+         * sounds.
          */
         JPanel soundPanelWrapper = new JPanel();
         soundPanelWrapper.setLayout(new BoxLayout(soundPanelWrapper, BoxLayout.Y_AXIS));
@@ -848,12 +854,22 @@ public final class ConfigurationDialog implements ActionListener {
         unitHUDLayoutPanel.add(mainHUDSpring);
 
         /*
-         * Format the TAB VISIBILITY panel. Uses Spring Layout for the Top/Bottom and Vis/Invis options. Box Layout w/ embedded flow layouts for the to-main options. Dummy check boxes are created in the Top column for the chat tabs which are only avaliable in the lower pane. A NEW dummy must be created for each, as the formatter blows up if the same dummy is used multiple times. Example of the layout: Visible: Top Panel: Headquarters [] []
+         * Format the TAB VISIBILITY panel. Uses Spring Layout for the
+         * Top/Bottom and Vis/Invis options. Box Layout w/ embedded flow layouts
+         * for the to-main options. Dummy check boxes are created in the Top
+         * column for the chat tabs which are only avaliable in the lower pane.
+         * A NEW dummy must be created for each, as the formatter blows up if
+         * the same dummy is used multiple times. Example of the layout:
+         * Visible: Top Panel: Headquarters [] []
          */
         JPanel tabVisibilitySpring = new JPanel(new SpringLayout());
 
         tabVisibilitySpring.add(new JLabel(""));
-        tabVisibilitySpring.add(new JLabel(" Visible:  ", SwingConstants.CENTER));// extra spaces are for formatting.
+        tabVisibilitySpring.add(new JLabel(" Visible:  ", SwingConstants.CENTER));// extra
+        // spaces
+        // are
+        // for
+        // formatting.
         tabVisibilitySpring.add(new JLabel("Top Panel:", SwingConstants.CENTER));
 
         tabVisibilitySpring.add(new JLabel("Headquarters:", SwingConstants.TRAILING));
@@ -953,7 +969,8 @@ public final class ConfigurationDialog implements ActionListener {
         tabVisibilityPanel.add(tabVisBox);
 
         /*
-         * Format the TABNAMING panel. Example of the layout: Name Displayed: Shortcut: Headquarters: Headquarters H
+         * Format the TABNAMING panel. Example of the layout: Name Displayed:
+         * Shortcut: Headquarters: Headquarters H
          */
 
         // add the header
@@ -1083,7 +1100,9 @@ public final class ConfigurationDialog implements ActionListener {
         keyBindPanel.add(keySpringPanel);
 
         /*
-         * ADD THE NEWLY FORMATTED PANELS AS TABS Because I'm a dolt, some of the tabs formatted above are embedded within JPanels with flow layouts. This makes them center, instead of aligning left.
+         * ADD THE NEWLY FORMATTED PANELS AS TABS Because I'm a dolt, some of
+         * the tabs formatted above are embedded within JPanels with flow
+         * layouts. This makes them center, instead of aligning left.
          */
         JPanel tabVisWrapper = new JPanel();
         tabVisWrapper.add(tabVisibilityPanel);
@@ -1114,7 +1133,6 @@ public final class ConfigurationDialog implements ActionListener {
         darkenMapBox.setSelected(mwclient.getConfig().isParam("DARKERMAP"));
         bmPreviewImageBox.setSelected(mwclient.getConfig().isParam("BMPREVIEWIMAGE"));
         useStatusForIconBox.setSelected(mwclient.getConfig().isParam("STATUSINTRAYICON"));
-        useAWTInterfaceBox.setSelected(mwclient.getConfig().isParam("USEAWTINTERFACE"));
         showUnitTechBaseCheckBox.setSelected(mwclient.getConfig().isParam("ShowUnitTechBase"));
         hqColumnsField.setText(mwclient.getConfig().getParam("UNITAMOUNT"));
         defaultArmyNameField.setText(mwclient.getConfig().getParam("DEFAULTARMYNAME"));
@@ -1176,8 +1194,9 @@ public final class ConfigurationDialog implements ActionListener {
             sysMessageColorComboBox.setSelectedIndex(5);
         } else if (sysColor.equals("teal")) {
             sysMessageColorComboBox.setSelectedIndex(6);
-        } else
+        } else {
             sysMessageColorComboBox.setSelectedIndex(7);
+        }
 
         // Set the selected look and feel button
         String skin = mwclient.getConfigParam("LOOKANDFEEL").toLowerCase();
@@ -1251,7 +1270,7 @@ public final class ConfigurationDialog implements ActionListener {
         mapOnClickBox.setSelected(mwclient.getConfig().isParam("MAPTABONCLICK"));
 
         invertChatColors.setSelected(mwclient.getConfig().isParam("INVERTCHATCOLOR"));
-        
+
         maxPlayersField.setText(mwclient.getConfig().getParam("MAXPLAYERS"));
         hostCommentsField.setText(mwclient.getConfig().getParam("COMMENT"));
 
@@ -1365,11 +1384,11 @@ public final class ConfigurationDialog implements ActionListener {
         // Show the dialog and get the user's input
         dialog.setModal(true);
         dialog.pack();
-        //Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        // Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
         // Determine the new location of the window
-        //int h = dialog.getSize().height;
-        //int y = (dim.height - h) / 2;
+        // int h = dialog.getSize().height;
+        // int y = (dim.height - h) / 2;
 
         dialog.setLocationRelativeTo(mwclient.getMainFrame());
         dialog.setVisible(true);
@@ -1378,15 +1397,15 @@ public final class ConfigurationDialog implements ActionListener {
 
             mwclient.getConfig().setParam("UNITHEX", Boolean.toString(showHexinHQBox.isSelected()));
             mwclient.getConfig().setParam("STATUSINTRAYICON", Boolean.toString(useStatusForIconBox.isSelected()));
-            mwclient.getConfig().setParam("USEAWTINTERFACE", Boolean.toString(useAWTInterfaceBox.isSelected()));
             mwclient.getConfig().setParam("ShowUnitTechBase", Boolean.toString(showUnitTechBaseCheckBox.isSelected()));
             mwclient.getConfig().setParam("DARKERMAP", Boolean.toString(darkenMapBox.isSelected()));
             mwclient.getConfig().setParam("BMPREVIEWIMAGE", Boolean.toString(bmPreviewImageBox.isSelected()));
 
             // don't let people do stupid things with the Columns and crash the
             // client.
-            if (Integer.parseInt(hqColumnsField.getText()) < 1)
+            if (Integer.parseInt(hqColumnsField.getText()) < 1) {
                 hqColumnsField.setText("8");// no negatives or 0's allowed
+            }
 
             mwclient.getConfig().setParam("UNITAMOUNT", hqColumnsField.getText());
             mwclient.getConfig().setParam("DEFAULTARMYNAME", defaultArmyNameField.getText());
@@ -1437,7 +1456,12 @@ public final class ConfigurationDialog implements ActionListener {
             if (lookandfeelComboBox.getSelectedIndex() == 1) {
                 mwclient.getConfig().setParam("LOOKANDFEEL", "motif");
             } else if (lookandfeelComboBox.getSelectedIndex() == 2) {
-                mwclient.getConfig().setParam("LOOKANDFEEL", "metal");// note: this is actually "Ocean" in Java 1.5
+                mwclient.getConfig().setParam("LOOKANDFEEL", "metal");// note:
+                // this is
+                // actually
+                // "Ocean"
+                // in Java
+                // 1.5
             } else if (lookandfeelComboBox.getSelectedIndex() == 3) {
                 mwclient.getConfig().setParam("LOOKANDFEEL", "metouia");
             } else if (lookandfeelComboBox.getSelectedIndex() == 4) {
@@ -1458,7 +1482,8 @@ public final class ConfigurationDialog implements ActionListener {
             }
 
             // set the SYSMESSAGECOLOR based on selected button
-            // sysMessageColorChoices = {"Dark Green", "Gold", "Indigo", "Navy", "Orange", "Red", "Teal"};
+            // sysMessageColorChoices = {"Dark Green", "Gold", "Indigo", "Navy",
+            // "Orange", "Red", "Teal"};
             if (sysMessageColorComboBox.getSelectedIndex() == 0) {
                 mwclient.getConfig().setParam("SYSMESSAGECOLOR", "#006400");// dark
                 // green
@@ -1472,13 +1497,18 @@ public final class ConfigurationDialog implements ActionListener {
                 mwclient.getConfig().setParam("SYSMESSAGECOLOR", "#FFA500");// orange
             } else if (sysMessageColorComboBox.getSelectedIndex() == 6) {
                 mwclient.getConfig().setParam("SYSMESSAGECOLOR", "teal");
-            } else if (sysMessageColorComboBox.getSelectedIndex() == 5) {// colour is red
+            } else if (sysMessageColorComboBox.getSelectedIndex() == 5) {// colour
+                // is
+                // red
                 mwclient.getConfig().setParam("SYSMESSAGECOLOR", "red");
-            } else
+            } else {
                 mwclient.getConfig().setParam("SYSMESSAGECOLOR", "black");
+            }
 
             // set the PLAYERCHATCOLORMODE based on selected button.
-            // private final String[] playerChatColorChoices = {"Player Defined", "Faction Colors", "Mixed (Faction Tag)", "Mixed (Faction Name)"};
+            // private final String[] playerChatColorChoices =
+            // {"Player Defined", "Faction Colors", "Mixed (Faction Tag)",
+            // "Mixed (Faction Name)"};
             if (playerChatColorComboBox.getSelectedIndex() == 2) {
                 mwclient.getConfig().setParam("PLAYERCHATCOLORMODE", "factionadd");
             } else if (playerChatColorComboBox.getSelectedIndex() == 1) {
@@ -1522,7 +1552,7 @@ public final class ConfigurationDialog implements ActionListener {
             mwclient.getConfig().setParam("MAPTABONCLICK", Boolean.toString(mapOnClickBox.isSelected()));
 
             mwclient.getConfig().setParam("INVERTCHATCOLOR", Boolean.toString(invertChatColors.isSelected()));
-            
+
             mwclient.getConfig().setParam("HQTABNAME", hqTabNameField.getText());
             mwclient.getConfig().setParam("HQMNEMONIC", hqTabMnemonicField.getText());
             mwclient.getConfig().setParam("HQINTOPROW", Boolean.toString(hqTabonTopBox.isSelected()));
@@ -1606,8 +1636,9 @@ public final class ConfigurationDialog implements ActionListener {
             mwclient.getConfig().setParam("SOCKETTIMEOUTDELAY", socketTimeOutField.getText().trim());
 
             // only save a new host name if Dedicated is in use
-            if (enableDedicatedServerCB.isSelected())
+            if (enableDedicatedServerCB.isSelected()) {
                 mwclient.getConfig().setParam("NAME", nameField.getText().trim());
+            }
 
             mwclient.getConfig().setParam("DEDAUTORESTART", restartField.getText().trim());
             mwclient.getConfig().setParam("DEDICATEDOWNERNAME", ownersField.getText().trim());
@@ -1640,34 +1671,43 @@ public final class ConfigurationDialog implements ActionListener {
             mwclient.setConfig();
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "color " + chatNameColorField.getText());
 
-            if (mwclient.getPlayer().getAutoReorder() != autoReOrder.isSelected())
+            if (mwclient.getPlayer().getAutoReorder() != autoReOrder.isSelected()) {
                 mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "setautoreorder " + autoReOrder.isSelected());
+            }
 
             mwclient.getMainFrame().getMainPanel().recreateMainTPane(mwclient.getMainFrame());
 
             /*
-             * Last but not least, figure out which (if any) components need to be redrawn and reinitialized. Checking is a pain, but redrawing complex tables from scratch for no reason is even more wasteful, so...
+             * Last but not least, figure out which (if any) components need to
+             * be redrawn and reinitialized. Checking is a pain, but redrawing
+             * complex tables from scratch for no reason is even more wasteful,
+             * so...
              */
             boolean columnsChanged = false;
             boolean schemeChanged = false;
             boolean unitHexChanged = false;
             boolean mapBrightnessChanged = false;
 
-            if (!mwclient.getConfigParam("LOOKANDFEEL").equalsIgnoreCase(originalLookAndFeel) || (mwclient.getConfigParam("LOOKANDFEEL").equalsIgnoreCase("skins") && !mwclient.getConfigParam("LOOKANDFEELSKIN").equalsIgnoreCase(originalSkin)))
+            if (!mwclient.getConfigParam("LOOKANDFEEL").equalsIgnoreCase(originalLookAndFeel) || (mwclient.getConfigParam("LOOKANDFEEL").equalsIgnoreCase("skins") && !mwclient.getConfigParam("LOOKANDFEELSKIN").equalsIgnoreCase(originalSkin))) {
                 mwclient.setLookAndFeel(true);
+            }
 
-            if (!mwclient.getConfigParam("UNITHEX").equals(originalUnitHex))
+            if (!mwclient.getConfigParam("UNITHEX").equals(originalUnitHex)) {
                 unitHexChanged = true;
+            }
 
-            if (!mwclient.getConfigParam("HQCOLORSCHEME").equalsIgnoreCase(originalScheme))
+            if (!mwclient.getConfigParam("HQCOLORSCHEME").equalsIgnoreCase(originalScheme)) {
                 schemeChanged = true;
+            }
 
-            if (!mwclient.getConfigParam("DARKERMAP").equalsIgnoreCase(originalScheme))
+            if (!mwclient.getConfigParam("DARKERMAP").equalsIgnoreCase(originalScheme)) {
                 mapBrightnessChanged = true;
+            }
 
             int currColumns = Integer.parseInt(mwclient.getConfigParam("UNITAMOUNT"));
-            if (currColumns != originalColumns)
+            if (currColumns != originalColumns) {
                 columnsChanged = true;
+            }
 
             if (columnsChanged || schemeChanged || unitHexChanged) {
                 // only reinit. no image loading.
@@ -1676,15 +1716,18 @@ public final class ConfigurationDialog implements ActionListener {
                 mwclient.getMainFrame().getMainPanel().getHQPanel().reinitialize();
             }
 
-            if (mapBrightnessChanged)
+            if (mapBrightnessChanged) {
                 mwclient.getMainFrame().getMainPanel().getMapPanel().repaint();
+            }
 
-            if (!mwclient.getConfigParam("BMPREVIEWIMAGE").equalsIgnoreCase(originalBMPreview))
+            if (!mwclient.getConfigParam("BMPREVIEWIMAGE").equalsIgnoreCase(originalBMPreview)) {
                 mwclient.getMainFrame().getMainPanel().getBMPanel().resetButtonBar();
+            }
 
             mwclient.addToChat("</BODY></html><html><BODY  TEXT=\"" + mwclient.getConfig().getParam("CHATFONTCOLOR") + "\" BGCOLOR=\"" + mwclient.getConfig().getParam("BACKGROUNDCOLOR") + "\"></BODY>");
-        } else
+        } else {
             dialog.dispose();
+        }
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -1699,13 +1742,12 @@ public final class ConfigurationDialog implements ActionListener {
             CamoSelectionDialog camoDialog = new CamoSelectionDialog(mwclient.getMainFrame(), mwclient);
             camoDialog.setVisible(true);
         } else if (command.equals(lookAndFeelCommand)) {
-            if (lookandfeelComboBox.getSelectedIndex() == 9)
+            if (lookandfeelComboBox.getSelectedIndex() == 9) {
                 skinComboBox.setEnabled(true);
-            else
+            } else {
                 skinComboBox.setEnabled(false);
+            }
         }
     }
 
-
-    
 }// end ConfigPage.java

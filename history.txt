@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ Bug: remove access to AWT Gui modual in MM. Swing now only supported.
 + Bug 2814870: Battle amor can load Mech SRM Ammo 
 + new MegaMek.jar
 - Removed Targeting systems as MegaMek now uses that as part of its Quirk code. 
