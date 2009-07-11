@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ Bug 2819004: Problem with vee and aero crews when getting pilot hits
 + Bug: remove access to AWT Gui modual in MM. Swing now only supported.
 + Bug 2814870: Battle amor can load Mech SRM Ammo 
 + new MegaMek.jar

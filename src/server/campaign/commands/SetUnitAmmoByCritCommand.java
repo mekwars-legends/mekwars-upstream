@@ -221,6 +221,10 @@ public class SetUnitAmmoByCritCommand implements Command {
     private int getWeaponRefillShots(SUnit unit, Mounted weapon) {
         int shots = 0;
 
+        if (weapon.getLocation() == Entity.LOC_NONE) {
+            return 1;
+        }
+
         Entity tempEnt = SUnit.loadMech(unit.getUnitFilename());
 
         for (Mounted ammoWeapon : tempEnt.getWeaponList()) {

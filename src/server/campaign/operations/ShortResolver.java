@@ -1395,7 +1395,7 @@ public class ShortResolver {
 
             // If damaged is transfered from Game to campaign then save it the
             // pilot
-            if (CampaignMain.cm.getBooleanConfig("AllowPilotDamageToTransfer")) {
+            if (CampaignMain.cm.getBooleanConfig("AllowPilotDamageToTransfer") && currU.isSinglePilotUnit()) {
                 if (nonDestructionMode) {
                     currU.getPilot().setHits(0);
                     currEntity.setPilothits(0);
@@ -3872,7 +3872,7 @@ public class ShortResolver {
 
             // If damaged is transfered from Game to campaign then save it the
             // pilot
-            if (CampaignMain.cm.getBooleanConfig("AllowPilotDamageToTransfer")) {
+            if (CampaignMain.cm.getBooleanConfig("AllowPilotDamageToTransfer") && currUnit.isSinglePilotUnit()) {
                 currUnit.getPilot().setHits(currEntity.getPilothits());
             }
 

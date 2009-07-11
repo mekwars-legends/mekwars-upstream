@@ -137,7 +137,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
     // CONSTRUCTORS
     /**
-     * Stock constructor. Note that an SPlayer is data-less unless/until fromString() or some sets are called. SPlayers are created in only two places - CampaignMain's load method and the EnrollCommand.
+     * Stock constructor. Note that an SPlayer is data-less unless/until
+     * fromString() or some sets are called. SPlayers are created in only two
+     * places - CampaignMain's load method and the EnrollCommand.
      */
     public SPlayer() {
 
@@ -162,7 +164,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
     // PUBLIC METHODS
     /**
-     * Override the standard Object.equals(), compare two instances of a player by name only.
+     * Override the standard Object.equals(), compare two instances of a player
+     * by name only.
      */
     @Override
     public boolean equals(Object o) {
@@ -187,7 +190,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * A Method that returns a rounded ELO rating for this player. Used to send truncated doubles to the userlist.
+     * A Method that returns a rounded ELO rating for this player. Used to send
+     * truncated doubles to the userlist.
      * 
      * @return the rounded rating
      */
@@ -198,7 +202,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * Determine whether or not a player can use a unit of a given weight class. This is used to prevent new players from buying heavier/larger units and sucking a house dry.
+     * Determine whether or not a player can use a unit of a given weight class.
+     * This is used to prevent new players from buying heavier/larger units and
+     * sucking a house dry.
      * 
      * @param - weight class to check.
      */
@@ -222,14 +228,18 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * Add a unit to the player. Pass-though to addUnit(SUnit,boolean,boolean). This version should be called in almost all situations.
+     * Add a unit to the player. Pass-though to addUnit(SUnit,boolean,boolean).
+     * This version should be called in almost all situations.
      */
     public void addUnit(SUnit m, boolean isNew) {
         this.addUnit(m, isNew, true);
     }
 
     /**
-     * Add a unit to the player. If the unit is new, make it immune to maintenance scraps. Nearly all calls should send updates to a client; however, in some instances (ex: when giving units to a SOL player), bandwidth is saved by doing a single PS| at the end of a series of adds.
+     * Add a unit to the player. If the unit is new, make it immune to
+     * maintenance scraps. Nearly all calls should send updates to a client;
+     * however, in some instances (ex: when giving units to a SOL player),
+     * bandwidth is saved by doing a single PS| at the end of a series of adds.
      */
     public String addUnit(SUnit m, boolean isNew, boolean sendUpdates) {
 
@@ -242,7 +252,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         m.setScrappableFor(-1);
 
         /*
-         * OK if there's room, unmaintained if not. This also strips any FOR_SALE from units purchased via the market.
+         * OK if there's room, unmaintained if not. This also strips any
+         * FOR_SALE from units purchased via the market.
          */
         if (getFreeBays() < (CampaignMain.cm.isUsingIncreasedTechs() ? SUnit.getHangarSpaceRequired(m, getMyHouse().houseSupportsUnit(m.getUnitFilename()), getMyHouse()) : SUnit.getHangarSpaceRequired(m, getMyHouse()))) {
             m.setUnmaintainedStatus();
@@ -257,7 +268,10 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         units.add(m);
 
         /*
-         * Send PL|HD. Client-side reading of HD adds units to the hangar instead of clearing/replacing the hangar, so we can send just this one, if we like. Send status update to the client (status determined above), along with total and free bay/tech info.
+         * Send PL|HD. Client-side reading of HD adds units to the hangar
+         * instead of clearing/replacing the hangar, so we can send just this
+         * one, if we like. Send status update to the client (status determined
+         * above), along with total and free bay/tech info.
          */
         if (sendUpdates) {
             CampaignMain.cm.toUser("PL|HD|" + m.toString(true), name, false);
@@ -275,7 +289,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * Return an SUnit with a given unique ID. If the player doesn't own the unit, return a null.
+     * Return an SUnit with a given unique ID. If the player doesn't own the
+     * unit, return a null.
      * 
      * @param int - id the the unit to return
      * @return the desired unit, or null.
@@ -292,7 +307,10 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * ISeller-compliant .removeUnit(). Simply get the unit ID and pass to normal SPlayer.removeUnit(int,bool). Use the (int,boolean) version of remove unit whenever possible in order to intelligently pass select the army update option. ISeller assumes true and sends updates to all armies.
+     * ISeller-compliant .removeUnit(). Simply get the unit ID and pass to
+     * normal SPlayer.removeUnit(int,bool). Use the (int,boolean) version of
+     * remove unit whenever possible in order to intelligently pass select the
+     * army update option. ISeller assumes true and sends updates to all armies.
      * 
      * @urgru 1.2.06
      */
@@ -302,7 +320,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * Remove the Unit with ID unitid from the player. Ops are checked by discrete commands (ie - SellUnit), unchecked by large blocks of code which force a check on their own (ie - ShortResolver).
+     * Remove the Unit with ID unitid from the player. Ops are checked by
+     * discrete commands (ie - SellUnit), unchecked by large blocks of code
+     * which force a check on their own (ie - ShortResolver).
      * 
      * @param unitid
      *            the ID of the unit to remove
@@ -339,7 +359,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * Method which determines the number ot free bays/techs a player has. Simple loop through the hangar.
+     * Method which determines the number ot free bays/techs a player has.
+     * Simple loop through the hangar.
      * 
      * @return number of free bays/techs
      */
@@ -350,7 +371,12 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         boolean advanceRep = CampaignMain.cm.isUsingAdvanceRepair();
 
         /*
-         * Loop through all units. Those with STATUS_OK and STATUS_FORSALE take up space. Units with STATUS_UNMAINTAINED and STATUS_DESTROYED don't require techs. Protos get special point-based handling. They're counted and passed off to this.getTechRequiredForProtos(), which determines exactly how many techs are needed for any ProtoMek grouping.
+         * Loop through all units. Those with STATUS_OK and STATUS_FORSALE take
+         * up space. Units with STATUS_UNMAINTAINED and STATUS_DESTROYED don't
+         * require techs. Protos get special point-based handling. They're
+         * counted and passed off to this.getTechRequiredForProtos(), which
+         * determines exactly how many techs are needed for any ProtoMek
+         * grouping.
          */
         for (SUnit currU : units) {
 
@@ -391,7 +417,10 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * This can be calcualted in one of three "standard" ways: 1) House bays + techs 2) House bays + experience 3) House bays + techs + experience Or, two additional ways if using Advanced Repair: 4) House Bays + bays owned by player 5) House bays + bays owned by player + experience
+     * This can be calcualted in one of three "standard" ways: 1) House bays +
+     * techs 2) House bays + experience 3) House bays + techs + experience Or,
+     * two additional ways if using Advanced Repair: 4) House Bays + bays owned
+     * by player 5) House bays + bays owned by player + experience
      * 
      * @return the total amount of bays this player has
      */
@@ -412,7 +441,11 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         numBays += BASE_BAYS;
 
         /*
-         * Make sure all non-merc players meet a minimum free bay standard. Useful for small factions on large servers (Marians, etc) and factions which lose a large number of their warehouse worlds, dropping fresh-from-SOL players to an unacceptably low # of bays. Don't give these to mercenaries.
+         * Make sure all non-merc players meet a minimum free bay standard.
+         * Useful for small factions on large servers (Marians, etc) and
+         * factions which lose a large number of their warehouse worlds,
+         * dropping fresh-from-SOL players to an unacceptably low # of bays.
+         * Don't give these to mercenaries.
          */
         if (!myHouse.isMercHouse()) {
             int minBays = Integer.parseInt(getMyHouse().getConfig("MinimumHouseBays"));
@@ -446,7 +479,15 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }// end TotalMechBays()
 
     /**
-     * This method does all the math to figure out how much the retainer fee, maintenance cost, whathaveyou is for the current number of technicians. The number itself is useful in some cases (let people know what they will have to pay after hiring a new tech, for example), and thus separated from the actual payment. For now, we have only one payment calculation mechanism -- additive costing, whereby each tech costs as much as the last, plus a constant kicker. A cap to this cost can be configured; however, it must be a multiple of the per-tech additive (eg, if the additive is .04, 1.20 would be a valid cap, but 1.30 wouldn't).
+     * This method does all the math to figure out how much the retainer fee,
+     * maintenance cost, whathaveyou is for the current number of technicians.
+     * The number itself is useful in some cases (let people know what they will
+     * have to pay after hiring a new tech, for example), and thus separated
+     * from the actual payment. For now, we have only one payment calculation
+     * mechanism -- additive costing, whereby each tech costs as much as the
+     * last, plus a constant kicker. A cap to this cost can be configured;
+     * however, it must be a multiple of the per-tech additive (eg, if the
+     * additive is .04, 1.20 would be a valid cap, but 1.30 wouldn't).
      * 
      * @urgru 7/26/04
      */
@@ -468,7 +509,10 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         float ceiling = Float.parseFloat(getMyHouse().getConfig("AdditiveCostCeiling"));
 
         /*
-         * divide the ceiling by the addiive. techs past this number are all charged at the ceiling rate. Example: (With 1.20 and .04, the result is 30. Every additional tech (31, 32, etc.) is paid at the ceiling wage.
+         * divide the ceiling by the addiive. techs past this number are all
+         * charged at the ceiling rate. Example: (With 1.20 and .04, the result
+         * is 30. Every additional tech (31, 32, etc.) is paid at the ceiling
+         * wage.
          */
         int techCeiling = (int) (ceiling / additive);
         if (techs > techCeiling) {
@@ -477,7 +521,11 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         }// end if(some techs are paid @ ceiling price)
 
         /*
-         * Add up the number of times the non-ceiling techs were incremented, then figure out their total cost. In cases where the ceiling is passed, the flat fee techs are handled above, so only techs up to that ceiling need to have the additive math done. If the ceiling isnt reached, just use the number of techToPay from the param.
+         * Add up the number of times the non-ceiling techs were incremented,
+         * then figure out their total cost. In cases where the ceiling is
+         * passed, the flat fee techs are handled above, so only techs up to
+         * that ceiling need to have the additive math done. If the ceiling isnt
+         * reached, just use the number of techToPay from the param.
          */
         int techsUsingAdditive = 0;
         if (techs > techCeiling) {
@@ -487,7 +535,10 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         }
 
         /*
-         * Faster to just to a for loop to determine the number of times the additive was made (1 + 2 + 3 + 4, and so on) with ints, and THEN multiply by the double additive than do alot of floating point math by for-in through and multiplying by the additive each time.
+         * Faster to just to a for loop to determine the number of times the
+         * additive was made (1 + 2 + 3 + 4, and so on) with ints, and THEN
+         * multiply by the double additive than do alot of floating point math
+         * by for-in through and multiplying by the additive each time.
          */
         int totalAdditions = 0;
         for (int i = 1; i <= techsUsingAdditive; i++) {
@@ -498,7 +549,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         amountToPay += totalAdditions * additive;
 
         /*
-         * now return the amount in INT form since we don't support fractional money. also, set the currentTechPayment, to avoid doing this math again if possible.
+         * now return the amount in INT form since we don't support fractional
+         * money. also, set the currentTechPayment, to avoid doing this math
+         * again if possible.
          */
         int toSet = Math.round(amountToPay);
         if (toSet < 0) {
@@ -510,10 +563,15 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }// end doPayTechnicians(arbitrary number)
 
     /**
-     * Should be called only after an attempt to pay techs comes up short. At present, only used by ShortResolver. Other times techs are paid (eg - TransferCommand) shortfalls stop the player from acting. Does all the dirty work of lowering the number of technicians and setting units as unmaintained.
+     * Should be called only after an attempt to pay techs comes up short. At
+     * present, only used by ShortResolver. Other times techs are paid (eg -
+     * TransferCommand) shortfalls stop the player from acting. Does all the
+     * dirty work of lowering the number of technicians and setting units as
+     * unmaintained.
      * 
      * @param amountofShortFall
-     *            - the amount owed to techs which can't be paid. used to determine how many walk off / quit.
+     *            - the amount owed to techs which can't be paid. used to
+     *            determine how many walk off / quit.
      * @return numLost - the number of techs or bays lost.
      */
     public int doFireUnpaidTechnicians(float amountOfShortFall) {
@@ -532,7 +590,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         int techCeiling = (int) (ceiling / additive);// the ceiling
 
         /*
-         * Start by getting rid of the most expensive techs (those at the ceiling). Loop until the player is able to afford the bill, or all techs above the ceiling have been dismissed.
+         * Start by getting rid of the most expensive techs (those at the
+         * ceiling). Loop until the player is able to afford the bill, or all
+         * techs above the ceiling have been dismissed.
          */
         while (amountOfShortFall > 0 && currentTechs > techCeiling) {
             currentTechs = currentTechs - 1;
@@ -540,7 +600,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         }
 
         /*
-         * Now start getting rid of the less expensive techs. Each tech costs his # times his additive amount. Loop until theyre all gone, or the bill can be paid.
+         * Now start getting rid of the less expensive techs. Each tech costs
+         * his # times his additive amount. Loop until theyre all gone, or the
+         * bill can be paid.
          */
         while (amountOfShortFall > 0) {
 
@@ -563,14 +625,20 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * Method that returns the current cost of hiring a new technician, after adjustment for XP, etc. Used by HireTechsCommand, Requests and SetMaintainedCommand.
+     * Method that returns the current cost of hiring a new technician, after
+     * adjustment for XP, etc. Used by HireTechsCommand, Requests and
+     * SetMaintainedCommand.
      */
     public int getTechHiringFee() {
         // get the starting tech cost
         int techCost = Integer.parseInt(CampaignMain.cm.getConfig("BaseTechCost"));
 
         /*
-         * Check to see if tech hiring costs should be decreased with experience. If they should be, load the amount of XP for each reduction, and the pricing floor. Loop through the XP amount reducing cost until the floor is reached, or there isnt enough XP to reduce price further.
+         * Check to see if tech hiring costs should be decreased with
+         * experience. If they should be, load the amount of XP for each
+         * reduction, and the pricing floor. Loop through the XP amount reducing
+         * cost until the floor is reached, or there isnt enough XP to reduce
+         * price further.
          */
         boolean decreaseWithXP = Boolean.parseBoolean(getMyHouse().getConfig("DecreasingTechCost"));
         if (decreaseWithXP) {
@@ -595,7 +663,11 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * A method which is called to randomly set some units as unmaintained when support levels go negative. Continues until support number is positive again, or all units are unsupported (catches odd problems with units on the black market -- not an expecially graceful solution; however, the alternative is allowing units on the BM to be scrapped mid-auction).
+     * A method which is called to randomly set some units as unmaintained when
+     * support levels go negative. Continues until support number is positive
+     * again, or all units are unsupported (catches odd problems with units on
+     * the black market -- not an expecially graceful solution; however, the
+     * alternative is allowing units on the BM to be scrapped mid-auction).
      * 
      * @urgru 8/2/04
      */
@@ -637,7 +709,15 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }// end setRandomUnmaintained
 
     /**
-     * Loop through the units and perform maintainance. Check status and adjust maintainance level accordingly. This is called during slices. Check to ses if units are maintained -- if so, improve maintainance levels. If not, roll a random. If its greater than the maintainance level, scrap the unit. If unit should be scrapped, or just have its mainainance level reduced. Note that units on the BM arent included in the maintainance loop. It should be impossible to add an unmaintained unit to the BM, but just in case, they're excluded (STATUS_FORSALE is ignored). This prevents off BM nulls.
+     * Loop through the units and perform maintainance. Check status and adjust
+     * maintainance level accordingly. This is called during slices. Check to
+     * ses if units are maintained -- if so, improve maintainance levels. If
+     * not, roll a random. If its greater than the maintainance level, scrap the
+     * unit. If unit should be scrapped, or just have its mainainance level
+     * reduced. Note that units on the BM arent included in the maintainance
+     * loop. It should be impossible to add an unmaintained unit to the BM, but
+     * just in case, they're excluded (STATUS_FORSALE is ignored). This prevents
+     * off BM nulls.
      */
     public void doMaintainance() {
 
@@ -703,7 +783,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         }// end for(all elements)
 
         /*
-         * remove those units which were destroyed. no need to send updates b/c unmaintained units can't be in armies.
+         * remove those units which were destroyed. no need to send updates b/c
+         * unmaintained units can't be in armies.
          */
         for (SUnit destroyedU : unitsToDestroy) {
             this.removeUnit(destroyedU.getId(), false);
@@ -715,7 +796,10 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }// end doMaintainance()
 
     /**
-     * Method which checks to see if a player owns an unmaintained unit. Called from Request, RequestDonated, Transfer and other commands. Hacky direct access of SUnitData, but constructing an SUnit when we have direct access to the status and no intent to change it is a bit wasteful.
+     * Method which checks to see if a player owns an unmaintained unit. Called
+     * from Request, RequestDonated, Transfer and other commands. Hacky direct
+     * access of SUnitData, but constructing an SUnit when we have direct access
+     * to the status and no intent to change it is a bit wasteful.
      * 
      * @return boolean indicating owndership of an unmaintained unit.
      */
@@ -732,7 +816,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * Transition a player from reserve to active, or vice versa. See in-line comments for more detail.
+     * Transition a player from reserve to active, or vice versa. See in-line
+     * comments for more detail.
      * 
      * @param newStatus
      *            - true to activate, false to deac.
@@ -749,18 +834,33 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             setLastOnline(System.currentTimeMillis());
 
             /*
-             * Player is being moved to ianctive status. This means he is no longer an eligible attack target. Need to remove his oplists and clear his entries on other players oplists.
+             * Player is being moved to ianctive status. This means he is no
+             * longer an eligible attack target. Need to remove his oplists and
+             * clear his entries on other players oplists.
              */
             OpponentListHelper olh = new OpponentListHelper(this, OpponentListHelper.MODE_REMOVE);
             olh.sendInfoToOpponents("left the front lines and may no longer be attacked");
 
             /*
-             * The player also needs to be removed as a possible defender from all outstanding operations. Loop through the ops, removing him from their defender/chicken trees. It's safe to assume that any deactivation in the face of attack deserves a penalty, so call the punishing shutdown. NOTE: The chicken threads call setActive(false) in order to turn off someone who has been leeched. This means that the thread is calling its own doPenalty() methods indirectly here ... but also lets the first thread to hit the leach ceiling turn off any other attacks against the player.
+             * The player also needs to be removed as a possible defender from
+             * all outstanding operations. Loop through the ops, removing him
+             * from their defender/chicken trees. It's safe to assume that any
+             * deactivation in the face of attack deserves a penalty, so call
+             * the punishing shutdown. NOTE: The chicken threads call
+             * setActive(false) in order to turn off someone who has been
+             * leeched. This means that the thread is calling its own
+             * doPenalty() methods indirectly here ... but also lets the first
+             * thread to hit the leach ceiling turn off any other attacks
+             * against the player.
              */
             CampaignMain.cm.getOpsManager().removePlayerFromAllPossibleDefenderLists(name, true);
 
             /*
-             * Remove the player from all attacker lists. It is presumed that a player who is fighting could never finish the Deactivate command. If a player has gotten this far, his attacks must be in WAITING status, so we remove the player from the games and cancel if they hit 0 attackers.
+             * Remove the player from all attacker lists. It is presumed that a
+             * player who is fighting could never finish the Deactivate command.
+             * If a player has gotten this far, his attacks must be in WAITING
+             * status, so we remove the player from the games and cancel if they
+             * hit 0 attackers.
              */
             CampaignMain.cm.getOpsManager().removePlayerFromAllAttackerLists(this, null, true);
 
@@ -782,7 +882,11 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             CampaignMain.cm.getIThread().removeImmunity(this);
 
             /*
-             * Player is activating. His armies are all acceptable, and his status has changed. Broadcast his army values to other players and construct opponent vectors for the newly activated armies. [NOTE: actual checks moved into a helper class so they can be run as a player logs in w/ a running game and after games as well].
+             * Player is activating. His armies are all acceptable, and his
+             * status has changed. Broadcast his army values to other players
+             * and construct opponent vectors for the newly activated armies.
+             * [NOTE: actual checks moved into a helper class so they can be run
+             * as a player logs in w/ a running game and after games as well].
              */
             OpponentListHelper olh = new OpponentListHelper(this, OpponentListHelper.MODE_ADD);
             olh.sendInfoToOpponents("is headed to the front lines. You may attack it with ");
@@ -794,7 +898,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * Standard active/fighting rotation. Use setFighting(bool,bool) to move a player to reserve from fighting after an AFR game, and this method for everything else.
+     * Standard active/fighting rotation. Use setFighting(bool,bool) to move a
+     * player to reserve from fighting after an AFR game, and this method for
+     * everything else.
      */
     public void setFighting(boolean newStatus) {
         this.setFighting(newStatus, false);
@@ -814,7 +920,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         if (newStatus) {
 
             /*
-             * remove the player (if present) from the active list, then add him to the fighting hashtable.
+             * remove the player (if present) from the active list, then add him
+             * to the fighting hashtable.
              */
             myHouse.getActivePlayers().remove(lowerName);
             myHouse.getFightingPlayers().put(lowerName, this);
@@ -823,7 +930,12 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             CampaignMain.cm.toUser("CS|" + +SPlayer.STATUS_FIGHTING, name, false);
 
             /*
-             * Player is being moved to busy status. This means he is no longer an eligible attack target. Need to remove his oplists and clear his entries on other players oplists. Note that this has no effect on players who are being set as Busy immediately after logging in because they disconnected mid-game since they have empty op lists.
+             * Player is being moved to busy status. This means he is no longer
+             * an eligible attack target. Need to remove his oplists and clear
+             * his entries on other players oplists. Note that this has no
+             * effect on players who are being set as Busy immediately after
+             * logging in because they disconnected mid-game since they have
+             * empty op lists.
              */
             OpponentListHelper olh = new OpponentListHelper(this, OpponentListHelper.MODE_REMOVE);
             olh.sendInfoToOpponents(" entered combat and may no longer be attacked");
@@ -839,13 +951,19 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         else {
 
             /*
-             * remove the player (if present) from the active list, then add him to the fighting hashtable.
+             * remove the player (if present) from the active list, then add him
+             * to the fighting hashtable.
              */
             myHouse.getFightingPlayers().remove(lowerName);
             myHouse.getActivePlayers().put(lowerName, this);
 
             /*
-             * If player was STATUS_FIGHTING and is being moved back into STATUS_ACTIVE, either - a game was cancelled; or - a game was finished. If we're dealing with a finished game, let the ImmunityThread handle OpponentList issues. If a cancel, there will not be any immunity and updates should be sent to all players immediately.
+             * If player was STATUS_FIGHTING and is being moved back into
+             * STATUS_ACTIVE, either - a game was cancelled; or - a game was
+             * finished. If we're dealing with a finished game, let the
+             * ImmunityThread handle OpponentList issues. If a cancel, there
+             * will not be any immunity and updates should be sent to all
+             * players immediately.
              */
             if (!CampaignMain.cm.getIThread().isImmune(this)) {
                 OpponentListHelper olh = new OpponentListHelper(this, OpponentListHelper.MODE_ADD);
@@ -856,7 +974,13 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }// end setFighting(boolean b)
 
     /**
-     * Method which sets a player to fighting without triggering Oplist construction. DO NOT USE THIS METHOD. It is a special activation/business sequence that is used only when a player is returning to the server and already involved in a game and should only be called from ShortOperation. All standard activations and ALL deactivations should be dealt with via SPlayer.setActive(boolean), which sets up opponent lists, informs potential attackers, etc.
+     * Method which sets a player to fighting without triggering Oplist
+     * construction. DO NOT USE THIS METHOD. It is a special activation/business
+     * sequence that is used only when a player is returning to the server and
+     * already involved in a game and should only be called from ShortOperation.
+     * All standard activations and ALL deactivations should be dealt with via
+     * SPlayer.setActive(boolean), which sets up opponent lists, informs
+     * potential attackers, etc.
      */
     public void setFightingNoOppList() {
 
@@ -877,7 +1001,15 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * A method which grants influence to players. Called from CampaignMain on slices if the player meets various and sundry activity requirements. This should only be called from CampaignMain, and only on a slice. Any other grant of influence should use addInfluence(int). Post-game adds are now handled by the ShortResolver (whereas the old Tasks code granted flu for as many slices as the player was busy, to a max). Alot of ugly casting to reduce rounding errors when multiplying/dividing with ints imported from config, and because getting an evenly distributed, declared range double from java.util.Random isnt possible.
+     * A method which grants influence to players. Called from CampaignMain on
+     * slices if the player meets various and sundry activity requirements. This
+     * should only be called from CampaignMain, and only on a slice. Any other
+     * grant of influence should use addInfluence(int). Post-game adds are now
+     * handled by the ShortResolver (whereas the old Tasks code granted flu for
+     * as many slices as the player was busy, to a max). Alot of ugly casting to
+     * reduce rounding errors when multiplying/dividing with ints imported from
+     * config, and because getting an evenly distributed, declared range double
+     * from java.util.Random isnt possible.
      * 
      * @param p
      *            - player to have influence granted
@@ -902,7 +1034,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         }
         CampaignData.mwlog.debugLog("not in merc house");
         /*
-         * Passed simple returns. Now check the player's activity time and make sure he has at least 1 (after weighting) eligible army.
+         * Passed simple returns. Now check the player's activity time and make
+         * sure he has at least 1 (after weighting) eligible army.
          */
         double weightedNumArmies = getWeightedArmyNumber();
         boolean activeLongEnough = (System.currentTimeMillis() - activeSince) > Integer.parseInt(getMyHouse().getConfig("InfluenceTimeMin"));
@@ -918,7 +1051,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             totalInfluenceGrant = (baseFlu * weightedNumArmies);
 
             /*
-             * reduce flu gain for folks who have alot of flu already. 80% yeild above 100, 60% above 150.
+             * reduce flu gain for folks who have alot of flu already. 80% yeild
+             * above 100, 60% above 150.
              */
             if (influence > (fluCeiling * .5) && influence < (fluCeiling * .75)) {
                 totalInfluenceGrant = totalInfluenceGrant * .80;
@@ -1002,8 +1136,19 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }// end payInfluence(Player p)
 
     /**
-     * Method that determines the weighted number or armies a player has active. Each army gives an initial weight of 1. Weight for an army is reduced if its BV +/- MaxBVDifference (from campaign configuration) overlaps another armies BV, falls below MinCount or rises above MaxCount. In short, only the portions of an army which may be *uniquely* targetted by opposing forces with the Min/Max range count fully. The weight is automatically reduced by the level of overlap, and server operators may declare additional overlap penalties. Example: Player A has Armies of 3000 and 3050 BV. MaxBVDifference is 150, and an OverlapPenalty of .20 is set in campaignconfig.txt - Starting weight is 2 for two armies, - Raw amount of overlap is (150-(3050-3000 = 50))/150 = .67 - Weight after raw overlap adjustment is 2.0 - 0.67 = 1.33 - OverlapPenalty is applied (1.33 - .20 = 1.13) In this case, the final
-     * weighted number of armies is 1.37.
+     * Method that determines the weighted number or armies a player has active.
+     * Each army gives an initial weight of 1. Weight for an army is reduced if
+     * its BV +/- MaxBVDifference (from campaign configuration) overlaps another
+     * armies BV, falls below MinCount or rises above MaxCount. In short, only
+     * the portions of an army which may be *uniquely* targetted by opposing
+     * forces with the Min/Max range count fully. The weight is automatically
+     * reduced by the level of overlap, and server operators may declare
+     * additional overlap penalties. Example: Player A has Armies of 3000 and
+     * 3050 BV. MaxBVDifference is 150, and an OverlapPenalty of .20 is set in
+     * campaignconfig.txt - Starting weight is 2 for two armies, - Raw amount of
+     * overlap is (150-(3050-3000 = 50))/150 = .67 - Weight after raw overlap
+     * adjustment is 2.0 - 0.67 = 1.33 - OverlapPenalty is applied (1.33 - .20 =
+     * 1.13) In this case, the final weighted number of armies is 1.37.
      * 
      * @return int the weighted army number
      * @author urgru 10/27/04
@@ -1058,7 +1203,12 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 }
 
                 /*
-                 * Sort the armies into BV order, least to greatest. Take an enumeration of all armies. 1st is added to orderedArmies by default. Additional armies are compared to previously sorted BVs and inserted in front of the first element which has a higher value. If currentForce is larger than previously sorted armies it is appended to end of the vector
+                 * Sort the armies into BV order, least to greatest. Take an
+                 * enumeration of all armies. 1st is added to orderedArmies by
+                 * default. Additional armies are compared to previously sorted
+                 * BVs and inserted in front of the first element which has a
+                 * higher value. If currentForce is larger than previously
+                 * sorted armies it is appended to end of the vector
                  */
 
                 // if empty, add the first force by default
@@ -1086,7 +1236,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             }// end for(each army)
 
             /*
-             * Determine overlap of lances, now that they have been ordered. Reduce payout modifier if forces cover similar value ranges. Only do this if there are actually ordered armies!
+             * Determine overlap of lances, now that they have been ordered.
+             * Reduce payout modifier if forces cover similar value ranges. Only
+             * do this if there are actually ordered armies!
              */
             if (legalOps != 0) {
                 MaxFlatDiff /= legalOps;
@@ -1107,7 +1259,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 double currentMaxDiff = 0;
 
                 /*
-                 * compare first force to floor. get first army, determine percent and flat difference, then test against the BV-edge.
+                 * compare first force to floor. get first army, determine
+                 * percent and flat difference, then test against the BV-edge.
                  */
                 double caPercentDiff = currentBV * MaxPercentDiff;
                 if (MaxFlatDiff >= caPercentDiff) {
@@ -1134,7 +1287,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                     nextBV = nextArmy.getOperationsBV(null);
 
                     /*
-                     * test whether flat or percent BV difference is larger for these two armies. compare based on larger window.
+                     * test whether flat or percent BV difference is larger for
+                     * these two armies. compare based on larger window.
                      */
                     if (MaxPercentDiff <= 0) {
                         currentMaxDiff = MaxFlatDiff;
@@ -1177,7 +1331,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 }
 
                 /*
-                 * Remove armies which cannot attack from the weighting AFTER overlap checks in order to discourage any abusive stacking.
+                 * Remove armies which cannot attack from the weighting AFTER
+                 * overlap checks in order to discourage any abusive stacking.
                  */
                 for (SArmy currA : orderedArmies) {
                     if (currA.getLegalOperations().size() <= 0) {
@@ -1198,7 +1353,10 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * A method which resets the weightedArmyNumber to -1, forcing a recalculation next time the above method (getWeightedArmyNumber) is called. Should be triggered by anything which changes army BV or army numbers - game resolution and EXM, etc.
+     * A method which resets the weightedArmyNumber to -1, forcing a
+     * recalculation next time the above method (getWeightedArmyNumber) is
+     * called. Should be triggered by anything which changes army BV or army
+     * numbers - game resolution and EXM, etc.
      * 
      * @urgru 11/12/04
      */
@@ -1237,7 +1395,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * Add money to a player. Money is always modified relative to a previous amount (this.fromString is an expetion, but sets the value directly), so there is no need for a public SPlayer.setMoney() method.
+     * Add money to a player. Money is always modified relative to a previous
+     * amount (this.fromString is an expetion, but sets the value directly), so
+     * there is no need for a public SPlayer.setMoney() method.
      */
     public void addMoney(int i) {
 
@@ -1260,7 +1420,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * Get the amount of money the player currently has on hand. Required for IBuyer.
+     * Get the amount of money the player currently has on hand. Required for
+     * IBuyer.
      */
     public int getMoney() {
         return money;
@@ -1284,7 +1445,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * Method required for ISeller compliance. Used to distinguish between human controlled actors (this class) and factions/automated actors (SHouse).
+     * Method required for ISeller compliance. Used to distinguish between human
+     * controlled actors (this class) and factions/automated actors (SHouse).
      */
     public boolean isHuman() {
         return true;
@@ -1298,14 +1460,17 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * Method which determines which house a player is actually fighting for. Used to display contracting house, instead of real faction, for mercenaries.
+     * Method which determines which house a player is actually fighting for.
+     * Used to display contracting house, instead of real faction, for
+     * mercenaries.
      */
     public SHouse getHouseFightingFor() {
         return getMyHouse().getHouseFightingFor(this);
     }
 
     /**
-     * Set the player's faction. Should only be used by Defect, ForcedDefect and Enroll commands.
+     * Set the player's faction. Should only be used by Defect, ForcedDefect and
+     * Enroll commands.
      */
     public void setMyHouse(SHouse h) {
         myHouse = h;
@@ -1313,7 +1478,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * A Method to get the current duty status of a player. Options are, from lowest to hightest, STATUS_LOGGEDOUT, STATUS_RESERVE, STATUS_ACTIVE, and STATUS_FIGHTING.
+     * A Method to get the current duty status of a player. Options are, from
+     * lowest to hightest, STATUS_LOGGEDOUT, STATUS_RESERVE, STATUS_ACTIVE, and
+     * STATUS_FIGHTING.
      */
     public int getDutyStatus() {
 
@@ -1339,7 +1506,10 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * Determines the weighted number of votes a player can cast. Draws a flat config out of campaignconfig.txt to use as a base number. Additonal votes may be assigned as a player gains XP, up to a configurable ceiling. Used by the various vote cmds to block overvoting, etc.
+     * Determines the weighted number of votes a player can cast. Draws a flat
+     * config out of campaignconfig.txt to use as a base number. Additonal votes
+     * may be assigned as a player gains XP, up to a configurable ceiling. Used
+     * by the various vote cmds to block overvoting, etc.
      * 
      * @return int representing total # of votes player is allowed to cast.
      */
@@ -1358,10 +1528,13 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * Strip the player's units. They disappear forever and are NOT given to the player's house.
+     * Strip the player's units. They disappear forever and are NOT given to the
+     * player's house.
      * 
      * @param sendStatus
-     *            - boolean. if true, send the player's status downstream. should usually be true. false when called from NewbieHouse, which send status on its own after granting new units.
+     *            - boolean. if true, send the player's status downstream.
+     *            should usually be true. false when called from NewbieHouse,
+     *            which send status on its own after granting new units.
      */
     public void stripOfAllUnits(boolean sendStatus) {
         if (CampaignMain.cm.isUsingMySQL()) {
@@ -1388,7 +1561,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
     // EXPERIENCE SET/ADD/GET Methods
     /**
-     * Add experience to the player. Boolean param is used to prevent RP gain from mod/admin XP additions.
+     * Add experience to the player. Boolean param is used to prevent RP gain
+     * from mod/admin XP additions.
      * 
      * @param i
      *            - amount of RP to add
@@ -1468,7 +1642,12 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
     // SPECIAL USE METHODS (PRIVATE OR PUBLIC&STATIC)
     /**
-     * Determine the total BV of all units owned by the player. This is used by the welfare checks to see whether a players units can form an army of sufficient BV. Note that for_sale units are included in the BV total, because skipping them would allow players to list a unit, get welfare units, and then delist the sales unit in order. Freebies is something we want to avoid, because people are evil and cheat.
+     * Determine the total BV of all units owned by the player. This is used by
+     * the welfare checks to see whether a players units can form an army of
+     * sufficient BV. Note that for_sale units are included in the BV total,
+     * because skipping them would allow players to list a unit, get welfare
+     * units, and then delist the sales unit in order. Freebies is something we
+     * want to avoid, because people are evil and cheat.
      * 
      * @author Jason Tighe.
      * @return the total bv of the player's units.
@@ -1482,7 +1661,10 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * Simple private method which returns the next available free position ID (hangar location). While this seems pointless, and probably is, the hangar ID is used by the client for all kinds of things and we're stuck with it until someone takes the time to weed it out completely.
+     * Simple private method which returns the next available free position ID
+     * (hangar location). While this seems pointless, and probably is, the
+     * hangar ID is used by the client for all kinds of things and we're stuck
+     * with it until someone takes the time to weed it out completely.
      */
     private int getFreeID() {
         int id = 0;
@@ -1518,7 +1700,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     // METHODS TO CHECK/COMMENT
     /**
      * @author Jason Tighe aka Torren
-     * @return if the player is eligible for welfare light meks from faction bays. due to lack of mechs in bay and they are all light
+     * @return if the player is eligible for welfare light meks from faction
+     *         bays. due to lack of mechs in bay and they are all light
      */
     public boolean mayAcquireWelfareUnits() {
 
@@ -1756,7 +1939,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
     /**
      * @param t
-     *            - the number of technicians to add (subtract) from the player's total sub-zero cases are checked in setTechs(). no check here.
+     *            - the number of technicians to add (subtract) from the
+     *            player's total sub-zero cases are checked in setTechs(). no
+     *            check here.
      */
     @Override
     public void addTechnicians(int t) {
@@ -2094,7 +2279,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * Method which returns a boolean indicating whether any units in all the armies or any units period are being repaired.
+     * Method which returns a boolean indicating whether any units in all the
+     * armies or any units period are being repaired.
      * 
      * @param inArmy
      *            - if false, check all units. true, check units in armies.
@@ -2186,7 +2372,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         int medtechHeal = Integer.parseInt(getMyHouse().getConfig("MedTechAmountHealedPerTick")) * numberOfHeals;
 
         if (Boolean.parseBoolean(getMyHouse().getConfig("AllowPersonalPilotQueues"))) {
-            for (int type = 0; type < 2; type++) {
+            int typeList[] = { Unit.MEK, Unit.PROTOMEK, Unit.AERO };
+            for (int type : typeList) {
                 for (int weight = 0; weight <= Unit.ASSAULT; weight++) {
                     List<Pilot> list = personalPilotQueue.getPilotQueue(type, weight);
                     for (Pilot pilot : list) {
@@ -2231,7 +2418,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         int medtechHeal = Integer.parseInt(getMyHouse().getConfig("MedTechAmountHealedPerTick"));
 
         if (Boolean.parseBoolean(getMyHouse().getConfig("AllowPersonalPilotQueues"))) {
-            for (int type = 0; type < 2; type++) {
+            int typeList[] = { Unit.MEK, Unit.PROTOMEK, Unit.AERO };
+            for (int type : typeList) {
                 for (int weight = 0; weight <= Unit.ASSAULT; weight++) {
                     List<Pilot> list = personalPilotQueue.getPilotQueue(type, weight);
                     for (Pilot pilot : list) {
@@ -2270,10 +2458,14 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
     // STATUS DISPLAY METHODS
     /*
-     * These would normally be under the PUBLIC METHODS heading; however, they're important (and long) enough to justify their own heading.
+     * These would normally be under the PUBLIC METHODS heading; however,
+     * they're important (and long) enough to justify their own heading.
      */
     /**
-     * Complete human readable status of a player. Absolutely must be maintained and properly updated at all times. /c mystatus is the best/only way to accurately confirm a client's data representation vs. the player's state according to the server.
+     * Complete human readable status of a player. Absolutely must be maintained
+     * and properly updated at all times. /c mystatus is the best/only way to
+     * accurately confirm a client's data representation vs. the player's state
+     * according to the server.
      */
     public String getReadableStatus(boolean adminStatus) {
         DecimalFormat myFormatter = new DecimalFormat("####.##");
@@ -2430,7 +2622,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * Method that returns a human readable string containing special info pertinent to mercenaries, such an employer and contract terms.
+     * Method that returns a human readable string containing special info
+     * pertinent to mercenaries, such an employer and contract terms.
      */
     public String getReadableMercStatus() {
         String s = "";
@@ -2452,7 +2645,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
     // TOSTRING AND FROMSTRING METHODS
     /*
-     * These would normally be under the "methods" heading; however, they're so huge (and important) that they get a separate block.
+     * These would normally be under the "methods" heading; however, they're so
+     * huge (and important) that they get a separate block.
      */
     public String toString(boolean toClient) {
 
@@ -2511,7 +2705,12 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             result.append(" ~");
 
             /*
-             * In older code, player-prefered game options were saved here. This feature has been eliminated. Because of terrible coding (using the standard ~ delimiter instead of an inner delimiter like $), we can't eliminate the read in without endangering older saves. We'll just save a 0 for now. Sometime in the future, this space can be reclaimed. @urgru 12.28.05
+             * In older code, player-prefered game options were saved here. This
+             * feature has been eliminated. Because of terrible coding (using
+             * the standard ~ delimiter instead of an inner delimiter like $),
+             * we can't eliminate the read in without endangering older saves.
+             * We'll just save a 0 for now. Sometime in the future, this space
+             * can be reclaimed. @urgru 12.28.05
              */
             result.append(0);
             result.append("~");
@@ -2529,7 +2728,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         result.append("~");
 
         /*
-         * In older code, player's price modifier (mezzo) was saved here. This feature has been eliminated, and the spaces can be reclaimed. @urgru 9.30.06
+         * In older code, player's price modifier (mezzo) was saved here. This
+         * feature has been eliminated, and the spaces can be reclaimed. @urgru
+         * 9.30.06
          */
         if (!toClient) {
             if (CampaignMain.cm.isUsingMySQL()) {
@@ -2893,7 +3094,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     /**
      * @author jtighe
      * @param s
-     *            - string from a pfile Used for sperate pfiles with faction name stuck on the end.
+     *            - string from a pfile Used for sperate pfiles with faction
+     *            name stuck on the end.
      */
     public void fromString(String s) {
 
@@ -2913,7 +3115,11 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             setName(TokenReader.readString(ST));
 
             /*
-             * name is set before the exclusion list is un-strung in SPlayer.fromString(). Use this opportunity to set it in the ExclusionList so strip/error messages can be sent back to the player properly. Uber-Hacky, but functional.
+             * name is set before the exclusion list is un-strung in
+             * SPlayer.fromString(). Use this opportunity to set it in the
+             * ExclusionList so strip/error messages can be sent back to the
+             * player properly. Uber-Hacky, but functional.
+             * 
              * @urgru 4.2.05
              */
             exclusionList.setOwnerName(name);
@@ -2962,7 +3168,11 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             fluffText = TokenReader.readString(ST).trim();
 
             /*
-             * This space used to be occupied by player-set game options. Do not use the node until we're sure all servers have reset and removed any residual data. For now, we'll READ the data correctly, but write out 0's during all saves. At some point in the future, we'll be able to fully reclaim this space.
+             * This space used to be occupied by player-set game options. Do not
+             * use the node until we're sure all servers have reset and removed
+             * any residual data. For now, we'll READ the data correctly, but
+             * write out 0's during all saves. At some point in the future,
+             * we'll be able to fully reclaim this space.
              */
 
             int numberOfOptions = TokenReader.readInt(ST);
@@ -2989,7 +3199,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             currentReward = TokenReader.readInt(ST);
 
             /*
-             * Eat the next two tokens. Formerly used to save mezzo data. Can be reclaimed soon-ish, as no server used the feature. @urgru 9/30/06
+             * Eat the next two tokens. Formerly used to save mezzo data. Can be
+             * reclaimed soon-ish, as no server used the feature. @urgru 9/30/06
              */
 
             if (CampaignMain.cm.isUsingMySQL()) {
@@ -3123,7 +3334,12 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             healAllPilots();
 
             /*
-             * Check all units for bad ammo or illegal/mis-set vacant pilots. This was being done at the same time as the units are unstrung, but caused a null b/c fixAmmo() uses .myHouse(), which is null at that point in the unstring. If the units are changed as a result of the checks, a PL|UU is sent, as well as a PL|SAD for each army that includes the unit.
+             * Check all units for bad ammo or illegal/mis-set vacant pilots.
+             * This was being done at the same time as the units are unstrung,
+             * but caused a null b/c fixAmmo() uses .myHouse(), which is null at
+             * that point in the unstring. If the units are changed as a result
+             * of the checks, a PL|UU is sent, as well as a PL|SAD for each army
+             * that includes the unit.
              */
             for (SUnit currU : units) {
                 fixPilot(currU);
@@ -3299,7 +3515,12 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 healAllPilots();
 
                 /*
-                 * Check all units for bad ammo or illegal/mis-set vacant pilots. This was being done at the same time as the units are unstrung, but caused a null b/c fixAmmo() uses .myHouse(), which is null at that point in the unstring. If the units are changed as a result of the checks, a PL|UU is sent, as well as a PL|SAD for each army that includes the unit.
+                 * Check all units for bad ammo or illegal/mis-set vacant
+                 * pilots. This was being done at the same time as the units are
+                 * unstrung, but caused a null b/c fixAmmo() uses .myHouse(),
+                 * which is null at that point in the unstring. If the units are
+                 * changed as a result of the checks, a PL|UU is sent, as well
+                 * as a PL|SAD for each army that includes the unit.
                  */
                 for (SUnit currU : units) {
                     fixPilot(currU);
@@ -3321,7 +3542,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * Issue with vacant pilots getting placed in !Mek and !Proto Units This fixes it. Will also be helpful if future bugs cause vacant pilots.
+     * Issue with vacant pilots getting placed in !Mek and !Proto Units This
+     * fixes it. Will also be helpful if future bugs cause vacant pilots.
      * 
      * @param unit
      */
@@ -3529,7 +3751,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                         setSubFaction(subFactionName);
                         CampaignMain.cm.toUser("PL|SSN|" + subFactionName, getName(), false);
                         CampaignMain.cm.doSendToAllOnlinePlayers("PI|FT|" + getName() + "|" + getFluffText(), false);
-                        CampaignMain.cm.toUser("HS|CA|0", getName(), false);// clear old data
+                        CampaignMain.cm.toUser("HS|CA|0", getName(), false);// clear
+                        // old
+                        // data
                         CampaignMain.cm.toUser(getMyHouse().getCompleteStatus(), getName(), false);
                         for (SArmy army : getArmies()) {
                             CampaignMain.cm.getOpsManager().checkOperations(army, true);
@@ -3573,7 +3797,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * A player may only have 1 army locked at a time. This will lock that army and unlock any others Passing an armyId of -1 will unlock all armies.
+     * A player may only have 1 army locked at a time. This will lock that army
+     * and unlock any others Passing an armyId of -1 will unlock all armies.
      * 
      * @param armyId
      */
@@ -3600,80 +3825,83 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
-     * A method to determine if a player is above or below the hangar limits
-     * for units, based on type and weight.
+     * A method to determine if a player is above or below the hangar limits for
+     * units, based on type and weight.
      * 
-     * @param uType - type of unit (Unit.MEK, Unit.VEHICLE, etc.)
-     * @param uWeightClass - weightclass of unit (Unit.LIGHT, Unit.MEDIUM, etc)
+     * @param uType
+     *            - type of unit (Unit.MEK, Unit.VEHICLE, etc.)
+     * @param uWeightClass
+     *            - weightclass of unit (Unit.LIGHT, Unit.MEDIUM, etc)
      * @return true if the player is below the limit, false if he's at or above
      */
     public boolean hasRoomForUnit(int uType, int uWeightClass) {
-    	if (uType < 0 || uType > Unit.AERO) {
-    		CampaignData.mwlog.errLog("Invalid uType in SPlayer.hasRoomForUnit: " + uType);
-    		return false;
-    	}
-    	if (uWeightClass < 0 || uWeightClass > Unit.ASSAULT) {
-    		CampaignData.mwlog.errLog("Invalid uWeightClass in SPlayer.hasRoomForUnit: " + uWeightClass);
-    		return false;
-    	}
-    	int limit = CampaignMain.cm.getHouseFromPartialString(getMyHouse().getName()).getUnitLimit(uType, uWeightClass);
-    	
-    	if (limit < 0) {
-    		// Unlimited
-    		return true;
-    	}
-    	
-    	int inHangar = countUnits(uType, uWeightClass);
-    	
-    	if (inHangar < limit) {
-    		return true;
-    	}
-    	
-    	return false;
+        if (uType < 0 || uType > Unit.AERO) {
+            CampaignData.mwlog.errLog("Invalid uType in SPlayer.hasRoomForUnit: " + uType);
+            return false;
+        }
+        if (uWeightClass < 0 || uWeightClass > Unit.ASSAULT) {
+            CampaignData.mwlog.errLog("Invalid uWeightClass in SPlayer.hasRoomForUnit: " + uWeightClass);
+            return false;
+        }
+        int limit = CampaignMain.cm.getHouseFromPartialString(getMyHouse().getName()).getUnitLimit(uType, uWeightClass);
+
+        if (limit < 0) {
+            // Unlimited
+            return true;
+        }
+
+        int inHangar = countUnits(uType, uWeightClass);
+
+        if (inHangar < limit) {
+            return true;
+        }
+
+        return false;
     }
-    
+
     /**
-     * A method to count the units of a given type and weight in a player's hangar
+     * A method to count the units of a given type and weight in a player's
+     * hangar
      * 
      * @param uType
      * @param uWeightClass
      * @return number of units
      */
     public int countUnits(int uType, int uWeightClass) {
-    	if (uType < 0 || uType > Unit.AERO) {
-    		CampaignData.mwlog.errLog("Invalid uType in SPlayer.countUnits: " + uType);
-    		return 0;
-    	}
-    	if (uWeightClass < 0 || uWeightClass > Unit.ASSAULT) {
-    		CampaignData.mwlog.errLog("Invalid uWeightClass in SPlayer.countUnits: " + uWeightClass);
-    		return 0;
-    	}
-    	// Actually count them now
-    	int count = 0;
-    	for (SUnit u : units) {
-    		if (u.getType() == uType && u.getWeightclass() == uWeightClass) {
-    			count++;
-    		}
-    	}
-    	return count;
+        if (uType < 0 || uType > Unit.AERO) {
+            CampaignData.mwlog.errLog("Invalid uType in SPlayer.countUnits: " + uType);
+            return 0;
+        }
+        if (uWeightClass < 0 || uWeightClass > Unit.ASSAULT) {
+            CampaignData.mwlog.errLog("Invalid uWeightClass in SPlayer.countUnits: " + uWeightClass);
+            return 0;
+        }
+        // Actually count them now
+        int count = 0;
+        for (SUnit u : units) {
+            if (u.getType() == uType && u.getWeightclass() == uWeightClass) {
+                count++;
+            }
+        }
+        return count;
     }
-    
+
     /**
      * A method to determine if any of the unit limits have been exceeded
      * 
      * @return true if any limits are exceeded, false otherwise
      */
     public boolean isOverAnyUnitLimits() {
-    	for (int t = Unit.MEK; t <= Unit.AERO; t++) {
-    		for (int w = Unit.LIGHT; w <= Unit.ASSAULT; w++) {
-    			int limit = getMyHouse().getUnitLimit(t, w);
-    			int inHangar = countUnits(t, w);
-    			if (limit != -1 && inHangar > limit) {
-    				return true;
-    			}
-    		}
-    	}
-    	return false;
+        for (int t = Unit.MEK; t <= Unit.AERO; t++) {
+            for (int w = Unit.LIGHT; w <= Unit.ASSAULT; w++) {
+                int limit = getMyHouse().getUnitLimit(t, w);
+                int inHangar = countUnits(t, w);
+                if (limit != -1 && inHangar > limit) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
-    
+
 }// end SPlayer()
