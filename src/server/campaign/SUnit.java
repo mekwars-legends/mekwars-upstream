@@ -796,6 +796,7 @@ public final class SUnit extends Unit {
             setEntity(en);
             TokenReader.readString(ST);// unused
             TokenReader.readString(ST);// unused
+            TokenReader.readString(ST);// unused
 
             setScrappableFor(TokenReader.readInt(ST));
 

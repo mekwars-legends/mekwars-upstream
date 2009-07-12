@@ -207,7 +207,7 @@ public class CUnit extends Unit {
 
         TokenReader.readString(ST);// unused
 
-        TokenReader.readInt(ST);// unused
+        TokenReader.readString(ST);// unused
 
         scrappableFor = TokenReader.readInt(ST);
 
