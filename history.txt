@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ Bug 2813301: Parts BM Issue 2.41.1
 + New MegaMek.jar
 + Bug: Client still using AWT interface.
 + Bug: units not loading successfully due to data read error
