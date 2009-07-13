@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ Bug Error when starting the game without any cameo selected
 + Bug 2813301: Parts BM Issue 2.41.1
 + New MegaMek.jar
 + Bug: Client still using AWT interface.
