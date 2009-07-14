@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ Bug 2811864: "force size to face" not working when no army #0 exists
 + Bug: Ban targetting still showing up in Admin menus
 + Bug: Error when starting the game without any cameo selected
 + Bug 2813301: Parts BM Issue 2.41.1
