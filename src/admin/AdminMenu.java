@@ -107,7 +107,6 @@ public class AdminMenu extends JMenu {
     JMenuItem jMenuAdminSetPlanetHomeWorld = new JMenuItem();
     JMenuItem jMenuAdminSetPlanetOriginalOwner = new JMenuItem();
     JMenuItem jMenuAdminSetServerAmmoBan = new JMenuItem();
-    JMenuItem jMenuAdminSetBanTargeting = new JMenuItem();
     JMenuItem jMenuAdminSetCommandLevel = new JMenuItem();
     JMenuItem jMenuAdminSetMegaMekGameOptions = new JMenuItem();
     JMenuItem jMenuAdminSetAmmoCost = new JMenuItem();
@@ -677,9 +676,6 @@ public class AdminMenu extends JMenu {
 
         if (userLevel >= mwclient.getData().getAccessLevel("AdminSetServerAmmoBan")) {
             jMenuAdminSubSet.add(jMenuAdminSetServerAmmoBan);
-        }
-        if (userLevel >= mwclient.getData().getAccessLevel("AdminSetBanTargeting")) {
-            jMenuAdminSubSet.add(jMenuAdminSetBanTargeting);
         }
         if (userLevel >= mwclient.getData().getAccessLevel("AdminSetCommandLevel")) {
             jMenuAdminSubSet.add(jMenuAdminSetCommandLevel);
