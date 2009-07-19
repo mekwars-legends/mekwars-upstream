@@ -547,6 +547,18 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField.setToolTipText("<html>% Chance operation will occur at dusk.  Default 0%</html>");
         BaseTextField.setName("DuskChance");
         rangesBox.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        rangesBox.add(new JLabel("Attacker Briefing", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Message Attacker recieves after launching</html>");
+        BaseTextField.setName("AttackerBriefing");
+        rangesBox.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        rangesBox.add(new JLabel("Defender Briefing", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Message Defender recieves after launching</html>");
+        BaseTextField.setName("DefenderBriefing");
+        rangesBox.add(BaseTextField);
 
         BaseCheckBox = new JCheckBox("Must Have Fac");
         BaseCheckBox.setToolTipText("<html>If checked, attack type may only be used against<br>a world which has a production facility.</html>");

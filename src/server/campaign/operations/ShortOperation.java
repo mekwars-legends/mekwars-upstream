@@ -1165,6 +1165,12 @@ public class ShortOperation implements Comparable<Object> {
             if (defendArtDesc.length() > 0) {
                 defendIntel += "<br>" + defendArtDesc;
             }
+            
+            if( !o.getValue("AttackerBriefing").equals(""))
+            	attackIntel += "<br><b>Briefing:</b> " + o.getValue("AttackerBriefing");
+            if( !o.getValue("DefenderBriefing").equals(""))
+            	defendIntel += "<br><b>Briefing:</b> " + o.getValue("DefenderBriefing");
+            
 
             if (isBuildingOperation) {
                 attackIntel += "<br><b>Mission Objectives:</b><br>You must destroy " + o.getValue("MinBuildingsForOp") + " out of " + o.getValue("TotalBuildings") + " facilities.";

@@ -102,6 +102,8 @@ public class DefaultOperation {
          * MaxBVPercent				   - Max % BV diffence between Attacker and defneder. default 0%
          * NightChance				   - Chance that operation will take place at night.
          * DuskChance				   - Chance that operation will take place at dusk.
+         * AttackerBriefing            - Message attacking player receives when launching
+         * DefenderBriefing            - Message defending player receives when launching
          *
          * NOTE: Colours are HTML hexidecimal. Keywords cannot be used. # must
          *       lead the string or massive fuck-ups will ensue.
@@ -144,6 +146,8 @@ public class DefaultOperation {
         operationsDefaults.put("MaxBVPercent", "0.0");
         operationsDefaults.put("NightChance", "0");
         operationsDefaults.put("DuskChance", "0");
+        operationsDefaults.put("AttackerBriefing", "");
+        operationsDefaults.put("DefenderBriefing", "");
 
         /*
          * SHORT VARIABLES. These are params which are necessary for
