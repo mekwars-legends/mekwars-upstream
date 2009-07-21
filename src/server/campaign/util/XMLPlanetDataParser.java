@@ -20,6 +20,7 @@ import gd.xml.ParseException;
 import gd.xml.XMLParser;
 import gd.xml.XMLResponder;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -29,20 +30,18 @@ import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.Vector;
-import java.awt.Dimension;
 
-import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.SUnitFactory;
 
 import common.AdvancedTerrain;
+import common.CampaignData;
 import common.Continent;
 import common.Influences;
 import common.PlanetEnvironments;
 import common.UnitFactory;
-
 
 public class XMLPlanetDataParser implements XMLResponder {
     String lastElement = "";
@@ -135,21 +134,26 @@ public class XMLPlanetDataParser implements XMLResponder {
 
     public void recordNotationDeclaration(String name, String pubID, String sysID) throws ParseException {
         System.out.print(prefix + "!NOTATION: " + name);
-        if (sysID != null)
+        if (sysID != null) {
             System.out.print("  sysID = " + sysID);
+        }
         CampaignData.mwlog.mainLog("");
     }
 
     public void recordEntityDeclaration(String name, String value, String pubID, String sysID, String notation) throws ParseException {
         System.out.print(prefix + "!ENTITY: " + name);
-        if (value != null)
+        if (value != null) {
             System.out.print("  value = " + value);
-        if (pubID != null)
+        }
+        if (pubID != null) {
             System.out.print("  pubID = " + pubID);
-        if (sysID != null)
+        }
+        if (sysID != null) {
             System.out.print("  sysID = " + sysID);
-        if (notation != null)
+        }
+        if (notation != null) {
             System.out.print("  notation = " + notation);
+        }
         CampaignData.mwlog.mainLog("");
     }
 
@@ -168,10 +172,12 @@ public class XMLPlanetDataParser implements XMLResponder {
 
     public void recordDoctypeDeclaration(String name, String pubID, String sysID) throws ParseException {
         System.out.print(prefix + "!DOCTYPE: " + name);
-        if (pubID != null)
+        if (pubID != null) {
             System.out.print("  pubID = " + pubID);
-        if (sysID != null)
+        }
+        if (sysID != null) {
             System.out.print("  sysID = " + sysID);
+        }
         CampaignData.mwlog.mainLog("");
         prefix = "";
     }
@@ -189,10 +195,12 @@ public class XMLPlanetDataParser implements XMLResponder {
     public void recordElementStart(String name, Hashtable attr) throws ParseException {
         // CampaignData.mwlog.mainLog(prefix+"Element: "+name);
         lastElement = name;
-        if (name.equalsIgnoreCase("WAREHOUSE"))
+        if (name.equalsIgnoreCase("WAREHOUSE")) {
             inWarehouse = true;
-        if (name.equalsIgnoreCase("CONTINENT"))
+        }
+        if (name.equalsIgnoreCase("CONTINENT")) {
             inContinent = true;
+        }
         if (name.equalsIgnoreCase("ADVANCETERRAIN")) {
             hasAdvancedTerrain = true;
             AdvTerr = new AdvancedTerrain();
@@ -243,8 +251,9 @@ public class XMLPlanetDataParser implements XMLResponder {
             terrainProb = 0;
             terrainName = "";
             inContinent = false;
-            if (hasAdvancedTerrain)
+            if (hasAdvancedTerrain) {
                 AdvTerrTreeMap.put(cont.getEnvironment().getId(), AdvTerr);
+            }
         }
         if (name.equalsIgnoreCase("ADVANCETERRAIN")) {
             AdvTerr.setDisplayName(aterrainName);
@@ -294,16 +303,18 @@ public class XMLPlanetDataParser implements XMLResponder {
             p.setGravity(gravity);
             p.setVacuum(vacuum);
             p.setOwner(null, p.checkOwner(), false);// no old owner, no updates
-            if (hasAdvancedTerrain)
+            if (hasAdvancedTerrain) {
                 p.getAdvancedTerrain().putAll(AdvTerrTreeMap);
+            }
             /*
              * for ( Integer id: AdvTerrTreeMap.keySet() ){
              * p.getAdvancedTerrain().put(id,AdvTerrTreeMap.get(id)); }
              */
-            if ( singlePlayerFactions && !OriginalOwner.equalsIgnoreCase(CampaignMain.cm.getConfig("NewbieHouseName")) )
+            if (singlePlayerFactions && !OriginalOwner.equalsIgnoreCase(CampaignMain.cm.getConfig("NewbieHouseName"))) {
                 p.setOriginalOwner("None");
-            else
+            } else {
                 p.setOriginalOwner(OriginalOwner);
+            }
             p.setPlanetFlags(OpFlags);
             p.setHomeWorld(isHomeWorld);
 
@@ -352,8 +363,9 @@ public class XMLPlanetDataParser implements XMLResponder {
             AdvTerrTreeMap.clear();
 
         }
-        if (name.equalsIgnoreCase("WAREHOUSE"))
+        if (name.equalsIgnoreCase("WAREHOUSE")) {
             inWarehouse = false;
+        }
     }
 
     public void recordPI(String name, String pValue) {
@@ -361,129 +373,132 @@ public class XMLPlanetDataParser implements XMLResponder {
     }
 
     public void recordCharData(String charData) {
-        CampaignData.mwlog.mainLog(prefix+charData);
+        CampaignData.mwlog.mainLog(prefix + charData);
         if (!charData.equalsIgnoreCase("")) {
-            CampaignData.mwlog.mainLog(lastElement + " --> " +charData);
-        } else
+            CampaignData.mwlog.mainLog(lastElement + " --> " + charData);
+        } else {
             lastElement = "";
+        }
 
         if (lastElement.equalsIgnoreCase("NAME")) {
             Name = charData;
             CampaignData.mwlog.mainLog(Name);
-        } else if (lastElement.equalsIgnoreCase("INCOME"))
+        } else if (lastElement.equalsIgnoreCase("INCOME")) {
             Income = Integer.parseInt(charData);
-        else if (lastElement.equalsIgnoreCase("XCOOD"))
+        } else if (lastElement.equalsIgnoreCase("XCOOD")) {
             XCood = charData;
-        else if (lastElement.equalsIgnoreCase("YCOOD"))
+        } else if (lastElement.equalsIgnoreCase("YCOOD")) {
             YCood = charData;
-        else if (lastElement.equalsIgnoreCase("WAREHOUSE"))
+        } else if (lastElement.equalsIgnoreCase("WAREHOUSE")) {
             Warehousesize = Integer.parseInt(charData);
-        else if (lastElement.equalsIgnoreCase("FACTION")) {
+        } else if (lastElement.equalsIgnoreCase("FACTION")) {
             lastInfFaction = charData;
-            if ( singlePlayerFactions && !lastInfFaction.equalsIgnoreCase(CampaignMain.cm.getConfig("NewbieHouseName")) )
+            if (singlePlayerFactions && !lastInfFaction.equalsIgnoreCase(CampaignMain.cm.getConfig("NewbieHouseName"))) {
                 lastInfFaction = "None";
-        }
-        else if (lastElement.equalsIgnoreCase("AMOUNT")) {
+            }
+        } else if (lastElement.equalsIgnoreCase("AMOUNT")) {
             SHouse h = CampaignMain.cm.getHouseFromPartialString(lastInfFaction, null);
             if (h != null) {
                 Influence.put(new Integer(h.getId()), new Integer(charData));
                 CampaignData.mwlog.mainLog("Parsed: " + h.toString() + " - " + charData);
-            } else
+            } else {
                 CampaignData.mwlog.mainLog("ERROR READING FACTION: " + lastInfFaction);
+            }
         }
 
-        else if (lastElement.equalsIgnoreCase("FACTORYNAME"))
+        else if (lastElement.equalsIgnoreCase("FACTORYNAME")) {
             MFName = charData;
-        else if (lastElement.equalsIgnoreCase("FOUNDER"))
+        } else if (lastElement.equalsIgnoreCase("FOUNDER")) {
             MFFounder = charData;
-        else if (lastElement.equalsIgnoreCase("SIZE")) {
-            if (inWarehouse)
+        } else if (lastElement.equalsIgnoreCase("SIZE")) {
+            if (inWarehouse) {
                 Warehousesize = Integer.parseInt(charData);
-            else if (inContinent)
+            } else if (inContinent) {
                 terrainProb = Integer.parseInt(charData);
-            else
+            } else {
                 MFSize = charData;
-        } else if (lastElement.equalsIgnoreCase("TICKSUNTILREFRESH"))
+            }
+        } else if (lastElement.equalsIgnoreCase("TICKSUNTILREFRESH")) {
             MFTicksUntilRefresh = Integer.parseInt(charData);
-        else if (lastElement.equalsIgnoreCase("REFRESHSPEED"))
+        } else if (lastElement.equalsIgnoreCase("REFRESHSPEED")) {
             MFRefreshSpeed = Integer.parseInt(charData);
-        // else if (lastElement.equalsIgnoreCase("TIMEZONENAME"))
-        // TZData.setName(charData);
-        // else if (lastElement.equalsIgnoreCase("TIMEZONEPROPABILITY"))
-        // TZData.setPropability(Integer.parseInt(charData));
-        else if (lastElement.equalsIgnoreCase("TYPE")) {
-            if (charData.equalsIgnoreCase("VEHICLE"))
+        } else if (lastElement.equalsIgnoreCase("TYPE")) {
+            if (charData.equalsIgnoreCase("VEHICLE")) {
                 Type = Type + UnitFactory.BUILDVEHICLES;
-            else if (charData.equalsIgnoreCase("INFANTRY"))
+            } else if (charData.equalsIgnoreCase("INFANTRY")) {
                 Type = Type + UnitFactory.BUILDINFANTRY;
-            else if (charData.equalsIgnoreCase("BATTLEARMOR"))
+            } else if (charData.equalsIgnoreCase("BATTLEARMOR")) {
                 Type = Type + UnitFactory.BUILDBATTLEARMOR;
-            else if (charData.equalsIgnoreCase("PROTOMEK"))
+            } else if (charData.equalsIgnoreCase("PROTOMEK")) {
                 Type = Type + UnitFactory.BUILDPROTOMECHS;
-            else
+            } else if (charData.equalsIgnoreCase("AERO")) {
+                Type = Type + UnitFactory.BUILDAERO;
+            } else {
                 Type = Type + UnitFactory.BUILDMEK;
-        } else if (lastElement.equalsIgnoreCase("COMPPRODUCTION"))
+            }
+        } else if (lastElement.equalsIgnoreCase("COMPPRODUCTION")) {
             CompProduction = Integer.parseInt(charData);
-        else if (lastElement.equalsIgnoreCase("CONQUERABLE"))
+        } else if (lastElement.equalsIgnoreCase("CONQUERABLE")) {
             conquerable = Boolean.parseBoolean(charData);
-        else if (lastElement.equalsIgnoreCase("TERRAIN"))
+        } else if (lastElement.equalsIgnoreCase("TERRAIN")) {
             terrainName = charData;
-        else if (lastElement.endsWith("XMAP"))
+        } else if (lastElement.endsWith("XMAP")) {
             xmap = Integer.parseInt(charData);
-        else if (lastElement.endsWith("YMAP"))
+        } else if (lastElement.endsWith("YMAP")) {
             ymap = Integer.parseInt(charData);
-        else if (lastElement.endsWith("XBOARD"))
+        } else if (lastElement.endsWith("XBOARD")) {
             xboard = Integer.parseInt(charData);
-        else if (lastElement.endsWith("YBOARD"))
+        } else if (lastElement.endsWith("YBOARD")) {
             yboard = Integer.parseInt(charData);
-        else if (lastElement.endsWith("LOWTEMP"))
+        } else if (lastElement.endsWith("LOWTEMP")) {
             lowtemp = Integer.parseInt(charData);
-        else if (lastElement.endsWith("HITEMP"))
+        } else if (lastElement.endsWith("HITEMP")) {
             hitemp = Integer.parseInt(charData);
-        else if (lastElement.endsWith("GRAVITY"))
+        } else if (lastElement.endsWith("GRAVITY")) {
             gravity = Double.parseDouble(charData);
-        else if (lastElement.endsWith("VACUUM"))
+        } else if (lastElement.endsWith("VACUUM")) {
             vacuum = Boolean.parseBoolean(charData);
-        else if (lastElement.endsWith("MAP"))
+        } else if (lastElement.endsWith("MAP")) {
             map = Boolean.parseBoolean(charData);
-        else if (lastElement.endsWith("NIGHTCHANCE"))
+        } else if (lastElement.endsWith("NIGHTCHANCE")) {
             nightchance = Integer.parseInt(charData);
-        else if (lastElement.endsWith("NIGHTMOD"))
+        } else if (lastElement.endsWith("NIGHTMOD")) {
             nightmod = Integer.parseInt(charData);
-        else if (lastElement.endsWith("MAPNAME"))
+        } else if (lastElement.endsWith("MAPNAME")) {
             mapname = charData;
-        else if (lastElement.endsWith("TERRAINNAME"))
+        } else if (lastElement.endsWith("TERRAINNAME")) {
             aterrainName = charData;
-        else if (lastElement.endsWith("ORIGINALOWNER"))
+        } else if (lastElement.endsWith("ORIGINALOWNER")) {
             OriginalOwner = charData;
-        else if (lastElement.endsWith("OPKEY"))
+        } else if (lastElement.endsWith("OPKEY")) {
             OpFlag = charData;
-        else if (lastElement.endsWith("OPNAME"))
+        } else if (lastElement.endsWith("OPNAME")) {
             OpName = charData;
-        else if (lastElement.endsWith("HOMEWORLD"))
+        } else if (lastElement.endsWith("HOMEWORLD")) {
             isHomeWorld = Boolean.parseBoolean(charData);
-        else if (lastElement.endsWith("BUILDTABLEFOLDER"))
+        } else if (lastElement.endsWith("BUILDTABLEFOLDER")) {
             buildTableFolder = charData;
-        else if (lastElement.endsWith("ACCESSSLEVEL"))
+        } else if (lastElement.endsWith("ACCESSSLEVEL")) {
             accessLevel = Integer.parseInt(charData);
-        else if (lastElement.endsWith("MINVISIBILITY"))
+        } else if (lastElement.endsWith("MINVISIBILITY")) {
             minVisibility = Integer.parseInt(charData);
-        else if (lastElement.endsWith("MAXVISIBILITY"))
+        } else if (lastElement.endsWith("MAXVISIBILITY")) {
             maxVisibility = Integer.parseInt(charData);
-        else if (lastElement.endsWith("BLIZZARDCHANCE"))
+        } else if (lastElement.endsWith("BLIZZARDCHANCE")) {
             blizzardChance = Integer.parseInt(charData);
-        else if (lastElement.endsWith("BLOWINGSANDCHANCE"))
+        } else if (lastElement.endsWith("BLOWINGSANDCHANCE")) {
             blowingSandChance = Integer.parseInt(charData);
-        else if (lastElement.endsWith("HEAVYSNOWFALLCHANCE"))
+        } else if (lastElement.endsWith("HEAVYSNOWFALLCHANCE")) {
             heavySnowfallChance = Integer.parseInt(charData);
-        else if (lastElement.endsWith("LIGHTRAINFALLCHANCE"))
+        } else if (lastElement.endsWith("LIGHTRAINFALLCHANCE")) {
             lightRainfallChance = Integer.parseInt(charData);
-        else if (lastElement.endsWith("HEAVYRAINFALLCHANCE"))
+        } else if (lastElement.endsWith("HEAVYRAINFALLCHANCE")) {
             heavyRainfallChance = Integer.parseInt(charData);
-        else if (lastElement.endsWith("MODERATEWINDSCHANCE"))
+        } else if (lastElement.endsWith("MODERATEWINDSCHANCE")) {
             moderateWindsChance = Integer.parseInt(charData);
-        else if (lastElement.endsWith("HIGHWINDSCHANCE"))
+        } else if (lastElement.endsWith("HIGHWINDSCHANCE")) {
             highWindsChance = Integer.parseInt(charData);
+        }
 
     }
 
@@ -522,8 +537,9 @@ public class XMLPlanetDataParser implements XMLResponder {
         String result = new String();
         while (tokened.hasMoreElements()) {
             result += tokened.nextElement();
-            if (tokened.hasMoreElements())
+            if (tokened.hasMoreElements()) {
                 result += "<BR>";
+            }
         }
         return result;
     }

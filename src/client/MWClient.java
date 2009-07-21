@@ -267,7 +267,8 @@ public final class MWClient implements IClient, GameListener {
     TreeMap<String, IProtCommand> ProtCommands = new TreeMap<String, IProtCommand>();
 
     /**
-     * Maps the task prefixes as HS, PL, SP etc. to a command under package cmd. key: String, value: cmd.Command
+     * Maps the task prefixes as HS, PL, SP etc. to a command under package cmd.
+     * key: String, value: cmd.Command
      */
     HashMap<String, Command> commands = new HashMap<String, Command>();
 
@@ -285,11 +286,6 @@ public final class MWClient implements IClient, GameListener {
     Vector<String> KeyWords = new Vector<String>(1, 1); // words announced with
     // sound
     private String cacheDir;
-
-    /**
-     * @author Torren place holder until I can think of something better to say.
-     */
-    public Properties serverConfigs = new Properties();
 
     // Starting edge for players in building ops
     private int playerStartingEdge = Buildings.EDGE_UNKNOWN;
@@ -1736,8 +1732,11 @@ public final class MWClient implements IClient, GameListener {
     }
 
     /**
-     * Method which parses OpList.txt in order to set up a tree which conatins names (as keys) and information (as values) for all game types. Various portions
-     * of the GUI code use this tree to properly draw themselves. Kept in MWClient in order to be universally available; however, this is poor design ... *sigh*
+     * Method which parses OpList.txt in order to set up a tree which conatins
+     * names (as keys) and information (as values) for all game types. Various
+     * portions of the GUI code use this tree to properly draw themselves. Kept
+     * in MWClient in order to be universally available; however, this is poor
+     * design ... *sigh*
      */
     public void setupAllOps() {
 
@@ -1824,7 +1823,8 @@ public final class MWClient implements IClient, GameListener {
     }// end setupAllOps
 
     /**
-     * Method which returns the master list of Operations (as assembled from OpList.txt) for use in display code.
+     * Method which returns the master list of Operations (as assembled from
+     * OpList.txt) for use in display code.
      */
     public TreeMap<String, String[]> getAllOps() {
         return allOps;
@@ -1832,6 +1832,7 @@ public final class MWClient implements IClient, GameListener {
 
     /*
      * Rewritten in order to allow ConfigPage to reset the skin on the fly.
+     * 
      * @urgru 2.21.05
      */
     public void setLookAndFeel(boolean isRedraw) {
@@ -2568,7 +2569,8 @@ public final class MWClient implements IClient, GameListener {
     }
 
     /**
-     * Reloads new planet data from the server. This will be done asynchron, so you may have to wait a bit ;-)
+     * Reloads new planet data from the server. This will be done asynchron, so
+     * you may have to wait a bit ;-)
      */
     synchronized public void refreshData() {
 
@@ -2606,8 +2608,9 @@ public final class MWClient implements IClient, GameListener {
     }
 
     /**
-     * @author jtighe Reload all the server data back into the client. Used when the client runs a command that changes the server's data (ie - admin makes map
-     *         change).
+     * @author jtighe Reload all the server data back into the client. Used when
+     *         the client runs a command that changes the server's data (ie -
+     *         admin makes map change).
      */
     public void reloadData() {
         try {
@@ -2805,7 +2808,8 @@ public final class MWClient implements IClient, GameListener {
     }
 
     /**
-     * Return the directory, where all cache files can go into. The dirname depends on the server you connect.
+     * Return the directory, where all cache files can go into. The dirname
+     * depends on the server you connect.
      */
     public String getCacheDir() {
         // if (cacheDir == null) {
@@ -2837,14 +2841,16 @@ public final class MWClient implements IClient, GameListener {
     }
 
     /**
-     * Sets the current advanced terrain and map size that will be used on next playboard
+     * Sets the current advanced terrain and map size that will be used on next
+     * playboard
      */
     public void setAdvancedTerrain(AdvancedTerrain aTerrain) {
         this.aTerrain = aTerrain;
     }
 
     /**
-     * Sets the current environment, map size and map medium that will be used on next playboard
+     * Sets the current environment, map size and map medium that will be used
+     * on next playboard
      */
     public void setEnvironment(PlanetEnvironment pe, Dimension map, int mapMedium) {
         currentEnvironment = pe;
@@ -2862,7 +2868,7 @@ public final class MWClient implements IClient, GameListener {
 
     /**
      * Changes the duty to a new status.
-     *
+     * 
      * @param newStatus
      */
     public void changeStatus(int newStatus) {
@@ -2909,15 +2915,15 @@ public final class MWClient implements IClient, GameListener {
     }
 
     public String getserverConfigs(String key) {
-        if (serverConfigs.getProperty(key) == null) {
+        if (CampaignData.cd.getServerConfigs().getProperty(key) == null) {
             CampaignData.mwlog.infoLog("You're missing the config variable: " + key + " in serverconfig!");
             return "-1";
         }
-        return serverConfigs.getProperty(key).trim();
+        return CampaignData.cd.getServerConfigs().getProperty(key).trim();
     }
 
     public Properties getserverConfigs() {
-        return serverConfigs;
+        return CampaignData.cd.getServerConfigs();
     }
 
     public boolean isAdmin() {
@@ -3147,7 +3153,8 @@ public final class MWClient implements IClient, GameListener {
      * @param money
      * @param shortname
      * @param amount
-     * @return String Hokey function to return the correct syntax for long and short money/flu messages to the user. ClientVersion
+     * @return String Hokey function to return the correct syntax for long and
+     *         short money/flu messages to the user. ClientVersion
      */
     public String moneyOrFluMessage(boolean money, boolean shortname, int amount) {
         return moneyOrFluMessage(money, shortname, amount, false);

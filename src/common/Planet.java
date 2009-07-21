@@ -21,8 +21,8 @@
 package common;
 
 import java.awt.Dimension;
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.TreeMap;
@@ -101,9 +101,9 @@ public class Planet implements Comparable<Object>, MutableSerializable {
      * Torren
      */
     private Dimension MapSize = new Dimension(1, 1); // default megamek map
-                                                        // size
+    // size
     private Dimension BoardSize = new Dimension(16, 17);// default megamek board
-                                                        // size
+    // size
 
     /**
      * Vars for temperature vaccum and gravity
@@ -157,10 +157,10 @@ public class Planet implements Comparable<Object>, MutableSerializable {
 
     // CONSTRUCTORS
     public Planet(int id, String name, Position position, Influences influence) {
-        this.setId(id);
-        this.setName(name);
-        this.setPosition(position);
-        this.setInfluence(influence);
+        setId(id);
+        setName(name);
+        setPosition(position);
+        setInfluence(influence);
     }
 
     /**
@@ -174,38 +174,38 @@ public class Planet implements Comparable<Object>, MutableSerializable {
      * Read the stream back to a Planet object.
      */
     public Planet(BinReader in, Map<Integer, House> factions, CampaignData data) throws IOException {
-        this.setId(new Integer(in.readInt("id")));
-        this.setName(in.readLine("name"));
-        this.setPosition(new Position(in.readDouble("x"), in.readDouble("y")));
+        setId(new Integer(in.readInt("id")));
+        setName(in.readLine("name"));
+        setPosition(new Position(in.readDouble("x"), in.readDouble("y")));
         int size = in.readInt("unitFactories.size");
-        this.setUnitFactories(new Vector<UnitFactory>(size, 1));
+        setUnitFactories(new Vector<UnitFactory>(size, 1));
         for (int i = 0; i < size; ++i) {
             UnitFactory uf = new UnitFactory();
             uf.binIn(in);
-            this.getUnitFactories().add(uf);
+            getUnitFactories().add(uf);
         }
-        this.setEnvironments(new PlanetEnvironments());
-        this.getEnvironments().binIn(in, data);
-        this.setDescription(in.readLine("description"));
-        this.setBaysProvided(in.readInt("baysProvided"));
-        this.setConquerable(in.readBoolean("conquerable"));
-        this.setCompProduction(in.readInt("compProduction"));
-        this.setInfluence(new Influences());
-        this.getInfluence().binIn(in, factions);
-        this.setMapSize(new Dimension(in.readInt("x"), in.readInt("y")));
-        this.setBoardSize(new Dimension(in.readInt("x"), in.readInt("y")));
-        this.setTemp(new Dimension(in.readInt("lowtemp"), in.readInt("hitemp")));
-        this.setGravity(in.readDouble("gravity"));
-        this.setVacuum(in.readBoolean("vacuum"));
-        this.setMinPlanetOwnerShip(in.readInt("minplanetownership"));
-        this.setHomeWorld(in.readBoolean("homeworld"));
-        this.setOriginalOwner(in.readLine("originalowner"));
+        setEnvironments(new PlanetEnvironments());
+        getEnvironments().binIn(in, data);
+        setDescription(in.readLine("description"));
+        setBaysProvided(in.readInt("baysProvided"));
+        setConquerable(in.readBoolean("conquerable"));
+        setCompProduction(in.readInt("compProduction"));
+        setInfluence(new Influences());
+        getInfluence().binIn(in, factions);
+        setMapSize(new Dimension(in.readInt("x"), in.readInt("y")));
+        setBoardSize(new Dimension(in.readInt("x"), in.readInt("y")));
+        setTemp(new Dimension(in.readInt("lowtemp"), in.readInt("hitemp")));
+        setGravity(in.readDouble("gravity"));
+        setVacuum(in.readBoolean("vacuum"));
+        setMinPlanetOwnerShip(in.readInt("minplanetownership"));
+        setHomeWorld(in.readBoolean("homeworld"));
+        setOriginalOwner(in.readLine("originalowner"));
         size = in.readInt("AdvancedTerrain.size");
         for (int i = 0; i < size; ++i) {
             AdvancedTerrain aTerrain = new AdvancedTerrain();
             int id = in.readInt("AdvancedTerrainId");
             aTerrain.binIn(in);
-            this.getAdvancedTerrain().put(new Integer(id), aTerrain);
+            getAdvancedTerrain().put(new Integer(id), aTerrain);
         }
         TreeMap<String, String> map = new TreeMap<String, String>();
         size = in.readInt("PlanetFlags.size");
@@ -216,8 +216,8 @@ public class Planet implements Comparable<Object>, MutableSerializable {
             value = in.readLine("PlanetFlags.value");
             map.put(key, value);
         }
-        this.setPlanetFlags(map);
-        this.setConquestPoints(in.readInt("MaxInfluence"));
+        setPlanetFlags(map);
+        setConquestPoints(in.readInt("MaxInfluence"));
     }
 
     // METHODS
@@ -241,7 +241,7 @@ public class Planet implements Comparable<Object>, MutableSerializable {
     }
 
     public void setDBID(int ID) {
-        this.DBID = ID;
+        DBID = ID;
     }
 
     /**
@@ -264,7 +264,7 @@ public class Planet implements Comparable<Object>, MutableSerializable {
      * @return the id of the current owner of the planet
      */
     public Integer getPlanetOwner() {
-        Integer ownerid = this.getInfluence().getOwner();
+        Integer ownerid = getInfluence().getOwner();
         return ownerid;
     }
 
@@ -275,8 +275,9 @@ public class Planet implements Comparable<Object>, MutableSerializable {
      */
     public boolean isOwner(int factionid) {
         Integer ownerID = getPlanetOwner();
-        if (ownerID == null)
+        if (ownerID == null) {
             return false;
+        }
         return ownerID == factionid;
     }
 
@@ -400,8 +401,9 @@ public class Planet implements Comparable<Object>, MutableSerializable {
         int totalCP = getConquestPoints();
 
         for (House house : getInfluence().getHouses()) {
-            if ( house.getId() == -1 )
+            if (house.getId() == -1) {
                 continue;
+            }
             totalCP -= getInfluence().getInfluence(house.getId());
         }
 
@@ -432,8 +434,8 @@ public class Planet implements Comparable<Object>, MutableSerializable {
      * Decode all mutable fields from the stream.
      */
     public void decodeMutableFields(BinReader in, CampaignData dataProvider) throws IOException {
-        this.setId(new Integer(in.readInt("id")));
-        this.getInfluence().decodeMutableFields(in, dataProvider);
+        setId(new Integer(in.readInt("id")));
+        getInfluence().decodeMutableFields(in, dataProvider);
         binIn(in, dataProvider);
     }
 
@@ -441,74 +443,74 @@ public class Planet implements Comparable<Object>, MutableSerializable {
      * Write itself into the stream.
      */
     public void binOut(BinWriter out) throws IOException {
-        out.println(this.getId(), "id");
-        out.println(this.getName(), "name");
-        out.println(this.getPosition().x, "x");
-        out.println(this.getPosition().y, "y");
-        out.println(this.getUnitFactories().size(), "unitFactories.size");
-        for (UnitFactory i : this.getUnitFactories()) {
+        out.println(getId(), "id");
+        out.println(getName(), "name");
+        out.println(getPosition().x, "x");
+        out.println(getPosition().y, "y");
+        out.println(getUnitFactories().size(), "unitFactories.size");
+        for (UnitFactory i : getUnitFactories()) {
             i.binOut(out);
         }
-        this.getEnvironments().binOut(out);
-        out.println(this.getDescription(), "description");
-        out.println(this.getBaysProvided(), "baysProvided");
-        out.println(this.isConquerable(), "conquerable");
-        out.println(this.getCompProduction(), "compProduction");
-        this.getInfluence().binOut(out);
-        out.println(this.getMapSize().width, "x");
-        out.println(this.getMapSize().height, "y");
-        out.println(this.getBoardSize().width, "x");
-        out.println(this.getBoardSize().height, "y");
-        out.println(this.getTemp().width, "lowtemp");
-        out.println(this.getTemp().height, "hitemp");
-        out.println(this.getGravity(), "gravity");
-        out.println(this.isVacuum(), "vacuum");
-        out.println(this.getMinPlanetOwnerShip(), "minplanetownership");
-        out.println(this.isHomeWorld(), "homeworld");
-        out.println(this.getOriginalOwner(), "originalowner");
+        getEnvironments().binOut(out);
+        out.println(getDescription(), "description");
+        out.println(getBaysProvided(), "baysProvided");
+        out.println(isConquerable(), "conquerable");
+        out.println(getCompProduction(), "compProduction");
+        getInfluence().binOut(out);
+        out.println(getMapSize().width, "x");
+        out.println(getMapSize().height, "y");
+        out.println(getBoardSize().width, "x");
+        out.println(getBoardSize().height, "y");
+        out.println(getTemp().width, "lowtemp");
+        out.println(getTemp().height, "hitemp");
+        out.println(getGravity(), "gravity");
+        out.println(isVacuum(), "vacuum");
+        out.println(getMinPlanetOwnerShip(), "minplanetownership");
+        out.println(isHomeWorld(), "homeworld");
+        out.println(getOriginalOwner(), "originalowner");
 
-        out.println(this.getAdvancedTerrain().size(), "AdvancedTerrain.size");
-        for (Integer currI : this.getAdvancedTerrain().keySet()) {
+        out.println(getAdvancedTerrain().size(), "AdvancedTerrain.size");
+        for (Integer currI : getAdvancedTerrain().keySet()) {
             out.println(currI.intValue(), "AdvancedTerrainId");
-            AdvancedTerrain aTerrain = this.getAdvancedTerrain().get(currI);
+            AdvancedTerrain aTerrain = getAdvancedTerrain().get(currI);
             aTerrain.binOut(out);
         }
 
-        out.println(this.getPlanetFlags().size(), "PlanetFlags.size");
-        for (String key : this.getPlanetFlags().keySet()) {
+        out.println(getPlanetFlags().size(), "PlanetFlags.size");
+        for (String key : getPlanetFlags().keySet()) {
             out.println(key, "PlanetFlags.key");
-            out.println(this.getPlanetFlags().get(key), "PlayerFlags.value");
+            out.println(getPlanetFlags().get(key), "PlayerFlags.value");
         }
-        out.println(this.getConquestPoints(), "MaxInfluence");
+        out.println(getConquestPoints(), "MaxInfluence");
     }
 
     public void binIn(BinReader in, CampaignData data) throws IOException {
-        this.setId(new Integer(in.readInt("id")));
-        this.setName(in.readLine("name"));
-        this.setPosition(new Position(in.readDouble("x"), in.readDouble("y")));
+        setId(new Integer(in.readInt("id")));
+        setName(in.readLine("name"));
+        setPosition(new Position(in.readDouble("x"), in.readDouble("y")));
         int size = in.readInt("unitFactories.size");
-        this.setUnitFactories(new Vector<UnitFactory>(size, 1));
+        setUnitFactories(new Vector<UnitFactory>(size, 1));
         for (int i = 0; i < size; ++i) {
             UnitFactory uf = new UnitFactory();
             uf.binIn(in);
-            this.getUnitFactories().add(uf);
+            getUnitFactories().add(uf);
         }
-        this.setEnvironments(new PlanetEnvironments());
-        this.getEnvironments().binIn(in, data);
-        this.setDescription(in.readLine("description"));
-        this.setBaysProvided(in.readInt("baysProvided"));
-        this.setConquerable(in.readBoolean("conquerable"));
-        this.setCompProduction(in.readInt("compProduction"));
-        this.setInfluence(new Influences());
-        this.getInfluence().binIn(in);
-        this.setMapSize(new Dimension(in.readInt("x"), in.readInt("y")));
-        this.setBoardSize(new Dimension(in.readInt("x"), in.readInt("y")));
-        this.setTemp(new Dimension(in.readInt("lowtemp"), in.readInt("hitemp")));
-        this.setGravity(in.readDouble("gravity"));
-        this.setVacuum(in.readBoolean("vacuum"));
-        this.setMinPlanetOwnerShip(in.readInt("minplanetownership"));
-        this.setHomeWorld(in.readBoolean("homeworld"));
-        this.setOriginalOwner(in.readLine("originalowner"));
+        setEnvironments(new PlanetEnvironments());
+        getEnvironments().binIn(in, data);
+        setDescription(in.readLine("description"));
+        setBaysProvided(in.readInt("baysProvided"));
+        setConquerable(in.readBoolean("conquerable"));
+        setCompProduction(in.readInt("compProduction"));
+        setInfluence(new Influences());
+        getInfluence().binIn(in);
+        setMapSize(new Dimension(in.readInt("x"), in.readInt("y")));
+        setBoardSize(new Dimension(in.readInt("x"), in.readInt("y")));
+        setTemp(new Dimension(in.readInt("lowtemp"), in.readInt("hitemp")));
+        setGravity(in.readDouble("gravity"));
+        setVacuum(in.readBoolean("vacuum"));
+        setMinPlanetOwnerShip(in.readInt("minplanetownership"));
+        setHomeWorld(in.readBoolean("homeworld"));
+        setOriginalOwner(in.readLine("originalowner"));
         size = in.readInt("AdvancedTerrain.size");
         // CampaignData.mwlog.errLog("AdvancedTerrain.size");
         for (int i = 0; i < size; ++i) {
@@ -516,7 +518,7 @@ public class Planet implements Comparable<Object>, MutableSerializable {
             int id = in.readInt("AdvancedTerrainId");
             // CampaignData.mwlog.errLog("AdvancedTerrainId "+id);
             aTerrain.binIn(in);
-            this.getAdvancedTerrain().put(new Integer(id), aTerrain);
+            getAdvancedTerrain().put(new Integer(id), aTerrain);
         }
         TreeMap<String, String> map = new TreeMap<String, String>();
         size = in.readInt("PlanetFlags.size");
@@ -527,9 +529,9 @@ public class Planet implements Comparable<Object>, MutableSerializable {
             value = in.readLine("PlanetFlags.value");
             map.put(key, value);
         }
-        this.setPlanetFlags(map);
+        setPlanetFlags(map);
 
-        this.setConquestPoints(in.readInt("MaxInfluence"));
+        setConquestPoints(in.readInt("MaxInfluence"));
     }
 
     /**
@@ -544,53 +546,59 @@ public class Planet implements Comparable<Object>, MutableSerializable {
 
         result.append("<b>Industry:</b><br>");
         // factories
-        if (getCompProduction() > 0)
+        if (getCompProduction() > 0) {
             result.append("Heavy industry allows an export of " + getCompProduction() + " parts.<br>");
+        }
         if (getBaysProvided() > 0) {
-            result.append("A warehouse on this world provides all players with " + getBaysProvided() + " extra bays.<br>");
+            result.append("A base on this world provides all players with " + getBaysProvided() + " extra bays.<br>");
         }
 
         if (getUnitFactories().size() > 0) {
             String founder = "";
-            if (getUnitFactories().size() == 1)
+            if (getUnitFactories().size() == 1) {
                 result.append("<br><b>Factory:</b><br>");
-            else
+            } else {
                 result.append("<br><b>Factories:</b><br>");
+            }
             for (UnitFactory u : getUnitFactories()) {
                 founder = u.getFounder();
                 String openImage = "./data/images/open" + founder + ".gif";
 
-                if ( !new File(openImage).exists() )
+                if (!new File(openImage).exists()) {
                     openImage = "./data/images/open.gif";
+                }
 
-                result.append("<img src=\"file:///"+ new File(openImage).getAbsolutePath()+ "\">" + u.getSize() + " " + u.getFullTypeString() + u.getName() + " built by " + founder + "<br>");
+                result.append("<img src=\"file:///" + new File(openImage).getAbsolutePath() + "\">" + u.getSize() + " " + u.getFullTypeString() + u.getName() + " built by " + founder + "<br>");
             }
         }
 
         result.append("<br><b>Planetary Conditions</b><br>");
         result.append("Atmosphere: ");
-        if (isVacuum())
+        if (isVacuum()) {
             result.append("None<br>");
-        else
+        } else {
             result.append("Present<br>");
+        }
         result.append("Gravity: " + getGravity() + "<br>");
         result.append("Average Low: " + getTemp().width + "<br>");
         result.append("Average High: " + getTemp().height + "<br>");
 
         result.append("<br><b>Terrain:</b><br>");
         int maxProbab = getEnvironments().getTotalEnivronmentPropabilities();
-        if (getEnvironments().size() < 1)
+        if (getEnvironments().size() < 1) {
             result.append("nothing special");
-        else {
+        } else {
             for (Continent pe : getEnvironments().toArray()) {
                 int curProb = (pe.getSize() * 100 / maxProbab);
-                if (curProb < 10)
+                if (curProb < 10) {
                     result.append("0");
+                }
                 result.append(curProb + "% ");
-                if (client)
+                if (client) {
                     result.append(pe.getEnvironment().toImageAbsolutePathDescription());
-                else
+                } else {
                     result.append(pe.getEnvironment().toImageDescription());
+                }
 
                 String terrainName = pe.getEnvironment().getName();
 
@@ -618,9 +626,9 @@ public class Planet implements Comparable<Object>, MutableSerializable {
 
         result.replace(result.length() - 2, result.length(), "<br>");
 
-        if (this.getPlanetFlags().size() > 0) {
-            result.append("<br><b>Points of Intereset:</b><br>");
-            for (String value : this.getPlanetFlags().values()) {
+        if (getPlanetFlags().size() > 0) {
+            result.append("<br><b>Points of Interest:</b><br>");
+            for (String value : getPlanetFlags().values()) {
                 result.append(value + ", ");
             }
             result.replace(result.length() - 2, result.length(), "<br> <br>");
@@ -647,61 +655,63 @@ public class Planet implements Comparable<Object>, MutableSerializable {
     /**
      * @see common.persistence.MMNetSerializable#binOut(common.persistence.TreeWriter)
      * 
-     * public void binOut(TreeWriter out) { out.write(this.getId(), "id");
-     * out.write(this.getName(), "name"); out.write(this.getPosition().x, "x");
-     * out.write(this.getPosition().y, "y"); out.write(this.getUnitFactories(),
-     * "unitFactories"); out.write(this.getEnvironments(), "environments");
-     * out.write(this.getDescription(), "description");
-     * out.write(this.getBaysProvided(), "baysProvided");
-     * out.write(this.isConquerable(), "conquerable");
-     * out.write(this.getCompProduction(), "compProduction");
-     * out.write(this.getInfluence(), "influence");
-     * out.write(this.getMapSize().width,"x");
-     * out.write(this.getMapSize().height,"y");
-     * out.write(this.getBoardSize().width,"x");
-     * out.write(this.getBoardSize().height,"y");
-     * out.write(this.getTemp().width,"lowtemp");
-     * out.write(this.getTemp().height,"hitemp");
-     * out.write(this.getGravity(),"gravity");
-     * out.write(this.isVacuum(),"vacuum");
-     * out.write(this.getMinPlanetOwnerShip(),"minplanetownership");
-     * out.write(this.isHomeWorld(),"homeworld");
-     * out.write(this.getOriginalOwner(),"originalowner");
-     *  }
+     *      public void binOut(TreeWriter out) { out.write(this.getId(), "id");
+     *      out.write(this.getName(), "name"); out.write(this.getPosition().x,
+     *      "x"); out.write(this.getPosition().y, "y");
+     *      out.write(this.getUnitFactories(), "unitFactories");
+     *      out.write(this.getEnvironments(), "environments");
+     *      out.write(this.getDescription(), "description");
+     *      out.write(this.getBaysProvided(), "baysProvided");
+     *      out.write(this.isConquerable(), "conquerable");
+     *      out.write(this.getCompProduction(), "compProduction");
+     *      out.write(this.getInfluence(), "influence");
+     *      out.write(this.getMapSize().width,"x");
+     *      out.write(this.getMapSize().height,"y");
+     *      out.write(this.getBoardSize().width,"x");
+     *      out.write(this.getBoardSize().height,"y");
+     *      out.write(this.getTemp().width,"lowtemp");
+     *      out.write(this.getTemp().height,"hitemp");
+     *      out.write(this.getGravity(),"gravity");
+     *      out.write(this.isVacuum(),"vacuum");
+     *      out.write(this.getMinPlanetOwnerShip(),"minplanetownership");
+     *      out.write(this.isHomeWorld(),"homeworld");
+     *      out.write(this.getOriginalOwner(),"originalowner"); }
      * 
-     * /**
+     *      /**
      * @see common.persistence.MMNetSerializable#binIn(common.persistence.TreeReader)
      * 
-     * public void binIn(TreeReader in, CampaignData dataProvider) throws
-     * IOException { this.setId(new Integer(in.readInt("id")));
-     * this.setName(in.readString("name")); this.setPosition(new
-     * Position(in.readDouble("x"), in.readDouble("y")));
-     * this.setUnitFactories(new Vector<UnitFactory>(1,1));
-     * in.readCollection(this.getUnitFactories(), UnitFactory.class,
-     * dataProvider, "unitFactories"); this.setEnvironments(new
-     * PlanetEnvironments()); in.readObject(this.getEnvironments(),
-     * dataProvider, "environments");
-     * this.setDescription(in.readString("description"));
-     * this.setBaysProvided(in.readInt("baysProvided"));
-     * this.setConquerable(in.readBoolean("conquerable"));
-     * this.setCompProduction(in.readInt("compProduction"));
-     * this.setInfluence(new Influences()); in.readObject(this.getInfluence(),
-     * dataProvider, "influence"); this.setMapSize(new
-     * Dimension(in.readInt("x"),in.readInt("y"))); this.setBoardSize(new
-     * Dimension(in.readInt("x"),in.readInt("y"))); this.setTemp(new
-     * Dimension(in.readInt("lowtemp"),in.readInt("hitemp")));
-     * this.setGravity(in.readDouble("gravity"));
-     * this.setVacuum(in.readBoolean("vacuum"));
-     * this.setMinPlanetOwnerShip(in.readInt("minplanetownership"));
-     * this.setHomeWorld(in.readBoolean("homeworld"));
-     * this.setOriginalOwner(in.readString("originalowner")); TreeMap<String,
-     * String> map = new TreeMap<String, String>(); int size =
-     * in.readInt("PlanetFlags.size"); for (int i = 0; i < size; ++i) { String
-     * key; String value; key = in.readString("PlanetFlags.key"); value =
-     * in.readString("PlanetFlags.value"); map.put(key, value); }
-     * this.setPlanetFlags(map);
+     *      public void binIn(TreeReader in, CampaignData dataProvider) throws
+     *      IOException { this.setId(new Integer(in.readInt("id")));
+     *      this.setName(in.readString("name")); this.setPosition(new
+     *      Position(in.readDouble("x"), in.readDouble("y")));
+     *      this.setUnitFactories(new Vector<UnitFactory>(1,1));
+     *      in.readCollection(this.getUnitFactories(), UnitFactory.class,
+     *      dataProvider, "unitFactories"); this.setEnvironments(new
+     *      PlanetEnvironments()); in.readObject(this.getEnvironments(),
+     *      dataProvider, "environments");
+     *      this.setDescription(in.readString("description"));
+     *      this.setBaysProvided(in.readInt("baysProvided"));
+     *      this.setConquerable(in.readBoolean("conquerable"));
+     *      this.setCompProduction(in.readInt("compProduction"));
+     *      this.setInfluence(new Influences());
+     *      in.readObject(this.getInfluence(), dataProvider, "influence");
+     *      this.setMapSize(new Dimension(in.readInt("x"),in.readInt("y")));
+     *      this.setBoardSize(new Dimension(in.readInt("x"),in.readInt("y")));
+     *      this.setTemp(new
+     *      Dimension(in.readInt("lowtemp"),in.readInt("hitemp")));
+     *      this.setGravity(in.readDouble("gravity"));
+     *      this.setVacuum(in.readBoolean("vacuum"));
+     *      this.setMinPlanetOwnerShip(in.readInt("minplanetownership"));
+     *      this.setHomeWorld(in.readBoolean("homeworld"));
+     *      this.setOriginalOwner(in.readString("originalowner"));
+     *      TreeMap<String, String> map = new TreeMap<String, String>(); int
+     *      size = in.readInt("PlanetFlags.size"); for (int i = 0; i < size;
+     *      ++i) { String key; String value; key =
+     *      in.readString("PlanetFlags.key"); value =
+     *      in.readString("PlanetFlags.value"); map.put(key, value); }
+     *      this.setPlanetFlags(map);
      * 
-     *  }
+     *      }
      */
     public StringBuilder getAdvanceDescription(int level) {
 
@@ -714,39 +724,44 @@ public class Planet implements Comparable<Object>, MutableSerializable {
 
         result.append("<b>Industry:</b><br>");
         // factories
-        if (getCompProduction() > 0)
+        if (getCompProduction() > 0) {
             result.append("Heavy industry allows an export of " + getCompProduction() + " parts.<br>");
-        if (getBaysProvided() > 0)
+        }
+        if (getBaysProvided() > 0) {
             result.append("A warehouse on this world provides all players with " + getBaysProvided() + " extra .<br><br>");
+        }
         if (getUnitFactories().size() > 0) {
             String founder = "";
-            if (getUnitFactories().size() == 1)
+            if (getUnitFactories().size() == 1) {
                 result.append("<br><b>Factory:</b><br>");
-            else
+            } else {
                 result.append("<br><b>Factories:</b><br>");
+            }
             for (UnitFactory u : getUnitFactories()) {
                 founder = u.getFounder();
                 String openImage = "./data/images/open" + founder + ".gif";
 
-                if (!new File(openImage).exists())
+                if (!new File(openImage).exists()) {
                     openImage = "./data/images/open.gif";
-                
-                result.append("<img src=\"file:///"+ new File(openImage).getAbsolutePath()+ "\">" + u.getSize() + " " + u.getFullTypeString() + u.getName() + " built by " + founder + "<br>");
+                }
+
+                result.append("<img src=\"file:///" + new File(openImage).getAbsolutePath() + "\">" + u.getSize() + " " + u.getFullTypeString() + u.getName() + " built by " + founder + "<br>");
             }
         }
 
         result.append("<br><b>Terrain:</b><br>");
         int maxProbab = getEnvironments().getTotalEnivronmentPropabilities();
-        if (getEnvironments().size() < 1)
+        if (getEnvironments().size() < 1) {
             result.append("nothing special");
-        else {
+        } else {
             for (Continent pe : getEnvironments().toArray()) {
                 int curProb = (pe.getSize() * 100 / maxProbab);
-                if (curProb < 10)
+                if (curProb < 10) {
                     result.append("0");
+                }
                 result.append(curProb + "% ");
                 result.append(pe.getEnvironment().toImageAbsolutePathDescription());
-                AdvancedTerrain aTerrain = this.getAdvancedTerrain().get(new Integer(pe.getEnvironment().getId()));
+                AdvancedTerrain aTerrain = getAdvancedTerrain().get(new Integer(pe.getEnvironment().getId()));
                 if (aTerrain == null) {
                     result.append("Nothing special");
                 } else {
@@ -789,15 +804,15 @@ public class Planet implements Comparable<Object>, MutableSerializable {
             result.append(", ");
         } // while*/
         result.replace(result.length() - 2, result.length(), "<br>");
-        if (this.getPlanetFlags().size() > 0) {
+        if (getPlanetFlags().size() > 0) {
             result.append("<br><b>Points of Intereset:</b><br>");
-            for (String value : this.getPlanetFlags().values()) {
+            for (String value : getPlanetFlags().values()) {
                 result.append(value + ", ");
             }
             result.delete(result.length() - 2, result.length());
             result.append("<br><br>");
         }// end if planet has flags
-        
+
         return result;
     }
 
@@ -816,7 +831,7 @@ public class Planet implements Comparable<Object>, MutableSerializable {
     }
 
     public void setMapSize(Dimension map) {
-        this.MapSize = map;
+        MapSize = map;
     }
 
     public Dimension getBoardSize() {
@@ -824,15 +839,15 @@ public class Planet implements Comparable<Object>, MutableSerializable {
     }
 
     public void setBoardSize(Dimension board) {
-        this.BoardSize = board;
+        BoardSize = board;
     }
 
     public Dimension getTemp() {
-        return this.temperature;
+        return temperature;
     }
 
     public void setTemp(Dimension temp) {
-        this.temperature = temp;
+        temperature = temp;
     }
 
     public double getGravity() {
@@ -840,7 +855,7 @@ public class Planet implements Comparable<Object>, MutableSerializable {
     }
 
     public void setGravity(double grav) {
-        this.gravity = grav;
+        gravity = grav;
     }
 
     public boolean isVacuum() {
@@ -848,7 +863,7 @@ public class Planet implements Comparable<Object>, MutableSerializable {
     }
 
     public void setVacuum(boolean vac) {
-        this.vacuum = vac;
+        vacuum = vac;
     }
 
     public int getNightChance() {
@@ -872,7 +887,7 @@ public class Planet implements Comparable<Object>, MutableSerializable {
     }
 
     public void setAdvancedTerrain(Hashtable<Integer, AdvancedTerrain> terrain) {
-        this.advanceTerrain = terrain;
+        advanceTerrain = terrain;
     }
 
     public int getMinPlanetOwnerShip() {
@@ -880,19 +895,19 @@ public class Planet implements Comparable<Object>, MutableSerializable {
     }
 
     public void setMinPlanetOwnerShip(int ownership) {
-        this.minPlanetOwnerShip = ownership;
+        minPlanetOwnerShip = ownership;
     }
 
     public void setHomeWorld(boolean homeworld) {
-        this.homeWorld = homeworld;
+        homeWorld = homeworld;
     }
 
     public boolean isHomeWorld() {
-        return this.homeWorld;
+        return homeWorld;
     }
 
     public void setOriginalOwner(String owner) {
-        this.originalOwner = owner;
+        originalOwner = owner;
     }
 
     public String getOriginalOwner() {
@@ -904,7 +919,7 @@ public class Planet implements Comparable<Object>, MutableSerializable {
     }
 
     public void setPlanetFlags(TreeMap<String, String> flags) {
-        this.planetFlags = flags;
+        planetFlags = flags;
     }
 
     public int getConquestPoints() {

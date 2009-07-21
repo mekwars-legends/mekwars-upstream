@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
-v 0.2.41.x
+v 0.2.41.x 
++ Bug 2737874: Planets.xml and Aero Factories
++ Bug 2785407: Unit Class naming in Faction/Server Configs
++ Bug: Unable to add Aero and VTOL factories via planet editor.
 + new MegaMek 0.35.5-MW072009-6942
 + Bug 2823364: Problem with new users registration
 + Bug 2824520: Operation Eligibility does not update when Commanders are se
