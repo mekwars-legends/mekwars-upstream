@@ -102,10 +102,12 @@ class ClientThread extends Thread implements CloseClientListener {
         CArmy currA = mwclient.getPlayer().getLockedArmy();
         client = new Client(myname, serverip, serverport);
         client.addCloseClientListener(this);
-        mwclient.getserverConfigs("MMTimeStampLogFile");
-        mwclient.getserverConfigs("MMShowUnitId");
-        mwclient.getserverConfigs("MMKeepGameLog");
-        mwclient.getserverConfigs("MMGameLogName");
+        /*
+         * mwclient.getserverConfigs("MMTimeStampLogFile");
+         * mwclient.getserverConfigs("MMShowUnitId");
+         * mwclient.getserverConfigs("MMKeepGameLog");
+         * mwclient.getserverConfigs("MMGameLogName");
+         */
 
         try {
 
@@ -413,7 +415,7 @@ class ClientThread extends Thread implements CloseClientListener {
                 cs.setShowUnitId(Boolean.parseBoolean(mwclient.getserverConfigs("MMShowUnitId")));
                 cs.setKeepGameLog(Boolean.parseBoolean(mwclient.getserverConfigs("MMKeepGameLog")));
                 cs.setGameLogFilename(mwclient.getserverConfigs("MMGameLogName"));
-                if (mwclient.getConfig().getParam("UNITCAMO").length() > 0) {
+                if (!mwclient.getConfig().getParam("UNITCAMO").equals(Player.NO_CAMO)) {
                     client.getLocalPlayer().setCamoCategory(Player.ROOT_CAMO);
                     client.getLocalPlayer().setCamoFileName(mwclient.getConfig().getParam("UNITCAMO"));
                     playerUpdate = true;

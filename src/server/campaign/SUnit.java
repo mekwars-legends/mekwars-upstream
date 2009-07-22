@@ -508,13 +508,7 @@ public final class SUnit extends Unit {
 
             if (mgCount > 0) {
 
-                int endLocation = Mech.LOC_LLEG;
-
-                if (unitEntity instanceof Tank) {
-                    endLocation = Tank.LOC_TURRET;
-                }
-
-                for (int location = 0; location <= endLocation; location++) {
+                for (int location = 0; location < unitEntity.locations(); location++) {
                     for (int slot = 0; slot < unitEntity.getNumberOfCriticals(location); slot++) {
                         CriticalSlot crit = unitEntity.getCritical(location, slot);
 
@@ -1193,7 +1187,7 @@ public final class SUnit extends Unit {
          * setWeightclass(getEntityWeight(this.getEntity()));
          */
         // Set Modelname
-        if (getType() == Unit.PROTOMEK || getType() == Unit.BATTLEARMOR || getType() == Unit.INFANTRY || getType() == Unit.VEHICLE || getEntity().isOmni()) {
+        if (getType() != Unit.MEK && !getEntity().isOmni()) {
             setModelname(new String(unitEntity.getChassis() + " " + unitEntity.getModel()).trim());
         } else {
 
