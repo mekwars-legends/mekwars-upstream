@@ -51,6 +51,7 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
 import megamek.client.Client;
+import megamek.common.Aero;
 import megamek.common.AmmoType;
 import megamek.common.BattleArmor;
 import megamek.common.CriticalSlot;
@@ -401,7 +402,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
             // Protomechs need special choice panels.
             if (entity instanceof Protomech) {
                 mcp = new ProtomechMunitionChoicePanel(m, vTypes, location);
-            } else {
+            } else if (!(entity instanceof Aero)) {
                 mcp = new MunitionChoicePanel(m, vTypes, location);
             }
 
