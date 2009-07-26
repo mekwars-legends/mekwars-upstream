@@ -169,7 +169,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
     private JPanel planetAdvancedTerrain;
     private JTabbedPane ConfigPane = new JTabbedPane(SwingConstants.TOP);
 
-    private String[] factoryTypes = { "All", "Mek", "Vee", "Mek & Vee", "Inf", "Mek & Inf", "Vee & Inf", "Mek & Inf & Vee", "Proto", "Mek & Proto", "Vee & Proto", "Mek & Vee & Proto", "Inf & Proto", "Mek & Inf & Proto", "Vee & Inf & Proto", "Mek & Vee & Inf & Proto", "BA", "Mek & BA", "Vee & BA", "Mek & Vee & BA", "Inf & BA", "Mek & Inf & BA", "Vee & Inf & BA", "Mek & Vee & Inf & BA", "Proto & BA", "Mek & Proto & BA", "Vee & Proto & BA", "Mek & Vee & Proto & BA", "Inf & Proto & BA", "Mek & Inf & Proto & BA", "Vee & Inf & Proto & BA", "VTOL", "Aero" };
+    private String[] factoryTypes = { "All", "Mek", "Vee", "Mek & Vee", "Inf", "Mek & Inf", "Vee & Inf", "Mek & Inf & Vee", "Proto", "Mek & Proto", "Vee & Proto", "Mek & Vee & Proto", "Inf & Proto", "Mek & Inf & Proto", "Vee & Inf & Proto", "Mek & Vee & Inf & Proto", "BA", "Mek & BA", "Vee & BA", "Mek & Vee & BA", "Inf & BA", "Mek & Inf & BA", "Vee & Inf & BA", "Mek & Vee & Inf & BA", "Proto & BA", "Mek & Proto & BA", "Vee & Proto & BA", "Mek & Vee & Proto & BA", "Inf & Proto & BA", "Mek & Inf & Proto & BA", "Vee & Inf & Proto & BA", "Mek & Vee & Inf & Proto & BA", "VTOL", "Aero" };
 
     private String[] factorySizes = { "Light", "Medium", "Heavy", "Assault" };
 
@@ -1237,7 +1237,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
     private void populateHouseNames(JComboBox combo) {
 
         TreeSet<String> factionNames = new TreeSet<String>();// tree to alpha
-                                                             // sort
+        // sort
         for (House house : mwclient.getData().getAllHouses()) {
             factionNames.add(house.getName());
         }

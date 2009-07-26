@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ Bug: Planet editor did not have the correct number of Factory Combos
 + Bug 2783184: Trouble Reloading Ammo on Warships 
 + Bug: Error when starting the game without any cameo selected
 + Bug 2737874: Planets.xml and Aero Factories
