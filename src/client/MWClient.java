@@ -3510,7 +3510,7 @@ public final class MWClient implements IClient, GameListener {
 
         StringTokenizer ST = new StringTokenizer(data, "#");
         boolean allowTechCrossOver = Boolean.parseBoolean(this.getserverConfigs("AllowCrossOverTech"));
-        int techLevel = getData().getHouseByName(getPlayer().getHouse()).getTechLevel();
+        int houseTechLevel = getData().getHouseByName(getPlayer().getHouse()).getTechLevel();
 
         getCampaign().getBlackMarketParts().clear();
 
@@ -3526,7 +3526,7 @@ public final class MWClient implements IClient, GameListener {
             bme.getEquipmentName();
             bme.getTech();
 
-            if (!allowTechCrossOver && !UnitUtils.isSameTech(bme.getTechLevel(), techLevel)) {
+            if (!allowTechCrossOver && !UnitUtils.isSameTech(bme.getTechLevel(), houseTechLevel)) {
                 continue;
             }
 
