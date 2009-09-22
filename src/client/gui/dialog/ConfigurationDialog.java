@@ -191,6 +191,7 @@ public final class ConfigurationDialog implements ActionListener {
     private final JCheckBox viewLogoBox = new JCheckBox();
     private final JCheckBox armyPopUpBox = new JCheckBox();
     private final JCheckBox autoReOrder = new JCheckBox();
+    private final JCheckBox useAWTInterfaceBox = new JCheckBox();
 
     // chat options
     private final JCheckBox hmInMainBox = new JCheckBox();
@@ -392,6 +393,10 @@ public final class ConfigurationDialog implements ActionListener {
             playerUpperCBoxesPanel.add(useStatusForIconBox);
             upperCBoxesCounter++;
         }
+
+        useAWTInterfaceBox.setText("Use AWT Interface");
+        useAWTInterfaceBox.setToolTipText("<html>When checked the AWT MM interface is used<br>Uncheck to use MM's Swing Interface.</html>");
+        playerUpperCBoxesPanel.add(useAWTInterfaceBox);
 
         showUnitTechBaseCheckBox.setText("Show Unit Tech Base");
         showUnitTechBaseCheckBox.setToolTipText("<html>When checked, unit Tool Tip will include Clan/IS indication.</html>");
@@ -1133,6 +1138,7 @@ public final class ConfigurationDialog implements ActionListener {
         darkenMapBox.setSelected(mwclient.getConfig().isParam("DARKERMAP"));
         bmPreviewImageBox.setSelected(mwclient.getConfig().isParam("BMPREVIEWIMAGE"));
         useStatusForIconBox.setSelected(mwclient.getConfig().isParam("STATUSINTRAYICON"));
+        useAWTInterfaceBox.setSelected(mwclient.getConfig().isParam("USEAWTINTERFACE"));
         showUnitTechBaseCheckBox.setSelected(mwclient.getConfig().isParam("ShowUnitTechBase"));
         hqColumnsField.setText(mwclient.getConfig().getParam("UNITAMOUNT"));
         defaultArmyNameField.setText(mwclient.getConfig().getParam("DEFAULTARMYNAME"));
@@ -1397,6 +1403,7 @@ public final class ConfigurationDialog implements ActionListener {
 
             mwclient.getConfig().setParam("UNITHEX", Boolean.toString(showHexinHQBox.isSelected()));
             mwclient.getConfig().setParam("STATUSINTRAYICON", Boolean.toString(useStatusForIconBox.isSelected()));
+            mwclient.getConfig().setParam("USEAWTINTERFACE", Boolean.toString(useAWTInterfaceBox.isSelected()));
             mwclient.getConfig().setParam("ShowUnitTechBase", Boolean.toString(showUnitTechBaseCheckBox.isSelected()));
             mwclient.getConfig().setParam("DARKERMAP", Boolean.toString(darkenMapBox.isSelected()));
             mwclient.getConfig().setParam("BMPREVIEWIMAGE", Boolean.toString(bmPreviewImageBox.isSelected()));

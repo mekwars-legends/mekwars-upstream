@@ -26,8 +26,8 @@ import megamek.client.Client;
 import megamek.client.CloseClientListener;
 import megamek.client.bot.BotClient;
 import megamek.client.bot.TestBot;
-import megamek.client.bot.ui.swing.BotGUI;
-import megamek.client.ui.swing.ClientGUI;
+import megamek.client.bot.ui.AWT.BotGUI;
+import megamek.client.ui.AWT.ClientGUI;
 import megamek.common.Board;
 import megamek.common.Coords;
 import megamek.common.Entity;
@@ -60,7 +60,9 @@ class ClientThread extends Thread implements CloseClientListener {
     private int serverport;
     private MWClient mwclient;
     private Client client;
-    private ClientGUI Gui;
+    private ClientGUI awtGui;
+    private megamek.client.ui.swing.ClientGUI swingGui;
+    private boolean awtGUI = false;
 
     private ArrayList<Unit> mechs = new ArrayList<Unit>();
     private ArrayList<CUnit> autoarmy = new ArrayList<CUnit>();// from server's
@@ -98,7 +100,7 @@ class ClientThread extends Thread implements CloseClientListener {
     public void run() {
         boolean playerUpdate = false;
         boolean nightGame = false;
-
+        awtGUI = mwclient.getConfig().isParam("USEAWTINTERFACE");
         CArmy currA = mwclient.getPlayer().getLockedArmy();
         client = new Client(myname, serverip, serverport);
         client.addCloseClientListener(this);
@@ -128,14 +130,27 @@ class ClientThread extends Thread implements CloseClientListener {
             CampaignData.mwlog.errLog(ex);
         }
 
-        if (Gui != null) {
-            for (Client client2 : Gui.getBots().values()) {
-                client2.die();
+        if (awtGUI) {
+            if (awtGui != null) {
+                for (Client client2 : awtGui.getBots().values()) {
+                    client2.die();
+                }
+                awtGui.getBots().clear();
             }
-            Gui.getBots().clear();
+            awtGui = new ClientGUI(client);
+            awtGui.initialize();
+            swingGui = null;
+        } else {
+            if (swingGui != null) {
+                for (Client client2 : swingGui.getBots().values()) {
+                    client2.die();
+                }
+                swingGui.getBots().clear();
+            }
+            awtGui = null;
+            swingGui = new megamek.client.ui.swing.ClientGUI(client);
+            swingGui.initialize();
         }
-        Gui = new ClientGUI(client);
-        Gui.initialize();
 
         if (mwclient.getGameOptions().size() < 1) {
             mwclient.setWaiting(true);
@@ -391,7 +406,11 @@ class ClientThread extends Thread implements CloseClientListener {
                 bot.retrieveServerInfo();
                 Thread.sleep(125);
 
-                Gui.getBots().put(name, bot);
+                if (awtGUI) {
+                    awtGui.getBots().put(name, bot);
+                } else {
+                    swingGui.getBots().put(name, bot);
+                }
 
                 if (mwclient.isBotsOnSameTeam()) {
                     bot.getLocalPlayer().setTeam(5);
@@ -549,7 +568,11 @@ class ClientThread extends Thread implements CloseClientListener {
                                 linkMegaMekC3Units(currA, slave, currA.getC3Network().get(slave));
                             }
 
-                            Gui.chatlounge.refreshEntities();
+                            if (awtGUI) {
+                                awtGui.chatlounge.refreshEntities();
+                            } else {
+                                swingGui.chatlounge.refreshEntities();
+                            }
                         }
                     }
                 }
