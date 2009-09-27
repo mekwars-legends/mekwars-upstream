@@ -1590,6 +1590,7 @@ src/server/campaign/commands/ColorCommand.java -text
 src/server/campaign/commands/Command.java -text
 src/server/campaign/commands/CommenceOperationCommand.java -text
 src/server/campaign/commands/CreateArmyCommand.java -text
+src/server/campaign/commands/CreateChatRoomCommand.java -text
 src/server/campaign/commands/DeactivateCommand.java -text
 src/server/campaign/commands/DeclineAttackFromReserveCommand.java -text
 src/server/campaign/commands/DefectCommand.java -text
@@ -1946,6 +1947,7 @@ src/server/campaign/pilot/skills/TacticalGeniusSkill.java -text
 src/server/campaign/pilot/skills/TraitSkill.java -text
 src/server/campaign/pilot/skills/VDNI.java -text
 src/server/campaign/pilot/skills/WeaponSpecialistSkill.java -text
+src/server/campaign/util/ChatRoom.java -text
 src/server/campaign/util/ELORanking.java -text
 src/server/campaign/util/EXPRankingContainer.java -text
 src/server/campaign/util/ExclusionList.java -text

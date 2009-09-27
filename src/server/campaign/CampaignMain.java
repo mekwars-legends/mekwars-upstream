@@ -26,6 +26,7 @@ import java.sql.Statement;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -151,6 +152,7 @@ import server.campaign.pilot.skills.TacticalGeniusSkill;
 import server.campaign.pilot.skills.TraitSkill;
 import server.campaign.pilot.skills.VDNI;
 import server.campaign.pilot.skills.WeaponSpecialistSkill;
+import server.campaign.util.ChatRoom;
 import server.campaign.util.HouseRankingHelpContainer;
 import server.campaign.util.MechStatistics;
 import server.campaign.util.Statistics;
@@ -255,6 +257,8 @@ public final class CampaignMain implements Serializable {
     private boolean validBBVersion = true;
 
     private Date housePlanetDate = new Date();
+
+    private HashMap<String, ChatRoom> chatRooms = new HashMap<String, ChatRoom>();
 
     /**
      * This is a hash collection of all the players that have yet to log into
@@ -1510,6 +1514,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("CRA", new CreateArmyCommand());
         //
         Commands.put("CREATEARMYFROMMUL", new CreateArmyFromMulCommand());
+        Commands.put("CREATECHATROOM", new CreateChatRoomCommand());
         Commands.put("CREATEMERCFACTION", new CreateMercFactionCommand());
         Commands.put("CREATESUBFACTION", new CreateSubFactionCommand());
         Commands.put("CREATEPILOT", new CreatePilotCommand());
@@ -2599,6 +2604,18 @@ public final class CampaignMain implements Serializable {
         }
 
         return -1.0;
+    }
+
+    public ChatRoom getChatRoom(String chatRoomName) {
+        return chatRooms.get(chatRoomName);
+    }
+
+    public Collection<ChatRoom> getChatRoomList() {
+        return chatRooms.values();
+    }
+
+    public void addChatRoom(String chatRoomName, ChatRoom chatRoom) {
+        chatRooms.put(chatRoomName.toLowerCase(), chatRoom);
     }
 
     /**

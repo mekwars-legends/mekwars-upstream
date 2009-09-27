@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ Bug 2829144: Repods bugged under current dev
 + RFE: Added AWT/Swing MM Interface selector back into client.
 + Bug 2852434: Setting Faction Tech level to ALL
 + Bug: Planet editor did not have the correct number of Factory Combos
