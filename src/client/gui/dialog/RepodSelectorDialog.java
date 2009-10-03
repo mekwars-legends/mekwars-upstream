@@ -347,9 +347,9 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
             try {
                 MechSummary ms = mechsCurrent[mechList.getSelectedIndex()];
                 if (global) {
-                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c repod#" + unitId + "#GLOBAL#" + ms.getName());
+                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c repod#" + unitId + "#GLOBAL#" + ms.getModel());
                 } else {
-                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c repod#" + unitId + "#" + ms.getName());
+                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c repod#" + unitId + "#" + ms.getModel());
                 }
                 Thread.sleep(125);
                 dispose();

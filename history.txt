@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ Bug 2869196: Repods still not working
 + Bug 2829144: Repods bugged under current dev
 + RFE: Added AWT/Swing MM Interface selector back into client.
 + Bug 2852434: Setting Faction Tech level to ALL
