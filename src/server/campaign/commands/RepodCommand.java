@@ -209,10 +209,10 @@ public class RepodCommand implements Command {
                     return;
                 }
             } else if (Boolean.parseBoolean(h.getConfig("RandomRepodOnly"))) {// there
-                                                                              // is
-                                                                              // a
-                                                                              // real
-                                                                              // target
+                // is
+                // a
+                // real
+                // target
                 CampaignMain.cm.toUser("Only random repods are allowed.", Username, true);
                 return;
             }
@@ -271,7 +271,7 @@ public class RepodCommand implements Command {
                                 if (cm.isOmni() && chassis.equalsIgnoreCase(targetChassis)) {
 
                                     // good Omni possibility
-                                    String model = cm.getModelName();
+                                    String model = cme.getModel();
 
                                     if (target.equals("<none>") || target.equals("RANDOM")) {
 
@@ -309,7 +309,7 @@ public class RepodCommand implements Command {
                                     }
 
                                 }// end if(cm.isOmni() &&
-                                 // chassis.equals(targetChassis)
+                                // chassis.equals(targetChassis)
                             }// end if (Filename.startsWith(targetChassis))
                         } else {
                             CampaignData.mwlog.mainLog("File " + prodFile + " has a problem with line:" + l);

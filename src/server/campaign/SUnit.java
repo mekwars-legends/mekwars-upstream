@@ -1191,10 +1191,10 @@ public final class SUnit extends Unit {
             setModelname(new String(unitEntity.getChassis() + " " + unitEntity.getModel()).trim());
         } else {
 
-            if (unitEntity.getModel().trim().length() > 0) {
-                setModelname(unitEntity.getModel().trim());
-            } else {
+            if (unitEntity.getChassis().trim().length() > 0) {
                 setModelname(unitEntity.getChassis().trim());
+            } else {
+                setModelname(unitEntity.getModel().trim());
             }
 
         }
