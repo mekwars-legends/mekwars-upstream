@@ -1698,7 +1698,6 @@ src/server/campaign/commands/UnitPositionCommand.java -text
 src/server/campaign/commands/UseRewardPointsCommand.java -text
 src/server/campaign/commands/ValidateEmailCommand.java -text
 src/server/campaign/commands/VoteCommand.java -text
-src/server/campaign/commands/admin/AddOmniVariantModCommand.java -text
 src/server/campaign/commands/admin/AddSongCommand.java -text
 src/server/campaign/commands/admin/AddTraitCommand.java -text
 src/server/campaign/commands/admin/AdminAddServerOpFlagsCommand.java -text

@@ -276,9 +276,9 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
             for (; x < mechs.length; x++) {
 
                 // String chassis = mechs[x].getChassis();
-                String model = mechs[x].getModel();
+                String model = UnitUtils.getMechSummaryFileName(mechs[x]);
 
-                if (chassieList.get(model) != null && !vMechs.contains(mechs[x].getName())) {
+                if (chassieList.get(model) != null && !vMechs.contains(mechs[x].getModel())) {
                     vMechs.addElement(mechs[x]);
                 }// end if(chassie)
             }// end for(all mechs)
@@ -327,7 +327,7 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
 
         String result = makeLength(ms.getModel(), 12) + " " + makeLength(ms.getChassis(), 10) + " " + makeLength("" + ms.getTons(), 3) + " " + makeLength("" + ms.getBV(), 5);
 
-        String chassieMods = chassieList.get(ms.getModel());
+        String chassieMods = chassieList.get(UnitUtils.getMechSummaryFileName(ms));
         // CampaignData.mwlog.errLog("Name: "+ms.getName()+" Mods: "+chassieMods);
 
         StringTokenizer mods = new StringTokenizer(chassieMods, "$");
@@ -347,9 +347,9 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
             try {
                 MechSummary ms = mechsCurrent[mechList.getSelectedIndex()];
                 if (global) {
-                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c repod#" + unitId + "#GLOBAL#" + ms.getModel());
+                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c repod#" + unitId + "#GLOBAL#" + ms.getSourceFile().getName());
                 } else {
-                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c repod#" + unitId + "#" + ms.getModel());
+                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c repod#" + unitId + "#" + ms.getSourceFile().getName());
                 }
                 Thread.sleep(125);
                 dispose();

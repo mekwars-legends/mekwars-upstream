@@ -271,8 +271,6 @@ public class RepodCommand implements Command {
                                 if (cm.isOmni() && chassis.equalsIgnoreCase(targetChassis)) {
 
                                     // good Omni possibility
-                                    String model = cme.getModel();
-
                                     if (target.equals("<none>") || target.equals("RANDOM")) {
 
                                         if (target.equals("RANDOM") && cm.getModelName().equals(m.getModelName())) {
@@ -290,19 +288,10 @@ public class RepodCommand implements Command {
                                             int repodFluMod = Integer.parseInt(h.getConfig(repodInfluCfg));
                                             int repodCompMod = Integer.parseInt(h.getConfig(repodCompCfg));
 
-                                            if (CampaignMain.cm.getOmniVariantMods().get(model) != null) {
-                                                String mods = CampaignMain.cm.getOmniVariantMods().get(model);
-                                                StringTokenizer modlist = new StringTokenizer(mods, "$");
-                                                repodMoneyMod += Integer.parseInt(modlist.nextToken());
-                                                repodCompMod += Integer.parseInt(modlist.nextToken());
-                                                repodFluMod += Integer.parseInt(modlist.nextToken());
-
-                                            }
-
-                                            result += model + "#" + repodMoneyMod + "$" + repodCompMod + "$" + repodFluMod + "#";
+                                            result += Filename + "#" + repodMoneyMod + "$" + repodCompMod + "$" + repodFluMod + "#";
                                         }
                                     } else {
-                                        if (target.equalsIgnoreCase(model)) {
+                                        if (target.equalsIgnoreCase(Filename)) {
                                             createOmni(m, Filename, m.getId(), p, possible, false);
                                             return;
                                         }
@@ -404,14 +393,6 @@ public class RepodCommand implements Command {
             String repodCompCfg = "RepodComp" + Unit.getWeightClassDesc(m.getWeightclass());
             String repodRefreshCfg = "RepodRefreshTime" + Unit.getWeightClassDesc(m.getWeightclass());
             int repodMoneyMod = 0, repodCompMod = 0, repodFluMod = 0;
-
-            if (CampaignMain.cm.getOmniVariantMods().get(cm.getModelName()) != null) {
-                String mods = CampaignMain.cm.getOmniVariantMods().get(cm.getModelName());
-                StringTokenizer modList = new StringTokenizer(mods, "$");
-                repodMoneyMod = Integer.parseInt(modList.nextToken());
-                repodCompMod = Integer.parseInt(modList.nextToken());
-                repodFluMod = Integer.parseInt(modList.nextToken());
-            }
 
             int repodRandomMod = Integer.parseInt(h.getConfig("RepodRandomMod"));
 

@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ Bug 2872537: Repods of units that are not on the buildtables
 + Bug 2872768: Omni Units displaying names incorrectly
 + Bug 2869196: Repods still not working
 + Bug 2829144: Repods bugged under current dev

@@ -212,8 +212,6 @@ public final class CampaignMain implements Serializable {
 
     private Hashtable<String, MechStatistics> MechStats = new Hashtable<String, MechStatistics>();
 
-    private Hashtable<String, String> omniVariantMods = new Hashtable<String, String>();
-
     private Hashtable<Integer, SPilotSkill> pilotSkills = new Hashtable<Integer, SPilotSkill>();
 
     private Hashtable<String, Equipment> blackMarketEquipmentCostTable = new Hashtable<String, Equipment>();
@@ -388,7 +386,6 @@ public final class CampaignMain implements Serializable {
         }
 
         // misc loads.
-        cm.loadOmniVariantMods();
         cm.loadBlackMarketSettings();
 
         // create command hashs
@@ -531,9 +528,6 @@ public final class CampaignMain implements Serializable {
 
             saveFactionData();
             savePlanetData();
-
-            // Save omni variant mods
-            cm.saveOmniVariantMods();
 
             // Save Mech-Stats
             FileOutputStream out = new FileOutputStream("./campaign/mechstat.dat");
@@ -1405,7 +1399,6 @@ public final class CampaignMain implements Serializable {
         Commands.put("ACCEPTCONTRACT", new AcceptContractCommand());
         Commands.put("ACTIVATE", new ActivateCommand());
         Commands.put("ADDLEADER", new AddLeaderCommand());
-        Commands.put("ADDOMNIVARIANTMOD", new AddOmniVariantModCommand());
         Commands.put("ADDPARTS", new AddPartsCommand());
         Commands.put("ADDSONG", new AddSongCommand());
         Commands.put("ADDTRAIT", new AddTraitCommand());
@@ -3189,38 +3182,6 @@ public final class CampaignMain implements Serializable {
         }
     }
 
-    public void setOmniVariantMods(Hashtable<String, String> table) {
-        omniVariantMods = table;
-    }
-
-    public Hashtable<String, String> getOmniVariantMods() {
-        return omniVariantMods;
-    }
-
-    public void saveOmniVariantMods() {
-
-        if (omniVariantMods.size() < 1) {
-            return;
-        }
-
-        try {
-
-            FileOutputStream out = new FileOutputStream("./campaign/omnivariantmods.dat");
-            PrintStream p = new PrintStream(out);
-
-            for (String currKey : cm.getOmniVariantMods().keySet()) {
-                String currMod = cm.getOmniVariantMods().get(currKey);
-                p.println(currKey + "#" + currMod);
-            }
-
-            p.close();
-            out.close();
-        } catch (Exception ex) {
-            CampaignData.mwlog.errLog("Error while saving omnivariantmods.dat");
-            CampaignData.mwlog.errLog(ex);
-        }
-    }
-
     /**
      * @author Torren (Jason Tighe) This method will go through and check all
      *         the player files and forceible unenroll anyone that is over
@@ -3372,21 +3333,6 @@ public final class CampaignMain implements Serializable {
         } catch (Exception ex) {
         }
 
-    }
-
-    public void loadOmniVariantMods() {
-        try {
-            File configFile = new File("./campaign/omnivariantmods.dat");
-            FileInputStream fis = new FileInputStream(configFile);
-            BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
-            while (dis.ready()) {
-                StringTokenizer line = new StringTokenizer(dis.readLine(), "#");
-                cm.getOmniVariantMods().put(line.nextToken(), line.nextToken());
-            }
-            dis.close();
-            fis.close();
-        } catch (Exception ex) {
-        }
     }
 
     public void setArchiving(boolean archive) {
