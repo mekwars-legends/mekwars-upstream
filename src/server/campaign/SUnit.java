@@ -1187,7 +1187,7 @@ public final class SUnit extends Unit {
          * setWeightclass(getEntityWeight(this.getEntity()));
          */
         // Set Modelname
-        if (getType() != Unit.MEK && !getEntity().isOmni()) {
+        if (getType() != Unit.MEK || getEntity().isOmni()) {
             setModelname(new String(unitEntity.getChassis() + " " + unitEntity.getModel()).trim());
         } else {
 
