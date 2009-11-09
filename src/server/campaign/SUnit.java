@@ -197,7 +197,7 @@ public final class SUnit extends Unit {
                 while (allTypes.hasMoreElements() && !defaultFound) {
                     AmmoType currType = allTypes.nextElement();
 
-                    if (currType.getTechLevel() <= en.getTechLevel() && currType.getMunitionType() == AmmoType.M_STANDARD && currType.getRackSize() == at.getRackSize()) {
+                    if ((currType.getTechLevel() <= en.getTechLevel()) && (currType.getMunitionType() == AmmoType.M_STANDARD) && (currType.getRackSize() == at.getRackSize())) {
                         mAmmo.changeAmmoType(currType);
                         mAmmo.setShotsLeft(at.getShots());
                         defaultFound = true;
@@ -219,17 +219,17 @@ public final class SUnit extends Unit {
      */
     public static boolean mayBeSoldOnMarket(SUnit u) {
 
-        if (u.getType() == Unit.BATTLEARMOR && !CampaignMain.cm.getBooleanConfig("BAMayBeSoldOnBM")) {
+        if ((u.getType() == Unit.BATTLEARMOR) && !CampaignMain.cm.getBooleanConfig("BAMayBeSoldOnBM")) {
             return false;
-        } else if (u.getType() == Unit.PROTOMEK && !CampaignMain.cm.getBooleanConfig("ProtosMayBeSoldOnBM")) {
+        } else if ((u.getType() == Unit.PROTOMEK) && !CampaignMain.cm.getBooleanConfig("ProtosMayBeSoldOnBM")) {
             return false;
-        } else if (u.getType() == Unit.AERO && !CampaignMain.cm.getBooleanConfig("AerosMayBeSoldOnBM")) {
+        } else if ((u.getType() == Unit.AERO) && !CampaignMain.cm.getBooleanConfig("AerosMayBeSoldOnBM")) {
             return false;
-        } else if (u.getType() == Unit.INFANTRY && !CampaignMain.cm.getBooleanConfig("InfantryMayBeSoldOnBM")) {
+        } else if ((u.getType() == Unit.INFANTRY) && !CampaignMain.cm.getBooleanConfig("InfantryMayBeSoldOnBM")) {
             return false;
-        } else if (u.getType() == Unit.VEHICLE && !CampaignMain.cm.getBooleanConfig("VehsMayBeSoldOnBM")) {
+        } else if ((u.getType() == Unit.VEHICLE) && !CampaignMain.cm.getBooleanConfig("VehsMayBeSoldOnBM")) {
             return false;
-        } else if ((u.getType() == Unit.MEK || u.getType() == Unit.QUAD) && !CampaignMain.cm.getBooleanConfig("MeksMayBeSoldOnBM")) {
+        } else if (((u.getType() == Unit.MEK) || (u.getType() == Unit.QUAD)) && !CampaignMain.cm.getBooleanConfig("MeksMayBeSoldOnBM")) {
             return false;
         }
 
@@ -245,7 +245,7 @@ public final class SUnit extends Unit {
             return 0;
         }
 
-        if (typeid == Unit.INFANTRY && CampaignMain.cm.getBooleanConfig("FootInfTakeNoBays")) {
+        if ((typeid == Unit.INFANTRY) && CampaignMain.cm.getBooleanConfig("FootInfTakeNoBays")) {
 
             // check types
             boolean isFoot = model.startsWith("Foot");
@@ -501,7 +501,7 @@ public final class SUnit extends Unit {
             result.append("$");
         }
 
-        if (unitEntity instanceof Mech || unitEntity instanceof Tank) {
+        if ((unitEntity instanceof Mech) || (unitEntity instanceof Tank)) {
             int mgCount = CampaignMain.cm.getMachineGunCount(unitEntity.getWeaponList());
             result.append(mgCount);
             result.append("$");
@@ -512,13 +512,13 @@ public final class SUnit extends Unit {
                     for (int slot = 0; slot < unitEntity.getNumberOfCriticals(location); slot++) {
                         CriticalSlot crit = unitEntity.getCritical(location, slot);
 
-                        if (crit == null || crit.getType() != CriticalSlot.TYPE_EQUIPMENT) {
+                        if ((crit == null) || (crit.getType() != CriticalSlot.TYPE_EQUIPMENT)) {
                             continue;
                         }
 
                         Mounted m = unitEntity.getEquipment(crit.getIndex());
 
-                        if (m == null || !(m.getType() instanceof WeaponType)) {
+                        if ((m == null) || !(m.getType() instanceof WeaponType)) {
                             continue;
                         }
 
@@ -709,7 +709,7 @@ public final class SUnit extends Unit {
              * still exists. If not, the server probably crashed and the unit
              * should be returned to normal.
              */
-            if (newstate == STATUS_FORSALE && CampaignMain.cm.getMarket().getListingForUnit(getId()) == null) {
+            if ((newstate == STATUS_FORSALE) && (CampaignMain.cm.getMarket().getListingForUnit(getId()) == null)) {
                 setStatus(STATUS_OK);
             } else if (CampaignMain.cm.isUsingAdvanceRepair()) {
                 setStatus(STATUS_OK);
@@ -794,8 +794,8 @@ public final class SUnit extends Unit {
 
             setScrappableFor(TokenReader.readInt(ST));
 
-            if (CampaignMain.cm.isUsingAdvanceRepair() && (unitEntity instanceof Mech || unitEntity instanceof Tank)) {
-                UnitUtils.applyBattleDamage(unitEntity, TokenReader.readString(ST), (CampaignMain.cm.getRTT() != null && CampaignMain.cm.getRTT().unitRepairTimes(getId()) != null));
+            if (CampaignMain.cm.isUsingAdvanceRepair() && ((unitEntity instanceof Mech) || (unitEntity instanceof Tank))) {
+                UnitUtils.applyBattleDamage(unitEntity, TokenReader.readString(ST), ((CampaignMain.cm.getRTT() != null) && (CampaignMain.cm.getRTT().unitRepairTimes(getId()) != null)));
             } else {
                 TokenReader.readString(ST);
             }
@@ -850,7 +850,7 @@ public final class SUnit extends Unit {
                 if (getId() == 0) {
                     setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
                 }
-                if (newstate == Unit.STATUS_FORSALE && CampaignMain.cm.getMarket().getListingForUnit(getId()) == null) {
+                if ((newstate == Unit.STATUS_FORSALE) && (CampaignMain.cm.getMarket().getListingForUnit(getId()) == null)) {
                     setStatus(Unit.STATUS_OK);
                 } else if (CampaignMain.cm.isUsingAdvanceRepair()) {
                     setStatus(Unit.STATUS_OK);
@@ -868,8 +868,8 @@ public final class SUnit extends Unit {
 
                 unitEntity.setSpotlightState(rs.getBoolean("uIsUsingSpotlight"));
 
-                if (CampaignMain.cm.isUsingAdvanceRepair() && (unitEntity instanceof Mech || unitEntity instanceof Tank)) {
-                    UnitUtils.applyBattleDamage(unitEntity, rs.getString("uBattleDamage"), (CampaignMain.cm.getRTT() != null & CampaignMain.cm.getRTT().unitRepairTimes(getId()) != null));
+                if (CampaignMain.cm.isUsingAdvanceRepair() && ((unitEntity instanceof Mech) || (unitEntity instanceof Tank))) {
+                    UnitUtils.applyBattleDamage(unitEntity, rs.getString("uBattleDamage"), ((CampaignMain.cm.getRTT() != null) & (CampaignMain.cm.getRTT().unitRepairTimes(getId()) != null)));
                 }
 
                 setEntity(unitEntity);
@@ -992,11 +992,11 @@ public final class SUnit extends Unit {
         }
         String dialogBox = "<a href=\"MEKINFO" + getEntity().getChassis() + " " + getEntity().getModel() + "#" + getBV() + "#" + getPilot().getGunnery() + "#" + getPilot().getPiloting() + "\">" + getModelName() + "</a>";
 
-        if (getType() == Unit.MEK || getType() == Unit.VEHICLE) {
+        if ((getType() == Unit.MEK) || (getType() == Unit.VEHICLE)) {
             return idToShow + " " + dialogBox + " (" + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ") [" + getPilot().getExperience() + " EXP " + getPilot().getSkillString(false) + "] Kills: " + getPilot().getKills() + " " + getProducer() + ". BV: " + getBV() + " " + status;
         }
 
-        if (getType() == Unit.INFANTRY || getType() == Unit.BATTLEARMOR) {
+        if ((getType() == Unit.INFANTRY) || (getType() == Unit.BATTLEARMOR)) {
             if (((Infantry) getEntity()).isAntiMek()) {
                 return idToShow + " " + dialogBox + " (" + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ") [" + getPilot().getExperience() + " EXP " + getPilot().getSkillString(false) + "] Kills: " + getPilot().getKills() + " " + getProducer() + ". BV: " + getBV() + " " + status;
             }
@@ -1010,9 +1010,9 @@ public final class SUnit extends Unit {
      */
     public String getSmallDescription() {
         String result;
-        if (getType() == Unit.MEK || getType() == Unit.VEHICLE || getType() == Unit.AERO) {
+        if ((getType() == Unit.MEK) || (getType() == Unit.VEHICLE) || (getType() == Unit.AERO)) {
             result = getModelName() + " [" + getPilot().getGunnery() + "/" + getPilot().getPiloting();
-        } else if (getType() == Unit.INFANTRY || getType() == Unit.BATTLEARMOR) {
+        } else if ((getType() == Unit.INFANTRY) || (getType() == Unit.BATTLEARMOR)) {
             if (((Infantry) getEntity()).isAntiMek()) {
                 result = getModelName() + " [" + getPilot().getGunnery() + "/" + getPilot().getPiloting();
             } else {
@@ -1045,11 +1045,11 @@ public final class SUnit extends Unit {
 
     public String getVerboseModelName() {
         // Includes Pilot Stats in ModelName
-        if (getType() == Unit.MEK || getType() == Unit.VEHICLE || getType() == Unit.AERO) {
+        if ((getType() == Unit.MEK) || (getType() == Unit.VEHICLE) || (getType() == Unit.AERO)) {
             return getModelName() + " (" + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ")";
         }
 
-        if (getType() == Unit.INFANTRY || getType() == Unit.BATTLEARMOR) {
+        if ((getType() == Unit.INFANTRY) || (getType() == Unit.BATTLEARMOR)) {
             if (((Infantry) getEntity()).isAntiMek()) {
                 return getModelName() + " (" + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ")";
             }
@@ -1078,7 +1078,7 @@ public final class SUnit extends Unit {
             // positive
             // number.
             int FastHoverBVMod = CampaignMain.cm.getIntegerConfig("FastHoverBVMod");
-            if (FastHoverBVMod > 0 && getType() == Unit.VEHICLE && getEntity().getMovementMode() == megamek.common.IEntityMovementMode.HOVER) {
+            if ((FastHoverBVMod > 0) && (getType() == Unit.VEHICLE) && (getEntity().getMovementMode() == megamek.common.EntityMovementMode.HOVER)) {
                 if (getEntity().getWalkMP() >= 8) {
                     calcedBV += FastHoverBVMod;
                 }
@@ -1120,7 +1120,7 @@ public final class SUnit extends Unit {
             return false;
         }
 
-        if (m.getId() == getId() && m.getUnitFilename().equals(getUnitFilename()) && m.getPilot().getGunnery() == getPilot().getGunnery() && m.getPilot().getPiloting() == getPilot().getPiloting()) {
+        if ((m.getId() == getId()) && m.getUnitFilename().equals(getUnitFilename()) && (m.getPilot().getGunnery() == getPilot().getGunnery()) && (m.getPilot().getPiloting() == getPilot().getPiloting())) {
             return true;
         }
 
@@ -1149,7 +1149,7 @@ public final class SUnit extends Unit {
 
         // Lazy Bug report. non Anti-Mek BA should not have a Piloting skill
         // better/worse then 5
-        if (getEntity() instanceof BattleArmor && !((BattleArmor) getEntity()).isAntiMek() && !hasVacantPilot()) {
+        if ((getEntity() instanceof BattleArmor) && !((BattleArmor) getEntity()).isAntiMek() && !hasVacantPilot()) {
             mPilot.setPiloting(5);
         }
 
@@ -1187,7 +1187,7 @@ public final class SUnit extends Unit {
          * setWeightclass(getEntityWeight(this.getEntity()));
          */
         // Set Modelname
-        if (getType() != Unit.MEK || getEntity().isOmni()) {
+        if ((getType() != Unit.MEK) || getEntity().isOmni()) {
             setModelname(new String(unitEntity.getChassis() + " " + unitEntity.getModel()).trim());
         } else {
 
@@ -1202,7 +1202,7 @@ public final class SUnit extends Unit {
 
         if (getModelName().equals("OMG-UR-FD")) {
             setProducer("Error loading unit. Tried to build from " + getUnitFilename());
-            setWeightclass(SUnit.LIGHT);
+            setWeightclass(Unit.LIGHT);
         }
 
         /*
@@ -1414,7 +1414,7 @@ public final class SUnit extends Unit {
         // Check the vehicle list to see if they SO's want it to be an omni but
         // do not have it flagged
         // In the MM File.
-        if (getType() == Unit.VEHICLE && !isOmni) {
+        if ((getType() == Unit.VEHICLE) && !isOmni) {
             try {
                 FileInputStream fis = new FileInputStream("./data/buildtables/omnivehiclelist.txt");
                 BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
@@ -1471,7 +1471,7 @@ public final class SUnit extends Unit {
 
         while (pilotSkills.hasNext()) {
             SPilotSkill skill = (SPilotSkill) pilotSkills.next();
-            if (skill instanceof WeaponSpecialistSkill || skill instanceof PainResistanceSkill) {
+            if ((skill instanceof WeaponSpecialistSkill) || (skill instanceof PainResistanceSkill)) {
                 skillBV += skill.getBVMod(getEntity(), (SPilot) getPilot());
             } else {
                 skillBV += skill.getBVMod(getEntity());
@@ -1497,10 +1497,11 @@ public final class SUnit extends Unit {
         lastCombatPilot = pilot;
     }
 
+    @Override
     public void setWeightclass(int i) {
 
-        if (i > SUnit.ASSAULT || i < SUnit.LIGHT) {
-            i = SUnit.getEntityWeight(getEntity());
+        if ((i > Unit.ASSAULT) || (i < Unit.LIGHT)) {
+            i = Unit.getEntityWeight(getEntity());
         }
 
         super.setWeightclass(i);
