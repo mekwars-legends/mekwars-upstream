@@ -63,7 +63,7 @@ import javax.swing.SpringLayout;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import megamek.client.ui.MechView;
+import megamek.client.ui.AWT.MechView;
 import megamek.client.ui.AWT.UnitFailureDialog;
 import megamek.client.ui.AWT.UnitLoadingDialog;
 import megamek.common.Entity;
@@ -244,7 +244,7 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
         unitLoadingDialog.setVisible(false);
 
         final Map<String, String> hFailedFiles = MechSummaryCache.getInstance().getFailedFiles();
-        if (hFailedFiles != null && hFailedFiles.size() > 0) {
+        if ((hFailedFiles != null) && (hFailedFiles.size() > 0)) {
             new UnitFailureDialog(clientgui, hFailedFiles); // self-showing
             // dialog
         }
@@ -278,7 +278,7 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
                 // String chassis = mechs[x].getChassis();
                 String model = UnitUtils.getMechSummaryFileName(mechs[x]);
 
-                if (chassieList.get(model) != null && !vMechs.contains(mechs[x].getModel())) {
+                if ((chassieList.get(model) != null) && !vMechs.contains(mechs[x].getModel())) {
                     vMechs.addElement(mechs[x]);
                 }// end if(chassie)
             }// end for(all mechs)
@@ -449,7 +449,7 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
 
         mechViewLeft.setEditable(false);
         mechViewRight.setEditable(false);
-        if (populateTextFields && mechView != null) {
+        if (populateTextFields && (mechView != null)) {
             mechViewLeft.setText(mechView.getMechReadoutBasic());
             mechViewRight.setText(mechView.getMechReadoutLoadout());
         } else {
