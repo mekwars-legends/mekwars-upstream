@@ -142,7 +142,7 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
             String tempstr = ST.nextToken();
             if (tempstr.equals("GLOBAL")) {
                 global = true;
-            } else {
+            } else if (tempstr.contains(".")) {
                 String chassieMods = ST.nextToken();
                 // CampaignData.mwlog.errLog("Chassie: "+tempstr+" mods: "+chassieMods+" ChassieList: "+chassieList);
                 this.chassieList.put(tempstr, chassieMods);

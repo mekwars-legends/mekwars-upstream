@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ Possible fix for Repod issues.
 + Updated code for new MegaMek.jar
 + Bug 2872537: Repods of units that are not on the buildtables
 + Bug 2872768: Omni Units displaying names incorrectly

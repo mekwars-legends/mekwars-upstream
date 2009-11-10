@@ -278,7 +278,7 @@ public class RepodCommand implements Command {
                                         }
 
                                         // CampaignData.mwlog.errLog("FileName: "+Filename+" Model: "+model);
-                                        if (!variants.contains(Filename)) {
+                                        if (!variants.contains(Filename) && Filename.contains(".")) {
                                             variants.add(Filename);
                                             String repodMoneyCfg = "RepodCost" + Unit.getWeightClassDesc(cm.getWeightclass());
                                             String repodInfluCfg = "RepodFlu" + Unit.getWeightClassDesc(cm.getWeightclass());
@@ -383,7 +383,7 @@ public class RepodCommand implements Command {
         if (!global) {
 
             String needPartsList = p.getUnitParts().canRepodUnit(m.getEntity(), cm.getEntity()).trim();
-            if (CampaignMain.cm.getBooleanConfig("UsePartsRepair") && needPartsList.length() > 0) {
+            if (CampaignMain.cm.getBooleanConfig("UsePartsRepair") && (needPartsList.length() > 0)) {
                 CampaignMain.cm.toUser("You do not have enough parts to repod your " + m.getModelName() + " to " + cm.getModelName() + "<br> you need the following parts:<br>" + needPartsList, Username);
                 return;
             }
