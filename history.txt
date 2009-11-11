@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ More Repod issue fixes.
 + Possible fix for Repod issues.
 + Updated code for new MegaMek.jar
 + Bug 2872537: Repods of units that are not on the buildtables

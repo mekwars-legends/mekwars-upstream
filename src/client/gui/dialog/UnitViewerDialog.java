@@ -653,15 +653,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
                     setVisible(false);
                     int weightClass = chWeightClass.getSelectedIndex();
 
-                    if ((unitFile == null) || unitFile.equals("null")) {
-                        unitFile = ms.getSourceFile().getName();
-                    }
-
-                    if (unitFile.indexOf("/") > -1) {
-                        unitFile = unitFile.substring(unitFile.lastIndexOf("/") + 1);
-                    } else if (unitFile.indexOf("\\") > -1) {
-                        unitFile = unitFile.substring(unitFile.lastIndexOf("\\") + 1);
-                    }
+                    unitFile = UnitUtils.getMechSummaryFileName(ms);
 
                     String fluff = JOptionPane.showInputDialog(clientgui, "Fluff text for " + unit);
 
@@ -704,17 +696,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
                 MechSummary ms = mechsCurrent[mechList.getSelectedIndex()];
 
                 String unitFile;
-                if (ms.getEntryName() != null) {
-                    unitFile = ms.getEntryName();
-                } else {
-                    unitFile = ms.getSourceFile().getName();
-                    if (unitFile.indexOf("\\") > 0) {
-                        unitFile = unitFile.substring(unitFile.lastIndexOf("\\"));
-                    }
-                    if (unitFile.indexOf("/") > 0) {
-                        unitFile = unitFile.substring(unitFile.lastIndexOf("/"));
-                    }
-                }
+                unitFile = UnitUtils.getMechSummaryFileName(ms);
                 setVisible(false);
 
                 if ((unitFile != null) && !unitFile.equals("null")) {
