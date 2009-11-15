@@ -29,6 +29,7 @@ import megamek.common.Entity;
 import megamek.common.Infantry;
 import megamek.common.Mech;
 import megamek.common.Mounted;
+import megamek.common.OffBoardDirection;
 import megamek.common.WeaponType;
 import client.MWClient;
 
@@ -158,7 +159,7 @@ public class CUnit extends Unit {
         }
 
         // set autoeject if its a mech
-        if (UnitEntity instanceof Mech && ST.hasMoreElements()) {
+        if ((UnitEntity instanceof Mech) && ST.hasMoreElements()) {
             ((Mech) UnitEntity).setAutoEject(Boolean.parseBoolean(TokenReader.readString(ST)));
         }
 
@@ -243,7 +244,9 @@ public class CUnit extends Unit {
         // setType(Unit.VEHICLE);//auto units are always vehs ...
         createEntity();// make the entity
         if (distance > 0) {
-            UnitEntity.setOffBoard(distance, edge);// move it offboard
+            UnitEntity.setOffBoard(distance, OffBoardDirection.getDirection(edge));// move
+                                                                                   // it
+                                                                                   // offboard
         }
     }
 
@@ -251,11 +254,11 @@ public class CUnit extends Unit {
      * @return a smaller description
      */
     public String getSmallDescription() {
-        if (getType() == Unit.MEK || getType() == Unit.VEHICLE || getType() == Unit.AERO) {
+        if ((getType() == Unit.MEK) || (getType() == Unit.VEHICLE) || (getType() == Unit.AERO)) {
             return getModelName() + " [" + getPilot().getGunnery() + "/" + getPilot().getPiloting() + "]";
         }
 
-        if (getType() == Unit.INFANTRY || getType() == Unit.BATTLEARMOR) {
+        if ((getType() == Unit.INFANTRY) || (getType() == Unit.BATTLEARMOR)) {
             if (((Infantry) UnitEntity).isAntiMek()) {
                 return getModelName() + " [" + getPilot().getGunnery() + "/" + getPilot().getPiloting() + "]";
             }
@@ -267,15 +270,15 @@ public class CUnit extends Unit {
     public String getDisplayInfo(String armyText) {
         String tinfo = "";
 
-        if (getType() == Unit.MEK && !UnitEntity.isOmni()) {
+        if ((getType() == Unit.MEK) && !UnitEntity.isOmni()) {
             tinfo = "<html><body>#" + getId() + " " + UnitEntity.getChassis() + ", " + getModelName();
         } else {
             tinfo = "<html><body>#" + getId() + " " + getModelName();
         }
 
-        if (getType() == Unit.MEK || getType() == Unit.VEHICLE || getType() == Unit.AERO) {
+        if ((getType() == Unit.MEK) || (getType() == Unit.VEHICLE) || (getType() == Unit.AERO)) {
             tinfo += " (" + getPilot().getName() + ", " + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ") <br>";
-        } else if (getType() == Unit.BATTLEARMOR || getType() == Unit.INFANTRY) {
+        } else if ((getType() == Unit.BATTLEARMOR) || (getType() == Unit.INFANTRY)) {
 
             if (((Infantry) UnitEntity).isAntiMek()) {
                 tinfo += " (" + getPilot().getName() + ", " + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ") <br>";
@@ -312,7 +315,7 @@ public class CUnit extends Unit {
         }
 
         String capacity = getEntity().getUnusedString();
-        if (capacity != null && capacity.startsWith("Troops")) {
+        if ((capacity != null) && capacity.startsWith("Troops")) {
             capacity = capacity.substring(9);// strip "Troops - " from string
             tinfo += "Cargo: " + capacity + "<br>";
         }
@@ -321,7 +324,7 @@ public class CUnit extends Unit {
         }
         tinfo += getProducer();
 
-        if (scrappableFor > 0 && !Boolean.parseBoolean(mwclient.getserverConfigs("UseAdvanceRepair")) && !Boolean.parseBoolean(mwclient.getserverConfigs("UseSimpleRepair"))) {
+        if ((scrappableFor > 0) && !Boolean.parseBoolean(mwclient.getserverConfigs("UseAdvanceRepair")) && !Boolean.parseBoolean(mwclient.getserverConfigs("UseSimpleRepair"))) {
             tinfo += "<br><br><b>Scrap Value: " + mwclient.moneyOrFluMessage(true, false, scrappableFor) + "</b>";
         }
 
@@ -384,7 +387,7 @@ public class CUnit extends Unit {
         boolean isOmni = getEntity().isOmni();
         String targetChassis = getEntity().getChassis();
 
-        if (getType() == Unit.VEHICLE && !isOmni) {
+        if ((getType() == Unit.VEHICLE) && !isOmni) {
             try {
                 FileInputStream fis = new FileInputStream("./data/mechfiles/omnivehiclelist.txt");
                 BufferedReader dis = new BufferedReader(new InputStreamReader(fis));

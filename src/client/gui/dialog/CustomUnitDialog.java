@@ -60,6 +60,7 @@ import megamek.common.IOffBoardDirections;
 import megamek.common.Infantry;
 import megamek.common.Mech;
 import megamek.common.Mounted;
+import megamek.common.OffBoardDirection;
 import megamek.common.Protomech;
 import megamek.common.Tank;
 import megamek.common.TechConstants;
@@ -228,7 +229,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
          * Build second major subpanel - muntions; however, only for non-inf
          * units.
          */
-        if (!(entity instanceof Infantry) || entity instanceof BattleArmor) {
+        if (!(entity instanceof Infantry) || (entity instanceof BattleArmor)) {
             setupMunitions();
             JPanel centeringPanel = new JPanel();
             centeringPanel.setLayout(new BoxLayout(centeringPanel, BoxLayout.Y_AXIS));
@@ -307,7 +308,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
             for (int x = 0, n = vAllTypes.size(); x < n; x++) {
                 AmmoType atCheck = vAllTypes.elementAt(x);
 
-                if (atCheck.getRackSize() != at.getRackSize() || atCheck.getTonnage(entity) != at.getTonnage(entity)) {
+                if ((atCheck.getRackSize() != at.getRackSize()) || (atCheck.getTonnage(entity) != at.getTonnage(entity))) {
                     continue;
                 }
 
@@ -320,16 +321,16 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
 
                 // CampaignData.mwlog.errLog("Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
                 // check banned ammo
-                if (mwclient.getData().getServerBannedAmmo().containsKey(munition) || faction.getBannedAmmo().containsKey(munition) || (mwclient.getAmmoCost(atCheck.getInternalName()) < 0 && !usingCrits)) {
+                if (mwclient.getData().getServerBannedAmmo().containsKey(munition) || faction.getBannedAmmo().containsKey(munition) || ((mwclient.getAmmoCost(atCheck.getInternalName()) < 0) && !usingCrits)) {
                     continue;
                 }
 
                 // CampaignData.mwlog.errLog("2.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
 
                 // System.err.println(atCheck.getName()+"/"+atCheck.getInternalName());
-                if (usingCrits && mwclient.getPlayer().getPartsCache().getPartsCritCount(atCheck.getInternalName()) < 1 && !ammoAlreadyLoaded(atCheck) &&
-                // !mwclient.getPlayer().getAutoReorder() &&
-                        mwclient.getBlackMarketEquipmentList().get(atCheck.getInternalName()) == null) {
+                if (usingCrits && (mwclient.getPlayer().getPartsCache().getPartsCritCount(atCheck.getInternalName()) < 1) && !ammoAlreadyLoaded(atCheck) && (// !mwclient.getPlayer().getAutoReorder()
+                                                                                                                                                             // &&
+                        mwclient.getBlackMarketEquipmentList().get(atCheck.getInternalName()) == null)) {
                     continue;
                     // CampaignData.mwlog.errLog("3.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
                 }
@@ -338,7 +339,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
                 // lvl1 IS units don't need to be allowed to use lvl1 ammo,
                 // because there is no special lvl1 ammo, therefore it doesn't
                 // need to show up in this display.
-                if (!bTechMatch && (entity.getTechLevel() == TechConstants.T_IS_ADVANCED || entity.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL) && atCheck.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) {
+                if (!bTechMatch && ((entity.getTechLevel() == TechConstants.T_IS_ADVANCED) || (entity.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL)) && (atCheck.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX)) {
                     bTechMatch = true;
                 }
 
@@ -350,13 +351,13 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
 
                 // Possibly allow level 3 ammos, possibly not.
                 if (mmClient.game.getOptions().booleanOption("allow_advanced_ammo") && !mmClient.game.getOptions().booleanOption("is_eq_limits")) {
-                    if (entity.isClan() && (atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_CLAN_ADVANCED || atCheck.getTechLevel() == TechConstants.T_CLAN_UNOFFICIAL)) {
+                    if (entity.isClan() && ((atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL) || (atCheck.getTechLevel() == TechConstants.T_CLAN_ADVANCED) || (atCheck.getTechLevel() == TechConstants.T_CLAN_UNOFFICIAL))) {
                         bTechMatch = true;
                     }
-                    if (!entity.isClan() && (atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED || atCheck.getTechLevel() == TechConstants.T_IS_UNOFFICIAL)) {
+                    if (!entity.isClan() && ((atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL) || (atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED) || (atCheck.getTechLevel() == TechConstants.T_IS_UNOFFICIAL))) {
                         bTechMatch = true;
                     }
-                } else if (((atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED || atCheck.getTechLevel() == TechConstants.T_IS_UNOFFICIAL) && entity.getTechLevel() != TechConstants.T_IS_EXPERIMENTAL && entity.getTechLevel() != TechConstants.T_IS_ADVANCED) || ((atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL || atCheck.getTechLevel() == TechConstants.T_CLAN_ADVANCED || atCheck.getTechLevel() == TechConstants.T_CLAN_UNOFFICIAL) && entity.getTechLevel() != TechConstants.T_CLAN_EXPERIMENTAL && entity.getTechLevel() != TechConstants.T_CLAN_ADVANCED)) {
+                } else if ((((atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL) || (atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED) || (atCheck.getTechLevel() == TechConstants.T_IS_UNOFFICIAL)) && (entity.getTechLevel() != TechConstants.T_IS_EXPERIMENTAL) && (entity.getTechLevel() != TechConstants.T_IS_ADVANCED)) || (((atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL) || (atCheck.getTechLevel() == TechConstants.T_CLAN_ADVANCED) || (atCheck.getTechLevel() == TechConstants.T_CLAN_UNOFFICIAL)) && (entity.getTechLevel() != TechConstants.T_CLAN_EXPERIMENTAL) && (entity.getTechLevel() != TechConstants.T_CLAN_ADVANCED))) {
                     bTechMatch = false;
                 }
 
@@ -371,7 +372,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
                 // to be combined to other munition types.
                 long muniType = atCheck.getMunitionType();
                 muniType &= ~AmmoType.M_INCENDIARY_LRM;
-                if (!mmClient.game.getOptions().booleanOption("clan_ignore_eq_limits") && entity.isClan() && (muniType == AmmoType.M_SEMIGUIDED || muniType == AmmoType.M_THUNDER_AUGMENTED || muniType == AmmoType.M_THUNDER_INFERNO || muniType == AmmoType.M_THUNDER_VIBRABOMB || muniType == AmmoType.M_THUNDER_ACTIVE || muniType == AmmoType.M_INFERNO_IV || muniType == AmmoType.M_VIBRABOMB_IV)) {
+                if (!mmClient.game.getOptions().booleanOption("clan_ignore_eq_limits") && entity.isClan() && ((muniType == AmmoType.M_SEMIGUIDED) || (muniType == AmmoType.M_THUNDER_AUGMENTED) || (muniType == AmmoType.M_THUNDER_INFERNO) || (muniType == AmmoType.M_THUNDER_VIBRABOMB) || (muniType == AmmoType.M_THUNDER_ACTIVE) || (muniType == AmmoType.M_INFERNO_IV) || (muniType == AmmoType.M_VIBRABOMB_IV))) {
                     bTechMatch = false;
                 }
 
@@ -388,7 +389,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
 
                 // When dealing with machine guns, Protos can only
                 // use proto-specific machine gun ammo
-                if (entity instanceof Protomech && atCheck.hasFlag(AmmoType.F_MG) && !atCheck.hasFlag(AmmoType.F_PROTOMECH)) {
+                if ((entity instanceof Protomech) && atCheck.hasFlag(AmmoType.F_MG) && !atCheck.hasFlag(AmmoType.F_PROTOMECH)) {
                     continue;
                 }
                 // CampaignData.mwlog.errLog("6.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
@@ -465,13 +466,13 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
             for (int slot = 0; slot < entity.getNumberOfCriticals(location); slot++) {
                 CriticalSlot crit = entity.getCritical(location, slot);
 
-                if (crit == null || crit.getType() != CriticalSlot.TYPE_EQUIPMENT) {
+                if ((crit == null) || (crit.getType() != CriticalSlot.TYPE_EQUIPMENT)) {
                     continue;
                 }
 
                 Mounted m = entity.getEquipment(crit.getIndex());
 
-                if (m == null || !(m.getType() instanceof WeaponType)) {
+                if ((m == null) || !(m.getType() instanceof WeaponType)) {
                     continue;
                 }
 
@@ -816,9 +817,9 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
                     mwclient.showInfoWindow("Offboard units need to be at least one mapsheet (17 hexes) away.");
                     return;
                 }
-                entity.setOffBoard(offBoardDistance, IOffBoardDirections.NORTH);
+                entity.setOffBoard(offBoardDistance, OffBoardDirection.getDirection(IOffBoardDirections.NORTH));
             } else {
-                entity.setOffBoard(0, Entity.NONE);
+                entity.setOffBoard(0, OffBoardDirection.NONE);
             }
 
             // change entity

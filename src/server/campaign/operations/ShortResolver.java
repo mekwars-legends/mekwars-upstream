@@ -519,13 +519,13 @@ public class ShortResolver {
             loserA = loser.getArmy(so.getAllPlayersAndArmies().get(loserName.toLowerCase()));
         }
 
-        if (winnerA == null || winnerA.getPlayerName().trim().length() == 0) {
+        if ((winnerA == null) || (winnerA.getPlayerName().trim().length() == 0)) {
             CampaignMain.cm.toUser("Autoreporting error: Winner army null or had empty owner name.", winnerName, true);
             CampaignMain.cm.getOpsManager().terminateOperation(so, OperationManager.TERM_REPORTINGERROR, null);
             return;
         }
 
-        if (loserA == null || loserA.getPlayerName().trim().length() == 0) {
+        if ((loserA == null) || (loserA.getPlayerName().trim().length() == 0)) {
             CampaignMain.cm.toUser("Autoreporting error: Loser army null or had empty owner name.", winnerName, true);
             CampaignMain.cm.getOpsManager().terminateOperation(so, OperationManager.TERM_REPORTINGERROR, null);
             return;
@@ -613,7 +613,7 @@ public class ShortResolver {
         // start scrap thread
         if (scrapThreads.containsKey(winName)) {
             Integer maxScrapPay = unitCosts.get(winName);
-            if (maxScrapPay == null || maxScrapPay < 0) {
+            if ((maxScrapPay == null) || (maxScrapPay < 0)) {
                 maxScrapPay = new Integer(0);
             }
             scrapThreads.get(winName).setMaxPayment(maxScrapPay);
@@ -632,7 +632,7 @@ public class ShortResolver {
 
         // set immunity && make unbusy
         CampaignMain.cm.getIThread().addImmunePlayer(winner);
-        if (so.isFromReserve() && winner != null) {
+        if (so.isFromReserve() && (winner != null)) {
             winner.setFighting(false, true);// return AFR players to reserve
         } else if (winner != null) {
             winner.setFighting(false);
@@ -644,7 +644,7 @@ public class ShortResolver {
          * to avoid games, so they can scrap units without cost and reset in
          * SOL.
          */
-        if (!so.isFromReserve() && CampaignMain.cm.getBooleanConfig("ForcedDeactivation") && winner != null) {
+        if (!so.isFromReserve() && CampaignMain.cm.getBooleanConfig("ForcedDeactivation") && (winner != null)) {
             winner.setActive(false);
             CampaignMain.cm.toUser("You've left the front lines to repair and refit, and are now in reserve.", winner.getName());
         }
@@ -768,7 +768,7 @@ public class ShortResolver {
         // Building Payments.
         // make sure that it wasn't a building map that they fought on and the
         // SO screwed up and set building ops happen.
-        if (buildingsLeft > -1 && buildingsLeft <= so.getTotalBuildings()) {
+        if ((buildingsLeft > -1) && (buildingsLeft <= so.getTotalBuildings())) {
             int totalBuildings = so.getTotalBuildings();
             int minBuildings = so.getMinBuildings();
             buildingsDestroyed = totalBuildings - buildingsLeft;
@@ -847,7 +847,7 @@ public class ShortResolver {
              * If the player disconnected, tell him that he gets no payment or
              * reduced payment, then continue normally.
              */
-            if (disconnector != null && disconnector.getName().toLowerCase().equals(currName)) {
+            if ((disconnector != null) && disconnector.getName().toLowerCase().equals(currName)) {
 
                 // if the disco pay is 0, no pay
                 String modString = "";
@@ -1038,7 +1038,7 @@ public class ShortResolver {
             /*
              * Adjust the payments for disconnection status, if necessary.
              */
-            if (disconnector != null && disconnector.getName().toLowerCase().equals(currName)) {
+            if ((disconnector != null) && disconnector.getName().toLowerCase().equals(currName)) {
                 earnedMoney = (earnedMoney * discoPayPercent) / 100;
                 earnedFlu = (earnedFlu * discoPayPercent) / 100;
                 earnedXP = (earnedXP * discoPayPercent) / 100;
@@ -1073,7 +1073,7 @@ public class ShortResolver {
              * currentBV / (double) loserBV)));
              * CampaignData.mwlog.debugLog("Money Earned: "+earnedMoney);
              */
-            if (minBVDifference > 0 && (1.0 - ((double) currentBV / (double) loserBV)) < minBVDifference && disconnector == null && so.getLosers().containsKey(currName)) {
+            if ((minBVDifference > 0) && ((1.0 - ((double) currentBV / (double) loserBV)) < minBVDifference) && (disconnector == null) && so.getLosers().containsKey(currName)) {
                 int minBVvPenaltyMod = o.getIntValue("BVFailurePaymentModifier");
                 earnedMoney = (earnedMoney * minBVvPenaltyMod) / 100;
                 // earnedFlu = (earnedFlu * minBVvPenaltyMod)/100;
@@ -1112,11 +1112,11 @@ public class ShortResolver {
             boolean hasMoneyGain = false;// CBills
             boolean hasOtherGain = false;// XP, Flu, RP
 
-            if (earnedMoney > 0 || salvageAndRepairCosts > 0 || battleLossCompensation > 0 || techPayment > 0) {
+            if ((earnedMoney > 0) || (salvageAndRepairCosts > 0) || (battleLossCompensation > 0) || (techPayment > 0)) {
 
                 // if salvage costs are greater than the amount earned, reduce
                 // them.
-                if (salvageAndRepairCosts > 0 && salvageAndRepairCosts > earnedMoney) {
+                if ((salvageAndRepairCosts > 0) && (salvageAndRepairCosts > earnedMoney)) {
                     salvageAndRepairCosts = earnedMoney;
                     unitCosts.put(currName, salvageAndRepairCosts);
                 }
@@ -1150,7 +1150,7 @@ public class ShortResolver {
                  * If the player loses techs, set some units to be unmaintained
                  * and store a warning string to add to the final message.
                  */
-                if (techsLost > 0 && currP.getTechnicians() < 0) {
+                if ((techsLost > 0) && (currP.getTechnicians() < 0)) {
 
                     int numberUnmaintained = currP.setRandomUnmaintained();
                     if (numberUnmaintained > 0) {
@@ -1267,7 +1267,7 @@ public class ShortResolver {
          * Ratings should only change in 1 vs 1 games.
          */
         boolean opEffectsElo = o.getBooleanValue("CountGameForRanking");
-        if (allPlayers.size() == 2 && opEffectsElo && !drawGame) {
+        if ((allPlayers.size() == 2) && opEffectsElo && !drawGame) {
 
             SPlayer wp = so.getWinners().get(so.getWinners().firstKey());
             SPlayer lp = so.getLosers().get(so.getLosers().firstKey());
@@ -1379,13 +1379,13 @@ public class ShortResolver {
             // Attacker was able to flee the unit so that means they get to keep
             // it even if they
             // Lost the battle
-            if (currEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_IN_RETREAT || currEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_PUSHED) {
+            if ((currEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_IN_RETREAT) || (currEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_PUSHED)) {
                 removePreCaptured(so, currU.getId());
             }
 
             // apply battle damage if there is any to be applied.
             try {
-                if (!nonDestructionMode && currEntity.getUnitDamage().trim().length() > 0) {
+                if (!nonDestructionMode && (currEntity.getUnitDamage().trim().length() > 0)) {
                     UnitUtils.applyBattleDamage(currU.getEntity(), currEntity.getUnitDamage(), false);
                 }
             } catch (Exception ex) {
@@ -1513,7 +1513,7 @@ public class ShortResolver {
                         toSet = toOwner + pilotinformation[1] + pilotAppend;// set
                         // the
                     } else {
-                        if (captor != null && currName.equals(captor.getName().toLowerCase())) {
+                        if ((captor != null) && currName.equals(captor.getName().toLowerCase())) {
                             toSet = toOthers + pilotinformation[2];
                         } else {
                             toSet = toOthers + pilotinformation[3];
@@ -1609,7 +1609,7 @@ public class ShortResolver {
                         toSet = toOwner + pilotinformation[1] + pilotAppend;// set
                         // the
                     } else {
-                        if (captor != null && currName.equals(captor.getName().toLowerCase())) {
+                        if ((captor != null) && currName.equals(captor.getName().toLowerCase())) {
                             toSet = toOthers + pilotinformation[2];
                         } else {
                             toSet = toOthers + pilotinformation[3];
@@ -1705,7 +1705,7 @@ public class ShortResolver {
                         toSet = toOwner + pilotinformation[1] + pilotAppend;// set
                         // the
                     } else {
-                        if (captor != null && currName.equals(captor.getName().toLowerCase())) {
+                        if ((captor != null) && currName.equals(captor.getName().toLowerCase())) {
                             toSet = toOthers + pilotinformation[2];
                         } else {
                             toSet = toOthers + pilotinformation[3];
@@ -1810,7 +1810,7 @@ public class ShortResolver {
              * unit is returning to its original owner!
              */
             boolean pilotLived = (Boolean) pilotinformation[0];
-            if (!pilotLived && newOwner == null) {
+            if (!pilotLived && (newOwner == null)) {
                 String deathString = handleDeadPilot(oldOwner, currU, currEntity, so);
                 String workingS = (String) pilotinformation[1];
                 workingS += deathString;
@@ -1823,7 +1823,7 @@ public class ShortResolver {
             }
 
             // If the pilot is alive, and has no unit ...
-            if (pilotLived && newOwner != null) {
+            if (pilotLived && (newOwner != null)) {
                 handleDispossesedPilot(oldOwner, currU);
             }
 
@@ -1860,14 +1860,14 @@ public class ShortResolver {
                 // otherstring
                 if (currName.equals(oldOwnerName)) {
                     toSet = toOriginalOwner + pilotinformation[1] + pilotAppend;
-                } else if (newOwner != null && currName.equals(newOwner.getName().toLowerCase())) {
-                    if (captor != null && currName.equals(captor.getName().toLowerCase())) {
+                } else if ((newOwner != null) && currName.equals(newOwner.getName().toLowerCase())) {
+                    if ((captor != null) && currName.equals(captor.getName().toLowerCase())) {
                         toSet = toNewOwner + pilotinformation[2];
                     } else {
                         toSet = toNewOwner + pilotinformation[3];
                     }
                 } else {
-                    if (captor != null && currName.equals(captor.getName().toLowerCase())) {
+                    if ((captor != null) && currName.equals(captor.getName().toLowerCase())) {
                         toSet = toOthers + pilotinformation[2];
                     } else {
                         toSet = toOthers + pilotinformation[3];
@@ -2040,7 +2040,7 @@ public class ShortResolver {
                 if (currName.equals(oldOwnerName)) {
                     toSet = toOwner + pilotinformation[1];// set the "owner"
                 } else {
-                    if (captor != null && currName.equals(captor.getName().toLowerCase())) {
+                    if ((captor != null) && currName.equals(captor.getName().toLowerCase())) {
                         toSet = toOthers + pilotinformation[2];
                     } else {
                         toSet = toOthers + pilotinformation[3];
@@ -2324,7 +2324,7 @@ public class ShortResolver {
                  * games, or if the "ShowCompleteGameInfoInNews" option is
                  * disabled.
                  */
-                if (numWinners > 1 || !CampaignMain.cm.getBooleanConfig("ShowCompleteGameInfoInNews")) {
+                if ((numWinners > 1) || !CampaignMain.cm.getBooleanConfig("ShowCompleteGameInfoInNews")) {
                     completeFinishedInfoString += aWinner.getHouseFightingFor().getColoredNameAsLink();
                     incompleteFinishedInfoString += aWinner.getHouseFightingFor().getColoredNameAsLink();
                     newsFeedBody = aWinner.getHouseFightingFor().getName();
@@ -2341,7 +2341,7 @@ public class ShortResolver {
                 String completeLoserTemp = "";
                 String incompleteLoserTemp = "";
                 String newsFeedTemp = "";
-                if (numLosers > 1 || !CampaignMain.cm.getBooleanConfig("ShowCompleteGameInfoInNews")) {
+                if ((numLosers > 1) || !CampaignMain.cm.getBooleanConfig("ShowCompleteGameInfoInNews")) {
                     completeLoserTemp += aLoser.getHouseFightingFor().getColoredNameAsLink();
                     incompleteLoserTemp += aLoser.getHouseFightingFor().getColoredNameAsLink();
                     newsFeedTemp = aLoser.getHouseFightingFor().getName();
@@ -2353,15 +2353,15 @@ public class ShortResolver {
                     newsFeedTitle += aLoser.getName() + "[" + aLoser.getHouseFightingFor().getAbbreviation() + "]";
                 }
 
-                if (numLosers > 1 && attackersWon) {
+                if ((numLosers > 1) && attackersWon) {
                     completeFinishedInfoString += " defeated" + completeLoserTemp + "defenders";
                     incompleteFinishedInfoString += " defeated" + incompleteLoserTemp + "defenders";
                     newsFeedBody += " defeated" + newsFeedTemp + "defenders";
-                } else if (numLosers == 1 && attackersWon) {
+                } else if ((numLosers == 1) && attackersWon) {
                     completeFinishedInfoString += " attacked and defeated " + completeLoserTemp;
                     incompleteFinishedInfoString += " attacked and defeated " + incompleteLoserTemp;
                     newsFeedBody += " attacked and defeated " + newsFeedTemp;
-                } else if (numLosers > 1 && defendersWon) {
+                } else if ((numLosers > 1) && defendersWon) {
                     completeFinishedInfoString += " defeated " + completeLoserTemp + " attackers";
                     incompleteFinishedInfoString += " defeated " + incompleteLoserTemp + " attackers";
                     newsFeedBody += " defeated " + newsFeedTemp + " attackers";
@@ -2488,7 +2488,7 @@ public class ShortResolver {
                         }
 
                         // Building delays for each one the attacker destroyed.
-                        if (buildingsLeft > -1 && buildingsLeft <= so.getTotalBuildings()) {
+                        if ((buildingsLeft > -1) && (buildingsLeft <= so.getTotalBuildings())) {
                             if (attackerisWinner(so)) {
                                 buildingsDestroyed = Math.max(buildingsDestroyed, o.getIntValue("AttackerMinBuildingsIfAttackerWins"));
                             }
@@ -2504,7 +2504,7 @@ public class ShortResolver {
 
                         // not allowed to delay or steal from factories the
                         // defender doesn't own
-                        if (so.getTargetWorld().getOwner() == null || !so.getTargetWorld().getOwner().getName().equalsIgnoreCase(aLoser.getHouseFightingFor().getName())) {
+                        if ((so.getTargetWorld().getOwner() == null) || !so.getTargetWorld().getOwner().getName().equalsIgnoreCase(aLoser.getHouseFightingFor().getName())) {
                             totalDelay = 0;
                         }
 
@@ -2708,7 +2708,7 @@ public class ShortResolver {
 
                         // not allowed to delay or steal from factories the
                         // defender doesn't own
-                        if (so.getTargetWorld().getOwner() == null || !so.getTargetWorld().getOwner().getName().equalsIgnoreCase(aLoser.getHouseFightingFor().getName())) {
+                        if ((so.getTargetWorld().getOwner() == null) || !so.getTargetWorld().getOwner().getName().equalsIgnoreCase(aLoser.getHouseFightingFor().getName())) {
                             ppToCapture = 0;
                         }
 
@@ -2721,7 +2721,7 @@ public class ShortResolver {
                          */
                         int ppCaptured = 0;
                         ArrayList<UnitFactory> factoriesSearched = new ArrayList<UnitFactory>(target.getUnitFactories());
-                        while (factoriesSearched.size() > 0 && ppCaptured < ppToCapture) {
+                        while ((factoriesSearched.size() > 0) && (ppCaptured < ppToCapture)) {
 
                             // get a random factory
                             SUnitFactory currFacility = (SUnitFactory) factoriesSearched.remove(CampaignMain.cm.getRandomNumber(factoriesSearched.size()));
@@ -2746,7 +2746,7 @@ public class ShortResolver {
                                 }
 
                                 boolean noPP = false;
-                                while (!noPP && ppCaptured < ppToCapture) {
+                                while (!noPP && (ppCaptured < ppToCapture)) {
                                     int ppAvailable = aLoser.getHouseFightingFor().getPP(currWeight, type);
                                     if (ppAvailable <= 0) {
                                         noPP = true;
@@ -2832,7 +2832,7 @@ public class ShortResolver {
                                     }
 
                                     boolean noUnits = false;
-                                    while (!noUnits && numDestroyed < unitsToDestroy) {
+                                    while (!noUnits && (numDestroyed < unitsToDestroy)) {
                                         SUnit destroyed = aLoser.getHouseFightingFor().getEntity(currWeight, type);
                                         if (destroyed == null) {
                                             noUnits = true;
@@ -2907,7 +2907,7 @@ public class ShortResolver {
 
                         // not allowed to delay or steal from factories the
                         // defender doesn't own
-                        if (so.getTargetWorld().getOwner() == null || !so.getTargetWorld().getOwner().getName().equalsIgnoreCase(aLoser.getHouseFightingFor().getName())) {
+                        if ((so.getTargetWorld().getOwner() == null) || !so.getTargetWorld().getOwner().getName().equalsIgnoreCase(aLoser.getHouseFightingFor().getName())) {
                             ppToDestroy = 0;
                         }
 
@@ -2921,7 +2921,7 @@ public class ShortResolver {
                         int ppDestroyed = 0;
                         factoriesSearched.clear();
                         factoriesSearched.addAll(target.getUnitFactories());
-                        while (factoriesSearched.size() > 0 && ppDestroyed < ppToDestroy) {
+                        while ((factoriesSearched.size() > 0) && (ppDestroyed < ppToDestroy)) {
 
                             // get a random factory
                             SUnitFactory currFacility = (SUnitFactory) factoriesSearched.remove(CampaignMain.cm.getRandomNumber(factoriesSearched.size()));
@@ -2938,7 +2938,7 @@ public class ShortResolver {
                                 }
 
                                 boolean noPP = false;
-                                while (!noPP && ppDestroyed < ppToDestroy) {
+                                while (!noPP && (ppDestroyed < ppToDestroy)) {
                                     int ppAvailable = aLoser.getHouseFightingFor().getPP(currWeight, type);
                                     if (ppAvailable <= 0) {
                                         noPP = true;
@@ -3044,7 +3044,7 @@ public class ShortResolver {
 
                         // not allowed to boost production or decrease factory
                         // delays if the defender doesn't own
-                        if (so.getTargetWorld().getOwner() == null || !so.getTargetWorld().getOwner().getName().equalsIgnoreCase(aWinner.getHouseFightingFor().getName())) {
+                        if ((so.getTargetWorld().getOwner() == null) || !so.getTargetWorld().getOwner().getName().equalsIgnoreCase(aWinner.getHouseFightingFor().getName())) {
                             totalRefreshBoost = 0;
                         }
 
@@ -3101,7 +3101,7 @@ public class ShortResolver {
 
                             // not allowed to boost production or decrease
                             // factory delays if the defender doesn't own
-                            if (so.getTargetWorld().getOwner() == null || !so.getTargetWorld().getOwner().getName().equalsIgnoreCase(aWinner.getHouseFightingFor().getName())) {
+                            if ((so.getTargetWorld().getOwner() == null) || !so.getTargetWorld().getOwner().getName().equalsIgnoreCase(aWinner.getHouseFightingFor().getName())) {
                                 ppToGenerate = 0;
                             }
 
@@ -3258,30 +3258,32 @@ public class ShortResolver {
 
                         // if the player doesnt own the unit, its probably
                         // autoartillery. continue to next loop.
-                        if (unit == null && !o.getBooleanValue("SupportUnitsAreSalvageable")) {
+                        if ((unit == null) && !o.getBooleanValue("SupportUnitsAreSalvageable")) {
                             continue;
-                        } else if (unit == null && o.getBooleanValue("SupportUnitsAreSalvageable")) {
+                        } else if ((unit == null) && o.getBooleanValue("SupportUnitsAreSalvageable")) {
                             unit = new SUnit(oEntity.getID(), "Salvaged Support Unit", oEntity.getUnitFileName());
                             CampaignMain.cm.getPlayer(oEntity.getOwnerName()).addUnit(unit, true);
+                            oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_SALVAGEABLE);
+                            oEntity.setSalvage(true);
                         }
 
-                        if ((fledSalvageChance > 0 || fledScrappedChance > 0) && oEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_IN_RETREAT) {
+                        if (((fledSalvageChance > 0) || (fledScrappedChance > 0)) && (oEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_IN_RETREAT)) {
                             if (CampaignMain.cm.getRandomNumber(100) <= fledSalvageChance) {
                                 oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_SALVAGEABLE);
                                 oEntity.setSalvage(true);
                             } else if (CampaignMain.cm.getRandomNumber(100) <= fledScrappedChance) {
                                 oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
                             }
-                        } else if ((pushedSalvageChance > 0 || pushedScrappedChance > 0) && oEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_PUSHED) {
+                        } else if (((pushedSalvageChance > 0) || (pushedScrappedChance > 0)) && (oEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_PUSHED)) {
                             if (CampaignMain.cm.getRandomNumber(100) <= pushedSalvageChance) {
                                 oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_SALVAGEABLE);
                                 oEntity.setSalvage(true);
                             } else if (CampaignMain.cm.getRandomNumber(100) <= pushedScrappedChance) {
                                 oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
                             }
-                        } else if (UnitUtils.getNumberOfDamagedEngineCrits(unit.getEntity()) >= 3 && CampaignMain.cm.getRandomNumber(100) <= enginedScrappedChance) {
+                        } else if ((UnitUtils.getNumberOfDamagedEngineCrits(unit.getEntity()) >= 3) && (CampaignMain.cm.getRandomNumber(100) <= enginedScrappedChance)) {
                             oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
-                        } else if (!oEntity.canStand() && !separateMobilityScrapChances && CampaignMain.cm.getRandomNumber(100) < forcedSalvageScrappedChance) {
+                        } else if (!oEntity.canStand() && !separateMobilityScrapChances && (CampaignMain.cm.getRandomNumber(100) < forcedSalvageScrappedChance)) {
                             oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
                         } else if (separateMobilityScrapChances && oEntity.isLegged() && (CampaignMain.cm.getRandomNumber(100) < leggedScrapChance)) {
                             oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
@@ -3289,7 +3291,7 @@ public class ShortResolver {
                             oEntity.setRemovalReason(IEntityRemovalConditions.REMOVE_DEVASTATED);
                         }
 
-                        if (oEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_EJECTED && CampaignMain.cm.isUsingAdvanceRepair() && !nonDestructionMode) {
+                        if ((oEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_EJECTED) && CampaignMain.cm.isUsingAdvanceRepair() && !nonDestructionMode) {
                             UnitUtils.destroyCockPit(unit.getEntity());
                         }
 
@@ -3385,7 +3387,7 @@ public class ShortResolver {
                             currO.setRemovalReason(megamek.common.IEntityRemovalConditions.REMOVE_SALVAGEABLE);
                             salvagableUnits.put(currO.getID(), currO);
                         } else {// destroy the piece
-                            if (currO.getType() == Unit.MEK || currO.getType() == Unit.QUAD) {
+                            if ((currO.getType() == Unit.MEK) || (currO.getType() == Unit.QUAD)) {
                                 currO.setCTint(0);
                             }
                             currO.setSalvage(false);
@@ -3449,7 +3451,7 @@ public class ShortResolver {
                 for (SArmy currArmy : allArmies.values()) {
                     for (Unit currUnit : currArmy.getUnits()) {
                         int currID = currUnit.getId();
-                        if (livingUnits.get(currID) == null && salvagableUnits.get(currID) == null && destroyedUnits.get(currID) == null) {
+                        if ((livingUnits.get(currID) == null) && (salvagableUnits.get(currID) == null) && (destroyedUnits.get(currID) == null)) {
                             OperationEntity oe = new OperationEntity(currArmy.getPlayerName(), currID, 0, 1, 1, true);
                             livingUnits.put(currID, oe);
                         }
@@ -3494,7 +3496,7 @@ public class ShortResolver {
 
                     // DESTROY! RAWR!
                     int unitsDestroyed = 0;
-                    while (unitsDestroyed < unitsToDestroy && dropLivingUnits.size() > 0) {
+                    while ((unitsDestroyed < unitsToDestroy) && (dropLivingUnits.size() > 0)) {
 
                         OperationEntity randomEntity = dropLivingUnits.remove(CampaignMain.cm.getRandomNumber(dropLivingUnits.size()));
 
@@ -3509,12 +3511,12 @@ public class ShortResolver {
 
                     // Bonus Salvage. Note that this can destroy infantry.
                     int unitsSalvaged = 0;
-                    while (unitsSalvaged < unitsToSalvage && dropLivingUnits.size() > 0) {
+                    while ((unitsSalvaged < unitsToSalvage) && (dropLivingUnits.size() > 0)) {
 
                         OperationEntity randomEntity = dropLivingUnits.remove(CampaignMain.cm.getRandomNumber(dropLivingUnits.size()));
 
                         // if the entity if a mech, eject the pilot
-                        if (randomEntity.getType() == Unit.MEK || randomEntity.getType() == Unit.QUAD) {
+                        if ((randomEntity.getType() == Unit.MEK) || (randomEntity.getType() == Unit.QUAD)) {
                             pilots.put(randomEntity.getID(), SPilot.getMekWarrior(randomEntity.getID(), -1));
                         }
 
@@ -3569,7 +3571,7 @@ public class ShortResolver {
                     toReturn += " New Pilot: " + unit.getPilot().getName();
                 } else if (entity.getType() == Unit.VEHICLE) {
                     toReturn += " New Crew:";
-                } else if (entity.getType() == Unit.BATTLEARMOR || entity.getType() == Unit.INFANTRY) {
+                } else if ((entity.getType() == Unit.BATTLEARMOR) || (entity.getType() == Unit.INFANTRY)) {
                     toReturn += " New Squad:";
                 }
                 toReturn += " " + newPilotDescription(unit);
@@ -3845,7 +3847,7 @@ public class ShortResolver {
                 return toReturn;
             }
 
-            else if (currEntity.getType() == Unit.BATTLEARMOR || currEntity.getType() == Unit.INFANTRY) {
+            else if ((currEntity.getType() == Unit.BATTLEARMOR) || (currEntity.getType() == Unit.INFANTRY)) {
                 toReturn[1] = "The " + currUnit.getModelName() + " squad was declared MIA.";
                 toReturn[3] = "The squad was killed.";
                 return toReturn;
@@ -3860,11 +3862,11 @@ public class ShortResolver {
 
             // see if the location containing the cockpit was obliterated (HD or
             // CT)
-            if (currEntity.getHDint() <= 0 && currEntity.getCockpitType() != Mech.COCKPIT_TORSO_MOUNTED && currEntity.getRemovalReason() != IEntityRemovalConditions.REMOVE_EJECTED) {
+            if ((currEntity.getHDint() <= 0) && (currEntity.getCockpitType() != Mech.COCKPIT_TORSO_MOUNTED) && (currEntity.getRemovalReason() != IEntityRemovalConditions.REMOVE_EJECTED)) {
                 toReturn[1] = currUnit.getPilot().getName() + " died when the " + currUnit.getModelName() + "'s head was destroyed.";
                 toReturn[3] = "The pilot was killed.";
                 return toReturn;
-            } else if ((currEntity.getCTint() <= 0 || currEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_DEVASTATED) && currEntity.getCockpitType() == Mech.COCKPIT_TORSO_MOUNTED) {
+            } else if (((currEntity.getCTint() <= 0) || (currEntity.getRemovalReason() == IEntityRemovalConditions.REMOVE_DEVASTATED)) && (currEntity.getCockpitType() == Mech.COCKPIT_TORSO_MOUNTED)) {
                 toReturn[1] = currUnit.getPilot().getName() + " died when the " + currUnit.getModelName() + "'s center torso was destroyed.";
                 toReturn[3] = "The pilot was killed.";
                 return toReturn;
@@ -3982,12 +3984,12 @@ public class ShortResolver {
         // if attacker, true. else, defender.
         boolean isAttacker = false;
         try {
-            if (so.getAttackers().containsKey(owner.getName().toLowerCase()) && attackerMod > 0) {
+            if (so.getAttackers().containsKey(owner.getName().toLowerCase()) && (attackerMod > 0)) {
                 repairCost = u.getBV() / attackerMod;
                 isAttacker = true;
             }
 
-            if (so.getDefenders().containsKey(owner.getName().toLowerCase()) && defenderMod > 0) {
+            if (so.getDefenders().containsKey(owner.getName().toLowerCase()) && (defenderMod > 0)) {
                 repairCost = u.getBV() / defenderMod;
             }
 
@@ -4064,7 +4066,7 @@ public class ShortResolver {
          * compensation for Light Meks, but reduced compensation for light
          * vehicles.
          */
-        if (u.getType() == Unit.MEK || u.getType() == Unit.QUAD) {
+        if ((u.getType() == Unit.MEK) || (u.getType() == Unit.QUAD)) {
             compensation *= CampaignMain.cm.getFloatConfig("MekMultiToUnitLossPayment");
         } else if (u.getType() == Unit.VEHICLE) {
             compensation *= CampaignMain.cm.getFloatConfig("VehMultiToUnitLossPayment");
@@ -4081,7 +4083,7 @@ public class ShortResolver {
         // check the compensation caps. 1st check reduces compensation to a
         // portion of a new unit's cost.
         float newMultiMax = newPrice * CampaignMain.cm.getFloatConfig("NewCostMultiMaxUnitLossPayment");
-        if (newMultiMax > 0 && compensation > newMultiMax) {
+        if ((newMultiMax > 0) && (compensation > newMultiMax)) {
             compensation = newMultiMax;
         }
 
@@ -4180,9 +4182,9 @@ public class ShortResolver {
         String result = " ";
         try {
             result = u.getPilot().getName() + " ";
-            if (u.getType() == Unit.MEK || u.getType() == Unit.VEHICLE || u.getType() == Unit.AERO) {
+            if ((u.getType() == Unit.MEK) || (u.getType() == Unit.VEHICLE) || (u.getType() == Unit.AERO)) {
                 result = "[" + u.getPilot().getGunnery() + "/" + u.getPilot().getPiloting();
-            } else if (u.getType() == Unit.INFANTRY || u.getType() == Unit.BATTLEARMOR) {
+            } else if ((u.getType() == Unit.INFANTRY) || (u.getType() == Unit.BATTLEARMOR)) {
                 if (((Infantry) u.getEntity()).isAntiMek()) {
                     result = "[" + u.getPilot().getGunnery() + "/" + u.getPilot().getPiloting();
                 } else {
@@ -4275,7 +4277,7 @@ public class ShortResolver {
         // check the unit for kills. if it has kills, check their quality
         int realKills = 0;
         boolean countKills = !o.getBooleanValue("NoStatisticsMode");
-        if (currEntity.getKills().size() > 0 && countKills) {
+        if ((currEntity.getKills().size() > 0) && countKills) {
 
             // Look for ID matches of all killed units.
             for (Integer id : currEntity.getKills()) {

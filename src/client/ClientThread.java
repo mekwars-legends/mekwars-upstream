@@ -34,6 +34,7 @@ import megamek.common.Entity;
 import megamek.common.IGame;
 import megamek.common.IOffBoardDirections;
 import megamek.common.MapSettings;
+import megamek.common.OffBoardDirection;
 import megamek.common.Pilot;
 import megamek.common.PlanetaryConditions;
 import megamek.common.Player;
@@ -185,13 +186,13 @@ class ClientThread extends Thread implements CloseClientListener {
 
             // if game is running, shouldn't do the following, so detect the
             // phase
-            for (int i = 0; i < 1000 && client.game.getPhase() == IGame.Phase.PHASE_UNKNOWN; i++) {
+            for (int i = 0; (i < 1000) && (client.game.getPhase() == IGame.Phase.PHASE_UNKNOWN); i++) {
                 Thread.sleep(50);
             }
 
             // Lets start with the environment set first then do everything
             // else.
-            if (mwclient.getCurrentEnvironment() != null && client.game.getPhase() == IGame.Phase.PHASE_LOUNGE) {
+            if ((mwclient.getCurrentEnvironment() != null) && (client.game.getPhase() == IGame.Phase.PHASE_LOUNGE)) {
                 // creates the playboard*/
                 MapSettings mySettings = new MapSettings(mwclient.getMapSize().width, mwclient.getMapSize().height, 1, 1);
                 // MapSettings mySettings = new MapSettings(16, 17, 2, 2);
@@ -267,7 +268,7 @@ class ClientThread extends Thread implements CloseClientListener {
                             mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), ""));
                         }
 
-                        if (mwclient.getBuildingTemplate() != null && mwclient.getBuildingTemplate().getTotalBuildings() > 0) {
+                        if ((mwclient.getBuildingTemplate() != null) && (mwclient.getBuildingTemplate().getTotalBuildings() > 0)) {
                             ArrayList<BuildingTemplate> buildingList = generateRandomBuildings(mySettings, mwclient.getBuildingTemplate());
                             mySettings.setBoardBuildings(buildingList);
                         } else if (!env.getCityType().equalsIgnoreCase("NONE")) {
@@ -338,7 +339,7 @@ class ClientThread extends Thread implements CloseClientListener {
                     boardvec.add(MapSettings.BOARD_GENERATED);
                     mySettings.setBoardsSelectedVector(boardvec);
 
-                    if (mwclient.getBuildingTemplate() != null && mwclient.getBuildingTemplate().getTotalBuildings() > 0) {
+                    if ((mwclient.getBuildingTemplate() != null) && (mwclient.getBuildingTemplate().getTotalBuildings() > 0)) {
                         ArrayList<BuildingTemplate> buildingList = generateRandomBuildings(mySettings, mwclient.getBuildingTemplate());
                         mySettings.setBoardBuildings(buildingList);
                     } else if (!env.getCityType().equalsIgnoreCase("NONE")) {
@@ -396,7 +397,7 @@ class ClientThread extends Thread implements CloseClientListener {
                     }
                     // if game is running, shouldn't do the following, so detect
                     // the phase
-                    for (int i = 0; i < 1000 && bot.game.getPhase() == IGame.Phase.PHASE_UNKNOWN; i++) {
+                    for (int i = 0; (i < 1000) && (bot.game.getPhase() == IGame.Phase.PHASE_UNKNOWN); i++) {
                         Thread.sleep(50);
                     }
                 } catch (Exception ex) {
@@ -422,10 +423,10 @@ class ClientThread extends Thread implements CloseClientListener {
                 Thread.sleep(125);
             }
 
-            if ((client.game != null && client.game.getPhase() == IGame.Phase.PHASE_LOUNGE)) {
+            if (((client.game != null) && (client.game.getPhase() == IGame.Phase.PHASE_LOUNGE))) {
 
                 client.game.getOptions().loadOptions();
-                if (mechs.size() > 0 && xmlGameOptions.size() > 0) {
+                if ((mechs.size() > 0) && (xmlGameOptions.size() > 0)) {
                     client.sendGameOptions("", xmlGameOptions);
                 }
 
@@ -469,27 +470,27 @@ class ClientThread extends Thread implements CloseClientListener {
                     if (entity.isOffBoard()) {
                         int direction = IOffBoardDirections.NORTH;
                         switch (mwclient.getPlayerStartingEdge()) {
-                        case 4:
-                        case 14:
-                            direction = IOffBoardDirections.EAST;
-                            break;
-                        case 5:
-                        case 6:
-                        case 7:
-                        case 15:
-                        case 16:
-                        case 17:
-                            direction = IOffBoardDirections.SOUTH;
-                            break;
-                        case 8:
-                        case 18:
-                            direction = IOffBoardDirections.WEST;
-                            break;
-                        default:
-                            direction = IOffBoardDirections.NORTH;
-                            break;
+                            case 4:
+                            case 14:
+                                direction = IOffBoardDirections.EAST;
+                                break;
+                            case 5:
+                            case 6:
+                            case 7:
+                            case 15:
+                            case 16:
+                            case 17:
+                                direction = IOffBoardDirections.SOUTH;
+                                break;
+                            case 8:
+                            case 18:
+                                direction = IOffBoardDirections.WEST;
+                                break;
+                            default:
+                                direction = IOffBoardDirections.NORTH;
+                                break;
                         }
-                        entity.setOffBoard(entity.getOffBoardDistance(), direction);
+                        entity.setOffBoard(entity.getOffBoardDistance(), OffBoardDirection.getDirection(direction));
                     }
 
                     // Add Pilot to entity
@@ -629,15 +630,15 @@ class ClientThread extends Thread implements CloseClientListener {
         Entity c3Unit = null;
         Entity c3Master = null;
 
-        while (c3Unit == null || c3Master == null) {
+        while ((c3Unit == null) || (c3Master == null)) {
             try {
 
                 for (Entity en : client.game.getEntitiesVector()) {
-                    if (c3Unit == null && en.getExternalId() == slaveid) {
+                    if ((c3Unit == null) && (en.getExternalId() == slaveid)) {
                         c3Unit = en;
                     }
 
-                    if (c3Master == null && en.getExternalId() == masterid) {
+                    if ((c3Master == null) && (en.getExternalId() == masterid)) {
                         c3Master = en;
                     }
                 }
@@ -649,7 +650,7 @@ class ClientThread extends Thread implements CloseClientListener {
         }
 
         // catch for some funky stuff
-        if (c3Unit == null || c3Master == null) {
+        if ((c3Unit == null) || (c3Master == null)) {
             CampaignData.mwlog.errLog("Null Units c3Unit: " + c3Unit + " C3Master: " + c3Master);
             return;
         }
@@ -660,7 +661,7 @@ class ClientThread extends Thread implements CloseClientListener {
             // "+masterUnit.getModelName());
             // CampaignData.mwlog.errLog("Slave Unit:
             // "+c3Unit.getModel());
-            if (!masterUnit.hasC3SlavesLinkedTo(army) && masterUnit.hasBeenC3LinkedTo(army) && (masterUnit.getC3Level() == Unit.C3_MASTER || masterUnit.getC3Level() == Unit.C3_MMASTER)) {
+            if (!masterUnit.hasC3SlavesLinkedTo(army) && masterUnit.hasBeenC3LinkedTo(army) && ((masterUnit.getC3Level() == Unit.C3_MASTER) || (masterUnit.getC3Level() == Unit.C3_MMASTER))) {
                 // CampaignData.mwlog.errLog("Unit:
                 // "+c3Master.getModel()+" id: "+c3Master.getExternalId());
                 if (c3Master.getC3MasterId() == Entity.NONE) {
@@ -767,28 +768,28 @@ class ClientThread extends Thread implements CloseClientListener {
         int minWidth = 0;
 
         switch (buildingTemplate.getStartingEdge()) {
-        case Buildings.NORTH:
-            height = 5;
-            minHeight = 1;
-            break;
-        case Buildings.SOUTH:
-            if (height > 5) {
-                minHeight = height - 5;
-            }
-            height = 5;
-            break;
-        case Buildings.EAST:
-            if (width > 5) {
-                minWidth = width - 5;
-            }
-            width = 5;
-            break;
-        case Buildings.WEST:
-            width = 5;
-            minWidth = 1;
-            break;
-        default:
-            break;
+            case Buildings.NORTH:
+                height = 5;
+                minHeight = 1;
+                break;
+            case Buildings.SOUTH:
+                if (height > 5) {
+                    minHeight = height - 5;
+                }
+                height = 5;
+                break;
+            case Buildings.EAST:
+                if (width > 5) {
+                    minWidth = width - 5;
+                }
+                width = 5;
+                break;
+            case Buildings.WEST:
+                width = 5;
+                minWidth = 1;
+                break;
+            default:
+                break;
         }
 
         StringTokenizer types = new StringTokenizer(buildingTemplate.getBuildingType(), ",");
