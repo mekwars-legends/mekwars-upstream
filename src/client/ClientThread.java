@@ -32,7 +32,6 @@ import megamek.common.Board;
 import megamek.common.Coords;
 import megamek.common.Entity;
 import megamek.common.IGame;
-import megamek.common.IOffBoardDirections;
 import megamek.common.MapSettings;
 import megamek.common.OffBoardDirection;
 import megamek.common.Pilot;
@@ -468,11 +467,11 @@ class ClientThread extends Thread implements CloseClientListener {
 
                     // Set the correct home edge for off board units
                     if (entity.isOffBoard()) {
-                        int direction = IOffBoardDirections.NORTH;
+                        OffBoardDirection direction = OffBoardDirection.NORTH;
                         switch (mwclient.getPlayerStartingEdge()) {
                             case 4:
                             case 14:
-                                direction = IOffBoardDirections.EAST;
+                                direction = OffBoardDirection.EAST;
                                 break;
                             case 5:
                             case 6:
@@ -480,17 +479,17 @@ class ClientThread extends Thread implements CloseClientListener {
                             case 15:
                             case 16:
                             case 17:
-                                direction = IOffBoardDirections.SOUTH;
+                                direction = OffBoardDirection.SOUTH;
                                 break;
                             case 8:
                             case 18:
-                                direction = IOffBoardDirections.WEST;
+                                direction = OffBoardDirection.WEST;
                                 break;
                             default:
-                                direction = IOffBoardDirections.NORTH;
+                                direction = OffBoardDirection.NORTH;
                                 break;
                         }
-                        entity.setOffBoard(entity.getOffBoardDistance(), OffBoardDirection.getDirection(direction));
+                        entity.setOffBoard(entity.getOffBoardDistance(), direction);
                     }
 
                     // Add Pilot to entity

@@ -237,16 +237,16 @@ public class CUnit extends Unit {
      * 
      * @urgru 1/4/05
      */
-    public void setAutoUnitData(String filename, int distance, int edge) {
+    public void setAutoUnitData(String filename, int distance, OffBoardDirection edge) {
         setUnitFilename(filename);
         // setProducer("Autounit");
         setPilot(new Pilot("Autopilot", 4, 5));
         // setType(Unit.VEHICLE);//auto units are always vehs ...
         createEntity();// make the entity
         if (distance > 0) {
-            UnitEntity.setOffBoard(distance, OffBoardDirection.getDirection(edge));// move
-                                                                                   // it
-                                                                                   // offboard
+            UnitEntity.setOffBoard(distance, edge);// move
+            // it
+            // offboard
         }
     }
 

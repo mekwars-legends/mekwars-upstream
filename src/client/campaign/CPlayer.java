@@ -25,7 +25,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import megamek.common.CriticalSlot;
-import megamek.common.IOffBoardDirections;
+import megamek.common.OffBoardDirection;
 import client.MWClient;
 import client.util.CArmyComparator;
 import client.util.CUnitComparator;
@@ -517,26 +517,26 @@ public class CPlayer extends Player {
              * set for players. Else, arty edge is set in MM when the players
              * click on the edge they want.
              */
-            int direction = 0;
+            OffBoardDirection direction = OffBoardDirection.NORTH;
             switch (mwclient.getPlayerStartingEdge()) {
-            case 0:
-                break;
-            case 1:
-            case 2:
-            case 3:
-                direction = IOffBoardDirections.NORTH;
-                break;
-            case 4:
-                direction = IOffBoardDirections.EAST;
-                break;
-            case 5:
-            case 6:
-            case 7:
-                direction = IOffBoardDirections.SOUTH;
-                break;
-            case 8:
-                direction = IOffBoardDirections.WEST;
-                break;
+                case 0:
+                    break;
+                case 1:
+                case 2:
+                case 3:
+                    direction = OffBoardDirection.NORTH;
+                    break;
+                case 4:
+                    direction = OffBoardDirection.EAST;
+                    break;
+                case 5:
+                case 6:
+                case 7:
+                    direction = OffBoardDirection.SOUTH;
+                    break;
+                case 8:
+                    direction = OffBoardDirection.WEST;
+                    break;
             }
 
             currUnit.setAutoUnitData(filename, distInHexes, direction);
@@ -566,7 +566,7 @@ public class CPlayer extends Player {
             }
 
             CUnit currUnit = new CUnit(mwclient);
-            currUnit.setAutoUnitData(filename, 0, 0);
+            currUnit.setAutoUnitData(filename, 0, OffBoardDirection.NORTH);
             AutoArmy.add(currUnit);
         }// end while(tokens)
     }// end setAutoArmy()
@@ -834,7 +834,7 @@ public class CPlayer extends Player {
                 return;
             }
 
-            if (mwclient.isUsingAdvanceRepairs() && status == Unit.STATUS_UNMAINTAINED) {
+            if (mwclient.isUsingAdvanceRepairs() && (status == Unit.STATUS_UNMAINTAINED)) {
                 unit.setStatus(Unit.STATUS_OK);
             } else {
                 unit.setStatus(status);
@@ -995,7 +995,8 @@ public class CPlayer extends Player {
 
         // Choices [note - this array must be duplicated in CHQPanel's
         // maybeShowPopup()]
-        String[] choices = { "Name", "Battle Value", "Gunnery Skill", "ID Number", "MP (Jumping)", "MP (Walking)", "Pilot Kills", "Unit Type", "Weight (Class)", "Weight (Tons)", "No Sort" };
+        String[] choices =
+            { "Name", "Battle Value", "Gunnery Skill", "ID Number", "MP (Jumping)", "MP (Walking)", "Pilot Kills", "Unit Type", "Weight (Class)", "Weight (Tons)", "No Sort" };
 
         // determine which sort will dominate
         int primarySort = CUnitComparator.HQSORT_NONE;
@@ -1025,12 +1026,12 @@ public class CPlayer extends Player {
         Object[] unitsArray = Hangar.toArray();
 
         // run third sort
-        if (tertiarySort != primarySort && tertiarySort != secondarySort && tertiarySort != CUnitComparator.HQSORT_NONE) {
+        if ((tertiarySort != primarySort) && (tertiarySort != secondarySort) && (tertiarySort != CUnitComparator.HQSORT_NONE)) {
             Arrays.sort(unitsArray, new CUnitComparator(tertiarySort));
         }
 
         // run the second sort
-        if (primarySort != secondarySort && secondarySort != CUnitComparator.HQSORT_NONE) {
+        if ((primarySort != secondarySort) && (secondarySort != CUnitComparator.HQSORT_NONE)) {
             Arrays.sort(unitsArray, new CUnitComparator(secondarySort));
         }
 
@@ -1078,7 +1079,8 @@ public class CPlayer extends Player {
 
         // Choices [note - this array must be duplicated in CHQPanel's
         // maybeShowPopup()]
-        String[] choices = { "Name", "Battle Value", "ID Number", "Max Tonnage", "Avg Walk MP", "Avg Jump MP", "Number Of Units", "No Sort" };
+        String[] choices =
+            { "Name", "Battle Value", "ID Number", "Max Tonnage", "Avg Walk MP", "Avg Jump MP", "Number Of Units", "No Sort" };
 
         // determine which sort will dominate
         int primarySort = CArmyComparator.ARMYSORT_NONE;
@@ -1108,12 +1110,12 @@ public class CPlayer extends Player {
         Object[] armiesArray = Armies.toArray();
 
         // run third sort
-        if (tertiarySort != primarySort && tertiarySort != secondarySort && tertiarySort != CArmyComparator.ARMYSORT_NONE) {
+        if ((tertiarySort != primarySort) && (tertiarySort != secondarySort) && (tertiarySort != CArmyComparator.ARMYSORT_NONE)) {
             Arrays.sort(armiesArray, new CArmyComparator(tertiarySort));
         }
 
         // run the second sort
-        if (primarySort != secondarySort && secondarySort != CArmyComparator.ARMYSORT_NONE) {
+        if ((primarySort != secondarySort) && (secondarySort != CArmyComparator.ARMYSORT_NONE)) {
             Arrays.sort(armiesArray, new CArmyComparator(secondarySort));
         }
 
@@ -1140,7 +1142,7 @@ public class CPlayer extends Player {
             return 0;
         }
 
-        if (typeid == Unit.INFANTRY && Boolean.parseBoolean(mwclient.getserverConfigs("FootInfTakeNoBays"))) {
+        if ((typeid == Unit.INFANTRY) && Boolean.parseBoolean(mwclient.getserverConfigs("FootInfTakeNoBays"))) {
 
             // check types
             boolean isFoot = model.startsWith("Foot");

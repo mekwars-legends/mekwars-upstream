@@ -56,7 +56,6 @@ import megamek.common.AmmoType;
 import megamek.common.BattleArmor;
 import megamek.common.CriticalSlot;
 import megamek.common.Entity;
-import megamek.common.IOffBoardDirections;
 import megamek.common.Infantry;
 import megamek.common.Mech;
 import megamek.common.Mounted;
@@ -329,7 +328,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
 
                 // System.err.println(atCheck.getName()+"/"+atCheck.getInternalName());
                 if (usingCrits && (mwclient.getPlayer().getPartsCache().getPartsCritCount(atCheck.getInternalName()) < 1) && !ammoAlreadyLoaded(atCheck) && (// !mwclient.getPlayer().getAutoReorder()
-                                                                                                                                                             // &&
+                        // &&
                         mwclient.getBlackMarketEquipmentList().get(atCheck.getInternalName()) == null)) {
                     continue;
                     // CampaignData.mwlog.errLog("3.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
@@ -817,7 +816,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
                     mwclient.showInfoWindow("Offboard units need to be at least one mapsheet (17 hexes) away.");
                     return;
                 }
-                entity.setOffBoard(offBoardDistance, OffBoardDirection.getDirection(IOffBoardDirections.NORTH));
+                entity.setOffBoard(offBoardDistance, OffBoardDirection.NORTH);
             } else {
                 entity.setOffBoard(0, OffBoardDirection.NONE);
             }
