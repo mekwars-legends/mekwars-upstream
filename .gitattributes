@@ -1691,6 +1691,7 @@ src/server/campaign/commands/TickCommand.java -text
 src/server/campaign/commands/ToggleArmyDisabledCommand.java -text
 src/server/campaign/commands/TransferMoneyCommand.java -text
 src/server/campaign/commands/TransferPilotCommand.java -text
+src/server/campaign/commands/TransferRewardPointsCommand.java -text
 src/server/campaign/commands/TransferUnitCommand.java -text
 src/server/campaign/commands/UnemployedMercsCommand.java -text
 src/server/campaign/commands/UnenrollCommand.java -text

@@ -4214,6 +4214,11 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setName("SendSingleCommandAtATime");
         miscCBoxSpring.add(BaseCheckBox);
 
+        BaseCheckBox = new JCheckBox("Allow RP transfer");
+        BaseCheckBox.setToolTipText("<HTML>Allow players to transfer reward points in the same manner as they can transfer cbills</html>");
+        BaseCheckBox.setName("AllowRPTransfer");
+        miscCBoxSpring.add(BaseCheckBox);
+        
         SpringLayoutHelper.setupSpringGrid(miscCBoxSpring, 3);
 
         // finalize layout

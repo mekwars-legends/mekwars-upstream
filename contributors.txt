@@ -5,6 +5,7 @@
   coelocanth        (coelocanth@users.sourceforge.net)
   Mikhail           (redzed260@users.sourceforge.net)
   Bob Eldred		(billypinhead@users.sourceforge.net)
+  Targ
   
  MekWars testing and documentation (a few of many):
   Alan Bell         (Carpe Mortis)

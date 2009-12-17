@@ -1722,6 +1722,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("TOUCH", new TouchCommand());
         Commands.put("TRANSFERMONEY", new TransferMoneyCommand());
         Commands.put("TRANSFERPILOT", new TransferPilotCommand());
+        Commands.put("TRANSFERREWARDPOINTS", new TransferRewardPointsCommand());
         Commands.put("TRANSFERUNIT", new TransferUnitCommand());
         Commands.put("UPDATEOPERATIONS", new UpdateOperationsCommand());
         Commands.put("UPDATESERVERUNITSCACHE", new UpdateServerUnitsCacheCommand());

@@ -114,6 +114,9 @@ public class DefaultServerOptions {
         // 11.12.06
         defaults.setProperty("SelectableSalvage", "true");
         defaults.setProperty("TimeToSelectSalvage", "300");
+        //Allow RP Transfer switch
+        defaults.setProperty("AllowRPTransfer", "true");
+
 
         defaults.setProperty("BaseUnitLossPayment", "0");// int
         defaults.setProperty("NewCostMultiUnitLossPayment", ".50");// float

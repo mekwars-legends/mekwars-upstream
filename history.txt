@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ Added TransferRewardPoints command.  Thank you to Targ.
 + Bug: with support units and salvage
 + More Repod issue fixes.
 + Possible fix for Repod issues.

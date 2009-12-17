@@ -1461,6 +1461,34 @@ public class CMainFrame extends JFrame {
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c transfermoney#" + targetPlayer + "#" + Amount);
     }
 
+    public void jMenuCommanderTransferRewardPoints_actionPerformed(String name)
+    {
+    	String targetPlayer;
+    	String Amount;
+
+    	if (name == null || name.trim().equals(""))
+    	{
+    		PlayerNameDialog pnd = new PlayerNameDialog(mwclient, "Transfer Recipient", PlayerNameDialog.FACTION_ONLY);
+    		pnd.setVisible(true);
+    		targetPlayer = pnd.getPlayerName();
+    		pnd.dispose();
+    	}
+    	else
+    		targetPlayer = name;
+
+    	if (targetPlayer == null)
+    		return;
+
+    	Amount = JOptionPane.showInputDialog(getContentPane(), "Amount", "Send Reward Points to " + targetPlayer, JOptionPane.PLAIN_MESSAGE);
+
+    	if (Amount == null)
+    		return;
+
+    	mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c transferrewardpoints#" + targetPlayer + "#" + Amount);
+    }
+
+
+    
     public void jMenuCommanderTransferUnit_actionPerformed(String name, int mid) {
 
         String targetPlayer;

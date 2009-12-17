@@ -399,6 +399,11 @@ public class CUserListPanel extends JPanel implements ActionListener{
 							item.addActionListener(this);
 							sendMen.add(item);
 							
+							item = new JMenuItem("Send Reward Points");
+							item.setActionCommand("MR|"+userName);
+							item.addActionListener(this);
+							sendMen.add(item);
+							
 							item = new JMenuItem("Send Unit");
 							item.setActionCommand("TU|"+userName);
 							item.addActionListener(this);
@@ -679,6 +684,13 @@ public class CUserListPanel extends JPanel implements ActionListener{
 				userName = st.nextToken();
 				if (true)
 					mwclient.getMainFrame().jMenuCommanderTransferMoney_actionPerformed(userName);
+				return;
+			}
+			
+			if (command.equals("MR") && st.hasMoreElements())
+			{
+				userName = st.nextToken();
+				mwclient.getMainFrame().jMenuCommanderTransferRewardPoints_actionPerformed(userName);
 				return;
 			}
 			
