@@ -478,7 +478,7 @@ public class XMLPlanetDataParser implements XMLResponder {
             isHomeWorld = Boolean.parseBoolean(charData);
         } else if (lastElement.endsWith("BUILDTABLEFOLDER")) {
             buildTableFolder = charData;
-        } else if (lastElement.endsWith("ACCESSSLEVEL")) {
+        } else if (lastElement.endsWith("ACCESSLEVEL")) {
             accessLevel = Integer.parseInt(charData);
         } else if (lastElement.endsWith("MINVISIBILITY")) {
             minVisibility = Integer.parseInt(charData);
