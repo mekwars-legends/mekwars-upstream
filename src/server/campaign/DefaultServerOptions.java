@@ -1122,6 +1122,7 @@ public class DefaultServerOptions {
         defaults.setProperty("DisableAFRIfOverHangarLimits", "false");
         defaults.setProperty("DisableActivationIfOverHangarLimits", "false");
         
+        defaults.setProperty("DisallowFreshUnitSalvage", "false");
     }
 
     /**

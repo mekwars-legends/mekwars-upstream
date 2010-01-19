@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
+R Released server v0.2.41.2
++ Added Kestrel's patch to disable salvaging parts from pristine units
 + Added TransferRewardPoints command.  Thank you to Targ.
 + Bug: with support units and salvage
 + More Repod issue fixes.

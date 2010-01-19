@@ -31,12 +31,14 @@ import megamek.common.Mounted;
 import megamek.common.Tank;
 import common.CampaignData;
 import server.campaign.CampaignMain;
+import server.campaign.SHouse;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
 import server.util.RepairTrackingThread;
 
 /**
  * @author Torren (Jason Tighe)
+ * @author Kestrel
  * this parses out what the User wants salvaged on thier unit and sends that data
  * to the repair thread
  */
@@ -68,6 +70,7 @@ public class SalvageUnitCommand implements Command {
             boolean sendDialogUpdate = Boolean.parseBoolean(command.nextToken());
             
             SPlayer player = CampaignMain.cm.getPlayer(Username);
+            SHouse house = player.getMyHouse();
             SUnit unit = player.getUnit(unitID);
             Entity entity = unit.getEntity();
             String salvageMessage = "";
@@ -94,6 +97,15 @@ public class SalvageUnitCommand implements Command {
                 return;
             }
 
+            /*
+             * by Kestrel
+             * Do not allow users to salvage fresh units if the option is enabled.
+             */
+            if (CampaignMain.cm.getBooleanConfig("DisallowFreshUnitSalvage") && !(UnitUtils.hasArmorDamage( entity )) && !UnitUtils.hasCriticalDamage( entity )) {
+            	CampaignMain.cm.toUser("FSM|You may not salvage undamaged units.", Username, false);
+            	return;
+            }
+            
             int numberOfTechs = 1;
             
             if ( techType < UnitUtils.TECH_PILOT ){

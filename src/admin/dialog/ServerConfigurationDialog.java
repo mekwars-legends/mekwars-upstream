@@ -5268,6 +5268,11 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setToolTipText("Only used with Tech Repairs.  Increases the tech cost of non-faction units.");
         BaseCheckBox.setName("UseNonFactionUnitsIncreasedTechs");
         repairSpring.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Do not allow salvage of undamaged units");
+        BaseCheckBox.setToolTipText("Only used with Tech Repairs.  Players may not salvage undamaged units");
+        BaseCheckBox.setName("DisallowFreshUnitSalvage");
+        repairSpring.add(BaseCheckBox);
 
         SpringLayoutHelper.setupSpringGrid(repairSpring, 3);
 
