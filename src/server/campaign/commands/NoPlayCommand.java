@@ -56,7 +56,7 @@ public class NoPlayCommand implements Command {
             return;
         }
 
-        if (p.getDutyStatus() < SPlayer.STATUS_ACTIVE) {
+        if (p.getDutyStatus() >= SPlayer.STATUS_ACTIVE) {
             CampaignMain.cm.toUser("AM:You may not use this command while active.", Username, true);
             return;
         }
@@ -152,7 +152,7 @@ public class NoPlayCommand implements Command {
 
             if (totalVarsWithCost == 3) {
                 shortCost += " and ";
-            } else if (totalVarsWithCost == 2 && removeRPCost <= 0) {
+            } else if ((totalVarsWithCost == 2) && (removeRPCost <= 0)) {
                 shortCost += " and ";
             }
         }
@@ -191,7 +191,7 @@ public class NoPlayCommand implements Command {
             }
 
             // check the current list size [adminList only]
-            if (adminListCountsForCap && exList.getAdminExcludes().size() >= maxSize) {
+            if (adminListCountsForCap && (exList.getAdminExcludes().size() >= maxSize)) {
                 CampaignMain.cm.toUser("AM:Moderators/Admins have filled your no-play list. You may not add" + " any players on your own at this time.", Username, true);
                 return;
             }
@@ -201,7 +201,7 @@ public class NoPlayCommand implements Command {
             if (adminListCountsForCap) {
                 currentSize += exList.getAdminExcludes().size();
             }
-            if (currentSize >= maxSize && exList.getPlayerExcludes().size() > 0) {
+            if ((currentSize >= maxSize) && (exList.getPlayerExcludes().size() > 0)) {
 
                 if (canAffordRemove) {
                     String toUser = "AM:You must remove a player from your no-play list in order to add " + excludeName + ". Removing " + costBlock + "<br>";

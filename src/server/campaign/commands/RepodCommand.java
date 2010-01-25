@@ -278,7 +278,7 @@ public class RepodCommand implements Command {
                                         }
 
                                         // CampaignData.mwlog.errLog("FileName: "+Filename+" Model: "+model);
-                                        if (!variants.contains(Filename) && Filename.contains(".")) {
+                                        if (!variants.contains(Filename)) {
                                             variants.add(Filename);
                                             String repodMoneyCfg = "RepodCost" + Unit.getWeightClassDesc(cm.getWeightclass());
                                             String repodInfluCfg = "RepodFlu" + Unit.getWeightClassDesc(cm.getWeightclass());
@@ -287,6 +287,15 @@ public class RepodCommand implements Command {
                                             int repodMoneyMod = Integer.parseInt(h.getConfig(repodMoneyCfg));
                                             int repodFluMod = Integer.parseInt(h.getConfig(repodInfluCfg));
                                             int repodCompMod = Integer.parseInt(h.getConfig(repodCompCfg));
+
+                                            if (CampaignMain.cm.getOmniVariantMods().get(Filename) != null) {
+                                                String mods = CampaignMain.cm.getOmniVariantMods().get(Filename);
+                                                StringTokenizer modlist = new StringTokenizer(mods, "$");
+                                                repodMoneyMod += Integer.parseInt(modlist.nextToken());
+                                                repodCompMod += Integer.parseInt(modlist.nextToken());
+                                                repodFluMod += Integer.parseInt(modlist.nextToken());
+
+                                            }
 
                                             result += Filename + "#" + repodMoneyMod + "$" + repodCompMod + "$" + repodFluMod + "#";
                                         }
@@ -393,6 +402,14 @@ public class RepodCommand implements Command {
             String repodCompCfg = "RepodComp" + Unit.getWeightClassDesc(m.getWeightclass());
             String repodRefreshCfg = "RepodRefreshTime" + Unit.getWeightClassDesc(m.getWeightclass());
             int repodMoneyMod = 0, repodCompMod = 0, repodFluMod = 0;
+
+            if (CampaignMain.cm.getOmniVariantMods().get(cm.getModelName()) != null) {
+                String mods = CampaignMain.cm.getOmniVariantMods().get(cm.getModelName());
+                StringTokenizer modList = new StringTokenizer(mods, "$");
+                repodMoneyMod = Integer.parseInt(modList.nextToken());
+                repodCompMod = Integer.parseInt(modList.nextToken());
+                repodFluMod = Integer.parseInt(modList.nextToken());
+            }
 
             int repodRandomMod = Integer.parseInt(h.getConfig("RepodRandomMod"));
 
