@@ -33,6 +33,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.lang.management.ManagementFactory;
@@ -41,6 +42,7 @@ import java.lang.reflect.Constructor;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.security.MessageDigest;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -775,6 +777,31 @@ public final class MWClient implements IClient, GameListener {
         }
     }
 
+    public String createFilenameChecksum(String filename) throws Exception {
+    	byte[] b = createChecksum(filename);
+    	String result = "";
+    	for(int i = 0; i < b.length; i++) {
+    		result += Integer.toString( ( b[i] & 0xff ) + 0x100, 16).substring( 1 );
+    	}
+    	return result;
+    }
+
+    public byte[] createChecksum(String filename) throws Exception {
+    	InputStream fis = new FileInputStream(filename);
+	
+    	byte[] buffer = new byte[1024];
+    	MessageDigest complete = MessageDigest.getInstance("MD5");
+    	int numRead;
+    	do {
+    		numRead = fis.read(buffer);
+    		if (numRead > 0) {
+    			complete.update(buffer, 0, numRead);
+    		}
+    	} while (numRead != -1);
+    	fis.close();
+    	return complete.digest();
+    }
+    
     /*
      * Actual GUI-mode parseData. Before we started streaming data over the chat
      * part, this was called directly. Now we buffer all incoming non-data chat

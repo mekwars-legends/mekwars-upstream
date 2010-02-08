@@ -29,16 +29,29 @@ public class SendClientDataCommand implements Command {
 		try{
 
 			StringBuilder userData = new StringBuilder("USERDATA:");
-			
+			StringBuilder verifyData = new StringBuilder("File Info for " + Username + ": ");
 			userData.append(Username);
 			userData.append(";");
 			
+			int count = 0;
+
 			while ( command.hasMoreElements() ){
-				userData.append(command.nextToken());
-				userData.append(";");
+				if (count == 0) {
+					// what file we're running
+					verifyData.append(command.nextToken());
+				} else if (count ==1 ) {
+					// MD5
+					verifyData.append("  MD5: " + command.nextToken());
+				} else if (count == 2) {
+					// MMNet MD5
+					verifyData.append("  MegaMek MD5: " + command.nextToken());
+				} else {
+					userData.append(command.nextToken() + ";");
+				}
+				count++;
 			}
-			
 			CampaignData.mwlog.ipLog(userData.toString());
+			CampaignData.mwlog.ipLog(verifyData.toString());
 		}catch (Exception ex){
 			//do nothing
 		}

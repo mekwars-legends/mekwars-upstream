@@ -236,6 +236,11 @@ public class PL extends Command {
         } else if (cmd.equals("SUD")) {
             try {
                 StringBuilder userData = new StringBuilder(MWClient.CAMPAIGN_PREFIX + "c sendclientdata#");
+            	String clientMD5 = mwclient.createFilenameChecksum("./MekWarsClient.jar");
+            	String mmMD5 = mwclient.createFilenameChecksum("./MegaMek.jar");
+                userData.append(mwclient.getClass().getProtectionDomain().getCodeSource().getLocation().toURI() + "#");
+            	userData.append(clientMD5 + "#");
+                userData.append(mmMD5 + "#");
 
                 String[] userDataSet = { "user.name", "user.language", "user.country", "user.timezone", "os.name", "os.arch", "os.version", "java.version" };
 
