@@ -116,7 +116,9 @@ public class House {
      *            The baseGunner to set.
      */
     public void setBaseGunner(int baseGunner) {
-        this.baseGunner.set(0, baseGunner);
+        synchronized(this.baseGunner) {
+        	this.baseGunner.set(0, baseGunner);
+        }
     }
 
     /**
@@ -124,7 +126,9 @@ public class House {
      *            The base piloting skill for unit <code>type</code> to set.
      */
     public void setBasePilotSkill(String basePilotSkill, int type) {
-        this.basePilotSkills.set(type, basePilotSkill);
+        synchronized(this.basePilotSkills) {
+        	this.basePilotSkills.set(type, basePilotSkill);
+        }
     }
 
     /**
@@ -132,7 +136,9 @@ public class House {
      *            The baseGunner to set.
      */
     public void setBaseGunner(int baseGunner, int type) {
-        this.baseGunner.set(type, baseGunner);
+        synchronized(this.baseGunner) {
+        	this.baseGunner.set(type, baseGunner);
+        }
     }
 
     /**
@@ -161,7 +167,9 @@ public class House {
      *            The basePilot to set.
      */
     public void setBasePilot(int basePilot) {
-        this.basePilot.set(0, basePilot);
+        synchronized(this.basePilot) {
+        	this.basePilot.set(0, basePilot);
+        }
     }
 
     /**
@@ -169,7 +177,9 @@ public class House {
      *            The basePilot to set.
      */
     public void setBasePilot(int basePilot, int type) {
-        this.basePilot.set(type, basePilot);
+        synchronized(this.basePilot) {
+        	this.basePilot.set(type, basePilot);
+        }
     }
 
     /**

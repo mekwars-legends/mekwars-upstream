@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
+Released server v0.2.41.3
++ Made some changes to improve thread-safety during iterations over
+    Vectors
 + Bug 2934486: Tileset problem under current SF build
 + Bug 2938714: Variable Repod Costs under current SF build
 + Bug 2938622: Setting No-Play bugged 

@@ -348,7 +348,9 @@ public class PilotQueues {
 	 */
 	
 	public void setBasePiloting(int piloting,int type){
-	    this.basePiloting.set(type,piloting);
+	    synchronized(basePiloting) {
+	    	this.basePiloting.set(type,piloting);
+	    }
 	}
 	
 	/*
@@ -356,11 +358,15 @@ public class PilotQueues {
 	 */
 	
 	public void setBaseGunnery(int gunnery,int type){
-	    this.baseGunnery.set(type,gunnery);
+	    synchronized(baseGunnery) {
+	    	this.baseGunnery.set(type,gunnery);
+	    }
 	}
 	
 	public void setBasePilotSkill(String skills, int type) {
-	    this.basePilotSkills.set(type,skills);
+	    synchronized(basePilotSkills) {
+	    	this.basePilotSkills.set(type,skills);
+	    }
 	}
 	
 	public void setFactionID(int factionID) {

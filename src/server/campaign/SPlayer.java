@@ -265,7 +265,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         SUnit.checkAmmoForUnit(m, myHouse);
 
         m.setPosId(getFreeID());
-        units.add(m);
+        synchronized(units) { 
+        	units.add(m); 
+        }
 
         /*
          * Send PL|HD. Client-side reading of HD adds units to the hangar
@@ -333,10 +335,12 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         }
 
         SUnit Mech = null;
-        for (int i = 0; i < units.size(); i++) {
-            Mech = units.elementAt(i);
-            if (Mech.getId() == unitid) {
-                units.removeElementAt(i);
+        synchronized (units) {
+        	for (int i = 0; i < units.size(); i++) {
+        		Mech = units.elementAt(i);
+        		if (Mech.getId() == unitid) {
+        			units.removeElementAt(i);
+        		}
             }
         }
 
@@ -1803,7 +1807,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
         techs += number;
 
-        getAvailableTechs().set(type, techs);
+        synchronized(availableTechs) {
+        	getAvailableTechs().set(type, techs);
+        }
 
         CampaignMain.cm.toUser("PL|UAT|" + availableTechsToString(), name, false);
 
@@ -1815,7 +1821,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             return;
         }
 
-        getAvailableTechs().set(type, number);
+        synchronized (availableTechs) {
+        	getAvailableTechs().set(type, number);
+        }
 
         CampaignMain.cm.toUser("PL|UAT|" + availableTechsToString(), name, false);
 
@@ -1829,7 +1837,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
         int techs = getTotalTechs().elementAt(type);
         techs += number;
-        getTotalTechs().set(type, techs);
+        synchronized (totalTechs) {
+        	getTotalTechs().set(type, techs);
+        }
 
         CampaignMain.cm.toUser("PL|UTT|" + totalTechsToString(), name, false);
     }
@@ -1839,7 +1849,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             return;
         }
 
-        getTotalTechs().set(type, number);
+        synchronized(totalTechs) {
+        	getTotalTechs().set(type, number);
+        }
         CampaignMain.cm.toUser("PL|UTT|" + totalTechsToString(), name, false);
     }
 

@@ -4448,14 +4448,16 @@ public class ShortResolver {
     }
 
     private void removePreCaptured(ShortOperation so, int unitId) {
-        for (int pos = 0; pos < so.preCapturedUnits.size(); pos++) {
-            if (so.preCapturedUnits.elementAt(pos).getId() == unitId) {
-                SPilot pilot = new SPilot("Vacant", 99, 99);
-                so.preCapturedUnits.elementAt(pos).setPilot(pilot);
-                so.preCapturedUnits.removeElementAt(pos);
-                break;
-            }
-        }
+        synchronized (so.preCapturedUnits) {
+			for (int pos = 0; pos < so.preCapturedUnits.size(); pos++) {
+				if (so.preCapturedUnits.elementAt(pos).getId() == unitId) {
+					SPilot pilot = new SPilot("Vacant", 99, 99);
+					so.preCapturedUnits.elementAt(pos).setPilot(pilot);
+					so.preCapturedUnits.removeElementAt(pos);
+					break;
+				}
+			}
+		}
     }
 
     private void repodUnits(ShortOperation so, Operation o) {
