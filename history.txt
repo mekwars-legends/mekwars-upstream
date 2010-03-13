@@ -1,7 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
-Released server v0.2.41.3
+Released server v0.2.41.3 
++ New MegaMek.jar
 + Made some changes to improve thread-safety during iterations over
     Vectors
 + Bug 2934486: Tileset problem under current SF build
