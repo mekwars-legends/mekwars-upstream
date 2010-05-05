@@ -53,9 +53,11 @@ public class UnitUtils {
     public static final int CLAN_XL_ENGINE = 4;
     public static final int CLAN_XXL_ENGINE = 5;
 
-    public static final String[] ENGINE_SHORT_STRING = { "Standard Engine", "Light Engine", "XL Engine", "XXL Engine", "XL Engine", "XXL Engine" };
+    public static final String[] ENGINE_SHORT_STRING =
+        { "Standard Engine", "Light Engine", "XL Engine", "XXL Engine", "XL Engine", "XXL Engine" };
 
-    public static final String[] ENGINE_TECH_STRING = { "Standard Engine", "IS Light Engine", "IS XL Engine", "IS XXL Engine", "Clan XL Engine", "Clan XXL Engine" };
+    public static final String[] ENGINE_TECH_STRING =
+        { "Standard Engine", "IS Light Engine", "IS XL Engine", "IS XXL Engine", "Clan XL Engine", "Clan XXL Engine" };
 
     // Locations for Advanced Repair.
     public static final int LOC_HEAD = 0;
@@ -386,7 +388,7 @@ public class UnitUtils {
                     }
 
                     Mounted m = unit.getEquipment(cs.getIndex());
-                    if (m != null && m.getType() instanceof MiscType && ((MiscType) m.getType()).isShield() && m.getBaseDamageCapacity() != m.getCurrentDamageCapacity(unit, x) && shieldHitsLeft == -1 && (x == Mech.LOC_LARM || x == Mech.LOC_RARM)) {
+                    if ((m != null) && (m.getType() instanceof MiscType) && ((MiscType) m.getType()).isShield() && (m.getBaseDamageCapacity() != m.getCurrentDamageCapacity(unit, x)) && (shieldHitsLeft == -1) && ((x == Mech.LOC_LARM) || (x == Mech.LOC_RARM))) {
                         float shieldcrits = Math.max(1, UnitUtils.getNumberOfCrits(unit, cs));
                         float basePoints = m.getBaseDamageCapacity();
                         float currentPoints = m.getCurrentDamageCapacity(unit, x);
@@ -442,7 +444,7 @@ public class UnitUtils {
                         result.append("X");
                         result.append(delimiter2);
                         hasData = true;
-                    } else if (m != null && m.getType() instanceof MiscType && ((MiscType) m.getType()).isShield() && (x == Mech.LOC_LARM || x == Mech.LOC_RARM) && shieldHitsLeft > 0) {
+                    } else if ((m != null) && (m.getType() instanceof MiscType) && ((MiscType) m.getType()).isShield() && ((x == Mech.LOC_LARM) || (x == Mech.LOC_RARM)) && (shieldHitsLeft > 0)) {
                         result.append(x);
                         result.append(delimiter2);
                         result.append(y);
@@ -587,7 +589,7 @@ public class UnitUtils {
             unit.setCritical(location, slot, critSlot);
         }
 
-        if (ammo != null && ammo.hasMoreTokens()) {
+        if ((ammo != null) && ammo.hasMoreTokens()) {
             int locationCount = 0;
             Iterator<Mounted> munitions = unit.getAmmo().iterator();
 
@@ -622,7 +624,7 @@ public class UnitUtils {
             return;
         }
 
-        if (unit instanceof Protomech || unit instanceof Infantry) {
+        if ((unit instanceof Protomech) || (unit instanceof Infantry)) {
             return;
         }
 
@@ -728,7 +730,7 @@ public class UnitUtils {
             }
         }
 
-        if (ammo != null && ammo.hasMoreTokens()) {
+        if ((ammo != null) && ammo.hasMoreTokens()) {
             int locationCount = 0;
             Iterator<Mounted> munitions = unit.getAmmo().iterator();
 
@@ -788,13 +790,21 @@ public class UnitUtils {
 
     public static boolean hasArmorDamage(Entity unit) {
 
-        if (unit.getTotalArmor() != unit.getTotalOArmor() || unit.getTotalInternal() != unit.getTotalOInternal()) {
+        if (unit instanceof Infantry) {
+            return false;
+        }
+
+        if ((unit.getTotalArmor() != unit.getTotalOArmor()) || (unit.getTotalInternal() != unit.getTotalOInternal())) {
             return true;
         }
         return false;
     }
 
     public static boolean hasISDamage(Entity unit) {
+
+        if (unit instanceof Infantry) {
+            return false;
+        }
 
         if (unit.getTotalInternal() != unit.getTotalOInternal()) {
             return true;
@@ -804,11 +814,11 @@ public class UnitUtils {
 
     public static boolean hasCriticalDamage(Entity unit) {
 
-        if (unit instanceof Mech || unit instanceof Tank) {
+        if ((unit instanceof Mech) || (unit instanceof Tank)) {
             for (int x = 0; x < unit.locations(); x++) {
                 for (int y = 0; y < unit.getNumberOfCriticals(x); y++) {
                     CriticalSlot cs = unit.getCritical(x, y);
-                    if (cs != null && (cs.isDamaged() || cs.isBreached())) {
+                    if ((cs != null) && (cs.isDamaged() || cs.isBreached())) {
                         return true;
                     }
                 }
@@ -819,10 +829,10 @@ public class UnitUtils {
 
     public static boolean hasUndamagedCriticals(Entity unit, int location) {
 
-        if (unit instanceof Mech || unit instanceof Tank) {
+        if ((unit instanceof Mech) || (unit instanceof Tank)) {
             for (int y = 0; y < unit.getNumberOfCriticals(location); y++) {
                 CriticalSlot cs = unit.getCritical(location, y);
-                if (cs != null && !cs.isDamaged() && !UnitUtils.isNonRepairableCrit(unit, cs)) {
+                if ((cs != null) && !cs.isDamaged() && !UnitUtils.isNonRepairableCrit(unit, cs)) {
                     return true;
                 }
             }
@@ -832,10 +842,10 @@ public class UnitUtils {
 
     public static boolean hasCriticalsUnderRepair(Entity unit, int location) {
 
-        if (unit instanceof Mech || unit instanceof Tank) {
+        if ((unit instanceof Mech) || (unit instanceof Tank)) {
             for (int y = 0; y < unit.getNumberOfCriticals(location); y++) {
                 CriticalSlot cs = unit.getCritical(location, y);
-                if (cs != null && cs.isRepairing()) {
+                if ((cs != null) && cs.isRepairing()) {
                     return true;
                 }
             }
@@ -845,7 +855,7 @@ public class UnitUtils {
 
     public static boolean isRepairing(Entity unit) {
 
-        if (unit instanceof Mech || unit instanceof Tank) {
+        if ((unit instanceof Mech) || (unit instanceof Tank)) {
             for (int x = 0; x < unit.locations(); x++) {
 
                 // check for armor repairs first then move to crits.
@@ -865,7 +875,7 @@ public class UnitUtils {
 
                 for (int y = 0; y < unit.getNumberOfCriticals(x); y++) {
                     CriticalSlot cs = unit.getCritical(x, y);
-                    if (cs != null && cs.isRepairing()) {
+                    if ((cs != null) && cs.isRepairing()) {
                         return true;
                     }
                 }
@@ -1088,7 +1098,7 @@ public class UnitUtils {
 
     public static void salvageSystemCrit(int location, CriticalSlot cs, Entity unit) {
 
-        if (cs.getIndex() >= Mech.SYSTEM_LIFE_SUPPORT && cs.getIndex() <= Mech.SYSTEM_GYRO) {
+        if ((cs.getIndex() >= Mech.SYSTEM_LIFE_SUPPORT) && (cs.getIndex() <= Mech.SYSTEM_GYRO)) {
             for (int slot = 0; slot < unit.getNumberOfCriticals(location); slot++) {
                 CriticalSlot crit = unit.getCritical(location, slot);
 
@@ -1162,7 +1172,7 @@ public class UnitUtils {
 
     public static void repairSystemCrit(int location, CriticalSlot cs, Entity unit) {
 
-        if (cs.getIndex() >= Mech.SYSTEM_LIFE_SUPPORT && cs.getIndex() <= Mech.SYSTEM_GYRO) {
+        if ((cs.getIndex() >= Mech.SYSTEM_LIFE_SUPPORT) && (cs.getIndex() <= Mech.SYSTEM_GYRO)) {
             for (int slot = 0; slot < unit.getNumberOfCriticals(location); slot++) {
                 CriticalSlot crit = unit.getCritical(location, slot);
 
@@ -1213,7 +1223,7 @@ public class UnitUtils {
     }
 
     public static boolean isEngineCrit(CriticalSlot cs) {
-        if (cs != null && cs.getType() == CriticalSlot.TYPE_SYSTEM && cs.getIndex() == Mech.SYSTEM_ENGINE) {
+        if ((cs != null) && (cs.getType() == CriticalSlot.TYPE_SYSTEM) && (cs.getIndex() == Mech.SYSTEM_ENGINE)) {
             return true;
         }
         return false;
@@ -1267,7 +1277,7 @@ public class UnitUtils {
         if (cs.getIndex() == Mech.SYSTEM_GYRO) {
             for (int slot = 0; slot < unit.getNumberOfCriticals(Mech.LOC_CT); slot++) {
                 CriticalSlot crit = unit.getCritical(Mech.LOC_CT, slot);
-                if (crit == null || crit.getType() != CriticalSlot.TYPE_SYSTEM) {
+                if ((crit == null) || (crit.getType() != CriticalSlot.TYPE_SYSTEM)) {
                     continue;
                 }
 
@@ -1282,7 +1292,7 @@ public class UnitUtils {
                 for (int location = LOC_CT; location <= LOC_LT; location++) {
                     for (int slot = 0; slot < unit.getNumberOfCriticals(location); slot++) {
                         CriticalSlot crit = unit.getCritical(location, slot);
-                        if (crit == null || crit.getType() != CriticalSlot.TYPE_SYSTEM) {
+                        if ((crit == null) || (crit.getType() != CriticalSlot.TYPE_SYSTEM)) {
                             continue;
                         }
 
@@ -1295,7 +1305,7 @@ public class UnitUtils {
             else {
                 for (int slot = 0; slot < unit.getNumberOfCriticals(LOC_HEAD); slot++) {
                     CriticalSlot crit = unit.getCritical(LOC_HEAD, slot);
-                    if (crit == null || crit.getType() != CriticalSlot.TYPE_SYSTEM) {
+                    if ((crit == null) || (crit.getType() != CriticalSlot.TYPE_SYSTEM)) {
                         continue;
                     }
 
@@ -1320,7 +1330,7 @@ public class UnitUtils {
         if (cs.getIndex() == Mech.SYSTEM_GYRO) {
             for (int slot = 0; slot < unit.getNumberOfCriticals(Mech.LOC_CT); slot++) {
                 CriticalSlot crit = unit.getCritical(Mech.LOC_CT, slot);
-                if (crit == null || crit.getType() != CriticalSlot.TYPE_SYSTEM) {
+                if ((crit == null) || (crit.getType() != CriticalSlot.TYPE_SYSTEM)) {
                     continue;
                 }
 
@@ -1335,7 +1345,7 @@ public class UnitUtils {
                 for (int location = LOC_CT; location <= LOC_LT; location++) {
                     for (int slot = 0; slot < unit.getNumberOfCriticals(location); slot++) {
                         CriticalSlot crit = unit.getCritical(location, slot);
-                        if (crit == null || crit.getType() != CriticalSlot.TYPE_SYSTEM) {
+                        if ((crit == null) || (crit.getType() != CriticalSlot.TYPE_SYSTEM)) {
                             continue;
                         }
 
@@ -1348,7 +1358,7 @@ public class UnitUtils {
             else {
                 for (int slot = 0; slot < unit.getNumberOfCriticals(LOC_HEAD); slot++) {
                     CriticalSlot crit = unit.getCritical(LOC_HEAD, slot);
-                    if (crit == null || crit.getType() != CriticalSlot.TYPE_SYSTEM) {
+                    if ((crit == null) || (crit.getType() != CriticalSlot.TYPE_SYSTEM)) {
                         continue;
                     }
 
@@ -1379,7 +1389,7 @@ public class UnitUtils {
         if (cs.getIndex() == Mech.SYSTEM_GYRO) {
             for (int slot = 0; slot < unit.getNumberOfCriticals(Mech.LOC_CT); slot++) {
                 CriticalSlot crit = unit.getCritical(Mech.LOC_CT, slot);
-                if (crit == null || crit.getType() != CriticalSlot.TYPE_SYSTEM || !crit.isDamaged()) {
+                if ((crit == null) || (crit.getType() != CriticalSlot.TYPE_SYSTEM) || !crit.isDamaged()) {
                     continue;
                 }
 
@@ -1394,7 +1404,7 @@ public class UnitUtils {
                 for (int location = LOC_CT; location <= LOC_LT; location++) {
                     for (int slot = 0; slot < unit.getNumberOfCriticals(location); slot++) {
                         CriticalSlot crit = unit.getCritical(location, slot);
-                        if (crit == null || crit.getType() != CriticalSlot.TYPE_SYSTEM || !crit.isDamaged()) {
+                        if ((crit == null) || (crit.getType() != CriticalSlot.TYPE_SYSTEM) || !crit.isDamaged()) {
                             continue;
                         }
 
@@ -1407,7 +1417,7 @@ public class UnitUtils {
             else {
                 for (int slot = 0; slot < unit.getNumberOfCriticals(LOC_HEAD); slot++) {
                     CriticalSlot crit = unit.getCritical(LOC_HEAD, slot);
-                    if (crit == null || crit.getType() != CriticalSlot.TYPE_SYSTEM || !crit.isDamaged()) {
+                    if ((crit == null) || (crit.getType() != CriticalSlot.TYPE_SYSTEM) || !crit.isDamaged()) {
                         continue;
                     }
 
@@ -1556,11 +1566,11 @@ public class UnitUtils {
                 return true;
             }
 
-            if (mounted.getType() instanceof MiscType && mounted.getType().hasFlag(MiscType.F_TSM)) {
+            if ((mounted.getType() instanceof MiscType) && mounted.getType().hasFlag(MiscType.F_TSM)) {
                 return true;
             }
 
-            if (mounted.getType() instanceof MiscType && mounted.getType().hasFlag(MiscType.F_CASE) && unit.isClan()) {
+            if ((mounted.getType() instanceof MiscType) && mounted.getType().hasFlag(MiscType.F_CASE) && unit.isClan()) {
                 return true;
             }
 
@@ -1595,24 +1605,24 @@ public class UnitUtils {
         String result = "";
 
         switch (tech) {
-        case TECH_GREEN:
-            result = "Green";
-            break;
-        case TECH_REG:
-            result = "Reg";
-            break;
-        case TECH_VET:
-            result = "Vet";
-            break;
-        case TECH_ELITE:
-            result = "Elite";
-            break;
-        case TECH_PILOT:
-            result = "Pilot";
-            break;
-        case TECH_REWARD_POINTS:
-            result = "Reward Points";
-            break;
+            case TECH_GREEN:
+                result = "Green";
+                break;
+            case TECH_REG:
+                result = "Reg";
+                break;
+            case TECH_VET:
+                result = "Vet";
+                break;
+            case TECH_ELITE:
+                result = "Elite";
+                break;
+            case TECH_PILOT:
+                result = "Pilot";
+                break;
+            case TECH_REWARD_POINTS:
+                result = "Reward Points";
+                break;
         }
         return result;
     }
@@ -1657,7 +1667,7 @@ public class UnitUtils {
             return 1;
         }
 
-        if (location < 0 || slot < 0) {
+        if ((location < 0) || (slot < 0)) {
             return roll;
         }
 
@@ -1678,7 +1688,7 @@ public class UnitUtils {
 
                 // has to replace the whole location.
                 if (unit.getInternal(location) <= 0) {
-                    if (location == Mech.LOC_LARM || location == Mech.LOC_RARM || location == Mech.LOC_RLEG || location == Mech.LOC_LLEG) {
+                    if ((location == Mech.LOC_LARM) || (location == Mech.LOC_RARM) || (location == Mech.LOC_RLEG) || (location == Mech.LOC_LLEG)) {
                         roll += 2;
                     } else if (location == Mech.LOC_HEAD) {
                         roll += 3;
@@ -1729,21 +1739,21 @@ public class UnitUtils {
                         int crits = UnitUtils.getNumberOfCrits(unit, cs);
 
                         switch (crits) {
-                        case 0:
-                            roll++;
-                            break;
-                        case 1:
-                            roll -= 2;
-                            break;
-                        case 2:
-                            roll -= 1;
-                            break;
-                        case 3:
-                            roll += 1;
-                            break;
-                        default:
-                            roll += 3;
-                            break;
+                            case 0:
+                                roll++;
+                                break;
+                            case 1:
+                                roll -= 2;
+                                break;
+                            case 2:
+                                roll -= 1;
+                                break;
+                            case 3:
+                                roll += 1;
+                                break;
+                            default:
+                                roll += 3;
+                                break;
                         }
                     } else {
                         roll++;
@@ -1761,19 +1771,19 @@ public class UnitUtils {
                 if (UnitUtils.isEngineCrit(cs)) {
                     int crits = UnitUtils.getNumberOfDamagedEngineCrits(unit);
                     switch (crits) {
-                    case 1:
-                        break;
-                    case 2:
-                        roll++;
-                        break;
-                    default:
-                        roll += 3;
-                        break;
+                        case 1:
+                            break;
+                        case 2:
+                            roll++;
+                            break;
+                        default:
+                            roll += 3;
+                            break;
                     }
                 } else {
                     if (cs.getIndex() == Mech.SYSTEM_SENSORS) {
                         int crits = unit.getBadCriticals(CriticalSlot.TYPE_SYSTEM, Mech.SYSTEM_SENSORS, Mech.LOC_HEAD);
-                        if (crits >= 2 && !cs.isMissing()) {
+                        if ((crits >= 2) && !cs.isMissing()) {
                             roll += 4;
                         } else if (crits > 0) {
                             roll++;
@@ -1826,7 +1836,7 @@ public class UnitUtils {
             return false;
         }
 
-        if (cs.getIndex() == Mech.ACTUATOR_FOOT || cs.getIndex() == Mech.ACTUATOR_HAND || cs.getIndex() == Mech.ACTUATOR_HIP || cs.getIndex() == Mech.ACTUATOR_LOWER_ARM || cs.getIndex() == Mech.ACTUATOR_LOWER_LEG || cs.getIndex() == Mech.ACTUATOR_SHOULDER || cs.getIndex() == Mech.ACTUATOR_UPPER_ARM || cs.getIndex() == Mech.ACTUATOR_UPPER_LEG) {
+        if ((cs.getIndex() == Mech.ACTUATOR_FOOT) || (cs.getIndex() == Mech.ACTUATOR_HAND) || (cs.getIndex() == Mech.ACTUATOR_HIP) || (cs.getIndex() == Mech.ACTUATOR_LOWER_ARM) || (cs.getIndex() == Mech.ACTUATOR_LOWER_LEG) || (cs.getIndex() == Mech.ACTUATOR_SHOULDER) || (cs.getIndex() == Mech.ACTUATOR_UPPER_ARM) || (cs.getIndex() == Mech.ACTUATOR_UPPER_LEG)) {
             return true;
         }
 
@@ -1890,7 +1900,7 @@ public class UnitUtils {
         if (cs.getIndex() == Mech.SYSTEM_GYRO) {
             for (int slot = 0; slot < unit.getNumberOfCriticals(Mech.LOC_CT); slot++) {
                 CriticalSlot crit = unit.getCritical(Mech.LOC_CT, slot);
-                if (crit == null || crit.getType() != CriticalSlot.TYPE_SYSTEM) {
+                if ((crit == null) || (crit.getType() != CriticalSlot.TYPE_SYSTEM)) {
                     continue;
                 }
 
@@ -1905,7 +1915,7 @@ public class UnitUtils {
                 for (int location = LOC_CT; location <= LOC_LT; location++) {
                     for (int slot = 0; slot < unit.getNumberOfCriticals(location); slot++) {
                         CriticalSlot crit = unit.getCritical(location, slot);
-                        if (crit == null || crit.getType() != CriticalSlot.TYPE_SYSTEM) {
+                        if ((crit == null) || (crit.getType() != CriticalSlot.TYPE_SYSTEM)) {
                             continue;
                         }
 
@@ -1918,7 +1928,7 @@ public class UnitUtils {
             else {
                 for (int slot = 0; slot < unit.getNumberOfCriticals(LOC_HEAD); slot++) {
                     CriticalSlot crit = unit.getCritical(LOC_HEAD, slot);
-                    if (crit == null || crit.getType() != CriticalSlot.TYPE_SYSTEM) {
+                    if ((crit == null) || (crit.getType() != CriticalSlot.TYPE_SYSTEM)) {
                         continue;
                     }
 
@@ -2087,7 +2097,7 @@ public class UnitUtils {
 
                 if (m.getDesc().indexOf("Heat Sink") > -1) {
                     if (m.getType().hasFlag(MiscType.F_HEAT_SINK)) {
-                        if (m.getType().getTechLevel() == TechConstants.T_IS_ADVANCED || m.getType().getTechLevel() == TechConstants.T_IS_EXPERIMENTAL) {
+                        if ((m.getType().getTechLevel() == TechConstants.T_IS_ADVANCED) || (m.getType().getTechLevel() == TechConstants.T_IS_EXPERIMENTAL)) {
                             cost = 3000;
                         } else {
                             cost = 2000;
@@ -2144,13 +2154,13 @@ public class UnitUtils {
                             cost = mek.getWeight() * 80;
                         } else if (cs.getIndex() == Mech.ACTUATOR_LOWER_ARM) {
                             cost = mek.getWeight() * 50;
-                        } else if (cs.getIndex() == Mech.ACTUATOR_UPPER_ARM || cs.getIndex() == Mech.ACTUATOR_SHOULDER) {
+                        } else if ((cs.getIndex() == Mech.ACTUATOR_UPPER_ARM) || (cs.getIndex() == Mech.ACTUATOR_SHOULDER)) {
                             cost = mek.getWeight() * 100;
                         } else if (cs.getIndex() == Mech.ACTUATOR_FOOT) {
                             cost = mek.getWeight() * 120;
                         } else if (cs.getIndex() == Mech.ACTUATOR_LOWER_LEG) {
                             cost = mek.getWeight() * 80;
-                        } else if (cs.getIndex() == Mech.ACTUATOR_UPPER_LEG || cs.getIndex() == Mech.ACTUATOR_HIP) {
+                        } else if ((cs.getIndex() == Mech.ACTUATOR_UPPER_LEG) || (cs.getIndex() == Mech.ACTUATOR_HIP)) {
                             cost = mek.getWeight() * 150;
                         }
                     }
@@ -2166,7 +2176,7 @@ public class UnitUtils {
         double totalCost = 0;
 
         for (int location = 0; location < unit.locations(); location++) {
-            if (location == LOC_CT || location == LOC_RT || location == LOC_LT) {
+            if ((location == LOC_CT) || (location == LOC_RT) || (location == LOC_LT)) {
                 totalCost += UnitUtils.getPartCost(unit, location, LOC_FRONT_ARMOR, true);
                 totalCost += UnitUtils.getPartCost(unit, location, LOC_REAR_ARMOR, true);
                 totalCost += UnitUtils.getPartCost(unit, location, LOC_INTERNAL_ARMOR, true);
@@ -2186,7 +2196,7 @@ public class UnitUtils {
     public static String getRepairMessage(Entity unit, int location, int slot, boolean armor) {
         String repairMessage = "";
 
-        if (unit instanceof Mech && unit.getInternal(UnitUtils.LOC_CT) < 1) {
+        if ((unit instanceof Mech) && (unit.getInternal(UnitUtils.LOC_CT) < 1)) {
             repairMessage = "This unit has been cored and cannot be repaired. Either Scrap it or try to salvage it for parts!";
             return repairMessage;
         }
@@ -2201,7 +2211,7 @@ public class UnitUtils {
             }
         }
 
-        if ((location == UnitUtils.LOC_RARM && unit.getInternal(UnitUtils.LOC_RT) != unit.getOInternal(UnitUtils.LOC_RT)) || location == UnitUtils.LOC_LARM && unit.getInternal(UnitUtils.LOC_LT) != unit.getOInternal(UnitUtils.LOC_LT)) {
+        if (((location == UnitUtils.LOC_RARM) && (unit.getInternal(UnitUtils.LOC_RT) != unit.getOInternal(UnitUtils.LOC_RT))) || ((location == UnitUtils.LOC_LARM) && (unit.getInternal(UnitUtils.LOC_LT) != unit.getOInternal(UnitUtils.LOC_LT)))) {
             repairMessage = ("You may not repair your " + unit.getShortNameRaw() + "'s " + unit.getLocationName(location) + " until the adjacent torso's internal structure is fully repaired.");
             return repairMessage;
         }
@@ -2266,13 +2276,13 @@ public class UnitUtils {
     public static String getSalvageMessage(Entity unit, int location, int slot, boolean armor) {
         String salvageMessage = "";
 
-        if ((armor && slot == UnitUtils.LOC_INTERNAL_ARMOR)) {
-            if ((location == UnitUtils.LOC_RT && unit.getInternal(Mech.LOC_RARM) > 0) || (location == UnitUtils.LOC_LT && unit.getInternal(UnitUtils.LOC_LARM) > 0)) {
+        if ((armor && (slot == UnitUtils.LOC_INTERNAL_ARMOR))) {
+            if (((location == UnitUtils.LOC_RT) && (unit.getInternal(Mech.LOC_RARM) > 0)) || ((location == UnitUtils.LOC_LT) && (unit.getInternal(UnitUtils.LOC_LARM) > 0))) {
                 salvageMessage = ("You may not salvage your " + unit.getShortNameRaw() + "'s " + unit.getLocationName(location) + " until the adjacent arm's internal structure is fully removed.");
                 return salvageMessage;
             }
 
-            if (location == UnitUtils.LOC_CT && unit.getInternal(UnitUtils.LOC_LARM) > 0 && unit.getInternal(UnitUtils.LOC_RARM) > 0) {
+            if ((location == UnitUtils.LOC_CT) && (unit.getInternal(UnitUtils.LOC_LARM) > 0) && (unit.getInternal(UnitUtils.LOC_RARM) > 0)) {
                 salvageMessage = ("You may not salvage your " + unit.getShortNameRaw() + "'s " + unit.getLocationName(location) + " until the adjacent toro's internal structure is fully removed.");
                 return salvageMessage;
             }
@@ -2328,7 +2338,7 @@ public class UnitUtils {
 
     public static boolean checkRepairViability(Entity unit, int location, int slot, boolean armor) {
 
-        if ((location == UnitUtils.LOC_RARM && unit.getInternal(UnitUtils.LOC_RT) != unit.getOInternal(UnitUtils.LOC_RT)) || (location == UnitUtils.LOC_LARM && unit.getInternal(UnitUtils.LOC_LT) != unit.getOInternal(UnitUtils.LOC_LT))) {
+        if (((location == UnitUtils.LOC_RARM) && (unit.getInternal(UnitUtils.LOC_RT) != unit.getOInternal(UnitUtils.LOC_RT))) || ((location == UnitUtils.LOC_LARM) && (unit.getInternal(UnitUtils.LOC_LT) != unit.getOInternal(UnitUtils.LOC_LT)))) {
             return false;
         }
 
@@ -2350,7 +2360,7 @@ public class UnitUtils {
      */
     public static boolean hasTargettingComputer(Entity unit) {
         for (Mounted m : unit.getMisc()) {
-            if (m.getType() instanceof MiscType && m.getType().hasFlag(MiscType.F_TARGCOMP)) {
+            if ((m.getType() instanceof MiscType) && m.getType().hasFlag(MiscType.F_TARGCOMP)) {
                 return true;
             }
         }
@@ -2388,7 +2398,7 @@ public class UnitUtils {
                     if (ammo.getShotsLeft() == 0) {
                         return true;
                     }
-                } else if (ammo.getShotsLeft() < ((AmmoType) ammo.getType()).getShots() && ammo.getShotsLeft() > 0) {
+                } else if ((ammo.getShotsLeft() < ((AmmoType) ammo.getType()).getShots()) && (ammo.getShotsLeft() > 0)) {
                     return true;
                 }
             } catch (Exception ex) {
@@ -2414,36 +2424,36 @@ public class UnitUtils {
         String armorName = "Standard";
 
         switch (unit.getArmorType()) {
-        case EquipmentType.T_ARMOR_STANDARD:
-            armorName = "Standard";
-            break;
-        case EquipmentType.T_ARMOR_FERRO_FIBROUS:
-            armorName = "FF";
-            break;
-        case EquipmentType.T_ARMOR_REACTIVE:
-            armorName = "Reactive";
-            break;
-        case EquipmentType.T_ARMOR_REFLECTIVE:
-            armorName = "Reflective";
-            break;
-        case EquipmentType.T_ARMOR_HARDENED:
-            armorName = "Hardened";
-            break;
-        case EquipmentType.T_ARMOR_LIGHT_FERRO:
-            armorName = "LFF";
-            break;
-        case EquipmentType.T_ARMOR_HEAVY_FERRO:
-            armorName = "HFF";
-            break;
-        case EquipmentType.T_ARMOR_PATCHWORK:
-            armorName = "Patchwork";
-            break;
-        case EquipmentType.T_ARMOR_STEALTH:
-            armorName = "Stealth";
-            break;
-        case EquipmentType.T_ARMOR_FERRO_FIBROUS_PROTO:
-            armorName = "FFProto";
-            break;
+            case EquipmentType.T_ARMOR_STANDARD:
+                armorName = "Standard";
+                break;
+            case EquipmentType.T_ARMOR_FERRO_FIBROUS:
+                armorName = "FF";
+                break;
+            case EquipmentType.T_ARMOR_REACTIVE:
+                armorName = "Reactive";
+                break;
+            case EquipmentType.T_ARMOR_REFLECTIVE:
+                armorName = "Reflective";
+                break;
+            case EquipmentType.T_ARMOR_HARDENED:
+                armorName = "Hardened";
+                break;
+            case EquipmentType.T_ARMOR_LIGHT_FERRO:
+                armorName = "LFF";
+                break;
+            case EquipmentType.T_ARMOR_HEAVY_FERRO:
+                armorName = "HFF";
+                break;
+            case EquipmentType.T_ARMOR_PATCHWORK:
+                armorName = "Patchwork";
+                break;
+            case EquipmentType.T_ARMOR_STEALTH:
+                armorName = "Stealth";
+                break;
+            case EquipmentType.T_ARMOR_FERRO_FIBROUS_PROTO:
+                armorName = "FFProto";
+                break;
         }
         return armorName;
     }
@@ -2452,21 +2462,21 @@ public class UnitUtils {
         String internalName = "Standard";
 
         switch (unit.getStructureType()) {
-        case EquipmentType.T_STRUCTURE_STANDARD:
-            internalName = "Standard";
-            break;
-        case EquipmentType.T_STRUCTURE_ENDO_STEEL:
-            internalName = "Endo";
-            break;
-        case EquipmentType.T_STRUCTURE_ENDO_PROTOTYPE:
-            internalName = "EndoProto";
-            break;
-        case EquipmentType.T_STRUCTURE_REINFORCED:
-            internalName = "Reinforced";
-            break;
-        case EquipmentType.T_STRUCTURE_COMPOSITE:
-            internalName = "Composite";
-            break;
+            case EquipmentType.T_STRUCTURE_STANDARD:
+                internalName = "Standard";
+                break;
+            case EquipmentType.T_STRUCTURE_ENDO_STEEL:
+                internalName = "Endo";
+                break;
+            case EquipmentType.T_STRUCTURE_ENDO_PROTOTYPE:
+                internalName = "EndoProto";
+                break;
+            case EquipmentType.T_STRUCTURE_REINFORCED:
+                internalName = "Reinforced";
+                break;
+            case EquipmentType.T_STRUCTURE_COMPOSITE:
+                internalName = "Composite";
+                break;
         }
         return internalName;
     }
@@ -2502,7 +2512,7 @@ public class UnitUtils {
             for (int slot = 0; slot < numberOfSlots; slot++) {
                 CriticalSlot crit = unit.getCritical(location, slot);
                 try {
-                    if (crit != null && unit.getEquipment(crit.getIndex()).equals(unit.getEquipment(cs.getIndex()))) {
+                    if ((crit != null) && unit.getEquipment(crit.getIndex()).equals(unit.getEquipment(cs.getIndex()))) {
                         totalCrits++;
                         if (crit.isDamaged()) {
                             damagedCrits++;
@@ -2517,7 +2527,7 @@ public class UnitUtils {
             for (int slot = 0; slot < numberOfSlots; slot++) {
                 CriticalSlot crit = unit.getCritical(location, slot);
                 try {
-                    if (crit != null && unit.getEquipment(crit.getIndex()).equals(unit.getEquipment(cs.getIndex()))) {
+                    if ((crit != null) && unit.getEquipment(crit.getIndex()).equals(unit.getEquipment(cs.getIndex()))) {
                         totalCrits++;
                         if (crit.isDamaged()) {
                             damagedCrits++;
@@ -2537,7 +2547,7 @@ public class UnitUtils {
             for (int slot = 0; slot < numberOfSlots; slot++) {
                 CriticalSlot crit = unit.getCritical(mount.getLocation(), slot);
                 try {
-                    if (crit != null && unit.getEquipment(crit.getIndex()).equals(unit.getEquipment(cs.getIndex()))) {
+                    if ((crit != null) && unit.getEquipment(crit.getIndex()).equals(unit.getEquipment(cs.getIndex()))) {
                         totalCrits++;
                         if (crit.isDamaged()) {
                             damagedCrits++;
@@ -2579,14 +2589,14 @@ public class UnitUtils {
 
             int damagedCrits = 0;
 
-            if (mount != null && mount.isSplit()) {
+            if ((mount != null) && mount.isSplit()) {
                 int location = mount.getLocation();
 
                 int numberOfSlots = unit.getNumberOfCriticals(location);
                 for (int pos = 0; pos < numberOfSlots; pos++) {
                     CriticalSlot crit = unit.getCritical(location, pos);
                     try {
-                        if (crit != null && unit.getEquipment(crit.getIndex()).equals(mount)) {
+                        if ((crit != null) && unit.getEquipment(crit.getIndex()).equals(mount)) {
                             if (crit.isDamaged()) {
                                 damagedCrits++;
                             }
@@ -2600,7 +2610,7 @@ public class UnitUtils {
                 for (int pos = 0; pos < numberOfSlots; pos++) {
                     CriticalSlot crit = unit.getCritical(location, pos);
                     try {
-                        if (crit != null && unit.getEquipment(crit.getIndex()).equals(mount)) {
+                        if ((crit != null) && unit.getEquipment(crit.getIndex()).equals(mount)) {
                             if (crit.isDamaged()) {
                                 damagedCrits++;
                             }
@@ -2614,7 +2624,7 @@ public class UnitUtils {
                 for (int pos = 0; pos < numberOfSlots; pos++) {
                     CriticalSlot crit = unit.getCritical(mount.getLocation(), pos);
                     try {
-                        if (crit != null && unit.getEquipment(crit.getIndex()).equals(mount)) {
+                        if ((crit != null) && unit.getEquipment(crit.getIndex()).equals(mount)) {
                             if (crit.isDamaged()) {
                                 damagedCrits++;
                             }
@@ -2635,17 +2645,17 @@ public class UnitUtils {
 
         if (armor) {
             if (slot == UnitUtils.LOC_INTERNAL_ARMOR) {
-                if (MiscType.getArmorTypeName(unit.getStructureType()).equalsIgnoreCase("Standard")) {
+                if (EquipmentType.getArmorTypeName(unit.getStructureType()).equalsIgnoreCase("Standard")) {
                     return "IS (STD)";
                 }
 
-                return MiscType.getStructureTypeName(unit.getStructureType());
+                return EquipmentType.getStructureTypeName(unit.getStructureType());
 
             } else {
-                if (MiscType.getArmorTypeName(unit.getArmorType()).equalsIgnoreCase("Standard")) {
+                if (EquipmentType.getArmorTypeName(unit.getArmorType()).equalsIgnoreCase("Standard")) {
                     return "Armor (STD)";
                 }
-                return MiscType.getArmorTypeName(unit.getArmorType());
+                return EquipmentType.getArmorTypeName(unit.getArmorType());
             }
         }
         CriticalSlot crit = unit.getCritical(location, slot);
@@ -2664,7 +2674,7 @@ public class UnitUtils {
             }
         }
 
-        if (unit instanceof Mech && crit.getType() == CriticalSlot.TYPE_SYSTEM) {
+        if ((unit instanceof Mech) && (crit.getType() == CriticalSlot.TYPE_SYSTEM)) {
 
             if (crit.getIndex() == Mech.SYSTEM_ENGINE) {
                 return UnitUtils.ENGINE_TECH_STRING[UnitUtils.getEngineType(unit)];
@@ -2689,17 +2699,17 @@ public class UnitUtils {
 
         if (armor) {
             if (slot == UnitUtils.LOC_INTERNAL_ARMOR) {
-                if (MiscType.getArmorTypeName(unit.getStructureType()).equalsIgnoreCase("Standard")) {
+                if (EquipmentType.getArmorTypeName(unit.getStructureType()).equalsIgnoreCase("Standard")) {
                     return "IS (STD)";
                 }
 
-                return MiscType.getStructureTypeName(unit.getStructureType());
+                return EquipmentType.getStructureTypeName(unit.getStructureType());
 
             } else {
-                if (MiscType.getArmorTypeName(unit.getArmorType()).equalsIgnoreCase("Standard")) {
+                if (EquipmentType.getArmorTypeName(unit.getArmorType()).equalsIgnoreCase("Standard")) {
                     return "Armor (STD)";
                 }
-                return MiscType.getArmorTypeName(unit.getArmorType());
+                return EquipmentType.getArmorTypeName(unit.getArmorType());
             }
         }
         CriticalSlot crit = unit.getCritical(location, slot);
@@ -2720,7 +2730,7 @@ public class UnitUtils {
             return mounted.getName();
         }
 
-        if (unit instanceof Mech && crit.getType() == CriticalSlot.TYPE_SYSTEM) {
+        if ((unit instanceof Mech) && (crit.getType() == CriticalSlot.TYPE_SYSTEM)) {
 
             if (crit.getIndex() == Mech.SYSTEM_ENGINE) {
                 return UnitUtils.ENGINE_TECH_STRING[UnitUtils.getEngineType(unit)];
@@ -2745,55 +2755,55 @@ public class UnitUtils {
         // armor and IS are universal everything else gets a +4 to the roll if
         // the tech levels
         // are not compatible.
-        if (techLevel != TechConstants.T_ALL && techLevel != TechConstants.T_ALLOWED_ALL && techLevel != TechConstants.T_TECH_UNKNOWN) {
+        if ((techLevel != TechConstants.T_ALL) && (techLevel != TechConstants.T_ALLOWED_ALL) && (techLevel != TechConstants.T_TECH_UNKNOWN)) {
             if (unit.getTechLevel() != techLevel) {
                 switch (unit.getTechLevel()) {
-                case TechConstants.T_CLAN_UNOFFICIAL:
-                    if (techLevel != TechConstants.T_CLAN_UNOFFICIAL) {
-                        return false;
-                    }
-                    break;
-                case TechConstants.T_CLAN_EXPERIMENTAL:
-                    if (techLevel != TechConstants.T_CLAN_EXPERIMENTAL && techLevel != TechConstants.T_CLAN_UNOFFICIAL) {
-                        return false;
-                    }
-                    break;
-                case TechConstants.T_CLAN_ADVANCED:
-                    if (techLevel != TechConstants.T_CLAN_ADVANCED && techLevel != TechConstants.T_CLAN_EXPERIMENTAL && techLevel != TechConstants.T_CLAN_UNOFFICIAL) {
-                        return false;
-                    }
-                    break;
-                case TechConstants.T_CLAN_TW:
-                    if (techLevel != TechConstants.T_CLAN_TW && techLevel != TechConstants.T_CLAN_ADVANCED && techLevel != TechConstants.T_CLAN_EXPERIMENTAL && techLevel != TechConstants.T_CLAN_UNOFFICIAL) {
-                        return false;
-                    }
-                    break;
-                case TechConstants.T_IS_UNOFFICIAL:
-                    if (techLevel != TechConstants.T_IS_UNOFFICIAL) {
-                        return false;
-                    }
-                    break;
-                case TechConstants.T_IS_EXPERIMENTAL:
-                    if (techLevel != TechConstants.T_IS_UNOFFICIAL && techLevel != TechConstants.T_IS_EXPERIMENTAL) {
-                        return false;
-                    }
-                    break;
-                case TechConstants.T_IS_ADVANCED:
-                    if (techLevel != TechConstants.T_IS_ADVANCED && techLevel != TechConstants.T_IS_UNOFFICIAL && techLevel != TechConstants.T_IS_EXPERIMENTAL) {
-                        return false;
-                    }
-                case TechConstants.T_IS_TW_ALL:
-                    if (techLevel != TechConstants.T_IS_TW_ALL && techLevel != TechConstants.T_IS_ADVANCED && techLevel != TechConstants.T_IS_UNOFFICIAL && techLevel != TechConstants.T_IS_EXPERIMENTAL) {
-                        return false;
-                    }
-                case TechConstants.T_IS_TW_NON_BOX:
-                    if (techLevel != TechConstants.T_IS_TW_NON_BOX && techLevel != TechConstants.T_IS_TW_ALL && techLevel != TechConstants.T_IS_ADVANCED && techLevel != TechConstants.T_IS_UNOFFICIAL && techLevel != TechConstants.T_IS_EXPERIMENTAL) {
-                        return false;
-                    }
-                case TechConstants.T_INTRO_BOXSET:
-                    if (techLevel != TechConstants.T_INTRO_BOXSET && techLevel != TechConstants.T_IS_TW_NON_BOX && techLevel != TechConstants.T_IS_TW_ALL && techLevel != TechConstants.T_IS_ADVANCED && techLevel != TechConstants.T_IS_UNOFFICIAL && techLevel != TechConstants.T_IS_EXPERIMENTAL) {
-                        return false;
-                    }
+                    case TechConstants.T_CLAN_UNOFFICIAL:
+                        if (techLevel != TechConstants.T_CLAN_UNOFFICIAL) {
+                            return false;
+                        }
+                        break;
+                    case TechConstants.T_CLAN_EXPERIMENTAL:
+                        if ((techLevel != TechConstants.T_CLAN_EXPERIMENTAL) && (techLevel != TechConstants.T_CLAN_UNOFFICIAL)) {
+                            return false;
+                        }
+                        break;
+                    case TechConstants.T_CLAN_ADVANCED:
+                        if ((techLevel != TechConstants.T_CLAN_ADVANCED) && (techLevel != TechConstants.T_CLAN_EXPERIMENTAL) && (techLevel != TechConstants.T_CLAN_UNOFFICIAL)) {
+                            return false;
+                        }
+                        break;
+                    case TechConstants.T_CLAN_TW:
+                        if ((techLevel != TechConstants.T_CLAN_TW) && (techLevel != TechConstants.T_CLAN_ADVANCED) && (techLevel != TechConstants.T_CLAN_EXPERIMENTAL) && (techLevel != TechConstants.T_CLAN_UNOFFICIAL)) {
+                            return false;
+                        }
+                        break;
+                    case TechConstants.T_IS_UNOFFICIAL:
+                        if (techLevel != TechConstants.T_IS_UNOFFICIAL) {
+                            return false;
+                        }
+                        break;
+                    case TechConstants.T_IS_EXPERIMENTAL:
+                        if ((techLevel != TechConstants.T_IS_UNOFFICIAL) && (techLevel != TechConstants.T_IS_EXPERIMENTAL)) {
+                            return false;
+                        }
+                        break;
+                    case TechConstants.T_IS_ADVANCED:
+                        if ((techLevel != TechConstants.T_IS_ADVANCED) && (techLevel != TechConstants.T_IS_UNOFFICIAL) && (techLevel != TechConstants.T_IS_EXPERIMENTAL)) {
+                            return false;
+                        }
+                    case TechConstants.T_IS_TW_ALL:
+                        if ((techLevel != TechConstants.T_IS_TW_ALL) && (techLevel != TechConstants.T_IS_ADVANCED) && (techLevel != TechConstants.T_IS_UNOFFICIAL) && (techLevel != TechConstants.T_IS_EXPERIMENTAL)) {
+                            return false;
+                        }
+                    case TechConstants.T_IS_TW_NON_BOX:
+                        if ((techLevel != TechConstants.T_IS_TW_NON_BOX) && (techLevel != TechConstants.T_IS_TW_ALL) && (techLevel != TechConstants.T_IS_ADVANCED) && (techLevel != TechConstants.T_IS_UNOFFICIAL) && (techLevel != TechConstants.T_IS_EXPERIMENTAL)) {
+                            return false;
+                        }
+                    case TechConstants.T_INTRO_BOXSET:
+                        if ((techLevel != TechConstants.T_INTRO_BOXSET) && (techLevel != TechConstants.T_IS_TW_NON_BOX) && (techLevel != TechConstants.T_IS_TW_ALL) && (techLevel != TechConstants.T_IS_ADVANCED) && (techLevel != TechConstants.T_IS_UNOFFICIAL) && (techLevel != TechConstants.T_IS_EXPERIMENTAL)) {
+                            return false;
+                        }
                 }
             }
         }
@@ -2803,170 +2813,170 @@ public class UnitUtils {
 
     public static boolean isSameTech(int partTechLevel, int houseTechLevel) {
 
-        if (houseTechLevel >= TechConstants.T_ALL || partTechLevel >= TechConstants.T_ALL || partTechLevel < TechConstants.T_INTRO_BOXSET || partTechLevel == houseTechLevel) {
+        if ((houseTechLevel >= TechConstants.T_ALL) || (partTechLevel >= TechConstants.T_ALL) || (partTechLevel < TechConstants.T_INTRO_BOXSET) || (partTechLevel == houseTechLevel)) {
             return true;
         }
 
         switch (houseTechLevel) {
-        case TechConstants.T_INTRO_BOXSET:
-            switch (partTechLevel) {
             case TechConstants.T_INTRO_BOXSET:
-                return true;
+                switch (partTechLevel) {
+                    case TechConstants.T_INTRO_BOXSET:
+                        return true;
+                    case TechConstants.T_IS_TW_NON_BOX:
+                    case TechConstants.T_IS_TW_ALL:
+                    case TechConstants.T_IS_ADVANCED:
+                    case TechConstants.T_IS_EXPERIMENTAL:
+                    case TechConstants.T_IS_UNOFFICIAL:
+                    case TechConstants.T_CLAN_TW:
+                    case TechConstants.T_CLAN_ADVANCED:
+                    case TechConstants.T_CLAN_EXPERIMENTAL:
+                    case TechConstants.T_CLAN_UNOFFICIAL:
+                        return false;
+                }
+                break;
             case TechConstants.T_IS_TW_NON_BOX:
+                switch (partTechLevel) {
+                    case TechConstants.T_INTRO_BOXSET:
+                    case TechConstants.T_IS_TW_NON_BOX:
+                        return true;
+                    case TechConstants.T_IS_TW_ALL:
+                    case TechConstants.T_IS_ADVANCED:
+                    case TechConstants.T_IS_EXPERIMENTAL:
+                    case TechConstants.T_IS_UNOFFICIAL:
+                    case TechConstants.T_CLAN_TW:
+                    case TechConstants.T_CLAN_ADVANCED:
+                    case TechConstants.T_CLAN_EXPERIMENTAL:
+                    case TechConstants.T_CLAN_UNOFFICIAL:
+                        return false;
+                }
+                break;
             case TechConstants.T_IS_TW_ALL:
+                switch (partTechLevel) {
+                    case TechConstants.T_INTRO_BOXSET:
+                    case TechConstants.T_IS_TW_NON_BOX:
+                    case TechConstants.T_IS_TW_ALL:
+                        return true;
+                    case TechConstants.T_IS_ADVANCED:
+                    case TechConstants.T_IS_EXPERIMENTAL:
+                    case TechConstants.T_IS_UNOFFICIAL:
+                    case TechConstants.T_CLAN_TW:
+                    case TechConstants.T_CLAN_ADVANCED:
+                    case TechConstants.T_CLAN_EXPERIMENTAL:
+                    case TechConstants.T_CLAN_UNOFFICIAL:
+                        return false;
+                }
+                break;
             case TechConstants.T_IS_ADVANCED:
+                switch (partTechLevel) {
+                    case TechConstants.T_INTRO_BOXSET:
+                    case TechConstants.T_IS_TW_NON_BOX:
+                    case TechConstants.T_IS_TW_ALL:
+                    case TechConstants.T_IS_ADVANCED:
+                        return true;
+                    case TechConstants.T_CLAN_TW:
+                    case TechConstants.T_CLAN_ADVANCED:
+                    case TechConstants.T_IS_EXPERIMENTAL:
+                    case TechConstants.T_IS_UNOFFICIAL:
+                    case TechConstants.T_CLAN_EXPERIMENTAL:
+                    case TechConstants.T_CLAN_UNOFFICIAL:
+                        return false;
+                }
+                break;
             case TechConstants.T_IS_EXPERIMENTAL:
+                switch (partTechLevel) {
+                    case TechConstants.T_INTRO_BOXSET:
+                    case TechConstants.T_IS_TW_NON_BOX:
+                    case TechConstants.T_IS_TW_ALL:
+                    case TechConstants.T_IS_ADVANCED:
+                    case TechConstants.T_IS_EXPERIMENTAL:
+                        return true;
+                    case TechConstants.T_CLAN_TW:
+                    case TechConstants.T_CLAN_ADVANCED:
+                    case TechConstants.T_CLAN_EXPERIMENTAL:
+                    case TechConstants.T_IS_UNOFFICIAL:
+                    case TechConstants.T_CLAN_UNOFFICIAL:
+                        return false;
+                }
+                break;
             case TechConstants.T_IS_UNOFFICIAL:
+                switch (partTechLevel) {
+                    case TechConstants.T_INTRO_BOXSET:
+                    case TechConstants.T_IS_TW_NON_BOX:
+                    case TechConstants.T_IS_TW_ALL:
+                    case TechConstants.T_IS_ADVANCED:
+                    case TechConstants.T_IS_EXPERIMENTAL:
+                    case TechConstants.T_IS_UNOFFICIAL:
+                        return true;
+                    case TechConstants.T_CLAN_TW:
+                    case TechConstants.T_CLAN_ADVANCED:
+                    case TechConstants.T_CLAN_EXPERIMENTAL:
+                    case TechConstants.T_CLAN_UNOFFICIAL:
+                }
+                break;
             case TechConstants.T_CLAN_TW:
+                switch (partTechLevel) {
+                    case TechConstants.T_INTRO_BOXSET:
+                    case TechConstants.T_IS_TW_NON_BOX:
+                    case TechConstants.T_IS_TW_ALL:
+                    case TechConstants.T_IS_ADVANCED:
+                    case TechConstants.T_IS_EXPERIMENTAL:
+                    case TechConstants.T_IS_UNOFFICIAL:
+                    case TechConstants.T_CLAN_ADVANCED:
+                    case TechConstants.T_CLAN_EXPERIMENTAL:
+                    case TechConstants.T_CLAN_UNOFFICIAL:
+                        return false;
+                    case TechConstants.T_CLAN_TW:
+                        return true;
+                }
+                break;
             case TechConstants.T_CLAN_ADVANCED:
+                switch (partTechLevel) {
+                    case TechConstants.T_INTRO_BOXSET:
+                    case TechConstants.T_IS_TW_NON_BOX:
+                    case TechConstants.T_IS_TW_ALL:
+                    case TechConstants.T_IS_ADVANCED:
+                    case TechConstants.T_IS_EXPERIMENTAL:
+                    case TechConstants.T_IS_UNOFFICIAL:
+                    case TechConstants.T_CLAN_EXPERIMENTAL:
+                    case TechConstants.T_CLAN_UNOFFICIAL:
+                        return false;
+                    case TechConstants.T_CLAN_TW:
+                    case TechConstants.T_CLAN_ADVANCED:
+                        return true;
+                }
+                break;
             case TechConstants.T_CLAN_EXPERIMENTAL:
+                switch (partTechLevel) {
+                    case TechConstants.T_INTRO_BOXSET:
+                    case TechConstants.T_IS_TW_NON_BOX:
+                    case TechConstants.T_IS_TW_ALL:
+                    case TechConstants.T_IS_ADVANCED:
+                    case TechConstants.T_IS_EXPERIMENTAL:
+                    case TechConstants.T_IS_UNOFFICIAL:
+                    case TechConstants.T_CLAN_UNOFFICIAL:
+                        return false;
+                    case TechConstants.T_CLAN_TW:
+                    case TechConstants.T_CLAN_ADVANCED:
+                    case TechConstants.T_CLAN_EXPERIMENTAL:
+                        return true;
+                }
+                break;
             case TechConstants.T_CLAN_UNOFFICIAL:
-                return false;
-            }
-            break;
-        case TechConstants.T_IS_TW_NON_BOX:
-            switch (partTechLevel) {
-            case TechConstants.T_INTRO_BOXSET:
-            case TechConstants.T_IS_TW_NON_BOX:
-                return true;
-            case TechConstants.T_IS_TW_ALL:
-            case TechConstants.T_IS_ADVANCED:
-            case TechConstants.T_IS_EXPERIMENTAL:
-            case TechConstants.T_IS_UNOFFICIAL:
-            case TechConstants.T_CLAN_TW:
-            case TechConstants.T_CLAN_ADVANCED:
-            case TechConstants.T_CLAN_EXPERIMENTAL:
-            case TechConstants.T_CLAN_UNOFFICIAL:
-                return false;
-            }
-            break;
-        case TechConstants.T_IS_TW_ALL:
-            switch (partTechLevel) {
-            case TechConstants.T_INTRO_BOXSET:
-            case TechConstants.T_IS_TW_NON_BOX:
-            case TechConstants.T_IS_TW_ALL:
-                return true;
-            case TechConstants.T_IS_ADVANCED:
-            case TechConstants.T_IS_EXPERIMENTAL:
-            case TechConstants.T_IS_UNOFFICIAL:
-            case TechConstants.T_CLAN_TW:
-            case TechConstants.T_CLAN_ADVANCED:
-            case TechConstants.T_CLAN_EXPERIMENTAL:
-            case TechConstants.T_CLAN_UNOFFICIAL:
-                return false;
-            }
-            break;
-        case TechConstants.T_IS_ADVANCED:
-            switch (partTechLevel) {
-            case TechConstants.T_INTRO_BOXSET:
-            case TechConstants.T_IS_TW_NON_BOX:
-            case TechConstants.T_IS_TW_ALL:
-            case TechConstants.T_IS_ADVANCED:
-                return true;
-            case TechConstants.T_CLAN_TW:
-            case TechConstants.T_CLAN_ADVANCED:
-            case TechConstants.T_IS_EXPERIMENTAL:
-            case TechConstants.T_IS_UNOFFICIAL:
-            case TechConstants.T_CLAN_EXPERIMENTAL:
-            case TechConstants.T_CLAN_UNOFFICIAL:
-                return false;
-            }
-            break;
-        case TechConstants.T_IS_EXPERIMENTAL:
-            switch (partTechLevel) {
-            case TechConstants.T_INTRO_BOXSET:
-            case TechConstants.T_IS_TW_NON_BOX:
-            case TechConstants.T_IS_TW_ALL:
-            case TechConstants.T_IS_ADVANCED:
-            case TechConstants.T_IS_EXPERIMENTAL:
-                return true;
-            case TechConstants.T_CLAN_TW:
-            case TechConstants.T_CLAN_ADVANCED:
-            case TechConstants.T_CLAN_EXPERIMENTAL:
-            case TechConstants.T_IS_UNOFFICIAL:
-            case TechConstants.T_CLAN_UNOFFICIAL:
-                return false;
-            }
-            break;
-        case TechConstants.T_IS_UNOFFICIAL:
-            switch (partTechLevel) {
-            case TechConstants.T_INTRO_BOXSET:
-            case TechConstants.T_IS_TW_NON_BOX:
-            case TechConstants.T_IS_TW_ALL:
-            case TechConstants.T_IS_ADVANCED:
-            case TechConstants.T_IS_EXPERIMENTAL:
-            case TechConstants.T_IS_UNOFFICIAL:
-                return true;
-            case TechConstants.T_CLAN_TW:
-            case TechConstants.T_CLAN_ADVANCED:
-            case TechConstants.T_CLAN_EXPERIMENTAL:
-            case TechConstants.T_CLAN_UNOFFICIAL:
-            }
-            break;
-        case TechConstants.T_CLAN_TW:
-            switch (partTechLevel) {
-            case TechConstants.T_INTRO_BOXSET:
-            case TechConstants.T_IS_TW_NON_BOX:
-            case TechConstants.T_IS_TW_ALL:
-            case TechConstants.T_IS_ADVANCED:
-            case TechConstants.T_IS_EXPERIMENTAL:
-            case TechConstants.T_IS_UNOFFICIAL:
-            case TechConstants.T_CLAN_ADVANCED:
-            case TechConstants.T_CLAN_EXPERIMENTAL:
-            case TechConstants.T_CLAN_UNOFFICIAL:
-                return false;
-            case TechConstants.T_CLAN_TW:
-                return true;
-            }
-            break;
-        case TechConstants.T_CLAN_ADVANCED:
-            switch (partTechLevel) {
-            case TechConstants.T_INTRO_BOXSET:
-            case TechConstants.T_IS_TW_NON_BOX:
-            case TechConstants.T_IS_TW_ALL:
-            case TechConstants.T_IS_ADVANCED:
-            case TechConstants.T_IS_EXPERIMENTAL:
-            case TechConstants.T_IS_UNOFFICIAL:
-            case TechConstants.T_CLAN_EXPERIMENTAL:
-            case TechConstants.T_CLAN_UNOFFICIAL:
-                return false;
-            case TechConstants.T_CLAN_TW:
-            case TechConstants.T_CLAN_ADVANCED:
-                return true;
-            }
-            break;
-        case TechConstants.T_CLAN_EXPERIMENTAL:
-            switch (partTechLevel) {
-            case TechConstants.T_INTRO_BOXSET:
-            case TechConstants.T_IS_TW_NON_BOX:
-            case TechConstants.T_IS_TW_ALL:
-            case TechConstants.T_IS_ADVANCED:
-            case TechConstants.T_IS_EXPERIMENTAL:
-            case TechConstants.T_IS_UNOFFICIAL:
-            case TechConstants.T_CLAN_UNOFFICIAL:
-                return false;
-            case TechConstants.T_CLAN_TW:
-            case TechConstants.T_CLAN_ADVANCED:
-            case TechConstants.T_CLAN_EXPERIMENTAL:
-                return true;
-            }
-            break;
-        case TechConstants.T_CLAN_UNOFFICIAL:
-            switch (partTechLevel) {
-            case TechConstants.T_INTRO_BOXSET:
-            case TechConstants.T_IS_TW_NON_BOX:
-            case TechConstants.T_IS_TW_ALL:
-            case TechConstants.T_IS_ADVANCED:
-            case TechConstants.T_IS_EXPERIMENTAL:
-            case TechConstants.T_IS_UNOFFICIAL:
-                return false;
-            case TechConstants.T_CLAN_TW:
-            case TechConstants.T_CLAN_ADVANCED:
-            case TechConstants.T_CLAN_EXPERIMENTAL:
-            case TechConstants.T_CLAN_UNOFFICIAL:
-                return true;
-            }
-            break;
+                switch (partTechLevel) {
+                    case TechConstants.T_INTRO_BOXSET:
+                    case TechConstants.T_IS_TW_NON_BOX:
+                    case TechConstants.T_IS_TW_ALL:
+                    case TechConstants.T_IS_ADVANCED:
+                    case TechConstants.T_IS_EXPERIMENTAL:
+                    case TechConstants.T_IS_UNOFFICIAL:
+                        return false;
+                    case TechConstants.T_CLAN_TW:
+                    case TechConstants.T_CLAN_ADVANCED:
+                    case TechConstants.T_CLAN_EXPERIMENTAL:
+                    case TechConstants.T_CLAN_UNOFFICIAL:
+                        return true;
+                }
+                break;
         }
 
         return false;
@@ -3072,7 +3082,7 @@ public class UnitUtils {
         String unitFile = "";
 
         unitFile = ms.getEntryName();
-        if (unitFile == null || unitFile.equals("null")) {
+        if ((unitFile == null) || unitFile.equals("null")) {
             unitFile = ms.getSourceFile().getName();
         }
 
@@ -3116,7 +3126,7 @@ public class UnitUtils {
 
         for (int y = 0; y < unit.getNumberOfCriticals(location); y++) {
             CriticalSlot cs = unit.getCritical(location, y);
-            if (cs != null && cs.getIndex() == Mech.SYSTEM_COCKPIT) {
+            if ((cs != null) && (cs.getIndex() == Mech.SYSTEM_COCKPIT)) {
                 UnitUtils.salvageCriticalSlot(cs, unit);
             }
         }
@@ -3150,7 +3160,7 @@ public class UnitUtils {
     }
 
     public static boolean isClanEQ(EquipmentType eq) {
-        if (eq.getTechLevel() == TechConstants.T_CLAN_ADVANCED || eq.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL || eq.getTechLevel() == TechConstants.T_CLAN_TW || eq.getTechLevel() == TechConstants.T_CLAN_UNOFFICIAL) {
+        if ((eq.getTechLevel() == TechConstants.T_CLAN_ADVANCED) || (eq.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL) || (eq.getTechLevel() == TechConstants.T_CLAN_TW) || (eq.getTechLevel() == TechConstants.T_CLAN_UNOFFICIAL)) {
             return true;
         }
         return false;
