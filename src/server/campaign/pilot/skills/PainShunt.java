@@ -17,6 +17,7 @@ package server.campaign.pilot.skills;
 import megamek.common.Entity;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
+import server.campaign.pilot.SPilot;
 
 import common.MegaMekPilotOption;
 import common.Unit;
@@ -33,34 +34,40 @@ public class PainShunt extends SPilotSkill {
     @Override
     public void modifyPilot(Pilot p) {
         // super.addToPilot(p);
-        p.addMegamekOption(new MegaMekPilotOption("pain_shunt",true));
-        p.setBvMod(p.getBVMod() +  0.01);
+        p.addMegamekOption(new MegaMekPilotOption("pain_shunt", true));
+        p.setBvMod(p.getBVMod() + 0.01);
     }
 
     @Override
-	public int getBVMod(Entity unit){
+    public int getBVMod(Entity unit) {
         return CampaignMain.cm.getIntegerConfig("PainShuntBaseBVMod");
     }
 
-	@Override
-	public int getChance(int unitType, Pilot p) {
-    	if (p.getSkills().has(PilotSkill.PainShuntID)) {
+    @Override
+    public int getBVMod(Entity unit, SPilot p) {
+        SHouse house = CampaignMain.cm.getHouseFromPartialString(p.getCurrentFaction());
+        return house.getIntegerConfig("PainShuntBaseBVMod");
+    }
+
+    @Override
+    public int getChance(int unitType, Pilot p) {
+        if (p.getSkills().has(PilotSkill.PainShuntID)) {
             return 0;
         }
 
-        if ( unitType == Unit.PROTOMEK ) {
+        if (unitType == Unit.PROTOMEK) {
             return 0;
         }
 
-    	String chance = "chancefor"+getAbbreviation()+"for"+Unit.getTypeClassDesc(unitType);
+        String chance = "chancefor" + getAbbreviation() + "for" + Unit.getTypeClassDesc(unitType);
 
-		SHouse house = CampaignMain.cm.getHouseFromPartialString(p.getCurrentFaction());
+        SHouse house = CampaignMain.cm.getHouseFromPartialString(p.getCurrentFaction());
 
-		if ( house == null ) {
+        if (house == null) {
             return CampaignMain.cm.getIntegerConfig(chance);
         }
 
-		return house.getIntegerConfig(chance);
-	}
+        return house.getIntegerConfig(chance);
+    }
 
 }

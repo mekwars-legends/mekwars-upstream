@@ -47,7 +47,6 @@ import megamek.common.Tank;
 import megamek.common.WeaponType;
 import megamek.common.options.PilotOptions;
 import server.campaign.pilot.SPilot;
-import server.campaign.pilot.skills.PainResistanceSkill;
 import server.campaign.pilot.skills.SPilotSkill;
 import server.campaign.pilot.skills.WeaponSpecialistSkill;
 
@@ -1471,11 +1470,7 @@ public final class SUnit extends Unit {
 
         while (pilotSkills.hasNext()) {
             SPilotSkill skill = (SPilotSkill) pilotSkills.next();
-            if ((skill instanceof WeaponSpecialistSkill) || (skill instanceof PainResistanceSkill)) {
-                skillBV += skill.getBVMod(getEntity(), (SPilot) getPilot());
-            } else {
-                skillBV += skill.getBVMod(getEntity());
-            }
+            skillBV += skill.getBVMod(getEntity(), (SPilot) getPilot());
         }
 
         return skillBV;

@@ -21,36 +21,34 @@ import megamek.common.Entity;
 import common.MegaMekPilotOption;
 import common.campaign.pilot.Pilot;
 
-
 /**
  * @author Helge Richter
  */
 public class ClanPilotTrainingSkill extends SPilotSkill {
 
-
-   public ClanPilotTrainingSkill() {
-    	//TODO: replace with ReflectionProvider
+    public ClanPilotTrainingSkill() {
+        // TODO: replace with ReflectionProvider
     }
 
     public ClanPilotTrainingSkill(int id) {
-        super(id, "Clan Pilot Training","CPT");
+        super(id, "Clan Pilot Training", "CPT");
         setDescription("Pilot has a +1 penalty for physical attacks, because clans do not train for dishonourable combat.");
     }
 
     @Override
-	public void modifyPilot(Pilot p) {
-		// super.addToPilot(p);
-		p.addMegamekOption(new MegaMekPilotOption("clan_pilot_training",true));
-		p.setBvMod(p.getBVMod() +  0.01);
-	}
+    public void modifyPilot(Pilot p) {
+        // super.addToPilot(p);
+        p.addMegamekOption(new MegaMekPilotOption("clan_pilot_training", true));
+        p.setBvMod(p.getBVMod() + 0.01);
+    }
 
-	@Override
-	public int getChance(int unitType, Pilot p) {
-  		return 0;
-   }
+    @Override
+    public int getChance(int unitType, Pilot p) {
+        return 0;
+    }
 
-	@Override
-	public int getBVMod(Entity unit){
+    @Override
+    public int getBVMod(Entity unit) {
 
         return 0;
     }

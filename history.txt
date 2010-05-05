@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.2.41.x
++ Bug 2956740: Server Config vs. Faction Configs
 + Bug 2996804: Donating of Infantry
 + Bug 2970188: New Infantry from MM 0.35.14-dev
 Released server v0.2.41.3 

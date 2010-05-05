@@ -22,10 +22,12 @@ import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
 
 /**
- * Base class for all skill implementations. Overide this if you want to create a cool new skill. You may want to use SLevelPilotSkill if you want a skill with
- * different Levels.
+ * Base class for all skill implementations. Overide this if you want to create
+ * a cool new skill. You may want to use SLevelPilotSkill if you want a skill
+ * with different Levels.
  * 
- * Also note, that the skill should not hold any internal state depending on any parameter passed to any function to it, since the instance created only once
+ * Also note, that the skill should not hold any internal state depending on any
+ * parameter passed to any function to it, since the instance created only once
  * and then shared among all pilots.
  * 
  * @author Helge Richter and Immanuel Scholz
@@ -46,14 +48,17 @@ public abstract class SPilotSkill extends PilotSkill {
     /**
      * Override this, if you have changes to be done to the pilot's stats.
      * 
-     * Do not touch the skill list of a pilot here, but change the other stats. The skill will be automatically add to the pilot's list.
+     * Do not touch the skill list of a pilot here, but change the other stats.
+     * The skill will be automatically add to the pilot's list.
      */
     public void modifyPilot(Pilot pilot) {
     }
 
     /**
-     * Override this, if you want a special handling of how the skill is added to the pilot's skill list. As example it could remove other skills on its list
-     * (look at SLevelPilotSkill), or auto-add another skill (you have to call modifyPilot for that auto-added by yourself!).
+     * Override this, if you want a special handling of how the skill is added
+     * to the pilot's skill list. As example it could remove other skills on its
+     * list (look at SLevelPilotSkill), or auto-add another skill (you have to
+     * call modifyPilot for that auto-added by yourself!).
      */
     public void addToPilot(Pilot pilot) {
 
@@ -78,8 +83,9 @@ public abstract class SPilotSkill extends PilotSkill {
     }
 
     /**
-     * This is called by the pilot's level-up to determinate whether the class can be used for this pilot. getChance should return 0 if this skill cannot be
-     * used (as example because the pilot has already that skill).
+     * This is called by the pilot's level-up to determinate whether the class
+     * can be used for this pilot. getChance should return 0 if this skill
+     * cannot be used (as example because the pilot has already that skill).
      */
     public abstract int getChance(int unitType, Pilot pilot);
 

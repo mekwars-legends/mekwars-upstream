@@ -25,14 +25,16 @@ import megamek.common.Mounted;
 import megamek.common.WeaponType;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
+import server.campaign.pilot.SPilot;
 
 import common.MegaMekPilotOption;
 import common.Unit;
 import common.campaign.pilot.Pilot;
 
-
 /**
- * NOTE: This is a unofficial rule. Pilot gets a -1 to-hit bonus on all missile weapons (LRM, SRM, MRM, RL and ATM).
+ * NOTE: This is a unofficial rule. Pilot gets a -1 to-hit bonus on all missile
+ * weapons (LRM, SRM, MRM, RL and ATM).
+ * 
  * @@author Torren (Jason Tighe)
  */
 public class GunneryMissileSkill extends SPilotSkill {
@@ -43,41 +45,47 @@ public class GunneryMissileSkill extends SPilotSkill {
     }
 
     public GunneryMissileSkill() {
-    	//TODO: replace with ReflectionProvider
+        // TODO: replace with ReflectionProvider
     }
 
     @Override
-	public int getChance(int unitType, Pilot pilot) {
-    	if (pilot.getSkills().has(this)) {
+    public int getChance(int unitType, Pilot pilot) {
+        if (pilot.getSkills().has(this)) {
             return 0;
         }
 
-    	String chance = "chancefor"+getAbbreviation()+"for"+Unit.getTypeClassDesc(unitType);
+        String chance = "chancefor" + getAbbreviation() + "for" + Unit.getTypeClassDesc(unitType);
 
-		SHouse house = CampaignMain.cm.getHouseFromPartialString(pilot.getCurrentFaction());
+        SHouse house = CampaignMain.cm.getHouseFromPartialString(pilot.getCurrentFaction());
 
-		if ( house == null ) {
+        if (house == null) {
             return CampaignMain.cm.getIntegerConfig(chance);
         }
 
-		return house.getIntegerConfig(chance);
+        return house.getIntegerConfig(chance);
     }
 
     @Override
-	public void modifyPilot(Pilot pilot) {
-        pilot.addMegamekOption(new MegaMekPilotOption("gunnery_missile",true));
-//        pilot.setBvMod(pilot.getBVMod() +  0.02);
+    public void modifyPilot(Pilot pilot) {
+        pilot.addMegamekOption(new MegaMekPilotOption("gunnery_missile", true));
+        // pilot.setBvMod(pilot.getBVMod() + 0.02);
     }
+
     @Override
-	public int getBVMod(Entity unit){
+    public int getBVMod(Entity unit) {
         double missileBV = 0;
-        double gunneryMissileBVBaseMod = megamek.common.Pilot.getBVSkillMultiplier(unit.getCrew().getGunnery()-1, unit.getCrew().getPiloting());
+        double gunneryMissileBVBaseMod = megamek.common.Pilot.getBVSkillMultiplier(unit.getCrew().getGunnery() - 1, unit.getCrew().getPiloting());
 
-        for (Mounted weapon : unit.getWeaponList()){
-            if ( weapon.getType().hasFlag(WeaponType.F_MISSILE) ) {
+        for (Mounted weapon : unit.getWeaponList()) {
+            if (weapon.getType().hasFlag(WeaponType.F_MISSILE)) {
                 missileBV += weapon.getType().getBV(unit);
             }
         }
-        return (int)(missileBV * gunneryMissileBVBaseMod);
+        return (int) (missileBV * gunneryMissileBVBaseMod);
+    }
+
+    @Override
+    public int getBVMod(Entity unit, SPilot p) {
+        return getBVMod(unit);
     }
 }

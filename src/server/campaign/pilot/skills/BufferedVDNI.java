@@ -17,6 +17,7 @@ package server.campaign.pilot.skills;
 import megamek.common.Entity;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
+import server.campaign.pilot.SPilot;
 
 import common.MegaMekPilotOption;
 import common.Unit;
@@ -32,35 +33,45 @@ public class BufferedVDNI extends SPilotSkill {
 
     @Override
     public void modifyPilot(Pilot p) {
-       // super.addToPilot(p);
-        p.addMegamekOption(new MegaMekPilotOption("bvdni",true));
-        p.setBvMod(p.getBVMod() +  0.01);
+        // super.addToPilot(p);
+        p.addMegamekOption(new MegaMekPilotOption("bvdni", true));
+        p.setBvMod(p.getBVMod() + 0.01);
     }
 
     @Override
-	public int getBVMod(Entity unit){
+    public int getBVMod(Entity unit) {
         return CampaignMain.cm.getIntegerConfig("BufferedVDNIBaseBVMod");
     }
 
-	@Override
-	public int getChance(int unitType, Pilot p) {
-    	if (p.getSkills().has(PilotSkill.BufferedVDNIID)) {
+    @Override
+    public int getBVMod(Entity unit, SPilot p) {
+        SHouse house = CampaignMain.cm.getHouseFromPartialString(p.getCurrentFaction());
+
+        if (house != null) {
+            return house.getIntegerConfig("BufferedVDNIBaseBVMod");
+        }
+        return CampaignMain.cm.getIntegerConfig("BufferedVDNIBaseBVMod");
+    }
+
+    @Override
+    public int getChance(int unitType, Pilot p) {
+        if (p.getSkills().has(PilotSkill.BufferedVDNIID)) {
             return 0;
         }
 
-        if ( unitType != Unit.MEK && unitType != Unit.VEHICLE) {
+        if ((unitType != Unit.MEK) && (unitType != Unit.VEHICLE)) {
             return 0;
         }
 
-    	String chance = "chancefor"+getAbbreviation()+"for"+Unit.getTypeClassDesc(unitType);
+        String chance = "chancefor" + getAbbreviation() + "for" + Unit.getTypeClassDesc(unitType);
 
-		SHouse house = CampaignMain.cm.getHouseFromPartialString(p.getCurrentFaction());
+        SHouse house = CampaignMain.cm.getHouseFromPartialString(p.getCurrentFaction());
 
-		if ( house == null ) {
+        if (house == null) {
             return CampaignMain.cm.getIntegerConfig(chance);
         }
 
-		return house.getIntegerConfig(chance);
-	}
+        return house.getIntegerConfig(chance);
+    }
 
 }

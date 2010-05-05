@@ -21,56 +21,69 @@
 package server.campaign.pilot.skills;
 
 import megamek.common.Entity;
+import server.campaign.CampaignMain;
+import server.campaign.SHouse;
+import server.campaign.pilot.SPilot;
+
 import common.MegaMekPilotOption;
 import common.Unit;
 import common.campaign.pilot.Pilot;
 
-import server.campaign.CampaignMain;
-import server.campaign.SHouse;
-
 /**
  * @author Helge Richter
- *
+ * 
  */
 public class DodgeManeuverSkill extends SPilotSkill {
 
     public DodgeManeuverSkill(int id) {
         super(id, "Dodge Maneuver", "DM");
-        this.setDescription("Enables the unit to make a dodge maneuver instead of a physical attack. This maneuver adds +2 to the BTH to physical attacks against the unit.");
+        setDescription("Enables the unit to make a dodge maneuver instead of a physical attack. This maneuver adds +2 to the BTH to physical attacks against the unit.");
     }
-    
+
     public DodgeManeuverSkill() {
-    	//TODO: replace with ReflectionProvider
+        // TODO: replace with ReflectionProvider
     }
 
+    @Override
+    public void modifyPilot(Pilot p) {
+        p.addMegamekOption(new MegaMekPilotOption("dodge_maneuver", true));
+        // p.setBvMod(p.getBVMod() + 0.01);
+    }
 
     @Override
-	public void modifyPilot(Pilot p) {
-		p.addMegamekOption(new MegaMekPilotOption("dodge_maneuver",true));
-		//p.setBvMod(p.getBVMod() +  0.01);
-	}
-
-    @Override
-	public int getBVMod(Entity unit){
+    public int getBVMod(Entity unit) {
         return CampaignMain.cm.getIntegerConfig("DodgeManeuverBaseBVMod");
     }
-    
-  	@Override
-	public int getChance(int unitType, Pilot p) {
-  	    
-  	    if (p.getSkills().has(this))
-    		return 0;
-  	    
-    	if ( unitType != Unit.MEK)
-    	    return 0;
-    	
-    	String chance = "chancefor"+this.getAbbreviation()+"for"+Unit.getTypeClassDesc(unitType);
-    	
-		SHouse house = CampaignMain.cm.getHouseFromPartialString(p.getCurrentFaction());
-		
-		if ( house == null )
-			return CampaignMain.cm.getIntegerConfig(chance);
-		
-		return house.getIntegerConfig(chance);
-	}
+
+    @Override
+    public int getBVMod(Entity unit, SPilot p) {
+        SHouse house = CampaignMain.cm.getHouseFromPartialString(p.getCurrentFaction());
+
+        if (house != null) {
+            return house.getIntegerConfig("DodgeManeuverBaseBVMod");
+        }
+        return CampaignMain.cm.getIntegerConfig("DodgeManeuverBaseBVMod");
+    }
+
+    @Override
+    public int getChance(int unitType, Pilot p) {
+
+        if (p.getSkills().has(this)) {
+            return 0;
+        }
+
+        if (unitType != Unit.MEK) {
+            return 0;
+        }
+
+        String chance = "chancefor" + getAbbreviation() + "for" + Unit.getTypeClassDesc(unitType);
+
+        SHouse house = CampaignMain.cm.getHouseFromPartialString(p.getCurrentFaction());
+
+        if (house == null) {
+            return CampaignMain.cm.getIntegerConfig(chance);
+        }
+
+        return house.getIntegerConfig(chance);
+    }
 }
