@@ -3006,7 +3006,7 @@ public class UnitUtils {
             }
         }
 
-        entity.setFluff("This is an Error Unit! If you've recieved this unit in error please let someone know.");
+        entity.getFluff().setHistory("This is an Error Unit! If you've recieved this unit in error please let someone know.");
         entity.setModel("OMG-UR-FD");
         entity.setChassis("Error");
         return entity;

@@ -997,7 +997,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
                 unitFluff.setEditable(false);
                 unitFluff.setLineWrap(true);
                 unitFluff.setWrapStyleWord(true);
-                unitFluff.setText(currEntity.getFluff());
+                unitFluff.setText(currEntity.getFluff().getHistory());
                 unitFluff.setCaretPosition(0);
 
             } else {
