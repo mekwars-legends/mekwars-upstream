@@ -16,6 +16,7 @@
 package server.campaign;
 
 import java.io.Serializable;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,8 +42,10 @@ import common.util.Position;
 import common.util.TokenReader;
 
 import server.campaign.data.TimeUpdatePlanet;
+import server.mwmysql.JDBCConnectionHandler;
 
 public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparable<Object> {
+private JDBCConnectionHandler ch = new JDBCConnectionHandler();
 
     /**
      * 
@@ -163,14 +166,16 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
     }
 
     public void toDB() {
+    	Statement stmt = null;
+    	PreparedStatement ps = null;
+    	ResultSet rs = null;
+    	Connection c = ch.getConnection();
         try {
             if (getDBID() == 0) {
                 // It's a new planet, INSERT it.
-                Statement stmt = CampaignMain.cm.MySQL.getStatement();
-                ResultSet rs = null;
+                stmt = c.createStatement();
                 StringBuffer sql = new StringBuffer();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-                PreparedStatement ps = null;
 
                 sql.append("INSERT into planets set pCompProd = ?, ");
                 sql.append("pXpos = ?, ");
@@ -194,9 +199,10 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
                 sql.append("pIsHomeworld = ?, ");
                 sql.append("pOriginalOwner = ?, ");
                 sql.append("pMaxConquestPoints = ?, ");
-                sql.append("pName = ?");
+                sql.append("pName = ?, ");
+                sql.append("pString = ?");
 
-                ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
+                ps = c.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, getCompProduction());
                 ps.setDouble(2, getPosition().getX());
                 ps.setDouble(3, getPosition().getY());
@@ -220,6 +226,7 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
                 ps.setString(21, getOriginalOwner());
                 ps.setInt(22, getConquestPoints());
                 ps.setString(23, getName());
+                ps.setString(24, toString());
 
                 ps.executeUpdate();
 
@@ -255,10 +262,9 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
                     stmt.close();
             } else {
                 // It's already in the database, UPDATE it
-                Statement stmt = CampaignMain.cm.MySQL.getStatement();
+                stmt = c.createStatement();
                 StringBuffer sql = new StringBuffer();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-                PreparedStatement ps = null;
 
                 sql.append("UPDATE planets set pCompProd = ?, ");
                 sql.append("pXpos = ?, ");
@@ -282,10 +288,11 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
                 sql.append("pIsHomeworld = ?, ");
                 sql.append("pOriginalOwner = ?, ");
                 sql.append("pMaxConquestPoints = ?, ");
-                sql.append("pName = ? ");
+                sql.append("pName = ?, ");
+                sql.append("pString = ? ");
                 sql.append("WHERE PlanetID = ?");
 
-                ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
+                ps = c.prepareStatement(sql.toString());
 
                 ps.setInt(1, getCompProduction());
                 ps.setDouble(2, getPosition().getX());
@@ -310,29 +317,30 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
                 ps.setString(21, getOriginalOwner());
                 ps.setInt(22, getConquestPoints());
                 ps.setString(23, getName());
-                ps.setInt(24, getDBID());
+                ps.setString(24, toString());
+                ps.setInt(25, getDBID());
 
                 ps.executeUpdate();
 
                 /**
                  * Now, we need to save all the vectors: Factories Influence Environments planet flags
                  */
-                if (getUnitFactories() != null) {
-                    for (int i = 0; i < getUnitFactories().size(); i++) {
-                        SUnitFactory MF = (SUnitFactory) getUnitFactories().get(i);
-                        MF.toDB();
-                    }
-                }
-                // Save Influences
-                CampaignMain.cm.MySQL.saveInfluences(this);
-
-                // Save Environments
-
-                CampaignMain.cm.MySQL.saveEnvironments(this);
-
-                // Save Planet Flags
-                if (getPlanetFlags().size() > 0)
-                    CampaignMain.cm.MySQL.savePlanetFlags(this);
+//                if (getUnitFactories() != null) {
+//                    for (int i = 0; i < getUnitFactories().size(); i++) {
+//                        SUnitFactory MF = (SUnitFactory) getUnitFactories().get(i);
+//                        MF.toDB();
+//                    }
+//                }
+//                // Save Influences
+//                CampaignMain.cm.MySQL.saveInfluences(this);
+//
+//                // Save Environments
+//
+//                CampaignMain.cm.MySQL.saveEnvironments(this);
+//
+//                // Save Planet Flags
+//                if (getPlanetFlags().size() > 0)
+//                    CampaignMain.cm.MySQL.savePlanetFlags(this);
                 ps.close();
                 if (stmt != null)
                     stmt.close();
@@ -340,6 +348,23 @@ public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparabl
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog(e.getMessage());
             CampaignData.mwlog.dbLog(e);
+        } finally {
+        	if (rs != null) {
+        		try {
+        			rs.close();
+        		} catch (SQLException e) {}
+        	}
+        	if (stmt != null) {
+        		try {
+        			stmt.close();
+        		} catch (SQLException e) {}
+        	}
+        	if (ps != null) {
+        		try {
+        			ps.close();
+        		} catch (SQLException e) {}
+        	}
+        	ch.returnConnection(c);
         }
 
     }

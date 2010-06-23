@@ -17,6 +17,7 @@
 package server.campaign.util;
 
 import java.io.File;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,6 +27,7 @@ import java.util.Iterator;
 
 import common.CampaignData;
 import server.campaign.CampaignMain;
+import server.mwmysql.JDBCConnectionHandler;
 
 /**
  * @author urgru
@@ -53,6 +55,8 @@ public class ExclusionList{
 	private String owner;
 	private Vector<String> playerExcludes = null;
 	private Vector<String> adminExcludes = null;
+	
+	private JDBCConnectionHandler ch = new JDBCConnectionHandler();
 	
 	public ExclusionList() {
 		
@@ -267,9 +271,10 @@ public class ExclusionList{
 	public void fromDB(int playerID) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		Connection c = ch.getConnection();
 		try {
 			String sql = "SELECT * from noplay_lists WHERE player_id = " + playerID;
-			ps = CampaignMain.cm.MySQL.getPreparedStatement(sql);
+			ps = c.prepareStatement(sql);
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				this.addExclude(rs.getString("admin_exclude").equalsIgnoreCase("y")? true : false, rs.getString("np_name"));
@@ -280,13 +285,15 @@ public class ExclusionList{
             CampaignData.mwlog.dbLog(e);
 		} finally {
 			try {
-				if(ps != null)
-					ps.close();
 				if(rs != null)
 					rs.close();
+				if(ps != null)
+					ps.close();
 			} catch (SQLException ex) {
 				CampaignData.mwlog.dbLog("Exception in ExclusionList.fromDB: " + ex.getMessage());
                 CampaignData.mwlog.dbLog(ex);
+			} finally {
+				ch.returnConnection(c);
 			}
 		}
 	}
@@ -313,43 +320,50 @@ public class ExclusionList{
 	public void toDB(int playerID) {
 		PreparedStatement ps = null;
 		String sql = "";
+		Connection c = ch.getConnection();
 		try {
 			sql = "DELETE from noplay_lists where player_id = " + playerID;
-			ps = CampaignMain.cm.MySQL.getPreparedStatement(sql);
+			ps = c.prepareStatement(sql);
 			ps.executeUpdate(sql);
 			ps.close();
 			
 			// player excludes
 			
 			if(playerExcludes.size() > 0) {
+				sql = "REPLACE into noplay_lists set player_id = ?, np_name = ?, admin_exclude = 'n'";
+				ps = c.prepareStatement(sql);
 				for (String currName : playerExcludes) {
-					sql = "REPLACE into noplay_lists set player_id = ?, np_name = ?, admin_exclude = 'n'";
-					ps = CampaignMain.cm.MySQL.getPreparedStatement(sql);
 					ps.setInt(1, playerID);
 					ps.setString(2, currName);
 					ps.executeUpdate();
-					ps.close();
 				}
+				ps.close();
 			}
 			
 			// admin excludes
 			
 			if(adminExcludes.size() > 0) {
+				sql = "INSERT into noplay_lists set player_id = ?, np_name = ?, admin_exclude = 'y'";
+				ps = c.prepareStatement(sql);
 				for (String currName : adminExcludes) {
-					sql = "INSERT into noplay_lists set player_id = ?, np_name = ?, admin_exclude = 'y'";
-					ps = CampaignMain.cm.MySQL.getPreparedStatement(sql);
 					ps.setInt(1, playerID);
 					ps.setString(2, currName);
 					ps.executeUpdate();
-					ps.close();
 				}
+				ps.close();
 			}
 		} catch(SQLException e) {
 			CampaignData.mwlog.dbLog("SQLException in ExclusionList.toDB: " + e.getMessage());
 			CampaignData.mwlog.dbLog("  -> " + sql);
-			if(ps != null)
+			if(ps != null) {
 				CampaignData.mwlog.dbLog("    -> " + ps.toString());
+				try {
+					ps.close();
+				} catch (SQLException ex) {}
+			}
             CampaignData.mwlog.dbLog(e);
+		} finally {
+			ch.returnConnection(c);
 		}
 	}
 	

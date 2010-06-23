@@ -402,7 +402,7 @@ public final class CampaignMain implements Serializable {
 
         // Load the Mech-Statistics
         if (CampaignMain.cm.isUsingMySQL()) {
-            loadMechStatsFromDB();
+            //loadMechStatsFromDB();
         } else {
             try {
                 File configFile = new File("./campaign/mechstat.dat");
@@ -4183,22 +4183,6 @@ public final class CampaignMain implements Serializable {
                     CampaignData.mwlog.errLog(ex);
                 }
             }
-        }
-    }
-
-    private void loadMechStatsFromDB() {
-        try {
-            Statement stmt = MySQL.getStatement();
-            ResultSet rs = stmt.executeQuery("SELECT ID from mechstats ORDER BY ID");
-            while (rs.next()) {
-                MechStatistics m = new MechStatistics(rs.getInt("ID"));
-                MechStats.put(m.getMechFileName(), m);
-            }
-            rs.close();
-            stmt.close();
-        } catch (SQLException e) {
-            CampaignData.mwlog.dbLog("SQL Error in UnitHandler.loadMechStats: " + e.getMessage());
-            CampaignData.mwlog.dbLog(e);
         }
     }
 

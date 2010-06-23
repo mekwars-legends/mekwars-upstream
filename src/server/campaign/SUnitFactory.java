@@ -26,6 +26,7 @@ package server.campaign;
 
 import java.io.File;
 import java.io.Serializable;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,6 +42,7 @@ import common.UnitFactory;
 import common.CampaignData;
 import server.campaign.pilot.SPilot;
 import server.campaign.SUnit;
+import server.mwmysql.JDBCConnectionHandler;
 import common.util.TokenReader;
 
 
@@ -52,6 +54,8 @@ public class SUnitFactory extends UnitFactory implements Serializable {
     private static final long serialVersionUID = 1735176578439214960L;
     // VARIABLES
     private SPlanet planet;
+    
+    private JDBCConnectionHandler ch = new JDBCConnectionHandler();
 
     // CONSTRUCTORS
     public SUnitFactory() {
@@ -112,12 +116,12 @@ public class SUnitFactory extends UnitFactory implements Serializable {
         Statement stmt = null;
         ResultSet rs = null;
         StringBuffer sql = new StringBuffer();
-        Planet planet = getPlanet();
+        Planet pl = getPlanet();
         PreparedStatement ps = null;
         int fid = 0;
-
+        Connection c = ch.getConnection();
         try {
-            stmt = CampaignMain.cm.MySQL.getStatement();
+            stmt = c.createStatement();
             sql.setLength(0);
             sql.append("SELECT FactoryID from factories WHERE FactoryID = '");
             sql.append(getID());
@@ -138,14 +142,14 @@ public class SUnitFactory extends UnitFactory implements Serializable {
                 sql.append("FactoryBuildTableFolder = ?, ");
                 sql.append("FactoryAccessLevel = ?");
 
-                ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
+                ps = c.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setString(1, getName());
                 ps.setString(2, getSize());
                 ps.setString(3, getFounder());
                 ps.setInt(4, getTicksUntilRefresh());
                 ps.setInt(5, getRefreshSpeed());
                 ps.setInt(6, getType());
-                ps.setString(7, planet.getName());
+                ps.setString(7, pl.getName());
                 ps.setString(8, Boolean.toString(isLocked()));
                 ps.setString(9, getBuildTableFolder());
                 ps.setInt(10, getAccessLevel());
@@ -173,10 +177,10 @@ public class SUnitFactory extends UnitFactory implements Serializable {
                 sql.append("FactoryAccessLevel = ? ");
                 sql.append("WHERE FactoryID = ?");
 
-                ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
+                ps = c.prepareStatement(sql.toString());
                 ps.setString(1, getName());
                 ps.setString(2, getSize());
-                ps.setString(3, planet.getName());
+                ps.setString(3, pl.getName());
                 ps.setString(4, getFounder());
                 ps.setInt(5, getTicksUntilRefresh());
                 ps.setInt(6, getRefreshSpeed());
@@ -194,6 +198,23 @@ public class SUnitFactory extends UnitFactory implements Serializable {
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL ERROR in SUnitFactory.toDB: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+        } finally {
+        	if (rs != null) {
+        		try {
+        			rs.close();
+        		} catch (SQLException e) {}
+        	}
+        	if (ps != null) {
+        		try {
+        			ps.close();
+        		} catch (SQLException e) {}
+        	}
+        	if (stmt != null) {
+        		try {
+        			stmt.close();
+        		} catch (SQLException e) {}
+        	}
+        	ch.returnConnection(c);
         }
     }
 
@@ -347,8 +368,8 @@ public class SUnitFactory extends UnitFactory implements Serializable {
      * @param planet
      *            The planet to set.
      */
-    public void setPlanet(SPlanet planet) {
-        this.planet = planet;
+    public void setPlanet(SPlanet pl) {
+        this.planet = pl;
     }
 
     /**

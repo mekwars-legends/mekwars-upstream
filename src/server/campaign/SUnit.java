@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,6 +50,7 @@ import megamek.common.options.PilotOptions;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.SPilotSkill;
 import server.campaign.pilot.skills.WeaponSpecialistSkill;
+import server.mwmysql.JDBCConnectionHandler;
 
 import common.CampaignData;
 import common.MegaMekPilotOption;
@@ -76,6 +78,10 @@ public final class SUnit extends Unit {
 
     private Entity unitEntity = null;
     private int lastCombatPilot = -1;
+
+    private boolean is_saving = false;
+    private JDBCConnectionHandler ch = new JDBCConnectionHandler();
+
 
     // CONSTRUCTOR
     /**
@@ -571,45 +577,27 @@ public final class SUnit extends Unit {
         return result.toString();
     }
 
-    public synchronized void toDB() {
+    public void toDB() {
         PreparedStatement ps = null;
         StringBuffer sql = new StringBuffer();
-        Entity ent = getEntity();
         ResultSet rs = null;
-
+        
+        if (is_saving)
+        	return;
+        
+        is_saving = true;
+        Connection c = ch.getConnection();
+        
         try {
             if (getDBId() == 0) {
                 // Unit's not in there - insert it
                 sql.setLength(0);
-                sql.append("INSERT into units set MWID=?, uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, uType=?");
-                ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
+                sql.append("INSERT into units set MWID=?, uFileName=?, uWeightClass=?, uType=?");
+                ps = c.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, getId());
                 ps.setString(2, getUnitFilename());
-                ps.setInt(3, getPosId());
-                ps.setInt(4, getStatus());
-                ps.setString(5, getProducer() == null ? " " : getProducer());
-                ps.setInt(6, getWeightclass());
-                if (ent instanceof Mech) {
-                    ps.setBoolean(7, ((Mech) ent).isAutoEject());
-                } else {
-                    ps.setBoolean(7, false);
-                }
-                ps.setBoolean(8, false);
-                ps.setBoolean(9, false);
-
-                // Old code for Targetting type no longer supported in its only
-                // way.
-                ps.setInt(10, 0);
-                ps.setInt(11, getScrappableFor());
-                if (CampaignMain.cm.isUsingAdvanceRepair()) {
-                    ps.setString(12, UnitUtils.unitBattleDamage(getEntity(), false));
-                } else {
-                    ps.setString(12, "%%-%%-%%-");
-                }
-                ps.setInt(13, getLastCombatPilot());
-                ps.setInt(14, getCurrentRepairCost());
-                ps.setInt(15, getLifeTimeRepairCost());
-                ps.setInt(16, getType());
+                ps.setInt(3, getWeightclass());
+                ps.setInt(4, getType());
                 ps.executeUpdate();
                 rs = ps.getGeneratedKeys();
                 rs.next();
@@ -618,56 +606,29 @@ public final class SUnit extends Unit {
             } else {
                 // Unit's already there - update it
                 sql.setLength(0);
-                sql.append("UPDATE units set uFileName=?, uPosID=?, uStatus=?, uProducer=?, uWeightClass=?, uAutoEject=?, uHasSpotlight=?, uIsUsingSpotlight=?, uTargetSystem=?, uScrappableFor=?, uBattleDamage=?, uLastCombatPilot=?, uCurrentRepairCost=?, uLifetimeRepairCost=?, uType = ?, MWID=? WHERE ID = ?");
-                ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
+                sql.append("UPDATE units set uFileName=?, uWeightClass=?, uType = ?, MWID=? WHERE ID = ?");
+                ps = c.prepareStatement(sql.toString());
                 ps.setString(1, getUnitFilename());
-                ps.setInt(2, getPosId());
-                ps.setInt(3, getStatus());
-                ps.setString(4, getProducer() == null ? " " : getProducer());
-                ps.setInt(5, getWeightclass());
-                if (ent instanceof Mech) {
-                    ps.setBoolean(6, ((Mech) ent).isAutoEject());
-                } else {
-                    ps.setBoolean(6, false);
-                }
-                ps.setBoolean(7, ent.hasSpotlight());
-                ps.setBoolean(8, ent.isUsingSpotlight());
-                // Removed the old targetting type code no longer supported by
-                // MM now moved to Quriks
-                ps.setInt(9, 0);
-                ps.setInt(10, getScrappableFor());
-                if (CampaignMain.cm.isUsingAdvanceRepair()) {
-                    ps.setString(11, UnitUtils.unitBattleDamage(getEntity(), false));
-                } else {
-                    ps.setString(11, "%%-%%-%%-");
-                }
-                ps.setInt(12, getLastCombatPilot());
-                ps.setInt(13, getCurrentRepairCost());
-                ps.setInt(14, getLifeTimeRepairCost());
-                ps.setInt(15, getType());
-                ps.setInt(16, getId());
-                ps.setInt(17, getDBId());
+                ps.setInt(2, getWeightclass());
+                ps.setInt(3, getType());
+                ps.setInt(4, getId());
+                ps.setInt(5, getDBId());
                 ps.executeUpdate();
             }
-            // Now do Machine Guns
-            ps.executeUpdate("DELETE from unit_mgs WHERE unitID = " + getDBId());
-
-            // Do Ammo
-            ps.executeUpdate("DELETE from unit_ammo WHERE unitID = " + getDBId());
-
             ps.close();
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL Exception in SUnit.toDB: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
             try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
+                if (ps != null)
+                    ps.close();
             } catch (SQLException ex) {
             }
+        } finally {
+        	is_saving = false;
+        	ch.returnConnection(c);
         }
     }
 
@@ -814,7 +775,7 @@ public final class SUnit extends Unit {
         }
     }
 
-    public synchronized void fromDB(int unitID) {
+    public void fromDB(int unitID) {
 
         ResultSet rs = null;
         ResultSet ammoRS = null;
@@ -822,12 +783,13 @@ public final class SUnit extends Unit {
         Statement ammoStmt = null;
         Statement mgStmt = null;
         Statement stmt = null;
+        Connection c = ch.getConnection();
 
         try {
 
-            ammoStmt = CampaignMain.cm.MySQL.getStatement();
-            mgStmt = CampaignMain.cm.MySQL.getStatement();
-            stmt = CampaignMain.cm.MySQL.getStatement();
+            ammoStmt = c.createStatement();
+            mgStmt = c.createStatement();
+            stmt = c.createStatement();
             // MG and ammo are being reset during unit load.
             // So get the resultSets now and save them for later.
 
@@ -843,40 +805,35 @@ public final class SUnit extends Unit {
                 setWeightclass(rs.getInt("uWeightClass"));
                 setId(rs.getInt("MWID"));
                 setDBId(unitID);
-                if (CampaignMain.cm.getCurrentUnitID() <= getId()) {
+                if (CampaignMain.cm.getCurrentUnitID() <= getId())
                     CampaignMain.cm.setCurrentUnitID(getId() + 1);
-                }
-                if (getId() == 0) {
+                if (getId() == 0)
                     setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
-                }
-                if ((newstate == Unit.STATUS_FORSALE) && (CampaignMain.cm.getMarket().getListingForUnit(getId()) == null)) {
+                if (newstate == Unit.STATUS_FORSALE && CampaignMain.cm.getMarket().getListingForUnit(getId()) == null)
                     setStatus(Unit.STATUS_OK);
-                } else if (CampaignMain.cm.isUsingAdvanceRepair()) {
+                else if (CampaignMain.cm.isUsingAdvanceRepair())
                     setStatus(Unit.STATUS_OK);
-                } else {
+                else
                     setStatus(newstate);
-                }
                 setScrappableFor(rs.getInt("uScrappableFor"));
                 setRepairCosts(rs.getInt("uCurrentRepairCost"), rs.getInt("uLifetimeRepairCost"));
-                Entity unitEntity = SUnit.loadMech(getUnitFilename());
+                Entity uEntity = loadMech(getUnitFilename());
 
-                if (unitEntity instanceof Mech) {
-                    ((Mech) unitEntity).setAutoEject(rs.getBoolean("uAutoEject"));
-                }
-                unitEntity.setSpotlight(rs.getBoolean("uHasSpotlight"));
+                if (uEntity instanceof Mech)
+                    ((Mech) uEntity).setAutoEject(rs.getBoolean("uAutoEject"));
+                uEntity.setSpotlight(rs.getBoolean("uHasSpotlight"));
 
-                unitEntity.setSpotlightState(rs.getBoolean("uIsUsingSpotlight"));
+                uEntity.setSpotlightState(rs.getBoolean("uIsUsingSpotlight"));
 
-                if (CampaignMain.cm.isUsingAdvanceRepair() && ((unitEntity instanceof Mech) || (unitEntity instanceof Tank))) {
-                    UnitUtils.applyBattleDamage(unitEntity, rs.getString("uBattleDamage"), ((CampaignMain.cm.getRTT() != null) & (CampaignMain.cm.getRTT().unitRepairTimes(getId()) != null)));
-                }
+                if (CampaignMain.cm.isUsingAdvanceRepair() && (uEntity instanceof Mech || uEntity instanceof Tank))
+                    UnitUtils.applyBattleDamage(uEntity, rs.getString("uBattleDamage"), (CampaignMain.cm.getRTT() != null & CampaignMain.cm.getRTT().unitRepairTimes(getId()) != null));
 
-                setEntity(unitEntity);
+                setEntity(uEntity);
 
                 SPilot p = CampaignMain.cm.MySQL.loadUnitPilot(unitID);
-                init();
                 setPilot(p);
                 setLastCombatPilot(p.getPilotId());
+                init();
 
                 // Load ammo
                 unitEntity = getEntity();
@@ -887,15 +844,13 @@ public final class SUnit extends Unit {
                     int shots = ammoRS.getInt("ammoShotsLeft");
                     int AmmoLoc = ammoRS.getInt("ammoLocation");
                     boolean hotloaded = Boolean.parseBoolean(ammoRS.getString("ammoHotLoaded"));
-                    if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("tacops_hotload")) {
+                    if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("tacops_hotload"))
                         hotloaded = false;
-                    }
                     AmmoType at = getEntityAmmo(weaponType, ammoName);
                     String munition = Long.toString(at.getMunitionType());
 
-                    if (CampaignMain.cm.getData().getServerBannedAmmo().get(munition) != null) {
+                    if (CampaignMain.cm.getData().getServerBannedAmmo().get(munition) != null)
                         continue;
-                    }
                     try {
                         unitEntity.getAmmo().get(AmmoLoc).changeAmmoType(at);
                         unitEntity.getAmmo().get(AmmoLoc).setShotsLeft(shots);
@@ -911,7 +866,7 @@ public final class SUnit extends Unit {
 
                 // Load MGs
 
-                Entity en = getEntity();
+                Entity en = this.getEntity();
                 while (mgRS.next()) {
                     int location = mgRS.getInt("mgLocation");
                     int slot = mgRS.getInt("mgSlot");
@@ -936,27 +891,23 @@ public final class SUnit extends Unit {
             CampaignData.mwlog.dbLog("SQL Error in SUnit.fromDB: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (mgRS != null) {
+                if (mgRS != null)
                     mgRS.close();
-                }
-                if (ammoRS != null) {
+                if (ammoRS != null)
                     ammoRS.close();
-                }
-                if (stmt != null) {
+                if (stmt != null)
                     stmt.close();
-                }
-                if (mgStmt != null) {
+                if (mgStmt != null)
                     mgStmt.close();
-                }
-                if (ammoStmt != null) {
+                if (ammoStmt != null)
                     ammoStmt.close();
-                }
             } catch (SQLException ex) {
-            }
-        }
+            } 
+        } finally {
+        	ch.returnConnection(c);
+        } 
     }
 
     /**

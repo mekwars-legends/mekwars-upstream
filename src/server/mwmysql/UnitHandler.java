@@ -27,52 +27,78 @@ import common.CampaignData;
 
 public class UnitHandler {
 	
-	Connection con;
+	private JDBCConnectionHandler ch = new JDBCConnectionHandler();
 	
 	public void linkUnitToFaction(int unitID, int factionID) {
+		Statement stmt = null;
+		Connection con = ch.getConnection();
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			stmt.executeUpdate("UPDATE units set uPlayerID = NULL, uFactionID = " + factionID + " WHERE ID = " + unitID);
-			stmt.close();
+			
 		} catch (SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in UnitHandler.linkUnitToFaction: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+		} finally {
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException ex) {}
 		}
+		ch.returnConnection(con);
 	}
 	
 	public int getUnitDBIdFromMWId(int MWId) {
 		int uID = 0;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Connection con = ch.getConnection();
 		try {
-			PreparedStatement ps = con.prepareStatement("SELECT ID from units WHERE MWID = ?");
+			ps = con.prepareStatement("SELECT ID from units WHERE MWID = ?");
 			ps.setInt(1, MWId);
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if(rs.next()) {
 				uID = rs.getInt("ID");
 			}
-			rs.close();
-			ps.close();
+
 		} catch (SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in UnitHandler.getDBIdFromMWId: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
-		} 
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (ps != null)
+					ps.close();
+			} catch (SQLException ex) {}
+		}
+		ch.returnConnection(con);
 		return uID;
 	}
 	
 	public void unlinkUnit(int unitID){
+		Statement stmt = null;
+		Connection c = ch.getConnection();
 		try {
-			Statement stmt = con.createStatement();
+			stmt = c.createStatement();
 			stmt.executeUpdate("UPDATE units set uFactionID = NULL, uPlayerID = NULL WHERE ID = " + unitID);
-			stmt.close();
 		} catch(SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in UnitHandler.unlinkUnit: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+		} finally {
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException ex) {}
 		}
+		ch.returnConnection(c);
 	}
 	
 	public void linkUnitToPlayer(int unitID, int playerID) {
+		PreparedStatement ps = null;
+		Connection con = ch.getConnection();
 		try {
-			PreparedStatement ps = null;
 			ps = con.prepareStatement("UPDATE units set uFactionID = NULL, uPlayerID = ? WHERE ID = " + unitID);
 			ps.setInt(1, playerID);
 			ps.executeUpdate();
@@ -80,24 +106,37 @@ public class UnitHandler {
 		} catch (SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in UnitHandler.linkUnitToPlayer: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
-		}
+		} finally {
+			try {
+				if (ps != null) 
+					ps.close();
+			} catch (SQLException ex) {}
+		} 
+		ch.returnConnection(con);
 	}
 	
 	public void deleteUnit(int unitID) {
+		Statement stmt = null;
+		Connection con = ch.getConnection();
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 			stmt.executeUpdate("DELETE from unit_mgs WHERE unitID = " + unitID);
 			stmt.executeUpdate("DELETE from unit_ammo WHERE unitID = " + unitID);
 			stmt.executeUpdate("DELETE from units WHERE ID = " + unitID);
-			stmt.close();
 		} catch (SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in UnitHandler.deleteUnit: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+		} finally {
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException ex) {}
 		}
+		ch.returnConnection(con);
 	}
 	
-	public UnitHandler(Connection c) {
-		this.con = c;
+	public UnitHandler() {
+		
 	}
 
 }

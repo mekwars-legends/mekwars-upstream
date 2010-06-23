@@ -21,19 +21,23 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Connection;
+
 import server.campaign.SUnitFactory;
 import common.CampaignData;
 import server.campaign.SPlanet;
 
 public class factoryHandler {
-    Connection con = null;
 
-    public void loadFactories(SPlanet planet) {
+    JDBCConnectionHandler ch = new JDBCConnectionHandler();
+    
+	public void loadFactories(SPlanet planet) {
         ResultSet rs = null;
+        PreparedStatement ps = null;
 
+        
+        Connection con = ch.getConnection();
+        
         try {
-            PreparedStatement ps = null;
-
             ps = con.prepareStatement("SELECT * from factories WHERE FactoryPlanet = ?");
             ps.setString(1, planet.getName());
 
@@ -58,12 +62,25 @@ public class factoryHandler {
             ps.close();
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL Error in factoryHandler.java: " + e.getMessage());
+        } finally {
+        	if (rs != null) {
+        		try {
+        			rs.close();
+        		} catch (SQLException e) {}
+        	}
+        	if (ps != null) {
+        		try {
+        			ps.close();
+        		} catch (SQLException e) {}
+        	}
         }
+        ch.returnConnection(con);
     }
 
     public int getFactoryIdByNameAndPlanet(String fName, String planetName) {
         ResultSet rs = null;
         PreparedStatement ps = null;
+        Connection con = ch.getConnection();
 
         try {
             ps = con.prepareStatement("SELECT factoryID from factories WHERE factoryPlanet = ? AND factoryName = ?");
@@ -73,15 +90,18 @@ public class factoryHandler {
             if (!rs.next()) {
                 rs.close();
                 ps.close();
+                ch.returnConnection(con);
                 return 0;
             }
             int fid = rs.getInt("factoryID");
             rs.close();
             ps.close();
+            ch.returnConnection(con);
             return fid;
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQLException in factoryHandler.getFactoryByNameAndPlanet: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+            ch.returnConnection(con);
             return 0;
         }
 
@@ -90,6 +110,7 @@ public class factoryHandler {
     public void deleteFactory(int factoryID) {
         Statement stmt = null;
         String sql;
+        Connection con = ch.getConnection();
 
         try {
             CampaignData.mwlog.dbLog("Deleting factory " + factoryID);
@@ -101,10 +122,12 @@ public class factoryHandler {
             CampaignData.mwlog.dbLog("SQL ERROR in factoryHandler.java: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
         }
+        ch.returnConnection(con);
     }
 
     public void deletePlanetFactories(String planetName) {
         PreparedStatement stmt = null;
+        Connection con = ch.getConnection();
 
         try {
             stmt = con.prepareStatement("DELETE from factories where FactoryPlanet=?");
@@ -114,11 +137,18 @@ public class factoryHandler {
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL ERROR in factoryHandler.java: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+        } finally {
+        	if (stmt != null) {
+        		try {
+        			stmt.close();
+        		} catch (SQLException e) {}
+        	}
         }
+        ch.returnConnection(con);
     }
 
     // CONSTRUCTOR
-    public factoryHandler(Connection c) {
-        this.con = c;
+    public factoryHandler() {
+        
     }
 }

@@ -30,28 +30,42 @@ import server.campaign.SPlayer;
 import server.campaign.commands.Command;
 
 public class PlayerHandler {
-
-	Connection con;
+	private JDBCConnectionHandler ch = new JDBCConnectionHandler();
 	
 	public int countPlayers() {
+		Connection con = ch.getConnection();
+		int toReturn = 0;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
 		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT COUNT(*) as num from players");
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT COUNT(*) as num from players");
 			rs.next();
-			int numplayers = rs.getInt("num");
-			rs.close();
-			stmt.close();
-			return numplayers;
+			toReturn = rs.getInt("num");
 		} catch (SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in PlayerHandler.countPlayers: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
-			return 0;
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {}
+			} 
+			ch.returnConnection(con);
 		}
+		return toReturn;
 	}
 	
 	public void purgeStalePlayers(long days) {
-		Statement stmt;
-		ResultSet rs;
+		Statement stmt = null;
+		ResultSet rs = null;
+		Connection con = ch.getConnection();
 		try {
 			stmt = con.createStatement();
 			rs = stmt.executeQuery("SELECT playerName from players WHERE playerLastModified < (CURRENT_TIMESTAMP() - INTERVAL " + days + " DAY)");
@@ -62,62 +76,108 @@ public class PlayerHandler {
 				c.process(new StringTokenizer("CONFIRMED", "#"), rs.getString("playerName"));
 				CampaignData.mwlog.infoLog(rs.getString("playerName") + " purged.");
 			}
-			rs.close();
-			stmt.close();
 		} catch (SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in PlayerHandler.purgeStalePlayers: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {}
+			} 
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {}
+			}
 		}
+		ch.returnConnection(con);
 	}
 	
 	public int getPlayerIDByName(String name) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int pid = -1;
+		Connection con = ch.getConnection();
+		
 		try {
-			PreparedStatement ps = null;
 			ps = con.prepareStatement("SELECT playerID from players WHERE playerName = ?");
 			ps.setString(1, name);
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if(rs.next()) {
-				int pid = rs.getInt("playerID");
+				pid = rs.getInt("playerID");
 				rs.close();
 				ps.close();
-				return pid;
 			}
 			rs.close();
 			ps.close();
-			return -1;
 		} catch (SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in PlayerHandler.getPlayerIDByName: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
-			return -1;
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {}
+			}
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException e) {}
+			}
 		}
+		ch.returnConnection(con);
+		return pid;
 	}
+	
 	public void setPassword(int DBId, String pass) {
+		PreparedStatement ps = null;
+		Connection con = ch.getConnection();
 		try {
-			PreparedStatement ps = con.prepareStatement("UPDATE players set playerPassword = MD5(?) WHERE playerID = " + DBId);
+			ps = con.prepareStatement("UPDATE players set playerPassword = MD5(?) WHERE playerID = " + DBId);
 			ps.setString(1, pass);
 			ps.executeUpdate();
 			ps.close();
 		} catch(SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in PlayerHandler.setPassword: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException e) {}
+			}
 		}
+		ch.returnConnection(con);
 	}
 	
 	public void setPlayerAccess(int DBId, int level) {
+		PreparedStatement ps = null;
+		Connection con = ch.getConnection();
+		
 		try {
-			PreparedStatement ps = con.prepareStatement("UPDATE players set playerAccess = ? WHERE playerID = " + DBId);
+			ps = con.prepareStatement("UPDATE players set playerAccess = ? WHERE playerID = " + DBId);
 			ps.setInt(1, level);
 			ps.executeUpdate();
 			ps.close();
 		} catch(SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in PlayerHandler.setPlayerAccess: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException e) {}
+			}
 		}
+		ch.returnConnection(con);
 	}
 	
 	public boolean matchPassword(String playerName, String pass) {
 		PreparedStatement ps = null;
-		ResultSet rs;
+		ResultSet rs = null;
+		boolean toReturn = false;
+		Connection con = ch.getConnection();
 		try {
 			ps = con.prepareStatement("SELECT playerPassword, MD5(?) as cryptedpass, playerAccess from players WHERE playerName = ?");
 			ps.setString(1, pass);
@@ -126,29 +186,42 @@ public class PlayerHandler {
 			if(!rs.next()){
 				rs.close();
 				ps.close();
-				return false;
 			}
 			else
 				if(rs.getString("playerPassword").equalsIgnoreCase(rs.getString("cryptedpass"))) {
 					rs.close();
 					ps.close();
-					return true;
+					toReturn = true;
 				}
 				else {
 					rs.close();
 					ps.close();
-					return false;
 				}
 		} catch (SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in PlayerHandler.matchPassword: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
-			return false;
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {}
+			}
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException e) {}
+			}
 		}
+		ch.returnConnection(con);
+		return toReturn;
 	}
 	
 	public boolean playerExists(String name) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		boolean toReturn = false;
+		Connection con = ch.getConnection();
+		
 		try {
 			ps = con.prepareStatement("SELECT COUNT(*) as num from players where playerName = ?");
 			ps.setString(1, name);
@@ -156,22 +229,32 @@ public class PlayerHandler {
 			if(!rs.next()) {
 				rs.close();
 				ps.close();
-				return false;
 			}
 			else
 				if(rs.getInt("num") == 1) {
 					rs.close();
 					ps.close();
-					return true;
+					toReturn = true;
 				}
 			rs.close();
 			ps.close();
-			return false;
 		} catch(SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in playerHandler.playerExists: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
-			return false;
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {}
+			}
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException e) {}
+			}
 		}
+		ch.returnConnection(con);
+		return toReturn;
 	}
 	
 	public void deletePlayer(SPlayer p) {
@@ -179,11 +262,13 @@ public class PlayerHandler {
 	}
 	
 	public void deletePlayer(SPlayer p, boolean deleteForumAccount) {
-		Statement stmt;
+		Statement stmt = null;
+		ResultSet rs = null;
+		Connection con = ch.getConnection();
+		
 		try {
 			// Remove armies
 			stmt = con.createStatement();
-			ResultSet rs = null;
 			
 			stmt.executeUpdate("DELETE from playerarmies WHERE playerID = " + p.getDBId());
 			// Remove units - if they should have been donated, SHouse.removePlayer will have done that
@@ -212,10 +297,22 @@ public class PlayerHandler {
 		} catch (SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in PlayerHandler.deletePlayer: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {}
+			}
 		}
+		ch.returnConnection(con);
 	}
 	
-	public PlayerHandler(Connection c) {
-		this.con = c;
+	public PlayerHandler() {
+
 	}
 }

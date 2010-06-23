@@ -26,9 +26,13 @@ package server.mwmysql;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Hashtable;
 
 import server.campaign.operations.OperationReportEntry;
+import server.campaign.SUnit;
 
 import common.CampaignData;
 
@@ -67,6 +71,14 @@ public class HistoryHandler {
   
   public static final int HISTORY_TYPE_UNIT = 1;
   public static final int HISTORY_TYPE_PILOT = 2;
+  
+  public static final int MECHSTAT_TYPE_GAMEPLAYED = 0;
+  public static final int MECHSTAT_TYPE_GAMEWON = 1;
+  public static final int MECHSTAT_TYPE_UNITSCRAPPED = 2;
+  public static final int MECHSTAT_TYPE_UNITDESTROYED =3;
+  
+  
+  private Hashtable<String, Integer> mechStatIDs = new Hashtable<String, Integer>();
   
   public void addHistoryEntry(int historyType, int unitID, int eventType, String fluff) {
 	  PreparedStatement ps = null;
@@ -159,9 +171,130 @@ public class HistoryHandler {
 	  }
   }
   
+  private int getIDByName(String n) {
+	  if(mechStatIDs.containsKey(n))
+		  return mechStatIDs.get(n);
+	  return createNewMechstatRecord(n);
+  }
+  
+  private int createNewMechstatRecord(String n) {
+	  Statement stmt = null;
+	  ResultSet rs = null;
+	  int uID = -1;
+	  int BV = -1;
+	  int mechSize = -1;
+	  
+	  mechSize = SUnit.loadMech(n).getWeightClass();
+	  BV = SUnit.loadMech(n).calculateBattleValue();
+	  
+	  if(BV == -1 || mechSize == -1)
+		  return -1;  // Invalid mechfile
+	  try {
+		  stmt = con.createStatement();
+		  stmt.executeUpdate("INSERT into mechstats SET mechFileName = '" + n + "', mechSize = " + mechSize + ", originalBV = " + BV, Statement.RETURN_GENERATED_KEYS);
+		  rs = stmt.getGeneratedKeys();
+		  if (rs.next()) {
+			uID = rs.getInt(1);  
+		  }
+	  } catch (SQLException e) {
+		  CampaignData.mwlog.dbLog("SQLException in HistoryHandler.createNewMechstatRecord (" + n + "): " + e.getMessage());
+		  CampaignData.mwlog.dbLog(e);
+	  } finally {
+		  if (rs != null) {
+			  try {
+				  rs.close();
+			  } catch(SQLException e) {}
+		  }
+		  if (stmt != null) {
+			  try {
+				  stmt.close();
+			  } catch (SQLException e) {}
+		  }
+	  }
+	  if (uID != -1)
+		  mechStatIDs.put(n, uID);
+	  return uID;
+  }
+  
+  public void addMechstat(String unitType, int statType) {
+	  StringBuilder sql = new StringBuilder();
+	  Statement stmt = null;
+	  String transType = "";
+	  	  
+	  int unitID = getIDByName(unitType);
+	  if (unitID == -1)
+		  return;  // No entry in database, and we were unable to update the DB
+	  
+	  switch(statType) {
+	  case MECHSTAT_TYPE_GAMEPLAYED: {
+		  transType = "gamesPlayed";
+		  break;
+	  }
+	  case MECHSTAT_TYPE_GAMEWON: {
+		  transType = "gamesWon";
+		  break;
+	  }
+	  case MECHSTAT_TYPE_UNITSCRAPPED: {
+		  transType = "timesScrapped";
+		  break;
+	  }
+	  case MECHSTAT_TYPE_UNITDESTROYED: {
+		  transType = "timesDestroyed";
+		  break;
+	  }
+	  default: {
+		  return;  // Invalid stat type
+	  }
+	  }
+	  
+	  sql.append("UPDATE mechstats set " + transType + " = " + transType + " + 1 WHERE ID = " + unitID);
+	  
+	  try {
+		  stmt = con.createStatement();
+		  stmt.executeUpdate(sql.toString());
+	  } catch (SQLException e ) {
+		  CampaignData.mwlog.dbLog("SQLException in HistoryHandler.addMechstat: " + e.getMessage());
+		  CampaignData.mwlog.dbLog(sql.toString());
+		  CampaignData.mwlog.dbLog(e);
+	  } finally {
+		  try {
+			  if (stmt != null)
+				  stmt.close();
+		  } catch (SQLException e) {}
+	  }
+  }  
+  
+  private void loadMechStats() {
+	  Statement stmt = null;
+	  ResultSet rs = null;
+	  
+	  try {
+		  stmt = con.createStatement();
+		  rs = stmt.executeQuery("SELECT ID, mechFileName from mechstats ORDER BY ID");
+		  while (rs.next()) {
+			  this.mechStatIDs.put(rs.getString("mechFileName"), rs.getInt("ID"));
+		  }
+	  } catch (SQLException e) {
+		  CampaignData.mwlog.dbLog("SQLException in HistoryHandler.loadMechStats: " + e.getMessage());
+		  CampaignData.mwlog.dbLog(e);
+	  } finally {
+		  if (rs != null) {
+			  try {
+				  rs.close();
+			  } catch (SQLException e) {}
+		  }
+		  if (stmt != null) {
+			  try {
+				  stmt.close();
+			  } catch (SQLException e) {}
+		  }
+	  }
+  }
+  
   // CONSTRUCTOR
   public HistoryHandler(Connection c)
     {
     this.con = c;
+    this.loadMechStats();
     }
 }

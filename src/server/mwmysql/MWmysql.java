@@ -20,9 +20,7 @@ package server.mwmysql;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -31,7 +29,7 @@ import server.campaign.CampaignMain;
 
 public class MWmysql{
   Connection con = null;
-
+  ConnectionPool cPool = null;
  
   public void close(){
     CampaignData.mwlog.dbLog("Attempting to close MySQL Connection");
@@ -45,6 +43,14 @@ public class MWmysql{
     }
   } 
 
+  public Connection getCon() {
+	  return cPool.borrowConnection();
+  }
+  
+  public void returnCon(Connection c) {
+	  cPool.returnConnection(c);
+  }
+  
   public void backupDB(long time) {
 	  String fs = System.getProperty("file.separator");
 	  Runtime runtime=Runtime.getRuntime();
@@ -72,28 +78,30 @@ public class MWmysql{
   }
 
   public MWmysql(){
-	String url = "jdbc:mysql://" + CampaignMain.cm.getServer().getConfigParam("MYSQLHOST") + "/" + CampaignMain.cm.getServer().getConfigParam("MYSQLDB") + "?user=" + CampaignMain.cm.getServer().getConfigParam("MYSQLUSER") + "&password=" + CampaignMain.cm.getServer().getConfigParam("MYSQLPASS") + "&useUnicode=true&characterEncoding=UTF-8";
-    CampaignData.mwlog.dbLog("Attempting MySQL Connection");
-    
-    try{
-      Class.forName("com.mysql.jdbc.Driver");
-    }
-    catch(ClassNotFoundException e){
-      CampaignData.mwlog.dbLog("ClassNotFoundException: " + e.getMessage());
-      CampaignData.mwlog.dbLog(e);
-    }
-    try{
-    	con=DriverManager.getConnection(url);
-      	if(con != null) {
-    	  CampaignData.mwlog.dbLog("Connection established");
-    	  Statement s = con.createStatement();
-    	  s.executeUpdate("SET NAMES 'utf8'");
-
-      	}
-    }
-    catch(SQLException ex){
-    	CampaignData.mwlog.dbLog("SQLException: " + ex.getMessage());
-        CampaignData.mwlog.dbLog(ex);
-    }
+//	String url = "jdbc:mysql://" + CampaignMain.cm.getServer().getConfigParam("MYSQLHOST") + "/" + CampaignMain.cm.getServer().getConfigParam("MYSQLDB") + "?user=" + CampaignMain.cm.getServer().getConfigParam("MYSQLUSER") + "&password=" + CampaignMain.cm.getServer().getConfigParam("MYSQLPASS") + "&useUnicode=true&characterEncoding=UTF-8";
+//    CampaignData.mwlog.dbLog("Attempting MySQL Connection");
+//    
+//    try{
+//      Class.forName("com.mysql.jdbc.Driver");
+//    }
+//    catch(ClassNotFoundException e){
+//      CampaignData.mwlog.dbLog("ClassNotFoundException: " + e.getMessage());
+//      CampaignData.mwlog.dbLog(e);
+//    }
+//    try{
+//    	con=DriverManager.getConnection(url);
+//      	if(con != null) {
+//    	  CampaignData.mwlog.dbLog("Connection established");
+//    	  Statement s = con.createStatement();
+//    	  s.executeUpdate("SET NAMES 'utf8'");
+//
+//      	}
+//    }
+//    catch(SQLException ex){
+//    	CampaignData.mwlog.dbLog("SQLException: " + ex.getMessage());
+//        CampaignData.mwlog.dbLog(ex);
+//    }
+	  String url = "jdbc:mysql://" + CampaignMain.cm.getServer().getConfigParam("MYSQLHOST") + "/" + CampaignMain.cm.getServer().getConfigParam("MYSQLDB") + "?user=" + "&useUnicode=true&characterEncoding=UTF-8";  
+	  cPool = new ConnectionPool("com.mysql.jdbc.Driver", url, CampaignMain.cm.getServer().getConfigParam("MYSQLUSER"), CampaignMain.cm.getServer().getConfigParam("MYSQLPASS"));  
   }
 }

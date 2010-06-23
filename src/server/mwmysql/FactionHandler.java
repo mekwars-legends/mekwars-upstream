@@ -41,13 +41,18 @@ import server.campaign.mercenaries.ContractInfo;
 import server.campaign.mercenaries.MercHouse;
 
 public class FactionHandler {
-	Connection con;
+	JDBCConnectionHandler ch = new JDBCConnectionHandler();
 	
 	public void loadFactions(CampaignData data) {
+		ResultSet rs = null;
+		ResultSet rs1 = null;
+		Statement stmt = null;
+		Statement stmt2 = null;
+		Connection con = ch.getConnection();
+		
 		try {
-			ResultSet rs = null, rs1 = null;
-			Statement stmt = con.createStatement();
-			Statement stmt2 = con.createStatement();
+			stmt = con.createStatement();
+			stmt2 = con.createStatement();
 			rs = stmt.executeQuery("SELECT * from factions ORDER BY ID");
 			while(rs.next()) {
 				SHouse h;
@@ -306,30 +311,61 @@ public class FactionHandler {
 		} catch (SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in FactionHandler.loadFaction: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+			} catch (SQLException ex) {}
+			try {
+				if (rs1 != null)
+					rs1.close();
+			} catch (SQLException ex) {}
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException ex) {}
+			try {
+				if (stmt2 != null)
+					stmt2.close();
+			} catch (SQLException ex) {}
 		}
+		ch.returnConnection(con);
 	}
 	
 	public int countFactions() {
+		Statement stmt = null;
+		ResultSet rs = null;
+		int num = 0;
+		Connection con = ch.getConnection();
+		
 		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT COUNT(*) as num from factions");
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT COUNT(*) as num from factions");
 			rs.next();
-			int num = rs.getInt("num");
-			rs.close();
-			stmt.close();
-			return num;
+			num = rs.getInt("num");
 		} catch (SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in FactionHandler.countFactions: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
-			return 0;
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+			} catch (SQLException ex) {}
+			try {
+				if (stmt != null) 
+					stmt.close();
+			} catch (SQLException ex) {}
 		}
+		ch.returnConnection(con);
+		return num;
 	}
 	
 	public void saveSubFaction(String SubFactionString, int houseID) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Connection con = ch.getConnection();
 		try {
 			String sql = "";
-			PreparedStatement ps = null;
-			ResultSet rs = null;
 			SubFaction sf = new SubFaction();
 			sf.fromString(SubFactionString);
 
@@ -362,26 +398,44 @@ public class FactionHandler {
 		} catch (SQLException e) {
 			CampaignData.mwlog.dbLog("SQLException in FactionHandler.saveSubFaction: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException ex) {}
+			}
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException ex) {}
+			}
 		}
+		ch.returnConnection(con);
 	}
 	
 	public void deleteSubFaction(String subFactionName, int houseID) {
 		PreparedStatement ps = null;
+		Connection con = ch.getConnection();
+		
 		try {
 			ps = con.prepareStatement("DELETE from subfactions WHERE subfactionName = ? AND houseID = ?");
 			ps.setString(1, subFactionName);
 			ps.setInt(2, houseID);
 			ps.executeUpdate();
-			ps.close();
 		} catch (SQLException e) {
 			CampaignData.mwlog.dbLog("SQLException in FactionHandler.deleteSubFaction: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+		} finally {
+			try {
+				if (ps != null)
+					ps.close();
+			} catch (SQLException ex) {}
 		}
-
+		ch.returnConnection(con);
 	}
 	
-	public FactionHandler (Connection c) {
-		this.con = c;
+	public FactionHandler () {
+		
 	}
 
 }

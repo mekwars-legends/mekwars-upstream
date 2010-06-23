@@ -22,8 +22,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.StringTokenizer;
 
+import java.sql.Connection;
+
 import common.CampaignData;
 import server.campaign.*;
+import server.mwmysql.JDBCConnectionHandler;
 
 /**
  *
@@ -44,6 +47,7 @@ public class MechStatistics implements Cloneable, Comparable<Object> {
   private int currentGamesPlayed = 0;
   private int timesDestroyed = 0;
   private int DBID = 0;
+  private JDBCConnectionHandler ch;
   
   public String getMechFileName() {
     return mechFileName;
@@ -88,8 +92,9 @@ public String toString()
   
   public void fromDB(int id) {
 	  ResultSet rs = null;
+	  Connection c = ch.getConnection();
 	  try {
-		  Statement stmt = CampaignMain.cm.MySQL.getStatement();
+		  Statement stmt = c.createStatement();
 		  rs = stmt.executeQuery("SELECT * from mechstats WHERE ID = " + id);
 		  if(rs.next()) {
 			    this.mechFileName = rs.getString("mechFileName");
@@ -109,6 +114,8 @@ public String toString()
 	  } catch(SQLException e){
 		  CampaignData.mwlog.dbLog("SQL Error in MechStatistics.fromDB: " + e.getMessage());
           CampaignData.mwlog.dbLog(e);
+	  } finally {
+		  ch.returnConnection(c);
 	  }
   }
   
@@ -116,6 +123,7 @@ public String toString()
 	 PreparedStatement ps = null;
 	 ResultSet rs = null;
 	 StringBuffer sql = new StringBuffer();
+	 Connection c = ch.getConnection();
 	 if(getDBId()==0) {
 		 // It's an insert
 		 sql.append("INSERT into mechstats set ");
@@ -130,7 +138,7 @@ public String toString()
 		 sql.append("timesDestroyed = ?, ");
 		 sql.append("lastTimeUpdated = ?");
 		 try {
-			 ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
+			 ps = c.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 			 ps.setString(1, this.mechFileName);
 			 ps.setInt(2, this.mechSize);
 			 ps.setInt(3, this.gamesWon);
@@ -169,7 +177,7 @@ public String toString()
 		 sql.append("lastTimeUpdated = ? ");
 		 sql.append("WHERE ID = ?");
 		 try {
-			 ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
+			 ps = c.prepareStatement(sql.toString());
 			 ps.setString(1, this.mechFileName);
 			 ps.setInt(2, this.mechSize);
 			 ps.setInt(3, this.gamesWon);
@@ -187,7 +195,8 @@ public String toString()
 			 CampaignData.mwlog.dbLog("SQLException in MechStatistics.toDB: " + e.getMessage());
              CampaignData.mwlog.dbLog(e);
 		 }
-	 }	 
+	 }
+	 ch.returnConnection(c);
   }
   
   public MechStatistics()

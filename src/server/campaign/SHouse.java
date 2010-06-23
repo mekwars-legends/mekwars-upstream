@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.Serializable;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,6 +54,7 @@ import server.campaign.mercenaries.MercHouse;
 import server.campaign.operations.Operation;
 import server.campaign.operations.ShortOperation;
 import server.campaign.pilot.SPilot;
+import server.mwmysql.JDBCConnectionHandler;
 
 import common.BMEquipment;
 import common.CampaignData;
@@ -105,7 +107,9 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
     private Hashtable<String, ComponentToCritsConverter> componentConverter = new Hashtable<String, ComponentToCritsConverter>();
 
     private int[][] unitLimits = new int[6][4];
-
+    private boolean[][] bmLimits = new boolean[6][4];
+    private JDBCConnectionHandler ch = new JDBCConnectionHandler();
+    
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
@@ -374,22 +378,25 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         PreparedStatement ps = null;
         StringBuffer sql = new StringBuffer();
         ResultSet rs = null;
+        Statement s = null;
+        ResultSet r = null;
+        Connection c = ch.getConnection();
         try {
             if (getDBId() == 0) {
-                // For some reason, houses seem to be losing their DBId
-                // occasionally - check to see if it's still in there.
-                CampaignData.mwlog.dbLog("House " + getName() + " has no DBId");
-                Statement s = CampaignMain.cm.MySQL.getStatement();
-                ResultSet r = s.executeQuery("SELECT ID from factions WHERE fName = '" + getName() + "'");
-                if (r.next()) {
-                    setDBId(r.getInt("ID"));
-                    r.close();
-                    s.close();
-                    return;
-                }
-                s.close();
-                r.close();
-
+            	// For some reason, houses seem to be losing their DBId occasionally - check to see if it's still in there.
+            	CampaignData.mwlog.dbLog("House " + getName() + " has no DBId");
+            	s = c.createStatement();
+            	r = s.executeQuery("SELECT ID from factions WHERE fName = '" + getName() + "'");
+            	if(r.next()) {
+            		setDBId(r.getInt("ID"));
+            		r.close();
+            		s.close();
+            		ch.returnConnection(c);
+            		return;
+            	}
+            	s.close();
+            	r.close();
+            	
                 // Not in the database - INSERT it
                 sql.setLength(0);
                 sql.append("INSERT into factions set ");
@@ -413,7 +420,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                 sql.append("fIsMercHouse = ?, ");
                 sql.append("fString = ?");
 
-                ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
+                ps = c.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setString(1, getName());
                 ps.setInt(2, getMoney());
                 ps.setString(3, getHouseColor());
@@ -461,7 +468,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                 sql.append("fIsMercHouse = ?, ");
                 sql.append("fString = ? ");
                 sql.append("WHERE ID = ?");
-                ps = CampaignMain.cm.MySQL.getPreparedStatement(sql.toString());
+                ps = c.prepareStatement(sql.toString());
                 ps.setString(1, getName());
                 ps.setInt(2, getMoney());
                 ps.setString(3, getHouseColor());
@@ -566,17 +573,19 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                 Integer id = en.nextElement();
                 Vector<Integer> v = getComponents().get(id);
                 for (int i = 0; i < v.size(); i++) {
-                    ps.executeUpdate("INSERT into factioncomponents set factionID = " + getDBId() + ", unitType = " + id.intValue() + ", unitWeight = " + i + ", components = " + v.elementAt(i).intValue());
+                    ps.executeUpdate("REPLACE into factioncomponents set factionID = " + getDBId() + ", unitType = " + id.intValue() + ", unitWeight = " + i + ", components = " + v.elementAt(i).intValue());
                 }
             }
 
             // Pilot Skill
             // Change this so it doesn't save if it's blank.
             ps.executeUpdate("DELETE from faction_pilot_skills WHERE factionID = " + getDBId());
+            ps.close();
+            ps = c.prepareStatement("INSERT into faction_pilot_skills set factionID = ?, skillID = ?, pilotSkills = ?");
+            
+            
             for (int pos = 0; pos < Unit.MAXBUILD; pos++) {
                 String skill = getBasePilotSkill(pos);
-                ps.close();
-                ps = CampaignMain.cm.MySQL.getPreparedStatement("INSERT into faction_pilot_skills set factionID = ?, skillID = ?, pilotSkills = ?");
                 ps.setInt(1, getDBId());
                 ps.setString(3, skill);
                 ps.setInt(2, pos);
@@ -605,28 +614,48 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
             // Leaders
             ps.executeUpdate("DELETE from faction_leaders WHERE faction_id = " + getDBId());
-            if (rs != null) {
+            if (rs != null)
                 rs.close();
-            }
+
+            ps.close();
+            ps = c.prepareStatement("REPLACE into faction_leaders set faction_id = ?, leader_name=?");
             for (String leader : leaders) {
-                ps.close();
-                ps = CampaignMain.cm.MySQL.getPreparedStatement("REPLACE into faction_leaders set faction_id = ?, leader_name=?");
                 ps.setInt(1, getDBId());
                 ps.setString(2, leader);
                 ps.execute();
             }
-
-            if (rs != null) {
+            
+            if (rs != null)
                 rs.close();
-            }
             ps.close();
             CampaignData.mwlog.dbLog("Faction " + getName() + " saved");
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL Error in FactionHandler.saveFaction: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+        } finally {
+        	if (r != null) {
+        		try {
+        			r.close();
+        		} catch (SQLException e) {}
+        	}
+        	if (rs != null) {
+        		try {
+        			rs.close();
+        		} catch (SQLException e) {}
+        	}
+        	if (s != null) {
+        		try {
+        			s.close();
+        		} catch (SQLException e) {}
+        	}
+        	if (ps != null) {
+        		try {
+        			ps.close();
+        		} catch (SQLException e) {}
+        	}
+        	ch.returnConnection(c);
         }
     }
-
     public String fromString(String s, Random r) {
         try {
 
@@ -2964,24 +2993,25 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
     public void saveConfigFileToDB() {
         if (config == null) {
-            return;
+        	return;
         }
 
         if (config.size() < 1) {
             config = null;
             return;
         }
-        int dbId = getDBId();
+        int dbId = this.getDBId();
         PreparedStatement ps = null;
+        Connection c = ch.getConnection();
         try {
-            ps = CampaignMain.cm.MySQL.getPreparedStatement("DELETE from faction_configs WHERE factionID = " + dbId);
+            ps = c.prepareStatement("DELETE from faction_configs WHERE factionID = " + dbId);
             ps.executeUpdate();
             config.setProperty("TIMESTAMP", Long.toString((System.currentTimeMillis())));
+            String sql = "INSERT into faction_configs SET factionID = " + dbId + ", configKey = ?, configValue = ?";
+            ps = c.prepareStatement(sql);
             for (Enumeration<Object> e = config.keys(); e.hasMoreElements();) {
                 String key = (String) e.nextElement();
                 String val = config.getProperty(key);
-                String sql = "INSERT into faction_configs SET factionID = " + dbId + ", configKey = ?, configValue = ?";
-                ps = CampaignMain.cm.MySQL.getPreparedStatement(sql);
                 ps.setString(1, key);
                 ps.setString(2, val);
                 ps.executeUpdate();
@@ -2991,7 +3021,9 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             CampaignData.mwlog.dbLog("SQL Error in SHouse.saveConfigFileToDB: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
         }
+        ch.returnConnection(c);
     }
+
 
     public void loadConfigFile() {
 
@@ -3014,26 +3046,29 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
     public void loadConfigFileFromDB() {
         ResultSet rs = null;
         Statement stmt = null;
+        Connection c = ch.getConnection();
         try {
-            stmt = CampaignMain.cm.MySQL.getStatement();
+            stmt = c.createStatement();
             rs = stmt.executeQuery("SELECT configKey, configValue from faction_configs WHERE factionID = " + getDBId());
             boolean configCreated = false;
             while (rs.next()) {
                 if (!configCreated) {
-                    config = new Properties();
+                    this.config = new Properties();
                     configCreated = true;
                 }
-                config.setProperty(rs.getString("configKey"), rs.getString("configValue"));
+                this.config.setProperty(rs.getString("configKey"), rs.getString("configValue"));
             }
             rs.close();
             stmt.close();
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL Error in SHouse.loadConfigFileFromDB: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+        } finally {
+        	ch.returnConnection(c);
+        	populateUnitLimits();
+        	populateBMLimits();
         }
-        populateUnitLimits();
     }
-
     /**
      * A method to fill the unitLimits array
      */
@@ -3467,6 +3502,39 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             CampaignMain.cm.doSendHouseMail(this, "NOTE", "The house crits have been updated");
             CampaignMain.cm.doSendToAllOnlinePlayers(this, getCompleteStatus(), false);
         }
+
+    }
+    
+    public void populateBMLimits() {
+    	bmLimits[Unit.MEK][Unit.LIGHT] = getBooleanConfig("CanBuyBMLightMeks");
+    	bmLimits[Unit.MEK][Unit.MEDIUM] = getBooleanConfig("CanBuyBMMediumMeks");
+    	bmLimits[Unit.MEK][Unit.HEAVY] = getBooleanConfig("CanBuyBMHeavyMeks");
+    	bmLimits[Unit.MEK][Unit.ASSAULT] = getBooleanConfig("CanBuyBMAssaultMeks");
+
+    	bmLimits[Unit.VEHICLE][Unit.LIGHT] = getBooleanConfig("CanBuyBMLightVehicles");
+    	bmLimits[Unit.VEHICLE][Unit.MEDIUM] = getBooleanConfig("CanBuyBMMediumVehicles");
+    	bmLimits[Unit.VEHICLE][Unit.HEAVY] = getBooleanConfig("CanBuyBMHeavyVehicles");
+    	bmLimits[Unit.VEHICLE][Unit.ASSAULT] = getBooleanConfig("CanBuyBMAssaultVehicles");
+
+    	bmLimits[Unit.INFANTRY][Unit.LIGHT] = getBooleanConfig("CanBuyBMLightInfantry");
+    	bmLimits[Unit.INFANTRY][Unit.MEDIUM] = getBooleanConfig("CanBuyBMMediumInfantry");
+    	bmLimits[Unit.INFANTRY][Unit.HEAVY] = getBooleanConfig("CanBuyBMHeavyInfantry");
+    	bmLimits[Unit.INFANTRY][Unit.ASSAULT] = getBooleanConfig("CanBuyBMAssaultInfantry");
+
+    	bmLimits[Unit.BATTLEARMOR][Unit.LIGHT] = getBooleanConfig("CanBuyBMLightBA");
+    	bmLimits[Unit.BATTLEARMOR][Unit.MEDIUM] = getBooleanConfig("CanBuyBMMediumBA");
+    	bmLimits[Unit.BATTLEARMOR][Unit.HEAVY] = getBooleanConfig("CanBuyBMHeavyBA");
+    	bmLimits[Unit.BATTLEARMOR][Unit.ASSAULT] = getBooleanConfig("CanBuyBMAssaultBA");
+
+    	bmLimits[Unit.PROTOMEK][Unit.LIGHT] = getBooleanConfig("CanBuyBMLightProtomeks");
+    	bmLimits[Unit.PROTOMEK][Unit.MEDIUM] = getBooleanConfig("CanBuyBMMediumProtomeks");
+    	bmLimits[Unit.PROTOMEK][Unit.HEAVY] = getBooleanConfig("CanBuyBMHeavyProtomeks");
+    	bmLimits[Unit.PROTOMEK][Unit.ASSAULT] = getBooleanConfig("CanBuyBMAssaultProtomeks");
+
+    	bmLimits[Unit.AERO][Unit.LIGHT] = getBooleanConfig("CanBuyBMLightAero");
+    	bmLimits[Unit.AERO][Unit.MEDIUM] = getBooleanConfig("CanBuyBMMediumAero");
+    	bmLimits[Unit.AERO][Unit.HEAVY] = getBooleanConfig("CanBuyBMHeavyAero");
+    	bmLimits[Unit.AERO][Unit.ASSAULT] = getBooleanConfig("CanBuyBMAssaultAero");
 
     }
 }// end SHouse.java

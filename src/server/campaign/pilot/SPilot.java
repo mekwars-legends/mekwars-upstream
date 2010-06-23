@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,6 +43,7 @@ import server.campaign.pilot.skills.EdgeSkill;
 import server.campaign.pilot.skills.SPilotSkill;
 import server.campaign.pilot.skills.TraitSkill;
 import server.campaign.pilot.skills.WeaponSpecialistSkill;
+import server.mwmysql.JDBCConnectionHandler;
 
 import common.CampaignData;
 import common.campaign.pilot.Pilot;
@@ -59,6 +61,9 @@ public class SPilot extends Pilot {
     private int originalID;
     private int pickedUpID;
     private boolean death = false;
+    private boolean is_saving = false;
+    
+    private JDBCConnectionHandler ch = new JDBCConnectionHandler();
 
     public SPilot(String name, int gunnery, int piloting) {
         super(name, gunnery, piloting);
@@ -489,10 +494,17 @@ public class SPilot extends Pilot {
         return result.toString();
     }
 
-    public synchronized void toDB(int unitType, int unitSize) {
+    public void toDB(int unitType, int unitSize) {
+    	if (is_saving)
+    		return;
+    	
+    	is_saving = true;
+    	Connection c = null;
+    	
     	PreparedStatement ps = null;
     	try {
             if (getName().equalsIgnoreCase("Vacant")) {
+            	is_saving = false;
                 return;
             }
             if (getPilotId() == -1) {
@@ -501,13 +513,14 @@ public class SPilot extends Pilot {
             	CampaignData.mwlog.dbLog("Getting new Pilot ID: " + getPilotId());
             }
             StringBuffer sql = new StringBuffer();
-
-
+            
+            c = ch.getConnection();
+            
             if (getDBId() < 1) {
                 // No pilot with this id, so INSERT
                 sql.setLength(0);
 
-                ps = CampaignMain.cm.MySQL.getPreparedStatement("INSERT into pilots set MWID=?, pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ?", Statement.RETURN_GENERATED_KEYS);
+                ps = c.prepareStatement("INSERT into pilots set MWID=?, pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ?", PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, getPilotId());
                 ps.setString(2, getName());
                 ps.setInt(3, getExperience());
@@ -527,7 +540,7 @@ public class SPilot extends Pilot {
                 // Pilot already saved, so UPDATE
                 sql.setLength(0);
 
-                ps = CampaignMain.cm.MySQL.getPreparedStatement("UPDATE pilots set pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ?, MWID=? WHERE pilotID=?");
+                ps = c.prepareStatement("UPDATE pilots set pilotName=?, pilotExp=?, pilotGunnery=?, pilotPiloting=?, pilotKills=?, pilotCurrentFaction=?, pilotHits=?, pilotSize = ?, pilotType = ?, MWID=? WHERE pilotID=?");
                 ps.setString(1, getName());
                 ps.setInt(2, getExperience());
                 ps.setInt(3, getGunnery());
@@ -577,11 +590,14 @@ public class SPilot extends Pilot {
             CampaignData.mwlog.dbLog("SQL Error in PilotHandler.savePilot: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
             try {
-                if(ps != null) {
-                    ps.close();
-                }
+                if(ps != null)
+                	ps.close();         	
             } catch (SQLException ex) {}
+        } finally {
+        	is_saving = false;
+        	ch.returnConnection(c);
         }
+        
     }
 
     public void fromFileFormat(String s, String delimiter) {

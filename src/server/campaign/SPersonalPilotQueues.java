@@ -21,6 +21,7 @@
 package server.campaign;
 
 import java.io.Serializable;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -30,6 +31,7 @@ import java.util.Vector;
 
 import common.CampaignData;
 import server.campaign.pilot.SPilot;
+import server.mwmysql.JDBCConnectionHandler;
 
 import common.Unit;
 import common.campaign.pilot.Pilot;
@@ -53,7 +55,8 @@ public class SPersonalPilotQueues implements Serializable {
     private Vector<LinkedList<Pilot>> protoPilots = new Vector<LinkedList<Pilot>>(4, 1);
     private Vector<LinkedList<Pilot>> aeroPilots = new Vector<LinkedList<Pilot>>(4, 1);
     private int playerID = 0;
-
+    private JDBCConnectionHandler ch = new JDBCConnectionHandler();
+   
     // CONSTRUCTOR
     /**
      * Simple no-paramater constructor that creates the list-holding vectors and populates the weightclasses. LIGHTONLY values for infantry and vehicles are not checked, and Lists are created for all types/weightclasses. This ensures that a null is never returned by a getPilotQueue() call.
@@ -231,15 +234,16 @@ public class SPersonalPilotQueues implements Serializable {
      * @param delimiter
      */
 
-    public synchronized void fromDB(int playerID) {
+    public void fromDB(int pID) {
         int capSize = CampaignMain.cm.getIntegerConfig("MaxAllowedPilotsInQueueToBuyFromHouse");
         ResultSet rs;
         Statement stmt;
         int currentCount = 0;
-
+        Connection c = ch.getConnection();
+        
         try {
-            stmt = CampaignMain.cm.MySQL.getStatement();
-            rs = stmt.executeQuery("SELECT pilotID, pilotType, pilotSize from pilots WHERE playerID = " + playerID);
+            stmt = c.createStatement();
+            rs = stmt.executeQuery("SELECT pilotID, pilotType, pilotSize from pilots WHERE playerID = " + pID);
             while (rs.next()) {
                 SPilot p = CampaignMain.cm.MySQL.loadPilot(rs.getInt("pilotID"));
                 if (capSize < 1 || currentCount < capSize) {
@@ -261,10 +265,11 @@ public class SPersonalPilotQueues implements Serializable {
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL Error in SPersonalPilotQueues.fromDB: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+        } finally {
+        	ch.returnConnection(c);
         }
 
     }
-
     public void fromString(String buffer, String delimiter) {
 
             StringTokenizer mainTokenizer = new StringTokenizer(buffer, delimiter);

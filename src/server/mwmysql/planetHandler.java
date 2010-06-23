@@ -41,9 +41,10 @@ import server.campaign.SHouse;
 import server.campaign.SPlanet;
 
 public class planetHandler {
-    Connection con = null;
+    JDBCConnectionHandler ch = new JDBCConnectionHandler();
 
     public int countPlanets() {
+    	Connection con = ch.getConnection();
         int num = 0;
         try {
 
@@ -60,10 +61,12 @@ public class planetHandler {
             CampaignData.mwlog.dbLog("SQL Error in countPlanets: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
         }
+        ch.returnConnection(con);
         return num;
     }
 
     public void deletePlanet(int PlanetID) {
+    	Connection con = ch.getConnection();
         try {
             Statement stmt = con.createStatement();
             stmt.executeUpdate("DELETE from planets WHERE PlanetID = " + PlanetID);
@@ -75,65 +78,72 @@ public class planetHandler {
             CampaignData.mwlog.dbLog("SQL Error in deletePlanet: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
         }
-
+        ch.returnConnection(con);
     }
 
     public void loadPlanets(CampaignData data) {
-
+    	ResultSet rs = null;
+    	Statement stmt = null;
+    	Connection con = ch.getConnection();
+    	
         try {
-            ResultSet rs = null;
-
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
+            
             String sql = "SELECT * from planets";
-
+            
             rs = stmt.executeQuery(sql);
+            
             while (rs.next()) {
-                SPlanet p = new SPlanet();
+            	SPlanet p = new SPlanet();
+            	if (rs.getString("pString") != null && !rs.getString("pString").trim().equalsIgnoreCase("")){
+            		p.fromString(rs.getString("pString"), CampaignMain.cm.getR(), data);
+            		p.setId(-1);
+            		p.setDBID(rs.getInt("PlanetID"));
+            	} else {
+            		p.setCompProduction(rs.getInt("pCompProd"));
+            		p.setPosition(new Position(rs.getFloat("pXpos"), rs.getFloat("pYpos")));
+            		p.setDescription(rs.getString("pDesc"));
+            		p.setBaysProvided(rs.getInt("pBays"));
+            		p.setConquerable(rs.getBoolean("pIsConquerable"));
+            		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+            		try {
+            			p.setTimestamp(sdf.parse(rs.getString("pLastChanged")));
+            		} catch (Exception ex) {
+            			CampaignData.mwlog.errLog("The following exception is not critical, but will cause useless bandwidth usage: please fix!");
+            			CampaignData.mwlog.errLog(ex);
+            			p.setTimestamp(new Date(0));
+            		}
 
-                p.setCompProduction(rs.getInt("pCompProd"));
-                p.setPosition(new Position(rs.getFloat("pXpos"), rs.getFloat("pYpos")));
-                p.setDescription(rs.getString("pDesc"));
-                p.setBaysProvided(rs.getInt("pBays"));
-                p.setConquerable(rs.getBoolean("pIsConquerable"));
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-                try {
-                    p.setTimestamp(sdf.parse(rs.getString("pLastChanged")));
-                } catch (Exception ex) {
-                    CampaignData.mwlog.errLog("The following exception is not critical, but will cause useless bandwidth usage: please fix!");
-                    CampaignData.mwlog.errLog(ex);
-                    p.setTimestamp(new Date(0));
-                }
+            		p.setId(-1);
 
-                p.setId(-1);
+            		p.setMapSize(new Dimension(rs.getInt("pMapSizeWidth"), rs.getInt("pMapSizeHeight")));
+            		p.setBoardSize(new Dimension(rs.getInt("pBoardSizeWidth"), rs.getInt("pBoardSizeHeight")));
+            		p.setTemp(new Dimension(rs.getInt("pTempWidth"), rs.getInt("pTempHeight")));
+            		p.setGravity(rs.getFloat("pGravity"));
+            		p.setVacuum(rs.getBoolean("pVacuum"));
+            		p.setNightChance(rs.getInt("pNightChance"));
+            		p.setNightTempMod(rs.getInt("pNightTempMod"));
+            		p.setMinPlanetOwnerShip(rs.getInt("pMinPlanetOwnership"));
+            		p.setHomeWorld(rs.getBoolean("pIsHomeworld"));
+            		p.setOriginalOwner(rs.getString("pOriginalOwner"));
+            		p.setConquestPoints(rs.getInt("pMaxConquestPoints"));
+            		p.setName(rs.getString("pName"));
+            		p.setDBID(rs.getInt("PlanetID"));
 
-                p.setMapSize(new Dimension(rs.getInt("pMapSizeWidth"), rs.getInt("pMapSizeHeight")));
-                p.setBoardSize(new Dimension(rs.getInt("pBoardSizeWidth"), rs.getInt("pBoardSizeHeight")));
-                p.setTemp(new Dimension(rs.getInt("pTempWidth"), rs.getInt("pTempHeight")));
-                p.setGravity(rs.getFloat("pGravity"));
-                p.setVacuum(rs.getBoolean("pVacuum"));
-                p.setNightChance(rs.getInt("pNightChance"));
-                p.setNightTempMod(rs.getInt("pNightTempMod"));
-                p.setMinPlanetOwnerShip(rs.getInt("pMinPlanetOwnership"));
-                p.setHomeWorld(rs.getBoolean("pIsHomeworld"));
-                p.setOriginalOwner(rs.getString("pOriginalOwner"));
-                p.setConquestPoints(rs.getInt("pMaxConquestPoints"));
-                p.setName(rs.getString("pName"));
-                p.setDBID(rs.getInt("PlanetID"));
+            		// Add the vectors now
 
-                // Add the vectors now
+            		// Influences
+            		loadInfluences(p, data);
 
-                // Influences
-                loadInfluences(p, data);
+            		// Environments
+            		loadEnvironments(p, data);
 
-                // Environments
-                loadEnvironments(p, data);
+            		// Flags
+            		loadPlanetFlags(p, data);
 
-                // Flags
-                loadPlanetFlags(p, data);
-
-                // Factories
-                CampaignMain.cm.MySQL.loadFactories(p);
-
+            		// Factories
+            		CampaignMain.cm.MySQL.loadFactories(p);
+            	}
                 CampaignMain.cm.addPlanet(p);
                 p.setOwner(null, p.checkOwner(), false);
             }
@@ -142,10 +152,23 @@ public class planetHandler {
         } catch (SQLException e) {
             CampaignData.mwlog.dbLog("SQL Error in loadPlanets: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+        } finally {
+        	if (rs != null){
+        		try {
+        			rs.close();
+        		} catch (SQLException e) {}
+        	}
+        	if( stmt != null) {
+        		try {
+        			stmt.close();
+        		} catch (SQLException e) {}
+        	}
         }
+        ch.returnConnection(con);
     }
 
     public void loadInfluences(SPlanet p, CampaignData data) {
+    	Connection con = ch.getConnection();
         try {
             ResultSet rs1 = null;
             Statement stmt = con.createStatement();
@@ -173,9 +196,11 @@ public class planetHandler {
             CampaignData.mwlog.dbLog("SQL Error in loadInfluences: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
         }
+        ch.returnConnection(con);
     }
 
     public void loadPlanetFlags(SPlanet p, CampaignData data) {
+    	Connection con = ch.getConnection();
         try {
             ResultSet rs2 = null;
             Statement stmt = con.createStatement();
@@ -195,11 +220,13 @@ public class planetHandler {
             CampaignData.mwlog.dbLog("SQL Error in loadPlanetFlags: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
         }
+        ch.returnConnection(con);
     }
 
     public void loadEnvironments(SPlanet p, CampaignData data) {
         ResultSet rs3 = null;
         Statement stmt = null;
+        Connection con = ch.getConnection();
         
         try {
         	stmt = con.createStatement();
@@ -262,12 +289,14 @@ public class planetHandler {
                 	stmt.close();
             } catch (SQLException ex) {}
         }
+        ch.returnConnection(con);
     }
 
     public void saveEnvironments(SPlanet p) {
         Statement stmt = null;
         StringBuffer sql = new StringBuffer();
-
+        Connection con = ch.getConnection();
+        
         try {
             stmt = con.createStatement();
             sql.append("DELETE from planetenvironments WHERE PlanetID = " + p.getDBID());
@@ -309,11 +338,12 @@ public class planetHandler {
             CampaignData.mwlog.dbLog("SQL Error in saveEnvironments: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
         }
+        ch.returnConnection(con);
     }
 
     public void savePlanetFlags(SPlanet p) {
         Statement stmt = null;
-
+        Connection con = ch.getConnection();
         StringBuffer sql = new StringBuffer();
 
         try {
@@ -333,6 +363,7 @@ public class planetHandler {
             CampaignData.mwlog.dbLog("SQL Error in savePlanetFlags: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
         }
+        ch.returnConnection(con);
     }
 
     public void saveInfluences(SPlanet p) {
@@ -340,6 +371,7 @@ public class planetHandler {
         PreparedStatement ps = null;
         StringBuffer sql = new StringBuffer();
         int pid = p.getDBID();
+        Connection con = ch.getConnection();
 
         try {
             ps = con.prepareStatement("DELETE from planetinfluences WHERE PlanetID = " + pid);
@@ -370,10 +402,11 @@ public class planetHandler {
         			ps.close();
         	} catch (SQLException ex) {}
         }
+        ch.returnConnection(con);
     }
 
     // CONSTRUCTOR
-    public planetHandler(Connection c) {
-        this.con = c;
+    public planetHandler() {
+        
     }
 }

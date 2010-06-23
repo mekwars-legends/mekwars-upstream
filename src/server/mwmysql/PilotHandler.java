@@ -37,12 +37,14 @@ import server.campaign.pilot.skills.WeaponSpecialistSkill;
 
 public class PilotHandler {
 
-	Connection con;
+	JDBCConnectionHandler ch = new JDBCConnectionHandler();
 	
 	public SPilot loadPilot(int pID) {
 		SPilot p = new SPilot("Vacant", 99, 99);
 		ResultSet rs;
 		TraitSkill traitSkill = null;
+		Connection con = ch.getConnection();
+		
 		try {
 			try {
 				Statement stmt = con.createStatement();
@@ -95,6 +97,7 @@ public class PilotHandler {
 				else {
 					rs.close();
 					stmt.close();
+					ch.returnConnection(con);
 					return p;
 				}
 				rs.close();
@@ -102,18 +105,22 @@ public class PilotHandler {
 		} catch (SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.loadPilot: " + e.getMessage());
 			p = new SPilot("Vacant", 99, 99);
+			ch.returnConnection(con);
 			return p;
 		} } catch (Exception ex) {
 			CampaignData.mwlog.errLog("Error loading Pilot " + p.getPilotId());
 			CampaignData.mwlog.errLog(ex);
 			p = new SPilot("Vacant", 99, 99);
+			ch.returnConnection(con);
 			return p;
 		}
+	ch.returnConnection(con);
     return p;
 	}
 	
 	public SPilot loadUnitPilot(int unitID) {
 		SPilot p = new SPilot();
+		Connection con = ch.getConnection();
 		try {
 			ResultSet rs;
 			Statement stmt = con.createStatement();
@@ -126,11 +133,14 @@ public class PilotHandler {
 			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.loadUnitPilot: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
 		}
+		ch.returnConnection(con);
 		return p;
 	}
 	
 	public void deletePilot(int pilotID) {
 		int DBId = getPilotDBId(pilotID);
+		Connection con = ch.getConnection();
+		
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate("DELETE from pilotskills WHERE pilotID = " + DBId);
@@ -140,11 +150,14 @@ public class PilotHandler {
 			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.deletePilot: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
 		}
+		ch.returnConnection(con);
 	}
 	
 	public void deleteFactionPilots(int factionID) {
 		Statement stmt;
 		ResultSet rs;
+		Connection con = ch.getConnection();
+		
 		try {
 			stmt = con.createStatement();
 			rs = stmt.executeQuery("SELECT pilotID from pilots WHERE factionID = " + factionID);
@@ -158,11 +171,14 @@ public class PilotHandler {
 			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
 		}
+		ch.returnConnection(con);
 	}
 		
 	public void deletePlayerPilots(int playerID) {
 		Statement stmt, stmt1;
 		ResultSet rs;
+		Connection con = ch.getConnection();
+		
 		try {
 			stmt = con.createStatement();
 			stmt1 = con.createStatement();
@@ -178,11 +194,13 @@ public class PilotHandler {
 			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
 		}
+		ch.returnConnection(con);
 	}
 	
 	public void deletePlayerPilots(int playerID, int unitType, int unitWeight) {
 		Statement stmt, stmt1;
 		ResultSet rs;
+		Connection con = ch.getConnection();
 		try {
 			stmt = con.createStatement();
 			stmt1 = con.createStatement();
@@ -198,11 +216,14 @@ public class PilotHandler {
 			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
 		}
+		ch.returnConnection(con);
 	}
 	
 	public void deleteFactionPilots(int factionID, int type) {
-		Statement stmt, stmt1;
-		ResultSet rs;
+		Statement stmt = null, stmt1=null;
+		ResultSet rs = null;
+		Connection con = ch.getConnection();
+		
 		try {
 			stmt = con.createStatement();
 			stmt1 = con.createStatement();
@@ -217,10 +238,28 @@ public class PilotHandler {
 		} catch (SQLException e) {
 			CampaignData.mwlog.dbLog("SQL Error in PilotHandler.deleteFactionPilots: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {}
+			}
+			if (stmt1 != null) {
+				try {
+					stmt1.close();
+				} catch(SQLException e) {}
+			}
 		}
+		ch.returnConnection(con);
 	}
 	
 	public int getPilotDBId(int pilotID) {
+		Connection con = ch.getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int DBId = -1;
@@ -245,10 +284,11 @@ public class PilotHandler {
 			if(DBId == -1)
 				CampaignData.mwlog.dbLog("GetPilotDBId returned -1 for pilotID: " + pilotID);
 		}
+		ch.returnConnection(con);
 	return DBId;
 	}
 	
-	public PilotHandler(Connection c) {
-		this.con = c;
+	public PilotHandler() {
+		
 	}
 }
