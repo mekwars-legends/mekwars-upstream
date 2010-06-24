@@ -1742,6 +1742,7 @@ src/server/campaign/commands/admin/AdminRemoveUnitsOnMarketCommand.java -text
 src/server/campaign/commands/admin/AdminRequestBuildTableCommand.java -text
 src/server/campaign/commands/admin/AdminResetHouseRankingsCommand.java -text
 src/server/campaign/commands/admin/AdminResetPlayerCommand.java -text
+src/server/campaign/commands/admin/AdminRestartTrackerThreadCommand.java -text
 src/server/campaign/commands/admin/AdminReturnPlanetsToOriginalOwnersCommand.java -text
 src/server/campaign/commands/admin/AdminSaveBlackMarketConfigsCommand.java -text
 src/server/campaign/commands/admin/AdminSaveCommand.java -text

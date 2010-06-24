@@ -36,13 +36,6 @@ public class TrackerThread extends Thread {
 	}
 	
 	//METHODS
-	public void extendedWait(int time) {
-		try {
-			this.wait(time);
-		} catch (Exception ex) {
-			CampaignData.mwlog.errLog(ex);
-		}
-	}
 	
 	@Override
 	public synchronized void run() {
@@ -91,7 +84,13 @@ public class TrackerThread extends Thread {
 			while (true) {
 				
 				//10 minute wait between updates
-				this.extendedWait(600000);
+
+				try {
+					Thread.sleep(600000);
+				} catch (InterruptedException ex) {
+					Thread.currentThread().interrupt();
+					break;
+				}
 				
 				//set up substrings
 				//name - already saved from ServerStart
