@@ -149,6 +149,7 @@ public class DefaultServerOptions {
         defaults.setProperty("VehsMayBeSoldOnBM", "true");// 10.23.05 @urgru
         defaults.setProperty("MeksMayBeSoldOnBM", "true");// 10.23.05 @urgru
         defaults.setProperty("AerosMayBeSoldOnBM", "true");
+        defaults.setProperty("HiddenBMUnits", "false");
 
         defaults.setProperty("WelfareCeiling", "30");// go above this and you
         // no longer can pull
@@ -747,7 +748,8 @@ public class DefaultServerOptions {
         defaults.setProperty("MultiplierPerPreviousLevel", "1");// 0 to use only base
         defaults.setProperty("UseRandomPilotLevelups", "true");
         defaults.setProperty("LosingPilotsCheckToLevel", "false");
-
+        defaults.setProperty("AllowAsymmetricPilotLevels", "false");
+        
         // Disconnection auto-report settings
         defaults.setProperty("DisconnectionAddUnitsDestroyed", "0");
         defaults.setProperty("DisconnectionAddUnitsSalvage", "1");
@@ -1121,6 +1123,36 @@ public class DefaultServerOptions {
         defaults.setProperty("MaxHangarAssaultAero", "-1");
         defaults.setProperty("DisableAFRIfOverHangarLimits", "false");
         defaults.setProperty("DisableActivationIfOverHangarLimits", "false");
+        
+        // Can players buy from the BM
+        defaults.setProperty("CanBuyBMLightMeks", "true");
+        defaults.setProperty("CanBuyBMMediumMeks", "true");
+        defaults.setProperty("CanBuyBMHeavyMeks", "true");
+        defaults.setProperty("CanBuyBMAssaultMeks", "true");
+        defaults.setProperty("CanBuyBMLightVehicles", "true");
+        defaults.setProperty("CanBuyBMMediumVehicles", "true");
+        defaults.setProperty("CanBuyBMHeavyVehicles", "true");
+        defaults.setProperty("CanBuyBMAssaultVehicles", "true");
+        defaults.setProperty("CanBuyBMLightInfantry", "true");
+        defaults.setProperty("CanBuyBMMediumInfantry", "true");
+        defaults.setProperty("CanBuyBMHeavyInfantry", "true");
+        defaults.setProperty("CanBuyBMAssaultInfantry", "true");
+        defaults.setProperty("CanBuyBMLightProtomeks", "true");
+        defaults.setProperty("CanBuyBMMediumProtomeks", "true");
+        defaults.setProperty("CanBuyBMHeavyProtomeks", "true");
+        defaults.setProperty("CanBuyBMAssaultProtomeks", "true");
+        defaults.setProperty("CanBuyBMLightBA", "true");
+        defaults.setProperty("CanBuyBMMediumBA", "true");
+        defaults.setProperty("CanBuyBMHeavyBA", "true");
+        defaults.setProperty("CanBuyBMAssaultBA", "true");
+        defaults.setProperty("CanBuyBMLightAero", "true");
+        defaults.setProperty("CanBuyBMMediumAero", "true");
+        defaults.setProperty("CanBuyBMHeavyAero", "true");
+        defaults.setProperty("CanBuyBMAssaultAero", "true");
+
+        
+        // Slice Settings
+        defaults.setProperty("ProcessHouseTicksAtSlice", "false");
         
         defaults.setProperty("DisallowFreshUnitSalvage", "false");
     }

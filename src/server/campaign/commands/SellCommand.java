@@ -204,7 +204,9 @@ public class SellCommand implements Command {
 		 */
 		CampaignMain.cm.toUser("AM:The " + unitToSell.getModelName() + " is now on the Market "
 				+ "(" + CampaignMain.cm.moneyOrFluMessage(false,false,-sellFluCost,true) + ").", Username, true);
-		CampaignMain.cm.doSendHouseMail(p.getMyHouse(), "NOTE", p.getName() + " added a unit to the market [" + unitToSell.getModelName() + "].");
+		if (! CampaignMain.cm.getBooleanConfig("HiddenBMUnits")) {
+			CampaignMain.cm.doSendHouseMail(p.getMyHouse(), "NOTE", p.getName() + " added a unit to the market [" + unitToSell.getModelName() + "].");
+		}
 		CampaignData.mwlog.bmLog(p.getName() + " added a " + unitToSell.getModelName() + ". Asking: " + minBid + ". Length: " + salesTicks);
 				
 	}//end process()

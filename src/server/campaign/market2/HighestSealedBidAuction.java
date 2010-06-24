@@ -38,7 +38,7 @@ public final class HighestSealedBidAuction implements IAuction {
 	 * Auction. Same mechanism to find highest bidder, but no
 	 * downward adjustment.
 	 */
-	public MarketBid getWinner(MarketListing listing) {
+	public MarketBid getWinner(MarketListing listing, boolean hiddenBM) {
 		
 		MarketBid winningBid = null;
 		
@@ -86,7 +86,7 @@ public final class HighestSealedBidAuction implements IAuction {
 			
 			//if the buyer can no longer afford his bid, move on
 			if (potentialWinner.getMoney() < currBid.getAmount()) {
-				if (potentialWinner.isHuman()) {//let a human know ...
+				if (potentialWinner.isHuman() && !hiddenBM) {//let a human know ...
 				CampaignMain.cm.toUser("The " + listing.getListedModelName() 
 						+ " from the BM could have been yours! Unfortunately, you don't have the "
 						+ CampaignMain.cm.moneyOrFluMessage(true,true,currBid.getAmount())+" you "
@@ -97,7 +97,7 @@ public final class HighestSealedBidAuction implements IAuction {
 			
 			// if the buyer doesn't have room, move on as well.
 			
-			if (potentialWinner.isHuman() && !((SPlayer) potentialWinner).hasRoomForUnit(unitType, unitWeightClass)) {
+			if (potentialWinner.isHuman() && !hiddenBM && !((SPlayer) potentialWinner).hasRoomForUnit(unitType, unitWeightClass)) {
 				CampaignData.mwlog.errLog(currBid.getBidderName() + " has no room for a " + Unit.getWeightClassDesc(unitWeightClass) + " " + Unit.getTypeClassDesc(unitType) + " from the BM");
 				CampaignMain.cm.toUser("The " + listing.getListedModelName() 
 						+ " from the BM could have been yours! Unfortunately, you don't have room for another "
@@ -126,7 +126,7 @@ public final class HighestSealedBidAuction implements IAuction {
 			IBuyer loser = CampaignMain.cm.getPlayer(losingBid.getBidderName());
 			if (loser == null)
 				loser = CampaignMain.cm.getHouseFromPartialString(losingBid.getBidderName(),null);
-			if (loser != null && loser.isHuman()) {
+			if (loser != null && loser.isHuman() && !hiddenBM) {
 				CampaignMain.cm.toUser("You didn't get the  " + listing.getListedModelName()
 						+ " for " + CampaignMain.cm.moneyOrFluMessage(true,true,losingBid.getAmount())+". The "
 						+ "winner paid " + CampaignMain.cm.moneyOrFluMessage(true,true,winningBid.getAmount())

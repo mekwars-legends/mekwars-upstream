@@ -42,8 +42,11 @@ public class CBMUnit {
 	private int salesTicksRemaining = -1;
 	private int minBid = -1;
 	private int playersBid = -1;
-	    
-	CUnit embeddedUnit;
+	private String unitWeight = "";
+	private String unitType = "";
+	private boolean hidden = false;
+	
+	CUnit embeddedUnit = null;
 	
 	//CONSTRUCTOR
 	/**
@@ -53,7 +56,8 @@ public class CBMUnit {
 	 * Be sure that the token read-in order always matches the market's
 	 * write-out order.
 	 */
-	public CBMUnit(String listingData, CCampaign campaign) {
+	public CBMUnit(String listingData, CCampaign campaign, boolean hiddenUnits) {
+		hidden = hiddenUnits;
 		
 		//read data
 		StringTokenizer ST = new StringTokenizer(listingData,"*");
@@ -65,32 +69,38 @@ public class CBMUnit {
 		minBid = TokenReader.readInt(ST);
 		soldByPlayer = TokenReader.readBoolean(ST);
 		playersBid = TokenReader.readInt(ST);
-        
+		unitType = TokenReader.readString(ST);
+		unitWeight = TokenReader.readString(ST);
+		
+		
 		//bury a CUnit
-		embeddedUnit = new CUnit();
-		embeddedUnit.setUnitFilename(fileName);
-		embeddedUnit.createEntity();
-
+		if (!hiddenUnits) {
+			embeddedUnit = new CUnit();
+			embeddedUnit.setUnitFilename(fileName);
+			embeddedUnit.createEntity();
+		}
         /*
 		 * CUnit.createEntity sets type. Now that we've bootstrapped the
 		 * type in, we know if we need to set piloting and gunnery (meks,
 		 * vehicles) or just gunnery (misc. infantry types).
 		 */
-		int factionGunnery = campaign.getPlayer().getMyHouse().getBaseGunner();
-		int factionPiloting = campaign.getPlayer().getMyHouse().getBasePilot();
-		if (embeddedUnit.getType() == Unit.MEK || embeddedUnit.getType() == Unit.VEHICLE)
-			embeddedUnit.setPilot(new Pilot("BM Unit",factionGunnery,factionPiloting));
-		else 
-			embeddedUnit.setPilot(new Pilot("BM Unit",factionGunnery,5));
+		if (!hidden) {
+			int factionGunnery = campaign.getPlayer().getMyHouse().getBaseGunner();
+			int factionPiloting = campaign.getPlayer().getMyHouse().getBasePilot();
+			if (embeddedUnit.getType() == Unit.MEK || embeddedUnit.getType() == Unit.VEHICLE)
+				embeddedUnit.setPilot(new Pilot("BM Unit",factionGunnery,factionPiloting));
+			else 
+				embeddedUnit.setPilot(new Pilot("BM Unit",factionGunnery,5));
 		
-		/*
-		 * BlackMarketModel uses MegaMek's calculateBV() function instead of pulling the
-		 * stringed CUnit BV. This is because the server sends over values which reflect
-		 * the current BV of a unit, not the BV it would have with a generic faction pilot.
-		 * 
-		 * As such, we need to set the crew. See BlackMarketModel.java for usage. 
-		 */
-		embeddedUnit.getEntity().setCrew(new megamek.common.Pilot("Generic Pilot", factionGunnery, factionPiloting));
+			/*
+			 * BlackMarketModel uses MegaMek's calculateBV() function instead of pulling the
+			 * stringed CUnit BV. This is because the server sends over values which reflect
+			 * the current BV of a unit, not the BV it would have with a generic faction pilot.
+			 * 
+			 * As such, we need to set the crew. See BlackMarketModel.java for usage. 
+			 */
+			embeddedUnit.getEntity().setCrew(new megamek.common.Pilot("Generic Pilot", factionGunnery, factionPiloting));
+		}
 	}
 	
 	//METHODS
@@ -109,6 +119,10 @@ public class CBMUnit {
 		return unitID;
 	}
 	
+	public String getFileName() {
+		return fileName;
+	}
+	
 	public String getModelName() {
 		return modelName;
 	}
@@ -123,6 +137,10 @@ public class CBMUnit {
 	
 	public int getMinBid() {
 		return minBid;
+	}
+	
+	public String getHiddenUnitDescription() {
+		return unitWeight + " " + unitType;
 	}
 	
 	public boolean playerIsSeller() {

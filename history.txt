@@ -1,6 +1,18 @@
 VERSION HISTORY:
 ----------------
 v 0.2.42.x
+*** NOTE TO SOs *************************************************
+*                                                               *
+* This is NOT a safe build yet - I'm merging in MekWars-MySQL   *
+* and am not positive that this is a solid build.  Please feel  *
+* free to use it on test servers and report any bugs to me, but *
+* stick to 0.2.41.4 for production servers.                     *
+*                                                               *
+* I will rev this to 0.2.43.0 when testing is complete          *
+*****************************************************************
++ Added hidden BM
++ Added asymmetric pilot levelling
++ Added ability to restrict BM by unit/weight class per faction
 + Added adminRestartTrackerThread command
 v 0.2.41.4 Released 06/23/2010 20:06 PST GMT-8
 Released server v0.2.41.4

@@ -1512,7 +1512,9 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
                         // Add the unit to the market, and tell the faction
                         CampaignMain.cm.getMarket().addListing(getName(), randUnit, minPrice, saleTicks);
-                        marketAdditions.append(StringUtils.aOrAn(randUnit.getModelName(), false) + " was added to the black market.<br>");
+                        if (!Boolean.parseBoolean(CampaignMain.cm.getConfig("HiddenBMUnits"))) {
+                        	marketAdditions.append(StringUtils.aOrAn(randUnit.getModelName(), false) + " was added to the black market.<br>");
+                        }
                         hsUpdates.append(getHSUnitRemovalString(randUnit));// "remove"
                         // unit
                         // from
@@ -2300,13 +2302,13 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         }
         weightClass.add(unit);
 
-        String hsUpdate = getHSUnitAdditionString(unit);
-        if (sendUpdate) {
+        String hsUpdate = this.getHSUnitAdditionString(unit);
+        if (sendUpdate && !(this.isNewbieHouse() && Boolean.parseBoolean(CampaignMain.cm.getConfig("HiddenBMUnits"))) ){
             CampaignMain.cm.doSendToAllOnlinePlayers(this, "HS|" + hsUpdate, false);
         }
 
-        return hsUpdate;
-    }
+    return hsUpdate;
+}
 
     /*
      * Log a player into the faction and put him on reserve (normal) status.
@@ -2630,22 +2632,25 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         /*
          * Fourth, and final, block - units in faction bays.
          */
-        for (int type_id = 0; type_id < Unit.TOTALTYPES; type_id++) {
+        
+        if (!(this.isNewbieHouse() && Boolean.parseBoolean(CampaignMain.cm.getConfig("HiddenBMUnits")))) {
+			for (int type_id = 0; type_id < Unit.TOTALTYPES; type_id++) {
 
-            for (int weight = Unit.LIGHT; weight <= Unit.ASSAULT; weight++) {
+				for (int weight = Unit.LIGHT; weight <= Unit.ASSAULT; weight++) {
 
-                // skip units that are for sale. send all others.
-                Vector<SUnit> unitSet = this.getHangar(type_id).elementAt(weight);
-                for (SUnit currU : unitSet) {
-                    if (currU.getStatus() == Unit.STATUS_FORSALE) {
-                        continue;
-                    }
-                    result.append(getHSUnitAdditionString(currU));
-                }
-            }
-        }
-
-        return result.toString();
+					// skip units that are for sale. send all others.
+					Vector<SUnit> unitSet = this.getHangar(type_id).elementAt(
+							weight);
+					for (SUnit currU : unitSet) {
+						if (currU.getStatus() == Unit.STATUS_FORSALE) {
+							continue;
+						}
+						result.append(getHSUnitAdditionString(currU));
+					}
+				}
+			}
+		}
+		return result.toString();
     }
 
     /**
@@ -3031,6 +3036,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
         if (!configFile.exists()) {
             populateUnitLimits();
+            populateBMLimits();
             return;
         }
 
@@ -3041,6 +3047,8 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         } catch (Exception ex) {
             CampaignData.mwlog.errLog(ex);
         }
+        populateUnitLimits();
+        populateBMLimits();
     }
 
     public void loadConfigFileFromDB() {
@@ -3123,6 +3131,15 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         return unitLimits[unitType][unitWeightClass];
     }
 
+        
+    public boolean canBuyFromBM(int unitType, int unitWeight) {
+    	return bmLimits[unitType][unitWeight];
+    }
+    
+    public void setCanBuyFromBM(int unitType, int unitWeight, boolean canBuy) {
+    	bmLimits[unitType][unitWeight] = canBuy;
+    }
+    
     public void setForumName(String name) {
         forumName = name;
     }

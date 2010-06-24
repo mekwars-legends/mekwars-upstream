@@ -22,5 +22,5 @@ package server.campaign.market2;
  * of auction types.
  */
 public interface IAuction {
-	public abstract MarketBid getWinner(MarketListing listing);
+	public abstract MarketBid getWinner(MarketListing listing, boolean hiddenBM);
 }

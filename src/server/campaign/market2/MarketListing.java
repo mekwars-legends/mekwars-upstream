@@ -19,6 +19,8 @@ package server.campaign.market2;
 import java.util.TreeMap;
 
 import common.CampaignData;
+import common.Unit;
+import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
 
@@ -49,6 +51,12 @@ public final class MarketListing {
 	 */
 	String modelName;
 	String fileName;
+
+	String unitTypeString;
+	String unitWeightString;
+	int unitType;
+	int unitWeight;
+
 	
 	//CONSTRUCTOR
 	public MarketListing(String sellname, SUnit unit, int minbid, int duration) {
@@ -63,6 +71,12 @@ public final class MarketListing {
 		 */
 		modelName = unit.getModelName();
 		fileName = unit.getUnitFilename();
+
+		unitTypeString = Unit.getTypeClassDesc(unit.getType());
+		unitWeightString = Unit.getWeightClassDesc(unit.getWeightclass());
+		unitType = unit.getType();
+		unitWeight = unit.getWeightclass();
+
 	}
 	
 	//METHODS
@@ -76,26 +90,40 @@ public final class MarketListing {
 		//data everyone gets - names, times, etc.
 		toReturn.append(id + "*");
 		toReturn.append(this.getListedUnitID() + "*");
-		if (this.getListedModelName().length() > 0)
-			toReturn.append(this.getListedModelName() + "*");
-		else
-			toReturn.append(" *");//no blank model names!
-		toReturn.append(this.getListedFileName() + "*");
+		if (CampaignMain.cm.getBooleanConfig("HiddenBMUnits")) {
+			toReturn.append(this.getListedHiddenModelName() + "*");
+		} else {
+			if (this.getListedModelName().length() > 0) {
+				toReturn.append(this.getListedModelName() + "*");
+			} else {
+				toReturn.append(" *");//no blank model names!
+			}			
+		}
+		if (CampaignMain.cm.getBooleanConfig("HiddenBMUnits")) {
+			toReturn.append(" *");
+		} else {
+			toReturn.append(this.getListedFileName() + "*");
+		}
 		toReturn.append(this.getSaleTicks() + "*");
 		toReturn.append(this.getMinBid() + "*");
 		
 		//seller check
-		if (p != null && this.getSellerName().equalsIgnoreCase(p.getName()))
+		if (p != null && this.getSellerName().equalsIgnoreCase(p.getName())) {
 			toReturn.append(true);
-		else
+		} else {
 			toReturn.append(false);
+		}
 		toReturn.append("*");
 		
 		//player's bid.
-		if (p != null)
+		if (p != null) {
 			toReturn.append(this.getBidForPlayer(p));
-		else
+		} else {
 			toReturn.append(0);
+		}
+		
+		toReturn.append("*");
+		toReturn.append(unitTypeString + "*" + unitWeightString);
 		
 		return toReturn.toString();
 	}
@@ -113,11 +141,11 @@ public final class MarketListing {
         	//add the bid, or attempt to remove if the bid is negative
     		MarketBid currBid = new MarketBid(bidAmount, System.currentTimeMillis());
             currBid.setBidderName(lowerName);
-    		if (bidAmount > 0)
+    		if (bidAmount > 0) {
     			bidsReceived.put(lowerName, currBid);
-    		else if (bidAmount < 1 && bidsReceived.containsKey(lowerName))
+    		} else if (bidAmount < 1 && bidsReceived.containsKey(lowerName)) {
     			bidsReceived.remove(lowerName);
-    		
+    		}
         } catch(Exception ex) {
             CampaignData.mwlog.errLog(ex);
         }
@@ -179,6 +207,14 @@ public final class MarketListing {
 	}
 	
 	/**
+	 * Returns the simulated model name (i.e., "Heavy Mek") for an auction where
+	 * the units are hidden
+	 */
+	public String getListedHiddenModelName() {
+		return unitWeightString + " " + unitTypeString;
+	}
+	
+	/**
 	 * Return the saved filename.
 	 */
 	public String getListedFileName() {
@@ -210,5 +246,13 @@ public final class MarketListing {
      */ 
     public void increaseSaleTicks(){
         saleDuration++;
+    }
+    
+    public int getUnitType() {
+    	return unitType;
+    }
+    
+    public int getUnitWeight() {
+    	return unitWeight;
     }
 }//end MarketListing.java

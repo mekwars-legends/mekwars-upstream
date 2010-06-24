@@ -17,6 +17,9 @@
 package server.campaign.commands;
 
 import java.util.StringTokenizer;
+
+import common.Unit;
+
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.market2.MarketListing;
@@ -81,8 +84,13 @@ public class BidCommand implements Command {
 		//make sure the bid meets the minimum requirement
 		int minBid = auction.getMinBid();
 		if (bidAmount < minBid) {
-			CampaignMain.cm.toUser("AM:Minimum bid for the " + auction.getListedModelName()
+			if (!CampaignMain.cm.getBooleanConfig("HiddenBMUnits")) {
+				CampaignMain.cm.toUser("AM:Minimum bid for the " + auction.getListedModelName()
 					+ " is " + CampaignMain.cm.moneyOrFluMessage(true,false,minBid) + ". Nice try.",Username,true);
+			} else {
+				CampaignMain.cm.toUser("AM:Minimum bid for the " + auction.getListedHiddenModelName()
+						+ " is " + CampaignMain.cm.moneyOrFluMessage(true,false,minBid) + ". Nice try.",Username,true);
+			}
 			return;
 		}
 		
@@ -93,13 +101,27 @@ public class BidCommand implements Command {
 			return;
 		}
 		
+		// Check that the house is allowed to bid on this type of unit
+		int uType = auction.getUnitType();
+		int uWeight = auction.getUnitWeight();
+		boolean canBuy = CampaignMain.cm.getHouseForPlayer(p.getName()).canBuyFromBM(uType, uWeight);
+//		boolean canBuy = p.getMyHouse().canBuyFromBM(uType, uWeight);
+		if (!canBuy) {
+			CampaignMain.cm.toUser("AM:Your faction is not allowed to purchase " + 
+					Unit.getWeightClassDesc(uWeight) + " " + 
+					Unit.getTypeClassDesc(uType) + " from the Black Market.", Username, true);
+			return;
+		}
+		
 		/*
 		 * All checks cleared. Decrease the player's influence and add his bid.
 		 */
 		auction.placeBid(Username, bidAmount);
 		p.addInfluence(-bidFluCost);
+		
 		CampaignMain.cm.toUser("AM:You bid "+CampaignMain.cm.moneyOrFluMessage(true,false,bidAmount)+" for the "
-				+ auction.getListedModelName() + " (-" + CampaignMain.cm.moneyOrFluMessage(false,true,bidFluCost)
+				+ (CampaignMain.cm.getBooleanConfig("HiddenBMUnits") ? auction.getListedHiddenModelName() : auction.getListedModelName()) 
+				+ " (-" + CampaignMain.cm.moneyOrFluMessage(false,true,bidFluCost)
 				+").", Username, true);
 		
 		//send BM|CU to bidder

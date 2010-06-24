@@ -46,6 +46,7 @@ public class Market2 {
 	// IVARS
 	private IAuction auctionType;// set in constructor
 	private TreeMap<Integer, MarketListing> currentAuctions;
+	boolean hiddenBM = CampaignMain.cm.getBooleanConfig("HiddenBMUnits");
 	
 	// CONSTRUCTOR
 	/**
@@ -355,7 +356,9 @@ public class Market2 {
 		String result = "<font color=\"black\">Black Market: <br>";
 		for (Integer currListID : currentAuctions.keySet()) {
 			MarketListing currList = currentAuctions.get(currListID);
-			result += "#" + currListID + " " + currList.getListedModelName()+ ". Minimum Bid: ";
+			result += "#" + currListID + " " + 
+			(CampaignMain.cm.getBooleanConfig("HiddenBMUnits") ? currList.getListedHiddenModelName() : currList.getListedModelName())+ 
+			". Minimum Bid: ";
 			result += currList.getMinBid() + ", Remaining Ticks: " + currList.getSaleTicks();
 			result += ", Comment: " + "<br>";
 		}
@@ -418,7 +421,7 @@ public class Market2 {
 					 * winner, and how much he should pay. Fetch the SUnit and
 					 * SPlayer, as we need them whether the unit sold or not.
 					 */
-					MarketBid winningBid = auctionType.getWinner(currList);
+					MarketBid winningBid = auctionType.getWinner(currList, hiddenBM);
 					ISeller sellingActor = null;
 					
 					// try all possible ISellers.

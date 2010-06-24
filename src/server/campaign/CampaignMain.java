@@ -1419,7 +1419,8 @@ public final class CampaignMain implements Serializable {
         Commands.put("ADMINCREATEPLANET", new AdminCreatePlanetCommand());
         Commands.put("ADMINCREATEFACTORY", new AdminCreateFactoryCommand());
         Commands.put("ADMINCREATESOLARIS", new AdminCreateSolarisCommand());
-        Commands.put("ADMINCREATETERRAIN", new AdminCreateTerrainCommand());
+        Commands.put("ADMINCREATETERRAIN", new AdminCreateTerrainCommand());        
+        Commands.put("ADMINDESTROYFACTION", new AdminDestroyFactionCommand());
         Commands.put("ADMINDESTROYFACTORY", new AdminDestroyFactoryCommand());
         Commands.put("ADMINDESTROYPLANET", new AdminDestroyPlanetCommand());
         Commands.put("ADMINDESTROYTERRAIN", new AdminDestroyTerrainCommand());

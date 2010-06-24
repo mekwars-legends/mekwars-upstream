@@ -262,6 +262,30 @@ public class SPilot extends Pilot {
             } else {
                 levelGunnery = true;
             }
+            if(CampaignMain.cm.getBooleanConfig("AllowAsymmetricPilotLevels")) {
+            	// Have the differential modify it.  The further away from x/x+1 they are, the more likely
+            	// to level up in a manner that pushes it toward x/x+1, but can still get quite varied levelups
+            	
+            	// at 4/5, differential = -1
+            	// at 3/5, differential = -2
+            	// at 4/4, differential = 0
+            	// at 4/3, differential = 1
+            	
+            	if((random - differential) < 5)
+            		levelGunnery = true;
+            	else
+            		levelPiloting = true;
+            } else {
+            	if (differential > 0)
+            		levelGunnery = true;
+            	else if (differential < 0)
+            		levelPiloting = true;
+            	else if (random < 3 // 0-2, 30% chance for piloting on push
+            			|| (unit.getEntity() instanceof Infantry && random < 5)) // differential
+            		levelPiloting = true; // 50/50 for Infantry
+            	else
+            		levelGunnery = true;
+            }
 
             /*
              * The natural aptitude skills sometimes make it possible to get an

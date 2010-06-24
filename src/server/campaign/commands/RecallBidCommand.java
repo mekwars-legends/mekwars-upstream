@@ -77,7 +77,9 @@ public class RecallBidCommand implements Command {
 		bidList.placeBid(Username, -1);//placing a negative bid actually removes from the Hash. See MarketListing.
 		
 		//let the player know the bid was recalled
-		CampaignMain.cm.toUser("AM:You've rescinded your bid for the " + auction.getListedModelName() + ".", Username, true);
+		CampaignMain.cm.toUser("AM:You've rescinded your bid for the " + 
+				(CampaignMain.cm.getBooleanConfig("HiddenBMUnits") ? auction.getListedHiddenModelName() : auction.getListedModelName()) + 
+				".", Username, true);
 
 		//send BM|CU to bidder
 		CampaignMain.cm.toUser("BM|CU|" + auction.toString(auctionID,p),Username,false);

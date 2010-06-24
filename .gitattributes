@@ -1713,6 +1713,7 @@ src/server/campaign/commands/admin/AdminCreateFactoryCommand.java -text
 src/server/campaign/commands/admin/AdminCreatePlanetCommand.java -text
 src/server/campaign/commands/admin/AdminCreateSolarisCommand.java -text
 src/server/campaign/commands/admin/AdminCreateTerrainCommand.java -text
+src/server/campaign/commands/admin/AdminDestroyFactionCommand.java -text
 src/server/campaign/commands/admin/AdminDestroyFactoryCommand.java -text
 src/server/campaign/commands/admin/AdminDestroyPlanetCommand.java -text
 src/server/campaign/commands/admin/AdminDestroyTerrainCommand.java -text

@@ -34,11 +34,15 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import megamek.common.Entity;
+
 import common.Unit;
+import common.util.UnitUtils;
 
 import client.MWClient;
 import client.campaign.CBMUnit;
 import client.campaign.CCampaign;
+import client.campaign.CUnit;
 
 /**
  *
@@ -63,6 +67,8 @@ public class BlackMarketModel extends AbstractTableModel {
     public final static int BID = 4;
     public final static int AUCTION_ID = 5; //not shown in table
 
+    private boolean hiddenUnits = false;
+    
     final String[] columnNames = {
             "Unit",
             "Stock BV",
@@ -83,11 +89,12 @@ public class BlackMarketModel extends AbstractTableModel {
         return this.columnNames.length;
     }
 
-    public BlackMarketModel(MWClient client)
+    public BlackMarketModel(MWClient client, boolean hideBMUnits)
     {
         this.mwclient = client;
         theCampaign = mwclient.getCampaign();
         this.mechs = theCampaign.getBlackMarket();
+        hiddenUnits = hideBMUnits;
         //    this.bids = client.getMyBids();
 
         this.sortedMechs = this.mechs.values().toArray();
@@ -113,7 +120,15 @@ public class BlackMarketModel extends AbstractTableModel {
                     false, false, 0, i);
             cellWidth = comp.getPreferredSize().width;
             column.setPreferredWidth(Math.max(headerWidth, cellWidth));
+            
+            // This is a hack, but removeColumn() is throwing errors, so for the moment...
+            if (hiddenUnits && i == BV) {
+            	column.setMinWidth(0);
+            	column.setMaxWidth(0);
+            	column.setPreferredWidth(0);
+            }
         }
+        
     }
 
     public int getRowCount() {
@@ -136,8 +151,15 @@ public class BlackMarketModel extends AbstractTableModel {
         CBMUnit mm = (CBMUnit)this.sortedMechs[row];
         switch (col) {
             case MECH:
+            	if (hiddenUnits) {
+            		return mm.getHiddenUnitDescription();
+            	} else {
                 return mm.getModelName();
+            	}
             case BV:
+            	if (hiddenUnits) {
+            		return " ";
+            	}
                 return mm.getEmbeddedUnit().getEntity().calculateBattleValue();
             case MIN:
                 return new Integer(mm.getMinBid());
@@ -180,19 +202,23 @@ public class BlackMarketModel extends AbstractTableModel {
             c.setToolTipText("");
 
             CBMUnit mm = (CBMUnit)mechs.get(table.getModel().getValueAt(row, BlackMarketModel.AUCTION_ID));
-            String description = "<html><body>#" + mm.getAuctionID() + " " + mm.getEmbeddedUnit().getEntity().getChassis()
-            + " (" + mm.getEmbeddedUnit().getEntity().getModel() + ")<br>";
+            String description = "";
+            if (!hiddenUnits) {
+            	description="<html><body>#" + mm.getAuctionID() + " " + mm.getEmbeddedUnit().getEntity().getChassis()
+            	+ " (" + mm.getEmbeddedUnit().getEntity().getModel() + ")<br>";
+            
 
-            if (mm.getEmbeddedUnit().getC3Level() > Unit.C3_NONE){
-                if ( mm.getEmbeddedUnit().getC3Level() == Unit.C3_SLAVE)
-                    description += "<br>" + "C3 Slave";
-                else if (mm.getEmbeddedUnit().getC3Level() == Unit.C3_MASTER)
-                    description += "<br>" + "C3 Master";
-                else if (mm.getEmbeddedUnit().getC3Level() == Unit.C3_IMPROVED)
-                    description += "<br>" + "C3 Improved";
+            	if (mm.getEmbeddedUnit().getC3Level() > Unit.C3_NONE){
+            		if ( mm.getEmbeddedUnit().getC3Level() == Unit.C3_SLAVE)
+            			description += "<br>" + "C3 Slave";
+            		else if (mm.getEmbeddedUnit().getC3Level() == Unit.C3_MASTER)
+            			description += "<br>" + "C3 Master";
+            		else if (mm.getEmbeddedUnit().getC3Level() == Unit.C3_IMPROVED)
+            			description += "<br>" + "C3 Improved";
+            	}
+
+            	description += "</body></html>";
             }
-
-            description += "</body></html>";
             c.setToolTipText(description);
             if (isSelected) {
                 c.setForeground(d.getForeground());

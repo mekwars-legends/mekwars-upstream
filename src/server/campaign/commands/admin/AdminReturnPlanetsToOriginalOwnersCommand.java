@@ -19,6 +19,7 @@ package server.campaign.commands.admin;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import common.CampaignData;
 import common.House;
 import common.Planet;
 
@@ -47,13 +48,13 @@ public class AdminReturnPlanetsToOriginalOwnersCommand implements Command {
 		
 		//look for confirmation
 		if (!command.hasMoreTokens() || !command.nextToken().equalsIgnoreCase("confirm")) {
-			CampaignMain.cm.toUser("Do you want to return all planets to their original owners? If so, [<a href=\"MEKWARS/c adminreturnplanetstooriginalowners#confirm\">click to confirm.</a>",Username,true);
+			CampaignMain.cm.toUser("Do you want to return all planets to their original owners? If so, [<a href=\"MEKWARS/c adminreturnplanetstooriginalowners#confirm\">click to confirm.</a>]",Username,true);
 			return;
 		}
 		
 		//check for double confirmation
 		if (!command.hasMoreTokens() || !command.nextToken().equalsIgnoreCase("confirm")) {
-			CampaignMain.cm.toUser("Are you *ABSOLUTELY SURE* you want to return planets to their original owners? This cannot be easily reversed. If so, [<a href=\"MEKWARS/c adminreturnplanetstooriginalowners#confirm#confirm\">click to re-confirm.</a>",Username,true);
+			CampaignMain.cm.toUser("Are you *ABSOLUTELY SURE* you want to return planets to their original owners? This cannot be easily reversed. If so, [<a href=\"MEKWARS/c adminreturnplanetstooriginalowners#confirm#confirm\">click to re-confirm.</a>]",Username,true);
 			return;
 		}
 		
@@ -69,10 +70,10 @@ public class AdminReturnPlanetsToOriginalOwnersCommand implements Command {
 			
 			//cast to planet
 			SPlanet p = (SPlanet)currP;
-			
+			CampaignData.mwlog.mainLog("Returning planet " + p.getName() + " to original owner");
+				
 			//get original owner
 			SHouse origOwner = CampaignMain.cm.getHouseFromPartialString(p.getOriginalOwner(), Username);
-			
 			//change the ownership in the respective SHouses
 			p.setOwner(p.getOwner(), origOwner, true);
 			

@@ -59,6 +59,7 @@ public final class MWLogger {// final - no extension of the server logger
                             // stats)
     private Logger ipLog; // Log connecting IPs.
     private Logger dbLog; // Log MySQL Database issues
+    private Logger testLog; // Log test code
     private Logger debugLog; // for all debug messages
 
     private MMNetFormatter mmnetFormatter;
@@ -77,6 +78,7 @@ public final class MWLogger {// final - no extension of the server logger
     private FileHandler tickHandler;
     private FileHandler ipHandler;
     private FileHandler dbHandler;
+    private FileHandler testHandler;
     private FileHandler debugHandler;
 
     public static class MMNetFormatter extends SimpleFormatter {
@@ -295,6 +297,15 @@ public final class MWLogger {// final - no extension of the server logger
             dbLog = Logger.getLogger("dbLogger");
             dbLog.setUseParentHandlers(false);
             dbLog.addHandler(dbHandler);
+            
+            testHandler = new FileHandler(logDir.getPath() + "/testlog", 104857600, rotations, true);
+            testHandler.setLevel(Level.INFO);
+            testHandler.setFilter(null);
+            testHandler.setFormatter(mmnetFormatter);
+            testHandler.setEncoding("UTF8");
+            testLog = Logger.getLogger("testLogger");
+            testLog.setUseParentHandlers(false);
+            testLog.addHandler(testHandler);
 
             debugHandler = new FileHandler(logDir.getPath() + "/debuglog", hugeFileSize, rotations, true);
             debugHandler.setLevel(Level.INFO);
@@ -479,6 +490,21 @@ public final class MWLogger {// final - no extension of the server logger
         }
     }
 
+    public void testLog(String s) {
+    	if (logging)
+    		testLog.info(s);
+    }
+    
+    public void testLog(Exception e) {
+    	if (logging) {
+    		testLog.warning("[" + e.toString() + "]");
+    		StackTraceElement[] t = e.getStackTrace();
+    		for (int i = 0; i < t.length; i++) {
+    			testLog.warning("   " + t[i].toString());
+    		}
+    	}
+    }
+    
     public void enableSeconds(boolean b) {
         MWLogger.addSeconds = b;
     }

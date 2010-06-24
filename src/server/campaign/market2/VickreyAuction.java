@@ -45,7 +45,7 @@ public final class VickreyAuction implements IAuction {
 	 * - If several people bid, winner pays next-highest + 1.
 	 * - In only one person bids, winner pays the minimum.
 	 */
-	public MarketBid getWinner(MarketListing listing) {
+	public MarketBid getWinner(MarketListing listing, boolean hiddenBM) {
 		
 		MarketBid winningBid = null;
 		
@@ -91,7 +91,7 @@ public final class VickreyAuction implements IAuction {
 			
 			//if the buyer can no longer afford his bid, move on
 			if (potentialWinner.getMoney() < currBid.getAmount()) {
-				if (potentialWinner.isHuman()) {//let a human know ...
+				if (potentialWinner.isHuman() && !hiddenBM) {//let a human know ...
 				CampaignMain.cm.toUser("The " + listing.getListedModelName() 
 						+ " from the BM could have been yours! Unfortunately, you don't have the "
 						+ CampaignMain.cm.moneyOrFluMessage(true,true,currBid.getAmount())+" you "
@@ -100,7 +100,7 @@ public final class VickreyAuction implements IAuction {
 				continue;
 			}
 			
-			if (potentialWinner.isHuman() && !((SPlayer) potentialWinner).hasRoomForUnit(unitType, unitWeightClass)) {
+			if (potentialWinner.isHuman() && !hiddenBM && !((SPlayer) potentialWinner).hasRoomForUnit(unitType, unitWeightClass)) {
 				CampaignMain.cm.toUser("The " + listing.getListedModelName() 
 						+ " from the BM could have been yours! Unfortunately, you don't have room for another "
 						+ Unit.getWeightClassDesc(unitWeightClass) + " " 
@@ -135,7 +135,7 @@ public final class VickreyAuction implements IAuction {
 			IBuyer potentialWinner = CampaignMain.cm.getPlayer(nextBid.getBidderName());
 			if (potentialWinner == null)
 				potentialWinner = CampaignMain.cm.getHouseFromPartialString(nextBid.getBidderName(),null);
-			if (potentialWinner != null && potentialWinner.isHuman()) {
+			if (potentialWinner != null && potentialWinner.isHuman() && !hiddenBM) {
 				CampaignMain.cm.toUser("You didn't get the  " + listing.getListedModelName()
 						+ " for " + CampaignMain.cm.moneyOrFluMessage(true,true,nextBidAmount)+ ". Yours was the "
 						+ "second place offer. The winner paid " + CampaignMain.cm.moneyOrFluMessage(true,true,winningBid.getAmount())
@@ -161,7 +161,7 @@ public final class VickreyAuction implements IAuction {
 			IBuyer loser = CampaignMain.cm.getPlayer(losingBid.getBidderName());
 			if (loser == null)
 				loser = CampaignMain.cm.getHouseFromPartialString(losingBid.getBidderName(),null);
-			if (loser != null && loser.isHuman()) {
+			if (loser != null && loser.isHuman() && !hiddenBM) {
 				CampaignMain.cm.toUser("You didn't get the  " + listing.getListedModelName()
 						+ " for " + CampaignMain.cm.moneyOrFluMessage(true,true,losingBid.getAmount())+". The "
 						+ "winner paid " + CampaignMain.cm.moneyOrFluMessage(true,true,winningBid.getAmount())
@@ -173,4 +173,5 @@ public final class VickreyAuction implements IAuction {
 		return winningBid;
 	}//end getWinner
 
+	
 }//end VickreyAuction.java

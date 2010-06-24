@@ -765,6 +765,8 @@ public class ShortResolver {
             baseDefenderExperiencePay += Math.floor(so.getStartingBV() / defenderTotalBVXPAdjustment);
         }
 
+        double ratingMultiplier = 1.0; // Will be changed if ELO modifies the payouts
+        
         // Building Payments.
         // make sure that it wasn't a building map that they fought on and the
         // SO screwed up and set building ops happen.
@@ -1091,6 +1093,58 @@ public class ShortResolver {
                 techPayment = currP.getCurrentTechPayment();
             }
 
+            /*
+             * Modify payouts based on ELO
+             */
+            
+            if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO") && so.getAllPlayerNames().size() <= 2) { // This will really only work for 2-player games
+            	Double myRating;
+            	Double hisRating;
+            	
+            	if (so.getWinners().containsKey(currName)) {
+            		myRating = so.getWinners().get(currName).getRating();
+            		hisRating = so.getLosers().get(so.getLosers().keySet().iterator().next()).getRating();
+            	} else {
+            		myRating = so.getLosers().get(currName).getRating();
+            		hisRating = so.getWinners().get(so.getWinners().keySet().iterator().next()).getRating();
+            	}
+            	
+            	ratingMultiplier = hisRating / myRating;
+            	boolean modifyBasedOnPosition;
+            	if (ratingMultiplier >= 1.0 && CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELOForLower")) {
+            		modifyBasedOnPosition = true;
+            	} else if (ratingMultiplier <= 1.0 && CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELOForHigher")) {
+            		modifyBasedOnPosition = true;
+            	} else {
+            		modifyBasedOnPosition = false;
+            	}
+            	
+            	CampaignData.mwlog.testLog("MyName: " + currName);
+            	CampaignData.mwlog.testLog("myRating: " + myRating + " , hisRating: " + hisRating);
+            	CampaignData.mwlog.testLog("ratingMultiplier: " + ratingMultiplier);
+            	CampaignData.mwlog.testLog("OldMoney: " + earnedMoney);
+            	if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO_Money") && modifyBasedOnPosition) {
+            		earnedMoney = (int)Math.floor((earnedMoney * (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));
+            	}
+            	CampaignData.mwlog.testLog("NewMoney: " + earnedMoney);
+
+            	CampaignData.mwlog.testLog("OldXP: " + earnedXP);
+            	if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO_Exp") && modifyBasedOnPosition) {
+            		earnedXP = (int)Math.floor((earnedXP * (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));
+            	}
+            	CampaignData.mwlog.testLog("NewXP: " + earnedXP);
+            	CampaignData.mwlog.testLog("OldFlu: " + earnedFlu);
+            	if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO_Influence") && modifyBasedOnPosition) {
+            		earnedFlu = (int)Math.floor((earnedFlu * (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));
+            	}
+            	CampaignData.mwlog.testLog("NewFlu: " + earnedFlu);
+            	CampaignData.mwlog.testLog("OldRP: " + earnedRP);
+            	if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO_RP") && modifyBasedOnPosition) {
+            		earnedRP = (int)Math.floor((earnedRP *  (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));
+            	}
+            	CampaignData.mwlog.testLog("NewRP: " + earnedRP);
+            }
+            
             /*
              * Put together the actual string to show our bold hero, and add the
              * earned amounts to their accounts.
@@ -2424,8 +2478,28 @@ public class ShortResolver {
                 // save the planet
                 SPlanet target = so.getTargetWorld();
 
-                // ATTACKER VICTORY BLOCK
-                if (attackersWon) {
+            	Double ratingMultiplier = 1.0;  
+            	boolean modifyBasedOnPosition = false;
+                if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO") && so.getAllPlayerNames().size() <= 2) { // This will really only work for 2-player games
+                	Double myRating;
+                	Double hisRating;
+                	
+                	myRating = so.getWinners().get(so.getWinners().keySet().iterator().next()).getRating();
+                	hisRating = so.getLosers().get(so.getLosers().keySet().iterator().next()).getRating();
+                	ratingMultiplier = hisRating / myRating;
+                	
+                	ratingMultiplier = hisRating / myRating;
+                	if (ratingMultiplier >= 1.0 && CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELOForLower")) {
+                		modifyBasedOnPosition = true;
+                	} else if (ratingMultiplier <= 1.0 && CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELOForHigher")) {
+                		modifyBasedOnPosition = true;
+                	} else {
+                		modifyBasedOnPosition = false;
+                	}
+                }
+
+                    // ATTACKER VICTORY BLOCK
+               	if (attackersWon) {
                     try {
                         /*
                          * Determine the amount of land which should change
@@ -2442,6 +2516,11 @@ public class ShortResolver {
                         if (conquestBVAdjust > 0) {
                             totalConquest += Math.floor(so.getStartingBV() / conquestBVAdjust);
                         }
+                        CampaignData.mwlog.testLog("Old Land: " + totalConquest);
+                        if (modifyBasedOnPosition) {
+                        	totalConquest = (int)(Math.floor(totalConquest *  (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));                      	
+                        }
+                        CampaignData.mwlog.testLog("New Land: " + totalConquest);
                         if (totalConquest > conquestCap) {
                             totalConquest = conquestCap;
                         }
@@ -2989,6 +3068,13 @@ public class ShortResolver {
                             totalConquest += Math.floor(so.getStartingBV() / conquestBVAdjust);
                         }
                         if (totalConquest > conquestCap) {
+                        }
+                        CampaignData.mwlog.testLog("Old Land: " + totalConquest);
+                        if (modifyBasedOnPosition) {
+                        	totalConquest = (int)(Math.floor(totalConquest *  (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));                      	
+                        }
+                        CampaignData.mwlog.testLog("New Land: " + totalConquest);
+                        if (totalConquest > conquestCap) {
                             totalConquest = conquestCap;
                         }
 
@@ -3224,11 +3310,16 @@ public class ShortResolver {
             int leggedScrapChance = o.getIntValue("LeggedUnitsScrappedChance");
             int gyroedScrapChance = o.getIntValue("GyroedUnitsScrappedChance");
 
+			String errorUnit = ""; // Will be used to inform the mods of the errors we're getting.  Temporary.
+			
             try {
                 // loop through all units in the string
                 while (reportTokenizer.hasMoreTokens()) {
 
                     String currentUnit = reportTokenizer.nextToken();
+                    // We're getting errors in this module.  Let's find out why
+                    errorUnit = currentUnit;
+                    CampaignData.mwlog.errLog("Testing unit: " + currentUnit); 
 
                     // MechWarrior
                     if (currentUnit.startsWith("MW*")) {
@@ -3341,6 +3432,8 @@ public class ShortResolver {
                 so.setFinishingBV(currentBV);
 
             } catch (Exception ex) {
+            	CampaignMain.cm.doSendErrLog("Error processing unit: ");
+            	CampaignMain.cm.doSendErrLog(errorUnit);
                 CampaignData.mwlog.errLog(ex);
             }
 

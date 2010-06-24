@@ -168,7 +168,8 @@ public class CCampaign {
 		BlackMarket.clear();
 
 		while(mainTokenizer.hasMoreTokens()) {
-			CBMUnit currBMUnit = new CBMUnit(TokenReader.readString(mainTokenizer), this);
+			boolean hidden = Boolean.parseBoolean(mwclient.getserverConfigs("HiddenBMUnits"));
+			CBMUnit currBMUnit = new CBMUnit(TokenReader.readString(mainTokenizer), this, hidden);
 			BlackMarket.put(currBMUnit.getAuctionID(), currBMUnit);
 		}
 	}
@@ -184,7 +185,7 @@ public class CCampaign {
 	 * Method that adds a unit to the client's BM representation.
 	 */
 	public void addBMUnit(String command) {
-		CBMUnit bmUnit = new CBMUnit(command, this);
+		CBMUnit bmUnit = new CBMUnit(command, this, Boolean.parseBoolean(mwclient.getserverConfigs("HiddenBMUnits")));
 		BlackMarket.put(bmUnit.getAuctionID(), bmUnit);
 	}
 
@@ -193,7 +194,7 @@ public class CCampaign {
 	 * on a unit in order to change colors and show amount.
 	 */
 	public void changeBMUnit(String command) {
-		CBMUnit bmUnit = new CBMUnit(command, this);
+		CBMUnit bmUnit = new CBMUnit(command, this, Boolean.parseBoolean(mwclient.getserverConfigs("HiddenBMUnits")));
 		BlackMarket.remove(bmUnit.getAuctionID());
 		BlackMarket.put(bmUnit.getAuctionID(), bmUnit);
 	}

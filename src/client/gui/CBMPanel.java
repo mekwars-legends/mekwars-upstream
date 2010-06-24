@@ -82,6 +82,7 @@ public class CBMPanel extends JPanel {
     private JPanel pnlMekIcon = new JPanel();
 
     private boolean factionBidsAllowed = true;
+    private boolean hideBMUnits;
 
     private CCampaign theCampaign;
     private GridBagConstraints gridBagConstraints;
@@ -90,7 +91,8 @@ public class CBMPanel extends JPanel {
     public CBMPanel(MWClient client) {
         setLayout(new GridBagLayout());
         this.mwclient = client;
-
+        this.hideBMUnits = Boolean.parseBoolean(mwclient.getserverConfigs("HiddenBMUnits"));
+        
         pnlMekIconHolder = new JPanel();
         pnlMekIconHolder.setMaximumSize(new Dimension(84,72));
         pnlMekIconHolder.setMaximumSize(new Dimension(84,72));
@@ -100,7 +102,7 @@ public class CBMPanel extends JPanel {
         pnlMekIcon.setPreferredSize(new Dimension(84,72));
         pnlMekIcon.setMaximumSize(new Dimension(84,72));
 
-        BlackMarketInfo = new BlackMarketModel(mwclient);
+        BlackMarketInfo = new BlackMarketModel(mwclient, hideBMUnits);
         theCampaign = client.getCampaign();
         Player = theCampaign.getPlayer();
         TableSorter sorter = new TableSorter(this.BlackMarketInfo, client, TableSorter.SORTER_BM);
@@ -141,7 +143,8 @@ public class CBMPanel extends JPanel {
                     //if there is a unit in the row, update the dynamic buttons.
                     if (mm != null) {
 
-                        btnShowMek.setEnabled(true);
+                        if (!hideBMUnits)
+                        	btnShowMek.setEnabled(true);
 
                         if (mm.getBid() > 0)
                             btnRecallBid.setEnabled(true);
@@ -262,6 +265,7 @@ public class CBMPanel extends JPanel {
     public void fireMarketChanged() {
         //here's a problem MyBlackMarket has to be created somehow (by parsing BM or from Player data)
         this.BlackMarketInfo.refreshModel();
+        
         this.tblMarket.setPreferredSize(new Dimension(this.tblMarket.getWidth(), this.tblMarket.getRowHeight()*(this.tblMarket.getRowCount())));
         this.tblMarket.revalidate();
     }
@@ -333,6 +337,8 @@ public class CBMPanel extends JPanel {
      * @param evt 
      */
     private void btnShowMekActionPerformed(ActionEvent evt) {
+    	if (hideBMUnits) 
+    		return;
         mm = this.getMarketMechAtRow(this.tblMarket.getSelectedRow());
         if (mm == null) {return;}
         Entity theEntity = mm.getEmbeddedUnit().getEntity();
@@ -425,7 +431,7 @@ public class CBMPanel extends JPanel {
     //refresh preview image
     public void resetCamo() {
 
-        if (mwclient.getConfig().isParam("BMPREVIEWIMAGE")) {
+        if (!hideBMUnits && mwclient.getConfig().isParam("BMPREVIEWIMAGE")) {
 
             //refresh the camo ... may have been changed.
             pnlMekIcon = new MechInfo(mwclient.getConfig().getImage("CAMO"));
@@ -433,6 +439,7 @@ public class CBMPanel extends JPanel {
             pnlMekIcon.setPreferredSize(new Dimension(84,72));
             pnlMekIcon.setMaximumSize(new Dimension(84,72));
 
+            
             try {
                 ((MechInfo)pnlMekIcon).setUnit(mm.getEmbeddedUnit().getEntity());
                 ((MechInfo)pnlMekIcon).setImageVisible(true);
@@ -506,7 +513,8 @@ public class CBMPanel extends JPanel {
 
             //standard spring layout for the buttons
             JPanel buttonSpring = new JPanel(new SpringLayout());
-            buttonSpring.add(btnShowMek);
+            if (!hideBMUnits)
+            	buttonSpring.add(btnShowMek);
             buttonSpring.add(btnBid);
             buttonSpring.add(spacingPanel1);
             buttonSpring.add(btnBid);
@@ -536,7 +544,8 @@ public class CBMPanel extends JPanel {
              */
             pnlBuyBtns.removeAll();
 
-            pnlBuyBtns.add(btnShowMek);
+            if (!hideBMUnits)
+            	pnlBuyBtns.add(btnShowMek);
             pnlBuyBtns.add(btnBid);
             pnlBuyBtns.add(spacingPanel1);
             pnlBuyBtns.add(btnBid);
