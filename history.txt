@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
-v 0.2.41.x
+v 0.2.42.x
+
+v 0.2.41.4 Released 06/23/2010 20:06 PST GMT-8
 Released server v0.2.41.4
 + Start of DB Branch merge
 + Bug 2956740: Server Config vs. Faction Configs

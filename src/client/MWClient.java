@@ -179,7 +179,7 @@ public final class MWClient implements IClient, GameListener {
 
     CConfig Config;
 
-    public static final String CLIENT_VERSION = "0.2.41.1"; // change this with
+    public static final String CLIENT_VERSION = "0.2.41.4"; // change this with
     // all client
     // changes @Torren
 
@@ -719,7 +719,7 @@ public final class MWClient implements IClient, GameListener {
         // repeated connection attempts for dedicated hosts.
         else {
             int retryCount = 0;
-            while (Status == STATUS_DISCONNECTED && retryCount++ < 20) {
+            while ((Status == STATUS_DISCONNECTED) && (retryCount++ < 20)) {
                 connectToServer(chatServerIP, chatServerPort);
                 if (Status == STATUS_DISCONNECTED) {
                     CampaignData.mwlog.infoLog("Couldn't connect to server. Retrying in 90 seconds.");
@@ -995,7 +995,7 @@ public final class MWClient implements IClient, GameListener {
                 owner = "";
             }
 
-            if (myDedOwners.equals("") || name.equals(owner) || getUser(name).getUserlevel() >= 100) { // if
+            if (myDedOwners.equals("") || name.equals(owner) || (getUser(name).getUserlevel() >= 100)) { // if
                 // no
                 // owners
                 // set,
@@ -1142,7 +1142,7 @@ public final class MWClient implements IClient, GameListener {
                         return;
                     }
 
-                    if (port > 0 && port < 65536) {
+                    if ((port > 0) && (port < 65536)) {
                         myPort = port;
                     }// check for legal port range
                     else {
@@ -1419,7 +1419,7 @@ public final class MWClient implements IClient, GameListener {
                 s = "c " + ST.nextToken().toLowerCase();
             }
             IGUICommand command = getGUICommand(s);
-            if (command != null && command.check(s)) {
+            if ((command != null) && command.check(s)) {
                 if (!command.execute(input)) {
                     CampaignData.mwlog.infoLog("COMMAND ERROR: wrong command executed.");
                 }
@@ -1740,7 +1740,7 @@ public final class MWClient implements IClient, GameListener {
 
         int myLevel = getUser(getPlayer().getName()).getUserlevel();
         for (CUser usr : Users) {
-            if (usr.getName().toLowerCase().startsWith(result.toLowerCase()) && (!usr.isInvis() || (usr.isInvis() && myLevel >= usr.getUserlevel()))) {
+            if (usr.getName().toLowerCase().startsWith(result.toLowerCase()) && (!usr.isInvis() || (usr.isInvis() && (myLevel >= usr.getUserlevel())))) {
                 userNames.add(usr.getName());
             }
         }
@@ -2170,7 +2170,7 @@ public final class MWClient implements IClient, GameListener {
             StringTokenizer ST = new StringTokenizer(incoming, PROTOCOL_DELIMITER);
             String s = ST.nextToken();
             pcommand = getProtCommand(s);
-            if (pcommand != null && pcommand.check(s)) {
+            if ((pcommand != null) && pcommand.check(s)) {
                 if (!pcommand.execute(incoming)) {
                     CampaignData.mwlog.infoLog("COMMAND ERROR: wrong protocol command executed or execution failed.");
                     CampaignData.mwlog.infoLog("COMMAND RECEIVED: " + incoming);
@@ -2243,7 +2243,7 @@ public final class MWClient implements IClient, GameListener {
          * empty password creates a nobody, but this does the trick ...
          */
         String passToSend = getConfigParam("NAMEPASSWORD");
-        if (passToSend == null || passToSend.length() == 0) {
+        if ((passToSend == null) || (passToSend.length() == 0)) {
             passToSend = "1337";
         }
 
@@ -2264,7 +2264,7 @@ public final class MWClient implements IClient, GameListener {
     }
 
     public void connectToServer(String ip, int port) {
-        if (myUsername == null || myUsername.equals("")) {
+        if ((myUsername == null) || myUsername.equals("")) {
             errorMessage("Username not set.");
             return;
         }
@@ -2275,7 +2275,7 @@ public final class MWClient implements IClient, GameListener {
 
     public void goodbye() {
         SignOff = true;
-        if (!isDedicated() && Status > STATUS_LOGGEDOUT) {
+        if (!isDedicated() && (Status > STATUS_LOGGEDOUT)) {
             getConfig().setParam("PANELDIVIDER", Integer.toString(getMainFrame().getMainPanel().getTabSPane().getDividerLocation()));
             getConfig().setParam("VERTICALDIVIDER", Integer.toString(getMainFrame().getMainPanel().getMainSPane().getDividerLocation()));
             getConfig().setParam("PLAYERPANELDIVIDER", Integer.toString(getMainFrame().getMainPanel().getSideSPane().getDividerLocation()));
@@ -2441,7 +2441,7 @@ public final class MWClient implements IClient, GameListener {
     }
 
     public boolean loadGame(String filename) {// load saved game
-        if (myServer != null && filename != null && !filename.equals("")) {
+        if ((myServer != null) && (filename != null) && !filename.equals("")) {
             boolean loaded = myServer.loadGame(new File("./savegames/", filename));
             myServer.getGame().addGameListener(this);
             return loaded;
@@ -2461,7 +2461,7 @@ public final class MWClient implements IClient, GameListener {
     }
 
     public boolean loadGameWithFullPath(String filename) {// load saved game
-        if (myServer != null && filename != null && !filename.equals("")) {
+        if ((myServer != null) && (filename != null) && !filename.equals("")) {
             boolean loaded = myServer.loadGame(new File(filename));
             myServer.getGame().addGameListener(this);
             return loaded;
@@ -2491,7 +2491,7 @@ public final class MWClient implements IClient, GameListener {
         ArrayList<CUnit> autoArmy = new ArrayList<CUnit>();
 
         // If a row is selected
-        if (servers.size() > 0 && hostName != null && hostName.trim().length() > 0) {
+        if ((servers.size() > 0) && (hostName != null) && (hostName.trim().length() > 0)) {
 
             // get server from tree
             MMGame toJoin = servers.get(hostName);
@@ -2714,7 +2714,7 @@ public final class MWClient implements IClient, GameListener {
      */
     public CampaignData getData() {
 
-        if (data == null && !isDedicated()) {
+        if ((data == null) && !isDedicated()) {
 
             // Lets reload everything from the cache and then pull down and
             // planet changes
@@ -2728,7 +2728,7 @@ public final class MWClient implements IClient, GameListener {
                 // data = dataFetcher.getAllData();
 
                 data = dataFetcher.getCacheData(getCacheDir());
-                if (data == null || data.getAllPlanets().size() == 0 || data.getAllHouses().size() == 0) {
+                if ((data == null) || (data.getAllPlanets().size() == 0) || (data.getAllHouses().size() == 0)) {
                     throw new Exception("data still empty");
                 }
                 refreshData();
@@ -3023,7 +3023,7 @@ public final class MWClient implements IClient, GameListener {
         File[] fileList = saveFiles.listFiles();
         for (File savedFile : fileList) {
             long lastTime = savedFile.lastModified();
-            if (savedFile.exists() && savedFile.isFile() && lastTime < (System.currentTimeMillis() - daysInSeconds)) {
+            if (savedFile.exists() && savedFile.isFile() && (lastTime < (System.currentTimeMillis() - daysInSeconds))) {
                 try {
                     CampaignData.mwlog.infoLog("Purging File: " + savedFile.getName() + " Time: " + lastTime + " purge Time: " + (System.currentTimeMillis() - daysInSeconds));
                     savedFile.delete();
@@ -3046,7 +3046,7 @@ public final class MWClient implements IClient, GameListener {
         File[] fileList = saveFiles.listFiles();
         for (File savedFile : fileList) {
             long lastTime = savedFile.lastModified();
-            if (savedFile.exists() && savedFile.isFile() && lastTime < (System.currentTimeMillis() - daysInSeconds)) {
+            if (savedFile.exists() && savedFile.isFile() && (lastTime < (System.currentTimeMillis() - daysInSeconds))) {
                 try {
                     CampaignData.mwlog.infoLog("Purging File: " + savedFile.getName() + " Time: " + lastTime + " purge Time: " + (System.currentTimeMillis() - daysInSeconds));
                     savedFile.delete();
@@ -3205,17 +3205,17 @@ public final class MWClient implements IClient, GameListener {
 
         if (money) {
             if (shortname) {
-                if (amount == 1 && moneyShort.endsWith("s")) {
+                if ((amount == 1) && moneyShort.endsWith("s")) {
                     result += moneyShort.substring(0, moneyShort.length() - 1);
-                } else if (amount > 1 && !moneyShort.endsWith("s")) {
+                } else if ((amount > 1) && !moneyShort.endsWith("s")) {
                     result += moneyShort + "s";
                 } else {
                     result += moneyShort;
                 }
             } else {// longname
-                if (amount == 1 && moneyLong.endsWith("s")) {
+                if ((amount == 1) && moneyLong.endsWith("s")) {
                     result += " " + moneyLong.substring(0, moneyLong.length() - 1);
-                } else if (amount > 1 && !moneyLong.endsWith("s")) {
+                } else if ((amount > 1) && !moneyLong.endsWith("s")) {
                     result += " " + moneyLong + "s";
                 } else {
                     result += " " + moneyLong;
@@ -3302,7 +3302,7 @@ public final class MWClient implements IClient, GameListener {
         for (int critLocation = 0; critLocation < unit.locations(); critLocation++) {
             // These three location have rear armor so the user might be
             // selecting that armor instead of crit.
-            if (critLocation == Mech.LOC_CT || critLocation == Mech.LOC_LT || critLocation == Mech.LOC_RT) {
+            if ((critLocation == Mech.LOC_CT) || (critLocation == Mech.LOC_LT) || (critLocation == Mech.LOC_RT)) {
                 if (unit.getArmor(critLocation, false) != unit.getOArmor(critLocation, false)) {
                     cost += CUnit.getArmorCost(unit, this) * unit.getOArmor(critLocation, false) - unit.getArmor(critLocation, false);
                 }
@@ -3376,7 +3376,7 @@ public final class MWClient implements IClient, GameListener {
         for (int critLocation = 0; critLocation < unit.locations(); critLocation++) {
             // These three location have rear armor so the user might be
             // selecting that armor instead of crit.
-            if (critLocation == Mech.LOC_CT || critLocation == Mech.LOC_LT || critLocation == Mech.LOC_RT) {
+            if ((critLocation == Mech.LOC_CT) || (critLocation == Mech.LOC_LT) || (critLocation == Mech.LOC_RT)) {
                 if (unit.getArmor(critLocation, false) != unit.getOArmor(critLocation, false)) {
                     cost += techCost;
                 }
@@ -3618,7 +3618,7 @@ public final class MWClient implements IClient, GameListener {
                     File[] fileList = saveFiles.listFiles(filter);
                     for (File savedFile : fileList) {
                         long lastTime = savedFile.lastModified();
-                        if (savedFile.exists() && savedFile.isFile() && lastTime < (System.currentTimeMillis() - twoHours)) {
+                        if (savedFile.exists() && savedFile.isFile() && (lastTime < (System.currentTimeMillis() - twoHours))) {
                             try {
                                 CampaignData.mwlog.infoLog("Purging File: " + savedFile.getName() + " Time: " + lastTime + " purge Time: " + (System.currentTimeMillis() - twoHours));
                                 savedFile.delete();
@@ -3665,7 +3665,7 @@ public final class MWClient implements IClient, GameListener {
         if (myServer != null) {
             if (turn == 0) {
                 serverSend("SHS|" + getUsername() + "|Running");
-            } else if (myServer.getGame().getPhase() != currentPhase && myServer.getGame().getOptions().booleanOption("paranoid_autosave")) {
+            } else if ((myServer.getGame().getPhase() != currentPhase) && myServer.getGame().getOptions().booleanOption("paranoid_autosave")) {
                 sendServerGameUpdate();
                 currentPhase = myServer.getGame().getPhase();
             }
@@ -3792,7 +3792,7 @@ public final class MWClient implements IClient, GameListener {
             if (ent.getOwner().getName().startsWith("War Bot") || (!(ent instanceof MechWarrior) && !UnitUtils.hasArmorDamage(ent) && !UnitUtils.hasISDamage(ent) && !UnitUtils.hasCriticalDamage(ent) && !UnitUtils.hasLowAmmo(ent) && !UnitUtils.hasEmptyAmmo(ent))) {
                 continue;
             }
-            if (ent instanceof Mech && ent.getInternal(Mech.LOC_CT) <= 0) {
+            if ((ent instanceof Mech) && (ent.getInternal(Mech.LOC_CT) <= 0)) {
                 serverSend("IPU|" + SerializeEntity.serializeEntity(ent, true, true, isUsingAdvanceRepairs()));
             } else {
                 serverSend("IPU|" + SerializeEntity.serializeEntity(ent, true, false, isUsingAdvanceRepairs()));
@@ -3940,6 +3940,7 @@ class AePlayWave extends Thread {
         curPosition = p;
     }
 
+    @Override
     public synchronized void run() {
 
         File soundFile = new File(filename);
