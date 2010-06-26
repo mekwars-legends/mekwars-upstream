@@ -17,14 +17,15 @@
 package server.dataProvider.commands;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
 
+import server.dataProvider.ServerCommand;
+
 import common.CampaignData;
 import common.util.BinWriter;
-
-import server.dataProvider.ServerCommand;
 
 /**
  * Retrieve all planet information (if the data cache is lost at client side)
@@ -37,14 +38,16 @@ public class BanTargeting implements ServerCommand {
      * @see server.dataProvider.ServerCommand#execute(java.util.Date,
      *      java.io.PrintWriter, common.CampaignData)
      */
-    public void execute(Date timestamp, BinWriter out, CampaignData data)
-            throws Exception {
-        
-            FileInputStream configFile = new FileInputStream("./campaign/bantargeting.dat");
-            BufferedReader config = new BufferedReader(new InputStreamReader(configFile));
-            
-            while (config.ready()) {
-                out.println(config.readLine(),"BanTargeting");
-            }
+    public void execute(Date timestamp, BinWriter out, CampaignData data) throws Exception {
+
+        if (!new File("./campaign/bantargeting.dat").exists()) {
+            return;
         }
+        FileInputStream configFile = new FileInputStream("./campaign/bantargeting.dat");
+        BufferedReader config = new BufferedReader(new InputStreamReader(configFile));
+
+        while (config.ready()) {
+            out.println(config.readLine(), "BanTargeting");
+        }
+    }
 }
