@@ -141,7 +141,12 @@ public class DefaultServerOptions {
         defaults.setProperty("BMBidFlu", "10");
         defaults.setProperty("BMSellFlu", "20");
         defaults.setProperty("BMFluSizeCost", "5");
-
+        defaults.setProperty("BMLightMekWeight", "1");
+        defaults.setProperty("BMMediumMekWeight", "1");
+        defaults.setProperty("BMHeavyMekWeight", "1");
+        defaults.setProperty("BMAssaultMekWeight", "1");
+        defaults.setProperty("UseBMWeightingTables", "false");
+        defaults.setProperty("MaximumNegativeBaysFromBM", "-1");
         defaults.setProperty("InfantryMayBeSoldOnBM", "false");// 10.23.05
         // @urgru
         defaults.setProperty("BAMayBeSoldOnBM", "true");// 10.23.05 @urgru
@@ -876,11 +881,9 @@ public class DefaultServerOptions {
         // Attack from reserver options
         defaults.setProperty("AllowAttackFromReserve", "false");
         defaults.setProperty("AttackFromReserveResponseTime", "5");
-        defaults.setProperty("AttackFromReserveSleepTime", "60");// time
-        // between
-        // each
-        // attack.
-
+        defaults.setProperty("AttackFromReserveSleepTime", "60");// time between each attack.
+        defaults.setProperty("MaxNegativeBaysForAFR", "-1");
+        
         // Pilot Damage Transfers
         defaults.setProperty("AllowPilotDamageToTransfer", "false");
         defaults.setProperty("PilotAmountHealedPerTick", "1");
@@ -965,6 +968,7 @@ public class DefaultServerOptions {
         defaults.setProperty("autoPromoteSubFaction", "true");
         defaults.setProperty("factionLeaderLevel", "30");
         defaults.setProperty("daysbetweenpromotions", "7");
+        defaults.setProperty("disableDemotionNotification", "false");
 
         // Factory Type Names
         defaults.setProperty("LightFactoryTypeTitle", "Light");
@@ -1155,6 +1159,17 @@ public class DefaultServerOptions {
         defaults.setProperty("ProcessHouseTicksAtSlice", "false");
         
         defaults.setProperty("DisallowFreshUnitSalvage", "false");
+        
+        // Payout options - if true, then the others apply
+        defaults.setProperty("ModifyOpPayoutByELO", "false");
+        defaults.setProperty("ModifyOpPayoutByELOForHigher", "false");
+        defaults.setProperty("ModifyOpPayoutByELOForLower", "false");
+        defaults.setProperty("ModifyOpPayoutByELO_RP", "false");
+        defaults.setProperty("ModifyOpPayoutByELO_Money", "false");
+        defaults.setProperty("ModifyOpPayoutByELO_Exp", "false");
+        defaults.setProperty("ModifyOpPayoutByELO_Influence", "false");
+        defaults.setProperty("ModifyOpPayoutByELO_Land", "false");
+        defaults.setProperty("ModifyOpPayoutByELO_Multiplier", "1");
     }
 
     /**

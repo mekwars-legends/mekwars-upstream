@@ -3319,7 +3319,7 @@ public class ShortResolver {
                     String currentUnit = reportTokenizer.nextToken();
                     // We're getting errors in this module.  Let's find out why
                     errorUnit = currentUnit;
-                    CampaignData.mwlog.errLog("Testing unit: " + currentUnit); 
+                    //CampaignData.mwlog.errLog("Testing unit: " + currentUnit); 
 
                     // MechWarrior
                     if (currentUnit.startsWith("MW*")) {

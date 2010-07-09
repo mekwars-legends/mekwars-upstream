@@ -10,6 +10,8 @@ v 0.2.42.x
 *                                                               *
 * I will rev this to 0.2.43.0 when testing is complete          *
 *****************************************************************
+R Released Server v0.2.42.3
++ Bug: missing ELO Payout Modification defaults
 + Added hidden BM
 + Added asymmetric pilot levelling
 + Added ability to restrict BM by unit/weight class per faction
