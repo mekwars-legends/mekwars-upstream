@@ -27,6 +27,17 @@ public abstract class ObjectPool {
 	abstract void expire(Object o);
 	abstract boolean validate(Object o);
 	
+	synchronized void killEmAll() {
+		Object o;
+		if (locked.size() > 0) {
+			Enumeration e = locked.keys();
+			while (e.hasMoreElements()) {
+				o = e.nextElement();
+				expire(o);
+			}
+		}
+	}
+	
 	protected String countObjects() {
 		return ("Unlocked: " + unlocked.size() + "  Locked: " + locked.size());
 	}

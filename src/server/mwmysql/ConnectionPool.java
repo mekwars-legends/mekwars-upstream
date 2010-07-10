@@ -31,6 +31,10 @@ public class ConnectionPool extends ObjectPool {
 	private String usr;
 	private String pwd;
 
+	void shutdown() {
+		super.killEmAll();
+	}
+	
 	Object create() {
 		try {
 			return (DriverManager.getConnection(url, usr, pwd));

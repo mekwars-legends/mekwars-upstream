@@ -34,12 +34,12 @@ public class MWmysql{
   public void close(){
     CampaignData.mwlog.dbLog("Attempting to close MySQL Connection");
     try {
-    	this.con.close();
-
-    } catch (SQLException e) {
-    	CampaignData.mwlog.dbLog("SQL Exception: " + e.getMessage());
-    	CampaignData.mwlog.errLog("SQL Exception:");
+    	//this.con.close();
+    	cPool.shutdown();
+    	CampaignData.mwlog.dbLog("MySQL Connection closed.");
+    } catch (Exception e) {
     	CampaignData.mwlog.errLog(e);
+    	CampaignData.mwlog.dbLog("Error shutting down MySQL Connection");
     }
   } 
 
