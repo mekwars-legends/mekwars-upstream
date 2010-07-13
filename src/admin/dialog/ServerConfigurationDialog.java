@@ -4878,7 +4878,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("AttackFromReserveSleepTime");
         combatSpring4.add(baseTextField);
 
-        SpringLayoutHelper.setupSpringGrid(combatSpring4, 5);
+        //SpringLayoutHelper.setupSpringGrid(combatSpring4, 5);
         
         SpringLayoutHelper.setupSpringGrid(combatSpring4, 7);
 
@@ -4898,11 +4898,51 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setToolTipText("<html>If checked, payout will be changed for the higher-ranked player.");
         combatPayoutUpperPanel.add(BaseCheckBox);
 
+        BaseCheckBox = new JCheckBox("For Lower Player?");
+        BaseCheckBox.setName("ModifyOpPayoutByELOForLower");
+        BaseCheckBox.setToolTipText("<html>If checked, payout will be changed for the lower-ranked player.");
+        combatPayoutUpperPanel.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Money");
+        BaseCheckBox.setName("ModifyOpPayoutByELO_Money");
+        BaseCheckBox.setToolTipText("If checked, monetary payout will be modified by ELO");
+        combatPayoutLowerPanel.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Exp");
+        BaseCheckBox.setName("ModifyOpPayoutByELO_Exp");
+        BaseCheckBox.setToolTipText("If checked, experience gain will be modified by ELO");
+        combatPayoutLowerPanel.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("RP");
+        BaseCheckBox.setName("ModifyOpPayoutByELO_RP");
+        BaseCheckBox.setToolTipText("If checked, RP payout will be modified by ELO");
+        combatPayoutLowerPanel.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Influence");
+        BaseCheckBox.setName("ModifyOpPayoutByELO_Influence");
+        BaseCheckBox.setToolTipText("If checked, influence payout will be modified by ELO");
+        combatPayoutLowerPanel.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Land");
+        BaseCheckBox.setName("ModifyOpPayoutByELO_Land");
+        BaseCheckBox.setToolTipText("If checked, land transfer will be modified by ELO.");
+        combatPayoutLowerPanel.add(BaseCheckBox);
+        
+        baseTextField = new JTextField(5);
+        baseTextField.setName("ModifyOpPayoutByELO_Multiplier");
+        baseTextField.setToolTipText("<html><p>Not really a multiplier, but a power.  The ELO ratio (loser / winner) will be raised to this power to determine change of actual payout.</p><p>Please refer to documentation for a more complete discussion of this mechanic.</p></html>");
+        combatPayoutLowerPanel.add(new JLabel("Payout Multiplier:"));
+        combatPayoutLowerPanel.add(baseTextField);
+        
+        combatPayoutPanel.add(combatPayoutUpperPanel);
+        combatPayoutPanel.add(combatPayoutLowerPanel);
+
         // finalize layout
         combatBox.add(combatCBoxGrid);
         combatBox.add(combatSpringFlow);
         combatBox.add(combatMMOptionsSpring);
         combatBox.add(combatSpring4);
+        combatBox.add(combatPayoutPanel);
         combatPanel.add(combatBox);
 
         /*
