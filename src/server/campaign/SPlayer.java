@@ -3750,7 +3750,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             return;
         }
 
-        if (elo > getRating() || exp > getExperience()) {
+        if ((elo > getRating() || exp > getExperience())  && !CampaignMain.cm.getBooleanConfig("disableDemotionNotification") ) {
             StringBuilder message = new StringBuilder(name);
             message.append(" no longer meets the eligbility requirements for subfaction ");
             message.append(getSubFactionName());

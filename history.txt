@@ -11,6 +11,7 @@ v 0.2.42.x
 * I will rev this to 0.2.43.0 when testing is complete          *
 *****************************************************************
 R Released Server v0.2.42.5
++ Added ability to hide demotion notifications
 + Bug: Configuration details missing for ELO Payout skew
 R Released Server v0.2.42.4
 + Bug: error shutting down due to null Connection in MWMysql

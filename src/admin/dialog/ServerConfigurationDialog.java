@@ -3396,6 +3396,11 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setName("autoPromoteSubFaction");
         factionCBoxSpring.add(BaseCheckBox);
 
+        BaseCheckBox = new JCheckBox("Disable Player Demotion Notifications");
+        BaseCheckBox.setToolTipText("<html>If checked, House Leaders will not be notified <br>when a player no longer qualifies for a subfaction.</html>");
+        BaseCheckBox.setName("disableDemotionNotification");
+        factionCBoxSpring.add(BaseCheckBox);
+        
         SpringLayoutHelper.setupSpringGrid(factionCBoxSpring, 3);
 
         // finalize the layout
