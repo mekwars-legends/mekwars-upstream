@@ -5235,9 +5235,50 @@ public final class ServerConfigurationDialog implements ActionListener {
 
         SpringLayoutHelper.setupSpringGrid(bmButtonSpring, 1);
 
+        JPanel BMWeightPanel = new JPanel();
+        BMWeightPanel.setLayout(new BoxLayout(BMWeightPanel, BoxLayout.Y_AXIS));
+        BaseCheckBox = new JCheckBox("Use BM Weighting Tables");
+        BaseCheckBox.setName("UseBMWeightingTables");
+        BMWeightPanel.add(BaseCheckBox);
+        
+        JPanel MekWeightPanel = new JPanel();
+        
+        baseTextField = new JTextField(5);
+        baseTextField.setName("BMLightMekWeight");
+        MekWeightPanel.add(new JLabel("Light Mek:", SwingConstants.TRAILING));
+        MekWeightPanel.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        baseTextField.setName("BMMediumMekWeight");
+        MekWeightPanel.add(new JLabel("Medium Mek:", SwingConstants.TRAILING));
+        MekWeightPanel.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        baseTextField.setName("BMHeavyMekWeight");
+        MekWeightPanel.add(new JLabel("Heavy Mek:", SwingConstants.TRAILING));
+        MekWeightPanel.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        baseTextField.setName("BMAssaultMekWeight");
+        MekWeightPanel.add(new JLabel("Assault Mek:", SwingConstants.TRAILING));
+        MekWeightPanel.add(baseTextField);
+        
+        BMWeightPanel.add(MekWeightPanel);
+        
+        JPanel BMBayLimitPanel = new JPanel();
+        
+        baseTextField = new JTextField(5);
+        baseTextField.setName("MaximumNegativeBaysFromBM");
+        baseTextField.setToolTipText("-1 to disable check for negative bays.");
+        BMBayLimitPanel.add(new JLabel("Maximum Negative Bays From BM:", SwingConstants.TRAILING));
+        BMBayLimitPanel.add(baseTextField);
+        
         bmBox.add(bmTextSpring);
         bmBox.add(bmCBoxSpring);
         bmBox.add(bmButtonSpring);
+        bmBox.add(BMWeightPanel);
+        bmBox.add(BMBayLimitPanel);
+
         blackMarketPanel.add(bmBox);
 
         /*

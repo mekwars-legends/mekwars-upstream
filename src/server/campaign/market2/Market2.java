@@ -590,7 +590,12 @@ public class Market2 {
 			 * We're going to be creating a RARE unit. Joyous day. First, lets
 			 * pick a weightclass ...
 			 */
-			int weightClass = CampaignMain.cm.getRandomNumber(4);// 0-3
+			int weightClass = 0;
+			if (CampaignMain.cm.getBooleanConfig("UseBMWeightingTables")) {
+				weightClass = getSkewedWeightClass();
+			} else {
+				weightClass = CampaignMain.cm.getRandomNumber(4);// 0-3
+			}
 			
 			// get a filename from the static build table
 			String factionName = "Rare";
@@ -647,4 +652,30 @@ public class Market2 {
 			CampaignMain.cm.toUser("BM|AD|" + result, p.getName(), false);
 	}
 	
+	private int getSkewedWeightClass() {
+		int lightEnd = CampaignMain.cm.getIntegerConfig("BMLightMekWeight");
+		int mediumEnd = lightEnd + CampaignMain.cm.getIntegerConfig("BMMediumMekWeight");
+		int heavyEnd = mediumEnd + CampaignMain.cm.getIntegerConfig("BMHeavyMekWeight");
+		int assaultEnd = heavyEnd + CampaignMain.cm.getIntegerConfig("BMAssaultMekWeight");
+		int totalWeight = assaultEnd;
+		int roll = CampaignMain.cm.getRandomNumber(totalWeight);
+		
+		if(roll < lightEnd) {
+			return 0;
+		} else if (roll < mediumEnd) {
+			return 1;
+		} else if (roll < heavyEnd) {
+			return 2;
+		} else if (roll < assaultEnd) {
+			return 3;
+		} else {
+			CampaignData.mwlog.errLog("Error in getSkewedWeightClass().");
+			CampaignData.mwlog.errLog("lightEnd: " + lightEnd);
+			CampaignData.mwlog.errLog("mediumEnd: " + mediumEnd);
+			CampaignData.mwlog.errLog("heavyEnd: " + heavyEnd);
+			CampaignData.mwlog.errLog("assaultEnd: " + assaultEnd);
+			CampaignData.mwlog.errLog("Roll: " + roll);
+			return 0;
+		}
+	}
 }// end Market.java
