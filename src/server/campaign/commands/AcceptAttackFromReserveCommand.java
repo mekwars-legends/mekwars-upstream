@@ -98,6 +98,12 @@ public class AcceptAttackFromReserveCommand implements Command {
 			return;
 		}
 		
+		if ((CampaignMain.cm.getIntegerConfig("MaxNegativeBaysForAFR") > -1) && ((dp.getFreeBays() + CampaignMain.cm.getIntegerConfig("MaxNegativeBaysForAFR"))< 0)) {
+			CampaignMain.cm.toUser("AM:Defend failed. " + dp.getName() + " has too many negative bays.", ap.getName(), true);
+			CampaignMain.cm.toUser("AM:Defend failed.  You have too many negative bays.", Username, true);
+			return;
+		}
+		
 		//Ensure offer is still valid
         Long launchTime = ap.getLastAttackFromReserve();
         if (launchTime + (Long.parseLong(CampaignMain.cm.getConfig("AttackFromReserveResponseTime")) * 60000) < System.currentTimeMillis()) {

@@ -4883,6 +4883,12 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("AttackFromReserveSleepTime");
         combatSpring4.add(baseTextField);
 
+        baseTextField = new JTextField(5);
+        combatSpring4.add(new JLabel("Max Negative Bays:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>How many negative bays a player may have<br>to engage in AFR.  Set to -1 to disable check");
+        baseTextField.setName("MaxNegativeBaysForAFR");
+        combatSpring4.add(baseTextField);
+        
         //SpringLayoutHelper.setupSpringGrid(combatSpring4, 5);
         
         SpringLayoutHelper.setupSpringGrid(combatSpring4, 7);

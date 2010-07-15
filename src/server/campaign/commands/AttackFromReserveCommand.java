@@ -111,6 +111,12 @@ public class AttackFromReserveCommand implements Command {
             return;
         }
 
+        // Check if the SOs have disabled AFR while in negative bays
+        if ((CampaignMain.cm.getIntegerConfig("MaxNegativeBaysForAFR") > -1) && ((ap.getFreeBays() + CampaignMain.cm.getIntegerConfig("MaxNegativeBaysForAFR")) < 0)) {
+        	CampaignMain.cm.toUser("AM:You cannot attack from reserve with more than " + CampaignMain.cm.getIntegerConfig("MaxNegativeBaysForAFR")  + " negative bays.  How about you share the wealth with your housemates.", Username, true);
+        	return;
+        }
+        
         // Check if the SOs have disabled activation while over unit limits
         if (CampaignMain.cm.getBooleanConfig("DisableAFRIfOverHangarLimits") && ap.isOverAnyUnitLimits()) {
         	CampaignMain.cm.toUser("AM: You have exceeded one or more hangar limits.  Activation is disabled until you get under those limits.", Username, true);
