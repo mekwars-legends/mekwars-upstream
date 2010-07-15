@@ -3750,7 +3750,41 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             return;
         }
 
-        if ((elo > getRating() || exp > getExperience())  && !CampaignMain.cm.getBooleanConfig("disableDemotionNotification") ) {
+        // Auto Promotes and Demotes no need to inform anyone
+        if (CampaignMain.cm.getBooleanConfig("autoPromoteSubFaction")) {
+        	SubFaction newSF = null;
+        	for (SubFaction subFaction : getMyHouse().getSubFactionList().values()) {
+        		if (access > Integer.parseInt(subFaction.getConfig("AccessLevel")) && getRating() >= Integer.parseInt(subFaction.getConfig("MinELO")) && getExperience() >= Integer.parseInt(subFaction.getConfig("MinExp"))) {
+        			if (newSF == null) {
+        				newSF = subFaction;
+        			} else if (Integer.parseInt(subFaction.getConfig("AccessLevel")) > Integer.parseInt(newSF.getConfig("AccessLevel"))) {
+        				newSF = subFaction;
+        			}
+        		}
+        	}
+        		
+        	if(newSF == null) {
+        		return;  // Nothing to demote him to
+        	}
+        	SubFaction subFaction = newSF;
+            String subFactionName = subFaction.getConfig("Name");
+            setSubFaction(subFactionName);
+            CampaignMain.cm.toUser("PL|SSN|" + subFactionName, getName(), false);
+            CampaignMain.cm.doSendToAllOnlinePlayers("PI|FT|" + getName() + "|" + getFluffText(), false);
+            CampaignMain.cm.toUser("HS|CA|0", getName(), false);// clear
+            // old
+            // data
+            CampaignMain.cm.toUser(getMyHouse().getCompleteStatus(), getName(), false);
+            for (SArmy army : getArmies()) {
+                CampaignMain.cm.getOpsManager().checkOperations(army, true);
+            }
+
+            CampaignMain.cm.toUser("AM:You have been demoted to SubFaction " + subFactionName + ".", getName());
+            CampaignMain.cm.doSendHouseMail(getMyHouse(), "NOTE", getName() + " has been demoted to subfaction " + subFactionName + " by the Faction Leadership!");
+            return;
+        }
+        
+        if ((elo > getRating() || exp > getExperience())  && !CampaignMain.cm.getBooleanConfig("disableDemotionNotification") && !CampaignMain.cm.getBooleanConfig("autoPromoteSubFaction") ) {
             StringBuilder message = new StringBuilder(name);
             message.append(" no longer meets the eligbility requirements for subfaction ");
             message.append(getSubFactionName());
@@ -3758,25 +3792,6 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             for (SubFaction subFaction : getMyHouse().getSubFactionList().values()) {
 
                 if (access > Integer.parseInt(subFaction.getConfig("AccessLevel")) && getRating() >= Integer.parseInt(subFaction.getConfig("MinELO")) && getExperience() >= Integer.parseInt(subFaction.getConfig("MinExp"))) {
-
-                    if (CampaignMain.cm.getBooleanConfig("autoPromoteSubFaction")) {
-
-                        String subFactionName = subFaction.getConfig("Name");
-                        setSubFaction(subFactionName);
-                        CampaignMain.cm.toUser("PL|SSN|" + subFactionName, getName(), false);
-                        CampaignMain.cm.doSendToAllOnlinePlayers("PI|FT|" + getName() + "|" + getFluffText(), false);
-                        CampaignMain.cm.toUser("HS|CA|0", getName(), false);// clear
-                        // old
-                        // data
-                        CampaignMain.cm.toUser(getMyHouse().getCompleteStatus(), getName(), false);
-                        for (SArmy army : getArmies()) {
-                            CampaignMain.cm.getOpsManager().checkOperations(army, true);
-                        }
-
-                        CampaignMain.cm.toUser("AM:You have been demoted to SubFaction " + subFactionName + ".", getName());
-                        CampaignMain.cm.doSendHouseMail(getMyHouse(), "NOTE", getName() + " has been demoted to subfaction " + subFactionName + " by the Faction Leadership!");
-                        return;
-                    }
                     message.append(subFaction.getConfig("Name"));
                     message.append(". <a href=\"MEKWARS/c demoteplayer#");
                     message.append(getName());
@@ -3787,10 +3802,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
             }
 
-            // Auto Promotes and Demotes no need to inform anyone
-            if (CampaignMain.cm.getBooleanConfig("autoPromoteSubFaction")) {
-                return;
-            }
+
             message.append("None");
             message.append(". <a href=\"MEKWARS/c demoteplayer#");
             message.append(getName());
