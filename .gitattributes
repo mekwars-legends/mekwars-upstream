@@ -1261,7 +1261,13 @@ server-dist/data/db_schemas/db_schema_26to27.txt -text
 server-dist/data/db_schemas/db_schema_27to28.txt -text
 server-dist/data/db_schemas/db_schema_28to29.txt -text
 server-dist/data/db_schemas/db_schema_29to30.txt -text
-server-dist/data/db_schemas/full_db_schema_29.txt -text
+server-dist/data/db_schemas/db_schema_30to31.txt -text
+server-dist/data/db_schemas/db_schema_31to32.txt -text
+server-dist/data/db_schemas/db_schema_32to33.txt -text
+server-dist/data/db_schemas/db_schema_33to34.txt -text
+server-dist/data/db_schemas/db_schema_34to35.txt -text
+server-dist/data/db_schemas/full_db_schema_34.txt -text
+server-dist/data/db_schemas/full_db_schema_35.txt -text
 server-dist/data/factions.dtd -text
 server-dist/data/factions.xml -text
 server-dist/data/influencemessages/CommonInfluenceMessages.txt -text
@@ -1322,6 +1328,7 @@ src/admin/dialog/PlanetEditorDialog.java -text
 src/admin/dialog/ServerConfigurationDialog.java -text
 src/admin/dialog/SubFactionConfigurationDialog.java -text
 src/admin/dialog/TerrainSelectionDialog.java -text
+src/admin/dialog/VerticalLayout.java -text
 src/client/CConfig.java -text
 src/client/CUser.java -text
 src/client/ClientThread.java -text

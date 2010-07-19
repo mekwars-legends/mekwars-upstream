@@ -10,6 +10,8 @@ v 0.2.42.x
 *                                                               *
 * I will rev this to 0.2.43.0 when testing is complete          *
 *****************************************************************
+R Released Server v0.2.42.9
++ Option for weight-and-class based autoproduction
 R Released Server v0.2.42.8
 + Bug 1943979 - auto-demotion demoting players to first subfaction they
   qualify for, rather than highest-level subfaction they qualify for

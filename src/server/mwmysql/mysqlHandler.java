@@ -47,7 +47,7 @@ public class mysqlHandler{
   private PhpBBConnector phpBBCon = null;
   private HistoryHandler hh = null;
 
-  private final int currentDBVersion = 34;
+  private final int currentDBVersion = 35;
   
   public void closeMySQL(){
 	  MySQLCon.close();

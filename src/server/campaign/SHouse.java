@@ -1850,8 +1850,13 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
     }
 
     public int getMaxAllowedPP(int weight, int type_id) {
-        String unitAPMax = "APAtMax" + Unit.getWeightClassDesc(weight) + "Units";
-        int maxUnits = Integer.parseInt(this.getConfig(unitAPMax));
+    	String unitAPMax = "";
+        if(CampaignMain.cm.getBooleanConfig("UseAutoProdNew")) {
+        	unitAPMax = "APAtMax" + Unit.getWeightClassDesc(weight) + Unit.getTypeClassDesc(type_id);
+        } else {
+        	unitAPMax = "APAtMax" + Unit.getWeightClassDesc(weight) + "Units";        	
+        }
+    	int maxUnits = Integer.parseInt(this.getConfig(unitAPMax));
         return maxUnits * getPPCost(weight, type_id);
     }
 

@@ -274,6 +274,38 @@ public class DefaultServerOptions {
         defaults.setProperty("APAtMaxAssaultUnits", "20");
         defaults.setProperty("AutoProductionFailureRate", "70");
         defaults.setProperty("RareChance", "1.0");
+        defaults.setProperty("UseAutoProdClassic", "true");
+        defaults.setProperty("UseAutoProdNew", "false");
+
+        defaults.setProperty("APAtMaxLightMek", "30");
+        defaults.setProperty("APAtMaxMediumMek", "20");
+        defaults.setProperty("APAtMaxHeavyMek", "20");
+        defaults.setProperty("APAtMaxAssaultMek", "20");
+
+        defaults.setProperty("APAtMaxLightVehicle", "30");
+        defaults.setProperty("APAtMaxMediumVehicle", "20");
+        defaults.setProperty("APAtMaxHeavyVehicle", "20");
+        defaults.setProperty("APAtMaxAssaultVehicle", "20");
+
+        defaults.setProperty("APAtMaxLightInfantry", "30");
+        defaults.setProperty("APAtMaxMediumInfantry", "20");
+        defaults.setProperty("APAtMaxHeavyInfantry", "20");
+        defaults.setProperty("APAtMaxAssaultInfantry", "20");
+
+        defaults.setProperty("APAtMaxLightProtoMek", "30");
+        defaults.setProperty("APAtMaxMediumProtoMek", "20");
+        defaults.setProperty("APAtMaxHeavyProtoMek", "20");
+        defaults.setProperty("APAtMaxAssaultProtoMek", "20");
+
+        defaults.setProperty("APAtMaxLightBattleArmor", "30");
+        defaults.setProperty("APAtMaxMediumBattleArmor", "20");
+        defaults.setProperty("APAtMaxHeavyBattleArmor", "20");
+        defaults.setProperty("APAtMaxAssaultBattleArmor", "20");
+
+        defaults.setProperty("APAtMaxLightAero", "30");
+        defaults.setProperty("APAtMaxMediumAero", "20");
+        defaults.setProperty("APAtMaxHeavyAero", "20");
+        defaults.setProperty("APAtMaxAssaultAero", "20");
 
         // Factory refresh rates
         defaults.setProperty("LightRefresh", "5");

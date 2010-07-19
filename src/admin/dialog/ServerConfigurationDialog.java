@@ -120,6 +120,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         JPanel unitResearchPanel = new JPanel(); // Research Unit Panel
         JPanel factoryPurchasePanel = new JPanel(); // Allow players to purchase new factories.
         JPanel unitLimitsPanel = new JPanel(); // Set limits on units in a player's hangar
+        JPanel autoProdPanel = new JPanel(); // Autoproduction
         /*
          * PGMH PANEL CONSTRUCTION Set up the PGMH panel, which indicates where HTML output (EXPRanking, etc.) is dumped and where certain core server files are located.
          */
@@ -3514,6 +3515,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         salesSpringPanel.add(baseTextField);
 
         // autoproduction spring
+        /*
         baseTextField = new JTextField(5);
         apSpringPanel.add(new JLabel("Lights to AP:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("Number of units worth of stored components to trigger an AP attempt for light units");
@@ -3536,14 +3538,15 @@ public final class ServerConfigurationDialog implements ActionListener {
         apSpringPanel.add(new JLabel("Assaults to AP:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("Number of units worth of stored components to trigger an AP attempt for assault units");
         baseTextField.setName("APAtMaxAssaultUnits");
-        apSpringPanel.add(baseTextField);
-
+        apSpringPanel.add(baseTextField); 
+   
         baseTextField = new JTextField(5);
         apSpringPanel.add(new JLabel("AP Failure Rate:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("% of autoproduction attempts which fail and destroy components");
         baseTextField.setName("AutoProductionFailureRate");
         apSpringPanel.add(baseTextField);
-
+        */
+        
         // factory misc spring
         baseTextField = new JTextField(5);
         prodMiscPanel.add(new JLabel("Max Light Units:", SwingConstants.TRAILING));
@@ -3674,6 +3677,124 @@ public final class ServerConfigurationDialog implements ActionListener {
         productionPanel.add(prodCBoxSpring);
         productionPanel.add(prodCrit);
 
+        /*
+         * AutoProduction Panel
+         */
+        
+        autoProdPanel.setLayout(new VerticalLayout());
+        
+        // Choose Classic or New
+        ButtonGroup autoProdType = new ButtonGroup();
+        JRadioButton apTypeClassic = new JRadioButton("Use Classic Autoproduction");
+        apTypeClassic.setToolTipText("Autoproduction is controlled only by weight");
+        apTypeClassic.setName("UseAutoProdClassic");
+        autoProdType.add(apTypeClassic);
+        
+        JRadioButton apTypeNew = new JRadioButton("Use New Autoproduction");
+        apTypeNew.setToolTipText("Autoproduction done by type and weight");
+        apTypeNew.setName("UseAutoProdNew");
+        autoProdType.add(apTypeNew);
+        
+        JPanel failureRatePanel = new JPanel();
+        
+        baseTextField = new JTextField(5);
+        failureRatePanel.add(new JLabel("AP Failure Rate:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("% of autoproduction attempts which fail and destroy components");
+        baseTextField.setName("AutoProductionFailureRate");
+        failureRatePanel.add(baseTextField);
+        
+        JPanel selectionPanel = new JPanel();
+        selectionPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        selectionPanel.add(apTypeClassic);
+        selectionPanel.add(apTypeNew);
+        
+        if(Boolean.parseBoolean(mwclient.getserverConfigs("UseAutoProdNew"))) {
+        	apTypeClassic.setSelected(false);
+        	apTypeNew.setSelected(true);
+        } else {
+        	apTypeNew.setSelected(false);
+        	apTypeClassic.setSelected(true);
+        }
+        
+        //selectionPanel.setPreferredSize(new Dimension(selectionPanel.getMinimumSize()));
+        JPanel apTopPanel = new JPanel();
+        apTopPanel.add(selectionPanel);
+        
+        // Classic Menu
+        JPanel apClassicPanel = new JPanel();
+        apClassicPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        apClassicPanel.setLayout(new BoxLayout(apClassicPanel, BoxLayout.Y_AXIS));
+        JLabel l = new JLabel("Classic AP");
+        apClassicPanel.add(l);
+        JPanel apClassicBoxPanel = new JPanel();
+        //apClassicBoxPanel.setLayout(new BoxLayout(apClassicBoxPanel, BoxLayout.X_AXIS));
+        
+        baseTextField = new JTextField(5);
+        apClassicBoxPanel.add(new JLabel("Lights to AP:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Number of units worth of stored components to trigger an AP attempt for light units");
+        baseTextField.setName("APAtMaxLightUnits");
+        apClassicBoxPanel.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        apClassicBoxPanel.add(new JLabel("Mediums to AP:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Number of units worth of stored components to trigger an AP attempt for medium units");
+        baseTextField.setName("APAtMaxMediumUnits");
+        apClassicBoxPanel.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        apClassicBoxPanel.add(new JLabel("Heavies to AP:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Number of units worth of stored components to trigger an AP attempt for heavy units");
+        baseTextField.setName("APAtMaxHeavyUnits");
+        apClassicBoxPanel.add(baseTextField);
+
+        baseTextField = new JTextField(5);
+        apClassicBoxPanel.add(new JLabel("Assaults to AP:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Number of units worth of stored components to trigger an AP attempt for assault units");
+        baseTextField.setName("APAtMaxAssaultUnits");
+        apClassicBoxPanel.add(baseTextField); 
+        
+        apClassicPanel.add(apClassicBoxPanel);
+        
+        JPanel apMiddlePanel = new JPanel();
+        apMiddlePanel.add(apClassicPanel);
+        
+        // New AP
+        JPanel apNewPanel = new JPanel();
+        apNewPanel.setLayout(new VerticalLayout());
+        apNewPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        apNewPanel.add(new JLabel("New Autoproduction Model"));
+        
+        JPanel apNewBoxPanel = new JPanel();
+        apNewBoxPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        apNewBoxPanel.setLayout(new GridLayout(0, 5));
+        apNewBoxPanel.add(new JLabel(" "));
+        apNewBoxPanel.add(new JLabel("Light"));
+        apNewBoxPanel.add(new JLabel("Medium"));
+        apNewBoxPanel.add(new JLabel("Heavy"));
+        apNewBoxPanel.add(new JLabel("Assault"));
+        
+        for (int i = 0; i < Unit.MAXBUILD; i++) {
+        	for (int j = 0; j <= Unit.ASSAULT; j++) {
+        		if (j == 0) {
+        			apNewBoxPanel.add(new JLabel(Unit.getTypeClassDesc(i)));
+        		}
+        		baseTextField = new JTextField();
+        		baseTextField.setName("APAtMax" + Unit.getWeightClassDesc(j) + Unit.getTypeClassDesc(i));
+        		baseTextField.setToolTipText("Number of units worth of stored components to trigger an AP attempt for " + Unit.getWeightClassDesc(j) + " " + Unit.getTypeClassDesc(i));
+        		apNewBoxPanel.add(baseTextField);
+        	}
+        }
+        
+        apNewPanel.add(apNewBoxPanel);
+        
+        JPanel apBottomPanel = new JPanel();
+        apBottomPanel.add(apNewPanel);
+        
+        autoProdPanel.add(apTopPanel);
+        autoProdPanel.add(failureRatePanel);
+        autoProdPanel.add(apMiddlePanel);
+        autoProdPanel.add(apBottomPanel);
+        
         /*
          * REWARD MENU CONSTRUCTION
          */
@@ -6439,6 +6560,8 @@ public final class ServerConfigurationDialog implements ActionListener {
         ConfigPane.addTab("Unit Research", null, unitResearchPanel, "Unit Research Configuration");
         ConfigPane.addTab("Voting", null, votingPanel, "Voting Stuff");
         ConfigPane.addTab("Unit Limits", null, unitLimitsPanel, "Limits to unit ownership based on unit weightclass");
+        ConfigPane.addTab("Autoproduction", null, autoProdPanel, "Set type and details of factory autoproduction");
+
         // Create the panel that will hold the entire UI
         JPanel mainConfigPanel = new JPanel();
 
