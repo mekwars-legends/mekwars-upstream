@@ -274,6 +274,12 @@ public class RequestCommand implements Command {
             mechPP = Math.round(mechPP * CampaignMain.cm.getFloatConfig("NonOriginalComponentMultiplier"));
         }
 
+        // Add penalty if the player is over a sliding limit
+        if (p.hasHangarPenalty(type_id, weightclass)) {
+        	int costPenalty = p.calculateHangarPenalty(type_id, weightclass);
+        	mechCbills += costPenalty;
+        }
+        
         // reduce flu cost to ceiling if over
         if (mechInfluence > CampaignMain.cm.getIntegerConfig("InfluenceCeiling")) {
             mechInfluence = CampaignMain.cm.getIntegerConfig("InfluenceCeiling");
@@ -354,6 +360,7 @@ public class RequestCommand implements Command {
                 toSend.append("<br><a href=\"MEKWARS/c hireandrequestnew#" + numTechs + "#" + Unit.getWeightClassDesc(weightclass) + "#" + type_id + "#" + planet.getName() + "#" + factory.getName() + "\">Click here to purchase both the unit and the needed support.</a>");
 
                 CampaignMain.cm.toUser(toSend.toString(), Username, true);
+
                 return;
             }
 

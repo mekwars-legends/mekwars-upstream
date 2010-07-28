@@ -3086,30 +3086,30 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
      * A method to fill the unitLimits array
      */
     public void populateUnitLimits() {
-        unitLimits[Unit.MEK][Unit.LIGHT] = getIntegerConfig("MaxHangarLightMeks");
-        unitLimits[Unit.MEK][Unit.MEDIUM] = getIntegerConfig("MaxHangarMediumMeks");
-        unitLimits[Unit.MEK][Unit.HEAVY] = getIntegerConfig("MaxHangarHeavyMeks");
-        unitLimits[Unit.MEK][Unit.ASSAULT] = getIntegerConfig("MaxHangarAssaultMeks");
+        unitLimits[Unit.MEK][Unit.LIGHT] = getIntegerConfig("MaxHangarLightMek");
+        unitLimits[Unit.MEK][Unit.MEDIUM] = getIntegerConfig("MaxHangarMediumMek");
+        unitLimits[Unit.MEK][Unit.HEAVY] = getIntegerConfig("MaxHangarHeavyMek");
+        unitLimits[Unit.MEK][Unit.ASSAULT] = getIntegerConfig("MaxHangarAssaultMek");
 
-        unitLimits[Unit.VEHICLE][Unit.LIGHT] = getIntegerConfig("MaxHangarLightVehicles");
-        unitLimits[Unit.VEHICLE][Unit.MEDIUM] = getIntegerConfig("MaxHangarMediumVehicles");
-        unitLimits[Unit.VEHICLE][Unit.HEAVY] = getIntegerConfig("MaxHangarHeavyVehicles");
-        unitLimits[Unit.VEHICLE][Unit.ASSAULT] = getIntegerConfig("MaxHangarAssaultVehicles");
+        unitLimits[Unit.VEHICLE][Unit.LIGHT] = getIntegerConfig("MaxHangarLightVehicle");
+        unitLimits[Unit.VEHICLE][Unit.MEDIUM] = getIntegerConfig("MaxHangarMediumVehicle");
+        unitLimits[Unit.VEHICLE][Unit.HEAVY] = getIntegerConfig("MaxHangarHeavyVehicle");
+        unitLimits[Unit.VEHICLE][Unit.ASSAULT] = getIntegerConfig("MaxHangarAssaultVehicle");
 
         unitLimits[Unit.INFANTRY][Unit.LIGHT] = getIntegerConfig("MaxHangarLightInfantry");
         unitLimits[Unit.INFANTRY][Unit.MEDIUM] = getIntegerConfig("MaxHangarMediumInfantry");
         unitLimits[Unit.INFANTRY][Unit.HEAVY] = getIntegerConfig("MaxHangarHeavyInfantry");
         unitLimits[Unit.INFANTRY][Unit.ASSAULT] = getIntegerConfig("MaxHangarAssaultInfantry");
 
-        unitLimits[Unit.BATTLEARMOR][Unit.LIGHT] = getIntegerConfig("MaxHangarLightBA");
-        unitLimits[Unit.BATTLEARMOR][Unit.MEDIUM] = getIntegerConfig("MaxHangarMediumBA");
-        unitLimits[Unit.BATTLEARMOR][Unit.HEAVY] = getIntegerConfig("MaxHangarHeavyBA");
-        unitLimits[Unit.BATTLEARMOR][Unit.ASSAULT] = getIntegerConfig("MaxHangarAssaultBA");
+        unitLimits[Unit.BATTLEARMOR][Unit.LIGHT] = getIntegerConfig("MaxHangarLightBattleArmor");
+        unitLimits[Unit.BATTLEARMOR][Unit.MEDIUM] = getIntegerConfig("MaxHangarMediumBattleArmor");
+        unitLimits[Unit.BATTLEARMOR][Unit.HEAVY] = getIntegerConfig("MaxHangarHeavyBattleArmor");
+        unitLimits[Unit.BATTLEARMOR][Unit.ASSAULT] = getIntegerConfig("MaxHangarAssaultBattleArmor");
 
-        unitLimits[Unit.PROTOMEK][Unit.LIGHT] = getIntegerConfig("MaxHangarLightProtomeks");
-        unitLimits[Unit.PROTOMEK][Unit.MEDIUM] = getIntegerConfig("MaxHangarMediumProtomeks");
-        unitLimits[Unit.PROTOMEK][Unit.HEAVY] = getIntegerConfig("MaxHangarHeavyProtomeks");
-        unitLimits[Unit.PROTOMEK][Unit.ASSAULT] = getIntegerConfig("MaxHangarAssaultProtomeks");
+        unitLimits[Unit.PROTOMEK][Unit.LIGHT] = getIntegerConfig("MaxHangarLightProtoMek");
+        unitLimits[Unit.PROTOMEK][Unit.MEDIUM] = getIntegerConfig("MaxHangarMediumProtoMek");
+        unitLimits[Unit.PROTOMEK][Unit.HEAVY] = getIntegerConfig("MaxHangarHeavyProtoMek");
+        unitLimits[Unit.PROTOMEK][Unit.ASSAULT] = getIntegerConfig("MaxHangarAssaultProtoMek");
 
         unitLimits[Unit.AERO][Unit.LIGHT] = getIntegerConfig("MaxHangarLightAero");
         unitLimits[Unit.AERO][Unit.MEDIUM] = getIntegerConfig("MaxHangarMediumAero");

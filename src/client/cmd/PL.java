@@ -254,6 +254,8 @@ public class PL extends Command {
             }
         } else if (cmd.equals("ROP") ) {
             mwclient.getPlayer().setAutoReorder(TokenReader.readBoolean(st));
+        } else if (cmd.equals("SHP")) { 
+        	player.setHangarPenalty(TokenReader.readInt(st));
         }else {
             return;
         }

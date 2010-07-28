@@ -31,7 +31,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -3845,191 +3844,82 @@ public final class FactionConfigurationDialog implements ActionListener {
 
         // unitLimitsPanel construction
         
-        JPanel ulBox = new JPanel();
-        ulBox.setLayout(new BoxLayout(ulBox, BoxLayout.Y_AXIS));
-        JPanel ulMekPanel = new JPanel();
-        JPanel ulVehiclePanel = new JPanel();
-        JPanel ulInfantryPanel = new JPanel();
-        JPanel ulProtoPanel = new JPanel();
-        JPanel ulBAPanel = new JPanel();
-        JPanel ulAeroPanel = new JPanel();
-        JPanel mekBox = new JPanel();
-        JPanel vehicleBox = new JPanel();
-        JPanel infantryBox = new JPanel();
-        JPanel protoBox = new JPanel();
-        JPanel baBox = new JPanel();
-        JPanel aeroBox = new JPanel();
-        JPanel bmLimitsBox = new JPanel();
+        JPanel uLimitsPanel = new JPanel();
+        JPanel ulTopPanel = new JPanel();
+        JPanel ulBottomPanel = new JPanel();
         
-        mekBox.setLayout(new BoxLayout(mekBox, BoxLayout.Y_AXIS));
-        vehicleBox.setLayout(new BoxLayout(vehicleBox, BoxLayout.Y_AXIS));
-        infantryBox.setLayout(new BoxLayout(infantryBox, BoxLayout.Y_AXIS));
-        protoBox.setLayout(new BoxLayout(protoBox, BoxLayout.Y_AXIS));
-        baBox.setLayout(new BoxLayout(baBox, BoxLayout.Y_AXIS));
-        aeroBox.setLayout(new BoxLayout(aeroBox, BoxLayout.Y_AXIS));
+        ulTopPanel.add(new JLabel("Hangar Limits"));
         
-        mekBox.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-        vehicleBox.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-        infantryBox.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-        protoBox.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-        baBox.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-        aeroBox.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-        bmLimitsBox.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+        ulBottomPanel.setLayout(new GridLayout(7, 5));
+        ulBottomPanel.add(new JLabel(" "));
+        ulBottomPanel.add(new JLabel("Light"));
+        ulBottomPanel.add(new JLabel("Medium"));
+        ulBottomPanel.add(new JLabel("Heavy"));
+        ulBottomPanel.add(new JLabel("Assault"));        
         
-        ulBox.add(Box.createRigidArea(new Dimension(10,10)));
+        for (int type = Unit.MEK; type < Unit.MAXBUILD; type++) {
+        	ulBottomPanel.add(new JLabel(Unit.getTypeClassDesc(type)));
+        	for (int weight = Unit.LIGHT; weight <= Unit.ASSAULT; weight++) {
+        		baseTextField = new JTextField(5);
+        		baseTextField.setName("MaxHangar" + Unit.getWeightClassDesc(weight) + Unit.getTypeClassDesc(type));
+        		baseTextField.setToolTipText("Limit hangar to this many " + Unit.getWeightClassDesc(weight) + " " + Unit.getTypeClassDesc(type) + ((Unit.getTypeClassDesc(type) == "Infantry") ? "" : "s") + ".  -1 to disable limit");
+        		ulBottomPanel.add(baseTextField);
+        	}
+        }
+        ulTopPanel.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
+        ulBottomPanel.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
+        
+        uLimitsPanel.setBorder(BorderFactory.createEtchedBorder());
+        uLimitsPanel.setLayout(new VerticalLayout());
+        uLimitsPanel.add(ulTopPanel);
+        uLimitsPanel.add(ulBottomPanel);
+        
+        JPanel ulActionsPanel = new JPanel();
+        JPanel ulAPTop = new JPanel();
+        JPanel ulAPBottom = new JPanel();
+        ulAPTop.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        ulAPBottom.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        
+        BaseCheckBox = new JCheckBox("Disable Activation");
+        BaseCheckBox.setName("DisableActivationIfOverHangarLimits");
+        BaseCheckBox.setToolTipText("Players over the limits cannot go active.");
+        ulAPTop.add(BaseCheckBox);
+        BaseCheckBox = new JCheckBox("Disable AFR");
+        BaseCheckBox.setName("DisableAFRIfOverHangarLimits");
+        BaseCheckBox.setToolTipText("Players over the limits cannot initiate or defend Attack From Reserve.");
+        ulAPTop.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Use Sliding Hangar Limits");
+        BaseCheckBox.setName("UseSlidingHangarLimits");
+        BaseCheckBox.setToolTipText("<html>Checking this box enables modified limits that increase in cost as more units are purchased.<br>See 'Using Sliding Hangar Limits.pdf'<br><br>Please note that at this time, this is an on/off switch - the per fight and on purchase options do nothing.</html>");
+        ulAPBottom.add(BaseCheckBox);
+        
+        ulAPBottom.add(new JLabel("Multiplier:"));
+        baseTextField = new JTextField(5);
+        baseTextField.setName("SlidingHangarLimitModifier");
+        baseTextField.setToolTipText("Multiplier for sliding hangar limits");
+        ulAPBottom.add(baseTextField);
+        
+        BaseCheckBox = new JCheckBox("Apply to Purchase");
+        BaseCheckBox.setName("SlidingHangarLimitsAffectPurchase");
+        BaseCheckBox.setToolTipText("The over-limit penalty will be applied to purchase price");
+        ulAPBottom.add(BaseCheckBox);
 
-        mekBox.add(new JLabel("Meks"));
-        ulMekPanel.add(new JLabel("Light", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many light Meks.  -1 to disable limit");
-        baseTextField.setName("MaxHangarLightMeks");
-        ulMekPanel.add(baseTextField);
-        ulMekPanel.add(new JLabel("Medium", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many Medium Meks.  -1 to disable limit");
-        baseTextField.setName("MaxHangarMediumMeks");
-        ulMekPanel.add(baseTextField);
-        ulMekPanel.add(new JLabel("Heavy", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many Heavy Meks.  -1 to disable limit");
-        baseTextField.setName("MaxHangarHeavyMeks");
-        ulMekPanel.add(baseTextField);
-        ulMekPanel.add(new JLabel("Assault", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many Assault Meks.  -1 to disable limit");
-        baseTextField.setName("MaxHangarAssaultMeks");
-        ulMekPanel.add(baseTextField);
-        mekBox.add(ulMekPanel);
-        ulBox.add(mekBox);
-        ulBox.add(Box.createRigidArea(new Dimension(10,10)));
+        BaseCheckBox = new JCheckBox("Apply to Payout");
+        BaseCheckBox.setName("SlidingHangarLimitsAffectPayout");
+        BaseCheckBox.setToolTipText("The over-limit penalty will be applied to game payout");
+        ulAPBottom.add(BaseCheckBox);
         
-        vehicleBox.add(new JLabel("Vehicles"));
-        ulVehiclePanel.add(new JLabel("Light", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many light Vehicles.  -1 to disable limit");
-        baseTextField.setName("MaxHangarLightVehicles");
-        ulVehiclePanel.add(baseTextField);
-        ulVehiclePanel.add(new JLabel("Medium", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many Medium Vehicles.  -1 to disable limit");
-        baseTextField.setName("MaxHangarMediumVehicles");
-        ulVehiclePanel.add(baseTextField);
-        ulVehiclePanel.add(new JLabel("Heavy", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many Heavy Vehicles.  -1 to disable limit");
-        baseTextField.setName("MaxHangarHeavyVehicles");
-        ulVehiclePanel.add(baseTextField);
-        ulVehiclePanel.add(new JLabel("Assault", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many Assault Vehicles.  -1 to disable limit");
-        baseTextField.setName("MaxHangarAssaultVehicles");
-        ulVehiclePanel.add(baseTextField);
-        vehicleBox.add(ulVehiclePanel);
-        ulBox.add(vehicleBox);
-        ulBox.add(Box.createRigidArea(new Dimension(10,10)));
+        ulActionsPanel.setLayout(new VerticalLayout());
+        ulActionsPanel.add(ulAPTop);
+        ulActionsPanel.add(ulAPBottom);
+        ulActionsPanel.setBorder(BorderFactory.createEtchedBorder());
         
-        infantryBox.add(new JLabel("Infantry"));
-        ulInfantryPanel.add(new JLabel("Light", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many light Infantry.  -1 to disable limit");
-        baseTextField.setName("MaxHangarLightInfantry");
-        ulInfantryPanel.add(baseTextField);
-        ulInfantryPanel.add(new JLabel("Medium", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many Medium Infantry.  -1 to disable limit");
-        baseTextField.setName("MaxHangarMediumInfantry");
-        ulInfantryPanel.add(baseTextField);
-        ulInfantryPanel.add(new JLabel("Heavy", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many Heavy Infantry.  -1 to disable limit");
-        baseTextField.setName("MaxHangarHeavyInfantry");
-        ulInfantryPanel.add(baseTextField);
-        ulInfantryPanel.add(new JLabel("Assault", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many Assault Infantry.  -1 to disable limit");
-        baseTextField.setName("MaxHangarAssaultInfantry");
-        ulInfantryPanel.add(baseTextField);
-        infantryBox.add(ulInfantryPanel);
-        ulBox.add(infantryBox);
-        ulBox.add(Box.createRigidArea(new Dimension(10,10)));
+        JPanel limitsPanel = new JPanel();
+        limitsPanel.setLayout(new VerticalLayout());
+        limitsPanel.add(uLimitsPanel);
+        limitsPanel.add(ulActionsPanel);
         
-        baBox.add(new JLabel("BA"));
-        ulBAPanel.add(new JLabel("Light", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many light BA.  -1 to disable limit");
-        baseTextField.setName("MaxHangarLightBA");
-        ulBAPanel.add(baseTextField);
-        ulBAPanel.add(new JLabel("Medium", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many Medium BA.  -1 to disable limit");
-        baseTextField.setName("MaxHangarMediumBA");
-        ulBAPanel.add(baseTextField);
-        ulBAPanel.add(new JLabel("Heavy", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many Heavy BA.  -1 to disable limit");
-        baseTextField.setName("MaxHangarHeavyBA");
-        ulBAPanel.add(baseTextField);
-        ulBAPanel.add(new JLabel("Assault", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many Assault BA.  -1 to disable limit");
-        baseTextField.setName("MaxHangarAssaultBA");
-        ulBAPanel.add(baseTextField);
-        baBox.add(ulBAPanel);
-        ulBox.add(baBox);
-        ulBox.add(Box.createRigidArea(new Dimension(10,10)));
-        
-        protoBox.add(new JLabel("Protomeks"));
-        ulProtoPanel.add(new JLabel("Light", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many light Protomeks.  -1 to disable limit");
-        baseTextField.setName("MaxHangarLightProtomeks");
-        ulProtoPanel.add(baseTextField);
-        ulProtoPanel.add(new JLabel("Medium", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many Medium Protomeks.  -1 to disable limit");
-        baseTextField.setName("MaxHangarMediumProtomeks");
-        ulProtoPanel.add(baseTextField);
-        ulProtoPanel.add(new JLabel("Heavy", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many Heavy Protomeks.  -1 to disable limit");
-        baseTextField.setName("MaxHangarHeavyProtomeks");
-        ulProtoPanel.add(baseTextField);
-        ulProtoPanel.add(new JLabel("Assault", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many Assault Protomeks.  -1 to disable limit");
-        baseTextField.setName("MaxHangarAssaultProtomeks");
-        ulProtoPanel.add(baseTextField);
-        protoBox.add(ulProtoPanel);
-        ulBox.add(protoBox);
-        ulBox.add(Box.createRigidArea(new Dimension(10,10)));
-        
-        aeroBox.add(new JLabel("Aero"));
-        ulAeroPanel.add(new JLabel("Light", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many light Aero.  -1 to disable limit");
-        baseTextField.setName("MaxHangarLightAero");
-        ulAeroPanel.add(baseTextField);
-        ulAeroPanel.add(new JLabel("Medium", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many Medium Aero.  -1 to disable limit");
-        baseTextField.setName("MaxHangarMediumAero");
-        ulAeroPanel.add(baseTextField);
-        ulAeroPanel.add(new JLabel("Heavy", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many Heavy Aero.  -1 to disable limit");
-        baseTextField.setName("MaxHangarHeavyAero");
-        ulAeroPanel.add(baseTextField);
-        ulAeroPanel.add(new JLabel("Assault", SwingConstants.TRAILING));
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Limit hangar to this many Assault Aero.  -1 to disable limit");
-        baseTextField.setName("MaxHangarAssaultAero");
-        ulAeroPanel.add(baseTextField);
-        aeroBox.add(ulAeroPanel);
-        ulBox.add(aeroBox);
-        
-        unitLimitsPanel.add(ulBox);
-
-		
         JPanel bmLimitsPanel = new JPanel();
         bmLimitsPanel.setLayout(new GridLayout(7, 5));
         bmLimitsPanel.add(new JLabel(" "));
@@ -4170,15 +4060,20 @@ public final class FactionConfigurationDialog implements ActionListener {
         BaseCheckBox.setToolTipText("Players can buy Assault Aero from the BM");
         bmLimitsPanel.add(BaseCheckBox);
         
+        JPanel bmLimitsBox = new JPanel();
         bmLimitsBox.setLayout(new BoxLayout(bmLimitsBox, BoxLayout.Y_AXIS));
+        bmLimitsBox.setBorder(BorderFactory.createEtchedBorder());
+        bmLimitsPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
         JPanel titlePanel = new JPanel();
         titlePanel.add(new JLabel("Black Market Limits"));
         bmLimitsBox.add(titlePanel);
         bmLimitsBox.add(bmLimitsPanel);
-        ulBox.add(bmLimitsBox);
         
-        unitLimitsPanel.add(ulBox);
-        
+        unitLimitsPanel.setLayout(new VerticalLayout());
+        unitLimitsPanel.setBorder(BorderFactory.createEmptyBorder(5,0,5,0));
+        unitLimitsPanel.add(limitsPanel);
+        unitLimitsPanel.add(bmLimitsBox);
+                
 		// Set the actions to generate
 		okayButton.setActionCommand(okayCommand);
 		cancelButton.setActionCommand(cancelCommand);

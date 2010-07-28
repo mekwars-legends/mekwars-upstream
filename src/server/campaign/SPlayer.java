@@ -290,6 +290,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         }
         // make sure to save the player, with his fancy new unit ...
         setSave();
+        
+        int penalty = calculateTotalHangarPenalty();
+        CampaignMain.cm.toUser("PL|SHP|" + penalty, name, false);
         return "";// dummy string returned to comply with IBuyer
     }
 
@@ -321,6 +324,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
      */
     public String removeUnit(SUnit unitToRemove, boolean sendHouseStatusUpdate) {
         this.removeUnit(unitToRemove.getId(), true);
+        int penalty = calculateTotalHangarPenalty();
+        CampaignMain.cm.toUser("PL|SHP|" + penalty, name, false);
         return "";// dummy stirng returned for IBuyer
     }
 
@@ -555,7 +560,17 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         // now figure out the final amount to pay ...
         amountToPay += totalAdditions * additive;
 
-        /*
+        // Add penalty if the player is over a sliding limit
+        
+        for(int type_id = Unit.MEK; type_id < Unit.MAXBUILD; type_id ++) {
+        	for (int weightclass = Unit.LIGHT; weightclass <= Unit.ASSAULT; weightclass++) {
+        		if (hasHangarPenalty(type_id, weightclass)) {
+        			int costPenalty = calculateHangarPenalty(type_id, weightclass);
+        			amountToPay += costPenalty;
+        		}
+			}
+		}
+		/*
          * now return the amount in INT form since we don't support fractional
          * money. also, set the currentTechPayment, to avoid doing this math
          * again if possible.
@@ -3881,7 +3896,11 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         if (inHangar < limit) {
             return true;
         }
-
+        
+        if (inHangar >= limit  && Boolean.parseBoolean(getMyHouse().getConfig("UseSlidingHangarLimits")) ) {
+        	return true;
+        }
+        
         return false;
     }
 
@@ -3930,4 +3949,62 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         return false;
     }
 
+    /**
+     * A method to determine if the player is over the unit limit
+     * and the server is configured to use sliding hangar cost
+     * increases
+     * 
+     * 
+     */
+    public boolean hasHangarPenalty(int uType, int uWeight) {
+    	// Always false if we're not using the sliding limits
+    	if (!Boolean.parseBoolean(getMyHouse().getConfig("UseSlidingHangarLimits"))) {
+    		return false;
+    	}
+    	
+    	int limit = CampaignMain.cm.getHouseFromPartialString(getMyHouse().getName()).getUnitLimit(uType, uWeight);
+    	
+    	// Always false if the particular limit is not checked
+    	if (limit < 0) {
+    		return false;
+    	}
+    	
+    	int numUnits = countUnits(uType, uWeight);
+    	// False if we're below the limit
+    	if (limit >= numUnits) {
+    		return false;
+    	}
+    	
+    	return true;
+    }
+
+	public int calculateHangarPenalty(int type_id, int weightclass) {
+		if(!hasHangarPenalty(type_id, weightclass)) {
+			return 0;
+		}
+		int penalty = 0;
+		
+		int limit = CampaignMain.cm.getHouseFromPartialString(getMyHouse().getName()).getUnitLimit(type_id, weightclass);
+		int numUnits = countUnits(type_id, weightclass);
+    	
+		if (numUnits <= limit) {
+			return 0;
+		}
+		
+		int penaltyUnits = numUnits - limit;
+		
+		penalty = (int)(Math.pow((double)penaltyUnits, Double.parseDouble(getMyHouse().getConfig("SlidingHangarLimitModifier"))));
+		
+		return penalty;
+	}
+	
+	public int calculateTotalHangarPenalty() {
+		int penalty = 0;
+		for (int type = Unit.MEK; type < Unit.MAXBUILD; type++) {
+			for (int weight = Unit.LIGHT; weight <= Unit.ASSAULT; weight++) {
+				penalty += calculateHangarPenalty(type, weight);
+			}
+		}
+		return penalty;
+	}
 }// end SPlayer()

@@ -10,6 +10,17 @@ v 0.2.42.x
 *                                                               *
 * I will rev this to 0.2.43.0 when testing is complete          *
 *****************************************************************
+
+*** ANOTHER NOTE ***
+    If you use hangar limits, please re-visit them.  The config
+    names have changed, to bring them in line with MegaMek's naming
+    conventions.  I.e., MaxHangarLightBA has been changed to 
+    MaxHangarLightBattleArmor
+
+R Released Server v0.2.42.10
+R Released Client v0.2.42.3
++ Added ability to turn hangar limits into soft limits, costing extra cbills
+    per fight and/or per purchase if over the limits.    
 R Released Server v0.2.42.9
 + Option for weight-and-class based autoproduction
 R Released Server v0.2.42.8

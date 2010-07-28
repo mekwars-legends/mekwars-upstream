@@ -175,6 +175,12 @@ public class RequestDonatedCommand implements Command {
             }
         }
 
+        // Add penalty if the player is over a sliding limit
+        if (p.hasHangarPenalty(type_id, weightclass)) {
+        	int costPenalty = p.calculateHangarPenalty(type_id, weightclass);
+        	unitCbills += costPenalty;
+        }
+        
         if (unitCbills > p.getMoney() || unitInfluence > p.getInfluence()) {
             house.addUnit(u, false);// add the retrieved mech back to the pool
             CampaignMain.cm.toUser("AM:You cannot afford to purchase " + StringUtils.aOrAn(Unit.getWeightClassDesc(u.getWeightclass()), true) + " " + Unit.getTypeClassDesc(u.getType()) + " from the faction bay (Requires " + CampaignMain.cm.moneyOrFluMessage(true, false, unitCbills) + ", " + CampaignMain.cm.moneyOrFluMessage(false, true, unitInfluence) + ").", Username, true);

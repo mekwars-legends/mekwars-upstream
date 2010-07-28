@@ -24,6 +24,7 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import server.campaign.CampaignMain;
 import megamek.common.CriticalSlot;
 import megamek.common.OffBoardDirection;
 import client.MWClient;
@@ -61,7 +62,8 @@ public class CPlayer extends Player {
     private int TechCost;
     private int RewardPoints;
     private double Rating;
-
+    private int hangarPenalty;
+    
     private Vector<CUnit> Hangar;
     private Vector<CArmy> Armies;
     private ArrayList<CUnit> AutoArmy;
@@ -448,7 +450,7 @@ public class CPlayer extends Player {
             return 0;
         }
         // else
-        return TechCost;
+        return TechCost + getHangarPenalty();  // If not using sliding hangar costs, hangarPenalty will be 0, so will still return the same.
     }
 
     public Vector<CUnit> getHangar() {
@@ -709,6 +711,10 @@ public class CPlayer extends Player {
         // now figure out the final amount to pay ...
         amountToPay += totalAdditions * additive;
 
+        // Add penalty if the player is over a sliding limit
+        
+        amountToPay += hangarPenalty;
+        
         // now return the amount in INT form since we don't support fractional
         // MU costs.
         // also, set the currentTechPayment, to avoid doing this math again if
@@ -1317,6 +1323,13 @@ public class CPlayer extends Player {
 
     public String getSubFactionName() {
         return subFactionName;
+    }  
+    
+    public int getHangarPenalty() {
+    	return hangarPenalty;
     }
-
+    
+    public void setHangarPenalty(int p) {
+    	hangarPenalty = p;
+    }
 }
