@@ -1560,7 +1560,13 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                     // see if we should have an accident
                     boolean accident = false;
                     SUnitFactory m = getNativeFactoryForProduction(type_id, weight);
-                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= Integer.parseInt(this.getConfig("AutoProductionFailureRate"))) {
+                    int failureRateToUse;
+                    if(Boolean.parseBoolean(this.getConfig("UseAutoProdClassic"))) {
+                    	failureRateToUse = Integer.parseInt(this.getConfig("AutoProductionFailureRate"));
+                    } else {
+                    	failureRateToUse = Integer.parseInt(this.getConfig("APFailureRate" + Unit.getWeightClassDesc(weight) + Unit.getTypeClassDesc(type_id)));
+                    }
+                    if (CampaignMain.cm.getRandomNumber(100) + 1 <= failureRateToUse) {
                         accident = true;
                     }
 

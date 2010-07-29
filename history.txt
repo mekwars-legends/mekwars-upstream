@@ -17,6 +17,8 @@ v 0.2.42.x
     conventions.  I.e., MaxHangarLightBA has been changed to 
     MaxHangarLightBattleArmor
 
+R Released Server v0.2.42.11
++ Added unit type- and weight-based AP failure rates
 R Released Server v0.2.42.10
 R Released Client v0.2.42.3
 + Added ability to turn hangar limits into soft limits, costing extra cbills

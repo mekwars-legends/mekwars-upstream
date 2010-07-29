@@ -307,6 +307,36 @@ public class DefaultServerOptions {
         defaults.setProperty("APAtMaxHeavyAero", "20");
         defaults.setProperty("APAtMaxAssaultAero", "20");
 
+        defaults.setProperty("APFailureRateLightMek", "70");
+        defaults.setProperty("APFailureRateMediumMek", "70");
+        defaults.setProperty("APFailureRateHeavyMek", "70");
+        defaults.setProperty("APFailureRateAssaultMek", "70");
+
+        defaults.setProperty("APFailureRateLightVehicle", "70");
+        defaults.setProperty("APFailureRateMediumVehicle", "70");
+        defaults.setProperty("APFailureRateHeavyVehicle", "70");
+        defaults.setProperty("APFailureRateAssaultVehicle", "70");
+
+        defaults.setProperty("APFailureRateLightInfantry", "70");
+        defaults.setProperty("APFailureRateMediumInfantry", "70");
+        defaults.setProperty("APFailureRateHeavyInfantry", "70");
+        defaults.setProperty("APFailureRateAssaultInfantry", "70");
+
+        defaults.setProperty("APFailureRateLightProtoMek", "70");
+        defaults.setProperty("APFailureRateMediumProtoMek", "70");
+        defaults.setProperty("APFailureRateHeavyProtoMek", "70");
+        defaults.setProperty("APFailureRateAssaultProtoMek", "70");
+
+        defaults.setProperty("APFailureRateLightBattleArmor", "70");
+        defaults.setProperty("APFailureRateMediumBattleArmor", "70");
+        defaults.setProperty("APFailureRateHeavyBattleArmor", "70");
+        defaults.setProperty("APFailureRateAssaultBattleArmor", "70");
+
+        defaults.setProperty("APFailureRateLightAero", "70");
+        defaults.setProperty("APFailureRateMediumAero", "70");
+        defaults.setProperty("APFailureRateHeavyAero", "70");
+        defaults.setProperty("APFailureRateAssaultAero", "70");
+        
         // Factory refresh rates
         defaults.setProperty("LightRefresh", "5");
         defaults.setProperty("MediumRefresh", "10");

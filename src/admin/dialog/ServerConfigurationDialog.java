@@ -3694,13 +3694,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         apTypeNew.setName("UseAutoProdNew");
         autoProdType.add(apTypeNew);
         
-        JPanel failureRatePanel = new JPanel();
-        
-        baseTextField = new JTextField(5);
-        failureRatePanel.add(new JLabel("AP Failure Rate:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("% of autoproduction attempts which fail and destroy components");
-        baseTextField.setName("AutoProductionFailureRate");
-        failureRatePanel.add(baseTextField);
+
         
         JPanel selectionPanel = new JPanel();
         selectionPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
@@ -3754,6 +3748,15 @@ public final class ServerConfigurationDialog implements ActionListener {
         
         apClassicPanel.add(apClassicBoxPanel);
         
+        JPanel failureRatePanel = new JPanel();
+        
+        baseTextField = new JTextField(5);
+        failureRatePanel.add(new JLabel("AP Failure Rate:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("% of autoproduction attempts which fail and destroy components");
+        baseTextField.setName("AutoProductionFailureRate");
+        failureRatePanel.add(baseTextField);
+        apClassicPanel.add(failureRatePanel);
+        
         JPanel apMiddlePanel = new JPanel();
         apMiddlePanel.add(apClassicPanel);
         
@@ -3765,12 +3768,25 @@ public final class ServerConfigurationDialog implements ActionListener {
         
         JPanel apNewBoxPanel = new JPanel();
         apNewBoxPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-        apNewBoxPanel.setLayout(new GridLayout(0, 5));
+        apNewBoxPanel.setLayout(new GridLayout(0, 9));
         apNewBoxPanel.add(new JLabel(" "));
         apNewBoxPanel.add(new JLabel("Light"));
+        apNewBoxPanel.add(new JLabel(" "));
         apNewBoxPanel.add(new JLabel("Medium"));
+        apNewBoxPanel.add(new JLabel(" "));
         apNewBoxPanel.add(new JLabel("Heavy"));
+        apNewBoxPanel.add(new JLabel(" "));
         apNewBoxPanel.add(new JLabel("Assault"));
+        apNewBoxPanel.add(new JLabel(" "));
+        apNewBoxPanel.add(new JLabel(" "));
+        apNewBoxPanel.add(new JLabel("Units"));
+        apNewBoxPanel.add(new JLabel("Failure"));
+        apNewBoxPanel.add(new JLabel("Units"));
+        apNewBoxPanel.add(new JLabel("Failure"));
+        apNewBoxPanel.add(new JLabel("Units"));
+        apNewBoxPanel.add(new JLabel("Failure"));
+        apNewBoxPanel.add(new JLabel("Units"));
+        apNewBoxPanel.add(new JLabel("Failure"));
         
         for (int i = 0; i < Unit.MAXBUILD; i++) {
         	for (int j = 0; j <= Unit.ASSAULT; j++) {
@@ -3781,6 +3797,11 @@ public final class ServerConfigurationDialog implements ActionListener {
         		baseTextField.setName("APAtMax" + Unit.getWeightClassDesc(j) + Unit.getTypeClassDesc(i));
         		baseTextField.setToolTipText("Number of units worth of stored components to trigger an AP attempt for " + Unit.getWeightClassDesc(j) + " " + Unit.getTypeClassDesc(i));
         		apNewBoxPanel.add(baseTextField);
+        		
+        		baseTextField = new JTextField();
+        		baseTextField.setName("APFailureRate" + Unit.getWeightClassDesc(j) + Unit.getTypeClassDesc(i));
+        		baseTextField.setToolTipText("Percent failure rate for " + Unit.getWeightClassDesc(j) + " " + Unit.getTypeClassDesc(i));
+        		apNewBoxPanel.add(baseTextField);
         	}
         }
         
@@ -3790,7 +3811,6 @@ public final class ServerConfigurationDialog implements ActionListener {
         apBottomPanel.add(apNewPanel);
         
         autoProdPanel.add(apTopPanel);
-        autoProdPanel.add(failureRatePanel);
         autoProdPanel.add(apMiddlePanel);
         autoProdPanel.add(apBottomPanel);
         
