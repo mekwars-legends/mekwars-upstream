@@ -17,6 +17,8 @@ v 0.2.42.x
     conventions.  I.e., MaxHangarLightBA has been changed to 
     MaxHangarLightBattleArmor
 
+R Released Server v0.2.42.12
++ Added ability to require attack-capable armies for activation
 R Released Server v0.2.42.11
 + Added unit type- and weight-based AP failure rates
 R Released Server v0.2.42.10

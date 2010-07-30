@@ -212,6 +212,13 @@ public class ActivateCommand implements Command {
             CampaignMain.cm.toUser("AM:Army #" + armyID + " is currently unable to launch or defend any ops!  You may not go active.", Username, true);
             return;
         }
+        
+        armyID = hasNoAttackOptions(p, p.getArmies());
+        
+        if (armyID > -1) {
+        	CampaignMain.cm.toUser("AM:Army #" + armyID + " is currently unable to launch any attacks!  You may not go active.", Username, true);
+        	return;
+        }
 
         // Check if the SOs have disabled activation while over unit limits
         if (CampaignMain.cm.getBooleanConfig("DisableActivationIfOverHangarLimits") && p.isOverAnyUnitLimits()) {
@@ -396,6 +403,26 @@ public class ActivateCommand implements Command {
         return -1;
     }
 
+    private int hasNoAttackOptions(SPlayer player, Vector<SArmy> armies) {
+
+        for (SArmy army : armies) {
+
+            boolean canAttack = false;
+            boolean requireAttackCapable = CampaignMain.cm.getBooleanConfig("RequireAttackCapableArmiesForActivation");
+
+            // check for legal attacks
+            if (army.getLegalOperations().size() > 0) {
+                canAttack = true;
+            }
+
+            if(!canAttack && !army.isDisabled() && requireAttackCapable) {
+            	return army.getID();
+            }
+        }
+
+        return -1;
+    }
+    
 }// end activatecommand class
 
 /**

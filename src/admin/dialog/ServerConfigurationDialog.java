@@ -5002,7 +5002,12 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setToolTipText("<html>Allow units in any army<br>to go active if they have partially full ammobins.</html>");
         BaseCheckBox.setName("AllowUnitsToActivateWithPartialBins");
         combatMMOptionsSpring.add(BaseCheckBox);
-
+        
+        BaseCheckBox = new JCheckBox("Require attack-capable armies?");
+        BaseCheckBox.setName("RequireAttackCapableArmiesForActivation");
+        BaseCheckBox.setToolTipText("<html>Require all armies to be attack capable in order or disallow activation.</html>");
+        combatMMOptionsSpring.add(BaseCheckBox);
+        
         SpringLayoutHelper.setupSpringGrid(combatMMOptionsSpring, 3);
 
         BaseCheckBox = new JCheckBox("Allow Attacks From Reserve?");
