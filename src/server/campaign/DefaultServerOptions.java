@@ -1180,7 +1180,7 @@ public class DefaultServerOptions {
         defaults.setProperty("MaxHangarAssaultInfantry", "-1");
         defaults.setProperty("MaxHangarLightProtoMek", "-1");
         defaults.setProperty("MaxHangarMediumProtoMek", "-1");
-        defaults.setProperty("MaxHangarHeavyProtoMeks", "-1");
+        defaults.setProperty("MaxHangarHeavyProtoMek", "-1");
         defaults.setProperty("MaxHangarAssaultProtoMek", "-1");
         defaults.setProperty("MaxHangarLightBattleArmor", "-1");
         defaults.setProperty("MaxHangarMediumBattleArmor", "-1");
