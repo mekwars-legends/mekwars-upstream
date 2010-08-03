@@ -17,6 +17,8 @@ v 0.2.42.x
     conventions.  I.e., MaxHangarLightBA has been changed to 
     MaxHangarLightBattleArmor
 
+R Released Client v0.2.42.5
++ Bug: Client still not showing costs correctly
 R Released Server v0.2.42.14, Client v0.2.42.4
 + Bug: Players being charged incorrectly when going over sliding hangar limits
 + Bug: Client not showing correct cost of units when sliding hangar limits enabled.

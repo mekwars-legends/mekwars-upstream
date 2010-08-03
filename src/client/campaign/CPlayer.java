@@ -1350,5 +1350,6 @@ public class CPlayer extends Player {
 				setHangarPurchasePenalty(type, weight, Integer.parseInt(st.nextToken()));
 			}
 		}
+		mwclient.getMainFrame().getMainPanel().getHSPanel().updateDisplay();
 	}
 }
