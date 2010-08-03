@@ -1133,7 +1133,7 @@ public final class CampaignMain implements Serializable {
              */
             CampaignData.mwlog.ipLog("Name: " + Username + " IP: " + CampaignMain.cm.getServer().getIP(Username));
             CampaignMain.cm.toUser("PL|SUD|1", Username, false);
-            CampaignMain.cm.toUser("PL|SHP|" + toLogin.calculateTotalHangarPenalty(), Username, false);
+            CampaignMain.cm.toUser("PL|SHP|" + toLogin.buildHangarPenaltyString(), Username, false);
 
             // Send him the Tick Counter
             CampaignMain.cm.toUser("CC|NT|" + TThread.getRemainingSleepTime() + "|" + false, Username, false);

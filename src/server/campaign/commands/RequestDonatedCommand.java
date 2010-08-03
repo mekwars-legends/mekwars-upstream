@@ -176,8 +176,8 @@ public class RequestDonatedCommand implements Command {
         }
 
         // Add penalty if the player is over a sliding limit
-        if (p.hasHangarPenalty(type_id, weightclass)) {
-        	int costPenalty = p.calculateHangarPenalty(type_id, weightclass);
+        if (p.willHaveHangarPenalty(type_id, weightclass)) {
+        	int costPenalty = p.calculateHangarPenaltyForNextPurchase(type_id, weightclass);
         	unitCbills += costPenalty;
         }
         

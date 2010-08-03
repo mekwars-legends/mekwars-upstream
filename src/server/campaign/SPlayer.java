@@ -291,8 +291,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         // make sure to save the player, with his fancy new unit ...
         setSave();
         
-        int penalty = calculateTotalHangarPenalty();
-        CampaignMain.cm.toUser("PL|SHP|" + penalty, name, false);
+        String penaltyString = buildHangarPenaltyString();
+        CampaignMain.cm.toUser("PL|SHP|" + penaltyString, name, false);
         return "";// dummy string returned to comply with IBuyer
     }
 
@@ -324,8 +324,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
      */
     public String removeUnit(SUnit unitToRemove, boolean sendHouseStatusUpdate) {
         this.removeUnit(unitToRemove.getId(), true);
-        int penalty = calculateTotalHangarPenalty();
-        CampaignMain.cm.toUser("PL|SHP|" + penalty, name, false);
+        String penaltyString = buildHangarPenaltyString();
+        CampaignMain.cm.toUser("PL|SHP|" + penaltyString, name, false);
         return "";// dummy stirng returned for IBuyer
     }
 
@@ -1579,6 +1579,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         }
 
         setSave();
+        CampaignMain.cm.toUser("PL|SHP|" + buildHangarPenaltyString(), name, true);
     }
 
     // EXPERIENCE SET/ADD/GET Methods
@@ -3950,6 +3951,35 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     }
 
     /**
+     * A method to determine if the player will be over the unit limit
+     * after purchasing a new unit if the server is configured 
+     * to use sliding hangar cost increases
+     * 
+     */
+    public boolean willHaveHangarPenalty(int uType, int uWeight) {
+    	// Always false if we're not using the sliding limits
+    	if (!Boolean.parseBoolean(getMyHouse().getConfig("UseSlidingHangarLimits"))) {
+    		return false;
+    	}
+    	
+    	int limit = CampaignMain.cm.getHouseFromPartialString(getMyHouse().getName()).getUnitLimit(uType, uWeight);
+    	
+    	// Always false if the particular limit is not checked
+    	if (limit < 0) {
+    		return false;
+    	}
+    	
+    	// Need to add one, since we're checking what it will be after a purchase
+    	int numUnits = countUnits(uType, uWeight) + 1;
+    	// False if we're below the limit
+    	if (limit >= numUnits) {
+    		return false;
+    	}
+    	
+    	return true;
+    }
+    
+    /**
      * A method to determine if the player is over the unit limit
      * and the server is configured to use sliding hangar cost
      * increases
@@ -3978,6 +4008,45 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     	return true;
     }
 
+    /**
+     * Calculates and returns the string to be sent to the client to 
+     * set both the maintenance penalty and the purchase price penalty
+     * for each unit type and weight.
+     * 
+     * @return
+     */
+    public String buildHangarPenaltyString() {
+    	StringBuilder toReturn = new StringBuilder();
+    	
+    	toReturn.append(Integer.toString(calculateTotalHangarPenalty()));
+    	
+    	for (int type = Unit.MEK; type < Unit.MAXBUILD; type++) {
+    		for (int weight = Unit.LIGHT; weight <= Unit.ASSAULT; weight++) {
+    			toReturn.append("*" + Integer.toString(calculateHangarPenaltyForNextPurchase(type, weight)));
+    		}
+    	}
+    	
+    	return toReturn.toString();
+    }
+    
+    public int calculateHangarPenaltyForNextPurchase(int type, int weight) {
+    	int penalty = 0;
+    	
+		int limit = CampaignMain.cm.getHouseFromPartialString(getMyHouse().getName()).getUnitLimit(type, weight);
+		int numUnits = countUnits(type, weight) + 1;
+    	
+		if (limit == -1 || numUnits <= limit) {
+			return 0;
+		}
+		
+		int penaltyUnits = numUnits - limit;
+		
+		penalty = (int)(Math.pow((double)penaltyUnits, Double.parseDouble(getMyHouse().getConfig("SlidingHangarLimitModifier"))));
+		
+    	
+    	return penalty;
+    }
+    
 	public int calculateHangarPenalty(int type_id, int weightclass) {
 		if(!hasHangarPenalty(type_id, weightclass)) {
 			return 0;

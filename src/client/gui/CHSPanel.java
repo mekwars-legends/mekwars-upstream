@@ -595,12 +595,12 @@ public class CHSPanel extends JPanel {
                             if (refreshTime == 0) {
 
                                 House foundH = mwclient.getData().getHouseByName(founder);
-                                int cbillCost = CUnit.getPriceForUnit(mwclient, weight, type_id, foundH);
+                                int cbillCost = CUnit.getPriceForUnit(mwclient, weight, type_id, foundH) + mwclient.getPlayer().getHangarPurchasePenalty(type_id, weight);
                                 int fluCost = CUnit.getInfluenceForUnit(mwclient, weight, type_id, foundH);
                                 int ppCost = CUnit.getPPForUnit(mwclient, weight, type_id, foundH);
 
                                 if (!mwclient.getPlayer().getMyHouse().getName().equalsIgnoreCase(foundH.getName())) {
-                                    cbillCost = Math.round(cbillCost * Float.parseFloat(mwclient.getserverConfigs("NonOriginalCBillMultiplier")));
+                                    cbillCost = Math.round(cbillCost * Float.parseFloat(mwclient.getserverConfigs("NonOriginalCBillMultiplier"))) + mwclient.getPlayer().getHangarPurchasePenalty(type_id, weight);
                                     fluCost = Math.round(fluCost * Float.parseFloat(mwclient.getserverConfigs("NonOriginalInfluenceMultiplier")));
                                     ppCost = Math.round(ppCost * Float.parseFloat(mwclient.getserverConfigs("NonOriginalComponentMultiplier")));
                                 }
@@ -665,7 +665,7 @@ public class CHSPanel extends JPanel {
 
                 if (unitsInfo.get(weight + "$" + type) != null && unitsInfo.get(weight + "$" + type).size() > 0) {
                     House foundH = mwclient.getData().getHouseByName(mwclient.getPlayer().getMyHouse().getName());
-                    int cbillCost = Math.round(CUnit.getPriceForUnit(mwclient, weight, type, foundH) * foundH.getUsedMekBayMultiplier());
+                    int cbillCost = Math.round(CUnit.getPriceForUnit(mwclient, weight, type, foundH) * foundH.getUsedMekBayMultiplier()) + mwclient.getPlayer().getHangarPurchasePenalty(type, weight);
                     int fluCost = Math.round(CUnit.getInfluenceForUnit(mwclient, weight, type, foundH) * foundH.getUsedMekBayMultiplier());
                     result.append("<a href=\"MEKWARS/c requestdonated#" + weight + "#" + type + "\"><img border=\"0\" alt=\"Request one of the Units from this bay (Cost: " + mwclient.moneyOrFluMessage(true, true, cbillCost, false) + ", " + mwclient.moneyOrFluMessage(false, true, fluCost, false) + ")\" src=\"data/images/cart.gif\"></a> " + Unit.getWeightClassDesc(weight) + ": ");
                     Vector<HSMek> v = unitsInfo.get(weight + "$" + type);

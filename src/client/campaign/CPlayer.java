@@ -63,6 +63,7 @@ public class CPlayer extends Player {
     private int RewardPoints;
     private double Rating;
     private int hangarPenalty;
+    private int hangarPurchasePenalties[][] = new int[6][4];
     
     private Vector<CUnit> Hangar;
     private Vector<CArmy> Armies;
@@ -1329,7 +1330,25 @@ public class CPlayer extends Player {
     	return hangarPenalty;
     }
     
+    public int getHangarPurchasePenalty(int type, int weight) {
+    	return hangarPurchasePenalties[type][weight];
+    }
+    
     public void setHangarPenalty(int p) {
     	hangarPenalty = p;
     }
+    
+    public void setHangarPurchasePenalty(int type, int weight, int p) {
+    	hangarPurchasePenalties[type][weight] = p;
+    }
+
+	public void parseHangarPenaltyString(String readString) {
+		StringTokenizer st = new StringTokenizer(readString, "*");
+		setHangarPenalty(Integer.parseInt(st.nextToken()));
+		for (int type = Unit.MEK; type < Unit.MAXBUILD; type++) {
+			for (int weight = Unit.LIGHT; weight <= Unit.ASSAULT; weight++) {
+				setHangarPurchasePenalty(type, weight, Integer.parseInt(st.nextToken()));
+			}
+		}
+	}
 }
