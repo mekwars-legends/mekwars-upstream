@@ -19,6 +19,8 @@ package server.campaign.commands;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 
+import common.CampaignData;
+
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SPlayer;
@@ -163,12 +165,23 @@ public class RetirePilotCommand implements Command {
 			 * can go about the actual retirement now.
 			 */
 			
+			// Figure out if the pilot is going to take his unit with him
+			Boolean retireMechToo = false;
+			String unitName = m.getModelName();
+			if (!CampaignMain.cm.getBooleanConfig("AllowPersonalPilotQueues") && (CampaignMain.cm.getIntegerConfig("RetiredPilotTakesMechChance") > 0 )) {
+				if (CampaignMain.cm.getRandomNumber(100) <= CampaignMain.cm.getIntegerConfig("RetiredPilotTakesMechChance")) {
+					retireMechToo = true;
+				}
+			}
+			
 			//set up the message for the player
 			String toReturn = "";
-			if (retirementCost <= 0)
-				toReturn = m.getPilot().getName() + " retired, went home to his family, and lived happily ever after.";
-			else
-				toReturn = "AM:You dismissed " + m.getPilot().getName() + " (-" + CampaignMain.cm.moneyOrFluMessage(true,true,retirementCost)+").";
+			if (retirementCost <= 0) {
+				toReturn = m.getPilot().getName() + " retired, went home to his family, and lived happily ever after." + (retireMechToo ? (" Unfortunately, he took his family's " + unitName + " with him.") : "");
+				
+			} else { 
+				toReturn = "AM:You dismissed " + m.getPilot().getName() + " (-" + CampaignMain.cm.moneyOrFluMessage(true,true,retirementCost)+")." + (retireMechToo ? (" Unfortunately, he took his family's " + unitName + " with him.") : "");
+			}
 			
 			//take money away
 			if (retirementCost > 0)
@@ -209,6 +222,9 @@ public class RetirePilotCommand implements Command {
 				}//end if(army contains the )
 			}//end while(more armies to check)
 			
+			if (retireMechToo) {
+				p.removeUnit(m.getId(), true);
+			}
 		}
 	}
 }

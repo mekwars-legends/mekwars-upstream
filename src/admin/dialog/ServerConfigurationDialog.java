@@ -2110,6 +2110,12 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setToolTipText("<html>" + mwclient.moneyOrFluMessage(true, true, -1) + " cost PER LEVEL to retire a pilot before free. For<br>" + "example, if Skill to Retire is 6, a pilot is 4/5 (Total:9)<br>" + "and the cost is 10, it will cost (9-6)*10=30 " + mwclient.moneyOrFluMessage(true, true, -1) + " to<br>" + "retire the 4/5.</html>");
         baseTextField.setName("CostPerLevelToRetireEarly");
         pilotOptionsSpring2.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        pilotOptionsSpring2.add(new JLabel("Retired Pilot Takes Mech Chance:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html> Chance a retiring pilot takes his unit with him.</html>");
+        baseTextField.setName("RetiredPilotTakesMechChance");
+        pilotOptionsSpring2.add(baseTextField);
 
         baseTextField = new JTextField(5);
         pilotOptionsSpring2.add(new JLabel("Best Gunnery:", SwingConstants.TRAILING));
@@ -2262,6 +2268,8 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setToolTipText("<html>If checked, pilots will be able to level up asymmetrically (2/5, 1/5, 4/2, etc)</html>");
         BaseCheckBox.setName("AllowAsymmetricPilotLevels");
         pilotCBoxGrid.add(BaseCheckBox);
+        
+        
         
         // finalize the layout
         JPanel pilotBox = new JPanel(new SpringLayout());

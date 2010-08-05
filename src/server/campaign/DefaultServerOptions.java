@@ -701,6 +701,7 @@ public class DefaultServerOptions {
         defaults.setProperty("CostPerLevelToRetireEarly", "25");
         defaults.setProperty("UseCommonPilotNameFileOnly", "true");
         defaults.setProperty("RandomRetirementOfElites", "false");
+        defaults.setProperty("RetiredPilotTakesMechChance", "0");
 
         // Money and resource names
         defaults.setProperty("MoneyLongName", "CBills");
