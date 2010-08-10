@@ -179,7 +179,7 @@ public final class MWClient implements IClient, GameListener {
 
     CConfig Config;
 
-    public static final String CLIENT_VERSION = "0.2.42.5"; // change this with
+    public static final String CLIENT_VERSION = "0.3.0.0"; // change this with
     // all client
     // changes @Torren
 

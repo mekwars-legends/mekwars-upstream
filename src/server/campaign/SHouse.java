@@ -370,9 +370,12 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
     }
 
     public void toDB() {
-        if (getName().equalsIgnoreCase("None")) {
+        /*
+         if (getName().equalsIgnoreCase("None")) {
+         
             return;
         }
+        */
         CampaignData.mwlog.dbLog("Saving Faction " + getName());
 
         PreparedStatement ps = null;

@@ -1,5 +1,9 @@
 VERSION HISTORY:
 ----------------
+v 0.3.0.x
+R Released Server, Client, MekWarsDed v0.3.0.0
++ Re-added "NONE" faction in DB-enabled servers
+
 v 0.2.42.x
 *** NOTE TO SOs *************************************************
 *                                                               *
