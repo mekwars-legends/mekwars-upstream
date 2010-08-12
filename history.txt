@@ -1,5 +1,14 @@
 VERSION HISTORY:
 ----------------
+v 0.3.1.x
+R Released Server, Client, MekWarsDed v0.3.1.0
+  * Revved versions because MegaMek.jar was changed, meaning 
+  * that the client/server communication could be compromised
+  * We need to stick to this convention, or we will run into
+  * situations where people are using different builds with the same
+  * version numbers - not good
++ Bug 2910055: MekWars favors mwconfig.bak over .txt
+
 v 0.3.0.x
 R Released Server, Client, MekWarsDed v0.3.0.0
 + Re-added "NONE" faction in DB-enabled servers

@@ -66,7 +66,10 @@ public class CConfig {
             File configfile = new File(CONFIG_FILE);
             FileInputStream fis = new FileInputStream(configfile);
             File backupfile = new File(CONFIG_BACKUP_FILE);
-            if (backupfile.exists()) {
+            // Changing this - the client is *always* loading the .bak first.
+            // Just load the config.  If it fails, load the .bak.
+            
+            /*            if (backupfile.exists()) {
                 FileInputStream backupStream = new FileInputStream(backupfile);
                 if (fis.available() < backupStream.available()) {
                     try {
@@ -83,6 +86,8 @@ public class CConfig {
             } else {
                 config.load(fis);
             }
+            */
+            config.load(fis);  // Here's the change.
             fis.close();
         } catch (IOException ie) {
             try {
@@ -97,7 +102,7 @@ public class CConfig {
         } catch (Exception ex) {
             CampaignData.mwlog.errLog(ex);
             JOptionPane.showMessageDialog(null, "Unable to load main config file");
-        }
+        } 
 
         // check for a serverdata.dat
         try {
