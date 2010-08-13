@@ -2650,8 +2650,8 @@ public class ShortOperation implements Comparable<Object> {
         int maxPlayersPerTeam = o.getIntValue("TeamSize");
         int teamCount = 0;
         int totalBV = 0;
-        int maxOpBV = CampaignMain.cm.getIntegerConfig("MaxBVDifference");
-
+        //int maxOpBV = CampaignMain.cm.getIntegerConfig("MaxBVDifference");
+        int maxOpBV = o.getIntValue("MaxBVDifference");
         if (attacker) {
             maxOpBV += o.getIntValue("MaxAttackerBV");
         } else {
