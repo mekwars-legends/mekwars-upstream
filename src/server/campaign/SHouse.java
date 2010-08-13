@@ -1501,7 +1501,19 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                     
                     if (CampaignMain.cm.getBooleanConfig("ScrapOldestUnitsFirst")) {
                     	Collections.sort(v);
-                    	randUnit = v.firstElement();
+                    	// Crap.  This could loop, if every unit is on the BM already.
+                    	// So, find the first unit thatis not already for sale
+                    	int unitToGet = -1;
+                    	for (int j = 0; j < v.size(); j++ ) {
+                    		if (unitToGet == -1 && v.elementAt(j).getStatus() != Unit.STATUS_FORSALE) {
+                    			unitToGet = j;
+                    		}
+                    	}
+                    	if (unitToGet == -1) {
+                    		// Nothing to see here, move along
+                    		continue;
+                    	}
+                    	randUnit = v.elementAt(unitToGet);
                     } else {
                     	randUnit = v.elementAt(CampaignMain.cm.getRandomNumber(v.size()));
                     }
