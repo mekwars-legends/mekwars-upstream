@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.1.x
+R Released Server v0.3.1.2
++ RFE 3032425: Added option to autoscrap by age of unit
 R Released Server v0.3.1.1
 + Bug 2858706: Team Operations check campaignconfig for MaxBVDifference
     instead of the op

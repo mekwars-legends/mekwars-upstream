@@ -67,7 +67,7 @@ import common.util.UnitUtils;
  *         an existing Mech to facilitate repodding
  */
 
-public final class SUnit extends Unit {
+public final class SUnit extends Unit implements Comparable<SUnit> {
 
     // VARIABLES
     private Integer BV = 0;
@@ -1538,4 +1538,12 @@ public final class SUnit extends Unit {
         }
         return mulUnits;
     }
+
+    /**
+     * Compares SUnit IDs to support sorting of collections
+     * @author Spork
+     */
+	public int compareTo(SUnit u) {
+		return Integer.valueOf(this.getId()).compareTo(Integer.valueOf(u.getId()));	
+	}
 }

@@ -31,6 +31,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -1493,7 +1494,17 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                     // get vector of units of the right weight, then select a
                     // random unit from the stack.
                     Vector<SUnit> v = this.getHangar(type_id).elementAt(i);
-                    SUnit randUnit = v.elementAt(CampaignMain.cm.getRandomNumber(v.size()));
+                    
+                    // Get a unit.  If the SO has set the flag for selecting the oldest units,
+                    // first, get that one, if not, get a random one.
+                    SUnit randUnit;
+                    
+                    if (CampaignMain.cm.getBooleanConfig("ScrapOldestUnitsFirst")) {
+                    	Collections.sort(v);
+                    	randUnit = v.firstElement();
+                    } else {
+                    	randUnit = v.elementAt(CampaignMain.cm.getRandomNumber(v.size()));
+                    }
 
                     if (randUnit.getStatus() == Unit.STATUS_FORSALE) {
                         continue;

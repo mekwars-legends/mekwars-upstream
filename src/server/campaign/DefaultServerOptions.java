@@ -276,7 +276,8 @@ public class DefaultServerOptions {
         defaults.setProperty("RareChance", "1.0");
         defaults.setProperty("UseAutoProdClassic", "true");
         defaults.setProperty("UseAutoProdNew", "false");
-
+        defaults.setProperty("ScrapOldestUnitsFirst", "false");
+        
         defaults.setProperty("APAtMaxLightMek", "30");
         defaults.setProperty("APAtMaxMediumMek", "20");
         defaults.setProperty("APAtMaxHeavyMek", "20");

@@ -3818,9 +3818,18 @@ public final class ServerConfigurationDialog implements ActionListener {
         JPanel apBottomPanel = new JPanel();
         apBottomPanel.add(apNewPanel);
         
+        JPanel scrapPanel = new JPanel();
+        scrapPanel.setBorder(BorderFactory.createEtchedBorder());
+        scrapPanel.add(new JLabel("Scrap Oldest Units First:", SwingConstants.TRAILING));
+        BaseCheckBox = new JCheckBox();
+        BaseCheckBox.setName("ScrapOldestUnitsFirst");
+        BaseCheckBox.setToolTipText("<html>If checked, bay units will be scrapped/sold in order of unitID<br>If not checked, the unit chosen will be random.</html>");
+        scrapPanel.add(BaseCheckBox);
+        
         autoProdPanel.add(apTopPanel);
         autoProdPanel.add(apMiddlePanel);
         autoProdPanel.add(apBottomPanel);
+        autoProdPanel.add(scrapPanel);
         
         /*
          * REWARD MENU CONSTRUCTION
