@@ -188,12 +188,17 @@ public class CheckAttackCommand implements Command {
 		OperationManager manager = CampaignMain.cm.getOpsManager(); 
 		for ( String attack : aa.getLegalOperations().keySet() ){
 			Operation o = manager.getOperation(attack);
+			// Don't show AFR-only attacks
+			if (o.getBooleanValue("OnlyAllowedFromReserve")) {
+				continue;
+			}
+			
 			if ( !aa.matches(da, o) )
 				continue;
 
 			if (dp.getHouseFightingFor().equals(ah) && !o.getBooleanValue("AllowInFaction") )
 				continue;
-
+			
 			if ( manager.validateShortDefense(dp, da, o, null) == null ){
 				report.append(attack);
 				report.append(", ");
