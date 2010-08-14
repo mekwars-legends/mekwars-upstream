@@ -1579,7 +1579,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         }
 
         setSave();
-        CampaignMain.cm.toUser("PL|SHP|" + buildHangarPenaltyString(), name, true);
+        CampaignMain.cm.toUser("PL|SHP|" + buildHangarPenaltyString(), name, false);
     }
 
     // EXPERIENCE SET/ADD/GET Methods
