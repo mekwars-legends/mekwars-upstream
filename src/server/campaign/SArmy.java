@@ -35,7 +35,7 @@ import common.util.TokenReader;
 
 /**
  * @author Helge Richter
- * 
+ *
  */
 
 public class SArmy extends Army {
@@ -63,9 +63,10 @@ public class SArmy extends Army {
     }
 
     public void toDB() {
-    	if(isLoading)
-    		return;
-        this.deleteFromDB();
+    	if(isLoading) {
+            return;
+        }
+        deleteFromDB();
         PreparedStatement ps = null;
         Connection c = ch.getConnection();
         try {
@@ -93,7 +94,7 @@ public class SArmy extends Army {
         try {
             ps = c.prepareStatement("DELETE from playerarmies WHERE playerID = ? AND armyID = ?");
             ps.setInt(1, CampaignMain.cm.MySQL.getPlayerIDByName(playerName));
-            ps.setInt(2, this.getID());
+            ps.setInt(2, getID());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
@@ -419,47 +420,47 @@ public class SArmy extends Army {
          * CampaignMain.cm.getBooleanConfig("CountInfForLimiters"); boolean
          * allowLimiters = CampaignMain.cm.getBooleanConfig("AllowLimiters"); if
          * (getLowerLimiter() != Army.NO_LIMIT && allowLimiters){
-         * 
+         *
          * int smallest = -1; int enemyNum = -1; if (infCounts) { smallest =
          * getAmountOfUnits() - Math.abs(getLowerLimiter()); enemyNum =
          * enemy.getAmountOfUnits(); } else { smallest =
          * getAmountOfUnitsWithoutInfantry() - Math.abs(getLowerLimiter());
          * enemyNum = enemy.getAmountOfUnitsWithoutInfantry(); }
-         * 
+         *
          * //check for 0 and negatives. if (smallest < 1) smallest = 1;
-         * 
+         *
          * if (enemyNum < smallest) return false; } if (getUpperLimiter() !=
          * Army.NO_LIMIT && allowLimiters){
-         * 
+         *
          * int highest = -1; int enemyNum = -1; if (infCounts) { highest =
          * getAmountOfUnits() + getUpperLimiter(); enemyNum =
          * enemy.getAmountOfUnits(); } else { highest =
          * getAmountOfUnitsWithoutInfantry() + getUpperLimiter(); enemyNum =
          * enemy.getAmountOfUnitsWithoutInfantry(); }
-         * 
+         *
          * if (enemyNum > highest) return false; }
-         * 
+         *
          * //Within Limits of the OTHER army? if (enemy.getLowerLimiter() !=
          * Army.NO_LIMIT && allowLimiters){
-         * 
+         *
          * int smallest = -1; int ownNum = -1; if (infCounts) { smallest =
          * enemy.getAmountOfUnits() - Math.abs(enemy.getLowerLimiter()); ownNum
          * = getAmountOfUnits(); } else { smallest =
          * enemy.getAmountOfUnitsWithoutInfantry() -
          * Math.abs(getLowerLimiter()); ownNum =
          * getAmountOfUnitsWithoutInfantry(); }
-         * 
+         *
          * if (smallest < 1) smallest = 1;
-         * 
+         *
          * if (ownNum < smallest) return false; } if (enemy.getUpperLimiter() !=
          * Army.NO_LIMIT && allowLimiters){
-         * 
+         *
          * int highest = -1; int ownNum = -1; if (infCounts) { highest =
          * enemy.getAmountOfUnits() + enemy.getUpperLimiter(); ownNum =
          * getAmountOfUnits(); } else { highest =
          * enemy.getAmountOfUnitsWithoutInfantry() + enemy.getUpperLimiter();
          * ownNum = getAmountOfUnitsWithoutInfantry(); }
-         * 
+         *
          * if (ownNum > highest) return false; }
          */
         return true;
@@ -524,13 +525,13 @@ public class SArmy extends Army {
 
             Iterator<Unit> i = getUnits().iterator();
             while (i.hasNext()) {
-            	SUnit u = (SUnit) i.next();
-            	if (this.isCommander(u.getId())) {
-            		result.append("<i>");
-            	}
+                SUnit u = (SUnit) i.next();
+                if (isCommander(u.getId())) {
+                    result.append("<i>");
+                }
                 result.append(u.getSmallDescription());
-                if (this.isCommander(u.getId())) {
-                	result.append("</i>");
+                if (isCommander(u.getId())) {
+                    result.append("</i>");
                 }
                 if (i.hasNext()) {
                     result.append(", ");
@@ -617,7 +618,7 @@ public class SArmy extends Army {
     /**
      * Conduit which returns legal operations from the SArmyData. Note the lack
      * of a corresponding set().
-     * 
+     *
      * @return legalOperations
      */
     public TreeMap<String, String> getLegalOperations() {
@@ -687,7 +688,7 @@ public class SArmy extends Army {
      * the SPlayer who owns the army (and, in turn, back to his faction). It is
      * used by checkattack to generate readible output like "Liao(4),
      * Davion(3)."
-     * 
+     *
      * Also used to generate lists of players who should receive notification
      * when SArmy's owner deactivates or joins a game and moves to
      * STATUS_FIGHTING.
