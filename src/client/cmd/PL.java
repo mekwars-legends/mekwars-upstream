@@ -19,15 +19,15 @@ package client.cmd;
 
 import java.util.StringTokenizer;
 
-import common.CampaignData;
-import common.campaign.pilot.Pilot;
-import common.util.TokenReader;
-import common.util.UnitUtils;
-
 import client.MWClient;
 import client.campaign.CPlayer;
 import client.campaign.CUnit;
 import client.gui.dialog.AdvancedRepairDialog;
+
+import common.CampaignData;
+import common.campaign.pilot.Pilot;
+import common.util.TokenReader;
+import common.util.UnitUtils;
 
 /**
  * @author Imi (immanuel.scholz@gmx.de)
@@ -52,123 +52,125 @@ public class PL extends Command {
         String cmd = TokenReader.readString(st);
         CPlayer player = mwclient.getPlayer();
 
-        if (!st.hasMoreTokens())
+        if (!st.hasMoreTokens()) {
             return;
+        }
 
         if (cmd.equals("FCU")) {
             mwclient.updateClient();
             return;
         }
 
-        if (cmd.equals("RA")) // Remove army PL|RA|
+        if (cmd.equals("RA")) {
             player.removeArmy(TokenReader.readInt(st));
-        else if (cmd.equals("LA"))
+        } else if (cmd.equals("LA")) {
             player.playerLockArmy(TokenReader.readInt(st));
-        else if (cmd.equals("ULA"))
+        } else if (cmd.equals("ULA")) {
             player.playerUnlockArmy(TokenReader.readInt(st));
-        else if (cmd.equals("TAD"))
+        } else if (cmd.equals("TAD")) {
             player.toggleArmyDisabled(TokenReader.readInt(st));
-        else if (cmd.equals("SAD")) // New army. PL|SAD|army data
+        } else if (cmd.equals("SAD")) {
             player.setArmyData(TokenReader.readString(st));
-        else if (cmd.equals("SABV")) // New army bv PL|army ID|new BV
+        } else if (cmd.equals("SABV")) {
             player.setArmyBV(TokenReader.readString(st));
-        else if (cmd.equals("AAU")) // add unit to army PL|AAU|armyid$unitid
+        } else if (cmd.equals("AAU")) {
             player.addArmyUnit(TokenReader.readString(st));
-        else if (cmd.equals("RAU")) // remove unit from army PL|RAU|armyid$unitid
+        } else if (cmd.equals("RAU")) {
             player.removeArmyUnit(TokenReader.readString(st));
-        else if (cmd.equals("HD")) // hangar data feed PL|HD|<hangar string>. also used to add single new units.
+        } else if (cmd.equals("HD")) {
             player.setHangarData(TokenReader.readString(st));
-        else if (cmd.equals("RU")) // Remove hangar unit PL|RHU|id
+        } else if (cmd.equals("RU")) {
             player.removeUnit(TokenReader.readInt(st));
-        else if (cmd.equals("SE")) // set experience PL|SE|<amount>
+        } else if (cmd.equals("SE")) {
             player.setExp(TokenReader.readInt(st));
-        else if (cmd.equals("SM")) // set money PL|SM|<amount>
+        } else if (cmd.equals("SM")) {
             player.setMoney(TokenReader.readInt(st));
-        else if (cmd.equals("SB")) // set bays PL|SB|<amount>
+        } else if (cmd.equals("SB")) {
             player.setBays(TokenReader.readInt(st));
-        else if (cmd.equals("SF")) // set free bays PL|SF|<amount>
+        } else if (cmd.equals("SF")) {
             player.setFreeBays(TokenReader.readInt(st));
-        else if (cmd.equals("SI")) // set influence PL|SI|<amount>
+        } else if (cmd.equals("SI")) {
             player.setInfluence(TokenReader.readInt(st));
-        else if (cmd.equals("SR")) // set rating PL|SR|<amount>
+        } else if (cmd.equals("SR")) {
             player.setRating(TokenReader.readDouble(st));
-        else if (cmd.equals("SRP")) // set reward points PL|SRP|<amount>
+        } else if (cmd.equals("SRP")) {
             player.setRewardPoints(TokenReader.readInt(st));
-        else if (cmd.equals("SH")) // set faction PL|SH|<faction string>
+        } else if (cmd.equals("SH")) {
             player.setHouse(TokenReader.readString(st));
-        else if (cmd.equals("ST")) // set Technicians PL|ST|<number of techs>
+        } else if (cmd.equals("ST")) {
             player.setTechnicians(TokenReader.readInt(st));
-        else if (cmd.equals("SSN")) // set Subfaction Name PL|SSN|Name of sub Faction;
+        } else if (cmd.equals("SSN")) {
             player.setSubFaction(TokenReader.readString(st));
-        else if (cmd.equals("AAA"))// incoming autoarmy
+        } else if (cmd.equals("AAA")) {
             player.setAutoArmy(st);// give it the whole tokenizer
-        else if (cmd.equals("AAM"))// incoming mines
+        } else if (cmd.equals("AAM")) {
             player.setMines(st);// give it the whole tokenizer
-        else if (cmd.equals("GEA"))// incoming GunEmplacementArmy
+        } else if (cmd.equals("GEA")) {
             player.setAutoGunEmplacements(st);// give it the whole tokenizer
-        else if (cmd.equals("SUS"))// set unit status (maintained, unmaintained, for sale, etc)
+        } else if (cmd.equals("SUS")) {
             player.setUnitStatus(TokenReader.readString(st));
-        else if (cmd.equals("RNA"))
+        } else if (cmd.equals("RNA")) {
             player.setArmyName(TokenReader.readString(st));
-        else if (cmd.equals("SAB")) // set Army bounds PL|SAB|Armyid#lowerlimit#upperlimit
+        } else if (cmd.equals("SAB")) {
             player.setArmyLimit(TokenReader.readString(st));
-        else if (cmd.equals("SAL")) // set if the army is locked or not PL|SAL|armyid#true/false
+        } else if (cmd.equals("SAL")) {
             player.setArmyLock(TokenReader.readString(st));
-        else if (cmd.equals("UU")) // update unit PL|UU|unitdata
+        } else if (cmd.equals("UU")) {
             player.updateUnitData(st);
-        else if (cmd.equals("UUMG")) // update unit PL|UUMG|id|location|selection
+        } else if (cmd.equals("UUMG")) {
             player.updateUnitMachineGuns(st);
-        else if (cmd.equals("BMW")) { // play a sound someone won the bm.
-            if (mwclient.getConfig().isParam("ENABLEBMSOUND"))
+        } else if (cmd.equals("BMW")) { // play a sound someone won the bm.
+            if (mwclient.getConfig().isParam("ENABLEBMSOUND")) {
                 mwclient.doPlaySound(mwclient.getConfig().getParam("SOUNDONBMWIN"));
-        } else if (cmd.equals("PPQ")) // Personal Pilot Queue update
+            }
+        } else if (cmd.equals("PPQ")) {
             player.getPersonalPilotQueue().fromString(TokenReader.readString(st));
-        else if (cmd.equals("PEU")) // Player Exclude Update
+        } else if (cmd.equals("PEU")) {
             player.setPlayerExcludes(TokenReader.readString(st), "$");
-        else if (cmd.equals("AEU")) // Admin Exclude Update
+        } else if (cmd.equals("AEU")) {
             player.setAdminExcludes(TokenReader.readString(st), "$");
-        else if (cmd.equals("RPU"))// Re-Position Unit
+        } else if (cmd.equals("RPU")) {
             player.repositionArmyUnit(TokenReader.readString(st));
-        else if (cmd.equals("UOE"))// update ops eligibility
+        } else if (cmd.equals("UOE")) {
             player.updateOperations(TokenReader.readString(st));
-        else if (cmd.equals("UTT"))// update ops eligibility
+        } else if (cmd.equals("UTT")) {
             player.updateTotalTechs(TokenReader.readString(st));
-        else if (cmd.equals("UAT"))// update ops eligibility
+        } else if (cmd.equals("UAT")) {
             player.updateAvailableTechs(TokenReader.readString(st));
-        else if (cmd.equals("GBB"))// Go bye bye
+        } else if (cmd.equals("GBB")) {
             mwclient.getConnector().closeConnection();
-        else if (cmd.equals("UB"))// Using Bots
+        } else if (cmd.equals("UB")) {
             mwclient.setUsingBots(TokenReader.readBoolean(st));
-        else if (cmd.equals("BOST"))// Bots On the Same Team
+        } else if (cmd.equals("BOST")) {
             mwclient.setBotsOnSameTeam(TokenReader.readBoolean(st));
-        else if (cmd.equals("SHFF"))// Players house fighting for
+        } else if (cmd.equals("SHFF")) {
             player.setHouseFightingFor(TokenReader.readString(st));
-        else if (cmd.equals("SUL")) {// Players Unit Logo
+        } else if (cmd.equals("SUL")) {// Players Unit Logo
             player.setLogo(TokenReader.readString(st));
             mwclient.getMainFrame().getMainPanel().getPlayerPanel().refresh();
-        } else if (cmd.equals("AP2PPQ"))// adding a single pilot back to the players PPQ
+        } else if (cmd.equals("AP2PPQ")) {
             player.getPersonalPilotQueue().addPilot(st);
-        else if (cmd.equals("RPPPQ"))// Remove a pilot from the players pilot queue
+        } else if (cmd.equals("RPPPQ")) {
             player.getPersonalPilotQueue().removePilot(st);
-        else if (cmd.equals("RSOD"))// Retrieve Short Op Data
+        } else if (cmd.equals("RSOD")) {
             mwclient.retrieveOpData("short", TokenReader.readString(st));
-        else if (cmd.equals("UCP"))// Update/Set a clients param
+        } else if (cmd.equals("UCP")) {
             mwclient.updateParam(st);
-        else if (cmd.equals("SOFL"))// Server Op Flags
+        } else if (cmd.equals("SOFL")) {
             mwclient.setServerOpFlags(st);
-        else if (cmd.equals("SAOFS"))// Set Army Op Force Size
+        } else if (cmd.equals("SAOFS")) {
             player.setArmyOpForceSize(TokenReader.readString(st));
-        else if (cmd.equals("FC"))// Set Faction Configs
+        } else if (cmd.equals("FC")) {
             player.setFactionConfigs(TokenReader.readString(st));
-        else if (cmd.equals("UPBM"))// Set Faction Configs
+        } else if (cmd.equals("UPBM")) {
             mwclient.updatePartsBlackMarket(TokenReader.readString(st));
-        else if (cmd.equals("UPPC"))// Set Faction Configs
+        } else if (cmd.equals("UPPC")) {
             mwclient.updatePlayerPartsCache(TokenReader.readString(st));
-        else if (cmd.equals("RPPC"))
+        } else if (cmd.equals("RPPC")) {
             mwclient.getPlayer().getPartsCache().fromString(st);
-        else if (cmd.equals("STN"))
+        } else if (cmd.equals("STN")) {
             mwclient.getPlayer().setTeamNumber(TokenReader.readInt(st));
-        else if (cmd.equals("VUI")) {
+        } else if (cmd.equals("VUI")) {
             StringTokenizer data = new StringTokenizer(TokenReader.readString(st), "#");
             String filename = TokenReader.readString(data);
             int BV = TokenReader.readInt(data);
@@ -176,8 +178,9 @@ public class PL extends Command {
             int piloting = TokenReader.readInt(data);
             String damage = "";
 
-            if (data.hasMoreElements())
+            if (data.hasMoreElements()) {
                 damage = TokenReader.readString(data);
+            }
 
             mwclient.getMainFrame().getMainPanel().getHSPanel().showInfoWindow(filename, BV, gunnery, piloting, damage);
         } else if (cmd.equals("VURD")) {
@@ -195,8 +198,9 @@ public class PL extends Command {
             mwclient.getPlayer().getPartsCache().clear();
         } else if (cmd.equals("UDAO")) {
             mwclient.updateOpData(true);
-            if (!mwclient.isDedicated())
+            if (!mwclient.isDedicated()) {
                 mwclient.getMainFrame().updateAttackMenu();
+            }
         } else if (cmd.equals("RMF")) {
             mwclient.retrieveMul(TokenReader.readString(st));
         } else if (cmd.equals("SMFD")) {
@@ -236,13 +240,14 @@ public class PL extends Command {
         } else if (cmd.equals("SUD")) {
             try {
                 StringBuilder userData = new StringBuilder(MWClient.CAMPAIGN_PREFIX + "c sendclientdata#");
-            	String clientMD5 = mwclient.createFilenameChecksum("./MekWarsClient.jar");
-            	String mmMD5 = mwclient.createFilenameChecksum("./MegaMek.jar");
+                String clientMD5 = mwclient.createFilenameChecksum("./MekWarsClient.jar");
+                String mmMD5 = mwclient.createFilenameChecksum("./MegaMek.jar");
                 userData.append(mwclient.getClass().getProtectionDomain().getCodeSource().getLocation().toURI() + "#");
-            	userData.append(clientMD5 + "#");
+                userData.append(clientMD5 + "#");
                 userData.append(mmMD5 + "#");
 
-                String[] userDataSet = { "user.name", "user.language", "user.country", "user.timezone", "os.name", "os.arch", "os.version", "java.version" };
+                String[] userDataSet =
+                    { "user.name", "user.language", "user.country", "user.timezone", "os.name", "os.arch", "os.version", "java.version" };
 
                 for (int pos = 0; pos < userDataSet.length; pos++) {
                     String property = System.getProperty(userDataSet[pos], "Unknown");
@@ -252,11 +257,11 @@ public class PL extends Command {
                 mwclient.sendChat(userData.toString());
             } catch (Exception ex) {
             }
-        } else if (cmd.equals("ROP") ) {
+        } else if (cmd.equals("ROP")) {
             mwclient.getPlayer().setAutoReorder(TokenReader.readBoolean(st));
-        } else if (cmd.equals("SHP")) { 
-        	player.parseHangarPenaltyString(TokenReader.readString(st));
-        }else {
+        } else if (cmd.equals("SHP")) {
+            player.parseHangarPenaltyString(TokenReader.readString(st));
+        } else {
             return;
         }
 

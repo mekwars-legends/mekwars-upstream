@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.3.1.x
++ Updated UnitUtils.isSameTech to check for two new tech levels added to MegaMek
 R Released Server v0.3.1.5
 + New MegaMek.jar
 + Bug: Units only showing chassis, not model

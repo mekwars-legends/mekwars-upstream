@@ -2822,50 +2822,26 @@ public class UnitUtils {
                 switch (partTechLevel) {
                     case TechConstants.T_INTRO_BOXSET:
                         return true;
-                    case TechConstants.T_IS_TW_NON_BOX:
-                    case TechConstants.T_IS_TW_ALL:
-                    case TechConstants.T_IS_ADVANCED:
-                    case TechConstants.T_IS_EXPERIMENTAL:
-                    case TechConstants.T_IS_UNOFFICIAL:
-                    case TechConstants.T_CLAN_TW:
-                    case TechConstants.T_CLAN_ADVANCED:
-                    case TechConstants.T_CLAN_EXPERIMENTAL:
-                    case TechConstants.T_CLAN_UNOFFICIAL:
+                    default:
                         return false;
                 }
-                break;
             case TechConstants.T_IS_TW_NON_BOX:
                 switch (partTechLevel) {
                     case TechConstants.T_INTRO_BOXSET:
                     case TechConstants.T_IS_TW_NON_BOX:
                         return true;
-                    case TechConstants.T_IS_TW_ALL:
-                    case TechConstants.T_IS_ADVANCED:
-                    case TechConstants.T_IS_EXPERIMENTAL:
-                    case TechConstants.T_IS_UNOFFICIAL:
-                    case TechConstants.T_CLAN_TW:
-                    case TechConstants.T_CLAN_ADVANCED:
-                    case TechConstants.T_CLAN_EXPERIMENTAL:
-                    case TechConstants.T_CLAN_UNOFFICIAL:
+                    default:
                         return false;
                 }
-                break;
             case TechConstants.T_IS_TW_ALL:
                 switch (partTechLevel) {
                     case TechConstants.T_INTRO_BOXSET:
                     case TechConstants.T_IS_TW_NON_BOX:
                     case TechConstants.T_IS_TW_ALL:
                         return true;
-                    case TechConstants.T_IS_ADVANCED:
-                    case TechConstants.T_IS_EXPERIMENTAL:
-                    case TechConstants.T_IS_UNOFFICIAL:
-                    case TechConstants.T_CLAN_TW:
-                    case TechConstants.T_CLAN_ADVANCED:
-                    case TechConstants.T_CLAN_EXPERIMENTAL:
-                    case TechConstants.T_CLAN_UNOFFICIAL:
+                    default:
                         return false;
                 }
-                break;
             case TechConstants.T_IS_ADVANCED:
                 switch (partTechLevel) {
                     case TechConstants.T_INTRO_BOXSET:
@@ -2873,15 +2849,9 @@ public class UnitUtils {
                     case TechConstants.T_IS_TW_ALL:
                     case TechConstants.T_IS_ADVANCED:
                         return true;
-                    case TechConstants.T_CLAN_TW:
-                    case TechConstants.T_CLAN_ADVANCED:
-                    case TechConstants.T_IS_EXPERIMENTAL:
-                    case TechConstants.T_IS_UNOFFICIAL:
-                    case TechConstants.T_CLAN_EXPERIMENTAL:
-                    case TechConstants.T_CLAN_UNOFFICIAL:
+                    default:
                         return false;
                 }
-                break;
             case TechConstants.T_IS_EXPERIMENTAL:
                 switch (partTechLevel) {
                     case TechConstants.T_INTRO_BOXSET:
@@ -2890,15 +2860,11 @@ public class UnitUtils {
                     case TechConstants.T_IS_ADVANCED:
                     case TechConstants.T_IS_EXPERIMENTAL:
                         return true;
-                    case TechConstants.T_CLAN_TW:
-                    case TechConstants.T_CLAN_ADVANCED:
-                    case TechConstants.T_CLAN_EXPERIMENTAL:
-                    case TechConstants.T_IS_UNOFFICIAL:
-                    case TechConstants.T_CLAN_UNOFFICIAL:
+                    default:
                         return false;
                 }
-                break;
             case TechConstants.T_IS_UNOFFICIAL:
+            case TechConstants.T_ALL_IS:
                 switch (partTechLevel) {
                     case TechConstants.T_INTRO_BOXSET:
                     case TechConstants.T_IS_TW_NON_BOX:
@@ -2906,77 +2872,47 @@ public class UnitUtils {
                     case TechConstants.T_IS_ADVANCED:
                     case TechConstants.T_IS_EXPERIMENTAL:
                     case TechConstants.T_IS_UNOFFICIAL:
+                    case TechConstants.T_ALL_IS:
                         return true;
-                    case TechConstants.T_CLAN_TW:
-                    case TechConstants.T_CLAN_ADVANCED:
-                    case TechConstants.T_CLAN_EXPERIMENTAL:
-                    case TechConstants.T_CLAN_UNOFFICIAL:
+                    default:
+                        return false;
                 }
-                break;
             case TechConstants.T_CLAN_TW:
                 switch (partTechLevel) {
-                    case TechConstants.T_INTRO_BOXSET:
-                    case TechConstants.T_IS_TW_NON_BOX:
-                    case TechConstants.T_IS_TW_ALL:
-                    case TechConstants.T_IS_ADVANCED:
-                    case TechConstants.T_IS_EXPERIMENTAL:
-                    case TechConstants.T_IS_UNOFFICIAL:
-                    case TechConstants.T_CLAN_ADVANCED:
-                    case TechConstants.T_CLAN_EXPERIMENTAL:
-                    case TechConstants.T_CLAN_UNOFFICIAL:
-                        return false;
                     case TechConstants.T_CLAN_TW:
                         return true;
+                    default:
+                        return false;
                 }
-                break;
             case TechConstants.T_CLAN_ADVANCED:
                 switch (partTechLevel) {
-                    case TechConstants.T_INTRO_BOXSET:
-                    case TechConstants.T_IS_TW_NON_BOX:
-                    case TechConstants.T_IS_TW_ALL:
-                    case TechConstants.T_IS_ADVANCED:
-                    case TechConstants.T_IS_EXPERIMENTAL:
-                    case TechConstants.T_IS_UNOFFICIAL:
-                    case TechConstants.T_CLAN_EXPERIMENTAL:
-                    case TechConstants.T_CLAN_UNOFFICIAL:
-                        return false;
                     case TechConstants.T_CLAN_TW:
                     case TechConstants.T_CLAN_ADVANCED:
                         return true;
+                    default:
+                        return false;
                 }
-                break;
             case TechConstants.T_CLAN_EXPERIMENTAL:
                 switch (partTechLevel) {
-                    case TechConstants.T_INTRO_BOXSET:
-                    case TechConstants.T_IS_TW_NON_BOX:
-                    case TechConstants.T_IS_TW_ALL:
-                    case TechConstants.T_IS_ADVANCED:
-                    case TechConstants.T_IS_EXPERIMENTAL:
-                    case TechConstants.T_IS_UNOFFICIAL:
-                    case TechConstants.T_CLAN_UNOFFICIAL:
-                        return false;
                     case TechConstants.T_CLAN_TW:
                     case TechConstants.T_CLAN_ADVANCED:
                     case TechConstants.T_CLAN_EXPERIMENTAL:
                         return true;
+                    default:
+                        return false;
                 }
-                break;
             case TechConstants.T_CLAN_UNOFFICIAL:
+            case TechConstants.T_ALL_CLAN:
                 switch (partTechLevel) {
-                    case TechConstants.T_INTRO_BOXSET:
-                    case TechConstants.T_IS_TW_NON_BOX:
-                    case TechConstants.T_IS_TW_ALL:
-                    case TechConstants.T_IS_ADVANCED:
-                    case TechConstants.T_IS_EXPERIMENTAL:
-                    case TechConstants.T_IS_UNOFFICIAL:
-                        return false;
                     case TechConstants.T_CLAN_TW:
                     case TechConstants.T_CLAN_ADVANCED:
                     case TechConstants.T_CLAN_EXPERIMENTAL:
                     case TechConstants.T_CLAN_UNOFFICIAL:
+                    case TechConstants.T_ALL_CLAN:
                         return true;
+                    default:
+                        return false;
                 }
-                break;
         }
 
         return false;
