@@ -1141,10 +1141,10 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
             setModelname(new String(unitEntity.getChassis() + " " + unitEntity.getModel()).trim());
         } else {
 
-            if (unitEntity.getChassis().trim().length() > 0) {
-                setModelname(unitEntity.getChassis().trim());
-            } else {
+            if (unitEntity.getModel().trim().length() > 0) {
                 setModelname(unitEntity.getModel().trim());
+            } else {
+                setModelname(unitEntity.getChassis().trim());
             }
 
         }
