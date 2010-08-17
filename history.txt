@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.1.x
++ RFE 1937848: Variable price for house-produce BM units
+R Released Server v0.3.1.6
 + Updated UnitUtils.isSameTech to check for two new tech levels added to MegaMek
 R Released Server v0.3.1.5
 + New MegaMek.jar

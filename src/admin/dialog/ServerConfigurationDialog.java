@@ -3521,39 +3521,6 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("AssaultSaleTicks");
         salesSpringPanel.add(baseTextField);
 
-        // autoproduction spring
-        /*
-        baseTextField = new JTextField(5);
-        apSpringPanel.add(new JLabel("Lights to AP:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Number of units worth of stored components to trigger an AP attempt for light units");
-        baseTextField.setName("APAtMaxLightUnits");
-        apSpringPanel.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        apSpringPanel.add(new JLabel("Mediums to AP:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Number of units worth of stored components to trigger an AP attempt for medium units");
-        baseTextField.setName("APAtMaxMediumUnits");
-        apSpringPanel.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        apSpringPanel.add(new JLabel("Heavies to AP:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Number of units worth of stored components to trigger an AP attempt for heavy units");
-        baseTextField.setName("APAtMaxHeavyUnits");
-        apSpringPanel.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        apSpringPanel.add(new JLabel("Assaults to AP:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Number of units worth of stored components to trigger an AP attempt for assault units");
-        baseTextField.setName("APAtMaxAssaultUnits");
-        apSpringPanel.add(baseTextField); 
-   
-        baseTextField = new JTextField(5);
-        apSpringPanel.add(new JLabel("AP Failure Rate:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("% of autoproduction attempts which fail and destroy components");
-        baseTextField.setName("AutoProductionFailureRate");
-        apSpringPanel.add(baseTextField);
-        */
-        
         // factory misc spring
         baseTextField = new JTextField(5);
         prodMiscPanel.add(new JLabel("Max Light Units:", SwingConstants.TRAILING));
@@ -5222,11 +5189,16 @@ public final class ServerConfigurationDialog implements ActionListener {
          * BLACK MARKET setup
          */
         JPanel bmBox = new JPanel();
-        bmBox.setLayout(new BoxLayout(bmBox, BoxLayout.Y_AXIS));
+        //bmBox.setLayout(new BoxLayout(bmBox, BoxLayout.Y_AXIS));
 
+        bmBox.setLayout(new VerticalLayout());
+        
         JPanel bmCBoxSpring = new JPanel(new SpringLayout());
         JPanel bmTextSpring = new JPanel(new SpringLayout());
 
+        bmCBoxSpring.setBorder(BorderFactory.createEtchedBorder());
+        bmTextSpring.setBorder(BorderFactory.createEtchedBorder());
+        
         // small text spring
         baseTextField = new JTextField(10);
         bmTextSpring.add(new JLabel("Min BM Sale Length:", SwingConstants.TRAILING));
@@ -5318,7 +5290,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("BMNoBuy");
         bmTextSpring.add(baseTextField);
         
-       SpringLayoutHelper.setupSpringGrid(bmTextSpring, 4);
+       SpringLayoutHelper.setupSpringGrid(bmTextSpring, 8);
 
         // cbox spring - 5 elements in a 3*2 arrangement
         BaseCheckBox = new JCheckBox("Infantry Allowed");
@@ -5379,10 +5351,11 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setName("HiddenBMUnits");
         bmCBoxSpring.add(BaseCheckBox);
         
-        SpringLayoutHelper.setupSpringGrid(bmCBoxSpring, 3);
+        SpringLayoutHelper.setupSpringGrid(bmCBoxSpring, 5);
 
         JPanel bmButtonSpring = new JPanel(new SpringLayout());
-
+        bmButtonSpring.setBorder(BorderFactory.createEtchedBorder());
+        
         ButtonGroup auctionTypes = new ButtonGroup();
 
         baseRadioButton = new JRadioButton("Vickery");
@@ -5401,10 +5374,12 @@ public final class ServerConfigurationDialog implements ActionListener {
         auctionTypes.add(baseRadioButton);
         bmButtonSpring.add(baseRadioButton);
 
-        SpringLayoutHelper.setupSpringGrid(bmButtonSpring, 1);
+        SpringLayoutHelper.setupSpringGrid(bmButtonSpring, 2);
 
         JPanel BMWeightPanel = new JPanel();
         BMWeightPanel.setLayout(new BoxLayout(BMWeightPanel, BoxLayout.Y_AXIS));
+        BMWeightPanel.setBorder(BorderFactory.createEtchedBorder());
+        
         BaseCheckBox = new JCheckBox("Use BM Weighting Tables");
         BaseCheckBox.setName("UseBMWeightingTables");
         BMWeightPanel.add(BaseCheckBox);
@@ -5434,19 +5409,42 @@ public final class ServerConfigurationDialog implements ActionListener {
         BMWeightPanel.add(MekWeightPanel);
         
         JPanel BMBayLimitPanel = new JPanel();
-        
+        BMBayLimitPanel.setBorder(BorderFactory.createEtchedBorder());
         baseTextField = new JTextField(5);
         baseTextField.setName("MaximumNegativeBaysFromBM");
         baseTextField.setToolTipText("-1 to disable check for negative bays.");
         BMBayLimitPanel.add(new JLabel("Maximum Negative Bays From BM:", SwingConstants.TRAILING));
         BMBayLimitPanel.add(baseTextField);
         
+        JPanel BMPriceModPanel = new JPanel();
+        JPanel BMPMPanel = new JPanel();
+        BMPMPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        BMPriceModPanel.setBorder(BorderFactory.createEtchedBorder());
+        BMPMPanel.setLayout(new GridLayout(7,5));
+        BMPMPanel.add(new JLabel(" "));
+        BMPMPanel.add(new JLabel("Light"));
+        BMPMPanel.add(new JLabel("Medium"));
+        BMPMPanel.add(new JLabel("Heavy"));
+        BMPMPanel.add(new JLabel("Assault"));
+        
+        for (int type = Unit.MEK; type < Unit.MAXBUILD; type++) {
+        	BMPMPanel.add(new JLabel(Unit.getTypeClassDesc(type)));
+        	for (int weight = Unit.LIGHT; weight <= Unit.ASSAULT; weight++) {
+        		baseTextField = new JTextField(5);
+        		baseTextField.setName("BMPriceMultiplier_" + Unit.getWeightClassDesc(weight) + Unit.getTypeClassDesc(type) );
+        		baseTextField.setToolTipText("Multiplier for faction bay " + Unit.getWeightClassDesc(weight) + " " + Unit.getTypeClassDesc(type) + " units sent to the BM.  (float value)");
+        		BMPMPanel.add(baseTextField);
+        	}
+        }
+        BMPriceModPanel.add(BMPMPanel);
+        
         bmBox.add(bmTextSpring);
         bmBox.add(bmCBoxSpring);
         bmBox.add(bmButtonSpring);
         bmBox.add(BMWeightPanel);
         bmBox.add(BMBayLimitPanel);
-
+        bmBox.add(BMPriceModPanel);
+        
         blackMarketPanel.add(bmBox);
 
         /*

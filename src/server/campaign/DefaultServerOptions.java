@@ -155,7 +155,33 @@ public class DefaultServerOptions {
         defaults.setProperty("MeksMayBeSoldOnBM", "true");// 10.23.05 @urgru
         defaults.setProperty("AerosMayBeSoldOnBM", "true");
         defaults.setProperty("HiddenBMUnits", "false");
-
+        
+        // BM Price mulipliers.  Used to determine house unit pricing on BM
+        defaults.setProperty("BMPriceMultiplier_LightMek", "1.0");
+        defaults.setProperty("BMPriceMultiplier_MediumMek", "1.0");
+        defaults.setProperty("BMPriceMultiplier_HeavyMek", "1.0");
+        defaults.setProperty("BMPriceMultiplier_AssaultMek", "1.0");
+        defaults.setProperty("BMPriceMultiplier_LightVehicle", "1.0");
+        defaults.setProperty("BMPriceMultiplier_MediumVehicle", "1.0");
+        defaults.setProperty("BMPriceMultiplier_HeavyVehicle", "1.0");
+        defaults.setProperty("BMPriceMultiplier_AssaultVehicle", "1.0");
+        defaults.setProperty("BMPriceMultiplier_LightInfantry", "1.0");
+        defaults.setProperty("BMPriceMultiplier_MediumInfantry", "1.0");
+        defaults.setProperty("BMPriceMultiplier_HeavyInfantry", "1.0");
+        defaults.setProperty("BMPriceMultiplier_AssaultInfantry", "1.0");
+        defaults.setProperty("BMPriceMultiplier_LightBattleArmor", "1.0");
+        defaults.setProperty("BMPriceMultiplier_MediumBattleArmor", "1.0");
+        defaults.setProperty("BMPriceMultiplier_HeavyBattleArmor", "1.0");
+        defaults.setProperty("BMPriceMultiplier_AssaultBattleArmor", "1.0");
+        defaults.setProperty("BMPriceMultiplier_LightProtoMek", "1.0");
+        defaults.setProperty("BMPriceMultiplier_MediumProtoMek", "1.0");
+        defaults.setProperty("BMPriceMultiplier_HeavyProtoMek", "1.0");
+        defaults.setProperty("BMPriceMultiplier_AssaultProtoMek", "1.0");
+        defaults.setProperty("BMPriceMultiplier_LightAero", "1.0");
+        defaults.setProperty("BMPriceMultiplier_MediumAero", "1.0");
+        defaults.setProperty("BMPriceMultiplier_HeavyAero", "1.0");
+        defaults.setProperty("BMPriceMultiplier_AssaultAero", "1.0");
+        
         defaults.setProperty("WelfareCeiling", "30");// go above this and you
         // no longer can pull
         // welfare units

@@ -1527,7 +1527,8 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
                         // Use standard factory pricing for the unit, and
                         // configured ticks.
-                        int minPrice = getPriceForUnit(i, type_id);
+                        //int minPrice = getPriceForUnit(i, type_id);
+                    	int minPrice = getBMPriceForUnit(i, type_id);
                         String saleTicksString = Unit.getWeightClassDesc(randUnit.getWeightclass()) + "SaleTicks";
                         // add 1 to the sale tick due to a quirk with the BM
                         // autoupdate.
@@ -2186,6 +2187,13 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         return result;
     }
 
+    private int getBMPriceForUnit(int weight, int type) {
+    	int price = getPriceForUnit(weight, type);
+    	double multiplier = CampaignMain.cm.getDoubleConfig("BMPriceMultiplier_" + Unit.getWeightClassDesc(weight) + Unit.getTypeClassDesc(type));
+    	int finalPrice = (int)(price * multiplier);
+    	return finalPrice;
+    }
+    
     private void parseSupportFile(String fileName, boolean addUnits) {
         File file = new File(fileName);
         if (!file.exists()) {
