@@ -200,7 +200,11 @@ public String toString()
   }
   
   public MechStatistics()
-  {}
+  {
+	  if (CampaignMain.cm.isUsingMySQL()) {
+		  ch = new JDBCConnectionHandler();
+	  }
+  }
 
   public MechStatistics(String Filename,int mechsize)
   {
@@ -209,6 +213,10 @@ public String toString()
     this.gamesPlayed = 0;
     this.gamesWon = 0;
     this.timesDestroyed = 0;
+	  if (CampaignMain.cm.isUsingMySQL()) {
+		  ch = new JDBCConnectionHandler();
+	  }
+    
   }
 
   public MechStatistics(String s)
@@ -229,9 +237,16 @@ public String toString()
       this.OriginalBV = Integer.parseInt(ST.nextToken());
     if (ST.hasMoreElements())
         this.timesDestroyed = Integer.parseInt(ST.nextToken());
+	  if (CampaignMain.cm.isUsingMySQL()) {
+		  ch = new JDBCConnectionHandler();
+	  }
   }
 
   public MechStatistics(int id) {
+	  if (CampaignMain.cm.isUsingMySQL()) {
+		  ch = new JDBCConnectionHandler();
+	  }
+
 	  this.fromDB(id);
   }
   
