@@ -48,6 +48,7 @@ import megamek.common.Mounted;
 import megamek.common.WeaponType;
 import megamek.common.options.IOption;
 import server.MWServ;
+import server.MWChatServer.MWChatServer;
 import server.campaign.commands.*;
 import server.campaign.commands.admin.*;
 import server.campaign.commands.helpers.HireAndMaintainHelper;
@@ -2017,7 +2018,8 @@ public final class CampaignMain implements Serializable {
         }
 
         // if he's already logged out, who cares?
-        if (p.getDutyStatus() <= SPlayer.STATUS_LOGGEDOUT) {
+        // Well, it turns out that some people do care - see RFE 2126734
+        if (p.getDutyStatus() <= SPlayer.STATUS_LOGGEDOUT && !CampaignMain.cm.getBooleanConfig("DisconnectIdleUsers")) {
             return;
         }
 
@@ -2030,7 +2032,11 @@ public final class CampaignMain implements Serializable {
         // NOTE: KI| command is actualy campaign logout. GBB| a disco/kill.
         if (System.currentTimeMillis() - p.getLastTimeCommandSent() > maxIdleTime) {
             CampaignMain.cm.toUser("You were logged out by the server (excessive idle time).", p.getName(), true);
-            CampaignMain.cm.toUser("KI|idler", p.getName(), false);
+            if(!CampaignMain.cm.getBooleanConfig("DisconnectIdleUsers")) {
+            	CampaignMain.cm.toUser("KI|idler", p.getName(), false);
+            } else {
+            	CampaignMain.cm.toUser("PL|GBB|idler", p.getName(), false);
+            }
         }
     }
 

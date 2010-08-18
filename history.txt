@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.1.x
+R Released Server v0.3.1.9
++ RFE 2126734 - option to kick idle users instead of logging them off
 R Released Server v0.3.1.8
 + Added HTML Who is online output
 + New MegaMek v0.35.18-MW20100818-7759

@@ -4359,6 +4359,11 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setName("AllowRPTransfer");
         miscCBoxSpring.add(BaseCheckBox);
         
+        BaseCheckBox = new JCheckBox("Disconnect idle users");
+        BaseCheckBox.setToolTipText("<html>Disconnect users after [MAXIDLETIME]?<br>Unchecked logs them out, but leaves them connected.</html>");
+        BaseCheckBox.setName("DisconnectIdleUsers");
+        miscCBoxSpring.add(BaseCheckBox);
+        
         SpringLayoutHelper.setupSpringGrid(miscCBoxSpring, 3);
 
         // finalize layout

@@ -778,6 +778,8 @@ public class DefaultServerOptions {
         defaults.setProperty("PenalizeDefectToNonConq", "true");
 
         defaults.setProperty("MaxIdleTime", "0");
+        defaults.setProperty("DisconnectIdleUsers", "false");
+        
         // ban weapon specialist weapons
         defaults.setProperty("BannedWSWeapons", "AMS,Leg Attack,Swarm Mek,Stop Swarm Attack");
 
