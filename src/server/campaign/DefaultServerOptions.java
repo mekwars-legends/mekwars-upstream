@@ -41,7 +41,8 @@ public class DefaultServerOptions {
         defaults.setProperty("HouseRankPath", "./HouseRanking.html");
         defaults.setProperty("XMLPlanetPath", "./data/DynPlanets.xml");
         defaults.setProperty("MechstatPath", "./Mechstats.htm");
-
+        defaults.setProperty("HTMLWhoPath", "./who.html");
+        
         /*
          * defaults.setProperty("MaxBVDifference", "150"); defaults.setProperty("MaxBVPercent", "0");
          */

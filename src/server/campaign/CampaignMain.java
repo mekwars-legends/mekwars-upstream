@@ -156,6 +156,7 @@ import server.campaign.util.ChatRoom;
 import server.campaign.util.HouseRankingHelpContainer;
 import server.campaign.util.MechStatistics;
 import server.campaign.util.Statistics;
+import server.campaign.util.WhoToHTML;
 import server.campaign.util.XMLFactionDataParser;
 import server.campaign.util.XMLPlanetDataParser;
 import server.campaign.util.XMLTerrainDataParser;
@@ -2047,7 +2048,9 @@ public final class CampaignMain implements Serializable {
         CampaignData.mwlog.mainLog("Slice #" + sliceID + " Started");
         CampaignData.mwlog.cmdLog("Slice #" + sliceID + " Started");
         CampaignData.mwlog.infoLog("Slice #" + sliceID + " Started: " + System.currentTimeMillis());
-
+        
+        WhoToHTML who = new WhoToHTML(CampaignMain.cm.getConfig("HTMLWhoPath"));
+        
         // loop through all houses
         for (House vh : data.getAllHouses()) {
             SHouse currH = (SHouse) vh;
@@ -2056,18 +2059,32 @@ public final class CampaignMain implements Serializable {
             long maxIdleTime = Long.parseLong(CampaignMain.cm.getConfig("MaxIdleTime")) * 60000;
 
             // for reserve players, we only check idleness
-            if (maxIdleTime > 0) {
+/*
+             if (maxIdleTime > 0) {
+
                 for (SPlayer currP : currH.getReservePlayers().values()) {
-                    checkAndRemoveIdle(currP, maxIdleTime);
+                	checkAndRemoveIdle(currP, maxIdleTime);
                 }
             }
-
+*/
+            for (SPlayer currP : currH.getReservePlayers().values()) {
+            	if (maxIdleTime > 0) {
+            		checkAndRemoveIdle(currP, maxIdleTime);
+            	}
+            	if(!currP.isInvisible()) {
+            		who.addPlayer(currP);
+            	}
+            }
+            
             /*
              * Active players get the whole shebang - influence addition,
              * maintainance, and an idle check (if enabled).
              */
             for (SPlayer currP : currH.getActivePlayers().values()) {
                 currP.doMaintainance();
+            	if(!currP.isInvisible()) {
+            		who.addPlayer(currP);
+            	}
                 this.toUser(currP.addInfluenceAtSlice(), currP.getName(), true);
                 if (maxIdleTime > 0) {
                     checkAndRemoveIdle(currP, maxIdleTime);
@@ -2077,6 +2094,9 @@ public final class CampaignMain implements Serializable {
             // fighters only have maint. they get influence grants post-game.
             for (SPlayer currP : currH.getFightingPlayers().values()) {
                 currP.doMaintainance();
+            	if(!currP.isInvisible()) {
+            		who.addPlayer(currP);
+            	}
                 // People fighting are always up to date
                 if (maxIdleTime > 0) {
                     currP.setLastTimeCommandSent(System.currentTimeMillis() + maxIdleTime);
@@ -2084,7 +2104,12 @@ public final class CampaignMain implements Serializable {
             }
 
         }// end all houses
-
+        
+        if (CampaignMain.cm.getBooleanConfig("HTMLOUTPUT")) {
+        	who.outputHTML();
+        }
+        who = null;
+        
         // check to see if we should save on this slice
         int saveOnSlice = CampaignMain.cm.getIntegerConfig("SaveEverySlice");
         if (saveOnSlice < 1) {

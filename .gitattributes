@@ -1275,6 +1275,7 @@ server-dist/data/iplist.txt -text
 server-dist/data/mechfiles/Infantry.zip -text
 server-dist/data/mechfiles/Meks.zip -text
 server-dist/data/mechfiles/Vehicles.zip -text
+server-dist/data/mw_who.css -text
 server-dist/data/pilotmessages/pilotcaptureanddefectedmessages.txt -text
 server-dist/data/pilotmessages/pilotcaptureandremovedmessages.txt -text
 server-dist/data/pilotmessages/pilotcapturemessagestoowner.txt -text
@@ -1967,6 +1968,7 @@ src/server/campaign/util/MechStatistics.java -text
 src/server/campaign/util/OpponentListHelper.java -text
 src/server/campaign/util/PlanetNameComparator.java -text
 src/server/campaign/util/Statistics.java -text
+src/server/campaign/util/WhoToHTML.java -text
 src/server/campaign/util/XMLFactionDataParser.java -text
 src/server/campaign/util/XMLPlanetDataParser.java -text
 src/server/campaign/util/XMLTerrainDataParser.java -text

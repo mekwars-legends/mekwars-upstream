@@ -168,6 +168,12 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setToolTipText("Path to Mechstats.htm");
         baseTextField.setName("MechstatPath");
         pathsSubPanel.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        pathsSubPanel.add(new JLabel("HTML Who Path:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Path to who.html");
+        baseTextField.setName("HTMLWhoPath");
+        pathsSubPanel.add(baseTextField);
 
         // do the spring layout.
         SpringLayoutHelper.setupSpringGrid(pathsSubPanel, 2);
