@@ -93,6 +93,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     private double rating = 1600;
 
     private long lastOnline = 0;
+    private long lastSave = 0;
 
     private Vector<SUnit> units = new Vector<SUnit>(1, 1);
     private Vector<SArmy> armies = new Vector<SArmy>(1, 1);
@@ -160,9 +161,13 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
      * Save player file immediatly.
      */
     public void setSave() {
+    	if (!isReadyToSave()) {
+    		return;
+    	}
         if (!isLoading) {
             CampaignMain.cm.forceSavePlayer(this);
         }
+        setLastSave();
     }
 
     // PUBLIC METHODS
@@ -2869,9 +2874,21 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         return result.toString();
     }
 
+    public boolean isReadyToSave() {
+    	if (System.currentTimeMillis() - lastSave < 5000) {
+    		return false;
+    	}
+    	return true;
+    }
+    
+    public void setLastSave() {
+    	lastSave = System.currentTimeMillis();
+    }
+    
     public void toDB() {
         if (this.isLoading)
             return;
+        
         PreparedStatement ps = null;
         StringBuffer sql = new StringBuffer();
         ResultSet rs = null;
@@ -3073,18 +3090,21 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             // Save Exclude Lists
             this.getExclusionList().toDB(getDBId());
 
-            // Save Units
-            if (getUnits().size() > 0) {
-                for (SUnit currU : getUnits()) {
-                    SPilot pilot = (SPilot) currU.getPilot();
-                    pilot.setCurrentFaction(getMyHouse().getName());
-                    if(pilot != null && pilot.getGunnery() != 99 && pilot.getPiloting() != 99) {
-                    	pilot.toDB(currU.getType(), currU.getWeightclass());
-                    }
-                    currU.toDB();
-                }
-            }
-                ps.close();
+            synchronized (units) {
+				// Save Units
+				if (getUnits().size() > 0) {
+					for (SUnit currU : getUnits()) {
+						SPilot pilot = (SPilot) currU.getPilot();
+						pilot.setCurrentFaction(getMyHouse().getName());
+						if (pilot != null && pilot.getGunnery() != 99
+								&& pilot.getPiloting() != 99) {
+							pilot.toDB(currU.getType(), currU.getWeightclass());
+						}
+						currU.toDB();
+					}
+				}
+			}
+				ps.close();
                 ps = c.prepareStatement("DELETE from playerarmies WHERE playerID = " + getDBId());
                 ps.executeUpdate();
     
@@ -3379,6 +3399,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         } finally {
             isLoading = false;
         }
+        lastSave = System.currentTimeMillis();
     }
 
     public void fromDB(int playerID) {
@@ -3568,6 +3589,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             this.isLoading = false;
             ch.returnConnection(c);
         }
+        lastSave = System.currentTimeMillis();
     }
 
 
