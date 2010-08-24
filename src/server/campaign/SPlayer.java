@@ -160,7 +160,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
      * Save player file immediatly.
      */
     public void setSave() {
-        if (!isLoading) {
+        if (!isLoading && ! CampaignMain.cm.isUsingMySQL()) {
             CampaignMain.cm.forceSavePlayer(this);
         }
     }
