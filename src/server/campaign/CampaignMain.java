@@ -3010,13 +3010,10 @@ public final class CampaignMain implements Serializable {
      * @author nmorris 1/13/06
      */
     private void savePlayerFile(SPlayer p) {
-    	if (!p.isReadyToSave()) {
-    		return;
-    	}
+
         try {
             if (CampaignMain.cm.isUsingMySQL()) {
                 p.toDB();
-                p.setLastSave();
                 return;
             }
             String fileName = p.getName().toLowerCase();
@@ -3043,7 +3040,6 @@ public final class CampaignMain implements Serializable {
             CampaignData.mwlog.errLog(ex);
             CampaignData.mwlog.errLog("Unable to save " + p.getName().toLowerCase());
         }
-        p.setLastSave();
     }
 
     public void loadBanAmmo(String line) {
