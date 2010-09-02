@@ -32,9 +32,6 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import common.CampaignData;
 import common.util.ThreadManager;
@@ -50,99 +47,104 @@ import common.util.ThreadManager;
  * up and calls flush on the different CHes in turn.
  */
 public class ConnectionHandler extends AbstractConnectionHandler {
-    
+
     protected Socket _socket = null;
     protected PrintWriter _out = null;
     protected ReaderThread _reader = null;
     protected WriterThread _writer = null;
     protected InputStream _inputStream = null;
     protected boolean _isShutDown = false;
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-//    protected Dispatcher _dispatcher;
+    // private final ScheduledExecutorService scheduler =
+    // Executors.newScheduledThreadPool(1);
+
+    // protected Dispatcher _dispatcher;
 
     /**
      * Construct a ConnectionHandler for the given socket
      * 
-     * @param s - the socket
-     * @param listener - object that will be notified with incoming messages
-     * @exception IOException- if there is a problem reading or writing to the socket
+     * @param s
+     *            - the socket
+     * @param listener
+     *            - object that will be notified with incoming messages
+     * @exception IOException
+     *                - if there is a problem reading or writing to the socket
      */
     public ConnectionHandler(Socket socket, MWChatClient client) throws IOException {
-        
-    	_client = client;
-        _socket = socket;
-        //_socket.setKeepAlive(true);
 
-        //_socket.setTcpNoDelay(true);
-        //_socket.setSoLinger(false, 0);
-        //_socket.setReuseAddress(true);
-        
+        _client = client;
+        _socket = socket;
+        // _socket.setKeepAlive(true);
+
+        // _socket.setTcpNoDelay(true);
+        // _socket.setSoLinger(false, 0);
+        // _socket.setReuseAddress(true);
+
         _out = new PrintWriter(new OutputStreamWriter(_socket.getOutputStream(), "UTF8"));
         _inputStream = socket.getInputStream();
     }
 
     /**
-     * Called from MWChatClient. Start reading incoming
-     * chat and sending to an associated dispatcher.
+     * Called from MWChatClient. Start reading incoming chat and sending to an
+     * associated dispatcher.
      */
     void init() {
-    	
-    	//set a dispatcher
-    	//d.addHandler(this);
-    	//_dispatcher = d;
-    	
-    	//start reading incoming data
-    	try {
 
-    		_reader = new ReaderThread(this, _client, _inputStream);
-    		ThreadManager.getInstance().runInThreadFromPool(_reader);
-    		_writer = new WriterThread(_socket,_out,_client.getHost());
-    		//ThreadManager.getInstance().runInThreadFromPool(_writer);
-    		scheduler.scheduleAtFixedRate(_writer, 0, 20, TimeUnit.MILLISECONDS);
-    	} catch (OutOfMemoryError OOM) {
-    	    CampaignData.mwlog.errLog(OOM.getMessage());
-    		/*
-    		 * OOM usually mean there are no remaining threads or
-    		 * sockets. This is generally not a problem.
-    		 */
-    		
-    		try {
-    			
-    			//shut down everything we can
-    			_out.close();
-    			_out = null;
-    			_socket.close();
-    			_socket = null;
-    			_inputStream.close();
-    			_inputStream = null;
-    			_client = null;
-    			_reader = null;
-    			_writer = null;
-    			//garbage collect and try again
-    			System.gc();
-    			shutdown(true);
-    		} catch (Exception e) {
-    			CampaignData.mwlog.errLog(e);
-    		}
-    		
-    	}catch (Exception ex) {
-    		CampaignData.mwlog.errLog(ex);
-    	} 
-    	
-    }//end init()
+        // set a dispatcher
+        // d.addHandler(this);
+        // _dispatcher = d;
 
+        // start reading incoming data
+        try {
+
+            _reader = new ReaderThread(this, _client, _inputStream);
+            ThreadManager.getInstance().runInThreadFromPool(_reader);
+            _writer = new WriterThread(_socket, _out, _client.getHost());
+            ThreadManager.getInstance().runInThreadFromPool(_writer);
+            // scheduler.scheduleAtFixedRate(_writer, 0, 20,
+            // TimeUnit.MILLISECONDS);
+        } catch (OutOfMemoryError OOM) {
+            CampaignData.mwlog.errLog(OOM.getMessage());
+            /*
+             * OOM usually mean there are no remaining threads or sockets. This
+             * is generally not a problem.
+             */
+
+            try {
+
+                // shut down everything we can
+                _out.close();
+                _out = null;
+                _socket.close();
+                _socket = null;
+                _inputStream.close();
+                _inputStream = null;
+                _client = null;
+                _reader = null;
+                _writer = null;
+                // garbage collect and try again
+                System.gc();
+                shutdown(true);
+            } catch (Exception e) {
+                CampaignData.mwlog.errLog(e);
+            }
+
+        } catch (Exception ex) {
+            CampaignData.mwlog.errLog(ex);
+        }
+
+    }// end init()
 
     /**
-     * Bypass the message queue to send something immediately. This is
-     * used for pings and to kill clients (bad chars, banned folks, etc).
+     * Bypass the message queue to send something immediately. This is used for
+     * pings and to kill clients (bad chars, banned folks, etc).
      */
     @Override
-	public void queuePriorityMessage(String message) {
+    public void queuePriorityMessage(String message) {
         synchronized (message) {
-    //        CampaignData.mwlog.warnLog("queuePriorityMessage Client: "
-      //              + _client.getUserId() + "Size: " + message.length()
-        //            + " Host: " + _client.getHost());
+            // CampaignData.mwlog.warnLog("queuePriorityMessage Client: "
+            // + _client.getUserId() + "Size: " + message.length()
+            // + " Host: " + _client.getHost());
             _out.print(message + "\n");
             _out.flush();
         }
@@ -155,7 +157,7 @@ public class ConnectionHandler extends AbstractConnectionHandler {
      *            false otherwise (if client called this method on purpose)
      */
     @Override
-	public synchronized void shutdown(boolean notify) {
+    public synchronized void shutdown(boolean notify) {
 
         if (!_isShutDown) {
             _isShutDown = true;
@@ -165,8 +167,8 @@ public class ConnectionHandler extends AbstractConnectionHandler {
 
             _writer.pleaseStop();
             _writer.interrupt();
-            
-            //_dispatcher.removeHandler(this);
+
+            // _dispatcher.removeHandler(this);
 
             try {
                 _socket.close();
@@ -177,11 +179,13 @@ public class ConnectionHandler extends AbstractConnectionHandler {
 
             super.shutdown(notify);
         }
-    }//end shutdown()
-    
-	public void queueMessage(String message) {
-		if ( _writer != null )
-			_writer.queueMessage(message);
-	}
+    }// end shutdown()
+
+    @Override
+    public void queueMessage(String message) {
+        if (_writer != null) {
+            _writer.queueMessage(message);
+        }
+    }
 
 }
