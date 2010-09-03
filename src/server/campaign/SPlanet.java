@@ -321,7 +321,7 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
                 ps.setInt(25, getDBID());
 
                 //Temporary - we're erroring and I need to know why - something having to do with bays
-                CampaignData.mwlog.dbLog(ps.toString());
+                //CampaignData.mwlog.dbLog(ps.toString());
                 
                 ps.executeUpdate();
 
