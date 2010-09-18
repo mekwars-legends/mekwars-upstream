@@ -212,14 +212,14 @@ class GeneralPanel extends JPanel{
         mechTypeL.setText("<HTML><br><b>" + uName + "</b><br></HTML>");
 
         weightR.setText(Integer.toString((int)en.getWeight()));
-        pilotR.setText(en.crew.getDesc());
-        if ( en instanceof Mech || en instanceof Tank
-                || (en instanceof Infantry && ((Infantry)en).isAntiMek()) ){
-            skillsR.setText(en.crew.getGunnery()+"/"+en.crew.getPiloting());
+        pilotR.setText(en.getCrew().getDesc());
+        if ( (en instanceof Mech) || (en instanceof Tank)
+                || ((en instanceof Infantry) && ((Infantry)en).isAntiMek()) ){
+            skillsR.setText(en.getCrew().getGunnery()+"/"+en.getCrew().getPiloting());
         }
         else{
             skillsL.setText("Gunnery:");
-            skillsR.setText(Integer.toString(en.crew.getGunnery()));
+            skillsR.setText(Integer.toString(en.getCrew().getGunnery()));
         }
 
         StringBuilder mp = new StringBuilder();
@@ -245,7 +245,7 @@ class GeneralPanel extends JPanel{
         heatR.setText(Integer.toString(en.heat) + " (" + heatCapacityStr + " capacity)");
 
         String capacity = en.getUnusedString();
-        if (capacity != null && capacity.startsWith("Troops")) {
+        if ((capacity != null) && capacity.startsWith("Troops")) {
             capacity = capacity.substring(9);//strip "Troops - " from string
             cargoR.setText(capacity);
         } else {
@@ -350,12 +350,12 @@ class ArmorPanel extends JPanel {
             }
             if ( en.getArmor(i) >= 99 ){
                 UnitUtils.removeArmorRepair(en,UnitUtils.LOC_FRONT_ARMOR,i);
-                if ( en.hasRearArmor(i) && en.getArmor(i,true) >= 99){
+                if ( en.hasRearArmor(i) && (en.getArmor(i,true) >= 99)){
                     UnitUtils.removeArmorRepair(en,UnitUtils.LOC_REAR_ARMOR,i);
                 }
                 armorL[i].setText(en.getArmorString(i) + (en.hasRearArmor(i) ? " (" + en.getArmorString(i, true) + ")" : ""));
                 UnitUtils.setArmorRepair(en,UnitUtils.LOC_FRONT_ARMOR,i);
-                if ( en.hasRearArmor(i) && en.getArmor(i,true) != en.getOArmor(i,true) ) {
+                if ( en.hasRearArmor(i) && (en.getArmor(i,true) != en.getOArmor(i,true)) ) {
                     UnitUtils.setArmorRepair(en,UnitUtils.LOC_REAR_ARMOR,i);
                 }
             } else {
@@ -531,7 +531,7 @@ class WeaponPanel extends JPanel implements ListSelectionListener {
             // determine shots left & total shots left
             if (wtype.getAmmoType() != AmmoType.T_NA) {
                 int shotsLeft = 0;
-                if (mounted.getLinked() != null && !mounted.getLinked().isDumping()) {
+                if ((mounted.getLinked() != null) && !mounted.getLinked().isDumping()) {
                     shotsLeft = mounted.getLinked().getShotsLeft();
                 }
 
@@ -617,10 +617,10 @@ class WeaponPanel extends JPanel implements ListSelectionListener {
             int i = 0;
             for (Mounted mountedAmmo : entity.getAmmo()) {
                 AmmoType atype = (AmmoType)mountedAmmo.getType();
-                if (mountedAmmo.isDestroyed() || mountedAmmo.getShotsLeft() <= 0 || mountedAmmo.isDumping()) {
+                if (mountedAmmo.isDestroyed() || (mountedAmmo.getShotsLeft() <= 0) || mountedAmmo.isDumping()) {
                     continue;
                 }
-                if (atype.getAmmoType() == wtype.getAmmoType() && atype.getRackSize() == wtype.getRackSize()) {
+                if ((atype.getAmmoType() == wtype.getAmmoType()) && (atype.getRackSize() == wtype.getRackSize())) {
                     ammo.addElement(mountedAmmo);
                     if (mounted.getLinked() == mountedAmmo) {
                         nCur = i;
@@ -822,7 +822,7 @@ class SystemPanel extends JPanel implements ListSelectionListener {
                 Iterator<Mounted> equip = en.getEquipment().iterator();
                 while (equip.hasNext()) {
                     Mounted m = equip.next();
-                    if (m.getType() instanceof MiscType &&
+                    if ((m.getType() instanceof MiscType) &&
                         m.getType().hasFlag(MiscType.F_TARGCOMP) ) {
                         StringBuilder sb = new StringBuilder(32);
                         sb.append(m.isDestroyed() ? "*" : "").append(m.isBreached() ? "x" : "").append(m.getDesc()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -842,7 +842,7 @@ class SystemPanel extends JPanel implements ListSelectionListener {
             displaySlots();
         } else if (ev.getSource() == slotList) {
             Mounted m = getSelectedEquipment();
-            if (m != null && m.getType().hasModes()) {
+            if ((m != null) && m.getType().hasModes()) {
                 modeLabel.setEnabled(true);
                 modeList.setEnabled(true);
                 modeList.removeAllItems();
