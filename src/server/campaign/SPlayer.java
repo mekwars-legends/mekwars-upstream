@@ -478,7 +478,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 }
                 numBays += expBays;
             } else {
-                CampaignData.mwlog.errLog("0 is invalid setting for EXP for Bay Setting!");
+                CampaignData.mwlog.errLog("0 is invalid setting for EXP for Bay Setting when using xp for bays!");
             }
         }
 
