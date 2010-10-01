@@ -1,6 +1,12 @@
 VERSION HISTORY:
 ----------------
 v 0.3.1.x
+R Released Client v 0.3.1.1
+  ********************************************************************
+  *** SOs, please note that the "data/names" directory is required ***
+  *** client-side for the new MM version.                          ***
+  ********************************************************************
++ New MegaMek v0.35.19-MW20101001-7892
 + Added names directory to client-dist as required by next MM release.
 + Reverted Back Code for WriterThread to use Thread Pool code instead of Scheduler.
 R Released Server v0.3.1.9
