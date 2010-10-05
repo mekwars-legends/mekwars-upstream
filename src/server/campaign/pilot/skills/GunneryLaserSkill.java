@@ -75,13 +75,16 @@ public class GunneryLaserSkill extends SPilotSkill {
     public int getBVMod(Entity unit) {
         double laserBV = 0;
         double gunneryLaserBVBaseMod = megamek.common.Pilot.getBVSkillMultiplier(unit.getCrew().getGunnery() - 1, unit.getCrew().getPiloting());
-
+        double originalLaserBV = 0;
         for (Mounted weapon : unit.getWeaponList()) {
             if (weapon.getType().hasFlag(WeaponType.F_ENERGY)) {
                 laserBV += weapon.getType().getBV(unit);
+                originalLaserBV += weapon.getType().getBV(unit);
             }
         }
-        return (int) (laserBV * gunneryLaserBVBaseMod);
+        // This is adding the base BV of the weapon twice - once originally, and once here.
+        // Need to back out the original cost so that it only gets added once.
+        return (int) ((laserBV * gunneryLaserBVBaseMod) - originalLaserBV);
     }
 
     @Override

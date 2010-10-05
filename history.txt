@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.1.x
+R Released Server v 0.3.1.10
++ Bug: Gunnery/<anything> was adding base weapon BV to unit twice
 R Released Client v 0.3.1.1
   ********************************************************************
   *** SOs, please note that the "data/names" directory is required ***
