@@ -826,6 +826,13 @@ public class DefaultServerOptions {
         defaults.setProperty("BufferedVDNIBaseBVMod", "50");
         defaults.setProperty("PainShuntBaseBVMod", "50");
 
+        defaults.setProperty("USEFLATGUNNERYBALLISTICMODIFIER", "false");
+        defaults.setProperty("USEFLATGUNNERYLASERMODIFIER", "false");
+        defaults.setProperty("USEFLATGUNNERYMISSILEMODIFIER", "false");
+        defaults.setProperty("GunneryBallisticBaseBVMod", "35");
+        defaults.setProperty("GunneryLaserBaseBVMod", "35");
+        defaults.setProperty("GunneryMissileBaseBVMod", "35");
+        
         // Mega Mek Client Settings
         defaults.setProperty("MMTimeStampLogFile", "false");
         defaults.setProperty("MMShowUnitId", "true");

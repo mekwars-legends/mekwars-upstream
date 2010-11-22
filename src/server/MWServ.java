@@ -54,7 +54,7 @@ import common.comm.ServerCommand;
 public class MWServ {
 
 	// Static logging engine, and static version info.
-    public static final String SERVER_VERSION = "0.3.1.10";// Sync this with the
+    public static final String SERVER_VERSION = "0.3.1.11";// Sync this with the
 															// clientVersion in
 															// MMClient @Torren
 

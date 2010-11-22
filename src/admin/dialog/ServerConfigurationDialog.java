@@ -122,7 +122,6 @@ public final class ServerConfigurationDialog implements ActionListener {
         JPanel autoProdPanel = new JPanel(); // Autoproduction
         /*
          * PGMH PANEL CONSTRUCTION Set up the PGMH panel, which indicates where HTML output (EXPRanking, etc.) is dumped and where certain core server files are located.
-         */
         // give the path panel a box layout. its going to be smaller than some,
         // so
         // we dont need flow-nested boxes
@@ -2026,9 +2025,44 @@ public final class ServerConfigurationDialog implements ActionListener {
         baseTextField.setName("GiftedPercent");
         SkillModSpring.add(baseTextField);
 
+        JPanel GunneryModPanel = new JPanel();
+        
+        GunneryModPanel.setLayout(new GridLayout(3,2));
+        
+        BaseCheckBox = new JCheckBox("Flat G/B Mod");
+        BaseCheckBox.setName("USEFLATGUNNERYBALLISTICMODIFIER");
+        GunneryModPanel.add(BaseCheckBox);
+
+        baseTextField = new JTextField(5);
+        baseTextField.setName("GunneryBallisticBaseBVMod");
+        baseTextField.setToolTipText("BV Mod per Ballistic Weapon");
+        GunneryModPanel.add(baseTextField);
+        
+        BaseCheckBox = new JCheckBox("Flat G/L Mod");
+        BaseCheckBox.setName("USEFLATGUNNERYLASERMODIFIER");
+        GunneryModPanel.add(BaseCheckBox);
+
+        baseTextField = new JTextField(5);
+        baseTextField.setName("GunneryLaserBaseBVMod");
+        baseTextField.setToolTipText("BV Mod per Laser Weapon");
+        GunneryModPanel.add(baseTextField);
+        
+        BaseCheckBox = new JCheckBox("Flat G/M Mod");
+        BaseCheckBox.setName("USEFLATGUNNERYMISSILEMODIFIER");
+        GunneryModPanel.add(BaseCheckBox);
+
+        baseTextField = new JTextField(5);
+        baseTextField.setName("GunneryMissileBaseBVMod");
+        baseTextField.setToolTipText("BV Mod per Missile Weapon");
+        GunneryModPanel.add(baseTextField);
+        
+        
         SpringLayoutHelper.setupSpringGrid(SkillModSpring, 4);
 
+        pilotSkillsModPanel.setLayout(new VerticalLayout(10));
+        
         pilotSkillsModPanel.add(SkillModSpring);
+        pilotSkillsModPanel.add(GunneryModPanel);
 
         /*
          * Pilots options panel

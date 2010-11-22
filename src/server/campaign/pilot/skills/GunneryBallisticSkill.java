@@ -27,6 +27,7 @@ import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.pilot.SPilot;
 
+import common.CampaignData;
 import common.MegaMekPilotOption;
 import common.Unit;
 import common.campaign.pilot.Pilot;
@@ -73,6 +74,9 @@ public class GunneryBallisticSkill extends SPilotSkill {
 
     @Override
     public int getBVMod(Entity unit) {
+    	if (CampaignMain.cm.getBooleanConfig("USEFLATGUNNERYBALLISTICMODIFIER")) {
+    		return getBVModFlat(unit);
+    	}
         double ballisticBV = 0;
         double gunneryBallisticBVBaseMod = megamek.common.Pilot.getBVSkillMultiplier(unit.getCrew().getGunnery() - 1, unit.getCrew().getPiloting());
 
@@ -86,7 +90,11 @@ public class GunneryBallisticSkill extends SPilotSkill {
 
     @Override
     public int getBVMod(Entity unit, SPilot p) {
-        double ballisticBV = 0;
+    	if (CampaignMain.cm.getBooleanConfig("USEFLATGUNNERYBALLISTICMODIFIER")) {
+    		return getBVModFlat(unit);
+    	}
+    	
+    	double ballisticBV = 0;
         double gunneryBallisticBVBaseMod = megamek.common.Pilot.getBVSkillMultiplier(unit.getCrew().getGunnery() - 1, unit.getCrew().getPiloting());
         double originalBallisticBV = 0;
         
@@ -101,4 +109,15 @@ public class GunneryBallisticSkill extends SPilotSkill {
         return (int) ((ballisticBV * gunneryBallisticBVBaseMod) - originalBallisticBV);
     }
 
+    
+	public int getBVModFlat(Entity unit){
+        int numberOfGuns = 0;
+        int gunneryBallisticBVBaseMod = CampaignMain.cm.getIntegerConfig("GunneryBallisticBaseBVMod");
+        
+        for(Mounted weapon : unit.getWeaponList() ){
+            if ( weapon.getType().hasFlag(WeaponType.F_BALLISTIC) )
+                numberOfGuns++;
+        }
+        return numberOfGuns * gunneryBallisticBVBaseMod;
+    }
 }

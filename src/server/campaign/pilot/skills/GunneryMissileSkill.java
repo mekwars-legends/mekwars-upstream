@@ -73,6 +73,9 @@ public class GunneryMissileSkill extends SPilotSkill {
 
     @Override
     public int getBVMod(Entity unit) {
+    	if (CampaignMain.cm.getBooleanConfig("USEFLATGUNNERYMISSILEMODIFIER")) {
+    		return getBVModFlat(unit);
+    	}
         double missileBV = 0;
         double gunneryMissileBVBaseMod = megamek.common.Pilot.getBVSkillMultiplier(unit.getCrew().getGunnery() - 1, unit.getCrew().getPiloting());
         double originalMissileBV = 0;
@@ -91,5 +94,17 @@ public class GunneryMissileSkill extends SPilotSkill {
     @Override
     public int getBVMod(Entity unit, SPilot p) {
         return getBVMod(unit);
+    }
+    
+    
+	public int getBVModFlat(Entity unit){
+        int numberOfGuns = 0;
+        int gunneryMissileBVBaseMod = CampaignMain.cm.getIntegerConfig("GunneryMissileBaseBVMod");
+        
+        for(Mounted weapon : unit.getWeaponList() ){
+            if ( weapon.getType().hasFlag(WeaponType.F_MISSILE) )
+                numberOfGuns++;
+        }
+        return numberOfGuns * gunneryMissileBVBaseMod;
     }
 }

@@ -73,6 +73,9 @@ public class GunneryLaserSkill extends SPilotSkill {
 
     @Override
     public int getBVMod(Entity unit) {
+    	if (CampaignMain.cm.getBooleanConfig("USEFLATGUNNERYLASERMODIFIER")) {
+    		return getBVModFlat(unit);
+    	}
         double laserBV = 0;
         double gunneryLaserBVBaseMod = megamek.common.Pilot.getBVSkillMultiplier(unit.getCrew().getGunnery() - 1, unit.getCrew().getPiloting());
         double originalLaserBV = 0;
@@ -90,5 +93,16 @@ public class GunneryLaserSkill extends SPilotSkill {
     @Override
     public int getBVMod(Entity unit, SPilot p) {
         return getBVMod(unit);
+    }
+    
+	public int getBVModFlat(Entity unit){
+        int numberOfLasers = 0;
+        int gunneryLaserBVBaseMod = CampaignMain.cm.getIntegerConfig("GunneryLaserBaseBVMod");
+        
+        for(Mounted weapon : unit.getWeaponList() ){
+            if ( weapon.getType().hasFlag(WeaponType.F_ENERGY) )
+                numberOfLasers++;
+        }
+        return numberOfLasers * gunneryLaserBVBaseMod;
     }
 }
