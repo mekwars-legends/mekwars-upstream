@@ -20,7 +20,6 @@ public class TargetSystem {
 	private int currentType = TS_TYPE_STANDARD;
 	
 	public void setTargetSystem(int type) throws TargetTypeOutOfBoundsException, TargetTypeNotImplementedException {
-		CampaignData.mwlog.errLog("Setting Target System to: " + type);
 		if (type < 0 || type > TS_TYPE_MAX) {
 			throw new TargetTypeOutOfBoundsException(type);
 		}
