@@ -1466,13 +1466,13 @@ src/common/TerrainProvider.java -text
 src/common/Unit.java -text
 src/common/UnitFactory.java -text
 src/common/campaign/Buildings.java -text
-src/common/campaign/TargetSystem.java -text
-src/common/campaign/TargetTypeNotImplementedException.java -text
-src/common/campaign/TargetTypeOutOfBoundsException.java -text
 src/common/campaign/pilot/Pilot.java -text
 src/common/campaign/pilot/skills/IPilotSkill.java -text
 src/common/campaign/pilot/skills/PilotSkill.java -text
 src/common/campaign/pilot/skills/PilotSkills.java -text
+src/common/campaign/targetsystems/TargetSystem.java -text
+src/common/campaign/targetsystems/TargetTypeNotImplementedException.java -text
+src/common/campaign/targetsystems/TargetTypeOutOfBoundsException.java -text
 src/common/comm/ClientCommand.java -text
 src/common/comm/Command.java -text
 src/common/comm/ICommand.java -text

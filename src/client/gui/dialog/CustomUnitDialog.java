@@ -69,11 +69,11 @@ import client.campaign.CUnit;
 
 import common.CampaignData;
 import common.House;
-import common.campaign.TargetSystem;
-import common.campaign.TargetTypeNotImplementedException;
-import common.campaign.TargetTypeOutOfBoundsException;
 import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
+import common.campaign.targetsystems.TargetSystem;
+import common.campaign.targetsystems.TargetTypeNotImplementedException;
+import common.campaign.targetsystems.TargetTypeOutOfBoundsException;
 import common.util.SpringLayoutHelper;
 
 /**

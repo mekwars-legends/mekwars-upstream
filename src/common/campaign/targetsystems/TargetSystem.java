@@ -1,4 +1,4 @@
-package common.campaign;
+package common.campaign.targetsystems;
 
 import java.util.Vector;
 

@@ -1,6 +1,11 @@
-package common.campaign;
+package common.campaign.targetsystems;
 
 public class TargetTypeNotImplementedException extends Exception {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6789705609508538769L;
 
 	public TargetTypeNotImplementedException() {
 		// TODO Auto-generated constructor stub

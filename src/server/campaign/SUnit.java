@@ -56,9 +56,9 @@ import server.mwmysql.JDBCConnectionHandler;
 import common.CampaignData;
 import common.MegaMekPilotOption;
 import common.Unit;
-import common.campaign.TargetTypeNotImplementedException;
-import common.campaign.TargetTypeOutOfBoundsException;
 import common.campaign.pilot.skills.PilotSkill;
+import common.campaign.targetsystems.TargetTypeNotImplementedException;
+import common.campaign.targetsystems.TargetTypeOutOfBoundsException;
 import common.util.TokenReader;
 import common.util.UnitUtils;
 
