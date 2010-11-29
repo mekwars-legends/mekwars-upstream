@@ -2511,7 +2511,7 @@ public class CHQPanel extends JPanel {
                 Entity theEntity = mek.getEntity();
                 // JFrame InfoWindow = new JFrame();
                 theEntity.loadAllWeapons();
-                CustomUnitDialog customizeUnit = new CustomUnitDialog(mwclient, theEntity, mek.getPilot());
+                CustomUnitDialog customizeUnit = new CustomUnitDialog(mwclient, theEntity, mek.getPilot(), mek);
                 customizeUnit.setVisible(true);
 
             }// Repair a unit
@@ -3176,7 +3176,8 @@ public class CHQPanel extends JPanel {
                             C3Text.append("Tech Base: IS");
                         }
                     }
-
+                    C3Text.append("Targeting: " + cm.getTargetSystemTypeDesc());
+                    
                     // If you have a unit in more then one army, list all the
                     // armies it is in.
                     if (inNumberofArmies > 1) {
@@ -3190,7 +3191,6 @@ public class CHQPanel extends JPanel {
                     } else {
                         description = cm.getDisplayInfo(C3Text.toString());
                     }
-
                     setToolTipText(description);
                     setUnit(cm, l);
                     setImageVisible(true);

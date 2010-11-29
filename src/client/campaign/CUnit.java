@@ -31,12 +31,16 @@ import megamek.common.Mech;
 import megamek.common.Mounted;
 import megamek.common.OffBoardDirection;
 import megamek.common.WeaponType;
+import megamek.common.options.Quirks;
 import client.MWClient;
 
 import common.CampaignData;
 import common.House;
 import common.MegaMekPilotOption;
 import common.Unit;
+import common.campaign.TargetSystem;
+import common.campaign.TargetTypeNotImplementedException;
+import common.campaign.TargetTypeOutOfBoundsException;
 import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
 import common.util.TokenReader;
@@ -208,7 +212,17 @@ public class CUnit extends Unit {
 
         TokenReader.readString(ST);// unused
 
-        TokenReader.readString(ST);// unused
+        targetSystem.setEntity(UnitEntity);
+        try {
+			targetSystem.setTargetSystem(TokenReader.readInt(ST));
+		} catch (TargetTypeOutOfBoundsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TargetTypeNotImplementedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
 
         scrappableFor = TokenReader.readInt(ST);
 
@@ -538,6 +552,25 @@ public class CUnit extends Unit {
         return cost;
     }
 
+    public void setAntiAir(boolean aa) {
+    	Quirks quirks = UnitEntity.getQuirks();
+    	quirks.getOption("anti_air").setValue(aa);
+    }
+	
+
+    
+    public void setTargetSystem(int type) {
+    	try {
+			targetSystem.setTargetSystem(type);
+		} catch (TargetTypeOutOfBoundsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TargetTypeNotImplementedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
     public static double getCritCost(Entity unit, MWClient client, CriticalSlot crit) {
         double cost = 0.0;
 
@@ -601,4 +634,13 @@ public class CUnit extends Unit {
         cost = Math.max(cost, 1);
         return cost;
     }
+
+	public String getTargetSystemTypeDesc() {
+		// TODO Auto-generated method stub
+		return targetSystem.getCurrentTypeName();
+	}
+
+	public TargetSystem getTargetSystem() {
+		return targetSystem;
+	}
 }// end CUnit.java

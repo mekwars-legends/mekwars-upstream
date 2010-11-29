@@ -47,6 +47,7 @@ import megamek.common.Pilot;
 import megamek.common.Tank;
 import megamek.common.WeaponType;
 import megamek.common.options.PilotOptions;
+import megamek.common.options.Quirks;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.SPilotSkill;
 import server.campaign.pilot.skills.WeaponSpecialistSkill;
@@ -55,6 +56,8 @@ import server.mwmysql.JDBCConnectionHandler;
 import common.CampaignData;
 import common.MegaMekPilotOption;
 import common.Unit;
+import common.campaign.TargetTypeNotImplementedException;
+import common.campaign.TargetTypeOutOfBoundsException;
 import common.campaign.pilot.skills.PilotSkill;
 import common.util.TokenReader;
 import common.util.UnitUtils;
@@ -546,7 +549,9 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
             result.append("0$");
         }
 
-        result.append("0$0$0$"); // unused Slite info and targetting.
+        result.append("0$0$"); // unused Slite info and targetting.
+        result.append(targetSystem.getCurrentType());
+        result.append("$");
         result.append(getScrappableFor());
         result.append("$");
         if (CampaignMain.cm.isUsingAdvanceRepair()) {
@@ -748,10 +753,10 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
                 }
             }
             setEntity(en);
+            targetSystem.setEntity(en);
             TokenReader.readString(ST);// unused
             TokenReader.readString(ST);// unused
-            TokenReader.readString(ST);// unused
-
+            targetSystem.setTargetSystem(TokenReader.readInt(ST));
             setScrappableFor(TokenReader.readInt(ST));
 
             if (CampaignMain.cm.isUsingAdvanceRepair() && ((unitEntity instanceof Mech) || (unitEntity instanceof Tank))) {
@@ -1546,4 +1551,16 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
 	public int compareTo(SUnit u) {
 		return Integer.valueOf(this.getId()).compareTo(Integer.valueOf(u.getId()));	
 	}
+
+    public void setTargetSystem(int type) {
+    	try {
+			targetSystem.setTargetSystem(type);
+		} catch (TargetTypeOutOfBoundsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TargetTypeNotImplementedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 }

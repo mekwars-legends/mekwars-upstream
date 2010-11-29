@@ -65,9 +65,13 @@ import megamek.common.Tank;
 import megamek.common.TechConstants;
 import megamek.common.WeaponType;
 import client.MWClient;
+import client.campaign.CUnit;
 
 import common.CampaignData;
 import common.House;
+import common.campaign.TargetSystem;
+import common.campaign.TargetTypeNotImplementedException;
+import common.campaign.TargetTypeOutOfBoundsException;
 import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
 import common.util.SpringLayoutHelper;
@@ -111,7 +115,9 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
     private JCheckBox koCB = new JCheckBox("KO Rolls");
     private JCheckBox headHitsCB = new JCheckBox("Head Hit Rolls");
     private JCheckBox explosionsCB = new JCheckBox("Explosion Rolls");
-
+    private JComboBox targetSelection = new JComboBox();
+    private JPanel panTargeting = new JPanel();
+    
     private Entity entity;
     private boolean okay = false;
 
@@ -122,13 +128,16 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
     private Pilot pilot = null;
     private boolean usingCrits = false;
 
+    private CUnit unit;
+    
     /** Creates new CustomMechDialog */
-    public CustomUnitDialog(MWClient mwclient, Entity entity, Pilot pilot) {
+    public CustomUnitDialog(MWClient mwclient, Entity entity, Pilot pilot, CUnit unit) {
         super(mwclient.getMainFrame());
 
         this.entity = entity;
         this.mwclient = mwclient;
         this.pilot = pilot;
+        this.unit = unit;
         usingCrits = Boolean.parseBoolean(mwclient.getserverConfigs("UsePartsRepair"));
 
         mmClient.game.getOptions().loadOptions();
@@ -253,6 +262,12 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
             scrollPanel.add(panMachineGuns);
         }
 
+        /*
+         * Build fouth subpanel - Target System
+         */
+        setupTargetSystems();
+        scrollPanel.add(panTargeting);
+        
         // add window listener which hides the window on close.
         addWindowListener(new WindowAdapter() {
             @Override
@@ -269,7 +284,20 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
         setLocationRelativeTo(null);
     }
 
-    private void setupMunitions() {
+    private void setupTargetSystems() {
+    	String names[] = unit.getTargetSystem().getNameArray();
+    	targetSelection = new JComboBox(names);
+    	String currentTargetSystemName = unit.getTargetSystemTypeDesc();
+    	for (int i = 0; i < names.length; i++) {
+    		if (targetSelection.getItemAt(i).toString().equalsIgnoreCase(currentTargetSystemName)) {
+    			targetSelection.setSelectedIndex(i);
+    		}
+    	}
+    	panTargeting.add(new JLabel("Targeting System:"));
+    	panTargeting.add(targetSelection);
+	}
+
+	private void setupMunitions() {
 
         int munitionsRows = 0;
         panMunitions.setLayout(new SpringLayout());
@@ -843,7 +871,14 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
             for (MachineGunChoicePanel machineGunChoicePanel : m_vMachineGuns) {
                 machineGunChoicePanel.applyChoice();
             }
-
+            
+            // Targeting
+            int newTargetSystem = unit.getTargetSystem().getTypeByName(targetSelection.getSelectedItem().toString());
+            CampaignData.mwlog.errLog("Targeting Selected: " + newTargetSystem);
+            if (newTargetSystem != unit.getTargetSystem().getCurrentType()) {
+            	// Change in targeting - send server notification
+            	mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setTargetSystem#" + unit.getId() + "#" + newTargetSystem);
+            }
         }
 
         setVisible(false);

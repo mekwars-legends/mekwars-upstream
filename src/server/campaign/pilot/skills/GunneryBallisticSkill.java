@@ -106,6 +106,10 @@ public class GunneryBallisticSkill extends SPilotSkill {
         }
         // This is adding the base BV of the weapon twice - once originally, and once here.
         // Need to back out the original cost so that it only gets added once. 
+        CampaignData.mwlog.debugLog("Ballistic BV: " + ballisticBV);
+        CampaignData.mwlog.debugLog("Original Ballistic BV: " + originalBallisticBV);
+        CampaignData.mwlog.debugLog("Mod: " + (int) ((ballisticBV * gunneryBallisticBVBaseMod) - originalBallisticBV));
+        
         return (int) ((ballisticBV * gunneryBallisticBVBaseMod) - originalBallisticBV);
     }
 

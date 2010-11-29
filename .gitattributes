@@ -1466,6 +1466,9 @@ src/common/TerrainProvider.java -text
 src/common/Unit.java -text
 src/common/UnitFactory.java -text
 src/common/campaign/Buildings.java -text
+src/common/campaign/TargetSystem.java -text
+src/common/campaign/TargetTypeNotImplementedException.java -text
+src/common/campaign/TargetTypeOutOfBoundsException.java -text
 src/common/campaign/pilot/Pilot.java -text
 src/common/campaign/pilot/skills/IPilotSkill.java -text
 src/common/campaign/pilot/skills/PilotSkill.java -text
@@ -1686,6 +1689,7 @@ src/server/campaign/commands/SetEdgeSkillsCommand.java -text
 src/server/campaign/commands/SetMOTDCommand.java -text
 src/server/campaign/commands/SetMaintainedCommand.java -text
 src/server/campaign/commands/SetMyLogoCommand.java -text
+src/server/campaign/commands/SetTargetSystemCommand.java -text
 src/server/campaign/commands/SetUnitAmmoByCritCommand.java -text
 src/server/campaign/commands/SetUnitAmmoCommand.java -text
 src/server/campaign/commands/SetUnitBurstCommand.java -text

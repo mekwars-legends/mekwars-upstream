@@ -27,6 +27,7 @@ import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.pilot.SPilot;
 
+import common.CampaignData;
 import common.MegaMekPilotOption;
 import common.Unit;
 import common.campaign.pilot.Pilot;
@@ -74,6 +75,7 @@ public class GunneryLaserSkill extends SPilotSkill {
     @Override
     public int getBVMod(Entity unit) {
     	if (CampaignMain.cm.getBooleanConfig("USEFLATGUNNERYLASERMODIFIER")) {
+    		CampaignData.mwlog.debugLog("Using Flat GL Mod");
     		return getBVModFlat(unit);
     	}
         double laserBV = 0;
@@ -87,6 +89,10 @@ public class GunneryLaserSkill extends SPilotSkill {
         }
         // This is adding the base BV of the weapon twice - once originally, and once here.
         // Need to back out the original cost so that it only gets added once.
+        CampaignData.mwlog.debugLog("Laser BV: " + laserBV);
+        CampaignData.mwlog.debugLog("Original Laser BV: " + originalLaserBV);
+        CampaignData.mwlog.debugLog("Mod: " + (int) ((laserBV * gunneryLaserBVBaseMod) - originalLaserBV));
+
         return (int) ((laserBV * gunneryLaserBVBaseMod) - originalLaserBV);
     }
 

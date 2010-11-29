@@ -22,6 +22,9 @@ package common;
 
 import java.util.Vector;
 
+import common.campaign.TargetSystem;
+import common.campaign.TargetTypeNotImplementedException;
+import common.campaign.TargetTypeOutOfBoundsException;
 import common.campaign.pilot.Pilot;
 
 import megamek.common.Aero;
@@ -89,6 +92,8 @@ public class Unit {
     private int currentRepairCost = 0;
     private int lifeTimeRepairCost = 0;
 
+    protected TargetSystem targetSystem = new TargetSystem();
+    
     //CONSTRUCTOR
     public Unit(){
         //no content
@@ -600,7 +605,7 @@ public class Unit {
             lifeTimeRepairCost += cost;
         }
     }
-
+    
     public int getCurrentRepairCost () {
         return currentRepairCost;
     }
@@ -618,4 +623,8 @@ public class Unit {
         return false;
     }
 
+    public boolean isAntiAir() {
+    	return targetSystem.is("anti_air");
+    }
+    
 }

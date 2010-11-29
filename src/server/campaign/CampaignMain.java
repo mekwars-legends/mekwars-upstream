@@ -1712,6 +1712,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("SETPLANETWAREHOUSE", new SetPlanetWareHouseCommand());
         Commands.put("SETPLANETCOMPPRODUCTION", new SetPlanetCompProductionCommand());
         Commands.put("SETSUBFACTIONCONFIG", new SetSubFactionConfigCommand());
+        Commands.put("SETTARGETSYSTEM", new SetTargetSystemCommand());
         Commands.put("SETUNITAMMO", new SetUnitAmmoCommand());
         Commands.put("SETUNITAMMOBYCRIT", new SetUnitAmmoByCritCommand());
         Commands.put("SETUNITBURST", new SetUnitBurstCommand());

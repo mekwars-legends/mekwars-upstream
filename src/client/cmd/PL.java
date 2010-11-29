@@ -261,6 +261,13 @@ public class PL extends Command {
             mwclient.getPlayer().setAutoReorder(TokenReader.readBoolean(st));
         } else if (cmd.equals("SHP")) {
             player.parseHangarPenaltyString(TokenReader.readString(st));
+        } else if (cmd.equals("STS")) {
+        	int unitID = TokenReader.readInt(st);
+        	int targetType = TokenReader.readInt(st);
+        	CampaignData.mwlog.errLog("Setting Targeting for Unit " + unitID + " to " + targetType);
+        	player.getUnit(unitID).setTargetSystem(targetType);
+        	mwclient.doParseDataInput("CH|AM: Targeting for unit " + unitID + " set to " + player.getUnit(unitID).getTargetSystemTypeDesc());
+        	
         } else {
             return;
         }
