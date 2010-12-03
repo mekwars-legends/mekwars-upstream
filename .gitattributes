@@ -1320,6 +1320,7 @@ src/admin/AdminMenu.java -text
 src/admin/ModeratorMenu.java -text
 src/admin/StaffUserlistPopupMenu.java -text
 src/admin/dialog/BannedAmmoDialog.java -text
+src/admin/dialog/BannedTargetingDialog.java -text
 src/admin/dialog/CommandNameDialog.java -text
 src/admin/dialog/ComponentDisplayDialog.java -text
 src/admin/dialog/FactionConfigurationDialog.java -text
@@ -1364,6 +1365,7 @@ src/client/cmd/PS.java -text
 src/client/cmd/RBP.java -text
 src/client/cmd/RUD.java -text
 src/client/cmd/SAS.java -text
+src/client/cmd/SBT.java -text
 src/client/cmd/SL.java -text
 src/client/cmd/SM.java -text
 src/client/cmd/SP.java -text
@@ -1781,6 +1783,7 @@ src/server/campaign/commands/admin/AdminSetPlanetOriginalOwnerCommand.java -text
 src/server/campaign/commands/admin/AdminSetPlanetTemperatureCommand.java -text
 src/server/campaign/commands/admin/AdminSetPlanetVacuumCommand.java -text
 src/server/campaign/commands/admin/AdminSetServerAmmoBanCommand.java -text
+src/server/campaign/commands/admin/AdminSetServerTargetBanCommand.java -text
 src/server/campaign/commands/admin/AdminSpoofCommand.java -text
 src/server/campaign/commands/admin/AdminTerminateAllCommand.java -text
 src/server/campaign/commands/admin/AdminTransferCommand.java -text

@@ -2498,6 +2498,20 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         // send the player the latest data from the factionbays
         p.setLastOnline(System.currentTimeMillis());// must be done after
         // smallplayer creation
+        
+        // Send the target system bans
+        StringBuilder tsBans = new StringBuilder();
+        tsBans.append("SBT|");
+       
+        for (int ban : CampaignMain.cm.getData().getBannedTargetingSystems()) {
+        	tsBans.append(ban);
+        	tsBans.append("|");
+        }
+        tsBans.append("|");
+        CampaignData.mwlog.mainLog("Sending TargetBans: " + tsBans.toString());
+        CampaignMain.cm.toUser(tsBans.toString(), realName, false);
+        
+        
 
         return ("<b>[*] Logged into " + getColoredNameAsLink() + ".</b>");
     }

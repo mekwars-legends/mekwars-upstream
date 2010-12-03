@@ -162,4 +162,22 @@ public class TargetSystem {
 		names.toArray(toReturn);
 		return toReturn;
 	}
+
+	public String[] getNonBannedNameArray(Vector<Integer> bans) {
+		Vector<String> names = new Vector<String>(1,1);
+		for (int i = TS_TYPE_STANDARD; i <= TS_TYPE_MAX; i++) {
+			try {
+				if(!bans.contains(i)) {
+					names.add(getTypeName(i));
+				}
+			} catch (TargetTypeOutOfBoundsException e) {
+				CampaignData.mwlog.errLog(e);
+			} catch (TargetTypeNotImplementedException e) {
+				CampaignData.mwlog.errLog(e);
+			}
+		}
+		String toReturn[] = new String[names.size()];
+		names.toArray(toReturn);
+		return toReturn;
+	}
 }

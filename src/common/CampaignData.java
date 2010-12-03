@@ -25,6 +25,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
+import java.util.Vector;
 
 import megamek.common.AmmoType;
 
@@ -82,7 +83,7 @@ public class CampaignData implements TerrainProvider {
     private ArrayList<Terrain> terrains = new ArrayList<Terrain>();
 
     private Hashtable<String, String> ServerBannedAmmo = new Hashtable<String, String>();
-    private HashMap<Integer, String> bannedTargetingSystems = new HashMap<Integer, String>();
+    private Vector<Integer> bannedTargetingSystems = new Vector<Integer>();
     private Hashtable<String, Integer> commands = new Hashtable<String, Integer>();
     private TreeMap<String, String> planetOpFlags = new TreeMap<String, String>();
 
@@ -738,11 +739,11 @@ public class CampaignData implements TerrainProvider {
         return ServerBannedAmmo;
     }
 
-    public void setBannedTargetingSystems(HashMap<Integer, String> ban) {
+    public void setBannedTargetingSystems(Vector<Integer> ban) {
         bannedTargetingSystems = ban;
     }
 
-    public HashMap<Integer, String> getBannedTargetingSystems() {
+    public Vector<Integer> getBannedTargetingSystems() {
         return bannedTargetingSystems;
     }
 
@@ -800,4 +801,12 @@ public class CampaignData implements TerrainProvider {
     public void setServerConfigs(Properties configs) {
         serverConfigs = configs;
     }
+
+	public boolean targetSystemIsBanned(int id) {
+		if(bannedTargetingSystems.contains(id)) {
+			return true;
+		}
+		return false;
+	}
+
 }

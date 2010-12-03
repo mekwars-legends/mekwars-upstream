@@ -179,7 +179,7 @@ public final class MWClient implements IClient, GameListener {
 
     CConfig Config;
 
-    public static final String CLIENT_VERSION = "0.3.2.0"; // change this with
+    public static final String CLIENT_VERSION = "0.3.2.1"; // change this with
     // all client
     // changes @Torren
 
@@ -3089,7 +3089,7 @@ public final class MWClient implements IClient, GameListener {
     public void loadBanTargeting(String line) {
         StringTokenizer st = new StringTokenizer(line, "#");
         while (st.hasMoreTokens()) {
-            getData().getBannedTargetingSystems().put(Integer.parseInt(st.nextToken()), "Banned");
+            getData().getBannedTargetingSystems().add(Integer.parseInt(st.nextToken()));
         }
     }
 
@@ -3099,7 +3099,7 @@ public final class MWClient implements IClient, GameListener {
             FileOutputStream out = new FileOutputStream(cacheDir + "/bantargeting.dat");
             PrintStream p = new PrintStream(out);
             p.println(timestamp);
-            for (Integer targetingSytem : getData().getBannedTargetingSystems().keySet()) {
+            for (Integer targetingSytem : getData().getBannedTargetingSystems()) {
                 p.print(targetingSytem);
                 p.print("#");
             }
@@ -3912,6 +3912,13 @@ public final class MWClient implements IClient, GameListener {
             checkForRestart();
         }
     }
+
+	public boolean getTargetSystemBanStatus(int type) {
+		if(getData().getBannedTargetingSystems().contains(type)) {
+			return true;
+		}
+		return false;
+	}
 
 }
 

@@ -35,6 +35,7 @@ import javax.swing.JOptionPane;
 import megamek.client.ui.AWT.UnitLoadingDialog;
 import megamek.common.TechConstants;
 import admin.dialog.BannedAmmoDialog;
+import admin.dialog.BannedTargetingDialog;
 import admin.dialog.CommandNameDialog;
 import admin.dialog.ComponentDisplayDialog;
 import admin.dialog.FactionConfigurationDialog;
@@ -107,6 +108,7 @@ public class AdminMenu extends JMenu {
     JMenuItem jMenuAdminSetPlanetHomeWorld = new JMenuItem();
     JMenuItem jMenuAdminSetPlanetOriginalOwner = new JMenuItem();
     JMenuItem jMenuAdminSetServerAmmoBan = new JMenuItem();
+    JMenuItem jMenuAdminSetServerTargetBan = new JMenuItem();
     JMenuItem jMenuAdminSetCommandLevel = new JMenuItem();
     JMenuItem jMenuAdminSetMegaMekGameOptions = new JMenuItem();
     JMenuItem jMenuAdminSetAmmoCost = new JMenuItem();
@@ -431,6 +433,13 @@ public class AdminMenu extends JMenu {
                 jMenuAdminServerAmmoBan_actionPerformed(e);
             }
         });
+        
+        jMenuAdminSetServerTargetBan.setText("Set Server Target System Ban");
+        jMenuAdminSetServerTargetBan.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		jMenuAdminServerTargetBan_actionPerformed(e);
+        	}
+        });
 
         jMenuAdminUploadBuildTable.setText("Upload a build table");
         jMenuAdminUploadBuildTable.addActionListener(new ActionListener() {
@@ -676,6 +685,9 @@ public class AdminMenu extends JMenu {
 
         if (userLevel >= mwclient.getData().getAccessLevel("AdminSetServerAmmoBan")) {
             jMenuAdminSubSet.add(jMenuAdminSetServerAmmoBan);
+        }
+        if (userLevel >= mwclient.getData().getAccessLevel("AdminSetServerTargetBan")) {
+        	jMenuAdminSubSet.add(jMenuAdminSetServerTargetBan);
         }
         if (userLevel >= mwclient.getData().getAccessLevel("AdminSetCommandLevel")) {
             jMenuAdminSubSet.add(jMenuAdminSetCommandLevel);
@@ -1260,6 +1272,10 @@ public class AdminMenu extends JMenu {
 
     public void jMenuAdminServerAmmoBan_actionPerformed(ActionEvent e) {
         new BannedAmmoDialog(mwclient, null);
+    }
+    
+    public void jMenuAdminServerTargetBan_actionPerformed(ActionEvent e) {
+    	new BannedTargetingDialog(mwclient);
     }
 
     public void jMenuAdminListMuls_actionPerformed(ActionEvent e) {

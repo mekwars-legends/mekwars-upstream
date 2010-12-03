@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.Serializable;
@@ -393,6 +394,8 @@ public final class CampaignMain implements Serializable {
         cm.loadOmniVariantMods();
         cm.loadBlackMarketSettings();
 
+        cm.loadBannedTargetSystems();
+        
         // create command hashs
         init();
 
@@ -1477,6 +1480,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("ADMINSETPLANETVACUUM", new AdminSetPlanetVacuumCommand());
         Commands.put("ADMINSETHOUSEAMMOBAN", new AdminSetHouseAmmoBanCommand());
         Commands.put("ADMINSETSERVERAMMOBAN", new AdminSetServerAmmoBanCommand());
+        Commands.put("ADMINSETSERVERTARGETBAN", new AdminSetServerTargetBanCommand());
         Commands.put("ADMINSCRAP", new AdminScrapCommand());
         Commands.put("ADMINSPOOF", new AdminSpoofCommand());
         Commands.put("ADMINTERMINATEALL", new AdminTerminateAllCommand());
@@ -3063,6 +3067,34 @@ public final class CampaignMain implements Serializable {
         }// make it compatible with people that had the old format,without
         // the timestamp on the first line, the first time and now dont.
     }
+    
+    public void loadBannedTargetSystems() {
+    	File tsFile = new File("./campaign/bantarget.dat");
+    	if(!tsFile.exists()) {
+    		return;
+    	}
+    	
+    	FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(tsFile);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+        try {
+        	Vector<Integer> bans = new Vector<Integer>(1,1);
+			String line = dis.readLine();
+			StringTokenizer st = new StringTokenizer(line, "#");
+			while (st.hasMoreTokens()) {
+				bans.add(Integer.parseInt(st.nextToken()));
+			}
+			getData().setBannedTargetingSystems(bans);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 
     /**
      * Load the black market settings from file.
@@ -3914,6 +3946,29 @@ public final class CampaignMain implements Serializable {
         }
     }
 
+    public void saveBannedTargetSystems() {
+    	FileOutputStream out = null;
+		try {
+			out = new FileOutputStream("./campaign/bantarget.dat");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        PrintStream p = new PrintStream(out);
+        for (int ban : getData().getBannedTargetingSystems()) {
+            p.print(ban);
+            p.print("#");
+        }
+        p.println();
+        p.close();
+        try {
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
     public void loadPlanetOpFlags() {
 
         File configFile = new File("./campaign/planetOpFlags.dat");

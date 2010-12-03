@@ -57,6 +57,7 @@ import common.CampaignData;
 import common.MegaMekPilotOption;
 import common.Unit;
 import common.campaign.pilot.skills.PilotSkill;
+import common.campaign.targetsystems.TargetSystem;
 import common.campaign.targetsystems.TargetTypeNotImplementedException;
 import common.campaign.targetsystems.TargetTypeOutOfBoundsException;
 import common.util.TokenReader;
@@ -756,7 +757,11 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
             targetSystem.setEntity(en);
             TokenReader.readString(ST);// unused
             TokenReader.readString(ST);// unused
-            targetSystem.setTargetSystem(TokenReader.readInt(ST));
+            int tsType = TokenReader.readInt(ST);
+            if (tsType != TargetSystem.TS_TYPE_STANDARD && CampaignData.cd.targetSystemIsBanned(tsType)) {
+            	tsType = TargetSystem.TS_TYPE_STANDARD;
+            }
+            targetSystem.setTargetSystem(tsType);
             setScrappableFor(TokenReader.readInt(ST));
 
             if (CampaignMain.cm.isUsingAdvanceRepair() && ((unitEntity instanceof Mech) || (unitEntity instanceof Tank))) {
@@ -1553,6 +1558,9 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
 	}
 
     public void setTargetSystem(int type) {
+    	if (type != TargetSystem.TS_TYPE_STANDARD && CampaignData.cd.targetSystemIsBanned(type)) {
+    		setTargetSystem(TargetSystem.TS_TYPE_STANDARD);
+    	}
     	try {
 			targetSystem.setTargetSystem(type);
 		} catch (TargetTypeOutOfBoundsException e) {

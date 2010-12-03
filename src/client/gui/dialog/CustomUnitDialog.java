@@ -285,7 +285,8 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
     }
 
     private void setupTargetSystems() {
-    	String names[] = unit.getTargetSystem().getNameArray();
+    	String names[] = unit.getTargetSystem().getNonBannedNameArray(mwclient.getData().getBannedTargetingSystems());
+
     	targetSelection = new JComboBox(names);
     	String currentTargetSystemName = unit.getTargetSystemTypeDesc();
     	for (int i = 0; i < names.length; i++) {

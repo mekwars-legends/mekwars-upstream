@@ -18,6 +18,7 @@
 package client.cmd;
 
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 import client.MWClient;
 import client.campaign.CPlayer;
@@ -264,10 +265,9 @@ public class PL extends Command {
         } else if (cmd.equals("STS")) {
         	int unitID = TokenReader.readInt(st);
         	int targetType = TokenReader.readInt(st);
-        	CampaignData.mwlog.errLog("Setting Targeting for Unit " + unitID + " to " + targetType);
+        	//CampaignData.mwlog.errLog("Setting Targeting for Unit " + unitID + " to " + targetType);
         	player.getUnit(unitID).setTargetSystem(targetType);
         	mwclient.doParseDataInput("CH|AM: Targeting for unit " + unitID + " set to " + player.getUnit(unitID).getTargetSystemTypeDesc());
-        	
         } else {
             return;
         }
