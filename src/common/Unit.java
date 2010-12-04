@@ -622,9 +622,5 @@ public class Unit {
         
         return false;
     }
-
-    public boolean isAntiAir() {
-    	return targetSystem.is("anti_air");
-    }
     
 }

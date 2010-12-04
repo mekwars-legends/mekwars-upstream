@@ -294,8 +294,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         String penaltyString = buildHangarPenaltyString();
         CampaignMain.cm.toUser("PL|SHP|" + penaltyString, name, false);
         
-        CampaignData.mwlog.debugLog("Checking Anti-Air");
-        m.isAntiAir();
+        //CampaignData.mwlog.debugLog("Checking Anti-Air");
+        //m.isAntiAir();
         
         return "";// dummy string returned to comply with IBuyer
     }

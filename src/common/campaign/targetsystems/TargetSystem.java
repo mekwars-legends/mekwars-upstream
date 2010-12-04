@@ -108,7 +108,8 @@ public class TargetSystem {
 	}
 	
 	private void setTargetSystem(String type, boolean on) {
-		entity.getQuirks().getOption(type).setValue(on);
+		if (entity != null)
+			entity.getQuirks().getOption(type).setValue(on);
 	}
 	
 	public void setEntity(Entity e) {
@@ -117,15 +118,6 @@ public class TargetSystem {
 	
 	public int getCurrentType() {
 		return currentType;
-	}
-	
-	public boolean is(String type) {
-		if (type.equalsIgnoreCase("standard")) {
-			return(is("anti_air") 
-					&& is("imp_target_short") && is("imp_target_med") && is("imp_target_long")  
-					&& is("poor_target_short") && is("poor_target_med") && is("poor_target_long"));		
-		}
-		return entity.getQuirks().getOption(type).booleanValue();
 	}
 	
 	public TargetSystem() {
