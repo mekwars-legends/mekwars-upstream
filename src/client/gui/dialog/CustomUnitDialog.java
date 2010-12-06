@@ -887,7 +887,6 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
 
     private void loadAmmo() {
         mwclient.loadBannedAmmo();
-        mwclient.loadBanTargeting();
     }
 
     private boolean ammoAlreadyLoaded(AmmoType ammo) {

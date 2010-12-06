@@ -179,7 +179,7 @@ public final class MWClient implements IClient, GameListener {
 
     CConfig Config;
 
-    public static final String CLIENT_VERSION = "0.3.2.1"; // change this with
+    public static final String CLIENT_VERSION = "0.3.2.2"; // change this with
     // all client
     // changes @Torren
 
@@ -2698,17 +2698,6 @@ public final class MWClient implements IClient, GameListener {
         }
     }
 
-    public void loadBanTargeting() {
-        try {
-            dataFetcher.getBanTargetingData(this);
-        } catch (Exception ex) {
-            if (!(ex instanceof SocketException)) {
-                CampaignData.mwlog.errLog("Error loading Server banned targeting file");
-                CampaignData.mwlog.errLog(ex);
-            }
-        }
-    }
-
     /**
      * @return Returns the data.
      */
@@ -2787,13 +2776,6 @@ public final class MWClient implements IClient, GameListener {
                 dataFetcher.getBannedAmmoData(this);
             } catch (Exception ex) {
                 CampaignData.mwlog.errLog("Unable to fetch server banned ammo data.");
-                CampaignData.mwlog.errLog(ex);
-            }
-
-            try {
-                dataFetcher.getBanTargetingData(this);
-            } catch (Exception ex) {
-                CampaignData.mwlog.errLog("Unable to fetch banned targeting systems.");
                 CampaignData.mwlog.errLog(ex);
             }
 
