@@ -1,5 +1,5 @@
 /*
- * MekWars - Copyright (C) 2004 
+ * MekWars - Copyright (C) 2010 
  * 
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  *
