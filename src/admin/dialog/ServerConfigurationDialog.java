@@ -4842,6 +4842,11 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setToolTipText("<HTML>Check in order to use real_blind_drop option in MM,<br> hiding units from players until they appear on the map.<br>If this option is enabled, /c tasks and join messages will not show army composition.</HTML>");
         BaseCheckBox.setName("UseBlindDrops");
         combatCBoxGrid.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Show unit type counts");
+        BaseCheckBox.setName("ShowUnitTypeCounts");
+        BaseCheckBox.setToolTipText("<HTML>If checked, unit type totals will be<br>shown in the attack / defend notifications <br>in blind operations</HTML>");
+        combatCBoxGrid.add(BaseCheckBox);
 
         BaseCheckBox = new JCheckBox("Selectable Salvage");
         BaseCheckBox.setToolTipText("If set to true then players can recoup repair costs by scrapping salvaged units");
