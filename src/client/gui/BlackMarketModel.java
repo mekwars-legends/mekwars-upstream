@@ -34,15 +34,11 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import megamek.common.Entity;
-
-import common.Unit;
-import common.util.UnitUtils;
-
 import client.MWClient;
 import client.campaign.CBMUnit;
 import client.campaign.CCampaign;
-import client.campaign.CUnit;
+
+import common.Unit;
 
 /**
  *

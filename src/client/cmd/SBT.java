@@ -17,12 +17,8 @@
 
 package client.cmd;
 
-import java.awt.Dimension;
 import java.util.StringTokenizer;
 import java.util.Vector;
-
-import common.CampaignData;
-import common.util.TokenReader;
 
 import client.MWClient;
 

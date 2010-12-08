@@ -65,7 +65,7 @@ public class CConfig {
         try {
             File configfile = new File(CONFIG_FILE);
             FileInputStream fis = new FileInputStream(configfile);
-            File backupfile = new File(CONFIG_BACKUP_FILE);
+            //File backupfile = new File(CONFIG_BACKUP_FILE);
             // Changing this - the client is *always* loading the .bak first.
             // Just load the config.  If it fails, load the .bak.
             

@@ -22,11 +22,6 @@ package common;
 
 import java.util.Vector;
 
-import common.campaign.pilot.Pilot;
-import common.campaign.targetsystems.TargetSystem;
-import common.campaign.targetsystems.TargetTypeNotImplementedException;
-import common.campaign.targetsystems.TargetTypeOutOfBoundsException;
-
 import megamek.common.Aero;
 import megamek.common.AmmoType;
 import megamek.common.BattleArmor;
@@ -35,6 +30,9 @@ import megamek.common.EntityWeightClass;
 import megamek.common.Mech;
 import megamek.common.Protomech;
 import megamek.common.Tank;
+
+import common.campaign.pilot.Pilot;
+import common.campaign.targetsystems.TargetSystem;
 
 
 /**

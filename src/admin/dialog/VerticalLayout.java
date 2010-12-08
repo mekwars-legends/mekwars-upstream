@@ -1,12 +1,19 @@
 package admin.dialog;
 
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+
 /**
 THIS PROGRAM IS PROVIDED "AS IS" WITHOUT ANY WARRANTIES (OR CONDITIONS),
 EXPRESS OR IMPLIED WITH RESPECT TO THE PROGRAM, INCLUDING THE IMPLIED WARRANTIES (OR CONDITIONS)
 OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK ARISING OUT OF USE OR
 PERFORMANCE OF THE PROGRAM AND DOCUMENTATION REMAINS WITH THE USER.
 */
-import java.awt.*; import java.util.*;
+
+
 /**
  *
  * A vertical layout manager similar to java.awt.FlowLayout.
@@ -52,7 +59,7 @@ public class VerticalLayout implements LayoutManager{
   private int vgap; //the vertical vgap between components...defaults to 5
   private int alignment; //LEFT, RIGHT, CENTER or BOTH...how the components are justified
   private int anchor; //TOP, BOTTOM or CENTER ...where are the components positioned in an overlarge space
-  private Hashtable comps;
+  //private Hashtable comps;
 
 //Constructors
 /**

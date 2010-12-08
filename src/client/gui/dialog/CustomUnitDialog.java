@@ -71,9 +71,6 @@ import common.CampaignData;
 import common.House;
 import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
-import common.campaign.targetsystems.TargetSystem;
-import common.campaign.targetsystems.TargetTypeNotImplementedException;
-import common.campaign.targetsystems.TargetTypeOutOfBoundsException;
 import common.util.SpringLayoutHelper;
 
 /**

@@ -21,8 +21,8 @@ import java.util.Hashtable;
 
 public abstract class ObjectPool {
 	private long expirationTime;
-	private Hashtable locked;
-	private Hashtable unlocked;
+	private Hashtable<Object, Object> locked;
+	private Hashtable<Object, Object> unlocked;
 	abstract Object create();
 	abstract void expire(Object o);
 	abstract boolean validate(Object o);
@@ -30,7 +30,7 @@ public abstract class ObjectPool {
 	synchronized void killEmAll() {
 		Object o;
 		if (locked.size() > 0) {
-			Enumeration e = locked.keys();
+			Enumeration<Object> e = locked.keys();
 			while (e.hasMoreElements()) {
 				o = e.nextElement();
 				expire(o);
@@ -46,7 +46,7 @@ public abstract class ObjectPool {
 		long now = System.currentTimeMillis();
 		Object o;
 		if ( unlocked.size() > 0 ) {
-			Enumeration e = unlocked.keys();
+			Enumeration<Object> e = unlocked.keys();
 			while (e.hasMoreElements()) {
 				o = e.nextElement();
 				if ((now = ((Long) unlocked.get(o)).longValue()) > expirationTime) {
@@ -83,7 +83,7 @@ public abstract class ObjectPool {
 	
 	ObjectPool() {
 		expirationTime = 30000; // 30 seconds
-		locked = new Hashtable();
-		unlocked = new Hashtable();
+		locked = new Hashtable<Object, Object>();
+		unlocked = new Hashtable<Object, Object>();
 	}
 }

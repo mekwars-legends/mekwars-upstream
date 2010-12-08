@@ -24,7 +24,6 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import server.campaign.CampaignMain;
 import megamek.common.CriticalSlot;
 import megamek.common.OffBoardDirection;
 import client.MWClient;

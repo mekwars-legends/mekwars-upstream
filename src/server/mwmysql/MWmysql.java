@@ -20,12 +20,12 @@ package server.mwmysql;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import common.CampaignData;
 import server.campaign.CampaignMain;
+
+import common.CampaignData;
 
 public class MWmysql{
   Connection con = null;
