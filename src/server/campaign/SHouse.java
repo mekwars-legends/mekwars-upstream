@@ -2508,7 +2508,6 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         	tsBans.append("|");
         }
         tsBans.append("|");
-        CampaignData.mwlog.mainLog("Sending TargetBans: " + tsBans.toString());
         CampaignMain.cm.toUser(tsBans.toString(), realName, false);
         
         
