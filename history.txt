@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.2.x
+R Released Server v0.3.2.3
++ RFE 2823485 - RP per BV
 R Released Server v0.3.2.2
 + Added ability to show unit type counts on blind operations
 R Released Client v0.3.2.2

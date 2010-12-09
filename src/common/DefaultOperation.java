@@ -1195,6 +1195,9 @@ public class DefaultOperation {
         operationsDefaults.put("AttackerPayBVforExperience", "0");
         operationsDefaults.put("DefenderPayBVforExperience", "0");
 
+        operationsDefaults.put("AttackerPayBVforRP", "0");
+        operationsDefaults.put("DefenderPayBVforRP", "0");
+        
         operationsDefaults.put("AttackerWinModifierCBillsFlat", "0");
         operationsDefaults.put("DefenderWinModifierCBillsFlat", "0");
         operationsDefaults.put("AttackerLossModifierCBillsFlat", "0");

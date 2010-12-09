@@ -743,6 +743,16 @@ public class ShortResolver {
             baseDefenderMoneyPay += Math.floor(so.getStartingBV() / defenderTotalBVMoneyAdjustment);
         }
 
+        int attackerTotalBVRPAdjustment = o.getIntValue("AttackerPayBVforRP");
+        if (attackerTotalBVRPAdjustment > 0) {
+            baseAttackerRewardPointsPay += Math.floor(so.getStartingBV() / attackerTotalBVRPAdjustment);
+        }
+
+        int defenderTotalBVRPAdjustment = o.getIntValue("DefenderPayBVforRP");
+        if (defenderTotalBVRPAdjustment > 0) {
+            baseDefenderRewardPointsPay += Math.floor(so.getStartingBV() / defenderTotalBVRPAdjustment);
+        }
+
         // do the total influence adjustments
         int attackerTotalBVFluAdjustment = o.getIntValue("AttackerPayBVforInfluence");
         if (attackerTotalBVFluAdjustment > 0) {

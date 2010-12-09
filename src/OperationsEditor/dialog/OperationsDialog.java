@@ -2029,34 +2029,34 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         attackerBox = new JPanel();
         attackerBox.setLayout(new BoxLayout(attackerBox, BoxLayout.Y_AXIS));
-        attackerBox.setPreferredSize(new Dimension(350, 260));
+        //attackerBox.setPreferredSize(new Dimension(350, 260));
         attackerBox.setMinimumSize(new Dimension(350, 260));
-        attackerBox.setMaximumSize(new Dimension(350, 260));
+        //attackerBox.setMaximumSize(new Dimension(350, 260));
 
         defenderBox = new JPanel();
         defenderBox.setLayout(new BoxLayout(defenderBox, BoxLayout.Y_AXIS));
-        defenderBox.setPreferredSize(new Dimension(350, 260));
+        //defenderBox.setPreferredSize(new Dimension(350, 260));
         defenderBox.setMinimumSize(new Dimension(350, 260));
-        defenderBox.setMaximumSize(new Dimension(350, 260));
+        //defenderBox.setMaximumSize(new Dimension(350, 260));
 
         JPanel outcomeBox = new JPanel();
         outcomeBox.setLayout(new BoxLayout(outcomeBox, BoxLayout.Y_AXIS));
-        outcomeBox.setPreferredSize(new Dimension(697, 100));
+        //outcomeBox.setPreferredSize(new Dimension(697, 100));
         outcomeBox.setMinimumSize(new Dimension(697, 100));
-        outcomeBox.setMaximumSize(new Dimension(697, 100));
+        //outcomeBox.setMaximumSize(new Dimension(697, 100));
 
         JPanel penaltyBox = new JPanel();
         penaltyBox.setLayout(new BoxLayout(penaltyBox, BoxLayout.Y_AXIS));
         penaltyBox.setPreferredSize(new Dimension(700, 50));
         penaltyBox.setMinimumSize(new Dimension(700, 50));
-        penaltyBox.setMaximumSize(new Dimension(700, 50));
+        //penaltyBox.setMaximumSize(new Dimension(700, 50));
 
         JPanel fleeingBox = new JPanel();
         Dimension dim = new Dimension(700, 170);
         fleeingBox.setLayout(new BoxLayout(fleeingBox, BoxLayout.Y_AXIS));
         fleeingBox.setPreferredSize(dim);
         fleeingBox.setMinimumSize(dim);
-        fleeingBox.setMaximumSize(dim);
+        //fleeingBox.setMaximumSize(dim);
 
         attackerPanel = new JPanel(new SpringLayout());
         defenderPanel = new JPanel(new SpringLayout());
@@ -2100,7 +2100,13 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField.setToolTipText("<html>1 Exp added to Base pay for every complete<br>increment. ie - if 2, will add BV/2 Exp to pay</html>");
         BaseTextField.setName("AttackerPayBVforExperience");
         attackerPanel.add(BaseTextField);
-
+        
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("RP per BV:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>1 RP added to Base pay for every complete<br>increment. ie - if 2, will add BV/2 RP to pay</html>");
+        BaseTextField.setName("AttackerPayBVforRP");
+        attackerPanel.add(BaseTextField);
+        
         BaseTextField = new JTextField(5);
         attackerPanel.add(new JLabel("Win Money:", SwingConstants.TRAILING));
         BaseTextField.setToolTipText("flat boost to pay for winning attack");
@@ -2173,7 +2179,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField.setName("AttackerLossModifierExperiencePercent");
         attackerPanel.add(BaseTextField);
 
-        SpringLayoutHelper.setupSpringGrid(attackerPanel, 9, 4);
+        SpringLayoutHelper.setupSpringGrid(attackerPanel, 10, 4);
 
         BaseTextField = new JTextField(5);
         defenderPanel.add(new JLabel("Money Paid:", SwingConstants.TRAILING));
@@ -2211,6 +2217,12 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField.setName("DefenderPayBVforExperience");
         defenderPanel.add(BaseTextField);
 
+        BaseTextField = new JTextField(5);
+        defenderPanel.add(new JLabel("RP per BV:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>1 RP added to Base pay for every complete<br>increment. ie - if 2, will add BV/2 RP to pay</html>");
+        BaseTextField.setName("DefenderPayBVforRP");
+        defenderPanel.add(BaseTextField);
+        
         BaseTextField = new JTextField(5);
         defenderPanel.add(new JLabel("Win Money:", SwingConstants.TRAILING));
         BaseTextField.setToolTipText("flat boost to pay for winning defend");
@@ -2283,7 +2295,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField.setName("DefenderLossModifierExperiencePercent");
         defenderPanel.add(BaseTextField);
 
-        SpringLayoutHelper.setupSpringGrid(defenderPanel, 9, 4);
+        SpringLayoutHelper.setupSpringGrid(defenderPanel, 10, 4);
 
         BaseTextField = new JTextField(5);
         outcomePanel.add(new JLabel("Attacker RP:", SwingConstants.TRAILING));
