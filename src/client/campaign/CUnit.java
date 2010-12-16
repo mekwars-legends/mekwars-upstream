@@ -23,6 +23,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import server.campaign.CampaignMain;
+
 import megamek.common.AmmoType;
 import megamek.common.CriticalSlot;
 import megamek.common.Entity;
@@ -307,8 +309,16 @@ public class CUnit extends Unit {
             tinfo += " Movement: " + getEntity().getMovementModeAsString() + "<br>";
         }
 
-        tinfo += "BV: " + BV + " // Exp: " + getPilot().getExperience() + " // Kills: " + getPilot().getKills() + "<br> ";
+        tinfo += "BV: ";
+        
+        if (Boolean.parseBoolean(mwclient.getserverConfigs("UseBaseBVForMatching"))) {
+        	tinfo += getBaseBV(); 
+        } else {
+        	tinfo += BV;
+        }
 
+        tinfo += " // Exp: " + getPilot().getExperience() + " // Kills: " + getPilot().getKills() + "<br> ";
+        
         if (getPilot().getSkills().size() > 0) {
             tinfo += "Skills: ";
             /*
@@ -346,6 +356,8 @@ public class CUnit extends Unit {
         return (tinfo);
     }
 
+    
+    
     public String getModelName() {
 
         if (getType() != MEK) {
@@ -373,7 +385,18 @@ public class CUnit extends Unit {
         // else
         return BV;
     }
+    
+    public int getBaseBV() {
+    	return getEntity().calculateBattleValue(false, true);
+    }
 
+    public int getBVForMatch() {
+    	if (Boolean.parseBoolean(mwclient.getserverConfigs("UseBaseBVForMatching"))) {
+    		return getBaseBV();
+    	}
+    	return getBV();
+    }
+    
     public Entity getEntity() {
         return UnitEntity;
     }

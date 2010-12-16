@@ -349,7 +349,7 @@ public class ArmyViewerDialog extends JDialog implements ActionListener, ListSel
                 }
                 else
                    armyText.append(" ("+unit.getPilot().getGunnery()+")");
-                armyText.append(" BV: "+((CUnit)unit).getBV()+"\n");
+                armyText.append(" BV: "+((CUnit)unit).getBVForMatch()+"\n");
             }
 			armyView.setText(armyText.toString());
 		} else {

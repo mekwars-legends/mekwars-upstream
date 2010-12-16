@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.3.2.x
+R Released Server v0.3.2.4, client v0.3.2.3
++ RFE 2717507: Ignore Pilot BV changes in campaign
++ Added ability to ignore Pilot BV changes globally or per-operation 
 R Released Server v0.3.2.3
 + RFE 2823485 - RP per BV
 R Released Server v0.3.2.2

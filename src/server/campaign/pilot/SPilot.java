@@ -131,7 +131,7 @@ public class SPilot extends Pilot {
         }
 
         // save BV for before and after comparison
-        int oldBV = unit.getBV();
+        int oldBV = unit.getBVForMatch();
 
         /*
          * Check to see whether or not the pilot is elite. This is used to
@@ -334,7 +334,7 @@ public class SPilot extends Pilot {
             // been untouched because of caps)
             if (levelGunnery || levelPiloting) {
                 unit.setPilot(this);// refresh pilot! HACKY! CHANGE!
-                return " and advanced a level. " + getName() + " is now " + getGunnery() + "/" + getPiloting() + " [Old BV: " + oldBV + "/New BV: " + unit.getBV() + "]";
+                return " and advanced a level. " + getName() + " is now " + getGunnery() + "/" + getPiloting() + " [Old BV: " + oldBV + "/New BV: " + unit.getBVForMatch() + "]";
             }
         }
 
@@ -374,7 +374,7 @@ public class SPilot extends Pilot {
             }
 
             unit.setPilot(this);// refresh pilot! HACKY! CHANGE!
-            return ". " + oldName + " grew weary of war and retired from active duty. The unit was passed on to " + getName() + " [" + getGunnery() + "/" + getPiloting() + ", Old BV: " + oldBV + "/New BV: " + unit.getBV() + "]";
+            return ". " + oldName + " grew weary of war and retired from active duty. The unit was passed on to " + getName() + " [" + getGunnery() + "/" + getPiloting() + ", Old BV: " + oldBV + "/New BV: " + unit.getBVForMatch() + "]";
         }
 
         if (skillToAdd != null) {
@@ -400,7 +400,7 @@ public class SPilot extends Pilot {
             skillToAdd.modifyPilot(this);
             unit.setPilot(this);// refresh pilot! HACKY! CHANGE!
 
-            int newBV = unit.getBV();
+            int newBV = unit.getBVForMatch();
 
             if (skillToAdd instanceof AstechSkill && !CampaignMain.cm.isUsingAdvanceRepair()) {
                 CampaignMain.cm.toUser("PL|SF|" + owner.getFreeBays(), owner.getName(), false);

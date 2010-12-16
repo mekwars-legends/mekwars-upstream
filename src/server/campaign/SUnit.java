@@ -949,19 +949,19 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
         } else {
             idToShow = "#" + getId();
         }
-        String dialogBox = "<a href=\"MEKINFO" + getEntity().getChassis() + " " + getEntity().getModel() + "#" + getBV() + "#" + getPilot().getGunnery() + "#" + getPilot().getPiloting() + "\">" + getModelName() + "</a>";
+        String dialogBox = "<a href=\"MEKINFO" + getEntity().getChassis() + " " + getEntity().getModel() + "#" + getBVForMatch() + "#" + getPilot().getGunnery() + "#" + getPilot().getPiloting() + "\">" + getModelName() + "</a>";
 
         if ((getType() == Unit.MEK) || (getType() == Unit.VEHICLE)) {
-            return idToShow + " " + dialogBox + " (" + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ") [" + getPilot().getExperience() + " EXP " + getPilot().getSkillString(false) + "] Kills: " + getPilot().getKills() + " " + getProducer() + ". BV: " + getBV() + " " + status;
+            return idToShow + " " + dialogBox + " (" + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ") [" + getPilot().getExperience() + " EXP " + getPilot().getSkillString(false) + "] Kills: " + getPilot().getKills() + " " + getProducer() + ". BV: " + getBVForMatch() + " " + status;
         }
 
         if ((getType() == Unit.INFANTRY) || (getType() == Unit.BATTLEARMOR)) {
             if (((Infantry) getEntity()).isAntiMek()) {
-                return idToShow + " " + dialogBox + " (" + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ") [" + getPilot().getExperience() + " EXP " + getPilot().getSkillString(false) + "] Kills: " + getPilot().getKills() + " " + getProducer() + ". BV: " + getBV() + " " + status;
+                return idToShow + " " + dialogBox + " (" + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ") [" + getPilot().getExperience() + " EXP " + getPilot().getSkillString(false) + "] Kills: " + getPilot().getKills() + " " + getProducer() + ". BV: " + getBVForMatch() + " " + status;
             }
         }
         // else
-        return idToShow + " " + dialogBox + " (" + getPilot().getGunnery() + ") [" + getPilot().getExperience() + " EXP " + getPilot().getSkillString(false) + "] Kills: " + getPilot().getKills() + " " + getProducer() + ". BV: " + getBV() + " " + status;
+        return idToShow + " " + dialogBox + " (" + getPilot().getGunnery() + ") [" + getPilot().getExperience() + " EXP " + getPilot().getSkillString(false) + "] Kills: " + getPilot().getKills() + " " + getProducer() + ". BV: " + getBVForMatch() + " " + status;
     }
 
     /**
@@ -1206,6 +1206,13 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
 
     // GETTER AND SETTER
 
+    public int getBVForMatch() {
+    	if (CampaignMain.cm.getBooleanConfig("UseBaseBVForMatching")) {
+    		return getBaseBV();
+    	}
+    	return getBV();
+    }
+    
     public int getBV() {
 
         int toReturn = 0;
@@ -1227,7 +1234,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
         }
         BV = i;
     }
-
+    
     /**
      * @return the megamek.common.entity this Unit represents
      */
@@ -1423,6 +1430,10 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
 
     }
 
+    public int getBaseBV() {
+    	return getEntity().calculateBattleValue(false, true);
+    }
+    
     public int getPilotSkillBV() {
 
         int skillBV = 0;

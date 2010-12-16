@@ -4420,7 +4420,7 @@ public class ShortResolver {
                 totalXPforUnit += flatKillXP;
                 int bvForBonusXP = o.getIntValue("KillBonusXPforBV");
                 if (bvForBonusXP > 0) {
-                    totalXPforUnit += Math.floor(killedUnit.getBV() / bvForBonusXP);
+                    totalXPforUnit += Math.floor(killedUnit.getBVForMatch() / bvForBonusXP);
                 }
 
                 if (CampaignMain.cm.isKeepingUnitHistory()) {

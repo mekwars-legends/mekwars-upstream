@@ -587,7 +587,7 @@ public class CHQPanel extends JPanel {
                     MechDetailDisplay MechDetailInfo = new MechDetailDisplay();
                     Entity theEntity = mek.getEntity();
                     theEntity.loadAllWeapons();
-                    MechDetailInfo.displayEntity(theEntity, mek.getBV(), mwclient.getConfig().getImage("CAMO"));
+                    MechDetailInfo.displayEntity(theEntity, mek.getBVForMatch(), mwclient.getConfig().getImage("CAMO"));
                     InfoWindow.getContentPane().add(MechDetailInfo);
                     InfoWindow.setSize(220, 400);
                     InfoWindow.setResizable(false);
@@ -1153,15 +1153,15 @@ public class CHQPanel extends JPanel {
                                     // in army
                                     hasUnitsFree = true;
                                     if (mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE || mm.getType() == Unit.AERO) {
-                                        menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV() + " BV");
+                                        menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBVForMatch() + " BV");
                                     } else if (mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR) {
                                         if (((Infantry) mm.getEntity()).isAntiMek()) {
-                                            menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV() + " BV");
+                                            menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBVForMatch() + " BV");
                                         } else {
-                                            menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBV() + " BV");
+                                            menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBVForMatch() + " BV");
                                         }
                                     } else {
-                                        menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBV() + " BV");
+                                        menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBVForMatch() + " BV");
                                     }
                                     menuItem.setActionCommand("EXM|" + lid + "|" + "-1" + "|" + mm.getId());
                                     menuItem.addActionListener(this);
@@ -1280,15 +1280,15 @@ public class CHQPanel extends JPanel {
                                     continue;
                                 }
                                 if (mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE || mm.getType() == Unit.AERO) {
-                                    menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV() + " BV");
+                                    menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBVForMatch() + " BV");
                                 } else if (mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR) {
                                     if (((Infantry) mm.getEntity()).isAntiMek()) {
-                                        menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV() + " BV");
+                                        menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBVForMatch() + " BV");
                                     } else {
-                                        menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBV() + " BV");
+                                        menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBVForMatch() + " BV");
                                     }
                                 } else {
-                                    menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBV() + " BV");
+                                    menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBVForMatch() + " BV");
                                 }
 
                                 menuItem.setActionCommand("EXM|" + lid + "|" + mid + "|" + mm.getId());
@@ -1330,7 +1330,7 @@ public class CHQPanel extends JPanel {
                             for (int i = 0; i < Masters.size(); i++) {
                                 CUnit mm = (CUnit) Masters.elementAt(i);
                                 if (l.getUnit(mm.getId()) != null) {
-                                    menuItem = new JMenuItem(mm.getModelName() + " " + mm.getBV() + " BV");
+                                    menuItem = new JMenuItem(mm.getModelName() + " " + mm.getBVForMatch() + " BV");
                                     menuItem.setActionCommand("LCN|" + lid + "|" + cm.getId() + "|" + mm.getId());
                                     menuItem.addActionListener(this);
                                     linkMenu.add(menuItem);
@@ -1389,15 +1389,15 @@ public class CHQPanel extends JPanel {
                                         // in
                                         // army
                                         if (mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE || mm.getType() == Unit.AERO) {
-                                            menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV() + " BV");
+                                            menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBVForMatch() + " BV");
                                         } else if (mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR) {
                                             if (((Infantry) mm.getEntity()).isAntiMek()) {
-                                                menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV() + " BV");
+                                                menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBVForMatch() + " BV");
                                             } else {
-                                                menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBV() + " BV");
+                                                menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBVForMatch() + " BV");
                                             }
                                         } else {
-                                            menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBV() + " BV");
+                                            menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBVForMatch() + " BV");
                                         }
                                         menuItem.setActionCommand("EXM|" + lid + "|" + cm.getId() + "|" + mm.getId());
                                         menuItem.addActionListener(this);
@@ -1516,15 +1516,15 @@ public class CHQPanel extends JPanel {
                                         continue;
                                     }
                                     if (mm.getType() == Unit.MEK || mm.getType() == Unit.VEHICLE || mm.getType() == Unit.AERO) {
-                                        menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV() + " BV");
+                                        menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBVForMatch() + " BV");
                                     } else if (mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR) {
                                         if (((Infantry) mm.getEntity()).isAntiMek()) {
-                                            menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBV() + " BV");
+                                            menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting() + ") " + mm.getBVForMatch() + " BV");
                                         } else {
-                                            menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBV() + " BV");
+                                            menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBVForMatch() + " BV");
                                         }
                                     } else {
-                                        menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBV() + " BV");
+                                        menuItem = new JMenuItem(mm.getModelName() + " (" + mm.getPilot().getGunnery() + ") " + mm.getBVForMatch() + " BV");
                                     }
                                     menuItem.setActionCommand("EXM|" + lid + "|" + cm.getId() + "|" + mm.getId());
                                     menuItem.addActionListener(this);
@@ -2380,7 +2380,7 @@ public class CHQPanel extends JPanel {
                         Enumeration<Unit> e = currArmy.getUnits().elements();
                         while (e.hasMoreElements()) {
                             CUnit unit = (CUnit) e.nextElement();
-                            toSend += " <a href=\"MEKINFO" + unit.getUnitFilename() + "#" + unit.getBV() + "#" + unit.getPilot().getGunnery() + "#" + unit.getPilot().getPiloting() + "\">" + unit.getModelName() + "</a>,";
+                            toSend += " <a href=\"MEKINFO" + unit.getUnitFilename() + "#" + unit.getBVForMatch() + "#" + unit.getPilot().getGunnery() + "#" + unit.getPilot().getPiloting() + "\">" + unit.getModelName() + "</a>,";
                         }
                         // replace final comma with a period.
                         int sendLength = toSend.lastIndexOf(",");
@@ -2398,7 +2398,7 @@ public class CHQPanel extends JPanel {
                         Enumeration<Unit> e = currArmy.getUnits().elements();
                         while (e.hasMoreElements()) {
                             CUnit unit = (CUnit) e.nextElement();
-                            toSend += " <a href=\"MEKINFO" + unit.getUnitFilename() + "#" + unit.getBV() + "#" + unit.getPilot().getGunnery() + "#" + unit.getPilot().getPiloting() + "\">" + unit.getModelName() + "</a>,";
+                            toSend += " <a href=\"MEKINFO" + unit.getUnitFilename() + "#" + unit.getBVForMatch() + "#" + unit.getPilot().getGunnery() + "#" + unit.getPilot().getPiloting() + "\">" + unit.getModelName() + "</a>,";
                         }
                         // replace final comma with a period.
                         int sendLength = toSend.lastIndexOf(",");

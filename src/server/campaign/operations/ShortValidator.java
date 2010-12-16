@@ -1044,7 +1044,14 @@ public class ShortValidator {
             }
 
             // check the unit's BV
-            int currBV = currUnit.getBV();
+            int currBV = 0;
+            
+            if (o.getBooleanValue("IgnorePilotsForBVSpread")) {
+            	currBV = currUnit.getBaseBV();
+            } else {
+            	currBV = currUnit.getBVForMatch();
+            }
+            
             if (currBV < o.getIntValue("MinAttackerUnitBV"))
                 minBVFail = true;
             else if (currBV > o.getIntValue("MaxAttackerUnitBV"))
@@ -1410,7 +1417,12 @@ public class ShortValidator {
                     minTonFail = true;
             }
             // check the unit's BV
-            int currBV = currUnit.getBV();
+            int currBV = 0;
+            if(o.getBooleanValue("IgnorePilotsForBVSpread")) {
+            	currBV = currUnit.getBaseBV();
+            } else {
+            	currBV = currUnit.getBV();
+            }
             if (currBV < o.getIntValue("MinDefenderUnitBV"))
                 minBVFail = true;
             else if (currBV > o.getIntValue("MaxDefenderUnitBV"))

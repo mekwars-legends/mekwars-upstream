@@ -53,8 +53,8 @@
 				return unit1.getUnitFilename().compareTo(unit2.getUnitFilename());
  		
  			case HQSORT_BV : //self evident
- 				Integer unit1BV = new Integer(unit1.getBV());
- 				Integer unit2BV = new Integer(unit2.getBV());
+ 				Integer unit1BV = new Integer(unit1.getBVForMatch());
+ 				Integer unit2BV = new Integer(unit2.getBVForMatch());
  				return unit1BV.compareTo(unit2BV);
  				
  			case HQSORT_GUNNERY : //gunnery

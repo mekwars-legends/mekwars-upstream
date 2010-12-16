@@ -5042,6 +5042,11 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setToolTipText("<html>Require all armies to be attack capable in order or disallow activation.</html>");
         combatMMOptionsSpring.add(BaseCheckBox);
         
+        BaseCheckBox = new JCheckBox("Ignore pilots for BV calcs");
+        BaseCheckBox.setName("UseBaseBVForMatching");
+        BaseCheckBox.setToolTipText("<html>Checking this will always use a base 4/5 pilot for BV calcs</html>");
+        combatMMOptionsSpring.add(BaseCheckBox);
+        
         SpringLayoutHelper.setupSpringGrid(combatMMOptionsSpring, 3);
 
         BaseCheckBox = new JCheckBox("Allow Attacks From Reserve?");

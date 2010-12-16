@@ -1559,6 +1559,8 @@ public class DefaultOperation {
         operationsDefaults.put("LPlayerLaunchExp", "0");
 
         operationsDefaults.put("LPlayerLaunchMezzo", "0");
+        
+        operationsDefaults.put("IgnorePilotsForBVSpread", "false");
     }
 
     // METHODS

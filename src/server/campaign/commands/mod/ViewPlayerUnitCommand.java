@@ -75,7 +75,7 @@ public class ViewPlayerUnitCommand implements Command {
         
         String fileName = unit.getEntity().getChassis() + " " +  unit.getEntity().getModel();
         if ( !damage)
-        	CampaignMain.cm.toUser("PL|VUI|"+fileName+ "#" + unit.getBV() + "#" + unit.getPilot().getGunnery() + "#" + unit.getPilot().getPiloting()+"#"+UnitUtils.unitBattleDamage(unit.getEntity()), Username,false);
+        	CampaignMain.cm.toUser("PL|VUI|"+fileName+ "#" + unit.getBVForMatch() + "#" + unit.getPilot().getGunnery() + "#" + unit.getPilot().getPiloting()+"#"+UnitUtils.unitBattleDamage(unit.getEntity()), Username,false);
         else
         	CampaignMain.cm.toUser("PL|VURD|"+fileName+ "#"+UnitUtils.unitBattleDamage(unit.getEntity()), Username,false);
         CampaignMain.cm.doSendModMail("NOTE",Username+" has viewed "+p.getName()+"'s "+unit.getModelName());

@@ -729,7 +729,14 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseCheckBox.setToolTipText("If true, infantry and BA are included when checking BV spreads between high/low units.");
         BaseCheckBox.setName("CountInfForSpread");
         spreadPanel.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Ignore pilot for BV Spread");
+        BaseCheckBox.setToolTipText("If true, pilot levels will be ignored for the purposes of spread-checking");
+        BaseCheckBox.setName("IgnorePilotsForBVSpread");
+        spreadPanel.add(BaseCheckBox);
 
+        spreadPanel.add(new JLabel(" "));
+        
         BaseTextField = new JTextField(5);
         spreadPanel.add(new JLabel("Repod Omni to Base:", SwingConstants.TRAILING));
         BaseTextField.setToolTipText("<HTML>String. Omni's that where used in this op are repodded<br>back to this base configuration.<br>Leave blank to disable this option </HTML>");

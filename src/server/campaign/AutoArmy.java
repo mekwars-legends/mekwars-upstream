@@ -449,7 +449,7 @@ public class AutoArmy {
 	public int getBV() {
 		int toReturn = 0;
 		for (SUnit currU : this.getUnits())
-			toReturn += currU.getBV();
+			toReturn += currU.getBVForMatch();
 		
 		return toReturn;
 	}

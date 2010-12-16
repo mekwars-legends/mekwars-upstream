@@ -1279,6 +1279,7 @@ public class DefaultServerOptions {
         defaults.setProperty("ModifyOpPayoutByELO_Multiplier", "1");
         
         defaults.setProperty("ShowUnitTypeCounts", "false");
+        defaults.setProperty("UseBaseBVForMatching", "false");
     }
 
     /**

@@ -101,7 +101,7 @@ public class ExchangePilotInUnitCommand implements Command {
 						if ( p2 != null ) {
 	                        CampaignMain.cm.toUser("PL|RPPPQ|"+m.getType()+"|"+m.getWeightclass()+"|"+newPilotId,Username,false);
 	                        m.setPilot(p2);
-	                        CampaignMain.cm.toUser(p2.getName()+" is now assigned to the "+ m.getModelName()  + " [New BV: " + m.getBV() + "].",Username,true);
+	                        CampaignMain.cm.toUser(p2.getName()+" is now assigned to the "+ m.getModelName()  + " [New BV: " + m.getBVForMatch() + "].",Username,true);
 						}else {
 							CampaignMain.cm.toUser("AM:Invalid Pilot try again!",Username,true);
 							return;

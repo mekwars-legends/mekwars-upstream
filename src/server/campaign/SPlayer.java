@@ -1687,7 +1687,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     private int getHangarBV() {
         int bv = 0;
         for (SUnit currU : units) {
-            bv += currU.getBV();
+            bv += currU.getBVForMatch();
         }
         return bv;
     }
