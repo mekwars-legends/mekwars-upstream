@@ -43,14 +43,14 @@ public class OpsChickenThread extends Thread {
 
     private boolean shouldContinue;
     private int waittime;
-    private int leechCount;
+    //private int leechCount;
 
     // CONSTRUCTOS
     public OpsChickenThread(SPlayer pd, int id, String name, String mess) {
         pdefender = pd;
         parmies = new Vector<SArmy>(1, 1);
         shouldContinue = true;
-        leechCount = 0;
+        //leechCount = 0;
         message = mess;
         opID = id;
         opName = name;
@@ -451,7 +451,7 @@ public class OpsChickenThread extends Thread {
                 return;
             }
             // not stopped. add a leech.
-            leechCount++;
+            pdefender.leechCount++;
 
             /*
              * If we've reached the leach limit, deactivate the player. The
@@ -463,10 +463,11 @@ public class OpsChickenThread extends Thread {
              * SPlayer is reloaded as currP in case the person quit and
              * rejoined, creating a new SPlayer instance.
              */
-            if (leechCount > CampaignMain.cm.getOpsManager().getOperation(opName).getIntValue("LeechesToDeactivate")) {
+            if (pdefender.leechCount > CampaignMain.cm.getOpsManager().getOperation(opName).getIntValue("LeechesToDeactivate")) {
                 shouldContinue = false;
                 SPlayer currP = CampaignMain.cm.getPlayer(pdefender.getName());
                 currP.setActive(false);
+                currP.leechCount = 0;
                 CampaignMain.cm.sendPlayerStatusUpdate(currP, !new Boolean(CampaignMain.cm.getConfig("HideActiveStatus")).booleanValue());
                 CampaignMain.cm.toUser("You've been deactivated!", currP.getName(), true);
                 return;

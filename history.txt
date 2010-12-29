@@ -1,6 +1,11 @@
 VERSION HISTORY:
 ----------------
 v 0.3.2.x
+R Released Server v0.3.2.5
++ Changed leeches so they are tracked by player, rather than by
+  operation.  Players were able to cancel attacks before maximum
+  leech had been reached, thus getting around operation-coded
+  leech limits.
 R Released Server v0.3.2.4, client v0.3.2.3
 + RFE 2717507: Ignore Pilot BV changes in campaign
 + Added ability to ignore Pilot BV changes globally or per-operation 

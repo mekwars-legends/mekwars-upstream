@@ -61,6 +61,7 @@ public class DeactivateCommand implements Command {
 		}
 		
 		p.setActive(false);
+		p.leechCount = 0;
 		CampaignMain.cm.toUser("AM:[*] You've left active duty and are now in reserve.",Username,true);
 		
 		/*

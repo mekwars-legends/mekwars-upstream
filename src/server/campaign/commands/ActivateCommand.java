@@ -454,7 +454,7 @@ class CheckAttackThread extends Thread {
                 CampaignMain.cm.toUser("<br>You have arrived on the front lines!", p.getName(), true);
                 ca.process(new StringTokenizer(""), p.getName());
             }
-
+            p.leechCount = 0;
             // ran once. kill the thread by returning.
             return;
         } catch (Exception ex) {

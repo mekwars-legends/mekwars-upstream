@@ -138,6 +138,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
     private long lastPromoted = 0;
     private JDBCConnectionHandler ch = new JDBCConnectionHandler();
 
+    public volatile int leechCount = 0;
+    
     // CONSTRUCTORS
     /**
      * Stock constructor. Note that an SPlayer is data-less unless/until
