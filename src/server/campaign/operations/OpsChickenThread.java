@@ -431,6 +431,11 @@ public class OpsChickenThread extends Thread {
             if (!shouldContinue)
                 return;
 
+            if (pdefender.leechCount > CampaignMain.cm.getOpsManager().getOperation(opName).getIntValue("LeechesToDeactivate")) {
+            	// Some other thing pushed this over the edge.  Don't do anything but return.
+            	return;
+            }
+            
             // FFA ops start once the leech is done.
             if (CampaignMain.cm.getOpsManager().getOperation(opName).getBooleanValue("FreeForAllOperation")) {
 
