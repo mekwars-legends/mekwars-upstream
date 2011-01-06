@@ -211,7 +211,11 @@ class GeneralPanel extends JPanel{
         String uName = en.getShortNameRaw();//Get Name without ID
         mechTypeL.setText("<HTML><br><b>" + uName + "</b><br></HTML>");
 
-        weightR.setText(Integer.toString((int)en.getWeight()));
+        if (en instanceof Infantry) {
+            weightR.setText(Float.toString(en.getWeight()));
+        } else {
+            weightR.setText(Integer.toString((int)en.getWeight()));
+        }
         pilotR.setText(en.getCrew().getDesc());
         if ( (en instanceof Mech) || (en instanceof Tank)
                 || ((en instanceof Infantry) && ((Infantry)en).isAntiMek()) ){

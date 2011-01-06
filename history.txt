@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.3.2.x
++ fix infantry weight display in the unit viewer
 R Released Server v0.3.2.6
 + Changed bay loss due to unpaid techs/bays to only cut those you can't pay for
 R Released Server v0.3.2.5
