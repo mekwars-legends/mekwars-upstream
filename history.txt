@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.2.x
+R Released Server v0.3.2.6
++ Changed bay loss due to unpaid techs/bays to only cut those you can't pay for
 R Released Server v0.3.2.5
 + Changed leeches so they are tracked by player, rather than by
   operation.  Players were able to cancel attacks before maximum

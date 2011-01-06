@@ -1199,15 +1199,29 @@ public class ShortResolver {
                  */
                 int techsLost = 0;
                 if (techPayment > availMoney) {
-                    techsLost = currP.doFireUnpaidTechnicians(techPayment - availMoney);
-                    techPayment = availMoney;
+                	boolean keepFiring = true;
+                	while (keepFiring) {
+                		techsLost += currP.doFireUnpaidTechnicians(1);
+                		techPayment = currP.getCurrentTechPayment();
+                		if (techPayment <= availMoney) {
+                			keepFiring = false;
+                		}
+                	}
+                    //techsLost = currP.doFireUnpaidTechnicians(techPayment - availMoney);
+                    //techPayment = availMoney;
                 }
 
                 // Put together a notification string.
                 if (techsLost > 0) {
-                    techFiringWarning += "You weren't able to pay all of your technicians. ";
-                    techFiringWarning += (techsLost == 1) ? "One" : techsLost;
-                    techFiringWarning += " quit in protest.";
+                	if(!CampaignMain.cm.isUsingAdvanceRepair()) {
+                		techFiringWarning += "You weren't able to pay all of your technicians. ";
+                		techFiringWarning += (techsLost == 1) ? "One" : techsLost;
+                		techFiringWarning += " quit in protest.";
+                	} else {
+                		techFiringWarning += "You weren't able to pay all of your leased bays. ";
+                		techFiringWarning += (techsLost == 1) ? "One was " : (techsLost + " were ");
+                		techFiringWarning += "repossessed.";                		
+                	}
                 }
 
                 /*
