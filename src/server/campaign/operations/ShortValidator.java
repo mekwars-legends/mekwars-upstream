@@ -297,7 +297,9 @@ public class ShortValidator {
     public static final int SFAIL_ATTACK_MAX_AERO = 254;// Max Number of Aeros an Attacker can have in an army
     public static final int SFAIL_ATTACK_MIN_AERO = 255;// Min Number of Aeros an Attacker can have in an army
     public static final int SFAIL_ATTACK_NOAEROS = 256;// "AttackerAllowedAeros",
-
+    public static final int SFAIL_ATTACK_TECHBASE_TOO_MUCH_CLAN = 257; // Too many clan units
+    public static final int SFAIL_ATTACK_TECHBASE_TOO_LITTLE_CLAN = 258; // Not enough clan units
+    
     /*
      * Failure codes for defender-specific checks.
      * 
@@ -445,7 +447,10 @@ public class ShortValidator {
     public static final int SFAIL_DEFEND_MAX_AERO = 455;// Max Number of Aeros a defender can have in an army
     public static final int SFAIL_DEFEND_MIN_AERO = 456;// Min Number of Aeros a defender can have in an army
     public static final int SFAIL_DEFEND_NOAEROS  = 457;// "DefenderAllowedAeros",
-    
+
+    public static final int SFAIL_DEFEND_TECHBASE_TOO_MUCH_CLAN = 458; // Too many clan units
+    public static final int SFAIL_DEFEND_TECHBASE_TOO_LITTLE_CLAN = 459; // Not enough clan units
+
     // CONSTRUCTORS
     public ShortValidator(OperationManager m) {
         manager = m;
@@ -977,6 +982,10 @@ public class ShortValidator {
         boolean greenPilots = false;
         double averageArmySkills = 0.0;
         int numberOfValidUnits = 0;
+        boolean checkClantech = o.getBooleanValue("UseClanEquipmentRatios");
+        int numClanUnits = 0;
+        int numTotalUnits = 0;
+
         
         Iterator<Unit> i = aa.getUnits().iterator();
         while (i.hasNext()) {
@@ -1101,6 +1110,11 @@ public class ShortValidator {
             lowUnitBV = Math.min(lowUnitBV, currBV);
             highUnitBV = Math.max(highUnitBV, currBV);
 
+            // Count total units and clan units
+            numTotalUnits++;
+            if(currUnit.getEntity().isClan()) {
+            	numClanUnits++;
+            }
         }// end while(units remain)
 
         // add unit exclusion failures to list
@@ -1173,6 +1187,19 @@ public class ShortValidator {
         
         if ( greenPilots || averageArmySkills < o.getDoubleValue("AttackerAverageArmySkillMin") )
             failureReasons.add(SFAIL_ATTACK_GREEN_PILOTS );
+        
+        if (checkClantech) {
+        	double minClantech = o.getDoubleValue("AttackerMinClanEquipmentPercent");
+        	double maxClantech = o.getDoubleValue("AttackerMaxClanEquipmentPercent");
+        	double clanTechPercent = (((double)numClanUnits / (double)numTotalUnits) * 100.0);
+        	
+        	if (clanTechPercent < minClantech) {
+        		failureReasons.add(SFAIL_ATTACK_TECHBASE_TOO_LITTLE_CLAN);
+        	}
+        	if (clanTechPercent > maxClantech) {
+        		failureReasons.add(SFAIL_ATTACK_TECHBASE_TOO_MUCH_CLAN);
+        	}
+        }
 
     }// end CheckAttackerConstruction
 
@@ -1364,6 +1391,9 @@ public class ShortValidator {
         boolean greenPilots = false;
         double averageArmySkills = 0.0;
         int numberOfValidUnits = 0;
+        boolean checkClantech = o.getBooleanValue("UseClanEquipmentRatios");
+        int numClanUnits = 0;
+        int numTotalUnits = 0;
         
         Iterator<Unit> i = da.getUnits().iterator();
         while (i.hasNext()) {
@@ -1469,6 +1499,12 @@ public class ShortValidator {
             
             lowUnitBV = Math.min(lowUnitBV, currBV);
             highUnitBV = Math.max(highUnitBV, currBV);
+            
+            // Count total units and clan units
+            numTotalUnits++;
+            if(currUnit.getEntity().isClan()) {
+            	numClanUnits++;
+            }
 
         }// end while(units remain)
 
@@ -1541,6 +1577,18 @@ public class ShortValidator {
         
         if ( greenPilots || averageArmySkills < o.getDoubleValue("DefenderAverageArmySkillMin") )
             failureReasons.add(SFAIL_DEFEND_GREEN_PILOTS );
+        
+        if (checkClantech) {
+        	double minClantech = o.getDoubleValue("DefenderMinClanEquipmentPercent");
+        	double maxClantech = o.getDoubleValue("DefenderMaxClanEquipmentPercent");
+        	double clanTechPercent = numClanUnits / numTotalUnits;
+        	if (clanTechPercent < minClantech) {
+        		failureReasons.add(SFAIL_DEFEND_TECHBASE_TOO_LITTLE_CLAN);
+        	}
+        	if (clanTechPercent > maxClantech) {
+        		failureReasons.add(SFAIL_DEFEND_TECHBASE_TOO_MUCH_CLAN);
+        	}
+        }
 
     }// end checkDefenderConstruction
 
@@ -1923,6 +1971,12 @@ public class ShortValidator {
         case SFAIL_ATTACK_NOAEROS:
             return " the army contains aeros, which may not participate in this type of attack";
 
+        case SFAIL_ATTACK_TECHBASE_TOO_LITTLE_CLAN:
+        	return " the army does not contain enough clantech";
+        	
+        case SFAIL_ATTACK_TECHBASE_TOO_MUCH_CLAN:
+        	return " the army contains too much clantech";
+        
             /*
              * DEFENSE failure causes
              */
@@ -2085,6 +2139,12 @@ public class ShortValidator {
         
         case SFAIL_DEFEND_NOAEROS:
             return " the army contains aeros, which may not participate in this type of defense";
+            
+        case SFAIL_DEFEND_TECHBASE_TOO_LITTLE_CLAN:
+        	return " the army does not contain enough clantech";
+        	
+        case SFAIL_DEFEND_TECHBASE_TOO_MUCH_CLAN:
+        	return " the army contains too much clantech";
         }
 
         return "";

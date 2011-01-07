@@ -735,7 +735,11 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseCheckBox.setName("IgnorePilotsForBVSpread");
         spreadPanel.add(BaseCheckBox);
 
-        spreadPanel.add(new JLabel(" "));
+        //spreadPanel.add(new JLabel(" "));
+        BaseCheckBox = new JCheckBox("Enforce Tech Base Ratios");
+        BaseCheckBox.setToolTipText("If true, limited clan tech per army will be enforced.");
+        BaseCheckBox.setName("UseClanEquipmentRatios");
+        spreadPanel.add(BaseCheckBox);
         
         BaseTextField = new JTextField(5);
         spreadPanel.add(new JLabel("Repod Omni to Base:", SwingConstants.TRAILING));
@@ -963,6 +967,19 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField.setName("AttackerAverageArmySkillMin");
         attackerPanel.add(BaseTextField);
 
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Min Clantech Percent:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Minimum percent of an army that may be Clantech</html>");
+        BaseTextField.setName("AttackerMinClanEquipmentPercent");
+        attackerPanel.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Max Clantech Percent:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Maximum percent of an army that may be Clantech</html>");
+        BaseTextField.setName("AttackerMaxClanEquipmentPercent");
+        attackerPanel.add(BaseTextField);
+
+        
         SpringLayoutHelper.setupSpringGrid(attackerPanel, 4);
 
         BaseCheckBox = new JCheckBox("Allow Meks");
@@ -1182,6 +1199,19 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField.setName("DefenderAverageArmySkillMin");
         defenderPanel.add(BaseTextField);
 
+        BaseTextField = new JTextField(5);
+        defenderPanel.add(new JLabel("Min Clantech Percent:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Minimum percent of an army that may be Clantech</html>");
+        BaseTextField.setName("DefenderMinClanEquipmentPercent");
+        defenderPanel.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        defenderPanel.add(new JLabel("Max Clantech Percent:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Maximum percent of an army that may be Clantech</html>");
+        BaseTextField.setName("DefenderMaxClanEquipmentPercent");
+        defenderPanel.add(BaseTextField);
+
+        
         SpringLayoutHelper.setupSpringGrid(defenderPanel, 4);
 
         attackerBox.add(new JLabel("Attacker"));
@@ -3732,7 +3762,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         ConfigPane.addTab("Scenario Addons", null, scenarioPanel, "<html>Arty/mines anything given to an attacker/<br>defender besides their own units</HTML>");
         ConfigPane.addTab("Teams", null, teamPanel, "Team Settings For MegaMek");
         ConfigPane.addTab("Units", null, unitsPanel, "Unit mins and maxes for the op");
-        ConfigPane.addTab("Victroy Conditions", null, victoryPanel, "Victory Conditions For MegaMek");
+        ConfigPane.addTab("Victory Conditions", null, victoryPanel, "Victory Conditions For MegaMek");
 
         // Remove the old configpane and add the newly created one!
         pane.remove(0);

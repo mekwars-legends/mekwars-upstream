@@ -1561,6 +1561,13 @@ public class DefaultOperation {
         operationsDefaults.put("LPlayerLaunchMezzo", "0");
         
         operationsDefaults.put("IgnorePilotsForBVSpread", "false");
+        
+        operationsDefaults.put("UseClanEquipmentRatios", "false");
+        operationsDefaults.put("AttackerMaxClanEquipmentPercent", "100.0");
+        operationsDefaults.put("AttackerMinClanEquipmentPercent", "0.0");
+        operationsDefaults.put("DefenderMaxClanEquipmentPercent", "100.0");
+        operationsDefaults.put("DefenderMinClanEquipmentPercent", "0.0");
+
     }
 
     // METHODS
