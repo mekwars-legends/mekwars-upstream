@@ -204,6 +204,46 @@ public class Army {
 
         return count;
     }
+    
+    /**
+     * This will pull The number of unit types this army holds i.e. type =
+     * Unit.MEK all meks will be counted.
+     *  
+     * @param type
+     * 	The unit type to check against.
+     * @param countSupport
+     *  Whether or not to count Support Units.
+     * @return
+     */
+    
+    public int getNumberOfUnitTypes(int type, boolean countSupport) {
+        int count = 0;
+
+        for (Unit unit : getUnits()) {
+            if (unit.getType() == type) {
+            	if (!unit.isSupportUnit() || (unit.isSupportUnit() && countSupport) ) {
+                count++;
+            	}
+            }
+        }
+        return count;    	
+    }
+    
+    /**
+     * This method will return the total number of support units in the army
+     * 
+     * @return
+     * 	Total number of support units in the army
+     */
+    public int getTotalSupportUnits() {
+    	int count = 0;
+    	for (Unit unit : getUnits()) {
+    		if (unit.isSupportUnit()) {
+    			count++;
+    		}
+    	}
+    	return count;
+    }
 
     /**
      * @return Returns the upperLimit.

@@ -1567,7 +1567,13 @@ public class DefaultOperation {
         operationsDefaults.put("AttackerMinClanEquipmentPercent", "0.0");
         operationsDefaults.put("DefenderMaxClanEquipmentPercent", "100.0");
         operationsDefaults.put("DefenderMinClanEquipmentPercent", "0.0");
-
+        
+        operationsDefaults.put("CountSupportUnits", "True");
+        operationsDefaults.put("MinAttackerSupportUnits", "0");
+        operationsDefaults.put("MaxAttackerSupportUnits", "999");
+        operationsDefaults.put("MinDefenderSupportUnits", "0");
+        operationsDefaults.put("MaxDefenderSupportUnits", "999");
+        operationsDefaults.put("CountSupportUnitsForSpread", "true");
     }
 
     // METHODS

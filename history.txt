@@ -1,6 +1,10 @@
 VERSION HISTORY:
 ----------------
 v 0.3.2.x
+R Released Server v0.3.2.8, Client v0.3.2.5
++ Added ability to designate units as "Support Units".  Support units
+  may be restricted/required for ops, counted or not-counted in the BV
+  spread
 R Released Server v0.3.2.7, Client v0.3.2.4
 + RFE2028023: Unit Ratios based on Tech Level
 + fix infantry weight display in the unit viewer

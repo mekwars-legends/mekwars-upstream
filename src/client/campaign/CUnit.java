@@ -212,8 +212,6 @@ public class CUnit extends Unit {
 
         TokenReader.readString(ST);// unused
 
-        TokenReader.readString(ST);// unused
-
         targetSystem.setEntity(UnitEntity);
         try {
 			targetSystem.setTargetSystem(TokenReader.readInt(ST));
@@ -224,7 +222,13 @@ public class CUnit extends Unit {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
+		
+		int suppUnit = TokenReader.readInt(ST);
+		if (suppUnit == 1) {
+			setSupportUnit(true);
+		} else {
+			setSupportUnit(false);
+		}
 
         scrappableFor = TokenReader.readInt(ST);
 

@@ -92,6 +92,8 @@ public class Unit {
 
     protected TargetSystem targetSystem = new TargetSystem();
     
+    private boolean isSupportUnit = false;
+    
     //CONSTRUCTOR
     public Unit(){
         //no content
@@ -620,5 +622,19 @@ public class Unit {
         
         return false;
     }
+
+	/**
+	 * @return the isSupportUnit
+	 */
+	public boolean isSupportUnit() {
+		return isSupportUnit;
+	}
+
+	/**
+	 * @param isSupportUnit the isSupportUnit to set
+	 */
+	public void setSupportUnit(boolean isSupportUnit) {
+		this.isSupportUnit = isSupportUnit;
+	}
     
 }

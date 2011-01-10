@@ -735,11 +735,23 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseCheckBox.setName("IgnorePilotsForBVSpread");
         spreadPanel.add(BaseCheckBox);
 
-        //spreadPanel.add(new JLabel(" "));
         BaseCheckBox = new JCheckBox("Enforce Tech Base Ratios");
         BaseCheckBox.setToolTipText("If true, limited clan tech per army will be enforced.");
         BaseCheckBox.setName("UseClanEquipmentRatios");
         spreadPanel.add(BaseCheckBox);
+
+        BaseCheckBox = new JCheckBox("Ignore Support Unit Designation");
+        BaseCheckBox.setToolTipText("<html>If true, support units will be counted as normal units for purposes of unit count.<br>If false, a support unit will not count towards it unit type count.</html>");
+        BaseCheckBox.setName("CountSupportUnits");
+        spreadPanel.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Count support units in Spread");
+        BaseCheckBox.setToolTipText("If true, protos are included when checking BV spreads between high/low units.");
+        BaseCheckBox.setName("CountSupportUnitsForSpread");
+        spreadPanel.add(BaseCheckBox);
+        
+        //spreadPanel.add(new JLabel(" "));
+        
         
         BaseTextField = new JTextField(5);
         spreadPanel.add(new JLabel("Repod Omni to Base:", SwingConstants.TRAILING));
@@ -978,7 +990,18 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField.setToolTipText("<html>Maximum percent of an army that may be Clantech</html>");
         BaseTextField.setName("AttackerMaxClanEquipmentPercent");
         attackerPanel.add(BaseTextField);
-
+        
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Min Support Units:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("Minimum number of support units");
+        BaseTextField.setName("MinAttackerSupportUnits");
+        attackerPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Max Support Units:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("Maximum number of support units");
+        BaseTextField.setName("MaxAttackerSupportUnits");
+        attackerPanel.add(BaseTextField);        
         
         SpringLayoutHelper.setupSpringGrid(attackerPanel, 4);
 
@@ -1209,6 +1232,18 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         defenderPanel.add(new JLabel("Max Clantech Percent:", SwingConstants.TRAILING));
         BaseTextField.setToolTipText("<html>Maximum percent of an army that may be Clantech</html>");
         BaseTextField.setName("DefenderMaxClanEquipmentPercent");
+        defenderPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        defenderPanel.add(new JLabel("Min Support Units:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("Minimum number of support units");
+        BaseTextField.setName("MinDefenderSupportUnits");
+        defenderPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        defenderPanel.add(new JLabel("Max Support Units:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("Maximum number of support units");
+        BaseTextField.setName("MaxDefenderSupportUnits");
         defenderPanel.add(BaseTextField);
 
         

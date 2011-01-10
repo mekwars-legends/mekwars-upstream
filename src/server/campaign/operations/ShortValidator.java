@@ -299,6 +299,8 @@ public class ShortValidator {
     public static final int SFAIL_ATTACK_NOAEROS = 256;// "AttackerAllowedAeros",
     public static final int SFAIL_ATTACK_TECHBASE_TOO_MUCH_CLAN = 257; // Too many clan units
     public static final int SFAIL_ATTACK_TECHBASE_TOO_LITTLE_CLAN = 258; // Not enough clan units
+    public static final int SFAIL_ATTACK_TOO_MANY_SUPPORT_UNITS = 259; // Too many designated support units
+    public static final int SFAIL_ATTACK_TOO_FEW_SUPPORT_UNITS = 260; // Not enough designated support units
     
     /*
      * Failure codes for defender-specific checks.
@@ -450,7 +452,10 @@ public class ShortValidator {
 
     public static final int SFAIL_DEFEND_TECHBASE_TOO_MUCH_CLAN = 458; // Too many clan units
     public static final int SFAIL_DEFEND_TECHBASE_TOO_LITTLE_CLAN = 459; // Not enough clan units
-
+    
+    public static final int SFAIL_DEFEND_TOO_MANY_SUPPORT_UNITS = 460; // Too many designated support units
+    public static final int SFAIL_DEFEND_TOO_FEW_SUPPORT_UNITS = 461; // Not enough designated support units
+    
     // CONSTRUCTORS
     public ShortValidator(OperationManager m) {
         manager = m;
@@ -901,6 +906,8 @@ public class ShortValidator {
             return;
         }
         
+        boolean countSupport = o.getBooleanValue("CountSupportUnits");
+        
         /*
          * Can have too many units, or too few, but not both. As such, can use
          * "else if" here and skip the mincheck in some cases. Similar logic
@@ -915,30 +922,30 @@ public class ShortValidator {
 
         // Mek min/max. Remember - these are for op qualification, not related
         // to limiters.
-        if (aa.getNumberOfUnitTypes(Unit.MEK) > o.getIntValue("MaxAttackerMeks"))
+        if (aa.getNumberOfUnitTypes(Unit.MEK, countSupport) > o.getIntValue("MaxAttackerMeks"))
             failureReasons.add(new Integer(SFAIL_ATTACK_MAXMEKS));
-        else if (aa.getNumberOfUnitTypes(Unit.MEK) < o.getIntValue("MinAttackerMeks"))
+        else if (aa.getNumberOfUnitTypes(Unit.MEK, countSupport) < o.getIntValue("MinAttackerMeks"))
             failureReasons.add(new Integer(SFAIL_ATTACK_MINMEKS));
 
         // Vehicle min/max. Remember - these are for op qualification, not
         // related to limiters.
-        if (aa.getNumberOfUnitTypes(Unit.VEHICLE) > o.getIntValue("MaxAttackerVehicles"))
+        if (aa.getNumberOfUnitTypes(Unit.VEHICLE, countSupport) > o.getIntValue("MaxAttackerVehicles"))
             failureReasons.add(new Integer(SFAIL_ATTACK_MAXVEHICLES));
-        else if (aa.getNumberOfUnitTypes(Unit.VEHICLE) < o.getIntValue("MinAttackerVehicles"))
+        else if (aa.getNumberOfUnitTypes(Unit.VEHICLE, countSupport) < o.getIntValue("MinAttackerVehicles"))
             failureReasons.add(new Integer(SFAIL_ATTACK_MINVEHICLES));
 
         // Aero min/max. Remember - these are for op qualification, not
         // related to limiters.
-        if (aa.getNumberOfUnitTypes(Unit.AERO) > o.getIntValue("MaxAttackerAero"))
+        if (aa.getNumberOfUnitTypes(Unit.AERO, countSupport) > o.getIntValue("MaxAttackerAero"))
             failureReasons.add(new Integer(SFAIL_ATTACK_MAX_AERO));
-        else if (aa.getNumberOfUnitTypes(Unit.AERO) < o.getIntValue("MinAttackerAero"))
+        else if (aa.getNumberOfUnitTypes(Unit.AERO, countSupport) < o.getIntValue("MinAttackerAero"))
             failureReasons.add(new Integer(SFAIL_ATTACK_MIN_AERO));
 
-        int infCount = aa.getNumberOfUnitTypes(Unit.INFANTRY);
-        int protoCount = aa.getNumberOfUnitTypes(Unit.PROTOMEK);
+        int infCount = aa.getNumberOfUnitTypes(Unit.INFANTRY, countSupport);
+        int protoCount = aa.getNumberOfUnitTypes(Unit.PROTOMEK, countSupport);
         if (protoCount > 0)
             infCount += Math.max(1, protoCount / 5);
-        infCount += aa.getNumberOfUnitTypes(Unit.BATTLEARMOR);
+        infCount += aa.getNumberOfUnitTypes(Unit.BATTLEARMOR, countSupport);
 
         // Mek min/max. Remember - these are for op qualification, not related
         // to limiters.
@@ -954,6 +961,14 @@ public class ShortValidator {
         else if (aa.getNumberOfUnitTypes(Unit.MEK) + aa.getNumberOfUnitTypes(Unit.VEHICLE) + aa.getNumberOfUnitTypes(Unit.AERO) < o.getIntValue("MinAttackerNonInfantry"))
             failureReasons.add(new Integer(SFAIL_ATTACK_MINNONINFANTRY));
 
+        // Support Unit min/max
+        if (aa.getTotalSupportUnits() < o.getIntValue("MinAttackerSupportUnits")) {
+        	failureReasons.add(new Integer(SFAIL_ATTACK_TOO_FEW_SUPPORT_UNITS));
+        } else if (aa.getTotalSupportUnits() > o.getIntValue("MaxAttackerSupportUnits")) {
+        	failureReasons.add(new Integer(SFAIL_ATTACK_TOO_MANY_SUPPORT_UNITS));
+        }
+        
+        
         /*
          * loop through all units in the army, setting up remaining checks.
          */
@@ -1069,6 +1084,8 @@ public class ShortValidator {
             // check spreads. because the spreads can <code>continue</code> they
             // should be LAST
             int type = currUnit.getType();
+            if (currUnit.isSupportUnit() && !o.getBooleanValue("CountSupportUnitsForSpread"))
+            	continue;
             if (type == Unit.VEHICLE && !o.getBooleanValue("CountVehsForSpread"))
                 continue;
             else if (type == Unit.PROTOMEK && !o.getBooleanValue("CountProtosForSpread"))
@@ -1315,6 +1332,8 @@ public class ShortValidator {
             return;
         }
         
+        boolean countSupport = o.getBooleanValue("CountSupportUnits");
+        
         // BV min/max. Remember - these are for op qualification, not army
         // matching.
         if (da.getBV() > o.getIntValue("MaxDefenderBV"))
@@ -1324,28 +1343,28 @@ public class ShortValidator {
 
         // Meks min/max. Remember - these are for op qualification, not related
         // to limiters.
-        if (da.getNumberOfUnitTypes(Unit.MEK) > o.getIntValue("MaxDefenderMeks"))
+        if (da.getNumberOfUnitTypes(Unit.MEK, countSupport) > o.getIntValue("MaxDefenderMeks"))
             failureReasons.add(new Integer(SFAIL_DEFEND_MAXMEKS));
-        else if (da.getNumberOfUnitTypes(Unit.MEK) < o.getIntValue("MinDefenderMeks"))
+        else if (da.getNumberOfUnitTypes(Unit.MEK, countSupport) < o.getIntValue("MinDefenderMeks"))
             failureReasons.add(new Integer(SFAIL_DEFEND_MINMEKS));
 
         // Vehicles min/max. Remember - these are for op qualification, not
         // related to limiters.
-        if (da.getNumberOfUnitTypes(Unit.VEHICLE) > o.getIntValue("MaxDefenderVehicles"))
+        if (da.getNumberOfUnitTypes(Unit.VEHICLE, countSupport) > o.getIntValue("MaxDefenderVehicles"))
             failureReasons.add(new Integer(SFAIL_DEFEND_MAXVEHICLES));
-        else if (da.getNumberOfUnitTypes(Unit.VEHICLE) < o.getIntValue("MinDefenderVehicles"))
+        else if (da.getNumberOfUnitTypes(Unit.VEHICLE, countSupport) < o.getIntValue("MinDefenderVehicles"))
             failureReasons.add(new Integer(SFAIL_DEFEND_MINVEHICLES));
 
         // Aero min/max. Remember - these are for op qualification, not
         // related to limiters.
-        if (da.getNumberOfUnitTypes(Unit.AERO) > o.getIntValue("MaxDefenderAero"))
+        if (da.getNumberOfUnitTypes(Unit.AERO, countSupport) > o.getIntValue("MaxDefenderAero"))
             failureReasons.add(new Integer(SFAIL_DEFEND_MAX_AERO));
-        else if (da.getNumberOfUnitTypes(Unit.AERO) < o.getIntValue("MinDefenderAero"))
+        else if (da.getNumberOfUnitTypes(Unit.AERO, countSupport) < o.getIntValue("MinDefenderAero"))
             failureReasons.add(new Integer(SFAIL_DEFEND_MIN_AERO));
 
-        int infCount = da.getNumberOfUnitTypes(Unit.INFANTRY);
-        infCount += da.getNumberOfUnitTypes(Unit.BATTLEARMOR);
-        int protoCount = da.getNumberOfUnitTypes(Unit.PROTOMEK);
+        int infCount = da.getNumberOfUnitTypes(Unit.INFANTRY, countSupport);
+        infCount += da.getNumberOfUnitTypes(Unit.BATTLEARMOR, countSupport);
+        int protoCount = da.getNumberOfUnitTypes(Unit.PROTOMEK, countSupport);
         if (protoCount > 0)
             infCount += Math.max(1, protoCount / 5);
 
@@ -1363,6 +1382,14 @@ public class ShortValidator {
         else if (da.getNumberOfUnitTypes(Unit.MEK) + da.getNumberOfUnitTypes(Unit.VEHICLE) + da.getNumberOfUnitTypes(Unit.AERO) < o.getIntValue("MinDefenderNonInfantry"))
             failureReasons.add(new Integer(SFAIL_DEFEND_MINNONINFANTRY));
 
+        // Support Unit min/max
+        if (da.getTotalSupportUnits() < o.getIntValue("MinDefenderSupportUnits")) {
+        	failureReasons.add(new Integer(SFAIL_DEFEND_TOO_FEW_SUPPORT_UNITS));
+        } else if (da.getTotalSupportUnits() > o.getIntValue("MaxDefenderSupportUnits")) {
+        	failureReasons.add(new Integer(SFAIL_DEFEND_TOO_MANY_SUPPORT_UNITS));
+        }
+        
+        
         /*
          * loop through all units in the army, setting up remaining checks.
          */
@@ -1976,6 +2003,12 @@ public class ShortValidator {
         	
         case SFAIL_ATTACK_TECHBASE_TOO_MUCH_CLAN:
         	return " the army contains too much clantech";
+        	
+        case SFAIL_ATTACK_TOO_MANY_SUPPORT_UNITS:
+        	return " the army has too many support units";
+        
+        case SFAIL_ATTACK_TOO_FEW_SUPPORT_UNITS:
+        	return " the army does not have enough support units";
         
             /*
              * DEFENSE failure causes
@@ -2145,6 +2178,12 @@ public class ShortValidator {
         	
         case SFAIL_DEFEND_TECHBASE_TOO_MUCH_CLAN:
         	return " the army contains too much clantech";
+        	
+        case SFAIL_DEFEND_TOO_FEW_SUPPORT_UNITS:
+        	return " the army does not have enough support units";
+        	
+        case SFAIL_DEFEND_TOO_MANY_SUPPORT_UNITS:
+        	return " the army has too many support units";
         }
 
         return "";

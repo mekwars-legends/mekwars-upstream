@@ -3171,12 +3171,15 @@ public class CHQPanel extends JPanel {
                             C3Text.append("<br>");
                         }
                         if (cm.getEntity().isClan()) {
-                            C3Text.append("Tech Base: Clan");
+                            C3Text.append("Tech Base: Clan<br>");
                         } else {
-                            C3Text.append("Tech Base: IS");
+                            C3Text.append("Tech Base: IS<br>");
                         }
                     }
-                    C3Text.append("Targeting: " + cm.getTargetSystemTypeDesc());
+                    C3Text.append("Targeting: " + cm.getTargetSystemTypeDesc() + "<br>");
+                    if (cm.isSupportUnit()) {
+                    	C3Text.append("[Support]<br>");
+                    }
                     
                     // If you have a unit in more then one army, list all the
                     // armies it is in.

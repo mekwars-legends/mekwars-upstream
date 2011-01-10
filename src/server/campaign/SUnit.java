@@ -85,7 +85,8 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
     private boolean is_saving = false;
     private JDBCConnectionHandler ch = new JDBCConnectionHandler();
 
-
+    
+    
     // CONSTRUCTOR
     /**
      * For Serialization.
@@ -549,8 +550,10 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
             result.append("0$");
         }
 
-        result.append("0$0$"); // unused Slite info and targetting.
+        result.append("0$"); // unused Slite info and targetting.
         result.append(targetSystem.getCurrentType());
+        result.append("$");
+        result.append(isSupportUnit()?"1":"0");
         result.append("$");
         result.append(getScrappableFor());
         result.append("$");
@@ -755,12 +758,23 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
             setEntity(en);
             targetSystem.setEntity(en);
             TokenReader.readString(ST);// unused
-            TokenReader.readString(ST);// unused
             int tsType = TokenReader.readInt(ST);
             if (tsType != TargetSystem.TS_TYPE_STANDARD && CampaignData.cd.targetSystemIsBanned(tsType)) {
             	tsType = TargetSystem.TS_TYPE_STANDARD;
             }
             targetSystem.setTargetSystem(tsType);
+            
+            TokenReader.readInt(ST); // Placeholder for isSupportUnit
+            // Now we need to override this.  Needs to be set in the string, 
+            // so we don't need to keep a list of all support units client-side
+            // but should be dynamic server-side.
+            if (CampaignMain.cm.getSupportUnits().contains(getUnitFilename().trim().toLowerCase())) {
+            	setSupportUnit(true);
+            } else {
+            	setSupportUnit(false);
+            }
+            
+            
             setScrappableFor(TokenReader.readInt(ST));
 
             if (CampaignMain.cm.isUsingAdvanceRepair() && ((unitEntity instanceof Mech) || (unitEntity instanceof Tank))) {
@@ -1580,5 +1594,16 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    }
+    
+    @Override
+    public boolean isSupportUnit() {
+    	CampaignData.mwlog.mainLog("Checking " + getUnitFilename().toLowerCase() + " for Support Unit status");
+    	if (CampaignMain.cm.getSupportUnits().contains(getUnitFilename().toLowerCase())) {
+    		CampaignData.mwlog.mainLog("True");
+    	} else {
+    		CampaignData.mwlog.mainLog("False");
+    	}
+    	return CampaignMain.cm.getSupportUnits().contains(getUnitFilename().toLowerCase());
     }
 }

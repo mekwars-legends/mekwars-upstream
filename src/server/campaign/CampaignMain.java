@@ -266,6 +266,8 @@ public final class CampaignMain implements Serializable {
      * removed from this hash and added to the houses memory.
      */
     private Hashtable<String, SPlayer> lostSouls = new Hashtable<String, SPlayer>();
+    
+    private Vector<String> supportUnits = new Vector<String>();
 
     // CONSTRUCTOR
     public CampaignMain(MWServ serv) {
@@ -391,6 +393,7 @@ public final class CampaignMain implements Serializable {
         cm.loadBlackMarketSettings();
 
         cm.loadBannedTargetSystems();
+        cm.loadSupportUnitDefinitions();
         
         // create command hashs
         init();
@@ -509,7 +512,49 @@ public final class CampaignMain implements Serializable {
         this.addToNewsFeed("MekWars Server Started!");
     }
 
-    /*
+    private void loadSupportUnitDefinitions() {
+    	CampaignData.mwlog.mainLog("Entering loadSupportUnitDefinitions");
+    	
+    	File tsFile = new File("./data/supportunits.txt");
+    	if(!tsFile.exists()) {
+    		return;
+    	}
+    	
+    	FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(tsFile);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Vector<String> units = new Vector<String>();
+        BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+        try {
+        	while (dis.ready()) {
+        		String line = dis.readLine();
+        		line = line.trim().toLowerCase();
+        		CampaignData.mwlog.mainLog("Line: " + line);
+        		if (line.startsWith("#")) {
+        			continue;
+        		}
+        		if (!units.contains(line)) {
+        			units.add(line);
+        			CampaignData.mwlog.mainLog("Adding Support Unit: " + line);
+        		}
+        	}
+        } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				dis.close();
+				fis.close();
+			} catch (IOException e) {}
+			CampaignMain.cm.setSupportUnits(units);
+		}
+	}
+
+	/*
      * public void saveData() { try { data.saveData(new File("campaign")); /
      * MMNetXStream xml = new MMNetXStream(new DomDriver()); for (Iterator i =
      * data.getAllHouses().iterator(); i.hasNext();) { SHouse h = (SHouse)
@@ -4376,4 +4421,18 @@ public final class CampaignMain implements Serializable {
             return (name.endsWith(".dat"));
         }
     }
+
+	/**
+	 * @return the supportUnits
+	 */
+	public Vector<String> getSupportUnits() {
+		return supportUnits;
+	}
+
+	/**
+	 * @param supportUnits the supportUnits to set
+	 */
+	public void setSupportUnits(Vector<String> supportUnits) {
+		this.supportUnits = supportUnits;
+	}
 }
