@@ -1598,12 +1598,6 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
     
     @Override
     public boolean isSupportUnit() {
-    	//CampaignData.mwlog.mainLog("Checking " + getUnitFilename().toLowerCase() + " for Support Unit status");
-    	if (CampaignMain.cm.getSupportUnits().contains(getUnitFilename().toLowerCase())) {
-    		CampaignData.mwlog.mainLog("True");
-    	} else {
-    		CampaignData.mwlog.mainLog("False");
-    	}
     	return CampaignMain.cm.getSupportUnits().contains(getUnitFilename().toLowerCase());
     }
 }
