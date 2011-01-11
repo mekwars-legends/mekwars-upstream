@@ -1,6 +1,10 @@
 VERSION HISTORY:
 ----------------
 v 0.3.2.x
+R Released Server v0.3.2.9, Client v0.3.2.6
++ Changed anti-air targeting to add a +1 short-range malus in order
+  to balance out the positive of anti-air.  This will have to do as
+  a short-term fix while waiting on MegaMek RFE 3155624.
 R Released Server v0.3.2.8, Client v0.3.2.5
 + Added ability to designate units as "Support Units".  Support units
   may be restricted/required for ops, counted or not-counted in the BV

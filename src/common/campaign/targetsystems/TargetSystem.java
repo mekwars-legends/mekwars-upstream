@@ -26,7 +26,7 @@ public class TargetSystem {
 		if (type == TS_TYPE_ANTIAIR) {
 			setTargetSystem("anti_air", true);
 			setTargetSystem("imp_target_short", false);
-			setTargetSystem("poor_target_short", false);
+			setTargetSystem("poor_target_short", true);
 			setTargetSystem("imp_target_med", false);
 			setTargetSystem("poor_target_med", false);
 			setTargetSystem("imp_target_long", false);
