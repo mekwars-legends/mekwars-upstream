@@ -1110,7 +1110,6 @@ public class ShortResolver {
             if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO") && so.getAllPlayerNames().size() <= 2) { // This will really only work for 2-player games
             	Double myRating;
             	Double hisRating;
-            	
             	if (so.getWinners().containsKey(currName)) {
             		myRating = so.getWinners().get(currName).getRating();
             		hisRating = so.getLosers().get(so.getLosers().keySet().iterator().next()).getRating();
@@ -1129,30 +1128,19 @@ public class ShortResolver {
             		modifyBasedOnPosition = false;
             	}
             	
-            	CampaignData.mwlog.testLog("MyName: " + currName);
-            	CampaignData.mwlog.testLog("myRating: " + myRating + " , hisRating: " + hisRating);
-            	CampaignData.mwlog.testLog("ratingMultiplier: " + ratingMultiplier);
-            	CampaignData.mwlog.testLog("OldMoney: " + earnedMoney);
             	if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO_Money") && modifyBasedOnPosition) {
             		earnedMoney = (int)Math.floor((earnedMoney * (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));
             	}
-            	CampaignData.mwlog.testLog("NewMoney: " + earnedMoney);
-
-            	CampaignData.mwlog.testLog("OldXP: " + earnedXP);
             	if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO_Exp") && modifyBasedOnPosition) {
             		earnedXP = (int)Math.floor((earnedXP * (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));
             	}
-            	CampaignData.mwlog.testLog("NewXP: " + earnedXP);
-            	CampaignData.mwlog.testLog("OldFlu: " + earnedFlu);
             	if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO_Influence") && modifyBasedOnPosition) {
             		earnedFlu = (int)Math.floor((earnedFlu * (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));
             	}
-            	CampaignData.mwlog.testLog("NewFlu: " + earnedFlu);
-            	CampaignData.mwlog.testLog("OldRP: " + earnedRP);
             	if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO_RP") && modifyBasedOnPosition) {
             		earnedRP = (int)Math.floor((earnedRP *  (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));
             	}
-            	CampaignData.mwlog.testLog("NewRP: " + earnedRP);
+            	
             }
             
             /*
@@ -2504,15 +2492,20 @@ public class ShortResolver {
 
             	Double ratingMultiplier = 1.0;  
             	boolean modifyBasedOnPosition = false;
+            	boolean alwaysReduceLand = CampaignMain.cm.getBooleanConfig("AlwaysReduceLandTransfer");
                 if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO") && so.getAllPlayerNames().size() <= 2) { // This will really only work for 2-player games
                 	Double myRating;
                 	Double hisRating;
                 	
                 	myRating = so.getWinners().get(so.getWinners().keySet().iterator().next()).getRating();
                 	hisRating = so.getLosers().get(so.getLosers().keySet().iterator().next()).getRating();
-                	ratingMultiplier = hisRating / myRating;
+                	if(alwaysReduceLand) {
+                		ratingMultiplier = Math.min(hisRating, myRating) / Math.max(hisRating, myRating);
+                	} else {
+                		ratingMultiplier = hisRating / myRating;
+                	}
                 	
-                	ratingMultiplier = hisRating / myRating;
+                	
                 	if (ratingMultiplier >= 1.0 && CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELOForLower")) {
                 		modifyBasedOnPosition = true;
                 	} else if (ratingMultiplier <= 1.0 && CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELOForHigher")) {
@@ -3093,11 +3086,9 @@ public class ShortResolver {
                         }
                         if (totalConquest > conquestCap) {
                         }
-                        CampaignData.mwlog.testLog("Old Land: " + totalConquest);
                         if (modifyBasedOnPosition) {
                         	totalConquest = (int)(Math.floor(totalConquest *  (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));                      	
                         }
-                        CampaignData.mwlog.testLog("New Land: " + totalConquest);
                         if (totalConquest > conquestCap) {
                             totalConquest = conquestCap;
                         }

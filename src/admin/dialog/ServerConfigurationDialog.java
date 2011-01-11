@@ -5123,11 +5123,18 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setToolTipText("If checked, land transfer will be modified by ELO.");
         combatPayoutLowerPanel.add(BaseCheckBox);
         
+        BaseCheckBox = new JCheckBox("Always reduce land payout");
+        BaseCheckBox.setName("AlwaysReduceLandTransfer");
+        BaseCheckBox.setToolTipText("If checked, land transfer will be reduced no matter who wins");
+        combatPayoutLowerPanel.add(BaseCheckBox);
+        
         baseTextField = new JTextField(5);
         baseTextField.setName("ModifyOpPayoutByELO_Multiplier");
         baseTextField.setToolTipText("<html><p>Not really a multiplier, but a power.  The ELO ratio (loser / winner) will be raised to this power to determine change of actual payout.</p><p>Please refer to documentation for a more complete discussion of this mechanic.</p></html>");
         combatPayoutLowerPanel.add(new JLabel("Payout Multiplier:"));
         combatPayoutLowerPanel.add(baseTextField);
+        
+        
         
         combatPayoutPanel.add(combatPayoutUpperPanel);
         combatPayoutPanel.add(combatPayoutLowerPanel);

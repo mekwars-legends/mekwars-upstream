@@ -1277,6 +1277,7 @@ public class DefaultServerOptions {
         defaults.setProperty("ModifyOpPayoutByELO_Influence", "false");
         defaults.setProperty("ModifyOpPayoutByELO_Land", "false");
         defaults.setProperty("ModifyOpPayoutByELO_Multiplier", "1");
+        defaults.setProperty("AlwaysReduceLandTransfer", "false");
         
         defaults.setProperty("ShowUnitTypeCounts", "false");
         defaults.setProperty("UseBaseBVForMatching", "false");

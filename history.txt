@@ -1,6 +1,10 @@
 VERSION HISTORY:
 ----------------
 v 0.3.2.x
+R Released Server v0.3.2.10, Client v0.3.2.7, DedHost v0.3.2.1
++ New MegaMek v0.35.22-MW20110111-8083
++ Added option for ELO payout skew to always reduce land exchange
+  regardless of winner
 R Released Server v0.3.2.9, Client v0.3.2.6
 + Changed anti-air targeting to add a +1 short-range malus in order
   to balance out the positive of anti-air.  This will have to do as
