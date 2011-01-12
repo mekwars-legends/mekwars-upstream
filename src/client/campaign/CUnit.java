@@ -320,7 +320,13 @@ public class CUnit extends Unit {
         } else {
         	tinfo += BV;
         }
-
+        
+        //if (Boolean.parseBoolean(mwclient.getserverConfigs("RIGHTHERE")))
+        if (Boolean.parseBoolean(mwclient.getConfigParam("ShowUnitBaseBV"))) {
+        	if (getBV() != getBaseBV()) {
+        		tinfo += " (" + getBaseBV() + ")";
+        	}
+        }
         tinfo += " // Exp: " + getPilot().getExperience() + " // Kills: " + getPilot().getKills() + "<br> ";
         
         if (getPilot().getSkills().size() > 0) {

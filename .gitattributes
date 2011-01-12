@@ -1300,6 +1300,7 @@ server-dist/data/supportunits.txt -text
 server-dist/data/tasknames/Tasknames.txt -text
 server-dist/data/terrain.dtd -text
 server-dist/data/terrain.xml -text
+server-dist/data/unitquirks.txt -text
 server-dist/docs/Enabling[!!-~]Support[!!-~]Units.txt -text
 server-dist/docs/IncreasedTechForNonFactionUnits.txt -text
 server-dist/docs/Modifying[!!-~]Payout[!!-~]By[!!-~]ELO.pdf -text

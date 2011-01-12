@@ -429,6 +429,8 @@ public class CConfig {
 
         defaults.setProperty("USERDEFINDMESSAGETAB", "0");
         defaults.setProperty("INVERTCHATCOLOR", "NO");
+        
+        defaults.setProperty("ShowUnitBaseBV", "false");
 
         return defaults;
     }

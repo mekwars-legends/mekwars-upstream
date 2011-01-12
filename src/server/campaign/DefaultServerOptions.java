@@ -1281,6 +1281,8 @@ public class DefaultServerOptions {
         
         defaults.setProperty("ShowUnitTypeCounts", "false");
         defaults.setProperty("UseBaseBVForMatching", "false");
+        
+        defaults.setProperty("UseUnitQuirks", "false");
     }
 
     /**
