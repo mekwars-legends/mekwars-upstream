@@ -333,7 +333,9 @@ public final class MWLogger {// final - no extension of the server logger
     public void factionLog(String s, String LogName) {
         factionLog = Logger.getLogger(LogName);
         factionLog.info(s);
-        factionLog.getHandlers()[0].flush();
+        if (factionLog.getHandlers().length > 0) {
+        	factionLog.getHandlers()[0].flush();
+        }
     }
 
     public void gameLog(String s) {
