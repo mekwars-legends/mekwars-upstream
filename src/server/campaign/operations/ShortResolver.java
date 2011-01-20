@@ -432,9 +432,7 @@ public class ShortResolver {
          */
         so.changeStatus(ShortOperation.STATUS_FINISHED);
         CampaignMain.cm.addGamesCompleted(1);
-        if (CampaignMain.cm.isUsingCyclops()) {
-            CampaignMain.cm.getMWCC().opConclude(so);
-        }
+
         if (o.getBooleanValue("ReportOpToNewsFeed")) {
             CampaignMain.cm.addToNewsFeed(newsFeedTitle, newsFeedBody);
         }
@@ -684,11 +682,6 @@ public class ShortResolver {
          */
         so.changeStatus(ShortOperation.STATUS_FINISHED);
         CampaignMain.cm.addGamesCompleted(1);
-
-        // send to cyclops, if using Guibod-style info tracking
-        if (CampaignMain.cm.isUsingCyclops()) {
-            CampaignMain.cm.getMWCC().opConclude(so);
-        }
 
         // send to news feed, if the server ops believe this is a "meaningful"
         // game
@@ -1970,11 +1963,6 @@ public class ShortResolver {
                     }
                 }
 
-                // note change of ownership on cyclops
-                if (CampaignMain.cm.isUsingCyclops()) {
-                    CampaignMain.cm.getMWCC().unitChangeOwnerShip(Integer.toString(currU.getId()), newOwner.getName(), newOwner.getHouseFightingFor().getName(), so.getOpCyclopsID(), "Salvage");
-                }
-
                 // do the actual unit move
                 oldOwner.removeUnit(currU.getId(), false);
                 String newPilot = handleDeadPilot(newOwner, currU, currEntity, so);
@@ -2058,16 +2046,6 @@ public class ShortResolver {
             Boolean pilotLived = (Boolean) pilotinformation[0];
             if (pilotLived.booleanValue()) {
                 handleDispossesedPilot(oldOwner, currU);
-            }
-
-            /*
-             * Added name of player and unit that destroyed unit for better
-             * tracking on cyclops. MM does report this and we can use it.
-             * 
-             * @torren
-             */
-            if (CampaignMain.cm.isUsingCyclops()) {
-                CampaignMain.cm.getMWCC().unitDestroy(Integer.toString(currU.getId()), "cored", so.getOpCyclopsID(), "", "");
             }
 
             // check for compensation from the faction.
@@ -3661,9 +3639,7 @@ public class ShortResolver {
             // if PPQs are on and the unit is a mek, vacate
             boolean personalQueues = CampaignMain.cm.getBooleanConfig("AllowPersonalPilotQueues");
             boolean isPilotChangeable = unit.isSinglePilotUnit();
-            if (CampaignMain.cm.isUsingCyclops()) {
-                CampaignMain.cm.getMWCC().pilotKill((SPilot) unit.getPilot(), op.getOpCyclopsID());
-            }
+
             if (CampaignMain.cm.isUsingMySQL()) {
                 CampaignMain.cm.MySQL.deletePilot(((SPilot) unit.getPilot()).getPilotId());
             }

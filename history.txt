@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
-v 0.3.2.x
+v 0.3.3.x
+R Released Server, Ded, Client v0.3.3.0
+- Removed all Cyclops support - the Cyclops project is dead
+    per conversation with Guibod
 R Released Server v0.3.2.11
 + Fixed database issues with mechstats
 + Fixed missing filepaths in configuration menu

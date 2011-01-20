@@ -160,7 +160,6 @@ import server.campaign.util.XMLPlanetDataParser;
 import server.campaign.util.XMLTerrainDataParser;
 import server.campaign.votes.VoteManager;
 import server.dataProvider.Server;
-import server.mwcyclopscomm.MWCyclopsComm;
 import server.mwmysql.mysqlHandler;
 import server.util.AutomaticBackup;
 import server.util.MWPasswd;
@@ -197,8 +196,6 @@ public final class CampaignMain implements Serializable {
     private Client megaMekClient = new Client("MWServer", "None", 0);
 
     private Server dataProviderServer;
-
-    private MWCyclopsComm mwcc = null;
 
     private CampaignData data = new CampaignData();
 
@@ -488,13 +485,6 @@ public final class CampaignMain implements Serializable {
             dataProviderServer = new Server(data, dataport, myServer.getConfigParam("SERVERIP"));
             Thread t = new Thread(dataProviderServer);
             t.start();
-        }
-
-        // Start Cyclops
-        if (isUsingCyclops()) {
-            getMWCC().skillWriteFromList(pilotSkills);
-            getMWCC().houseWriteFromList(getData().getAllHouses());
-            getMWCC().planetWriteFromList(getData().getAllPlanets());
         }
 
         // start tick, slice and immunity threads
@@ -1569,12 +1559,6 @@ public final class CampaignMain implements Serializable {
         Commands.put("CREATESUBFACTION", new CreateSubFactionCommand());
         Commands.put("CREATEPILOT", new CreatePilotCommand());
         Commands.put("CREATEUNIT", new CreateUnitCommand());
-        Commands.put("CYCLOPSCHECKUP", new CyclopsCheckupCommand());
-        Commands.put("CYCLOPSOPTIMIZE", new CyclopsOptimizeCommand());
-        Commands.put("CYCLOPSPOSTMAXSIZE", new CyclopsPostMaxSizeCommand());
-        Commands.put("CYCLOPSRESET", new CyclopsResetCommand());
-        Commands.put("CYCLOPSTEMPLATELOADER", new CyclopsTemplateLoaderCommand());
-        Commands.put("CYCLOPSVERSION", new CyclopsVersionCommand());
         Commands.put("DEACTIVATE", new DeactivateCommand());
         Commands.put("DECLINEATTACKFROMRESERVE", new DeclineAttackFromReserveCommand());
         Commands.put("DEFECT", new DefectCommand());
@@ -2469,31 +2453,6 @@ public final class CampaignMain implements Serializable {
         return null;
     }
 
-    /**
-     * Check to see if the server is currently using cyclops if so then check to
-     * make sure the link is turned on in case the SO's have turned in on while
-     * the server was already running. Also the link is nulled if the SO's turn
-     * off cyclops while the server is running.
-     * 
-     * @return
-     */
-    public boolean isUsingCyclops() {
-        boolean isUsing = Boolean.parseBoolean(myServer.getConfigParam("USECYCLOPS"));
-
-        if (isUsing && mwcc == null) {
-            mwcc = new MWCyclopsComm(myServer.getConfigParam("CYCLOPSIP"), myServer.getConfigParam("SERVERNAME"), myServer.getConfigParam("CYCLOPSURL"), Boolean.parseBoolean(myServer.getConfigParam("CYCLOPSDEBUG")));
-            mwcc.start();
-        } else if (!isUsing && mwcc != null) {
-            mwcc.interrupt();
-            mwcc = null;
-        }// restart the thread if need be.
-        else if (isUsing && mwcc != null && (mwcc.isInterrupted() || !mwcc.isAlive())) {
-            mwcc.start();
-        }
-
-        return isUsing;
-    }
-
     public boolean isUsingMySQL() {
         boolean isUsing = Boolean.parseBoolean(myServer.getConfigParam("USEMYSQL"));
 
@@ -2964,17 +2923,6 @@ public final class CampaignMain implements Serializable {
 
         // only one match! send it back.
         return theMatch;
-    }
-
-    /*
-     * protected void addSavePlayer(SPlayer p) {
-     * savePlayers.put(p.getName().toLowerCase(), p); } protected void
-     * removeSavePlayer(SPlayer p) {
-     * savePlayers.remove(p.getName().toLowerCase()); }
-     */
-    // return the mwcyclopscomm class
-    public MWCyclopsComm getMWCC() {
-        return mwcc;
     }
 
     /**

@@ -631,10 +631,6 @@ public class OperationManager {
 	 * boolean into the full termination method.
 	 */
 	public void terminateOperation(ShortOperation so, int termCode, SPlayer terminator) {
-        
-		if (CampaignMain.cm.isUsingCyclops())
-            CampaignMain.cm.getMWCC().opCancel(so);
-		
 		this.terminateOperation(so, termCode, terminator, false);
 	}
 	

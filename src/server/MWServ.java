@@ -54,7 +54,7 @@ import common.comm.ServerCommand;
 public class MWServ {
 
 	// Static logging engine, and static version info.
-    public static final String SERVER_VERSION = "0.3.2.11";// Sync this with the
+    public static final String SERVER_VERSION = "0.3.3.0";// Sync this with the
 															// clientVersion in
 															// MMClient @Torren
 
@@ -198,10 +198,6 @@ public class MWServ {
 			config.setProperty("TRACKERDESC", "none");
 			config.setProperty("SERVERIP", "-1");// this binds to all local IPs
 													// in MWChatServer.java
-			config.setProperty("USECYCLOPS", "false");
-			config.setProperty("CYCLOPSIP", "muposerver.dyndns.org");
-			config.setProperty("CYCLOPSURL", "http://muposerver.dyndns.org/devel/cyclops/XMLRPC/");
-			config.setProperty("CYCLOPSDEBUG", "false");
 			config.setProperty("USEMYSQL", "false");
 			config.setProperty("MYSQLUSER", "");
 			config.setProperty("MYSQLPASS", "");

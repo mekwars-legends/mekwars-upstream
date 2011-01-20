@@ -3356,14 +3356,6 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 password.setAccess(IAuthenticator.GUEST);
             }
 
-            if (CampaignMain.cm.isUsingCyclops()) {
-                CampaignMain.cm.getMWCC().playerWrite(this);
-                // CampaignMain.cm.getMWCC().unitWrite(this.getUnitsData().firstElement(),name,this.getHouseName());
-                CampaignMain.cm.getMWCC().unitWriteFromList(getUnits(), name, myHouse.getName());
-                CampaignMain.cm.getMWCC().pilotWriteFromList(getPersonalPilotQueue(), name);
-                // CampaignMain.cm.getMWCC().pilotWrite((SPilot)this.getUnitsData().firstElement().getPilot(),name);
-            }
-
             CampaignMain.cm.toUser("PL|SB|" + getTotalMekBays(), name, false);
             CampaignMain.cm.toUser("PL|SF|" + getFreeBays(), name, false);
             if (CampaignMain.cm.isUsingAdvanceRepair()) {
@@ -3540,12 +3532,6 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
 
                 if ((password != null) && (password.getPasswd().trim().length() <= 2)) {
                     password.setAccess(IAuthenticator.GUEST);
-                }
-
-                if (CampaignMain.cm.isUsingCyclops()) {
-                    CampaignMain.cm.getMWCC().playerWrite(this);
-                    CampaignMain.cm.getMWCC().unitWriteFromList(getUnits(), name, myHouse.getName());
-                    CampaignMain.cm.getMWCC().pilotWriteFromList(getPersonalPilotQueue(), name);
                 }
 
                 CampaignMain.cm.toUser("PL|SB|" + getTotalMekBays(), name, false);

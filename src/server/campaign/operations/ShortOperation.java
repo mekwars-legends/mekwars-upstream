@@ -179,9 +179,6 @@ public class ShortOperation implements Comparable<Object> {
     private String opName;
     private TreeMap<String, String> playerModifyingOps;
 
-    // id for cyclops
-    private String opCyclopsID = null;
-
     // autoReport String
     private String autoReportString = null;
     private int playersReported = 0;
@@ -1594,11 +1591,6 @@ public class ShortOperation implements Comparable<Object> {
                 CampaignMain.cm.getPlayer(currN).setSave();
             }
 
-            if (CampaignMain.cm.isUsingCyclops()) {
-                opCyclopsID = Long.toString(System.currentTimeMillis()) + "-" + getShortID();
-                CampaignMain.cm.getMWCC().opWrite(this);
-            }
-
             // save the starting time
             startTime = System.currentTimeMillis();
 
@@ -1816,15 +1808,6 @@ public class ShortOperation implements Comparable<Object> {
      */
     public int getMinDefedners() {
         return minDefenders;
-    }
-
-    /**
-     * ID used for cyclops tracking of ops.
-     * 
-     * @return
-     */
-    public String getOpCyclopsID() {
-        return opCyclopsID;
     }
 
     public PlanetEnvironment getEnvironment() {

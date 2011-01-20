@@ -188,9 +188,6 @@ public class RetirePilotCommand implements Command {
 			//tell the user about the retirement
 			CampaignMain.cm.toUser(toReturn,Username,true);
 			
-            if ( CampaignMain.cm.isUsingCyclops() )
-                CampaignMain.cm.getMWCC().pilotRetire((SPilot)m.getPilot());
-            
             if (CampaignMain.cm.isUsingMySQL())
             	CampaignMain.cm.MySQL.deletePilot(((SPilot)m.getPilot()).getPilotId());
             
