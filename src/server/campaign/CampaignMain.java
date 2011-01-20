@@ -2038,7 +2038,10 @@ public final class CampaignMain implements Serializable {
     }
 
     public void addMechStat(String Filename, int mechsize, int gameplayed, int gamewon, int scrapped, int destroyed) {
-        MechStatistics m = null;
+    	if (CampaignMain.cm.isUsingMySQL()) {
+    		CampaignMain.cm.MySQL.addMechstat(Filename, mechsize, gameplayed, gamewon, scrapped, destroyed);
+    	}
+    	MechStatistics m = null;
         if (MechStats.get(Filename) == null) {
             m = new MechStatistics(Filename, mechsize);
         } else {

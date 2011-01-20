@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.3.2.x
+R Released Server v0.3.2.11
++ Fixed database issues with mechstats
++ Fixed missing filepaths in configuration menu
 R Released Client v0.3.2.8
 + Client-side option to show Base BV in hangar display
 R Released Server v0.3.2.10, Client v0.3.2.7, DedHost v0.3.2.1

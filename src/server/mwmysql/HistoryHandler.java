@@ -216,14 +216,50 @@ public class HistoryHandler {
 	  return uID;
   }
   
-  public void addMechstat(String unitType, int statType) {
+  public void addMechstat (String fileName, int mechsize, int gameplayed, int gamewon, int scrapped, int destroyed) {
+	  StringBuilder sql = new StringBuilder();
+	  Statement stmt = null;
+	  ResultSet rs = null;
+	  
+	  int unitID = getIDByName(fileName);
+	  if (unitID == -1) {
+		  		  
+	  } else {
+		  sql.append("UPDATE mechstats SET gamesPlayed = gamesPlayed + " + gameplayed + ", gamesWon = gamesWon + " + gamewon + ", timesScrapped = timesScrapped + " + scrapped + ", timesDestroyed = timesDestroyed + " + destroyed + ", mechSize = " + mechsize + " WHERE mechFileName = '" + fileName + "'");
+		  try {
+			  stmt = con.createStatement();
+			  stmt.execute(sql.toString());
+		  } catch (SQLException e) {
+			  CampaignData.mwlog.errLog(e);			  
+		  } finally {
+			  if (rs != null) {
+				  try {
+					rs.close();
+				} catch (SQLException e) {
+					
+				}
+			  }
+			  if (stmt != null) {
+				  try {
+					  stmt.close();
+				  } catch (SQLException e) {
+					  
+				  }
+			  }
+		  }
+	  }
+  }
+  
+  private void addMechstat(String unitType, int statType) {
 	  StringBuilder sql = new StringBuilder();
 	  Statement stmt = null;
 	  String transType = "";
 	  	  
 	  int unitID = getIDByName(unitType);
-	  if (unitID == -1)
-		  return;  // No entry in database, and we were unable to update the DB
+	  if (unitID == -1) {
+		  
+	  }
+		    // No entry in database, and we were unable to update the DB
 	  
 	  switch(statType) {
 	  case MECHSTAT_TYPE_GAMEPLAYED: {

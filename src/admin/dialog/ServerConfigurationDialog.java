@@ -120,8 +120,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         JPanel factoryPurchasePanel = new JPanel(); // Allow players to purchase new factories.
         JPanel unitLimitsPanel = new JPanel(); // Set limits on units in a player's hangar
         JPanel autoProdPanel = new JPanel(); // Autoproduction
-        /*
-         * PGMH PANEL CONSTRUCTION Set up the PGMH panel, which indicates where HTML output (EXPRanking, etc.) is dumped and where certain core server files are located.
+        // PGMH PANEL CONSTRUCTION Set up the PGMH panel, which indicates where HTML output (EXPRanking, etc.) is dumped and where certain core server files are located.
         // give the path panel a box layout. its going to be smaller than some,
         // so
         // we dont need flow-nested boxes

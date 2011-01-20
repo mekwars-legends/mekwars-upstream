@@ -578,22 +578,6 @@ public class mysqlHandler{
 	  returnConnection(c);
   }
   
-  public void addMechstatUnitScrap(String name) {
-	  hh.addMechstat(name, HistoryHandler.MECHSTAT_TYPE_UNITSCRAPPED);
-  }
-  
-  public void addMechstatUnitWin(String name) {
-	  hh.addMechstat(name, HistoryHandler.MECHSTAT_TYPE_GAMEWON);
-  }
-  
-  public void addMechstatUnitGamePlayed(String name) {
-	  hh.addMechstat(name, HistoryHandler.MECHSTAT_TYPE_GAMEPLAYED);
-  }
-  
-  public void addMechstatUnitDestroyed(String name) {
-	  hh.addMechstat(name, HistoryHandler.MECHSTAT_TYPE_UNITDESTROYED);
-  }
-  
   public Connection getConnection() {
 	  if (MySQLCon == null) {
 		  MySQLCon = new MWmysql();
@@ -611,6 +595,10 @@ public class mysqlHandler{
 		  phpBBCon.init();
 	  }
 	  return phpBBCon.con;
+  }
+  
+  public void addMechstat (String fileName, int mechsize, int gameplayed, int gamewon, int scrapped, int destroyed) {
+	  hh.addMechstat(fileName, mechsize, gameplayed, gamewon, scrapped, destroyed);
   }
   
   public mysqlHandler(){
