@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
+R Released Server, Ded, Client v0.3.3.1
++ New MegaMek version 0.35.22-MW20110121-8124
 R Released Server, Ded, Client v0.3.3.0
 - Removed all Cyclops support - the Cyclops project is dead
     per conversation with Guibod
