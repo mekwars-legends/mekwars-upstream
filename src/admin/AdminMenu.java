@@ -800,7 +800,8 @@ public class AdminMenu extends JMenu {
 
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c admincreateplanet#" + planetName + "#" + xcord + "#" + ycord + "#");
         mwclient.reloadData();
-        new PlanetEditorDialog(mwclient, planetName);
+        int id = CampaignData.cd.getPlanetByName(planetName).getId();
+        new PlanetEditorDialog(mwclient, planetName, id);
 
     }
 

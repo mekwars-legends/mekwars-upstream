@@ -1758,6 +1758,7 @@ src/server/campaign/commands/admin/AdminRemoveAllTerrainCommand.java -text
 src/server/campaign/commands/admin/AdminRemovePlanetOwnershipCommand.java -text
 src/server/campaign/commands/admin/AdminRemoveServerOpFlagsCommand.java -text
 src/server/campaign/commands/admin/AdminRemoveUnitsOnMarketCommand.java -text
+src/server/campaign/commands/admin/AdminRenamePlanetCommand.java -text
 src/server/campaign/commands/admin/AdminRequestBuildTableCommand.java -text
 src/server/campaign/commands/admin/AdminResetHouseRankingsCommand.java -text
 src/server/campaign/commands/admin/AdminResetPlayerCommand.java -text

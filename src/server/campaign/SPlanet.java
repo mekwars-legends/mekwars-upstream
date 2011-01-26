@@ -121,7 +121,7 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         result.append(sdf.format(this.getLastChanged()));
         result.append("#");
-        result.append(-1);
+        result.append(this.getId());
         result.append("#");
         result.append(getMapSize().width);
         result.append("#");
@@ -489,8 +489,12 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
             setTimestamp(new Date(System.currentTimeMillis()));
         }
 
-        TokenReader.readString(ST);
-        setId(-1);
+        int id = TokenReader.readInt(ST);
+        if (id == -1) {
+        	id = CampaignData.cd.getUnusedPlanetID();
+        }
+        setId(id);
+//        setId(-1);
         int x = (TokenReader.readInt(ST));
         int y = (TokenReader.readInt(ST));
         setMapSize(new Dimension(x, y));

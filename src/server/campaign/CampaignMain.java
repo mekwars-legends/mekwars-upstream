@@ -523,8 +523,7 @@ public final class CampaignMain implements Serializable {
         	while (dis.ready()) {
         		String line = dis.readLine();
         		line = line.trim().toLowerCase();
-        		CampaignData.mwlog.mainLog("Line: " + line);
-        		if (line.startsWith("#")) {
+        		if (line.startsWith("#") || line.length() < 5) {
         			continue;
         		}
         		if (!units.contains(line)) {
@@ -1484,6 +1483,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("ADMINREMOVEPLANETOWNERSHIP", new AdminRemovePlanetOwnershipCommand());
         Commands.put("ADMINREMOVESERVEROPFLAGS", new AdminRemoveServerOpFlagsCommand());
         Commands.put("ADMINREMOVEUNITSONMARKET", new AdminRemoveUnitsOnMarketCommand());
+        Commands.put("ADMINRENAMEPLANET", new AdminRenamePlanetCommand());
         Commands.put("ADMINREQUESTBUILDTABLE", new AdminRequestBuildTableCommand());
         Commands.put("ADMINRESETHOUSERANKINGS", new AdminResetHouseRankingsCommand());
         Commands.put("ADMINRESETPLAYER", new AdminResetPlayerCommand());

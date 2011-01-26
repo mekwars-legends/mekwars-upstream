@@ -20,6 +20,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import common.CampaignData;
 import common.Planet;
 
 import java.awt.event.ActionEvent;
@@ -71,11 +72,27 @@ public class AdminMapPopupMenu extends JMenu {
 		//start formatting
 		JMenuItem item;//holder
 		
+		item = new JMenuItem("Rename Planet");
+		item.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ex) {
+				Planet cPlanet = pplanet;
+				String newName = (String)JOptionPane.showInputDialog("Rename " + cPlanet.getName() + " to:");
+				if (newName != null && newName.trim().length() > 0) {
+					mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "adminrenameplanet " + cPlanet.getId() + "#" + cPlanet.getName() + "#" + newName);
+					mwclient.refreshData();
+					mp.repaint();
+				}
+			}
+		});
+		if (userLevel >= mwclient.getData().getAccessLevel("AdminRenamePlanet")) {
+			this.add(item);
+		}
+		
         item = new JMenuItem("Vertigos: Edit Planet");
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ex) {
 				Planet cPlanet = pplanet;
-				new PlanetEditorDialog(mwclient, cPlanet.getName());
+				new PlanetEditorDialog(mwclient, cPlanet.getName(), cPlanet.getId());
 			}
 		});
         if ( userLevel >= mwclient.getData().getAccessLevel("SetAdvancedPlanetTerrain") 
@@ -127,8 +144,8 @@ public class AdminMapPopupMenu extends JMenu {
 				mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c admincreateplanet#"+planetName+"#"+xcoord+"#"+ycoord);
 				mwclient.refreshData();
 				mp.repaint();
-
-				new PlanetEditorDialog(mwclient, planetName);
+				int id = CampaignData.cd.getPlanetByName(planetName).getId();
+				new PlanetEditorDialog(mwclient, planetName, id);
 			}
 		});
         if ( userLevel >= mwclient.getData().getAccessLevel("AdminCreatePlanet") )

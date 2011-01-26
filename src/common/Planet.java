@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Vector;
 
+import client.MWClient;
+
 import megamek.common.PlanetaryConditions;
 
 import common.util.BinReader;
@@ -718,7 +720,13 @@ public class Planet implements Comparable<Object>, MutableSerializable {
         StringBuilder result = new StringBuilder();
 
         result.append("Information for Planet: <b>");
-        result.append(getName() + "</b><br><br>");
+        result.append(getName() + "</b>");
+        
+        if (level >= 100) {
+        	result.append(" (ID: " + getId() + ")");
+        }
+        
+        result.append("<br><br>");
         // result.append("</b> ("+ getDescription() + ")<br><br>");
         result.append("<b>Location:</b> " + (int) getPosition().x + " x " + (int) getPosition().y + " y<br>" + Math.round(getPosition().distanceSq(0.0, 0.0)) + " Lightyears from the galaxy center <br><br>");
 

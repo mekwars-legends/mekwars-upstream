@@ -1,6 +1,10 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
+R Released Server v0.3.3.2
++ Added ability to rename a planet
++ Started moving all planet access to use IDs, rather than
+  names
 R Released Server, Ded, Client v0.3.3.1
 + New MegaMek version 0.35.22-MW20110121-8124
 R Released Server, Ded, Client v0.3.3.0

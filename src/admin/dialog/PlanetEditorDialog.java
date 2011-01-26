@@ -59,6 +59,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
     // store the client backlink for other things to use
     private MWClient mwclient = null;
     private String planetName = "";
+    private int planetID = -1;
     private AdvancedTerrain aTerrain = new AdvancedTerrain();
     private int advanceTerrainId = -1;
     private Planet selectedPlanet;
@@ -173,6 +174,8 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
 
     private String[] factorySizes = { "Light", "Medium", "Heavy", "Assault" };
 
+    
+    
     // Combo boxes
     private JComboBox planetNames;
     private JComboBox houseNames;
@@ -186,11 +189,12 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
     private JComboBox ownerNames;
     private JComboBox atmosphere = new JComboBox(PlanetaryConditions.atmoNames);
 
-    public PlanetEditorDialog(MWClient c, String planetName) {
+    public PlanetEditorDialog(MWClient c, String planetName, int planetID) {
 
         // save the client
         mwclient = c;
         this.planetName = planetName;
+        this.planetID = planetID;
 
         useAdvancedTerrain = Boolean.parseBoolean(mwclient.getserverConfigs("UseStaticMaps"));
         // Set the tooltips and actions for dialouge buttons
@@ -993,20 +997,21 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
 
         planets = new JPanel();
         Collection<Planet> planets = mwclient.getData().getAllPlanets();
-        Dimension comboBoxSize = new Dimension(150, 22);
+        //Dimension comboBoxSize = new Dimension(200, 22);
         // setup the a list of names to feed into a list
         TreeSet<String> pNames = new TreeSet<String>();// tree to alpha sort
         for (Planet planet : planets) {
-            pNames.add(planet.getName());
+            pNames.add(planet.getName() + " [ID: " + planet.getId() + "]");
         }
-
+        String selectedItem = planetName + " [ID: " + CampaignData.cd.getPlanetByName(planetName).getId() + "]";
         planetNames = new JComboBox(pNames.toArray());
-        planetNames.setSelectedItem(planetName);
+        //planetNames.setSelectedItem(planetName);
+        planetNames.setSelectedItem(selectedItem);
         planetNames.addActionListener(this);
         planetNames.setActionCommand(refreshCommand);
-        planetNames.setPreferredSize(comboBoxSize);
-        planetNames.setMaximumSize(comboBoxSize);
-        planetNames.setMinimumSize(comboBoxSize);
+        //planetNames.setPreferredSize(comboBoxSize);
+        //planetNames.setMaximumSize(comboBoxSize);
+        //planetNames.setMinimumSize(comboBoxSize);
 
         this.planets.add(new JLabel("Planet:", JLabel.TRAILING));
         this.planets.add(planetNames);

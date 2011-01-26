@@ -97,7 +97,11 @@ public class planetHandler {
             	SPlanet p = new SPlanet();
             	if (rs.getString("pString") != null && !rs.getString("pString").trim().equalsIgnoreCase("")){
             		p.fromString(rs.getString("pString"), CampaignMain.cm.getR(), data);
-            		p.setId(-1);
+            		int id = rs.getInt("pMWID");
+            		if (id == -1) {
+            			id = CampaignData.cd.getUnusedPlanetID();
+            		}
+            		p.setId(id);
             		p.setDBID(rs.getInt("PlanetID"));
             	} else {
             		p.setCompProduction(rs.getInt("pCompProd"));
@@ -114,8 +118,12 @@ public class planetHandler {
             			p.setTimestamp(new Date(0));
             		}
 
-            		p.setId(-1);
-
+            		//p.setId(-1);
+            		int id = rs.getInt("pMWID");
+            		if (id == -1) {
+            			id = CampaignData.cd.getUnusedPlanetID();
+            		}
+            		p.setId(id);
             		p.setMapSize(new Dimension(rs.getInt("pMapSizeWidth"), rs.getInt("pMapSizeHeight")));
             		p.setBoardSize(new Dimension(rs.getInt("pBoardSizeWidth"), rs.getInt("pBoardSizeHeight")));
             		p.setTemp(new Dimension(rs.getInt("pTempWidth"), rs.getInt("pTempHeight")));
