@@ -78,10 +78,6 @@ public class AdminReturnPlanetsToOriginalOwnersCommand implements Command {
 			p.setOwner(p.getOwner(), origOwner, true);
 			
 			//change the planet's influence table
-			CampaignData.mwlog.mainLog("Planet: " + p.getName());
-			CampaignData.mwlog.mainLog("Original Owner: " + CampaignMain.cm.getHouseFromPartialString(p.getOriginalOwner(), Username).getName());
-			CampaignData.mwlog.mainLog("Owner's ID: " + origOwner.getId());
-			CampaignData.mwlog.mainLog("Total CP: " + totalCP);
 			
 			HashMap<Integer,Integer> flu = new HashMap<Integer,Integer>();
 			flu.put(origOwner.getId(), totalCP);
