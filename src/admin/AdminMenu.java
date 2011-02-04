@@ -127,6 +127,7 @@ public class AdminMenu extends JMenu {
     JMenuItem jMenuAdminRetrieveMul = new JMenuItem();
     JMenuItem jMenuAdminRetrieveAllMuls = new JMenuItem();
     JMenuItem jMenuAdminCreateMulArmy = new JMenuItem();
+    JMenuItem jMenuAdminReloadSupportUnits = new JMenuItem();
 
     MWClient mwclient;
     private int userLevel = 0;
@@ -440,6 +441,13 @@ public class AdminMenu extends JMenu {
         		jMenuAdminServerTargetBan_actionPerformed(e);
         	}
         });
+        
+        jMenuAdminReloadSupportUnits.setText("Reload supportunits.txt");
+        jMenuAdminReloadSupportUnits.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		jMenuAdminReloadSupportUnits_actionPerformed(e);
+        	}
+        });
 
         jMenuAdminUploadBuildTable.setText("Upload a build table");
         jMenuAdminUploadBuildTable.addActionListener(new ActionListener() {
@@ -582,6 +590,10 @@ public class AdminMenu extends JMenu {
 
         if (userLevel >= mwclient.getData().getAccessLevel("AdminTerminateAll")) {
             this.add(jMenuAdminTerminateAll);
+        }
+        
+        if (userLevel >= mwclient.getData().getAccessLevel("AdminReloadSupportUnits")) {
+        	this.add(jMenuAdminReloadSupportUnits);
         }
 
         if (getItemCount() > 0) {
@@ -1665,5 +1677,9 @@ public class AdminMenu extends JMenu {
     public void jMenuAdminCreateMulArmy_actionPerformed(ActionEvent e) {
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "listmuls CAFM");
     }
+    
+	private void jMenuAdminReloadSupportUnits_actionPerformed(ActionEvent e) {
+		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "adminReloadSupportUnits");		
+	}
 
 }// end AdminMenu class

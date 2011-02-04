@@ -1753,6 +1753,7 @@ src/server/campaign/commands/admin/AdminPurgeHouseBaysCommand.java -text
 src/server/campaign/commands/admin/AdminPurgeHouseConfigsCommand.java -text
 src/server/campaign/commands/admin/AdminRandomlySetPlanetProductionCommand.java -text
 src/server/campaign/commands/admin/AdminReloadHouseConfigsCommand.java -text
+src/server/campaign/commands/admin/AdminReloadSupportUnitsCommand.java -text
 src/server/campaign/commands/admin/AdminRemoveAllFactoriesCommand.java -text
 src/server/campaign/commands/admin/AdminRemoveAllTerrainCommand.java -text
 src/server/campaign/commands/admin/AdminRemovePlanetOwnershipCommand.java -text

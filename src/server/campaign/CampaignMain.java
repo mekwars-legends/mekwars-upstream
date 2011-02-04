@@ -502,7 +502,7 @@ public final class CampaignMain implements Serializable {
         this.addToNewsFeed("MekWars Server Started!");
     }
 
-    private void loadSupportUnitDefinitions() {
+    public void loadSupportUnitDefinitions() {
     	CampaignData.mwlog.mainLog("Entering loadSupportUnitDefinitions");
     	
     	File tsFile = new File("./data/supportunits.txt");
@@ -1478,6 +1478,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("ADMINPURGEHOUSECONFIGS", new AdminPurgeHouseConfigsCommand());
         Commands.put("ADMINRANDOMLYSETPLANETPRODUCTION", new AdminRandomlySetPlanetProductionCommand());
         Commands.put("ADMINRELOADHOUSECONFIGS", new AdminReloadHouseConfigsCommand());
+        Commands.put("ADMINRELOADSUPPORTUNITS", new AdminReloadSupportUnitsCommand());
         Commands.put("ADMINREMOVEALLFACTORIES", new AdminRemoveAllFactoriesCommand());
         Commands.put("ADMINREMOVEALLTERRAIN", new AdminRemoveAllTerrainCommand());
         Commands.put("ADMINREMOVEPLANETOWNERSHIP", new AdminRemovePlanetOwnershipCommand());

@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
+R Released Server v0.3.3.3
++ Added ability to reload supportunits.txt without rebooting server
 R Released Server v0.3.3.2
 + Added ability to rename a planet
 + Started moving all planet access to use IDs, rather than
