@@ -84,7 +84,7 @@ public final class ServerConfigurationDialog implements ActionListener {
 
         this.mwclient = mwclient;
         // TAB PANELS (these are added to the root pane as tabs)
-        JPanel pathsPanel = new JPanel();// file paths
+        JPanel pathsPanel = new PathsPanel();// file paths
         JPanel influencePanel = new JPanel();// influence settings
         JPanel repodPanel = new JPanel();
         JPanel technicianPanel = new JPanel();
@@ -124,69 +124,6 @@ public final class ServerConfigurationDialog implements ActionListener {
         // give the path panel a box layout. its going to be smaller than some,
         // so
         // we dont need flow-nested boxes
-        JPanel pathsBox = new JPanel();
-        pathsBox.setLayout(new BoxLayout(pathsBox, BoxLayout.Y_AXIS));
-
-        // and a sub panel to put a spring layout into.
-        JPanel pathsSubPanel = new JPanel(new SpringLayout());
-
-        baseTextField = new JTextField(5);
-
-        pathsSubPanel.add(new JLabel("ELO Ranking Path:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Path to Ranking.htm");
-        baseTextField.setName("RankingPath");
-        pathsSubPanel.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        pathsSubPanel.add(new JLabel("EXP Ranking Path:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Path to EXPRanking.htm");
-        baseTextField.setName("EXPRankingPath");
-        pathsSubPanel.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        pathsSubPanel.add(new JLabel("News Path:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Path to News.rdf (News Feed)");
-        baseTextField.setName("NewsPath");
-        pathsSubPanel.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        pathsSubPanel.add(new JLabel("House Rank Path:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Path to House Ranking file");
-        baseTextField.setName("HouseRankPath");
-        pathsSubPanel.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        pathsSubPanel.add(new JLabel("XML Planet Path:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Path to up-to-date DynPlanets.xml for IS-Map-Generators");
-        baseTextField.setName("XMLPlanetPath");
-        pathsSubPanel.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        pathsSubPanel.add(new JLabel("Mechstat Path:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Path to Mechstats.htm");
-        baseTextField.setName("MechstatPath");
-        pathsSubPanel.add(baseTextField);
-        
-        baseTextField = new JTextField(5);
-        pathsSubPanel.add(new JLabel("HTML Who Path:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Path to who.html");
-        baseTextField.setName("HTMLWhoPath");
-        pathsSubPanel.add(baseTextField);
-
-        // do the spring layout.
-        SpringLayoutHelper.setupSpringGrid(pathsSubPanel, 2);
-
-        // add to the main panel.
-        pathsBox.add(pathsSubPanel);
-
-        // thats all the path naming options. put the HTML CBox here, as it
-        // was in the old UI, for now. Should be moved eventually.
-        BaseCheckBox = new JCheckBox("Enable HTML Output");
-
-        BaseCheckBox.setToolTipText("Uncheck to disable html output [ranking, etc.]");
-        BaseCheckBox.setName("HTMLOUTPUT");
-        pathsBox.add(BaseCheckBox);
-        pathsPanel.add(pathsBox);
 
         /*
          * INFLUENCE PANEL CONSTRUCTION Influence panel, where admins set influence gain controls (bv limits, etc) and action costs (bm bid, attack, and so on). Use nested layouts. A Box containing a Flow, which in turn contains two Springs

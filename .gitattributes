@@ -1329,6 +1329,7 @@ src/admin/dialog/ComponentDisplayDialog.java -text
 src/admin/dialog/FactionConfigurationDialog.java -text
 src/admin/dialog/FactionToFactionRewardPointMultiplierDialog.java -text
 src/admin/dialog/OpFlagSelectionDialog.java -text
+src/admin/dialog/PathsPanel.java -text
 src/admin/dialog/PlanetEditorDialog.java -text
 src/admin/dialog/ServerConfigurationDialog.java -text
 src/admin/dialog/SubFactionConfigurationDialog.java -text

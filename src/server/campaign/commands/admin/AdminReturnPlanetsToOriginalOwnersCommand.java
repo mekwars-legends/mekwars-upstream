@@ -71,15 +71,20 @@ public class AdminReturnPlanetsToOriginalOwnersCommand implements Command {
 			//cast to planet
 			SPlanet p = (SPlanet)currP;
 			CampaignData.mwlog.mainLog("Returning planet " + p.getName() + " to original owner");
-				
+			int totalCP	= p.getConquestPoints();
 			//get original owner
 			SHouse origOwner = CampaignMain.cm.getHouseFromPartialString(p.getOriginalOwner(), Username);
 			//change the ownership in the respective SHouses
 			p.setOwner(p.getOwner(), origOwner, true);
 			
 			//change the planet's influence table
+			CampaignData.mwlog.mainLog("Planet: " + p.getName());
+			CampaignData.mwlog.mainLog("Original Owner: " + CampaignMain.cm.getHouseFromPartialString(p.getOriginalOwner(), Username).getName());
+			CampaignData.mwlog.mainLog("Owner's ID: " + origOwner.getId());
+			CampaignData.mwlog.mainLog("Total CP: " + totalCP);
+			
 			HashMap<Integer,Integer> flu = new HashMap<Integer,Integer>();
-			flu.put(origOwner.getId(),100);
+			flu.put(origOwner.getId(), totalCP);
 			p.getInfluence().setInfluence(flu);
 			
 			//set updated flag so players' maps refresh

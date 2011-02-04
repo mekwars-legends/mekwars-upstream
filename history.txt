@@ -1,6 +1,12 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
+R Released Server v0.3.3.4
++ Bug: /adminreturnplanetstooriginalowers was resetting all planets
+    to 100CP, even if they'd been changed
++ Started work on separating out panels in ServerConfig.  The code
+    is getting far too difficult to read and find anything in.  The
+    class is simply too big and needs to be broken up.
 R Released Server v0.3.3.3
 + Added ability to reload supportunits.txt without rebooting server
 R Released Server v0.3.3.2
