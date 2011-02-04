@@ -1,5 +1,5 @@
 /*
- * MekWars - Copyright (C) 2006 
+ * MekWars - Copyright (C) 2011 
  * 
  * Original author - coelocanth
  *
