@@ -577,7 +577,11 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                 Integer id = en.nextElement();
                 Vector<Integer> v = getComponents().get(id);
                 for (int i = 0; i < v.size(); i++) {
-                    ps.executeUpdate("REPLACE into factioncomponents set factionID = " + getDBId() + ", unitType = " + id.intValue() + ", unitWeight = " + i + ", components = " + v.elementAt(i).intValue());
+                	if (v.elementAt(i) != null) {	
+                		ps.executeUpdate("REPLACE into factioncomponents set factionID = " + getDBId() + ", unitType = " + id.intValue() + ", unitWeight = " + i + ", components = " + v.elementAt(i).intValue());
+                	} else {
+                		ps.executeUpdate("REPLACE into factioncomponents set factionID = " + getDBId() + ", unitType = " + id.intValue() + ", unitWeight = " + i + ", components = 0");
+                	}
                 }
             }
 

@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
+R Released Server v0.3.3.5
++ Bug: Houses without components (SOL) sometimes throwing errors 
+	during saves to database
 R Released Server v0.3.3.4
 + Bug: /adminreturnplanetstooriginalowers was resetting all planets
     to 100CP, even if they'd been changed
