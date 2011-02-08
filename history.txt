@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
+R Released Server v0.3.3.6
++ Bug: Potential problems with level-up left over from improper merge
 R Released Server v0.3.3.5
 + Bug: Houses without components (SOL) sometimes throwing errors 
 	during saves to database

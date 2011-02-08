@@ -251,16 +251,7 @@ public class SPilot extends Pilot {
             int random = CampaignMain.cm.getRandomNumber(10);
             boolean levelGunnery = false;
             boolean levelPiloting = false;
-            if (differential > 0) {
-                levelGunnery = true;
-            } else if (differential < 0) {
-                levelPiloting = true;
-            } else if (random < 3 // 0-2, 30% chance for piloting on push
-                    || (unit.getEntity() instanceof Infantry && random < 5)) {
-                levelPiloting = true; // 50/50 for Infantry
-            } else {
-                levelGunnery = true;
-            }
+
             if(CampaignMain.cm.getBooleanConfig("AllowAsymmetricPilotLevels")) {
             	// Have the differential modify it.  The further away from x/x+1 they are, the more likely
             	// to level up in a manner that pushes it toward x/x+1, but can still get quite varied levelups
