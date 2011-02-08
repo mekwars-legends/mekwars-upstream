@@ -4973,6 +4973,11 @@ public final class ServerConfigurationDialog implements ActionListener {
         BaseCheckBox.setName("AllowUnitsToActivateWithPartialBins");
         combatMMOptionsSpring.add(BaseCheckBox);
         
+        BaseCheckBox = new JCheckBox("Allow damaged units to activate?");
+        BaseCheckBox.setToolTipText("<html>Allow units in an army<br>to go active if they are damaged.</html>");
+        BaseCheckBox.setName("AllowActivationWithDamagedUnits");
+        combatMMOptionsSpring.add(BaseCheckBox);
+        
         BaseCheckBox = new JCheckBox("Require attack-capable armies?");
         BaseCheckBox.setName("RequireAttackCapableArmiesForActivation");
         BaseCheckBox.setToolTipText("<html>Require all armies to be attack capable in order or disallow activation.</html>");

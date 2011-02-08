@@ -176,7 +176,11 @@ public class ActivateCommand implements Command {
                 CampaignMain.cm.toUser("AM:You may not activate while units in your armies have parital ammo bins.", Username, true);
                 return;
             }
-
+            
+            if ( (!CampaignMain.cm.getBooleanConfig("AllowActivationWithDamagedUnits")) && this.armiesDamagedUnits(p.getArmies())) {
+            	CampaignMain.cm.toUser("AM:You may not activate while units in your armies have damage.", Username, true);
+            	return;
+            }
         }
 
         /*

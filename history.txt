@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
+R Released Server v0.3.3.7
++ Added option to disallow activation with damaged units.  This option
+    did not make it over in the merge.
 R Released Server v0.3.3.6
 + Bug: Potential problems with level-up left over from improper merge
 R Released Server v0.3.3.5

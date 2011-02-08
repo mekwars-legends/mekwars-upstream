@@ -1033,6 +1033,9 @@ public class DefaultServerOptions {
 
         // To allow or not to allow partial bins into combat.
         defaults.setProperty("AllowUnitsToActivateWithPartialBins", "true");
+        
+        // To allow or not to allow damaged units into combat
+        defaults.setProperty("AllowActivationWithDamagedUnits", "true");
 
         // Require players to have attack-capable armies to activate
         defaults.setProperty("RequireAttackCapableArmiesForActivation", "false");
