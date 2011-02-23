@@ -28,7 +28,7 @@ import server.util.MWPasswd;
 public class AdminPasswordCommand implements Command {
 
     // conforming methods
-    int accessLevel = IAuthenticator.ADMIN;
+    int accessLevel = IAuthenticator.REGISTERED;
 
     public int getExecutionLevel() {
         return accessLevel;
