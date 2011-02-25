@@ -1,4 +1,4 @@
-package admin.dialog;
+package admin.dialog.serverConfigDialogs;
 
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
