@@ -1334,6 +1334,8 @@ src/admin/dialog/ServerConfigurationDialog.java -text
 src/admin/dialog/SubFactionConfigurationDialog.java -text
 src/admin/dialog/TerrainSelectionDialog.java -text
 src/admin/dialog/VerticalLayout.java -text
+src/admin/dialog/serverConfigDialogs/AutoProdPanel.java -text
+src/admin/dialog/serverConfigDialogs/CombatPanel.java -text
 src/admin/dialog/serverConfigDialogs/DirectSellPanel.java -text
 src/admin/dialog/serverConfigDialogs/FactionPanel.java -text
 src/admin/dialog/serverConfigDialogs/InfluencePanel.java -text
@@ -1342,6 +1344,7 @@ src/admin/dialog/serverConfigDialogs/PathsPanel.java -text
 src/admin/dialog/serverConfigDialogs/RepodPanel.java -text
 src/admin/dialog/serverConfigDialogs/TechnicianPanel.java -text
 src/admin/dialog/serverConfigDialogs/UnitsPanel.java -text
+src/admin/dialog/serverConfigDialogs/VotingPanel.java -text
 src/client/CConfig.java -text
 src/client/CUser.java -text
 src/client/ClientThread.java -text

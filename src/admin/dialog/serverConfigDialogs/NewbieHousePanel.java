@@ -13,8 +13,6 @@ package admin.dialog.serverConfigDialogs;
 
 import java.awt.GridLayout;
 import java.util.HashMap;
-import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;

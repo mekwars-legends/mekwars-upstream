@@ -40,8 +40,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
-import javax.swing.border.EtchedBorder;
 
+import admin.dialog.serverConfigDialogs.AutoProdPanel;
+import admin.dialog.serverConfigDialogs.CombatPanel;
 import admin.dialog.serverConfigDialogs.DirectSellPanel;
 import admin.dialog.serverConfigDialogs.FactionPanel;
 import admin.dialog.serverConfigDialogs.InfluencePanel;
@@ -50,7 +51,7 @@ import admin.dialog.serverConfigDialogs.PathsPanel;
 import admin.dialog.serverConfigDialogs.RepodPanel;
 import admin.dialog.serverConfigDialogs.TechnicianPanel;
 import admin.dialog.serverConfigDialogs.UnitsPanel;
-
+import admin.dialog.serverConfigDialogs.VotingPanel;
 import client.MWClient;
 
 import common.CampaignData;
@@ -102,23 +103,21 @@ public final class ServerConfigurationDialog implements ActionListener {
         FactionPanel factionPanel = new FactionPanel(mwclient);
         DirectSellPanel directSellPanel = new DirectSellPanel();
         NewbieHousePanel newbieHousePanel = new NewbieHousePanel();
+        VotingPanel votingPanel = new VotingPanel();
+        AutoProdPanel autoProdPanel = new AutoProdPanel(mwclient); // Autoproduction
+        CombatPanel combatPanel = new CombatPanel();// mm options, etc
         
-        JPanel votingPanel = new JPanel();
         JPanel productionPanel = new JPanel();// was factoryOptions
         JPanel rewardPanel = new JPanel();
-        JPanel miscOptionsPanel = new JPanel();// things which can't be easily
-        // categorized
+        JPanel miscOptionsPanel = new JPanel();// things which can't be easily categorized
         JPanel artilleryPanel = new JPanel();
-        JPanel combatPanel = new JPanel();// mm options, etc
         JPanel pilotsPanel = new JPanel();// allows SO's set up pilot options and personal pilot queue options
         JPanel pilotSkillsModPanel = new JPanel();// Allows the SO's to set the mods for each skill type that affects the MM game.
         JPanel pilotSkillsPanel = new JPanel();// allows SO's to select what pilot skills they want for non-Mek unit types.
         JPanel mekPilotSkillsPanel = new JPanel();// allows SO's to select what pilot skills they want for Meks
-
         JPanel noPlayPanel = new JPanel();
         JPanel blackMarketPanel = new JPanel();
-        JPanel defectionPanel = new JPanel();// control defection access,
-        // losses therefrom, etc.
+        JPanel defectionPanel = new JPanel();// control defection access, losses therefrom, etc.
         JPanel battleValuePanel = new JPanel();// mekwars BV adjustments
         JPanel disconenctionPanel = new JPanel();
         JPanel advancedRepairPanel = new JPanel();// Advanced Repair
@@ -129,15 +128,6 @@ public final class ServerConfigurationDialog implements ActionListener {
         JPanel unitResearchPanel = new JPanel(); // Research Unit Panel
         JPanel factoryPurchasePanel = new JPanel(); // Allow players to purchase new factories.
         JPanel unitLimitsPanel = new JPanel(); // Set limits on units in a player's hangar
-        JPanel autoProdPanel = new JPanel(); // Autoproduction
-        // PGMH PANEL CONSTRUCTION Set up the PGMH panel, which indicates where HTML output (EXPRanking, etc.) is dumped and where certain core server files are located.
-        // give the path panel a box layout. its going to be smaller than some,
-        // so
-        // we dont need flow-nested boxes
-
-        
-
-
 
         /*
          * PILOT SKILLS Panel
@@ -1779,45 +1769,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         
 
 
-        /*
-         * VOTE PANEL CONSTRUCTION
-         */
-        JPanel voteBoxPanel = new JPanel();
-        voteBoxPanel.setLayout(new BoxLayout(voteBoxPanel, BoxLayout.Y_AXIS));
-        JPanel voteSpring = new JPanel(new SpringLayout());
-
-        // set up voting CBox
-        BaseCheckBox = new JCheckBox("Enable Voting");
-
-        BaseCheckBox.setToolTipText("If checked, players are able to cast votes.");
-        BaseCheckBox.setName("VotingEnabled");
-        voteBoxPanel.add(BaseCheckBox);
-
-        // set up vote spring
-        baseTextField = new JTextField(5);
-        voteSpring.add(new JLabel("Base Votes:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Starting number of votes");
-        baseTextField.setName("StartingVotes");
-        voteSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        voteSpring.add(new JLabel("XP For Vote:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Amount of XP required to earn an additional vote");
-        baseTextField.setName("XPForAdditionalVote");
-        voteSpring.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        voteSpring.add(new JLabel("Max Votes:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Maximum number of votes a player can have");
-        baseTextField.setName("MaximumVotes");
-        voteSpring.add(baseTextField);
-
-        SpringLayoutHelper.setupSpringGrid(voteSpring, 3, 2);
-
-        // finalize the layout
-
-        voteBoxPanel.add(voteSpring);
-        votingPanel.add(voteBoxPanel);
+        
 
         /*
          * PRODUCTION/FACTORY PANEL CONSTRUCTION
@@ -2009,152 +1961,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         productionPanel.add(prodCBoxSpring);
         productionPanel.add(prodCrit);
 
-        /*
-         * AutoProduction Panel
-         */
-        
-        autoProdPanel.setLayout(new VerticalLayout());
-        
-        // Choose Classic or New
-        ButtonGroup autoProdType = new ButtonGroup();
-        JRadioButton apTypeClassic = new JRadioButton("Use Classic Autoproduction");
-        apTypeClassic.setToolTipText("Autoproduction is controlled only by weight");
-        apTypeClassic.setName("UseAutoProdClassic");
-        autoProdType.add(apTypeClassic);
-        
-        JRadioButton apTypeNew = new JRadioButton("Use New Autoproduction");
-        apTypeNew.setToolTipText("Autoproduction done by type and weight");
-        apTypeNew.setName("UseAutoProdNew");
-        autoProdType.add(apTypeNew);
-        
 
-        
-        JPanel selectionPanel = new JPanel();
-        selectionPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-        selectionPanel.add(apTypeClassic);
-        selectionPanel.add(apTypeNew);
-        
-        if(Boolean.parseBoolean(mwclient.getserverConfigs("UseAutoProdNew"))) {
-        	apTypeClassic.setSelected(false);
-        	apTypeNew.setSelected(true);
-        } else {
-        	apTypeNew.setSelected(false);
-        	apTypeClassic.setSelected(true);
-        }
-        
-        //selectionPanel.setPreferredSize(new Dimension(selectionPanel.getMinimumSize()));
-        JPanel apTopPanel = new JPanel();
-        apTopPanel.add(selectionPanel);
-        
-        // Classic Menu
-        JPanel apClassicPanel = new JPanel();
-        apClassicPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-        apClassicPanel.setLayout(new BoxLayout(apClassicPanel, BoxLayout.Y_AXIS));
-        JLabel l = new JLabel("Classic AP");
-        apClassicPanel.add(l);
-        JPanel apClassicBoxPanel = new JPanel();
-        //apClassicBoxPanel.setLayout(new BoxLayout(apClassicBoxPanel, BoxLayout.X_AXIS));
-        
-        baseTextField = new JTextField(5);
-        apClassicBoxPanel.add(new JLabel("Lights to AP:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Number of units worth of stored components to trigger an AP attempt for light units");
-        baseTextField.setName("APAtMaxLightUnits");
-        apClassicBoxPanel.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        apClassicBoxPanel.add(new JLabel("Mediums to AP:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Number of units worth of stored components to trigger an AP attempt for medium units");
-        baseTextField.setName("APAtMaxMediumUnits");
-        apClassicBoxPanel.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        apClassicBoxPanel.add(new JLabel("Heavies to AP:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Number of units worth of stored components to trigger an AP attempt for heavy units");
-        baseTextField.setName("APAtMaxHeavyUnits");
-        apClassicBoxPanel.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        apClassicBoxPanel.add(new JLabel("Assaults to AP:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Number of units worth of stored components to trigger an AP attempt for assault units");
-        baseTextField.setName("APAtMaxAssaultUnits");
-        apClassicBoxPanel.add(baseTextField); 
-        
-        apClassicPanel.add(apClassicBoxPanel);
-        
-        JPanel failureRatePanel = new JPanel();
-        
-        baseTextField = new JTextField(5);
-        failureRatePanel.add(new JLabel("AP Failure Rate:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("% of autoproduction attempts which fail and destroy components");
-        baseTextField.setName("AutoProductionFailureRate");
-        failureRatePanel.add(baseTextField);
-        apClassicPanel.add(failureRatePanel);
-        
-        JPanel apMiddlePanel = new JPanel();
-        apMiddlePanel.add(apClassicPanel);
-        
-        // New AP
-        JPanel apNewPanel = new JPanel();
-        apNewPanel.setLayout(new VerticalLayout());
-        apNewPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-        apNewPanel.add(new JLabel("New Autoproduction Model"));
-        
-        JPanel apNewBoxPanel = new JPanel();
-        apNewBoxPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-        apNewBoxPanel.setLayout(new GridLayout(0, 9));
-        apNewBoxPanel.add(new JLabel(" "));
-        apNewBoxPanel.add(new JLabel("Light"));
-        apNewBoxPanel.add(new JLabel(" "));
-        apNewBoxPanel.add(new JLabel("Medium"));
-        apNewBoxPanel.add(new JLabel(" "));
-        apNewBoxPanel.add(new JLabel("Heavy"));
-        apNewBoxPanel.add(new JLabel(" "));
-        apNewBoxPanel.add(new JLabel("Assault"));
-        apNewBoxPanel.add(new JLabel(" "));
-        apNewBoxPanel.add(new JLabel(" "));
-        apNewBoxPanel.add(new JLabel("Units"));
-        apNewBoxPanel.add(new JLabel("Failure"));
-        apNewBoxPanel.add(new JLabel("Units"));
-        apNewBoxPanel.add(new JLabel("Failure"));
-        apNewBoxPanel.add(new JLabel("Units"));
-        apNewBoxPanel.add(new JLabel("Failure"));
-        apNewBoxPanel.add(new JLabel("Units"));
-        apNewBoxPanel.add(new JLabel("Failure"));
-        
-        for (int i = 0; i < Unit.MAXBUILD; i++) {
-        	for (int j = 0; j <= Unit.ASSAULT; j++) {
-        		if (j == 0) {
-        			apNewBoxPanel.add(new JLabel(Unit.getTypeClassDesc(i)));
-        		}
-        		baseTextField = new JTextField();
-        		baseTextField.setName("APAtMax" + Unit.getWeightClassDesc(j) + Unit.getTypeClassDesc(i));
-        		baseTextField.setToolTipText("Number of units worth of stored components to trigger an AP attempt for " + Unit.getWeightClassDesc(j) + " " + Unit.getTypeClassDesc(i));
-        		apNewBoxPanel.add(baseTextField);
-        		
-        		baseTextField = new JTextField();
-        		baseTextField.setName("APFailureRate" + Unit.getWeightClassDesc(j) + Unit.getTypeClassDesc(i));
-        		baseTextField.setToolTipText("Percent failure rate for " + Unit.getWeightClassDesc(j) + " " + Unit.getTypeClassDesc(i));
-        		apNewBoxPanel.add(baseTextField);
-        	}
-        }
-        
-        apNewPanel.add(apNewBoxPanel);
-        
-        JPanel apBottomPanel = new JPanel();
-        apBottomPanel.add(apNewPanel);
-        
-        JPanel scrapPanel = new JPanel();
-        scrapPanel.setBorder(BorderFactory.createEtchedBorder());
-        scrapPanel.add(new JLabel("Scrap Oldest Units First:", SwingConstants.TRAILING));
-        BaseCheckBox = new JCheckBox();
-        BaseCheckBox.setName("ScrapOldestUnitsFirst");
-        BaseCheckBox.setToolTipText("<html>If checked, bay units will be scrapped/sold in order of unitID<br>If not checked, the unit chosen will be random.</html>");
-        scrapPanel.add(BaseCheckBox);
-        
-        autoProdPanel.add(apTopPanel);
-        autoProdPanel.add(apMiddlePanel);
-        autoProdPanel.add(apBottomPanel);
-        autoProdPanel.add(scrapPanel);
         
         /*
          * REWARD MENU CONSTRUCTION
@@ -2926,346 +2733,7 @@ public final class ServerConfigurationDialog implements ActionListener {
 
         artilleryPanel.add(artyBox);
 
-        /*
-         * COMBAT Panel Setup
-         */
-        JPanel combatBox = new JPanel();
-        combatBox.setLayout(new BoxLayout(combatBox, BoxLayout.Y_AXIS));
-        JPanel combatCBoxGrid = new JPanel(new GridLayout(4, 3));
 
-        JPanel combatSpring1 = new JPanel(new SpringLayout());
-        JPanel combatSpring2 = new JPanel(new SpringLayout());
-        JPanel combatSpring3 = new JPanel(new SpringLayout());
-        JPanel combatSpring4 = new JPanel(new SpringLayout());
-        JPanel combatMMOptionsSpring = new JPanel(new SpringLayout());
-
-        JPanel combatSpringFlow = new JPanel();
-
-        combatSpringFlow.add(combatSpring1);
-        combatSpringFlow.add(combatSpring2);
-        combatSpringFlow.add(combatSpring3);
-        combatSpringFlow.add(combatSpring4);
-
-        BaseCheckBox = new JCheckBox("Probe In Reserve");
-
-        BaseCheckBox.setToolTipText("Allow /c ca in reserve mode?");
-        BaseCheckBox.setName("ProbeInReserve");
-        combatCBoxGrid.add(BaseCheckBox);
-
-        BaseCheckBox = new JCheckBox("Use Real_Blind_Drops");
-
-        BaseCheckBox.setToolTipText("<HTML>Check in order to use real_blind_drop option in MM,<br> hiding units from players until they appear on the map.<br>If this option is enabled, /c tasks and join messages will not show army composition.</HTML>");
-        BaseCheckBox.setName("UseBlindDrops");
-        combatCBoxGrid.add(BaseCheckBox);
-        
-        BaseCheckBox = new JCheckBox("Show unit type counts");
-        BaseCheckBox.setName("ShowUnitTypeCounts");
-        BaseCheckBox.setToolTipText("<HTML>If checked, unit type totals will be<br>shown in the attack / defend notifications <br>in blind operations</HTML>");
-        combatCBoxGrid.add(BaseCheckBox);
-
-        BaseCheckBox = new JCheckBox("Selectable Salvage");
-        BaseCheckBox.setToolTipText("If set to true then players can recoup repair costs by scrapping salvaged units");
-
-        BaseCheckBox.setName("SelectableSalvage");
-        combatCBoxGrid.add(BaseCheckBox);
-
-        BaseCheckBox = new JCheckBox("Use Force Salvage");
-
-        BaseCheckBox.setToolTipText("Count Mechs without a leg or 2 gyro hits as salvage?");
-        BaseCheckBox.setName("ForceSalvage");
-        combatCBoxGrid.add(BaseCheckBox);
-
-        BaseCheckBox = new JCheckBox("Use Advanced Terrains");
-
-        BaseCheckBox.setToolTipText("Use Already built maps vs terrain and RMG");
-        BaseCheckBox.setName("UseStaticMaps");
-        combatCBoxGrid.add(BaseCheckBox);
-
-        BaseCheckBox = new JCheckBox("Show Inf In /c ca");
-
-        BaseCheckBox.setName("ShowInfInCheckAttack");
-        combatCBoxGrid.add(BaseCheckBox);
-
-        BaseCheckBox = new JCheckBox("Allow Limiters");
-
-        BaseCheckBox.setName("AllowLimiters");
-        combatCBoxGrid.add(BaseCheckBox);
-
-        BaseCheckBox = new JCheckBox("Count Inf For Limits");
-
-        BaseCheckBox.setName("CountInfForLimiters");
-        combatCBoxGrid.add(BaseCheckBox);
-
-        BaseCheckBox = new JCheckBox("Allow Unit Ratios");
-
-        BaseCheckBox.setToolTipText("If checked ratios will be followed otherwise anything goes.");
-        BaseCheckBox.setName("AllowRatios");
-        combatCBoxGrid.add(BaseCheckBox);
-
-        BaseCheckBox = new JCheckBox("Use Prelim Op Report");
-
-        BaseCheckBox.setToolTipText("<html>Check this to allow the players a chance<br>of receiving prelim data on a task they've accepted</html>");
-        BaseCheckBox.setName("AllowPreliminaryOperationsReports");
-        combatCBoxGrid.add(BaseCheckBox);
-
-        BaseCheckBox = new JCheckBox("Display Op Name");
-
-        BaseCheckBox.setToolTipText("Display the Op name to the defender");
-        BaseCheckBox.setName("DisplayOperationName");
-        combatCBoxGrid.add(BaseCheckBox);
-
-        BaseCheckBox = new JCheckBox("Force Deactivate Players");
-
-        BaseCheckBox.setToolTipText("<html>If this is checked then after combat players are<br>automatically deactivated immunity time is also ignored.</html>");
-        BaseCheckBox.setName("ForcedDeactivation");
-        combatCBoxGrid.add(BaseCheckBox);
-
-        // spring1. 6 elements.
-        baseTextField = new JTextField(5);
-        combatSpring1.add(new JLabel("Upper Limit Buffer"));
-        baseTextField.setToolTipText("<HTML>" + "Min Buffer On Upper Limiter. For example, a<br>" + "setting of 2 would prevent a player with a 4<br>" + "unit army from setting a limiter of 4 or 5.");
-        baseTextField.setName("UpperLimitBuffer");
-        combatSpring1.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        combatSpring1.add(new JLabel("Lower Limit Buffer"));
-        baseTextField.setToolTipText("<HTML>" + "Min Buffer On Lower Limiter. For example, a<br>" + "setting of 2 would prevent a player with a 7<br>" + "unit army from setting a limiter of 5 or 6.");
-        baseTextField.setName("LowerLimitBuffer");
-        combatSpring1.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        combatSpring1.add(new JLabel("Default Upper Limit"));
-        baseTextField.setName("DefaultUpperLimit");
-        combatSpring1.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        combatSpring1.add(new JLabel("Default Lower Limit"));
-        baseTextField.setName("DefaultLowerLimit");
-        combatSpring1.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        combatSpring1.add(new JLabel("Mek to Inf Ratio:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Only Used if AllowRatios is checked<br>Set the %Ratio for Infantry to Mek if set at 50% 1 Infantry to every 2 Meks<br>If set at 200% 2 infantry to 1 Mek is allowed</body></html>");
-        baseTextField.setName("MekToInfantryRatio");
-        combatSpring1.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        combatSpring1.add(new JLabel("Chance For Op Report:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html>The min chance a player will receive info on the planet<br>base chance is based on players factions<br>owner ship of the planet<br>if that is lower then this number this number<br>will be used</htlm>");
-        baseTextField.setName("MinChanceForAccurateOperationsReports");
-        combatSpring1.add(baseTextField);
-
-        // spring2. 6 elements.
-        baseTextField = new JTextField(5);
-        combatSpring2.add(new JLabel("Immunity Time", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("How long shall a player be immune to attacks after he just finished a task? (in seconds)");
-        baseTextField.setName("ImmunityTime");
-        combatSpring2.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        combatSpring2.add(new JLabel("Mek Map Factor", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Map Size Factors (Those determine how big a map will be)");
-        baseTextField.setName("MekMapSizeFactor");
-        combatSpring2.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Map Size Factors (Those determine how big a map will be)");
-        combatSpring2.add(new JLabel("Veh Map Factor", SwingConstants.TRAILING));
-        baseTextField.setName("VehicleMapSizeFactor");
-        combatSpring2.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Map Size Factors (Those determine how big a map will be)");
-        combatSpring2.add(new JLabel("Inf Map Factor", SwingConstants.TRAILING));
-        baseTextField.setName("InfantryMapSizeFactor");
-        combatSpring2.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Map Size Factors (Those determine how big a map will be)");
-        combatSpring2.add(new JLabel("Aero Map Factor", SwingConstants.TRAILING));
-        baseTextField.setName("AeroMapSizeFactor");
-        combatSpring2.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        combatSpring2.add(new JLabel("Game Log Name", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Name of the game log to save to the users system");
-        baseTextField.setName("MMGameLogName");
-        combatSpring2.add(baseTextField);
-
-        // spring3. 5 elements.
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Map Size Factors (Those determine how big a map will be)");
-        combatSpring3.add(new JLabel("Proto Map Factor", SwingConstants.TRAILING));
-        baseTextField.setName("ProtoMekMapSizeFactor");
-        combatSpring3.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        baseTextField.setToolTipText("Map Size Factors (Those determine how big a map will be)");
-        combatSpring3.add(new JLabel("BA Map Factor", SwingConstants.TRAILING));
-        baseTextField.setName("BattleArmorMapSizeFactor");
-        combatSpring3.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        combatSpring3.add(new JLabel("Fast Hover Mod", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("Add X BV to all Hovers with 8/12 and more");
-        baseTextField.setName("FastHoverBVMod");
-        combatSpring3.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        combatSpring3.add(new JLabel("Salvage Scrap Time", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html>" + "Time, in seconds, that players have<br>" + "after game to scrap units w/o charge.</html>");
-        baseTextField.setName("TimeToSelectSalvage");
-        combatSpring3.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        combatSpring3.add(new JLabel("Mek to Vehicle Ratio:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html><body>Only Used if AllowRatios is checked<br>Set the %Ratio for vehicle to Mek if set at 50% 1 vehcile to every 2 Meks<br>If set at 200% 2 Vehicles to 1 Mek is allowed</body></html>");
-        baseTextField.setName("MekToVehicleRatio");
-        combatSpring3.add(baseTextField);
-
-        // pack the springs.
-        SpringLayoutHelper.setupSpringGrid(combatSpring1, 2);
-        SpringLayoutHelper.setupSpringGrid(combatSpring2, 2);
-        SpringLayoutHelper.setupSpringGrid(combatSpring3, 2);
-
-        BaseCheckBox = new JCheckBox("Show Unit Id?");
-
-        BaseCheckBox.setToolTipText("Unit ID are displayed to help ID units");
-        BaseCheckBox.setName("MMShowUnitId");
-        combatMMOptionsSpring.add(BaseCheckBox);
-
-        BaseCheckBox = new JCheckBox("Time Stamp Save Games?");
-
-        BaseCheckBox.setToolTipText("All Save Games will have a timestamp on them");
-        BaseCheckBox.setName("MMTimeStampLogFile");
-        combatMMOptionsSpring.add(BaseCheckBox);
-
-        BaseCheckBox = new JCheckBox("Keep Game Log?");
-
-        BaseCheckBox.setToolTipText("Save game log to users system");
-        BaseCheckBox.setName("MMKeepGameLog");
-        combatMMOptionsSpring.add(BaseCheckBox);
-
-        BaseCheckBox = new JCheckBox("Allow partial bins?");
-
-        BaseCheckBox.setToolTipText("<html>Allow units in any army<br>to go active if they have partially full ammobins.</html>");
-        BaseCheckBox.setName("AllowUnitsToActivateWithPartialBins");
-        combatMMOptionsSpring.add(BaseCheckBox);
-        
-        BaseCheckBox = new JCheckBox("Allow damaged units to activate?");
-        BaseCheckBox.setToolTipText("<html>Allow units in an army<br>to go active if they are damaged.</html>");
-        BaseCheckBox.setName("AllowActivationWithDamagedUnits");
-        combatMMOptionsSpring.add(BaseCheckBox);
-        
-        BaseCheckBox = new JCheckBox("Require attack-capable armies?");
-        BaseCheckBox.setName("RequireAttackCapableArmiesForActivation");
-        BaseCheckBox.setToolTipText("<html>Require all armies to be attack capable in order or disallow activation.</html>");
-        combatMMOptionsSpring.add(BaseCheckBox);
-        
-        BaseCheckBox = new JCheckBox("Ignore pilots for BV calcs");
-        BaseCheckBox.setName("UseBaseBVForMatching");
-        BaseCheckBox.setToolTipText("<html>Checking this will always use a base 4/5 pilot for BV calcs</html>");
-        combatMMOptionsSpring.add(BaseCheckBox);
-        
-        SpringLayoutHelper.setupSpringGrid(combatMMOptionsSpring, 3);
-
-        BaseCheckBox = new JCheckBox("Allow Attacks From Reserve?");
-
-        BaseCheckBox.setToolTipText("Allows players to arrange games and attack while in reserve");
-        BaseCheckBox.setName("AllowAttackFromReserve");
-        combatSpring4.add(BaseCheckBox);
-
-        baseTextField = new JTextField(5);
-        combatSpring4.add(new JLabel("Response Time:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html>The amount of time, in minutes, that the<br>defending player has to respond before the offer expires</html>");
-        baseTextField.setName("AttackFromReserveResponseTime");
-        combatSpring4.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        combatSpring4.add(new JLabel("Wait Time:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html>How long, in minutes, the attacking player<br>has to wait before they can attack again from reserve.</html>");
-        baseTextField.setName("AttackFromReserveSleepTime");
-        combatSpring4.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        combatSpring4.add(new JLabel("Max Negative Bays:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html>How many negative bays a player may have<br>to engage in AFR.  Set to -1 to disable check");
-        baseTextField.setName("MaxNegativeBaysForAFR");
-        combatSpring4.add(baseTextField);
-        
-        //SpringLayoutHelper.setupSpringGrid(combatSpring4, 5);
-        
-        SpringLayoutHelper.setupSpringGrid(combatSpring4, 7);
-
-        JPanel combatPayoutPanel = new JPanel();
-        JPanel combatPayoutUpperPanel = new JPanel();
-        JPanel combatPayoutLowerPanel = new JPanel();
-        combatPayoutPanel.setLayout(new BoxLayout(combatPayoutPanel, BoxLayout.Y_AXIS));
-        combatPayoutPanel.setBorder(BorderFactory.createEtchedBorder());
-        
-        BaseCheckBox = new JCheckBox("Modify Op Payout for ELO Difference?");
-        BaseCheckBox.setName("ModifyOpPayoutByELO");
-        BaseCheckBox.setToolTipText("<html>If checked, payout will be changed based on ELO of players involved.");
-        combatPayoutUpperPanel.add(BaseCheckBox);
-        
-        BaseCheckBox = new JCheckBox("For Higher Player?");
-        BaseCheckBox.setName("ModifyOpPayoutByELOForHigher");
-        BaseCheckBox.setToolTipText("<html>If checked, payout will be changed for the higher-ranked player.");
-        combatPayoutUpperPanel.add(BaseCheckBox);
-
-        BaseCheckBox = new JCheckBox("For Lower Player?");
-        BaseCheckBox.setName("ModifyOpPayoutByELOForLower");
-        BaseCheckBox.setToolTipText("<html>If checked, payout will be changed for the lower-ranked player.");
-        combatPayoutUpperPanel.add(BaseCheckBox);
-        
-        BaseCheckBox = new JCheckBox("Money");
-        BaseCheckBox.setName("ModifyOpPayoutByELO_Money");
-        BaseCheckBox.setToolTipText("If checked, monetary payout will be modified by ELO");
-        combatPayoutLowerPanel.add(BaseCheckBox);
-        
-        BaseCheckBox = new JCheckBox("Exp");
-        BaseCheckBox.setName("ModifyOpPayoutByELO_Exp");
-        BaseCheckBox.setToolTipText("If checked, experience gain will be modified by ELO");
-        combatPayoutLowerPanel.add(BaseCheckBox);
-        
-        BaseCheckBox = new JCheckBox("RP");
-        BaseCheckBox.setName("ModifyOpPayoutByELO_RP");
-        BaseCheckBox.setToolTipText("If checked, RP payout will be modified by ELO");
-        combatPayoutLowerPanel.add(BaseCheckBox);
-        
-        BaseCheckBox = new JCheckBox("Influence");
-        BaseCheckBox.setName("ModifyOpPayoutByELO_Influence");
-        BaseCheckBox.setToolTipText("If checked, influence payout will be modified by ELO");
-        combatPayoutLowerPanel.add(BaseCheckBox);
-        
-        BaseCheckBox = new JCheckBox("Land");
-        BaseCheckBox.setName("ModifyOpPayoutByELO_Land");
-        BaseCheckBox.setToolTipText("If checked, land transfer will be modified by ELO.");
-        combatPayoutLowerPanel.add(BaseCheckBox);
-        
-        BaseCheckBox = new JCheckBox("Always reduce land payout");
-        BaseCheckBox.setName("AlwaysReduceLandTransfer");
-        BaseCheckBox.setToolTipText("If checked, land transfer will be reduced no matter who wins");
-        combatPayoutLowerPanel.add(BaseCheckBox);
-        
-        baseTextField = new JTextField(5);
-        baseTextField.setName("ModifyOpPayoutByELO_Multiplier");
-        baseTextField.setToolTipText("<html><p>Not really a multiplier, but a power.  The ELO ratio (loser / winner) will be raised to this power to determine change of actual payout.</p><p>Please refer to documentation for a more complete discussion of this mechanic.</p></html>");
-        combatPayoutLowerPanel.add(new JLabel("Payout Multiplier:"));
-        combatPayoutLowerPanel.add(baseTextField);
-        
-        
-        
-        combatPayoutPanel.add(combatPayoutUpperPanel);
-        combatPayoutPanel.add(combatPayoutLowerPanel);
-
-        // finalize layout
-        combatBox.add(combatCBoxGrid);
-        combatBox.add(combatSpringFlow);
-        combatBox.add(combatMMOptionsSpring);
-        combatBox.add(combatSpring4);
-        combatBox.add(combatPayoutPanel);
-        combatPanel.add(combatBox);
 
         /*
          * BATTLE VALUE Panel
