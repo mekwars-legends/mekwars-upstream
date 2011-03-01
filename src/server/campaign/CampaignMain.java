@@ -308,6 +308,27 @@ public final class CampaignMain implements Serializable {
              * FileInputStream(this.myServer.getConfigParam("CAMPAIGNCONFIG")));
              * }
              */
+            
+            // Right here, we're going to try to prune old cruft from the configs
+            // Over the course of many years, as config options change, crap never
+            // gets removed from campaignconfig.txt.  We're seeing this very badly on
+            // MMNet, and probably other servers are, as well.
+            Vector<String> keysToRemove = new Vector<String>();
+            for (Object key : config.keySet()) {
+            	if (!dso.getServerDefaults().keySet().contains(key) && !((String)key).endsWith("RewardPointMultiplier")) {
+            		CampaignData.mwlog.errLog("Key " + (String)key + " does not exist in DefaultServerConfig.  Pruning from configs.");
+            		keysToRemove.add((String)key);
+            	} 
+            }
+            
+            for (String key : keysToRemove) {
+            	config.remove(key);
+            }
+            
+            CampaignMain.cm.saveConfigureFile(config, CampaignMain.cm.getServer().getConfigParam("CAMPAIGNCONFIG"));
+            // Now, in theory, there is no cruft for next boot.  Let's test.
+            
+            
             if (isUsingMySQL()) {
                 if (Boolean.parseBoolean(getServer().getConfigParam("MYSQL_SYNCHPHPBB"))) {
                     config.put("REQUIREEMAILFORREGISTRATION", "true");

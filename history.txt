@@ -1,6 +1,17 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
+R Released Server v0.3.3.8
++ Server now prunes old, defunct campaignconfig.txt settings from 
+  the file on each boot.  
+  *****************************************************************
+  *                   NOTE TO SOs                                 *
+  *                                                               *
+  * Because I cannot know your faction names, the server will not *
+  * automatically remove the <House>To<House>RewardPointMultiplier*
+  * lines.  If you change houses, and you want these removed from *
+  * campaigconfig.txt, you will need to do this by hand.          *
+  *****************************************************************
 R Released Server v0.3.3.7
 + Added option to disallow activation with damaged units.  This option
     did not make it over in the merge.
