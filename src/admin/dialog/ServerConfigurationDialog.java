@@ -48,12 +48,10 @@ import admin.dialog.serverConfigDialogs.FactionPanel;
 import admin.dialog.serverConfigDialogs.FactoryPurchasePanel;
 import admin.dialog.serverConfigDialogs.InfluencePanel;
 import admin.dialog.serverConfigDialogs.LossCompensationPanel;
-import admin.dialog.serverConfigDialogs.MekPilotSkillsPanel;
 import admin.dialog.serverConfigDialogs.MiscOptionsPanel;
 import admin.dialog.serverConfigDialogs.NewbieHousePanel;
 import admin.dialog.serverConfigDialogs.NoPlayPanel;
 import admin.dialog.serverConfigDialogs.PathsPanel;
-import admin.dialog.serverConfigDialogs.PilotSkillsModPanel;
 import admin.dialog.serverConfigDialogs.PilotSkillsPanel;
 import admin.dialog.serverConfigDialogs.PilotsPanel;
 import admin.dialog.serverConfigDialogs.ProductionPanel;
@@ -133,9 +131,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         PilotsPanel pilotsPanel = new PilotsPanel(mwclient);// allows SO's set up pilot options and personal pilot queue options
         NoPlayPanel noPlayPanel = new NoPlayPanel(mwclient);
         DBPanel dbPanel = new DBPanel(); // Database configuration
-        PilotSkillsModPanel pilotSkillsModPanel = new PilotSkillsModPanel(mwclient);// Allows the SO's to set the mods for each skill type that affects the MM game.
         PilotSkillsPanel pilotSkillsPanel = new PilotSkillsPanel(mwclient);// allows SO's to select what pilot skills they want for non-Mek unit types.
-        MekPilotSkillsPanel mekPilotSkillsPanel = new MekPilotSkillsPanel(mwclient);// allows SO's to select what pilot skills they want for Meks
         AdvancedRepairPanel advancedRepairPanel = new AdvancedRepairPanel();// Advanced Repair
         LossCompensationPanel lossCompensationPanel = new LossCompensationPanel();// battle loss compensation
       
@@ -171,9 +167,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         ConfigPane.addTab("Misc Options", null, miscOptionsPanel, "Misc Stuff");
         ConfigPane.addTab("No Play", null, noPlayPanel, "Personal Blacklist/Exclusion options");
         ConfigPane.addTab("Pilots", null, pilotsPanel, "Pilot Options");
-        ConfigPane.addTab("Pilot Skills(Mek)", null, mekPilotSkillsPanel, "Server Configurable Pilot Skills (Mek)");
         ConfigPane.addTab("Pilot Skills", null, pilotSkillsPanel, "Server Configurable Pilot Skills");
-        ConfigPane.addTab("Pilot Skill Mods", null, pilotSkillsModPanel, "Server Configurable Pilot Skills Modifiers");
         ConfigPane.addTab("Repodding", null, repodPanel, "Repod");
         ConfigPane.addTab("Rewards", null, rewardPanel, "Reward Points");
         ConfigPane.addTab("Single Player", null, singlePlayerFactionPanel, "Single Player Faction Configuration");

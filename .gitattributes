@@ -1348,11 +1348,11 @@ src/admin/dialog/serverConfigDialogs/FactionPanel.java -text
 src/admin/dialog/serverConfigDialogs/FactoryPurchasePanel.java -text
 src/admin/dialog/serverConfigDialogs/InfluencePanel.java -text
 src/admin/dialog/serverConfigDialogs/LossCompensationPanel.java -text
-src/admin/dialog/serverConfigDialogs/MekPilotSkillsPanel.java -text
 src/admin/dialog/serverConfigDialogs/MiscOptionsPanel.java -text
 src/admin/dialog/serverConfigDialogs/NewbieHousePanel.java -text
 src/admin/dialog/serverConfigDialogs/NoPlayPanel.java -text
 src/admin/dialog/serverConfigDialogs/PathsPanel.java -text
+src/admin/dialog/serverConfigDialogs/PilotSkillTextField.java -text
 src/admin/dialog/serverConfigDialogs/PilotSkillsModPanel.java -text
 src/admin/dialog/serverConfigDialogs/PilotSkillsPanel.java -text
 src/admin/dialog/serverConfigDialogs/PilotsPanel.java -text
