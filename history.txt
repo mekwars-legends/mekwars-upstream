@@ -1,6 +1,15 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
+R Released Server v0.3.3.9
++ Upgraded version of MySQL-Connector/J to be compatible with MySQL
+  5.1
+  *****************************************************************
+  *                   NOTE TO SOs                                 *
+  *                                                               *
+  * This will require copying the new mysql-connector jar to your *
+  * ./lib folder, or you will not successfully launch your server *
+  *****************************************************************
 R Released Server v0.3.3.8
 + Server now prunes old, defunct campaignconfig.txt settings from 
   the file on each boot.  
