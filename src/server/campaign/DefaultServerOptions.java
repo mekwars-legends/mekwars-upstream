@@ -674,6 +674,7 @@ public class DefaultServerOptions {
         defaults.setProperty("chanceforQSforAero", "0");
         defaults.setProperty("chanceforMTforMek", "20");
         defaults.setProperty("chanceforMTforProtoMek", "20");
+        defaults.setProperty("chanceforMTforAero", "20");
         defaults.setProperty("chanceforVDNIforMek", "0");
         defaults.setProperty("chanceforVDNIforVehicle", "0");
         defaults.setProperty("chanceforVDNIforAero", "0");

@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
+R Released Server v0.3.3.10
++ Bug: Missing MT for Aero.
 R Released Server v0.3.3.9
 + Upgraded version of MySQL-Connector/J to be compatible with MySQL
   5.1

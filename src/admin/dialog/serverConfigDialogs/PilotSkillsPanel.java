@@ -1240,7 +1240,16 @@ public class PilotSkillsPanel extends JPanel {
         }
         baseTextField.setName("chanceforPSforAero");
         aeroPilotSkillsSpring.add(baseTextField);
-
+        
+        aeroPilotSkillsSpring.add(new JLabel("MT", SwingConstants.TRAILING));
+        if (Boolean.parseBoolean(mwclient.getserverConfigs("PlayersCanBuyPilotUpgrades"))) {
+            baseTextField.setToolTipText("<html><body>Set cost for a pilot to gain the Med Tech skill. Zero to disable</body></html>");
+        } else {
+            baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain the Med Tech skill</body></html>");
+        }
+        baseTextField.setName("chanceforMTforAero");
+        aeroPilotSkillsSpring.add(baseTextField);
+        
         SpringLayoutHelper.setupSpringGrid(vehiclePilotSkillsSpring, 2);
         SpringLayoutHelper.setupSpringGrid(infantryPilotSkillsSpring, 2);
         SpringLayoutHelper.setupSpringGrid(protomechPilotSkillsSpring, 2);

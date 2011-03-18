@@ -1543,6 +1543,18 @@ public final class FactionConfigurationDialog implements ActionListener {
         }
         baseTextField.setName("chanceforPSforAero");
         aeroPilotSkillsSpring.add(baseTextField);
+        
+        baseTextField = new JTextField(3);
+        baseTextField.setMaximumSize(fieldSize);
+        baseTextField.setPreferredSize(fieldSize);
+        aeroPilotSkillsSpring.add(new JLabel("MT", SwingConstants.TRAILING));
+        if ( Boolean.parseBoolean(mwclient.getserverConfigs("PlayersCanBuyPilotUpgrades")) ){
+            baseTextField.setToolTipText("<html><body>Set cost for a pilot to gain the Med Tech skill. Zero to disable</body></html>");
+        }else{
+            baseTextField.setToolTipText("<html><body>Set Chance for a pilot to gain the Med Tech skill</body></html>");
+        }
+        baseTextField.setName("chanceforMTforAero");
+        aeroPilotSkillsSpring.add(baseTextField);
 
 
         SpringLayoutHelper.setupSpringGrid(vehiclePilotSkillsSpring, 2);
