@@ -17,6 +17,7 @@
 package common.util;
 
 import java.text.DecimalFormat;
+import java.util.logging.Handler;
 import java.util.logging.Logger;
 import java.util.logging.FileHandler;
 import java.util.logging.SimpleFormatter;
@@ -24,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.io.File;
 
 
@@ -62,10 +64,12 @@ public final class MWLogger {// final - no extension of the server logger
     private Logger testLog; // Log test code
     private Logger debugLog; // for all debug messages
 
+    private HashMap<String, Logger> factionLoggers = new HashMap<String, Logger>();
+    
     private MMNetFormatter mmnetFormatter;
 
     private FileHandler mainHandler;
-    private FileHandler factionHandler;
+    //private FileHandler factionHandler;
     private FileHandler gameHandler;
     private FileHandler resultsHandler;
     private FileHandler cmdHandler;
@@ -331,11 +335,11 @@ public final class MWLogger {// final - no extension of the server logger
     }
 
     public void factionLog(String s, String LogName) {
-        factionLog = Logger.getLogger(LogName);
+        errLog("Logging to house file: " + LogName);
+    	//factionLog = Logger.getLogger(LogName);
+        factionLog = factionLoggers.get(LogName);
         factionLog.info(s);
-        if (factionLog.getHandlers().length > 0) {
-        	factionLog.getHandlers()[0].flush();
-        }
+        factionLog.getHandlers()[0].flush();
     }
 
     public void gameLog(String s) {
@@ -522,14 +526,15 @@ public final class MWLogger {// final - no extension of the server logger
     public void createFactionLogger(String logName) {
 
         try {
-            factionHandler = new FileHandler(logDir.getPath() + "/" + logName, bigFileSize, rotations, true);
+            Handler factionHandler = new FileHandler(logDir.getPath() + "/" + logName, bigFileSize, rotations, true);
             factionHandler.setLevel(Level.INFO);
             factionHandler.setFilter(null);
             factionHandler.setFormatter(mmnetFormatter);
-            factionLog = Logger.getLogger(logName);
+            factionLog = Logger.getLogger(logName.trim());
             factionLog.setUseParentHandlers(false);
             factionLog.addHandler(factionHandler);
             factionLog.info(logName + " log touched");
+            factionLoggers.put(logName, factionLog);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

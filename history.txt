@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
+R Released Server v0.3.3.11
++ Bug: Fix for disappearing faction logs for Java versions 1.6_19
+  through 1.6_22 (Oracle fixed this themselves in _23)
 R Released Server v0.3.3.10
 + Bug: Missing MT for Aero.
 R Released Server v0.3.3.9
