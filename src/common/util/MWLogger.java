@@ -335,7 +335,7 @@ public final class MWLogger {// final - no extension of the server logger
     }
 
     public void factionLog(String s, String LogName) {
-        errLog("Logging to house file: " + LogName);
+        //errLog("Logging to house file: " + LogName);
     	//factionLog = Logger.getLogger(LogName);
         factionLog = factionLoggers.get(LogName);
         factionLog.info(s);
