@@ -255,11 +255,36 @@ public class PhpBBConnector {
 	    return exists;
     }
 
-    public void deleteForumAccount(int forumID) {
+    public synchronized void deleteForumAccount(int forumID) {
         PreparedStatement ps = null;
         
         switch (bbMajorVersion) {
         case 3:
+        	ResultSet rs = null;
+        	Runtime runtime=Runtime.getRuntime();
+        		try {
+					String userName = "";
+					ps = con.prepareStatement("SELECT username from " + userTable + " WHERE user_id = ?");
+					rs = ps.executeQuery();
+					rs.next();
+					userName = rs.getString("username");
+					try {
+						rs.close();
+						ps.close();
+					} catch (SQLException e) {}
+					if (userName != "") {
+						String fs = System.getProperty("file.separator");
+							  String[] call={"PHPBB3" + fs + "delUser.php", userName};
+							  runtime.exec(call);
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        	break;
         case 2:
         
 	        try {
@@ -291,6 +316,16 @@ public class PhpBBConnector {
         ResultSet rs = null;
         switch (bbMajorVersion) {
         case 3:
+        	Runtime runtime=Runtime.getRuntime();
+        	String fs = System.getProperty("file.separator");
+			String[] call={"PHPBB3" + fs + "addUserToGroup.php", Integer.toString(userID), Integer.toString(houseForumID)};
+			try {
+					runtime.exec(call);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        	break;
         case 2:
         	try {
 	            ps = con.prepareStatement("SELECT count(*) as num from " + userGroupTable + " WHERE group_id = " + houseForumID + " AND user_id = " + userID);
@@ -330,6 +365,16 @@ public class PhpBBConnector {
         PreparedStatement ps = null;
         switch(bbMajorVersion) {
         case 3:
+        	Runtime runtime=Runtime.getRuntime();
+        	String fs = System.getProperty("file.separator");
+			String[] call={"PHPBB3" + fs + "removeUserFromGroup.php", Integer.toString(userID), Integer.toString(forumID)};
+			try {
+					runtime.exec(call);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        	break;
         case 2:
         	try {
         		ps = con.prepareStatement("DELETE from " + userGroupTable + " WHERE group_id = " + forumID + " AND user_id = " + userID);
@@ -436,6 +481,46 @@ public class PhpBBConnector {
         ResultSet rs = null;
         switch (bbMajorVersion) {
         case 3:
+	        if (userExistsInForum(name)) {
+	            // There's already a user with that name - figure out if it's the
+	            // same one
+	            if (userExistsInForum(name, email, pass)) {
+	                // Name, email, and passwords match. It should be good. Send the
+	                // authentication email and return true;
+	                addActivationKey(getUserForumID(name, email), name);
+	
+	                toReturn = this.sendEmailValidation(getUserForumID(name, email), email, getActivationKey(getUserForumID(name, email)));
+	            } else if (userExistsInForum(name, email)) {
+	                // Most likely still ok, and if they don't get the email, they
+	                // won't be authenticating anyway
+	                addActivationKey(getUserForumID(name, email), name);
+	                toReturn = this.sendEmailValidation(getUserForumID(name, email), email, getActivationKey(getUserForumID(name, email)));
+	            } else {
+	                // Username is already registered in the forums, but to a
+	                // different email address
+	                // Probably not the same guy - this *could* cause issues if the
+	                // user changes email addresses, but
+	                // an admin can fix the entry in the phpBB database manually. I
+	                // don't see it happening too often.
+	                CampaignMain.cm.toUser("This name is already registered to a different email address.", name, true);
+	                return false;
+	            }
+	        } else if (emailExistsInForum(email)) {
+	            // This email is already in use
+	            CampaignMain.cm.toUser("This email address is already registered to another user.", name, true);
+	            return false;
+	        } else {
+	        	Runtime runtime=Runtime.getRuntime();
+	        	String fs = System.getProperty("file.separator");
+	        	String[] call={"PHPBB3" + fs + "createUser.php", name, pass, email};
+	        	try {
+					runtime.exec(call);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+	        }
+        	break;
         case 2:
 	        if (userExistsInForum(name)) {
 	            // There's already a user with that name - figure out if it's the
@@ -604,7 +689,7 @@ public class PhpBBConnector {
             this.userGroupTable = tablePrefix + "user_group";
             this.userTable = tablePrefix + "users";
             CampaignData.mwlog.dbLog("Valid phpBB Version: 3");
-
+            break;
         case 2:
             if (bbVersion.equalsIgnoreCase(".0.22")) {
                 this.groupsTable = tablePrefix + "groups";
@@ -765,6 +850,7 @@ public class PhpBBConnector {
         PreparedStatement ps = null;
         switch (bbMajorVersion) {
         case 3:
+        	break;
         case 2:
         	try {
 	            ps = con.prepareStatement("UPDATE " + userTable + " SET user_active = 1 WHERE user_id = " + forumID);

@@ -981,6 +981,11 @@ client-dist/startClient.bat -text
 /olderhistory.txt -text
 server-dist/CreateUpdate.bat -text
 server-dist/MegaMek.jar -text
+server-dist/PHPBB3/addUserToGroup.php -text
+server-dist/PHPBB3/config.inc.php -text
+server-dist/PHPBB3/createUser.php -text
+server-dist/PHPBB3/delUser.php -text
+server-dist/PHPBB3/removeUserFromGroup.php -text
 server-dist/WebTools/ELORanking.php -text
 server-dist/WebTools/EXPRanking.php -text
 server-dist/WebTools/MechStats.php -text

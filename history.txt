@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
+R Released Server v0.3.3.12
++ Added initial support for PHPBB3
 R Released Server v0.3.3.11
 + Bug: Fix for disappearing faction logs for Java versions 1.6_19
   through 1.6_22 (Oracle fixed this themselves in _23)
