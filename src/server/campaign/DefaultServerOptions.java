@@ -570,7 +570,9 @@ public class DefaultServerOptions {
         // min exp to set the motd
         defaults.setProperty("MinMOTDExp", "200");
         defaults.setProperty("MaxMOTDLength", "7000");
-
+        defaults.setProperty("AllowLinksInMOTD", "true");
+        defaults.setProperty("AllowPlanetsInMOTD", "true");
+                
         // ratios TODO: Remove? Move into ops? Are these still used?
         defaults.setProperty("AllowRatios", "false"); // if turned off you can
         // have as many units as

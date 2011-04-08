@@ -960,6 +960,7 @@ client-dist/data/sounds/menu.wav -text
 client-dist/data/sounds/radarping.wav -text
 client-dist/data/sounds/winner.wav -text
 client-dist/docs/How[!!-~]to[!!-~]set[!!-~]up[!!-~]a[!!-~]Dedicated[!!-~]Server.pdf -text
+client-dist/docs/Using[!!-~]Links[!!-~]in[!!-~]MOTD.txt -text
 client-dist/lib/PngEncoder.jar -text
 client-dist/lib/TabPanel.jar -text
 client-dist/lib/TinyXML.jar -text
@@ -999,6 +1000,7 @@ server-dist/WebTools/templates/EXPRankRow.tmp -text
 server-dist/WebTools/templates/MechStatsRow.tmp -text
 server-dist/WebTools/templates/MechStatsTableFooter.tmp -text
 server-dist/WebTools/templates/MechStatsUnitHeader.tmp -text
+server-dist/data/HTMLSanitizer.cfg -text
 server-dist/data/activationemail.txt -text
 server-dist/data/buildtables/omnivehiclelist.txt -text
 server-dist/data/buildtables/rare/Common_Assault.txt -text
@@ -1314,6 +1316,7 @@ server-dist/dump_db.bat -text
 server-dist/dump_db.sh -text
 server-dist/lib/Ostermiller.jar -text
 server-dist/lib/TinyXML.jar -text
+server-dist/lib/jsoup-1.5.2.jar -text
 server-dist/lib/mailapi.jar -text
 server-dist/lib/mysql-connector-java-5.1.15-bin.jar -text
 server-dist/lib/smtp.jar -text
@@ -1789,6 +1792,7 @@ src/server/campaign/commands/admin/AdminPlayerStatusCommand.java -text
 src/server/campaign/commands/admin/AdminPurgeHouseBaysCommand.java -text
 src/server/campaign/commands/admin/AdminPurgeHouseConfigsCommand.java -text
 src/server/campaign/commands/admin/AdminRandomlySetPlanetProductionCommand.java -text
+src/server/campaign/commands/admin/AdminReloadHTMLSanitizerConfigsCommand.java -text
 src/server/campaign/commands/admin/AdminReloadHouseConfigsCommand.java -text
 src/server/campaign/commands/admin/AdminReloadSupportUnitsCommand.java -text
 src/server/campaign/commands/admin/AdminRemoveAllFactoriesCommand.java -text

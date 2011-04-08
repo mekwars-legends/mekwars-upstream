@@ -124,7 +124,9 @@ public class FactionPanel extends JPanel {
         baseTextField.setToolTipText("Max number of characters allowed in the MOTD.");
         baseTextField.setName("MaxMOTDLength");
         factionSpring1.add(baseTextField);
+        
 
+        
         SpringLayoutHelper.setupSpringGrid(factionSpring1, 2);
 
         // faction spring #2
@@ -234,6 +236,16 @@ public class FactionPanel extends JPanel {
         baseCheckBox = new JCheckBox("Disable Player Demotion Notifications");
         baseCheckBox.setToolTipText("<html>If checked, House Leaders will not be notified <br>when a player no longer qualifies for a subfaction.</html>");
         baseCheckBox.setName("disableDemotionNotification");
+        factionCBoxSpring.add(baseCheckBox);
+        
+        baseCheckBox = new JCheckBox("Allow Planets in MOTD");
+        baseCheckBox.setToolTipText("If checked, players can use the new <planet> tags in their MOTD");
+        baseCheckBox.setName("AllowPlanetsInMOTD");
+        factionCBoxSpring.add(baseCheckBox);
+        
+        baseCheckBox = new JCheckBox("Allow Links in MOTD");
+        baseCheckBox.setToolTipText("If checked, players can add external links to their MOTD");
+        baseCheckBox.setName("AllowLinksInMOTD");
         factionCBoxSpring.add(baseCheckBox);
         
         SpringLayoutHelper.setupSpringGrid(factionCBoxSpring, 3);

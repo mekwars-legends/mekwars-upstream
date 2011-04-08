@@ -1,6 +1,16 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
+R Released Server v0.3.3.13
++ Added HTML Sanitizer for MOTDs.  This fixes issue of the
+  players' ability to embed commands in MOTDs.  
+  *****************************************************************
+  *                   NOTE TO SOs                                 *
+  *                                                               *
+  * This will require copying the new jsoap jar to your ./lib     *
+  * or you will not successfully launch your server.  In also,    *
+  * you will need to copy HTMLSanitizer.cfg to your ./data folder *
+  *****************************************************************
 R Released Server v0.3.3.12
 + Added initial support for PHPBB3
 R Released Server v0.3.3.11

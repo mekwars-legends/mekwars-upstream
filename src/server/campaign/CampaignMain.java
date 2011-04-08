@@ -12,6 +12,7 @@
 package server.campaign;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -36,6 +37,13 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.safety.Cleaner;
+import org.jsoup.safety.Whitelist;
 
 import megamek.MegaMek;
 import megamek.client.Client;
@@ -265,6 +273,8 @@ public final class CampaignMain implements Serializable {
     private Hashtable<String, SPlayer> lostSouls = new Hashtable<String, SPlayer>();
     
     private Vector<String> supportUnits = new Vector<String>();
+    
+    private Cleaner HTMLCleaner = null;
 
     // CONSTRUCTOR
     public CampaignMain(MWServ serv) {
@@ -456,6 +466,10 @@ public final class CampaignMain implements Serializable {
          * objects as part of its construction.
          */
         createNewOpsManager();
+        
+        
+        // Start up the HTML Sanitizer
+        loadSanitizer();
 
         /*
          * Load all players in ./campaign/players and create SmallPlayers. This
@@ -518,6 +532,8 @@ public final class CampaignMain implements Serializable {
 
         // start Advanced Repair, if enabled
         isUsingAdvanceRepair();
+
+
 
         // finally, announce restart in news feed.
         this.addToNewsFeed("MekWars Server Started!");
@@ -1499,6 +1515,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("ADMINPURGEHOUSECONFIGS", new AdminPurgeHouseConfigsCommand());
         Commands.put("ADMINRANDOMLYSETPLANETPRODUCTION", new AdminRandomlySetPlanetProductionCommand());
         Commands.put("ADMINRELOADHOUSECONFIGS", new AdminReloadHouseConfigsCommand());
+        Commands.put("ADMINRELOADHTMLSANITIZERCONFIGS", new AdminReloadHTMLSanitizerConfigsCommand());
         Commands.put("ADMINRELOADSUPPORTUNITS", new AdminReloadSupportUnitsCommand());
         Commands.put("ADMINREMOVEALLFACTORIES", new AdminRemoveAllFactoriesCommand());
         Commands.put("ADMINREMOVEALLTERRAIN", new AdminRemoveAllTerrainCommand());
@@ -4407,5 +4424,107 @@ public final class CampaignMain implements Serializable {
 	 */
 	public void setSupportUnits(Vector<String> supportUnits) {
 		this.supportUnits = supportUnits;
+	}
+	
+	/**
+	 * Returns a string sanitized of potentially harmful HTML
+	 * 
+	 * @param Unsanitized string
+	 * @return Sanitized string
+	 * 
+	 * @author Spork
+	 */
+	public String sanitize(String unclean) {
+		Document doc = Jsoup.parse(unclean);
+		doc = HTMLCleaner.clean(doc);
+		String toReturn = doc.body().toString().replace("<body>", "").replace("</body>", "");
+		boolean allowPlanets = getBooleanConfig("AllowPlanetsInMOTD");
+		if (allowPlanets) {
+			toReturn = replacePlanetTags(toReturn);
+		}
+		
+		return toReturn;
+	}
+
+	public String replacePlanetTags(String input) {
+		String regex = "<planet name=\"([^\"]+)\">([^<]+)</planet>";
+		String replacement = "<a href=\"JUMPTOPLANET$1\">$2</a>";
+		Pattern planetPattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+		Matcher matcher = planetPattern.matcher(input);
+		return matcher.replaceAll(replacement);
+	}
+	
+	private void loadSanitizer() {
+        Whitelist whitelist = Whitelist.relaxed();
+        if(!getBooleanConfig("AllowLinksInMOTD")) {
+        	whitelist.addEnforcedAttribute("a", "rel", "nofollow");
+        }
+
+        whitelist.addTags("planet");
+        whitelist.addAttributes("planet", "name");
+        
+        Vector<String> allowedTags = new Vector<String>();
+        HashMap<String, Vector<String>> allowedAttributes = new HashMap<String, Vector<String>>();
+        
+        try {
+			FileInputStream fstream = new FileInputStream("./data/HTMLSanitizer.cfg");
+			DataInputStream in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String line;
+			while((line = br.readLine()) != null) {
+				line = line.toLowerCase().trim();
+				// Process it here
+				if (line.startsWith("#") || line.length() < 5) {
+					// Comment
+				} else if (line.startsWith("tag")) {
+					// Add next token to allowed tags
+					StringTokenizer st = new StringTokenizer(line, " ");
+					st.nextToken();  // Eat the "Tag" token
+					allowedTags.add(st.nextToken());
+				} else if (line.startsWith("att")) {
+					StringTokenizer st = new StringTokenizer(line, " ");
+					st.nextToken(); // Eat the "Att" token
+					String tag = st.nextToken();
+					while(st.hasMoreTokens()) {
+						if (allowedAttributes.keySet().contains(tag)) {
+							allowedAttributes.get(tag).add(st.nextToken());
+						} else {
+							Vector<String> newTag = new Vector<String>();
+							newTag.add(st.nextToken());
+							allowedAttributes.put(tag, newTag);
+						}
+					}
+				}
+			}
+			br.close();
+			in.close();
+			fstream.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			CampaignData.mwlog.errLog("No HTMLSanitizer.cfg found.");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+		for(String tag : allowedTags) {
+			CampaignData.mwlog.errLog("Adding to whitelist: " + tag);
+			whitelist.addTags(tag);
+		}
+		
+		for(String att : allowedAttributes.keySet()) {
+			Vector<String> attributes = allowedAttributes.get(att);
+			
+			for (String attribute : attributes) {
+				whitelist.addAttributes(att, attribute);
+			}
+		}
+CampaignData.mwlog.errLog(whitelist.toString());
+		Cleaner c = new Cleaner(whitelist);
+		HTMLCleaner = c;
+	}
+	
+	public void reloadSanitizer() {
+		loadSanitizer();
 	}
 }

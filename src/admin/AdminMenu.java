@@ -128,7 +128,8 @@ public class AdminMenu extends JMenu {
     JMenuItem jMenuAdminRetrieveAllMuls = new JMenuItem();
     JMenuItem jMenuAdminCreateMulArmy = new JMenuItem();
     JMenuItem jMenuAdminReloadSupportUnits = new JMenuItem();
-
+    JMenuItem jMenuAdminReloadSanitizerConfigs = new JMenuItem();
+    
     MWClient mwclient;
     private int userLevel = 0;
 
@@ -448,6 +449,13 @@ public class AdminMenu extends JMenu {
         		jMenuAdminReloadSupportUnits_actionPerformed(e);
         	}
         });
+        
+        jMenuAdminReloadSanitizerConfigs.setText("Reload HTML Sanitizer");
+        jMenuAdminReloadSanitizerConfigs.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		jMenuAdminReloadSanitizer_actionPerformed(e);
+        	}
+        });
 
         jMenuAdminUploadBuildTable.setText("Upload a build table");
         jMenuAdminUploadBuildTable.addActionListener(new ActionListener() {
@@ -595,7 +603,11 @@ public class AdminMenu extends JMenu {
         if (userLevel >= mwclient.getData().getAccessLevel("AdminReloadSupportUnits")) {
         	this.add(jMenuAdminReloadSupportUnits);
         }
-
+        
+        if (userLevel >= mwclient.getData().getAccessLevel("AdminReloadHTMLSanitizerConfig")) {
+        	this.add(jMenuAdminReloadSanitizerConfigs);
+        }
+        
         if (getItemCount() > 0) {
             addSeparator();
         }
@@ -1680,6 +1692,10 @@ public class AdminMenu extends JMenu {
     
 	private void jMenuAdminReloadSupportUnits_actionPerformed(ActionEvent e) {
 		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "adminReloadSupportUnits");		
+	}
+	
+	private void jMenuAdminReloadSanitizer_actionPerformed(ActionEvent e) {
+		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "adminReloadHTMLSanitizerConfigs");
 	}
 
 }// end AdminMenu class

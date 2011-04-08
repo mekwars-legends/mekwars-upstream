@@ -84,6 +84,8 @@ public class SetMOTDCommand implements Command {
 			return;
 		}
 		
+		boolean allowPlanets = CampaignMain.cm.getBooleanConfig("AllowPlanetsInMOTD");
+		motd = CampaignMain.cm.sanitize(motd);
 		
 		p.getMyHouse().setMotd(motd + "<p> -- Set by " + p.getName());
 		CampaignMain.cm.toUser("AM:MOTD set. Use /c motd to review.",Username,true);
