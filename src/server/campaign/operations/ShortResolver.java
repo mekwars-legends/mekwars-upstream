@@ -1278,7 +1278,7 @@ public class ShortResolver {
                     tempBuilder.append(", ");
                 }
 
-                tempBuilder.append(earnedRP + "RP");
+                tempBuilder.append(earnedRP + " " + CampaignMain.cm.getConfig("RPShortName"));
                 currP.addReward(earnedRP);
                 hasOtherGain = true;
             }
@@ -1301,7 +1301,7 @@ public class ShortResolver {
 
                 // add link to use RP, if earned.
                 if (earnedRP > 0) {
-                    toSave.append(" [<a href=\"MWUSERP\">Use RP</a>]");
+                    toSave.append(" [<a href=\"MWUSERP\">Use " + CampaignMain.cm.getConfig("RPShortName") + "</a>]");
                 }
 
                 // add firing and maint info

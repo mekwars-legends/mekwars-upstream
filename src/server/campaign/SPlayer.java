@@ -1653,13 +1653,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
                 setXPToReward(currentXP);
 
                 // set up and send upe rp link
-                String toSend = "You earned " + rpToAdd + " experience reward ";
-                if (rpToAdd > 1) {
-                    toSend += " points ";
-                } else {
-                    toSend += " point ";
-                }
-                toSend += "[<a href=\"MWUSERP\">Use RP</a>]";
+                String toSend = "You earned " + rpToAdd + " experience " + CampaignMain.cm.getConfig("RPShortName");
+                toSend += "[<a href=\"MWUSERP\">Use " + CampaignMain.cm.getConfig("RPShortName") + "</a>]";
                 CampaignMain.cm.toUser(toSend, name, true);
 
             } else {
@@ -2568,7 +2563,7 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             s.append("Rating: " + myFormatter.format(getRating()) + "<br>");
         }
         if (Boolean.parseBoolean(getMyHouse().getConfig("ShowReward"))) {
-            s.append("Current Reward Points: " + getReward() + " (Maximum  of " + Integer.parseInt(getMyHouse().getConfig("XPRewardCap")) + ")<br>");
+            s.append("Current " + CampaignMain.cm.getConfig("RPLongName") + ": " + getReward() + " (Maximum  of " + Integer.parseInt(getMyHouse().getConfig("XPRewardCap")) + ")<br>");
         }
 
         // if merc show their status.

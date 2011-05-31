@@ -44,7 +44,7 @@ public class RefreshFactoryCommand implements Command {
 		}
 		
 		if (!CampaignMain.cm.getBooleanConfig("AllowFactoryRefreshForRewards")) {
-			CampaignMain.cm.toUser("AM:You may not use RP to refresh a factory on this server.",Username,true);
+			CampaignMain.cm.toUser("AM:You may not use " + CampaignMain.cm.getConfig("RPShortName") + " to refresh a factory on this server.",Username,true);
 			return;   
 		}
 		
@@ -75,7 +75,7 @@ public class RefreshFactoryCommand implements Command {
 		
 		int playerRP = player.getReward();
 		if (playerRP < rpCost){
-			CampaignMain.cm.toUser(rpCost + " reward points required to refresh "+ uf.getName()+ ". You only have " + playerRP + ".",Username,true);
+			CampaignMain.cm.toUser(rpCost + " " + CampaignMain.cm.getConfig("RPLongName") + " required to refresh "+ uf.getName()+ ". You only have " + playerRP + ".",Username,true);
 			return;
 		}
 		
@@ -85,7 +85,7 @@ public class RefreshFactoryCommand implements Command {
 		
 		CampaignMain.cm.doSendToAllOnlinePlayers(player.getMyHouse(), "HS|" + refresh, false);
 
-		CampaignMain.cm.toUser("AM:You refreshed "+ uf.getName()+" on planet "+p.getName()+" (-"+rpCost+" RP).",Username,true);
+		CampaignMain.cm.toUser("AM:You refreshed "+ uf.getName()+" on planet "+p.getName()+" (-"+rpCost+" " + CampaignMain.cm.getConfig("RPShortName") + ").",Username,true);
 		CampaignMain.cm.doSendHouseMail(player.getMyHouse(), "NOTE",player.getName()+" refreshed "+ uf.getName()+" on planet "+p.getName());
 	}
 }

@@ -162,9 +162,9 @@ public class OpsChickenThread extends Thread {
 
         if (totalRPLoss > 0) {
             if (!hasLoss)
-                toPlayer += " (-" + totalRPLoss + " RP";
+                toPlayer += " (-" + totalRPLoss + " " + CampaignMain.cm.getConfig("RPShortName");
             else
-                toPlayer += ", -" + totalRPLoss + " RP";
+                toPlayer += ", -" + totalRPLoss + " " + CampaignMain.cm.getConfig("RPShortName");
             pdefender.addReward(-totalRPLoss);
             hasLoss = true;
         }

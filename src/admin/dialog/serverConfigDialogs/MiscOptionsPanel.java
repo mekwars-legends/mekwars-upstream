@@ -111,6 +111,12 @@ public class MiscOptionsPanel extends JPanel {
         baseTextField.setToolTipText("<html>short name you want displayed for your servers influence<br>i.e. flu for influence</html>");
         baseTextField.setName("FluShortName");
         miscSpring1.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        miscSpring1.add(new JLabel("RP Short Name:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("<html>short name you want displayed for your server's RP</html>");
+        baseTextField.setName("RPShortName");
+        miscSpring1.add(baseTextField);
 
         SpringLayoutHelper.setupSpringGrid(miscSpring1, 2);
 
@@ -155,6 +161,12 @@ public class MiscOptionsPanel extends JPanel {
         miscSpring2.add(new JLabel("Flu Long Name:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("Name of your servers influence");
         baseTextField.setName("FluLongName");
+        miscSpring2.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
+        miscSpring2.add(new JLabel("RP Long Name:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Name of your server's RP");
+        baseTextField.setName("RPLongName");
         miscSpring2.add(baseTextField);
 
         baseTextField = new JTextField(5);

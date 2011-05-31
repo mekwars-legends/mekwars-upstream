@@ -68,7 +68,7 @@ public class CheckCommand implements Command {
 		toMod += "He has " + CampaignMain.cm.moneyOrFluMessage(true,true, p.getMoney())+", ";
 		toMod += p.getExperience() + " EXP, ";
 		toMod += CampaignMain.cm.moneyOrFluMessage(false,true, p.getInfluence()) + " and ";
-		toMod += p.getReward() + " RPs.<br>";
+		toMod += p.getReward() + " " + CampaignMain.cm.getConfig("RPShortName") + "s.<br>";
 		toMod += " - Client version is " + p.getPlayerClientVersion() + ".<br>";
 		toMod += " - IP addess is " + CampaignMain.cm.getServer().getIP(p.getName()) + ".<br>";
 		toMod += " - Userlevel is " + CampaignMain.cm.getServer().getUserLevel(p.getName()) + ".";

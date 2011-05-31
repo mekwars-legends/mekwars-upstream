@@ -128,7 +128,7 @@ public class StaffUserlistPopupMenu extends JMenu implements ActionListener {
         item.addActionListener(this);
         if (userLevel >= mwclient.getData().getAccessLevel("GrantMoney"))
             grantMenu.add(item);
-        item = new JMenuItem("Reward Points");
+        item = new JMenuItem(client.getserverConfigs("RPLongName"));
         item.setActionCommand("GRP|" + userName);
         item.addActionListener(this);
         if (userLevel >= mwclient.getData().getAccessLevel("GrantReward"))

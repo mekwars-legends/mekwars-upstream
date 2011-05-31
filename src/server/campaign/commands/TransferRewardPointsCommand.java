@@ -54,7 +54,7 @@ public class TransferRewardPointsCommand implements Command {
 		}
 		
 		if (player.getMyHouse().isNewbieHouse()) {
-			CampaignMain.cm.toUser("AM:You may not transfer reward points while in a training faction.",Username,true);
+			CampaignMain.cm.toUser("AM:You may not transfer " + CampaignMain.cm.getConfig("RPLongName") + " while in a training faction.",Username,true);
 			return;
 		}
 		
@@ -77,20 +77,20 @@ public class TransferRewardPointsCommand implements Command {
 		
 		//no negative amounts
 		if (amount < 1) {
-			CampaignMain.cm.toUser("AM:You must transfer at least 1 reward point.",Username,true);
+			CampaignMain.cm.toUser("AM:You must transfer at least 1 " + CampaignMain.cm.getConfig("RPLongName") + ".",Username,true);
 			return;
 		}
 		
 		// check for same-ip interaction
 		boolean ipcheck = Boolean.parseBoolean(house.getConfig("IPCheck"));
 		if (ipcheck && CampaignMain.cm.getServer().getIP(player.getName()).toString().equals(CampaignMain.cm.getServer().getIP(targetplayer.getName()).toString())) {
-			CampaignMain.cm.toUser("AM:"+targetplayer.getName() + " has the same IP as you do. You can't send them reward points.", Username, true);
+			CampaignMain.cm.toUser("AM:"+targetplayer.getName() + " has the same IP as you do. You can't send them " + CampaignMain.cm.getConfig("RPLongName") + ".", Username, true);
 			return;
 		}
 		
 		// if the player is neither in the faction of the target, nor fighting for that faction
 		if (!targetplayer.getHouseFightingFor().equals(player.getMyHouse()) && !targetplayer.getMyHouse().equals(player.getMyHouse())) {
-			CampaignMain.cm.toUser("AM:"+targetplayer.getName() + " is not from your faction! You can't send them reward points", Username, true);
+			CampaignMain.cm.toUser("AM:"+targetplayer.getName() + " is not from your faction! You can't send them " + CampaignMain.cm.getConfig("RPLongName") + ".", Username, true);
 			return;
 		}
 
@@ -103,8 +103,8 @@ public class TransferRewardPointsCommand implements Command {
 		//do the transfer
 		player.addReward(-amount);
 		targetplayer.addReward(amount);
-		CampaignMain.cm.toUser("AM:You've transferred " + amount + " reward points to " + targetplayer.getName(), Username, true);
-		CampaignMain.cm.toUser("AM:"+player.getName() + " sends you " + amount + "reward points.", targetPlayer, true);
+		CampaignMain.cm.toUser("AM:You've transferred " + amount + " " + CampaignMain.cm.getConfig("RPLongName") + " to " + targetplayer.getName(), Username, true);
+		CampaignMain.cm.toUser("AM:"+player.getName() + " sends you " + amount + " " + CampaignMain.cm.getConfig("RPLongName") + ".", targetPlayer, true);
 
 	}
 }

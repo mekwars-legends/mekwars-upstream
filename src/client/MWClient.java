@@ -179,7 +179,7 @@ public final class MWClient implements IClient, GameListener {
 
     CConfig Config;
 
-    public static final String CLIENT_VERSION = "0.3.3.1"; // change this with
+    public static final String CLIENT_VERSION = "0.3.3.2"; // change this with
     // all client
     // changes @Torren
 
@@ -3176,6 +3176,8 @@ public final class MWClient implements IClient, GameListener {
         String moneyLong = getserverConfigs("MoneyLongName");
         String fluShort = getserverConfigs("FluShortName");
         String fluLong = getserverConfigs("FluLongName");
+        String RPLong = getserverConfigs("RPLongName");
+        String RPShort = getserverConfigs("RPShortName");
 
         String sign = "+";
 

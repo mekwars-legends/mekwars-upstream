@@ -394,7 +394,7 @@ public class OperationManager {
 		}
 		if (rp > 0) {
 			ap.addReward(-rp);
-			toSend += ", -" + rp + " RP";
+			toSend += ", -" + rp + " " + CampaignMain.cm.getConfig("RPShortName");
 		}
 		toSend += ").";
 		
@@ -502,9 +502,9 @@ public class OperationManager {
 			if (attrp > 0) {
 				currP.addReward(attrp);
 				if (!didReturn) 
-					toPlayer += " (+" + attrp + " RP";
+					toPlayer += " (+" + attrp + " " + CampaignMain.cm.getConfig("RPShortName");
 				else 
-					toPlayer += ", +" + attrp + " RP";
+					toPlayer += ", +" + attrp + " " + CampaignMain.cm.getConfig("RPShortName");
 					didReturn = true;
 			}
 			if (didReturn)
@@ -537,11 +537,11 @@ public class OperationManager {
 			if (defrp > 0) {
 				currP.addReward(defrp);
 				if (!didReturn) {
-					toPlayer += "(+" + defrp + " RP";
+					toPlayer += "(+" + defrp + " " + CampaignMain.cm.getConfig("RPShortName");
 					didReturn = true;
 				}
 				else {
-					toPlayer += ", +" + defrp + " RP";
+					toPlayer += ", +" + defrp + " " + CampaignMain.cm.getConfig("RPShortName");
 					didReturn = true;
 				}
 			}

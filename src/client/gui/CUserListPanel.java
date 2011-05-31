@@ -399,7 +399,7 @@ public class CUserListPanel extends JPanel implements ActionListener{
 							item.addActionListener(this);
 							sendMen.add(item);
 							
-							item = new JMenuItem("Send Reward Points");
+							item = new JMenuItem("Send " + mwclient.getserverConfigs("RPLongName"));
 							item.setActionCommand("MR|"+userName);
 							item.addActionListener(this);
 							sendMen.add(item);

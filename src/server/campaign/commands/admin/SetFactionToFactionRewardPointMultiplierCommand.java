@@ -59,8 +59,8 @@ public class SetFactionToFactionRewardPointMultiplierCommand implements Command 
 		
 		CampaignMain.cm.getConfig().setProperty(rewardMultiplier,Double.toString(multiplier));
 
-		CampaignMain.cm.toUser("You set the reward point multipler for "+faction1.getName()+" to "+faction2.getName()+" to "+multiplier,Username,true);
-		CampaignMain.cm.doSendModMail("NOTE",Username + " has set reward point multipler for "+faction1.getName()+" to "+faction2.getName()+" to "+multiplier);
+		CampaignMain.cm.toUser("You set the " + CampaignMain.cm.getConfig("RPShortName") + " multipler for "+faction1.getName()+" to "+faction2.getName()+" to "+multiplier,Username,true);
+		CampaignMain.cm.doSendModMail("NOTE",Username + " has set " + CampaignMain.cm.getConfig("RPShortName") + " multipler for "+faction1.getName()+" to "+faction2.getName()+" to "+multiplier);
 
 	}
 }

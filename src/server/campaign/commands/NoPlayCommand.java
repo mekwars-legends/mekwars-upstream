@@ -139,7 +139,7 @@ public class NoPlayCommand implements Command {
         costBlock += " cost ";
 
         if (removeRPCost > 0) {
-            shortCost += removeRPCost + " RP";
+            shortCost += removeRPCost + " " + CampaignMain.cm.getConfig("RPShortName");
 
             if (totalVarsWithCost == 3) {
                 shortCost += ", ";

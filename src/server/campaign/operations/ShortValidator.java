@@ -1873,7 +1873,7 @@ public class ShortValidator {
             return " you do not have enough " + CampaignMain.cm.getConfig("FluLongName") + " for this type of attack";
 
         case SFAIL_ATTACK_REWARD:// "AttackerCostReward", cost prop
-            return " you do not have enough RP for this type of attack";
+            return " you do not have enough " + CampaignMain.cm.getConfig("RPShortName") + " for this type of attack";
 
         case SFAIL_ATTACK_MAXRATING:// "MaxAttackerRating", milestone prop
             return " your rating is too high for this type of attack";
@@ -2093,7 +2093,7 @@ public class ShortValidator {
             return " you do not have enough influence for this type of defense";
 
         case SFAIL_DEFEND_REWARD:// "AttackerCostReward", cost prop
-            return " you do not have enough RP for this type of defense";
+            return " you do not have enough " + CampaignMain.cm.getConfig("RPShortName") + " for this type of defense";
 
         case SFAIL_DEFEND_MAXRATING:// "MaxAttackerRating", milestone prop
             return " your rating is too high for this type of defense";

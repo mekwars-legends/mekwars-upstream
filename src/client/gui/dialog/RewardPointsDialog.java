@@ -67,7 +67,7 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
 
 	//private final static String amountCommand = "Amount";
 	
-	private final static String windowName = "Reward Points";
+	private static String windowName = "Reward Points";
 	
 	
 	//BUTTONS
@@ -100,7 +100,7 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
     private final JComboBox techComboBox = new JComboBox(techChoices);
 	
 	private final JTextField amountText = new JTextField(5);
-	private final JLabel amountLabel = new JLabel("RP to use:",SwingConstants.TRAILING);
+	private JLabel amountLabel;
 	int cost = 0;
 	
 	//STOCK DIALOUG AND PANE
@@ -113,7 +113,8 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
 		
 		//save the client
 		this.mwclient = c;
-		
+		windowName = mwclient.getserverConfigs("RPLongName");
+		amountLabel = new JLabel(mwclient.getserverConfigs("RPShortName") + " to use:",SwingConstants.TRAILING);
 		//COMBO BOXES
 		TreeSet<String> names = new TreeSet<String>();
 		names.add("Common"); //start with the common faction
@@ -285,7 +286,7 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
         }
 
         comboPanel.add(repairLabel);
-        repairComboBox.setToolTipText("Repair Unit with RPs");
+        repairComboBox.setToolTipText("Repair Unit with " + mwclient.getserverConfigs("RPShortName") + "s");
         comboPanel.add(repairComboBox);
         
 		comboPanel.add(amountLabel);
@@ -357,11 +358,11 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
 		        cost = Integer.parseInt(mwclient.getserverConfigs("GlobalRepodWithRPCost"));
 		        if ( ((String)repodComboBox.getSelectedItem()).equals("Random") )
 		            cost /= 2;
-				costLabel.setText("RP Required: "+cost+" RP");
+				costLabel.setText(mwclient.getserverConfigs("RPLongName") + " Required: "+cost+" " + mwclient.getserverConfigs("RPShortName"));
 		    }
 		    else if ( selection.equals(refreshCommand) ){
 		        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointToRefreshFactory"));
-		        costLabel.setText("RP Required: "+cost+" RP");
+		        costLabel.setText(mwclient.getserverConfigs("RPShortName") + " Required: "+cost+" " + mwclient.getserverConfigs("RPShortName"));
 		        dialog.repaint();
 		    }
 		    else{
@@ -435,7 +436,7 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
                 }
 
 				cost = getUnitRPCost();
-				costLabel.setText("RP Required: "+cost+" RP");
+				costLabel.setText(mwclient.getserverConfigs("RPShortName") + " Required: "+cost+" " + mwclient.getserverConfigs("RPShortName"));
 		    }
 		    else if (selection.equals("Techs")){
                 makeVisible(false,false,false);
@@ -443,7 +444,7 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
 
                     int type = techComboBox.getSelectedIndex();
                     int total = Integer.parseInt(mwclient.getserverConfigs("RewardPointsFor"+UnitUtils.techDescription(type)));
-                    costLabel.setText("Hire 1 "+UnitUtils.techDescription(type)+" tech for "+total+"rp");
+                    costLabel.setText("Hire 1 "+UnitUtils.techDescription(type)+" tech for "+total+" " + mwclient.getserverConfigs("RPShortName"));
                     techComboBox.setVisible(true);
                     techComboLabel.setVisible(true);
                     
@@ -463,14 +464,14 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
 		        cost = Integer.parseInt(mwclient.getserverConfigs("GlobalRepodWithRPCost"));
 		        if ( ((String)repodComboBox.getSelectedItem()).equals("Random") )
 		            cost /= 2;
-				costLabel.setText("RP Required: "+cost+" RP");
+				costLabel.setText(mwclient.getserverConfigs("RPShortName") + " Required: "+cost+" " + mwclient.getserverConfigs("RPShortName"));
 				makeVisible(false,true,false);
 		    }
 		    else if ( selection.equals(refreshCommand) ){
 		        if ( refreshComboBox.getItemCount() >= 1)
 		           refreshComboBox.setSelectedIndex(0);
 		        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointToRefreshFactory"));
-		        costLabel.setText("RP Required: "+cost+" RP");
+		        costLabel.setText(mwclient.getserverConfigs("RPShortName") + " Required: "+cost+" " + mwclient.getserverConfigs("RPShortName"));
 		        makeVisible(false,false,true);
 		    }
             else if (selection.equals(repairCommand)){
@@ -497,20 +498,20 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
 	        cost = Integer.parseInt(mwclient.getserverConfigs("GlobalRepodWithRPCost"));
 	        if ( ((String)repodComboBox.getSelectedItem()).equals("Random") )
 	            cost /= 2;
-			costLabel.setText("RP Required: "+cost+" RP");
+			costLabel.setText(mwclient.getserverConfigs("RPShortName") + " Required: "+cost+" " + mwclient.getserverConfigs("RPShortName"));
 		}
 		else if (command.equals(weightCommand) 
 		        || command.equals(unitCommand)
 		        || command.equals(factionCommand)){
 			cost = getUnitRPCost();
-			costLabel.setText("RP Required: "+cost+" RP");
+			costLabel.setText(mwclient.getserverConfigs("RPShortName") + " Required: "+cost+" " + mwclient.getserverConfigs("RPShortName"));
 		}
         else if (command.equals(techComboCommand)){
             makeVisible(false,false,false);
 
             int type = techComboBox.getSelectedIndex();
             int total = Integer.parseInt(mwclient.getserverConfigs("RewardPointsFor"+UnitUtils.techDescription(type)));
-            costLabel.setText("Hire 1 "+UnitUtils.techDescription(type)+" tech for "+total+"rp");
+            costLabel.setText("Hire 1 "+UnitUtils.techDescription(type)+" tech for "+total+" " + mwclient.getserverConfigs("RPShortName"));
             techComboBox.setVisible(true);
             techComboLabel.setVisible(true);
             

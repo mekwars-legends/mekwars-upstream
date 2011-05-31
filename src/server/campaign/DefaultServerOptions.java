@@ -740,6 +740,8 @@ public class DefaultServerOptions {
         defaults.setProperty("MoneyShortName", "CB");
         defaults.setProperty("FluLongName", "Influence");
         defaults.setProperty("FluShortName", "flu");
+        defaults.setProperty("RPLongName", "Reward Points");
+        defaults.setProperty("RPShortName", "RP");
 
         // Techs per Units exculding Protos
         defaults.setProperty("TechsForLightMek", "3");

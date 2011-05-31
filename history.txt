@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
+R Released Server v0.3.3.15
+R Released Client v0.3.3.2
++ RFE 3210867: Renamable Reward Points
 R Released Server v0.3.3.14
 + RFE 3305669 - Captured Factories do not auto produce
   New config setting (in autoproduction panel) to allow for captured

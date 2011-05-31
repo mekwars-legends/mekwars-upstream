@@ -370,7 +370,7 @@ public class DefectCommand implements Command {
                     penString += ", ";
 
                 if (rwdLoss > 0) {
-                    penString += rwdLoss + " Reward Points";
+                    penString += rwdLoss + " " + CampaignMain.cm.getConfig("RPLongName");
                     varsAddedToString++;
                 }
 

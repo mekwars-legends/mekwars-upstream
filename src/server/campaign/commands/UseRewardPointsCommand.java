@@ -92,21 +92,21 @@ public class UseRewardPointsCommand implements Command {
 			rewardPoints = Integer.parseInt(command.nextToken());
 			
 			if (rewardPoints < 0) {
-				CampaignMain.cm.toUser("AM:Invalid input - negative reward points.",Username,true);
+				CampaignMain.cm.toUser("AM:Invalid input - negative " + CampaignMain.cm.getConfig("RPLongName") + ".",Username,true);
 				return;
 			}
 			
 			if ( !(new Boolean(house.getConfig("AllowTechsForRewards")).booleanValue()) ){
-				CampaignMain.cm.toUser("AM:Sorry but you are not allowed to buy techs with reward points.",Username,true);
+				CampaignMain.cm.toUser("AM:Sorry but you are not allowed to buy techs with " + CampaignMain.cm.getConfig("RPLongName") + ".",Username,true);
 				return;
 			}
 			
 			if ( rewardPoints > player.getReward() )
 			{
 				if ( player.getReward() == 1)
-					CampaignMain.cm.toUser("AM:You only have 1 reward point. Try again later.",Username,true);
+					CampaignMain.cm.toUser("AM:You only have 1 " + CampaignMain.cm.getConfig("RPShortName") + ". Try again later.",Username,true);
 				else
-					CampaignMain.cm.toUser("AM:You only have " + player.getReward() + " reward points. Try again later.",Username,true);
+					CampaignMain.cm.toUser("AM:You only have " + player.getReward() + " " + CampaignMain.cm.getConfig("RPShortName") + " . Try again later.",Username,true);
 				return; 
 			}
             if ( CampaignMain.cm.isUsingAdvanceRepair() ){
@@ -114,7 +114,7 @@ public class UseRewardPointsCommand implements Command {
                 int techCost = Integer.parseInt(house.getConfig("RewardPointsFor"+UnitUtils.techDescription(typeOfTechToBuy)));
                 
                 if ( player.getReward() < techCost ){
-                    CampaignMain.cm.toUser("AM:You do not have enough reward points to buy this tech. You need "+techCost,Username,true);
+                    CampaignMain.cm.toUser("AM:You do not have enough " + CampaignMain.cm.getConfig("RPLongName") + " to buy this tech. You need "+techCost,Username,true);
                     return;
                 }
                 
@@ -133,7 +133,7 @@ public class UseRewardPointsCommand implements Command {
     				techs ="s";
     			if (rewardPoints > 1)
     				rewards = "s";
-    			CampaignMain.cm.toUser("AM:You hired " + numOfTechBought + " tech" + techs + " for " + rewardPoints + " reward point"+ rewards +".",Username,true);
+    			CampaignMain.cm.toUser("AM:You hired " + numOfTechBought + " tech" + techs + " for " + rewardPoints + " " + CampaignMain.cm.getConfig("RPLongName") + rewards +".",Username,true);
     			player.addReward(-rewardPoints);
     			player.addTechnicians(numOfTechBought);
             }
@@ -143,21 +143,21 @@ public class UseRewardPointsCommand implements Command {
 			rewardPoints = Integer.parseInt(command.nextToken());
 			
 			if (rewardPoints < 0) {
-				CampaignMain.cm.toUser("AM:Invalid input - negative reward points.",Username,true);
+				CampaignMain.cm.toUser("AM:Invalid input - negative " + CampaignMain.cm.getConfig("RPLongName") + ".",Username,true);
 				return;
 			}
 			
 			if ( !(new Boolean(house.getConfig("AllowInfluenceForRewards")).booleanValue())){
-				CampaignMain.cm.toUser("Sorry but you are not allowed to buy influence with reward points.",Username,true);
+				CampaignMain.cm.toUser("Sorry but you are not allowed to buy influence with " + CampaignMain.cm.getConfig("RPLongName") + ".",Username,true);
 				return;
 			}
 			
 			if (rewardPoints > player.getReward()) {
 				
 				if (player.getReward() == 0)
-					CampaignMain.cm.toUser("AM:You don't have any reward points. Purchase fails.",Username,true);
+					CampaignMain.cm.toUser("AM:You don't have any " + CampaignMain.cm.getConfig("RPLongName") + ". Purchase fails.",Username,true);
 				else {
-					String toSend = "AM:You only have " + player.getReward() + "reward point" + StringUtils.addAnS(player.getReward()) + ". Try again.";
+					String toSend = "AM:You only have " + player.getReward() + CampaignMain.cm.getConfig("RPLongName") + StringUtils.addAnS(player.getReward()) + ". Try again.";
 					CampaignMain.cm.toUser(toSend,Username,true);
 				}
 				
@@ -166,7 +166,7 @@ public class UseRewardPointsCommand implements Command {
 			
 			int amountOfInfluenceBought = (Integer.parseInt(house.getConfig("InfluenceForARewardPoint")));
 			amountOfInfluenceBought *= rewardPoints;
-			CampaignMain.cm.toUser("AM:You've bought " + CampaignMain.cm.moneyOrFluMessage(false,true,amountOfInfluenceBought)+" for " + rewardPoints + " reward point" + StringUtils.addAnS(rewardPoints) + ".",Username,true);
+			CampaignMain.cm.toUser("AM:You've bought " + CampaignMain.cm.moneyOrFluMessage(false,true,amountOfInfluenceBought)+" for " + rewardPoints + " "+ CampaignMain.cm.getConfig("RPLongName") + StringUtils.addAnS(rewardPoints) + ".",Username,true);
 			
 			player.addReward(-rewardPoints);
 			player.addInfluence(amountOfInfluenceBought);
@@ -174,7 +174,7 @@ public class UseRewardPointsCommand implements Command {
 		
 		case 2: //buying units
 			if ( !(new Boolean(house.getConfig("AllowUnitsForRewards")).booleanValue())){
-				CampaignMain.cm.toUser("AM:Sorry but you are not allowed to buy units with reward points.",Username,true);
+				CampaignMain.cm.toUser("AM:Sorry but you are not allowed to buy units with " + CampaignMain.cm.getConfig("RPLongName") + ".",Username,true);
 				return;
 			}
 			int rewardPointsAvailable = player.getReward();
@@ -212,7 +212,7 @@ public class UseRewardPointsCommand implements Command {
 				if ( factionstring.equalsIgnoreCase("rare") ) {
 					
 					if ( !(new Boolean(house.getConfig("AllowRareUnitsForRewards")).booleanValue()) ) {
-						CampaignMain.cm.toUser("AM:Sorry. You are not allowed to buy rare units with your reward points.",Username,true);
+						CampaignMain.cm.toUser("AM:Sorry. You are not allowed to buy rare units with your " + CampaignMain.cm.getConfig("RPLongName") + ".",Username,true);
 						return;
 					}
 					
@@ -297,7 +297,7 @@ public class UseRewardPointsCommand implements Command {
 				unitTotalRewardPointCost *= rareCost;
 			
 			if ( unitTotalRewardPointCost > rewardPointsAvailable ){
-				CampaignMain.cm.toUser("AM:Sorry. You need more reward points to buy that kind of unit.",Username,true);
+				CampaignMain.cm.toUser("AM:Sorry. You need more " + CampaignMain.cm.getConfig("RPLongName") + " to buy that kind of unit.",Username,true);
 				return;
 			}    	    
 			
@@ -312,7 +312,7 @@ public class UseRewardPointsCommand implements Command {
 				
 				for ( SUnit newUnit : newUnits ){
 					player.addUnit(newUnit, true);
-					CampaignMain.cm.toUser("AM:You've bought a " + newUnit.getModelName() + " for " +unitTotalRewardPointCost + " reward points.",Username,true);
+					CampaignMain.cm.toUser("AM:You've bought a " + newUnit.getModelName() + " for " +unitTotalRewardPointCost + " " + CampaignMain.cm.getConfig("RPLongName") + ".",Username,true);
 				}
 				player.addReward(-unitTotalRewardPointCost);
 			} catch (Exception ex){
@@ -326,7 +326,7 @@ public class UseRewardPointsCommand implements Command {
             rewardPoints = Integer.parseInt(house.getConfig("RewardPointsForRepair"));
             
             if ( rewardPoints > player.getReward() ){
-                CampaignMain.cm.toUser("AM:You need more reward points to repair this unit (requires " + rewardPoints + " RP)", Username, true);
+                CampaignMain.cm.toUser("AM:You need more " + CampaignMain.cm.getConfig("RPLongName") + " to repair this unit (requires " + rewardPoints + " RP)", Username, true);
                 return;
             }
             
@@ -342,7 +342,7 @@ public class UseRewardPointsCommand implements Command {
             Entity entity = unit.getEntity();
             
             if ( entity.getInternal(Mech.LOC_CT) < 1 ){
-                CampaignMain.cm.toUser("AM:Sorry but cored units cannot be repaired with reward points!", Username);
+                CampaignMain.cm.toUser("AM:Sorry but cored units cannot be repaired with " + CampaignMain.cm.getConfig("RPLongName") + "!", Username);
                 return;
             }
             

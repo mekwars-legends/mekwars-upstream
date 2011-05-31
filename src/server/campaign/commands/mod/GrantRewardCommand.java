@@ -43,15 +43,14 @@ public class GrantRewardCommand implements Command {
 		if (p != null) {
 			p.setReward(p.getReward() + amount);
 			
-			String toRecipient = "AM:"+Username + " granted you " + amount + " Reward Points";
+			String toRecipient = "AM:"+Username + " granted you " + amount + " " + CampaignMain.cm.getConfig("RPLongName");
 			if (amount > 0)
-				toRecipient += " [<a href=\"MWUSERP\">Use RP</a>]";
+				toRecipient += " [<a href=\"MWUSERP\">Use " + CampaignMain.cm.getConfig("RPShortName") + "</a>]";
 			toRecipient += ".";
 			CampaignMain.cm.toUser(toRecipient,p.getName(),true);
 			
-			CampaignMain.cm.toUser("AM:You granted " + amount + " Reward Points to " + p.getName(),Username,true);
-			//server.CampaignData.mwlog.modLog(Username + " granted " + amount + " Reward Points to " + p.getName());
-			CampaignMain.cm.doSendModMail("NOTE",Username + " granted " + amount + " Reward Points to " + p.getName());
+			CampaignMain.cm.toUser("AM:You granted " + amount + " " + CampaignMain.cm.getConfig("RPLongName") + " to " + p.getName(),Username,true);
+			CampaignMain.cm.doSendModMail("NOTE",Username + " granted " + amount + " " + CampaignMain.cm.getConfig("RPLongName") + " to " + p.getName());
 		}
 		
 	}//end process()

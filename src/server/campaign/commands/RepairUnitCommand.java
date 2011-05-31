@@ -99,7 +99,7 @@ public class RepairUnitCommand implements Command {
             }
             
             if ( techType == UnitUtils.TECH_REWARD_POINTS && cost > player.getReward() ){
-                CampaignMain.cm.toUser("FSM|You do not have enough reward points to repair this location.",Username,false);
+                CampaignMain.cm.toUser("FSM|You do not have enough " + CampaignMain.cm.getConfig("RPLongName") + " to repair this location.",Username,false);
                 return;
             }
             

@@ -3377,6 +3377,8 @@ public final class CampaignMain implements Serializable {
         String moneyLong = cm.getConfig("MoneyLongName");
         String fluShort = cm.getConfig("FluShortName").toLowerCase();
         String fluLong = cm.getConfig("FluLongName");
+        String RPShort = cm.getConfig("RPShortName");
+        String RPLong = cm.getConfig("RPLongName");
 
         String sign = "+";
 

@@ -469,7 +469,7 @@ public class RepodCommand implements Command {
             }// - end Repod costing
         } else {
             if (p.getReward() < rpCost) {
-                CampaignMain.cm.toUser("AM:You do not have enough reward points to repod this unit!", Username, true);
+                CampaignMain.cm.toUser("AM:You do not have enough " + CampaignMain.cm.getConfig("RPLongName") + " to repod this unit!", Username, true);
                 return;
             }
             p.addReward(-rpCost);
@@ -509,7 +509,7 @@ public class RepodCommand implements Command {
                 CampaignMain.cm.toUser("AM:Repodding cost " + CampaignMain.cm.moneyOrFluMessage(true, false, moneyCost) + " and " + CampaignMain.cm.moneyOrFluMessage(false, true, influenceCost) + ".", Username, true);
             }
         } else {
-            CampaignMain.cm.toUser("AM:Repodding cost " + rpCost + " reward points.", Username, true);
+            CampaignMain.cm.toUser("AM:Repodding cost " + rpCost + " " + CampaignMain.cm.getConfig("RPLongName") + ".", Username, true);
         }
 
         return;// break out of it all

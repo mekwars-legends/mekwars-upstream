@@ -216,7 +216,7 @@ public class AcceptAttackFromReserveCommand implements Command {
 				toSend += ", ";
 			else
 				toSend += "(";
-			toSend += "-" + rp + " RP";
+			toSend += "-" + rp + " " + CampaignMain.cm.getConfig("RPShortName");
 			hasCost = true;
 		}
 		

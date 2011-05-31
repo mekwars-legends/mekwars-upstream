@@ -768,7 +768,7 @@ public class CMainFrame extends JFrame {
             }
         });
 
-        jMenuCampaignRewardPoints.setText("Use Reward Points");
+        jMenuCampaignRewardPoints.setText("Use " + mwclient.getserverConfigs("RPLongName"));
         jMenuCampaignRewardPoints.setMnemonic('P');
         jMenuCampaignRewardPoints.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -1479,7 +1479,7 @@ public class CMainFrame extends JFrame {
     	if (targetPlayer == null)
     		return;
 
-    	Amount = JOptionPane.showInputDialog(getContentPane(), "Amount", "Send Reward Points to " + targetPlayer, JOptionPane.PLAIN_MESSAGE);
+    	Amount = JOptionPane.showInputDialog(getContentPane(), "Amount", "Send " + mwclient.getserverConfigs("RPShortName") + " to " + targetPlayer, JOptionPane.PLAIN_MESSAGE);
 
     	if (Amount == null)
     		return;

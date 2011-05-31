@@ -59,7 +59,7 @@ public class CPlayerPanel extends JScrollPane {
     private static final String PP_STATUS = "Status:";
     private static final String PP_EXP = "Experience:";
     private static final String PP_ELO = "Rating:";
-    private static final String PP_REWARD = "Reward Points:";    
+    private static String PP_REWARD;    
     private static final String PP_TECHS = "Techs:";
     private static final String PP_PAIDTECHS = "Paid Techs:";
     private static final String PP_BAYS = "Bays:";
@@ -82,7 +82,9 @@ public class CPlayerPanel extends JScrollPane {
     
     public CPlayerPanel(MWClient client)
     {
-        Insets insets = new Insets(0, 0, 0, 0);
+        PP_REWARD = client.getserverConfigs("RPLongName") + ":";
+    	
+    	Insets insets = new Insets(0, 0, 0, 0);
         //int west = GridBagConstraints.WEST;
         int center = GridBagConstraints.CENTER;
         int none = GridBagConstraints.NONE;
