@@ -251,7 +251,7 @@ public class RequestCommand implements Command {
          * we should return a failure.
          */
         else {
-            factory = p.getMyHouse().getNativeFactoryForProduction(type_id, weightclass);
+            factory = p.getMyHouse().getNativeFactoryForProduction(type_id, weightclass, true);
             if (factory != null) {
                 planet = factory.getPlanet();
             }

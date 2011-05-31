@@ -1,6 +1,10 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
+R Released Server v0.3.3.14
++ RFE 3305669 - Captured Factories do not auto produce
+  New config setting (in autoproduction panel) to allow for captured
+  factories to join in autoproduction
 R Released Server v0.3.3.13
 + Added HTML Sanitizer for MOTDs.  This fixes issue of the
   players' ability to embed commands in MOTDs.  

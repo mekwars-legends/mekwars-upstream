@@ -304,6 +304,7 @@ public class DefaultServerOptions {
         defaults.setProperty("UseAutoProdClassic", "true");
         defaults.setProperty("UseAutoProdNew", "false");
         defaults.setProperty("ScrapOldestUnitsFirst", "false");
+        defaults.setProperty("OnlyUseOriginalFactoriesForAutoprod", "true");  // Setting this to false will allow autoprod from captured factories.
         
         defaults.setProperty("APAtMaxLightMek", "30");
         defaults.setProperty("APAtMaxMediumMek", "20");

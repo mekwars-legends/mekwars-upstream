@@ -1590,7 +1590,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
                     // see if we should have an accident
                     boolean accident = false;
-                    SUnitFactory m = getNativeFactoryForProduction(type_id, weight);
+                    SUnitFactory m = getNativeFactoryForProduction(type_id, weight, CampaignMain.cm.getBooleanConfig("OnlyUseOriginalFactoriesForAutoprod"));
                     int failureRateToUse;
                     if(Boolean.parseBoolean(this.getConfig("UseAutoProdClassic"))) {
                     	failureRateToUse = Integer.parseInt(this.getConfig("AutoProductionFailureRate"));
@@ -1862,7 +1862,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
      * build randomly on ticks or pursuant to a general purchase request are
      * from the faction's own tables.
      */
-    public SUnitFactory getNativeFactoryForProduction(int type, int weight) {
+    public SUnitFactory getNativeFactoryForProduction(int type, int weight, boolean useOnlyOriginalFactories) {
 
         // get all possible @ weight and type and return if none exist
         Vector<SUnitFactory> allPossible = getPossibleFactoryForProduction(type, weight, false);
@@ -1873,7 +1873,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         // sort out non-faction factories and return if none exist
         Vector<SUnitFactory> factionPossible = new Vector<SUnitFactory>(1, 1);
         for (SUnitFactory currFac : allPossible) {
-            if (currFac.getFounder().equalsIgnoreCase(getName())) {
+            if (!useOnlyOriginalFactories || currFac.getFounder().equalsIgnoreCase(getName())) {
                 factionPossible.add(currFac);
             }
         }

@@ -180,17 +180,23 @@ public class AutoProdPanel extends JPanel {
         JPanel apBottomPanel = new JPanel();
         apBottomPanel.add(apNewPanel);
         
-        JPanel scrapPanel = new JPanel();
-        scrapPanel.setBorder(BorderFactory.createEtchedBorder());
-        scrapPanel.add(new JLabel("Scrap Oldest Units First:", SwingConstants.TRAILING));
+        JPanel checkBoxPanel = new JPanel();
+        checkBoxPanel.setBorder(BorderFactory.createEtchedBorder());
+        checkBoxPanel.add(new JLabel("Scrap Oldest Units First:", SwingConstants.TRAILING));
         BaseCheckBox = new JCheckBox();
         BaseCheckBox.setName("ScrapOldestUnitsFirst");
         BaseCheckBox.setToolTipText("<html>If checked, bay units will be scrapped/sold in order of unitID<br>If not checked, the unit chosen will be random.</html>");
-        scrapPanel.add(BaseCheckBox);
+        checkBoxPanel.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox();
+        BaseCheckBox.setName("OnlyUseOriginalFactoriesForAutoprod");
+        BaseCheckBox.setToolTipText("<html>If checked, autoproduction will only happen from originally-owned factories.");
+        checkBoxPanel.add(new JLabel("Restrict Autoproduction to Faction-original factories"));
+        checkBoxPanel.add(BaseCheckBox);
         
         add(apTopPanel);
         add(apMiddlePanel);
         add(apBottomPanel);
-        add(scrapPanel);
+        add(checkBoxPanel);
 	}
 }
