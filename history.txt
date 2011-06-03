@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
+R Released Server v0.3.3.17
++ Bug: When using real costs, decimal value will be needed for pay-per-BV
 R Released Server v0.3.3.16
 + Bug 3286761: Real Costs & Bugs
 R Released Server v0.3.3.15

@@ -726,12 +726,12 @@ public class ShortResolver {
         int baseDefenderRewardPointsPay = o.getIntValue("RPForDefender");
 
         // adjust the base values for total BV, if configured to do so.
-        int attackerTotalBVMoneyAdjustment = o.getIntValue("AttackerPayBVforCBill");
+        float attackerTotalBVMoneyAdjustment = o.getFloatValue("AttackerPayBVforCBill");
         if (attackerTotalBVMoneyAdjustment > 0) {
             baseAttackerMoneyPay += Math.floor(so.getStartingBV() / attackerTotalBVMoneyAdjustment);
         }
 
-        int defenderTotalBVMoneyAdjustment = o.getIntValue("DefenderPayBVforCBill");
+        float defenderTotalBVMoneyAdjustment = o.getFloatValue("DefenderPayBVforCBill");
         if (defenderTotalBVMoneyAdjustment > 0) {
             baseDefenderMoneyPay += Math.floor(so.getStartingBV() / defenderTotalBVMoneyAdjustment);
         }
