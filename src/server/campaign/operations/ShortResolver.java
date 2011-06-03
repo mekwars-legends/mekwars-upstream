@@ -4129,8 +4129,13 @@ public class ShortResolver {
         float compensation = CampaignMain.cm.getFloatConfig("BaseUnitLossPayment");
 
         // store the cost of a similar unit from the faction
-        int newPrice = p.getHouseFightingFor().getPriceForUnit(u.getWeightclass(), u.getType());
-
+        boolean calcCosts = p.getHouseFightingFor().getBooleanConfig("UseCalculatedCosts");
+        double newPrice;
+        if (calcCosts) {
+        	newPrice = u.getEntity().getCost(false);
+        } else {
+        	newPrice = p.getHouseFightingFor().getPriceForUnit(u.getWeightclass(), u.getType());
+        }
         // add a multiple of a similar new unit's cost from the player's faction
         compensation += newPrice * CampaignMain.cm.getFloatConfig("NewCostMultiUnitLossPayment");
 
@@ -4166,7 +4171,7 @@ public class ShortResolver {
 
         // check the compensation caps. 1st check reduces compensation to a
         // portion of a new unit's cost.
-        float newMultiMax = newPrice * CampaignMain.cm.getFloatConfig("NewCostMultiMaxUnitLossPayment");
+        float newMultiMax = ((int)newPrice) * CampaignMain.cm.getFloatConfig("NewCostMultiMaxUnitLossPayment");
         if ((newMultiMax > 0) && (compensation > newMultiMax)) {
             compensation = newMultiMax;
         }
