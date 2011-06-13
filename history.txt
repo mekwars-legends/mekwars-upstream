@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
+R Released Server v0.3.3.18
++ Bug: 3315836 - Firing/Donating apilot generates an error
 R Released Server v0.3.3.17
 + Bug: When using real costs, decimal value will be needed for pay-per-BV
 R Released Server v0.3.3.16

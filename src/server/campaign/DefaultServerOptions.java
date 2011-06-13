@@ -111,6 +111,8 @@ public class DefaultServerOptions {
         // "DonatingCostsBills",
         // 11.12.06
         // @urgru
+        defaults.setProperty("DonatingCostsBills", "false");
+        
         defaults.setProperty("UsedPurchaseCostMulti", ".50");// @urgru
         // 11.12.06
         defaults.setProperty("SelectableSalvage", "true");
