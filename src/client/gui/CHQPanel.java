@@ -3001,6 +3001,10 @@ public class CHQPanel extends JPanel {
                     if (useOpRule && army.getOpForceSize() < army.getUnits().size() && army.getOpForceSize() > 0 && army.getOpForceSize() > 0) {
                         toReturn += "Force Size: " + army.getOpForceSize() + "<br>";
                     }
+                    
+                    // Put in the tonnage info
+                    toReturn += "Tons: " + (int)army.getTotalTonnage() + "<br>";
+                    //toReturn += army.getSkillInfoForDisplay();
                     toReturn += "</HTML>";
                     return toReturn;
                 }
@@ -3096,6 +3100,7 @@ public class CHQPanel extends JPanel {
                 if (l != null) {
                     if (column == 0) {
                         setImageVisible(false);
+                        setToolTipText(l.getSkillInfoForDisplay());
                         if (l.isLocked()) {
                             c.setBackground(new Color(235, 225, 5));
                         }

@@ -303,5 +303,49 @@ public class CArmy extends Army {
 
         return walk;
     }
+    
+    public String getSkillInfoForDisplay() {
+    	if (this.getUnits().size() < 1) {
+    		return " ";
+    	}
+    	
+    	double avgSkills = 0.0;
+    	double avgGunnery = 0.0;
+    	double avgPiloting = 0.0;
+    	int maxSkill = 0;
+    	int maxGunnery = 0;
+    	int maxPiloting = 0;
+    	int minSkill = 99;
+    	int minGunnery = 99;
+    	int minPiloting = 99;
+    	int numunits = 0;
+    	int totalGunnery = 0;
+    	int totalPiloting = 0;
+    	StringBuilder toReturn = new StringBuilder();
+    	for (Unit un : this.getUnits()) {
+    		CUnit unit = (CUnit) un;
+    		int gunnery = unit.getPilot().getGunnery();
+    		int piloting = unit.getPilot().getPiloting();
+    		maxSkill = Math.max(maxSkill, (gunnery + piloting));
+    		maxGunnery = Math.max(maxGunnery, gunnery);
+    		maxPiloting = Math.max(maxPiloting, piloting);
+    		minSkill = Math.min(minSkill, (gunnery + piloting));
+    		minGunnery = Math.min(minGunnery, gunnery);
+    		minPiloting = Math.min(minPiloting, piloting);
+    		totalGunnery += gunnery;
+    		totalPiloting += piloting;
+    		numunits++;
+    	}
+    	avgSkills = (totalGunnery + totalPiloting) / numunits;
+    	avgGunnery = totalGunnery / numunits;
+    	avgPiloting = totalPiloting / numunits;
+    	toReturn.append("<html><table><tr><td colspan=4>Skillsums</td></tr>");
+    	toReturn.append("<tr><td>&nbsp;</td><td>Total</td><td>Gunnery</td><td>Piloting</td></tr>");
+    	toReturn.append("<tr><td>Average:</td><td>" + avgSkills + "</td><td>" + avgGunnery + "</td><td>" + avgPiloting + "</td></tr>");
+    	toReturn.append("<tr><td>Maximum:</td><td>" + maxSkill + "</td><td>" + maxGunnery + "</td><td>" + maxPiloting + "</td></tr>");
+    	toReturn.append("<tr><td>Minimum:</td><td>" + minSkill + "</td><td>" + minGunnery + "</td><td>" + minPiloting + "</td></tr>");
+    	toReturn.append("</table></html>");
+    	return toReturn.toString();
+    }
 
 }

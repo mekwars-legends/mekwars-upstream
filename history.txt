@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
+R Released Client v0.3.3.3
++ RFE 3308955: showing additional info per army
 R Released Server v0.3.3.18
 + Bug: 3315836 - Firing/Donating apilot generates an error
 R Released Server v0.3.3.17
