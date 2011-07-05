@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
++ Bug: Carriage Returns causing problems in House saves
 R Released Client v0.3.3.3
 + RFE 3308955: showing additional info per army
 R Released Server v0.3.3.18

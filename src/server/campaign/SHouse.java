@@ -286,7 +286,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         if (getMotd().equals("")) {
             result.append(" ");
         } else {
-            result.append(getMotd());
+            result.append(stripReturns(getMotd()));
         }
 
         result.append("|");
@@ -366,7 +366,17 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         return result.toString();
     }
 
-    public Hashtable<Integer, Vector<Integer>> getComponents() {
+    
+    /**
+     * Carriage returns in the MOTD causing problems in house saves.
+     * @param motd
+     * @return sanitized String
+     */
+    private String stripReturns(String motd) {
+		return motd.replaceAll("[\\r\\n]", "");
+	}
+
+	public Hashtable<Integer, Vector<Integer>> getComponents() {
         return Components;
     }
 
