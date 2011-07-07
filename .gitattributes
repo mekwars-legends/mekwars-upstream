@@ -1342,6 +1342,7 @@ src/admin/dialog/ServerConfigurationDialog.java -text
 src/admin/dialog/SubFactionConfigurationDialog.java -text
 src/admin/dialog/TerrainSelectionDialog.java -text
 src/admin/dialog/VerticalLayout.java -text
+src/admin/dialog/playerFlags/DefaultPlayerFlagListDialog.java -text
 src/admin/dialog/serverConfigDialogs/AdvancedRepairPanel.java -text
 src/admin/dialog/serverConfigDialogs/ArtilleryPanel.java -text
 src/admin/dialog/serverConfigDialogs/AutoProdPanel.java -text
@@ -1401,6 +1402,7 @@ src/client/cmd/KI.java -text
 src/client/cmd/LPU.java -text
 src/client/cmd/NU.java -text
 src/client/cmd/PE.java -text
+src/client/cmd/PF.java -text
 src/client/cmd/PI.java -text
 src/client/cmd/PL.java -text
 src/client/cmd/PM.java -text
@@ -1523,6 +1525,8 @@ src/common/comm/Command.java -text
 src/common/comm/ICommand.java -text
 src/common/comm/ServerCommand.java -text
 src/common/comm/TransportCodec.java -text
+src/common/flags/FlagSet.java -text
+src/common/flags/PlayerFlags.java -text
 src/common/persistence/BinReader.java -text
 src/common/persistence/BinWriter.java -text
 src/common/util/BinReader.java -text
@@ -1835,6 +1839,7 @@ src/server/campaign/commands/admin/AdminTerminateAllCommand.java -text
 src/server/campaign/commands/admin/AdminTransferCommand.java -text
 src/server/campaign/commands/admin/AdminUnlockCampaignCommand.java -text
 src/server/campaign/commands/admin/AdminUpdateClientParamCommand.java -text
+src/server/campaign/commands/admin/AdminUpdateDefaultPlayerFlagsCommand.java -text
 src/server/campaign/commands/admin/AdminUpdatePlanetOwnershipCommand.java -text
 src/server/campaign/commands/admin/AdminUploadBuildTableCommand.java -text
 src/server/campaign/commands/admin/AdminViewLogCommand.java -text

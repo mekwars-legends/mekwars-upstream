@@ -1,6 +1,11 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
+R Released Server v0.3.3.19, Client v0.3.3.4
++ Added code for Player Flags.  Note that they are not implemented
+  yet in operations, but work
++ Added continent ID.  Needed for future refinement of save/
+  load/modify routines
 + Bug: Carriage Returns causing problems in House saves
 R Released Client v0.3.3.3
 + RFE 3308955: showing additional info per army

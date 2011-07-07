@@ -179,6 +179,7 @@ import common.House;
 import common.Influences;
 import common.Planet;
 import common.campaign.pilot.skills.PilotSkill;
+import common.flags.PlayerFlags;
 import common.util.UnitUtils;
 
 public final class CampaignMain implements Serializable {
@@ -275,6 +276,8 @@ public final class CampaignMain implements Serializable {
     private Vector<String> supportUnits = new Vector<String>();
     
     private Cleaner HTMLCleaner = null;
+    
+    private PlayerFlags defaultPlayerFlags = new PlayerFlags();
 
     // CONSTRUCTOR
     public CampaignMain(MWServ serv) {
@@ -470,6 +473,9 @@ public final class CampaignMain implements Serializable {
         
         // Start up the HTML Sanitizer
         loadSanitizer();
+        
+        // Load the default player flags
+        defaultPlayerFlags.loadFromDisk();
 
         /*
          * Load all players in ./campaign/players and create SmallPlayers. This
@@ -1558,6 +1564,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("ADMINUNLOCKCAMPAIGN", new AdminUnlockCampaignCommand());
         Commands.put("ADMINUPDATECLIENTPARAM", new AdminUpdateClientParamCommand());
         Commands.put("ADMINUPDATEPLANETOWNERSHIP", new AdminUpdatePlanetOwnershipCommand());
+        Commands.put("ADMINUPDATEDEFAULTPLAYERFLAGS", new AdminUpdateDefaultPlayerFlagsCommand());
         Commands.put("ADMINUPLOADBUILDTABLE", new AdminUploadBuildTableCommand());
         Commands.put("ADMINVIEWLOG", new AdminViewLogCommand());
         Commands.put("ALL", new ArmyLowerLimiterCommand());
@@ -4529,4 +4536,12 @@ CampaignData.mwlog.errLog(whitelist.toString());
 	public void reloadSanitizer() {
 		loadSanitizer();
 	}
+
+	/**
+	 * @return the defaultPlayerFlags
+	 */
+	public PlayerFlags getDefaultPlayerFlags() {
+		return defaultPlayerFlags;
+	}
+
 }

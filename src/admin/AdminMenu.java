@@ -43,6 +43,7 @@ import admin.dialog.FactionToFactionRewardPointMultiplierDialog;
 import admin.dialog.PlanetEditorDialog;
 import admin.dialog.ServerConfigurationDialog;
 import admin.dialog.SubFactionConfigurationDialog;
+import admin.dialog.playerFlags.DefaultPlayerFlagListDialog;
 import client.MWClient;
 import client.campaign.CUnit;
 import client.gui.dialog.HouseNameDialog;
@@ -129,6 +130,7 @@ public class AdminMenu extends JMenu {
     JMenuItem jMenuAdminCreateMulArmy = new JMenuItem();
     JMenuItem jMenuAdminReloadSupportUnits = new JMenuItem();
     JMenuItem jMenuAdminReloadSanitizerConfigs = new JMenuItem();
+    JMenuItem jMenuAdminPlayerFlags = new JMenuItem();
     
     MWClient mwclient;
     private int userLevel = 0;
@@ -583,6 +585,13 @@ public class AdminMenu extends JMenu {
                 mwclient.loadMegaMekClient();
             }
         });
+        
+        jMenuAdminPlayerFlags.setText("Player Flags");
+        jMenuAdminPlayerFlags.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		new DefaultPlayerFlagListDialog(mwclient);
+        	}
+        });
 
         // clear the entire menu, incase this is a reconstruction call
         removeAll();
@@ -793,6 +802,10 @@ public class AdminMenu extends JMenu {
             jMenuAdminBlackMarketSettings.add(jMenuAdminComponentAmmoList);
             jMenuAdminBlackMarketSettings.add(jMenuAdminComponentMiscList);
             this.add(jMenuAdminBlackMarketSettings);
+        }
+        
+        if (userLevel >= 101) {
+        	this.add(jMenuAdminPlayerFlags);
         }
     }// end CreateMenu();
 

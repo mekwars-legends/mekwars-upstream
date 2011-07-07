@@ -2872,6 +2872,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             result.append("~");
         }
 
+        result.append(exportFlags().length() > 1 ? exportFlags() : CampaignMain.cm.getDefaultPlayerFlags().export());
+        result.append("~");
+        
         return result.toString();
     }
 
@@ -3343,10 +3346,22 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             }
 
             setAutoReorder(TokenReader.readBoolean(ST));
+
+
             setTeamNumber(TokenReader.readInt(ST));
             subFaction = TokenReader.readString(ST);
             lastPromoted = TokenReader.readLong(ST);
 
+            loadFlags(CampaignMain.cm.getDefaultPlayerFlags().export());
+            
+            if (ST.hasMoreTokens()) {
+            	String flagString = TokenReader.readString(ST);
+            	if (flagString.length() > 1) {
+            		flags.loadPersonal(flagString);
+            	} 
+            } 
+            
+            
             if ((password != null) && (password.getPasswd().trim().length() <= 2)) {
                 password.setAccess(IAuthenticator.GUEST);
             }

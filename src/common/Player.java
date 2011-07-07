@@ -21,14 +21,20 @@
 
 package common;
 
+import java.util.StringTokenizer;
+
+import common.flags.PlayerFlags;
+
 
 public class Player {
 	
 	private int technicians = 0;//@urgru 7/17/04
 	private int currentTechPayment = -1;//num Cbills owed to techs after games
-	private boolean isInvsible = false;//Evil command for Big brother err admins.
+	private boolean isInvisible = false;//Evil command for Big brother err admins.
 	private int teamNumber = -1;
 	private boolean autoReorderParts = false;
+	protected PlayerFlags flags = new PlayerFlags();
+	protected PlayerFlags defaultPlayerFlags = new PlayerFlags(); // This is only going to be set for staff
 	
 	/**
 	 * @return current post-task payment to technicians, in Cbills
@@ -80,7 +86,7 @@ public class Player {
      * @param invis
      */
     public void setInvisible(boolean invis){
-        isInvsible = invis;
+        isInvisible = invis;
     }
     
     /**
@@ -88,7 +94,7 @@ public class Player {
      * @return true/false.
      */
     public boolean isInvisible(){
-        return isInvsible;
+        return isInvisible;
     }
 
     /**
@@ -123,4 +129,62 @@ public class Player {
     	return this.autoReorderParts;
     }
     
+    /**
+     * Sets a player flag
+     * @param name - the name of the flag to set
+     * @param value - true or false (String value)
+     */
+    public void setFlagStatus(String name, String value) {
+    	setFlagStatus(name, Boolean.parseBoolean(value));
+    }
+    
+    /**
+     * Sets a player flag
+     * @param name - the name of the flag to set
+     * @param value - true or false (boolean value)
+     */
+    public void setFlagStatus(String name, boolean value) {
+    	flags.setFlag(name, value);
+    }
+    
+    /** Returns the value of a flag
+     * 
+     * @param name - the name of the flag to get
+     * @return true or false (boolean value)
+     */
+    public boolean getFlagStatus(String name) {
+    	return flags.getFlagStatus(name);
+    }
+    
+    /**
+     * Loads the set of server-defined players flags from a string.
+     * This should probably only be called during player logon, and then
+     * each flag can be set individually
+     * @param data
+     */
+    public void loadFlags (String data) {
+    	flags.loadDefaults(data);
+    }
+    
+    /**
+     * Exports the string of flags read by loadFlags
+     * @return flag data
+     */
+    public String exportFlags() {
+    	return flags.export();
+    }
+
+	/**
+	 * @return the defaultPlayerFlags
+	 */
+	public PlayerFlags getDefaultPlayerFlags() {
+		return defaultPlayerFlags;
+	}
+	
+	/**
+	 * @return the playerFlags
+	 */
+    public PlayerFlags getFlags() {
+    	return flags;
+    }
 }//End Class Player

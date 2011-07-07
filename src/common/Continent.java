@@ -26,6 +26,7 @@ package common;
 public class Continent {
 	private Terrain environment;
 	private int size = 1;
+	private int id = -1;
 	
 	public Continent(int Size, Terrain env) {
 		this.size = Size;
@@ -67,6 +68,21 @@ public class Continent {
 	 */
 	public Terrain getEnvironment() {
 		return environment;
+	}
+	
+	/**
+	 * @return Returns the Continent ID
+	 */
+	public int getID() {
+		return id;
+	}
+	
+	/**
+	 * Sets the continent ID;
+	 * @param id
+	 */
+	public void setID(int id) {
+		this.id = id;
 	}
 	
   /* public void binOut(TreeWriter out)
