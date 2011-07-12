@@ -26,9 +26,9 @@ import javax.swing.SwingConstants;
 
 import client.MWClient;
 
-import admin.dialog.VerticalLayout;
 
 import common.Unit;
+import common.VerticalLayout;
 import common.util.SpringLayoutHelper;
 
 /**

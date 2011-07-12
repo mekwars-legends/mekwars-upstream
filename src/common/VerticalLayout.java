@@ -1,4 +1,4 @@
-package admin.dialog;
+package common;
 
 import java.awt.Component;
 import java.awt.Container;

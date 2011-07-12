@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.3.x
++ Added the ability to add/edit/save PlayerFlags for operations
+  Note that they are *still* not implemented, but it's close
 R Released Server v0.3.3.19, Client v0.3.3.4
 + Added code for Player Flags.  Note that they are not implemented
   yet in operations, but work

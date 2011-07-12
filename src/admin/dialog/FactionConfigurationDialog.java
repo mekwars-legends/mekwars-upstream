@@ -48,6 +48,7 @@ import javax.swing.border.EtchedBorder;
 
 import common.CampaignData;
 import common.Unit;
+import common.VerticalLayout;
 import common.util.SpringLayoutHelper;
 
 import client.MWClient;

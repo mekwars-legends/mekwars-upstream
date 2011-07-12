@@ -26,9 +26,9 @@ import javax.swing.border.EtchedBorder;
 
 import client.MWClient;
 
-import admin.dialog.VerticalLayout;
 
 import common.Unit;
+import common.VerticalLayout;
 
 /**
  * @author Spork

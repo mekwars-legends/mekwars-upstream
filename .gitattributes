@@ -1324,6 +1324,7 @@ server-dist/lib/xstream.jar -text
 server-dist/startserver.bat -text
 /serverDescription.xml -text
 src/OperationsEditor/MainOperations.java -text
+src/OperationsEditor/dialog/FlagTable.java -text
 src/OperationsEditor/dialog/OperationsDialog.java -text
 src/OperationsEditor/dialog/TextEditorDialog.java -text
 src/admin/AdminMapPopupMenu.java -text
@@ -1341,7 +1342,6 @@ src/admin/dialog/PlanetEditorDialog.java -text
 src/admin/dialog/ServerConfigurationDialog.java -text
 src/admin/dialog/SubFactionConfigurationDialog.java -text
 src/admin/dialog/TerrainSelectionDialog.java -text
-src/admin/dialog/VerticalLayout.java -text
 src/admin/dialog/playerFlags/DefaultPlayerFlagListDialog.java -text
 src/admin/dialog/serverConfigDialogs/AdvancedRepairPanel.java -text
 src/admin/dialog/serverConfigDialogs/ArtilleryPanel.java -text
@@ -1512,6 +1512,7 @@ src/common/Terrain.java -text
 src/common/TerrainProvider.java -text
 src/common/Unit.java -text
 src/common/UnitFactory.java -text
+src/common/VerticalLayout.java -text
 src/common/campaign/Buildings.java -text
 src/common/campaign/pilot/Pilot.java -text
 src/common/campaign/pilot/skills/IPilotSkill.java -text

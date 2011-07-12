@@ -1574,6 +1574,12 @@ public class DefaultOperation {
         operationsDefaults.put("MinDefenderSupportUnits", "0");
         operationsDefaults.put("MaxDefenderSupportUnits", "999");
         operationsDefaults.put("CountSupportUnitsForSpread", "true");
+        
+        // Flags
+        operationsDefaults.put("AttackerFlags", "");
+        operationsDefaults.put("DefenderFlags", "");
+        operationsDefaults.put("WinnerFlags", "");
+        operationsDefaults.put("LoserFlags", "");
     }
 
     // METHODS

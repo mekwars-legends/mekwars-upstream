@@ -22,10 +22,10 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
-import admin.dialog.VerticalLayout;
 import client.MWClient;
 
 import common.CampaignData;
+import common.VerticalLayout;
 import common.flags.PlayerFlags;
 
 public class DefaultPlayerFlagListDialog extends JDialog implements ActionListener {

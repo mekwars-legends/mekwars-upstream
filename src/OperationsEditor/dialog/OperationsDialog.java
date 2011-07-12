@@ -22,6 +22,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.Frame;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -60,6 +61,7 @@ import javax.swing.SwingConstants;
 
 import common.CampaignData;
 import common.DefaultOperation;
+import common.VerticalLayout;
 import common.util.SpringLayoutHelper;
 
 public class OperationsDialog extends JFrame implements ActionListener, KeyListener, MouseListener {
@@ -101,6 +103,11 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
     private Dimension textBoxSize = new Dimension(70, 22);
 
     JTabbedPane ConfigPane = new JTabbedPane(SwingConstants.TOP);
+    
+    FlagTable afTable;
+    FlagTable dfTable;
+    FlagTable wfTable;
+    FlagTable lfTable;
 
     /**
      * @author Torren (Jason Tighe) 01/04/2006
@@ -433,6 +440,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         JPanel factionPanel = new JPanel();// Faction exclusions
         JPanel unitsPanel = new JPanel();// Unit mins and maxes for the op
         JPanel costsPanel = new JPanel();// Cost to attack or defend an op
+        JPanel flagsPanel = new JPanel(); // Player flags
 
         JPanel playerPropertiesPanel = new JPanel();// mins/maxes for players if they can attack/defend an op
         JPanel scenarioPanel = new JPanel();// Arty/mines anything given to an attacker/defender besides their own units
@@ -3781,6 +3789,52 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         masterBox.add(mapParamsPanel);
         masterBox.add(mapParamsPanel2);
         deploymentPanel.add(masterBox);
+        
+        /*
+         * Set up Player Flag panel
+         */
+        // We're going to use 4 JTables for this
+
+        JPanel afPanel = new JPanel(new VerticalLayout());
+        //afPanel.setBorder(BorderFactory.createEtchedBorder());
+        JPanel dfPanel = new JPanel(new VerticalLayout());
+        //dfPanel.setBorder(BorderFactory.createEtchedBorder());
+        JPanel wfPanel = new JPanel(new VerticalLayout());
+        //wfPanel.setBorder(BorderFactory.createEtchedBorder());
+        JPanel lfPanel = new JPanel(new VerticalLayout());
+        //lfPanel.setBorder(BorderFactory.createEtchedBorder());
+        
+        afTable = new FlagTable(this);
+        afTable.setName("AttackerFlags");
+        dfTable = new FlagTable(this);
+        dfTable.setName("DefenderFlags");
+        wfTable = new FlagTable(this);
+        wfTable.setName("WinnerFlags");
+        lfTable = new FlagTable(this);
+        lfTable.setName("LoserFlags");
+        
+        afPanel.add(new JLabel("Required Attacker Flags"));
+        afPanel.add(afTable);
+        dfPanel.add(new JLabel("Required Defender Flags"));
+        dfPanel.add(dfTable);
+        wfPanel.add(new JLabel("Winner Flags to Set"));
+        wfPanel.add(wfTable);
+        lfPanel.add(new JLabel("Loser Flags to Set"));
+        lfPanel.add(lfTable);
+        
+        JPanel mainFlagPanel = new JPanel();
+        
+        //mainFlagPanel.setLayout(new VerticalLayout());
+        mainFlagPanel.setLayout(new GridLayout(2,2,10,10));
+        
+        //mainFlagPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        mainFlagPanel.add(afPanel);
+        mainFlagPanel.add(dfPanel);
+        mainFlagPanel.add(wfPanel);
+        mainFlagPanel.add(lfPanel);
+        
+        flagsPanel.add(mainFlagPanel);
+        
 
         ConfigPane.addTab("Buildings", null, buildingsPanel, "Set up buildings for operations.");
         ConfigPane.addTab("Chicken/Leech", null, chickenLeechPanel, "<html>Set up what happens to those that flee and<br>those that don't pay attention to an attack.</html>");
@@ -3798,6 +3852,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         ConfigPane.addTab("Teams", null, teamPanel, "Team Settings For MegaMek");
         ConfigPane.addTab("Units", null, unitsPanel, "Unit mins and maxes for the op");
         ConfigPane.addTab("Victory Conditions", null, victoryPanel, "Victory Conditions For MegaMek");
+        ConfigPane.addTab("Player Flags", null, flagsPanel, "Player Flag settings");
 
         // Remove the old configpane and add the newly created one!
         pane.remove(0);
@@ -3859,6 +3914,12 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         setTitle(windowName + " (" + taskName + ")");
 
+        // clear out the Flag Tables, just in case
+        afTable.clear();
+        dfTable.clear();
+        wfTable.clear();
+        lfTable.clear();
+        
         try {
             FileInputStream fis = new FileInputStream(shortOP);
             BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
@@ -3885,6 +3946,9 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
             findAndPopulateTextAndCheckBoxes(panel, opValues);
 
         }
+      
+
+
     }
 
     /*
@@ -3989,6 +4053,11 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
                 }
                 combo.setSelectedIndex(Integer.parseInt(defaultOperationInfo.getDefault(key)));
 
+            } else if (field instanceof FlagTable) {
+            	FlagTable table = (FlagTable) field;
+            	
+            	key = table.getName();
+            	table.importFlagString(defaultOperationInfo.getDefault(key));
             }// else continue
         }
     }
@@ -4043,7 +4112,17 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
                 }
                 combo.setSelectedIndex(Integer.parseInt(OperationInfo.getV(key)));
 
-            }// else continue
+            } else if (field instanceof FlagTable) {
+            	FlagTable table = (FlagTable) field;
+            	key = table.getName();
+            	
+            	if (key == null) {
+            		System.err.println("Null Flagtable");
+            		continue;
+            	}
+            	table.importFlagString(OperationInfo.getV(key));
+            	
+            } // else continue
         }
     }
 
@@ -4101,6 +4180,13 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
                 if (Integer.parseInt(value) != Integer.parseInt(defaultOperationInfo.getDefault(key))) {
                     p.println(key + "=" + value);
                 }
+            } else if (field instanceof FlagTable) {
+            	FlagTable table = (FlagTable) field;
+            	value = table.exportFlagString();
+            	key = table.getName();
+            	if (!value.equalsIgnoreCase(defaultOperationInfo.getDefault(key))) {
+            		p.println(key + "=" + value);
+            	}
             }// else continue
         }
 

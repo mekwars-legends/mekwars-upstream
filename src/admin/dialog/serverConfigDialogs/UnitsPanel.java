@@ -27,10 +27,10 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
-import admin.dialog.VerticalLayout;
 import client.MWClient;
 
 import common.Unit;
+import common.VerticalLayout;
 import common.util.SpringLayoutHelper;
 
 public class UnitsPanel extends JPanel {
