@@ -89,7 +89,6 @@ public class FlagTable extends JTable implements ActionListener {
 	 * @param flagSettings
 	 */
 	public void importFlagString(String flagSettings) {
-		System.out.print("Importing Flag String: " + flagSettings + "\n");
 		if (flagSettings == null || flagSettings.trim().length() == 0) {
 			return;
 		}

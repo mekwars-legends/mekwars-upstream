@@ -42,6 +42,7 @@ import java.util.Iterator;
 import common.House;
 import common.Planet;
 import common.Unit;
+import common.flags.PlayerFlags;
 
 import megamek.common.BattleArmor;
 import megamek.common.Protomech;
@@ -302,6 +303,9 @@ public class ShortValidator {
     public static final int SFAIL_ATTACK_TOO_MANY_SUPPORT_UNITS = 259; // Too many designated support units
     public static final int SFAIL_ATTACK_TOO_FEW_SUPPORT_UNITS = 260; // Not enough designated support units
     
+    public static final int SFAIL_ATTACK_MISSING_REQUIRED_FLAG = 261; // Attacker is missing a required flag
+    public static final int SFAIL_ATTACK_HAS_BANNED_FLAG = 262; // Attacker has a flag set that is banned from the attack
+    
     /*
      * Failure codes for defender-specific checks.
      * 
@@ -456,6 +460,9 @@ public class ShortValidator {
     public static final int SFAIL_DEFEND_TOO_MANY_SUPPORT_UNITS = 460; // Too many designated support units
     public static final int SFAIL_DEFEND_TOO_FEW_SUPPORT_UNITS = 461; // Not enough designated support units
     
+    public static final int SFAIL_DEFEND_MISSING_REQUIRED_FLAG = 462; // Defender is missing a required set flag
+    public static final int SFAIL_DEFEND_HAS_BANNED_FLAG = 463; // Defender has set a banned flag
+    
     // CONSTRUCTORS
     public ShortValidator(OperationManager m) {
         manager = m;
@@ -532,6 +539,7 @@ public class ShortValidator {
             this.checkAttackerMilestones(failureReasons, ap, o);
             this.checkAttackerCosts(failureReasons, ap, o);
             this.checkAttackerConstruction(failureReasons, aa, o);
+            this.checkAttackerFlags(failureReasons, ap, o);
 
             // don't check defenders if the attacker can't pass his own checks
             if (failureReasons.size() > 0)
@@ -695,7 +703,27 @@ public class ShortValidator {
         return failureReasons;
     }// end validateShortAttacker()
 
-    /**
+    private void checkAttackerFlags(ArrayList<Integer> failureReasons,
+			SPlayer ap, Operation o) {
+    	PlayerFlags pFlags = ap.getFlags();
+		String requiredFlags = o.getValue("AttackerFlags");
+		// Loop through the flag string, checking settings
+		StringTokenizer st = new StringTokenizer(requiredFlags, "$");
+		while(st.hasMoreTokens()) {
+			StringTokenizer element = new StringTokenizer(st.nextToken(), "#");
+			String fName = element.nextToken();
+			boolean value = Boolean.parseBoolean(element.nextToken());
+			if (pFlags.getFlagStatus(fName) != value) {
+				if (value) {
+					failureReasons.add(new Integer(SFAIL_ATTACK_MISSING_REQUIRED_FLAG));
+				} else {
+					failureReasons.add(new Integer(SFAIL_ATTACK_HAS_BANNED_FLAG));
+				}
+			}
+		}
+	}
+
+	/**
      * Method which checks the attacker's ability to reach the target world.
      * Factions may always reach worlds on which they have running long ops, as
      * they couldn't have started them if the targets were out of range. Players
@@ -1243,11 +1271,33 @@ public class ShortValidator {
         this.checkDefenderMilestones(failureReasons, dp, o, target);
         this.checkDefenderCosts(failureReasons, dp, o);
         this.checkDefenderConstruction(failureReasons, da, o);
+        this.checkDefenderFlags(failureReasons, dp, o);
 
         return failureReasons;
     }
 
-    /**
+    private void checkDefenderFlags(ArrayList<Integer> failureReasons,
+			SPlayer dp, Operation o) {
+		// TODO Auto-generated method stub
+    	PlayerFlags pFlags = dp.getFlags();
+		String requiredFlags = o.getValue("DefenderFlags");
+		// Loop through the flag string, checking settings
+		StringTokenizer st = new StringTokenizer(requiredFlags, "$");
+		while(st.hasMoreTokens()) {
+			StringTokenizer element = new StringTokenizer(st.nextToken(), "#");
+			String fName = element.nextToken();
+			boolean value = Boolean.parseBoolean(element.nextToken());
+			if (pFlags.getFlagStatus(fName) != value) {
+				if (value) {
+					failureReasons.add(new Integer(SFAIL_DEFEND_MISSING_REQUIRED_FLAG));
+				} else {
+					failureReasons.add(new Integer(SFAIL_DEFEND_HAS_BANNED_FLAG));
+				}
+			}
+		}
+	}
+
+	/**
      * Method which checks defender milestones, like experience and rank.
      */
     private void checkDefenderMilestones(ArrayList<Integer> failureReasons, SPlayer dp, Operation o, SPlanet target) {
@@ -2009,6 +2059,12 @@ public class ShortValidator {
         
         case SFAIL_ATTACK_TOO_FEW_SUPPORT_UNITS:
         	return " the army does not have enough support units";
+        	
+        case SFAIL_ATTACK_MISSING_REQUIRED_FLAG:
+        	return " you do not have a required Player Flag set";
+        	
+        case SFAIL_ATTACK_HAS_BANNED_FLAG:
+        	return " you have a Player Flag set that is banned from this attack";
         
             /*
              * DEFENSE failure causes
@@ -2184,8 +2240,15 @@ public class ShortValidator {
         	
         case SFAIL_DEFEND_TOO_MANY_SUPPORT_UNITS:
         	return " the army has too many support units";
-        }
 
+        case SFAIL_DEFEND_MISSING_REQUIRED_FLAG:
+        	return " your opponent does not have a required Player Flag set";
+        	
+        case SFAIL_DEFEND_HAS_BANNED_FLAG:
+        	return " your opponent has a Player Flag set that is banned from this attack";
+
+        }
+        
         return "";
     }
 

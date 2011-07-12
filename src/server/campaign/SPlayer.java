@@ -54,6 +54,7 @@ import common.SubFaction;
 import common.Unit;
 import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
+import common.flags.PlayerFlags;
 import common.util.TokenReader;
 import common.util.UnitComponents;
 import common.util.UnitUtils;
@@ -2655,6 +2656,14 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         }
 
         s.append("<br>");
+        
+        // Return the player's PlayerFlags
+        s.append("<b>Player Flags</b><br>");
+        PlayerFlags pFlags = this.getFlags();
+        for (String flag : pFlags.getFlagNames()) {
+        	s.append(flag + ": " + Boolean.toString(pFlags.getFlagStatus(flag)) + "<br>");
+        }
+        
         return s.toString();
     }
 

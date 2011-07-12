@@ -340,6 +340,31 @@ public class ShortResolver {
             CampaignMain.cm.toUser("PL|SAL|" + currA.getID() + "#" + false, currA.getPlayerName(), false);
         }
 
+        // Set Player Flags as a result of the operation
+        String wFlags = o.getValue("WinnerFlags");
+        String lFlags = o.getValue("LoserFlags");
+        
+        StringTokenizer wST = new StringTokenizer(wFlags, "$");
+        StringTokenizer lST = new StringTokenizer(lFlags, "$");
+        
+        while(wST.hasMoreElements()) {
+        	StringTokenizer element = new StringTokenizer(wST.nextToken());
+        	String flag = element.nextToken();
+        	String value = element.nextToken();
+        	for (String cp : so.getWinners().keySet()) {
+        		CampaignMain.cm.toUser("PF|SF|" + flag + "|" + value + "|", cp, false);
+        	}
+        }
+
+        while(lST.hasMoreElements()) {
+        	StringTokenizer element = new StringTokenizer(lST.nextToken());
+        	String flag = element.nextToken();
+        	String value = element.nextToken();
+        	for (String cp : so.getLosers().keySet()) {
+        		CampaignMain.cm.toUser("PF|SF|" + flag + "|" + value + "|", cp, false);
+        	}
+        }
+        
         /*
          * Send messages to the players, remove them from fighting status, and
          * inform them of any immunity they may have received.
