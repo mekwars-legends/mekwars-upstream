@@ -30,7 +30,6 @@ public class FlagSet {
 	 * @param name
 	 */
 	public void setFlagName(int key, String name) {
-		CampaignData.mwlog.errLog("Adding flag name: " + key + "  :  " + name);
 		flagNames.put(key, name);
 	}
 	

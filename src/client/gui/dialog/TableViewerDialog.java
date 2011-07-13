@@ -920,8 +920,10 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 
             case FREQUENCY:
                 DecimalFormat myFormatter = new DecimalFormat("##0.00");
-                return myFormatter.format(currU.getFrequency()) + "%";
-
+                String val = myFormatter.format(currU.getFrequency());
+                Double returnVal = Double.parseDouble(val);
+            	return returnVal;
+            	
             case FILENAME:
                 return currU.getRealFilename();
 
@@ -929,6 +931,11 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 
             return "";
         }
+        
+		@SuppressWarnings("unchecked")
+		public Class getColumnClass(int c) {
+			return getValueAt(0, c).getClass();
+		}
 
         /*
          * Method which sorts the units in currentUnits.

@@ -1,7 +1,10 @@
 VERSION HISTORY:
 ----------------
 v 0.3.4.x
-+ Released Server v0.3.4.1
+R Released Client v0.3.4.1
++ Bug: 3210851: Build table viewer fails to sort by frequency
++ Removed extraneous player flag logging
+R Released Server v0.3.4.1
 + Added ability to toggle player flags from the staff userlist
   popup menu
 + Released Server, Client, Ded v0.3.4.0
