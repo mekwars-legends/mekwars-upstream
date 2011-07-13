@@ -26,7 +26,7 @@ import server.MWChatServer.auth.IAuthenticator;
 public class AdminAddServerOpFlagsCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "Planet#FlagCode#FlagName#...";
+	String syntax = "FlagCode#FlagName#...";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}
@@ -55,7 +55,7 @@ public class AdminAddServerOpFlagsCommand implements Command {
                 CampaignMain.cm.doSendModMail("NOTE",Username + " added op flag "+key+"/"+value+".");
             }
         }catch (Exception ex){
-            CampaignMain.cm.toUser("Syntax AdminAddServerOpFlags#Planet#FlagCode#FlagName#...<br>NOTE: you can repeat FlagCode and FlagName multiple times." , Username);
+            CampaignMain.cm.toUser("Syntax AdminAddServerOpFlags#FlagCode#FlagName#...<br>NOTE: you can repeat FlagCode and FlagName multiple times." , Username);
             return;
         }
         
