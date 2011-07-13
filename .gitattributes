@@ -1739,6 +1739,7 @@ src/server/campaign/commands/SetEdgeSkillsCommand.java -text
 src/server/campaign/commands/SetMOTDCommand.java -text
 src/server/campaign/commands/SetMaintainedCommand.java -text
 src/server/campaign/commands/SetMyLogoCommand.java -text
+src/server/campaign/commands/SetPlayerFlagsCommand.java -text
 src/server/campaign/commands/SetTargetSystemCommand.java -text
 src/server/campaign/commands/SetUnitAmmoByCritCommand.java -text
 src/server/campaign/commands/SetUnitAmmoCommand.java -text

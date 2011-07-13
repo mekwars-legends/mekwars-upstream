@@ -262,6 +262,18 @@ public class StaffUserlistPopupMenu extends JMenu implements ActionListener {
         if (partsMen.getItemCount() > 0)
             this.add(partsMen);
 
+        // Flags submenu
+        JMenu flagsMen = new JMenu();
+        flagsMen.setText("Flags");
+        item = new JMenuItem("Toggle Player Flags");
+        item.setActionCommand("PF|" + userName);
+        item.addActionListener(this);
+        if (userLevel >= mwclient.getData().getAccessLevel("SetPlayerFlags")) {
+        	flagsMen.add(item);
+        }
+        if (flagsMen.getItemCount() > 0) {
+        	this.add(flagsMen);
+        }
     }
 
     public void actionPerformed(ActionEvent actionEvent) {
@@ -273,6 +285,13 @@ public class StaffUserlistPopupMenu extends JMenu implements ActionListener {
         String userName = "";
 
         // mod commands
+        if (command.equals("PF") && st.hasMoreElements()) {
+        	userName = st.nextToken();
+        	
+        	// Build a picklist of flags
+        	String fName = (String)JOptionPane.showInputDialog(mwclient.getMainFrame(),"Select a Flag", "Player Flags", JOptionPane.INFORMATION_MESSAGE, null, mwclient.getPlayer().getFlags().getFlagNames().toArray(), null);
+        	mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "SetPlayerFlags#" + userName + "#" + fName + "#toggle");
+        }
         if (command.equals("KK") && st.hasMoreElements()) {
 
             userName = st.nextToken();

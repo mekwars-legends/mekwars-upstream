@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.3.4.x
++ Released Server v0.3.4.1
++ Added ability to toggle player flags from the staff userlist
+  popup menu
 + Released Server, Client, Ded v0.3.4.0
 + Implemented PlayerFlags, and the ability to require them
   for operations, and set them upon winning or losing an
