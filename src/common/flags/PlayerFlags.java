@@ -17,6 +17,7 @@ public class PlayerFlags extends FlagSet {
 	
 	public PlayerFlags() {
 		super();
+		flagType = FLAGTYPE_PLAYER;
 	}
 
 }

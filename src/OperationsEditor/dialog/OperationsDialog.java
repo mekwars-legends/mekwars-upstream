@@ -62,6 +62,7 @@ import javax.swing.SwingConstants;
 import common.CampaignData;
 import common.DefaultOperation;
 import common.VerticalLayout;
+import common.flags.FlagSet;
 import common.util.SpringLayoutHelper;
 
 public class OperationsDialog extends JFrame implements ActionListener, KeyListener, MouseListener {
@@ -3804,22 +3805,26 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         JPanel lfPanel = new JPanel(new VerticalLayout());
         //lfPanel.setBorder(BorderFactory.createEtchedBorder());
         
-        afTable = new FlagTable(this);
+        afTable = new FlagTable(this, FlagSet.FLAGTYPE_PLAYER);
         afTable.setName("AttackerFlags");
-        dfTable = new FlagTable(this);
+        dfTable = new FlagTable(this, FlagSet.FLAGTYPE_PLAYER);
         dfTable.setName("DefenderFlags");
-        wfTable = new FlagTable(this);
+        wfTable = new FlagTable(this, FlagSet.FLAGTYPE_RESULTS);
         wfTable.setName("WinnerFlags");
-        lfTable = new FlagTable(this);
+        lfTable = new FlagTable(this, FlagSet.FLAGTYPE_RESULTS);
         lfTable.setName("LoserFlags");
         
         afPanel.add(new JLabel("Required Attacker Flags"));
+        afPanel.add(afTable.getTableHeader());
         afPanel.add(afTable);
         dfPanel.add(new JLabel("Required Defender Flags"));
+        dfPanel.add(dfTable.getTableHeader());
         dfPanel.add(dfTable);
         wfPanel.add(new JLabel("Winner Flags to Set"));
+        wfPanel.add(wfTable.getTableHeader());
         wfPanel.add(wfTable);
         lfPanel.add(new JLabel("Loser Flags to Set"));
+        lfPanel.add(lfTable.getTableHeader());
         lfPanel.add(lfTable);
         
         JPanel mainFlagPanel = new JPanel();
@@ -3890,6 +3895,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
             changesMade = false;
             setTitle(windowName + " (" + taskName + ")");
         } catch (Exception ex) {
+        	System.err.println(ex.getMessage());
             System.err.println("Unable to save file");
         }
 

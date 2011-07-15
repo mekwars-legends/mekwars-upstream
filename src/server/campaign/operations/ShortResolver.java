@@ -351,8 +351,22 @@ public class ShortResolver {
         	StringTokenizer element = new StringTokenizer(wST.nextToken());
         	String flag = element.nextToken();
         	String value = element.nextToken();
-        	for (String cp : so.getWinners().keySet()) {
-        		CampaignMain.cm.toUser("PF|SF|" + flag + "|" + value + "|", cp, false);
+        	boolean shouldApply = true; // if we're not using the new flags, we need to apply this regardless
+        	if (element.hasMoreTokens()) {
+        		shouldApply = false;
+        		int appliesTo = Integer.parseInt(element.nextToken());
+        		// Using ResultsFlags, rather than PlayerFlags
+        		if (this.attackersWon && (appliesTo%2 == 1)) {
+        			shouldApply = true;
+        		}
+        		if (this.defendersWon && (appliesTo > 1)) {
+        			shouldApply = true;
+        		}
+        	}
+        	if (shouldApply) {
+        		for (String cp : so.getWinners().keySet()) {
+            		CampaignMain.cm.toUser("PF|SF|" + flag + "|" + value + "|", cp, false);
+            	}	
         	}
         }
 
@@ -360,8 +374,24 @@ public class ShortResolver {
         	StringTokenizer element = new StringTokenizer(lST.nextToken());
         	String flag = element.nextToken();
         	String value = element.nextToken();
-        	for (String cp : so.getLosers().keySet()) {
-        		CampaignMain.cm.toUser("PF|SF|" + flag + "|" + value + "|", cp, false);
+        	boolean shouldApply = true; // if we're not using the new flags, we need to apply this regardless
+        	if (element.hasMoreTokens()) {
+        		shouldApply = false;
+        		int appliesTo = Integer.parseInt(element.nextToken());
+        		// Using ResultsFlags, rather than PlayerFlags
+        		if (this.attackersWon && (appliesTo%2 > 1)) {
+        			// Attacker won, this applies to defender, losers are defenders
+        			shouldApply = true;
+        		}
+        		if (this.defendersWon && (appliesTo%2 == 1)) {
+        			// Defender won, this applies to attacker, losers are attackers
+        			shouldApply = true;
+        		}
+        	}
+        	if (shouldApply) {
+        		for (String cp : so.getLosers().keySet()) {
+            		CampaignMain.cm.toUser("PF|SF|" + flag + "|" + value + "|", cp, false);
+            	}	
         	}
         }
         

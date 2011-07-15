@@ -17,7 +17,9 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
+import common.flags.FlagSet;
 import common.flags.PlayerFlags;
+import common.flags.ResultsFlags;
 
 public class FlagTable extends JTable implements ActionListener {
 
@@ -25,29 +27,51 @@ public class FlagTable extends JTable implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1674365115046546502L;
-	private PlayerFlags flags = new PlayerFlags();
+	private PlayerFlags flags;
 	private PlayerFlags availableFlags = new PlayerFlags();
 	
 	private JPopupMenu popup;
 	
 	private Component parent;
 	
+	private int flagType = 0;
+	
 	/**
 	 * A Table to store PlayerFlag settings for the operation
 	 * @param parentObject
 	 */
-	public FlagTable(Component parentObject) {
+	public FlagTable(Component parentObject, int flagType) {
+		if (flagType == FlagSet.FLAGTYPE_PLAYER) {
+			flags = new PlayerFlags();
+		} else if (flagType == FlagSet.FLAGTYPE_RESULTS) {
+			flags = new ResultsFlags();
+		}
 		parent = parentObject;
 		availableFlags.loadFromDisk();
-		String[] cNames = {"Flag Name", "Value"};
+		this.flagType = flagType;
+		
+		String[] cNames = {"Bad FlagType"};
+		if (flagType == FlagSet.FLAGTYPE_PLAYER) {
+			cNames = new String[]{"Flag Name", "Value"};
+		} else if (flagType == FlagSet.FLAGTYPE_RESULTS) {
+			cNames = new String[] {"Flag Name", "Value", "Apply To Attacker", "Apply To Defender"};
+		}
 		
 		PFTableModel model = new PFTableModel(cNames);
 		this.setModel(model);
-		model.addRow(new Object[]{" ", new Boolean(false)});
+		if (flagType == FlagSet.FLAGTYPE_PLAYER) {
+			model.addRow(new Object[]{" ", new Boolean(false)});
+		} else if (flagType == FlagSet.FLAGTYPE_RESULTS) {
+			model.addRow(new Object[]{ " ", new Boolean(false), new Boolean(false), new Boolean(false)});
+		}
 				
 		this.getColumnModel().getColumn(0).setPreferredWidth(200);
 		this.getColumnModel().getColumn(1).setPreferredWidth(40);
 		
+		if (flagType == FlagSet.FLAGTYPE_RESULTS) {
+			//this.getColumnModel().getColumn(2).setPreferredWidth(40);
+			//this.getColumnModel().getColumn(3).setPreferredWidth(40);
+		}
 		
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		this.setVisible(true);
@@ -98,9 +122,29 @@ public class FlagTable extends JTable implements ActionListener {
 			StringTokenizer element = new StringTokenizer(el, "#");
 			String flagName = element.nextToken();
 			Boolean value = Boolean.parseBoolean(element.nextToken());
-			flags.addFlag(flagName, flags.getAvailableID(), value);
+			boolean appliesToDefender = false;
+			boolean appliesToAttacker = false;
+			if (element.hasMoreTokens()) {
+				int appliesTo = Integer.parseInt(element.nextToken());
+				if (appliesTo >= ResultsFlags.APPLIESTO_DEFENDER) {
+					appliesToDefender = true;
+					appliesTo -= ResultsFlags.APPLIESTO_DEFENDER;
+				}
+				if (appliesTo >= ResultsFlags.APPLIESTO_ATTACKER) {
+					appliesToAttacker = true;
+				}
+			}
+			if (flagType == FlagSet.FLAGTYPE_PLAYER) {
+				flags.addFlag(flagName, flags.getAvailableID(), value);
+			} else if (flagType == FlagSet.FLAGTYPE_RESULTS) {
+				((ResultsFlags)flags).addFlag(flagName, flags.getAvailableID(), value, appliesToAttacker, appliesToDefender);
+			}
 			DefaultTableModel model = (DefaultTableModel)this.getModel();
-			model.addRow(new Object[]{flagName, value});
+			if (flagType == FlagSet.FLAGTYPE_PLAYER) {
+				model.addRow(new Object[]{flagName, value});
+			} else if (flagType == FlagSet.FLAGTYPE_RESULTS) {
+				model.addRow(new Object[]{flagName, value, appliesToAttacker, appliesToDefender});
+			}
 		}
 	}
 	
@@ -120,6 +164,18 @@ public class FlagTable extends JTable implements ActionListener {
 			toReturn.append(flag);
 			toReturn.append("#");
 			toReturn.append(Boolean.toString(flags.getFlagStatus(flag)));
+			if (flagType == FlagSet.FLAGTYPE_RESULTS) {
+				int appliesTo = 0;
+				if (((ResultsFlags)flags).flagAppliesToDefender(flag)) {
+					appliesTo += ResultsFlags.APPLIESTO_DEFENDER;
+				}
+				if (((ResultsFlags)flags).flagAppliesToAttacker(flag)) {
+					appliesTo += ResultsFlags.APPLIESTO_ATTACKER;
+				}
+				toReturn.append("#");
+				toReturn.append(Integer.toString(appliesTo));
+				toReturn.append("#");
+			}
 			toReturn.append("$");
 		}
 		if (toReturn.toString().trim().length() == 0) {
@@ -140,11 +196,22 @@ public class FlagTable extends JTable implements ActionListener {
 	}
 	
 	private void replaceFlagsFromTable() {
-		flags = new PlayerFlags();
-		for (int i = 0; i < this.getRowCount(); i++) {
-			String flagName = (String)this.getValueAt(i, 0);
-			if (!flagName.equalsIgnoreCase(" ")) {
-				flags.addFlag(flagName, flags.getAvailableID(), (Boolean)getValueAt(i,1));
+		if (flagType == FlagSet.FLAGTYPE_PLAYER) {
+			flags = new PlayerFlags();
+		
+			for (int i = 0; i < this.getRowCount(); i++) {
+				String flagName = (String)this.getValueAt(i, 0);
+				if (!flagName.equalsIgnoreCase(" ")) {
+					flags.addFlag(flagName, flags.getAvailableID(), (Boolean)getValueAt(i,1));
+				}
+			}
+		} else if (flagType == FlagSet.FLAGTYPE_RESULTS) {
+			flags = new ResultsFlags();
+			for (int i = 0; i < this.getRowCount(); i++) {
+				String flagName = (String)this.getValueAt(i, 0);
+				if (!flagName.equalsIgnoreCase(" ")) {
+					((ResultsFlags)flags).addFlag(flagName, flags.getAvailableID(), (Boolean)getValueAt(i,1), (Boolean)getValueAt(i,2), (Boolean)getValueAt(i,3));
+				}
 			}
 		}
 	}
@@ -208,7 +275,7 @@ public class FlagTable extends JTable implements ActionListener {
 			if (c == 0) {
 				return String.class;
 			}
-			if (c == 1) {
+			if (c >= 1) {
 				return Boolean.class;
 			}
 			return null;

@@ -20,8 +20,13 @@ import common.CampaignData;
  * 
  */
 public class FlagSet {
-	private BitSet flags = new BitSet();
-	private Map<Integer, String> flagNames;
+	protected BitSet flags = new BitSet();
+	protected Map<Integer, String> flagNames;
+	protected int flagType;
+	
+	// Flag Types - since they load differently and all
+	public static final int FLAGTYPE_PLAYER = 0;
+	public static final int FLAGTYPE_RESULTS = 1;
 	
 	/**
 	 * Adds the flag name to the map.  Used so that the SOs can 
@@ -52,7 +57,7 @@ public class FlagSet {
 	 * @param name
 	 * @return integer key ID
 	 */
-	private int getFlagKey(String name) {
+	protected int getFlagKey(String name) {
 		if (flagNames.size() < 1) {
 			return -1;
 		}

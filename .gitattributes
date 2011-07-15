@@ -1528,6 +1528,7 @@ src/common/comm/ServerCommand.java -text
 src/common/comm/TransportCodec.java -text
 src/common/flags/FlagSet.java -text
 src/common/flags/PlayerFlags.java -text
+src/common/flags/ResultsFlags.java -text
 src/common/persistence/BinReader.java -text
 src/common/persistence/BinWriter.java -text
 src/common/util/BinReader.java -text

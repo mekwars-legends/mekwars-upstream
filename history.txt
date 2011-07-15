@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.3.4.x
+R Released Server v0.3.4.2
++ Changed PlayerFlags to allow setting them only if attacker/defender
+  is the winner.
 R Released Client v0.3.4.1
 + Bug: 3210851: Build table viewer fails to sort by frequency
 + Removed extraneous player flag logging
