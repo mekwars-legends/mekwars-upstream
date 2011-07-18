@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.3.4.x
++ Bug: NumberFormatException in TableViewer when using German locale
 R Released Server v0.3.4.2
 + Changed PlayerFlags to allow setting them only if attacker/defender
   is the winner.

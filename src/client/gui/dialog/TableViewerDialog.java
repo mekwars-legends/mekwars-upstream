@@ -23,6 +23,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.TreeMap;
@@ -919,9 +920,18 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                 return new Integer(currU.getEntity().calculateBattleValue());
 
             case FREQUENCY:
+            	
                 DecimalFormat myFormatter = new DecimalFormat("##0.00");
                 String val = myFormatter.format(currU.getFrequency());
-                Double returnVal = Double.parseDouble(val);
+                //Double returnVal = Double.parseDouble(val);
+                Double returnVal = 0.0;
+                try {
+						returnVal = DecimalFormat.getNumberInstance().parse(val).doubleValue();
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                
             	return returnVal;
             	
             case FILENAME:
