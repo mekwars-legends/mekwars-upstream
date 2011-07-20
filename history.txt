@@ -1,5 +1,16 @@
 VERSION HISTORY:
 ----------------
+v 0.3.5.x
+R Released Server, Client, Ded v0.3.5.0
++ New MegaMek v0.35.25-20110720-8479
+  *****************************************************************
+  *                   NOTE TO SOs                                 *
+  *                                                               *
+  * This update will almost certainly cause issues if you are not *
+  * using up to date unit files.  You are strongly encouraged to  *
+  * test this on a test server and update whatever files are      *
+  * necessary from the current MM repository.                     *
+  *****************************************************************  
 v 0.3.4.x
 + Bug: NumberFormatException in TableViewer when using German locale
 R Released Server v0.3.4.2

@@ -375,7 +375,7 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
 
                         for (int x = 0, n = vAllTypes.size(); x < n; x++) {
                             AmmoType atCheck = vAllTypes.elementAt(x);
-                            boolean bTechMatch = TechConstants.isLegal(unit.getTechLevel(), atCheck.getTechLevel());// (unit.getTechLevel()
+                            boolean bTechMatch = TechConstants.isLegal(unit.getTechLevel(), atCheck.getTechLevel(), unit.isMixedTech());// (unit.getTechLevel()
                                                                                                                     // ==
                                                                                                                     // atCheck.getTechLevel());
 
@@ -567,12 +567,8 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
         legPanel.setLayout(new BoxLayout(legPanel, BoxLayout.X_AXIS));
 
         synchronized (unit) {
-            String armorName = EquipmentType.getArmorTypeName(unit.getArmorType());
             String isName = EquipmentType.getStructureTypeName(unit.getStructureType());
 
-            if (armorName.equalsIgnoreCase("Standard")) {
-                armorName = "Armor";
-            }
             if (isName.equalsIgnoreCase("Standard")) {
                 isName = "Internal";
             }
@@ -583,7 +579,11 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
                 Vector<String> armorNames = new Vector<String>(3, 1);
                 boolean armorDamage = false;
                 boolean critDamage = false;
-
+                String armorName = EquipmentType.getArmorTypeName(unit.getArmorType(location));
+                if (armorName.equalsIgnoreCase("Standard")) {
+                    armorName = "Armor";
+                }
+                
                 if (unit.getArmor(location) > unit.getOArmor(location)) {
                     UnitUtils.removeArmorRepair(unit, UnitUtils.LOC_FRONT_ARMOR, location);
                     armorNames.add("!!" + armorName + ": " + (unit.getArmor(location)) + "/" + unit.getOArmor(location));
@@ -1031,7 +1031,7 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
 
             if (critSlot == UnitUtils.LOC_FRONT_ARMOR) {
                 armor = true;
-                double cost = CUnit.getArmorCost(unit, mwclient);
+                double cost = CUnit.getArmorCost(unit, mwclient, critSlot);
                 if (unit.getArmor(critLocation) > unit.getOArmor(critLocation)) {
                     // remove the repairing armor so we can get the real cost.
                     UnitUtils.removeArmorRepair(unit, UnitUtils.LOC_FRONT_ARMOR, critLocation);
@@ -1050,7 +1050,7 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
             } else if (critSlot == UnitUtils.LOC_REAR_ARMOR) {
                 armor = true;
                 // tell the repair command its using rear external armor
-                double cost = CUnit.getArmorCost(unit, mwclient);
+                double cost = CUnit.getArmorCost(unit, mwclient, critSlot);
                 if (unit.getArmor(critLocation, true) > unit.getOArmor(critLocation, true)) {
                     // remove the repairing armor so we can get the real cost.
                     UnitUtils.removeArmorRepair(unit, UnitUtils.LOC_REAR_ARMOR, critLocation);

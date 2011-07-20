@@ -179,7 +179,7 @@ public final class MWClient implements IClient, GameListener {
 
     CConfig Config;
 
-    public static final String CLIENT_VERSION = "0.3.4.1"; // change this with
+    public static final String CLIENT_VERSION = "0.3.5.0"; // change this with
     // all client
     // changes @Torren
 
@@ -3288,21 +3288,21 @@ public final class MWClient implements IClient, GameListener {
             // selecting that armor instead of crit.
             if ((critLocation == Mech.LOC_CT) || (critLocation == Mech.LOC_LT) || (critLocation == Mech.LOC_RT)) {
                 if (unit.getArmor(critLocation, false) != unit.getOArmor(critLocation, false)) {
-                    cost += CUnit.getArmorCost(unit, this) * unit.getOArmor(critLocation, false) - unit.getArmor(critLocation, false);
+                    cost += CUnit.getArmorCost(unit, this, critLocation) * (unit.getOArmor(critLocation, false) - unit.getArmor(critLocation, false));
                 }
                 if (unit.getArmor(critLocation, true) != unit.getOArmor(critLocation, true)) {
-                    cost += CUnit.getArmorCost(unit, this) * unit.getOArmor(critLocation, false) - unit.getArmor(critLocation, false);
+                    cost += CUnit.getArmorCost(unit, this, critLocation) * (unit.getOArmor(critLocation, false) - unit.getArmor(critLocation, false));
                 }
                 if (unit.getInternal(critLocation) != unit.getOInternal(critLocation)) {
-                    cost += CUnit.getStructureCost(unit, this) * unit.getOInternal(critLocation) - unit.getInternal(critLocation);
+                    cost += CUnit.getStructureCost(unit, this) * (unit.getOInternal(critLocation) - unit.getInternal(critLocation));
                 }
             }// end toros armor
             else {
                 if (unit.getArmor(critLocation, false) != unit.getOArmor(critLocation, false)) {
-                    cost += CUnit.getArmorCost(unit, this) * unit.getOArmor(critLocation, false) - unit.getArmor(critLocation, false);
+                    cost += CUnit.getArmorCost(unit, this, critLocation) * (unit.getOArmor(critLocation, false) - unit.getArmor(critLocation, false));
                 }
                 if (unit.getInternal(critLocation) != unit.getOInternal(critLocation)) {
-                    cost += CUnit.getStructureCost(unit, this) * unit.getOInternal(critLocation) - unit.getInternal(critLocation);
+                    cost += CUnit.getStructureCost(unit, this) * (unit.getOInternal(critLocation) - unit.getInternal(critLocation));
                 }
             }// end armor
 

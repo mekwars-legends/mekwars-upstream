@@ -23,8 +23,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import server.campaign.CampaignMain;
-
 import megamek.common.AmmoType;
 import megamek.common.CriticalSlot;
 import megamek.common.Entity;
@@ -559,14 +557,14 @@ public class CUnit extends Unit {
         return result;
     }
 
-    public static double getArmorCost(Entity unit, MWClient client) {
+    public static double getArmorCost(Entity unit, MWClient client, int location) {
         double cost = 0.0;
 
         if (Boolean.parseBoolean(client.getserverConfigs("UsePartsRepair"))) {
             return 0;
         }
 
-        String armorCost = "CostPoint" + UnitUtils.getArmorShortName(unit);
+        String armorCost = "CostPoint" + UnitUtils.getArmorShortName(unit, location);
         cost = Double.parseDouble(client.getserverConfigs(armorCost));
 
         return cost;

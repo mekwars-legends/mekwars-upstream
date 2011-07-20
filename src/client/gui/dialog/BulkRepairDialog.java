@@ -836,7 +836,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
         int techType = ((JComboBox) techBox.getComponent(ARMOR)).getSelectedIndex();
         int baseRoll = Integer.parseInt(((JSpinner) rollBox.getComponent(ARMOR)).getValue().toString());
         double pointsToRepair = 0;
-        double armorCost = CUnit.getArmorCost(unit, mwclient);
+        double armorCost = 0.0;
         double techCost = 0;
         double techWorkMod = 0;
         double cost = 0;
@@ -881,6 +881,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
 
                 if (unit.hasRearArmor(location)) {
                     pointsToRepair += unit.getOArmor(location, true) - unit.getArmor(location, true);
+                    armorCost = CUnit.getArmorCost(unit, mwclient, location);
                     cost += armorCost * pointsToRepair;
                     cost += techCost * Math.abs(techWorkMod);
                     cost += techCost;

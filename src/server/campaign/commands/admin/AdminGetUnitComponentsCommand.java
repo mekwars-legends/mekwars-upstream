@@ -144,9 +144,10 @@ public class AdminGetUnitComponentsCommand implements Command {
 				else
 					components.put(part, 1);
 			}
+			components.put("Armor: "+MiscType.getArmorTypeName(ent.getArmorType(location)), armor+rear);
 		}
 		
-		components.put("Armor: "+MiscType.getArmorTypeName(ent.getArmorType()), armor+rear);
+		
 		components.put("IS: "+MiscType.getStructureTypeName(ent.getStructureType()), IS);
 		
 		return components;

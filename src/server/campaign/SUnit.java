@@ -341,14 +341,14 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
     /*
      * AR-related statics.
      */
-    public static double getArmorCost(Entity unit) {
+    public static double getArmorCost(Entity unit, int location) {
         double cost = 0.0;
 
         if (CampaignMain.cm.getBooleanConfig("UsePartsRepair")) {
             return 0;
         }
 
-        String armorCost = "CostPoint" + UnitUtils.getArmorShortName(unit);
+        String armorCost = "CostPoint" + UnitUtils.getArmorShortName(unit, location);
         cost = CampaignMain.cm.getDoubleConfig(armorCost);
 
         return cost;

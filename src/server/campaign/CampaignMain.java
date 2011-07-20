@@ -3552,7 +3552,7 @@ public final class CampaignMain implements Serializable {
         int baseRoll = rolls.elementAt(UnitUtils.ARMOR);
 
         double pointsToRepair = 0;
-        double armorCost = SUnit.getArmorCost(unit);
+        double armorCost = 0;
         double techCost = 0;
         double techWorkMod = 0;
 
@@ -3568,6 +3568,7 @@ public final class CampaignMain implements Serializable {
         for (int location = 0; location < unit.locations(); location++) {
             if (unit.getArmor(location) < unit.getOArmor(location)) {
                 pointsToRepair += unit.getOArmor(location) - unit.getArmor(location);
+                armorCost = SUnit.getArmorCost(unit, location);
                 totalArmorCost += armorCost * pointsToRepair;
                 totalArmorCost += techCost * Math.abs(techWorkMod);
                 totalArmorCost += techCost;
@@ -3575,6 +3576,7 @@ public final class CampaignMain implements Serializable {
 
             if (unit.hasRearArmor(location)) {
                 pointsToRepair += unit.getOArmor(location, true) - unit.getArmor(location, true);
+                armorCost = SUnit.getArmorCost(unit, location);
                 totalArmorCost += armorCost * pointsToRepair;
                 totalArmorCost += techCost * Math.abs(techWorkMod);
                 totalArmorCost += techCost;
@@ -3870,7 +3872,7 @@ public final class CampaignMain implements Serializable {
         } else {
             if (armor) {
                 if (critSlot == UnitUtils.LOC_FRONT_ARMOR) {
-                    cost = SUnit.getArmorCost(unit);
+                    cost = SUnit.getArmorCost(unit, critLocation);
                     if (unit.getArmor(critLocation) > unit.getOArmor(critLocation)) {
                         // remove the repairing armor so we can get the real
                         // cost.
@@ -3887,7 +3889,7 @@ public final class CampaignMain implements Serializable {
                     cost = Math.max(1, cost);
                 } else if (critSlot == UnitUtils.LOC_REAR_ARMOR) {
                     // tell the repair command its using rear external armor
-                    cost = SUnit.getArmorCost(unit);
+                    cost = SUnit.getArmorCost(unit, critLocation);
                     if (critLocation >= UnitUtils.LOC_CTR) {
                         critLocation -= 7;
                     }

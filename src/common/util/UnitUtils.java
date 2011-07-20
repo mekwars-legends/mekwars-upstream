@@ -2053,8 +2053,8 @@ public class UnitUtils {
 
             // External Armor
             if (slot < LOC_INTERNAL_ARMOR) {
-                double points = 16.0 * EquipmentType.getArmorPointMultiplier(unit.getArmorType(), unit.getArmorTechLevel());
-                double costPerTon = EquipmentType.getArmorCost(unit.getArmorType());
+                double points = 16.0 * EquipmentType.getArmorPointMultiplier(unit.getArmorType(slot), unit.getArmorTechLevel(slot));
+                double costPerTon = EquipmentType.getArmorCost(unit.getArmorType(slot));
 
                 // just in case
                 if (points == 0) {
@@ -2420,10 +2420,10 @@ public class UnitUtils {
         return false;
     }
 
-    public static String getArmorShortName(Entity unit) {
+    public static String getArmorShortName(Entity unit, int location) {
         String armorName = "Standard";
 
-        switch (unit.getArmorType()) {
+        switch (unit.getArmorType(location)) {
             case EquipmentType.T_ARMOR_STANDARD:
                 armorName = "Standard";
                 break;
@@ -2652,10 +2652,10 @@ public class UnitUtils {
                 return EquipmentType.getStructureTypeName(unit.getStructureType());
 
             } else {
-                if (EquipmentType.getArmorTypeName(unit.getArmorType()).equalsIgnoreCase("Standard")) {
+                if (EquipmentType.getArmorTypeName(unit.getArmorType(slot)).equalsIgnoreCase("Standard")) {
                     return "Armor (STD)";
                 }
-                return EquipmentType.getArmorTypeName(unit.getArmorType());
+                return EquipmentType.getArmorTypeName(unit.getArmorType(slot));
             }
         }
         CriticalSlot crit = unit.getCritical(location, slot);
@@ -2706,10 +2706,10 @@ public class UnitUtils {
                 return EquipmentType.getStructureTypeName(unit.getStructureType());
 
             } else {
-                if (EquipmentType.getArmorTypeName(unit.getArmorType()).equalsIgnoreCase("Standard")) {
+                if (EquipmentType.getArmorTypeName(unit.getArmorType(slot)).equalsIgnoreCase("Standard")) {
                     return "Armor (STD)";
                 }
-                return EquipmentType.getArmorTypeName(unit.getArmorType());
+                return EquipmentType.getArmorTypeName(unit.getArmorType(slot));
             }
         }
         CriticalSlot crit = unit.getCritical(location, slot);
