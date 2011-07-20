@@ -9,7 +9,7 @@ import server.campaign.SPlayer;
 public class SetPlayerFlagsCommand implements Command {
 
 	int accessLevel = IAuthenticator.MODERATOR;;
-	String syntax = "/c SetPlayerFlags#Player#FlagName#[true|false|toggle]{repeat flags if needed}";
+	String syntax = "/c SetPlayerFlags#Player#FlagName#[true|false|toggle]...";
 	
 	public int getExecutionLevel() {
 		return accessLevel;
