@@ -16,10 +16,14 @@
 
 package admin.dialog.serverConfigDialogs;
 
+import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,7 +37,7 @@ import common.Unit;
 import common.VerticalLayout;
 import common.util.SpringLayoutHelper;
 
-public class UnitsPanel extends JPanel {
+public class UnitsCardPanel extends JPanel {
 
 	
 	/**
@@ -43,12 +47,17 @@ public class UnitsPanel extends JPanel {
 
     private JTextField baseTextField = new JTextField(5);
     private JCheckBox baseCheckBox = new JCheckBox();
-    private Dimension screenSize;
     
 	private void init() {
+		// We're going to split up the UnitsPanel into two card dialogs
+		JPanel firstCard = new JPanel();
+		JPanel secondCard = new JPanel();
+		
+		
+		// First card will be to hold the units
 		// Set up the costs (cbills, flu, PP)
-		JPanel leftPanel = new JPanel();
-		JPanel rightPanel = new JPanel();
+		JPanel leftPanel1 = new JPanel();
+		JPanel rightPanel1 = new JPanel();		
 		
 		// Left Panel Setup - unit costs
 		JPanel costGrid = new JPanel(new SpringLayout());
@@ -58,7 +67,7 @@ public class UnitsPanel extends JPanel {
 		costGrid.add(new JLabel("Influence"));
 		costGrid.add(new JLabel("PP"));
 		
-		for (int unitType = Unit.MEK; unitType <= Unit.AERO; unitType++) {
+		for (int unitType = Unit.MEK; unitType <= Unit.INFANTRY; unitType++) {
 			for (int unitWeight = Unit.LIGHT; unitWeight <= Unit.ASSAULT; unitWeight++) {
 				String baseName = "";
 				if (unitType == Unit.MEK) {
@@ -87,11 +96,54 @@ public class UnitsPanel extends JPanel {
 		}
 		
 		SpringLayoutHelper.setupSpringGrid(costGrid, 4);
-		leftPanel.add(costGrid);
-		leftPanel.setBorder(BorderFactory.createTitledBorder("Unit Costs"));
+		leftPanel1.add(costGrid);
+		leftPanel1.setBorder(BorderFactory.createTitledBorder("Unit Costs"));
 		
-		// Right Panel Setup - checkboxes and such		
-		rightPanel.setLayout(new VerticalLayout(5, VerticalLayout.LEFT, VerticalLayout.TOP));
+		
+		costGrid = new JPanel(new SpringLayout());
+		costGrid.add(new JLabel("Unit"));
+		costGrid.add(new JLabel("CBills"));
+		costGrid.add(new JLabel("Influence"));
+		costGrid.add(new JLabel("PP"));
+		
+		for (int unitType = Unit.PROTOMEK; unitType <= Unit.AERO; unitType++) {
+			for (int unitWeight = Unit.LIGHT; unitWeight <= Unit.ASSAULT; unitWeight++) {
+				String baseName = "";
+				if (unitType == Unit.MEK) {
+					baseName = Unit.getWeightClassDesc(unitWeight);
+				} else {
+					baseName = Unit.getWeightClassDesc(unitWeight) + Unit.getTypeClassDesc(unitType);
+				}
+				
+				costGrid.add(new JLabel(Unit.getWeightClassDesc(unitWeight) + " " + Unit.getTypeClassDesc(unitType)));
+				baseTextField = new JTextField(5);
+				baseTextField.setName(baseName + "Price");
+				baseTextField.setToolTipText(Unit.getWeightClassDesc(unitWeight) + Unit.getTypeClassDesc(unitType) + "_cbills");
+				costGrid.add(baseTextField);
+				
+				baseTextField = new JTextField(5);
+				baseTextField.setName(baseName + "Inf");
+				baseTextField.setToolTipText(Unit.getWeightClassDesc(unitWeight) + Unit.getTypeClassDesc(unitType) + "_flu");
+				costGrid.add(baseTextField);
+				
+				baseTextField = new JTextField(5);
+				baseTextField.setName(baseName + "PP");
+				baseTextField.setToolTipText(Unit.getWeightClassDesc(unitWeight) + Unit.getTypeClassDesc(unitType) + "_PP");
+				costGrid.add(baseTextField);
+				
+			}
+		}
+		
+		SpringLayoutHelper.setupSpringGrid(costGrid, 4);
+		rightPanel1.add(costGrid);
+		rightPanel1.setBorder(BorderFactory.createTitledBorder("Unit Costs"));
+		
+		firstCard.add(leftPanel1);
+		firstCard.add(rightPanel1);
+		
+		// Second Panel Setup - checkboxes and such	
+		JPanel panel2 = new JPanel();
+		panel2.setLayout(new VerticalLayout(5, VerticalLayout.LEFT, VerticalLayout.TOP));
 		
 		JPanel unitUsePanel = new JPanel(new SpringLayout());
 		
@@ -262,20 +314,47 @@ public class UnitsPanel extends JPanel {
         typesPanel.setPreferredSize(new Dimension(unitUsePanel.getPreferredSize().width, typesPanel.getPreferredSize().height));
         miscPanel.setPreferredSize(new Dimension(unitUsePanel.getPreferredSize().width, miscPanel.getPreferredSize().height));
         
-        rightPanel.add(unitUsePanel);
-        rightPanel.add(commandersPanel);
-        rightPanel.add(miscCheckBoxPanel);
-        rightPanel.add(weightPanel);
-        rightPanel.add(typesPanel);
-        rightPanel.add(miscPanel);
+        panel2.add(unitUsePanel);
+        panel2.add(commandersPanel);
+        panel2.add(miscCheckBoxPanel);
+        panel2.add(weightPanel);
+        panel2.add(typesPanel);
+        panel2.add(miscPanel);
         
-        // Even up the heights
-        rightPanel.setPreferredSize(new Dimension(rightPanel.getPreferredSize().width, leftPanel.getPreferredSize().height));
-		add(leftPanel);
-		add(rightPanel);
+        secondCard.add(panel2);
+        
+        final CardLayout cl = new CardLayout();
+        
+        final JPanel topPanel = new JPanel();
+        final JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(cl);
+        JButton costsButton = new JButton("Unit Costs");
+        costsButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		cl.first(bottomPanel);
+        	}
+        });
+        
+        JButton otherButton = new JButton("Other");
+        otherButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		cl.last(bottomPanel);
+        	}
+        });
+        
+        topPanel.add(costsButton);
+        topPanel.add(otherButton);
+        topPanel.setBorder(BorderFactory.createEtchedBorder());
+                
+        bottomPanel.add(firstCard, "1");
+        bottomPanel.add(secondCard, "2");
+        
+        setLayout(new VerticalLayout());
+        add(topPanel);
+        add(bottomPanel);
 	}
 	
-	public UnitsPanel(MWClient mwclient) {
+	public UnitsCardPanel(MWClient mwclient) {
 		super();
 		init();
 	}

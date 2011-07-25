@@ -19,6 +19,7 @@
 package admin.dialog;
 
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -52,6 +53,7 @@ import admin.dialog.serverConfigDialogs.MiscOptionsPanel;
 import admin.dialog.serverConfigDialogs.NewbieHousePanel;
 import admin.dialog.serverConfigDialogs.NoPlayPanel;
 import admin.dialog.serverConfigDialogs.PathsPanel;
+import admin.dialog.serverConfigDialogs.PilotSkillsCardPanel;
 import admin.dialog.serverConfigDialogs.PilotSkillsPanel;
 import admin.dialog.serverConfigDialogs.PilotsPanel;
 import admin.dialog.serverConfigDialogs.ProductionPanel;
@@ -62,6 +64,7 @@ import admin.dialog.serverConfigDialogs.TechnicianPanel;
 import admin.dialog.serverConfigDialogs.TechnologyResearchPanel;
 import admin.dialog.serverConfigDialogs.UnitLimitsPanel;
 import admin.dialog.serverConfigDialogs.UnitResearchPanel;
+import admin.dialog.serverConfigDialogs.UnitsCardPanel;
 import admin.dialog.serverConfigDialogs.UnitsPanel;
 import admin.dialog.serverConfigDialogs.VotingPanel;
 import client.MWClient;
@@ -83,6 +86,8 @@ public final class ServerConfigurationDialog implements ActionListener {
     JTabbedPane ConfigPane = new JTabbedPane(SwingConstants.TOP);
 
     MWClient mwclient = null;
+    
+    private Dimension screenSize;
 
     /**
      * @author jtighe Opens the server config page in the client.
@@ -103,12 +108,25 @@ public final class ServerConfigurationDialog implements ActionListener {
     public ServerConfigurationDialog(MWClient mwclient) {
 
         this.mwclient = mwclient;
+        
+        // Get the screen dimensions - the Units tab is too tall for smaller than 1280 x 1024
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        screenSize = toolkit.getScreenSize();
+        
         // TAB PANELS (these are added to the root pane as tabs)
+        JPanel unitsPanel;
+        JPanel pilotSkillsPanel;
         PathsPanel pathsPanel = new PathsPanel();// file paths
         InfluencePanel influencePanel = new InfluencePanel(mwclient);// influence settings
         RepodPanel repodPanel = new RepodPanel(mwclient);
         TechnicianPanel technicianPanel = new TechnicianPanel(mwclient);
-        UnitsPanel unitsPanel = new UnitsPanel(mwclient);
+        if (screenSize.height >= 1024) {
+        	unitsPanel = new UnitsPanel(mwclient);
+        	pilotSkillsPanel = new PilotSkillsPanel(mwclient);
+        } else {
+        	unitsPanel = new UnitsCardPanel(mwclient);
+        	pilotSkillsPanel = new PilotSkillsCardPanel(mwclient);
+        }
         FactionPanel factionPanel = new FactionPanel(mwclient);
         DirectSellPanel directSellPanel = new DirectSellPanel();
         NewbieHousePanel newbieHousePanel = new NewbieHousePanel();
@@ -131,7 +149,6 @@ public final class ServerConfigurationDialog implements ActionListener {
         PilotsPanel pilotsPanel = new PilotsPanel(mwclient);// allows SO's set up pilot options and personal pilot queue options
         NoPlayPanel noPlayPanel = new NoPlayPanel(mwclient);
         DBPanel dbPanel = new DBPanel(); // Database configuration
-        PilotSkillsPanel pilotSkillsPanel = new PilotSkillsPanel(mwclient);// allows SO's to select what pilot skills they want for non-Mek unit types.
         AdvancedRepairPanel advancedRepairPanel = new AdvancedRepairPanel();// Advanced Repair
         LossCompensationPanel lossCompensationPanel = new LossCompensationPanel();// battle loss compensation
       

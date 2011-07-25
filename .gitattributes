@@ -1363,6 +1363,7 @@ src/admin/dialog/serverConfigDialogs/NewbieHousePanel.java -text
 src/admin/dialog/serverConfigDialogs/NoPlayPanel.java -text
 src/admin/dialog/serverConfigDialogs/PathsPanel.java -text
 src/admin/dialog/serverConfigDialogs/PilotSkillTextField.java -text
+src/admin/dialog/serverConfigDialogs/PilotSkillsCardPanel.java -text
 src/admin/dialog/serverConfigDialogs/PilotSkillsModPanel.java -text
 src/admin/dialog/serverConfigDialogs/PilotSkillsPanel.java -text
 src/admin/dialog/serverConfigDialogs/PilotsPanel.java -text
@@ -1374,6 +1375,7 @@ src/admin/dialog/serverConfigDialogs/TechnicianPanel.java -text
 src/admin/dialog/serverConfigDialogs/TechnologyResearchPanel.java -text
 src/admin/dialog/serverConfigDialogs/UnitLimitsPanel.java -text
 src/admin/dialog/serverConfigDialogs/UnitResearchPanel.java -text
+src/admin/dialog/serverConfigDialogs/UnitsCardPanel.java -text
 src/admin/dialog/serverConfigDialogs/UnitsPanel.java -text
 src/admin/dialog/serverConfigDialogs/VotingPanel.java -text
 src/client/CConfig.java -text
