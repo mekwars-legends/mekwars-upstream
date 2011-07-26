@@ -1304,7 +1304,7 @@ public class PilotSkillsCardPanel extends JPanel {
         JButton skillsButton = new JButton("Skill Chances");
         skillsButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		cl.last(bottomPanel);
+        		cl.first(bottomPanel);
         	}
         });
         
