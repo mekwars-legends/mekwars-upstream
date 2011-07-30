@@ -2680,42 +2680,32 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
      * AU|weight$type$chassis$model$damage|
      */
     public String getHSUnitAdditionString(SUnit u) {
-
-        StringBuilder result = new StringBuilder();
+        SerializedMessage result = new SerializedMessage("$");
 
         // header info
-        result.append("AU|");
-        result.append(u.getWeightclass());
-        result.append("$");
+        result.append("AU|" + u.getWeightclass());
         result.append(u.getType());
-        result.append("$");
 
         // unit information (note: no pilot info included)
         Entity currE = u.getEntity();
         result.append(u.getUnitFilename());
-        result.append("$");
         result.append(u.getId());// ID used to remove units. Never shown to
         // players in GUI.
 
         if (!u.hasVacantPilot()) {
-            result.append("$");
             result.append(u.getPilot().getGunnery());
-            result.append("$");
             result.append(u.getPilot().getPiloting());
         } else {
-            result.append("$");
             result.append(getBaseGunner(u.getType()));
-            result.append("$");
             result.append(getBasePilot(u.getType()));
         }
         // if using AR, send damage information
         if (CampaignMain.cm.isUsingAdvanceRepair()) {
-            result.append("$" + UnitUtils.unitBattleDamage(currE));
+            result.append(UnitUtils.unitBattleDamage(currE));
         }
 
-        // fianlize and return
-        result.append("|");
-        return result.toString();
+        // finalize and return
+        return result.toString() + "|";
     }
 
     /**
