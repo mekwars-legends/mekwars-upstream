@@ -31,6 +31,7 @@ import java.util.Vector;
 
 import common.CampaignData;
 import server.campaign.pilot.SPilot;
+import server.campaign.util.SerializedMessage;
 import server.mwmysql.JDBCConnectionHandler;
 
 import common.Unit;
@@ -182,16 +183,14 @@ public class SPersonalPilotQueues implements Serializable {
      */
     public String toString(boolean toClient) {
 
-        StringBuilder result = new StringBuilder();
+        SerializedMessage result = new SerializedMessage("$");
 
         // meks first
         for (int weightClass = Unit.LIGHT; weightClass <= Unit.ASSAULT; weightClass++) {
             LinkedList<Pilot> currList = this.getPilotQueue(Unit.MEK, weightClass);
             result.append(currList.size());
-            result.append("$");
             for (int position = 0; position < currList.size(); position++) {
                 result.append(((SPilot) currList.get(position)).toFileFormat("#", toClient));
-                result.append("$");
             }
         }
 
@@ -199,10 +198,8 @@ public class SPersonalPilotQueues implements Serializable {
         for (int weightClass = Unit.LIGHT; weightClass <= Unit.ASSAULT; weightClass++) {
             LinkedList<Pilot> currList = this.getPilotQueue(Unit.PROTOMEK, weightClass);
             result.append(currList.size());
-            result.append("$");
             for (int position = 0; position < currList.size(); position++) {
                 result.append(((SPilot) currList.get(position)).toFileFormat("#", toClient));
-                result.append("$");
             }
         }
 
@@ -210,10 +207,8 @@ public class SPersonalPilotQueues implements Serializable {
         for (int weightClass = Unit.LIGHT; weightClass <= Unit.ASSAULT; weightClass++) {
             LinkedList<Pilot> currList = this.getPilotQueue(Unit.AERO, weightClass);
             result.append(currList.size());
-            result.append("$");
             for (int position = 0; position < currList.size(); position++) {
                 result.append(((SPilot) currList.get(position)).toFileFormat("#", toClient));
-                result.append("$");
             }
         }
 

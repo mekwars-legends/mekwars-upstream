@@ -55,6 +55,7 @@ import server.campaign.mercenaries.MercHouse;
 import server.campaign.operations.Operation;
 import server.campaign.operations.ShortOperation;
 import server.campaign.pilot.SPilot;
+import server.campaign.util.SerializedMessage;
 import server.mwmysql.JDBCConnectionHandler;
 
 import common.BMEquipment;
@@ -113,20 +114,14 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
     
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
+        SerializedMessage result = new SerializedMessage("|");
         // result.append("HS�");
         result.append(getName());
-        result.append("|");
         result.append(getMoney());
-        result.append("|");
         result.append(getHouseColor());
-        result.append("|");
         result.append(this.getBaseGunner());
-        result.append("|");
         result.append(getBasePilot());
-        result.append("|");
         result.append(getAbbreviation());
-        result.append("|");
 
         // Store the Meks
         for (int i = 0; i < 4; i++) {
@@ -134,11 +129,9 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
             tmpVec.trimToSize();
             result.append(tmpVec.size());
-            result.append("|");
 
             for (SUnit currU : tmpVec) {
                 result.append(currU.toString(false));
-                result.append("|");
             }
         }
 
@@ -148,11 +141,9 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
             tmpVec.trimToSize();
             result.append(tmpVec.size());
-            result.append("|");
 
             for (SUnit currU : tmpVec) {
                 result.append(currU.toString(false));
-                result.append("|");
             }
         }
 
@@ -164,17 +155,14 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
                 tmpVec.trimToSize();
                 result.append(tmpVec.size());
-                result.append("|");
 
                 for (SUnit currU : tmpVec) {
                     result.append(currU.toString(false));
-                    result.append("|");
                 }
             }
         }
 
         result.append(getLogo());
-        result.append("|");
 
         /*
          * USABLE NODE
@@ -184,58 +172,44 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
          * and the node can now be used ...
          */
         result.append(0);
-        result.append("|");
 
         // Write the Components / BuildingPP's
-        result.append("Components" + "|");
+        result.append("Components");
         Enumeration<Integer> e = getComponents().keys();
         while (e.hasMoreElements()) {
             Integer id = e.nextElement();
             Vector<Integer> v = getComponents().get(id);
-            result.append(id.intValue() + "|" + v.size() + "|");
+            result.append(id.intValue());
+            result.append(v.size());
             for (int i = 0; i < v.size(); i++) {
-                result.append(v.elementAt(i).intValue() + "|");
+                result.append(v.elementAt(i).intValue());
             }
         }
         result.append("EndComponents");
-        result.append("|");
 
         result.append(getInitialHouseRanking());
-        result.append("|");
         result.append(isConquerable());
-        result.append("|");
         result.append(isInHouseAttacks());
-        result.append("|");
         result.append(getId());
-        result.append("|");
         result.append(getHousePlayerColor());
-        result.append("|");
         result.append(getHouseDefectionFrom());
-        result.append("|");// Mek pilots first
-        result.append(getPilotQueues().getQueueSize(Unit.MEK));
-        result.append("|");
+        result.append(getPilotQueues().getQueueSize(Unit.MEK));// Mek pilots first
         LinkedList<SPilot> PilotList = getPilotQueues().getPilotQueue(Unit.MEK);
         for (SPilot currP : PilotList) {
             result.append(currP.toFileFormat("#", false));
-            result.append("|");
         }// veehs next
         result.append(getPilotQueues().getQueueSize(Unit.VEHICLE));
-        result.append("|");
         PilotList = getPilotQueues().getPilotQueue(Unit.VEHICLE);
         for (SPilot currP : PilotList) {
             result.append(currP.toFileFormat("#", false));
-            result.append("|");
         }// inf
         result.append(getPilotQueues().getQueueSize(Unit.INFANTRY));
-        result.append("|");
         PilotList = getPilotQueues().getPilotQueue(Unit.INFANTRY);
         for (SPilot currP : PilotList) {
             result.append(currP.toFileFormat("#", false));
-            result.append("|");
         }
 
         result.append(getHouseFluFile());
-        result.append("|");
 
         // Store the BattleArmor (Units)
         for (int i = 0; i < 4; i++) {
@@ -243,11 +217,9 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
             tmpVec.trimToSize();
             result.append(tmpVec.size());
-            result.append("|");
 
             for (SUnit currU : tmpVec) {
                 result.append(currU.toString(false));
-                result.append("|");
             }
         }
 
@@ -257,29 +229,23 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
             tmpVec.trimToSize();
             result.append(tmpVec.size());
-            result.append("|");
             for (SUnit currU : tmpVec) {
                 result.append(currU.toString(false));
-                result.append("|");
             }
         }
 
         // Store BattleArmor (Pilots)
         result.append(getPilotQueues().getQueueSize(Unit.BATTLEARMOR));
-        result.append("|");
         PilotList = getPilotQueues().getPilotQueue(Unit.BATTLEARMOR);
         for (SPilot currPilot : PilotList) {
             result.append(currPilot.toFileFormat("#", false));
-            result.append("|");
         }
 
         // Store ProtoMeks (Pilots)
         result.append(getPilotQueues().getQueueSize(Unit.PROTOMEK));
-        result.append("|");
         PilotList = getPilotQueues().getPilotQueue(Unit.PROTOMEK);
         for (SPilot currPilot : PilotList) {
             result.append(currPilot.toFileFormat("#", false));
-            result.append("|");
         }
 
         // Save faction MOTD
@@ -289,15 +255,11 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             result.append(stripReturns(getMotd()));
         }
 
-        result.append("|");
         result.append(getHouseDefectionTo());
-        result.append("|");
 
         for (int pos = 0; pos < Unit.MAXBUILD; pos++) {
             result.append(getBaseGunner(pos));
-            result.append("|");
             result.append(getBasePilot(pos));
-            result.append("|");
         }
 
         for (int pos = 0; pos < Unit.MAXBUILD; pos++) {
@@ -307,34 +269,23 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
             } else {
                 result.append(skill);
             }
-            result.append("|");
         }
 
         result.append(getTechLevel());
-        result.append("|");
 
         result.append(getSubFactionList().size());
-        result.append("|");
 
         for (String key : getSubFactionList().keySet()) {
             result.append(getSubFactionList().get(key).toString());
-            result.append("|");
         }
 
         result.append(leaders.size());
-        result.append("|");
         for (String leader : leaders) {
             result.append(leader);
-            result.append("|");
         }
         result.append(techResearchPoints);
-        result.append("|");
-
         result.append(unitParts.toString("#"));
-        result.append("|");
-
         result.append(componentConverter.size());
-        result.append("|");
 
         for (String key : componentConverter.keySet()) {
             result.append(componentConverter.get(key).toString());
@@ -346,21 +297,17 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
             tmpVec.trimToSize();
             result.append(tmpVec.size());
-            result.append("|");
-
+ 
             for (SUnit currU : tmpVec) {
                 result.append(currU.toString(false));
-                result.append("|");
             }
         }
 
         // Store Aero (Pilots)
         result.append(getPilotQueues().getQueueSize(Unit.AERO));
-        result.append("|");
         PilotList = getPilotQueues().getPilotQueue(Unit.AERO);
         for (SPilot currPilot : PilotList) {
             result.append(currPilot.toFileFormat("#", false));
-            result.append("|");
         }
 
         return result.toString();

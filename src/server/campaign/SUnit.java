@@ -50,6 +50,7 @@ import megamek.common.options.PilotOptions;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.SPilotSkill;
 import server.campaign.pilot.skills.WeaponSpecialistSkill;
+import server.campaign.util.SerializedMessage;
 import server.mwmysql.JDBCConnectionHandler;
 
 import common.CampaignData;
@@ -438,6 +439,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
      */
     public String toString(boolean toPlayer) {
 
+    	SerializedMessage msg = new SerializedMessage("$");
         // Recalculate the unit's bv. There is a reason we are sending new data
         // to the player
         if (toPlayer) {
@@ -445,53 +447,38 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
             getBV();
         }
 
-        StringBuilder result = new StringBuilder();
-        result.append("CM$");
-        result.append(getUnitFilename());
-        result.append("$");
-        result.append(getPosId());
-        result.append("$");
-        result.append(getStatus());
-        result.append("$");
-        result.append(getProducer());
-        result.append("$");
-        result.append(((SPilot) getPilot()).toFileFormat("#", toPlayer));
-        result.append("$");
+        msg.append("CM");
+        msg.append(getUnitFilename());
+        msg.append(getPosId());
+        msg.append(getStatus());
+        msg.append(getProducer());
+        msg.append(((SPilot) getPilot()).toFileFormat("#", toPlayer));
         if (toPlayer) {
             LinkedList<MegaMekPilotOption> mmoptions = getPilot().getMegamekOptions();
-            result.append(mmoptions.size());
-            result.append("$");
+            msg.append(mmoptions.size());
             Iterator<MegaMekPilotOption> i = mmoptions.iterator();
             while (i.hasNext()) {
                 MegaMekPilotOption mmo = i.next();
-                result.append(mmo.getMmname());
-                result.append("$");
-                result.append(mmo.isValue());
-                result.append("$");
+                msg.append(mmo.getMmname());
+                msg.append(mmo.isValue());
             }
-            result.append(getType());
-            result.append("$");
-            result.append(getBV());
-            result.append("$");
+            msg.append(getType());
+            msg.append(getBV());
         }
-        result.append(getWeightclass());
-        result.append("$");
-        result.append(getId());
-        result.append("$");
+        msg.append(getWeightclass());
+        msg.append(getId());
 
         // error units don't need the rest of this data sent.
         if (getModelName().equals("OMG-UR-FD")) {
-            return result.toString();
+            return msg.getMessage();
         }
 
         if (getEntity() instanceof Mech) {
             unitEntity = getEntity();
-            result.append(((Mech) unitEntity).isAutoEject());
-            result.append("$");
+            msg.append(((Mech) unitEntity).isAutoEject());
         }
         ArrayList<Mounted> en_Ammo = unitEntity.getAmmo();
-        result.append(en_Ammo.size());
-        result.append("$");
+        msg.append(en_Ammo.size());
         for (Mounted mAmmo : en_Ammo) {
 
             boolean hotloaded = mAmmo.isHotLoaded();
@@ -500,20 +487,15 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
             }
 
             AmmoType at = (AmmoType) mAmmo.getType();
-            result.append(at.getAmmoType());
-            result.append("$");
-            result.append(at.getInternalName());
-            result.append("$");
-            result.append(mAmmo.getShotsLeft());
-            result.append("$");
-            result.append(hotloaded);
-            result.append("$");
+            msg.append(at.getAmmoType());
+            msg.append(at.getInternalName());
+            msg.append(mAmmo.getShotsLeft());
+            msg.append(hotloaded);
         }
 
         if ((unitEntity instanceof Mech) || (unitEntity instanceof Tank)) {
             int mgCount = CampaignMain.cm.getMachineGunCount(unitEntity.getWeaponList());
-            result.append(mgCount);
-            result.append("$");
+            msg.append(mgCount);
 
             if (mgCount > 0) {
 
@@ -537,52 +519,40 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
                             continue;
                         }
 
-                        result.append(location);
-                        result.append("$");
-                        result.append(slot);
-                        result.append("$");
-                        result.append(m.isRapidfire());
-                        result.append("$");
+                        msg.append(location);
+                        msg.append(slot);
+                        msg.append(m.isRapidfire());
                     }
                 }
             }
         } else {
-            result.append("0$");
+        	msg.append(0);
         }
 
-        result.append("0$"); // unused Slite info and targetting.
-        result.append(targetSystem.getCurrentType());
-        result.append("$");
-        result.append(isSupportUnit()?"1":"0");
-        result.append("$");
-        result.append(getScrappableFor());
-        result.append("$");
+        msg.append(0);
+        msg.append(targetSystem.getCurrentType());
+        msg.append(isSupportUnit()?"1":"0");
+        msg.append(getScrappableFor());
         if (CampaignMain.cm.isUsingAdvanceRepair()) {
             // do not need to save ammo twice so set sendAmmo to False
-            result.append(UnitUtils.unitBattleDamage(getEntity(), false));
+        	msg.append(UnitUtils.unitBattleDamage(getEntity(), false));
         } else {
-            result.append("%%-%%-%%-");
+        	msg.append("%%-%%-%%-");
         }
-        result.append("$");
 
         if (toPlayer) {
-            result.append(getPilotIsReparing());
-            result.append("$");
+        	msg.append(getPilotIsReparing());
         }
         if (!toPlayer) {
-            result.append(getLastCombatPilot());
-            result.append("$");
+        	msg.append(getLastCombatPilot());
         }
 
-        result.append(getCurrentRepairCost());
-        result.append("$");
-        result.append(getLifeTimeRepairCost());
-        result.append("$");
+        msg.append(getCurrentRepairCost());
+        msg.append(getLifeTimeRepairCost());
         if (CampaignMain.cm.isUsingMySQL() && !toPlayer) {
-            result.append(getDBId());
-            result.append("$");
+        	msg.append(getDBId());
         }
-        return result.toString();
+        return msg.getMessage();
     }
 
     public void toDB() {

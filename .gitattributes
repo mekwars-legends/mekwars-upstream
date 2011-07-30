@@ -2025,6 +2025,7 @@ src/server/campaign/util/HouseRankingHelpContainer.java -text
 src/server/campaign/util/MechStatistics.java -text
 src/server/campaign/util/OpponentListHelper.java -text
 src/server/campaign/util/PlanetNameComparator.java -text
+src/server/campaign/util/SerializedMessage.java -text
 src/server/campaign/util/Statistics.java -text
 src/server/campaign/util/WhoToHTML.java -text
 src/server/campaign/util/XMLFactionDataParser.java -text

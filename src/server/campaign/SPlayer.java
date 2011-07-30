@@ -45,6 +45,7 @@ import server.campaign.mercenaries.MercHouse;
 import server.campaign.pilot.SPilot;
 import server.campaign.util.ExclusionList;
 import server.campaign.util.OpponentListHelper;
+import server.campaign.util.SerializedMessage;
 import server.mwmysql.JDBCConnectionHandler;
 import server.util.MWPasswdRecord;
 
@@ -2695,30 +2696,23 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
      * huge (and important) that they get a separate block.
      */
     public String toString(boolean toClient) {
-
-        StringBuilder result = new StringBuilder();
-        result.append("CP~");
+    	SerializedMessage result = new SerializedMessage("~");
+        result.append("CP");
         result.append(name);
-        result.append("~");
         result.append(money);
-        result.append("~");
         result.append(experience);
-        result.append("~");
-        result.append(units.size() + "~");
+        result.append(units.size());
         if (units.size() > 0) {
             synchronized (units) {
                 for (SUnit currU : units) {
                     currU.getPilot().setCurrentFaction(myHouse.getName());
                     result.append(currU.toString(toClient));
-                    result.append("~");
                 }
             }
         }
         result.append(armies.size());
-        result.append("~");
         for (int i = 0; i < armies.size(); i++) {
             result.append(armies.elementAt(i).toString(toClient, "%"));
-            result.append("~");
         }
         if (!toClient) {
             if (getMyHouse() != null) {
@@ -2726,14 +2720,12 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             } else {
                 result.append(CampaignMain.cm.getConfig("NewbieHouseName"));
             }
-            result.append("~");
             result.append(lastOnline);
-            result.append("~");
+            
         }
         result.append(getTotalMekBays());
-        result.append("~");
         result.append(getFreeBays());
-        result.append("~");
+        
         if (toClient) {
             if (Boolean.parseBoolean(getMyHouse().getConfig("HideELO"))) {
                 result.append("0");
@@ -2743,13 +2735,9 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         } else {
             result.append(rating);
         }
-        result.append("~");
         result.append(influence);
-        result.append("~");
         if (!toClient) {
-            result.append(fluffText);
-            result.append(" ~");
-
+            result.append(fluffText + " ");
             /*
              * In older code, player-prefered game options were saved here. This
              * feature has been eliminated. Because of terrible coding (using
@@ -2759,7 +2747,6 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
              * can be reclaimed. @urgru 12.28.05
              */
             result.append(0);
-            result.append("~");
         }
 
         if (CampaignMain.cm.isUsingAdvanceRepair()) {
@@ -2767,12 +2754,8 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
         } else {
             result.append(technicians);// used when saving to houses.dat
         }
-
         // above is used when sending to client bad hack but needed for now
-        result.append("~");
         result.append(currentReward); // saving current reward points
-        result.append("~");
-
         /*
          * In older code, player's price modifier (mezzo) was saved here. This
          * feature has been eliminated, and the spaces can be reclaimed. @urgru
@@ -2784,107 +2767,71 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             } else {
                 result.append("0");
             }
-            result.append("~");
             result.append(0);
-            result.append("~");
         }
-
-        result.append(myHouse.getName());
-        result.append(" ~");
+        result.append(myHouse.getName() + " ");
         if (toClient) {
-            result.append(getHouseFightingFor().getName());
-            result.append(" ~");
+            result.append(getHouseFightingFor().getName() + " ");
             if (getMyLogo().length() == 0) {
-                result.append(myHouse.getLogo());
+                result.append(myHouse.getLogo() + " ");
             } else {
-                result.append(getMyLogo());
+                result.append(getMyLogo() + " ");
             }
-            result.append(" ~");
         } else {
             result.append(xpToReward);
-            result.append("~");
             result.append("0");
-            result.append("~");
             result.append(getPersonalPilotQueue().toString(toClient));
-            result.append("~");
             result.append(getExclusionList().adminExcludeToString("$"));
-            result.append("~");
             result.append(getExclusionList().playerExcludeToString("$"));
-            result.append("~");
+            
             if (CampaignMain.cm.isUsingAdvanceRepair()) {
                 result.append(totalTechsToString());
-                result.append("~");
                 result.append(availableTechsToString());
-                result.append("~");
                 result.append(baysOwned);
-                result.append("~");
             } else {
                 result.append(" ");
-                result.append("~");
                 result.append(" ");
-                result.append("~");
                 result.append(technicians);
-                result.append("~");
             }
             if (getMyLogo().trim().length() == 0) {
-                result.append(myHouse.getLogo());
+                result.append(myHouse.getLogo() + " ");
             } else {
-                result.append(getMyLogo());
+                result.append(getMyLogo() + " ");
             }
-            result.append(" ~");
             result.append(getLastAttackFromReserve());
-            result.append("~");
             result.append(getGroupAllowance());
-            result.append("~");
             if (lastISP.length() < 1) {
                 result.append(" ");
             } else {
                 result.append(lastISP);
             }
-            result.append("~");
         }
         result.append(isInvisible());
-        result.append("~");
-
         if (!toClient) {
             result.append(groupAllowance);
-            result.append("~");
             if (password != null) {
                 result.append(password.getAccess());
-                result.append("~");
                 result.append(password.getPasswd());
-                result.append("~");
                 result.append(password.getTime());
-                result.append("~");
             } else {
-                result.append("0~ ~0~");
+                result.append("0");
+                result.append(" ");
+                result.append("0");
             }
         }
-
         result.append(unitParts.toString("|"));
-        result.append("~");
-
         result.append(getAutoReorder());
-        result.append("~");
-
         if (!toClient) {
             result.append(getTeamNumber());
-            result.append("~");
-
             if (getSubFactionName().trim().length() < 1) {
                 result.append(" ");
             } else {
                 result.append(getSubFactionName());
             }
-            result.append("~");
             result.append(getLastPromoted());
-            result.append("~");
         }
-
         result.append(exportFlags().length() > 1 ? exportFlags() : CampaignMain.cm.getDefaultPlayerFlags().export());
-        result.append("~");
-        
-        return result.toString();
+        return result.getMessage();
     }
 
     public void toDB() {

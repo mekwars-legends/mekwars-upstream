@@ -41,6 +41,7 @@ import common.UnitFactory;
 
 import common.CampaignData;
 import server.campaign.pilot.SPilot;
+import server.campaign.util.SerializedMessage;
 import server.campaign.SUnit;
 import server.mwmysql.JDBCConnectionHandler;
 import common.util.TokenReader;
@@ -82,18 +83,13 @@ public class SUnitFactory extends UnitFactory implements Serializable {
      */
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        result.append("MF*");
+        SerializedMessage result = new SerializedMessage("*");
+        result.append("MF");
         result.append(getName());
-        result.append("*");
         result.append(getSize());
-        result.append("*");
         result.append(getFounder());
-        result.append("*");
         result.append(getTicksUntilRefresh());
-        result.append("*");
         result.append(getRefreshSpeed());
-        result.append("*");
 
         String buildtablefolder = getBuildTableFolder().replaceAll(BuildTable.STANDARD + "\\" + File.separatorChar, "");
 
@@ -102,13 +98,9 @@ public class SUnitFactory extends UnitFactory implements Serializable {
         else
             result.append(buildtablefolder);
 
-        result.append("*");
         result.append(getType());
-        result.append("*");
         result.append(isLocked());
-        result.append("*");
         result.append(getAccessLevel());
-        result.append("*");
         return result.toString();
     }
 

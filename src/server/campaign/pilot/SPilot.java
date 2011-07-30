@@ -42,6 +42,7 @@ import server.campaign.pilot.skills.EdgeSkill;
 import server.campaign.pilot.skills.SPilotSkill;
 import server.campaign.pilot.skills.TraitSkill;
 import server.campaign.pilot.skills.WeaponSpecialistSkill;
+import server.campaign.util.SerializedMessage;
 import server.mwmysql.JDBCConnectionHandler;
 
 import common.CampaignData;
@@ -419,62 +420,44 @@ public class SPilot extends Pilot {
     }// end checkForPilotSkillImprovement
 
     public String toFileFormat(String delimiter, boolean toPlayer) {
-        StringBuilder result = new StringBuilder();
+        SerializedMessage result = new SerializedMessage(delimiter);
         result.append(getName());
-        result.append(delimiter);
         result.append(getExperience());
-        result.append(delimiter);
         result.append(getGunnery());
-        result.append(delimiter);
         result.append(getPiloting());
-        result.append(delimiter);
         result.append(getSkills().size());
-        result.append(delimiter);
         for (PilotSkill skill : getSkills().getPilotSkills()) {
             SPilotSkill sk = (SPilotSkill) skill;
             result.append(sk.getId());
-            result.append(delimiter);
             if (toPlayer) {
                 result.append(sk.getName());
-                result.append(delimiter);
             }
             result.append(sk.getLevel());
-            result.append(delimiter);
             if (toPlayer) {
                 result.append(sk.getAbbreviation());
-                result.append(delimiter);
             }
             if (sk instanceof WeaponSpecialistSkill) {
                 result.append(getWeapon());
-                result.append(delimiter);
             }
             if (sk instanceof TraitSkill) {
                 result.append(getTraitName());
-                result.append(delimiter);
             }
             if (sk instanceof EdgeSkill) {
                 result.append(((EdgeSkill) sk).getTac());
-                result.append(delimiter);
                 result.append(((EdgeSkill) sk).getKO());
-                result.append(delimiter);
                 result.append(((EdgeSkill) sk).getHeadHit());
-                result.append(delimiter);
                 result.append(((EdgeSkill) sk).getExplosion());
-                result.append(delimiter);
             }
 
         }
         result.append(getKills());
-        result.append(delimiter);
         if (!toPlayer) {
             if (getCurrentFaction().trim().length() > 0) {
                 result.append(getCurrentFaction());
             } else {
                 result.append(CampaignMain.cm.getConfig("NewbieHouseName"));
             }
-            result.append(delimiter);
             result.append(getPilotId());
-            result.append(delimiter);
         }
         if (CampaignMain.cm.getBooleanConfig("AllowPilotDamageToTransfer")) {
             if (toPlayer) {
@@ -494,7 +477,6 @@ public class SPilot extends Pilot {
         } else {
             result.append(0);
         }
-        result.append(delimiter);
 
         if (!toPlayer) {
             if (CampaignMain.cm.isUsingMySQL()) {
@@ -502,7 +484,6 @@ public class SPilot extends Pilot {
             } else {
                 result.append(0);// unused var
             }
-            result.append(delimiter);
         }
 
         return result.toString();

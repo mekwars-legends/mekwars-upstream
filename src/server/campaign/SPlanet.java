@@ -42,6 +42,7 @@ import common.util.Position;
 import common.util.TokenReader;
 
 import server.campaign.data.TimeUpdatePlanet;
+import server.campaign.util.SerializedMessage;
 import server.mwmysql.JDBCConnectionHandler;
 
 public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparable<Object> {
@@ -55,50 +56,46 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        result.append("PL#");
+        SerializedMessage result = new SerializedMessage("#");
+        result.append("PL");
         result.append(getName());
-        result.append("#");
         result.append(getCompProduction());
         if (getUnitFactories() != null) {
-            result.append("#" + getUnitFactories().size());
+            result.append(getUnitFactories().size());
             for (UnitFactory factory : getUnitFactories()) {
                 // int i = 0; i < getUnitFactories().size(); i++) {
                 // SUnitFactory MF = (SUnitFactory) getUnitFactories().get(i);
-                result.append("#" + ((SUnitFactory) factory).toString());
+                result.append(((SUnitFactory) factory).toString());
             }
         } else
-            result.append("#0");
+            result.append("0");
 
-        result.append("#" + getPosition().getX());
-        result.append("#" + getPosition().getY());
-        result.append("#");
+        result.append(getPosition().getX());
+        result.append(getPosition().getY());
+        StringBuilder houseString = new StringBuilder();
         for (House house : getInfluence().getHouses()) {
             SHouse next = (SHouse) house;
             if (next == null)
                 continue;
-            result.append(next.getName());
-            result.append("$"); // change for unusual influence
-            result.append(getInfluence().getInfluence(next.getId()));
-            result.append("$"); // change for unusual influence
+            houseString.append(next.getName());
+            houseString.append("$"); // change for unusual influence
+            houseString.append(getInfluence().getInfluence(next.getId()));
+            houseString.append("$"); // change for unusual influence
         }
         // No Influences then set influence to NewbieHouse so the planet will
         // load.
         if (getInfluence().getHouses().size() < 1) {
-            result.append(CampaignMain.cm.getConfig("NewbieHouseName"));
-            result.append("$");
-            result.append(this.getConquestPoints());
-            result.append("$");
+        	houseString.append(CampaignMain.cm.getConfig("NewbieHouseName"));
+        	houseString.append("$");
+        	houseString.append(this.getConquestPoints());
+        	houseString.append("$");
         }
 
-        result.append("#");
+        result.append(houseString.toString());
         result.append(getEnvironments().size());
-        result.append("#");
         for (Continent t : getEnvironments().toArray()) {
             result.append(t.getSize());
-            result.append("#");
             result.append(t.getEnvironment().getName());
-            result.append("#");
             if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")) {
                 AdvancedTerrain aTerrain = this.getAdvancedTerrain().get(new Integer(t.getEnvironment().getId()));
                 if (aTerrain == null)
@@ -106,61 +103,39 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
                 if (aTerrain.getDisplayName().length() <= 1)
                     aTerrain.setDisplayName(t.getEnvironment().getName());
                 result.append(aTerrain.toString());
-                result.append("#");
             }
         }
         if (getDescription().equals(""))
             result.append(" ");
         else
             result.append(getDescription());
-        result.append("#");
         result.append(this.getBaysProvided());
-        result.append("#");
         result.append(this.isConquerable());
-        result.append("#");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         result.append(sdf.format(this.getLastChanged()));
-        result.append("#");
         result.append(this.getId());
-        result.append("#");
         result.append(getMapSize().width);
-        result.append("#");
         result.append(getMapSize().height);
-        result.append("#");
         result.append(getBoardSize().width);
-        result.append("#");
         result.append(getBoardSize().height);
-        result.append("#");
         result.append(getTemp().width);
-        result.append("#");
         result.append(getTemp().height);
-        result.append("#");
         result.append(getGravity());
-        result.append("#");
         result.append(isVacuum());
-        result.append("#");
         result.append(getNightChance());
-        result.append("#");
         result.append(getNightTempMod());
-        result.append("#");
         result.append(this.getMinPlanetOwnerShip());
-        result.append("#");
         result.append(isHomeWorld());
-        result.append("#");
         result.append(getOriginalOwner());
-        result.append("#");
 
         if (this.getPlanetFlags().size() > 0) {
             for (String key : this.getPlanetFlags().keySet()) {
                 result.append(key + "^");
             }
-
-            result.append("#");
         } else
-            result.append("^^#");
+            result.append("^^");
 
         result.append(this.getConquestPoints());
-        result.append("#");
 
         return result.toString();
     }
