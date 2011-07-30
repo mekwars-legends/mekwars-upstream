@@ -24,16 +24,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.StringTokenizer;
 
-import common.campaign.pilot.skills.PilotSkill;
-
-import common.CampaignData;
 import server.campaign.CampaignMain;
+import server.campaign.pilot.SPilotSkills;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.AstechSkill;
 import server.campaign.pilot.skills.EdgeSkill;
 import server.campaign.pilot.skills.SPilotSkill;
 import server.campaign.pilot.skills.TraitSkill;
 import server.campaign.pilot.skills.WeaponSpecialistSkill;
+
+import common.CampaignData;
+import common.campaign.pilot.skills.PilotSkill;
 
 public class PilotHandler {
 
@@ -63,7 +64,7 @@ public class PilotHandler {
 					// Load the skills
 					rs = stmt.executeQuery("SELECT * from pilotskills WHERE pilotID = " + pID);
 					while(rs.next()) {
-						SPilotSkill skill = CampaignMain.cm.getPilotSkill(rs.getInt("skillNum"));
+						SPilotSkill skill = SPilotSkills.getPilotSkill(rs.getInt("skillNum"));
 						int level = rs.getInt("skillLevel");
 						if (skill instanceof AstechSkill)
 							skill = new AstechSkill(PilotSkill.AstechSkillID);

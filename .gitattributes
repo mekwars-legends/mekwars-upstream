@@ -1991,6 +1991,7 @@ src/server/campaign/operations/ShortOperation.java -text
 src/server/campaign/operations/ShortResolver.java -text
 src/server/campaign/operations/ShortValidator.java -text
 src/server/campaign/pilot/SPilot.java -text
+src/server/campaign/pilot/SPilotSkills.java -text
 src/server/campaign/pilot/skills/AstechSkill.java -text
 src/server/campaign/pilot/skills/BufferedVDNI.java -text
 src/server/campaign/pilot/skills/ClanPilotTrainingSkill.java -text
@@ -2069,6 +2070,7 @@ src/server/util/IpCountry.java -text
 src/server/util/MWPasswd.java -text
 src/server/util/MWPasswdRecord.java -text
 src/server/util/RepairTrackingThread.java -text
+src/server/util/StringUtil.java -text
 src/server/util/TrackerThread.java -text
 src/tracker/MWTracker.java -text
 src/updaters/AutoUpdater.java -text

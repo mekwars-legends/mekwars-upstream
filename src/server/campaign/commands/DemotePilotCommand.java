@@ -17,6 +17,7 @@ import java.util.StringTokenizer;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
+import server.campaign.pilot.SPilotSkills;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.AstechSkill;
 import server.campaign.pilot.skills.EdgeSkill;
@@ -92,7 +93,7 @@ public class DemotePilotCommand implements Command {
             return;
         }
 
-        ps = CampaignMain.cm.getPilotSkill(skill);
+        ps = SPilotSkills.getPilotSkill(skill);
 
         if (!pilot.getSkills().has(ps)) {
             CampaignMain.cm.toUser("AM:" + pilot.getName() + " does not have " + ps.getName() + ".", Username, true);

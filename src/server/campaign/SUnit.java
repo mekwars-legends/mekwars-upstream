@@ -47,6 +47,7 @@ import megamek.common.Pilot;
 import megamek.common.Tank;
 import megamek.common.WeaponType;
 import megamek.common.options.PilotOptions;
+import server.campaign.pilot.SPilotSkills;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.SPilotSkill;
 import server.campaign.pilot.skills.WeaponSpecialistSkill;
@@ -1501,11 +1502,11 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
 
                 if (skill.toLowerCase().startsWith("weapon_specialist")) {
                     pilot.addMegamekOption(new MegaMekPilotOption("weapon_specialist", true));
-                    pilot.getSkills().add(CampaignMain.cm.getPilotSkill(PilotSkill.WeaponSpecialistSkillID));
+                    pilot.getSkills().add(SPilotSkills.getPilotSkill(PilotSkill.WeaponSpecialistSkillID));
                     pilot.setWeapon(skill.substring("weapon_specialist".length()).trim());
                 } else if (skill.toLowerCase().startsWith("edge ")) {
                     pilot.addMegamekOption(new MegaMekPilotOption("edge", true));
-                    pilot.getSkills().add(CampaignMain.cm.getPilotSkill(PilotSkill.EdgeSkillID));
+                    pilot.getSkills().add(SPilotSkills.getPilotSkill(PilotSkill.EdgeSkillID));
                     try {
                         pilot.getSkills().getPilotSkill(PilotSkill.EdgeSkillID).setLevel(Integer.parseInt(skill.substring("edge ".length()).trim()));
                     } catch (Exception ex) {
@@ -1520,7 +1521,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
                 } else if (skill.toLowerCase().equals("edge_when_explosion")) {
                     pilot.setExplosion(true);
                 } else {
-                    pilot.getSkills().add(CampaignMain.cm.getPilotSkill(PilotSkill.getMMSkillID(skill)));
+                    pilot.getSkills().add(SPilotSkills.getPilotSkill(PilotSkill.getMMSkillID(skill)));
                     pilot.addMegamekOption(new MegaMekPilotOption(skill, true));
                 }
             }
@@ -1530,7 +1531,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
             while (skillList.hasMoreTokens()) {
                 String skill = skillList.nextToken();
 
-                pilot.getSkills().add(CampaignMain.cm.getPilotSkill(PilotSkill.getMMSkillID(skill)));
+                pilot.getSkills().add(SPilotSkills.getPilotSkill(PilotSkill.getMMSkillID(skill)));
                 pilot.addMegamekOption(new MegaMekPilotOption(skill, true));
             }
 

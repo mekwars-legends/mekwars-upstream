@@ -47,6 +47,7 @@ import server.campaign.SUnitFactory;
 import server.campaign.mercenaries.ContractInfo;
 import server.campaign.mercenaries.MercHouse;
 import server.campaign.pilot.SPilot;
+import server.util.StringUtil;
 
 import common.AdvancedTerrain;
 import common.CampaignData;
@@ -1639,7 +1640,7 @@ public class ShortOperation implements Comparable<Object> {
 
             // add duration, names and BV's to the results log
             StringBuilder toStore = new StringBuilder();
-            toStore.append("#" + getShortID() + " [" + getName() + "]" + " [" + targetWorld.getName() + "]" + " Duration: " + CampaignMain.readableTime(completionTime - startTime) + " / Players: ");
+            toStore.append("#" + getShortID() + " [" + getName() + "]" + " [" + targetWorld.getName() + "]" + " Duration: " + StringUtil.readableTime(completionTime - startTime) + " / Players: ");
             boolean firstPlayer = true;
             for (String currName : getAllPlayerNames()) {
                 if (firstPlayer) {
@@ -2146,7 +2147,7 @@ public class ShortOperation implements Comparable<Object> {
         // if this is a mod request, append the duration to pre-built header
         if (mod) {
             Long duration = System.currentTimeMillis() - startTime;
-            String readableDuration = CampaignMain.readableTime(duration);
+            String readableDuration = StringUtil.readableTime(duration);
             resultString += modHeader + " / Duration: " + readableDuration + "]<br>";
         }
 
@@ -2255,13 +2256,13 @@ public class ShortOperation implements Comparable<Object> {
     private String getFinishedInfo(boolean complete, boolean mod) {
 
         Long age = System.currentTimeMillis() - completionTime;
-        String toReturn = CampaignMain.readableTime(age) + " ago: ";
+        String toReturn = StringUtil.readableTime(age) + " ago: ";
 
         // determine how much to return (player or faction names)
         if (mod) {
 
             Long duration = completionTime - startTime;
-            String readableDuration = CampaignMain.readableTime(duration);
+            String readableDuration = StringUtil.readableTime(duration);
             toReturn += modHeader + " / Duration: " + readableDuration + "]<br>";
             toReturn += completeFinishedString;
 

@@ -17,6 +17,7 @@ import java.util.StringTokenizer;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
+import server.campaign.pilot.SPilotSkills;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.AstechSkill;
 import server.campaign.pilot.skills.EdgeSkill;
@@ -144,7 +145,7 @@ public class PromotePilotCommand implements Command {
             cost *= 10 - totalSkill;
 
         } else {
-            ps = CampaignMain.cm.getPilotSkill(skill);
+            ps = SPilotSkills.getPilotSkill(skill);
 
             skill = ps.getName();
             if (pilot.getSkills().has(ps.getId()) && pilot.getSkills().getPilotSkill(ps.getId()).getLevel() >= 0) {

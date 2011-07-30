@@ -18,6 +18,7 @@ package server.campaign.operations;
 
 import common.CampaignData;
 import server.campaign.CampaignMain;
+import server.util.StringUtil;
 
 public class OpsDisconnectionThread extends Thread {
 	
@@ -58,7 +59,7 @@ public class OpsDisconnectionThread extends Thread {
 			timeToReport = 120000;
 		
 		//inform the potential "winner" that the game will resolve
-		String timeToReturn = CampaignMain.readableTimeWithSeconds(timeToReport);
+		String timeToReturn = StringUtil.readableTimeWithSeconds(timeToReport);
 		CampaignMain.cm.toUser(CampaignMain.cm.getPlayer(loserName).getColoredName() + " disconnected. You will win by forfeit if he does not return within " + timeToReturn + ".",winnerName,true);
 		
 		//add the start to the log
@@ -89,7 +90,7 @@ public class OpsDisconnectionThread extends Thread {
 	
 	public void playerReturned(boolean tellOtherPlayer, long timeOffline) {
 		if (tellOtherPlayer) {
-			CampaignMain.cm.toUser(CampaignMain.cm.getPlayer(loserName).getColoredName() + " returned. He was offline for " + CampaignMain.readableTimeWithSeconds(timeOffline) + ".",winnerName,true);
+			CampaignMain.cm.toUser(CampaignMain.cm.getPlayer(loserName).getColoredName() + " returned. He was offline for " + StringUtil.readableTimeWithSeconds(timeOffline) + ".",winnerName,true);
 			CampaignData.mwlog.gameLog("Disco Thread/Stop:" + id + "/" + loserName + ". Player returned.");
 		} else {
 			CampaignData.mwlog.gameLog("Disco Thread/Stop:" + id + "/" + loserName + ". Player threads cleared.");

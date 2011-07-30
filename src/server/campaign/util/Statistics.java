@@ -31,6 +31,7 @@ import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SmallPlayer;
 import server.campaign.SHouse;
+import server.util.StringUtil;
 
 
 public class Statistics {
@@ -78,7 +79,7 @@ public class Statistics {
 	        
 	        result.append("</td><td align=\"right\">");
 	        if (m.getLastTimeUpdated() > 0) {
-	            result.append(CampaignMain.readableTime(System.currentTimeMillis() - m.getLastTimeUpdated()));
+	            result.append(StringUtil.readableTime(System.currentTimeMillis() - m.getLastTimeUpdated()));
 	        } else
 	            result.append("unknown");
 	        result.append("</td></tr>\n\r");

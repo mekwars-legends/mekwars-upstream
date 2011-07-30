@@ -12,7 +12,6 @@
 package server.campaign;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,20 +29,12 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Properties;
 import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.safety.Cleaner;
-import org.jsoup.safety.Whitelist;
 
 import megamek.MegaMek;
 import megamek.client.Client;
@@ -132,32 +123,7 @@ import server.campaign.mercenaries.MercHouse;
 import server.campaign.operations.Operation;
 import server.campaign.operations.OperationManager;
 import server.campaign.operations.ShortOperation;
-import server.campaign.pilot.SPilot;
-import server.campaign.pilot.skills.AstechSkill;
-import server.campaign.pilot.skills.BufferedVDNI;
-import server.campaign.pilot.skills.ClanPilotTrainingSkill;
-import server.campaign.pilot.skills.DodgeManeuverSkill;
-import server.campaign.pilot.skills.EdgeSkill;
-import server.campaign.pilot.skills.EnhancedInterfaceSkill;
-import server.campaign.pilot.skills.GiftedSkill;
-import server.campaign.pilot.skills.GunneryBallisticSkill;
-import server.campaign.pilot.skills.GunneryLaserSkill;
-import server.campaign.pilot.skills.GunneryMissileSkill;
-import server.campaign.pilot.skills.IronManSkill;
-import server.campaign.pilot.skills.ManeuveringAceSkill;
-import server.campaign.pilot.skills.MedTechSkill;
-import server.campaign.pilot.skills.MeleeSpecialistSkill;
-import server.campaign.pilot.skills.NaturalAptitudeGunnerySkill;
-import server.campaign.pilot.skills.NaturalAptitudePilotingSkill;
-import server.campaign.pilot.skills.PainResistanceSkill;
-import server.campaign.pilot.skills.PainShunt;
-import server.campaign.pilot.skills.QuickStudySkill;
-import server.campaign.pilot.skills.SPilotSkill;
-import server.campaign.pilot.skills.SurvivalistSkill;
-import server.campaign.pilot.skills.TacticalGeniusSkill;
-import server.campaign.pilot.skills.TraitSkill;
-import server.campaign.pilot.skills.VDNI;
-import server.campaign.pilot.skills.WeaponSpecialistSkill;
+import server.campaign.pilot.SPilotSkills;
 import server.campaign.util.ChatRoom;
 import server.campaign.util.HouseRankingHelpContainer;
 import server.campaign.util.MechStatistics;
@@ -172,13 +138,13 @@ import server.mwmysql.mysqlHandler;
 import server.util.AutomaticBackup;
 import server.util.MWPasswd;
 import server.util.RepairTrackingThread;
+import server.util.StringUtil;
 
 import common.CampaignData;
 import common.Equipment;
 import common.House;
 import common.Influences;
 import common.Planet;
-import common.campaign.pilot.skills.PilotSkill;
 import common.flags.PlayerFlags;
 import common.util.UnitUtils;
 
@@ -218,8 +184,6 @@ public final class CampaignMain implements Serializable {
     private Hashtable<String, MechStatistics> MechStats = new Hashtable<String, MechStatistics>();
 
     private Hashtable<String, String> omniVariantMods = new Hashtable<String, String>();
-
-    private Hashtable<Integer, SPilotSkill> pilotSkills = new Hashtable<Integer, SPilotSkill>();
 
     private Hashtable<String, Equipment> blackMarketEquipmentCostTable = new Hashtable<String, Equipment>();
 
@@ -274,8 +238,6 @@ public final class CampaignMain implements Serializable {
     private Hashtable<String, SPlayer> lostSouls = new Hashtable<String, SPlayer>();
     
     private Vector<String> supportUnits = new Vector<String>();
-    
-    private Cleaner HTMLCleaner = null;
     
     private PlayerFlags defaultPlayerFlags = new PlayerFlags();
 
@@ -382,7 +344,7 @@ public final class CampaignMain implements Serializable {
         market = new Market2();
         partsmarket = new PartsMarket();
 
-        initializePilotSkills();
+        SPilotSkills.initializePilotSkills();
         // data.clearHouses();
 
         // Load & Init Data
@@ -472,7 +434,7 @@ public final class CampaignMain implements Serializable {
         
         
         // Start up the HTML Sanitizer
-        loadSanitizer();
+        StringUtil.loadSanitizer();
         
         // Load the default player flags
         defaultPlayerFlags.loadFromDisk();
@@ -2646,33 +2608,7 @@ public final class CampaignMain implements Serializable {
         return partsmarket;
     }
 
-    public void initializePilotSkills() {
-        // PilotSkills
-        pilotSkills.put(new Integer(PilotSkill.DodgeManeuverSkillID), (new DodgeManeuverSkill(PilotSkill.DodgeManeuverSkillID)));
-        pilotSkills.put(new Integer(PilotSkill.ManeuveringAceSkillID), (new ManeuveringAceSkill(PilotSkill.ManeuveringAceSkillID)));
-        pilotSkills.put(new Integer(PilotSkill.MeleeSpecialistSkillID), (new MeleeSpecialistSkill(PilotSkill.MeleeSpecialistSkillID)));
-        pilotSkills.put(new Integer(PilotSkill.PainResistanceSkillID), (new PainResistanceSkill(PilotSkill.PainResistanceSkillID)));
-        pilotSkills.put(new Integer(PilotSkill.AstechSkillID), (new AstechSkill(PilotSkill.AstechSkillID)));
-        pilotSkills.put(new Integer(PilotSkill.NaturalAptitudeGunnerySkillID), (new NaturalAptitudeGunnerySkill(PilotSkill.NaturalAptitudeGunnerySkillID)));
-        pilotSkills.put(new Integer(PilotSkill.NaturalAptitudePilotingSkillID), (new NaturalAptitudePilotingSkill(PilotSkill.NaturalAptitudePilotingSkillID)));
-        pilotSkills.put(new Integer(PilotSkill.IronManSkillID), (new IronManSkill(PilotSkill.IronManSkillID)));
-        pilotSkills.put(new Integer(PilotSkill.GunneryBallisticSkillID), (new GunneryBallisticSkill(PilotSkill.GunneryBallisticSkillID)));
-        pilotSkills.put(new Integer(PilotSkill.GunneryLaserSkillID), (new GunneryLaserSkill(PilotSkill.GunneryLaserSkillID)));
-        pilotSkills.put(new Integer(PilotSkill.GunneryMissileSkillID), (new GunneryMissileSkill(PilotSkill.GunneryMissileSkillID)));
-        pilotSkills.put(new Integer(PilotSkill.TacticalGeniusSkillID), (new TacticalGeniusSkill(PilotSkill.TacticalGeniusSkillID)));
-        pilotSkills.put(new Integer(PilotSkill.WeaponSpecialistSkillID), (new WeaponSpecialistSkill(PilotSkill.WeaponSpecialistSkillID)));
-        pilotSkills.put(new Integer(PilotSkill.SurvivalistSkillID), (new SurvivalistSkill(PilotSkill.SurvivalistSkillID)));
-        pilotSkills.put(new Integer(PilotSkill.TraitID), (new TraitSkill(PilotSkill.TraitID)));
-        pilotSkills.put(new Integer(PilotSkill.EnhancedInterfaceID), (new EnhancedInterfaceSkill(PilotSkill.EnhancedInterfaceID)));
-        pilotSkills.put(new Integer(PilotSkill.QuickStudyID), (new QuickStudySkill(PilotSkill.QuickStudyID)));
-        pilotSkills.put(new Integer(PilotSkill.GiftedID), (new GiftedSkill(PilotSkill.GiftedID)));
-        pilotSkills.put(new Integer(PilotSkill.MedTechID), (new MedTechSkill(PilotSkill.MedTechID)));
-        pilotSkills.put(new Integer(PilotSkill.EdgeSkillID), (new EdgeSkill(PilotSkill.EdgeSkillID)));
-        pilotSkills.put(new Integer(PilotSkill.ClanPilotTraingID), (new ClanPilotTrainingSkill(PilotSkill.ClanPilotTraingID)));
-        pilotSkills.put(new Integer(PilotSkill.VDNIID), (new VDNI(PilotSkill.VDNIID)));
-        pilotSkills.put(new Integer(PilotSkill.BufferedVDNIID), (new BufferedVDNI(PilotSkill.BufferedVDNIID)));
-        pilotSkills.put(new Integer(PilotSkill.PainShuntID), (new PainShunt(PilotSkill.PainShuntID)));
-    }
+   
 
     public Properties getConfig() {
         return config;
@@ -2737,150 +2673,7 @@ public final class CampaignMain implements Serializable {
         return unresolvedContracts;
     }
 
-    public SPilotSkill getRandomSkill(SPilot p, int unitType) {
-        int total = 0;
 
-        Iterator<SPilotSkill> it = pilotSkills.values().iterator();
-        Hashtable<Integer, Integer> skilltable = new Hashtable<Integer, Integer>();
-        if (p.getSkills().has(PilotSkill.TraitID)) {
-            // SPilotSkill skill =
-            // (SPilotSkill)p.getSkills().getPilotSkill(SPilotSkill.TraitID);
-            String trait = p.getTraitName();
-            if (trait.indexOf("*") > -1) {
-                trait = trait.substring(0, trait.indexOf("*"));
-            }
-            Vector<String> traitsList = getFactionTraits(p.getCurrentFaction());
-            traitsList.trimToSize();
-            for (String traitNames : traitsList) {
-                StringTokenizer traitName = new StringTokenizer(traitNames, "*");
-                String traitString = traitName.nextToken();
-                if (traitString.equalsIgnoreCase(trait)) {
-                    while (traitName.hasMoreElements()) {
-                        int traitid = Integer.parseInt(traitName.nextToken());
-                        int traitMod = Integer.parseInt(traitName.nextToken());
-                        skilltable.put(traitid, traitMod);
-                    }
-                }
-            }
-        }
-
-        // check for trait mods and add them
-        while (it.hasNext()) {
-            SPilotSkill skill = it.next();
-            total += skill.getChance(unitType, p);
-        }
-
-        if (total == 0) {
-            return null;
-        }
-        /*
-         * int rnd = 1; if (total > 1) rnd = getR().nextInt(total) + 1;
-         */
-        it = pilotSkills.values().iterator();
-        Vector<SPilotSkill> skillBuilder = new Vector<SPilotSkill>(total, 1);
-
-        try {
-            while (it.hasNext()) {
-                SPilotSkill skill = it.next();
-                int chance = skill.getChance(unitType, p);
-                if (skilltable.get(new Integer(skill.getId())) != null) {
-                    chance += skilltable.get(skill.getId());
-                }
-
-                for (int pos = 0; pos < chance; pos++) {
-                    skillBuilder.add(skill);
-                }
-                skillBuilder.trimToSize();
-                /*
-                 * //CampaignData.mwlog.errLog("Pilot: "+p.getName()+" Skill:
-                 * "+skill.getName()+" Rnd "+rnd+ " chance: "+chance); if ( rnd
-                 * <= chance ) return skill; //else rnd -=
-                 * skill.getChance(unitType,p);
-                 */
-            }
-
-            return skillBuilder.elementAt(cm.getRandomNumber(skillBuilder.size()));
-        } catch (Exception ex) {
-            CampaignData.mwlog.errLog("Problems during skill earning! Skill Table Size = " + skillBuilder.size() + " total = " + total);
-            return null;
-        }
-    }
-
-    /**
-     * Create a skill from a string. Used by CreateUnitCommand.
-     */
-    public SPilotSkill getPilotSkill(String skill) {
-
-        for (SPilotSkill pSkill : pilotSkills.values()) {
-            if (pSkill.getName().equalsIgnoreCase(skill) || pSkill.getAbbreviation().equalsIgnoreCase(skill)) {
-                return pSkill;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Get a pilot skill by ID number. Used to unstring SPilots in pfiles.
-     */
-    public SPilotSkill getPilotSkill(int id) {
-        return pilotSkills.get(id);
-    }
-
-    /*
-     * Replace original readible time (which oddly adjusted times from MechStats
-     * into seconds, but used ms from System.currentTime() for comparison) with
-     * similar code from MWTracker.java. This produces abbreviated timenames.
-     * 
-     * @urgru 8.6.05
-     */
-    public static String readableTime(long elapsed) {
-
-        // to return
-        String result = "";
-
-        long elapsedDays = (elapsed / 86400000);
-        long elapsedHours = (elapsed % 86400000) / 3600000;
-        long elapsedMinutes = (elapsed % 3600000) / 60000;
-
-        if (elapsedDays > 0) {
-            result += elapsedDays + "d ";
-        }
-
-        if (elapsedHours > 0 || elapsedDays > 0) {
-            result += elapsedHours + "h ";
-        }
-
-        result += elapsedMinutes + "m";
-
-        return result;
-    }
-
-    /**
-     * Method which generates human readible times from miliseconds. Useful only
-     * for times which are known to be minutes or seconds in length. Produces
-     * full-word output.
-     */
-    public static String readableTimeWithSeconds(long elapsed) {
-
-        // to return
-        String result = "";
-
-        long elapsedMinutes = elapsed / 60000;
-        long elapsedSeconds = (elapsed % 60000) / 1000;
-
-        if (elapsedMinutes > 0) {
-            result += elapsedMinutes + " min";
-        }
-
-        if (elapsedSeconds > 0 && elapsedMinutes > 0) {
-            result += ", " + elapsedSeconds + " sec";
-        } else if (elapsedSeconds > 0) {
-            result += elapsedSeconds + " sec";
-        }
-
-        return result;
-    }
 
     /**
      * @return Returns the currentUnitID.
@@ -4438,108 +4231,7 @@ public final class CampaignMain implements Serializable {
 		this.supportUnits = supportUnits;
 	}
 	
-	/**
-	 * Returns a string sanitized of potentially harmful HTML
-	 * 
-	 * @param Unsanitized string
-	 * @return Sanitized string
-	 * 
-	 * @author Spork
-	 */
-	public String sanitize(String unclean) {
-		Document doc = Jsoup.parse(unclean);
-		doc = HTMLCleaner.clean(doc);
-		String toReturn = doc.body().toString().replace("<body>", "").replace("</body>", "");
-		boolean allowPlanets = getBooleanConfig("AllowPlanetsInMOTD");
-		if (allowPlanets) {
-			toReturn = replacePlanetTags(toReturn);
-		}
-		
-		return toReturn;
-	}
-
-	public String replacePlanetTags(String input) {
-		String regex = "<planet name=\"([^\"]+)\">([^<]+)</planet>";
-		String replacement = "<a href=\"JUMPTOPLANET$1\">$2</a>";
-		Pattern planetPattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-		Matcher matcher = planetPattern.matcher(input);
-		return matcher.replaceAll(replacement);
-	}
 	
-	private void loadSanitizer() {
-        Whitelist whitelist = Whitelist.relaxed();
-        if(!getBooleanConfig("AllowLinksInMOTD")) {
-        	whitelist.addEnforcedAttribute("a", "rel", "nofollow");
-        }
-
-        whitelist.addTags("planet");
-        whitelist.addAttributes("planet", "name");
-        
-        Vector<String> allowedTags = new Vector<String>();
-        HashMap<String, Vector<String>> allowedAttributes = new HashMap<String, Vector<String>>();
-        
-        try {
-			FileInputStream fstream = new FileInputStream("./data/HTMLSanitizer.cfg");
-			DataInputStream in = new DataInputStream(fstream);
-			BufferedReader br = new BufferedReader(new InputStreamReader(in));
-			String line;
-			while((line = br.readLine()) != null) {
-				line = line.toLowerCase().trim();
-				// Process it here
-				if (line.startsWith("#") || line.length() < 5) {
-					// Comment
-				} else if (line.startsWith("tag")) {
-					// Add next token to allowed tags
-					StringTokenizer st = new StringTokenizer(line, " ");
-					st.nextToken();  // Eat the "Tag" token
-					allowedTags.add(st.nextToken());
-				} else if (line.startsWith("att")) {
-					StringTokenizer st = new StringTokenizer(line, " ");
-					st.nextToken(); // Eat the "Att" token
-					String tag = st.nextToken();
-					while(st.hasMoreTokens()) {
-						if (allowedAttributes.keySet().contains(tag)) {
-							allowedAttributes.get(tag).add(st.nextToken());
-						} else {
-							Vector<String> newTag = new Vector<String>();
-							newTag.add(st.nextToken());
-							allowedAttributes.put(tag, newTag);
-						}
-					}
-				}
-			}
-			br.close();
-			in.close();
-			fstream.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			CampaignData.mwlog.errLog("No HTMLSanitizer.cfg found.");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-		for(String tag : allowedTags) {
-			CampaignData.mwlog.errLog("Adding to whitelist: " + tag);
-			whitelist.addTags(tag);
-		}
-		
-		for(String att : allowedAttributes.keySet()) {
-			Vector<String> attributes = allowedAttributes.get(att);
-			
-			for (String attribute : attributes) {
-				whitelist.addAttributes(att, attribute);
-			}
-		}
-CampaignData.mwlog.errLog(whitelist.toString());
-		Cleaner c = new Cleaner(whitelist);
-		HTMLCleaner = c;
-	}
-	
-	public void reloadSanitizer() {
-		loadSanitizer();
-	}
-
 	/**
 	 * @return the defaultPlayerFlags
 	 */

@@ -18,8 +18,10 @@
 package server.campaign.commands;
 
 import java.util.StringTokenizer;
+
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
+import server.util.StringUtil;
 
 /**
  * Set a faction's message of the day. Can be of arbitrary length and use HTML.
@@ -85,7 +87,7 @@ public class SetMOTDCommand implements Command {
 		}
 		
 		boolean allowPlanets = CampaignMain.cm.getBooleanConfig("AllowPlanetsInMOTD");
-		motd = CampaignMain.cm.sanitize(motd);
+		motd = StringUtil.sanitize(motd);
 		
 		p.getMyHouse().setMotd(motd + "<p> -- Set by " + p.getName());
 		CampaignMain.cm.toUser("AM:MOTD set. Use /c motd to review.",Username,true);

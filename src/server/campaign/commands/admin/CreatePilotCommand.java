@@ -17,15 +17,17 @@
 package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
-import server.campaign.commands.Command;
+
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
+import server.campaign.commands.Command;
+import server.campaign.pilot.SPilotSkills;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.SPilotSkill;
 import server.campaign.pilot.skills.TraitSkill;
-import server.MWChatServer.auth.IAuthenticator;
 
 // syntanx /c createunit#filename#flavortext#gunnery#pilot#skill1,skill2,skill3
 public class CreatePilotCommand implements Command {
@@ -92,9 +94,9 @@ public class CreatePilotCommand implements Command {
 				String skill = skillList.nextToken();
 				SPilotSkill pSkill = null; 
 				if ( skill.equalsIgnoreCase("random") )
-					pSkill = CampaignMain.cm.getRandomSkill(pilot, type );
+					pSkill = SPilotSkills.getRandomSkill(pilot, type );
 				else					
-					pSkill = CampaignMain.cm.getPilotSkill(skill);
+					pSkill = SPilotSkills.getPilotSkill(skill);
 				
 				if ( pSkill != null ){
                     if ( pSkill instanceof TraitSkill){

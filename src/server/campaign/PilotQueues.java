@@ -29,13 +29,14 @@ import java.util.LinkedList;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import common.Unit;
-import common.campaign.pilot.skills.PilotSkill;
-
-import common.CampaignData;
+import server.campaign.pilot.SPilotSkills;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.SPilotSkill;
 import server.campaign.pilot.skills.TraitSkill;
+
+import common.CampaignData;
+import common.Unit;
+import common.campaign.pilot.skills.PilotSkill;
 
 /**
  * @author Helge Richter
@@ -237,7 +238,7 @@ public class PilotQueues {
 		StringTokenizer ST = new StringTokenizer(getBasePilotSkill(type),"$");
 		
 		while ( ST.hasMoreTokens() ) {
-		    SPilotSkill pSkill = CampaignMain.cm.getPilotSkill(ST.nextToken());
+		    SPilotSkill pSkill = SPilotSkills.getPilotSkill(ST.nextToken());
 		    if ( !pilot.getSkills().has(pSkill) )
 			pilot.getSkills().add(pSkill);
 		}
@@ -279,7 +280,7 @@ public class PilotQueues {
 		rnd = CampaignMain.cm.getRandomNumber(100);//reroll rnd, use to check for improved pilots
 		if (rnd <= skillChance && CampaignMain.cm.getBooleanConfig("PilotSkills")) {
 			
-			SPilotSkill skill = CampaignMain.cm.getRandomSkill(result,unitType);
+			SPilotSkill skill = SPilotSkills.getRandomSkill(result,unitType);
 			if (skill != null) {
 				if (skill instanceof TraitSkill)
 					((TraitSkill)skill).assignTrait(result);

@@ -21,6 +21,7 @@ import java.util.TreeMap;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
+import server.util.StringUtil;
 
 import common.CampaignData;
 
@@ -190,7 +191,7 @@ public class OpsScrapThread extends Thread {
 		}
 
 		// inform the potential scrapper that he can get some cash.
-		CampaignMain.cm.toUser("You have " + CampaignMain.readableTimeWithSeconds(waitTime) + " to scrap salvaged units and recover repair costs.", playerName, true);
+		CampaignMain.cm.toUser("You have " + StringUtil.readableTimeWithSeconds(waitTime) + " to scrap salvaged units and recover repair costs.", playerName, true);
 
 		// do the wait
 		try {

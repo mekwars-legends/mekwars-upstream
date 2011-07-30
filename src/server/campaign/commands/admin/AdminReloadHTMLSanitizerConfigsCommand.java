@@ -21,6 +21,7 @@ import java.util.StringTokenizer;
 import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
+import server.util.StringUtil;
 
 public class AdminReloadHTMLSanitizerConfigsCommand implements Command {
 	
@@ -40,7 +41,7 @@ public class AdminReloadHTMLSanitizerConfigsCommand implements Command {
 			return;
 		}
 		
-		CampaignMain.cm.reloadSanitizer();
+		StringUtil.reloadSanitizer();
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has reloaded the HTML Sanitizer configs");
 		CampaignMain.cm.toUser("You have reloaded the HTML Sanitizer configs",Username,true);
 	}

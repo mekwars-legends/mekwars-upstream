@@ -233,7 +233,7 @@ public class SPilot extends Pilot {
 
             int dieRoll = CampaignMain.cm.getRandomNumber(100) + 1;
             if (dieRoll < chanceToGainSkill) {
-                skillToAdd = CampaignMain.cm.getRandomSkill(this, unit.getType());
+                skillToAdd = SPilotSkills.getRandomSkill(this, unit.getType());
             }
         }
 
@@ -612,7 +612,7 @@ public class SPilot extends Pilot {
             setPiloting(TokenReader.readInt(ST));
             int skills = TokenReader.readInt(ST);
             for (int i = 0; i < skills; i++) {
-                SPilotSkill skill = CampaignMain.cm.getPilotSkill(TokenReader.readInt(ST));
+                SPilotSkill skill = SPilotSkills.getPilotSkill(TokenReader.readInt(ST));
                 int level = TokenReader.readInt(ST);
                 if (skill instanceof AstechSkill) {
                     skill = new AstechSkill(PilotSkill.AstechSkillID);
