@@ -146,6 +146,7 @@ import common.House;
 import common.Influences;
 import common.Planet;
 import common.flags.PlayerFlags;
+import common.util.MekwarsFileReader;
 import common.util.UnitUtils;
 
 public final class CampaignMain implements Serializable {
@@ -339,6 +340,7 @@ public final class CampaignMain implements Serializable {
          * a nice idea, it was creating dupes and NPEs after crashes.
          */
 
+        //TODO: That one is bad. IT has side effects and has to be called although it looks like a simple getter method...
         cm.isUsingMySQL();
 
         market = new Market2();
@@ -366,15 +368,12 @@ public final class CampaignMain implements Serializable {
         loadPlanetData();
 
         try {
-            File configFile = new File("./campaign/banammo.dat");
-            FileInputStream fis = new FileInputStream(configFile);
-            BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+        	MekwarsFileReader dis = new MekwarsFileReader("./campaign/banammo.dat");
             while (dis.ready()) {
                 String line = dis.readLine();
                 loadBanAmmo(line);
             }
             dis.close();
-            fis.close();
         } catch (FileNotFoundException fne) {
             CampaignData.mwlog.mainLog("No banned ammo data found.");
         } catch (Exception ex) {
@@ -402,16 +401,13 @@ public final class CampaignMain implements Serializable {
             //loadMechStatsFromDB();
         } else {
             try {
-                File configFile = new File("./campaign/mechstat.dat");
-                FileInputStream fis = new FileInputStream(configFile);
-                BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+                MekwarsFileReader dis = new MekwarsFileReader("./campaign/mechstat.dat");
                 while (dis.ready()) {
                     String line = dis.readLine();
                     MechStatistics m = new MechStatistics(line);
                     MechStats.put(m.getMechFileName(), m);
                 }
                 dis.close();
-                fis.close();
             } catch (Exception ex) {
                 CampaignData.mwlog.errLog("Problems reading unit statistics data");
                 CampaignData.mwlog.errLog(ex);
@@ -515,16 +511,9 @@ public final class CampaignMain implements Serializable {
     		return;
     	}
     	
-    	FileInputStream fis = null;
-		try {
-			fis = new FileInputStream(tsFile);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		Vector<String> units = new Vector<String>();
-        BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
         try {
+            MekwarsFileReader dis = new MekwarsFileReader(tsFile);
         	while (dis.ready()) {
         		String line = dis.readLine();
         		line = line.trim().toLowerCase();
@@ -536,14 +525,11 @@ public final class CampaignMain implements Serializable {
         			CampaignData.mwlog.mainLog("Adding Support Unit: " + line);
         		}
         	}
+			dis.close();
         } catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			try {
-				dis.close();
-				fis.close();
-			} catch (IOException e) {}
 			CampaignMain.cm.setSupportUnits(units);
 		}
 	}
@@ -1349,8 +1335,7 @@ public final class CampaignMain implements Serializable {
 
         if (!name.startsWith("[Dedicated]") && !name.startsWith("War Bot")) {
 
-            FileInputStream fis = null;
-            BufferedReader dis = null;
+            MekwarsFileReader dis = null;
 
             try {
                 if (CampaignMain.cm.isUsingMySQL()) {
@@ -1379,8 +1364,7 @@ public final class CampaignMain implements Serializable {
                     return null;
                 }
 
-                fis = new FileInputStream(pFile);
-                dis = new BufferedReader(new InputStreamReader(fis));
+                dis = new MekwarsFileReader(pFile);
 
                 // create player from string read by dis
                 SPlayer p = new SPlayer();
@@ -1412,9 +1396,6 @@ public final class CampaignMain implements Serializable {
                 try {
                     if (dis != null) {
                         dis.close();
-                    }
-                    if (fis != null) {
-                        fis.close();
                     }
                 } catch (Exception ex) {
                     CampaignData.mwlog.errLog(ex);
@@ -1821,9 +1802,7 @@ public final class CampaignMain implements Serializable {
         // ok we've put all the commands in the command hash now lets set the
         // levels
         try {
-            File configFile = new File("./data/commands/commands.dat");
-            FileInputStream fis = new FileInputStream(configFile);
-            BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+            MekwarsFileReader dis = new MekwarsFileReader("./data/commands/commands.dat");
             while (dis.ready()) {
                 StringTokenizer command = new StringTokenizer(dis.readLine(), "#");
                 String commandName = command.nextToken();
@@ -1831,6 +1810,7 @@ public final class CampaignMain implements Serializable {
                     (Commands.get(commandName)).setExecutionLevel(Integer.parseInt(command.nextToken()));
                 }
             }
+            dis.close();
         } catch (Exception ex) {
             CampaignData.mwlog.errLog("Unable to find commands.dat. Continuing with defaults in place");
             TreeMap<String, Command> commandTable = new TreeMap<String, Command>(cm.getServerCommands());
@@ -2906,15 +2886,8 @@ public final class CampaignMain implements Serializable {
     		return;
     	}
     	
-    	FileInputStream fis = null;
-		try {
-			fis = new FileInputStream(tsFile);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
         try {
+            MekwarsFileReader dis = new MekwarsFileReader(tsFile);
         	Vector<Integer> bans = new Vector<Integer>(1,1);
 			String line = dis.readLine();
 			StringTokenizer st = new StringTokenizer(line, "#");
@@ -2922,6 +2895,7 @@ public final class CampaignMain implements Serializable {
 				bans.add(Integer.parseInt(st.nextToken()));
 			}
 			getData().setBannedTargetingSystems(bans);
+			dis.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -2940,8 +2914,7 @@ public final class CampaignMain implements Serializable {
                 return;
             }
 
-            FileInputStream fis = new FileInputStream(bmFile);
-            BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+            MekwarsFileReader dis = new MekwarsFileReader(bmFile);
 
             // Ignore Time Stamp
             dis.readLine();
@@ -2959,7 +2932,7 @@ public final class CampaignMain implements Serializable {
 
                 cm.getBlackMarketEquipmentTable().put(bme.getEquipmentInternalName(), bme);
             }
-
+            dis.close();
         } catch (Exception ex) {
             CampaignData.mwlog.errLog(ex);
         }
@@ -2983,15 +2956,10 @@ public final class CampaignMain implements Serializable {
 
     public void loadTopUnitID() {
         try {
-            File idFile = new File("./campaign/topserverid.dat");
-            FileInputStream fis = new FileInputStream(idFile);
-            BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
-
+            MekwarsFileReader dis = new MekwarsFileReader("./campaign/topserverid.dat");
             cm.setCurrentUnitID(Integer.parseInt(dis.readLine()));
             cm.setCurrentPilotID(Integer.parseInt(dis.readLine()));
-
             dis.close();
-            fis.close();
         } catch (FileNotFoundException FNFE) {
             // Do nothing.
             CampaignData.mwlog.errLog("Unable to fine/open ./campaign/topserverid.dat. moving on.");
@@ -3041,16 +3009,11 @@ public final class CampaignMain implements Serializable {
 
         try {
 
-            FileInputStream fis = new FileInputStream(traitNames);
-            BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
-
+        	MekwarsFileReader dis = new MekwarsFileReader(traitNames);
             while (dis.ready()) {
                 traits.addElement(dis.readLine());
             }
-
             dis.close();
-            fis.close();
-
         } catch (FileNotFoundException nf) {
             CampaignData.mwlog.errLog("File Not Found: " + traitNames);
         } catch (Exception ex) {
@@ -3277,15 +3240,12 @@ public final class CampaignMain implements Serializable {
 
     public void loadOmniVariantMods() {
         try {
-            File configFile = new File("./campaign/omnivariantmods.dat");
-            FileInputStream fis = new FileInputStream(configFile);
-            BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+        	MekwarsFileReader dis = new MekwarsFileReader("./campaign/omnivariantmods.dat");
             while (dis.ready()) {
                 StringTokenizer line = new StringTokenizer(dis.readLine(), "#");
                 cm.getOmniVariantMods().put(line.nextToken(), line.nextToken());
             }
             dis.close();
-            fis.close();
         } catch (Exception ex) {
         }
     }
@@ -3806,7 +3766,6 @@ public final class CampaignMain implements Serializable {
     }
     
     public void loadPlanetOpFlags() {
-
         File configFile = new File("./campaign/planetOpFlags.dat");
         if (!configFile.exists()) {
             CampaignData.mwlog.errLog("No planetOpFlags.dat. Skipping.");
@@ -3814,10 +3773,7 @@ public final class CampaignMain implements Serializable {
         }
 
         try {
-
-            FileInputStream fis = new FileInputStream(configFile);
-            BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
-
+        	MekwarsFileReader dis = new MekwarsFileReader(configFile);
             dis.readLine();// Time Stamp
 
             String nextLine = dis.readLine();
@@ -3832,8 +3788,6 @@ public final class CampaignMain implements Serializable {
             }
 
             dis.close();
-            fis.close();
-
         } catch (Exception ex) {
             CampaignData.mwlog.errLog("Error loading Planet Op Flags.");
             CampaignData.mwlog.errLog(ex);
@@ -3881,8 +3835,7 @@ public final class CampaignMain implements Serializable {
         // load each file
         for (File faction : factionFileList) {
             try {
-                FileInputStream fis = new FileInputStream(faction);
-                BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+                MekwarsFileReader dis = new MekwarsFileReader(faction);
                 String line = dis.readLine();
                 SHouse h;
                 if (line.startsWith("[N][C]")) {
@@ -3903,7 +3856,6 @@ public final class CampaignMain implements Serializable {
                 }
                 addHouse(h);
                 dis.close();
-                fis.close();
             } catch (Exception ex) {
                 CampaignData.mwlog.errLog("Unable to load " + faction.getName());
             }
@@ -3930,13 +3882,10 @@ public final class CampaignMain implements Serializable {
                 continue;
             }
             try {
-
-                FileInputStream fis = new FileInputStream(faction);
-                BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+                MekwarsFileReader dis = new MekwarsFileReader(faction);
 
                 String currLine = null;
                 while ((currLine = dis.readLine()) != null) {
-
                     StringTokenizer tokenizer = new StringTokenizer(currLine, "$");
                     String cost = tokenizer.nextToken();
                     int type = Integer.parseInt(tokenizer.nextToken());
@@ -3950,15 +3899,12 @@ public final class CampaignMain implements Serializable {
                     } else if (cost.equals("Comp")) {
                         currH.setHouseUnitComponentMod(type, weight, mod);
                     }
-
                 }
-
+                dis.close();
             } catch (Exception e) {
                 CampaignData.mwlog.errLog("Unable to load cost modifiers for " + currH.getName());
             }
-
         }
-
     }
 
     // Save Houses
@@ -4092,8 +4038,7 @@ public final class CampaignMain implements Serializable {
             for (File planet : planetFileList) {
 
                 try {
-                    FileInputStream fis = new FileInputStream(planet);
-                    BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+                    MekwarsFileReader dis = new MekwarsFileReader(planet);
                     String line = dis.readLine();
                     SPlanet p;
                     if (line.startsWith("[N]")) {
@@ -4103,7 +4048,6 @@ public final class CampaignMain implements Serializable {
                     p.fromString(line, r, data);
                     addPlanet(p);
                     dis.close();
-                    fis.close();
                 } catch (Exception ex) {
                     CampaignData.mwlog.errLog("Unable to load " + planet.getName());
                     CampaignData.mwlog.errLog(ex);
