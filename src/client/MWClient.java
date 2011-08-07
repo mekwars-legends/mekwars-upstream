@@ -52,6 +52,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -86,10 +87,9 @@ import megamek.common.CriticalSlot;
 import megamek.common.Entity;
 import megamek.common.EquipmentType;
 import megamek.common.IGame;
+import megamek.common.IGame.Phase;
 import megamek.common.Mech;
 import megamek.common.MechWarrior;
-import megamek.common.Player;
-import megamek.common.IGame.Phase;
 import megamek.common.event.GameBoardChangeEvent;
 import megamek.common.event.GameBoardNewEvent;
 import megamek.common.event.GameEndEvent;
@@ -154,6 +154,7 @@ import common.AdvancedTerrain;
 import common.BMEquipment;
 import common.CampaignData;
 import common.Equipment;
+import common.GameInterface;
 import common.House;
 import common.Influences;
 import common.MMGame;
@@ -3789,99 +3790,7 @@ public final class MWClient implements IClient, GameListener {
             return;
         }
 
-        StringBuilder result = new StringBuilder();
-        String name = "";
-        // Parse the real playername from the Modified In game one..
-        String winnerName = "";
-        if (myServer.getGame().getVictoryTeam() != Player.TEAM_NONE) {
-
-            int numberOfWinners = 0;
-            // Multiple Winners
-            Enumeration<Player> en = myServer.getGame().getPlayers();
-            while (en.hasMoreElements()) {
-                Player p = en.nextElement();
-                if (p.getTeam() == myServer.getGame().getVictoryTeam()) {
-                    StringTokenizer st = new StringTokenizer(p.getName().trim(), "~");
-                    name = "";
-                    while (st.hasMoreElements()) {
-                        name = st.nextToken().trim();
-                    }
-                    // some of the players set themselves as a team of 1.
-                    // This keeps that from happening.
-                    if (numberOfWinners > 0) {
-                        winnerName += "*";
-                    }
-                    numberOfWinners++;
-
-                    winnerName += name;
-                }
-            }
-            if (winnerName.endsWith("*")) {
-                winnerName = winnerName.substring(0, winnerName.length() - 1);
-            }
-            winnerName += "#";
-        }
-
-        // Only one winner
-        else {
-            if (myServer.getGame().getVictoryPlayerId() == Player.PLAYER_NONE) {
-                winnerName = "DRAW#";
-            } else {
-                winnerName = myServer.getGame().getPlayer(myServer.getGame().getVictoryPlayerId()).getName();
-                StringTokenizer st = new StringTokenizer(winnerName, "~");
-                name = "";
-                while (st.hasMoreElements()) {
-                    name = st.nextToken().trim();
-                }
-                winnerName = name + "#";
-            }
-        }
-
-        result.append(winnerName);
-
-        // Report the mech stat
-        Enumeration<Entity> en = myServer.getGame().getDevastatedEntities();
-        while (en.hasMoreElements()) {
-            Entity ent = en.nextElement();
-            if (ent.getOwner().getName().startsWith("War Bot")) {
-                continue;
-            }
-            result.append(SerializeEntity.serializeEntity(ent, true, false, isUsingAdvanceRepairs()));
-            result.append("#");
-        }
-        en = myServer.getGame().getGraveyardEntities();
-        while (en.hasMoreElements()) {
-            Entity ent = en.nextElement();
-            if (ent.getOwner().getName().startsWith("War Bot")) {
-                continue;
-            }
-            result.append(SerializeEntity.serializeEntity(ent, true, false, isUsingAdvanceRepairs()));
-            result.append("#");
-
-        }
-        en = myServer.getGame().getEntities();
-        while (en.hasMoreElements()) {
-            Entity ent = en.nextElement();
-            if (ent.getOwner().getName().startsWith("War Bot")) {
-                continue;
-            }
-            result.append(SerializeEntity.serializeEntity(ent, true, false, isUsingAdvanceRepairs()));
-            result.append("#");
-        }
-        en = myServer.getGame().getRetreatedEntities();
-        while (en.hasMoreElements()) {
-            Entity ent = en.nextElement();
-            if (ent.getOwner().getName().startsWith("War Bot")) {
-                continue;
-            }
-            result.append(SerializeEntity.serializeEntity(ent, true, false, isUsingAdvanceRepairs()));
-            result.append("#");
-        }
-
-        if (getBuildingTemplate() != null) {
-            result.append("BL*" + getBuildingsLeft());
-        }
-        CampaignData.mwlog.infoLog("CR|" + result);
+        StringBuilder result = prepareReport(new GameWrapper(myServer.getGame()), isUsingAdvanceRepairs(), getBuildingTemplate());
 
         // send the autoreport
         serverSend("CR|" + result.toString());
@@ -3896,6 +3805,89 @@ public final class MWClient implements IClient, GameListener {
             checkForRestart();
         }
     }
+
+	public static StringBuilder prepareReport(GameInterface myGame, boolean usingAdvancedRepairs, Buildings buildingTemplate) {
+		StringBuilder result = new StringBuilder();
+        String name = "";
+        // Parse the real playername from the Modified In game one..
+        String winnerName = "";
+        if (myGame.hasWinner()) {
+
+            int numberOfWinners = 0;
+            // Multiple Winners
+            List<String> winners = myGame.getWinners();
+            for (String winner: winners){
+                StringTokenizer st = new StringTokenizer(winner, "~");
+                name = "";
+                while (st.hasMoreElements()) {
+                    name = st.nextToken().trim();
+                }
+                // some of the players set themselves as a team of 1.
+                // This keeps that from happening.
+                if (numberOfWinners > 0) {
+                    winnerName += "*";
+                }
+                numberOfWinners++;
+
+                winnerName += name;
+            }
+            if (winnerName.endsWith("*")) {
+                winnerName = winnerName.substring(0, winnerName.length() - 1);
+            }
+            winnerName += "#";
+        }
+
+        else {
+            winnerName = "DRAW#";
+        }
+
+        result.append(winnerName);
+
+        // Report the mech stat
+        Enumeration<Entity> en = myGame.getDevastatedEntities();
+        while (en.hasMoreElements()) {
+            Entity ent = en.nextElement();
+            if (ent.getOwner().getName().startsWith("War Bot")) {
+                continue;
+            }
+            result.append(SerializeEntity.serializeEntity(ent, true, false, usingAdvancedRepairs));
+            result.append("#");
+        }
+        en = myGame.getGraveyardEntities();
+        while (en.hasMoreElements()) {
+            Entity ent = en.nextElement();
+            if (ent.getOwner().getName().startsWith("War Bot")) {
+                continue;
+            }
+            result.append(SerializeEntity.serializeEntity(ent, true, false, usingAdvancedRepairs));
+            result.append("#");
+
+        }
+        en = myGame.getEntities();
+        while (en.hasMoreElements()) {
+            Entity ent = en.nextElement();
+            if (ent.getOwner().getName().startsWith("War Bot")) {
+                continue;
+            }
+            result.append(SerializeEntity.serializeEntity(ent, true, false, usingAdvancedRepairs));
+            result.append("#");
+        }
+        en = myGame.getRetreatedEntities();
+        while (en.hasMoreElements()) {
+            Entity ent = en.nextElement();
+            if (ent.getOwner().getName().startsWith("War Bot")) {
+                continue;
+            }
+            result.append(SerializeEntity.serializeEntity(ent, true, false, usingAdvancedRepairs));
+            result.append("#");
+        }
+
+        if (buildingTemplate != null) {
+            result.append("BL*" + buildingTemplate);
+        }
+        CampaignData.mwlog.infoLog("CR|" + result);
+		return result;
+	}
 
 	public boolean getTargetSystemBanStatus(int type) {
 		if(getData().getBannedTargetingSystems().contains(type)) {

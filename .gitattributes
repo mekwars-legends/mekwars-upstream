@@ -1381,6 +1381,7 @@ src/admin/dialog/serverConfigDialogs/VotingPanel.java -text
 src/client/CConfig.java -text
 src/client/CUser.java -text
 src/client/ClientThread.java -text
+src/client/GameWrapper.java -text
 src/client/MWClient.java -text
 src/client/campaign/CArmy.java -text
 src/client/campaign/CBMUnit.java -text
