@@ -1502,6 +1502,7 @@ src/common/CampaignData.java -text
 src/common/Continent.java -text
 src/common/DefaultOperation.java -text
 src/common/Equipment.java -text
+src/common/GameInterface.java -text
 src/common/House.java -text
 src/common/Influences.java -text
 src/common/MMGame.java -text
