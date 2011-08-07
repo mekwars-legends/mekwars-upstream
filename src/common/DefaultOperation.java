@@ -104,7 +104,8 @@ public class DefaultOperation {
          * DuskChance				   - Chance that operation will take place at dusk.
          * AttackerBriefing            - Message attacking player receives when launching
          * DefenderBriefing            - Message defending player receives when launching
-         *
+         * AutoresolveBattle           - Determines if the battle is played with megamek or autoresolved
+         *          
          * NOTE: Colours are HTML hexidecimal. Keywords cannot be used. # must
          *       lead the string or massive fuck-ups will ensue.
          *
@@ -148,6 +149,7 @@ public class DefaultOperation {
         operationsDefaults.put("DuskChance", "0");
         operationsDefaults.put("AttackerBriefing", "");
         operationsDefaults.put("DefenderBriefing", "");
+        operationsDefaults.put("AutoresolveBattle", "false");
 
         /*
          * SHORT VARIABLES. These are params which are necessary for

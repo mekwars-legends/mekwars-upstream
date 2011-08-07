@@ -629,6 +629,12 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseCheckBox.setName("IndividualInit");
         rangesBox2.add(BaseCheckBox);
 
+        BaseCheckBox = new JCheckBox("Autoresolve Battles");
+        BaseCheckBox.setToolTipText("<html>If set, the battles will be autoresolved</html>");
+        BaseCheckBox.setName("AutoresolveBattle");
+        rangesBox2.add(BaseCheckBox);
+
+        
         // finalize layout.
         SpringLayoutHelper.setupSpringGrid(rangesBox, 4);
         SpringLayoutHelper.setupSpringGrid(rangesBox2, 3);
