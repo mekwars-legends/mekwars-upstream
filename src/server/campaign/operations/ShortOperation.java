@@ -2703,7 +2703,7 @@ public class ShortOperation implements Comparable<Object> {
      * 
      * @return Attackers Total BV
      */
-    private int getAttackersBV() {
+    public int getAttackersBV() {
         int bv = 0;
 
         for (String attacker : getAttackers().keySet()) {

@@ -2869,11 +2869,23 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField.setToolTipText("units to take an additional factory unit (confusing!)");
         BaseTextField.setName("AttackerFactoryUnitsUnitAdjustment");
         attackerPanel.add(BaseTextField);
-
+        
         BaseTextField = new JTextField(5);
         attackerPanel.add(new JLabel("Target Op Mod:", SwingConstants.TRAILING));
         BaseTextField.setToolTipText("<html>Op Adjustments are used to increase or decrease victory THRESHOLDS for<br>targetted long-ops. Not recommended for individual games. Generally, better<br>for use as a long-op (w/ fewer games than target) set up as a counter-assault<br>or spoling attack.</html>");
         BaseTextField.setName("AttackerTargetOpAdjustment");
+        attackerPanel.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Factory Units to Player Max:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Maximum number of units to award to a player<br>instead of the faction</html>");
+        BaseTextField.setName("AttackerAwardFactoryUnitsTakenToPlayerMax");
+        attackerPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Max award BV percent:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Maximum BV of single unit to award to a player<br>based on a percentage of the BV of<br>their initial force.<br><br>This stops players from recovering a WarShip<br>with a single ASF.</html>");
+        BaseTextField.setName("AttackerAwardFactoryUnitsTakenToPlayerBVPercent");
         attackerPanel.add(BaseTextField);
 
         SpringLayoutHelper.setupSpringGrid(attackerPanel, 4);
@@ -3032,7 +3044,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseCheckBox.setToolTipText("<html>If enabled then the attacker can target a planet without claimed land and will automatically capture CP.</html>");
         BaseCheckBox.setName("AttackerAllowAgainstUnclaimedLand");
         attackerBox.add(BaseCheckBox);
-
+        
         attackerBox.add(attackerPanel);
 
         attackerBox.setBorder(BorderFactory.createLineBorder(Color.black));

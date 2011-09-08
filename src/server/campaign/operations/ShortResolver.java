@@ -1449,7 +1449,10 @@ public class ShortResolver {
     private void assembleSalvageStrings(Operation o, ShortOperation so) {
 
         // set up the units cost tree and string tree
-        unitStrings = new TreeMap<String, String>();
+    	if (null == unitStrings) {
+    		unitStrings = new TreeMap<String, String>();
+    	}
+    	
         unitCosts = new TreeMap<String, Integer>();
         lossCompensation = new TreeMap<String, Integer>();
         scrapThreads = new TreeMap<String, OpsScrapThread>();
@@ -2769,7 +2772,6 @@ public class ShortResolver {
                         }
 
                         if (unitsToCapture > 0) {
-
                             capturedUnits = new ArrayList<SUnit>();
 
                             capturedUnits = so.captureUnits(unitsToCapture, target, aLoser.getHouseFightingFor(), true);
@@ -2777,12 +2779,60 @@ public class ShortResolver {
 
                             // add to metaString if anything was actually taken
                             if (numCaptured >= 1) {
-
+                                // Send a percentage of the force-produced units to the attacker
+                                // Settings in the operation will control is this happens or not
+                                // as well as how much
+                                int numUnitsToAward = o.getIntValue("AttackerAwardFactoryUnitsTakenToPlayerMax");
+                                int maxBVToAward = 0;
+                                int numUnitsAwarded = 0;
+                                
+                                if (numUnitsToAward > 0) {
+                                	//Calculate the maxmium BV of a single unit that can be awarded
+                                	//This stops people from trying to capture a Warship with a single ASF
+                                	int bvAwardPercent = o.getIntValue("AttackerAwardFactoryUnitsTakenToPlayerBVPercent");
+                                	int totalAttackerBV = so.getAttackersBV();
+                                	
+                                	maxBVToAward = (int)(((double)totalAttackerBV * (double)bvAwardPercent) / 100D);
+                                }
+                                
+                            	StringBuilder sendToPlayerString = new StringBuilder();
+                            	
+                            	if (null == unitStrings) {
+                            		unitStrings = new TreeMap<String, String>();
+                            	}
+                            	
                                 for (SUnit unit : capturedUnits) {
                                     loserHSUpdates.append(aLoser.getHouseFightingFor().getHSUnitRemovalString(unit));
-                                    winnerHSUpdates.append(aWinner.getHouseFightingFor().addUnit(unit, false));
+                                    
+                                    boolean sendToPlayer = ((numUnitsToAward > numUnitsAwarded) && (unit.getBaseBV() <= maxBVToAward));
+                                    
+                                    if (sendToPlayer) {
+                                        String newPilot = handleDeadPilot(aWinner, unit, null, so);
+                                        aWinner.addUnit(unit, true);
+                                        
+                                        numUnitsAwarded++;
+                                        
+                                        sendToPlayerString.append("Your logistics and procurement officer managed to get you a " + unit.getModelName() + " for your efforts." + newPilot + "<br>");
+                                    } else {
+                                    	winnerHSUpdates.append(aWinner.getHouseFightingFor().addUnit(unit, false));
+                                    }
                                 }
 
+                                if (sendToPlayerString.length() > 0) {
+	                                // add new pilot info to this unit's string
+	                                String curUS = unitStrings.get(aWinner.getName().toLowerCase());
+	                                
+	                                if (null != curUS) {
+	                                	if (curUS.endsWith("<br>")) {
+	                                		curUS = curUS.substring(0, curUS.length() - 4);// remove "<br>"
+	                                	}
+	                                } else {
+	                                	curUS = "";
+	                                }
+	                                
+	                                unitStrings.put(aWinner.getName().toLowerCase(), curUS + sendToPlayerString.toString());
+                                }
+                                
                                 // setup leadin
                                 if (hasLoss) {
                                     winnerMetaString += ",";
@@ -3704,13 +3754,26 @@ public class ShortResolver {
             }
 
             else {
-
+            	/*
+            	 * This is put in here because we really don't need to pass in an OperationEntity
+            	 * to get the type, we should be able to get it from the passed in unit. But instead of
+            	 * re-factoring all the calls to this, we'll just default to the unit's type and
+            	 * override it with the entity's type if one exists
+            	 * 
+            	 * Aug 5, 2011 - Cord Awtry
+            	 */
+            	int entityType = unit.getType();
+            	
+            	if (null != entity) {
+            		entityType = entity.getType();
+            	}
+            	
                 unit.setPilot(owner.getHouseFightingFor().getNewPilot(unit.getType()));
                 if (unit.isSinglePilotUnit()) {
                     toReturn += " New Pilot: " + unit.getPilot().getName();
-                } else if (entity.getType() == Unit.VEHICLE) {
+                } else if (entityType == Unit.VEHICLE) {
                     toReturn += " New Crew:";
-                } else if ((entity.getType() == Unit.BATTLEARMOR) || (entity.getType() == Unit.INFANTRY)) {
+                } else if ((entityType == Unit.BATTLEARMOR) || (entityType == Unit.INFANTRY)) {
                     toReturn += " New Squad:";
                 }
                 toReturn += " " + newPilotDescription(unit);

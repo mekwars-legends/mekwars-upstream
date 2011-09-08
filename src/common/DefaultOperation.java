@@ -1320,6 +1320,8 @@ public class DefaultOperation {
         operationsDefaults.put("AttackerBaseFactoryUnitsTaken", "0");
         operationsDefaults.put("AttackerFactoryUnitsBVAdjustment", "0");
         operationsDefaults.put("AttackerFactoryUnitsUnitAdjustment", "0");
+        operationsDefaults.put("AttackerAwardFactoryUnitsTakenToPlayerBVPercent", "0");
+        operationsDefaults.put("AttackerAwardFactoryUnitsTakenToPlayerMax", "0");
         operationsDefaults.put("AttackerUnitsTakenBeforeFightStarts", "false");
         operationsDefaults.put("AttackerAllowAgainstUnclaimedLand", "false");
 
