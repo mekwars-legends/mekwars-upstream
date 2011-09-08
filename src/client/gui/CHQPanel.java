@@ -109,6 +109,7 @@ public class CHQPanel extends JPanel {
     private JButton setCamoButton;
     private JButton newbieResetUnitsButton;
     private JButton repairAllUnitsButton;
+    private JButton reloadAllUnitsButton;
 
     private boolean useAdvanceRepairs = false;
 
@@ -170,6 +171,7 @@ public class CHQPanel extends JPanel {
         setCamoButton = new JButton();
         newbieResetUnitsButton = new JButton();
         repairAllUnitsButton = new JButton();
+        reloadAllUnitsButton = new JButton();
         // pnlMekIcon = new MechInfo(mwclient);
         // btnShowMek = new JButton();
 
@@ -276,6 +278,22 @@ public class CHQPanel extends JPanel {
         }
     };
 
+    private void reloadAllUnitsButtonActionPerformed(ActionEvent evt) {
+        if (mwclient.getPlayer().getHangar().size() > 0) {
+            int result = JOptionPane.showConfirmDialog(mwclient.getMainFrame(), "Are you sure you want to reload all the ammo on all your units?", "Reload all units?", JOptionPane.YES_NO_OPTION);
+            
+            if (result == JOptionPane.YES_OPTION) {
+        		for (CUnit unit : mwclient.getPlayer().getHangar()) {
+                	if (!UnitUtils.hasAllAmmo(unit.getEntity())) {
+                		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c RELOADALLAMMO#" + unit.getId());
+                	}
+        		}
+            	
+            	refresh();
+            }
+        }
+    };
+
     private void btnAddLanceActionPerformed(ActionEvent evt) {
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c cra#" + mwclient.getConfigParam("DEFAULTARMYNAME"));
     }
@@ -332,6 +350,15 @@ public class CHQPanel extends JPanel {
                 }
             });
             hqButtonSpring.add(repairAllUnitsButton);
+            numButtons++;
+            
+            reloadAllUnitsButton.setText("Reload All Units");
+            reloadAllUnitsButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    reloadAllUnitsButtonActionPerformed(evt);
+                }
+            });
+            hqButtonSpring.add(reloadAllUnitsButton);
             numButtons++;
         }
 
