@@ -3642,10 +3642,13 @@ public final class CampaignMain implements Serializable {
                     cost = Math.max(1, cost);
                 } else if (critSlot == UnitUtils.LOC_REAR_ARMOR) {
                     // tell the repair command its using rear external armor
-                    cost = SUnit.getArmorCost(unit, critLocation);
+                	// Need to move this above the getArmorCost because it's
+                	// sending back index to get the loc.
+                	// 07 Sept 2011 - Cord Awtry
                     if (critLocation >= UnitUtils.LOC_CTR) {
                         critLocation -= 7;
                     }
+                    cost = SUnit.getArmorCost(unit, critLocation);
                     if (unit.getArmor(critLocation, true) > unit.getOArmor(critLocation, true)) {
                         // remove the repairing armor so we can get the real
                         // cost.
