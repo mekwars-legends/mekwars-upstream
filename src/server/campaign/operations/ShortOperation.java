@@ -2830,7 +2830,7 @@ public class ShortOperation implements Comparable<Object> {
         return returnList;
     }
 
-    public ArrayList<SUnit> captureUnits(int unitsToCapture, SPlanet target, SHouse losingHouse, boolean forced) {
+    public ArrayList<SUnit> captureUnits(Operation o, int unitsToCapture, SPlanet target, SHouse losingHouse, boolean forced) {
         // for (all unit types, mek preferred)
         int numCaptured = 0;
 
@@ -2856,6 +2856,12 @@ public class ShortOperation implements Comparable<Object> {
                     continue;
                 }
 
+                // skip if the operation doesn't allow capturing of this unit type
+                if (!currFacility.canBeRaided(type, o)) {
+                	CampaignData.mwlog.debugLog("Can not capture unit type (" + type + ") for operation '" + o.getName() + "' as it is not allowed.");
+                	continue;
+                }
+                
                 boolean noUnits = false;
                 while (!noUnits && numCaptured < unitsToCapture) {
                     SPilot pilot = new SPilot("Vacant", 99, 99);
@@ -2868,6 +2874,23 @@ public class ShortOperation implements Comparable<Object> {
                             captured.add(capturedUnit);
                         }
                     }
+
+                    //Make sure we have no OMG-UR-FDs or we have gotten
+                    //a unit type we can't have because of a factory
+                    //that makes multiple unit types
+                    //13 Sept 2011 - Cord Awtry
+                    for (int i = captured.size() - 1; i >= 0; i--) {
+                    	SUnit unit = captured.get(i);
+                    	
+                    	if (unit.isOMGUnit()) {
+                    		CampaignData.mwlog.debugLog("Removing an OMG-UR-FD from captured units for operation '" + o.getName() + "'.");
+                    		captured.remove(i);
+                    	} else if (!unit.canBeCapturedInOperation(o)) {
+                    		CampaignData.mwlog.debugLog("Removing an '" + unit.getModelName() + "' from captured units for operation '" + o.getName() + "'.");
+                    		captured.remove(i);
+                    	}
+                    }
+                    
                     if (captured.size() < 1) {
                         noUnits = true;
                     } else {
@@ -2883,7 +2906,7 @@ public class ShortOperation implements Comparable<Object> {
         return capturedUnits;
     }
 
-    public Vector<SUnit> getPreOperationUnits(Operation o) {
+	public Vector<SUnit> getPreOperationUnits(Operation o) {
         Vector<SUnit> units = new Vector<SUnit>(1, 1);
 
         int unitCaptureCap = o.getIntValue("UnitCaptureCap");
@@ -2903,7 +2926,7 @@ public class ShortOperation implements Comparable<Object> {
             unitsToCapture = unitCaptureCap;
         }
 
-        units.addAll(captureUnits(unitsToCapture, targetWorld, defendingHouse, false));
+        units.addAll(captureUnits(o, unitsToCapture, targetWorld, defendingHouse, false));
 
         unitsToCapture = o.getIntValue("AttackerBaseFactoryUnitsTaken");
         unitUnitAdjust = o.getIntValue("AttackerFactoryUnitsUnitAdjustment");
@@ -2919,7 +2942,7 @@ public class ShortOperation implements Comparable<Object> {
             unitsToCapture = unitCaptureCap;
         }
 
-        units.addAll(captureUnits(unitsToCapture, targetWorld, defendingHouse, true));
+        units.addAll(captureUnits(o, unitsToCapture, targetWorld, defendingHouse, true));
 
         StringBuilder results = new StringBuilder("HS|");
 

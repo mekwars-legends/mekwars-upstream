@@ -47,6 +47,7 @@ import megamek.common.Pilot;
 import megamek.common.Tank;
 import megamek.common.WeaponType;
 import megamek.common.options.PilotOptions;
+import server.campaign.operations.Operation;
 import server.campaign.pilot.SPilotSkills;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.SPilotSkill;
@@ -1571,4 +1572,27 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
     public boolean isSupportUnit() {
     	return CampaignMain.cm.getSupportUnits().contains(getUnitFilename().toLowerCase());
     }
+    
+    public boolean isOMGUnit() {
+    	return getModelName().equals("OMG-UR-FD");
+    }
+
+	public boolean canBeCapturedInOperation(Operation o) {
+    	switch (getType()) {
+		case Unit.MEK:
+			return o.getBooleanValue("ForceProduceAndCaptureMeks");
+		case Unit.VEHICLE:
+			return o.getBooleanValue("ForceProduceAndCaptureVees");
+		case Unit.INFANTRY:
+			return o.getBooleanValue("ForceProduceAndCaptureInfs");
+		case Unit.PROTOMEK:
+			return o.getBooleanValue("ForceProduceAndCaptureProtos");
+		case Unit.BATTLEARMOR:
+			return o.getBooleanValue("ForceProduceAndCaptureBAs");
+		case Unit.AERO:
+			return o.getBooleanValue("ForceProduceAndCaptureAeros");
+    	}
+    	
+		return false;
+	}
 }

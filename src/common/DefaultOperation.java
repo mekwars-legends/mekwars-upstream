@@ -1321,9 +1321,17 @@ public class DefaultOperation {
         operationsDefaults.put("AttackerFactoryUnitsBVAdjustment", "0");
         operationsDefaults.put("AttackerFactoryUnitsUnitAdjustment", "0");
         operationsDefaults.put("AttackerAwardFactoryUnitsTakenToPlayerBVPercent", "0");
+        operationsDefaults.put("AttackerAwardFactoryUnitsTakenToPlayerMaxBVPercent", "0");
         operationsDefaults.put("AttackerAwardFactoryUnitsTakenToPlayerMax", "0");
         operationsDefaults.put("AttackerUnitsTakenBeforeFightStarts", "false");
         operationsDefaults.put("AttackerAllowAgainstUnclaimedLand", "false");
+
+        operationsDefaults.put("ForceProduceAndCaptureMeks", "true");
+        operationsDefaults.put("ForceProduceAndCaptureVees", "true");
+        operationsDefaults.put("ForceProduceAndCaptureInfs", "true");
+        operationsDefaults.put("ForceProduceAndCaptureBAs", "true");
+        operationsDefaults.put("ForceProduceAndCaptureAeros", "true");
+        operationsDefaults.put("ForceProduceAndCaptureProtos", "true");
 
         operationsDefaults.put("AttackerTargetOpAdjustment", "0");
         operationsDefaults.put("DefenderTargetOpAdjustment", "0");

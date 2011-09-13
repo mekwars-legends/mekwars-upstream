@@ -25,7 +25,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
-import common.Unit;
+import server.campaign.operations.Operation;
+
 import common.util.BinReader;
 import common.util.BinWriter;
 
@@ -265,6 +266,47 @@ public class UnitFactory implements Serializable {
 				return true;
 		}
 		
+		return false;
+	}
+	
+	/**
+	 * See if this factory can be raided by the particular operation
+	 * 
+	 * 13 Sept 2011 - Cord Awtry
+	 */
+	public boolean canBeRaided(int type_id, Operation o) {
+		boolean capMeks = o.getBooleanValue("ForceProduceAndCaptureMeks");
+		boolean capVees = o.getBooleanValue("ForceProduceAndCaptureVees");
+		boolean capInfs = o.getBooleanValue("ForceProduceAndCaptureInfs");
+		boolean capProtos = o.getBooleanValue("ForceProduceAndCaptureProtos");
+		boolean capBAs = o.getBooleanValue("ForceProduceAndCaptureBAs");
+		boolean capAeros = o.getBooleanValue("ForceProduceAndCaptureAeros");
+		
+		boolean canRaidAnything = capMeks || capVees || capInfs || capProtos || capBAs || capAeros;
+
+		if (!canRaidAnything) {
+			return false;
+		}
+		
+		if ( getType() == BUILDALL ) {
+			return true;
+		}
+		
+    	switch (type_id) {
+		case Unit.MEK:
+			return capMeks && canProduce(type_id);
+		case Unit.VEHICLE:
+			return capVees && canProduce(type_id);
+		case Unit.INFANTRY:
+			return capInfs && canProduce(type_id);
+		case Unit.PROTOMEK:
+			return capProtos && canProduce(type_id);
+		case Unit.BATTLEARMOR:
+			return capBAs && canProduce(type_id);
+		case Unit.AERO:
+			return capAeros && canProduce(type_id);
+    	}
+    	
 		return false;
 	}
 	

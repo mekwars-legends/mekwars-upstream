@@ -2711,7 +2711,7 @@ public class ShortResolver {
                         ArrayList<SUnit> capturedUnits = new ArrayList<SUnit>();
                         if (unitsToCapture > 0) {
 
-                            capturedUnits = so.captureUnits(unitsToCapture, target, aLoser.getHouseFightingFor(), false);
+                            capturedUnits = so.captureUnits(o, unitsToCapture, target, aLoser.getHouseFightingFor(), false);
                             // for (all unit types, mek preferred)
                             int numCaptured = capturedUnits.size();
 
@@ -2774,7 +2774,7 @@ public class ShortResolver {
                         if (unitsToCapture > 0) {
                             capturedUnits = new ArrayList<SUnit>();
 
-                            capturedUnits = so.captureUnits(unitsToCapture, target, aLoser.getHouseFightingFor(), true);
+                            capturedUnits = so.captureUnits(o, unitsToCapture, target, aLoser.getHouseFightingFor(), true);
                             int numCaptured = capturedUnits.size();
 
                             // add to metaString if anything was actually taken
@@ -2784,15 +2784,25 @@ public class ShortResolver {
                                 // as well as how much
                                 int numUnitsToAward = o.getIntValue("AttackerAwardFactoryUnitsTakenToPlayerMax");
                                 int maxBVToAward = 0;
+                                int maxTotalBVToAward = 0;
                                 int numUnitsAwarded = 0;
+                                int bvAwarded = 0;
                                 
                                 if (numUnitsToAward > 0) {
                                 	//Calculate the maxmium BV of a single unit that can be awarded
                                 	//This stops people from trying to capture a Warship with a single ASF
                                 	int bvAwardPercent = o.getIntValue("AttackerAwardFactoryUnitsTakenToPlayerBVPercent");
+                                	int bvMaxAwardPercent = o.getIntValue("AttackerAwardFactoryUnitsTakenToPlayerMaxBVPercent");
                                 	int totalAttackerBV = so.getAttackersBV();
                                 	
                                 	maxBVToAward = (int)(((double)totalAttackerBV * (double)bvAwardPercent) / 100D);
+                                	maxTotalBVToAward = (int)(((double)totalAttackerBV * (double)bvMaxAwardPercent) / 100D);
+                                	
+                                	CampaignData.mwlog.debugLog("bvAwardPercent -> " + bvAwardPercent);
+                                	CampaignData.mwlog.debugLog("bvMaxAwardPercent -> " + bvMaxAwardPercent);
+                                	CampaignData.mwlog.debugLog("totalAttackerBV -> " + totalAttackerBV);
+                                	CampaignData.mwlog.debugLog("maxBVToAward -> " + maxBVToAward);
+                                	CampaignData.mwlog.debugLog("maxTotalBVToAward -> " + maxTotalBVToAward);
                                 }
                                 
                             	StringBuilder sendToPlayerString = new StringBuilder();
@@ -2804,13 +2814,14 @@ public class ShortResolver {
                                 for (SUnit unit : capturedUnits) {
                                     loserHSUpdates.append(aLoser.getHouseFightingFor().getHSUnitRemovalString(unit));
                                     
-                                    boolean sendToPlayer = ((numUnitsToAward > numUnitsAwarded) && (unit.getBaseBV() <= maxBVToAward));
+                                    boolean sendToPlayer = ((numUnitsToAward > numUnitsAwarded) && (unit.getBaseBV() <= maxBVToAward) && ((bvAwarded + unit.getBaseBV()) <= maxTotalBVToAward));
                                     
                                     if (sendToPlayer) {
                                         String newPilot = handleDeadPilot(aWinner, unit, null, so);
                                         aWinner.addUnit(unit, true);
                                         
                                         numUnitsAwarded++;
+                                        bvAwarded += unit.getBaseBV();
                                         
                                         sendToPlayerString.append("Your logistics and procurement officer managed to get you a " + unit.getModelName() + " for your efforts." + newPilot + "<br>");
                                     } else {
@@ -2922,6 +2933,11 @@ public class ShortResolver {
                                 // skip this type if the facility cannot produce
                                 if (!currFacility.canProduce(type)) {
                                     continue;
+                                }
+
+                                // skip if the operation doesn't allow capturing of this unit type
+                                if (!currFacility.canBeRaided(type, o)) {
+                                	continue;
                                 }
 
                                 boolean noPP = false;

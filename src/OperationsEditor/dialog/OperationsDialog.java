@@ -2887,9 +2887,51 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField.setToolTipText("<html>Maximum BV of single unit to award to a player<br>based on a percentage of the BV of<br>their initial force.<br><br>This stops players from recovering a WarShip<br>with a single ASF.</html>");
         BaseTextField.setName("AttackerAwardFactoryUnitsTakenToPlayerBVPercent");
         attackerPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Max total award BV percent:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Maximum total BV of units to award to a player<br>based on a percentage of the BV of<br>their initial force.</html>");
+        BaseTextField.setName("AttackerAwardFactoryUnitsTakenToPlayerMaxBVPercent");
+        attackerPanel.add(BaseTextField);
 
         SpringLayoutHelper.setupSpringGrid(attackerPanel, 4);
-
+        // *** START new valid factory panel
+        JPanel validAttackerFactoryPanel = new JPanel(new SpringLayout());       
+        
+        validAttackerFactoryPanel.add(new JLabel("Valid factory types to capture from:"));
+        BaseCheckBox = new JCheckBox("Mek Factories");
+        BaseCheckBox.setToolTipText("<html>Only capture components and force produce units from Mek factories</html>");
+        BaseCheckBox.setName("ForceProduceAndCaptureMeks");
+        validAttackerFactoryPanel.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Vee Factories");
+        BaseCheckBox.setToolTipText("<html>Only capture components and force produce units from Vee factories</html>");
+        BaseCheckBox.setName("ForceProduceAndCaptureVees");
+        validAttackerFactoryPanel.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Inf Factories");
+        BaseCheckBox.setToolTipText("<html>Only capture components and force produce units from Inf factories</html>");
+        BaseCheckBox.setName("ForceProduceAndCaptureInfs");
+        validAttackerFactoryPanel.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("BA Factories");
+        BaseCheckBox.setToolTipText("<html>Only capture components and force produce units from BA factories</html>");
+        BaseCheckBox.setName("ForceProduceAndCaptureBAs");
+        validAttackerFactoryPanel.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Aero Factories");
+        BaseCheckBox.setToolTipText("<html>Only capture components and force produce units from Aero factories</html>");
+        BaseCheckBox.setName("ForceProduceAndCaptureAeros");
+        validAttackerFactoryPanel.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Proto Factories");
+        BaseCheckBox.setToolTipText("<html>Only capture components and force produce units from Proto factories</html>");
+        BaseCheckBox.setName("ForceProduceAndCaptureProtos");
+        validAttackerFactoryPanel.add(BaseCheckBox);
+        
+        SpringLayoutHelper.setupSpringGrid(validAttackerFactoryPanel, 1);        
+        // *** END new valid factory panel
+        
         BaseTextField = new JTextField(5);
         defenderPanel.add(new JLabel("Base Conquer:", SwingConstants.TRAILING));
         BaseTextField.setToolTipText("Base points of a planet taken for winning defender");
@@ -3057,6 +3099,8 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         capsBox.add(new JLabel("Max Operation Winnings"));
         capsBox.add(capsPanel);
 
+        attackerBox.add(validAttackerFactoryPanel);
+        
         metaBox.add(attackerBox);
         metaBox.add(defenderBox);
 
