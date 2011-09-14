@@ -2564,10 +2564,10 @@ public class ShortResolver {
                         int conquestUnitAdjust = o.getIntValue("AttackerConquestUnitAdjustment");
                         int conquestBVAdjust = o.getIntValue("AttackerConquestBVAdjustment");
                         if (conquestUnitAdjust > 0) {
-                            totalConquest += Math.floor(so.getStartingUnits() / conquestUnitAdjust);
+                            totalConquest += (int) (Math.floor(so.getStartingUnits() / conquestUnitAdjust));
                         }
                         if (conquestBVAdjust > 0) {
-                            totalConquest += Math.floor(so.getStartingBV() / conquestBVAdjust);
+                            totalConquest += (int) (Math.floor(so.getStartingBV() / conquestBVAdjust));
                         }
                         CampaignData.mwlog.testLog("Old Land: " + totalConquest);
                         if (modifyBasedOnPosition) {

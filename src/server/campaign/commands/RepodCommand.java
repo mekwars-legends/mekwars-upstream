@@ -385,7 +385,7 @@ public class RepodCommand implements Command {
         // make sure a vaild unit is select for the repod first.
         SUnit cm = new SUnit(unitid, m.getProducer(), Filename);
         if (cm.getModelName().equals("OMG-UR-FD")) {
-            CampaignMain.cm.toUser("AM:Invaild repod format try again!", Username, true);
+            CampaignMain.cm.toUser("AM:Invalid repod format try again!", Username, true);
             return;
         }
 

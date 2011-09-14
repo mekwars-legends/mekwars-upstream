@@ -213,7 +213,7 @@ public class UnitComponents{
 			}
 		}
 
-		part = UnitUtils.getCritName(mainUnit, UnitUtils.LOC_FRONT_ARMOR, 0, true);
+		part = UnitUtils.getCritName(mainUnit, UnitUtils.LOC_CT, 0, true);
 
 		mainUnitParts.put(part, armor+rear);
 

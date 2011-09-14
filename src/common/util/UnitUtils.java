@@ -2652,10 +2652,10 @@ public class UnitUtils {
                 return EquipmentType.getStructureTypeName(unit.getStructureType());
 
             } else {
-                if (EquipmentType.getArmorTypeName(unit.getArmorType(slot)).equalsIgnoreCase("Standard")) {
+                if (EquipmentType.getArmorTypeName(unit.getArmorType(location)).equalsIgnoreCase("Standard")) {
                     return "Armor (STD)";
                 }
-                return EquipmentType.getArmorTypeName(unit.getArmorType(slot));
+                return EquipmentType.getArmorTypeName(unit.getArmorType(location));
             }
         }
         CriticalSlot crit = unit.getCritical(location, slot);
