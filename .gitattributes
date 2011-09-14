@@ -1273,7 +1273,6 @@ server-dist/data/db_schemas/db_schema_31to32.txt -text
 server-dist/data/db_schemas/db_schema_32to33.txt -text
 server-dist/data/db_schemas/db_schema_33to34.txt -text
 server-dist/data/db_schemas/db_schema_34to35.txt -text
-server-dist/data/db_schemas/full_db_schema_34.txt -text
 server-dist/data/db_schemas/full_db_schema_35.txt -text
 server-dist/data/factions.dtd -text
 server-dist/data/factions.xml -text
