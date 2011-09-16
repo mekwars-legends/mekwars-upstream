@@ -1361,6 +1361,7 @@ src/admin/dialog/serverConfigDialogs/MiscOptionsPanel.java -text
 src/admin/dialog/serverConfigDialogs/NewbieHousePanel.java -text
 src/admin/dialog/serverConfigDialogs/NoPlayPanel.java -text
 src/admin/dialog/serverConfigDialogs/PathsPanel.java -text
+src/admin/dialog/serverConfigDialogs/PayoutModPanel.java -text
 src/admin/dialog/serverConfigDialogs/PilotSkillTextField.java -text
 src/admin/dialog/serverConfigDialogs/PilotSkillsCardPanel.java -text
 src/admin/dialog/serverConfigDialogs/PilotSkillsModPanel.java -text
@@ -1989,6 +1990,7 @@ src/server/campaign/operations/OperationWriter.java -text
 src/server/campaign/operations/OpsChickenThread.java -text
 src/server/campaign/operations/OpsDisconnectionThread.java -text
 src/server/campaign/operations/OpsScrapThread.java -text
+src/server/campaign/operations/PayoutModifier.java -text
 src/server/campaign/operations/ShortOperation.java -text
 src/server/campaign/operations/ShortResolver.java -text
 src/server/campaign/operations/ShortValidator.java -text

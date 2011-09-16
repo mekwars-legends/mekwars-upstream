@@ -127,6 +127,8 @@ public class ShortResolver {
     private ShortOperation shortOp = null;
 
     boolean nonDestructionMode = false;
+    
+    private PayoutModifier payoutModifier = new PayoutModifier();
 
     // CONSTRUCTORS
     public ShortResolver() {
@@ -823,8 +825,6 @@ public class ShortResolver {
             baseDefenderExperiencePay += Math.floor(so.getStartingBV() / defenderTotalBVXPAdjustment);
         }
 
-        double ratingMultiplier = 1.0; // Will be changed if ELO modifies the payouts
-        
         // Building Payments.
         // make sure that it wasn't a building map that they fought on and the
         // SO screwed up and set building ops happen.
@@ -1154,43 +1154,50 @@ public class ShortResolver {
             /*
              * Modify payouts based on ELO
              */
-            
-            if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO") && so.getAllPlayerNames().size() <= 2) { // This will really only work for 2-player games
-            	Double myRating;
-            	Double hisRating;
-            	if (so.getWinners().containsKey(currName)) {
-            		myRating = so.getWinners().get(currName).getRating();
-            		hisRating = so.getLosers().get(so.getLosers().keySet().iterator().next()).getRating();
-            	} else {
-            		myRating = so.getLosers().get(currName).getRating();
-            		hisRating = so.getWinners().get(so.getWinners().keySet().iterator().next()).getRating();
-            	}
-            	
-            	ratingMultiplier = hisRating / myRating;
-            	boolean modifyBasedOnPosition;
-            	if (ratingMultiplier >= 1.0 && CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELOForLower")) {
-            		modifyBasedOnPosition = true;
-            	} else if (ratingMultiplier <= 1.0 && CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELOForHigher")) {
-            		modifyBasedOnPosition = true;
-            	} else {
-            		modifyBasedOnPosition = false;
-            	}
-            	
-            	if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO_Money") && modifyBasedOnPosition) {
-            		earnedMoney = (int)Math.floor((earnedMoney * (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));
-            	}
-            	if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO_Exp") && modifyBasedOnPosition) {
-            		earnedXP = (int)Math.floor((earnedXP * (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));
-            	}
-            	if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO_Influence") && modifyBasedOnPosition) {
-            		earnedFlu = (int)Math.floor((earnedFlu * (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));
-            	}
-            	if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO_RP") && modifyBasedOnPosition) {
-            		earnedRP = (int)Math.floor((earnedRP *  (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));
-            	}
-            	
-            }
-            
+            TreeMap<String, Integer> payout = payoutModifier.calculate(currName, so, earnedMoney, earnedRP, earnedXP, earnedFlu);
+            earnedMoney = payout.get("earnedMoney");
+            earnedRP = payout.get("earnedRP");
+            earnedFlu = payout.get("earnedFlu");
+            earnedXP = payout.get("earnedXP");
+//            if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO") && so.getAllPlayerNames().size() <= 2) { // This will really only work for 2-player games
+//            	
+//            	
+//            	Double myRating;
+//            	Double hisRating;
+//            	
+//            	if (so.getWinners().containsKey(currName)) {
+//            		myRating = so.getWinners().get(currName).getRating();
+//            		hisRating = so.getLosers().get(so.getLosers().keySet().iterator().next()).getRating();
+//            	} else {
+//            		myRating = so.getLosers().get(currName).getRating();
+//            		hisRating = so.getWinners().get(so.getWinners().keySet().iterator().next()).getRating();
+//            	}
+//            	
+//            	ratingMultiplier = hisRating / myRating;
+//            	boolean modifyBasedOnPosition;
+//            	if (ratingMultiplier >= 1.0 && CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELOForLower")) {
+//            		modifyBasedOnPosition = true;
+//            	} else if (ratingMultiplier <= 1.0 && CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELOForHigher")) {
+//            		modifyBasedOnPosition = true;
+//            	} else {
+//            		modifyBasedOnPosition = false;
+//            	}
+//            	
+//            	if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO_Money") && modifyBasedOnPosition) {
+//            		earnedMoney = (int)Math.floor((earnedMoney * (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));
+//            	}
+//            	if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO_Exp") && modifyBasedOnPosition) {
+//            		earnedXP = (int)Math.floor((earnedXP * (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));
+//            	}
+//            	if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO_Influence") && modifyBasedOnPosition) {
+//            		earnedFlu = (int)Math.floor((earnedFlu * (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));
+//            	}
+//            	if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO_RP") && modifyBasedOnPosition) {
+//            		earnedRP = (int)Math.floor((earnedRP *  (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));
+//            	}
+//            	
+//            }
+//            
             /*
              * Put together the actual string to show our bold hero, and add the
              * earned amounts to their accounts.

@@ -53,6 +53,7 @@ import admin.dialog.serverConfigDialogs.MiscOptionsPanel;
 import admin.dialog.serverConfigDialogs.NewbieHousePanel;
 import admin.dialog.serverConfigDialogs.NoPlayPanel;
 import admin.dialog.serverConfigDialogs.PathsPanel;
+import admin.dialog.serverConfigDialogs.PayoutModPanel;
 import admin.dialog.serverConfigDialogs.PilotSkillsCardPanel;
 import admin.dialog.serverConfigDialogs.PilotSkillsPanel;
 import admin.dialog.serverConfigDialogs.PilotsPanel;
@@ -151,6 +152,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         DBPanel dbPanel = new DBPanel(); // Database configuration
         AdvancedRepairPanel advancedRepairPanel = new AdvancedRepairPanel();// Advanced Repair
         LossCompensationPanel lossCompensationPanel = new LossCompensationPanel();// battle loss compensation
+        PayoutModPanel payoutModPanel = new PayoutModPanel();
       
         // Set the actions to generate
         okayButton.setActionCommand(okayCommand);
@@ -183,6 +185,7 @@ public final class ServerConfigurationDialog implements ActionListener {
         ConfigPane.addTab("Loss Compensation", null, lossCompensationPanel, "Extra Payments for salvaged/destroyed units.");
         ConfigPane.addTab("Misc Options", null, miscOptionsPanel, "Misc Stuff");
         ConfigPane.addTab("No Play", null, noPlayPanel, "Personal Blacklist/Exclusion options");
+        ConfigPane.addTab("Payout Mods", null, payoutModPanel, "Modifications to ops payout");
         ConfigPane.addTab("Pilots", null, pilotsPanel, "Pilot Options");
         ConfigPane.addTab("Pilot Skills", null, pilotSkillsPanel, "Server Configurable Pilot Skills");
         ConfigPane.addTab("Repodding", null, repodPanel, "Repod");

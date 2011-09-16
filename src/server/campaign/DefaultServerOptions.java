@@ -1289,6 +1289,26 @@ public class DefaultServerOptions {
         defaults.setProperty("ModifyOpPayoutByELO_Land", "false");
         defaults.setProperty("ModifyOpPayoutByELO_Multiplier", "1");
         defaults.setProperty("AlwaysReduceLandTransfer", "false");
+        defaults.setProperty("ModifyOpPayoutByELO_RP_Higher", "false");
+        defaults.setProperty("ModifyOpPayoutByELO_RP_Lower", "false");
+        defaults.setProperty("ModifyOpPayoutByELO_RP_MinELO", "0");
+        defaults.setProperty("ModifyOpPayoutByELO_RP_MaxELO", "9999");
+        defaults.setProperty("ModifyOpPayoutByELO_Money_Higher", "false");
+        defaults.setProperty("ModifyOpPayoutByELO_Money_Lower", "false");
+        defaults.setProperty("ModifyOpPayoutByELO_Money_MinELO", "0");
+        defaults.setProperty("ModifyOpPayoutByELO_Money_MaxELO", "9999");
+        defaults.setProperty("ModifyOpPayoutByELO_Exp_Higher", "false");
+        defaults.setProperty("ModifyOpPayoutByELO_Exp_Lower", "false");
+        defaults.setProperty("ModifyOpPayoutByELO_Exp_MinELO", "0");
+        defaults.setProperty("ModifyOpPayoutByELO_Exp_MaxELO", "9999");
+        defaults.setProperty("ModifyOpPayoutByELO_Influence_Higher", "false");
+        defaults.setProperty("ModifyOpPayoutByELO_Influence_Lower", "false");
+        defaults.setProperty("ModifyOpPayoutByELO_Influence_MinELO", "0");
+        defaults.setProperty("ModifyOpPayoutByELO_Influence_MaxELO", "9999");
+        defaults.setProperty("ModifyOpPayoutByELO_Land_Higher", "false");
+        defaults.setProperty("ModifyOpPayoutByELO_Land_Lower", "false");
+        defaults.setProperty("ModifyOpPayoutByELO_Land_MinELO", "0");
+        defaults.setProperty("ModifyOpPayoutByELO_Land_MaxELO", "9999");
         
         defaults.setProperty("ShowUnitTypeCounts", "false");
         defaults.setProperty("UseBaseBVForMatching", "false");
