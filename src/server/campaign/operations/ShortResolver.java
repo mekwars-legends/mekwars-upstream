@@ -106,6 +106,8 @@ public class ShortResolver {
 
     int loserBV = 0;
 
+    int attackerBV = 0;
+    
     int buildingsLeft = -1;
 
     int buildingsDestroyed = 0;
@@ -165,7 +167,8 @@ public class ShortResolver {
 
         currentBV = 0;
         loserBV = 0;
-
+        attackerBV = 0;
+        
         buildingsLeft = -1;
         buildingsDestroyed = 0;
 
@@ -272,9 +275,12 @@ public class ShortResolver {
          * so.getLosers()'s BV. User to set the level at which he's paid out.
          */
         loserBV = 0;
+        attackerBV = 0;
         for (SArmy currArmy : allArmies.values()) {
             if (so.getLosers().containsKey(currArmy.getPlayerName().toLowerCase())) {
                 loserBV += currArmy.getBV();
+            } else {
+            	attackerBV += currArmy.getBV();
             }
         }
 
@@ -2953,22 +2959,35 @@ public class ShortResolver {
                                     if (ppAvailable <= 0) {
                                         noPP = true;
                                     } else {
-                                        int toTake = ppToCapture;
-                                        if (ppToCapture > ppAvailable) {
-                                            toTake = ppAvailable;
+                                    	/*
+                                    	 * Changing this because it actually can yield a lot more comps
+                                    	 * being taken than planned. If 'ppCaptured' is only one less
+                                    	 * than ''ppToCapture', it will still take everything from the factory
+                                    	 * eventhough it should only take what it needs to take to fullfil the
+                                    	 * capture amount
+                                    	 * 
+                                    	 * 17 Sept 2011 - Cord Awtry
+                                    	 */
+                                    	
+                                        int toTake = ppToCapture - ppCaptured;
+                                        
+                                        if (toTake > 0) {
+	                                        if (toTake > ppAvailable) {
+	                                            toTake = ppAvailable;
+	                                        }
+	                                        loserHSUpdates.append(aLoser.getHouseFightingFor().addPP(currWeight, type, -toTake, false));
+	                                        winnerHSUpdates.append(aWinner.getHouseFightingFor().addPP(currWeight, type, toTake, false));
+	                                        ppCaptured += toTake;
+	
+	                                        if (hasLoss) {
+	                                            winnerMetaString += ",";
+	                                            loserMetaString += ",";
+	                                        }
+	
+	                                        winnerMetaString += " stole " + toTake + " " + Unit.getWeightClassDesc(currWeight) + " " + Unit.getTypeClassDesc(type) + " components";
+	                                        loserMetaString += " lost " + toTake + " " + Unit.getWeightClassDesc(currWeight) + " " + Unit.getTypeClassDesc(type) + " components";
+	                                        hasLoss = true;
                                         }
-                                        loserHSUpdates.append(aLoser.getHouseFightingFor().addPP(currWeight, type, -toTake, false));
-                                        winnerHSUpdates.append(aWinner.getHouseFightingFor().addPP(currWeight, type, toTake, false));
-                                        ppCaptured += toTake;
-
-                                        if (hasLoss) {
-                                            winnerMetaString += ",";
-                                            loserMetaString += ",";
-                                        }
-
-                                        winnerMetaString += " stole " + toTake + " " + Unit.getWeightClassDesc(currWeight) + " " + Unit.getTypeClassDesc(type) + " components";
-                                        loserMetaString += " lost " + toTake + " " + Unit.getWeightClassDesc(currWeight) + " " + Unit.getTypeClassDesc(type) + " components";
-                                        hasLoss = true;
                                     }
                                 }// end while(units remain in this factories'
                                 // pool)
@@ -3145,23 +3164,26 @@ public class ShortResolver {
                                     if (ppAvailable <= 0) {
                                         noPP = true;
                                     } else {
-                                        int toDestroy = ppToDestroy;
-                                        if (ppToDestroy > ppAvailable) {
-                                            toDestroy = ppAvailable;
+                                        int toDestroy = ppToDestroy - ppDestroyed;
+                                        
+                                        if (toDestroy > 0) {
+	                                        if (toDestroy > ppAvailable) {
+	                                            toDestroy = ppAvailable;
+	                                        }
+	                                        loserHSUpdates.append(aLoser.getHouseFightingFor().addPP(currWeight, type, -toDestroy, false));
+	                                        // aWinner.getHouseFightingFor().addPP(currWeight,type,
+	                                        // toTake);
+	                                        ppDestroyed += toDestroy;
+	
+	                                        if (hasLoss) {
+	                                            winnerMetaString += ",";
+	                                            loserMetaString += ",";
+	                                        }
+	
+	                                        winnerMetaString += " destroyed " + toDestroy + " " + Unit.getWeightClassDesc(currWeight) + " " + Unit.getTypeClassDesc(type) + " components";
+	                                        loserMetaString += " lost " + toDestroy + " " + Unit.getWeightClassDesc(currWeight) + " " + Unit.getTypeClassDesc(type) + " components";
+	                                        hasLoss = true;
                                         }
-                                        loserHSUpdates.append(aLoser.getHouseFightingFor().addPP(currWeight, type, -toDestroy, false));
-                                        // aWinner.getHouseFightingFor().addPP(currWeight,type,
-                                        // toTake);
-                                        ppDestroyed += toDestroy;
-
-                                        if (hasLoss) {
-                                            winnerMetaString += ",";
-                                            loserMetaString += ",";
-                                        }
-
-                                        winnerMetaString += " destroyed " + toDestroy + " " + Unit.getWeightClassDesc(currWeight) + " " + Unit.getTypeClassDesc(type) + " components";
-                                        loserMetaString += " lost " + toDestroy + " " + Unit.getWeightClassDesc(currWeight) + " " + Unit.getTypeClassDesc(type) + " components";
-                                        hasLoss = true;
                                     }
                                 }// end while(units remain in this factories'
                                 // pool)
