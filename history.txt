@@ -2,6 +2,8 @@ VERSION HISTORY:
 ----------------
 v 0.3.5.x
 R Released Server v0.3.5.2
++ Bug: 3413017: Quotes in unit model (such as "Fire Javelin") corrupt 
+  mystatus output
 + Added ability to control payout skew individually for all payment components
   (flu, RP, exp, money)
 R Released Server v0.3.5.1
