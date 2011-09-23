@@ -788,6 +788,9 @@ public class DefaultServerOptions {
         defaults.setProperty("MaxIdleTime", "0");
         defaults.setProperty("DisconnectIdleUsers", "false");
         
+        defaults.setProperty("UseFullCapacityDescription", "false");
+        defaults.setProperty("UseFullCapacityInDetailDisplay", "false");
+        
         // ban weapon specialist weapons
         defaults.setProperty("BannedWSWeapons", "AMS,Leg Attack,Swarm Mek,Stop Swarm Attack");
 

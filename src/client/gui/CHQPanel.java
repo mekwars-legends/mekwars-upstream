@@ -611,7 +611,7 @@ public class CHQPanel extends JPanel {
 
                 if (mek != null) {
                     JFrame InfoWindow = new JFrame();
-                    MechDetailDisplay MechDetailInfo = new MechDetailDisplay();
+                    MechDetailDisplay MechDetailInfo = new MechDetailDisplay(mwclient);
                     Entity theEntity = mek.getEntity();
                     theEntity.loadAllWeapons();
                     MechDetailInfo.displayEntity(theEntity, mek.getBVForMatch(), mwclient.getConfig().getImage("CAMO"));
@@ -2522,7 +2522,7 @@ public class CHQPanel extends JPanel {
                 CUnit mek = MekTable.getMekAt(row, col);
                 Entity theEntity = mek.getEntity();
                 JFrame InfoWindow = new JFrame();
-                MechDetailDisplay MechDetailInfo = new MechDetailDisplay();
+                MechDetailDisplay MechDetailInfo = new MechDetailDisplay(mwclient);
                 theEntity.loadAllWeapons();
                 MechDetailInfo.displayEntity(theEntity, mek.getBV(), mwclient.getConfig().getImage("CAMO"));
                 InfoWindow.getContentPane().add(MechDetailInfo);

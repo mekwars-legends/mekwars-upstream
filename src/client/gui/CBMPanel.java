@@ -345,7 +345,7 @@ public class CBMPanel extends JPanel {
         theEntity.loadAllWeapons();
 
         JFrame InfoWindow = new JFrame();
-        MechDetailDisplay MechDetailInfo = new MechDetailDisplay();
+        MechDetailDisplay MechDetailInfo = new MechDetailDisplay(mwclient);
 
         InfoWindow.getContentPane().add(MechDetailInfo);
         InfoWindow.setSize(220,400);

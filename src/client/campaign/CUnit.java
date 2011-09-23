@@ -347,10 +347,24 @@ public class CUnit extends Unit {
         }
 
         String capacity = getEntity().getUnusedString();
-        if ((capacity != null) && capacity.startsWith("Troops")) {
-            capacity = capacity.substring(9);// strip "Troops - " from string
-            tinfo += "Cargo: " + capacity + "<br>";
+        
+        if ((capacity != null) && (capacity.trim().length() > 0)) {
+	        if(Boolean.parseBoolean(mwclient.getserverConfigs("UseFullCapacityDescription"))) {
+	        	if (capacity.endsWith("<br>")) {
+	        		capacity = capacity.substring(0, capacity.length() - 4);
+	        	}
+	
+	        	if (capacity.indexOf("<br>") > -1) {
+	        		tinfo += "Cargo:<br>" + capacity + "<br>";
+	        	} else {
+	        		tinfo += "Cargo: " + capacity + "<br>";
+	        	}
+	        } else if (capacity.startsWith("Troops")) {
+	            capacity = capacity.substring(9);// strip "Troops - " from string
+	            tinfo += "Cargo: " + capacity + "<br>";
+	        }
         }
+        
         if (getLifeTimeRepairCost() > 0) {
             tinfo += "Repair Costs: " + getCurrentRepairCost() + "/" + getLifeTimeRepairCost() + "<br>";
         }

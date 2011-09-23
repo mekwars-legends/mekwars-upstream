@@ -249,6 +249,16 @@ public class MiscOptionsPanel extends JPanel {
         BaseCheckBox.setName("DisconnectIdleUsers");
         miscCBoxSpring.add(BaseCheckBox);
         
+        BaseCheckBox = new JCheckBox("Show full capacity in unit popups");
+        BaseCheckBox.setToolTipText("<html>Show the complete capacity description for units in the overlay popup</html>");
+        BaseCheckBox.setName("UseFullCapacityDescription");
+        miscCBoxSpring.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Show full capacity in detail display");
+        BaseCheckBox.setToolTipText("<html>Show the complete capacity description for units when viewing</html>");
+        BaseCheckBox.setName("UseFullCapacityInDetailDisplay");
+        miscCBoxSpring.add(BaseCheckBox);
+        
         SpringLayoutHelper.setupSpringGrid(miscCBoxSpring, 3);
 
         // finalize layout

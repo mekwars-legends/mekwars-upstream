@@ -51,6 +51,7 @@ import megamek.common.Mounted;
 import megamek.common.Protomech;
 import megamek.common.Tank;
 import megamek.common.WeaponType;
+import client.MWClient;
 import client.gui.MechInfo;
 
 import common.util.SpringLayoutHelper;
@@ -72,10 +73,12 @@ public class MechDetailDisplay extends JTabbedPane {
     public WeaponPanel wPan;
     public SystemPanel sPan;
 
+    private MWClient mwclient;
+    
     /**
      * Creates and lays out a new mech display.
      */
-    public MechDetailDisplay() {
+    public MechDetailDisplay(MWClient _mwclient) {
         super();
         mPan = new GeneralPanel();
         add("General", mPan);
@@ -85,6 +88,8 @@ public class MechDetailDisplay extends JTabbedPane {
         add("Weapons", wPan);
         sPan = new SystemPanel();
         add("Systems", sPan);
+        
+        this.mwclient = _mwclient;
     }
 
     //public void displayEntity(Entity en, int bv) {
@@ -95,7 +100,7 @@ public class MechDetailDisplay extends JTabbedPane {
      * Displays the specified entity in the panel.
      */
     public void displayEntity(Entity en, int bv, ImageIcon currentCamo) {
-        mPan.displayMech(en, bv, currentCamo);
+        mPan.displayMech(en, bv, currentCamo, mwclient);
         aPan.displayMech(en);
         wPan.displayMech(en);
         sPan.displayMech(en);
@@ -118,7 +123,7 @@ class GeneralPanel extends JPanel{
     public JLabel weightL, weightR, pilotL, pilotR, skillsL, skillsR;
     public JLabel mpL, mpR, heatL, heatR;
     public JLabel bvR, bvL;
-    public JLabel cargoL, cargoR;
+    public JLabel cargoL, cargoR, cargoFull;
     public JCheckBox autoEjectCB;
     public Entity ent = null;
     public MechInfo unitPicture = null;
@@ -164,6 +169,9 @@ class GeneralPanel extends JPanel{
         cargoL = new JLabel("Cargo:",SwingConstants.RIGHT);
         cargoR = new JLabel("9999",SwingConstants.LEFT);
 
+        cargoFull = new JLabel("<HTML><body>Cargo full holder</body></HTML>", SwingConstants.CENTER);
+        cargoFull.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
         //bv stuff
         bvL = new JLabel("BV:", SwingConstants.RIGHT);
         bvR = new JLabel("9999", SwingConstants.LEFT);
@@ -190,17 +198,18 @@ class GeneralPanel extends JPanel{
         SpringLayoutHelper.setupSpringGrid(statusSpringP,6,2);
         statusP.setLayout(new BoxLayout(statusP, BoxLayout.Y_AXIS));
         statusP.add(statusSpringP);
-
+        
         //layout main panel
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         add(mechTypeL);
         add(statusP);
+        add(cargoFull);
     }
 
     /**
      * updates fields for the specified mech
      */
-    public void displayMech(Entity en, int bv, ImageIcon currentCamo) {
+    public void displayMech(Entity en, int bv, ImageIcon currentCamo, MWClient mwclient) {
 
         ent = en;
 
@@ -249,16 +258,38 @@ class GeneralPanel extends JPanel{
         heatR.setText(Integer.toString(en.heat) + " (" + heatCapacityStr + " capacity)");
 
         String capacity = en.getUnusedString();
-        if ((capacity != null) && capacity.startsWith("Troops")) {
-            capacity = capacity.substring(9);//strip "Troops - " from string
-            cargoR.setText(capacity);
-        } else {
+        boolean showDefaultCapacity = false;
+        boolean showFullCapacity = false;
+        
+        if ((capacity != null) && (capacity.trim().length() > 0)) {
+        	if((mwclient != null) && Boolean.parseBoolean(mwclient.getserverConfigs("UseFullCapacityInDetailDisplay"))) {
+	        	if (capacity.endsWith("<br>")) {
+	        		capacity = capacity.substring(0, capacity.length() - 4);
+	        	}
+	
+	        	cargoFull.setText("<HTML><body><div align=\"center\"><b>Carrying Capacity</b><br>" + capacity + "</div></body></HTML>");
+	        	
+	        	showFullCapacity = true;
+        	} else if (capacity.startsWith("Troops")) {
+	            capacity = capacity.substring(9);//strip "Troops - " from string
+	            cargoR.setText(capacity);
+	            
+	            showDefaultCapacity = true;
+        	}
+        }
+        
+        if (!showDefaultCapacity) {
         	cargoL.setText("");
         	cargoR.setText("");
         	cargoL.setVisible(false);
         	cargoR.setVisible(false);
         }
-
+        
+        if (!showFullCapacity) {
+        	cargoFull.setText("");
+        	cargoFull.setVisible(false);
+        }
+        
         if (bv == 0) {
             bvR.setText("N/A");
         } else {
@@ -266,6 +297,11 @@ class GeneralPanel extends JPanel{
         }
 
         add(unitPicture);
+        
+        if (showFullCapacity) {
+        	add(cargoFull);
+        }
+        
         validate();
     }
 }

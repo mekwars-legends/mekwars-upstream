@@ -812,7 +812,7 @@ public class CHSPanel extends JPanel {
         UnitEntity = embeddedUnit.getEntity();
 
         JFrame InfoWindow = new JFrame();
-        MechDetailDisplay MechDetailInfo = new MechDetailDisplay();
+        MechDetailDisplay MechDetailInfo = new MechDetailDisplay(mwclient);
         UnitEntity.loadAllWeapons();
         UnitEntity.setCrew(new megamek.common.Pilot("", Gunnery, Piloting));
         if (battleDamage.trim().length() > 1) {

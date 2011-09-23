@@ -237,7 +237,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                     theEntity.loadAllWeapons();
 
                     JFrame InfoWindow = new JFrame();
-                    MechDetailDisplay MechDetailInfo = new MechDetailDisplay();
+                    MechDetailDisplay MechDetailInfo = new MechDetailDisplay(mwclient);
 
                     InfoWindow.getContentPane().add(MechDetailInfo);
                     InfoWindow.setSize(220, 400);
