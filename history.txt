@@ -1,9 +1,10 @@
 VERSION HISTORY:
 ----------------
-+ Bug: 3413332: Aero pilot queue gets indented incorrectly 
-+ RFE: 3413316: Show full carrying capacity in popup and entity display
 v 0.3.5.x
-R Released Server v0.3.5.2
+R Released Server v0.3.5.3, Client v0.3.5.1
++ Bug: 3413332: Aero pilot queue gets indented incorrectly 
++ RFE: 3413316: Show full carrying capacity in popup and entity displayR Released Server v0.3.5.2
++ Bug: 3410752: Players' hangars not sorting
 + Bug: 3413017: Quotes in unit model (such as "Fire Javelin") corrupt 
   mystatus output
 + Added ability to control payout skew individually for all payment components

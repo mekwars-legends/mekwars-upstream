@@ -51,6 +51,10 @@ public class PF extends Command {
 			boolean value = Boolean.parseBoolean(st.nextToken());
 			mwclient.getPlayer().getDefaultPlayerFlags().setFlag(name, value);
 		}
+		// As this is the last command sent on login, and since players' hangars aren't
+		// being sorted when first logging in, it seems an appropriate time to send a
+		// sortHangar command
+		mwclient.getPlayer().sortHangar();
 	}
 
 	public PF(MWClient mwclient) {
