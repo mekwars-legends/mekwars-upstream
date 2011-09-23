@@ -19,6 +19,7 @@ package server.campaign.commands;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
+import common.CampaignData;
 import common.Unit;
 import common.campaign.pilot.Pilot;
 
@@ -168,7 +169,7 @@ public class DisplayPlayerPersonalPilotQueueCommand implements Command {
                 hasQueuedPilots = true;
                 
                 //add the weight class descrpition to table
-                toReturn.append(Unit.getWeightClassDesc(weightClass)+":<UL>");
+                toReturnAero.append(Unit.getWeightClassDesc(weightClass)+":<UL>");
                 
                 //add all pilots in the list to the table
                 for (int i = 0; i < currList.size(); i++) {
@@ -206,7 +207,7 @@ public class DisplayPlayerPersonalPilotQueueCommand implements Command {
             toReturnAero.insert(0,"<u>Aero Pilots</u>:<br>");
             toReturn.append(toReturnAero);
         }
-		
+        
 		if (toReturn.length() > 0)
 			CampaignMain.cm.toUser("SM|"+toReturn.toString(),Username,false);
 		else

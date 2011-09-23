@@ -175,7 +175,7 @@ public class ViewPlayerPersonalPilotQueueCommand implements Command {
                 hasQueuedPilots = true;
                 
                 //add the weight class descrpition to table
-                toReturn.append(Unit.getWeightClassDesc(weightClass)+":<UL>");
+                toReturnAero.append(Unit.getWeightClassDesc(weightClass)+":<UL>");
                 
                 //add all pilots in the list to the table
                 for (int i = 0; i < currList.size(); i++) {
