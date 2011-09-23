@@ -1,5 +1,6 @@
 VERSION HISTORY:
 ----------------
++ RFE: 3413316: Show full carrying capacity in popup and entity display
 v 0.3.5.x
 R Released Server v0.3.5.2
 + Bug: 3413017: Quotes in unit model (such as "Fire Javelin") corrupt 
