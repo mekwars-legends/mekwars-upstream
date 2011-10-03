@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
+R Released Server v0.3.5.5, Client v0.3.5.2
++ Bug: Units with quotes in the model did not work in MEKINFO links
 R Released Server v0.3.5.4
 + Bug: Defending armies counting support units in BV spread when told not to
 R Released Server v0.3.5.3, Client v0.3.5.1

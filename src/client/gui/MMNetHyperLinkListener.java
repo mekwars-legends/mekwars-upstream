@@ -121,7 +121,7 @@ class MMNetHyperLinkListener implements HyperlinkListener {
 						String command = e.getDescription();
 						command = command.substring(7);
 						StringTokenizer ST = new StringTokenizer(command,"#");
-						String filename = ST.nextToken();
+						String filename = ST.nextToken().replace("%22", "\"");
 						int BV = Integer.parseInt(ST.nextToken());
 						int gunnery = Integer.parseInt(ST.nextToken());
 						int piloting = Integer.parseInt(ST.nextToken());

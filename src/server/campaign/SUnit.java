@@ -935,7 +935,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
         } else {
             idToShow = "#" + getId();
         }
-        String dialogBox = "<a href=\"MEKINFO" + getEntity().getChassis().replace('"', '\"') + " " + getEntity().getModel().replace('"', '\"') + "#" + getBVForMatch() + "#" + getPilot().getGunnery() + "#" + getPilot().getPiloting() + "\">" + getModelName() + "</a>";
+        String dialogBox = "<a href=\"MEKINFO" + getEntity().getChassis() + " " + getEntity().getModel().replace("\"", "%22") + "#" + getBVForMatch() + "#" + getPilot().getGunnery() + "#" + getPilot().getPiloting() + "\">" + getModelName() + "</a>";
 
         if ((getType() == Unit.MEK) || (getType() == Unit.VEHICLE)) {
             return idToShow + " " + dialogBox + " (" + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ") [" + getPilot().getExperience() + " EXP " + getPilot().getSkillString(false) + "] Kills: " + getPilot().getKills() + " " + getProducer() + ". BV: " + getBVForMatch() + " " + status;
