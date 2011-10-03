@@ -1538,6 +1538,8 @@ public class ShortValidator {
             // check spreads. because the spreads can <code>continue</code> they
             // should be LAST
             int type = currUnit.getType();
+            if (currUnit.isSupportUnit() && !o.getBooleanValue("CountSupportUnitsForSpread"))
+            	continue;
             if (type == Unit.VEHICLE && !o.getBooleanValue("CountVehsForSpread"))
                 continue;
             else if (type == Unit.PROTOMEK && !o.getBooleanValue("CountProtosForSpread"))
