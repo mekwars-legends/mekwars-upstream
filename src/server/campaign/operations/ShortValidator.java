@@ -976,13 +976,7 @@ public class ShortValidator {
         	int totalUnits = aa.getAmountOfUnits();
         	double minPercent = o.getDoubleValue("MinAttackerAeroPercent");
         	double maxPercent = o.getDoubleValue("MaxAttackerAeroPercent");
-        	double actualPercent = (double) (numAero / totalUnits);
-        	
-        	CampaignData.mwlog.debugLog("NumAero: " + numAero);
-        	CampaignData.mwlog.debugLog("totalUnits: " + totalUnits);
-        	CampaignData.mwlog.debugLog("Min: " + minPercent);
-        	CampaignData.mwlog.debugLog("Max: " + maxPercent);
-        	CampaignData.mwlog.debugLog("actual: " + actualPercent);
+        	double actualPercent = (double) (((double)numAero / (double)totalUnits) * 100);
         	
         	if (actualPercent < minPercent) {
         		failureReasons.add(new Integer(SFAIL_ATTACK_MIN_AERO));
@@ -1441,7 +1435,7 @@ public class ShortValidator {
         	int totalUnits = da.getAmountOfUnits();
         	double minPercent = o.getDoubleValue("MinAttackerAeroPercent");
         	double maxPercent = o.getDoubleValue("MaxAttackerAeroPercent");
-        	double actualPercent = (double) (numAero / totalUnits);
+        	double actualPercent = (double) (((double)numAero / (double)totalUnits) * 100);
         	if (actualPercent < minPercent) {
         		failureReasons.add(new Integer(SFAIL_DEFEND_MIN_AERO));
         	} else if (actualPercent > maxPercent) {
