@@ -962,7 +962,7 @@ public class DefaultOperation {
         operationsDefaults.put("MaxDefenderAero", "0");
         operationsDefaults.put("MinDefenderAero", "0");
         operationsDefaults.put("EnforceAttackerAeroRatio", "false");
-        operationsDefaults.put("EnforceDefencerAeroRatio", "false");
+        operationsDefaults.put("EnforceDefenderAeroRatio", "false");
         operationsDefaults.put("CountSupportUnitsInAeroRatio", "true");
         operationsDefaults.put("MaxDefenderAeroPercent", "100");
         operationsDefaults.put("MinDefenderAeroPercent", "0");
@@ -1594,7 +1594,7 @@ public class DefaultOperation {
         operationsDefaults.put("MaxDefenderSupportUnits", "999");
         operationsDefaults.put("CountSupportUnitsForSpread", "true");
         operationsDefaults.put("EnforceAttackerSupportRatio", "false");
-        operationsDefaults.put("EnforceDefencerSupportRatio", "false");
+        operationsDefaults.put("EnforceDefenderSupportRatio", "false");
         operationsDefaults.put("MaxDefenderSupportPercent", "100");
         operationsDefaults.put("MinDefenderSupportPercent", "0");
         operationsDefaults.put("MaxAttackerSupportPercent", "100");
