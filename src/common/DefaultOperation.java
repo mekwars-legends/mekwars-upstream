@@ -961,7 +961,14 @@ public class DefaultOperation {
         operationsDefaults.put("MinAttackerAero", "0");
         operationsDefaults.put("MaxDefenderAero", "0");
         operationsDefaults.put("MinDefenderAero", "0");
-
+        operationsDefaults.put("EnforceAttackerAeroRatio", "false");
+        operationsDefaults.put("EnforceDefencerAeroRatio", "false");
+        operationsDefaults.put("CountSupportUnitsInAeroRatio", "true");
+        operationsDefaults.put("MaxDefenderAeroPercent", "100");
+        operationsDefaults.put("MinDefenderAeroPercent", "0");
+        operationsDefaults.put("MaxAttackerAeroPercent", "100");
+        operationsDefaults.put("MinAttackerAeroPercent", "0");
+        
         operationsDefaults.put("MaxAttackerNonInfantry", "10000000");
         operationsDefaults.put("MinAttackerNonInfantry", "0");
         operationsDefaults.put("MaxDefenderNonInfantry", "10000000");
@@ -1586,6 +1593,12 @@ public class DefaultOperation {
         operationsDefaults.put("MinDefenderSupportUnits", "0");
         operationsDefaults.put("MaxDefenderSupportUnits", "999");
         operationsDefaults.put("CountSupportUnitsForSpread", "true");
+        operationsDefaults.put("EnforceAttackerSupportRatio", "false");
+        operationsDefaults.put("EnforceDefencerSupportRatio", "false");
+        operationsDefaults.put("MaxDefenderSupportPercent", "100");
+        operationsDefaults.put("MinDefenderSupportPercent", "0");
+        operationsDefaults.put("MaxAttackerSupportPercent", "100");
+        operationsDefaults.put("MinAttackerSupportPercent", "0");
         
         // Flags
         operationsDefaults.put("AttackerFlags", "");

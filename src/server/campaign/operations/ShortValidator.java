@@ -968,6 +968,21 @@ public class ShortValidator {
             failureReasons.add(new Integer(SFAIL_ATTACK_MAX_AERO));
         else if (aa.getNumberOfUnitTypes(Unit.AERO, countSupport) < o.getIntValue("MinAttackerAero"))
             failureReasons.add(new Integer(SFAIL_ATTACK_MIN_AERO));
+        
+        // Check Aero ratios
+        if (o.getBooleanValue("EnforceAttackerAeroRatio")) {
+        	boolean countAeroSupport = o.getBooleanValue("CountSupportUnitsInAeroRatio");
+        	int numAero = aa.getNumberOfUnitTypes(Unit.AERO, countAeroSupport);
+        	int totalUnits = aa.getAmountOfUnits();
+        	double minPercent = o.getDoubleValue("MinAttackerAeroPercent");
+        	double maxPercent = o.getDoubleValue("MaxAttackerAeroPercent");
+        	double actualPercent = (double) (numAero / totalUnits);
+        	if (actualPercent < minPercent) {
+        		failureReasons.add(new Integer(SFAIL_ATTACK_MIN_AERO));
+        	} else if (actualPercent > maxPercent) {
+        		failureReasons.add(new Integer(SFAIL_ATTACK_MAX_AERO));
+        	}
+        }
 
         int infCount = aa.getNumberOfUnitTypes(Unit.INFANTRY, countSupport);
         int protoCount = aa.getNumberOfUnitTypes(Unit.PROTOMEK, countSupport);
@@ -1412,6 +1427,22 @@ public class ShortValidator {
         else if (da.getNumberOfUnitTypes(Unit.AERO, countSupport) < o.getIntValue("MinDefenderAero"))
             failureReasons.add(new Integer(SFAIL_DEFEND_MIN_AERO));
 
+        // Check Aero ratios
+        if (o.getBooleanValue("EnforceDefenderAeroRatio")) {
+        	boolean countAeroSupport = o.getBooleanValue("CountSupportUnitsInAeroRatio");
+        	int numAero = da.getNumberOfUnitTypes(Unit.AERO, countAeroSupport);
+        	int totalUnits = da.getAmountOfUnits();
+        	double minPercent = o.getDoubleValue("MinAttackerAeroPercent");
+        	double maxPercent = o.getDoubleValue("MaxAttackerAeroPercent");
+        	double actualPercent = (double) (numAero / totalUnits);
+        	if (actualPercent < minPercent) {
+        		failureReasons.add(new Integer(SFAIL_DEFEND_MIN_AERO));
+        	} else if (actualPercent > maxPercent) {
+        		failureReasons.add(new Integer(SFAIL_DEFEND_MAX_AERO));
+        	}
+        }
+
+        
         int infCount = da.getNumberOfUnitTypes(Unit.INFANTRY, countSupport);
         infCount += da.getNumberOfUnitTypes(Unit.BATTLEARMOR, countSupport);
         int protoCount = da.getNumberOfUnitTypes(Unit.PROTOMEK, countSupport);

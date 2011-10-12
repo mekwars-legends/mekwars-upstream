@@ -442,6 +442,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         JPanel unitsPanel = new JPanel();// Unit mins and maxes for the op
         JPanel costsPanel = new JPanel();// Cost to attack or defend an op
         JPanel flagsPanel = new JPanel(); // Player flags
+        JPanel unitRatiosPanel = new JPanel();
 
         JPanel playerPropertiesPanel = new JPanel();// mins/maxes for players if they can attack/defend an op
         JPanel scenarioPanel = new JPanel();// Arty/mines anything given to an attacker/defender besides their own units
@@ -3902,7 +3903,63 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         
         flagsPanel.add(mainFlagPanel);
         
-
+        // Unit Ratios Tab
+        unitRatiosPanel.setLayout(new VerticalLayout());
+        JPanel aeroRatioPanel = new JPanel();
+        JPanel supportRatioPanel = new JPanel();
+        JPanel attackerRatioPanel = new JPanel();
+        JPanel defenderRatioPanel = new JPanel();
+        
+        BaseCheckBox = new JCheckBox("Count Support Aero");
+        BaseCheckBox.setName("CountSupportUnitsInAeroRatio");
+        BaseCheckBox.setToolTipText("<html>If checked, support Aero will count as normal aero for purposes of the ratio<br>If unchecked, support aero will not count toward the ratio</html>");
+        supportRatioPanel.add(BaseCheckBox);
+        
+        attackerRatioPanel.setLayout(new VerticalLayout());
+        attackerRatioPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Attacker"));
+        BaseCheckBox = new JCheckBox("Enforce Attacker Ratio");
+        BaseCheckBox.setName("EnforceAttackerAeroRatio");
+        BaseCheckBox.setToolTipText("If checked, ratios will be enforced for the attacker");
+        attackerRatioPanel.add(BaseCheckBox);
+        BaseTextField = new JTextField(5);
+        BaseTextField.setName("MaxAttackerAeroPercent");
+        JPanel maxPanel = new JPanel();
+        maxPanel.add(new JLabel("Max aero percent:"));
+        maxPanel.add(BaseTextField);
+        attackerRatioPanel.add(maxPanel);
+        BaseTextField = new JTextField(5);
+        BaseTextField.setName("MinAttackerAeroPercent");
+        JPanel minPanel = new JPanel();
+        minPanel.add(new JLabel("Min aero percent:"));
+        minPanel.add(BaseTextField);
+        attackerRatioPanel.add(minPanel);
+        
+        defenderRatioPanel.setLayout(new VerticalLayout());
+        defenderRatioPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Defender"));
+        BaseCheckBox = new JCheckBox("Enforce Defender Ratio");
+        BaseCheckBox.setName("EnforceDefenderAeroRatio");
+        BaseCheckBox.setToolTipText("If checked, ratios will be enforced for the Defender");
+        defenderRatioPanel.add(BaseCheckBox);
+        BaseTextField = new JTextField(5);
+        BaseTextField.setName("MaxDefenderAeroPercent");
+        maxPanel = new JPanel();
+        maxPanel.add(new JLabel("Max aero percent:"));
+        maxPanel.add(BaseTextField);
+        defenderRatioPanel.add(maxPanel);
+        BaseTextField = new JTextField(5);
+        BaseTextField.setName("MinDefenderAeroPercent");
+        minPanel = new JPanel();
+        minPanel.add(new JLabel("Min aero percent:"));
+        minPanel.add(BaseTextField);
+        defenderRatioPanel.add(minPanel);
+        
+        
+        aeroRatioPanel.add(supportRatioPanel);
+        aeroRatioPanel.add(attackerRatioPanel);
+        aeroRatioPanel.add(defenderRatioPanel);
+        
+        unitRatiosPanel.add(aeroRatioPanel);
+        
         ConfigPane.addTab("Buildings", null, buildingsPanel, "Set up buildings for operations.");
         ConfigPane.addTab("Chicken/Leech", null, chickenLeechPanel, "<html>Set up what happens to those that flee and<br>those that don't pay attention to an attack.</html>");
         ConfigPane.addTab("Deployment", null, deploymentPanel, "Set Army Deployment Chances.");
@@ -3920,6 +3977,8 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         ConfigPane.addTab("Units", null, unitsPanel, "Unit mins and maxes for the op");
         ConfigPane.addTab("Victory Conditions", null, victoryPanel, "Victory Conditions For MegaMek");
         ConfigPane.addTab("Player Flags", null, flagsPanel, "Player Flag settings");
+        ConfigPane.addTab("Unit Ratios", null, unitRatiosPanel, "Limit access to op by unit ratios");
+        
 
         // Remove the old configpane and add the newly created one!
         pane.remove(0);
