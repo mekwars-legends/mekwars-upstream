@@ -3958,6 +3958,8 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         aeroRatioPanel.add(attackerRatioPanel);
         aeroRatioPanel.add(defenderRatioPanel);
         
+        aeroRatioPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Aero Ratios"));
+        
         unitRatiosPanel.add(aeroRatioPanel);
         
         ConfigPane.addTab("Buildings", null, buildingsPanel, "Set up buildings for operations.");
