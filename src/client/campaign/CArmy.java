@@ -21,6 +21,7 @@
 
 package client.campaign;
 
+import java.text.DecimalFormat;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
@@ -336,9 +337,11 @@ public class CArmy extends Army {
     		totalPiloting += piloting;
     		numunits++;
     	}
-    	avgSkills = (totalGunnery + totalPiloting) / numunits;
-    	avgGunnery = totalGunnery / numunits;
-    	avgPiloting = totalPiloting / numunits;
+    	// Need to use a DecimalFormat so we don't get just whole integer averages
+    	DecimalFormat twoDForm = new DecimalFormat("#.##");
+    	avgSkills = Double.valueOf( twoDForm.format( (double)(((double)(totalGunnery + totalPiloting)) / numunits) ) );
+    	avgGunnery = Double.valueOf(twoDForm.format((double)((double)totalGunnery / numunits)));
+    	avgPiloting = Double.valueOf(twoDForm.format((double)((double)totalPiloting / numunits)));
     	toReturn.append("<html><table><tr><td colspan=4>Skillsums</td></tr>");
     	toReturn.append("<tr><td>&nbsp;</td><td>Total</td><td>Gunnery</td><td>Piloting</td></tr>");
     	toReturn.append("<tr><td>Average:</td><td>" + avgSkills + "</td><td>" + avgGunnery + "</td><td>" + avgPiloting + "</td></tr>");
