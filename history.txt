@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
+R Released Client v0.3.5.5
++ Bug 3410752: Hangar not sorting on login
 R Released Client v0.3.5.4
 + Bug 3411351: Apparent Rounding Error in Averag Gunnery Skill Popup 
 R Released Server v0.3.5.6, Client v0.3.5.3
