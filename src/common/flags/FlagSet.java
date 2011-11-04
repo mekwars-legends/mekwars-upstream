@@ -197,7 +197,7 @@ public class FlagSet {
 	public String export() {
 		StringBuilder toReturn = new StringBuilder();
 		if (flagNames.size() == 0) {
-			return "";
+			return " ";
 		}
 		for (int key : flagNames.keySet()) {
 			String name = flagNames.get(key);

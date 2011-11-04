@@ -2472,7 +2472,11 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         CampaignMain.cm.toUser(tsBans.toString(), realName, false);
         
         // Send default player flags if it's an admin or mod
-        CampaignMain.cm.toUser("PF|SDF|" + CampaignMain.cm.getDefaultPlayerFlags().export(), p.getName(), false);
+        if (CampaignMain.cm.getServer().isModerator(p.getName()) || CampaignMain.cm.getServer().isAdmin(p.getName())) {
+        	if(!CampaignMain.cm.getDefaultPlayerFlags().isEmpty()) {
+        		CampaignMain.cm.toUser("PF|SDF|" + CampaignMain.cm.getDefaultPlayerFlags().export(), p.getName(), false);
+        	}
+        }
         
         
         CampaignMain.cm.toUser("PF|S", p.getName(), false);
