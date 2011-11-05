@@ -1633,6 +1633,10 @@ src/server/campaign/SliceThread.java -text
 src/server/campaign/SmallPlayer.java -text
 src/server/campaign/TickThread.java -text
 src/server/campaign/UnitCosts.java -text
+src/server/campaign/autoresolve/BattleReport.java -text
+src/server/campaign/autoresolve/BattleResolver.java -text
+src/server/campaign/autoresolve/Battlefield.java -text
+src/server/campaign/autoresolve/VirtualUnit.java -text
 src/server/campaign/commands/AcceptAttackFromReserveCommand.java -text
 src/server/campaign/commands/AcceptContractCommand.java -text
 src/server/campaign/commands/ActivateCommand.java -text
