@@ -28,6 +28,8 @@ import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.Vector;
@@ -105,9 +107,9 @@ public class ShortResolver {
     int currentBV = 0;
 
     int loserBV = 0;
-
-    int attackerBV = 0;
     
+    int attackerBV = 0;
+
     int buildingsLeft = -1;
 
     int buildingsDestroyed = 0;
@@ -223,6 +225,8 @@ public class ShortResolver {
          * new TreeMap<String, SPlayer>();
          */
 
+        init(so);
+
         /*
          * Set up a Map with all of the players from the game. ShortOperation
          * has a method which returns all player names; however, we want a map
@@ -324,6 +328,44 @@ public class ShortResolver {
          * used to adjust players' paystrings.
          */
         assembleSalvageStrings(o, so);
+        
+        handleOperationImpact(o, so);
+
+        
+        
+       
+
+    }// end resolveShortAttack
+
+	public void init(ShortOperation so) {
+		/*
+         * Set up a Map with all of the players from the game. ShortOperation
+         * has a method which returns all player names; however, we want a map
+         * populated with real SPlayer pointers from the outset in order to
+         * avoid continual calls to CampaignMain's getPlayer() method.
+         */
+        allPlayers = new TreeMap<String, SPlayer>();
+        allArmies = new TreeMap<String, SArmy>();
+
+        TreeMap<String, Integer> soIdentifiers = so.getAllPlayersAndArmies();
+        for (String currName : soIdentifiers.keySet()) {
+
+            SPlayer currP = CampaignMain.cm.getPlayer(currName);
+            SArmy currA = currP.getArmy(soIdentifiers.get(currName));
+
+            allPlayers.put(currName, currP);
+            allArmies.put(currName, currA);
+        }
+	}
+
+	public void handleOperationImpact(Operation o, ShortOperation so) {
+		/*
+         * assemble the winner and loser strings, and the final status info
+         * string. NOTE: This is where meta-impacts are applied. See method for
+         * more detailed comments on assignment of conquest %, thefts, etc.
+         */
+        assembleDescriptionStrings(o, so);
+
 
         /*
          * Put together the payment strings, and pay the players. Adjust the
@@ -334,7 +376,7 @@ public class ShortResolver {
         processCapturedUnits(so);
 
         repodUnits(so, o);
-
+        
         /*
          * Check to see if this resolves a long operation.
          */
@@ -402,7 +444,6 @@ public class ShortResolver {
             	}	
         	}
         }
-        
         /*
          * Send messages to the players, remove them from fighting status, and
          * inform them of any immunity they may have received.
@@ -501,8 +542,7 @@ public class ShortResolver {
         }
         so.getReporter().closeOperation(drawGame, attackersWon);
         so.getReporter().commit();
-
-    }// end resolveShortAttack
+	}
 
     /**
      * Method which resolves a short operation in the absence of an autoreport -
@@ -902,8 +942,10 @@ public class ShortResolver {
          * large melees.
          */
         int discoPayPercent = CampaignMain.cm.getIntegerConfig("DisconnectionPayPercentage");
-        for (String currName : allPlayers.keySet()) {
-
+        Set<String> allPlayersSet = allPlayers.keySet();
+        Iterator<String> it = allPlayersSet.iterator();
+        while (it.hasNext()){
+        	String currName = it.next();
             // load the player
             SPlayer currP = CampaignMain.cm.getPlayer(currName);
             // Reset all players Team Number
@@ -1160,6 +1202,7 @@ public class ShortResolver {
             /*
              * Modify payouts based on ELO
              */
+
             TreeMap<String, Integer> payout = payoutModifier.calculate(currName, so, earnedMoney, earnedRP, earnedXP, earnedFlu);
             earnedMoney = payout.get("earnedMoney");
             earnedRP = payout.get("earnedRP");
@@ -1465,7 +1508,6 @@ public class ShortResolver {
     	if (null == unitStrings) {
     		unitStrings = new TreeMap<String, String>();
     	}
-    	
         unitCosts = new TreeMap<String, Integer>();
         lossCompensation = new TreeMap<String, Integer>();
         scrapThreads = new TreeMap<String, OpsScrapThread>();
@@ -2842,6 +2884,7 @@ public class ShortResolver {
                                     }
                                 }
 
+
                                 if (sendToPlayerString.length() > 0) {
 	                                // add new pilot info to this unit's string
 	                                String curUS = unitStrings.get(aWinner.getName().toLowerCase());
@@ -2856,7 +2899,6 @@ public class ShortResolver {
 	                                
 	                                unitStrings.put(aWinner.getName().toLowerCase(), curUS + sendToPlayerString.toString());
                                 }
-                                
                                 // setup leadin
                                 if (hasLoss) {
                                     winnerMetaString += ",";
@@ -2946,6 +2988,12 @@ public class ShortResolver {
                                 // skip this type if the facility cannot produce
                                 if (!currFacility.canProduce(type)) {
                                     continue;
+                                }
+                                
+                                
+                                // skip if the operation doesn't allow capturing of this unit type
+                                if (!currFacility.canBeRaided(type, o)) {
+                                	continue;
                                 }
 
                                 // skip if the operation doesn't allow capturing of this unit type
@@ -3799,6 +3847,7 @@ public class ShortResolver {
             }
 
             else {
+
             	/*
             	 * This is put in here because we really don't need to pass in an OperationEntity
             	 * to get the type, we should be able to get it from the passed in unit. But instead of
@@ -3812,7 +3861,6 @@ public class ShortResolver {
             	if (null != entity) {
             		entityType = entity.getType();
             	}
-            	
                 unit.setPilot(owner.getHouseFightingFor().getNewPilot(unit.getType()));
                 if (unit.isSinglePilotUnit()) {
                     toReturn += " New Pilot: " + unit.getPilot().getName();

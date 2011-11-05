@@ -44,6 +44,7 @@ import server.campaign.SPlanet;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
 import server.campaign.SUnitFactory;
+import server.campaign.autoresolve.BattleResolver;
 import server.campaign.mercenaries.ContractInfo;
 import server.campaign.mercenaries.MercHouse;
 import server.campaign.pilot.SPilot;
@@ -482,6 +483,14 @@ public class ShortOperation implements Comparable<Object> {
                     }
                 }
                 return;
+            }
+            
+            //Should the battle be autoresolved?
+            if (o.getBooleanValue("AutoresolveBattle")){
+            	currentStatus = STATUS_INPROGRESS;
+            	switchPlayerStatusToFighting();
+            	BattleResolver.getInstance().resolve(this);
+            	return;
             }
 
             isBuildingOperation = o.getIntValue("TotalBuildings") > 0;
@@ -1046,160 +1055,11 @@ public class ShortOperation implements Comparable<Object> {
              * client-side logs
              */
             currentStatus = STATUS_INPROGRESS;
-            for (String currN : getAllPlayerNames()) {
-                SPlayer currP = CampaignMain.cm.getPlayer(currN);
+            switchPlayerStatusToFighting();
 
-                currP.setFighting(true);
-                CampaignMain.cm.sendPlayerStatusUpdate(currP, true);// send
-                // fighting
-                // info to
-                // all
-                CampaignMain.cm.toUser("TL|" + getInfo(true, false), currN, false);
-
-                CampaignMain.cm.getOpsManager().removePlayerFromAllPossibleDefenderLists(currN, false);
-                CampaignMain.cm.getOpsManager().removePlayerFromAllDefenderLists(currP, this, true);
-                CampaignMain.cm.getOpsManager().removePlayerFromAllAttackerLists(currP, this, true);
-            }
-
-            // Do not let people get chickened anymore - stop all the threads.
-            terminateChickenThreads();
-
-            /*
-             * Now that the Operation is actually running, it will return
-             * nifty/useful info. We want to show that info to the houses of all
-             * attacking/defending players, but don't want to spam housechannels
-             * if there is more than one participant per house. Set up a quick
-             * TreeMap in order to filtouer out duplicates, then send to all
-             * involved houses.
-             */
-            TreeMap<String, SHouse> houseMap = new TreeMap<String, SHouse>();
-            for (String currN : getAllPlayerNames()) {
-                SHouse currH = CampaignMain.cm.getPlayer(currN).getHouseFightingFor();
-                if (houseMap.get(currH.getName()) == null) {
-                    houseMap.put(currH.getName(), currH);
-                }
-            }
-            for (SHouse currH : houseMap.values()) {
-                CampaignMain.cm.doSendHouseMail(currH, "New Game:", getInfo(true, false));
-            }
-
-            /*
-             * Send logos, intel reports and detailed game info to the invovled
-             * players. Logos are those of the first player in the attacker and
-             * defender maps, respectively.
-             */
-            String firstAttackName = attackers.firstKey();
-            String firstDefendName = defenders.firstKey();
-            SPlayer firstAttPlayer = CampaignMain.cm.getPlayer(firstAttackName);
-            SPlayer firstDefPlayer = CampaignMain.cm.getPlayer(firstDefendName);
-
-            // Players logo stores House logo as default if they don't have one.
-            String attackLogo = "<img height=\"150\" width=\"150\" src =\"" + firstAttPlayer.getMyLogo() + "\">";
-            String defendLogo = "<img height=\"150\" width=\"150\" src =\"" + firstDefPlayer.getMyLogo() + "\">";
-
-            // save the logo string ...
-            String logos = attackLogo + " vs " + defendLogo + "<br>";
-
-            // average the attacker and defender rankings, then compare for an
-            // intel report.
-            double averageAttackELO = 0;
-            double averageDefendELO = 0;
-
-            for (String currN : defenders.keySet()) {
-                SPlayer currP = CampaignMain.cm.getPlayer(currN);
-                averageDefendELO += currP.getRating();
-            }
-            for (String currN : attackers.keySet()) {
-                SPlayer currP = CampaignMain.cm.getPlayer(currN);
-                averageAttackELO += currP.getRating();
-            }
-
-            averageAttackELO = averageAttackELO / (attackers.size());
-            averageDefendELO = averageDefendELO / (defenders.size());
-            double difference = Math.abs(averageAttackELO - averageDefendELO);
-
-            String better = "";
-            String worse = "";
-
-            /*
-             * TODO: Come up with better intelligence messages.
-             */
-            if (difference <= 50.0) {
-                better = "<b>Intel Report:</b> This appears to be a balanced fight.";
-                worse = "<b>Intel Report:</b> This appears to be a balanced fight.";
-            } else if (difference <= 100.0) {
-                better = "<b>Intel Report:</b> It appears that our forces have slightly more experience than the enemy.";
-                worse = "<b>Intel Report:</b> It appears that our forces are slightly less experienced than the enemy.";
-            } else if (difference <= 150.0) {
-                better = "<b>Intel Report:</b> The opposing force is somewhat inexperienced. The advantage is ours.";
-                worse = "<b>Intel Report:</b> The opposing force has seen a fair amount of combat, and will not be easily dispatched.";
-            } else if (difference <= 210.0) {
-                better = "<b>Intel Report:</b> Our forces are considerably more experienced than the enemy. Victory is likely, but not assured.";
-                worse = "<b>Intel Report:</b> The enemy has sent a hardened, veteran force. This will be a difficult battle.";
-            } else {
-                better = "<b>Intel Report:</b> The opposing force is little more than ragtag militia - be merciful.";
-                worse = "<b>Intel Report:</b> The enemy force is elite. Victory will be difficult to achieve, but would bring great honor.";
-            }
-
-            String attackIntel = "";
-            String defendIntel = "";
-            if (!CampaignMain.cm.getBooleanConfig("HideELO")) {
-                if (averageAttackELO > averageDefendELO) {
-                    attackIntel = better;
-                    defendIntel = worse;
-                } else {
-                    attackIntel = worse;
-                    defendIntel = better;
-                }
-            } else {
-                attackIntel = "<b>Intel Report:</b> Nothing is known about your enemy. Good luck!";
-                defendIntel = "<b>Intel Report:</b> Nothing is known about your enemy. Good luck!";
-            }
-
-            if (attackArtDesc.length() > 0) {
-                attackIntel += "<br>" + attackArtDesc;
-            }
-
-            if (defendArtDesc.length() > 0) {
-                defendIntel += "<br>" + defendArtDesc;
-            }
-            
-            if( !o.getValue("AttackerBriefing").equals(""))
-            	attackIntel += "<br><b>Briefing:</b> " + o.getValue("AttackerBriefing");
-            if( !o.getValue("DefenderBriefing").equals(""))
-            	defendIntel += "<br><b>Briefing:</b> " + o.getValue("DefenderBriefing");
             
 
-            if (isBuildingOperation) {
-                attackIntel += "<br><b>Mission Objectives:</b><br>You must destroy " + o.getValue("MinBuildingsForOp") + " out of " + o.getValue("TotalBuildings") + " facilities.";
-                defendIntel += "<br><b>Mission Objectives:</b><br>You must defend all " + o.getValue("TotalBuildings") + " of your facilities.";
-            }
-
-            if (o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts") && preCapturedUnits.size() > 0) {
-
-                StringBuilder unitList = new StringBuilder();
-
-                attackIntel += "<br><b>You've managed to steal the following ";
-                if (preCapturedUnits.size() > 1) {
-                    unitList.append("units ");
-                } else {
-                    unitList.append("unit ");
-                }
-
-                for (SUnit unit : preCapturedUnits) {
-                    unitList.append(unit.getModelName());
-                    unitList.append(", ");
-                }
-
-                unitList.replace(unitList.length() - 2, unitList.length(), ".");
-
-                attackIntel += unitList.toString();
-                attackIntel += "  Now you need to get away with them!";
-
-                defendIntel += "<br><b>The attackers have managed to steal the following ";
-                defendIntel += unitList.toString();
-                defendIntel += "  You must stop them, at all costs, before they get away!";
-            }
+            
 
             /*
              * Send GameOptions to the player.
@@ -1531,26 +1391,7 @@ public class ShortOperation implements Comparable<Object> {
             int sizeY = Math.max(totalWeight - 2, o.getIntValue("MapSizeY"));
             mapsize = new Dimension(sizeX, sizeY);
 
-            // send the logos and intel to all players, then send .getInfo()
-            for (String currN : attackers.keySet()) {
-                if (CampaignMain.cm.getBooleanConfig("AllowPreliminaryOperationsReports")) {
-                    SPlayer currP = CampaignMain.cm.getPlayer(currN);
-                    CampaignMain.cm.toUser(logos + planetIntel(attackIntel, currP.getHouseFightingFor()), currP.getName(), true);
-                } else {
-                    CampaignMain.cm.toUser(logos + attackIntel, currN, true);
-                }
-
-                CampaignMain.cm.toUser(getInfo(true, false), currN, true);
-            }
-            for (String currN : defenders.keySet()) {
-                if (CampaignMain.cm.getBooleanConfig("AllowPreliminaryOperationsReports")) {
-                    SPlayer currP = CampaignMain.cm.getPlayer(currN);
-                    CampaignMain.cm.toUser(logos + planetIntel(defendIntel, currP.getHouseFightingFor()), currP.getName(), true);
-                } else {
-                    CampaignMain.cm.toUser(logos + defendIntel, currN, true);
-                }
-                CampaignMain.cm.toUser(getInfo(true, false), currN, true);
-            }
+            
 
             /*
              * Send the options to all of the players. The sendReconnectInfoTo()
@@ -1698,15 +1539,193 @@ public class ShortOperation implements Comparable<Object> {
             for (SHouse currH : houseMap.values()) {
                 CampaignMain.cm.doSendHouseMail(currH, "Finished Game", toSend);
             }
-
-            // we now return to our regularly scheduled program ...
-            defenders.clear();
-            attackers.clear();
-            winners.clear();
-            losers.clear();
         }
 
     }
+
+	public void switchPlayerStatusToFighting() {
+		Operation o = CampaignMain.cm.getOpsManager().getOperation(opName);
+		for (String currN : getAllPlayerNames()) {
+		    SPlayer currP = CampaignMain.cm.getPlayer(currN);
+
+		    currP.setFighting(true);
+		    CampaignMain.cm.sendPlayerStatusUpdate(currP, true);// send
+		    // fighting
+		    // info to
+		    // all
+		    CampaignMain.cm.toUser("TL|" + getInfo(true, false), currN, false);
+
+		    CampaignMain.cm.getOpsManager().removePlayerFromAllPossibleDefenderLists(currN, false);
+		    CampaignMain.cm.getOpsManager().removePlayerFromAllDefenderLists(currP, this, true);
+		    CampaignMain.cm.getOpsManager().removePlayerFromAllAttackerLists(currP, this, true);
+		}
+
+		// Do not let people get chickened anymore - stop all the threads.
+		terminateChickenThreads();
+		
+		/*
+         * Now that the Operation is actually running, it will return
+         * nifty/useful info. We want to show that info to the houses of all
+         * attacking/defending players, but don't want to spam housechannels
+         * if there is more than one participant per house. Set up a quick
+         * TreeMap in order to filtouer out duplicates, then send to all
+         * involved houses.
+         */
+        TreeMap<String, SHouse> houseMap = new TreeMap<String, SHouse>();
+        for (String currN : getAllPlayerNames()) {
+            SHouse currH = CampaignMain.cm.getPlayer(currN).getHouseFightingFor();
+            if (houseMap.get(currH.getName()) == null) {
+                houseMap.put(currH.getName(), currH);
+            }
+        }
+        for (SHouse currH : houseMap.values()) {
+            CampaignMain.cm.doSendHouseMail(currH, "New Game:", getInfo(true, false));
+        }
+
+        /*
+         * Send logos, intel reports and detailed game info to the invovled
+         * players. Logos are those of the first player in the attacker and
+         * defender maps, respectively.
+         */
+        String firstAttackName = attackers.firstKey();
+        String firstDefendName = defenders.firstKey();
+        SPlayer firstAttPlayer = CampaignMain.cm.getPlayer(firstAttackName);
+        SPlayer firstDefPlayer = CampaignMain.cm.getPlayer(firstDefendName);
+
+        // Players logo stores House logo as default if they don't have one.
+        String attackLogo = "<img height=\"150\" width=\"150\" src =\"" + firstAttPlayer.getMyLogo() + "\">";
+        String defendLogo = "<img height=\"150\" width=\"150\" src =\"" + firstDefPlayer.getMyLogo() + "\">";
+
+        // save the logo string ...
+        String logos = attackLogo + " vs " + defendLogo + "<br>";
+        
+     // average the attacker and defender rankings, then compare for an
+        // intel report.
+        double averageAttackELO = 0;
+        double averageDefendELO = 0;
+
+        for (String currN : defenders.keySet()) {
+            SPlayer currP = CampaignMain.cm.getPlayer(currN);
+            averageDefendELO += currP.getRating();
+        }
+        for (String currN : attackers.keySet()) {
+            SPlayer currP = CampaignMain.cm.getPlayer(currN);
+            averageAttackELO += currP.getRating();
+        }
+
+        averageAttackELO = averageAttackELO / (attackers.size());
+        averageDefendELO = averageDefendELO / (defenders.size());
+        double difference = Math.abs(averageAttackELO - averageDefendELO);
+
+        String better = "";
+        String worse = "";
+
+        /*
+         * TODO: Come up with better intelligence messages.
+         */
+        if (difference <= 50.0) {
+            better = "<b>Intel Report:</b> This appears to be a balanced fight.";
+            worse = "<b>Intel Report:</b> This appears to be a balanced fight.";
+        } else if (difference <= 100.0) {
+            better = "<b>Intel Report:</b> It appears that our forces have slightly more experience than the enemy.";
+            worse = "<b>Intel Report:</b> It appears that our forces are slightly less experienced than the enemy.";
+        } else if (difference <= 150.0) {
+            better = "<b>Intel Report:</b> The opposing force is somewhat inexperienced. The advantage is ours.";
+            worse = "<b>Intel Report:</b> The opposing force has seen a fair amount of combat, and will not be easily dispatched.";
+        } else if (difference <= 210.0) {
+            better = "<b>Intel Report:</b> Our forces are considerably more experienced than the enemy. Victory is likely, but not assured.";
+            worse = "<b>Intel Report:</b> The enemy has sent a hardened, veteran force. This will be a difficult battle.";
+        } else {
+            better = "<b>Intel Report:</b> The opposing force is little more than ragtag militia - be merciful.";
+            worse = "<b>Intel Report:</b> The enemy force is elite. Victory will be difficult to achieve, but would bring great honor.";
+        }
+
+        String attackIntel = "";
+        String defendIntel = "";
+        if (!CampaignMain.cm.getBooleanConfig("HideELO")) {
+            if (averageAttackELO > averageDefendELO) {
+                attackIntel = better;
+                defendIntel = worse;
+            } else {
+                attackIntel = worse;
+                defendIntel = better;
+            }
+        } else {
+            attackIntel = "<b>Intel Report:</b> Nothing is known about your enemy. Good luck!";
+            defendIntel = "<b>Intel Report:</b> Nothing is known about your enemy. Good luck!";
+        }
+
+        if (attackArtDesc.length() > 0) {
+            attackIntel += "<br>" + attackArtDesc;
+        }
+
+        if (defendArtDesc.length() > 0) {
+            defendIntel += "<br>" + defendArtDesc;
+        }
+        
+        if( !o.getValue("AttackerBriefing").equals(""))
+        	attackIntel += "<br><b>Briefing:</b> " + o.getValue("AttackerBriefing");
+        if( !o.getValue("DefenderBriefing").equals(""))
+        	defendIntel += "<br><b>Briefing:</b> " + o.getValue("DefenderBriefing");
+        
+
+        if (isBuildingOperation) {
+            attackIntel += "<br><b>Mission Objectives:</b><br>You must destroy " + o.getValue("MinBuildingsForOp") + " out of " + o.getValue("TotalBuildings") + " facilities.";
+            defendIntel += "<br><b>Mission Objectives:</b><br>You must defend all " + o.getValue("TotalBuildings") + " of your facilities.";
+        }
+
+        if (o.getBooleanValue("AttackerUnitsTakenBeforeFightStarts") && preCapturedUnits.size() > 0) {
+
+            StringBuilder unitList = new StringBuilder();
+
+            attackIntel += "<br><b>You've managed to steal the following ";
+            if (preCapturedUnits.size() > 1) {
+                unitList.append("units ");
+            } else {
+                unitList.append("unit ");
+            }
+
+            for (SUnit unit : preCapturedUnits) {
+                unitList.append(unit.getModelName());
+                unitList.append(", ");
+            }
+
+            unitList.replace(unitList.length() - 2, unitList.length(), ".");
+
+            attackIntel += unitList.toString();
+            attackIntel += "  Now you need to get away with them!";
+
+            defendIntel += "<br><b>The attackers have managed to steal the following ";
+            defendIntel += unitList.toString();
+            defendIntel += "  You must stop them, at all costs, before they get away!";
+        }
+        
+        
+        //XXX
+        
+     // send the logos and intel to all players, then send .getInfo()
+        for (String currN : attackers.keySet()) {
+            if (CampaignMain.cm.getBooleanConfig("AllowPreliminaryOperationsReports")) {
+                SPlayer currP = CampaignMain.cm.getPlayer(currN);
+                CampaignMain.cm.toUser(logos + planetIntel(attackIntel, currP.getHouseFightingFor()), currP.getName(), true);
+            } else {
+                CampaignMain.cm.toUser(logos + attackIntel, currN, true);
+            }
+
+            CampaignMain.cm.toUser(getInfo(true, false), currN, true);
+        }
+        for (String currN : defenders.keySet()) {
+            if (CampaignMain.cm.getBooleanConfig("AllowPreliminaryOperationsReports")) {
+                SPlayer currP = CampaignMain.cm.getPlayer(currN);
+                CampaignMain.cm.toUser(logos + planetIntel(defendIntel, currP.getHouseFightingFor()), currP.getName(), true);
+            } else {
+                CampaignMain.cm.toUser(logos + defendIntel, currN, true);
+            }
+            CampaignMain.cm.toUser(getInfo(true, false), currN, true);
+        }
+        
+        
+	}
 
     /**
      * Method which sends all game information - autoarty, map info, planet info, game options, etc. Used when a participant disconnects and then returns to the
@@ -2854,6 +2873,12 @@ public class ShortOperation implements Comparable<Object> {
                 // produce
                 if (!currFacility.canProduce(type)) {
                     continue;
+                }
+                
+                // skip if the operation doesn't allow capturing of this unit type
+                if (!currFacility.canBeRaided(type, o)) {
+                	CampaignData.mwlog.debugLog("Can not capture unit type (" + type + ") for operation '" + o.getName() + "' as it is not allowed.");
+                	continue;
                 }
 
                 // skip if the operation doesn't allow capturing of this unit type

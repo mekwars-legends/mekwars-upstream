@@ -48,8 +48,8 @@ import megamek.common.Tank;
 import megamek.common.WeaponType;
 import megamek.common.options.PilotOptions;
 import server.campaign.operations.Operation;
-import server.campaign.pilot.SPilotSkills;
 import server.campaign.pilot.SPilot;
+import server.campaign.pilot.SPilotSkills;
 import server.campaign.pilot.skills.SPilotSkill;
 import server.campaign.pilot.skills.WeaponSpecialistSkill;
 import server.campaign.util.SerializedMessage;
@@ -1573,6 +1573,9 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
     	return CampaignMain.cm.getSupportUnits().contains(getUnitFilename().toLowerCase());
     }
     
+    public void reportStateToPlayer(SPlayer player){
+    	CampaignMain.cm.toUser("PL|UU|" + getId() + "|" + toString(true), player.getName(), false);
+    }
     public boolean isOMGUnit() {
     	return getModelName().equals("OMG-UR-FD");
     }
