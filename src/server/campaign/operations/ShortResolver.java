@@ -315,12 +315,6 @@ public class ShortResolver {
         // break units in living/salvagable/dead, etc.
         possibleSalvageFromReport(reportTokenizer, so);
 
-        /*
-         * assemble the winner and loser strings, and the final status info
-         * string. NOTE: This is where meta-impacts are applied. See method for
-         * more detailed comments on assignment of conquest %, thefts, etc.
-         */
-        assembleDescriptionStrings(o, so);
 
         /*
          * put together the salvage strings, and move units around. also
