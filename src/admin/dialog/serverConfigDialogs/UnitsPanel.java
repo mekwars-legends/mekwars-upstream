@@ -43,7 +43,6 @@ public class UnitsPanel extends JPanel {
 
     private JTextField baseTextField = new JTextField(5);
     private JCheckBox baseCheckBox = new JCheckBox();
-    private Dimension screenSize;
     
 	private void init() {
 		// Set up the costs (cbills, flu, PP)
