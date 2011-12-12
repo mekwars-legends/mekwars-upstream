@@ -1755,6 +1755,7 @@ public final class CampaignMain implements Serializable {
         Commands.put("TRANSFERMONEY", new TransferMoneyCommand());
         Commands.put("TRANSFERPILOT", new TransferPilotCommand());
         Commands.put("TRANSFERUNIT", new TransferUnitCommand());
+        Commands.put("TRANSFERREWARDPOINTS", new TransferRewardPointsCommand());
         Commands.put("UPDATEOPERATIONS", new UpdateOperationsCommand());
         Commands.put("UPDATESERVERUNITSCACHE", new UpdateServerUnitsCacheCommand());
         Commands.put("UPLOADMUL", new UploadMulCommand());
@@ -2013,6 +2014,7 @@ public final class CampaignMain implements Serializable {
     public void addMechStat(String Filename, int mechsize, int gameplayed, int gamewon, int scrapped, int destroyed) {
     	if (CampaignMain.cm.isUsingMySQL()) {
     		CampaignMain.cm.MySQL.addMechstat(Filename, mechsize, gameplayed, gamewon, scrapped, destroyed);
+    		return;
     	}
     	MechStatistics m = null;
         if (MechStats.get(Filename) == null) {
