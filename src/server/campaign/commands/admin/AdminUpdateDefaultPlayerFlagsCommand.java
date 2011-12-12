@@ -12,7 +12,7 @@ import common.flags.PlayerFlags;
 public class AdminUpdateDefaultPlayerFlagsCommand implements Command {
 
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "[D|S]#flagname[#value if action is Set]...";
+	String syntax = "[D or S]#flagname[#value if action is Set]...";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}
