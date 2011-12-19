@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
+R Released Server v0.3.5.8
++ Bug in new terrain types.  Fixed to MM Standards.  Sometimes,
+  reading is hard for developers.
 + Updated MegaMek to v0.35.27-MW20111214-8644
 R Released Server v0.3.5.7, Client v0.3.5.6
 + Added sand and planted fields to terrain options
