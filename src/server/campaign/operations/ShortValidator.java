@@ -1549,7 +1549,7 @@ public class ShortValidator {
             }// end if(hasn't already speedfail'ed)
 
             // check the unit's weight
-            if (currUnit.getType() == Unit.MEK || currUnit.getType() == Unit.VEHICLE) {
+            if (currUnit.getType() == Unit.MEK || currUnit.getType() == Unit.VEHICLE || currUnit.getType() == Unit.AERO) {
                 if (currWeight > o.getIntValue("MaxDefenderUnitTonnage"))
                     maxTonFail = true;
                 else if (currWeight < o.getIntValue("MinDefenderUnitTonnage"))
