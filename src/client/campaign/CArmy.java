@@ -22,6 +22,7 @@
 package client.campaign;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
@@ -310,9 +311,9 @@ public class CArmy extends Army {
     		return " ";
     	}
     	
-    	double avgSkills = 0.0;
-    	double avgGunnery = 0.0;
-    	double avgPiloting = 0.0;
+    	String avgSkills = "0.0";
+    	String avgGunnery = "0.0";
+    	String avgPiloting = "0.0";
     	int maxSkill = 0;
     	int maxGunnery = 0;
     	int maxPiloting = 0;
@@ -338,10 +339,18 @@ public class CArmy extends Army {
     		numunits++;
     	}
     	// Need to use a DecimalFormat so we don't get just whole integer averages
-    	DecimalFormat twoDForm = new DecimalFormat("#.##");
-    	avgSkills = Double.valueOf( twoDForm.format( (double)(((double)(totalGunnery + totalPiloting)) / numunits) ) );
-    	avgGunnery = Double.valueOf(twoDForm.format((double)((double)totalGunnery / numunits)));
-    	avgPiloting = Double.valueOf(twoDForm.format((double)((double)totalPiloting / numunits)));
+    	
+    	double avgS = (double) (totalGunnery + totalPiloting) / (double) numunits;
+    	double avgG = (double) (totalGunnery) / (double) numunits;
+    	double avgP = (double) (totalPiloting) / (double) numunits;
+    	DecimalFormat twoDForm = (DecimalFormat)NumberFormat.getNumberInstance();
+    	twoDForm.applyPattern("0.00");
+    	
+    	avgSkills = twoDForm.format(avgS);
+    	avgGunnery = twoDForm.format(avgG);
+    	avgPiloting = twoDForm.format(avgP);
+    	
+    	
     	toReturn.append("<html><table><tr><td colspan=4>Skillsums</td></tr>");
     	toReturn.append("<tr><td>&nbsp;</td><td>Total</td><td>Gunnery</td><td>Piloting</td></tr>");
     	toReturn.append("<tr><td>Average:</td><td>" + avgSkills + "</td><td>" + avgGunnery + "</td><td>" + avgPiloting + "</td></tr>");

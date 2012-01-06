@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
+R Release Client v0.3.5.7
++ Bug: NPE when calculating army average skillsum when using a German Locale
 R Released Server v0.3.5.9
 + Bug 3436868: Operation unit limit checking for defender not thorough
 R Released Server v0.3.5.8
