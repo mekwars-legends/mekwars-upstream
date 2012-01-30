@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
+R Released Server v0.3.5.10
++ Bug: registration not completed when email unable to be sent
 R Release Client v0.3.5.7
 + Bug: NPE when calculating army average skillsum when using a German Locale
 R Released Server v0.3.5.9

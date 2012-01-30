@@ -96,8 +96,10 @@ public class RegisterCommand implements Command {
             
             // Check for phpBB integration - there are a lot of possible outcomes here.
             if(CampaignMain.cm.isSynchingBB()) 
-            	if(!CampaignMain.cm.MySQL.addUserToForum(Username, pw, email))
-            		return;
+            	if(!CampaignMain.cm.MySQL.addUserToForum(Username, pw, email)) {
+            		CampaignMain.cm.doSendModMail("NOTE","Server was unable to send registration email to " + Username + ".  Staff will need to give him his activation key.");
+            		CampaignMain.cm.toUser("AM: The server was unable to send your registration email.  Please ask staff for assistance.", Username, true);
+            	}
                 	
             //change userlevel
             int level = -1;
