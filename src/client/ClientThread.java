@@ -25,7 +25,7 @@ import java.util.Vector;
 import megamek.client.Client;
 import megamek.client.CloseClientListener;
 import megamek.client.bot.BotClient;
-import megamek.client.bot.TestBot;
+import megamek.client.bot.princess.Princess;
 import megamek.client.bot.ui.AWT.BotGUI;
 import megamek.client.ui.AWT.ClientGUI;
 import megamek.common.Board;
@@ -391,7 +391,7 @@ class ClientThread extends Thread implements CloseClientListener {
              */
             if (mwclient.isUsingBots()) {
                 String name = "War Bot" + client.getLocalPlayer().getId();
-                bot = new TestBot(name, client.getHost(), client.getPort());
+                bot = new Princess(name, client.getHost(), client.getPort());
                 bot.game.addGameListener(new BotGUI(bot));
                 try {
                     bot.connect();

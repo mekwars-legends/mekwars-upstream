@@ -2932,7 +2932,7 @@ public class UnitUtils {
         entity.addGyro();
         entity.addEngineCrits();
         entity.addCockpit();
-        entity.addEngineSinks(entity.getEngine().integralHeatSinkCapacity(), false);
+        entity.addEngineSinks(entity.getEngine().integralHeatSinkCapacity(), MiscType.F_HEAT_SINK, false);
 
         entity.autoSetInternal();
         for (int loc = 0; loc <= Mech.LOC_LLEG; loc++) {
