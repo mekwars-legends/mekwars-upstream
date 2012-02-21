@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
++ New MegaMek v0.35.28-MW20120221-8724
 R Released Server v0.3.5.11, Client v0.3.5.8
 + Made Princess Bot the default bot
 + New MegaMek v0.35.28-MW20120214-8721 
