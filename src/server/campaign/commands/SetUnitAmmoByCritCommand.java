@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2004 
- * 
+ * MekWars - Copyright (C) 2004
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -91,7 +91,7 @@ public class SetUnitAmmoByCritCommand implements Command {
         if (shots == 0) {// dumping ammo
 
             if (usingCrits) {
-                p.updatePartsCache(currAmmo.getInternalName(), mWeapon.getShotsLeft());
+                p.updatePartsCache(currAmmo.getInternalName(), mWeapon.getUsableShotsLeft());
             }
 
             mWeapon.changeAmmoType(at);
@@ -112,7 +112,7 @@ public class SetUnitAmmoByCritCommand implements Command {
         // for ammo
         double ammoCharge = CampaignMain.cm.getAmmoCost(currAmmo.getInternalName());
 
-        if (CampaignMain.cm.getData().getServerBannedAmmo().get(munitionType) != null || faction.getBannedAmmo().get(munitionType) != null || (ammoCharge < 0 && !usingCrits)) {
+        if ((CampaignMain.cm.getData().getServerBannedAmmo().get(munitionType) != null) || (faction.getBannedAmmo().get(munitionType) != null) || ((ammoCharge < 0) && !usingCrits)) {
             CampaignMain.cm.toUser("AM:<font color=green>Quartermaster Command regretfully informs you that " + at.getName() + " is out of stock.</font>", Username, true);
             return;
         }
@@ -122,7 +122,7 @@ public class SetUnitAmmoByCritCommand implements Command {
             strConfirm = command.nextToken();
         }
 
-        if (ammoCharge > 0 || usingCrits) {
+        if ((ammoCharge > 0) || usingCrits) {
 
             int refillShots = at.getShots();
 
@@ -130,7 +130,7 @@ public class SetUnitAmmoByCritCommand implements Command {
                 refillShots = getWeaponRefillShots(unit, mWeapon);
             }
 
-            int shotsLeft = mWeapon.getShotsLeft();
+            int shotsLeft = mWeapon.getUsableShotsLeft();
             if (!currAmmo.getInternalName().equalsIgnoreCase(at.getInternalName())) {
                 shotsLeft = 0;
             }
@@ -160,10 +160,10 @@ public class SetUnitAmmoByCritCommand implements Command {
             if (usingCrits) {
                 ammoCharge = 0;
                 // unload all of old ammo
-                p.getUnitParts().add(currAmmo.getInternalName(), mWeapon.getShotsLeft());
+                p.getUnitParts().add(currAmmo.getInternalName(), mWeapon.getUsableShotsLeft());
                 int newAmmoAmount = p.getPartsAmount(at.getInternalName());
 
-                if (p.getAutoReorder() && newAmmoAmount < refillShots) {
+                if (p.getAutoReorder() && (newAmmoAmount < refillShots)) {
                     String newCommand = at.getInternalName() + "#" + (refillShots - newAmmoAmount);
                     CampaignMain.cm.getServerCommands().get("BUYPARTS").process(new StringTokenizer(newCommand, "#"), Username);
                     newAmmoAmount = p.getPartsAmount(at.getInternalName());
@@ -178,7 +178,7 @@ public class SetUnitAmmoByCritCommand implements Command {
                     CampaignMain.cm.toUser("AM:Ammo set for " + unit.getModelName() + " (#" + unit.getId() + ").", Username, true);
                     newAmmoAmount = refillShots;
                 }
-                p.updatePartsCache(currAmmo.getInternalName(), mWeapon.getShotsLeft());
+                p.updatePartsCache(currAmmo.getInternalName(), mWeapon.getUsableShotsLeft());
                 p.updatePartsCache(at.getInternalName(), -newAmmoAmount);
                 mWeapon.changeAmmoType(at);
                 mWeapon.setShotsLeft(newAmmoAmount);
@@ -194,7 +194,7 @@ public class SetUnitAmmoByCritCommand implements Command {
 
             // check the confirmation
             if (!strConfirm.equals("CONFIRM")) {
-                String result = "AM:Quartermaster command will charge you " + CampaignMain.cm.moneyOrFluMessage(true, false, cost) + " to change the load out on #" + unit.getId() + " " + unit.getModelName() + "<br>from " + currAmmo.getDesc() + "(" + en.getLocationAbbr(loc) + " " + mWeapon.getShotsLeft() + "/" + currAmmo.getShots() + ") to " + at.getDesc() + "(" + refillShots + "/" + refillShots + ").";
+                String result = "AM:Quartermaster command will charge you " + CampaignMain.cm.moneyOrFluMessage(true, false, cost) + " to change the load out on #" + unit.getId() + " " + unit.getModelName() + "<br>from " + currAmmo.getDesc() + "(" + en.getLocationAbbr(loc) + " " + mWeapon.getUsableShotsLeft() + "/" + currAmmo.getShots() + ") to " + at.getDesc() + "(" + refillShots + "/" + refillShots + ").";
                 result += "AM:<br><a href=\"MEKWARS/c setunitammobyCrit#" + unitid + "#" + weaponLocation + "#" + weaponSlot + "#" + weaponType + "#" + ammoName + "#" + at.getShots() + "#CONFIRM";
                 result += "AM:\">Click here to change the ammo.</a>";
                 CampaignMain.cm.toUser(result, Username, true);
@@ -229,7 +229,7 @@ public class SetUnitAmmoByCritCommand implements Command {
 
         for (Mounted ammoWeapon : tempEnt.getWeaponList()) {
             if (ammoWeapon.equals(weapon)) {
-                shots = ammoWeapon.getShotsLeft();
+                shots = ammoWeapon.getUsableShotsLeft();
                 break;
             }
         }

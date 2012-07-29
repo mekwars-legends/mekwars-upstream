@@ -74,7 +74,7 @@ public class MechDetailDisplay extends JTabbedPane {
     public SystemPanel sPan;
 
     private MWClient mwclient;
-    
+
     /**
      * Creates and lays out a new mech display.
      */
@@ -88,8 +88,8 @@ public class MechDetailDisplay extends JTabbedPane {
         add("Weapons", wPan);
         sPan = new SystemPanel();
         add("Systems", sPan);
-        
-        this.mwclient = _mwclient;
+
+        mwclient = _mwclient;
     }
 
     //public void displayEntity(Entity en, int bv) {
@@ -171,7 +171,7 @@ class GeneralPanel extends JPanel{
 
         cargoFull = new JLabel("<HTML><body>Cargo full holder</body></HTML>", SwingConstants.CENTER);
         cargoFull.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         //bv stuff
         bvL = new JLabel("BV:", SwingConstants.RIGHT);
         bvR = new JLabel("9999", SwingConstants.LEFT);
@@ -198,7 +198,7 @@ class GeneralPanel extends JPanel{
         SpringLayoutHelper.setupSpringGrid(statusSpringP,6,2);
         statusP.setLayout(new BoxLayout(statusP, BoxLayout.Y_AXIS));
         statusP.add(statusSpringP);
-        
+
         //layout main panel
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         add(mechTypeL);
@@ -260,36 +260,36 @@ class GeneralPanel extends JPanel{
         String capacity = en.getUnusedString();
         boolean showDefaultCapacity = false;
         boolean showFullCapacity = false;
-        
+
         if ((capacity != null) && (capacity.trim().length() > 0)) {
         	if((mwclient != null) && Boolean.parseBoolean(mwclient.getserverConfigs("UseFullCapacityInDetailDisplay"))) {
 	        	if (capacity.endsWith("<br>")) {
 	        		capacity = capacity.substring(0, capacity.length() - 4);
 	        	}
-	
+
 	        	cargoFull.setText("<HTML><body><div align=\"center\"><b>Carrying Capacity</b><br>" + capacity + "</div></body></HTML>");
-	        	
+
 	        	showFullCapacity = true;
         	} else if (capacity.startsWith("Troops")) {
 	            capacity = capacity.substring(9);//strip "Troops - " from string
 	            cargoR.setText(capacity);
-	            
+
 	            showDefaultCapacity = true;
         	}
         }
-        
+
         if (!showDefaultCapacity) {
         	cargoL.setText("");
         	cargoR.setText("");
         	cargoL.setVisible(false);
         	cargoR.setVisible(false);
         }
-        
+
         if (!showFullCapacity) {
         	cargoFull.setText("");
         	cargoFull.setVisible(false);
         }
-        
+
         if (bv == 0) {
             bvR.setText("N/A");
         } else {
@@ -297,11 +297,11 @@ class GeneralPanel extends JPanel{
         }
 
         add(unitPicture);
-        
+
         if (showFullCapacity) {
         	add(cargoFull);
         }
-        
+
         validate();
     }
 }
@@ -572,7 +572,7 @@ class WeaponPanel extends JPanel implements ListSelectionListener {
             if (wtype.getAmmoType() != AmmoType.T_NA) {
                 int shotsLeft = 0;
                 if ((mounted.getLinked() != null) && !mounted.getLinked().isDumping()) {
-                    shotsLeft = mounted.getLinked().getShotsLeft();
+                    shotsLeft = mounted.getLinked().getUsableShotsLeft();
                 }
 
                 EquipmentType typeUsed = mounted.getLinked() == null ? null : mounted.getLinked().getType();
@@ -635,12 +635,12 @@ class WeaponPanel extends JPanel implements ListSelectionListener {
         } else {
             wShortR.setText("" + wtype.getShortRange());
         }
-        if(wtype.getMediumRange() - wtype.getShortRange() > 1) {
+        if((wtype.getMediumRange() - wtype.getShortRange()) > 1) {
             wMedR.setText((wtype.getShortRange() + 1) + " - " + wtype.getMediumRange());
         } else {
             wMedR.setText("" + wtype.getMediumRange());
         }
-        if(wtype.getLongRange() - wtype.getMediumRange() > 1) {
+        if((wtype.getLongRange() - wtype.getMediumRange()) > 1) {
             wLongR.setText((wtype.getMediumRange() + 1) + " - " + wtype.getLongRange());
         } else {
             wLongR.setText("" + wtype.getLongRange());
@@ -657,7 +657,7 @@ class WeaponPanel extends JPanel implements ListSelectionListener {
             int i = 0;
             for (Mounted mountedAmmo : entity.getAmmo()) {
                 AmmoType atype = (AmmoType)mountedAmmo.getType();
-                if (mountedAmmo.isDestroyed() || (mountedAmmo.getShotsLeft() <= 0) || mountedAmmo.isDumping()) {
+                if (mountedAmmo.isDestroyed() || (mountedAmmo.getUsableShotsLeft() <= 0) || mountedAmmo.isDumping()) {
                     continue;
                 }
                 if ((atype.getAmmoType() == wtype.getAmmoType()) && (atype.getRackSize() == wtype.getRackSize())) {

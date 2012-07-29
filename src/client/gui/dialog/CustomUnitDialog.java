@@ -76,7 +76,7 @@ import common.util.SpringLayoutHelper;
 /**
  * A dialog that a player can use to customize his mech before battle.
  * Currently, only changing pilots is supported.
- * 
+ *
  * @author Ben
  * @version
  */
@@ -114,7 +114,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
     private JCheckBox explosionsCB = new JCheckBox("Explosion Rolls");
     private JComboBox targetSelection = new JComboBox();
     private JPanel panTargeting = new JPanel();
-    
+
     private Entity entity;
     private boolean okay = false;
 
@@ -126,7 +126,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
     private boolean usingCrits = false;
 
     private CUnit unit;
-    
+
     /** Creates new CustomMechDialog */
     public CustomUnitDialog(MWClient mwclient, Entity entity, Pilot pilot, CUnit unit) {
         super(mwclient.getMainFrame());
@@ -145,11 +145,11 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
 
         /*
          * Dialog Layout.
-         * 
+         *
          * Generally speaking, dialog's content pane is a holder for a
          * ScrollPane, which itself wraps around a vertical BoxLayout which
          * holds 3 major sub-panels, and a flowpanel containing Okay/Cancel.
-         * 
+         *
          * ScrollPane panels are as follows: - checkboxes and offboard - ammo
          * loads - machinegun settings
          */
@@ -251,7 +251,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
         /*
          * Build the third major subpanel - burst MGs - for Meks and Vehicles.
          * No BA/Inf/Proto bursts!
-         * 
+         *
          * Only doso if the server has enabled "maxtech_burst"
          */
         if (mmClient.game.getOptions().booleanOption("tacops_burst") && !(entity instanceof Infantry)) {
@@ -264,7 +264,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
          */
         setupTargetSystems();
         scrollPanel.add(panTargeting);
-        
+
         // add window listener which hides the window on close.
         addWindowListener(new WindowAdapter() {
             @Override
@@ -561,7 +561,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
                 AmmoType at = e.nextElement();
                 m_choice.setMaximumSize(new Dimension(5, 5));
                 int cost = Integer.MAX_VALUE;
-                int shotsLeft = m.getShotsLeft();
+                int shotsLeft = m.getUsableShotsLeft();
                 if (!curType.getInternalName().equalsIgnoreCase(at.getInternalName())) {
                     shotsLeft = 0;
                 }
@@ -610,7 +610,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
 
             // set up the dump checkbox, if dumping is allowed
             if (canDump) {
-                if (m.getShotsLeft() == 0) {
+                if (m.getUsableShotsLeft() == 0) {
                     chDump.setSelected(true);
                 }
                 chDump.setText("Dump");
@@ -669,16 +669,16 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
 
         /**
          * Get the number of shots in the mount.
-         * 
+         *
          * @return the <code>int</code> number of shots in the mount.
          */
         /* package */int getShotsLeft() {
-            return m_mounted.getShotsLeft();
+            return m_mounted.getUsableShotsLeft();
         }
 
         /**
          * Set the number of shots in the mount.
-         * 
+         *
          * @param shots
          *            the <code>int</code> number of shots for the mount.
          */
@@ -794,7 +794,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
         public ProtomechMunitionChoicePanel(Mounted m, Vector<AmmoType> vTypes, int row) {
             super(m, vTypes, row);
             m_origAmmo = (AmmoType) m.getType();
-            m_origShotsLeft = m.getShotsLeft();
+            m_origShotsLeft = m.getUsableShotsLeft();
         }
 
         /**
@@ -807,7 +807,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
             // Calculate the number of shots for the new ammo.
             // N.B. Some special ammos are twice as heavy as normal
             // so they have half the number of shots (rounded down).
-            setShotsLeft(Math.round(getShotsLeft() * m_origShotsLeft / m_origAmmo.getShots()));
+            setShotsLeft(Math.round((getShotsLeft() * m_origShotsLeft) / m_origAmmo.getShots()));
             if (chDump.isSelected()) {
                 setShotsLeft(0);
             }
@@ -869,7 +869,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
             for (MachineGunChoicePanel machineGunChoicePanel : m_vMachineGuns) {
                 machineGunChoicePanel.applyChoice();
             }
-            
+
             // Targeting
             int newTargetSystem = unit.getTargetSystem().getTypeByName(targetSelection.getSelectedItem().toString());
             CampaignData.mwlog.errLog("Targeting Selected: " + newTargetSystem);

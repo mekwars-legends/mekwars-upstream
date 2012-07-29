@@ -67,7 +67,7 @@ import common.util.UnitUtils;
 
 /**
  * A class representing an MM.Net Entity
- * 
+ *
  * @author Helge Richter (McWizard) Jun 10/04 - Dave Poole added an overloaded
  *         constructor to allow creation of a new SUnit with the same UnitID as
  *         an existing Mech to facilitate repodding
@@ -88,8 +88,8 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
     private boolean is_saving = false;
     private JDBCConnectionHandler ch = new JDBCConnectionHandler();
 
-    
-    
+
+
     // CONSTRUCTOR
     /**
      * For Serialization.
@@ -100,7 +100,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
 
     /**
      * Construct a new unit.
-     * 
+     *
      * @param p
      *            flavour string (es: Built by Kurita on An-Ting)
      * @param filename
@@ -131,7 +131,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
 
     /**
      * Constructs a new Unit with the id for an existing unit (repod)
-     * 
+     *
      * @param p
      *            - flavour string (es: Built by Kurita on An-Ting)
      * @param Filename
@@ -163,7 +163,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
      * precision AC) and replace it with normal ammo. L3 ammos may lead to some
      * oddities and should be banned or allowed server wide rather than on a
      * house-by-house basis.
-     * 
+     *
      * @param u
      *            - unit to check
      * @param h
@@ -316,7 +316,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
      * Simple static method that access configs and returns a unit's influence
      * on map size. Called by ShortOperation when changing status from Waiting
      * -> In_Progress.
-     * 
+     *
      * @return - configured map weighting
      */
     public static int getMapSizeModification(SUnit u) {
@@ -491,7 +491,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
             AmmoType at = (AmmoType) mAmmo.getType();
             msg.append(at.getAmmoType());
             msg.append(at.getInternalName());
-            msg.append(mAmmo.getShotsLeft());
+            msg.append(mAmmo.getUsableShotsLeft());
             msg.append(hotloaded);
         }
 
@@ -561,19 +561,20 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
         PreparedStatement ps = null;
         StringBuffer sql = new StringBuffer();
         ResultSet rs = null;
-        
-        if (is_saving)
-        	return;
-        
+
+        if (is_saving) {
+            return;
+        }
+
         is_saving = true;
         Connection c = ch.getConnection();
-        
+
         try {
             if (getDBId() == 0) {
                 // Unit's not in there - insert it
                 sql.setLength(0);
                 sql.append("INSERT into units set MWID=?, uFileName=?, uWeightClass=?, uType=?");
-                ps = c.prepareStatement(sql.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
+                ps = c.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, getId());
                 ps.setString(2, getUnitFilename());
                 ps.setInt(3, getWeightclass());
@@ -600,10 +601,12 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
             CampaignData.mwlog.dbLog("SQL Exception in SUnit.toDB: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
             try {
-                if (rs != null)
+                if (rs != null) {
                     rs.close();
-                if (ps != null)
+                }
+                if (ps != null) {
                     ps.close();
+                }
             } catch (SQLException ex) {
             }
         } finally {
@@ -614,7 +617,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
 
     /**
      * Reads a Entity from a String
-     * 
+     *
      * @param s
      *            A string to read from
      * @return the remaining String
@@ -731,13 +734,13 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
             targetSystem.setEntity(en);
             TokenReader.readString(ST);// unused
             int tsType = TokenReader.readInt(ST);
-            if (tsType != TargetSystem.TS_TYPE_STANDARD && CampaignData.cd.targetSystemIsBanned(tsType)) {
+            if ((tsType != TargetSystem.TS_TYPE_STANDARD) && CampaignData.cd.targetSystemIsBanned(tsType)) {
             	tsType = TargetSystem.TS_TYPE_STANDARD;
             }
             targetSystem.setTargetSystem(tsType);
-            
+
             TokenReader.readInt(ST); // Placeholder for isSupportUnit
-            // Now we need to override this.  Needs to be set in the string, 
+            // Now we need to override this.  Needs to be set in the string,
             // so we don't need to keep a list of all support units client-side
             // but should be dynamic server-side.
             if (CampaignMain.cm.getSupportUnits().contains(getUnitFilename().trim().toLowerCase())) {
@@ -745,8 +748,8 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
             } else {
             	setSupportUnit(false);
             }
-            
-            
+
+
             setScrappableFor(TokenReader.readInt(ST));
 
             if (CampaignMain.cm.isUsingAdvanceRepair() && ((unitEntity instanceof Mech) || (unitEntity instanceof Tank))) {
@@ -800,28 +803,33 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
                 setWeightclass(rs.getInt("uWeightClass"));
                 setId(rs.getInt("MWID"));
                 setDBId(unitID);
-                if (CampaignMain.cm.getCurrentUnitID() <= getId())
+                if (CampaignMain.cm.getCurrentUnitID() <= getId()) {
                     CampaignMain.cm.setCurrentUnitID(getId() + 1);
-                if (getId() == 0)
+                }
+                if (getId() == 0) {
                     setId(CampaignMain.cm.getAndUpdateCurrentUnitID());
-                if (newstate == Unit.STATUS_FORSALE && CampaignMain.cm.getMarket().getListingForUnit(getId()) == null)
+                }
+                if ((newstate == Unit.STATUS_FORSALE) && (CampaignMain.cm.getMarket().getListingForUnit(getId()) == null)) {
                     setStatus(Unit.STATUS_OK);
-                else if (CampaignMain.cm.isUsingAdvanceRepair())
+                } else if (CampaignMain.cm.isUsingAdvanceRepair()) {
                     setStatus(Unit.STATUS_OK);
-                else
+                } else {
                     setStatus(newstate);
+                }
                 setScrappableFor(rs.getInt("uScrappableFor"));
                 setRepairCosts(rs.getInt("uCurrentRepairCost"), rs.getInt("uLifetimeRepairCost"));
                 Entity uEntity = loadMech(getUnitFilename());
 
-                if (uEntity instanceof Mech)
+                if (uEntity instanceof Mech) {
                     ((Mech) uEntity).setAutoEject(rs.getBoolean("uAutoEject"));
+                }
                 uEntity.setSpotlight(rs.getBoolean("uHasSpotlight"));
 
                 uEntity.setSpotlightState(rs.getBoolean("uIsUsingSpotlight"));
 
-                if (CampaignMain.cm.isUsingAdvanceRepair() && (uEntity instanceof Mech || uEntity instanceof Tank))
-                    UnitUtils.applyBattleDamage(uEntity, rs.getString("uBattleDamage"), (CampaignMain.cm.getRTT() != null & CampaignMain.cm.getRTT().unitRepairTimes(getId()) != null));
+                if (CampaignMain.cm.isUsingAdvanceRepair() && ((uEntity instanceof Mech) || (uEntity instanceof Tank))) {
+                    UnitUtils.applyBattleDamage(uEntity, rs.getString("uBattleDamage"), ((CampaignMain.cm.getRTT() != null) & (CampaignMain.cm.getRTT().unitRepairTimes(getId()) != null)));
+                }
 
                 setEntity(uEntity);
 
@@ -839,13 +847,15 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
                     int shots = ammoRS.getInt("ammoShotsLeft");
                     int AmmoLoc = ammoRS.getInt("ammoLocation");
                     boolean hotloaded = Boolean.parseBoolean(ammoRS.getString("ammoHotLoaded"));
-                    if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("tacops_hotload"))
+                    if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("tacops_hotload")) {
                         hotloaded = false;
+                    }
                     AmmoType at = getEntityAmmo(weaponType, ammoName);
                     String munition = Long.toString(at.getMunitionType());
 
-                    if (CampaignMain.cm.getData().getServerBannedAmmo().get(munition) != null)
+                    if (CampaignMain.cm.getData().getServerBannedAmmo().get(munition) != null) {
                         continue;
+                    }
                     try {
                         unitEntity.getAmmo().get(AmmoLoc).changeAmmoType(at);
                         unitEntity.getAmmo().get(AmmoLoc).setShotsLeft(shots);
@@ -861,7 +871,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
 
                 // Load MGs
 
-                Entity en = this.getEntity();
+                Entity en = getEntity();
                 while (mgRS.next()) {
                     int location = mgRS.getInt("mgLocation");
                     int slot = mgRS.getInt("mgSlot");
@@ -886,23 +896,29 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
             CampaignData.mwlog.dbLog("SQL Error in SUnit.fromDB: " + e.getMessage());
             CampaignData.mwlog.dbLog(e);
             try {
-                if (rs != null)
+                if (rs != null) {
                     rs.close();
-                if (mgRS != null)
+                }
+                if (mgRS != null) {
                     mgRS.close();
-                if (ammoRS != null)
+                }
+                if (ammoRS != null) {
                     ammoRS.close();
-                if (stmt != null)
+                }
+                if (stmt != null) {
                     stmt.close();
-                if (mgStmt != null)
+                }
+                if (mgStmt != null) {
                     mgStmt.close();
-                if (ammoStmt != null)
+                }
+                if (ammoStmt != null) {
                     ammoStmt.close();
+                }
             } catch (SQLException ex) {
-            } 
+            }
         } finally {
         	ch.returnConnection(c);
-        } 
+        }
     }
 
     /**
@@ -976,7 +992,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
 
     /**
      * Returns the Modelname for this Unit
-     * 
+     *
      * @return the Modelname
      */
     public String getModelName() {
@@ -1075,7 +1091,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
 
     /**
      * Sets the Pilot of this entity
-     * 
+     *
      * @param p
      *            A pilot
      */
@@ -1161,7 +1177,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
      * Called from both Player and SetUnmaintainedCommand. It would possible to
      * bypass this code and set a unit as unmaintained without incurring any
      * maintainance penalty w/ Unit.setStatus(STATUS_UNMAINTAINED).
-     * 
+     *
      * @urgru 8/4/04
      */
     public void setUnmaintainedStatus() {
@@ -1182,7 +1198,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
          * now change the maintainance levels. if the unit is well maintained,
          * drop it to the basevalue. otherwise, apply the standard penalty.
          */
-        if (getMaintainanceLevel() >= baseUnmaintained + unmaintPenalty) {
+        if (getMaintainanceLevel() >= (baseUnmaintained + unmaintPenalty)) {
             setMaintainanceLevel(baseUnmaintained);
         } else {
             addToMaintainanceLevel(-unmaintPenalty);
@@ -1198,7 +1214,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
     	}
     	return getBV();
     }
-    
+
     public int getBV() {
 
         int toReturn = 0;
@@ -1220,7 +1236,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
         }
         BV = i;
     }
-    
+
     /**
      * @return the megamek.common.entity this Unit represents
      */
@@ -1419,7 +1435,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
     public int getBaseBV() {
     	return getEntity().calculateBattleValue(false, true);
     }
-    
+
     public int getPilotSkillBV() {
 
         int skillBV = 0;
@@ -1550,11 +1566,11 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
      * @author Spork
      */
 	public int compareTo(SUnit u) {
-		return Integer.valueOf(this.getId()).compareTo(Integer.valueOf(u.getId()));	
+		return Integer.valueOf(getId()).compareTo(Integer.valueOf(u.getId()));
 	}
 
     public void setTargetSystem(int type) {
-    	if (type != TargetSystem.TS_TYPE_STANDARD && CampaignData.cd.targetSystemIsBanned(type)) {
+    	if ((type != TargetSystem.TS_TYPE_STANDARD) && CampaignData.cd.targetSystemIsBanned(type)) {
     		setTargetSystem(TargetSystem.TS_TYPE_STANDARD);
     	}
     	try {
@@ -1567,12 +1583,12 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
 			e.printStackTrace();
 		}
     }
-    
+
     @Override
     public boolean isSupportUnit() {
     	return CampaignMain.cm.getSupportUnits().contains(getUnitFilename().toLowerCase());
     }
-    
+
     public void reportStateToPlayer(SPlayer player){
     	CampaignMain.cm.toUser("PL|UU|" + getId() + "|" + toString(true), player.getName(), false);
     }
@@ -1595,7 +1611,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
 		case Unit.AERO:
 			return o.getBooleanValue("ForceProduceAndCaptureAeros");
     	}
-    	
+
 		return false;
 	}
 }

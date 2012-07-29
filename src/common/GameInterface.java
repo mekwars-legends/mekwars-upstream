@@ -7,7 +7,7 @@ import megamek.common.Entity;
 
 public interface GameInterface {
 	List<String> getWinners();
-	
+
 	boolean hasWinner();
 
 	Enumeration<Entity> getDevastatedEntities();

@@ -80,7 +80,7 @@ public class PainResistanceSkill extends SPilotSkill {
         while (ammoList.hasNext()) {
             Mounted ammoType = ammoList.next();
 
-            if (ammoType.getShotsLeft() <= 0) {
+            if (ammoType.getUsableShotsLeft() <= 0) {
                 continue;
             }
 
@@ -113,7 +113,7 @@ public class PainResistanceSkill extends SPilotSkill {
         while (ammoList.hasNext()) {
             Mounted ammoType = ammoList.next();
 
-            if (ammoType.getShotsLeft() <= 0) {
+            if (ammoType.getUsableShotsLeft() <= 0) {
                 continue;
             }
 

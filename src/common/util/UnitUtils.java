@@ -259,11 +259,11 @@ public class UnitUtils {
                         result.append(delimiter2);
                         result.append(0);
                         result.append(delimiter2);
-                    } else if (weap.getShotsLeft() != ((AmmoType) weap.getType()).getShots()) {
+                    } else if (weap.getUsableShotsLeft() != ((AmmoType) weap.getType()).getShots()) {
                         hasData = true;
                         result.append(location);
                         result.append(delimiter2);
-                        result.append(Math.max(0, weap.getShotsLeft()));
+                        result.append(Math.max(0, weap.getUsableShotsLeft()));
                         result.append(delimiter2);
                     }
 
@@ -473,11 +473,11 @@ public class UnitUtils {
                         result.append(delimiter2);
                         result.append(0);
                         result.append(delimiter2);
-                    } else if (weap.getShotsLeft() != ((AmmoType) weap.getType()).getShots()) {
+                    } else if (weap.getUsableShotsLeft() != ((AmmoType) weap.getType()).getShots()) {
                         hasData = true;
                         result.append(location);
                         result.append(delimiter2);
-                        result.append(Math.max(0, weap.getShotsLeft()));
+                        result.append(Math.max(0, weap.getUsableShotsLeft()));
                         result.append(delimiter2);
                     }
 
@@ -551,7 +551,7 @@ public class UnitUtils {
                     Mounted mounted = unit.getEquipment(critSlot.getIndex());
                     // check to see if it has ammo. If so set it 0 as the
                     // ammobin has gone bye bye.
-                    if (mounted.getShotsLeft() > 0) {
+                    if (mounted.getUsableShotsLeft() > 0) {
                         mounted.setShotsLeft(0);
                     }
                 }
@@ -562,7 +562,7 @@ public class UnitUtils {
                     Mounted mounted = unit.getEquipment(critSlot.getIndex());
                     // check to see if it has ammo. If so set it 0 as the
                     // ammobin has gone bye bye.
-                    if (mounted.getShotsLeft() > 0) {
+                    if (mounted.getUsableShotsLeft() > 0) {
                         mounted.setShotsLeft(0);
                     }
                 }
@@ -576,7 +576,7 @@ public class UnitUtils {
                             Mounted mounted = unit.getEquipment(critSlot.getIndex());
                             // check to see if it has ammo. If so set it 0 as
                             // the ammobin has gone bye bye.
-                            if (mounted.getShotsLeft() > 0) {
+                            if (mounted.getUsableShotsLeft() > 0) {
                                 mounted.setShotsLeft(0);
                             }
                         }
@@ -683,7 +683,7 @@ public class UnitUtils {
                         mounted.setMissing(true);
                         // check to see if it has ammo. If so set it 0 as the
                         // ammobin has gone bye bye.
-                        if (mounted.getShotsLeft() > 0) {
+                        if (mounted.getUsableShotsLeft() > 0) {
                             mounted.setShotsLeft(0);
                         }
                     }
@@ -695,7 +695,7 @@ public class UnitUtils {
                         mounted.setDestroyed(true);
                         // check to see if it has ammo. If so set it 0 as the
                         // ammobin has gone bye bye.
-                        if (mounted.getShotsLeft() > 0) {
+                        if (mounted.getUsableShotsLeft() > 0) {
                             mounted.setShotsLeft(0);
                         }
                     }
@@ -710,7 +710,7 @@ public class UnitUtils {
                                 mounted.setDestroyed(true);
                                 // check to see if it has ammo. If so set it 0
                                 // as the ammobin has gone bye bye.
-                                if (mounted.getShotsLeft() > 0) {
+                                if (mounted.getUsableShotsLeft() > 0) {
                                     mounted.setShotsLeft(0);
                                 }
                             }
@@ -912,7 +912,7 @@ public class UnitUtils {
     /**
      * This destroys all the engine crits in the unit this means a botched
      * salvage job or cored unit
-     * 
+     *
      * @param unit
      * @return
      */
@@ -987,7 +987,7 @@ public class UnitUtils {
     /**
      * Some EQ can take up multiple slots this will track them down and repair
      * them.
-     * 
+     *
      * @param eq
      * @param unit
      * @param location
@@ -1017,7 +1017,7 @@ public class UnitUtils {
 
     /**
      * Salvage the crit and its mount set them all to destroyed.
-     * 
+     *
      * @param cs
      * @param unit
      */
@@ -1039,7 +1039,7 @@ public class UnitUtils {
 
     /**
      * Salvage the crits.
-     * 
+     *
      * @param eq
      * @param unit
      * @param location
@@ -1119,7 +1119,7 @@ public class UnitUtils {
 
     /**
      * Repairs all of the engines in a unit.
-     * 
+     *
      * @param unit
      */
     public static void repairDamagedEngine(Entity unit) {
@@ -1138,7 +1138,7 @@ public class UnitUtils {
 
     /**
      * Repairs weapons that are split between locations Used for mechs Only.
-     * 
+     *
      * @param unit
      */
     public static void repairSplitEquipment(Mounted eq, Entity unit) {
@@ -1194,7 +1194,7 @@ public class UnitUtils {
     /**
      * Fix a crit based on if its damaged or breached. Breached flags are fixed
      * first.
-     * 
+     *
      * @param cs
      * @param unit
      * @param breach
@@ -1584,7 +1584,7 @@ public class UnitUtils {
 
     /**
      * Set all engine crits to repairing!
-     * 
+     *
      * @param unit
      */
     public static void setRepairingEngines(Entity unit) {
@@ -1695,11 +1695,11 @@ public class UnitUtils {
                     } else {
                         roll += 4;
                     }
-                } else if (armorToRepair <= unit.getOInternal(location) / 4) {
+                } else if (armorToRepair <= (unit.getOInternal(location) / 4)) {
                     roll = UnitUtils.techBaseRoll(techType);
-                } else if (armorToRepair <= unit.getOInternal(location) / 2) {
+                } else if (armorToRepair <= (unit.getOInternal(location) / 2)) {
                     roll++;
-                } else if (armorToRepair <= (unit.getOInternal(location) * 3) / 4) {
+                } else if (armorToRepair <= ((unit.getOInternal(location) * 3) / 4)) {
                     roll += 2;
                 } else {
                     roll += 3;
@@ -1847,7 +1847,7 @@ public class UnitUtils {
     /**
      * Some EQ can take up multiple slots this will track them down and repair
      * them.
-     * 
+     *
      * @param eq
      * @param unit
      * @param location
@@ -1986,7 +1986,7 @@ public class UnitUtils {
 
     /**
      * Repairs all of the engines in a unit.
-     * 
+     *
      * @param unit
      */
     public static void removeRepairDamagedEngine(Entity unit) {
@@ -2008,7 +2008,7 @@ public class UnitUtils {
 
     /**
      * Repairs weapons that are split between locations Used for mechs Only.
-     * 
+     *
      * @param unit
      */
     public static void removeRepairSplitEquipment(Mounted eq, Entity unit) {
@@ -2121,7 +2121,7 @@ public class UnitUtils {
                     Engine engine = mek.getEngine();
                     // (weight*walk=rating; rating*weight*cost factor = cost of
                     // engine.
-                    cost = engine.getBaseCost() * engine.getRating() * mek.getWeight() / 75.0;
+                    cost = (engine.getBaseCost() * engine.getRating() * mek.getWeight()) / 75.0;
                     double totalEngineCrits = UnitUtils.getNumberOfEngineCrits(unit);
                     double damagedEngineCrits = UnitUtils.getNumberOfDamagedEngineCrits(unit);
                     cost = cost * (damagedEngineCrits / totalEngineCrits);
@@ -2131,13 +2131,13 @@ public class UnitUtils {
                         cost = mek.getWeight() * 2000;// sensors
                     } else if (cs.getIndex() == Mech.SYSTEM_GYRO) {
                         if (mek.getGyroType() == Mech.GYRO_XL) {
-                            cost = 750000 * (int) Math.ceil(mek.getOriginalWalkMP() * mek.getWeight() / 100f) * 0.5;
+                            cost = 750000 * (int) Math.ceil((mek.getOriginalWalkMP() * mek.getWeight()) / 100f) * 0.5;
                         } else if (mek.getGyroType() == Mech.GYRO_COMPACT) {
-                            cost = 400000 * (int) Math.ceil(mek.getOriginalWalkMP() * mek.getWeight() / 100f) * 1.5;
+                            cost = 400000 * (int) Math.ceil((mek.getOriginalWalkMP() * mek.getWeight()) / 100f) * 1.5;
                         } else if (mek.getGyroType() == Mech.GYRO_HEAVY_DUTY) {
-                            cost = 500000 * (int) Math.ceil(mek.getOriginalWalkMP() * mek.getWeight() / 100f) * 2;
+                            cost = 500000 * (int) Math.ceil((mek.getOriginalWalkMP() * mek.getWeight()) / 100f) * 2;
                         } else {
-                            cost = 300000 * (int) Math.ceil(mek.getOriginalWalkMP() * mek.getWeight() / 100f);
+                            cost = 300000 * (int) Math.ceil((mek.getOriginalWalkMP() * mek.getWeight()) / 100f);
                         }
                     } else if (cs.getIndex() == Mech.SYSTEM_LIFE_SUPPORT) {
                         cost = 50000;// life support
@@ -2372,10 +2372,10 @@ public class UnitUtils {
         for (Mounted ammo : unit.getAmmo()) {
 
             if (ammo.getLocation() == Entity.LOC_NONE) {
-                if (ammo.getShotsLeft() != 1) {
+                if (ammo.getUsableShotsLeft() != 1) {
                     return false;
                 }
-            } else if (ammo.getShotsLeft() != ((AmmoType) ammo.getType()).getShots()) {
+            } else if (ammo.getUsableShotsLeft() != ((AmmoType) ammo.getType()).getShots()) {
                 return false;
             }
         }
@@ -2395,10 +2395,10 @@ public class UnitUtils {
             }
             try {
                 if (ammo.getLocation() == Entity.LOC_NONE) {
-                    if (ammo.getShotsLeft() == 0) {
+                    if (ammo.getUsableShotsLeft() == 0) {
                         return true;
                     }
-                } else if ((ammo.getShotsLeft() < ((AmmoType) ammo.getType()).getShots()) && (ammo.getShotsLeft() > 0)) {
+                } else if ((ammo.getUsableShotsLeft() < ((AmmoType) ammo.getType()).getShots()) && (ammo.getUsableShotsLeft() > 0)) {
                     return true;
                 }
             } catch (Exception ex) {
@@ -2413,7 +2413,7 @@ public class UnitUtils {
 
         for (Mounted ammo : unit.getAmmo()) {
 
-            if (ammo.getShotsLeft() == 0) {
+            if (ammo.getUsableShotsLeft() == 0) {
                 return true;
             }
         }
@@ -2538,7 +2538,7 @@ public class UnitUtils {
             }
 
             // more then 50% of the total crits are damages its toast.
-            if (damagedCrits > totalCrits / 2) {
+            if (damagedCrits > (totalCrits / 2)) {
                 return true;
             }
 
@@ -2558,7 +2558,7 @@ public class UnitUtils {
             }
 
             // more then 50% of the total crits are damages its toast.
-            if (damagedCrits > totalCrits / 2) {
+            if (damagedCrits > (totalCrits / 2)) {
                 return true;
             }
         }
