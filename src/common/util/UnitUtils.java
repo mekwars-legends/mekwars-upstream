@@ -2108,10 +2108,7 @@ public class UnitUtils {
                         cost = 6000;
                     }
                 } else {
-                    int itemCost = (int) m.getType().getCost(mek, m.isArmored());
-                    if (itemCost == EquipmentType.COST_VARIABLE) {
-                        itemCost = m.getType().resolveVariableCost(mek, m.isArmored());
-                    }
+                    int itemCost = (int) m.getType().getCost(mek, m.isArmored(), m.getLocation());
                     cost = itemCost;
                 }
 
@@ -2932,7 +2929,7 @@ public class UnitUtils {
         entity.addGyro();
         entity.addEngineCrits();
         entity.addCockpit();
-        entity.addEngineSinks(entity.getEngine().integralHeatSinkCapacity(), MiscType.F_HEAT_SINK, false);
+        entity.addEngineSinks(entity.getEngine().integralHeatSinkCapacity(false), MiscType.F_HEAT_SINK, false);
 
         entity.autoSetInternal();
         for (int loc = 0; loc <= Mech.LOC_LLEG; loc++) {

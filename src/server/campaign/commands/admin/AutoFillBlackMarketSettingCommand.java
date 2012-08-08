@@ -108,11 +108,9 @@ public class AutoFillBlackMarketSettingCommand implements Command {
             }
 
             crits = Math.max(crits, 1);
-            baseCost = eq.getCost(ent, false);
+            baseCost = eq.getCost(ent, false, -1);
 
-            if (baseCost == EquipmentType.COST_VARIABLE) {
-                baseCost = eq.resolveVariableCost(ent, false);
-            } else if (isArmor(eq)) {
+            if (isArmor(eq)) {
                 baseCost = EquipmentType.getArmorCost(EquipmentType.getArmorType(eq.getName()));
             } else if (isStructure(eq)) {
                 baseCost = EquipmentType.getStructureCost(EquipmentType.getStructureType(eq.getName()));
@@ -288,7 +286,7 @@ public class AutoFillBlackMarketSettingCommand implements Command {
 
         bme = new Equipment();
         bme.setEquipmentInternalName(Mech.getGyroTypeString(Mech.GYRO_STANDARD));
-        baseCost = 300000 * (int) Math.ceil(ent.getOriginalWalkMP() * ent.getWeight() / 100f);
+        baseCost = 300000 * (int) Math.ceil((ent.getOriginalWalkMP() * ent.getWeight()) / 100f);
         minCost = baseCost * minCostMod;
         maxCost = baseCost * maxCostMod;
         bme.setMinCost(minCost);
@@ -299,7 +297,7 @@ public class AutoFillBlackMarketSettingCommand implements Command {
 
         bme = new Equipment();
         bme.setEquipmentInternalName(Mech.getGyroTypeString(Mech.GYRO_HEAVY_DUTY));
-        baseCost = 500000 * (int) Math.ceil(ent.getOriginalWalkMP() * ent.getWeight() / 100f) * 2;
+        baseCost = 500000 * (int) Math.ceil((ent.getOriginalWalkMP() * ent.getWeight()) / 100f) * 2;
         minCost = baseCost * minCostMod;
         maxCost = baseCost * maxCostMod;
         bme.setMinCost(minCost);
@@ -310,7 +308,7 @@ public class AutoFillBlackMarketSettingCommand implements Command {
 
         bme = new Equipment();
         bme.setEquipmentInternalName(Mech.getGyroTypeString(Mech.GYRO_XL));
-        baseCost = 750000 * (int) Math.ceil(ent.getOriginalWalkMP() * ent.getWeight() / 100f) * 0.5;
+        baseCost = 750000 * (int) Math.ceil((ent.getOriginalWalkMP() * ent.getWeight()) / 100f) * 0.5;
         minCost = baseCost * minCostMod;
         maxCost = baseCost * maxCostMod;
         bme.setMinCost(minCost);
@@ -321,7 +319,7 @@ public class AutoFillBlackMarketSettingCommand implements Command {
 
         bme = new Equipment();
         bme.setEquipmentInternalName(Mech.getGyroTypeString(Mech.GYRO_COMPACT));
-        baseCost = 400000 * (int) Math.ceil(ent.getOriginalWalkMP() * ent.getWeight() / 100f) * 1.5;
+        baseCost = 400000 * (int) Math.ceil((ent.getOriginalWalkMP() * ent.getWeight()) / 100f) * 1.5;
         minCost = baseCost * minCostMod;
         maxCost = baseCost * maxCostMod;
         bme.setMinCost(minCost);
@@ -332,7 +330,7 @@ public class AutoFillBlackMarketSettingCommand implements Command {
 
         bme = new Equipment();
         bme.setEquipmentInternalName(UnitUtils.ENGINE_TECH_STRING[UnitUtils.STANDARD_ENGINE]);
-        baseCost = 5000 * ent.getEngine().getRating() * ent.getWeight() / 75.0;
+        baseCost = (5000 * ent.getEngine().getRating() * ent.getWeight()) / 75.0;
         minCost = baseCost * minCostMod;
         maxCost = baseCost * maxCostMod;
         bme.setMinCost(minCost);
@@ -343,7 +341,7 @@ public class AutoFillBlackMarketSettingCommand implements Command {
 
         bme = new Equipment();
         bme.setEquipmentInternalName(UnitUtils.ENGINE_TECH_STRING[UnitUtils.IS_LIGHT_ENGINE]);
-        baseCost = 15000 * ent.getEngine().getRating() * ent.getWeight() / 75.0;
+        baseCost = (15000 * ent.getEngine().getRating() * ent.getWeight()) / 75.0;
         minCost = baseCost * minCostMod;
         maxCost = baseCost * maxCostMod;
         bme.setMinCost(minCost);
@@ -354,7 +352,7 @@ public class AutoFillBlackMarketSettingCommand implements Command {
 
         bme = new Equipment();
         bme.setEquipmentInternalName(UnitUtils.ENGINE_TECH_STRING[UnitUtils.IS_XL_ENGINE]);
-        baseCost = 20000 * ent.getEngine().getRating() * ent.getWeight() / 75.0;
+        baseCost = (20000 * ent.getEngine().getRating() * ent.getWeight()) / 75.0;
         minCost = baseCost * minCostMod;
         maxCost = baseCost * maxCostMod;
         bme.setMinCost(minCost);
@@ -365,7 +363,7 @@ public class AutoFillBlackMarketSettingCommand implements Command {
 
         bme = new Equipment();
         bme.setEquipmentInternalName(UnitUtils.ENGINE_TECH_STRING[UnitUtils.IS_XXL_ENGINE]);
-        baseCost = 100000 * ent.getEngine().getRating() * ent.getWeight() / 75.0;
+        baseCost = (100000 * ent.getEngine().getRating() * ent.getWeight()) / 75.0;
         minCost = baseCost * minCostMod;
         maxCost = baseCost * maxCostMod;
         bme.setMinCost(minCost);
@@ -376,7 +374,7 @@ public class AutoFillBlackMarketSettingCommand implements Command {
 
         bme = new Equipment();
         bme.setEquipmentInternalName(UnitUtils.ENGINE_TECH_STRING[UnitUtils.CLAN_XL_ENGINE]);
-        baseCost = 20000 * ent.getEngine().getRating() * ent.getWeight() / 75.0;
+        baseCost = (20000 * ent.getEngine().getRating() * ent.getWeight()) / 75.0;
         minCost = baseCost * minCostMod;
         maxCost = baseCost * maxCostMod;
         bme.setMinCost(minCost);
@@ -387,7 +385,7 @@ public class AutoFillBlackMarketSettingCommand implements Command {
 
         bme = new Equipment();
         bme.setEquipmentInternalName(UnitUtils.ENGINE_TECH_STRING[UnitUtils.CLAN_XXL_ENGINE]);
-        baseCost = 100000 * ent.getEngine().getRating() * ent.getWeight() / 75.0;
+        baseCost = (100000 * ent.getEngine().getRating() * ent.getWeight()) / 75.0;
         minCost = baseCost * minCostMod;
         maxCost = baseCost * maxCostMod;
         bme.setMinCost(minCost);
