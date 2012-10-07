@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2004 
- * 
+ * MekWars - Copyright (C) 2004
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megamek)
  * Original author Helge Richter (McWizard)
  *
@@ -158,7 +158,7 @@ public class CUnit extends Unit {
         // don't try to set ammo and eject on an OMG
         if (getModelName().startsWith("Error") || getModelName().startsWith("OMG")) {
             UnitEntity.setExternalId(getId());
-            UnitEntity.setCrew(new megamek.common.Pilot(p.getName(), p.getGunnery(), p.getPiloting()));
+            UnitEntity.setCrew(new megamek.common.Crew(p.getName(), 1, p.getGunnery(), p.getPiloting()));
             return true;
         }
 
@@ -220,7 +220,7 @@ public class CUnit extends Unit {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		int suppUnit = TokenReader.readInt(ST);
 		if (suppUnit == 1) {
 			setSupportUnit(true);
@@ -237,7 +237,7 @@ public class CUnit extends Unit {
         setRepairCosts(TokenReader.readInt(ST), TokenReader.readInt(ST));
 
         UnitEntity.setExternalId(getId());
-        UnitEntity.setCrew(new megamek.common.Pilot(p.getName(), p.getGunnery(), p.getPiloting()));
+        UnitEntity.setCrew(new megamek.common.Crew(p.getName(), 1, p.getGunnery(), p.getPiloting()));
 
         if (unitDamage != null) {
             UnitUtils.applyBattleDamage(UnitEntity, unitDamage);
@@ -252,7 +252,7 @@ public class CUnit extends Unit {
      * Method which generates data for an auto unit. Since auto units have no
      * unique properties this can be assembled client side rather than sent from
      * the server.
-     * 
+     *
      * @urgru 1/4/05
      */
     public void setAutoUnitData(String filename, int distance, OffBoardDirection edge) {
@@ -312,13 +312,13 @@ public class CUnit extends Unit {
         }
 
         tinfo += "BV: ";
-        
+
         if (Boolean.parseBoolean(mwclient.getserverConfigs("UseBaseBVForMatching"))) {
-        	tinfo += getBaseBV(); 
+        	tinfo += getBaseBV();
         } else {
         	tinfo += BV;
         }
-        
+
         //if (Boolean.parseBoolean(mwclient.getserverConfigs("RIGHTHERE")))
         if (Boolean.parseBoolean(mwclient.getConfigParam("ShowUnitBaseBV"))) {
         	if (getBV() != getBaseBV()) {
@@ -326,7 +326,7 @@ public class CUnit extends Unit {
         	}
         }
         tinfo += " // Exp: " + getPilot().getExperience() + " // Kills: " + getPilot().getKills() + "<br> ";
-        
+
         if (getPilot().getSkills().size() > 0) {
             tinfo += "Skills: ";
             /*
@@ -347,13 +347,13 @@ public class CUnit extends Unit {
         }
 
         String capacity = getEntity().getUnusedString();
-        
+
         if ((capacity != null) && (capacity.trim().length() > 0)) {
 	        if(Boolean.parseBoolean(mwclient.getserverConfigs("UseFullCapacityDescription"))) {
 	        	if (capacity.endsWith("<br>")) {
 	        		capacity = capacity.substring(0, capacity.length() - 4);
 	        	}
-	
+
 	        	if (capacity.indexOf("<br>") > -1) {
 	        		tinfo += "Cargo:<br>" + capacity + "<br>";
 	        	} else {
@@ -364,7 +364,7 @@ public class CUnit extends Unit {
 	            tinfo += "Cargo: " + capacity + "<br>";
 	        }
         }
-        
+
         if (getLifeTimeRepairCost() > 0) {
             tinfo += "Repair Costs: " + getCurrentRepairCost() + "/" + getLifeTimeRepairCost() + "<br>";
         }
@@ -378,8 +378,8 @@ public class CUnit extends Unit {
         return (tinfo);
     }
 
-    
-    
+
+
     public String getModelName() {
 
         if (getType() != MEK) {
@@ -407,7 +407,7 @@ public class CUnit extends Unit {
         // else
         return BV;
     }
-    
+
     public int getBaseBV() {
     	return getEntity().calculateBattleValue(false, true);
     }
@@ -418,7 +418,7 @@ public class CUnit extends Unit {
     	}
     	return getBV();
     }
-    
+
     public Entity getEntity() {
         return UnitEntity;
     }
@@ -486,7 +486,7 @@ public class CUnit extends Unit {
     // STATIC METHODS
     /**
      * A method which returns the MU cost of a specified campaign unit.
-     * 
+     *
      * @return int - # of MU it takes to buy a unit of the given weight class
      */
     public static int getPriceForUnit(MWClient mwclient, int weightclass, int type_id, House producer) {
@@ -516,7 +516,7 @@ public class CUnit extends Unit {
 
     /**
      * A method which returns the influence cost of a specified campaign mech.
-     * 
+     *
      * @return int - # if IP it takes to buy a mech of the given units weight
      *         class
      */
@@ -545,7 +545,7 @@ public class CUnit extends Unit {
     /**
      * A method which returns the PP COST of a unit. Meks and Vehicles are
      * segregated by weightclass. Infantry are flat priced accross
-     * 
+     *
      * all weight classes. @ param weight - the weight class to be checked @
      * return int - the PP cost
      */
@@ -601,9 +601,9 @@ public class CUnit extends Unit {
     	Quirks quirks = UnitEntity.getQuirks();
     	quirks.getOption("anti_air").setValue(aa);
     }
-	
 
-    
+
+
     public void setTargetSystem(int type) {
     	try {
 			targetSystem.setTargetSystem(type);
@@ -615,7 +615,7 @@ public class CUnit extends Unit {
 			e.printStackTrace();
 		}
     }
-    
+
     public static double getCritCost(Entity unit, MWClient client, CriticalSlot crit) {
         double cost = 0.0;
 

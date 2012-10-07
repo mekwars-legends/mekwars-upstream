@@ -51,6 +51,7 @@ import megamek.common.Mounted;
 import megamek.common.Protomech;
 import megamek.common.Tank;
 import megamek.common.WeaponType;
+import megamek.common.weapons.HAGWeapon;
 import client.MWClient;
 import client.gui.MechInfo;
 
@@ -616,8 +617,12 @@ class WeaponPanel extends JPanel implements ListSelectionListener {
         // update weapon display
         wNameR.setText(mounted.getDesc());
         wHeatR.setText(wtype.getHeat() + "");
-        if(wtype.getDamage() == WeaponType.DAMAGE_MISSILE) {
-            wDamR.setText("Missile");
+        if(wtype.getDamage() == WeaponType.DAMAGE_BY_CLUSTERTABLE) {
+            if (wtype instanceof HAGWeapon) {
+                wDamR.setText("Variable");
+            } else {
+                wDamR.setText("Missile");
+            }
         } else if(wtype.getDamage() == WeaponType.DAMAGE_VARIABLE) {
             wDamR.setText("Variable");
         } else {

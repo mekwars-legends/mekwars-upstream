@@ -34,6 +34,7 @@ import java.util.Vector;
 
 import megamek.common.AmmoType;
 import megamek.common.BattleArmor;
+import megamek.common.Crew;
 import megamek.common.CriticalSlot;
 import megamek.common.Entity;
 import megamek.common.EntityListFile;
@@ -43,7 +44,6 @@ import megamek.common.MechFileParser;
 import megamek.common.MechSummary;
 import megamek.common.MechSummaryCache;
 import megamek.common.Mounted;
-import megamek.common.Pilot;
 import megamek.common.Tank;
 import megamek.common.WeaponType;
 import megamek.common.options.PilotOptions;
@@ -1105,7 +1105,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
         }
 
         // any time the pilot changes set the unit commander flag to false.
-        Pilot mPilot = new Pilot(p.getName(), p.getGunnery(), p.getPiloting());
+        Crew mPilot = new Crew(p.getName(), 1, p.getGunnery(), p.getPiloting());
         Entity entity = getEntity();
 
         // Lazy Bug report. non Anti-Mek BA should not have a Piloting skill

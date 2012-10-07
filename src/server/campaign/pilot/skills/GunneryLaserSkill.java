@@ -35,7 +35,7 @@ import common.campaign.pilot.Pilot;
 /**
  * NOTE: This is a unofficial rule. Pilot gets a -1 to-hit bonus on all
  * energy-based weapons (Laser, PPC, and Flamer).
- * 
+ *
  * @@author Torren (Jason Tighe)
  */
 public class GunneryLaserSkill extends SPilotSkill {
@@ -79,7 +79,7 @@ public class GunneryLaserSkill extends SPilotSkill {
     		return getBVModFlat(unit);
     	}
         double laserBV = 0;
-        double gunneryLaserBVBaseMod = megamek.common.Pilot.getBVSkillMultiplier(unit.getCrew().getGunnery() - 1, unit.getCrew().getPiloting());
+        double gunneryLaserBVBaseMod = megamek.common.Crew.getBVSkillMultiplier(unit.getCrew().getGunnery() - 1, unit.getCrew().getPiloting());
         double originalLaserBV = 0;
         for (Mounted weapon : unit.getWeaponList()) {
             if (weapon.getType().hasFlag(WeaponType.F_ENERGY)) {
@@ -100,14 +100,15 @@ public class GunneryLaserSkill extends SPilotSkill {
     public int getBVMod(Entity unit, SPilot p) {
         return getBVMod(unit);
     }
-    
+
 	public int getBVModFlat(Entity unit){
         int numberOfLasers = 0;
         int gunneryLaserBVBaseMod = CampaignMain.cm.getIntegerConfig("GunneryLaserBaseBVMod");
-        
+
         for(Mounted weapon : unit.getWeaponList() ){
-            if ( weapon.getType().hasFlag(WeaponType.F_ENERGY) )
+            if ( weapon.getType().hasFlag(WeaponType.F_ENERGY) ) {
                 numberOfLasers++;
+            }
         }
         return numberOfLasers * gunneryLaserBVBaseMod;
     }

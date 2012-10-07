@@ -35,7 +35,7 @@ import common.campaign.pilot.Pilot;
 /**
  * NOTE: This is a unofficial rule. Pilot gets a -1 to-hit bonus on all
  * ballistic weapons (MGs, all ACs, Gaussrifles).
- * 
+ *
  * @@author Torren (Jason Tighe)
  */
 public class GunneryBallisticSkill extends SPilotSkill {
@@ -78,7 +78,7 @@ public class GunneryBallisticSkill extends SPilotSkill {
     		return getBVModFlat(unit);
     	}
         double ballisticBV = 0;
-        double gunneryBallisticBVBaseMod = megamek.common.Pilot.getBVSkillMultiplier(unit.getCrew().getGunnery() - 1, unit.getCrew().getPiloting());
+        double gunneryBallisticBVBaseMod = megamek.common.Crew.getBVSkillMultiplier(unit.getCrew().getGunnery() - 1, unit.getCrew().getPiloting());
 
         for (Mounted weapon : unit.getWeaponList()) {
             if (weapon.getType().hasFlag(WeaponType.F_BALLISTIC)) {
@@ -93,11 +93,11 @@ public class GunneryBallisticSkill extends SPilotSkill {
     	if (CampaignMain.cm.getBooleanConfig("USEFLATGUNNERYBALLISTICMODIFIER")) {
     		return getBVModFlat(unit);
     	}
-    	
+
     	double ballisticBV = 0;
-        double gunneryBallisticBVBaseMod = megamek.common.Pilot.getBVSkillMultiplier(unit.getCrew().getGunnery() - 1, unit.getCrew().getPiloting());
+        double gunneryBallisticBVBaseMod = megamek.common.Crew.getBVSkillMultiplier(unit.getCrew().getGunnery() - 1, unit.getCrew().getPiloting());
         double originalBallisticBV = 0;
-        
+
         for (Mounted weapon : unit.getWeaponList()) {
             if (weapon.getType().hasFlag(WeaponType.F_BALLISTIC)) {
                 ballisticBV += weapon.getType().getBV(unit);
@@ -105,22 +105,23 @@ public class GunneryBallisticSkill extends SPilotSkill {
             }
         }
         // This is adding the base BV of the weapon twice - once originally, and once here.
-        // Need to back out the original cost so that it only gets added once. 
+        // Need to back out the original cost so that it only gets added once.
         CampaignData.mwlog.debugLog("Ballistic BV: " + ballisticBV);
         CampaignData.mwlog.debugLog("Original Ballistic BV: " + originalBallisticBV);
         CampaignData.mwlog.debugLog("Mod: " + (int) ((ballisticBV * gunneryBallisticBVBaseMod) - originalBallisticBV));
-        
+
         return (int) ((ballisticBV * gunneryBallisticBVBaseMod) - originalBallisticBV);
     }
 
-    
+
 	public int getBVModFlat(Entity unit){
         int numberOfGuns = 0;
         int gunneryBallisticBVBaseMod = CampaignMain.cm.getIntegerConfig("GunneryBallisticBaseBVMod");
-        
+
         for(Mounted weapon : unit.getWeaponList() ){
-            if ( weapon.getType().hasFlag(WeaponType.F_BALLISTIC) )
+            if ( weapon.getType().hasFlag(WeaponType.F_BALLISTIC) ) {
                 numberOfGuns++;
+            }
         }
         return numberOfGuns * gunneryBallisticBVBaseMod;
     }

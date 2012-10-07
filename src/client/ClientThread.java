@@ -30,11 +30,11 @@ import megamek.client.bot.ui.AWT.BotGUI;
 import megamek.client.ui.AWT.ClientGUI;
 import megamek.common.Board;
 import megamek.common.Coords;
+import megamek.common.Crew;
 import megamek.common.Entity;
 import megamek.common.IGame;
 import megamek.common.MapSettings;
 import megamek.common.OffBoardDirection;
-import megamek.common.Pilot;
 import megamek.common.PlanetaryConditions;
 import megamek.common.Player;
 import megamek.common.options.IBasicOption;
@@ -391,7 +391,7 @@ class ClientThread extends Thread implements CloseClientListener {
              */
             if (mwclient.isUsingBots()) {
                 String name = "War Bot" + client.getLocalPlayer().getId();
-                bot = new Princess(name, client.getHost(), client.getPort());
+                bot = new Princess(name, client.getHost(), client.getPort(), Princess.LogLevel.ERROR);
                 bot.game.addGameListener(new BotGUI(bot));
                 try {
                     bot.connect();
@@ -537,7 +537,7 @@ class ClientThread extends Thread implements CloseClientListener {
 
                     if (entity.getCrew().getName().equalsIgnoreCase("Unnamed") || entity.getCrew().getName().equalsIgnoreCase("vacant")) {
                         // set the pilot
-                        Pilot pilot = new Pilot("AutoArtillery", 4, 5);
+                        Crew pilot = new Crew("AutoArtillery", 1, 4, 5);
                         entity.setCrew(pilot);
                     } else {
                         entity.setCrew(UnitUtils.createEntityPilot(autoUnit));

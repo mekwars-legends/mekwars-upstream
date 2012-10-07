@@ -34,7 +34,7 @@ import common.campaign.pilot.Pilot;
 /**
  * NOTE: This is a unofficial rule. Pilot gets a -1 to-hit bonus on all missile
  * weapons (LRM, SRM, MRM, RL and ATM).
- * 
+ *
  * @@author Torren (Jason Tighe)
  */
 public class GunneryMissileSkill extends SPilotSkill {
@@ -77,9 +77,9 @@ public class GunneryMissileSkill extends SPilotSkill {
     		return getBVModFlat(unit);
     	}
         double missileBV = 0;
-        double gunneryMissileBVBaseMod = megamek.common.Pilot.getBVSkillMultiplier(unit.getCrew().getGunnery() - 1, unit.getCrew().getPiloting());
+        double gunneryMissileBVBaseMod = megamek.common.Crew.getBVSkillMultiplier(unit.getCrew().getGunnery() - 1, unit.getCrew().getPiloting());
         double originalMissileBV = 0;
-        
+
         for (Mounted weapon : unit.getWeaponList()) {
             if (weapon.getType().hasFlag(WeaponType.F_MISSILE)) {
                 missileBV += weapon.getType().getBV(unit);
@@ -95,15 +95,16 @@ public class GunneryMissileSkill extends SPilotSkill {
     public int getBVMod(Entity unit, SPilot p) {
         return getBVMod(unit);
     }
-    
-    
+
+
 	public int getBVModFlat(Entity unit){
         int numberOfGuns = 0;
         int gunneryMissileBVBaseMod = CampaignMain.cm.getIntegerConfig("GunneryMissileBaseBVMod");
-        
+
         for(Mounted weapon : unit.getWeaponList() ){
-            if ( weapon.getType().hasFlag(WeaponType.F_MISSILE) )
+            if ( weapon.getType().hasFlag(WeaponType.F_MISSILE) ) {
                 numberOfGuns++;
+            }
         }
         return numberOfGuns * gunneryMissileBVBaseMod;
     }

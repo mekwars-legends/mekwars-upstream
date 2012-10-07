@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2004 
- * 
+ * MekWars - Copyright (C) 2004
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  * Original author Helge Richter (McWizard)
  *
@@ -70,7 +70,7 @@ import common.util.UnitUtils;
 public class CHSPanel extends JPanel {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -6985292870326367798L;
     MWClient mwclient;
@@ -290,7 +290,7 @@ public class CHSPanel extends JPanel {
          * Check for multiproduction and add to all appropriate factory
          * categories. Overly complex, and makes me want to punch the person who
          * RFE'ed multifacs in the face
-         * 
+         *
          * :-(
          */
         if (canProduce(Unit.MEK, type)) {
@@ -316,7 +316,7 @@ public class CHSPanel extends JPanel {
     /**
      * Remove a factory from house status. Used when client receives a HS|RF|
      * command. Usually after a world changes hands.
-     * 
+     *
      * Format: HS|RF|weight$metatype$planet$name|
      */
     public void removeFactionFactory(String factoryData) {
@@ -483,42 +483,42 @@ public class CHSPanel extends JPanel {
         }
 
         int test = productionCapabilities;
-        if (test - UnitFactory.BUILDAERO >= 0) {
+        if ((test - UnitFactory.BUILDAERO) >= 0) {
             test -= UnitFactory.BUILDAERO;
             if (type_id == Unit.AERO) {
                 return true;
             }
         }
 
-        if (test - UnitFactory.BUILDBATTLEARMOR >= 0) {
+        if ((test - UnitFactory.BUILDBATTLEARMOR) >= 0) {
             test -= UnitFactory.BUILDBATTLEARMOR;
             if (type_id == Unit.BATTLEARMOR) {
                 return true;
             }
         }
 
-        if (test - UnitFactory.BUILDPROTOMECHS >= 0) {
+        if ((test - UnitFactory.BUILDPROTOMECHS) >= 0) {
             test -= UnitFactory.BUILDPROTOMECHS;
             if (type_id == Unit.PROTOMEK) {
                 return true;
             }
         }
 
-        if (test - UnitFactory.BUILDINFANTRY >= 0) {
+        if ((test - UnitFactory.BUILDINFANTRY) >= 0) {
             test -= UnitFactory.BUILDINFANTRY;
             if (type_id == Unit.INFANTRY) {
                 return true;
             }
         }
 
-        if (test - UnitFactory.BUILDVEHICLES >= 0) {
+        if ((test - UnitFactory.BUILDVEHICLES) >= 0) {
             test -= UnitFactory.BUILDVEHICLES;
             if (type_id == Unit.VEHICLE) {
                 return true;
             }
         }
 
-        if (test - UnitFactory.BUILDMEK >= 0) {
+        if ((test - UnitFactory.BUILDMEK) >= 0) {
             if (type_id == Unit.MEK) {
                 return true;
             }
@@ -555,7 +555,7 @@ public class CHSPanel extends JPanel {
                 String Comps = componentsInfo.get(weight + "$" + type_id);
                 StringTokenizer ST = new StringTokenizer(Comps, "$");
                 int comps = Integer.parseInt(ST.nextToken());
-                if (comps > 0 || (factoriesInfo.get(weight + "$" + type_id) != null)) {
+                if ((comps > 0) || (factoriesInfo.get(weight + "$" + type_id) != null)) {
 
                     result.append("<TD>" + "<img src=\"data/images/miniticks.gif\">:" + comps);
                     result.append("<img src=\"data/images/units.gif\">:" + ST.nextToken() + "<br>");
@@ -564,7 +564,7 @@ public class CHSPanel extends JPanel {
                     int typetocheck = type_id;
 
                     TreeMap<String, String> facs = factoriesInfo.get(weight + "$" + typetocheck);
-                    if (facs != null && Boolean.parseBoolean(thePlayer.getSubFaction().getConfig(buyNew))) {
+                    if ((facs != null) && Boolean.parseBoolean(thePlayer.getSubFaction().getConfig(buyNew))) {
 
                         boolean hasOpen = false;
                         int minrefresh = Integer.MAX_VALUE;
@@ -658,12 +658,12 @@ public class CHSPanel extends JPanel {
             // fill out bays
             for (int weight = 0; weight < 4; weight++) {
 
-                String buyUsed = "CanBuyUsed" + CUnit.getWeightClassDesc(weight) + CUnit.getTypeClassDesc(type);
+                String buyUsed = "CanBuyUsed" + Unit.getWeightClassDesc(weight) + Unit.getTypeClassDesc(type);
                 if (!Boolean.parseBoolean(thePlayer.getSubFaction().getConfig(buyUsed))) {
                     continue;
                 }
 
-                if (unitsInfo.get(weight + "$" + type) != null && unitsInfo.get(weight + "$" + type).size() > 0) {
+                if ((unitsInfo.get(weight + "$" + type) != null) && (unitsInfo.get(weight + "$" + type).size() > 0)) {
                     House foundH = mwclient.getData().getHouseByName(mwclient.getPlayer().getMyHouse().getName());
                     int cbillCost = Math.round(CUnit.getPriceForUnit(mwclient, weight, type, foundH) * foundH.getUsedMekBayMultiplier()) + mwclient.getPlayer().getHangarPurchasePenalty(type, weight);
                     int fluCost = Math.round(CUnit.getInfluenceForUnit(mwclient, weight, type, foundH) * foundH.getUsedMekBayMultiplier());
@@ -720,7 +720,7 @@ public class CHSPanel extends JPanel {
                         HSMek m = entities[j];
                         int num = 1;
 
-                        while (j < entities.length - 1 && m.getName().equalsIgnoreCase(entities[j + 1].getName()) && (m.getBattleDamage().equalsIgnoreCase(entities[j + 1].getBattleDamage())) && m.getEntity().getCrew().getPiloting() == entities[j + 1].getEntity().getCrew().getPiloting() && m.getEntity().getCrew().getGunnery() == entities[j + 1].getEntity().getCrew().getGunnery()) {
+                        while ((j < (entities.length - 1)) && m.getName().equalsIgnoreCase(entities[j + 1].getName()) && (m.getBattleDamage().equalsIgnoreCase(entities[j + 1].getBattleDamage())) && (m.getEntity().getCrew().getPiloting() == entities[j + 1].getEntity().getCrew().getPiloting()) && (m.getEntity().getCrew().getGunnery() == entities[j + 1].getEntity().getCrew().getGunnery())) {
                             j++;
                             num++;
                         }
@@ -744,7 +744,7 @@ public class CHSPanel extends JPanel {
                         if (m.getType().equalsIgnoreCase("mek") || m.getType().equalsIgnoreCase("vehicle")) {
                             unitString.append("<a href=\"MEKINFO" + m.getMekFile() + "#" + m.getBV() + "#" + m.getEntity().getCrew().getGunnery() + "#" + m.getEntity().getCrew().getPiloting() + "#" + m.getBattleDamage() + "\">" + m.getName() + " (" + m.getEntity().getCrew().getGunnery() + "/" + m.getEntity().getCrew().getPiloting() + ")");
                         } else {
-                            if (m.getEntity() instanceof Infantry && ((Infantry) m.getEntity()).isAntiMek()) {
+                            if ((m.getEntity() instanceof Infantry) && ((Infantry) m.getEntity()).isAntiMek()) {
                                 unitString.append("<a href=\"MEKINFO" + m.getMekFile() + "#" + m.getBV() + "#" + m.getEntity().getCrew().getGunnery() + "#" + m.getEntity().getCrew().getPiloting() + "#" + m.getBattleDamage() + "\">" + m.getName() + " (" + m.getEntity().getCrew().getGunnery() + "/" + m.getEntity().getCrew().getPiloting() + ")");
                             } else {
                                 unitString.append("<a href=\"MEKINFO" + m.getMekFile() + "#" + m.getBV() + "#" + m.getEntity().getCrew().getGunnery() + "#" + m.getEntity().getCrew().getPiloting() + "#" + m.getBattleDamage() + "\">" + m.getName() + " (" + m.getEntity().getCrew().getGunnery() + ")");
@@ -793,7 +793,7 @@ public class CHSPanel extends JPanel {
             // only set the info label's dimension once. has to be done here to
             // ensure
             // that the label and panel dimensions match exactly.
-            if (lblInfo.getWidth() == 0 && lblInfo.getHeight() == 0) {
+            if ((lblInfo.getWidth() == 0) && (lblInfo.getHeight() == 0)) {
                 Dimension newDim = new Dimension();
                 newDim.setSize(lblInfo.getPreferredSize().getWidth(), hsButtonSpringPanel.getSize().getHeight());
                 lblInfo.setMinimumSize(newDim);
@@ -814,7 +814,7 @@ public class CHSPanel extends JPanel {
         JFrame InfoWindow = new JFrame();
         MechDetailDisplay MechDetailInfo = new MechDetailDisplay(mwclient);
         UnitEntity.loadAllWeapons();
-        UnitEntity.setCrew(new megamek.common.Pilot("", Gunnery, Piloting));
+        UnitEntity.setCrew(new megamek.common.Crew("", 1, Gunnery, Piloting));
         if (battleDamage.trim().length() > 1) {
             UnitUtils.applyBattleDamage(UnitEntity, battleDamage, false);
         }
@@ -1177,7 +1177,7 @@ public class CHSPanel extends JPanel {
 
     private boolean hasFactories(int type) {
 
-        for (int weight = 0; weight <= CUnit.ASSAULT; weight++) {
+        for (int weight = 0; weight <= Unit.ASSAULT; weight++) {
             if (factoriesInfo.get(weight + "$" + type) != null) {
                 return true;
             }

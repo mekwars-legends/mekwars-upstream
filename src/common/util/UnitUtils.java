@@ -21,6 +21,7 @@ import java.util.StringTokenizer;
 
 import megamek.common.AmmoType;
 import megamek.common.BipedMech;
+import megamek.common.Crew;
 import megamek.common.CriticalSlot;
 import megamek.common.Engine;
 import megamek.common.Entity;
@@ -33,7 +34,6 @@ import megamek.common.MechSummary;
 import megamek.common.MechSummaryCache;
 import megamek.common.MiscType;
 import megamek.common.Mounted;
-import megamek.common.Pilot;
 import megamek.common.Protomech;
 import megamek.common.Tank;
 import megamek.common.TechConstants;
@@ -3065,10 +3065,10 @@ public class UnitUtils {
         }
     }
 
-    public static Pilot createEntityPilot(Unit mek) {
+    public static Crew createEntityPilot(Unit mek) {
         // get and set the options
-        Pilot pilot = null;
-        pilot = new Pilot(mek.getPilot().getName(), mek.getPilot().getGunnery(), mek.getPilot().getPiloting());
+        Crew pilot = null;
+        pilot = new Crew(mek.getPilot().getName(), 1, mek.getPilot().getGunnery(), mek.getPilot().getPiloting());
 
         // Hits defaults to 0 so no reason to keep checking over and over again.
         pilot.setHits(mek.getPilot().getHits());
