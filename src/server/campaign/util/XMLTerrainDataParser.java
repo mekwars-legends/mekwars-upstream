@@ -143,18 +143,6 @@ public class XMLTerrainDataParser implements XMLResponder {
     int InvertNegativeTerrain;
     int environmentProb = 1;
     
-    // Sand
-    int minSandSpots;
-    int maxSandSpots;
-    int minSandSize;
-    int maxSandSize;
-    
-    // Planted Fields
-    int minPlantedFieldSpots;
-    int maxPlantedFieldSpots;
-    int minPlantedFieldSize;
-    int maxPlantedFieldSize;
-    
     String Theme = "";
     Terrain planetTerrain = new Terrain();
     
@@ -586,24 +574,6 @@ public class XMLTerrainDataParser implements XMLResponder {
             Algorithm = Integer.parseInt(charData);
         else if (lastElement.equalsIgnoreCase("ENVIRONMENTPROBABILITY"))
             environmentProb = Integer.parseInt(charData);
-        
-        else if (lastElement.equalsIgnoreCase("SANDMINSPOTS"))
-        	minSandSpots = Integer.parseInt(charData);
-        else if (lastElement.equalsIgnoreCase("SANDMAXSPOTS"))
-        	maxSandSpots = Integer.parseInt(charData);
-        else if (lastElement.equalsIgnoreCase("SANDMINHEXES"))
-        	minSandSize = Integer.parseInt(charData);
-        else if (lastElement.equalsIgnoreCase("SANDMAXHEXES"))
-        	maxSandSize = Integer.parseInt(charData);
-
-        else if (lastElement.equalsIgnoreCase("PLANTEDFIELDMINSPOTS"))
-        	minPlantedFieldSpots = Integer.parseInt(charData);
-        else if (lastElement.equalsIgnoreCase("PLANEDFIELDMAXSPOTS"))
-        	maxPlantedFieldSpots = Integer.parseInt(charData);
-        else if (lastElement.equalsIgnoreCase("PLANTEDFIELDMINHEXES"))
-        	minPlantedFieldSize = Integer.parseInt(charData);
-        else if (lastElement.equalsIgnoreCase("PLANTEDFIELDMAXHEXES"))
-        	maxPlantedFieldSize = Integer.parseInt(charData);
     }
 
     public void recordComment(String comment) {

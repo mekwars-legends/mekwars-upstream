@@ -134,18 +134,6 @@ final public class PlanetEnvironment{
     private int CliffProb = 0;
     private int InvertNegativeTerrain = 0;
     private int EnvironmentProb = 1;
-    
-    //Sand
-    private int minSandSpots = 0;
-    private int maxSandSpots = 0;
-    private int minSandSize = 1;
-    private int maxSandSize = 4;
-    
-    //Planted Fields
-    private int minPlantedFieldSpots = 0;
-    private int maxPlantedFieldSpots = 0;
-    private int minPlantedFieldSize = 1;
-    private int maxPlantedFieldSize = 4;
  
     /**
      * For Serialisation.
@@ -280,31 +268,6 @@ final public class PlanetEnvironment{
             MountStyle = Integer.parseInt(ST.nextToken());
         if ( ST.hasMoreElements() )
             EnvironmentProb = Integer.parseInt(ST.nextToken());
-        if ( ST.hasMoreElements() ) {
-        	minSandSpots = Integer.parseInt(ST.nextToken());
-        }
-        if ( ST.hasMoreElements() ) {
-        	maxSandSpots = Integer.parseInt(ST.nextToken());
-        }
-        if ( ST.hasMoreElements() ) {
-        	minSandSize = Integer.parseInt(ST.nextToken());	
-        }
-        if ( ST.hasMoreElements() ) {
-        	maxSandSize = Integer.parseInt(ST.nextToken());	
-        }
-        if ( ST.hasMoreElements() ) {
-        	minPlantedFieldSpots = Integer.parseInt(ST.nextToken());
-        }
-        if ( ST.hasMoreElements() ) {
-        	maxPlantedFieldSpots = Integer.parseInt(ST.nextToken());
-        }
-        if ( ST.hasMoreElements() ) {
-        	minPlantedFieldSize = Integer.parseInt(ST.nextToken());
-        }
-        if ( ST.hasMoreElements() ) {
-        	maxPlantedFieldSize = Integer.parseInt(ST.nextToken());
-        }
-
     }
 
     public PlanetEnvironment(StringTokenizer ST) {
@@ -433,30 +396,6 @@ final public class PlanetEnvironment{
             MountStyle = Integer.parseInt(ST.nextToken());
         if ( ST.hasMoreElements() )
             EnvironmentProb = Integer.parseInt(ST.nextToken());
-        if ( ST.hasMoreElements() ) {
-        	minSandSpots = Integer.parseInt(ST.nextToken());
-        }
-        if ( ST.hasMoreElements() ) {
-        	maxSandSpots = Integer.parseInt(ST.nextToken());
-        }
-        if ( ST.hasMoreElements() ) {
-        	minSandSize = Integer.parseInt(ST.nextToken());	
-        }
-        if ( ST.hasMoreElements() ) {
-        	maxSandSize = Integer.parseInt(ST.nextToken());	
-        }
-        if ( ST.hasMoreElements() ) {
-        	minPlantedFieldSpots = Integer.parseInt(ST.nextToken());
-        }
-        if ( ST.hasMoreElements() ) {
-        	maxPlantedFieldSpots = Integer.parseInt(ST.nextToken());
-        }
-        if ( ST.hasMoreElements() ) {
-        	minPlantedFieldSize = Integer.parseInt(ST.nextToken());
-        }
-        if ( ST.hasMoreElements() ) {
-        	maxPlantedFieldSize = Integer.parseInt(ST.nextToken());
-        }
     }
     
     public String toDescription() {
@@ -1334,14 +1273,6 @@ final public class PlanetEnvironment{
         out.println(MountHeightMin,"MountHeightMin");
         out.println(MountHeightMax,"MountHeightMax");
         out.println(MountStyle,"MountStyle");
-        out.println(minSandSpots, "minSandSpots");
-        out.println(maxSandSpots, "maxSandSpots");
-        out.println(minSandSize, "minSandSize");
-        out.println(maxSandSize, "maxSandSize");
-        out.println(minPlantedFieldSpots, "minPlantedFieldSpots");
-        out.println(maxPlantedFieldSpots, "maxPlantedFieldSpots");
-        out.println(minPlantedFieldSize, "minPlantedFieldSize");
-        out.println(maxPlantedFieldSize, "maxPlantedFieldSize");
     }
     
      /**
@@ -1422,14 +1353,6 @@ final public class PlanetEnvironment{
         MountHeightMin = in.readInt("MountHeightMin");
         MountHeightMax = in.readInt("MountHeightMax");
         MountStyle = in.readInt("MountStyle");
-        minSandSpots = in.readInt("minSandSpots");
-        maxSandSpots = in.readInt("maxSandSpots");
-        minSandSize = in.readInt("minSandSize");
-        maxSandSize = in.readInt("maxSandSize");
-        minPlantedFieldSpots = in.readInt("minPlantedFieldSpots");
-        maxPlantedFieldSpots = in.readInt("maxPlantedFieldSpots");
-        minPlantedFieldSize = in.readInt("minPlantedFieldSize");
-        maxPlantedFieldSize = in.readInt("maxPlantedFieldSize");
         
     }
     
@@ -1469,132 +1392,6 @@ final public class PlanetEnvironment{
 	    if ( theme.length() <=1 )
 	        theme = " ";
 		Theme = theme;
-	}
-
-	/**
-	 * @return the environmentProb
-	 */
-	public int getEnvironmentProb() {
-		return EnvironmentProb;
-	}
-
-	/**
-	 * @param environmentProb the environmentProb to set
-	 */
-	public void setEnvironmentProb(int environmentProb) {
-		EnvironmentProb = environmentProb;
-	}
-
-	/**
-	 * @return the minSandSpots
-	 */
-	public int getMinSandSpots() {
-		return minSandSpots;
-	}
-
-	/**
-	 * @param minSandSpots the minSandSpots to set
-	 */
-	public void setMinSandSpots(int minSandSpots) {
-		this.minSandSpots = minSandSpots;
-	}
-
-	/**
-	 * @return the maxSandSpots
-	 */
-	public int getMaxSandSpots() {
-		return maxSandSpots;
-	}
-
-	/**
-	 * @param maxSandSpots the maxSandSpots to set
-	 */
-	public void setMaxSandSpots(int maxSandSpots) {
-		this.maxSandSpots = maxSandSpots;
-	}
-
-	/**
-	 * @return the minSandSize
-	 */
-	public int getMinSandSize() {
-		return minSandSize;
-	}
-
-	/**
-	 * @param minSandSize the minSandSize to set
-	 */
-	public void setMinSandSize(int minSandSize) {
-		this.minSandSize = minSandSize;
-	}
-
-	/**
-	 * @return the maxSandSize
-	 */
-	public int getMaxSandSize() {
-		return maxSandSize;
-	}
-
-	/**
-	 * @param maxSandSize the maxSandSize to set
-	 */
-	public void setMaxSandSize(int maxSandSize) {
-		this.maxSandSize = maxSandSize;
-	}
-
-	/**
-	 * @return the minPlantedFieldSpots
-	 */
-	public int getMinPlantedFieldSpots() {
-		return minPlantedFieldSpots;
-	}
-
-	/**
-	 * @param minPlantedFieldSpots the minPlantedFieldSpots to set
-	 */
-	public void setMinPlantedFieldSpots(int minPlantedFieldSpots) {
-		this.minPlantedFieldSpots = minPlantedFieldSpots;
-	}
-
-	/**
-	 * @return the maxPlantedFieldSpots
-	 */
-	public int getMaxPlantedFieldSpots() {
-		return maxPlantedFieldSpots;
-	}
-
-	/**
-	 * @param maxPlantedFieldSpots the maxPlantedFieldSpots to set
-	 */
-	public void setMaxPlantedFieldSpots(int maxPlantedFieldSpots) {
-		this.maxPlantedFieldSpots = maxPlantedFieldSpots;
-	}
-
-	/**
-	 * @return the minPlantedFieldSize
-	 */
-	public int getMinPlantedFieldSize() {
-		return minPlantedFieldSize;
-	}
-
-	/**
-	 * @param minPlantedFieldSize the minPlantedFieldSize to set
-	 */
-	public void setMinPlantedFieldSize(int minPlantedFieldSize) {
-		this.minPlantedFieldSize = minPlantedFieldSize;
-	}
-
-	/**
-	 * @return the maxPlantedFieldSize
-	 */
-	public int getMaxPlantedFieldSize() {
-		return maxPlantedFieldSize;
-	}
-
-	/**
-	 * @param maxPlantedFieldSize the maxPlantedFieldSize to set
-	 */
-	public void setMaxPlantedFieldSize(int maxPlantedFieldSize) {
-		this.maxPlantedFieldSize = maxPlantedFieldSize;
 	}
 
 }

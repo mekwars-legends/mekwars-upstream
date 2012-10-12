@@ -244,8 +244,8 @@ class ClientThread extends Thread implements CloseClientListener {
                         mySettings.setAlgorithmToUse(env.getAlgorithm());
                         mySettings.setInvertNegativeTerrain(env.getInvertNegativeTerrain());
                         mySettings.setMountainParams(env.getMountPeaks(), env.getMountWidthMin(), env.getMountWidthMax(), env.getMountHeightMin(), env.getMountHeightMax(), env.getMountStyle());
-                        mySettings.setSandParams(env.getMinSandSpots(), env.getMaxSandSpots(), env.getMinSandSize(), env.getMaxSandSize());
-                        mySettings.setPlantedFieldParams(env.getMinPlantedFieldSpots(), env.getMaxPlantedFieldSpots(), env.getMinPlantedFieldSize(), env.getMaxPlantedFieldSize());
+                        mySettings.setSandParams(0, 0, 0, 0);
+                        mySettings.setPlantedFieldParams(0, 0, 0, 0);
 
                         if (env.getTheme().length() > 1) {
                             mySettings.setTheme(env.getTheme());

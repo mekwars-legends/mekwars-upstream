@@ -54,11 +54,9 @@ import common.comm.ServerCommand;
 public class MWServ {
 
 	// Static logging engine, and static version info.
-    public static final String SERVER_VERSION = "0.3.5.11";// Sync this with the
-															// clientVersion in
-															// MMClient @Torren
+    public static final String SERVER_VERSION = "0.3.5.12";
 
-	private ServerWrapper myCommunicator;
+    private ServerWrapper myCommunicator;
 	private Hashtable<String, MMGame> games = new Hashtable<String, MMGame>();
 	private Hashtable<String, MWClientInfo> users = new Hashtable<String, MWClientInfo>();
 	private Hashtable<InetAddress, Vector<MWClientInfo>> ips = new Hashtable<InetAddress, Vector<MWClientInfo>>();
