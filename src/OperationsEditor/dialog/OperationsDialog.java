@@ -893,10 +893,20 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField.setName("MinAttackerWalk");
         attackerPanel.add(BaseTextField);
 
+        /* padding to get both jump fields on the same line. Can be replaced with content */
+        attackerPanel.add(new JLabel(" "));
+        attackerPanel.add(new JLabel(" "));
+        
         BaseTextField = new JTextField(5);
         attackerPanel.add(new JLabel("Min Jump:", SwingConstants.TRAILING));
         BaseTextField.setToolTipText("<html>Min number of jump points<br>that any unit in the attackers army can have<br>to participate in this operation</html>");
         BaseTextField.setName("MinAttackerJump");
+        attackerPanel.add(BaseTextField);
+
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Max Jump:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Max number of jump points<br>that any unit in the attackers army can have<br>to participate in this operation</html>");
+        BaseTextField.setName("MaxAttackerJump");
         attackerPanel.add(BaseTextField);
 
         BaseTextField = new JTextField(5);
@@ -1136,10 +1146,20 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField.setName("MinDefenderWalk");
         defenderPanel.add(BaseTextField);
 
+        /* padding to get both jump fields on the same line. Can be replaced with content */
+        defenderPanel.add(new JLabel(" "));
+        defenderPanel.add(new JLabel(" "));
+        
         BaseTextField = new JTextField(5);
         defenderPanel.add(new JLabel("Min Jump:", SwingConstants.TRAILING));
         BaseTextField.setToolTipText("<html>Min number of jump points<br>that any unit in the defenders army can have<br>to participate in this operation</html>");
         BaseTextField.setName("MinDefenderJump");
+        defenderPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        defenderPanel.add(new JLabel("Max Jump:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("<html>Max number of jump points<br>that any unit in the defenders army can have<br>to participate in this operation</html>");
+        BaseTextField.setName("MaxDefenderJump");
         defenderPanel.add(BaseTextField);
 
         BaseTextField = new JTextField(5);

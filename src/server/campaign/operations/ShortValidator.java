@@ -306,6 +306,8 @@ public class ShortValidator {
     public static final int SFAIL_ATTACK_MISSING_REQUIRED_FLAG = 261; // Attacker is missing a required flag
     public static final int SFAIL_ATTACK_HAS_BANNED_FLAG = 262; // Attacker has a flag set that is banned from the attack
     
+    public static final int SFAIL_ATTACK_MAXJUMP = 263; // Attacker has a unit with too large a jump
+    
     /*
      * Failure codes for defender-specific checks.
      * 
@@ -462,6 +464,8 @@ public class ShortValidator {
     
     public static final int SFAIL_DEFEND_MISSING_REQUIRED_FLAG = 462; // Defender is missing a required set flag
     public static final int SFAIL_DEFEND_HAS_BANNED_FLAG = 463; // Defender has set a banned flag
+    
+    public static final int SFAIL_DEFEND_MAXJUMP = 464; // Defender has a unit that jumps too far
     
     // CONSTRUCTORS
     public ShortValidator(OperationManager m) {
@@ -1031,6 +1035,7 @@ public class ShortValidator {
         boolean normInf = false;
         boolean powerInf = false;
         boolean speedFail = false;
+        boolean jumpTooFar = false;
         boolean maxTonFail = false;
         boolean minTonFail = false;
         boolean maxBVFail = false;
@@ -1086,12 +1091,15 @@ public class ShortValidator {
 
             // now, check the unit's walking and jumping speeds. only fail on
             // this once.
-            if (!speedFail) {
+            if (!speedFail && !jumpTooFar) {
                 try {
                     int walkMP = currUnit.getEntity().getWalkMP();
                     int jumpMP = currUnit.getEntity().getJumpMP();
                     if (walkMP < o.getIntValue("MinAttackerWalk") && jumpMP < o.getIntValue("MinAttackerJump"))
                         speedFail = true;
+                    if (jumpMP > o.getIntValue("MaxAttackerJump")) {
+                    	jumpTooFar = true;
+                    }
                 } catch (Exception ex) {
                 }
 
@@ -1215,6 +1223,10 @@ public class ShortValidator {
         if (speedFail)
             failureReasons.add(new Integer(SFAIL_ATTACK_MINSPEED));
 
+        if (jumpTooFar) {
+        	failureReasons.add(new Integer(SFAIL_ATTACK_MAXJUMP));
+        }
+        
         // add max/min unit ton failures to list
         if (maxTonFail)
             failureReasons.add(new Integer(SFAIL_ATTACK_MAXUNITTON));
@@ -1490,6 +1502,7 @@ public class ShortValidator {
         boolean normInf = false;
         boolean powerInf = false;
         boolean speedFail = false;
+        boolean jumpTooFar = false;
         boolean maxTonFail = false;
         boolean minTonFail = false;
         boolean maxBVFail = false;
@@ -1538,12 +1551,15 @@ public class ShortValidator {
 
             // now, check the unit's walking and jumping speeds. only fail on
             // this once.
-            if (!speedFail) {
+            if (!speedFail && !jumpTooFar) {
                 try {
                     int walkMP = currUnit.getEntity().getWalkMP();
                     int jumpMP = currUnit.getEntity().getJumpMP();
                     if (walkMP < o.getIntValue("MinDefenderWalk") && jumpMP < o.getIntValue("MinDefenderJump"))
                         speedFail = true;
+                    if (jumpMP > o.getIntValue("MaxDefenderJump")) {
+                    	jumpTooFar = true;
+                    }
                 } catch (Exception ex) {
                 }
             }// end if(hasn't already speedfail'ed)
@@ -1654,7 +1670,9 @@ public class ShortValidator {
         // add speed failure to list
         if (speedFail)
             failureReasons.add(new Integer(SFAIL_DEFEND_MINSPEED));
-
+        if (jumpTooFar) {
+        	failureReasons.add(new Integer(SFAIL_DEFEND_MAXJUMP));
+        }
         // add max/min unit ton failures to list
         if (maxTonFail)
             failureReasons.add(new Integer(SFAIL_DEFEND_MAXUNITTON));

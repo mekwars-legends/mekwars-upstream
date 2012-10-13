@@ -979,6 +979,8 @@ public class DefaultOperation {
 
         operationsDefaults.put("MinAttackerJump", "0");
         operationsDefaults.put("MinDefenderJump", "0");
+        operationsDefaults.put("MaxAttackerJump", "99");
+        operationsDefaults.put("MaxDefenderJump", "99");
 
         operationsDefaults.put("MaxAttackerUnitTonnage", "100");
         operationsDefaults.put("MaxDefenderUnitTonnage", "100");
