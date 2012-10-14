@@ -2118,6 +2118,9 @@ public class ShortValidator {
         case SFAIL_ATTACK_HAS_BANNED_FLAG:
         	return " you have a Player Flag set that is banned from this attack";
         
+        case SFAIL_ATTACK_MAXJUMP:
+        	return " the army contains a unit that jumps too far.";
+        	
             /*
              * DEFENSE failure causes
              */
@@ -2299,6 +2302,8 @@ public class ShortValidator {
         case SFAIL_DEFEND_HAS_BANNED_FLAG:
         	return " your opponent has a Player Flag set that is banned from this attack";
 
+        case SFAIL_DEFEND_MAXJUMP:
+        	return " your opponent's army contains a unit that jumps too far.";
         }
         
         return "";
