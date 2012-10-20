@@ -1,7 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
-+ New Megamek v0.35.33-MW20111020-9004
++ New Megamek v0.35.33-MW20121020-9004 (typo in MM version)
 + Fixed repair bug
 R Released Server v0.3.5.13
 + Added MaxJump operation setting
