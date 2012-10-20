@@ -297,7 +297,6 @@ public class CUnit extends Unit {
         if ((getType() == Unit.MEK) || (getType() == Unit.VEHICLE) || (getType() == Unit.AERO)) {
             tinfo += " (" + getPilot().getName() + ", " + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ") <br>";
         } else if ((getType() == Unit.BATTLEARMOR) || (getType() == Unit.INFANTRY)) {
-
             if (((Infantry) UnitEntity).isAntiMek()) {
                 tinfo += " (" + getPilot().getName() + ", " + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ") <br>";
             } else {

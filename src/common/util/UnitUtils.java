@@ -420,20 +420,20 @@ public class UnitUtils {
                     }
 
                     // Crit can only be missing or damaged or Breached.
-                    if (cs.isMissing()) {
-                        result.append(x);
-                        result.append(delimiter2);
-                        result.append(y);
-                        result.append(delimiter2);
-                        result.append("@");
-                        result.append(delimiter2);
-                        hasData = true;
-                    } else if (cs.isDamaged()) {
+                    if (cs.isDamaged()) { // Moving this to the head of the line - isMissing seems to be overriding damaged.
                         result.append(x);
                         result.append(delimiter2);
                         result.append(y);
                         result.append(delimiter2);
                         result.append("^");
+                        result.append(delimiter2);
+                        hasData = true;
+                    } else if (cs.isMissing()) {
+                        result.append(x);
+                        result.append(delimiter2);
+                        result.append(y);
+                        result.append(delimiter2);
+                        result.append("@");
                         result.append(delimiter2);
                         hasData = true;
                     } else if (cs.isBreached()) {
