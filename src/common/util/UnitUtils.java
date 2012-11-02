@@ -377,8 +377,16 @@ public class UnitUtils {
             // location#Crit Number#Damage
             for (int x = 0; x < unit.locations(); x++) {
                 int shieldHitsLeft = -1;
+                // Need to get IS amount - critical slots marked as missing because
+                // of a blown-off arm or what have you should not be marked missing for
+                // MW purposes.  If it's missing, and there is IS left, it should
+                // be unmarked instead.
+                boolean hasISLeft = (unit.getInternal(x)>0);
+                
                 for (int y = 0; y < unit.getNumberOfCriticals(x); y++) {
                     CriticalSlot cs = unit.getCritical(x, y);
+
+                    
                     if (cs == null) {
                         continue;
                     }
@@ -428,7 +436,7 @@ public class UnitUtils {
                         result.append("^");
                         result.append(delimiter2);
                         hasData = true;
-                    } else if (cs.isMissing()) {
+                    } else if (cs.isMissing() && !hasISLeft) {  // Experimental addition of hasISLeft - if testing doesn't work, remove it
                         result.append(x);
                         result.append(delimiter2);
                         result.append(y);
