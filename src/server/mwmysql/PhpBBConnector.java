@@ -515,13 +515,7 @@ public class PhpBBConnector {
 	        	String[] call={"PHPBB3" + fs + "createUser.php", '"' + name + '"', pass, email};
 	        	try {
 					Process p = runtime.exec(call);
-					int exitCode = p.exitValue();
-					if (exitCode == 0) {
 						toReturn = this.sendEmailValidation(getUserForumID(name, email), email, getActivationKey(getUserForumID(name, email)));
-					} else {
-						CampaignMain.cm.toUser("There was an error creating your forum account.  Please ask staff to investigate.", name, true);
-						return false;
-					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
