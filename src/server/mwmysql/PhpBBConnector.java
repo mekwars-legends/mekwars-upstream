@@ -512,10 +512,9 @@ public class PhpBBConnector {
 	        } else {
 	        	Runtime runtime=Runtime.getRuntime();
 	        	String fs = System.getProperty("file.separator");
-	        	String[] call={"PHPBB3" + fs + "createUser.php", '"' + name + '"', pass, email};
+	        	String[] call={"PHPBB3" + fs + "createUser.php", name, pass, email};
 	        	try {
-					Process p = runtime.exec(call);
-						toReturn = this.sendEmailValidation(getUserForumID(name, email), email, getActivationKey(getUserForumID(name, email)));
+					runtime.exec(call);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
