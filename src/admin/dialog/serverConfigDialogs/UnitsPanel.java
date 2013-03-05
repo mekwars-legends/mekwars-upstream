@@ -57,6 +57,7 @@ public class UnitsPanel extends JPanel {
 		costGrid.add(new JLabel("CBills"));
 		costGrid.add(new JLabel("Influence"));
 		costGrid.add(new JLabel("PP"));
+		costGrid.add(new JLabel("RP"));
 		
 		for (int unitType = Unit.MEK; unitType <= Unit.AERO; unitType++) {
 			for (int unitWeight = Unit.LIGHT; unitWeight <= Unit.ASSAULT; unitWeight++) {
@@ -68,25 +69,31 @@ public class UnitsPanel extends JPanel {
 				}
 				
 				costGrid.add(new JLabel(Unit.getWeightClassDesc(unitWeight) + " " + Unit.getTypeClassDesc(unitType)));
-				baseTextField = new JTextField(5);
+				baseTextField = new JTextField(4);
 				baseTextField.setName(baseName + "Price");
 				baseTextField.setToolTipText(Unit.getWeightClassDesc(unitWeight) + Unit.getTypeClassDesc(unitType) + "_cbills");
 				costGrid.add(baseTextField);
 				
-				baseTextField = new JTextField(5);
+				baseTextField = new JTextField(4);
 				baseTextField.setName(baseName + "Inf");
 				baseTextField.setToolTipText(Unit.getWeightClassDesc(unitWeight) + Unit.getTypeClassDesc(unitType) + "_flu");
 				costGrid.add(baseTextField);
 				
-				baseTextField = new JTextField(5);
+				baseTextField = new JTextField(4);
 				baseTextField.setName(baseName + "PP");
 				baseTextField.setToolTipText(Unit.getWeightClassDesc(unitWeight) + Unit.getTypeClassDesc(unitType) + "_PP");
 				costGrid.add(baseTextField);
 				
+				baseTextField = new JTextField(4);
+				baseTextField.setName(baseName + "RP");
+				baseTextField.setToolTipText(Unit.getWeightClassDesc(unitWeight) + Unit.getTypeClassDesc(unitType) + "_RP");
+				costGrid.add(baseTextField);
+				
+				
 			}
 		}
 		
-		SpringLayoutHelper.setupSpringGrid(costGrid, 4);
+		SpringLayoutHelper.setupSpringGrid(costGrid, 5);
 		leftPanel.add(costGrid);
 		leftPanel.setBorder(BorderFactory.createTitledBorder("Unit Costs"));
 		

@@ -183,8 +183,8 @@ public class UseRewardPointsCommand implements Command {
 			String weightstring = command.nextToken();
 			int unitType = Unit.MEK;
 			int unitWeight = Unit.LIGHT;
-			int typeCost = (Integer.parseInt(house.getConfig("RewardPointsForAMek")));
-			int weightCost = (Integer.parseInt(house.getConfig("RewardPointsForALight")));
+			//int typeCost = (Integer.parseInt(house.getConfig("RewardPointsForAMek")));
+			//int weightCost = (Integer.parseInt(house.getConfig("RewardPointsForALight")));
 			SHouse faction = player.getHouseFightingFor();
 			double rareCost = 1;
 			boolean buyRareUnit = false;
@@ -231,7 +231,9 @@ public class UseRewardPointsCommand implements Command {
 				}
 			}
 			
-			switch (unitType) {
+			/*
+			 switch (unitType) {
+			 
 				case Unit.MEK:
 					typeCost = (Integer.parseInt(house.getConfig("RewardPointsForAMek")));
 					break;
@@ -282,8 +284,15 @@ public class UseRewardPointsCommand implements Command {
 					weightCost = (Integer.parseInt(house.getConfig("RewardPointsForAnAssault")));
 					break;
 			}
-			
-			unitTotalRewardPointCost = weightCost + typeCost;
+			*/
+			String configName = "";
+			if (unitType == Unit.MEK) {
+				configName = Unit.getWeightClassDesc(unitWeight) + "RP";
+			} else {
+				configName = Unit.getWeightClassDesc(unitWeight) + Unit.getTypeClassDesc(unitType) + "RP";
+			}
+			unitTotalRewardPointCost = Integer.parseInt(house.getConfig(configName));
+			//unitTotalRewardPointCost = weightCost + typeCost;
 			
 			if ( !player.getHouseFightingFor().equals(faction) ) {
 				double nonHouseUnitMod = Double.parseDouble(house.getConfig(player.getHouseFightingFor().getName()+"To"+faction.getName()+"RewardPointMultiplier"));

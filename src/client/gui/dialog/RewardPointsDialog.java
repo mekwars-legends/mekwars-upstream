@@ -573,28 +573,36 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
 	    int cost = 0;
 	    
 	    //find the type cost
-	    if ( type == Unit.MEK )
-	        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForAMek"));
-	    else if ( type == Unit.VEHICLE )
-	        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForAVeh"));
-	    else if ( type == Unit.INFANTRY )                   
-	        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForInf"));
-	    else if ( type == Unit.PROTOMEK)
-	        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForProto"));
-        else if ( type == Unit.AERO)
-            cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForAero"));
-	    else
-	        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForBA"));
-		    
-	    if ( weight == Unit.LIGHT)
-	        cost += Integer.parseInt(mwclient.getserverConfigs("RewardPointsForALight"));
-	    else if ( weight == Unit.MEDIUM)
-	        cost += Integer.parseInt(mwclient.getserverConfigs("RewardPointsForAMed"));
-	    else if ( weight == Unit.HEAVY)
-	        cost += Integer.parseInt(mwclient.getserverConfigs("RewardPointsForAHeavy"));
-	    else if ( weight == Unit.ASSAULT)
-	        cost += Integer.parseInt(mwclient.getserverConfigs("RewardPointsForAnAssault"));
+//	    if ( type == Unit.MEK )
+//	        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForAMek"));
+//	    else if ( type == Unit.VEHICLE )
+//	        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForAVeh"));
+//	    else if ( type == Unit.INFANTRY )                   
+//	        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForInf"));
+//	    else if ( type == Unit.PROTOMEK)
+//	        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForProto"));
+//        else if ( type == Unit.AERO)
+//            cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForAero"));
+//	    else
+//	        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForBA"));
+//		    
+//	    if ( weight == Unit.LIGHT)
+//	        cost += Integer.parseInt(mwclient.getserverConfigs("RewardPointsForALight"));
+//	    else if ( weight == Unit.MEDIUM)
+//	        cost += Integer.parseInt(mwclient.getserverConfigs("RewardPointsForAMed"));
+//	    else if ( weight == Unit.HEAVY)
+//	        cost += Integer.parseInt(mwclient.getserverConfigs("RewardPointsForAHeavy"));
+//	    else if ( weight == Unit.ASSAULT)
+//	        cost += Integer.parseInt(mwclient.getserverConfigs("RewardPointsForAnAssault"));
 
+	    String configName = "";
+	    if (type == Unit.MEK) {
+			configName = Unit.getWeightClassDesc(weight)+"RP";
+		} else {
+			configName = Unit.getWeightClassDesc(weight) + Unit.getTypeClassDesc(type)+"RP";
+		}
+	    cost = Integer.parseInt(mwclient.getserverConfigs(configName));
+	    
 	    if ( House.equals("Rare"))
 	        cost *= Double.parseDouble(mwclient.getserverConfigs("RewardPointMultiplierForRare"));
 	    else if ( !House.equals("Common") && !House.equals(mwclient.getPlayer().getHouse())){

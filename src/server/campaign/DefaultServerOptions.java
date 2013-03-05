@@ -284,6 +284,31 @@ public class DefaultServerOptions {
         defaults.setProperty("HeavyProtoMekPP", "45000");
         defaults.setProperty("AssaultProtoMekPP", "95000");
 
+        defaults.setProperty("LightRP", "1");
+        defaults.setProperty("MediumRP", "2");
+        defaults.setProperty("HeavyRP", "3");
+        defaults.setProperty("AssaultRP", "4");
+        defaults.setProperty("LightVehicleRP", "1");
+        defaults.setProperty("MediumVehicleRP", "2");
+        defaults.setProperty("HeavyVehicleRP", "3");
+        defaults.setProperty("AssaultVehicleRP", "4");
+        defaults.setProperty("LightInfantryRP", "1");
+        defaults.setProperty("MediumInfantryRP", "2");
+        defaults.setProperty("HeavyInfantryRP", "3");
+        defaults.setProperty("AssaultInfantryRP", "4");
+        defaults.setProperty("LightProtoMekRP", "1");
+        defaults.setProperty("MediumProtoMekRP", "2");
+        defaults.setProperty("HeavyProtoMekRP", "3");
+        defaults.setProperty("AssaultProtoMekRP", "4");
+        defaults.setProperty("LightBattleArmorRP", "1");
+        defaults.setProperty("MediumBattleArmorRP", "2");
+        defaults.setProperty("HeavyBattleArmorRP", "3");
+        defaults.setProperty("AssaultBattleArmorRP", "4");
+        defaults.setProperty("LightAeroRP", "1");
+        defaults.setProperty("MediumAeroRP", "2");
+        defaults.setProperty("HeavyAeroRP", "3");
+        defaults.setProperty("AssaultAeroRP", "4");
+        
         defaults.setProperty("ProduceComponentsWithNoFactory", "false");
 
         defaults.setProperty("UseMek", "true");

@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
+R Released Client v0.3.5.11b (beta), Server v0.3.5.15b (beta)
++ Ability to set RP costs for each type and weight of unit
++ Mew MegaMek v0.35.35-MW20130226-9150
 R Released Server v0.3.5.14, Client v0.3.5.10, Ded v0.3.5.1
 + New MegaMek v0.35.33-MW20121102-9053
 + More repair bug fixes
