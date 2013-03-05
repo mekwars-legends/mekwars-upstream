@@ -998,6 +998,10 @@ public class DefaultOperation {
         operationsDefaults.put("MaxDefenderUnitBVSpread", "10000000");
         operationsDefaults.put("MinAttackerUnitBVSpread", "0");
         operationsDefaults.put("MinDefenderUnitBVSpread", "0");
+        operationsDefaults.put("AttackerUsePercentageBVSpread", "false");
+        operationsDefaults.put("DefenderUsePercentageBVSpread", "false");
+        operationsDefaults.put("AttackerBVSpreadPercent", "0");
+        operationsDefaults.put("DefenderBVSpreadPercent", "0");
 
         operationsDefaults.put("HighestAttackerPilotSkillTotal", "20");
         operationsDefaults.put("LowestAttackerPilotSkillTotal", "0");

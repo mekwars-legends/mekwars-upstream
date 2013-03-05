@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
+R Released Server v0.3.5.16
++ Added the possibility of BV Spread as a percentage of the army
 R Released Client v0.3.5.11, Server v0.3.5.15
 + Cleaned up Reward tab in Server Config dialogs to remove old RP costs info
 R Released Client v0.3.5.11b (beta), Server v0.3.5.15b (beta)

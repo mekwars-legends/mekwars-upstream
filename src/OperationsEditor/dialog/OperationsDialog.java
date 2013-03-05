@@ -947,14 +947,26 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         BaseTextField = new JTextField(5);
         attackerPanel.add(new JLabel("Max BV Spread:", SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("Max BV difference between the highest and lowest counted units.");
+        BaseTextField.setToolTipText("<html>Max BV difference between the highest and lowest counted units.<br>If % BV spread is used, this will be an added value to the calculated percent</html>");
         BaseTextField.setName("MaxAttackerUnitBVSpread");
         attackerPanel.add(BaseTextField);
 
         BaseTextField = new JTextField(5);
         attackerPanel.add(new JLabel("Min BV Spread:", SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("Min BV difference between the highest and lowest counted units.");
+        BaseTextField.setToolTipText("<html>Min BV difference between the highest and lowest counted units.<br>If % BV spread is used, this will be an added value to the calculated percent</html>");
         BaseTextField.setName("MinAttackerUnitBVSpread");
+        attackerPanel.add(BaseTextField);
+        
+        attackerPanel.add(new JLabel("Use % BV Spread", SwingConstants.TRAILING));
+        BaseCheckBox = new JCheckBox();
+        BaseCheckBox.setToolTipText("BV Spread will be a % of the army's BV");
+        BaseCheckBox.setName("AttackerUsePercentBVSpread");
+        attackerPanel.add(BaseCheckBox);
+        
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("BV Spread %", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("% of army's BV allowed");
+        BaseTextField.setName("AttackerBVSpreadPercent");
         attackerPanel.add(BaseTextField);
 
         BaseTextField = new JTextField(5);
@@ -1200,14 +1212,26 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         BaseTextField = new JTextField(5);
         defenderPanel.add(new JLabel("Max BV Spread:", SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("Max BV difference between the highest and lowest counted units.");
+        BaseTextField.setToolTipText("<html>Max BV difference between the highest and lowest counted units.<br>If % BV spread is used, this will be an added value to the calculated percent</html>");
         BaseTextField.setName("MaxDefenderUnitBVSpread");
         defenderPanel.add(BaseTextField);
 
         BaseTextField = new JTextField(5);
         defenderPanel.add(new JLabel("Min BV Spread:", SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("Min BV difference between the highest and lowest counted units.");
+        BaseTextField.setToolTipText("<html>Min BV difference between the highest and lowest counted units.<br>If % BV spread is used, this will be an added value to the calculated percent</html>");
         BaseTextField.setName("MinDefenderUnitBVSpread");
+        defenderPanel.add(BaseTextField);
+
+        defenderPanel.add(new JLabel("Use % BV Spread", SwingConstants.TRAILING));
+        BaseCheckBox = new JCheckBox();
+        BaseCheckBox.setToolTipText("BV Spread will be a % of the army's BV");
+        BaseCheckBox.setName("DefenderUsePercentBVSpread");
+        defenderPanel.add(BaseCheckBox);
+        
+        BaseTextField = new JTextField(5);
+        defenderPanel.add(new JLabel("BV Spread %", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("% of army's BV allowed");
+        BaseTextField.setName("DefenderBVSpreadPercent");
         defenderPanel.add(BaseTextField);
 
         BaseTextField = new JTextField(5);
