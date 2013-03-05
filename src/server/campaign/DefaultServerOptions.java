@@ -453,16 +453,6 @@ public class DefaultServerOptions {
         defaults.setProperty("AllowTechsForRewards", "true");
         defaults.setProperty("TechsForARewardPoint", "5");
         defaults.setProperty("AllowUnitsForRewards", "true");
-        defaults.setProperty("RewardPointsForAMek", "10");
-        defaults.setProperty("RewardPointsForAVeh", "3");
-        defaults.setProperty("RewardPointsForInf", "1");
-        defaults.setProperty("RewardPointsForProto", "1");
-        defaults.setProperty("RewardPointsForBA", "1");
-        defaults.setProperty("RewardPointsForAero", "1");
-        defaults.setProperty("RewardPointsForALight", "2");
-        defaults.setProperty("RewardPointsForAMed", "4");
-        defaults.setProperty("RewardPointsForAHeavy", "6");
-        defaults.setProperty("RewardPointsForAnAssault", "8");
         defaults.setProperty("AllowRareUnitsForRewards", "false");
         defaults.setProperty("RewardPointMultiplierForRare", "2.5");
         defaults.setProperty("RewardPointNonHouseMultiplier", "5");

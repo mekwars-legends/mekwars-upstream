@@ -572,28 +572,6 @@ public final class RewardPointsDialog implements ActionListener, KeyListener{
 	    String House = (String)factionComboBox.getSelectedItem();
 	    int cost = 0;
 	    
-	    //find the type cost
-//	    if ( type == Unit.MEK )
-//	        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForAMek"));
-//	    else if ( type == Unit.VEHICLE )
-//	        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForAVeh"));
-//	    else if ( type == Unit.INFANTRY )                   
-//	        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForInf"));
-//	    else if ( type == Unit.PROTOMEK)
-//	        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForProto"));
-//        else if ( type == Unit.AERO)
-//            cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForAero"));
-//	    else
-//	        cost = Integer.parseInt(mwclient.getserverConfigs("RewardPointsForBA"));
-//		    
-//	    if ( weight == Unit.LIGHT)
-//	        cost += Integer.parseInt(mwclient.getserverConfigs("RewardPointsForALight"));
-//	    else if ( weight == Unit.MEDIUM)
-//	        cost += Integer.parseInt(mwclient.getserverConfigs("RewardPointsForAMed"));
-//	    else if ( weight == Unit.HEAVY)
-//	        cost += Integer.parseInt(mwclient.getserverConfigs("RewardPointsForAHeavy"));
-//	    else if ( weight == Unit.ASSAULT)
-//	        cost += Integer.parseInt(mwclient.getserverConfigs("RewardPointsForAnAssault"));
 
 	    String configName = "";
 	    if (type == Unit.MEK) {

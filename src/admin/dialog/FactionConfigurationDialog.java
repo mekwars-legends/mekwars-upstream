@@ -3716,36 +3716,6 @@ public final class FactionConfigurationDialog implements ActionListener {
 		rewardSpring1.add(baseTextField);
 		
         baseTextField = new JTextField(5);
-        rewardSpring1.add(new JLabel("RP for Veh:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("RP to get a vehicle. For final cost, add to RP for desired weightclass.");
-        baseTextField.setName("RewardPointsForAVeh");
-        rewardSpring1.add(baseTextField);
-        
-        baseTextField = new JTextField(5);
-		rewardSpring1.add(new JLabel("RP for Proto:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html>RP to get a protomech<br> For final cost, add to RP for desired weightclass.</html>");
-        baseTextField.setName("RewardPointsForProto");
-		rewardSpring1.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        rewardSpring1.add(new JLabel("RP for Aero:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html>RP to get an aero<br> For final cost, add to RP for desired weightclass.</html>");
-        baseTextField.setName("RewardPointsForAero");
-        rewardSpring1.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-        rewardSpring1.add(new JLabel("RP for Light:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("RP to get a light unit. Add to RP for desired type.");
-        baseTextField.setName("RewardPointsForALight");
-        rewardSpring1.add(baseTextField);
-        
-        baseTextField = new JTextField(5);
-        rewardSpring1.add(new JLabel("RP for Heavy:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("RP to get a heavy unit. Add to RP for desired type.");
-        baseTextField.setName("RewardPointsForAHeavy");
-        rewardSpring1.add(baseTextField);
-        
-        baseTextField = new JTextField(5);
 		rewardSpring1.add(new JLabel("Rare Multiplier:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("Rares units cost [Normal RP]*[Rare Multiplier]");
         baseTextField.setName("RewardPointMultiplierForRare");
@@ -3792,36 +3762,6 @@ public final class FactionConfigurationDialog implements ActionListener {
         baseTextField.setName("InfluenceForARewardPoint");
         rewardSpring2.add(baseTextField);
         
-        baseTextField = new JTextField(5);
-		rewardSpring2.add(new JLabel("RP for Mek:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("RP to get a mek. For final cost, add to RP for desired weightclass.");
-        baseTextField.setName("RewardPointsForAMek");
-		rewardSpring2.add(baseTextField);
-		
-        baseTextField = new JTextField(5);
-		rewardSpring2.add(new JLabel("RP for Inf:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("RP to get an infantry unit. For final cost, add to RP for desired weightclass.");
-        baseTextField.setName("RewardPointsForInf");
-		rewardSpring2.add(baseTextField);
-		
-        baseTextField = new JTextField(5);
-        rewardSpring2.add(new JLabel("RP for BA:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("<html>RP to get a battle armor squad<br> For final cost, add to RP for desired weightclass.</html>");
-        baseTextField.setName("RewardPointsForBA");
-        rewardSpring2.add(baseTextField);
-
-        baseTextField = new JTextField(5);
-		rewardSpring2.add(new JLabel("RP for Medium:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("RP to get a medium unit. Add to RP for desired type.");
-        baseTextField.setName("RewardPointsForAMed");
-		rewardSpring2.add(baseTextField);
-		
-        baseTextField = new JTextField(5);
-		rewardSpring2.add(new JLabel("RP for Assault:", SwingConstants.TRAILING));
-        baseTextField.setToolTipText("RP to get an assault unit. Add to RP for desired type.");
-        baseTextField.setName("RewardPointsForAnAssault");
-		rewardSpring2.add(baseTextField);
-		
         baseTextField = new JTextField(5);
 		rewardSpring2.add(new JLabel("RP to refresh:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("RP to refresh a factions factory.");

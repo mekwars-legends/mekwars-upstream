@@ -183,8 +183,6 @@ public class UseRewardPointsCommand implements Command {
 			String weightstring = command.nextToken();
 			int unitType = Unit.MEK;
 			int unitWeight = Unit.LIGHT;
-			//int typeCost = (Integer.parseInt(house.getConfig("RewardPointsForAMek")));
-			//int weightCost = (Integer.parseInt(house.getConfig("RewardPointsForALight")));
 			SHouse faction = player.getHouseFightingFor();
 			double rareCost = 1;
 			boolean buyRareUnit = false;
@@ -231,60 +229,6 @@ public class UseRewardPointsCommand implements Command {
 				}
 			}
 			
-			/*
-			 switch (unitType) {
-			 
-				case Unit.MEK:
-					typeCost = (Integer.parseInt(house.getConfig("RewardPointsForAMek")));
-					break;
-				case Unit.VEHICLE:
-					typeCost = (Integer.parseInt(house.getConfig("RewardPointsForAVeh")));
-					if (new Boolean(house.getConfig("UseOnlyOneVehicleSize")).booleanValue())
-						unitWeight = Unit.LIGHT;
-					break;
-				case Unit.INFANTRY:
-					typeCost = (Integer.parseInt(house.getConfig("RewardPointsForInf")));
-					if (new Boolean(house.getConfig("UseOnlyLightInfantry")).booleanValue() )
-						unitWeight = Unit.LIGHT;
-					break;
-				case Unit.PROTOMEK:
-                    if ( faction.getTechLevel() < TechConstants.T_CLAN_TW ){
-                        CampaignMain.cm.toUser(faction.getName()+" is unable to produce Proto Meks!", Username);
-                        return;
-                    }
-					typeCost = (Integer.parseInt(house.getConfig("RewardPointsForProto")));
-					if (new Boolean(house.getConfig("UseOnlyLightInfantry")).booleanValue())
-						unitWeight = Unit.LIGHT;
-					break;
-				case Unit.BATTLEARMOR:
-				    if ( faction.getTechLevel() < TechConstants.T_IS_TW_NON_BOX){
-				        CampaignMain.cm.toUser(faction.getName()+" is unable to produce Battle Armor!", Username);
-				        return;
-				    }
-				        typeCost = (Integer.parseInt(house.getConfig("RewardPointsForBA")));
-					if (new Boolean(house.getConfig("UseOnlyLightInfantry")).booleanValue() )
-						unitWeight = Unit.LIGHT;
-					break;
-                case Unit.AERO:
-                        typeCost = (Integer.parseInt(house.getConfig("RewardPointsForAero")));
-                    break;
-			}
-			
-			switch (unitWeight) {
-				case Unit.LIGHT:
-					weightCost = (Integer.parseInt(house.getConfig("RewardPointsForALight")));
-					break;
-				case Unit.MEDIUM:
-					weightCost = (Integer.parseInt(house.getConfig("RewardPointsForAMed")));
-					break;
-				case Unit.HEAVY:
-					weightCost = (Integer.parseInt(house.getConfig("RewardPointsForAHeavy")));
-					break;
-				case Unit.ASSAULT:
-					weightCost = (Integer.parseInt(house.getConfig("RewardPointsForAnAssault")));
-					break;
-			}
-			*/
 			String configName = "";
 			if (unitType == Unit.MEK) {
 				configName = Unit.getWeightClassDesc(unitWeight) + "RP";

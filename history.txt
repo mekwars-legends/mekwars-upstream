@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
+R Released Client v0.3.5.11, Server v0.3.5.15
++ Cleaned up Reward tab in Server Config dialogs to remove old RP costs info
 R Released Client v0.3.5.11b (beta), Server v0.3.5.15b (beta)
 + Ability to set RP costs for each type and weight of unit
 + Mew MegaMek v0.35.35-MW20130226-9150
