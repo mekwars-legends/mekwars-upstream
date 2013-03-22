@@ -307,7 +307,8 @@ public class ShortValidator {
     public static final int SFAIL_ATTACK_HAS_BANNED_FLAG = 262; // Attacker has a flag set that is banned from the attack
     
     public static final int SFAIL_ATTACK_MAXJUMP = 263; // Attacker has a unit with too large a jump
-    
+    public static final int SFAIL_ATTACK_TOO_MANY_NONSUPPORT_UNITS = 264;
+    public static final int SFAIL_ATTACK_TOO_FEW_NONSUPPORT_UNITS = 265;
     /*
      * Failure codes for defender-specific checks.
      * 
@@ -466,6 +467,10 @@ public class ShortValidator {
     public static final int SFAIL_DEFEND_HAS_BANNED_FLAG = 463; // Defender has set a banned flag
     
     public static final int SFAIL_DEFEND_MAXJUMP = 464; // Defender has a unit that jumps too far
+    
+    public static final int SFAIL_DEFEND_TOO_MANY_NONSUPPORT_UNITS = 465;
+    public static final int SFAIL_DEFEND_TOO_FEW_NONSUPPORT_UNITS = 466;
+    
     
     // CONSTRUCTORS
     public ShortValidator(OperationManager m) {
@@ -1015,6 +1020,12 @@ public class ShortValidator {
         } else if (aa.getTotalSupportUnits() > o.getIntValue("MaxAttackerSupportUnits")) {
         	failureReasons.add(new Integer(SFAIL_ATTACK_TOO_MANY_SUPPORT_UNITS));
         }
+        // Non-Support Unit min/max
+        if ((aa.getAmountOfUnitsWithoutInfantry() - aa.getTotalSupportUnits()) < o.getIntValue("MinAttackerNonSupportUnits")) {
+        	failureReasons.add(new Integer(SFAIL_ATTACK_TOO_FEW_NONSUPPORT_UNITS));
+        } else if ((aa.getAmountOfUnitsWithoutInfantry() - aa.getTotalSupportUnits()) > o.getIntValue("MaxAttackerNonSupportUnits")) {
+        	failureReasons.add(new Integer(SFAIL_ATTACK_TOO_MANY_NONSUPPORT_UNITS));
+        }
         
         
         /*
@@ -1490,6 +1501,12 @@ public class ShortValidator {
         	failureReasons.add(new Integer(SFAIL_DEFEND_TOO_MANY_SUPPORT_UNITS));
         }
         
+        // Non-Support Unit min/max
+        if ((da.getAmountOfUnitsWithoutInfantry() - da.getTotalSupportUnits()) < o.getIntValue("MinDefenderNonSupportUnits")) {
+        	failureReasons.add(new Integer(SFAIL_DEFEND_TOO_FEW_NONSUPPORT_UNITS));
+        } else if (da.getAmountOfUnitsWithoutInfantry() - da.getTotalSupportUnits() > o.getIntValue("MaxDefenderSupportUnits")) {
+        	failureReasons.add(new Integer(SFAIL_DEFEND_TOO_MANY_NONSUPPORT_UNITS));
+        }        
         
         /*
          * loop through all units in the army, setting up remaining checks.
@@ -2125,6 +2142,12 @@ public class ShortValidator {
         case SFAIL_ATTACK_TOO_FEW_SUPPORT_UNITS:
         	return " the army does not have enough support units";
         	
+        case SFAIL_ATTACK_TOO_MANY_NONSUPPORT_UNITS:
+        	return " the army has too many non-support units";
+        	
+        case SFAIL_ATTACK_TOO_FEW_NONSUPPORT_UNITS:
+        	return " the army does not have enough non-support units";
+        	
         case SFAIL_ATTACK_MISSING_REQUIRED_FLAG:
         	return " you do not have a required Player Flag set";
         	
@@ -2308,6 +2331,12 @@ public class ShortValidator {
         	
         case SFAIL_DEFEND_TOO_MANY_SUPPORT_UNITS:
         	return " the army has too many support units";
+        	
+        case SFAIL_DEFEND_TOO_FEW_NONSUPPORT_UNITS:
+        	return " the army does not have enough non-support units";
+        	
+        case SFAIL_DEFEND_TOO_MANY_NONSUPPORT_UNITS:
+        	return " the army has too many non-support units";
 
         case SFAIL_DEFEND_MISSING_REQUIRED_FLAG:
         	return " your opponent does not have a required Player Flag set";

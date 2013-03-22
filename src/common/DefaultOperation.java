@@ -1605,6 +1605,11 @@ public class DefaultOperation {
         operationsDefaults.put("MinDefenderSupportPercent", "0");
         operationsDefaults.put("MaxAttackerSupportPercent", "100");
         operationsDefaults.put("MinAttackerSupportPercent", "0");
+        operationsDefaults.put("MinAttackerNonSupportUnits", "0");
+        operationsDefaults.put("MaxAttackerNonSupportUnits", "999");
+        operationsDefaults.put("MinDefenderNonSupportUnits", "0");
+        operationsDefaults.put("MaxDefenderNonSupportUnits", "999");
+        
         
         // Flags
         operationsDefaults.put("AttackerFlags", "");

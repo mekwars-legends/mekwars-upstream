@@ -1040,6 +1040,18 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField.setToolTipText("Maximum number of support units");
         BaseTextField.setName("MaxAttackerSupportUnits");
         attackerPanel.add(BaseTextField);        
+
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Min Non-Support Units:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("Minimum number of non-support units");
+        BaseTextField.setName("MinAttackerNonSupportUnits");
+        attackerPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        attackerPanel.add(new JLabel("Max Non-Support Units:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("Maximum number of non-support units");
+        BaseTextField.setName("MaxAttackerNonSupportUnits");
+        attackerPanel.add(BaseTextField); 
         
         SpringLayoutHelper.setupSpringGrid(attackerPanel, 4);
 
@@ -1306,6 +1318,17 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         BaseTextField.setName("MaxDefenderSupportUnits");
         defenderPanel.add(BaseTextField);
 
+        BaseTextField = new JTextField(5);
+        defenderPanel.add(new JLabel("Min Non-Support Units:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("Minimum number of non-support units");
+        BaseTextField.setName("MinDefenderNonSupportUnits");
+        defenderPanel.add(BaseTextField);
+        
+        BaseTextField = new JTextField(5);
+        defenderPanel.add(new JLabel("Max Non-Support Units:", SwingConstants.TRAILING));
+        BaseTextField.setToolTipText("Maximum number of non-support units");
+        BaseTextField.setName("MaxDefenderNonSupportUnits");
+        defenderPanel.add(BaseTextField);
         
         SpringLayoutHelper.setupSpringGrid(defenderPanel, 4);
 
