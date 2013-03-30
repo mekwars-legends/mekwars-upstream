@@ -1263,7 +1263,6 @@ public class ShortValidator {
         if (usePercentSpread) {
             double BVSpreadPercent = o.getDoubleValue("AttackerBVSpreadPercent");
             maxAllowedSpread += (BVSpreadPercent * aa.getBV());
-            minAllowedSpread += (BVSpreadPercent * aa.getBV());
         }
         
         if (maxAllowedSpread > 0 && (highUnitBV - lowUnitBV) > maxAllowedSpread)
@@ -1722,7 +1721,6 @@ public class ShortValidator {
         if (usePercentSpread) {
             double BVSpreadPercent = o.getDoubleValue("DefenderBVSpreadPercent");
             maxAllowedSpread += (BVSpreadPercent * da.getBV());
-            minAllowedSpread += (BVSpreadPercent * da.getBV());
         }
         if (maxAllowedSpread > 0 && (highUnitBV - lowUnitBV) > maxAllowedSpread)
             failureReasons.add(SFAIL_DEFEND_MAXSPREAD);

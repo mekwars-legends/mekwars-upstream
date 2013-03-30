@@ -953,7 +953,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         BaseTextField = new JTextField(5);
         attackerPanel.add(new JLabel("Min BV Spread:", SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>Min BV difference between the highest and lowest counted units.<br>If % BV spread is used, this will be an added value to the calculated percent</html>");
+        BaseTextField.setToolTipText("<html>Min BV difference between the highest and lowest counted units.</html>");
         BaseTextField.setName("MinAttackerUnitBVSpread");
         attackerPanel.add(BaseTextField);
         
@@ -1230,7 +1230,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         BaseTextField = new JTextField(5);
         defenderPanel.add(new JLabel("Min BV Spread:", SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>Min BV difference between the highest and lowest counted units.<br>If % BV spread is used, this will be an added value to the calculated percent</html>");
+        BaseTextField.setToolTipText("<html>Min BV difference between the highest and lowest counted units.</html>");
         BaseTextField.setName("MinDefenderUnitBVSpread");
         defenderPanel.add(BaseTextField);
 
