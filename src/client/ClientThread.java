@@ -670,7 +670,7 @@ class ClientThread extends Thread implements CloseClientListener {
                 // "+c3Master.getModel()+" id: "+c3Master.getExternalId());
                 if (c3Master.getC3MasterId() == Entity.NONE) {
                     c3Master.setShutDown(false);
-                    c3Master.setC3Master(c3Master);
+                    c3Master.setC3Master(c3Master, false);
                     client.sendUpdateEntity(c3Master);
                 }
                 /*
@@ -680,13 +680,13 @@ class ClientThread extends Thread implements CloseClientListener {
                  */
             } else if (c3Master.getC3MasterId() != Entity.NONE) {
                 c3Master.setShutDown(false);
-                c3Master.setC3Master(Entity.NONE);
+                c3Master.setC3Master(Entity.NONE, false);
                 client.sendUpdateEntity(c3Master);
             }
             // CampaignData.mwlog.errLog("c3Unit: "+c3Unit.getModel()+"
             // Master: "+c3Master.getModel());
             c3Unit.setShutDown(false);
-            c3Unit.setC3Master(c3Master);
+            c3Unit.setC3Master(c3Master, false);
             // CampaignData.mwlog.errLog("c3Master Set to
             // "+c3Unit.getC3MasterId()+" "+c3Unit.getC3NetId());
             client.sendUpdateEntity(c3Unit);
