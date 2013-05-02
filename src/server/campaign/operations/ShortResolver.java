@@ -2618,11 +2618,9 @@ public class ShortResolver {
                         if (conquestBVAdjust > 0) {
                             totalConquest += (int) (Math.floor(so.getStartingBV() / conquestBVAdjust));
                         }
-                        CampaignData.mwlog.testLog("Old Land: " + totalConquest);
                         if (modifyBasedOnPosition) {
                         	totalConquest = (int)(Math.floor(totalConquest *  (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));                      	
                         }
-                        CampaignData.mwlog.testLog("New Land: " + totalConquest);
                         if (totalConquest > conquestCap) {
                             totalConquest = conquestCap;
                         }

@@ -54,7 +54,7 @@ import common.comm.ServerCommand;
 public class MWServ {
 
 	// Static logging engine, and static version info.
-    public static final String SERVER_VERSION = "0.3.5.20";
+    public static final String SERVER_VERSION = "0.3.5.21b";
 
     private ServerWrapper myCommunicator;
 	private Hashtable<String, MMGame> games = new Hashtable<String, MMGame>();

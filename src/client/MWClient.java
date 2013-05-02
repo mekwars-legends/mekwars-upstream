@@ -155,6 +155,7 @@ import common.BMEquipment;
 import common.CampaignData;
 import common.Equipment;
 import common.GameInterface;
+import common.GameWrapper;
 import common.House;
 import common.Influences;
 import common.MMGame;
@@ -180,7 +181,7 @@ public final class MWClient implements IClient, GameListener {
 
     CConfig Config;
 
-    public static final String CLIENT_VERSION = "0.3.5.14"; // change this with
+    public static final String CLIENT_VERSION = "0.3.5.15b"; // change this with
 
     // all client
     // changes @Torren

@@ -21,6 +21,7 @@ import java.util.StringTokenizer;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.commands.Command;
+import server.util.MWPasswd;
 import server.MWChatServer.auth.IAuthenticator;
 
 /**
@@ -51,8 +52,18 @@ public class AddLeaderCommand implements Command {
 			player = CampaignMain.cm.getPlayer(target);
 			player.getMyHouse().addLeader(player.getName());
 			int level = CampaignMain.cm.getIntegerConfig("factionLeaderLevel");
-			if ( player.getPassword().getAccess() < level )
-				CampaignMain.cm.updatePlayersAccessLevel(target,level);
+			if ( player.getPassword().getAccess() < level ) {
+				//CampaignMain.cm.updatePlayersAccessLevel(target,level);
+				MWPasswd.getRecord(target).setAccess(level);
+				CampaignMain.cm.getServer().getClient(target).setAccessLevel(level);
+				CampaignMain.cm.getServer().getUser(target).setLevel(level);
+				CampaignMain.cm.getServer().sendRemoveUserToAll(target, false);
+				CampaignMain.cm.getServer().sendNewUserToAll(target, false);
+				MWPasswd.writeRecord(player.getPassword(), target);
+				if (player != null) {
+					CampaignMain.cm.doSendToAllOnlinePlayers("PI|DA|" + CampaignMain.cm.getPlayerUpdateString(player), false);
+				}
+			}
 			CampaignMain.cm.toUser("AM:You have been promoted to the faction leadership by "+Username+".", target);
 			CampaignMain.cm.doSendHouseMail(player.getMyHouse(), "NOTE", player.getName()+" has been promoted to the faction leadership.");
 			CampaignMain.cm.doSendModMail("NOTE",Username+" has added promoted "+target+" to faction leader.");		

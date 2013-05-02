@@ -1,6 +1,12 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
+R Released Server v0.3.5.21b, client v0.3.5.15b, ded v0.3.5.4b
+  **** IMPORTANT ****
+  This is *not* a production release, but Sourceforge is going to force me
+  to re-check-out due to an upgrade and I do *not* want to lose these changes.
++ Potential fix for non-reporting and mis-reporting deds
++ Fix for faction leader army rebuild issues
 R Released Server v0.3.5.20, client v0.3.5.14
 + New MegaMek v0.35.36-MW20130404-9244
 R Released Server v0.3.5.19

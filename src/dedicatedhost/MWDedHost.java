@@ -73,6 +73,8 @@ import megamek.common.preference.PreferenceManager;
 import megamek.server.Server;
 
 import common.CampaignData;
+import common.GameReporter;
+import common.GameWrapper;
 import common.MMGame;
 import common.campaign.Buildings;
 import common.util.UnitUtils;
@@ -99,7 +101,7 @@ public final class MWDedHost implements IClient, GameListener {
     public static final int STATUS_DISCONNECTED = 0;
     public static final int STATUS_LOGGEDOUT = 1;
 
-    public static final String CLIENT_VERSION = "0.3.5.3"; // change this with
+    public static final String CLIENT_VERSION = "0.3.5.4b"; // change this with
     // all client
     // changes @Torren
 
@@ -1935,12 +1937,19 @@ public final class MWDedHost implements IClient, GameListener {
         }
     }
 
+    
+    
     private void sendGameReport() {
         if (myServer == null) {
             return;
         }
+        
+        //GameReporter.prepareReport(myGame, usingAdvancedRepairs, buildingTemplate)
 
-        StringBuilder result = new StringBuilder();
+        StringBuilder result = GameReporter.prepareReport(new GameWrapper(myServer.getGame()), isUsingAdvanceRepairs(), buildingTemplate);
+        serverSend("CR|" + result.toString());
+        
+/*        StringBuilder result = new StringBuilder();
         String name = "";
         // Parse the real playername from the Modified In game one..
         String winnerName = "";
@@ -2035,7 +2044,7 @@ public final class MWDedHost implements IClient, GameListener {
         CampaignData.mwlog.infoLog("CR|" + result);
 
         // send the autoreport
-        serverSend("CR|" + result.toString());
+        serverSend("CR|" + result.toString());*/
 
         // we may assume that a server which reports a game is no longer
         // "Running"

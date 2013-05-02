@@ -1381,7 +1381,6 @@ src/admin/dialog/serverConfigDialogs/VotingPanel.java -text
 src/client/CConfig.java -text
 src/client/CUser.java -text
 src/client/ClientThread.java -text
-src/client/GameWrapper.java -text
 src/client/MWClient.java -text
 src/client/campaign/CArmy.java -text
 src/client/campaign/CBMUnit.java -text
@@ -1503,6 +1502,8 @@ src/common/Continent.java -text
 src/common/DefaultOperation.java -text
 src/common/Equipment.java -text
 src/common/GameInterface.java -text
+src/common/GameReporter.java -text
+src/common/GameWrapper.java -text
 src/common/House.java -text
 src/common/Influences.java -text
 src/common/MMGame.java -text
@@ -1998,6 +1999,9 @@ src/server/campaign/operations/PayoutModifier.java -text
 src/server/campaign/operations/ShortOperation.java -text
 src/server/campaign/operations/ShortResolver.java -text
 src/server/campaign/operations/ShortValidator.java -text
+src/server/campaign/operations/resolvers/NewShortResolver.java -text
+src/server/campaign/operations/resolvers/ShortOpPlayers.java -text
+src/server/campaign/operations/resolvers/Team.java -text
 src/server/campaign/pilot/SPilot.java -text
 src/server/campaign/pilot/SPilotSkills.java -text
 src/server/campaign/pilot/skills/AstechSkill.java -text

@@ -167,7 +167,12 @@ public class DefendCommand implements Command {
                 return;
             }
         }
-
+        // Let's try setting teams manually
+        if (!o.getBooleanValue("TeamOperation")) {
+        	teamNumber = 2;
+        	CampaignMain.cm.toUser("PL|STN|" + teamNumber, Username, false);
+            dp.setTeamNumber(teamNumber);
+        }
         if (o.getBooleanValue("TeamOperation")) {
 
             if (teamNumber < 1 || teamNumber > 8) {

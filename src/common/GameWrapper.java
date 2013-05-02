@@ -1,4 +1,4 @@
-package client;
+package common;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -8,7 +8,6 @@ import megamek.common.Entity;
 import megamek.common.IGame;
 import megamek.common.Player;
 
-import common.GameInterface;
 
 public class GameWrapper implements GameInterface {
 	

@@ -47,6 +47,9 @@ import server.campaign.SUnitFactory;
 import server.campaign.autoresolve.BattleResolver;
 import server.campaign.mercenaries.ContractInfo;
 import server.campaign.mercenaries.MercHouse;
+import server.campaign.operations.resolvers.NewShortResolver;
+import server.campaign.operations.resolvers.ShortOpPlayers;
+import server.campaign.operations.resolvers.Team;
 import server.campaign.pilot.SPilot;
 import server.util.StringUtil;
 
@@ -102,7 +105,7 @@ public class ShortOperation implements Comparable<Object> {
     private SPlayer initiator;// player who sends the command to start an op
     private PlanetEnvironment playEnvironment;
     private StringBuilder cityBuilder = new StringBuilder();
-
+    
     // intel info
     AdvancedTerrain aTerrain = null;
     private boolean intelVacuum = false;
@@ -190,6 +193,8 @@ public class ShortOperation implements Comparable<Object> {
     public Vector<SUnit> preCapturedUnits = null;
 
     private OperationReporter reporter = new OperationReporter();
+    private NewShortResolver resolver;
+    
 
     // CONSTRUCTOR
     public ShortOperation(String opName, SPlanet target, SPlayer initiator, SArmy attackingArmy, ArrayList<SArmy> possibleDefenders, int shortID, int longID, boolean fromReserve) {
@@ -326,6 +331,34 @@ public class ShortOperation implements Comparable<Object> {
 
     }
 
+    private void submitPlayerList() {
+    	ShortOpPlayers sop = new ShortOpPlayers();
+    	HashMap<Integer, Vector<SPlayer>> teams = new HashMap<Integer, Vector<SPlayer>>();
+    	
+    	for(String pName : getAllPlayerNames()) {
+    		SPlayer p = CampaignMain.cm.getPlayer(pName);
+    		int teamID = p.getTeamNumber();
+    		
+    		if (teams.containsKey(teamID)) {
+    			teams.get(teamID).add(p);
+    		} else {
+    			 Vector<SPlayer> v = new Vector<SPlayer>();
+    			 v.add(p);
+    			 teams.put(teamID, v);
+    		}
+    	}
+    	
+    	// Now, add the teams to sop
+    	for (int teamID : teams.keySet()) {    		
+    		sop.addTeam(teamID, teams.get(teamID));
+    	}
+    	
+    	resolver = new NewShortResolver(shortID, targetWorld, this, sop);
+    	
+    	
+    	sop.reportTeams();
+    }
+    
     /**
      * Method which removes an attacker, and all of his armies, from a ShortOperation.
      */
@@ -385,7 +418,6 @@ public class ShortOperation implements Comparable<Object> {
         } else if (!o.getBooleanValue("FreeForAllOperation")) {
             changeStatus(STATUS_INPROGRESS);
         }
-
     }
 
     /**
@@ -1056,7 +1088,8 @@ public class ShortOperation implements Comparable<Object> {
              */
             currentStatus = STATUS_INPROGRESS;
             switchPlayerStatusToFighting();
-
+            // Build player list and submit to NewShortResolver
+            submitPlayerList();
             
 
             

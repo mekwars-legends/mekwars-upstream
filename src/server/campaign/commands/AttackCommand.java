@@ -177,9 +177,15 @@ public class AttackCommand implements Command {
             CampaignMain.cm.toUser("AM:Attack failed " + s, Username, true);
             return;
         }
-
+        // Let's set teams manually
+        int teamNumber = -1;
+        if (!o.getBooleanValue("TeamOperation")) {
+        	teamNumber = 1;
+        	CampaignMain.cm.toUser("PL|STN|" + teamNumber, Username, false);
+            ap.setTeamNumber(teamNumber);
+        }
         if (o.getBooleanValue("TeamOperation") && o.getIntValue("NumberOfTeams") > 1) {
-            int teamNumber = 1;
+            teamNumber = 1;
 
             // Ok we got the attack and its valid. lets check to see if its a
             // team Faction game if so add all active faciton Members
