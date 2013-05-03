@@ -2183,6 +2183,10 @@ public final class MWClient implements IClient, GameListener {
             if (pcommand == null) {
                 CampaignData.mwlog.infoLog("COMMAND ERROR: unknown protocol command from server.");
                 CampaignData.mwlog.infoLog("COMMAND RECEIVED: " + incoming);
+                if(incoming.equalsIgnoreCase("denied	/denied")) {
+                	// let them know it's a wrong password
+                	JOptionPane.showMessageDialog(getMainFrame(), "Unknown Username/Password combination.");
+                }
                 return;
             }
         } else {

@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
++ New MegaMek 0.35.38-MW20130503-9352
++ Added client notification on wrong password
 R Released Server v0.3.5.21, Client v0.3.5.15, Ded v0.3.5.5
 + Potential fix for mis-reporting deds
 + Potential fix for b0rked disconnection reports
