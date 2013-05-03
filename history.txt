@@ -1,6 +1,11 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
+R Released Server v0.3.5.21, Client v0.3.5.15, Ded v0.3.5.5
++ Potential fix for mis-reporting deds
++ Potential fix for b0rked disconnection reports
++ Fix for faction leader army rebuild issues
++ New MM v0.35.38-MW20130502-9345
 R Released Server v0.3.5.21b, client v0.3.5.15b, ded v0.3.5.4b
   **** IMPORTANT ****
   This is *not* a production release, but Sourceforge is going to force me

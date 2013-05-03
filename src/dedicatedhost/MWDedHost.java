@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
@@ -73,7 +74,7 @@ import megamek.common.preference.PreferenceManager;
 import megamek.server.Server;
 
 import common.CampaignData;
-import common.GameReporter;
+import common.GameInterface;
 import common.GameWrapper;
 import common.MMGame;
 import common.campaign.Buildings;
@@ -101,7 +102,7 @@ public final class MWDedHost implements IClient, GameListener {
     public static final int STATUS_DISCONNECTED = 0;
     public static final int STATUS_LOGGEDOUT = 1;
 
-    public static final String CLIENT_VERSION = "0.3.5.4b"; // change this with
+    public static final String CLIENT_VERSION = "0.3.5.4"; // change this with
     // all client
     // changes @Torren
 
@@ -1937,7 +1938,89 @@ public final class MWDedHost implements IClient, GameListener {
         }
     }
 
-    
+	public static StringBuilder prepareReport(GameInterface myGame, boolean usingAdvancedRepairs, Buildings buildingTemplate) {
+		StringBuilder result = new StringBuilder();
+        String name = "";
+        // Parse the real playername from the Modified In game one..
+        String winnerName = "";
+        if (myGame.hasWinner()) {
+
+            int numberOfWinners = 0;
+            // Multiple Winners
+            List<String> winners = myGame.getWinners();
+            for (String winner: winners){
+                StringTokenizer st = new StringTokenizer(winner, "~");
+                name = "";
+                while (st.hasMoreElements()) {
+                    name = st.nextToken().trim();
+                }
+                // some of the players set themselves as a team of 1.
+                // This keeps that from happening.
+                if (numberOfWinners > 0) {
+                    winnerName += "*";
+                }
+                numberOfWinners++;
+
+                winnerName += name;
+            }
+            if (winnerName.endsWith("*")) {
+                winnerName = winnerName.substring(0, winnerName.length() - 1);
+            }
+            winnerName += "#";
+        }
+
+        else {
+            winnerName = "DRAW#";
+        }
+
+        result.append(winnerName);
+
+        // Report the mech stat
+        Enumeration<Entity> en = myGame.getDevastatedEntities();
+        while (en.hasMoreElements()) {
+            Entity ent = en.nextElement();
+            if (ent.getOwner().getName().startsWith("War Bot")) {
+                continue;
+            }
+            result.append(SerializeEntity.serializeEntity(ent, true, false, usingAdvancedRepairs));
+            result.append("#");
+        }
+        en = myGame.getGraveyardEntities();
+        while (en.hasMoreElements()) {
+            Entity ent = en.nextElement();
+            if (ent.getOwner().getName().startsWith("War Bot")) {
+                continue;
+            }
+            result.append(SerializeEntity.serializeEntity(ent, true, false, usingAdvancedRepairs));
+            result.append("#");
+
+        }
+        en = myGame.getEntities();
+        while (en.hasMoreElements()) {
+            Entity ent = en.nextElement();
+            if (ent.getOwner().getName().startsWith("War Bot")) {
+                continue;
+            }
+            result.append(SerializeEntity.serializeEntity(ent, true, false, usingAdvancedRepairs));
+            result.append("#");
+        }
+        en = myGame.getRetreatedEntities();
+        while (en.hasMoreElements()) {
+            Entity ent = en.nextElement();
+            if (ent.getOwner().getName().startsWith("War Bot")) {
+                continue;
+            }
+            result.append(SerializeEntity.serializeEntity(ent, true, false, usingAdvancedRepairs));
+            result.append("#");
+        }
+
+        if (buildingTemplate != null) {
+            result.append("BL*" + buildingTemplate);
+        }
+        CampaignData.mwlog.infoLog("CR|" + result);
+		return result;
+	}
+
     
     private void sendGameReport() {
         if (myServer == null) {
@@ -1946,7 +2029,7 @@ public final class MWDedHost implements IClient, GameListener {
         
         //GameReporter.prepareReport(myGame, usingAdvancedRepairs, buildingTemplate)
 
-        StringBuilder result = GameReporter.prepareReport(new GameWrapper(myServer.getGame()), isUsingAdvanceRepairs(), buildingTemplate);
+        StringBuilder result = prepareReport(new GameWrapper(myServer.getGame()), isUsingAdvanceRepairs(), buildingTemplate);
         serverSend("CR|" + result.toString());
         
 /*        StringBuilder result = new StringBuilder();
