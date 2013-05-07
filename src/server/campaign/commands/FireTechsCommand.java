@@ -28,7 +28,7 @@ import server.campaign.SPlayer;
 public class FireTechsCommand implements Command {
 	
 	int accessLevel = 0;
-	String syntax = "";
+	String syntax = "Syntax: /firetechs numberOfTech#techType";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}
@@ -112,10 +112,22 @@ public class FireTechsCommand implements Command {
 	}//end process()
     
     private void fireAdvanceTechs(StringTokenizer command, String Username){
-        
+        int numberOfTechs = 0;
+        int techType = 0;
         SPlayer player = CampaignMain.cm.getPlayer(Username);
-        int numberOfTechs = Integer.parseInt(command.nextToken());
-        int techType = UnitUtils.TECH_GREEN;
+        
+        if ( command.hasMoreElements()) {
+        	numberOfTechs = Integer.parseInt(command.nextToken());
+        } else {
+        	CampaignMain.cm.toUser("AM: " + getSyntax(), Username, true);
+        	return;
+        }
+        if (command.hasMoreElements()) {
+        	techType = UnitUtils.TECH_GREEN;
+        } else {
+        	CampaignMain.cm.toUser("AM: " + getSyntax(),  Username, true);
+        	return;
+        }
         
         if ( command.hasMoreElements())
             techType = Integer.parseInt(command.nextToken());
