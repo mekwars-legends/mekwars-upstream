@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
++ Bug 326: IP Check no done with AFR
+    Added IP check in the AttackFromReserve command
 + Bug 313: Player flags cause 0-byte-files to be written.
     Added code to replace all spaces in player flag names with
     underscores

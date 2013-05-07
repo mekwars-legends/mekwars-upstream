@@ -208,6 +208,15 @@ public class AttackFromReserveCommand implements Command {
             return;
         }
 
+        // Check that the opponent is not on the same IP
+        if (CampaignMain.cm.getBooleanConfig("IPCheck")) {
+        	String apip = CampaignMain.cm.getServer().getIP(ap.getName()).toString();
+        	String dpip = CampaignMain.cm.getServer().getIP(ap.getName()).toString();
+        	if(apip.equalsIgnoreCase(dpip)) {
+        		CampaignMain.cm.toUser("AM: You cannot attack a player on the same IP as you.", Username, true);
+        		return;
+        	}
+        }
         // Make Sure the defenders faction owns part of the target
         if (target.getInfluence().getInfluence(dp.getHouseFightingFor().getId()) < 1) {
             CampaignMain.cm.toUser(dp.getName() + " cannot defend " + target.getName(), Username, true);
