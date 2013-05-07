@@ -364,6 +364,9 @@ public class SPilot extends Pilot {
             } else {
                 setName(oldName + " Jr.");
             }
+            
+            // New pilots are getting old injuries
+            super.setHits(0);
 
             unit.setPilot(this);// refresh pilot! HACKY! CHANGE!
             return ". " + oldName + " grew weary of war and retired from active duty. The unit was passed on to " + getName() + " [" + getGunnery() + "/" + getPiloting() + ", Old BV: " + oldBV + "/New BV: " + unit.getBVForMatch() + "]";
