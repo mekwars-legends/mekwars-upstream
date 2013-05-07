@@ -1,6 +1,17 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
++ Bug 313: Player flags cause 0-byte-files to be written.
+    Added code to replace all spaces in player flag names with
+    underscores
++ Added bot.properties, princess_bot.properties, defaultQuirks.xml, and
+  defaultQuirksSchema.xsl to client-dist/mmconf.  These files should be
+  added to client distributions in the mmconf folder
++ Bug 327: Op Editor - % Win/Loss Mod Field
+  Fixed tooltips to more accurately describe the field's use
+  Please note that SOs should check if this affects their operation
+  design
++ New MegaMek 0.35.39-MW20130507-9382
 + New MegaMek 0.35.38-MW20130503-9354
 + New MegaMek 0.35.38-MW20130503-9352
 + Added client notification on wrong password

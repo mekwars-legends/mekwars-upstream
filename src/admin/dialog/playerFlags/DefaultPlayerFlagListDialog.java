@@ -122,6 +122,8 @@ public class DefaultPlayerFlagListDialog extends JDialog implements ActionListen
 			// now validate the input
 			if (input.trim().length() > 0) {
 				input = input.trim().toUpperCase();
+				// Replace all spaces with underscores - spaces are causing issues
+				input = input.replace(' ', '_');
 				if (flags.getFlagNames().contains(input) || pendingFlags.contains(input)) {
 					JOptionPane.showMessageDialog(this, "Flag already exists");
 				} else {

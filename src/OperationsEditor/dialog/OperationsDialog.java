@@ -2276,13 +2276,13 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         BaseTextField = new JTextField(5);
         attackerPanel.add(new JLabel("Win %Mod Money:", SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>double multipliers. the base amounts + bv adjustments +<br>flat adjustments are multiplied by these numbers. A Win<br>Modifier of 2.0 would double pay. A LosseModifier of .50 <br>would reduce payments by half.</html>");
+        BaseTextField.setToolTipText("<html>Double value. The base amounts + bv adjustments +<br>flat adjustments are modified upward by this percent.</html>");
         BaseTextField.setName("AttackerWinModifierCBillsPercent");
         attackerPanel.add(BaseTextField);
 
         BaseTextField = new JTextField(5);
         attackerPanel.add(new JLabel("Loss %Mod Money:", SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>double multipliers. the base amounts + bv adjustments +<br>flat adjustments are multiplied by these numbers. A Win<br>Modifier of 2.0 would double pay. A LosseModifier of .50 <br>would reduce payments by half.</html>");
+        BaseTextField.setToolTipText("<html>Double value. The base amounts + bv adjustments +<br>flat adjustments are modified downward by this percent.</html>");
         BaseTextField.setName("AttackerLossModifierCBillsPercent");
         attackerPanel.add(BaseTextField);
 
@@ -2300,13 +2300,13 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         BaseTextField = new JTextField(5);
         attackerPanel.add(new JLabel("Win %Mod Flu:", SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>double multipliers. the base amounts + bv adjustments +<br>flat adjustments are multiplied by these numbers. A Win<br>Modifier of 2.0 would double pay. A LosseModifier of .50 <br>would reduce payments by half.</html>");
+        BaseTextField.setToolTipText("<html>Double value. The base amounts + bv adjustments +<br>flat adjustments are modified upward by this percent.</html>");
         BaseTextField.setName("AttackerWinModifierInfluencePercent");
         attackerPanel.add(BaseTextField);
 
         BaseTextField = new JTextField(5);
         attackerPanel.add(new JLabel("Loss %Mod Flu:", SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>double multipliers. the base amounts + bv adjustments +<br>flat adjustments are multiplied by these numbers. A Win<br>Modifier of 2.0 would double pay. A LosseModifier of .50 <br>would reduce payments by half.</html>");
+        BaseTextField.setToolTipText("<html>Double value. The base amounts + bv adjustments +<br>flat adjustments are modified downward by this percent.</html>");
         BaseTextField.setName("AttackerLossModifierInfluencePercent");
         attackerPanel.add(BaseTextField);
 
@@ -2324,13 +2324,13 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         BaseTextField = new JTextField(5);
         attackerPanel.add(new JLabel("Win %Mod Exp:", SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>double multipliers. the base amounts + bv adjustments +<br>flat adjustments are multiplied by these numbers. A Win<br>Modifier of 2.0 would double pay. A LosseModifier of .50 <br>would reduce payments by half.</html>");
+        BaseTextField.setToolTipText("<html>Double value. The base amounts + bv adjustments +<br>flat adjustments are modified upward by this percent.</html>");
         BaseTextField.setName("AttackerWinModifierExperiencePercent");
         attackerPanel.add(BaseTextField);
 
         BaseTextField = new JTextField(5);
         attackerPanel.add(new JLabel("Loss %Mod Exp:", SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>double multipliers. the base amounts + bv adjustments +<br>flat adjustments are multiplied by these numbers. A Win<br>Modifier of 2.0 would double pay. A LosseModifier of .50 <br>would reduce payments by half.</html>");
+        BaseTextField.setToolTipText("<html>Double value. The base amounts + bv adjustments +<br>flat adjustments are modified downward by this percent.</html>");
         BaseTextField.setName("AttackerLossModifierExperiencePercent");
         attackerPanel.add(BaseTextField);
 
@@ -2392,13 +2392,13 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         BaseTextField = new JTextField(5);
         defenderPanel.add(new JLabel("Win %Mod Money:", SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>double multipliers. the base amounts + bv adjustments +<br>flat adjustments are multiplied by these numbers. A Win<br>Modifier of 2.0 would double pay. A LosseModifier of .50 <br>would reduce payments by half.</html>");
+        BaseTextField.setToolTipText("<html>Double value. The base amounts + bv adjustments +<br>flat adjustments are modified upward by this percent.</html>");
         BaseTextField.setName("DefenderWinModifierCBillsPercent");
         defenderPanel.add(BaseTextField);
 
         BaseTextField = new JTextField(5);
         defenderPanel.add(new JLabel("Loss %Mod Money:", SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>double multipliers. the base amounts + bv adjustments +<br>flat adjustments are multiplied by these numbers. A Win<br>Modifier of 2.0 would double pay. A LosseModifier of .50 <br>would reduce payments by half.</html>");
+        BaseTextField.setToolTipText("<html>Double value. The base amounts + bv adjustments +<br>flat adjustments are modified downward by this percent.</html>");
         BaseTextField.setName("DefenderLossModifierCBillsPercent");
         defenderPanel.add(BaseTextField);
 
@@ -2416,13 +2416,13 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         BaseTextField = new JTextField(5);
         defenderPanel.add(new JLabel("Win %Mod Flu:", SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>double multipliers. the base amounts + bv adjustments +<br>flat adjustments are multiplied by these numbers. A Win<br>Modifier of 2.0 would double pay. A LosseModifier of .50 <br>would reduce payments by half.</html>");
+        BaseTextField.setToolTipText("<html>Double value. The base amounts + bv adjustments +<br>flat adjustments are modified upward by this percent.</html>");
         BaseTextField.setName("DefenderWinModifierInfluencePercent");
         defenderPanel.add(BaseTextField);
 
         BaseTextField = new JTextField(5);
         defenderPanel.add(new JLabel("Loss %Mod Flu:", SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>double multipliers. the base amounts + bv adjustments +<br>flat adjustments are multiplied by these numbers. A Win<br>Modifier of 2.0 would double pay. A LosseModifier of .50 <br>would reduce payments by half.</html>");
+        BaseTextField.setToolTipText("<html>Double value. The base amounts + bv adjustments +<br>flat adjustments are modified downward by this percent.</html>");
         BaseTextField.setName("DefenderLossModifierInfluencePercent");
         defenderPanel.add(BaseTextField);
 
@@ -2440,13 +2440,13 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
 
         BaseTextField = new JTextField(5);
         defenderPanel.add(new JLabel("Win %Mod Exp:", SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>double multipliers. the base amounts + bv adjustments +<br>flat adjustments are multiplied by these numbers. A Win<br>Modifier of 2.0 would double pay. A LosseModifier of .50 <br>would reduce payments by half.</html>");
+        BaseTextField.setToolTipText("<html>Double value. The base amounts + bv adjustments +<br>flat adjustments are modified upward by this percent.</html>");
         BaseTextField.setName("DefenderWinModifierExperiencePercent");
         defenderPanel.add(BaseTextField);
 
         BaseTextField = new JTextField(5);
         defenderPanel.add(new JLabel("Loss %Mod Exp:", SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("<html>double multipliers. the base amounts + bv adjustments +<br>flat adjustments are multiplied by these numbers. A Win<br>Modifier of 2.0 would double pay. A LosseModifier of .50 <br>would reduce payments by half.</html>");
+        BaseTextField.setToolTipText("<html>Double value. The base amounts + bv adjustments +<br>flat adjustments are modified downward by this percent.</html>");
         BaseTextField.setName("DefenderLossModifierExperiencePercent");
         defenderPanel.add(BaseTextField);
 

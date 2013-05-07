@@ -912,6 +912,10 @@ client-dist/data/mechfiles/Meks.zip -text
 client-dist/data/mechfiles/OfficialUnitList.txt -text
 client-dist/data/mechfiles/UnitVerifierOptions.xml -text
 client-dist/data/mechfiles/Vehicles.zip -text
+client-dist/data/mmconf/bot.properties -text
+client-dist/data/mmconf/defaultQuirks.xml -text
+client-dist/data/mmconf/defaultQuirksSchema.xsl -text
+client-dist/data/mmconf/princess_bot.properties -text
 client-dist/data/scenarios/Example.mms -text
 client-dist/data/skins/BeOSthemepack.zip -text
 client-dist/data/skins/amarachthemepack.zip -text
