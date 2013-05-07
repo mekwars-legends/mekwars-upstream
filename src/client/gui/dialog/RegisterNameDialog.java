@@ -158,7 +158,7 @@ public final class RegisterNameDialog implements ActionListener {
 
             if (emailValid && passwordValid) {
                 if (Boolean.parseBoolean(mwclient.getserverConfigs("REQUIREEMAILFORREGISTRATION"))) {
-                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "register " + usernameField.getText() + "," + emailField1.getText() + "," + String.valueOf(passwordField1.getPassword()));
+                    mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "register " + usernameField.getText() + "," + emailField1.getText().toLowerCase() + "," + String.valueOf(passwordField1.getPassword()));
                 } else {
                     mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "register " + usernameField.getText() + "," + String.valueOf(passwordField1.getPassword()));
                 }
