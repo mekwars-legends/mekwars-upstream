@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
+R Released Server v0.3.5.22, Client v0.3.5.17
++ Bug 289: Customize Menu on Aeros shows nothing
++ createUser.php script never being called due to missing .   
 R Released Server v0.3.5.21
 + Bug 335: Retired pilots pass on wounds to their replacements
 + Bug: /firetechs fails without error message when no number or type

@@ -512,7 +512,7 @@ public class PhpBBConnector {
 	        } else {
 	        	Runtime runtime=Runtime.getRuntime();
 	        	String fs = System.getProperty("file.separator");
-	        	String[] call={"PHPBB3" + fs + "createUser.php", name, pass, email};
+	        	String[] call={"./PHPBB3" + fs + "createUser.php", name, pass, email};
 	        	try {
 					runtime.exec(call);
 				} catch (IOException e1) {

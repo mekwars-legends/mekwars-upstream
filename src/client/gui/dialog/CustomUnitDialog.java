@@ -430,6 +430,13 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
                 mcp = new ProtomechMunitionChoicePanel(m, vTypes, location);
             } else if (!(entity instanceof Aero)) {
                 mcp = new MunitionChoicePanel(m, vTypes, location);
+            } else {
+            	// Sweet.  Erroring out on Aeros, because they're specifically 
+            	// being excluded.  Why?
+            	mcp = new MunitionChoicePanel(m, vTypes, location);
+            	// NOTE: This is a straight copy for testing purposes.  If this
+            	// Works, we'll just get rid of the "if (!(entity instanceof Aero))
+            	// above
             }
 
             // get a location name
