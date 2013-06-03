@@ -29,6 +29,7 @@ import megamek.client.bot.princess.Princess;
 import megamek.client.bot.ui.AWT.BotGUI;
 import megamek.client.ui.AWT.ClientGUI;
 import megamek.common.Board;
+import megamek.common.BoardDimensions;
 import megamek.common.Coords;
 import megamek.common.Crew;
 import megamek.common.Entity;
@@ -717,6 +718,7 @@ class ClientThread extends Thread implements CloseClientListener {
      * returns them.
      */
     private ArrayList<String> scanForBoards(int boardWidth, int boardHeight, String folder) {
+        BoardDimensions dimension = new BoardDimensions(boardWidth, boardHeight);
         ArrayList<String> boards = new ArrayList<String>();
         // Board Board = client.game.getBoard();
 
@@ -740,7 +742,7 @@ class ClientThread extends Thread implements CloseClientListener {
                 path = folder + "/" + path;
             }
 
-            if (Board.boardIsSize(path, boardWidth, boardHeight)) {
+            if (Board.boardIsSize(new File(path), dimension)) {
                 tempList.addElement(path.substring(0, path.lastIndexOf(".board")));
             }
         }
