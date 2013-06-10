@@ -181,7 +181,7 @@ public final class MWClient implements IClient, GameListener {
 
     CConfig Config;
 
-    public static final String CLIENT_VERSION = "0.3.5.17"; // change this with
+    public static final String CLIENT_VERSION = "0.3.5.18"; // change this with
 
     // all client
     // changes @Torren
@@ -3524,7 +3524,7 @@ public final class MWClient implements IClient, GameListener {
         return blackMarketEquipmentList;
     }
 
-    public void updatePartsBlackMarket(String data) {
+    public void updatePartsBlackMarket(String data, int year) {
 
         StringTokenizer ST = new StringTokenizer(data, "#");
         boolean allowTechCrossOver = Boolean.parseBoolean(this.getserverConfigs("AllowCrossOverTech"));
@@ -3542,7 +3542,7 @@ public final class MWClient implements IClient, GameListener {
             bme.setCostUp(Boolean.parseBoolean(ST.nextToken()));
 
             bme.getEquipmentName();
-            bme.getTech();
+            bme.getTech(year);
 
             if (!allowTechCrossOver && !UnitUtils.isSameTech(bme.getTechLevel(), houseTechLevel)) {
                 continue;

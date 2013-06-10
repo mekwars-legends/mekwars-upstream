@@ -162,7 +162,7 @@ public class PL extends Command {
         } else if (cmd.equals("FC")) {
             player.setFactionConfigs(TokenReader.readString(st));
         } else if (cmd.equals("UPBM")) {
-            mwclient.updatePartsBlackMarket(TokenReader.readString(st));
+            mwclient.updatePartsBlackMarket(TokenReader.readString(st), Integer.parseInt(mwclient.getserverConfigs("CampaignYear")));
         } else if (cmd.equals("UPPC")) {
             mwclient.updatePlayerPartsCache(TokenReader.readString(st));
         } else if (cmd.equals("RPPC")) {

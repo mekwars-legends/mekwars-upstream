@@ -126,6 +126,8 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
     private boolean usingCrits = false;
 
     private CUnit unit;
+    
+    private boolean unitIsAero = false;
 
     /** Creates new CustomMechDialog */
     public CustomUnitDialog(MWClient mwclient, Entity entity, Pilot pilot, CUnit unit) {
@@ -137,6 +139,10 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
         this.unit = unit;
         usingCrits = Boolean.parseBoolean(mwclient.getserverConfigs("UsePartsRepair"));
 
+        if(entity instanceof Aero) {
+        	unitIsAero = true;
+        }
+        
         mmClient.game.getOptions().loadOptions();
         setTitle("Customize Unit");
 
@@ -300,7 +306,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
         int munitionsRows = 0;
         panMunitions.setLayout(new SpringLayout());
         MunitionChoicePanel mcp = null;// replaced repeatedly w/i while loop
-
+        int year = Integer.parseInt(mwclient.getserverConfigs("CampaignYear"));
         // int row = 0;
         int location = -1;// also repeatedly replaced
 
@@ -337,7 +343,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
                     continue;
                 }
 
-                boolean bTechMatch = TechConstants.isLegal(entity.getTechLevel(), atCheck.getTechLevel(), true);// (entity.getTechLevel()
+                boolean bTechMatch = TechConstants.isLegal(entity.getTechLevel(), atCheck.getTechLevel(year), true);// (entity.getTechLevel()
                 // ==
                 // atCheck.getTechLevel());
 
@@ -364,25 +370,25 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
                 // lvl1 IS units don't need to be allowed to use lvl1 ammo,
                 // because there is no special lvl1 ammo, therefore it doesn't
                 // need to show up in this display.
-                if (!bTechMatch && ((entity.getTechLevel() == TechConstants.T_IS_ADVANCED) || (entity.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL)) && (atCheck.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX)) {
+                if (!bTechMatch && ((entity.getTechLevel() == TechConstants.T_IS_ADVANCED) || (entity.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL)) && (atCheck.getTechLevel(year) <= TechConstants.T_IS_TW_NON_BOX)) {
                     bTechMatch = true;
                 }
 
                 // if is_eq_limits is unchecked allow L1 units to use L2
                 // munitions
-                if (!mmClient.game.getOptions().booleanOption("is_eq_limits") && !entity.isClan() && (atCheck.getTechLevel() == TechConstants.T_IS_TW_NON_BOX)) {
+                if (!mmClient.game.getOptions().booleanOption("is_eq_limits") && !entity.isClan() && (atCheck.getTechLevel(year) == TechConstants.T_IS_TW_NON_BOX)) {
                     bTechMatch = true;
                 }
 
                 // Possibly allow level 3 ammos, possibly not.
                 if (mmClient.game.getOptions().booleanOption("allow_advanced_ammo") && !mmClient.game.getOptions().booleanOption("is_eq_limits")) {
-                    if (entity.isClan() && ((atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL) || (atCheck.getTechLevel() == TechConstants.T_CLAN_ADVANCED) || (atCheck.getTechLevel() == TechConstants.T_CLAN_UNOFFICIAL))) {
+                    if (entity.isClan() && ((atCheck.getTechLevel(year) == TechConstants.T_CLAN_EXPERIMENTAL) || (atCheck.getTechLevel(year) == TechConstants.T_CLAN_ADVANCED) || (atCheck.getTechLevel(year) == TechConstants.T_CLAN_UNOFFICIAL))) {
                         bTechMatch = true;
                     }
-                    if (!entity.isClan() && ((atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL) || (atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED) || (atCheck.getTechLevel() == TechConstants.T_IS_UNOFFICIAL))) {
+                    if (!entity.isClan() && ((atCheck.getTechLevel(year) == TechConstants.T_IS_EXPERIMENTAL) || (atCheck.getTechLevel(year) == TechConstants.T_IS_ADVANCED) || (atCheck.getTechLevel(year) == TechConstants.T_IS_UNOFFICIAL))) {
                         bTechMatch = true;
                     }
-                } else if ((((atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL) || (atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED) || (atCheck.getTechLevel() == TechConstants.T_IS_UNOFFICIAL)) && (entity.getTechLevel() != TechConstants.T_IS_EXPERIMENTAL) && (entity.getTechLevel() != TechConstants.T_IS_ADVANCED)) || (((atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL) || (atCheck.getTechLevel() == TechConstants.T_CLAN_ADVANCED) || (atCheck.getTechLevel() == TechConstants.T_CLAN_UNOFFICIAL)) && (entity.getTechLevel() != TechConstants.T_CLAN_EXPERIMENTAL) && (entity.getTechLevel() != TechConstants.T_CLAN_ADVANCED))) {
+                } else if ((((atCheck.getTechLevel(year) == TechConstants.T_IS_EXPERIMENTAL) || (atCheck.getTechLevel(year) == TechConstants.T_IS_ADVANCED) || (atCheck.getTechLevel(year) == TechConstants.T_IS_UNOFFICIAL)) && (entity.getTechLevel() != TechConstants.T_IS_EXPERIMENTAL) && (entity.getTechLevel() != TechConstants.T_IS_ADVANCED)) || (((atCheck.getTechLevel(year) == TechConstants.T_CLAN_EXPERIMENTAL) || (atCheck.getTechLevel(year) == TechConstants.T_CLAN_ADVANCED) || (atCheck.getTechLevel(year) == TechConstants.T_CLAN_UNOFFICIAL)) && (entity.getTechLevel() != TechConstants.T_CLAN_EXPERIMENTAL) && (entity.getTechLevel() != TechConstants.T_CLAN_ADVANCED))) {
                     bTechMatch = false;
                 }
 
@@ -588,6 +594,10 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
                     }
                 } else {
                     int refillShots = at.getShots();
+                    if(m.byShot()) {
+                    	// Capital Weapon
+                    	refillShots = m.getOriginalShots();
+                    }
                     if (!curType.getInternalName().equalsIgnoreCase(at.getInternalName())) {
                         shotsLeft = 0;
                     }
@@ -652,6 +662,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
             // m_mounted.changeAmmoType(at);
 
             int totalShots = at.getShots();
+            
             boolean hotloaded = false;
 
             if (chHotLoad != null) {

@@ -1,6 +1,26 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
+R Released Server v0.3.5.24, Client v0.3.5.18
++ Bug 325: Ammo costs for Capital Weapons
++ Bug: Compile error due to missing import
++ New MM v0.35.39.MW20130606-9495
++ Added CampaignYear Server Config. 
+**************************************************************
+* NOTE TO SOs:                                               *
+*                                                            *
+* This is set by default to 3071, the default year for BT    *
+* This setting *will* affect the tech levels of equipment    *
+* Please set it to the appropriate setting for your campaign *
+*                                                            *
+* Also, please note that while I've fixed the customize      *
+* screen for Aeros, it still puts us in the position of a    *
+* player being able to customize things that are not allowed *
+* by BT rules - they should not be able to set RapidFire MGs *
+* or non-standard ammo.  I'll fix that next release, but     *
+* thought I should get this commit in.  A server rule may be *
+* in order to keep your players within the rules.            *
+**************************************************************
 R Released Server v0.3.5.22, Client v0.3.5.17
 + Bug 289: Customize Menu on Aeros shows nothing
 + createUser.php script never being called due to missing .   

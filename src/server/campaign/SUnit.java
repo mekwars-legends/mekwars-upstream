@@ -172,6 +172,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
     public static void checkAmmoForUnit(SUnit u, SHouse h) {
 
         Entity en = u.getEntity();
+        int year = CampaignMain.cm.getIntegerConfig("CampaignYear");
 
         boolean wasChanged = false;
 
@@ -209,9 +210,13 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
                 while (allTypes.hasMoreElements() && !defaultFound) {
                     AmmoType currType = allTypes.nextElement();
 
-                    if ((currType.getTechLevel() <= en.getTechLevel()) && (currType.getMunitionType() == AmmoType.M_STANDARD) && (currType.getRackSize() == at.getRackSize())) {
+                    if ((currType.getTechLevel(year) <= en.getTechLevel()) && (currType.getMunitionType() == AmmoType.M_STANDARD) && (currType.getRackSize() == at.getRackSize())) {
                         mAmmo.changeAmmoType(currType);
-                        mAmmo.setShotsLeft(at.getShots());
+                        if(mAmmo.byShot()) {
+                        	mAmmo.setShotsLeft(mAmmo.getOriginalShots());
+                        } else {
+                        	mAmmo.setShotsLeft(at.getShots());
+                        }
                         defaultFound = true;
                         wasChanged = true;
                     }

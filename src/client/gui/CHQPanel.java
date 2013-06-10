@@ -2614,6 +2614,7 @@ public class CHQPanel extends JPanel {
             else if (command.equalsIgnoreCase("EUR")) {
                 int row = Integer.parseInt(st.nextToken());
                 int col = Integer.parseInt(st.nextToken());
+                int year = Integer.parseInt(mwclient.getserverConfigs("CampaignYear"));
                 CUnit mek = MekTable.getMekAt(row, col);
                 int greenTechCost = 0;
                 int regTechCost = 0;
@@ -2622,7 +2623,7 @@ public class CHQPanel extends JPanel {
 
                 double repairCost = 0;
                 if (Boolean.parseBoolean(mwclient.getserverConfigs("UseRealRepairCosts"))) {
-                    repairCost = UnitUtils.getTotalDamagedPartCost(mek.getEntity());
+                    repairCost = UnitUtils.getTotalDamagedPartCost(mek.getEntity(), year);
                     repairCost *= Double.parseDouble(mwclient.getserverConfigs("RealRepairCostMod"));
                     greenTechCost = mwclient.getTechLaborCosts(mek.getEntity(), UnitUtils.TECH_GREEN);
                     regTechCost = mwclient.getTechLaborCosts(mek.getEntity(), UnitUtils.TECH_REG);

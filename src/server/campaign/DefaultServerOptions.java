@@ -29,6 +29,8 @@ public class DefaultServerOptions {
 
     protected void createDefaults() {
         defaults = new Properties();
+        
+        defaults.setProperty("CampaignYear", "3071"); // Base year of campaign
 
         defaults.setProperty("TickTime", "90000000"); // Had to change this, as it's measured in milliseconds now
         defaults.setProperty("SliceTime", "18000000"); // Had to change this, as it's measured in milliseconds now

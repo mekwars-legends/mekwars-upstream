@@ -47,6 +47,12 @@ public class MiscOptionsPanel extends JPanel {
 
         // set up spring 1
         baseTextField = new JTextField(5);
+        miscSpring1.add(new JLabel("Campaign Year:", SwingConstants.TRAILING));
+        baseTextField.setToolTipText("Year of Campaign.  This will modify the TechLevel ratings in MM");
+        baseTextField.setName("CampaignYear");
+        miscSpring1.add(baseTextField);
+        
+        baseTextField = new JTextField(5);
         miscSpring1.add(new JLabel("Tick Time:", SwingConstants.TRAILING));
         baseTextField.setToolTipText("Length of Ticks, in ms");
         baseTextField.setName("TickTime");

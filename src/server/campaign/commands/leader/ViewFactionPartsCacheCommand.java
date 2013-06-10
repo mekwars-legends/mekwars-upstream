@@ -49,7 +49,9 @@ public class ViewFactionPartsCacheCommand implements Command {
                 return;
             }
         }
-
+        
+        int year = CampaignMain.cm.getIntegerConfig("CampaignYear");
+        
         SPlayer player = CampaignMain.cm.getPlayer(Username);
         SHouse house = player.getMyHouse();
         
@@ -59,7 +61,7 @@ public class ViewFactionPartsCacheCommand implements Command {
         if ( house == null )
             return;
         
-        String results = "SM|"+house.getUnitParts().tableizeComponents();
+        String results = "SM|"+house.getUnitParts().tableizeComponents(year);
         
         CampaignMain.cm.toUser(results, Username,false);
     }

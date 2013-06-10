@@ -22,6 +22,8 @@ import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import server.campaign.CampaignMain;
+
 import megamek.common.CriticalSlot;
 import megamek.common.Entity;
 import megamek.common.EquipmentType;
@@ -34,8 +36,8 @@ public class UnitComponents{
 
     Hashtable<String, Integer> components = new Hashtable<String, Integer>();
 
-    public String tableizeComponents() {
-        return tableizeComponents(components);
+    public String tableizeComponents(int year) {
+        return tableizeComponents(components, year);
     }
 
     public static Comparator<? super Object> stringComparator() {
@@ -48,7 +50,7 @@ public class UnitComponents{
         };
     }
 
-    public String tableizeComponents(Hashtable<String, Integer>parts) {
+    public String tableizeComponents(Hashtable<String, Integer>parts, int year) {
 
         StringBuffer result = new StringBuffer();
 
@@ -73,7 +75,7 @@ public class UnitComponents{
             result.append("</td><td>");
             result.append(parts.get(keys.get(key)));
             result.append("</td><td>");
-            result.append(UnitComponents.getTech(keys.get(key)));
+            result.append(UnitComponents.getTech(keys.get(key), year));
             if ( (pos % 2) == 1 ) {
                 result.append("</td></tr>");
                 result.append("<tr><td>");
@@ -449,9 +451,9 @@ public class UnitComponents{
 
     }
 
-    public static String getTech(String crit) {
+    public static String getTech(String crit, int year) {
         EquipmentType eq = EquipmentType.get(crit);
-
+        
 
         //Armor,IS,Engines,Actuators,Cockpit,Sensors anything that doesn't
         //make a normal object in MM
@@ -460,11 +462,11 @@ public class UnitComponents{
             return "All";
         }else {
 
-            if ( UnitUtils.isClanEQ(eq) ) {
+            if ( UnitUtils.isClanEQ(eq, year) ) {
                 return "Clan";
             }
-            if ( (eq.getTechLevel() == TechConstants.T_ALL) ||
-                    (eq.getTechLevel() <= TechConstants.T_TW_ALL) ) {
+            if ( (eq.getTechLevel(year) == TechConstants.T_ALL) ||
+                    (eq.getTechLevel(year) <= TechConstants.T_TW_ALL) ) {
                 return "All";
             }
 

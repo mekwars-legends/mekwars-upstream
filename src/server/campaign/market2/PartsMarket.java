@@ -52,7 +52,7 @@ public class PartsMarket {
 	 */
 	public synchronized void tick() {
 		
-
+		int year = CampaignMain.cm.getIntegerConfig("CampaignYear");
 		for ( String key : CampaignMain.cm.getBlackMarketEquipmentTable().keySet() ) {
 			BMEquipment eq = this.equipmentList.get(key);
 			BMEquipment tickList = this.lastTickList.get(key);
@@ -77,9 +77,9 @@ public class PartsMarket {
 					eq.setCost(Math.max(masterEq.getMinCost(), CampaignMain.cm.getR().nextDouble()*masterEq.getMaxCost()));
 					eq.setCostUp(false);
 					eq.getEquipmentName();
-					eq.getTech();
+					eq.getTech(year);
 					
-					this.lastTickList.put(key, eq.clone());
+					this.lastTickList.put(key, eq.clone(year));
 					this.equipmentList.put(key,eq);
 					continue;
 				}
@@ -118,8 +118,8 @@ public class PartsMarket {
 			}
 			eq.setAmount(Math.max(eq.getAmount(), masterEq.getMinProduction()));
 			eq.getEquipmentName();
-			eq.getTech();
-			this.lastTickList.put(key, eq.clone());
+			eq.getTech(year);
+			this.lastTickList.put(key, eq.clone(year));
 			this.equipmentList.put(key,eq);
 			
 		}
@@ -201,7 +201,7 @@ public class PartsMarket {
 	}
 
 	private void loadParts(){
-		
+		int year = CampaignMain.cm.getIntegerConfig("CampaignYear");
 		try{
 	        File bmFile = new File("./data/partsblackmarket.dat");
 	        
@@ -222,9 +222,9 @@ public class PartsMarket {
 					bme.setCost(Double.parseDouble(data.nextToken()));
 					bme.setAmount(Integer.parseInt(data.nextToken()));
 					bme.getEquipmentName();
-					bme.getTech();
+					bme.getTech(year);
 					this.equipmentList.put(bme.getEquipmentInternalName(),bme);
-					this.lastTickList.put(bme.getEquipmentInternalName(),bme.clone());
+					this.lastTickList.put(bme.getEquipmentInternalName(),bme.clone(year));
 				}
 			}
 			

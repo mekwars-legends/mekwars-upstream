@@ -44,6 +44,7 @@ import megamek.common.TechConstants;
 import megamek.common.WeaponType;
 import client.MWClient;
 
+import common.CampaignData;
 import common.Equipment;
 import common.util.SpringLayoutHelper;
 import common.util.UnitUtils;
@@ -74,12 +75,12 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
     private JScrollPane MasterPanel = new JScrollPane();
 
     private int displayType = 0;
-
+    
     // Text boxes
     JTabbedPane ConfigPane = new JTabbedPane();
 
     public ComponentDisplayDialog(MWClient c, int type) {
-
+    	
         super(c.getMainFrame(), "Component Display Dialog", true);
 
         // save the client
@@ -88,6 +89,10 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
         // stored values.
         displayType = type;
 
+        CampaignData.mwlog.errLog("Year: " + mwclient.getserverConfigs("CampaignYear"));
+        int year = Integer.parseInt(mwclient.getserverConfigs("CampaignYear"));
+
+        
         // Set the tooltips and actions for dialouge buttons
         okayButton.setActionCommand(okayCommand);
         cancelButton.setActionCommand(cancelCommand);
@@ -105,16 +110,16 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
         // CREATE THE PANELS
 
         if (displayType == WEAPON_TYPE) {
-            loadWeaponPanel();
+            loadWeaponPanel(year);
             windowName += " (Weapons)";
         } else if (displayType == AMMO_TYPE) {
-            loadAmmoPanel();
+            loadAmmoPanel(year);
             windowName += " (Ammo)";
         } else if (displayType == AMMO_COSTS_TYPE) {
-            loadAmmoCostPanel();
+            loadAmmoCostPanel(year);
             windowName += " (Ammo Costs)";
         } else {
-            loadMiscPanel();
+            loadMiscPanel(year);
             windowName += " (Misc)";
         }
 
@@ -171,43 +176,43 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
         }
     }
 
-    private void loadWeaponPanel() {
-        loadWeaponPanelType(TechConstants.T_INTRO_BOXSET);
-        loadWeaponPanelType(TechConstants.T_IS_TW_NON_BOX);
-        loadWeaponPanelType(TechConstants.T_IS_ADVANCED);
-        loadWeaponPanelType(TechConstants.T_IS_EXPERIMENTAL);
-        loadWeaponPanelType(TechConstants.T_IS_UNOFFICIAL);
-        loadWeaponPanelType(TechConstants.T_CLAN_TW);
-        loadWeaponPanelType(TechConstants.T_CLAN_ADVANCED);
-        loadWeaponPanelType(TechConstants.T_CLAN_EXPERIMENTAL);
-        loadWeaponPanelType(TechConstants.T_CLAN_UNOFFICIAL);
+    private void loadWeaponPanel(int year) {
+        loadWeaponPanelType(TechConstants.T_INTRO_BOXSET, year);
+        loadWeaponPanelType(TechConstants.T_IS_TW_NON_BOX, year);
+        loadWeaponPanelType(TechConstants.T_IS_ADVANCED, year);
+        loadWeaponPanelType(TechConstants.T_IS_EXPERIMENTAL, year);
+        loadWeaponPanelType(TechConstants.T_IS_UNOFFICIAL, year);
+        loadWeaponPanelType(TechConstants.T_CLAN_TW, year);
+        loadWeaponPanelType(TechConstants.T_CLAN_ADVANCED, year);
+        loadWeaponPanelType(TechConstants.T_CLAN_EXPERIMENTAL, year);
+        loadWeaponPanelType(TechConstants.T_CLAN_UNOFFICIAL, year);
     }
 
-    private void loadAmmoPanel() {
-        loadAmmoPanelType(TechConstants.T_INTRO_BOXSET);
-        loadAmmoPanelType(TechConstants.T_IS_TW_NON_BOX);
-        loadAmmoPanelType(TechConstants.T_IS_ADVANCED);
-        loadAmmoPanelType(TechConstants.T_IS_EXPERIMENTAL);
-        loadAmmoPanelType(TechConstants.T_IS_UNOFFICIAL);
-        loadAmmoPanelType(TechConstants.T_CLAN_TW);
-        loadAmmoPanelType(TechConstants.T_CLAN_ADVANCED);
-        loadAmmoPanelType(TechConstants.T_CLAN_EXPERIMENTAL);
-        loadAmmoPanelType(TechConstants.T_CLAN_UNOFFICIAL);
+    private void loadAmmoPanel(int year) {
+        loadAmmoPanelType(TechConstants.T_INTRO_BOXSET, year);
+        loadAmmoPanelType(TechConstants.T_IS_TW_NON_BOX, year);
+        loadAmmoPanelType(TechConstants.T_IS_ADVANCED, year);
+        loadAmmoPanelType(TechConstants.T_IS_EXPERIMENTAL, year);
+        loadAmmoPanelType(TechConstants.T_IS_UNOFFICIAL, year);
+        loadAmmoPanelType(TechConstants.T_CLAN_TW, year);
+        loadAmmoPanelType(TechConstants.T_CLAN_ADVANCED, year);
+        loadAmmoPanelType(TechConstants.T_CLAN_EXPERIMENTAL, year);
+        loadAmmoPanelType(TechConstants.T_CLAN_UNOFFICIAL, year);
     }
 
-    private void loadAmmoCostPanel() {
-        loadAmmoCostPanelType(TechConstants.T_INTRO_BOXSET);
-        loadAmmoCostPanelType(TechConstants.T_IS_TW_NON_BOX);
-        loadAmmoCostPanelType(TechConstants.T_IS_ADVANCED);
-        loadAmmoCostPanelType(TechConstants.T_IS_EXPERIMENTAL);
-        loadAmmoCostPanelType(TechConstants.T_IS_UNOFFICIAL);
-        loadAmmoCostPanelType(TechConstants.T_CLAN_TW);
-        loadAmmoCostPanelType(TechConstants.T_CLAN_ADVANCED);
-        loadAmmoCostPanelType(TechConstants.T_CLAN_EXPERIMENTAL);
-        loadAmmoCostPanelType(TechConstants.T_CLAN_UNOFFICIAL);
+    private void loadAmmoCostPanel(int year) {
+        loadAmmoCostPanelType(TechConstants.T_INTRO_BOXSET, year);
+        loadAmmoCostPanelType(TechConstants.T_IS_TW_NON_BOX, year);
+        loadAmmoCostPanelType(TechConstants.T_IS_ADVANCED, year);
+        loadAmmoCostPanelType(TechConstants.T_IS_EXPERIMENTAL, year);
+        loadAmmoCostPanelType(TechConstants.T_IS_UNOFFICIAL, year);
+        loadAmmoCostPanelType(TechConstants.T_CLAN_TW, year);
+        loadAmmoCostPanelType(TechConstants.T_CLAN_ADVANCED, year);
+        loadAmmoCostPanelType(TechConstants.T_CLAN_EXPERIMENTAL, year);
+        loadAmmoCostPanelType(TechConstants.T_CLAN_UNOFFICIAL, year);
     }
 
-    private void loadAmmoPanelType(int tech) {
+    private void loadAmmoPanelType(int tech, int year) {
         Enumeration<EquipmentType> list = EquipmentType.getAllTypes();
         TreeMap<String, AmmoType> equipmentSort = new TreeMap<String, AmmoType>();
 
@@ -238,10 +243,10 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
                 continue;
             }
 
-            if (((AmmoType) eq).getTechLevel() != tech) {
+            if (((AmmoType) eq).getTechLevel(year) != tech) {
                 // This is done for Unknown and all tech level. Make them all IS
                 // Level 1
-                if (tech == TechConstants.T_IS_TW_NON_BOX && ((AmmoType) eq).getTechLevel() > tech) {
+                if (tech == TechConstants.T_IS_TW_NON_BOX && ((AmmoType) eq).getTechLevel(year) > tech) {
                     continue;
                 }
                 if (tech != TechConstants.T_IS_TW_NON_BOX) {
@@ -314,7 +319,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 
     }
 
-    private void loadAmmoCostPanelType(int tech) {
+    private void loadAmmoCostPanelType(int tech, int year) {
         Enumeration<EquipmentType> list = EquipmentType.getAllTypes();
 
         TreeMap<String, AmmoType> equipmentSort = new TreeMap<String, AmmoType>();
@@ -344,10 +349,10 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
                 continue;
             }
 
-            if (((AmmoType) eq).getTechLevel() != tech) {
+            if (((AmmoType) eq).getTechLevel(year) != tech) {
                 // This is done for Unknown and all tech level. Make them all IS
                 // Level 1
-                if (tech == TechConstants.T_IS_TW_NON_BOX && ((AmmoType) eq).getTechLevel() > tech) {
+                if (tech == TechConstants.T_IS_TW_NON_BOX && ((AmmoType) eq).getTechLevel(year) > tech) {
                     continue;
                 }
                 if (tech != TechConstants.T_IS_TW_NON_BOX) {
@@ -400,7 +405,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 
     }
 
-    private void loadWeaponPanelType(int tech) {
+    private void loadWeaponPanelType(int tech, int year) {
         Enumeration<EquipmentType> list = EquipmentType.getAllTypes();
         TreeMap<String, WeaponType> equipmentSort = new TreeMap<String, WeaponType>();
 
@@ -430,10 +435,10 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
                 continue;
             }
 
-            if (((WeaponType) eq).getTechLevel() != tech) {
+            if (((WeaponType) eq).getTechLevel(year) != tech) {
                 // This is done for Unknown and all tech level. Make them all IS
                 // Level 1
-                if (tech == TechConstants.T_IS_TW_NON_BOX && ((WeaponType) eq).getTechLevel() > tech) {
+                if (tech == TechConstants.T_IS_TW_NON_BOX && ((WeaponType) eq).getTechLevel(year) > tech) {
                     continue;
                 }
                 if (tech != TechConstants.T_IS_TW_NON_BOX) {
@@ -507,7 +512,7 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 
     }
 
-    private void loadMiscPanelType(int tech) {
+    private void loadMiscPanelType(int tech, int year) {
         Enumeration<EquipmentType> list = EquipmentType.getAllTypes();
         TreeMap<String, MiscType> equipmentSort = new TreeMap<String, MiscType>();
 
@@ -721,10 +726,10 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
                     continue;
                 }
 
-                if (((MiscType) eq).getTechLevel() != tech) {
+                if (((MiscType) eq).getTechLevel(year) != tech) {
                     // This is done for Unknown and all tech level. Make them
                     // all IS Level 1
-                    if (tech == TechConstants.T_IS_TW_NON_BOX && ((MiscType) eq).getTechLevel() > tech) {
+                    if (tech == TechConstants.T_IS_TW_NON_BOX && ((MiscType) eq).getTechLevel(year) > tech) {
                         continue;
                     }
                     if (tech != TechConstants.T_IS_TW_NON_BOX) {
@@ -862,17 +867,17 @@ public final class ComponentDisplayDialog extends JDialog implements ActionListe
 
     }
 
-    private void loadMiscPanel() {
-        loadMiscPanelType(TechConstants.T_INTRO_BOXSET);
-        loadMiscPanelType(TechConstants.T_IS_TW_NON_BOX);
-        loadMiscPanelType(TechConstants.T_IS_ADVANCED);
-        loadMiscPanelType(TechConstants.T_IS_EXPERIMENTAL);
-        loadMiscPanelType(TechConstants.T_IS_UNOFFICIAL);
-        loadMiscPanelType(TechConstants.T_CLAN_TW);
-        loadMiscPanelType(TechConstants.T_CLAN_ADVANCED);
-        loadMiscPanelType(TechConstants.T_CLAN_EXPERIMENTAL);
-        loadMiscPanelType(TechConstants.T_CLAN_UNOFFICIAL);
-        loadMiscPanelType(TechConstants.T_ALL);
+    private void loadMiscPanel(int year) {
+        loadMiscPanelType(TechConstants.T_INTRO_BOXSET, year);
+        loadMiscPanelType(TechConstants.T_IS_TW_NON_BOX, year);
+        loadMiscPanelType(TechConstants.T_IS_ADVANCED, year);
+        loadMiscPanelType(TechConstants.T_IS_EXPERIMENTAL, year);
+        loadMiscPanelType(TechConstants.T_IS_UNOFFICIAL, year);
+        loadMiscPanelType(TechConstants.T_CLAN_TW, year);
+        loadMiscPanelType(TechConstants.T_CLAN_ADVANCED, year);
+        loadMiscPanelType(TechConstants.T_CLAN_EXPERIMENTAL, year);
+        loadMiscPanelType(TechConstants.T_CLAN_UNOFFICIAL, year);
+        loadMiscPanelType(TechConstants.T_ALL, year);
     }
 
     /**

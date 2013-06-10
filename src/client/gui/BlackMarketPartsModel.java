@@ -138,7 +138,7 @@ public class BlackMarketPartsModel extends AbstractTableModel {
             DecimalFormat df = new DecimalFormat("#,###,###,##0.00");
             return df.format(bme.getCost());
         case TECH:
-            return bme.getTech();
+            return bme.getTech(Integer.parseInt(mwclient.getserverConfigs("CampaignYear")));
         case AMOUNT:
             if (mwclient.getPlayer().getPartsCache().getPartsCritCount(bme.getEquipmentInternalName()) < 1) {
                 return bme.getAmount();
@@ -167,7 +167,7 @@ public class BlackMarketPartsModel extends AbstractTableModel {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component d = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
+            int year = Integer.parseInt(mwclient.getserverConfigs("CampaignYear"));
             JLabel c = new JLabel(); // use a new label for everything (should
                                      // be made better later)
             c.setOpaque(true);
@@ -180,7 +180,7 @@ public class BlackMarketPartsModel extends AbstractTableModel {
             c.setToolTipText("");
 
             BMEquipment bme = components.get(table.getModel().getValueAt(row, BlackMarketPartsModel.INTERNALPART));
-            String description = "<html><body>" + bme.getEquipmentName() + " C:" + bme.getCost() + " A:" + bme.getAmount() + " T:" + bme.getTech() + "<br>";
+            String description = "<html><body>" + bme.getEquipmentName() + " C:" + bme.getCost() + " A:" + bme.getAmount() + " T:" + bme.getTech(year) + "<br>";
 
             description += "</body></html>";
             c.setToolTipText(description);

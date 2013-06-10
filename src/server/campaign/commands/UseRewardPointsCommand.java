@@ -332,8 +332,13 @@ public class UseRewardPointsCommand implements Command {
             }
             
             //Fill up ammo.
-            for (Mounted weap : entity.getAmmo())
-                weap.setShotsLeft(((AmmoType)weap.getType()).getShots());
+            for (Mounted weap : entity.getAmmo()) {
+            	if (weap.byShot()) {
+            		weap.setShotsLeft(weap.getOriginalShots());
+            	}else {
+            		weap.setShotsLeft(((AmmoType)weap.getType()).getShots());
+            	}
+            }
 
             CampaignMain.cm.toUser("AM:Unit #" + unitID + " "+unit.getModelName()+" is now fully repaired.", Username, true);
             CampaignMain.cm.toUser("PL|UU|"+unit.getId()+"|"+unit.toString(true),Username,false);

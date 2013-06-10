@@ -1353,6 +1353,9 @@ public class ShortOperation implements Comparable<Object> {
             // This will allow for closer BV's between MW and MM
             gameOptions.append("|no_force_size_mod|");
             gameOptions.append(!CampaignMain.cm.getBooleanConfig("UseOperationsRule"));
+            gameOptions.append("|year|");
+            gameOptions.append(CampaignMain.cm.getIntegerConfig("CampaignYear"));
+            
 
             /*
              * Stop all repairs on units

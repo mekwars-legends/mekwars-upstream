@@ -52,6 +52,8 @@ public class AdminGetUnitComponentsCommand implements Command {
 			return;
 		}
 		
+		int year = CampaignMain.cm.getIntegerConfig("CampaignYear");
+		
 		try {
 			String targetName = command.nextToken();
 			String option = command.nextToken();
@@ -66,7 +68,7 @@ public class AdminGetUnitComponentsCommand implements Command {
 			
 			if ( option.equalsIgnoreCase("DisplayParts") ) {
 				result.append("You have the current parts stockpiled<br>");
-				result.append(target.getUnitParts().tableizeComponents());
+				result.append(target.getUnitParts().tableizeComponents(year));
 				
 				CampaignMain.cm.toUser(result.toString(), Username);
 			} else if ( option.equalsIgnoreCase("addParts")) {

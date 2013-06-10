@@ -519,6 +519,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
     }
 
     private void populateWeaponsAndEquipmentChoices() {
+    	int year = Integer.parseInt(mwclient.getserverConfigs("CampaignYear"));
         m_cWeapons1.removeAllItems();
         m_cWeapons2.removeAllItems();
         m_cEquipment.removeAllItems();
@@ -529,14 +530,14 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
         int nUnitType = chUnitType.getSelectedIndex();
         for (Enumeration<EquipmentType> e = EquipmentType.getAllTypes(); e.hasMoreElements();) {
             EquipmentType et = e.nextElement();
-            if ((et instanceof WeaponType) && ((et.getTechLevel() == nType) || (nType == TechConstants.T_ALL) || ((nType == TechConstants.T_IS_TW_ALL) && ((et.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) || (et.getTechLevel() == TechConstants.T_IS_ADVANCED) || (et.getTechLevel() == TechConstants.T_CLAN_ADVANCED))) || (((nType == TechConstants.T_IS_TW_ALL) || (nType == TechConstants.T_IS_ADVANCED)) && ((et.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) || (et.getTechLevel() == TechConstants.T_IS_ADVANCED))))) {
+            if ((et instanceof WeaponType) && ((et.getTechLevel(year) == nType) || (nType == TechConstants.T_ALL) || ((nType == TechConstants.T_IS_TW_ALL) && ((et.getTechLevel(year) <= TechConstants.T_IS_TW_NON_BOX) || (et.getTechLevel(year) == TechConstants.T_IS_ADVANCED) || (et.getTechLevel(year) == TechConstants.T_CLAN_ADVANCED))) || (((nType == TechConstants.T_IS_TW_ALL) || (nType == TechConstants.T_IS_ADVANCED)) && ((et.getTechLevel(year) <= TechConstants.T_IS_TW_NON_BOX) || (et.getTechLevel(year) == TechConstants.T_IS_ADVANCED))))) {
                 if (!(nUnitType == UnitType.SIZE) && ((UnitType.getTypeName(nUnitType).equals("Mek") || UnitType.getTypeName(nUnitType).equals("Tank")) && (et.hasFlag(WeaponType.F_INFANTRY) || et.hasFlag(WeaponType.F_INFANTRY_ONLY)))) {
                     continue;
                 }
                 m_cWeapons1.addItem(et.getName());
                 m_cWeapons2.addItem(et.getName());
             }
-            if ((et instanceof MiscType) && ((et.getTechLevel() == nType) || (nType == TechConstants.T_ALL) || ((nType == TechConstants.T_TW_ALL) && ((et.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) || (et.getTechLevel() == TechConstants.T_IS_ADVANCED) || (et.getTechLevel() == TechConstants.T_CLAN_ADVANCED))) || (((nType == TechConstants.T_IS_TW_ALL) || (nType == TechConstants.T_IS_ADVANCED)) && ((et.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) || (et.getTechLevel() == TechConstants.T_IS_ADVANCED))))) {
+            if ((et instanceof MiscType) && ((et.getTechLevel(year) == nType) || (nType == TechConstants.T_ALL) || ((nType == TechConstants.T_TW_ALL) && ((et.getTechLevel(year) <= TechConstants.T_IS_TW_NON_BOX) || (et.getTechLevel(year) == TechConstants.T_IS_ADVANCED) || (et.getTechLevel(year) == TechConstants.T_CLAN_ADVANCED))) || (((nType == TechConstants.T_IS_TW_ALL) || (nType == TechConstants.T_IS_ADVANCED)) && ((et.getTechLevel(year) <= TechConstants.T_IS_TW_NON_BOX) || (et.getTechLevel(year) == TechConstants.T_IS_ADVANCED))))) {
                 m_cEquipment.addItem(et.getName());
             }
         }

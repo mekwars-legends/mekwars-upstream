@@ -129,6 +129,10 @@ public class SetUnitAmmoByCritCommand implements Command {
             if (unit.getEntity() instanceof BattleArmor) {
                 refillShots = getWeaponRefillShots(unit, mWeapon);
             }
+            
+            if (mWeapon.byShot()) {
+            	refillShots = mWeapon.getOriginalShots();
+            }
 
             int shotsLeft = mWeapon.getUsableShotsLeft();
             if (!currAmmo.getInternalName().equalsIgnoreCase(at.getInternalName())) {
@@ -139,6 +143,9 @@ public class SetUnitAmmoByCritCommand implements Command {
             if (shotsLeft == refillShots) {
                 return;
             }
+
+            int fullMagazine = refillShots;
+            
             if (mWeapon.getLocation() == Entity.LOC_NONE) {
                 refillShots = 1;
             }// Parital Reloads
@@ -148,6 +155,8 @@ public class SetUnitAmmoByCritCommand implements Command {
                 ;
             }
 
+
+            
             int loc = 0;
             if (mWeapon.getLocation() == Entity.LOC_NONE) {
                 // oneshot weapons don't have a location of their own
@@ -159,6 +168,7 @@ public class SetUnitAmmoByCritCommand implements Command {
 
             if (usingCrits) {
                 ammoCharge = 0;
+                
                 // unload all of old ammo
                 p.getUnitParts().add(currAmmo.getInternalName(), mWeapon.getUsableShotsLeft());
                 int newAmmoAmount = p.getPartsAmount(at.getInternalName());
@@ -171,7 +181,7 @@ public class SetUnitAmmoByCritCommand implements Command {
                 if (newAmmoAmount == 0) {
                     String result = "AM:After unloading " + currAmmo.getDesc() + "(" + en.getLocationAbbr(loc) + ") from unit #" + unit.getId() + " " + unit.getModelName() + " your techs realize you do not have any " + at.getDesc() + " to reload with!";
                     CampaignMain.cm.toUser(result, Username);
-                } else if (newAmmoAmount < at.getShots()) {
+                } else if (newAmmoAmount < fullMagazine) {
                     String result = "AM:After unloading " + currAmmo.getDesc() + "(" + en.getLocationAbbr(loc) + ") from unit #" + unit.getId() + " " + unit.getModelName() + " your techs realize you only had " + newAmmoAmount + " rounds of " + at.getDesc() + " to reload with!";
                     CampaignMain.cm.toUser(result, Username);
                 } else {
@@ -194,8 +204,8 @@ public class SetUnitAmmoByCritCommand implements Command {
 
             // check the confirmation
             if (!strConfirm.equals("CONFIRM")) {
-                String result = "AM:Quartermaster command will charge you " + CampaignMain.cm.moneyOrFluMessage(true, false, cost) + " to change the load out on #" + unit.getId() + " " + unit.getModelName() + "<br>from " + currAmmo.getDesc() + "(" + en.getLocationAbbr(loc) + " " + mWeapon.getUsableShotsLeft() + "/" + currAmmo.getShots() + ") to " + at.getDesc() + "(" + refillShots + "/" + refillShots + ").";
-                result += "AM:<br><a href=\"MEKWARS/c setunitammobyCrit#" + unitid + "#" + weaponLocation + "#" + weaponSlot + "#" + weaponType + "#" + ammoName + "#" + at.getShots() + "#CONFIRM";
+                String result = "AM:Quartermaster command will charge you " + CampaignMain.cm.moneyOrFluMessage(true, false, cost) + " to change the load out on #" + unit.getId() + " " + unit.getModelName() + "<br>from " + currAmmo.getDesc() + "(" + en.getLocationAbbr(loc) + " " + mWeapon.getUsableShotsLeft() + "/" + fullMagazine + ") to " + at.getDesc() + "(" + refillShots + "/" + refillShots + ").";
+                result += "AM:<br><a href=\"MEKWARS/c setunitammobyCrit#" + unitid + "#" + weaponLocation + "#" + weaponSlot + "#" + weaponType + "#" + ammoName + "#" + fullMagazine + "#CONFIRM";
                 result += "AM:\">Click here to change the ammo.</a>";
                 CampaignMain.cm.toUser(result, Username, true);
                 return;

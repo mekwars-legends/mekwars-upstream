@@ -2139,8 +2139,9 @@ public class CMainFrame extends JFrame {
     public void jMenuCampaignPartsCache_actionPerformed() {
         CPlayer p = mwclient.getPlayer();
         StringBuilder result = new StringBuilder();
+        int year = Integer.parseInt(mwclient.getserverConfigs("CampaignYear"));
 
-        result.append(p.getPartsCache().tableizeComponents());
+        result.append(p.getPartsCache().tableizeComponents(year));
         mwclient.doParseDataInput("SM|" + result.toString());
     }
 

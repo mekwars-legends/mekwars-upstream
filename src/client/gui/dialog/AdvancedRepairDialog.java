@@ -63,6 +63,7 @@ import megamek.common.TechConstants;
 import client.MWClient;
 import client.campaign.CUnit;
 
+import common.CampaignData;
 import common.House;
 import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
@@ -123,6 +124,8 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
     private JComboBox techComboBox = new JComboBox();
 
     JTabbedPane ConfigPane = new JTabbedPane(SwingConstants.TOP);
+    
+    int year = Integer.parseInt(mwclient.getserverConfigs("CampaignYear"));
 
     public AdvancedRepairDialog(MWClient c, int unitID, boolean salvage) {
         CUnit pUnit = c.getPlayer().getUnit(unitID);
@@ -358,6 +361,7 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
                         mmClient.game.getOptions().loadOptions();
 
                         CriticalSlot cs = unit.getCritical(critLocation, critSlot);
+                        Mounted m = cs.getMount();
                         AmmoType at = (AmmoType) unit.getEquipmentType(cs);
 
                         Vector<AmmoType> vAllTypes = AmmoType.getMunitionsFor(at.getAmmoType());
@@ -375,7 +379,7 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
 
                         for (int x = 0, n = vAllTypes.size(); x < n; x++) {
                             AmmoType atCheck = vAllTypes.elementAt(x);
-                            boolean bTechMatch = TechConstants.isLegal(unit.getTechLevel(), atCheck.getTechLevel(), unit.isMixedTech());// (unit.getTechLevel()
+                            boolean bTechMatch = TechConstants.isLegal(unit.getTechLevel(), atCheck.getTechLevel(year), unit.isMixedTech());// (unit.getTechLevel()
                                                                                                                     // ==
                                                                                                                     // atCheck.getTechLevel());
 
@@ -393,27 +397,27 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
                             // because there is no special lvl1 ammo, therefore
                             // it doesn't
                             // need to show up in this display.
-                            if (!bTechMatch && (unit.getTechLevel() == TechConstants.T_IS_ADVANCED) && (atCheck.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX)) {
+                            if (!bTechMatch && (unit.getTechLevel() == TechConstants.T_IS_ADVANCED) && (atCheck.getTechLevel(year) <= TechConstants.T_IS_TW_NON_BOX)) {
                                 bTechMatch = true;
                             }
 
                             // if is_eq_limits is unchecked allow L1 units to
                             // use L2 munitions
-                            if (!mmClient.game.getOptions().booleanOption("is_eq_limits") && (unit.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) && (atCheck.getTechLevel() == TechConstants.T_IS_ADVANCED)) {
+                            if (!mmClient.game.getOptions().booleanOption("is_eq_limits") && (unit.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) && (atCheck.getTechLevel(year) == TechConstants.T_IS_ADVANCED)) {
                                 bTechMatch = true;
                             }
 
                             // Possibly allow level 3 ammos, possibly not.
                             if (mmClient.game.getOptions().booleanOption("allow_advanced_ammo")) {
                                 if (!mmClient.game.getOptions().booleanOption("is_eq_limits")) {
-                                    if ((unit.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL) && (atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL)) {
+                                    if ((unit.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL) && (atCheck.getTechLevel(year) == TechConstants.T_CLAN_EXPERIMENTAL)) {
                                         bTechMatch = true;
                                     }
-                                    if (((unit.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) || (unit.getTechLevel() == TechConstants.T_IS_ADVANCED)) && (atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL)) {
+                                    if (((unit.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) || (unit.getTechLevel() == TechConstants.T_IS_ADVANCED)) && (atCheck.getTechLevel(year) == TechConstants.T_IS_EXPERIMENTAL)) {
                                         bTechMatch = true;
                                     }
                                 }
-                            } else if ((atCheck.getTechLevel() == TechConstants.T_IS_EXPERIMENTAL) || (atCheck.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL)) {
+                            } else if ((atCheck.getTechLevel(year) == TechConstants.T_IS_EXPERIMENTAL) || (atCheck.getTechLevel(year) == TechConstants.T_CLAN_EXPERIMENTAL)) {
                                 bTechMatch = false;
                             }
 
@@ -456,12 +460,14 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
                                 double ammoCost = mwclient.getAmmoCost(atCheck.getInternalName());
                                 int cost = 0;
                                 JMenuItem info = new JMenuItem();
-                                Mounted m = unit.getEquipment(cs.getIndex());
                                 if (m.getLocation() == Entity.LOC_NONE) {
                                     cost = (int) ammoCost;
                                     info.setText(atCheck.getName() + " (" + m.getUsableShotsLeft() + "/1) " + mwclient.moneyOrFluMessage(true, true, cost));
                                 } else {
                                     int refillShots = at.getShots();
+                                    if (m.byShot()) {
+                                    	refillShots = m.getOriginalShots();
+                                    }
                                     int shotsLeft = m.getUsableShotsLeft();
                                     if (!atCheck.getInternalName().equalsIgnoreCase(at.getInternalName())) {
                                         shotsLeft = 0;
@@ -474,7 +480,8 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
                                     } else {
                                         cost = (int) Math.ceil(ammoCost * refillShots);
                                     }
-                                    info.setText(atCheck.getName() + " (" + m.getUsableShotsLeft() + "/" + atCheck.getShots() + ") " + mwclient.moneyOrFluMessage(true, true, cost));
+                                    
+                                    info.setText(atCheck.getName() + " (" + m.getUsableShotsLeft() + "/" + refillShots+ ") " + mwclient.moneyOrFluMessage(true, true, cost));
                                 }
 
                                 info.addActionListener(new ActionListener() {
@@ -1013,7 +1020,7 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
             if (critSlot >= UnitUtils.LOC_FRONT_ARMOR) {
                 armor = true;
             }
-            double cost = UnitUtils.getPartCost(unit, critLocation, critSlot, armor);
+            double cost = UnitUtils.getPartCost(unit, critLocation, critSlot, armor, year);
             if (Boolean.parseBoolean(mwclient.getserverConfigs("UsePartsRepair"))) {
                 cost = 0;
             }

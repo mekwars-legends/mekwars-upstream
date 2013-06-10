@@ -68,6 +68,10 @@ public class ReloadAllAmmoCommand implements Command {
                 AmmoType baseAmmo = (AmmoType)ammo.getType();
 
                 refillShots = baseAmmo.getShots();
+                if(ammo.byShot()) {
+                	// Capital Weapon
+                	refillShots = ammo.getOriginalShots();
+                }
                 ammoCharge = CampaignMain.cm.getAmmoCost(baseAmmo.getInternalName());
                 if ( ammoCharge < 0 ){
                     continue;
@@ -102,6 +106,9 @@ public class ReloadAllAmmoCommand implements Command {
                 }
 
                 refillShots = baseAmmo.getShots();
+                if(ammo.byShot()) {
+                	refillShots = ammo.getOriginalShots();
+                }
 
                 //Single shot weapons should only cost 1 short i.e. total shots = 10 then price is 1/10th minium 1.
                 if ( ammo.getLocation() == Entity.LOC_NONE ){
@@ -116,6 +123,9 @@ public class ReloadAllAmmoCommand implements Command {
                 AmmoType baseAmmo = (AmmoType)ammo.getType();
                 //ammo.changeAmmoType(baseAmmo);
                 refillShots = baseAmmo.getShots();
+                if(ammo.byShot()) {
+                	refillShots = ammo.getOriginalShots();
+                }
                 int ammoAmount = 0;
 
                 if ( ((ammo.getLocation() == Entity.LOC_NONE) ||

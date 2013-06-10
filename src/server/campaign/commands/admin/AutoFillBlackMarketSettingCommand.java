@@ -34,6 +34,7 @@ import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 
+import common.CampaignData;
 import common.Equipment;
 import common.util.UnitUtils;
 
@@ -69,6 +70,8 @@ public class AutoFillBlackMarketSettingCommand implements Command {
         double maxCostMod = 1.0;
         double minCostMod = 1.0;
         double baseCost = 1.0;
+        
+        int year = CampaignMain.cm.getIntegerConfig("CampaignYear");
 
         Entity ent = UnitUtils.createOMG();
 
@@ -126,7 +129,7 @@ public class AutoFillBlackMarketSettingCommand implements Command {
                 } else if (eq.hasFlag(MiscType.F_JUMP_BOOSTER)) {
                     baseCost = 6.0 * ent.getWeight() * 150;
                 } else if (eq.hasFlag(MiscType.F_JUMP_JET)) {
-                    if (eq.getTechLevel() > TechConstants.T_IS_TW_ALL) {
+                    if (eq.getTechLevel(year) > TechConstants.T_IS_TW_ALL) {
                         baseCost = 6.0 * ent.getWeight() * 500;
                     } else {
                         baseCost = 6.0 * ent.getWeight() * 200;

@@ -163,6 +163,10 @@ public class SetUnitAmmoCommand implements Command {
         if ((ammoCharge > 0) || usingCrits) {
 
             int refillShots = at.getShots();
+            
+            if (mWeapon.byShot()) {
+            	refillShots = mWeapon.getOriginalShots();
+            }
 
             if (unit.getEntity() instanceof BattleArmor) {
                 refillShots = getWeaponRefillShots(unit, mWeapon);
@@ -176,7 +180,7 @@ public class SetUnitAmmoCommand implements Command {
             if (shotsLeft == refillShots) {
                 return;
             }
-
+            int fullMagazine = refillShots;
             // Single shot weapons should only cost 1 shot.
             if (mWeapon.getLocation() == Entity.LOC_NONE) {
                 refillShots = 1;
@@ -210,7 +214,7 @@ public class SetUnitAmmoCommand implements Command {
                 if (newAmmoAmount == 0) {
                     String result = "After unloading " + currAmmo.getDesc() + "(" + en.getLocationAbbr(loc) + ") from unit #" + unit.getId() + " " + unit.getModelName() + " your techs realize you do not have any " + at.getDesc() + " to reload with!";
                     CampaignMain.cm.toUser(result, Username);
-                } else if (newAmmoAmount < at.getShots()) {
+                } else if (newAmmoAmount < fullMagazine) {
                     String result = "After unloading " + currAmmo.getDesc() + "(" + en.getLocationAbbr(loc) + ") from unit #" + unit.getId() + " " + unit.getModelName() + " your techs realize you only had " + newAmmoAmount + " rounds of " + at.getDesc() + " to reload with!";
                     CampaignMain.cm.toUser(result, Username);
                 } else {
@@ -235,8 +239,8 @@ public class SetUnitAmmoCommand implements Command {
 
             // check the confirmation
             if (!strConfirm.equals("CONFIRM")) {
-                String result = "AM:Quartermaster command will charge you " + CampaignMain.cm.moneyOrFluMessage(true, false, cost) + " to change the load out on #" + unit.getId() + " " + unit.getModelName() + "<br>from " + currAmmo.getDesc() + "(" + en.getLocationAbbr(loc) + " " + shotsLeft + "/" + currAmmo.getShots() + ") to " + at.getDesc() + "(" + refillShots + "/" + refillShots + ").";
-                result += "<br><a href=\"MEKWARS/c setunitammo#" + unitid + "#" + weaponLocation + "#" + weaponType + "#" + ammoName + "#" + at.getShots() + "#" + hotloaded + "#CONFIRM";
+                String result = "AM:Quartermaster command will charge you " + CampaignMain.cm.moneyOrFluMessage(true, false, cost) + " to change the load out on #" + unit.getId() + " " + unit.getModelName() + "<br>from " + currAmmo.getDesc() + "(" + en.getLocationAbbr(loc) + " " + shotsLeft + "/" + fullMagazine + ") to " + at.getDesc() + "(" + refillShots + "/" + refillShots + ").";
+                result += "<br><a href=\"MEKWARS/c setunitammo#" + unitid + "#" + weaponLocation + "#" + weaponType + "#" + ammoName + "#" + fullMagazine + "#" + hotloaded + "#CONFIRM";
                 result += "\">Click here to change the ammo.</a>";
                 CampaignMain.cm.toUser(result, Username, true);
                 return;

@@ -16,6 +16,7 @@
 
 package common;
 
+import server.campaign.CampaignMain;
 import megamek.common.AmmoType;
 import megamek.common.EquipmentType;
 import megamek.common.TechConstants;
@@ -129,9 +130,8 @@ public class BMEquipment {
         return techLevel;
     }
 
-    public String getTech() {
-
-        if (tech.trim().length() > 0) {
+    public String getTech(int year) {
+    	if (tech.trim().length() > 0) {
             return tech;
         }
 
@@ -149,21 +149,21 @@ public class BMEquipment {
                 techLevel = TechConstants.T_ALL;
             }
         } else {
-            if ((eq.getTechLevel() == TechConstants.T_CLAN_ADVANCED) || (eq.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL) || (eq.getTechLevel() == TechConstants.T_CLAN_TW) || (eq.getTechLevel() == TechConstants.T_CLAN_UNOFFICIAL)) {
+            if ((eq.getTechLevel(year) == TechConstants.T_CLAN_ADVANCED) || (eq.getTechLevel(year) == TechConstants.T_CLAN_EXPERIMENTAL) || (eq.getTechLevel(year) == TechConstants.T_CLAN_TW) || (eq.getTechLevel(year) == TechConstants.T_CLAN_UNOFFICIAL)) {
                 tech = "Clan";
-            } else if ((eq.getTechLevel() == TechConstants.T_ALL) || (eq.getTechLevel() < TechConstants.T_INTRO_BOXSET)) {
+            } else if ((eq.getTechLevel(year) == TechConstants.T_ALL) || (eq.getTechLevel(year) < TechConstants.T_INTRO_BOXSET)) {
                 tech = "All";
             } else {
                 tech = "IS";
             }
-            techLevel = eq.getTechLevel();
+            techLevel = eq.getTechLevel(year);
         }
 
         return tech;
     }
 
-    @Override
-    public BMEquipment clone() {
+
+    public BMEquipment clone(int year) {
         BMEquipment clone = new BMEquipment();
 
         clone.setAmount(getAmount());
@@ -172,7 +172,7 @@ public class BMEquipment {
         clone.setEquipmentInternalName(getEquipmentInternalName());
         clone.setEquipmentName(getEquipmentName());
         clone.setEquipmentType(getEquipmentType());
-        clone.getTech();
+        clone.getTech(year);
 
         return clone;
     }

@@ -65,6 +65,7 @@ class ClientThread extends Thread implements CloseClientListener {
     private megamek.client.ui.swing.ClientGUI swingGui;
     private boolean awtGUI = false;
 
+
     private ArrayList<Unit> mechs = new ArrayList<Unit>();
     private ArrayList<CUnit> autoarmy = new ArrayList<CUnit>();// from server's
     // auto army
@@ -96,7 +97,7 @@ class ClientThread extends Thread implements CloseClientListener {
     public Client getClient() {
         return client;
     }
-
+    
     @Override
     public void run() {
         boolean playerUpdate = false;

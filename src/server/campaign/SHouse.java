@@ -3435,11 +3435,11 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
     }
 
     private void produceCrits() {
-
+    	
         if (!CampaignMain.cm.getBooleanConfig("UsePartsRepair")) {
             return;
         }
-
+        int year = CampaignMain.cm.getIntegerConfig("CampaignYear");
         boolean cacheUpdate = false;
 
         double baseCost = CampaignMain.cm.getDoubleConfig("BaseComponentToMoneyRatio");
@@ -3459,7 +3459,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
                 // do bother producing what you cannot use.
                 if (!CampaignMain.cm.getBooleanConfig("AllowCrossOverTech")) {
-                    eq.getTech();
+                    eq.getTech(year);
                     if (eq.getTechLevel() != TechConstants.T_ALL && eq.getTechLevel() > getTechLevel()) {
                         continue;
                     }
@@ -3505,7 +3505,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
                 }
                 // do bother producing what you cannot use.
                 if (!CampaignMain.cm.getBooleanConfig("AllowCrossOverTech")) {
-                    eq.getTech();
+                    eq.getTech(year);
                     if (eq.getTechLevel() != TechConstants.T_ALL && eq.getTechLevel() > getTechLevel()) {
                         continue;
                     }

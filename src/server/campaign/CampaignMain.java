@@ -3606,13 +3606,14 @@ public final class CampaignMain implements Serializable {
         double techCost = 0;
         double cost = 1;
         int totalCrits = 1;
-
+        int year = getIntegerConfig("CampaignYear");
+        
         if (techType < UnitUtils.TECH_PILOT) {
             techCost = CampaignMain.cm.getIntegerConfig(UnitUtils.techDescription(techType) + "TechRepairCost");
         }
 
         if (Boolean.parseBoolean(cm.getConfig("UseRealRepairCosts"))) {
-            double realCost = UnitUtils.getPartCost(unit, critLocation, critSlot, armor);
+            double realCost = UnitUtils.getPartCost(unit, critLocation, critSlot, armor, year);
             if (Boolean.parseBoolean(cm.getConfig("UsePartsRepair"))) {
                 realCost = 0;
             }

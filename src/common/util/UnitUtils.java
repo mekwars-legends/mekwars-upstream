@@ -259,7 +259,7 @@ public class UnitUtils {
                         result.append(delimiter2);
                         result.append(0);
                         result.append(delimiter2);
-                    } else if (weap.getUsableShotsLeft() != ((AmmoType) weap.getType()).getShots()) {
+                    } else if (weap.getUsableShotsLeft() != getShots(weap)) {
                         hasData = true;
                         result.append(location);
                         result.append(delimiter2);
@@ -471,17 +471,22 @@ public class UnitUtils {
             }
             result.append(delimiter);
             hasData = false;
-
             if (sendAmmo) {
                 int location = 0;
                 for (Mounted weap : unit.getAmmo()) {
+                    int shots = 0;
+                    if (weap.byShot()) {
+                    	shots = weap.getOriginalShots();
+                    } else {
+                    	shots = ((AmmoType) weap.getType()).getShots();
+                    }
                     if (weap.isDestroyed()) {
                         hasData = true;
                         result.append(location);
                         result.append(delimiter2);
                         result.append(0);
                         result.append(delimiter2);
-                    } else if (weap.getUsableShotsLeft() != ((AmmoType) weap.getType()).getShots()) {
+                    } else if (weap.getUsableShotsLeft() != shots) {
                         hasData = true;
                         result.append(location);
                         result.append(delimiter2);
@@ -2048,9 +2053,9 @@ public class UnitUtils {
         }
     }
 
-    public static int getPartCost(Entity unit, int location, int slot, boolean armor) {
+    public static int getPartCost(Entity unit, int location, int slot, boolean armor, int year) {
         double cost = 0;
-
+        
         if (!(unit instanceof Mech)) {
             return 0;
         }
@@ -2105,7 +2110,7 @@ public class UnitUtils {
 
                 if (m.getDesc().indexOf("Heat Sink") > -1) {
                     if (m.getType().hasFlag(MiscType.F_HEAT_SINK)) {
-                        if ((m.getType().getTechLevel() == TechConstants.T_IS_ADVANCED) || (m.getType().getTechLevel() == TechConstants.T_IS_EXPERIMENTAL)) {
+                        if ((m.getType().getTechLevel(year) == TechConstants.T_IS_ADVANCED) || (m.getType().getTechLevel(year) == TechConstants.T_IS_EXPERIMENTAL)) {
                             cost = 3000;
                         } else {
                             cost = 2000;
@@ -2176,21 +2181,21 @@ public class UnitUtils {
         return (int) Math.ceil(cost);
     }
 
-    public static int getTotalDamagedPartCost(Entity unit) {
+    public static int getTotalDamagedPartCost(Entity unit, int year) {
 
         double totalCost = 0;
 
         for (int location = 0; location < unit.locations(); location++) {
             if ((location == LOC_CT) || (location == LOC_RT) || (location == LOC_LT)) {
-                totalCost += UnitUtils.getPartCost(unit, location, LOC_FRONT_ARMOR, true);
-                totalCost += UnitUtils.getPartCost(unit, location, LOC_REAR_ARMOR, true);
-                totalCost += UnitUtils.getPartCost(unit, location, LOC_INTERNAL_ARMOR, true);
+                totalCost += UnitUtils.getPartCost(unit, location, LOC_FRONT_ARMOR, true, year);
+                totalCost += UnitUtils.getPartCost(unit, location, LOC_REAR_ARMOR, true, year);
+                totalCost += UnitUtils.getPartCost(unit, location, LOC_INTERNAL_ARMOR, true, year);
             } else {
-                totalCost += UnitUtils.getPartCost(unit, location, LOC_FRONT_ARMOR, true);
-                totalCost += UnitUtils.getPartCost(unit, location, LOC_INTERNAL_ARMOR, true);
+                totalCost += UnitUtils.getPartCost(unit, location, LOC_FRONT_ARMOR, true, year);
+                totalCost += UnitUtils.getPartCost(unit, location, LOC_INTERNAL_ARMOR, true, year);
             }
             for (int slot = 0; slot < unit.getNumberOfCriticals(location); slot++) {
-                totalCost += UnitUtils.getPartCost(unit, location, slot, false);
+                totalCost += UnitUtils.getPartCost(unit, location, slot, false, year);
             }
         }
 
@@ -2375,12 +2380,17 @@ public class UnitUtils {
     public static boolean hasAllAmmo(Entity unit) {
 
         for (Mounted ammo : unit.getAmmo()) {
-
+        	int shots = 0;
+        	if (ammo.byShot()) {
+        		shots = ammo.getOriginalShots();
+        	} else {
+        		shots = ((AmmoType) ammo.getType()).getShots();
+        	}
             if (ammo.getLocation() == Entity.LOC_NONE) {
                 if (ammo.getUsableShotsLeft() != 1) {
                     return false;
                 }
-            } else if (ammo.getUsableShotsLeft() != ((AmmoType) ammo.getType()).getShots()) {
+            } else if (ammo.getUsableShotsLeft() != shots) {
                 return false;
             }
         }
@@ -2391,6 +2401,14 @@ public class UnitUtils {
         return unit.getAmmo().size() == 0;
     }
 
+    public static int getShots(Mounted m) {
+    	if(m.byShot()) {
+    		return m.getOriginalShots();
+    	} else {
+    		return ((AmmoType)m.getType()).getShots();
+    	}
+    }
+    
     public static boolean hasLowAmmo(Entity unit) {
 
         for (Mounted ammo : unit.getAmmo()) {
@@ -2399,11 +2417,17 @@ public class UnitUtils {
                 continue;
             }
             try {
+            	int shots = 0;
+            	if (ammo.byShot()) {
+            		shots = ammo.getOriginalShots();
+            	} else {
+            		shots = ((AmmoType)ammo.getType()).getShots();
+            	}
                 if (ammo.getLocation() == Entity.LOC_NONE) {
                     if (ammo.getUsableShotsLeft() == 0) {
                         return true;
                     }
-                } else if ((ammo.getUsableShotsLeft() < ((AmmoType) ammo.getType()).getShots()) && (ammo.getUsableShotsLeft() > 0)) {
+                } else if ((ammo.getUsableShotsLeft() < getShots(ammo)) && (ammo.getUsableShotsLeft() > 0)) {
                     return true;
                 }
             } catch (Exception ex) {
@@ -3100,8 +3124,8 @@ public class UnitUtils {
         return pilot;
     }
 
-    public static boolean isClanEQ(EquipmentType eq) {
-        if ((eq.getTechLevel() == TechConstants.T_CLAN_ADVANCED) || (eq.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL) || (eq.getTechLevel() == TechConstants.T_CLAN_TW) || (eq.getTechLevel() == TechConstants.T_CLAN_UNOFFICIAL)) {
+    public static boolean isClanEQ(EquipmentType eq, int year) {
+    	if ((eq.getTechLevel(year) == TechConstants.T_CLAN_ADVANCED) || (eq.getTechLevel(year) == TechConstants.T_CLAN_EXPERIMENTAL) || (eq.getTechLevel(year) == TechConstants.T_CLAN_TW) || (eq.getTechLevel(year) == TechConstants.T_CLAN_UNOFFICIAL)) {
             return true;
         }
         return false;
