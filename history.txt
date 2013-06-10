@@ -1,6 +1,15 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
+**************************************************************
+* Additional Note To SOs:
+*
+* You will need to set the CampaignYear in two places - 1st in
+* the Misc Options panel of Server Configs, 2nd in the first
+* screen of the MM Options.  I'll try to figure out a simple
+* way to make this only 1 place, but for now, just do it in
+* both.
+**************************************************************
 R Released Server v0.3.5.24, Client v0.3.5.18
 + Bug 325: Ammo costs for Capital Weapons
 + Bug: Compile error due to missing import
