@@ -2005,6 +2005,13 @@ src/server/campaign/operations/ShortValidator.java -text
 src/server/campaign/operations/resolvers/NewShortResolver.java -text
 src/server/campaign/operations/resolvers/ShortOpPlayers.java -text
 src/server/campaign/operations/resolvers/Team.java -text
+src/server/campaign/operations/validation/A_SpreadCalculator.java -text
+src/server/campaign/operations/validation/BVSpreadCalculator.java -text
+src/server/campaign/operations/validation/BVSpreadValidator.java -text
+src/server/campaign/operations/validation/ISpreadCalculator.java -text
+src/server/campaign/operations/validation/ISpreadValidator.java -text
+src/server/campaign/operations/validation/PercentBVSpreadValidator.java -text
+src/server/campaign/operations/validation/StandardBVSpreadValidator.java -text
 src/server/campaign/pilot/SPilot.java -text
 src/server/campaign/pilot/SPilotSkills.java -text
 src/server/campaign/pilot/skills/AstechSkill.java -text
