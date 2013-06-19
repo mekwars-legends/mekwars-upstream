@@ -33,6 +33,9 @@ import server.campaign.SPlayer;
 import server.campaign.SArmy;
 import server.campaign.SUnit;
 import server.campaign.mercenaries.ContractInfo;
+import server.campaign.operations.validation.ISpreadValidator;
+import server.campaign.operations.validation.PercentBVSpreadValidator;
+import server.campaign.operations.validation.StandardBVSpreadValidator;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -942,6 +945,19 @@ public class ShortValidator {
         if ( o.getBooleanValue("MULArmiesOnly") ) {
             return;
         }
+        ISpreadValidator isv;
+        int spreadError = ISpreadValidator.ERROR_NONE;
+        if (o.getBooleanValue("AttackerUsePercentageBVSpread")) {
+        	isv = new PercentBVSpreadValidator(o.getIntValue("MaxAttackerUnitBVSpread"), o.getDoubleValue("AttackerBVSpreadPercent"));
+        } else {
+        	isv = new StandardBVSpreadValidator(o.getIntValue("MinAttackerUnitBVSpread"), o.getIntValue("MaxAttackerUnitBVSpread"));
+        }
+        isv.setDebug(false); // Set this to false when we go live with it.
+        boolean spreadValidates = isv.validate(aa, o);
+        
+        if (!spreadValidates) {
+        	spreadError = isv.getError();
+        }
         
         boolean countSupport = o.getBooleanValue("CountSupportUnits");
         
@@ -1034,10 +1050,7 @@ public class ShortValidator {
         int totalWeight = 0;
         int largestWeight = 0;
         int numProtoMeks = aa.getNumberOfUnitTypes(Unit.PROTOMEK);
-        int lowUnitBV = Integer.MAX_VALUE;// used for spreads, NOT single unit
-        // BV checks
-        int highUnitBV = Integer.MIN_VALUE;// used for spreads, NOT single unit
-        // BV checks
+
         int numberOfCommanders = 0;
         boolean hasMeks = false;
         boolean hasVehs = false;
@@ -1185,10 +1198,6 @@ public class ShortValidator {
                 if ( totalSkills < o.getIntValue("LowestAttackerPilotSkillTotal") )
                     vetPilots = true;
             }
-            
-
-            lowUnitBV = Math.min(lowUnitBV, currBV);
-            highUnitBV = Math.max(highUnitBV, currBV);
 
             // Count total units and clan units
             numTotalUnits++;
@@ -1257,18 +1266,12 @@ public class ShortValidator {
             failureReasons.add(new Integer(SFAIL_ATTACK_MINARMYTON));
 
         // check unit BV difference failures
-        int maxAllowedSpread = o.getIntValue("MaxAttackerUnitBVSpread");
-        int minAllowedSpread = o.getIntValue("MinAttackerUnitBVSpread");
-        boolean usePercentSpread = o.getBooleanValue("AttackerUsePercentageBVSpread");
-        if (usePercentSpread) {
-            double BVSpreadPercent = o.getDoubleValue("AttackerBVSpreadPercent");
-            maxAllowedSpread += (BVSpreadPercent * aa.getBV());
+       
+        if (spreadError == ISpreadValidator.ERROR_SPREAD_TOO_LARGE) {
+        	failureReasons.add(SFAIL_ATTACK_MAXSPREAD);
+        } else if (spreadError == ISpreadValidator.ERROR_SPREAD_TOO_SMALL) {
+        	failureReasons.add(SFAIL_ATTACK_MINSPREAD);
         }
-        
-        if (maxAllowedSpread > 0 && (highUnitBV - lowUnitBV) > maxAllowedSpread)
-            failureReasons.add(SFAIL_ATTACK_MAXSPREAD);
-        if (minAllowedSpread > 0 && (highUnitBV - lowUnitBV) < minAllowedSpread)
-            failureReasons.add(SFAIL_ATTACK_MINSPREAD);
         
         averageArmySkills /= numberOfValidUnits;
         
@@ -1427,6 +1430,20 @@ public class ShortValidator {
             return;
         }
         
+        ISpreadValidator isv;
+        int spreadError = ISpreadValidator.ERROR_NONE;
+        if (o.getBooleanValue("DefenderUsePercentageBVSpread")) {
+        	isv = new PercentBVSpreadValidator(o.getIntValue("MaxDefenderUnitBVSpread"), o.getDoubleValue("DefenderBVSpreadPercent"));
+        } else {
+        	isv = new StandardBVSpreadValidator(o.getIntValue("MinDefenderUnitBVSpread"), o.getIntValue("MaxDefenderUnitBVSpread"));
+        }
+        isv.setDebug(false); // Set this to false when we go live with it.
+        boolean spreadValidates = isv.validate(da, o);
+        
+        if (!spreadValidates) {
+        	spreadError = isv.getError();
+        }
+        
         boolean countSupport = o.getBooleanValue("CountSupportUnits");
         
         // BV min/max. Remember - these are for op qualification, not army
@@ -1513,10 +1530,7 @@ public class ShortValidator {
         int totalWeight = 0;
         int largestWeight = 0;
         int numProtoMeks = da.getNumberOfUnitTypes(Unit.PROTOMEK);
-        int lowUnitBV = Integer.MAX_VALUE;// used for spreads, NOT single unit
-        // BV checks
-        int highUnitBV = Integer.MIN_VALUE;// used for spreads, NOT single unit
-        // BV checks
+        
         int numberOfCommanders = 0;
         boolean hasMeks = false;
         boolean hasVehs = false;
@@ -1647,9 +1661,6 @@ public class ShortValidator {
                     vetPilots = true;
             }
             
-            lowUnitBV = Math.min(lowUnitBV, currBV);
-            highUnitBV = Math.max(highUnitBV, currBV);
-            
             // Count total units and clan units
             numTotalUnits++;
             if(currUnit.getEntity().isClan()) {
@@ -1715,17 +1726,11 @@ public class ShortValidator {
             failureReasons.add(new Integer(SFAIL_DEFEND_MINARMYTON));
 
         // check unit BV difference failures
-        int maxAllowedSpread = o.getIntValue("MaxDefenderUnitBVSpread");
-        int minAllowedSpread = o.getIntValue("MinDefenderUnitBVSpread");
-        boolean usePercentSpread = o.getBooleanValue("DefenderUsePercentageBVSpread");
-        if (usePercentSpread) {
-            double BVSpreadPercent = o.getDoubleValue("DefenderBVSpreadPercent");
-            maxAllowedSpread += (BVSpreadPercent * da.getBV());
+        if (spreadError == ISpreadValidator.ERROR_SPREAD_TOO_LARGE) {
+        	failureReasons.add(SFAIL_DEFEND_MAXSPREAD);
+        } else if (spreadError == ISpreadValidator.ERROR_SPREAD_TOO_SMALL) {
+        	failureReasons.add(SFAIL_DEFEND_MINSPREAD);
         }
-        if (maxAllowedSpread > 0 && (highUnitBV - lowUnitBV) > maxAllowedSpread)
-            failureReasons.add(SFAIL_DEFEND_MAXSPREAD);
-        if (minAllowedSpread > 0 && (highUnitBV - lowUnitBV) < minAllowedSpread)
-            failureReasons.add(SFAIL_DEFEND_MINSPREAD);
         
         averageArmySkills /= numberOfValidUnits;
         

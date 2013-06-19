@@ -959,8 +959,8 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         
         attackerPanel.add(new JLabel("Use % BV Spread", SwingConstants.TRAILING));
         BaseCheckBox = new JCheckBox();
-        BaseCheckBox.setToolTipText("BV Spread will be a % of the army's BV");
-        BaseCheckBox.setName("AttackerUsePercentBVSpread");
+        BaseCheckBox.setToolTipText("<html>BV Spread will be a % of the army's BV.<br>Float value, so 0.2 = 20%</html>");
+        BaseCheckBox.setName("AttackerUsePercentageBVSpread");
         attackerPanel.add(BaseCheckBox);
         
         BaseTextField = new JTextField(5);
@@ -1242,7 +1242,7 @@ public class OperationsDialog extends JFrame implements ActionListener, KeyListe
         
         BaseTextField = new JTextField(5);
         defenderPanel.add(new JLabel("BV Spread %", SwingConstants.TRAILING));
-        BaseTextField.setToolTipText("% of army's BV allowed");
+        BaseTextField.setToolTipText("% of army's BV allowed.  Float value, so 0.20 = 20%");
         BaseTextField.setName("DefenderBVSpreadPercent");
         defenderPanel.add(BaseTextField);
 
