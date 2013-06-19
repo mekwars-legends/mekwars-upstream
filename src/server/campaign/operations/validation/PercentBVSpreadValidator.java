@@ -38,8 +38,11 @@ public class PercentBVSpreadValidator extends BVSpreadValidator implements
 		int spreadPercent = (int) (a.getBV() * percent);
 		maximum += spreadPercent;
 		
-		CampaignData.mwlog.debugLog("Base = " + base + ", spreadPercent = " + spreadPercent + ", maximum = " + maximum);
-		CampaignData.mwlog.debugLog("Army BV = " + a.getBV() + ", percent = " + percent);
+		if(getDebug()) {
+			CampaignData.mwlog.debugLog("Base = " + base + ", spreadPercent = " + spreadPercent + ", maximum = " + maximum);
+			CampaignData.mwlog.debugLog("Army BV = " + a.getBV() + ", percent = " + percent);
+		}
+
 		
 		setMaxAllowed(maximum);
 		setMinActual(a, o);
