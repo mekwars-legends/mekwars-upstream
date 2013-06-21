@@ -5,6 +5,7 @@ R Released Server v0.3.5.25
 + Fixed %BV Spread
 + Pulled spread validation out of Short Validator and into 
   classes of its own
++ New MM v0.35.40.MW2013-06-21-9578
 **************************************************************
 * Additional Note To SOs:
 *
