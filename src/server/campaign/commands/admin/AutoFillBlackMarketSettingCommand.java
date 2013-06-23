@@ -98,7 +98,7 @@ public class AutoFillBlackMarketSettingCommand implements Command {
             if (eq instanceof AmmoType) {
                 crits = ((AmmoType) eq).getRackSize();
             } else if (isArmor(eq)) {
-                crits = 16.0 * EquipmentType.getArmorPointMultiplier(EquipmentType.getArmorType(eq.getName(),TechConstants.isClan(eq.getTechLevel(year))));
+                crits = 16.0 * EquipmentType.getArmorPointMultiplier(EquipmentType.getArmorType(eq));
             } else if (isStructure(eq)) {
                 crits = 8;
             } else {
@@ -113,9 +113,9 @@ public class AutoFillBlackMarketSettingCommand implements Command {
             baseCost = eq.getCost(ent, false, -1);
 
             if (isArmor(eq)) {
-                baseCost = EquipmentType.getArmorCost(EquipmentType.getArmorType(eq.getName(),TechConstants.isClan(eq.getTechLevel(year))));
+                baseCost = EquipmentType.getArmorCost(EquipmentType.getArmorType(eq));
             } else if (isStructure(eq)) {
-                baseCost = EquipmentType.getStructureCost(EquipmentType.getStructureType(eq.getName(), TechConstants.isClan(eq.getTechLevel(year))));
+                baseCost = EquipmentType.getStructureCost(EquipmentType.getStructureType(eq));
             } else if (eq instanceof MiscType) {
                 if (eq.hasFlag(MiscType.F_HEAT_SINK) || eq.hasFlag(MiscType.F_DOUBLE_HEAT_SINK)) {
                     if (eq.getName().equals("1 Compact Heat Sink")) {

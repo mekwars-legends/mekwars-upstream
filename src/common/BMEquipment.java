@@ -62,7 +62,7 @@ public class BMEquipment {
             if (eq == null) {
                 setEquipmentName(getEquipmentInternalName());
 
-                if ((getEquipmentName().toLowerCase().indexOf("armor") > -1) || getEquipmentName().equalsIgnoreCase("IS (STD)") || (EquipmentType.getArmorType(getEquipmentName(), TechConstants.isClan(techLevel)) != EquipmentType.T_ARMOR_UNKNOWN) || (EquipmentType.getStructureType(getEquipmentName(), TechConstants.isClan(techLevel)) != EquipmentType.T_STRUCTURE_UNKNOWN)) {
+                if ((getEquipmentName().toLowerCase().indexOf("armor") > -1) || getEquipmentName().equalsIgnoreCase("IS (STD)") || (EquipmentType.getArmorType(eq) != EquipmentType.T_ARMOR_UNKNOWN) || (EquipmentType.getStructureType(eq) != EquipmentType.T_STRUCTURE_UNKNOWN)) {
                     setEquipmentType(BMEquipment.PART_ARMOR);
                 } else {
                     setEquipmentType(BMEquipment.PART_MISC);
@@ -78,7 +78,7 @@ public class BMEquipment {
                     if (eq.hasFlag(WeaponType.F_BA_WEAPON)) {
                         setEquipmentName(eq.getName() + " (BA)");
                     }
-                } else if ((getEquipmentName().toLowerCase().indexOf("armor") > -1) || (EquipmentType.getArmorType(getEquipmentName(), TechConstants.isClan(techLevel)) != EquipmentType.T_ARMOR_UNKNOWN) || (EquipmentType.getStructureType(getEquipmentName(), TechConstants.isClan(techLevel)) != EquipmentType.T_STRUCTURE_UNKNOWN)) {
+                } else if ((getEquipmentName().toLowerCase().indexOf("armor") > -1) || (EquipmentType.getArmorType(eq) != EquipmentType.T_ARMOR_UNKNOWN) || (EquipmentType.getStructureType(eq) != EquipmentType.T_STRUCTURE_UNKNOWN)) {
                     setEquipmentType(BMEquipment.PART_ARMOR);
                 } else {
                     setEquipmentType(BMEquipment.PART_MISC);
