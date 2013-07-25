@@ -4892,7 +4892,8 @@ public class ShortResolver {
                             ((Mech) cm.getEntity()).setAutoEject(((Mech) en).isAutoEject());
                         }
 
-                        cm.getEntity().setSpotlight(en.hasSpotlight());
+                      //Torren 07/25/2013 following function no longer works in MM
+                        //cm.getEntity().setSpotlight(en.hasSpotlight());
                         cm.getEntity().setSpotlightState(en.isUsingSpotlight());
                         cm.setWeightclass(unit.getWeightclass());
                         cm.setType(unit.getType());

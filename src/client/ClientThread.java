@@ -469,7 +469,8 @@ class ClientThread extends Thread implements CloseClientListener {
                     entity.setCommander(currA.isCommander(mek.getId()));
 
                     // Set slights based on games light conditions.
-                    entity.setSpotlight(nightGame);
+                    //Torren 07/25/2013 following function no longer works in MM
+                    //entity.setSpotlight(nightGame);
                     entity.setSpotlightState(nightGame);
 
                     // Set the correct home edge for off board units
@@ -523,7 +524,9 @@ class ClientThread extends Thread implements CloseClientListener {
                     Entity entity = autoUnit.getEntity();
 
                     // Set slights based on games light conditions.
-                    entity.setSpotlight(nightGame);
+                  //Torren 07/25/2013 following function no longer works in MM
+                    //entity.setSpotlight(nightGame);
+                    
                     entity.setSpotlightState(nightGame);
 
                     // Had issues with Id's so we are now setting them.

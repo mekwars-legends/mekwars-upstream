@@ -828,7 +828,8 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
                 if (uEntity instanceof Mech) {
                     ((Mech) uEntity).setAutoEject(rs.getBoolean("uAutoEject"));
                 }
-                uEntity.setSpotlight(rs.getBoolean("uHasSpotlight"));
+                ////Torren 07/25/2013 following function no longer works in MM
+                //uEntity.setSpotlight(rs.getBoolean("uHasSpotlight"));
 
                 uEntity.setSpotlightState(rs.getBoolean("uIsUsingSpotlight"));
 
