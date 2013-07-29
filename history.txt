@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
+Replaced all the old Entity.setSpotlight(Bool) with
+Entity.setExternalSpotlight(Bool)
 -Removed References to Entity.setSpotlight(Bool) as it no longer 
 exists in MM.
 R Released Server v0.3.5.25

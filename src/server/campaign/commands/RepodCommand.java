@@ -492,9 +492,7 @@ public class RepodCommand implements Command {
             ((Mech) cm.getEntity()).setAutoEject(((Mech) entity).isAutoEject());
         }
 
-      //Torren 07/25/2013 following function no longer works in MM
-        //cm.getEntity().setSpotlight(entity.hasSpotlight());
-        
+       	cm.getEntity().setExternalSpotlight(entity.hasSpotlight());
         cm.getEntity().setSpotlightState(entity.isUsingSpotlight());
         cm.setWeightclass(m.getWeightclass());
         cm.setType(m.getType());

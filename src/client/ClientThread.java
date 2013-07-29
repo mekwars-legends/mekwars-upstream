@@ -39,6 +39,7 @@ import megamek.common.OffBoardDirection;
 import megamek.common.PlanetaryConditions;
 import megamek.common.Player;
 import megamek.common.options.IBasicOption;
+import megamek.common.options.Quirks;
 import megamek.common.preference.IClientPreferences;
 import megamek.common.preference.PreferenceManager;
 import megamek.common.util.BuildingTemplate;
@@ -469,8 +470,9 @@ class ClientThread extends Thread implements CloseClientListener {
                     entity.setCommander(currA.isCommander(mek.getId()));
 
                     // Set slights based on games light conditions.
-                    //Torren 07/25/2013 following function no longer works in MM
-                    //entity.setSpotlight(nightGame);
+                    if ( !entity.hasSpotlight()){
+                    	entity.getQuirks().getOption("searchlight").setValue(nightGame);
+                    }
                     entity.setSpotlightState(nightGame);
 
                     // Set the correct home edge for off board units
@@ -524,9 +526,7 @@ class ClientThread extends Thread implements CloseClientListener {
                     Entity entity = autoUnit.getEntity();
 
                     // Set slights based on games light conditions.
-                  //Torren 07/25/2013 following function no longer works in MM
-                    //entity.setSpotlight(nightGame);
-                    
+                   	entity.setExternalSpotlight(nightGame);
                     entity.setSpotlightState(nightGame);
 
                     // Had issues with Id's so we are now setting them.
