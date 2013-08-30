@@ -2705,7 +2705,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         }
         // if using AR, send damage information
         if (CampaignMain.cm.isUsingAdvanceRepair()) {
-            result.append(UnitUtils.unitBattleDamage(currE));
+            result.append(UnitUtils.unitBattleDamage(currE, true));
         }
 
         // finalize and return

@@ -125,7 +125,7 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
 
     JTabbedPane ConfigPane = new JTabbedPane(SwingConstants.TOP);
     
-    int year = Integer.parseInt(mwclient.getserverConfigs("CampaignYear"));
+    int year;
 
     public AdvancedRepairDialog(MWClient c, int unitID, boolean salvage) {
         CUnit pUnit = c.getPlayer().getUnit(unitID);
@@ -141,6 +141,7 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
         this.playerUnit = playerUnit;
         this.unit = unit;
         mwclient = c;
+        year = Integer.parseInt(mwclient.getserverConfigs("CampaignYear"));
         tablocation = c.getPlayer().getRepairLocation();
         techs.addAll(c.getPlayer().getAvailableTechs());
         techType = c.getPlayer().getRepairTechType();

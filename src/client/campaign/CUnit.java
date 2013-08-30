@@ -240,7 +240,7 @@ public class CUnit extends Unit {
         UnitEntity.setCrew(new megamek.common.Crew(p.getName(), 1, p.getGunnery(), p.getPiloting()));
 
         if (unitDamage != null) {
-            UnitUtils.applyBattleDamage(UnitEntity, unitDamage);
+            UnitUtils.applyBattleDamage(UnitEntity, unitDamage, true);
         }
 
         getC3Type(UnitEntity);
@@ -475,7 +475,7 @@ public class CUnit extends Unit {
 
     public void applyRepairs(String data) {
         createEntity();
-        UnitUtils.applyBattleDamage(UnitEntity, data);
+        UnitUtils.applyBattleDamage(UnitEntity, data, true);
     }
 
     public boolean getPilotIsReparing() {

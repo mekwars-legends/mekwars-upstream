@@ -1576,6 +1576,15 @@ src/common/util/ThreadManager.java -text
 src/common/util/TokenReader.java -text
 src/common/util/UnitComponents.java -text
 src/common/util/UnitUtils.java -text
+src/common/util/unitdamage/AbstractUnitDamageHandler.java -text
+src/common/util/unitdamage/AeroDamageHandler.java -text
+src/common/util/unitdamage/BattleArmorDamageHandler.java -text
+src/common/util/unitdamage/GenericDamageHandler.java -text
+src/common/util/unitdamage/InfantryDamageHandler.java -text
+src/common/util/unitdamage/MekDamageHandler.java -text
+src/common/util/unitdamage/ProtoDamageHandler.java -text
+src/common/util/unitdamage/UnitDamageHandlerFactory.java -text
+src/common/util/unitdamage/VehicleDamageHandler.java -text
 src/dedicatedhost/CConfig.java -text
 src/dedicatedhost/CUser.java -text
 src/dedicatedhost/MWDedHost.java -text

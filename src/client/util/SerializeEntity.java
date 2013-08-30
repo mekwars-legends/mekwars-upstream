@@ -91,7 +91,7 @@ public class SerializeEntity{
 				result.append(e.getBadCriticals(CriticalSlot.TYPE_SYSTEM, Mech.SYSTEM_GYRO, Mech.LOC_CT) + "*");
 				result.append(((Mech)e).getCockpitType()+"*");
 				if ( useRepairs ){
-					result.append(UnitUtils.unitBattleDamage(e)+"*");
+					result.append(UnitUtils.unitBattleDamage(e, true)+"*");
 				}
 	            result.append(UnitUtils.getEntityFileName(e));
 			} else if (e instanceof Tank ) {
@@ -99,7 +99,7 @@ public class SerializeEntity{
 				result.append(e.isImmobile() + "*");
 				result.append(e.getCrew().isDead() + "*");
 				if ( useRepairs ){
-					result.append(UnitUtils.unitBattleDamage(e)+"*");
+					result.append(UnitUtils.unitBattleDamage(e, true)+"*");
 				}
 	            result.append(UnitUtils.getEntityFileName(e));
 			}else if (e instanceof Aero ) {

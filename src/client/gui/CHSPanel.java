@@ -729,7 +729,7 @@ public class CHSPanel extends JPanel {
                         // AS
                         if (usingAdvanceRepairs) {
                             Entity e = m.getEntity();
-                            UnitUtils.applyBattleDamage(e, m.getBattleDamage());
+                            UnitUtils.applyBattleDamage(e, m.getBattleDamage(), true);
                             if (!UnitUtils.canStartUp(e)) {
                                 unitString.append("<font color=\"BLUE\">");
                             } else if (UnitUtils.hasCriticalDamage(e)) {
