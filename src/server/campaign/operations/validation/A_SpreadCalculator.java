@@ -15,14 +15,13 @@
  */
 package server.campaign.operations.validation;
 
-import server.campaign.SArmy;
 import common.Unit;
 
 /**
  * @author 	Spork
  * @version	1.0
  * @since	2013-06-19
- * 
+ * <p>
  * Calculate the spread.  Intended to allow for multiple spread
  * types (such as BV and tonnage).  
  * <p>

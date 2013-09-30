@@ -2001,6 +2001,8 @@ src/server/campaign/commands/mod/ViewPlayerPersonalPilotQueueCommand.java -text
 src/server/campaign/commands/mod/ViewPlayerUnitCommand.java -text
 src/server/campaign/data/TimeUpdateHouse.java -text
 src/server/campaign/data/TimeUpdatePlanet.java -text
+src/server/campaign/housekeeping/slice/SliceProcessor.java -text
+src/server/campaign/housekeeping/tick/TickProcessor.java -text
 src/server/campaign/market2/HighestSealedBidAuction.java -text
 src/server/campaign/market2/IAuction.java -text
 src/server/campaign/market2/IBuyer.java -text

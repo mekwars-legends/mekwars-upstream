@@ -44,6 +44,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -256,11 +257,11 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
 
         /*
          * Build the third major subpanel - burst MGs - for Meks and Vehicles.
-         * No BA/Inf/Proto bursts!
+         * No BA/Inf/Proto/Aero bursts!
          *
          * Only doso if the server has enabled "maxtech_burst"
          */
-        if (mmClient.game.getOptions().booleanOption("tacops_burst") && !(entity instanceof Infantry)) {
+        if (mmClient.game.getOptions().booleanOption("tacops_burst") && !(entity instanceof Infantry || entity instanceof Aero )) {
             setupMachineGuns();
             scrollPanel.add(panMachineGuns);
         }
@@ -307,6 +308,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
         panMunitions.setLayout(new SpringLayout());
         MunitionChoicePanel mcp = null;// replaced repeatedly w/i while loop
         int year = Integer.parseInt(mwclient.getserverConfigs("CampaignYear"));
+        CampaignData.mwlog.errLog("Year: " + year);
         // int row = 0;
         int location = -1;// also repeatedly replaced
 
@@ -346,7 +348,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
                 boolean bTechMatch = TechConstants.isLegal(entity.getTechLevel(), atCheck.getTechLevel(year), true);// (entity.getTechLevel()
                 // ==
                 // atCheck.getTechLevel());
-
+CampaignData.mwlog.errLog("IsLegal (" + atCheck.getName() + "): " + bTechMatch + "  [entityTechLevel: " + entity.getTechLevel() + "Ammo TechLevel: " + atCheck.getTechLevel(year));
                 String munition = Long.toString(atCheck.getMunitionType());
                 House faction = mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse());
 
@@ -425,6 +427,11 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
                 }
                 // CampaignData.mwlog.errLog("6.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
 
+                // Restrict Aero to ATM
+                if ((entity instanceof Aero) && !(atCheck.getAmmoType() == AmmoType.T_ATM)) {
+                	continue;
+                }
+                
                 // All other ammo types need to match on rack size and tech.
                 if (bTechMatch) {
                     vTypes.addElement(atCheck);
@@ -437,6 +444,8 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
             } else if (!(entity instanceof Aero)) {
                 mcp = new MunitionChoicePanel(m, vTypes, location);
             } else {
+            	// Aero.  We can only give them default ammos, unless it's an ATM
+            	
             	// Sweet.  Erroring out on Aeros, because they're specifically 
             	// being excluded.  Why?
             	mcp = new MunitionChoicePanel(m, vTypes, location);
