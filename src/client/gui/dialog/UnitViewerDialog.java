@@ -653,9 +653,13 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
                     String unit = ms.getName();
                     setVisible(false);
                     int weightClass = chWeightClass.getSelectedIndex();
-
+                    // Item "All" takes up Weight Class 0, so this is usually 1 off.
+                    if (weightClass > 0) {
+                    	weightClass -= 1;
+                    }
                     unitFile = UnitUtils.getMechSummaryFileName(ms);
 
+                    
                     String fluff = JOptionPane.showInputDialog(clientgui, "Fluff text for " + unit);
 
                     if ((fluff == null) || (fluff.length() == 0)) {

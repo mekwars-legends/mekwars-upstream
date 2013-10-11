@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
++ Bug in weightclass when creating units using the gui
++ New MM v0.35.44-MW20131008-9915
 R Released Server v0.3.5.26, client v0.3.5.19
 + Bug with advanced repair dialog
 Moved damage string utilities to their own classes to simplify repairs

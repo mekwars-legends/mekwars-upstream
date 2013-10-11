@@ -11,7 +11,6 @@
 /TrackerManifest.txt -text
 /build.bat -text
 /build.xml -text
-client-dist/MegaMek.jar -text
 client-dist/data/boards/devilsrun.board -text
 client-dist/data/boards/oasis.board -text
 client-dist/data/images/absent.gif -text
@@ -992,7 +991,6 @@ client-dist/lib/xmlpull-1.1.3.1.jar -text
 client-dist/lib/xom-1.1.jar -text
 client-dist/lib/xpp3_min-1.1.4c.jar -text
 client-dist/lib/xstream-1.4.4.jar -text
-client-dist/lib/xstream.jar -text
 client-dist/licenses/jgoodies[!!-~]license.txt -text
 client-dist/licenses/license.txt -text
 client-dist/licenses/metouia[!!-~]license.txt -text
