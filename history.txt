@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
+R Released Server v0.3.5.27
++ Bug 343: Unknown Unit Type in UnitDamageHandlerFactory for Infantry
++ Bug 342: AFR does not work
 + Bug in weightclass when creating units using the gui
 + New MM v0.35.44-MW20131008-9915
 R Released Server v0.3.5.26, client v0.3.5.19

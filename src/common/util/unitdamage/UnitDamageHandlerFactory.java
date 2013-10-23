@@ -5,6 +5,7 @@ import common.CampaignData;
 import megamek.common.Aero;
 import megamek.common.BattleArmor;
 import megamek.common.Entity;
+import megamek.common.Infantry;
 import megamek.common.Mech;
 import megamek.common.Protomech;
 import megamek.common.Tank;
@@ -29,6 +30,10 @@ public final class UnitDamageHandlerFactory {
 		
 		if (e instanceof Tank) {
 			return new VehicleDamageHandler();
+		}
+		
+		if (e instanceof Infantry) {
+			return new InfantryDamageHandler();
 		}
 		
 		CampaignData.mwlog.errLog("Unknown Unit Type in UnitDamageHandlerFactory.getHandler(): " + e.getModel());

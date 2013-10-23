@@ -212,9 +212,9 @@ public class AttackFromReserveCommand implements Command {
         // Check that the opponent is not on the same IP
         if (CampaignMain.cm.getBooleanConfig("IPCheck")) {
         	String apip = CampaignMain.cm.getServer().getIP(ap.getName()).toString();
-        	String dpip = CampaignMain.cm.getServer().getIP(ap.getName()).toString();
-        	CampaignData.mwlog.debugLog("AttackerIP: " + apip);
-        	CampaignData.mwlog.debugLog("DefenderIP: " + dpip);
+        	String dpip = CampaignMain.cm.getServer().getIP(dp.getName()).toString();
+        	//CampaignData.mwlog.debugLog("AttackerIP: " + apip);
+        	//CampaignData.mwlog.debugLog("DefenderIP: " + dpip);
         	if(apip.equalsIgnoreCase(dpip)) {
         		CampaignMain.cm.toUser("AM: You cannot attack a player on the same IP as you.", Username, true);
         		return;
