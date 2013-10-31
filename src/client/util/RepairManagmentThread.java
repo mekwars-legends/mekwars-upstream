@@ -301,7 +301,7 @@ public class RepairManagmentThread extends Thread{
                         CriticalSlot cs = unit.getEntity().getCritical(locationid,slotid);
                         
                         if ( cs.getType() == CriticalSlot.TYPE_EQUIPMENT ){
-                            Mounted mounted = unit.getEntity().getEquipment(cs.getIndex());
+                            Mounted mounted = cs.getMount();
                             data +=UnitUtils.techDescription(tech)+" tech queued for repair of "+mounted.getName()+"("+ unit.getEntity().getLocationAbbr(locationid)+").";
                         }// end CS type if
                         else{

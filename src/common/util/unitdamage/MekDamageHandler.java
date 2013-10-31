@@ -126,7 +126,7 @@ public class MekDamageHandler extends AbstractUnitDamageHandler {
                         continue;
                     }
 
-                    Mounted m = unit.getEquipment(cs.getIndex());
+                    Mounted m = cs.getMount();
                     if ((m != null) && (m.getType() instanceof MiscType) && ((MiscType) m.getType()).isShield() && (m.getBaseDamageCapacity() != m.getCurrentDamageCapacity(unit, x)) && (shieldHitsLeft == -1) && ((x == Mech.LOC_LARM) || (x == Mech.LOC_RARM))) {
                         float shieldcrits = Math.max(1, UnitUtils.getNumberOfCrits(unit, cs));
                         float basePoints = m.getBaseDamageCapacity();
@@ -297,7 +297,7 @@ public class MekDamageHandler extends AbstractUnitDamageHandler {
                 if (damageType.equals("@")) {
                     critSlot.setMissing(true);
                     if (critSlot.getType() == CriticalSlot.TYPE_EQUIPMENT) {
-                        Mounted mounted = unit.getEquipment(critSlot.getIndex());
+                        Mounted mounted = critSlot.getMount();
                         mounted.setMissing(true);
                         // check to see if it has ammo. If so set it 0 as the
                         // ammobin has gone bye bye.
@@ -309,7 +309,7 @@ public class MekDamageHandler extends AbstractUnitDamageHandler {
                 if (damageType.equals("^")) {
                     critSlot.setDestroyed(true);
                     if (critSlot.getType() == CriticalSlot.TYPE_EQUIPMENT) {
-                        Mounted mounted = unit.getEquipment(critSlot.getIndex());
+                        Mounted mounted = critSlot.getMount();
                         mounted.setDestroyed(true);
                         // check to see if it has ammo. If so set it 0 as the
                         // ammobin has gone bye bye.
@@ -324,7 +324,7 @@ public class MekDamageHandler extends AbstractUnitDamageHandler {
                         if (!critSlot.isBreached() && !critSlot.isDamaged()) {
                             critSlot.setDestroyed(true);
                             if (critSlot.getType() == CriticalSlot.TYPE_EQUIPMENT) {
-                                Mounted mounted = unit.getEquipment(critSlot.getIndex());
+                                Mounted mounted = critSlot.getMount();
                                 mounted.setDestroyed(true);
                                 // check to see if it has ammo. If so set it 0
                                 // as the ammobin has gone bye bye.
@@ -338,7 +338,7 @@ public class MekDamageHandler extends AbstractUnitDamageHandler {
                 if (damageType.equals("X")) {
                     critSlot.setBreached(true);
                     if (critSlot.getType() == CriticalSlot.TYPE_EQUIPMENT) {
-                        Mounted mounted = unit.getEquipment(critSlot.getIndex());
+                        Mounted mounted = critSlot.getMount();
                         mounted.setBreached(true);
                     }
                 }

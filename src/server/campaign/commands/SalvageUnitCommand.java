@@ -181,7 +181,7 @@ public class SalvageUnitCommand implements Command {
                 CriticalSlot cs = entity.getCritical(location, slot);
 
                 if (cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
-                    Mounted mounted = entity.getEquipment(cs.getIndex());
+                    Mounted mounted = cs.getMount();
                     salvageMessage = "Work has begun on the " + mounted.getName() + "(" + entity.getLocationAbbr(location) + ") for your " + entity.getShortNameRaw() + ".  <b>At a Cost of " + CampaignMain.cm.moneyOrFluMessage(true, true, cost) + "</b>";
                 }// end CS type if
                 else {

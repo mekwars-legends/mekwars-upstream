@@ -1,14 +1,14 @@
 /*
  * MekWars - Copyright (C) 2004
- * 
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  * Original author Helge Richter (McWizard)
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
@@ -191,7 +191,6 @@ public final class ConfigurationDialog implements ActionListener {
     private final JCheckBox viewLogoBox = new JCheckBox();
     private final JCheckBox armyPopUpBox = new JCheckBox();
     private final JCheckBox autoReOrder = new JCheckBox();
-    private final JCheckBox useAWTInterfaceBox = new JCheckBox();
 
     // chat options
     private final JCheckBox hmInMainBox = new JCheckBox();
@@ -394,14 +393,10 @@ public final class ConfigurationDialog implements ActionListener {
             upperCBoxesCounter++;
         }
 
-        useAWTInterfaceBox.setText("Use AWT Interface");
-        useAWTInterfaceBox.setToolTipText("<html>When checked the AWT MM interface is used<br>Uncheck to use MM's Swing Interface.</html>");
-        playerUpperCBoxesPanel.add(useAWTInterfaceBox);
-
         showUnitTechBaseCheckBox.setText("Show Unit Tech Base");
         showUnitTechBaseCheckBox.setToolTipText("<html>When checked, unit Tool Tip will include Clan/IS indication.</html>");
         playerUpperCBoxesPanel.add(showUnitTechBaseCheckBox);
-        
+
         showUnitBaseBVCheckBox.setText("Show Base BV");
         showUnitBaseBVCheckBox.setToolTipText("<html>If selected, BV without pilot skills will be shown in the unit display</html>");
         playerUpperCBoxesPanel.add(showUnitBaseBVCheckBox);
@@ -1142,7 +1137,6 @@ public final class ConfigurationDialog implements ActionListener {
         darkenMapBox.setSelected(mwclient.getConfig().isParam("DARKERMAP"));
         bmPreviewImageBox.setSelected(mwclient.getConfig().isParam("BMPREVIEWIMAGE"));
         useStatusForIconBox.setSelected(mwclient.getConfig().isParam("STATUSINTRAYICON"));
-        useAWTInterfaceBox.setSelected(mwclient.getConfig().isParam("USEAWTINTERFACE"));
         showUnitTechBaseCheckBox.setSelected(mwclient.getConfig().isParam("ShowUnitTechBase"));
         showUnitBaseBVCheckBox.setSelected(mwclient.getConfig().isParam("ShowUnitBaseBV"));
         hqColumnsField.setText(mwclient.getConfig().getParam("UNITAMOUNT"));
@@ -1408,7 +1402,6 @@ public final class ConfigurationDialog implements ActionListener {
 
             mwclient.getConfig().setParam("UNITHEX", Boolean.toString(showHexinHQBox.isSelected()));
             mwclient.getConfig().setParam("STATUSINTRAYICON", Boolean.toString(useStatusForIconBox.isSelected()));
-            mwclient.getConfig().setParam("USEAWTINTERFACE", Boolean.toString(useAWTInterfaceBox.isSelected()));
             mwclient.getConfig().setParam("ShowUnitTechBase", Boolean.toString(showUnitTechBaseCheckBox.isSelected()));
             mwclient.getConfig().setParam("ShowUnitBaseBV", Boolean.toString(showUnitBaseBVCheckBox.isSelected()));
             mwclient.getConfig().setParam("DARKERMAP", Boolean.toString(darkenMapBox.isSelected()));

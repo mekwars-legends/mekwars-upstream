@@ -84,7 +84,7 @@ public class SetUnitAmmoByCritCommand implements Command {
         Mounted mWeapon = null;
 
         cs = en.getCritical(weaponLocation, weaponSlot);
-        mWeapon = en.getEquipment(cs.getIndex());
+        mWeapon = cs.getMount();
         AmmoType currAmmo = (AmmoType) mWeapon.getType();
         AmmoType at = unit.getEntityAmmo(weaponType, ammoName);
 

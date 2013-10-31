@@ -1,17 +1,17 @@
 /*
  * MekWars - Copyright (C) 2004
- * 
- * 
+ *
+ *
  * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  */
 
 /**
  * @author jtighe
- * 
+ *
  *         This class loads the default server config options as well as saves the server configs back to the serverconfig file
  */
 package server.campaign;
@@ -29,8 +29,8 @@ public class DefaultServerOptions {
 
     protected void createDefaults() {
         defaults = new Properties();
-        
-        defaults.setProperty("CampaignYear", "3071"); // Base year of campaign
+
+        defaults.setProperty("CampaignYear", "3145"); // Base year of campaign
 
         defaults.setProperty("TickTime", "90000000"); // Had to change this, as it's measured in milliseconds now
         defaults.setProperty("SliceTime", "18000000"); // Had to change this, as it's measured in milliseconds now
@@ -44,7 +44,7 @@ public class DefaultServerOptions {
         defaults.setProperty("XMLPlanetPath", "./data/DynPlanets.xml");
         defaults.setProperty("MechstatPath", "./Mechstats.htm");
         defaults.setProperty("HTMLWhoPath", "./who.html");
-        
+
         /*
          * defaults.setProperty("MaxBVDifference", "150"); defaults.setProperty("MaxBVPercent", "0");
          */
@@ -114,7 +114,7 @@ public class DefaultServerOptions {
         // 11.12.06
         // @urgru
         defaults.setProperty("DonatingCostsBills", "false");
-        
+
         defaults.setProperty("UsedPurchaseCostMulti", ".50");// @urgru
         // 11.12.06
         defaults.setProperty("SelectableSalvage", "true");
@@ -160,7 +160,7 @@ public class DefaultServerOptions {
         defaults.setProperty("MeksMayBeSoldOnBM", "true");// 10.23.05 @urgru
         defaults.setProperty("AerosMayBeSoldOnBM", "true");
         defaults.setProperty("HiddenBMUnits", "false");
-        
+
         // BM Price mulipliers.  Used to determine house unit pricing on BM
         defaults.setProperty("BMPriceMultiplier_LightMek", "1.0");
         defaults.setProperty("BMPriceMultiplier_MediumMek", "1.0");
@@ -186,7 +186,7 @@ public class DefaultServerOptions {
         defaults.setProperty("BMPriceMultiplier_MediumAero", "1.0");
         defaults.setProperty("BMPriceMultiplier_HeavyAero", "1.0");
         defaults.setProperty("BMPriceMultiplier_AssaultAero", "1.0");
-        
+
         defaults.setProperty("WelfareCeiling", "30");// go above this and you
         // no longer can pull
         // welfare units
@@ -310,7 +310,7 @@ public class DefaultServerOptions {
         defaults.setProperty("MediumAeroRP", "2");
         defaults.setProperty("HeavyAeroRP", "3");
         defaults.setProperty("AssaultAeroRP", "4");
-        
+
         defaults.setProperty("ProduceComponentsWithNoFactory", "false");
 
         defaults.setProperty("UseMek", "true");
@@ -334,7 +334,7 @@ public class DefaultServerOptions {
         defaults.setProperty("UseAutoProdNew", "false");
         defaults.setProperty("ScrapOldestUnitsFirst", "false");
         defaults.setProperty("OnlyUseOriginalFactoriesForAutoprod", "true");  // Setting this to false will allow autoprod from captured factories.
-        
+
         defaults.setProperty("APAtMaxLightMek", "30");
         defaults.setProperty("APAtMaxMediumMek", "20");
         defaults.setProperty("APAtMaxHeavyMek", "20");
@@ -394,7 +394,7 @@ public class DefaultServerOptions {
         defaults.setProperty("APFailureRateMediumAero", "70");
         defaults.setProperty("APFailureRateHeavyAero", "70");
         defaults.setProperty("APFailureRateAssaultAero", "70");
-        
+
         // Factory refresh rates
         defaults.setProperty("LightRefresh", "5");
         defaults.setProperty("MediumRefresh", "10");
@@ -592,7 +592,7 @@ public class DefaultServerOptions {
         defaults.setProperty("MaxMOTDLength", "7000");
         defaults.setProperty("AllowLinksInMOTD", "true");
         defaults.setProperty("AllowPlanetsInMOTD", "true");
-                
+
         // ratios TODO: Remove? Move into ops? Are these still used?
         defaults.setProperty("AllowRatios", "false"); // if turned off you can
         // have as many units as
@@ -804,10 +804,10 @@ public class DefaultServerOptions {
 
         defaults.setProperty("MaxIdleTime", "0");
         defaults.setProperty("DisconnectIdleUsers", "false");
-        
+
         defaults.setProperty("UseFullCapacityDescription", "false");
         defaults.setProperty("UseFullCapacityInDetailDisplay", "false");
-        
+
         // ban weapon specialist weapons
         defaults.setProperty("BannedWSWeapons", "AMS,Leg Attack,Swarm Mek,Stop Swarm Attack");
 
@@ -860,7 +860,7 @@ public class DefaultServerOptions {
         defaults.setProperty("GunneryBallisticBaseBVMod", "35");
         defaults.setProperty("GunneryLaserBaseBVMod", "35");
         defaults.setProperty("GunneryMissileBaseBVMod", "35");
-        
+
         // Mega Mek Client Settings
         defaults.setProperty("MMTimeStampLogFile", "false");
         defaults.setProperty("MMShowUnitId", "true");
@@ -882,7 +882,7 @@ public class DefaultServerOptions {
         defaults.setProperty("UseRandomPilotLevelups", "true");
         defaults.setProperty("LosingPilotsCheckToLevel", "false");
         defaults.setProperty("AllowAsymmetricPilotLevels", "false");
-        
+
         // Disconnection auto-report settings
         defaults.setProperty("DisconnectionAddUnitsDestroyed", "0");
         defaults.setProperty("DisconnectionAddUnitsSalvage", "1");
@@ -1011,7 +1011,7 @@ public class DefaultServerOptions {
         defaults.setProperty("AttackFromReserveResponseTime", "5");
         defaults.setProperty("AttackFromReserveSleepTime", "60");// time between each attack.
         defaults.setProperty("MaxNegativeBaysForAFR", "-1");
-        
+
         // Pilot Damage Transfers
         defaults.setProperty("AllowPilotDamageToTransfer", "false");
         defaults.setProperty("PilotAmountHealedPerTick", "1");
@@ -1061,13 +1061,13 @@ public class DefaultServerOptions {
 
         // To allow or not to allow partial bins into combat.
         defaults.setProperty("AllowUnitsToActivateWithPartialBins", "true");
-        
+
         // To allow or not to allow damaged units into combat
         defaults.setProperty("AllowActivationWithDamagedUnits", "true");
 
         // Require players to have attack-capable armies to activate
         defaults.setProperty("RequireAttackCapableArmiesForActivation", "false");
-        
+
         // Only used when commands are saved to the DB
         defaults.setProperty("ServerOptionsSavedToDB", "false");
 
@@ -1233,7 +1233,7 @@ public class DefaultServerOptions {
         defaults.setProperty("PlayersCanSellPilotUpgrades", "false");
         defaults.setProperty("MaxPilotUpgrades", "-1");
         defaults.setProperty("PilotUpgradeSellBackPercent", ".5");
-        
+
         // Max Units by Weight Category
         defaults.setProperty("MaxHangarLightMek", "-1");
         defaults.setProperty("MaxHangarMediumMek", "-1");
@@ -1265,7 +1265,7 @@ public class DefaultServerOptions {
         defaults.setProperty("UseSlidingHangarLimits", "false");
         defaults.setProperty("SlidingHangarLimitsAffectPurchase", "false");
         defaults.setProperty("SlidingHangarLimitsAffectPayout", "false");
-        
+
         // Can players buy from the BM
         defaults.setProperty("CanBuyBMLightMeks", "true");
         defaults.setProperty("CanBuyBMMediumMeks", "true");
@@ -1292,12 +1292,12 @@ public class DefaultServerOptions {
         defaults.setProperty("CanBuyBMHeavyAero", "true");
         defaults.setProperty("CanBuyBMAssaultAero", "true");
 
-        
+
         // Slice Settings
         defaults.setProperty("ProcessHouseTicksAtSlice", "false");
-        
+
         defaults.setProperty("DisallowFreshUnitSalvage", "false");
-        
+
         // Payout options - if true, then the others apply
         defaults.setProperty("ModifyOpPayoutByELO", "false");
         defaults.setProperty("ModifyOpPayoutByELOForHigher", "false");
@@ -1329,10 +1329,10 @@ public class DefaultServerOptions {
         defaults.setProperty("ModifyOpPayoutByELO_Land_Lower", "false");
         defaults.setProperty("ModifyOpPayoutByELO_Land_MinELO", "0");
         defaults.setProperty("ModifyOpPayoutByELO_Land_MaxELO", "9999");
-        
+
         defaults.setProperty("ShowUnitTypeCounts", "false");
         defaults.setProperty("UseBaseBVForMatching", "false");
-        
+
         defaults.setProperty("UseUnitQuirks", "false");
     }
 

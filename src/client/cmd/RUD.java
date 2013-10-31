@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2004 
- * 
+ * MekWars - Copyright (C) 2004
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megamek)
  * Original author Helge Richter (McWizard)
  *
@@ -19,50 +19,53 @@ package client.cmd;
 
 import java.util.StringTokenizer;
 
-import common.CampaignData;
-
-import megamek.client.ui.AWT.UnitLoadingDialog;
+import megamek.client.ui.swing.UnitLoadingDialog;
 import client.MWClient;
 import client.gui.dialog.RepodSelectorDialog;
+
+import common.CampaignData;
 
 /**
  * @@author jtighe
  */
 public class RUD extends Command {
 
-	/**
-	 * @param client
-	 */
-	public RUD(MWClient mwclient) {
-		super(mwclient);
-	}
+    /**
+     * @param client
+     */
+    public RUD(MWClient mwclient) {
+        super(mwclient);
+    }
 
-	/**
-	 * @see client.cmd.Command#execute(java.lang.String)
-	 */
-	@Override
-	public void execute(String input) {
-	    StringTokenizer ST = decode(input);
-	    
-	    try{
-	    	
-	        String unitId = ST.nextToken();
-		    
-		    if (!ST.hasMoreTokens()) {
-		    	String toUser = "CH|CLIENT: Your faction has no repod options for Unit " + unitId + ".";
-		    	mwclient.doParseDataInput(toUser);
-		    } else {
-		    	String chassieList = ST.nextToken();
-		    	UnitLoadingDialog unitLoadingDialog = new UnitLoadingDialog(mwclient.getMainFrame());
-		        RepodSelectorDialog repodSelector = new RepodSelectorDialog(mwclient.getMainFrame(),unitLoadingDialog,mwclient,chassieList,unitId);
-		        Thread.sleep(125);
-				new Thread(repodSelector).start();
-		    }
-		    
-	    }
-	    catch(Exception ex){
-	        CampaignData.mwlog.errLog(ex);
-	        CampaignData.mwlog.errLog("Unable to run Repod Dialog");
-	    }
-	}
+    /**
+     * @see client.cmd.Command#execute(java.lang.String)
+     */
+    @Override
+    public void execute(String input) {
+        StringTokenizer ST = decode(input);
+
+        try {
+
+            String unitId = ST.nextToken();
+
+            if (!ST.hasMoreTokens()) {
+                String toUser = "CH|CLIENT: Your faction has no repod options for Unit "
+                        + unitId + ".";
+                mwclient.doParseDataInput(toUser);
+            } else {
+                String chassieList = ST.nextToken();
+                UnitLoadingDialog unitLoadingDialog = new UnitLoadingDialog(
+                        mwclient.getMainFrame());
+                RepodSelectorDialog repodSelector = new RepodSelectorDialog(
+                        mwclient.getMainFrame(), unitLoadingDialog, mwclient,
+                        chassieList, unitId);
+                Thread.sleep(125);
+                new Thread(repodSelector).start();
+            }
+
+        } catch (Exception ex) {
+            CampaignData.mwlog.errLog(ex);
+            CampaignData.mwlog.errLog("Unable to run Repod Dialog");
+        }
+    }
 }

@@ -1,13 +1,13 @@
 /*
  * MekWars - Copyright (C) 2005
- * 
+ *
  * Original author - nmorris (urgru@users.sourceforge.net)
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
@@ -24,19 +24,18 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import common.UnitFactory;
-
-import megamek.client.ui.AWT.UnitLoadingDialog;
-
+import megamek.client.ui.swing.UnitLoadingDialog;
 import client.MWClient;
 import client.gui.dialog.PlanetNameDialog;
 import client.gui.dialog.PlayerNameDialog;
 import client.gui.dialog.UnitViewerDialog;
 
+import common.UnitFactory;
+
 public class ModeratorMenu extends JMenu {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -74,9 +73,9 @@ public class ModeratorMenu extends JMenu {
 
     public void createMenu(MWClient client) {
 
-        this.mwclient = client;
+        mwclient = client;
 
-        userLevel = this.mwclient.getUser(this.mwclient.getUsername()).getUserlevel();
+        userLevel = mwclient.getUser(mwclient.getUsername()).getUserlevel();
         /*
          * This is code extracted from CMainFrame. It could be dramatically
          * improced. There isn't much need for the seperate methods for each
@@ -230,84 +229,111 @@ public class ModeratorMenu extends JMenu {
         });
 
         // clear the menu, in case this is a reconstruction
-        this.removeAll();
+        removeAll();
 
         // then name, add components, etc.
         JMenu subMenu = new JMenu();
 
-        if (userLevel >= mwclient.getData().getAccessLevel("Check"))
+        if (userLevel >= mwclient.getData().getAccessLevel("Check")) {
             this.add(jMenuModCheck);
-        if (userLevel >= mwclient.getData().getAccessLevel("ModGames"))
+        }
+        if (userLevel >= mwclient.getData().getAccessLevel("ModGames")) {
             this.add(jMenuModGames);
-        this.addSeparator();
+        }
+        addSeparator();
 
         subMenu = new JMenu();
         subMenu.setText("Grant");
-        if (userLevel >= mwclient.getData().getAccessLevel("GrantEXP"))
+        if (userLevel >= mwclient.getData().getAccessLevel("GrantEXP")) {
             subMenu.add(jMenuModGrantEXP);
-        if (userLevel >= mwclient.getData().getAccessLevel("GrantInfluence"))
+        }
+        if (userLevel >= mwclient.getData().getAccessLevel("GrantInfluence")) {
             subMenu.add(jMenuModGrantInfluence);
-        if (userLevel >= mwclient.getData().getAccessLevel("GrantMoney"))
+        }
+        if (userLevel >= mwclient.getData().getAccessLevel("GrantMoney")) {
             subMenu.add(jMenuModGrantMoney);
-        if (userLevel >= mwclient.getData().getAccessLevel("GrantReward"))
+        }
+        if (userLevel >= mwclient.getData().getAccessLevel("GrantReward")) {
             subMenu.add(jMenuModGrantReward);
-        if (subMenu.getItemCount() > 0)
+        }
+        if (subMenu.getItemCount() > 0) {
             this.add(subMenu);
+        }
 
         subMenu = new JMenu();
         subMenu.setText("List");
-        if (userLevel >= mwclient.getData().getAccessLevel("ListCommands"))
+        if (userLevel >= mwclient.getData().getAccessLevel("ListCommands")) {
             subMenu.add(jMenuModListCommands);
-        if (userLevel >= mwclient.getData().getAccessLevel("ListMultiPlayerGroups"))
+        }
+        if (userLevel >= mwclient.getData().getAccessLevel("ListMultiPlayerGroups")) {
             subMenu.add(jMenuModListMultiPlayerGroups);
-        if (subMenu.getItemCount() > 0)
+        }
+        if (subMenu.getItemCount() > 0) {
             this.add(subMenu);
+        }
 
         subMenu = new JMenu();
         subMenu.setText("Games");
-        if (userLevel >= mwclient.getData().getAccessLevel("UnlockLances"))
+        if (userLevel >= mwclient.getData().getAccessLevel("UnlockLances")) {
             subMenu.add(jMenuModUnlockLances);
-        if (userLevel >= mwclient.getData().getAccessLevel("ModTerminate"))
+        }
+        if (userLevel >= mwclient.getData().getAccessLevel("ModTerminate")) {
             subMenu.add(jMenuModTerminate);
-        if (userLevel >= mwclient.getData().getAccessLevel("ModDeactivate"))
+        }
+        if (userLevel >= mwclient.getData().getAccessLevel("ModDeactivate")) {
             subMenu.add(jMenuModDeactivate);
-        if (subMenu.getItemCount() > 0)
+        }
+        if (subMenu.getItemCount() > 0) {
             this.add(subMenu);
+        }
 
         subMenu = new JMenu();
         subMenu.setText("Logs");
-        if (userLevel >= mwclient.getData().getAccessLevel("GetModLog"))
+        if (userLevel >= mwclient.getData().getAccessLevel("GetModLog")) {
             subMenu.add(jMenuModGetModLog);
-        if (userLevel >= mwclient.getData().getAccessLevel("ModLog"))
+        }
+        if (userLevel >= mwclient.getData().getAccessLevel("ModLog")) {
             subMenu.add(jMenuModLog);
-        if (subMenu.getItemCount() > 0)
+        }
+        if (subMenu.getItemCount() > 0) {
             this.add(subMenu);
+        }
 
         subMenu = new JMenu();
         subMenu.setText("Set");
-        if (userLevel >= mwclient.getData().getAccessLevel("SetElo"))
+        if (userLevel >= mwclient.getData().getAccessLevel("SetElo")) {
             subMenu.add(jMenuModSetElo);
-        if (userLevel >= mwclient.getData().getAccessLevel("SetPriceMod"))
+        }
+        if (userLevel >= mwclient.getData().getAccessLevel("SetPriceMod")) {
             subMenu.add(jMenuModSetPricemod);
-        if (userLevel >= mwclient.getData().getAccessLevel("ModNoPlay"))
+        }
+        if (userLevel >= mwclient.getData().getAccessLevel("ModNoPlay")) {
             subMenu.add(jMenuModNoPlay);
-        if (subMenu.getItemCount() > 0)
+        }
+        if (subMenu.getItemCount() > 0) {
             this.add(subMenu);
+        }
 
         subMenu = new JMenu();
         subMenu.setText("Misc");
-        if (userLevel >= mwclient.getData().getAccessLevel("TerminateContract"))
+        if (userLevel >= mwclient.getData().getAccessLevel("TerminateContract")) {
             subMenu.add(jMenuModTerminateContract);
-        if (userLevel >= mwclient.getData().getAccessLevel("Touch"))
+        }
+        if (userLevel >= mwclient.getData().getAccessLevel("Touch")) {
             subMenu.add(jMenuModTouch);
-        if (userLevel >= mwclient.getData().getAccessLevel("CreateUnit"))
+        }
+        if (userLevel >= mwclient.getData().getAccessLevel("CreateUnit")) {
             subMenu.add(jMenuModCreateUnit);
-        if (userLevel >= mwclient.getData().getAccessLevel("ModRefreshFactory"))
+        }
+        if (userLevel >= mwclient.getData().getAccessLevel("ModRefreshFactory")) {
             subMenu.add(jMenuModRefreshFactory);
-        if (userLevel >= mwclient.getData().getAccessLevel("UpdateServerUnitsCache"))
+        }
+        if (userLevel >= mwclient.getData().getAccessLevel("UpdateServerUnitsCache")) {
             subMenu.add(jMenuModUpdateServerUnitsCache);
-        if (subMenu.getItemCount() > 0)
+        }
+        if (subMenu.getItemCount() > 0) {
             this.add(subMenu);
+        }
 
     }// end CreateMenu()
 
@@ -315,9 +341,9 @@ public class ModeratorMenu extends JMenu {
      * Various mod methods. These really don't need to be stand alone, and could
      * (should?) be worked back into a unified ActionPerformed command, or back
      * into the overloaded actionPerformed commands is createMenu();
-     * 
+     *
      * For now, these methods remain as they were in CMainFrame.
-     * 
+     *
      * @urgru, 6.26.05
      */
 
@@ -328,8 +354,9 @@ public class ModeratorMenu extends JMenu {
         String name = playerDialog.getPlayerName();
         playerDialog.dispose();
 
-        if (name == null || name.length() == 0)
+        if ((name == null) || (name.length() == 0)) {
             return;
+        }
 
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c check#" + name);
     }
@@ -343,8 +370,9 @@ public class ModeratorMenu extends JMenu {
         playerDialog.setVisible(true);
         String name = playerDialog.getPlayerName();
         playerDialog.dispose();
-        if (name == null || name.length() == 0)
+        if ((name == null) || (name.length() == 0)) {
             return;
+        }
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c checkversion#" + name);
     }
 
@@ -360,14 +388,17 @@ public class ModeratorMenu extends JMenu {
             playerDialog.setVisible(true);
             name = playerDialog.getPlayerName();
             playerDialog.dispose();
-        } else
+        } else {
             name = player;
+        }
 
-        if (name == null || name.length() == 0)
+        if ((name == null) || (name.length() == 0)) {
             return;
+        }
         String exp = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Exp Amount,- to remove");
-        if (exp == null || exp.length() == 0)
+        if ((exp == null) || (exp.length() == 0)) {
             return;
+        }
 
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c grantexp#" + name + "#" + exp);
     }
@@ -380,14 +411,17 @@ public class ModeratorMenu extends JMenu {
             playerDialog.setVisible(true);
             name = playerDialog.getPlayerName();
             playerDialog.dispose();
-        } else
+        } else {
             name = player;
+        }
 
-        if (name == null || name.length() == 0)
+        if ((name == null) || (name.length() == 0)) {
             return;
+        }
         String exp = JOptionPane.showInputDialog(mwclient.getMainFrame(), mwclient.moneyOrFluMessage(true, true, -1) + " Amount,- to remove");
-        if (exp == null || exp.length() == 0)
+        if ((exp == null) || (exp.length() == 0)) {
             return;
+        }
 
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c grantmoney#" + name + "#" + exp);
     }
@@ -399,14 +433,17 @@ public class ModeratorMenu extends JMenu {
             playerDialog.setVisible(true);
             name = playerDialog.getPlayerName();
             playerDialog.dispose();
-        } else
+        } else {
             name = player;
+        }
 
-        if (name == null || name.length() == 0)
+        if ((name == null) || (name.length() == 0)) {
             return;
+        }
         String exp = JOptionPane.showInputDialog(mwclient.getMainFrame(), mwclient.moneyOrFluMessage(false, true, -1) + " Amount,- to remove");
-        if (exp == null || exp.length() == 0)
+        if ((exp == null) || (exp.length() == 0)) {
             return;
+        }
 
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c grantinfluence#" + name + "#" + exp);
     }
@@ -418,20 +455,23 @@ public class ModeratorMenu extends JMenu {
             playerDialog.setVisible(true);
             name = playerDialog.getPlayerName();
             playerDialog.dispose();
-        } else
+        } else {
             name = player;
+        }
 
         String exp = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Reward Amount,- to remove");
-        if (exp == null || exp.length() == 0)
+        if ((exp == null) || (exp.length() == 0)) {
             return;
+        }
 
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c grantreward#" + name + "#" + exp);
     }
 
     public void jMenuModListCommands_actionPerformed(ActionEvent e) {
         String name = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Parital Command");
-        if (name == null)
+        if (name == null) {
             return;
+        }
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c listcommands#" + name);
     }
 
@@ -441,8 +481,9 @@ public class ModeratorMenu extends JMenu {
 
     public void jMenuModTerminate_actionPerformed(ActionEvent e) {
         String id = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Game ID");
-        if (id == null || id.length() == 0)
+        if ((id == null) || (id.length() == 0)) {
             return;
+        }
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c modterminate#" + id);
     }
 
@@ -452,15 +493,17 @@ public class ModeratorMenu extends JMenu {
         String name = playerDialog.getPlayerName();
         playerDialog.dispose();
 
-        if (name == null || name.length() == 0)
+        if ((name == null) || (name.length() == 0)) {
             return;
+        }
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c moddeactivate#" + name);
     }
 
     public void jMenuModLog_actionPerformed(ActionEvent e) {
         String name = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Enter comments you would like to add the the mod log");
-        if (name == null || name.length() == 0)
+        if ((name == null) || (name.length() == 0)) {
             return;
+        }
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c modlog#" + name);
     }
 
@@ -470,17 +513,20 @@ public class ModeratorMenu extends JMenu {
         String name = playerDialog.getPlayerName();
         playerDialog.dispose();
 
-        if (name == null || name.length() == 0)
+        if ((name == null) || (name.length() == 0)) {
             return;
+        }
 
         String mode = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Mode (add/remove)");
-        if (mode == null || mode.length() == 0)
+        if ((mode == null) || (mode.length() == 0)) {
             return;
+        }
 
         String offender = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Player to add");
 
-        if (offender == null || offender.length() == 0)
+        if ((offender == null) || (offender.length() == 0)) {
             return;
+        }
 
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c modnoplay#" + mode + "#" + name + "#" + offender);
     }
@@ -491,12 +537,14 @@ public class ModeratorMenu extends JMenu {
         String name = playerDialog.getPlayerName();
         playerDialog.dispose();
 
-        if (name == null || name.length() == 0)
+        if ((name == null) || (name.length() == 0)) {
             return;
+        }
 
         String elo = JOptionPane.showInputDialog(mwclient.getMainFrame(), "ELO");
-        if (elo == null || elo.length() == 0)
+        if ((elo == null) || (elo.length() == 0)) {
             return;
+        }
 
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setelo#" + name + "#" + elo);
     }
@@ -507,12 +555,14 @@ public class ModeratorMenu extends JMenu {
         String name = playerDialog.getPlayerName();
         playerDialog.dispose();
 
-        if (name == null || name.length() == 0)
+        if ((name == null) || (name.length() == 0)) {
             return;
+        }
 
         String elo = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Price Mod Amount(- to remove)");
-        if (elo == null || elo.length() == 0)
+        if ((elo == null) || (elo.length() == 0)) {
             return;
+        }
 
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c setpricemod#" + name + "#" + elo);
     }
@@ -523,8 +573,9 @@ public class ModeratorMenu extends JMenu {
         String name = playerDialog.getPlayerName();
         playerDialog.dispose();
 
-        if (name == null || name.length() == 0)
+        if ((name == null) || (name.length() == 0)) {
             return;
+        }
 
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c terminatecontract#" + name);
     }
@@ -535,8 +586,9 @@ public class ModeratorMenu extends JMenu {
         String name = playerDialog.getPlayerName();
         playerDialog.dispose();
 
-        if (name == null || name.length() == 0)
+        if ((name == null) || (name.length() == 0)) {
             return;
+        }
 
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c touch#" + name);
     }
@@ -547,8 +599,9 @@ public class ModeratorMenu extends JMenu {
         String name = playerDialog.getPlayerName();
         playerDialog.dispose();
 
-        if (name == null || name.length() == 0)
+        if ((name == null) || (name.length() == 0)) {
             return;
+        }
 
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c unlocklances#" + name);
     }
@@ -566,8 +619,9 @@ public class ModeratorMenu extends JMenu {
         String planetNamestr = planetDialog.getPlanetName();
         planetDialog.dispose();
 
-        if (planetNamestr == null || planetNamestr.length() == 0)
+        if ((planetNamestr == null) || (planetNamestr.length() == 0)) {
             return;
+        }
 
         JComboBox combo = new JComboBox();
 
@@ -587,8 +641,9 @@ public class ModeratorMenu extends JMenu {
 
         int value = ((Integer) jop.getValue()).intValue();
 
-        if (value == JOptionPane.CANCEL_OPTION)
+        if (value == JOptionPane.CANCEL_OPTION) {
             return;
+        }
 
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c modrefreshFactory#" + planetNamestr + "#" + combo.getSelectedItem().toString());
     }

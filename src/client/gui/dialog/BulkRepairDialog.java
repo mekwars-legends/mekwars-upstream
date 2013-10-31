@@ -1,8 +1,8 @@
 /*
- * MekWars - Copyright (C) 2005 
- * 
+ * MekWars - Copyright (C) 2005
+ *
  * Original author - Torren (torren@users.sourceforge.net)
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
  * Software Foundation; either version 2 of the License, or (at your option)
@@ -25,39 +25,39 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JSpinner;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import common.campaign.pilot.Pilot;
-import common.campaign.pilot.skills.PilotSkill;
-import common.util.SpringLayoutHelper;
-import common.util.UnitUtils;
-
 import megamek.common.CriticalSlot;
 import megamek.common.Entity;
 import megamek.common.Mech;
 import megamek.common.Mounted;
 import megamek.common.WeaponType;
-
 import client.MWClient;
 import client.campaign.CUnit;
+
+import common.Unit;
+import common.campaign.pilot.Pilot;
+import common.campaign.pilot.skills.PilotSkill;
+import common.util.SpringLayoutHelper;
+import common.util.UnitUtils;
 
 public class BulkRepairDialog extends JFrame implements ActionListener, KeyListener, ChangeListener {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 2053155152906533410L;
     // store the client backlink for other things to use
@@ -128,22 +128,23 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
         // super();
 
         // save the client
-        this.mwclient = c;
-        this.playerUnit = c.getPlayer().getUnit(unitID);
+        mwclient = c;
+        playerUnit = c.getPlayer().getUnit(unitID);
         this.repairType = repairType;
         this.unitRepairType = unitRepairType;
 
         synchronized (playerUnit.getEntity()) {
-            this.unit = playerUnit.getEntity();
+            unit = playerUnit.getEntity();
         }
         windowName = unit.getShortNameRaw() + " Repair Dialog";
 
-        this.addKeyListener(this);
+        addKeyListener(this);
 
         // stored values.
 
-        if (isSalvage())
+        if (isSalvage()) {
             okayButton.setText("Start Salvage");
+        }
         // Set the tooltips and actions for dialouge buttons
         okayButton.setActionCommand(okayCommand);
         okayButton.addActionListener(this);
@@ -172,18 +173,19 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
         // Create the pane containing the buttons
         pane = new JOptionPane(MasterPanel, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION, null, options, null);
 
-        this.setIconImage(mwclient.getConfig().getImage("REPAIR").getImage());
-        this.setTitle(windowName);
+        setIconImage(mwclient.getConfig().getImage("REPAIR").getImage());
+        setTitle(windowName);
 
-        contentPane = (JPanel) this.getContentPane();
+        contentPane = (JPanel) getContentPane();
         contentPane.setLayout(new BorderLayout());
         contentPane.add(pane, BorderLayout.CENTER);
-        this.setResizable(true);
-        if (!isBulk())
+        setResizable(true);
+        if (!isBulk()) {
             this.setSize(new Dimension(440, 287));
-        else
+        } else {
             this.setSize(new Dimension(369, 287));
-        this.setExtendedState(Frame.NORMAL);
+        }
+        setExtendedState(Frame.NORMAL);
         contentPane.addKeyListener(this);
         pane.addKeyListener(this);
         MasterPanel.addKeyListener(this);
@@ -195,14 +197,14 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
         rollBox.addKeyListener(this);
         timeBox.addKeyListener(this);
 
-        this.addKeyListener(this);
+        addKeyListener(this);
 
         this.repaint();
         // this.setLocation((mwclient.getMainFrame().getWidth()/2)-(this.getWidth()/2),(mwclient.getMainFrame().getHeight()/2)-(this.getHeight()/2));
-        this.setLocationRelativeTo(mwclient.getMainFrame());
+        setLocationRelativeTo(mwclient.getMainFrame());
 
         // this.pack();
-        this.setVisible(true);
+        setVisible(true);
         setRepair();
     }
 
@@ -219,8 +221,8 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
                 }
                 if (unitRepairType == BulkRepairDialog.UNIT_TYPE_ALL) {
                     for (CUnit repairUnit : mwclient.getPlayer().getHangar()) {
-                        if ((repairUnit.getType() == CUnit.MEK || repairUnit.getType() == CUnit.VEHICLE) && (UnitUtils.hasArmorDamage(unit) || UnitUtils.hasCriticalDamage(unit) || UnitUtils.hasISDamage(unit))) {
-                            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c simplerepair#" + repairUnit.getId() + sb.toString());                        
+                        if (((repairUnit.getType() == Unit.MEK) || (repairUnit.getType() == Unit.VEHICLE)) && (UnitUtils.hasArmorDamage(unit) || UnitUtils.hasCriticalDamage(unit) || UnitUtils.hasISDamage(unit))) {
+                            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c simplerepair#" + repairUnit.getId() + sb.toString());
                         }
                     }
                 }else {
@@ -241,7 +243,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
 
                         unit = repairUnit.getEntity();
 
-                        if ((repairUnit.getType() == CUnit.MEK || repairUnit.getType() == CUnit.VEHICLE) && (UnitUtils.hasArmorDamage(unit) || UnitUtils.hasCriticalDamage(unit) || UnitUtils.hasISDamage(unit)) ){
+                        if (((repairUnit.getType() == Unit.MEK) || (repairUnit.getType() == Unit.VEHICLE)) && (UnitUtils.hasArmorDamage(unit) || UnitUtils.hasCriticalDamage(unit) || UnitUtils.hasISDamage(unit)) ){
 
                             mwclient.getRMT().removeAllWorkOrders(unit.getExternalId());
 
@@ -274,14 +276,16 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
             try {
                 int location = Integer.parseInt(command);
                 int techType = ((JComboBox) techBox.getComponent(location)).getSelectedIndex();
-                if (techType == UnitUtils.TECH_PILOT)
+                if (techType == UnitUtils.TECH_PILOT) {
                     techType = playerUnit.getPilot().getSkills().getPilotSkill(PilotSkill.AstechSkillID).getLevel();
+                }
                 ((JSpinner) rollBox.getComponent(location)).setValue(UnitUtils.techBaseRoll(techType));
 
-                if (((JCheckBox) repairBox.getComponent(location)).isSelected())
+                if (((JCheckBox) repairBox.getComponent(location)).isSelected()) {
                     setCost(location);
-                else
+                } else {
                     ((JLabel) costBox.getComponent(location)).setText("0");
+                }
                 setTotalCost();
             } catch (Exception ex) {
             }
@@ -291,19 +295,21 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
     private void loadPanel() {
         String[] techList = null;
 
-        Pilot pilot = this.playerUnit.getPilot();
+        Pilot pilot = playerUnit.getPilot();
 
         if (pilot.getSkills().has(PilotSkill.AstechSkillID)) {
             techList = new String[] { "Green", "Reg", "Vet", "Elite", "Pilot" };
-        } else
+        } else {
             techList = new String[] { "Green", "Reg", "Vet", "Elite" };
+        }
 
         repairBox.add(new JLabel("Repair Type"));
         techBox.add(new JLabel("Tech Type", SwingConstants.LEFT));
         rollBox.add(new JLabel("Base Roll", SwingConstants.LEFT));
         costBox.add(new JLabel("Cost", SwingConstants.LEFT));
-        if (isSimple())
+        if (isSimple()) {
             timeBox.add(new JLabel("Time", SwingConstants.LEFT));
+        }
 
         for (int x = 0; x < 6; x++) {
             techComboBox = new JComboBox(techList);
@@ -385,8 +391,9 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
         masterBox.add(techBox);
         masterBox.add(rollBox);
         masterBox.add(costBox);
-        if (isSimple())
+        if (isSimple()) {
             masterBox.add(timeBox);
+        }
 
         blankPanel1.add(new JLabel(" "));
         blankPanel2.add(new JLabel(" "));
@@ -406,15 +413,17 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
             masterBox.add(timePanel);
         }
 
-        if (isSimple())
+        if (isSimple()) {
             SpringLayoutHelper.setupSpringGrid(masterBox, 5);
-        else
+        } else {
             SpringLayoutHelper.setupSpringGrid(masterBox, 4);
+        }
         MasterPanel.add(masterBox);
 
         if (isSimple()) {
-            for (int type = ARMOR; type <= ENGINES; type++)
+            for (int type = ARMOR; type <= ENGINES; type++) {
                 setCost(type);
+            }
             setTotalCost();
         }
     }
@@ -463,15 +472,18 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
             for (int location = 0; location < unit.locations(); location++) {
                 for (int slot = 0; slot < unit.getNumberOfCriticals(location); slot++) {
                     CriticalSlot cs = unit.getCritical(location, slot);
-                    if (cs == null)
+                    if (cs == null) {
                         continue;
-                    if (!cs.isBreached() && !cs.isDamaged())
+                    }
+                    if (!cs.isBreached() && !cs.isDamaged()) {
                         continue;
+                    }
                     if (cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
-                        Mounted mounted = unit.getEquipment(cs.getIndex());
+                        Mounted mounted = cs.getMount();
 
-                        if (!mounted.isDestroyed() && !mounted.isMissing())
+                        if (!mounted.isDestroyed() && !mounted.isMissing()) {
                             continue;
+                        }
 
                         // Only want to set a Tech to work on the Mounted object
                         // that is destroyed don't need to
@@ -491,7 +503,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
                             ((JSpinner) rollBox.getComponent(EQUIPMENT)).setValue(roll);
                             setEquipmentCost();
                         }
-                    } else if (cs.getType() == CriticalSlot.TYPE_SYSTEM && cs.getIndex() != Mech.SYSTEM_ENGINE) {
+                    } else if ((cs.getType() == CriticalSlot.TYPE_SYSTEM) && (cs.getIndex() != Mech.SYSTEM_ENGINE)) {
                         ((JCheckBox) repairBox.getComponent(SYSTEMS)).setSelected(true);
                         tech = Integer.parseInt(mwclient.getConfigParam(("REPAIRSYSTEMSTECH")));
                         roll = Integer.parseInt(mwclient.getConfigParam(("REPAIRSYSTEMSROLL")));
@@ -515,7 +527,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
     /**
      * This method sets the cost field with the cost of the repair based on the
      * crit and the tech doing the job.
-     * 
+     *
      */
     public void setCost(int repairType) {
 
@@ -579,13 +591,14 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
 
     private void checkArmor() {
         // check to see if the checked the box
-        if (!((JCheckBox) repairBox.getComponent(ARMOR)).isSelected())
+        if (!((JCheckBox) repairBox.getComponent(ARMOR)).isSelected()) {
             return;
+        }
 
         int techType = ((JComboBox) techBox.getComponent(ARMOR)).getSelectedIndex();
         String baseRoll = ((JSpinner) rollBox.getComponent(ARMOR)).getValue().toString();
 
-        if (isBulk() && techType != UnitUtils.TECH_PILOT) {
+        if (isBulk() && (techType != UnitUtils.TECH_PILOT)) {
             mwclient.getConfig().setParam("REPAIRARMORTECH", Integer.toString(techType));
             mwclient.getConfig().setParam("REPAIRARMORROLL", baseRoll);
         } else if (isSalvage()) {
@@ -598,7 +611,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
                     String workOrder = unit.getExternalId() + "#" + location + "#" + UnitUtils.LOC_FRONT_ARMOR;
                     mwclient.getSMT().addWorkOrder(techType, workOrder);
                 }
-                if (unit.hasRearArmor(location) && unit.getArmor(location, true) > 0) {
+                if (unit.hasRearArmor(location) && (unit.getArmor(location, true) > 0)) {
                     String workOrder = unit.getExternalId() + "#" + (location) + "#" + UnitUtils.LOC_REAR_ARMOR;
                     mwclient.getSMT().addWorkOrder(techType, workOrder);
                 }
@@ -607,7 +620,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
                     String workOrder = unit.getExternalId() + "#" + location + "#" + UnitUtils.LOC_FRONT_ARMOR + "#" + baseRoll + "#999";
                     mwclient.getRMT().addWorkOrder(techType, workOrder);
                 }
-                if (unit.hasRearArmor(location) && unit.getArmor(location, true) < unit.getOArmor(location, true)) {
+                if (unit.hasRearArmor(location) && (unit.getArmor(location, true) < unit.getOArmor(location, true))) {
                     String workOrder = unit.getExternalId() + "#" + (location + 7) + "#" + UnitUtils.LOC_REAR_ARMOR + "#" + baseRoll + "#999";
                     mwclient.getRMT().addWorkOrder(techType, workOrder);
                 }
@@ -619,13 +632,14 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
 
     private void checkInternal() {
         // check to see if the checked the box
-        if (!((JCheckBox) repairBox.getComponent(INTERNAL)).isSelected())
+        if (!((JCheckBox) repairBox.getComponent(INTERNAL)).isSelected()) {
             return;
+        }
 
         int techType = ((JComboBox) techBox.getComponent(INTERNAL)).getSelectedIndex();
         String baseRoll = ((JSpinner) rollBox.getComponent(INTERNAL)).getValue().toString();
 
-        if (isBulk() && techType != UnitUtils.TECH_PILOT) {
+        if (isBulk() && (techType != UnitUtils.TECH_PILOT)) {
             mwclient.getConfig().setParam("REPAIRINTERNALTECH", Integer.toString(techType));
             mwclient.getConfig().setParam("REPAIRINTERNALROLL", baseRoll);
         } else if (isSalvage()) {
@@ -648,17 +662,19 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
 
     private void checkEngines() {
         // check to see if the checked the box
-        if (!((JCheckBox) repairBox.getComponent(ENGINES)).isSelected())
+        if (!((JCheckBox) repairBox.getComponent(ENGINES)).isSelected()) {
             return;
+        }
 
         // No damaged engines no reason to keep going.
-        if (!isSalvage() && UnitUtils.getNumberOfDamagedEngineCrits(unit) < 1)
+        if (!isSalvage() && (UnitUtils.getNumberOfDamagedEngineCrits(unit) < 1)) {
             return;
+        }
 
         int techType = ((JComboBox) techBox.getComponent(ENGINES)).getSelectedIndex();
         String baseRoll = ((JSpinner) rollBox.getComponent(ENGINES)).getValue().toString();
 
-        if (isBulk() && techType != UnitUtils.TECH_PILOT) {
+        if (isBulk() && (techType != UnitUtils.TECH_PILOT)) {
             mwclient.getConfig().setParam("REPAIRENGINESTECH", Integer.toString(techType));
             mwclient.getConfig().setParam("REPAIRENGINESROLL", baseRoll);
         } else if (isSalvage()) {
@@ -668,11 +684,13 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
             for (int slot = 0; slot < unit.locations(); slot++) {
                 CriticalSlot cs = unit.getCritical(location, slot);
                 // make sure it a viable slot
-                if (cs == null)
+                if (cs == null) {
                     continue;
+                }
                 // check for engine slot
-                if (!UnitUtils.isEngineCrit(cs))
+                if (!UnitUtils.isEngineCrit(cs)) {
                     continue;
+                }
                 // check its damaged
                 if (isSalvage()) {
                     if (!cs.isDamaged()) {
@@ -681,8 +699,9 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
                         return;
                     }
                 } else {
-                    if (!cs.isDamaged() && !cs.isBreached())
+                    if (!cs.isDamaged() && !cs.isBreached()) {
                         continue;
+                    }
 
                     // ok we have a damaged engine slot lets queue up the repair
                     // and exit.
@@ -696,34 +715,39 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
 
     private void checkSystems() {
         // check to see if the checked the box
-        if (!((JCheckBox) repairBox.getComponent(SYSTEMS)).isSelected())
+        if (!((JCheckBox) repairBox.getComponent(SYSTEMS)).isSelected()) {
             return;
+        }
 
         int techType = ((JComboBox) techBox.getComponent(SYSTEMS)).getSelectedIndex();
         String baseRoll = ((JSpinner) rollBox.getComponent(SYSTEMS)).getValue().toString();
-        if (!isSalvage() && techType != UnitUtils.TECH_PILOT) {
+        if (!isSalvage() && (techType != UnitUtils.TECH_PILOT)) {
             mwclient.getConfig().setParam("REPAIRSYSTEMSTECH", Integer.toString(techType));
             mwclient.getConfig().setParam("REPAIRSYSTEMSROLL", baseRoll);
-        } else if (isSalvage())
+        } else if (isSalvage()) {
             mwclient.getConfig().setParam("SALVAGESYSTEMSTECH", Integer.toString(techType));
+        }
 
         for (int location = 0; location < unit.locations(); location++) {
             for (int slot = 0; slot < unit.getNumberOfCriticals(location); slot++) {
                 CriticalSlot cs = unit.getCritical(location, slot);
-                if (cs == null)
+                if (cs == null) {
                     continue;
-                if (UnitUtils.isNonRepairableCrit(unit, cs))
+                }
+                if (UnitUtils.isNonRepairableCrit(unit, cs)) {
                     continue;
+                }
                 if (isSalvage()) {
-                    if (!cs.isDamaged() && cs.getType() == CriticalSlot.TYPE_SYSTEM && cs.getIndex() != Mech.SYSTEM_ENGINE) {
+                    if (!cs.isDamaged() && (cs.getType() == CriticalSlot.TYPE_SYSTEM) && (cs.getIndex() != Mech.SYSTEM_ENGINE)) {
                         String workOrder = unit.getExternalId() + "#" + location + "#" + slot;
                         mwclient.getSMT().addWorkOrder(techType, workOrder);
                         slot += UnitUtils.getNumberOfCrits(unit, cs) - 1;
                     }
                 } else {
-                    if (!cs.isBreached() && !cs.isDamaged())
+                    if (!cs.isBreached() && !cs.isDamaged()) {
                         continue;
-                    if (cs.getType() == CriticalSlot.TYPE_SYSTEM && cs.getIndex() != Mech.SYSTEM_ENGINE) {
+                    }
+                    if ((cs.getType() == CriticalSlot.TYPE_SYSTEM) && (cs.getIndex() != Mech.SYSTEM_ENGINE)) {
                         String workOrder = unit.getExternalId() + "#" + location + "#" + slot + "#" + baseRoll + "#999";
                         mwclient.getRMT().addWorkOrder(techType, workOrder);
                         slot += UnitUtils.getNumberOfCrits(unit, cs) - 1;
@@ -735,13 +759,14 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
 
     private void checkWeapons() {
         // check to see if the checked the box
-        if (!((JCheckBox) repairBox.getComponent(WEAPONS)).isSelected())
+        if (!((JCheckBox) repairBox.getComponent(WEAPONS)).isSelected()) {
             return;
+        }
 
         int techType = ((JComboBox) techBox.getComponent(WEAPONS)).getSelectedIndex();
         String baseRoll = ((JSpinner) rollBox.getComponent(WEAPONS)).getValue().toString();
 
-        if (!isSalvage() && techType != UnitUtils.TECH_PILOT) {
+        if (!isSalvage() && (techType != UnitUtils.TECH_PILOT)) {
             mwclient.getConfig().setParam("REPAIRWEAPONSTECH", Integer.toString(techType));
             mwclient.getConfig().setParam("REPAIRWEAPONSROLL", baseRoll);
         } else if (isSalvage()) {
@@ -752,16 +777,19 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
             Mounted lastWeapon = null;
             for (int slot = 0; slot < unit.getNumberOfCriticals(location); slot++) {
                 CriticalSlot cs = unit.getCritical(location, slot);
-                if (cs == null)
+                if (cs == null) {
                     continue;
-                if (UnitUtils.isNonRepairableCrit(unit, cs))
+                }
+                if (UnitUtils.isNonRepairableCrit(unit, cs)) {
                     continue;
+                }
 
-                if (!isSalvage() && !cs.isBreached() && !cs.isDamaged())
+                if (!isSalvage() && !cs.isBreached() && !cs.isDamaged()) {
                     continue;
+                }
 
                 if (cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
-                    Mounted mounted = unit.getEquipment(cs.getIndex());
+                    Mounted mounted = cs.getMount();
                     // Only want to set a Tech to work on the Mounted object
                     // that is destroyed don't need to
                     // add multiple techs to a single weapon
@@ -771,7 +799,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
                             String workOrder = unit.getExternalId() + "#" + location + "#" + slot;
                             mwclient.getSMT().addWorkOrder(techType, workOrder);
                         }
-                    } else if (mounted.getType() instanceof WeaponType && (mounted.isDestroyed() || mounted.isMissing()) && !mounted.equals(lastWeapon)) {
+                    } else if ((mounted.getType() instanceof WeaponType) && (mounted.isDestroyed() || mounted.isMissing()) && !mounted.equals(lastWeapon)) {
                         lastWeapon = mounted;
                         String workOrder = unit.getExternalId() + "#" + location + "#" + slot + "#" + baseRoll + "#999";
                         mwclient.getRMT().addWorkOrder(techType, workOrder);
@@ -783,13 +811,14 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
 
     private void checkEquipment() {
         // check to see if the checked the box
-        if (!((JCheckBox) repairBox.getComponent(EQUIPMENT)).isSelected())
+        if (!((JCheckBox) repairBox.getComponent(EQUIPMENT)).isSelected()) {
             return;
+        }
 
         int techType = ((JComboBox) techBox.getComponent(EQUIPMENT)).getSelectedIndex();
         String baseRoll = ((JSpinner) rollBox.getComponent(EQUIPMENT)).getValue().toString();
 
-        if (isBulk() && techType != UnitUtils.TECH_PILOT) {
+        if (isBulk() && (techType != UnitUtils.TECH_PILOT)) {
             mwclient.getConfig().setParam("REPAIREQUIPMENTTECH", Integer.toString(techType));
             mwclient.getConfig().setParam("REPAIREQUIPMENTROLL", baseRoll);
         } else if (isSalvage()) {
@@ -800,16 +829,19 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
             Mounted lastEq = null;
             for (int slot = 0; slot < unit.getNumberOfCriticals(location); slot++) {
                 CriticalSlot cs = unit.getCritical(location, slot);
-                if (cs == null)
+                if (cs == null) {
                     continue;
-                if (UnitUtils.isNonRepairableCrit(unit, cs))
+                }
+                if (UnitUtils.isNonRepairableCrit(unit, cs)) {
                     continue;
+                }
 
-                if (!isSalvage() && !cs.isBreached() && !cs.isDamaged())
+                if (!isSalvage() && !cs.isBreached() && !cs.isDamaged()) {
                     continue;
+                }
 
                 if (cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
-                    Mounted mounted = unit.getEquipment(cs.getIndex());
+                    Mounted mounted = cs.getMount();
 
                     // Only want to set a Tech to work on the Mounted object
                     // that is destroyed don't need to
@@ -846,12 +878,13 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
             ((JLabel) costBox.getComponent(ARMOR)).setText("?????");
             return;
         }
-        
+
         if (techType != UnitUtils.TECH_PILOT) {
             techCost = Integer.parseInt(mwclient.getserverConfigs(UnitUtils.techDescription(techType) + "TechRepairCost"));
-            techWorkMod = UnitUtils.getTechRoll(unit, 0, UnitUtils.LOC_FRONT_ARMOR, techType, true, this.mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getTechLevel()) - baseRoll;
-        } else
+            techWorkMod = UnitUtils.getTechRoll(unit, 0, UnitUtils.LOC_FRONT_ARMOR, techType, true, mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getTechLevel()) - baseRoll;
+        } else {
             techType = playerUnit.getPilot().getSkills().getPilotSkill(PilotSkill.AstechSkillID).getLevel();
+        }
 
         techWorkMod = Math.max(techWorkMod, 0);
 
@@ -864,7 +897,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
                     clear = false;
                 }
 
-                if (unit.hasRearArmor(location) && unit.getArmor(location, true) > 0) {
+                if (unit.hasRearArmor(location) && (unit.getArmor(location, true) > 0)) {
                     cost += techCost;
                     setWorkHours(ARMOR, location, 0, true, clear);
                     clear = false;
@@ -894,8 +927,9 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
         // Base on what they assigned as the base roll we increase the payout so
         // that it covers the chances of failures. not the greatest but better
         // then nothing.
-        if (!isSalvage())
+        if (!isSalvage()) {
             cost *= payOutIncreaseBasedOnRoll(baseRoll);
+        }
         cost = Math.max(0, cost);
 
         ((JLabel) costBox.getComponent(ARMOR)).setText(Integer.toString((int) cost));
@@ -923,14 +957,14 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
 
         for (int location = 0; location < unit.locations(); location++) {
 
-            if (isSalvage() && unit.getInternal(location) > 0) {
+            if (isSalvage() && (unit.getInternal(location) > 0)) {
                 cost += techCost;
                 setWorkHours(INTERNAL, location, UnitUtils.LOC_INTERNAL_ARMOR, true, clear);
                 clear = false;
             } else {
                 if (unit.getInternal(location) < unit.getOInternal(location)) {
                     if (techType != UnitUtils.TECH_PILOT) {
-                        techWorkMod = UnitUtils.getTechRoll(unit, location, UnitUtils.LOC_INTERNAL_ARMOR, techType, true, this.mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getTechLevel()) - baseRoll;
+                        techWorkMod = UnitUtils.getTechRoll(unit, location, UnitUtils.LOC_INTERNAL_ARMOR, techType, true, mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getTechLevel()) - baseRoll;
                     }
 
                     techWorkMod = Math.max(techWorkMod, 0);
@@ -948,8 +982,9 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
         // Base on what they assigned as the base roll we increase the payout so
         // that it covers the chances of failures. not the greatest but better
         // then nothing.
-        if (!isSalvage())
+        if (!isSalvage()) {
             cost *= payOutIncreaseBasedOnRoll(baseRoll);
+        }
         cost = Math.max(0, cost);
 
         ((JLabel) costBox.getComponent(INTERNAL)).setText(Integer.toString((int) cost));
@@ -978,12 +1013,14 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
         for (int location = 0; location < unit.locations(); location++) {
             for (int slot = 0; slot < unit.getNumberOfCriticals(location); slot++) {
                 CriticalSlot cs = unit.getCritical(location, slot);
-                if (cs == null)
+                if (cs == null) {
                     continue;
-                if (UnitUtils.isNonRepairableCrit(unit, cs))
+                }
+                if (UnitUtils.isNonRepairableCrit(unit, cs)) {
                     continue;
+                }
                 if (isSalvage()) {
-                    if (!cs.isDamaged() && cs.getType() == CriticalSlot.TYPE_SYSTEM && cs.getIndex() != Mech.SYSTEM_ENGINE) {
+                    if (!cs.isDamaged() && (cs.getType() == CriticalSlot.TYPE_SYSTEM) && (cs.getIndex() != Mech.SYSTEM_ENGINE)) {
                         int crits = UnitUtils.getNumberOfCrits(unit, cs) - UnitUtils.getNumberOfDamagedCrits(unit, slot, location, false);
                         cost += techCost * crits;
                         cost += techCost;
@@ -993,11 +1030,12 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
                     continue;
                 }
 
-                if (!cs.isBreached() && !cs.isDamaged())
+                if (!cs.isBreached() && !cs.isDamaged()) {
                     continue;
-                if (cs.getType() == CriticalSlot.TYPE_SYSTEM && cs.getIndex() != Mech.SYSTEM_ENGINE) {
+                }
+                if ((cs.getType() == CriticalSlot.TYPE_SYSTEM) && (cs.getIndex() != Mech.SYSTEM_ENGINE)) {
                     if (techType != UnitUtils.TECH_PILOT) {
-                        techWorkMod = UnitUtils.getTechRoll(unit, location, slot, techType, true, this.mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getTechLevel()) - baseRoll;
+                        techWorkMod = UnitUtils.getTechRoll(unit, location, slot, techType, true, mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getTechLevel()) - baseRoll;
                     }
 
                     critCost = CUnit.getCritCost(unit, mwclient, cs);
@@ -1019,8 +1057,9 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
         // Base on what they assigned as the base roll we increase the payout so
         // that it covers the chances of failures. not the greatest but better
         // then nothing.
-        if (!isSalvage())
+        if (!isSalvage()) {
             cost *= payOutIncreaseBasedOnRoll(baseRoll);
+        }
         cost = Math.max(0, cost);
 
         ((JLabel) costBox.getComponent(SYSTEMS)).setText(Integer.toString((int) cost));
@@ -1037,7 +1076,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
         double cost = 0;
         boolean clear = true;
 
-        
+
         if ( unitRepairType == BulkRepairDialog.UNIT_TYPE_ALL ) {
             ((JLabel) costBox.getComponent(WEAPONS)).setText("?????");
             return;
@@ -1051,31 +1090,34 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
         for (int location = 0; location < unit.locations(); location++) {
             for (int slot = 0; slot < unit.getNumberOfCriticals(location); slot++) {
                 CriticalSlot cs = unit.getCritical(location, slot);
-                if (cs == null)
+                if (cs == null) {
                     continue;
+                }
                 if (isSalvage()) {
-                    if (!cs.isDamaged() && cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
-                        Mounted mounted = unit.getEquipment(cs.getIndex());
+                    if (!cs.isDamaged() && (cs.getType() == CriticalSlot.TYPE_EQUIPMENT)) {
+                        Mounted mounted = cs.getMount();
 
-                        if (mounted.getType() instanceof WeaponType && !mounted.equals(lastWeapon)) {
+                        if ((mounted.getType() instanceof WeaponType) && !mounted.equals(lastWeapon)) {
                             int crits = UnitUtils.getNumberOfCrits(unit, cs) - UnitUtils.getNumberOfDamagedCrits(unit, slot, location, false);
                             cost += techCost * crits;
-                            if (crits > 0)
+                            if (crits > 0) {
                                 cost += techCost;
+                            }
                             clear = false;
                             lastWeapon = mounted;
                         }
                     }
                     continue;
                 } else {
-                    if (!cs.isBreached() && !cs.isDamaged())
+                    if (!cs.isBreached() && !cs.isDamaged()) {
                         continue;
+                    }
                     if (cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
-                        Mounted mounted = unit.getEquipment(cs.getIndex());
+                        Mounted mounted = cs.getMount();
 
-                        if (mounted.getType() instanceof WeaponType && !mounted.equals(lastWeapon)) {
+                        if ((mounted.getType() instanceof WeaponType) && !mounted.equals(lastWeapon)) {
                             if (techType != UnitUtils.TECH_PILOT) {
-                                techWorkMod = UnitUtils.getTechRoll(unit, location, slot, techType, true, this.mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getTechLevel()) - baseRoll;
+                                techWorkMod = UnitUtils.getTechRoll(unit, location, slot, techType, true, mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getTechLevel()) - baseRoll;
                             }
 
                             critCost = CUnit.getCritCost(unit, mwclient, cs);
@@ -1097,8 +1139,9 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
         // Base on what they assigned as the base roll we increase the payout so
         // that it covers the chances of failures. not the greatest but better
         // then nothing.
-        if (!isSalvage())
+        if (!isSalvage()) {
             cost *= payOutIncreaseBasedOnRoll(baseRoll);
+        }
         cost = Math.max(0, cost);
 
         ((JLabel) costBox.getComponent(WEAPONS)).setText(Integer.toString((int) cost));
@@ -1128,13 +1171,15 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
         for (int location = 0; location < unit.locations(); location++) {
             for (int slot = 0; slot < unit.getNumberOfCriticals(location); slot++) {
                 CriticalSlot cs = unit.getCritical(location, slot);
-                if (cs == null)
+                if (cs == null) {
                     continue;
-                if (UnitUtils.isNonRepairableCrit(unit, cs))
+                }
+                if (UnitUtils.isNonRepairableCrit(unit, cs)) {
                     continue;
+                }
                 if (isSalvage()) {
-                    if (!cs.isDamaged() && cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
-                        Mounted mounted = unit.getEquipment(cs.getIndex());
+                    if (!cs.isDamaged() && (cs.getType() == CriticalSlot.TYPE_EQUIPMENT)) {
+                        Mounted mounted = cs.getMount();
                         if (!(mounted.getType() instanceof WeaponType) && !mounted.equals(lastEq)) {
                             int crits = UnitUtils.getNumberOfCrits(unit, cs) - UnitUtils.getNumberOfDamagedCrits(unit, slot, location, false);
                             cost += techCost * crits;
@@ -1146,14 +1191,15 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
                     continue;
                 }
 
-                if (!cs.isBreached() && !cs.isDamaged())
+                if (!cs.isBreached() && !cs.isDamaged()) {
                     continue;
+                }
                 if (cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
-                    Mounted mounted = unit.getEquipment(cs.getIndex());
+                    Mounted mounted = cs.getMount();
 
                     if (!(mounted.getType() instanceof WeaponType) && !mounted.equals(lastEq)) {
                         if (techType != UnitUtils.TECH_PILOT) {
-                            techWorkMod = UnitUtils.getTechRoll(unit, location, slot, techType, true, this.mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getTechLevel()) - baseRoll;
+                            techWorkMod = UnitUtils.getTechRoll(unit, location, slot, techType, true, mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getTechLevel()) - baseRoll;
                         }
 
                         critCost = CUnit.getCritCost(unit, mwclient, cs);
@@ -1174,8 +1220,9 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
         // Base on what they assigned as the base roll we increase the payout so
         // that it covers the chances of failures. not the greatest but better
         // then nothing.
-        if (!isSalvage())
+        if (!isSalvage()) {
             cost *= payOutIncreaseBasedOnRoll(baseRoll);
+        }
         cost = Math.max(0, cost);
 
         ((JLabel) costBox.getComponent(EQUIPMENT)).setText(Integer.toString((int) cost));
@@ -1207,24 +1254,28 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
             for (int y = 0; y < unit.getNumberOfCriticals(x); y++) {
                 cs = unit.getCritical(x, y);
 
-                if (cs == null)
+                if (cs == null) {
                     continue;
+                }
 
-                if (!UnitUtils.isEngineCrit(cs))
+                if (!UnitUtils.isEngineCrit(cs)) {
                     continue;
+                }
 
                 if (isSalvage()) {
                     int totalCrits = UnitUtils.getNumberOfEngineCrits(unit) - UnitUtils.getNumberOfDamagedEngineCrits(unit);
                     int totalCost = (int) (totalCrits * techCost);
-                    if (totalCrits > 0)
+                    if (totalCrits > 0) {
                         totalCost += techCost;
+                    }
                     cost = Math.max(0, totalCost);
                     ((JLabel) costBox.getComponent(ENGINES)).setText(Integer.toString((int) cost));
                     return;
                 }
 
-                if (!cs.isDamaged() && !cs.isBreached())
+                if (!cs.isDamaged() && !cs.isBreached()) {
                     continue;
+                }
 
                 location = x;
                 slot = y;
@@ -1235,7 +1286,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
         }
 
         if (techType != UnitUtils.TECH_PILOT) {
-            techWorkMod = UnitUtils.getTechRoll(unit, location, slot, techType, true, this.mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getTechLevel()) - baseRoll;
+            techWorkMod = UnitUtils.getTechRoll(unit, location, slot, techType, true, mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getTechLevel()) - baseRoll;
         }
 
         critCost = CUnit.getCritCost(unit, mwclient, cs);
@@ -1281,8 +1332,9 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
         int techType = ((JComboBox) techBox.getComponent(type)).getSelectedIndex();
         int baseRoll = Integer.parseInt(((JSpinner) rollBox.getComponent(type)).getValue().toString());
 
-        if (critLocation < 0 || critSlot < 0)
+        if ((critLocation < 0) || (critSlot < 0)) {
             return;
+        }
 
         int baseLine = Integer.parseInt(mwclient.getserverConfigs("TimeForEachRepairPoint"));
 
@@ -1292,16 +1344,18 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
             baseLine *= totalCrits;
         }
 
-        int rolls = UnitUtils.getTechRoll(unit, critLocation, critSlot, techType, armor, this.mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getTechLevel()) - baseRoll;
+        int rolls = UnitUtils.getTechRoll(unit, critLocation, critSlot, techType, armor, mwclient.getData().getHouseByName(mwclient.getPlayer().getHouse()).getTechLevel()) - baseRoll;
 
-        for (int count = 0; count < rolls; count++)
+        for (int count = 0; count < rolls; count++) {
             baseLine *= 2;
+        }
 
         baseLine = (int) (baseLine * payOutIncreaseBasedOnRoll(baseRoll));
 
         JLabel textField = (JLabel) timeBox.getComponent(type);
-        if (!clear)
+        if (!clear) {
             baseLine += Integer.parseInt(textField.getText());
+        }
         textField.setText(Integer.toString(baseLine));
 
     }
@@ -1320,7 +1374,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
             ((JLabel) totalPanel.getComponent(0)).setText("?????");
             return;
         }
-        
+
         for (int x = ARMOR; x <= ENGINES; x++) {
             cost += Integer.parseInt(((JLabel) costBox.getComponent(x)).getText());
             if (isSimple()) {

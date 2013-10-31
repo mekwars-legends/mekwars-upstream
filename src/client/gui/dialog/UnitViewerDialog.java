@@ -1,5 +1,5 @@
 /*
- * MekWars - Copyright (C) 2004, 2005 
+ * MekWars - Copyright (C) 2004, 2005
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -14,19 +14,19 @@
 
 /*
  * MechSelectorJDialog.java - Copyright (C) 2002,2004 Josh Yockey
- * 
- *  This program is free software; you can redistribute it and/or modify it 
- *  under the terms of the GNU General Public License as published by the Free 
- *  Software Foundation; either version 2 of the License, or (at your option) 
+ *
+ *  This program is free software; you can redistribute it and/or modify it
+ *  under the terms of the GNU General Public License as published by the Free
+ *  Software Foundation; either version 2 of the License, or (at your option)
  *  any later version.
- * 
- *  This program is distributed in the hope that it will be useful, but 
- *  WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
- *  or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License 
+ *
+ *  This program is distributed in the hope that it will be useful, but
+ *  WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ *  or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  *  for more details.
  */
 
-/* 
+/*
  * Thanks to the MegaMek Crew for the Code base
  * Modified by Torren (Jason Tighe)
  * From Megamek.client.MechSelectorDialgo.java
@@ -73,9 +73,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import megamek.client.ui.AWT.MechView;
-import megamek.client.ui.AWT.UnitFailureDialog;
-import megamek.client.ui.AWT.UnitLoadingDialog;
+import megamek.client.ui.swing.UnitFailureDialog;
+import megamek.client.ui.swing.UnitLoadingDialog;
 import megamek.common.Entity;
 import megamek.common.EntityWeightClass;
 import megamek.common.EquipmentType;
@@ -83,6 +82,7 @@ import megamek.common.MechFileParser;
 import megamek.common.MechSummary;
 import megamek.common.MechSummaryCache;
 import megamek.common.MechSummaryComparator;
+import megamek.common.MechView;
 import megamek.common.MiscType;
 import megamek.common.Mounted;
 import megamek.common.TechConstants;
@@ -104,7 +104,7 @@ import common.util.UnitUtils;
 public class UnitViewerDialog extends JFrame implements ActionListener, KeyListener, ListSelectionListener, Runnable, WindowListener, ItemListener {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -7210333306969855153L;
     // how long after a key is typed does a new search begin
@@ -659,7 +659,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
                     }
                     unitFile = UnitUtils.getMechSummaryFileName(ms);
 
-                    
+
                     String fluff = JOptionPane.showInputDialog(clientgui, "Fluff text for " + unit);
 
                     if ((fluff == null) || (fluff.length() == 0)) {
@@ -799,7 +799,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
         int sel = m_cArmor.getSelectedIndex();
         if (sel > 0) {
             int armor = entity.getTotalArmor();
-            int maxArmor = entity.getTotalInternal() * 2 + 3;
+            int maxArmor = (entity.getTotalInternal() * 2) + 3;
             if (sel == 1) {
                 if (armor < (maxArmor * .25)) {
                     return false;
@@ -1047,7 +1047,7 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
             actionPerformed(event);
         }
         long curTime = System.currentTimeMillis();
-        if (curTime - m_nLastSearch > KEY_TIMEOUT) {
+        if ((curTime - m_nLastSearch) > KEY_TIMEOUT) {
             m_sbSearch = new StringBuilder();
         }
         m_nLastSearch = curTime;

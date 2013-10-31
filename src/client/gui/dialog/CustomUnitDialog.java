@@ -44,7 +44,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -127,7 +126,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
     private boolean usingCrits = false;
 
     private CUnit unit;
-    
+
     private boolean unitIsAero = false;
 
     /** Creates new CustomMechDialog */
@@ -143,7 +142,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
         if(entity instanceof Aero) {
         	unitIsAero = true;
         }
-        
+
         mmClient.game.getOptions().loadOptions();
         setTitle("Customize Unit");
 
@@ -261,7 +260,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
          *
          * Only doso if the server has enabled "maxtech_burst"
          */
-        if (mmClient.game.getOptions().booleanOption("tacops_burst") && !(entity instanceof Infantry || entity instanceof Aero )) {
+        if (mmClient.game.getOptions().booleanOption("tacops_burst") && !((entity instanceof Infantry) || (entity instanceof Aero) )) {
             setupMachineGuns();
             scrollPanel.add(panMachineGuns);
         }
@@ -431,7 +430,7 @@ CampaignData.mwlog.errLog("IsLegal (" + atCheck.getName() + "): " + bTechMatch +
                 if ((entity instanceof Aero) && !(atCheck.getAmmoType() == AmmoType.T_ATM)) {
                 	continue;
                 }
-                
+
                 // All other ammo types need to match on rack size and tech.
                 if (bTechMatch) {
                     vTypes.addElement(atCheck);
@@ -445,8 +444,8 @@ CampaignData.mwlog.errLog("IsLegal (" + atCheck.getName() + "): " + bTechMatch +
                 mcp = new MunitionChoicePanel(m, vTypes, location);
             } else {
             	// Aero.  We can only give them default ammos, unless it's an ATM
-            	
-            	// Sweet.  Erroring out on Aeros, because they're specifically 
+
+            	// Sweet.  Erroring out on Aeros, because they're specifically
             	// being excluded.  Why?
             	mcp = new MunitionChoicePanel(m, vTypes, location);
             	// NOTE: This is a straight copy for testing purposes.  If this
@@ -517,7 +516,7 @@ CampaignData.mwlog.errLog("IsLegal (" + atCheck.getName() + "): " + bTechMatch +
                     continue;
                 }
 
-                Mounted m = entity.getEquipment(crit.getIndex());
+                Mounted m = crit.getMount();
 
                 if ((m == null) || !(m.getType() instanceof WeaponType)) {
                     continue;
@@ -671,7 +670,7 @@ CampaignData.mwlog.errLog("IsLegal (" + atCheck.getName() + "): " + bTechMatch +
             // m_mounted.changeAmmoType(at);
 
             int totalShots = at.getShots();
-            
+
             boolean hotloaded = false;
 
             if (chHotLoad != null) {

@@ -205,7 +205,7 @@ public class RepairTrackingThread extends Thread{
                         CriticalSlot cs = repairOrder.getUnit().getCritical(repairOrder.getLocation(),repairOrder.getSlot());
 
                         if ( cs.getType() == CriticalSlot.TYPE_EQUIPMENT ){
-                            Mounted mounted = repairOrder.getUnit().getEquipment(cs.getIndex());
+                            Mounted mounted = cs.getMount();
                             results +="Repairing "+mounted.getName()+"("+ repairOrder.getUnit().getLocationAbbr(repairOrder.getLocation())+") ETA: "+output+".";
                         }// end CS type if
                         else{
@@ -452,7 +452,7 @@ class Repair{
                         }
 
                         if ( cs.getType() == CriticalSlot.TYPE_EQUIPMENT ){
-                            Mounted mounted = entity.getEquipment(cs.getIndex());
+                            Mounted mounted = cs.getMount();
                             UnitUtils.repairEquipment(mounted,entity,x);
                         }// end CS type if
                         else{
@@ -776,7 +776,7 @@ class Repair{
 
                     if ( salvage ) {
                         if ( cs.getType() == CriticalSlot.TYPE_EQUIPMENT ){
-                            Mounted mounted = unit.getEquipment(cs.getIndex());
+                            Mounted mounted = cs.getMount();
                             repairMessage ="The salvage job for the "+mounted.getName()+"("+ unit.getLocationAbbr(location)+") on the "+unit.getShortNameRaw()+" was a complete failure and the part was lost.";
                             UnitUtils.salvageEquipment(mounted, unit, location);
                         }// end CS type if
@@ -794,7 +794,7 @@ class Repair{
                         CampaignMain.cm.toUser("FSM|"+repairMessage,Username,false);
                     }else {
                         if ( cs.getType() == CriticalSlot.TYPE_EQUIPMENT ){
-                            Mounted mounted = unit.getEquipment(cs.getIndex());
+                            Mounted mounted = cs.getMount();
                             repairMessage ="The repair job for the "+mounted.getName()+"("+ unit.getLocationAbbr(location)+") on the "+unit.getShortNameRaw()+" was a complete failure.";
                         }// end CS type if
                         else{
@@ -961,7 +961,7 @@ class Repair{
 
                     if ( salvage ) {
                         if ( cs.getType() == CriticalSlot.TYPE_EQUIPMENT ){
-                            Mounted mounted = unit.getEquipment(cs.getIndex());
+                            Mounted mounted = cs.getMount();
                             UnitUtils.salvageEquipment(mounted,unit,location);
                             repairMessage ="The "+mounted.getName()+"("+ unit.getLocationAbbr(location)+") on the "+unit.getShortNameRaw()+" was succesfully salvaged.";
                             //Ammo Bins have both the bin and the ammo
@@ -995,7 +995,7 @@ class Repair{
                         CampaignMain.cm.toUser("FSM|"+repairMessage,Username,false);
                     }else {
                         if ( cs.getType() == CriticalSlot.TYPE_EQUIPMENT ){
-                            Mounted mounted = unit.getEquipment(cs.getIndex());
+                            Mounted mounted = cs.getMount();
                             UnitUtils.repairEquipment(mounted,unit,location);
                             if ( mounted.getType() instanceof AmmoType ) {
                                 critName = "Ammo Bin";

@@ -311,7 +311,7 @@ public class UseRewardPointsCommand implements Command {
                         continue;
                     
                     if ( cs.getType() == CriticalSlot.TYPE_EQUIPMENT ){
-                        Mounted mounted = entity.getEquipment(cs.getIndex());
+                        Mounted mounted = cs.getMount();
                         UnitUtils.repairEquipment(mounted,entity,x);
                     }// end CS type if
                     else{

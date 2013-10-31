@@ -1,14 +1,14 @@
 /*
  * MekWars - Copyright (C) 2004
- * 
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  * Original author Helge Richter (McWizard)
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
@@ -56,7 +56,7 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 import megamek.MegaMek;
-import megamek.client.ui.AWT.UnitLoadingDialog;
+import megamek.client.ui.swing.UnitLoadingDialog;
 import client.CUser;
 import client.MWClient;
 import client.campaign.CArmy;
@@ -84,7 +84,7 @@ import common.util.StringUtils;
 
 public class CMainFrame extends JFrame {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -1198882220815512476L;
 
@@ -1419,7 +1419,7 @@ public class CMainFrame extends JFrame {
         String faction;
 
         range = JOptionPane.showInputDialog(getContentPane(), "Max distance in Lightyears?");
-        if (range == null || range.length() < 1) {
+        if ((range == null) || (range.length() < 1)) {
             return;
         }
 
@@ -1428,7 +1428,7 @@ public class CMainFrame extends JFrame {
         faction = factionDialog.getHouseName();
         factionDialog.dispose();
 
-        if (faction == null || faction.length() < 1) {
+        if ((faction == null) || (faction.length() < 1)) {
             return;
         }
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c range#" + range + "#" + faction);
@@ -1439,7 +1439,7 @@ public class CMainFrame extends JFrame {
         String targetPlayer;
         String Amount;
 
-        if (name == null || name.trim().equals("")) {
+        if ((name == null) || name.trim().equals("")) {
             PlayerNameDialog pnd = new PlayerNameDialog(mwclient, "Transfer Recipient", PlayerNameDialog.FACTION_ONLY);
             pnd.setVisible(true);
             targetPlayer = pnd.getPlayerName();
@@ -1466,34 +1466,36 @@ public class CMainFrame extends JFrame {
     	String targetPlayer;
     	String Amount;
 
-    	if (name == null || name.trim().equals(""))
+    	if ((name == null) || name.trim().equals(""))
     	{
     		PlayerNameDialog pnd = new PlayerNameDialog(mwclient, "Transfer Recipient", PlayerNameDialog.FACTION_ONLY);
     		pnd.setVisible(true);
     		targetPlayer = pnd.getPlayerName();
     		pnd.dispose();
-    	}
-    	else
-    		targetPlayer = name;
+    	} else {
+            targetPlayer = name;
+        }
 
-    	if (targetPlayer == null)
-    		return;
+    	if (targetPlayer == null) {
+            return;
+        }
 
     	Amount = JOptionPane.showInputDialog(getContentPane(), "Amount", "Send " + mwclient.getserverConfigs("RPShortName") + " to " + targetPlayer, JOptionPane.PLAIN_MESSAGE);
 
-    	if (Amount == null)
-    		return;
+    	if (Amount == null) {
+            return;
+        }
 
     	mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c transferrewardpoints#" + targetPlayer + "#" + Amount);
     }
 
 
-    
+
     public void jMenuCommanderTransferUnit_actionPerformed(String name, int mid) {
 
         String targetPlayer;
 
-        if (name == null || name.trim().equals("")) {
+        if ((name == null) || name.trim().equals("")) {
             PlayerNameDialog pnd = new PlayerNameDialog(mwclient, "Transfer Recipient", PlayerNameDialog.FACTION_ONLY);
             pnd.setVisible(true);
             targetPlayer = pnd.getPlayerName();
@@ -1688,7 +1690,7 @@ public class CMainFrame extends JFrame {
         // get player
         String targetPlayer;
 
-        if (name == null || name.trim().equals("")) {
+        if ((name == null) || name.trim().equals("")) {
             PlayerNameDialog pnd = new PlayerNameDialog(mwclient, "Transfer Recipient", PlayerNameDialog.FACTION_ONLY);
             pnd.setVisible(true);
             targetPlayer = pnd.getPlayerName();
@@ -1711,7 +1713,7 @@ public class CMainFrame extends JFrame {
         // determine the unit type to use
         String pUnitTypeString = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(), "Select a pilot unit type", "Unit Type Selection", JOptionPane.INFORMATION_MESSAGE, null, pUnitType, pUnitType[0]);
 
-        if (pUnitTypeString == null || pUnitTypeString.length() == 0) {
+        if ((pUnitTypeString == null) || (pUnitTypeString.length() == 0)) {
             return;
         }
 
@@ -1724,7 +1726,7 @@ public class CMainFrame extends JFrame {
         // determine the weight class to use
         String pWeightClassString = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(), "Select a pilot unit size", "Weight Class Selection", JOptionPane.INFORMATION_MESSAGE, null, pWeightClass, pWeightClass[0]);
 
-        if (pWeightClassString == null || pWeightClassString.length() == 0) {
+        if ((pWeightClassString == null) || (pWeightClassString.length() == 0)) {
             return;
         }
 
@@ -1786,7 +1788,7 @@ public class CMainFrame extends JFrame {
         // determine the unit type to use
         String pUnitTypeString = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(), "Select a pilot unit type", "Unit Type Selection", JOptionPane.INFORMATION_MESSAGE, null, pUnitType, pUnitType[0]);
 
-        if (pUnitTypeString == null || pUnitTypeString.length() == 0) {
+        if ((pUnitTypeString == null) || (pUnitTypeString.length() == 0)) {
             return;
         }
 
@@ -1799,7 +1801,7 @@ public class CMainFrame extends JFrame {
         // determine the weight class to use
         String pWeightClassString = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(), "Select a pilot unit size", "Weight Class Selection", JOptionPane.INFORMATION_MESSAGE, null, pWeightClass, pWeightClass[0]);
 
-        if (pWeightClassString == null || pWeightClassString.length() == 0) {
+        if ((pWeightClassString == null) || (pWeightClassString.length() == 0)) {
             return;
         }
 
@@ -1850,7 +1852,7 @@ public class CMainFrame extends JFrame {
         String unitID;
         String price;
 
-        if (name == null || name.trim().equals("")) {
+        if ((name == null) || name.trim().equals("")) {
             PlayerNameDialog pnd = new PlayerNameDialog(mwclient, "Buyer", PlayerNameDialog.ANY_PLAYER);
             pnd.setVisible(true);
             buyer = pnd.getPlayerName();
@@ -1863,7 +1865,7 @@ public class CMainFrame extends JFrame {
             return;
         }
 
-        if (id == null || id.trim().equals("")) {
+        if ((id == null) || id.trim().equals("")) {
             UnitSelectionDialog usd = new UnitSelectionDialog(mwclient, "Unit", "Select a unit to sell");
             usd.setVisible(true);
             unitID = usd.getUnitID();
@@ -1877,7 +1879,7 @@ public class CMainFrame extends JFrame {
         String serviceFee = "SellDirect" + Unit.getWeightClassDesc(unit.getWeightclass()) + Unit.getTypeClassDesc(unit.getType()) + "Price";
         price = JOptionPane.showInputDialog(getContentPane(), "How much do you wish to offer? (" + mwclient.moneyOrFluMessage(true, true, -2) + ")\n\r" + "Please note a service charge of " + mwclient.moneyOrFluMessage(true, true, Integer.parseInt(mwclient.getserverConfigs(serviceFee))) + " will be added.");
 
-        if (price == null || price.length() < 1) {
+        if ((price == null) || (price.length() < 1)) {
             return;
         }
 
@@ -1967,17 +1969,17 @@ public class CMainFrame extends JFrame {
     public void jMenuCommanderFireTechs_actionPerformed() {
 
         String techsToFire = JOptionPane.showInputDialog(getContentPane(), "How many techs do you want to fire?");
-        if (techsToFire == null || techsToFire.trim().length() == 0) {
+        if ((techsToFire == null) || (techsToFire.trim().length() == 0)) {
             return;
         }
 
         int techs = Integer.parseInt(techsToFire);
-        if (!useAdvanceRepairs && thePlayer.getTechs() <= 0) {
+        if (!useAdvanceRepairs && (thePlayer.getTechs() <= 0)) {
             mwclient.addToChat("<b>You have no hired techs to fire.<b>");
             return;
         }
 
-        if (!useAdvanceRepairs && (techs < 1 || techs > thePlayer.getTechs())) {
+        if (!useAdvanceRepairs && ((techs < 1) || (techs > thePlayer.getTechs()))) {
             mwclient.addToChat("<b>Try picking a number between 1 and " + thePlayer.getTechs() + "<b>");
             return;
         }
@@ -2028,7 +2030,7 @@ public class CMainFrame extends JFrame {
             techsToHire = JOptionPane.showInputDialog(getContentPane(), "How many techs do you want to hire?");
         }
 
-        if (techsToHire == null || techsToHire.length() == 0) {
+        if ((techsToHire == null) || (techsToHire.length() == 0)) {
             return;
         }
 
@@ -2093,16 +2095,16 @@ public class CMainFrame extends JFrame {
         // determine the unit type to use
         String pUnitTypeString = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(), "Select unit type", "Unit Type Selection", JOptionPane.INFORMATION_MESSAGE, null, pUnitType, pUnitType[0]);
 
-        if (pUnitTypeString == null || pUnitTypeString.length() == 0) {
+        if ((pUnitTypeString == null) || (pUnitTypeString.length() == 0)) {
             return;
         }
 
-        unitType = CUnit.getTypeIDForName(pUnitTypeString);
+        unitType = Unit.getTypeIDForName(pUnitTypeString);
 
         // determine the weight class to use
         String pWeightClassString = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(), "Select unit size", "Weight Class Selection", JOptionPane.INFORMATION_MESSAGE, null, pWeightClass, pWeightClass[0]);
 
-        if (pWeightClassString == null || pWeightClassString.length() == 0) {
+        if ((pWeightClassString == null) || (pWeightClassString.length() == 0)) {
             return;
         }
 
@@ -2110,7 +2112,7 @@ public class CMainFrame extends JFrame {
 
         String numberOfPilots = JOptionPane.showInputDialog(getContentPane(), "How many pilots do you want to hire?", 1);
 
-        if (numberOfPilots == null || numberOfPilots.length() == 0) {
+        if ((numberOfPilots == null) || (numberOfPilots.length() == 0)) {
             return;
         }
 
@@ -2120,7 +2122,7 @@ public class CMainFrame extends JFrame {
     public void jMenuCommanderSellBays_actionPerformed() {
         String baysToFire = JOptionPane.showInputDialog(getContentPane(), "How many bays do you want to return??");
 
-        if (baysToFire == null || baysToFire.length() == 0) {
+        if ((baysToFire == null) || (baysToFire.length() == 0)) {
             return;
         }
 
@@ -2129,7 +2131,7 @@ public class CMainFrame extends JFrame {
             mwclient.addToChat("<b>You have no free bays to return.<b>");
             return;
         }
-        if (bays < 1 || bays > thePlayer.getFreeBays()) {
+        if ((bays < 1) || (bays > thePlayer.getFreeBays())) {
             mwclient.addToChat("<b>Try picking a number between 1 and " + thePlayer.getFreeBays() + "<b>");
             return;
         }
@@ -2148,7 +2150,7 @@ public class CMainFrame extends JFrame {
     public void jMenuCommanderBuyBays_actionPerformed() {
         String baysToHire = JOptionPane.showInputDialog(getContentPane(), "How many bays do you want to lease?(" + Integer.parseInt(mwclient.getserverConfigs("CostToBuyNewBay")) + mwclient.moneyOrFluMessage(true, true, -2) + ")");
 
-        if (baysToHire == null || baysToHire.length() == 0) {
+        if ((baysToHire == null) || (baysToHire.length() == 0)) {
             return;
         }
 
@@ -2165,7 +2167,7 @@ public class CMainFrame extends JFrame {
          * Show the client side GUI if the requisite file is available.
          * Otherwise, make use of server commands.
          */
-        if (userLevel >= mwclient.getData().getAccessLevel("AdminRequestBuildTable") || userLevel >= mwclient.getData().getAccessLevel("RequestBuildTable")) {
+        if ((userLevel >= mwclient.getData().getAccessLevel("AdminRequestBuildTable")) || (userLevel >= mwclient.getData().getAccessLevel("RequestBuildTable"))) {
             new TableViewerDialog(mwclient);
         } else {
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c buildtablelist");
@@ -2200,7 +2202,7 @@ public class CMainFrame extends JFrame {
         String subFactionName = subFactionDialog.getSubFactionName();
         subFactionDialog.dispose();
 
-        if (subFactionName == null || subFactionName.length() == 0) {
+        if ((subFactionName == null) || (subFactionName.length() == 0)) {
             return;
         }
 
@@ -2227,7 +2229,7 @@ public class CMainFrame extends JFrame {
         String subFactionName = subFactionDialog.getSubFactionName();
         subFactionDialog.dispose();
 
-        if (subFactionName == null || subFactionName.length() == 0) {
+        if ((subFactionName == null) || (subFactionName.length() == 0)) {
             return;
         }
 
@@ -2303,8 +2305,8 @@ public class CMainFrame extends JFrame {
     }
 
     public void jMenuLeaderPurchaseFactory_actionPerformed(String planet) {
-        String[] units = { CUnit.getTypeClassDesc(CUnit.MEK), CUnit.getTypeClassDesc(CUnit.VEHICLE), CUnit.getTypeClassDesc(CUnit.INFANTRY), CUnit.getTypeClassDesc(CUnit.PROTOMEK), CUnit.getTypeClassDesc(CUnit.BATTLEARMOR) };
-        String[] weight = { CUnit.getWeightClassDesc(CUnit.LIGHT), CUnit.getWeightClassDesc(CUnit.MEDIUM), CUnit.getWeightClassDesc(CUnit.HEAVY), CUnit.getWeightClassDesc(CUnit.ASSAULT) };
+        String[] units = { Unit.getTypeClassDesc(Unit.MEK), Unit.getTypeClassDesc(Unit.VEHICLE), Unit.getTypeClassDesc(Unit.INFANTRY), Unit.getTypeClassDesc(Unit.PROTOMEK), Unit.getTypeClassDesc(Unit.BATTLEARMOR) };
+        String[] weight = { Unit.getWeightClassDesc(Unit.LIGHT), Unit.getWeightClassDesc(Unit.MEDIUM), Unit.getWeightClassDesc(Unit.HEAVY), Unit.getWeightClassDesc(Unit.ASSAULT) };
 
         String factoryName = JOptionPane.showInputDialog(this, "Factory Name?", "Factory Name?", JOptionPane.QUESTION_MESSAGE);
 
@@ -2426,7 +2428,7 @@ public class CMainFrame extends JFrame {
         Dimension dlgSize = dlg.getPreferredSize();
         Dimension frmSize = getSize();
         Point loc = getLocation();
-        dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
+        dlg.setLocation(((frmSize.width - dlgSize.width) / 2) + loc.x, ((frmSize.height - dlgSize.height) / 2) + loc.y);
         dlg.setModal(true);
         dlg.setResizable(false);
         dlg.pack();
@@ -2509,12 +2511,12 @@ public class CMainFrame extends JFrame {
 
                 // No reason to cycle through med-assault infantry if you are
                 // only using light
-                if (Boolean.parseBoolean(mwclient.getserverConfigs("UseOnlyLightInfantry")) && type == Unit.INFANTRY && weight != Unit.LIGHT) {
+                if (Boolean.parseBoolean(mwclient.getserverConfigs("UseOnlyLightInfantry")) && (type == Unit.INFANTRY) && (weight != Unit.LIGHT)) {
                     break;
                 }
                 // only using one vee size means only lights are used. so no
                 // reason to keep cycling if we are past the lights.
-                if (Boolean.parseBoolean(mwclient.getserverConfigs("UseOnlyOneVehicleSize")) && type == Unit.VEHICLE && weight != Unit.LIGHT) {
+                if (Boolean.parseBoolean(mwclient.getserverConfigs("UseOnlyOneVehicleSize")) && (type == Unit.VEHICLE) && (weight != Unit.LIGHT)) {
                     break;
                 }
 
@@ -2857,7 +2859,7 @@ public class CMainFrame extends JFrame {
                 } catch (Exception ex) {
                     CampaignData.mwlog.errLog(ex);
                 }
-            } else if (status == MWClient.STATUS_LOGGEDOUT || status == MWClient.STATUS_DISCONNECTED) {
+            } else if ((status == MWClient.STATUS_LOGGEDOUT) || (status == MWClient.STATUS_DISCONNECTED)) {
                 try {
                     setIconImage(mwclient.getConfig().getImage("LOGOUT").getImage());
                 } catch (Exception ex) {
@@ -2924,7 +2926,7 @@ public class CMainFrame extends JFrame {
         String selectedMul = list.elementAt(combo.getSelectedIndex());
 
         String fluff = JOptionPane.showInputDialog(getContentPane(), "Army Name.");
-        if (fluff == null || fluff.length() < 1) {
+        if ((fluff == null) || (fluff.length() < 1)) {
             return;
         }
 
@@ -2973,7 +2975,7 @@ public class CMainFrame extends JFrame {
 
         String opName = JOptionPane.showInputDialog(mwclient.getMainFrame().getContentPane(), "New Op Name?");
 
-        if (opName == null || opName.trim().length() < 1) {
+        if ((opName == null) || (opName.trim().length() < 1)) {
             return;
         }
 

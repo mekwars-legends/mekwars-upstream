@@ -100,7 +100,7 @@ public class VehicleDamageHandler extends AbstractUnitDamageHandler {
                     }
 
                     /*
-                     * Mounted mount = unit.getEquipment(cs.getIndex()); //makes
+                     * Mounted mount = cs.getMount(); //makes
                      * sure that a destroyed split weapon is marked destroyed
                      * //in all locations --Torren if ( mount != null &&
                      * mount.isSplitable() && mount.isSplit()){
@@ -229,7 +229,7 @@ public class VehicleDamageHandler extends AbstractUnitDamageHandler {
             if (damageType.equals("@")) {
                 critSlot.setMissing(true);
                 if (critSlot.getType() == CriticalSlot.TYPE_EQUIPMENT) {
-                    Mounted mounted = unit.getEquipment(critSlot.getIndex());
+                    Mounted mounted = critSlot.getMount();
                     // check to see if it has ammo. If so set it 0 as the
                     // ammobin has gone bye bye.
                     if (mounted.getUsableShotsLeft() > 0) {
@@ -240,7 +240,7 @@ public class VehicleDamageHandler extends AbstractUnitDamageHandler {
             if (damageType.equals("^")) {
                 critSlot.setDestroyed(true);
                 if (critSlot.getType() == CriticalSlot.TYPE_EQUIPMENT) {
-                    Mounted mounted = unit.getEquipment(critSlot.getIndex());
+                    Mounted mounted = critSlot.getMount();
                     // check to see if it has ammo. If so set it 0 as the
                     // ammobin has gone bye bye.
                     if (mounted.getUsableShotsLeft() > 0) {
@@ -254,7 +254,7 @@ public class VehicleDamageHandler extends AbstractUnitDamageHandler {
                     if (!critSlot.isBreached() && !critSlot.isDamaged()) {
                         critSlot.setDestroyed(true);
                         if (critSlot.getType() == CriticalSlot.TYPE_EQUIPMENT) {
-                            Mounted mounted = unit.getEquipment(critSlot.getIndex());
+                            Mounted mounted = critSlot.getMount();
                             // check to see if it has ammo. If so set it 0 as
                             // the ammobin has gone bye bye.
                             if (mounted.getUsableShotsLeft() > 0) {

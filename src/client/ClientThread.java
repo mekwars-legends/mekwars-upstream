@@ -26,8 +26,8 @@ import megamek.client.Client;
 import megamek.client.CloseClientListener;
 import megamek.client.bot.BotClient;
 import megamek.client.bot.princess.Princess;
-import megamek.client.bot.ui.AWT.BotGUI;
-import megamek.client.ui.AWT.ClientGUI;
+import megamek.client.bot.ui.swing.BotGUI;
+import megamek.client.ui.swing.ClientGUI;
 import megamek.common.Board;
 import megamek.common.BoardDimensions;
 import megamek.common.Coords;
@@ -39,7 +39,6 @@ import megamek.common.OffBoardDirection;
 import megamek.common.PlanetaryConditions;
 import megamek.common.Player;
 import megamek.common.options.IBasicOption;
-import megamek.common.options.Quirks;
 import megamek.common.preference.IClientPreferences;
 import megamek.common.preference.PreferenceManager;
 import megamek.common.util.BuildingTemplate;
@@ -62,10 +61,7 @@ class ClientThread extends Thread implements CloseClientListener {
     private int serverport;
     private MWClient mwclient;
     private Client client;
-    private ClientGUI awtGui;
-    private megamek.client.ui.swing.ClientGUI swingGui;
-    private boolean awtGUI = false;
-
+    private ClientGUI swingGui;
 
     private ArrayList<Unit> mechs = new ArrayList<Unit>();
     private ArrayList<CUnit> autoarmy = new ArrayList<CUnit>();// from server's
@@ -81,7 +77,8 @@ class ClientThread extends Thread implements CloseClientListener {
     final int NW = 5;
 
     // CONSTRUCTOR
-    public ClientThread(String name, String servername, String ip, int port, MWClient mwclient, ArrayList<Unit> mechs, ArrayList<CUnit> autoarmy) {
+    public ClientThread(String name, String servername, String ip, int port,
+            MWClient mwclient, ArrayList<Unit> mechs, ArrayList<CUnit> autoarmy) {
         super(name);
         myname = name.trim();
         serverName = servername;
@@ -98,12 +95,11 @@ class ClientThread extends Thread implements CloseClientListener {
     public Client getClient() {
         return client;
     }
-    
+
     @Override
     public void run() {
         boolean playerUpdate = false;
         boolean nightGame = false;
-        awtGUI = mwclient.getConfig().isParam("USEAWTINTERFACE");
         CArmy currA = mwclient.getPlayer().getLockedArmy();
         client = new Client(myname, serverip, serverport);
         client.addCloseClientListener(this);
@@ -133,32 +129,20 @@ class ClientThread extends Thread implements CloseClientListener {
             CampaignData.mwlog.errLog(ex);
         }
 
-        if (awtGUI) {
-            if (awtGui != null) {
-                for (Client client2 : awtGui.getBots().values()) {
-                    client2.die();
-                }
-                awtGui.getBots().clear();
+        if (swingGui != null) {
+            for (Client client2 : swingGui.getBots().values()) {
+                client2.die();
             }
-            awtGui = new ClientGUI(client);
-            awtGui.initialize();
-            swingGui = null;
-        } else {
-            if (swingGui != null) {
-                for (Client client2 : swingGui.getBots().values()) {
-                    client2.die();
-                }
-                swingGui.getBots().clear();
-            }
-            awtGui = null;
-            swingGui = new megamek.client.ui.swing.ClientGUI(client);
-            swingGui.initialize();
+            swingGui.getBots().clear();
         }
+        swingGui = new megamek.client.ui.swing.ClientGUI(client);
+        swingGui.initialize();
 
         if (mwclient.getGameOptions().size() < 1) {
             mwclient.setWaiting(true);
 
-            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c RequestOperationSettings");
+            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX
+                    + "c RequestOperationSettings");
             while (mwclient.isWaiting()) {
                 try {
                     mwclient.addToChat("Retrieving Operation Data Please Wait..");
@@ -188,21 +172,27 @@ class ClientThread extends Thread implements CloseClientListener {
 
             // if game is running, shouldn't do the following, so detect the
             // phase
-            for (int i = 0; (i < 1000) && (client.game.getPhase() == IGame.Phase.PHASE_UNKNOWN); i++) {
+            for (int i = 0; (i < 1000)
+                    && (client.game.getPhase() == IGame.Phase.PHASE_UNKNOWN); i++) {
                 Thread.sleep(50);
             }
 
             // Lets start with the environment set first then do everything
             // else.
-            if ((mwclient.getCurrentEnvironment() != null) && (client.game.getPhase() == IGame.Phase.PHASE_LOUNGE)) {
+            if ((mwclient.getCurrentEnvironment() != null)
+                    && (client.game.getPhase() == IGame.Phase.PHASE_LOUNGE)) {
                 // creates the playboard*/
-                MapSettings mySettings = new MapSettings(mwclient.getMapSize().width, mwclient.getMapSize().height, 1, 1);
+                MapSettings mySettings = new MapSettings(
+                        mwclient.getMapSize().width,
+                        mwclient.getMapSize().height, 1, 1);
                 // MapSettings mySettings = new MapSettings(16, 17, 2, 2);
                 AdvancedTerrain aTerrain = mwclient.getCurrentAdvancedTerrain();
 
                 if ((aTerrain != null) && aTerrain.isStaticMap()) {
 
-                    mySettings = new MapSettings(aTerrain.getXSize(), aTerrain.getYSize(), aTerrain.getXBoardSize(), aTerrain.getYBoardSize());
+                    mySettings = new MapSettings(aTerrain.getXSize(),
+                            aTerrain.getYSize(), aTerrain.getXBoardSize(),
+                            aTerrain.getYBoardSize());
 
                     // MMClient.mwClientLog.clientErrLog("Board x:
                     // "+myClient.getBoardSize().width+"Board y:
@@ -210,8 +200,10 @@ class ClientThread extends Thread implements CloseClientListener {
                     // "+myClient.getMapSize().width+"Map y:
                     // "+myClient.getMapSize().height);
                     ArrayList<String> boardvec = new ArrayList<String>();
-                    if (aTerrain.getStaticMapName().toLowerCase().endsWith("surprise")) {
-                        int maxBoards = aTerrain.getXBoardSize() * aTerrain.getYBoardSize();
+                    if (aTerrain.getStaticMapName().toLowerCase()
+                            .endsWith("surprise")) {
+                        int maxBoards = aTerrain.getXBoardSize()
+                                * aTerrain.getYBoardSize();
                         for (int i = 0; i < maxBoards; i++) {
                             boardvec.add(MapSettings.BOARD_SURPRISE);
                         }
@@ -219,34 +211,83 @@ class ClientThread extends Thread implements CloseClientListener {
                         mySettings.setBoardsSelectedVector(boardvec);
 
                         if (aTerrain.getStaticMapName().indexOf("/") > -1) {
-                            String folder = aTerrain.getStaticMapName().substring(0, aTerrain.getStaticMapName().lastIndexOf("/"));
-                            mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), folder));
+                            String folder = aTerrain.getStaticMapName()
+                                    .substring(
+                                            0,
+                                            aTerrain.getStaticMapName()
+                                                    .lastIndexOf("/"));
+                            mySettings.setBoardsAvailableVector(scanForBoards(
+                                    aTerrain.getXSize(), aTerrain.getYSize(),
+                                    folder));
                         } else if (aTerrain.getStaticMapName().indexOf("\\") > -1) {
-                            String folder = aTerrain.getStaticMapName().substring(0, aTerrain.getStaticMapName().lastIndexOf("\\"));
-                            mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), folder));
+                            String folder = aTerrain.getStaticMapName()
+                                    .substring(
+                                            0,
+                                            aTerrain.getStaticMapName()
+                                                    .lastIndexOf("\\"));
+                            mySettings.setBoardsAvailableVector(scanForBoards(
+                                    aTerrain.getXSize(), aTerrain.getYSize(),
+                                    folder));
                         } else {
-                            mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), ""));
+                            mySettings.setBoardsAvailableVector(scanForBoards(
+                                    aTerrain.getXSize(), aTerrain.getYSize(),
+                                    ""));
                         }
-                    } else if (aTerrain.getStaticMapName().toLowerCase().endsWith("generated")) {
-                        PlanetEnvironment env = mwclient.getCurrentEnvironment();
+                    } else if (aTerrain.getStaticMapName().toLowerCase()
+                            .endsWith("generated")) {
+                        PlanetEnvironment env = mwclient
+                                .getCurrentEnvironment();
                         /* Set the map-gen values */
-                        mySettings.setElevationParams(env.getHillyness(), env.getHillElevationRange(), env.getHillInvertProb());
-                        mySettings.setWaterParams(env.getWaterMinSpots(), env.getWaterMaxSpots(), env.getWaterMinHexes(), env.getWaterMaxHexes(), env.getWaterDeepProb());
-                        mySettings.setForestParams(env.getForestMinSpots(), env.getForestMaxSpots(), env.getForestMinHexes(), env.getForestMaxHexes(), env.getForestHeavyProb());
-                        mySettings.setRoughParams(env.getRoughMinSpots(), env.getRoughMaxSpots(), env.getRoughMinHexes(), env.getRoughMaxHexes());
-                        mySettings.setSwampParams(env.getSwampMinSpots(), env.getSwampMaxSpots(), env.getSwampMinHexes(), env.getSwampMaxHexes());
-                        mySettings.setPavementParams(env.getPavementMinSpots(), env.getPavementMaxSpots(), env.getPavementMinHexes(), env.getPavementMaxHexes());
-                        mySettings.setIceParams(env.getIceMinSpots(), env.getIceMaxSpots(), env.getIceMinHexes(), env.getIceMaxHexes());
-                        mySettings.setRubbleParams(env.getRubbleMinSpots(), env.getRubbleMaxSpots(), env.getRubbleMinHexes(), env.getRubbleMaxHexes());
-                        mySettings.setFortifiedParams(env.getFortifiedMinSpots(), env.getFortifiedMaxSpots(), env.getFortifiedMinHexes(), env.getFortifiedMaxHexes());
-                        mySettings.setSpecialFX(env.getFxMod(), env.getProbForestFire(), env.getProbFreeze(), env.getProbFlood(), env.getProbDrought());
+                        mySettings.setElevationParams(env.getHillyness(),
+                                env.getHillElevationRange(),
+                                env.getHillInvertProb());
+                        mySettings.setWaterParams(env.getWaterMinSpots(),
+                                env.getWaterMaxSpots(), env.getWaterMinHexes(),
+                                env.getWaterMaxHexes(), env.getWaterDeepProb());
+                        mySettings.setForestParams(env.getForestMinSpots(),
+                                env.getForestMaxSpots(),
+                                env.getForestMinHexes(),
+                                env.getForestMaxHexes(),
+                                env.getForestHeavyProb());
+                        mySettings.setRoughParams(env.getRoughMinSpots(),
+                                env.getRoughMaxSpots(), env.getRoughMinHexes(),
+                                env.getRoughMaxHexes());
+                        mySettings.setSwampParams(env.getSwampMinSpots(),
+                                env.getSwampMaxSpots(), env.getSwampMinHexes(),
+                                env.getSwampMaxHexes());
+                        mySettings.setPavementParams(env.getPavementMinSpots(),
+                                env.getPavementMaxSpots(),
+                                env.getPavementMinHexes(),
+                                env.getPavementMaxHexes());
+                        mySettings.setIceParams(env.getIceMinSpots(),
+                                env.getIceMaxSpots(), env.getIceMinHexes(),
+                                env.getIceMaxHexes());
+                        mySettings.setRubbleParams(env.getRubbleMinSpots(),
+                                env.getRubbleMaxSpots(),
+                                env.getRubbleMinHexes(),
+                                env.getRubbleMaxHexes());
+                        mySettings.setFortifiedParams(
+                                env.getFortifiedMinSpots(),
+                                env.getFortifiedMaxSpots(),
+                                env.getFortifiedMinHexes(),
+                                env.getFortifiedMaxHexes());
+                        mySettings.setSpecialFX(env.getFxMod(),
+                                env.getProbForestFire(), env.getProbFreeze(),
+                                env.getProbFlood(), env.getProbDrought());
                         mySettings.setRiverParam(env.getRiverProb());
                         mySettings.setCliffParam(env.getCliffProb());
                         mySettings.setRoadParam(env.getRoadProb());
-                        mySettings.setCraterParam(env.getCraterProb(), env.getCraterMinNum(), env.getCraterMaxNum(), env.getCraterMinRadius(), env.getCraterMaxRadius());
+                        mySettings.setCraterParam(env.getCraterProb(),
+                                env.getCraterMinNum(), env.getCraterMaxNum(),
+                                env.getCraterMinRadius(),
+                                env.getCraterMaxRadius());
                         mySettings.setAlgorithmToUse(env.getAlgorithm());
-                        mySettings.setInvertNegativeTerrain(env.getInvertNegativeTerrain());
-                        mySettings.setMountainParams(env.getMountPeaks(), env.getMountWidthMin(), env.getMountWidthMax(), env.getMountHeightMin(), env.getMountHeightMax(), env.getMountStyle());
+                        mySettings.setInvertNegativeTerrain(env
+                                .getInvertNegativeTerrain());
+                        mySettings.setMountainParams(env.getMountPeaks(),
+                                env.getMountWidthMin(), env.getMountWidthMax(),
+                                env.getMountHeightMin(),
+                                env.getMountHeightMax(), env.getMountStyle());
                         mySettings.setSandParams(0, 0, 0, 0);
                         mySettings.setPlantedFieldParams(0, 0, 0, 0);
 
@@ -256,28 +297,50 @@ class ClientThread extends Thread implements CloseClientListener {
                             mySettings.setTheme("");
                         }
 
-                        int maxBoards = aTerrain.getXBoardSize() * aTerrain.getYBoardSize();
+                        int maxBoards = aTerrain.getXBoardSize()
+                                * aTerrain.getYBoardSize();
                         for (int i = 0; i < maxBoards; i++) {
                             boardvec.add(MapSettings.BOARD_GENERATED);
                         }
 
                         mySettings.setBoardsSelectedVector(boardvec);
                         if (aTerrain.getStaticMapName().indexOf("/") > -1) {
-                            String folder = aTerrain.getStaticMapName().substring(0, aTerrain.getStaticMapName().lastIndexOf("/"));
-                            mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), folder));
+                            String folder = aTerrain.getStaticMapName()
+                                    .substring(
+                                            0,
+                                            aTerrain.getStaticMapName()
+                                                    .lastIndexOf("/"));
+                            mySettings.setBoardsAvailableVector(scanForBoards(
+                                    aTerrain.getXSize(), aTerrain.getYSize(),
+                                    folder));
                         } else if (aTerrain.getStaticMapName().indexOf("\\") > -1) {
-                            String folder = aTerrain.getStaticMapName().substring(0, aTerrain.getStaticMapName().lastIndexOf("\\"));
-                            mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), folder));
+                            String folder = aTerrain.getStaticMapName()
+                                    .substring(
+                                            0,
+                                            aTerrain.getStaticMapName()
+                                                    .lastIndexOf("\\"));
+                            mySettings.setBoardsAvailableVector(scanForBoards(
+                                    aTerrain.getXSize(), aTerrain.getYSize(),
+                                    folder));
                         } else {
-                            mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), ""));
+                            mySettings.setBoardsAvailableVector(scanForBoards(
+                                    aTerrain.getXSize(), aTerrain.getYSize(),
+                                    ""));
                         }
 
-                        if ((mwclient.getBuildingTemplate() != null) && (mwclient.getBuildingTemplate().getTotalBuildings() > 0)) {
-                            ArrayList<BuildingTemplate> buildingList = generateRandomBuildings(mySettings, mwclient.getBuildingTemplate());
+                        if ((mwclient.getBuildingTemplate() != null)
+                                && (mwclient.getBuildingTemplate()
+                                        .getTotalBuildings() > 0)) {
+                            ArrayList<BuildingTemplate> buildingList = generateRandomBuildings(
+                                    mySettings, mwclient.getBuildingTemplate());
                             mySettings.setBoardBuildings(buildingList);
                         } else if (!env.getCityType().equalsIgnoreCase("NONE")) {
                             mySettings.setRoadParam(0);
-                            mySettings.setCityParams(env.getRoads(), env.getCityType(), env.getMinCF(), env.getMaxCF(), env.getMinFloors(), env.getMaxFloors(), env.getCityDensity(), env.getTownSize());
+                            mySettings.setCityParams(env.getRoads(),
+                                    env.getCityType(), env.getMinCF(),
+                                    env.getMaxCF(), env.getMinFloors(),
+                                    env.getMaxFloors(), env.getCityDensity(),
+                                    env.getTownSize());
                         }
                     } else {
                         boardvec.add(aTerrain.getStaticMapName());
@@ -292,13 +355,18 @@ class ClientThread extends Thread implements CloseClientListener {
                     planetCondition.setEMI(aTerrain.hasEMI());
                     planetCondition.setFog(aTerrain.getFog());
                     planetCondition.setLight(aTerrain.getLightConditions());
-                    planetCondition.setShiftingWindDirection(aTerrain.hasShifitingWindDirection());
-                    planetCondition.setShiftingWindStrength(aTerrain.hasShifitingWindStrength());
-                    planetCondition.setTerrainAffected(aTerrain.isTerrainAffected());
+                    planetCondition.setShiftingWindDirection(aTerrain
+                            .hasShifitingWindDirection());
+                    planetCondition.setShiftingWindStrength(aTerrain
+                            .hasShifitingWindStrength());
+                    planetCondition.setTerrainAffected(aTerrain
+                            .isTerrainAffected());
                     planetCondition.setWeather(aTerrain.getWeatherConditions());
-                    planetCondition.setWindDirection(aTerrain.getWindDirection());
+                    planetCondition.setWindDirection(aTerrain
+                            .getWindDirection());
                     planetCondition.setWindStrength(aTerrain.getWindStrength());
-                    planetCondition.setMaxWindStrength(aTerrain.getMaxWindStrength());
+                    planetCondition.setMaxWindStrength(aTerrain
+                            .getMaxWindStrength());
 
                     // Check for a night game and set nightGame Variable.
                     // This is needed to be done since it was possible that a
@@ -315,23 +383,51 @@ class ClientThread extends Thread implements CloseClientListener {
                 } else {
                     PlanetEnvironment env = mwclient.getCurrentEnvironment();
                     /* Set the map-gen values */
-                    mySettings.setElevationParams(env.getHillyness(), env.getHillElevationRange(), env.getHillInvertProb());
-                    mySettings.setWaterParams(env.getWaterMinSpots(), env.getWaterMaxSpots(), env.getWaterMinHexes(), env.getWaterMaxHexes(), env.getWaterDeepProb());
-                    mySettings.setForestParams(env.getForestMinSpots(), env.getForestMaxSpots(), env.getForestMinHexes(), env.getForestMaxHexes(), env.getForestHeavyProb());
-                    mySettings.setRoughParams(env.getRoughMinSpots(), env.getRoughMaxSpots(), env.getRoughMinHexes(), env.getRoughMaxHexes());
-                    mySettings.setSwampParams(env.getSwampMinSpots(), env.getSwampMaxSpots(), env.getSwampMinHexes(), env.getSwampMaxHexes());
-                    mySettings.setPavementParams(env.getPavementMinSpots(), env.getPavementMaxSpots(), env.getPavementMinHexes(), env.getPavementMaxHexes());
-                    mySettings.setIceParams(env.getIceMinSpots(), env.getIceMaxSpots(), env.getIceMinHexes(), env.getIceMaxHexes());
-                    mySettings.setRubbleParams(env.getRubbleMinSpots(), env.getRubbleMaxSpots(), env.getRubbleMinHexes(), env.getRubbleMaxHexes());
-                    mySettings.setFortifiedParams(env.getFortifiedMinSpots(), env.getFortifiedMaxSpots(), env.getFortifiedMinHexes(), env.getFortifiedMaxHexes());
-                    mySettings.setSpecialFX(env.getFxMod(), env.getProbForestFire(), env.getProbFreeze(), env.getProbFlood(), env.getProbDrought());
+                    mySettings.setElevationParams(env.getHillyness(),
+                            env.getHillElevationRange(),
+                            env.getHillInvertProb());
+                    mySettings.setWaterParams(env.getWaterMinSpots(),
+                            env.getWaterMaxSpots(), env.getWaterMinHexes(),
+                            env.getWaterMaxHexes(), env.getWaterDeepProb());
+                    mySettings.setForestParams(env.getForestMinSpots(),
+                            env.getForestMaxSpots(), env.getForestMinHexes(),
+                            env.getForestMaxHexes(), env.getForestHeavyProb());
+                    mySettings.setRoughParams(env.getRoughMinSpots(),
+                            env.getRoughMaxSpots(), env.getRoughMinHexes(),
+                            env.getRoughMaxHexes());
+                    mySettings.setSwampParams(env.getSwampMinSpots(),
+                            env.getSwampMaxSpots(), env.getSwampMinHexes(),
+                            env.getSwampMaxHexes());
+                    mySettings.setPavementParams(env.getPavementMinSpots(),
+                            env.getPavementMaxSpots(),
+                            env.getPavementMinHexes(),
+                            env.getPavementMaxHexes());
+                    mySettings.setIceParams(env.getIceMinSpots(),
+                            env.getIceMaxSpots(), env.getIceMinHexes(),
+                            env.getIceMaxHexes());
+                    mySettings.setRubbleParams(env.getRubbleMinSpots(),
+                            env.getRubbleMaxSpots(), env.getRubbleMinHexes(),
+                            env.getRubbleMaxHexes());
+                    mySettings.setFortifiedParams(env.getFortifiedMinSpots(),
+                            env.getFortifiedMaxSpots(),
+                            env.getFortifiedMinHexes(),
+                            env.getFortifiedMaxHexes());
+                    mySettings.setSpecialFX(env.getFxMod(),
+                            env.getProbForestFire(), env.getProbFreeze(),
+                            env.getProbFlood(), env.getProbDrought());
                     mySettings.setRiverParam(env.getRiverProb());
                     mySettings.setCliffParam(env.getCliffProb());
                     mySettings.setRoadParam(env.getRoadProb());
-                    mySettings.setCraterParam(env.getCraterProb(), env.getCraterMinNum(), env.getCraterMaxNum(), env.getCraterMinRadius(), env.getCraterMaxRadius());
+                    mySettings.setCraterParam(env.getCraterProb(),
+                            env.getCraterMinNum(), env.getCraterMaxNum(),
+                            env.getCraterMinRadius(), env.getCraterMaxRadius());
                     mySettings.setAlgorithmToUse(env.getAlgorithm());
-                    mySettings.setInvertNegativeTerrain(env.getInvertNegativeTerrain());
-                    mySettings.setMountainParams(env.getMountPeaks(), env.getMountWidthMin(), env.getMountWidthMax(), env.getMountHeightMin(), env.getMountHeightMax(), env.getMountStyle());
+                    mySettings.setInvertNegativeTerrain(env
+                            .getInvertNegativeTerrain());
+                    mySettings.setMountainParams(env.getMountPeaks(),
+                            env.getMountWidthMin(), env.getMountWidthMax(),
+                            env.getMountHeightMin(), env.getMountHeightMax(),
+                            env.getMountStyle());
                     mySettings.setSandParams(0, 0, 0, 0);
                     mySettings.setPlantedFieldParams(0, 0, 0, 0);
 
@@ -346,12 +442,19 @@ class ClientThread extends Thread implements CloseClientListener {
                     boardvec.add(MapSettings.BOARD_GENERATED);
                     mySettings.setBoardsSelectedVector(boardvec);
 
-                    if ((mwclient.getBuildingTemplate() != null) && (mwclient.getBuildingTemplate().getTotalBuildings() > 0)) {
-                        ArrayList<BuildingTemplate> buildingList = generateRandomBuildings(mySettings, mwclient.getBuildingTemplate());
+                    if ((mwclient.getBuildingTemplate() != null)
+                            && (mwclient.getBuildingTemplate()
+                                    .getTotalBuildings() > 0)) {
+                        ArrayList<BuildingTemplate> buildingList = generateRandomBuildings(
+                                mySettings, mwclient.getBuildingTemplate());
                         mySettings.setBoardBuildings(buildingList);
                     } else if (!env.getCityType().equalsIgnoreCase("NONE")) {
                         mySettings.setRoadParam(0);
-                        mySettings.setCityParams(env.getRoads(), env.getCityType(), env.getMinCF(), env.getMaxCF(), env.getMinFloors(), env.getMaxFloors(), env.getCityDensity(), env.getTownSize());
+                        mySettings.setCityParams(env.getRoads(),
+                                env.getCityType(), env.getMinCF(),
+                                env.getMaxCF(), env.getMinFloors(),
+                                env.getMaxFloors(), env.getCityDensity(),
+                                env.getTownSize());
                     }
 
                     mySettings.setMedium(mwclient.getMapMedium());
@@ -361,19 +464,28 @@ class ClientThread extends Thread implements CloseClientListener {
                     if (aTerrain != null) {
                         PlanetaryConditions planetCondition = new PlanetaryConditions();
 
-                        planetCondition.setGravity((float) aTerrain.getGravity());
-                        planetCondition.setTemperature(aTerrain.getTemperature());
+                        planetCondition.setGravity((float) aTerrain
+                                .getGravity());
+                        planetCondition.setTemperature(aTerrain
+                                .getTemperature());
                         planetCondition.setAtmosphere(aTerrain.getAtmosphere());
                         planetCondition.setEMI(aTerrain.hasEMI());
                         planetCondition.setFog(aTerrain.getFog());
                         planetCondition.setLight(aTerrain.getLightConditions());
-                        planetCondition.setShiftingWindDirection(aTerrain.hasShifitingWindDirection());
-                        planetCondition.setShiftingWindStrength(aTerrain.hasShifitingWindStrength());
-                        planetCondition.setTerrainAffected(aTerrain.isTerrainAffected());
-                        planetCondition.setWeather(aTerrain.getWeatherConditions());
-                        planetCondition.setWindDirection(aTerrain.getWindDirection());
-                        planetCondition.setWindStrength(aTerrain.getWindStrength());
-                        planetCondition.setMaxWindStrength(aTerrain.getMaxWindStrength());
+                        planetCondition.setShiftingWindDirection(aTerrain
+                                .hasShifitingWindDirection());
+                        planetCondition.setShiftingWindStrength(aTerrain
+                                .hasShifitingWindStrength());
+                        planetCondition.setTerrainAffected(aTerrain
+                                .isTerrainAffected());
+                        planetCondition.setWeather(aTerrain
+                                .getWeatherConditions());
+                        planetCondition.setWindDirection(aTerrain
+                                .getWindDirection());
+                        planetCondition.setWindStrength(aTerrain
+                                .getWindStrength());
+                        planetCondition.setMaxWindStrength(aTerrain
+                                .getMaxWindStrength());
 
                         // Check for a night game and set nightGame Variable.
                         // This is needed to be done since it was possible that
@@ -394,7 +506,8 @@ class ClientThread extends Thread implements CloseClientListener {
              */
             if (mwclient.isUsingBots()) {
                 String name = "War Bot" + client.getLocalPlayer().getId();
-                bot = new Princess(name, client.getHost(), client.getPort(), Princess.LogLevel.ERROR);
+                bot = new Princess(name, client.getHost(), client.getPort(),
+                        Princess.LogLevel.ERROR);
                 bot.game.addGameListener(new BotGUI(bot));
                 try {
                     bot.connect();
@@ -404,7 +517,8 @@ class ClientThread extends Thread implements CloseClientListener {
                     }
                     // if game is running, shouldn't do the following, so detect
                     // the phase
-                    for (int i = 0; (i < 1000) && (bot.game.getPhase() == IGame.Phase.PHASE_UNKNOWN); i++) {
+                    for (int i = 0; (i < 1000)
+                            && (bot.game.getPhase() == IGame.Phase.PHASE_UNKNOWN); i++) {
                         Thread.sleep(50);
                     }
                 } catch (Exception ex) {
@@ -414,11 +528,7 @@ class ClientThread extends Thread implements CloseClientListener {
                 bot.retrieveServerInfo();
                 Thread.sleep(125);
 
-                if (awtGUI) {
-                    awtGui.getBots().put(name, bot);
-                } else {
-                    swingGui.getBots().put(name, bot);
-                }
+                swingGui.getBots().put(name, bot);
 
                 if (mwclient.isBotsOnSameTeam()) {
                     bot.getLocalPlayer().setTeam(5);
@@ -437,23 +547,34 @@ class ClientThread extends Thread implements CloseClientListener {
                     client.sendGameOptions("", xmlGameOptions);
                 }
 
-                IClientPreferences cs = PreferenceManager.getClientPreferences();
-                cs.setStampFilenames(Boolean.parseBoolean(mwclient.getserverConfigs("MMTimeStampLogFile")));
-                cs.setShowUnitId(Boolean.parseBoolean(mwclient.getserverConfigs("MMShowUnitId")));
-                cs.setKeepGameLog(Boolean.parseBoolean(mwclient.getserverConfigs("MMKeepGameLog")));
-                cs.setGameLogFilename(mwclient.getserverConfigs("MMGameLogName"));
-                if (!mwclient.getConfig().getParam("UNITCAMO").equals(Player.NO_CAMO)) {
+                IClientPreferences cs = PreferenceManager
+                        .getClientPreferences();
+                cs.setStampFilenames(Boolean.parseBoolean(mwclient
+                        .getserverConfigs("MMTimeStampLogFile")));
+                cs.setShowUnitId(Boolean.parseBoolean(mwclient
+                        .getserverConfigs("MMShowUnitId")));
+                cs.setKeepGameLog(Boolean.parseBoolean(mwclient
+                        .getserverConfigs("MMKeepGameLog")));
+                cs.setGameLogFilename(mwclient
+                        .getserverConfigs("MMGameLogName"));
+                if (!mwclient.getConfig().getParam("UNITCAMO")
+                        .equals(Player.NO_CAMO)) {
                     client.getLocalPlayer().setCamoCategory(Player.ROOT_CAMO);
-                    client.getLocalPlayer().setCamoFileName(mwclient.getConfig().getParam("UNITCAMO"));
+                    client.getLocalPlayer().setCamoFileName(
+                            mwclient.getConfig().getParam("UNITCAMO"));
                     playerUpdate = true;
                 }
 
                 if (bot != null) {
-                    bot.getLocalPlayer().setNbrMFConventional(mwclient.getPlayer().getConventionalMinesAllowed());
-                    bot.getLocalPlayer().setNbrMFVibra(mwclient.getPlayer().getVibraMinesAllowed());
+                    bot.getLocalPlayer().setNbrMFConventional(
+                            mwclient.getPlayer().getConventionalMinesAllowed());
+                    bot.getLocalPlayer().setNbrMFVibra(
+                            mwclient.getPlayer().getVibraMinesAllowed());
                 } else {
-                    client.getLocalPlayer().setNbrMFConventional(mwclient.getPlayer().getConventionalMinesAllowed());
-                    client.getLocalPlayer().setNbrMFVibra(mwclient.getPlayer().getVibraMinesAllowed());
+                    client.getLocalPlayer().setNbrMFConventional(
+                            mwclient.getPlayer().getConventionalMinesAllowed());
+                    client.getLocalPlayer().setNbrMFVibra(
+                            mwclient.getPlayer().getVibraMinesAllowed());
                 }
 
                 for (Unit unit : mechs) {
@@ -470,8 +591,9 @@ class ClientThread extends Thread implements CloseClientListener {
                     entity.setCommander(currA.isCommander(mek.getId()));
 
                     // Set slights based on games light conditions.
-                    if ( !entity.hasSpotlight()){
-                    	entity.getQuirks().getOption("searchlight").setValue(nightGame);
+                    if (!entity.hasSpotlight()) {
+                        entity.getQuirks().getOption("searchlight")
+                                .setValue(nightGame);
                     }
                     entity.setSpotlightState(nightGame);
 
@@ -499,7 +621,8 @@ class ClientThread extends Thread implements CloseClientListener {
                                 direction = OffBoardDirection.NORTH;
                                 break;
                         }
-                        entity.setOffBoard(entity.getOffBoardDistance(), direction);
+                        entity.setOffBoard(entity.getOffBoardDistance(),
+                                direction);
                     }
 
                     // Add Pilot to entity
@@ -526,7 +649,7 @@ class ClientThread extends Thread implements CloseClientListener {
                     Entity entity = autoUnit.getEntity();
 
                     // Set slights based on games light conditions.
-                   	entity.setExternalSpotlight(nightGame);
+                    entity.setExternalSpotlight(nightGame);
                     entity.setSpotlightState(nightGame);
 
                     // Had issues with Id's so we are now setting them.
@@ -540,7 +663,9 @@ class ClientThread extends Thread implements CloseClientListener {
                         entity.setOwner(client.getLocalPlayer());
                     }
 
-                    if (entity.getCrew().getName().equalsIgnoreCase("Unnamed") || entity.getCrew().getName().equalsIgnoreCase("vacant")) {
+                    if (entity.getCrew().getName().equalsIgnoreCase("Unnamed")
+                            || entity.getCrew().getName()
+                                    .equalsIgnoreCase("vacant")) {
                         // set the pilot
                         Crew pilot = new Crew("AutoArtillery", 1, 4, 5);
                         entity.setCrew(pilot);
@@ -562,7 +687,8 @@ class ClientThread extends Thread implements CloseClientListener {
                 }// end while(more autoarty)
 
                 if (mwclient.getPlayerStartingEdge() != Buildings.EDGE_UNKNOWN) {
-                    client.getLocalPlayer().setStartingPos(mwclient.getPlayerStartingEdge());
+                    client.getLocalPlayer().setStartingPos(
+                            mwclient.getPlayerStartingEdge());
                     playerUpdate = true;
                 }
 
@@ -575,20 +701,18 @@ class ClientThread extends Thread implements CloseClientListener {
                             // Thread.sleep(125);
                             playerUpdate = true;
                             for (int slave : currA.getC3Network().keySet()) {
-                                linkMegaMekC3Units(currA, slave, currA.getC3Network().get(slave));
+                                linkMegaMekC3Units(currA, slave, currA
+                                        .getC3Network().get(slave));
                             }
+                            swingGui.chatlounge.refreshEntities();
 
-                            if (awtGUI) {
-                                awtGui.chatlounge.refreshEntities();
-                            } else {
-                                swingGui.chatlounge.refreshEntities();
-                            }
                         }
                     }
                 }
 
                 if (mwclient.getPlayer().getTeamNumber() > 0) {
-                    client.getLocalPlayer().setTeam(mwclient.getPlayer().getTeamNumber());
+                    client.getLocalPlayer().setTeam(
+                            mwclient.getPlayer().getTeamNumber());
                     playerUpdate = true;
                 }
 
@@ -660,7 +784,8 @@ class ClientThread extends Thread implements CloseClientListener {
 
         // catch for some funky stuff
         if ((c3Unit == null) || (c3Master == null)) {
-            CampaignData.mwlog.errLog("Null Units c3Unit: " + c3Unit + " C3Master: " + c3Master);
+            CampaignData.mwlog.errLog("Null Units c3Unit: " + c3Unit
+                    + " C3Master: " + c3Master);
             return;
         }
 
@@ -670,7 +795,10 @@ class ClientThread extends Thread implements CloseClientListener {
             // "+masterUnit.getModelName());
             // CampaignData.mwlog.errLog("Slave Unit:
             // "+c3Unit.getModel());
-            if (!masterUnit.hasC3SlavesLinkedTo(army) && masterUnit.hasBeenC3LinkedTo(army) && ((masterUnit.getC3Level() == Unit.C3_MASTER) || (masterUnit.getC3Level() == Unit.C3_MMASTER))) {
+            if (!masterUnit.hasC3SlavesLinkedTo(army)
+                    && masterUnit.hasBeenC3LinkedTo(army)
+                    && ((masterUnit.getC3Level() == Unit.C3_MASTER) || (masterUnit
+                            .getC3Level() == Unit.C3_MMASTER))) {
                 // CampaignData.mwlog.errLog("Unit:
                 // "+c3Master.getModel()+" id: "+c3Master.getExternalId());
                 if (c3Master.getC3MasterId() == Entity.NONE) {
@@ -721,7 +849,8 @@ class ClientThread extends Thread implements CloseClientListener {
      * Scans the boards directory for map boards of the appropriate size and
      * returns them.
      */
-    private ArrayList<String> scanForBoards(int boardWidth, int boardHeight, String folder) {
+    private ArrayList<String> scanForBoards(int boardWidth, int boardHeight,
+            String folder) {
         BoardDimensions dimension = new BoardDimensions(boardWidth, boardHeight);
         ArrayList<String> boards = new ArrayList<String>();
         // Board Board = client.game.getBoard();
@@ -747,7 +876,8 @@ class ClientThread extends Thread implements CloseClientListener {
             }
 
             if (Board.boardIsSize(new File(path), dimension)) {
-                tempList.addElement(path.substring(0, path.lastIndexOf(".board")));
+                tempList.addElement(path.substring(0,
+                        path.lastIndexOf(".board")));
             }
         }
 
@@ -767,7 +897,8 @@ class ClientThread extends Thread implements CloseClientListener {
         return boards;
     }
 
-    private ArrayList<BuildingTemplate> generateRandomBuildings(MapSettings mapSettings, Buildings buildingTemplate) {
+    private ArrayList<BuildingTemplate> generateRandomBuildings(
+            MapSettings mapSettings, Buildings buildingTemplate) {
 
         ArrayList<BuildingTemplate> buildingList = new ArrayList<BuildingTemplate>();
         ArrayList<String> buildingTypes = new ArrayList<String>();
@@ -802,7 +933,8 @@ class ClientThread extends Thread implements CloseClientListener {
                 break;
         }
 
-        StringTokenizer types = new StringTokenizer(buildingTemplate.getBuildingType(), ",");
+        StringTokenizer types = new StringTokenizer(
+                buildingTemplate.getBuildingType(), ",");
 
         while (types.hasMoreTokens()) {
             buildingTypes.add(types.nextToken());
@@ -849,7 +981,8 @@ class ClientThread extends Thread implements CloseClientListener {
             tempMap.add(stringCoord);
             coordList.add(coord);
 
-            int floors = buildingTemplate.getMaxFloors() - buildingTemplate.getMinFloors();
+            int floors = buildingTemplate.getMaxFloors()
+                    - buildingTemplate.getMinFloors();
 
             if (floors <= 0) {
                 floors = buildingTemplate.getMinFloors();
@@ -857,7 +990,8 @@ class ClientThread extends Thread implements CloseClientListener {
                 floors = r.nextInt(floors) + buildingTemplate.getMinFloors();
             }
 
-            int totalCF = buildingTemplate.getMaxCF() - buildingTemplate.getMinCF();
+            int totalCF = buildingTemplate.getMaxCF()
+                    - buildingTemplate.getMinCF();
 
             if (totalCF <= 0) {
                 totalCF = buildingTemplate.getMinCF();
@@ -874,12 +1008,14 @@ class ClientThread extends Thread implements CloseClientListener {
                 if (typeSize == 1) {
                     type = Integer.parseInt(buildingTypes.get(0));
                 } else {
-                    type = Integer.parseInt(buildingTypes.get(r.nextInt(typeSize)));
+                    type = Integer.parseInt(buildingTypes.get(r
+                            .nextInt(typeSize)));
                 }
             } catch (Exception ex) {
             } // someone entered a bad building type.
 
-            buildingList.add(new BuildingTemplate(type, coordList, totalCF, floors, -1));
+            buildingList.add(new BuildingTemplate(type, coordList, totalCF,
+                    floors, -1));
         }
 
         return buildingList;

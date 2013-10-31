@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
++ updated MM.jar
 R Released Server v0.3.5.27
 + Bug 343: Unknown Unit Type in UnitDamageHandlerFactory for Infantry
 + Bug 342: AFR does not work

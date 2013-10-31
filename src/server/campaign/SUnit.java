@@ -400,7 +400,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
                 cost = CampaignMain.cm.getDoubleConfig("SystemCritRepairCost");
             }
         } else {
-            Mounted mounted = unit.getEquipment(crit.getIndex());
+            Mounted mounted = crit.getMount();
 
             if (mounted.getType() instanceof WeaponType) {
                 WeaponType weapon = (WeaponType) mounted.getType();
@@ -514,7 +514,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
                             continue;
                         }
 
-                        Mounted m = unitEntity.getEquipment(crit.getIndex());
+                        Mounted m = crit.getMount();
 
                         if ((m == null) || !(m.getType() instanceof WeaponType)) {
                             continue;
@@ -730,7 +730,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
                 boolean selection = TokenReader.readBoolean(ST);
                 try {
                     CriticalSlot cs = en.getCritical(location, slot);
-                    Mounted m = en.getEquipment(cs.getIndex());
+                    Mounted m = cs.getMount();
                     m.setRapidfire(selection);
                 } catch (Exception ex) {
                 }
@@ -828,7 +828,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
                 if (uEntity instanceof Mech) {
                     ((Mech) uEntity).setAutoEject(rs.getBoolean("uAutoEject"));
                 }
-                
+
                	uEntity.setExternalSpotlight(rs.getBoolean("uHasSpotlight"));
                 uEntity.setSpotlightState(rs.getBoolean("uIsUsingSpotlight"));
 
@@ -883,7 +883,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
                     boolean selection = mgRS.getBoolean("mgRapidFire");
                     try {
                         CriticalSlot cs = en.getCritical(location, slot);
-                        Mounted m = en.getEquipment(cs.getIndex());
+                        Mounted m = cs.getMount();
                         m.setRapidfire(selection);
                     } catch (Exception ex) {
                     }

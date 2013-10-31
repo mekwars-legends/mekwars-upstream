@@ -851,7 +851,7 @@ class SystemPanel extends JPanel implements ListSelectionListener {
                     equipment.addElement(SYSTEM);
                     break;
                 case CriticalSlot.TYPE_EQUIPMENT :
-                    Mounted m = en.getEquipment(cs.getIndex());
+                    Mounted m = cs.getMount();
                     sb.append(cs.isDestroyed() ? "*" : "").append(m.getDesc());
                     if (m.getType().hasModes()) {
                         sb.append(" (").append(m.curMode().getDisplayableName()).append(")");

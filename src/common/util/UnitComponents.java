@@ -22,8 +22,6 @@ import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import server.campaign.CampaignMain;
-
 import megamek.common.CriticalSlot;
 import megamek.common.Entity;
 import megamek.common.EquipmentType;
@@ -191,7 +189,7 @@ public class UnitComponents{
                 part = UnitUtils.getCritName(mainUnit, slot, location, false);
 
                 if ( part.equalsIgnoreCase("Ammo Bin") ) {
-                    Mounted mount = mainUnit.getEquipment(crit.getIndex());
+                    Mounted mount = crit.getMount();
                     String ammoName = mount.getType().getInternalName();
 
                     if ( mainUnitParts.containsKey(ammoName) ) {
@@ -240,7 +238,7 @@ public class UnitComponents{
                 part = UnitUtils.getCritName(repodUnit, slot, location, false);
 
                 if ( part.equalsIgnoreCase("Ammo Bin") ) {
-                    Mounted mount = repodUnit.getEquipment(crit.getIndex());
+                    Mounted mount = crit.getMount();
                     String ammoName = mount.getType().getInternalName();
 
                     if ( repodUnitParts.containsKey(ammoName) ) {
@@ -341,7 +339,7 @@ public class UnitComponents{
                 part = UnitUtils.getCritName(mainUnit, slot, location, false);
 
                 if ( part.indexOf("Ammo") > -1 ) {
-                    Mounted mount = mainUnit.getEquipment(crit.getIndex());
+                    Mounted mount = crit.getMount();
 
                     this.add(part, mount.getUsableShotsLeft());
                     this.add("Ammo Bin", 1);
@@ -374,7 +372,7 @@ public class UnitComponents{
                 part = UnitUtils.getCritName(repodUnit, slot, location, false);
 
                 if ( part.indexOf("Ammo") > -1 ) {
-                    Mounted mount = repodUnit.getEquipment(crit.getIndex());
+                    Mounted mount = crit.getMount();
 
                     if ( repodUnitParts.containsKey(part) ) {
                         repodUnitParts.put(part, repodUnitParts.get(part)+mount.getUsableShotsLeft());
@@ -453,7 +451,7 @@ public class UnitComponents{
 
     public static String getTech(String crit, int year) {
         EquipmentType eq = EquipmentType.get(crit);
-        
+
 
         //Armor,IS,Engines,Actuators,Cockpit,Sensors anything that doesn't
         //make a normal object in MM

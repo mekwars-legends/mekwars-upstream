@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2004, 2005, 2006 
- * 
+ * MekWars - Copyright (C) 2004, 2005, 2006
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megamek)
  * Original author Helge Richter (McWizard)
  *
@@ -23,8 +23,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.Vector;
-
-import javax.swing.JOptionPane;
 
 import megamek.common.CriticalSlot;
 import megamek.common.OffBoardDirection;
@@ -65,7 +63,7 @@ public class CPlayer extends Player {
     private double Rating;
     private int hangarPenalty;
     private int hangarPurchasePenalties[][] = new int[6][4];
-    
+
     private Vector<CUnit> Hangar;
     private Vector<CArmy> Armies;
     private ArrayList<CUnit> AutoArmy;
@@ -163,7 +161,7 @@ public class CPlayer extends Player {
 
     /**
      * Complete setData command. Called in response to a PS| sent by the server.
-     * 
+     *
      * @param - data
      * @return - success
      */
@@ -226,7 +224,7 @@ public class CPlayer extends Player {
         }
 
         setAutoReorder(TokenReader.readBoolean(ST));
-        
+
         //flags.loadDefaults(mwclient.getPlayer().getDefaultPlayerFlags().export());
         //flags.loadPersonal(TokenReader.readString(ST));
 CampaignData.mwlog.infoLog("My Player Flags: " + flags.export());
@@ -274,7 +272,7 @@ CampaignData.mwlog.infoLog("My Player Flags: " + flags.export());
             boolean selection = TokenReader.readBoolean(st);
 
             CriticalSlot crit = currUnit.getEntity().getCritical(location, slot);
-            currUnit.getEntity().getEquipment(crit.getIndex()).setRapidfire(selection);
+            crit.getMount().setRapidfire(selection);
 
             sortHangar();// properties have changes. sort. YARR!
         } catch (Exception e) {
@@ -305,7 +303,7 @@ CampaignData.mwlog.infoLog("My Player Flags: " + flags.export());
     /**
      * Remove a unit from the player's hangar. Called from PL after receipt of a
      * PL|RU|ID (RemoveUnit#ID) command.
-     * 
+     *
      * Note that there is NOT an analagous addUnit() method. Single additions
      * are sent to the clients using (obtusely enough) the PL|HD (hangar data)
      * command. See .setHangarData()'s comments, as well as those in
@@ -490,7 +488,7 @@ CampaignData.mwlog.infoLog("My Player Flags: " + flags.export());
      * Method which greates an autoarmy. takes in a string with weight classes,
      * and uses server configs (path, filenames) to construct units of those
      * weights.
-     * 
+     *
      * Units are added to servers when a player joins a game, same as units from
      * locked armies.
      */
@@ -555,7 +553,7 @@ CampaignData.mwlog.infoLog("My Player Flags: " + flags.export());
      * Method which greates an autoarmy gun emplacements. takes in a string with
      * weight classes, and uses server configs (path, filenames) to construct
      * units of those weights.
-     * 
+     *
      * Units are added to servers when a player joins a game, same as units from
      * locked armies.
      */
@@ -717,9 +715,9 @@ CampaignData.mwlog.infoLog("My Player Flags: " + flags.export());
         amountToPay += totalAdditions * additive;
 
         // Add penalty if the player is over a sliding limit
-        
+
         amountToPay += hangarPenalty;
-        
+
         // now return the amount in INT form since we don't support fractional
         // MU costs.
         // also, set the currentTechPayment, to avoid doing this math again if
@@ -939,7 +937,7 @@ CampaignData.mwlog.infoLog("My Player Flags: " + flags.export());
      * Exclude method, called after receipt of PL|AEU| (Admin Exclude Update).
      * Because NP lists are expected to be small (2-5 players), the entire list
      * is sent every time.
-     * 
+     *
      * @urgru 4.3.05
      */
     public void setAdminExcludes(String buffer, String token) {
@@ -983,10 +981,10 @@ CampaignData.mwlog.infoLog("My Player Flags: " + flags.export());
      * Hangar sorting mechanisms. Client and server need not order hangars in
      * the same fashion, since all transactions (after the initial data feed)
      * take place on a unit by unit basis.
-     * 
+     *
      * Sort options: - BV - Name - Type - Unit ID - Weight - No sort [load
      * order]
-     * 
+     *
      * BV is (for all intents and purposes) an exclusive sort. The others can
      * lead to significant clustering. Hence, secondary filters can be applied.
      */
@@ -994,7 +992,7 @@ CampaignData.mwlog.infoLog("My Player Flags: " + flags.export());
     /**
      * Method which resorts every unit. Inefficient, but we hate clients.
      * Because we're evil. So there.
-     * 
+     *
      * @urgru 4.4.05
      */
     public void sortHangar() {
@@ -1067,10 +1065,10 @@ CampaignData.mwlog.infoLog("My Player Flags: " + flags.export());
      * Hangar sorting mechanisms. Client and server need not order hangars in
      * the same fashion, since all transactions (after the initial data feed)
      * take place on a unit by unit basis.
-     * 
+     *
      * Sort options: - BV - Name - Type - Unit ID - Weight - No sort [load
      * order]
-     * 
+     *
      * BV is (for all intents and purposes) an exclusive sort. The others can
      * lead to significant clustering. Hence, secondary filters can be applied.
      */
@@ -1078,7 +1076,7 @@ CampaignData.mwlog.infoLog("My Player Flags: " + flags.export());
     /**
      * Method which resorts every unit. Inefficient, but we hate clients.
      * Because we're evil. So there.
-     * 
+     *
      * @urgru 4.4.05
      */
     public void sortArmies() {
@@ -1328,20 +1326,20 @@ CampaignData.mwlog.infoLog("My Player Flags: " + flags.export());
 
     public String getSubFactionName() {
         return subFactionName;
-    }  
-    
+    }
+
     public int getHangarPenalty() {
     	return hangarPenalty;
     }
-    
+
     public int getHangarPurchasePenalty(int type, int weight) {
     	return hangarPurchasePenalties[type][weight];
     }
-    
+
     public void setHangarPenalty(int p) {
     	hangarPenalty = p;
     }
-    
+
     public void setHangarPurchasePenalty(int type, int weight, int p) {
     	hangarPurchasePenalties[type][weight] = p;
     }

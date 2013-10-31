@@ -201,7 +201,7 @@ public class SimpleRepairCommand implements Command {
                     engineFound = true;
                 }
                 if (cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
-                    Mounted mounted = unit.getEquipment(cs.getIndex());
+                    Mounted mounted = cs.getMount();
                     
                     if ( !(mounted.getType() instanceof WeaponType) ){
                         techType = techs.elementAt(UnitUtils.EQUIPMENT);

@@ -1,13 +1,13 @@
 /*
  * MekWars - Copyright (C) 2005
- * 
+ *
  * Original author - nmorris (urgru@users.sourceforge.net)
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
@@ -32,7 +32,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import megamek.client.ui.AWT.UnitLoadingDialog;
+import megamek.client.ui.swing.UnitLoadingDialog;
 import megamek.common.TechConstants;
 import admin.dialog.BannedAmmoDialog;
 import admin.dialog.BannedTargetingDialog;
@@ -45,7 +45,6 @@ import admin.dialog.ServerConfigurationDialog;
 import admin.dialog.SubFactionConfigurationDialog;
 import admin.dialog.playerFlags.DefaultPlayerFlagListDialog;
 import client.MWClient;
-import client.campaign.CUnit;
 import client.gui.dialog.HouseNameDialog;
 import client.gui.dialog.PlanetNameDialog;
 import client.gui.dialog.SubFactionNameDialog;
@@ -55,16 +54,17 @@ import client.gui.dialog.UnitViewerDialog;
 import common.CampaignData;
 import common.Planet;
 import common.Terrain;
+import common.Unit;
 import common.UnitFactory;
 
 public class AdminMenu extends JMenu {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -4734543796361026030L;
     /**
-     * 
+     *
      */
     // admin menu components
     JMenu jMenuAdminSubSave = new JMenu();// sub menus
@@ -131,7 +131,7 @@ public class AdminMenu extends JMenu {
     JMenuItem jMenuAdminReloadSupportUnits = new JMenuItem();
     JMenuItem jMenuAdminReloadSanitizerConfigs = new JMenuItem();
     JMenuItem jMenuAdminPlayerFlags = new JMenuItem();
-    
+
     MWClient mwclient;
     private int userLevel = 0;
 
@@ -223,7 +223,7 @@ public class AdminMenu extends JMenu {
                 factionDialog.setVisible(true);
                 String faction = factionDialog.getHouseName();
                 factionDialog.dispose();
-                if (faction == null || faction.length() == 0) {
+                if ((faction == null) || (faction.length() == 0)) {
                     return;
                 }
 
@@ -268,7 +268,7 @@ public class AdminMenu extends JMenu {
                 factionDialog.setVisible(true);
                 String faction = factionDialog.getHouseName();
                 factionDialog.dispose();
-                if (faction == null || faction.length() == 0) {
+                if ((faction == null) || (faction.length() == 0)) {
                     return;
                 }
 
@@ -281,7 +281,7 @@ public class AdminMenu extends JMenu {
                 subFactionDialog.setVisible(true);
                 String subFactionName = subFactionDialog.getSubFactionName();
                 subFactionDialog.dispose();
-                if (subFactionName == null || subFactionName.length() == 0) {
+                if ((subFactionName == null) || (subFactionName.length() == 0)) {
                     return;
                 }
 
@@ -437,21 +437,21 @@ public class AdminMenu extends JMenu {
                 jMenuAdminServerAmmoBan_actionPerformed(e);
             }
         });
-        
+
         jMenuAdminSetServerTargetBan.setText("Set Server Target System Ban");
         jMenuAdminSetServerTargetBan.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		jMenuAdminServerTargetBan_actionPerformed(e);
         	}
         });
-        
+
         jMenuAdminReloadSupportUnits.setText("Reload supportunits.txt");
         jMenuAdminReloadSupportUnits.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		jMenuAdminReloadSupportUnits_actionPerformed(e);
         	}
         });
-        
+
         jMenuAdminReloadSanitizerConfigs.setText("Reload HTML Sanitizer");
         jMenuAdminReloadSanitizerConfigs.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -585,7 +585,7 @@ public class AdminMenu extends JMenu {
                 mwclient.loadMegaMekClient();
             }
         });
-        
+
         jMenuAdminPlayerFlags.setText("Player Flags");
         jMenuAdminPlayerFlags.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -608,15 +608,15 @@ public class AdminMenu extends JMenu {
         if (userLevel >= mwclient.getData().getAccessLevel("AdminTerminateAll")) {
             this.add(jMenuAdminTerminateAll);
         }
-        
+
         if (userLevel >= mwclient.getData().getAccessLevel("AdminReloadSupportUnits")) {
         	this.add(jMenuAdminReloadSupportUnits);
         }
-        
+
         if (userLevel >= mwclient.getData().getAccessLevel("AdminReloadHTMLSanitizerConfig")) {
         	this.add(jMenuAdminReloadSanitizerConfigs);
         }
-        
+
         if (getItemCount() > 0) {
             addSeparator();
         }
@@ -674,7 +674,7 @@ public class AdminMenu extends JMenu {
         if (userLevel >= mwclient.getData().getAccessLevel("AddTrait")) {
             jMenuAdminSubSetHouse.add(jMenuAdminSetFactionTraits);
         }
-        if (userLevel >= mwclient.getData().getAccessLevel("CreateSubFaction") && userLevel >= mwclient.getData().getAccessLevel("SetSubFactionConfig")) {
+        if ((userLevel >= mwclient.getData().getAccessLevel("CreateSubFaction")) && (userLevel >= mwclient.getData().getAccessLevel("SetSubFactionConfig"))) {
             jMenuAdminSubSetHouse.add(jMenuAdminSetSubFactionConfigs);
         }
         if (userLevel >= mwclient.getData().getAccessLevel("SetFactionToFactionRewardPointMultiplier")) {
@@ -803,7 +803,7 @@ public class AdminMenu extends JMenu {
             jMenuAdminBlackMarketSettings.add(jMenuAdminComponentMiscList);
             this.add(jMenuAdminBlackMarketSettings);
         }
-        
+
         if (userLevel >= 101) {
         	this.add(jMenuAdminPlayerFlags);
         }
@@ -813,25 +813,25 @@ public class AdminMenu extends JMenu {
      * Various admin methods. These really don't need to be stand alone, and
      * could (should?) be worked back into a unified ActionPerformed command, or
      * back into the overloaded actionPerformed commands is createMenu();
-     * 
+     *
      * For now, these methods remain as they were in CMainFrame.
-     * 
+     *
      * @urgru, 6.26.05
      */
 
     public void jMenuAdminCreatePlanet_actionPerformed(ActionEvent e) {
         String planetName = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Planet Name?");
-        if (planetName == null || planetName.length() == 0) {
+        if ((planetName == null) || (planetName.length() == 0)) {
             return;
         }
 
         String xcord = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Planet x coord");
-        if (xcord == null || xcord.length() == 0) {
+        if ((xcord == null) || (xcord.length() == 0)) {
             return;
         }
 
         String ycord = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Planet y coord?");
-        if (ycord == null || ycord.length() == 0) {
+        if ((ycord == null) || (ycord.length() == 0)) {
             return;
         }
 
@@ -849,7 +849,7 @@ public class AdminMenu extends JMenu {
         String planetNamestr = planetDialog.getPlanetName();
         planetDialog.dispose();
 
-        if (planetNamestr == null || planetNamestr.length() == 0) {
+        if ((planetNamestr == null) || (planetNamestr.length() == 0)) {
             return;
         }
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c admindestroyplanet#" + planetNamestr);
@@ -867,13 +867,13 @@ public class AdminMenu extends JMenu {
         String planetNamestr = planetDialog.getPlanetName();
         planetDialog.dispose();
 
-        if (planetNamestr == null || planetNamestr.length() == 0) {
+        if ((planetNamestr == null) || (planetNamestr.length() == 0)) {
             return;
         }
 
         String factoryName = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Factory Name");
 
-        if (factoryName == null || factoryName.length() == 0) {
+        if ((factoryName == null) || (factoryName.length() == 0)) {
             return;
         }
 
@@ -882,13 +882,13 @@ public class AdminMenu extends JMenu {
         String factionName = factionDialog.getHouseName();
         factionDialog.dispose();
 
-        if (factionName == null || factionName.length() == 0) {
+        if ((factionName == null) || (factionName.length() == 0)) {
             return;
         }
 
         String factoryTypestr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(), "Select factory production", "Factory Production", JOptionPane.INFORMATION_MESSAGE, null, factoryTypes, factoryTypes[0]);
 
-        if (factoryTypestr == null || factoryTypestr.length() == 0) {
+        if ((factoryTypestr == null) || (factoryTypestr.length() == 0)) {
             return;
         }
 
@@ -902,7 +902,7 @@ public class AdminMenu extends JMenu {
 
         String factorySizestr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(), "Select a factory size", "FactorySize", JOptionPane.INFORMATION_MESSAGE, null, factorySize, factorySize[0]);
 
-        if (factorySizestr == null || factorySizestr.length() == 0) {
+        if ((factorySizestr == null) || (factorySizestr.length() == 0)) {
             return;
         }
 
@@ -914,7 +914,7 @@ public class AdminMenu extends JMenu {
 
         String factoryAccessLevel = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Factory Access Level", 0);
 
-        if (factoryAccessLevel == null || factoryAccessLevel.length() == 0) {
+        if ((factoryAccessLevel == null) || (factoryAccessLevel.length() == 0)) {
             return;
         }
 
@@ -938,7 +938,7 @@ public class AdminMenu extends JMenu {
         String planetNamestr = planetDialog.getPlanetName();
         planetDialog.dispose();
 
-        if (planetNamestr == null || planetNamestr.length() == 0) {
+        if ((planetNamestr == null) || (planetNamestr.length() == 0)) {
             return;
         }
 
@@ -962,7 +962,7 @@ public class AdminMenu extends JMenu {
 
         String factoryName = (String) combo.getSelectedItem();
 
-        if (factoryName == null || factoryName.length() == 0) {
+        if ((factoryName == null) || (factoryName.length() == 0)) {
             return;
         }
 
@@ -984,7 +984,7 @@ public class AdminMenu extends JMenu {
         String planetNamestr = planetDialog.getPlanetName();
         planetDialog.dispose();
 
-        if (planetNamestr == null || planetNamestr.length() == 0) {
+        if ((planetNamestr == null) || (planetNamestr.length() == 0)) {
             return;
         }
 
@@ -1014,13 +1014,13 @@ public class AdminMenu extends JMenu {
             return;
         }
 
-        if (terrainType == null || terrainType.length() == 0) {
+        if ((terrainType == null) || (terrainType.length() == 0)) {
             return;
         }
 
         String terrainChance = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Terrain Chance", new Integer(100));
 
-        if (terrainChance == null || terrainChance.length() == 0) {
+        if ((terrainChance == null) || (terrainChance.length() == 0)) {
             return;
         }
 
@@ -1036,13 +1036,13 @@ public class AdminMenu extends JMenu {
         String planetNamestr = planetDialog.getPlanetName();
         planetDialog.dispose();
 
-        if (planetNamestr == null || planetNamestr.length() == 0) {
+        if ((planetNamestr == null) || (planetNamestr.length() == 0)) {
             return;
         }
 
         String terrainType = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Select the Terrain position: start with 0 for the top most terrain in the information box");
 
-        if (terrainType == null || terrainType.length() == 0) {
+        if ((terrainType == null) || (terrainType.length() == 0)) {
             return;
         }
 
@@ -1057,7 +1057,7 @@ public class AdminMenu extends JMenu {
         String planetNamestr = planetDialog.getPlanetName();
         planetDialog.dispose();
 
-        if (planetNamestr == null || planetNamestr.length() == 0) {
+        if ((planetNamestr == null) || (planetNamestr.length() == 0)) {
             return;
         }
 
@@ -1066,7 +1066,7 @@ public class AdminMenu extends JMenu {
         String newOwner = factionDialog.getHouseName();
         factionDialog.dispose();
 
-        if (newOwner == null || newOwner.length() == 0) {
+        if ((newOwner == null) || (newOwner.length() == 0)) {
             return;
         }
 
@@ -1081,13 +1081,13 @@ public class AdminMenu extends JMenu {
         String factionName = factionDialog.getHouseName();
         factionDialog.dispose();
 
-        if (factionName == null || factionName.length() == 0) {
+        if ((factionName == null) || (factionName.length() == 0)) {
             return;
         }
 
         String points = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Number of Points(Negative to remove Points)", "0");
 
-        if (points == null || points.length() == 0) {
+        if ((points == null) || (points.length() == 0)) {
             return;
         }
 
@@ -1110,13 +1110,13 @@ public class AdminMenu extends JMenu {
         String factionName = factionDialog.getHouseName();
         factionDialog.dispose();
 
-        if (factionName == null || factionName.length() == 0) {
+        if ((factionName == null) || (factionName.length() == 0)) {
             return;
         }
 
         String fluFilePrefix = JOptionPane.showInputDialog(mwclient.getMainFrame(), mwclient.moneyOrFluMessage(false, true, -1) + " File Prefix:");
 
-        if (fluFilePrefix == null || fluFilePrefix.length() == 0) {
+        if ((fluFilePrefix == null) || (fluFilePrefix.length() == 0)) {
             return;
         }
 
@@ -1133,23 +1133,23 @@ public class AdminMenu extends JMenu {
         String factionName = factionDialog.getHouseName();
         factionDialog.dispose();
 
-        if (factionName == null || factionName.length() == 0) {
+        if ((factionName == null) || (factionName.length() == 0)) {
             return;
         }
 
         String Typestr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(), "Select component type", "Component Type", JOptionPane.INFORMATION_MESSAGE, null, Types, Types[0]);
 
-        if (Typestr == null || Typestr.length() == 0) {
+        if ((Typestr == null) || (Typestr.length() == 0)) {
             return;
         }
 
         String Sizestr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(), "Select a component size", "Component Size", JOptionPane.INFORMATION_MESSAGE, null, Size, Size[0]);
-        if (Sizestr == null || Sizestr.length() == 0) {
+        if ((Sizestr == null) || (Sizestr.length() == 0)) {
             return;
         }
 
         String components = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Amount of Components to add(negative number to subtract)");
-        if (components == null || components.length() == 0) {
+        if ((components == null) || (components.length() == 0)) {
             return;
         }
 
@@ -1163,7 +1163,7 @@ public class AdminMenu extends JMenu {
         String planetName = planetDialog.getPlanetName();
         planetDialog.dispose();
 
-        if (planetName == null || planetName.length() == 0) {
+        if ((planetName == null) || (planetName.length() == 0)) {
             return;
         }
 
@@ -1172,7 +1172,7 @@ public class AdminMenu extends JMenu {
         String winningHouseName = factionDialog.getHouseName();
         factionDialog.dispose();
 
-        if (winningHouseName == null || winningHouseName.length() == 0) {
+        if ((winningHouseName == null) || (winningHouseName.length() == 0)) {
             return;
         }
 
@@ -1181,12 +1181,12 @@ public class AdminMenu extends JMenu {
         String losingHouseName = factionDialog.getHouseName();
         factionDialog.dispose();
 
-        if (losingHouseName == null || losingHouseName.length() == 0) {
+        if ((losingHouseName == null) || (losingHouseName.length() == 0)) {
             return;
         }
 
         String amount = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Amount");
-        if (amount == null || amount.length() == 0) {
+        if ((amount == null) || (amount.length() == 0)) {
             return;
         }
 
@@ -1202,25 +1202,25 @@ public class AdminMenu extends JMenu {
         String factionName = factionDialog.getHouseName();
         factionDialog.dispose();
 
-        if (factionName == null || factionName.length() == 0) {
+        if ((factionName == null) || (factionName.length() == 0)) {
             return;
         }
 
         String unitTypestr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(), "Select Unit Type", "Unit Type", JOptionPane.INFORMATION_MESSAGE, null, unitTypes, unitTypes[0]);
 
-        if (unitTypestr == null || unitTypestr.length() == 0) {
+        if ((unitTypestr == null) || (unitTypestr.length() == 0)) {
             return;
         }
 
         String unitClassstr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(), "Select Unit Class", "Unit Class", JOptionPane.INFORMATION_MESSAGE, null, unitClass, unitClass[0]);
 
-        if (unitClassstr == null || unitClassstr.length() == 0) {
+        if ((unitClassstr == null) || (unitClassstr.length() == 0)) {
             return;
         }
 
         String priceMod = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Price Modifier:");
 
-        if (priceMod == null || priceMod.length() == 0) {
+        if ((priceMod == null) || (priceMod.length() == 0)) {
             return;
         }
 
@@ -1236,25 +1236,25 @@ public class AdminMenu extends JMenu {
         String factionName = factionDialog.getHouseName();
         factionDialog.dispose();
 
-        if (factionName == null || factionName.length() == 0) {
+        if ((factionName == null) || (factionName.length() == 0)) {
             return;
         }
 
         String unitTypestr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(), "Select Unit Type", "Unit Type", JOptionPane.INFORMATION_MESSAGE, null, unitTypes, unitTypes[0]);
 
-        if (unitTypestr == null || unitTypestr.length() == 0) {
+        if ((unitTypestr == null) || (unitTypestr.length() == 0)) {
             return;
         }
 
         String unitClassstr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(), "Select Unit Class", "Unit Class", JOptionPane.INFORMATION_MESSAGE, null, unitClass, unitClass[0]);
 
-        if (unitClassstr == null || unitClassstr.length() == 0) {
+        if ((unitClassstr == null) || (unitClassstr.length() == 0)) {
             return;
         }
 
         String fluMod = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Price Modifier:");
 
-        if (fluMod == null || fluMod.length() == 0) {
+        if ((fluMod == null) || (fluMod.length() == 0)) {
             return;
         }
 
@@ -1268,7 +1268,7 @@ public class AdminMenu extends JMenu {
         String factionName = factionDialog.getHouseName();
         factionDialog.dispose();
 
-        if (factionName == null || factionName.length() == 0) {
+        if ((factionName == null) || (factionName.length() == 0)) {
             return;
         }
 
@@ -1311,7 +1311,7 @@ public class AdminMenu extends JMenu {
     public void jMenuAdminServerAmmoBan_actionPerformed(ActionEvent e) {
         new BannedAmmoDialog(mwclient, null);
     }
-    
+
     public void jMenuAdminServerTargetBan_actionPerformed(ActionEvent e) {
     	new BannedTargetingDialog(mwclient);
     }
@@ -1420,7 +1420,7 @@ public class AdminMenu extends JMenu {
         String factionName = factionDialog.getHouseName();
         factionDialog.dispose();
 
-        if (factionName == null || factionName.length() == 0) {
+        if ((factionName == null) || (factionName.length() == 0)) {
             return;
         }
 
@@ -1433,7 +1433,7 @@ public class AdminMenu extends JMenu {
         String factionName = factionDialog.getHouseName();
         factionDialog.dispose();
 
-        if (factionName == null || factionName.length() == 0) {
+        if ((factionName == null) || (factionName.length() == 0)) {
             return;
         }
 
@@ -1441,21 +1441,21 @@ public class AdminMenu extends JMenu {
 
         String unitTypestr = (String) JOptionPane.showInputDialog(mwclient.getMainFrame(), "Select Unit Type", "Unit Type", JOptionPane.INFORMATION_MESSAGE, null, unitTypes, unitTypes[0]);
 
-        if (unitTypestr == null || unitTypestr.length() == 0) {
+        if ((unitTypestr == null) || (unitTypestr.length() == 0)) {
             return;
         }
 
-        int unitTypeint = CUnit.getTypeIDForName(unitTypestr);
+        int unitTypeint = Unit.getTypeIDForName(unitTypestr);
 
         String gunnery = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Base Gunnery");
 
-        if (gunnery == null || gunnery.length() == 0) {
+        if ((gunnery == null) || (gunnery.length() == 0)) {
             return;
         }
 
         String piloting = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Base Piloting");
 
-        if (piloting == null || piloting.length() == 0) {
+        if ((piloting == null) || (piloting.length() == 0)) {
             return;
         }
 
@@ -1479,13 +1479,13 @@ public class AdminMenu extends JMenu {
         String commandNamestr = commandDialog.getCommandName();
         commandDialog.dispose();
 
-        if (commandNamestr == null || commandNamestr.equalsIgnoreCase("null")) {
+        if ((commandNamestr == null) || commandNamestr.equalsIgnoreCase("null")) {
             return;
         }
 
         String level = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Level");
 
-        if (level == null || level.length() == 0) {
+        if ((level == null) || (level.length() == 0)) {
             return;
         }
 
@@ -1500,7 +1500,7 @@ public class AdminMenu extends JMenu {
         String planetNamestr = planetDialog.getPlanetName();
         planetDialog.dispose();
 
-        if (planetNamestr == null || planetNamestr.length() == 0) {
+        if ((planetNamestr == null) || (planetNamestr.length() == 0)) {
             return;
         }
 
@@ -1522,7 +1522,7 @@ public class AdminMenu extends JMenu {
 
         String factoryName = (String) combo.getSelectedItem();
 
-        if (factoryName == null || factoryName.length() == 0) {
+        if ((factoryName == null) || (factoryName.length() == 0)) {
             return;
         }
 
@@ -1537,19 +1537,19 @@ public class AdminMenu extends JMenu {
         String planetNamestr = planetDialog.getPlanetName();
         planetDialog.dispose();
 
-        if (planetNamestr == null || planetNamestr.length() == 0) {
+        if ((planetNamestr == null) || (planetNamestr.length() == 0)) {
             return;
         }
 
         String xSize = JOptionPane.showInputDialog(mwclient.getMainFrame(), "X size");
 
-        if (xSize == null || xSize.length() == 0) {
+        if ((xSize == null) || (xSize.length() == 0)) {
             return;
         }
 
         String ySize = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Y Size");
 
-        if (ySize == null || ySize.length() == 0) {
+        if ((ySize == null) || (ySize.length() == 0)) {
             return;
         }
 
@@ -1563,7 +1563,7 @@ public class AdminMenu extends JMenu {
         String planetNamestr = planetDialog.getPlanetName();
         planetDialog.dispose();
 
-        if (planetNamestr == null || planetNamestr.length() == 0) {
+        if ((planetNamestr == null) || (planetNamestr.length() == 0)) {
             return;
         }
 
@@ -1589,19 +1589,19 @@ public class AdminMenu extends JMenu {
         String planetNamestr = planetDialog.getPlanetName();
         planetDialog.dispose();
 
-        if (planetNamestr == null || planetNamestr.length() == 0) {
+        if ((planetNamestr == null) || (planetNamestr.length() == 0)) {
             return;
         }
 
         String xSize = JOptionPane.showInputDialog(mwclient.getMainFrame(), "X size");
 
-        if (xSize == null || xSize.length() == 0) {
+        if ((xSize == null) || (xSize.length() == 0)) {
             return;
         }
 
         String ySize = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Y Size");
 
-        if (ySize == null || ySize.length() == 0) {
+        if ((ySize == null) || (ySize.length() == 0)) {
             return;
         }
 
@@ -1616,7 +1616,7 @@ public class AdminMenu extends JMenu {
         String planetNamestr = planetDialog.getPlanetName();
         planetDialog.dispose();
 
-        if (planetNamestr == null || planetNamestr.length() == 0) {
+        if ((planetNamestr == null) || (planetNamestr.length() == 0)) {
             return;
         }
 
@@ -1625,7 +1625,7 @@ public class AdminMenu extends JMenu {
         String owner = hnd.getHouseName();
         hnd.dispose();
 
-        if (owner == null || owner.length() == 0) {
+        if ((owner == null) || (owner.length() == 0)) {
             return;
         }
 
@@ -1639,19 +1639,19 @@ public class AdminMenu extends JMenu {
         String planetNamestr = planetDialog.getPlanetName();
         planetDialog.dispose();
 
-        if (planetNamestr == null || planetNamestr.length() == 0) {
+        if ((planetNamestr == null) || (planetNamestr.length() == 0)) {
             return;
         }
 
         String lowTemp = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Low Temp");
 
-        if (lowTemp == null || lowTemp.length() == 0) {
+        if ((lowTemp == null) || (lowTemp.length() == 0)) {
             return;
         }
 
         String hiTemp = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Hi Temp");
 
-        if (hiTemp == null || hiTemp.length() == 0) {
+        if ((hiTemp == null) || (hiTemp.length() == 0)) {
             return;
         }
 
@@ -1665,13 +1665,13 @@ public class AdminMenu extends JMenu {
         String planetNamestr = planetDialog.getPlanetName();
         planetDialog.dispose();
 
-        if (planetNamestr == null || planetNamestr.length() == 0) {
+        if ((planetNamestr == null) || (planetNamestr.length() == 0)) {
             return;
         }
 
         String grav = JOptionPane.showInputDialog(mwclient.getMainFrame(), "Gravity");
 
-        if (grav == null || grav.length() == 0) {
+        if ((grav == null) || (grav.length() == 0)) {
             return;
         }
 
@@ -1702,11 +1702,11 @@ public class AdminMenu extends JMenu {
     public void jMenuAdminCreateMulArmy_actionPerformed(ActionEvent e) {
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "listmuls CAFM");
     }
-    
+
 	private void jMenuAdminReloadSupportUnits_actionPerformed(ActionEvent e) {
-		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "adminReloadSupportUnits");		
+		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "adminReloadSupportUnits");
 	}
-	
+
 	private void jMenuAdminReloadSanitizer_actionPerformed(ActionEvent e) {
 		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "adminReloadHTMLSanitizerConfigs");
 	}

@@ -81,7 +81,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import megamek.MegaMek;
 import megamek.client.Client;
-import megamek.client.ui.AWT.GameOptionsDialog;
+import megamek.client.ui.swing.GameOptionsDialog;
 import megamek.common.Building;
 import megamek.common.CriticalSlot;
 import megamek.common.Entity;
@@ -791,7 +791,7 @@ public final class MWClient implements IClient, GameListener {
 
     public byte[] createChecksum(String filename) throws Exception {
     	InputStream fis = new FileInputStream(filename);
-	
+
     	byte[] buffer = new byte[1024];
     	MessageDigest complete = MessageDigest.getInstance("MD5");
     	int numRead;
@@ -804,7 +804,7 @@ public final class MWClient implements IClient, GameListener {
     	fis.close();
     	return complete.digest();
     }
-    
+
     /*
      * Actual GUI-mode parseData. Before we started streaming data over the chat
      * part, this was called directly. Now we buffer all incoming non-data chat
@@ -1862,7 +1862,7 @@ public final class MWClient implements IClient, GameListener {
 
     /*
      * Rewritten in order to allow ConfigPage to reset the skin on the fly.
-     * 
+     *
      * @urgru 2.21.05
      */
     public void setLookAndFeel(boolean isRedraw) {
@@ -2884,7 +2884,7 @@ public final class MWClient implements IClient, GameListener {
 
     /**
      * Changes the duty to a new status.
-     * 
+     *
      * @param newStatus
      */
     public void changeStatus(int newStatus) {
@@ -2964,7 +2964,7 @@ public final class MWClient implements IClient, GameListener {
         gameCount++;
 
         // only check for restart once every 30 seconds.
-        if (System.currentTimeMillis() - 30000 < lastResetCheck) {
+        if ((System.currentTimeMillis() - 30000) < lastResetCheck) {
             return;
         }
 
@@ -3250,7 +3250,7 @@ public final class MWClient implements IClient, GameListener {
             MMGOD.dispose();
             File localGameOptions = new File("mmconf/gameoptions.xml");
 
-            if (localGameOptions.lastModified() >= System.currentTimeMillis() - 1000) {
+            if (localGameOptions.lastModified() >= (System.currentTimeMillis() - 1000)) {
                 sendGameOptionsToServer();
             }
         } catch (Exception ex) {

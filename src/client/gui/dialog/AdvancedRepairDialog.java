@@ -63,7 +63,6 @@ import megamek.common.TechConstants;
 import client.MWClient;
 import client.campaign.CUnit;
 
-import common.CampaignData;
 import common.House;
 import common.campaign.pilot.Pilot;
 import common.campaign.pilot.skills.PilotSkill;
@@ -124,7 +123,7 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
     private JComboBox techComboBox = new JComboBox();
 
     JTabbedPane ConfigPane = new JTabbedPane(SwingConstants.TOP);
-    
+
     int year;
 
     public AdvancedRepairDialog(MWClient c, int unitID, boolean salvage) {
@@ -481,7 +480,7 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
                                     } else {
                                         cost = (int) Math.ceil(ammoCost * refillShots);
                                     }
-                                    
+
                                     info.setText(atCheck.getName() + " (" + m.getUsableShotsLeft() + "/" + refillShots+ ") " + mwclient.moneyOrFluMessage(true, true, cost));
                                 }
 
@@ -760,7 +759,7 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
                             critNames.add(result + ((Mech) unit).getSystemName(cs.getIndex()));
                         }
                     } else if (cs.getType() == CriticalSlot.TYPE_EQUIPMENT) {
-                        Mounted m = unit.getEquipment(cs.getIndex());
+                        Mounted m = cs.getMount();
                         if (cs.isRepairing()) {
                             critNames.add("!!" + m.getDesc());
                         } else if (mwclient.getRMT().isQueued(location, slot, unit.getExternalId())) {
