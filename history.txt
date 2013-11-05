@@ -1,6 +1,10 @@
 VERSION HISTORY:
 ----------------
 v 0.3.5.x
+R Released Ded v0.3.5.5, Client v0.3.5.20
++ BUG 344: Dedicated Client uses mwconfig.txt.bak instead of mwconfig.txt
++ RFE 405: Increase DEDMEMORY in cconfig.java to 256
++ BUG 345: Memory hardcoded in mwclient when turned into a ded
 + updated MM.jar
 R Released Server v0.3.5.27
 + Bug 343: Unknown Unit Type in UnitDamageHandlerFactory for Infantry

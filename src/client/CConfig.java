@@ -65,28 +65,7 @@ public class CConfig {
         try {
             File configfile = new File(CONFIG_FILE);
             FileInputStream fis = new FileInputStream(configfile);
-            //File backupfile = new File(CONFIG_BACKUP_FILE);
-            // Changing this - the client is *always* loading the .bak first.
-            // Just load the config.  If it fails, load the .bak.
             
-            /*            if (backupfile.exists()) {
-                FileInputStream backupStream = new FileInputStream(backupfile);
-                if (fis.available() < backupStream.available()) {
-                    try {
-                        config.load(backupStream);
-                        backupStream.close();
-                    } catch (Exception ex) {
-                        CampaignData.mwlog.errLog(ex);
-                        JOptionPane.showMessageDialog(null, "Unable to load Backup config file");
-                    }
-
-                } else {
-                    config.load(fis);
-                }
-            } else {
-                config.load(fis);
-            }
-            */
             config.load(fis);  // Here's the change.
             fis.close();
         } catch (IOException ie) {
@@ -370,7 +349,7 @@ public class CConfig {
         defaults.setProperty("MAPIMAGEWIDTH", "100");
 
         defaults.setProperty("UPDATEKEY", "-1");
-        defaults.setProperty("DEDMEMORY", "64");
+        defaults.setProperty("DEDMEMORY", "256");  //Had to up this - new MM is taking way more memory than before
 
         // unitstatus setting
         // Right column

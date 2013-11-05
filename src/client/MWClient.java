@@ -181,7 +181,7 @@ public final class MWClient implements IClient, GameListener {
 
     CConfig Config;
 
-    public static final String CLIENT_VERSION = "0.3.5.19"; // change this with
+    public static final String CLIENT_VERSION = "0.3.5.20"; // change this with
 
     // all client
     // changes @Torren
@@ -390,7 +390,8 @@ public final class MWClient implements IClient, GameListener {
         if (isDedicated()) {
             try {
                 Runtime runTime = Runtime.getRuntime();
-                String[] call = { "java", "-Xmx512m", "-jar", "MekWarsDed.jar" };
+                String mem = Config.getParam("DEDMEMORY");
+                String[] call = { "java", "-Xmx" + mem + "m", "-jar", "MekWarsDed.jar" };
                 runTime.exec(call);
                 System.exit(0);
             } catch (Exception ex) {
@@ -1037,10 +1038,12 @@ public final class MWClient implements IClient, GameListener {
                     try {
                         Runtime runTime = Runtime.getRuntime();
                         if (new File("MekWarsDed.jar").exists()) {
-                            String[] call = { "java", "-Xmx512m", "-jar", "MekWarsDed.jar" };
+                        	String mem = Config.getParam("DEDMEMORY");
+                            String[] call = { "java", "-Xmx" + mem + "m", "-jar", "MekWarsDed.jar" };
                             runTime.exec(call);
                         } else {
-                            String[] call = { "java", "-Xmx512m", "-jar", "MekWarsClient.jar" };
+                        	String mem = Config.getParam("DEDMEMORY");
+                        	String[] call = { "java", "-Xmx" + mem + "m", "-jar", "MekWarsClient.jar" };
                             runTime.exec(call);
                         }
                         System.exit(0);
@@ -2984,11 +2987,12 @@ public final class MWClient implements IClient, GameListener {
             }
             try {
                 Runtime runTime = Runtime.getRuntime();
-                if (new File("MekWarsDed.jar").exists()) {
-                    String[] call = { "java", "-Xmx512m", "-jar", "MekWarsDed.jar" };
+            	String mem = Config.getParam("DEDMEMORY");
+            	if (new File("MekWarsDed.jar").exists()) {
+                    String[] call = { "java", "-Xmx" + mem + "m", "-jar", "MekWarsDed.jar" };
                     runTime.exec(call);
                 } else {
-                    String[] call = { "java", "-Xmx512m", "-jar", "MekWarsClient.jar" };
+                    String[] call = { "java", "-Xmx" + mem + "m", "-jar", "MekWarsClient.jar" };
                     runTime.exec(call);
                 }
                 System.exit(0);

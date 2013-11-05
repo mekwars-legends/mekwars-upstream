@@ -49,27 +49,13 @@ public class CConfig {
 			createConfig();
 		
 		//load the saved mwconfig.txt file 
-		try {
-			File configfile = new File(CONFIG_FILE);
-			FileInputStream fis = new FileInputStream(configfile);
-            File backupfile = new File(CONFIG_BACKUP_FILE);
-            if ( backupfile.exists() ){
-                FileInputStream backupStream = new FileInputStream(backupfile);
-                if ( fis.available() < backupStream.available() ){
-                    try {
-                        config.load(backupStream);
-                        backupStream.close();
-                    } catch (Exception ex) {
-                        CampaignData.mwlog.errLog(ex);
-                        JOptionPane.showMessageDialog(null, "Unable to load Backup config file");
-                    }
-                    
-                }else
-                    config.load(fis);
-            }else
-                config.load(fis);
+        try {
+            File configfile = new File(CONFIG_FILE);
+            FileInputStream fis = new FileInputStream(configfile);
+            
+            config.load(fis);  // Here's the change.
             fis.close();
-		} catch (IOException ie){
+        } catch (IOException ie) {
             try {
                 File configfile = new File(CONFIG_BACKUP_FILE);
                 FileInputStream fis = new FileInputStream(configfile);
@@ -77,14 +63,12 @@ public class CConfig {
                 fis.close();
             } catch (Exception ex) {
                 CampaignData.mwlog.errLog(ex);
-                JOptionPane.showMessageDialog(null,
-                        "Unable to load Backup config file");
+                JOptionPane.showMessageDialog(null, "Unable to load Backup config file");
             }
         } catch (Exception ex) {
-			CampaignData.mwlog.errLog(ex);
-			JOptionPane.showMessageDialog(null, "Unable to load main config file");
-		}
-		
+            CampaignData.mwlog.errLog(ex);
+            JOptionPane.showMessageDialog(null, "Unable to load main config file");
+        }
 		//check for a serverdata.dat
 		try {
 			File configfile = new File("serverdata.dat");
