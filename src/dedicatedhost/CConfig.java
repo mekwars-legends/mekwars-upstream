@@ -113,7 +113,7 @@ public class CConfig {
 		defaults.setProperty("MAXPLAYERS","12");
 		defaults.setProperty("MAXSAVEDGAMEDAYS","7");
         defaults.setProperty("UPDATEKEY","-1");
-        defaults.setProperty("DEDMEMORY","64");
+        defaults.setProperty("DEDMEMORY","256");
 
         return defaults;
 	}
