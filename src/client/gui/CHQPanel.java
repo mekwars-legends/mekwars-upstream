@@ -29,6 +29,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.RGBImageFilter;
+import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -3103,7 +3104,7 @@ public class CHQPanel extends JPanel {
 
             int meknum;
 
-            MechTileset mt = new MechTileset("data/images/units/");
+            MechTileset mt = new MechTileset(new File("data/images/units/"));
             Color dcolor = new Color(220, 220, 220);
 
             public Renderer(MWClient client) {

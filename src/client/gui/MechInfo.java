@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2004
- *
+ * MekWars - Copyright (C) 2004 
+ * 
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  * Original author Helge Richter (McWizard)
  *
@@ -33,6 +33,7 @@ import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
 import java.awt.image.MemoryImageSource;
 import java.awt.image.PixelGrabber;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.Icon;
@@ -40,6 +41,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+
+import common.CampaignData;
+import common.Unit;
+import common.util.UnitUtils;
 
 import megamek.client.ui.swing.MechTileset;
 import megamek.client.ui.swing.util.RotateFilter;
@@ -51,19 +56,15 @@ import client.MWClient;
 import client.campaign.CArmy;
 import client.campaign.CUnit;
 
-import common.CampaignData;
-import common.Unit;
-import common.util.UnitUtils;
-
 /**
- *
+ * 
  * @author Steve Hawkins
  */
 
 public class MechInfo extends JPanel {
 
     /**
-     *
+     * 
      */
     private static final long serialVersionUID = 4308503800966118202L;
     protected static MechTileset mt;
@@ -84,20 +85,19 @@ public class MechInfo extends JPanel {
 
     /**
      * Creates new general-purpose MechInfo.
-     *
+     * 
      * Used to generate images in HQ, BM, etx.
      */
     public MechInfo(MWClient client) {
         mwclient = client;
 
-        if (mwclient != null) {
+        if (mwclient != null)
             Config = mwclient.getConfig();
-        }
 
         lblImage = new JLabel() {
 
             /**
-             *
+             * 
              */
             private static final long serialVersionUID = -114192798426952281L;
 
@@ -114,14 +114,14 @@ public class MechInfo extends JPanel {
                 Icon icon = getIcon();
                 icon.paintIcon(this, g, (getWidth() - icon.getIconWidth()) / 2, (getHeight() - icon.getIconHeight()) / 2);
 
-                if ((mwclient != null) && mwclient.getConfig().isUsingStatusIcons() && (cm != null)) {
+                if (mwclient != null && mwclient.getConfig().isUsingStatusIcons() && cm != null) {
 
                     int height = 0;
                     boolean dynamic = mwclient.getConfig().isParam("LEFTCOLUMNDYNAMIC");
                     ImageIcon ic = null;
                     Entity m = cm.getEntity();
 
-                    if (lblImage.isVisible() && ((m instanceof Mech) || (m instanceof Tank))) {
+                    if (lblImage.isVisible() && (m instanceof Mech || m instanceof Tank)) {
 
                         boolean useAdvanceRepairs = mwclient.isUsingAdvanceRepairs();
 
@@ -138,7 +138,7 @@ public class MechInfo extends JPanel {
                                 ic = new ImageIcon("data/images/status/wound.gif");
                                 g.drawImage(ic.getImage(), 0, height, ic.getImageObserver());
                                 height += ic.getIconHeight();
-                            } else if ((m instanceof Mech) && ((Mech) m).isAutoEject()) {
+                            } else if (m instanceof Mech && ((Mech) m).isAutoEject()) {
                                 if (!dynamic) {
                                     ic = new ImageIcon("data/images/status/eject.gif");
                                     g.drawImage(ic.getImage(), 0, height, ic.getImageObserver());
@@ -159,7 +159,7 @@ public class MechInfo extends JPanel {
                                     ic = new ImageIcon("data/images/status/repairing.gif");
                                     g.drawImage(ic.getImage(), 0, height, ic.getImageObserver());
                                     height += ic.getIconHeight();
-                                } else if ((mwclient.getRMT() != null) && mwclient.getRMT().hasQueuedOrders(cm.getId())) {
+                                } else if (mwclient.getRMT() != null && mwclient.getRMT().hasQueuedOrders(cm.getId())) {
                                     ic = new ImageIcon("data/images/status/pending.gif");
                                     g.drawImage(ic.getImage(), 0, height, ic.getImageObserver());
                                     height += ic.getIconHeight();
@@ -255,7 +255,7 @@ public class MechInfo extends JPanel {
                         }
 
                         // commander block
-                        if (Config.isParam("LEFTCOMMANDER") && (army != null)) {
+                        if (Config.isParam("LEFTCOMMANDER") && army != null) {
                             if (army.isCommander(cm.getId())) {
                                 ic = new ImageIcon("data/images/status/comm.gif");
                                 g.drawImage(ic.getImage(), 0, height, ic.getImageObserver());
@@ -287,7 +287,7 @@ public class MechInfo extends JPanel {
                                 ic = new ImageIcon("data/images/status/wound.gif");
                                 g.drawImage(ic.getImage(), cellWidth - ic.getIconWidth(), height, ic.getImageObserver());
                                 height += ic.getIconHeight();
-                            } else if ((m instanceof Mech) && ((Mech) m).isAutoEject()) {
+                            } else if (m instanceof Mech && ((Mech) m).isAutoEject()) {
                                 if (!dynamic) {
                                     ic = new ImageIcon("data/images/status/eject.gif");
                                     g.drawImage(ic.getImage(), cellWidth - ic.getIconWidth(), height, ic.getImageObserver());
@@ -308,7 +308,7 @@ public class MechInfo extends JPanel {
                                     ic = new ImageIcon("data/images/status/repairing.gif");
                                     g.drawImage(ic.getImage(), cellWidth - ic.getIconWidth(), height, ic.getImageObserver());
                                     height += ic.getIconHeight();
-                                } else if ((mwclient.getRMT() != null) && mwclient.getRMT().hasQueuedOrders(cm.getId())) {
+                                } else if (mwclient.getRMT() != null && mwclient.getRMT().hasQueuedOrders(cm.getId())) {
                                     ic = new ImageIcon("data/images/status/pending.gif");
                                     g.drawImage(ic.getImage(), cellWidth - ic.getIconWidth(), height, ic.getImageObserver());
                                     height += ic.getIconHeight();
@@ -405,7 +405,7 @@ public class MechInfo extends JPanel {
                     }
 
                     // commander block
-                    if (Config.isParam("RIGHTCOMMANDER") && (army != null)) {
+                    if (Config.isParam("RIGHTCOMMANDER") && army != null) {
                         if (army.isCommander(cm.getId())) {
                             ic = new ImageIcon("data/images/status/comm.gif");
                             g.drawImage(ic.getImage(), cellWidth - ic.getIconWidth(), height, ic.getImageObserver());
@@ -446,13 +446,13 @@ public class MechInfo extends JPanel {
     /**
      * Creates new MechInfo for use in previews. Is passed a ficticious config
      * which contains preview camo.
-     *
+     * 
      * Used to generate images in HQ, BM, etc.
      */
     public MechInfo(ImageIcon preview) {
 
         // set the preview icon
-        previewIcon = preview;
+        this.previewIcon = preview;
         Config = null;
 
         GridBagConstraints gridBagConstraints;
@@ -463,7 +463,7 @@ public class MechInfo extends JPanel {
         lblImage = new JLabel() {
 
             /**
-             *
+             * 
              */
             private static final long serialVersionUID = 639618470390199477L;
 
@@ -514,7 +514,7 @@ public class MechInfo extends JPanel {
     public static Image getImageFor(Entity m, Component c) {
 
         if (mt == null) {
-            mt = new MechTileset("data/images/units/");
+            mt = new MechTileset(new File("data/images/units/"));
             try {
                 mt.loadFromFile("mechset.txt");
             } catch (IOException ex) {
@@ -532,21 +532,19 @@ public class MechInfo extends JPanel {
         Image unit = null;
         Image camo = null;
         ImageIcon camoicon = null;
-        cm = null;
+        this.cm = null;
 
         unit = getImageFor(m, lblImage).getScaledInstance(84, 72, Image.SCALE_DEFAULT);
 
         // look for a config image to load. if no config exists,
         // try to load the preview icon.
-        if (Config != null) {
+        if (Config != null)
             camoicon = Config.getImage("CAMO");
-        } else {
+        else
             camoicon = previewIcon;
-        }
 
-        if (camoicon != null) {
+        if (camoicon != null)
             camo = camoicon.getImage();
-        }
 
         EntityImage ei = new EntityImage(unit, 0xFFFFFF, camo, this);
         setImage(ei.loadPreviewImage());
@@ -555,9 +553,8 @@ public class MechInfo extends JPanel {
 
     public void setUnit(CUnit cm, CArmy army) {
 
-        if (cm == null) {
+        if (cm == null)
             return;
-        }
 
         this.cm = cm;
         this.army = army;
@@ -570,15 +567,13 @@ public class MechInfo extends JPanel {
 
         // look for a config image to load. if no config exists,
         // try to load the preview icon.
-        if (Config != null) {
+        if (Config != null)
             camoicon = Config.getImage("CAMO");
-        } else {
+        else
             camoicon = previewIcon;
-        }
 
-        if (camoicon != null) {
+        if (camoicon != null)
             camo = camoicon.getImage();
-        }
 
         EntityImage ei = new EntityImage(unit, 0xFFFFFF, camo, this);
         setImage(ei.loadPreviewImage());

@@ -181,7 +181,7 @@ public final class MWClient implements IClient, GameListener {
 
     CConfig Config;
 
-    public static final String CLIENT_VERSION = "0.3.5.20"; // change this with
+    public static final String CLIENT_VERSION = "0.3.6.0"; // change this with
 
     // all client
     // changes @Torren
@@ -390,8 +390,7 @@ public final class MWClient implements IClient, GameListener {
         if (isDedicated()) {
             try {
                 Runtime runTime = Runtime.getRuntime();
-                String mem = Config.getParam("DEDMEMORY");
-                String[] call = { "java", "-Xmx" + mem + "m", "-jar", "MekWarsDed.jar" };
+                String[] call = { "java", "-Xmx512m", "-jar", "MekWarsDed.jar" };
                 runTime.exec(call);
                 System.exit(0);
             } catch (Exception ex) {
@@ -792,7 +791,7 @@ public final class MWClient implements IClient, GameListener {
 
     public byte[] createChecksum(String filename) throws Exception {
     	InputStream fis = new FileInputStream(filename);
-
+	
     	byte[] buffer = new byte[1024];
     	MessageDigest complete = MessageDigest.getInstance("MD5");
     	int numRead;
@@ -805,7 +804,7 @@ public final class MWClient implements IClient, GameListener {
     	fis.close();
     	return complete.digest();
     }
-
+    
     /*
      * Actual GUI-mode parseData. Before we started streaming data over the chat
      * part, this was called directly. Now we buffer all incoming non-data chat
@@ -1038,12 +1037,10 @@ public final class MWClient implements IClient, GameListener {
                     try {
                         Runtime runTime = Runtime.getRuntime();
                         if (new File("MekWarsDed.jar").exists()) {
-                        	String mem = Config.getParam("DEDMEMORY");
-                            String[] call = { "java", "-Xmx" + mem + "m", "-jar", "MekWarsDed.jar" };
+                            String[] call = { "java", "-Xmx512m", "-jar", "MekWarsDed.jar" };
                             runTime.exec(call);
                         } else {
-                        	String mem = Config.getParam("DEDMEMORY");
-                        	String[] call = { "java", "-Xmx" + mem + "m", "-jar", "MekWarsClient.jar" };
+                            String[] call = { "java", "-Xmx512m", "-jar", "MekWarsClient.jar" };
                             runTime.exec(call);
                         }
                         System.exit(0);
@@ -1865,7 +1862,7 @@ public final class MWClient implements IClient, GameListener {
 
     /*
      * Rewritten in order to allow ConfigPage to reset the skin on the fly.
-     *
+     * 
      * @urgru 2.21.05
      */
     public void setLookAndFeel(boolean isRedraw) {
@@ -2887,7 +2884,7 @@ public final class MWClient implements IClient, GameListener {
 
     /**
      * Changes the duty to a new status.
-     *
+     * 
      * @param newStatus
      */
     public void changeStatus(int newStatus) {
@@ -2967,7 +2964,7 @@ public final class MWClient implements IClient, GameListener {
         gameCount++;
 
         // only check for restart once every 30 seconds.
-        if ((System.currentTimeMillis() - 30000) < lastResetCheck) {
+        if (System.currentTimeMillis() - 30000 < lastResetCheck) {
             return;
         }
 
@@ -2987,12 +2984,11 @@ public final class MWClient implements IClient, GameListener {
             }
             try {
                 Runtime runTime = Runtime.getRuntime();
-            	String mem = Config.getParam("DEDMEMORY");
-            	if (new File("MekWarsDed.jar").exists()) {
-                    String[] call = { "java", "-Xmx" + mem + "m", "-jar", "MekWarsDed.jar" };
+                if (new File("MekWarsDed.jar").exists()) {
+                    String[] call = { "java", "-Xmx512m", "-jar", "MekWarsDed.jar" };
                     runTime.exec(call);
                 } else {
-                    String[] call = { "java", "-Xmx" + mem + "m", "-jar", "MekWarsClient.jar" };
+                    String[] call = { "java", "-Xmx512m", "-jar", "MekWarsClient.jar" };
                     runTime.exec(call);
                 }
                 System.exit(0);
@@ -3254,7 +3250,7 @@ public final class MWClient implements IClient, GameListener {
             MMGOD.dispose();
             File localGameOptions = new File("mmconf/gameoptions.xml");
 
-            if (localGameOptions.lastModified() >= (System.currentTimeMillis() - 1000)) {
+            if (localGameOptions.lastModified() >= System.currentTimeMillis() - 1000) {
                 sendGameOptionsToServer();
             }
         } catch (Exception ex) {

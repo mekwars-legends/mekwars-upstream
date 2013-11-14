@@ -1,14 +1,14 @@
 /*
  * MekWars - Copyright (C) 2004
- *
+ * 
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  * Original author Helge Richter (McWizard)
- *
+ * 
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
@@ -191,7 +191,7 @@ public final class ConfigurationDialog implements ActionListener {
     private final JCheckBox viewLogoBox = new JCheckBox();
     private final JCheckBox armyPopUpBox = new JCheckBox();
     private final JCheckBox autoReOrder = new JCheckBox();
-
+    
     // chat options
     private final JCheckBox hmInMainBox = new JCheckBox();
     private final JCheckBox pmInMainBox = new JCheckBox();
@@ -396,7 +396,7 @@ public final class ConfigurationDialog implements ActionListener {
         showUnitTechBaseCheckBox.setText("Show Unit Tech Base");
         showUnitTechBaseCheckBox.setToolTipText("<html>When checked, unit Tool Tip will include Clan/IS indication.</html>");
         playerUpperCBoxesPanel.add(showUnitTechBaseCheckBox);
-
+        
         showUnitBaseBVCheckBox.setText("Show Base BV");
         showUnitBaseBVCheckBox.setToolTipText("<html>If selected, BV without pilot skills will be shown in the unit display</html>");
         playerUpperCBoxesPanel.add(showUnitBaseBVCheckBox);

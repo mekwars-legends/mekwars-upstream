@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 
 //util imports
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 //swing imports
@@ -216,7 +217,9 @@ public class OpFlagSelectionDialog extends JDialog implements ActionListener {
 		        if (selectedCommand == null || selectedCommand.equals(""))
 		        	return;
 		        if (matchingCommandList.getModel().getSize() >= 1){
-                    setCommandName(matchingCommandList.getSelectedValues());
+		        	// JList.getSelectedValues deprecated
+                    //setCommandName(matchingCommandList.getSelectedValues());
+                    setCommandName(matchingCommandList.getSelectedValuesList().toArray());
 		        }
                 else
                     JOptionPane.showMessageDialog(null,"Unknown Terrain");

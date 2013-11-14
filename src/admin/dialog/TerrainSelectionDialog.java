@@ -210,7 +210,8 @@ public class TerrainSelectionDialog extends JDialog implements ActionListener {
 		        if (selectedCommand == null || selectedCommand.equals(""))
 		        	return;
 		        if (matchingCommandList.getModel().getSize() >= 1){
-                    setCommandName(matchingCommandList.getSelectedValues());
+		        	// JList.getSelectedValues() deprecated
+                    setCommandName(matchingCommandList.getSelectedValuesList().toArray());
 		        }
                 else
                     JOptionPane.showMessageDialog(null,"Unknown Terrain");

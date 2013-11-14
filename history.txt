@@ -1,5 +1,13 @@
 VERSION HISTORY:
 ----------------
+v 0.3.6.x
+R Released Server, Ded, Client v0.3.6.0
++ New MM version 0.37.0-MW20131114-10064
++ Updated make targets to 1.7
++ PLEASE NOTE: MM (and therefore MW) now requires Java 1.7
++   This (like most .0 versions) should be heavily tested. Last
++   time we changed required Java versions was a little bit rocky
+
 v 0.3.5.x
 R Released Ded v0.3.5.5, Client v0.3.5.20
 + BUG 344: Dedicated Client uses mwconfig.txt.bak instead of mwconfig.txt
