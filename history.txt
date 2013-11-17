@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.6.x
+R Released Server, Ded, Client v0.3.6.1
++ New MM v0.37.0-MW20131116-10075
 R Released Server, Ded, Client v0.3.6.0
 + New MM version 0.37.0-MW20131114-10064
 + Updated make targets to 1.7
