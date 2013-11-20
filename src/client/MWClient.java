@@ -181,7 +181,7 @@ public final class MWClient implements IClient, GameListener {
 
     CConfig Config;
 
-    public static final String CLIENT_VERSION = "0.3.6.1"; // change this with
+    public static final String CLIENT_VERSION = "0.3.6.2"; // change this with
 
     // all client
     // changes @Torren
@@ -3241,8 +3241,8 @@ public final class MWClient implements IClient, GameListener {
             }
 
             Client MegaMekClient = new Client("temp", "None", 0);
-            MegaMekClient.game.getOptions().loadOptions();
-            GameOptions gameOptions = MegaMekClient.game.getOptions();
+            MegaMekClient.getGame().getOptions().loadOptions();
+            GameOptions gameOptions = MegaMekClient.getGame().getOptions();
             GameOptionsDialog MMGOD = new GameOptionsDialog(getMainFrame(), gameOptions);
             MMGOD.update(gameOptions);
             MMGOD.setEditable(true);

@@ -70,7 +70,7 @@ public class ServerGameOptionsCommand implements Command {
 			CampaignData.mwlog.errLog(ex);
 		}
 		
-		CampaignMain.cm.getMegaMekClient().game.getOptions().loadOptions();
+		CampaignMain.cm.getMegaMekClient().getGame().getOptions().loadOptions();
 		
 		CampaignMain.cm.toUser("You have set the MegaMek Game Options",Username,true);
 		CampaignMain.cm.doSendModMail("NOTE",Username + " has set the MegaMek game options for the server.");

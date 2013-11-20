@@ -173,13 +173,13 @@ class ClientThread extends Thread implements CloseClientListener {
 
             // if game is running, shouldn't do the following, so detect the
             // phase
-            for (int i = 0; (i < 1000) && (client.game.getPhase() == IGame.Phase.PHASE_UNKNOWN); i++) {
+            for (int i = 0; (i < 1000) && (client.getGame().getPhase() == IGame.Phase.PHASE_UNKNOWN); i++) {
                 Thread.sleep(50);
             }
 
             // Lets start with the environment set first then do everything
             // else.
-            if ((mwclient.getCurrentEnvironment() != null) && (client.game.getPhase() == IGame.Phase.PHASE_LOUNGE)) {
+            if ((mwclient.getCurrentEnvironment() != null) && (client.getGame().getPhase() == IGame.Phase.PHASE_LOUNGE)) {
                 // creates the playboard*/
                 MapSettings mySettings = new MapSettings(mwclient.getMapSize().width, mwclient.getMapSize().height, 1, 1);
                 // MapSettings mySettings = new MapSettings(16, 17, 2, 2);
@@ -380,7 +380,7 @@ class ClientThread extends Thread implements CloseClientListener {
             if (mwclient.isUsingBots()) {
                 String name = "War Bot" + client.getLocalPlayer().getId();
                 bot = new Princess(name, client.getHost(), client.getPort(), LogLevel.ERROR);
-                bot.game.addGameListener(new BotGUI(bot));
+                bot.getGame().addGameListener(new BotGUI(bot));
                 try {
                     bot.connect();
                     Thread.sleep(125);
@@ -389,7 +389,7 @@ class ClientThread extends Thread implements CloseClientListener {
                     }
                     // if game is running, shouldn't do the following, so detect
                     // the phase
-                    for (int i = 0; (i < 1000) && (bot.game.getPhase() == IGame.Phase.PHASE_UNKNOWN); i++) {
+                    for (int i = 0; (i < 1000) && (bot.getGame().getPhase() == IGame.Phase.PHASE_UNKNOWN); i++) {
                         Thread.sleep(50);
                     }
                 } catch (Exception ex) {
@@ -411,9 +411,9 @@ class ClientThread extends Thread implements CloseClientListener {
                 Thread.sleep(125);
             }
 
-            if (((client.game != null) && (client.game.getPhase() == IGame.Phase.PHASE_LOUNGE))) {
+            if (((client.getGame() != null) && (client.getGame().getPhase() == IGame.Phase.PHASE_LOUNGE))) {
 
-                client.game.getOptions().loadOptions();
+                client.getGame().getOptions().loadOptions();
                 if ((mechs.size() > 0) && (xmlGameOptions.size() > 0)) {
                     client.sendGameOptions("", xmlGameOptions);
                 }
@@ -619,7 +619,7 @@ class ClientThread extends Thread implements CloseClientListener {
         while ((c3Unit == null) || (c3Master == null)) {
             try {
 
-                for (Entity en : client.game.getEntitiesVector()) {
+                for (Entity en : client.getGame().getEntitiesVector()) {
                     if ((c3Unit == null) && (en.getExternalId() == slaveid)) {
                         c3Unit = en;
                     }

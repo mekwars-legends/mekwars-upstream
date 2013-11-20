@@ -6,7 +6,7 @@ import java.util.List;
 
 import megamek.common.Entity;
 import megamek.common.IGame;
-import megamek.common.Player;
+import megamek.common.IPlayer;
 
 
 public class GameWrapper implements GameInterface {
@@ -35,9 +35,9 @@ public class GameWrapper implements GameInterface {
 
 	public List<String> getWinners() {
 		ArrayList<String> result = new ArrayList<String>();
-		Enumeration<Player> en = game.getPlayers();
+		Enumeration<IPlayer> en = game.getPlayers();
 		while (en.hasMoreElements()){
-			Player player = en.nextElement();
+			final IPlayer player = en.nextElement();
 			if (player.getTeam() == game.getVictoryTeam()){
 				result.add(player.getName().trim());
 			}
@@ -46,7 +46,7 @@ public class GameWrapper implements GameInterface {
 	}
 
 	public boolean hasWinner() {
-		return game.getVictoryTeam() != Player.TEAM_NONE;
+		return game.getVictoryTeam() != IPlayer.TEAM_NONE;
 	}
 
 

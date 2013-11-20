@@ -1119,7 +1119,7 @@ public class ShortOperation implements Comparable<Object> {
             // if Op isn't set to double blind check to see if the game option
             // is.
             if (!doubleBlind) {
-                doubleBlind = CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("double_blind");
+                doubleBlind = CampaignMain.cm.getMegaMekClient().getGame().getOptions().booleanOption("double_blind");
             }
 
             // autoset offboard arty to homeedge. always.
@@ -1264,7 +1264,7 @@ public class ShortOperation implements Comparable<Object> {
                         gameOptions.append("|fire|false");
                         aTerrain.setShiftingWindDirection(false);
                         aTerrain.setShiftingWindStrength(false);
-                    } else if (CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("tacops_start_fire") && !wind) {
+                    } else if (CampaignMain.cm.getMegaMekClient().getGame().getOptions().booleanOption("tacops_start_fire") && !wind) {
                         aTerrain.setShiftingWindDirection(true);
                         aTerrain.setShiftingWindStrength(true);
                         aTerrain.setMaxWindStrength(PlanetaryConditions.WI_LIGHT_GALE);

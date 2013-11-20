@@ -143,7 +143,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
         	unitIsAero = true;
         }
 
-        mmClient.game.getOptions().loadOptions();
+        mmClient.getGame().getOptions().loadOptions();
         setTitle("Customize Unit");
 
         // refresh all ammo data
@@ -260,7 +260,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
          *
          * Only doso if the server has enabled "maxtech_burst"
          */
-        if (mmClient.game.getOptions().booleanOption("tacops_burst") && !((entity instanceof Infantry) || (entity instanceof Aero) )) {
+        if (mmClient.getGame().getOptions().booleanOption("tacops_burst") && !((entity instanceof Infantry) || (entity instanceof Aero) )) {
             setupMachineGuns();
             scrollPanel.add(panMachineGuns);
         }
@@ -324,7 +324,7 @@ public class CustomUnitDialog extends JDialog implements ActionListener {
             Vector<AmmoType> vAllTypes = AmmoType.getMunitionsFor(at.getAmmoType());
             location++;
 
-            canDump = mmClient.game.getOptions().booleanOption("lobby_ammo_dump");
+            canDump = mmClient.getGame().getOptions().booleanOption("lobby_ammo_dump");
 
             if (vAllTypes == null) {
                 continue;
@@ -377,12 +377,12 @@ CampaignData.mwlog.errLog("IsLegal (" + atCheck.getName() + "): " + bTechMatch +
 
                 // if is_eq_limits is unchecked allow L1 units to use L2
                 // munitions
-                if (!mmClient.game.getOptions().booleanOption("is_eq_limits") && !entity.isClan() && (atCheck.getTechLevel(year) == TechConstants.T_IS_TW_NON_BOX)) {
+                if (!mmClient.getGame().getOptions().booleanOption("is_eq_limits") && !entity.isClan() && (atCheck.getTechLevel(year) == TechConstants.T_IS_TW_NON_BOX)) {
                     bTechMatch = true;
                 }
 
                 // Possibly allow level 3 ammos, possibly not.
-                if (mmClient.game.getOptions().booleanOption("allow_advanced_ammo") && !mmClient.game.getOptions().booleanOption("is_eq_limits")) {
+                if (mmClient.getGame().getOptions().booleanOption("allow_advanced_ammo") && !mmClient.getGame().getOptions().booleanOption("is_eq_limits")) {
                     if (entity.isClan() && ((atCheck.getTechLevel(year) == TechConstants.T_CLAN_EXPERIMENTAL) || (atCheck.getTechLevel(year) == TechConstants.T_CLAN_ADVANCED) || (atCheck.getTechLevel(year) == TechConstants.T_CLAN_UNOFFICIAL))) {
                         bTechMatch = true;
                     }
@@ -404,11 +404,11 @@ CampaignData.mwlog.errLog("IsLegal (" + atCheck.getName() + "): " + bTechMatch +
                 // to be combined to other munition types.
                 long muniType = atCheck.getMunitionType();
                 muniType &= ~AmmoType.M_INCENDIARY_LRM;
-                if (!mmClient.game.getOptions().booleanOption("clan_ignore_eq_limits") && entity.isClan() && ((muniType == AmmoType.M_SEMIGUIDED) || (muniType == AmmoType.M_THUNDER_AUGMENTED) || (muniType == AmmoType.M_THUNDER_INFERNO) || (muniType == AmmoType.M_THUNDER_VIBRABOMB) || (muniType == AmmoType.M_THUNDER_ACTIVE) || (muniType == AmmoType.M_INFERNO_IV) || (muniType == AmmoType.M_VIBRABOMB_IV))) {
+                if (!mmClient.getGame().getOptions().booleanOption("clan_ignore_eq_limits") && entity.isClan() && ((muniType == AmmoType.M_SEMIGUIDED) || (muniType == AmmoType.M_THUNDER_AUGMENTED) || (muniType == AmmoType.M_THUNDER_INFERNO) || (muniType == AmmoType.M_THUNDER_VIBRABOMB) || (muniType == AmmoType.M_THUNDER_ACTIVE) || (muniType == AmmoType.M_INFERNO_IV) || (muniType == AmmoType.M_VIBRABOMB_IV))) {
                     bTechMatch = false;
                 }
 
-                if (!mmClient.game.getOptions().booleanOption("minefields") && AmmoType.canDeliverMinefield(atCheck)) {
+                if (!mmClient.getGame().getOptions().booleanOption("minefields") && AmmoType.canDeliverMinefield(atCheck)) {
                     continue;
                 }
                 // CampaignData.mwlog.errLog("4.Ammo: "+atCheck.getInternalName()+" MType: "+atCheck.getMunitionType());
@@ -641,7 +641,7 @@ CampaignData.mwlog.errLog("IsLegal (" + atCheck.getName() + "): " + bTechMatch +
                 chDump.setText("Dump");
                 add(chDump);
             }
-            if (mmClient.game.getOptions().booleanOption("tacops_hotload") && ((entity instanceof Mech) || (entity instanceof Tank)) && ((AmmoType) m.getType()).hasFlag(AmmoType.F_HOTLOAD)) {
+            if (mmClient.getGame().getOptions().booleanOption("tacops_hotload") && ((entity instanceof Mech) || (entity instanceof Tank)) && ((AmmoType) m.getType()).hasFlag(AmmoType.F_HOTLOAD)) {
                 chHotLoad.setSelected(m.isHotLoaded());
                 chHotLoad.setText("Hot-Load");
                 add(chHotLoad);

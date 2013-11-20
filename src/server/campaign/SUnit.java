@@ -489,7 +489,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
         for (Mounted mAmmo : en_Ammo) {
 
             boolean hotloaded = mAmmo.isHotLoaded();
-            if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("tacops_hotload")) {
+            if (!CampaignMain.cm.getMegaMekClient().getGame().getOptions().booleanOption("tacops_hotload")) {
                 hotloaded = false;
             }
 
@@ -698,7 +698,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
                         hotloaded = false;
                     }
 
-                    if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("tacops_hotload")) {
+                    if (!CampaignMain.cm.getMegaMekClient().getGame().getOptions().booleanOption("tacops_hotload")) {
                         hotloaded = false;
                     }
 
@@ -852,7 +852,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
                     int shots = ammoRS.getInt("ammoShotsLeft");
                     int AmmoLoc = ammoRS.getInt("ammoLocation");
                     boolean hotloaded = Boolean.parseBoolean(ammoRS.getString("ammoHotLoaded"));
-                    if (!CampaignMain.cm.getMegaMekClient().game.getOptions().booleanOption("tacops_hotload")) {
+                    if (!CampaignMain.cm.getMegaMekClient().getGame().getOptions().booleanOption("tacops_hotload")) {
                         hotloaded = false;
                     }
                     AmmoType at = getEntityAmmo(weaponType, ammoName);

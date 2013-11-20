@@ -358,7 +358,7 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
                     else if ((component.indexOf("Ammo") > -1) || (component.indexOf("Pods") > -1)) {
                         JPopupMenu popup = new JPopupMenu();
                         Client mmClient = new Client("temp", "None", 0);
-                        mmClient.game.getOptions().loadOptions();
+                        mmClient.getGame().getOptions().loadOptions();
 
                         CriticalSlot cs = unit.getCritical(critLocation, critSlot);
                         Mounted m = cs.getMount();
@@ -367,7 +367,7 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
                         Vector<AmmoType> vAllTypes = AmmoType.getMunitionsFor(at.getAmmoType());
                         // location++;
 
-                        boolean canDump = mmClient.game.getOptions().booleanOption("lobby_ammo_dump");
+                        boolean canDump = mmClient.getGame().getOptions().booleanOption("lobby_ammo_dump");
 
                         if (vAllTypes == null) {
                             return;
@@ -403,13 +403,13 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
 
                             // if is_eq_limits is unchecked allow L1 units to
                             // use L2 munitions
-                            if (!mmClient.game.getOptions().booleanOption("is_eq_limits") && (unit.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) && (atCheck.getTechLevel(year) == TechConstants.T_IS_ADVANCED)) {
+                            if (!mmClient.getGame().getOptions().booleanOption("is_eq_limits") && (unit.getTechLevel() <= TechConstants.T_IS_TW_NON_BOX) && (atCheck.getTechLevel(year) == TechConstants.T_IS_ADVANCED)) {
                                 bTechMatch = true;
                             }
 
                             // Possibly allow level 3 ammos, possibly not.
-                            if (mmClient.game.getOptions().booleanOption("allow_advanced_ammo")) {
-                                if (!mmClient.game.getOptions().booleanOption("is_eq_limits")) {
+                            if (mmClient.getGame().getOptions().booleanOption("allow_advanced_ammo")) {
+                                if (!mmClient.getGame().getOptions().booleanOption("is_eq_limits")) {
                                     if ((unit.getTechLevel() == TechConstants.T_CLAN_EXPERIMENTAL) && (atCheck.getTechLevel(year) == TechConstants.T_CLAN_EXPERIMENTAL)) {
                                         bTechMatch = true;
                                     }
@@ -434,11 +434,11 @@ public class AdvancedRepairDialog extends JFrame implements ActionListener, Mous
                             // to be combined to other munition types.
                             long muniType = atCheck.getMunitionType();
                             muniType &= ~AmmoType.M_INCENDIARY_LRM;
-                            if (!mmClient.game.getOptions().booleanOption("clan_ignore_eq_limits") && unit.isClan() && ((muniType == AmmoType.M_SEMIGUIDED) || (muniType == AmmoType.M_THUNDER_AUGMENTED) || (muniType == AmmoType.M_THUNDER_INFERNO) || (muniType == AmmoType.M_THUNDER_VIBRABOMB) || (muniType == AmmoType.M_THUNDER_ACTIVE) || (muniType == AmmoType.M_INFERNO_IV) || (muniType == AmmoType.M_VIBRABOMB_IV))) {
+                            if (!mmClient.getGame().getOptions().booleanOption("clan_ignore_eq_limits") && unit.isClan() && ((muniType == AmmoType.M_SEMIGUIDED) || (muniType == AmmoType.M_THUNDER_AUGMENTED) || (muniType == AmmoType.M_THUNDER_INFERNO) || (muniType == AmmoType.M_THUNDER_VIBRABOMB) || (muniType == AmmoType.M_THUNDER_ACTIVE) || (muniType == AmmoType.M_INFERNO_IV) || (muniType == AmmoType.M_VIBRABOMB_IV))) {
                                 bTechMatch = false;
                             }
 
-                            if (!mmClient.game.getOptions().booleanOption("minefields") && AmmoType.canDeliverMinefield(atCheck)) {
+                            if (!mmClient.getGame().getOptions().booleanOption("minefields") && AmmoType.canDeliverMinefield(atCheck)) {
                                 continue;
                             }
 

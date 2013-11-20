@@ -354,7 +354,7 @@ public final class CampaignMain implements Serializable {
 
         // load megamek gameoptions;
         CampaignData.mwlog.infoLog("Loading MegaMek Game Options");
-        cm.megaMekClient.game.getOptions().loadOptions();
+        cm.megaMekClient.getGame().getOptions().loadOptions();
 
         // Parse Terrain
         // XMLTerrainDataParser tParse =
@@ -4151,7 +4151,7 @@ public final class CampaignMain implements Serializable {
     public String getMegaMekOptionsToString() {
         StringBuffer result = new StringBuffer();
 
-        Enumeration<IOption> options = cm.getMegaMekClient().game.getOptions().getOptions();
+        Enumeration<IOption> options = cm.getMegaMekClient().getGame().getOptions().getOptions();
 
         while (options.hasMoreElements()) {
             IOption option = options.nextElement();
