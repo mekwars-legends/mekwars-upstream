@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.6.x
+R Released Server, Ded Client v0.3.6.3
++ Starting cleanup of Memory leaks in ClientThread
 R Released Server, Ded, Client v0.3.6.2
 + New MM v0.37.0-MW20131119-10091
 + BUG: setting burst fire mode failed 

@@ -297,6 +297,12 @@ class ClientThread extends Thread implements CloseClientListener {
 
                     mySettings.setMedium(mwclient.getMapMedium());
                     client.sendMapSettings(mySettings);
+                    /*the mysettings and planetCondition object refs were 
+                     *passed to the client, so release the refs to them - BarukKhazad!
+                     */
+                    mySettings = null;
+                    planetCondition = null;
+
                 } else {
                     PlanetEnvironment env = mwclient.getCurrentEnvironment();
                     /* Set the map-gen values */
@@ -369,6 +375,11 @@ class ClientThread extends Thread implements CloseClientListener {
                         nightGame = aTerrain.getLightConditions() > PlanetaryConditions.L_DUSK;
 
                         client.sendPlanetaryConditions(planetCondition);
+                        /*the mysettings and planetCondition object refs were 
+                         *passed to the client, so release the refs to them - BarukKhazad!
+                         */
+                        mySettings = null;
+                        planetCondition = null;
                     }
                 }
 
@@ -423,6 +434,10 @@ class ClientThread extends Thread implements CloseClientListener {
                 cs.setShowUnitId(Boolean.parseBoolean(mwclient.getserverConfigs("MMShowUnitId")));
                 cs.setKeepGameLog(Boolean.parseBoolean(mwclient.getserverConfigs("MMKeepGameLog")));
                 cs.setGameLogFilename(mwclient.getserverConfigs("MMGameLogName"));
+                /*the cs object ref is no longer needed, so release the ref to it- BarukKhazad!
+                 */
+                 cs = null;
+                 
                 if (!mwclient.getConfig().getParam("UNITCAMO").equals(Player.NO_CAMO)) {
                     client.getLocalPlayer().setCamoCategory(Player.ROOT_CAMO);
                     client.getLocalPlayer().setCamoFileName(mwclient.getConfig().getParam("UNITCAMO"));
@@ -489,6 +504,11 @@ class ClientThread extends Thread implements CloseClientListener {
                     client.sendAddEntity(entity);
                     // Wait a few secs to not overuse bandwith
                     Thread.sleep(125);
+                   /*the entity object ref was passed so release the ref to it- BarukKhazad!
+                    * some concern that this "entity" is a keyword of some sort, expect it to puke on conplie if yes
+                    * fahr- this represents anything on the map - but in this case is units
+                    */
+                   entity = null;
                 }
 
                 /*
@@ -540,6 +560,10 @@ class ClientThread extends Thread implements CloseClientListener {
 
                     // Wait a few secs to not overuse bandwith
                     Thread.sleep(125);
+                    /*the entity object ref was passed so release the ref to it- BarukKhazad!
+                     * some concern that this "entity" is a keyword of some sort, expect it to puke on conplie if yes
+                     */
+                    entity = null;
                 }// end while(more autoarty)
 
                 if (mwclient.getPlayerStartingEdge() != Buildings.EDGE_UNKNOWN) {
@@ -581,6 +605,11 @@ class ClientThread extends Thread implements CloseClientListener {
         } catch (Exception e) {
             CampaignData.mwlog.errLog(e);
         }
+        /*the swingGui object ref was initialized and is 
+        *active on the client thread, so release the ref to it- BarukKhazad!
+        */
+        swingGui = null;
+
     }
 
     /*
