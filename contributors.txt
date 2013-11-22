@@ -7,6 +7,8 @@
   Bob Eldred		(billypinhead@users.sourceforge.net)
   Targ
   Kestrel
+  fahr				(eventsbeyondme@users.sourceforge.net)
+  BarukKhazad!
   
  MekWars testing and documentation (a few of many):
   Alan Bell         (Carpe Mortis)
