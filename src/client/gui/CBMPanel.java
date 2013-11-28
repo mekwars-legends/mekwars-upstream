@@ -1,5 +1,5 @@
 /*
- * MekWars - Copyright (C) 2004 
+ * MekWars - Copyright (C) 2004
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megameknet)
  * Original author Helge Richter (McWizard)
  *
@@ -32,22 +32,21 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SpringLayout;
 import javax.swing.ListSelectionModel;
+import javax.swing.SpringLayout;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import common.CampaignData;
-import common.util.SpringLayoutHelper;
-
+import megamek.client.ui.swing.MechDisplay;
 import megamek.common.Entity;
-
 import client.MWClient;
 import client.campaign.CBMUnit;
 import client.campaign.CCampaign;
 import client.campaign.CPlayer;
 import client.gui.dialog.SellUnitDialog;
-import client.gui.dialog.MechDetailDisplay;
+
+import common.CampaignData;
+import common.util.SpringLayoutHelper;
 
 /**
  * Black Market Panel
@@ -55,7 +54,7 @@ import client.gui.dialog.MechDetailDisplay;
 
 public class CBMPanel extends JPanel {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -432087180209544906L;
     MWClient mwclient;
@@ -90,9 +89,9 @@ public class CBMPanel extends JPanel {
 
     public CBMPanel(MWClient client) {
         setLayout(new GridBagLayout());
-        this.mwclient = client;
-        this.hideBMUnits = Boolean.parseBoolean(mwclient.getserverConfigs("HiddenBMUnits"));
-        
+        mwclient = client;
+        hideBMUnits = Boolean.parseBoolean(mwclient.getserverConfigs("HiddenBMUnits"));
+
         pnlMekIconHolder = new JPanel();
         pnlMekIconHolder.setMaximumSize(new Dimension(84,72));
         pnlMekIconHolder.setMaximumSize(new Dimension(84,72));
@@ -105,35 +104,39 @@ public class CBMPanel extends JPanel {
         BlackMarketInfo = new BlackMarketModel(mwclient, hideBMUnits);
         theCampaign = client.getCampaign();
         Player = theCampaign.getPlayer();
-        TableSorter sorter = new TableSorter(this.BlackMarketInfo, client, TableSorter.SORTER_BM);
-        this.tblMarket.setModel(sorter);
+        TableSorter sorter = new TableSorter(BlackMarketInfo, client, TableSorter.SORTER_BM);
+        tblMarket.setModel(sorter);
 
-        this.tblMarket.addMouseListener(new MouseAdapter(){
+        tblMarket.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2)
+                if (e.getClickCount() == 2) {
                     btnShowMekActionPerformed(new ActionEvent(btnShowMek,0,""));
+                }
             }
         });
 
-        this.BlackMarketInfo.initColumnSizes(this.tblMarket);
-        for (int i = 0; i < this.BlackMarketInfo.getColumnCount(); i++)
-            this.tblMarket.getColumnModel().getColumn(i).setCellRenderer(this.BlackMarketInfo.getRenderer());
+        BlackMarketInfo.initColumnSizes(tblMarket);
+        for (int i = 0; i < BlackMarketInfo.getColumnCount(); i++) {
+            tblMarket.getColumnModel().getColumn(i).setCellRenderer(BlackMarketInfo.getRenderer());
+        }
 
-        sorter.addMouseListenerToHeaderInTable(this.tblMarket);
-        this.tblMarket.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        ListSelectionModel rowSM = this.tblMarket.getSelectionModel();
+        sorter.addMouseListenerToHeaderInTable(tblMarket);
+        tblMarket.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        ListSelectionModel rowSM = tblMarket.getSelectionModel();
         rowSM.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
 
                 //ignore dragging
-                if (e.getValueIsAdjusting())
+                if (e.getValueIsAdjusting()) {
                     return;
+                }
 
                 ListSelectionModel lsm = (ListSelectionModel)e.getSource();
 
-                if (lsm.isSelectionEmpty()) 
-                    ((MechInfo)pnlMekIcon).setImageVisible(false); 	 
+                if (lsm.isSelectionEmpty()) {
+                    ((MechInfo)pnlMekIcon).setImageVisible(false);
+                }
 
                 int selectedRow = lsm.getMinSelectionIndex();
                 Integer auctionId = (Integer)tblMarket.getModel().getValueAt(selectedRow, BlackMarketModel.AUCTION_ID);
@@ -143,28 +146,31 @@ public class CBMPanel extends JPanel {
                     //if there is a unit in the row, update the dynamic buttons.
                     if (mm != null) {
 
-                        if (!hideBMUnits)
-                        	btnShowMek.setEnabled(true);
+                        if (!hideBMUnits) {
+                            btnShowMek.setEnabled(true);
+                        }
 
-                        if (mm.getBid() > 0)
+                        if (mm.getBid() > 0) {
                             btnRecallBid.setEnabled(true);
-                        else
+                        } else {
                             btnRecallBid.setEnabled(false);
+                        }
 
                         if (mm.playerIsSeller()) {
                             btnBid.setEnabled(false);
                             btnRecallUnit.setEnabled(true);
                         } else {
                             //check cached faction ban value
-                            if (factionBidsAllowed)
+                            if (factionBidsAllowed) {
                                 btnBid.setEnabled(true);
-                            else
+                            } else {
                                 btnBid.setEnabled(false);
+                            }
                             btnRecallUnit.setEnabled(false);
                         }
 
 
-                        //refresh the camo ... may have changed. 	 
+                        //refresh the camo ... may have changed.
                         mwclient.getMainFrame().getMainPanel().getBMPanel().resetCamo();
 
                     } else {//dim them all
@@ -237,7 +243,7 @@ public class CBMPanel extends JPanel {
         spacingPanel3.setMaximumSize(new Dimension(20,1));
 
         //do the actual button layout, springmanagement, etc.
-        this.resetButtonBar();
+        resetButtonBar();
 
         panelButtonWrapper.add(pnlBuyBtns);
 
@@ -264,14 +270,14 @@ public class CBMPanel extends JPanel {
 
     public void fireMarketChanged() {
         //here's a problem MyBlackMarket has to be created somehow (by parsing BM or from Player data)
-        this.BlackMarketInfo.refreshModel();
-        
-        this.tblMarket.setPreferredSize(new Dimension(this.tblMarket.getWidth(), this.tblMarket.getRowHeight()*(this.tblMarket.getRowCount())));
-        this.tblMarket.revalidate();
+        BlackMarketInfo.refreshModel();
+
+        tblMarket.setPreferredSize(new Dimension(tblMarket.getWidth(), tblMarket.getRowHeight()*(tblMarket.getRowCount())));
+        tblMarket.revalidate();
     }
 
     public void refresh() {
-        fireMarketChanged();	
+        fireMarketChanged();
     }
 
     /**
@@ -280,15 +286,17 @@ public class CBMPanel extends JPanel {
      */
     private void btnRecallBidActionPerformed(ActionEvent evt) {
 
-        mm = this.getMarketMechAtRow(this.tblMarket.getSelectedRow());
+        mm = getMarketMechAtRow(tblMarket.getSelectedRow());
 
         //break out if no selection
-        if (mm == null)
+        if (mm == null) {
             return;
+        }
 
         //no bid. return.
-        if (this.tblMarket.getValueAt(this.tblMarket.getSelectedRow(), BlackMarketModel.BID) == null)
+        if (tblMarket.getValueAt(tblMarket.getSelectedRow(), BlackMarketModel.BID) == null) {
             return;
+        }
 
         //returns passed. send the recall command and deselect the buttons.
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c recallbid#" + mm.getAuctionID());
@@ -303,15 +311,17 @@ public class CBMPanel extends JPanel {
      */
     private void btnRecallUnitActionPerformed(ActionEvent evt) {
 
-        mm = this.getMarketMechAtRow(this.tblMarket.getSelectedRow());
+        mm = getMarketMechAtRow(tblMarket.getSelectedRow());
 
         //break out if no selection
-        if (mm == null)
+        if (mm == null) {
             return;
+        }
 
         //not the players unit, so he cant terminate the sale
-        if (!mm.playerIsSeller())
+        if (!mm.playerIsSeller()) {
             return;
+        }
 
         //returns passed. send the recall command and deselect the buttons.
         mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c recall#" + mm.getAuctionID());
@@ -333,37 +343,38 @@ public class CBMPanel extends JPanel {
      * Called from an action listener. Opens
      * a MechDetailDisplay for the unit at the
      * currently selected row.
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void btnShowMekActionPerformed(ActionEvent evt) {
-    	if (hideBMUnits) 
-    		return;
-        mm = this.getMarketMechAtRow(this.tblMarket.getSelectedRow());
+    	if (hideBMUnits) {
+            return;
+        }
+        mm = getMarketMechAtRow(tblMarket.getSelectedRow());
         if (mm == null) {return;}
         Entity theEntity = mm.getEmbeddedUnit().getEntity();
         theEntity.loadAllWeapons();
 
-        JFrame InfoWindow = new JFrame();
-        MechDetailDisplay MechDetailInfo = new MechDetailDisplay(mwclient);
+        JFrame infoWindow = new JFrame();
+        MechDisplay mechDisplay = new MechDisplay(null);
 
-        InfoWindow.getContentPane().add(MechDetailInfo);
-        InfoWindow.setSize(220,400);
-        InfoWindow.setResizable(false);
+        infoWindow.getContentPane().add(mechDisplay);
+        infoWindow.setSize(300,400);
+        infoWindow.setResizable(false);
 
-        MechDetailInfo.displayEntity(theEntity, mm.getEmbeddedUnit().getEntity().calculateBattleValue(), mwclient.getConfig().getImage("CAMO"));
-        InfoWindow.setTitle(mm.getModelName());
-        InfoWindow.setLocationRelativeTo(mwclient.getMainFrame());//center it
-        InfoWindow.setVisible(true);
+        infoWindow.setTitle(mm.getModelName());
+        infoWindow.setLocationRelativeTo(mwclient.getMainFrame());//center it
+        infoWindow.setVisible(true);
+        mechDisplay.displayEntity(theEntity);
     }
 
 
     public CBMUnit getMarketMechAtRow(int row)
     {
         mm = null;
-        Integer auctionId = (Integer)this.tblMarket.getModel().getValueAt(row, BlackMarketModel.AUCTION_ID);
+        Integer auctionId = (Integer)tblMarket.getModel().getValueAt(row, BlackMarketModel.AUCTION_ID);
         if (auctionId != null) {
-            mm = (CBMUnit)theCampaign.getBlackMarket().get(auctionId);
+            mm = theCampaign.getBlackMarket().get(auctionId);
         }
         return mm;
     }
@@ -372,22 +383,24 @@ public class CBMPanel extends JPanel {
      * Called from an action listener. Opens a dialo
      * for input, checks the input, and places a bid
      * with the server if the bid is sufficient.
-     * 
+     *
      * @param evt
      */
     private void btnBidActionPerformed(ActionEvent evt) {
-        int row = this.tblMarket.getSelectedRow();
+        int row = tblMarket.getSelectedRow();
 
         //shouldnt ever happen, but still trap
-        if (row < 0)
+        if (row < 0) {
             return;
+        }
 
         //get the unit
         mm = getMarketMechAtRow(tblMarket.getSelectedRow());
 
         //also shouldn't ever happen but, again, catch it
-        if (mm.playerIsSeller())
+        if (mm.playerIsSeller()) {
             return;
+        }
 
         if (mm != null) {
 
@@ -398,8 +411,9 @@ public class CBMPanel extends JPanel {
                 String playerBidString = JOptionPane.showInputDialog(mwclient.getMainFrame(), "<HTML><center>How much would you like to bid on the " + mm.getModelName() + "?<BR>Minimum is " + mwclient.moneyOrFluMessage(true,true,mm.getMinBid())+".</center></HTML>","Amount to Bid", JOptionPane.PLAIN_MESSAGE);
 
                 //Clicked Cancel
-                if ( playerBidString == null || playerBidString.trim().length() == 0)
+                if ( (playerBidString == null) || (playerBidString.trim().length() == 0)) {
                     return;
+                }
 
                 try{
                     int playerBid = Integer.parseInt(playerBidString);
@@ -439,7 +453,7 @@ public class CBMPanel extends JPanel {
             pnlMekIcon.setPreferredSize(new Dimension(84,72));
             pnlMekIcon.setMaximumSize(new Dimension(84,72));
 
-            
+
             try {
                 ((MechInfo)pnlMekIcon).setUnit(mm.getEmbeddedUnit().getEntity());
                 ((MechInfo)pnlMekIcon).setImageVisible(true);
@@ -460,7 +474,7 @@ public class CBMPanel extends JPanel {
     /**
      * Method called from CPlayer after a faction is set. Enables or
      * disables the Sell Unit button, as appropriate for the faction.
-     * 
+     *
      * Also sets a correct CBMPanel.factionBidsAllowed value so that
      * future clicks on BM units give a correct "Place Bid" button.
      */
@@ -470,28 +484,32 @@ public class CBMPanel extends JPanel {
         boolean sellingEnabled = true;
         StringTokenizer blockedFactions = new StringTokenizer(mwclient.getserverConfigs("BMNoSell"), "$");
         while (blockedFactions.hasMoreTokens()) {
-            if (Player.getMyHouse().getName().equals(blockedFactions.nextToken()))
+            if (Player.getMyHouse().getName().equals(blockedFactions.nextToken())) {
                 sellingEnabled = false;
+            }
         }
 
-        if (sellingEnabled)
+        if (sellingEnabled) {
             btnSellUnit.setEnabled(true);
-        else
+        } else {
             btnSellUnit.setEnabled(false);
+        }
 
         //check to see if buying is forbidds, and save boolean.
         boolean buyingEnabled = true;
         blockedFactions = new StringTokenizer(mwclient.getserverConfigs("BMNoBuy"), "$");
         while (blockedFactions.hasMoreTokens()) {
-            if (Player.getMyHouse().getName().equals(blockedFactions.nextToken()))
+            if (Player.getMyHouse().getName().equals(blockedFactions.nextToken())) {
                 buyingEnabled = false;
+            }
         }
 
         //have to use an ivar and check the perm so bidding is re-enabled after defection
-        if (buyingEnabled)
+        if (buyingEnabled) {
             factionBidsAllowed = true;
-        else
+        } else {
             factionBidsAllowed = false;
+        }
 
     }
 
@@ -513,8 +531,9 @@ public class CBMPanel extends JPanel {
 
             //standard spring layout for the buttons
             JPanel buttonSpring = new JPanel(new SpringLayout());
-            if (!hideBMUnits)
-            	buttonSpring.add(btnShowMek);
+            if (!hideBMUnits) {
+                buttonSpring.add(btnShowMek);
+            }
             buttonSpring.add(btnBid);
             buttonSpring.add(spacingPanel1);
             buttonSpring.add(btnBid);
@@ -524,7 +543,7 @@ public class CBMPanel extends JPanel {
             buttonSpring.add(btnSellUnit);
 
             //refresh the camo, so an image shows if possible
-            this.resetCamo();
+            resetCamo();
 
             //stick the pnlMekIcon in its holder, and add
             //the combined struct inot the button bar.
@@ -544,8 +563,9 @@ public class CBMPanel extends JPanel {
              */
             pnlBuyBtns.removeAll();
 
-            if (!hideBMUnits)
-            	pnlBuyBtns.add(btnShowMek);
+            if (!hideBMUnits) {
+                pnlBuyBtns.add(btnShowMek);
+            }
             pnlBuyBtns.add(btnBid);
             pnlBuyBtns.add(spacingPanel1);
             pnlBuyBtns.add(btnBid);

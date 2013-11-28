@@ -55,6 +55,7 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import megamek.client.ui.swing.MechDisplay;
 import megamek.client.ui.swing.MechTileset;
 import megamek.common.Entity;
 import megamek.common.Infantry;
@@ -68,7 +69,6 @@ import client.gui.dialog.AdvancedRepairDialog;
 import client.gui.dialog.BulkRepairDialog;
 import client.gui.dialog.CamoSelectionDialog;
 import client.gui.dialog.CustomUnitDialog;
-import client.gui.dialog.MechDetailDisplay;
 import client.gui.dialog.PromotePilotDialog;
 
 import common.Army;
@@ -611,17 +611,17 @@ public class CHQPanel extends JPanel {
                 CUnit mek = MekTable.getMekAt(row, col);
 
                 if (mek != null) {
-                    JFrame InfoWindow = new JFrame();
-                    MechDetailDisplay MechDetailInfo = new MechDetailDisplay(mwclient);
+                    JFrame infoWindow = new JFrame();
+                    MechDisplay mechdisplay = new MechDisplay(null);
                     Entity theEntity = mek.getEntity();
                     theEntity.loadAllWeapons();
-                    MechDetailInfo.displayEntity(theEntity, mek.getBVForMatch(), mwclient.getConfig().getImage("CAMO"));
-                    InfoWindow.getContentPane().add(MechDetailInfo);
-                    InfoWindow.setSize(220, 400);
-                    InfoWindow.setResizable(false);
-                    InfoWindow.setTitle(mek.getModelName());
-                    InfoWindow.setLocationRelativeTo(null);
-                    InfoWindow.setVisible(true);
+                    infoWindow.getContentPane().add(mechdisplay);
+                    infoWindow.setSize(300, 400);
+                    infoWindow.setResizable(false);
+                    infoWindow.setTitle(mek.getModelName());
+                    infoWindow.setLocationRelativeTo(null);
+                    infoWindow.setVisible(true);
+                    mechdisplay.displayEntity(theEntity);
                 }
             }
             tblMeks.repaint();
@@ -2522,16 +2522,16 @@ public class CHQPanel extends JPanel {
                 int col = Integer.parseInt(st.nextToken());
                 CUnit mek = MekTable.getMekAt(row, col);
                 Entity theEntity = mek.getEntity();
-                JFrame InfoWindow = new JFrame();
-                MechDetailDisplay MechDetailInfo = new MechDetailDisplay(mwclient);
+                JFrame infoWindow = new JFrame();
+                MechDisplay mechDisplay = new MechDisplay(null);
                 theEntity.loadAllWeapons();
-                MechDetailInfo.displayEntity(theEntity, mek.getBV(), mwclient.getConfig().getImage("CAMO"));
-                InfoWindow.getContentPane().add(MechDetailInfo);
-                InfoWindow.setSize(220, 400);
-                InfoWindow.setResizable(false);
-                InfoWindow.setTitle(mek.getModelName());
-                InfoWindow.setLocationRelativeTo(mwclient.getMainFrame());
-                InfoWindow.setVisible(true);
+                infoWindow.getContentPane().add(mechDisplay);
+                infoWindow.setSize(300, 400);
+                infoWindow.setResizable(false);
+                infoWindow.setTitle(mek.getModelName());
+                infoWindow.setLocationRelativeTo(mwclient.getMainFrame());
+                infoWindow.setVisible(true);
+                mechDisplay.displayEntity(theEntity);
             } else if (command.equalsIgnoreCase("CMU")) {
                 int row = Integer.parseInt(st.nextToken());
                 int col = Integer.parseInt(st.nextToken());

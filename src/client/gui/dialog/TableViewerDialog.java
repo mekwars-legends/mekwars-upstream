@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2004, 2005 
- * 
+ * MekWars - Copyright (C) 2004, 2005
+ *
  * Original author - nmorris (urgru@users.sourceforge.net)
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -19,28 +19,28 @@ package client.gui.dialog;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.util.StringTokenizer;
-import java.util.TreeSet;
-import java.util.TreeMap;
-import java.util.Iterator;
-import java.util.Arrays;
-import java.util.Vector;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Comparator;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.util.Iterator;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -48,37 +48,37 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import megamek.client.ui.swing.MechDisplay;
 import megamek.common.Entity;
 import megamek.common.EntityListFile;
 import megamek.common.MechFileParser;
 import megamek.common.MechSummary;
 import megamek.common.MechSummaryCache;
+import client.MWClient;
+import client.campaign.CUnit;
+import client.gui.TableSorter;
+import client.util.CUnitComparator;
 
 import common.CampaignData;
 import common.House;
 import common.Unit;
 import common.campaign.pilot.Pilot;
-
-import client.MWClient;
-import client.campaign.CUnit;
 import common.util.SpringLayoutHelper;
 import common.util.UnitUtils;
-import client.gui.TableSorter;
-import client.util.CUnitComparator;
 
 public class TableViewerDialog extends JFrame implements ItemListener {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -5449211786198003020L;
     // ivars
@@ -141,7 +141,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         weightClassCombo = new JComboBox(weightClassArray);
         factionCombo = new JComboBox(factionArray);
         unitTypeCombo = new JComboBox();
-        
+
         for ( int type = Unit.MEK; type < Unit.MAXBUILD; type++ ){
             unitTypeCombo.addItem(Unit.getTypeClassDesc(type));
         }
@@ -236,18 +236,18 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                     Entity theEntity = u.getEntity();
                     theEntity.loadAllWeapons();
 
-                    JFrame InfoWindow = new JFrame();
-                    MechDetailDisplay MechDetailInfo = new MechDetailDisplay(mwclient);
+                    JFrame infoWindow = new JFrame();
+                    MechDisplay mechDetailInfo = new MechDisplay(null);
 
-                    InfoWindow.getContentPane().add(MechDetailInfo);
-                    InfoWindow.setSize(220, 400);
-                    InfoWindow.setResizable(false);
+                    infoWindow.getContentPane().add(mechDetailInfo);
+                    infoWindow.setSize(300, 400);
+                    infoWindow.setResizable(false);
 
-                    MechDetailInfo.displayEntity(theEntity, theEntity.calculateBattleValue(), mwclient.getConfig().getImage("CAMO"));
-                    InfoWindow.setTitle(u.getModelName());
-                    InfoWindow.setLocationRelativeTo(mwclient.getMainFrame());// center
+                    infoWindow.setTitle(u.getModelName());
+                    infoWindow.setLocationRelativeTo(mwclient.getMainFrame());// center
                     // it
-                    InfoWindow.setVisible(true);
+                    infoWindow.setVisible(true);
+                    mechDetailInfo.displayEntity(theEntity);
                 }
             }
         });// end addMouseListener();
@@ -281,7 +281,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         JPanel boxPanel = new JPanel();
         boxPanel.setLayout(new BoxLayout(boxPanel, BoxLayout.Y_AXIS));
         JPanel buttonPanel = new JPanel(new SpringLayout());
-        
+
         // center the percentage label
         percentageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         percentageLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
@@ -295,20 +295,20 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         buttonPanel.add(closeButton);
 
         SpringLayoutHelper.setupSpringGrid(buttonPanel, 2);
-        
+
         boxPanel.add(buttonPanel);
-            
+
         // give the box a small border
         boxPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // add the box to the main panel
-        this.getContentPane().add(boxPanel);
+        getContentPane().add(boxPanel);
 
         // load the default tables/units
-        this.loadTables();
-        this.refresh();
-        this.setLocationRelativeTo(mwclient.getMainFrame());
-        this.setVisible(true);
+        loadTables();
+        refresh();
+        setLocationRelativeTo(mwclient.getMainFrame());
+        setVisible(true);
     }
 
     // refresh
@@ -322,8 +322,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
     @Override
     public void setVisible(boolean show) {
 
-        this.pack();
-        this.setLocationRelativeTo(mwclient.getMainFrame());
+        pack();
+        setLocationRelativeTo(mwclient.getMainFrame());
 
         this.setSize(720, 575);
         setResizable(false);
@@ -335,8 +335,9 @@ public class TableViewerDialog extends JFrame implements ItemListener {
     public TableUnit getUnitAtRow(int row) {
 
         String filename = (String) generalTable.getModel().getValueAt(row, TableViewerModel.FILENAME);
-        if (filename != null)
-            return (TableUnit) currentUnits.get(filename);
+        if (filename != null) {
+            return currentUnits.get(filename);
+        }
 
         // else
         return null;
@@ -353,12 +354,13 @@ public class TableViewerDialog extends JFrame implements ItemListener {
          * selection.
          */
         JComboBox source = (JComboBox) i.getSource();
-        if (source == unitTypeCombo && unitSort == unitTypeCombo.getSelectedIndex())
+        if ((source == unitTypeCombo) && (unitSort == unitTypeCombo.getSelectedIndex())) {
             return;
-        else if (source == weightClassCombo && weightSort == weightClassCombo.getSelectedIndex())
+        } else if ((source == weightClassCombo) && (weightSort == weightClassCombo.getSelectedIndex())) {
             return;
-        else if (source == factionCombo && factionSort == factionCombo.getSelectedIndex())
+        } else if ((source == factionCombo) && (factionSort == factionCombo.getSelectedIndex())) {
             return;
+        }
 
         // fails passed. reload the tables.
         loadTables();
@@ -376,7 +378,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         mwclient.setConfig();
 
         // refresh the display
-        this.refresh();
+        refresh();
     }
 
     /**
@@ -385,8 +387,9 @@ public class TableViewerDialog extends JFrame implements ItemListener {
      */
     public boolean hasValidExtension(String l) {
         String lc = l.toLowerCase();
-        if (lc.endsWith(".blk") || lc.endsWith(".mtf") || lc.endsWith(".hmp") || lc.endsWith(".xml") || lc.endsWith(".hmv") || lc.endsWith(".mep") || lc.endsWith(".mul"))
+        if (lc.endsWith(".blk") || lc.endsWith(".mtf") || lc.endsWith(".hmp") || lc.endsWith(".xml") || lc.endsWith(".hmv") || lc.endsWith(".mep") || lc.endsWith(".mul")) {
             return true;
+        }
         // else
         return false;
     }
@@ -420,13 +423,15 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                 // read the line and remove excess whitespace
                 String l = dis.readLine();
 
-                if (l == null || l.trim().length() == 0)
+                if ((l == null) || (l.trim().length() == 0)) {
                     continue;
+                }
 
                 l = l.trim();
                 l = l.replaceAll("\\s+", " ");
-                if (l.indexOf(" ") == 0)
+                if (l.indexOf(" ") == 0) {
                     l = l.substring(1, l.length());
+                }
 
                 StringTokenizer ST = new StringTokenizer(l);
                 totalweight += Integer.parseInt((String) ST.nextElement());
@@ -459,16 +464,18 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 
             // get zip entry for the new file.
             File tableEntry = null;
-            if (commonOverride)
+            if (commonOverride) {
                 tableEntry = new File(buildTablePath.getPath() + File.separatorChar + "Common" + add);
-            else
+            } else {
                 tableEntry = new File(buildTablePath.getPath() + File.separatorChar + currTableName + add);
+            }
 
             if (!tableEntry.exists()) {
-                if (commonOverride)
+                if (commonOverride) {
                     tableEntry = new File((buildTablePath.getPath() + File.separatorChar + "Common" + add).toLowerCase());
-                else
+                } else {
                     tableEntry = new File((buildTablePath.getPath() + File.separatorChar + currTableName + add).toLowerCase());
+                }
             }
 
             // ignore missing links
@@ -479,13 +486,13 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                  * weighting of all entries. This total is used to determine the
                  * fractional values of each line on a second pass.
                  */
-                int totaltableweight = this.getTotalWeightForTable(tableEntry);
+                int totaltableweight = getTotalWeightForTable(tableEntry);
 
                 /*
                  * InputStream and Buffered reader for a second pass through the
                  * file.
                  */
-                InputStream is = this.getEntryInputStream(tableEntry);
+                InputStream is = getEntryInputStream(tableEntry);
                 BufferedReader dis = new BufferedReader(new InputStreamReader(is));
 
                 /*
@@ -494,7 +501,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                  * target table at 50%, and the tableweight is .10 (aka - 10%),
                  * the ONI's actual frequncy is 5%.
                  */
-                double tablemultiplier = ((Double) curr.get(currTableName)).doubleValue();
+                double tablemultiplier = curr.get(currTableName).doubleValue();
                 // System.out.println("TableMultiplier for " + currTableName +
                 // ": " + tablemultiplier);
 
@@ -503,14 +510,16 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 
                         // read the line. make sure it's not empty.
                         String l = dis.readLine();
-                        if (l == null || l.trim().length() == 0)
+                        if ((l == null) || (l.trim().length() == 0)) {
                             continue;
+                        }
 
                         // remove excess whitespace
                         l = l.trim();
                         l = l.replaceAll("\\s+", " ");
-                        if (l.indexOf(" ") == 0)
+                        if (l.indexOf(" ") == 0) {
                             l = l.substring(1, l.length());
+                        }
 
                         /*
                          * All lines should have weights. Set up a
@@ -527,13 +536,14 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                          * known extension is present, assume a crosslinked
                          * table.
                          */
-                        if (this.hasValidExtension(l) && weight != 0) {
+                        if (hasValidExtension(l) && (weight != 0)) {
 
                             String Filename = "";
                             while (ST.hasMoreElements()) {
                                 Filename += ST.nextToken();
-                                if (ST.hasMoreElements())
+                                if (ST.hasMoreElements()) {
                                     Filename += " ";
+                                }
                             }
 
                             /*
@@ -566,7 +576,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                                         continue;
                                     }
 
-                                    TableUnit eu = (TableUnit) currentUnits.get(tu.getRealFilename());// existing
+                                    TableUnit eu = currentUnits.get(tu.getRealFilename());// existing
                                     // unit
                                     if (eu != null) {
                                         eu.addFrequencyFrom(tu);
@@ -577,12 +587,12 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                                     /*
                                      * Add this table as a source.
                                      */
-                                    eu = (TableUnit) currentUnits.get(tu.getRealFilename());// existing
+                                    eu = currentUnits.get(tu.getRealFilename());// existing
                                     // unit
                                     if (eu.getTables().get(currTableName) == null) {
                                         eu.getTables().put(currTableName, new Double(frequency));
                                     } else {
-                                        Double currFreq = (Double) eu.getTables().get(currTableName);
+                                        Double currFreq = eu.getTables().get(currTableName);
                                         Double newFreq = new Double(currFreq.doubleValue() + frequency);
                                         eu.getTables().remove(currTableName);
                                         eu.getTables().put(currTableName, newFreq);
@@ -595,7 +605,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                                     continue;
                                 }
 
-                                TableUnit eu = (TableUnit) currentUnits.get(Filename);// existing
+                                TableUnit eu = currentUnits.get(Filename);// existing
                                 // unit
                                 if (eu != null) {
                                     eu.addFrequencyFrom(tu);
@@ -606,12 +616,12 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                                 /*
                                  * Add this table as a source.
                                  */
-                                eu = (TableUnit) currentUnits.get(Filename);// existing
+                                eu = currentUnits.get(Filename);// existing
                                 // unit
                                 if (eu.getTables().get(currTableName) == null) {
                                     eu.getTables().put(currTableName, new Double(frequency));
                                 } else {
-                                    Double currFreq = (Double) eu.getTables().get(currTableName);
+                                    Double currFreq = eu.getTables().get(currTableName);
                                     Double newFreq = new Double(currFreq.doubleValue() + frequency);
                                     eu.getTables().remove(currTableName);
                                     eu.getTables().put(currTableName, newFreq);
@@ -621,8 +631,9 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                             String crossTableName = "";
                             while (ST.hasMoreElements()) {
                                 crossTableName += ST.nextToken();
-                                if (ST.hasMoreElements())
+                                if (ST.hasMoreElements()) {
                                     crossTableName += " ";
+                                }
                             }
 
                             /*
@@ -633,7 +644,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                              */
                             if (next != null) {
                                 if (next.containsKey("crossTableName")) {
-                                    Double d = (Double) next.get(crossTableName);
+                                    Double d = next.get(crossTableName);
                                     double newTableWeight = d.doubleValue() + ((weight / totaltableweight) * tablemultiplier);
                                     next.remove(crossTableName);
                                     next.put(crossTableName, new Double(newTableWeight));
@@ -679,8 +690,9 @@ public class TableViewerDialog extends JFrame implements ItemListener {
          * Finally, determine the type of unit to look at.
          */
         String type = (String) unitTypeCombo.getSelectedItem();
-        if (!type.equals("Mek"))
+        if (!type.equals("Mek")) {
             addOnString += type;
+        }
 
         // always look for a .txt
         addOnString += ".txt";
@@ -763,15 +775,16 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         // %'s instead of decimals
         // ...
         // System.out.println("this.doTableLayer - base");
-        this.doTableLayer(temp, crossMap1, addOnString, buildTablePath, overrideWithCommon);
+        doTableLayer(temp, crossMap1, addOnString, buildTablePath, overrideWithCommon);
 
         while (true) {
             // 1st cross-linkages (2nd degree)
             // System.out.println("this.doTableLayer - map1");
-            this.doTableLayer(crossMap1, crossMap2, addOnString, buildTablePath, false);
+            doTableLayer(crossMap1, crossMap2, addOnString, buildTablePath, false);
 
-            if (crossMap2.size() < 1)
+            if (crossMap2.size() < 1) {
                 break;
+            }
 
             crossMap1 = crossMap2;
             crossMap2 = new TreeMap<String, Double>();
@@ -815,7 +828,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
     static class TableViewerModel extends AbstractTableModel {
 
         /**
-         * 
+         *
          */
         private static final long serialVersionUID = 4544580878221428391L;
         // IVARS
@@ -839,7 +852,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 
         // CONSTRUCTOR
         public TableViewerModel(MWClient c, TreeMap<Object, TableUnit> current, TableUnit[] sorted) {
-            this.mwclient = c;
+            mwclient = c;
             currentUnits = current;
             sortedUnits = sorted;
         }
@@ -884,28 +897,31 @@ public class TableViewerDialog extends JFrame implements ItemListener {
          */
         public void refreshModel() {
             sortedUnits = new TableUnit[] {};
-            sortedUnits = this.sortUnits(currentSortMode);
-            this.fireTableDataChanged();
+            sortedUnits = sortUnits(currentSortMode);
+            fireTableDataChanged();
         }
 
         // getValueAt, for AbstractModel
         public Object getValueAt(int row, int col) {
 
             // invalid row
-            if (row < 0 || row >= sortedUnits.length)
+            if ((row < 0) || (row >= sortedUnits.length)) {
                 return "";
+            }
 
-            TableUnit currU = (TableUnit) sortedUnits[row];
+            TableUnit currU = sortedUnits[row];
 
-            if (currU == null)
+            if (currU == null) {
                 return "";
+            }
 
             switch (col) {
             case UNIT:
 
                 try {
-                    if (currU.getType() == Unit.MEK && currU.getEntity() != null && !currU.getEntity().isOmni())
+                    if ((currU.getType() == Unit.MEK) && (currU.getEntity() != null) && !currU.getEntity().isOmni()) {
                         return "<html><body>" + currU.getEntity().getChassis() + ", " + currU.getModelName();
+                    }
                     // else
                     return "<html><body>" + currU.getModelName();
                 } catch (Exception ex) {
@@ -920,20 +936,20 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                 return new Integer(currU.getEntity().calculateBattleValue());
 
             case FREQUENCY:
-            	
+
                 DecimalFormat myFormatter = new DecimalFormat("##0.00");
                 String val = myFormatter.format(currU.getFrequency());
                 //Double returnVal = Double.parseDouble(val);
                 Double returnVal = 0.0;
                 try {
-						returnVal = DecimalFormat.getNumberInstance().parse(val).doubleValue();
+						returnVal = NumberFormat.getNumberInstance().parse(val).doubleValue();
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-                
+
             	return returnVal;
-            	
+
             case FILENAME:
                 return currU.getRealFilename();
 
@@ -941,8 +957,9 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 
             return "";
         }
-        
-		@SuppressWarnings("unchecked")
+
+		@Override
+        @SuppressWarnings("unchecked")
 		public Class getColumnClass(int c) {
 			return getValueAt(0, c).getClass();
 		}
@@ -1015,7 +1032,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         private class TableViewerRenderer extends DefaultTableCellRenderer {
 
             /**
-             * 
+             *
              */
             private static final long serialVersionUID = -8249928200262506117L;
 
@@ -1027,8 +1044,9 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                 // (should be made better later)
                 c.setOpaque(true);
 
-                if (row >= currentUnits.size() || row < 0)
+                if ((row >= currentUnits.size()) || (row < 0)) {
                     return c;
+                }
 
                 if (table.getModel().getValueAt(row, column) != null) {
                     c.setText(table.getModel().getValueAt(row, column).toString());
@@ -1037,7 +1055,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 
                 // get the unit from the tree
                 Object unit = table.getModel().getValueAt(row, TableViewerModel.FILENAME);
-                TableUnit currU = (TableUnit) currentUnits.get(unit);
+                TableUnit currU = currentUnits.get(unit);
 
                 if (currU == null) {
                     return null;
@@ -1046,10 +1064,11 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                 // set up description
                 StringBuilder description = new StringBuilder();
 
-                if (currU.getType() == Unit.MEK && !currU.getEntity().isOmni())
+                if ((currU.getType() == Unit.MEK) && !currU.getEntity().isOmni()) {
                     description.append("<html><body><u>" + currU.getEntity().getChassis() + ", " + currU.getModelName() + "</u><br>");
-                else
+                } else {
                     description.append("<html><body><u>" + currU.getModelName() + "</u><br>");
+                }
 
                 // show the percent frequency for each table
                 description.append("Sources:");
@@ -1116,7 +1135,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 
                 // get the unit from the summary cache
                 MechSummary ms = MechSummaryCache.getInstance().getMech(modfn);
-                UnitEntity = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
+                unitEntity = new MechFileParser(ms.getSourceFile(), ms.getEntryName()).getEntity();
 
             } catch (Exception e) {
                 // CampaignData.mwlog.errLog(e);
@@ -1140,9 +1159,9 @@ public class TableViewerDialog extends JFrame implements ItemListener {
             setPilot(new Pilot("Autopilot", 4, 5));
 
             // get the unit from the summary cache
-            UnitEntity = en;
+            unitEntity = en;
 
-            
+
             frequency = f;
 
             tables = new TreeMap<String, Double>();
@@ -1167,9 +1186,9 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 
         private void createEntityFromFileNameWithCache(String fn) {
 
-            UnitEntity = UnitUtils.createEntity(fn);
+            unitEntity = UnitUtils.createEntity(fn);
 
-            if (UnitEntity == null) {
+            if (unitEntity == null) {
                 createEntityFromFilename(fn);
             }
         }
@@ -1183,22 +1202,22 @@ public class TableViewerDialog extends JFrame implements ItemListener {
          */
         private void createEntityFromFilename(String fn) {
 
-            UnitEntity = null;
+            unitEntity = null;
             try {
-                UnitEntity = new MechFileParser(new File("./data/mechfiles/Meks.zip"), fn).getEntity();
+                unitEntity = new MechFileParser(new File("./data/mechfiles/Meks.zip"), fn).getEntity();
             } catch (Exception e) {
                 try {
-                    UnitEntity = new MechFileParser(new File("./data/mechfiles/Vehicles.zip"), fn).getEntity();
+                    unitEntity = new MechFileParser(new File("./data/mechfiles/Vehicles.zip"), fn).getEntity();
                 } catch (Exception ex) {
                     try {
-                        UnitEntity = new MechFileParser(new File("./data/mechfiles/Infantry.zip"), fn).getEntity();
+                        unitEntity = new MechFileParser(new File("./data/mechfiles/Infantry.zip"), fn).getEntity();
                     } catch (Exception exc) {
                         try {
                             CampaignData.mwlog.errLog("Error loading unit: " + fn + ". Try replacing with OMG.");
                             // MechSummary ms =
                             // MechSummaryCache.getInstance().getMech("Error
                             // OMG-UR-FD");
-                            UnitEntity = UnitUtils.createOMG();// new
+                            unitEntity = UnitUtils.createOMG();// new
                             // MechFileParser(ms.getSourceFile(),
                             // ms.getEntryName()).getEntity();
                             // UnitEntity = new MechFileParser (new
@@ -1212,8 +1231,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                 }
             }
 
-            setType(getEntityType(UnitEntity));
-            this.getC3Type(UnitEntity);
+            setType(getEntityType(unitEntity));
+            getC3Type(unitEntity);
         }
 
     }// end TableUnit
@@ -1221,14 +1240,14 @@ public class TableViewerDialog extends JFrame implements ItemListener {
     public void refreshButton_ActionPerformed() {
 
         int userLevel = mwclient.getUserLevel();
-        
+
         refreshButton.setEnabled(false);
         if (userLevel >= mwclient.getData().getAccessLevel("AdminRequestBuildTable")) {
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminRequestBuildTable#list#true");
-        } 
+        }
         else if (userLevel >= mwclient.getData().getAccessLevel("RequestBuildTable")) {
             mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c RequestBuildTable#list#true");
-        } 
+        }
 
         mwclient.setWaiting(true);
         while (mwclient.isWaiting()) {
@@ -1238,8 +1257,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 
             }
         }
-        this.loadTables();
-        this.refresh();
+        loadTables();
+        refresh();
         refreshButton.setEnabled(true);
     }
 }// end TableViewerDialog class

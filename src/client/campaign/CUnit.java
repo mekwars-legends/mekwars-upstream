@@ -52,7 +52,7 @@ import common.util.UnitUtils;
 public class CUnit extends Unit {
 
     // VARIABLES
-    protected Entity UnitEntity;
+    protected Entity unitEntity;
 
     private int BV;
     private int scrappableFor = 0;// value if scrapped
@@ -71,7 +71,7 @@ public class CUnit extends Unit {
 
     // PRIVATE METHODS
     private void init() {
-        UnitEntity = null;
+        unitEntity = null;
         BV = 0;
         setStatus(STATUS_OK);
         setProducer("unknown origin");
@@ -155,7 +155,7 @@ public class CUnit extends Unit {
         setId(TokenReader.readInt(ST));
 
         createEntity();
-        if (UnitEntity == null) {
+        if (unitEntity == null) {
             CampaignData.mwlog.errLog("Cannot load entity!");
             return (false);
         }
@@ -163,15 +163,15 @@ public class CUnit extends Unit {
         // don't try to set ammo and eject on an OMG
         if (getModelName().startsWith("Error")
                 || getModelName().startsWith("OMG")) {
-            UnitEntity.setExternalId(getId());
-            UnitEntity.setCrew(new megamek.common.Crew(p.getName(), 1, p
+            unitEntity.setExternalId(getId());
+            unitEntity.setCrew(new megamek.common.Crew(p.getName(), 1, p
                     .getGunnery(), p.getPiloting()));
             return true;
         }
 
         // set autoeject if its a mech
-        if ((UnitEntity instanceof Mech) && ST.hasMoreElements()) {
-            ((Mech) UnitEntity).setAutoEject(Boolean.parseBoolean(TokenReader
+        if ((unitEntity instanceof Mech) && ST.hasMoreElements()) {
+            ((Mech) unitEntity).setAutoEject(Boolean.parseBoolean(TokenReader
                     .readString(ST)));
         }
 
@@ -179,7 +179,7 @@ public class CUnit extends Unit {
         {
             try {
                 int maxCrits = TokenReader.readInt(ST);
-                ArrayList<Mounted> e = UnitEntity.getAmmo();
+                ArrayList<Mounted> e = unitEntity.getAmmo();
                 for (int count = 0; count < maxCrits; count++) {
                     int weaponType = TokenReader.readInt(ST);
                     String ammoName = TokenReader.readString(ST);
@@ -207,7 +207,7 @@ public class CUnit extends Unit {
                 int location = TokenReader.readInt(ST);
                 int slot = TokenReader.readInt(ST);
                 boolean selection = TokenReader.readBoolean(ST);
-                CriticalSlot cs = UnitEntity.getCritical(location, slot);
+                CriticalSlot cs = unitEntity.getCritical(location, slot);
 
                 Mounted mg = cs.getMount();
 
@@ -218,7 +218,7 @@ public class CUnit extends Unit {
 
         TokenReader.readString(ST);// unused
 
-        targetSystem.setEntity(UnitEntity);
+        targetSystem.setEntity(unitEntity);
         try {
             targetSystem.setTargetSystem(TokenReader.readInt(ST));
         } catch (TargetTypeOutOfBoundsException e) {
@@ -244,15 +244,13 @@ public class CUnit extends Unit {
 
         setRepairCosts(TokenReader.readInt(ST), TokenReader.readInt(ST));
 
-        UnitEntity.setExternalId(getId());
-        UnitEntity.setCrew(new megamek.common.Crew(p.getName(), 1, p
-                .getGunnery(), p.getPiloting()));
+        unitEntity.setExternalId(getId());
 
         if (unitDamage != null) {
-            UnitUtils.applyBattleDamage(UnitEntity, unitDamage, true);
+            UnitUtils.applyBattleDamage(unitEntity, unitDamage, true);
         }
 
-        getC3Type(UnitEntity);
+        getC3Type(unitEntity);
 
         return (true);
     }
@@ -272,7 +270,7 @@ public class CUnit extends Unit {
         // setType(Unit.VEHICLE);//auto units are always vehs ...
         createEntity();// make the entity
         if (distance > 0) {
-            UnitEntity.setOffBoard(distance, edge);// move
+            unitEntity.setOffBoard(distance, edge);// move
             // it
             // offboard
         }
@@ -289,7 +287,7 @@ public class CUnit extends Unit {
         }
 
         if ((getType() == Unit.INFANTRY) || (getType() == Unit.BATTLEARMOR)) {
-            if (((Infantry) UnitEntity).isAntiMek()) {
+            if (((Infantry) unitEntity).isAntiMek()) {
                 return getModelName() + " [" + getPilot().getGunnery() + "/"
                         + getPilot().getPiloting() + "]";
             }
@@ -301,8 +299,8 @@ public class CUnit extends Unit {
     public String getDisplayInfo(String armyText) {
         String tinfo = "";
 
-        if ((getType() == Unit.MEK) && !UnitEntity.isOmni()) {
-            tinfo = "<html><body>#" + getId() + " " + UnitEntity.getChassis()
+        if ((getType() == Unit.MEK) && !unitEntity.isOmni()) {
+            tinfo = "<html><body>#" + getId() + " " + unitEntity.getChassis()
                     + ", " + getModelName();
         } else {
             tinfo = "<html><body>#" + getId() + " " + getModelName();
@@ -315,7 +313,7 @@ public class CUnit extends Unit {
                     + ") <br>";
         } else if ((getType() == Unit.BATTLEARMOR)
                 || (getType() == Unit.INFANTRY)) {
-            if (((Infantry) UnitEntity).isAntiMek()) {
+            if (((Infantry) unitEntity).isAntiMek()) {
                 tinfo += " (" + getPilot().getName() + ", "
                         + getPilot().getGunnery() + "/"
                         + getPilot().getPiloting() + ") <br>";
@@ -458,7 +456,7 @@ public class CUnit extends Unit {
     }
 
     public Entity getEntity() {
-        return UnitEntity;
+        return unitEntity;
     }
 
     /**
@@ -466,19 +464,20 @@ public class CUnit extends Unit {
      */
     public void createEntity() {
         // MMClient.mwClientLog.clientErrLog("Filename: " + getUnitFilename());
-        UnitEntity = UnitUtils.createEntity(getUnitFilename());
+        unitEntity = UnitUtils.createEntity(getUnitFilename());
+        unitEntity.setCrew(UnitUtils.createEntityPilot(this));
 
-        if (UnitEntity == null) {
+        if (unitEntity == null) {
             CampaignData.mwlog.errLog("Error unit failed to load. Exiting.");
             System.exit(1);
         }
 
-        if (UnitEntity.getChassis().equals("Error")) {
+        if (unitEntity.getChassis().equals("Error")) {
             setProducer("Unable to find " + getUnitFilename()
                     + " on clients system!");
         }
         // setType(getEntityType(UnitEntity));
-        getC3Type(UnitEntity);
+        getC3Type(unitEntity);
     }
 
     public boolean isOmni() {
@@ -512,12 +511,12 @@ public class CUnit extends Unit {
     }
 
     public int getOriginalBV() {
-        return UnitEntity.calculateBattleValue(false, false);
+        return unitEntity.calculateBattleValue(false, false);
     }
 
     public void applyRepairs(String data) {
         createEntity();
-        UnitUtils.applyBattleDamage(UnitEntity, data, true);
+        UnitUtils.applyBattleDamage(unitEntity, data, true);
     }
 
     public boolean getPilotIsReparing() {
@@ -650,7 +649,7 @@ public class CUnit extends Unit {
     }
 
     public void setAntiAir(boolean aa) {
-        Quirks quirks = UnitEntity.getQuirks();
+        Quirks quirks = unitEntity.getQuirks();
         quirks.getOption("anti_air").setValue(aa);
     }
 

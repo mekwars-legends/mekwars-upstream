@@ -1481,7 +1481,6 @@ src/client/gui/dialog/ComponentConverterDialog.java -text
 src/client/gui/dialog/ConfigurationDialog.java -text
 src/client/gui/dialog/CustomUnitDialog.java -text
 src/client/gui/dialog/HouseNameDialog.java -text
-src/client/gui/dialog/MechDetailDisplay.java -text
 src/client/gui/dialog/PlanetNameDialog.java -text
 src/client/gui/dialog/PlanetSearchDialog.java -text
 src/client/gui/dialog/PlayerNameDialog.java -text

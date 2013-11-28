@@ -48,13 +48,13 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SpringLayout;
 import javax.swing.border.LineBorder;
 
+import megamek.client.ui.swing.MechDisplay;
 import megamek.common.Entity;
 import megamek.common.Infantry;
 import client.MWClient;
 import client.campaign.CCampaign;
 import client.campaign.CPlayer;
 import client.campaign.CUnit;
-import client.gui.dialog.MechDetailDisplay;
 
 import common.CampaignData;
 import common.House;
@@ -804,25 +804,25 @@ public class CHSPanel extends JPanel {
         }
     }
 
-    public void showInfoWindow(String MekFile, int BV, int Gunnery, int Piloting, String battleDamage) {
-        Entity UnitEntity = null;
+    public void showInfoWindow(String mekFile, int bv, int gunnery, int piloting, String battleDamage) {
+        Entity unitEntity = null;
         CUnit embeddedUnit = new CUnit();
-        embeddedUnit.setUnitFilename(MekFile);
+        embeddedUnit.setUnitFilename(mekFile);
         embeddedUnit.createEntity();
-        UnitEntity = embeddedUnit.getEntity();
+        unitEntity = embeddedUnit.getEntity();
 
         JFrame InfoWindow = new JFrame();
-        MechDetailDisplay MechDetailInfo = new MechDetailDisplay(mwclient);
-        UnitEntity.loadAllWeapons();
-        UnitEntity.setCrew(new megamek.common.Crew("", 1, Gunnery, Piloting));
+        MechDisplay mechDetailInfo = new MechDisplay(null);
+        unitEntity.loadAllWeapons();
+        unitEntity.setCrew(new megamek.common.Crew("", 1, gunnery, piloting));
         if (battleDamage.trim().length() > 1) {
-            UnitUtils.applyBattleDamage(UnitEntity, battleDamage, false);
+            UnitUtils.applyBattleDamage(unitEntity, battleDamage, false);
         }
-        MechDetailInfo.displayEntity(UnitEntity, BV, mwclient.getConfig().getImage("CAMO"));
-        InfoWindow.getContentPane().add(MechDetailInfo);
-        InfoWindow.setSize(220, 400);
+        mechDetailInfo.displayEntity(unitEntity);
+        InfoWindow.getContentPane().add(mechDetailInfo);
+        InfoWindow.setSize(300, 400);
         InfoWindow.setResizable(false);
-        InfoWindow.setTitle(UnitEntity.getModel());
+        InfoWindow.setTitle(unitEntity.getModel());
         InfoWindow.setLocationRelativeTo(mwclient.getMainFrame());
         InfoWindow.setVisible(true);
     }
