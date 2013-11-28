@@ -65,7 +65,7 @@ public class CConfig {
         try {
             File configfile = new File(CONFIG_FILE);
             FileInputStream fis = new FileInputStream(configfile);
-            
+
             config.load(fis);  // Here's the change.
             fis.close();
         } catch (IOException ie) {
@@ -81,7 +81,7 @@ public class CConfig {
         } catch (Exception ex) {
             CampaignData.mwlog.errLog(ex);
             JOptionPane.showMessageDialog(null, "Unable to load main config file");
-        } 
+        }
 
         // check for a serverdata.dat
         try {
@@ -187,6 +187,8 @@ public class CConfig {
                                                        // main channel
         defaults.setProperty("MAINCHANNELRPG", "NO"); // show in char messages
                                                       // in main channel
+        defaults.setProperty("MAINCHANNELMM", "NO"); // show modmail in main
+                                                      // channel
         defaults.setProperty("AUTOSCROLL", "NO"); // automatic chat scrolling
         defaults.setProperty("REPLYTOSENDER", "YES"); // PM tab replies to last
                                                       // mail sender
@@ -408,7 +410,7 @@ public class CConfig {
 
         defaults.setProperty("USERDEFINDMESSAGETAB", "0");
         defaults.setProperty("INVERTCHATCOLOR", "NO");
-        
+
         defaults.setProperty("ShowUnitBaseBV", "false");
 
         return defaults;
@@ -545,7 +547,7 @@ public class CConfig {
 
     /**
      * Get an ImageIcon from the client image cache.
-     * 
+     *
      * @param image
      *            - name of image to fetch
      * @return an ImageIcon. Null if no match.

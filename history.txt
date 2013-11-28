@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.3.6.x
++ added option to show mod mail in main chat
 R Released Server/Ded v0.3.6.3, Client v0.3.6.4
 + New MegaMek v0.37.0-MW20131125-10128
 R Rolled Ded and server back to v0.3.6.2 versioning - no changes made in last 

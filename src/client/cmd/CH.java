@@ -1,6 +1,6 @@
 /*
- * MekWars - Copyright (C) 2004 
- * 
+ * MekWars - Copyright (C) 2004
+ *
  * Derived from MegaMekNET (http://www.sourceforge.net/projects/megamek)
  * Original author Helge Richter (McWizard)
  *
@@ -19,11 +19,11 @@ package client.cmd;
 
 import java.util.StringTokenizer;
 
-import common.util.StringUtils;
-
 import client.CUser;
 import client.MWClient;
 import client.gui.CCommPanel;
+
+import common.util.StringUtils;
 
 /**
  * @author Imi (immanuel.scholz@gmx.de)
@@ -70,20 +70,22 @@ public class CH extends Command {
             if (nextString.startsWith("(Housemail)") || nextString.startsWith("(Moderator Mail)")) {
 
                 boolean isModMail = false;
-                if (nextString.startsWith("(Moderator Mail)"))
+                if (nextString.startsWith("(Moderator Mail)")) {
                     isModMail = true;
+                }
 
                 // get the name
-                if (isModMail)
+                if (isModMail) {
                     name = nextString.substring(16, nextString.indexOf(":")).trim();
-                else
+                } else {
                     name = nextString.substring(11, nextString.indexOf(":"));
+                }
 
                 uncoloredName = name;
 
                 // only proceed if player isnt muted
                 CUser user = mwclient.getUser(name);
-                if (user.isInvis() && user.getUserlevel() > mwclient.getUser(mwclient.getUsername()).getUserlevel()) {
+                if (user.isInvis() && (user.getUserlevel() > mwclient.getUser(mwclient.getUsername()).getUserlevel())) {
                     isInvisible = true;
                 }
 
@@ -98,10 +100,11 @@ public class CH extends Command {
                         usercolor = user.getColor(); // Get the Color
 
                         // draw a factioncolour from the datafeed
-                        if (user.getHouse().length() > 1 && mwclient.getData().getHouseByName(user.getHouse()) != null)
+                        if ((user.getHouse().length() > 1) && (mwclient.getData().getHouseByName(user.getHouse()) != null)) {
                             factioncolor = mwclient.getData().getHouseByName(user.getHouse()).getHouseColor();
-                        else
+                        } else {
                             factioncolor = defaultColor;
+                        }
 
                     } else {
                         usercolor = defaultColor;
@@ -134,15 +137,17 @@ public class CH extends Command {
 
                     // load the message
                     message = nextString.substring(nextString.indexOf(":") + 1).trim();
-                    while (ST.hasMoreTokens())
+                    while (ST.hasMoreTokens()) {
                         message += "|" + ST.nextToken();
+                    }
 
                     // faction mail emote. [does this work server side? never seen it used.]
                     if (message.startsWith("#me")) {
-                        if (mwclient.getConfig().isParam("COLOREDEMOTES"))
+                        if (mwclient.getConfig().isParam("COLOREDEMOTES")) {
                             message = "*** " + name + message.substring(3);
-                        else
+                        } else {
                             message = "*** " + uncoloredName + message.substring(3);
+                        }
                         message = "<font size=\"" + fontSize + "\">" + message + "</font>";
                     }
 
@@ -158,10 +163,11 @@ public class CH extends Command {
                         int start = message.toLowerCase().indexOf("<img");
                         int finish = -1;
 
-                        if (start != -1)
+                        if (start != -1) {
                             finish = message.indexOf(">", start);
+                        }
 
-                        if (start != -1 && finish != -1) {
+                        if ((start != -1) && (finish != -1)) {
                             String firstHalf = message.substring(0, start);
                             String secondHalf = message.substring(finish + 1, message.length());
 
@@ -170,19 +176,25 @@ public class CH extends Command {
                     }
 
                     // add timestamp
-                    if (mwclient.getConfig().isParam("TIMESTAMP"))
+                    if (mwclient.getConfig().isParam("TIMESTAMP")) {
                         message = mwclient.getShortTime() + message;
+                    }
 
-                    if (isModMail)
+                    if (isModMail) {
                         mwclient.addToChat(message, CCommPanel.CHANNEL_MOD);
-
+                     // also add to main, if configured to do so
+                        if (mwclient.getConfig().isParam("MAINCHANNELMM")) {
+                            mwclient.addToChat("<font color=\"red\" size=\"" + fontSize + "\"><b>Mod Mail: </b></font>" + message);
+                        }
+                    }
                     else {
                         // add message to faction panel
                         mwclient.addToChat(message, CCommPanel.CHANNEL_HMAIL);
 
                         // also add to main, if configured to do so
-                        if (mwclient.getConfig().isParam("MAINCHANNELHM"))
+                        if (mwclient.getConfig().isParam("MAINCHANNELHM")) {
                             mwclient.addToChat("<font color=\"red\" size=\"" + fontSize + "\"><b>House Mail: </b></font>" + message);
+                        }
                     }
                 }
             }// end HM and MM
@@ -203,7 +215,7 @@ public class CH extends Command {
 
                 // only proceed if player isnt muted
                 CUser user = mwclient.getUser(name);
-                if (user.isInvis() && user.getUserlevel() > mwclient.getUser(mwclient.getUsername()).getUserlevel()) {
+                if (user.isInvis() && (user.getUserlevel() > mwclient.getUser(mwclient.getUsername()).getUserlevel())) {
                     isInvisible = true;
                 }
 
@@ -218,17 +230,19 @@ public class CH extends Command {
                         usercolor = user.getColor(); // Get the Color
 
                         // draw a factioncolour from the datafeed
-                        if (user.getHouse().length() > 1 && mwclient.getData().getHouseByName(user.getHouse()) != null)
+                        if ((user.getHouse().length() > 1) && (mwclient.getData().getHouseByName(user.getHouse()) != null)) {
                             factioncolor = mwclient.getData().getHouseByName(user.getHouse()).getHouseColor();
-                        else
+                        } else {
                             factioncolor = defaultColor;
+                        }
 
                     } else {
                         usercolor = defaultColor;
                         factioncolor = defaultColor;
                         addon = "";
-                        if (isInvisible)
+                        if (isInvisible) {
                             name = "Someone";
+                        }
                     }
 
                     /*
@@ -256,18 +270,20 @@ public class CH extends Command {
                     // load the message
                     message = nextString.substring(nextString.indexOf(":") + 1);
 
-                    while (ST.hasMoreTokens())
+                    while (ST.hasMoreTokens()) {
                         message += "|" + ST.nextToken();
+                    }
 
                     // strip HTML from the chat in order to stop javascripts
                     message = mwclient.doEscape(message);
 
                     // IC emote. [does this work server side? never seen it used.]
                     if (message.startsWith("#me")) {
-                        if (mwclient.getConfig().isParam("COLOREDEMOTES"))
+                        if (mwclient.getConfig().isParam("COLOREDEMOTES")) {
                             message = "*** " + name + message.substring(3);
-                        else
+                        } else {
                             message = "*** " + uncoloredName + message.substring(3);
+                        }
                         message = "<font size=\"" + fontSize + "\">" + message + "</font>";
 
                     }
@@ -285,10 +301,11 @@ public class CH extends Command {
                         int start = message.toLowerCase().indexOf("<img");
                         int finish = -1;
 
-                        if (start != -1)
+                        if (start != -1) {
                             finish = message.indexOf(">", start);
+                        }
 
-                        if (start != -1 && finish != -1) {
+                        if ((start != -1) && (finish != -1)) {
                             String firstHalf = message.substring(0, start);
                             String secondHalf = message.substring(finish + 1, message.length());
 
@@ -297,14 +314,16 @@ public class CH extends Command {
                     }
 
                     // add timestamp
-                    if (mwclient.getConfig().isParam("TIMESTAMP"))
+                    if (mwclient.getConfig().isParam("TIMESTAMP")) {
                         message = mwclient.getShortTime() + message;
+                    }
 
                     mwclient.addToChat(message, CCommPanel.CHANNEL_RPG);
 
                     // also add to main, if configured to do so
-                    if (mwclient.getConfig().isParam("MAINCHANNELRPG"))
+                    if (mwclient.getConfig().isParam("MAINCHANNELRPG")) {
                         mwclient.addToChat("<font color=\"red\" size=\"" + fontSize + "\"><b>In Character: </b></font>" + message);
+                    }
                 }
             }// end In Character
 
@@ -322,12 +341,13 @@ public class CH extends Command {
 
                     CUser user = mwclient.getUser(name);
 
-                    if (user.isInvis() && user.getUserlevel() > mwclient.getUser(mwclient.getUsername()).getUserlevel()) {
+                    if (user.isInvis() && (user.getUserlevel() > mwclient.getUser(mwclient.getUsername()).getUserlevel())) {
                         isInvisible = true;
-                    } else
+                    } else {
                         isInvisible = false;
+                    }
 
-                    if (user != null && !isInvisible) {
+                    if ((user != null) && !isInvisible) {
 
                         // faction letter
                         addon = user.getAddon();
@@ -336,10 +356,11 @@ public class CH extends Command {
                         usercolor = user.getColor(); // Get the Color
 
                         // draw a factioncolour from the datafeed
-                        if (user.getHouse().length() > 1 && mwclient.getData().getHouseByName(user.getHouse()) != null)
+                        if ((user.getHouse().length() > 1) && (mwclient.getData().getHouseByName(user.getHouse()) != null)) {
                             factioncolor = mwclient.getData().getHouseByName(user.getHouse()).getHouseColor();
-                        else
+                        } else {
                             factioncolor = defaultColor;
+                        }
 
                     } else {
                         // user is null. usually means player isn't
@@ -347,8 +368,9 @@ public class CH extends Command {
                         usercolor = defaultColor;
                         factioncolor = defaultColor;
                         addon = "";
-                        if (isInvisible)
+                        if (isInvisible) {
                             name = "Someone";
+                        }
                     }
 
                     /*
@@ -374,18 +396,20 @@ public class CH extends Command {
                     }
 
                     message = ST.nextToken();
-                    while (ST.hasMoreTokens())
+                    while (ST.hasMoreTokens()) {
                         message += "|" + ST.nextToken();
+                    }
 
                     // strip HTML from the chat in order to stop javascripts
                     message = mwclient.doEscape(message);
 
                     // handle emote ("me" command) formatting
                     if (message.startsWith("#me")) {
-                        if (mwclient.getConfig().isParam("COLOREDEMOTES"))
+                        if (mwclient.getConfig().isParam("COLOREDEMOTES")) {
                             message = "*** " + name + message.substring(3);
-                        else
+                        } else {
                             message = "*** " + uncoloredName + message.substring(3);
+                        }
                         message = "<font size=\"" + fontSize + "\">" + message + "</font>";
                     }
 
@@ -396,8 +420,9 @@ public class CH extends Command {
                     }
 
                     // add timestamp
-                    if (mwclient.getConfig().isParam("TIMESTAMP"))
+                    if (mwclient.getConfig().isParam("TIMESTAMP")) {
                         message = mwclient.getShortTime() + message;
+                    }
 
                     // append message to chat
                     mwclient.addToChat(message);
@@ -417,12 +442,12 @@ public class CH extends Command {
                     message = "<font color=\"" + sysColour + "\"><b>" + nextString.substring(3) + "</b></font>";
                 } else if (nextString.startsWith("ED:")) {
                     message = nextString.substring(3);
-                    if (mwclient.getConfig().isParam("ENABLEENEMYDETECTEDSOUND"))
+                    if (mwclient.getConfig().isParam("ENABLEENEMYDETECTEDSOUND")) {
                         mwclient.doPlaySound(mwclient.getConfigParam("SOUNDONENEMYDETECTED"));
-                }
-
-                else
+                    }
+                } else {
                     message = nextString;
+                }
                 wasSystemMessage = true;
                 mwclient.addToChat(message);
             }
@@ -438,9 +463,10 @@ public class CH extends Command {
                     // do nothing
                 }
 
-                else if ((!uncoloredName.equalsIgnoreCase(mwclient.getUsername()) || uncoloredName.trim().length() < 1) && message.indexOf(mwclient.getUsername()) > -1) {
-                    if (mwclient.getConfig().isParam("ENABLECALLSOUND"))
+                else if ((!uncoloredName.equalsIgnoreCase(mwclient.getUsername()) || (uncoloredName.trim().length() < 1)) && (message.indexOf(mwclient.getUsername()) > -1)) {
+                    if (mwclient.getConfig().isParam("ENABLECALLSOUND")) {
                         mwclient.doPlaySound(mwclient.getConfig().getParam("SOUNDONCALL"));
+                    }
 
                     // keep logging, even if sound is disabled
                     mwclient.addToChat(message, CCommPanel.CHANNEL_PLOG);// log the message
@@ -448,8 +474,9 @@ public class CH extends Command {
 
                 else if (mwclient.hasKeyWords(message)) {
 
-                    if (mwclient.getConfig().isParam("ENABLEKEYWORDSOUND"))
+                    if (mwclient.getConfig().isParam("ENABLEKEYWORDSOUND")) {
                         mwclient.doPlaySound(mwclient.getConfig().getParam("SOUNDONKEYWORD"));
+                    }
 
                     // keep logging, even if sound is disabled
                     mwclient.addToChat(message, CCommPanel.CHANNEL_PLOG);
