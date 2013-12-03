@@ -305,8 +305,11 @@ public class SUnitFactory extends UnitFactory implements Serializable {
         if (type_id != Unit.MEK)
             buildtableName += Unit.getTypeClassDesc(type_id);
 
-        CampaignData.mwlog.infoLog("New unit for " + this.getPlanet().getOwner().getName() + " on " + this.getPlanet().getName() + ": " + Filename + "(Table: " + buildtableName + ")");
-
+		if(this.getPlanet().getOwner() != null)
+			CampaignData.mwlog.infoLog("New unit for " + this.getPlanet().getOwner().getName() + " on " + this.getPlanet().getName() + ": " + Filename + "(Table: " + buildtableName + ")");
+		else 
+			CampaignData.mwlog.infoLog("New unit for " + this.getFounder() + " on " + this.getPlanet().getName() + ": " + Filename + "(Table: " + buildtableName + ")");
+		
         if (Filename.toLowerCase().trim().endsWith(".mul")) {
             units.addAll(SUnit.createMULUnits(Filename, producer));
         } else {
