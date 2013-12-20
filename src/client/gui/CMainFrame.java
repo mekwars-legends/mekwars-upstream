@@ -56,6 +56,8 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 import megamek.MegaMek;
+import megamek.client.ui.swing.ClientGUI;
+import megamek.client.ui.swing.MechSelectorDialog;
 import megamek.client.ui.swing.UnitLoadingDialog;
 import client.CUser;
 import client.MWClient;
@@ -66,6 +68,7 @@ import client.campaign.CUnit;
 import client.gui.dialog.ComponentConverterDialog;
 import client.gui.dialog.ConfigurationDialog;
 import client.gui.dialog.HouseNameDialog;
+import client.gui.dialog.NewUnitViewerDialog;
 import client.gui.dialog.PlanetNameDialog;
 import client.gui.dialog.PlayerNameDialog;
 import client.gui.dialog.RegisterNameDialog;
@@ -75,7 +78,6 @@ import client.gui.dialog.TableViewerDialog;
 import client.gui.dialog.TraitDialog;
 import client.gui.dialog.UnitSelectionDialog;
 import client.gui.dialog.UnitViewerDialog;
-
 import common.CampaignData;
 import common.House;
 import common.Unit;
@@ -2178,8 +2180,9 @@ public class CMainFrame extends JFrame {
     public void jMenuHelpViewUnit_actionPerformed() {
 
         UnitLoadingDialog unitLoadingDialog = new UnitLoadingDialog(mwclient.getMainFrame());
-        UnitViewerDialog unitSelector = new UnitViewerDialog(mwclient.getMainFrame(), unitLoadingDialog, mwclient, UnitViewerDialog.UNIT_VIEWER);
-        new Thread(unitSelector).start();
+        //UnitViewerDialog unitSelector = new UnitViewerDialog(mwclient.getMainFrame(), unitLoadingDialog, mwclient, UnitViewerDialog.UNIT_VIEWER);
+        NewUnitViewerDialog unitSelector = new NewUnitViewerDialog(this, unitLoadingDialog, mwclient);
+        new Thread(unitSelector).run();
         // unitSelector.setVisible(true);
     }
 

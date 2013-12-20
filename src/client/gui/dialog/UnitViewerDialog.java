@@ -66,6 +66,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpringLayout;
@@ -92,7 +93,6 @@ import megamek.common.loaders.EntityLoadingException;
 import client.MWClient;
 import client.gui.CMainFrame;
 import client.gui.MechInfo;
-
 import common.CampaignData;
 import common.util.SpringLayoutHelper;
 import common.util.UnitUtils;
@@ -153,9 +153,9 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
     private JButton bCancel = new JButton("Close");
     private JButton bSelect = new JButton("Select");
 
-    private JTextArea mechViewLeft = null;
-    private JTextArea mechViewRight = null;
-    private JTextArea unitFluff = null;
+    private JTextPane mechViewLeft = null;
+    private JTextPane mechViewRight = null;
+    private JTextPane unitFluff = null;
 
     private JPanel pUpper = new JPanel();
     private JPanel pPreview = new JPanel();
@@ -208,9 +208,12 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
         viewFluff = Boolean.parseBoolean(mwclient.getConfigParam("VIEWFLUFF"));
 
         // construct 2 text boxes
-        mechViewLeft = new JTextArea(17, 29);
-        mechViewRight = new JTextArea(17, 34);
-        unitFluff = new JTextArea(10, 40);
+        mechViewLeft = new JTextPane();
+        mechViewLeft.setContentType("text/html");
+        mechViewRight = new JTextPane();
+        mechViewRight.setContentType("text/html");
+        unitFluff = new JTextPane();
+        unitFluff.setContentType("text/html");
 
         // construct a model and list
         defaultModel = new DefaultListModel();
@@ -1000,8 +1003,8 @@ public class UnitViewerDialog extends JFrame implements ActionListener, KeyListe
             mechViewRight.setText(mechView.getMechReadoutLoadout());
             if ((currEntity.getFluff() != null) && viewFluff) {
                 unitFluff.setEditable(false);
-                unitFluff.setLineWrap(true);
-                unitFluff.setWrapStyleWord(true);
+                //unitFluff.setLineWrap(true);
+                //unitFluff.setWrapStyleWord(true);
                 unitFluff.setText(currEntity.getFluff().getHistory());
                 unitFluff.setCaretPosition(0);
 

@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.6.x
+R Released Client v0.3.6.5
++ Fixed unitViewer
 + fixed minor bug in SUnitFactory causing NPE updated server to 3.6.4
 + use mechdisplay directly from MM
 + added option to show mod mail in main chat
