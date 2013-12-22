@@ -2660,9 +2660,14 @@ public class UnitUtils {
     public static Crew createEntityPilot(Unit mek) {
         // get and set the options
         Crew pilot = null;
-        pilot = new Crew(mek.getPilot().getName(), 1, mek.getPilot()
+        if (mek.getPilot() == null) {
+			//when looking at a pilotless mek - we need a default pilot
+		    pilot = new Crew("No Pilot", 1, 4, 5);
+		    return pilot;
+		} else {
+            pilot = new Crew(mek.getPilot().getName(), 1, mek.getPilot()
                 .getGunnery(), mek.getPilot().getPiloting());
-
+        }
         // Hits defaults to 0 so no reason to keep checking over and over again.
         pilot.setHits(mek.getPilot().getHits());
 
