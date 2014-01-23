@@ -60,8 +60,8 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
 import common.CampaignData;
-import common.DefaultOperation;
 import common.VerticalLayout;
+import common.campaign.operations.DefaultOperation;
 import common.flags.FlagSet;
 import common.util.SpringLayoutHelper;
 

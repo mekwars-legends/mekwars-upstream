@@ -21,6 +21,7 @@ import java.util.Vector;
 
 import common.Unit;
 import common.UnitFactory;
+import common.campaign.operations.Operation;
 import common.util.StringUtils;
 
 import common.CampaignData;

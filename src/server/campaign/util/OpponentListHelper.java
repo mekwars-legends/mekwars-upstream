@@ -27,9 +27,9 @@ import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
-import server.campaign.operations.Operation;
 import server.campaign.operations.OperationManager;
 
+import common.campaign.operations.Operation;
 import common.util.StringUtils;
 import common.House;
 

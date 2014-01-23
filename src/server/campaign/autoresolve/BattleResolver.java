@@ -24,10 +24,10 @@ import server.campaign.SArmy;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
 import server.campaign.autoresolve.VirtualUnit.MovementMode;
-import server.campaign.operations.Operation;
 import server.campaign.operations.ShortOperation;
 
 import common.Unit;
+import common.campaign.operations.Operation;
 
 public class BattleResolver {
 	

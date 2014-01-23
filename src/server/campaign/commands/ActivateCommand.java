@@ -22,11 +22,11 @@ import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
-import server.campaign.operations.Operation;
 import server.campaign.operations.OperationManager;
 
 import common.CampaignData;
 import common.Unit;
+import common.campaign.operations.Operation;
 import common.util.UnitUtils;
 
 public class ActivateCommand implements Command {

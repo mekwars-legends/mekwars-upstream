@@ -15,12 +15,13 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
+import common.campaign.operations.Operation;
+
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.SPlayer;
-import server.campaign.operations.Operation;
 import server.campaign.operations.OperationManager;
 
 /**

@@ -135,8 +135,7 @@ import megamek.common.loaders.EntityLoadingException;
 	    }
 
 	    private void initComponents() {
-	    	CampaignData.mwlog.errLog("Entering initcomponents");
-	        setMinimumSize(new java.awt.Dimension(640, 480));
+	    	setMinimumSize(new java.awt.Dimension(640, 480));
 
 	        GridBagConstraints c;
 

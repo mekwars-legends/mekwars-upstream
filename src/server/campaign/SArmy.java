@@ -34,12 +34,12 @@ import megamek.common.Mounted;
 import megamek.common.Protomech;
 import megamek.common.Tank;
 import megamek.common.VTOL;
-import server.campaign.operations.Operation;
 import server.mwmysql.JDBCConnectionHandler;
 
 import common.Army;
 import common.CampaignData;
 import common.Unit;
+import common.campaign.operations.Operation;
 import common.util.TokenReader;
 
 /**

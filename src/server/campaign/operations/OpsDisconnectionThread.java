@@ -17,6 +17,7 @@
 package server.campaign.operations;
 
 import common.CampaignData;
+import common.campaign.operations.Operation;
 import server.campaign.CampaignMain;
 import server.util.StringUtil;
 

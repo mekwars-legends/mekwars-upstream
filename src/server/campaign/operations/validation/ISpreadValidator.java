@@ -15,8 +15,9 @@
  */
 package server.campaign.operations.validation;
 
+import common.campaign.operations.Operation;
+
 import server.campaign.SArmy;
-import server.campaign.operations.Operation;
 /**
  * @author 	Spork
  * @version	1.0

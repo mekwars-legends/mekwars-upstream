@@ -206,6 +206,7 @@ public class CMainFrame extends JFrame {
     JMenuItem jMenuHelpViewBuildTables = new JMenuItem();
     JMenuItem jMenuHelpViewTraits = new JMenuItem();
     JMenuItem jMenuHelpPilotSkills = new JMenuItem();
+    JMenuItem jMenuHelpOpViewer = new JMenuItem();
 
     // These are simple holders for when real menus
     // is generated/returned from the admin plugin.
@@ -1093,6 +1094,13 @@ public class CMainFrame extends JFrame {
             }
         });
 
+        jMenuHelpOpViewer.setText("Operation Viewer");
+        jMenuHelpOpViewer.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "getops md5");
+        	}
+        });
+        
         /*
          * Display Report "MekWars Bug" and "Report MegaMek Bug" links in the
          * Help Menu. Create the actual menu options, with browsers calls, here
@@ -1273,6 +1281,7 @@ public class CMainFrame extends JFrame {
 
         jMenuHelp.add(jMenuHelpHelp);
         jMenuHelp.add(jMenuHelpPilotSkills);
+        jMenuHelp.add(jMenuHelpOpViewer);
         jMenuHelp.addSeparator();
         jMenuHelp.add(jMenuMekwarsBug);
         jMenuHelp.add(jMenuMegamekBug);
@@ -2642,6 +2651,10 @@ public class CMainFrame extends JFrame {
         mwclient.doParseDataInput("SM|" + result.toString());
     }
 
+    public void jMenuHelpOpViewer_actionPerformed() {
+    	
+    }
+    
     public void jMenuHelpPilotSkills_actionPerformed() {
         String result = "";
         result += "<font color=\"black\">";

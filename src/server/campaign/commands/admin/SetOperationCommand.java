@@ -71,5 +71,10 @@ public class SetOperationCommand implements Command {
         }
         
         CampaignMain.cm.doSendModMail("NOTE",Username+" has updated "+opFile.getName());
+        // Delete md5 file so clients will refresh properly
+        File md5File = new File("./data/operations/opsmd5.txt");
+        if (md5File.exists()) {
+        	md5File.delete();
+        }
     }
 }//end RetrieveShortOperation

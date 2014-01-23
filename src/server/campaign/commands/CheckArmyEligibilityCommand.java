@@ -18,10 +18,11 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
+import common.campaign.operations.Operation;
+
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SArmy;
-import server.campaign.operations.Operation;
 
 public class CheckArmyEligibilityCommand implements Command {
 	

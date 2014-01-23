@@ -18,12 +18,12 @@ import java.util.StringTokenizer;
 
 import common.CampaignData;
 import common.Unit;
+import common.campaign.operations.Operation;
 
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SPlanet;
 import server.campaign.SPlayer;
-import server.campaign.operations.Operation;
 import server.campaign.operations.OperationManager;
 import server.campaign.util.ExclusionList;
 

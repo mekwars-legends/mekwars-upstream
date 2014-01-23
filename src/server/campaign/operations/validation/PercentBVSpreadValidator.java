@@ -16,9 +16,9 @@
 package server.campaign.operations.validation;
 
 import common.CampaignData;
+import common.campaign.operations.Operation;
 
 import server.campaign.SArmy;
-import server.campaign.operations.Operation;
 import server.campaign.operations.validation.ISpreadValidator;
 
 /**

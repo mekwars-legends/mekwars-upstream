@@ -26,8 +26,10 @@ import java.util.StringTokenizer;
 import megamek.common.Entity;
 
 import common.CampaignData;
+import common.campaign.operations.Operation;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
+import server.campaign.SUnit;
 import server.campaign.commands.Command;
 
 public class CodeTestCommand implements Command {
@@ -48,34 +50,11 @@ public class CodeTestCommand implements Command {
 			}
 		}
 		
-		int id = Integer.parseInt(command.nextToken());
-		String cmd = command.nextToken();
-        String file = "./campaign/entites/entity"+id+".dat";
-        SPlayer player = null;
-		Entity en = null;
-		File dirFile = new File("./campaign/entites"); 
-		
-		if ( !dirFile.exists() )
-		    dirFile.mkdir();
-		
-		if ( cmd.equalsIgnoreCase("load") ) {
-		    try {
-	            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
-	            en = (Entity) ois.readObject();
-	            ois.close();
-		    }catch(Exception ex) {
-		        CampaignData.mwlog.errLog(ex);
-		    }
-		    CampaignMain.cm.doSendModMail("NOTE", "Entity loaded: "+en.getShortNameRaw());
-		}else {
-		    player = CampaignMain.cm.getPlayer(Username);		    
-		    try {
-		        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
-		        oos.writeObject(player.getUnit(id).getEntity());
-		        oos.close();
-		    }catch(Exception ex) {
-		        CampaignData.mwlog.errLog(ex);
-		    }
+		for (Operation o : CampaignMain.cm.getOpsManager().getOperations().values()) {
+			String folder = "./data/operations/xml";
+			String fileName = o.getName() + ".xml";
+			o.writeToXmlFile(folder, fileName);
+			CampaignMain.cm.toUser("OP|add|" + o.getName() + "|" + o.getXmlString(), Username, false);
 		}
 	}
 }

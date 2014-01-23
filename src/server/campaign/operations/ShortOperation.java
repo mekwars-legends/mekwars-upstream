@@ -59,6 +59,7 @@ import common.PlanetEnvironment;
 import common.Unit;
 import common.UnitFactory;
 import common.campaign.Buildings;
+import common.campaign.operations.Operation;
 import common.util.StringUtils;
 import common.util.UnitUtils;
 

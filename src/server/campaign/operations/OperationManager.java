@@ -51,6 +51,8 @@ import server.campaign.SPlayer;
 import server.campaign.SUnit;
 
 import common.CampaignData;
+import common.campaign.operations.ModifyingOperation;
+import common.campaign.operations.Operation;
 
 
 public class OperationManager {

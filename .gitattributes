@@ -915,6 +915,7 @@ client-dist/data/mmconf/bot.properties -text
 client-dist/data/mmconf/defaultQuirks.xml -text
 client-dist/data/mmconf/defaultQuirksSchema.xsl -text
 client-dist/data/mmconf/princess_bot.properties -text
+client-dist/data/operations/OpTemplate.html -text
 client-dist/data/scenarios/Example.mms -text
 client-dist/data/skins/BeOSthemepack.zip -text
 client-dist/data/skins/amarachthemepack.zip -text
@@ -1328,6 +1329,7 @@ server-dist/data/tasknames/Tasknames.txt -text
 server-dist/data/terrain.dtd -text
 server-dist/data/terrain.xml -text
 server-dist/data/unitquirks.txt -text
+server-dist/docs/CustomizingTheOperationViewer.pdf -text svneol=unset#unset
 server-dist/docs/Enabling[!!-~]Support[!!-~]Units.txt -text
 server-dist/docs/IncreasedTechForNonFactionUnits.txt -text
 server-dist/docs/Modifying[!!-~]Payout[!!-~]By[!!-~]ELO.pdf -text
@@ -1425,6 +1427,7 @@ src/client/cmd/HS.java -text
 src/client/cmd/KI.java -text
 src/client/cmd/LPU.java -text
 src/client/cmd/NU.java -text
+src/client/cmd/OP.java -text
 src/client/cmd/PE.java -text
 src/client/cmd/PF.java -text
 src/client/cmd/PI.java -text
@@ -1496,6 +1499,10 @@ src/client/gui/dialog/TableViewerDialog.java -text
 src/client/gui/dialog/TraitDialog.java -text
 src/client/gui/dialog/UnitSelectionDialog.java -text
 src/client/gui/dialog/UnitViewerDialog.java -text
+src/client/gui/dialog/opviewer/IOpViewerPane.java -text
+src/client/gui/dialog/opviewer/OpViewerAnchorButton.java -text
+src/client/gui/dialog/opviewer/OpViewerOpPane.java -text
+src/client/gui/dialog/opviewer/OperationViewerDialog.java -text
 src/client/protocol/CConnector.java -text
 src/client/protocol/ConnectionHandlerLocal.java -text
 src/client/protocol/DataFetchClient.java -text
@@ -1520,13 +1527,14 @@ src/common/Army.java -text
 src/common/BMEquipment.java -text
 src/common/CampaignData.java -text
 src/common/Continent.java -text
-src/common/DefaultOperation.java -text
 src/common/Equipment.java -text
 src/common/GameInterface.java -text
 src/common/GameWrapper.java -text
 src/common/House.java -text
 src/common/Influences.java -text
 src/common/MMGame.java -text
+src/common/MWXMLWriter.java -text
+src/common/MWXmlSerializable.java -text
 src/common/MegaMekPilotOption.java -text
 src/common/MutableSerializable.java -text
 src/common/Planet.java -text
@@ -1540,6 +1548,9 @@ src/common/Unit.java -text
 src/common/UnitFactory.java -text
 src/common/VerticalLayout.java -text
 src/common/campaign/Buildings.java -text
+src/common/campaign/operations/DefaultOperation.java -text
+src/common/campaign/operations/ModifyingOperation.java -text
+src/common/campaign/operations/Operation.java -text
 src/common/campaign/pilot/Pilot.java -text
 src/common/campaign/pilot/skills/IPilotSkill.java -text
 src/common/campaign/pilot/skills/PilotSkill.java -text
@@ -1711,6 +1722,7 @@ src/server/campaign/commands/ExchangeUnitCommand.java -text
 src/server/campaign/commands/FireTechsCommand.java -text
 src/server/campaign/commands/GamesCommand.java -text
 src/server/campaign/commands/GetFactionConfigsCommand.java -text
+src/server/campaign/commands/GetOpsCommand.java -text
 src/server/campaign/commands/GetSavedMailCommand.java -text
 src/server/campaign/commands/GetServerMegaMekGameOptionsCommand.java -text
 src/server/campaign/commands/GetServerOpFlagsCommand.java -text
@@ -2015,8 +2027,6 @@ src/server/campaign/mercenaries/MercHouse.java -text
 src/server/campaign/operations/LongOperation.java -text
 src/server/campaign/operations/LongResolver.java -text
 src/server/campaign/operations/LongValidator.java -text
-src/server/campaign/operations/ModifyingOperation.java -text
-src/server/campaign/operations/Operation.java -text
 src/server/campaign/operations/OperationEntity.java -text
 src/server/campaign/operations/OperationLoader.java -text
 src/server/campaign/operations/OperationManager.java -text

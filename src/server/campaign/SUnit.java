@@ -19,7 +19,10 @@ package server.campaign;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,6 +34,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 import java.util.Vector;
+
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import megamek.common.AmmoType;
 import megamek.common.BattleArmor;
@@ -47,7 +52,6 @@ import megamek.common.Mounted;
 import megamek.common.Tank;
 import megamek.common.WeaponType;
 import megamek.common.options.PilotOptions;
-import server.campaign.operations.Operation;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.SPilotSkills;
 import server.campaign.pilot.skills.SPilotSkill;
@@ -56,12 +60,15 @@ import server.campaign.util.SerializedMessage;
 import server.mwmysql.JDBCConnectionHandler;
 
 import common.CampaignData;
+import common.MWXmlSerializable;
 import common.MegaMekPilotOption;
 import common.Unit;
+import common.campaign.operations.Operation;
 import common.campaign.pilot.skills.PilotSkill;
 import common.campaign.targetsystems.TargetSystem;
 import common.campaign.targetsystems.TargetTypeNotImplementedException;
 import common.campaign.targetsystems.TargetTypeOutOfBoundsException;
+import common.util.MMNetXStream;
 import common.util.TokenReader;
 import common.util.UnitUtils;
 

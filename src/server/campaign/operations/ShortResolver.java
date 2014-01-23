@@ -56,6 +56,7 @@ import common.CampaignData;
 import common.House;
 import common.Unit;
 import common.UnitFactory;
+import common.campaign.operations.Operation;
 import common.campaign.pilot.skills.PilotSkill;
 import common.util.StringUtils;
 import common.util.ThreadManager;

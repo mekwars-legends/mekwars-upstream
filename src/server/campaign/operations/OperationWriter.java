@@ -38,6 +38,7 @@ import java.util.StringTokenizer;
 import common.House;
 
 import common.CampaignData;
+import common.campaign.operations.Operation;
 import server.campaign.CampaignMain;
 
 //IMPORTS

@@ -22,7 +22,7 @@
  *
  * NOTE: Defaults stored in a TreeMap, -not- a hash.
  */
-package common;
+package common.campaign.operations;
 
 // IMPORTS
 import java.util.TreeMap;

@@ -1,5 +1,11 @@
 VERSION HISTORY:
 ----------------
+v 0.3.7.x
+R Released Server, Client, Ded v0.3.7.0
++ Refactored Operation and DefaultOperation into common
++ Added Operation Viewer - documentation found in the
+    server-dist/docs folder
+
 v 0.3.6.x
 R Released Client v0.3.6.5
 + Fixed unitViewer

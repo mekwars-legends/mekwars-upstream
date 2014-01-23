@@ -46,7 +46,7 @@
  * of ModOp settings. 
  */
 
-package server.campaign.operations;
+package common.campaign.operations;
 
 import java.util.Properties;
 

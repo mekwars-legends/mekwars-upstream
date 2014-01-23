@@ -33,9 +33,11 @@ import java.io.FileInputStream;
 
 import java.util.Properties;
 
-import common.DefaultOperation;
 
 import common.CampaignData;
+import common.campaign.operations.DefaultOperation;
+import common.campaign.operations.ModifyingOperation;
+import common.campaign.operations.Operation;
 
 
 public class OperationLoader {

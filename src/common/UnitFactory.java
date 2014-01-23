@@ -25,8 +25,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
-import server.campaign.operations.Operation;
 
+import common.campaign.operations.Operation;
 import common.util.BinReader;
 import common.util.BinWriter;
 

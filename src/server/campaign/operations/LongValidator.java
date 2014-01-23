@@ -28,6 +28,8 @@ import server.campaign.SPlayer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import common.campaign.operations.Operation;
 //TODO: remove "unused" once longs are running
 public class LongValidator {
 	

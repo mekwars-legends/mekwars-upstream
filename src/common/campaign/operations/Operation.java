@@ -33,17 +33,22 @@
  * - LongOperation.java
  * - ModifiyingOperations.java [userland: Special Ops]
  */
-package server.campaign.operations;
+package common.campaign.operations;
 
 //IMPORTS
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Properties;
 import java.util.TreeMap;
 
-import common.DefaultOperation;
+
+import common.MWXMLWriter;
+import common.MWXmlSerializable;
 
 import common.CampaignData;
+import common.util.MMNetXStream;
 
-public class Operation {
+public class Operation implements MWXmlSerializable {
 	
 	//IVARS
 	
@@ -99,14 +104,18 @@ public class Operation {
 		opValues = params;
         
 	}
-
+	
+	public String getValue(String valToGet) {
+		return getValue(valToGet, true);
+	}
+	
 	/**
 	 * Method which attempts to look up the value of a given Paramater
 	 * in an Operation's local Tree. If the value is unavailable, for
 	 * any reason (typo, intentionally unset), a default value is checked
 	 * and returned.
 	 */
-	public String getValue(String valToGet) {
+	public String getValue(String valToGet, boolean log) {
 		
 		//look in the short list every time
 		String toReturn = (String)opValues.get(valToGet);
@@ -116,7 +125,7 @@ public class Operation {
 			toReturn = opsDefaults.getDefault(valToGet);
 		
 		//catastrophic failue. sysexit.
-		if (toReturn == null) {
+		if (toReturn == null && log) {
 			CampaignData.mwlog.errLog("Failed getting value \"" + valToGet + "\" from " + this.getName() + " and DefaultOp. Returning null.");
 			try{
 				throw new Exception();
@@ -206,5 +215,17 @@ public class Operation {
 	public String getName() {
 		return this.opName;
 	}
-	
+
+	@Override
+	public void writeToXmlFile(String folderName, String fileName) {
+		MWXMLWriter writer = new MWXMLWriter(folderName, fileName, opValues);
+		writer.writeToFile();
+	}
+
+	@Override
+	public String getXmlString() {
+		MMNetXStream xml = new MMNetXStream();
+		return xml.toXML(opValues);
+	}
+			
 }//end OperationsManager class

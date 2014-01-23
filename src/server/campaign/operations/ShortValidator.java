@@ -45,6 +45,7 @@ import java.util.Iterator;
 import common.House;
 import common.Planet;
 import common.Unit;
+import common.campaign.operations.Operation;
 import common.flags.PlayerFlags;
 
 import megamek.common.BattleArmor;
