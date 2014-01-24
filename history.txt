@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.3.7.x
+R Released Server v0.3.7.1
++ RFE 407 introduction of a player XP adjustment
++ Bug in PayoutModifier checked wrong config variable for ELO experience payout skew
 R Released Server, Client, Ded v0.3.7.0
 + Refactored Operation and DefaultOperation into common
 + Added Operation Viewer - documentation found in the

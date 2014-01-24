@@ -43,7 +43,7 @@ public class PayoutModifier {
         		hisRating = so.getWinners().get(so.getWinners().keySet().iterator().next()).getRating();
         	}
         	
-        	if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO_Exp")) {
+        	if (CampaignMain.cm.getBooleanConfig("ModifyOpPayoutByELO_Money")) {
         		earnedMoney = modifyMoney(earnedMoney, myRating, hisRating);
         	}
         	

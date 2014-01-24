@@ -1330,6 +1330,12 @@ public class DefaultServerOptions {
         defaults.setProperty("ModifyOpPayoutByELO_Land_MinELO", "0");
         defaults.setProperty("ModifyOpPayoutByELO_Land_MaxELO", "9999");
 
+        // Do we modify Operation payout according to experience?
+        // Formula to be used: Payout = payout * Math.max(1, ((base + exp)/max))
+        defaults.setProperty("ModifyLandExchangeByExp", "false");
+        defaults.setProperty("ModifyLandExchangeByExp_Base", "500");
+        defaults.setProperty("ModifyLandExchangeByExp_Max", "2000");
+        
         defaults.setProperty("ShowUnitTypeCounts", "false");
         defaults.setProperty("UseBaseBVForMatching", "false");
 
