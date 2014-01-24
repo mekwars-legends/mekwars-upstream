@@ -3223,6 +3223,9 @@ public class ShortResolver {
                         if (modifyBasedOnPosition) {
                         	totalConquest = (int)(Math.floor(totalConquest *  (Math.pow(ratingMultiplier, CampaignMain.cm.getDoubleConfig("ModifyOpPayoutByELO_Multiplier"))) + 0.5));                      	
                         }
+                        
+                        totalConquest = maybeModifyLandByExperience(totalConquest, so);
+                        
                         if (totalConquest > conquestCap) {
                             totalConquest = conquestCap;
                         }
@@ -4726,8 +4729,8 @@ public class ShortResolver {
     	int attackerExp = CampaignMain.cm.getPlayer(so.getAttackers().firstKey()).getExperience();
     	int defenderExp = CampaignMain.cm.getPlayer(so.getDefenders().firstKey()).getExperience();
     	
-    	double aMult = Math.max(1.0, (base + attackerExp)/ maximum);
-    	double dMult = Math.max(1.0, (base + defenderExp)/ maximum);
+    	double aMult = Math.min(1.0, (base + attackerExp)/ maximum);
+    	double dMult = Math.min(1.0, (base + defenderExp)/ maximum);
     	
     	land *= (aMult * dMult);
     	

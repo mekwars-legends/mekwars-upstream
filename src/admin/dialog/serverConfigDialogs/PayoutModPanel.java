@@ -144,7 +144,7 @@ public class PayoutModPanel extends JPanel {
         expModPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createRaisedBevelBorder(), "Experience Mod"));
         baseCheckBox = new JCheckBox("Experience Affects Land Exchange");
         baseCheckBox.setName("ModifyLandExchangeByExp");
-        baseCheckBox.setToolTipText("<html>If checked, land exchange will be reduced until players meet an experience threshold<br />Formula used is:<br /><p align='center'><b>Math.max(1, ( (<i>base</i> + exp) / <i>maximum</i> ))</b></p></html>");
+        baseCheckBox.setToolTipText("<html>If checked, land exchange will be reduced until players meet an experience threshold<br />Formula used is:<br /><p align='center'><b>Math.min(1, ( (<i>base</i> + exp) / <i>maximum</i> ))</b></p></html>");
         expModPanel.add(baseCheckBox);
         
         expModPanel.add(new JLabel("Base: "));
