@@ -4729,8 +4729,8 @@ public class ShortResolver {
     	int attackerExp = CampaignMain.cm.getPlayer(so.getAttackers().firstKey()).getExperience();
     	int defenderExp = CampaignMain.cm.getPlayer(so.getDefenders().firstKey()).getExperience();
     	
-    	double aMult = Math.min(1.0, (base + attackerExp)/ maximum);
-    	double dMult = Math.min(1.0, (base + defenderExp)/ maximum);
+    	double aMult = Math.min(1.0, ( (double) (base + attackerExp))/ (double) maximum);
+    	double dMult = Math.min(1.0, ( (double) (base + defenderExp))/ (double) maximum);
     	
     	CampaignData.mwlog.debugLog("maybeModifyLandByExperience:");
     	CampaignData.mwlog.debugLog(" --> base: " + base);
