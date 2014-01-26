@@ -33,11 +33,10 @@ import java.util.Hashtable;
 
 import server.campaign.operations.OperationReportEntry;
 import server.campaign.SUnit;
-
 import common.CampaignData;
 
 public class HistoryHandler {
-  Connection con = null;
+	JDBCConnectionHandler ch = new JDBCConnectionHandler();
   
   public static final int UNIT_CREATED = 0;
   public static final int UNIT_AUTOPRODUCED = 1;
@@ -92,6 +91,7 @@ public class HistoryHandler {
 		  hTypeName = "pilot_history";
 		  unitIDType = "pilot_id";
 	  }
+	  Connection con = ch.getConnection();
 	  try {
 		  ps = con.prepareStatement("INSERT INTO " + hTypeName + " set event_fluff = ?, " + unitIDType + " = ?, event_type = ?");
 		  ps.setString(1, fluff);
@@ -107,10 +107,12 @@ public class HistoryHandler {
 				  ps.close();
 		  } catch (Exception ex) {}
 	  }
+	  ch.returnConnection(con);
   }
   
   public void commitBattleReport(OperationReportEntry opData) {
 	  PreparedStatement ps = null;
+	  Connection con = ch.getConnection();
 	  try {
 		  CampaignData.mwlog.dbLog("New Operation!!!");
 		  CampaignData.mwlog.dbLog("Attacker(s): " + opData.getAttackers() + " (" + opData.getAttackerStartBV() + " / " + opData.getAttackerEndBV() + ")");
@@ -169,6 +171,7 @@ public class HistoryHandler {
 				  ps.close();  
 		  } catch (SQLException ex) {}
 	  }
+	  ch.returnConnection(con);
   }
   
   private int getIDByName(String n) {
@@ -189,6 +192,7 @@ public class HistoryHandler {
 	  
 	  if(BV == -1 || mechSize == -1)
 		  return -1;  // Invalid mechfile
+	  Connection con = ch.getConnection();
 	  try {
 		  stmt = con.createStatement();
 		  stmt.executeUpdate("INSERT into mechstats SET mechFileName = '" + n + "', mechSize = " + mechSize + ", originalBV = " + BV, Statement.RETURN_GENERATED_KEYS);
@@ -211,6 +215,7 @@ public class HistoryHandler {
 			  } catch (SQLException e) {}
 		  }
 	  }
+	  ch.returnConnection(con);
 	  if (uID != -1)
 		  mechStatIDs.put(n, uID);
 	  return uID;
@@ -220,6 +225,7 @@ public class HistoryHandler {
 	  StringBuilder sql = new StringBuilder();
 	  Statement stmt = null;
 	  ResultSet rs = null;
+	  Connection con = ch.getConnection();
 	  
 	  int unitID = getIDByName(fileName);
 	  if (unitID == -1) {
@@ -248,6 +254,7 @@ public class HistoryHandler {
 			  }
 		  }
 	  }
+	  ch.returnConnection(con);
   }
   
   private void addMechstat(String unitType, int statType) {
@@ -284,7 +291,7 @@ public class HistoryHandler {
 	  }
 	  
 	  sql.append("UPDATE mechstats set " + transType + " = " + transType + " + 1 WHERE ID = " + unitID);
-	  
+	  Connection con = ch.getConnection();
 	  try {
 		  stmt = con.createStatement();
 		  stmt.executeUpdate(sql.toString());
@@ -298,12 +305,13 @@ public class HistoryHandler {
 				  stmt.close();
 		  } catch (SQLException e) {}
 	  }
+	  ch.returnConnection(con);
   }  
   
   private void loadMechStats() {
 	  Statement stmt = null;
 	  ResultSet rs = null;
-	  
+	  Connection con = ch.getConnection();
 	  try {
 		  stmt = con.createStatement();
 		  rs = stmt.executeQuery("SELECT ID, mechFileName from mechstats ORDER BY ID");
@@ -325,12 +333,12 @@ public class HistoryHandler {
 			  } catch (SQLException e) {}
 		  }
 	  }
+	  ch.returnConnection(con);
   }
   
   // CONSTRUCTOR
   public HistoryHandler(Connection c)
     {
-    this.con = c;
     this.loadMechStats();
     }
 }
