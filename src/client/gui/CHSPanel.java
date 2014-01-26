@@ -818,13 +818,13 @@ public class CHSPanel extends JPanel {
         if (battleDamage.trim().length() > 1) {
             UnitUtils.applyBattleDamage(unitEntity, battleDamage, false);
         }
-        mechDetailInfo.displayEntity(unitEntity);
         InfoWindow.getContentPane().add(mechDetailInfo);
         InfoWindow.setSize(300, 400);
         InfoWindow.setResizable(false);
         InfoWindow.setTitle(unitEntity.getModel());
         InfoWindow.setLocationRelativeTo(mwclient.getMainFrame());
         InfoWindow.setVisible(true);
+        mechDetailInfo.displayEntity(unitEntity);
     }
 
     // BUY MENU METHODS AND LISTENERS
