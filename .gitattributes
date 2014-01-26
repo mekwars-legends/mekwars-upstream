@@ -11,6 +11,7 @@
 /TrackerManifest.txt -text
 /build.bat -text
 /build.xml -text
+client-dist/MegaMek.jar -text
 client-dist/data/boards/devilsrun.board -text
 client-dist/data/boards/oasis.board -text
 client-dist/data/images/absent.gif -text

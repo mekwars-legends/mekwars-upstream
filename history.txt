@@ -2,7 +2,8 @@ VERSION HISTORY:
 ----------------
 v 0.3.7.x
 + fix armor tab in unit display in all cases
-+ new MM.jar v0.37.5-MW20142601-r10426
++ new MM.jar v0.37.5-MW20142601-r10432
++ new MM.jar v0.37.6-MW-r10432
 R Released Server v0.3.7.1
 + RFE 407 introduction of a player XP adjustment
 + Bug in PayoutModifier checked wrong config variable for ELO experience payout skew
