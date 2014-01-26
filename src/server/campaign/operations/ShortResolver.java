@@ -4731,15 +4731,15 @@ public class ShortResolver {
     	
     	double aMult = Math.min(1.0, ( (double) (base + attackerExp))/ (double) maximum);
     	double dMult = Math.min(1.0, ( (double) (base + defenderExp))/ (double) maximum);
-    	
-    	CampaignData.mwlog.debugLog("maybeModifyLandByExperience:");
-    	CampaignData.mwlog.debugLog(" --> base: " + base);
-    	CampaignData.mwlog.debugLog(" --> maximum: " + maximum);
-    	CampaignData.mwlog.debugLog(" --> attackerExp: " + attackerExp);
-    	CampaignData.mwlog.debugLog(" --> aMult: " + aMult);
-    	CampaignData.mwlog.debugLog(" --> defenderExp: " + defenderExp);
-    	CampaignData.mwlog.debugLog(" --> dMult: " + dMult);
-    	CampaignData.mwlog.debugLog(" --> Initial Land: " + land);
+//    	
+//    	CampaignData.mwlog.debugLog("maybeModifyLandByExperience:");
+//    	CampaignData.mwlog.debugLog(" --> base: " + base);
+//    	CampaignData.mwlog.debugLog(" --> maximum: " + maximum);
+//    	CampaignData.mwlog.debugLog(" --> attackerExp: " + attackerExp);
+//    	CampaignData.mwlog.debugLog(" --> aMult: " + aMult);
+//    	CampaignData.mwlog.debugLog(" --> defenderExp: " + defenderExp);
+//    	CampaignData.mwlog.debugLog(" --> dMult: " + dMult);
+//    	CampaignData.mwlog.debugLog(" --> Initial Land: " + land);
     	
     	land *= (aMult * dMult);
     	CampaignData.mwlog.debugLog(" --> Final Land: " + land);
