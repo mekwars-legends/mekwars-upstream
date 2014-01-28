@@ -2924,12 +2924,21 @@ public class ShortOperation implements Comparable<Object> {
                 	continue;
                 }
                 
+            	// Check if there are enough PPs
+            	int ppAvailable = losingHouse.getPP(currFacility.getWeightclass(), type);
+            	int ppNeed = currFacility.getPPCost(currFacility.getWeightclass(), type);
+            	if (ppNeed > ppAvailable) {
+            		CampaignData.mwlog.debugLog("Not enough PP to capture a unit.  Needed: " + ppNeed + ", available: " + ppAvailable);
+            		continue;
+            	}
+                
                 boolean noUnits = false;
                 while (!noUnits && numCaptured < unitsToCapture) {
                     SPilot pilot = new SPilot("Vacant", 99, 99);
                     Vector<SUnit> captured = new Vector<SUnit>(1, 1);
                     if (forced) {
                         captured.addAll(currFacility.getMechProduced(type, pilot));
+                        losingHouse.addPP(currFacility.getWeightclass(), type, -ppNeed, false);
                     } else {
                         SUnit capturedUnit = losingHouse.getEntity(currWeight, type);
                         if (capturedUnit != null && UnitUtils.canStartUp(capturedUnit.getEntity())) {
