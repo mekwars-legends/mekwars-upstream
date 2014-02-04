@@ -374,11 +374,11 @@
 			dir="dist/client"
 		>
 		</mkdir>
-		<unzip
-			dest="dist\client"
-			src="MegaMek.zip"
+		<copy
+			todir="dist\client"
+			file="MegaMek.jar"
 		>
-		</unzip>
+			</copy>
 		<copy
 			todir="dist\client"
 		>
@@ -391,14 +391,6 @@
 			file="MekWarsClient.jar"
 			todir="dist\client"
 		>
-		</copy>
-		<copy
-			todir="dist\client\web"
-		>
-			<fileset
-				dir="web"
-			>
-			</fileset>
 		</copy>
 	</target>
 	<target
@@ -413,11 +405,11 @@
 			dir="dist/server"
 		>
 		</mkdir>
-		<unzip
-			dest="dist\server"
-			src="MegaMek.zip"
+		<copy
+			file="MegaMek.jar"
+			todir="dist\server"
 		>
-		</unzip>
+		</copy>
 		<copy
 			file="MekWarsServer.jar"
 			todir="dist\server"
