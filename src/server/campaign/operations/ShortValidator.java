@@ -313,6 +313,9 @@ public class ShortValidator {
     public static final int SFAIL_ATTACK_MAXJUMP = 263; // Attacker has a unit with too large a jump
     public static final int SFAIL_ATTACK_TOO_MANY_NONSUPPORT_UNITS = 264;
     public static final int SFAIL_ATTACK_TOO_FEW_NONSUPPORT_UNITS = 265;
+    public static final int SFAIL_ATTACK_SKILLSUM_TOOHIGH = 266;
+    public static final int SFAIL_ATTACK_SKILLSUM_TOOLOW = 267;
+    
     /*
      * Failure codes for defender-specific checks.
      * 
@@ -474,6 +477,9 @@ public class ShortValidator {
     
     public static final int SFAIL_DEFEND_TOO_MANY_NONSUPPORT_UNITS = 465;
     public static final int SFAIL_DEFEND_TOO_FEW_NONSUPPORT_UNITS = 466;
+    
+    public static final int SFAIL_DEFEND_SKILLSUM_TOOHIGH = 467;
+    public static final int SFAIL_DEFEND_SKILLSUM_TOOLOW = 468;
     
     
     // CONSTRUCTORS
@@ -1276,10 +1282,18 @@ public class ShortValidator {
         
         averageArmySkills /= numberOfValidUnits;
         
-        if ( vetPilots || averageArmySkills > o.getDoubleValue("AttackerAverageArmySkillMax"))
+        if ( vetPilots)
             failureReasons.add(SFAIL_ATTACK_ELITE_PILOTS );
+
+        if (averageArmySkills > o.getDoubleValue("AttackerAverageArmySkillMax")) {
+        	failureReasons.add(SFAIL_ATTACK_SKILLSUM_TOOHIGH);
+        }
         
-        if ( greenPilots || averageArmySkills < o.getDoubleValue("AttackerAverageArmySkillMin") )
+        if (averageArmySkills < o.getDoubleValue("AttackerAverageArmySkillMin")) {
+        	failureReasons.add(SFAIL_ATTACK_SKILLSUM_TOOLOW);
+        }
+        
+        if ( greenPilots )
             failureReasons.add(SFAIL_ATTACK_GREEN_PILOTS );
         
         if (checkClantech) {
@@ -1735,10 +1749,19 @@ public class ShortValidator {
         
         averageArmySkills /= numberOfValidUnits;
         
-        if ( vetPilots || averageArmySkills > o.getDoubleValue("DefenderAverageArmySkillMax"))
+        if (averageArmySkills > o.getDoubleValue("DefenderAverageArmySkillMax") ) {
+        	failureReasons.add(SFAIL_DEFEND_SKILLSUM_TOOHIGH);
+        }
+
+        if (averageArmySkills < o.getDoubleValue("DefenderAverageArmySkillMin") ) {
+        	failureReasons.add(SFAIL_DEFEND_SKILLSUM_TOOLOW);
+        }
+
+        
+        if ( vetPilots )
             failureReasons.add(SFAIL_DEFEND_ELITE_PILOTS );
         
-        if ( greenPilots || averageArmySkills < o.getDoubleValue("DefenderAverageArmySkillMin") )
+        if ( greenPilots )
             failureReasons.add(SFAIL_DEFEND_GREEN_PILOTS );
         
         if (checkClantech) {
@@ -2125,6 +2148,12 @@ public class ShortValidator {
         case SFAIL_ATTACK_GREEN_PILOTS:// Army has pilots whoes total skill is higher then the highest allowed
             return " this army has green pilots.";
 
+        case SFAIL_ATTACK_SKILLSUM_TOOHIGH: // Army's average skillsum is too high
+        	return " this army's pilots are not skilled enough for the operation.";
+
+        case SFAIL_ATTACK_SKILLSUM_TOOLOW: // Army's average skillsum is too low
+        	return " this army's pilots are too skilled for the operation.";
+            
         case SFAIL_ATTACK_MAX_AERO:
             return " the army has too many aeros";
 
@@ -2311,6 +2340,12 @@ public class ShortValidator {
 
         case SFAIL_DEFEND_ELITE_PILOTS:// Army has pilots whoes total skill is lower then the lowest allowed
             return " this army has eilte pilots.";
+            
+        case SFAIL_DEFEND_SKILLSUM_TOOHIGH: // Army's average skillsum is too high
+        	return " this army's pilots are not skilled enough for the operation.";
+
+        case SFAIL_DEFEND_SKILLSUM_TOOLOW: // Army's average skillsum is too low
+        	return " this army's pilots are too skilled for the operation.";
 
         case SFAIL_DEFEND_GREEN_PILOTS:// Army has pilots whoes total skill is higher then the highest allowed
             return " this army has green pilots.";

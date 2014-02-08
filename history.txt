@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.3.7.x
+R Released Server v0.3.7.3
++ Bug 347: Incorrect message when army has not enough levels for Operation
 R Released Server v0.3.7.2
 + Bug: captured units from factories not using PP
 + fix armor tab in unit display in all cases
