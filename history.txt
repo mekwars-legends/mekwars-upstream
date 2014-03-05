@@ -1,6 +1,10 @@
 VERSION HISTORY:
 ----------------
 v 0.3.7.x
+R Released Server v0.3.7.4, Client v0.3.7.1
++ Removed "Exit Nobody" notifications
++ New MM v0.37.9-MW20140227-10611
++ Added to OpsViewer documentation
 R Released Server v0.3.7.3
 + Bug 347: Incorrect message when army has not enough levels for Operation
 R Released Server v0.3.7.2

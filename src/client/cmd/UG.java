@@ -70,7 +70,7 @@ public class UG extends Command {
             if (mwclient.getConfig().isParam("TIMESTAMP"))
             	toSend = mwclient.getShortTime() + toSend;
             
-            if (mwclient.getConfig().isParam("SHOWENTERANDEXIT") )
+            if (mwclient.getConfig().isParam("SHOWENTERANDEXIT") && !mmci.getName().equalsIgnoreCase("Nobody"))
             	mwclient.addToChat(toSend);
             
             //Play the sound

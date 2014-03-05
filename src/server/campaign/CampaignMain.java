@@ -1816,7 +1816,7 @@ public final class CampaignMain implements Serializable {
         } catch (Exception ex) {
             CampaignData.mwlog.errLog("Unable to find commands.dat. Continuing with defaults in place");
             TreeMap<String, Command> commandTable = new TreeMap<String, Command>(cm.getServerCommands());
-
+            PrintStream p = null;
             try {
 
                 File fp = new File("./data/commands");
@@ -1825,7 +1825,7 @@ public final class CampaignMain implements Serializable {
                 }
 
                 FileOutputStream out = new FileOutputStream("./data/commands/commands.dat");
-                PrintStream p = new PrintStream(out);
+                p = new PrintStream(out);
 
                 for (String commandName : commandTable.keySet()) {
 
@@ -1838,8 +1838,11 @@ public final class CampaignMain implements Serializable {
             } catch (Exception ex1) {
                 CampaignData.mwlog.errLog(ex1);
                 CampaignData.mwlog.errLog("Unable to save command levels");
+            } finally {
+            	if (p != null) {
+            		p.close();
+            	}
             }
-
         }
 
         // Is the server data already there? (config files)? if not, create one
@@ -3197,6 +3200,7 @@ public final class CampaignMain implements Serializable {
     }
 
     public void updateISPLists(SPlayer player) {
+    	BufferedReader buff = null;
         try {
             File file = new File("./data/Providers");
             if (!file.exists()) {
@@ -3211,7 +3215,7 @@ public final class CampaignMain implements Serializable {
             }
 
             FileInputStream in = new FileInputStream(file);
-            BufferedReader buff = new BufferedReader(new InputStreamReader(in));
+            buff = new BufferedReader(new InputStreamReader(in));
 
             while (buff.ready()) {
                 String name = buff.readLine();
@@ -3225,6 +3229,12 @@ public final class CampaignMain implements Serializable {
             saveToISPLists(player);
 
         } catch (Exception ex) {
+        } finally {
+        	try {
+				buff.close();
+			} catch (IOException e) {
+				CampaignData.mwlog.errLog(e);
+			}
         }
 
     }

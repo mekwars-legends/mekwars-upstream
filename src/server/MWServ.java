@@ -54,7 +54,7 @@ import common.comm.ServerCommand;
 public class MWServ {
 
 	// Static logging engine, and static version info.
-    public static final String SERVER_VERSION = "0.3.7.3";
+    public static final String SERVER_VERSION = "0.3.7.4";
 
     private ServerWrapper myCommunicator;
 	private Hashtable<String, MMGame> games = new Hashtable<String, MMGame>();
@@ -274,6 +274,8 @@ public class MWServ {
 		InetAddress hisip = getIP(name);
 		MWChatClient client = myCommunicator.getClient(name);
 
+		
+		CampaignData.mwlog.ipLog("Connection from " + getIP(name) + " (" + name + ")");
 		// Double account check
 		// Don't worry about deds or nobodies.
 		if (!originalName.startsWith("[Dedicated]") && !originalName.startsWith("Nobody")) {
@@ -535,6 +537,10 @@ public class MWServ {
 		campaign.getOpsManager().doDisconnectCheckOnPlayer(name);
 		campaign.doLogoutPlayer(name);
 
+		if (hisip != null) {
+			sendRemoveUserToAll(name, true, hisip.toString());
+		}
+		
 		sendRemoveUserToAll(name, true);
 		CampaignData.mwlog.infoLog("Client " + name + "logged out.");
 		users.remove(name.toLowerCase());
@@ -751,6 +757,15 @@ public class MWServ {
 		}// end For
 	}
 
+	public void sendRemoveUserToAll(String name, boolean userGone, String ip) {
+		if (userGone && ip != null) {
+			CampaignData.mwlog.infoLog(name + " left the room (IP:" + ip + ").");
+		} else if (userGone) {
+			CampaignData.mwlog.infoLog(name + " left the room");
+		}
+		myCommunicator.broadcastComm("UG|" + getUser(name) + (userGone ? "|GONE" : ""));
+	}
+	
 	public void sendRemoveUserToAll(String name, boolean userGone) {
 		if (userGone) {
 			CampaignData.mwlog.infoLog(name + " left the room.");
