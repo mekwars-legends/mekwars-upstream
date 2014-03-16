@@ -881,6 +881,8 @@ public class CMainFrame extends JFrame {
 
         jMenuCSHostDedicated.setText("Start Dedicated Host");
         jMenuCSHostDedicated.setMnemonic('D');
+        jMenuCSHostDedicated.setEnabled(false);
+        jMenuCSHostDedicated.setVisible(false);
         jMenuCSHostDedicated.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 startHost();
@@ -890,6 +892,8 @@ public class CMainFrame extends JFrame {
 
         jMenuCSHostLoad.setText("Start Dedicated Host (Load Savegame)");
         jMenuCSHostLoad.setMnemonic('L');
+        jMenuCSHostLoad.setEnabled(false);
+        jMenuCSHostLoad.setVisible(false);
         jMenuCSHostLoad.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 startHost();
