@@ -539,9 +539,9 @@ public class MWServ {
 
 		if (hisip != null) {
 			sendRemoveUserToAll(name, true, hisip.toString());
+		} else { 
+			sendRemoveUserToAll(name, true);
 		}
-		
-		sendRemoveUserToAll(name, true);
 		CampaignData.mwlog.infoLog("Client " + name + "logged out.");
 		users.remove(name.toLowerCase());
 
