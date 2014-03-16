@@ -232,7 +232,7 @@ public class OP extends Command {
 						}
 					}
 					// Now, request these
-					JOptionPane.showMessageDialog(null, opsToGet);
+					//JOptionPane.showMessageDialog(null, opsToGet);
 					mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "getops getsome#" + sb.toString());
 				} else {
 					// Our ops are good
