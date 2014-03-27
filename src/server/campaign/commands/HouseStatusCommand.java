@@ -52,7 +52,7 @@ public class HouseStatusCommand implements Command {
 			    continue;
 			result += "<FONT Color=\"" + h.getHouseColor() + "\">";
 			result += h.getName() + " Tech Level: "+TechConstants.getLevelDisplayableName(h.getTechLevel()) + " has " + h.getPlanets().size(); 
-			result += " Planets and " + h.getSmallPlayers().size() + " Members. The total economy value is: "+ h.getComponentProduction() + "</font><br>";
+			result += " Planets providing " + h.getBaysProvided() + " bays and " + h.getSmallPlayers().size() + " Members. The total economy value is: "+ h.getComponentProduction() + "</font><br>";
 		}
 		result += "Note: Member numbers are based on members that have logged in since the last reboot of the server!";
 		
