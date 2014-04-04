@@ -361,6 +361,8 @@ public final class CampaignMain implements Serializable {
         // XMLTerrainDataParser tParse =
         new XMLTerrainDataParser("./data/terrain.xml");
         new XMLAdvancedTerrainDataParser("./data/advancedTerrain.xml");
+        new XMLAdvancedTerrainDataParser("./data/advTerr.xml");
+        
         
         cm.loadTopUnitID();
         gamesCompleted = 0;

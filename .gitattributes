@@ -1025,8 +1025,8 @@ server-dist/WebTools/templates/MechStatsTableFooter.tmp -text
 server-dist/WebTools/templates/MechStatsUnitHeader.tmp -text
 server-dist/data/HTMLSanitizer.cfg -text
 server-dist/data/activationemail.txt -text
-server-dist/data/advancedTerrain.dtd -text
-server-dist/data/advancedTerrain.xml -text
+server-dist/data/advTerr.dtd -text
+server-dist/data/advTerr.xml -text
 server-dist/data/buildtables/omnivehiclelist.txt -text
 server-dist/data/buildtables/rare/Common_Assault.txt -text
 server-dist/data/buildtables/rare/Common_AssaultVehicle.txt -text
