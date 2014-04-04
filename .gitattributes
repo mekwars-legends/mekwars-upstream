@@ -1337,6 +1337,8 @@ server-dist/docs/Enabling[!!-~]Support[!!-~]Units.txt -text
 server-dist/docs/IncreasedTechForNonFactionUnits.txt -text
 server-dist/docs/Modifying[!!-~]Payout[!!-~]By[!!-~]ELO.pdf -text
 server-dist/docs/PlayerFlags.txt -text
+server-dist/docs/UpdatingPlanetsToV0400.txt -text
+server-dist/docs/UsingVertigoPlanetEditor.txt -text
 server-dist/docs/phpBB[!!-~]Synchronization.pdf -text
 server-dist/dump_db.bat -text
 server-dist/dump_db.sh -text
