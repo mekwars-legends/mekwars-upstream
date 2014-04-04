@@ -20,12 +20,12 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import common.util.StringUtils;
-import common.util.UnitUtils;
-
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
+
+import common.util.StringUtils;
+import common.util.UnitUtils;
 
 public class HireTechsCommand implements Command {
 	

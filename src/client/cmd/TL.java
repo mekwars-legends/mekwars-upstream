@@ -21,9 +21,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
-import common.CampaignData;
-
 import client.MWClient;
+
+import common.CampaignData;
 
 /**
  * @author Imi (immanuel.scholz@gmx.de)

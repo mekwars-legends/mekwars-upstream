@@ -33,8 +33,9 @@ import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import common.CampaignData;
 import server.campaign.CampaignMain;
+
+import common.CampaignData;
 
 public class AutomaticBackup extends Thread{
 

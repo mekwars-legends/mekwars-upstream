@@ -21,11 +21,11 @@ import java.util.StringTokenizer;
 
 import javax.swing.JPanel;
 
-import common.util.StringUtils;
-
 import client.CUser;
 import client.MWClient;
 import client.gui.CCommPanel;
+
+import common.util.StringUtils;
 
 /**
  * @author Imi (immanuel.scholz@gmx.de)

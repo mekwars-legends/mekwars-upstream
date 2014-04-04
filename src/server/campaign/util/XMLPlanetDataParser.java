@@ -109,6 +109,7 @@ public class XMLPlanetDataParser implements XMLResponder {
     boolean hasAdvancedTerrain = false;
     int terrainProb = 0;
     String terrainName = "";
+    String advTerrainName = "";
     String OriginalOwner = CampaignMain.cm.getConfig("NewbieHouseName");
     String OpFlag = "";
     String OpName = "";
@@ -201,14 +202,6 @@ public class XMLPlanetDataParser implements XMLResponder {
         if (name.equalsIgnoreCase("CONTINENT")) {
             inContinent = true;
         }
-        if (name.equalsIgnoreCase("ADVANCETERRAIN")) {
-            hasAdvancedTerrain = true;
-            AdvTerr = new AdvancedTerrain();
-            if (!CampaignMain.cm.getBooleanConfig("UseStaticMaps")) {
-                CampaignMain.cm.getConfig().setProperty("UseStaticMaps", "true");
-                CampaignMain.cm.saveConfigureFile(CampaignMain.cm.getConfig(), CampaignMain.cm.getServer().getConfigParam("CAMPAIGNCONFIG"));
-            }
-        }
 
         /*
          * if (attr!=null) { Enumeration e = attr.keys();
@@ -246,32 +239,16 @@ public class XMLPlanetDataParser implements XMLResponder {
             }
         }
         if (name.equalsIgnoreCase("CONTINENT")) {
-            Continent cont = new Continent(terrainProb, CampaignMain.cm.getData().getTerrainByName(terrainName));
+          //TODO remove this later MDR
+        	CampaignData.mwlog.mainLog("continent to try and add is: "+ terrainProb +"% " +terrainName + "[" + CampaignMain.cm.getData().getTerrainByName(terrainName).getId() + "]"
+        			+ "(" + advTerrainName +"[" + CampaignMain.cm.getData().getAdvancedTerrainByName(advTerrainName).getId() + "])");
+        	
+            Continent cont = new Continent(terrainProb, CampaignMain.cm.getData().getTerrainByName(terrainName),CampaignMain.cm.getData().getAdvancedTerrainByName(advTerrainName));
             PlanEnv.add(cont);
             terrainProb = 0;
             terrainName = "";
+            advTerrainName = "";
             inContinent = false;
-            if (hasAdvancedTerrain) {
-                AdvTerrTreeMap.put(cont.getEnvironment().getId(), AdvTerr);
-            }
-        }
-        if (name.equalsIgnoreCase("ADVANCETERRAIN")) {
-            AdvTerr.setDisplayName(aterrainName);
-            AdvTerr.setGravity(gravity);
-            AdvTerr.setHighTemp(hitemp);
-            AdvTerr.setLowTemp(lowtemp);
-            AdvTerr.setStaticMap(map);
-            AdvTerr.setStaticMapName(mapname);
-            AdvTerr.setXBoardSize(xboard);
-            AdvTerr.setXSize(xmap);
-            AdvTerr.setNightChance(nightchance);
-            AdvTerr.setNightTempMod(nightmod);
-            AdvTerr.setYBoardSize(yboard);
-            AdvTerr.setYSize(ymap);
-            AdvTerr.setHeavySnowfallChance(heavySnowfallChance);
-            AdvTerr.setLightRainfallChance(lightRainfallChance);
-            AdvTerr.setHeavyRainfallChance(heavyRainfallChance);
-            AdvTerr.setModerateWindsChance(moderateWindsChance);
         }
 
         if (name.equalsIgnoreCase("OPNAME")) {
@@ -299,13 +276,6 @@ public class XMLPlanetDataParser implements XMLResponder {
             p.setConquerable(conquerable);
             p.setMapSize(new Dimension(xmap, ymap));
             p.setBoardSize(new Dimension(xboard, yboard));
-            p.setTemp(new Dimension(lowtemp, hitemp));
-            p.setGravity(gravity);
-            p.setVacuum(vacuum);
-            p.setOwner(null, p.checkOwner(), false);// no old owner, no updates
-            if (hasAdvancedTerrain) {
-                p.getAdvancedTerrain().putAll(AdvTerrTreeMap);
-            }
             /*
              * for ( Integer id: AdvTerrTreeMap.keySet() ){
              * p.getAdvancedTerrain().put(id,AdvTerrTreeMap.get(id)); }
@@ -341,6 +311,7 @@ public class XMLPlanetDataParser implements XMLResponder {
             map = false;
             mapname = "";
             aterrainName = "";
+            advTerrainName = "";
             gravity = 1.0;
             vacuum = false;
             lowtemp = 25;
@@ -442,6 +413,8 @@ public class XMLPlanetDataParser implements XMLResponder {
             conquerable = Boolean.parseBoolean(charData);
         } else if (lastElement.equalsIgnoreCase("TERRAIN")) {
             terrainName = charData;
+        } else if (lastElement.equalsIgnoreCase("ADVTERRAIN")) {
+            advTerrainName = charData;
         } else if (lastElement.endsWith("XMAP")) {
             xmap = Integer.parseInt(charData);
         } else if (lastElement.endsWith("YMAP")) {

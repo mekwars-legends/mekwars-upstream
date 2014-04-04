@@ -23,12 +23,12 @@ package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
 
-import common.House;
-
-import server.campaign.commands.Command;
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.SPlanet;
-import server.MWChatServer.auth.IAuthenticator;
+import server.campaign.commands.Command;
+
+import common.House;
 
 public class AdminUpdatePlanetOwnershipCommand implements Command {
 	

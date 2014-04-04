@@ -18,11 +18,11 @@ package server.campaign.commands.mod;
 
 import java.util.StringTokenizer;
 
+import server.MWChatServer.auth.IAuthenticator;
+import server.campaign.CampaignMain;
 import server.campaign.SPlanet;
 import server.campaign.SUnitFactory;
-import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
-import server.MWChatServer.auth.IAuthenticator;
 
 //modrefreshfactory#planet#factory
 public class ModRefreshFactoryCommand implements Command {

@@ -18,11 +18,11 @@ package server.dataProvider.commands;
 
 import java.util.Date;
 
-import common.CampaignData;
-import common.util.BinWriter;
-
 import server.MWServ;
 import server.dataProvider.ServerCommand;
+
+import common.CampaignData;
+import common.util.BinWriter;
 
 /**
  * Retrieve the current server version. Used to ensure

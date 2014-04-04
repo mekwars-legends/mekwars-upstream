@@ -18,6 +18,7 @@
 package server.campaign.commands;
 
 import java.util.StringTokenizer;
+
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.votes.Vote;

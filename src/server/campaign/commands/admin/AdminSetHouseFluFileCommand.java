@@ -17,10 +17,11 @@
 package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
+
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.commands.Command;
-import server.MWChatServer.auth.IAuthenticator;
 
 // comand /c AdminSetHouseFluFile#House#message
 public class AdminSetHouseFluFileCommand implements Command {

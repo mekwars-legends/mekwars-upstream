@@ -17,12 +17,12 @@ package server.campaign.commands.leader;
 
 import java.util.StringTokenizer;
 
-import common.SubFaction;
-
+import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SPlayer;
-import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
+
+import common.SubFaction;
 
 public class DemotePlayerCommand implements Command {
 

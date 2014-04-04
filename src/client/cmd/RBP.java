@@ -16,9 +16,9 @@ package client.cmd;
 
 import java.util.StringTokenizer;
 
-import common.campaign.Buildings;
-
 import client.MWClient;
+
+import common.campaign.Buildings;
 
 /**
  * @@author Torren (Jason Tighe)

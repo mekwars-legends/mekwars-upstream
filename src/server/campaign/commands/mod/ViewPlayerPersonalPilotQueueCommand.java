@@ -19,13 +19,13 @@ package server.campaign.commands.mod;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-import common.Unit;
-import common.campaign.pilot.Pilot;
-
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.commands.Command;
-import server.MWChatServer.auth.IAuthenticator;
+
+import common.Unit;
+import common.campaign.pilot.Pilot;
 
 /**
  * Return a human readable string that describes the pilots

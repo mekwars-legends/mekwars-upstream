@@ -16,13 +16,13 @@
 
 package server.campaign.commands;
 
-import java.util.StringTokenizer;
 import java.util.Iterator;
-
-import common.Planet;
+import java.util.StringTokenizer;
 
 import server.campaign.CampaignMain;
 import server.campaign.SPlanet;
+
+import common.Planet;
 
 public class AutoPlanetStatusCommand implements Command {
 

@@ -21,13 +21,13 @@
 package server.campaign.operations;
 
 //IMPORTS
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.SPlayer;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import common.campaign.operations.Operation;
 //TODO: remove "unused" once longs are running

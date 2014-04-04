@@ -1,5 +1,15 @@
 VERSION HISTORY:
 ----------------
+v 0.4.0.x
+R Released Server v0.4.0.0, Client v0.4.0.0, PlanetDatConverter v0.4.0.0
++ created AdvancedTerrain Templates
++ changed planet.dat file format to acomodate new Advanced terrain templates 
++ created Tool to convert old planet.dat files to the new format
++ fixed bug with Vertigo Editor re: factory buildtable paths
++ updated Vertigo editor to deal with terrain/AdvancedTerrain templates 
++ added AdvancedTerrain.xml to define advanced terrain templates
++ updated planets.xml format to deal with advanced terrain templates
+
 v 0.3.7.x
 R Released Server v0.3.7.4, Client v0.3.7.2
 + Removed start Dedicated host from host menu

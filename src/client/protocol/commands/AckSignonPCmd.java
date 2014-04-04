@@ -2,9 +2,9 @@ package client.protocol.commands;
 
 import java.util.StringTokenizer;
 
-import common.CampaignData;
-
 import client.MWClient;
+
+import common.CampaignData;
 
 /**
  * AckSignon command

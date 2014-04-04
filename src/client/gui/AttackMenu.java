@@ -17,36 +17,35 @@
 
 package client.gui;
 
-import javax.swing.BoxLayout;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.event.MenuKeyListener;
-
-import common.CampaignData;
-import common.House;
-import common.Planet;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeListener;
-
 import java.util.Iterator;
+import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.StringTokenizer;
+
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.event.MenuKeyListener;
 
 import client.MWClient;
 import client.campaign.CArmy;
 import client.gui.dialog.ArmyViewerDialog;
 import client.gui.dialog.PlanetNameDialog;
 import client.gui.dialog.PlayerNameDialog;
+
+import common.CampaignData;
+import common.House;
+import common.Planet;
 
 /**
  * Create an "Attack" menu. Used in Map, CMainFramge, etc. to generate

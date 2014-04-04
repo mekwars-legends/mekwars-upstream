@@ -17,12 +17,13 @@
 package server.campaign.commands.mod;
 
 import java.util.StringTokenizer;
+
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
+import server.campaign.commands.Command;
 import server.campaign.operations.OperationManager;
 import server.campaign.operations.ShortOperation;
-import server.campaign.commands.Command;
-import server.MWChatServer.auth.IAuthenticator;
 
 public class HardTerminateCommand implements Command {
 	

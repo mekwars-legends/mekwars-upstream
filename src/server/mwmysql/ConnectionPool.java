@@ -23,8 +23,6 @@ import java.sql.Statement;
 
 import common.CampaignData;
 
-import server.mwmysql.ObjectPool;
-
 public class ConnectionPool extends ObjectPool {
 	
 	private String url;

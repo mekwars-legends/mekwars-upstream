@@ -17,9 +17,10 @@
 
 package server.campaign.commands;
 
+import java.util.Enumeration;
 import java.util.StringTokenizer;
 import java.util.Vector;
-import java.util.Enumeration;
+
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.votes.Vote;

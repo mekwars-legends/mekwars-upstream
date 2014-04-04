@@ -21,10 +21,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
-import server.campaign.commands.Command;
 
-import server.campaign.CampaignMain;
 import server.MWChatServer.auth.IAuthenticator;
+import server.campaign.CampaignMain;
+import server.campaign.commands.Command;
 
 
 public class AdminViewLogCommand implements Command {

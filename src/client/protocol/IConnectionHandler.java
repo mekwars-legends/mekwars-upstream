@@ -31,7 +31,6 @@
  */
 package client.protocol;
 
-import client.protocol.IConnectionListener;
 
 /**
  * Interface that ConnectionHandlers must implement

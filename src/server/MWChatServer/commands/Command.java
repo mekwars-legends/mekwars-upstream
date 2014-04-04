@@ -17,12 +17,11 @@
  */
 package server.MWChatServer.commands;
 
-import common.CampaignData;
 import server.ServerWrapper;
 import server.MWChatServer.MWChatClient;
 import server.MWChatServer.MWChatServer;
-import server.MWChatServer.commands.CommandBase;
-import server.MWChatServer.commands.ICommands;
+
+import common.CampaignData;
 
 /**
  *

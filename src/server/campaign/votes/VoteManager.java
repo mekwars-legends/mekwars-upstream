@@ -1,11 +1,12 @@
 package server.campaign.votes;
 
-import java.util.Vector;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.Vector;
+
+import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
-import server.campaign.CampaignMain;
 
 
 /**

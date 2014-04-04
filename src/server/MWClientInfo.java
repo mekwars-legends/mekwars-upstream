@@ -20,8 +20,8 @@ package server;
 //@Author Helge Richter (McWizard@gmx.de)
 //@Version 0.1
 
-import java.net.InetAddress;
 import java.io.Serializable;
+import java.net.InetAddress;
 
 
 

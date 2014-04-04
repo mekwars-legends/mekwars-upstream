@@ -25,9 +25,11 @@
  */
 package common.util;
 
-import java.io.OutputStream;
 import java.io.FilterOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+
+import com.Ostermiller.util.MD5InputStream;
 
 /**
  * Implements MD5 functionality on a stream.

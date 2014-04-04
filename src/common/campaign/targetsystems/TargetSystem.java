@@ -2,9 +2,9 @@ package common.campaign.targetsystems;
 
 import java.util.Vector;
 
-import common.CampaignData;
-
 import megamek.common.Entity;
+
+import common.CampaignData;
 
 public class TargetSystem {
 

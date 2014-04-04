@@ -27,10 +27,11 @@ import java.io.InputStream;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import common.CampaignData;
 import server.campaign.NewbieHouse;
 import server.campaign.SHouse;
 import server.campaign.mercenaries.MercHouse;
+
+import common.CampaignData;
 
 
 public class XMLFactionDataParser implements XMLResponder {

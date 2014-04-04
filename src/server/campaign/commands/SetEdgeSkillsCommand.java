@@ -19,13 +19,13 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import common.campaign.pilot.skills.PilotSkill;
-
-import server.campaign.SPlayer;
 import server.campaign.CampaignMain;
+import server.campaign.SPlayer;
 import server.campaign.SUnit;
 import server.campaign.pilot.SPilot;
 import server.campaign.pilot.skills.EdgeSkill;
+
+import common.campaign.pilot.skills.PilotSkill;
 
 public class SetEdgeSkillsCommand implements Command {
 	

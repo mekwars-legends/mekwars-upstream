@@ -21,9 +21,9 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.StringTokenizer;
 
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
-import server.MWChatServer.auth.IAuthenticator;
 
 //Syntax addsong#songname#lyric1#lyric2....
 public class AddSongCommand implements Command {

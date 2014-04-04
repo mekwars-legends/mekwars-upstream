@@ -15,18 +15,18 @@
  */
 package admin;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.StringTokenizer;
+
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.StringTokenizer;
-
-import client.MWClient;
 import client.CUser;
+import client.MWClient;
 import client.gui.dialog.HouseNameDialog;
 import client.gui.dialog.PlayerNameDialog;
 

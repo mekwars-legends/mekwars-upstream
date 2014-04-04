@@ -20,9 +20,9 @@
  */
 package client.campaign;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
-import java.util.ArrayList;
 
 import common.CampaignData;
 import common.Unit;

@@ -20,19 +20,14 @@ package client.gui.dialog;
 
 //awt imports
 import java.awt.Dimension;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
-//util imports
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-//swing imports
 import javax.swing.BoxLayout;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SpringLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JList;
@@ -41,14 +36,19 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SpringLayout;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
-//MekWars imports
 import client.MWClient;
 import client.gui.InnerStellarMap;
-import common.util.SpringLayoutHelper;
+
 import common.Planet;
+import common.util.SpringLayoutHelper;
+//util imports
+//swing imports
+//MekWars imports
 
 /*
  * Base dialog, derived from MMNET's SearchPlanetListener, allows players

@@ -17,7 +17,8 @@
  package client.util;
  
  import java.util.Comparator;
- import client.campaign.CUnit;
+
+import client.campaign.CUnit;
 
  public class CUnitComparator implements Comparator<Object> {
 

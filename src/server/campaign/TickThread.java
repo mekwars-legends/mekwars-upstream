@@ -17,10 +17,12 @@
 package server.campaign;
 
 
-import java.io.IOException;
 import java.io.FileWriter;
-import common.CampaignData;
+import java.io.IOException;
+
 import server.campaign.util.Statistics;
+
+import common.CampaignData;
 
 public class TickThread extends Thread {
 	

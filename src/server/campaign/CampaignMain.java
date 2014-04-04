@@ -128,6 +128,7 @@ import server.campaign.util.HouseRankingHelpContainer;
 import server.campaign.util.MechStatistics;
 import server.campaign.util.Statistics;
 import server.campaign.util.WhoToHTML;
+import server.campaign.util.XMLAdvancedTerrainDataParser;
 import server.campaign.util.XMLFactionDataParser;
 import server.campaign.util.XMLPlanetDataParser;
 import server.campaign.util.XMLTerrainDataParser;
@@ -359,7 +360,8 @@ public final class CampaignMain implements Serializable {
         // Parse Terrain
         // XMLTerrainDataParser tParse =
         new XMLTerrainDataParser("./data/terrain.xml");
-
+        new XMLAdvancedTerrainDataParser("./data/advancedTerrain.xml");
+        
         cm.loadTopUnitID();
         gamesCompleted = 0;
 
@@ -1888,7 +1890,7 @@ public final class CampaignMain implements Serializable {
 
                     // add the planet
                     addPlanet(p);
-
+ 
                     // set initial influences
                     for (House h : p.getInfluence().getHouses()) {
 
@@ -2088,7 +2090,9 @@ public final class CampaignMain implements Serializable {
         // loop through all houses
         for (House vh : data.getAllHouses()) {
             SHouse currH = (SHouse) vh;
-
+			//fahr
+			CampaignData.mwlog.infoLog("Slice #" + sliceID + " house: " + currH.getName());
+        
             // load max idle time, converted to ms
             long maxIdleTime = Long.parseLong(CampaignMain.cm.getConfig("MaxIdleTime")) * 60000;
 
@@ -2101,9 +2105,15 @@ public final class CampaignMain implements Serializable {
                 }
             }
 */
+ 			CampaignData.mwlog.infoLog("Slice #" + sliceID + " house: " + currH.getName() + " reservePlayers");
             for (SPlayer currP : currH.getReservePlayers().values()) {
             	if (maxIdleTime > 0) {
-            		checkAndRemoveIdle(currP, maxIdleTime);
+            		try {
+                        checkAndRemoveIdle(currP, maxIdleTime);
+                    } catch (Exception ex) {
+                        CampaignData.mwlog.infoLog("Slice #" + sliceID + " house: " + currH.getName() + " reservePlayer: " + currP.getName());
+                        CampaignData.mwlog.errLog(ex);
+                    }
             	}
             	if(!currP.isInvisible()) {
             		who.addPlayer(currP);
@@ -2114,45 +2124,67 @@ public final class CampaignMain implements Serializable {
              * Active players get the whole shebang - influence addition,
              * maintainance, and an idle check (if enabled).
              */
+ 			CampaignData.mwlog.infoLog("Slice #" + sliceID + " house: " + currH.getName() + " ActivePlayers");
             for (SPlayer currP : currH.getActivePlayers().values()) {
-                currP.doMaintainance();
-            	if(!currP.isInvisible()) {
-            		who.addPlayer(currP);
-            	}
-                this.toUser(currP.addInfluenceAtSlice(), currP.getName(), true);
-                if (maxIdleTime > 0) {
-                    checkAndRemoveIdle(currP, maxIdleTime);
+                try {
+                    currP.doMaintainance();
+                    if(!currP.isInvisible()) {
+                        who.addPlayer(currP);
+                    }
+                    this.toUser(currP.addInfluenceAtSlice(), currP.getName(), true);
+                    if (maxIdleTime > 0) {
+                        checkAndRemoveIdle(currP, maxIdleTime);
+                    }
+                } catch (Exception ex) {
+                    CampaignData.mwlog.errLog(ex);
+                    CampaignData.mwlog.infoLog("Slice #" + sliceID + " house: " + currH.getName() + " activePlayer: " + currP.getName());
                 }
             }
 
             // fighters only have maint. they get influence grants post-game.
+ 			CampaignData.mwlog.infoLog("Slice #" + sliceID + " house: " + currH.getName() + " fightingPlayers");
             for (SPlayer currP : currH.getFightingPlayers().values()) {
-                currP.doMaintainance();
-            	if(!currP.isInvisible()) {
-            		who.addPlayer(currP);
-            	}
-                // People fighting are always up to date
-                if (maxIdleTime > 0) {
-                    currP.setLastTimeCommandSent(System.currentTimeMillis() + maxIdleTime);
+                try {
+                    currP.doMaintainance();
+                    if(!currP.isInvisible()) {
+                        who.addPlayer(currP);
+                    }
+                    // People fighting are always up to date
+                    if (maxIdleTime > 0) {
+                        currP.setLastTimeCommandSent(System.currentTimeMillis() + maxIdleTime);
+                    }
+                } catch (Exception ex) {
+                    CampaignData.mwlog.errLog(ex);
+                    CampaignData.mwlog.infoLog("Slice #" + sliceID + " house: " + currH.getName() + " fightingPlayer: " + currP.getName());
                 }
             }
-
         }// end all houses
         
         if (CampaignMain.cm.getBooleanConfig("HTMLOUTPUT")) {
         	who.outputHTML();
         }
         who = null;
-        
+
         // check to see if we should save on this slice
         int saveOnSlice = CampaignMain.cm.getIntegerConfig("SaveEverySlice");
         if (saveOnSlice < 1) {
             saveOnSlice = 1;
         }
         if (sliceID % saveOnSlice == 0) {
-            savePlayers();// Once all of the saving is done clear
-            // everything for the next tick.
-            saveTopUnitID();
+            CampaignData.mwlog.infoLog("Slice #" + sliceID + " savePlayers()");
+            try {
+                savePlayers();// Once all of the saving is done clear
+            } catch (Exception ex) {
+                CampaignData.mwlog.errLog(ex);
+                CampaignData.mwlog.infoLog("Slice #" + sliceID + " savePlayers() failed");
+            }// everything for the next tick.
+            CampaignData.mwlog.infoLog("Slice #" + sliceID + " saveTopUnitID()");
+            try {
+                saveTopUnitID();
+            } catch (Exception ex) {
+                CampaignData.mwlog.errLog(ex);
+                CampaignData.mwlog.infoLog("Slice #" + sliceID + " saveTopUnitID() failed");
+            }
         }
 
         // write log header

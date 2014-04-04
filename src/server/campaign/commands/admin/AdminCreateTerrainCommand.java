@@ -18,25 +18,25 @@ package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
 
-import common.AdvancedTerrain;
-import common.Continent;
-import common.CampaignData;
-import server.campaign.commands.Command;
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.SPlanet;
-import server.MWChatServer.auth.IAuthenticator;
+import server.campaign.commands.Command;
+
+import common.AdvancedTerrain;
+import common.CampaignData;
+import common.Continent;
 
 
 public class AdminCreateTerrainCommand implements Command {
 	
 	int accessLevel = IAuthenticator.ADMIN;
-	String syntax = "Planet Name#TerrainType#Chance";
+	String syntax = "Planet Name#TerrainType#AdvancedTerrain#Chance";
 	public int getExecutionLevel(){return accessLevel;}
 	public void setExecutionLevel(int i) {accessLevel = i;}
 	public String getSyntax() { return syntax;}
 	
 	public void process(StringTokenizer command,String Username) {
-		
 		//access level check
 		int userLevel = CampaignMain.cm.getServer().getUserLevel(Username);
 		if(userLevel < getExecutionLevel()) {
@@ -47,6 +47,7 @@ public class AdminCreateTerrainCommand implements Command {
 		try{
 			SPlanet p = CampaignMain.cm.getPlanetFromPartialString(command.nextToken(),Username);
 			String terraintype = command.nextToken();
+			String advTerrainType = command.nextToken();
 			int chance = Integer.parseInt(command.nextToken());
 			
 			if (p == null) {
@@ -54,17 +55,13 @@ public class AdminCreateTerrainCommand implements Command {
 				return;
 			}
 			
-			Continent cont = new Continent(chance, CampaignMain.cm.getData().getTerrainByName(terraintype));
+			Continent cont = new Continent(chance, CampaignMain.cm.getData().getTerrainByName(terraintype), CampaignMain.cm.getData().getAdvancedTerrainByName(advTerrainType));
 			p.getEnvironments().add(cont);
-			if ( new Boolean(CampaignMain.cm.getConfig("UseStaticMaps")).booleanValue() ){
-				AdvancedTerrain aTerrain = new AdvancedTerrain();
-				p.getAdvancedTerrain().put(new Integer(cont.getEnvironment().getId()),aTerrain);
-			}
 			p.updated();
 			
 			//server.CampaignData.mwlog.modLog(Username + " added terrain to " + p.getName() + " (" + terraintype + ").");
-			CampaignMain.cm.toUser("Terrain added to " + p.getName() + "(" + terraintype + ").",Username,true);
-			CampaignMain.cm.doSendModMail("NOTE",Username + " added terrain to planet " + p.getName() + "(" + terraintype + ").");
+			CampaignMain.cm.toUser("Terrain added to " + p.getName() + "(" + terraintype + "-" + advTerrainType + ").",Username,true);
+			CampaignMain.cm.doSendModMail("NOTE",Username + " added terrain to planet " + p.getName() + "(" + terraintype + "-" + advTerrainType + ").");
 		}
 		
 		catch (Exception ex){

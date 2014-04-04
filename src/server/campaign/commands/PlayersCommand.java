@@ -20,8 +20,8 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 
 import server.campaign.CampaignMain;
-import server.campaign.SPlayer;
 import server.campaign.SHouse;
+import server.campaign.SPlayer;
 
 import common.House;
 

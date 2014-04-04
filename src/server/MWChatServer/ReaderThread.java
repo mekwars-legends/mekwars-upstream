@@ -34,9 +34,9 @@ import java.io.InputStreamReader;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
-import common.CampaignData;
-
 import server.MWChatServer.commands.ICommands;
+
+import common.CampaignData;
 
 /**
  * Constantly reads from the BufferedReader.

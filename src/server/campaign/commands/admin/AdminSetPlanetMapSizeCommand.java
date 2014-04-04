@@ -16,12 +16,13 @@
 
 package server.campaign.commands.admin;
 
-import java.util.StringTokenizer;
 import java.awt.Dimension;
-import server.campaign.commands.Command;
+import java.util.StringTokenizer;
+
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.SPlanet;
-import server.MWChatServer.auth.IAuthenticator;
+import server.campaign.commands.Command;
 
 
 public class AdminSetPlanetMapSizeCommand implements Command {

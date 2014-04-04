@@ -48,6 +48,11 @@
 	>
 	</property>
 	<property
+			name="PlanetDatConverterFile"
+			value="PlanetDatConverter.jar"
+	>
+	</property>
+	<property
 			name="opeditor"
 			value="MekWarsOpEditor.jar"
 	>
@@ -189,6 +194,25 @@
 			includes="tracker/**"
 			jarfile="${trackerfile}"
 			manifest="TrackerManifest.txt"
+		>
+		</jar>
+	</target>
+	<target
+		depends="compile"
+		description="Create PlanetDatConverter jar file"
+		name="PlanetDatConverter-jar"
+	>
+		<delete
+			file="${PlanetDatConverterFile}"
+		>
+		</delete>
+		<jar
+			basedir="${build}"
+			compress="true"
+			destfile="${PlanetDatConverterFile}"
+			includes="common/**,server/**"
+			jarfile="${PlanetDatConverterFile}"
+			manifest="PlanetDatConverterManifest.txt"
 		>
 		</jar>
 	</target>
@@ -361,6 +385,12 @@
 	<target
 		name="run-server"
 	>
+		<java
+			dir="${basedir}\dist\server"
+			fork="true"
+			jar="MekWarsServer.jar"
+		>
+		</java>
 	</target>
 	<target
 		depends="client-jar"

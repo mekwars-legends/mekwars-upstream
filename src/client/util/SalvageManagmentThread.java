@@ -25,13 +25,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import megamek.common.CriticalSlot;
 import megamek.common.Mech;
 import megamek.common.Mounted;
+import client.MWClient;
+import client.campaign.CUnit;
 
 import common.CampaignData;
 import common.campaign.pilot.skills.PilotSkill;
 import common.util.UnitUtils;
-
-import client.MWClient;
-import client.campaign.CUnit;
 
 public class SalvageManagmentThread extends Thread{
     

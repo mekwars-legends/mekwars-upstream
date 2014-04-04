@@ -15,11 +15,10 @@
  */
 package server.campaign.operations.validation;
 
+import server.campaign.SArmy;
+
 import common.CampaignData;
 import common.campaign.operations.Operation;
-
-import server.campaign.SArmy;
-import server.campaign.operations.validation.ISpreadValidator;
 
 /**
  * @author 	Spork

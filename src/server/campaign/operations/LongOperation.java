@@ -29,11 +29,11 @@
 
 package server.campaign.operations;
 
-import java.util.Vector;
 import java.util.Collections;
+import java.util.Vector;
 
-import server.campaign.SPlanet;
 import server.campaign.SHouse;
+import server.campaign.SPlanet;
 
 // TODO: Remove "unused" once longs are running
 @SuppressWarnings("unused")

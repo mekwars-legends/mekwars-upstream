@@ -21,7 +21,7 @@
  
  import java.util.Comparator;
 
- import client.campaign.CArmy;
+import client.campaign.CArmy;
 
  public class CArmyComparator implements Comparator<Object> {
 

@@ -39,5 +39,18 @@ public interface TerrainProvider {
     /**
      * Add a terrain to the list
      */
-    public void addTerrain(Terrain terrain);
+    public void addAdvancedTerrain(AdvancedTerrain terrain);
+    
+    /*add the advanced terrain provisions*/
+    /**
+     * Return the terrain to a given id.
+     */
+    public AdvancedTerrain getAdvancedTerrain(int id);
+
+    /**
+     * Return all terrains
+     */
+    public Collection<AdvancedTerrain> getAllAdvancedTerrains();
+
+    
 }

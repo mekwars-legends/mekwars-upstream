@@ -21,15 +21,14 @@
  */ 
 package server.MWChatServer.commands;
 
-import common.CampaignData;
-import common.util.StringUtils;
 import server.ServerWrapper;
 import server.MWChatServer.MWChatClient;
 import server.MWChatServer.Translator;
-import server.MWChatServer.commands.CommandBase;
-import server.MWChatServer.commands.ICommands;
-import server.campaign.CampaignMain;
 import server.MWChatServer.auth.IAuthenticator;
+import server.campaign.CampaignMain;
+
+import common.CampaignData;
+import common.util.StringUtils;
 
 /**
  * @author  Steve Hawkins

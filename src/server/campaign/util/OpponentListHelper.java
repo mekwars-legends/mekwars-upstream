@@ -19,19 +19,19 @@ package server.campaign.util;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.Vector;
 import java.util.TreeMap;
+import java.util.Vector;
 
-import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
 import server.campaign.operations.OperationManager;
 
+import common.CampaignData;
+import common.House;
 import common.campaign.operations.Operation;
 import common.util.StringUtils;
-import common.House;
 
 /**
  * 

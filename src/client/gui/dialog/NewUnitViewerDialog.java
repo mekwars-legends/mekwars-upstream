@@ -34,16 +34,12 @@ import javax.swing.RowFilter;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SortOrder;
-import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
-import common.CampaignData;
-
-import client.MWClient;
 import megamek.client.Client;
 import megamek.client.ui.swing.AdvancedSearchDialog;
 import megamek.client.ui.swing.MechViewPanel;
@@ -59,6 +55,7 @@ import megamek.common.MechView;
 import megamek.common.TechConstants;
 import megamek.common.UnitType;
 import megamek.common.loaders.EntityLoadingException;
+import client.MWClient;
 
 	public class NewUnitViewerDialog extends JDialog implements Runnable,
 	    KeyListener, ActionListener {

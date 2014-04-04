@@ -18,9 +18,9 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import common.CampaignData;
 import server.campaign.CampaignMain;
-import server.campaign.commands.Command;
+
+import common.CampaignData;
 
 
 

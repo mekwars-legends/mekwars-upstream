@@ -29,23 +29,23 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
-import javax.swing.SpringLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
+
+import client.MWClient;
 
 import common.CampaignData;
 import common.House;
 import common.campaign.pilot.skills.PilotSkill;
-
-import client.MWClient;
 import common.util.SpringLayoutHelper;
 
 public final class TraitDialog implements ActionListener, KeyListener{

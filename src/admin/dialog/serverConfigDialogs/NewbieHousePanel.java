@@ -13,12 +13,12 @@ package admin.dialog.serverConfigDialogs;
 
 import java.awt.GridLayout;
 import java.util.HashMap;
+
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
 
 import common.Unit;
 import common.VerticalLayout;

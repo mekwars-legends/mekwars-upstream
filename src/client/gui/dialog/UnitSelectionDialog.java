@@ -17,31 +17,29 @@ package client.gui.dialog;
 //awt imports
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
-//util imports
+import java.awt.event.ActionListener;
 import java.util.StringTokenizer;
 
-//swing imports
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.SpringLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
 import megamek.common.Infantry;
-
-import common.Unit;
-
-//mekwars imports
 import client.MWClient;
 import client.campaign.CUnit;
+
+import common.Unit;
 import common.util.SpringLayoutHelper;
+//util imports
+//swing imports
+//mekwars imports
 
 /*
  * Dialog, based on HouseNameDialog, which allows players

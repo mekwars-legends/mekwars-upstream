@@ -18,13 +18,13 @@ package server.campaign.commands.mod;
 
 import java.util.StringTokenizer;
 
-import common.util.UnitUtils;
-
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
 import server.campaign.commands.Command;
-import server.MWChatServer.auth.IAuthenticator;
+
+import common.util.UnitUtils;
 
 /**
  * Sends a Players Unit data to a Mod/Admin

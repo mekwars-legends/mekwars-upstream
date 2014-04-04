@@ -37,7 +37,7 @@ import common.Unit;
 import common.UnitFactory;
 
 public class AdminSavePlanetsToXMLCommand implements Command {
-    int accessLevel = IAuthenticator.ADMIN;
+	int accessLevel = IAuthenticator.ADMIN;
     String syntax = "";
 
     public int getExecutionLevel() {
@@ -118,49 +118,9 @@ public class AdminSavePlanetsToXMLCommand implements Command {
                 for (Continent pe : planet.getEnvironments().toArray()) {
                     p.println("		<CONTINENT>");
                     p.println("			<TERRAIN>" + pe.getEnvironment().getName() + "</TERRAIN>");
+                    p.println("			<ADVTERRAIN>" + pe.getAdvancedTerrain().getName() + "</ADVTERRAIN>");                  
                     p.println("			<SIZE>" + pe.getSize() + "</SIZE>");
-                    if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")) {
-                        AdvancedTerrain aTerrain = new AdvancedTerrain();
-                        aTerrain = planet.getAdvancedTerrain().get(new Integer(pe.getEnvironment().getId()));
-                        if (aTerrain != null) {
-                            p.println("                 <ADVANCETERRAIN>");
-                            if (aTerrain.getDisplayName().length() <= 1) {
-                                p.println("                         <TERRAINNAME>" + pe.getEnvironment().getName() + "/<TERRAINNAME>");
-                            } else {
-                                p.println("                         <TERRAINNAME>" + aTerrain.getDisplayName() + "</TERRAINNAME>");
-                            }
-                            p.println("                         <XMAP>" + aTerrain.getXSize() + "</XMAP>");
-                            p.println("                         <YMAP>" + aTerrain.getYSize() + "</YMAP>");
-                            p.println("                         <MAP>" + aTerrain.isStaticMap() + "</MAP>");
-                            p.println("                         <XBOARD>" + aTerrain.getXBoardSize() + "</XBOARD>");
-                            p.println("                         <YBOARD>" + aTerrain.getYBoardSize() + "</YBOARD>");
-                            p.println("                         <LOWTEMP>" + aTerrain.getLowTemp() + "</LOWTEMP>");
-                            p.println("                         <HITEMP>" + aTerrain.getHighTemp() + "</HITEMP>");
-                            p.println("                         <GRAVITY>" + aTerrain.getGravity() + "</GRAVITY>");
-                            p.println("                         <NIGHTCHANCE>" + aTerrain.getNightChance() + "</NIGHTCHANCE>");
-                            p.println("                         <NIGHTMOD>" + aTerrain.getNightTempMod() + "</NIGHTMOD>");
-                            p.println("                         <MAPNAME>" + aTerrain.getStaticMapName() + "</MAPNAME>");
-                            p.println("                         <HEAVYSNOWFALLCHANCE>" + aTerrain.getHeavySnowfallChance() + "</HEAVYSNOWFALLCHANCE>");
-                            p.println("                         <LIGHTRAINFALLCHANCE>" + aTerrain.getLightRainfallChance() + "</LIGHTRAINFALLCHANCE>");
-                            p.println("                         <HEAVYRAINFALLCHANCE>" + aTerrain.getHeavyRainfallChance() + "</HEAVYRAINFALLCHANCE>");
-                            p.println("                         <MODERATEWINDSCHANCE>" + aTerrain.getModerateWindsChance() + "</MODERATEWINDSCHANCE>");
-                            p.println("                 </ADVANCETERRAIN>");
-                        }
-                    }
-
                     p.println("		</CONTINENT>");
-                }
-                if (!CampaignMain.cm.getBooleanConfig("UseStaticMaps")) {
-                    p.println("		<XMAP>" + planet.getMapSize().width + "</XMAP>");
-                    p.println("		<YMAP>" + planet.getMapSize().height + "</YMAP>");
-                    p.println("		<XBOARD>" + planet.getBoardSize().width + "</XBOARD>");
-                    p.println("		<YBOARD>" + planet.getBoardSize().height + "</YBOARD>");
-                    p.println("		<TEMPERATURE>");
-                    p.println("			<LOWTEMP>" + planet.getTemp().width + "</LOWTEMP>");
-                    p.println("			<HITEMP>" + planet.getTemp().height + "</HITEMP>");
-                    p.println("		</TEMPERATURE>");
-                    p.println("		<GRAVITY>" + planet.getGravity() + "</GRAVITY>");
-                    p.println("		<VACUUM>" + planet.isVacuum() + "</VACUUM>");
                 }
                 p.println("     <WAREHOUSE>" + planet.getBaysProvided() + "</WAREHOUSE>");
                 if (planet.getPlanetFlags().size() > 0) {

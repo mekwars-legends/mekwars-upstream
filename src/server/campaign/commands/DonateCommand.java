@@ -23,17 +23,17 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import common.Unit;
-import common.util.StringUtils;
-import common.util.UnitUtils;
-
-import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
 import server.campaign.pilot.SPilot;
+
+import common.CampaignData;
+import common.Unit;
+import common.util.StringUtils;
+import common.util.UnitUtils;
 
 /**
  * @author Helge Richter

@@ -15,14 +15,14 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import common.campaign.operations.Operation;
-
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.SPlayer;
 import server.campaign.operations.OperationManager;
+
+import common.campaign.operations.Operation;
 
 /**
  * AttackCommand is used to initiate ShortOperations. Checks the validity of the

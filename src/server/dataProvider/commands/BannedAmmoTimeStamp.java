@@ -22,10 +22,10 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
 
+import server.dataProvider.ServerCommand;
+
 import common.CampaignData;
 import common.util.BinWriter;
-
-import server.dataProvider.ServerCommand;
 
 /**
  * Retrieve the MD5 of the current campaignconfig file.

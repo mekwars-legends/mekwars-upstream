@@ -17,12 +17,12 @@ package server.dataProvider.commands;
 
 import java.util.Date;
 
+import server.campaign.CampaignMain;
+import server.dataProvider.ServerCommand;
+
 import common.CampaignData;
 import common.Equipment;
 import common.util.BinWriter;
-
-import server.dataProvider.ServerCommand;
-import server.campaign.CampaignMain;
 
 public class BMSetting implements ServerCommand {
 

@@ -26,12 +26,12 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-import common.BMEquipment;
-import common.Equipment;
-
-import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
+
+import common.BMEquipment;
+import common.CampaignData;
+import common.Equipment;
 
 public class PartsMarket {
 	

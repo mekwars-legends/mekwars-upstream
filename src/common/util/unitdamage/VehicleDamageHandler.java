@@ -3,14 +3,14 @@ package common.util.unitdamage;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import common.CampaignData;
-import common.util.UnitUtils;
-
 import megamek.common.CriticalSlot;
 import megamek.common.Entity;
 import megamek.common.IArmorState;
 import megamek.common.Mounted;
 import megamek.common.Tank;
+
+import common.CampaignData;
+import common.util.UnitUtils;
 
 public class VehicleDamageHandler extends AbstractUnitDamageHandler {
 

@@ -21,12 +21,13 @@ import java.net.InetAddress;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 
-import common.CampaignData;
-import common.UnitFactory;
 import server.campaign.CampaignMain;
+import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.SPlayer;
-import server.campaign.SHouse;
+
+import common.CampaignData;
+import common.UnitFactory;
 
 
 public class UnenrollCommand implements Command {

@@ -42,8 +42,6 @@ import java.util.zip.Inflater;
 
 import common.CampaignData;
 
-import client.protocol.IConnectionListener;
-
 /**
  * Constantly read from the socket's input stream
  */

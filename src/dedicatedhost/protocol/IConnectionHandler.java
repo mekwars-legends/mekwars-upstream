@@ -31,7 +31,6 @@
  */
 package dedicatedhost.protocol;
 
-import dedicatedhost.protocol.IConnectionListener;
 
 /**
  * Interface that ConnectionHandlers must implement

@@ -30,9 +30,8 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
-import common.Unit;
-
 import common.CampaignData;
+import common.Unit;
 
 
 /**

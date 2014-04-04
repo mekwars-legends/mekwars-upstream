@@ -19,24 +19,24 @@ package admin.dialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.TreeSet;
-import java.util.ArrayList;
 
-import javax.swing.JCheckBox;
-import javax.swing.SpringLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SpringLayout;
+
+import client.MWClient;
 
 import common.CampaignData;
 import common.House;
 import common.util.SpringLayoutHelper;
-
-import client.MWClient;
 
 public final class BannedAmmoDialog implements ActionListener{
 	

@@ -24,10 +24,10 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.StringTokenizer;
 
-import common.CampaignData;
-
 import client.MWClient;
 import client.gui.CCommPanel;
+
+import common.CampaignData;
 
 /**
  * @author Spork

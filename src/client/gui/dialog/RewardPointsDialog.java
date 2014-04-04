@@ -26,27 +26,27 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
-import javax.swing.SpringLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
+
+import client.MWClient;
+import client.campaign.CUnit;
 
 import common.House;
 import common.Planet;
 import common.Unit;
 import common.UnitFactory;
-import common.util.UnitUtils;
-
-import client.MWClient;
-import client.campaign.CUnit;
 import common.util.SpringLayoutHelper;
+import common.util.UnitUtils;
 
 
 public final class RewardPointsDialog implements ActionListener, KeyListener{

@@ -19,19 +19,19 @@ package server.campaign.operations;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import common.Unit;
-import common.UnitFactory;
-import common.campaign.operations.Operation;
-import common.util.StringUtils;
-
-import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.SPlayer;
-import server.campaign.SUnitFactory;
 import server.campaign.SUnit;
+import server.campaign.SUnitFactory;
+
+import common.CampaignData;
+import common.Unit;
+import common.UnitFactory;
+import common.campaign.operations.Operation;
+import common.util.StringUtils;
 
 public class OpsChickenThread extends Thread {
 

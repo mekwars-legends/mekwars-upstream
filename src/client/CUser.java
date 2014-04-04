@@ -17,8 +17,8 @@
 
 package client;
 
-import java.util.StringTokenizer;
 import java.awt.Color;
+import java.util.StringTokenizer;
 
 import common.CampaignData;
 import common.House;

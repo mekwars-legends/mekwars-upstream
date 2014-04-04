@@ -18,12 +18,12 @@ package server.campaign.commands.mod;
 
 import java.util.StringTokenizer;
 
-import common.Unit;
-
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.commands.Command;
-import server.MWChatServer.auth.IAuthenticator;
+
+import common.Unit;
 
 //Syntax sethousebasepilotskills house#pilotType#Gunnery#Piloting
 public class SetHouseBasePilotSkillsCommand implements Command {

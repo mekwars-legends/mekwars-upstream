@@ -1,7 +1,5 @@
 package server.campaign.autoresolve;
 
-import java.util.Hashtable;
-
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
 

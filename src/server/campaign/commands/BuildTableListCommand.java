@@ -23,10 +23,10 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 import megamek.common.Entity;
-
-import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SUnit;
+
+import common.CampaignData;
 
 
 public class BuildTableListCommand implements Command {

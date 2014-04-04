@@ -26,12 +26,12 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import common.CampaignData;
-import common.util.BinWriter;
-
-import server.dataProvider.ServerCommand;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
+import server.dataProvider.ServerCommand;
+
+import common.CampaignData;
+import common.util.BinWriter;
 
 /**
  * Retrieve all planet information (if the data cache is lost at client side)

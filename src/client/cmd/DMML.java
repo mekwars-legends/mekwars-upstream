@@ -22,9 +22,9 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.StringTokenizer;
 
-import common.CampaignData;
-
 import client.MWClient;
+
+import common.CampaignData;
 
 /**
  * @author Torren

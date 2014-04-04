@@ -28,8 +28,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Vector;
 
-import client.MWClient;
-
 import megamek.common.PlanetaryConditions;
 
 import common.util.BinReader;
@@ -113,14 +111,7 @@ public class Planet implements Comparable<Object>, MutableSerializable {
      * @author jtighe
      */
 
-    private Dimension temperature = new Dimension(25, 25);
-    private double gravity = 1.0;
-    private boolean vacuum = false;
 
-    private int nightChance = 0;
-    private int nightTempMod = 0;
-
-    private Hashtable<Integer, AdvancedTerrain> advanceTerrain = new Hashtable<Integer, AdvancedTerrain>();
 
     /**
      * Min Planet ownership to allow a faction to use the planets resources
@@ -176,50 +167,7 @@ public class Planet implements Comparable<Object>, MutableSerializable {
      * Read the stream back to a Planet object.
      */
     public Planet(BinReader in, Map<Integer, House> factions, CampaignData data) throws IOException {
-        setId(new Integer(in.readInt("id")));
-        setName(in.readLine("name"));
-        setPosition(new Position(in.readDouble("x"), in.readDouble("y")));
-        int size = in.readInt("unitFactories.size");
-        setUnitFactories(new Vector<UnitFactory>(size, 1));
-        for (int i = 0; i < size; ++i) {
-            UnitFactory uf = new UnitFactory();
-            uf.binIn(in);
-            getUnitFactories().add(uf);
-        }
-        setEnvironments(new PlanetEnvironments());
-        getEnvironments().binIn(in, data);
-        setDescription(in.readLine("description"));
-        setBaysProvided(in.readInt("baysProvided"));
-        setConquerable(in.readBoolean("conquerable"));
-        setCompProduction(in.readInt("compProduction"));
-        setInfluence(new Influences());
-        getInfluence().binIn(in, factions);
-        setMapSize(new Dimension(in.readInt("x"), in.readInt("y")));
-        setBoardSize(new Dimension(in.readInt("x"), in.readInt("y")));
-        setTemp(new Dimension(in.readInt("lowtemp"), in.readInt("hitemp")));
-        setGravity(in.readDouble("gravity"));
-        setVacuum(in.readBoolean("vacuum"));
-        setMinPlanetOwnerShip(in.readInt("minplanetownership"));
-        setHomeWorld(in.readBoolean("homeworld"));
-        setOriginalOwner(in.readLine("originalowner"));
-        size = in.readInt("AdvancedTerrain.size");
-        for (int i = 0; i < size; ++i) {
-            AdvancedTerrain aTerrain = new AdvancedTerrain();
-            int id = in.readInt("AdvancedTerrainId");
-            aTerrain.binIn(in);
-            getAdvancedTerrain().put(new Integer(id), aTerrain);
-        }
-        TreeMap<String, String> map = new TreeMap<String, String>();
-        size = in.readInt("PlanetFlags.size");
-        for (int i = 0; i < size; ++i) {
-            String key;
-            String value;
-            key = in.readLine("PlanetFlags.key");
-            value = in.readLine("PlanetFlags.value");
-            map.put(key, value);
-        }
-        setPlanetFlags(map);
-        setConquestPoints(in.readInt("MaxInfluence"));
+    	this.binIn(in, data);
     }
 
     // METHODS
@@ -459,25 +407,9 @@ public class Planet implements Comparable<Object>, MutableSerializable {
         out.println(isConquerable(), "conquerable");
         out.println(getCompProduction(), "compProduction");
         getInfluence().binOut(out);
-        out.println(getMapSize().width, "x");
-        out.println(getMapSize().height, "y");
-        out.println(getBoardSize().width, "x");
-        out.println(getBoardSize().height, "y");
-        out.println(getTemp().width, "lowtemp");
-        out.println(getTemp().height, "hitemp");
-        out.println(getGravity(), "gravity");
-        out.println(isVacuum(), "vacuum");
         out.println(getMinPlanetOwnerShip(), "minplanetownership");
         out.println(isHomeWorld(), "homeworld");
-        out.println(getOriginalOwner(), "originalowner");
-
-        out.println(getAdvancedTerrain().size(), "AdvancedTerrain.size");
-        for (Integer currI : getAdvancedTerrain().keySet()) {
-            out.println(currI.intValue(), "AdvancedTerrainId");
-            AdvancedTerrain aTerrain = getAdvancedTerrain().get(currI);
-            aTerrain.binOut(out);
-        }
-
+        out.println(getOriginalOwner(), "originalowner"); 
         out.println(getPlanetFlags().size(), "PlanetFlags.size");
         for (String key : getPlanetFlags().keySet()) {
             out.println(key, "PlanetFlags.key");
@@ -505,23 +437,9 @@ public class Planet implements Comparable<Object>, MutableSerializable {
         setCompProduction(in.readInt("compProduction"));
         setInfluence(new Influences());
         getInfluence().binIn(in);
-        setMapSize(new Dimension(in.readInt("x"), in.readInt("y")));
-        setBoardSize(new Dimension(in.readInt("x"), in.readInt("y")));
-        setTemp(new Dimension(in.readInt("lowtemp"), in.readInt("hitemp")));
-        setGravity(in.readDouble("gravity"));
-        setVacuum(in.readBoolean("vacuum"));
         setMinPlanetOwnerShip(in.readInt("minplanetownership"));
         setHomeWorld(in.readBoolean("homeworld"));
         setOriginalOwner(in.readLine("originalowner"));
-        size = in.readInt("AdvancedTerrain.size");
-        // CampaignData.mwlog.errLog("AdvancedTerrain.size");
-        for (int i = 0; i < size; ++i) {
-            AdvancedTerrain aTerrain = new AdvancedTerrain();
-            int id = in.readInt("AdvancedTerrainId");
-            // CampaignData.mwlog.errLog("AdvancedTerrainId "+id);
-            aTerrain.binIn(in);
-            getAdvancedTerrain().put(new Integer(id), aTerrain);
-        }
         TreeMap<String, String> map = new TreeMap<String, String>();
         size = in.readInt("PlanetFlags.size");
         for (int i = 0; i < size; ++i) {
@@ -575,16 +493,7 @@ public class Planet implements Comparable<Object>, MutableSerializable {
         }
 
         result.append("<br><b>Planetary Conditions</b><br>");
-        result.append("Atmosphere: ");
-        if (isVacuum()) {
-            result.append("None<br>");
-        } else {
-            result.append("Present<br>");
-        }
-        result.append("Gravity: " + getGravity() + "<br>");
-        result.append("Average Low: " + getTemp().width + "<br>");
-        result.append("Average High: " + getTemp().height + "<br>");
-
+        
         result.append("<br><b>Terrain:</b><br>");
         int maxProbab = getEnvironments().getTotalEnivronmentPropabilities();
         if (getEnvironments().size() < 1) {
@@ -601,11 +510,24 @@ public class Planet implements Comparable<Object>, MutableSerializable {
                 } else {
                     result.append(pe.getEnvironment().toImageDescription());
                 }
-
                 String terrainName = pe.getEnvironment().getName();
 
-                result.append(" " + terrainName);
+                result.append(" " + terrainName + " (" + pe.getAdvancedTerrain().getDisplayName() + ")");
                 result.append("<br>");
+
+                result.append("  Atmosphere: ");
+                result.append(PlanetaryConditions.getAtmosphereDisplayableName(pe.getAdvancedTerrain().getAtmosphere()));
+                result.append("<br>");
+                
+                result.append("  Gravity: " + pe.getAdvancedTerrain().getGravity() + "<br>");
+                result.append("  Average Low: " + pe.getAdvancedTerrain().getLowTemp() + "<br>");
+                result.append("  Average High: " + pe.getAdvancedTerrain().getHighTemp() + "<br>");
+                result.append("<br>");
+                result.append(pe.getAdvancedTerrain().WeatherForcast());
+                result.append("<br>");
+                
+                
+                
             }
         }
 
@@ -769,29 +691,16 @@ public class Planet implements Comparable<Object>, MutableSerializable {
                 }
                 result.append(curProb + "% ");
                 result.append(pe.getEnvironment().toImageAbsolutePathDescription());
-                AdvancedTerrain aTerrain = getAdvancedTerrain().get(new Integer(pe.getEnvironment().getId()));
-                if (aTerrain == null) {
-                    result.append("Nothing special");
-                } else {
-                    result.append(" " + aTerrain.getDisplayName());
-                    result.append("<br>Atmosphere: ");
-                    result.append(PlanetaryConditions.getAtmosphereDisplayableName(aTerrain.getAtmosphere()));
-                    result.append("<br>");
-                    result.append("Gravity: " + aTerrain.getGravity());
-                    result.append("<br>Average Low: " + aTerrain.getLowTemp());
-                    result.append("<br>Average High: " + aTerrain.getHighTemp());
-                    if (level >= 100) {
-                        result.append("<br>Night Chance: " + aTerrain.getNightChance());
-                        result.append("<br>Night Temp Mod: " + aTerrain.getNightTempMod());
-                        if (aTerrain.isStaticMap()) {
-                            result.append("<br>Map Name: " + aTerrain.getStaticMapName());
-                            result.append("<br>Map Size(XxY): " + aTerrain.getXSize() + " x " + aTerrain.getYSize());
-                            result.append("<br>Board Size(XxY): " + aTerrain.getXBoardSize() + " x " + aTerrain.getYBoardSize());
-                        }
-                    }
-                }
+                result.append(" " + pe.getAdvancedTerrain().getName());
+                result.append("<br>Atmosphere: ");
+                result.append(PlanetaryConditions.getAtmosphereDisplayableName(pe.getAdvancedTerrain().getAtmosphere()));
                 result.append("<br>");
-            }
+                result.append("Gravity: " + pe.getAdvancedTerrain().getGravity());
+                result.append("<br>Average Low: " + pe.getAdvancedTerrain().getLowTemp());
+                result.append("<br>Average High: " + pe.getAdvancedTerrain().getHighTemp());
+                result.append("<br>Night Temp Mod: " + pe.getAdvancedTerrain().getNightTempMod());
+                result.append("<br>" + pe.getAdvancedTerrain().WeatherForcast() );                
+            	}
         }
 
         // influence
@@ -849,55 +758,6 @@ public class Planet implements Comparable<Object>, MutableSerializable {
     public void setBoardSize(Dimension board) {
         BoardSize = board;
     }
-
-    public Dimension getTemp() {
-        return temperature;
-    }
-
-    public void setTemp(Dimension temp) {
-        temperature = temp;
-    }
-
-    public double getGravity() {
-        return gravity;
-    }
-
-    public void setGravity(double grav) {
-        gravity = grav;
-    }
-
-    public boolean isVacuum() {
-        return vacuum;
-    }
-
-    public void setVacuum(boolean vac) {
-        vacuum = vac;
-    }
-
-    public int getNightChance() {
-        return nightChance;
-    }
-
-    public void setNightChance(int chance) {
-        nightChance = chance;
-    }
-
-    public int getNightTempMod() {
-        return nightTempMod;
-    }
-
-    public void setNightTempMod(int mod) {
-        nightTempMod = mod;
-    }
-
-    public Hashtable<Integer, AdvancedTerrain> getAdvancedTerrain() {
-        return advanceTerrain;
-    }
-
-    public void setAdvancedTerrain(Hashtable<Integer, AdvancedTerrain> terrain) {
-        advanceTerrain = terrain;
-    }
-
     public int getMinPlanetOwnerShip() {
         return minPlanetOwnerShip;
     }

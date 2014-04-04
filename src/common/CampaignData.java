@@ -26,6 +26,8 @@ import java.util.Properties;
 import java.util.TreeMap;
 import java.util.Vector;
 
+import server.campaign.CampaignMain;
+
 import megamek.common.AmmoType;
 
 import common.util.BinReader;
@@ -80,6 +82,8 @@ public class CampaignData implements TerrainProvider {
      * List of all terrains that can occur on surfaces of planets.
      */
     private ArrayList<Terrain> terrains = new ArrayList<Terrain>();
+    private ArrayList<AdvancedTerrain> advTerrains = new ArrayList<AdvancedTerrain>();
+    
 
     private Hashtable<String, String> ServerBannedAmmo = new Hashtable<String, String>();
     private Vector<Integer> bannedTargetingSystems = new Vector<Integer>();
@@ -335,6 +339,24 @@ public class CampaignData implements TerrainProvider {
         id++;
         return id;
     }
+    /**
+     * Retrieve an unused id for advterrains. Only used upon start up of a new
+     * server using XML files.
+     * 
+     * @return An terrain id not used yet.
+     */
+    public int getUnusedAdvTerrainID() {
+        int id = -1;
+        int hid = -1;
+        for (AdvancedTerrain e : advTerrains) {
+            hid = e.getId();
+            if (hid > id) {
+                id = hid;
+            }
+        }
+        id++;
+        return id;
+    }
 
     /**
      * Since I have no idea how TinyXML is operating and since McWizard does not
@@ -392,6 +414,11 @@ public class CampaignData implements TerrainProvider {
         for (Terrain pe : terrains) {
             pe.binOut(out);
         }
+        out.println(advTerrains.size(), "advTerrains.size");
+        for (AdvancedTerrain pe : advTerrains) {
+            pe.binOut(out);
+        }
+        
     }
 
     /**
@@ -435,8 +462,14 @@ public class CampaignData implements TerrainProvider {
         int size = in.readInt("terrains.size");
         for (int i = 0; i < size; ++i) {
             Terrain pe = new Terrain();
-            pe.binIn(in, this);
-            terrains.add(pe);
+            pe.binIn(in, this);            
+            addTerrain(pe);
+        }
+        int Advsize = in.readInt("advTerrains.size");
+        for (int i = 0; i < Advsize; ++i) {
+            AdvancedTerrain pe = new AdvancedTerrain();
+            pe.binIn(in);
+            addAdvancedTerrain(pe);
         }
 
         size = in.readInt("factions.size");
@@ -542,6 +575,46 @@ public class CampaignData implements TerrainProvider {
         return null;
     }
 
+    /*adding the advanced terrain to the campaign data*/
+    /**
+     * @see common.TerrainProvider#getAdvancedTerrain(int)
+     */
+    public AdvancedTerrain getAdvancedTerrain(int id) {
+        for (AdvancedTerrain env : advTerrains) {
+            if (env.getId() == id) {
+                return env;
+            }
+        }
+        return new AdvancedTerrain();
+
+    }
+
+    /**
+     * @see common.TerrainProvider#getAllTerrains()
+     */
+    public Collection<AdvancedTerrain> getAllAdvancedTerrains() {
+        return advTerrains;
+    }
+
+    /**
+     * @see common.TerrainProvider#addTerrain(common.PlanetEnvironment)
+     */
+    public void addAdvancedTerrain(AdvancedTerrain newAdvTerrain) {
+    	newAdvTerrain.setId(getUnusedAdvTerrainID());
+        advTerrains.add(newAdvTerrain);
+        advTerrains.trimToSize();
+    }
+
+    public AdvancedTerrain getAdvancedTerrainByName(String AdvTerrainName) {
+        for (AdvancedTerrain env : advTerrains) {
+            if (env.getName().equalsIgnoreCase(AdvTerrainName)) {
+                return env;
+            }
+        }
+        return new AdvancedTerrain();
+    }
+
+    
     /**
      * @see common.persistence.MMNetSerializable#binOut(common.persistence.TreeWriter)
      * 

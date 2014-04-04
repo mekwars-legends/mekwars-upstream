@@ -24,8 +24,8 @@ import server.campaign.SHouse;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
 import server.campaign.commands.Command;
-import server.campaign.pilot.SPilotSkills;
 import server.campaign.pilot.SPilot;
+import server.campaign.pilot.SPilotSkills;
 import server.campaign.pilot.skills.SPilotSkill;
 import server.campaign.pilot.skills.TraitSkill;
 

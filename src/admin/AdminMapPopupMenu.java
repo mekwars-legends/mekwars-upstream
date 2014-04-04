@@ -15,25 +15,23 @@
  */
 package admin;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import common.CampaignData;
-import common.Planet;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
+import admin.dialog.OpFlagSelectionDialog;
+import admin.dialog.PlanetEditorDialog;
 import client.MWClient;
-
 import client.gui.CMapPanel;
 import client.gui.InnerStellarMap;
 import client.gui.dialog.PlanetNameDialog;
 
-import admin.dialog.OpFlagSelectionDialog;
-import admin.dialog.PlanetEditorDialog;
+import common.CampaignData;
+import common.Planet;
 
 public class AdminMapPopupMenu extends JMenu {
 	

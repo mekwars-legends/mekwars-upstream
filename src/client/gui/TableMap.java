@@ -13,10 +13,10 @@ package client.gui;
  * @author Philip Milne
  */
 
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
-import javax.swing.event.TableModelListener; 
-import javax.swing.event.TableModelEvent; 
 
 public class TableMap extends AbstractTableModel implements TableModelListener {
     

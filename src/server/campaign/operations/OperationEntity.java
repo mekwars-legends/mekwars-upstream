@@ -16,18 +16,17 @@
 
 package server.campaign.operations;
 
-import java.util.Vector;
 import java.util.StringTokenizer;
-
-import common.Unit;
+import java.util.Vector;
 
 import megamek.common.IEntityRemovalConditions;
 import megamek.common.Mech;
-
-import common.CampaignData;
+import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
-import server.campaign.CampaignMain;
+
+import common.CampaignData;
+import common.Unit;
 
 
 public class OperationEntity {

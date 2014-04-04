@@ -24,10 +24,9 @@ import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
-import common.VerticalLayout;
-
 import client.MWClient;
 
+import common.VerticalLayout;
 import common.util.SpringLayoutHelper;
 
 /**

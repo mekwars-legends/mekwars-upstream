@@ -20,9 +20,9 @@ package client.cmd;
 import java.awt.Dimension;
 import java.util.StringTokenizer;
 
-import common.util.TokenReader;
-
 import client.MWClient;
+
+import common.util.TokenReader;
 
 /**
  * @author Imi (immanuel.scholz@gmx.de)

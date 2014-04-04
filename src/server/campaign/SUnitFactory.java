@@ -35,15 +35,14 @@ import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import server.campaign.pilot.SPilot;
+import server.campaign.util.SerializedMessage;
+import server.mwmysql.JDBCConnectionHandler;
+
+import common.CampaignData;
 import common.Planet;
 import common.Unit;
 import common.UnitFactory;
-
-import common.CampaignData;
-import server.campaign.pilot.SPilot;
-import server.campaign.util.SerializedMessage;
-import server.campaign.SUnit;
-import server.mwmysql.JDBCConnectionHandler;
 import common.util.TokenReader;
 
 

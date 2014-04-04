@@ -30,9 +30,7 @@ package server.campaign.operations;
 
 //IMPORTS
 import java.io.FileInputStream;
-
 import java.util.Properties;
-
 
 import common.CampaignData;
 import common.campaign.operations.DefaultOperation;

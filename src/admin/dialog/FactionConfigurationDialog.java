@@ -34,24 +34,24 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
-import javax.swing.JCheckBox;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
+
+import client.MWClient;
 
 import common.CampaignData;
 import common.Unit;
 import common.VerticalLayout;
 import common.util.SpringLayoutHelper;
-
-import client.MWClient;
 
 public final class FactionConfigurationDialog implements ActionListener {
 	

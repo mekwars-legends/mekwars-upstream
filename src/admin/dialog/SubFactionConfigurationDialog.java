@@ -27,24 +27,24 @@ import java.util.Hashtable;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
-import javax.swing.JCheckBox;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
+
+import client.MWClient;
+import client.campaign.CUnit;
 
 import common.CampaignData;
 import common.House;
 import common.SubFaction;
 import common.util.SpringLayoutHelper;
-
-import client.MWClient;
-import client.campaign.CUnit;
 
 public final class SubFactionConfigurationDialog implements ActionListener {
 	

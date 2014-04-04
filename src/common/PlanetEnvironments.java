@@ -66,11 +66,14 @@ public class PlanetEnvironments {
      * so modifying is pointless!
      */
     public Continent[] toArray() {
-        Continent[] ret = new Continent[size()];
-        int i = 0;
-        for (Iterator<Continent> it = iterator(); it.hasNext();)
-            ret[i++] = it.next();
-        return ret;
+    	
+    	int size = continents.size();
+    	Continent Conts[] = new Continent[size];
+    	for (int x = 0;x < size;x++)
+    	{	
+    		Conts[x] = continents.get(x);
+    	}
+    	return Conts;
     }
 
     /**
@@ -108,9 +111,8 @@ public class PlanetEnvironments {
      * Return the environment with the most probability to occour.
      */
     public Continent getBiggestEnvironment() {
-        Continent result = new Continent(0,new Terrain());
-        for (Iterator<Continent> it = iterator(); it.hasNext();) {
-            Continent p = it.next();
+        Continent result = new Continent(0,new Terrain(),new AdvancedTerrain());
+        for (Continent p:continents) {
             if (p.getSize() > result.getSize()) result = p;
         }
         return result;
@@ -121,8 +123,8 @@ public class PlanetEnvironments {
      */
     public int getTotalEnivronmentPropabilities() {
         int result = 0;
-        for (Iterator<Continent> it = iterator(); it.hasNext();)
-            result += (it.next()).getSize();
+        for (Continent C:continents)
+            result += C.getSize();
         return result;
     }
 
@@ -130,35 +132,35 @@ public class PlanetEnvironments {
      * Returns a randomEnvironment based on the propability of each
      * Environment.
      */
-    public PlanetEnvironment getRandomEnvironment(Random r) {
+    public Continent getRandomEnvironment(Random r) {
         // use the skewer draw algorithm from Knuth.
         int probs = getTotalEnivronmentPropabilities();
-        for (Iterator<Continent> it = iterator(); it.hasNext();) {
-            Continent pe = it.next();
+        for (Continent pe:continents) {
             if (r.nextInt(probs) < pe.getSize()){
                 
                 probs = pe.getEnvironment().getTotalEnivronmentPropabilities();
                 for ( PlanetEnvironment env : pe.getEnvironment().getEnviroments() ){
                     if (r.nextInt(probs) < env.getEnvironmentalProb()){
-                        return env;
+                        return pe;
                     }
                     probs -= env.getEnvironmentalProb();
                 }
             }
             probs -= pe.getSize();
         }
-        return new PlanetEnvironment();
+        return new Continent(0,null,null);
     }
 
     /**
      * Writes as binary stream
      */
     public void binOut(BinWriter out){
-        out.println(size(), "terrain.size");
-        for (Iterator<Continent> it = continents.iterator(); it.hasNext();) {
-            Continent cont =it.next(); 
-            out.println(cont.getSize(),"size");
-            out.println(cont.getEnvironment().getId(),"id");
+        out.println(continents.size(), "terrain.size");      
+        for (Continent C: continents)
+        {        
+            out.println(C.getSize(),"size");
+            out.println(C.getEnvironment().getId(),"id");
+            out.println(C.getAdvancedTerrain().getId(),"aid");
         }
     }
 
@@ -168,7 +170,16 @@ public class PlanetEnvironments {
     public void binIn(BinReader in, CampaignData data) throws IOException {
         int size = in.readInt("terrain.size");
         for (int i = 0; i < size; ++i)
-        	add(new Continent(in.readInt("size"), data.getTerrain(in.readInt("id"))));
+        {
+        	int percent = in.readInt("size");
+        	int id =  in.readInt("id");
+        	int aid = in.readInt("aid");
+        	Terrain T = data.getTerrain(id);
+        	AdvancedTerrain AT = data.getAdvancedTerrain(aid);
+        	Continent C = new Continent(percent, T, AT);
+        	add(C);
+        	
+        }
     }
 
     /**

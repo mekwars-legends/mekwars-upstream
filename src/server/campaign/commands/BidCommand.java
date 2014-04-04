@@ -18,11 +18,11 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import common.Unit;
-
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.market2.MarketListing;
+
+import common.Unit;
 
 public class BidCommand implements Command {
 	

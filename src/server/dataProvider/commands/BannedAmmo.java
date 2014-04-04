@@ -24,10 +24,10 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.Date;
 
+import server.dataProvider.ServerCommand;
+
 import common.CampaignData;
 import common.util.BinWriter;
-
-import server.dataProvider.ServerCommand;
 
 /**
  * Retrieve all planet information (if the data cache is lost at client side)

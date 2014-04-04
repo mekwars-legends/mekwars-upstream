@@ -19,11 +19,11 @@ package server.campaign.commands.leader;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import common.CampaignData;
-
-import server.campaign.SPlayer;
 import server.campaign.CampaignMain;
+import server.campaign.SPlayer;
 import server.campaign.commands.Command;
+
+import common.CampaignData;
 
 public class FactionLeaderMuteCommand implements Command {
 

@@ -17,6 +17,7 @@
 package server.campaign.commands;
 
 import java.util.StringTokenizer;
+
 import server.campaign.CampaignMain;
 
 public class LoginCommand implements Command {

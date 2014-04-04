@@ -22,16 +22,16 @@ import java.util.Vector;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import common.Unit;
-import common.util.UnitUtils;
-
-import common.CampaignData;
 import server.campaign.BuildTable;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
 import server.campaign.pilot.SPilot;
+
+import common.CampaignData;
+import common.Unit;
+import common.util.UnitUtils;
 
 
 /**

@@ -16,16 +16,17 @@
 
 package server.campaign.commands.mod;
 
-import java.util.StringTokenizer;
-import java.io.FileInputStream;
-import java.io.File;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
-import common.CampaignData;
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
-import server.MWChatServer.auth.IAuthenticator;
+
+import common.CampaignData;
 
 public class GetModLogCommand implements Command {
 	

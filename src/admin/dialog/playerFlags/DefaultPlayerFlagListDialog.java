@@ -24,7 +24,6 @@ import javax.swing.table.DefaultTableModel;
 
 import client.MWClient;
 
-import common.CampaignData;
 import common.VerticalLayout;
 import common.flags.PlayerFlags;
 

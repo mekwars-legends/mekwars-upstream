@@ -21,8 +21,8 @@ package common;
 //@Version 0.1
 
 import java.io.Serializable;
-import java.util.TreeSet;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 
 public class MMGame implements Serializable {

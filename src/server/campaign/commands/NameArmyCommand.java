@@ -18,11 +18,11 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import common.util.StringUtils;
-
 import server.campaign.CampaignMain;
-import server.campaign.SPlayer;
 import server.campaign.SArmy;
+import server.campaign.SPlayer;
+
+import common.util.StringUtils;
 
 
 public class NameArmyCommand implements Command {

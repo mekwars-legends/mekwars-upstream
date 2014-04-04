@@ -16,14 +16,14 @@
 
 package server.campaign.commands;
 
-import java.util.StringTokenizer;
 import java.util.Enumeration;
-
-import common.Unit;
+import java.util.StringTokenizer;
 
 import server.campaign.CampaignMain;
-import server.campaign.SPlayer;
 import server.campaign.SArmy;
+import server.campaign.SPlayer;
+
+import common.Unit;
 
 
 public class LinkUnitCommand implements Command {

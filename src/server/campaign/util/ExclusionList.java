@@ -21,13 +21,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
-import java.util.Iterator;
 
-import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.mwmysql.JDBCConnectionHandler;
+
+import common.CampaignData;
 
 /**
  * @author urgru

@@ -26,7 +26,6 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
 
-import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
@@ -34,6 +33,7 @@ import server.campaign.SPlayer;
 import server.campaign.operations.OperationReportEntry;
 import server.campaign.pilot.SPilot;
 
+import common.CampaignData;
 import common.Unit;
 
 public class mysqlHandler{

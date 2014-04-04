@@ -16,19 +16,17 @@
 
 package server.campaign.commands;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.StringTokenizer;
-import java.util.Collections;
+import java.util.Vector;
 
+import megamek.common.TechConstants;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.operations.ShortOperation;
 import server.campaign.util.PlanetNameComparator;
-
-import java.util.Vector;
-
-import megamek.common.TechConstants;
 
 import common.Planet;
 

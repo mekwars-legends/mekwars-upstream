@@ -29,8 +29,8 @@ import java.util.LinkedList;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import server.campaign.pilot.SPilotSkills;
 import server.campaign.pilot.SPilot;
+import server.campaign.pilot.SPilotSkills;
 import server.campaign.pilot.skills.SPilotSkill;
 import server.campaign.pilot.skills.TraitSkill;
 

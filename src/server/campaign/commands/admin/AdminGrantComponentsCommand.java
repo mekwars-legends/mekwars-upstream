@@ -18,11 +18,12 @@ package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
 
-import common.Unit;
-import server.campaign.commands.Command;
-import server.campaign.SHouse;
-import server.campaign.CampaignMain;
 import server.MWChatServer.auth.IAuthenticator;
+import server.campaign.CampaignMain;
+import server.campaign.SHouse;
+import server.campaign.commands.Command;
+
+import common.Unit;
 
 // AdminGrantComponents#Faction#Type#WeightClass#Components
 public class AdminGrantComponentsCommand implements Command {

@@ -18,12 +18,12 @@ package server.campaign.commands;
 
 
 import java.util.StringTokenizer;
-import server.campaign.SPlayer;
-import server.campaign.CampaignMain;
-import server.campaign.SUnit;
 
 import megamek.common.Entity;
 import megamek.common.Mech;
+import server.campaign.CampaignMain;
+import server.campaign.SPlayer;
+import server.campaign.SUnit;
 
 public class SetAutoEjectCommand implements Command {
 	

@@ -17,12 +17,12 @@
 
 package client.gui;
 
-import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.html.HTML;
-import javax.swing.text.ViewFactory;
-import javax.swing.text.View;
 import javax.swing.text.Element;
 import javax.swing.text.StyleConstants;
+import javax.swing.text.View;
+import javax.swing.text.ViewFactory;
+import javax.swing.text.html.HTML;
+import javax.swing.text.html.HTMLEditorKit;
 
 public class MyHTMLEditorKit extends HTMLEditorKit {
 

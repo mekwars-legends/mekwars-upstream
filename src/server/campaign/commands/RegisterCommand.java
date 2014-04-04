@@ -18,12 +18,12 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import common.CampaignData;
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
-import server.campaign.commands.Command;
-import server.MWChatServer.auth.IAuthenticator;
 import server.util.MWPasswd;
+
+import common.CampaignData;
 
 
 /**

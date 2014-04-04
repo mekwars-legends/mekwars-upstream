@@ -36,16 +36,12 @@
 package common.campaign.operations;
 
 //IMPORTS
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Properties;
 import java.util.TreeMap;
 
-
+import common.CampaignData;
 import common.MWXMLWriter;
 import common.MWXmlSerializable;
-
-import common.CampaignData;
 import common.util.MMNetXStream;
 
 public class Operation implements MWXmlSerializable {

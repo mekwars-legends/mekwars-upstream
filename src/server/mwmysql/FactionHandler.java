@@ -19,7 +19,6 @@ package server.mwmysql;
 
 
 import java.sql.Connection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,18 +26,16 @@ import java.sql.Statement;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import server.campaign.CampaignMain;
+import server.campaign.NewbieHouse;
+import server.campaign.SHouse;
+import server.campaign.SUnit;
+import server.campaign.mercenaries.ContractInfo;
+import server.campaign.mercenaries.MercHouse;
+
 import common.CampaignData;
 import common.SubFaction;
 import common.Unit;
-
-
-
-import server.campaign.CampaignMain;
-import server.campaign.SHouse;
-import server.campaign.SUnit;
-import server.campaign.NewbieHouse;
-import server.campaign.mercenaries.ContractInfo;
-import server.campaign.mercenaries.MercHouse;
 
 public class FactionHandler {
 	JDBCConnectionHandler ch = new JDBCConnectionHandler();

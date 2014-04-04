@@ -1,16 +1,16 @@
 package updaters;
 
-import java.io.BufferedReader;
-import java.util.List;
-import java.util.ArrayList;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileNotFoundException;
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.swing.JFileChooser;

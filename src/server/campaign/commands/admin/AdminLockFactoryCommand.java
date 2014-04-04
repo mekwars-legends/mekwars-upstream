@@ -18,12 +18,13 @@ package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
 
-import common.CampaignData;
+import server.MWChatServer.auth.IAuthenticator;
+import server.campaign.CampaignMain;
 import server.campaign.SPlanet;
 import server.campaign.SUnitFactory;
-import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
-import server.MWChatServer.auth.IAuthenticator;
+
+import common.CampaignData;
 
 // AdminLockPlanet#Planet#factory#true/false
 public class AdminLockFactoryCommand implements Command {

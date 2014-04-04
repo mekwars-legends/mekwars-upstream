@@ -25,13 +25,25 @@ package common;
  */
 public class Continent {
 	private Terrain environment;
+	private AdvancedTerrain advTerrain;
 	private int size = 1;
 	private int id = -1;
 	
-	public Continent(int Size, Terrain env) {
+	/*public Continent(int Size, Terrain env) {
 		this.size = Size;
 		environment = env;
+		advTerrain = new AdvancedTerrain();
+		advTerrain.setName("none");
+		advTerrain.setId(0);
 	}
+	*/
+	
+	public Continent(int Size, Terrain env, AdvancedTerrain advTerr) {
+		this.size = Size;
+		environment = env;
+		advTerrain = advTerr;
+	}
+	
 	
 	public Continent() {
 		// for serialisation
@@ -59,7 +71,9 @@ public class Continent {
 		Continent cont = (Continent)o;
 		if (cont.getSize() != getSize())
 			return false;
-		if (cont.getEnvironment().equals(getEnvironment()))
+		if (cont.getEnvironment().equals(getEnvironment()))			
+			return false;
+		if (cont.getAdvancedTerrain().equals(getAdvancedTerrain()))
 			return false;
 		return true;
 	}
@@ -68,6 +82,13 @@ public class Continent {
 	 */
 	public Terrain getEnvironment() {
 		return environment;
+	}
+	/**
+	 * @return Returns the envID.
+	 */
+	public AdvancedTerrain getAdvancedTerrain() {
+			return advTerrain;
+
 	}
 	
 	/**
@@ -85,6 +106,9 @@ public class Continent {
 		this.id = id;
 	}
 	
+	public String getDropBoxName() {
+		return getEnvironment().getName() + "(" + getAdvancedTerrain().getName() + ") %" + getSize();        
+	}
   /* public void binOut(TreeWriter out)
    {
        out.write(getEnvironment().getId(), "envID");

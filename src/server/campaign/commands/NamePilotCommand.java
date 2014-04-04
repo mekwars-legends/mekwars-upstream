@@ -18,12 +18,12 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import common.util.StringUtils;
-
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
 import server.campaign.pilot.SPilot;
+
+import common.util.StringUtils;
 
 
 public class NamePilotCommand implements Command {

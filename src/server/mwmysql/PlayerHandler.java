@@ -24,10 +24,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.StringTokenizer;
 
-import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.commands.Command;
+
+import common.CampaignData;
 
 public class PlayerHandler {
 	private JDBCConnectionHandler ch = new JDBCConnectionHandler();

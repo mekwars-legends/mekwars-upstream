@@ -14,11 +14,12 @@ package server.util;
 
 import java.io.IOException;
 
-import common.CampaignData;
 import server.MWChatServer.commands.ICommands;
 import server.MWChatServer.translator.jcrypt;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
+
+import common.CampaignData;
 
 /*
  * Modified 2/26/2003 by Jonathan Ellis

@@ -19,7 +19,6 @@ package server.campaign.commands;
 import java.util.StringTokenizer;
 
 import server.campaign.CampaignMain;
-import server.campaign.commands.Command;
 
 /**
  * Moving the Me command from MWServ into the normal command structure.

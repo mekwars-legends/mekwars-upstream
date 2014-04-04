@@ -15,24 +15,21 @@
  */
 package tracker;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.BufferedReader;
 import java.io.PrintStream;
-
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-
 import java.text.SimpleDateFormat;
-
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Vector;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 /**
  * Starts a server which listens for information

@@ -18,6 +18,7 @@
 package client.gui;
 
 import java.awt.Color;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -25,9 +26,9 @@ import javax.swing.JPanel;
 
 import client.MWClient;
 
-import common.util.StringUtils;
 import common.House;
 import common.Planet;
+import common.util.StringUtils;
 
 /**
  * Draws statistic for a specific CPlanet in the stellar map

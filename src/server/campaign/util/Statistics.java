@@ -24,14 +24,14 @@ import java.util.Iterator;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import common.House;
-import common.Unit;
+import server.campaign.CampaignMain;
+import server.campaign.SHouse;
+import server.campaign.SmallPlayer;
+import server.util.StringUtil;
 
 import common.CampaignData;
-import server.campaign.CampaignMain;
-import server.campaign.SmallPlayer;
-import server.campaign.SHouse;
-import server.util.StringUtil;
+import common.House;
+import common.Unit;
 
 
 public class Statistics {

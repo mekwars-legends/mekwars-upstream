@@ -37,8 +37,9 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
 
-import common.CampaignData;
 import server.campaign.CampaignMain;
+
+import common.CampaignData;
 
 /*
  * Currently, there are at least 3 versions of phpBB in use. For now, I'm going

@@ -17,7 +17,9 @@
 
 package admin.dialog;
 
+import java.util.ArrayList;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -59,18 +61,17 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
     // store the client backlink for other things to use
     private MWClient mwclient = null;
     private String planetName = "";
-    private int planetID = -1;
-    private AdvancedTerrain aTerrain = new AdvancedTerrain();
     private int advanceTerrainId = -1;
     private Planet selectedPlanet;
-    private boolean useAdvancedTerrain = false;
-    private TreeSet<String> removedOwners = new TreeSet<String>();
+    private ArrayList<String> removedOwners = new ArrayList<String>();
     private HashMap<String, Integer> ownersMap = new HashMap<String, Integer>();
-    private TreeSet<String> removedTerrain = new TreeSet<String>();
+    private ArrayList<String> removedTerrain = new ArrayList<String>();
+    private ArrayList<String> removedAdvTerrain = new ArrayList<String>();    
+    private HashMap<String,Continent> ContinentMap = new HashMap<String, Continent>();
     private HashMap<String, Integer> terrainMap = new HashMap<String, Integer>();
-    private TreeSet<String> removedFactory = new TreeSet<String>();
+    private HashMap<String, Integer> advTerrainMap = new HashMap<String, Integer>();
+    private ArrayList<String> removedFactory = new ArrayList<String>();
     private HashMap<String, String> factoryMap = new HashMap<String, String>();
-    private HashMap<String, AdvancedTerrain> advancedTerrainMap = new HashMap<String, AdvancedTerrain>();
 
     private final static String okayCommand = "Save";
     private final static String cancelCommand = "Cancel";
@@ -85,10 +86,8 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
     private final static String RemoveTerrainCommand = "RemoveTerrain";
     private final static String removeAllTerrainsCommand = "RemoveAllTerrains";
     private final static String planetTerrainsCombo = "PlanetTerrainsCombo";
+    private final static String planetAdvancedTerrainsCombo = "PlanetAdvancedTerrainsCombo";
     private final static String planetOwnersListCommand = "PlanetOwnersList";
-    private final static String staticMapCBCommmand = "StaticMapCB";
-    private final static String atmosphereCommand = "Atmosphere";
-
     private final static String windowName = "Vertigo's Planet Editor";
 
     // BUTTONS
@@ -169,11 +168,12 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
     private JPanel planetTerrain;
     private JPanel planetAdvancedTerrain;
     private JTabbedPane ConfigPane = new JTabbedPane(SwingConstants.TOP);
-
     private String[] factoryTypes = { "All", "Mek", "Vee", "Mek & Vee", "Inf", "Mek & Inf", "Vee & Inf", "Mek & Inf & Vee", "Proto", "Mek & Proto", "Vee & Proto", "Mek & Vee & Proto", "Inf & Proto", "Mek & Inf & Proto", "Vee & Inf & Proto", "Mek & Vee & Inf & Proto", "BA", "Mek & BA", "Vee & BA", "Mek & Vee & BA", "Inf & BA", "Mek & Inf & BA", "Vee & Inf & BA", "Mek & Vee & Inf & BA", "Proto & BA", "Mek & Proto & BA", "Vee & Proto & BA", "Mek & Vee & Proto & BA", "Inf & Proto & BA", "Mek & Inf & Proto & BA", "Vee & Inf & Proto & BA", "Mek & Vee & Inf & Proto & BA", "VTOL", "Aero" };
 
     private String[] factorySizes = { "Light", "Medium", "Heavy", "Assault" };
 
+    ArrayList<String> terrainList = new ArrayList<String>();
+    ArrayList<String> advTerrainList = new ArrayList<String>();
     
     
     // Combo boxes
@@ -182,7 +182,9 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
     private JComboBox planetOwnersList;
     private JComboBox planetFactories;
     private JComboBox planetTerrains;
+    private JComboBox planetAdvancedTerrains;
     private JComboBox allTerrains;
+    private JComboBox allAdvancedTerrains;
     private JComboBox factorySize = new JComboBox(factorySizes);
     private JComboBox factoryType = new JComboBox(factoryTypes);
     private JComboBox factoryOwners;
@@ -194,9 +196,6 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
         // save the client
         mwclient = c;
         this.planetName = planetName;
-        this.planetID = planetID;
-
-        useAdvancedTerrain = Boolean.parseBoolean(mwclient.getserverConfigs("UseStaticMaps"));
         // Set the tooltips and actions for dialouge buttons
         okayButton.setActionCommand(okayCommand);
         cancelButton.setActionCommand(cancelCommand);
@@ -275,11 +274,9 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
             removedFactory.clear();
             refreshAllPanels();
         } else if (command.equals(planetTerrainsCombo)) {
-            if (planetTerrains.getItemCount() > 0) {
-                currentTerrainPercent.setText(Integer.toString(terrainMap.get(planetTerrains.getSelectedItem().toString())));
-                advanceTerrainId = getTerrainId();
-                loadAdvancedTerrainsData();
-            }
+        		//int indexToComboBox = planetTerrains.getSelectedIndex();
+        		//Continent C = ContinentMap.get(indexToComboBox);
+            	//currentTerrainPercent.setText(Integer.toString(C.getSize()));
         } else if (command.equals(planetOwnersListCommand)) {
             try {
                 currentFactionOwnerShip.setText(Integer.toString(ownersMap.get(planetOwnersList.getSelectedItem().toString())));
@@ -378,42 +375,32 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
         } else if (command.equals(addTerrainCommand)) {
             try {
                 int percent = Integer.parseInt(newTerrainPercent.getText().trim().replaceAll("%", ""));
-                terrainMap.put(allTerrains.getSelectedItem().toString(), percent);
-                planetTerrains.addItem(allTerrains.getSelectedItem().toString().trim());
-                planetTerrains.setSelectedIndex(0);
-                if (useAdvancedTerrain) {
-                    AdvancedTerrain at = new AdvancedTerrain();
-                    at.setDisplayName(allTerrains.getSelectedItem().toString());
-                    advancedTerrainMap.put(allTerrains.getSelectedItem().toString(), at);
-                }
+                String Tname = allTerrains.getSelectedItem().toString().trim();
+                String ATname = allAdvancedTerrains.getSelectedItem().toString().trim();
+                Terrain T = mwclient.getData().getTerrainByName(Tname);
+                AdvancedTerrain A = mwclient.getData().getAdvancedTerrainByName(ATname);
+                Continent C = new Continent(percent,T,A);
+                String displayName =  C.getDropBoxName();
+                planetTerrains.addItem(displayName);
+                ContinentMap.put(displayName, C);
             } catch (Exception ex) {
                 CampaignData.mwlog.errLog(ex);
             }
         } else if (command.equals(RemoveTerrainCommand)) {
             currentTerrainPercent.setText("");
             if (planetTerrains.getItemCount() > 0) {
-                String terrainName = planetTerrains.getSelectedItem().toString().trim();
-                terrainMap.remove(terrainName);
-                removedTerrain.add(terrainName);
+            	//TODO MDR
+            	ContinentMap.remove(planetTerrains.getSelectedItem());
                 planetTerrains.removeItemAt(planetTerrains.getSelectedIndex());
-                if (planetTerrains.getItemCount() > 0) {
-                    planetTerrains.setSelectedIndex(0);
-                }
-                if (useAdvancedTerrain) {
-                    advancedTerrainMap.remove(terrainName);
-                }
+                saveTerrain();                                
             }
         } else if (command.equals(removeAllTerrainsCommand)) {
             removedTerrain.addAll(terrainMap.keySet());
-            if (useAdvancedTerrain) {
-                advancedTerrainMap.clear();
-            }
             terrainMap.clear();
             planetTerrains.removeAllItems();
+            planetAdvancedTerrains.removeAllItems();
             currentTerrainPercent.setText("");
-        } else if (command.equals(staticMapCBCommmand) || command.equals(atmosphereCommand)) {
-            updateAdvancedTerrain();
-        }
+        } 
     }
 
     private void loadAllPanels() {
@@ -437,9 +424,10 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
         loadPlanetInfoData();
         loadPlanetProductionData();
         loadPlanetTerrainData();
+        
         advanceTerrainId = getTerrainId();
 
-        loadAdvancedTerrainsData();
+        //loadAdvancedTerrainsData();
     }
 
     private void loadPlanetInfo() {
@@ -659,38 +647,52 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
 
         panel1.add(new JLabel("Terrains:", JLabel.CENTER));
 
-        TreeSet<String> terrainList = new TreeSet<String>();
+        ArrayList<String> displayTerrainList = new ArrayList<String>();
         Iterator<Continent> terrains = selectedPlanet.getEnvironments().iterator();
-        while (terrains.hasNext()) {
+        planetTerrains = new JComboBox();
+        int indexer = 0;
+        while (terrains.hasNext()) {        	
             Continent terrain = terrains.next();
-            terrainList.add(terrain.getEnvironment().getName());
-            terrainMap.put(terrain.getEnvironment().getName(), terrain.getSize());
+            String displayName =  terrain.getDropBoxName();
+            planetTerrains.addItem(displayName);
+            ContinentMap.put(displayName, terrain);
         }
-
-        planetTerrains = new JComboBox(terrainList.toArray());
-        planetTerrains.addActionListener(this);
-        planetTerrains.setActionCommand(planetTerrainsCombo);
-        if (planetTerrains.getItemCount() > 0) {
-            planetTerrains.setSelectedIndex(0);
-        }
+        
         currentTerrainPercent.addKeyListener(this);
-
+        
         panel1.add(planetTerrains);
         panel1.add(currentTerrainPercent);
 
         JPanel panel2 = new JPanel();
         allTerrains = new JComboBox();
-        terrainList = new TreeSet<String>();
+        allAdvancedTerrains = new JComboBox();
+        
+        ArrayList<String> allTerrainList = new ArrayList<String>();
+        allTerrainList = new ArrayList<String>();
         for (Terrain terrain : mwclient.getData().getAllTerrains()) {
-            if (terrainMap.containsKey(terrain.getName())) {
+            if (allTerrainList.contains(terrain.getName())) {
                 continue;
             }
-            terrainList.add(terrain.getName());
+            allTerrainList.add(terrain.getName());
         }
 
-        addAllItems(allTerrains, terrainList);
+        addAllItems(allTerrains, allTerrainList);
         panel2.add(allTerrains);
 
+        ArrayList<String> allAdvTerrainList = new ArrayList<String>();
+        Collection<AdvancedTerrain> AdvTerrainCollection = mwclient.getData().getAllAdvancedTerrains();
+        Object[] at = AdvTerrainCollection.toArray();
+        for (int x = 0;x < at.length; x++) {
+        	if((AdvancedTerrain)at[x] != null) {
+        		AdvancedTerrain AdvTer = (AdvancedTerrain)at[x];
+        		allAdvTerrainList.add(AdvTer.getName());
+        	}
+        }
+
+        addAllItems(allAdvancedTerrains, allAdvTerrainList);
+        panel2.add(allAdvancedTerrains);
+
+        
         newTerrainPercent.setToolTipText("Enter the % Chance for this new Terrain");
         panel2.add(newTerrainPercent);
 
@@ -722,274 +724,10 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
         /*
          * Format the Reward Points panel. Spring layout.
          */
-        aTerrain = mwclient.getData().getPlanetByName(planetName).getAdvancedTerrain().get(advanceTerrainId);
         planetAdvancedTerrain.setLayout(new BoxLayout(planetAdvancedTerrain, BoxLayout.Y_AXIS));
 
-        JPanel textPanel = new JPanel(new SpringLayout());
-        JPanel checkboxPanel = new JPanel();
-
-        if (useAdvancedTerrain) {
-
-            for (int aTerrainId : selectedPlanet.getAdvancedTerrain().keySet()) {
-                advancedTerrainMap.put(mwclient.getData().getTerrain(aTerrainId).getName(), selectedPlanet.getAdvancedTerrain().get(aTerrainId));
-            }
-            textPanel.add(new JLabel("Display Name:", SwingConstants.TRAILING));
-            DisplayNameText.setToolTipText("Name of the Continent to appear in planet info");
-            DisplayNameText.addKeyListener(this);
-            textPanel.add(DisplayNameText);
-
-            textPanel.add(new JLabel("Static Map Name:", SwingConstants.TRAILING));
-            StaticMapNameText.setToolTipText("<HTML>Name of a static map you wish to use instead of the RMG<BR>Static Map must be checked to work<br>leave on surprise to grab a random map");
-            StaticMapNameText.addKeyListener(this);
-            textPanel.add(StaticMapNameText);
-
-            textPanel.add(new JLabel("Map X Size:", SwingConstants.TRAILING));
-            XSizeText.setToolTipText("For static maps X size of the Map");
-            XSizeText.addKeyListener(this);
-            textPanel.add(XSizeText);
-
-            textPanel.add(new JLabel("Map Y Size:", SwingConstants.TRAILING));
-            YSizeText.setToolTipText("For static maps Y size of the Map");
-            YSizeText.addKeyListener(this);
-            textPanel.add(YSizeText);
-
-            textPanel.add(new JLabel("Board X Size:", SwingConstants.TRAILING));
-            XBoardSizeText.setToolTipText("For static maps X size of the Board");
-            XBoardSizeText.addKeyListener(this);
-            textPanel.add(XBoardSizeText);
-
-            textPanel.add(new JLabel("Board Y Size:", SwingConstants.TRAILING));
-            YBoardSizeText.setToolTipText("For static maps Y size of the Board");
-            YBoardSizeText.addKeyListener(this);
-            textPanel.add(YBoardSizeText);
-
-            textPanel.add(new JLabel("EMI Chance:", SwingConstants.TRAILING));
-            emiChanceText.setToolTipText("Chance emi is in effect on the planet.");
-            emiChanceText.addKeyListener(this);
-            textPanel.add(emiChanceText);
-
-            textPanel.add(new JLabel("Low Temp:", SwingConstants.TRAILING));
-            LowTempText.setToolTipText("The Lowest temp for this terrain");
-            LowTempText.addKeyListener(this);
-            textPanel.add(LowTempText);
-
-            textPanel.add(new JLabel("High Temp:", SwingConstants.TRAILING));
-            HighTempText.setToolTipText("The Highest temp for this terrain");
-            HighTempText.addKeyListener(this);
-            textPanel.add(HighTempText);
-
-            textPanel.add(new JLabel("Gravity:", SwingConstants.TRAILING));
-            GravityText.setToolTipText("Gravity for this terrain");
-            GravityText.addKeyListener(this);
-            textPanel.add(GravityText);
-
-            textPanel.add(new JLabel("Dusk Chance:", SwingConstants.TRAILING));
-            DuskChanceText.setToolTipText("Chance for dusk to occur on this terrain");
-            DuskChanceText.addKeyListener(this);
-            textPanel.add(DuskChanceText);
-
-            textPanel.add(new JLabel("Night Chance:", SwingConstants.TRAILING));
-            NightChanceText.setToolTipText("Chance for night to occur on this terrain");
-            NightChanceText.addKeyListener(this);
-            textPanel.add(NightChanceText);
-
-            textPanel.add(new JLabel("Moonless Night:", SwingConstants.TRAILING));
-            MoonLessNightChanceText.setToolTipText("Chance for a moonless night to occur on this terrain");
-            MoonLessNightChanceText.addKeyListener(this);
-            textPanel.add(MoonLessNightChanceText);
-
-            textPanel.add(new JLabel("Pitch Black:", SwingConstants.TRAILING));
-            PitchBlackNightChanceText.setToolTipText("Chance for a pitch black night to occur on this terrain");
-            PitchBlackNightChanceText.addKeyListener(this);
-            textPanel.add(PitchBlackNightChanceText);
-
-            textPanel.add(new JLabel("Temp Reduction:", SwingConstants.TRAILING));
-            NightTempModText.setToolTipText("<html>Calculated temp is reduced by <br> this much at night and 1/2 as much at dusk/down<br>i.e. if set to 10 and the temp is 50 the new temp with be 40</html>");
-            NightTempModText.addKeyListener(this);
-            textPanel.add(NightTempModText);
-
-            textPanel.add(new JLabel("Light Rainfall:", SwingConstants.TRAILING));
-            lightRainfallChanceText.setToolTipText("<html>Chance for Light Rainfall</html>");
-            lightRainfallChanceText.addKeyListener(this);
-            textPanel.add(lightRainfallChanceText);
-
-            textPanel.add(new JLabel("Moderate Rainfall:", SwingConstants.TRAILING));
-            moderateRainfallChanceText.setToolTipText("<html>Chance for moderate Rainfall</html>");
-            moderateRainfallChanceText.addKeyListener(this);
-            textPanel.add(moderateRainfallChanceText);
-
-            textPanel.add(new JLabel("Heavy Rainfall:", SwingConstants.TRAILING));
-            heavyRainfallChanceText.setToolTipText("<html>Chance for Heavy Rainfall</html>");
-            heavyRainfallChanceText.addKeyListener(this);
-            textPanel.add(heavyRainfallChanceText);
-
-            textPanel.add(new JLabel("Downpour:", SwingConstants.TRAILING));
-            downPourChanceText.setToolTipText("<html>Chance for a downpour</html>");
-            downPourChanceText.addKeyListener(this);
-            textPanel.add(downPourChanceText);
-
-            textPanel.add(new JLabel("Light Snowfall:", SwingConstants.TRAILING));
-            lightSnowfallChanceText.setToolTipText("<html>Chance for Light Snowfall</html>");
-            lightSnowfallChanceText.addKeyListener(this);
-            textPanel.add(lightSnowfallChanceText);
-
-            textPanel.add(new JLabel("Moderate Snowfall:", SwingConstants.TRAILING));
-            moderateSnowfallChanceText.setToolTipText("<html>Chance for Moderate Snowfall</html>");
-            moderateSnowfallChanceText.addKeyListener(this);
-            textPanel.add(moderateSnowfallChanceText);
-
-            textPanel.add(new JLabel("Heavy Snowfall:", SwingConstants.TRAILING));
-            heavySnowfallChanceText.setToolTipText("<html>Chance for Heavy Snowfall</html>");
-            heavySnowfallChanceText.addKeyListener(this);
-            textPanel.add(heavySnowfallChanceText);
-
-            textPanel.add(new JLabel("Sleet:", SwingConstants.TRAILING));
-            sleetChanceText.setToolTipText("<html>Chance for Sleet</html>");
-            sleetChanceText.addKeyListener(this);
-            textPanel.add(sleetChanceText);
-
-            textPanel.add(new JLabel("Ice Storm:", SwingConstants.TRAILING));
-            iceStormChanceText.setToolTipText("<html>Chance for Ice Storm</html>");
-            iceStormChanceText.addKeyListener(this);
-            textPanel.add(iceStormChanceText);
-
-            textPanel.add(new JLabel("Light Hail:", SwingConstants.TRAILING));
-            lightHailChanceText.setToolTipText("<html>Chance for light hail</html>");
-            lightHailChanceText.addKeyListener(this);
-            textPanel.add(lightHailChanceText);
-
-            textPanel.add(new JLabel("Heavy Hail:", SwingConstants.TRAILING));
-            heavyHailChanceText.setToolTipText("<html>Chance for heavy hail</html>");
-            heavyHailChanceText.addKeyListener(this);
-            textPanel.add(heavyHailChanceText);
-
-            textPanel.add(new JLabel("Light Winds:", SwingConstants.TRAILING));
-            lightWindsChanceText.setToolTipText("<html>Chance for Light Winds</html>");
-            lightWindsChanceText.addKeyListener(this);
-            textPanel.add(lightWindsChanceText);
-
-            textPanel.add(new JLabel("Moderate Winds:", SwingConstants.TRAILING));
-            moderateWindsChanceText.setToolTipText("<html>Chance for Moderate Winds</html>");
-            moderateWindsChanceText.addKeyListener(this);
-            textPanel.add(moderateWindsChanceText);
-
-            textPanel.add(new JLabel("Strong Winds:", SwingConstants.TRAILING));
-            strongWindsChanceText.setToolTipText("<html>Chance for Strong Winds</html>");
-            strongWindsChanceText.addKeyListener(this);
-            textPanel.add(strongWindsChanceText);
-
-            textPanel.add(new JLabel("Storm Winds:", SwingConstants.TRAILING));
-            stormWindsChanceText.setToolTipText("<html>Chance for Storm Winds</html>");
-            stormWindsChanceText.addKeyListener(this);
-            textPanel.add(stormWindsChanceText);
-
-            textPanel.add(new JLabel("Tornado F1-F3:", SwingConstants.TRAILING));
-            tornadoF13WindsChanceText.setToolTipText("<html>Chance for an F1-F3 Tornado</html>");
-            tornadoF13WindsChanceText.addKeyListener(this);
-            textPanel.add(tornadoF13WindsChanceText);
-
-            textPanel.add(new JLabel("Tornado F4+:", SwingConstants.TRAILING));
-            tornadoF4ChanceText.setToolTipText("<html>Chance for an F4+ Tornado</html>");
-            tornadoF4ChanceText.addKeyListener(this);
-            textPanel.add(tornadoF4ChanceText);
-
-            textPanel.add(new JLabel("Light Fog:", SwingConstants.TRAILING));
-            lightFogChanceText.setToolTipText("<html>Chance for light fog</html>");
-            lightFogChanceText.addKeyListener(this);
-            textPanel.add(lightFogChanceText);
-
-            textPanel.add(new JLabel("Heavy Fog:", SwingConstants.TRAILING));
-            heavyFogChanceText.setToolTipText("<html>Chance for heavy fog</html>");
-            heavyFogChanceText.addKeyListener(this);
-            textPanel.add(heavyFogChanceText);
-
-            // run the spring layout
-            SpringLayoutHelper.setupSpringGrid(textPanel, 6);
-
-            isStaticMapCB.setText("Use Static Maps");
-            isStaticMapCB.setToolTipText("Check if you want to use static maps.");
-            isStaticMapCB.setActionCommand(staticMapCBCommmand);
-            checkboxPanel.add(isStaticMapCB);
-
-            checkboxPanel.add(new JLabel("Atmosphere:", SwingConstants.TRAILING));
-            atmosphere.setToolTipText("<html>What type of atmosphere this terrain has.</html>");
-            atmosphere.setActionCommand(atmosphereCommand);
-            checkboxPanel.add(atmosphere);
-
-        } else {
-
-            textPanel.add(new JLabel("Low Temp:", SwingConstants.TRAILING));
-            LowTempText.setToolTipText("The Lowest temp for this terrain");
-            textPanel.add(LowTempText);
-
-            textPanel.add(new JLabel("High Temp:", SwingConstants.TRAILING));
-            HighTempText.setToolTipText("The Highest temp for this terrain");
-            textPanel.add(HighTempText);
-
-            textPanel.add(new JLabel("Gravity:", SwingConstants.TRAILING));
-            GravityText.setToolTipText("Gravity for this terrain");
-            textPanel.add(GravityText);
-
-            textPanel.add(new JLabel("Night Chance:", SwingConstants.TRAILING));
-            NightChanceText.setToolTipText("Chance for night to occur on this terrain");
-            textPanel.add(NightChanceText);
-
-            textPanel.add(new JLabel("Temp Reduction:", SwingConstants.TRAILING));
-            NightTempModText.setToolTipText("<html>Calculated temp is reduced by <br> this much at night and 1/2 as much at dusk/down<br>i.e. if set to 10 and the temp is 50 the new temp with be 40</html>");
-            textPanel.add(NightTempModText);
-
-            // run the spring layout
-            SpringLayoutHelper.setupSpringGrid(textPanel, 4);
-        }
-        planetAdvancedTerrain.add(checkboxPanel);
-        planetAdvancedTerrain.add(textPanel);
-
-        if (aTerrain != null && useAdvancedTerrain) {
-            DisplayNameText.setText(aTerrain.getDisplayName());
-            StaticMapNameText.setText(aTerrain.getStaticMapName());
-            XSizeText.setText(Integer.toString(aTerrain.getXSize()));
-            YSizeText.setText(Integer.toString(aTerrain.getYSize()));
-            XBoardSizeText.setText(Integer.toString(aTerrain.getXBoardSize()));
-            YBoardSizeText.setText(Integer.toString(aTerrain.getYBoardSize()));
-            LowTempText.setText(Integer.toString(aTerrain.getLowTemp()));
-            HighTempText.setText(Integer.toString(aTerrain.getHighTemp()));
-            GravityText.setText(Double.toString(aTerrain.getGravity()));
-            NightChanceText.setText(Integer.toString(aTerrain.getNightChance()));
-            NightTempModText.setText(Integer.toString(aTerrain.getNightTempMod()));
-            heavyRainfallChanceText.setText(Integer.toString(aTerrain.getHeavyRainfallChance()));
-            heavySnowfallChanceText.setText(Integer.toString(aTerrain.getHeavySnowfallChance()));
-            lightRainfallChanceText.setText(Integer.toString(aTerrain.getLightRainfallChance()));
-            moderateWindsChanceText.setText(Integer.toString(aTerrain.getModerateWindsChance()));
-            DuskChanceText.setText(Integer.toString(aTerrain.getDuskChance()));
-            MoonLessNightChanceText.setText(Integer.toString(aTerrain.getMoonLessNightChance()));
-            PitchBlackNightChanceText.setText(Integer.toString(aTerrain.getPitchBlackNightChance()));
-            moderateRainfallChanceText.setText(Integer.toString(aTerrain.getModerateRainFallChance()));
-            downPourChanceText.setText(Integer.toString(aTerrain.getDownPourChance()));
-            lightSnowfallChanceText.setText(Integer.toString(aTerrain.getLightSnowfallChance()));
-            moderateSnowfallChanceText.setText(Integer.toString(aTerrain.getModerateSnowFallChance()));
-            sleetChanceText.setText(Integer.toString(aTerrain.getSleetChance()));
-            iceStormChanceText.setText(Integer.toString(aTerrain.getIceStormChance()));
-            lightHailChanceText.setText(Integer.toString(aTerrain.getLightHailChance()));
-            heavyHailChanceText.setText(Integer.toString(aTerrain.getHeavyHailChance()));
-            lightFogChanceText.setText(Integer.toString(aTerrain.getLightFogChance()));
-            heavyFogChanceText.setText(Integer.toString(aTerrain.getHeavyFogChance()));
-            emiChanceText.setText(Integer.toString(aTerrain.getEMIChance()));
-            lightWindsChanceText.setText(Integer.toString(aTerrain.getLightWindsChance()));
-            strongWindsChanceText.setText(Integer.toString(aTerrain.getStrongWindsChance()));
-            stormWindsChanceText.setText(Integer.toString(aTerrain.getStormWindsChance()));
-            tornadoF13WindsChanceText.setText(Integer.toString(aTerrain.getTornadoF13WindsChance()));
-            tornadoF4ChanceText.setText(Integer.toString(aTerrain.getTornadoF4WindsChance()));
-            isStaticMapCB.setSelected(aTerrain.isStaticMap());
-            atmosphere.setSelectedIndex(aTerrain.getAtmosphere());
-            atmosphere.addActionListener(this);
-            isStaticMapCB.addActionListener(this);
-        } else {
-            LowTempText.setText(Integer.toString(selectedPlanet.getTemp().width));
-            HighTempText.setText(Double.toString(selectedPlanet.getTemp().height));
-            GravityText.setText(Double.toString(selectedPlanet.getGravity()));
-            NightChanceText.setText(Integer.toString(selectedPlanet.getNightChance()));
-            NightTempModText.setText(Integer.toString(selectedPlanet.getNightTempMod()));
-        }
+        new JPanel(new SpringLayout());
+        new JPanel();
         planetAdvancedTerrain.repaint();
     }
 
@@ -1039,7 +777,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
         populateHouseNames(houseNames);
         houseNames.setSelectedItem(selectedPlanet.getOriginalOwner());
 
-        TreeSet<String> houseList = new TreeSet<String>();
+        ArrayList<String> houseList = new ArrayList<String>();
 
         for (House house : selectedPlanet.getInfluence().getHouses()) {
             if (removedOwners.contains(house.getName())) {
@@ -1075,7 +813,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
         planetComps.addActionListener(this);
 
         factoryMap.clear();
-        TreeSet<String> factoryList = new TreeSet<String>();
+        ArrayList<String> factoryList = new ArrayList<String>();
         for (UnitFactory factory : selectedPlanet.getUnitFactories()) {
             if (removedFactory.contains(factory.getName())) {
                 continue;
@@ -1090,41 +828,52 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
 
     private void loadPlanetTerrainData() {
 
-        TreeSet<String> terrainList = new TreeSet<String>();
+    	
+        ContinentMap.clear();
+    	ArrayList<String> terrainList = new ArrayList<String>();
         Iterator<Continent> terrains = selectedPlanet.getEnvironments().iterator();
-        terrainMap.clear();
-        while (terrains.hasNext()) {
-            Continent terrain = terrains.next();
-            if (removedTerrain.contains(terrain.getEnvironment().getName())) {
-                continue;
-            }
-            terrainList.add(terrain.getEnvironment().getName());
-            terrainMap.put(terrain.getEnvironment().getName(), terrain.getSize());
-        }
 
         planetTerrains.removeActionListener(this);
         planetTerrains.removeAllItems();
-        addAllItems(planetTerrains, terrainList);
-        planetTerrains.addActionListener(this);
-        planetTerrains.setActionCommand(planetTerrainsCombo);
-        if (planetTerrains.getItemCount() > 0) {
-            planetTerrains.setSelectedIndex(0);
+        int indexer = 0;
+        while (terrains.hasNext()) {        	
+            Continent terrain = terrains.next();
+            String displayName =  terrain.getDropBoxName();
+            planetTerrains.addItem(displayName);
+            ContinentMap.put(displayName, terrain);
         }
 
+
         allTerrains.removeAllItems();
-        terrainList = new TreeSet<String>();
+        terrainList = new ArrayList<String>();
         for (Terrain terrain : mwclient.getData().getAllTerrains()) {
-            if (terrainMap.containsKey(terrain.getName())) {
-                continue;
-            }
             terrainList.add(terrain.getName());
         }
 
         addAllItems(allTerrains, terrainList);
 
+        planetAdvancedTerrains.removeActionListener(this);
+        planetAdvancedTerrains.removeAllItems();
+        addAllItems(planetAdvancedTerrains, advTerrainList);
+        planetAdvancedTerrains.addActionListener(this);
+        planetAdvancedTerrains.setActionCommand(planetAdvancedTerrainsCombo);
+        if (planetAdvancedTerrains.getItemCount() > 0) {
+            planetAdvancedTerrains.setSelectedIndex(0);
+        }
+
+        allAdvancedTerrains.removeAllItems();
+        advTerrainList = new ArrayList<String>();
+        Collection<AdvancedTerrain> AdvTerrainCollection = mwclient.getData().getAllAdvancedTerrains();
+        Object[] at = AdvTerrainCollection.toArray();
+        for (int x = 0;x < at.length; x++) {
+        	if((AdvancedTerrain)at[x] != null) {
+        		AdvancedTerrain AdvTer = (AdvancedTerrain)at[x];
+        		advTerrainList.add(AdvTer.getName());
+        	}
+        }
     }
 
-    private void loadAdvancedTerrainsData() {
+/*    private void loadAdvancedTerrainsData() {
 
         if (planetTerrains.getItemCount() < 1) {
             aTerrain = null;
@@ -1219,13 +968,14 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
             // isStaticMapCB.setSelected(false);
         }
     }
-
+*/
+    
     private void loadPlanetNamesData() {
 
         // setup the a list of names to feed into a list
         planetNames.removeActionListener(this);
         planetNames.removeAllItems();
-        TreeSet<String> pNames = new TreeSet<String>();// tree to alpha sort
+        ArrayList<String> pNames = new ArrayList<String>();// tree to alpha sort
         for (Planet planet : mwclient.getData().getAllPlanets()) {
             pNames.add(planet.getName());
         }
@@ -1241,7 +991,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
 
     private void populateHouseNames(JComboBox combo) {
 
-        TreeSet<String> factionNames = new TreeSet<String>();// tree to alpha
+    	ArrayList<String> factionNames = new ArrayList<String>();// tree to alpha
         // sort
         for (House house : mwclient.getData().getAllHouses()) {
             factionNames.add(house.getName());
@@ -1250,7 +1000,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
         addAllItems(combo, factionNames);
     }
 
-    private void addAllItems(JComboBox combo, TreeSet<String> list) {
+    private void addAllItems(JComboBox combo, ArrayList<String> list) {
 
         // combo.addItem("None");
         for (String name : list) {
@@ -1260,7 +1010,10 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
 
     private int getTerrainId() {
         try {
-            return mwclient.getData().getTerrainByName(planetTerrains.getSelectedItem().toString().trim()).getId();
+        	int indexToComboBox = planetTerrains.getSelectedIndex();
+        	String terrainToLookup = terrainList.get(indexToComboBox);
+
+            return mwclient.getData().getTerrainByName(terrainToLookup).getId();
         } catch (Exception ex) {
             return -1;
         }
@@ -1288,15 +1041,13 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
             } catch (Exception ex) {
                 CampaignData.mwlog.errLog(ex);
             }
-        } else if (e.getComponent().equals(StaticMapNameText) || e.getComponent().equals(DisplayNameText) || e.getComponent().equals(XBoardSizeText) || e.getComponent().equals(YBoardSizeText) || e.getComponent().equals(XSizeText) || e.getComponent().equals(YSizeText) || e.getComponent().equals(LowTempText) || e.getComponent().equals(HighTempText) || e.getComponent().equals(NightChanceText) || e.getComponent().equals(NightTempModText) || e.getComponent().equals(GravityText) || e.getComponent().equals(lightRainfallChanceText) || e.getComponent().equals(heavyRainfallChanceText) || e.getComponent().equals(heavySnowfallChanceText) || e.getComponent().equals(moderateWindsChanceText) || e.getComponent().equals(DuskChanceText) || e.getComponent().equals(MoonLessNightChanceText) || e.getComponent().equals(PitchBlackNightChanceText) || e.getComponent().equals(moderateRainfallChanceText) || e.getComponent().equals(downPourChanceText) || e.getComponent().equals(lightSnowfallChanceText) || e.getComponent().equals(moderateSnowfallChanceText) || e.getComponent().equals(sleetChanceText) || e.getComponent().equals(iceStormChanceText) || e.getComponent().equals(lightHailChanceText) || e.getComponent().equals(heavyHailChanceText) || e.getComponent().equals(lightFogChanceText) || e.getComponent().equals(heavyFogChanceText) || e.getComponent().equals(emiChanceText) || e.getComponent().equals(lightWindsChanceText) || e.getComponent().equals(strongWindsChanceText) || e.getComponent().equals(stormWindsChanceText) || e.getComponent().equals(tornadoF13WindsChanceText) || e.getComponent().equals(tornadoF4ChanceText)) {
-            updateAdvancedTerrain();
-        }
+        } 
     }
 
     public void keyTyped(KeyEvent e) {
     }
 
-    private void updateAdvancedTerrain() {
+/*    private void updateAdvancedTerrain() {
         AdvancedTerrain aTerrain = advancedTerrainMap.get(planetTerrains.getSelectedItem().toString());
         if (aTerrain == null) {
             aTerrain = new AdvancedTerrain();
@@ -1342,7 +1093,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
         aTerrain.setAtmosphere(atmosphere.getSelectedIndex());
 
     }
-
+*/
     private boolean saveAllData() {
 
         try {
@@ -1392,83 +1143,23 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
 
     private void saveFactories() {
         for (String factory : factoryMap.keySet()) {
-            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminCreateFactory#" + planetName + "#" + factoryMap.get(factory));
+        	String FactoryData = factoryMap.get(factory);
+            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminCreateFactory#" + planetName + "#" + FactoryData);
         }
 
     }
 
     private void saveTerrain() {
-        for (String terrain : terrainMap.keySet()) {
-            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminCreateTerrain#" + planetName + "#" + terrain + "#" + terrainMap.get(terrain));
+        for (String terrainIndex : ContinentMap.keySet()) {
+        	Continent terrain = ContinentMap.get(terrainIndex);
+        	//TODO fix this to send the advancedterrain as well
+        	mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminCreateTerrain#" + planetName + "#" + terrain.getEnvironment().getName() + "#" + terrain.getAdvancedTerrain().getName()+ "#" + terrain.getSize());
         }
 
     }
 
     private void saveAdvancedTerrain() {
 
-        if (useAdvancedTerrain) {
-            for (String terrain : terrainMap.keySet()) {
-                AdvancedTerrain aTerrain = advancedTerrainMap.get(terrain);
-                Terrain pTerrain = mwclient.getData().getTerrainByName(terrain);
-                if (pTerrain == null) {
-                    CampaignData.mwlog.errLog("Unable to find Terrain " + terrain + " on planet " + selectedPlanet.getName());
-                    throw new NullPointerException();
-                }
-                int id = pTerrain.getId();
-
-                if (aTerrain == null) {
-                    aTerrain = new AdvancedTerrain();
-                    aTerrain.setDisplayName(DisplayNameText.getText());
-                    aTerrain.setStaticMapName(StaticMapNameText.getText());
-                    aTerrain.setXSize(Integer.parseInt(XSizeText.getText()));
-                    aTerrain.setYSize(Integer.parseInt(YSizeText.getText()));
-                    aTerrain.setXBoardSize(Integer.parseInt(XBoardSizeText.getText()));
-                    aTerrain.setYBoardSize(Integer.parseInt(YBoardSizeText.getText()));
-                    aTerrain.setLowTemp(Integer.parseInt(LowTempText.getText()));
-                    aTerrain.setHighTemp(Integer.parseInt(HighTempText.getText()));
-                    aTerrain.setGravity(Double.parseDouble(GravityText.getText()));
-                    aTerrain.setNightChance(Integer.parseInt(NightChanceText.getText()));
-                    aTerrain.setNightTempMod(Integer.parseInt(NightTempModText.getText()));
-                    aTerrain.setHeavySnowfallChance(Integer.parseInt(heavySnowfallChanceText.getText()));
-                    aTerrain.setLightRainfallChance(Integer.parseInt(lightRainfallChanceText.getText()));
-                    aTerrain.setHeavyRainfallChance(Integer.parseInt(heavyRainfallChanceText.getText()));
-                    aTerrain.setModerateWindsChance(Integer.parseInt(moderateWindsChanceText.getText()));
-                    aTerrain.setStaticMap(isStaticMapCB.isSelected());
-                    aTerrain.setDuskChance(Integer.parseInt(DuskChanceText.getText()));
-                    aTerrain.setMoonLessNightChance(Integer.parseInt(MoonLessNightChanceText.getText()));
-                    aTerrain.setPitchBlackNightChance(Integer.parseInt(PitchBlackNightChanceText.getText()));
-                    aTerrain.setModerateRainFallChance(Integer.parseInt(moderateRainfallChanceText.getText()));
-                    aTerrain.setDownPourChance(Integer.parseInt(downPourChanceText.getText()));
-                    aTerrain.setLightSnowfallChance(Integer.parseInt(lightSnowfallChanceText.getText()));
-                    aTerrain.setModerateSnowFallChance(Integer.parseInt(moderateSnowfallChanceText.getText()));
-                    aTerrain.setSleetChance(Integer.parseInt(sleetChanceText.getText()));
-                    aTerrain.setIceStormChance(Integer.parseInt(iceStormChanceText.getText()));
-                    aTerrain.setLightHailChance(Integer.parseInt(lightHailChanceText.getText()));
-                    aTerrain.setHeavyHailChance(Integer.parseInt(heavyHailChanceText.getText()));
-                    aTerrain.setLightFogChance(Integer.parseInt(lightFogChanceText.getText()));
-                    aTerrain.setHeavyfogChance(Integer.parseInt(heavyFogChanceText.getText()));
-                    aTerrain.setEMIChance(Integer.parseInt(emiChanceText.getText()));
-                    aTerrain.setLightWindChance(Integer.parseInt(lightWindsChanceText.getText()));
-                    aTerrain.setStrongWindsChance(Integer.parseInt(strongWindsChanceText.getText()));
-                    aTerrain.setStormWindsChance(Integer.parseInt(stormWindsChanceText.getText()));
-                    aTerrain.setTornadoF13WindChance(Integer.parseInt(tornadoF13WindsChanceText.getText()));
-                    aTerrain.setTornadoF4WindsChance(Integer.parseInt(tornadoF4ChanceText.getText()));
-
-                    aTerrain.setAtmosphere(atmosphere.getSelectedIndex());
-                }
-
-                if (aTerrain.getDisplayName().trim().length() < 1) {
-                    aTerrain.setDisplayName(terrain);
-                }
-                mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c SetAdvancedPlanetTerrain#" + planetName + "#" + id + "#" + aTerrain.toString());
-
-            }
-        } else {
-            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminSetPlanetBoardSize#" + planetName + "#" + XBoardSizeText.getText() + "#" + YBoardSizeText.getText());
-            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminSetPlanetGravity#" + planetName + "#" + GravityText.getText());
-            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminSetPlanetMapSize#" + planetName + "#" + XSizeText.getText() + "#" + YSizeText.getText());
-            mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "c AdminSetPlanetTemperature#" + planetName + "#" + LowTempText.getText() + "#" + HighTempText.getText());
-        }
     }
 
     private void saveMisc() {

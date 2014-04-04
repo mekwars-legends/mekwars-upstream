@@ -31,8 +31,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Hashtable;
 
-import server.campaign.operations.OperationReportEntry;
 import server.campaign.SUnit;
+import server.campaign.operations.OperationReportEntry;
 
 import common.CampaignData;
 

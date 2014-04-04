@@ -19,17 +19,16 @@ import java.io.File;
 import java.util.StringTokenizer;
 import java.util.concurrent.ConcurrentHashMap;
 
-import common.util.StringUtils;
-
 import megamek.common.Entity;
-
 import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.BuildTable;
+import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
-import server.campaign.CampaignMain;
 import server.campaign.SUnit;
 import server.campaign.commands.Command;
+
+import common.util.StringUtils;
 
 public class ResearchUnitCommand implements Command {
 

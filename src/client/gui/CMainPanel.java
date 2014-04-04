@@ -34,11 +34,10 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import client.MWClient;
+
 import common.BMEquipment;
 import common.CampaignData;
-
-import client.MWClient;
-import client.gui.CCommPanel;
 
 /**
  * Main panel

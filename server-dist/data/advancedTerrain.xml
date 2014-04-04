@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE DOCUMENT SYSTEM "advancedTerrain.dtd">
+<DOCUMENT>
+	<ADVANCEDTERRAIN>
+	<NAME>none</NAME>
+	<xmap>1</xmap>
+	<ymap>1</ymap>
+	<xboard>16</xboard>
+	<yboard>17</yboard>
+	
+	<effectTerrain>true</effectTerrain>
+	
+	<lowtemp>25</lowtemp>
+	<hitemp>25</hitemp>
+	<gravity>1.0</gravity>
+	<vacuum>false</vacuum>
+	<nightchance>0</nightchance>
+	<duskChance>0</duskChance>
+	<nightmod>0<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>0</pitchBlackChance>
+	<moonlessNightChance>0</moonlessNightChance>
+	
+	<sleetchance>0</sleetchance>
+	<ligthSnowfallChance>0</ligthSnowfallChance>
+	<moderateSnowFallChance>0</moderateSnowFallChance>
+	<heavysnowfallchance>0</heavysnowfallchance>
+	<blizzardchance>0</blizzardchance>
+	<iceStormChance>0</iceStormChance>
+	
+	<blowingsandchance>0</blowingsandchance>
+	
+	<lightRainfallChance>0</lightRainfallChance>
+	<moderateRainFallChance>0</moderateRainFallChance>
+	<heavyRainfallChance>0</heavyRainfallChance>
+	<downPourChance>0</downPourChance>
+	<lightHailChance>0</lightHailChance>
+	<HeavyHailChance>0</HeavyHailChance>
+	
+	<lightWindChance>0</lightWindChance>
+	<moderateWindsChance>0</moderateWindsChance>
+	<highWindsChance>0</highWindsChance>
+	<strongWindsChance>0</strongWindsChance>
+	<stormWindsChance>0</stormWindsChance>
+	<tornadoF13WindChance>0</tornadoF13WindChance>
+	<tornadoF4WindChance>0</tornadoF4WindChance>
+	
+	<emiChance>0</emiChance>	
+	<fogChance>0</fogChance>
+	<lightFogChance>0</lightFogChance>
+	<heavyFogChance>0</heavyFogChance>
+	<atmosphere>3<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
+	
+</ADVANCEDTERRAIN>
+	<ADVANCEDTERRAIN>
+	<NAME>allparams</NAME>
+	<xmap>1</xmap>
+	<ymap>1</ymap>
+	<xboard>16</xboard>
+	<yboard>17</yboard>
+	
+	<effectTerrain>true</effectTerrain>
+	
+	<staticmap>false</staticmap>
+	<mapname>none</mapname>
+	
+	<lowtemp>25</lowtemp>
+	<hitemp>25</hitemp>
+	<temp>25<!--this is the static temperature if you don't want to use a range--></temp>
+	<gravity>1.0</gravity>
+	<vacuum>false</vacuum>
+	<atmosphere>3<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
+	
+	<lightConditions>0<!--this is the integer representation of the light conditions ,overrides the chances--></lightConditions>
+	<nightchance>0</nightchance>
+	<duskChance>0</duskChance>
+	<nightmod>0<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>0</pitchBlackChance>
+	<moonlessNightChance>0</moonlessNightChance>
+	
+	<sleetchance>0</sleetchance>
+	<ligthSnowfallChance>0</ligthSnowfallChance>
+	<moderateSnowFallChance>0</moderateSnowFallChance>
+	<heavysnowfallchance>0</heavysnowfallchance>
+	<blizzardchance>0</blizzardchance>
+	<iceStormChance>0</iceStormChance>
+	
+	<blowingsandchance>0</blowingsandchance>
+	
+	<lightRainfallChance>0</lightRainfallChance>
+	<moderateRainFallChance>0</moderateRainFallChance>
+	<heavyRainfallChance>0</heavyRainfallChance>
+	<downPourChance>0</downPourChance>
+	<lightHailChance>0</lightHailChance>
+	<HeavyHailChance>0</HeavyHailChance>
+	
+	<windStrength>0<!--this is the integer representation of the winds, overides the chances--></windStrength>
+	<windDir>0<!--this is the integer representation of the wind direction - sets initial direction--></windDir>
+	<shiftingwindstrength>false<!--this will ovveride the normal way to determine this, which is by checking the wind chances and seeing if they are there, and then setting the max wind to the highest windspeed with a chance greater than 0--></shiftingwindstrength>
+	<shiftingWindDirection>true</shiftingWindDirection>
+	<maxWindsStrength>0<!--this will ovveride the normal way to determine this, which is by checking the wind chances and seeing if they are there, and then setting the max wind to the highest windspeed with a chance greater than 0--></maxWindsStrength>
+	<lightWindChance>0</lightWindChance>
+	<moderateWindsChance>0</moderateWindsChance>
+	<highWindsChance>0</highWindsChance>
+	<strongWindsChance>0</strongWindsChance>
+	<stormWindsChance>0</stormWindsChance>
+	<tornadoF13WindChance>0</tornadoF13WindChance>
+	<tornadoF4WindChance>0</tornadoF4WindChance>
+	
+	<emiChance>0</emiChance>
+	<emi>false<!--this will overide the emi chance--></emi>
+	
+	<fogChance>0</fogChance>
+	<lightFogChance>0</lightFogChance>
+	<heavyFogChance>0</heavyFogChance>
+</ADVANCEDTERRAIN>
+	<ADVANCEDTERRAIN>
+	<NAME>temperate</NAME>
+	<xmap>1</xmap>
+	<ymap>1</ymap>
+	<xboard>16</xboard>
+	<yboard>17</yboard>
+	
+	<effectTerrain>true</effectTerrain>
+	
+	<staticmap>false</staticmap>
+	<mapname>none</mapname>
+	
+	<lowtemp>12</lowtemp>
+	<hitemp>28</hitemp>
+	<gravity>1.0</gravity>
+	<atmosphere>3<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
+	<nightchance>30</nightchance>
+	<duskChance>15</duskChance>
+	<nightmod>10<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>2</pitchBlackChance>
+	<moonlessNightChance>3</moonlessNightChance>
+	
+	<sleetchance>1</sleetchance>
+	<ligthSnowfallChance>5</ligthSnowfallChance>
+	<moderateSnowFallChance>0</moderateSnowFallChance>
+	<heavysnowfallchance>0</heavysnowfallchance>
+	<blizzardchance>0</blizzardchance>
+	<iceStormChance>0</iceStormChance>
+	
+	<blowingsandchance>5</blowingsandchance>
+	
+	<lightRainfallChance>10</lightRainfallChance>
+	<moderateRainFallChance>15</moderateRainFallChance>
+	<heavyRainfallChance>5</heavyRainfallChance>
+	<downPourChance>2</downPourChance>
+	<lightHailChance>5</lightHailChance>
+	<HeavyHailChance>2</HeavyHailChance>
+	<shiftingWindDirection>true</shiftingWindDirection>
+	<lightWindChance>15</lightWindChance>
+	<moderateWindsChance>10</moderateWindsChance>
+	<highWindsChance>5</highWindsChance>
+	<strongWindsChance>1</strongWindsChance>
+	<stormWindsChance>0</stormWindsChance>
+	<tornadoF13WindChance>0</tornadoF13WindChance>
+	<tornadoF4WindChance>0</tornadoF4WindChance>
+	
+	<emiChance>0</emiChance>
+	
+	<fogChance>10</fogChance>
+	<lightFogChance>10</lightFogChance>
+	<heavyFogChance>5</heavyFogChance>
+</ADVANCEDTERRAIN>
+	<ADVANCEDTERRAIN>
+	<NAME>allparams</NAME>
+	<xmap>1</xmap>
+	<ymap>1</ymap>
+	<xboard>16</xboard>
+	<yboard>17</yboard>
+	
+	<effectTerrain>true</effectTerrain>
+	
+	<staticmap>false</staticmap>
+	<mapname>none</mapname>
+	
+	<lowtemp>25</lowtemp>
+	<hitemp>25</hitemp>
+	<temp>25<!--this is the static temperature if you don't want to use a range--></temp>
+	<gravity>1.0</gravity>
+	<atmosphere>3<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
+	<vacuum>false</vacuum>
+	
+	<lightConditions>0<!--this is the integer representation of the light conditions ,overrides the chances--></lightConditions>
+	<nightchance>0</nightchance>
+	<duskChance>0</duskChance>
+	<nightmod>0<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>0</pitchBlackChance>
+	<moonlessNightChance>0</moonlessNightChance>
+	
+	<sleetchance>0</sleetchance>
+	<ligthSnowfallChance>0</ligthSnowfallChance>
+	<moderateSnowFallChance>0</moderateSnowFallChance>
+	<heavysnowfallchance>0</heavysnowfallchance>
+	<blizzardchance>0</blizzardchance>
+	<iceStormChance>0</iceStormChance>
+	
+	<blowingsandchance>0</blowingsandchance>
+	
+	<lightRainfallChance>0</lightRainfallChance>
+	<moderateRainFallChance>0</moderateRainFallChance>
+	<heavyRainfallChance>0</heavyRainfallChance>
+	<downPourChance>0</downPourChance>
+	<lightHailChance>0</lightHailChance>
+	<HeavyHailChance>0</HeavyHailChance>
+	
+	<windStrength>0<!--this is the integer representation of the winds, overides the chances--></windStrength>
+	<windDir>0<!--this is the integer representation of the wind direction - sets initial direction--></windDir>
+	<shiftingwindstrength>false<!--this will ovveride the normal way to determine this, which is by checking the wind chances and seeing if they are there, and then setting the max wind to the highest windspeed with a chance greater than 0--></shiftingwindstrength>
+	<shiftingWindDirection>true</shiftingWindDirection>
+	<maxWindsStrength>0<!--this will ovveride the normal way to determine this, which is by checking the wind chances and seeing if they are there, and then setting the max wind to the highest windspeed with a chance greater than 0--></maxWindsStrength>
+	<lightWindChance>0</lightWindChance>
+	<moderateWindsChance>0</moderateWindsChance>
+	<highWindsChance>0</highWindsChance>
+	<strongWindsChance>0</strongWindsChance>
+	<stormWindsChance>0</stormWindsChance>
+	<tornadoF13WindChance>0</tornadoF13WindChance>
+	<tornadoF4WindChance>0</tornadoF4WindChance>
+	
+	<emiChance>0</emiChance>
+	<emi>false<!--this will overide the emi chance--></emi>
+	
+	<fogChance>0</fogChance>
+	<lightFogChance>0</lightFogChance>
+	<heavyFogChance>0</heavyFogChance>
+</ADVANCEDTERRAIN>
+
+</DOCUMENT>

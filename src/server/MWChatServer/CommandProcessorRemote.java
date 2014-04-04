@@ -34,11 +34,11 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import common.CampaignData;
-
 import server.MWChatServer.commands.ICommandProcessorRemote;
 import server.MWChatServer.commands.ICommands;
 import server.MWChatServer.commands.UnknownCommand;
+
+import common.CampaignData;
 
 /**
  * When messages come in on the socket from the client, they have to be processed.  This class

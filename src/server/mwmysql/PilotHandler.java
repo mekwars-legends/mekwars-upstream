@@ -25,8 +25,8 @@ import java.sql.Statement;
 import java.util.StringTokenizer;
 
 import server.campaign.CampaignMain;
-import server.campaign.pilot.SPilotSkills;
 import server.campaign.pilot.SPilot;
+import server.campaign.pilot.SPilotSkills;
 import server.campaign.pilot.skills.AstechSkill;
 import server.campaign.pilot.skills.EdgeSkill;
 import server.campaign.pilot.skills.SPilotSkill;

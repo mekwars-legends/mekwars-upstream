@@ -19,9 +19,10 @@ package server.util;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import common.CampaignData;
 import server.MWServ;
 import server.campaign.CampaignMain;
+
+import common.CampaignData;
 
 public class TrackerThread extends Thread {
 	

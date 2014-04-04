@@ -16,14 +16,15 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import common.CampaignData;
-import common.campaign.operations.Operation;
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SPlayer;
 import server.campaign.operations.OperationManager;
 import server.campaign.operations.OpsChickenThread;
 import server.campaign.operations.ShortOperation;
+
+import common.CampaignData;
+import common.campaign.operations.Operation;
 
 /**
  * DefendCommand is analagous to the Task system's "join" command - it allows a

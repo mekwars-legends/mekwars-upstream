@@ -21,8 +21,6 @@
 
 package common;
 
-import java.util.StringTokenizer;
-
 import common.flags.PlayerFlags;
 
 

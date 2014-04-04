@@ -1,7 +1,5 @@
 package common.util.unitdamage;
 
-import common.CampaignData;
-
 import megamek.common.Aero;
 import megamek.common.BattleArmor;
 import megamek.common.Entity;
@@ -9,6 +7,8 @@ import megamek.common.Infantry;
 import megamek.common.Mech;
 import megamek.common.Protomech;
 import megamek.common.Tank;
+
+import common.CampaignData;
 
 public final class UnitDamageHandlerFactory {
 	public static AbstractUnitDamageHandler getHandler(Entity e) {

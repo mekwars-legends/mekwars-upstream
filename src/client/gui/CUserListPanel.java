@@ -43,8 +43,8 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
@@ -56,12 +56,12 @@ import javax.swing.ListCellRenderer;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 
-import common.CampaignData;
-import common.util.StringUtils;
-
 import client.CConfig;
 import client.CUser;
 import client.MWClient;
+
+import common.CampaignData;
+import common.util.StringUtils;
 
 
 //admin import. har!

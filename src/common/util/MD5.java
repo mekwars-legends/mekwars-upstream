@@ -25,11 +25,13 @@
  */
 package common.util;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+
+import com.Ostermiller.util.MD5InputStream;
 
 /**
  * MD5 hash generator.

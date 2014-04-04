@@ -30,16 +30,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
+import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import java.util.StringTokenizer;
-
-import common.House;
+import server.campaign.CampaignMain;
 
 import common.CampaignData;
+import common.House;
 import common.campaign.operations.Operation;
-import server.campaign.CampaignMain;
 
 //IMPORTS
 

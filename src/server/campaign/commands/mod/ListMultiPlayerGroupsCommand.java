@@ -16,19 +16,18 @@
 
 package server.campaign.commands.mod;
 
-import java.util.StringTokenizer;
-import java.util.Hashtable;
 import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
 import server.campaign.commands.Command;
 
 import common.House;
-
-import server.MWChatServer.auth.IAuthenticator;
 
 
 public class ListMultiPlayerGroupsCommand implements Command {

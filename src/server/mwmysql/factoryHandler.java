@@ -16,15 +16,16 @@
 
 package server.mwmysql;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-import server.campaign.SUnitFactory;
-import common.CampaignData;
 import server.campaign.SPlanet;
+import server.campaign.SUnitFactory;
+
+import common.CampaignData;
 
 public class factoryHandler {
 

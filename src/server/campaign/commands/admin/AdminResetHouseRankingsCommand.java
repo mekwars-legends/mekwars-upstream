@@ -19,10 +19,10 @@ package server.campaign.commands.admin;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import server.MWChatServer.auth.IAuthenticator;
+import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 import server.campaign.util.HouseRankingHelpContainer;
-import server.campaign.CampaignMain;
-import server.MWChatServer.auth.IAuthenticator;
 
 public class AdminResetHouseRankingsCommand implements Command {
 	

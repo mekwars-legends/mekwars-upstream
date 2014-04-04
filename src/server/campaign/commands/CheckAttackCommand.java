@@ -19,13 +19,13 @@ package server.campaign.commands;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 
-import common.campaign.operations.Operation;
-
 import server.campaign.CampaignMain;
+import server.campaign.SArmy;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
-import server.campaign.SArmy;
 import server.campaign.operations.OperationManager;
+
+import common.campaign.operations.Operation;
 
 public class CheckAttackCommand implements Command {
 	

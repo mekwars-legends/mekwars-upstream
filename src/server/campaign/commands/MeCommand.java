@@ -21,7 +21,6 @@ import java.util.StringTokenizer;
 import server.MWClientInfo;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
-import server.campaign.commands.Command;
 
 
 /**

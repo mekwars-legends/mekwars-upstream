@@ -44,31 +44,30 @@ import java.awt.event.ItemListener;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpringLayout;
-import javax.swing.JList;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.DefaultListModel;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import megamek.common.Infantry;
-
-import common.CampaignData;
-import common.Unit;
-import common.util.SpringLayoutHelper;
-
 import client.MWClient;
 import client.campaign.CArmy;
 import client.campaign.CPlayer;
 import client.campaign.CUnit;
+
+import common.CampaignData;
+import common.Unit;
+import common.util.SpringLayoutHelper;
 
 
 /* 

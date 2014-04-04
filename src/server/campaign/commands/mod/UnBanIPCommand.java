@@ -20,10 +20,9 @@ import java.net.InetAddress;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 
-
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
-import server.MWChatServer.auth.IAuthenticator;
 
 
 /**

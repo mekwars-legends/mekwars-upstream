@@ -18,9 +18,10 @@ package server.campaign.commands.admin;
 
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
+
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
-import server.MWChatServer.auth.IAuthenticator;
 
 /**
  * AdminSpoof allows an admin to issue ANY command on a player's behalf. Unlike

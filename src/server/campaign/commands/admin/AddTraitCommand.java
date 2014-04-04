@@ -17,13 +17,13 @@
 package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
-
 import java.util.Vector;
 
-import common.CampaignData;
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
-import server.MWChatServer.auth.IAuthenticator;
+
+import common.CampaignData;
 
 
 public class AddTraitCommand implements Command {

@@ -22,10 +22,11 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
+
+import common.CampaignData;
 
 /**
  * @author Torren (Jason Tighe)

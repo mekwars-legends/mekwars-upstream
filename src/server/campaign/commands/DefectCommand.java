@@ -24,12 +24,6 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import megamek.common.TechConstants;
-
-import common.Planet;
-import common.UnitFactory;
-import common.util.UnitUtils;
-
-import common.CampaignData;
 import server.campaign.BuildTable;
 import server.campaign.CampaignMain;
 import server.campaign.NewbieHouse;
@@ -40,6 +34,11 @@ import server.campaign.SUnit;
 import server.campaign.SUnitFactory;
 import server.campaign.util.HouseRankingHelpContainer;
 import server.util.MWPasswd;
+
+import common.CampaignData;
+import common.Planet;
+import common.UnitFactory;
+import common.util.UnitUtils;
 
 public class DefectCommand implements Command {
 

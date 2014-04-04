@@ -24,7 +24,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
-import javax.swing.SpringLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -32,16 +32,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
 import megamek.common.Infantry;
-
-import common.Unit;
-
 import client.MWClient;
 import client.campaign.CUnit;
 import client.gui.WholeNumberField;
+
+import common.Unit;
 import common.util.SpringLayoutHelper;
 
 /*

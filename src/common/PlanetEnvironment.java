@@ -398,7 +398,8 @@ final public class PlanetEnvironment{
             EnvironmentProb = Integer.parseInt(ST.nextToken());
     }
     
-    public String toDescription() {
+
+	public String toDescription() {
         String result="";
         
         int water=(((WaterMaxSpots+WaterMinSpots)/2)*

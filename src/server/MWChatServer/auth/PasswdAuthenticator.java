@@ -34,13 +34,12 @@ package server.MWChatServer.auth;
 
 import java.io.IOException;
 
-import common.CampaignData;
-
 import server.MWChatServer.MWChatClient;
 import server.MWChatServer.MWChatServer;
-import server.MWChatServer.auth.IAuthenticator;
 import server.util.MWPasswd;
 import server.util.MWPasswdRecord;
+
+import common.CampaignData;
 
 /**
  * Authenitcator that reads from a password file.<p>

@@ -29,10 +29,10 @@ package server.MWChatServer;
 
 import java.net.Socket;
 
-import common.CampaignData;
-
 import server.MWChatServer.auth.IAuthenticator;
 import server.MWChatServer.commands.ICommands;
+
+import common.CampaignData;
 
 /**
  * This is the representation of a Client, on the server side. All the

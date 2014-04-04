@@ -228,25 +228,7 @@ public class ShortResolver {
 
         init(so);
 
-        /*
-         * Set up a Map with all of the players from the game. ShortOperation
-         * has a method which returns all player names; however, we want a map
-         * populated with real SPlayer pointers from the outset in order to
-         * avoid continual calls to CampaignMain's getPlayer() method.
-         */
-        allPlayers = new TreeMap<String, SPlayer>();
-        allArmies = new TreeMap<String, SArmy>();
-
-        TreeMap<String, Integer> soIdentifiers = so.getAllPlayersAndArmies();
-        for (String currName : soIdentifiers.keySet()) {
-
-            SPlayer currP = CampaignMain.cm.getPlayer(currName);
-            SArmy currA = currP.getArmy(soIdentifiers.get(currName));
-
-            allPlayers.put(currName, currP);
-            allArmies.put(currName, currA);
-        }
-
+        
         // First token is a winner list, deliminted by *'s.
         StringTokenizer winnerTokenizer = new StringTokenizer(reportTokenizer.nextToken(), "*");
 
@@ -580,13 +562,15 @@ public class ShortResolver {
 
         // return if there is no winner. terminate the game.
         if (so.getWinners().size() == 0) {
+            CampaignData.mwlog.errLog("Autoreporting error: Game had no winner." + so.getShortID() + " Result sent by Game: ");
             CampaignMain.cm.toUser("Autoreporting error: Game had no winner.", loserName, true);
             CampaignMain.cm.getOpsManager().terminateOperation(so, OperationManager.TERM_REPORTINGERROR, null);
-            return;
+			return;
         }
 
         // return if there is no loser. terminate the game.
         if (so.getLosers().size() == 0) {
+            CampaignData.mwlog.errLog("Autoreporting error: Game had no loser." + so.getShortID() + " Result sent by Game: ");
             CampaignMain.cm.toUser("Autoreporting error: Game had no loser.", winnerName, true);
             CampaignMain.cm.getOpsManager().terminateOperation(so, OperationManager.TERM_REPORTINGERROR, null);
             return;
@@ -616,13 +600,17 @@ public class ShortResolver {
         }
 
         if ((winnerA == null) || (winnerA.getPlayerName().trim().length() == 0)) {
-            CampaignMain.cm.toUser("Autoreporting error: Winner army null or had empty owner name.", winnerName, true);
+            CampaignData.mwlog.errLog("Autoreporting error ["+ so.getShortID() + "]:" + " Winner(" + winnerName + ") army  null or had empty owner name.");
+			CampaignMain.cm.toUser("Autoreporting error: Winner army null or had empty owner name.", winnerName, true);
+			CampaignMain.cm.toUser("Autoreporting error: Winner army null or had empty owner name.", loserName, true);
             CampaignMain.cm.getOpsManager().terminateOperation(so, OperationManager.TERM_REPORTINGERROR, null);
             return;
         }
 
         if ((loserA == null) || (loserA.getPlayerName().trim().length() == 0)) {
-            CampaignMain.cm.toUser("Autoreporting error: Loser army null or had empty owner name.", winnerName, true);
+            CampaignData.mwlog.errLog("Autoreporting error ["+ so.getShortID() + "]:" + "Loser(" + loserName + ") army  null or had empty owner name.");
+			CampaignMain.cm.toUser("Autoreporting error: Loser army null or had empty owner name.", loserName, true);
+			CampaignMain.cm.toUser("Autoreporting error: Loser army null or had empty owner name.", winnerName, true);
             CampaignMain.cm.getOpsManager().terminateOperation(so, OperationManager.TERM_REPORTINGERROR, null);
             return;
         }
@@ -637,8 +625,8 @@ public class ShortResolver {
                 winner.addUnit(unit, true);
             }
         }
-
-        // break units in living/salvagable/dead, etc.
+        
+        CampaignData.mwlog.debugLog("Autoreporting debug ["+ so.getShortID() + "]:" + "break " + loserName + "'s units in living/salvagable/dead, etc.");
         possibleSalvageFromInProgressInfo(so, loser);
 
         /*
@@ -646,6 +634,7 @@ public class ShortResolver {
          * string. NOTE: This is where meta-impacts are applied. See method for
          * more detailed comments on assignment of conquest %, thefts, etc.
          */
+        CampaignData.mwlog.debugLog("Autoreporting debug ["+ so.getShortID() + "]:" + "assemble the winner and loser strings, and the final status info string");
         assembleDescriptionStrings(o, so);
 
         /*
@@ -653,16 +642,20 @@ public class ShortResolver {
          * determine cost of player's salvage. save these costs so they may be
          * used to adjust players' paystrings.
          */
+        CampaignData.mwlog.debugLog("Autoreporting debug ["+ so.getShortID() + "]:" + "put together the salvage strings, and move units around");
         assembleSalvageStrings(o, so);
 
         /*
          * Put together the payment strings, and pay the players. Adjust the
          * actual game pay by the salvage costs.
          */
+        CampaignData.mwlog.debugLog("Autoreporting debug ["+ so.getShortID() + "]:" + "Put together the payment strings, and pay the players");
         assemblePaymentStrings(o, so, loser);
 
+        CampaignData.mwlog.debugLog("Autoreporting debug ["+ so.getShortID() + "]:" + "Process Captured units");
         processCapturedUnits(so);
 
+        CampaignData.mwlog.debugLog("Autoreporting debug ["+ so.getShortID() + "]:" + "Process repods");
         repodUnits(so, o);
         /*
          * Check to see if this resolves a long operation.
@@ -674,6 +667,8 @@ public class ShortResolver {
          * players who are no longer connected, but its not going to kill the
          * server.
          */
+         
+        CampaignData.mwlog.debugLog("Autoreporting debug ["+ so.getShortID() + "]:" + "Unlock all participating armies");
         for (SArmy currA : allArmies.values()) {
             currA.setLocked(false);
             CampaignMain.cm.toUser("PL|SAL|" + currA.getID() + "#" + false, currA.getPlayerName(), false);
@@ -684,6 +679,7 @@ public class ShortResolver {
          * inform him of any immunity he may have received.
          */
 
+        CampaignData.mwlog.debugLog("Autoreporting debug ["+ so.getShortID() + "]:" + "Send messages to the winner, remove them from fighting status");
         // send message
         String winName = "";
         if (winner != null) {
@@ -707,6 +703,7 @@ public class ShortResolver {
         }
 
         // start scrap thread
+        CampaignData.mwlog.debugLog("Autoreporting debug ["+ so.getShortID() + "]:" + "start scrap thread");
         if (scrapThreads.containsKey(winName)) {
             Integer maxScrapPay = unitCosts.get(winName);
             if ((maxScrapPay == null) || (maxScrapPay < 0)) {
@@ -727,6 +724,7 @@ public class ShortResolver {
         }
 
         // set immunity && make unbusy
+        CampaignData.mwlog.debugLog("Autoreporting debug ["+ so.getShortID() + "]:" + "set immunity && make unbusy");
         CampaignMain.cm.getIThread().addImmunePlayer(winner);
         if (so.isFromReserve() && (winner != null)) {
             winner.setFighting(false, true);// return AFR players to reserve
@@ -740,18 +738,21 @@ public class ShortResolver {
          * to avoid games, so they can scrap units without cost and reset in
          * SOL.
          */
+        CampaignData.mwlog.debugLog("Autoreporting debug ["+ so.getShortID() + "]:" + "send winner to reserve");
         if (!so.isFromReserve() && CampaignMain.cm.getBooleanConfig("ForcedDeactivation") && (winner != null)) {
             winner.setActive(false);
             CampaignMain.cm.toUser("You've left the front lines to repair and refit, and are now in reserve.", winner.getName());
         }
 
         // send the status update to all players
+        CampaignData.mwlog.debugLog("Autoreporting debug ["+ so.getShortID() + "]:" + "send status update");
         CampaignMain.cm.sendPlayerStatusUpdate(winner, true);
 
         /*
          * Send the message to the loser/disconnector. The player is offline, so
          * their status and immunity time are not concerns at the moment.
          */
+        CampaignData.mwlog.debugLog("Autoreporting debug ["+ so.getShortID() + "]:" + "send loser updates");
         String loseName = "";
         if (loser != null) {
             loseName = loser.getName().toLowerCase();
@@ -760,6 +761,8 @@ public class ShortResolver {
         // longStrings.get(loseName);
         CampaignMain.cm.toUser(toSend, loseName, true);
 
+        CampaignData.mwlog.debugLog("Autoreporting debug ["+ so.getShortID() + "]:" + "save players");
+
         if (winner != null) {
             winner.setSave();
         }
@@ -767,17 +770,21 @@ public class ShortResolver {
             loser.setSave();
         }
         // stick the result into the human readable result log, per RFE1479311.
+		CampaignData.mwlog.debugLog("Autoreporting debug ["+ so.getShortID() + "]:" + "stick the result into the human readable result log");
+
         CampaignData.mwlog.resultsLog(toSend);
 
         /*
          * Set the finished strings for the ShortOperation.
          */
+		CampaignData.mwlog.debugLog("Autoreporting debug ["+ so.getShortID() + "]:" + "Set the finished strings for the ShortOperation");
         so.setCompleteFinishedInfo(completeFinishedInfoString);
         so.setIncompleteFinishedInfo(incompleteFinishedInfoString);
 
         /*
          * Set the game to finished staus and bump the game counter.
          */
+		CampaignData.mwlog.debugLog("Autoreporting debug ["+ so.getShortID() + "]:" + "Set the game to finished staus and bump the game counter");
         so.changeStatus(ShortOperation.STATUS_FINISHED);
         CampaignMain.cm.addGamesCompleted(1);
 
@@ -787,6 +794,7 @@ public class ShortResolver {
             CampaignMain.cm.addToNewsFeed(newsFeedTitle, newsFeedBody);
         }
 
+		CampaignData.mwlog.debugLog("Autoreporting debug ["+ so.getShortID() + "]:" + "check for promotions and then save again?");
         if (winner != null) {
             winner.checkForPromotion();
             winner.checkForDemotion();
@@ -797,6 +805,7 @@ public class ShortResolver {
             loser.checkForDemotion();
             loser.setSave();
         }
+		CampaignData.mwlog.debugLog("Autoreporting debug ["+ so.getShortID() + "]:" + "All Done!");
 
     }
 

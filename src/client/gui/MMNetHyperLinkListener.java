@@ -27,10 +27,10 @@ import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 
+import client.MWClient;
+
 import common.CampaignData;
 import common.Planet;
-
-import client.MWClient;
 
 class MMNetHyperLinkListener implements HyperlinkListener {
 	

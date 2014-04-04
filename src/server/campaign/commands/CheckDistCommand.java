@@ -17,9 +17,10 @@
 package server.campaign.commands;
 
 import java.util.StringTokenizer;
+
 import server.campaign.CampaignMain;
-import server.campaign.SPlayer;
 import server.campaign.SPlanet;
+import server.campaign.SPlayer;
 
 public class CheckDistCommand implements Command {
 	

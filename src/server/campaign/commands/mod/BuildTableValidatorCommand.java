@@ -22,12 +22,12 @@ import java.io.FileReader;
 import java.util.StringTokenizer;
 
 import megamek.common.Entity;
-
-import common.CampaignData;
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.SUnit;
 import server.campaign.commands.Command;
-import server.MWChatServer.auth.IAuthenticator;
+
+import common.CampaignData;
 
 
 /**

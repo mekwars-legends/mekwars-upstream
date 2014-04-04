@@ -20,18 +20,17 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import megamek.common.TechConstants;
-
-import common.UnitFactory;
-
 import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.BuildTable;
+import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.SPlayer;
-import server.campaign.CampaignMain;
 import server.campaign.SUnit;
 import server.campaign.SUnitFactory;
 import server.campaign.commands.Command;
+
+import common.UnitFactory;
 
 public class PurchaseFactoryCommand implements Command {
 

@@ -34,6 +34,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import javax.swing.AbstractAction;
 import javax.swing.JEditorPane;
@@ -56,16 +61,10 @@ import javax.swing.event.HyperlinkListener;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.html.HTMLEditorKit;
 
+import client.MWClient;
+
 import common.CampaignData;
 import common.util.StringUtils;
-
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
-
-import client.MWClient;
 
 /**
  * This is a tabbed multi-channet Communications Panel using Swing to manage the

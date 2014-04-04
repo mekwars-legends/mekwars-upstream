@@ -3,9 +3,9 @@ package server.campaign.operations.resolvers;
 import java.util.HashMap;
 import java.util.Vector;
 
-import common.CampaignData;
-
 import server.campaign.SPlayer;
+
+import common.CampaignData;
 
 public class ShortOpPlayers {
 	private HashMap<Integer, Team> teams;

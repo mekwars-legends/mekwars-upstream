@@ -18,10 +18,10 @@ package server.dataProvider.commands;
 
 import java.util.Date;
 
+import server.dataProvider.ServerCommand;
+
 import common.CampaignData;
 import common.util.BinWriter;
-
-import server.dataProvider.ServerCommand;
 
 
 /**

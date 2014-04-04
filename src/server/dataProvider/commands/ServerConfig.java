@@ -16,16 +16,16 @@
 
 package server.dataProvider.commands;
 
-import java.util.Date;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.util.Date;
+
+import server.campaign.CampaignMain;
+import server.dataProvider.ServerCommand;
 
 import common.CampaignData;
 import common.util.BinWriter;
-
-import server.dataProvider.ServerCommand;
-import server.campaign.CampaignMain;
 
 /**
  * Retrieve all planet information (if the data cache is lost at client side)

@@ -19,12 +19,11 @@ package server.campaign.commands;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-import common.CampaignData;
-import common.Unit;
-import common.campaign.pilot.Pilot;
-
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
+
+import common.Unit;
+import common.campaign.pilot.Pilot;
 
 /**
  * Return a human readable string that describes the pilots

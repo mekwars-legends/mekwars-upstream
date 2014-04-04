@@ -19,9 +19,9 @@ package client.cmd;
 
 import java.util.StringTokenizer;
 
-import common.CampaignData;
-
 import client.MWClient;
+
+import common.CampaignData;
 
 /**
  * Updates the faction status screen

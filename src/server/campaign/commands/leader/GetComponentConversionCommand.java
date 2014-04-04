@@ -17,12 +17,12 @@ package server.campaign.commands.leader;
 
 import java.util.StringTokenizer;
 
-import common.util.ComponentToCritsConverter;
-
+import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
-import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
+
+import common.util.ComponentToCritsConverter;
 
 public class GetComponentConversionCommand implements Command {
 

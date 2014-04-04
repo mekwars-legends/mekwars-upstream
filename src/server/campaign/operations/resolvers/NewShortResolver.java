@@ -1,12 +1,9 @@
 package server.campaign.operations.resolvers;
 
-import java.util.Vector;
+import server.campaign.SPlanet;
+import server.campaign.operations.ShortOperation;
 
 import common.UnitFactory;
-
-import server.campaign.SPlanet;
-import server.campaign.SPlayer;
-import server.campaign.operations.ShortOperation;
 
 public class NewShortResolver {
 	int gameID;

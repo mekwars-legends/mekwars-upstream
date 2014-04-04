@@ -21,7 +21,6 @@ package server.campaign.pilot.skills;
 
 
 import megamek.common.Entity;
-
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 

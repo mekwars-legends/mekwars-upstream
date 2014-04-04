@@ -16,17 +16,18 @@
 
 package server.campaign.util;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.StringTokenizer;
 
-import java.sql.Connection;
+import server.campaign.CampaignMain;
+import server.campaign.SUnit;
+import server.mwmysql.JDBCConnectionHandler;
 
 import common.CampaignData;
-import server.campaign.*;
-import server.mwmysql.JDBCConnectionHandler;
 
 /**
  *

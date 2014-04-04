@@ -15,6 +15,7 @@
 
 package server.campaign;
 
+import java.awt.Dimension;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,7 +29,10 @@ import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.Vector;
-import java.awt.Dimension;
+
+import server.campaign.data.TimeUpdatePlanet;
+import server.campaign.util.SerializedMessage;
+import server.mwmysql.JDBCConnectionHandler;
 
 import common.AdvancedTerrain;
 import common.CampaignData;
@@ -36,14 +40,11 @@ import common.Continent;
 import common.House;
 import common.Influences;
 import common.Terrain;
+import common.AdvancedTerrain;
 import common.Unit;
 import common.UnitFactory;
 import common.util.Position;
 import common.util.TokenReader;
-
-import server.campaign.data.TimeUpdatePlanet;
-import server.campaign.util.SerializedMessage;
-import server.mwmysql.JDBCConnectionHandler;
 
 public class SPlanet extends TimeUpdatePlanet implements Serializable, Comparable<Object> {
 private JDBCConnectionHandler ch = new JDBCConnectionHandler();
@@ -96,14 +97,10 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
         for (Continent t : getEnvironments().toArray()) {
             result.append(t.getSize());
             result.append(t.getEnvironment().getName());
-            if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")) {
-                AdvancedTerrain aTerrain = this.getAdvancedTerrain().get(new Integer(t.getEnvironment().getId()));
-                if (aTerrain == null)
-                    aTerrain = new AdvancedTerrain(); // no data start it over. first time starting advanced maps.
-                if (aTerrain.getDisplayName().length() <= 1)
-                    aTerrain.setDisplayName(t.getEnvironment().getName());
-                result.append(aTerrain.toString());
-            }
+            
+            if(t.getAdvancedTerrain() != null)
+            	if(t.getAdvancedTerrain().getName() != null)
+            result.append(t.getAdvancedTerrain().getName());
         }
         if (getDescription().equals(""))
             result.append(" ");
@@ -118,12 +115,6 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
         result.append(getMapSize().height);
         result.append(getBoardSize().width);
         result.append(getBoardSize().height);
-        result.append(getTemp().width);
-        result.append(getTemp().height);
-        result.append(getGravity());
-        result.append(isVacuum());
-        result.append(getNightChance());
-        result.append(getNightTempMod());
         result.append(this.getMinPlanetOwnerShip());
         result.append(isHomeWorld());
         result.append(getOriginalOwner());
@@ -181,7 +172,6 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
                 ps.setInt(1, getCompProduction());
                 ps.setDouble(2, getPosition().getX());
                 ps.setDouble(3, getPosition().getY());
-                ps.setString(4, getDescription());
                 ps.setInt(5, getBaysProvided());
                 ps.setBoolean(6, isConquerable());
                 ps.setString(7, sdf.format(getLastChanged()));
@@ -190,12 +180,6 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
                 ps.setInt(10, getMapSize().height);
                 ps.setInt(11, getBoardSize().width);
                 ps.setInt(12, getBoardSize().height);
-                ps.setInt(13, getTemp().width);
-                ps.setInt(14, getTemp().height);
-                ps.setDouble(15, getGravity());
-                ps.setBoolean(16, isVacuum());
-                ps.setInt(17, getNightChance());
-                ps.setInt(18, getNightTempMod());
                 ps.setInt(19, getMinPlanetOwnerShip());
                 ps.setBoolean(20, isHomeWorld());
                 ps.setString(21, getOriginalOwner());
@@ -281,12 +265,7 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
                 ps.setInt(10, getMapSize().height);
                 ps.setInt(11, getBoardSize().width);
                 ps.setInt(12, getBoardSize().height);
-                ps.setInt(13, getTemp().width);
-                ps.setInt(14, getTemp().height);
-                ps.setDouble(15, getGravity());
-                ps.setBoolean(16, isVacuum());
-                ps.setInt(17, getNightChance());
-                ps.setInt(18, getNightTempMod());
+
                 ps.setInt(19, getMinPlanetOwnerShip());
                 ps.setBoolean(20, isHomeWorld());
                 ps.setString(21, getOriginalOwner());
@@ -405,9 +384,11 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
         for (int i = 0; i < Envs; i++) {
             int size = TokenReader.readInt(ST);
             String terrain = TokenReader.readString(ST);
+            String advTerrain = TokenReader.readString(ST);
             int terrainNumber = 0;
+            int advTerrainNumber = 0;
             Terrain planetEnvironment = null;
-
+            AdvancedTerrain planetWeather = null; 
             /*
              * Bug reported if you screw with the positions of the terrains in terrain.xml you'll screw up the planet terrains this will now allow you to load via int and then save via name so the terrain will always be correct no matter the position of the terrain in the terrain.xml.
              */
@@ -416,35 +397,24 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
                 planetEnvironment = data.getTerrain(terrainNumber);
             } catch (Exception ex) {
                 planetEnvironment = data.getTerrainByName(terrain);
-            }
+            }            
             
             if ( planetEnvironment == null )
                 planetEnvironment = data.getTerrain(0);
 
-            Continent PE = new Continent(size, planetEnvironment);
-            if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")) {
-                AdvancedTerrain aTerrain = new AdvancedTerrain();
+            try{
+            	advTerrainNumber = Integer.parseInt(advTerrain);
+            	planetWeather = data.getAdvancedTerrain(advTerrainNumber);
+            } catch (Exception ex) {
+            	CampaignData.mwlog.mainLog("advTerrain is " + advTerrain);                	
 
-                String tempHolder = TokenReader.readString(ST);
-                if (tempHolder.indexOf("$") < 0) {
-                    aTerrain.setDisplayName(tempHolder);
-                    aTerrain.setXSize(TokenReader.readInt(ST));
-                    aTerrain.setYSize(TokenReader.readInt(ST));
-                    aTerrain.setStaticMap(TokenReader.readBoolean(ST));
-                    aTerrain.setXBoardSize(TokenReader.readInt(ST));
-                    aTerrain.setYBoardSize(TokenReader.readInt(ST));
-                    aTerrain.setLowTemp(TokenReader.readInt(ST));
-                    aTerrain.setHighTemp(TokenReader.readInt(ST));
-                    aTerrain.setGravity(TokenReader.readDouble(ST));
-                    TokenReader.readBoolean(ST);
-                    aTerrain.setNightChance(TokenReader.readInt(ST));
-                    aTerrain.setNightTempMod(TokenReader.readInt(ST));
-                    aTerrain.setStaticMapName(TokenReader.readString(ST));
-                } else {
-                    aTerrain = new AdvancedTerrain(tempHolder);
-                }
-                this.getAdvancedTerrain().put(new Integer(PE.getEnvironment().getId()), aTerrain);
+            	planetWeather = data.getAdvancedTerrainByName(advTerrain);
             }
+            
+            if (planetWeather == null)
+            	planetWeather  = data.getAdvancedTerrain(0);
+            
+            Continent PE = new Continent(size, planetEnvironment, planetWeather);                       
             getEnvironments().add(PE);
         }
 
@@ -469,28 +439,7 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
         	id = CampaignData.cd.getUnusedPlanetID();
         }
         setId(id);
-//        setId(-1);
-        int x = (TokenReader.readInt(ST));
-        int y = (TokenReader.readInt(ST));
-        setMapSize(new Dimension(x, y));
-
-        x = (TokenReader.readInt(ST));
-        y = (TokenReader.readInt(ST));
-        setBoardSize(new Dimension(x, y));
-
-        x = (TokenReader.readInt(ST));
-        y = (TokenReader.readInt(ST));
-        setTemp(new Dimension(x, y));
-
-        setGravity(TokenReader.readDouble(ST));
-
-        setVacuum(TokenReader.readBoolean(ST));
-        int chance = (TokenReader.readInt(ST));
-        int mod = (TokenReader.readInt(ST));
-        setNightChance(chance);
-        setNightTempMod(mod);
-
-        setMinPlanetOwnerShip(TokenReader.readInt(ST));
+//       setMinPlanetOwnerShip(TokenReader.readInt(ST));
 
         setHomeWorld(TokenReader.readBoolean(ST));
 
@@ -782,8 +731,12 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
         if (withTerrain) {
             Continent p = getEnvironments().getBiggestEnvironment();
             Terrain pe = p.getEnvironment();
+            AdvancedTerrain ape = p.getAdvancedTerrain();
             if (pe != null && pe.getEnviroments().size() > 0)
                 result.append(" " + pe.getEnviroments().get(0).toImageDescription());
+            if (ape != null )
+                result.append(" " + ape.WeatherForcast());
+            	
 
             if (this.getUnitFactories().size() > 0) {
                 for (int i = 0; i < this.getUnitFactories().size(); i++) {

@@ -16,21 +16,11 @@
 
 package server.campaign.commands;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.StringTokenizer;
 
-import megamek.common.Entity;
-
-import common.CampaignData;
-import common.campaign.operations.Operation;
 import server.campaign.CampaignMain;
-import server.campaign.SPlayer;
-import server.campaign.SUnit;
-import server.campaign.commands.Command;
+
+import common.campaign.operations.Operation;
 
 public class CodeTestCommand implements Command {
 	

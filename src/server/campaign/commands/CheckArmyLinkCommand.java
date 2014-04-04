@@ -16,13 +16,13 @@
 
 package server.campaign.commands;
 
-import java.util.StringTokenizer;
 import java.util.Enumeration;
+import java.util.StringTokenizer;
 
 import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
-import server.campaign.SPlayer;
 import server.campaign.SArmy;
+import server.campaign.SPlayer;
 
 
 public class CheckArmyLinkCommand implements Command {

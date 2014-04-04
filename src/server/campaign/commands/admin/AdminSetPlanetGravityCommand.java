@@ -17,10 +17,11 @@
 package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
-import server.campaign.commands.Command;
+
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.SPlanet;
-import server.MWChatServer.auth.IAuthenticator;
+import server.campaign.commands.Command;
 
 
 public class AdminSetPlanetGravityCommand implements Command {
@@ -33,30 +34,9 @@ public class AdminSetPlanetGravityCommand implements Command {
 	
 	public void process(StringTokenizer command,String Username) {
 		
-		//access level check
-		int userLevel = CampaignMain.cm.getServer().getUserLevel(Username);
-		if(userLevel < getExecutionLevel()) {
-			CampaignMain.cm.toUser("AM:Insufficient access level for command. Level: " + userLevel + ". Required: " + accessLevel + ".",Username,true);
-			return;
-		}
+		CampaignMain.cm.toUser("AM: This command is deprecated, please use SetPlanetAdvancedTerrain",Username,true);
+		return;
 		
-		SPlanet planet =  (SPlanet) CampaignMain.cm.getData().getPlanetByName(command.nextToken());
-		if ( planet == null ) {
-			CampaignMain.cm.toUser("Unknown Planet",Username,true);
-			return;
-		}
-		double grav = Double.parseDouble(command.nextToken());
-		
-		planet.setGravity(grav);
-		planet.updated();
-		
-		if(CampaignMain.cm.isUsingMySQL())
-			planet.toDB();
-		
-		
-		CampaignMain.cm.toUser("Gravity set for "+planet.getName(),Username,true);
-		//server.CampaignData.mwlog.modLog(Username + " set the gravity for "+planet.getName());
-		CampaignMain.cm.doSendModMail("NOTE",Username + " has set the gravity for "+planet.getName());
 		
 	}
 }

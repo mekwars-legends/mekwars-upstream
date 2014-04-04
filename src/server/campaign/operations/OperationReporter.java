@@ -21,14 +21,13 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import megamek.common.IEntityRemovalConditions;
-
-import common.CampaignData;
-import common.Unit;
-
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
+
+import common.CampaignData;
+import common.Unit;
 
 public class OperationReporter {
 

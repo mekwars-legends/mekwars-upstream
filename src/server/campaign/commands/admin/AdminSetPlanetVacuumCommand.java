@@ -18,11 +18,12 @@ package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
 
-import common.CampaignData;
-import server.campaign.commands.Command;
-import server.campaign.SPlanet;
-import server.campaign.CampaignMain;
 import server.MWChatServer.auth.IAuthenticator;
+import server.campaign.CampaignMain;
+import server.campaign.SPlanet;
+import server.campaign.commands.Command;
+
+import common.CampaignData;
 
 // AdminSetPlanetVacuum#Planet#true/false
 public class AdminSetPlanetVacuumCommand implements Command {
@@ -36,47 +37,8 @@ public class AdminSetPlanetVacuumCommand implements Command {
 	public void process(StringTokenizer command,String Username) {
 		
 		//access level check
-		int userLevel = CampaignMain.cm.getServer().getUserLevel(Username);
-		if(userLevel < getExecutionLevel()) {
-			CampaignMain.cm.toUser("AM:Insufficient access level for command. Level: " + userLevel + ". Required: " + accessLevel + ".",Username,true);
+			CampaignMain.cm.toUser("AM: This command is deprecated, please use SetPlanetAdvancedTerrain",Username,true);
 			return;
-		}
-		
-		try{
-			SPlanet p = (SPlanet) CampaignMain.cm.getData().getPlanetByName(command.nextToken());
-			if ( p == null ){
-				CampaignMain.cm.toUser("Unknown planet!",Username,true);
-				return;   
-			}
-			
-			boolean lock; 
-			if ( command.hasMoreElements() )
-				lock = new Boolean(command.nextToken()).booleanValue();
-			else {
-				if ( p.isVacuum() )
-					lock = false;
-				else
-					lock = true;
-			}
-			
-			p.setVacuum(lock);
-			if ( lock ) {
-				CampaignMain.cm.toUser("You've removed the atmosphere from planet "+p.getName(),Username,true);
-				//server.CampaignData.mwlog.modLog(Username + " removed the atmosphere from planet "+p.getName());
-				CampaignMain.cm.doSendModMail("NOTE",Username + " has removed the atmosphere from planet "+p.getName());
-			}
-			else {	
-				CampaignMain.cm.toUser("You've created an atmosphere on planet "+p.getName(),Username,true);
-				//server.CampaignData.mwlog.modLog(Username + " has created an atmosphere on planet "+p.getName());
-				CampaignMain.cm.doSendModMail("NOTE",Username + " has created an atmosphere on planet "+p.getName());
-			}
-			p.updated();
-
-			
-		}
-		catch (Exception ex){
-			CampaignData.mwlog.errLog(ex);
-		}
-		
+				
 	}
 }

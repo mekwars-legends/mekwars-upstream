@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.AccessException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,14 +39,14 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
-import common.CampaignData;
-
+import server.MWChatServer.auth.Auth;
 import server.MWChatServer.auth.IAuthenticator;
 import server.MWChatServer.auth.IRoomAuthenticator;
 import server.MWChatServer.auth.NullRoomAuthenticator;
 import server.MWChatServer.auth.PasswdAuthenticator;
 import server.MWChatServer.commands.ICommands;
-import server.MWChatServer.auth.Auth;
+
+import common.CampaignData;
 
 public class MWChatServer implements ICommands {
 

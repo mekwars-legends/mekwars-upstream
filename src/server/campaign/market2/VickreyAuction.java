@@ -16,16 +16,16 @@
 
 package server.campaign.market2;
 
-import java.util.TreeMap;
 import java.util.Iterator;
-
-import common.CampaignData;
-import common.Unit;
+import java.util.TreeMap;
 
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
+
+import common.CampaignData;
+import common.Unit;
 
 /**
  * Vickrey auction is a modified highest sealed bid auction. Winner

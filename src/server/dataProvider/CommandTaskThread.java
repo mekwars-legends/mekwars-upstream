@@ -26,9 +26,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import common.CampaignData;
-
-//import common.util.BinReader;
 import common.util.BinWriter;
+//import common.util.BinReader;
 
 
 

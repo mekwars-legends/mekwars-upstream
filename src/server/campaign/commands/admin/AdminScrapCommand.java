@@ -17,13 +17,15 @@
 package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
+
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
-import common.campaign.pilot.Pilot;
 import server.campaign.commands.Command;
 import server.campaign.pilot.SPilot;
-import server.MWChatServer.auth.IAuthenticator;
+
+import common.campaign.pilot.Pilot;
 
 /**
  * @author Helge Richter

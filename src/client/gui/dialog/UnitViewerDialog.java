@@ -64,7 +64,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
@@ -93,6 +92,7 @@ import megamek.common.loaders.EntityLoadingException;
 import client.MWClient;
 import client.gui.CMainFrame;
 import client.gui.MechInfo;
+
 import common.CampaignData;
 import common.util.SpringLayoutHelper;
 import common.util.UnitUtils;

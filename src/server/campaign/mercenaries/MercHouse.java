@@ -18,10 +18,11 @@ package server.campaign.mercenaries;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
-import server.campaign.SHouse;
-import server.campaign.SPlayer;
-import server.campaign.SPlanet;
+
 import server.campaign.CampaignMain;
+import server.campaign.SHouse;
+import server.campaign.SPlanet;
+import server.campaign.SPlayer;
 
 public class MercHouse extends SHouse {
 	

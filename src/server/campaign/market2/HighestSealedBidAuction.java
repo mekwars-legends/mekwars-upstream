@@ -19,13 +19,13 @@ package server.campaign.market2;
 import java.util.Iterator;
 import java.util.TreeMap;
 
-import common.CampaignData;
-import common.Unit;
-
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
+
+import common.CampaignData;
+import common.Unit;
 
 /**
  * Classic MMNET-style sealed bid auction.

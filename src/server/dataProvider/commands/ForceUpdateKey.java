@@ -18,11 +18,11 @@ package server.dataProvider.commands;
 
 import java.util.Date;
 
-import common.CampaignData;
-import common.util.BinWriter;
-
 import server.campaign.CampaignMain;
 import server.dataProvider.ServerCommand;
+
+import common.CampaignData;
+import common.util.BinWriter;
 
 /**
  * Retrieve the MD5 of the current campaignconfig file.

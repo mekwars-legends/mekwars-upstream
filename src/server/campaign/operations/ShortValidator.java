@@ -24,32 +24,31 @@
 package server.campaign.operations;
 
 // IMPORTS
-import common.CampaignData;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
+
+import megamek.common.BattleArmor;
+import megamek.common.Protomech;
 import server.campaign.CampaignMain;
 import server.campaign.NewbieHouse;
+import server.campaign.SArmy;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.SPlayer;
-import server.campaign.SArmy;
 import server.campaign.SUnit;
 import server.campaign.mercenaries.ContractInfo;
 import server.campaign.operations.validation.ISpreadValidator;
 import server.campaign.operations.validation.PercentBVSpreadValidator;
 import server.campaign.operations.validation.StandardBVSpreadValidator;
 
-import java.util.ArrayList;
-import java.util.StringTokenizer;
-import java.util.TreeMap;
-import java.util.Iterator;
-
+import common.CampaignData;
 import common.House;
 import common.Planet;
 import common.Unit;
 import common.campaign.operations.Operation;
 import common.flags.PlayerFlags;
-
-import megamek.common.BattleArmor;
-import megamek.common.Protomech;
 
 public class ShortValidator {
 

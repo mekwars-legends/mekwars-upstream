@@ -16,12 +16,13 @@
 
 package server.campaign.commands.admin;
 
-import java.util.StringTokenizer;
 import java.awt.Dimension;
-import server.campaign.commands.Command;
+import java.util.StringTokenizer;
+
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.SPlanet;
-import server.MWChatServer.auth.IAuthenticator;
+import server.campaign.commands.Command;
 
 
 public class AdminSetPlanetTemperatureCommand implements Command {
@@ -34,34 +35,8 @@ public class AdminSetPlanetTemperatureCommand implements Command {
 	
 	public void process(StringTokenizer command,String Username) {
 		
-		//access level check
-		int userLevel = CampaignMain.cm.getServer().getUserLevel(Username);
-		if(userLevel < getExecutionLevel()) {
-			CampaignMain.cm.toUser("AM:Insufficient access level for command. Level: " + userLevel + ". Required: " + accessLevel + ".",Username,true);
-			return;
-		}
+		CampaignMain.cm.toUser("AM: This command is deprecated, please use SetPlanetAdvancedTerrain",Username,true);
+		return;
 		
-		SPlanet planet =  (SPlanet) CampaignMain.cm.getData().getPlanetByName(command.nextToken());
-		if ( planet == null ) {
-			CampaignMain.cm.toUser("Unknown Planet",Username,true);
-			return;
-		}
-		int low = Integer.parseInt(command.nextToken());
-		
-		int hi;
-		if ( command.hasMoreTokens() )
-			hi = Integer.parseInt(command.nextToken());
-		else
-			hi = low;
-		
-		planet.setTemp(new Dimension(low,hi));
-		planet.updated();
-		
-        if(CampaignMain.cm.isUsingMySQL())
-        	planet.toDB();
-		
-		CampaignMain.cm.toUser("Temperature range set for "+planet.getName(),Username,true);
-		//server.CampaignData.mwlog.modLog(Username + " set the Temperature range for "+planet.getName());
-		CampaignMain.cm.doSendModMail("NOTE",Username + " has set the Temperature range for "+planet.getName());
 	}
 }

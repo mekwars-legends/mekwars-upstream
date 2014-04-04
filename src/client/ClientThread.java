@@ -39,7 +39,6 @@ import megamek.common.PlanetaryConditions;
 import megamek.common.Player;
 import megamek.common.logging.LogLevel;
 import megamek.common.options.IBasicOption;
-import megamek.common.options.Quirks;
 import megamek.common.preference.IClientPreferences;
 import megamek.common.preference.PreferenceManager;
 import megamek.common.util.BuildingTemplate;
@@ -116,7 +115,7 @@ class ClientThread extends Thread implements CloseClientListener {
             mwclient.getPlayer().setConventionalMinesAllowed(0);
             mwclient.getPlayer().setVibraMinesAllowed(0);
             mwclient.setUsingBots(false);
-            // clear out everything from this game
+            // clear out everything from this game 
             mwclient.setEnvironment(null, null, 0);
             mwclient.setAdvancedTerrain(null);
             mwclient.setPlayerStartingEdge(Buildings.EDGE_UNKNOWN);

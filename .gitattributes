@@ -7,11 +7,11 @@
 /MegaMek.jar -text
 /MekWarsAutoUpdateManifest.txt -text
 /OpEditorManifest.txt -text
+/PlanetDatConverterManifest.txt -text
 /ServerManifest.txt -text
 /TrackerManifest.txt -text
 /build.bat -text
 /build.xml -text
-client-dist/MegaMek.jar -text
 client-dist/data/boards/devilsrun.board -text
 client-dist/data/boards/oasis.board -text
 client-dist/data/images/absent.gif -text
@@ -1025,6 +1025,8 @@ server-dist/WebTools/templates/MechStatsTableFooter.tmp -text
 server-dist/WebTools/templates/MechStatsUnitHeader.tmp -text
 server-dist/data/HTMLSanitizer.cfg -text
 server-dist/data/activationemail.txt -text
+server-dist/data/advancedTerrain.dtd -text
+server-dist/data/advancedTerrain.xml -text
 server-dist/data/buildtables/omnivehiclelist.txt -text
 server-dist/data/buildtables/rare/Common_Assault.txt -text
 server-dist/data/buildtables/rare/Common_AssaultVehicle.txt -text
@@ -2079,6 +2081,11 @@ src/server/campaign/pilot/skills/TacticalGeniusSkill.java -text
 src/server/campaign/pilot/skills/TraitSkill.java -text
 src/server/campaign/pilot/skills/VDNI.java -text
 src/server/campaign/pilot/skills/WeaponSpecialistSkill.java -text
+src/server/campaign/tools/PlanetDatConverter/PlanetDatConverter.java -text
+src/server/campaign/tools/PlanetDatConverter/SPlanetOld.java -text
+src/server/campaign/tools/PlanetDatConverter/SUnitFactoryOld.java -text
+src/server/campaign/tools/PlanetDatConverter/oldPLanet.java -text
+src/server/campaign/tools/PlanetDatConverter/oldTimeUpdatePlanet.java -text
 src/server/campaign/util/ChatRoom.java -text
 src/server/campaign/util/ELORanking.java -text
 src/server/campaign/util/EXPRankingContainer.java -text
@@ -2090,6 +2097,7 @@ src/server/campaign/util/PlanetNameComparator.java -text
 src/server/campaign/util/SerializedMessage.java -text
 src/server/campaign/util/Statistics.java -text
 src/server/campaign/util/WhoToHTML.java -text
+src/server/campaign/util/XMLAdvancedTerrainDataParser.java -text
 src/server/campaign/util/XMLFactionDataParser.java -text
 src/server/campaign/util/XMLPlanetDataParser.java -text
 src/server/campaign/util/XMLTerrainDataParser.java -text

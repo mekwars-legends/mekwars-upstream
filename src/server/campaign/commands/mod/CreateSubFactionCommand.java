@@ -18,13 +18,13 @@ package server.campaign.commands.mod;
 
 import java.util.StringTokenizer;
 
-import common.SubFaction;
-
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlayer;
 import server.campaign.commands.Command;
-import server.MWChatServer.auth.IAuthenticator;
+
+import common.SubFaction;
 
 
 /**

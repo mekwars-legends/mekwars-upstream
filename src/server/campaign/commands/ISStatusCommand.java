@@ -21,12 +21,12 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
-import common.Planet;
-
 import server.campaign.CampaignMain;
 import server.campaign.SHouse;
 import server.campaign.SPlanet;
 import server.campaign.util.PlanetNameComparator;
+
+import common.Planet;
 
 public class ISStatusCommand implements Command {
 	

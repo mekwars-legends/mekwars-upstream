@@ -20,12 +20,12 @@ import java.io.File;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import server.campaign.commands.Command;
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.SArmy;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
-import server.MWChatServer.auth.IAuthenticator;
+import server.campaign.commands.Command;
 
 public class CreateArmyFromMulCommand implements Command {
 

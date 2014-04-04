@@ -18,9 +18,9 @@ package server.campaign.commands.mod;
 
 import java.util.StringTokenizer;
 
-import server.campaign.commands.Command;
-import server.campaign.CampaignMain;
 import server.MWChatServer.auth.IAuthenticator;
+import server.campaign.CampaignMain;
+import server.campaign.commands.Command;
 
 public class ModeratorMailCommand implements Command {
 	

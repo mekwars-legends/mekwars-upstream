@@ -29,11 +29,11 @@ import java.util.LinkedList;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import common.CampaignData;
 import server.campaign.pilot.SPilot;
 import server.campaign.util.SerializedMessage;
 import server.mwmysql.JDBCConnectionHandler;
 
+import common.CampaignData;
 import common.Unit;
 import common.campaign.pilot.Pilot;
 import common.util.TokenReader;

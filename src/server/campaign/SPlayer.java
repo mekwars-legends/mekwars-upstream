@@ -3050,16 +3050,20 @@ public final class SPlayer extends Player implements Comparable<Object>, IBuyer,
             getExclusionList().toDB(getDBId());
 
             // Save Units
-            if (getUnits().size() > 0) {
-                for (SUnit currU : getUnits()) {
-                    SPilot pilot = (SPilot) currU.getPilot();
-                    pilot.setCurrentFaction(getMyHouse().getName());
-                    if((pilot != null) && (pilot.getGunnery() != 99) && (pilot.getPiloting() != 99)) {
-                    	pilot.toDB(currU.getType(), currU.getWeightclass());
-                    }
-                    currU.toDB();
-                }
-            }
+            //should be synch so we don't have concurrent issues on Units during a save
+            //java.util.ConcurrentModificationException is thrown when that happens
+             synchronized (this) {
+				 if (getUnits().size() > 0) {
+					for (SUnit currU : getUnits()) {
+						SPilot pilot = (SPilot) currU.getPilot();
+						pilot.setCurrentFaction(getMyHouse().getName());
+						if((pilot != null) && (pilot.getGunnery() != 99) && (pilot.getPiloting() != 99)) {
+							pilot.toDB(currU.getType(), currU.getWeightclass());
+						}
+						currU.toDB();
+					}
+				}
+			}
                 ps.close();
                 ps = c.prepareStatement("DELETE from playerarmies WHERE playerID = " + getDBId());
                 ps.executeUpdate();

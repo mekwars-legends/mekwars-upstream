@@ -14,16 +14,16 @@
 
 package server.dataProvider.commands;
 
-import java.util.Date;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.util.Date;
+
+import server.dataProvider.ServerCommand;
 
 import common.CampaignData;
 import common.util.BinWriter;
-
-import server.dataProvider.ServerCommand;
 
 /**
  * Command which calcaulates and returns the 

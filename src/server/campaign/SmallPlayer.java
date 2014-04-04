@@ -28,7 +28,6 @@
 package server.campaign;
 
 import java.math.BigDecimal;
-import server.campaign.SHouse;
 
 public final class SmallPlayer implements Comparable<Object>{
 	

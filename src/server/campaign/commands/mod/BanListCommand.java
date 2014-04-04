@@ -17,14 +17,13 @@
 package server.campaign.commands.mod;
 
 import java.net.InetAddress;
-
 import java.util.Date;
 import java.util.StringTokenizer;
 import java.util.concurrent.ConcurrentHashMap;
 
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
-import server.MWChatServer.auth.IAuthenticator;
 
 /**
  * Moving the BanList command from MWServ into the normal command structure.

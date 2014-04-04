@@ -22,18 +22,18 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import common.util.UnitUtils;
-
 import megamek.common.CriticalSlot;
 import megamek.common.Entity;
 import megamek.common.Mech;
 import megamek.common.Mounted;
 import megamek.common.Tank;
-import common.CampaignData;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
 import server.campaign.SUnit;
 import server.util.RepairTrackingThread;
+
+import common.CampaignData;
+import common.util.UnitUtils;
 
 /**
  * @author Torren (Jason Tighe)

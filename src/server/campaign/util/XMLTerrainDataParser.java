@@ -32,11 +32,11 @@ import java.io.InputStream;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
-import common.PlanetEnvironment;
-import common.Terrain;
+import server.campaign.CampaignMain;
 
 import common.CampaignData;
-import server.campaign.CampaignMain;
+import common.PlanetEnvironment;
+import common.Terrain;
 
 /**
  * @author Helge Richter

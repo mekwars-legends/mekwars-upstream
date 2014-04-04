@@ -22,9 +22,8 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
-import server.campaign.CampaignMain;
-import server.campaign.commands.Command;
 import server.MWChatServer.auth.IAuthenticator;
+import server.campaign.CampaignMain;
 
 public class ListCommandsCommand implements Command {
 	

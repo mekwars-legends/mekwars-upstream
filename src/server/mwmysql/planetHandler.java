@@ -17,10 +17,10 @@
 package server.mwmysql;
 
 import java.awt.Dimension;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,6 +29,10 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
+import server.campaign.CampaignMain;
+import server.campaign.SHouse;
+import server.campaign.SPlanet;
+
 import common.AdvancedTerrain;
 import common.CampaignData;
 import common.Continent;
@@ -36,9 +40,6 @@ import common.House;
 import common.Influences;
 import common.Terrain;
 import common.util.Position;
-import server.campaign.CampaignMain;
-import server.campaign.SHouse;
-import server.campaign.SPlanet;
 
 public class planetHandler {
     JDBCConnectionHandler ch = new JDBCConnectionHandler();
@@ -124,13 +125,6 @@ public class planetHandler {
             			id = CampaignData.cd.getUnusedPlanetID();
             		}
             		p.setId(id);
-            		p.setMapSize(new Dimension(rs.getInt("pMapSizeWidth"), rs.getInt("pMapSizeHeight")));
-            		p.setBoardSize(new Dimension(rs.getInt("pBoardSizeWidth"), rs.getInt("pBoardSizeHeight")));
-            		p.setTemp(new Dimension(rs.getInt("pTempWidth"), rs.getInt("pTempHeight")));
-            		p.setGravity(rs.getFloat("pGravity"));
-            		p.setVacuum(rs.getBoolean("pVacuum"));
-            		p.setNightChance(rs.getInt("pNightChance"));
-            		p.setNightTempMod(rs.getInt("pNightTempMod"));
             		p.setMinPlanetOwnerShip(rs.getInt("pMinPlanetOwnership"));
             		p.setHomeWorld(rs.getBoolean("pIsHomeworld"));
             		p.setOriginalOwner(rs.getString("pOriginalOwner"));
@@ -243,7 +237,9 @@ public class planetHandler {
             while (rs3.next()) {
                 int size = rs3.getInt("ContinentSize");
                 Terrain planetEnvironment = null;
+                AdvancedTerrain planetAdvancedTerrain = null;
                 int terrainNumber = 0;
+                int advTerrainNumber = 0;
 
                 try {
                     terrainNumber = rs3.getInt("TerrainData");
@@ -257,31 +253,19 @@ public class planetHandler {
                 if ( planetEnvironment == null )
                     planetEnvironment = data.getTerrain(0);
 
-                Continent PE = new Continent(size, planetEnvironment);
-                if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")) {
-                    AdvancedTerrain aTerrain = new AdvancedTerrain();
-
-                    String tempHolder = rs3.getString("AdvancedTerrainData");
-                    if (tempHolder.length() > 0) {
-                        StringTokenizer ST = new StringTokenizer(tempHolder, "$");
-                        aTerrain.setDisplayName(ST.nextToken());
-                        aTerrain.setXSize(Integer.parseInt(ST.nextToken()));
-                        aTerrain.setYSize(Integer.parseInt(ST.nextToken()));
-                        aTerrain.setStaticMap(Boolean.parseBoolean(ST.nextToken()));
-                        aTerrain.setXBoardSize(Integer.parseInt(ST.nextToken()));
-                        aTerrain.setYBoardSize(Integer.parseInt(ST.nextToken()));
-                        aTerrain.setLowTemp(Integer.parseInt(ST.nextToken()));
-                        aTerrain.setHighTemp(Integer.parseInt(ST.nextToken()));
-                        aTerrain.setGravity(Double.parseDouble(ST.nextToken()));
-                        ST.nextToken();
-                        aTerrain.setNightChance(Integer.parseInt(ST.nextToken()));
-                        aTerrain.setNightTempMod(Integer.parseInt(ST.nextToken()));
-                        aTerrain.setStaticMapName(ST.nextToken());
-                    } else {
-                        aTerrain = new AdvancedTerrain(tempHolder);
-                    }
-                    p.getAdvancedTerrain().put(new Integer(PE.getEnvironment().getId()), aTerrain);
+                try {
+                    advTerrainNumber = rs3.getInt("AdvancedTerrainData");
+                    planetAdvancedTerrain = data.getAdvancedTerrain(terrainNumber);
+                } catch (Exception ex) {
+                    CampaignData.mwlog.dbLog(ex);
+                    CampaignData.mwlog.dbLog("Unable to load AdvancedTerrain #"+terrainNumber);
+                    planetAdvancedTerrain = data.getAdvancedTerrain(0);
                 }
+                
+                if ( planetAdvancedTerrain == null )
+                	planetAdvancedTerrain = data.getAdvancedTerrain(0);
+
+                Continent PE = new Continent(size, planetEnvironment,planetAdvancedTerrain);
                 p.getEnvironments().add(PE);
 
             }
@@ -319,26 +303,17 @@ public class planetHandler {
                 tName.append(t.getEnvironment().getName());
                 int tId = t.getEnvironment().getId();
 
-                if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")) {
-                    /**
-                     * This is a hack. Right now, to get this working, I'm going
-                     * to just store the terrain.fromString() string. I'll come
-                     * back and break this out later.
-                     */
-                    AdvancedTerrain aTerrain = p.getAdvancedTerrain().get(new Integer(t.getEnvironment().getId()));
-                    if (aTerrain == null)
-                        aTerrain = new AdvancedTerrain();
-                    if (aTerrain.getDisplayName().length() <= 1)
-                        aTerrain.setDisplayName(t.getEnvironment().getName());
-                    atData.append(aTerrain.toString());
-                }
+                AdvancedTerrain aTerrain = t.getAdvancedTerrain();
+                if (aTerrain == null)
+                    aTerrain = new AdvancedTerrain();
+                if (aTerrain.getName().length() <= 1)
+                    aTerrain.setName(t.getEnvironment().getName());
                 sql.setLength(0);
                 sql.append("INSERT into planetenvironments set ");
                 sql.append("PlanetID = " + p.getDBID() + ", ");
                 sql.append("ContinentSize = " + size + ", ");
-                sql.append("TerrainData = '" + tId + "'");
-                if (CampaignMain.cm.getBooleanConfig("UseStaticMaps"))
-                    sql.append(", AdvancedTerrainData = '" + atData.toString() + "'");
+                sql.append("TerrainData = '" + tId + ",");
+                sql.append("AdvancedTerrainData = " + aTerrain.getId());
                 stmt.executeUpdate(sql.toString());
             }
             stmt.close();

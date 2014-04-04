@@ -19,8 +19,9 @@ package server.campaign;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-import common.CampaignData;
 import server.campaign.util.OpponentListHelper;
+
+import common.CampaignData;
 
 /**
  * @author urgru

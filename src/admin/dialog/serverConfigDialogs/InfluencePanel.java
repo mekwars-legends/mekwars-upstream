@@ -23,8 +23,9 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
-import common.util.SpringLayoutHelper;
 import client.MWClient;
+
+import common.util.SpringLayoutHelper;
 
 public class InfluencePanel extends JPanel {
 

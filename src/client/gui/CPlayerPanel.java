@@ -34,12 +34,12 @@ import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
 import javax.swing.text.html.HTMLEditorKit;
 
-import common.CampaignData;
-import common.util.UnitUtils;
-
 import client.CConfig;
 import client.MWClient;
 import client.campaign.CPlayer;
+
+import common.CampaignData;
+import common.util.UnitUtils;
 
 /**
  * Player panel

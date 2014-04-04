@@ -25,21 +25,18 @@ import megamek.common.CriticalSlot;
 import megamek.common.Entity;
 import megamek.common.Mech;
 import megamek.common.Mounted;
-import megamek.common.TechConstants;
+import server.campaign.BuildTable;
+import server.campaign.CampaignMain;
+import server.campaign.SHouse;
+import server.campaign.SPlayer;
+import server.campaign.SUnit;
+import server.campaign.SUnitFactory;
+import server.campaign.pilot.SPilot;
 
+import common.CampaignData;
 import common.Unit;
 import common.util.StringUtils;
 import common.util.UnitUtils;
-
-import server.campaign.SPlayer;
-import server.campaign.SUnit;
-import server.campaign.SHouse;
-import server.campaign.SUnitFactory;
-import server.campaign.CampaignMain;
-import server.campaign.pilot.SPilot;
-import server.campaign.BuildTable;
-
-import common.CampaignData;
 
 /**
  * 

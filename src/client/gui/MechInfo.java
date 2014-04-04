@@ -42,10 +42,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import common.CampaignData;
-import common.Unit;
-import common.util.UnitUtils;
-
 import megamek.client.ui.swing.MechTileset;
 import megamek.client.ui.swing.util.RotateFilter;
 import megamek.common.Entity;
@@ -55,6 +51,10 @@ import client.CConfig;
 import client.MWClient;
 import client.campaign.CArmy;
 import client.campaign.CUnit;
+
+import common.CampaignData;
+import common.Unit;
+import common.util.UnitUtils;
 
 /**
  * 

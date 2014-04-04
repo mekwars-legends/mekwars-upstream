@@ -20,14 +20,14 @@ package server.campaign.commands;
 import java.net.InetAddress;
 import java.util.StringTokenizer;
 
-import common.House;
-
-import common.CampaignData;
 import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.NewbieHouse;
-import server.campaign.SPlayer;
 import server.campaign.SHouse;
+import server.campaign.SPlayer;
+
+import common.CampaignData;
+import common.House;
 
 public class EnrollCommand implements Command {
 	

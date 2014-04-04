@@ -22,13 +22,13 @@ import java.util.StringTokenizer;
 
 import javax.swing.JPanel;
 
-import common.util.StringUtils;
-
 import client.CConfig;
 import client.CUser;
 import client.MWClient;
 import client.gui.CCommPanel;
 import client.protocol.TransportCodec;
+
+import common.util.StringUtils;
 
 /**
  * Mail command

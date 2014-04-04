@@ -31,15 +31,12 @@
  */
 package client.protocol;
 
-import java.io.PrintStream;
 import java.io.IOException;
-
-import java.util.Vector;
+import java.io.PrintStream;
 import java.net.Socket;
+import java.util.Vector;
 
 import common.CampaignData;
-
-import client.protocol.IConnectionListener;
 
 /**
  * The keeper of the Socket on the client side.

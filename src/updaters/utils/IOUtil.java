@@ -6,24 +6,24 @@
 
 package updaters.utils;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.zip.CRC32;
-import java.util.zip.CheckedInputStream;
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.util.StringTokenizer;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.StringTokenizer;
+import java.util.zip.CRC32;
+import java.util.zip.CheckedInputStream;
 
 public class IOUtil
 {

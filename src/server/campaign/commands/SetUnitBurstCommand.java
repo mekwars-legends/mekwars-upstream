@@ -18,8 +18,8 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import megamek.common.Entity;
 import megamek.common.CriticalSlot;
+import megamek.common.Entity;
 import megamek.common.Mounted;
 import megamek.common.WeaponType;
 import server.campaign.CampaignMain;

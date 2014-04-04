@@ -19,9 +19,9 @@ package client.cmd;
 
 import java.util.StringTokenizer;
 
-import common.AdvancedTerrain;
-
 import client.MWClient;
+
+import common.AdvancedTerrain;
 
 /**
  * @@author Torren (Jason Tighe)

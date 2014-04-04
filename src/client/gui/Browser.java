@@ -17,38 +17,38 @@
  */
 
 package client.gui;
-import java.io.IOException;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.PrintWriter;
 import java.io.FileWriter;
-import java.text.MessageFormat;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import javax.swing.JTextArea;
+import java.text.MessageFormat;
+import java.util.Locale;
+import java.util.Properties;
+import java.util.ResourceBundle;
+import java.util.Vector;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JDialog;
 import javax.swing.JScrollPane;
-import javax.swing.BorderFactory;
+import javax.swing.JTextArea;
 
 import common.CampaignData;
-
-import java.awt.Window;
-import java.awt.Frame;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.util.Properties;
-import java.util.Vector;
-import java.util.ResourceBundle;
-import java.util.Locale;
-import java.io.StringReader;
-import java.lang.reflect.Method;
 
 /**
  * Allows URLs to be opened in the system browser on Windows and Unix.

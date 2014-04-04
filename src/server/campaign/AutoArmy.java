@@ -32,15 +32,11 @@
  */
 package server.campaign;
 
+import java.util.StringTokenizer;
 import java.util.Vector;
 
-import java.util.StringTokenizer;
-
-import common.Unit;
-
 import common.CampaignData;
-import server.campaign.SUnit;
-import server.campaign.CampaignMain;
+import common.Unit;
 
 public class AutoArmy {
 	

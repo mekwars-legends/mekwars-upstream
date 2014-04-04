@@ -20,8 +20,8 @@ package server.campaign.commands;
 import java.util.StringTokenizer;
 
 import server.campaign.CampaignMain;
-import server.campaign.SPlayer;
 import server.campaign.SArmy;
+import server.campaign.SPlayer;
 
 public class RemoveArmyCommand implements Command {
 	

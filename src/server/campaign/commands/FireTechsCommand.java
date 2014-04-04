@@ -20,10 +20,10 @@ package server.campaign.commands;
 
 import java.util.StringTokenizer;
 
-import common.util.UnitUtils;
-
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
+
+import common.util.UnitUtils;
 
 public class FireTechsCommand implements Command {
 	

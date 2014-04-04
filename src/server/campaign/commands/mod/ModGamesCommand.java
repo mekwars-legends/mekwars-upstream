@@ -16,12 +16,11 @@ package server.campaign.commands.mod;
 
 import java.util.StringTokenizer;
 
+import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.SPlayer;
-import server.campaign.operations.ShortOperation;
-
 import server.campaign.commands.Command;
-import server.MWChatServer.auth.IAuthenticator;
+import server.campaign.operations.ShortOperation;
 
 
 public class ModGamesCommand implements Command {
