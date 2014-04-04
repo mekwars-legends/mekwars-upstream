@@ -9,6 +9,7 @@ R Released Server v0.4.0.0, Client v0.4.0.0, PlanetDatConverter v0.4.0.0
 + updated Vertigo editor to deal with terrain/AdvancedTerrain templates 
 + added AdvancedTerrain.xml to define advanced terrain templates
 + updated planets.xml format to deal with advanced terrain templates
++ cleaned up imports across several files
 
 v 0.3.7.x
 R Released Server v0.3.7.4, Client v0.3.7.2
