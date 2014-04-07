@@ -1,6 +1,5 @@
 * text=auto !eol
 / svnc_subclipse_003atags
-.settings/org.eclipse.jdt.ui.prefs -text
 /AdminManifest.txt -text
 /ClientManifest.txt -text
 /DedHostManifest.txt -text
