@@ -1059,6 +1059,7 @@ final public class AdvancedTerrain {
 			results.append(Math.max(lightFogChance, heavyFogChance));
 			results.append("% ");
 		}
+		results.append("<br>");						
 		
 		
         return results.toString();
