@@ -165,7 +165,7 @@
 	<heavyFogChance>5</heavyFogChance>
 </ADVANCEDTERRAIN>
 	<ADVANCEDTERRAIN>
-	<NAME>allparams</NAME>
+	<NAME>temperate winter</NAME>
 	<xmap>1</xmap>
 	<ymap>1</ymap>
 	<xboard>16</xboard>
@@ -176,19 +176,587 @@
 	<staticmap>false</staticmap>
 	<mapname>none</mapname>
 	
-	<lowtemp>25</lowtemp>
-	<hitemp>25</hitemp>
-	<temp>25<!--this is the static temperature if you don't want to use a range--></temp>
+	<lowtemp>-10</lowtemp>
+	<hitemp>10</hitemp>
 	<gravity>1.0</gravity>
 	<atmosphere>3<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
-	<vacuum>false</vacuum>
+	<nightchance>30</nightchance>
+	<duskChance>15</duskChance>
+	<nightmod>20<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>2</pitchBlackChance>
+	<moonlessNightChance>3</moonlessNightChance>
 	
-	<lightConditions>0<!--this is the integer representation of the light conditions ,overrides the chances--></lightConditions>
-	<nightchance>0</nightchance>
-	<duskChance>0</duskChance>
-	<nightmod>0<!--this is the temperature drop at night, half this at dusk --></nightmod>
-	<pitchBlackChance>0</pitchBlackChance>
-	<moonlessNightChance>0</moonlessNightChance>
+	<sleetchance>15</sleetchance>
+	<ligthSnowfallChance>15</ligthSnowfallChance>
+	<moderateSnowFallChance>10</moderateSnowFallChance>
+	<heavysnowfallchance>5</heavysnowfallchance>
+	<blizzardchance>2</blizzardchance>
+	<iceStormChance>2</iceStormChance>
+	
+	<blowingsandchance>0</blowingsandchance>
+	
+	<lightRainfallChance>10</lightRainfallChance>
+	<moderateRainFallChance>0</moderateRainFallChance>
+	<heavyRainfallChance>0</heavyRainfallChance>
+	<downPourChance>0</downPourChance>
+	<lightHailChance>5</lightHailChance>
+	<HeavyHailChance>2</HeavyHailChance>
+	<shiftingWindDirection>true</shiftingWindDirection>
+	<lightWindChance>15</lightWindChance>
+	<moderateWindsChance>10</moderateWindsChance>
+	<highWindsChance>5</highWindsChance>
+	<strongWindsChance>1</strongWindsChance>
+	<stormWindsChance>0</stormWindsChance>
+	<tornadoF13WindChance>0</tornadoF13WindChance>
+	<tornadoF4WindChance>0</tornadoF4WindChance>
+	
+	<emiChance>0</emiChance>
+	
+	<fogChance>0</fogChance>
+	<lightFogChance>0</lightFogChance>
+	<heavyFogChance>0</heavyFogChance>
+</ADVANCEDTERRAIN>
+	<ADVANCEDTERRAIN>
+	<NAME>temperate Windy</NAME>
+	<xmap>1</xmap>
+	<ymap>1</ymap>
+	<xboard>16</xboard>
+	<yboard>17</yboard>
+	
+	<effectTerrain>true</effectTerrain>
+	
+	<staticmap>false</staticmap>
+	<mapname>none</mapname>
+	
+	<lowtemp>12</lowtemp>
+	<hitemp>28</hitemp>
+	<gravity>1.0</gravity>
+	<atmosphere>3<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
+	<nightchance>30</nightchance>
+	<duskChance>15</duskChance>
+	<nightmod>10<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>2</pitchBlackChance>
+	<moonlessNightChance>3</moonlessNightChance>
+	
+	<sleetchance>1</sleetchance>
+	<ligthSnowfallChance>5</ligthSnowfallChance>
+	<moderateSnowFallChance>0</moderateSnowFallChance>
+	<heavysnowfallchance>0</heavysnowfallchance>
+	<blizzardchance>0</blizzardchance>
+	<iceStormChance>0</iceStormChance>
+	
+	<blowingsandchance>5</blowingsandchance>
+	
+	<lightRainfallChance>10</lightRainfallChance>
+	<moderateRainFallChance>15</moderateRainFallChance>
+	<heavyRainfallChance>5</heavyRainfallChance>
+	<downPourChance>2</downPourChance>
+	<lightHailChance>5</lightHailChance>
+	<HeavyHailChance>2</HeavyHailChance>
+	<shiftingWindDirection>true</shiftingWindDirection>
+	<lightWindChance>99</lightWindChance>
+	<moderateWindsChance>80</moderateWindsChance>
+	<highWindsChance>60</highWindsChance>
+	<strongWindsChance>40</strongWindsChance>
+	<stormWindsChance>0</stormWindsChance>
+	<tornadoF13WindChance>0</tornadoF13WindChance>
+	<tornadoF4WindChance>0</tornadoF4WindChance>
+	
+	<emiChance>0</emiChance>
+	
+	<fogChance>10</fogChance>
+	<lightFogChance>10</lightFogChance>
+	<heavyFogChance>5</heavyFogChance>
+</ADVANCEDTERRAIN>
+	<ADVANCEDTERRAIN>
+	<NAME>temperate winter Windy</NAME>
+	<xmap>1</xmap>
+	<ymap>1</ymap>
+	<xboard>16</xboard>
+	<yboard>17</yboard>
+	
+	<effectTerrain>true</effectTerrain>
+	
+	<staticmap>false</staticmap>
+	<mapname>none</mapname>
+	
+	<lowtemp>-10</lowtemp>
+	<hitemp>10</hitemp>
+	<gravity>1.0</gravity>
+	<atmosphere>3<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
+	<nightchance>30</nightchance>
+	<duskChance>15</duskChance>
+	<nightmod>20<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>2</pitchBlackChance>
+	<moonlessNightChance>3</moonlessNightChance>
+	
+	<sleetchance>15</sleetchance>
+	<ligthSnowfallChance>15</ligthSnowfallChance>
+	<moderateSnowFallChance>10</moderateSnowFallChance>
+	<heavysnowfallchance>5</heavysnowfallchance>
+	<blizzardchance>2</blizzardchance>
+	<iceStormChance>2</iceStormChance>
+	
+	<blowingsandchance>0</blowingsandchance>
+	
+	<lightRainfallChance>10</lightRainfallChance>
+	<moderateRainFallChance>0</moderateRainFallChance>
+	<heavyRainfallChance>0</heavyRainfallChance>
+	<downPourChance>0</downPourChance>
+	<lightHailChance>5</lightHailChance>
+	<HeavyHailChance>2</HeavyHailChance>
+	<shiftingWindDirection>true</shiftingWindDirection>
+	<lightWindChance>99</lightWindChance>
+	<moderateWindsChance>80</moderateWindsChance>
+	<highWindsChance>60</highWindsChance>
+	<strongWindsChance>40</strongWindsChance>
+	<stormWindsChance>0</stormWindsChance>
+	<tornadoF13WindChance>0</tornadoF13WindChance>
+	<tornadoF4WindChance>0</tornadoF4WindChance>
+	
+	<emiChance>0</emiChance>
+	
+	<fogChance>10</fogChance>
+	<lightFogChance>10</lightFogChance>
+	<heavyFogChance>5</heavyFogChance>
+</ADVANCEDTERRAIN>
+	<ADVANCEDTERRAIN>
+	<NAME>Arid</NAME>
+	<xmap>1</xmap>
+	<ymap>1</ymap>
+	<xboard>16</xboard>
+	<yboard>17</yboard>
+	
+	<effectTerrain>true</effectTerrain>
+	
+	<staticmap>false</staticmap>
+	<mapname>none</mapname>
+	
+	<lowtemp>30</lowtemp>
+	<hitemp>45</hitemp>
+	<gravity>1.0</gravity>
+	<atmosphere>3<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
+	<nightchance>30</nightchance>
+	<duskChance>15</duskChance>
+	<nightmod>50<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>2</pitchBlackChance>
+	<moonlessNightChance>3</moonlessNightChance>
+	
+	<sleetchance>0</sleetchance>
+	<ligthSnowfallChance>0</ligthSnowfallChance>
+	<moderateSnowFallChance>0</moderateSnowFallChance>
+	<heavysnowfallchance>0</heavysnowfallchance>
+	<blizzardchance>0</blizzardchance>
+	<iceStormChance>0</iceStormChance>
+	
+	<blowingsandchance>25</blowingsandchance>
+	
+	<lightRainfallChance>1</lightRainfallChance>
+	<moderateRainFallChance>1</moderateRainFallChance>
+	<heavyRainfallChance>1</heavyRainfallChance>
+	<downPourChance>10</downPourChance>
+	<lightHailChance>0</lightHailChance>
+	<HeavyHailChance>0</HeavyHailChance>
+	<shiftingWindDirection>true</shiftingWindDirection>
+	<lightWindChance>15</lightWindChance>
+	<moderateWindsChance>20</moderateWindsChance>
+	<highWindsChance>15</highWindsChance>
+	<strongWindsChance>10</strongWindsChance>
+	<stormWindsChance>0</stormWindsChance>
+	<tornadoF13WindChance>0</tornadoF13WindChance>
+	<tornadoF4WindChance>0</tornadoF4WindChance>
+	
+	<emiChance>0</emiChance>
+	
+	<fogChance>0</fogChance>
+	<lightFogChance>0</lightFogChance>
+	<heavyFogChance>0</heavyFogChance>
+</ADVANCEDTERRAIN>
+	<ADVANCEDTERRAIN>
+	<NAME>Arid Hot</NAME>
+	<xmap>1</xmap>
+	<ymap>1</ymap>
+	<xboard>16</xboard>
+	<yboard>17</yboard>
+	
+	<effectTerrain>true</effectTerrain>
+	
+	<staticmap>false</staticmap>
+	<mapname>none</mapname>
+	
+	<lowtemp>50</lowtemp>
+	<hitemp>75</hitemp>
+	<gravity>1.0</gravity>
+	<atmosphere>3<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
+	<nightchance>30</nightchance>
+	<duskChance>15</duskChance>
+	<nightmod>30<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>2</pitchBlackChance>
+	<moonlessNightChance>3</moonlessNightChance>
+	
+	<sleetchance>0</sleetchance>
+	<ligthSnowfallChance>0</ligthSnowfallChance>
+	<moderateSnowFallChance>0</moderateSnowFallChance>
+	<heavysnowfallchance>0</heavysnowfallchance>
+	<blizzardchance>0</blizzardchance>
+	<iceStormChance>0</iceStormChance>
+	
+	<blowingsandchance>25</blowingsandchance>
+	
+	<lightRainfallChance>1</lightRainfallChance>
+	<moderateRainFallChance>1</moderateRainFallChance>
+	<heavyRainfallChance>1</heavyRainfallChance>
+	<downPourChance>10</downPourChance>
+	<lightHailChance>0</lightHailChance>
+	<HeavyHailChance>0</HeavyHailChance>
+	<shiftingWindDirection>true</shiftingWindDirection>
+	<lightWindChance>15</lightWindChance>
+	<moderateWindsChance>20</moderateWindsChance>
+	<highWindsChance>15</highWindsChance>
+	<strongWindsChance>10</strongWindsChance>
+	<stormWindsChance>0</stormWindsChance>
+	<tornadoF13WindChance>0</tornadoF13WindChance>
+	<tornadoF4WindChance>0</tornadoF4WindChance>
+	
+	<emiChance>0</emiChance>
+	
+	<fogChance>0</fogChance>
+	<lightFogChance>0</lightFogChance>
+	<heavyFogChance>0</heavyFogChance>
+</ADVANCEDTERRAIN>
+	<ADVANCEDTERRAIN>
+	<NAME>Arid Cold</NAME>
+	<xmap>1</xmap>
+	<ymap>1</ymap>
+	<xboard>16</xboard>
+	<yboard>17</yboard>
+	
+	<effectTerrain>true</effectTerrain>
+	
+	<staticmap>false</staticmap>
+	<mapname>none</mapname>
+	
+	<lowtemp>-10</lowtemp>
+	<hitemp>15</hitemp>
+	<gravity>1.0</gravity>
+	<atmosphere>3<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
+	<nightchance>30</nightchance>
+	<duskChance>15</duskChance>
+	<nightmod>80<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>2</pitchBlackChance>
+	<moonlessNightChance>3</moonlessNightChance>
+	
+	<sleetchance>0</sleetchance>
+	<ligthSnowfallChance>1</ligthSnowfallChance>
+	<moderateSnowFallChance>1</moderateSnowFallChance>
+	<heavysnowfallchance>1</heavysnowfallchance>
+	<blizzardchance>10</blizzardchance>
+	<iceStormChance>1</iceStormChance>
+	
+	<blowingsandchance>25</blowingsandchance>
+	
+	<lightRainfallChance>0</lightRainfallChance>
+	<moderateRainFallChance>0</moderateRainFallChance>
+	<heavyRainfallChance>0</heavyRainfallChance>
+	<downPourChance>0</downPourChance>
+	<lightHailChance>2</lightHailChance>
+	<HeavyHailChance>2</HeavyHailChance>
+	<shiftingWindDirection>true</shiftingWindDirection>
+	<lightWindChance>15</lightWindChance>
+	<moderateWindsChance>20</moderateWindsChance>
+	<highWindsChance>15</highWindsChance>
+	<strongWindsChance>10</strongWindsChance>
+	<stormWindsChance>0</stormWindsChance>
+	<tornadoF13WindChance>0</tornadoF13WindChance>
+	<tornadoF4WindChance>0</tornadoF4WindChance>
+	
+	<emiChance>0</emiChance>
+	
+	<fogChance>0</fogChance>
+	<lightFogChance>0</lightFogChance>
+	<heavyFogChance>0</heavyFogChance>
+</ADVANCEDTERRAIN>
+	<ADVANCEDTERRAIN>
+	<NAME>Arid Windy</NAME>
+	<xmap>1</xmap>
+	<ymap>1</ymap>
+	<xboard>16</xboard>
+	<yboard>17</yboard>
+	
+	<effectTerrain>true</effectTerrain>
+	
+	<staticmap>false</staticmap>
+	<mapname>none</mapname>
+	
+	<lowtemp>30</lowtemp>
+	<hitemp>45</hitemp>
+	<gravity>1.0</gravity>
+	<atmosphere>3<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
+	<nightchance>30</nightchance>
+	<duskChance>15</duskChance>
+	<nightmod>50<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>2</pitchBlackChance>
+	<moonlessNightChance>3</moonlessNightChance>
+	
+	<sleetchance>0</sleetchance>
+	<ligthSnowfallChance>0</ligthSnowfallChance>
+	<moderateSnowFallChance>0</moderateSnowFallChance>
+	<heavysnowfallchance>0</heavysnowfallchance>
+	<blizzardchance>0</blizzardchance>
+	<iceStormChance>0</iceStormChance>
+	
+	<blowingsandchance>25</blowingsandchance>
+	
+	<lightRainfallChance>1</lightRainfallChance>
+	<moderateRainFallChance>1</moderateRainFallChance>
+	<heavyRainfallChance>1</heavyRainfallChance>
+	<downPourChance>10</downPourChance>
+	<lightHailChance>0</lightHailChance>
+	<HeavyHailChance>0</HeavyHailChance>
+	<shiftingWindDirection>true</shiftingWindDirection>
+	<lightWindChance>99</lightWindChance>
+	<moderateWindsChance>80</moderateWindsChance>
+	<highWindsChance>60</highWindsChance>
+	<strongWindsChance>40</strongWindsChance>
+	<stormWindsChance>0</stormWindsChance>
+	<tornadoF13WindChance>0</tornadoF13WindChance>
+	<tornadoF4WindChance>0</tornadoF4WindChance>
+	
+	<emiChance>0</emiChance>
+	
+	<fogChance>0</fogChance>
+	<lightFogChance>0</lightFogChance>
+	<heavyFogChance>0</heavyFogChance>
+</ADVANCEDTERRAIN>
+	<ADVANCEDTERRAIN>
+	<NAME>Arid Hot Windy </NAME>
+	<xmap>1</xmap>
+	<ymap>1</ymap>
+	<xboard>16</xboard>
+	<yboard>17</yboard>
+	
+	<effectTerrain>true</effectTerrain>
+	
+	<staticmap>false</staticmap>
+	<mapname>none</mapname>
+	
+	<lowtemp>50</lowtemp>
+	<hitemp>75</hitemp>
+	<gravity>1.0</gravity>
+	<atmosphere>3<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
+	<nightchance>30</nightchance>
+	<duskChance>15</duskChance>
+	<nightmod>30<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>2</pitchBlackChance>
+	<moonlessNightChance>3</moonlessNightChance>
+	
+	<sleetchance>0</sleetchance>
+	<ligthSnowfallChance>0</ligthSnowfallChance>
+	<moderateSnowFallChance>0</moderateSnowFallChance>
+	<heavysnowfallchance>0</heavysnowfallchance>
+	<blizzardchance>0</blizzardchance>
+	<iceStormChance>0</iceStormChance>
+	
+	<blowingsandchance>25</blowingsandchance>
+	
+	<lightRainfallChance>1</lightRainfallChance>
+	<moderateRainFallChance>1</moderateRainFallChance>
+	<heavyRainfallChance>1</heavyRainfallChance>
+	<downPourChance>10</downPourChance>
+	<lightHailChance>0</lightHailChance>
+	<HeavyHailChance>0</HeavyHailChance>
+	<shiftingWindDirection>true</shiftingWindDirection>
+	<lightWindChance>99</lightWindChance>
+	<moderateWindsChance>80</moderateWindsChance>
+	<highWindsChance>60</highWindsChance>
+	<strongWindsChance>40</strongWindsChance>
+	<stormWindsChance>0</stormWindsChance>
+	<tornadoF13WindChance>0</tornadoF13WindChance>
+	<tornadoF4WindChance>0</tornadoF4WindChance>
+	
+	<emiChance>0</emiChance>
+	
+	<fogChance>0</fogChance>
+	<lightFogChance>0</lightFogChance>
+	<heavyFogChance>0</heavyFogChance>
+</ADVANCEDTERRAIN>
+	<ADVANCEDTERRAIN>
+	<NAME>Arid Cold Windy</NAME>
+	<xmap>1</xmap>
+	<ymap>1</ymap>
+	<xboard>16</xboard>
+	<yboard>17</yboard>
+	
+	<effectTerrain>true</effectTerrain>
+	
+	<staticmap>false</staticmap>
+	<mapname>none</mapname>
+	
+	<lowtemp>-10</lowtemp>
+	<hitemp>15</hitemp>
+	<gravity>1.0</gravity>
+	<atmosphere>3<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
+	<nightchance>30</nightchance>
+	<duskChance>15</duskChance>
+	<nightmod>80<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>2</pitchBlackChance>
+	<moonlessNightChance>3</moonlessNightChance>
+	
+	<sleetchance>0</sleetchance>
+	<ligthSnowfallChance>1</ligthSnowfallChance>
+	<moderateSnowFallChance>1</moderateSnowFallChance>
+	<heavysnowfallchance>1</heavysnowfallchance>
+	<blizzardchance>10</blizzardchance>
+	<iceStormChance>1</iceStormChance>
+	
+	<blowingsandchance>25</blowingsandchance>
+	
+	<lightRainfallChance>0</lightRainfallChance>
+	<moderateRainFallChance>0</moderateRainFallChance>
+	<heavyRainfallChance>0</heavyRainfallChance>
+	<downPourChance>0</downPourChance>
+	<lightHailChance>2</lightHailChance>
+	<HeavyHailChance>2</HeavyHailChance>
+	<shiftingWindDirection>true</shiftingWindDirection>
+	<lightWindChance>99</lightWindChance>
+	<moderateWindsChance>80</moderateWindsChance>
+	<highWindsChance>60</highWindsChance>
+	<strongWindsChance>40</strongWindsChance>
+	<stormWindsChance>0</stormWindsChance>
+	<tornadoF13WindChance>0</tornadoF13WindChance>
+	<tornadoF4WindChance>0</tornadoF4WindChance>
+	
+	<emiChance>0</emiChance>
+	
+	<fogChance>0</fogChance>
+	<lightFogChance>0</lightFogChance>
+	<heavyFogChance>0</heavyFogChance>
+</ADVANCEDTERRAIN>
+	<ADVANCEDTERRAIN>
+	<NAME>Monsoon</NAME>
+	<xmap>1</xmap>
+	<ymap>1</ymap>
+	<xboard>16</xboard>
+	<yboard>17</yboard>
+	
+	<effectTerrain>true</effectTerrain>
+	
+	<staticmap>false</staticmap>
+	<mapname>none</mapname>
+	
+	<lowtemp>22</lowtemp>
+	<hitemp>35</hitemp>
+	<gravity>1.0</gravity>
+	<atmosphere>3<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
+	<nightchance>30</nightchance>
+	<duskChance>15</duskChance>
+	<nightmod>8<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>2</pitchBlackChance>
+	<moonlessNightChance>3</moonlessNightChance>
+	
+	<sleetchance>0</sleetchance>
+	<ligthSnowfallChance>0</ligthSnowfallChance>
+	<moderateSnowFallChance>0</moderateSnowFallChance>
+	<heavysnowfallchance>0</heavysnowfallchance>
+	<blizzardchance>0</blizzardchance>
+	<iceStormChance>0</iceStormChance>
+	
+	<blowingsandchance>0</blowingsandchance>
+	
+	<lightRainfallChance>99</lightRainfallChance>
+	<moderateRainFallChance>80</moderateRainFallChance>
+	<heavyRainfallChance>60</heavyRainfallChance>
+	<downPourChance>40</downPourChance>
+	<lightHailChance>30</lightHailChance>
+	<HeavyHailChance>20</HeavyHailChance>
+	<shiftingWindDirection>true</shiftingWindDirection>
+	<lightWindChance>99</lightWindChance>
+	<moderateWindsChance>90</moderateWindsChance>
+	<highWindsChance>80</highWindsChance>
+	<strongWindsChance>70</strongWindsChance>
+	<stormWindsChance>5</stormWindsChance>
+	<tornadoF13WindChance>0</tornadoF13WindChance>
+	<tornadoF4WindChance>0</tornadoF4WindChance>
+	
+	<emiChance>0</emiChance>
+	
+	<fogChance>0</fogChance>
+	<lightFogChance>0</lightFogChance>
+	<heavyFogChance>0</heavyFogChance>
+</ADVANCEDTERRAIN>
+	<ADVANCEDTERRAIN>
+	<NAME>Moon Thin</NAME>
+	<xmap>1</xmap>
+	<ymap>1</ymap>
+	<xboard>16</xboard>
+	<yboard>17</yboard>
+	
+	<effectTerrain>true</effectTerrain>
+	
+	<staticmap>false</staticmap>
+	<mapname>none</mapname>
+	
+	<lowtemp>70</lowtemp>
+	<hitemp>80</hitemp>
+	<gravity>0.8</gravity>
+	<atmosphere>2<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
+	<nightchance>30</nightchance>
+	<duskChance>15</duskChance>
+	<nightmod>160<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>2</pitchBlackChance>
+	<moonlessNightChance>3</moonlessNightChance>
+	
+	<sleetchance>0</sleetchance>
+	<ligthSnowfallChance>0</ligthSnowfallChance>
+	<moderateSnowFallChance>0</moderateSnowFallChance>
+	<heavysnowfallchance>0</heavysnowfallchance>
+	<blizzardchance>0</blizzardchance>
+	<iceStormChance>0</iceStormChance>
+	
+	<blowingsandchance>50</blowingsandchance>
+	
+	<lightRainfallChance>0</lightRainfallChance>
+	<moderateRainFallChance>0</moderateRainFallChance>
+	<heavyRainfallChance>0</heavyRainfallChance>
+	<downPourChance>0</downPourChance>
+	<lightHailChance>0</lightHailChance>
+	<HeavyHailChance>0</HeavyHailChance>
+	<shiftingWindDirection>true</shiftingWindDirection>
+	<lightWindChance>10</lightWindChance>
+	<moderateWindsChance>0</moderateWindsChance>
+	<highWindsChance>0</highWindsChance>
+	<strongWindsChance>0</strongWindsChance>
+	<stormWindsChance>0</stormWindsChance>
+	<tornadoF13WindChance>0</tornadoF13WindChance>
+	<tornadoF4WindChance>0</tornadoF4WindChance>
+	
+	<emiChance>10</emiChance>
+	
+	<fogChance>0</fogChance>
+	<lightFogChance>0</lightFogChance>
+	<heavyFogChance>0</heavyFogChance>
+</ADVANCEDTERRAIN>
+	<ADVANCEDTERRAIN>
+	<NAME>Moon trace</NAME>
+	<xmap>1</xmap>
+	<ymap>1</ymap>
+	<xboard>16</xboard>
+	<yboard>17</yboard>
+	
+	<effectTerrain>true</effectTerrain>
+	
+	<staticmap>false</staticmap>
+	<mapname>none</mapname>
+	
+	<lowtemp>110</lowtemp>
+	<hitemp>120</hitemp>
+	<gravity>0.8</gravity>
+	<atmosphere>1<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
+	<nightchance>30</nightchance>
+	<duskChance>15</duskChance>
+	<nightmod>240<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>2</pitchBlackChance>
+	<moonlessNightChance>3</moonlessNightChance>
 	
 	<sleetchance>0</sleetchance>
 	<ligthSnowfallChance>0</ligthSnowfallChance>
@@ -205,12 +773,7 @@
 	<downPourChance>0</downPourChance>
 	<lightHailChance>0</lightHailChance>
 	<HeavyHailChance>0</HeavyHailChance>
-	
-	<windStrength>0<!--this is the integer representation of the winds, overides the chances--></windStrength>
-	<windDir>0<!--this is the integer representation of the wind direction - sets initial direction--></windDir>
-	<shiftingwindstrength>false<!--this will ovveride the normal way to determine this, which is by checking the wind chances and seeing if they are there, and then setting the max wind to the highest windspeed with a chance greater than 0--></shiftingwindstrength>
-	<shiftingWindDirection>true</shiftingWindDirection>
-	<maxWindsStrength>0<!--this will ovveride the normal way to determine this, which is by checking the wind chances and seeing if they are there, and then setting the max wind to the highest windspeed with a chance greater than 0--></maxWindsStrength>
+	<shiftingWindDirection>false</shiftingWindDirection>
 	<lightWindChance>0</lightWindChance>
 	<moderateWindsChance>0</moderateWindsChance>
 	<highWindsChance>0</highWindsChance>
@@ -219,8 +782,215 @@
 	<tornadoF13WindChance>0</tornadoF13WindChance>
 	<tornadoF4WindChance>0</tornadoF4WindChance>
 	
-	<emiChance>0</emiChance>
-	<emi>false<!--this will overide the emi chance--></emi>
+	<emiChance>15</emiChance>
+	
+	<fogChance>0</fogChance>
+	<lightFogChance>0</lightFogChance>
+	<heavyFogChance>0</heavyFogChance>
+</ADVANCEDTERRAIN>
+	<ADVANCEDTERRAIN>
+	<NAME>Moon void</NAME>
+	<xmap>1</xmap>
+	<ymap>1</ymap>
+	<xboard>16</xboard>
+	<yboard>17</yboard>
+	
+	<effectTerrain>true</effectTerrain>
+	
+	<staticmap>false</staticmap>
+	<mapname>none</mapname>
+	
+	<lowtemp>120</lowtemp>
+	<hitemp>130</hitemp>
+	<gravity>0.8</gravity>
+	<atmosphere>0<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
+	<nightchance>30</nightchance>
+	<duskChance>15</duskChance>
+	<nightmod>240<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>2</pitchBlackChance>
+	<moonlessNightChance>3</moonlessNightChance>
+	
+	<sleetchance>0</sleetchance>
+	<ligthSnowfallChance>0</ligthSnowfallChance>
+	<moderateSnowFallChance>0</moderateSnowFallChance>
+	<heavysnowfallchance>0</heavysnowfallchance>
+	<blizzardchance>0</blizzardchance>
+	<iceStormChance>0</iceStormChance>
+	
+	<blowingsandchance>0</blowingsandchance>
+	
+	<lightRainfallChance>0</lightRainfallChance>
+	<moderateRainFallChance>0</moderateRainFallChance>
+	<heavyRainfallChance>0</heavyRainfallChance>
+	<downPourChance>0</downPourChance>
+	<lightHailChance>0</lightHailChance>
+	<HeavyHailChance>0</HeavyHailChance>
+	<shiftingWindDirection>false</shiftingWindDirection>
+	<lightWindChance>0</lightWindChance>
+	<moderateWindsChance>0</moderateWindsChance>
+	<highWindsChance>0</highWindsChance>
+	<strongWindsChance>0</strongWindsChance>
+	<stormWindsChance>0</stormWindsChance>
+	<tornadoF13WindChance>0</tornadoF13WindChance>
+	<tornadoF4WindChance>0</tornadoF4WindChance>
+	
+	<emiChance>25</emiChance>
+	
+	<fogChance>0</fogChance>
+	<lightFogChance>0</lightFogChance>
+	<heavyFogChance>0</heavyFogChance>
+</ADVANCEDTERRAIN>
+	<ADVANCEDTERRAIN>
+	<NAME>asteroid Thin</NAME>
+	<xmap>1</xmap>
+	<ymap>1</ymap>
+	<xboard>16</xboard>
+	<yboard>17</yboard>
+	
+	<effectTerrain>true</effectTerrain>
+	
+	<staticmap>false</staticmap>
+	<mapname>none</mapname>
+	
+	<lowtemp>70</lowtemp>
+	<hitemp>80</hitemp>
+	<gravity>0.5</gravity>
+	<atmosphere>2<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
+	<nightchance>30</nightchance>
+	<duskChance>15</duskChance>
+	<nightmod>160<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>2</pitchBlackChance>
+	<moonlessNightChance>3</moonlessNightChance>
+	
+	<sleetchance>0</sleetchance>
+	<ligthSnowfallChance>0</ligthSnowfallChance>
+	<moderateSnowFallChance>0</moderateSnowFallChance>
+	<heavysnowfallchance>0</heavysnowfallchance>
+	<blizzardchance>0</blizzardchance>
+	<iceStormChance>0</iceStormChance>
+	
+	<blowingsandchance>50</blowingsandchance>
+	
+	<lightRainfallChance>0</lightRainfallChance>
+	<moderateRainFallChance>0</moderateRainFallChance>
+	<heavyRainfallChance>0</heavyRainfallChance>
+	<downPourChance>0</downPourChance>
+	<lightHailChance>0</lightHailChance>
+	<HeavyHailChance>0</HeavyHailChance>
+	<shiftingWindDirection>true</shiftingWindDirection>
+	<lightWindChance>10</lightWindChance>
+	<moderateWindsChance>0</moderateWindsChance>
+	<highWindsChance>0</highWindsChance>
+	<strongWindsChance>0</strongWindsChance>
+	<stormWindsChance>0</stormWindsChance>
+	<tornadoF13WindChance>0</tornadoF13WindChance>
+	<tornadoF4WindChance>0</tornadoF4WindChance>
+	
+	<emiChance>10</emiChance>
+	
+	<fogChance>0</fogChance>
+	<lightFogChance>0</lightFogChance>
+	<heavyFogChance>0</heavyFogChance>
+</ADVANCEDTERRAIN>
+	<ADVANCEDTERRAIN>
+	<NAME>asteroid trace</NAME>
+	<xmap>1</xmap>
+	<ymap>1</ymap>
+	<xboard>16</xboard>
+	<yboard>17</yboard>
+	
+	<effectTerrain>true</effectTerrain>
+	
+	<staticmap>false</staticmap>
+	<mapname>none</mapname>
+	
+	<lowtemp>110</lowtemp>
+	<hitemp>120</hitemp>
+	<gravity>0.5</gravity>
+	<atmosphere>1<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
+	<nightchance>30</nightchance>
+	<duskChance>15</duskChance>
+	<nightmod>240<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>2</pitchBlackChance>
+	<moonlessNightChance>3</moonlessNightChance>
+	
+	<sleetchance>0</sleetchance>
+	<ligthSnowfallChance>0</ligthSnowfallChance>
+	<moderateSnowFallChance>0</moderateSnowFallChance>
+	<heavysnowfallchance>0</heavysnowfallchance>
+	<blizzardchance>0</blizzardchance>
+	<iceStormChance>0</iceStormChance>
+	
+	<blowingsandchance>0</blowingsandchance>
+	
+	<lightRainfallChance>0</lightRainfallChance>
+	<moderateRainFallChance>0</moderateRainFallChance>
+	<heavyRainfallChance>0</heavyRainfallChance>
+	<downPourChance>0</downPourChance>
+	<lightHailChance>0</lightHailChance>
+	<HeavyHailChance>0</HeavyHailChance>
+	<shiftingWindDirection>false</shiftingWindDirection>
+	<lightWindChance>0</lightWindChance>
+	<moderateWindsChance>0</moderateWindsChance>
+	<highWindsChance>0</highWindsChance>
+	<strongWindsChance>0</strongWindsChance>
+	<stormWindsChance>0</stormWindsChance>
+	<tornadoF13WindChance>0</tornadoF13WindChance>
+	<tornadoF4WindChance>0</tornadoF4WindChance>
+	
+	<emiChance>15</emiChance>
+	
+	<fogChance>0</fogChance>
+	<lightFogChance>0</lightFogChance>
+	<heavyFogChance>0</heavyFogChance>
+</ADVANCEDTERRAIN>
+	<ADVANCEDTERRAIN>
+	<NAME>Asteroid void</NAME>
+	<xmap>1</xmap>
+	<ymap>1</ymap>
+	<xboard>16</xboard>
+	<yboard>17</yboard>
+	
+	<effectTerrain>true</effectTerrain>
+	
+	<staticmap>false</staticmap>
+	<mapname>none</mapname>
+	
+	<lowtemp>120</lowtemp>
+	<hitemp>130</hitemp>
+	<gravity>0.5</gravity>
+	<atmosphere>0<!-- 3 is standard, this is the integer representation of the atmosphere --></atmosphere>
+	<nightchance>30</nightchance>
+	<duskChance>15</duskChance>
+	<nightmod>240<!--this is the temperature drop at night, half this at dusk --></nightmod>
+	<pitchBlackChance>2</pitchBlackChance>
+	<moonlessNightChance>3</moonlessNightChance>
+	
+	<sleetchance>0</sleetchance>
+	<ligthSnowfallChance>0</ligthSnowfallChance>
+	<moderateSnowFallChance>0</moderateSnowFallChance>
+	<heavysnowfallchance>0</heavysnowfallchance>
+	<blizzardchance>0</blizzardchance>
+	<iceStormChance>0</iceStormChance>
+	
+	<blowingsandchance>0</blowingsandchance>
+	
+	<lightRainfallChance>0</lightRainfallChance>
+	<moderateRainFallChance>0</moderateRainFallChance>
+	<heavyRainfallChance>0</heavyRainfallChance>
+	<downPourChance>0</downPourChance>
+	<lightHailChance>0</lightHailChance>
+	<HeavyHailChance>0</HeavyHailChance>
+	<shiftingWindDirection>false</shiftingWindDirection>
+	<lightWindChance>0</lightWindChance>
+	<moderateWindsChance>0</moderateWindsChance>
+	<highWindsChance>0</highWindsChance>
+	<strongWindsChance>0</strongWindsChance>
+	<stormWindsChance>0</stormWindsChance>
+	<tornadoF13WindChance>0</tornadoF13WindChance>
+	<tornadoF4WindChance>0</tornadoF4WindChance>
+	
+	<emiChance>25</emiChance>
 	
 	<fogChance>0</fogChance>
 	<lightFogChance>0</lightFogChance>

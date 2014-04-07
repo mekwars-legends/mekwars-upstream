@@ -387,19 +387,14 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
                 CampaignData.mwlog.errLog(ex);
             }
         } else if (command.equals(RemoveTerrainCommand)) {
-            currentTerrainPercent.setText("");
             if (planetTerrains.getItemCount() > 0) {
-            	//TODO MDR
             	ContinentMap.remove(planetTerrains.getSelectedItem());
                 planetTerrains.removeItemAt(planetTerrains.getSelectedIndex());
                 saveTerrain();                                
             }
         } else if (command.equals(removeAllTerrainsCommand)) {
-            removedTerrain.addAll(terrainMap.keySet());
-            terrainMap.clear();
+        	ContinentMap.clear();
             planetTerrains.removeAllItems();
-            planetAdvancedTerrains.removeAllItems();
-            currentTerrainPercent.setText("");
         } 
     }
 
@@ -658,10 +653,7 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
             ContinentMap.put(displayName, terrain);
         }
         
-        currentTerrainPercent.addKeyListener(this);
-        
         panel1.add(planetTerrains);
-        panel1.add(currentTerrainPercent);
 
         JPanel panel2 = new JPanel();
         allTerrains = new JComboBox();
@@ -1031,13 +1023,6 @@ public final class PlanetEditorDialog implements ActionListener, KeyListener {
             try {
                 int percent = Integer.parseInt(currentFactionOwnerShip.getText().trim().replaceAll("%", ""));
                 ownersMap.put(planetOwnersList.getSelectedItem().toString(), percent);
-            } catch (Exception ex) {
-                CampaignData.mwlog.errLog(ex);
-            }
-        } else if (e.getComponent().equals(currentTerrainPercent)) {
-            try {
-                int percent = Integer.parseInt(currentTerrainPercent.getText().trim().replaceAll("%", ""));
-                terrainMap.put(planetTerrains.getSelectedItem().toString(), percent);
             } catch (Exception ex) {
                 CampaignData.mwlog.errLog(ex);
             }
