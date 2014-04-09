@@ -143,6 +143,15 @@ public class XMLTerrainDataParser implements XMLResponder {
     int InvertNegativeTerrain;
     int environmentProb = 1;
     
+    //static maps
+    int xmap = 1;
+    int ymap = 1;
+    int xboard = 16;
+    int yboard = 17;
+    boolean map = false;
+    String mapname = "";
+
+    
     String Theme = "";
     Terrain planetTerrain = new Terrain();
     
@@ -300,6 +309,14 @@ public class XMLTerrainDataParser implements XMLResponder {
             PE.setInvertNegativeTerrain(InvertNegativeTerrain);
             PE.setEnvironmentalProb(environmentProb);
             PE.setName(name);
+            
+        	PE.setStaticMap(map);
+        	PE.setStaticMapName(mapname);
+        	PE.setXBoardSize(xboard);
+        	PE.setXSize(xmap);
+        	PE.setYBoardSize(yboard);
+        	PE.setYSize(ymap);
+
             
             planetTerrain.getEnviroments().add(PE);
             // Reset Variables
@@ -572,6 +589,19 @@ public class XMLTerrainDataParser implements XMLResponder {
             RiverProb = Integer.parseInt(charData);
         else if (lastElement.equalsIgnoreCase("ALGORITHM"))
             Algorithm = Integer.parseInt(charData);
+        else if (lastElement.equalsIgnoreCase("staticmap")) {
+        	map =  Boolean.parseBoolean(charData);
+        } else if (lastElement.equalsIgnoreCase("mapname")) {
+        	mapname = charData;
+        } else if (lastElement.equalsIgnoreCase("xmap")) {
+        	xmap =  Integer.parseInt(charData);
+        } else if (lastElement.equalsIgnoreCase("ymap")) {
+        	ymap =  Integer.parseInt(charData);
+        } else if (lastElement.equalsIgnoreCase("xboard")) {
+        	xboard =  Integer.parseInt(charData);
+        } else if (lastElement.equalsIgnoreCase("yboard")) {
+        	yboard =  Integer.parseInt(charData);
+        }
         else if (lastElement.equalsIgnoreCase("ENVIRONMENTPROBABILITY"))
             environmentProb = Integer.parseInt(charData);
     }

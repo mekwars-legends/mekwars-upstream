@@ -1,6 +1,11 @@
 VERSION HISTORY:
 ----------------
 v 0.4.0.x
+R Released Server v0.4.0.1
++ moved the static maps to the terrain.xml instead of the advterr.xml
++ moved the static maps in code to planetenvironment where it belongs
++ fixed minor formatting bugs
++ added a whole slew of new default templates for advterr.xml
 R Released Server v0.4.0.0, Client v0.4.0.0, PlanetDatConverter v0.4.0.0
 + created AdvancedTerrain Templates
 + changed planet.dat file format to acomodate new Advanced terrain templates 

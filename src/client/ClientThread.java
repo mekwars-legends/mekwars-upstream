@@ -183,10 +183,10 @@ class ClientThread extends Thread implements CloseClientListener {
                 MapSettings mySettings = new MapSettings(mwclient.getMapSize().width, mwclient.getMapSize().height, 1, 1);
                 // MapSettings mySettings = new MapSettings(16, 17, 2, 2);
                 AdvancedTerrain aTerrain = mwclient.getCurrentAdvancedTerrain();
+                PlanetEnvironment pe = mwclient.getCurrentEnvironment();
+                if ((pe != null) && pe.isStaticMap()) {
 
-                if ((aTerrain != null) && aTerrain.isStaticMap()) {
-
-                    mySettings = new MapSettings(aTerrain.getXSize(), aTerrain.getYSize(), aTerrain.getXBoardSize(), aTerrain.getYBoardSize());
+                    mySettings = new MapSettings(pe.getXSize(), pe.getYSize(), pe.getXBoardSize(), pe.getYBoardSize());
 
                     // MMClient.mwClientLog.clientErrLog("Board x:
                     // "+myClient.getBoardSize().width+"Board y:
@@ -194,24 +194,24 @@ class ClientThread extends Thread implements CloseClientListener {
                     // "+myClient.getMapSize().width+"Map y:
                     // "+myClient.getMapSize().height);
                     ArrayList<String> boardvec = new ArrayList<String>();
-                    if (aTerrain.getStaticMapName().toLowerCase().endsWith("surprise")) {
-                        int maxBoards = aTerrain.getXBoardSize() * aTerrain.getYBoardSize();
+                    if (pe.getStaticMapName().toLowerCase().endsWith("surprise")) {
+                        int maxBoards = pe.getXBoardSize() * pe.getYBoardSize();
                         for (int i = 0; i < maxBoards; i++) {
                             boardvec.add(MapSettings.BOARD_SURPRISE);
                         }
 
                         mySettings.setBoardsSelectedVector(boardvec);
 
-                        if (aTerrain.getStaticMapName().indexOf("/") > -1) {
-                            String folder = aTerrain.getStaticMapName().substring(0, aTerrain.getStaticMapName().lastIndexOf("/"));
-                            mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), folder));
-                        } else if (aTerrain.getStaticMapName().indexOf("\\") > -1) {
-                            String folder = aTerrain.getStaticMapName().substring(0, aTerrain.getStaticMapName().lastIndexOf("\\"));
-                            mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), folder));
+                        if (pe.getStaticMapName().indexOf("/") > -1) {
+                            String folder = pe.getStaticMapName().substring(0, pe.getStaticMapName().lastIndexOf("/"));
+                            mySettings.setBoardsAvailableVector(scanForBoards(pe.getXSize(), pe.getYSize(), folder));
+                        } else if (pe.getStaticMapName().indexOf("\\") > -1) {
+                            String folder = pe.getStaticMapName().substring(0, pe.getStaticMapName().lastIndexOf("\\"));
+                            mySettings.setBoardsAvailableVector(scanForBoards(pe.getXSize(), pe.getYSize(), folder));
                         } else {
-                            mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), ""));
+                            mySettings.setBoardsAvailableVector(scanForBoards(pe.getXSize(), pe.getYSize(), ""));
                         }
-                    } else if (aTerrain.getStaticMapName().toLowerCase().endsWith("generated")) {
+                    } else if (pe.getStaticMapName().toLowerCase().endsWith("generated")) {
                         PlanetEnvironment env = mwclient.getCurrentEnvironment();
                         /* Set the map-gen values */
                         mySettings.setElevationParams(env.getHillyness(), env.getHillElevationRange(), env.getHillInvertProb());
@@ -240,20 +240,20 @@ class ClientThread extends Thread implements CloseClientListener {
                             mySettings.setTheme("");
                         }
 
-                        int maxBoards = aTerrain.getXBoardSize() * aTerrain.getYBoardSize();
+                        int maxBoards = pe.getXBoardSize() * pe.getYBoardSize();
                         for (int i = 0; i < maxBoards; i++) {
                             boardvec.add(MapSettings.BOARD_GENERATED);
                         }
 
                         mySettings.setBoardsSelectedVector(boardvec);
-                        if (aTerrain.getStaticMapName().indexOf("/") > -1) {
-                            String folder = aTerrain.getStaticMapName().substring(0, aTerrain.getStaticMapName().lastIndexOf("/"));
-                            mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), folder));
-                        } else if (aTerrain.getStaticMapName().indexOf("\\") > -1) {
-                            String folder = aTerrain.getStaticMapName().substring(0, aTerrain.getStaticMapName().lastIndexOf("\\"));
-                            mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), folder));
+                        if (pe.getStaticMapName().indexOf("/") > -1) {
+                            String folder = pe.getStaticMapName().substring(0, pe.getStaticMapName().lastIndexOf("/"));
+                            mySettings.setBoardsAvailableVector(scanForBoards(pe.getXSize(), pe.getYSize(), folder));
+                        } else if (pe.getStaticMapName().indexOf("\\") > -1) {
+                            String folder = pe.getStaticMapName().substring(0, pe.getStaticMapName().lastIndexOf("\\"));
+                            mySettings.setBoardsAvailableVector(scanForBoards(pe.getXSize(), pe.getYSize(), folder));
                         } else {
-                            mySettings.setBoardsAvailableVector(scanForBoards(aTerrain.getXSize(), aTerrain.getYSize(), ""));
+                            mySettings.setBoardsAvailableVector(scanForBoards(pe.getXSize(), pe.getYSize(), ""));
                         }
 
                         if ((mwclient.getBuildingTemplate() != null) && (mwclient.getBuildingTemplate().getTotalBuildings() > 0)) {
@@ -264,7 +264,7 @@ class ClientThread extends Thread implements CloseClientListener {
                             mySettings.setCityParams(env.getRoads(), env.getCityType(), env.getMinCF(), env.getMaxCF(), env.getMinFloors(), env.getMaxFloors(), env.getCityDensity(), env.getTownSize());
                         }
                     } else {
-                        boardvec.add(aTerrain.getStaticMapName());
+                        boardvec.add(pe.getStaticMapName());
                         mySettings.setBoardsSelectedVector(boardvec);
                     }
 

@@ -35,16 +35,9 @@ import common.util.TokenReader;
 final public class AdvancedTerrain {
 
     private String displayName = "none";
-    private String staticMapName = "surprise";
     private int id = 0;
     private String Name = "none";
     
-    private int xSize = -1;
-    private int ySize = -1;
-
-    private boolean staticMap = false;
-    private int xBoardSize = -1;
-    private int yBoardSize = -1;
     private int lowTemp = 25;
     private int highTemp = 25;
     private double gravity = 1.0;
@@ -109,16 +102,6 @@ final public class AdvancedTerrain {
         }
 
         result += "$";
-        result += xSize;
-        result += "$";
-        result += ySize;
-        result += "$";
-        result += staticMap;
-        result += "$";
-        result += xBoardSize;
-        result += "$";
-        result += yBoardSize;
-        result += "$";
         result += lowTemp;
         result += "$";
         result += highTemp;
@@ -130,8 +113,6 @@ final public class AdvancedTerrain {
         result += fullMoonChance;
         result += "$";
         result += nightTempMod;
-        result += "$";
-        result += staticMapName;
         result += "$";
         result += minVisibility;
         result += "$";
@@ -191,18 +172,12 @@ final public class AdvancedTerrain {
     public void binIn(BinReader in) throws IOException {
         displayName = in.readLine("displayName");
         Name = displayName;
-        setStaticMap(in.readBoolean("staticMap"));
-        xSize = in.readInt("xSize");
-        ySize = in.readInt("ySize");
-        xBoardSize = in.readInt("xBoardSize");
-        yBoardSize = in.readInt("yBoardSize");
         lowTemp = in.readInt("lowTemp");
         highTemp = in.readInt("highTemp");
         gravity = in.readDouble("gravity");
         vacuum = in.readBoolean("vacuum");
         fullMoonChance = in.readInt("nightChance");
         nightTempMod = in.readInt("nightTempMod");
-        staticMapName = in.readLine("staticMapName");
         minVisibility = in.readInt("minvisibility");
         maxVisibility = in.readInt("maxvisibility");
         moderateRainfallChance = in.readInt("moderateRainfallChance");
@@ -234,18 +209,12 @@ final public class AdvancedTerrain {
     public void binOut(BinWriter out) throws IOException {
 
         out.println(displayName, "displayName");
-        out.println(staticMap, "staticMap");
-        out.println(xSize, "xSize");
-        out.println(ySize, "ySize");
-        out.println(xBoardSize, "xBoardSize");
-        out.println(yBoardSize, "yBoardSize");
         out.println(lowTemp, "lowTemp");
         out.println(highTemp, "highTemp");
         out.println(gravity, "gravity");
         out.println(vacuum, "vacuum");
         out.println(fullMoonChance, "nightChance");
         out.println(nightTempMod, "nightTempMod");
-        out.println(staticMapName, "staticMapName");
         out.println(minVisibility, "minvisibility");
         out.println(maxVisibility, "maxvisibility");
         out.println(moderateRainfallChance, "moderateRainfallChance");
@@ -278,18 +247,12 @@ final public class AdvancedTerrain {
         StringTokenizer command = new StringTokenizer(s, "$");
 
         setDisplayName(TokenReader.readString(command));
-        setXSize(TokenReader.readInt(command));
-        setYSize(TokenReader.readInt(command));
-        setStaticMap(TokenReader.readBoolean(command));
-        setXBoardSize(TokenReader.readInt(command));
-        setYBoardSize(TokenReader.readInt(command));
         setLowTemp(TokenReader.readInt(command));
         setHighTemp(TokenReader.readInt(command));
         setGravity(TokenReader.readDouble(command));
         setVacuum(TokenReader.readBoolean(command));
         setNightChance(TokenReader.readInt(command));
         setNightTempMod(TokenReader.readInt(command));
-        setStaticMapName(TokenReader.readString(command));
         setMinVisibility(TokenReader.readInt(command));
         setMaxVisibility(TokenReader.readInt(command));
         setModerateRainFallChance(TokenReader.readInt(command));
@@ -344,13 +307,6 @@ final public class AdvancedTerrain {
         Name = name; 
     }
 
-    public boolean isStaticMap() {
-        return staticMap;
-    }
-
-    public void setStaticMap(boolean map) {
-        staticMap = map;
-    }
 
     @Deprecated
     public boolean isVacuum() {
@@ -362,21 +318,6 @@ final public class AdvancedTerrain {
         this.vacuum = vacuum;        	
     }
 
-    public int getXBoardSize() {
-        return xBoardSize;
-    }
-
-    public void setXBoardSize(int size) {
-        xBoardSize = size;
-    }
-
-    public int getYBoardSize() {
-        return yBoardSize;
-    }
-
-    public void setYBoardSize(int size) {
-        yBoardSize = size;
-    }
 
     public int getLowTemp() {
         return lowTemp;
@@ -440,30 +381,6 @@ final public class AdvancedTerrain {
 
     public void setNightTempMod(int mod) {
         nightTempMod = mod;
-    }
-
-    public String getStaticMapName() {
-        return staticMapName;
-    }
-
-    public void setStaticMapName(String name) {
-        staticMapName = name;
-    }
-
-    public int getXSize() {
-        return xSize;
-    }
-
-    public int getYSize() {
-        return ySize;
-    }
-
-    public void setXSize(int xSize) {
-        this.xSize = xSize;
-    }
-
-    public void setYSize(int ySize) {
-        this.ySize = ySize;
     }
 
     @Deprecated

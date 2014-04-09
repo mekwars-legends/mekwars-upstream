@@ -32,10 +32,6 @@ public class XMLAdvancedTerrainDataParser implements XMLResponder{
     String name;
     String filename;
 	
-    int xmap = 1;
-    int ymap = 1;
-    int xboard = 16;
-    int yboard = 17;
     int lowtemp = 25;
     int hitemp = 25;
     double gravity = 1.0;
@@ -54,8 +50,6 @@ public class XMLAdvancedTerrainDataParser implements XMLResponder{
     int atmo = 0;
     int emiChance = 0;
     boolean emi = false;
-    boolean map = false;
-    String mapname = "";
 	private int windStrength;
 	private int windDir;
 	private int tornadoF4WindChance;
@@ -190,8 +184,6 @@ public class XMLAdvancedTerrainDataParser implements XMLResponder{
         	planetTerrain.setShiftingWindDirection(shiftingWindDirection);
         	planetTerrain.setShiftingWindStrength(shiftingWindStrength);
         	planetTerrain.setSleetChance(sleetChance);
-        	planetTerrain.setStaticMap(map);
-        	planetTerrain.setStaticMapName(mapname);
         	planetTerrain.setStormWindsChance(stormWindsChance);
         	planetTerrain.setStrongWindsChance(strongWindsChance);
         	planetTerrain.setTemperature(temp);
@@ -200,10 +192,6 @@ public class XMLAdvancedTerrainDataParser implements XMLResponder{
         	planetTerrain.setTornadoF4WindsChance(tornadoF4WindChance);
         	planetTerrain.setWindDirection(windDir);
         	planetTerrain.setWindStrength(windStrength);
-        	planetTerrain.setXBoardSize(xboard);
-        	planetTerrain.setXSize(xmap);
-        	planetTerrain.setYBoardSize(yboard);
-        	planetTerrain.setYSize(ymap);
         	planetTerrain.setName(name);
         	planetTerrain.setDisplayName(name);
         	CampaignData.mwlog.mainLog("ADVTERRAIN: adding " + planetTerrain.getName());
@@ -235,15 +223,7 @@ public class XMLAdvancedTerrainDataParser implements XMLResponder{
         if (lastElement.equalsIgnoreCase("NAME")) {
             name = charData;
             CampaignData.mwlog.mainLog(name);
-        } else if (lastElement.equalsIgnoreCase("xmap")) {
-        	xmap =  Integer.parseInt(charData);
-        } else if (lastElement.equalsIgnoreCase("ymap")) {
-        	ymap =  Integer.parseInt(charData);
-        } else if (lastElement.equalsIgnoreCase("xboard")) {
-        	xboard =  Integer.parseInt(charData);
-        } else if (lastElement.equalsIgnoreCase("yboard")) {
-        	yboard =  Integer.parseInt(charData);
-        } else if (lastElement.equalsIgnoreCase("lowtemp")) {
+        }  else if (lastElement.equalsIgnoreCase("lowtemp")) {
         	lowtemp =  Integer.parseInt(charData);
         } else if (lastElement.equalsIgnoreCase("hitemp")) {
         	hitemp =  Integer.parseInt(charData);
@@ -279,10 +259,6 @@ public class XMLAdvancedTerrainDataParser implements XMLResponder{
         	emiChance =  Integer.parseInt(charData);
         } else if (lastElement.equalsIgnoreCase("emi")) {
         	emi =  Boolean.parseBoolean(charData);
-        } else if (lastElement.equalsIgnoreCase("staticmap")) {
-        	map =  Boolean.parseBoolean(charData);
-        } else if (lastElement.equalsIgnoreCase("mapname")) {
-        	mapname = charData;
         } else if (lastElement.equalsIgnoreCase("windStrength")) {
         	windStrength =  Integer.parseInt(charData);
         } else if (lastElement.equalsIgnoreCase("windDir")) {

@@ -135,6 +135,15 @@ final public class PlanetEnvironment{
     private int InvertNegativeTerrain = 0;
     private int EnvironmentProb = 1;
  
+    //static maps support
+    private String staticMapName = "surprise";
+    private int xSize = -1;
+    private int ySize = -1;
+
+    private boolean staticMap = false;
+    private int xBoardSize = -1;
+    private int yBoardSize = -1;
+
     /**
      * For Serialisation.
      */
@@ -268,6 +277,16 @@ final public class PlanetEnvironment{
             MountStyle = Integer.parseInt(ST.nextToken());
         if ( ST.hasMoreElements() )
             EnvironmentProb = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	setStaticMap(Boolean.parseBoolean(ST.nextToken()));
+        if ( ST.hasMoreElements() )
+        	xSize = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	ySize = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	xBoardSize = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	yBoardSize = Integer.parseInt(ST.nextToken());
     }
 
     public PlanetEnvironment(StringTokenizer ST) {
@@ -396,6 +415,17 @@ final public class PlanetEnvironment{
             MountStyle = Integer.parseInt(ST.nextToken());
         if ( ST.hasMoreElements() )
             EnvironmentProb = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	setStaticMap(Boolean.parseBoolean(ST.nextToken()));
+        if ( ST.hasMoreElements() )
+        	xSize = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	ySize = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	xBoardSize = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	yBoardSize = Integer.parseInt(ST.nextToken());
+
     }
     
 
@@ -667,7 +697,19 @@ final public class PlanetEnvironment{
         result += MountHeightMax+"$";
         result += MountStyle+"$";
         result += EnvironmentProb+"$";
-        
+        result += staticMap;
+        result += "$";
+        result += staticMapName;
+        result += "$";
+        result += xSize;
+        result += "$";
+        result += ySize;
+        result += "$";
+        result += xBoardSize;
+        result += "$";
+        result += yBoardSize;
+        result += "$";
+
         return result;
     }
 
@@ -748,6 +790,18 @@ final public class PlanetEnvironment{
         result += MountHeightMax+"$";
         result += MountStyle+"$";
         result += EnvironmentProb+"$";
+        result += staticMap;
+        result += "$";
+        result += staticMapName;
+        result += "$";
+        result += xSize;
+        result += "$";
+        result += ySize;
+        result += "$";
+        result += xBoardSize;
+        result += "$";
+        result += yBoardSize;
+        result += "$";
 
         
         return result;
@@ -1093,7 +1147,7 @@ final public class PlanetEnvironment{
     public void setFortifiedMaxHexes(int FortifiedMaxHexes) {
         this.FortifiedMaxHexes = FortifiedMaxHexes;
     }
-    public void setFortifiedMaxSpots(int FortifiedMaxSpots) {
+    public void setFortifiedMaxSpots(int FortifiedMadebugNamexSpots) {
         this.FortifiedMaxSpots = FortifiedMaxSpots;
     }
     public void setFortifiedMinSpots(int FortifiedMinSpots) {
@@ -1274,6 +1328,13 @@ final public class PlanetEnvironment{
         out.println(MountHeightMin,"MountHeightMin");
         out.println(MountHeightMax,"MountHeightMax");
         out.println(MountStyle,"MountStyle");
+        out.println(staticMap, "staticMap");
+        out.println(staticMapName,"staticMapName");
+        out.println(xSize,"xSize");
+        out.println(ySize,"ySize");
+        out.println(xBoardSize,"xBoardSize");
+        out.println(yBoardSize,"yBoardSize");
+        
     }
     
      /**
@@ -1354,6 +1415,12 @@ final public class PlanetEnvironment{
         MountHeightMin = in.readInt("MountHeightMin");
         MountHeightMax = in.readInt("MountHeightMax");
         MountStyle = in.readInt("MountStyle");
+        staticMap = in.readBoolean("staticMap");
+        staticMapName = in.readLine("staticMapName");
+        xSize = in.readInt("xSize");
+        ySize =in.readInt("ySize");
+        xBoardSize = in.readInt("xBoardSize");
+        yBoardSize = in.readInt("yBoardSize");
         
     }
     
@@ -1394,5 +1461,51 @@ final public class PlanetEnvironment{
 	        theme = " ";
 		Theme = theme;
 	}
+    public boolean isStaticMap() {
+        return staticMap;
+    }
+
+    public void setStaticMap(boolean map) {
+        staticMap = map;
+    }
+
+    public String getStaticMapName() {
+        return staticMapName;
+    }
+
+    public void setStaticMapName(String name) {
+        staticMapName = name;
+    }
+
+    public int getXSize() {
+        return xSize;
+    }
+
+    public int getYSize() {
+        return ySize;
+    }
+
+    public void setXSize(int xSize) {
+        this.xSize = xSize;
+    }
+
+    public void setYSize(int ySize) {
+        this.ySize = ySize;
+    }
+    public int getXBoardSize() {
+        return xBoardSize;
+    }
+
+    public void setXBoardSize(int size) {
+        xBoardSize = size;
+    }
+
+    public int getYBoardSize() {
+        return yBoardSize;
+    }
+
+    public void setYBoardSize(int size) {
+        yBoardSize = size;
+    }
 
 }
