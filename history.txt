@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.4.0.x
+R Released Server v0.4.0.2, Client v0.4.0.1
++ fixed bug in static map loader that would fail to load the advterr when they were set at all 
 R Released Server v0.4.0.1
 + moved the static maps to the terrain.xml instead of the advterr.xml
 + moved the static maps in code to planetenvironment where it belongs

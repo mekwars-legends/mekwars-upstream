@@ -46,13 +46,9 @@ public class PE extends Command {
 		int xsize = TokenReader.readInt(st);
 		int ysize = TokenReader.readInt(st);
 		int mapMedium = TokenReader.readInt(st);
-		/*if (Boolean.parseBoolean(client.getserverConfigs("UseStaticMaps")).booleanValue() ){
-		    int xboard = Integer.parseInt(st.nextToken());
-		    int yboard = Integer.parseInt(st.nextToken());
-		    client.setEnvironment(pe, new Dimension(xsize,ysize),new Dimension(xboard,yboard));
-		}
-		
-		else*/
-		mwclient.setEnvironment(pe, new Dimension(xsize,ysize), mapMedium);
+		if (pe.isStaticMap())
+			mwclient.setEnvironment(pe, new Dimension(pe.getXSize(),pe.getYSize()),mapMedium);
+		else
+			mwclient.setEnvironment(pe, new Dimension(xsize,ysize), mapMedium);
 	}
 }

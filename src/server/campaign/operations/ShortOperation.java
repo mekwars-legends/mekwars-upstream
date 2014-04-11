@@ -1106,7 +1106,7 @@ public class ShortOperation implements Comparable<Object> {
             // and Min Temp) to the low temperature
             int highTemp = aTerrain.getHighTemp();
             int lowTemp = aTerrain.getLowTemp();
-            int tempdiff = aTerrain.getTemperature();
+            int tempdiff = highTemp - lowTemp;
             int tempToSet = lowTemp;
 
             // only get random if there's an actual temp diff

@@ -280,6 +280,8 @@ final public class PlanetEnvironment{
         if ( ST.hasMoreElements() )
         	setStaticMap(Boolean.parseBoolean(ST.nextToken()));
         if ( ST.hasMoreElements() )
+        	staticMapName = ST.nextToken();        
+        if ( ST.hasMoreElements() )
         	xSize = Integer.parseInt(ST.nextToken());
         if ( ST.hasMoreElements() )
         	ySize = Integer.parseInt(ST.nextToken());
@@ -417,6 +419,8 @@ final public class PlanetEnvironment{
             EnvironmentProb = Integer.parseInt(ST.nextToken());
         if ( ST.hasMoreElements() )
         	setStaticMap(Boolean.parseBoolean(ST.nextToken()));
+        if ( ST.hasMoreElements() )
+        	staticMapName = ST.nextToken();        
         if ( ST.hasMoreElements() )
         	xSize = Integer.parseInt(ST.nextToken());
         if ( ST.hasMoreElements() )
