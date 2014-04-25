@@ -105,6 +105,7 @@ public class SPlanetOld extends TimeUpdatePlanet implements Serializable, Compar
             int terrainNumber = 0;
             Terrain planetEnvironment = new Terrain();
             planetEnvironment.setName(terrain);
+            String oldterrainstring = TokenReader.readString(ST);
 
             Continent PE = new Continent(size, planetEnvironment, null);
             getEnvironments().add(PE);
