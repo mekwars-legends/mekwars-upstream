@@ -111,10 +111,6 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         result.append(sdf.format(this.getLastChanged()));
         result.append(this.getId());
-        result.append(getMapSize().width);
-        result.append(getMapSize().height);
-        result.append(getBoardSize().width);
-        result.append(getBoardSize().height);
         result.append(this.getMinPlanetOwnerShip());
         result.append(isHomeWorld());
         result.append(getOriginalOwner());
@@ -439,7 +435,7 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
         	id = CampaignData.cd.getUnusedPlanetID();
         }
         setId(id);
-//       setMinPlanetOwnerShip(TokenReader.readInt(ST));
+       setMinPlanetOwnerShip(TokenReader.readInt(ST));
 
         setHomeWorld(TokenReader.readBoolean(ST));
 

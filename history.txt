@@ -2,6 +2,7 @@ VERSION HISTORY:
 ----------------
 v 0.4.0.x
 R Released PlanetDatConverter v4.0.1
++ fixed bug with the map and board size not being removed correctly from the converter
 + fixed bug reading planets with multiple terrains 
 R Released Server v0.4.0.2, Client v0.4.0.1
 + fixed bug in static map loader that would fail to load the advterr when they were set at all 

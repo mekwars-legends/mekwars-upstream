@@ -316,10 +316,6 @@ public class PlanetDatConverter {
 	         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 	         result.append(sdf.format(new Date()));
 	         result.append(P.getId());
-	         result.append(P.getMapSize().width);
-	         result.append(P.getMapSize().height);
-	         result.append(P.getBoardSize().width);
-	         result.append(P.getBoardSize().height);
 	         result.append(P.getMinPlanetOwnerShip());
 	         result.append(P.isHomeWorld());
 	         result.append(P.getOriginalOwner());
