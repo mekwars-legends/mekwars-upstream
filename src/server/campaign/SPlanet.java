@@ -425,7 +425,7 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
             setTimestamp(sdf.parse(TokenReader.readString(ST)));
         } catch (Exception ex) {
             // No biggy, but will cause senseless Data transfer, so:
-            CampaignData.mwlog.errLog("The following excepion is not critical, but will cause useless bandwith usage: please fix!");
+            CampaignData.mwlog.errLog("The following excepion on planet " + getName() + " is not critical, but will cause useless bandwith usage: please fix!");
             CampaignData.mwlog.errLog(ex);
             setTimestamp(new Date(System.currentTimeMillis()));
         }

@@ -2155,4 +2155,3 @@ src/updaters/VersionManifest.java -text
 src/updaters/utils/IOUtil.java -text
 src/updaters/utils/Terminator.java -text
 src/updaters/utils/VoidFunction.java -text
-/timestamp -text
