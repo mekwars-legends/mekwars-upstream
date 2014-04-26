@@ -691,7 +691,8 @@ public class Planet implements Comparable<Object>, MutableSerializable {
                 }
                 result.append(curProb + "% ");
                 result.append(pe.getEnvironment().toImageAbsolutePathDescription());
-                result.append(" " + pe.getAdvancedTerrain().getName());
+                result.append(" " + pe.getEnvironment().getName());
+                result.append(" - " + pe.getAdvancedTerrain().getName());
                 result.append("<br>Atmosphere: ");
                 result.append(PlanetaryConditions.getAtmosphereDisplayableName(pe.getAdvancedTerrain().getAtmosphere()));
                 result.append("<br>");

@@ -728,8 +728,10 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
             Continent p = getEnvironments().getBiggestEnvironment();
             Terrain pe = p.getEnvironment();
             AdvancedTerrain ape = p.getAdvancedTerrain();
-            if (pe != null && pe.getEnviroments().size() > 0)
+            if (pe != null && pe.getEnviroments().size() > 0) {
                 result.append(" " + pe.getEnviroments().get(0).toImageDescription());
+                result.append(" " + pe.getEnviroments().get(0).getName());
+            }
             if (ape != null )
                 result.append(" " + ape.WeatherForcast());
             	

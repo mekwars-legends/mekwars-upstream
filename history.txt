@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.4.0.x
+R Released Server v0.4.0.3, Client v0.4.0.2
++ fixed minor display issue with planet terrains.
 R Released PlanetDatConverter v4.0.1
 + fixed bug with the map and board size not being removed correctly from the converter
 + fixed bug reading planets with multiple terrains 
