@@ -2542,11 +2542,7 @@ public class ShortOperation implements Comparable<Object> {
         // Extra planet intel
         // Attacker
         result += "<br><B>Planet Name:</b> " + getTargetWorld().getName() + "<br>";
-        if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")) {
-            result += "<b>Continent:</b> " + playContinent.getAdvancedTerrain().getName() + "<br>";
-        } else {
-            result += "<b>Terrain Type:</b> " + playEnvironment.getName() + " (" + playContinent.getAdvancedTerrain().getName() + ") <br>";
-        }
+        result += "<b>Terrain Type:</b> " + playEnvironment.getName() + " (" + playContinent.getAdvancedTerrain().getName() + ") <br>";
 
         if (intelVacuum && factionOwnerShip >= chanceVacuum) {
             result += "<b>Atmosphere:</b> Missing<br>";
