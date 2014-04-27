@@ -2543,7 +2543,7 @@ public class ShortOperation implements Comparable<Object> {
         // Attacker
         result += "<br><B>Planet Name:</b> " + getTargetWorld().getName() + "<br>";
         if (CampaignMain.cm.getBooleanConfig("UseStaticMaps")) {
-            result += "<b>Continent:</b> " + aTerrain.getDisplayName() + "<br>";
+            result += "<b>Continent:</b> " + playContinent.getAdvancedTerrain().getName() + "<br>";
         } else {
             result += "<b>Terrain Type:</b> " + playEnvironment.getName() + " (" + playContinent.getAdvancedTerrain().getName() + ") <br>";
         }
@@ -2564,9 +2564,9 @@ public class ShortOperation implements Comparable<Object> {
             result += "<b>Visibility is :</b> " + (intelVisibility * 30) + " meters<br>";
         }
 
-        if (aTerrain != null && aTerrain.getWeatherConditions() > PlanetaryConditions.WE_NONE) {
+        if (playContinent.getAdvancedTerrain() != null && playContinent.getAdvancedTerrain().getWeatherConditions() > PlanetaryConditions.WE_NONE) {
             result += ("<b>Weather Condition: </b>");
-            result += (PlanetaryConditions.getWeatherDisplayableName(aTerrain.getWeatherConditions()));
+            result += (PlanetaryConditions.getWeatherDisplayableName(playContinent.getAdvancedTerrain().getWeatherConditions()));
         }
         return result;
 
