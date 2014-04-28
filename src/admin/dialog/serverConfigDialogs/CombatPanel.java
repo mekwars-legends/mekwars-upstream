@@ -84,7 +84,7 @@ public class CombatPanel extends JPanel {
         BaseCheckBox.setName("ForceSalvage");
         combatCBoxGrid.add(BaseCheckBox);
 
-        BaseCheckBox = new JCheckBox("Use Advanced Terrains");
+        BaseCheckBox = new JCheckBox("Use Static Maps");
 
         BaseCheckBox.setToolTipText("Use Already built maps vs terrain and RMG");
         BaseCheckBox.setName("UseStaticMaps");
