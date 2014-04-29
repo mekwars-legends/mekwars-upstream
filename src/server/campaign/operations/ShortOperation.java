@@ -116,6 +116,8 @@ public class ShortOperation implements Comparable<Object> {
     private int intelTemp = 0;
     private int intelTimeFrame = PlanetaryConditions.L_DAY;
     private int intelVisibility = 999;
+    private int intelWeather = PlanetaryConditions.WE_NONE;
+    private int intelWind = PlanetaryConditions.WI_NONE;
 
     private TreeSet<String> cancellingPlayers = new TreeSet<String>();
     /*
@@ -1237,7 +1239,9 @@ public class ShortOperation implements Comparable<Object> {
             pc.setLight(aTerrain.getLightConditions());
             pc.setWindStrength(aTerrain.getWindStrength());
             pc.setWeather(aTerrain.getWeatherConditions());
-
+            intelWeather = aTerrain.getWeatherConditions();
+            intelWind = aTerrain.getWindStrength();
+            
             intelVisibility = pc.getVisualRange(null, false);
                 
            
@@ -1377,6 +1381,9 @@ public class ShortOperation implements Comparable<Object> {
                 cityBuilder.append(o.getValue("RCGCityBlocks") + "$");
             }
 
+            //Now that everything is setup, send the intel reports!
+            SendIntelReports();
+            
             for (String currN : getAllPlayerNames()) {
 
                 // send options
@@ -1547,7 +1554,12 @@ public class ShortOperation implements Comparable<Object> {
             CampaignMain.cm.doSendHouseMail(currH, "New Game:", getInfo(true, false));
         }
 
-        /*
+	}
+	
+    public void SendIntelReports() {
+		Operation o = CampaignMain.cm.getOpsManager().getOperation(opName);
+
+    	/*
          * Send logos, intel reports and detailed game info to the invovled
          * players. Logos are those of the first player in the attacker and
          * defender maps, respectively.
@@ -2560,10 +2572,16 @@ public class ShortOperation implements Comparable<Object> {
             result += "<b>Visibility is :</b> " + (intelVisibility * 30) + " meters<br>";
         }
 
-        if (playContinent.getAdvancedTerrain() != null && playContinent.getAdvancedTerrain().getWeatherConditions() > PlanetaryConditions.WE_NONE) {
+        if (intelWeather != PlanetaryConditions.WE_NONE) {
             result += ("<b>Weather Condition: </b>");
-            result += (PlanetaryConditions.getWeatherDisplayableName(playContinent.getAdvancedTerrain().getWeatherConditions()));
+            result += (PlanetaryConditions.getWeatherDisplayableName(intelWeather));            
         }
+        
+        if (intelWind != PlanetaryConditions.WI_NONE) {
+            result += ("<b>Wind Condition: </b>");
+            result += (PlanetaryConditions.getWindDisplayableName(intelWind));            
+        }
+        
         return result;
 
     }

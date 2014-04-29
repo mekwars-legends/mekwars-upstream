@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.4.0.x
+R Released Server v0.4.0.5
++ fixed bug in when intel messages are sent when game is started. 
 R Released Server v0.4.0.4, Client v0.4.0.2
 + fixed bug in display of planet data when game is started. 
 R Released Server v0.4.0.3, Client v0.4.0.2
