@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -466,6 +467,8 @@ public class ShortOperation implements Comparable<Object> {
      */
     public void changeStatus(int newStatus) {
 
+    	Random r = CampaignMain.cm.getR();
+    	
         /*
          * Never change to waiting mode. First actual switch is to INPROGRESS.
          */
@@ -1115,20 +1118,20 @@ public class ShortOperation implements Comparable<Object> {
             if (tempdiff > 0) {
                 tempToSet = CampaignMain.cm.getRandomNumber(tempdiff) + lowTemp;
             }
-
-            if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getDuskChance()) {
+            
+            if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getDuskChance()) {
                 tempToSet -= Math.abs(aTerrain.getNightTempMod()) / 2;
                 intelTimeFrame = PlanetaryConditions.L_DUSK;
                 aTerrain.setLightConditions(PlanetaryConditions.L_DUSK);
-            } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getNightChance()) {
+            } else if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getNightChance()) {
                 tempToSet -= Math.abs(aTerrain.getNightTempMod());
                 intelTimeFrame = PlanetaryConditions.L_FULL_MOON;
                 aTerrain.setLightConditions(PlanetaryConditions.L_FULL_MOON);
-            } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getMoonLessNightChance()) {
+            } else if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getMoonLessNightChance()) {
                 tempToSet -= Math.abs(aTerrain.getNightTempMod());
                 intelTimeFrame = PlanetaryConditions.L_MOONLESS;
                 aTerrain.setLightConditions(PlanetaryConditions.L_MOONLESS);
-            } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getPitchBlackNightChance()) {
+            } else if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getPitchBlackNightChance()) {
                 tempToSet -= Math.abs(aTerrain.getNightTempMod());
                 intelTimeFrame = PlanetaryConditions.L_PITCH_BLACK;
                 aTerrain.setLightConditions(PlanetaryConditions.L_PITCH_BLACK);
@@ -1138,41 +1141,41 @@ public class ShortOperation implements Comparable<Object> {
                 intelTimeFrame = PlanetaryConditions.L_DAY;
             }
 
-            if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getLightRainfallChance()) {
+            if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getLightRainfallChance()) {
                 aTerrain.setWeatherConditions(PlanetaryConditions.WE_LIGHT_RAIN);
-            } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getModerateRainFallChance()) {
+            } else if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getModerateRainFallChance()) {
                 aTerrain.setWeatherConditions(PlanetaryConditions.WE_MOD_RAIN);
-            } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHeavyRainfallChance()) {
+            } else if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getHeavyRainfallChance()) {
                 aTerrain.setWeatherConditions(PlanetaryConditions.WE_HEAVY_RAIN);
-            } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getDownPourChance()) {
+            } else if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getDownPourChance()) {
                 aTerrain.setWeatherConditions(PlanetaryConditions.WE_DOWNPOUR);
-            } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getLightSnowfallChance()) {
+            } else if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getLightSnowfallChance()) {
                 aTerrain.setWeatherConditions(PlanetaryConditions.WE_LIGHT_SNOW);
-            } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getModerateSnowFallChance()) {
+            } else if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getModerateSnowFallChance()) {
                 aTerrain.setWeatherConditions(PlanetaryConditions.WE_MOD_SNOW);
-            } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHeavySnowfallChance()) {
+            } else if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getHeavySnowfallChance()) {
                 aTerrain.setWeatherConditions(PlanetaryConditions.WE_HEAVY_SNOW);
-            } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getSleetChance()) {
+            } else if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getSleetChance()) {
                 aTerrain.setWeatherConditions(PlanetaryConditions.WE_SLEET);
-            } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getIceStormChance()) {
+            } else if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getIceStormChance()) {
                 aTerrain.setWeatherConditions(PlanetaryConditions.WE_ICE_STORM);
-            } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getLightHailChance()) {
+            } else if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getLightHailChance()) {
                 aTerrain.setWeatherConditions(PlanetaryConditions.WE_LIGHT_HAIL);
-            } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHeavyHailChance()) {
+            } else if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getHeavyHailChance()) {
                 aTerrain.setWeatherConditions(PlanetaryConditions.WE_HEAVY_HAIL);
             }
 
-            if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getLightWindsChance()) {
+            if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getLightWindsChance()) {
                 aTerrain.setWindStrength(PlanetaryConditions.WI_LIGHT_GALE);
-            } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getModerateWindsChance()) {
+            } else if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getModerateWindsChance()) {
                 aTerrain.setWindStrength(PlanetaryConditions.WI_MOD_GALE);
-            } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getStrongWindsChance()) {
+            } else if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getStrongWindsChance()) {
                 aTerrain.setWindStrength(PlanetaryConditions.WI_STRONG_GALE);
-            } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getStormWindsChance()) {
+            } else if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getStormWindsChance()) {
                 aTerrain.setWindStrength(PlanetaryConditions.WI_STORM);
-            } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getTornadoF13WindsChance()) {
+            } else if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getTornadoF13WindsChance()) {
                 aTerrain.setWindStrength(PlanetaryConditions.WI_TORNADO_F13);
-            } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getTornadoF4WindsChance()) {
+            } else if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getTornadoF4WindsChance()) {
                 aTerrain.setWindStrength(PlanetaryConditions.WI_TORNADO_F4);
             }
 
@@ -1207,13 +1210,13 @@ public class ShortOperation implements Comparable<Object> {
             aTerrain.setShiftingWindDirection(wind);
             aTerrain.setShiftingWindStrength(wind);
 
-            if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getLightFogChance()) {
+            if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getLightFogChance()) {
                 aTerrain.setFog(PlanetaryConditions.FOG_LIGHT);
-            } else if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getHeavyFogChance()) {
+            } else if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getHeavyFogChance()) {
                 aTerrain.setFog(PlanetaryConditions.FOG_HEAVY);
             }
 
-            if (CampaignMain.cm.getRandomNumber(100) + 1 <= aTerrain.getEMIChance()) {
+            if (CampaignMain.cm.getRandomNumber(1000) + 1 <= aTerrain.getEMIChance()) {
                 aTerrain.setEMI(true);
             }
 

@@ -2,6 +2,9 @@ VERSION HISTORY:
 ----------------
 v 0.4.0.x
 R Released Server v0.4.0.5
++ changed the percentage chances for weather conditions to be .1 percent per increment instead of 1%
++ updated the default advterr.xml to have more reasonable weather (~75% chance of a clear, windless Day map)
+R Released Server v0.4.0.5
 + fixed bug in when intel messages are sent when game is started. 
 R Released Server v0.4.0.4, Client v0.4.0.2
 + fixed bug in display of planet data when game is started. 
