@@ -776,17 +776,17 @@ final public class AdvancedTerrain {
 	public String WeatherForcast()
 	{
 		int worstLight = PlanetaryConditions.L_DAY;
-		int worstLightProb = 0;
+		float worstLightProb = 0;
 		int likelyLight = PlanetaryConditions.L_DAY;
-		int lightProb = 0;
+		float lightProb = 0;
 		int worstWeather = PlanetaryConditions.WE_NONE;
-		int worstWeatherProb = 0;
+		float worstWeatherProb = 0;
 		int likelyWeather = PlanetaryConditions.WE_NONE;
-		int weatherProb = 0;
+		float weatherProb = 0;
 		int worstWind = PlanetaryConditions.WI_NONE;
-		int worstWindProb = 0;
+		float worstWindProb = 0;
 		int likelyWind = PlanetaryConditions.WI_NONE;
-		int windProb = 0;
+		float windProb = 0;
 		
 		StringBuilder results = new StringBuilder();
 		
@@ -823,11 +823,11 @@ final public class AdvancedTerrain {
 		results.append("likely / worst <br>");
 		results.append("Light:");
 		if(lightProb > 0){
-			results.append(lightProb);
+			results.append(lightProb/10);
 			results.append("% ");
 			results.append(PlanetaryConditions.getLightDisplayableName(likelyLight));
 			results.append(" / ");
-			results.append(worstLightProb);
+			results.append(worstLightProb/10);
 			results.append("% ");
 			results.append(PlanetaryConditions.getLightDisplayableName(worstLight));
 			results.append("<br>");			
@@ -891,11 +891,11 @@ final public class AdvancedTerrain {
 
 		results.append("Weather:");
 		if(weatherProb > 0) {
-			results.append(weatherProb);
+			results.append(weatherProb/10);
 			results.append("% ");
 			results.append(PlanetaryConditions.getWeatherDisplayableName(likelyWeather));
 			results.append(" / ");
-			results.append(worstWeatherProb);
+			results.append(worstWeatherProb/10);
 			results.append("% ");
 			results.append(PlanetaryConditions.getWeatherDisplayableName(worstWeather));
 			if(lightHailChance > 0 || heavyHailChance > 0)
@@ -957,11 +957,11 @@ final public class AdvancedTerrain {
 
 		results.append("Wind:");
 		if(windProb > 0) {
-			results.append(windProb);
+			results.append(windProb/10);
 			results.append("% ");
 			results.append(PlanetaryConditions.getWindDisplayableName(likelyWind));
 			results.append(" / ");
-			results.append(worstWindProb);
+			results.append(worstWindProb/10);
 			results.append("% ");
 			results.append(PlanetaryConditions.getWindDisplayableName(worstWind));
 			results.append("<br>");			
@@ -973,13 +973,36 @@ final public class AdvancedTerrain {
 		
 		if(lightFogChance > 0 || heavyFogChance > 0) {
 			results.append("Fog:");
-			results.append(Math.max(lightFogChance, heavyFogChance));
+			results.append((float)Math.max(lightFogChance, heavyFogChance)/10);
 			results.append("% ");
 		}
 		results.append("<br>");						
 		
 		
         return results.toString();
+	}
+
+	public String getHumanReadableWeather() {
+		StringBuilder results = new StringBuilder();
+		int adverse = 0;
+		
+		results.append(PlanetaryConditions.getLightDisplayableName(lightConditions));
+		results.append("/" + PlanetaryConditions.getWeatherDisplayableName(weatherConditions));
+		results.append("/" + PlanetaryConditions.getWindDisplayableName(windStrength));
+		results.append("/" + PlanetaryConditions.getFogDisplayableName(fog));
+		results.append("/" + PlanetaryConditions.getAtmosphereDisplayableName(atmosphere));
+		results.append("/");
+		results.append(gravity);
+		if (lightConditions != PlanetaryConditions.L_DAY) adverse++;
+		if (weatherConditions != PlanetaryConditions.WE_NONE) adverse++;
+		if (windStrength != PlanetaryConditions.WI_NONE) adverse++;
+		if (fog != PlanetaryConditions.FOG_NONE) adverse++;
+		if (atmosphere != PlanetaryConditions.ATMO_STANDARD) adverse++;
+		if (gravity != 1.0) adverse++;
+		
+		results.append("/" + adverse);
+		
+		return results.toString();
 	}
 
 }

@@ -1456,7 +1456,7 @@ public class ShortOperation implements Comparable<Object> {
 
             // add duration, names and BV's to the results log
             StringBuilder toStore = new StringBuilder();
-            toStore.append("#" + getShortID() + " [" + getName() + "]" + " [" + targetWorld.getName() + "]" + " Duration: " + StringUtil.readableTime(completionTime - startTime) + " / Players: ");
+            toStore.append("#" + getShortID() + " [" + getName() + "]" + " [" + targetWorld.getName() + "] {" +  aTerrain.getHumanReadableWeather() + "} Duration: " + StringUtil.readableTime(completionTime - startTime) + " / Players: " );
             boolean firstPlayer = true;
             for (String currName : getAllPlayerNames()) {
                 if (firstPlayer) {
