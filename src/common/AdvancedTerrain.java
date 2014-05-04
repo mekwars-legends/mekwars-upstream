@@ -540,8 +540,49 @@ final public class AdvancedTerrain {
     }
 
     public AdvancedTerrain clone() {
-        AdvancedTerrain clone = new AdvancedTerrain(toString());
-
+        AdvancedTerrain clone = new AdvancedTerrain();
+        clone.setAtmosphere(atmosphere);
+        clone.setDisplayName(displayName);
+        clone.setDownPourChance(downPourChance);
+        clone.setDuskChance(duskChance);
+        clone.setEMI(emi);
+        clone.setFog(fog);
+        clone.setGravity(gravity);
+        clone.setHeavyfogChance(heavyFogChance);
+        clone.setHeavyHailChance(heavyHailChance);
+        clone.setHeavyRainfallChance(heavyRainfallChance);
+        clone.setHeavySnowfallChance(heavySnowfallChance);
+        clone.setHighTemp(highTemp);
+        clone.setIceStormChance(iceStormChance);
+        clone.setLightConditions(lightConditions);
+        clone.setLightFogChance(lightFogChance);
+        clone.setLightHailChance(lightHailChance);
+        clone.setLightRainfallChance(lightRainfallChance);
+        clone.setLightSnowfallChance(lightSnowfallChance);
+        clone.setLightWindChance(lightWindsChance);
+        clone.setLowTemp(lowTemp);
+        clone.setMaxWindStrength(maxWindStrength);
+        clone.setModerateRainFallChance(moderateRainfallChance);
+        clone.setModerateSnowFallChance(moderateSnowfallChance);
+        clone.setModerateWindsChance(moderateWindsChance);
+        clone.setMoonLessNightChance(moonlessChance);
+        clone.setName(Name);
+        clone.setNightChance(fullMoonChance);
+        clone.setNightTempMod(nightTempMod);
+        clone.setPitchBlackNightChance(pitchBlackChance);
+        clone.setShiftingWindDirection(shiftWindDirection);
+        clone.setShiftingWindStrength(shiftWindStrength);
+        clone.setSleetChance(sleetChance);
+        clone.setStormWindsChance(stormWindsChance);
+        clone.setStrongWindsChance(strongWindsChance);
+        clone.setTemperature(temperature);
+        clone.setTerrainAffected(terrainAffected);
+        clone.setTornadoF13WindChance(tornadoF13WindsChance);
+        clone.setTornadoF4WindsChance(tornadoF4WindsChance);
+        clone.setWeatherConditions(weatherConditions);
+        clone.setWindDirection(windDirection);
+        clone.setWindStrength(windStrength);
+       
         return clone;
     }
 
