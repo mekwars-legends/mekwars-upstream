@@ -110,7 +110,7 @@ public class ShortOperation implements Comparable<Object> {
     private StringBuilder cityBuilder = new StringBuilder();
     
     // intel info
-    AdvancedTerrain aTerrain = null;
+    private AdvancedTerrain aTerrain = null;
     private boolean intelVacuum = false;
     private boolean doubleBlind = false;
     private double intelGravity = 0;
@@ -222,7 +222,9 @@ public class ShortOperation implements Comparable<Object> {
 
         // fetch an environment to play in
         playContinent = targetWorld.getEnvironments().getRandomEnvironment(CampaignMain.cm.getR());
-        playEnvironment = playContinent.getEnvironment().getEnviroments().firstElement();        
+        playEnvironment = playContinent.getEnvironment().getEnviroments().firstElement();
+        
+        
         // initiator is always an attacker, so add
         addAttacker(initiator, attackingArmy, "");
 
@@ -1105,7 +1107,7 @@ public class ShortOperation implements Comparable<Object> {
 
 
             // set the temp gravity and vacuum from the terrain configs
-            	aTerrain = playContinent.getAdvancedTerrain();
+            	aTerrain = playContinent.getAdvancedTerrain().clone();
 
             // determine temp. Add a random number from 0-(Diff b/w Max
             // and Min Temp) to the low temperature

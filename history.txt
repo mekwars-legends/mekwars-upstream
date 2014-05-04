@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.4.0.x
+R Released Server v0.4.0.8
++ was not cloning the weather choices so instead everyone shared the same results for there games if they were on the same planet/continent
 R Released Server v0.4.0.7
 + changed the display of weather percentage chances for weather conditions to be .1 percent per increment instead of 1%
 + added a line to the resultslog indicating the exact weather conditions used and the number of adverse conditions.
