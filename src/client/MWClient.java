@@ -80,7 +80,6 @@ import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import megamek.MegaMek;
-import megamek.client.Client;
 import megamek.client.ui.swing.GameOptionsDialog;
 import megamek.common.Building;
 import megamek.common.CriticalSlot;
@@ -3239,11 +3238,9 @@ public final class MWClient implements IClient, GameListener {
             } catch (Exception ex) {
                 CampaignData.mwlog.errLog(ex);
             }
-
-            Client MegaMekClient = new Client("temp", "None", 0);
-            MegaMekClient.getGame().getOptions().loadOptions();
-            GameOptions gameOptions = MegaMekClient.getGame().getOptions();
-            GameOptionsDialog MMGOD = new GameOptionsDialog(getMainFrame(), gameOptions);
+            GameOptions gameOptions = new GameOptions();
+            gameOptions.loadOptions();
+            GameOptionsDialog MMGOD = new GameOptionsDialog(getMainFrame(), gameOptions, true);
             MMGOD.update(gameOptions);
             MMGOD.setEditable(true);
             MMGOD.setVisible(true);

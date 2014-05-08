@@ -35,6 +35,7 @@ R Released Server v0.4.0.0, Client v0.4.0.0, PlanetDatConverter v0.4.0.0
 + updated planets.xml format to deal with advanced terrain templates
 + cleaned up imports across several files
 + fixed formatting bug in weather forcast
++ fixed megamek game option dialog
 
 v 0.3.7.x
 R Released Server v0.3.7.4, Client v0.3.7.2

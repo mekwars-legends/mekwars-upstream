@@ -33,10 +33,10 @@ import megamek.common.Coords;
 import megamek.common.Crew;
 import megamek.common.Entity;
 import megamek.common.IGame;
+import megamek.common.IPlayer;
 import megamek.common.MapSettings;
 import megamek.common.OffBoardDirection;
 import megamek.common.PlanetaryConditions;
-import megamek.common.Player;
 import megamek.common.logging.LogLevel;
 import megamek.common.options.IBasicOption;
 import megamek.common.preference.IClientPreferences;
@@ -94,7 +94,7 @@ class ClientThread extends Thread implements CloseClientListener {
     public Client getClient() {
         return client;
     }
-    
+
     @Override
     public void run() {
         boolean playerUpdate = false;
@@ -115,7 +115,7 @@ class ClientThread extends Thread implements CloseClientListener {
             mwclient.getPlayer().setConventionalMinesAllowed(0);
             mwclient.getPlayer().setVibraMinesAllowed(0);
             mwclient.setUsingBots(false);
-            // clear out everything from this game 
+            // clear out everything from this game
             mwclient.setEnvironment(null, null, 0);
             mwclient.setAdvancedTerrain(null);
             mwclient.setPlayerStartingEdge(Buildings.EDGE_UNKNOWN);
@@ -137,7 +137,7 @@ class ClientThread extends Thread implements CloseClientListener {
 
             swingGui = new megamek.client.ui.swing.ClientGUI(client);
             swingGui.initialize();
-        
+
 
         if (mwclient.getGameOptions().size() < 1) {
             mwclient.setWaiting(true);
@@ -296,7 +296,7 @@ class ClientThread extends Thread implements CloseClientListener {
 
                     mySettings.setMedium(mwclient.getMapMedium());
                     client.sendMapSettings(mySettings);
-                    /*the mysettings and planetCondition object refs were 
+                    /*the mysettings and planetCondition object refs were
                      *passed to the client, so release the refs to them - BarukKhazad!
                      */
                     mySettings = null;
@@ -374,7 +374,7 @@ class ClientThread extends Thread implements CloseClientListener {
                         nightGame = aTerrain.getLightConditions() > PlanetaryConditions.L_DUSK;
 
                         client.sendPlanetaryConditions(planetCondition);
-                        /*the mysettings and planetCondition object refs were 
+                        /*the mysettings and planetCondition object refs were
                          *passed to the client, so release the refs to them - BarukKhazad!
                          */
                         mySettings = null;
@@ -436,9 +436,9 @@ class ClientThread extends Thread implements CloseClientListener {
                 /*the cs object ref is no longer needed, so release the ref to it- BarukKhazad!
                  */
                  cs = null;
-                 
-                if (!mwclient.getConfig().getParam("UNITCAMO").equals(Player.NO_CAMO)) {
-                    client.getLocalPlayer().setCamoCategory(Player.ROOT_CAMO);
+
+                if (!mwclient.getConfig().getParam("UNITCAMO").equals(IPlayer.NO_CAMO)) {
+                    client.getLocalPlayer().setCamoCategory(IPlayer.ROOT_CAMO);
                     client.getLocalPlayer().setCamoFileName(mwclient.getConfig().getParam("UNITCAMO"));
                     playerUpdate = true;
                 }
@@ -466,7 +466,7 @@ class ClientThread extends Thread implements CloseClientListener {
 
                     // Set slights based on games light conditions.
                     if ( !entity.hasSpotlight()){
-                    	entity.getQuirks().getOption("searchlight").setValue(nightGame);
+                        entity.getQuirks().getOption("searchlight").setValue(nightGame);
                     }
                     entity.setSpotlightState(nightGame);
 
@@ -604,7 +604,7 @@ class ClientThread extends Thread implements CloseClientListener {
         } catch (Exception e) {
             CampaignData.mwlog.errLog(e);
         }
-        /*the swingGui object ref was initialized and is 
+        /*the swingGui object ref was initialized and is
         *active on the client thread, so release the ref to it- BarukKhazad!
         */
         swingGui = null;
