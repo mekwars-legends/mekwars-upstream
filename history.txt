@@ -36,6 +36,7 @@ R Released Server v0.4.0.0, Client v0.4.0.0, PlanetDatConverter v0.4.0.0
 + cleaned up imports across several files
 + fixed formatting bug in weather forcast
 + fixed megamek game option dialog
++ don't set shifting wind strength and direction to true whenever there's wind in a game
 
 v 0.3.7.x
 R Released Server v0.3.7.4, Client v0.3.7.2
