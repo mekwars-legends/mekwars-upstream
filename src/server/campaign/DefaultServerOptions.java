@@ -511,6 +511,7 @@ public class DefaultServerOptions {
         defaults.setProperty("ShowFactionRanks", "true");
         defaults.setProperty("NewbieHouseName", "Solaris Training Company");
         defaults.setProperty("UseStaticMaps", "false");
+        defaults.setProperty("DisableWeather", "false");
         defaults.setProperty("SaveEverySlice", "4");
         defaults.setProperty("ExperienceForBay", "500");
         defaults.setProperty("MaxBaysFromEXP", "10");

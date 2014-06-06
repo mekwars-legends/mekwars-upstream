@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.4.0.x
+R Released Server v0.4.0.9
++ New MM v0.37.13-MW20140606-10941
++ Added ability to totally disable weather, set in Combat Panel
 R Released Server v0.4.0.8
 + was not cloning the weather choices so instead everyone shared the same results for there games if they were on the same planet/continent
 R Released Server v0.4.0.7

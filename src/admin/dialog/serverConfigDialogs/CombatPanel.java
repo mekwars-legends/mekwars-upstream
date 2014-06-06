@@ -89,6 +89,11 @@ public class CombatPanel extends JPanel {
         BaseCheckBox.setToolTipText("Use Already built maps vs terrain and RMG");
         BaseCheckBox.setName("UseStaticMaps");
         combatCBoxGrid.add(BaseCheckBox);
+        
+        BaseCheckBox = new JCheckBox("Disable Weather");
+        BaseCheckBox.setToolTipText("Disable all weather conditions");
+        BaseCheckBox.setName("DisableWeather");
+        combatCBoxGrid.add(BaseCheckBox);
 
         BaseCheckBox = new JCheckBox("Show Inf In /c ca");
 

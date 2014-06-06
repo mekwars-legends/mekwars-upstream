@@ -1105,135 +1105,142 @@ public class ShortOperation implements Comparable<Object> {
             gameOptions.append("|set_arty_player_homeedge|");
             gameOptions.append(true);
 
-
+            boolean useWeather = !CampaignMain.cm.getBooleanConfig("DisableWeather");
+            
             // set the temp gravity and vacuum from the terrain configs
+            if (useWeather) {
             	aTerrain = playContinent.getAdvancedTerrain().clone();
+            } else {
+            	aTerrain = new AdvancedTerrain();
+            }
 
+            if (useWeather) {
             // determine temp. Add a random number from 0-(Diff b/w Max
             // and Min Temp) to the low temperature
-            int highTemp = aTerrain.getHighTemp();
-            int lowTemp = aTerrain.getLowTemp();
-            int tempdiff = highTemp - lowTemp;
-            int tempToSet = lowTemp;
+            	int highTemp = aTerrain.getHighTemp();
+            	int lowTemp = aTerrain.getLowTemp();
+            	int tempdiff = highTemp - lowTemp;
+            	int tempToSet = lowTemp;
 
-            // only get random if there's an actual temp diff
-            if (tempdiff > 0) {
-                tempToSet = CampaignMain.cm.getRandomNumber(tempdiff) + lowTemp;
-            }
+            	// only get random if there's an actual temp diff
+            	if (tempdiff > 0) {
+            		tempToSet = CampaignMain.cm.getRandomNumber(tempdiff) + lowTemp;
+            	}
 
-            if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getDuskChance()) {
-                tempToSet -= Math.abs(aTerrain.getNightTempMod()) / 2;
-                intelTimeFrame = PlanetaryConditions.L_DUSK;
-                aTerrain.setLightConditions(PlanetaryConditions.L_DUSK);
-            } else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getNightChance()) {
-                tempToSet -= Math.abs(aTerrain.getNightTempMod());
-                intelTimeFrame = PlanetaryConditions.L_FULL_MOON;
-                aTerrain.setLightConditions(PlanetaryConditions.L_FULL_MOON);
-            } else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getMoonLessNightChance()) {
-                tempToSet -= Math.abs(aTerrain.getNightTempMod());
-                intelTimeFrame = PlanetaryConditions.L_MOONLESS;
-                aTerrain.setLightConditions(PlanetaryConditions.L_MOONLESS);
-            } else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getPitchBlackNightChance()) {
-                tempToSet -= Math.abs(aTerrain.getNightTempMod());
-                intelTimeFrame = PlanetaryConditions.L_PITCH_BLACK;
-                aTerrain.setLightConditions(PlanetaryConditions.L_PITCH_BLACK);
-            }
-            // else normal daylight conditions
-            else {
-                intelTimeFrame = PlanetaryConditions.L_DAY;
-            }
+            	if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getDuskChance()) {
+            		tempToSet -= Math.abs(aTerrain.getNightTempMod()) / 2;
+            		intelTimeFrame = PlanetaryConditions.L_DUSK;
+            		aTerrain.setLightConditions(PlanetaryConditions.L_DUSK);
+            	} else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getNightChance()) {
+            		tempToSet -= Math.abs(aTerrain.getNightTempMod());
+            		intelTimeFrame = PlanetaryConditions.L_FULL_MOON;
+            		aTerrain.setLightConditions(PlanetaryConditions.L_FULL_MOON);
+            	} else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getMoonLessNightChance()) {
+            		tempToSet -= Math.abs(aTerrain.getNightTempMod());
+            		intelTimeFrame = PlanetaryConditions.L_MOONLESS;
+            		aTerrain.setLightConditions(PlanetaryConditions.L_MOONLESS);
+            	} else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getPitchBlackNightChance()) {
+            		tempToSet -= Math.abs(aTerrain.getNightTempMod());
+            		intelTimeFrame = PlanetaryConditions.L_PITCH_BLACK;
+            		aTerrain.setLightConditions(PlanetaryConditions.L_PITCH_BLACK);
+            	}
+            	// else normal daylight conditions
+            	else {
+            		intelTimeFrame = PlanetaryConditions.L_DAY;
+            	}
 
-            if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getLightRainfallChance()) {
-                aTerrain.setWeatherConditions(PlanetaryConditions.WE_LIGHT_RAIN);
-            } else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getModerateRainFallChance()) {
-                aTerrain.setWeatherConditions(PlanetaryConditions.WE_MOD_RAIN);
-            } else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getHeavyRainfallChance()) {
-                aTerrain.setWeatherConditions(PlanetaryConditions.WE_HEAVY_RAIN);
-            } else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getDownPourChance()) {
-                aTerrain.setWeatherConditions(PlanetaryConditions.WE_DOWNPOUR);
-            } else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getLightSnowfallChance()) {
-                aTerrain.setWeatherConditions(PlanetaryConditions.WE_LIGHT_SNOW);
-            } else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getModerateSnowFallChance()) {
-                aTerrain.setWeatherConditions(PlanetaryConditions.WE_MOD_SNOW);
-            } else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getHeavySnowfallChance()) {
-                aTerrain.setWeatherConditions(PlanetaryConditions.WE_HEAVY_SNOW);
-            } else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getSleetChance()) {
-                aTerrain.setWeatherConditions(PlanetaryConditions.WE_SLEET);
-            } else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getIceStormChance()) {
-                aTerrain.setWeatherConditions(PlanetaryConditions.WE_ICE_STORM);
-            } else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getLightHailChance()) {
-                aTerrain.setWeatherConditions(PlanetaryConditions.WE_LIGHT_HAIL);
-            } else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getHeavyHailChance()) {
-                aTerrain.setWeatherConditions(PlanetaryConditions.WE_HEAVY_HAIL);
-            }
+            	if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getLightRainfallChance()) {
+            		aTerrain.setWeatherConditions(PlanetaryConditions.WE_LIGHT_RAIN);
+            	} else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getModerateRainFallChance()) {
+            		aTerrain.setWeatherConditions(PlanetaryConditions.WE_MOD_RAIN);
+            	} else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getHeavyRainfallChance()) {
+            		aTerrain.setWeatherConditions(PlanetaryConditions.WE_HEAVY_RAIN);
+            	} else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getDownPourChance()) {
+            		aTerrain.setWeatherConditions(PlanetaryConditions.WE_DOWNPOUR);
+            	} else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getLightSnowfallChance()) {
+            		aTerrain.setWeatherConditions(PlanetaryConditions.WE_LIGHT_SNOW);
+            	} else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getModerateSnowFallChance()) {
+            		aTerrain.setWeatherConditions(PlanetaryConditions.WE_MOD_SNOW);
+            	} else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getHeavySnowfallChance()) {
+            		aTerrain.setWeatherConditions(PlanetaryConditions.WE_HEAVY_SNOW);
+            	} else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getSleetChance()) {
+            		aTerrain.setWeatherConditions(PlanetaryConditions.WE_SLEET);
+            	} else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getIceStormChance()) {
+            		aTerrain.setWeatherConditions(PlanetaryConditions.WE_ICE_STORM);
+            	} else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getLightHailChance()) {
+            		aTerrain.setWeatherConditions(PlanetaryConditions.WE_LIGHT_HAIL);
+            	} else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getHeavyHailChance()) {
+            		aTerrain.setWeatherConditions(PlanetaryConditions.WE_HEAVY_HAIL);
+            	}
 
-            if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getLightWindsChance()) {
-                aTerrain.setWindStrength(PlanetaryConditions.WI_LIGHT_GALE);
-            } else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getModerateWindsChance()) {
-                aTerrain.setWindStrength(PlanetaryConditions.WI_MOD_GALE);
-            } else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getStrongWindsChance()) {
-                aTerrain.setWindStrength(PlanetaryConditions.WI_STRONG_GALE);
-            } else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getStormWindsChance()) {
-                aTerrain.setWindStrength(PlanetaryConditions.WI_STORM);
-            } else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getTornadoF13WindsChance()) {
-                aTerrain.setWindStrength(PlanetaryConditions.WI_TORNADO_F13);
-            } else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getTornadoF4WindsChance()) {
-                aTerrain.setWindStrength(PlanetaryConditions.WI_TORNADO_F4);
-            }
+            	if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getLightWindsChance()) {
+            		aTerrain.setWindStrength(PlanetaryConditions.WI_LIGHT_GALE);
+            	} else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getModerateWindsChance()) {
+            		aTerrain.setWindStrength(PlanetaryConditions.WI_MOD_GALE);
+            	} else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getStrongWindsChance()) {
+            		aTerrain.setWindStrength(PlanetaryConditions.WI_STRONG_GALE);
+            	} else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getStormWindsChance()) {
+            		aTerrain.setWindStrength(PlanetaryConditions.WI_STORM);
+            	} else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getTornadoF13WindsChance()) {
+            		aTerrain.setWindStrength(PlanetaryConditions.WI_TORNADO_F13);
+            	} else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getTornadoF4WindsChance()) {
+            		aTerrain.setWindStrength(PlanetaryConditions.WI_TORNADO_F4);
+            	}
 
-            boolean wind = false;
+            	boolean wind = false;
 
-            if (aTerrain.getLightWindsChance() > 0) {
-                wind = true;
-                aTerrain.setMaxWindStrength(PlanetaryConditions.WI_LIGHT_GALE);
-            }
+            	if (aTerrain.getLightWindsChance() > 0) {
+            		wind = true;
+            		aTerrain.setMaxWindStrength(PlanetaryConditions.WI_LIGHT_GALE);
+            	}
 
-            if (aTerrain.getModerateWindsChance() > 0) {
-                wind = true;
-                aTerrain.setMaxWindStrength(PlanetaryConditions.WI_MOD_GALE);
-            }
-            if (aTerrain.getStrongWindsChance() > 0) {
-                wind = true;
-                aTerrain.setMaxWindStrength(PlanetaryConditions.WI_STRONG_GALE);
-            }
-            if (aTerrain.getStormWindsChance() > 0) {
-                wind = true;
-                aTerrain.setMaxWindStrength(PlanetaryConditions.WI_STORM);
-            }
-            if (aTerrain.getTornadoF13WindsChance() > 0) {
-                wind = true;
-                aTerrain.setMaxWindStrength(PlanetaryConditions.WI_TORNADO_F13);
-            }
-            if (aTerrain.getTornadoF4WindsChance() > 0) {
-                wind = true;
-                aTerrain.setMaxWindStrength(PlanetaryConditions.WI_TORNADO_F4);
-            }
+            	if (aTerrain.getModerateWindsChance() > 0) {
+            		wind = true;
+            		aTerrain.setMaxWindStrength(PlanetaryConditions.WI_MOD_GALE);
+            	}
+            	if (aTerrain.getStrongWindsChance() > 0) {
+            		wind = true;
+            		aTerrain.setMaxWindStrength(PlanetaryConditions.WI_STRONG_GALE);
+            	}
+            	if (aTerrain.getStormWindsChance() > 0) {
+            		wind = true;
+            		aTerrain.setMaxWindStrength(PlanetaryConditions.WI_STORM);
+            	}
+            	if (aTerrain.getTornadoF13WindsChance() > 0) {
+            		wind = true;
+            		aTerrain.setMaxWindStrength(PlanetaryConditions.WI_TORNADO_F13);
+            	}
+            	if (aTerrain.getTornadoF4WindsChance() > 0) {
+            		wind = true;
+            		aTerrain.setMaxWindStrength(PlanetaryConditions.WI_TORNADO_F4);
+            	}
 
-            if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getLightFogChance()) {
-                aTerrain.setFog(PlanetaryConditions.FOG_LIGHT);
-            } else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getHeavyFogChance()) {
-                aTerrain.setFog(PlanetaryConditions.FOG_HEAVY);
+            	if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getLightFogChance()) {
+            		aTerrain.setFog(PlanetaryConditions.FOG_LIGHT);
+            	} else if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getHeavyFogChance()) {
+            		aTerrain.setFog(PlanetaryConditions.FOG_HEAVY);
+            	}
+
+            	if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getEMIChance()) {
+            		aTerrain.setEMI(true);
+            	}
+
+            	if (aTerrain.getAtmosphere() <= PlanetaryConditions.ATMO_TRACE) {
+            		gameOptions.append("|fire|false");
+            		aTerrain.setShiftingWindDirection(false);
+            		aTerrain.setShiftingWindStrength(false);
+            	} else if (CampaignMain.cm.getMegaMekClient().getGame().getOptions().booleanOption("tacops_start_fire") && !wind) {
+            		aTerrain.setShiftingWindDirection(true);
+            		aTerrain.setShiftingWindStrength(true);
+            		aTerrain.setMaxWindStrength(PlanetaryConditions.WI_LIGHT_GALE);
+            	}
+
+
+
+            	aTerrain.setTemperature(tempToSet);
+            	
             }
-
-            if ((CampaignMain.cm.getRandomNumber(1000) + 1) <= aTerrain.getEMIChance()) {
-                aTerrain.setEMI(true);
-            }
-
-            if (aTerrain.getAtmosphere() <= PlanetaryConditions.ATMO_TRACE) {
-                gameOptions.append("|fire|false");
-                aTerrain.setShiftingWindDirection(false);
-                aTerrain.setShiftingWindStrength(false);
-            } else if (CampaignMain.cm.getMegaMekClient().getGame().getOptions().booleanOption("tacops_start_fire") && !wind) {
-                aTerrain.setShiftingWindDirection(true);
-                aTerrain.setShiftingWindStrength(true);
-                aTerrain.setMaxWindStrength(PlanetaryConditions.WI_LIGHT_GALE);
-            }
-
-            intelGravity = aTerrain.getGravity();
-            intelTemp = tempToSet;
-            aTerrain.setTemperature(tempToSet);
-            intelVacuum = aTerrain.getAtmosphere() <= PlanetaryConditions.ATMO_TRACE;
-
+            
             PlanetaryConditions pc = new PlanetaryConditions();
 
             pc.setAtmosphere(aTerrain.getAtmosphere());
@@ -1241,9 +1248,12 @@ public class ShortOperation implements Comparable<Object> {
             pc.setLight(aTerrain.getLightConditions());
             pc.setWindStrength(aTerrain.getWindStrength());
             pc.setWeather(aTerrain.getWeatherConditions());
+            
             intelWeather = aTerrain.getWeatherConditions();
             intelWind = aTerrain.getWindStrength();
-
+        	intelTemp = aTerrain.getTemperature();
+        	intelGravity = aTerrain.getGravity();
+        	intelVacuum = aTerrain.getAtmosphere() <= PlanetaryConditions.ATMO_TRACE;
             intelVisibility = pc.getVisualRange(null, false);
 
 
