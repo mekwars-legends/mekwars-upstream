@@ -3240,7 +3240,7 @@ public final class MWClient implements IClient, GameListener {
             }
             GameOptions gameOptions = new GameOptions();
             gameOptions.loadOptions();
-            GameOptionsDialog MMGOD = new GameOptionsDialog(getMainFrame(), gameOptions, true);
+            GameOptionsDialog MMGOD = new GameOptionsDialog(getMainFrame(), gameOptions);
             MMGOD.update(gameOptions);
             MMGOD.setEditable(true);
             MMGOD.setVisible(true);
