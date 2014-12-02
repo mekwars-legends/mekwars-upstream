@@ -27,6 +27,7 @@ import megamek.client.CloseClientListener;
 import megamek.client.bot.BotClient;
 import megamek.client.bot.princess.Princess;
 import megamek.client.bot.ui.swing.BotGUI;
+import megamek.client.ui.swing.util.MegaMekController;
 import megamek.common.Board;
 import megamek.common.BoardDimensions;
 import megamek.common.Coords;
@@ -135,7 +136,7 @@ class ClientThread extends Thread implements CloseClientListener {
                 swingGui.getBots().clear();
             }
 
-            swingGui = new megamek.client.ui.swing.ClientGUI(client);
+            swingGui = new megamek.client.ui.swing.ClientGUI(client, new MegaMekController());
             swingGui.initialize();
 
 
@@ -406,7 +407,7 @@ class ClientThread extends Thread implements CloseClientListener {
                     CampaignData.mwlog.errLog("Bot Error!");
                     CampaignData.mwlog.errLog(ex);
                 }
-                bot.retrieveServerInfo();
+//                bot.retrieveServerInfo();
                 Thread.sleep(125);
 
                 swingGui.getBots().put(name, bot);
@@ -615,7 +616,8 @@ class ClientThread extends Thread implements CloseClientListener {
      * from megamek.client.CloseClientListener clientClosed() Thanks to MM for
      * adding the listener. And to MMNet for the poorly documented code change.
      */
-    public void clientClosed() {
+    @Override
+	public void clientClosed() {
 
         PreferenceManager.getInstance().save();
 
@@ -714,7 +716,8 @@ class ClientThread extends Thread implements CloseClientListener {
 
     public static Comparator<? super Object> stringComparator() {
         return new Comparator<Object>() {
-            public int compare(Object o1, Object o2) {
+            @Override
+			public int compare(Object o1, Object o2) {
                 String s1 = ((String) o1).toLowerCase();
                 String s2 = ((String) o2).toLowerCase();
                 return s1.compareTo(s2);

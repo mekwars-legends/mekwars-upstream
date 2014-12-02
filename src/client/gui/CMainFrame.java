@@ -56,8 +56,6 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 import megamek.MegaMek;
-import megamek.client.ui.swing.ClientGUI;
-import megamek.client.ui.swing.MechSelectorDialog;
 import megamek.client.ui.swing.UnitLoadingDialog;
 import client.CUser;
 import client.MWClient;
@@ -376,7 +374,7 @@ public class CMainFrame extends JFrame {
                     jMenuBar1.remove(jMenuMod);
                     jMenuMod = (JMenu) o;
                     jMenuBar1.add(jMenuMod);
-
+                    loader.close();
                     /*
                      * if ( jMenuMod.getItemCount() < 1 ){ mod = false; }
                      */
@@ -392,6 +390,7 @@ public class CMainFrame extends JFrame {
                     jMenuBar1.remove(jMenuAdmin);
                     jMenuAdmin = (JMenu) o;
                     jMenuBar1.add(jMenuAdmin);
+                    loader.close();
                 } catch (Exception ex) {
                     CampaignData.mwlog.errLog("AdminMenu creation FAILED!");
                     CampaignData.mwlog.errLog(ex);
@@ -409,11 +408,10 @@ public class CMainFrame extends JFrame {
                             Class<?> c = loader.loadClass("OperationsEditor.MainOperations");
                             Object o = c.newInstance();
                             c.getDeclaredMethod("main", new Class[] { Object.class }).invoke(o, new Object[] { mwclient });
-
+                            loader.close(); 
                         } catch (Exception ex) {
                             CampaignData.mwlog.errLog(ex);
                         }
-
                         // new
                         // OperationsEditor.dialog.OperationsDialog(mwclient);
                     }
@@ -1754,7 +1752,7 @@ public class CMainFrame extends JFrame {
 
         Object[] pilots = mwclient.getPlayer().getPersonalPilotQueue().getPilotQueue(unitType, weightClass).toArray();
 
-        JComboBox combo = new JComboBox();
+        JComboBox<String> combo = new JComboBox<String>();
 
         for (Object pilot : pilots) {
             Pilot mm = (Pilot) pilot;
@@ -1829,7 +1827,7 @@ public class CMainFrame extends JFrame {
 
         Object[] pilots = mwclient.getPlayer().getPersonalPilotQueue().getPilotQueue(unitType, weightClass).toArray();
 
-        JComboBox combo = new JComboBox();
+        JComboBox<String> combo = new JComboBox<String>();
 
         for (Object pilot : pilots) {
             Pilot mm = (Pilot) pilot;
@@ -1924,7 +1922,7 @@ public class CMainFrame extends JFrame {
         techTypes.add("Units");
         techTypes.add("Components");
         techTypes.add("Delay");
-        JComboBox combo = new JComboBox(techTypes);
+        JComboBox<String> combo = new JComboBox<String>(techTypes);
         combo.setEditable(false);
         JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 
@@ -2006,7 +2004,7 @@ public class CMainFrame extends JFrame {
             techTypes.add("Regular");
             techTypes.add("Vet");
             techTypes.add("Elite");
-            JComboBox combo = new JComboBox(techTypes);
+            JComboBox<String> combo = new JComboBox<String>(techTypes);
             combo.setEditable(true);
             JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 
@@ -2060,7 +2058,7 @@ public class CMainFrame extends JFrame {
             Vector<String> techTypes = new Vector<String>(2, 1);
             techTypes.add("Green " + Integer.parseInt(mwclient.getserverConfigs("GreenTechHireCost")) + mwclient.moneyOrFluMessage(true, true, -2));
             techTypes.add("Regular " + Integer.parseInt(mwclient.getserverConfigs("RegTechHireCost")) + mwclient.moneyOrFluMessage(true, true, -2));
-            JComboBox combo = new JComboBox(techTypes);
+            JComboBox<String> combo = new JComboBox<String>(techTypes);
             combo.setEditable(false);
             JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 
@@ -2330,7 +2328,7 @@ public class CMainFrame extends JFrame {
             return;
         }
 
-        JComboBox combo = new JComboBox(units);
+        JComboBox<String> combo = new JComboBox<String>(units);
         combo.setEditable(false);
         JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 
@@ -2352,7 +2350,7 @@ public class CMainFrame extends JFrame {
             return;
         }
 
-        combo = new JComboBox(weight);
+        combo = new JComboBox<String>(weight);
         combo.setEditable(false);
         jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 
@@ -2765,7 +2763,7 @@ public class CMainFrame extends JFrame {
             list.add(mulList.nextToken());
         }
 
-        JComboBox combo = new JComboBox(list);
+        JComboBox<String> combo = new JComboBox<String>(list);
         combo.setEditable(false);
         JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 
@@ -2924,7 +2922,7 @@ public class CMainFrame extends JFrame {
 
         // System.err.println("creating combo box.");
 
-        JComboBox combo = new JComboBox(list);
+        JComboBox<String> combo = new JComboBox<String>(list);
         combo.setEditable(false);
         JOptionPane jop = new JOptionPane(combo, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 
@@ -3034,7 +3032,7 @@ public class CMainFrame extends JFrame {
 
     public void jMenuRetrieveOperationFile_actionPerformed(ActionEvent e) {
 
-        JComboBox opCombo = new JComboBox(mwclient.getAllOps().keySet().toArray());
+        JComboBox<String> opCombo = new JComboBox<String>((String[])mwclient.getAllOps().keySet().toArray());
         opCombo.setEditable(false);
 
         JOptionPane jop = new JOptionPane(opCombo, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
@@ -3055,7 +3053,7 @@ public class CMainFrame extends JFrame {
 
     public void jMenuSetOperationFile_actionPerformed(ActionEvent e) {
 
-        JComboBox opCombo = new JComboBox(mwclient.getAllOps().keySet().toArray());
+        JComboBox<String> opCombo = new JComboBox<String>(mwclient.getAllOps().keySet().toArray(new String[mwclient.getAllOps().keySet().size()]));
         opCombo.setEditable(false);
 
         JOptionPane jop = new JOptionPane(opCombo, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);

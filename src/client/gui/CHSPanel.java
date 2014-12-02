@@ -48,7 +48,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SpringLayout;
 import javax.swing.border.LineBorder;
 
-import megamek.client.ui.swing.MechDisplay;
+import megamek.client.ui.swing.UnitDisplay;
 import megamek.common.Entity;
 import megamek.common.Infantry;
 import client.MWClient;
@@ -812,19 +812,19 @@ public class CHSPanel extends JPanel {
         unitEntity = embeddedUnit.getEntity();
 
         JFrame InfoWindow = new JFrame();
-        MechDisplay mechDetailInfo = new MechDisplay(null);
+        UnitDisplay unitDetailInfo = new UnitDisplay(null);
         unitEntity.loadAllWeapons();
         unitEntity.setCrew(new megamek.common.Crew("", 1, gunnery, piloting));
         if (battleDamage.trim().length() > 1) {
             UnitUtils.applyBattleDamage(unitEntity, battleDamage, false);
         }
-        InfoWindow.getContentPane().add(mechDetailInfo);
+        InfoWindow.getContentPane().add(unitDetailInfo);
         InfoWindow.setSize(300, 400);
         InfoWindow.setResizable(false);
         InfoWindow.setTitle(unitEntity.getModel());
         InfoWindow.setLocationRelativeTo(mwclient.getMainFrame());
         InfoWindow.setVisible(true);
-        mechDetailInfo.displayEntity(unitEntity);
+        unitDetailInfo.displayEntity(unitEntity);
     }
 
     // BUY MENU METHODS AND LISTENERS

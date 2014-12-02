@@ -3,6 +3,7 @@ package server.campaign.autoresolve;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -96,12 +97,12 @@ public class Battlefield implements GameInterface {
 	}
 
 	
-	public Enumeration<Entity> getEntities() {
+	public Iterator<Entity> getEntities() {
 		Vector<Entity> result = new Vector<Entity>();
 		for (VirtualUnit unit: getAllUnits()){
 			result.add(unit.getUnit().getEntity());
 		}
-		return result.elements();
+		return result.iterator();
 	}
 
 	
@@ -114,6 +115,21 @@ public class Battlefield implements GameInterface {
 		winners.add(winnerName);
 	}
 
+	public int getStartingBVAttacker() {
+		return startingBVAttacker;
+	}
+
+	public void setStartingBVAttacker(int startingBVAttacker) {
+		this.startingBVAttacker = startingBVAttacker;
+	}
+
+	public int getStartingBVDefender() {
+		return startingBVDefender;
+	}
+
+	public void setStartingBVDefender(int startingBVDefender) {
+		this.startingBVDefender = startingBVDefender;
+	}
 	
 	
 	

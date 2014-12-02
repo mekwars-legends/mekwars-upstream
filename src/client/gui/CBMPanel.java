@@ -37,7 +37,7 @@ import javax.swing.SpringLayout;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import megamek.client.ui.swing.MechDisplay;
+import megamek.client.ui.swing.UnitDisplay;
 import megamek.common.Entity;
 import client.MWClient;
 import client.campaign.CBMUnit;
@@ -356,16 +356,16 @@ public class CBMPanel extends JPanel {
         theEntity.loadAllWeapons();
 
         JFrame infoWindow = new JFrame();
-        MechDisplay mechDisplay = new MechDisplay(null);
+        UnitDisplay unitDisplay = new UnitDisplay(null);
 
-        infoWindow.getContentPane().add(mechDisplay);
+        infoWindow.getContentPane().add(unitDisplay);
         infoWindow.setSize(300,400);
         infoWindow.setResizable(false);
 
         infoWindow.setTitle(mm.getModelName());
         infoWindow.setLocationRelativeTo(mwclient.getMainFrame());//center it
         infoWindow.setVisible(true);
-        mechDisplay.displayEntity(theEntity);
+        unitDisplay.displayEntity(theEntity);
     }
 
 

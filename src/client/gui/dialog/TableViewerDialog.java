@@ -57,7 +57,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import megamek.client.ui.swing.MechDisplay;
+import megamek.client.ui.swing.UnitDisplay;
 import megamek.common.Entity;
 import megamek.common.EntityListFile;
 import megamek.common.MechFileParser;
@@ -205,7 +205,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         closeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         closeButton.setAlignmentY(Component.CENTER_ALIGNMENT);
         closeButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 dispose();
             }
         });
@@ -213,7 +214,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         refreshButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         refreshButton.setAlignmentY(Component.CENTER_ALIGNMENT);
         refreshButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 refreshButton_ActionPerformed();
             }
         });
@@ -237,9 +239,9 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                     theEntity.loadAllWeapons();
 
                     JFrame infoWindow = new JFrame();
-                    MechDisplay mechDetailInfo = new MechDisplay(null);
+                    UnitDisplay unitDetailInfo = new UnitDisplay(null);
 
-                    infoWindow.getContentPane().add(mechDetailInfo);
+                    infoWindow.getContentPane().add(unitDetailInfo);
                     infoWindow.setSize(300, 400);
                     infoWindow.setResizable(false);
 
@@ -247,7 +249,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                     infoWindow.setLocationRelativeTo(mwclient.getMainFrame());// center
                     // it
                     infoWindow.setVisible(true);
-                    mechDetailInfo.displayEntity(theEntity);
+                    unitDetailInfo.displayEntity(theEntity);
                 }
             }
         });// end addMouseListener();
@@ -347,7 +349,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
      * Method to conform with ItemListener. Takes item events from the combo
      * boxes and triggers table loads.
      */
-    public void itemStateChanged(ItemEvent i) {
+    @Override
+	public void itemStateChanged(ItemEvent i) {
 
         /*
          * Do not re-load tables and units if there is no actual change in the
@@ -858,12 +861,14 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         }
 
         // column count, for AbstractModel
-        public int getColumnCount() {
+        @Override
+		public int getColumnCount() {
             return columnNames.length;
         }
 
         // rowcount, for AbstractModel
-        public int getRowCount() {
+        @Override
+		public int getRowCount() {
             return sortedUnits.length;
         }
 
@@ -902,7 +907,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         }
 
         // getValueAt, for AbstractModel
-        public Object getValueAt(int row, int col) {
+        @Override
+		public Object getValueAt(int row, int col) {
 
             // invalid row
             if ((row < 0) || (row >= sortedUnits.length)) {
@@ -998,7 +1004,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 
                 sortedUnits = currentUnits.values().toArray(sortedUnits);
                 Arrays.sort(sortedUnits, new Comparator<TableUnit>() {
-                    public int compare(TableUnit o1, TableUnit o2) {
+                    @Override
+					public int compare(TableUnit o1, TableUnit o2) {
 
                         try {
                             TableUnit t1 = o1;

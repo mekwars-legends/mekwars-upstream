@@ -55,8 +55,8 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 
-import megamek.client.ui.swing.MechDisplay;
 import megamek.client.ui.swing.MechTileset;
+import megamek.client.ui.swing.UnitDisplay;
 import megamek.common.Entity;
 import megamek.common.Infantry;
 import megamek.common.Mech;
@@ -612,16 +612,16 @@ public class CHQPanel extends JPanel {
 
                 if (mek != null) {
                     JFrame infoWindow = new JFrame();
-                    MechDisplay mechdisplay = new MechDisplay(null);
+                    UnitDisplay unitdisplay = new UnitDisplay(null);
                     Entity theEntity = mek.getEntity();
                     theEntity.loadAllWeapons();
-                    infoWindow.getContentPane().add(mechdisplay);
+                    infoWindow.getContentPane().add(unitdisplay);
                     infoWindow.setSize(300, 400);
                     infoWindow.setResizable(false);
                     infoWindow.setTitle(mek.getModelName());
                     infoWindow.setLocationRelativeTo(null);
                     infoWindow.setVisible(true);
-                    mechdisplay.displayEntity(theEntity);
+                    unitdisplay.displayEntity(theEntity);
                 }
             }
             tblMeks.repaint();
@@ -2028,7 +2028,7 @@ public class CHQPanel extends JPanel {
                 // check access
             } else if (command.equalsIgnoreCase("CAA")) {
                 int armyID = Integer.parseInt(st.nextToken());
-                JComboBox attackCombo = new JComboBox(mwclient.getAllOps().keySet().toArray());
+                JComboBox<String> attackCombo = new JComboBox<String>((String[]) mwclient.getAllOps().keySet().toArray());
                 attackCombo.setEditable(false);
 
                 attackCombo.grabFocus();
@@ -2523,15 +2523,15 @@ public class CHQPanel extends JPanel {
                 CUnit mek = MekTable.getMekAt(row, col);
                 Entity theEntity = mek.getEntity();
                 JFrame infoWindow = new JFrame();
-                MechDisplay mechDisplay = new MechDisplay(null);
+                UnitDisplay unitDisplay = new UnitDisplay(null);
                 theEntity.loadAllWeapons();
-                infoWindow.getContentPane().add(mechDisplay);
+                infoWindow.getContentPane().add(unitDisplay);
                 infoWindow.setSize(300, 400);
                 infoWindow.setResizable(false);
                 infoWindow.setTitle(mek.getModelName());
                 infoWindow.setLocationRelativeTo(mwclient.getMainFrame());
                 infoWindow.setVisible(true);
-                mechDisplay.displayEntity(theEntity);
+                unitDisplay.displayEntity(theEntity);
             } else if (command.equalsIgnoreCase("CMU")) {
                 int row = Integer.parseInt(st.nextToken());
                 int col = Integer.parseInt(st.nextToken());

@@ -1,6 +1,7 @@
 package common;
 
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 
 import megamek.common.Entity;
@@ -14,7 +15,7 @@ public interface GameInterface {
 
 	Enumeration<Entity> getGraveyardEntities();
 
-	Enumeration<Entity> getEntities();
+	Iterator<Entity> getEntities();
 
 	Enumeration<Entity> getRetreatedEntities();
 

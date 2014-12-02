@@ -50,6 +50,7 @@ import megamek.common.Mech;
 import megamek.common.MechWarrior;
 import megamek.common.event.GameBoardChangeEvent;
 import megamek.common.event.GameBoardNewEvent;
+import megamek.common.event.GameCFREvent;
 import megamek.common.event.GameEndEvent;
 import megamek.common.event.GameEntityChangeEvent;
 import megamek.common.event.GameEntityNewEvent;
@@ -67,6 +68,7 @@ import megamek.common.event.GamePlayerDisconnectedEvent;
 import megamek.common.event.GameReportEvent;
 import megamek.common.event.GameSettingsChangeEvent;
 import megamek.common.event.GameTurnChangeEvent;
+import megamek.common.event.GameVictoryEvent;
 import megamek.common.options.IOption;
 import megamek.common.preference.IClientPreferences;
 import megamek.common.preference.PreferenceManager;
@@ -1599,6 +1601,8 @@ public final class MWDedHost implements IClient, GameListener {
             while (gameOptions.ready()) {
                 packet.append(gameOptions.readLine() + "#");
             }
+            gameOptions.close();
+            gameOptionsFile.close();
         } catch (Exception ex) {
         }
 
@@ -1815,13 +1819,6 @@ public final class MWDedHost implements IClient, GameListener {
 
         try {
 
-            if (myServer.getGame().getPhase() == IGame.Phase.PHASE_VICTORY) {
-
-                sendGameReport();
-                CampaignData.mwlog.infoLog("GAME END");
-
-            }// end victory
-
             /*
              * Reporting phases show deaths - units that try to stand and blow
              * their ammo, units that have ammo explode from head, etc. This is
@@ -1830,9 +1827,7 @@ public final class MWDedHost implements IClient, GameListener {
              * final condition of the unit are not the same (ie - remove on
              * Engine crits even when a CT core comes later in the round).
              */
-            else if (myServer.getGame().getPhase() == IGame.Phase.PHASE_END_REPORT) {
                 sendServerGameUpdate();
-            }
 
         }// end try
         catch (Exception ex) {
@@ -1923,9 +1918,9 @@ public final class MWDedHost implements IClient, GameListener {
         // Only send data for units currently on the board.
         // any units removed from play will have already sent thier final
         // update.
-        Enumeration<Entity> en = myServer.getGame().getEntities();
-        while (en.hasMoreElements()) {
-            Entity ent = en.nextElement();
+    	Iterator<Entity> en = myServer.getGame().getEntities();
+        while (en.hasNext()) {
+            Entity ent = en.next();
             if (ent.getOwner().getName().startsWith("War Bot") || (!(ent instanceof MechWarrior) && !UnitUtils.hasArmorDamage(ent) && !UnitUtils.hasISDamage(ent) && !UnitUtils.hasCriticalDamage(ent) && !UnitUtils.hasLowAmmo(ent) && !UnitUtils.hasEmptyAmmo(ent))) {
                 continue;
             }
@@ -1994,9 +1989,9 @@ public final class MWDedHost implements IClient, GameListener {
             result.append("#");
 
         }
-        en = myGame.getEntities();
-        while (en.hasMoreElements()) {
-            Entity ent = en.nextElement();
+        Iterator<Entity> en2 = myGame.getEntities();
+        while (en2.hasNext()) {
+            Entity ent = en2.next();
             if (ent.getOwner().getName().startsWith("War Bot")) {
                 continue;
             }
@@ -2138,5 +2133,17 @@ public final class MWDedHost implements IClient, GameListener {
             checkForRestart();
         }
     }
+
+	public void gameClientFeedbackRquest(GameCFREvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void gameVictory(GameVictoryEvent e) {
+        sendGameReport();
+        CampaignData.mwlog.infoLog("GAME END");
+
+		
+	}
 
 }

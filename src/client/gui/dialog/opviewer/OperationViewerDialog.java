@@ -25,7 +25,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -162,7 +161,7 @@ public class OperationViewerDialog extends JDialog implements Runnable {
 			if (!fileEntry.isDirectory() && fileEntry.getName().endsWith(".xml")) {
 				MMNetXStream xml = new MMNetXStream();
 				try {
-					p = (Properties)xml.fromXML(new FileInputStream(fileEntry));
+					p = (Properties)xml.fromXML(new FileReader(fileEntry));
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

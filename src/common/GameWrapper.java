@@ -2,6 +2,7 @@ package common;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 
 import megamek.common.Entity;
@@ -25,7 +26,7 @@ public class GameWrapper implements GameInterface {
 		return game.getGraveyardEntities();
 	}
 
-	public Enumeration<Entity> getEntities() {
+	public Iterator<Entity> getEntities() {
 		return game.getEntities();
 	}
 

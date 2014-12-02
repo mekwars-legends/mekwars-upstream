@@ -354,7 +354,8 @@ public class CUser implements Comparable<Object> {
     /**
      * Comparable, for PlayerNameDialog. Don't use elsewhere =)
      */
-    public int compareTo(Object o) {
+    @Override
+	public int compareTo(Object o) {
         if (!(o instanceof CUser))
             return 0;
 

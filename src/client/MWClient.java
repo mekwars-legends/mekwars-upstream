@@ -91,6 +91,7 @@ import megamek.common.Mech;
 import megamek.common.MechWarrior;
 import megamek.common.event.GameBoardChangeEvent;
 import megamek.common.event.GameBoardNewEvent;
+import megamek.common.event.GameCFREvent;
 import megamek.common.event.GameEndEvent;
 import megamek.common.event.GameEntityChangeEvent;
 import megamek.common.event.GameEntityNewEvent;
@@ -108,6 +109,7 @@ import megamek.common.event.GamePlayerDisconnectedEvent;
 import megamek.common.event.GameReportEvent;
 import megamek.common.event.GameSettingsChangeEvent;
 import megamek.common.event.GameTurnChangeEvent;
+import megamek.common.event.GameVictoryEvent;
 import megamek.common.options.GameOptions;
 import megamek.common.options.IBasicOption;
 import megamek.common.preference.IClientPreferences;
@@ -465,6 +467,7 @@ public final class MWClient implements IClient, GameListener {
                 BufferedReader dis = new BufferedReader(new InputStreamReader(new FileInputStream("data/servers/" + Config.getParam("SERVERIP") + "." + Config.getParam("SERVERPORT") + "/dataLastUpdated.dat")));
                 Date lastTS = new Date(Long.parseLong(dis.readLine()));
                 dataFetcher.setLastTimestamp(lastTS);
+                dis.close();
             } catch (Throwable t) {
                 CampaignData.mwlog.infoLog("Couldn't read timestamp of last datafetch. Will need to fetch all planetchanges since last full update.");
             }
@@ -1613,7 +1616,8 @@ public final class MWClient implements IClient, GameListener {
             tabName = ttabName;
         }
 
-        public void run() {
+        @Override
+		public void run() {
             (MainFrame.getMainPanel().getCommPanel()).setChat(input, channel, tabName);
         }
     }
@@ -1930,7 +1934,8 @@ public final class MWClient implements IClient, GameListener {
             mode = tmode;
         }
 
-        public void run() {
+        @Override
+		public void run() {
             if (MainFrame == null) {
                 return;
             }// return if main frame not yet drawn (still fetching data)
@@ -2002,7 +2007,8 @@ public final class MWClient implements IClient, GameListener {
             contentPane.add(panel, gridBagConstraints);
 
             okButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent event) {
+                @Override
+				public void actionPerformed(ActionEvent event) {
                     dialog.setVisible(false);
                     dialog.dispose();
                 }
@@ -2142,7 +2148,8 @@ public final class MWClient implements IClient, GameListener {
     }
 
     // IClient interface
-    public void systemMessage(String message) {
+    @Override
+	public void systemMessage(String message) {
 
         if (!isDedicated()) {
             String sysColour = getConfigParam("SYSMESSAGECOLOR");
@@ -2155,7 +2162,8 @@ public final class MWClient implements IClient, GameListener {
         }
     }
 
-    public void errorMessage(String message) {
+    @Override
+	public void errorMessage(String message) {
         if (!isDedicated()) {
             JOptionPane.showMessageDialog(MainFrame, message);
         } else {
@@ -2163,7 +2171,8 @@ public final class MWClient implements IClient, GameListener {
         }
     }
 
-    public void processIncoming(String incoming) {
+    @Override
+	public void processIncoming(String incoming) {
         IProtCommand pcommand = null;
 
         // CampaignData.mwlog.infoLog("INCOMING: " + incoming);
@@ -2195,7 +2204,8 @@ public final class MWClient implements IClient, GameListener {
         }
     }
 
-    public void connectionLost() {
+    @Override
+	public void connectionLost() {
 
         Status = STATUS_DISCONNECTED;
         if (SignOff) {
@@ -2234,7 +2244,8 @@ public final class MWClient implements IClient, GameListener {
         }
     }
 
-    public void connectionEstablished() {
+    @Override
+	public void connectionEstablished() {
 
         LastPing = System.currentTimeMillis() / 1000;
         CampaignData.mwlog.errLog("Connected. Signing on.");
@@ -3182,8 +3193,8 @@ public final class MWClient implements IClient, GameListener {
         String moneyLong = getserverConfigs("MoneyLongName");
         String fluShort = getserverConfigs("FluShortName");
         String fluLong = getserverConfigs("FluLongName");
-        String RPLong = getserverConfigs("RPLongName");
-        String RPShort = getserverConfigs("RPShortName");
+//        String RPLong = getserverConfigs("RPLongName");
+//        String RPShort = getserverConfigs("RPShortName");
 
         String sign = "+";
 
@@ -3240,7 +3251,7 @@ public final class MWClient implements IClient, GameListener {
             }
             GameOptions gameOptions = new GameOptions();
             gameOptions.loadOptions();
-            GameOptionsDialog MMGOD = new GameOptionsDialog(getMainFrame(), gameOptions);
+            GameOptionsDialog MMGOD = new GameOptionsDialog(getMainFrame(), gameOptions,true);
             MMGOD.update(gameOptions);
             MMGOD.setEditable(true);
             MMGOD.setVisible(true);
@@ -3266,6 +3277,8 @@ public final class MWClient implements IClient, GameListener {
             while (gameOptions.ready()) {
                 packet.append(gameOptions.readLine() + "#");
             }
+            gameOptions.close();
+            gameOptionsFile.close();
         } catch (Exception ex) {
         }
 
@@ -3583,7 +3596,8 @@ public final class MWClient implements IClient, GameListener {
      * INNER CLASSES
      */
     static class AutoSaveFilter implements FilenameFilter {
-        public boolean accept(File dir, String name) {
+        @Override
+		public boolean accept(File dir, String name) {
             return (name.startsWith("autosave"));
         }
     }
@@ -3594,7 +3608,8 @@ public final class MWClient implements IClient, GameListener {
             super();
         }
 
-        public void run() {
+        @Override
+		public void run() {
             long twoHours = 2 * 60 * 60 * 1000;
             try {
                 while (true) {
@@ -3649,7 +3664,8 @@ public final class MWClient implements IClient, GameListener {
     public void gamePlayerStatusChange(GameEvent e) {
     }
 
-    public void gameTurnChange(GameTurnChangeEvent e) {
+    @Override
+	public void gameTurnChange(GameTurnChangeEvent e) {
         if (myServer != null) {
             if (turn == 0) {
                 serverSend("SHS|" + getUsername() + "|Running");
@@ -3662,16 +3678,10 @@ public final class MWClient implements IClient, GameListener {
         }
     }
 
-    public void gamePhaseChange(GamePhaseChangeEvent e) {
+    @Override
+	public void gamePhaseChange(GamePhaseChangeEvent e) {
 
         try {
-
-            if (myServer.getGame().getPhase() == IGame.Phase.PHASE_VICTORY) {
-
-                sendGameReport();
-                CampaignData.mwlog.infoLog("GAME END");
-
-            }// end victory
 
             /*
              * Reporting phases show deaths - units that try to stand and blow
@@ -3681,9 +3691,7 @@ public final class MWClient implements IClient, GameListener {
              * final condition of the unit are not the same (ie - remove on
              * Engine crits even when a CT core comes later in the round).
              */
-            else if (myServer.getGame().getPhase() == IGame.Phase.PHASE_END_REPORT) {
                 sendServerGameUpdate();
-            }
 
         }// end try
         catch (Exception ex) {
@@ -3701,7 +3709,8 @@ public final class MWClient implements IClient, GameListener {
      * means that a unit which is simultanously head killed and then CT cored
      * will show as salvageable.
      */
-    public void gameEntityRemove(GameEntityRemoveEvent e) {// only send if the
+    @Override
+	public void gameEntityRemove(GameEntityRemoveEvent e) {// only send if the
         // player is
         // actually involved
         // in the game
@@ -3716,46 +3725,60 @@ public final class MWClient implements IClient, GameListener {
         serverSend("IPU|" + toSend);
     }
 
-    public void gamePlayerConnected(GamePlayerConnectedEvent e) {
+    @Override
+	public void gamePlayerConnected(GamePlayerConnectedEvent e) {
     }
 
-    public void gamePlayerDisconnected(GamePlayerDisconnectedEvent e) {
+    @Override
+	public void gamePlayerDisconnected(GamePlayerDisconnectedEvent e) {
     }
 
-    public void gamePlayerChange(GamePlayerChangeEvent e) {
+    @Override
+	public void gamePlayerChange(GamePlayerChangeEvent e) {
     }
 
-    public void gamePlayerChat(GamePlayerChatEvent e) {
+    @Override
+	public void gamePlayerChat(GamePlayerChatEvent e) {
     }
 
-    public void gameReport(GameReportEvent e) {
+    @Override
+	public void gameReport(GameReportEvent e) {
     }
 
-    public void gameEnd(GameEndEvent e) {
+    @Override
+	public void gameEnd(GameEndEvent e) {
     }
 
-    public void gameBoardNew(GameBoardNewEvent e) {
+    @Override
+	public void gameBoardNew(GameBoardNewEvent e) {
     }
 
-    public void gameBoardChanged(GameBoardChangeEvent e) {
+    @Override
+	public void gameBoardChanged(GameBoardChangeEvent e) {
     }
 
-    public void gameSettingsChange(GameSettingsChangeEvent e) {
+    @Override
+	public void gameSettingsChange(GameSettingsChangeEvent e) {
     }
 
-    public void gameMapQuery(GameMapQueryEvent e) {
+    @Override
+	public void gameMapQuery(GameMapQueryEvent e) {
     }
 
-    public void gameEntityNew(GameEntityNewEvent e) {
+    @Override
+	public void gameEntityNew(GameEntityNewEvent e) {
     }
 
-    public void gameEntityNewOffboard(GameEntityNewOffboardEvent e) {
+    @Override
+	public void gameEntityNewOffboard(GameEntityNewOffboardEvent e) {
     }
 
-    public void gameEntityChange(GameEntityChangeEvent e) {
+    @Override
+	public void gameEntityChange(GameEntityChangeEvent e) {
     }
 
-    public void gameNewAction(GameNewActionEvent e) {
+    @Override
+	public void gameNewAction(GameNewActionEvent e) {
     }
 
     public int getBuildingsLeft() {
@@ -3774,9 +3797,9 @@ public final class MWClient implements IClient, GameListener {
         // Only send data for units currently on the board.
         // any units removed from play will have already sent thier final
         // update.
-        Enumeration<Entity> en = myServer.getGame().getEntities();
-        while (en.hasMoreElements()) {
-            Entity ent = en.nextElement();
+    	Iterator<Entity> en = myServer.getGame().getEntities();
+        while (en.hasNext()) {
+            Entity ent = en.next();
             if (ent.getOwner().getName().startsWith("War Bot") || (!(ent instanceof MechWarrior) && !UnitUtils.hasArmorDamage(ent) && !UnitUtils.hasISDamage(ent) && !UnitUtils.hasCriticalDamage(ent) && !UnitUtils.hasLowAmmo(ent) && !UnitUtils.hasEmptyAmmo(ent))) {
                 continue;
             }
@@ -3866,9 +3889,9 @@ public final class MWClient implements IClient, GameListener {
             result.append("#");
 
         }
-        en = myGame.getEntities();
-        while (en.hasMoreElements()) {
-            Entity ent = en.nextElement();
+        Iterator<Entity> en2 = myGame.getEntities();
+        while (en2.hasNext()) {
+            Entity ent = en2.next();
             if (ent.getOwner().getName().startsWith("War Bot")) {
                 continue;
             }
@@ -3897,6 +3920,21 @@ public final class MWClient implements IClient, GameListener {
 			return true;
 		}
 		return false;
+	}
+
+	public void gameClientFeedbackRquest(GameCFREvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void gameVictory(GameVictoryEvent e) {
+            sendGameReport();
+            CampaignData.mwlog.infoLog("GAME END");
+		
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 }
