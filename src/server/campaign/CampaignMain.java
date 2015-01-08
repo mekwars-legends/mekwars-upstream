@@ -531,7 +531,6 @@ public final class CampaignMain implements Serializable {
         	}
 			dis.close();
         } catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			CampaignMain.cm.setSupportUnits(units);
@@ -2937,8 +2936,7 @@ public final class CampaignMain implements Serializable {
 			getData().setBannedTargetingSystems(bans);
 			dis.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+						e.printStackTrace();
 		}
     }
 
@@ -3181,8 +3179,8 @@ public final class CampaignMain implements Serializable {
         String moneyLong = cm.getConfig("MoneyLongName");
         String fluShort = cm.getConfig("FluShortName").toLowerCase();
         String fluLong = cm.getConfig("FluLongName");
-        String RPShort = cm.getConfig("RPShortName");
-        String RPLong = cm.getConfig("RPLongName");
+//        String RPShort = cm.getConfig("RPShortName");
+//        String RPLong = cm.getConfig("RPLongName");
 
         String sign = "+";
 
@@ -3669,7 +3667,7 @@ public final class CampaignMain implements Serializable {
                 realCost *= costMod;
             }
 
-            cost += (techCost * Math.abs(techWorkMod)) + techCost;
+            cost += (techCost * Math.abs(techWorkMod)) + realCost;
         } else {
             if (armor) {
                 if (critSlot == UnitUtils.LOC_FRONT_ARMOR) {
@@ -3798,7 +3796,6 @@ public final class CampaignMain implements Serializable {
 		try {
 			out = new FileOutputStream("./campaign/bantarget.dat");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         PrintStream p = new PrintStream(out);
@@ -3811,7 +3808,6 @@ public final class CampaignMain implements Serializable {
         try {
 			out.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
