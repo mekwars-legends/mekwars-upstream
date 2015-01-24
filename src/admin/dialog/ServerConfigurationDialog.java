@@ -69,7 +69,6 @@ import admin.dialog.serverConfigDialogs.UnitsCardPanel;
 import admin.dialog.serverConfigDialogs.UnitsPanel;
 import admin.dialog.serverConfigDialogs.VotingPanel;
 import client.MWClient;
-
 import common.CampaignData;
 
 public final class ServerConfigurationDialog implements ActionListener {

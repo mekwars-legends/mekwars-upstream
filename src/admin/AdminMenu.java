@@ -50,7 +50,6 @@ import client.gui.dialog.PlanetNameDialog;
 import client.gui.dialog.SubFactionNameDialog;
 import client.gui.dialog.TraitDialog;
 import client.gui.dialog.UnitViewerDialog;
-
 import common.CampaignData;
 import common.Planet;
 import common.Terrain;
