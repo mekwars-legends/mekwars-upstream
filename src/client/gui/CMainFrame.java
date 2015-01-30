@@ -3031,8 +3031,7 @@ public class CMainFrame extends JFrame {
     }
 
     public void jMenuRetrieveOperationFile_actionPerformed(ActionEvent e) {
-
-        JComboBox<String> opCombo = new JComboBox<String>((String[])mwclient.getAllOps().keySet().toArray());
+    	JComboBox<String> opCombo = new JComboBox<String>((String[])mwclient.getAllOps().keySet().toArray(new String[0]));
         opCombo.setEditable(false);
 
         JOptionPane jop = new JOptionPane(opCombo, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);

@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.4.0.x
+R Released Client v0.4.0.3
++ Bug: Admin and OpEditor links broken in client
++ Bug: Game Entity Iterator broken. 
 + Fixed broken links between MW and MM (Needs Testing)
 + Cleaned up some warnings.
 R Released Server v0.4.0.9

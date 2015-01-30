@@ -182,7 +182,7 @@ public final class MWClient implements IClient, GameListener {
 
     CConfig Config;
 
-    public static final String CLIENT_VERSION = "0.4.0.2"; // change this with
+    public static final String CLIENT_VERSION = "0.4.0.3"; // change this with
 
     // all client
     // changes @Torren
@@ -1838,7 +1838,6 @@ public final class MWClient implements IClient, GameListener {
                         activeOnly,// 13
                         minAccessLevel // 14
                 };
-
                 allOps.put(name, props);
 
                 // load next line
@@ -3797,7 +3796,7 @@ public final class MWClient implements IClient, GameListener {
         // Only send data for units currently on the board.
         // any units removed from play will have already sent thier final
         // update.
-    	Iterator<Entity> en = myServer.getGame().getEntities();
+    	Iterator<Entity> en = (Iterator<Entity>) myServer.getGame().getEntities();
         while (en.hasNext()) {
             Entity ent = en.next();
             if (ent.getOwner().getName().startsWith("War Bot") || (!(ent instanceof MechWarrior) && !UnitUtils.hasArmorDamage(ent) && !UnitUtils.hasISDamage(ent) && !UnitUtils.hasCriticalDamage(ent) && !UnitUtils.hasLowAmmo(ent) && !UnitUtils.hasEmptyAmmo(ent))) {
