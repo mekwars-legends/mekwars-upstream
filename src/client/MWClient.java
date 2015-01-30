@@ -3796,9 +3796,9 @@ public final class MWClient implements IClient, GameListener {
         // Only send data for units currently on the board.
         // any units removed from play will have already sent thier final
         // update.
-    	Enumeration<Entity> en = myServer.getGame().getEntities();
-        while (en.hasMoreElements()) {
-            Entity ent = en.nextElement();
+    	Iterator<Entity> en = myServer.getGame().getEntities();
+        while (en.hasNext()) {
+            Entity ent = en.next();
             if (ent.getOwner().getName().startsWith("War Bot") || (!(ent instanceof MechWarrior) && !UnitUtils.hasArmorDamage(ent) && !UnitUtils.hasISDamage(ent) && !UnitUtils.hasCriticalDamage(ent) && !UnitUtils.hasLowAmmo(ent) && !UnitUtils.hasEmptyAmmo(ent))) {
                 continue;
             }
