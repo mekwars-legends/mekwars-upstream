@@ -84,6 +84,7 @@ public class XMLAdvancedTerrainDataParser implements XMLResponder{
             XMLParser xp = new XMLParser();
             xp.parseXML(this);
         } catch (Exception ex) {
+            CampaignData.mwlog.errLog("Error parsing " + filename);
             CampaignData.mwlog.errLog(ex);
         }
     }	
