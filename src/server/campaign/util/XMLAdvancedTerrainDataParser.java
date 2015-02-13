@@ -207,7 +207,7 @@ public class XMLAdvancedTerrainDataParser implements XMLResponder{
         try {
             return new FileInputStream(filename);
         } catch (FileNotFoundException e) {
-            throw new ParseException("could not find the specified file");
+            throw new ParseException("could not find the specified file: " + filename);
         }
 	}
 
