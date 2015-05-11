@@ -310,7 +310,7 @@ public class SPilot extends Pilot {
             } else if (levelPiloting) {
 
                 if (unit.getEntity() instanceof Infantry) {
-                    if (((Infantry) unit.getEntity()).isAntiMek()){
+                    if (((Infantry) unit.getEntity()).canMakeAntiMekAttacks()){
                         setPiloting(getPiloting() - 1);
                     }
                     else{

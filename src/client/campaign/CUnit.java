@@ -287,7 +287,7 @@ public class CUnit extends Unit {
         }
 
         if ((getType() == Unit.INFANTRY) || (getType() == Unit.BATTLEARMOR)) {
-            if (((Infantry) unitEntity).isAntiMek()) {
+            if (((Infantry) unitEntity).canMakeAntiMekAttacks()) {
                 return getModelName() + " [" + getPilot().getGunnery() + "/"
                         + getPilot().getPiloting() + "]";
             }
@@ -313,7 +313,7 @@ public class CUnit extends Unit {
                     + ") <br>";
         } else if ((getType() == Unit.BATTLEARMOR)
                 || (getType() == Unit.INFANTRY)) {
-            if (((Infantry) unitEntity).isAntiMek()) {
+            if (((Infantry) unitEntity).canMakeAntiMekAttacks()) {
                 tinfo += " (" + getPilot().getName() + ", "
                         + getPilot().getGunnery() + "/"
                         + getPilot().getPiloting() + ") <br>";

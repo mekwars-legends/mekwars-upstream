@@ -4455,7 +4455,7 @@ public class ShortResolver {
             if ((u.getType() == Unit.MEK) || (u.getType() == Unit.VEHICLE) || (u.getType() == Unit.AERO)) {
                 result = "[" + u.getPilot().getGunnery() + "/" + u.getPilot().getPiloting();
             } else if ((u.getType() == Unit.INFANTRY) || (u.getType() == Unit.BATTLEARMOR)) {
-                if (((Infantry) u.getEntity()).isAntiMek()) {
+                if (((Infantry) u.getEntity()).canMakeAntiMekAttacks()) {
                     result = "[" + u.getPilot().getGunnery() + "/" + u.getPilot().getPiloting();
                 } else {
                     result = u.getModelName() + " [" + u.getPilot().getGunnery();

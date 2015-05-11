@@ -85,7 +85,7 @@ public class GetPlayerUnitsCommand implements Command {
     			 if (unit.getType() == Unit.MEK || unit.getType() == Unit.VEHICLE || unit.getType() == Unit.AERO)
      		        result += unit.getId()+" "+unit.getModelName()+" ("+unit.getPilot().getGunnery()+"/"+unit.getPilot().getPiloting()+")#";
                  else if ( unit.getType() == Unit.INFANTRY || unit.getType() == Unit.BATTLEARMOR ){
-                     if ( ((Infantry)unit.getEntity()).isAntiMek() )
+                     if ( ((Infantry)unit.getEntity()).canMakeAntiMekAttacks() )
                          result += unit.getId()+" "+unit.getModelName()+" ("+unit.getPilot().getGunnery()+"/"+unit.getPilot().getPiloting()+")#";
                      else
                          result += unit.getId()+" "+unit.getModelName()+" ("+unit.getPilot().getGunnery()+")#";

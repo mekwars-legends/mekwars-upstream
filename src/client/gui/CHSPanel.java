@@ -744,7 +744,7 @@ public class CHSPanel extends JPanel {
                         if (m.getType().equalsIgnoreCase("mek") || m.getType().equalsIgnoreCase("vehicle")) {
                             unitString.append("<a href=\"MEKINFO" + m.getMekFile() + "#" + m.getBV() + "#" + m.getEntity().getCrew().getGunnery() + "#" + m.getEntity().getCrew().getPiloting() + "#" + m.getBattleDamage() + "\">" + m.getName() + " (" + m.getEntity().getCrew().getGunnery() + "/" + m.getEntity().getCrew().getPiloting() + ")");
                         } else {
-                            if ((m.getEntity() instanceof Infantry) && ((Infantry) m.getEntity()).isAntiMek()) {
+                            if ((m.getEntity() instanceof Infantry) && ((Infantry) m.getEntity()).canMakeAntiMekAttacks()) {
                                 unitString.append("<a href=\"MEKINFO" + m.getMekFile() + "#" + m.getBV() + "#" + m.getEntity().getCrew().getGunnery() + "#" + m.getEntity().getCrew().getPiloting() + "#" + m.getBattleDamage() + "\">" + m.getName() + " (" + m.getEntity().getCrew().getGunnery() + "/" + m.getEntity().getCrew().getPiloting() + ")");
                             } else {
                                 unitString.append("<a href=\"MEKINFO" + m.getMekFile() + "#" + m.getBV() + "#" + m.getEntity().getCrew().getGunnery() + "#" + m.getEntity().getCrew().getPiloting() + "#" + m.getBattleDamage() + "\">" + m.getName() + " (" + m.getEntity().getCrew().getGunnery() + ")");

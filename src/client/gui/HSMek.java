@@ -67,7 +67,7 @@ public class HSMek {
 		 */
 		if (embeddedUnit.getType() != Unit.PROTOMEK ) {
             if ( embeddedUnit.getType() == Unit.INFANTRY  ){
-		        if ( ((Infantry)embeddedUnit.getEntity()).isAntiMek() ) {
+		        if ( ((Infantry)embeddedUnit.getEntity()).canMakeAntiMekAttacks() ) {
                     embeddedUnit.setPilot(new Pilot("BM Unit",factionGunnery,factionPiloting));
                 } else {
                     embeddedUnit.setPilot(new Pilot("BM Unit",factionGunnery,5));

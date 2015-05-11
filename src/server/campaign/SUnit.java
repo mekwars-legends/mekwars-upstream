@@ -963,7 +963,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
         }
 
         if ((getType() == Unit.INFANTRY) || (getType() == Unit.BATTLEARMOR)) {
-            if (((Infantry) getEntity()).isAntiMek()) {
+            if (((Infantry) getEntity()).canMakeAntiMekAttacks()) {
                 return idToShow + " " + dialogBox + " (" + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ") [" + getPilot().getExperience() + " EXP " + getPilot().getSkillString(false) + "] Kills: " + getPilot().getKills() + " " + getProducer() + ". BV: " + getBVForMatch() + " " + status;
             }
         }
@@ -979,7 +979,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
         if ((getType() == Unit.MEK) || (getType() == Unit.VEHICLE) || (getType() == Unit.AERO)) {
             result = getModelName() + " [" + getPilot().getGunnery() + "/" + getPilot().getPiloting();
         } else if ((getType() == Unit.INFANTRY) || (getType() == Unit.BATTLEARMOR)) {
-            if (((Infantry) getEntity()).isAntiMek()) {
+            if (((Infantry) getEntity()).canMakeAntiMekAttacks()) {
                 result = getModelName() + " [" + getPilot().getGunnery() + "/" + getPilot().getPiloting();
             } else {
                 result = getModelName() + " [" + getPilot().getGunnery();
@@ -1016,7 +1016,7 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
         }
 
         if ((getType() == Unit.INFANTRY) || (getType() == Unit.BATTLEARMOR)) {
-            if (((Infantry) getEntity()).isAntiMek()) {
+            if (((Infantry) getEntity()).canMakeAntiMekAttacks()) {
                 return getModelName() + " (" + getPilot().getGunnery() + "/" + getPilot().getPiloting() + ")";
             }
         }
@@ -1115,7 +1115,8 @@ public final class SUnit extends Unit implements Comparable<SUnit> {
 
         // Lazy Bug report. non Anti-Mek BA should not have a Piloting skill
         // better/worse then 5
-        if ((getEntity() instanceof BattleArmor) && !((BattleArmor) getEntity()).isAntiMek() && !hasVacantPilot()) {
+		if ((getEntity() instanceof BattleArmor)
+				&& !((BattleArmor) getEntity()).canMakeAntiMekAttacks() && !hasVacantPilot()) {
             mPilot.setPiloting(5);
         }
 

@@ -134,7 +134,7 @@ public class SellUnitDialog extends JDialog implements ActionListener {
 				    return (mm.getId() +" "+ mm.getModelName() + " [" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting()+"]");
 				
 				if ( mm.getType() == Unit.INFANTRY || mm.getType() == Unit.BATTLEARMOR ){
-				    if ( ((Infantry)mm.getEntity()).isAntiMek() )
+				    if ( ((Infantry)mm.getEntity()).canMakeAntiMekAttacks() )
 				        return (mm.getId() +" "+ mm.getModelName() + " [" + mm.getPilot().getGunnery() + "/" + mm.getPilot().getPiloting()+"]");
 				    return (mm.getId() +" "+ mm.getModelName() + " [" + mm.getPilot().getGunnery() +"]");
 				}

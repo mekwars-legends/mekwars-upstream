@@ -1,10 +1,11 @@
 VERSION HISTORY:
 ----------------
 v 0.4.0.x
++ Bug: isAntiMek function no longer exists in MegaMek Version 0.41.4-DEV and higher
 R Released Client v0.4.0.3
 + New MegaMek: 0.41.2-MW20150130
 + Bug: Admin and OpEditor links broken in client
-+ Bug: Game Entity Iterator broken. 
++ Bug: Game Entity Iterator broken.
 + Fixed broken links between MW and MM (Needs Testing)
 + Cleaned up some warnings.
 R Released Server v0.4.0.9

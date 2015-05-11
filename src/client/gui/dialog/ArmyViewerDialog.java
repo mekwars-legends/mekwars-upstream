@@ -340,7 +340,7 @@ public class ArmyViewerDialog extends JDialog implements ActionListener, ListSel
                 if ( unit.getType() == Unit.VEHICLE || unit.getType() == Unit.MEK || unit.getType() == Unit.AERO )
                     armyText.append(" ("+unit.getPilot().getGunnery()+"/"+unit.getPilot().getPiloting()+")");
                 else if ( unit.getType() == Unit.INFANTRY || unit.getType() == Unit.BATTLEARMOR){
-                    if ( ((Infantry)((CUnit)unit).getEntity()).isAntiMek() ){
+                    if ( ((Infantry)((CUnit)unit).getEntity()).canMakeAntiMekAttacks() ){
                         armyText.append(" ("+unit.getPilot().getGunnery()+"/"+unit.getPilot().getPiloting()+")");
                     }
                     else
