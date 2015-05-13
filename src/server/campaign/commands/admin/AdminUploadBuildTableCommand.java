@@ -52,6 +52,10 @@ public class AdminUploadBuildTableCommand implements Command {
 		}
 		String fileName = "./data/buildtables/" + command.nextToken();
 
+		if (!command.hasMoreElements()){
+			CampaignMain.cm.toUser("No file data found. This may be due to the fact that the command line was used intead of the GUI.", Username,true);
+			return;
+		}
 		try {
 			File newTable = new File(fileName);
 			if(newTable.exists()) {
