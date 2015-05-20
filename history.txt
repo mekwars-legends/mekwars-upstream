@@ -1,6 +1,8 @@
 VERSION HISTORY:
 ----------------
 v 0.4.0.x
++ Bug 355: Build Table Browser does not reload data
++ Bug 356: Set MegaMek Game Options Broken
 + Bug 348: Uploading tables and files from command line is broken
 + Bug: isAntiMek function no longer exists in MegaMek Version 0.41.4-DEV and higher
 R Released Client v0.4.0.3

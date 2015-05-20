@@ -4189,6 +4189,29 @@ public final class CampaignMain implements Serializable {
         }
     }
 
+    public void saveMegaMekGameOptions(StringTokenizer gameOptions){
+		File mmGameOptionsFolder = new File("./mmconf");
+		
+		if ( !mmGameOptionsFolder.exists() )
+			mmGameOptionsFolder.mkdir();
+		
+		File mmGameOptions = new File("./mmconf/gameoptions.xml");
+		try{
+			FileOutputStream fops = new FileOutputStream(mmGameOptions);
+			PrintStream out = new PrintStream(fops);
+			while (gameOptions.hasMoreTokens()){
+				out.println(gameOptions.nextToken());
+			}
+			out.close();
+			fops.close();
+		}
+		catch (Exception ex){
+			CampaignData.mwlog.errLog("Unable to save Mega Mek Game Options!");
+			CampaignData.mwlog.errLog(ex);
+		}
+
+    }
+    
     public String getMegaMekOptionsToString() {
         StringBuffer result = new StringBuffer();
 

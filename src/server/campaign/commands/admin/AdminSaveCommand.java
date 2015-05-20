@@ -17,6 +17,9 @@
 package server.campaign.commands.admin;
 
 import java.util.StringTokenizer;
+import java.util.Vector;
+
+import megamek.common.options.IOption;
 
 import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;

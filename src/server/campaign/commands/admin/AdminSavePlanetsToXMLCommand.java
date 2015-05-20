@@ -28,7 +28,6 @@ import server.campaign.SPlanet;
 import server.campaign.SUnitFactory;
 import server.campaign.commands.Command;
 
-import common.AdvancedTerrain;
 import common.CampaignData;
 import common.Continent;
 import common.House;

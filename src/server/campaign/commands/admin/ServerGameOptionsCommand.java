@@ -23,16 +23,12 @@
 
 package server.campaign.commands.admin;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.util.StringTokenizer;
 
 import server.MWChatServer.auth.IAuthenticator;
 import server.campaign.CampaignMain;
 import server.campaign.commands.Command;
 
-import common.CampaignData;
 
 public class ServerGameOptionsCommand implements Command {
 	
@@ -50,26 +46,13 @@ public class ServerGameOptionsCommand implements Command {
 			CampaignMain.cm.toUser("AM:Insufficient access level for command. Level: " + userLevel + ". Required: " + accessLevel + ".",Username,true);
 			return;
 		}
-		
-		File mmGameOptionsFolder = new File("./mmconf");
-		
-		if ( !mmGameOptionsFolder.exists() )
-			mmGameOptionsFolder.mkdir();
-		
-		File mmGameOptions = new File("./mmconf/gameoptions.xml");
-		try{
-			FileOutputStream fops = new FileOutputStream(mmGameOptions);
-			PrintStream out = new PrintStream(fops);
-			while (command.hasMoreTokens()){
-				out.println(command.nextToken());
-			}
-			out.close();
-			fops.close();
+
+		if (!command.hasMoreElements()){
+			CampaignMain.cm.toUser("No file data found. This may be due to the fact that the command line was used intead of the GUI.", Username,true);
+			return;
 		}
-		catch (Exception ex){
-			CampaignData.mwlog.errLog("Unable to save Mega Mek Game Options!");
-			CampaignData.mwlog.errLog(ex);
-		}
+		
+		CampaignMain.cm.saveMegaMekGameOptions(command);
 		
 		CampaignMain.cm.getMegaMekClient().getGame().getOptions().loadOptions();
 		

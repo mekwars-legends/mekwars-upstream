@@ -82,16 +82,16 @@ public class TableViewerDialog extends JFrame implements ItemListener {
      */
     private static final long serialVersionUID = -5449211786198003020L;
     // ivars
-    JComboBox weightClassCombo;
-    JComboBox factionCombo;
-    JComboBox unitTypeCombo;
+    JComboBox<String> weightClassCombo;
+    JComboBox<String> factionCombo;
+    JComboBox<String> unitTypeCombo;
 
     JLabel factionLabel = new JLabel("Faction: ", SwingConstants.RIGHT);
     JLabel typeLabel = new JLabel("Type: ", SwingConstants.RIGHT);
     JLabel weightLabel = new JLabel("Class: ", SwingConstants.RIGHT);
     JLabel percentageLabel = new JLabel("Total Percentage: ", SwingConstants.CENTER);
 
-    Object[] factionArray;
+    String[] factionArray = {};
     String[] unitTypeArray = { "Mek", "Vehicle", "BattleArmor", "Infantry", "ProtoMek", "Aero" };
     String[] weightClassArray = { "Light", "Medium", "Heavy", "Assault" };
 
@@ -133,14 +133,15 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                 factionNames.add(house.getName());
             }
         }
+
         factionNames.add("Common");
-        factionArray = factionNames.toArray();
+        factionArray =  factionNames.toArray(factionArray);
 
         // CONSTRUCT GUI
         // make combo boxes
-        weightClassCombo = new JComboBox(weightClassArray);
-        factionCombo = new JComboBox(factionArray);
-        unitTypeCombo = new JComboBox();
+        weightClassCombo = new JComboBox<String>(weightClassArray);
+        factionCombo = new JComboBox<String>(factionArray);
+        unitTypeCombo = new JComboBox<String>();
 
         for ( int type = Unit.MEK; type < Unit.MAXBUILD; type++ ){
             unitTypeCombo.addItem(Unit.getTypeClassDesc(type));
@@ -356,7 +357,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
          * Do not re-load tables and units if there is no actual change in the
          * selection.
          */
-        JComboBox source = (JComboBox) i.getSource();
+        @SuppressWarnings("unchecked")
+		JComboBox<String> source = (JComboBox<String>) i.getSource();
         if ((source == unitTypeCombo) && (unitSort == unitTypeCombo.getSelectedIndex())) {
             return;
         } else if ((source == weightClassCombo) && (weightSort == weightClassCombo.getSelectedIndex())) {
@@ -575,9 +577,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
 
                                 for (Entity en : loadedUnits) {
                                     TableUnit tu = new TableUnit(en, frequency);
-                                    if (tu == null) {
-                                        continue;
-                                    }
+                                    if (tu != null) {
+                                    
 
                                     TableUnit eu = currentUnits.get(tu.getRealFilename());// existing
                                     // unit
@@ -600,13 +601,12 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                                         eu.getTables().remove(currTableName);
                                         eu.getTables().put(currTableName, newFreq);
                                     }
-
+                                    }
                                 }
                             } else {
                                 TableUnit tu = new TableUnit(Filename, frequency);
-                                if (tu == null) {
-                                    continue;
-                                }
+                                if (tu != null) {
+                                
 
                                 TableUnit eu = currentUnits.get(Filename);// existing
                                 // unit
@@ -628,6 +628,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                                     Double newFreq = new Double(currFreq.doubleValue() + frequency);
                                     eu.getTables().remove(currTableName);
                                     eu.getTables().put(currTableName, newFreq);
+                                }
                                 }
                             }
                         } else if (weight != 0) {// is a crosslink table
@@ -671,7 +672,8 @@ public class TableViewerDialog extends JFrame implements ItemListener {
      * Method which loads tables and TableUnits, based on current ComboBox
      * selections. This is the beef of the class ...
      */
-    public void loadTables() {
+    @SuppressWarnings("unused")
+	public void loadTables() {
 
         // System.out.println("loadTables() called");
 
@@ -726,8 +728,6 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         // System.out.println("Attempting to find base table entry.");
         File tableEntry = new File(buildTablePath.getPath() + File.separatorChar + factionString + addOnString);
         if (tableEntry == null) {
-            // System.out.println("Failed to find base table entry. Retrying in
-            // lower case.");
             tableEntry = new File((buildTablePath.getPath() + File.separatorChar + factionString + addOnString).toLowerCase());
         }
 
@@ -950,7 +950,6 @@ public class TableViewerDialog extends JFrame implements ItemListener {
                 try {
 						returnVal = NumberFormat.getNumberInstance().parse(val).doubleValue();
 					} catch (ParseException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 
@@ -965,8 +964,7 @@ public class TableViewerDialog extends JFrame implements ItemListener {
         }
 
 		@Override
-        @SuppressWarnings("unchecked")
-		public Class getColumnClass(int c) {
+		public Class<? extends Object> getColumnClass(int c) {
 			return getValueAt(0, c).getClass();
 		}
 

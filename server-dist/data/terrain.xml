@@ -51,31 +51,23 @@
 				<FORTIFIEDMAXSPOTS>0</FORTIFIEDMAXSPOTS>
 				<FORTIFIEDMINHEXES>0</FORTIFIEDMINHEXES>
 				<FORTIFIEDMAXHEXES>0</FORTIFIEDMAXHEXES>
-				<!--This sets up the city blocks for auto generated cites
-				    this basicly is the number of roads running North South
-				    and East West -->
+				<!--This sets up the city blocks for auto generated cites this basicly 
+					is the number of roads running North South and East West -->
 				<CITYBLOCKS>0</CITYBLOCKS>
-				<!--Type type GRID, HUB, METRO or NONE. Set to NONE if you do not want a city
-				-->
+				<!--Type type GRID, HUB, METRO or NONE. Set to NONE if you do not want 
+					a city -->
 				<CITYTYPE>NONE</CITYTYPE>
 
-				<!-- Settings to create mountain on your terrain 
-				-->				
+				<!-- Settings to create mountain on your terrain -->
 				<MOUNTPEAKS>0</MOUNTPEAKS>
 				<MOUNTWIDTHMIN>0</MOUNTWIDTHMIN>
 				<MOUNTWIDTHMAX>0</MOUNTWIDTHMAX>
 				<MOUNTHEIGHTMIN>0</MOUNTHEIGHTMIN>
 				<MOUNTHEIGHTMAX>0</MOUNTHEIGHTMAX>
 				<MOUNTSTYLE>0</MOUNTSTYLE>
-				<!--
-				    This is a list of the different mount styles.
-				    PLAIN = 0;
-     				VOLCANO EXTINCT = 1;
-					VOLCANO DORMANT = 2;
-					VOLCANO ACTIVE = 3;
-					SNOWCAPPED = 4;
-					LAKE = 5;
-				-->
+				<!-- This is a list of the different mount styles. PLAIN = 0; VOLCANO 
+					EXTINCT = 1; VOLCANO DORMANT = 2; VOLCANO ACTIVE = 3; SNOWCAPPED = 4; LAKE 
+					= 5; -->
 				<MINCF>0</MINCF>
 				<MAXCF>0</MAXCF>
 				<MINFLOORS>0</MINFLOORS>

@@ -1362,7 +1362,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
 
         CampaignData.mwlog.debugLog("     -> " + refreshToAdd);
 
-        CampaignData.mwlog.debugLog("Geting planet income and refreshing factories");
+        CampaignData.mwlog.debugLog("Getting planet income and refreshing factories");
         // Get income, and refresh factories
         Iterator<SPlanet> e = getPlanets().values().iterator();
         while (e.hasNext()) {// loop through all planets which the faction
@@ -3426,7 +3426,7 @@ public class SHouse extends TimeUpdateHouse implements Comparable<Object>, ISell
         return amount;
     }
 
-    public void addComponentConverter(ComponentToCritsConverter converter) {
+	public void addComponentConverter(ComponentToCritsConverter converter) {
         componentConverter.put(converter.getCritName(), converter);
     }
 
