@@ -360,7 +360,10 @@ public final class CampaignMain implements Serializable {
         // Parse Terrain
         // XMLTerrainDataParser tParse =
         new XMLTerrainDataParser("./data/terrain.xml");
-        new XMLAdvancedTerrainDataParser("./data/advancedTerrain.xml");        
+        
+        if (new File("./data/advancedTerrain.xml").exists())
+        	new XMLAdvancedTerrainDataParser("./data/advancedTerrain.xml");        
+        
         new XMLAdvancedTerrainDataParser("./data/advterr.xml");
 
         

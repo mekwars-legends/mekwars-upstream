@@ -18,7 +18,7 @@ import server.campaign.CampaignMain;
 
 import common.AdvancedTerrain;
 import common.CampaignData;
-import common.Terrain;
+//import common.Terrain;
 
 /**
  * @author mike
@@ -80,6 +80,9 @@ public class XMLAdvancedTerrainDataParser implements XMLResponder{
     
     public XMLAdvancedTerrainDataParser(String filename) {
         this.filename = filename;
+        if (!(new File(filename).exists())){
+        	return;
+        }
         try {
             XMLParser xp = new XMLParser();
             xp.parseXML(this);
@@ -145,7 +148,8 @@ public class XMLAdvancedTerrainDataParser implements XMLResponder{
         CampaignData.mwlog.mainLog("Parsing finished without error");
     }
 
-    public void recordElementStart(String name, Hashtable attr) throws ParseException {
+    @SuppressWarnings("rawtypes")
+	public void recordElementStart(String name, Hashtable attr) throws ParseException {
         // CampaignData.mwlog.mainLog(prefix+"Element: "+name);
         lastElement = name;
     }
