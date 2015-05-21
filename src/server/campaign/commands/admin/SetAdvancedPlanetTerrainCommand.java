@@ -16,7 +16,7 @@
 
 package server.campaign.commands.admin;
 
-import java.util.Hashtable;
+//import java.util.Hashtable;
 import java.util.StringTokenizer;
 
 import server.MWChatServer.auth.IAuthenticator;
@@ -26,9 +26,9 @@ import server.campaign.commands.Command;
 
 import common.AdvancedTerrain;
 import common.Continent;
-import common.Terrain;
+//import common.Terrain;
 import common.PlanetEnvironments;
-import common.PlanetEnvironment;
+//import common.PlanetEnvironment;
 
 public class SetAdvancedPlanetTerrainCommand implements Command {
 	
@@ -55,7 +55,7 @@ public class SetAdvancedPlanetTerrainCommand implements Command {
 		
 		int id = Integer.parseInt(command.nextToken());
 		int aid = Integer.parseInt(command.nextToken());
-		int conid = 0;
+//		int conid = 0;
 		 
 		AdvancedTerrain AT = CampaignMain.cm.getData().getAdvancedTerrain(aid);
 		PlanetEnvironments originalPe = planet.getEnvironments();

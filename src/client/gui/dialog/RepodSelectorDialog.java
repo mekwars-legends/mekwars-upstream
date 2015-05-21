@@ -57,6 +57,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpringLayout;
@@ -105,9 +106,9 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
 
     private JPanel pParams = new JPanel();
 
-    DefaultListModel defaultModel = null;
+    DefaultListModel<String> defaultModel = null;
     ListSelectionModel listSelectionModel = null;
-    JList mechList = null;
+    JList<String> mechList = null;
     JScrollPane listScrollPane = null;
     JScrollPane leftScrollPane = null;
     JScrollPane rightScrollPane = null;
@@ -115,8 +116,8 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
     private JButton bRepod = new JButton("Repod");
     private JButton bCancel = new JButton("Close");
     private JButton bRandom = new JButton("Random");
-    private JTextArea mechViewLeft = null;
-    private JTextArea mechViewRight = null;
+    private JTextPane mechViewLeft = null;
+    private JTextPane mechViewRight = null;
 
     private JPanel pUpper = new JPanel();
     private JPanel pPreview = new JPanel();
@@ -152,12 +153,17 @@ public class RepodSelectorDialog extends JFrame implements ActionListener, KeyLi
         this.unitId = unitId;
 
         // construct 2 text boxes
-        mechViewLeft = new JTextArea(22, 29);
-        mechViewRight = new JTextArea(22, 34);
+        mechViewLeft = new JTextPane(); //(22, 29);
+        mechViewRight = new JTextPane(); //(22, 34);
 
+        mechViewLeft.setContentType("text/html");
+//        mechViewLeft.set
+        
+        mechViewRight.setContentType("text/html");
+        
         // construct a model and list
-        defaultModel = new DefaultListModel();
-        mechList = new JList(defaultModel);
+        defaultModel = new DefaultListModel<String>();
+        mechList = new JList<String>(defaultModel);
         listSelectionModel = mechList.getSelectionModel();
         mechList.setVisibleRowCount(22);// give the list same number of rows as
         // the text boxes
