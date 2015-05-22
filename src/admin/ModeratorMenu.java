@@ -28,7 +28,7 @@ import megamek.client.ui.swing.UnitLoadingDialog;
 import client.MWClient;
 import client.gui.dialog.PlanetNameDialog;
 import client.gui.dialog.PlayerNameDialog;
-import client.gui.dialog.UnitViewerDialog;
+import client.gui.dialog.NewUnitViewerDialog;
 
 import common.UnitFactory;
 
@@ -608,7 +608,7 @@ public class ModeratorMenu extends JMenu {
 
     public void jMenuModCreateUnit_actionPerformed(ActionEvent e) {
         UnitLoadingDialog unitLoadingDialog = new UnitLoadingDialog(mwclient.getMainFrame());
-        UnitViewerDialog unitSelector = new UnitViewerDialog(mwclient.getMainFrame(), unitLoadingDialog, mwclient, UnitViewerDialog.UNIT_SELECTOR);
+        NewUnitViewerDialog unitSelector = new NewUnitViewerDialog(mwclient.getMainFrame(), unitLoadingDialog, mwclient,NewUnitViewerDialog.UNIT_SELECTOR);
         unitSelector.setName("Unit Selector");
         new Thread(unitSelector).start();
     }

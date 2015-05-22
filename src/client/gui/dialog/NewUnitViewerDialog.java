@@ -57,6 +57,9 @@ import megamek.common.UnitType;
 import megamek.common.loaders.EntityLoadingException;
 import client.MWClient;
 
+import common.CampaignData;
+import common.util.UnitUtils;
+
 	public class NewUnitViewerDialog extends JDialog implements Runnable,
 	    KeyListener, ActionListener {
 
@@ -113,12 +116,26 @@ import client.MWClient;
 	    private int selectorSizeWidth;
 	    
 	    private Client mmClient = new Client("temp", "None", 0);
+	    
+	    public static final int UNIT_VIEWER = 0;
+	    public static final int OMNI_VARIANT_SELECTOR = 1;
+	    public static final int UNIT_SELECTOR = 2;
+	    public static final int UNIT_RESEARCH = 3;
 
+	    private int viewerType = NewUnitViewerDialog.UNIT_VIEWER;
+//	    private boolean viewFluff = false;
+	    
 	    /** Creates new form UnitSelectorDialog */
-	    public NewUnitViewerDialog (JFrame mainFrame, UnitLoadingDialog uld, MWClient c) {
+	    public NewUnitViewerDialog (JFrame mainFrame, UnitLoadingDialog uld, MWClient c, int viewer) {
 	        super(mainFrame, "Unit Viewer", true); //$NON-NLS-1$
 	        client = c;
-
+	        
+	        viewerType = viewer;
+	        if (viewerType == NewUnitViewerDialog.OMNI_VARIANT_SELECTOR) {
+	            setTitle("Omni Variant Selector");
+	        } else if (viewerType == NewUnitViewerDialog.UNIT_SELECTOR) {
+	            setTitle("Unit Selector");
+	        }
 	        unitLoadingDialog = uld;
 
 	        unitModel = new MechTableModel();
@@ -484,7 +501,7 @@ import client.MWClient;
 	            panelMekView.reset();
 	        }
 
-	        //clientgui.loadPreviewImage(lblImage, selectedUnit, client.getLocalPlayer());
+	        //client.getMainFrame().loadPreviewImage(lblImage, selectedUnit, client.getLocalPlayer());
 	    }
 
 	    public Entity getSelectedEntity() {
@@ -510,6 +527,18 @@ import client.MWClient;
 	        }
 	    }
 
+	    public MechSummary getSelectedMechSummary() {
+	        int view = tableUnits.getSelectedRow();
+	        if (view < 0) {
+	            // selection got filtered away
+	            return null;
+	        }
+	        int selected = tableUnits.convertRowIndexToModel(view);
+	        // else
+	        return  mechs[selected];
+	        
+	    }
+	    
 	     public void run() {
 	         // Loading mechs can take a while, so it will have its own thread.
 	         // This prevents the UI from freezing, and allows the
@@ -568,7 +597,6 @@ import client.MWClient;
 	         searchFilter=null;
 	         btnResetSearch.setEnabled(false);
 
-	         //FIXME: this is not updating the table when canonicity is selected/deselected until user clicks it
 	         filterUnits();
 	         super.setVisible(visible);
 	     }
@@ -580,8 +608,8 @@ import client.MWClient;
 	             selectedUnitType = comboUnitType.getSelectedIndex();
 	             selectedUnitWeight = comboWeight.getSelectedIndex();
 	             selectedUnitRulesLevel = comboType.getSelectedIndex();
-	             selectorSizeHeight = getSize().height;
-	             selectorSizeWidth = getSize().width;
+	             setSelectorSizeHeight(getSize().height);
+	             setSelectorSizeWidth(getSize().width);
 	         }
 	     }
 
@@ -740,7 +768,114 @@ import client.MWClient;
 	            searchFilter=null;
 	            btnResetSearch.setEnabled(false);
 	            filterUnits();
+	        } else if (ev.getSource().equals(btnSelect) || ev.getSource().equals(btnSelectClose)) {
+	            saveComboBoxSettings();
+	            if (viewerType == NewUnitViewerDialog.OMNI_VARIANT_SELECTOR) {
+	                try {
+	                    MechSummary ms = getSelectedMechSummary();
+	                    String unit = ms.getName();
+	                    setVisible(false);
+	                    String moneyMod = JOptionPane.showInputDialog(client.getMainFrame(), "Money Mod for " + unit, 0);
+
+	                    if ((moneyMod == null) || (moneyMod.length() == 0)) {
+	                        dispose();
+	                        return;
+	                    }
+
+	                    String compMod = JOptionPane.showInputDialog(client.getMainFrame(), "Comp Mod for " + unit, 0);
+
+	                    if ((compMod == null) || (compMod.length() == 0)) {
+	                        dispose();
+	                        return;
+	                    }
+
+	                    String fluMod = JOptionPane.showInputDialog(client.getMainFrame(), "Flu Mod for " + unit, 0);
+
+	                    if ((fluMod == null) || (fluMod.length() == 0)) {
+	                        dispose();
+	                        return;
+	                    }
+
+	                    client.sendChat(MWClient.CAMPAIGN_PREFIX + "c AddOmniVariantMod#" + unit + "#" + moneyMod + "$" + compMod + "$" + fluMod);
+
+	                    dispose();
+	                } catch (Exception ex) {
+	                    CampaignData.mwlog.errLog(ex);
+	                    // MMClient.mwClientLog.clientErrLog("Problem with
+	                    // actionPerformed in RepodDialog");
+	                }
+	            }// end omni selector if
+	            else if (viewerType == NewUnitViewerDialog.UNIT_SELECTOR) {
+	                try {
+	                    MechSummary ms = getSelectedMechSummary();
+	                    String unitFile = ms.getEntryName();
+	                    String unit = ms.getName();
+	                    setVisible(false);
+	                    int weightClass = comboWeight.getSelectedIndex();
+	                    // Item "All" takes up Weight Class 0, so this is usually 1 off.
+	                    if (weightClass > 0) {
+	                    	weightClass -= 1;
+	                    }
+	                    unitFile = UnitUtils.getMechSummaryFileName(ms);
+
+
+	                    String fluff = JOptionPane.showInputDialog(client.getMainFrame(), "Fluff text for " + unit);
+
+	                    if ((fluff == null) || (fluff.length() == 0)) {
+	                        dispose();
+	                        return;
+	                    }
+
+	                    String gunnery = JOptionPane.showInputDialog(client.getMainFrame(), "Gunnery skill for " + unit, 99);
+
+	                    if ((gunnery == null) || (gunnery.length() == 0)) {
+	                        dispose();
+	                        return;
+	                    }
+
+	                    String piloting = JOptionPane.showInputDialog(client.getMainFrame(), "Piloting Mod for " + unit, 99);
+
+	                    if ((piloting == null) || (piloting.length() == 0)) {
+	                        dispose();
+	                        return;
+	                    }
+
+	                    String skills = null;
+	                    skills = JOptionPane.showInputDialog(client.getMainFrame(), "Skills Mod for " + unit + " (comma delimited)");
+
+	                    if (skills == null) {
+	                        dispose();
+	                        return;
+	                    }
+
+	                    client.sendChat(MWClient.CAMPAIGN_PREFIX + "c createunit#" + unitFile + "#" + fluff + "#" + gunnery + "#" + piloting + "#" + weightClass + "#" + skills);
+
+	                    dispose();
+	                } catch (Exception ex) {
+	                    CampaignData.mwlog.errLog(ex);
+	                    // MMClient.mwClientLog.clientErrLog("Problem with
+	                    // actionPerformed in RepodDialog");
+	                }
+	            } else if (viewerType == NewUnitViewerDialog.UNIT_RESEARCH) {
+	                MechSummary ms = getSelectedMechSummary();
+
+	                String unitFile;
+	                unitFile = UnitUtils.getMechSummaryFileName(ms);
+	                setVisible(false);
+
+	                if ((unitFile != null) && !unitFile.equals("null")) {
+	                    client.sendChat(MWClient.CAMPAIGN_PREFIX + "c researchunit#" + unitFile);
+	                }
+
+	                dispose();
+
+	            }
+	            // end unit selector if.
+	            else {
+	                dispose();
+	            }
 	        }
+
 	    }
 
 	    private void searchFor(String search) {
@@ -761,9 +896,38 @@ import client.MWClient;
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
+
+		public int getSelectorSizeHeight() {
+			return selectorSizeHeight;
+		}
+
+		public void setSelectorSizeHeight(int selectorSizeHeight) {
+			this.selectorSizeHeight = selectorSizeHeight;
+		}
+
+		public int getSelectorSizeWidth() {
+			return selectorSizeWidth;
+		}
+
+		public void setSelectorSizeWidth(int selectorSizeWidth) {
+			this.selectorSizeWidth = selectorSizeWidth;
+		}
+		
+	    private void saveComboBoxSettings() {
+
+	    	client.getConfig().setParam("UNITVIEWERWEIGHT", (String) comboWeight.getSelectedItem());
+	    	client.getConfig().setParam("UNITVIEWERTECH", (String) comboType.getSelectedItem());
+	    	client.getConfig().setParam("UNITVIEWERTYPE", (String) comboUnitType.getSelectedItem());
+//	    	client.getConfig().setParam("UNITVIEWERSORT", (String) combos.getSelectedItem());
+//	        if (mechList.getSelectedValue() != null) {
+//	        	client.getConfig().setParam("UNITVIEWERUNIT", mechList.getSelectedValue().toString());
+//	        }
+
+	        client.getConfig().saveConfig();
+	        client.setConfig();
+	    }
 	 }
 
 

@@ -50,6 +50,7 @@ public class PilotQueues {
 	private Vector<String>  basePilotSkills = new Vector<String>(Unit.MAXBUILD,1);
 	private String factionString = "";//string for faction specific name list
 	private int factionID;
+	private BufferedReader dis;
 	
 	public PilotQueues(Vector<Integer>baseGunnery, Vector<Integer>basePiloting, Vector<String>basePilotSkill) {
 		for (int i = Unit.MEK; i < Unit.MAXBUILD; i++) {
@@ -394,7 +395,7 @@ public class PilotQueues {
         try {
         	File configFile = new File("./data/pilotnames/" + factionString + "Pilotnames.txt");
         	FileInputStream fis = new FileInputStream(configFile);
-        	BufferedReader dis = new BufferedReader(new InputStreamReader(fis));
+        	dis = new BufferedReader(new InputStreamReader(fis));
         	int names = Integer.parseInt(dis.readLine());
         	int pilotid = CampaignMain.cm.getRandomNumber(names);
         	while (dis.ready()) {
@@ -411,6 +412,8 @@ public class PilotQueues {
         } catch (Exception e) {
         	CampaignData.mwlog.errLog("A problem occured while retreiving a name from the " + factionString + " Pilotnames File! Tried using Pilotnames.txt instead.");
         	result = SPilot.getRandomPilotName(CampaignMain.cm.getR());
+        }finally{
+        	
         }
         
 	    return result;

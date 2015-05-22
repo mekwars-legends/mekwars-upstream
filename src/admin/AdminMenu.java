@@ -46,10 +46,10 @@ import admin.dialog.SubFactionConfigurationDialog;
 import admin.dialog.playerFlags.DefaultPlayerFlagListDialog;
 import client.MWClient;
 import client.gui.dialog.HouseNameDialog;
+import client.gui.dialog.NewUnitViewerDialog;
 import client.gui.dialog.PlanetNameDialog;
 import client.gui.dialog.SubFactionNameDialog;
 import client.gui.dialog.TraitDialog;
-import client.gui.dialog.UnitViewerDialog;
 import common.CampaignData;
 import common.Planet;
 import common.Terrain;
@@ -1302,7 +1302,7 @@ public class AdminMenu extends JMenu {
 
     public void jMenuAdminOmniVariantMod_actionPerformed(ActionEvent e) {
         UnitLoadingDialog unitLoadingDialog = new UnitLoadingDialog(mwclient.getMainFrame());
-        UnitViewerDialog unitSelector = new UnitViewerDialog(mwclient.getMainFrame(), unitLoadingDialog, mwclient, UnitViewerDialog.OMNI_VARIANT_SELECTOR);
+        NewUnitViewerDialog unitSelector = new NewUnitViewerDialog(mwclient.getMainFrame(), unitLoadingDialog, mwclient,NewUnitViewerDialog.OMNI_VARIANT_SELECTOR);
         unitSelector.setName("Unit Selector");
         new Thread(unitSelector).start();
     }

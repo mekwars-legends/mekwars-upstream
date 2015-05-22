@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.4.0.x
++ Bug #350: Old unit viewer code used by admin jar for create unit dialogue
 + Bug #354: Unit Viewer/Repod Viewer issues
 + Bug: Still trying to parase legacy AdvanceTerrain.xml when it no longer exists.
 + Bug:  AdvTerr.xml was malfored.

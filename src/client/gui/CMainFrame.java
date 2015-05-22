@@ -75,7 +75,6 @@ import client.gui.dialog.SubFactionNameDialog;
 import client.gui.dialog.TableViewerDialog;
 import client.gui.dialog.TraitDialog;
 import client.gui.dialog.UnitSelectionDialog;
-import client.gui.dialog.UnitViewerDialog;
 import common.CampaignData;
 import common.House;
 import common.Unit;
@@ -2192,7 +2191,7 @@ public class CMainFrame extends JFrame {
 
         UnitLoadingDialog unitLoadingDialog = new UnitLoadingDialog(mwclient.getMainFrame());
         //UnitViewerDialog unitSelector = new UnitViewerDialog(mwclient.getMainFrame(), unitLoadingDialog, mwclient, UnitViewerDialog.UNIT_VIEWER);
-        NewUnitViewerDialog unitSelector = new NewUnitViewerDialog(this, unitLoadingDialog, mwclient);
+        NewUnitViewerDialog unitSelector = new NewUnitViewerDialog(this, unitLoadingDialog, mwclient,NewUnitViewerDialog.UNIT_VIEWER);
         new Thread(unitSelector).run();
         // unitSelector.setVisible(true);
     }
@@ -2309,7 +2308,7 @@ public class CMainFrame extends JFrame {
 
     public void jMenuLeaderResearchUnit_actionPerformed() {
         UnitLoadingDialog unitLoadingDialog = new UnitLoadingDialog(mwclient.getMainFrame());
-        UnitViewerDialog unitSelector = new UnitViewerDialog(mwclient.getMainFrame(), unitLoadingDialog, mwclient, UnitViewerDialog.UNIT_RESEARCH);
+        NewUnitViewerDialog unitSelector = new NewUnitViewerDialog(this, unitLoadingDialog, mwclient,NewUnitViewerDialog.UNIT_VIEWER);
         unitSelector.setName("Unit Selector");
         new Thread(unitSelector).start();
     }
