@@ -37,7 +37,7 @@ import javax.swing.SpringLayout;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import megamek.client.ui.swing.UnitDisplay;
+import megamek.client.ui.swing.unitDisplay.UnitDisplay;
 import megamek.common.Entity;
 import client.MWClient;
 import client.campaign.CBMUnit;

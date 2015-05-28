@@ -56,7 +56,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import megamek.client.ui.swing.MechTileset;
-import megamek.client.ui.swing.UnitDisplay;
+import megamek.client.ui.swing.unitDisplay.UnitDisplay;
 import megamek.common.Entity;
 import megamek.common.Infantry;
 import megamek.common.Mech;

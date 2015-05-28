@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.4.0.x
++ Bug: NPE occured when loading the Star map.
++ Bug: MekWars Host not working with MWClient. New xstream.1.4.7.jar added to client
+       and server lib folders.
 + Bug #350: Old unit viewer code used by admin jar for create unit dialogue
 + Bug #354: Unit Viewer/Repod Viewer issues
 + Bug: Still trying to parase legacy AdvanceTerrain.xml when it no longer exists.

@@ -48,7 +48,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SpringLayout;
 import javax.swing.border.LineBorder;
 
-import megamek.client.ui.swing.UnitDisplay;
+import megamek.client.ui.swing.unitDisplay.UnitDisplay;
 import megamek.common.Entity;
 import megamek.common.Infantry;
 import client.MWClient;

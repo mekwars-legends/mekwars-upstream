@@ -391,7 +391,7 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
                     if (!loadJar.exists()) {
                         CampaignData.mwlog.errLog("AdminMapPopupMenu creation skipped. No MekWarsAdmin.jar present.");
                     } else {
-                        URLClassLoader loader = new URLClassLoader(new URL[] { loadJar.toURI().toURL() });
+                        loader = new URLClassLoader(new URL[] { loadJar.toURI().toURL() });
                         Class<?> c = loader.loadClass("admin.AdminMapPopupMenu");
                         Object o = c.newInstance();
                         c.getDeclaredMethod("createMenu", new Class[] { MWClient.class, InnerStellarMap.class, Integer.class, Integer.class, Planet.class }).invoke(o, new Object[] { mwclient, this, new Integer((int) scr2mapX(e.getX())), new Integer((int) scr2mapY(e.getY())), mp.getPPanel().getPlanet() });
@@ -964,6 +964,8 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
 
     int mouseMod = 0;
 
+	private URLClassLoader loader;
+
     public void mouseDragged(MouseEvent e) {
         if (mouseMod != MouseEvent.BUTTON3) {
             return;
@@ -1180,6 +1182,10 @@ public class InnerStellarMap extends JComponent implements MouseListener, MouseM
      */
     private boolean planetIsVisible(Planet p) {
 
+    	if ( null == p){
+    		return false;
+    	}
+    	
         // first, make sure its not "All"
         if (filterSettings[FILTER_ALL]) {
             return true;
