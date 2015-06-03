@@ -1917,17 +1917,12 @@ public class UnitUtils {
                 continue;
             }
             try {
-                int shots = 0;
-                if (ammo.byShot()) {
-                    shots = ammo.getOriginalShots();
-                } else {
-                    shots = ((AmmoType) ammo.getType()).getShots();
-                }
+                int shots = getShots(ammo);
                 if (ammo.getLocation() == Entity.LOC_NONE) {
                     if (ammo.getUsableShotsLeft() == 0) {
                         return true;
                     }
-                } else if ((ammo.getUsableShotsLeft() < getShots(ammo))
+                } else if ((ammo.getUsableShotsLeft() < shots)
                         && (ammo.getUsableShotsLeft() > 0)) {
                     return true;
                 }

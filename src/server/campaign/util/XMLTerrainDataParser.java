@@ -104,6 +104,18 @@ public class XMLTerrainDataParser implements XMLResponder {
     int RubbleMinHexes;
     int RubbleMaxHexes;
 
+    // Sand
+    int SandMinSpots;
+    int SandMaxSpots;
+    int SandMinHexes;
+    int SandMaxHexes;
+
+    // PlantedField
+    int PlantedFieldMinSpots;
+    int PlantedFieldMaxSpots;
+    int PlantedFieldMinHexes;
+    int PlantedFieldMaxHexes;
+    
     // Fortified
     int FortifiedMinSpots;
     int FortifiedMaxSpots;
@@ -220,7 +232,8 @@ public class XMLTerrainDataParser implements XMLResponder {
         CampaignData.mwlog.mainLog("Parsing finished without error");
     }
 
-    public void recordElementStart(String name, Hashtable attr) throws ParseException {
+    @SuppressWarnings("rawtypes")
+	public void recordElementStart(String name, Hashtable attr) throws ParseException {
         // CampaignData.mwlog.mainLog(prefix+"Element: "+name);
         lastElement = name;
     }
@@ -273,6 +286,16 @@ public class XMLTerrainDataParser implements XMLResponder {
             PE.setRubbleMinHexes(RubbleMinHexes);
             PE.setRubbleMaxHexes(RubbleMaxHexes);
 
+            PE.setSandMinSpots(SandMinSpots);
+            PE.setSandMaxSpots(SandMaxSpots);
+            PE.setSandMinHexes(SandMinHexes);
+            PE.setSandMaxHexes(SandMaxHexes);
+            
+            PE.setPlantedFieldMinSpots(PlantedFieldMinSpots);
+            PE.setPlantedFieldMaxSpots(PlantedFieldMaxSpots);
+            PE.setPlantedFieldMinHexes(PlantedFieldMinHexes);
+            PE.setPlantedFieldMaxHexes(PlantedFieldMaxHexes);
+            
             PE.setFortifiedMinSpots(FortifiedMinSpots);
             PE.setFortifiedMaxSpots(FortifiedMaxSpots);
             PE.setFortifiedMinHexes(FortifiedMinHexes);
@@ -388,6 +411,18 @@ public class XMLTerrainDataParser implements XMLResponder {
         RubbleMaxSpots = 0;
         RubbleMinHexes = 0;
         RubbleMaxHexes = 0;
+
+        // Sand
+        SandMinSpots = 0;
+        SandMaxSpots = 0;
+        SandMinHexes = 0;
+        SandMaxHexes = 0;
+
+        // PlantedField
+        PlantedFieldMinSpots = 0;
+        PlantedFieldMaxSpots = 0;
+        PlantedFieldMinHexes = 0;
+        PlantedFieldMaxHexes = 0;
 
         // Fortified
         FortifiedMinSpots = 0;
@@ -527,6 +562,24 @@ public class XMLTerrainDataParser implements XMLResponder {
         else if (lastElement.equalsIgnoreCase("RUBBLEMAXHEXES"))
             RubbleMaxHexes = Integer.parseInt(charData);
 
+        else if (lastElement.equalsIgnoreCase("SANDMINSPOTS"))
+            SandMinSpots = Integer.parseInt(charData);
+        else if (lastElement.equalsIgnoreCase("SANDMAXSPOTS"))
+            SandMaxSpots = Integer.parseInt(charData);
+        else if (lastElement.equalsIgnoreCase("SANDMINHEXES"))
+            SandMinHexes = Integer.parseInt(charData);
+        else if (lastElement.equalsIgnoreCase("SANDMAXHEXES"))
+            SandMaxHexes = Integer.parseInt(charData);
+        
+        else if (lastElement.equalsIgnoreCase("PLANTEDFIELDMINSPOTS"))
+            PlantedFieldMinSpots = Integer.parseInt(charData);
+        else if (lastElement.equalsIgnoreCase("PLANTEDFIELDMAXSPOTS"))
+            PlantedFieldMaxSpots = Integer.parseInt(charData);
+        else if (lastElement.equalsIgnoreCase("PLANTEDFIELDMINHEXES"))
+            PlantedFieldMinHexes = Integer.parseInt(charData);
+        else if (lastElement.equalsIgnoreCase("PLANTEDFIELDMAXHEXES"))
+            PlantedFieldMaxHexes = Integer.parseInt(charData);
+        
         else if (lastElement.equalsIgnoreCase("FORTIFIEDMINSPOTS"))
             FortifiedMinSpots = Integer.parseInt(charData);
         else if (lastElement.equalsIgnoreCase("FORTIFIEDMAXSPOTS"))

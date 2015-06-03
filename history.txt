@@ -1,6 +1,7 @@
 VERSION HISTORY:
 ----------------
 v 0.4.0.x
++ RFE: Added Sand and Planted Fields to Terrain(SAND,PLANTEDFIELD)
 + Bug: NPE occured when loading the Star map.
 + Bug: MekWars Host not working with MWClient. New xstream.1.4.7.jar added to client
        and server lib folders.

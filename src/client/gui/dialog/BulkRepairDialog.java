@@ -110,7 +110,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
     private SpinnerNumberModel baseRollEditor = new SpinnerNumberModel();
     private JSpinner baseRollField = new JSpinner(baseRollEditor);
 
-    private JComboBox techComboBox = new JComboBox();
+    private JComboBox<String> techComboBox = new JComboBox<String>();
     private int repairType = BulkRepairDialog.TYPE_BULK;
 
     public static int TYPE_BULK = 0;
@@ -216,7 +216,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
             if (isSimple()) {
                 StringBuilder sb = new StringBuilder();
                 for (int type = ARMOR; type <= ENGINES; type++) {
-                    sb.append("#" + ((JComboBox) techBox.getComponent(type)).getSelectedIndex());
+                    sb.append("#" + ((JComboBox<?>) techBox.getComponent(type)).getSelectedIndex());
                     sb.append("#" + ((JSpinner) rollBox.getComponent(type)).getValue().toString());
                 }
                 if (unitRepairType == BulkRepairDialog.UNIT_TYPE_ALL) {
@@ -275,7 +275,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
         } else {
             try {
                 int location = Integer.parseInt(command);
-                int techType = ((JComboBox) techBox.getComponent(location)).getSelectedIndex();
+                int techType = ((JComboBox<?>) techBox.getComponent(location)).getSelectedIndex();
                 if (techType == UnitUtils.TECH_PILOT) {
                     techType = playerUnit.getPilot().getSkills().getPilotSkill(PilotSkill.AstechSkillID).getLevel();
                 }
@@ -312,7 +312,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
         }
 
         for (int x = 0; x < 6; x++) {
-            techComboBox = new JComboBox(techList);
+            techComboBox = new JComboBox<String>(techList);
             techComboBox.addActionListener(this);
             techComboBox.setActionCommand(Integer.toString(x + 1));
             techComboBox.addKeyListener(this);
@@ -434,12 +434,12 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
         int roll = 0;
 
         if (isSalvage()) {
-            ((JComboBox) techBox.getComponent(ARMOR)).setSelectedIndex(Integer.parseInt(mwclient.getConfigParam(("SALVAGEARMORTECH"))));
-            ((JComboBox) techBox.getComponent(INTERNAL)).setSelectedIndex(Integer.parseInt(mwclient.getConfigParam(("SALVAGEINTERNALTECH"))));
-            ((JComboBox) techBox.getComponent(SYSTEMS)).setSelectedIndex(Integer.parseInt(mwclient.getConfigParam(("SALVAGESYSTEMSTECH"))));
-            ((JComboBox) techBox.getComponent(ENGINES)).setSelectedIndex(Integer.parseInt(mwclient.getConfigParam(("SALVAGEENGINESTECH"))));
-            ((JComboBox) techBox.getComponent(WEAPONS)).setSelectedIndex(Integer.parseInt(mwclient.getConfigParam(("SALVAGEWEAPONSTECH"))));
-            ((JComboBox) techBox.getComponent(EQUIPMENT)).setSelectedIndex(Integer.parseInt(mwclient.getConfigParam(("SALVAGEEQUIPMENTTECH"))));
+            ((JComboBox<?>) techBox.getComponent(ARMOR)).setSelectedIndex(Integer.parseInt(mwclient.getConfigParam(("SALVAGEARMORTECH"))));
+            ((JComboBox<?>) techBox.getComponent(INTERNAL)).setSelectedIndex(Integer.parseInt(mwclient.getConfigParam(("SALVAGEINTERNALTECH"))));
+            ((JComboBox<?>) techBox.getComponent(SYSTEMS)).setSelectedIndex(Integer.parseInt(mwclient.getConfigParam(("SALVAGESYSTEMSTECH"))));
+            ((JComboBox<?>) techBox.getComponent(ENGINES)).setSelectedIndex(Integer.parseInt(mwclient.getConfigParam(("SALVAGEENGINESTECH"))));
+            ((JComboBox<?>) techBox.getComponent(WEAPONS)).setSelectedIndex(Integer.parseInt(mwclient.getConfigParam(("SALVAGEWEAPONSTECH"))));
+            ((JComboBox<?>) techBox.getComponent(EQUIPMENT)).setSelectedIndex(Integer.parseInt(mwclient.getConfigParam(("SALVAGEEQUIPMENTTECH"))));
             setArmorCost();
             setInternalCost();
             setSystemCost();
@@ -454,7 +454,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
             ((JCheckBox) repairBox.getComponent(ARMOR)).setSelected(true);
             tech = Integer.parseInt(mwclient.getConfigParam(("REPAIRARMORTECH")));
             roll = Integer.parseInt(mwclient.getConfigParam(("REPAIRARMORROLL")));
-            ((JComboBox) techBox.getComponent(ARMOR)).setSelectedIndex(tech);
+            ((JComboBox<?>) techBox.getComponent(ARMOR)).setSelectedIndex(tech);
             ((JSpinner) rollBox.getComponent(ARMOR)).setValue(roll);
             setArmorCost();
         }
@@ -463,7 +463,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
             ((JCheckBox) repairBox.getComponent(INTERNAL)).setSelected(true);
             tech = Integer.parseInt(mwclient.getConfigParam(("REPAIRINTERNALTECH")));
             roll = Integer.parseInt(mwclient.getConfigParam(("REPAIRINTERNALROLL")));
-            ((JComboBox) techBox.getComponent(INTERNAL)).setSelectedIndex(tech);
+            ((JComboBox<?>) techBox.getComponent(INTERNAL)).setSelectedIndex(tech);
             ((JSpinner) rollBox.getComponent(INTERNAL)).setValue(roll);
             setInternalCost();
         }
@@ -492,14 +492,14 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
                             ((JCheckBox) repairBox.getComponent(WEAPONS)).setSelected(true);
                             tech = Integer.parseInt(mwclient.getConfigParam(("REPAIRWEAPONSTECH")));
                             roll = Integer.parseInt(mwclient.getConfigParam(("REPAIRWEAPONSROLL")));
-                            ((JComboBox) techBox.getComponent(WEAPONS)).setSelectedIndex(tech);
+                            ((JComboBox<?>) techBox.getComponent(WEAPONS)).setSelectedIndex(tech);
                             ((JSpinner) rollBox.getComponent(WEAPONS)).setValue(roll);
                             setWeaponCost();
                         } else if (!(mounted.getType() instanceof WeaponType)) {
                             ((JCheckBox) repairBox.getComponent(EQUIPMENT)).setSelected(true);
                             tech = Integer.parseInt(mwclient.getConfigParam(("REPAIREQUIPMENTTECH")));
                             roll = Integer.parseInt(mwclient.getConfigParam(("REPAIREQUIPMENTROLL")));
-                            ((JComboBox) techBox.getComponent(EQUIPMENT)).setSelectedIndex(tech);
+                            ((JComboBox<?>) techBox.getComponent(EQUIPMENT)).setSelectedIndex(tech);
                             ((JSpinner) rollBox.getComponent(EQUIPMENT)).setValue(roll);
                             setEquipmentCost();
                         }
@@ -507,14 +507,14 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
                         ((JCheckBox) repairBox.getComponent(SYSTEMS)).setSelected(true);
                         tech = Integer.parseInt(mwclient.getConfigParam(("REPAIRSYSTEMSTECH")));
                         roll = Integer.parseInt(mwclient.getConfigParam(("REPAIRSYSTEMSROLL")));
-                        ((JComboBox) techBox.getComponent(SYSTEMS)).setSelectedIndex(tech);
+                        ((JComboBox<?>) techBox.getComponent(SYSTEMS)).setSelectedIndex(tech);
                         ((JSpinner) rollBox.getComponent(SYSTEMS)).setValue(roll);
                         setSystemCost();
                     } else if (UnitUtils.isEngineCrit(cs)) {
                         ((JCheckBox) repairBox.getComponent(ENGINES)).setSelected(true);
                         tech = Integer.parseInt(mwclient.getConfigParam(("REPAIRENGINESTECH")));
                         roll = Integer.parseInt(mwclient.getConfigParam(("REPAIRENGINESROLL")));
-                        ((JComboBox) techBox.getComponent(ENGINES)).setSelectedIndex(tech);
+                        ((JComboBox<?>) techBox.getComponent(ENGINES)).setSelectedIndex(tech);
                         ((JSpinner) rollBox.getComponent(ENGINES)).setValue(roll);
                         setEngineCost();
                     }
@@ -595,7 +595,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
             return;
         }
 
-        int techType = ((JComboBox) techBox.getComponent(ARMOR)).getSelectedIndex();
+        int techType = ((JComboBox<?>) techBox.getComponent(ARMOR)).getSelectedIndex();
         String baseRoll = ((JSpinner) rollBox.getComponent(ARMOR)).getValue().toString();
 
         if (isBulk() && (techType != UnitUtils.TECH_PILOT)) {
@@ -636,7 +636,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
             return;
         }
 
-        int techType = ((JComboBox) techBox.getComponent(INTERNAL)).getSelectedIndex();
+        int techType = ((JComboBox<?>) techBox.getComponent(INTERNAL)).getSelectedIndex();
         String baseRoll = ((JSpinner) rollBox.getComponent(INTERNAL)).getValue().toString();
 
         if (isBulk() && (techType != UnitUtils.TECH_PILOT)) {
@@ -671,7 +671,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
             return;
         }
 
-        int techType = ((JComboBox) techBox.getComponent(ENGINES)).getSelectedIndex();
+        int techType = ((JComboBox<?>) techBox.getComponent(ENGINES)).getSelectedIndex();
         String baseRoll = ((JSpinner) rollBox.getComponent(ENGINES)).getValue().toString();
 
         if (isBulk() && (techType != UnitUtils.TECH_PILOT)) {
@@ -719,7 +719,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
             return;
         }
 
-        int techType = ((JComboBox) techBox.getComponent(SYSTEMS)).getSelectedIndex();
+        int techType = ((JComboBox<?>) techBox.getComponent(SYSTEMS)).getSelectedIndex();
         String baseRoll = ((JSpinner) rollBox.getComponent(SYSTEMS)).getValue().toString();
         if (!isSalvage() && (techType != UnitUtils.TECH_PILOT)) {
             mwclient.getConfig().setParam("REPAIRSYSTEMSTECH", Integer.toString(techType));
@@ -763,7 +763,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
             return;
         }
 
-        int techType = ((JComboBox) techBox.getComponent(WEAPONS)).getSelectedIndex();
+        int techType = ((JComboBox<?>) techBox.getComponent(WEAPONS)).getSelectedIndex();
         String baseRoll = ((JSpinner) rollBox.getComponent(WEAPONS)).getValue().toString();
 
         if (!isSalvage() && (techType != UnitUtils.TECH_PILOT)) {
@@ -815,7 +815,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
             return;
         }
 
-        int techType = ((JComboBox) techBox.getComponent(EQUIPMENT)).getSelectedIndex();
+        int techType = ((JComboBox<?>) techBox.getComponent(EQUIPMENT)).getSelectedIndex();
         String baseRoll = ((JSpinner) rollBox.getComponent(EQUIPMENT)).getValue().toString();
 
         if (isBulk() && (techType != UnitUtils.TECH_PILOT)) {
@@ -865,7 +865,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
 
     private void setArmorCost() {
 
-        int techType = ((JComboBox) techBox.getComponent(ARMOR)).getSelectedIndex();
+        int techType = ((JComboBox<?>) techBox.getComponent(ARMOR)).getSelectedIndex();
         int baseRoll = Integer.parseInt(((JSpinner) rollBox.getComponent(ARMOR)).getValue().toString());
         double pointsToRepair = 0;
         double armorCost = 0.0;
@@ -937,7 +937,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
 
     private void setInternalCost() {
 
-        int techType = ((JComboBox) techBox.getComponent(INTERNAL)).getSelectedIndex();
+        int techType = ((JComboBox<?>) techBox.getComponent(INTERNAL)).getSelectedIndex();
         int baseRoll = Integer.parseInt(((JSpinner) rollBox.getComponent(INTERNAL)).getValue().toString());
         double pointsToRepair = 0;
         double armorCost = CUnit.getStructureCost(unit, mwclient);
@@ -992,7 +992,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
 
     private void setSystemCost() {
 
-        int techType = ((JComboBox) techBox.getComponent(SYSTEMS)).getSelectedIndex();
+        int techType = ((JComboBox<?>) techBox.getComponent(SYSTEMS)).getSelectedIndex();
         int baseRoll = Integer.parseInt(((JSpinner) rollBox.getComponent(SYSTEMS)).getValue().toString());
         double pointsToRepair = 0;
         double critCost = 0;
@@ -1067,7 +1067,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
 
     private void setWeaponCost() {
 
-        int techType = ((JComboBox) techBox.getComponent(WEAPONS)).getSelectedIndex();
+        int techType = ((JComboBox<?>) techBox.getComponent(WEAPONS)).getSelectedIndex();
         int baseRoll = Integer.parseInt(((JSpinner) rollBox.getComponent(WEAPONS)).getValue().toString());
         double pointsToRepair = 0;
         double critCost = 0;
@@ -1149,7 +1149,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
 
     private void setEquipmentCost() {
 
-        int techType = ((JComboBox) techBox.getComponent(EQUIPMENT)).getSelectedIndex();
+        int techType = ((JComboBox<?>) techBox.getComponent(EQUIPMENT)).getSelectedIndex();
         int baseRoll = Integer.parseInt(((JSpinner) rollBox.getComponent(EQUIPMENT)).getValue().toString());
         double pointsToRepair = 0;
         double critCost = 0;
@@ -1230,7 +1230,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
 
     private void setEngineCost() {
 
-        int techType = ((JComboBox) techBox.getComponent(ENGINES)).getSelectedIndex();
+        int techType = ((JComboBox<?>) techBox.getComponent(ENGINES)).getSelectedIndex();
         int baseRoll = Integer.parseInt(((JSpinner) rollBox.getComponent(ENGINES)).getValue().toString());
         double pointsToRepair = 0;
         double critCost = 0;
@@ -1329,7 +1329,7 @@ public class BulkRepairDialog extends JFrame implements ActionListener, KeyListe
 
     private void setWorkHours(int type, int critLocation, int critSlot, boolean armor, boolean clear) {
 
-        int techType = ((JComboBox) techBox.getComponent(type)).getSelectedIndex();
+        int techType = ((JComboBox<?>) techBox.getComponent(type)).getSelectedIndex();
         int baseRoll = Integer.parseInt(((JSpinner) rollBox.getComponent(type)).getValue().toString());
 
         if ((critLocation < 0) || (critSlot < 0)) {

@@ -15,7 +15,6 @@
 
 package server.campaign;
 
-import java.awt.Dimension;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -40,7 +39,6 @@ import common.Continent;
 import common.House;
 import common.Influences;
 import common.Terrain;
-import common.AdvancedTerrain;
 import common.Unit;
 import common.UnitFactory;
 import common.util.Position;
@@ -353,7 +351,7 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
         }
         setPosition(new Position(TokenReader.readDouble(ST), TokenReader.readDouble(ST)));
 
-        int Infcount = 0;
+//        int Infcount = 0;
         try {
             HashMap<Integer, Integer> influence = new HashMap<Integer, Integer>();
             {
@@ -363,7 +361,7 @@ private JDBCConnectionHandler ch = new JDBCConnectionHandler();
                     String HouseName = TokenReader.readString(influences);
                     SHouse h = (SHouse) data.getHouseByName(HouseName);
                     int HouseInf = TokenReader.readInt(influences);
-                    Infcount += HouseInf;
+//                    Infcount += HouseInf;
                     if (h != null)
                         influence.put(h.getId(), HouseInf);
                     else

@@ -99,6 +99,18 @@ final public class PlanetEnvironment{
     private int FortifiedMinHexes = 0;
     private int FortifiedMaxHexes = 0;
 
+    //Sand 
+    private int SandMinSpots = 0;
+    private int SandMaxSpots = 0;
+    private int SandMinHexes = 0;
+    private int SandMaxHexes = 0;
+    
+    //Planted Field 
+    private int PlantedFieldMinSpots = 0;
+    private int PlantedFieldMaxSpots = 0;
+    private int PlantedFieldMinHexes = 0;
+    private int PlantedFieldMaxHexes = 0;
+    
     //Buildings
     private int MinBuildings = 0;
     private int MaxBuildings = 0;
@@ -289,6 +301,24 @@ final public class PlanetEnvironment{
         	xBoardSize = Integer.parseInt(ST.nextToken());
         if ( ST.hasMoreElements() )
         	yBoardSize = Integer.parseInt(ST.nextToken());
+
+        if ( ST.hasMoreElements() )
+        	SandMinSpots = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	SandMaxSpots = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	SandMinHexes = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	SandMaxHexes = Integer.parseInt(ST.nextToken());
+        
+        if ( ST.hasMoreElements() )
+        	PlantedFieldMinSpots = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	PlantedFieldMaxSpots = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	PlantedFieldMinHexes = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	PlantedFieldMaxHexes = Integer.parseInt(ST.nextToken());
     }
 
     public PlanetEnvironment(StringTokenizer ST) {
@@ -430,6 +460,23 @@ final public class PlanetEnvironment{
         if ( ST.hasMoreElements() )
         	yBoardSize = Integer.parseInt(ST.nextToken());
 
+        if ( ST.hasMoreElements() )
+        	SandMinSpots = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	SandMaxSpots = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	SandMinHexes = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	SandMaxHexes = Integer.parseInt(ST.nextToken());
+        
+        if ( ST.hasMoreElements() )
+        	PlantedFieldMinSpots = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	PlantedFieldMaxSpots = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	PlantedFieldMinHexes = Integer.parseInt(ST.nextToken());
+        if ( ST.hasMoreElements() )
+        	PlantedFieldMaxHexes = Integer.parseInt(ST.nextToken());
     }
     
 
@@ -714,6 +761,18 @@ final public class PlanetEnvironment{
         result += yBoardSize;
         result += "$";
 
+        result += SandMinSpots + "$";
+        result += SandMaxSpots + "$";
+        result += SandMinHexes + "$";
+        result += SandMaxHexes + "$";
+
+
+        result += PlantedFieldMinSpots + "$";
+        result += PlantedFieldMaxSpots + "$";
+        result += PlantedFieldMinHexes + "$";
+        result += PlantedFieldMaxHexes + "$";
+
+
         return result;
     }
 
@@ -807,6 +866,16 @@ final public class PlanetEnvironment{
         result += yBoardSize;
         result += "$";
 
+        result += SandMinSpots + "$";
+        result += SandMaxSpots + "$";
+        result += SandMinHexes + "$";
+        result += SandMaxHexes + "$";
+
+
+        result += PlantedFieldMinSpots + "$";
+        result += PlantedFieldMaxSpots + "$";
+        result += PlantedFieldMinHexes + "$";
+        result += PlantedFieldMaxHexes + "$";
         
         return result;
     }
@@ -1151,7 +1220,7 @@ final public class PlanetEnvironment{
     public void setFortifiedMaxHexes(int FortifiedMaxHexes) {
         this.FortifiedMaxHexes = FortifiedMaxHexes;
     }
-    public void setFortifiedMaxSpots(int FortifiedMadebugNamexSpots) {
+    public void setFortifiedMaxSpots(int FortifiedMaxSpots) {
         this.FortifiedMaxSpots = FortifiedMaxSpots;
     }
     public void setFortifiedMinSpots(int FortifiedMinSpots) {
@@ -1311,6 +1380,16 @@ final public class PlanetEnvironment{
         out.println(RubbleMinHexes, "RubbleMinHexes");
         out.println(RubbleMaxHexes, "RubbleMaxHexes");
 
+        out.println(SandMinSpots, "SandMinSpots");
+        out.println(SandMaxSpots, "SandMaxSpots");
+        out.println(SandMinHexes, "SandMinHexes");
+        out.println(SandMaxHexes, "SandMaxHexes");
+
+        out.println(PlantedFieldMinSpots, "PlantedFieldMinSpots");
+        out.println(PlantedFieldMaxSpots, "PlantedFieldMaxSpots");
+        out.println(PlantedFieldMinHexes, "PlantedFieldMinHexes");
+        out.println(PlantedFieldMaxHexes, "PlantedFieldMaxHexes");
+                
         out.println(FortifiedMinSpots, "FortifiedMinSpots");
         out.println(FortifiedMaxSpots, "FortifiedMaxSpots");
         out.println(FortifiedMinHexes, "FortifiedMinHexes");
@@ -1397,6 +1476,16 @@ final public class PlanetEnvironment{
         RubbleMaxSpots = in.readInt("RubbleMaxSpots");
         RubbleMinHexes = in.readInt("RubbleMinHexes");
         RubbleMaxHexes = in.readInt("RubbleMaxHexes");
+
+        SandMinSpots = in.readInt("SandMinSpots");
+        SandMaxSpots = in.readInt("SandMaxSpots");
+        SandMinHexes = in.readInt("SandMinHexes");
+        SandMaxHexes = in.readInt("SandMaxHexes");
+
+        PlantedFieldMinSpots = in.readInt("PlantedFieldMinSpots");
+        PlantedFieldMaxSpots = in.readInt("PlantedFieldMaxSpots");
+        PlantedFieldMinHexes = in.readInt("PlantedFieldMinHexes");
+        PlantedFieldMaxHexes = in.readInt("PlantedFieldMaxHexes");
 
         FortifiedMinSpots = in.readInt("FortifiedMinSpots");
         FortifiedMaxSpots = in.readInt("FortifiedMaxSpots");
@@ -1511,5 +1600,69 @@ final public class PlanetEnvironment{
     public void setYBoardSize(int size) {
         yBoardSize = size;
     }
+
+	public int getSandMinSpots() {
+		return SandMinSpots;
+	}
+
+	public void setSandMinSpots(int sandMinSpots) {
+		SandMinSpots = sandMinSpots;
+	}
+
+	public int getSandMaxSpots() {
+		return SandMaxSpots;
+	}
+
+	public void setSandMaxSpots(int sandMaxSpots) {
+		SandMaxSpots = sandMaxSpots;
+	}
+
+	public int getSandMinHexes() {
+		return SandMinHexes;
+	}
+
+	public void setSandMinHexes(int sandMinHexes) {
+		SandMinHexes = sandMinHexes;
+	}
+
+	public int getSandMaxHexes() {
+		return SandMaxHexes;
+	}
+
+	public void setSandMaxHexes(int sandMaxHexes) {
+		SandMaxHexes = sandMaxHexes;
+	}
+
+	public int getPlantedFieldMinSpots() {
+		return PlantedFieldMinSpots;
+	}
+
+	public void setPlantedFieldMinSpots(int plantedFieldMinSpots) {
+		PlantedFieldMinSpots = plantedFieldMinSpots;
+	}
+
+	public int getPlantedFieldMinHexes() {
+		return PlantedFieldMinHexes;
+	}
+
+	public void setPlantedFieldMinHexes(int plantedFieldMinHexes) {
+		PlantedFieldMinHexes = plantedFieldMinHexes;
+	}
+
+	public int getPlantedFieldMaxSpots() {
+		return PlantedFieldMaxSpots;
+	}
+
+	public void setPlantedFieldMaxSpots(int plantedFieldMaxSpots) {
+		PlantedFieldMaxSpots = plantedFieldMaxSpots;
+	}
+
+	public int getPlantedFieldMaxHexes() {
+		return PlantedFieldMaxHexes;
+	}
+
+	public void setPlantedFieldMaxHexes(int plantedFieldMaxHexes) {
+		PlantedFieldMaxHexes = plantedFieldMaxHexes;
+	}
 
 }
