@@ -66,6 +66,9 @@ public class OperationReporter {
 						CampaignData.mwlog.testLog("winners is null");
 					} else {
 						CampaignData.mwlog.testLog("Winners must have returned a null object");
+						CampaignData.mwlog.testLog("looking for: " + name);
+						CampaignData.mwlog.testLog("size: " + winners.size());
+						CampaignData.mwlog.testLog("conents: " + winners.keySet().toString());
 					}
 				}
 			}
