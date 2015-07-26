@@ -57,7 +57,17 @@ public class OperationReporter {
 			if (name.equalsIgnoreCase("Draw") ) {
 			    wNames.append("Draw");
 			} else {
-			    wNames.append(winners.get(name).getName());
+				try {
+					wNames.append(winners.get(name).getName());
+				} catch (Exception e) {
+					if (wNames==null) {
+						CampaignData.mwlog.testLog("wNames is null");
+					} else if (winners == null) {
+						CampaignData.mwlog.testLog("winners is null");
+					} else {
+						CampaignData.mwlog.testLog("Winners must have returned a null object");
+					}
+				}
 			}
 			count++;
 		}

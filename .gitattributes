@@ -912,9 +912,19 @@ client-dist/data/mechfiles/OfficialUnitList.txt -text
 client-dist/data/mechfiles/UnitVerifierOptions.xml -text
 client-dist/data/mechfiles/Vehicles.zip -text
 client-dist/data/mmconf/bot.properties -text
+client-dist/data/mmconf/customWeaponOrder.xml -text
+client-dist/data/mmconf/defaultKeyBinds.xml -text
 client-dist/data/mmconf/defaultQuirks.xml -text
 client-dist/data/mmconf/defaultQuirksSchema.xsl -text
+client-dist/data/mmconf/defaultSkin.xml -text
+client-dist/data/mmconf/defaultSkinScrollBars.xml -text
+client-dist/data/mmconf/keyBindingSchema.xsl -text
+client-dist/data/mmconf/plainSkin.xml -text
+client-dist/data/mmconf/plainSkinScrollBars.xml -text
+client-dist/data/mmconf/princessBehaviors.xml -text
 client-dist/data/mmconf/princess_bot.properties -text
+client-dist/data/mmconf/skinSchema.xsl -text
+client-dist/data/mmconf/unitQuirksOverride.xml -text
 client-dist/data/operations/OpTemplate.html -text
 client-dist/data/scenarios/Example.mms -text
 client-dist/data/skins/BeOSthemepack.zip -text
@@ -973,7 +983,8 @@ client-dist/lib/cglib-nodep-2.2.jar -text
 client-dist/lib/dom4j-1.6.1.jar -text
 client-dist/lib/j3dcore.jar -text
 client-dist/lib/j3dutils.jar -text
-client-dist/lib/jdom-1.1.jar -text
+client-dist/lib/jdom-1.1.3.jar -text
+client-dist/lib/jdom2-2.0.5.jar -text
 client-dist/lib/jettison-1.2.jar -text
 client-dist/lib/joda-time-1.6.jar -text
 client-dist/lib/json-20080701.jar -text
@@ -992,6 +1003,7 @@ client-dist/lib/xmlpull-1.1.3.1.jar -text
 client-dist/lib/xom-1.1.jar -text
 client-dist/lib/xpp3_min-1.1.4c.jar -text
 client-dist/lib/xstream-1.4.7.jar -text
+client-dist/lib/xstream-distribution-1.4.7-bin.zip -text
 client-dist/licenses/jgoodies[!!-~]license.txt -text
 client-dist/licenses/license.txt -text
 client-dist/licenses/metouia[!!-~]license.txt -text
