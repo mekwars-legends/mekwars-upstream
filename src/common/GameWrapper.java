@@ -36,9 +36,18 @@ public class GameWrapper implements GameInterface {
 
 	public List<String> getWinners() {
 		ArrayList<String> result = new ArrayList<String>();
+		
+		//TODO: Winners sometimes coming up empty. Let's see why
+		
 		Enumeration<IPlayer> en = game.getPlayers();
+		
+		CampaignData.mwlog.errLog("  :: game.getPlayers(): " + en.toString());
+		CampaignData.mwlog.errLog("  :: VictoryTeam: " + game.getVictoryTeam());
+		
 		while (en.hasMoreElements()){
 			final IPlayer player = en.nextElement();
+			CampaignData.mwlog.errLog("  :: ==> Player: " + player.getName().trim() + " :: Team: " + player.getTeam());
+			
 			if (player.getTeam() == game.getVictoryTeam()){
 				result.add(player.getName().trim());
 			}

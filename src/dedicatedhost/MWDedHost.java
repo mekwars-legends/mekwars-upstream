@@ -1942,6 +1942,11 @@ public final class MWDedHost implements IClient, GameListener {
             int numberOfWinners = 0;
             // Multiple Winners
             List<String> winners = myGame.getWinners();
+            
+            //TODO: Winners is sometimes coming up empty.  Let's see why
+            CampaignData.mwlog.errLog("Finding winners:");
+            CampaignData.mwlog.errLog(winners.toString());
+            
             for (String winner: winners){
                 StringTokenizer st = new StringTokenizer(winner, "~");
                 name = "";
