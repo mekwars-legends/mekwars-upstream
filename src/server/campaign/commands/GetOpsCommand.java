@@ -92,11 +92,16 @@ public class GetOpsCommand implements Command {
 							} catch (NoSuchAlgorithmException e) {
 								CampaignData.mwlog.errLog(e);
 							}
+							CampaignData.mwlog.testLog("MD5 stop 1");
 							byte[] array = md.digest(o.getXmlString().getBytes("UTF-8"));
+							CampaignData.mwlog.testLog("MD5 stop 2");
 							StringBuffer sb = new StringBuffer();
+							CampaignData.mwlog.testLog("MD5 stop 3");
 							for (int i = 0; i < array.length; ++i) {
+								CampaignData.mwlog.testLog("MD5 stop 4." + i);
 								sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
 							}
+							CampaignData.mwlog.testLog("MD5 stop 5");
 							fw.write(o.getName() + "#" + sb.toString() + "\n");
 							CampaignData.mwlog.mainLog("MD5 for " + o.getName() + " calculated: " + sb.toString());
 						}
