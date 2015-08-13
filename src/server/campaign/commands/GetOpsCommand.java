@@ -93,7 +93,8 @@ public class GetOpsCommand implements Command {
 								CampaignData.mwlog.errLog(e);
 							}
 							CampaignData.mwlog.testLog("MD5 stop 1");
-							CampaignData.mwlog.testLog("getXmlString returns: " + o.getXmlString());
+							CampaignData.mwlog.testLog("getXmlString returns: ");
+							CampaignData.mwlog.testLog(o.getXmlString());
 							CampaignData.mwlog.testLog("getBytes returns: " + o.getXmlString().getBytes());
 							byte[] array = md.digest(o.getXmlString().getBytes("UTF-8"));
 							CampaignData.mwlog.testLog("MD5 stop 2");
