@@ -1,6 +1,9 @@
 VERSION HISTORY:
 ----------------
 v 0.4.0.x
+R Released Client v0.4.0.4, DedHost 0.4.0.0, Server v0.4.0.10
++ Added logging to find source of NPE in game resolution.
++ Added TestLog command, since ded owners are not sending me the requested logs
 + Added missing MM libraries and config files
 + Added some logging to find source of NPE in game resolution
 + RFE: Added Sand and Planted Fields to Terrain(SAND,PLANTEDFIELD)

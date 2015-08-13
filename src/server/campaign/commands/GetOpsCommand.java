@@ -85,12 +85,12 @@ public class GetOpsCommand implements Command {
 					try {
 						fw = new FileWriter(md5File);
 						for (Operation o : CampaignMain.cm.getOpsManager().getOperations().values()) {
+							CampaignData.mwlog.mainLog("Calculating MD5 for " + o.getName());
 							MessageDigest md = null;
 							try {
 								md = MessageDigest.getInstance("MD5");
 							} catch (NoSuchAlgorithmException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+								CampaignData.mwlog.errLog(e);
 							}
 							byte[] array = md.digest(o.getXmlString().getBytes("UTF-8"));
 							StringBuffer sb = new StringBuffer();
@@ -98,16 +98,15 @@ public class GetOpsCommand implements Command {
 								sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
 							}
 							fw.write(o.getName() + "#" + sb.toString() + "\n");
+							CampaignData.mwlog.mainLog("MD5 for " + o.getName() + " calculated: " + sb.toString());
 						}
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						CampaignData.mwlog.errLog(e);
 					} finally {
 						try {
 							fw.close();
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							CampaignData.mwlog.errLog(e);
 						}
 					}
 				}
@@ -126,7 +125,6 @@ public class GetOpsCommand implements Command {
 
 	                }
 	            } catch (FileNotFoundException e) {
-	                // TODO Auto-generated catch block
 	                CampaignData.mwlog.errLog(e);
 	            }
 				CampaignMain.cm.toUser("OP|md5|" + toReturn.toString(), Username, false);
