@@ -103,7 +103,7 @@ public final class MWDedHost implements IClient, GameListener {
     public static final int STATUS_DISCONNECTED = 0;
     public static final int STATUS_LOGGEDOUT = 1;
 
-    public static final String CLIENT_VERSION = "0.4.0.0"; // change this with
+    public static final String CLIENT_VERSION = "0.3.7.0"; // change this with
     // all client
     // changes @Torren
 
@@ -1932,7 +1932,7 @@ public final class MWDedHost implements IClient, GameListener {
         }
     }
 
-	public static StringBuilder prepareReport(GameInterface myGame, boolean usingAdvancedRepairs, Buildings buildingTemplate, MWDedHost host) {
+	public static StringBuilder prepareReport(GameInterface myGame, boolean usingAdvancedRepairs, Buildings buildingTemplate) {
 		StringBuilder result = new StringBuilder();
         String name = "";
         // Parse the real playername from the Modified In game one..
@@ -1946,7 +1946,6 @@ public final class MWDedHost implements IClient, GameListener {
             //TODO: Winners is sometimes coming up empty.  Let's see why
             CampaignData.mwlog.errLog("Finding winners:");
             CampaignData.mwlog.errLog(winners.toString());
-            host.serverSend("TestLog|" + winners.toString());
             
             for (String winner: winners){
                 StringTokenizer st = new StringTokenizer(winner, "~");
@@ -2029,7 +2028,7 @@ public final class MWDedHost implements IClient, GameListener {
         
         //GameReporter.prepareReport(myGame, usingAdvancedRepairs, buildingTemplate)
 
-        StringBuilder result = prepareReport(new GameWrapper(myServer.getGame()), isUsingAdvanceRepairs(), buildingTemplate, this);
+        StringBuilder result = prepareReport(new GameWrapper(myServer.getGame()), isUsingAdvanceRepairs(), buildingTemplate);
         serverSend("CR|" + result.toString());
         
 /*        StringBuilder result = new StringBuilder();

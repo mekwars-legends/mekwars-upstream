@@ -1820,7 +1820,6 @@ src/server/campaign/commands/SignOffCommand.java -text
 src/server/campaign/commands/SimpleRepairCommand.java -text
 src/server/campaign/commands/StopRepairJobCommand.java -text
 src/server/campaign/commands/TerminateCommand.java -text
-src/server/campaign/commands/TestLogCommand.java -text
 src/server/campaign/commands/TickCommand.java -text
 src/server/campaign/commands/ToggleArmyDisabledCommand.java -text
 src/server/campaign/commands/TransferMoneyCommand.java -text

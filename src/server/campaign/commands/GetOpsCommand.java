@@ -85,36 +85,29 @@ public class GetOpsCommand implements Command {
 					try {
 						fw = new FileWriter(md5File);
 						for (Operation o : CampaignMain.cm.getOpsManager().getOperations().values()) {
-							CampaignData.mwlog.mainLog("Calculating MD5 for " + o.getName());
 							MessageDigest md = null;
 							try {
 								md = MessageDigest.getInstance("MD5");
 							} catch (NoSuchAlgorithmException e) {
-								CampaignData.mwlog.errLog(e);
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 							}
-							CampaignData.mwlog.testLog("MD5 stop 1");
-							CampaignData.mwlog.testLog("getXmlString returns: ");
-							CampaignData.mwlog.testLog(o.getXmlString());
-							CampaignData.mwlog.testLog("getBytes returns: " + o.getXmlString().getBytes());
 							byte[] array = md.digest(o.getXmlString().getBytes("UTF-8"));
-							CampaignData.mwlog.testLog("MD5 stop 2");
 							StringBuffer sb = new StringBuffer();
-							CampaignData.mwlog.testLog("MD5 stop 3");
 							for (int i = 0; i < array.length; ++i) {
-								CampaignData.mwlog.testLog("MD5 stop 4." + i);
 								sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
 							}
-							CampaignData.mwlog.testLog("MD5 stop 5");
 							fw.write(o.getName() + "#" + sb.toString() + "\n");
-							CampaignData.mwlog.mainLog("MD5 for " + o.getName() + " calculated: " + sb.toString());
 						}
 					} catch (IOException e) {
-						CampaignData.mwlog.errLog(e);
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					} finally {
 						try {
 							fw.close();
 						} catch (IOException e) {
-							CampaignData.mwlog.errLog(e);
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
 					}
 				}
@@ -133,6 +126,7 @@ public class GetOpsCommand implements Command {
 
 	                }
 	            } catch (FileNotFoundException e) {
+	                // TODO Auto-generated catch block
 	                CampaignData.mwlog.errLog(e);
 	            }
 				CampaignMain.cm.toUser("OP|md5|" + toReturn.toString(), Username, false);

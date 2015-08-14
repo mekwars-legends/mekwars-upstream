@@ -128,7 +128,7 @@ public class BattleResolver {
 	}
 	
 	private String buildReportString(Battlefield bf) {
-		return MWClient.prepareReport(bf, true, null, null).toString();
+		return MWClient.prepareReport(bf, true, null).toString();
 	}
 
 	private void resolveTargeting(Battlefield bf) {

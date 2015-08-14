@@ -182,7 +182,7 @@ public final class MWClient implements IClient, GameListener {
 
     CConfig Config;
 
-    public static final String CLIENT_VERSION = "0.4.0.4"; // change this with
+    public static final String CLIENT_VERSION = "0.4.0.3"; // change this with
 
     // all client
     // changes @Torren
@@ -3815,7 +3815,7 @@ public final class MWClient implements IClient, GameListener {
             return;
         }
 
-        StringBuilder result = prepareReport(new GameWrapper(myServer.getGame()), isUsingAdvanceRepairs(), getBuildingTemplate(), this);
+        StringBuilder result = prepareReport(new GameWrapper(myServer.getGame()), isUsingAdvanceRepairs(), getBuildingTemplate());
 
         // send the autoreport
         serverSend("CR|" + result.toString());
@@ -3831,7 +3831,7 @@ public final class MWClient implements IClient, GameListener {
         }
     }
 
-	public static StringBuilder prepareReport(GameInterface myGame, boolean usingAdvancedRepairs, Buildings buildingTemplate, MWClient client) {
+	public static StringBuilder prepareReport(GameInterface myGame, boolean usingAdvancedRepairs, Buildings buildingTemplate) {
 		StringBuilder result = new StringBuilder();
         String name = "";
         // Parse the real playername from the Modified In game one..
@@ -3846,10 +3846,6 @@ public final class MWClient implements IClient, GameListener {
             CampaignData.mwlog.errLog("Finding winners:");
             CampaignData.mwlog.errLog(winners.toString());
             
-            if(client != null) {
-            	// Client is null if this is called by McWizard's autoresolution code
-            	client.serverSend("TestLog|" + winners.toString());
-            }
             for (String winner: winners){
                 StringTokenizer st = new StringTokenizer(winner, "~");
                 name = "";
