@@ -145,7 +145,7 @@ class ClientThread extends Thread implements CloseClientListener {
                 swingGui.getBots().clear();
             }
 
-            swingGui = new megamek.client.ui.swing.ClientGUI(client, new MegaMekController());
+            swingGui = new megamek.client.ui.swing.ClientGUI(client, controller);
             swingGui.initialize();
 
 
