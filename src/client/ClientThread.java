@@ -12,6 +12,7 @@
 
 package client;
 
+import java.awt.KeyboardFocusManager;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,6 +36,7 @@ import megamek.common.Crew;
 import megamek.common.Entity;
 import megamek.common.IGame;
 import megamek.common.IPlayer;
+import megamek.common.KeyBindParser;
 import megamek.common.MapSettings;
 import megamek.common.OffBoardDirection;
 import megamek.common.PlanetaryConditions;
@@ -63,6 +65,7 @@ class ClientThread extends Thread implements CloseClientListener {
     private MWClient mwclient;
     private Client client;
     private megamek.client.ui.swing.ClientGUI swingGui;
+    private megamek.client.ui.swing.util.MegaMekController controller;
 
     private ArrayList<Unit> mechs = new ArrayList<Unit>();
     private ArrayList<CUnit> autoarmy = new ArrayList<CUnit>();// from server's
@@ -90,6 +93,12 @@ class ClientThread extends Thread implements CloseClientListener {
         if (serverip.indexOf("127.0.0.1") != -1) {
             serverip = "127.0.0.1";
         }
+        controller = new MegaMekController();
+        KeyboardFocusManager kbfm = KeyboardFocusManager
+                .getCurrentKeyboardFocusManager();
+        kbfm.addKeyEventDispatcher(controller);
+
+        KeyBindParser.parseKeyBindings(controller);
     }
 
     public Client getClient() {
@@ -234,8 +243,8 @@ class ClientThread extends Thread implements CloseClientListener {
                         mySettings.setMountainParams(env.getMountPeaks(), env.getMountWidthMin(), env.getMountWidthMax(), env.getMountHeightMin(), env.getMountHeightMax(), env.getMountStyle());
                         mySettings.setSandParams(env.getSandMinSpots(), env.getSandMaxSpots(), env.getSandMinHexes(), env.getSandMaxHexes());
                         mySettings.setPlantedFieldParams(env.getPlantedFieldMinSpots(), env.getPlantedFieldMaxSpots(), env.getPlantedFieldMinHexes(), env.getPlantedFieldMaxHexes());
-                       
-                        
+
+
                         if (env.getTheme().length() > 1) {
                             mySettings.setTheme(env.getTheme());
                         } else {
