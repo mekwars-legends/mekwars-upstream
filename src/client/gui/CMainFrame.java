@@ -58,6 +58,7 @@ import javax.swing.event.MenuListener;
 import megamek.MegaMek;
 import megamek.client.ui.swing.UnitLoadingDialog;
 import client.CUser;
+import client.ClientThread;
 import client.MWClient;
 import client.campaign.CArmy;
 import client.campaign.CCampaign;
@@ -75,6 +76,7 @@ import client.gui.dialog.SubFactionNameDialog;
 import client.gui.dialog.TableViewerDialog;
 import client.gui.dialog.TraitDialog;
 import client.gui.dialog.UnitSelectionDialog;
+
 import common.CampaignData;
 import common.House;
 import common.Unit;
@@ -278,6 +280,22 @@ public class CMainFrame extends JFrame {
                     System.exit(0);
                 }
             }
+
+
+            @Override
+            public void windowGainedFocus(WindowEvent evt) {
+                for (ClientThread mmClient : mwclient.getMMClients()) {
+                    mmClient.getMegaMekController().setIgnoreKeyPresses(true);
+                }
+            }
+
+
+            @Override
+            public void windowLostFocus(WindowEvent evt) {
+                for (ClientThread mmClient : mwclient.getMMClients()) {
+                    mmClient.getMegaMekController().setIgnoreKeyPresses(false);
+                }
+            }
         });
     }
 
@@ -407,7 +425,7 @@ public class CMainFrame extends JFrame {
                             Class<?> c = loader.loadClass("OperationsEditor.MainOperations");
                             Object o = c.newInstance();
                             c.getDeclaredMethod("main", new Class[] { Object.class }).invoke(o, new Object[] { mwclient });
-                            loader.close(); 
+                            loader.close();
                         } catch (Exception ex) {
                             CampaignData.mwlog.errLog(ex);
                         }
@@ -1101,7 +1119,7 @@ public class CMainFrame extends JFrame {
         		mwclient.sendChat(MWClient.CAMPAIGN_PREFIX + "getops md5");
         	}
         });
-        
+
         /*
          * Display Report "MekWars Bug" and "Report MegaMek Bug" links in the
          * Help Menu. Create the actual menu options, with browsers calls, here
@@ -2653,9 +2671,9 @@ public class CMainFrame extends JFrame {
     }
 
     public void jMenuHelpOpViewer_actionPerformed() {
-    	
+
     }
-    
+
     public void jMenuHelpPilotSkills_actionPerformed() {
         String result = "";
         result += "<font color=\"black\">";
@@ -3030,7 +3048,7 @@ public class CMainFrame extends JFrame {
     }
 
     public void jMenuRetrieveOperationFile_actionPerformed(ActionEvent e) {
-    	JComboBox<String> opCombo = new JComboBox<String>((String[])mwclient.getAllOps().keySet().toArray(new String[0]));
+    	JComboBox<String> opCombo = new JComboBox<String>(mwclient.getAllOps().keySet().toArray(new String[0]));
         opCombo.setEditable(false);
 
         JOptionPane jop = new JOptionPane(opCombo, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);

@@ -55,7 +55,7 @@ import common.Unit;
 import common.campaign.Buildings;
 import common.util.UnitUtils;
 
-class ClientThread extends Thread implements CloseClientListener {
+public class ClientThread extends Thread implements CloseClientListener {
 
     // VARIABLES
     private String myname;
@@ -103,6 +103,10 @@ class ClientThread extends Thread implements CloseClientListener {
 
     public Client getClient() {
         return client;
+    }
+
+    public MegaMekController getMegaMekController() {
+        return controller;
     }
 
     @Override
